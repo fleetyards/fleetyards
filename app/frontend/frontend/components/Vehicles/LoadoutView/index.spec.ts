@@ -271,7 +271,7 @@ describe("VehicleLoadoutView", () => {
 });
 
 describe("VehicleLoadoutView components", () => {
-  it("tells the owner which items a new build refuses, and marks the ones still listed", async () => {
+  it("tells the owner which items a new build refuses, and marks the ones still listed in red", async () => {
     loadoutProblems.value = [
       {
         slotPath: "hardpoint_rear_module",
@@ -299,7 +299,7 @@ describe("VehicleLoadoutView components", () => {
     const living = wrapper
       .findAll("[data-test='vehicle-loadout-view-item']")
       .find((row) => row.text().includes("Living Module"));
-    expect(living?.text()).toContain("No longer fits");
+    expect(living?.attributes("data-refused")).toBe("true");
 
     loadoutProblems.value = [];
   });
@@ -333,7 +333,6 @@ describe("VehicleLoadoutView components", () => {
     });
 
     const section = wrapper.get("[data-test='vehicle-loadout-view-weapons']");
-    expect(section.text()).toContain("Gun Nose › Class 2");
     expect(section.text()).toContain("Other Gun");
     expect(section.text()).not.toContain("Stock Gimbal");
 

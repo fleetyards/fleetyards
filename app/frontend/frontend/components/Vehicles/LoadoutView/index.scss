@@ -46,24 +46,14 @@
     margin: 0 0 10px;
   }
 
-  &__slots {
+  // What is fitted, as badges that wrap.
+  &__badges {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    flex-wrap: wrap;
+    gap: 6px;
     margin: 0;
-  }
-
-  &__slot {
-    dt {
-      margin-bottom: 4px;
-      color: var(--color-text-dim);
-      font-size: 0.8rem;
-      font-weight: normal;
-    }
-
-    dd {
-      margin: 0;
-    }
+    padding: 0;
+    list-style: none;
   }
 
   &__empty {

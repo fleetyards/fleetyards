@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
-import AddonOption from "@/frontend/components/Models/AddonOption/index.vue";
+import Pill from "@/shared/components/base/Pill/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import Specs from "@/frontend/components/Vehicles/Overview/Specs/index.vue";
 import Alert from "@/shared/components/base/Alert/index.vue";
@@ -21,7 +21,6 @@ import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { VehicleLoadoutTabsEnum } from "@/frontend/components/Vehicles/LoadoutModal/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useModuleContents } from "@/frontend/composables/useModuleContents";
 import { useLoadoutSlotLabel } from "@/frontend/composables/useLoadoutSlotLabel";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
 import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
@@ -35,7 +34,6 @@ import { useLoadoutFitting } from "@/frontend/composables/useLoadoutFitting";
 import {
   HardpointCategoryEnum,
   type LoadoutSlot,
-  type ModelModule,
   ModelProductionStatusEnum,
   type Vehicle,
   type VehicleLoadout,
@@ -57,8 +55,6 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { t } = useI18n();
-
-const { contents } = useModuleContents();
 
 const { slotLabel } = useLoadoutSlotLabel();
 
@@ -88,18 +84,13 @@ const refusedAt = computed(
   () => new Map(problems.value.map((problem) => [problem.slotPath, problem])),
 );
 
-const refusedBadges = (slotPath: string) => {
+// Why the build in force refuses what a slot holds, for its badge's tooltip.
+const refusedReason = (slotPath: string) => {
   const problem = refusedAt.value.get(slotPath);
 
   return problem
-    ? [
-        {
-          key: "refused",
-          label: `${t("labels.vehicleLoadout.refused.badge")}: ${reason(problem)}`,
-          variant: PillVariantsEnum.DANGER,
-        },
-      ]
-    : [];
+    ? `${t("labels.vehicleLoadout.refused.badge")}: ${reason(problem)}`
+    : undefined;
 };
 
 // What the loadout changes on the ship as the game files deliver it, worked out
@@ -110,14 +101,12 @@ const flightReady = computed(
     model.value?.productionStatus === ModelProductionStatusEnum.FLIGHT_READY,
 );
 
-const { fitting, changesFromStock } = useLoadoutFitting({
+const { changesFromStock } = useLoadoutFitting({
   model,
   loadoutSlots,
   items: () => props.loadout?.items,
   enabled: () => props.editable && flightReady.value,
 });
-
-const { componentFigure } = fitting;
 
 type ComponentRow = { slotPath: string; label: string; slot: LoadoutSlot };
 
@@ -165,35 +154,45 @@ const componentSections = computed(() =>
   })),
 );
 
-// One section per category with something fitted, so the view grows with
-// the categories rather than listing the ones still to come.
-const sections = computed(() =>
+// What the loadout fits, category by category, as badges: the module or part
+// by name, the slot it sits in on hover, refused ones in red. The loadout's
+// page carries the full hardpoint list.
+type SummaryItem = {
+  key: string;
+  label: string;
+  slot: string;
+  refused?: string;
+  testId: string;
+};
+
+const summarySections = computed(() =>
   [
     {
       key: "modules",
       label: t("labels.vehicleLoadout.tabs.modules"),
       category: HardpointCategoryEnum.MODULE,
-      rows: moduleRows.value,
+      items: moduleRows.value.map<SummaryItem>((row) => ({
+        key: row.slotPath,
+        label: row.module.name,
+        slot: slotLabel(row.slotPath),
+        refused: refusedReason(row.slotPath),
+        testId: "vehicle-loadout-view-item",
+      })),
     },
-  ].filter((section) => section.rows.length),
+    ...componentSections.value.map((section) => ({
+      key: section.key,
+      label: section.label,
+      category: section.category,
+      items: section.rows.map<SummaryItem>((row) => ({
+        key: row.slotPath,
+        label: row.slot.fitted?.name || t("labels.loadoutPicker.emptySocket"),
+        slot: row.label,
+        refused: refusedReason(row.slotPath),
+        testId: "vehicle-loadout-view-component",
+      })),
+    })),
+  ].filter((section) => section.items.length),
 );
-
-const fittedComponentSections = computed(() =>
-  componentSections.value.filter((section) => section.rows.length),
-);
-
-const badges = (mod: ModelModule, slotPath: string) => [
-  ...(mod.stock
-    ? [
-        {
-          key: "stock",
-          label: t("labels.vehicleLoadout.stock"),
-          variant: PillVariantsEnum.NEUTRAL,
-        },
-      ]
-    : []),
-  ...refusedBadges(slotPath),
-];
 
 const previewImage = computed(
   () =>
@@ -287,7 +286,7 @@ const edit = () => {
       />
 
       <section
-        v-for="section in sections"
+        v-for="section in summarySections"
         :key="section.key"
         class="loadout-view__section"
         :data-test="`vehicle-loadout-view-${section.key}`"
@@ -299,64 +298,28 @@ const edit = () => {
           />
           {{ section.label }}
         </h3>
-        <dl class="loadout-view__slots">
-          <div
-            v-for="row in section.rows"
-            :key="row.slotPath"
-            class="loadout-view__slot"
-          >
-            <dt>{{ slotLabel(row.slotPath) }}</dt>
-            <dd>
-              <AddonOption
-                :name="row.module.name"
-                :image="row.module.media?.storeImage?.smallUrl"
-                :contents="row.module.description || contents(row.module)"
-                :badges="badges(row.module, row.slotPath)"
-                :editable="false"
-                test-id="vehicle-loadout-view-item"
-              />
-            </dd>
-          </div>
-        </dl>
-      </section>
-
-      <section
-        v-for="section in fittedComponentSections"
-        :key="section.key"
-        class="loadout-view__section"
-        :data-test="`vehicle-loadout-view-${section.key}`"
-      >
-        <h3>
-          <HardpointCategoryIcon
-            :category="section.category"
-            class="loadout-view__icon"
-          />
-          {{ section.label }}
-        </h3>
-        <dl class="loadout-view__slots">
-          <div
-            v-for="row in section.rows"
-            :key="row.slotPath"
-            class="loadout-view__slot"
-          >
-            <dt>{{ row.label }}</dt>
-            <dd>
-              <AddonOption
-                :name="
-                  row.slot.fitted?.name || t('labels.loadoutPicker.emptySocket')
-                "
-                :contents="componentFigure(row.slot.fitted)"
-                :badges="refusedBadges(row.slotPath)"
-                :editable="false"
-                test-id="vehicle-loadout-view-component"
-              />
-            </dd>
-          </div>
-        </dl>
+        <ul class="loadout-view__badges">
+          <li v-for="item in section.items" :key="item.key">
+            <Pill
+              v-tooltip="
+                item.refused ? `${item.slot} · ${item.refused}` : item.slot
+              "
+              :variant="
+                item.refused
+                  ? PillVariantsEnum.DANGER
+                  : PillVariantsEnum.NEUTRAL
+              "
+              :data-test="item.testId"
+              :data-refused="item.refused ? true : undefined"
+            >
+              {{ item.label }}
+            </Pill>
+          </li>
+        </ul>
       </section>
 
       <p
-        v-if="!sections.length && !fittedComponentSections.length"
+        v-if="!summarySections.length"
         class="loadout-view__empty"
         data-test="vehicle-loadout-view-empty"
       >
