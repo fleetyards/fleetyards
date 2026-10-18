@@ -11,6 +11,7 @@ import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useModalDirty } from "@/shared/components/AppModal/dirty";
 import type {
   FilterOption,
   HangarInventory,
@@ -40,6 +41,10 @@ const inventoryId = ref<string | undefined>(
   contractDestination?.id ?? props.inventories[0]?.id,
 );
 
+const initialInventoryId = inventoryId.value;
+
+useModalDirty(() => inventoryId.value !== initialInventoryId);
+
 const options = computed<FilterOption[]>(() =>
   props.inventories.map((inventory) => ({
     value: inventory.id,
@@ -54,7 +59,7 @@ const onSubmit = async () => {
 
   try {
     await props.onAccept(inventoryId.value);
-    comlink.emit("close-modal");
+    comlink.emit("close-modal", true);
   } finally {
     submitting.value = false;
   }

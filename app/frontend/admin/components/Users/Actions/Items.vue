@@ -18,6 +18,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useQueryClient } from "@tanstack/vue-query";
 import { validationErrorFrom } from "@/shared/utils/ApiErrors";
+import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
 type Props = {
   user: User;
@@ -112,6 +113,7 @@ const runDestroy = async (destroyFleets: boolean) => {
 
       setTimeout(() => {
         displayConfirm({
+          tone: AppConfirmTonesEnum.DANGER,
           text: t("messages.confirm.user.destroyWithFleets", { fleets }),
           onConfirm: () => {
             void runDestroy(true);
@@ -136,6 +138,7 @@ const destroy = () => {
   if (!props.user.id) return;
 
   displayConfirm({
+    tone: AppConfirmTonesEnum.DANGER,
     text: t("messages.confirm.user.destroy"),
     onConfirm: () => {
       void runDestroy(false);

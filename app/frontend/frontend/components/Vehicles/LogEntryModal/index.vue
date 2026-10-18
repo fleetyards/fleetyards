@@ -16,6 +16,8 @@ import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useModalDirty } from "@/shared/components/AppModal/dirty";
+import { useFormDirty } from "@/shared/composables/useFormDirty";
 import { useQueryClient } from "@tanstack/vue-query";
 import {
   type Vehicle,
@@ -39,14 +41,18 @@ const queryClient = useQueryClient();
 
 const isEdit = computed(() => !!props.logEntry);
 
-const { defineField, handleSubmit } = useForm({
-  initialValues: {
-    title: props.logEntry?.title ?? "",
-    body: props.logEntry?.body ?? "",
-    loggedAt: (props.logEntry?.loggedAt ?? null) as string | null,
-    public: props.logEntry?.public ?? props.vehicle.logEntriesPublicByDefault,
-  },
+const initialValues = {
+  title: props.logEntry?.title ?? "",
+  body: props.logEntry?.body ?? "",
+  loggedAt: (props.logEntry?.loggedAt ?? null) as string | null,
+  public: props.logEntry?.public ?? props.vehicle.logEntriesPublicByDefault,
+};
+
+const { defineField, handleSubmit, values } = useForm({
+  initialValues,
 });
+
+useModalDirty(useFormDirty(values, initialValues));
 
 const [title, titleProps] = defineField("title");
 const [body, bodyProps] = defineField("body");
@@ -100,7 +106,7 @@ const onSubmit = handleSubmit(async (values) => {
           ? t("messages.vehicleLog.update.success")
           : t("messages.vehicleLog.create.success"),
       });
-      comlink.emit("close-modal");
+      comlink.emit("close-modal", true);
     })
     .catch(() => {
       displayAlert({

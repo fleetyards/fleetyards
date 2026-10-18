@@ -12,6 +12,7 @@ import { useOverlayStore } from "@/shared/stores/overlay";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { popoverLayerKey } from "@/shared/components/Popover/layer";
+import { modalDirtyKey } from "./dirty";
 import { type AppModalOptions } from "./types";
 
 interface ModalComponent extends HTMLElement {
@@ -41,6 +42,19 @@ const dirty = ref(false);
 const isShow = ref(false);
 
 const isOpen = ref(false);
+
+const dirtySources = new Set<() => boolean>();
+
+provide(modalDirtyKey, (source) => {
+  dirtySources.add(source);
+
+  return () => dirtySources.delete(source);
+});
+
+// Anything the content reports: its own exposed `dirty`, and every component
+// inside it that reports through `useModalDirty`.
+const contentDirty = () =>
+  !!modalComponent.value?.dirty || [...dirtySources].some((source) => source());
 
 // Matches `.app-modal` in index.scss, so a popover opened from the modal's
 // content is placed above it rather than underneath.
@@ -124,10 +138,10 @@ const close = async (force = false) => {
 
   // A forced close is the modal closing itself after it saved: what was typed
   // is not lost, so there is nothing to confirm.
-  if (!force && modalComponent.value?.dirty) {
+  if (!force && contentDirty()) {
     displayConfirm({
       text:
-        modalComponent.value.dirtyText ?? t("appModal.messages.confirm.dirty"),
+        modalComponent.value?.dirtyText ?? t("appModal.messages.confirm.dirty"),
       onConfirm: async () => {
         await internalHide();
       },

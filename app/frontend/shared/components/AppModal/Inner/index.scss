@@ -1,6 +1,12 @@
 // Whatever contains this bounds its height; the chain down to the body has to
 // be allowed to shrink for the body to scroll instead of overflowing.
+//
+// --modal-gutter is the header's and body's side padding, exposed so content
+// that drops the body's padding (`flush`) can line its sections up with the
+// title.
 .modal-inner {
+  --modal-gutter: 24px;
+
   display: flex;
   flex-direction: column;
   min-height: 0;
@@ -13,77 +19,97 @@
   min-height: 0;
 }
 
-.modal-header {
-  position: relative;
-  flex-shrink: 0;
-  padding: 0;
-  padding-bottom: 1rem;
-  border-bottom: none;
-  border-radius: 0;
-
-  .modal-title {
-    padding-right: 20px;
-    font-weight: normal;
-    font-family: "Orbitron", sans-serif;
-    line-height: 1;
-    padding-bottom: 1rem;
-
-    small {
-      font-size: 15px;
-      font-family: "Open Sans", sans-serif;
-      line-height: 1;
-    }
-  }
-
-  .modal-title--with-actions {
-    padding-right: 3rem;
-  }
-
-  .modal-header-actions {
-    position: absolute;
-    top: -6px;
-    right: -6px;
-    display: flex;
-    gap: 0.25rem;
-  }
-
-  .modal-header-actions--beside-close {
-    right: 1.5rem;
-  }
-
-  .close {
-    position: absolute;
-    top: 0;
-    right: -10px;
-    margin: 0;
-    padding: 3px 10px;
-    color: white;
-    font-size: 1rem;
-    text-shadow: none;
-    cursor: pointer;
-    opacity: 1;
-  }
-}
-
+// The seam runs edge to edge, so the header and body carry the padding rather
+// than the content box.
 .modal-content {
-  padding: 15px;
+  padding: 0;
   background-color: transparent;
   border: none;
   border-radius: $border-radius-base;
   box-shadow: none;
 }
 
-.modal-header--tabbed {
-  padding-bottom: 0.5rem;
+.modal-header {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 20px var(--modal-gutter) 18px;
+  border-bottom: 1px solid var(--color-seam, #3a3f44);
 
-  .modal-title {
-    padding-bottom: 0;
+  .modal-header-actions {
+    display: flex;
+    flex-shrink: 0;
+    gap: 0.25rem;
+  }
+
+  .close {
+    flex-shrink: 0;
   }
 }
 
+.modal-heading {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.modal-eyebrow {
+  margin: 0;
+  color: var(--color-text-dim, #959595);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+.modal-title {
+  margin: 0;
+  color: var(--color-lifted, #eee);
+  font-weight: normal;
+  font-family: "Orbitron", sans-serif;
+  font-size: 24px;
+  line-height: 1.15;
+
+  small {
+    font-size: 15px;
+    font-family: "Open Sans", sans-serif;
+    line-height: 1;
+  }
+}
+
+// The hero stands in for the header and runs to the panel's edges, so the
+// close button sits on the picture, on a ground that keeps it readable there.
+.modal-hero {
+  position: relative;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: var(--radius-surface-inner, 14px)
+    var(--radius-surface-inner, 14px) 0 0;
+}
+
+.modal-hero__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 1;
+  background-color: rgb(26 29 33 / 0.8);
+}
+
+// Rounded like the panel's inside, so content that runs to the edges - a
+// flush body's sticky tray - is clipped to the corners instead of poking out.
 .modal-body {
-  padding: 0;
+  padding: 20px var(--modal-gutter) 24px;
   overflow: hidden auto;
+  border-radius: 0 0 var(--radius-surface-inner, 14px)
+    var(--radius-surface-inner, 14px);
+}
+
+// A tab strip's links carry their own padding above the labels.
+.modal-header--tabbed + .modal-body {
+  padding-top: 8px;
 }
 
 .modal-body--fill {
@@ -91,6 +117,15 @@
   flex-direction: column;
 }
 
+.modal-body--flush {
+  padding: 0;
+}
+
+/*
+ * The actions dock below the panel rather than inside it: the panel holds what
+ * is being worked on, the dock what commits it. A plate of its own keeps them
+ * anchored to the dialog instead of floating over the page behind the scrim.
+ */
 .modal-footer {
   display: flex;
   flex-shrink: 0;
@@ -98,15 +133,109 @@
   align-items: center;
   justify-content: flex-end;
   gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  border-top: none;
-  border-radius: 0;
+  margin-top: 12px;
+  padding: 8px;
+  background-color: var(--color-control-press, rgb(26 29 33 / 0.95));
+  border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+  border-radius: var(--radius-surface-slim, 12px);
+  box-shadow: var(--shadow-surface-slim, 0 6px 20px -14px rgb(0 0 0 / 0.9));
 }
 
 @media (max-width: $tablet-breakpoint) {
+  .modal-inner {
+    --modal-gutter: 16px;
+  }
+
   .modal-content {
     border-width: 1px 0 0;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
+  }
+
+  .modal-header {
+    padding-top: 16px;
+    padding-bottom: 14px;
+  }
+
+  .modal-title {
+    font-size: 20px;
+  }
+
+  .modal-hero__close {
+    top: 8px;
+    right: 8px;
+  }
+
+  .modal-body {
+    padding-top: 16px;
+    padding-bottom: 20px;
+  }
+
+  .modal-body--flush {
+    padding: 0;
+  }
+}
+
+/*
+ * On a phone the app's modal is a sheet resting on the mobile nav: square at
+ * the bottom, the top cap shortened into a grab handle, and the action plate
+ * folded in as the sheet's last row rather than floating between the sheet and
+ * the nav. Scoped to the app's modal - a dialog opened above it, in a native
+ * `<dialog>` of its own, stays a centred dialog.
+ */
+@media (max-width: $tablet-breakpoint) {
+  // Grows into a sheet given a height of its own; sized by its content, it
+  // has nothing to grow into and this changes nothing.
+  .app-modal .modal-inner {
+    flex: 1 1 auto;
+    transition: transform 200ms ease;
+  }
+
+  .app-modal .modal-inner > .panel,
+  .app-modal .modal-content,
+  .app-modal .modal-body {
+    flex: 1 1 auto;
+  }
+
+  .app-modal .modal-inner > .panel {
+    border-bottom-width: 0;
+    border-radius: 20px 20px 0 0;
+    box-shadow: none;
+  }
+
+  // On the pseudo-element itself: the cap's custom properties inherit, and set
+  // on the panel they shrank every input's and button's caps inside it too.
+  .app-modal .modal-inner > .panel::before {
+    left: calc(50% - 24px);
+    right: calc(50% - 24px);
+    height: 5px;
+  }
+
+  .app-modal .modal-inner > .panel::after {
+    content: none;
+  }
+
+  .app-modal .modal-hero {
+    border-radius: 18px 18px 0 0;
+  }
+
+  .app-modal .modal-body {
+    border-radius: 0;
+  }
+
+  .app-modal .modal-footer {
+    margin-top: 0;
+    padding: 12px var(--modal-gutter) 14px;
+    border: 2px solid var(--color-edge, rgb(122 130 136 / 0.5));
+    border-top: 1px solid var(--color-seam, #3a3f44);
+    border-bottom: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  // Dragged down from here to close.
+  .app-modal .modal-header,
+  .app-modal .modal-hero {
+    touch-action: none;
   }
 }

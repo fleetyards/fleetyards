@@ -29,6 +29,7 @@ import {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
+import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
 type Props = {
   fleet: Fleet;
@@ -82,6 +83,7 @@ const destroyMutation = useDestroyFleetInventoryItem();
 
 const destroyEntry = (entry: FleetInventoryItem) => {
   displayConfirm({
+    tone: AppConfirmTonesEnum.DANGER,
     text: t("messages.logistics.inventoryItem.destroy.confirm"),
     onConfirm: async () => {
       try {
@@ -151,6 +153,7 @@ const destroyStockItem = () => {
   if (!stockItem.value) return;
 
   displayConfirm({
+    tone: AppConfirmTonesEnum.DANGER,
     text: t("messages.logistics.stockItem.destroy.confirm", {
       count: stockItem.value.entriesCount,
     }),

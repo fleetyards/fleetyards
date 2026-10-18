@@ -17,6 +17,7 @@ import { useMobile } from "@/shared/composables/useMobile";
 import { useI18n } from "@/shared/composables/useI18n";
 import { uniq as uniqArray } from "@/shared/utils/Array";
 import { Comment, Fragment, Text, type VNode } from "vue";
+import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
 type Props = {
   items: T[];
@@ -125,6 +126,7 @@ const destroy = (item: T) => {
 
   if (props.confirmDestroyText) {
     displayConfirm({
+      tone: AppConfirmTonesEnum.DANGER,
       text: props.confirmDestroyText,
       onConfirm,
     });

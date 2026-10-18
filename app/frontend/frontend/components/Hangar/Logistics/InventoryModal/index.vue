@@ -17,6 +17,8 @@ import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useModalDirty } from "@/shared/components/AppModal/dirty";
+import { useFormDirty } from "@/shared/composables/useFormDirty";
 import { inventoryDefaultImage } from "@/frontend/composables/useInventoryImage";
 import type { InventoryPanelRecord } from "@/frontend/types/logistics";
 import {
@@ -42,16 +44,20 @@ const validationSchema = {
   name: "required|min:2",
 };
 
-const { defineField, handleSubmit } = useForm({
-  initialValues: {
-    name: props.inventory?.name ?? "",
-    description: props.inventory?.description ?? "",
-    location: props.inventory?.location ?? "",
-    locationId: props.inventory?.linkedLocation?.id ?? null,
-    image: undefined as string | undefined,
-    imagePreset: props.inventory?.imagePreset ?? null,
-  },
+const initialValues = {
+  name: props.inventory?.name ?? "",
+  description: props.inventory?.description ?? "",
+  location: props.inventory?.location ?? "",
+  locationId: props.inventory?.linkedLocation?.id ?? null,
+  image: undefined as string | undefined,
+  imagePreset: props.inventory?.imagePreset ?? null,
+};
+
+const { defineField, handleSubmit, values } = useForm({
+  initialValues,
 });
+
+useModalDirty(useFormDirty(values, initialValues));
 
 const [name, nameProps] = defineField("name");
 const [description, descriptionProps] = defineField("description");
@@ -114,7 +120,7 @@ const onSubmit = handleSubmit(async (values) => {
       comlink.emit(
         isEdit.value ? "hangar-inventory-updated" : "hangar-inventory-created",
       );
-      comlink.emit("close-modal");
+      comlink.emit("close-modal", true);
     })
     .catch(() => {
       displayAlert({

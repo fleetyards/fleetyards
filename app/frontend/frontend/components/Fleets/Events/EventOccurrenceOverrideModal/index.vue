@@ -15,6 +15,8 @@ import FormMarkdownEditor from "@/shared/components/base/FormMarkdownEditor/inde
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useModalDirty } from "@/shared/components/AppModal/dirty";
+import { useFormDirty } from "@/shared/composables/useFormDirty";
 import {
   type Fleet,
   type FleetEvent,
@@ -45,17 +47,21 @@ const comlink = useComlink();
 
 const submitting = ref(false);
 
-const { defineField, handleSubmit } = useForm({
-  initialValues: {
-    title: props.initial?.title ?? "",
-    description: props.initial?.description ?? "",
-    location: props.initial?.location ?? "",
-    meetupLocation: props.initial?.meetupLocation ?? "",
-    locationId: props.initial?.linkedLocation?.id ?? null,
-    meetupLocationId: props.initial?.linkedMeetupLocation?.id ?? null,
-    scenario: props.initial?.scenario ?? "",
-  },
+const initialValues = {
+  title: props.initial?.title ?? "",
+  description: props.initial?.description ?? "",
+  location: props.initial?.location ?? "",
+  meetupLocation: props.initial?.meetupLocation ?? "",
+  locationId: props.initial?.linkedLocation?.id ?? null,
+  meetupLocationId: props.initial?.linkedMeetupLocation?.id ?? null,
+  scenario: props.initial?.scenario ?? "",
+};
+
+const { defineField, handleSubmit, values } = useForm({
+  initialValues,
 });
+
+useModalDirty(useFormDirty(values, initialValues));
 
 const [title, titleProps] = defineField("title");
 const [description, descriptionProps] = defineField("description");
@@ -88,7 +94,7 @@ const onSubmit = handleSubmit(async (values) => {
       text: t("messages.fleets.event.update.success"),
     });
     comlink.emit("fleet-event-updated");
-    comlink.emit("close-modal");
+    comlink.emit("close-modal", true);
   } catch {
     displayAlert({
       text: t("messages.fleets.event.update.failure"),

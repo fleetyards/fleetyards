@@ -13,6 +13,8 @@ import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useModalDirty } from "@/shared/components/AppModal/dirty";
+import { useFormDirty } from "@/shared/composables/useFormDirty";
 import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import {
   type FleetMember,
@@ -37,12 +39,16 @@ const validationSchema = {
 
 const { displaySuccess, displayAlert } = useAppNotifications();
 
-const { defineField, handleSubmit, setErrors } =
+const initialValues: FleetMemberUpdateInput = {
+  nickname: props.member.nickname ?? undefined,
+};
+
+const { defineField, handleSubmit, setErrors, values } =
   useForm<FleetMemberUpdateInput>({
-    initialValues: {
-      nickname: props.member.nickname ?? undefined,
-    },
+    initialValues,
   });
+
+useModalDirty(useFormDirty(values, initialValues));
 
 const [nickname, nicknameProps] = defineField("nickname");
 
@@ -63,7 +69,7 @@ const onSubmit = handleSubmit(async (values) => {
     })
     .then(() => {
       comlink.emit("fleet-member-update");
-      comlink.emit("close-modal");
+      comlink.emit("close-modal", true);
 
       displaySuccess({
         text: t("messages.fleet.members.nickname.success"),

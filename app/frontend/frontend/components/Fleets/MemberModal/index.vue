@@ -14,6 +14,8 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { type Fleet, type FleetMemberCreateInput } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useModalDirty } from "@/shared/components/AppModal/dirty";
+import { useFormDirty } from "@/shared/composables/useFormDirty";
 import { useCreateFleetMember as useCreateFleetMemberMutation } from "@/services/fyApi";
 import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 
@@ -33,12 +35,16 @@ const validationSchema = {
 
 const { displayAlert } = useAppNotifications();
 
-const { defineField, handleSubmit, setErrors } =
+const initialValues: FleetMemberCreateInput = {
+  username: undefined,
+};
+
+const { defineField, handleSubmit, setErrors, values } =
   useForm<FleetMemberCreateInput>({
-    initialValues: {
-      username: undefined,
-    },
+    initialValues,
   });
+
+useModalDirty(useFormDirty(values, initialValues));
 
 const [username, usernameProps] = defineField("username");
 
@@ -56,7 +62,7 @@ const onSubmit = handleSubmit(async (values) => {
     })
     .then((member) => {
       comlink.emit("fleet-member-invited", member);
-      comlink.emit("close-modal");
+      comlink.emit("close-modal", true);
     })
     .catch((error) => {
       const { message, formErrors } = validationErrorFrom(error, {

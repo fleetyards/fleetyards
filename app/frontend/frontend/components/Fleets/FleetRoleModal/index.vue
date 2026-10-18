@@ -16,6 +16,8 @@ import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useModalDirty } from "@/shared/components/AppModal/dirty";
+import { useFormDirty } from "@/shared/composables/useFormDirty";
 import {
   type FleetRoleExtended,
   type FleetRoleUpdateInput,
@@ -39,9 +41,14 @@ const comlink = useComlink();
 const queryClient = useQueryClient();
 const submitting = ref(false);
 
-const { defineField, handleSubmit, setErrors } = useForm<FleetRoleUpdateInput>({
-  initialValues: { name: props.role.name },
-});
+const initialValues: FleetRoleUpdateInput = { name: props.role.name };
+
+const { defineField, handleSubmit, setErrors, values } =
+  useForm<FleetRoleUpdateInput>({
+    initialValues,
+  });
+
+useModalDirty(useFormDirty(values, initialValues));
 
 const [name, nameProps] = defineField("name");
 const mutation = useUpdateFleetRole();
@@ -67,7 +74,7 @@ const onSubmit = handleSubmit(async (values) => {
       ].map((queryKey) => queryClient.invalidateQueries({ queryKey })),
     );
     displaySuccess({ text: t("messages.fleet.roles.update.success") });
-    comlink.emit("close-modal");
+    comlink.emit("close-modal", true);
   } catch (error) {
     const { message, formErrors } = validationErrorFrom(error);
     setErrors(formErrors);

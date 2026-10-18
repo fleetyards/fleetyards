@@ -32,6 +32,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import Sortable from "sortablejs";
+import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
 type Props = {
   fleet: Fleet;
@@ -97,6 +98,7 @@ const sortShipsMutation = useSortFleetEventShips();
 
 const removeTeam = () => {
   displayConfirm({
+    tone: AppConfirmTonesEnum.DANGER,
     text: t("messages.fleets.eventTeam.destroy.confirm"),
     confirmText: t("actions.delete"),
     onConfirm: async () => {

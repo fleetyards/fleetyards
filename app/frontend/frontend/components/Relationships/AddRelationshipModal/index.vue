@@ -10,6 +10,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useModalDirty } from "@/shared/components/AppModal/dirty";
 
 type Props = {
   title: string;
@@ -27,6 +28,8 @@ const comlink = useComlink();
 const handle = ref("");
 const submitting = ref(false);
 
+useModalDirty(() => handle.value !== "");
+
 const invalid = computed(() => handle.value.trim() === "");
 
 const submit = async () => {
@@ -39,7 +42,7 @@ const submit = async () => {
     // such handle -- leaves the typed value where it is so it can be corrected
     // rather than retyped.
     if (await props.onSubmit(handle.value.trim())) {
-      comlink.emit("close-modal");
+      comlink.emit("close-modal", true);
     }
   } finally {
     submitting.value = false;

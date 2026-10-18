@@ -286,8 +286,7 @@ const pillVariant = (item: SummaryItem) => {
   return item.changed ? PillVariantsEnum.WARNING : PillVariantsEnum.NEUTRAL;
 };
 
-// The band over the picture names the loadout; the modal carries no title row
-// of its own.
+// The band over the picture names the loadout, and the dialog by it.
 const title = computed(
   () =>
     props.loadout?.name ||
@@ -343,12 +342,8 @@ const edit = () => {
 </script>
 
 <template>
-  <Modal class="loadout-view-modal" :loading="loading">
-    <div
-      class="loadout-view"
-      data-test="vehicle-loadout-view"
-      :aria-busy="loading || undefined"
-    >
+  <Modal :title="title" :loading="loading" flush>
+    <template #hero>
       <header
         class="loadout-view__hero"
         :class="{ 'skeleton-well': previewImage && !imageLoaded }"
@@ -387,7 +382,13 @@ const edit = () => {
           </div>
         </div>
       </header>
+    </template>
 
+    <div
+      class="loadout-view"
+      data-test="vehicle-loadout-view"
+      :aria-busy="loading || undefined"
+    >
       <div class="loadout-view__body">
         <section
           v-if="changesLoading && editable && flightReady"

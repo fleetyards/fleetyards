@@ -90,7 +90,8 @@ const confirmSlow = () => {
 
 const confirmDestructive = () => {
   comlink.emit("show-confirm", {
-    text: "Delete all 284 ships from your hangar?",
+    title: "Remove all ships?",
+    text: "All 284 ships leave your hangar, with their loadouts and names. This can't be undone.",
     confirmText: "Delete everything",
     tone: AppConfirmTonesEnum.DANGER,
     onConfirm: () => record("confirmed (danger tone)"),

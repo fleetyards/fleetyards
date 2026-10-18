@@ -19,6 +19,8 @@ import { BaseSelectVariantsEnum } from "@/shared/components/base/Select/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useModalDirty } from "@/shared/components/AppModal/dirty";
+import { useFormDirty } from "@/shared/composables/useFormDirty";
 import ComponentPicker from "@/frontend/components/Logistics/ComponentPicker/index.vue";
 import CommodityPicker from "@/frontend/components/Logistics/CommodityPicker/index.vue";
 import EquipmentPicker from "@/frontend/components/Logistics/EquipmentPicker/index.vue";
@@ -107,17 +109,19 @@ const validationSchema = {
   quantity: "required|min_value:0",
 };
 
-const { defineField, handleSubmit, setFieldValue } = useForm({
-  initialValues: {
-    name: "",
-    category: InventoryCategoryEnum.COMMODITY as InventoryCategoryEnum,
-    quantity: 1,
-    unit: InventoryUnitEnum.SCU as InventoryUnitEnum,
-    quality: 0,
-    memberId: undefined as string | undefined,
-    image: undefined as string | undefined,
-    notes: "",
-  },
+const initialValues = {
+  name: "",
+  category: InventoryCategoryEnum.COMMODITY as InventoryCategoryEnum,
+  quantity: 1,
+  unit: InventoryUnitEnum.SCU as InventoryUnitEnum,
+  quality: 0,
+  memberId: undefined as string | undefined,
+  image: undefined as string | undefined,
+  notes: "",
+};
+
+const { defineField, handleSubmit, setFieldValue, values } = useForm({
+  initialValues,
 });
 
 const [name, nameProps] = defineField("name");
@@ -307,6 +311,19 @@ const formatMembers = (response: { items: FleetMember[] }) => {
 
 const createMutation = useCreateFleetInventoryItem();
 
+// Deposit or withdrawal and the position or item picked live outside the form.
+const entryChoice = computed(() => ({
+  entryType: entryType.value,
+  selectedStockItem: selectedStockItem.value,
+  selectedExistingItem: selectedExistingItem.value,
+  pickedItemId: pickedItem.value?.id,
+}));
+
+const formDirty = useFormDirty(values, initialValues);
+const choiceDirty = useFormDirty(entryChoice, { ...entryChoice.value });
+
+useModalDirty(() => formDirty.value || choiceDirty.value);
+
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
 
@@ -338,7 +355,7 @@ const onSubmit = handleSubmit(async (values) => {
           : t("messages.logistics.inventoryItem.withdrawal.success"),
       });
       comlink.emit("fleet-inventory-item-created");
-      comlink.emit("close-modal");
+      comlink.emit("close-modal", true);
     })
     .catch(() => {
       displayAlert({

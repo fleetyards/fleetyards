@@ -4,12 +4,33 @@ import { flushPromises, type VueWrapper } from "@vue/test-utils";
 import { defineComponent, h } from "vue";
 import { useComlink } from "@/shared/composables/useComlink";
 import Component from "./index.vue";
+import { useModalDirty } from "./dirty";
 import { createMemoryHistory, createRouter } from "vue-router";
 
 const DirtyForm = defineComponent({
   setup(_, { expose }) {
     expose({ dirty: true });
     return () => h("form");
+  },
+});
+
+const reportsDirty = { value: true };
+
+const NestedPicker = defineComponent({
+  setup() {
+    useModalDirty(() => reportsDirty.value);
+    return () => h("input", { "data-test": "picker-search" });
+  },
+});
+
+const formDirty = { value: false };
+
+// A form with a picker inside it, the picker one component down - the way a
+// picker sits inside its caller's modal. Both report.
+const FormWithPicker = defineComponent({
+  setup() {
+    useModalDirty(() => formDirty.value);
+    return () => h("form", [h(NestedPicker)]);
   },
 });
 
@@ -23,7 +44,7 @@ afterEach(() => {
   vi.useRealTimers();
 });
 
-const openDirty = async () => {
+const openWith = async (content: object) => {
   vi.useFakeTimers();
   wrapper = await mountWithDefaults<typeof Component>(Component, {});
 
@@ -35,12 +56,14 @@ const openDirty = async () => {
     close: (force?: boolean) => Promise<void>;
   };
 
-  await modal.open({ component: () => Promise.resolve(DirtyForm) });
+  await modal.open({ component: () => Promise.resolve(content) });
   vi.runAllTimers();
   await flushPromises();
 
   return { modal, confirm };
 };
+
+const openDirty = () => openWith(DirtyForm);
 
 describe("AppModal", () => {
   it("asks before closing over unsaved input", async () => {
@@ -177,6 +200,38 @@ describe("AppModal", () => {
       await settle();
 
       expect(wrapper?.find('[data-test="modal"]').exists()).toBe(true);
+    });
+  });
+  describe("with components that report their own state", () => {
+    it("asks while a nested one reports unsaved state", async () => {
+      reportsDirty.value = true;
+      formDirty.value = false;
+      const { modal, confirm } = await openWith(FormWithPicker);
+
+      await modal.close();
+
+      expect(confirm).toHaveBeenCalledTimes(1);
+    });
+
+    // One clean reporter must not speak for the others.
+    it("asks while any of them does", async () => {
+      reportsDirty.value = false;
+      formDirty.value = true;
+      const { modal, confirm } = await openWith(FormWithPicker);
+
+      await modal.close();
+
+      expect(confirm).toHaveBeenCalledTimes(1);
+    });
+
+    it("closes without asking while none does", async () => {
+      reportsDirty.value = false;
+      formDirty.value = false;
+      const { modal, confirm } = await openWith(FormWithPicker);
+
+      await modal.close();
+
+      expect(confirm).not.toHaveBeenCalled();
     });
   });
 });

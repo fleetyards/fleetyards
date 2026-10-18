@@ -6,7 +6,7 @@
   left: 0;
   z-index: 1050;
   display: none;
-  align-items: flex-start;
+  align-items: center;
   overflow: hidden;
   background-color: rgba(black, 0.7);
   outline: 0;
@@ -24,11 +24,13 @@
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    width: 600px;
-    max-width: 600px;
+    width: 640px;
+    max-width: 640px;
     max-height: calc(100% - 60px);
     margin: 30px auto;
-    transition: $transition-base-speed ease-in-out;
+    // Transform only: with every property animating, a height the content
+    // settled into after it loaded played back as the dialog stretching.
+    transition: transform $transition-base-speed ease-in-out;
     pointer-events: unset;
 
     &.fullscreen {
@@ -106,9 +108,17 @@
     // A wide modal's fixed width outranks the phone width above, and as a flex
     // item it then only shrank to its content's minimum - wider than the
     // screen, which clipped its right edge and its close button.
+    //
+    // It also takes the sheet's full height from the start: a wide modal is a
+    // workspace that fills the screen once its content is in, and growing into
+    // it as that content arrived threw the sheet up again as it landed.
     &.wide .modal-dialog {
       width: 100%;
       max-width: 100%;
+      height: calc(
+        100% - #{$navigation-mobile-height} -
+          #{$navigation-mobile-bottom-offset}
+      );
     }
 
     .modal-dialog {
@@ -122,16 +132,29 @@
       margin-top: auto !important;
       margin-bottom: $navigation-mobile-height +
         $navigation-mobile-bottom-offset;
-      padding: 20px 0;
+      // A sheet: it rests on the mobile nav and stops short of the top, so the
+      // page behind still shows that this is a layer over it.
+      padding: 24px 0 0;
 
       > :first-child {
         margin-top: env(safe-area-inset-top);
       }
     }
 
+    /*
+     * From below the screen, like a sheet. A percentage would be of the sheet's
+     * own height, which grows while its content loads, so the travel changed
+     * mid-slide and the sheet seemed to stretch. The curve decelerates into
+     * place the way a sheet settles, short enough to finish before the modal
+     * unmounts on close.
+     */
+    .modal-dialog {
+      transition: transform 320ms cubic-bezier(0.32, 0.72, 0, 1);
+    }
+
     &.fade {
       .modal-dialog {
-        transform: translate(0, 25%);
+        transform: translate(0, 100vh);
       }
 
       &.in {

@@ -18,6 +18,7 @@ import {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useQueryClient } from "@tanstack/vue-query";
+import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
 type Props = {
   image: Image;
@@ -62,6 +63,7 @@ const destroy = () => {
   if (!props.image.id) return;
 
   displayConfirm({
+    tone: AppConfirmTonesEnum.DANGER,
     text: t("messages.confirm.image.destroy"),
     onConfirm: async () => {
       await destroyMutation.mutateAsync({ id: props.image.id! });

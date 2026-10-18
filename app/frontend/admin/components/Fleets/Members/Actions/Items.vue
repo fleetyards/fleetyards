@@ -16,6 +16,7 @@ import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useQueryClient } from "@tanstack/vue-query";
+import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
 type Props = {
   fleet: Fleet;
@@ -66,6 +67,7 @@ const loginAs = () => {
 
 const remove = () => {
   displayConfirm({
+    tone: AppConfirmTonesEnum.DANGER,
     text: t("messages.confirm.fleet.members.remove"),
     onConfirm: async () => {
       await removeFleetMember(props.fleet.id, props.member.id)

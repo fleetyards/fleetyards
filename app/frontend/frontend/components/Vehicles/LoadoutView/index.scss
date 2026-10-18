@@ -8,7 +8,7 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-    padding: 20px 16px 16px;
+    padding: 20px var(--modal-gutter) 16px;
   }
 
   &__hero {
@@ -18,7 +18,6 @@
     align-items: flex-end;
     height: 160px;
     overflow: hidden;
-    border-radius: $panelContentBorderRadius $panelContentBorderRadius 0 0;
     background: var(--color-surface-sunken, #{$gray-black});
   }
 
@@ -43,7 +42,7 @@
     justify-content: space-between;
     gap: 12px;
     width: 100%;
-    padding: 12px 16px;
+    padding: 12px var(--modal-gutter);
     border-top: 1px solid var(--color-edge-faint);
     background: rgba($gray-black, 0.86);
   }
@@ -236,47 +235,9 @@
   }
 }
 
-// The picture band is the modal's header: the title row goes, and the close
-// button sits on the picture. The content's padding goes too, since the body
-// scrolls with overflow hidden and would clip a picture pulled out of it; the
-// sections under the picture pad themselves.
-.loadout-view-modal {
-  :deep(.modal-content) {
-    padding: 0;
-  }
-
-  :deep(.modal-header) {
-    z-index: 1;
-    padding: 0;
-  }
-
-  :deep(.modal-title) {
-    display: none;
-  }
-
-  :deep(.close) {
-    top: 8px;
-    right: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    padding: 0;
-    border-radius: $border-radius-base;
-    background: rgba($gray-black, 0.8);
-  }
-}
-
 @media (min-width: $tablet-breakpoint) {
   .loadout-view__hero {
     height: 190px;
-  }
-
-  .loadout-view__band,
-  .loadout-view__body {
-    padding-right: 24px;
-    padding-left: 24px;
   }
 
   .loadout-view__band {

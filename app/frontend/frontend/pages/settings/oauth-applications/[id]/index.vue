@@ -24,6 +24,7 @@ import {
   regenerateOauthApplicationSecret,
 } from "@/services/fyApi";
 import { useQueryClient } from "@tanstack/vue-query";
+import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
 type Props = {
   oauthApplication: OauthApplication;
@@ -105,6 +106,7 @@ const dismissSecret = async () => {
 
 const confirmDestroy = () => {
   displayConfirm({
+    tone: AppConfirmTonesEnum.DANGER,
     text: t("messages.confirm.oauthApplication.destroy"),
     onConfirm: async () => {
       try {

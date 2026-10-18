@@ -33,6 +33,7 @@ import {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
+import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
 type Props = {
   fleet: Fleet;
@@ -77,6 +78,7 @@ const destroyMutation = useDestroyFleetEventShip();
 
 const removeShip = () => {
   displayConfirm({
+    tone: AppConfirmTonesEnum.DANGER,
     text: t("messages.fleets.eventShip.destroy.confirm"),
     confirmText: t("actions.delete"),
     onConfirm: async () => {

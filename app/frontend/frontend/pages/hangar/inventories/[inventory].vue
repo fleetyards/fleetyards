@@ -36,6 +36,7 @@ import { useLedgerTab } from "@/frontend/composables/useLedgerTab";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useTransferModal } from "@/frontend/composables/useTransferModal";
+import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
 const { t } = useI18n();
 const route = useRoute();
@@ -118,6 +119,7 @@ const destroyMutation = useDestroyHangarInventoryItem();
 
 const destroyEntry = (entry: HangarInventoryItem) => {
   displayConfirm({
+    tone: AppConfirmTonesEnum.DANGER,
     text: t("messages.logistics.inventoryItem.destroy.confirm"),
     onConfirm: async () => {
       try {

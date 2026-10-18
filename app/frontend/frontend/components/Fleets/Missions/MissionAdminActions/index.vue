@@ -21,6 +21,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import { checkAccess } from "@/shared/utils/Access";
 import { useRouter } from "vue-router";
+import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
 type Props = {
   fleet: Fleet;
@@ -143,6 +144,7 @@ const performDestroy = async () => {
 
 const handleDestroy = () => {
   displayConfirm({
+    tone: AppConfirmTonesEnum.DANGER,
     text: t("messages.fleets.mission.destroy.confirm"),
     confirmText: t("actions.fleets.missions.destroy"),
     onConfirm: performDestroy,

@@ -13,7 +13,6 @@ import FormMarkdownEditor from "@/shared/components/base/FormMarkdownEditor/inde
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import {
-  BtnSizesEnum,
   BtnTonesEnum,
   BtnTypesEnum,
   BtnVariantsEnum,
@@ -22,6 +21,8 @@ import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useModalDirty } from "@/shared/components/AppModal/dirty";
+import { useFormDirty } from "@/shared/composables/useFormDirty";
 import {
   getFleetAnnouncementsQueryKey,
   useCreateFleetAnnouncement,
@@ -75,12 +76,16 @@ const expiryOptions = computed<FilterOption[]>(() => [
 
 type FormValues = { body: string; expiry: string };
 
-const { defineField, handleSubmit, setErrors } = useForm<FormValues>({
-  initialValues: {
-    body: props.announcement?.body ?? "",
-    expiry: canKeep.value ? KEEP : "0",
-  },
+const initialValues: FormValues = {
+  body: props.announcement?.body ?? "",
+  expiry: canKeep.value ? KEEP : "0",
+};
+
+const { defineField, handleSubmit, setErrors, values } = useForm<FormValues>({
+  initialValues,
 });
+
+useModalDirty(useFormDirty(values, initialValues));
 
 const [body, bodyProps] = defineField("body");
 
@@ -110,7 +115,7 @@ const done = (message: string) => {
   void queryClient.invalidateQueries({
     queryKey: getFleetAnnouncementsQueryKey(props.fleetSlug),
   });
-  comlink.emit("close-modal");
+  comlink.emit("close-modal", true);
   displaySuccess({ text: message });
 };
 
@@ -195,17 +200,9 @@ const remove = async () => {
         unsorted
       />
     </form>
-    <template #footer>
+    <template v-if="announcement" #footer-start>
       <Btn
-        :size="BtnSizesEnum.LG"
         :variant="BtnVariantsEnum.BARE"
-        @click="comlink.emit('close-modal')"
-      >
-        {{ t("actions.cancel") }}
-      </Btn>
-      <Btn
-        v-if="announcement"
-        :size="BtnSizesEnum.LG"
         :tone="BtnTonesEnum.DANGER"
         :disabled="submitting"
         :confirm="t('fleetDashboard.announcements.confirmRemove')"
@@ -214,8 +211,12 @@ const remove = async () => {
       >
         {{ t("actions.delete") }}
       </Btn>
+    </template>
+    <template #footer>
+      <Btn :variant="BtnVariantsEnum.BARE" @click="comlink.emit('close-modal')">
+        {{ t("actions.cancel") }}
+      </Btn>
       <Btn
-        :size="BtnSizesEnum.LG"
         :type="BtnTypesEnum.SUBMIT"
         :form="formId"
         :loading="submitting"

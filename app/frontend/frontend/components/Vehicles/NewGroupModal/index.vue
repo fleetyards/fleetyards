@@ -18,6 +18,8 @@ import {
   HangarGroupCreateInput,
 } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useModalDirty } from "@/shared/components/AppModal/dirty";
+import { useFormDirty } from "@/shared/composables/useFormDirty";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
 const { t } = useI18n();
@@ -29,7 +31,17 @@ const validationSchema = {
   color: "required",
 };
 
-const { defineField, handleSubmit } = useForm<HangarGroupCreateInput>();
+const initialValues: Partial<HangarGroupCreateInput> = {
+  name: undefined,
+  color: undefined,
+  public: undefined,
+};
+
+const { defineField, handleSubmit, values } = useForm<HangarGroupCreateInput>({
+  initialValues,
+});
+
+useModalDirty(useFormDirty(values, initialValues));
 
 const [name, nameProps] = defineField("name");
 const [color, colorProps] = defineField("color");
@@ -50,7 +62,7 @@ const onSubmit = handleSubmit(async (values) => {
     })
     .then(() => {
       comlink.emit("hangar-group-save");
-      comlink.emit("close-modal");
+      comlink.emit("close-modal", true);
     })
     .catch((error) => {
       console.error(error);

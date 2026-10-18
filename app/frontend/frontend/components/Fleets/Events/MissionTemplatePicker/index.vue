@@ -298,11 +298,7 @@ const pick = (mission: Mission | null) => {
     </div>
 
     <template #footer>
-      <Btn
-        :size="BtnSizesEnum.LG"
-        :variant="BtnVariantsEnum.BARE"
-        @click="comlink.emit('close-modal')"
-      >
+      <Btn :variant="BtnVariantsEnum.BARE" @click="comlink.emit('close-modal')">
         {{ t("actions.cancel") }}
       </Btn>
     </template>

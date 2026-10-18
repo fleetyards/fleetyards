@@ -71,7 +71,7 @@ const save = async (selection: ModelPickerSelection[]) => {
     .mutateAsync({ data: { vehicles } })
     .then(() => {
       comlink.emit("hangar-change");
-      comlink.emit("close-modal");
+      comlink.emit("close-modal", true);
     })
     .catch((error) => {
       const { message } = validationErrorFrom(error);

@@ -19,6 +19,10 @@ import {
 } from "@/shared/components/base/Btn/types";
 import { afterNextPaint } from "@/shared/utils/Transitions";
 
+const title = ref<string>();
+
+const titleId = useId();
+const textId = useId();
 const text = ref<string>();
 const confirmText = ref<string>();
 const cancelText = ref<string>();
@@ -59,6 +63,7 @@ const visible = ref(false);
 const entered = ref(false);
 
 const show = (options: AppConfirmOptions) => {
+  title.value = options.title;
   text.value = options.text || "Are you sure?";
   confirmText.value = options.confirmText || "Confirm";
   cancelText.value = options.cancelText || "Cancel";
@@ -137,16 +142,30 @@ const handleCancel = async () => {
     data-test="confirm-dialog"
     @click.self="handleCancel"
   >
-    <div class="app-confirm__dialog">
+    <div
+      class="app-confirm__dialog"
+      role="alertdialog"
+      aria-modal="true"
+      :aria-labelledby="title ? titleId : textId"
+      :aria-describedby="title ? textId : undefined"
+    >
       <Panel :tone="panelTone" :outer-spacing="false">
         <PanelBody>
+          <h2 v-if="title" :id="titleId" class="app-confirm__title">
+            {{ title }}
+          </h2>
           <!-- eslint-disable-next-line vue/no-v-html -->
-          <div class="app-confirm__text" v-html="text" />
+          <div :id="textId" class="app-confirm__text" v-html="text" />
         </PanelBody>
       </Panel>
-      <!-- Outside the panel, like the modal footer: the actions belong to the
-           dialog, not to the surface holding the question. -->
-      <div class="app-confirm__buttons" data-test="confirm-buttons">
+      <!-- Joined to the panel rather than docked apart like a modal's footer: a
+           question and its answers are one thing, and as two boxes they read
+           as two dialogs. The bottom cap moves down onto it. -->
+      <div
+        class="app-confirm__buttons"
+        :class="`app-confirm__buttons--${panelTone}`"
+        data-test="confirm-buttons"
+      >
         <Btn
           :variant="BtnVariantsEnum.GHOST"
           data-test="confirm-cancel"
@@ -157,6 +176,7 @@ const handleCancel = async () => {
         <Btn
           ref="confirmRef"
           :tone="confirmButtonTone"
+          commit
           data-test="confirm-ok"
           @click="handleConfirm"
         >

@@ -27,6 +27,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import { checkAccess } from "@/shared/utils/Access";
 import { useRouter } from "vue-router";
+import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
 type Props = {
   fleet: Fleet;
@@ -166,6 +167,7 @@ const handleDestroy = () => {
     confirmText: removes.value
       ? t("actions.fleets.events.destroy")
       : t("actions.fleets.events.archive"),
+    tone: removes.value ? AppConfirmTonesEnum.DANGER : undefined,
     onConfirm: performDestroy,
   });
 };

@@ -20,6 +20,10 @@ type Props = {
 
 const props = defineProps<Props>();
 
+const emit = defineEmits<{
+  suggest: [paintIds: string[]];
+}>();
+
 const { value: modelPaintIds, meta } = useField<string[]>("modelPaintIds");
 
 const { isFeatureEnabled } = useFeatures();
@@ -48,6 +52,7 @@ watch(
     }
 
     modelPaintIds.value = [...ids];
+    emit("suggest", [...ids]);
   },
   { immediate: true },
 );

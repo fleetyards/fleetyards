@@ -16,6 +16,7 @@ import {
 } from "@/services/fyAdminApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useModalDirty } from "@/shared/components/AppModal/dirty";
 import { useQueryClient } from "@tanstack/vue-query";
 
 type Props = {
@@ -37,6 +38,10 @@ const modelId = ref<string | undefined>(
 const submitting = ref(false);
 const error = ref<string | undefined>();
 
+const initialModelId = modelId.value;
+
+useModalDirty(() => modelId.value !== initialModelId);
+
 const linkMutation = useScDataUnlistedModelLink();
 
 const submit = async () => {
@@ -55,7 +60,7 @@ const submit = async () => {
       queryKey: getScDataUnlistedModelsQueryKey(),
     });
 
-    comlink.emit("close-modal");
+    comlink.emit("close-modal", true);
   } catch (err) {
     error.value = err instanceof Error ? err.message : String(err);
   } finally {

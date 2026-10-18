@@ -39,6 +39,7 @@ import { keepPreviousData } from "@tanstack/vue-query";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useReducedMotion } from "@/shared/composables/useReducedMotion";
 import { useMobile } from "@/shared/composables/useMobile";
+import { useModalDirty } from "@/shared/components/AppModal/dirty";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
@@ -448,14 +449,22 @@ const save = () => {
 
   emit("submit", selection.value);
 };
+
+// The search and filters only narrow what is shown, so a pick is the one edit
+// that closing the modal would lose. Whoever handles the submit closes with
+// force once the pick has been used, so a save that fails still asks.
+useModalDirty(() => !props.single && selection.value.length > 0);
 </script>
 
 <template>
-  <Modal :title="title">
+  <Modal :title="title" flush>
     <!-- Enter belongs to the search and the quantity fields; only the button saves. -->
     <form
       class="model-picker"
-      :class="{ 'model-picker--folded': mobile }"
+      :class="{
+        'model-picker--folded': mobile,
+        'model-picker--tray': !single && selection.length,
+      }"
       @submit.prevent
     >
       <div class="model-picker__header">
@@ -662,27 +671,27 @@ const save = () => {
       </div>
     </form>
 
+    <template v-if="!single" #footer-start>
+      <span class="model-picker__selected">
+        {{ t("modelPicker.labels.selected", { count: selectedTotal }) }}
+      </span>
+    </template>
     <template v-if="!single" #footer>
-      <div class="model-picker__actions">
-        <span class="model-picker__selected">
-          {{ t("modelPicker.labels.selected", { count: selectedTotal }) }}
-        </span>
-        <Btn
-          v-if="selection.length"
-          :variant="BtnVariantsEnum.BARE"
-          @click="clearSelection"
-        >
-          {{ t("modelPicker.actions.clearSelection") }}
-        </Btn>
-        <Btn
-          :loading="submitting"
-          :disabled="!selection.length"
-          data-test="model-picker-submit"
-          @click="save"
-        >
-          {{ submitLabel }}
-        </Btn>
-      </div>
+      <Btn
+        v-if="selection.length"
+        :variant="BtnVariantsEnum.GHOST"
+        @click="clearSelection"
+      >
+        {{ t("modelPicker.actions.clearSelection") }}
+      </Btn>
+      <Btn
+        :loading="submitting"
+        :disabled="!selection.length"
+        data-test="model-picker-submit"
+        @click="save"
+      >
+        {{ submitLabel }}
+      </Btn>
     </template>
   </Modal>
 </template>
@@ -695,8 +704,21 @@ const save = () => {
    under them, so the fill has to be opaque: --color-surface is 90% alpha and the
    cards would show through it. --color-gray-darker is that colour at full
    strength. */
+/* The body is flush, so the header and the tray can meet its edges: sticky
+   inside a padded scroller they stopped short of them, and the grid showed
+   through the gap. Both run out to the edges and pad back in. */
+.model-picker {
+  padding: 0 var(--modal-gutter, 24px) 24px;
+}
+
+.model-picker--tray {
+  padding-bottom: 0;
+}
+
 .model-picker__header {
   @apply bg-gray-darker sticky top-0 z-[3];
+  margin: 0 calc(-1 * var(--modal-gutter, 24px));
+  padding: 20px var(--modal-gutter, 24px) 0;
 }
 
 .model-picker__toolbar {
@@ -834,16 +856,13 @@ const save = () => {
   @apply bg-gray-darker sticky bottom-0 z-[3];
   @apply flex max-h-[84px] flex-wrap gap-2 overflow-y-auto;
   border-top: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));
-  padding: 12px 0 2px;
+  margin: 12px calc(-1 * var(--modal-gutter, 24px)) 0;
+  padding: 12px var(--modal-gutter, 24px);
 }
 
 /* ---------- footer ---------- */
-.model-picker__actions {
-  @apply flex w-full flex-wrap items-center justify-end gap-3;
-}
-
 .model-picker__selected {
-  @apply text-text mr-auto text-[15px] font-semibold;
+  @apply text-[15px];
   font-variant-numeric: tabular-nums;
 }
 

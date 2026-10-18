@@ -1,11 +1,13 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { h } from "vue";
+import { flushPromises } from "@vue/test-utils";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import { useComlink } from "@/shared/composables/useComlink";
 import Component from "./index.vue";
 
 describe("AppModalInner", () => {
-  it("sizes the footer's buttons large and leaves the body's alone", async () => {
+  it("sizes the footer's buttons medium and leaves the body's alone", async () => {
     const wrapper = await mountWithDefaults<typeof Component>(Component, {
       slots: {
         default: () => [h(Btn, { "data-test": "body-btn" }, () => "Body")],
@@ -14,7 +16,7 @@ describe("AppModalInner", () => {
     });
 
     expect(wrapper.get("[data-test='footer-btn']").classes()).toContain(
-      "btn--lg",
+      "btn--md",
     );
     expect(wrapper.get("[data-test='body-btn']").classes()).toContain(
       "btn--sm",
@@ -31,5 +33,136 @@ describe("AppModalInner", () => {
       "modal-body--fill",
     );
     expect(filled.get(".modal-body").classes()).toContain("modal-body--fill");
+  });
+
+  describe("as a sheet on a phone", () => {
+    // jsdom has no matchMedia.
+    const sheetWidth = (matches: boolean) =>
+      vi.stubGlobal(
+        "matchMedia",
+        vi.fn(() => ({ matches })),
+      );
+
+    let stopListening: (() => void) | undefined;
+
+    afterEach(() => {
+      stopListening?.();
+      vi.unstubAllGlobals();
+    });
+
+    const sheet = async (props: Record<string, unknown> = {}) => {
+      const closed = vi.fn();
+      stopListening = useComlink().on("close-modal", closed);
+
+      const wrapper = await mountWithDefaults<typeof Component>(Component, {
+        props: { title: "Edit", ...props },
+      });
+      const header = wrapper.get(".modal-header").element;
+
+      // jsdom has no PointerEvent, and a MouseEvent's clientY cannot be set.
+      const pointer = (
+        type: string,
+        clientY = 0,
+        { pointerType = "touch", pointerId = 1 } = {},
+      ) => {
+        const event = new Event(type, { bubbles: true });
+        Object.assign(event, {
+          pointerType,
+          clientY,
+          pointerId,
+          isPrimary: pointerId === 1,
+        });
+        header.dispatchEvent(event);
+      };
+
+      return { closed, wrapper, pointer };
+    };
+
+    const drag = async (
+      distance: number,
+      pointerType = "touch",
+      props: Record<string, unknown> = {},
+    ) => {
+      const { closed, wrapper, pointer } = await sheet(props);
+
+      pointer("pointerdown", 100, { pointerType });
+      pointer("pointermove", 100 + distance, { pointerType });
+      pointer("pointerup", 0, { pointerType });
+      await flushPromises();
+
+      return { closed, wrapper };
+    };
+
+    it("closes when dragged down far enough", async () => {
+      sheetWidth(true);
+
+      const { closed } = await drag(140);
+
+      expect(closed).toHaveBeenCalledTimes(1);
+    });
+
+    it("springs back from a short drag", async () => {
+      sheetWidth(true);
+
+      const { closed, wrapper } = await drag(40);
+
+      expect(closed).not.toHaveBeenCalled();
+      expect(
+        (wrapper.get(".modal-inner").element as HTMLElement).style.transform,
+      ).toBe("");
+    });
+
+    it("leaves a tap alone", async () => {
+      sheetWidth(true);
+
+      const { closed, wrapper } = await drag(0);
+
+      expect(closed).not.toHaveBeenCalled();
+      expect(
+        (wrapper.get(".modal-inner").element as HTMLElement).style.transform,
+      ).toBe("");
+    });
+
+    it("does not drag a dialog that closes itself", async () => {
+      sheetWidth(true);
+      const onClose = vi.fn();
+
+      const { closed } = await drag(140, "touch", { onClose });
+
+      expect(closed).not.toHaveBeenCalled();
+      expect(onClose).not.toHaveBeenCalled();
+    });
+
+    it("keeps following the first finger when a second one touches", async () => {
+      sheetWidth(true);
+
+      const { closed, pointer } = await sheet();
+
+      pointer("pointerdown", 100);
+      pointer("pointermove", 160);
+      pointer("pointerdown", 300, { pointerId: 2 });
+      pointer("pointerup", 0, { pointerId: 2 });
+      pointer("pointermove", 240);
+      pointer("pointerup");
+      await flushPromises();
+
+      expect(closed).toHaveBeenCalledTimes(1);
+    });
+
+    it("leaves a mouse alone", async () => {
+      sheetWidth(true);
+
+      const { closed } = await drag(140, "mouse");
+
+      expect(closed).not.toHaveBeenCalled();
+    });
+
+    it("does not drag where the modal is not a sheet", async () => {
+      sheetWidth(false);
+
+      const { closed } = await drag(140);
+
+      expect(closed).not.toHaveBeenCalled();
+    });
   });
 });

@@ -19,6 +19,7 @@ import {
   type OauthApplication,
 } from "@/services/fyApi";
 import { useQueryClient } from "@tanstack/vue-query";
+import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
 const { t } = useI18n();
 const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
@@ -35,6 +36,7 @@ const invalidateOauthApplications = () =>
 
 const confirmDestroy = (app: OauthApplication) => {
   displayConfirm({
+    tone: AppConfirmTonesEnum.DANGER,
     text: t("messages.confirm.oauthApplication.destroy"),
     onConfirm: async () => {
       try {

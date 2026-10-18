@@ -19,6 +19,7 @@ import { refDebounced } from "@vueuse/core";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useModalDirty } from "@/shared/components/AppModal/dirty";
 import {
   type Fleet,
   type FleetSquadron,
@@ -134,6 +135,10 @@ const blockedBy = (member: FleetMember) => {
 const options = computed(() => records.value.filter((m) => !alreadyIn(m)));
 
 const selection = ref<FleetMember[]>([]);
+
+// Added members leave the selection, so after a save only the ones that
+// failed are still unsaved.
+useModalDirty(() => selection.value.length > 0);
 
 const isSelected = (member: FleetMember) =>
   selection.value.some((held) => held.id === member.id);
@@ -299,33 +304,33 @@ const onSubmit = async () => {
       </div>
     </form>
 
+    <template #footer-start>
+      <span>
+        {{
+          t("labels.fleet.squadrons.selectedMembers", {
+            count: selection.length,
+          })
+        }}
+      </span>
+    </template>
     <template #footer>
-      <div class="member-picker__actions">
-        <span class="member-picker__selected">
-          {{
-            t("labels.fleet.squadrons.selectedMembers", {
-              count: selection.length,
-            })
-          }}
-        </span>
-        <Btn
-          v-if="selection.length"
-          :variant="BtnVariantsEnum.BARE"
-          @click="clearSelection"
-        >
-          {{ t("actions.reset") }}
-        </Btn>
-        <Btn
-          :loading="submitting"
-          :disabled="!selection.length"
-          data-test="squadron-add-members"
-          @click="onSubmit"
-        >
-          {{
-            t("actions.fleet.squadrons.addMembers", { count: selection.length })
-          }}
-        </Btn>
-      </div>
+      <Btn
+        v-if="selection.length"
+        :variant="BtnVariantsEnum.BARE"
+        @click="clearSelection"
+      >
+        {{ t("actions.reset") }}
+      </Btn>
+      <Btn
+        :loading="submitting"
+        :disabled="!selection.length"
+        data-test="squadron-add-members"
+        @click="onSubmit"
+      >
+        {{
+          t("actions.fleet.squadrons.addMembers", { count: selection.length })
+        }}
+      </Btn>
     </template>
   </Modal>
 </template>
@@ -406,17 +411,5 @@ const onSubmit = async () => {
   margin-top: 16px;
   padding-top: 12px;
   border-top: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
-}
-
-.member-picker__actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-}
-
-.member-picker__selected {
-  margin-right: auto;
-  color: var(--color-text-dim);
 }
 </style>

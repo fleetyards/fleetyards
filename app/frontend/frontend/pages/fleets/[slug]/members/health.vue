@@ -46,6 +46,7 @@ import {
   type FleetMemberHealthMember,
   type FleetMemberHealthParams,
 } from "@/services/fyApi";
+import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
 type Props = {
   fleet: Fleet;
@@ -409,6 +410,7 @@ const destroySquadronMutation = useDestroyFleetSquadron();
 
 const deleteSquadron = (squadron: { slug: string; name: string }) => {
   displayConfirm({
+    tone: AppConfirmTonesEnum.DANGER,
     text: t("messages.fleet.squadrons.destroy.confirm", {
       name: squadron.name,
     }),

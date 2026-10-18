@@ -32,6 +32,8 @@ import { storeToRefs } from "pinia";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useModalDirty } from "@/shared/components/AppModal/dirty";
+import { useFormDirty } from "@/shared/composables/useFormDirty";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 import {
@@ -91,26 +93,30 @@ const validationSchema = {
   plaqueCaptain: `max:${CAPTAIN_LIMIT}`,
 };
 
-const { defineField, handleSubmit } = useForm({
+const initialValues = {
+  dedication: props.vehicle.dedication ?? "",
+  dedicationVerse: props.vehicle.dedicationVerse ?? "",
+  launchedOn: props.vehicle.launchedOn ?? null,
+  launchPort: props.vehicle.launchPort ?? "",
+  launchPortLocationId: props.vehicle.launchPortLocation?.id ?? null,
+  affiliation: props.vehicle.affiliation ?? "",
+  plaqueCaptain: props.vehicle.plaqueCaptain ?? "",
+  operationsGroup: props.vehicle.operationsGroup ?? null,
+  plaqueStyle: keptStyle
+    ? FREE_STYLE
+    : props.vehicle.dedication
+      ? (props.vehicle.plaqueStyle ?? defaultStyle.value)
+      : defaultStyle.value,
+};
+
+const { defineField, handleSubmit, values } = useForm({
   // The style page swaps the fields out; without this, coming back from it
   // finds every line typed so far gone.
   keepValuesOnUnmount: true,
-  initialValues: {
-    dedication: props.vehicle.dedication ?? "",
-    dedicationVerse: props.vehicle.dedicationVerse ?? "",
-    launchedOn: props.vehicle.launchedOn ?? null,
-    launchPort: props.vehicle.launchPort ?? "",
-    launchPortLocationId: props.vehicle.launchPortLocation?.id ?? null,
-    affiliation: props.vehicle.affiliation ?? "",
-    plaqueCaptain: props.vehicle.plaqueCaptain ?? "",
-    operationsGroup: props.vehicle.operationsGroup ?? null,
-    plaqueStyle: keptStyle
-      ? FREE_STYLE
-      : props.vehicle.dedication
-        ? (props.vehicle.plaqueStyle ?? defaultStyle.value)
-        : defaultStyle.value,
-  },
+  initialValues,
 });
+
+useModalDirty(useFormDirty(values, initialValues));
 
 const [dedication] = defineField("dedication");
 const [dedicationVerse] = defineField("dedicationVerse");
@@ -269,7 +275,7 @@ const removePlaque = async () => {
         operationsGroup: null,
       },
     })
-    .then(() => comlink.emit("close-modal"))
+    .then(() => comlink.emit("close-modal", true))
     .catch(() => {
       displayAlert({ text: t("messages.vehiclePlaque.failure") });
     });
@@ -298,7 +304,7 @@ const onSubmit = handleSubmit(async (values) => {
       if (values.dedication) {
         await uploadPlaqueImage();
       }
-      comlink.emit("close-modal");
+      comlink.emit("close-modal", true);
     })
     .catch(() => {
       displayAlert({ text: t("messages.vehiclePlaque.failure") });
@@ -488,12 +494,10 @@ const onSubmit = handleSubmit(async (values) => {
       <VehiclePlaque :vehicle="captureVehicle" :captain="captain" />
     </div>
 
-    <template #footer>
+    <template #footer-start>
       <Btn
         v-if="stylesOpen"
-        :size="BtnSizesEnum.LG"
         :variant="BtnVariantsEnum.BARE"
-        class="plaque-edit__footer-start"
         data-test="vehicle-plaque-styles-back"
         @click="stylesOpen = false"
       >
@@ -502,9 +506,7 @@ const onSubmit = handleSubmit(async (values) => {
       </Btn>
       <template v-else>
         <Btn
-          :size="BtnSizesEnum.LG"
           :variant="BtnVariantsEnum.BARE"
-          class="plaque-edit__footer-start"
           data-test="vehicle-plaque-styles-open"
           @click="stylesOpen = true"
         >
@@ -513,7 +515,6 @@ const onSubmit = handleSubmit(async (values) => {
         </Btn>
         <Btn
           v-if="vehicle.dedication"
-          :size="BtnSizesEnum.LG"
           :variant="BtnVariantsEnum.BARE"
           :tone="BtnTonesEnum.DANGER"
           :confirm="t('messages.vehiclePlaque.removeConfirm')"
@@ -523,15 +524,17 @@ const onSubmit = handleSubmit(async (values) => {
         >
           {{ t("actions.vehiclePlaque.remove") }}
         </Btn>
-        <Btn
-          :type="BtnTypesEnum.SUBMIT"
-          form="vehicle-plaque-form"
-          :loading="updateMutation.isPending.value || capturing"
-          data-test="vehicle-plaque-save"
-        >
-          {{ t("actions.save") }}
-        </Btn>
       </template>
+    </template>
+    <template v-if="!stylesOpen" #footer>
+      <Btn
+        :type="BtnTypesEnum.SUBMIT"
+        form="vehicle-plaque-form"
+        :loading="updateMutation.isPending.value || capturing"
+        data-test="vehicle-plaque-save"
+      >
+        {{ t("actions.save") }}
+      </Btn>
     </template>
   </Modal>
 </template>
@@ -596,10 +599,6 @@ const onSubmit = handleSubmit(async (values) => {
   @media (max-width: $tablet-breakpoint) {
     grid-template-columns: minmax(0, 1fr);
   }
-}
-
-.plaque-edit__footer-start {
-  margin-right: auto;
 }
 
 .plaque-edit__locked {

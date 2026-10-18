@@ -506,7 +506,8 @@
         "hangar": {
           "import": "Le navi importate saranno aggiunte al tuo Hangar senza corrispondere alle navi già presenti.<br><br>Formati supportati sono: Fleetyards Export o HangarXplor.<br><br>Vuoi continuare?",
           "destroySelected": "Sei sicuro di voler rimuovere tutte le navi selezionate dall'Hangar? Questa azione non può essere annullata.",
-          "destroyAll": "Sei sicuro di voler rimuovere tutte le navi dall'Hangar? Questa azione non può essere annullata."
+          "destroyAll": "Sei sicuro di voler rimuovere tutte le navi dall'Hangar? Questa azione non può essere annullata.",
+          "destroyAllTitle": "Rimuovere tutte le navi?"
         },
         "wishlist": {
           "destroyAll": "Sei sicuro di voler rimuovere tutte le navi dalla tua Lista dei Desideri? Questa azione non può essere annullata."

@@ -32,6 +32,7 @@ import {
   useUpdateVehicle,
   getVehicleLogEntriesQueryKey,
 } from "@/services/fyApi";
+import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
 type Props = {
   vehicle: Vehicle;
@@ -78,6 +79,7 @@ const destroyMutation = useDestroyVehicleLogEntry({
 
 const destroy = (logEntry: VehicleLogEntry) => {
   displayConfirm({
+    tone: AppConfirmTonesEnum.DANGER,
     text: t("messages.confirm.vehicleLog.destroy"),
     onConfirm: async () => {
       await destroyMutation

@@ -6,8 +6,9 @@
  *
  * It keeps the toasts' idea - a neutral surface with an accent that says what
  * the message means - but expressed the way the app does it now: the accent is
- * the panel's end-caps rather than a border on one side. Actions sit outside the
- * panel, as they do in the modal footer.
+ * the panel's end-caps rather than a border on one side. Unlike the modal, whose
+ * actions dock on a plate of their own below the panel, the answers hang from
+ * the panel itself.
  */
 .app-confirm {
   position: fixed;
@@ -28,65 +29,92 @@
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    // Between the toast's 325px and the modal's 600px: a question needs more
+    // Between the toast's 325px and the modal's 640px: a question needs more
     // room than a notification and less than a form.
-    width: 420px;
+    width: 460px;
     max-width: 100%;
     transition: transform $transition-base-speed ease-in-out;
   }
 
-  /*
-   * Two things a panel needs when it is being a dialog rather than a page
-   * surface. It has to sit above the scrim, so the ground is opaque instead of
-   * sharing a value with the page behind it. And the caps pull in: at their
-   * default 12% inset they span almost the whole width of a short question and
-   * read as a highlighted bar, where the point of them is to be a signature.
-   */
+  // Above the scrim, so the ground is opaque instead of sharing a value with
+  // the page behind it.
   :deep(.panel) {
-    --cap-inset: 34%;
-
     background-color: $gray-darker;
+  }
+
+  // The bottom cap moves onto the button plate, which is the dialog's real
+  // bottom edge.
+  :deep(.panel::after) {
+    content: none;
   }
 
   /*
    * PanelBody is 4px top and 18px bottom - deliberately tight under a heading
-   * that closes flush above it. This panel has no heading, so that asymmetry
-   * became visible as a question sitting high in its own box. Even, and the
-   * question's own padding goes with it.
+   * that closes flush above it. Here the title is inside the body, so the
+   * padding is even.
    */
   :deep(.panel-body) {
-    padding: 18px;
+    padding: 24px;
   }
 
-  /*
-   * PanelBody carries only 4px of padding at the top - right for a panel with a
-   * heading above it, wrong for one holding nothing but a question, which then
-   * sat against the top cap in a panel squeezed to a single line. The question
-   * gets the room instead, and a floor so a short one still reads as a dialog
-   * rather than a bar.
-   */
+  &__title {
+    margin: 0 0 12px;
+    color: var(--color-lifted, #eee);
+    font-weight: normal;
+    font-family: "Orbitron", sans-serif;
+    font-size: 22px;
+    line-height: 1.2;
+  }
+
   &__text {
-    display: grid;
-    place-items: center;
-    // A floor, so a one-line question still reads as a dialog rather than a bar.
-    min-height: 3.5rem;
+    color: var(--color-text, #c8c8c8);
+    font-size: 15px;
+    line-height: 1.55;
     // Questions name things - models, groups, ids - with nothing to break on.
     overflow-wrap: anywhere;
-    text-align: center;
   }
 
   /*
-   * Centred, following the question. A confirm has no title and no form, so the
-   * two halves are one column - right-aligned actions under centred text read as
-   * two unrelated things, which is exactly how it looked.
+   * Hanging from the panel's right, joined to it: it overlaps the panel's
+   * bottom border by its own width and has no top border, so the two read as
+   * one outline. Opaque for the same reason the panel is.
    */
   &__buttons {
+    position: relative;
+    z-index: 1;
+    align-self: flex-end;
     flex-shrink: 0;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 0.5rem;
-    padding-top: 1rem;
+    margin: -2px 24px 0 0;
+    padding: 10px 10px 12px;
+    background-color: $gray-black;
+    border: 2px solid var(--color-edge, rgb(122 130 136 / 0.5));
+    border-top: 0;
+    border-radius: 0 0 var(--radius-surface-slim, 12px)
+      var(--radius-surface-slim, 12px);
+
+    &::after {
+      content: "";
+      position: absolute;
+      right: 18%;
+      bottom: -2px;
+      left: 18%;
+      height: 4px;
+      background-color: var(--plate-cap, var(--color-endcap, #7a8288));
+      border-radius: 3px 3px 0 0;
+    }
+  }
+
+  // The tones the panel's caps carry, which the plate's cap repeats.
+  &__buttons--error {
+    --plate-cap: #c00;
+  }
+
+  &__buttons--highlight {
+    --plate-cap: var(--color-gold, #d4af37);
   }
 
   // Start state, painted before `in` is added. See afterNextPaint in index.vue.
@@ -110,7 +138,12 @@
 @media (max-width: $tablet-breakpoint) {
   .app-confirm__buttons {
     // Thumb-reachable and full width, like the toasts go full width here.
+    // Inset like on a desktop, two buttons cannot fit a label such as "Delete
+    // everything", so here the plate takes the panel's whole width.
+    align-self: stretch;
     justify-content: stretch;
+    margin-right: 0;
+    border-radius: 0 0 var(--radius-surface, 16px) var(--radius-surface, 16px);
 
     :deep(.btn) {
       flex: 1;

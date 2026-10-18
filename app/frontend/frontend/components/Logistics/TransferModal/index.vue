@@ -17,6 +17,8 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useModalDirty } from "@/shared/components/AppModal/dirty";
+import { useFormDirty } from "@/shared/composables/useFormDirty";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
   type FilterOption,
@@ -359,6 +361,18 @@ const remove = (position: InventoryStockPosition) => {
   removed.value = new Set(removed.value).add(position.id);
 };
 
+const transferState = computed(() => ({
+  targetKind: targetKind.value,
+  memberFleet: memberFleet.value,
+  targetValue: targetValue.value,
+  contractId: contractId.value,
+  quantities: quantities.value,
+  removed: [...removed.value],
+  note: note.value,
+}));
+
+useModalDirty(useFormDirty(transferState, transferState.value));
+
 const onSubmit = async () => {
   const target = selectedTarget.value;
   if (!target || invalid.value) return;
@@ -377,7 +391,7 @@ const onSubmit = async () => {
       ...target.payload,
     });
 
-    comlink.emit("close-modal");
+    comlink.emit("close-modal", true);
   } catch (error) {
     displayAlert({
       text:

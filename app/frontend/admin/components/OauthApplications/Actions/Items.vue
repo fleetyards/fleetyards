@@ -17,6 +17,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
 import { useComlink } from "@/shared/composables/useComlink";
+import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
 type Props = {
   oauthApplication: OauthApplication;
@@ -62,6 +63,7 @@ const destroyMutation = useDestroyOauthApplication();
 
 const destroy = () => {
   displayConfirm({
+    tone: AppConfirmTonesEnum.DANGER,
     text: t("messages.confirm.oauthApplication.destroy"),
     onConfirm: async () => {
       await destroyMutation.mutateAsync({ id: props.oauthApplication.id });

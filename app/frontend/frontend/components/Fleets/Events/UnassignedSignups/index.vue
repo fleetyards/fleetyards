@@ -18,6 +18,7 @@ import {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
+import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
 type Props = {
   fleet: Fleet;
@@ -47,6 +48,7 @@ const openAssign = (signup: FleetEventSignup) => {
 
 const remove = (signup: FleetEventSignup) => {
   displayConfirm({
+    tone: AppConfirmTonesEnum.DANGER,
     text: t("messages.fleets.eventSignup.kick.confirm"),
     confirmText: t("actions.fleets.events.kick"),
     onConfirm: async () => {

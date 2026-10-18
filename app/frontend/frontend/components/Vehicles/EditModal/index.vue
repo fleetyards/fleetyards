@@ -12,6 +12,8 @@ import FormTab from "@/shared/components/base/FormTabs/Tab/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useModalDirty } from "@/shared/components/AppModal/dirty";
+import { useFormDirty } from "@/shared/composables/useFormDirty";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
@@ -76,9 +78,11 @@ const EDITABLE_FIELDS = Object.keys(
   savedValues(),
 ) as (keyof VehicleUpdateInput & keyof VehicleEditValues)[];
 
-const { handleSubmit, resetForm, setErrors, meta, setFieldValue } =
+const initialValues = savedValues();
+
+const { handleSubmit, resetForm, setErrors, meta, setFieldValue, values } =
   useForm<VehicleEditValues>({
-    initialValues: savedValues(),
+    initialValues,
   });
 
 // Set as a pending choice rather than an initial value, so it saves like a pick
@@ -156,6 +160,28 @@ watch(activeTab, (tab) => {
 
 const imagePanel = ref<InstanceType<typeof ImagePanel> | null>(null);
 
+// The paint tab fills in the pledged paints as a suggestion. Left as it was
+// suggested, closing loses nothing the user did, so it does not ask.
+const suggestedPaintIds = ref<string[]>();
+
+const suggestedValues = (): VehicleEditValues => ({
+  ...savedValues(),
+  ...(suggestedPaintIds.value
+    ? { modelPaintIds: suggestedPaintIds.value }
+    : {}),
+});
+
+const editedFromSaved = useFormDirty(values, savedValues);
+
+const editedFromSuggestion = useFormDirty(values, suggestedValues);
+
+const formDirty = computed(
+  () => editedFromSaved.value && editedFromSuggestion.value,
+);
+
+// The picture is picked outside the form, so its tab answers for itself.
+useModalDirty(() => formDirty.value || !!imagePanel.value?.changes());
+
 const { useUpdateMutation, invalidateVehiclePage, invalidateHangarQueries } =
   useVehicleMutations();
 
@@ -198,7 +224,7 @@ const onSubmit = handleSubmit(async (values) => {
   const imageChanges = imagePanel.value?.changes();
 
   if (!changes && !imageChanges) {
-    comlink.emit("close-modal");
+    comlink.emit("close-modal", true);
     return;
   }
 
@@ -213,7 +239,7 @@ const onSubmit = handleSubmit(async (values) => {
         });
       }
 
-      comlink.emit("close-modal");
+      comlink.emit("close-modal", true);
     })
     .catch((error) => {
       const { message, formErrors } = validationErrorFrom(error);
@@ -237,18 +263,14 @@ const vehicleName = computed(
 
 <template>
   <Modal v-if="vehicle" tabbed>
+    <template #eyebrow>
+      <!-- eslint-disable-next-line vue/no-v-html -->
+      <span v-html="vehicle.model?.manufacturer?.name" />
+      · {{ vehicle.model?.name }}
+      <template v-if="vehicle.serial"> · {{ vehicle.serial }}</template>
+    </template>
     <template #title>
-      <span>{{ t("headlines.editMyVehicle", { vehicle: vehicleName }) }}</span>
-      <small v-if="vehicle.serial" class="text-muted">
-        {{ vehicle.serial }}
-      </small>
-      <br />
-
-      <small class="text-muted">
-        <!-- eslint-disable-next-line vue/no-v-html -->
-        <span v-html="vehicle.model?.manufacturer?.name" />
-        {{ vehicle.model?.name }}
-      </small>
+      {{ t("headlines.editMyVehicle", { vehicle: vehicleName }) }}
     </template>
 
     <form
@@ -352,6 +374,7 @@ const vehicleName = computed(
           <Paint
             v-if="paintTabOpened && equipmentVisible && vehicle.model.hasPaints"
             :vehicle="vehicle"
+            @suggest="suggestedPaintIds = $event"
           />
         </FormTab>
       </FormTabs>

@@ -8,8 +8,10 @@ vi.mock("@/shared/composables/useI18n", () => ({
   useI18n: () => ({ t: (key: string) => key }),
 }));
 
+const { displayConfirm } = vi.hoisted(() => ({ displayConfirm: vi.fn() }));
+
 vi.mock("@/shared/composables/useAppNotifications", () => ({
-  useAppNotifications: () => ({ displayConfirm: vi.fn() }),
+  useAppNotifications: () => ({ displayConfirm }),
 }));
 
 const RouterLinkStub = {
@@ -115,6 +117,25 @@ describe("BaseBtn", () => {
     await wrapper.trigger("click");
 
     expect(wrapper.emitted("click")).toBeUndefined();
+  });
+
+  it("asks in the danger tone when it is a danger button itself", async () => {
+    displayConfirm.mockClear();
+
+    await mountBtn({ confirm: "Sure?", tone: BtnTonesEnum.DANGER }).trigger(
+      "click",
+    );
+    await mountBtn({ confirm: "Sure?" }).trigger("click");
+
+    expect(displayConfirm.mock.calls[0][0].tone).toBe("danger");
+    expect(displayConfirm.mock.calls[1][0].tone).toBeUndefined();
+  });
+
+  it("marks a button that commits rather than leads to a confirm", () => {
+    expect(mountBtn().classes()).not.toContain("btn--commit");
+    expect(
+      mountBtn({ tone: BtnTonesEnum.DANGER, commit: true }).classes(),
+    ).toContain("btn--commit");
   });
 
   it("adapts to a group container without the group styling it", () => {
