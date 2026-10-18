@@ -147,28 +147,31 @@ const aside = (count: SyncCount) => {
 
 <style lang="scss" scoped>
 // One frame around the rows, divided rather than boxed, as the settings list.
+// The rows share the list's columns, so the numbers line up and the figure
+// after them starts right where the widest number ends.
 .sync-count-list {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   margin: 0;
   border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
   border-radius: var(--radius-surface-slim, 12px);
 }
 
+.sync-count-list--aside {
+  grid-template-columns: minmax(0, 1fr) auto auto;
+}
+
 .sync-count-list__row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
   align-items: baseline;
-  column-gap: 12px;
+  column-gap: 6px;
   padding: 8px 14px;
 
   & + & {
     border-top: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));
   }
-}
-
-.sync-count-list--aside .sync-count-list__row {
-  grid-template-columns: minmax(0, 1fr) auto 72px;
 }
 
 // Under the row's text, across all its columns.
@@ -179,6 +182,7 @@ const aside = (count: SyncCount) => {
 
 .sync-count-list__label {
   min-width: 0;
+  margin-right: 12px;
   color: var(--color-text-dim, #959595);
   font-size: 14px;
   font-weight: normal;
@@ -206,7 +210,6 @@ const aside = (count: SyncCount) => {
   margin: 0;
   color: var(--color-text-dim, #959595);
   font-size: 13px;
-  text-align: right;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
