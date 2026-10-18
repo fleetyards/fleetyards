@@ -2888,7 +2888,8 @@
         "firstSyncTitle": "La primera sincronización tarda más",
         "updateExtensionTitle": "Actualiza la extensión de sincronización",
         "finishedTitle": "Pledges de recompra sincronizados",
-        "runningTitle": "Sincronizando pledges de recompra"
+        "runningTitle": "Sincronizando pledges de recompra",
+        "pledges": "Pledges de recompra"
       },
       "syncExtension": {
         "warnings": "Avisos",
@@ -2987,7 +2988,8 @@
           "sent": {
             "one": "%{count} elemento enviado",
             "other": "%{count} elementos enviados"
-          }
+          },
+          "pageOfAbout": "Página %{page} de unas %{total}"
         },
         "unmatchedCount": {
           "one": "No se pudo emparejar 1 elemento",

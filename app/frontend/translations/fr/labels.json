@@ -2888,7 +2888,8 @@
         "firstSyncTitle": "La première synchronisation est plus longue",
         "updateExtensionTitle": "Mettez à jour l'extension de synchronisation",
         "finishedTitle": "Pledges rachetables synchronisés",
-        "runningTitle": "Synchronisation des pledges rachetables"
+        "runningTitle": "Synchronisation des pledges rachetables",
+        "pledges": "Pledges rachetables"
       },
       "syncExtension": {
         "warnings": "Avertissements",
@@ -2987,7 +2988,8 @@
           "sent": {
             "one": "%{count} élément envoyé",
             "other": "%{count} éléments envoyés"
-          }
+          },
+          "pageOfAbout": "Page %{page} sur environ %{total}"
         },
         "unmatchedCount": {
           "one": "1 élément n'a pas pu être associé",

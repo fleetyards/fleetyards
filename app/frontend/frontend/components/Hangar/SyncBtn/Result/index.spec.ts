@@ -211,6 +211,23 @@ describe("HangarSyncResult", () => {
       ).toBe("2 of about 4 items");
     });
 
+    it("estimates the pages from the last sync without RSI's pager", async () => {
+      const wrapper = await mountAgainstLast("processing");
+
+      expect(
+        wrapper
+          .get(
+            "[data-test='sync-step-fetchHangar'] .sync-steps__detail [data-text]",
+          )
+          .attributes("data-text"),
+      ).toBe("Page 2 of about 2");
+      expect(
+        wrapper
+          .get("[data-test='sync-step-fetchHangar'] [role='progressbar']")
+          .attributes("aria-valuemax"),
+      ).toBe("2");
+    });
+
     it("says how far a run that read everything ended from the last sync", async () => {
       const wrapper = await mountAgainstLast("success");
 

@@ -2888,7 +2888,8 @@
         "firstSyncTitle": "La prima sincronizzazione richiede più tempo",
         "updateExtensionTitle": "Aggiorna l'estensione di sincronizzazione",
         "finishedTitle": "Pledge riacquistabili sincronizzati",
-        "runningTitle": "Sincronizzazione dei pledge riacquistabili"
+        "runningTitle": "Sincronizzazione dei pledge riacquistabili",
+        "pledges": "Pledge riacquistabili"
       },
       "syncExtension": {
         "warnings": "Avvisi",
@@ -2987,7 +2988,8 @@
           "sent": {
             "one": "%{count} elemento inviato",
             "other": "%{count} elementi inviati"
-          }
+          },
+          "pageOfAbout": "Pagina %{page} di circa %{total}"
         },
         "unmatchedCount": {
           "one": "1 elemento non è stato abbinato",

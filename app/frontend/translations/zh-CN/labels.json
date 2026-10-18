@@ -2888,7 +2888,8 @@
         "firstSyncTitle": "首次同步耗时更长",
         "updateExtensionTitle": "更新同步扩展",
         "finishedTitle": "可回购承诺已同步",
-        "runningTitle": "正在同步可回购承诺"
+        "runningTitle": "正在同步可回购承诺",
+        "pledges": "可回购承诺"
       },
       "syncExtension": {
         "warnings": "警告",
@@ -2985,7 +2986,8 @@
           },
           "sent": {
             "other": "已发送 %{count} 项"
-          }
+          },
+          "pageOfAbout": "第 %{page} 页，共约 %{total} 页"
         },
         "unmatchedCount": {
           "one": "有 1 项无法匹配",

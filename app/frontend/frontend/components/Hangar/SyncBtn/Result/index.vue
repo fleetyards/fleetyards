@@ -9,6 +9,8 @@ import Alert from "@/shared/components/base/Alert/index.vue";
 import { AlertVariantsEnum } from "@/shared/components/base/Alert/types";
 import SupportHint from "@/shared/components/SupportHint/index.vue";
 import SyncSteps from "@/frontend/components/Hangar/SyncSteps/index.vue";
+import { readingPages } from "@/frontend/components/Hangar/SyncSteps/readingPages";
+import { lastSyncCaption } from "@/frontend/components/Hangar/SyncSteps/lastSyncCaption";
 import type {
   SyncStep,
   SyncStepStatus,
@@ -159,34 +161,10 @@ const readTotal = computed(() =>
   allReadCounts.value.reduce((sum, count) => sum + Number(count.value), 0),
 );
 
-const lastReadCaption = (): SyncStep["caption"] => {
-  if (!props.lastRead) return undefined;
-
-  const difference = readTotal.value - props.lastRead.total;
-
-  if (!readingDone.value && difference <= 0) {
-    return {
-      key: "labels.syncExtension.lastSync.reading",
-      values: { count: readTotal.value, total: props.lastRead.total },
-    };
-  }
-
-  if (difference > 0) {
-    return {
-      key: "labels.syncExtension.lastSync.more",
-      values: { count: difference },
-    };
-  }
-
-  if (difference < 0) {
-    return {
-      key: "labels.syncExtension.lastSync.fewer",
-      values: { count: -difference },
-    };
-  }
-
-  return t("labels.syncExtension.lastSync.same");
-};
+const lastReadCaption = (): SyncStep["caption"] =>
+  props.lastRead
+    ? lastSyncCaption(readTotal.value, props.lastRead.total, readingDone.value)
+    : undefined;
 
 const STEP_STATUS: Record<SyncProcessStepStatus, SyncStepStatus> = {
   pending: "pending",
@@ -196,25 +174,20 @@ const STEP_STATUS: Record<SyncProcessStepStatus, SyncStepStatus> = {
   backendFailure: "failed",
 };
 
+// RSI's pager names the list's length; without one, the last sync's page count
+// is the best guess, and said to be one.
+const reading = computed(() =>
+  props.totalPages
+    ? readingPages(props.currentPage, props.totalPages)
+    : readingPages(props.currentPage, props.lastRead?.pages ?? undefined, true),
+);
+
 const stepDetail = (step: SyncProcessStep): SyncStep["detail"] => {
   if (step.name === "fetchHangar") {
     if (step.status === "pending") return undefined;
 
     // While reading, the list under the step carries the counts.
-    if (step.status === "processing") {
-      return props.totalPages
-        ? {
-            key: "labels.syncExtension.stepDetails.pageOf",
-            values: {
-              page: Math.min(props.currentPage, props.totalPages),
-              total: props.totalPages,
-            },
-          }
-        : {
-            key: "labels.syncExtension.stepDetails.page",
-            values: { page: props.currentPage },
-          };
-    }
+    if (step.status === "processing") return reading.value.detail;
 
     return {
       key: "labels.syncExtension.stepDetails.read",
@@ -254,14 +227,11 @@ const importRoute = computed(() =>
     : undefined,
 );
 
-// Reading fills toward the last page RSI's pager names; without a pager it
-// only shows that it is working, as the save, a single request, always does.
-// Each kind's row measures itself against the last sync.
+// Reading fills by page; the save, a single request, only shows that it is
+// working. Each kind's row measures itself against the last sync.
 const stepProgress = (step: SyncProcessStep): SyncStep["progress"] => {
   if (step.status !== "processing") return undefined;
-  if (step.name === "fetchHangar" && props.totalPages) {
-    return { value: props.currentPage, max: props.totalPages };
-  }
+  if (step.name === "fetchHangar") return reading.value.progress;
 
   return "indeterminate";
 };

@@ -2888,7 +2888,8 @@
         "firstSyncTitle": "The first sync takes longer",
         "updateExtensionTitle": "Update the sync extension",
         "finishedTitle": "Buy-back pledges synced",
-        "runningTitle": "Syncing buy-back pledges"
+        "runningTitle": "Syncing buy-back pledges",
+        "pledges": "Buy-back pledges"
       },
       "syncExtension": {
         "warnings": "Warnings",
@@ -2987,7 +2988,8 @@
           "sent": {
             "one": "Sent %{count} item",
             "other": "Sent %{count} items"
-          }
+          },
+          "pageOfAbout": "Page %{page} of about %{total}"
         },
         "unmatchedCount": {
           "one": "1 item could not be matched",

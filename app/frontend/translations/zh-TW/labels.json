@@ -2888,7 +2888,8 @@
         "firstSyncTitle": "首次同步耗時較長",
         "updateExtensionTitle": "更新同步擴充功能",
         "finishedTitle": "可回購承諾已同步",
-        "runningTitle": "正在同步可回購承諾"
+        "runningTitle": "正在同步可回購承諾",
+        "pledges": "可回購承諾"
       },
       "syncExtension": {
         "warnings": "警告",
@@ -2985,7 +2986,8 @@
           },
           "sent": {
             "other": "已傳送 %{count} 項"
-          }
+          },
+          "pageOfAbout": "第 %{page} 頁，共約 %{total} 頁"
         },
         "unmatchedCount": {
           "one": "有 1 項無法比對",

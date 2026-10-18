@@ -2888,7 +2888,8 @@
         "firstSyncTitle": "Die erste Synchronisierung dauert länger",
         "updateExtensionTitle": "Sync-Erweiterung aktualisieren",
         "finishedTitle": "Rückkauf-Pledges synchronisiert",
-        "runningTitle": "Rückkauf-Pledges werden synchronisiert"
+        "runningTitle": "Rückkauf-Pledges werden synchronisiert",
+        "pledges": "Rückkauf-Pledges"
       },
       "syncExtension": {
         "warnings": "Warnungen",
@@ -2987,7 +2988,8 @@
           "sent": {
             "one": "%{count} Eintrag gesendet",
             "other": "%{count} Einträge gesendet"
-          }
+          },
+          "pageOfAbout": "Seite %{page} von etwa %{total}"
         },
         "unmatchedCount": {
           "one": "1 Eintrag konnte nicht zugeordnet werden",
