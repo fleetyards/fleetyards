@@ -2897,8 +2897,6 @@
         "backgroundFailed": "Hangar-Synchronisierung fehlgeschlagen",
         "backgroundCancelled": "Hangar-Synchronisierung abgebrochen",
         "status": {
-          "started": "Import gestartet...",
-          "finished": "Import abgeschlossen",
           "failed": "Import fehlgeschlagen!",
           "cancelled": "Import abgebrochen"
         },
@@ -2906,7 +2904,6 @@
           "fetchHangar": "Dein RSI-Hangar wird gelesen",
           "submitData": "Speichern auf Fleetyards"
         },
-        "sessionStatus": "RSI-Sitzungsstatus",
         "signedInAs": "Bei RSI angemeldet als %{handle}",
         "signInToRsi": "Bei RSI anmelden",
         "checkIdentity": "RSI-Sitzung prüfen",
@@ -2946,10 +2943,6 @@
         },
         "pledgeItems": {
           "pages": "Seiten",
-          "all": "Alle Pledge-Gegenstände",
-          "ships": "Schiffe",
-          "components": "Module",
-          "upgrades": "Upgrades",
           "paints": "Lackierungen",
           "hangarFlair": "Hangar-Flair",
           "paintsNotSynced": "Lackierungen (nicht synchronisiert)",

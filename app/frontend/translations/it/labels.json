@@ -2897,8 +2897,6 @@
         "backgroundFailed": "Sincronizzazione dell'hangar non riuscita",
         "backgroundCancelled": "Sincronizzazione dell'hangar annullata",
         "status": {
-          "started": "Importazione avviata...",
-          "finished": "Importazione completata",
           "failed": "Importazione fallita!",
           "cancelled": "Importazione annullata"
         },
@@ -2906,7 +2904,6 @@
           "fetchHangar": "Lettura del tuo hangar RSI",
           "submitData": "Salvataggio su Fleetyards"
         },
-        "sessionStatus": "Stato sessione RSI",
         "signedInAs": "Accesso a RSI effettuato come %{handle}",
         "signInToRsi": "Accedi a RSI",
         "checkIdentity": "Verifica sessione RSI",
@@ -2946,10 +2943,6 @@
         },
         "pledgeItems": {
           "pages": "Pagine",
-          "all": "Tutti gli oggetti Pledge",
-          "ships": "Navi",
-          "components": "Moduli",
-          "upgrades": "Upgrade",
           "paints": "Verniciature",
           "hangarFlair": "Decorazioni per l'hangar",
           "paintsNotSynced": "Verniciature (non sincronizzate)",

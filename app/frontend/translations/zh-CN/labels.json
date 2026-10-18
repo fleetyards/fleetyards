@@ -2897,8 +2897,6 @@
         "backgroundFailed": "机库同步失败",
         "backgroundCancelled": "机库同步已取消",
         "status": {
-          "started": "导入已开始...",
-          "finished": "导入完成",
           "failed": "导入失败!",
           "cancelled": "导入已取消"
         },
@@ -2906,7 +2904,6 @@
           "fetchHangar": "正在读取你的 RSI 机库",
           "submitData": "正在保存到 Fleetyards"
         },
-        "sessionStatus": "RSI 会话状态",
         "signedInAs": "已以 %{handle} 登录 RSI",
         "signInToRsi": "登录 RSI",
         "checkIdentity": "检查 RSI 会话",
@@ -2946,10 +2943,6 @@
         },
         "pledgeItems": {
           "pages": "页面",
-          "all": "所有质押物品",
-          "ships": "飞船",
-          "components": "模块",
-          "upgrades": "升级",
           "paints": "涂装",
           "hangarFlair": "机库装饰",
           "paintsNotSynced": "涂装（不会同步）",

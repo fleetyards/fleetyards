@@ -2897,8 +2897,6 @@
         "backgroundFailed": "La synchronisation du hangar a échoué",
         "backgroundCancelled": "Synchronisation du hangar annulée",
         "status": {
-          "started": "Import démarré...",
-          "finished": "Import terminé",
           "failed": "Échec de l'import !",
           "cancelled": "Importation annulée"
         },
@@ -2906,7 +2904,6 @@
           "fetchHangar": "Lecture de votre hangar RSI",
           "submitData": "Enregistrement sur Fleetyards"
         },
-        "sessionStatus": "Statut de session RSI",
         "signedInAs": "Connecté à RSI en tant que %{handle}",
         "signInToRsi": "Se connecter à RSI",
         "checkIdentity": "Vérifier la session RSI",
@@ -2946,10 +2943,6 @@
         },
         "pledgeItems": {
           "pages": "Pages",
-          "all": "Tous les articles de promesse",
-          "ships": "Vaisseaux",
-          "components": "Modules",
-          "upgrades": "Améliorations",
           "paints": "Peintures",
           "hangarFlair": "Décorations de hangar",
           "paintsNotSynced": "Peintures (non synchronisées)",

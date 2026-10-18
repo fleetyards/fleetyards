@@ -2897,8 +2897,6 @@
         "backgroundFailed": "機庫同步失敗",
         "backgroundCancelled": "機庫同步已取消",
         "status": {
-          "started": "匯入已開始...",
-          "finished": "匯入完成",
           "failed": "匯入失敗!",
           "cancelled": "匯入已取消"
         },
@@ -2906,7 +2904,6 @@
           "fetchHangar": "正在讀取你的 RSI 機庫",
           "submitData": "正在儲存到 Fleetyards"
         },
-        "sessionStatus": "RSI 工作階段狀態",
         "signedInAs": "已以 %{handle} 登入 RSI",
         "signInToRsi": "登入 RSI",
         "checkIdentity": "檢查 RSI 工作階段",
@@ -2946,10 +2943,6 @@
         },
         "pledgeItems": {
           "pages": "頁面",
-          "all": "所有質押物品",
-          "ships": "飛船",
-          "components": "模組",
-          "upgrades": "升級",
           "paints": "塗裝",
           "hangarFlair": "機庫裝飾",
           "paintsNotSynced": "塗裝（不會同步）",
