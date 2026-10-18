@@ -177,11 +177,17 @@
  */
 .form-toggle--switch-end {
   position: relative;
+  // Room for the switch, so neither the label line nor the description runs
+  // under it.
+  padding-right: 60px;
 
+  // Grows to fill the line beside the saved indicator, so the indicator no
+  // longer wraps below and moves the centred switch. A half-width basis still
+  // pushes the full-width description onto a line of its own.
   input + label {
     position: static;
-    width: 100%;
-    padding-right: 60px;
+    flex: 1 1 50%;
+    min-width: 0;
   }
 
   input + label .form-toggle-switch {
@@ -192,7 +198,7 @@
   }
 
   .form-toggle__description {
-    padding-right: 60px;
+    order: 1;
     padding-left: 0;
   }
 }
