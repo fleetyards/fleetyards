@@ -67,7 +67,7 @@ A page per vehicle loadout showing the ship detail page's hardpoints and metrics
 ## Progress
 
 - [x] Phase 1 — worked out in the browser from the fitted hardpoints (`composables/fuelDraw.ts`), so the loadout page follows its fitting; the endurance leaves the intakes out until their rate is understood
-- [ ] Phase 2
+- [x] Phase 2 — `fitting` prop on `Models/Hardpoints`; module slots render as read-only rows with their fitted contents (`hardpointsReadOnly`)
 - [ ] Phase 3
 - [ ] Phase 4
 - [ ] Phase 5
