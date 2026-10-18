@@ -31,8 +31,8 @@ import {
   usePublicVehicleLoadoutSlots,
   useModel,
   useShowVehicle,
+  useVehicleLoadout,
   useVehicleLoadoutSlots,
-  useVehicleLoadouts,
 } from "@/services/fyApi";
 
 const { t } = useI18n();
@@ -69,8 +69,9 @@ const { data: ownVehicle, ...ownVehicleStatus } = useShowVehicle(identifier, {
 
 const ownVehicleId = computed(() => ownVehicle.value?.id ?? "");
 
-const { data: ownLoadouts, ...ownLoadoutsStatus } = useVehicleLoadouts(
+const { data: ownLoadout, ...ownLoadoutStatus } = useVehicleLoadout(
   ownVehicleId,
+  loadoutId,
   { query: { enabled: () => isOwner.value && !!ownVehicle.value } },
 );
 
@@ -108,9 +109,7 @@ const vehicle = computed(() =>
 );
 
 const loadout = computed(() =>
-  isOwner.value
-    ? ownLoadouts.value?.find((entry) => entry.id === loadoutId.value)
-    : publicLoadout.value,
+  isOwner.value ? ownLoadout.value : publicLoadout.value,
 );
 
 const vehicleStatus = computed(() =>
@@ -118,7 +117,7 @@ const vehicleStatus = computed(() =>
 );
 
 const loadoutStatus = computed(() =>
-  isOwner.value ? ownLoadoutsStatus : publicLoadoutStatus,
+  isOwner.value ? ownLoadoutStatus : publicLoadoutStatus,
 );
 
 // The full model, as the ship page has it, for the hardpoints' figures.
@@ -158,7 +157,11 @@ const crumbs = computed<Crumb[]>(() => {
   if (!isOwner.value) {
     return [
       {
-        to: { name: "hangar-public", params: { username: username.value } },
+        to: {
+          name: "hangar-public",
+          params: { username: username.value },
+          query: publicParams.value,
+        },
         label: username.value,
       },
     ];

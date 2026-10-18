@@ -46,7 +46,7 @@ const { enabled, query, vehicle, loadout } = vi.hoisted(() => {
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   useShowVehicle: query("ownVehicle", vehicle),
-  useVehicleLoadouts: query("ownLoadouts", [loadout]),
+  useVehicleLoadout: query("ownLoadouts", loadout),
   useVehicleLoadoutSlots: query("ownSlots", []),
   usePublicHangarVehicle: query("publicVehicle", vehicle),
   usePublicVehicleLoadout: query("publicLoadout", loadout),
