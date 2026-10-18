@@ -167,6 +167,20 @@ describe("useSwipeToDismiss", () => {
     wrapper.unmount();
   });
 
+  it("does not read two moves a millisecond apart as a flick", async () => {
+    const { onDismiss, panel, wrapper } = await render("left");
+
+    panel.dispatchEvent(touch("touchstart", 0, 150));
+    panel.dispatchEvent(touch("touchmove", 40, 138));
+    panel.dispatchEvent(touch("touchmove", 80, 126));
+    panel.dispatchEvent(touch("touchmove", 81, 123));
+    await release(panel, 85);
+
+    expect(onDismiss).not.toHaveBeenCalled();
+
+    wrapper.unmount();
+  });
+
   it("stays open when flicked back after a long drag", async () => {
     const { onDismiss, panel, wrapper } = await render("left");
 

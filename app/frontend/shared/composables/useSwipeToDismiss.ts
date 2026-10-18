@@ -10,8 +10,13 @@ const DISMISS_FRACTION = 0.5;
 // A flick closes the panel however short it was, in px per ms.
 const FLICK_VELOCITY = 0.4;
 
-// A finger that came to rest before lifting has not flicked, whatever its last
-// move measured: no move event arrives while it holds still.
+/*
+ * The flick is the finger's speed over its last stretch of at least
+ * FLICK_SPAN_MS, not between its last two moves: those can arrive a
+ * millisecond apart and read as any speed at all. A finger whose last move is
+ * older than FLICK_WINDOW_MS came to rest before lifting, and has not flicked.
+ */
+const FLICK_SPAN_MS = 20;
 const FLICK_WINDOW_MS = 100;
 
 export type SwipeToDismissSide = "left" | "right";
@@ -88,16 +93,14 @@ export const useSwipeToDismiss = ({
 
   let startX = 0;
   let startY = 0;
-  let lastX = 0;
-  let lastTime = 0;
-  let velocity = 0;
+  let samples: { x: number; time: number }[] = [];
   let tracking = false;
   let axis: "x" | "y" | undefined;
 
   const reset = () => {
     tracking = false;
     axis = undefined;
-    velocity = 0;
+    samples = [];
     dragging.value = false;
     offset.value = 0;
   };
@@ -115,8 +118,7 @@ export const useSwipeToDismiss = ({
 
     startX = event.touches[0].clientX;
     startY = event.touches[0].clientY;
-    lastX = startX;
-    lastTime = event.timeStamp;
+    samples = [{ x: startX, time: event.timeStamp }];
     tracking = true;
   };
 
@@ -157,14 +159,10 @@ export const useSwipeToDismiss = ({
       event.preventDefault();
     }
 
-    const elapsed = event.timeStamp - lastTime;
-
-    if (elapsed > 0) {
-      velocity = towardsClosed(x - lastX) / elapsed;
-    }
-
-    lastX = x;
-    lastTime = event.timeStamp;
+    samples.push({ x, time: event.timeStamp });
+    samples = samples.filter(
+      ({ time }) => event.timeStamp - time <= FLICK_WINDOW_MS,
+    );
 
     // Held at the open position rather than pulled past it: the panel is
     // anchored to the edge, and further in would open a gap behind it.
@@ -174,14 +172,27 @@ export const useSwipeToDismiss = ({
     offset.value = toValue(side) === "left" ? -travel : travel;
   };
 
+  const flickVelocity = (endedAt: number) => {
+    const last = samples[samples.length - 1];
+
+    if (!last || endedAt - last.time > FLICK_WINDOW_MS) {
+      return 0;
+    }
+
+    const from =
+      samples.findLast(({ time }) => last.time - time >= FLICK_SPAN_MS) ||
+      samples[0];
+    const span = last.time - from.time;
+
+    return span > 0 ? towardsClosed(last.x - from.x) / span : 0;
+  };
+
   const onTouchEnd = (event: TouchEvent) => {
     if (!tracking) {
       return;
     }
 
-    if (event.timeStamp - lastTime > FLICK_WINDOW_MS) {
-      velocity = 0;
-    }
+    const velocity = flickVelocity(event.timeStamp);
 
     const travel = Math.abs(offset.value);
     const flicked = velocity > FLICK_VELOCITY;
