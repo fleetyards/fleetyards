@@ -1,4 +1,10 @@
-import { type InjectionKey, inject, onUnmounted } from "vue";
+import {
+  type InjectionKey,
+  type MaybeRefOrGetter,
+  inject,
+  onUnmounted,
+  toValue,
+} from "vue";
 
 type DirtySource = () => boolean;
 
@@ -8,13 +14,16 @@ export const modalDirtyKey: InjectionKey<RegisterDirtySource> =
   Symbol("modalDirty");
 
 // Tells the modal around this component whether closing it now would lose
-// something. Unlike an exposed `dirty`, it works from any depth, so content
-// wrapped in another component - a picker inside its caller's modal - is heard.
-// Once a source is registered, the modal no longer guesses from form events.
-export const useModalDirty = (source: DirtySource) => {
+// something, so it asks first. It works from any depth - a picker inside its
+// caller's modal is heard - and every component that reports is asked.
+//
+// A form passes `useFormDirty(values, initialValues)`. Once it has saved, it
+// closes the modal with force (`comlink.emit("close-modal", true)`): its values
+// still differ from where they started, and nothing is lost.
+export const useModalDirty = (dirty: MaybeRefOrGetter<boolean>) => {
   const register = inject(modalDirtyKey, undefined);
 
   if (!register) return;
 
-  onUnmounted(register(source));
+  onUnmounted(register(() => toValue(dirty)));
 };

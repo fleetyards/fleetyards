@@ -14,20 +14,6 @@ const DirtyForm = defineComponent({
   },
 });
 
-const PlainForm = defineComponent({
-  setup() {
-    return () =>
-      h("div", [
-        h(
-          "form",
-          { "data-test": "form", onSubmit: (e: Event) => e.preventDefault() },
-          [h("input", { "data-test": "field" })],
-        ),
-        h("input", { "data-test": "search" }),
-      ]);
-  },
-});
-
 const reportsDirty = { value: true };
 
 const NestedPicker = defineComponent({
@@ -37,9 +23,13 @@ const NestedPicker = defineComponent({
   },
 });
 
-// Wrapped, the way a picker sits inside its caller's modal.
-const WrappedPicker = defineComponent({
+const formDirty = { value: false };
+
+// A form with a picker inside it, the picker one component down - the way a
+// picker sits inside its caller's modal. Both report.
+const FormWithPicker = defineComponent({
   setup() {
+    useModalDirty(() => formDirty.value);
     return () => h("form", [h(NestedPicker)]);
   },
 });
@@ -212,50 +202,33 @@ describe("AppModal", () => {
       expect(wrapper?.find('[data-test="modal"]').exists()).toBe(true);
     });
   });
-  describe("without a dirty flag of its own", () => {
-    it("asks once something in a form was edited", async () => {
-      const { modal, confirm } = await openWith(PlainForm);
-
-      await wrapper!.get("[data-test='field']").trigger("input");
-      await modal.close();
-
-      expect(confirm).toHaveBeenCalledTimes(1);
-    });
-
-    it("closes without asking once the form was submitted", async () => {
-      const { modal, confirm } = await openWith(PlainForm);
-
-      await wrapper!.get("[data-test='field']").trigger("input");
-      await wrapper!.get("[data-test='form']").trigger("submit");
-      await modal.close();
-
-      expect(confirm).not.toHaveBeenCalled();
-    });
-
-    it("ignores input outside a form", async () => {
-      const { modal, confirm } = await openWith(PlainForm);
-
-      await wrapper!.get("[data-test='search']").trigger("input");
-      await modal.close();
-
-      expect(confirm).not.toHaveBeenCalled();
-    });
-  });
-  describe("with a nested component that reports its own state", () => {
-    it("asks while it reports unsaved state", async () => {
+  describe("with components that report their own state", () => {
+    it("asks while a nested one reports unsaved state", async () => {
       reportsDirty.value = true;
-      const { modal, confirm } = await openWith(WrappedPicker);
+      formDirty.value = false;
+      const { modal, confirm } = await openWith(FormWithPicker);
 
       await modal.close();
 
       expect(confirm).toHaveBeenCalledTimes(1);
     });
 
-    it("trusts it over form events", async () => {
+    // One clean reporter must not speak for the others.
+    it("asks while any of them does", async () => {
       reportsDirty.value = false;
-      const { modal, confirm } = await openWith(WrappedPicker);
+      formDirty.value = true;
+      const { modal, confirm } = await openWith(FormWithPicker);
 
-      await wrapper!.get("[data-test='picker-search']").trigger("input");
+      await modal.close();
+
+      expect(confirm).toHaveBeenCalledTimes(1);
+    });
+
+    it("closes without asking while none does", async () => {
+      reportsDirty.value = false;
+      formDirty.value = false;
+      const { modal, confirm } = await openWith(FormWithPicker);
+
       await modal.close();
 
       expect(confirm).not.toHaveBeenCalled();

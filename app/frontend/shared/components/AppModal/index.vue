@@ -43,26 +43,6 @@ const isShow = ref(false);
 
 const isOpen = ref(false);
 
-// An edit inside one of the content's forms that has not been submitted yet.
-// Content that knows better exposes `dirty` itself.
-const formEdited = ref(false);
-
-// A field that only narrows what is shown, such as a select's search, opts out
-// with `data-unsaved-ignore`.
-const onFormEdit = (event: Event) => {
-  const target = event.target as Element | null;
-
-  if (target?.closest?.("form") && !target.closest("[data-unsaved-ignore]")) {
-    formEdited.value = true;
-  }
-};
-
-// Every form modal saves by submitting, and most close themselves afterwards
-// without forcing it, so a submit is what clears the edit.
-const onFormSubmit = () => {
-  formEdited.value = false;
-};
-
 const dirtySources = new Set<() => boolean>();
 
 provide(modalDirtyKey, (source) => {
@@ -71,17 +51,10 @@ provide(modalDirtyKey, (source) => {
   return () => dirtySources.delete(source);
 });
 
-const contentDirty = () => {
-  if (modalComponent.value?.dirty !== undefined) {
-    return modalComponent.value.dirty;
-  }
-
-  if (dirtySources.size) {
-    return [...dirtySources].some((source) => source());
-  }
-
-  return formEdited.value;
-};
+// Anything the content reports: its own exposed `dirty`, and every component
+// inside it that reports through `useModalDirty`.
+const contentDirty = () =>
+  !!modalComponent.value?.dirty || [...dirtySources].some((source) => source());
 
 // Matches `.app-modal` in index.scss, so a popover opened from the modal's
 // content is placed above it rather than underneath.
@@ -118,7 +91,6 @@ const open = async (options: AppModalOptions) => {
   large.value = !!options.large;
   fixed.value = !!options.fixed;
   dirty.value = !!options.dirty;
-  formEdited.value = false;
   fullscreen.value = !!options.fullscreen;
   component.value = markRaw(defineAsyncComponent(options.component));
 
@@ -233,9 +205,6 @@ defineExpose({
     class="app-modal fade"
     data-test="modal"
     @click.self="() => close()"
-    @input="onFormEdit"
-    @change="onFormEdit"
-    @submit.capture="onFormSubmit"
   >
     <div class="modal-dialog" :class="modalDialogClasses">
       <Component :is="component" ref="modalComponent" v-bind="componentProps" />
