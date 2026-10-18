@@ -697,7 +697,7 @@ class HangarSyncTest < ActiveSupport::TestCase
 
   class ModulesTest < HangarSyncTest
     test "adds a Galaxy module to the Galaxy it belongs to" do
-      galaxy = Model.find_by(name: "Galaxy") || create(:model, name: "Galaxy")
+      galaxy = create(:model, name: "Galaxy")
       cargo = create(:model_module, name: "Cargo Module")
       create(:module_hardpoint, model: galaxy, model_module: cargo)
       vehicle = create(:vehicle, user: @user, model: galaxy, wanted: false)
