@@ -23,6 +23,7 @@ import { useLoadoutProblems } from "@/frontend/composables/useLoadoutProblems";
 import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
+import SavedIndicator from "@/shared/components/base/SavedIndicator/index.vue";
 import FormTabs from "@/shared/components/base/FormTabs/index.vue";
 import FormTab from "@/shared/components/base/FormTabs/Tab/index.vue";
 import SocketBoard from "@/frontend/components/Loadout/SocketBoard/index.vue";
@@ -158,11 +159,10 @@ const { defineField, handleSubmit, resetForm, resetField, isFieldDirty } =
 // Against the loadout as saved: the fitting, or its name. Undoing a pick
 // undoes the change. Visibility is saved as it is switched, so it is never a
 // change waiting on the save.
-const changed = computed(
-  () =>
-    isFieldDirty("loadoutName") ||
-    isFieldDirty("fittedModules") ||
-    isFieldDirty("fittedComponents"),
+const changed = computed(() =>
+  (Object.keys(savedValues()) as (keyof LoadoutValues)[])
+    .filter((field) => field !== "loadoutPublic")
+    .some((field) => isFieldDirty(field)),
 );
 
 /**
@@ -842,13 +842,22 @@ const { invalidateHangarQueries, invalidateVehiclePage } =
 // Whether the saved loadout shows in the public hangar, saved as it is
 // switched. Settled as the field's starting value either way, so it never
 // counts as a change the fitting's save is waiting on.
+// One write at a time, the switch held while it runs, so an earlier answer can
+// never land over a later choice; "saved" shows only once the server agrees.
+const savingPublic = ref(false);
+
+const publicSaved = ref<InstanceType<typeof SavedIndicator>>();
+
 const onTogglePublic = async (value: boolean) => {
   const loadout = editedLoadout.value;
-  if (!loadout) return;
+  if (!loadout || savingPublic.value) return;
+
+  savingPublic.value = true;
 
   try {
     await updateVehicleLoadout(props.vehicle.id, loadout.id, { public: value });
     resetField("loadoutPublic", { value });
+    publicSaved.value?.show();
     await Promise.all([
       invalidateVehiclePage(props.vehicle),
       queryClient.invalidateQueries({
@@ -862,6 +871,8 @@ const onTogglePublic = async (value: boolean) => {
         .filter(Boolean)
         .join(": "),
     });
+  } finally {
+    savingPublic.value = false;
   }
 };
 
@@ -1051,10 +1062,12 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
       </aside>
 
       <div class="vehicle-loadout__panel">
+        <!-- Enter in the name names the loadout; saving it is the button's. -->
         <div
           v-if="editable && flightReady"
           class="vehicle-loadout__identity"
           data-test="vehicle-loadout-identity"
+          @keydown.enter.prevent
         >
           <FormInput
             name="loadoutName"
@@ -1070,12 +1083,13 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
             :model-value="loadoutPublic"
             name="loadoutPublic"
             :label="t('labels.loadout.public')"
-            autosaved
+            :disabled="savingPublic"
             no-placeholder
             class="vehicle-loadout__public"
             data-test="vehicle-loadout-public"
             @update:model-value="onTogglePublic"
           />
+          <SavedIndicator v-if="editedLoadout" ref="publicSaved" />
         </div>
 
         <p

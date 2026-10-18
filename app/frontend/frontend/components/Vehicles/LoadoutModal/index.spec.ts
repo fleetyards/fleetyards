@@ -559,6 +559,35 @@ describe("VehicleLoadoutModal", () => {
     expect(
       wrapper.find("[data-test='vehicle-loadout-save-as-new']").exists(),
     ).toBe(false);
+    expect(toggle.attributes("disabled")).toBeDefined();
+  });
+
+  it("does not save the loadout when Enter is pressed in its name", async () => {
+    loadouts.value = [
+      {
+        id: "l2",
+        name: "Medical run",
+        public: false,
+        kind: "fleetyards",
+        active: false,
+        updatedAt: "2026-10-01T00:00:00Z",
+        items: [],
+      },
+    ];
+    const wrapper = await mountModal(vehicle(["m1"]), { loadoutId: "l2" });
+    await flushPromises();
+
+    const input = wrapper.get("[data-test='vehicle-loadout-name'] input");
+    const enter = new KeyboardEvent("keydown", {
+      key: "Enter",
+      bubbles: true,
+      cancelable: true,
+    });
+    input.element.dispatchEvent(enter);
+    await flushPromises();
+
+    expect(enter.defaultPrevented).toBe(true);
+    expect(updateVehicleLoadout).not.toHaveBeenCalled();
   });
 
   it("edits the saved loadout it was opened for, without activating it", async () => {
