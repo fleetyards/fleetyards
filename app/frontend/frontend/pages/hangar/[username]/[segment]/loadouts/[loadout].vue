@@ -28,6 +28,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import {
   type Vehicle,
+  VehicleLoadoutKindEnum,
   usePublicHangarVehicle,
   usePublicVehicleLoadout,
   usePublicVehicleLoadoutSlots,
@@ -117,6 +118,23 @@ const loadout = computed(() =>
 
 const vehicleStatus = computed(() =>
   isOwner.value ? ownVehicleStatus : publicVehicleStatus,
+);
+
+const router = useRouter();
+
+// A linked loadout lives on the site it links to and has no fitting here; the
+// public endpoint does not serve one, so the owner goes back to the list too.
+watch(
+  ownLoadout,
+  (current) => {
+    if (!current || current.kind === VehicleLoadoutKindEnum.FLEETYARDS) return;
+    if (!ownVehicle.value) return;
+
+    void router.replace(
+      vehicleRoute("hangar-vehicle-loadouts", ownVehicle.value, username.value),
+    );
+  },
+  { immediate: true },
 );
 
 const loadoutStatus = computed(() =>

@@ -1,3 +1,4 @@
+import { flushPromises } from "@vue/test-utils";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import { createRouter, createWebHashHistory } from "vue-router";
@@ -173,6 +174,18 @@ describe("HangarVehicleLoadoutPage", () => {
     ).toBe(true);
 
     hullHardpoints.value = [{ id: "hp-1", name: "hardpoint_power_plant" }];
+    wrapper.unmount();
+  });
+
+  it("sends the owner back to the list for a linked loadout", async () => {
+    loadout.kind = "link";
+
+    const wrapper = await mount({ username: "Owner" });
+    await flushPromises();
+
+    expect(router.currentRoute.value.name).toBe("hangar-vehicle-loadouts");
+
+    loadout.kind = "fleetyards";
     wrapper.unmount();
   });
 
