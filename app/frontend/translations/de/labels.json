@@ -2980,8 +2980,14 @@
           "saving": "Deine Pledges werden deinem Hangar zugeordnet …",
           "page": "Seite %{page}",
           "pageOf": "Seite %{page} von %{total}",
-          "sending": "%{count} Einträge werden gesendet",
-          "sent": "%{count} Einträge gesendet"
+          "sending": {
+            "one": "%{count} Eintrag wird gesendet",
+            "other": "%{count} Einträge werden gesendet"
+          },
+          "sent": {
+            "one": "%{count} Eintrag gesendet",
+            "other": "%{count} Einträge gesendet"
+          }
         },
         "unmatchedCount": {
           "one": "1 Eintrag konnte nicht zugeordnet werden",

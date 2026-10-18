@@ -2980,8 +2980,14 @@
           "saving": "Association de vos pledges à votre hangar…",
           "page": "Page %{page}",
           "pageOf": "Page %{page} sur %{total}",
-          "sending": "Envoi de %{count} éléments",
-          "sent": "%{count} éléments envoyés"
+          "sending": {
+            "one": "Envoi de %{count} élément",
+            "other": "Envoi de %{count} éléments"
+          },
+          "sent": {
+            "one": "%{count} élément envoyé",
+            "other": "%{count} éléments envoyés"
+          }
         },
         "unmatchedCount": {
           "one": "1 élément n'a pas pu être associé",

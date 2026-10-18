@@ -15,9 +15,21 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { t } = useI18n();
+const { t, tExists, currentLocale } = useI18n();
 
 const PLACEHOLDER = /%\{(\w+)\}/g;
+
+// i18n-js picks a plural form from a numeric `count`, and here `count` stands
+// in as a placeholder; the form is chosen up front instead, falling back to
+// `other` where a language does without the one asked for.
+const scope = (key: string) => {
+  const count = props.text.values.count;
+  if (count === undefined || !tExists(`${key}.other`)) return key;
+
+  const form = new Intl.PluralRules(currentLocale()).select(count);
+
+  return tExists(`${key}.${form}`) ? `${key}.${form}` : `${key}.other`;
+};
 
 // Each value passed as its own placeholder, so the translation keeps it where
 // the language puts it.
@@ -28,7 +40,7 @@ const template = computed(() => {
     Object.keys(props.text.values).map((name) => [name, `%{${name}}`]),
   );
 
-  return t(props.text.key ?? "", standing);
+  return t(scope(props.text.key ?? ""), standing);
 });
 
 const parts = computed(() =>

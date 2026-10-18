@@ -142,7 +142,7 @@ describe("HangarSyncResult", () => {
     it("says what is on its way while the request is out", async () => {
       const wrapper = await mountSaving();
 
-      expect(detail(wrapper)).toBe("Sending 1 items");
+      expect(detail(wrapper)).toBe("Sending 1 item");
       expect(wrapper.find("[data-test='sync-import-link']").exists()).toBe(
         false,
       );
@@ -151,7 +151,7 @@ describe("HangarSyncResult", () => {
     it("links the import the server took the items as", async () => {
       const wrapper = await mountSaving("import-1");
 
-      expect(detail(wrapper)).toBe("Sent 1 items");
+      expect(detail(wrapper)).toBe("Sent 1 item");
       expect(
         wrapper.get("[data-test='sync-import-link']").attributes("href"),
       ).toContain("/hangar/imports/import-1");

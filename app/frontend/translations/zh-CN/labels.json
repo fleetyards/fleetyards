@@ -2980,8 +2980,12 @@
           "saving": "正在将你的承诺与机库匹配…",
           "page": "第 %{page} 页",
           "pageOf": "第 %{page} 页，共 %{total} 页",
-          "sending": "正在发送 %{count} 项",
-          "sent": "已发送 %{count} 项"
+          "sending": {
+            "other": "正在发送 %{count} 项"
+          },
+          "sent": {
+            "other": "已发送 %{count} 项"
+          }
         },
         "unmatchedCount": {
           "one": "有 1 项无法匹配",

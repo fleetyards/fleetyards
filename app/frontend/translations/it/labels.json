@@ -2980,8 +2980,14 @@
           "saving": "Abbinamento dei tuoi pledge al tuo hangar…",
           "page": "Pagina %{page}",
           "pageOf": "Pagina %{page} di %{total}",
-          "sending": "Invio di %{count} elementi",
-          "sent": "%{count} elementi inviati"
+          "sending": {
+            "one": "Invio di %{count} elemento",
+            "other": "Invio di %{count} elementi"
+          },
+          "sent": {
+            "one": "%{count} elemento inviato",
+            "other": "%{count} elementi inviati"
+          }
         },
         "unmatchedCount": {
           "one": "1 elemento non è stato abbinato",

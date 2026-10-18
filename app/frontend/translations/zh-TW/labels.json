@@ -2980,8 +2980,12 @@
           "saving": "正在將你的承諾與機庫比對…",
           "page": "第 %{page} 頁",
           "pageOf": "第 %{page} 頁，共 %{total} 頁",
-          "sending": "正在傳送 %{count} 項",
-          "sent": "已傳送 %{count} 項"
+          "sending": {
+            "other": "正在傳送 %{count} 項"
+          },
+          "sent": {
+            "other": "已傳送 %{count} 項"
+          }
         },
         "unmatchedCount": {
           "one": "有 1 項無法比對",

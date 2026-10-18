@@ -2980,8 +2980,14 @@
           "saving": "Emparejando tus pledges con tu hangar…",
           "page": "Página %{page}",
           "pageOf": "Página %{page} de %{total}",
-          "sending": "Enviando %{count} elementos",
-          "sent": "%{count} elementos enviados"
+          "sending": {
+            "one": "Enviando %{count} elemento",
+            "other": "Enviando %{count} elementos"
+          },
+          "sent": {
+            "one": "%{count} elemento enviado",
+            "other": "%{count} elementos enviados"
+          }
         },
         "unmatchedCount": {
           "one": "No se pudo emparejar 1 elemento",

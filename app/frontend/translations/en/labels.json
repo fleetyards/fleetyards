@@ -2980,8 +2980,14 @@
           "saving": "Matching your pledges to your hangar…",
           "page": "Page %{page}",
           "pageOf": "Page %{page} of %{total}",
-          "sending": "Sending %{count} items",
-          "sent": "Sent %{count} items"
+          "sending": {
+            "one": "Sending %{count} item",
+            "other": "Sending %{count} items"
+          },
+          "sent": {
+            "one": "Sent %{count} item",
+            "other": "Sent %{count} items"
+          }
         },
         "unmatchedCount": {
           "one": "1 item could not be matched",
