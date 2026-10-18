@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { createRouter, createWebHashHistory } from "vue-router";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import type { Component } from "@/services/fyApi";
+import { HardpointCategoryEnum, type Component } from "@/services/fyApi";
+import DuotoneGlyph from "@/shared/components/DuotoneGlyph/index.vue";
+import { HARDPOINT_GLYPHS } from "@/frontend/components/Models/Hardpoints/CategoryIcon/glyphs";
 import ComponentStatsCard from "./index.vue";
 
 const router = () =>
@@ -45,5 +47,13 @@ describe("ComponentStatsCard", () => {
     const wrapper = await mount(false);
 
     expect(wrapper.text()).not.toContain("Orbit Spool Up");
+  });
+
+  it("draws its category's icon rather than the generic component one", async () => {
+    const wrapper = await mount(true);
+
+    expect(wrapper.findComponent(DuotoneGlyph).props("glyph")).toBe(
+      HARDPOINT_GLYPHS[HardpointCategoryEnum.QUANTUMDRIVE],
+    );
   });
 });
