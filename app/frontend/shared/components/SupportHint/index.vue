@@ -5,6 +5,11 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import Alert from "@/shared/components/base/Alert/index.vue";
+import {
+  AlertSizesEnum,
+  AlertVariantsEnum,
+} from "@/shared/components/base/Alert/types";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import MessageBody from "@/shared/components/AppNotifications/Message/Body/index.vue";
@@ -64,14 +69,25 @@ const dismissInline = (event: MouseEvent) => {
 </script>
 
 <template>
-  <div v-if="inline" class="support-hint support-hint--inline">
-    <div class="support-hint__heading">
-      <i class="fa-light fa-heart support-hint__icon" />
-      <h5>{{ t(headlineKey) }}</h5>
-    </div>
-    <p class="support-hint__body" v-html="t(bodyKey, meta)" />
-    <div class="support-hint__actions">
-      <Btn data-test="support-hint-cta" @click="openSupportModal">
+  <!-- A notice among the content it follows, so it is one: asking, not
+       warning, hence neutral. -->
+  <Alert
+    v-if="inline"
+    class="support-hint support-hint--inline"
+    :variant="AlertVariantsEnum.NEUTRAL"
+    :size="AlertSizesEnum.COMPACT"
+    icon="fa-duotone fa-heart"
+    :title="t(headlineKey)"
+  >
+    <span class="support-hint__body" v-html="t(bodyKey, meta)" />
+    <!-- Under the text rather than in the alert's actions: beside a body this
+         long they squeezed it into a narrow column. -->
+    <span class="support-hint__actions">
+      <Btn
+        :variant="BtnVariantsEnum.GHOST"
+        data-test="support-hint-cta"
+        @click="openSupportModal"
+      >
         {{ t("actions.supportHint.cta") }}
       </Btn>
       <Btn
@@ -81,8 +97,8 @@ const dismissInline = (event: MouseEvent) => {
       >
         {{ t("actions.supportHint.later") }}
       </Btn>
-    </div>
-  </div>
+    </span>
+  </Alert>
   <MessageBody v-else>
     <div class="support-hint support-hint--notification">
       <div class="support-hint__heading">
