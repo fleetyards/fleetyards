@@ -438,12 +438,14 @@ class Component < ApplicationRecord
   # to most people asking for one, an ore pod is a mining bag.
   SEARCH_ALIASES = {"mining_pod" => "mining bag"}.freeze
 
+  # One CASE per alias, so a key several fragments match carries all of them.
+  # `strpos` rather than LIKE: the fragments are full of underscores.
   ransacker :search_name do
     aliases = SEARCH_ALIASES.map { |fragment, words|
-      "WHEN components.sc_key LIKE #{connection.quote("%#{fragment}%")} THEN #{connection.quote(words)}"
+      "CASE WHEN strpos(components.sc_key, #{connection.quote(fragment)}) > 0 THEN #{connection.quote(words)} END"
     }
 
-    Arel.sql("concat_ws(' ', #{fact_sql(:name)}, CASE #{aliases.join(" ")} END)")
+    Arel.sql("concat_ws(' ', #{[fact_sql(:name), *aliases].join(", ")})")
   end
 
   def self.ransackable_attributes(auth_object = nil)
