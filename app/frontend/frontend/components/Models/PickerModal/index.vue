@@ -118,6 +118,10 @@ const { prefersReducedMotion } = useReducedMotion();
 
 const mobile = useMobile();
 
+// Per instance: the Teleport finds its target with a document-wide lookup, and
+// a closing picker can still be in the DOM while the next one mounts.
+const foldedFiltersId = `model-picker-folded-${useId()}`;
+
 // The cargo grid and trade route pickers pin flight-ready ships. Offering the
 // filter there would let it override the pin and widen the list instead.
 const productionStatusOffered = computed(
@@ -466,7 +470,7 @@ const save = () => {
             One set of fields that moves into the folded panel on a phone,
             rather than a copy per layout that could drift apart.
           -->
-          <Teleport to="#model-picker-folded-filters" :disabled="!mobile" defer>
+          <Teleport :to="`#${foldedFiltersId}`" :disabled="!mobile" defer>
             <ManufacturerSelect
               v-model="manufacturerIn"
               class="model-picker__filter"
@@ -519,10 +523,7 @@ const save = () => {
           :duration="prefersReducedMotion ? 1 : 200"
         >
           <div class="model-picker__toolbar model-picker__toolbar--more">
-            <div
-              id="model-picker-folded-filters"
-              class="model-picker__folded"
-            />
+            <div :id="foldedFiltersId" class="model-picker__folded" />
 
             <FocusSelect
               v-model="focusIn"
