@@ -397,6 +397,11 @@
         "profile": "個人資料設定",
         "hangar": "機庫設定",
         "privacy": "隱私設定",
+        "privacySections": {
+          "analytics": "使用情況分析",
+          "onlineStatus": "線上狀態",
+          "supporters": "支持者頁面"
+        },
         "features": "功能標誌",
         "connections": "連線",
         "oauthApplications": "OAuth 應用程式",

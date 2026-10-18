@@ -399,6 +399,11 @@
         "profile": "Profile Settings",
         "hangar": "Hangar Settings",
         "privacy": "Privacy Settings",
+        "privacySections": {
+          "analytics": "Usage analytics",
+          "onlineStatus": "Online status",
+          "supporters": "Supporters page"
+        },
         "features": "Feature Flags",
         "connections": "Connections",
         "oauthApplications": "OAuth Applications",

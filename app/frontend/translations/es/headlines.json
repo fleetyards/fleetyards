@@ -397,6 +397,11 @@
         "profile": "Configuración del perfil",
         "hangar": "Configuración del hangar",
         "privacy": "Configuración de privacidad",
+        "privacySections": {
+          "analytics": "Análisis de uso",
+          "onlineStatus": "Estado en línea",
+          "supporters": "Página de colaboradores"
+        },
         "features": "Indicadores de características",
         "connections": "Conexiones",
         "oauthApplications": "Aplicaciones OAuth",
