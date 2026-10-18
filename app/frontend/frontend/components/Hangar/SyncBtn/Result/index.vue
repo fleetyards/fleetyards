@@ -161,7 +161,11 @@ const steps = computed<SyncStep[]>(() =>
     key: step.name,
     label: t(`labels.syncExtension.processSteps.${step.name}`),
     detail: stepDetail(step),
-    status: STEP_STATUS[step.status],
+    // A cancelled run stops a step without it failing.
+    status:
+      props.cancelled && step.status === "failure"
+        ? "pending"
+        : STEP_STATUS[step.status],
     progress: step.status === "processing" ? "indeterminate" : undefined,
   })),
 );
@@ -406,7 +410,12 @@ const hasWarnings = computed(
     </template>
 
     <template v-else>
-      <div v-if="finishedWithErrors" data-test="sync-result-status">
+      <!-- A save the server failed is retryable rather than finished with
+           errors, and needs its notice all the more. -->
+      <div
+        v-if="finishedWithErrors || failedStep"
+        data-test="sync-result-status"
+      >
         <Alert
           v-if="cancelled"
           :variant="AlertVariantsEnum.NEUTRAL"

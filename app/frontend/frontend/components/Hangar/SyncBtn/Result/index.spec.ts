@@ -331,7 +331,6 @@ describe("HangarSyncResult", () => {
       { name: "fetchHangar", status: "success" },
       { name: "submitData", status: "backendFailure" },
     ]);
-    await wrapper.setProps({ finishedWithErrors: true });
 
     const status = wrapper.get("[data-test='sync-result-status']");
     expect(status.find(".base-alert--danger").exists()).toBe(true);
