@@ -204,7 +204,12 @@ const activateMutation = useActivateVehicleLoadout({
   mutation: { onSettled: invalidateLoadouts },
 });
 
+// One switch-on at a time, so the loadout left active is the last one clicked.
+const activating = activateMutation.isPending;
+
 const onActivate = async (record: VehicleLoadout) => {
+  if (activating.value) return;
+
   await activateMutation.mutateAsync({
     vehicleId: props.vehicle.id,
     id: record.id,
@@ -307,7 +312,8 @@ const onToggleVisibility = async (record: VehicleLoadout) => {
         </div>
       </template>
 
-      <template #actions="{ item }">
+      <!-- In the phone's menu the buttons name themselves. -->
+      <template #actions="{ item, mobile }">
         <!-- The same buttons on every row, so the badges line up: a linked
              build is viewed on its own site. -->
         <Btn
@@ -318,6 +324,9 @@ const onToggleVisibility = async (record: VehicleLoadout) => {
           @click="viewFitting(item)"
         >
           <i class="fa-duotone fa-up-right-and-down-left-from-center" />
+          <span v-if="mobile">{{
+            t("actions.vehicleLoadout.viewLoadout")
+          }}</span>
         </Btn>
         <Btn
           v-else
@@ -327,6 +336,9 @@ const onToggleVisibility = async (record: VehicleLoadout) => {
           :data-test="`loadout-view-link-${item.id}`"
         >
           <i class="fa-duotone fa-up-right-and-down-left-from-center" />
+          <span v-if="mobile">{{
+            t("actions.vehicleLoadout.viewLoadout")
+          }}</span>
         </Btn>
         <Btn
           v-tooltip="
@@ -339,12 +351,19 @@ const onToggleVisibility = async (record: VehicleLoadout) => {
               ? t('labels.loadout.active')
               : t('labels.loadout.activate')
           "
-          :disabled="item.active"
+          :disabled="item.active || activating"
           :class="{ 'loadouts-page__activate--active': item.active }"
           :data-test="`loadout-activate-${item.id}`"
           @click="onActivate(item)"
         >
           <i class="fa-duotone fa-circle-check" />
+          <span v-if="mobile">
+            {{
+              item.active
+                ? t("labels.loadout.active")
+                : t("labels.loadout.activate")
+            }}
+          </span>
         </Btn>
         <Btn
           v-if="!fittingEditable"
@@ -368,6 +387,13 @@ const onToggleVisibility = async (record: VehicleLoadout) => {
               item.public ? 'fa-duotone fa-eye' : 'fa-duotone fa-eye-slash'
             "
           />
+          <span v-if="mobile">
+            {{
+              item.public
+                ? t("actions.vehicleLoadout.makePrivate")
+                : t("actions.vehicleLoadout.makePublic")
+            }}
+          </span>
         </Btn>
         <Btn
           v-if="fittingEditable"
@@ -377,6 +403,9 @@ const onToggleVisibility = async (record: VehicleLoadout) => {
           @click="editLoadout(item)"
         >
           <i class="fa-duotone fa-pencil" />
+          <span v-if="mobile">{{
+            t("actions.vehicleLoadout.editLoadout")
+          }}</span>
         </Btn>
       </template>
 
