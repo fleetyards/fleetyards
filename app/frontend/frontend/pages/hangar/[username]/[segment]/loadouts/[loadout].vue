@@ -135,6 +135,7 @@ const {
   hardpoints,
   changed,
   changesFromStock,
+  fittedModules,
   loading: fittingLoading,
 } = useLoadoutFitting({
   model,
@@ -150,6 +151,13 @@ const fittingPending = computed(
     fittingLoading.value ||
     (isOwner.value ? ownSlotsLoading.value : publicSlotsLoading.value),
 );
+
+// The hull's holds and those of the modules the loadout fits, as the ship
+// page adds up its equipped modules'.
+const cargoHolds = computed(() => [
+  ...(model.value?.cargoHolds ?? []),
+  ...fittedModules.value.flatMap((mod) => mod.cargoHolds ?? []),
+]);
 
 const vehicleName = computed(
   () => vehicle.value?.name || vehicle.value?.model.name || "",
@@ -266,6 +274,7 @@ const edit = () => {
               :model="model"
               :fitting="hardpoints"
               :changed="changed"
+              :cargo-holds="cargoHolds"
             />
 
             <Empty

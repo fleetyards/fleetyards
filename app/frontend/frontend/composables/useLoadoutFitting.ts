@@ -175,6 +175,7 @@ export const useLoadoutFitting = ({
   return {
     fitting,
     loading,
+    fittedModules,
     hullSlots,
     modelHardpoints,
     modelModules,
