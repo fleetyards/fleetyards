@@ -68,31 +68,46 @@ const subTypeLabel = computed(() => {
   <HardpointItem :count="count">
     <template #default>
       <HardpointSize :size="hardpoint.maxSize" />
-      <HardpointComponent>
-        <template v-if="hardpoint.source === HardpointSourceEnum.GAME_FILES">
-          <template v-if="hardpoint.component">
-            {{ subTypeLabel }}
+      <div class="hardpoint-item__main">
+        <HardpointComponent>
+          <template v-if="hardpoint.source === HardpointSourceEnum.GAME_FILES">
+            <template v-if="hardpoint.component">
+              {{ subTypeLabel }}
+            </template>
+            <template v-else>
+              <span>TBD</span>
+            </template>
           </template>
           <template v-else>
-            <span>TBD</span>
+            {{ hardpoint.name }}
+            <span v-if="hardpoint.details">
+              {{ hardpoint.details }}
+            </span>
           </template>
-        </template>
-        <template v-else>
-          {{ hardpoint.name }}
-          <span v-if="hardpoint.details">
-            {{ hardpoint.details }}
-          </span>
-        </template>
-      </HardpointComponent>
-      <HardpointManufacturer
-        :manufacturer="hardpoint.component?.manufacturer"
-      />
+        </HardpointComponent>
+        <HardpointManufacturer
+          :manufacturer="hardpoint.component?.manufacturer"
+        />
+      </div>
+      <!-- A stack pushes with every thruster in it, as erkul sums them. -->
       <HardpointHeadline
         v-if="typeData?.thrustCapacity"
-        :value="toNumber(typeData.thrustCapacity, 'thrust')"
+        :value="toNumber(typeData.thrustCapacity * count, 'thrust')"
         :unit="t('labels.hardpoint.thrusters.thrust')"
       />
       <HardpointStats :stats="rowStats" />
     </template>
   </HardpointItem>
 </template>
+
+<style lang="scss" scoped>
+// The name with the maker under it, as on every other hardpoint row.
+.hardpoint-item__main {
+  flex: 1 1 120px;
+  min-width: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+</style>
