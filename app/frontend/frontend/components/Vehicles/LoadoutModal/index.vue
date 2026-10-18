@@ -45,6 +45,8 @@ import {
   EMPTIED,
   loadoutValues,
   slotName,
+  stockModuleValues,
+  stockModules,
   useComponentFitting,
 } from "@/frontend/composables/useComponentFitting";
 import { useMobile } from "@/shared/composables/useMobile";
@@ -402,20 +404,14 @@ const figures = computed(() =>
 
 // The ship as the game files deliver it: the modules it comes with, and the
 // stock part in every other slot.
-const stockModules = computed(() => modules.value.filter((mod) => mod.stock));
-
 const measuredStock = computed(() =>
   loadoutDiff.measure({
     hullCargo: hullCargo.value,
-    modules: stockModules.value,
+    modules: stockModules(modules.value),
     hardpoints: modelHardpoints.value ?? [],
     tree: fitting.resolve(
       hullSlots.value ?? [],
-      Object.fromEntries(
-        stockModules.value.flatMap((mod) =>
-          mod.slot ? [[mod.slot, mod.id]] : [],
-        ),
-      ),
+      stockModuleValues(modules.value),
     ),
     weaponPoolSize: model.value?.metrics.weaponPoolSize,
   }),

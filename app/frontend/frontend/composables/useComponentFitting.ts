@@ -65,6 +65,18 @@ export const EMPTIED = "";
 
 type ItemValue = Pick<VehicleLoadoutItem, "slotPath" | "itemType" | "itemId">;
 
+// The ship as the game files deliver it: the modules it comes with, by the slot
+// each sits in. Every other slot keeps its stock part by default.
+export const stockModules = (modules: ModelModule[]) =>
+  modules.filter((mod) => mod.stock);
+
+export const stockModuleValues = (modules: ModelModule[]) =>
+  Object.fromEntries(
+    stockModules(modules).flatMap((mod) =>
+      mod.slot ? [[mod.slot, mod.id]] : [],
+    ),
+  );
+
 // A saved loadout's items as a fitting holds them, by slot path: the modules,
 // and the parts in component slots, an emptied one holding EMPTIED.
 export const loadoutValues = (items: ItemValue[] = []) => {

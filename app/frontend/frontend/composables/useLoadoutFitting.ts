@@ -3,6 +3,8 @@ import {
   COMPONENT_TABS,
   type FittedSlot,
   loadoutValues,
+  stockModuleValues,
+  stockModules as stockModulesOf,
   useComponentFitting,
 } from "@/frontend/composables/useComponentFitting";
 import { useLoadoutDiff } from "@/frontend/composables/useLoadoutDiff";
@@ -95,18 +97,12 @@ export const useLoadoutFitting = ({
 
   // The ship as the game files deliver it: the modules it comes with in their
   // slots, and the stock part in every other one.
-  const stockModules = computed(() =>
-    modelModules.value.filter((mod) => mod.stock),
-  );
+  const stockModules = computed(() => stockModulesOf(modelModules.value));
 
   const stockTree = computed(() =>
     fitting.resolve(
       hullSlots.value ?? [],
-      Object.fromEntries(
-        stockModules.value.flatMap((mod) =>
-          mod.slot ? [[mod.slot, mod.id]] : [],
-        ),
-      ),
+      stockModuleValues(modelModules.value),
     ),
   );
 
