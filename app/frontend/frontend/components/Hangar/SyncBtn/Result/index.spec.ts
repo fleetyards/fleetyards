@@ -93,9 +93,104 @@ describe("HangarSyncResult", () => {
         ]),
     );
 
-    expect(wrapper.text()).toContain("Pledge items: 5");
+    // The total sums the rows, so the two never disagree.
+    expect(wrapper.text()).toContain("Pledge items: 4");
     expect(rows["Paints"]).toBe("1");
     expect(rows["Hangar flair"]).toBe("2");
+  });
+
+  describe("against the last sync", () => {
+    const lastRead = {
+      finishedAt: "2026-10-11T18:00:00Z",
+      pages: 2,
+      total: 4,
+      counts: {
+        ship: 2,
+        component: 0,
+        upgrade: 0,
+        skin: 1,
+        flair: 0,
+        equipment: 1,
+        ccu: 0,
+        extra: 0,
+      },
+    };
+
+    const pledges = [
+      { id: "1", name: "Cutter", type: RsiHangarItemKindEnum.SHIP },
+      { id: "2", name: "Space Globe", type: RsiHangarItemKindEnum.FLAIR },
+    ];
+
+    const mountAgainstLast = (status: "processing" | "success") =>
+      mountWithDefaults(HangarSyncResult, {
+        props: {
+          processSteps: [{ name: "fetchHangar", status }],
+          currentPage: 2,
+          lastRead,
+          pledges,
+          finished: false,
+          finishedWithErrors: false,
+        },
+      });
+
+    it("lists every kind the last sync read from the start, with its figure", async () => {
+      const wrapper = await mountAgainstLast("processing");
+
+      expect(
+        wrapper.get("[data-test='sync-count-ships-aside']").text(),
+      ).toContain("of 2");
+      // Not read yet this run, but the last sync had one.
+      expect(
+        wrapper
+          .get("[data-test='sync-count-equipment'] dd")
+          .attributes("data-count"),
+      ).toBe("0");
+      expect(
+        wrapper.get("[data-test='sync-step-fetchHangar-caption']").text(),
+      ).toBe("2 of about 4 items");
+    });
+
+    it("says how far a run that read everything ended from the last sync", async () => {
+      const wrapper = await mountAgainstLast("success");
+
+      expect(
+        wrapper.get("[data-test='sync-count-ships-aside']").text(),
+      ).toContain("\u22121");
+      expect(
+        wrapper.get("[data-test='sync-count-hangarFlair-aside']").text(),
+      ).toContain("+1");
+      expect(
+        wrapper.get("[data-test='sync-step-fetchHangar-caption']").text(),
+      ).toBe("2 fewer than the last sync");
+
+      // Each kind measures itself against the last sync on its own bar.
+      const ships = wrapper.get(
+        "[data-test='sync-count-ships'] [role='progressbar']",
+      );
+      expect(ships.attributes("aria-valuenow")).toBe("1");
+      expect(ships.find(".sync-progress-bar__gap").exists()).toBe(true);
+    });
+
+    it("measures nothing for a run that stopped reading", async () => {
+      const wrapper = await mountWithDefaults(HangarSyncResult, {
+        props: {
+          processSteps: [{ name: "fetchHangar", status: "failure" }],
+          currentPage: 2,
+          lastRead,
+          pledges,
+          finished: false,
+          finishedWithErrors: true,
+        },
+      });
+
+      expect(wrapper.find("[role='progressbar']").exists()).toBe(false);
+      expect(
+        wrapper.find("[data-test='sync-count-ships-aside']").exists(),
+      ).toBe(false);
+      expect(
+        wrapper.find("[data-test='sync-step-fetchHangar-caption']").exists(),
+      ).toBe(false);
+    });
   });
 
   it("marks paints and hangar flair the sync leaves out as not synced", async () => {
@@ -290,12 +385,12 @@ describe("HangarSyncResult", () => {
           .exists(),
       ).toBe(true);
       // A kind counts all of it, found and added; the new ones are a note.
-      const ships = wrapper.get("[data-test='sync-result-tile-ships']");
+      const ships = wrapper.get("[data-test='sync-count-ships']");
       expect(ships.get("dd").attributes("data-count")).toBe("3");
       expect(ships.get("dt").text()).toContain("+2 new");
-      // Nothing to show is not a tile reading zero.
+      // Nothing to show is not a row reading zero.
       expect(
-        wrapper.find("[data-test='sync-result-tile-deletedVehicles']").exists(),
+        wrapper.find("[data-test='sync-count-deletedVehicles']").exists(),
       ).toBe(false);
     });
 

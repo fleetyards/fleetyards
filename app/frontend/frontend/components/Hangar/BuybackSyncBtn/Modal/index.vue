@@ -16,8 +16,8 @@ import type {
   SyncStep,
   SyncStepStatus,
 } from "@/frontend/components/Hangar/SyncSteps/types";
-import SyncResultTiles from "@/frontend/components/Hangar/SyncResultTiles/index.vue";
-import type { SyncResultTile } from "@/frontend/components/Hangar/SyncResultTiles/types";
+import SyncCountList from "@/frontend/components/Hangar/SyncCountList/index.vue";
+import type { SyncCount } from "@/frontend/components/Hangar/SyncCountList/types";
 import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import SyncSessionStatus from "@/frontend/components/Hangar/SyncSessionStatus/index.vue";
@@ -199,7 +199,7 @@ const steps = computed<SyncStep[]>(() => {
   return list;
 });
 
-const resultTiles = computed<SyncResultTile[]>(() => [
+const resultCounts = computed<SyncCount[]>(() => [
   {
     key: "found",
     label: t("labels.buybackSync.found"),
@@ -447,7 +447,7 @@ const cancelRun = () => {
         >
           {{ t("texts.buybackSync.finished") }}
         </Alert>
-        <SyncResultTiles :tiles="resultTiles" />
+        <SyncCountList :counts="resultCounts" />
         <transition name="fade">
           <SupportHint
             v-if="showSupportHint"

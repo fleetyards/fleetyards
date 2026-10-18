@@ -3025,6 +3025,14 @@
           "active": "进行中",
           "done": "已完成",
           "failed": "失败"
+        },
+        "lastSync": {
+          "of": "/ %{count}",
+          "ofLong": "上次同步为 %{count}",
+          "more": "比上次同步多 %{count}",
+          "fewer": "比上次同步少 %{count}",
+          "same": "与上次同步相同",
+          "reading": "%{count} / 约 %{total} 项"
         }
       },
       "cargoGridViewer": {

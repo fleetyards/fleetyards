@@ -24,6 +24,8 @@ import type { HangarSyncData } from "@/services/fyCable/channels/HangarSyncChann
 import {
   RsiPageKindEnum,
   syncRsiHangar,
+  syncRsiHangarLastRead,
+  type HangarSyncLastRead,
   type HangarSyncResult,
   type HangarSyncStatus,
   type RsiHangarItemInput,
@@ -57,6 +59,10 @@ const currentPage = ref(1);
 const totalPages = ref<number>();
 
 const pledges = ref<RsiHangarItemInput[]>([]);
+
+// What the last finished sync read, taken when a run starts: fetched any later,
+// it could already be this run's own.
+const lastRead = ref<HangarSyncLastRead>();
 
 const result = ref<HangarSyncResult | undefined>();
 
@@ -145,6 +151,7 @@ const clear = () => {
   processSteps.value = initialSteps();
   currentPage.value = 1;
   totalPages.value = undefined;
+  lastRead.value = undefined;
   pledges.value = [];
   result.value = undefined;
   submitted.value = false;
@@ -333,6 +340,16 @@ export const useHangarSync = () => {
     extensionVersion = version;
     started.value = true;
 
+    const id = runId;
+
+    // Only a measure to read the run against; without it the run reads all the
+    // same.
+    syncRsiHangarLastRead()
+      .then((read) => {
+        if (id === runId && read.total > 0) lastRead.value = read;
+      })
+      .catch(() => undefined);
+
     void fetchPage(runId);
 
     displayInfo({ text: t("messages.syncExtension.started") });
@@ -423,6 +440,7 @@ export const useHangarSync = () => {
     processSteps,
     currentPage,
     totalPages,
+    lastRead,
     pledges,
     result,
     finished,

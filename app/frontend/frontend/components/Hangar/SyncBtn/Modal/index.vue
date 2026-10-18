@@ -56,6 +56,7 @@ const {
   processSteps,
   currentPage,
   totalPages,
+  lastRead,
   pledges,
   result,
   finished,
@@ -438,6 +439,7 @@ const refreshPage = async () => {
           :process-steps="processSteps"
           :current-page="currentPage"
           :total-pages="totalPages"
+          :last-read="lastRead"
           :pledges="pledges"
           :result="result"
           :finished="finished"

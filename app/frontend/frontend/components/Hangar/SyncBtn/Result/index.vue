@@ -15,10 +15,15 @@ import type {
   SyncStep,
   SyncStepStatus,
 } from "@/frontend/components/Hangar/SyncSteps/types";
-import SyncResultTiles from "@/frontend/components/Hangar/SyncResultTiles/index.vue";
-import type { SyncResultTile } from "@/frontend/components/Hangar/SyncResultTiles/types";
+import SyncCountList from "@/frontend/components/Hangar/SyncCountList/index.vue";
+import type { SyncCount } from "@/frontend/components/Hangar/SyncCountList/types";
 import { useI18n } from "@/shared/composables/useI18n";
-import type { RsiHangarItemInput, HangarSyncResult } from "@/services/fyApi";
+import type {
+  HangarSyncLastRead,
+  HangarSyncLastReadCounts,
+  RsiHangarItemInput,
+  HangarSyncResult,
+} from "@/services/fyApi";
 import type { SyncProcessStep, SyncProcessStepStatus } from "./types";
 import { syncOutcomeMessage } from "./status";
 
@@ -26,6 +31,7 @@ type Props = {
   processSteps: SyncProcessStep[];
   currentPage: number;
   totalPages?: number;
+  lastRead?: HangarSyncLastRead;
   pledges: RsiHangarItemInput[];
   result?: HangarSyncResult;
   finished: boolean;
@@ -41,6 +47,7 @@ type Props = {
 const props = withDefaults(defineProps<Props>(), {
   result: undefined,
   totalPages: undefined,
+  lastRead: undefined,
   cancelled: false,
   showSupportHint: false,
   syncPaints: true,
@@ -55,21 +62,6 @@ defineEmits<{
 
 const { t } = useI18n();
 
-const ITEM_TYPES = [
-  "ship",
-  "component",
-  "upgrade",
-  "skin",
-  "flair",
-  "equipment",
-  "ccu",
-  "extra",
-];
-
-const items = computed(() =>
-  props.pledges.filter((pledge) => ITEM_TYPES.includes(pledge.type)),
-);
-
 const countOf = (type: string) =>
   props.pledges.filter((pledge) => pledge.type === type).length;
 
@@ -82,54 +74,112 @@ const rowsOf = (type: string) =>
       .map((pledge) => `${pledge.id}:${pledge.name.trim()}`),
   ).size;
 
+const readStatus = computed(
+  () => props.processSteps.find((step) => step.name === "fetchHangar")?.status,
+);
+
+const readingDone = computed(() => readStatus.value === "success");
+
+// A run that stopped reading has nothing to measure against the last sync.
+const measuring = computed(
+  () =>
+    !!props.lastRead &&
+    (readStatus.value === "processing" || readStatus.value === "success"),
+);
+
+// The last sync's figure for a kind, for its row to fill toward while the run
+// reads and to measure against once it has read everything.
+const comparedToLast = (
+  type: keyof HangarSyncLastReadCounts,
+): Pick<SyncCount, "reference" | "final"> => {
+  if (!measuring.value || !props.lastRead) return {};
+
+  return { reference: props.lastRead.counts[type], final: readingDone.value };
+};
+
 // A kind the run leaves out is still counted, so the two steps agree, but
 // marked as not synced.
 const kind = (
   key: string,
+  type: keyof HangarSyncLastReadCounts,
   count: number,
   synced = true,
   dataTest?: string,
-): SyncResultTile => ({
+): SyncCount => ({
   key,
   value: count,
-  // The kinds' names are the result tiles', so the two read as one list.
+  // The kinds' names are the result's, so the two read as one list.
   label: synced
     ? t(`labels.syncExtension.resultKinds.${key}`)
     : t(`labels.syncExtension.pledgeItems.${key}NotSynced`),
   skipped: !synced,
   labelTest: synced ? undefined : dataTest,
+  ...comparedToLast(type),
 });
 
-// A kind shows once something of it is read.
-const allReadCounts = computed<SyncResultTile[]>(() => [
-  kind("ships", countOf("ship")),
-  kind("components", countOf("component")),
-  kind("upgrades", countOf("upgrade")),
-  kind("paints", rowsOf("skin"), props.syncPaints, "paints-not-synced"),
+const allReadCounts = computed<SyncCount[]>(() => [
+  kind("ships", "ship", countOf("ship")),
+  kind("components", "component", countOf("component")),
+  kind("upgrades", "upgrade", countOf("upgrade")),
+  kind("paints", "skin", rowsOf("skin"), props.syncPaints, "paints-not-synced"),
   kind(
     "hangarFlair",
+    "flair",
     rowsOf("flair"),
     props.syncHangarFlair,
     "hangar-flair-not-synced",
   ),
   kind(
     "equipment",
+    "equipment",
     rowsOf("equipment"),
     props.syncEquipment,
     "equipment-not-synced",
   ),
-  kind("ccus", rowsOf("ccu"), props.syncCcus, "ccus-not-synced"),
+  kind("ccus", "ccu", rowsOf("ccu"), props.syncCcus, "ccus-not-synced"),
   // Sorted into flair or equipment only once the server stores them.
   {
-    key: "extras",
-    value: rowsOf("extra"),
+    ...kind("extras", "extra", rowsOf("extra")),
     label: t("labels.syncExtension.pledgeItems.extras"),
   },
 ]);
 
+// A kind shows once something of it is read. With a last sync to go by, every
+// kind it had is listed from the start, so the list holds still while the run
+// reads, and a kind gone since still shows what it lost.
 const readCounts = computed(() =>
-  allReadCounts.value.filter((tile) => Number(tile.value) > 0),
+  allReadCounts.value.filter(
+    (count) => Number(count.value) > 0 || (count.reference ?? 0) > 0,
+  ),
 );
+
+// Counted as the kinds are, so the total and the list agree.
+const readTotal = computed(() =>
+  allReadCounts.value.reduce((sum, count) => sum + Number(count.value), 0),
+);
+
+const lastReadCaption = () => {
+  if (!props.lastRead) return undefined;
+
+  const difference = readTotal.value - props.lastRead.total;
+
+  if (!readingDone.value && difference <= 0) {
+    return t("labels.syncExtension.lastSync.reading", {
+      count: readTotal.value,
+      total: props.lastRead.total,
+    });
+  }
+
+  if (difference > 0) {
+    return t("labels.syncExtension.lastSync.more", { count: difference });
+  }
+
+  if (difference < 0) {
+    return t("labels.syncExtension.lastSync.fewer", { count: -difference });
+  }
+
+  return t("labels.syncExtension.lastSync.same");
+};
 
 const STEP_STATUS: Record<SyncProcessStepStatus, SyncStepStatus> = {
   pending: "pending",
@@ -143,7 +193,7 @@ const stepDetail = (step: SyncProcessStep) => {
   if (step.name === "fetchHangar") {
     if (step.status === "pending") return undefined;
 
-    // While reading, the tiles under the step carry the counts.
+    // While reading, the list under the step carries the counts.
     if (step.status === "processing") {
       return props.totalPages
         ? t("labels.syncExtension.stepDetails.pageOf", {
@@ -157,7 +207,7 @@ const stepDetail = (step: SyncProcessStep) => {
 
     return t("labels.syncExtension.stepDetails.read", {
       pages: pagesRead.value,
-      count: items.value.length,
+      count: readTotal.value,
     });
   }
 
@@ -170,6 +220,7 @@ const stepDetail = (step: SyncProcessStep) => {
 
 // Reading fills toward the last page RSI's pager names; without a pager it
 // only shows that it is working, as the save, a single request, always does.
+// Each kind's row measures itself against the last sync.
 const stepProgress = (step: SyncProcessStep): SyncStep["progress"] => {
   if (step.status !== "processing") return undefined;
   if (step.name === "fetchHangar" && props.totalPages) {
@@ -184,6 +235,10 @@ const steps = computed<SyncStep[]>(() =>
     key: step.name,
     label: t(`labels.syncExtension.processSteps.${step.name}`),
     detail: stepDetail(step),
+    caption:
+      step.name === "fetchHangar" && measuring.value
+        ? lastReadCaption()
+        : undefined,
     // A cancelled run stops a step without it failing.
     status:
       props.cancelled && step.status === "failure"
@@ -213,9 +268,9 @@ const failedStep = computed(() =>
   ),
 );
 
-// A kind's tile counts all of it, found and added alike, and notes how many
+// A kind's row counts all of it, found and added alike, and notes how many
 // are new: under "Hangar synced", "found" and "synced" said nothing more.
-const KIND_TILES = [
+const RESULT_KINDS = [
   { key: "ships", found: "foundVehicles", added: "importedVehicles" },
   { key: "components", found: "foundComponents", added: "importedComponents" },
   { key: "upgrades", found: "foundUpgrades", added: "importedUpgrades" },
@@ -226,34 +281,34 @@ const KIND_TILES = [
 ] as const;
 
 // What happened to the ships not in the RSI hangar: actions, named as such.
-const ACTION_TILES = [
+const RESULT_ACTIONS = [
   "movedVehiclesToWanted",
   "deletedVehicles",
   "groupedVehicles",
   "unchangedVehicles",
 ] as const;
 
-const resultTiles = computed<SyncResultTile[]>(() =>
+const resultCounts = computed<SyncCount[]>(() =>
   [
-    ...KIND_TILES.map((tile) => {
+    ...RESULT_KINDS.map((row) => {
       const added =
-        "added" in tile ? (props.result?.[tile.added]?.length ?? 0) : 0;
+        "added" in row ? (props.result?.[row.added]?.length ?? 0) : 0;
 
       return {
-        key: tile.key,
-        value: (props.result?.[tile.found]?.length ?? 0) + added,
-        label: t(`labels.syncExtension.resultKinds.${tile.key}`),
+        key: row.key,
+        value: (props.result?.[row.found]?.length ?? 0) + added,
+        label: t(`labels.syncExtension.resultKinds.${row.key}`),
         note: added
           ? t("labels.syncExtension.newCount", { count: added })
           : undefined,
       };
     }),
-    ...ACTION_TILES.map((key) => ({
+    ...RESULT_ACTIONS.map((key) => ({
       key,
       value: props.result?.[key]?.length ?? 0,
       label: t(`labels.syncExtension.resultActions.${key}`),
     })),
-  ].filter((tile) => tile.value > 0),
+  ].filter((row) => row.value > 0),
 );
 
 const UNMATCHED_KEYS = [
@@ -346,7 +401,7 @@ const hasWarnings = computed(
         </Alert>
       </div>
 
-      <SyncResultTiles v-if="resultTiles.length" :tiles="resultTiles" />
+      <SyncCountList v-if="resultCounts.length" :counts="resultCounts" />
 
       <section
         v-if="unmatchedGroups.length"
@@ -415,7 +470,7 @@ const hasWarnings = computed(
             {{
               t("labels.syncExtension.stepDetails.read", {
                 pages: pagesRead,
-                count: items.length,
+                count: readTotal,
               })
             }}
           </span>
@@ -426,7 +481,7 @@ const hasWarnings = computed(
           :duration="collapseDuration"
         >
           <div class="hangar-sync-result__read-counts">
-            <SyncResultTiles :tiles="readCounts" />
+            <SyncCountList :counts="readCounts" />
           </div>
         </Collapsed>
       </div>
@@ -471,7 +526,7 @@ const hasWarnings = computed(
 
       <SyncSteps :steps="steps">
         <template #step-fetchHangar>
-          <SyncResultTiles v-if="readingStarted" :tiles="readCounts" />
+          <SyncCountList v-if="readingStarted" :counts="readCounts" />
         </template>
       </SyncSteps>
     </template>

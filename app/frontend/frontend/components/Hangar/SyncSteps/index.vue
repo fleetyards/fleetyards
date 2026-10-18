@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
+import SyncProgressBar from "@/frontend/components/Hangar/SyncProgressBar/index.vue";
 import type { SyncStep } from "./types";
 
 type Props = {
@@ -15,23 +16,6 @@ type Props = {
 defineProps<Props>();
 
 const { t } = useI18n();
-
-const progressAttrs = (step: SyncStep) => {
-  if (!step.progress || step.progress === "indeterminate") return {};
-
-  return {
-    "aria-valuemin": 0,
-    "aria-valuemax": step.progress.max,
-    "aria-valuenow": step.progress.value,
-  };
-};
-
-const progressWidth = (step: SyncStep) => {
-  if (!step.progress || step.progress === "indeterminate") return undefined;
-  if (!step.progress.max) return "0%";
-
-  return `${Math.min(100, (step.progress.value / step.progress.max) * 100)}%`;
-};
 </script>
 
 <template>
@@ -63,21 +47,20 @@ const progressWidth = (step: SyncStep) => {
             {{ step.detail }}
           </span>
         </div>
-        <div
+        <SyncProgressBar
           v-if="step.progress"
-          class="sync-steps__bar"
-          :class="{
-            'sync-steps__bar--indeterminate': step.progress === 'indeterminate',
-          }"
-          role="progressbar"
-          :aria-label="step.label"
-          v-bind="progressAttrs(step)"
+          :progress="
+            step.progress === 'indeterminate' ? undefined : step.progress
+          "
+          :label="step.label"
+        />
+        <p
+          v-if="step.caption"
+          class="sync-steps__caption"
+          :data-test="`sync-step-${step.key}-caption`"
         >
-          <span
-            class="sync-steps__fill"
-            :style="{ width: progressWidth(step) }"
-          />
-        </div>
+          {{ step.caption }}
+        </p>
         <slot :name="`step-${step.key}`" />
       </div>
     </li>
@@ -179,51 +162,10 @@ const progressWidth = (step: SyncStep) => {
   border-color: var(--color-danger, #dc3545);
 }
 
-.sync-steps__bar {
-  position: relative;
-  height: 6px;
-  overflow: hidden;
-  background-color: rgb(122 130 136 / 0.2);
-  border-radius: 999px;
-}
-
-.sync-steps__fill {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  background-color: var(--color-primary, #428bca);
-  border-radius: 999px;
-  transition: width 300ms ease;
-}
-
-// Without a total there is no fraction to show, only that it is working.
-.sync-steps__bar--indeterminate .sync-steps__fill {
-  width: 28%;
-  background: linear-gradient(
-    to right,
-    transparent,
-    var(--color-primary, #428bca) 30%,
-    var(--color-primary, #428bca) 70%,
-    transparent
-  );
-  animation: sync-steps-slide 1.6s ease-in-out infinite;
-}
-
-@keyframes sync-steps-slide {
-  from {
-    left: -28%;
-  }
-
-  to {
-    left: 100%;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .sync-steps__bar--indeterminate .sync-steps__fill {
-    left: 36%;
-    animation: none;
-  }
+.sync-steps__caption {
+  margin: 0;
+  color: var(--color-text-dim, #959595);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
 }
 </style>

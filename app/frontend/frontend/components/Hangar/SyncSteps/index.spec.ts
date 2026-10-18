@@ -72,6 +72,6 @@ describe("HangarSyncSteps", () => {
     const bar = wrapper.get("[role='progressbar']");
 
     expect(bar.attributes("aria-valuenow")).toBeUndefined();
-    expect(bar.classes()).toContain("sync-steps__bar--indeterminate");
+    expect(bar.classes()).toContain("sync-progress-bar--indeterminate");
   });
 });

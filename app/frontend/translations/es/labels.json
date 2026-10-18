@@ -3025,6 +3025,14 @@
           "active": "En curso",
           "done": "Completado",
           "failed": "Error"
+        },
+        "lastSync": {
+          "of": "de %{count}",
+          "ofLong": "%{count} en la última sincronización",
+          "more": "%{count} más que en la última sincronización",
+          "fewer": "%{count} menos que en la última sincronización",
+          "same": "Los mismos que en la última sincronización",
+          "reading": "%{count} de unos %{total} elementos"
         }
       },
       "cargoGridViewer": {
