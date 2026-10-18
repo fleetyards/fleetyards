@@ -47,6 +47,7 @@
         "inventories": "My Hangar Inventories",
         "inventory": "%{inventory}",
         "vehicleCargo": "Cargaison du vaisseau",
+        "vehicleLoadout": "Loadout du vaisseau",
         "buybacks": "Pledges rachetables",
         "paints": "Peintures",
         "flair": "Décorations de hangar",

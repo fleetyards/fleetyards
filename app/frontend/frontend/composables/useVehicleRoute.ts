@@ -15,6 +15,7 @@ const LEGACY_PATHS: Record<
   "hangar-vehicle-loadouts": () => "loadouts/",
   "hangar-vehicle-cargo": () => "cargo/",
   "hangar-vehicle-cargo-item": (params) => `cargo/${params.item}/`,
+  "hangar-vehicle-loadout": (params) => `loadouts/${params.loadout}/`,
 };
 
 // Vehicle pages are their owner's alone, so every link to one is a link into
