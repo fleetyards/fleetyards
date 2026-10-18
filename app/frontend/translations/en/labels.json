@@ -3025,7 +3025,8 @@
           "deletedVehicles": "Deleted",
           "groupedVehicles": "Filed into a group",
           "unchangedVehicles": "Left unchanged"
-        }
+        },
+        "nothingChangedTitle": "Nothing changed"
       },
       "cargoGridViewer": {
         "capacity": "Capacity",

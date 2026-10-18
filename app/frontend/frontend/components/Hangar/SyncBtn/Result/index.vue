@@ -20,6 +20,7 @@ import type { SyncResultTile } from "@/frontend/components/Hangar/SyncResultTile
 import { useI18n } from "@/shared/composables/useI18n";
 import type { RsiHangarItemInput, HangarSyncResult } from "@/services/fyApi";
 import type { SyncProcessStep, SyncProcessStepStatus } from "./types";
+import { syncOutcomeMessage } from "./status";
 
 type Props = {
   processSteps: SyncProcessStep[];
@@ -300,6 +301,12 @@ const toggleGroup = (key: string, index: number) => {
 
 const incomplete = computed(() => !!props.result?.incomplete);
 
+// A run that found nothing to change, or only kinds it is set to skip, is no
+// success to report; its toast's words say what happened instead.
+const outcome = computed(() =>
+  syncOutcomeMessage(props.result?.outcome, incomplete.value),
+);
+
 const hasWarnings = computed(
   () => incomplete.value || unmatchedTotal.value > 0,
 );
@@ -309,8 +316,11 @@ const hasWarnings = computed(
   <div class="hangar-sync-result">
     <template v-if="finished">
       <div data-test="sync-result-status">
+        <Alert v-if="!outcome.synced" :variant="AlertVariantsEnum.NEUTRAL">
+          {{ t(outcome.key) }}
+        </Alert>
         <Alert
-          v-if="hasWarnings"
+          v-else-if="hasWarnings"
           :variant="AlertVariantsEnum.WARNING"
           :title="
             unmatchedTotal

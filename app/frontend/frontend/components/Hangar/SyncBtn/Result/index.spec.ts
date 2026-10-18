@@ -4,6 +4,7 @@ import HangarSyncResult from "./index.vue";
 import type { SyncProcessStep } from "./types";
 import {
   type HangarSyncResult as Result,
+  HangarSyncOutcomeEnum,
   RsiHangarItemKindEnum,
 } from "@/services/fyApi";
 
@@ -296,6 +297,17 @@ describe("HangarSyncResult", () => {
       expect(
         wrapper.find("[data-test='sync-result-tile-deletedVehicles']").exists(),
       ).toBe(false);
+    });
+
+    it("reports a run that found nothing to change as such", async () => {
+      const wrapper = await mountFinished({
+        outcome: HangarSyncOutcomeEnum.NOTHING_TO_SYNC,
+      });
+      const status = wrapper.get("[data-test='sync-result-status']");
+
+      expect(status.find(".base-alert--success").exists()).toBe(false);
+      expect(status.find(".base-alert--neutral").exists()).toBe(true);
+      expect(status.text()).toContain("nothing was changed");
     });
 
     it("lists what it could not match, the first group open", async () => {

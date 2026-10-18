@@ -208,7 +208,11 @@ const title = computed(() => {
       ? t("labels.syncExtension.settings")
       : headline.value;
   }
-  if (finished.value) return t("labels.syncExtension.finishedTitle");
+  if (finished.value) {
+    return syncedSomething.value
+      ? t("labels.syncExtension.finishedTitle")
+      : t("labels.syncExtension.nothingChangedTitle");
+  }
   if (cancelled.value) return t("labels.syncExtension.backgroundCancelled");
   if (finishedWithErrors.value || retryable.value) {
     return t("labels.syncExtension.failedTitle");

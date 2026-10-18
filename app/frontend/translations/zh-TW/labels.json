@@ -3025,7 +3025,8 @@
           "deletedVehicles": "已刪除",
           "groupedVehicles": "已歸入分組",
           "unchangedVehicles": "保持不變"
-        }
+        },
+        "nothingChangedTitle": "沒有任何變更"
       },
       "cargoGridViewer": {
         "capacity": "容量",
