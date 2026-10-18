@@ -38,6 +38,7 @@ const loadout = (overrides: Partial<VehicleLoadout> = {}): VehicleLoadout => ({
   id: "cargo",
   name: "Cargo",
   active: false,
+  public: false,
   kind: VehicleLoadoutKindEnum.FLEETYARDS,
   items: [],
   createdAt: NOW,

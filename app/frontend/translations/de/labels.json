@@ -1144,6 +1144,16 @@
         "fleetyards": "Fleetyards-Loadout",
         "namePlaceholder": "Loadout-Name...",
         "urlPlaceholder": "Loadout-URL von erkul.games oder spviewer.eu einfügen...",
+        "activateHint": "Klicken, um dies zum aktiven Loadout zu machen",
+        "activeHint": "Dies ist das aktive Loadout",
+        "kinds": {
+          "fleetyards": "Fleetyards",
+          "erkul": "Erkul",
+          "spviewer": "SPViewer",
+          "link": "Link"
+        },
+        "public": "Öffentlich",
+        "private": "Privat",
         "empty": "Noch keine Loadouts. Erstelle eines, um loszulegen.",
         "active": "Aktiv",
         "activate": "Als aktiv setzen"
@@ -1372,6 +1382,10 @@
         "fuel": "Treibstoff",
         "fuelHydrogen": "Hydrogen",
         "fuelQuantum": "Quantum",
+        "fuelFullMain": "Volllast, Haupttriebwerke",
+        "fuelFullAll": "Volllast, alle Triebwerke",
+        "durationHoursMinutes": "%{hours} h %{minutes} min",
+        "durationMinutes": "%{minutes} min",
         "hint": "Das geboostete Handling skaliert mit den Triebwerks-Pips; alles ist null, wenn das Triebwerk keine Energie hat."
       },
       "base": {
@@ -4391,11 +4405,13 @@
           }
         },
         "againstStock": "Änderungen gegenüber dem Serienschiff",
+        "fitted": "Verbaut",
         "owned": "Im Besitz",
         "noSlots": "An diesem Schiff lässt sich hier noch nichts ausrüsten",
         "unavailableModule": "Modul nicht mehr verfügbar",
         "noFigureChange": "Ändert keine Werte des Schiffs",
         "loadoutName": "Name des Loadouts",
+        "linkBuild": "Link zu einem anderswo geplanten Build",
         "stock": "Serienmäßig",
         "notFlightReady": "Loadouts gibt es nur für flugbereite Schiffe",
         "slots": {

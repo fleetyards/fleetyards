@@ -47,6 +47,7 @@
         "inventories": "My Hangar Inventories",
         "inventory": "%{inventory}",
         "vehicleCargo": "飞船货物",
+        "vehicleLoadout": "载具配置",
         "buybacks": "可回购承诺",
         "paints": "涂装",
         "flair": "机库装饰",

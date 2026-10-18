@@ -87,7 +87,8 @@ export type VehicleRouteName =
   | "hangar-vehicle-log"
   | "hangar-vehicle-loadouts"
   | "hangar-vehicle-cargo"
-  | "hangar-vehicle-cargo-item";
+  | "hangar-vehicle-cargo-item"
+  | "hangar-vehicle-loadout";
 
 export function vehicleRoute(
   name: VehicleRouteName,

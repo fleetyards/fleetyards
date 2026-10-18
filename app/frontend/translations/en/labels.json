@@ -1144,6 +1144,16 @@
         "fleetyards": "Fleetyards loadout",
         "namePlaceholder": "Loadout name...",
         "urlPlaceholder": "Paste erkul.games or spviewer.eu loadout URL...",
+        "activateHint": "Click to make this the active loadout",
+        "activeHint": "This is the active loadout",
+        "kinds": {
+          "fleetyards": "Fleetyards",
+          "erkul": "Erkul",
+          "spviewer": "SPViewer",
+          "link": "Link"
+        },
+        "public": "Public",
+        "private": "Private",
         "empty": "No loadouts yet. Create one to get started.",
         "active": "Active",
         "activate": "Set Active"
@@ -1372,6 +1382,10 @@
         "fuel": "Fuel",
         "fuelHydrogen": "Hydrogen",
         "fuelQuantum": "Quantum",
+        "fuelFullMain": "Full thrust, main",
+        "fuelFullAll": "Full thrust, all thrusters",
+        "durationHoursMinutes": "%{hours} h %{minutes} min",
+        "durationMinutes": "%{minutes} min",
         "hint": "Boosted handling scales with the engine pips; all zero when the engine is unpowered."
       },
       "base": {
@@ -4405,11 +4419,13 @@
           }
         },
         "againstStock": "Changes from the stock ship",
+        "fitted": "Fitted",
         "owned": "Owned",
         "noSlots": "Nothing on this ship can be fitted here yet",
         "unavailableModule": "Module no longer available",
         "noFigureChange": "Changes none of the ship's figures",
         "loadoutName": "Loadout name",
+        "linkBuild": "Link to a build planned elsewhere",
         "stock": "Stock",
         "notFlightReady": "Loadouts are only available for flight-ready ships",
         "slots": {

@@ -46,11 +46,28 @@ import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 type Props = {
   model: Model;
   cargoHolds?: CargoHold[];
+  // A loadout's fitting: the ship's game-files hardpoints with the loadout's
+  // modules and parts grafted in. Shown read-only in place of the hull as built.
+  fitting?: Hardpoint[];
+  // The ids of the fitting's hardpoints that differ from the stock ship.
+  changed?: Set<string>;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   cargoHolds: () => [],
+  fitting: undefined,
+  changed: undefined,
 });
+
+provide(
+  "hardpointsChanged",
+  computed(() => props.changed),
+);
+
+provide(
+  "hardpointsReadOnly",
+  computed(() => !!props.fitting),
+);
 
 provide(
   "modelSlug",
@@ -80,20 +97,28 @@ const spviewerUrl = computed(() => {
   return `https://www.spviewer.eu/performance?ship=${props.model.scIdentifier}`;
 });
 
+const shownHardpoints = computed(
+  () => props.fitting ?? (hardpoints.value as Hardpoint[] | undefined),
+);
+
 const hardpointsForGroup = (group: HardpointGroupEnum): Hardpoint[] => {
-  return (hardpoints.value?.filter((hardpoint) => hardpoint.group === group) ||
-    []) as Hardpoint[];
+  return (
+    shownHardpoints.value?.filter((hardpoint) => hardpoint.group === group) ||
+    []
+  );
 };
 
 watch(
   () => props.model,
   async () => {
-    await refetch();
+    if (!props.fitting) await refetch();
   },
 );
 
+// A loadout's fitting is grafted onto the game files' hardpoints, whatever the
+// model's flag says.
 const source = ref(
-  props.model.inGame
+  props.model.inGame || props.fitting
     ? HardpointSourceEnum.GAME_FILES
     : HardpointSourceEnum.SHIP_MATRIX,
 );
@@ -110,7 +135,7 @@ const {
   data: hardpoints,
   refetch,
 } = useModelHardpointsQuery(props.model.slug, modelHardpointsQueryParams, {
-  query: { enabled: !!props.model },
+  query: { enabled: () => !!props.model && !props.fitting },
 });
 
 // Cards that read the hardpoints query render right away and spin while it is
@@ -125,9 +150,14 @@ const equippedModules = inject<Ref<EquippedModules>>(
   ref({}),
 );
 
-const loadoutHardpoints = useEquippedHardpoints(
+const equippedHardpoints = useEquippedHardpoints(
   () => hardpoints.value as Hardpoint[] | undefined,
   equippedModules,
+);
+
+// A loadout's fitting already carries its modules' contents.
+const loadoutHardpoints = computed(
+  () => props.fitting ?? equippedHardpoints.value,
 );
 
 // Only a flight controller carries speeds, which tells it apart from the
@@ -209,9 +239,12 @@ provide(
 );
 
 // Every metrics card is derived from the game-files loadout, which only
-// flight-ready ships have — those always carry stats, so no per-card guard.
+// flight-ready ships have — those always carry stats, so no per-card guard. A
+// loadout's fitting is read from the game files whatever the model's flag.
 const showMetrics = computed(
-  () => props.model.inGame && source.value === HardpointSourceEnum.GAME_FILES,
+  () =>
+    (props.model.inGame || !!props.fitting) &&
+    source.value === HardpointSourceEnum.GAME_FILES,
 );
 
 const metricsGrid = ref<HTMLElement>();
@@ -222,7 +255,9 @@ useMetricsMasonry(metricsGrid);
 <template>
   <div id="hardpoints" class="row hardpoints">
     <div class="col-12">
-      <div class="hardpoints__controls">
+      <!-- The ship as built: planning tools and the data source. A loadout's
+           fitting is one plan, read from the game files. -->
+      <div v-if="!fitting" class="hardpoints__controls">
         <template v-if="model.inGame">
           <span class="hardpoints__links-label text-muted">
             {{ t("labels.hardpoints.prefix") }}
@@ -289,6 +324,7 @@ useMetricsMasonry(metricsGrid);
         <ModelFlightMetrics
           :model="model"
           :boost-capacitor="flightController?.boostCapacitor"
+          :hardpoints="loadoutHardpoints"
         />
         <ModelCargoMetrics :model="model" :cargo-holds="cargoHolds" />
         <ModelExternalFuelTanks :model="model" />
@@ -321,7 +357,7 @@ useMetricsMasonry(metricsGrid);
         <!-- First, so it sits at the top of the slot rather than after the
              rows a refetch keeps on screen. -->
         <Loader :loading="isLoading || isFetching" />
-        <div v-if="hardpoints?.length" class="row">
+        <div v-if="shownHardpoints?.length" class="row">
           <div class="col-12 col-md-6 col-lg-4">
             <HardpointGroup
               v-for="group in [

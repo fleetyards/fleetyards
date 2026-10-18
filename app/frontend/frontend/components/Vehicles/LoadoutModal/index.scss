@@ -224,12 +224,52 @@
   }
 }
 
-// In the footer, beside the save it names: as wide as a name needs, no wider,
-// and sharing the row with the button on a phone.
+// The loadout's name, and beside it whether it shows in the public hangar and
+// whether it is the ship's active one.
+.vehicle-loadout__identity {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin-bottom: 16px;
+}
+
 .vehicle-loadout__name {
-  flex: 1 1 160px;
-  max-width: 280px;
+  flex: 1 1 200px;
+  max-width: 360px;
   margin: 0;
+}
+
+.vehicle-loadout__switch {
+  flex: none;
+  margin: 0;
+}
+
+// A new loadout can link a build planned elsewhere instead of fitting one: the
+// address, and the sites to plan it on.
+.vehicle-loadout__link {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 8px 16px;
+  margin-bottom: 16px;
+}
+
+.vehicle-loadout__link-url {
+  flex: 1 1 260px;
+  max-width: 480px;
+  margin: 0;
+}
+
+.vehicle-loadout__planners {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+// Apart from the saves, at the footer's other end.
+.vehicle-loadout__mode {
+  margin-inline-end: auto;
 }
 
 .vehicle-loadout__refused {

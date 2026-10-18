@@ -136,6 +136,15 @@ const seat: RowPresentation = {
   sizeless: true,
 };
 
+// A loadout's module slot, shown rather than picked: the module's name, or
+// that the slot is empty.
+const moduleSlot: RowPresentation = {
+  label: (hardpoint, t) =>
+    hardpoint.component?.name || t("labels.vehicleLoadout.nothingFitted"),
+  headline: () => undefined,
+  stats: () => [],
+};
+
 const PRESENTATIONS: Partial<Record<HardpointCategoryEnum, RowPresentation>> = {
   [HardpointCategoryEnum.MAIN_THRUSTERS]: thruster,
   [HardpointCategoryEnum.MANEUVERING_THRUSTERS]: thruster,
@@ -147,6 +156,7 @@ const PRESENTATIONS: Partial<Record<HardpointCategoryEnum, RowPresentation>> = {
   [HardpointCategoryEnum.ORE_PODS]: tank,
   [HardpointCategoryEnum.SALVAGE_STORAGE]: tank,
   [HardpointCategoryEnum.SEAT]: seat,
+  [HardpointCategoryEnum.MODULE]: moduleSlot,
 };
 
 export const rowPresentation = (

@@ -280,6 +280,21 @@ export const routes: RouteRecordRaw[] = [
       feature: FeatureFlagName.SHIP_INVENTORIES,
     },
   },
+  // A loadout's page, outside the tab shell like a cargo position, and outside
+  // the owner guard: a ship its owner shows in a public hangar shows its
+  // loadouts too, read-only, and the page reads the owner's or the public
+  // endpoints by who is looking.
+  {
+    path: `:username/:segment(${VEHICLE_SEGMENT_PATTERN})/loadouts/:loadout/`,
+    name: "hangar-vehicle-loadout",
+    component: () =>
+      import("@/frontend/pages/hangar/[username]/[segment]/loadouts/[loadout].vue"),
+    meta: {
+      title: "hangar.vehicleLoadout",
+      backgroundImage: "bg-5",
+      customTitle: true,
+    },
+  },
   {
     path: `:username/:segment(${VEHICLE_SEGMENT_PATTERN})/`,
     component: () => import("@/frontend/pages/hangar/[username]/[segment].vue"),
@@ -304,6 +319,12 @@ export const routes: RouteRecordRaw[] = [
     path: ":id/cargo/:item/",
     component: legacyVehicleShell,
     beforeEnter: legacyVehicleGuard("hangar-vehicle-cargo-item"),
+    meta: { needsAuthentication: true },
+  },
+  {
+    path: ":id/loadouts/:loadout/",
+    component: legacyVehicleShell,
+    beforeEnter: legacyVehicleGuard("hangar-vehicle-loadout"),
     meta: { needsAuthentication: true },
   },
   ...vehicleRoutes

@@ -605,6 +605,11 @@
         "newLoadout": "Neues Loadout",
         "saveLoadout": "Loadout speichern",
         "saveAsNewLoadout": "Als neues Loadout speichern",
+        "openLoadoutPage": "Loadout-Seite öffnen",
+        "makePublic": "Öffentlich machen",
+        "makePrivate": "Privat machen",
+        "linkInstead": "Stattdessen einen Build verlinken",
+        "createOnFleetyards": "Loadout auf Fleetyards erstellen",
         "viewLoadout": "Loadout ansehen"
       }
     }

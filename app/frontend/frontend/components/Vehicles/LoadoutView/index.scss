@@ -1,69 +1,233 @@
+@import "@/shared/components/skeleton";
+
 .loadout-view {
   display: flex;
   flex-direction: column;
-  gap: 24px;
 
-  &__ship {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 16px;
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px 16px 16px;
+  }
+
+  &__hero {
+    position: relative;
+    display: flex;
+    flex-shrink: 0;
+    align-items: flex-end;
+    height: 160px;
+    overflow: hidden;
+    border-radius: $panelContentBorderRadius $panelContentBorderRadius 0 0;
+    background: var(--color-surface-sunken, #{$gray-black});
   }
 
   &__image {
+    position: absolute;
+    inset: 0;
     width: 100%;
-    max-height: 220px;
-    border-radius: 6px;
+    height: 100%;
     object-fit: cover;
-  }
+    opacity: 0;
+    transition: opacity 0.3s ease;
 
-  &__ship-info {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  &__model {
-    display: flex;
-    flex-direction: column;
-    margin: 0;
-    color: var(--color-text-dim);
-    font-size: 0.85rem;
-
-    strong {
-      color: var(--color-text);
-      font-size: 1.1rem;
+    &--loaded {
+      opacity: 1;
     }
   }
 
-  &__icon {
-    --hardpoint-category-icon-size: 1.3em;
-  }
-
-  &__section h3 {
+  &__band {
+    position: relative;
     display: flex;
-    align-items: center;
-    gap: 8px;
-    margin: 0 0 10px;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 16px;
+    border-top: 1px solid var(--color-edge-faint);
+    background: rgba($gray-black, 0.86);
   }
 
-  &__slots {
+  &__ship {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  &__manufacturer {
+    color: var(--color-text-dim);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  &__name {
+    margin: 0;
+    overflow: hidden;
+    color: var(--color-text);
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &__pills {
+    display: flex;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 6px;
+  }
+
+  &__title {
+    margin: 0 0 10px;
+    color: var(--color-text-dim);
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  &__changes {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin: 0;
+
+    .loadout-view__title {
+      margin: 0;
+    }
   }
 
-  &__slot {
+  // The lead figures, one tile each, split by the grid's own gap lines.
+  &__tiles {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid var(--color-edge-faint);
+    border-radius: 8px;
+    background: var(--color-edge-faint);
+  }
+
+  &__tile {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 10px 12px;
+    background: var(--color-surface-sunken, #{$gray-black});
+
     dt {
-      margin-bottom: 4px;
+      overflow: hidden;
       color: var(--color-text-dim);
-      font-size: 0.8rem;
-      font-weight: normal;
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      text-transform: uppercase;
     }
 
     dd {
       margin: 0;
     }
+  }
+
+  &__tile-value {
+    color: var(--color-gold, #{$gold});
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__tile-delta {
+    font-size: 12px;
+    font-weight: 600;
+
+    &--better {
+      color: var(--color-success, #{$success});
+    }
+
+    &--worse {
+      color: var(--color-danger, #{$danger});
+    }
+
+    &--even {
+      color: var(--color-text-dim);
+    }
+  }
+
+  // Two to a row where there is room; a lone card takes the whole row.
+  &__cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+    gap: 10px;
+  }
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px 12px;
+    border: 1px solid var(--color-edge-faint);
+    border-radius: 8px;
+    background: var(--color-surface-sunken, #{$gray-black});
+
+    &--refused {
+      border-color: var(--color-danger, #{$danger});
+    }
+  }
+
+  &__card-title {
+    margin: 0;
+    color: var(--color-text-dim);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  // What is fitted, as badges that wrap.
+  &__badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__skeleton-label {
+    width: 60%;
+    font-size: 10px;
+  }
+
+  &__skeleton-value {
+    width: 75%;
+    font-size: 1.05rem;
+  }
+
+  &__skeleton-delta {
+    width: 35%;
+    font-size: 12px;
+  }
+
+  &__skeleton-pill {
+    width: 110px;
+    border-radius: 999px;
+    font-size: 13px;
+  }
+
+  &__count {
+    margin-left: 2px;
+    opacity: 0.75;
+    font-variant-numeric: tabular-nums;
   }
 
   &__empty {
@@ -72,10 +236,68 @@
   }
 }
 
+// The picture band is the modal's header: the title row goes, and the close
+// button sits on the picture. The content's padding goes too, since the body
+// scrolls with overflow hidden and would clip a picture pulled out of it; the
+// sections under the picture pad themselves.
+.loadout-view-modal {
+  :deep(.modal-content) {
+    padding: 0;
+  }
+
+  :deep(.modal-header) {
+    z-index: 1;
+    padding: 0;
+  }
+
+  :deep(.modal-title) {
+    display: none;
+  }
+
+  :deep(.close) {
+    top: 8px;
+    right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border-radius: $border-radius-base;
+    background: rgba($gray-black, 0.8);
+  }
+}
+
 @media (min-width: $tablet-breakpoint) {
-  .loadout-view__ship {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    align-items: start;
+  .loadout-view__hero {
+    height: 190px;
+  }
+
+  .loadout-view__band,
+  .loadout-view__body {
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+
+  .loadout-view__band {
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+
+  .loadout-view__name {
+    font-size: 1.6rem;
+  }
+
+  .loadout-view__tiles {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .loadout-view__tile {
+    padding: 12px 14px;
+  }
+
+  .loadout-view__tile-value {
+    font-size: 1.25rem;
   }
 }
 

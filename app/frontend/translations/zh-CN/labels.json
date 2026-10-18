@@ -1144,6 +1144,16 @@
         "fleetyards": "Fleetyards 配装",
         "namePlaceholder": "配置名称...",
         "urlPlaceholder": "粘贴 erkul.games 或 spviewer.eu 的配置链接...",
+        "activateHint": "点击将其设为当前配置",
+        "activeHint": "这是当前配置",
+        "kinds": {
+          "fleetyards": "Fleetyards",
+          "erkul": "Erkul",
+          "spviewer": "SPViewer",
+          "link": "链接"
+        },
+        "public": "公开",
+        "private": "私密",
         "empty": "暂无配置。创建一个以开始使用。",
         "active": "使用中",
         "activate": "设为使用中"
@@ -1372,6 +1382,10 @@
         "fuel": "燃料",
         "fuelHydrogen": "氢",
         "fuelQuantum": "量子",
+        "fuelFullMain": "全推力，主推进器",
+        "fuelFullAll": "全推力，所有推进器",
+        "durationHoursMinutes": "%{hours} 小时 %{minutes} 分钟",
+        "durationMinutes": "%{minutes} 分钟",
         "hint": "加速后的操控表现随引擎能量档位变化；引擎未通电时全部为零。"
       },
       "base": {
@@ -4391,11 +4405,13 @@
           }
         },
         "againstStock": "相对原厂飞船的变化",
+        "fitted": "已装配",
         "owned": "已拥有",
         "noSlots": "这艘舰船目前还没有可在此装配的内容",
         "unavailableModule": "模块已不可用",
         "noFigureChange": "不改变舰船的任何数值",
         "loadoutName": "配装名称",
+        "linkBuild": "链接到在其他网站规划的配置",
         "stock": "原厂",
         "notFlightReady": "只有可飞行的舰船才能使用配装",
         "slots": {

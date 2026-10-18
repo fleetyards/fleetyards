@@ -43,7 +43,7 @@ end
 
 json.partial!("api/v1/vehicles/image", vehicle:)
 
-active_loadout = vehicle.vehicle_loadouts.find(&:active?)
+active_loadout = vehicle.vehicle_loadouts.find { |loadout| loadout.active? && loadout.public? }
 json.active_loadout do
   json.partial! "api/v1/vehicle_loadouts/base", vehicle_loadout: active_loadout if active_loadout.present?
 end

@@ -17117,6 +17117,114 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/public/hangars/{username}/vehicles/{vehicle_id}/loadouts/{id}":
+    parameters:
+    - name: username
+      in: path
+      schema:
+        type: string
+      description: Username
+      required: true
+    - name: vehicle_id
+      in: path
+      schema:
+        type: string
+      description: Vehicle id or serial
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Loadout id
+      required: true
+    get:
+      summary: Public Vehicle Loadout
+      tags:
+      - PublicVehicleLoadouts
+      operationId: publicVehicleLoadout
+      parameters:
+      - name: share
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Hangar share token
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/VehicleLoadout"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/public/hangars/{username}/vehicles/{vehicle_id}/loadouts/{id}/slots":
+    parameters:
+    - name: username
+      in: path
+      schema:
+        type: string
+      description: Username
+      required: true
+    - name: vehicle_id
+      in: path
+      schema:
+        type: string
+      description: Vehicle id or serial
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      description: Loadout id
+      required: true
+    get:
+      summary: Public Vehicle Loadout Slots
+      tags:
+      - PublicVehicleLoadouts
+      operationId: publicVehicleLoadoutSlots
+      parameters:
+      - name: share
+        in: query
+        schema:
+          type: string
+        required: false
+        description: Hangar share token
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/LoadoutSlotList"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/public/hangars/{username}/vehicles/{vehicle_id}/log-entries":
     parameters:
     - name: username
@@ -40794,6 +40902,8 @@ components:
           type: string
         active:
           type: boolean
+        public:
+          type: boolean
         kind:
           "$ref": "#/components/schemas/VehicleLoadoutKindEnum"
         url:
@@ -40814,6 +40924,7 @@ components:
       required:
       - id
       - active
+      - public
       - kind
       - items
       - createdAt
@@ -40832,6 +40943,8 @@ components:
           type:
           - string
           - 'null'
+        public:
+          type: boolean
         items:
           type: array
           items:
@@ -40919,6 +41032,8 @@ components:
           type: string
         active:
           type: boolean
+        public:
+          type: boolean
         kind:
           "$ref": "#/components/schemas/VehicleLoadoutKindEnum"
         url:
@@ -40940,6 +41055,7 @@ components:
       - id
       - name
       - active
+      - public
       - kind
       - items
       - createdAt

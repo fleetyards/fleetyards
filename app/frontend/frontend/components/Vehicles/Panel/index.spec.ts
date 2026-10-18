@@ -377,6 +377,7 @@ describe("loadout marker", () => {
     id: "l1",
     name: "Hauler",
     active: true,
+    public: false,
     kind: VehicleLoadoutKindEnum.FLEETYARDS,
     items: [],
     createdAt: "2026-10-01T00:00:00Z",

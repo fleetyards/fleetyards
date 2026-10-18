@@ -10,7 +10,11 @@ import type { LoadoutSocketSlot } from "@/frontend/components/Loadout/Socket/typ
 import { useForm } from "vee-validate";
 import { useQueryClient } from "@tanstack/vue-query";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
+import {
+  BtnSizesEnum,
+  BtnTypesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import Loader from "@/shared/components/Loader/index.vue";
@@ -20,8 +24,11 @@ import {
   AlertVariantsEnum,
 } from "@/shared/components/base/Alert/types";
 import { useLoadoutProblems } from "@/frontend/composables/useLoadoutProblems";
+import { useLoadoutPlanners } from "@/frontend/composables/useLoadoutPlanners";
 import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
+import SavedIndicator from "@/shared/components/base/SavedIndicator/index.vue";
 import FormTabs from "@/shared/components/base/FormTabs/index.vue";
 import FormTab from "@/shared/components/base/FormTabs/Tab/index.vue";
 import SocketBoard from "@/frontend/components/Loadout/SocketBoard/index.vue";
@@ -45,6 +52,8 @@ import {
   EMPTIED,
   loadoutValues,
   slotName,
+  stockModuleValues,
+  stockModules,
   useComponentFitting,
 } from "@/frontend/composables/useComponentFitting";
 import { useMobile } from "@/shared/composables/useMobile";
@@ -94,6 +103,14 @@ const { t } = useI18n();
  */
 type LoadoutValues = {
   loadoutName: string;
+  // On a saved loadout both are saved the moment they are switched, apart from
+  // the fitting; on a new one they go with its first save. Fields either way,
+  // which the change detection leaves out.
+  loadoutPublic: boolean;
+  loadoutActive: boolean;
+  // A build planned on another site, which a new loadout can be instead of a
+  // fitting of its own.
+  linkUrl: string;
   fittedModules: Record<string, string>;
   // Only parts that differ from the slot's stock one: a slot left alone keeps
   // the part it came with.
@@ -138,14 +155,43 @@ const savedValues = (): LoadoutValues => {
 
   return {
     loadoutName: editedLoadout.value?.name ?? "",
+    // A new loadout starts as the server would make it: the ship's default
+    // when it has none yet, and then public on a public ship.
+    loadoutPublic:
+      editedLoadout.value?.public ??
+      (!!props.vehicle.public && !props.vehicle.activeLoadout),
+    loadoutActive: editedLoadout.value?.active ?? !props.vehicle.activeLoadout,
+    linkUrl: editedLoadout.value?.url ?? "",
     fittedModules: modules,
     fittedComponents: components,
   };
 };
 
-const { defineField, handleSubmit, resetForm, meta } = useForm<LoadoutValues>({
+const {
+  defineField,
+  handleSubmit,
+  resetForm,
+  resetField,
+  setFieldValue,
+  isFieldDirty,
+} = useForm<LoadoutValues>({
   initialValues: savedValues(),
 });
+
+// Against the loadout as saved: the fitting, its name, its link. Undoing a
+// pick undoes the change. A saved loadout's switches are saved as they are
+// switched, so they never wait on the save; a new one's go with its first
+// save, and count until then.
+const INSTANT_FIELDS: (keyof LoadoutValues)[] = [
+  "loadoutPublic",
+  "loadoutActive",
+];
+
+const changed = computed(() =>
+  (Object.keys(savedValues()) as (keyof LoadoutValues)[])
+    .filter((field) => !(editedLoadout.value && INSTANT_FIELDS.includes(field)))
+    .some((field) => isFieldDirty(field)),
+);
 
 /**
  * Re-seeds the fields rather than the initial values, which vee-validate has
@@ -156,7 +202,7 @@ const { defineField, handleSubmit, resetForm, meta } = useForm<LoadoutValues>({
  * would discard what you had just picked and not yet saved.
  */
 watch([() => props.vehicle, () => editedLoadout.value?.updatedAt], () => {
-  if (meta.value.dirty) {
+  if (changed.value) {
     return;
   }
 
@@ -166,6 +212,27 @@ watch([() => props.vehicle, () => editedLoadout.value?.updatedAt], () => {
 const [fittedModules] = defineField("fittedModules");
 
 const [fittedComponents] = defineField("fittedComponents");
+
+const [loadoutPublic] = defineField("loadoutPublic");
+
+const [loadoutActive] = defineField("loadoutActive");
+
+const [linkUrl] = defineField("linkUrl");
+
+// A new loadout can be a link to a build planned elsewhere instead of a
+// fitting: the footer switches the modal to the link alone and back.
+const linkMode = ref(false);
+
+// A saved loadout keeps the kind it was made as.
+const linking = computed(() =>
+  editedLoadout.value
+    ? editedLoadout.value.kind === VehicleLoadoutKindEnum.LINK
+    : linkMode.value,
+);
+
+const linkMissing = computed(() => linking.value && !linkUrl.value?.trim());
+
+const { erkulUrl, spviewerUrl } = useLoadoutPlanners(() => props.vehicle.model);
 
 const loadoutProblems = useLoadoutProblems(
   () => props.vehicle.id,
@@ -398,6 +465,29 @@ const measuredSaved = computed(() =>
 
 const figures = computed(() =>
   loadoutDiff.diff(measuredSaved.value, measuredNow.value, COMPONENT_TABS),
+);
+
+// The ship as the game files deliver it: the modules it comes with, and the
+// stock part in every other slot.
+const measuredStock = computed(() =>
+  loadoutDiff.measure({
+    hullCargo: hullCargo.value,
+    modules: stockModules(modules.value),
+    hardpoints: modelHardpoints.value ?? [],
+    tree: fitting.resolve(
+      hullSlots.value ?? [],
+      stockModuleValues(modules.value),
+    ),
+    weaponPoolSize: model.value?.metrics.weaponPoolSize,
+  }),
+);
+
+// What the fitting on screen changes against the stock ship, as the loadout's
+// page and read view list it.
+const changesFromStock = computed(
+  () =>
+    loadoutDiff.diff(measuredStock.value, measuredNow.value, COMPONENT_TABS)
+      .changed,
 );
 
 // The open tab's figures, each with how far it moved from the saved loadout.
@@ -796,6 +886,107 @@ const { displayAlert, displayConfirm } = useAppNotifications();
 const { invalidateHangarQueries, invalidateVehiclePage } =
   useVehicleMutations();
 
+// The list the loadouts tab shows, set from the answer at once rather than
+// left to the refetch the invalidation starts.
+const updateCachedLoadouts = (
+  change: (loadout: VehicleLoadout) => VehicleLoadout,
+) =>
+  queryClient.setQueryData<VehicleLoadout[]>(
+    getVehicleLoadoutsQueryKey(props.vehicle.id),
+    (list) => list?.map(change),
+  );
+
+// One write at a time, the switch held while it runs, so an earlier answer can
+// never land over a later choice; "saved" shows only once the server agrees.
+const savingPublic = ref(false);
+
+const publicSaved = ref<InstanceType<typeof SavedIndicator>>();
+
+// On a new loadout Public follows Active, as the server's default does --
+// public when it becomes a public ship's default -- until it is picked.
+const publicPicked = ref(false);
+
+watch(loadoutActive, (active) => {
+  if (editedLoadout.value || publicPicked.value) return;
+
+  setFieldValue("loadoutPublic", !!props.vehicle.public && !!active);
+});
+
+const onTogglePublic = async (value: boolean) => {
+  const loadout = editedLoadout.value;
+  if (!loadout) {
+    publicPicked.value = true;
+    return;
+  }
+  if (savingPublic.value) return;
+
+  savingPublic.value = true;
+
+  try {
+    await updateVehicleLoadout(props.vehicle.id, loadout.id, { public: value });
+    resetField("loadoutPublic", { value });
+    updateCachedLoadouts((entry) =>
+      entry.id === loadout.id ? { ...entry, public: value } : entry,
+    );
+    publicSaved.value?.show();
+    await Promise.all([
+      invalidateVehiclePage(props.vehicle),
+      queryClient.invalidateQueries({
+        queryKey: getVehicleLoadoutsQueryKey(props.vehicle.id),
+      }),
+    ]);
+  } catch (error) {
+    resetField("loadoutPublic", { value: !value });
+    displayAlert({
+      text: [t("messages.vehicleLoadout.failure"), firstErrorMessageFrom(error)]
+        .filter(Boolean)
+        .join(": "),
+    });
+  } finally {
+    savingPublic.value = false;
+  }
+};
+
+// Switched on as asked, apart from the fitting, like the visibility: the
+// active loadout is the one the ship's figures and plaque show. There is no
+// switching it off; another loadout is switched on instead.
+const activating = ref(false);
+
+const activeSaved = ref<InstanceType<typeof SavedIndicator>>();
+
+const onToggleActive = async (value: boolean) => {
+  const loadout = editedLoadout.value;
+  if (!loadout || !value || activating.value) return;
+
+  activating.value = true;
+
+  try {
+    await activateVehicleLoadout(props.vehicle.id, loadout.id);
+    resetField("loadoutActive", { value: true });
+    updateCachedLoadouts((entry) => ({
+      ...entry,
+      active: entry.id === loadout.id,
+    }));
+    activeSaved.value?.show();
+    await Promise.all([
+      invalidateHangarQueries(),
+      invalidateVehiclePage(props.vehicle),
+      queryClient.invalidateQueries({
+        queryKey: getVehicleLoadoutsQueryKey(props.vehicle.id),
+      }),
+    ]);
+  } catch (error) {
+    resetField("loadoutActive", { value: false });
+    displayAlert({
+      text: [t("messages.vehicleLoadout.failure"), firstErrorMessageFrom(error)]
+        .filter(Boolean)
+        .join(": "),
+    });
+  } finally {
+    activating.value = false;
+  }
+};
+
 /**
  * The parts the tree still reaches, and those inside a fitted module, which
  * this editor does not list yet and keeps as they are while the module stays.
@@ -817,10 +1008,6 @@ const fittedComponentsToSave = (values: LoadoutValues) => {
 
 const saving = ref(false);
 
-// Against the loadout as saved: the fitting, or its name. Undoing a pick
-// undoes the change.
-const changed = computed(() => meta.value.dirty);
-
 // A saved loadout needs a change to save, or an item the build refuses to take
 // out; a new one saves the ship as it is.
 const savable = computed(
@@ -831,11 +1018,62 @@ const savable = computed(
 // rather than creating another beside it.
 const createdLoadout = ref<VehicleLoadout>();
 
+// A loadout that links a build: its name and address, and for a new one the
+// switches as picked. It has no fitting to write.
+const saveLink = async (values: LoadoutValues) => {
+  saving.value = true;
+
+  const name = values.loadoutName.trim();
+  const url = values.linkUrl.trim();
+
+  try {
+    // A retry after a failed switch-on finishes the loadout it created.
+    const target = editedLoadout.value ?? createdLoadout.value;
+
+    if (target) {
+      await updateVehicleLoadout(props.vehicle.id, target.id, {
+        name,
+        url,
+        ...(editedLoadout.value ? {} : { public: values.loadoutPublic }),
+      });
+    } else {
+      createdLoadout.value = await createVehicleLoadout(props.vehicle.id, {
+        kind: VehicleLoadoutKindEnum.LINK,
+        name,
+        url,
+        public: values.loadoutPublic,
+      });
+    }
+
+    if (createdLoadout.value && values.loadoutActive) {
+      await activateVehicleLoadout(props.vehicle.id, createdLoadout.value.id);
+    }
+
+    await Promise.all([
+      invalidateHangarQueries(),
+      invalidateVehiclePage(props.vehicle),
+      queryClient.invalidateQueries({
+        queryKey: getVehicleLoadoutsQueryKey(props.vehicle.id),
+      }),
+    ]);
+
+    comlink.emit("close-modal");
+  } catch (error) {
+    displayAlert({
+      text: [t("messages.vehicleLoadout.failure"), firstErrorMessageFrom(error)]
+        .filter(Boolean)
+        .join(": "),
+    });
+  } finally {
+    saving.value = false;
+  }
+};
+
 /**
  * Writes the loadout being edited, or a new one -- also on request beside the
  * one opened, which then stays as it was saved. A new loadout is switched on
- * only when nothing else is: replacing an active build stays a choice made on
- * the loadouts page.
+ * as its Active switch says; a copy only when nothing else is, since replacing
+ * an active build stays a choice of its own.
  */
 const save = async (values: LoadoutValues, asNew: boolean) => {
   if (
@@ -844,6 +1082,11 @@ const save = async (values: LoadoutValues, asNew: boolean) => {
     loadoutPending.value ||
     !(asNew ? changed.value : savable.value)
   ) {
+    return;
+  }
+
+  if (!asNew && linking.value) {
+    if (!linkMissing.value) await saveLink(values);
     return;
   }
 
@@ -898,11 +1141,18 @@ const save = async (values: LoadoutValues, asNew: boolean) => {
       createdLoadout.value = await createVehicleLoadout(props.vehicle.id, {
         kind: VehicleLoadoutKindEnum.FLEETYARDS,
         name,
+        // A copy takes the server's default, not the switches of the loadout
+        // it was copied from.
+        ...(asNew ? {} : { public: values.loadoutPublic }),
         items,
       });
     }
 
-    if (createdLoadout.value && !props.vehicle.activeLoadout) {
+    const activate = asNew
+      ? !props.vehicle.activeLoadout
+      : !editedLoadout.value && values.loadoutActive;
+
+    if (createdLoadout.value && activate) {
       await activateVehicleLoadout(props.vehicle.id, createdLoadout.value.id);
     }
 
@@ -958,7 +1208,11 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
         data-test="vehicle-loadout-loading"
       />
 
-      <aside class="vehicle-loadout__ship" data-test="vehicle-loadout-ship">
+      <aside
+        v-show="!linking"
+        class="vehicle-loadout__ship"
+        data-test="vehicle-loadout-ship"
+      >
         <p class="vehicle-loadout__model">
           <!-- eslint-disable-next-line vue/no-v-html -->
           <span v-html="vehicle.model.manufacturer?.name" />
@@ -976,9 +1230,91 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
           :figures="changedFigures"
           test-id="vehicle-loadout-changes"
         />
+
+        <LoadoutChanges
+          v-if="changesFromStock.length"
+          :title="t('labels.vehicleLoadout.againstStock')"
+          :figures="changesFromStock"
+          test-id="vehicle-loadout-changes-from-stock"
+        />
       </aside>
 
       <div class="vehicle-loadout__panel">
+        <!-- Enter in the name names the loadout; saving it is the button's. -->
+        <div
+          v-if="editable && flightReady"
+          class="vehicle-loadout__identity"
+          data-test="vehicle-loadout-identity"
+          @keydown.enter.prevent
+        >
+          <FormInput
+            name="loadoutName"
+            :label="t('labels.vehicleLoadout.loadoutName')"
+            :placeholder="t('labels.vehicleLoadout.loadoutName')"
+            no-label
+            inline
+            class="vehicle-loadout__name"
+            data-test="vehicle-loadout-name"
+          />
+          <FormToggle
+            :model-value="loadoutPublic"
+            name="loadoutPublic"
+            :label="t('labels.loadout.public')"
+            :disabled="savingPublic"
+            no-placeholder
+            class="vehicle-loadout__switch"
+            data-test="vehicle-loadout-public"
+            @update:model-value="onTogglePublic"
+          />
+          <SavedIndicator v-if="editedLoadout" ref="publicSaved" />
+          <FormToggle
+            :model-value="loadoutActive"
+            name="loadoutActive"
+            :label="t('labels.loadout.active')"
+            :disabled="activating || (!!editedLoadout && editedLoadout.active)"
+            no-placeholder
+            class="vehicle-loadout__switch"
+            data-test="vehicle-loadout-active"
+            @update:model-value="onToggleActive"
+          />
+          <SavedIndicator v-if="editedLoadout" ref="activeSaved" />
+        </div>
+
+        <div
+          v-if="editable && flightReady && linking"
+          class="vehicle-loadout__link"
+          data-test="vehicle-loadout-link"
+          @keydown.enter.prevent
+        >
+          <FormInput
+            name="linkUrl"
+            :label="t('labels.vehicleLoadout.linkBuild')"
+            :placeholder="t('labels.loadout.urlPlaceholder')"
+            class="vehicle-loadout__link-url"
+            data-test="vehicle-loadout-link-url"
+          />
+          <div v-if="erkulUrl || spviewerUrl" class="vehicle-loadout__planners">
+            <Btn
+              v-if="erkulUrl"
+              :href="erkulUrl"
+              :size="BtnSizesEnum.SM"
+              class="erkul-link"
+            >
+              <i />
+              {{ t("labels.hardpoints.erkul") }}
+            </Btn>
+            <Btn
+              v-if="spviewerUrl"
+              :href="spviewerUrl"
+              :size="BtnSizesEnum.SM"
+              class="spviewer-link"
+            >
+              <i />
+              {{ t("labels.hardpoints.spviewer") }}
+            </Btn>
+          </div>
+        </div>
+
         <p
           v-if="!flightReady"
           class="vehicle-loadout__hint"
@@ -1003,6 +1339,7 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
         </Alert>
 
         <FormTabs
+          v-show="!linking"
           :default-tab="tab"
           @update:active-tab="(id) => (pickedTab = id)"
           :sync-url="false"
@@ -1198,28 +1535,35 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
     </form>
 
     <template v-if="editable" #footer>
-      <!-- Named where it is saved; the label stays as the field's accessible name. -->
-      <FormInput
-        v-if="flightReady"
-        name="loadoutName"
-        :label="t('labels.vehicleLoadout.loadoutName')"
-        :placeholder="t('labels.vehicleLoadout.loadoutName')"
-        no-label
-        inline
-        class="vehicle-loadout__name"
-        data-test="vehicle-loadout-name"
-      />
+      <Btn
+        v-if="flightReady && !editedLoadout && !createdLoadout"
+        :variant="BtnVariantsEnum.GHOST"
+        class="vehicle-loadout__mode"
+        data-test="vehicle-loadout-mode"
+        @click="linkMode = !linkMode"
+      >
+        <i
+          :class="
+            linkMode ? 'fa-duotone fa-screwdriver-wrench' : 'fa-duotone fa-link'
+          "
+        />
+        {{
+          linkMode
+            ? t("actions.vehicleLoadout.createOnFleetyards")
+            : t("actions.vehicleLoadout.linkInstead")
+        }}
+      </Btn>
       <Btn
         :type="BtnTypesEnum.SUBMIT"
         :form="`vehicle-loadout-${vehicle.id}`"
         :loading="saving"
-        :disabled="!flightReady || loadoutPending || !savable"
+        :disabled="!flightReady || loadoutPending || !savable || linkMissing"
         data-test="vehicle-loadout-save"
       >
         {{ t("actions.vehicleLoadout.saveLoadout") }}
       </Btn>
       <Btn
-        v-if="editedLoadout && changed"
+        v-if="editedLoadout && changed && !linking"
         :loading="saving"
         :disabled="!flightReady || loadoutPending"
         data-test="vehicle-loadout-save-as-new"

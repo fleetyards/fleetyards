@@ -55,6 +55,17 @@ describe("rowPresentation", () => {
     expect(seat.sizeless).toBe(true);
   });
 
+  it("names a loadout's module slot after its module, or as empty", () => {
+    const slot = rowPresentation(HardpointCategoryEnum.MODULE);
+
+    expect(
+      slot.label?.(hardpoint({ component: { name: "Cargo Module" } }), t),
+    ).toBe("Cargo Module");
+    expect(slot.label?.(hardpoint({}), t)).toBe(
+      "labels.vehicleLoadout.nothingFitted",
+    );
+  });
+
   it("leaves a part's own kinds as they are", () => {
     expect(rowPresentation(HardpointCategoryEnum.WEAPONS)).toEqual({});
   });

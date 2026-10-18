@@ -27,6 +27,7 @@ module Api
         authorize! with: VehicleLoadoutPolicy
 
         @vehicle_loadout = @vehicle.vehicle_loadouts.new(vehicle_loadout_params)
+        @vehicle_loadout.public = @vehicle_loadout.public_by_default? unless vehicle_loadout_params.key?(:public)
 
         if @vehicle_loadout.save
           render status: :created
@@ -78,7 +79,7 @@ module Api
         @vehicle_loadout_params ||= begin
           # The kind is chosen once: a link turned fleetyards loadout, or the
           # other way round, would keep fields the new kind does not allow.
-          keys = [:name, :url, {items: [:slot_path, :item_type, :item_id]}]
+          keys = [:name, :url, :public, {items: [:slot_path, :item_type, :item_id]}]
           keys << :kind if action_name == "create"
           permitted = params.transform_keys(&:underscore).permit(*keys)
 

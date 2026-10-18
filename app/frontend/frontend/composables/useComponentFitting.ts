@@ -65,6 +65,18 @@ export const EMPTIED = "";
 
 type ItemValue = Pick<VehicleLoadoutItem, "slotPath" | "itemType" | "itemId">;
 
+// The ship as the game files deliver it: the modules it comes with, by the slot
+// each sits in. Every other slot keeps its stock part by default.
+export const stockModules = (modules: ModelModule[]) =>
+  modules.filter((mod) => mod.stock);
+
+export const stockModuleValues = (modules: ModelModule[]) =>
+  Object.fromEntries(
+    stockModules(modules).flatMap((mod) =>
+      mod.slot ? [[mod.slot, mod.id]] : [],
+    ),
+  );
+
 // A saved loadout's items as a fitting holds them, by slot path: the modules,
 // and the parts in component slots, an emptied one holding EMPTIED.
 export const loadoutValues = (items: ItemValue[] = []) => {
@@ -381,8 +393,15 @@ export const useComponentFitting = () => {
     };
   };
 
+  // A module is what its slot holds, as a part is: known by name, so a fitted
+  // module slot is not read as empty.
   const learnModules = (modules: ModelModule[]) =>
     modules.forEach((mod) => {
+      remember({
+        id: mod.id,
+        name: mod.name,
+        category: HardpointCategoryEnum.MODULE,
+      });
       if (mod.slot)
         learnBelow(mod.slot, mod.id, (mod.hardpoints ?? []).map(toSlot));
     });
@@ -719,7 +738,10 @@ export const useComponentFitting = () => {
     const toHardpoint = (entry: FittedSlot, original?: Hardpoint): Hardpoint =>
       ({
         ...original,
-        id: original?.id ?? entry.slot.hardpointId,
+        // A port inside a swapped-in part has no record on the ship; its slot
+        // path tells two copies of one part apart, where the part's own port
+        // id is the same for both.
+        id: original?.id ?? entry.path,
         name: entry.slot.name,
         // A port inside a part names no category of its own; the ship's copy
         // does, and failing that the part in it, which is what the figures
@@ -733,12 +755,16 @@ export const useComponentFitting = () => {
         minSize: entry.slot.minSize,
         maxSize: entry.slot.maxSize,
         component: entry.content as Component | undefined,
-        hardpoints: entry.children.map((child) =>
-          toHardpoint(
-            child,
-            original?.hardpoints?.find((hp) => hp.name === child.slot.name),
+        // As the editor shows a part's ports: an empty attachment or socket
+        // port nothing can be fitted to says nothing on a hardpoint list.
+        hardpoints: entry.children
+          .filter((child) => !!child.content || changeable(child))
+          .map((child) =>
+            toHardpoint(
+              child,
+              original?.hardpoints?.find((hp) => hp.name === child.slot.name),
+            ),
           ),
-        ),
       }) as Hardpoint;
 
     return hardpoints.map((hardpoint) => {

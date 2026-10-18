@@ -139,7 +139,7 @@ export const formatBoostFigure = (
   return decimal ? `${grouped}${separator || ","}${decimal}` : grouped;
 };
 
-const THRUSTER_CATEGORIES: HardpointCategoryEnum[] = [
+export const THRUSTER_CATEGORIES: HardpointCategoryEnum[] = [
   HardpointCategoryEnum.MAIN_THRUSTERS,
   HardpointCategoryEnum.MANEUVERING_THRUSTERS,
   HardpointCategoryEnum.RETRO_THRUSTERS,

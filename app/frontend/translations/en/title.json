@@ -47,6 +47,7 @@
         "inventories": "My Hangar Inventories",
         "inventory": "%{inventory}",
         "vehicleCargo": "Vehicle Cargo",
+        "vehicleLoadout": "Vehicle Loadout",
         "buybacks": "Buy-Back Pledges",
         "paints": "Paints",
         "flair": "Hangar Flair",

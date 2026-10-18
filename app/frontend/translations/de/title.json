@@ -47,6 +47,7 @@
         "inventories": "Meine Hangar Inventare",
         "inventory": "%{inventory}",
         "vehicleCargo": "Schiffsfracht",
+        "vehicleLoadout": "Fahrzeug-Loadout",
         "buybacks": "Rückkauf-Pledges",
         "paints": "Lackierungen",
         "flair": "Hangar-Flair",

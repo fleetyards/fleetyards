@@ -8,20 +8,21 @@ export default {
 import type { LoadoutMetric } from "@/frontend/composables/useLoadoutMetrics";
 
 type Props = {
-  title: string;
+  title?: string;
   // Only those that moved, each with its change.
   figures: LoadoutMetric[];
   testId?: string;
 };
 
 withDefaults(defineProps<Props>(), {
+  title: undefined,
   testId: "loadout-changes",
 });
 </script>
 
 <template>
   <section class="loadout-changes" :data-test="testId">
-    <h4 class="loadout-changes__title">{{ title }}</h4>
+    <h4 v-if="title" class="loadout-changes__title">{{ title }}</h4>
     <dl class="loadout-changes__list">
       <div
         v-for="figure in figures"

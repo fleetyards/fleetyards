@@ -117,7 +117,14 @@ const loadoutsRoute = computed(() =>
         :key="loadout.id"
         class="overview-loadouts__item"
       >
+        <!-- A click on a row switches that loadout on, which nothing else on
+             the row says. -->
         <AddonOption
+          v-tooltip="
+            loadout.active
+              ? t('labels.loadout.activeHint')
+              : t('labels.loadout.activateHint')
+          "
           :name="name(loadout)"
           :icon="icon(loadout)"
           :contents="source(loadout)"

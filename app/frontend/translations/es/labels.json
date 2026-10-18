@@ -1144,6 +1144,16 @@
         "fleetyards": "Configuración de Fleetyards",
         "namePlaceholder": "Nombre de la configuración...",
         "urlPlaceholder": "Pega la URL de una configuración de erkul.games o spviewer.eu...",
+        "activateHint": "Haz clic para convertirlo en el loadout activo",
+        "activeHint": "Este es el loadout activo",
+        "kinds": {
+          "fleetyards": "Fleetyards",
+          "erkul": "Erkul",
+          "spviewer": "SPViewer",
+          "link": "Enlace"
+        },
+        "public": "Público",
+        "private": "Privado",
         "empty": "Aún no hay configuraciones. Crea una para empezar.",
         "active": "Activa",
         "activate": "Marcar como activa"
@@ -1372,6 +1382,10 @@
         "fuel": "Combustible",
         "fuelHydrogen": "Hidrógeno",
         "fuelQuantum": "Quantum",
+        "fuelFullMain": "Empuje máximo, principales",
+        "fuelFullAll": "Empuje máximo, todos los propulsores",
+        "durationHoursMinutes": "%{hours} h %{minutes} min",
+        "durationMinutes": "%{minutes} min",
         "hint": "El manejo con boost escala con los pips del motor; todo queda a cero cuando el motor no tiene energía."
       },
       "base": {
@@ -4391,11 +4405,13 @@
           }
         },
         "againstStock": "Cambios respecto a la nave de serie",
+        "fitted": "Equipado",
         "owned": "En propiedad",
         "noSlots": "Todavía no se puede equipar nada de esta nave aquí",
         "unavailableModule": "Módulo ya no disponible",
         "noFigureChange": "No cambia ninguna cifra de la nave",
         "loadoutName": "Nombre de la configuración",
+        "linkBuild": "Enlace a una configuración planificada en otro sitio",
         "stock": "De serie",
         "notFlightReady": "Las configuraciones solo están disponibles para naves listas para volar",
         "slots": {

@@ -1144,6 +1144,16 @@
         "fleetyards": "Configuration Fleetyards",
         "namePlaceholder": "Nom de la configuration...",
         "urlPlaceholder": "Coller l'URL de configuration erkul.games ou spviewer.eu...",
+        "activateHint": "Cliquer pour en faire le loadout actif",
+        "activeHint": "C'est le loadout actif",
+        "kinds": {
+          "fleetyards": "Fleetyards",
+          "erkul": "Erkul",
+          "spviewer": "SPViewer",
+          "link": "Lien"
+        },
+        "public": "Public",
+        "private": "Privé",
         "empty": "Aucune configuration pour le moment. Créez-en une pour commencer.",
         "active": "Active",
         "activate": "Définir comme active"
@@ -1372,6 +1382,10 @@
         "fuel": "Carburant",
         "fuelHydrogen": "Hydrogène",
         "fuelQuantum": "Quantum",
+        "fuelFullMain": "Pleine poussée, principaux",
+        "fuelFullAll": "Pleine poussée, tous les propulseurs",
+        "durationHoursMinutes": "%{hours} h %{minutes} min",
+        "durationMinutes": "%{minutes} min",
         "hint": "La maniabilité boostée dépend des pips alloués au moteur ; tout est à zéro lorsque le moteur n'est pas alimenté."
       },
       "base": {
@@ -4391,11 +4405,13 @@
           }
         },
         "againstStock": "Changements par rapport au vaisseau d'origine",
+        "fitted": "Équipé",
         "owned": "Possédé",
         "noSlots": "Rien sur ce vaisseau ne peut encore être équipé ici",
         "unavailableModule": "Module plus disponible",
         "noFigureChange": "Ne change aucune valeur du vaisseau",
         "loadoutName": "Nom de la configuration",
+        "linkBuild": "Lien vers un build planifié ailleurs",
         "stock": "D'origine",
         "notFlightReady": "Les configurations ne sont disponibles que pour les vaisseaux prêts à voler",
         "slots": {

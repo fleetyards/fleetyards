@@ -47,6 +47,7 @@
         "inventories": "My Hangar Inventories",
         "inventory": "%{inventory}",
         "vehicleCargo": "Carico della nave",
+        "vehicleLoadout": "Loadout della nave",
         "buybacks": "Pledge riacquistabili",
         "paints": "Verniciature",
         "flair": "Decorazioni per l'hangar",

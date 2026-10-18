@@ -47,6 +47,7 @@
         "inventories": "My Hangar Inventories",
         "inventory": "%{inventory}",
         "vehicleCargo": "飛船貨物",
+        "vehicleLoadout": "載具配置",
         "buybacks": "可回購承諾",
         "paints": "塗裝",
         "flair": "機庫裝飾",

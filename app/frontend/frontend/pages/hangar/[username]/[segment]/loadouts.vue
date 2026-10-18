@@ -14,8 +14,12 @@ import VehicleTabLayout from "@/frontend/components/Vehicles/TabLayout/index.vue
 
 import { useI18n } from "@/shared/composables/useI18n";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
+import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useLoadoutEditor } from "@/frontend/composables/useLoadoutEditor";
+import { useLoadoutPlanners } from "@/frontend/composables/useLoadoutPlanners";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { firstErrorMessageFrom } from "@/shared/utils/ApiErrors";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 import { VehicleLoadoutTabsEnum } from "@/frontend/components/Vehicles/LoadoutModal/types";
 import {
@@ -44,18 +48,8 @@ const props = defineProps<Props>();
 const { t } = useI18n();
 const queryClient = useQueryClient();
 
-const erkulShipUrl = computed(() => {
-  const identifier =
-    props.vehicle.model?.erkulIdentifier || props.vehicle.model?.scIdentifier;
-  if (!identifier) return undefined;
-  return `https://www.erkul.games/ship/${identifier}`;
-});
-
-const spviewerShipUrl = computed(() => {
-  const identifier = props.vehicle.model?.scIdentifier;
-  if (!identifier) return undefined;
-  return `https://www.spviewer.eu/performance?ship=${identifier}`;
-});
+const { erkulUrl: erkulShipUrl, spviewerUrl: spviewerShipUrl } =
+  useLoadoutPlanners(() => props.vehicle.model);
 
 const { data: loadouts, isLoading } = useVehicleLoadouts(props.vehicle.id);
 
@@ -167,13 +161,31 @@ const { loadoutEditorAvailable } = useLoadoutEditor();
 
 const fittingEditable = computed(() => loadoutEditorAvailable(props.vehicle));
 
-const editFitting = (record: VehicleLoadout) => {
+// Every loadout is edited in the editor where it is available, a linked one
+// by its name and address.
+const editLoadout = (record: VehicleLoadout) => {
   openLoadoutModal(props.vehicle, {
     editable: true,
     loadoutId: record.id,
     tab: VehicleLoadoutTabsEnum.MODULES,
   });
 };
+
+const vehicleRoute = useVehicleRoute();
+
+// Where a loadout lives: here, or the site its link leads to.
+const kindOf = (record: VehicleLoadout) => {
+  if (record.kind === VehicleLoadoutKindEnum.FLEETYARDS) return "fleetyards";
+
+  return record.urlSource === "erkul" || record.urlSource === "spviewer"
+    ? record.urlSource
+    : "link";
+};
+
+const loadoutPage = (record: VehicleLoadout) =>
+  vehicleRoute("hangar-vehicle-loadout", props.vehicle, {
+    loadout: record.id,
+  });
 
 const viewFitting = (record: VehicleLoadout) => {
   openLoadoutView(props.vehicle, { editable: true, loadout: record });
@@ -192,11 +204,62 @@ const activateMutation = useActivateVehicleLoadout({
   mutation: { onSettled: invalidateLoadouts },
 });
 
+// The rows, set from an answer at once, so a second click never reads the
+// value the first one already changed while the refetch is on its way.
+const updateCachedLoadouts = (
+  change: (loadout: VehicleLoadout) => VehicleLoadout,
+) =>
+  queryClient.setQueryData<VehicleLoadout[]>(
+    getVehicleLoadoutsQueryKey(props.vehicle.id),
+    (list) => list?.map(change),
+  );
+
+// One switch-on at a time, so the loadout left active is the last one clicked.
+const activating = activateMutation.isPending;
+
 const onActivate = async (record: VehicleLoadout) => {
+  if (activating.value) return;
+
   await activateMutation.mutateAsync({
     vehicleId: props.vehicle.id,
     id: record.id,
   });
+  updateCachedLoadouts((loadout) => ({
+    ...loadout,
+    active: loadout.id === record.id,
+  }));
+};
+
+// Visibility is set in the editor; where the editor is not available it is
+// switched here, or a loadout made public could not be hidden again.
+const visibilityMutation = useUpdateVehicleLoadout({
+  mutation: { onSettled: invalidateLoadouts },
+});
+
+const visibilitySaving = visibilityMutation.isPending;
+
+const { displayAlert } = useAppNotifications();
+
+const onToggleVisibility = async (record: VehicleLoadout) => {
+  if (visibilitySaving.value) return;
+
+  try {
+    const value = !record.public;
+    await visibilityMutation.mutateAsync({
+      vehicleId: props.vehicle.id,
+      id: record.id,
+      data: { public: value },
+    });
+    updateCachedLoadouts((loadout) =>
+      loadout.id === record.id ? { ...loadout, public: value } : loadout,
+    );
+  } catch (error) {
+    displayAlert({
+      text: [t("messages.vehicleLoadout.failure"), firstErrorMessageFrom(error)]
+        .filter(Boolean)
+        .join(": "),
+    });
+  }
 };
 </script>
 
@@ -208,6 +271,7 @@ const onActivate = async (record: VehicleLoadout) => {
       :items="loadoutItems"
       :loading="isLoading"
       confirm-destroy-text="Are you sure you want to delete this loadout?"
+      :hide-edit="fittingEditable"
       @start-edit="onStartEdit"
       @save-edit="onSaveEdit"
       @start-create="onStartCreate"
@@ -216,54 +280,150 @@ const onActivate = async (record: VehicleLoadout) => {
     >
       <template #display="{ item }">
         <div class="loadouts-page__item-display">
-          <Pill
-            v-if="item.active"
-            :variant="PillVariantsEnum.SUCCESS"
-            uppercase
+          <!-- A name leads to the loadout: its page here, or the build on the
+               site it links to. -->
+          <router-link
+            v-if="item.kind === VehicleLoadoutKindEnum.FLEETYARDS"
+            :to="loadoutPage(item)"
+            class="loadouts-page__item-name"
+            :data-test="`loadout-page-${item.id}`"
           >
-            {{ t("labels.loadout.active") }}
-          </Pill>
-          <div class="loadouts-page__item-info">
-            <span class="loadouts-page__item-name">
-              {{ item.name }}
-            </span>
-            <div v-if="item.url" class="loadouts-page__item-links">
-              <a :href="item.url" target="_blank" rel="noopener">
-                {{ item.urlSource || item.url }}
-              </a>
-            </div>
-            <div v-else class="loadouts-page__item-links">
-              {{ t("labels.loadout.fleetyards") }}
-            </div>
+            {{ item.name }}
+          </router-link>
+          <a
+            v-else-if="item.url"
+            :href="item.url"
+            target="_blank"
+            rel="noopener"
+            class="loadouts-page__item-name"
+            :data-test="`loadout-link-${item.id}`"
+          >
+            {{ item.name }}
+          </a>
+          <span v-else class="loadouts-page__item-name">
+            {{ item.name }}
+          </span>
+          <div class="loadouts-page__item-badges">
+            <Pill
+              v-if="item.active"
+              :variant="PillVariantsEnum.SUCCESS"
+              uppercase
+            >
+              {{ t("labels.loadout.active") }}
+            </Pill>
+            <Pill
+              v-if="item.public"
+              :variant="PillVariantsEnum.NEUTRAL"
+              uppercase
+              :data-test="`loadout-public-${item.id}`"
+            >
+              {{ t("labels.loadout.public") }}
+            </Pill>
+            <Pill
+              :variant="PillVariantsEnum.NEUTRAL"
+              uppercase
+              :data-test="`loadout-kind-${item.id}`"
+            >
+              {{ t(`labels.loadout.kinds.${kindOf(item)}`) }}
+            </Pill>
           </div>
         </div>
       </template>
 
-      <template #actions="{ item }">
+      <!-- In the phone's menu the buttons name themselves. -->
+      <template #actions="{ item, mobile }">
+        <!-- The same buttons on every row, so the badges line up: a linked
+             build is viewed on its own site. -->
         <Btn
           v-if="item.kind === VehicleLoadoutKindEnum.FLEETYARDS"
           v-tooltip="t('actions.vehicleLoadout.viewLoadout')"
+          :aria-label="t('actions.vehicleLoadout.viewLoadout')"
           :data-test="`loadout-view-fitting-${item.id}`"
           @click="viewFitting(item)"
         >
           <i class="fa-duotone fa-up-right-and-down-left-from-center" />
+          <span v-if="mobile">{{
+            t("actions.vehicleLoadout.viewLoadout")
+          }}</span>
         </Btn>
         <Btn
-          v-if="
-            fittingEditable && item.kind === VehicleLoadoutKindEnum.FLEETYARDS
-          "
-          v-tooltip="t('actions.vehicleLoadout.editLoadout')"
-          :data-test="`loadout-edit-fitting-${item.id}`"
-          @click="editFitting(item)"
+          v-else
+          v-tooltip="t('actions.vehicleLoadout.viewLoadout')"
+          :aria-label="t('actions.vehicleLoadout.viewLoadout')"
+          :href="item.url"
+          :data-test="`loadout-view-link-${item.id}`"
         >
-          <i class="fa-duotone fa-screwdriver-wrench" />
+          <i class="fa-duotone fa-up-right-and-down-left-from-center" />
+          <span v-if="mobile">{{
+            t("actions.vehicleLoadout.viewLoadout")
+          }}</span>
         </Btn>
         <Btn
-          v-if="!item.active"
-          v-tooltip="t('labels.loadout.activate')"
+          v-tooltip="
+            item.active
+              ? t('labels.loadout.active')
+              : t('labels.loadout.activate')
+          "
+          :aria-label="
+            item.active
+              ? t('labels.loadout.active')
+              : t('labels.loadout.activate')
+          "
+          :disabled="item.active || activating"
+          :class="{ 'loadouts-page__activate--active': item.active }"
+          :data-test="`loadout-activate-${item.id}`"
           @click="onActivate(item)"
         >
           <i class="fa-duotone fa-circle-check" />
+          <span v-if="mobile">
+            {{
+              item.active
+                ? t("labels.loadout.active")
+                : t("labels.loadout.activate")
+            }}
+          </span>
+        </Btn>
+        <Btn
+          v-if="!fittingEditable"
+          v-tooltip="
+            item.public
+              ? t('actions.vehicleLoadout.makePrivate')
+              : t('actions.vehicleLoadout.makePublic')
+          "
+          :aria-label="
+            item.public
+              ? t('actions.vehicleLoadout.makePrivate')
+              : t('actions.vehicleLoadout.makePublic')
+          "
+          :aria-pressed="item.public"
+          :disabled="visibilitySaving"
+          :data-test="`loadout-visibility-${item.id}`"
+          @click="onToggleVisibility(item)"
+        >
+          <i
+            :class="
+              item.public ? 'fa-duotone fa-eye' : 'fa-duotone fa-eye-slash'
+            "
+          />
+          <span v-if="mobile">
+            {{
+              item.public
+                ? t("actions.vehicleLoadout.makePrivate")
+                : t("actions.vehicleLoadout.makePublic")
+            }}
+          </span>
+        </Btn>
+        <Btn
+          v-if="fittingEditable"
+          v-tooltip="t('actions.vehicleLoadout.editLoadout')"
+          :aria-label="t('actions.vehicleLoadout.editLoadout')"
+          :data-test="`loadout-edit-${item.id}`"
+          @click="editLoadout(item)"
+        >
+          <i class="fa-duotone fa-pencil" />
+          <span v-if="mobile">{{
+            t("actions.vehicleLoadout.editLoadout")
+          }}</span>
         </Btn>
       </template>
 
@@ -303,7 +463,9 @@ const onActivate = async (record: VehicleLoadout) => {
         "
         class="loadouts-page__add-wrapper"
       >
+        <!-- With the editor, a link is one of the ways a new loadout starts. -->
         <Btn
+          v-if="!editorEnabled"
           class="loadouts-page__add"
           :disabled="editableList?.creating || !flightReady"
           data-test="loadouts-add"
@@ -315,7 +477,7 @@ const onActivate = async (record: VehicleLoadout) => {
         <Btn
           v-if="editorEnabled"
           class="loadouts-page__add"
-          :disabled="!flightReady || !vehicle.model?.hasModules"
+          :disabled="!flightReady"
           data-test="loadouts-new-fleetyards"
           @click="newFleetyardsLoadout"
         >
@@ -325,7 +487,7 @@ const onActivate = async (record: VehicleLoadout) => {
       </span>
 
       <MetricsCard
-        v-if="erkulShipUrl || spviewerShipUrl"
+        v-if="!editorEnabled && (erkulShipUrl || spviewerShipUrl)"
         :title="t('labels.vehicleOverview.planLoadout')"
         variant="slim"
       >
@@ -378,16 +540,29 @@ const onActivate = async (record: VehicleLoadout) => {
     align-items: center;
     gap: 10px;
     flex: 1;
-  }
-
-  &__item-info {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
+    min-width: 0;
   }
 
   &__item-name {
+    min-width: 0;
+    overflow: hidden;
     font-weight: 600;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  // The active loadout's switch, held on and in the colour of its badge.
+  &__activate--active i {
+    color: var(--color-success, #{$success});
+  }
+
+  // What kind of loadout it is and how it stands, at the row's far end.
+  &__item-badges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 6px;
+    margin-inline-start: auto;
   }
 
   &__edit-name {
@@ -396,12 +571,6 @@ const onActivate = async (record: VehicleLoadout) => {
 
   &__edit-url {
     flex: 2 !important;
-  }
-
-  &__item-links {
-    display: flex;
-    gap: 10px;
-    font-size: 0.85rem;
   }
 }
 </style>

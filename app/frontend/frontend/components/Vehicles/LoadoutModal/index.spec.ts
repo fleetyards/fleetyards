@@ -1,3 +1,4 @@
+import type { QueryClient } from "@tanstack/vue-query";
 import { flushPromises } from "@vue/test-utils";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -104,6 +105,7 @@ vi.mock("@/shared/composables/useComlink", () => ({
 vi.mock("@/shared/composables/useI18n", () => ({
   useI18n: () => ({
     t: (key: string) => key,
+    tExists: () => false,
     toNumber: (value: number) => String(value),
   }),
 }));
@@ -224,6 +226,21 @@ describe("VehicleLoadoutModal", () => {
     expect(cargo(wrapper)).toContain("+32");
   });
 
+  it("lists what the fitting changes from the stock ship beside what changed since saving", async () => {
+    const wrapper = await mountModal(
+      vehicle(["m1", "m2"], { fitted: { hardpoint_module: "m1" } }),
+    );
+
+    expect(wrapper.find("[data-test='vehicle-loadout-changes']").exists()).toBe(
+      false,
+    );
+    expect(
+      wrapper
+        .get("[data-test='vehicle-loadout-changes-from-stock-cargo']")
+        .text(),
+    ).toContain("+32");
+  });
+
   it("previews the option under the pointer, then returns to what is picked", async () => {
     const wrapper = await mountModal(
       vehicle(["m1", "m2"], { fitted: { hardpoint_module: "m2" } }),
@@ -320,6 +337,7 @@ describe("VehicleLoadoutModal", () => {
     expect(createVehicleLoadout).toHaveBeenCalledWith("v1", {
       kind: "fleetyards",
       name: "",
+      public: false,
       items: [
         { slotPath: "hardpoint_module", itemType: "ModelModule", itemId: "m1" },
       ],
@@ -510,11 +528,320 @@ describe("VehicleLoadoutModal", () => {
     });
   });
 
+  it("saves the loadout's visibility as it is switched, apart from the fitting", async () => {
+    loadouts.value = [
+      {
+        id: "l2",
+        name: "Medical run",
+        public: true,
+        kind: "fleetyards",
+        active: false,
+        updatedAt: "2026-10-01T00:00:00Z",
+        items: [],
+      },
+    ];
+    const wrapper = await mountModal(vehicle(["m1"]), { loadoutId: "l2" });
+    await flushPromises();
+
+    const toggle = wrapper.get("[data-test='toggle-loadoutPublic']");
+    expect((toggle.element as HTMLInputElement).checked).toBe(true);
+
+    // Still saving: the buttons must not take the switch for a change.
+    updateVehicleLoadout.mockImplementationOnce(() => new Promise(() => {}));
+    (toggle.element as HTMLInputElement).checked = false;
+    await toggle.trigger("change");
+    await flushPromises();
+
+    expect(updateVehicleLoadout).toHaveBeenCalledWith("v1", "l2", {
+      public: false,
+    });
+    expect(
+      wrapper.get("[data-test='vehicle-loadout-save']").attributes("disabled"),
+    ).toBeDefined();
+    expect(
+      wrapper.find("[data-test='vehicle-loadout-save-as-new']").exists(),
+    ).toBe(false);
+    expect(toggle.attributes("disabled")).toBeDefined();
+  });
+
+  it("switches a saved loadout on as the active one at once, and holds the switch on the active one", async () => {
+    loadouts.value = [
+      {
+        id: "l1",
+        name: "Hauler",
+        public: false,
+        kind: "fleetyards",
+        active: true,
+        updatedAt: "2026-10-01T00:00:00Z",
+        items: [],
+      },
+      {
+        id: "l2",
+        name: "Medical run",
+        public: false,
+        kind: "fleetyards",
+        active: false,
+        updatedAt: "2026-10-01T00:00:00Z",
+        items: [],
+      },
+    ];
+
+    const active = await mountModal(vehicle(["m1"]), { loadoutId: "l1" });
+    await flushPromises();
+    const on = active.get("[data-test='toggle-loadoutActive']");
+    expect((on.element as HTMLInputElement).checked).toBe(true);
+    expect(on.attributes("disabled")).toBeDefined();
+
+    const other = await mountModal(vehicle(["m1"]), { loadoutId: "l2" });
+    await flushPromises();
+    const queryClient = other.getCurrentComponent().appContext.provides
+      .VUE_QUERY_CLIENT as QueryClient;
+    queryClient.setQueryData(["vehicles", "v1", "loadouts"], loadouts.value);
+    const off = other.get("[data-test='toggle-loadoutActive']");
+    (off.element as HTMLInputElement).checked = true;
+    await off.trigger("change");
+    await flushPromises();
+
+    expect(activateVehicleLoadout).toHaveBeenCalledWith("v1", "l2");
+    expect(updateVehicleLoadout).not.toHaveBeenCalled();
+    expect(
+      other.get("[data-test='vehicle-loadout-save']").attributes("disabled"),
+    ).toBeDefined();
+    // The loadouts tab under the modal shows the switch without a refetch.
+    expect(
+      (
+        queryClient.getQueryData(["vehicles", "v1", "loadouts"]) as {
+          id: string;
+          active: boolean;
+        }[]
+      ).map(({ id, active }) => [id, active]),
+    ).toEqual([
+      ["l1", false],
+      ["l2", true],
+    ]);
+  });
+
+  it("saves a new loadout with the visibility and active state picked for it", async () => {
+    const wrapper = await mountModal(
+      vehicle(["m1"], { activeLoadout: { id: "l1", kind: "fleetyards" } }),
+      { newLoadout: true },
+    );
+    await flushPromises();
+
+    const isPublic = wrapper.get("[data-test='toggle-loadoutPublic']");
+    const isActive = wrapper.get("[data-test='toggle-loadoutActive']");
+    expect((isPublic.element as HTMLInputElement).checked).toBe(false);
+    expect((isActive.element as HTMLInputElement).checked).toBe(false);
+
+    (isPublic.element as HTMLInputElement).checked = true;
+    await isPublic.trigger("change");
+    (isActive.element as HTMLInputElement).checked = true;
+    await isActive.trigger("change");
+    await flushPromises();
+
+    expect(updateVehicleLoadout).not.toHaveBeenCalled();
+    expect(activateVehicleLoadout).not.toHaveBeenCalled();
+
+    await save(wrapper);
+
+    expect(createVehicleLoadout).toHaveBeenCalledWith(
+      "v1",
+      expect.objectContaining({ public: true }),
+    );
+    expect(activateVehicleLoadout).toHaveBeenCalledWith("v1", "new");
+  });
+
+  it("switches a new loadout to a link to a build planned elsewhere, and back", async () => {
+    const wrapper = await mountModal(vehicle(["m1"]), { newLoadout: true });
+    await flushPromises();
+
+    expect(wrapper.find("[data-test='vehicle-loadout-link']").exists()).toBe(
+      false,
+    );
+
+    await wrapper.get("[data-test='vehicle-loadout-mode']").trigger("click");
+
+    expect(wrapper.get("[data-test='vehicle-loadout-ship']").isVisible()).toBe(
+      false,
+    );
+    expect(
+      wrapper.get("[data-test='vehicle-loadout-save']").attributes("disabled"),
+    ).toBeDefined();
+
+    await wrapper
+      .get("[data-test='vehicle-loadout-link-url'] input")
+      .setValue("https://www.erkul.games/loadout/abc");
+    await flushPromises();
+    await save(wrapper);
+
+    expect(createVehicleLoadout).toHaveBeenCalledWith("v1", {
+      kind: "link",
+      name: "",
+      url: "https://www.erkul.games/loadout/abc",
+      public: false,
+    });
+    expect(activateVehicleLoadout).toHaveBeenCalledWith("v1", "new");
+  });
+
+  it("edits a linked loadout by its name and address", async () => {
+    loadouts.value = [
+      {
+        id: "link",
+        name: "Erkul build",
+        public: false,
+        kind: "link",
+        url: "https://www.erkul.games/loadout/abc",
+        active: false,
+        updatedAt: "2026-10-01T00:00:00Z",
+        items: [],
+      },
+    ];
+    const wrapper = await mountModal(vehicle(["m1"]), { loadoutId: "link" });
+    await flushPromises();
+
+    expect(wrapper.find("[data-test='vehicle-loadout-mode']").exists()).toBe(
+      false,
+    );
+    const url = wrapper.get("[data-test='vehicle-loadout-link-url'] input");
+    expect((url.element as HTMLInputElement).value).toBe(
+      "https://www.erkul.games/loadout/abc",
+    );
+
+    await url.setValue("https://www.spviewer.eu/performance?loadout=x");
+    await flushPromises();
+    await save(wrapper);
+
+    expect(updateVehicleLoadout).toHaveBeenCalledWith("v1", "link", {
+      name: "Erkul build",
+      url: "https://www.spviewer.eu/performance?loadout=x",
+    });
+    expect(createVehicleLoadout).not.toHaveBeenCalled();
+  });
+
+  it("keeps a new loadout's switches through a refresh, and Public following Active until picked", async () => {
+    const ship = {
+      ...vehicle(["m1"], { activeLoadout: { id: "l1", kind: "fleetyards" } }),
+      public: true,
+    } as Vehicle;
+    const wrapper = await mountModal(ship, { newLoadout: true });
+    await flushPromises();
+
+    const isPublic = () =>
+      wrapper.get("[data-test='toggle-loadoutPublic']")
+        .element as HTMLInputElement;
+    const isActive = wrapper.get("[data-test='toggle-loadoutActive']");
+    expect(isPublic().checked).toBe(false);
+
+    (isActive.element as HTMLInputElement).checked = true;
+    await isActive.trigger("change");
+    await flushPromises();
+    expect(isPublic().checked).toBe(true);
+
+    await wrapper.setProps({ vehicle: { ...ship } });
+    await flushPromises();
+    expect((isActive.element as HTMLInputElement).checked).toBe(true);
+    expect(isPublic().checked).toBe(true);
+  });
+
+  it("finishes the link it created when switching it on failed", async () => {
+    activateVehicleLoadout.mockImplementationOnce(() =>
+      Promise.reject(new Error("timeout")),
+    );
+    const wrapper = await mountModal(vehicle(["m1"]), { newLoadout: true });
+    await flushPromises();
+
+    await wrapper.get("[data-test='vehicle-loadout-mode']").trigger("click");
+    const url = wrapper.get("[data-test='vehicle-loadout-link-url'] input");
+    await url.setValue("https://www.erkul.games/loadout/abc");
+    await flushPromises();
+    await save(wrapper);
+
+    expect(wrapper.find("[data-test='vehicle-loadout-mode']").exists()).toBe(
+      false,
+    );
+
+    await url.setValue("https://www.erkul.games/loadout/fixed");
+    await flushPromises();
+    await save(wrapper);
+
+    expect(createVehicleLoadout).toHaveBeenCalledTimes(1);
+    expect(updateVehicleLoadout).toHaveBeenCalledWith(
+      "v1",
+      "new",
+      expect.objectContaining({ url: "https://www.erkul.games/loadout/fixed" }),
+    );
+  });
+
+  it("goes back to the fitting from the link", async () => {
+    const wrapper = await mountModal(vehicle(["m1"]), { newLoadout: true });
+    await flushPromises();
+
+    const mode = wrapper.get("[data-test='vehicle-loadout-mode']");
+    await mode.trigger("click");
+    await mode.trigger("click");
+
+    expect(wrapper.find("[data-test='vehicle-loadout-link']").exists()).toBe(
+      false,
+    );
+    expect(wrapper.get("[data-test='vehicle-loadout-ship']").isVisible()).toBe(
+      true,
+    );
+  });
+
+  it("offers a link only for a new loadout", async () => {
+    loadouts.value = [
+      {
+        id: "l2",
+        name: "Medical run",
+        public: false,
+        kind: "fleetyards",
+        active: false,
+        updatedAt: "2026-10-01T00:00:00Z",
+        items: [],
+      },
+    ];
+    const wrapper = await mountModal(vehicle(["m1"]), { loadoutId: "l2" });
+    await flushPromises();
+
+    expect(wrapper.find("[data-test='vehicle-loadout-mode']").exists()).toBe(
+      false,
+    );
+  });
+
+  it("does not save the loadout when Enter is pressed in its name", async () => {
+    loadouts.value = [
+      {
+        id: "l2",
+        name: "Medical run",
+        public: false,
+        kind: "fleetyards",
+        active: false,
+        updatedAt: "2026-10-01T00:00:00Z",
+        items: [],
+      },
+    ];
+    const wrapper = await mountModal(vehicle(["m1"]), { loadoutId: "l2" });
+    await flushPromises();
+
+    const input = wrapper.get("[data-test='vehicle-loadout-name'] input");
+    const enter = new KeyboardEvent("keydown", {
+      key: "Enter",
+      bubbles: true,
+      cancelable: true,
+    });
+    input.element.dispatchEvent(enter);
+    await flushPromises();
+
+    expect(enter.defaultPrevented).toBe(true);
+    expect(updateVehicleLoadout).not.toHaveBeenCalled();
+  });
+
   it("edits the saved loadout it was opened for, without activating it", async () => {
     loadouts.value = [
       {
         id: "l2",
         name: "Medical run",
+        public: false,
         kind: "fleetyards",
         active: false,
         updatedAt: "2026-10-01T00:00:00Z",

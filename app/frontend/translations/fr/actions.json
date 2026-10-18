@@ -605,6 +605,11 @@
         "newLoadout": "Nouvel équipement",
         "saveLoadout": "Enregistrer l’équipement",
         "saveAsNewLoadout": "Enregistrer comme nouvel équipement",
+        "openLoadoutPage": "Ouvrir la page du loadout",
+        "makePublic": "Rendre public",
+        "makePrivate": "Rendre privé",
+        "linkInstead": "Lier un build à la place",
+        "createOnFleetyards": "Créer un loadout sur Fleetyards",
         "viewLoadout": "Voir l’équipement"
       }
     }

@@ -3,6 +3,7 @@
 json.id vehicle_loadout.id
 json.name vehicle_loadout.name
 json.active vehicle_loadout.active
+json.public vehicle_loadout.public
 json.kind vehicle_loadout.kind
 # Left out rather than null on a fleetyards loadout, which links nowhere.
 json.url vehicle_loadout.url if vehicle_loadout.url.present?
