@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import HangarSyncResult from "./index.vue";
 import type { SyncProcessStep } from "./types";
@@ -6,6 +6,16 @@ import {
   type HangarSyncResult as Result,
   RsiHangarItemKindEnum,
 } from "@/services/fyApi";
+
+// jsdom has no matchMedia; the disclosures ask it for reduced motion.
+vi.stubGlobal(
+  "matchMedia",
+  vi.fn(() => ({
+    matches: false,
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+  })),
+);
 
 const mount = (processSteps: SyncProcessStep[]) =>
   mountWithDefaults(HangarSyncResult, {
@@ -295,16 +305,16 @@ describe("HangarSyncResult", () => {
       ).toContain("3 items could not be matched");
 
       const ships = wrapper.get("[data-test='sync-unmatched-missingModels']");
-      expect(ships.attributes("open")).toBeDefined();
+      expect(ships.get("button").attributes("aria-expanded")).toBe("true");
       expect(ships.findAll("li").map((item) => item.text())).toEqual([
         "Mystery Ship",
         "Unknown Variant",
       ]);
       expect(
         wrapper
-          .get("[data-test='sync-unmatched-missingUpgrades']")
-          .attributes("open"),
-      ).toBeUndefined();
+          .get("[data-test='sync-unmatched-missingUpgrades'] button")
+          .attributes("aria-expanded"),
+      ).toBe("false");
     });
   });
 

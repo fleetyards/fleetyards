@@ -11,6 +11,8 @@ import {
   AlertVariantsEnum,
 } from "@/shared/components/base/Alert/types";
 import SupportHint from "@/shared/components/SupportHint/index.vue";
+import Collapsed from "@/shared/components/Collapsed.vue";
+import { useReducedMotion } from "@/shared/composables/useReducedMotion";
 import SyncSteps from "@/frontend/components/Hangar/SyncSteps/index.vue";
 import type {
   SyncStep,
@@ -243,6 +245,29 @@ const unmatchedTotal = computed(() =>
   unmatchedGroups.value.reduce((sum, group) => sum + group.items.length, 0),
 );
 
+const { prefersReducedMotion } = useReducedMotion();
+
+const collapseDuration = computed(() => (prefersReducedMotion.value ? 1 : 200));
+
+const disclosureId = useId();
+
+const readOpen = ref(false);
+
+// The first group starts open, so the most common miss - a ship it could not
+// find - is in view without a click; any group the reader toggles keeps
+// their choice.
+const toggledGroups = ref<Record<string, boolean>>({});
+
+const groupOpen = (key: string, index: number) =>
+  toggledGroups.value[key] ?? index === 0;
+
+const toggleGroup = (key: string, index: number) => {
+  toggledGroups.value = {
+    ...toggledGroups.value,
+    [key]: !groupOpen(key, index),
+  };
+};
+
 const incomplete = computed(() => !!props.result?.incomplete);
 
 const hasWarnings = computed(
@@ -297,14 +322,19 @@ const hasWarnings = computed(
           {{ t("labels.syncExtension.unmatchedHeading") }}
         </h3>
         <div class="hangar-sync-result__groups">
-          <details
+          <div
             v-for="(group, index) in unmatchedGroups"
             :key="group.key"
             class="hangar-sync-result__group"
-            :open="index === 0"
             :data-test="`sync-unmatched-${group.key}`"
           >
-            <summary class="hangar-sync-result__summary">
+            <button
+              type="button"
+              class="hangar-sync-result__summary"
+              :aria-expanded="groupOpen(group.key, index)"
+              :aria-controls="`${disclosureId}-${group.key}`"
+              @click="toggleGroup(group.key, index)"
+            >
               <i
                 class="fa-light fa-chevron-right hangar-sync-result__chevron"
                 aria-hidden="true"
@@ -315,21 +345,30 @@ const hasWarnings = computed(
               <span class="hangar-sync-result__count">
                 {{ group.items.length }}
               </span>
-            </summary>
-            <ul class="hangar-sync-result__items">
-              <li v-for="item in group.items" :key="`${group.key}-${item}`">
-                {{ item }}
-              </li>
-            </ul>
-          </details>
+            </button>
+            <Collapsed
+              :id="`${disclosureId}-${group.key}`"
+              :visible="groupOpen(group.key, index)"
+              :duration="collapseDuration"
+            >
+              <ul class="hangar-sync-result__items">
+                <li v-for="item in group.items" :key="`${group.key}-${item}`">
+                  {{ item }}
+                </li>
+              </ul>
+            </Collapsed>
+          </div>
         </div>
       </section>
 
-      <details
-        class="hangar-sync-result__group hangar-sync-result__read"
-        data-test="sync-read"
-      >
-        <summary class="hangar-sync-result__summary">
+      <div class="hangar-sync-result__read" data-test="sync-read">
+        <button
+          type="button"
+          class="hangar-sync-result__summary"
+          :aria-expanded="readOpen"
+          :aria-controls="`${disclosureId}-read`"
+          @click="readOpen = !readOpen"
+        >
           <i
             class="fa-light fa-chevron-right hangar-sync-result__chevron"
             aria-hidden="true"
@@ -345,18 +384,24 @@ const hasWarnings = computed(
               })
             }}
           </span>
-        </summary>
-        <dl class="hangar-sync-result__chips">
-          <div
-            v-for="entry in readCounts"
-            :key="entry.key"
-            class="hangar-sync-result__chip"
-          >
-            <dt :data-test="entry.dataTest">{{ entry.label }}</dt>
-            <dd>{{ entry.count }}</dd>
-          </div>
-        </dl>
-      </details>
+        </button>
+        <Collapsed
+          :id="`${disclosureId}-read`"
+          :visible="readOpen"
+          :duration="collapseDuration"
+        >
+          <dl class="hangar-sync-result__chips">
+            <div
+              v-for="entry in readCounts"
+              :key="entry.key"
+              class="hangar-sync-result__chip"
+            >
+              <dt :data-test="entry.dataTest">{{ entry.label }}</dt>
+              <dd>{{ entry.count }}</dd>
+            </div>
+          </dl>
+        </Collapsed>
+      </div>
 
       <transition name="fade">
         <SupportHint
@@ -466,12 +511,23 @@ const hasWarnings = computed(
   display: flex;
   align-items: center;
   gap: 10px;
+  width: 100%;
   padding: 11px 14px;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-surface-slim, 12px);
   cursor: pointer;
-  list-style: none;
 
-  &::-webkit-details-marker {
-    display: none;
+  &:hover {
+    color: var(--color-lifted, #eee);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary, #428bca);
+    outline-offset: -2px;
   }
 }
 
@@ -480,7 +536,8 @@ const hasWarnings = computed(
   transition: transform 150ms ease;
 }
 
-details[open] > .hangar-sync-result__summary .hangar-sync-result__chevron {
+.hangar-sync-result__summary[aria-expanded="true"]
+  .hangar-sync-result__chevron {
   transform: rotate(90deg);
 }
 
