@@ -798,11 +798,21 @@ const save = () => {
 }
 
 /* ---------- grid ----------
-   auto-fill from 220px: four across the wide modal, and it steps down to one on
-   a phone without a breakpoint per column count. */
+   auto-fill from 220px: four across the wide modal and fewer as it narrows,
+   without a breakpoint per column count. */
 .model-picker__grid {
   @apply grid gap-3;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+
+/* At least two across once folded, where 220px would leave a phone with one.
+   The min() holds two below 312px, where two 150px cards and the gap no longer
+   fit; a tablet still gets three or more. */
+.model-picker--folded .model-picker__grid {
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(min(150px, calc((100% - 12px) / 2)), 1fr)
+  );
 }
 
 /* Re-filtering leaves the old results readable rather than blanking the grid,

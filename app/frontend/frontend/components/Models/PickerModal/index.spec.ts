@@ -178,6 +178,7 @@ describe("Models/PickerModal", () => {
     expect(manufacturer).toHaveLength(1);
     expect(more.element.contains(manufacturer[0]?.element ?? null)).toBe(true);
     expect(more.element.parentElement?.style.display).toBe("none");
+    expect(wrapper.find(".model-picker--folded").exists()).toBe(true);
   });
 
   it("folds the container load away on a phone and counts it", async () => {
