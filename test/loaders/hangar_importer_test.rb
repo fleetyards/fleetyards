@@ -41,6 +41,20 @@ class HangarImporterTest < ActiveSupport::TestCase
     refute_nil import.reload.import_data
   end
 
+  test "keeps the ships beside an entry that is not an object" do
+    file = Tempfile.new(["import", ".json"])
+    file.write([@model.name, {name: @model.name}].to_json)
+    file.rewind
+    import = ::Imports::HangarImport.create!(
+      user_id: @user.id,
+      import: Rack::Test::UploadedFile.new(file.path, "application/json")
+    )
+
+    assert_equal [{name: @model.name}], import.reload.import_data
+  ensure
+    file&.close!
+  end
+
   test "records no versions" do
     assert_no_difference -> { PaperTrail::Version.where(item_type: "Vehicle").count } do
       ::HangarImporter.new(@import).run
