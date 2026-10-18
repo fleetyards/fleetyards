@@ -39,6 +39,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
   document.removeEventListener("click", documentClick);
   document.body.classList.remove("nav-swiping");
+  document.body.style.removeProperty("--nav-swipe-offset");
 
   closeNav();
 });
