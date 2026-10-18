@@ -129,6 +129,24 @@ module ScData
         assert_equal ["carryable", nil], parsed.fetch("ori_game_chess_1_king_a").values_at("equipment_type", "item_type")
       end
 
+      test "reads the mobiGlas casings and thruster packs from the suit folder, and nothing else there" do
+        write_equipment("mobiglas_02", name: "@item_Name_mobiglas_02", path: "entities/scitem/suit", type: "MobiGlas")
+        write_equipment("m_slaver_medium_jetpack", name: "@item_Name_fireshot",
+          path: "entities/scitem/suit/thrusterpack/slaver", type: "Suit", sub_type: "ThrusterPack")
+        write_equipment("rrs_radar_suit", name: "@item_Name_radar", path: "entities/scitem/suit", type: "Radar")
+        @parser.translations = {
+          "item_Name_hdh_boots_01_01_13" => "Novian \"Nighthunter\" Boots",
+          "item_Name_mobiglas_02" => "mobiGlas Crimson Casing",
+          "item_Name_fireshot" => "F1M-Fireshot",
+          "item_Name_radar" => "Suit Radar"
+        }
+
+        assert_equal %w[clothing mobiglas_casing], parsed.fetch("mobiglas_02").values_at("equipment_type", "item_type")
+        assert_equal %w[armor thruster_pack],
+          parsed.fetch("m_slaver_medium_jetpack").values_at("equipment_type", "item_type")
+        assert_not parsed.key?("rrs_radar_suit")
+      end
+
       # Harvestables, SLAM and the commodity crates carry a commodity's name,
       # and the commodities parser loads them from the same records.
       test "leaves out the carryables that are cargo, commodities or mission props" do

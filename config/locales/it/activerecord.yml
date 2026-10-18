@@ -133,6 +133,7 @@ it:
           mining_gadget: Gadget minerario
           mining_tool: Strumento da miniera
           missile_launcher: Lanciamissili
+          mobiglas_casing: Guscio per mobiGlas
           multitool: Multiutensile
           nurse: Infermiere
           nvtc: NVTC
@@ -161,6 +162,7 @@ it:
           suit: Completo
           super_heavy_armor: Armatura superpesante
           surgeon: Chirurgo
+          thruster_pack: Zaino propulsore
           tiesim: Tiesim
           tophat: Cilindro
           toxic: Tuta anticontaminazione

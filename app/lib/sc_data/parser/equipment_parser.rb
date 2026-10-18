@@ -27,10 +27,22 @@ module ScData
         "entities/scitem/flair" => "flair",
         "entities/scitem/carryables/1h" => nil,
         "entities/scitem/carryables/2h" => nil,
-        "entities/scitem/carryables/tractorbeamonly" => nil
+        "entities/scitem/carryables/tractorbeamonly" => nil,
+        "entities/scitem/suit" => :suit
+      }.freeze
+
+      # The suit folder holds the mobiGlas casings and the thruster packs: worn
+      # gear whose AttachDef names neither a slot nor a family. The rest of it --
+      # radar, displays, a test armour -- is part of a suit rather than something
+      # bought for one.
+      SUIT_TYPES = {
+        "MobiGlas" => %w[clothing mobiglas_casing],
+        "ThrusterPack" => %w[armor thruster_pack]
       }.freeze
 
       CARRIED_EQUIPMENT_TYPES = %w[mining_gadget flair carryable container sustenance].freeze
+
+      SUIT_ITEM_TYPES = SUIT_TYPES.values.map(&:last).freeze
 
       # Gear the carried folders hold among props. The game files the flares
       # with the flair and calls them grenades, and the tool cases are "Misc",
@@ -184,7 +196,8 @@ module ScData
       #
       # A carried prop's key names no maker -- the same plushie is filed as
       # plushy_orison_whale_1_a and carryable_1h_cy_toy_plushy_orison_whale_1_a
-      # -- so its type stands in for the prefix.
+      # -- so its type stands in for the prefix. The suit gear's keys name the
+      # wearer's sex instead, so its item type does.
       private def mark_skins(parsed)
         parsed.group_by { |item| item[:name] }.each_value do |named|
           next if named.one?
@@ -199,6 +212,7 @@ module ScData
 
       private def skin_family(item)
         return item[:equipment_type] if CARRIED_EQUIPMENT_TYPES.include?(item[:equipment_type])
+        return item[:item_type] if SUIT_ITEM_TYPES.include?(item[:item_type])
 
         item[:key].split("_").first(2).join("_")
       end
@@ -265,6 +279,7 @@ module ScData
         return picked.drop(1) if picked
         return if CARRIED_NOISE.match?(key)
         return if names_commodity?(attach_def, values)
+        return SUIT_TYPES[attach_def["Type"]] || SUIT_TYPES[attach_def["SubType"]] if item[:carried] == :suit
         return [item[:carried]] if item[:carried].present?
         return carried_consumable_types(attach_def, key) if CONSUMABLE_ATTACH_TYPES.include?(attach_def["Type"])
         return [CARRIED_TYPES[attach_def["Type"]]] if CARRIED_TYPES.key?(attach_def["Type"])
