@@ -2434,7 +2434,9 @@
           "signedOut": "請登入以取得您的專屬支持者金鑰。",
           "patreonNote": "透過您的電子郵件連結，不需金鑰",
           "label": "您的金鑰",
-          "hint": "將其貼到 PayPal、Ko-fi 或 Buy me a coffee 付款的留言中，付款即可與您的帳號連結。Patreon 則透過電子郵件連結。"
+          "hint": "將其貼到 PayPal、Ko-fi 或 Buy me a coffee 付款的留言中，付款即可與您的帳號連結。Patreon 則透過電子郵件連結。",
+          "listed": "是否在支持者頁面上顯示您的使用者名稱由您決定：",
+          "listedLink": "隱私設定"
         }
       },
       "filters": {

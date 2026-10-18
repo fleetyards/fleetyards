@@ -39,6 +39,11 @@ const router = createRouter({
   routes: [
     { path: "/", name: "home", component: { template: "<div />" } },
     { path: "/login", name: "login", component: { template: "<div />" } },
+    {
+      path: "/settings/privacy",
+      name: "settings-privacy",
+      component: { template: "<div />" },
+    },
   ],
 });
 
@@ -97,6 +102,25 @@ describe("SupportContent", () => {
     const wrapper = await mount();
 
     expect(wrapper.find("[data-test='claim-key-signed-out']").exists()).toBe(
+      false,
+    );
+  });
+
+  it("points a signed-in supporter at the privacy settings", async () => {
+    const wrapper = await mount();
+
+    expect(
+      wrapper.find("[data-test='supporter-listed-hint'] a").attributes("href"),
+    ).toBe("/settings/privacy");
+  });
+
+  it("shows no privacy settings hint when signed out", async () => {
+    authenticated.value = false;
+    claimKey.value = undefined;
+
+    const wrapper = await mount();
+
+    expect(wrapper.find("[data-test='supporter-listed-hint']").exists()).toBe(
       false,
     );
   });

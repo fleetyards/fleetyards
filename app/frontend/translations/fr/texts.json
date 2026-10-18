@@ -289,9 +289,9 @@
       },
       "settings": {
         "privacy": {
-          "tracking": "Lorsque cette option est activée, nous comptabilisons les pages que vous visitez pour voir quelles parties du site sont utilisées. Les adresses IP sont anonymisées, rien n'est stocké sur votre appareil, et les visites individuelles sont supprimées au bout d'un mois. La désactiver arrête complètement l'enregistrement.",
-          "onlineStatus": "Lorsque cette option est activée, les membres de vos flottes et vos amis voient un point à côté de votre nom tant que FleetYards est ouvert. La désactiver le leur masque — rien d'autre ne change, et votre dernière activité reste affichée.",
-          "supporterListed": "Choisis si tes dons sont cités sur la page des soutiens. C'est ton nom d'utilisateur qui apparaît, jamais le nom saisi lors du paiement, et les dons masqués comptent toujours pour l'objectif mensuel. En gardant le choix fait lors du don, chaque don Ko-fi conserve ce que tu as choisi là-bas et les contributions Patreon restent masquées."
+          "tracking": "Compte de façon anonyme les pages que vous visitez, sans rien stocker sur votre appareil. Les visites sont supprimées au bout d'un mois.",
+          "onlineStatus": "Affiche aux membres de vos flottes et à vos amis un point à côté de votre nom tant que FleetYards est ouvert. Votre dernière activité reste visible dans tous les cas.",
+          "supporterListed": "Si ton nom d'utilisateur — jamais le nom utilisé pour payer — apparaît sur la page des soutiens. Les dons masqués comptent toujours pour l'objectif, et les contributions Patreon restent masquées sauf si tu les affiches."
         },
         "notifications": {
           "hint": "Choisissez comment chaque événement vous parvient. Les notifications de l'application sont regroupées dans votre centre de notifications, les emails sont envoyés à l'adresse de votre compte.",

@@ -2434,7 +2434,9 @@
           "signedOut": "Please log in to get your personal supporter key.",
           "patreonNote": "matched by your email, no key needed",
           "label": "Your key",
-          "hint": "Paste it into the message on a PayPal, Ko-fi or Buy me a coffee payment and it links to your account. Patreon matches you by email instead."
+          "hint": "Paste it into the message on a PayPal, Ko-fi or Buy me a coffee payment and it links to your account. Patreon matches you by email instead.",
+          "listed": "Whether your username appears on the supporters page is up to you:",
+          "listedLink": "Privacy settings"
         }
       },
       "filters": {

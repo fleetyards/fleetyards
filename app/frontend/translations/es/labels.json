@@ -2434,7 +2434,9 @@
           "signedOut": "Inicia sesión para obtener tu clave personal de patrocinador.",
           "patreonNote": "se asocia mediante tu correo, no hace falta clave",
           "label": "Tu clave",
-          "hint": "Pégala en el mensaje de un pago por PayPal, Ko-fi o Buy me a coffee y se asociará a tu cuenta. En Patreon la asociación se hace por correo electrónico."
+          "hint": "Pégala en el mensaje de un pago por PayPal, Ko-fi o Buy me a coffee y se asociará a tu cuenta. En Patreon la asociación se hace por correo electrónico.",
+          "listed": "Tú decides si tu nombre de usuario aparece en la página de colaboradores:",
+          "listedLink": "Ajustes de privacidad"
         }
       },
       "filters": {
