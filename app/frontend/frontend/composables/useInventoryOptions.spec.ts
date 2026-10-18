@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { unitsForCategory } from "./useInventoryOptions";
+import {
+  INVENTORY_CATEGORIES,
+  INVENTORY_EQUIPMENT_TYPES,
+  unitsForCategory,
+} from "./useInventoryOptions";
 
 describe("unitsForCategory", () => {
   it("measures bulk cargo in SCU and gear per piece", () => {
@@ -35,5 +39,17 @@ describe("unitsForCategory", () => {
 
   it("offers both for a category nothing has a habit for", () => {
     expect(unitsForCategory(undefined)).toEqual(["scu", "units"]);
+  });
+});
+
+describe("INVENTORY_EQUIPMENT_TYPES", () => {
+  // Commodities and components have catalogues of their own; every other
+  // category picks from the equipment table.
+  it("gives every category without its own catalogue a slice of equipment", () => {
+    expect(
+      INVENTORY_CATEGORIES.filter(
+        (category) => !(category in INVENTORY_EQUIPMENT_TYPES),
+      ),
+    ).toEqual(["commodity", "component"]);
   });
 });

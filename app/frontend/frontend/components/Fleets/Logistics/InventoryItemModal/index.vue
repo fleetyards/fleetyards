@@ -38,7 +38,10 @@ import {
   InventoryUnitEnum,
 } from "@/services/fyApi";
 import { type BaseSelectParams } from "@/shared/components/base/Select/index.vue";
-import { useInventoryOptions } from "@/frontend/composables/useInventoryOptions";
+import {
+  INVENTORY_EQUIPMENT_TYPES,
+  useInventoryOptions,
+} from "@/frontend/composables/useInventoryOptions";
 
 type StockItem = {
   id: string;
@@ -134,16 +137,10 @@ const isCommodity = computed(
   () => category.value === InventoryCategoryEnum.COMMODITY,
 );
 
-// One table backs all three: the game files file magazines as weapon
-// attachments, so ammunition is not a catalogue of its own.
-const EQUIPMENT_CATEGORIES: InventoryCategoryEnum[] = [
-  InventoryCategoryEnum.WEAPON,
-  InventoryCategoryEnum.EQUIPMENT,
-  InventoryCategoryEnum.AMMUNITION,
-];
+const isEquipment = computed(() => category.value in INVENTORY_EQUIPMENT_TYPES);
 
-const isEquipment = computed(() =>
-  EQUIPMENT_CATEGORIES.includes(category.value),
+const equipmentTypes = computed(
+  () => INVENTORY_EQUIPMENT_TYPES[category.value] || [],
 );
 
 // A counted commodity is the only thing that puts `units` on offer under the
@@ -423,7 +420,11 @@ const onSubmit = handleSubmit(async (values) => {
         />
         <ComponentPicker v-if="isComponent" @select="applyPickedComponent" />
         <CommodityPicker v-if="isCommodity" @select="applyPickedCommodity" />
-        <EquipmentPicker v-if="isEquipment" @select="applyPickedEquipment" />
+        <EquipmentPicker
+          v-if="isEquipment"
+          :equipment-types="equipmentTypes"
+          @select="applyPickedEquipment"
+        />
       </template>
 
       <div class="row">

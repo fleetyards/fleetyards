@@ -19,7 +19,10 @@ import { BaseSelectVariantsEnum } from "@/shared/components/base/Select/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useInventoryOptions } from "@/frontend/composables/useInventoryOptions";
+import {
+  INVENTORY_EQUIPMENT_TYPES,
+  useInventoryOptions,
+} from "@/frontend/composables/useInventoryOptions";
 import ComponentPicker from "@/frontend/components/Logistics/ComponentPicker/index.vue";
 import CommodityPicker from "@/frontend/components/Logistics/CommodityPicker/index.vue";
 import EquipmentPicker from "@/frontend/components/Logistics/EquipmentPicker/index.vue";
@@ -130,42 +133,10 @@ const isCommodity = computed(
   () => category.value === InventoryCategoryEnum.COMMODITY,
 );
 
-// One table backs all three: the game files file magazines as weapon
-// attachments, so ammunition is not a catalogue of its own.
-const EQUIPMENT_CATEGORIES: InventoryCategoryEnum[] = [
-  InventoryCategoryEnum.WEAPON,
-  InventoryCategoryEnum.EQUIPMENT,
-  InventoryCategoryEnum.AMMUNITION,
-  InventoryCategoryEnum.CONSUMABLE,
-  InventoryCategoryEnum.OTHER,
-];
-
-const isEquipment = computed(() =>
-  EQUIPMENT_CATEGORIES.includes(category.value),
-);
-
-// Which slice of the equipment table each category means. Without it the picker
-// offers every type in the table — a hundred of them, mostly armour and
-// clothing — no matter which category is selected.
-const EQUIPMENT_TYPES_FOR_CATEGORY: Record<string, string[]> = {
-  [InventoryCategoryEnum.WEAPON]: ["weapon"],
-  [InventoryCategoryEnum.AMMUNITION]: ["weapon_attachment"],
-  [InventoryCategoryEnum.EQUIPMENT]: [
-    "armor",
-    "clothing",
-    "undersuit",
-    "tool",
-    "medical",
-    "hacking_tool",
-    "mining_gadget",
-    "container",
-  ],
-  [InventoryCategoryEnum.CONSUMABLE]: ["sustenance", "medical"],
-  [InventoryCategoryEnum.OTHER]: ["carryable", "flair"],
-};
+const isEquipment = computed(() => category.value in INVENTORY_EQUIPMENT_TYPES);
 
 const equipmentTypes = computed(
-  () => EQUIPMENT_TYPES_FOR_CATEGORY[category.value] || [],
+  () => INVENTORY_EQUIPMENT_TYPES[category.value] || [],
 );
 
 // A counted commodity is the only thing that puts `units` on offer under the
