@@ -84,4 +84,14 @@ describe("Hardpoints with a loadout's fitting", () => {
 
     wrapper.unmount();
   });
+
+  it("shows the fitting's figures whatever the model's in-game flag", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { model: { ...model, inGame: false }, fitting: [moduleSlot] },
+    });
+
+    expect(wrapper.find(".metrics-grid").exists()).toBe(true);
+
+    wrapper.unmount();
+  });
 });

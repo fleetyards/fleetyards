@@ -239,9 +239,12 @@ provide(
 );
 
 // Every metrics card is derived from the game-files loadout, which only
-// flight-ready ships have — those always carry stats, so no per-card guard.
+// flight-ready ships have — those always carry stats, so no per-card guard. A
+// loadout's fitting is read from the game files whatever the model's flag.
 const showMetrics = computed(
-  () => props.model.inGame && source.value === HardpointSourceEnum.GAME_FILES,
+  () =>
+    (props.model.inGame || !!props.fitting) &&
+    source.value === HardpointSourceEnum.GAME_FILES,
 );
 
 const metricsGrid = ref<HTMLElement>();
