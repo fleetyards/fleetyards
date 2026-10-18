@@ -296,7 +296,7 @@ const edit = () => {
             />
 
             <Empty
-              v-else-if="!fittingPending"
+              v-else-if="!fittingPending && model"
               variant="box"
               hide-actions
               data-test="vehicle-loadout-page-empty"
