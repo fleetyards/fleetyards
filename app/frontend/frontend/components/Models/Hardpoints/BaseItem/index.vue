@@ -62,6 +62,10 @@ const toggleExpanded = () => {
   expanded.value = !expanded.value;
 };
 
+// What sits inside the part -- a turret's guns, a rack's missiles -- shown
+// until folded away, as the loadout editor does.
+const childrenOpen = ref(true);
+
 // Only a real stack (>1 identical mount) collapses to a summary row; single
 // items always render, even when the global density is "expanded".
 const stackExpanded = computed(() => isGroup.value && expanded.value);
@@ -171,6 +175,22 @@ const hardpointNames = computed(() => {
     :class="{ 'hardpoint-item--clickable': isGroup || collapsible }"
     @click="onRowClick"
   >
+    <template v-if="loadout.length" #actions>
+      <button
+        type="button"
+        class="hardpoint-item__ctl"
+        :aria-expanded="childrenOpen"
+        :aria-label="t(childrenOpen ? 'labels.collapse' : 'labels.expand')"
+        data-test="hardpoint-children-toggle"
+        @click.stop="childrenOpen = !childrenOpen"
+      >
+        <i
+          class="fa-solid"
+          :class="childrenOpen ? 'fa-chevron-up' : 'fa-chevron-down'"
+          aria-hidden="true"
+        />
+      </button>
+    </template>
     <!-- The loadout editor's stack control: split a stack into its slots, or
       fold a split one back. The rest of the row toggles it too. -->
     <template v-if="isGroup || collapsible" #stack>
@@ -250,15 +270,17 @@ const hardpointNames = computed(() => {
       <HardpointStats :stats="inlineStats" />
     </template>
     <template #loadout>
-      <div v-if="loadout.length" class="hardpoint-item__loadout">
-        <HardpointBaseItem
-          v-for="(items, key) in groupedLoadout"
-          :key="key"
-          :hardpoints="items"
-          :count-multiplier="effectiveCount"
-          intended
-        />
-      </div>
+      <Collapsed v-if="loadout.length" :visible="childrenOpen" :duration="200">
+        <div class="hardpoint-item__loadout">
+          <HardpointBaseItem
+            v-for="(items, key) in groupedLoadout"
+            :key="key"
+            :hardpoints="items"
+            :count-multiplier="effectiveCount"
+            intended
+          />
+        </div>
+      </Collapsed>
     </template>
   </HardpointItem>
 

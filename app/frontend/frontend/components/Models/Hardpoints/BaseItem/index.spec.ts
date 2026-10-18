@@ -150,6 +150,34 @@ describe("HardpointBaseItem", () => {
     expect(expanded(wrapper)).toBe(false);
   });
 
+  it("shows what sits inside a part until its chevron folds it away", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        hardpoints: [
+          {
+            ...gun("mount", true),
+            name: "hardpoint_turret",
+            groupKey: "turret",
+            hardpoints: [gun("inner", true)],
+          } as unknown as Hardpoint,
+        ],
+      },
+      plugins: [router()],
+    });
+    wrappers.push(wrapper);
+
+    const children = () =>
+      wrapper.get(".hardpoint-item__loadout").element.parentElement!.style
+        .display;
+    expect(children()).not.toBe("none");
+
+    await wrapper
+      .get("[data-test='hardpoint-children-toggle']")
+      .trigger("click");
+
+    expect(children()).toBe("none");
+  });
+
   it("shows the figures a quantum drive ranks, in their order, on a row with a stats card", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: { hardpoints: [quantumDrive(HardpointSourceEnum.GAME_FILES)] },
