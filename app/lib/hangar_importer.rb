@@ -229,7 +229,8 @@ class HangarImporter
   end
 
   private def mapped_name(name)
-    hangar_xplor_mapping[name].presence ||
+    hangar_extension_mapping[name].presence ||
+      hangar_xplor_mapping[name].presence ||
       starship_42_mapping[name].presence ||
       legacy_mapping[name].presence ||
       name
@@ -350,9 +351,6 @@ class HangarImporter
       "Gatac Railen" => "Railen",
       "Carrack Expedition with Pisces Expedition" => "Carrack Expedition",
       "Carrack with Pisces Expedition" => "Carrack",
-      "Carrack w/C8X" => "Carrack",
-      "Carrack Expedition w/C8X" => "Carrack Expedition",
-      "Dragonfly Star Kitten" => "Dragonfly Starkitten Edition",
       "Mustang Omega : AMD Edition" => "Mustang Omega",
       "Nova Tank" => "Nova",
       "Pisces" => "C8 Pisces",
@@ -376,6 +374,14 @@ class HangarImporter
       "MOLE - Carbon Edition" => "Carbon",
       "MOLE - Talus Edition" => "Talus",
       "Gladius Dunlevy" => "Dunlevy"
+    }
+  end
+
+  private def hangar_extension_mapping
+    {
+      "Carrack w/C8X" => "Carrack",
+      "Carrack Expedition w/C8X" => "Carrack Expedition",
+      "Dragonfly Star Kitten" => "Dragonfly Starkitten Edition"
     }
   end
 
