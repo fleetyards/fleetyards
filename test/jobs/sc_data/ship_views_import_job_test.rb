@@ -86,7 +86,7 @@ module ScData
 
       perform
 
-      assert_equal Digest::MD5.hexdigest(padded), @model.top_view.blob.checksum.unpack1("m0").unpack1("H*")
+      assert_equal padded, @model.top_view.blob.download
       assert_equal [@model.top_view.blob.id], PreprocessRepresentationsJob.jobs.map { |job| job["args"].first }
     end
 
