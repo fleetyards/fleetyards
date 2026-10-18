@@ -40890,6 +40890,8 @@ components:
           type: string
         active:
           type: boolean
+        public:
+          type: boolean
         kind:
           "$ref": "#/components/schemas/VehicleLoadoutKindEnum"
         url:
@@ -40910,6 +40912,7 @@ components:
       required:
       - id
       - active
+      - public
       - kind
       - items
       - createdAt
@@ -40928,6 +40931,8 @@ components:
           type:
           - string
           - 'null'
+        public:
+          type: boolean
         items:
           type: array
           items:
@@ -41015,6 +41020,8 @@ components:
           type: string
         active:
           type: boolean
+        public:
+          type: boolean
         kind:
           "$ref": "#/components/schemas/VehicleLoadoutKindEnum"
         url:
@@ -41036,6 +41043,7 @@ components:
       - id
       - name
       - active
+      - public
       - kind
       - items
       - createdAt

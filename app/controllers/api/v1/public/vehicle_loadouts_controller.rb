@@ -18,11 +18,11 @@ module Api
         end
 
         # The same ships the public hangar lists, found by address like the
-        # plaque. A linked build lives on another site, so only fleetyards
-        # loadouts have a page.
+        # plaque, and only the loadouts their owner made public. A linked build
+        # lives on another site, so only fleetyards loadouts have a page.
         private def set_vehicle_loadout
           vehicle = @user.vehicles.purchased.public.at_address(params[:vehicle_id]).first!
-          @vehicle_loadout = vehicle.vehicle_loadouts.kind_fleetyards.find(params[:id])
+          @vehicle_loadout = vehicle.vehicle_loadouts.kind_fleetyards.public_loadouts.find(params[:id])
         end
       end
     end

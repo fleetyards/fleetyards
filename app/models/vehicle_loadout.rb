@@ -55,6 +55,10 @@ class VehicleLoadout < ApplicationRecord
 
   scope :active, -> { where(active: true) }
 
+  # What a visitor of a public hangar may see: the loadout's page, and the
+  # active one on the ship's plaque.
+  scope :public_loadouts, -> { where(public: true) }
+
   # Iterated rather than `update_all` so the loadout that stops being active
   # files a version too: a history saying only what was switched on would not
   # say what it replaced. Scoped to the active ones, which the switch itself

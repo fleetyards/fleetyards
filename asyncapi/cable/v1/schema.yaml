@@ -5247,6 +5247,8 @@ components:
           type: string
         active:
           type: boolean
+        public:
+          type: boolean
         kind:
           "$ref": "#/components/schemas/VehicleLoadoutKindEnum"
         url:
@@ -5268,6 +5270,7 @@ components:
       - id
       - name
       - active
+      - public
       - kind
       - items
       - createdAt

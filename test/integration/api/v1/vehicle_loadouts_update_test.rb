@@ -55,6 +55,18 @@ class Api::V1::VehicleLoadoutsUpdateTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT /vehicles/:vehicle_id/loadouts/:id makes the loadout public" do
+    loadout = create(:vehicle_loadout, vehicle: @vehicle)
+    sign_in @user
+
+    assert_api_response :put, 200,
+      path_params: {vehicle_id: @vehicle.id, id: loadout.id},
+      body: {public: true} do
+      assert parsed_body["public"]
+    end
+    assert loadout.reload.public?
+  end
+
   test "PUT /vehicles/:vehicle_id/loadouts/:id returns 404 for missing loadout" do
     sign_in @user
 

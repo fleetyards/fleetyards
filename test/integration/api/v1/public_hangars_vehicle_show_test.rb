@@ -45,6 +45,21 @@ class Api::V1::PublicHangarsVehicleShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /public/hangars/:username/vehicles/:id shows the active loadout only when it is public" do
+    @vehicle.update!(model: create(:model, production_status: "flight-ready"))
+    loadout = create(:vehicle_loadout, vehicle: @vehicle, active: true)
+
+    assert_api_response :get, 200, path_params: {username: @user.username, id: @vehicle.id} do
+      assert_nil parsed_body["activeLoadout"]
+    end
+
+    loadout.update!(public: true)
+
+    assert_api_response :get, 200, path_params: {username: @user.username, id: @vehicle.id} do
+      assert_equal loadout.id, parsed_body.dig("activeLoadout", "id")
+    end
+  end
+
   test "GET /public/hangars/:username/vehicles/:id finds a ship by the serial its address leads with" do
     @vehicle.update!(serial: "L8-4261-HA", name: "Contorta", name_visible: true)
 

@@ -12,6 +12,7 @@ module V1
             id: {type: :string, format: :uuid},
             name: {type: :string},
             active: {type: :boolean},
+            public: {type: :boolean},
             kind: ::V1::Schemas::Enums::VehicleLoadoutKindEnum,
             url: {type: :string},
             urlSource: {type: :string},
@@ -20,7 +21,7 @@ module V1
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id active kind items createdAt updatedAt]
+          required: %w[id active public kind items createdAt updatedAt]
         })
       end
     end

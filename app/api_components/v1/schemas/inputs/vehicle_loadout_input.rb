@@ -12,6 +12,7 @@ module V1
             name: {type: [:string, :null]},
             kind: ::V1::Schemas::Enums::VehicleLoadoutKindEnum,
             url: {type: [:string, :null]},
+            public: {type: :boolean},
             items: {type: :array, items: ::V1::Schemas::Inputs::VehicleLoadoutItemInput}
           },
           additionalProperties: false

@@ -73,7 +73,7 @@ class Api::V1::PublicHangarsVehicleLoadoutsTest < ActionDispatch::IntegrationTes
     create(:hardpoint, parent: model, sc_name: "hardpoint_power_plant", source: :game_files,
       types: ["PowerPlant"], min_size: 1, max_size: 1, component: stock)
 
-    @loadout = @vehicle.vehicle_loadouts.create!(kind: "fleetyards", name: "Hauler",
+    @loadout = @vehicle.vehicle_loadouts.create!(kind: "fleetyards", name: "Hauler", public: true,
       item_list: [{slot_path: "hardpoint_power_plant", item_type: "Component", item_id: upgrade.id}])
   end
 
@@ -113,8 +113,20 @@ class Api::V1::PublicHangarsVehicleLoadoutsTest < ActionDispatch::IntegrationTes
     assert_api_response :get, 404, api_path: SHOW, path_params: path
   end
 
+  test "GET /public/hangars/:username/vehicles/:vehicle_id/loadouts/:id returns 404 for a loadout its owner keeps private" do
+    @loadout.update!(public: false)
+
+    assert_api_response :get, 404, api_path: SHOW, path_params: path
+  end
+
+  test "GET /public/hangars/:username/vehicles/:vehicle_id/loadouts/:id/slots returns 404 for a loadout its owner keeps private" do
+    @loadout.update!(public: false)
+
+    assert_api_response :get, 404, api_path: SLOTS, path_params: path
+  end
+
   test "GET /public/hangars/:username/vehicles/:vehicle_id/loadouts/:id returns 404 for a linked build" do
-    link = @vehicle.vehicle_loadouts.create!(kind: "link", url: "https://www.erkul.games/loadout/abc")
+    link = @vehicle.vehicle_loadouts.create!(kind: "link", url: "https://www.erkul.games/loadout/abc", public: true)
 
     assert_api_response :get, 404, api_path: SHOW, path_params: path(loadout: link)
   end
