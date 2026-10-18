@@ -96,7 +96,8 @@
 
 .hardpoint-item__stack {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-end;
   gap: 4px;
 }
 
