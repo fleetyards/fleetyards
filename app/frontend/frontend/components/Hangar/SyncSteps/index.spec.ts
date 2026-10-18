@@ -25,6 +25,23 @@ describe("HangarSyncSteps", () => {
     ).toBe("3");
   });
 
+  it("names each step's status for screen readers", async () => {
+    const wrapper = await mountSteps([
+      { key: "read", label: "Reading", status: "done" },
+      { key: "save", label: "Saving", status: "active" },
+    ]);
+
+    expect(wrapper.get("[data-test='sync-step-read'] .sr-only").text()).toBe(
+      "Done",
+    );
+    expect(
+      wrapper.get("[data-test='sync-step-save']").attributes("aria-current"),
+    ).toBe("step");
+    expect(
+      wrapper.get("[data-test='sync-step-read']").attributes("aria-current"),
+    ).toBeUndefined();
+  });
+
   it("reports a fraction where the step knows its total", async () => {
     const wrapper = await mountSteps([
       {

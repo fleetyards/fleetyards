@@ -3026,7 +3026,13 @@
           "groupedVehicles": "Rangés dans un groupe",
           "unchangedVehicles": "Laissés tels quels"
         },
-        "nothingChangedTitle": "Rien n'a changé"
+        "nothingChangedTitle": "Rien n'a changé",
+        "stepStatus": {
+          "pending": "Pas commencé",
+          "active": "En cours",
+          "done": "Terminé",
+          "failed": "Échoué"
+        }
       },
       "cargoGridViewer": {
         "capacity": "Capacité",

@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { useI18n } from "@/shared/composables/useI18n";
 import type { SyncStep } from "./types";
 
 type Props = {
@@ -12,6 +13,8 @@ type Props = {
 };
 
 defineProps<Props>();
+
+const { t } = useI18n();
 
 const progressAttrs = (step: SyncStep) => {
   if (!step.progress || step.progress === "indeterminate") return {};
@@ -40,6 +43,7 @@ const progressWidth = (step: SyncStep) => {
       :class="`sync-steps__step--${step.status}`"
       :data-test="`sync-step-${step.key}`"
       :data-status="step.status"
+      :aria-current="step.status === 'active' ? 'step' : undefined"
     >
       <div class="sync-steps__rail" aria-hidden="true">
         <span class="sync-steps__marker">
@@ -52,6 +56,9 @@ const progressWidth = (step: SyncStep) => {
       <div class="sync-steps__content">
         <div class="sync-steps__heading">
           <span class="sync-steps__label">{{ step.label }}</span>
+          <span class="sr-only">
+            {{ t(`labels.syncExtension.stepStatus.${step.status}`) }}
+          </span>
           <span v-if="step.detail" class="sync-steps__detail">
             {{ step.detail }}
           </span>

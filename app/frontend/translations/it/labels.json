@@ -3026,7 +3026,13 @@
           "groupedVehicles": "Inserite in un gruppo",
           "unchangedVehicles": "Lasciate invariate"
         },
-        "nothingChangedTitle": "Nulla è cambiato"
+        "nothingChangedTitle": "Nulla è cambiato",
+        "stepStatus": {
+          "pending": "Non iniziato",
+          "active": "In corso",
+          "done": "Completato",
+          "failed": "Non riuscito"
+        }
       },
       "cargoGridViewer": {
         "capacity": "Capacità",

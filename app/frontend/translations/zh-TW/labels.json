@@ -3026,7 +3026,13 @@
           "groupedVehicles": "已歸入分組",
           "unchangedVehicles": "保持不變"
         },
-        "nothingChangedTitle": "沒有任何變更"
+        "nothingChangedTitle": "沒有任何變更",
+        "stepStatus": {
+          "pending": "未開始",
+          "active": "進行中",
+          "done": "已完成",
+          "failed": "失敗"
+        }
       },
       "cargoGridViewer": {
         "capacity": "容量",
