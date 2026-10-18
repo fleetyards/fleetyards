@@ -8,6 +8,7 @@ export default {
 import { useComlink } from "@/shared/composables/useComlink";
 import { type OffCanvasOptions } from "./types";
 import { afterNextPaint } from "@/shared/utils/Transitions";
+import { useSwipeToDismiss } from "@/shared/composables/useSwipeToDismiss";
 
 // Matches the panel's transition duration in index.scss.
 const CLOSE_DURATION = 500;
@@ -104,11 +105,35 @@ const onDocumentClick = (event: Event) => {
   close();
 };
 
+const {
+  offset: swipeOffset,
+  dragging,
+  progress: swipeProgress,
+} = useSwipeToDismiss({
+  panel,
+  side,
+  enabled: isOpen,
+  onDismiss: close,
+});
+
+const panelStyle = computed(() => {
+  if (!dragging.value) return undefined;
+
+  return { transform: `translateX(${swipeOffset.value}px)` };
+});
+
+const backdropStyle = computed(() => {
+  if (!dragging.value) return undefined;
+
+  return { opacity: String(1 - swipeProgress.value) };
+});
+
 const panelClasses = computed(() => {
   return {
     show: isShow.value,
     in: isOpen.value,
     "off-canvas__panel--positioning": positioning.value,
+    "off-canvas__panel--dragging": dragging.value,
     "off-canvas__panel--left": side.value === "left",
     "off-canvas__panel--right": side.value === "right",
   };
@@ -117,10 +142,22 @@ const panelClasses = computed(() => {
 
 <template>
   <Teleport to="body">
-    <transition name="off-canvas-backdrop">
-      <div v-if="isShow" class="off-canvas__backdrop" @click="close" />
-    </transition>
-    <nav ref="panel" class="off-canvas__panel" :class="panelClasses">
+    <div
+      v-if="isShow"
+      class="off-canvas__backdrop"
+      :class="{
+        in: isOpen,
+        'off-canvas__backdrop--dragging': dragging,
+      }"
+      :style="backdropStyle"
+      @click="close"
+    />
+    <nav
+      ref="panel"
+      class="off-canvas__panel"
+      :class="panelClasses"
+      :style="panelStyle"
+    >
       <div v-if="title" class="off-canvas__header">
         <span class="off-canvas__title">{{ title }}</span>
       </div>
