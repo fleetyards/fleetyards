@@ -451,7 +451,11 @@ const save = () => {
 <template>
   <Modal :title="title">
     <!-- Enter belongs to the search and the quantity fields; only the button saves. -->
-    <form class="model-picker" @submit.prevent>
+    <form
+      class="model-picker"
+      :class="{ 'model-picker--folded': mobile }"
+      @submit.prevent
+    >
       <div class="model-picker__header">
         <div class="model-picker__toolbar">
           <FormInput
@@ -696,12 +700,12 @@ const save = () => {
   @apply min-w-[200px] flex-1;
 }
 
-/* On a phone the search shares its row with the filter toggle alone, and at
-   240px the toggle would drop to a row of its own on the narrowest screens. */
-@media (max-width: 992px) {
-  .model-picker__search {
-    @apply min-w-0;
-  }
+/* Folded, the search shares its row with the filter toggle alone, and at 240px
+   the toggle would drop to a row of its own on the narrowest screens. Keyed on
+   the same flag as the Teleport rather than a media query, so the two cannot
+   disagree at the breakpoint. */
+.model-picker--folded .model-picker__search {
+  @apply min-w-0;
 }
 
 /*
