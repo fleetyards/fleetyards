@@ -171,6 +171,15 @@ const editLoadout = (record: VehicleLoadout) => {
 
 const vehicleRoute = useVehicleRoute();
 
+// Where a loadout lives: here, or the site its link leads to.
+const kindOf = (record: VehicleLoadout) => {
+  if (record.kind === VehicleLoadoutKindEnum.FLEETYARDS) return "fleetyards";
+
+  return record.urlSource === "erkul" || record.urlSource === "spviewer"
+    ? record.urlSource
+    : "link";
+};
+
 const loadoutPage = (record: VehicleLoadout) =>
   vehicleRoute("hangar-vehicle-loadout", props.vehicle, {
     loadout: record.id,
@@ -218,58 +227,91 @@ const onActivate = async (record: VehicleLoadout) => {
     >
       <template #display="{ item }">
         <div class="loadouts-page__item-display">
-          <Pill
-            v-if="item.active"
-            :variant="PillVariantsEnum.SUCCESS"
-            uppercase
+          <!-- A name leads to the loadout: its page here, or the build on the
+               site it links to. -->
+          <router-link
+            v-if="item.kind === VehicleLoadoutKindEnum.FLEETYARDS"
+            :to="loadoutPage(item)"
+            class="loadouts-page__item-name"
+            :data-test="`loadout-page-${item.id}`"
           >
-            {{ t("labels.loadout.active") }}
-          </Pill>
-          <Pill
-            v-if="item.public"
-            :variant="PillVariantsEnum.NEUTRAL"
-            uppercase
-            :data-test="`loadout-public-${item.id}`"
+            {{ item.name }}
+          </router-link>
+          <a
+            v-else-if="item.url"
+            :href="item.url"
+            target="_blank"
+            rel="noopener"
+            class="loadouts-page__item-name"
+            :data-test="`loadout-link-${item.id}`"
           >
-            {{ t("labels.loadout.public") }}
-          </Pill>
-          <div class="loadouts-page__item-info">
-            <!-- A fleetyards loadout's name leads to its page. -->
-            <router-link
-              v-if="item.kind === VehicleLoadoutKindEnum.FLEETYARDS"
-              :to="loadoutPage(item)"
-              class="loadouts-page__item-name"
-              :data-test="`loadout-page-${item.id}`"
+            {{ item.name }}
+          </a>
+          <span v-else class="loadouts-page__item-name">
+            {{ item.name }}
+          </span>
+          <div class="loadouts-page__item-badges">
+            <Pill
+              v-if="item.active"
+              :variant="PillVariantsEnum.SUCCESS"
+              uppercase
             >
-              {{ item.name }}
-            </router-link>
-            <span v-else class="loadouts-page__item-name">
-              {{ item.name }}
-            </span>
-            <div v-if="item.url" class="loadouts-page__item-links">
-              <a :href="item.url" target="_blank" rel="noopener">
-                {{ item.urlSource || item.url }}
-              </a>
-            </div>
-            <div v-else class="loadouts-page__item-links">
-              {{ t("labels.loadout.fleetyards") }}
-            </div>
+              {{ t("labels.loadout.active") }}
+            </Pill>
+            <Pill
+              v-if="item.public"
+              :variant="PillVariantsEnum.NEUTRAL"
+              uppercase
+              :data-test="`loadout-public-${item.id}`"
+            >
+              {{ t("labels.loadout.public") }}
+            </Pill>
+            <Pill
+              :variant="PillVariantsEnum.NEUTRAL"
+              uppercase
+              :data-test="`loadout-kind-${item.id}`"
+            >
+              {{ t(`labels.loadout.kinds.${kindOf(item)}`) }}
+            </Pill>
           </div>
         </div>
       </template>
 
       <template #actions="{ item }">
+        <!-- The same buttons on every row, so the badges line up: a linked
+             build is viewed on its own site. -->
         <Btn
           v-if="item.kind === VehicleLoadoutKindEnum.FLEETYARDS"
           v-tooltip="t('actions.vehicleLoadout.viewLoadout')"
+          :aria-label="t('actions.vehicleLoadout.viewLoadout')"
           :data-test="`loadout-view-fitting-${item.id}`"
           @click="viewFitting(item)"
         >
           <i class="fa-duotone fa-up-right-and-down-left-from-center" />
         </Btn>
         <Btn
-          v-if="!item.active"
-          v-tooltip="t('labels.loadout.activate')"
+          v-else
+          v-tooltip="t('actions.vehicleLoadout.viewLoadout')"
+          :aria-label="t('actions.vehicleLoadout.viewLoadout')"
+          :href="item.url"
+          :data-test="`loadout-view-link-${item.id}`"
+        >
+          <i class="fa-duotone fa-up-right-and-down-left-from-center" />
+        </Btn>
+        <Btn
+          v-tooltip="
+            item.active
+              ? t('labels.loadout.active')
+              : t('labels.loadout.activate')
+          "
+          :aria-label="
+            item.active
+              ? t('labels.loadout.active')
+              : t('labels.loadout.activate')
+          "
+          :disabled="item.active"
+          :class="{ 'loadouts-page__activate--active': item.active }"
+          :data-test="`loadout-activate-${item.id}`"
           @click="onActivate(item)"
         >
           <i class="fa-duotone fa-circle-check" />
@@ -398,16 +440,29 @@ const onActivate = async (record: VehicleLoadout) => {
     align-items: center;
     gap: 10px;
     flex: 1;
-  }
-
-  &__item-info {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
+    min-width: 0;
   }
 
   &__item-name {
+    min-width: 0;
+    overflow: hidden;
     font-weight: 600;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  // The active loadout's switch, held on and in the colour of its badge.
+  &__activate--active i {
+    color: var(--color-success, #{$success});
+  }
+
+  // What kind of loadout it is and how it stands, at the row's far end.
+  &__item-badges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 6px;
+    margin-inline-start: auto;
   }
 
   &__edit-name {
@@ -416,12 +471,6 @@ const onActivate = async (record: VehicleLoadout) => {
 
   &__edit-url {
     flex: 2 !important;
-  }
-
-  &__item-links {
-    display: flex;
-    gap: 10px;
-    font-size: 0.85rem;
   }
 }
 </style>

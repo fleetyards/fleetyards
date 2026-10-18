@@ -1143,6 +1143,12 @@
         "fleetyards": "Configurazione Fleetyards",
         "namePlaceholder": "Nome configurazione...",
         "urlPlaceholder": "Incolla l'URL della configurazione di erkul.games o spviewer.eu...",
+        "kinds": {
+          "fleetyards": "Fleetyards",
+          "erkul": "Erkul",
+          "spviewer": "SPViewer",
+          "link": "Link"
+        },
         "public": "Pubblico",
         "private": "Privato",
         "empty": "Ancora nessuna configurazione. Creane una per iniziare.",

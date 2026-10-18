@@ -1143,6 +1143,12 @@
         "fleetyards": "Fleetyards 配裝",
         "namePlaceholder": "配置名稱...",
         "urlPlaceholder": "貼上 erkul.games 或 spviewer.eu 的配置網址...",
+        "kinds": {
+          "fleetyards": "Fleetyards",
+          "erkul": "Erkul",
+          "spviewer": "SPViewer",
+          "link": "連結"
+        },
         "public": "公開",
         "private": "私密",
         "empty": "尚無配置。建立一個開始使用。",

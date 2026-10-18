@@ -34,6 +34,18 @@ const { updateLoadout, loadouts, mutation, openLoadoutModal } = vi.hoisted(
         createdAt: "2026-10-01T00:00:00Z",
         updatedAt: "2026-10-01T00:00:00Z",
       },
+      {
+        id: "l3",
+        name: "Erkul build",
+        kind: "link",
+        url: "https://www.erkul.games/loadout/abc",
+        urlSource: "erkul",
+        active: false,
+        public: false,
+        items: [],
+        createdAt: "2026-10-01T00:00:00Z",
+        updatedAt: "2026-10-01T00:00:00Z",
+      },
     ],
   }),
 );
@@ -88,6 +100,15 @@ describe("HangarVehicleLoadoutsPage", () => {
     expect(
       wrapper.get("[data-test='loadout-page-l2']").attributes("href"),
     ).toContain("/loadouts/l2/");
+
+    const link = wrapper.get("[data-test='loadout-link-l3']");
+    expect(link.attributes("href")).toBe("https://www.erkul.games/loadout/abc");
+    expect(link.attributes("target")).toBe("_blank");
+
+    expect(wrapper.get("[data-test='loadout-kind-l2']").text()).toBe(
+      "Fleetyards",
+    );
+    expect(wrapper.get("[data-test='loadout-kind-l3']").text()).toBe("Erkul");
   });
 
   it("starts a new loadout on a ship without modules, which still has parts to fit", async () => {
@@ -126,5 +147,25 @@ describe("HangarVehicleLoadoutsPage", () => {
       vehicle,
       expect.objectContaining({ editable: true, loadoutId: "l2" }),
     );
+  });
+
+  it("gives every row the same buttons, a linked build viewed on its site", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { vehicle },
+    });
+
+    expect(wrapper.find("[data-test='loadout-view-fitting-l2']").exists()).toBe(
+      true,
+    );
+    expect(
+      wrapper.get("[data-test='loadout-view-link-l3']").attributes("href"),
+    ).toBe("https://www.erkul.games/loadout/abc");
+
+    const active = wrapper.get("[data-test='loadout-activate-l1']");
+    expect(active.attributes("disabled")).toBeDefined();
+    expect(active.classes()).toContain("loadouts-page__activate--active");
+    expect(
+      wrapper.get("[data-test='loadout-activate-l2']").attributes("disabled"),
+    ).toBeUndefined();
   });
 });

@@ -1143,6 +1143,12 @@
         "fleetyards": "Fleetyards-Loadout",
         "namePlaceholder": "Loadout-Name...",
         "urlPlaceholder": "Loadout-URL von erkul.games oder spviewer.eu einfügen...",
+        "kinds": {
+          "fleetyards": "Fleetyards",
+          "erkul": "Erkul",
+          "spviewer": "SPViewer",
+          "link": "Link"
+        },
         "public": "Öffentlich",
         "private": "Privat",
         "empty": "Noch keine Loadouts. Erstelle eines, um loszulegen.",

@@ -1143,6 +1143,12 @@
         "fleetyards": "Fleetyards loadout",
         "namePlaceholder": "Loadout name...",
         "urlPlaceholder": "Paste erkul.games or spviewer.eu loadout URL...",
+        "kinds": {
+          "fleetyards": "Fleetyards",
+          "erkul": "Erkul",
+          "spviewer": "SPViewer",
+          "link": "Link"
+        },
         "public": "Public",
         "private": "Private",
         "empty": "No loadouts yet. Create one to get started.",
