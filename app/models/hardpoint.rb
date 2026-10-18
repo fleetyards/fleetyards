@@ -175,7 +175,7 @@ class Hardpoint < ApplicationRecord
       :thruster
     when "seat"
       :seat
-    when "utility", "ore_pods" # , "salvagemunching"
+    when "utility" # , "salvagemunching"
       :auxiliary
     when "armor", "countermeasures"
       :defense

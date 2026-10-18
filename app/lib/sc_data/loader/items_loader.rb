@@ -1,14 +1,17 @@
 module ScData
   module Loader
     class ItemsLoader < ::ScData::Loader::BaseLoader
-      # The ore pods a mining ship carries are the only containers among the
-      # utility parts. A player buys and hauls them on their own, so they get a
-      # category of their own rather than hiding among 140 utility rows.
-      ORE_POD_TYPE = "Container"
+      # A player buys and hauls the ore pods a mining ship carries on their
+      # own, so they get a category of their own rather than hiding among 140
+      # utility rows. Matched by key as Hardpoint#ore_pod? does: a Raft's cargo
+      # pod is a utility `Container` too.
+      ORE_POD = /mining_pod/
 
       # The template a pod is cloned from and the folded copy a ship shows when
-      # the pod is stowed: the same pod twice, under the same name.
-      ORE_POD_VARIANT = /_(template|collapsed)\z/
+      # the pod is stowed: the same pod twice, under the same name. The folded
+      # one stays a utility part, so the slot it sits in is not counted as an
+      # ore pod.
+      ORE_POD_VARIANT = /mining_pod.*_(template|collapsed)\z/
       def all
         exported = load_items("items")
         items = exported.reject { |item| item["category"] == "inventory" }
@@ -44,7 +47,7 @@ module ScData
             update_params[:hidden] = false
           end
 
-          if update_params[:category] == "ore_pods" && ORE_POD_VARIANT.match?(normalized_key)
+          if ORE_POD_VARIANT.match?(normalized_key)
             update_params[:hidden] = true
           end
 
@@ -243,7 +246,9 @@ module ScData
       end
 
       private def category(item)
-        return "ore_pods" if item["category"] == "utility" && item["type"] == ORE_POD_TYPE
+        key = item["key"].to_s.downcase
+
+        return "ore_pods" if item["category"] == "utility" && ORE_POD.match?(key) && !key.end_with?("_collapsed")
 
         item["category"]
       end
