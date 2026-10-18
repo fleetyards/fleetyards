@@ -39,6 +39,7 @@ const ownedByContent = (from: EventTarget | null) => {
   while (node && node !== document.body) {
     if (
       ["INPUT", "TEXTAREA", "SELECT", "CANVAS"].includes(node.tagName) ||
+      node.getAttribute("role") === "slider" ||
       (node instanceof HTMLElement && node.isContentEditable)
     ) {
       return true;

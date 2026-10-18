@@ -52,8 +52,17 @@ const render = async (
           return h("div", [
             h("nav", { ref: panel, class: "panel" }, [
               h("input", { class: "range", type: "range" }),
+              h("div", { class: "slider", role: "slider" }, [
+                h("div", { class: "rail" }),
+              ]),
             ]),
             h("div", { class: "backdrop" }),
+            // Stands in for a useSwipeActions row, which keeps the moves of a
+            // swipe it has taken to itself.
+            h("div", {
+              class: "swipe-row",
+              onTouchmove: (event: Event) => event.stopPropagation(),
+            }),
           ]);
         };
       },
@@ -72,6 +81,8 @@ const render = async (
     panel,
     backdrop: wrapper.find(".backdrop").element as HTMLElement,
     range: wrapper.find(".range").element as HTMLElement,
+    rail: wrapper.find(".rail").element as HTMLElement,
+    swipeRow: wrapper.find(".swipe-row").element as HTMLElement,
   };
 };
 
@@ -227,6 +238,34 @@ describe("useSwipeToDismiss", () => {
     expect(state.offset).toBe(0);
 
     await release(range, at + 200);
+
+    expect(onDismiss).not.toHaveBeenCalled();
+
+    wrapper.unmount();
+  });
+
+  it("leaves a drag on a custom slider to the slider", async () => {
+    const { state, onDismiss, rail, wrapper } = await render("left");
+
+    const at = await drag(rail, [130, 0]);
+
+    expect(state.offset).toBe(0);
+
+    await release(rail, at + 200);
+
+    expect(onDismiss).not.toHaveBeenCalled();
+
+    wrapper.unmount();
+  });
+
+  it("leaves a swipe that a row keeps to itself to the row", async () => {
+    const { state, onDismiss, swipeRow, wrapper } = await render("left");
+
+    const at = await drag(swipeRow, [130, 0]);
+
+    expect(state.offset).toBe(0);
+
+    await release(swipeRow, at + 200);
 
     expect(onDismiss).not.toHaveBeenCalled();
 
