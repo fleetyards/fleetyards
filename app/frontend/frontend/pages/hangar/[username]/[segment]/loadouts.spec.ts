@@ -1,3 +1,5 @@
+import type { QueryClient } from "@tanstack/vue-query";
+import { flushPromises } from "@vue/test-utils";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { describe, expect, it, vi } from "vitest";
 import { ModelProductionStatusEnum, type Vehicle } from "@/services/fyApi";
@@ -178,13 +180,28 @@ describe("HangarVehicleLoadoutsPage", () => {
     });
 
     expect(wrapper.find("[data-test='loadout-edit-l1']").exists()).toBe(false);
+    const queryClient = wrapper.getCurrentComponent().appContext.provides
+      .VUE_QUERY_CLIENT as QueryClient;
+    queryClient.setQueryData(["vehicles", "v1", "loadouts"], loadouts);
+
     await wrapper.get("[data-test='loadout-visibility-l1']").trigger("click");
+    await flushPromises();
 
     expect(updateLoadout).toHaveBeenCalledWith({
       vehicleId: "v1",
       id: "l1",
       data: { public: true },
     });
+    // The row shows the answer before the refetch, so a second click turns
+    // it back rather than sending the same value again.
+    expect(
+      (
+        queryClient.getQueryData(["vehicles", "v1", "loadouts"]) as {
+          id: string;
+          public: boolean;
+        }[]
+      ).find(({ id }) => id === "l1")?.public,
+    ).toBe(true);
 
     editor.enabled = true;
   });

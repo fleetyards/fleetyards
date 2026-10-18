@@ -204,6 +204,16 @@ const activateMutation = useActivateVehicleLoadout({
   mutation: { onSettled: invalidateLoadouts },
 });
 
+// The rows, set from an answer at once, so a second click never reads the
+// value the first one already changed while the refetch is on its way.
+const updateCachedLoadouts = (
+  change: (loadout: VehicleLoadout) => VehicleLoadout,
+) =>
+  queryClient.setQueryData<VehicleLoadout[]>(
+    getVehicleLoadoutsQueryKey(props.vehicle.id),
+    (list) => list?.map(change),
+  );
+
 // One switch-on at a time, so the loadout left active is the last one clicked.
 const activating = activateMutation.isPending;
 
@@ -214,6 +224,10 @@ const onActivate = async (record: VehicleLoadout) => {
     vehicleId: props.vehicle.id,
     id: record.id,
   });
+  updateCachedLoadouts((loadout) => ({
+    ...loadout,
+    active: loadout.id === record.id,
+  }));
 };
 
 // Visibility is set in the editor; where the editor is not available it is
@@ -230,11 +244,15 @@ const onToggleVisibility = async (record: VehicleLoadout) => {
   if (visibilitySaving.value) return;
 
   try {
+    const value = !record.public;
     await visibilityMutation.mutateAsync({
       vehicleId: props.vehicle.id,
       id: record.id,
-      data: { public: !record.public },
+      data: { public: value },
     });
+    updateCachedLoadouts((loadout) =>
+      loadout.id === record.id ? { ...loadout, public: value } : loadout,
+    );
   } catch (error) {
     displayAlert({
       text: [t("messages.vehicleLoadout.failure"), firstErrorMessageFrom(error)]
