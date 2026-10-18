@@ -140,7 +140,7 @@ const seat: RowPresentation = {
 // that the slot is empty.
 const moduleSlot: RowPresentation = {
   label: (hardpoint, t) =>
-    hardpoint.component?.name || t("labels.hardpoint.moduleSlotEmpty"),
+    hardpoint.component?.name || t("labels.vehicleLoadout.nothingFitted"),
   headline: () => undefined,
   stats: () => [],
 };

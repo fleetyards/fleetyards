@@ -62,7 +62,7 @@ describe("rowPresentation", () => {
       slot.label?.(hardpoint({ component: { name: "Cargo Module" } }), t),
     ).toBe("Cargo Module");
     expect(slot.label?.(hardpoint({}), t)).toBe(
-      "labels.hardpoint.moduleSlotEmpty",
+      "labels.vehicleLoadout.nothingFitted",
     );
   });
 
