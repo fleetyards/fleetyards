@@ -6,10 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Alert from "@/shared/components/base/Alert/index.vue";
-import {
-  AlertSizesEnum,
-  AlertVariantsEnum,
-} from "@/shared/components/base/Alert/types";
+import { AlertVariantsEnum } from "@/shared/components/base/Alert/types";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import MessageBody from "@/shared/components/AppNotifications/Message/Body/index.vue";
@@ -75,7 +72,6 @@ const dismissInline = (event: MouseEvent) => {
     v-if="inline"
     class="support-hint support-hint--inline"
     :variant="AlertVariantsEnum.NEUTRAL"
-    :size="AlertSizesEnum.COMPACT"
     icon="fa-duotone fa-heart"
     :title="t(headlineKey)"
   >

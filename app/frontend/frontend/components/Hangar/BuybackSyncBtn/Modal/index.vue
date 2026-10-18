@@ -7,10 +7,7 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Alert from "@/shared/components/base/Alert/index.vue";
-import {
-  AlertSizesEnum,
-  AlertVariantsEnum,
-} from "@/shared/components/base/Alert/types";
+import { AlertVariantsEnum } from "@/shared/components/base/Alert/types";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import SupportHint from "@/shared/components/SupportHint/index.vue";
 import SyncSteps from "@/frontend/components/Hangar/SyncSteps/index.vue";
@@ -359,10 +356,7 @@ const cancelRun = () => {
       class="buyback-sync"
       data-test="buyback-sync-outdated"
     >
-      <Alert
-        :variant="AlertVariantsEnum.WARNING"
-        :size="AlertSizesEnum.COMPACT"
-      >
+      <Alert :variant="AlertVariantsEnum.WARNING">
         {{ t("texts.buybackSync.unsupported") }}
         <template v-if="extensionInfo.version">
           {{ t("labels.buybackSync.extensionVersion") }}:
@@ -396,7 +390,6 @@ const cancelRun = () => {
       <Alert
         v-if="extensionSupportsDetails"
         :variant="AlertVariantsEnum.INFO"
-        :size="AlertSizesEnum.COMPACT"
         :title="t('labels.buybackSync.firstSyncTitle')"
       >
         {{ t("texts.buybackSync.detailsInfo") }}
@@ -404,7 +397,6 @@ const cancelRun = () => {
       <Alert
         v-if="detailsRunning"
         :variant="AlertVariantsEnum.WARNING"
-        :size="AlertSizesEnum.COMPACT"
         data-test="buyback-sync-details-running"
       >
         {{ t("texts.buybackSync.detailsRunning") }}
@@ -414,22 +406,17 @@ const cancelRun = () => {
       <Alert
         v-if="status === 'unsupported'"
         :variant="AlertVariantsEnum.WARNING"
-        :size="AlertSizesEnum.COMPACT"
       >
         {{ t("texts.buybackSync.unsupported") }}
       </Alert>
       <template v-else-if="settled">
-        <Alert
-          :variant="AlertVariantsEnum.SUCCESS"
-          :size="AlertSizesEnum.COMPACT"
-        >
+        <Alert :variant="AlertVariantsEnum.SUCCESS">
           {{ t("texts.buybackSync.finished") }}
         </Alert>
         <SyncResultTiles :tiles="resultTiles" />
         <Alert
           v-if="detailsIncomplete"
           :variant="AlertVariantsEnum.WARNING"
-          :size="AlertSizesEnum.COMPACT"
           data-test="buyback-sync-details-incomplete"
         >
           {{ t("texts.buybackSync.detailsIncomplete") }}
@@ -437,7 +424,6 @@ const cancelRun = () => {
         <Alert
           v-if="result?.detailsPending.length && !extensionSupportsDetails"
           :variant="AlertVariantsEnum.WARNING"
-          :size="AlertSizesEnum.COMPACT"
           data-test="buyback-sync-details-unsupported"
         >
           {{ t("texts.buybackSync.detailsUnsupported") }}
@@ -456,7 +442,6 @@ const cancelRun = () => {
         <Alert
           v-if="status === 'failed'"
           :variant="AlertVariantsEnum.DANGER"
-          :size="AlertSizesEnum.COMPACT"
           :title="t('labels.buybackSync.status.failed')"
         />
         <SyncSteps v-if="status !== 'failed' || failedAt" :steps="steps" />

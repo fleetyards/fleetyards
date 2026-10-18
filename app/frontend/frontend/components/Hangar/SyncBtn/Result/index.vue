@@ -6,10 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Alert from "@/shared/components/base/Alert/index.vue";
-import {
-  AlertSizesEnum,
-  AlertVariantsEnum,
-} from "@/shared/components/base/Alert/types";
+import { AlertVariantsEnum } from "@/shared/components/base/Alert/types";
 import SupportHint from "@/shared/components/SupportHint/index.vue";
 import Collapsed from "@/shared/components/Collapsed.vue";
 import { useReducedMotion } from "@/shared/composables/useReducedMotion";
@@ -315,7 +312,6 @@ const hasWarnings = computed(
         <Alert
           v-if="hasWarnings"
           :variant="AlertVariantsEnum.WARNING"
-          :size="AlertSizesEnum.COMPACT"
           :title="
             unmatchedTotal
               ? t('labels.syncExtension.unmatchedCount', {
@@ -335,11 +331,7 @@ const hasWarnings = computed(
             {{ t("labels.syncExtension.incomplete") }}
           </p>
         </Alert>
-        <Alert
-          v-else
-          :variant="AlertVariantsEnum.SUCCESS"
-          :size="AlertSizesEnum.COMPACT"
-        >
+        <Alert v-else :variant="AlertVariantsEnum.SUCCESS">
           {{ t("texts.syncExtension.finished") }}
         </Alert>
       </div>
@@ -450,13 +442,11 @@ const hasWarnings = computed(
         <Alert
           v-if="cancelled"
           :variant="AlertVariantsEnum.NEUTRAL"
-          :size="AlertSizesEnum.COMPACT"
           :title="t('labels.syncExtension.status.cancelled')"
         />
         <Alert
           v-else
           :variant="AlertVariantsEnum.DANGER"
-          :size="AlertSizesEnum.COMPACT"
           :title="
             failedStep
               ? t(`labels.syncExtension.failedStep.${failedStep.name}`)

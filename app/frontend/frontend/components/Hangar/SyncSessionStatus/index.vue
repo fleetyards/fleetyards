@@ -6,10 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Alert from "@/shared/components/base/Alert/index.vue";
-import {
-  AlertSizesEnum,
-  AlertVariantsEnum,
-} from "@/shared/components/base/Alert/types";
+import { AlertVariantsEnum } from "@/shared/components/base/Alert/types";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -42,7 +39,6 @@ const { t } = useI18n();
     <Alert
       v-if="props.status === 'notFound'"
       :variant="AlertVariantsEnum.WARNING"
-      :size="AlertSizesEnum.COMPACT"
       :title="t('texts.syncExtension.signedOutTitle')"
     >
       {{ t("texts.syncExtension.signedOut") }}

@@ -7,10 +7,7 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Alert from "@/shared/components/base/Alert/index.vue";
-import {
-  AlertSizesEnum,
-  AlertVariantsEnum,
-} from "@/shared/components/base/Alert/types";
+import { AlertVariantsEnum } from "@/shared/components/base/Alert/types";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -413,7 +410,6 @@ const refreshPage = async () => {
           <Alert
             v-if="missingUnmatchedGroup"
             :variant="AlertVariantsEnum.WARNING"
-            :size="AlertSizesEnum.COMPACT"
             data-test="sync-missing-unmatched-group"
           >
             {{ t("texts.syncExtension.missingUnmatchedGroup") }}
@@ -429,7 +425,6 @@ const refreshPage = async () => {
           <Alert
             v-if="hangarStore.syncRunning"
             :variant="AlertVariantsEnum.WARNING"
-            :size="AlertSizesEnum.COMPACT"
           >
             {{ t("texts.syncExtension.alreadyRunning") }}
           </Alert>
