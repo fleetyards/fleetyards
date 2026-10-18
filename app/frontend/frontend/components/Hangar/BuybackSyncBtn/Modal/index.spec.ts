@@ -287,7 +287,9 @@ describe("HangarBuybackSyncModal", () => {
         ],
       },
     });
-    expect(wrapper.find("[data-test='buyback-sync-added']").text()).toBe("2");
+    expect(
+      wrapper.find("[data-test='buyback-sync-added']").attributes("data-count"),
+    ).toBe("2");
   });
 
   it("keeps reading the list once the modal is closed", async () => {
@@ -336,7 +338,9 @@ describe("HangarBuybackSyncModal", () => {
 
     const wrapper = await mountModal(currentExtension);
 
-    expect(wrapper.find("[data-test='buyback-sync-added']").text()).toBe("2");
+    expect(
+      wrapper.find("[data-test='buyback-sync-added']").attributes("data-count"),
+    ).toBe("2");
     // A result offers no Start, so it needs no session check.
     expect(rsiIdentity).not.toHaveBeenCalled();
     wrapper.unmount();

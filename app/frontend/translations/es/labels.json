@@ -2958,7 +2958,7 @@
           "ccus": "Mejoras / CCU",
           "ccusNotSynced": "CCU (sin sincronizar)",
           "equipmentNotSynced": "Equipo FPS (no se sincroniza)",
-          "extras": "Otros objetos (se reparten entre decoración y equipo FPS)"
+          "extras": "Otros"
         },
         "importedItems": {
           "importedVehicles": "Naves agregadas",
@@ -2985,7 +2985,8 @@
         "stepDetails": {
           "reading": "Página %{page} · Pledges leídos hasta ahora: %{count}",
           "read": "Páginas leídas: %{pages} · Pledges: %{count}",
-          "saving": "Emparejando tus pledges con tu hangar…"
+          "saving": "Emparejando tus pledges con tu hangar…",
+          "page": "Página %{page}"
         },
         "unmatchedCount": {
           "one": "No se pudo emparejar 1 elemento",

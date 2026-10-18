@@ -197,7 +197,7 @@ describe("HangarSyncResult", () => {
 
     const text = wrapper.text();
     expect(text).toContain("FPS Gear (not synced)");
-    expect(text).toContain("Other Items (sorted into flair and FPS gear)");
+    expect(text).toContain("Other");
     expect(
       wrapper
         .find("[data-test='equipment-not-synced'] + dd")
@@ -290,7 +290,7 @@ describe("HangarSyncResult", () => {
       ).toBe(true);
       // A kind counts all of it, found and added; the new ones are a note.
       const ships = wrapper.get("[data-test='sync-result-tile-ships']");
-      expect(ships.get("dd").text()).toBe("3");
+      expect(ships.get("dd").attributes("data-count")).toBe("3");
       expect(ships.get("dt").text()).toContain("+2 new");
       // Nothing to show is not a tile reading zero.
       expect(

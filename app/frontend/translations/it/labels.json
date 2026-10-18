@@ -2958,7 +2958,7 @@
           "ccus": "Potenziamenti / CCU",
           "ccusNotSynced": "CCU (non sincronizzati)",
           "equipmentNotSynced": "Equipaggiamento FPS (non sincronizzato)",
-          "extras": "Altri oggetti (smistati tra decorazioni ed equipaggiamento FPS)"
+          "extras": "Altro"
         },
         "importedItems": {
           "importedVehicles": "Navi aggiunte",
@@ -2985,7 +2985,8 @@
         "stepDetails": {
           "reading": "Pagina %{page} · Pledge letti finora: %{count}",
           "read": "Pagine lette: %{pages} · Pledge: %{count}",
-          "saving": "Abbinamento dei tuoi pledge al tuo hangar…"
+          "saving": "Abbinamento dei tuoi pledge al tuo hangar…",
+          "page": "Pagina %{page}"
         },
         "unmatchedCount": {
           "one": "1 elemento non è stato abbinato",

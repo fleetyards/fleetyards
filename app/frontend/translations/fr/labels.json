@@ -2958,7 +2958,7 @@
           "ccus": "Améliorations / CCU",
           "ccusNotSynced": "CCU (non synchronisés)",
           "equipmentNotSynced": "Équipement FPS (non synchronisé)",
-          "extras": "Autres objets (répartis entre décorations et équipement FPS)"
+          "extras": "Autres"
         },
         "importedItems": {
           "importedVehicles": "Vaisseaux ajoutés",
@@ -2985,7 +2985,8 @@
         "stepDetails": {
           "reading": "Page %{page} · Pledges lus jusqu'ici : %{count}",
           "read": "Pages lues : %{pages} · Pledges : %{count}",
-          "saving": "Association de vos pledges à votre hangar…"
+          "saving": "Association de vos pledges à votre hangar…",
+          "page": "Page %{page}"
         },
         "unmatchedCount": {
           "one": "1 élément n'a pas pu être associé",

@@ -19,8 +19,6 @@ import type {
   SyncStepStatus,
 } from "@/frontend/components/Hangar/SyncSteps/types";
 import SyncResultTiles from "@/frontend/components/Hangar/SyncResultTiles/index.vue";
-import SyncReadCounts from "@/frontend/components/Hangar/SyncReadCounts/index.vue";
-import type { SyncReadCount } from "@/frontend/components/Hangar/SyncReadCounts/types";
 import type { SyncResultTile } from "@/frontend/components/Hangar/SyncResultTiles/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import type { RsiHangarItemInput, HangarSyncResult } from "@/services/fyApi";
@@ -91,20 +89,18 @@ const kind = (
   count: number,
   synced = true,
   dataTest?: string,
-): SyncReadCount => ({
+): SyncResultTile => ({
   key,
-  count,
+  value: count,
   label: t(
     `labels.syncExtension.pledgeItems.${synced ? key : `${key}NotSynced`}`,
   ),
   skipped: !synced,
-  dataTest: synced ? undefined : dataTest,
+  labelTest: synced ? undefined : dataTest,
 });
 
-// Every kind, zeros included: the grid is laid out once, when reading starts,
-// and only its numbers move after that.
-const readCounts = computed<SyncReadCount[]>(() => [
-  kind("pages", props.currentPage),
+// A kind shows once something of it is read.
+const allReadCounts = computed<SyncResultTile[]>(() => [
   kind("ships", countOf("ship")),
   kind("components", countOf("component")),
   kind("upgrades", countOf("upgrade")),
@@ -126,6 +122,10 @@ const readCounts = computed<SyncReadCount[]>(() => [
   kind("extras", rowsOf("extra")),
 ]);
 
+const readCounts = computed(() =>
+  allReadCounts.value.filter((tile) => Number(tile.value) > 0),
+);
+
 const STEP_STATUS: Record<SyncProcessStepStatus, SyncStepStatus> = {
   pending: "pending",
   processing: "active",
@@ -138,9 +138,9 @@ const stepDetail = (step: SyncProcessStep) => {
   if (step.name === "fetchHangar") {
     if (step.status === "pending") return undefined;
 
-    // While reading, the grid under the step carries the numbers.
+    // While reading, the tiles under the step carry the counts.
     return step.status === "processing"
-      ? undefined
+      ? t("labels.syncExtension.stepDetails.page", { page: props.currentPage })
       : t("labels.syncExtension.stepDetails.read", {
           pages: props.currentPage,
           count: items.value.length,
@@ -393,7 +393,7 @@ const hasWarnings = computed(
           :duration="collapseDuration"
         >
           <div class="hangar-sync-result__read-counts">
-            <SyncReadCounts :counts="readCounts" />
+            <SyncResultTiles :tiles="readCounts" />
           </div>
         </Collapsed>
       </div>
@@ -440,7 +440,7 @@ const hasWarnings = computed(
 
       <SyncSteps :steps="steps">
         <template #step-fetchHangar>
-          <SyncReadCounts v-if="readingStarted" :counts="readCounts" />
+          <SyncResultTiles v-if="readingStarted" :tiles="readCounts" />
         </template>
       </SyncSteps>
     </template>

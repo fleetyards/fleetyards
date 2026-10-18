@@ -2958,7 +2958,7 @@
           "ccus": "升级 / CCU",
           "ccusNotSynced": "CCU（未同步）",
           "equipmentNotSynced": "FPS 装备（不会同步）",
-          "extras": "其他物品（归入机库装饰和 FPS 装备）"
+          "extras": "其他"
         },
         "importedItems": {
           "importedVehicles": "已添加飞船",
@@ -2985,7 +2985,8 @@
         "stepDetails": {
           "reading": "第 %{page} 页 · 目前已读取承诺：%{count}",
           "read": "已读取页数：%{pages} · 承诺：%{count}",
-          "saving": "正在将你的承诺与机库匹配…"
+          "saving": "正在将你的承诺与机库匹配…",
+          "page": "第 %{page} 页"
         },
         "unmatchedCount": {
           "one": "有 1 项无法匹配",

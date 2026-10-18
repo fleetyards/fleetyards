@@ -2958,7 +2958,7 @@
           "ccus": "Upgrades / CCUs",
           "ccusNotSynced": "CCUs (not synced)",
           "equipmentNotSynced": "FPS Gear (not synced)",
-          "extras": "Other Items (sorted into flair and FPS gear)"
+          "extras": "Other"
         },
         "importedItems": {
           "importedVehicles": "Added Ships",
@@ -2985,7 +2985,8 @@
         "stepDetails": {
           "reading": "Page %{page} · Pledge items so far: %{count}",
           "read": "Pages read: %{pages} · Pledge items: %{count}",
-          "saving": "Matching your pledges to your hangar…"
+          "saving": "Matching your pledges to your hangar…",
+          "page": "Page %{page}"
         },
         "unmatchedCount": {
           "one": "1 item could not be matched",
