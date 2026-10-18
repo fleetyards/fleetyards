@@ -58,6 +58,34 @@ class HangarImportHangarExtensionTest < ActiveSupport::TestCase
     assert_equal ["Bengal Carrier"], result[:missing]
   end
 
+  test "skips the craft of every parent, one per parent" do
+    give_the_carrack_an_ursa
+    import = import_for([
+      {matrix: "Carrack", name: "Carrack"},
+      {matrix: "Carrack", name: "Carrack"},
+      {matrix: "Ursa", name: "Ursa", included_with: "Carrack"},
+      {matrix: "Ursa", name: "Ursa", included_with: "Carrack"}
+    ])
+
+    result = ::HangarImporter.new(import).run
+
+    assert_equal ["Carrack", "Carrack"], result[:imported]
+  end
+
+  # A rejected parent creates no loaners, so nothing stands in for the craft.
+  test "imports the craft of a parent the hangar rejected" do
+    give_the_carrack_an_ursa
+    Vehicle.create!(user_id: @user.id, model: Model.find_by!(name: "Avenger Titan"), serial: "L8-4261-HA")
+    import = import_for([
+      {matrix: "Carrack", name: "Carrack", ship_serial: "L8-4261-HA"},
+      {matrix: "Ursa", name: "Ursa", included_with: "Carrack"}
+    ])
+
+    ::HangarImporter.new(import).run
+
+    assert Vehicle.exists?(user_id: @user.id, model: Model.find_by!(name: "Ursa"), loaner: false, bundled: false)
+  end
+
   test "prefers the matrix name over the export alias" do
     import = import_for([{matrix: "F7C-M Super Hornet Heartseeker Mk I", name: "F7C-M Super Hornet Heartseeker"}])
 
@@ -80,6 +108,10 @@ class HangarImportHangarExtensionTest < ActiveSupport::TestCase
     result = ::HangarImporter.new(import).run
 
     assert_equal ["Bengal Carrier"], result[:missing]
+  end
+
+  def give_the_carrack_an_ursa
+    ModelLoaner.create!(model: Model.find_by!(name: "Carrack"), loaner_model: Model.find_by!(name: "Ursa"))
   end
 
   def import_of_example

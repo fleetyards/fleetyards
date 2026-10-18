@@ -49,7 +49,7 @@ class HangarImporter
     # parent created are kept.
     standalone, included = (@import.import_data || []).partition { |item| item[:included_with].blank? }
     items = standalone + included
-    derived_model_ids = {}
+    derived_craft = {}
 
     PaperTrail.request(enabled: false) do
       items.each_with_index do |item, index|
@@ -92,16 +92,18 @@ class HangarImporter
         model, model_paint = find_model_or_paint(names, slug)
         matched_model_id = model&.id || model_paint&.model_id
 
-        next if item[:included_with].present? && derived_model_ids[item[:included_with]]&.include?(matched_model_id)
-
-        record_derived_model_ids(derived_model_ids, item[:matrix], matched_model_id)
+        if item[:included_with].present? && derived_craft.dig(item[:included_with], matched_model_id).to_i.positive?
+          derived_craft[item[:included_with]][matched_model_id] -= 1
+          next
+        end
 
         if model.present?
-          Vehicle.create(params.merge(
+          vehicle = Vehicle.create(params.merge(
             model_id: model.id,
             name: custom_name(item, model),
             model_paint_ids: owned_paint_ids(item, model.id)
           ))
+          record_derived_craft(derived_craft, item[:matrix], vehicle)
           imported_models << model.name
           next
         end
@@ -109,11 +111,12 @@ class HangarImporter
         # An export from before owned paints names the one paint a ship had in
         # `paint_slug`, which is what `slug` was set to above.
         if model_paint.present?
-          Vehicle.create(params.merge(
+          vehicle = Vehicle.create(params.merge(
             model_id: model_paint.model_id,
             name: custom_name(item, model_paint.model),
             model_paint_ids: owned_paint_ids(item, model_paint.model_id) | [model_paint.id]
           ))
+          record_derived_craft(derived_craft, item[:matrix], vehicle)
           imported_models << model_paint.name
           next
         end
@@ -219,13 +222,18 @@ class HangarImporter
     [nil, nil]
   end
 
-  # The models a vehicle of this one creates alongside itself, which
-  # `Vehicle#add_loaners` and `#add_bundled_snub_crafts` draw from.
-  private def record_derived_model_ids(derived_model_ids, matrix, model_id)
-    return if matrix.blank? || model_id.blank? || derived_model_ids.key?(matrix)
+  # Counts the craft the vehicle actually created alongside itself, its loaners
+  # and bundled snub crafts, so each one excuses a single included entry. They
+  # are read back rather than taken from the model: a rejected vehicle creates
+  # none, and a snub craft nobody can own is skipped.
+  private def record_derived_craft(derived_craft, matrix, vehicle)
+    return if matrix.blank? || !vehicle.persisted?
 
-    model = Model.find(model_id)
-    derived_model_ids[matrix] = Set.new(model.loaners.ids + model.snub_crafts.ids)
+    children = Vehicle.where(vehicle_id: vehicle.id, user_id: vehicle.user_id)
+    created = derived_craft[matrix] ||= Hash.new(0)
+    children.where(loaner: true).or(children.where(bundled: true)).pluck(:model_id).each do |model_id|
+      created[model_id] += 1
+    end
   end
 
   private def mapped_name(name)
