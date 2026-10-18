@@ -4394,6 +4394,7 @@
           }
         },
         "againstStock": "相對原廠飛船的變化",
+        "fitted": "已裝配",
         "owned": "已擁有",
         "noSlots": "這艘艦船目前還沒有可在此裝配的內容",
         "unavailableModule": "模組已不可用",

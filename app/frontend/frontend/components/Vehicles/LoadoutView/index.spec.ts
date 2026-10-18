@@ -18,6 +18,7 @@ const resolved = () => ({
 });
 
 const loadoutSlots = ref<unknown[]>([]);
+const slotsLoading = ref(false);
 const loadoutProblems = ref<unknown[]>([]);
 const hullSlots = ref<unknown[]>([]);
 const modelHardpoints = ref<unknown[]>([]);
@@ -26,7 +27,11 @@ const cargoStock = ref(false);
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
-  useVehicleLoadoutSlots: () => ({ data: loadoutSlots, ...resolved() }),
+  useVehicleLoadoutSlots: () => ({
+    data: loadoutSlots,
+    ...resolved(),
+    isLoading: slotsLoading,
+  }),
   useVehicleLoadoutProblems: () => ({ data: loadoutProblems, ...resolved() }),
   useModelLoadoutSlots: () => ({ data: hullSlots, ...resolved() }),
   useModelHardpoints: () => ({ data: modelHardpoints, ...resolved() }),
@@ -193,12 +198,37 @@ describe("VehicleLoadoutView", () => {
     modelHardpoints.value = [];
   });
 
-  it("counts the fitted cargo in the ship's stats", async () => {
+  it("marks the parts that differ from the stock ship", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: { vehicle, loadout },
     });
 
-    expect(wrapper.get("[data-test='vehicle-specs']").text()).toContain("132");
+    const items = wrapper.findAll("[data-test='vehicle-loadout-view-item']");
+    expect(items[0].attributes("data-changed")).toBeDefined();
+  });
+
+  it("holds the changes and the fitted parts open while they load", async () => {
+    slotsLoading.value = true;
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: { vehicle, loadout, editable: true },
+    });
+
+    expect(
+      wrapper
+        .find("[data-test='vehicle-loadout-view-changes-skeleton']")
+        .exists(),
+    ).toBe(true);
+    expect(
+      wrapper
+        .find("[data-test='vehicle-loadout-view-fitted-skeleton']")
+        .exists(),
+    ).toBe(true);
+    expect(
+      wrapper.find("[data-test='vehicle-loadout-view-empty']").exists(),
+    ).toBe(false);
+
+    slotsLoading.value = false;
   });
 
   it("says when nothing is fitted", async () => {

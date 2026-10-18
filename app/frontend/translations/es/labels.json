@@ -4394,6 +4394,7 @@
           }
         },
         "againstStock": "Cambios respecto a la nave de serie",
+        "fitted": "Equipado",
         "owned": "En propiedad",
         "noSlots": "Todavía no se puede equipar nada de esta nave aquí",
         "unavailableModule": "Módulo ya no disponible",

@@ -4408,6 +4408,7 @@
           }
         },
         "againstStock": "Changes from the stock ship",
+        "fitted": "Fitted",
         "owned": "Owned",
         "noSlots": "Nothing on this ship can be fitted here yet",
         "unavailableModule": "Module no longer available",

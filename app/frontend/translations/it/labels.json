@@ -4394,6 +4394,7 @@
           }
         },
         "againstStock": "Modifiche rispetto alla nave di serie",
+        "fitted": "Montato",
         "owned": "Posseduto",
         "noSlots": "Su questa nave non si può ancora montare nulla qui",
         "unavailableModule": "Modulo non più disponibile",
