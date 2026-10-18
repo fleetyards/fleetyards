@@ -488,12 +488,10 @@ const onSubmit = handleSubmit(async (values) => {
       <VehiclePlaque :vehicle="captureVehicle" :captain="captain" />
     </div>
 
-    <template #footer>
+    <template #footer-start>
       <Btn
         v-if="stylesOpen"
-        :size="BtnSizesEnum.LG"
         :variant="BtnVariantsEnum.BARE"
-        class="plaque-edit__footer-start"
         data-test="vehicle-plaque-styles-back"
         @click="stylesOpen = false"
       >
@@ -502,9 +500,7 @@ const onSubmit = handleSubmit(async (values) => {
       </Btn>
       <template v-else>
         <Btn
-          :size="BtnSizesEnum.LG"
           :variant="BtnVariantsEnum.BARE"
-          class="plaque-edit__footer-start"
           data-test="vehicle-plaque-styles-open"
           @click="stylesOpen = true"
         >
@@ -513,7 +509,6 @@ const onSubmit = handleSubmit(async (values) => {
         </Btn>
         <Btn
           v-if="vehicle.dedication"
-          :size="BtnSizesEnum.LG"
           :variant="BtnVariantsEnum.BARE"
           :tone="BtnTonesEnum.DANGER"
           :confirm="t('messages.vehiclePlaque.removeConfirm')"
@@ -523,15 +518,17 @@ const onSubmit = handleSubmit(async (values) => {
         >
           {{ t("actions.vehiclePlaque.remove") }}
         </Btn>
-        <Btn
-          :type="BtnTypesEnum.SUBMIT"
-          form="vehicle-plaque-form"
-          :loading="updateMutation.isPending.value || capturing"
-          data-test="vehicle-plaque-save"
-        >
-          {{ t("actions.save") }}
-        </Btn>
       </template>
+    </template>
+    <template v-if="!stylesOpen" #footer>
+      <Btn
+        :type="BtnTypesEnum.SUBMIT"
+        form="vehicle-plaque-form"
+        :loading="updateMutation.isPending.value || capturing"
+        data-test="vehicle-plaque-save"
+      >
+        {{ t("actions.save") }}
+      </Btn>
     </template>
   </Modal>
 </template>
@@ -596,10 +593,6 @@ const onSubmit = handleSubmit(async (values) => {
   @media (max-width: $tablet-breakpoint) {
     grid-template-columns: minmax(0, 1fr);
   }
-}
-
-.plaque-edit__footer-start {
-  margin-right: auto;
 }
 
 .plaque-edit__locked {

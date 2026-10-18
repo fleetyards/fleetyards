@@ -299,33 +299,33 @@ const onSubmit = async () => {
       </div>
     </form>
 
+    <template #footer-start>
+      <span>
+        {{
+          t("labels.fleet.squadrons.selectedMembers", {
+            count: selection.length,
+          })
+        }}
+      </span>
+    </template>
     <template #footer>
-      <div class="member-picker__actions">
-        <span class="member-picker__selected">
-          {{
-            t("labels.fleet.squadrons.selectedMembers", {
-              count: selection.length,
-            })
-          }}
-        </span>
-        <Btn
-          v-if="selection.length"
-          :variant="BtnVariantsEnum.BARE"
-          @click="clearSelection"
-        >
-          {{ t("actions.reset") }}
-        </Btn>
-        <Btn
-          :loading="submitting"
-          :disabled="!selection.length"
-          data-test="squadron-add-members"
-          @click="onSubmit"
-        >
-          {{
-            t("actions.fleet.squadrons.addMembers", { count: selection.length })
-          }}
-        </Btn>
-      </div>
+      <Btn
+        v-if="selection.length"
+        :variant="BtnVariantsEnum.BARE"
+        @click="clearSelection"
+      >
+        {{ t("actions.reset") }}
+      </Btn>
+      <Btn
+        :loading="submitting"
+        :disabled="!selection.length"
+        data-test="squadron-add-members"
+        @click="onSubmit"
+      >
+        {{
+          t("actions.fleet.squadrons.addMembers", { count: selection.length })
+        }}
+      </Btn>
     </template>
   </Modal>
 </template>
@@ -406,17 +406,5 @@ const onSubmit = async () => {
   margin-top: 16px;
   padding-top: 12px;
   border-top: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
-}
-
-.member-picker__actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-}
-
-.member-picker__selected {
-  margin-right: auto;
-  color: var(--color-text-dim);
 }
 </style>

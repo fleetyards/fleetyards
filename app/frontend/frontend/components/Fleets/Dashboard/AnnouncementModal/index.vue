@@ -13,7 +13,6 @@ import FormMarkdownEditor from "@/shared/components/base/FormMarkdownEditor/inde
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import {
-  BtnSizesEnum,
   BtnTonesEnum,
   BtnTypesEnum,
   BtnVariantsEnum,
@@ -195,17 +194,9 @@ const remove = async () => {
         unsorted
       />
     </form>
-    <template #footer>
+    <template v-if="announcement" #footer-start>
       <Btn
-        :size="BtnSizesEnum.LG"
         :variant="BtnVariantsEnum.BARE"
-        @click="comlink.emit('close-modal')"
-      >
-        {{ t("actions.cancel") }}
-      </Btn>
-      <Btn
-        v-if="announcement"
-        :size="BtnSizesEnum.LG"
         :tone="BtnTonesEnum.DANGER"
         :disabled="submitting"
         :confirm="t('fleetDashboard.announcements.confirmRemove')"
@@ -214,8 +205,12 @@ const remove = async () => {
       >
         {{ t("actions.delete") }}
       </Btn>
+    </template>
+    <template #footer>
+      <Btn :variant="BtnVariantsEnum.BARE" @click="comlink.emit('close-modal')">
+        {{ t("actions.cancel") }}
+      </Btn>
       <Btn
-        :size="BtnSizesEnum.LG"
         :type="BtnTypesEnum.SUBMIT"
         :form="formId"
         :loading="submitting"

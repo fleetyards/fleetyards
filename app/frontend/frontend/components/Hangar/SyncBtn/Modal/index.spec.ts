@@ -133,7 +133,7 @@ const mountModal = async (
       stubs: {
         Modal: {
           template:
-            "<div><slot name='header-actions' /><slot /><slot name='footer' /></div>",
+            "<div><slot name='header-actions' /><slot /><slot name='footer-start' /><slot name='footer' /></div>",
         },
         HangarGroupsSelect: true,
         // Mounts a `useQuery` of its own, which needs a QueryClient this spec

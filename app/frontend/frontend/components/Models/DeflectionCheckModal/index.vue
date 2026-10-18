@@ -165,7 +165,7 @@ const detail = computed(
 </script>
 
 <template>
-  <Modal :title="t('labels.deflectionCheck.title')">
+  <Modal :title="t('labels.deflectionCheck.title')" fill-body>
     <div class="check-modal">
       <p class="intro">
         <strong>{{ modelName }}</strong>

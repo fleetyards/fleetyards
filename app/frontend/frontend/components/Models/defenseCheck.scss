@@ -184,13 +184,13 @@
 // A fixed table layout is the whole point here: column widths are decided by
 // the colgroup alone, so no amount of long weapon names or six-figure margins
 // can push the table wider than the modal.
-// The modal body is itself a scroll container, so an inner scroller with its
-// own max-height gives two nested scrollbars. Capping the wrapper at the same
-// height means the body never scrolls and only the weapon list does.
+// Shrinks to the modal body (opened with fill-body) rather than overflowing
+// it, so the body never scrolls and only the weapon list does - two nested
+// scrollbars otherwise.
 .check-modal {
   display: flex;
   flex-direction: column;
-  max-height: calc(100vh - 15rem);
+  min-height: 0;
 }
 
 .table-wrap {

@@ -7,10 +7,7 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import SyncSessionStatus from "@/frontend/components/Hangar/SyncSessionStatus/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -292,7 +289,6 @@ const cancelRun = () => {
       <Btn
         v-if="!running || status === 'fetching'"
         :variant="BtnVariantsEnum.BARE"
-        :size="BtnSizesEnum.LG"
         data-test="close-buyback-sync"
         @click="cancelRun"
       >
@@ -302,12 +298,7 @@ const cancelRun = () => {
             : t("actions.syncExtension.close")
         }}
       </Btn>
-      <Btn
-        v-if="running"
-        :size="BtnSizesEnum.LG"
-        data-test="background-buyback-sync"
-        @click="close"
-      >
+      <Btn v-if="running" data-test="background-buyback-sync" @click="close">
         {{ t("actions.syncExtension.runInBackground") }}
       </Btn>
       <Btn
@@ -316,7 +307,6 @@ const cancelRun = () => {
           extensionSupportsBuybacks &&
           ['idle', 'failed'].includes(status)
         "
-        :size="BtnSizesEnum.LG"
         data-test="start-buyback-sync"
         :loading="loadingIdentity"
         :disabled="identityStatus !== 'connected' || detailsRunning"

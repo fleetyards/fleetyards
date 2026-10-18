@@ -386,42 +386,43 @@ const refreshPage = async () => {
         />
       </div>
     </transition>
-    <template #footer>
+    <template
+      v-if="!finished && hangarStore.extensionReady && !started"
+      #footer-start
+    >
       <Btn
-        v-if="finished"
-        :size="BtnSizesEnum.LG"
+        v-if="settingsOpen"
         :variant="BtnVariantsEnum.BARE"
-        data-test="close-sync"
-        @click="close"
-      >
-        {{ t("actions.syncExtension.close") }}
-      </Btn>
-      <Btn
-        v-else-if="settingsOpen && hangarStore.extensionReady && !started"
-        :size="BtnSizesEnum.LG"
-        :variant="BtnVariantsEnum.BARE"
-        class="sync-footer-start"
         data-test="close-sync-settings"
         @click="settingsOpen = false"
       >
         <i class="fa-light fa-chevron-left" />
         {{ t("actions.back") }}
       </Btn>
-      <template v-else>
-        <Btn
-          v-if="hangarStore.extensionReady && !started"
-          :size="BtnSizesEnum.LG"
-          :variant="BtnVariantsEnum.BARE"
-          class="sync-footer-start"
-          data-test="toggle-sync-settings"
-          @click="settingsOpen = true"
-        >
-          <i class="fa-light fa-gear" />
-          {{ t("labels.syncExtension.settings") }}
-        </Btn>
+      <Btn
+        v-else
+        :variant="BtnVariantsEnum.BARE"
+        data-test="toggle-sync-settings"
+        @click="settingsOpen = true"
+      >
+        <i class="fa-light fa-gear" />
+        {{ t("labels.syncExtension.settings") }}
+      </Btn>
+    </template>
+    <template #footer>
+      <Btn
+        v-if="finished"
+        :variant="BtnVariantsEnum.BARE"
+        data-test="close-sync"
+        @click="close"
+      >
+        {{ t("actions.syncExtension.close") }}
+      </Btn>
+      <template
+        v-else-if="!settingsOpen || !hangarStore.extensionReady || started"
+      >
         <Btn
           v-if="!running || fetching"
-          :size="BtnSizesEnum.LG"
           :variant="BtnVariantsEnum.BARE"
           data-test="cancel-sync"
           @click="cancelRun"
@@ -432,17 +433,11 @@ const refreshPage = async () => {
               : t("actions.syncExtension.cancel")
           }}
         </Btn>
-        <Btn
-          v-if="running"
-          :size="BtnSizesEnum.LG"
-          data-test="background-sync"
-          @click="close"
-        >
+        <Btn v-if="running" data-test="background-sync" @click="close">
           {{ t("actions.syncExtension.runInBackground") }}
         </Btn>
         <Btn
           v-else-if="retryable"
-          :size="BtnSizesEnum.LG"
           data-test="start-sync"
           @click="hangarSync.retry"
         >
@@ -450,7 +445,6 @@ const refreshPage = async () => {
         </Btn>
         <Btn
           v-else-if="hangarStore.extensionReady"
-          :size="BtnSizesEnum.LG"
           data-test="start-sync"
           :loading="loadingIdentity"
           :disabled="
@@ -462,12 +456,7 @@ const refreshPage = async () => {
         >
           {{ t("actions.syncExtension.start") }}
         </Btn>
-        <Btn
-          v-else
-          :size="BtnSizesEnum.LG"
-          data-test="recheck-sync"
-          @click="refreshPage"
-        >
+        <Btn v-else data-test="recheck-sync" @click="refreshPage">
           {{ t("actions.syncExtension.refresh") }}
         </Btn>
       </template>

@@ -223,7 +223,7 @@ const detailSurvival = computed(() => {
 </script>
 
 <template>
-  <Modal :title="t('labels.penetrationCheck.title')">
+  <Modal :title="t('labels.penetrationCheck.title')" fill-body>
     <div class="check-modal">
       <p class="intro">
         <strong>{{ modelName }}</strong>

@@ -237,18 +237,14 @@ const vehicleName = computed(
 
 <template>
   <Modal v-if="vehicle" tabbed>
+    <template #eyebrow>
+      <!-- eslint-disable-next-line vue/no-v-html -->
+      <span v-html="vehicle.model?.manufacturer?.name" />
+      · {{ vehicle.model?.name }}
+      <template v-if="vehicle.serial"> · {{ vehicle.serial }}</template>
+    </template>
     <template #title>
-      <span>{{ t("headlines.editMyVehicle", { vehicle: vehicleName }) }}</span>
-      <small v-if="vehicle.serial" class="text-muted">
-        {{ vehicle.serial }}
-      </small>
-      <br />
-
-      <small class="text-muted">
-        <!-- eslint-disable-next-line vue/no-v-html -->
-        <span v-html="vehicle.model?.manufacturer?.name" />
-        {{ vehicle.model?.name }}
-      </small>
+      {{ t("headlines.editMyVehicle", { vehicle: vehicleName }) }}
     </template>
 
     <form
