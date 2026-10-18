@@ -38,6 +38,7 @@ import { useSessionStore } from "@/frontend/stores/session";
 import { keepPreviousData } from "@tanstack/vue-query";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useReducedMotion } from "@/shared/composables/useReducedMotion";
+import { useMobile } from "@/shared/composables/useMobile";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
@@ -115,17 +116,45 @@ const moreFiltersOpen = ref(false);
 
 const { prefersReducedMotion } = useReducedMotion();
 
+const mobile = useMobile();
+
+// Per instance: the Teleport finds its target with a document-wide lookup, and
+// a closing picker can still be in the DOM while the next one mounts.
+const foldedFiltersId = `model-picker-folded-${useId()}`;
+const foldedContainersId = `model-picker-folded-containers-${useId()}`;
+
 // The cargo grid and trade route pickers pin flight-ready ships. Offering the
 // filter there would let it override the pin and widen the list instead.
 const productionStatusOffered = computed(
   () => !props.query?.productionStatusIn,
 );
 
-const moreFiltersCount = computed(
-  () =>
-    [focusIn, sizeIn, productionStatusIn].filter(
-      (filter) => filter.value.length,
-    ).length,
+// On a phone the manufacturer, classification and hangar filters fold away
+// too, so the count has to cover them or a folded pick goes unannounced.
+const moreFiltersCount = computed(() => {
+  const folded = [focusIn, sizeIn, productionStatusIn];
+
+  if (mobile.value) {
+    folded.push(manufacturerIn, classificationIn);
+  }
+
+  return (
+    folded.filter((filter) => filter.value.length).length +
+    (mobile.value && hangarOnly.value ? 1 : 0) +
+    (mobile.value && containerFit.value ? 1 : 0)
+  );
+});
+
+const moreFiltersLabel = computed(() =>
+  mobile.value ? t("labels.filter") : t("modelPicker.actions.moreFilters"),
+);
+
+// The aria-label replaces the button's content as its name, badge included, so
+// the count has to be spoken from here.
+const moreFiltersAriaLabel = computed(() =>
+  moreFiltersCount.value
+    ? `${moreFiltersLabel.value} (${moreFiltersCount.value})`
+    : moreFiltersLabel.value,
 );
 
 // The sizes the API knows, as the literal keys ContainerFitQuery declares - so
@@ -424,7 +453,11 @@ const save = () => {
 <template>
   <Modal :title="title">
     <!-- Enter belongs to the search and the quantity fields; only the button saves. -->
-    <form class="model-picker" @submit.prevent>
+    <form
+      class="model-picker"
+      :class="{ 'model-picker--folded': mobile }"
+      @submit.prevent
+    >
       <div class="model-picker__header">
         <div class="model-picker__toolbar">
           <FormInput
@@ -439,38 +472,46 @@ const save = () => {
             clearable
           />
 
-          <ManufacturerSelect
-            v-model="manufacturerIn"
-            class="model-picker__filter"
-            name="model-picker-manufacturer"
-          />
+          <!--
+            One set of fields that moves into the folded panel on a phone,
+            rather than a copy per layout that could drift apart.
+          -->
+          <Teleport :to="`#${foldedFiltersId}`" :disabled="!mobile" defer>
+            <ManufacturerSelect
+              v-model="manufacturerIn"
+              class="model-picker__filter"
+              name="model-picker-manufacturer"
+            />
 
-          <ClassificationSelect
-            v-model="classificationIn"
-            class="model-picker__filter"
-            name="model-picker-classification"
-          />
+            <ClassificationSelect
+              v-model="classificationIn"
+              class="model-picker__filter"
+              name="model-picker-classification"
+            />
 
-          <Btn
-            v-if="hangarOffered"
-            class="model-picker__hangar"
-            :active="hangarOnly"
-            data-test="model-picker-hangar-only"
-            @click="hangarOnly = !hangarOnly"
-          >
-            {{ t("modelPicker.labels.hangarOnly") }}
-          </Btn>
+            <Btn
+              v-if="hangarOffered"
+              class="model-picker__hangar"
+              :active="hangarOnly"
+              data-test="model-picker-hangar-only"
+              @click="hangarOnly = !hangarOnly"
+            >
+              {{ t("modelPicker.labels.hangarOnly") }}
+            </Btn>
+          </Teleport>
 
           <Btn
             class="model-picker__more-filters"
             :active="moreFiltersOpen"
             :aria-expanded="moreFiltersOpen"
             aria-controls="model-picker-more-filters"
+            v-tooltip="moreFiltersLabel"
+            :aria-label="moreFiltersAriaLabel"
             data-test="model-picker-more-filters"
             @click="moreFiltersOpen = !moreFiltersOpen"
           >
-            <i class="fa-light fa-sliders" />
-            {{ t("modelPicker.actions.moreFilters") }}
+            <i v-if="moreFiltersCount" class="fa-solid fa-filter" />
+            <i v-else class="fa-regular fa-filter" />
             <span v-if="moreFiltersCount" class="model-picker__filter-count">
               {{ moreFiltersCount }}
             </span>
@@ -478,8 +519,9 @@ const save = () => {
         </div>
 
         <!--
-          Behind a toggle because the header is sticky: six fields wrap to three
-          rows on a phone and leave no room for the ships under them.
+          Behind a toggle because the header is sticky: the filters wrap to
+          several rows on a phone and leave no room for the ships under them,
+          so there every filter but the search folds away.
         -->
         <Collapsed
           id="model-picker-more-filters"
@@ -487,6 +529,8 @@ const save = () => {
           :duration="prefersReducedMotion ? 1 : 200"
         >
           <div class="model-picker__toolbar model-picker__toolbar--more">
+            <div :id="foldedFiltersId" class="model-picker__folded" />
+
             <FocusSelect
               v-model="focusIn"
               class="model-picker__filter"
@@ -506,28 +550,37 @@ const save = () => {
               name="model-picker-production-status"
             />
           </div>
+
+          <div :id="foldedContainersId" />
         </Collapsed>
 
-        <div v-if="containerFilter" class="model-picker__containers">
-          <span class="model-picker__containers-label">
-            {{ t("modelPicker.labels.containerFit") }}
-          </span>
-          <FormInput
-            v-for="size in CONTAINER_SIZES"
-            :key="size"
-            v-model.number="containerCounts[size]"
-            class="model-picker__container"
-            :class="{
-              'model-picker__container--set': containerCount(size) > 0,
-            }"
-            :name="`model-picker-container-${size}`"
-            :label="`${size} SCU`"
-            :type="InputTypesEnum.NUMBER"
-            :min="0"
-            :step="1"
-            :alignment="InputAlignmentsEnum.RIGHT"
-          />
-        </div>
+        <Teleport
+          v-if="containerFilter"
+          :to="`#${foldedContainersId}`"
+          :disabled="!mobile"
+          defer
+        >
+          <div class="model-picker__containers">
+            <span class="model-picker__containers-label">
+              {{ t("modelPicker.labels.containerFit") }}
+            </span>
+            <FormInput
+              v-for="size in CONTAINER_SIZES"
+              :key="size"
+              v-model.number="containerCounts[size]"
+              class="model-picker__container"
+              :class="{
+                'model-picker__container--set': containerCount(size) > 0,
+              }"
+              :name="`model-picker-container-${size}`"
+              :label="`${size} SCU`"
+              :type="InputTypesEnum.NUMBER"
+              :min="0"
+              :step="1"
+              :alignment="InputAlignmentsEnum.RIGHT"
+            />
+          </div>
+        </Teleport>
 
         <div class="model-picker__summary">
           <span class="model-picker__count">
@@ -658,6 +711,14 @@ const save = () => {
   @apply min-w-[200px] flex-1;
 }
 
+/* Folded, the search shares its row with the filter toggle alone, and at 240px
+   the toggle would drop to a row of its own on the narrowest screens. Keyed on
+   the same flag as the Teleport rather than a media query, so the two cannot
+   disagree at the breakpoint. */
+.model-picker--folded .model-picker__search {
+  @apply min-w-0;
+}
+
 /*
  * The filter sidebar opens these over a flat panel; here they open over a grid of
  * ship photos, and the 95%-alpha list fill plus the fully transparent search row
@@ -673,6 +734,11 @@ const save = () => {
 .model-picker__hangar,
 .model-picker__more-filters {
   @apply self-stretch;
+}
+
+/* Lets the moved fields wrap with the rest of the row they land in. */
+.model-picker__folded {
+  display: contents;
 }
 
 /* Inside the element Collapsed animates, not on it: it holds the animated
@@ -732,11 +798,21 @@ const save = () => {
 }
 
 /* ---------- grid ----------
-   auto-fill from 220px: four across the wide modal, and it steps down to one on
-   a phone without a breakpoint per column count. */
+   auto-fill from 220px: four across the wide modal and fewer as it narrows,
+   without a breakpoint per column count. */
 .model-picker__grid {
   @apply grid gap-3;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+
+/* At least two across once folded, where 220px would leave a phone with one.
+   The min() holds two below 312px, where two 150px cards and the gap no longer
+   fit; a tablet still gets three or more. */
+.model-picker--folded .model-picker__grid {
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(min(150px, calc((100% - 12px) / 2)), 1fr)
+  );
 }
 
 /* Re-filtering leaves the old results readable rather than blanking the grid,

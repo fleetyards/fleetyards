@@ -1,9 +1,10 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { nextTick, type Ref, ref } from "vue";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import FocusSelect from "@/frontend/components/base/ModelFocusSelect/index.vue";
 import SizeSelect from "@/frontend/components/base/ModelSizeSelect/index.vue";
 import ProductionStatusSelect from "@/frontend/components/base/ProductionStatusSelect/index.vue";
+import ManufacturerSelect from "@/frontend/components/base/ManufacturerSelect/index.vue";
 import { type ModelQuery } from "@/services/fyApi";
 import Component from "./index.vue";
 
@@ -41,10 +42,12 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   },
 }));
 
+const viewport = vi.hoisted(() => ({ mobile: false }));
+
 vi.stubGlobal(
   "matchMedia",
-  vi.fn(() => ({
-    matches: false,
+  vi.fn((query: string) => ({
+    matches: viewport.mobile && query.includes("max-width"),
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
   })),
@@ -64,7 +67,28 @@ const mount = (props: Record<string, unknown> = {}) =>
     props: { title: "Pick", submitLabel: "Add ships", ...props },
   });
 
+// The folded filters teleport by id, which only resolves in the document.
+const attached: { unmount: () => void }[] = [];
+
+const mountOnPhone = async (props: Record<string, unknown> = {}) => {
+  viewport.mobile = true;
+
+  const wrapper = await mountWithDefaults(Component, {
+    props: { title: "Pick", submitLabel: "Add ships", ...props },
+    attachTo: document.body,
+  });
+
+  attached.push(wrapper);
+
+  return wrapper;
+};
+
 describe("Models/PickerModal", () => {
+  afterEach(() => {
+    viewport.mobile = false;
+    attached.splice(0).forEach((wrapper) => wrapper.unmount());
+  });
+
   it("collects picks until they are submitted", async () => {
     const wrapper = await mount();
 
@@ -122,6 +146,70 @@ describe("Models/PickerModal", () => {
       .trigger("click");
 
     expect(display()).toBe("");
+  });
+
+  it("labels the filter toggle with an icon, not text", async () => {
+    const wrapper = await mount();
+    const toggle = wrapper.find('[data-test="model-picker-more-filters"]');
+
+    expect(toggle.text()).toBe("");
+    expect(toggle.find(".fa-filter").exists()).toBe(true);
+  });
+
+  it("keeps manufacturer and classification in the toolbar on a desktop", async () => {
+    const wrapper = await mount();
+
+    const manufacturer = wrapper.findComponent(ManufacturerSelect);
+
+    expect(manufacturer.exists()).toBe(true);
+    expect(
+      wrapper
+        .find(".model-picker__toolbar--more")
+        .element.contains(manufacturer.element),
+    ).toBe(false);
+  });
+
+  it("folds every filter but the search away on a phone", async () => {
+    const wrapper = await mountOnPhone();
+    const more = wrapper.find(".model-picker__toolbar--more");
+
+    const manufacturer = wrapper.findAllComponents(ManufacturerSelect);
+
+    expect(manufacturer).toHaveLength(1);
+    expect(more.element.contains(manufacturer[0]?.element ?? null)).toBe(true);
+    expect(more.element.parentElement?.style.display).toBe("none");
+    expect(wrapper.find(".model-picker--folded").exists()).toBe(true);
+  });
+
+  it("folds the container load away on a phone and counts it", async () => {
+    const wrapper = await mountOnPhone({
+      containerFilter: true,
+      containerFit: { "32": 2 },
+    });
+
+    expect(
+      wrapper
+        .find("#model-picker-more-filters")
+        .element.contains(wrapper.find(".model-picker__containers").element),
+    ).toBe(true);
+    expect(wrapper.find(".model-picker__filter-count").text()).toBe("1");
+  });
+
+  it("counts a folded manufacturer pick on a phone", async () => {
+    const wrapper = await mountOnPhone();
+
+    wrapper
+      .findComponent(ManufacturerSelect)
+      .vm.$emit("update:modelValue", ["misc"]);
+    await nextTick();
+
+    expect(wrapper.find(".model-picker__filter-count").text()).toBe("1");
+    expect(
+      wrapper
+        .find('[data-test="model-picker-more-filters"]')
+        .attributes("aria-label"),
+    ).toBe("Filter (1)");
+    expect(lastQuery()).toEqual({ manufacturerIn: ["misc"] });
   });
 
   it("offers no production status filter when the caller pins one", async () => {
