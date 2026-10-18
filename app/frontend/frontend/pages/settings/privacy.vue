@@ -141,11 +141,9 @@ const onSubmit = handleSubmit(async (values) => {
     <Panel>
       <PanelHeading :level="HeadingLevelEnum.H2">
         {{ t("headlines.settings.privacySections.analytics") }}
-        <template #subtitle>
-          {{ t("texts.settings.privacy.tracking") }}
-        </template>
       </PanelHeading>
       <PanelBody>
+        <p>{{ t("texts.settings.privacy.tracking") }}</p>
         <FormToggle
           v-model="tracking"
           v-bind="trackingProps"
@@ -159,11 +157,9 @@ const onSubmit = handleSubmit(async (values) => {
     <Panel>
       <PanelHeading :level="HeadingLevelEnum.H2">
         {{ t("headlines.settings.privacySections.onlineStatus") }}
-        <template #subtitle>
-          {{ t("texts.settings.privacy.onlineStatus") }}
-        </template>
       </PanelHeading>
       <PanelBody>
+        <p>{{ t("texts.settings.privacy.onlineStatus") }}</p>
         <FormToggle
           v-model="showOnlineStatus"
           v-bind="showOnlineStatusProps"
@@ -177,11 +173,9 @@ const onSubmit = handleSubmit(async (values) => {
     <Panel v-if="isSupporter" data-test="supporter-listed">
       <PanelHeading :level="HeadingLevelEnum.H2">
         {{ t("headlines.settings.privacySections.supporters") }}
-        <template #subtitle>
-          {{ t("texts.settings.privacy.supporterListed") }}
-        </template>
       </PanelHeading>
       <PanelBody>
+        <p>{{ t("texts.settings.privacy.supporterListed") }}</p>
         <RadioList
           v-model="supporterListed"
           name="supporterListed"
