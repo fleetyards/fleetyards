@@ -224,7 +224,8 @@
   }
 }
 
-// The loadout's name, and beside it whether it shows in the public hangar.
+// The loadout's name, and beside it whether it shows in the public hangar and
+// whether it is the ship's active one.
 .vehicle-loadout__identity {
   display: flex;
   flex-wrap: wrap;
@@ -239,7 +240,7 @@
   margin: 0;
 }
 
-.vehicle-loadout__public {
+.vehicle-loadout__switch {
   flex: none;
   margin: 0;
 }

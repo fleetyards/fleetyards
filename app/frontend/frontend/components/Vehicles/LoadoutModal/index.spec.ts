@@ -1,3 +1,4 @@
+import type { QueryClient } from "@tanstack/vue-query";
 import { flushPromises } from "@vue/test-utils";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -336,6 +337,7 @@ describe("VehicleLoadoutModal", () => {
     expect(createVehicleLoadout).toHaveBeenCalledWith("v1", {
       kind: "fleetyards",
       name: "",
+      public: false,
       items: [
         { slotPath: "hardpoint_module", itemType: "ModelModule", itemId: "m1" },
       ],
@@ -560,6 +562,93 @@ describe("VehicleLoadoutModal", () => {
       wrapper.find("[data-test='vehicle-loadout-save-as-new']").exists(),
     ).toBe(false);
     expect(toggle.attributes("disabled")).toBeDefined();
+  });
+
+  it("switches a saved loadout on as the active one at once, and holds the switch on the active one", async () => {
+    loadouts.value = [
+      {
+        id: "l1",
+        name: "Hauler",
+        public: false,
+        kind: "fleetyards",
+        active: true,
+        updatedAt: "2026-10-01T00:00:00Z",
+        items: [],
+      },
+      {
+        id: "l2",
+        name: "Medical run",
+        public: false,
+        kind: "fleetyards",
+        active: false,
+        updatedAt: "2026-10-01T00:00:00Z",
+        items: [],
+      },
+    ];
+
+    const active = await mountModal(vehicle(["m1"]), { loadoutId: "l1" });
+    await flushPromises();
+    const on = active.get("[data-test='toggle-loadoutActive']");
+    expect((on.element as HTMLInputElement).checked).toBe(true);
+    expect(on.attributes("disabled")).toBeDefined();
+
+    const other = await mountModal(vehicle(["m1"]), { loadoutId: "l2" });
+    await flushPromises();
+    const queryClient = other.getCurrentComponent().appContext.provides
+      .VUE_QUERY_CLIENT as QueryClient;
+    queryClient.setQueryData(["vehicles", "v1", "loadouts"], loadouts.value);
+    const off = other.get("[data-test='toggle-loadoutActive']");
+    (off.element as HTMLInputElement).checked = true;
+    await off.trigger("change");
+    await flushPromises();
+
+    expect(activateVehicleLoadout).toHaveBeenCalledWith("v1", "l2");
+    expect(updateVehicleLoadout).not.toHaveBeenCalled();
+    expect(
+      other.get("[data-test='vehicle-loadout-save']").attributes("disabled"),
+    ).toBeDefined();
+    // The loadouts tab under the modal shows the switch without a refetch.
+    expect(
+      (
+        queryClient.getQueryData(["vehicles", "v1", "loadouts"]) as {
+          id: string;
+          active: boolean;
+        }[]
+      ).map(({ id, active }) => [id, active]),
+    ).toEqual([
+      ["l1", false],
+      ["l2", true],
+    ]);
+  });
+
+  it("saves a new loadout with the visibility and active state picked for it", async () => {
+    const wrapper = await mountModal(
+      vehicle(["m1"], { activeLoadout: { id: "l1", kind: "fleetyards" } }),
+      { newLoadout: true },
+    );
+    await flushPromises();
+
+    const isPublic = wrapper.get("[data-test='toggle-loadoutPublic']");
+    const isActive = wrapper.get("[data-test='toggle-loadoutActive']");
+    expect((isPublic.element as HTMLInputElement).checked).toBe(false);
+    expect((isActive.element as HTMLInputElement).checked).toBe(false);
+
+    (isPublic.element as HTMLInputElement).checked = true;
+    await isPublic.trigger("change");
+    (isActive.element as HTMLInputElement).checked = true;
+    await isActive.trigger("change");
+    await flushPromises();
+
+    expect(updateVehicleLoadout).not.toHaveBeenCalled();
+    expect(activateVehicleLoadout).not.toHaveBeenCalled();
+
+    await save(wrapper);
+
+    expect(createVehicleLoadout).toHaveBeenCalledWith(
+      "v1",
+      expect.objectContaining({ public: true }),
+    );
+    expect(activateVehicleLoadout).toHaveBeenCalledWith("v1", "new");
   });
 
   it("does not save the loadout when Enter is pressed in its name", async () => {

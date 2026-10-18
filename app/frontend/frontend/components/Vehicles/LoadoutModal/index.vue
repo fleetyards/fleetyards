@@ -98,9 +98,11 @@ const { t } = useI18n();
  */
 type LoadoutValues = {
   loadoutName: string;
-  // Saved the moment it is switched, apart from the fitting; a field only so
-  // the toggle's own form binding does not read as an unsaved change.
+  // On a saved loadout both are saved the moment they are switched, apart from
+  // the fitting; on a new one they go with its first save. Fields either way,
+  // which the change detection leaves out.
   loadoutPublic: boolean;
+  loadoutActive: boolean;
   fittedModules: Record<string, string>;
   // Only parts that differ from the slot's stock one: a slot left alone keeps
   // the part it came with.
@@ -145,7 +147,12 @@ const savedValues = (): LoadoutValues => {
 
   return {
     loadoutName: editedLoadout.value?.name ?? "",
-    loadoutPublic: editedLoadout.value?.public ?? false,
+    // A new loadout starts as the server would make it: the ship's default
+    // when it has none yet, and then public on a public ship.
+    loadoutPublic:
+      editedLoadout.value?.public ??
+      (!!props.vehicle.public && !props.vehicle.activeLoadout),
+    loadoutActive: editedLoadout.value?.active ?? !props.vehicle.activeLoadout,
     fittedModules: modules,
     fittedComponents: components,
   };
@@ -159,9 +166,14 @@ const { defineField, handleSubmit, resetForm, resetField, isFieldDirty } =
 // Against the loadout as saved: the fitting, or its name. Undoing a pick
 // undoes the change. Visibility is saved as it is switched, so it is never a
 // change waiting on the save.
+const INSTANT_FIELDS: (keyof LoadoutValues)[] = [
+  "loadoutPublic",
+  "loadoutActive",
+];
+
 const changed = computed(() =>
   (Object.keys(savedValues()) as (keyof LoadoutValues)[])
-    .filter((field) => field !== "loadoutPublic")
+    .filter((field) => !INSTANT_FIELDS.includes(field))
     .some((field) => isFieldDirty(field)),
 );
 
@@ -186,6 +198,8 @@ const [fittedModules] = defineField("fittedModules");
 const [fittedComponents] = defineField("fittedComponents");
 
 const [loadoutPublic] = defineField("loadoutPublic");
+
+const [loadoutActive] = defineField("loadoutActive");
 
 const loadoutProblems = useLoadoutProblems(
   () => props.vehicle.id,
@@ -842,6 +856,16 @@ const { invalidateHangarQueries, invalidateVehiclePage } =
 // Whether the saved loadout shows in the public hangar, saved as it is
 // switched. Settled as the field's starting value either way, so it never
 // counts as a change the fitting's save is waiting on.
+// The list the loadouts tab shows, set from the answer at once rather than
+// left to the refetch the invalidation starts.
+const updateCachedLoadouts = (
+  change: (loadout: VehicleLoadout) => VehicleLoadout,
+) =>
+  queryClient.setQueryData<VehicleLoadout[]>(
+    getVehicleLoadoutsQueryKey(props.vehicle.id),
+    (list) => list?.map(change),
+  );
+
 // One write at a time, the switch held while it runs, so an earlier answer can
 // never land over a later choice; "saved" shows only once the server agrees.
 const savingPublic = ref(false);
@@ -857,6 +881,9 @@ const onTogglePublic = async (value: boolean) => {
   try {
     await updateVehicleLoadout(props.vehicle.id, loadout.id, { public: value });
     resetField("loadoutPublic", { value });
+    updateCachedLoadouts((entry) =>
+      entry.id === loadout.id ? { ...entry, public: value } : entry,
+    );
     publicSaved.value?.show();
     await Promise.all([
       invalidateVehiclePage(props.vehicle),
@@ -873,6 +900,46 @@ const onTogglePublic = async (value: boolean) => {
     });
   } finally {
     savingPublic.value = false;
+  }
+};
+
+// Switched on as asked, apart from the fitting, like the visibility: the
+// active loadout is the one the ship's figures and plaque show. There is no
+// switching it off; another loadout is switched on instead.
+const activating = ref(false);
+
+const activeSaved = ref<InstanceType<typeof SavedIndicator>>();
+
+const onToggleActive = async (value: boolean) => {
+  const loadout = editedLoadout.value;
+  if (!loadout || !value || activating.value) return;
+
+  activating.value = true;
+
+  try {
+    await activateVehicleLoadout(props.vehicle.id, loadout.id);
+    resetField("loadoutActive", { value: true });
+    updateCachedLoadouts((entry) => ({
+      ...entry,
+      active: entry.id === loadout.id,
+    }));
+    activeSaved.value?.show();
+    await Promise.all([
+      invalidateHangarQueries(),
+      invalidateVehiclePage(props.vehicle),
+      queryClient.invalidateQueries({
+        queryKey: getVehicleLoadoutsQueryKey(props.vehicle.id),
+      }),
+    ]);
+  } catch (error) {
+    resetField("loadoutActive", { value: false });
+    displayAlert({
+      text: [t("messages.vehicleLoadout.failure"), firstErrorMessageFrom(error)]
+        .filter(Boolean)
+        .join(": "),
+    });
+  } finally {
+    activating.value = false;
   }
 };
 
@@ -974,11 +1041,18 @@ const save = async (values: LoadoutValues, asNew: boolean) => {
       createdLoadout.value = await createVehicleLoadout(props.vehicle.id, {
         kind: VehicleLoadoutKindEnum.FLEETYARDS,
         name,
+        // A copy takes the server's default, not the switches of the loadout
+        // it was copied from.
+        ...(asNew ? {} : { public: values.loadoutPublic }),
         items,
       });
     }
 
-    if (createdLoadout.value && !props.vehicle.activeLoadout) {
+    const activate = asNew
+      ? !props.vehicle.activeLoadout
+      : !editedLoadout.value && values.loadoutActive;
+
+    if (createdLoadout.value && activate) {
       await activateVehicleLoadout(props.vehicle.id, createdLoadout.value.id);
     }
 
@@ -1079,17 +1153,27 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
             data-test="vehicle-loadout-name"
           />
           <FormToggle
-            v-if="editedLoadout"
             :model-value="loadoutPublic"
             name="loadoutPublic"
             :label="t('labels.loadout.public')"
             :disabled="savingPublic"
             no-placeholder
-            class="vehicle-loadout__public"
+            class="vehicle-loadout__switch"
             data-test="vehicle-loadout-public"
             @update:model-value="onTogglePublic"
           />
           <SavedIndicator v-if="editedLoadout" ref="publicSaved" />
+          <FormToggle
+            :model-value="loadoutActive"
+            name="loadoutActive"
+            :label="t('labels.loadout.active')"
+            :disabled="activating || (!!editedLoadout && editedLoadout.active)"
+            no-placeholder
+            class="vehicle-loadout__switch"
+            data-test="vehicle-loadout-active"
+            @update:model-value="onToggleActive"
+          />
+          <SavedIndicator v-if="editedLoadout" ref="activeSaved" />
         </div>
 
         <p
