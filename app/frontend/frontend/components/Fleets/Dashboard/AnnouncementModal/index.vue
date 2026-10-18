@@ -21,6 +21,8 @@ import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useModalDirty } from "@/shared/components/AppModal/dirty";
+import { useFormDirty } from "@/shared/composables/useFormDirty";
 import {
   getFleetAnnouncementsQueryKey,
   useCreateFleetAnnouncement,
@@ -74,12 +76,16 @@ const expiryOptions = computed<FilterOption[]>(() => [
 
 type FormValues = { body: string; expiry: string };
 
-const { defineField, handleSubmit, setErrors } = useForm<FormValues>({
-  initialValues: {
-    body: props.announcement?.body ?? "",
-    expiry: canKeep.value ? KEEP : "0",
-  },
+const initialValues: FormValues = {
+  body: props.announcement?.body ?? "",
+  expiry: canKeep.value ? KEEP : "0",
+};
+
+const { defineField, handleSubmit, setErrors, values } = useForm<FormValues>({
+  initialValues,
 });
+
+useModalDirty(useFormDirty(values, initialValues));
 
 const [body, bodyProps] = defineField("body");
 
@@ -109,7 +115,7 @@ const done = (message: string) => {
   void queryClient.invalidateQueries({
     queryKey: getFleetAnnouncementsQueryKey(props.fleetSlug),
   });
-  comlink.emit("close-modal");
+  comlink.emit("close-modal", true);
   displaySuccess({ text: message });
 };
 

@@ -12,6 +12,8 @@ import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import LocationInput from "@/shared/components/LocationInput/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useModalDirty } from "@/shared/components/AppModal/dirty";
+import { useFormDirty } from "@/shared/composables/useFormDirty";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 import { type Vehicle } from "@/services/fyApi";
@@ -28,12 +30,16 @@ const { displayAlert } = useAppNotifications();
 
 const vehicle = computed(() => props.vehicle);
 
-const { defineField, handleSubmit } = useForm({
-  initialValues: {
-    location: props.vehicle.location ?? "",
-    locationId: props.vehicle.linkedLocation?.id ?? null,
-  },
+const initialValues = {
+  location: props.vehicle.location ?? "",
+  locationId: props.vehicle.linkedLocation?.id ?? null,
+};
+
+const { defineField, handleSubmit, values } = useForm({
+  initialValues,
 });
+
+useModalDirty(useFormDirty(values, initialValues));
 
 const [location] = defineField("location");
 const [locationId] = defineField("locationId");
@@ -51,7 +57,7 @@ const onSubmit = handleSubmit(async (values) => {
         locationId: values.locationId ?? null,
       },
     })
-    .then(() => comlink.emit("close-modal"))
+    .then(() => comlink.emit("close-modal", true))
     .catch(() => {
       displayAlert({ text: t("messages.vehicleOverview.location.failure") });
     });

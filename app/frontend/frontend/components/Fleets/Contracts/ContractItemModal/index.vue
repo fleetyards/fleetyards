@@ -26,6 +26,8 @@ import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useModalDirty } from "@/shared/components/AppModal/dirty";
+import { useFormDirty } from "@/shared/composables/useFormDirty";
 import {
   type Fleet,
   type Commodity,
@@ -107,20 +109,24 @@ const validationSchema = {
   quantity: "required|min_value:0",
 };
 
-const { defineField, handleSubmit, setFieldValue, setErrors } = useForm({
-  initialValues: {
-    name: props.item?.name ?? "",
-    category: (props.item?.category ??
-      (props.kind === "crafting"
-        ? InventoryCategoryEnum.COMPONENT
-        : InventoryCategoryEnum.COMMODITY)) as InventoryCategoryEnum,
-    quantity: Number(props.item?.quantity ?? 1),
-    unit: (props.item?.unit ?? InventoryUnitEnum.SCU) as InventoryUnitEnum,
-    quality: (props.item?.quality ?? undefined) as number | undefined,
-    qualityMatch:
-      props.item?.qualityMatch ?? FleetContractQualityMatchEnum.AT_LEAST,
-  },
-});
+const initialValues = {
+  name: props.item?.name ?? "",
+  category: (props.item?.category ??
+    (props.kind === "crafting"
+      ? InventoryCategoryEnum.COMPONENT
+      : InventoryCategoryEnum.COMMODITY)) as InventoryCategoryEnum,
+  quantity: Number(props.item?.quantity ?? 1),
+  unit: (props.item?.unit ?? InventoryUnitEnum.SCU) as InventoryUnitEnum,
+  quality: (props.item?.quality ?? undefined) as number | undefined,
+  qualityMatch:
+    props.item?.qualityMatch ?? FleetContractQualityMatchEnum.AT_LEAST,
+};
+
+const { defineField, handleSubmit, setFieldValue, setErrors, values } = useForm(
+  { initialValues },
+);
+
+useModalDirty(useFormDirty(values, initialValues));
 
 const [name, nameProps] = defineField("name");
 const [category, categoryProps] = defineField("category");
@@ -244,7 +250,7 @@ const onSubmit = handleSubmit(async (values) => {
   // with the contract in one request.
   if (props.onDraft) {
     props.onDraft(data);
-    comlink.emit("close-modal");
+    comlink.emit("close-modal", true);
     submitting.value = false;
 
     return;
@@ -266,7 +272,7 @@ const onSubmit = handleSubmit(async (values) => {
   await saved
     .then(() => {
       comlink.emit("fleet-contract-item-saved");
-      comlink.emit("close-modal");
+      comlink.emit("close-modal", true);
     })
     .catch((error) => {
       // The API says *why* -- asking for the same goods twice is the common

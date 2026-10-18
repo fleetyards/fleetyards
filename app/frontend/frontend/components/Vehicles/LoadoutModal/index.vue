@@ -1164,7 +1164,7 @@ const save = async (values: LoadoutValues, asNew: boolean) => {
       }),
     ]);
 
-    comlink.emit("close-modal");
+    comlink.emit("close-modal", true);
   } catch (error) {
     // The reason -- a name another loadout already has, say -- is what tells
     // the owner what to change.

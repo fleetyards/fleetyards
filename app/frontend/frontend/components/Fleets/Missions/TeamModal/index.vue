@@ -14,6 +14,8 @@ import FormMarkdownEditor from "@/shared/components/base/FormMarkdownEditor/inde
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useModalDirty } from "@/shared/components/AppModal/dirty";
+import { useFormDirty } from "@/shared/composables/useFormDirty";
 import {
   type Fleet,
   type Mission,
@@ -41,12 +43,16 @@ const validationSchema = {
   title: "required|min:2",
 };
 
-const { defineField, handleSubmit } = useForm({
-  initialValues: {
-    title: props.team?.title ?? "",
-    description: props.team?.description ?? "",
-  },
+const initialValues = {
+  title: props.team?.title ?? "",
+  description: props.team?.description ?? "",
+};
+
+const { defineField, handleSubmit, values } = useForm({
+  initialValues,
 });
+
+useModalDirty(useFormDirty(values, initialValues));
 
 const [title, titleProps] = defineField("title");
 const [description, descriptionProps] = defineField("description");
@@ -82,7 +88,7 @@ const onSubmit = handleSubmit(async (values) => {
           : t("messages.fleets.missionTeam.create.success"),
       });
       comlink.emit("mission-children-changed");
-      comlink.emit("close-modal");
+      comlink.emit("close-modal", true);
     })
     .catch(() => {
       displayAlert({

@@ -12,6 +12,7 @@ import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useModalDirty } from "@/shared/components/AppModal/dirty";
 import {
   type FilterOption,
   type InventoryTransfer,
@@ -31,6 +32,12 @@ const comlink = useComlink();
 const submitting = ref(false);
 const reason = ref<string>(InventoryTransferReportReasonEnum.SPAM);
 const note = ref("");
+
+useModalDirty(
+  () =>
+    reason.value !== InventoryTransferReportReasonEnum.SPAM ||
+    note.value !== "",
+);
 
 const options = computed<FilterOption[]>(() =>
   Object.values(InventoryTransferReportReasonEnum).map((value) => ({
@@ -56,7 +63,7 @@ const onSubmit = async () => {
       reason: reason.value,
       note: note.value || undefined,
     });
-    comlink.emit("close-modal");
+    comlink.emit("close-modal", true);
   } finally {
     submitting.value = false;
   }

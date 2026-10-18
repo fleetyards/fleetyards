@@ -16,6 +16,8 @@ import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useModalDirty } from "@/shared/components/AppModal/dirty";
+import { useFormDirty } from "@/shared/composables/useFormDirty";
 import {
   type FleetSquadronRole,
   type FleetSquadronRoleUpdateInput,
@@ -36,13 +38,17 @@ const comlink = useComlink();
 const queryClient = useQueryClient();
 const submitting = ref(false);
 
-const { defineField, handleSubmit, setErrors } =
+const initialValues: FleetSquadronRoleUpdateInput = {
+  name: props.rank.name,
+  defaultRank: props.rank.defaultRank || undefined,
+};
+
+const { defineField, handleSubmit, setErrors, values } =
   useForm<FleetSquadronRoleUpdateInput>({
-    initialValues: {
-      name: props.rank.name,
-      defaultRank: props.rank.defaultRank || undefined,
-    },
+    initialValues,
   });
+
+useModalDirty(useFormDirty(values, initialValues));
 
 const [name, nameProps] = defineField("name");
 const [defaultRank, defaultRankProps] = defineField("defaultRank");
@@ -76,7 +82,7 @@ const onSubmit = handleSubmit(async (values) => {
     displaySuccess({
       text: t("messages.fleet.squadrons.ranks.update.success"),
     });
-    comlink.emit("close-modal");
+    comlink.emit("close-modal", true);
   } catch (error) {
     const { message, formErrors } = validationErrorFrom(error);
     setErrors(formErrors);

@@ -15,6 +15,8 @@ import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useModalDirty } from "@/shared/components/AppModal/dirty";
+import { useFormDirty } from "@/shared/composables/useFormDirty";
 import {
   type FleetSquadronMemberUpdateInput,
   type FleetSquadronRole,
@@ -53,13 +55,17 @@ const rankSelectOptions = computed(() =>
 
 const initialCreatedAt = props.membershipCreatedAt?.slice(0, 10);
 
-const { defineField, handleSubmit, setErrors } =
+const initialValues: FleetSquadronMemberUpdateInput = {
+  createdAt: initialCreatedAt,
+  fleetSquadronRoleId: props.roleId,
+};
+
+const { defineField, handleSubmit, setErrors, values } =
   useForm<FleetSquadronMemberUpdateInput>({
-    initialValues: {
-      createdAt: initialCreatedAt,
-      fleetSquadronRoleId: props.roleId,
-    },
+    initialValues,
   });
+
+useModalDirty(useFormDirty(values, initialValues));
 
 const [createdAt, createdAtProps] = defineField("createdAt");
 const [fleetSquadronRoleId, fleetSquadronRoleIdProps] = defineField(
@@ -98,7 +104,7 @@ const onSubmit = handleSubmit(async (values) => {
     });
     displaySuccess({ text: t("messages.fleet.squadrons.update.success") });
     comlink.emit("fleet-squadron-members-updated");
-    comlink.emit("close-modal");
+    comlink.emit("close-modal", true);
   } catch (error) {
     const { message, formErrors } = validationErrorFrom(error);
     setErrors(formErrors);

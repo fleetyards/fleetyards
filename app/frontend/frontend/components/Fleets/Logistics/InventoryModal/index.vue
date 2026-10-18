@@ -20,6 +20,8 @@ import { useSquadronVisibility } from "@/frontend/composables/useSquadronVisibil
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useModalDirty } from "@/shared/components/AppModal/dirty";
+import { useFormDirty } from "@/shared/composables/useFormDirty";
 import { inventoryDefaultImage } from "@/frontend/composables/useInventoryImage";
 import type { InventoryPanelRecord } from "@/frontend/types/logistics";
 import {
@@ -51,22 +53,25 @@ const validationSchema = {
   name: "required|min:2",
 };
 
-const { defineField, handleSubmit } = useForm({
-  initialValues: {
-    name: props.inventory?.name ?? "",
-    description: props.inventory?.description ?? "",
-    visibility: props.inventory?.visibility ?? "members_only",
-    fleetSquadronIds: (props.inventory?.fleetSquadrons ?? []).map(
-      (squadron) => squadron.id,
-    ),
-    location: props.inventory?.location ?? "",
-    locationId: props.inventory?.linkedLocation?.id ?? null,
-    image: undefined as string | undefined,
-    imagePreset: props.inventory?.imagePreset ?? null,
-    managedBy:
-      props.inventory?.manager?.id ?? (undefined as string | undefined),
-  },
+const initialValues = {
+  name: props.inventory?.name ?? "",
+  description: props.inventory?.description ?? "",
+  visibility: props.inventory?.visibility ?? "members_only",
+  fleetSquadronIds: (props.inventory?.fleetSquadrons ?? []).map(
+    (squadron) => squadron.id,
+  ),
+  location: props.inventory?.location ?? "",
+  locationId: props.inventory?.linkedLocation?.id ?? null,
+  image: undefined as string | undefined,
+  imagePreset: props.inventory?.imagePreset ?? null,
+  managedBy: props.inventory?.manager?.id ?? (undefined as string | undefined),
+};
+
+const { defineField, handleSubmit, values } = useForm({
+  initialValues,
 });
+
+useModalDirty(useFormDirty(values, initialValues));
 
 const [name, nameProps] = defineField("name");
 const [description, descriptionProps] = defineField("description");
@@ -192,7 +197,7 @@ const onSubmit = handleSubmit(async (values) => {
       comlink.emit(
         isEdit.value ? "fleet-inventory-updated" : "fleet-inventory-created",
       );
-      comlink.emit("close-modal");
+      comlink.emit("close-modal", true);
     })
     .catch(() => {
       displayAlert({

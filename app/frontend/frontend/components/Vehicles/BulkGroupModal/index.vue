@@ -16,6 +16,7 @@ import {
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useModalDirty } from "@/shared/components/AppModal/dirty";
 
 type Props = {
   vehicleIds: string[];
@@ -30,6 +31,8 @@ const comlink = useComlink();
 const submitting = ref(false);
 
 const hangarGroupIds = ref<string[]>([]);
+
+useModalDirty(() => hangarGroupIds.value.length > 0);
 
 const { data: hangarGroupsData } = useHangarGroupsQuery();
 
@@ -67,7 +70,7 @@ const save = async () => {
     },
   })
     .then(() => {
-      comlink.emit("close-modal");
+      comlink.emit("close-modal", true);
     })
     .finally(() => {
       submitting.value = false;

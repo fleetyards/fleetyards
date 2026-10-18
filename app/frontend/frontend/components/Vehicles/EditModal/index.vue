@@ -12,6 +12,8 @@ import FormTab from "@/shared/components/base/FormTabs/Tab/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useModalDirty } from "@/shared/components/AppModal/dirty";
+import { useFormDirty } from "@/shared/composables/useFormDirty";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
@@ -76,9 +78,11 @@ const EDITABLE_FIELDS = Object.keys(
   savedValues(),
 ) as (keyof VehicleUpdateInput & keyof VehicleEditValues)[];
 
-const { handleSubmit, resetForm, setErrors, meta, setFieldValue } =
+const initialValues = savedValues();
+
+const { handleSubmit, resetForm, setErrors, meta, setFieldValue, values } =
   useForm<VehicleEditValues>({
-    initialValues: savedValues(),
+    initialValues,
   });
 
 // Set as a pending choice rather than an initial value, so it saves like a pick
@@ -156,6 +160,11 @@ watch(activeTab, (tab) => {
 
 const imagePanel = ref<InstanceType<typeof ImagePanel> | null>(null);
 
+const formDirty = useFormDirty(values, savedValues);
+
+// The picture is picked outside the form, so its tab answers for itself.
+useModalDirty(() => formDirty.value || !!imagePanel.value?.changes());
+
 const { useUpdateMutation, invalidateVehiclePage, invalidateHangarQueries } =
   useVehicleMutations();
 
@@ -198,7 +207,7 @@ const onSubmit = handleSubmit(async (values) => {
   const imageChanges = imagePanel.value?.changes();
 
   if (!changes && !imageChanges) {
-    comlink.emit("close-modal");
+    comlink.emit("close-modal", true);
     return;
   }
 
@@ -213,7 +222,7 @@ const onSubmit = handleSubmit(async (values) => {
         });
       }
 
-      comlink.emit("close-modal");
+      comlink.emit("close-modal", true);
     })
     .catch((error) => {
       const { message, formErrors } = validationErrorFrom(error);

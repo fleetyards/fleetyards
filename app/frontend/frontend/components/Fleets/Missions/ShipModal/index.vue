@@ -19,6 +19,8 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { usePositionTypeLabel } from "@/frontend/composables/usePositionTypeLabel";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useModalDirty } from "@/shared/components/AppModal/dirty";
+import { useFormDirty } from "@/shared/composables/useFormDirty";
 import {
   type Fleet,
   type Mission,
@@ -79,17 +81,19 @@ const sizeOptions: FilterOption[] = [
   { value: "capital", label: "Capital" },
 ];
 
-const { defineField, handleSubmit } = useForm({
-  initialValues: {
-    title: props.ship?.title ?? "",
-    description: props.ship?.description ?? "",
-    classification: props.ship?.filters?.classification ?? "",
-    focus: props.ship?.filters?.focus ?? "",
-    minSize: props.ship?.filters?.minSize ?? "",
-    maxSize: props.ship?.filters?.maxSize ?? "",
-    minCrew: props.ship?.filters?.minCrew ?? null,
-    minCargo: props.ship?.filters?.minCargo ?? null,
-  },
+const initialValues = {
+  title: props.ship?.title ?? "",
+  description: props.ship?.description ?? "",
+  classification: props.ship?.filters?.classification ?? "",
+  focus: props.ship?.filters?.focus ?? "",
+  minSize: props.ship?.filters?.minSize ?? "",
+  maxSize: props.ship?.filters?.maxSize ?? "",
+  minCrew: props.ship?.filters?.minCrew ?? null,
+  minCargo: props.ship?.filters?.minCargo ?? null,
+};
+
+const { defineField, handleSubmit, values } = useForm({
+  initialValues,
 });
 
 const [title, titleProps] = defineField("title");
@@ -188,6 +192,27 @@ watch(selectedModelSlug, async (slug) => {
   }
 });
 
+// The kind of spot and its ships are picked outside the form. A model's
+// positions all start picked, so the ones left out are what was edited.
+const shipChoice = computed(() => ({
+  mode: mode.value,
+  selectedModelIds: selectedModelIds.value,
+  selectedModelId: selectedModelId.value,
+  skippedPositionIds: positions.value
+    .filter((position) => !selectedPositionIds.value.has(position.id))
+    .map((position) => position.id),
+}));
+
+const formDirty = useFormDirty(values, initialValues);
+const choiceDirty = useFormDirty(shipChoice, {
+  mode: initialMode,
+  selectedModelIds: [...selectedModelIds.value],
+  selectedModelId: selectedModelId.value,
+  skippedPositionIds: [] as string[],
+});
+
+useModalDirty(() => formDirty.value || choiceDirty.value);
+
 const togglePosition = (id: string) => {
   const next = new Set(selectedPositionIds.value);
   if (next.has(id)) {
@@ -261,7 +286,7 @@ const onSubmit = handleSubmit(async (values) => {
           : t("messages.fleets.missionShip.create.success"),
       });
       comlink.emit("mission-children-changed");
-      comlink.emit("close-modal");
+      comlink.emit("close-modal", true);
     })
     .catch(() => {
       displayAlert({

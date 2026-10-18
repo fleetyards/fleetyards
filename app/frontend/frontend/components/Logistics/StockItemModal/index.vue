@@ -13,6 +13,8 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useModalDirty } from "@/shared/components/AppModal/dirty";
+import { useFormDirty } from "@/shared/composables/useFormDirty";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
   useInventoryOptions,
@@ -42,13 +44,17 @@ const validationSchema = {
   name: "required|min:2",
 };
 
-const { defineField, handleSubmit, setFieldValue } = useForm({
-  initialValues: {
-    name: props.stockItem.name,
-    category: props.stockItem.category as string,
-    unit: props.stockItem.unit as string,
-  },
+const initialValues = {
+  name: props.stockItem.name,
+  category: props.stockItem.category as string,
+  unit: props.stockItem.unit as string,
+};
+
+const { defineField, handleSubmit, setFieldValue, values } = useForm({
+  initialValues,
 });
+
+useModalDirty(useFormDirty(values, initialValues));
 
 const [name, nameProps] = defineField("name");
 const [category, categoryProps] = defineField("category");
@@ -80,7 +86,7 @@ const onSubmit = handleSubmit(async (values) => {
       unit: values.unit as InventoryStockPositionInput["unit"],
     });
 
-    comlink.emit("close-modal");
+    comlink.emit("close-modal", true);
   } catch {
     displayAlert({
       text: t("messages.logistics.stockItem.update.failure"),

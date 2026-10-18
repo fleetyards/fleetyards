@@ -24,6 +24,8 @@ import {
   type HangarGroup,
 } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useModalDirty } from "@/shared/components/AppModal/dirty";
+import { useFormDirty } from "@/shared/composables/useFormDirty";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
 type Props = {
@@ -43,36 +45,35 @@ const validationSchema = {
   color: "required",
 };
 
-const initialValues = ref<HangarGroupUpdateInput>({
+const savedValues = (): HangarGroupUpdateInput => ({
   name: props.hangarGroup.name,
   color: props.hangarGroup.color,
   public: props.hangarGroup.public,
 });
 
-const { defineField, handleSubmit } = useForm({
+const initialValues = ref<HangarGroupUpdateInput>(savedValues());
+
+const { defineField, handleSubmit, resetForm, values } = useForm({
   initialValues: initialValues.value,
 });
+
+const dirty = useFormDirty(values, initialValues);
+
+useModalDirty(dirty);
 
 const [name, nameProps] = defineField("name");
 const [color, colorProps] = defineField("color");
 const [publicField, publicFieldProps] = defineField("public");
 
-const setupForm = () => {
-  initialValues.value = {
-    name: props.hangarGroup?.name,
-    color: props.hangarGroup?.color,
-    public: props.hangarGroup?.public,
-  };
-};
-
-onMounted(() => {
-  setupForm();
-});
-
+// A refetched group re-fills an untouched form and becomes what it is compared
+// with; a pending edit wins over the refresh.
 watch(
   () => props.hangarGroup,
   () => {
-    setupForm();
+    if (dirty.value) return;
+
+    initialValues.value = savedValues();
+    resetForm({ values: initialValues.value });
   },
   { deep: true },
 );
@@ -92,7 +93,7 @@ const onDestroy = async () => {
     })
     .then(() => {
       comlink.emit("hangar-group-delete", props.hangarGroup);
-      comlink.emit("close-modal");
+      comlink.emit("close-modal", true);
     })
     .then(() => {
       deleting.value = false;
@@ -111,7 +112,7 @@ const onSubmit = handleSubmit(async (values) => {
     })
     .then(() => {
       comlink.emit("hangar-group-save");
-      comlink.emit("close-modal");
+      comlink.emit("close-modal", true);
     })
     .catch((error) => {
       console.error(error);

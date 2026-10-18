@@ -18,6 +18,7 @@ import {
 } from "@/services/fyAdminApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useModalDirty } from "@/shared/components/AppModal/dirty";
 import { useQueryClient } from "@tanstack/vue-query";
 
 type BulkPayload = {
@@ -44,6 +45,8 @@ const queryClient = useQueryClient();
 const rejectionReason = ref("");
 const submitting = ref(false);
 const error = ref<string | undefined>();
+
+useModalDirty(() => rejectionReason.value !== "");
 
 const bulk = computed(() => !!props.bulkPayload);
 
@@ -92,7 +95,7 @@ const submit = async () => {
     });
 
     props.onRejected?.();
-    comlink.emit("close-modal");
+    comlink.emit("close-modal", true);
   } catch (err) {
     error.value = err instanceof Error ? err.message : String(err);
   } finally {
