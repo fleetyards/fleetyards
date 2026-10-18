@@ -8,14 +8,11 @@ export default {
 import Alert from "@/shared/components/base/Alert/index.vue";
 import { AlertVariantsEnum } from "@/shared/components/base/Alert/types";
 import SupportHint from "@/shared/components/SupportHint/index.vue";
-import Collapsed from "@/shared/components/Collapsed.vue";
-import { useReducedMotion } from "@/shared/composables/useReducedMotion";
 import SyncSteps from "@/frontend/components/Hangar/SyncSteps/index.vue";
 import type {
   SyncStep,
   SyncStepStatus,
 } from "@/frontend/components/Hangar/SyncSteps/types";
-import SyncNumberText from "@/frontend/components/Hangar/SyncNumberText/index.vue";
 import SyncCountList from "@/frontend/components/Hangar/SyncCountList/index.vue";
 import type { SyncCount } from "@/frontend/components/Hangar/SyncCountList/types";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -227,6 +224,13 @@ const stepDetail = (step: SyncProcessStep): SyncStep["detail"] => {
 
   // The save is one request, then the server's own run: first what is on its
   // way, then what arrived.
+  if (step.status === "success") {
+    return {
+      key: "labels.syncExtension.stepDetails.sent",
+      values: { count: readTotal.value },
+    };
+  }
+
   if (step.status === "processing") {
     return {
       key: props.importId
@@ -262,6 +266,21 @@ const stepProgress = (step: SyncProcessStep): SyncStep["progress"] => {
   return "indeterminate";
 };
 
+// A run that ended with something to look at is not a clean success: reading
+// that missed items, or a save that could not match some, says so on its step.
+const stepStatus = (step: SyncProcessStep): SyncStepStatus => {
+  // A cancelled run stops a step without it failing.
+  if (props.cancelled && step.status === "failure") return "pending";
+
+  const status = STEP_STATUS[step.status];
+  if (status !== "done" || !props.finished) return status;
+
+  if (step.name === "fetchHangar" && incomplete.value) return "warning";
+  if (step.name === "submitData" && unmatchedTotal.value > 0) return "warning";
+
+  return status;
+};
+
 const steps = computed<SyncStep[]>(() =>
   props.processSteps.map((step) => ({
     key: step.name,
@@ -273,11 +292,7 @@ const steps = computed<SyncStep[]>(() =>
           ? lastReadCaption()
           : undefined
         : saveCaption(step),
-    // A cancelled run stops a step without it failing.
-    status:
-      props.cancelled && step.status === "failure"
-        ? "pending"
-        : STEP_STATUS[step.status],
+    status: stepStatus(step),
     progress: stepProgress(step),
   })),
 );
@@ -365,14 +380,6 @@ const unmatchedTotal = computed(() =>
   unmatchedGroups.value.reduce((sum, group) => sum + group.items.length, 0),
 );
 
-const { prefersReducedMotion } = useReducedMotion();
-
-const collapseDuration = computed(() => (prefersReducedMotion.value ? 1 : 200));
-
-const disclosureId = useId();
-
-const readOpen = ref(false);
-
 const incomplete = computed(() => !!props.result?.incomplete);
 
 // A run that found nothing to change, or only kinds it is set to skip, is no
@@ -388,173 +395,130 @@ const hasWarnings = computed(
 
 <template>
   <div class="hangar-sync-result">
-    <template v-if="finished">
-      <div data-test="sync-result-status">
-        <Alert v-if="!outcome.synced" :variant="AlertVariantsEnum.NEUTRAL">
-          {{ t(outcome.key) }}
-        </Alert>
-        <Alert
-          v-else-if="hasWarnings"
-          :variant="AlertVariantsEnum.WARNING"
-          :title="
-            unmatchedTotal
-              ? t('labels.syncExtension.unmatchedCount', {
-                  count: unmatchedTotal,
-                })
-              : t('labels.syncExtension.warnings')
-          "
-        >
-          <p v-if="unmatchedTotal" class="hangar-sync-result__alert-text">
-            {{ t("texts.syncExtension.unmatched") }}
-          </p>
-          <p
-            v-if="incomplete"
-            class="hangar-sync-result__alert-text"
-            data-test="sync-incomplete"
-          >
-            {{ t("labels.syncExtension.incomplete") }}
-          </p>
-        </Alert>
-        <Alert v-else :variant="AlertVariantsEnum.SUCCESS">
-          {{ t("texts.syncExtension.finished") }}
-        </Alert>
-      </div>
-
-      <SyncCountList v-if="resultCounts.length" :counts="resultCounts" />
-
-      <section
-        v-if="unmatchedGroups.length"
-        class="hangar-sync-result__section"
-        data-test="sync-unmatched"
+    <div v-if="finished" data-test="sync-result-status">
+      <Alert v-if="!outcome.synced" :variant="AlertVariantsEnum.NEUTRAL">
+        {{ t(outcome.key) }}
+      </Alert>
+      <Alert
+        v-else-if="hasWarnings"
+        :variant="AlertVariantsEnum.WARNING"
+        :title="
+          unmatchedTotal
+            ? t('labels.syncExtension.unmatchedCount', {
+                count: unmatchedTotal,
+              })
+            : t('labels.syncExtension.warnings')
+        "
       >
-        <h3 class="hangar-sync-result__heading">
-          {{ t("labels.syncExtension.unmatchedHeading") }}
-        </h3>
-        <div class="hangar-sync-result__groups">
-          <!-- What the sync could not match is what the reader has to act on,
-               so it is never folded away. -->
-          <div
-            v-for="group in unmatchedGroups"
-            :key="group.key"
-            class="hangar-sync-result__group"
-            :data-test="`sync-unmatched-${group.key}`"
-          >
-            <h4 class="hangar-sync-result__group-heading">
-              <span class="hangar-sync-result__summary-label">
-                {{ group.label }}
-              </span>
-              <span class="hangar-sync-result__count">
-                {{ group.items.length }}
-              </span>
-            </h4>
-            <ul class="hangar-sync-result__items">
-              <li v-for="item in group.items" :key="`${group.key}-${item}`">
-                {{ item }}
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <div class="hangar-sync-result__read" data-test="sync-read">
-        <button
-          type="button"
-          class="hangar-sync-result__summary"
-          :aria-expanded="readOpen"
-          :aria-controls="`${disclosureId}-read`"
-          @click="readOpen = !readOpen"
+        <p v-if="unmatchedTotal" class="hangar-sync-result__alert-text">
+          {{ t("texts.syncExtension.unmatched") }}
+        </p>
+        <p
+          v-if="incomplete"
+          class="hangar-sync-result__alert-text"
+          data-test="sync-incomplete"
         >
-          <i
-            class="fa-light fa-chevron-right hangar-sync-result__chevron"
-            aria-hidden="true"
-          />
-          <span class="hangar-sync-result__summary-label">
-            {{ t("labels.syncExtension.readFromRsi") }}
-          </span>
-          <span class="hangar-sync-result__summary-detail">
-            <SyncNumberText
-              :text="{
-                key: 'labels.syncExtension.stepDetails.read',
-                values: { pages: pagesRead, count: readTotal },
-              }"
-            />
-          </span>
-        </button>
-        <Collapsed
-          :id="`${disclosureId}-read`"
-          :visible="readOpen"
-          :duration="collapseDuration"
-        >
-          <div class="hangar-sync-result__read-counts">
-            <SyncCountList :counts="readCounts" />
-          </div>
-        </Collapsed>
-      </div>
+          {{ t("labels.syncExtension.incomplete") }}
+        </p>
+      </Alert>
+      <Alert v-else :variant="AlertVariantsEnum.SUCCESS">
+        {{ t("texts.syncExtension.finished") }}
+      </Alert>
+    </div>
 
-      <router-link
-        v-if="importRoute"
-        :to="importRoute"
-        class="hangar-sync-result__import-link"
-        data-test="sync-import-link"
+    <!-- A save the server failed is retryable rather than finished with
+         errors, and needs its notice all the more. -->
+    <div
+      v-else-if="finishedWithErrors || failedStep"
+      data-test="sync-result-status"
+    >
+      <Alert
+        v-if="cancelled"
+        :variant="AlertVariantsEnum.NEUTRAL"
+        :title="t('labels.syncExtension.status.cancelled')"
+      />
+      <Alert
+        v-else
+        :variant="AlertVariantsEnum.DANGER"
+        :title="
+          failedStep
+            ? t(`labels.syncExtension.failedStep.${failedStep.name}`)
+            : t('labels.syncExtension.status.failed')
+        "
       >
-        {{ t("labels.syncExtension.viewImport") }}
-        <i class="fa-light fa-arrow-right" aria-hidden="true" />
-      </router-link>
-
-      <transition name="fade">
-        <SupportHint
-          v-if="showSupportHint"
-          inline
-          context="hangarSync"
-          :meta="{ count: result?.importedVehicles?.length ?? 0 }"
-          @dismiss="$emit('support-hint-dismiss')"
-        />
-      </transition>
-    </template>
-
-    <template v-else>
-      <!-- A save the server failed is retryable rather than finished with
-           errors, and needs its notice all the more. -->
-      <div
-        v-if="finishedWithErrors || failedStep"
-        data-test="sync-result-status"
-      >
-        <Alert
-          v-if="cancelled"
-          :variant="AlertVariantsEnum.NEUTRAL"
-          :title="t('labels.syncExtension.status.cancelled')"
-        />
-        <Alert
-          v-else
-          :variant="AlertVariantsEnum.DANGER"
-          :title="
-            failedStep
-              ? t(`labels.syncExtension.failedStep.${failedStep.name}`)
-              : t('labels.syncExtension.status.failed')
-          "
-        >
-          <template v-if="failedStep?.name === 'submitData'">
-            {{ t("texts.syncExtension.partialFailure") }}
-          </template>
-        </Alert>
-      </div>
-
-      <SyncSteps :steps="steps">
-        <template #step-fetchHangar>
-          <SyncCountList v-if="readingStarted" :counts="readCounts" />
+        <template v-if="failedStep?.name === 'submitData'">
+          {{ t("texts.syncExtension.partialFailure") }}
         </template>
-        <template v-if="importRoute" #step-submitData>
-          <router-link
-            :to="importRoute"
-            class="hangar-sync-result__import-link"
-            data-test="sync-import-link"
+      </Alert>
+    </div>
+
+    <!-- The result is the run's last step, read the same way as while it ran:
+         what was read folds away under its step, and what the save did stays
+         in view under its own. -->
+    <SyncSteps :steps="steps">
+      <template #step-fetchHangar>
+        <SyncCountList v-if="readingStarted" :counts="readCounts" />
+      </template>
+      <template v-if="finished || importRoute" #step-submitData>
+        <template v-if="finished">
+          <SyncCountList v-if="resultCounts.length" :counts="resultCounts" />
+
+          <section
+            v-if="unmatchedGroups.length"
+            class="hangar-sync-result__section"
+            data-test="sync-unmatched"
           >
-            {{ t("labels.syncExtension.viewImport") }}
-            <i class="fa-light fa-arrow-right" aria-hidden="true" />
-          </router-link>
+            <h3 class="hangar-sync-result__heading">
+              {{ t("labels.syncExtension.unmatchedHeading") }}
+            </h3>
+            <div class="hangar-sync-result__groups">
+              <!-- What the sync could not match is what the reader has to act
+                   on, so it is never folded away. -->
+              <div
+                v-for="group in unmatchedGroups"
+                :key="group.key"
+                class="hangar-sync-result__group"
+                :data-test="`sync-unmatched-${group.key}`"
+              >
+                <h4 class="hangar-sync-result__group-heading">
+                  <span class="hangar-sync-result__summary-label">
+                    {{ group.label }}
+                  </span>
+                  <span class="hangar-sync-result__count">
+                    {{ group.items.length }}
+                  </span>
+                </h4>
+                <ul class="hangar-sync-result__items">
+                  <li v-for="item in group.items" :key="`${group.key}-${item}`">
+                    {{ item }}
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </section>
         </template>
-      </SyncSteps>
-    </template>
+
+        <router-link
+          v-if="importRoute"
+          :to="importRoute"
+          class="hangar-sync-result__import-link"
+          data-test="sync-import-link"
+        >
+          {{ t("labels.syncExtension.viewImport") }}
+          <i class="fa-light fa-arrow-right" aria-hidden="true" />
+        </router-link>
+      </template>
+    </SyncSteps>
+
+    <transition name="fade">
+      <SupportHint
+        v-if="finished && showSupportHint"
+        inline
+        context="hangarSync"
+        :meta="{ count: result?.importedVehicles?.length ?? 0 }"
+        @dismiss="$emit('support-hint-dismiss')"
+      />
+    </transition>
   </div>
 </template>
 
@@ -610,53 +574,9 @@ const hasWarnings = computed(
   font-family: inherit;
 }
 
-.hangar-sync-result__read {
-  border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
-  border-radius: var(--radius-surface-slim, 12px);
-}
-
-.hangar-sync-result__summary {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  padding: 11px 14px;
-  color: inherit;
-  font: inherit;
-  text-align: left;
-  background: transparent;
-  border: 0;
-  border-radius: var(--radius-surface-slim, 12px);
-  cursor: pointer;
-
-  &:hover {
-    color: var(--color-lifted, #eee);
-  }
-
-  &:focus-visible {
-    outline: 2px solid var(--color-primary, #428bca);
-    outline-offset: -2px;
-  }
-}
-
-.hangar-sync-result__chevron {
-  color: var(--color-muted, #7a8288);
-  transition: transform 150ms ease;
-}
-
-.hangar-sync-result__summary[aria-expanded="true"]
-  .hangar-sync-result__chevron {
-  transform: rotate(90deg);
-}
-
 .hangar-sync-result__summary-label {
   flex: 1 1 auto;
   min-width: 0;
-}
-
-.hangar-sync-result__summary-detail {
-  color: var(--color-text-dim, #959595);
-  font-size: 13px;
 }
 
 .hangar-sync-result__count {
@@ -677,12 +597,6 @@ const hasWarnings = computed(
   padding: 0 14px 12px;
   color: var(--color-text-dim, #959595);
   list-style: none;
-}
-
-// Inside the element Collapsed animates, not on it: it holds the animated
-// element's padding at zero until the end, and the content would jump.
-.hangar-sync-result__read-counts {
-  padding: 0 14px 12px;
 }
 
 .hangar-sync-result__import-link {

@@ -436,6 +436,21 @@ describe("HangarSyncResult", () => {
         },
       });
 
+    it("shows the result under the save, with what was read folded away", async () => {
+      const wrapper = await mountFinished({ importedVehicles: ["v-1"] });
+
+      expect(
+        wrapper
+          .get("[data-test='sync-step-fetchHangar-heading']")
+          .attributes("aria-expanded"),
+      ).toBe("false");
+      const save = wrapper.get("[data-test='sync-step-submitData']");
+      expect(save.find("[data-test='sync-count-ships']").exists()).toBe(true);
+      expect(
+        save.get(".sync-steps__detail [data-text]").attributes("data-text"),
+      ).toBe("Sent 0 items");
+    });
+
     it("leads with the outcome and counts what changed", async () => {
       const wrapper = await mountFinished({
         importedVehicles: ["v-1", "v-2"],
@@ -479,6 +494,18 @@ describe("HangarSyncResult", () => {
           .get("[data-test='sync-result-status'] .base-alert--warning")
           .text(),
       ).toContain("3 items could not be matched");
+
+      // Finished, but not cleanly: the save says so on its step.
+      expect(
+        wrapper
+          .get("[data-test='sync-step-submitData']")
+          .attributes("data-status"),
+      ).toBe("warning");
+      expect(
+        wrapper
+          .get("[data-test='sync-step-fetchHangar']")
+          .attributes("data-status"),
+      ).toBe("done");
 
       // Every group is listed in full, none of them folded away.
       const ships = wrapper.get("[data-test='sync-unmatched-missingModels']");

@@ -2976,7 +2976,6 @@
         },
         "incomplete": "Some items in your RSI hangar could not be read, so ships missing from it were left as they are this time.",
         "stepDetails": {
-          "reading": "Page %{page} · Pledge items so far: %{count}",
           "read": "Pages read: %{pages} · Pledge items: %{count}",
           "saving": "Matching your pledges to your hangar…",
           "page": "Page %{page}",
@@ -2989,7 +2988,6 @@
           "other": "%{count} items could not be matched"
         },
         "unmatchedHeading": "Could not be matched",
-        "readFromRsi": "What it read from RSI",
         "failedStep": {
           "fetchHangar": "Reading your RSI hangar failed",
           "submitData": "Saving to Fleetyards failed"

@@ -2976,7 +2976,6 @@
         },
         "incomplete": "Algunos elementos de su hangar RSI no se pudieron leer, por lo que esta vez las naves que faltan se dejaron como estaban.",
         "stepDetails": {
-          "reading": "Página %{page} · Pledges leídos hasta ahora: %{count}",
           "read": "Páginas leídas: %{pages} · Pledges: %{count}",
           "saving": "Emparejando tus pledges con tu hangar…",
           "page": "Página %{page}",
@@ -2989,7 +2988,6 @@
           "other": "No se pudieron emparejar %{count} elementos"
         },
         "unmatchedHeading": "Sin emparejar",
-        "readFromRsi": "Lo que leyó de RSI",
         "failedStep": {
           "fetchHangar": "No se pudo leer tu hangar de RSI",
           "submitData": "No se pudo guardar en Fleetyards"

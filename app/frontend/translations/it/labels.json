@@ -2976,7 +2976,6 @@
         },
         "incomplete": "Alcuni elementi del tuo hangar RSI non sono stati letti, quindi questa volta le navi mancanti sono state lasciate come erano.",
         "stepDetails": {
-          "reading": "Pagina %{page} · Pledge letti finora: %{count}",
           "read": "Pagine lette: %{pages} · Pledge: %{count}",
           "saving": "Abbinamento dei tuoi pledge al tuo hangar…",
           "page": "Pagina %{page}",
@@ -2989,7 +2988,6 @@
           "other": "%{count} elementi non sono stati abbinati"
         },
         "unmatchedHeading": "Non abbinati",
-        "readFromRsi": "Cosa è stato letto da RSI",
         "failedStep": {
           "fetchHangar": "Impossibile leggere il tuo hangar RSI",
           "submitData": "Salvataggio su Fleetyards non riuscito"

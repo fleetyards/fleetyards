@@ -2976,7 +2976,6 @@
         },
         "incomplete": "Einige Gegenstände in deinem RSI-Hangar konnten nicht gelesen werden, daher wurden fehlende Schiffe dieses Mal unverändert gelassen.",
         "stepDetails": {
-          "reading": "Seite %{page} · Bisher gelesene Pledges: %{count}",
           "read": "Gelesene Seiten: %{pages} · Pledges: %{count}",
           "saving": "Deine Pledges werden deinem Hangar zugeordnet …",
           "page": "Seite %{page}",
@@ -2989,7 +2988,6 @@
           "other": "%{count} Einträge konnten nicht zugeordnet werden"
         },
         "unmatchedHeading": "Nicht zugeordnet",
-        "readFromRsi": "Was von RSI gelesen wurde",
         "failedStep": {
           "fetchHangar": "Dein RSI-Hangar konnte nicht gelesen werden",
           "submitData": "Speichern auf Fleetyards fehlgeschlagen"
