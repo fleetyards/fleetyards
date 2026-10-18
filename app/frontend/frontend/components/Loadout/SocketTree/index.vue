@@ -88,48 +88,41 @@ const groupOf = (row: LoadoutSocketSlot) =>
         :editable="editable && !socket.locked"
         @select="emit('select', socket.id)"
       >
-        <template
-          v-if="
-            socket.stack?.length || groupOf(socket) || socket.children?.length
-          "
-          #actions
-        >
-          <span class="loadout-socket-tree__controls">
-            <button
-              v-if="socket.stack?.length || groupOf(socket)"
-              type="button"
-              class="loadout-socket-tree__toggle"
-              :aria-expanded="!!groupOf(socket)"
-              :aria-label="
-                t(groupOf(socket) ? 'labels.collapse' : 'labels.expand')
-              "
-              :data-test="`loadout-socket-split-${socket.id}`"
-              @click.stop="toggleSplit(groupOf(socket) || socket)"
-            >
-              <i
-                class="fa-solid"
-                :class="groupOf(socket) ? 'fa-compress' : 'fa-layer-group'"
-                aria-hidden="true"
-              />
-            </button>
-            <button
-              v-if="socket.children?.length"
-              type="button"
-              class="loadout-socket-tree__toggle"
-              :aria-expanded="expanded(socket)"
-              :aria-label="
-                t(expanded(socket) ? 'labels.collapse' : 'labels.expand')
-              "
-              :data-test="`loadout-socket-toggle-${socket.id}`"
-              @click.stop="toggle(socket)"
-            >
-              <i
-                class="fa-solid"
-                :class="expanded(socket) ? 'fa-chevron-up' : 'fa-chevron-down'"
-                aria-hidden="true"
-              />
-            </button>
-          </span>
+        <template v-if="socket.children?.length" #actions>
+          <button
+            type="button"
+            class="loadout-socket-tree__toggle"
+            :aria-expanded="expanded(socket)"
+            :aria-label="
+              t(expanded(socket) ? 'labels.collapse' : 'labels.expand')
+            "
+            :data-test="`loadout-socket-toggle-${socket.id}`"
+            @click.stop="toggle(socket)"
+          >
+            <i
+              class="fa-solid"
+              :class="expanded(socket) ? 'fa-chevron-up' : 'fa-chevron-down'"
+              aria-hidden="true"
+            />
+          </button>
+        </template>
+        <template v-if="socket.stack?.length || groupOf(socket)" #stack>
+          <button
+            type="button"
+            class="loadout-socket-tree__toggle"
+            :aria-expanded="!!groupOf(socket)"
+            :aria-label="
+              t(groupOf(socket) ? 'labels.collapse' : 'labels.expand')
+            "
+            :data-test="`loadout-socket-split-${socket.id}`"
+            @click.stop="toggleSplit(groupOf(socket) || socket)"
+          >
+            <i
+              class="fa-solid"
+              :class="groupOf(socket) ? 'fa-compress' : 'fa-layer-group'"
+              aria-hidden="true"
+            />
+          </button>
         </template>
         <template v-if="socket.children?.length" #children>
           <Collapsed :visible="expanded(socket)" :duration="200">
@@ -171,12 +164,6 @@ const groupOf = (row: LoadoutSocketSlot) =>
   margin: 0;
   padding: 0;
   list-style: none;
-}
-
-.loadout-socket-tree__controls {
-  display: flex;
-  align-items: center;
-  gap: 4px;
 }
 
 // The ship page's row control: a fixed square in the row's rail, so it sits in

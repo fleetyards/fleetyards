@@ -119,9 +119,17 @@ const select = (event: Event) => {
     <template v-if="$slots.actions" #actions>
       <slot name="actions" />
     </template>
+    <template v-if="$slots.stack" #stack>
+      <slot name="stack" />
+    </template>
     <template #default>
       <HardpointSize :size="socket.maxSize" />
-      <span class="loadout-socket__frame">
+      <!-- A part with no picture of its own needs no tile: the size badge and
+        the name say what it is. -->
+      <span
+        v-if="socket.item?.image || !socket.item"
+        class="loadout-socket__frame"
+      >
         <img
           v-if="socket.item?.image"
           :src="socket.item.image"

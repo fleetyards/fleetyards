@@ -94,17 +94,24 @@ const wrappedStyle = computed(() =>
           <slot name="default" />
         </div>
         <div
-          v-if="(count && count > 1) || $slots.actions"
+          v-if="(count && count > 1) || $slots.actions || $slots.stack"
           ref="rail"
           class="hardpoint-item__rail"
         >
-          <HardpointQuantity
-            v-if="count && count > 1"
-            :quantity="count"
-            tag="span"
-            class="hardpoint-item__count"
-          />
           <slot name="actions" />
+          <!-- What the row stands for, and the control that splits it up. -->
+          <span
+            v-if="(count && count > 1) || $slots.stack"
+            class="hardpoint-item__stack"
+          >
+            <slot name="stack" />
+            <HardpointQuantity
+              v-if="count && count > 1"
+              :quantity="count"
+              tag="span"
+              class="hardpoint-item__count"
+            />
+          </span>
         </div>
       </div>
       <slot name="loadout" />
