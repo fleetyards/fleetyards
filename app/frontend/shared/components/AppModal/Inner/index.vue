@@ -93,21 +93,26 @@ const DRAG_SLOP = 8;
 const inner = ref<HTMLElement>();
 
 let touchStart: number | undefined;
+// The finger that started the drag; a second one must not restart or end it.
+let dragPointer: number | undefined;
 let dragging = false;
 let dragOffset = 0;
 
 const onDragStart = (event: PointerEvent) => {
   // A dialog that closes itself is not the app's modal, and not a sheet.
   if (props.fixed || props.onClose || event.pointerType !== "touch") return;
+  if (!event.isPrimary) return;
   if (!window.matchMedia(SHEET_QUERY).matches) return;
 
   touchStart = event.clientY;
+  dragPointer = event.pointerId;
   dragging = false;
   dragOffset = 0;
 };
 
 const onDragMove = (event: PointerEvent) => {
   if (touchStart === undefined || !inner.value) return;
+  if (event.pointerId !== dragPointer) return;
 
   const distance = event.clientY - touchStart;
 
@@ -123,11 +128,14 @@ const onDragMove = (event: PointerEvent) => {
   inner.value.style.transform = `translateY(${dragOffset}px)`;
 };
 
-const onDragEnd = () => {
+const onDragEnd = (event: PointerEvent) => {
+  if (event.pointerId !== dragPointer) return;
+
   const sheet = inner.value;
   const dragged = dragging;
 
   touchStart = undefined;
+  dragPointer = undefined;
   dragging = false;
 
   if (!dragged || !sheet) return;

@@ -50,11 +50,7 @@ describe("AppModalInner", () => {
       vi.unstubAllGlobals();
     });
 
-    const drag = async (
-      distance: number,
-      pointerType = "touch",
-      props: Record<string, unknown> = {},
-    ) => {
+    const sheet = async (props: Record<string, unknown> = {}) => {
       const closed = vi.fn();
       stopListening = useComlink().on("close-modal", closed);
 
@@ -64,15 +60,34 @@ describe("AppModalInner", () => {
       const header = wrapper.get(".modal-header").element;
 
       // jsdom has no PointerEvent, and a MouseEvent's clientY cannot be set.
-      const pointer = (type: string, clientY = 0) => {
+      const pointer = (
+        type: string,
+        clientY = 0,
+        { pointerType = "touch", pointerId = 1 } = {},
+      ) => {
         const event = new Event(type, { bubbles: true });
-        Object.assign(event, { pointerType, clientY, pointerId: 1 });
+        Object.assign(event, {
+          pointerType,
+          clientY,
+          pointerId,
+          isPrimary: pointerId === 1,
+        });
         header.dispatchEvent(event);
       };
 
-      pointer("pointerdown", 100);
-      pointer("pointermove", 100 + distance);
-      pointer("pointerup");
+      return { closed, wrapper, pointer };
+    };
+
+    const drag = async (
+      distance: number,
+      pointerType = "touch",
+      props: Record<string, unknown> = {},
+    ) => {
+      const { closed, wrapper, pointer } = await sheet(props);
+
+      pointer("pointerdown", 100, { pointerType });
+      pointer("pointermove", 100 + distance, { pointerType });
+      pointer("pointerup", 0, { pointerType });
       await flushPromises();
 
       return { closed, wrapper };
@@ -116,6 +131,22 @@ describe("AppModalInner", () => {
 
       expect(closed).not.toHaveBeenCalled();
       expect(onClose).not.toHaveBeenCalled();
+    });
+
+    it("keeps following the first finger when a second one touches", async () => {
+      sheetWidth(true);
+
+      const { closed, pointer } = await sheet();
+
+      pointer("pointerdown", 100);
+      pointer("pointermove", 160);
+      pointer("pointerdown", 300, { pointerId: 2 });
+      pointer("pointerup", 0, { pointerId: 2 });
+      pointer("pointermove", 240);
+      pointer("pointerup");
+      await flushPromises();
+
+      expect(closed).toHaveBeenCalledTimes(1);
     });
 
     it("leaves a mouse alone", async () => {
