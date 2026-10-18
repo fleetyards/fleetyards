@@ -91,3 +91,22 @@
   align-items: center;
   gap: 4px;
 }
+
+// A row whose headline went to a line of its own: the rail stays where it was
+// on the first line, and the lines below run to the row's edge.
+.hardpoint-item__inner--wrapped {
+  .hardpoint-item__rail {
+    position: absolute;
+    top: var(--hardpoint-rail-top);
+    right: var(--hardpoint-rail-right);
+  }
+
+  .hardpoint-item__content {
+    padding-right: var(--hardpoint-rail-room);
+  }
+
+  :slotted(.hardpoint-headline) {
+    position: relative;
+    left: var(--hardpoint-rail-room);
+  }
+}
