@@ -67,9 +67,26 @@ const mount = (props: Record<string, unknown> = {}) =>
     props: { title: "Pick", submitLabel: "Add ships", ...props },
   });
 
+// The folded filters teleport by id, which only resolves in the document.
+const attached: { unmount: () => void }[] = [];
+
+const mountOnPhone = async () => {
+  viewport.mobile = true;
+
+  const wrapper = await mountWithDefaults(Component, {
+    props: { title: "Pick", submitLabel: "Add ships" },
+    attachTo: document.body,
+  });
+
+  attached.push(wrapper);
+
+  return wrapper;
+};
+
 describe("Models/PickerModal", () => {
   afterEach(() => {
     viewport.mobile = false;
+    attached.splice(0).forEach((wrapper) => wrapper.unmount());
   });
 
   it("collects picks until they are submitted", async () => {
@@ -142,30 +159,29 @@ describe("Models/PickerModal", () => {
   it("keeps manufacturer and classification in the toolbar on a desktop", async () => {
     const wrapper = await mount();
 
+    const manufacturer = wrapper.findComponent(ManufacturerSelect);
+
+    expect(manufacturer.exists()).toBe(true);
     expect(
       wrapper
         .find(".model-picker__toolbar--more")
-        .findComponent(ManufacturerSelect)
-        .exists(),
+        .element.contains(manufacturer.element),
     ).toBe(false);
-    expect(wrapper.findComponent(ManufacturerSelect).exists()).toBe(true);
   });
 
   it("folds every filter but the search away on a phone", async () => {
-    viewport.mobile = true;
-
-    const wrapper = await mount();
+    const wrapper = await mountOnPhone();
     const more = wrapper.find(".model-picker__toolbar--more");
 
-    expect(more.findComponent(ManufacturerSelect).exists()).toBe(true);
-    expect(wrapper.findAllComponents(ManufacturerSelect)).toHaveLength(1);
+    const manufacturer = wrapper.findAllComponents(ManufacturerSelect);
+
+    expect(manufacturer).toHaveLength(1);
+    expect(more.element.contains(manufacturer[0]?.element ?? null)).toBe(true);
     expect(more.element.parentElement?.style.display).toBe("none");
   });
 
   it("counts a folded manufacturer pick on a phone", async () => {
-    viewport.mobile = true;
-
-    const wrapper = await mount();
+    const wrapper = await mountOnPhone();
 
     wrapper
       .findComponent(ManufacturerSelect)

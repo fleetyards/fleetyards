@@ -454,7 +454,11 @@ const save = () => {
             clearable
           />
 
-          <template v-if="!mobile">
+          <!--
+            One set of fields that moves into the folded panel on a phone,
+            rather than a copy per layout that could drift apart.
+          -->
+          <Teleport to="#model-picker-folded-filters" :disabled="!mobile" defer>
             <ManufacturerSelect
               v-model="manufacturerIn"
               class="model-picker__filter"
@@ -476,7 +480,7 @@ const save = () => {
             >
               {{ t("modelPicker.labels.hangarOnly") }}
             </Btn>
-          </template>
+          </Teleport>
 
           <Btn
             class="model-picker__more-filters"
@@ -507,29 +511,10 @@ const save = () => {
           :duration="prefersReducedMotion ? 1 : 200"
         >
           <div class="model-picker__toolbar model-picker__toolbar--more">
-            <template v-if="mobile">
-              <ManufacturerSelect
-                v-model="manufacturerIn"
-                class="model-picker__filter"
-                name="model-picker-manufacturer"
-              />
-
-              <ClassificationSelect
-                v-model="classificationIn"
-                class="model-picker__filter"
-                name="model-picker-classification"
-              />
-
-              <Btn
-                v-if="hangarOffered"
-                class="model-picker__hangar"
-                :active="hangarOnly"
-                data-test="model-picker-hangar-only"
-                @click="hangarOnly = !hangarOnly"
-              >
-                {{ t("modelPicker.labels.hangarOnly") }}
-              </Btn>
-            </template>
+            <div
+              id="model-picker-folded-filters"
+              class="model-picker__folded"
+            />
 
             <FocusSelect
               v-model="focusIn"
@@ -725,6 +710,11 @@ const save = () => {
 .model-picker__hangar,
 .model-picker__more-filters {
   @apply self-stretch;
+}
+
+/* Lets the moved fields wrap with the rest of the row they land in. */
+.model-picker__folded {
+  display: contents;
 }
 
 /* Inside the element Collapsed animates, not on it: it holds the animated
