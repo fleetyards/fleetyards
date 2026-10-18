@@ -7,6 +7,8 @@ export default {
 <script lang="ts" setup>
 import { type RouteLocationRaw } from "vue-router";
 import StatsCard from "@/frontend/components/StatsCard/index.vue";
+import DuotoneGlyph from "@/shared/components/DuotoneGlyph/index.vue";
+import { categoryIcon } from "@/frontend/components/Models/Hardpoints/categoryIcon";
 import { type StatsCardBadge } from "@/frontend/components/StatsCard/types";
 import { useComponentStats } from "@/frontend/composables/useComponentStats";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -53,6 +55,8 @@ const categoryLabel = computed(() => {
 
   return tExists(path) ? t(path) : key;
 });
+
+const glyph = computed(() => categoryIcon(props.component?.category));
 
 const badges = computed<StatsCardBadge[]>(() => {
   const component = props.component;
@@ -113,6 +117,9 @@ const ownRoute = computed(() =>
     :unavailable="compact && !loading && !component"
     @navigate="emit('navigate')"
   >
+    <template v-if="glyph" #glyph>
+      <DuotoneGlyph :glyph="glyph" />
+    </template>
     <template v-if="$slots.default" #default>
       <slot />
     </template>
