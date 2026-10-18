@@ -13,6 +13,8 @@ import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import VehicleTabLayout from "@/frontend/components/Vehicles/TabLayout/index.vue";
 
 import { useI18n } from "@/shared/composables/useI18n";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { firstErrorMessageFrom } from "@/shared/utils/ApiErrors";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
 import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
 import { useFeatures } from "@/frontend/composables/useFeatures";
@@ -213,12 +215,28 @@ const visibilityMutation = useUpdateVehicleLoadout({
   mutation: { onSettled: invalidateLoadouts },
 });
 
+const { displayAlert } = useAppNotifications();
+
+// Held while a switch is saving, so a second click cannot send the same
+// stale value again before the list has the first answer.
+const visibilitySaving = visibilityMutation.isPending;
+
 const onToggleVisibility = async (record: VehicleLoadout) => {
-  await visibilityMutation.mutateAsync({
-    vehicleId: props.vehicle.id,
-    id: record.id,
-    data: { public: !record.public },
-  });
+  if (visibilitySaving.value) return;
+
+  try {
+    await visibilityMutation.mutateAsync({
+      vehicleId: props.vehicle.id,
+      id: record.id,
+      data: { public: !record.public },
+    });
+  } catch (error) {
+    displayAlert({
+      text: [t("messages.vehicleLoadout.failure"), firstErrorMessageFrom(error)]
+        .filter(Boolean)
+        .join(": "),
+    });
+  }
 };
 </script>
 
@@ -309,6 +327,7 @@ const onToggleVisibility = async (record: VehicleLoadout) => {
               : t('actions.vehicleLoadout.makePublic')
           "
           :aria-pressed="item.public"
+          :disabled="visibilitySaving"
           :data-test="`loadout-visibility-${item.id}`"
           @click="onToggleVisibility(item)"
         >

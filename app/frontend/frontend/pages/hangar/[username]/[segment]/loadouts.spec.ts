@@ -4,7 +4,8 @@ import { flushPromises } from "@vue/test-utils";
 import { ModelProductionStatusEnum, type Vehicle } from "@/services/fyApi";
 import Component from "./loadouts.vue";
 
-const { updateLoadout, loadouts, mutation } = vi.hoisted(() => ({
+const { updateLoadout, loadouts, mutation, displayAlert } = vi.hoisted(() => ({
+  displayAlert: vi.fn(),
   mutation:
     (mutateAsync = vi.fn(() => Promise.resolve())) =>
     () => ({
@@ -50,6 +51,10 @@ vi.mock("@/shared/composables/useMobile", () => ({
   useMobile: () => ref(false),
 }));
 
+vi.mock("@/shared/composables/useAppNotifications", () => ({
+  useAppNotifications: () => ({ displayAlert, displayConfirm: vi.fn() }),
+}));
+
 vi.mock("@/frontend/composables/useVehicleMutations", () => ({
   useVehicleMutations: () => ({ invalidateVehiclePage: vi.fn() }),
 }));
@@ -81,5 +86,17 @@ describe("HangarVehicleLoadoutsPage", () => {
       id: "l1",
       data: { public: true },
     });
+  });
+
+  it("says so when a visibility switch fails", async () => {
+    updateLoadout.mockImplementationOnce(() => Promise.reject(new Error("x")));
+    const wrapper = await mountWithDefaults(Component, {
+      props: { vehicle },
+    });
+
+    await wrapper.get("[data-test='loadout-visibility-l2']").trigger("click");
+    await flushPromises();
+
+    expect(displayAlert).toHaveBeenCalled();
   });
 });
