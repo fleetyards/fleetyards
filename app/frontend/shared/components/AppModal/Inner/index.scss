@@ -141,67 +141,9 @@
   box-shadow: var(--shadow-surface-slim, 0 6px 20px -14px rgb(0 0 0 / 0.9));
 }
 
-/*
- * On a phone the modal is a sheet resting on the mobile nav: square at the
- * bottom, the top cap shortened into a grab handle, and the action plate folded
- * in as the sheet's last row rather than floating between the sheet and the nav.
- */
 @media (max-width: $tablet-breakpoint) {
-  // Grows into a sheet given a height of its own; sized by its content, it
-  // has nothing to grow into and this changes nothing.
   .modal-inner {
     --modal-gutter: 16px;
-
-    flex: 1 1 auto;
-    transition: transform 200ms ease;
-  }
-
-  .modal-inner > .panel,
-  .modal-content,
-  .modal-body {
-    flex: 1 1 auto;
-  }
-
-  .modal-inner > .panel {
-    border-bottom-width: 0;
-    border-radius: 20px 20px 0 0;
-    box-shadow: none;
-  }
-
-  // On the pseudo-element itself: the cap's custom properties inherit, and set
-  // on the panel they shrank every input's and button's caps inside it too.
-  .modal-inner > .panel::before {
-    left: calc(50% - 24px);
-    right: calc(50% - 24px);
-    height: 5px;
-  }
-
-  .modal-inner > .panel::after {
-    content: none;
-  }
-
-  .modal-hero {
-    border-radius: 18px 18px 0 0;
-  }
-
-  .modal-body {
-    border-radius: 0;
-  }
-
-  .modal-footer {
-    margin-top: 0;
-    padding: 12px var(--modal-gutter) 14px;
-    border: 2px solid var(--color-edge, rgb(122 130 136 / 0.5));
-    border-top: 1px solid var(--color-seam, #3a3f44);
-    border-bottom: 0;
-    border-radius: 0;
-    box-shadow: none;
-  }
-
-  // Dragged down from here to close.
-  .modal-header,
-  .modal-hero {
-    touch-action: none;
   }
 
   .modal-content {
@@ -231,5 +173,69 @@
 
   .modal-body--flush {
     padding: 0;
+  }
+}
+
+/*
+ * On a phone the app's modal is a sheet resting on the mobile nav: square at
+ * the bottom, the top cap shortened into a grab handle, and the action plate
+ * folded in as the sheet's last row rather than floating between the sheet and
+ * the nav. Scoped to the app's modal - a dialog opened above it, in a native
+ * `<dialog>` of its own, stays a centred dialog.
+ */
+@media (max-width: $tablet-breakpoint) {
+  // Grows into a sheet given a height of its own; sized by its content, it
+  // has nothing to grow into and this changes nothing.
+  .app-modal .modal-inner {
+    flex: 1 1 auto;
+    transition: transform 200ms ease;
+  }
+
+  .app-modal .modal-inner > .panel,
+  .app-modal .modal-content,
+  .app-modal .modal-body {
+    flex: 1 1 auto;
+  }
+
+  .app-modal .modal-inner > .panel {
+    border-bottom-width: 0;
+    border-radius: 20px 20px 0 0;
+    box-shadow: none;
+  }
+
+  // On the pseudo-element itself: the cap's custom properties inherit, and set
+  // on the panel they shrank every input's and button's caps inside it too.
+  .app-modal .modal-inner > .panel::before {
+    left: calc(50% - 24px);
+    right: calc(50% - 24px);
+    height: 5px;
+  }
+
+  .app-modal .modal-inner > .panel::after {
+    content: none;
+  }
+
+  .app-modal .modal-hero {
+    border-radius: 18px 18px 0 0;
+  }
+
+  .app-modal .modal-body {
+    border-radius: 0;
+  }
+
+  .app-modal .modal-footer {
+    margin-top: 0;
+    padding: 12px var(--modal-gutter) 14px;
+    border: 2px solid var(--color-edge, rgb(122 130 136 / 0.5));
+    border-top: 1px solid var(--color-seam, #3a3f44);
+    border-bottom: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  // Dragged down from here to close.
+  .app-modal .modal-header,
+  .app-modal .modal-hero {
+    touch-action: none;
   }
 }

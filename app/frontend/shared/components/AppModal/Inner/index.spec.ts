@@ -50,12 +50,16 @@ describe("AppModalInner", () => {
       vi.unstubAllGlobals();
     });
 
-    const drag = async (distance: number, pointerType = "touch") => {
+    const drag = async (
+      distance: number,
+      pointerType = "touch",
+      props: Record<string, unknown> = {},
+    ) => {
       const closed = vi.fn();
       stopListening = useComlink().on("close-modal", closed);
 
       const wrapper = await mountWithDefaults<typeof Component>(Component, {
-        props: { title: "Edit" },
+        props: { title: "Edit", ...props },
       });
       const header = wrapper.get(".modal-header").element;
 
@@ -91,6 +95,27 @@ describe("AppModalInner", () => {
       expect(
         (wrapper.get(".modal-inner").element as HTMLElement).style.transform,
       ).toBe("");
+    });
+
+    it("leaves a tap alone", async () => {
+      sheetWidth(true);
+
+      const { closed, wrapper } = await drag(0);
+
+      expect(closed).not.toHaveBeenCalled();
+      expect(
+        (wrapper.get(".modal-inner").element as HTMLElement).style.transform,
+      ).toBe("");
+    });
+
+    it("does not drag a dialog that closes itself", async () => {
+      sheetWidth(true);
+      const onClose = vi.fn();
+
+      const { closed } = await drag(140, "touch", { onClose });
+
+      expect(closed).not.toHaveBeenCalled();
+      expect(onClose).not.toHaveBeenCalled();
     });
 
     it("leaves a mouse alone", async () => {

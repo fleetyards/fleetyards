@@ -79,41 +79,59 @@ const close = () => {
   comlink.emit("close-modal");
 };
 
-// $tablet-breakpoint: where the modal becomes a sheet with a grab handle.
+// $tablet-breakpoint: where the modal becomes a sheet with a grab handle. Not
+// isMobileWidth, which answers for the navigation's breakpoint.
 const SHEET_QUERY = "(max-width: 768px)";
 
 // Far enough that a scroll that started on the header does not close it.
 const CLOSE_DISTANCE = 96;
 
+// Movement before a touch counts as a drag, so a tap on anything in the header
+// stays a tap.
+const DRAG_SLOP = 8;
+
 const inner = ref<HTMLElement>();
 
-let dragStart: number | undefined;
+let touchStart: number | undefined;
+let dragging = false;
 let dragOffset = 0;
 
 const onDragStart = (event: PointerEvent) => {
-  if (props.fixed || event.pointerType !== "touch") return;
+  // A dialog that closes itself is not the app's modal, and not a sheet.
+  if (props.fixed || props.onClose || event.pointerType !== "touch") return;
   if (!window.matchMedia(SHEET_QUERY).matches) return;
-  // A press on the close button or a header action stays a press.
-  if ((event.target as Element).closest("button, a, input")) return;
 
-  dragStart = event.clientY;
+  touchStart = event.clientY;
+  dragging = false;
   dragOffset = 0;
-  (event.currentTarget as Element).setPointerCapture?.(event.pointerId);
 };
 
 const onDragMove = (event: PointerEvent) => {
-  if (dragStart === undefined || !inner.value) return;
+  if (touchStart === undefined || !inner.value) return;
 
-  dragOffset = Math.max(0, event.clientY - dragStart);
+  const distance = event.clientY - touchStart;
+
+  if (!dragging) {
+    if (distance < DRAG_SLOP) return;
+
+    dragging = true;
+    (event.currentTarget as Element).setPointerCapture?.(event.pointerId);
+  }
+
+  dragOffset = Math.max(0, distance);
   inner.value.style.transition = "none";
   inner.value.style.transform = `translateY(${dragOffset}px)`;
 };
 
 const onDragEnd = () => {
-  if (dragStart === undefined || !inner.value) return;
-
   const sheet = inner.value;
-  dragStart = undefined;
+  const dragged = dragging;
+
+  touchStart = undefined;
+  dragging = false;
+
+  if (!dragged || !sheet) return;
+
   sheet.style.transition = "";
 
   if (dragOffset < CLOSE_DISTANCE) {
