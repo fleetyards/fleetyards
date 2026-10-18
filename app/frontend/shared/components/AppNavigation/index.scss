@@ -100,7 +100,9 @@
       transition:
         left ease $transition-base-speed,
         right ease $transition-base-speed,
-        width ease $transition-base-speed;
+        width ease $transition-base-speed,
+        translate ease $transition-base-speed;
+      touch-action: pan-y;
     }
 
     &__inner {
@@ -119,6 +121,13 @@
       &__wrapper {
         right: 0;
       }
+    }
+  }
+
+  .nav-swiping {
+    .app-navigation__wrapper {
+      translate: var(--nav-swipe-offset, 0);
+      transition: none;
     }
   }
 }

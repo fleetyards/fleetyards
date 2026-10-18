@@ -57,7 +57,9 @@
     // button and a search, and 15px either side of them is a screen's worth
     // of nothing over the course of a few pages.
     padding: 8px 15px;
-    transition: right ease $transition-base-speed;
+    transition:
+      right ease $transition-base-speed,
+      translate ease $transition-base-speed;
 
     &__left {
       // Outbids the actions for the free space on a shared row, so they stay at
@@ -107,6 +109,13 @@
       .environment-label {
         left: -280px;
       }
+    }
+  }
+
+  .nav-swiping {
+    .navigation-header {
+      translate: var(--nav-swipe-offset, 0);
+      transition: none;
     }
   }
 }
