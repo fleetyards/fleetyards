@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.14.0](https://github.com/fleetyards/fleetyards/compare/v9.13.0...v9.14.0) (2026-10-18)
+
+
+### Features
+
+* **settings:** group privacy settings into one panel per topic ([#5793](https://github.com/fleetyards/fleetyards/issues/5793)) ([e38235d](https://github.com/fleetyards/fleetyards/commit/e38235d0c35d5470479fddfe81e48796e3e24740))
+
+
+### Bug Fixes
+
+* **storage:** cut preprocessing memory: one job and one libvips thread at a time ([#5794](https://github.com/fleetyards/fleetyards/issues/5794)) ([d696bca](https://github.com/fleetyards/fleetyards/commit/d696bcad37da14722528093677fbd09f9721f641))
+
 ## [9.13.0](https://github.com/fleetyards/fleetyards/compare/v9.12.0...v9.13.0) (2026-10-18)
 
 
