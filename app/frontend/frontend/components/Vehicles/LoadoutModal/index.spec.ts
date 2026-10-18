@@ -832,7 +832,7 @@ describe("VehicleLoadoutModal", () => {
     input.element.dispatchEvent(enter);
     await flushPromises();
 
-    expect(enter.defaultPrevented).toBe(true);
+    expect(input.element.closest("form")).toBeNull();
     expect(updateVehicleLoadout).not.toHaveBeenCalled();
   });
 

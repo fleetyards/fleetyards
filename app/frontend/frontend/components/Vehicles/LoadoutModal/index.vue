@@ -1240,46 +1240,6 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
       </aside>
 
       <div class="vehicle-loadout__panel">
-        <!-- Enter in the name names the loadout; saving it is the button's. -->
-        <div
-          v-if="editable && flightReady"
-          class="vehicle-loadout__identity"
-          data-test="vehicle-loadout-identity"
-          @keydown.enter.prevent
-        >
-          <FormInput
-            name="loadoutName"
-            :label="t('labels.vehicleLoadout.loadoutName')"
-            :placeholder="t('labels.vehicleLoadout.loadoutName')"
-            no-label
-            inline
-            class="vehicle-loadout__name"
-            data-test="vehicle-loadout-name"
-          />
-          <FormToggle
-            :model-value="loadoutPublic"
-            name="loadoutPublic"
-            :label="t('labels.loadout.public')"
-            :disabled="savingPublic"
-            no-placeholder
-            class="vehicle-loadout__switch"
-            data-test="vehicle-loadout-public"
-            @update:model-value="onTogglePublic"
-          />
-          <SavedIndicator v-if="editedLoadout" ref="publicSaved" />
-          <FormToggle
-            :model-value="loadoutActive"
-            name="loadoutActive"
-            :label="t('labels.loadout.active')"
-            :disabled="activating || (!!editedLoadout && editedLoadout.active)"
-            no-placeholder
-            class="vehicle-loadout__switch"
-            data-test="vehicle-loadout-active"
-            @update:model-value="onToggleActive"
-          />
-          <SavedIndicator v-if="editedLoadout" ref="activeSaved" />
-        </div>
-
         <div
           v-if="editable && flightReady && linking"
           class="vehicle-loadout__link"
@@ -1533,6 +1493,45 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
         </FormTabs>
       </div>
     </form>
+
+    <template v-if="editable && flightReady" #footer-start>
+    <div
+      class="vehicle-loadout__identity"
+      data-test="vehicle-loadout-identity"
+    >
+      <FormInput
+        name="loadoutName"
+        :label="t('labels.vehicleLoadout.loadoutName')"
+        :placeholder="t('labels.vehicleLoadout.loadoutName')"
+        no-label
+        inline
+        class="vehicle-loadout__name"
+        data-test="vehicle-loadout-name"
+      />
+      <FormToggle
+        :model-value="loadoutPublic"
+        name="loadoutPublic"
+        :label="t('labels.loadout.public')"
+        :disabled="savingPublic"
+        no-placeholder
+        class="vehicle-loadout__switch"
+        data-test="vehicle-loadout-public"
+        @update:model-value="onTogglePublic"
+      />
+      <SavedIndicator v-if="editedLoadout" ref="publicSaved" />
+      <FormToggle
+        :model-value="loadoutActive"
+        name="loadoutActive"
+        :label="t('labels.loadout.active')"
+        :disabled="activating || (!!editedLoadout && editedLoadout.active)"
+        no-placeholder
+        class="vehicle-loadout__switch"
+        data-test="vehicle-loadout-active"
+        @update:model-value="onToggleActive"
+      />
+      <SavedIndicator v-if="editedLoadout" ref="activeSaved" />
+    </div>
+    </template>
 
     <template v-if="editable" #footer>
       <Btn

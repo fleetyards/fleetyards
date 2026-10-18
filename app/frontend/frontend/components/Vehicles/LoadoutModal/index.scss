@@ -225,13 +225,13 @@
 }
 
 // The loadout's name, and beside it whether it shows in the public hangar and
-// whether it is the ship's active one.
+// whether it is the ship's active one, on the plate's start side.
 .vehicle-loadout__identity {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 8px 16px;
-  margin-bottom: 16px;
+  color: var(--color-text);
 }
 
 .vehicle-loadout__name {
