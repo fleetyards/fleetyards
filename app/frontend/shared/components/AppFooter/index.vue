@@ -187,7 +187,9 @@ const currentYear = computed(() => new Date().getFullYear());
      this is the page sliding aside for the off-canvas nav, which `.main` in
      shared/layout.scss animates at the same duration. The 150ms the redesign
      standardised on is for controls answering a pointer. */
-  transition: transform 500ms ease;
+  transition:
+    transform 500ms ease,
+    translate 500ms ease;
 }
 
 /*
@@ -355,6 +357,11 @@ const currentYear = computed(() => new Date().getFullYear());
 
   .nav-visible .app-footer {
     transform: translateX(calc(-1 * var(--nav-width, 300px)));
+  }
+
+  .nav-swiping .app-footer {
+    translate: var(--nav-swipe-offset, 0);
+    transition: none;
   }
 }
 
