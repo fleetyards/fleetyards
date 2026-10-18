@@ -31479,12 +31479,14 @@ components:
       type: object
       properties:
         finishedAt:
-          type: string
+          type:
+          - string
+          - 'null'
           format: date-time
-          nullable: true
         pages:
-          type: integer
-          nullable: true
+          type:
+          - integer
+          - 'null'
         total:
           type: integer
         counts:

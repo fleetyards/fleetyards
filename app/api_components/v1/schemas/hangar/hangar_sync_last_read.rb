@@ -9,8 +9,8 @@ module V1
         schema({
           type: :object,
           properties: {
-            finishedAt: {type: :string, format: "date-time", nullable: true},
-            pages: {type: :integer, nullable: true},
+            finishedAt: {type: [:string, :null], format: "date-time"},
+            pages: {type: [:integer, :null]},
             total: {type: :integer},
             counts: {
               type: :object,
