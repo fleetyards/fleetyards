@@ -733,12 +733,16 @@ export const useComponentFitting = () => {
         minSize: entry.slot.minSize,
         maxSize: entry.slot.maxSize,
         component: entry.content as Component | undefined,
-        hardpoints: entry.children.map((child) =>
-          toHardpoint(
-            child,
-            original?.hardpoints?.find((hp) => hp.name === child.slot.name),
+        // As the editor shows a part's ports: an empty attachment or socket
+        // port nothing can be fitted to says nothing on a hardpoint list.
+        hardpoints: entry.children
+          .filter((child) => !!child.content || changeable(child))
+          .map((child) =>
+            toHardpoint(
+              child,
+              original?.hardpoints?.find((hp) => hp.name === child.slot.name),
+            ),
           ),
-        ),
       }) as Hardpoint;
 
     return hardpoints.map((hardpoint) => {
