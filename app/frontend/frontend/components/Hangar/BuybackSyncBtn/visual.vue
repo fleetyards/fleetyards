@@ -203,9 +203,11 @@ const openRun = (state: RunState) => {
   });
 };
 
+// A run preview opened before leaves its state running, which a plain reset
+// keeps.
 const open = (screen: StartScreen) => {
-  buybackSync.reset();
-  details.reset();
+  buybackSync.reset(true);
+  details.status.value = "idle";
   extension.configure(screen.answers);
 
   comlink.emit("open-modal", {
