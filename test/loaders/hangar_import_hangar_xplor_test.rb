@@ -46,6 +46,35 @@ class HangarImportHangarXplorTest < ActiveSupport::TestCase
     assert_nil Vehicle.find_by!(user_id: @user.id).name
   end
 
+  test "does not take a standard name for a custom name on a painted ship" do
+    paint = ModelPaint.find_by!(name: "Caterpillar Pirate Edition")
+    import = import_for([xplor_row(name: "Caterpillar Pirate Edition", ship_code: "DRAK_Caterpillar_Pirate", ship_name: "Caterpillar Pirate Edition")])
+
+    ::HangarImporter.new(import).run
+
+    vehicle = Vehicle.find_by!(user_id: @user.id)
+    assert_equal paint.model_id, vehicle.model_id
+    assert_nil vehicle.name
+  end
+
+  test "falls back to a custom name beside a standard ship name" do
+    import = import_for([xplor_row(name: "Aurora ES", ship_code: "RSI_Aurora_Mk_I_ES", ship_name: "Aurora Mk I ES", custom_name: "Bob's Bus")])
+
+    ::HangarImporter.new(import).run
+
+    assert_equal "Bob's Bus", Vehicle.find_by!(user_id: @user.id).name
+  end
+
+  # A Fleetyards export carries `ship_code` and `ship_name` too, but its
+  # `ship_name` is always the name the owner chose.
+  test "keeps a name from another format that matches a standard name" do
+    import = import_for([{name: "Aurora ES", ship_code: "RSI_Aurora_Mk_I_ES", ship_name: "Aurora Mk I ES"}])
+
+    ::HangarImporter.new(import).run
+
+    assert_equal "Aurora Mk I ES", Vehicle.find_by!(user_id: @user.id).name
+  end
+
   # The file the import modal offers as a download. A sample that stops
   # importing is worse than none, so it is imported here rather than trusted.
   test "the published example file imports cleanly" do

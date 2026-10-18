@@ -109,7 +109,7 @@ class HangarImporter
 
         # An export from before owned paints names the one paint a ship had in
         # `paint_slug`, which is what `slug` was set to above.
-        model_paint = ModelPaint.where(query).first
+        model_paint = ModelPaint.includes(:model).where(query).first
         if model_paint.present?
           Vehicle.create(params.merge(
             model_id: model_paint.model_id,
@@ -180,16 +180,22 @@ class HangarImporter
     HangarGroup.where(user_id: @import.user_id, name: item[:groups]).pluck(:id)
   end
 
-  # Hangar XPLORer exports a ship's standard name in `ship_name` unless its
-  # owner named it, and a ship newer than the vendored list still carries the
-  # model's own name; neither is a name the owner gave it.
+  # The first name the file gives the ship that its owner chose.
   private def custom_name(item, model)
-    name = (item[:ship_name] || item[:custom_name]).to_s.strip
-    return if name.blank?
-    return if HANGAR_XPLOR_SHIP_NAMES[item[:ship_code]].to_s.strip.casecmp?(name)
-    return if [model.name, model.rsi_name].compact_blank.any? { |model_name| normalize(model_name) == normalize(name) }
+    [item[:ship_name], item[:custom_name]].map { |name| name.to_s.squish }.find do |name|
+      name.present? && !hangar_xplor_standard_name?(item, model, name)
+    end
+  end
 
-    name
+  # Hangar XPLORer exports a ship's standard name in `ship_name` unless its
+  # owner named it. Only its rows carry a `pledge_id`, and a ship newer than the
+  # vendored list falls back to the names the row and the model already give.
+  private def hangar_xplor_standard_name?(item, model, name)
+    return false if item[:pledge_id].blank?
+
+    [HANGAR_XPLOR_SHIP_NAMES[item[:ship_code]], item[:name], model.name, model.rsi_name]
+      .compact_blank
+      .any? { |standard_name| standard_name.squish.casecmp?(name) }
   end
 
   private def stop_requested?(index)
