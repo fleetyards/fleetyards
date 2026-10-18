@@ -22,6 +22,8 @@ class HangarImporter
   # YAML blob back from the database on every check.
   CANCEL_CHECK_INTERVAL = 25
 
+  HANGAR_XPLOR_SHIP_NAMES = YAML.load_file(Rails.root.join("config/hangar_xplor_ship_names.yml")).freeze
+
   def initialize(import)
     @import = import
   end
@@ -75,7 +77,6 @@ class HangarImporter
         params = {
           notify: false,
           user_id: @import.user_id,
-          name: item[:ship_name] || item[:custom_name],
           # An export carries whatever serial the ship had, including ones from
           # before the game format; one of those would fail validation and lose
           # the whole ship rather than just its serial.
@@ -97,17 +98,22 @@ class HangarImporter
         ]
         model = Model.where(model_query).first
         if model.present?
-          Vehicle.create(params.merge(model_id: model.id, model_paint_ids: owned_paint_ids(item, model.id)))
+          Vehicle.create(params.merge(
+            model_id: model.id,
+            name: custom_name(item, model),
+            model_paint_ids: owned_paint_ids(item, model.id)
+          ))
           imported_models << model.name
           next
         end
 
         # An export from before owned paints names the one paint a ship had in
         # `paint_slug`, which is what `slug` was set to above.
-        model_paint = ModelPaint.where(query).first
+        model_paint = ModelPaint.includes(:model).where(query).first
         if model_paint.present?
           Vehicle.create(params.merge(
             model_id: model_paint.model_id,
+            name: custom_name(item, model_paint.model),
             model_paint_ids: owned_paint_ids(item, model_paint.model_id) | [model_paint.id]
           ))
           imported_models << model_paint.name
@@ -172,6 +178,26 @@ class HangarImporter
     return [@import.hangar_group_id] if @import.hangar_group_id.present?
 
     HangarGroup.where(user_id: @import.user_id, name: item[:groups]).pluck(:id)
+  end
+
+  # `custom_name` comes only from older Fleetyards exports, so it is always the
+  # owner's; `ship_name` may be Hangar XPLORer's standard name.
+  private def custom_name(item, model)
+    ship_name = item[:ship_name]
+    return ship_name if ship_name.present? && !hangar_xplor_standard_name?(item, model, ship_name)
+
+    item[:custom_name].presence
+  end
+
+  # Hangar XPLORer exports a ship's standard name in `ship_name` unless its
+  # owner named it. Only its rows carry a `pledge_id`, and a ship newer than the
+  # vendored list falls back to the names the row and the model already give.
+  private def hangar_xplor_standard_name?(item, model, name)
+    return false if item[:pledge_id].blank?
+
+    [HANGAR_XPLOR_SHIP_NAMES[item[:ship_code]], item[:name], model.name, model.rsi_name]
+      .compact_blank
+      .any? { |standard_name| standard_name.to_s.squish.casecmp?(name.to_s.squish) }
   end
 
   private def stop_requested?(index)
