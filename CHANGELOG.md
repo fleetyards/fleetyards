@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.13.0](https://github.com/fleetyards/fleetyards/compare/v9.12.0...v9.13.0) (2026-10-18)
+
+
+### Features
+
+* **support:** trim privacy copy and hint at the supporters-page setting ([#5792](https://github.com/fleetyards/fleetyards/issues/5792)) ([6f5267b](https://github.com/fleetyards/fleetyards/commit/6f5267b0dbf640303c63bd25cf5a7dfff81abd2e))
+
+
+### Bug Fixes
+
+* **hangar:** free a user from a sync or import whose job died ([#5788](https://github.com/fleetyards/fleetyards/issues/5788)) ([fbd5eb4](https://github.com/fleetyards/fleetyards/commit/fbd5eb424d876850f4e047054936e1b179a205c3))
+* **sc-data:** re-fetch renders lost to a worker kill, and cap preprocessing memory ([#5789](https://github.com/fleetyards/fleetyards/issues/5789)) ([9f884bf](https://github.com/fleetyards/fleetyards/commit/9f884bfd4123e24ab3f63c053cc7dd09308d70e4))
+
+
+### Chores
+
+* **skills:** stop review-loop from waiting on a bot review after a push ([fcadbc6](https://github.com/fleetyards/fleetyards/commit/fcadbc655df00053f099b2eded209e86cebc8ace))
+
 ## [9.12.0](https://github.com/fleetyards/fleetyards/compare/v9.11.0...v9.12.0) (2026-10-17)
 
 
