@@ -46,6 +46,16 @@ type Props = {
    * press: each change briefly confirms itself beside the label.
    */
   autosaved?: boolean;
+  /*
+   * A line under the label saying what the switch does, read out with the
+   * control rather than hidden behind an icon like `info`.
+   */
+  description?: string;
+  /*
+   * The label first and the switch at the end of the row, for a list of
+   * settings whose labels should line up.
+   */
+  switchEnd?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -61,6 +71,8 @@ const props = withDefaults(defineProps<Props>(), {
   noLabel: false,
   info: undefined,
   autosaved: false,
+  description: undefined,
+  switchEnd: false,
 });
 
 const { t, tExists } = useI18n();
@@ -70,6 +82,17 @@ const { value, errorMessage } = useField(props.name);
 const uuid = ref(`${props.name}-${uuidv4()}`);
 
 const errorId = computed(() => `${uuid.value}-error`);
+const descriptionId = computed(() => `${uuid.value}-description`);
+
+const describedBy = computed(
+  () =>
+    [
+      props.description ? descriptionId.value : undefined,
+      errorMessage.value ? errorId.value : undefined,
+    ]
+      .filter(Boolean)
+      .join(" ") || undefined,
+);
 
 watch(
   () => props.modelValue,
@@ -140,6 +163,7 @@ const innerPlaceholder = computed(() => {
       'form-toggle--inline': inline,
       'form-toggle--with-error': !!errorMessage,
       'form-toggle--align-with-fields': alignWithFields,
+      'form-toggle--switch-end': switchEnd,
     }"
   >
     <input
@@ -147,7 +171,7 @@ const innerPlaceholder = computed(() => {
       :checked="implied || !!value"
       v-tooltip.right="errorMessage"
       :aria-invalid="!!errorMessage || undefined"
-      :aria-describedby="errorMessage ? errorId : undefined"
+      :aria-describedby="describedBy"
       :placeholder="innerPlaceholder"
       :name="name"
       :disabled="disabled"
@@ -161,6 +185,9 @@ const innerPlaceholder = computed(() => {
         {{ innerLabel }}
       </span>
     </label>
+    <p v-if="description" :id="descriptionId" class="form-toggle__description">
+      {{ description }}
+    </p>
     <HintIcon v-if="info" :text="info" class="form-toggle-hint" />
     <SavedIndicator
       v-if="autosaved"

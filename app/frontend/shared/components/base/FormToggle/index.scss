@@ -159,3 +159,55 @@
   align-self: center;
   margin-left: 8px;
 }
+
+.form-toggle__description {
+  width: 100%;
+  margin: 2px 0 0;
+  padding-left: 54px;
+  color: var(--color-text-dim, #959595);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+/*
+ * The label and its description in one column, the switch in the other, across
+ * both lines. The label's box steps aside (`display: contents`) so its parts
+ * can sit in the grid; it is still the element a click lands in, so the whole
+ * row toggles as before.
+ */
+.form-toggle--switch-end {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 16px;
+  align-items: center;
+
+  input + label {
+    display: contents;
+  }
+
+  input + label .form-toggle-label {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  input + label .form-toggle-switch {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+
+  .form-toggle__description {
+    grid-column: 1;
+    grid-row: 2;
+    padding-left: 0;
+  }
+
+  .form-toggle-saved {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: end;
+  }
+
+  .form-toggle__error {
+    grid-column: 1 / -1;
+  }
+}

@@ -59,4 +59,22 @@ describe("FormToggle", () => {
 
     expect(wrapper.find(".saved-indicator__label").exists()).toBe(true);
   });
+
+  it("reads its description out with the control", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        name: "syncPaints",
+        label: "Sync paints",
+        description: "Replaces your paints with the ones in your RSI hangar.",
+      },
+    });
+
+    const description = wrapper.get(".form-toggle__description");
+    expect(wrapper.get("input").attributes("aria-describedby")).toBe(
+      description.attributes("id"),
+    );
+    expect(description.text()).toBe(
+      "Replaces your paints with the ones in your RSI hangar.",
+    );
+  });
 });
