@@ -45,7 +45,7 @@ const componentQuery = ({ search, page }: { search?: string; page?: number }) =>
       currentVersion: true,
       hiddenEq: false,
       ...(category.value ? { categoryIn: [category.value] } : {}),
-      ...(search ? { nameCont: search } : {}),
+      ...(search ? { searchNameCont: search } : {}),
     },
   });
 

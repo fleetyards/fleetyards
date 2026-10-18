@@ -1,6 +1,7 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { VueWrapper } from "@vue/test-utils";
+import { components as fetchComponents } from "@/services/fyApi";
 import Component from "./index.vue";
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
@@ -57,5 +58,25 @@ describe("LogisticsComponentPicker", () => {
         { id: "3", name: "Bulwark", size: "1", category: "shieldgenerator" },
       ]),
     ).toEqual(["Bulwark (1)"]);
+  });
+
+  // What players call a part is searched too, so "mining bag" finds the pods.
+  it("searches by name or alias", async () => {
+    wrapper = await mountWithDefaults<typeof Component>(Component);
+
+    const select = wrapper
+      .findAllComponents({ name: "BaseSelect" })
+      .find((candidate) => candidate.props("name") === "component");
+    const query = select?.props("queryFn") as (params: {
+      search?: string;
+    }) => Promise<unknown>;
+
+    await query({ search: "mining bag" });
+
+    expect(fetchComponents).toHaveBeenCalledWith(
+      expect.objectContaining({
+        q: expect.objectContaining({ searchNameCont: "mining bag" }),
+      }),
+    );
   });
 });
