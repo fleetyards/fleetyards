@@ -45,10 +45,14 @@ const cargoHoldGroups = computed(() => {
   return groupByHoldName(entries, (e) => e.name);
 });
 
+// Shown for a loadout rather than picked from: a module slot is then a row like
+// any other, with the module's fitted contents below it.
+const readOnly = inject<Ref<boolean>>("hardpointsReadOnly", ref(false));
+
 // A module slot opens the module picker; every other kind of hardpoint is a
 // part's row, which draws what its kind shows differently.
 const itemComponent = computed(() =>
-  props.category === HardpointCategoryEnum.MODULE
+  props.category === HardpointCategoryEnum.MODULE && !readOnly.value
     ? HardpointModuleItem
     : HardpointBaseItem,
 );

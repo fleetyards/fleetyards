@@ -46,11 +46,20 @@ import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 type Props = {
   model: Model;
   cargoHolds?: CargoHold[];
+  // A loadout's fitting: the ship's game-files hardpoints with the loadout's
+  // modules and parts grafted in. Shown read-only in place of the hull as built.
+  fitting?: Hardpoint[];
 };
 
 const props = withDefaults(defineProps<Props>(), {
   cargoHolds: () => [],
+  fitting: undefined,
 });
+
+provide(
+  "hardpointsReadOnly",
+  computed(() => !!props.fitting),
+);
 
 provide(
   "modelSlug",
@@ -80,15 +89,21 @@ const spviewerUrl = computed(() => {
   return `https://www.spviewer.eu/performance?ship=${props.model.scIdentifier}`;
 });
 
+const shownHardpoints = computed(
+  () => props.fitting ?? (hardpoints.value as Hardpoint[] | undefined),
+);
+
 const hardpointsForGroup = (group: HardpointGroupEnum): Hardpoint[] => {
-  return (hardpoints.value?.filter((hardpoint) => hardpoint.group === group) ||
-    []) as Hardpoint[];
+  return (
+    shownHardpoints.value?.filter((hardpoint) => hardpoint.group === group) ||
+    []
+  );
 };
 
 watch(
   () => props.model,
   async () => {
-    await refetch();
+    if (!props.fitting) await refetch();
   },
 );
 
@@ -110,7 +125,7 @@ const {
   data: hardpoints,
   refetch,
 } = useModelHardpointsQuery(props.model.slug, modelHardpointsQueryParams, {
-  query: { enabled: !!props.model },
+  query: { enabled: () => !!props.model && !props.fitting },
 });
 
 // Cards that read the hardpoints query render right away and spin while it is
@@ -125,9 +140,14 @@ const equippedModules = inject<Ref<EquippedModules>>(
   ref({}),
 );
 
-const loadoutHardpoints = useEquippedHardpoints(
+const equippedHardpoints = useEquippedHardpoints(
   () => hardpoints.value as Hardpoint[] | undefined,
   equippedModules,
+);
+
+// A loadout's fitting already carries its modules' contents.
+const loadoutHardpoints = computed(
+  () => props.fitting ?? equippedHardpoints.value,
 );
 
 // Only a flight controller carries speeds, which tells it apart from the
@@ -242,7 +262,7 @@ useMetricsMasonry(metricsGrid);
             </Btn>
           </BtnGroup>
         </template>
-        <BtnGroup segmented class="hardpoints__source">
+        <BtnGroup v-if="!fitting" segmented class="hardpoints__source">
           <Btn
             :active="source === HardpointSourceEnum.GAME_FILES"
             :disabled="!model.inGame"
@@ -322,7 +342,7 @@ useMetricsMasonry(metricsGrid);
         <!-- First, so it sits at the top of the slot rather than after the
              rows a refetch keeps on screen. -->
         <Loader :loading="isLoading || isFetching" />
-        <div v-if="hardpoints?.length" class="row">
+        <div v-if="shownHardpoints?.length" class="row">
           <div class="col-12 col-md-6 col-lg-4">
             <HardpointGroup
               v-for="group in [
