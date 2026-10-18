@@ -500,9 +500,11 @@ export const useComponentFitting = () => {
   // What makes two sibling slots the same row: the part in them, the room they
   // offer, and the same again all the way down, under the same names -- a pick
   // on the stack reaches each member's slots by the first member's paths.
+  // A part by its name: the game files carry one part as several records, a
+  // Constellation's left and right missile racks among them.
   const signature = (slot: LoadoutSocketSlot): string =>
     JSON.stringify([
-      slot.item?.id,
+      slot.item?.name || slot.item?.id,
       slot.kind,
       slot.size,
       slot.locked,

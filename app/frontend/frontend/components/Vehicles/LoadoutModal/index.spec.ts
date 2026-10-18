@@ -1476,6 +1476,27 @@ describe("VehicleLoadoutModal component tabs", () => {
     slots: [],
   });
 
+  it("stacks slots holding one part the game files carry as two records", async () => {
+    hullSlots.value = [
+      shieldSlot("hardpoint_shield_generator_left", {
+        id: "as-left",
+        name: "AllStop",
+        size: "1",
+      }),
+      shieldSlot("hardpoint_shield_generator_right", {
+        id: "as-right",
+        name: "AllStop",
+        size: "1",
+      }),
+    ];
+    const wrapper = await mountClosed(vehicle(), { tab: "shields" });
+    await flushPromises();
+
+    expect(
+      socket(wrapper, "hardpoint_shield_generator_left#stack").text(),
+    ).toContain("2");
+  });
+
   it("stacks identical slots with a count, and a pick fills every one", async () => {
     const allStop = { id: "as", name: "AllStop", size: "1" };
     const better = { id: "fr", name: "FR-66", size: "1" };
