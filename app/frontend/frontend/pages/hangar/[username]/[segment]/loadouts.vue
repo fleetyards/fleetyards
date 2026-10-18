@@ -13,8 +13,6 @@ import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import VehicleTabLayout from "@/frontend/components/Vehicles/TabLayout/index.vue";
 
 import { useI18n } from "@/shared/composables/useI18n";
-import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import { firstErrorMessageFrom } from "@/shared/utils/ApiErrors";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
 import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
 import { useFeatures } from "@/frontend/composables/useFeatures";
@@ -161,7 +159,9 @@ const { loadoutEditorAvailable } = useLoadoutEditor();
 
 const fittingEditable = computed(() => loadoutEditorAvailable(props.vehicle));
 
-const editFitting = (record: VehicleLoadout) => {
+// Every loadout is edited in the editor where it is available, a linked one
+// by its name and address.
+const editLoadout = (record: VehicleLoadout) => {
   openLoadoutModal(props.vehicle, {
     editable: true,
     loadoutId: record.id,
@@ -199,36 +199,6 @@ const onActivate = async (record: VehicleLoadout) => {
     id: record.id,
   });
 };
-
-// Visibility: a public loadout has its page in the public hangar, and shows on
-// the plaque while it is the active one.
-const visibilityMutation = useUpdateVehicleLoadout({
-  mutation: { onSettled: invalidateLoadouts },
-});
-
-const { displayAlert } = useAppNotifications();
-
-// Held while a switch is saving, so a second click cannot send the same
-// stale value again before the list has the first answer.
-const visibilitySaving = visibilityMutation.isPending;
-
-const onToggleVisibility = async (record: VehicleLoadout) => {
-  if (visibilitySaving.value) return;
-
-  try {
-    await visibilityMutation.mutateAsync({
-      vehicleId: props.vehicle.id,
-      id: record.id,
-      data: { public: !record.public },
-    });
-  } catch (error) {
-    displayAlert({
-      text: [t("messages.vehicleLoadout.failure"), firstErrorMessageFrom(error)]
-        .filter(Boolean)
-        .join(": "),
-    });
-  }
-};
 </script>
 
 <template>
@@ -239,6 +209,7 @@ const onToggleVisibility = async (record: VehicleLoadout) => {
       :items="loadoutItems"
       :loading="isLoading"
       confirm-destroy-text="Are you sure you want to delete this loadout?"
+      :hide-edit="fittingEditable"
       @start-edit="onStartEdit"
       @save-edit="onSaveEdit"
       @start-create="onStartCreate"
@@ -263,7 +234,16 @@ const onToggleVisibility = async (record: VehicleLoadout) => {
             {{ t("labels.loadout.public") }}
           </Pill>
           <div class="loadouts-page__item-info">
-            <span class="loadouts-page__item-name">
+            <!-- A fleetyards loadout's name leads to its page. -->
+            <router-link
+              v-if="item.kind === VehicleLoadoutKindEnum.FLEETYARDS"
+              :to="loadoutPage(item)"
+              class="loadouts-page__item-name"
+              :data-test="`loadout-page-${item.id}`"
+            >
+              {{ item.name }}
+            </router-link>
+            <span v-else class="loadouts-page__item-name">
               {{ item.name }}
             </span>
             <div v-if="item.url" class="loadouts-page__item-links">
@@ -281,15 +261,6 @@ const onToggleVisibility = async (record: VehicleLoadout) => {
       <template #actions="{ item }">
         <Btn
           v-if="item.kind === VehicleLoadoutKindEnum.FLEETYARDS"
-          v-tooltip="t('actions.vehicleLoadout.openLoadoutPage')"
-          :to="loadoutPage(item)"
-          :aria-label="t('actions.vehicleLoadout.openLoadoutPage')"
-          :data-test="`loadout-page-${item.id}`"
-        >
-          <i class="fa-duotone fa-file-lines" />
-        </Btn>
-        <Btn
-          v-if="item.kind === VehicleLoadoutKindEnum.FLEETYARDS"
           v-tooltip="t('actions.vehicleLoadout.viewLoadout')"
           :data-test="`loadout-view-fitting-${item.id}`"
           @click="viewFitting(item)"
@@ -297,43 +268,20 @@ const onToggleVisibility = async (record: VehicleLoadout) => {
           <i class="fa-duotone fa-up-right-and-down-left-from-center" />
         </Btn>
         <Btn
-          v-if="
-            fittingEditable && item.kind === VehicleLoadoutKindEnum.FLEETYARDS
-          "
-          v-tooltip="t('actions.vehicleLoadout.editLoadout')"
-          :data-test="`loadout-edit-fitting-${item.id}`"
-          @click="editFitting(item)"
-        >
-          <i class="fa-duotone fa-screwdriver-wrench" />
-        </Btn>
-        <Btn
-          v-tooltip="
-            item.public
-              ? t('actions.vehicleLoadout.makePrivate')
-              : t('actions.vehicleLoadout.makePublic')
-          "
-          :aria-label="
-            item.public
-              ? t('actions.vehicleLoadout.makePrivate')
-              : t('actions.vehicleLoadout.makePublic')
-          "
-          :aria-pressed="item.public"
-          :disabled="visibilitySaving"
-          :data-test="`loadout-visibility-${item.id}`"
-          @click="onToggleVisibility(item)"
-        >
-          <i
-            :class="
-              item.public ? 'fa-duotone fa-eye' : 'fa-duotone fa-eye-slash'
-            "
-          />
-        </Btn>
-        <Btn
           v-if="!item.active"
           v-tooltip="t('labels.loadout.activate')"
           @click="onActivate(item)"
         >
           <i class="fa-duotone fa-circle-check" />
+        </Btn>
+        <Btn
+          v-if="fittingEditable"
+          v-tooltip="t('actions.vehicleLoadout.editLoadout')"
+          :aria-label="t('actions.vehicleLoadout.editLoadout')"
+          :data-test="`loadout-edit-${item.id}`"
+          @click="editLoadout(item)"
+        >
+          <i class="fa-duotone fa-pencil" />
         </Btn>
       </template>
 

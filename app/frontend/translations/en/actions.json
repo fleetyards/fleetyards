@@ -608,8 +608,6 @@
         "openLoadoutPage": "Open loadout page",
         "linkInstead": "Link a build instead",
         "createOnFleetyards": "Create a loadout on Fleetyards",
-        "makePublic": "Make public",
-        "makePrivate": "Make private",
         "viewLoadout": "View loadout"
       }
     }

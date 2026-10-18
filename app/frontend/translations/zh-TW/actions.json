@@ -608,8 +608,6 @@
         "openLoadoutPage": "開啟配置頁面",
         "linkInstead": "改為連結配置",
         "createOnFleetyards": "在 Fleetyards 上建立配置",
-        "makePublic": "設為公開",
-        "makePrivate": "設為私密",
         "viewLoadout": "查看配置"
       }
     }

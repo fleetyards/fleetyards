@@ -608,8 +608,6 @@
         "openLoadoutPage": "Loadout-Seite öffnen",
         "linkInstead": "Stattdessen einen Build verlinken",
         "createOnFleetyards": "Loadout auf Fleetyards erstellen",
-        "makePublic": "Öffentlich machen",
-        "makePrivate": "Privat machen",
         "viewLoadout": "Loadout ansehen"
       }
     }

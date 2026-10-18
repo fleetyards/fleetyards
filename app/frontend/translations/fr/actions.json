@@ -608,8 +608,6 @@
         "openLoadoutPage": "Ouvrir la page du loadout",
         "linkInstead": "Lier un build à la place",
         "createOnFleetyards": "Créer un loadout sur Fleetyards",
-        "makePublic": "Rendre public",
-        "makePrivate": "Rendre privé",
         "viewLoadout": "Voir l’équipement"
       }
     }
