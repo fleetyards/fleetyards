@@ -9,6 +9,8 @@ import NavItem from "./NavItem/index.vue";
 import NavFooter from "./NavFooter/index.vue";
 import { useNavStore } from "@/shared/stores/nav";
 import { storeToRefs } from "pinia";
+import { useMobileStore } from "@/shared/stores/mobile";
+import { useSwipeToDismiss } from "@/shared/composables/useSwipeToDismiss";
 
 type Props = {
   title: string;
@@ -36,6 +38,8 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   document.removeEventListener("click", documentClick);
+  document.body.classList.remove("nav-swiping");
+  document.body.style.removeProperty("--nav-swipe-offset");
 
   closeNav();
 });
@@ -54,6 +58,29 @@ const documentClick = (event: Event) => {
 const closeNav = () => {
   navStore.close();
 };
+
+const wrapper = ref<HTMLElement | null>(null);
+
+const { mobile } = storeToRefs(useMobileStore());
+
+const { offset: swipeOffset, dragging } = useSwipeToDismiss({
+  panel: wrapper,
+  side: "right",
+  enabled: () => mobile.value && !navCollapsed.value,
+  onDismiss: closeNav,
+});
+
+/*
+ * On the body, because the page, its header and the tab bar all make room for
+ * the drawer and have to follow the finger with it - see `.nav-swiping`.
+ */
+watchEffect(() => {
+  document.body.classList.toggle("nav-swiping", dragging.value);
+  document.body.style.setProperty(
+    "--nav-swipe-offset",
+    `${swipeOffset.value}px`,
+  );
+});
 </script>
 
 <template>
@@ -68,6 +95,7 @@ const closeNav = () => {
     data-test="app-navigation"
   >
     <div
+      ref="wrapper"
       :class="{
         'app-navigation__wrapper--slim': slim,
       }"

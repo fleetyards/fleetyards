@@ -7,6 +7,18 @@
     left: 0;
     z-index: 2017;
     background-color: rgba(black, 0.6);
+    opacity: 0;
+    transition: opacity ease $transition-base-speed;
+
+    // Fades with the panel rather than after it, so a swipe that lets go
+    // halfway carries the dimming on from where the finger left it.
+    &.in {
+      opacity: 1;
+    }
+
+    &--dragging {
+      transition: none;
+    }
   }
 
   &__panel {
@@ -24,6 +36,7 @@
     transition:
       transform ease $transition-base-speed,
       visibility ease $transition-base-speed;
+    touch-action: pan-y;
 
     &--left {
       left: 0;
@@ -38,7 +51,8 @@
     }
 
     // Moved, not animated: see `positioning` in index.vue.
-    &--positioning {
+    &--positioning,
+    &--dragging {
       transition: none;
     }
 
@@ -73,14 +87,4 @@
     padding: 10px 15px 20px;
     padding-bottom: env(safe-area-inset-bottom);
   }
-}
-
-.off-canvas-backdrop-enter-active,
-.off-canvas-backdrop-leave-active {
-  transition: opacity ease $transition-base-speed;
-}
-
-.off-canvas-backdrop-enter-from,
-.off-canvas-backdrop-leave-to {
-  opacity: 0;
 }

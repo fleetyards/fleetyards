@@ -6,7 +6,8 @@
   width: 100%;
   transition:
     right ease $transition-base-speed,
-    width ease $transition-base-speed;
+    width ease $transition-base-speed,
+    translate ease $transition-base-speed;
 
   &__items {
     margin: 0;
@@ -168,6 +169,13 @@
   .nav-visible {
     .navigation-mobile {
       right: 300px;
+    }
+  }
+
+  .nav-swiping {
+    .navigation-mobile {
+      translate: var(--nav-swipe-offset, 0);
+      transition: none;
     }
   }
 }

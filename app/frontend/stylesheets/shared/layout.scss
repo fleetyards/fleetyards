@@ -151,7 +151,8 @@ body {
     .main {
       transition:
         left ease 0.5s,
-        right ease 0.5s;
+        right ease 0.5s,
+        translate ease 0.5s;
     }
   }
 
@@ -160,6 +161,15 @@ body {
       .main {
         right: 300px;
         left: -300px;
+      }
+    }
+  }
+
+  .nav-swiping {
+    .app-body {
+      .main {
+        translate: var(--nav-swipe-offset, 0);
+        transition: none;
       }
     }
   }
