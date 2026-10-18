@@ -88,6 +88,13 @@ const onUploadDone = async (files: FileUpload[]) => {
           {{ t("actions.imports.downloadExample") }}
         </a>
       </li>
+      <li>
+        {{ t("labels.imports.formats.hangarExtension") }}
+        <a href="/examples/hangar-extension-example.json" download>
+          <i class="fa-light fa-download" />
+          {{ t("actions.imports.downloadExample") }}
+        </a>
+      </li>
     </ul>
 
     <p class="hint">

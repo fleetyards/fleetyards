@@ -301,10 +301,11 @@
           "missing": "未找到",
           "found": "已配對"
         },
-        "formatHint": "支援兩種檔案格式：",
+        "formatHint": "支援三種檔案格式：",
         "formats": {
           "fleetyards": "FleetYards 機庫匯出檔 —— 使用匯出按鈕即可產生。",
-          "hangarXplor": "hangarXPLOR 匯出檔。"
+          "hangarXplor": "hangarXPLOR 匯出檔。",
+          "hangarExtension": "Star Citizen: Hangar Extension 瀏覽器擴充功能的 JSON 匯出檔。"
         },
         "details": {
           "imported": "已新增",
