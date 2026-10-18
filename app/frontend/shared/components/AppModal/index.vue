@@ -42,6 +42,22 @@ const isShow = ref(false);
 
 const isOpen = ref(false);
 
+// An edit inside one of the content's forms that has not been submitted yet.
+// Content that knows better exposes `dirty` itself.
+const formEdited = ref(false);
+
+const onFormEdit = (event: Event) => {
+  if ((event.target as Element | null)?.closest?.("form")) {
+    formEdited.value = true;
+  }
+};
+
+// Every form modal saves by submitting, and most close themselves afterwards
+// without forcing it, so a submit is what clears the edit.
+const onFormSubmit = () => {
+  formEdited.value = false;
+};
+
 // Matches `.app-modal` in index.scss, so a popover opened from the modal's
 // content is placed above it rather than underneath.
 provide(popoverLayerKey, 1050);
@@ -77,6 +93,7 @@ const open = async (options: AppModalOptions) => {
   large.value = !!options.large;
   fixed.value = !!options.fixed;
   dirty.value = !!options.dirty;
+  formEdited.value = false;
   fullscreen.value = !!options.fullscreen;
   component.value = markRaw(defineAsyncComponent(options.component));
 
@@ -124,10 +141,10 @@ const close = async (force = false) => {
 
   // A forced close is the modal closing itself after it saved: what was typed
   // is not lost, so there is nothing to confirm.
-  if (!force && modalComponent.value?.dirty) {
+  if (!force && (modalComponent.value?.dirty ?? formEdited.value)) {
     displayConfirm({
       text:
-        modalComponent.value.dirtyText ?? t("appModal.messages.confirm.dirty"),
+        modalComponent.value?.dirtyText ?? t("appModal.messages.confirm.dirty"),
       onConfirm: async () => {
         await internalHide();
       },
@@ -191,6 +208,9 @@ defineExpose({
     class="app-modal fade"
     data-test="modal"
     @click.self="() => close()"
+    @input="onFormEdit"
+    @change="onFormEdit"
+    @submit.capture="onFormSubmit"
   >
     <div class="modal-dialog" :class="modalDialogClasses">
       <Component :is="component" ref="modalComponent" v-bind="componentProps" />

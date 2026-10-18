@@ -13,6 +13,20 @@ const DirtyForm = defineComponent({
   },
 });
 
+const PlainForm = defineComponent({
+  setup() {
+    return () =>
+      h("div", [
+        h(
+          "form",
+          { "data-test": "form", onSubmit: (e: Event) => e.preventDefault() },
+          [h("input", { "data-test": "field" })],
+        ),
+        h("input", { "data-test": "search" }),
+      ]);
+  },
+});
+
 let wrapper: VueWrapper | undefined;
 let stopListening: (() => void) | undefined;
 
@@ -23,7 +37,7 @@ afterEach(() => {
   vi.useRealTimers();
 });
 
-const openDirty = async () => {
+const openWith = async (content: object) => {
   vi.useFakeTimers();
   wrapper = await mountWithDefaults<typeof Component>(Component, {});
 
@@ -35,12 +49,14 @@ const openDirty = async () => {
     close: (force?: boolean) => Promise<void>;
   };
 
-  await modal.open({ component: () => Promise.resolve(DirtyForm) });
+  await modal.open({ component: () => Promise.resolve(content) });
   vi.runAllTimers();
   await flushPromises();
 
   return { modal, confirm };
 };
+
+const openDirty = () => openWith(DirtyForm);
 
 describe("AppModal", () => {
   it("asks before closing over unsaved input", async () => {
@@ -177,6 +193,35 @@ describe("AppModal", () => {
       await settle();
 
       expect(wrapper?.find('[data-test="modal"]').exists()).toBe(true);
+    });
+  });
+  describe("without a dirty flag of its own", () => {
+    it("asks once something in a form was edited", async () => {
+      const { modal, confirm } = await openWith(PlainForm);
+
+      await wrapper!.get("[data-test='field']").trigger("input");
+      await modal.close();
+
+      expect(confirm).toHaveBeenCalledTimes(1);
+    });
+
+    it("closes without asking once the form was submitted", async () => {
+      const { modal, confirm } = await openWith(PlainForm);
+
+      await wrapper!.get("[data-test='field']").trigger("input");
+      await wrapper!.get("[data-test='form']").trigger("submit");
+      await modal.close();
+
+      expect(confirm).not.toHaveBeenCalled();
+    });
+
+    it("ignores input outside a form", async () => {
+      const { modal, confirm } = await openWith(PlainForm);
+
+      await wrapper!.get("[data-test='search']").trigger("input");
+      await modal.close();
+
+      expect(confirm).not.toHaveBeenCalled();
     });
   });
 });
