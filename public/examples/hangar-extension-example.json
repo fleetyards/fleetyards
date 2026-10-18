@@ -1,0 +1,69 @@
+[
+  {
+    "manufacturer": {
+      "code": "AEGS",
+      "name": "Aegis Dynamics",
+      "shortName": "Aegis"
+    },
+    "code": "AEGS_Avenger_Titan",
+    "matrix": "Avenger Titan",
+    "focus": "Light Freight",
+    "status": "Flight-Ready",
+    "name": "Avenger Titan"
+  },
+  {
+    "manufacturer": {
+      "code": "ANVL",
+      "name": "Anvil Aerospace",
+      "shortName": "Anvil"
+    },
+    "code": "ANVL_Carrack",
+    "matrix": "Carrack w/C8X",
+    "focus": "Expedition",
+    "status": "Flight-Ready",
+    "insurance": "LTI",
+    "name": "Carrack",
+    "includedShips": ["Ursa", "C8X Pisces Expedition"]
+  },
+  {
+    "manufacturer": {
+      "code": "ANVL",
+      "name": "Anvil Aerospace",
+      "shortName": "Anvil"
+    },
+    "code": "ANVL_C8X_Pisces_Expedition",
+    "matrix": "C8X Pisces Expedition",
+    "focus": "Expedition",
+    "status": "Flight-Ready",
+    "insurance": "LTI",
+    "name": "C8X Pisces Expedition",
+    "includedWith": "Carrack w/C8X"
+  },
+  {
+    "manufacturer": {
+      "code": "RSI",
+      "name": "Roberts Space Industries",
+      "shortName": "RSI"
+    },
+    "code": "RSI_Ursa",
+    "matrix": "Ursa",
+    "focus": "Exploration",
+    "status": "Flight-Ready",
+    "insurance": "LTI",
+    "name": "Ursa",
+    "includedWith": "Carrack w/C8X"
+  },
+  {
+    "manufacturer": {
+      "code": "ANVL",
+      "name": "Anvil Aerospace",
+      "shortName": "Anvil"
+    },
+    "code": "ANVL_F7C_M_Super_Hornet_Heartseeker_Mk_I",
+    "matrix": "F7C-M Super Hornet Heartseeker Mk I",
+    "focus": "Fighter",
+    "status": "Flight-Ready",
+    "insurance": "120MI",
+    "name": "F7C-M Super Hornet Heartseeker"
+  }
+]

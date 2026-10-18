@@ -51,28 +51,18 @@ class HangarImporter
           break
         end
 
-        name = item[:name].presence
-        name = legacy_mapping[item[:name]] if legacy_mapping[item[:name]].present?
-        name = starship_42_mapping[item[:name]] if starship_42_mapping[item[:name]].present?
-        name = hangar_xplor_mapping[item[:name]] if hangar_xplor_mapping[item[:name]].present?
+        # The Star Citizen: Hangar Extension writes its own export alias to
+        # `name` and the ship-matrix name to `matrix`. The alias is the one that
+        # misleads -- "F7C-M Super Hornet Heartseeker" maps to the plain Super
+        # Hornet -- so the matrix name goes first.
+        names = [item[:matrix], item[:name]].compact_blank.uniq.map { |raw| mapped_name(raw) }
 
-        normalized_name = normalize(name)
         slug = item[:slug].downcase if item[:slug].present?
         slug = item[:paint_slug].downcase if item[:paint_slug].present?
 
         # Neither half of the query can match on an item that names nothing, and
         # it has no label to report either.
-        next if name.blank? && slug.blank?
-
-        query = [
-          MODEL_FIND_QUERY.join(" OR "),
-          {
-            name: name&.downcase,
-            slug:,
-            normalized_name:,
-            search: "%#{normalized_name}%"
-          }
-        ]
+        next if names.empty? && slug.blank?
 
         params = {
           notify: false,
@@ -92,11 +82,7 @@ class HangarImporter
           model_upgrade_ids: ModelUpgrade.where(name: item[:upgrades]).pluck(:id)
         }
 
-        model_query = [
-          (MODEL_FIND_QUERY + MODEL_LEGACY_SLUG_QUERY).join(" OR "),
-          query[1]
-        ]
-        model = Model.where(model_query).first
+        model, model_paint = find_model_or_paint(names, slug)
         if model.present?
           Vehicle.create(params.merge(
             model_id: model.id,
@@ -109,7 +95,6 @@ class HangarImporter
 
         # An export from before owned paints names the one paint a ship had in
         # `paint_slug`, which is what `slug` was set to above.
-        model_paint = ModelPaint.includes(:model).where(query).first
         if model_paint.present?
           Vehicle.create(params.merge(
             model_id: model_paint.model_id,
@@ -125,7 +110,7 @@ class HangarImporter
         # instead would name a slug that was never queried, and on an item that
         # carried only a paint it would report nothing -- `missing` is sorted,
         # and one nil beside a string raises rather than naming either.
-        missing_models << (item[:name].presence || slug)
+        missing_models << (item[:matrix].presence || item[:name].presence || slug)
       end
     end
 
@@ -198,6 +183,30 @@ class HangarImporter
     [HANGAR_XPLOR_SHIP_NAMES[item[:ship_code]], item[:name], model.name, model.rsi_name]
       .compact_blank
       .any? { |standard_name| standard_name.to_s.squish.casecmp?(name.to_s.squish) }
+  end
+
+  # Each name in turn, the model before a paint, so a paint matched by the
+  # first name never shadows a model matched by the second.
+  private def find_model_or_paint(names, slug)
+    (names.presence || [nil]).each do |name|
+      normalized_name = normalize(name)
+      binds = {name: name&.downcase, slug:, normalized_name:}
+
+      model = Model.where((MODEL_FIND_QUERY + MODEL_LEGACY_SLUG_QUERY).join(" OR "), binds).first
+      return [model, nil] if model.present?
+
+      model_paint = ModelPaint.includes(:model).where(MODEL_FIND_QUERY.join(" OR "), binds).first
+      return [nil, model_paint] if model_paint.present?
+    end
+
+    [nil, nil]
+  end
+
+  private def mapped_name(name)
+    hangar_xplor_mapping[name].presence ||
+      starship_42_mapping[name].presence ||
+      legacy_mapping[name].presence ||
+      name
   end
 
   private def stop_requested?(index)
@@ -315,6 +324,9 @@ class HangarImporter
       "Gatac Railen" => "Railen",
       "Carrack Expedition with Pisces Expedition" => "Carrack Expedition",
       "Carrack with Pisces Expedition" => "Carrack",
+      "Carrack w/C8X" => "Carrack",
+      "Carrack Expedition w/C8X" => "Carrack Expedition",
+      "Dragonfly Star Kitten" => "Dragonfly Starkitten Edition",
       "Mustang Omega : AMD Edition" => "Mustang Omega",
       "Nova Tank" => "Nova",
       "Pisces" => "C8 Pisces",
