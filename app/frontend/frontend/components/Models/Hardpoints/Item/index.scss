@@ -94,6 +94,13 @@
   gap: 4px;
 }
 
+// As large as a row control.
+.hardpoint-item__actions-space {
+  flex: none;
+  width: 24px;
+  height: 24px;
+}
+
 .hardpoint-item__stack {
   display: flex;
   flex-direction: column;

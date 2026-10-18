@@ -99,6 +99,13 @@ const wrappedStyle = computed(() =>
           class="hardpoint-item__rail"
         >
           <slot name="actions" />
+          <!-- The fold control's place, kept where a row has nothing to fold,
+            so the controls below it sit at the same height on every row. -->
+          <span
+            v-if="!$slots.actions"
+            class="hardpoint-item__actions-space"
+            aria-hidden="true"
+          />
           <!-- What the row stands for, and the control that splits it up. -->
           <span
             v-if="(count && count > 1) || $slots.stack"
