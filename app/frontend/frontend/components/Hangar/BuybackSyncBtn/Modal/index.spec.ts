@@ -671,9 +671,9 @@ describe("HangarBuybackSyncModal", () => {
       const wrapper = await syncList(detailExtension);
 
       expect(
-        wrapper.get("[data-test='sync-step-submitting']").attributes(
-          "data-status",
-        ),
+        wrapper
+          .get("[data-test='sync-step-submitting']")
+          .attributes("data-status"),
       ).toBe("done");
       expect(
         wrapper.get("[data-test='sync-step-prices']").attributes("data-status"),

@@ -2882,7 +2882,8 @@
           "reading": "Página %{page} · Pledges de recompra hasta ahora: %{count}",
           "saved": "Nuevos: %{added} · Eliminados: %{removed}",
           "prices": "%{done} de %{total}",
-          "pricesPending": "Para los pledges nuevos desde la última sincronización"
+          "pricesPending": "Para los pledges nuevos desde la última sincronización",
+          "read": "Páginas leídas: %{page} · Pledges de recompra: %{count}"
         },
         "firstSyncTitle": "La primera sincronización tarda más",
         "updateExtensionTitle": "Actualiza la extensión de sincronización",

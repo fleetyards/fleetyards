@@ -147,10 +147,12 @@ const steps = computed<SyncStep[]>(() => {
     {
       key: "fetching",
       label: t("labels.buybackSync.status.fetching"),
-      detail: t("labels.buybackSync.stepDetails.reading", {
-        page: currentPage.value,
-        count: buybacks.value.length,
-      }),
+      detail: t(
+        current > 0
+          ? "labels.buybackSync.stepDetails.read"
+          : "labels.buybackSync.stepDetails.reading",
+        { page: currentPage.value, count: buybacks.value.length },
+      ),
       status: stepStatus(0, current, failed),
       // The list's pages are read until one comes back empty.
       progress: current === 0 && !failed ? "indeterminate" : undefined,

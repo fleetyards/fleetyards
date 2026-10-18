@@ -2882,7 +2882,8 @@
           "reading": "Page %{page} · Pledges rachetables trouvés jusqu'ici : %{count}",
           "saved": "Nouveaux : %{added} · Retirés : %{removed}",
           "prices": "%{done} sur %{total}",
-          "pricesPending": "Pour les pledges nouveaux depuis la dernière synchronisation"
+          "pricesPending": "Pour les pledges nouveaux depuis la dernière synchronisation",
+          "read": "Pages lues : %{page} · Pledges rachetables : %{count}"
         },
         "firstSyncTitle": "La première synchronisation est plus longue",
         "updateExtensionTitle": "Mettez à jour l'extension de synchronisation",

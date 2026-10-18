@@ -2882,7 +2882,8 @@
           "reading": "Page %{page} · Buy-back pledges so far: %{count}",
           "saved": "New: %{added} · Removed: %{removed}",
           "prices": "%{done} of %{total}",
-          "pricesPending": "For the pledges new since the last sync"
+          "pricesPending": "For the pledges new since the last sync",
+          "read": "Pages read: %{page} · Buy-back pledges: %{count}"
         },
         "firstSyncTitle": "The first sync takes longer",
         "updateExtensionTitle": "Update the sync extension",
