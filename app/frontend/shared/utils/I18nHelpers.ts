@@ -75,6 +75,17 @@ export const i18nHelpers = (i18n: I18n) => {
       count = i18n.numberToRounded((value as number) / 1000, { precision: 0 });
     }
 
+    // A fuel burn per 10 kN is a few hundredths, which one decimal rounds to 0
+    // or 0.1: two retro thrusters at 0.031 and 0.066 read as burning nothing
+    // and burning fuel.
+    if (units === "fuelRate" && value) {
+      count = i18n.numberToRounded(Number(value), {
+        precision: 2,
+        significant: true,
+        stripInsignificantZeros: true,
+      });
+    }
+
     if (units === "driveSpeed" || units === "thrust") {
       count = formatStat(i18n, (value as number) / 1000);
     }
