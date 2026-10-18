@@ -719,7 +719,10 @@ export const useComponentFitting = () => {
     const toHardpoint = (entry: FittedSlot, original?: Hardpoint): Hardpoint =>
       ({
         ...original,
-        id: original?.id ?? entry.slot.hardpointId,
+        // A port inside a swapped-in part has no record on the ship; its slot
+        // path tells two copies of one part apart, where the part's own port
+        // id is the same for both.
+        id: original?.id ?? entry.path,
         name: entry.slot.name,
         // A port inside a part names no category of its own; the ship's copy
         // does, and failing that the part in it, which is what the figures
