@@ -19,13 +19,23 @@ const normalize = (value: unknown) =>
 //
 // A getter or ref for the initial values is read on every comparison, for a
 // form that re-fills itself from a refetched record: it is compared with the
-// record as it is now, not as it was when the form opened.
+// record as it is now, not as it was when the form opened. A plain object is
+// copied when the form opens: one that shares a nested object with the live
+// values would otherwise be compared with itself and never read as dirty.
 export const useFormDirty = <T extends object>(
   values: T | Ref<T>,
   initialValues: MaybeRefOrGetter<T>,
-) =>
-  computed(() => {
-    const initial = toValue(initialValues) as Record<string, unknown>;
+) => {
+  const snapshot =
+    isRef(initialValues) || typeof initialValues === "function"
+      ? undefined
+      : (JSON.parse(JSON.stringify(initialValues)) as T);
+
+  return computed(() => {
+    const initial = (snapshot ?? toValue(initialValues)) as Record<
+      string,
+      unknown
+    >;
     const current = toValue(values) as Record<string, unknown>;
 
     // Both sides' keys: a field the form opened without a value for is still
@@ -36,3 +46,4 @@ export const useFormDirty = <T extends object>(
       (key) => normalize(current[key]) !== normalize(initial[key]),
     );
   });
+};

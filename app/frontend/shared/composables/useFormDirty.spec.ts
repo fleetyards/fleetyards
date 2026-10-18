@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useFormDirty } from "./useFormDirty";
 
 describe("useFormDirty", () => {
@@ -54,5 +54,16 @@ describe("useFormDirty", () => {
 
     record.value = { name: "Pathfinder" };
     expect(dirty.value).toBe(false);
+  });
+
+  // The transfer modal opens on its own quantities object and edits it in
+  // place.
+  it("reports an edit to a nested object the initial values share", () => {
+    const quantities = ref<Record<string, string>>({ p1: "10" });
+    const values = computed(() => ({ quantities: quantities.value }));
+    const dirty = useFormDirty(values, values.value);
+
+    quantities.value.p1 = "3";
+    expect(dirty.value).toBe(true);
   });
 });
