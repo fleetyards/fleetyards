@@ -158,6 +158,18 @@ class HangarImporterTest < ActiveSupport::TestCase
     assert_equal [paint.id], vehicle.model_paint_ids
   end
 
+  # Import data is stored with symbol keys, so a lookup by a string key
+  # silently found nothing and the bomber came in without its torpedo bays.
+  test "gives a Retaliator Bomber its torpedo bays" do
+    front = create(:model_module, name: "Front Torpedo Bay")
+    rear = create(:model_module, name: "Rear Torpedo Bay")
+    import = import_for([{name: "Retaliator Bomber"}])
+
+    ::HangarImporter.new(import).run
+
+    assert_equal [front.id, rear.id].sort, Vehicle.find_by!(user_id: @user.id).model_module_ids.sort
+  end
+
   test "imports a ship whose serial predates the game format, without it" do
     import = import_for([{slug: @model.slug, ship_serial: "SUB FLAGSHIP"}])
 

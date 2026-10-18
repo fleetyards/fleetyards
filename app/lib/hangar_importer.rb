@@ -85,7 +85,7 @@ class HangarImporter
           name_visible: item[:name_visible] || false,
           sale_notify: item[:sale_notify] || false,
           hangar_group_ids: hangar_group_ids_for(item),
-          model_module_ids: ModelModule.where(name: (item[:modules] || []) + (legacy_module_mapping[item["name"]] || [])).pluck(:id),
+          model_module_ids: ModelModule.where(name: (item[:modules] || []) + (legacy_module_mapping[item[:name]] || [])).pluck(:id),
           model_upgrade_ids: ModelUpgrade.where(name: item[:upgrades]).pluck(:id)
         }
 
