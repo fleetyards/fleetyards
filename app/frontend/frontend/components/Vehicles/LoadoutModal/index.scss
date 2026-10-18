@@ -226,9 +226,18 @@
 
 // In the footer, beside the save it names: as wide as a name needs, no wider,
 // and sharing the row with the button on a phone.
+// The loadout's name, and beside it whether it shows in the public hangar.
+.vehicle-loadout__identity {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin-bottom: 16px;
+}
+
 .vehicle-loadout__name {
-  flex: 1 1 160px;
-  max-width: 280px;
+  flex: 1 1 200px;
+  max-width: 360px;
   margin: 0;
 }
 

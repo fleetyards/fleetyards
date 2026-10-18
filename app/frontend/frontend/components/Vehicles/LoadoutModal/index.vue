@@ -97,7 +97,8 @@ const { t } = useI18n();
  */
 type LoadoutValues = {
   loadoutName: string;
-  // Shown in the owner's public hangar.
+  // Saved the moment it is switched, apart from the fitting; a field only so
+  // the toggle's own form binding does not read as an unsaved change.
   loadoutPublic: boolean;
   fittedModules: Record<string, string>;
   // Only parts that differ from the slot's stock one: a slot left alone keeps
@@ -149,9 +150,20 @@ const savedValues = (): LoadoutValues => {
   };
 };
 
-const { defineField, handleSubmit, resetForm, meta } = useForm<LoadoutValues>({
-  initialValues: savedValues(),
-});
+const { defineField, handleSubmit, resetForm, resetField, isFieldDirty } =
+  useForm<LoadoutValues>({
+    initialValues: savedValues(),
+  });
+
+// Against the loadout as saved: the fitting, or its name. Undoing a pick
+// undoes the change. Visibility is saved as it is switched, so it is never a
+// change waiting on the save.
+const changed = computed(
+  () =>
+    isFieldDirty("loadoutName") ||
+    isFieldDirty("fittedModules") ||
+    isFieldDirty("fittedComponents"),
+);
 
 /**
  * Re-seeds the fields rather than the initial values, which vee-validate has
@@ -162,7 +174,7 @@ const { defineField, handleSubmit, resetForm, meta } = useForm<LoadoutValues>({
  * would discard what you had just picked and not yet saved.
  */
 watch([() => props.vehicle, () => editedLoadout.value?.updatedAt], () => {
-  if (meta.value.dirty) {
+  if (changed.value) {
     return;
   }
 
@@ -827,6 +839,32 @@ const { displayAlert, displayConfirm } = useAppNotifications();
 const { invalidateHangarQueries, invalidateVehiclePage } =
   useVehicleMutations();
 
+// Whether the saved loadout shows in the public hangar, saved as it is
+// switched. Settled as the field's starting value either way, so it never
+// counts as a change the fitting's save is waiting on.
+const onTogglePublic = async (value: boolean) => {
+  const loadout = editedLoadout.value;
+  if (!loadout) return;
+
+  try {
+    await updateVehicleLoadout(props.vehicle.id, loadout.id, { public: value });
+    resetField("loadoutPublic", { value });
+    await Promise.all([
+      invalidateVehiclePage(props.vehicle),
+      queryClient.invalidateQueries({
+        queryKey: getVehicleLoadoutsQueryKey(props.vehicle.id),
+      }),
+    ]);
+  } catch (error) {
+    resetField("loadoutPublic", { value: !value });
+    displayAlert({
+      text: [t("messages.vehicleLoadout.failure"), firstErrorMessageFrom(error)]
+        .filter(Boolean)
+        .join(": "),
+    });
+  }
+};
+
 /**
  * The parts the tree still reaches, and those inside a fitted module, which
  * this editor does not list yet and keeps as they are while the module stays.
@@ -847,10 +885,6 @@ const fittedComponentsToSave = (values: LoadoutValues) => {
 };
 
 const saving = ref(false);
-
-// Against the loadout as saved: the fitting, or its name. Undoing a pick
-// undoes the change.
-const changed = computed(() => meta.value.dirty);
 
 // A saved loadout needs a change to save, or an item the build refuses to take
 // out; a new one saves the ship as it is.
@@ -923,14 +957,12 @@ const save = async (values: LoadoutValues, asNew: boolean) => {
     if (target) {
       await updateVehicleLoadout(props.vehicle.id, target.id, {
         name,
-        public: values.loadoutPublic,
         items,
       });
     } else {
       createdLoadout.value = await createVehicleLoadout(props.vehicle.id, {
         kind: VehicleLoadoutKindEnum.FLEETYARDS,
         name,
-        public: values.loadoutPublic,
         items,
       });
     }
@@ -1019,6 +1051,33 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
       </aside>
 
       <div class="vehicle-loadout__panel">
+        <div
+          v-if="editable && flightReady"
+          class="vehicle-loadout__identity"
+          data-test="vehicle-loadout-identity"
+        >
+          <FormInput
+            name="loadoutName"
+            :label="t('labels.vehicleLoadout.loadoutName')"
+            :placeholder="t('labels.vehicleLoadout.loadoutName')"
+            no-label
+            inline
+            class="vehicle-loadout__name"
+            data-test="vehicle-loadout-name"
+          />
+          <FormToggle
+            v-if="editedLoadout"
+            :model-value="loadoutPublic"
+            name="loadoutPublic"
+            :label="t('labels.loadout.public')"
+            autosaved
+            no-placeholder
+            class="vehicle-loadout__public"
+            data-test="vehicle-loadout-public"
+            @update:model-value="onTogglePublic"
+          />
+        </div>
+
         <p
           v-if="!flightReady"
           class="vehicle-loadout__hint"
@@ -1238,25 +1297,6 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
     </form>
 
     <template v-if="editable" #footer>
-      <!-- Named where it is saved; the label stays as the field's accessible name. -->
-      <FormInput
-        v-if="flightReady"
-        name="loadoutName"
-        :label="t('labels.vehicleLoadout.loadoutName')"
-        :placeholder="t('labels.vehicleLoadout.loadoutName')"
-        no-label
-        inline
-        class="vehicle-loadout__name"
-        data-test="vehicle-loadout-name"
-      />
-      <FormToggle
-        v-if="flightReady"
-        v-model="loadoutPublic"
-        name="loadoutPublic"
-        :label="t('labels.vehicleLoadout.publicToggle')"
-        class="vehicle-loadout__public"
-        data-test="vehicle-loadout-public"
-      />
       <Btn
         :type="BtnTypesEnum.SUBMIT"
         :form="`vehicle-loadout-${vehicle.id}`"

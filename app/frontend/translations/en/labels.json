@@ -4416,7 +4416,6 @@
         "unavailableModule": "Module no longer available",
         "noFigureChange": "Changes none of the ship's figures",
         "loadoutName": "Loadout name",
-        "publicToggle": "Show in my public hangar",
         "stock": "Stock",
         "notFlightReady": "Loadouts are only available for flight-ready ships",
         "slots": {

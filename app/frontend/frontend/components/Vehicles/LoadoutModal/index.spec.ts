@@ -336,7 +336,6 @@ describe("VehicleLoadoutModal", () => {
     expect(createVehicleLoadout).toHaveBeenCalledWith("v1", {
       kind: "fleetyards",
       name: "",
-      public: false,
       items: [
         { slotPath: "hardpoint_module", itemType: "ModelModule", itemId: "m1" },
       ],
@@ -434,7 +433,6 @@ describe("VehicleLoadoutModal", () => {
 
     expect(updateVehicleLoadout).toHaveBeenCalledWith("v1", "l2", {
       name: "Gunship II",
-      public: false,
       items: [
         { slotPath: "hardpoint_module", itemType: "ModelModule", itemId: "m1" },
         {
@@ -457,7 +455,6 @@ describe("VehicleLoadoutModal", () => {
     expect(createVehicleLoadout).not.toHaveBeenCalled();
     expect(updateVehicleLoadout).toHaveBeenCalledWith("v1", "l1", {
       name: "Hauler",
-      public: false,
       items: [
         { slotPath: "hardpoint_module", itemType: "ModelModule", itemId: "m2" },
       ],
@@ -523,14 +520,13 @@ describe("VehicleLoadoutModal", () => {
     expect(createVehicleLoadout).toHaveBeenCalledWith("v1", {
       kind: "fleetyards",
       name: "",
-      public: false,
       items: [
         { slotPath: "hardpoint_module", itemType: "ModelModule", itemId: "m2" },
       ],
     });
   });
 
-  it("saves whether the loadout shows in the public hangar", async () => {
+  it("saves the loadout's visibility as it is switched, apart from the fitting", async () => {
     loadouts.value = [
       {
         id: "l2",
@@ -548,15 +544,21 @@ describe("VehicleLoadoutModal", () => {
     const toggle = wrapper.get("[data-test='toggle-loadoutPublic']");
     expect((toggle.element as HTMLInputElement).checked).toBe(true);
 
+    // Still saving: the buttons must not take the switch for a change.
+    updateVehicleLoadout.mockImplementationOnce(() => new Promise(() => {}));
     (toggle.element as HTMLInputElement).checked = false;
     await toggle.trigger("change");
-    await save(wrapper);
+    await flushPromises();
 
-    expect(updateVehicleLoadout).toHaveBeenCalledWith(
-      "v1",
-      "l2",
-      expect.objectContaining({ public: false }),
-    );
+    expect(updateVehicleLoadout).toHaveBeenCalledWith("v1", "l2", {
+      public: false,
+    });
+    expect(
+      wrapper.get("[data-test='vehicle-loadout-save']").attributes("disabled"),
+    ).toBeDefined();
+    expect(
+      wrapper.find("[data-test='vehicle-loadout-save-as-new']").exists(),
+    ).toBe(false);
   });
 
   it("edits the saved loadout it was opened for, without activating it", async () => {
@@ -587,7 +589,6 @@ describe("VehicleLoadoutModal", () => {
 
     expect(updateVehicleLoadout).toHaveBeenCalledWith("v1", "l2", {
       name: "Medical run",
-      public: false,
       items: [
         { slotPath: "hardpoint_module", itemType: "ModelModule", itemId: "m2" },
       ],
