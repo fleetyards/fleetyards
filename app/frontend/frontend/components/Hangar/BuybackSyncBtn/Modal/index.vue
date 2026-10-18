@@ -108,6 +108,16 @@ const settled = computed(
   () => status.value === "finished" && !detailsRunning.value,
 );
 
+const detailsUnsupported = computed(
+  () =>
+    !!result.value?.detailsPending.length && !extensionSupportsDetails.value,
+);
+
+// Prices missing for any reason is not a success worth celebrating.
+const settledComplete = computed(
+  () => settled.value && !detailsIncomplete.value && !detailsUnsupported.value,
+);
+
 // The run only says it failed, not where; the modal remembers the phase it
 // last saw running. One opened onto a failed run never saw it, and says less.
 const failedAt = ref<"fetching" | "submitting">();
@@ -244,7 +254,10 @@ const eyebrow = computed(() =>
 const supportPrompt = useSupportPrompt();
 const supportHintDismissed = ref(false);
 const showSupportHint = computed(
-  () => settled.value && !supportHintDismissed.value && supportPrompt.canShow(),
+  () =>
+    settledComplete.value &&
+    !supportHintDismissed.value &&
+    supportPrompt.canShow(),
 );
 
 const extension = useSyncExtension();
@@ -410,10 +423,6 @@ const cancelRun = () => {
         {{ t("texts.buybackSync.unsupported") }}
       </Alert>
       <template v-else-if="settled">
-        <Alert :variant="AlertVariantsEnum.SUCCESS">
-          {{ t("texts.buybackSync.finished") }}
-        </Alert>
-        <SyncResultTiles :tiles="resultTiles" />
         <Alert
           v-if="detailsIncomplete"
           :variant="AlertVariantsEnum.WARNING"
@@ -422,12 +431,20 @@ const cancelRun = () => {
           {{ t("texts.buybackSync.detailsIncomplete") }}
         </Alert>
         <Alert
-          v-if="result?.detailsPending.length && !extensionSupportsDetails"
+          v-if="detailsUnsupported"
           :variant="AlertVariantsEnum.WARNING"
           data-test="buyback-sync-details-unsupported"
         >
           {{ t("texts.buybackSync.detailsUnsupported") }}
         </Alert>
+        <Alert
+          v-if="settledComplete"
+          :variant="AlertVariantsEnum.SUCCESS"
+          data-test="buyback-sync-finished"
+        >
+          {{ t("texts.buybackSync.finished") }}
+        </Alert>
+        <SyncResultTiles :tiles="resultTiles" />
         <transition name="fade">
           <SupportHint
             v-if="showSupportHint"

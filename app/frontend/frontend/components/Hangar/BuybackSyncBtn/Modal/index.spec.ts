@@ -778,6 +778,9 @@ describe("HangarBuybackSyncModal", () => {
       expect(
         wrapper.find("[data-test='buyback-sync-details-incomplete']").exists(),
       ).toBe(true);
+      expect(wrapper.find("[data-test='buyback-sync-finished']").exists()).toBe(
+        false,
+      );
     });
 
     it("reads prices while a hangar sync runs", async () => {
