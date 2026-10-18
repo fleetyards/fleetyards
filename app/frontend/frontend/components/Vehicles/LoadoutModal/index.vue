@@ -161,7 +161,7 @@ const savedValues = (): LoadoutValues => {
       editedLoadout.value?.public ??
       (!!props.vehicle.public && !props.vehicle.activeLoadout),
     loadoutActive: editedLoadout.value?.active ?? !props.vehicle.activeLoadout,
-    linkUrl: "",
+    linkUrl: editedLoadout.value?.url ?? "",
     fittedModules: modules,
     fittedComponents: components,
   };
@@ -182,7 +182,7 @@ const INSTANT_FIELDS: (keyof LoadoutValues)[] = [
 
 const changed = computed(() =>
   (Object.keys(savedValues()) as (keyof LoadoutValues)[])
-    .filter((field) => !INSTANT_FIELDS.includes(field) && field !== "linkUrl")
+    .filter((field) => !INSTANT_FIELDS.includes(field))
     .some((field) => isFieldDirty(field)),
 );
 
@@ -216,7 +216,12 @@ const [linkUrl] = defineField("linkUrl");
 // fitting: the footer switches the modal to the link alone and back.
 const linkMode = ref(false);
 
-const linking = computed(() => !editedLoadout.value && linkMode.value);
+// A saved loadout keeps the kind it was made as.
+const linking = computed(() =>
+  editedLoadout.value
+    ? editedLoadout.value.kind === VehicleLoadoutKindEnum.LINK
+    : linkMode.value,
+);
 
 const linkMissing = computed(() => linking.value && !linkUrl.value?.trim());
 
@@ -995,25 +1000,30 @@ const savable = computed(
 // rather than creating another beside it.
 const createdLoadout = ref<VehicleLoadout>();
 
-/**
- * Writes the loadout being edited, or a new one -- also on request beside the
- * one opened, which then stays as it was saved. A new loadout is switched on
- * only when nothing else is: replacing an active build stays a choice made on
- * the loadouts page.
- */
-// A new loadout that links a build: no fitting, the switches as picked.
+// A loadout that links a build: its name and address, and for a new one the
+// switches as picked. It has no fitting to write.
 const saveLink = async (values: LoadoutValues) => {
   saving.value = true;
 
-  try {
-    createdLoadout.value ??= await createVehicleLoadout(props.vehicle.id, {
-      kind: VehicleLoadoutKindEnum.LINK,
-      name: values.loadoutName.trim(),
-      url: values.linkUrl.trim(),
-      public: values.loadoutPublic,
-    });
+  const name = values.loadoutName.trim();
+  const url = values.linkUrl.trim();
 
-    if (values.loadoutActive) {
+  try {
+    if (editedLoadout.value) {
+      await updateVehicleLoadout(props.vehicle.id, editedLoadout.value.id, {
+        name,
+        url,
+      });
+    } else {
+      createdLoadout.value ??= await createVehicleLoadout(props.vehicle.id, {
+        kind: VehicleLoadoutKindEnum.LINK,
+        name,
+        url,
+        public: values.loadoutPublic,
+      });
+    }
+
+    if (createdLoadout.value && values.loadoutActive) {
       await activateVehicleLoadout(props.vehicle.id, createdLoadout.value.id);
     }
 
@@ -1037,6 +1047,12 @@ const saveLink = async (values: LoadoutValues) => {
   }
 };
 
+/**
+ * Writes the loadout being edited, or a new one -- also on request beside the
+ * one opened, which then stays as it was saved. A new loadout is switched on
+ * as its Active switch says; a copy only when nothing else is, since replacing
+ * an active build stays a choice of its own.
+ */
 const save = async (values: LoadoutValues, asNew: boolean) => {
   if (
     !props.editable ||
@@ -1525,7 +1541,7 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
         {{ t("actions.vehicleLoadout.saveLoadout") }}
       </Btn>
       <Btn
-        v-if="editedLoadout && changed"
+        v-if="editedLoadout && changed && !linking"
         :loading="saving"
         :disabled="!flightReady || loadoutPending"
         data-test="vehicle-loadout-save-as-new"

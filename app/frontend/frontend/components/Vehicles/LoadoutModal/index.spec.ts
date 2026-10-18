@@ -683,6 +683,41 @@ describe("VehicleLoadoutModal", () => {
     expect(activateVehicleLoadout).toHaveBeenCalledWith("v1", "new");
   });
 
+  it("edits a linked loadout by its name and address", async () => {
+    loadouts.value = [
+      {
+        id: "link",
+        name: "Erkul build",
+        public: false,
+        kind: "link",
+        url: "https://www.erkul.games/loadout/abc",
+        active: false,
+        updatedAt: "2026-10-01T00:00:00Z",
+        items: [],
+      },
+    ];
+    const wrapper = await mountModal(vehicle(["m1"]), { loadoutId: "link" });
+    await flushPromises();
+
+    expect(wrapper.find("[data-test='vehicle-loadout-mode']").exists()).toBe(
+      false,
+    );
+    const url = wrapper.get("[data-test='vehicle-loadout-link-url'] input");
+    expect((url.element as HTMLInputElement).value).toBe(
+      "https://www.erkul.games/loadout/abc",
+    );
+
+    await url.setValue("https://www.spviewer.eu/performance?loadout=x");
+    await flushPromises();
+    await save(wrapper);
+
+    expect(updateVehicleLoadout).toHaveBeenCalledWith("v1", "link", {
+      name: "Erkul build",
+      url: "https://www.spviewer.eu/performance?loadout=x",
+    });
+    expect(createVehicleLoadout).not.toHaveBeenCalled();
+  });
+
   it("goes back to the fitting from the link", async () => {
     const wrapper = await mountModal(vehicle(["m1"]), { newLoadout: true });
     await flushPromises();
