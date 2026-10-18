@@ -12,6 +12,10 @@ import RadioList from "@/shared/components/base/RadioList/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
+import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
+import Panel from "@/shared/components/base/Panel/index.vue";
+import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
+import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -134,11 +138,14 @@ const onSubmit = handleSubmit(async (values) => {
   <Heading hero>{{ t("headlines.settings.privacy") }}</Heading>
 
   <form id="settings-privacy-form" @submit.prevent="onSubmit">
-    <div class="row">
-      <div class="col-12">
-        <p>{{ t("texts.settings.privacy.tracking") }}</p>
-      </div>
-      <div class="col-12 col-md-6">
+    <Panel>
+      <PanelHeading :level="HeadingLevelEnum.H2">
+        {{ t("headlines.settings.privacySections.analytics") }}
+        <template #subtitle>
+          {{ t("texts.settings.privacy.tracking") }}
+        </template>
+      </PanelHeading>
+      <PanelBody>
         <FormToggle
           v-model="tracking"
           v-bind="trackingProps"
@@ -146,14 +153,17 @@ const onSubmit = handleSubmit(async (values) => {
           :disabled="submitting"
           :label="t('labels.user.tracking')"
         />
-      </div>
-    </div>
+      </PanelBody>
+    </Panel>
 
-    <div class="row">
-      <div class="col-12">
-        <p>{{ t("texts.settings.privacy.onlineStatus") }}</p>
-      </div>
-      <div class="col-12 col-md-6">
+    <Panel>
+      <PanelHeading :level="HeadingLevelEnum.H2">
+        {{ t("headlines.settings.privacySections.onlineStatus") }}
+        <template #subtitle>
+          {{ t("texts.settings.privacy.onlineStatus") }}
+        </template>
+      </PanelHeading>
+      <PanelBody>
         <FormToggle
           v-model="showOnlineStatus"
           v-bind="showOnlineStatusProps"
@@ -161,14 +171,17 @@ const onSubmit = handleSubmit(async (values) => {
           :disabled="submitting"
           :label="t('labels.user.showOnlineStatus')"
         />
-      </div>
-    </div>
+      </PanelBody>
+    </Panel>
 
-    <div v-if="isSupporter" class="row" data-test="supporter-listed">
-      <div class="col-12">
-        <p>{{ t("texts.settings.privacy.supporterListed") }}</p>
-      </div>
-      <div class="col-12">
+    <Panel v-if="isSupporter" data-test="supporter-listed">
+      <PanelHeading :level="HeadingLevelEnum.H2">
+        {{ t("headlines.settings.privacySections.supporters") }}
+        <template #subtitle>
+          {{ t("texts.settings.privacy.supporterListed") }}
+        </template>
+      </PanelHeading>
+      <PanelBody>
         <RadioList
           v-model="supporterListed"
           name="supporterListed"
@@ -177,8 +190,8 @@ const onSubmit = handleSubmit(async (values) => {
           :options="supporterListedOptions"
           :disabled="submitting"
         />
-      </div>
-    </div>
+      </PanelBody>
+    </Panel>
 
     <FormActions
       :submitting="submitting"
