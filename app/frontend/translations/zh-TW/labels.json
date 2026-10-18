@@ -2980,7 +2980,9 @@
           "read": "已讀取頁數：%{pages} · 承諾：%{count}",
           "saving": "正在將你的承諾與機庫比對…",
           "page": "第 %{page} 頁",
-          "pageOf": "第 %{page} 頁，共 %{total} 頁"
+          "pageOf": "第 %{page} 頁，共 %{total} 頁",
+          "sending": "正在傳送 %{count} 項",
+          "sent": "已傳送 %{count} 項"
         },
         "unmatchedCount": {
           "one": "有 1 項無法比對",
@@ -3033,7 +3035,8 @@
           "fewer": "比上次同步少 %{count}",
           "same": "與上次同步相同",
           "reading": "%{count} / 約 %{total} 項"
-        }
+        },
+        "viewImport": "檢視本次同步的匯入"
       },
       "cargoGridViewer": {
         "capacity": "容量",

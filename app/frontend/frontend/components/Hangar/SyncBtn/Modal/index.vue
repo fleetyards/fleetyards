@@ -57,6 +57,7 @@ const {
   currentPage,
   totalPages,
   lastRead,
+  importId,
   pledges,
   result,
   finished,
@@ -440,6 +441,7 @@ const refreshPage = async () => {
           :current-page="currentPage"
           :total-pages="totalPages"
           :last-read="lastRead"
+          :import-id="importId"
           :pledges="pledges"
           :result="result"
           :finished="finished"

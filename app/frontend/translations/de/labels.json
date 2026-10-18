@@ -2980,7 +2980,9 @@
           "read": "Gelesene Seiten: %{pages} · Pledges: %{count}",
           "saving": "Deine Pledges werden deinem Hangar zugeordnet …",
           "page": "Seite %{page}",
-          "pageOf": "Seite %{page} von %{total}"
+          "pageOf": "Seite %{page} von %{total}",
+          "sending": "%{count} Einträge werden gesendet",
+          "sent": "%{count} Einträge gesendet"
         },
         "unmatchedCount": {
           "one": "1 Eintrag konnte nicht zugeordnet werden",
@@ -3033,7 +3035,8 @@
           "fewer": "%{count} weniger als beim letzten Sync",
           "same": "Genauso viele wie beim letzten Sync",
           "reading": "%{count} von etwa %{total} Einträgen"
-        }
+        },
+        "viewImport": "Import dieses Syncs ansehen"
       },
       "cargoGridViewer": {
         "capacity": "Kapazität",

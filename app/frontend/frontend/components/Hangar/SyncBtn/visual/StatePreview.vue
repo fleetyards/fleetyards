@@ -24,6 +24,7 @@ type Props = {
   currentPage: number;
   totalPages?: number;
   lastRead?: HangarSyncLastRead;
+  importId?: string;
   pledges: RsiHangarItemInput[];
   result?: HangarSyncResult;
   finished: boolean;
@@ -35,6 +36,7 @@ const props = withDefaults(defineProps<Props>(), {
   result: undefined,
   totalPages: undefined,
   lastRead: undefined,
+  importId: undefined,
 });
 
 const working = computed(() => isSyncStepRunning(props.processSteps));
@@ -55,6 +57,7 @@ const close = () => {
       :current-page="currentPage"
       :total-pages="totalPages"
       :last-read="lastRead"
+      :import-id="importId"
       :pledges="pledges"
       :result="result"
       :finished="finished"

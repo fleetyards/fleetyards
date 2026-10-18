@@ -2980,7 +2980,9 @@
           "read": "Páginas leídas: %{pages} · Pledges: %{count}",
           "saving": "Emparejando tus pledges con tu hangar…",
           "page": "Página %{page}",
-          "pageOf": "Página %{page} de %{total}"
+          "pageOf": "Página %{page} de %{total}",
+          "sending": "Enviando %{count} elementos",
+          "sent": "%{count} elementos enviados"
         },
         "unmatchedCount": {
           "one": "No se pudo emparejar 1 elemento",
@@ -3033,7 +3035,8 @@
           "fewer": "%{count} menos que en la última sincronización",
           "same": "Los mismos que en la última sincronización",
           "reading": "%{count} de unos %{total} elementos"
-        }
+        },
+        "viewImport": "Ver la importación de esta sincronización"
       },
       "cargoGridViewer": {
         "capacity": "Capacidad",

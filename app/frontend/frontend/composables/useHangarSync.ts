@@ -64,6 +64,10 @@ const pledges = ref<RsiHangarItemInput[]>([]);
 // it could already be this run's own.
 const lastRead = ref<HangarSyncLastRead>();
 
+// The import the save created, for its page to be linked while the server
+// works through it and after.
+const importId = ref<string>();
+
 const result = ref<HangarSyncResult | undefined>();
 
 // Set once the backend has taken the run, so the status poll cannot read the
@@ -152,6 +156,7 @@ const clear = () => {
   currentPage.value = 1;
   totalPages.value = undefined;
   lastRead.value = undefined;
+  importId.value = undefined;
   pledges.value = [];
   result.value = undefined;
   submitted.value = false;
@@ -194,12 +199,14 @@ export const useHangarSync = () => {
     const version = reportExtensionVersion(extensionVersion);
 
     try {
-      await syncRsiHangar({
+      const submittedImport = await syncRsiHangar({
         ...input,
         items: pledges.value,
         ...(version ? { extensionVersion: version } : {}),
         ...(unreadPages.length ? { unreadPages } : {}),
       });
+
+      if (id === runId) importId.value = submittedImport.id;
     } catch (error) {
       if (id !== runId) return;
 
@@ -441,6 +448,7 @@ export const useHangarSync = () => {
     currentPage,
     totalPages,
     lastRead,
+    importId,
     pledges,
     result,
     finished,

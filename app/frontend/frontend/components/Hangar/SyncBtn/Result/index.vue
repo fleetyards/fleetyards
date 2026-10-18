@@ -33,6 +33,8 @@ type Props = {
   currentPage: number;
   totalPages?: number;
   lastRead?: HangarSyncLastRead;
+  // The import the save created, once the server has taken the items.
+  importId?: string;
   pledges: RsiHangarItemInput[];
   result?: HangarSyncResult;
   finished: boolean;
@@ -49,6 +51,7 @@ const props = withDefaults(defineProps<Props>(), {
   result: undefined,
   totalPages: undefined,
   lastRead: undefined,
+  importId: undefined,
   cancelled: false,
   showSupportHint: false,
   syncPaints: true,
@@ -222,12 +225,30 @@ const stepDetail = (step: SyncProcessStep): SyncStep["detail"] => {
     };
   }
 
+  // The save is one request, then the server's own run: first what is on its
+  // way, then what arrived.
   if (step.status === "processing") {
-    return t("labels.syncExtension.stepDetails.saving");
+    return {
+      key: props.importId
+        ? "labels.syncExtension.stepDetails.sent"
+        : "labels.syncExtension.stepDetails.sending",
+      values: { count: readTotal.value },
+    };
   }
 
   return undefined;
 };
+
+const saveCaption = (step: SyncProcessStep) =>
+  step.status === "processing" && props.importId
+    ? t("labels.syncExtension.stepDetails.saving")
+    : undefined;
+
+const importRoute = computed(() =>
+  props.importId
+    ? { name: "hangar-import", params: { id: props.importId } }
+    : undefined,
+);
 
 // Reading fills toward the last page RSI's pager names; without a pager it
 // only shows that it is working, as the save, a single request, always does.
@@ -247,9 +268,11 @@ const steps = computed<SyncStep[]>(() =>
     label: t(`labels.syncExtension.processSteps.${step.name}`),
     detail: stepDetail(step),
     caption:
-      step.name === "fetchHangar" && measuring.value
-        ? lastReadCaption()
-        : undefined,
+      step.name === "fetchHangar"
+        ? measuring.value
+          ? lastReadCaption()
+          : undefined
+        : saveCaption(step),
     // A cancelled run stops a step without it failing.
     status:
       props.cancelled && step.status === "failure"
@@ -468,6 +491,16 @@ const hasWarnings = computed(
         </Collapsed>
       </div>
 
+      <router-link
+        v-if="importRoute"
+        :to="importRoute"
+        class="hangar-sync-result__import-link"
+        data-test="sync-import-link"
+      >
+        {{ t("labels.syncExtension.viewImport") }}
+        <i class="fa-light fa-arrow-right" aria-hidden="true" />
+      </router-link>
+
       <transition name="fade">
         <SupportHint
           v-if="showSupportHint"
@@ -509,6 +542,16 @@ const hasWarnings = computed(
       <SyncSteps :steps="steps">
         <template #step-fetchHangar>
           <SyncCountList v-if="readingStarted" :counts="readCounts" />
+        </template>
+        <template v-if="importRoute" #step-submitData>
+          <router-link
+            :to="importRoute"
+            class="hangar-sync-result__import-link"
+            data-test="sync-import-link"
+          >
+            {{ t("labels.syncExtension.viewImport") }}
+            <i class="fa-light fa-arrow-right" aria-hidden="true" />
+          </router-link>
         </template>
       </SyncSteps>
     </template>
@@ -640,5 +683,13 @@ const hasWarnings = computed(
 // element's padding at zero until the end, and the content would jump.
 .hangar-sync-result__read-counts {
   padding: 0 14px 12px;
+}
+
+.hangar-sync-result__import-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  font-size: 14px;
 }
 </style>

@@ -7,6 +7,7 @@ import {
   HangarSyncOutcomeEnum,
   RsiHangarItemKindEnum,
 } from "@/services/fyApi";
+import { createMemoryHistory, createRouter } from "vue-router";
 
 // jsdom has no matchMedia; the disclosures ask it for reduced motion.
 vi.stubGlobal(
@@ -97,6 +98,64 @@ describe("HangarSyncResult", () => {
     expect(wrapper.text()).toContain("Pledge items: 4");
     expect(rows["Paints"]).toBe("1");
     expect(rows["Hangar flair"]).toBe("2");
+  });
+
+  describe("saving", () => {
+    // The link names the import's page, which the shared test router lacks.
+    const router = createRouter({
+      history: createMemoryHistory(),
+      routes: [
+        { path: "/", component: { template: "<div />" } },
+        {
+          path: "/hangar/imports/:id/",
+          name: "hangar-import",
+          component: { template: "<div />" },
+        },
+      ],
+    });
+
+    const mountSaving = (importId?: string) =>
+      mountWithDefaults(HangarSyncResult, {
+        plugins: [router],
+        props: {
+          processSteps: [
+            { name: "fetchHangar", status: "success" },
+            { name: "submitData", status: "processing" },
+          ],
+          currentPage: 2,
+          importId,
+          pledges: [
+            { id: "1", name: "Cutter", type: RsiHangarItemKindEnum.SHIP },
+          ],
+          finished: false,
+          finishedWithErrors: false,
+        },
+      });
+
+    const detail = (wrapper: Awaited<ReturnType<typeof mountSaving>>) =>
+      wrapper
+        .get(
+          "[data-test='sync-step-submitData'] .sync-steps__detail [data-text]",
+        )
+        .attributes("data-text");
+
+    it("says what is on its way while the request is out", async () => {
+      const wrapper = await mountSaving();
+
+      expect(detail(wrapper)).toBe("Sending 1 items");
+      expect(wrapper.find("[data-test='sync-import-link']").exists()).toBe(
+        false,
+      );
+    });
+
+    it("links the import the server took the items as", async () => {
+      const wrapper = await mountSaving("import-1");
+
+      expect(detail(wrapper)).toBe("Sent 1 items");
+      expect(
+        wrapper.get("[data-test='sync-import-link']").attributes("href"),
+      ).toContain("/hangar/imports/import-1");
+    });
   });
 
   describe("against the last sync", () => {

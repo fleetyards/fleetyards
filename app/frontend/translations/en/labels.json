@@ -2980,7 +2980,9 @@
           "read": "Pages read: %{pages} · Pledge items: %{count}",
           "saving": "Matching your pledges to your hangar…",
           "page": "Page %{page}",
-          "pageOf": "Page %{page} of %{total}"
+          "pageOf": "Page %{page} of %{total}",
+          "sending": "Sending %{count} items",
+          "sent": "Sent %{count} items"
         },
         "unmatchedCount": {
           "one": "1 item could not be matched",
@@ -3033,7 +3035,8 @@
           "fewer": "%{count} fewer than the last sync",
           "same": "As many as the last sync",
           "reading": "%{count} of about %{total} items"
-        }
+        },
+        "viewImport": "View this sync's import"
       },
       "cargoGridViewer": {
         "capacity": "Capacity",

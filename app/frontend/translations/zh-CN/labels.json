@@ -2980,7 +2980,9 @@
           "read": "已读取页数：%{pages} · 承诺：%{count}",
           "saving": "正在将你的承诺与机库匹配…",
           "page": "第 %{page} 页",
-          "pageOf": "第 %{page} 页，共 %{total} 页"
+          "pageOf": "第 %{page} 页，共 %{total} 页",
+          "sending": "正在发送 %{count} 项",
+          "sent": "已发送 %{count} 项"
         },
         "unmatchedCount": {
           "one": "有 1 项无法匹配",
@@ -3033,7 +3035,8 @@
           "fewer": "比上次同步少 %{count}",
           "same": "与上次同步相同",
           "reading": "%{count} / 约 %{total} 项"
-        }
+        },
+        "viewImport": "查看本次同步的导入"
       },
       "cargoGridViewer": {
         "capacity": "容量",

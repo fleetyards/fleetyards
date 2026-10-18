@@ -16,7 +16,9 @@ import { rsiRateLimiter } from "@/frontend/lib/RsiRateLimiter";
 import Component from "./index.vue";
 import HangarSyncResult from "@/frontend/components/Hangar/SyncBtn/Result/index.vue";
 
-const mutateAsync = vi.fn((_input: unknown) => Promise.resolve());
+const mutateAsync = vi.fn((_input: unknown) =>
+  Promise.resolve({ id: "import-1", status: "pending" }),
+);
 
 const reportMutateAsync = vi.fn((_input: unknown) => Promise.resolve());
 
@@ -427,6 +429,16 @@ describe("HangarSyncModal", () => {
           HangarSyncLastRead | undefined
       )?.total,
     ).toBe(3);
+  });
+
+  it("hands the run the import the save created", async () => {
+    const { wrapper } = await mountModal();
+
+    await submitHangar(wrapper);
+
+    expect(wrapper.findComponent(HangarSyncResult).props("importId")).toBe(
+      "import-1",
+    );
   });
 
   it("measures nothing before a first finished sync", async () => {

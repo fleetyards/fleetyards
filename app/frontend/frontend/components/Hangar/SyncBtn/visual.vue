@@ -33,6 +33,7 @@ type State = {
   currentPage: number;
   totalPages?: number;
   lastRead?: HangarSyncLastRead;
+  importId?: string;
   pledges: RsiHangarItemInput[];
   result?: HangarSyncResult;
   finished: boolean;
@@ -177,6 +178,7 @@ const states: State[] = [
     ],
     currentPage: 6,
     lastRead: smallerLastRead,
+    importId: "00000000-0000-4000-8000-000000000001",
     pledges: samplePledges,
     finished: false,
     finishedWithErrors: false,
@@ -191,6 +193,7 @@ const states: State[] = [
     ],
     currentPage: 6,
     lastRead: biggerLastRead,
+    importId: "00000000-0000-4000-8000-000000000001",
     pledges: samplePledges,
     finished: false,
     finishedWithErrors: false,
@@ -350,6 +353,7 @@ const openState = (state: State) => {
       currentPage: state.currentPage,
       totalPages: state.totalPages,
       lastRead: state.lastRead,
+      importId: state.importId,
       pledges: state.pledges,
       result: state.result,
       finished: state.finished,
