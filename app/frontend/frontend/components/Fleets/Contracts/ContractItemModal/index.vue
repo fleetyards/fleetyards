@@ -19,6 +19,7 @@ import EquipmentPicker from "@/frontend/components/Logistics/EquipmentPicker/ind
 import { type PickedItem } from "@/frontend/components/Logistics/types";
 import {
   INVENTORY_EQUIPMENT_TYPES,
+  inventoryCategoryForEquipment,
   useInventoryOptions,
 } from "@/frontend/composables/useInventoryOptions";
 import { validationErrorFrom } from "@/shared/utils/ApiErrors";
@@ -82,13 +83,8 @@ const availableCategories = computed(() =>
 // the depositor's word, not the contract author's: `Contracts::Progress` matches
 // on (name, category, unit), so a line filed as `equipment` would never see a
 // rifle the courier's ledger recorded as `weapon`.
-const categoryForEquipment = (equipmentType?: string | null) => {
-  if (equipmentType === "weapon") return InventoryCategoryEnum.WEAPON;
-  if (equipmentType === "weapon_attachment")
-    return InventoryCategoryEnum.AMMUNITION;
-
-  return InventoryCategoryEnum.EQUIPMENT;
-};
+const categoryForEquipment = (equipmentType?: string | null) =>
+  inventoryCategoryForEquipment(equipmentType) as InventoryCategoryEnum;
 
 const submitting = ref(false);
 
