@@ -69,10 +69,14 @@ Both sync modals match their boards on the Claude Design canvas, in every state,
 ## Discovery Log
 
 - **2026-10-18** Initial research: the state machines of both modals, the data-test hooks the specs pin, the target group's real scope, the missing transaction, and the unknown page total.
+- **2026-10-18** The settings rows needed `FormToggle` to take a description and a switch at the row's end; added as opt-in props. A grid with `display: contents` on the label broke clicking the label, so the switch is positioned instead.
+- **2026-10-18** The per-kind chips reflowed while pages came in; they now appear only once reading is done, the running total stays in the step's detail.
+- **2026-10-18** "Adds the ships it can't match" read as the opposite of "could not be matched" in the result; the start points now say "finds … already here" and "adds the ones that aren't here yet".
+- **2026-10-18** The buy-back run only says it failed, not where; the modal remembers the phase it last saw running.
 
 ## Progress
-- [ ] Phase 1: Shared pieces
-- [ ] Phase 2: Hangar sync modal
-- [ ] Phase 3: Buy-back sync modal
-- [ ] Phase 4: Copy
-- [ ] Phase 5: Tests and visual pages
+- [x] Phase 1: Shared pieces
+- [x] Phase 2: Hangar sync modal
+- [x] Phase 3: Buy-back sync modal
+- [x] Phase 4: Copy
+- [x] Phase 5: Tests and visual pages
