@@ -44,4 +44,21 @@ describe("groupIntoStacks", () => {
 
     expect(Object.values(stacks).map((stack) => stack.length)).toEqual([2]);
   });
+
+  it("stacks nameless parts that do the same, and keeps apart those that do not", () => {
+    const thruster = (id: string, fuelBurn: number) =>
+      ({
+        id,
+        groupKey: "main_thrusters-main-3800000.0",
+        component: { id, size: "1", typeData: { thrust: 3800000, fuelBurn } },
+      }) as unknown as Hardpoint;
+
+    const stacks = groupIntoStacks([
+      thruster("top-left", 0.1),
+      thruster("top-right", 0.1),
+      thruster("bottom", 0),
+    ]);
+
+    expect(Object.values(stacks).map((stack) => stack.length)).toEqual([2, 1]);
+  });
 });

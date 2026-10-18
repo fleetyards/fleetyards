@@ -7,11 +7,17 @@ import type { Hardpoint } from "@/services/fyApi";
  * stacked under the first one's name; the part has to match as well. By name:
  * the game files carry one part as several records -- a Constellation's left
  * and right missile racks -- which are the same part to anyone reading the list.
+ * A part with no name -- a thruster, one record per position -- is matched on
+ * what it does instead, so two that burn different fuel stay apart.
  */
 export const groupIntoStacks = (hardpoints: Hardpoint[]) =>
   hardpoints.reduce(
     (stacks, hardpoint) => {
-      const part = hardpoint.component?.name || hardpoint.component?.id || "";
+      const component = hardpoint.component;
+      const part = component
+        ? component.name ||
+          JSON.stringify([component.size, component.typeData ?? null])
+        : "";
       const key = `${hardpoint.groupKey ?? ""}|${part}`;
       stacks[key] = [...(stacks[key] ?? []), hardpoint];
       return stacks;
