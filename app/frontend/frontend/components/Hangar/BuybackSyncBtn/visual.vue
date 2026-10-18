@@ -114,6 +114,8 @@ const setRun = ({
   pricesDone,
   pricesTotal,
   pricesRunning = false,
+  lastCount,
+  totalPages,
 }: {
   status: "fetching" | "submitting" | "finished" | "failed";
   page?: number;
@@ -122,9 +124,14 @@ const setRun = ({
   pricesDone?: number;
   pricesTotal?: number;
   pricesRunning?: boolean;
+  lastCount?: number;
+  totalPages?: number;
 }) => {
   buybackSync.status.value = status;
   buybackSync.currentPage.value = page;
+  buybackSync.lastCount.value = lastCount;
+  buybackSync.totalPages.value = totalPages;
+  buybackSync.pagesEstimated.value = false;
   buybackSync.buybacks.value = samplePledges(found);
   buybackSync.result.value = result
     ? { total: found, ...result, detailsPending: [] }
@@ -143,14 +150,24 @@ const runStates: RunState[] = [
   {
     key: "reading",
     label: "Reading the list",
-    description: "Page 4 of the buy-back list, 24 pledges so far.",
-    apply: () => setRun({ status: "fetching", page: 4, found: 24 }),
+    description:
+      "Page 4 of 7 of the buy-back list, 24 pledges so far, against 40 stored.",
+    apply: () =>
+      setRun({
+        status: "fetching",
+        page: 4,
+        found: 24,
+        lastCount: 40,
+        totalPages: 7,
+      }),
   },
   {
     key: "saving",
     label: "Saving",
-    description: "The whole list is read and being submitted.",
-    apply: () => setRun({ status: "submitting", page: 4, found: 37 }),
+    description:
+      "The whole list is read and being submitted; 3 fewer than stored.",
+    apply: () =>
+      setRun({ status: "submitting", page: 8, found: 37, lastCount: 40 }),
   },
   {
     key: "prices",

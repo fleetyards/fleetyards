@@ -16,6 +16,8 @@ import type {
   SyncStep,
   SyncStepStatus,
 } from "@/frontend/components/Hangar/SyncSteps/types";
+import { readingPages } from "@/frontend/components/Hangar/SyncSteps/readingPages";
+import { lastSyncCaption } from "@/frontend/components/Hangar/SyncSteps/lastSyncCaption";
 import SyncCountList from "@/frontend/components/Hangar/SyncCountList/index.vue";
 import type { SyncCount } from "@/frontend/components/Hangar/SyncCountList/types";
 import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
@@ -75,8 +77,17 @@ const loadingIdentity = ref(false);
 
 const buybackSync = useBuybackSync();
 
-const { status, currentPage, buybacks, result, detailsStarted, running } =
-  buybackSync;
+const {
+  status,
+  currentPage,
+  totalPages,
+  pagesEstimated,
+  lastCount,
+  buybacks,
+  result,
+  detailsStarted,
+  running,
+} = buybackSync;
 
 const details = useBuybackDetailsSync();
 
@@ -135,62 +146,131 @@ watch(
   { immediate: true },
 );
 
-const stepStatus = (index: number, current: number, failed = false) => {
-  if (index < current) return "done";
-  if (index > current) return "pending";
+// Where the run stands: the list is read until it is submitted, then the
+// price pass. A failure stops at the phase the modal last saw running.
+const currentStep = computed(() =>
+  detailsRunning.value || (settled.value && detailsStarted.value)
+    ? 2
+    : status.value === "submitting" ||
+        status.value === "finished" ||
+        failedAt.value === "submitting"
+      ? 1
+      : 0,
+);
 
-  return (failed ? "failed" : "active") as SyncStepStatus;
+const readingDone = computed(() => currentStep.value > 0);
+
+// The run learns the list has ended by asking for one page past it, and the
+// page it stands on is not one it read.
+const pagesRead = computed(() => Math.max(currentPage.value - 1, 0));
+
+// What the last sync left stored, measured only while this run reads or once
+// it has read everything; a read that failed has nothing to measure.
+const measuring = computed(
+  () =>
+    !!lastCount.value &&
+    !(status.value === "failed" && failedAt.value === "fetching"),
+);
+
+const readCounts = computed<SyncCount[]>(() => [
+  {
+    key: "pledges",
+    label: t("labels.buybackSync.pledges"),
+    value: buybacks.value.length,
+    ...(measuring.value
+      ? { reference: lastCount.value, final: readingDone.value }
+      : {}),
+  },
+]);
+
+// Prices missing for any reason end the run with something to look at.
+const endedWithWarnings = computed(
+  () => settled.value && (detailsIncomplete.value || detailsUnsupported.value),
+);
+
+const stepStatus = (index: number, last: boolean): SyncStepStatus => {
+  const current = currentStep.value;
+
+  if (status.value === "failed" && index === current) return "failed";
+  if (index > current) return "pending";
+  if (index < current) return "done";
+  if (!settled.value) return "active";
+
+  return last && endedWithWarnings.value ? "warning" : "done";
 };
 
 const steps = computed<SyncStep[]>(() => {
   const failed = status.value === "failed";
-  // Where a failure stopped: the list is read until it is submitted.
-  const current = detailsRunning.value
-    ? 2
-    : status.value === "submitting" || failedAt.value === "submitting"
-      ? 1
-      : 0;
+  // A finished run whose price pass never started had nothing to price, and
+  // ends with the save.
+  const withPrices =
+    detailsStarted.value || (extensionSupportsDetails.value && !settled.value);
+  const reading = readingPages(
+    currentPage.value,
+    totalPages.value,
+    pagesEstimated.value,
+  );
+  const readingNow = currentStep.value === 0 && !failed;
+
   const list: SyncStep[] = [
     {
       key: "fetching",
       label: t("labels.buybackSync.status.fetching"),
-      detail: t(
-        current > 0
-          ? "labels.buybackSync.stepDetails.read"
-          : "labels.buybackSync.stepDetails.reading",
-        { page: currentPage.value, count: buybacks.value.length },
-      ),
-      status: stepStatus(0, current, failed),
-      // The list's pages are read until one comes back empty.
-      progress: current === 0 && !failed ? "indeterminate" : undefined,
+      detail: readingNow
+        ? reading.detail
+        : {
+            key: "labels.buybackSync.stepDetails.read",
+            values: { page: pagesRead.value, count: buybacks.value.length },
+          },
+      caption:
+        measuring.value && lastCount.value
+          ? lastSyncCaption(
+              buybacks.value.length,
+              lastCount.value,
+              readingDone.value,
+            )
+          : undefined,
+      status: stepStatus(0, false),
+      progress: readingNow ? reading.progress : undefined,
     },
     {
       key: "submitting",
       label: t("labels.buybackSync.status.submitting"),
       detail: result.value
-        ? t("labels.buybackSync.stepDetails.saved", {
-            added: result.value.added,
-            removed: result.value.removed,
-          })
-        : undefined,
-      status: stepStatus(1, current, failed),
-      progress: current === 1 && !failed ? "indeterminate" : undefined,
+        ? {
+            key: "labels.buybackSync.stepDetails.saved",
+            values: {
+              added: result.value.added,
+              removed: result.value.removed,
+            },
+          }
+        : currentStep.value === 1
+          ? {
+              key: "labels.syncExtension.stepDetails.sending",
+              values: { count: buybacks.value.length },
+            }
+          : undefined,
+      status: stepStatus(1, !withPrices),
+      progress:
+        currentStep.value === 1 && !failed && !settled.value
+          ? "indeterminate"
+          : undefined,
     },
   ];
 
-  if (extensionSupportsDetails.value || detailsStarted.value) {
+  if (withPrices) {
     list.push({
       key: "prices",
       label: t("labels.buybackSync.detailsProgress"),
       detail: detailsTotal.value
-        ? t("labels.buybackSync.stepDetails.prices", {
-            done: detailsDone.value,
-            total: detailsTotal.value,
-          })
+        ? {
+            key: "labels.buybackSync.stepDetails.prices",
+            values: { done: detailsDone.value, total: detailsTotal.value },
+          }
         : t("labels.buybackSync.stepDetails.pricesPending"),
-      status: stepStatus(2, current, failed),
+      status: stepStatus(2, true),
       progress:
-        current === 2 && detailsTotal.value
+        detailsRunning.value && detailsTotal.value
           ? { value: detailsDone.value, max: detailsTotal.value }
           : undefined,
     });
@@ -199,12 +279,10 @@ const steps = computed<SyncStep[]>(() => {
   return list;
 });
 
+// The run's result sits under its last step, as the hangar sync's does.
+const resultStep = computed(() => steps.value[steps.value.length - 1].key);
+
 const resultCounts = computed<SyncCount[]>(() => [
-  {
-    key: "found",
-    label: t("labels.buybackSync.found"),
-    value: buybacks.value.length,
-  },
   {
     key: "added",
     label: t("labels.buybackSync.added"),
@@ -425,46 +503,56 @@ const cancelRun = () => {
       >
         {{ t("texts.buybackSync.unsupported") }}
       </Alert>
-      <template v-else-if="settled">
-        <Alert
-          v-if="detailsIncomplete"
-          :variant="AlertVariantsEnum.WARNING"
-          data-test="buyback-sync-details-incomplete"
-        >
-          {{ t("texts.buybackSync.detailsIncomplete") }}
-        </Alert>
-        <Alert
-          v-if="detailsUnsupported"
-          :variant="AlertVariantsEnum.WARNING"
-          data-test="buyback-sync-details-unsupported"
-        >
-          {{ t("texts.buybackSync.detailsUnsupported") }}
-        </Alert>
-        <Alert
-          v-if="settledComplete"
-          :variant="AlertVariantsEnum.SUCCESS"
-          data-test="buyback-sync-finished"
-        >
-          {{ t("texts.buybackSync.finished") }}
-        </Alert>
-        <SyncCountList :counts="resultCounts" />
-        <transition name="fade">
-          <SupportHint
-            v-if="showSupportHint"
-            inline
-            context="hangarSync"
-            :meta="{ count: result?.added ?? 0 }"
-            @dismiss="supportHintDismissed = true"
-          />
-        </transition>
-      </template>
       <template v-else>
+        <template v-if="settled">
+          <Alert
+            v-if="detailsIncomplete"
+            :variant="AlertVariantsEnum.WARNING"
+            data-test="buyback-sync-details-incomplete"
+          >
+            {{ t("texts.buybackSync.detailsIncomplete") }}
+          </Alert>
+          <Alert
+            v-if="detailsUnsupported"
+            :variant="AlertVariantsEnum.WARNING"
+            data-test="buyback-sync-details-unsupported"
+          >
+            {{ t("texts.buybackSync.detailsUnsupported") }}
+          </Alert>
+          <Alert
+            v-if="settledComplete"
+            :variant="AlertVariantsEnum.SUCCESS"
+            data-test="buyback-sync-finished"
+          >
+            {{ t("texts.buybackSync.finished") }}
+          </Alert>
+        </template>
         <Alert
-          v-if="status === 'failed'"
+          v-else-if="status === 'failed'"
           :variant="AlertVariantsEnum.DANGER"
           :title="t('labels.buybackSync.status.failed')"
         />
-        <SyncSteps v-if="status !== 'failed' || failedAt" :steps="steps" />
+
+        <!-- The run and its result read as one: a step the run has moved on
+             from folds away, and the result sits under the last step. -->
+        <SyncSteps v-if="status !== 'failed' || failedAt" :steps="steps">
+          <template #step-fetching>
+            <SyncCountList
+              v-if="buybacks.length + (lastCount ?? 0)"
+              :counts="readCounts"
+            />
+          </template>
+          <template
+            v-if="settled && resultStep === 'submitting'"
+            #step-submitting
+          >
+            <SyncCountList :counts="resultCounts" />
+          </template>
+          <template v-if="settled && resultStep === 'prices'" #step-prices>
+            <SyncCountList :counts="resultCounts" />
+          </template>
+        </SyncSteps>
+
         <p
           v-if="status === 'finished' && detailsRunning"
           class="buyback-sync__note"
@@ -477,6 +565,16 @@ const cancelRun = () => {
           <i class="fa-light fa-circle-info" aria-hidden="true" />
           {{ t("texts.buybackSync.keepsRunning") }}
         </p>
+
+        <transition name="fade">
+          <SupportHint
+            v-if="showSupportHint"
+            inline
+            context="hangarSync"
+            :meta="{ count: result?.added ?? 0 }"
+            @dismiss="supportHintDismissed = true"
+          />
+        </transition>
       </template>
     </div>
     <template #footer>

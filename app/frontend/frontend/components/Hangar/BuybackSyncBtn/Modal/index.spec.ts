@@ -70,11 +70,17 @@ vi.mock("@/frontend/composables/useSyncExtension", async (importOriginal) => {
   };
 });
 
+// How many buy-backs are stored before a run, which the run reads against.
+const storedBuybacks = vi.fn((count = 0) =>
+  Promise.resolve({ meta: { pagination: { totalCount: count } }, items: [] }),
+);
+
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   syncRsiBuybacks: (data: unknown) => mutateAsync({ data }),
   syncRsiBuybackDetails: submitDetails,
   reportRsiPage: (data: unknown) => reportMutateAsync({ data }),
+  hangarBuybacks: () => storedBuybacks(),
 }));
 
 const comlinkEmit = vi.fn();
@@ -84,7 +90,11 @@ vi.mock("@/shared/composables/useComlink", () => ({
 }));
 
 vi.mock("@/shared/composables/useI18n", () => ({
-  useI18n: () => ({ t: (key: string) => key }),
+  useI18n: () => ({
+    t: (key: string) => key,
+    tExists: () => false,
+    currentLocale: () => "en",
+  }),
 }));
 
 const displayWarning = vi.hoisted(() => vi.fn());
@@ -215,6 +225,11 @@ const startSync = async () => {
 
 describe("HangarBuybackSyncModal", () => {
   beforeEach(() => {
+    storedBuybacks
+      .mockReset()
+      .mockImplementation(() =>
+        Promise.resolve({ meta: { pagination: { totalCount: 0 } }, items: [] }),
+      );
     rsiRateLimiter.reset();
     mutateAsync.mockClear();
     submitDetails.mockClear();
@@ -301,6 +316,38 @@ describe("HangarBuybackSyncModal", () => {
     expect(
       wrapper.find("[data-test='buyback-sync-added']").attributes("data-count"),
     ).toBe("2");
+  });
+
+  it("estimates the list's pages from the buy-backs stored now", async () => {
+    storedBuybacks.mockImplementation(() =>
+      Promise.resolve({ meta: { pagination: { totalCount: 4 } }, items: [] }),
+    );
+    const wrapper = await startSync();
+
+    await answerNextPage(buybackPage("1"));
+
+    expect(useBuybackSync().totalPages.value).toBe(4);
+    expect(
+      wrapper
+        .get("[data-test='sync-step-fetching'] .sync-steps__detail [data-text]")
+        .attributes("data-text"),
+    ).toBe("labels.syncExtension.stepDetails.pageOfAbout");
+  });
+
+  it("measures the list it read against the buy-backs stored now", async () => {
+    storedBuybacks.mockImplementation(() =>
+      Promise.resolve({ meta: { pagination: { totalCount: 4 } }, items: [] }),
+    );
+    const wrapper = await startSync();
+
+    await answerNextPage(buybackPage("1"));
+    await answerNextPage(emptyBuybackPage);
+
+    expect(
+      wrapper
+        .get("[data-test='sync-step-fetching-caption'] [data-text]")
+        .attributes("data-text"),
+    ).toBe("labels.syncExtension.lastSync.fewer");
   });
 
   it("keeps reading the list once the modal is closed", async () => {

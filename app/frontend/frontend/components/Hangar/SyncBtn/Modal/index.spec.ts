@@ -89,7 +89,11 @@ vi.mock("@/shared/composables/useComlink", () => ({
 }));
 
 vi.mock("@/shared/composables/useI18n", () => ({
-  useI18n: () => ({ t: (key: string) => key }),
+  useI18n: () => ({
+    t: (key: string) => key,
+    tExists: () => false,
+    currentLocale: () => "en",
+  }),
 }));
 
 const displayInfo = vi.fn();
