@@ -49,4 +49,17 @@ provide(BTN_CONTAINER, {
   gap: 0.5rem;
   margin-left: auto;
 }
+
+// The sheet's last row: the closing actions share its width, in reach of a
+// thumb. They never shrink below their labels - where the start side leaves
+// too little room, they take a row of their own instead.
+@media (max-width: $tablet-breakpoint) {
+  .modal-footer__end {
+    flex: 1 0 auto;
+  }
+
+  .modal-footer__end > :deep(*) {
+    flex: 1 1 auto;
+  }
+}
 </style>

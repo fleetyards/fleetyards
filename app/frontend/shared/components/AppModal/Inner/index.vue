@@ -78,13 +78,70 @@ const close = () => {
 
   comlink.emit("close-modal");
 };
+
+// $tablet-breakpoint: where the modal becomes a sheet with a grab handle.
+const SHEET_QUERY = "(max-width: 768px)";
+
+// Far enough that a scroll that started on the header does not close it.
+const CLOSE_DISTANCE = 96;
+
+const inner = ref<HTMLElement>();
+
+let dragStart: number | undefined;
+let dragOffset = 0;
+
+const onDragStart = (event: PointerEvent) => {
+  if (props.fixed || event.pointerType !== "touch") return;
+  if (!window.matchMedia(SHEET_QUERY).matches) return;
+  // A press on the close button or a header action stays a press.
+  if ((event.target as Element).closest("button, a, input")) return;
+
+  dragStart = event.clientY;
+  dragOffset = 0;
+  (event.currentTarget as Element).setPointerCapture?.(event.pointerId);
+};
+
+const onDragMove = (event: PointerEvent) => {
+  if (dragStart === undefined || !inner.value) return;
+
+  dragOffset = Math.max(0, event.clientY - dragStart);
+  inner.value.style.transition = "none";
+  inner.value.style.transform = `translateY(${dragOffset}px)`;
+};
+
+const onDragEnd = () => {
+  if (dragStart === undefined || !inner.value) return;
+
+  const sheet = inner.value;
+  dragStart = undefined;
+  sheet.style.transition = "";
+
+  if (dragOffset < CLOSE_DISTANCE) {
+    sheet.style.transform = "";
+    return;
+  }
+
+  // Closing goes the button's way, so unsaved edits still ask. If they do, the
+  // sheet comes back once the modal has had its chance to leave.
+  close();
+  setTimeout(() => {
+    sheet.style.transform = "";
+  }, 350);
+};
 </script>
 
 <template>
-  <div class="modal-inner" v-bind="dialogAttrs">
+  <div ref="inner" class="modal-inner" v-bind="dialogAttrs">
     <Panel :outer-spacing="false" :loading="loading">
       <div class="modal-content">
-        <div v-if="$slots.hero" class="modal-hero">
+        <div
+          v-if="$slots.hero"
+          class="modal-hero"
+          @pointerdown="onDragStart"
+          @pointermove="onDragMove"
+          @pointerup="onDragEnd"
+          @pointercancel="onDragEnd"
+        >
           <slot name="hero" />
           <Btn
             v-if="!fixed"
@@ -100,6 +157,10 @@ const close = () => {
           v-else
           class="modal-header"
           :class="{ 'modal-header--tabbed': tabbed }"
+          @pointerdown="onDragStart"
+          @pointermove="onDragMove"
+          @pointerup="onDragEnd"
+          @pointercancel="onDragEnd"
         >
           <div class="modal-heading">
             <p v-if="eyebrow || $slots.eyebrow" class="modal-eyebrow">
