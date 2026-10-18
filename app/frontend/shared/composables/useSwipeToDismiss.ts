@@ -210,10 +210,14 @@ export const useSwipeToDismiss = ({
     },
   );
 
-  useEventListener(document, "touchstart", onTouchStart, { passive: true });
-  useEventListener(document, "touchmove", onTouchMove, { passive: false });
-  useEventListener(document, "touchend", onTouchEnd);
-  useEventListener(document, "touchcancel", reset);
+  // Only while the panel is open: a non-passive touchmove on the document makes
+  // every scroll on the page wait for the main thread.
+  const listenOn = () => (toValue(enabled) ? document : undefined);
+
+  useEventListener(listenOn, "touchstart", onTouchStart, { passive: true });
+  useEventListener(listenOn, "touchmove", onTouchMove, { passive: false });
+  useEventListener(listenOn, "touchend", onTouchEnd);
+  useEventListener(listenOn, "touchcancel", reset);
 
   return { offset, dragging, progress };
 };
