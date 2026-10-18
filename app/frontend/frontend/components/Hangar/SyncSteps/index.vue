@@ -8,15 +8,43 @@ export default {
 import { useI18n } from "@/shared/composables/useI18n";
 import SyncProgressBar from "@/frontend/components/Hangar/SyncProgressBar/index.vue";
 import SyncNumberText from "@/frontend/components/Hangar/SyncNumberText/index.vue";
+import Collapsed from "@/shared/components/Collapsed.vue";
+import { useReducedMotion } from "@/shared/composables/useReducedMotion";
 import type { SyncStep } from "./types";
 
 type Props = {
   steps: SyncStep[];
 };
 
-defineProps<Props>();
+const props = defineProps<Props>();
+
+const slots = useSlots();
 
 const { t } = useI18n();
+
+const { prefersReducedMotion } = useReducedMotion();
+
+const collapseDuration = computed(() => (prefersReducedMotion.value ? 1 : 200));
+
+const bodyId = useId();
+
+const hasBody = (step: SyncStep) =>
+  !!step.progress || !!step.caption || !!slots[`step-${step.key}`];
+
+// A step the run has moved on from folds away under its heading, so the step
+// now running is the one in view; its heading opens it again. The last step
+// stays open: it ends the run, and what it says is the run's news.
+const collapsible = (step: SyncStep, index: number) =>
+  step.status === "done" && index < props.steps.length - 1 && hasBody(step);
+
+const toggled = ref<Record<string, boolean>>({});
+
+const isOpen = (step: SyncStep, index: number) =>
+  !collapsible(step, index) || (toggled.value[step.key] ?? false);
+
+const toggle = (step: SyncStep, index: number) => {
+  toggled.value = { ...toggled.value, [step.key]: !isOpen(step, index) };
+};
 </script>
 
 <template>
@@ -39,7 +67,22 @@ const { t } = useI18n();
         <span v-if="index < steps.length - 1" class="sync-steps__line" />
       </div>
       <div class="sync-steps__content">
-        <div class="sync-steps__heading">
+        <component
+          :is="collapsible(step, index) ? 'button' : 'div'"
+          class="sync-steps__heading"
+          :class="{ 'sync-steps__heading--toggle': collapsible(step, index) }"
+          v-bind="
+            collapsible(step, index)
+              ? {
+                  type: 'button',
+                  'aria-expanded': isOpen(step, index),
+                  'aria-controls': `${bodyId}-${step.key}`,
+                }
+              : {}
+          "
+          :data-test="`sync-step-${step.key}-heading`"
+          @click="collapsible(step, index) && toggle(step, index)"
+        >
           <span class="sync-steps__label">{{ step.label }}</span>
           <span class="sr-only">
             {{ t(`labels.syncExtension.stepStatus.${step.status}`) }}
@@ -50,25 +93,39 @@ const { t } = useI18n();
             </template>
             <SyncNumberText v-else :text="step.detail" />
           </span>
-        </div>
-        <SyncProgressBar
-          v-if="step.progress"
-          :progress="
-            step.progress === 'indeterminate' ? undefined : step.progress
-          "
-          :label="step.label"
-        />
-        <p
-          v-if="step.caption"
-          class="sync-steps__caption"
-          :data-test="`sync-step-${step.key}-caption`"
+          <i
+            v-if="collapsible(step, index)"
+            class="fa-light fa-chevron-down sync-steps__chevron"
+            aria-hidden="true"
+          />
+        </component>
+        <Collapsed
+          v-if="hasBody(step)"
+          :id="`${bodyId}-${step.key}`"
+          :visible="isOpen(step, index)"
+          :duration="collapseDuration"
         >
-          <template v-if="typeof step.caption === 'string'">
-            {{ step.caption }}
-          </template>
-          <SyncNumberText v-else :text="step.caption" />
-        </p>
-        <slot :name="`step-${step.key}`" />
+          <div class="sync-steps__body">
+            <SyncProgressBar
+              v-if="step.progress"
+              :progress="
+                step.progress === 'indeterminate' ? undefined : step.progress
+              "
+              :label="step.label"
+            />
+            <p
+              v-if="step.caption"
+              class="sync-steps__caption"
+              :data-test="`sync-step-${step.key}-caption`"
+            >
+              <template v-if="typeof step.caption === 'string'">
+                {{ step.caption }}
+              </template>
+              <SyncNumberText v-else :text="step.caption" />
+            </p>
+            <slot :name="`step-${step.key}`" />
+          </div>
+        </Collapsed>
       </div>
     </li>
   </ol>
@@ -119,7 +176,6 @@ const { t } = useI18n();
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
-  gap: 8px;
   min-width: 0;
   padding: 3px 0 16px;
 }
@@ -133,6 +189,47 @@ const { t } = useI18n();
   flex-wrap: wrap;
   align-items: baseline;
   column-gap: 10px;
+}
+
+.sync-steps__heading--toggle {
+  width: 100%;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+
+  &:hover .sync-steps__label {
+    color: var(--color-lifted, #eee);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary, #428bca);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+.sync-steps__chevron {
+  margin-left: auto;
+  align-self: center;
+  color: var(--color-muted, #7a8288);
+  transition: transform 150ms ease;
+}
+
+.sync-steps__heading[aria-expanded="true"] .sync-steps__chevron {
+  transform: rotate(180deg);
+}
+
+// Spaced inside the element Collapsed animates, not on it, so nothing jumps
+// at the end of the animation.
+.sync-steps__body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 8px;
 }
 
 .sync-steps__label {

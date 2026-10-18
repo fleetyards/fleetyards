@@ -8,6 +8,17 @@ import { useBuybackDetailsSync } from "@/frontend/composables/useBuybackDetailsS
 import { rsiRateLimiter } from "@/frontend/lib/RsiRateLimiter";
 import Component from "./index.vue";
 
+// jsdom has no matchMedia; a finished step asks it for reduced motion before
+// it folds away.
+vi.stubGlobal(
+  "matchMedia",
+  vi.fn(() => ({
+    matches: false,
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+  })),
+);
+
 const mutateAsync = vi.fn<
   (_input: unknown) => Promise<{
     total: number;

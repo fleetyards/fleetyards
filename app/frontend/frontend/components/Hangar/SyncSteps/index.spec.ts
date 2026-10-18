@@ -1,7 +1,18 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import Component from "./index.vue";
 import type { SyncStep } from "./types";
+
+// jsdom has no matchMedia; a finished step asks it for reduced motion before
+// it folds away.
+vi.stubGlobal(
+  "matchMedia",
+  vi.fn(() => ({
+    matches: false,
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+  })),
+);
 
 const mountSteps = (steps: SyncStep[]) =>
   mountWithDefaults<typeof Component>(Component, { props: { steps } });
@@ -40,6 +51,30 @@ describe("HangarSyncSteps", () => {
     expect(
       wrapper.get("[data-test='sync-step-read']").attributes("aria-current"),
     ).toBeUndefined();
+  });
+
+  it("folds a step the run has moved on from, and opens it again on request", async () => {
+    const wrapper = await mountWithDefaults<typeof Component>(Component, {
+      props: {
+        steps: [
+          { key: "read", label: "Reading", status: "done", caption: "6 items" },
+          { key: "save", label: "Saving", status: "active" },
+        ],
+      },
+      slots: { "step-read": "<ul class='read-list'><li>Ships</li></ul>" },
+    });
+
+    const heading = wrapper.get("[data-test='sync-step-read-heading']");
+
+    expect(heading.element.tagName).toBe("BUTTON");
+    expect(heading.attributes("aria-expanded")).toBe("false");
+
+    await heading.trigger("click");
+
+    expect(heading.attributes("aria-expanded")).toBe("true");
+    expect(
+      wrapper.get("[data-test='sync-step-save-heading']").element.tagName,
+    ).toBe("DIV");
   });
 
   it("reports a fraction where the step knows its total", async () => {
