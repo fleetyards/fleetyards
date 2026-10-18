@@ -695,6 +695,22 @@ class HangarSyncTest < ActiveSupport::TestCase
     end
   end
 
+  class ModulesTest < HangarSyncTest
+    test "adds a Galaxy module to the Galaxy it belongs to" do
+      galaxy = Model.find_by!(slug: "rsi-galaxy")
+      cargo = create(:model_module, name: "Cargo Module")
+      create(:module_hardpoint, model: galaxy, model_module: cargo)
+      vehicle = create(:vehicle, user: @user, model: galaxy, wanted: false)
+
+      result = ::HangarSync.new([
+        {"id" => "00012345", "name" => "Galaxy - Cargo Module", "type" => "component"}
+      ]).run(@user.id)
+
+      assert_equal 1, result[:imported_components].size
+      assert_equal cargo.id, vehicle.vehicle_modules.sole.model_module_id
+    end
+  end
+
   class NothingToSyncTest < HangarSyncTest
     setup do
       @input += [{"id" => "00064531", "name" => "Space Globe - Terra", "type" => "flair"}]
