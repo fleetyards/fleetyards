@@ -64,8 +64,15 @@ const toggleExpanded = () => {
 };
 
 // What sits inside the part -- a turret's guns, a rack's missiles -- shown
-// until folded away, as the loadout editor does.
-const childrenOpen = ref(true);
+// until folded away, as the loadout editor does. Its category folds them all
+// at once; a row's own chevron still opens or folds it alone afterwards.
+const partsFolded = inject<Ref<boolean>>("hardpointPartsFolded", ref(false));
+
+const childrenOpen = ref(!partsFolded.value);
+
+watch(partsFolded, (value) => {
+  childrenOpen.value = !value;
+});
 
 // Only a real stack (>1 identical mount) collapses to a summary row; single
 // items always render, even when the global density is "expanded".
