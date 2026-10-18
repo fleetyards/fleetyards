@@ -41,6 +41,20 @@ class HangarImporterTest < ActiveSupport::TestCase
     refute_nil import.reload.import_data
   end
 
+  test "keeps the ships beside an entry that is not an object" do
+    file = Tempfile.new(["import", ".json"])
+    file.write([@model.name, {name: @model.name}].to_json)
+    file.rewind
+    import = ::Imports::HangarImport.create!(
+      user_id: @user.id,
+      import: Rack::Test::UploadedFile.new(file.path, "application/json")
+    )
+
+    assert_equal [{name: @model.name}], import.reload.import_data
+  ensure
+    file&.close!
+  end
+
   test "records no versions" do
     assert_no_difference -> { PaperTrail::Version.where(item_type: "Vehicle").count } do
       ::HangarImporter.new(@import).run
@@ -156,6 +170,18 @@ class HangarImporterTest < ActiveSupport::TestCase
     vehicle = Vehicle.find_by!(user_id: @user.id)
     assert_equal @model.id, vehicle.model_id
     assert_equal [paint.id], vehicle.model_paint_ids
+  end
+
+  # Import data is stored with symbol keys, so a lookup by a string key
+  # silently found nothing and the bomber came in without its torpedo bays.
+  test "gives a Retaliator Bomber its torpedo bays" do
+    front = create(:model_module, name: "Front Torpedo Bay")
+    rear = create(:model_module, name: "Rear Torpedo Bay")
+    import = import_for([{name: "Retaliator Bomber"}])
+
+    ::HangarImporter.new(import).run
+
+    assert_equal [front.id, rear.id].sort, Vehicle.find_by!(user_id: @user.id).model_module_ids.sort
   end
 
   test "imports a ship whose serial predates the game format, without it" do

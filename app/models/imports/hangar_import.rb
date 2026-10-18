@@ -30,9 +30,7 @@ module Imports
     def set_import_data
       data = read_import_file
 
-      self.import_data = (data || []).map do |item|
-        return item unless item.is_a? Hash
-
+      self.import_data = Array(data).grep(Hash).map do |item|
         item.transform_keys(&:underscore)
           .transform_keys(&:to_sym)
       end.filter do |item|

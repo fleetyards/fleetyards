@@ -301,10 +301,11 @@
           "missing": "Nicht gefunden",
           "found": "Zugeordnet"
         },
-        "formatHint": "Zwei Dateiformate werden akzeptiert:",
+        "formatHint": "Drei Dateiformate werden akzeptiert:",
         "formats": {
           "fleetyards": "Ein FleetYards-Hangar-Export — nutze dafür den Export-Button.",
-          "hangarXplor": "Ein hangarXPLOR-Export."
+          "hangarXplor": "Ein hangarXPLOR-Export.",
+          "hangarExtension": "Ein JSON-Export der Browser-Erweiterung Star Citizen: Hangar Extension."
         },
         "details": {
           "imported": "Hinzugefügt",

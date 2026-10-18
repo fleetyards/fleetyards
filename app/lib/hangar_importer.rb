@@ -42,7 +42,14 @@ class HangarImporter
     # user made to a ship that already existed.
     cancelled = false
 
-    items = @import.import_data || []
+    # The Star Citizen: Hangar Extension lists the craft that come with a ship
+    # as entries of their own, `included_with` naming the parent by its matrix
+    # name. A vehicle creates most of those itself, as bundled snub crafts or
+    # loaners, so they run after every parent and only the craft no imported
+    # parent created are kept.
+    standalone, included = (@import.import_data || []).partition { |item| item[:included_with].blank? }
+    items = standalone + included
+    derived_craft = {}
 
     PaperTrail.request(enabled: false) do
       items.each_with_index do |item, index|
@@ -51,28 +58,18 @@ class HangarImporter
           break
         end
 
-        name = item[:name].presence
-        name = legacy_mapping[item[:name]] if legacy_mapping[item[:name]].present?
-        name = starship_42_mapping[item[:name]] if starship_42_mapping[item[:name]].present?
-        name = hangar_xplor_mapping[item[:name]] if hangar_xplor_mapping[item[:name]].present?
+        # The Star Citizen: Hangar Extension writes its own export alias to
+        # `name` and the ship-matrix name to `matrix`. The alias is the one that
+        # misleads -- "F7C-M Super Hornet Heartseeker" maps to the plain Super
+        # Hornet -- so the matrix name goes first.
+        names = [item[:matrix], item[:name]].compact_blank.map { |raw| mapped_name(raw) }.uniq
 
-        normalized_name = normalize(name)
         slug = item[:slug].downcase if item[:slug].present?
         slug = item[:paint_slug].downcase if item[:paint_slug].present?
 
         # Neither half of the query can match on an item that names nothing, and
         # it has no label to report either.
-        next if name.blank? && slug.blank?
-
-        query = [
-          MODEL_FIND_QUERY.join(" OR "),
-          {
-            name: name&.downcase,
-            slug:,
-            normalized_name:,
-            search: "%#{normalized_name}%"
-          }
-        ]
+        next if names.empty? && slug.blank?
 
         params = {
           notify: false,
@@ -88,44 +85,49 @@ class HangarImporter
           name_visible: item[:name_visible] || false,
           sale_notify: item[:sale_notify] || false,
           hangar_group_ids: hangar_group_ids_for(item),
-          model_module_ids: ModelModule.where(name: (item[:modules] || []) + (legacy_module_mapping[item["name"]] || [])).pluck(:id),
+          model_module_ids: ModelModule.where(name: (item[:modules] || []) + (legacy_module_mapping[item[:name]] || [])).pluck(:id),
           model_upgrade_ids: ModelUpgrade.where(name: item[:upgrades]).pluck(:id)
         }
 
-        model_query = [
-          (MODEL_FIND_QUERY + MODEL_LEGACY_SLUG_QUERY).join(" OR "),
-          query[1]
-        ]
-        model = Model.where(model_query).first
+        model, model_paint = find_model_or_paint(names, slug)
+        matched_model_id = model&.id || model_paint&.model_id
+
+        if item[:included_with].present? && derived_craft.dig(item[:included_with], matched_model_id).to_i.positive?
+          derived_craft[item[:included_with]][matched_model_id] -= 1
+          next
+        end
+
         if model.present?
-          Vehicle.create(params.merge(
+          vehicle = Vehicle.create(params.merge(
             model_id: model.id,
             name: custom_name(item, model),
             model_paint_ids: owned_paint_ids(item, model.id)
           ))
+          record_derived_craft(derived_craft, item[:matrix], vehicle)
           imported_models << model.name
           next
         end
 
         # An export from before owned paints names the one paint a ship had in
         # `paint_slug`, which is what `slug` was set to above.
-        model_paint = ModelPaint.includes(:model).where(query).first
         if model_paint.present?
-          Vehicle.create(params.merge(
+          vehicle = Vehicle.create(params.merge(
             model_id: model_paint.model_id,
             name: custom_name(item, model_paint.model),
             model_paint_ids: owned_paint_ids(item, model_paint.model_id) | [model_paint.id]
           ))
+          record_derived_craft(derived_craft, item[:matrix], vehicle)
           imported_models << model_paint.name
           next
         end
 
-        # The identifier the lookup actually used: `slug` already holds
-        # `paint_slug` where the item carried one. Reporting `item[:slug]`
-        # instead would name a slug that was never queried, and on an item that
-        # carried only a paint it would report nothing -- `missing` is sorted,
-        # and one nil beside a string raises rather than naming either.
-        missing_models << (item[:name].presence || slug)
+        # The first identifier the lookup used: the matrix name before the
+        # export alias, and `slug` already holds `paint_slug` where the item
+        # carried one. Reporting `item[:slug]` instead would name a slug that was
+        # never queried, and on an item that carried only a paint it would
+        # report nothing -- `missing` is sorted, and one nil beside a string
+        # raises rather than naming either.
+        missing_models << (item[:matrix].presence || item[:name].presence || slug)
       end
     end
 
@@ -200,6 +202,48 @@ class HangarImporter
       .any? { |standard_name| standard_name.to_s.squish.casecmp?(name.to_s.squish) }
   end
 
+  # Every name against the models before any against the paints, so a paint
+  # matched by the first name never shadows a model matched by the second.
+  private def find_model_or_paint(names, slug)
+    binds = (names.presence || [nil]).map do |name|
+      {name: name&.downcase, slug:, normalized_name: normalize(name)}
+    end
+
+    binds.each do |bind|
+      model = Model.where((MODEL_FIND_QUERY + MODEL_LEGACY_SLUG_QUERY).join(" OR "), bind).first
+      return [model, nil] if model.present?
+    end
+
+    binds.each do |bind|
+      model_paint = ModelPaint.includes(:model).where(MODEL_FIND_QUERY.join(" OR "), bind).first
+      return [nil, model_paint] if model_paint.present?
+    end
+
+    [nil, nil]
+  end
+
+  # Counts the craft the vehicle actually created alongside itself, its loaners
+  # and bundled snub crafts, so each one excuses a single included entry. They
+  # are read back rather than taken from the model: a rejected vehicle creates
+  # none, and a snub craft nobody can own is skipped.
+  private def record_derived_craft(derived_craft, matrix, vehicle)
+    return if matrix.blank? || !vehicle.persisted?
+
+    children = Vehicle.where(vehicle_id: vehicle.id, user_id: vehicle.user_id)
+    created = derived_craft[matrix] ||= Hash.new(0)
+    children.where(loaner: true).or(children.where(bundled: true)).pluck(:model_id).each do |model_id|
+      created[model_id] += 1
+    end
+  end
+
+  private def mapped_name(name)
+    hangar_extension_mapping[name].presence ||
+      hangar_xplor_mapping[name].presence ||
+      starship_42_mapping[name].presence ||
+      legacy_mapping[name].presence ||
+      name
+  end
+
   private def stop_requested?(index)
     return false unless (index % CANCEL_CHECK_INTERVAL).zero?
 
@@ -245,7 +289,7 @@ class HangarImporter
       "f7c-r hornet tracker" => "F7C-R Hornet Tracker Mk I",
       "f7c-s hornet ghost" => "F7C-S Hornet Ghost Mk I",
       "f7c-m super hornet" => "F7C-M Super Hornet Mk I",
-      "f7c-m super hornet heartseeker" => "F7C-M Super Hornet Mk I",
+      "f7c-m super hornet heartseeker" => "F7C-M Super Hornet Heartseeker Mk I",
       "f8c lightning civilian" => "F8C lightning",
       "hammerhead 2949 best in show" => "Hammerhead",
       "hercules starlifter a2" => "A2 Hercules",
@@ -298,14 +342,14 @@ class HangarImporter
       "Caterpillar Best In Show Edition" => "Caterpillar",
       "Cutlass Black Best In Show Edition" => "Cutlass Black",
       "F7C Hornet" => "F7C Hornet Mk I",
-      "F7C-M Super Hornet Heartseeker" => "F7C-M Super Hornet Mk I",
+      "F7C-M Super Hornet Heartseeker" => "F7C-M Super Hornet Heartseeker Mk I",
       "F7A Hornet" => "F7A Hornet Mk I",
       "F7C Hornet Wildfire" => "F7C Hornet Wildfire Mk I",
       "F7C-M Super Hornet" => "F7C-M Super Hornet Mk I",
       "F7C-R Hornet Tracker" => "F7C-R Hornet Tracker Mk I",
       "F7C-S Hornet Ghost" => "F7C-S Hornet Ghost Mk I",
       "Hornet F7C" => "F7C Hornet Mk I",
-      "Hornet F7C-M Heartseeker" => "F7C-M Super Hornet Mk I",
+      "Hornet F7C-M Heartseeker" => "F7C-M Super Hornet Heartseeker Mk I",
       "Idris-M Frigate" => "Idris-M",
       "Idris-P Frigate" => "Idris-P",
       "Idris-K Frigate" => "Idris-P",
@@ -338,6 +382,14 @@ class HangarImporter
       "MOLE - Carbon Edition" => "Carbon",
       "MOLE - Talus Edition" => "Talus",
       "Gladius Dunlevy" => "Dunlevy"
+    }
+  end
+
+  private def hangar_extension_mapping
+    {
+      "Carrack w/C8X" => "Carrack",
+      "Carrack Expedition w/C8X" => "Carrack Expedition",
+      "Dragonfly Star Kitten" => "Dragonfly Starkitten Edition"
     }
   end
 
