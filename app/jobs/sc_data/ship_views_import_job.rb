@@ -92,11 +92,9 @@ module ScData
       complete = true
 
       renders(store.listing(path), path).each do |field, name, md5|
-        next if md5s[field] == md5 && model.public_send(field).attached?
-
-        # A render already on the model, through the folder upload or an
-        # earlier import that predates the stored digests.
-        if current_checksum(model, field) == md5
+        # A render already on the model: imported before, or put there by the
+        # folder upload or an import that predates the stored digests.
+        if (md5s[field] == md5 || current_checksum(model, field) == md5) && stored?(model, field)
           md5s[field] = md5
           next
         end
@@ -117,15 +115,17 @@ module ScData
           next
         end
 
-        model.public_send(:"#{field}=", {io: file, filename: name})
+        # Uploaded before it is attached. Handed an io, ActiveStorage writes the
+        # blob row in the save and the bytes only in an `after_commit`, so a
+        # worker killed in between leaves an attachment naming a file storage
+        # never received. This way a kill leaves at most an unattached blob.
+        model.public_send(:"#{field}=", ActiveStorage::Blob.create_and_upload!(io: file, filename: name))
         md5s[field] = md5
       end
 
       fields = model.attachment_changes.keys
 
-      # ActiveStorage uploads an io in `after_commit`, so the import is only
-      # recorded once `save!` is back and the bytes are in storage. A render
-      # that did not come down is fetched again next run.
+      # A render that did not come down is fetched again next run.
       model.save!
       model.update_columns(ship_view_md5s: md5s, ship_views_digest: (complete ? digest : model.ship_views_digest))
 
@@ -151,6 +151,15 @@ module ScData
 
         candidates.first
       end
+    end
+
+    # The blob row, checksum included, is written before its bytes go up, so a
+    # worker killed in between leaves an attachment naming a file storage never
+    # received -- and a checksum that would otherwise say it is already here.
+    private def stored?(model, field)
+      blob = model.public_send(field).blob
+
+      blob.present? && blob.service.exist?(blob.key)
     end
 
     # ActiveStorage keeps the same MD5, base64-encoded.

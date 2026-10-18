@@ -66,12 +66,33 @@ module ScData
     end
 
     test "crops the views and measures the holos" do
-      publish({"flight_top.png" => PNG, "flight_holo.gltf" => HOLO})
+      publish({"flight_top.png" => PNG, "flight_front.png" => PNG, "flight_holo.gltf" => HOLO})
 
       perform
 
-      assert_equal [["Model", @model.id, "top_view"]], TrimAttachmentJob.jobs.map { |job| job["args"] }
+      assert_equal %w[front_view top_view], TrimAttachmentJob.jobs.map { |job| job["args"].third }.sort
       assert_equal ["holo"], MeasureHoloJob.jobs.map { |job| job["args"].second }
+    end
+
+    # The render is in storage before the save, so a lone view is cropped there
+    # and then rather than queued.
+    test "crops a single view in the import itself" do
+      publish({"flight_top.png" => PNG})
+
+      perform
+
+      assert_empty TrimAttachmentJob.jobs
+      assert @model.top_view.blob.metadata[:trimmed]
+    end
+
+    test "attaches a render only once its bytes are in storage" do
+      publish({"flight_top.png" => PNG})
+      ActiveStorage::Blob.any_instance.stubs(:upload_without_unfurling).raises(Aws::S3::Errors::InternalError.new(nil, "down"))
+      Appsignal.stubs(:report_error)
+
+      perform
+
+      assert_not @model.top_view.attached?
     end
 
     test "skips a ship whose listing has not changed" do
@@ -163,6 +184,29 @@ module ScData
 
       assert_equal blob, @model.top_view.blob
       assert_equal Digest::MD5.hexdigest(PNG), @model.ship_view_md5s["top_view"]
+    end
+
+    test "fetches a render again whose file never reached storage" do
+      @model.top_view.attach(io: StringIO.new(PNG), filename: "flight_top.png")
+      @model.update!(ship_view_md5s: {"top_view" => Digest::MD5.hexdigest(PNG)})
+      @model.top_view.blob.service.delete(@model.top_view.blob.key)
+      publish({"flight_top.png" => PNG})
+
+      perform(@model.id)
+
+      assert_includes fetched, "flight_top.png"
+      assert_equal PNG, @model.top_view.download
+    end
+
+    test "fetches a render again whose checksum matches but whose file is missing" do
+      @model.top_view.attach(io: StringIO.new(PNG), filename: "top.png")
+      @model.top_view.blob.service.delete(@model.top_view.blob.key)
+      publish({"flight_top.png" => PNG})
+
+      perform
+
+      assert_includes fetched, "flight_top.png"
+      assert_equal PNG, @model.top_view.download
     end
 
     test "replaces a render that changed" do
