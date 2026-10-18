@@ -2434,7 +2434,9 @@
           "signedOut": "Accedi per ottenere la tua chiave personale da sostenitore.",
           "patreonNote": "collegato tramite la tua email, nessuna chiave necessaria",
           "label": "La tua chiave",
-          "hint": "Incollala nel messaggio di un pagamento PayPal, Ko-fi o Buy me a coffee e verrà collegato al tuo account. Su Patreon il collegamento avviene tramite email."
+          "hint": "Incollala nel messaggio di un pagamento PayPal, Ko-fi o Buy me a coffee e verrà collegato al tuo account. Su Patreon il collegamento avviene tramite email.",
+          "listed": "Sei tu a decidere se il tuo nome utente compare nella pagina dei sostenitori:",
+          "listedLink": "Impostazioni privacy"
         }
       },
       "filters": {

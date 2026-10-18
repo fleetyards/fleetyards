@@ -184,6 +184,16 @@ const leaveForLogin = () => {
         <p class="support-claim-key__hint">
           {{ t("labels.account.supporterClaimKey.hint") }}
         </p>
+
+        <p class="support-claim-key__hint" data-test="supporter-listed-hint">
+          {{ t("labels.account.supporterClaimKey.listed") }}
+          <router-link
+            :to="{ name: 'settings-privacy' }"
+            @click="comlink.emit('close-modal')"
+          >
+            {{ t("labels.account.supporterClaimKey.listedLink") }}
+          </router-link>
+        </p>
       </template>
 
       <router-link

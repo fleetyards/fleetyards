@@ -2434,7 +2434,9 @@
           "signedOut": "Connectez-vous pour obtenir votre clé de soutien personnelle.",
           "patreonNote": "associé via votre e-mail, aucune clé nécessaire",
           "label": "Votre clé",
-          "hint": "Collez-la dans le message d'un paiement PayPal, Ko-fi ou Buy me a coffee et il sera associé à votre compte. Sur Patreon, l'association se fait par e-mail."
+          "hint": "Collez-la dans le message d'un paiement PayPal, Ko-fi ou Buy me a coffee et il sera associé à votre compte. Sur Patreon, l'association se fait par e-mail.",
+          "listed": "C'est vous qui décidez si votre nom d'utilisateur apparaît sur la page des soutiens :",
+          "listedLink": "Paramètres de confidentialité"
         }
       },
       "filters": {
