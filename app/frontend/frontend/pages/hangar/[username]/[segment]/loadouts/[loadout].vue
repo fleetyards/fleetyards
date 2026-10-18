@@ -6,6 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import AsyncData from "@/shared/components/AsyncData.vue";
+import Empty from "@/shared/components/Empty/index.vue";
+import Loader from "@/shared/components/Loader/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
@@ -75,9 +77,13 @@ const { data: ownLoadout, ...ownLoadoutStatus } = useVehicleLoadout(
   { query: { enabled: () => isOwner.value && !!ownVehicle.value } },
 );
 
-const { data: ownSlots } = useVehicleLoadoutSlots(ownVehicleId, loadoutId, {
-  query: { enabled: () => isOwner.value && !!ownVehicle.value },
-});
+const { data: ownSlots, isLoading: ownSlotsLoading } = useVehicleLoadoutSlots(
+  ownVehicleId,
+  loadoutId,
+  {
+    query: { enabled: () => isOwner.value && !!ownVehicle.value },
+  },
+);
 
 const { data: publicVehicle, ...publicVehicleStatus } = usePublicHangarVehicle(
   username,
@@ -96,13 +102,10 @@ const { data: publicLoadout, ...publicLoadoutStatus } = usePublicVehicleLoadout(
   },
 );
 
-const { data: publicSlots } = usePublicVehicleLoadoutSlots(
-  username,
-  identifier,
-  loadoutId,
-  publicParams,
-  { query: { enabled: () => !isOwner.value } },
-);
+const { data: publicSlots, isLoading: publicSlotsLoading } =
+  usePublicVehicleLoadoutSlots(username, identifier, loadoutId, publicParams, {
+    query: { enabled: () => !isOwner.value },
+  });
 
 const vehicle = computed(() =>
   isOwner.value ? ownVehicle.value : publicVehicle.value,
@@ -121,15 +124,32 @@ const loadoutStatus = computed(() =>
 );
 
 // The full model, as the ship page has it, for the hardpoints' figures.
-const { data: model } = useModel(() => vehicle.value?.model.slug ?? "", {
-  query: { enabled: () => !!vehicle.value },
-});
+const { data: model, isLoading: modelLoading } = useModel(
+  () => vehicle.value?.model.slug ?? "",
+  {
+    query: { enabled: () => !!vehicle.value },
+  },
+);
 
-const { hardpoints, changed, changesFromStock } = useLoadoutFitting({
+const {
+  hardpoints,
+  changed,
+  changesFromStock,
+  loading: fittingLoading,
+} = useLoadoutFitting({
   model,
   loadoutSlots: () => (isOwner.value ? ownSlots.value : publicSlots.value),
   items: () => loadout.value?.items,
 });
+
+// Until the slot tree and the hull's slots and hardpoints are all in, a
+// fitting would read as the stock ship.
+const fittingPending = computed(
+  () =>
+    modelLoading.value ||
+    fittingLoading.value ||
+    (isOwner.value ? ownSlotsLoading.value : publicSlotsLoading.value),
+);
 
 const vehicleName = computed(
   () => vehicle.value?.name || vehicle.value?.model.name || "",
@@ -231,8 +251,10 @@ const edit = () => {
               </Btn>
             </Teleport>
 
+            <Loader v-if="fittingPending" :loading="true" relative />
+
             <LoadoutChanges
-              v-if="changesFromStock.length"
+              v-else-if="changesFromStock.length"
               :title="t('labels.vehicleLoadout.againstStock')"
               :figures="changesFromStock"
               test-id="vehicle-loadout-page-changes"
@@ -240,11 +262,22 @@ const edit = () => {
             />
 
             <Hardpoints
-              v-if="model && hardpoints"
+              v-if="!fittingPending && model && hardpoints"
               :model="model"
               :fitting="hardpoints"
               :changed="changed"
             />
+
+            <Empty
+              v-else-if="!fittingPending"
+              variant="box"
+              hide-actions
+              data-test="vehicle-loadout-page-empty"
+            >
+              <template #info>
+                <p>{{ t("labels.vehicleLoadout.noSlots") }}</p>
+              </template>
+            </Empty>
           </template>
         </template>
       </AsyncData>

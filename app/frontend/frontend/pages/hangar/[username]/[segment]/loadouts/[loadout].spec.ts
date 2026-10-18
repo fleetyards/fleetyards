@@ -3,45 +3,52 @@ import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import { createRouter, createWebHashHistory } from "vue-router";
 import Component from "./[loadout].vue";
 
-const { enabled, query, vehicle, loadout } = vi.hoisted(() => {
-  const enabled: Record<string, boolean> = {};
+const { enabled, query, vehicle, loadout, pending, hullHardpoints } =
+  vi.hoisted(() => {
+    const enabled: Record<string, boolean> = {};
+    // Queries still loading, by name, read when the page sets them up.
+    const pending: Record<string, boolean> = {};
 
-  const query = (name: string, data: unknown) =>
-    vi.fn((...args: unknown[]) => {
-      const options = args.at(-1) as
-        { query?: { enabled?: unknown } } | undefined;
-      const flag = options?.query?.enabled;
-      enabled[name] =
-        typeof flag === "function" ? Boolean(flag()) : Boolean(toValue(flag));
+    const query = (name: string, data: unknown | (() => unknown)) =>
+      vi.fn((...args: unknown[]) => {
+        const options = args.at(-1) as
+          { query?: { enabled?: unknown } } | undefined;
+        const flag = options?.query?.enabled;
+        enabled[name] =
+          typeof flag === "function" ? Boolean(flag()) : Boolean(toValue(flag));
 
-      return {
-        data: ref(data),
-        isPending: ref(false),
-        isLoading: ref(false),
-        isFetching: ref(false),
-        isRefetching: ref(false),
-        isError: ref(false),
-        fetchStatus: ref("idle"),
-        error: ref(null),
-      };
-    });
+        return {
+          data: ref(typeof data === "function" ? data() : data),
+          isPending: ref(false),
+          isLoading: ref(!!pending[name]),
+          isFetching: ref(false),
+          isRefetching: ref(false),
+          isError: ref(false),
+          fetchStatus: ref("idle"),
+          error: ref(null),
+        };
+      });
 
-  const vehicle = {
-    id: "vehicle-1",
-    name: "Rust Bucket",
-    serial: "IC-021",
-    model: { slug: "scorpius", name: "Scorpius" },
-  };
+    const vehicle = {
+      id: "vehicle-1",
+      name: "Rust Bucket",
+      serial: "IC-021",
+      model: { slug: "scorpius", name: "Scorpius" },
+    };
 
-  const loadout = {
-    id: "l1",
-    name: "Brawler",
-    kind: "fleetyards",
-    items: [],
-  };
+    const loadout = {
+      id: "l1",
+      name: "Brawler",
+      kind: "fleetyards",
+      items: [],
+    };
 
-  return { enabled, query, vehicle, loadout };
-});
+    const hullHardpoints = {
+      value: [{ id: "hp-1", name: "hardpoint_power_plant" }] as unknown[],
+    };
+
+    return { enabled, query, vehicle, loadout, pending, hullHardpoints };
+  });
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
@@ -53,9 +60,7 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   usePublicVehicleLoadoutSlots: query("publicSlots", []),
   useModel: query("model", { slug: "scorpius", metrics: {}, speeds: {} }),
   useModelLoadoutSlots: query("hullSlots", []),
-  useModelHardpoints: query("modelHardpoints", [
-    { id: "hp-1", name: "hardpoint_power_plant" },
-  ]),
+  useModelHardpoints: query("modelHardpoints", () => hullHardpoints.value),
   useModelModules: query("modules", { items: [] }),
 }));
 
@@ -141,6 +146,33 @@ describe("HangarVehicleLoadoutPage", () => {
       expect.objectContaining({ name: "hardpoint_power_plant" }),
     ]);
 
+    wrapper.unmount();
+  });
+
+  it("holds the hardpoints back until the loadout's slots are in", async () => {
+    pending.publicSlots = true;
+
+    const wrapper = await mount();
+
+    expect(wrapper.findComponent({ name: "Hardpoints" }).exists()).toBe(false);
+    expect(
+      wrapper.find("[data-test='vehicle-loadout-page-empty']").exists(),
+    ).toBe(false);
+
+    pending.publicSlots = false;
+    wrapper.unmount();
+  });
+
+  it("says when the ship has no hardpoints to fit", async () => {
+    hullHardpoints.value = [];
+
+    const wrapper = await mount();
+
+    expect(
+      wrapper.find("[data-test='vehicle-loadout-page-empty']").exists(),
+    ).toBe(true);
+
+    hullHardpoints.value = [{ id: "hp-1", name: "hardpoint_power_plant" }];
     wrapper.unmount();
   });
 
