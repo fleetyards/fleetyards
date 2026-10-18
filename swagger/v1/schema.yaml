@@ -12354,6 +12354,33 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/hangar/sync-rsi-hangar/last-read":
+    get:
+      summary: Sync RSI Hangar Last Read
+      tags:
+      - Hangar
+      operationId: syncRsiHangarLastRead
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarSyncLastRead"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/hangar/sync-rsi-hangar/status":
     get:
       summary: Sync RSI Hangar Status
@@ -31448,6 +31475,52 @@ components:
       - groups
       - metrics
       title: HangarStatsPublic
+    HangarSyncLastRead:
+      type: object
+      properties:
+        finishedAt:
+          type: string
+          format: date-time
+          nullable: true
+        pages:
+          type: integer
+          nullable: true
+        total:
+          type: integer
+        counts:
+          type: object
+          properties:
+            ship:
+              type: integer
+            component:
+              type: integer
+            upgrade:
+              type: integer
+            skin:
+              type: integer
+            flair:
+              type: integer
+            equipment:
+              type: integer
+            ccu:
+              type: integer
+            extra:
+              type: integer
+          additionalProperties: false
+          required:
+          - ship
+          - component
+          - upgrade
+          - skin
+          - flair
+          - equipment
+          - ccu
+          - extra
+      additionalProperties: false
+      required:
+      - total
+      - counts
+      title: HangarSyncLastRead
     HangarSyncOutcomeEnum:
       type: string
       enum:

@@ -178,6 +178,25 @@ module Api
         render json: {active:, status:, result:}
       end
 
+      # What the last finished sync read from RSI, for a new run to be measured
+      # against. A user who never finished one gets a total of 0.
+      def sync_rsi_hangar_last_read
+        authorize! to: :update?, with: ::HangarPolicy
+
+        last_import = Imports::HangarSync.where(user_id: current_resource_owner.id, aasm_state: "finished")
+          .order(finished_at: :desc)
+          .first
+
+        summary = last_import&.read_summary || {
+          finished_at: nil,
+          pages: nil,
+          total: 0,
+          counts: Imports::HangarSync::READ_KINDS.index_with { 0 }
+        }
+
+        render json: summary.deep_transform_keys { |key| key.to_s.camelize(:lower) }
+      end
+
       def items
         authorize! to: :show?, with: ::HangarPolicy
 
