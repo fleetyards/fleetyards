@@ -30,12 +30,11 @@ import {
   COMPONENT_TABS,
   loadoutValues,
   slotName,
-  useComponentFitting,
 } from "@/frontend/composables/useComponentFitting";
 import { useLoadoutDiff } from "@/frontend/composables/useLoadoutDiff";
+import { useLoadoutFitting } from "@/frontend/composables/useLoadoutFitting";
 import {
   HardpointCategoryEnum,
-  HardpointSourceEnum,
   type LoadoutSlot,
   type ModelModule,
   ModelProductionStatusEnum,
@@ -43,9 +42,6 @@ import {
   type VehicleLoadout,
   type VehicleLoadoutMinimal,
   type VehiclePublic,
-  useModelHardpoints,
-  useModelLoadoutSlots,
-  useModelModules,
   useVehicleLoadoutSlots,
 } from "@/services/fyApi";
 
@@ -73,10 +69,6 @@ const { moduleRows, moduleCargo } = useLoadoutModules(
   () => model.value?.slug,
   () => props.loadout,
 );
-
-const fitting = useComponentFitting();
-
-const { componentFigure } = fitting;
 
 // The parts swapped in or taken out, read off the loadout's slot tree. Only the owner can
 // read that tree, so only the owner sees them.
@@ -119,31 +111,16 @@ const flightReady = computed(
     model.value?.productionStatus === ModelProductionStatusEnum.FLIGHT_READY,
 );
 
-const { data: hullSlots } = useModelLoadoutSlots(
-  () => model.value?.slug ?? "",
-  { query: { enabled: () => props.editable && flightReady.value } },
+const { fitting, hullSlots, modelHardpoints, modelModules } = useLoadoutFitting(
+  {
+    modelSlug: () => model.value?.slug,
+    loadoutSlots,
+    items: () => props.loadout?.items,
+    enabled: () => props.editable && flightReady.value,
+  },
 );
 
-const { data: modelHardpoints } = useModelHardpoints(
-  () => model.value?.slug ?? "",
-  { source: HardpointSourceEnum.GAME_FILES },
-  { query: { enabled: () => props.editable && flightReady.value } },
-);
-
-// Every module the model takes, the stock ones among them: the stock ship is
-// measured with those, and a module the loadout swapped out still has its
-// slots known.
-const { data: allModules } = useModelModules(
-  () => model.value?.slug ?? "",
-  undefined,
-  { query: { enabled: () => !!model.value?.slug } },
-);
-
-const modelModules = computed(() => allModules.value?.items ?? []);
-
-watch(hullSlots, (slots) => fitting.learn(slots), { immediate: true });
-watch(loadoutSlots, (slots) => fitting.learn(slots), { immediate: true });
-watch(modelModules, (list) => fitting.learnModules(list), { immediate: true });
+const { componentFigure } = fitting;
 
 const loadoutDiff = useLoadoutDiff(fitting);
 
