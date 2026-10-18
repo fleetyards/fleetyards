@@ -397,6 +397,11 @@
         "profile": "个人资料设置",
         "hangar": "机库设置",
         "privacy": "隐私设置",
+        "privacySections": {
+          "analytics": "使用情况分析",
+          "onlineStatus": "在线状态",
+          "supporters": "支持者页面"
+        },
         "features": "功能标志",
         "connections": "连接",
         "oauthApplications": "OAuth 应用",
