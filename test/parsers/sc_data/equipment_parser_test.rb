@@ -79,24 +79,75 @@ module ScData
         assert_equal %w[clothing eyewear], parsed.fetch("r6p_glasses_01_01_01").values_at("equipment_type", "slot")
       end
 
-      test "reads the flares and tool cases among the props, and nothing else there" do
+      test "reads the flares and tool cases among the props by their key" do
         write_equipment("carryable_1h_cu_glowstick_blue", name: "@item_Nameun_portable_light_1_a_cyan",
           path: "entities/scitem/flair/carryables", type: "WeaponPersonal", description: "@item_Desc_flare")
         write_equipment("carryable_2h_fl_container_anim_medgun_1_a", name: "@item_Name_medic_kit",
           path: "entities/scitem/carryables/2h", type: "Misc")
-        write_equipment("carryable_2h_fl_container_anim_coin_case_1_a", name: "@item_Name_coin_case",
-          path: "entities/scitem/carryables/2h", type: "Misc")
         @parser.translations = {
           "item_Nameun_portable_light_1_a_cyan" => "Cyan QuikFlarePro",
           "item_Desc_flare" => "Item Type: Grenade\\n\\nGlows longer than regular flares.",
-          "item_Name_medic_kit" => "Field Medic Kit",
-          "item_Name_coin_case" => "Chairman's Club Coin Case"
+          "item_Name_medic_kit" => "Field Medic Kit"
         }
 
         assert_equal %w[tool flare], parsed.fetch("carryable_1h_cu_glowstick_blue").values_at("equipment_type", "item_type")
         assert_equal %w[tool tool_case],
           parsed.fetch("carryable_2h_fl_container_anim_medgun_1_a").values_at("equipment_type", "item_type")
-        assert_not parsed.key?("carryable_2h_fl_container_anim_coin_case_1_a")
+      end
+
+      test "files the mining gadgets and the flair by their folder" do
+        write_equipment("mining_gadget_thcn_boremax", name: "@item_Name_boremax",
+          path: "entities/scitem/weapons/devices", type: "Gadget", description: "@item_Desc_boremax")
+        write_equipment("flair_model_freelancer", name: "@item_Name_freelancer_model",
+          path: "entities/scitem/flair/models", type: "Flair_Surface")
+        @parser.translations = {
+          "item_Name_boremax" => "BoreMax",
+          "item_Desc_boremax" => "Manufacturer: Thermyte Concern\\nItem Type: Mining Gadget\\n\\nKeeps clusters together.",
+          "item_Name_freelancer_model" => "Freelancer Model"
+        }
+
+        assert_equal %w[mining_gadget mining_gadget],
+          parsed.fetch("mining_gadget_thcn_boremax").values_at("equipment_type", "item_type")
+        assert_equal ["flair", nil], parsed.fetch("flair_model_freelancer").values_at("equipment_type", "item_type")
+      end
+
+      test "types each carryable by what it is" do
+        write_carryable("food_burger_wham_01_a", "Whamburger", type: "Food", sub_type: "Junk")
+        write_carryable("carryable_tbo_inventorycontainer_8scu", "Stor*All 8 SCU Self-Storage Container",
+          type: "InventoryContainer", sub_type: "Cargo", folder: "tractorbeamonly",
+          attach_extra: %(<inventoryOccupancyVolume><SStandardCargoUnit standardCargoUnits="8" /></inventoryOccupancyVolume>))
+        write_carryable("carryable_1h_cy_flair_poster_ht", "Hull C Poster", sub_type: "Utility")
+        write_carryable("bltr_consumable_hackingchip_01", "Tigersclaw", type: "FPS_Consumable", sub_type: "Hacking")
+        write_carryable("ori_game_chess_1_king_a", "Origin White King", type: "Gadget")
+
+        assert_equal "sustenance", parsed.fetch("food_burger_wham_01_a")["equipment_type"]
+        assert_equal ["container", 8.0],
+          parsed.fetch("carryable_tbo_inventorycontainer_8scu").values_at("equipment_type", "volume")
+        assert_equal "flair", parsed.fetch("carryable_1h_cy_flair_poster_ht")["equipment_type"]
+        assert_equal %w[hacking_tool cryptokey],
+          parsed.fetch("bltr_consumable_hackingchip_01").values_at("equipment_type", "item_type")
+        assert_equal ["carryable", nil], parsed.fetch("ori_game_chess_1_king_a").values_at("equipment_type", "item_type")
+      end
+
+      # Harvestables, SLAM and the commodity crates carry a commodity's name,
+      # and the commodities parser loads them from the same records.
+      test "leaves out the carryables that are cargo, commodities or mission props" do
+        write_carryable("carryable_tbo_fl_16scu_commodity_processedgoods_shipammunition", "Ship Ammunition",
+          type: "Cargo", sub_type: "Cargo", folder: "tractorbeamonly")
+        write_carryable("harvestable_heart_of_the_woods", "Heart of the Woods", sub_type: "Harvestable",
+          components_extra: %(<SCItemPurchasableParams displayName="@items_commodities_heartofthewoods" />))
+        write_carryable("carryable_2h_fl_05x05x05_missionitem_pizzabox_1_a", "Pizza Box")
+        write_carryable("carryable_1h_sq_datapad_fluff_fffinale", "Datapad")
+
+        assert_equal ["hdh_boots_01_01_13"], parsed.keys
+      end
+
+      test "shows one of the same carried prop filed under two keys" do
+        write_carryable("plushy_orison_whale_1_a", "Finley the Stormwal Plushie")
+        write_carryable("carryable_1h_cy_toy_plushy_orison_whale_1_a", "Finley the Stormwal Plushie", sub_type: "Personal")
+
+        assert_equal [false, true],
+          parsed.values_at("carryable_1h_cy_toy_plushy_orison_whale_1_a", "plushy_orison_whale_1_a").pluck("hidden")
       end
 
       # Memoized: a second `all` on the same parser writes over a folder
@@ -111,7 +162,17 @@ module ScData
         end
       end
 
-      private def write_equipment(key, name:, path: SOURCE_PATH, type: "Char_Clothing_Feet", description: "@LOC_EMPTY")
+      private def write_carryable(key, display_name, type: "Misc", sub_type: "UNDEFINED", folder: "1h", **)
+        write_equipment(key, name: "@item_Name_#{key}", path: "entities/scitem/carryables/#{folder}", type:, sub_type:, **)
+
+        @parser.translations = (@parser.translations || {}).merge(
+          "item_Name_hdh_boots_01_01_13" => "Novian \"Nighthunter\" Boots",
+          "item_Name_#{key}" => display_name
+        )
+      end
+
+      private def write_equipment(key, name:, path: SOURCE_PATH, type: "Char_Clothing_Feet", sub_type: "UNDEFINED",
+        description: "@LOC_EMPTY", attach_extra: "", components_extra: "")
         folder = "#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/#{path}"
 
         FileUtils.mkdir_p(folder)
@@ -120,10 +181,12 @@ module ScData
           <EntityClassDefinition.#{key} __ref="00000000-0000-0000-0000-00000000beef">
             <Components>
               <SAttachableComponentParams>
-                <AttachDef Type="#{type}" SubType="UNDEFINED" Size="1" Grade="1" Tags="#{key}">
+                <AttachDef Type="#{type}" SubType="#{sub_type}" Size="1" Grade="1" Tags="#{key}">
                   <Localization Name="#{name}" ShortName="@LOC_EMPTY" Description="#{description}" />
+                  #{attach_extra}
                 </AttachDef>
               </SAttachableComponentParams>
+              #{components_extra}
             </Components>
           </EntityClassDefinition.#{key}>
         XML

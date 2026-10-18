@@ -26,7 +26,7 @@ module ScData
       test "every parsed item carries a family the model knows" do
         assert_empty parsed.values.reject { |item| item[:equipment_type].present? }.map { |item| item[:key] }
 
-        assert_equal %w[armor clothing hacking_tool medical tool undersuit weapon weapon_attachment],
+        assert_equal Equipment::EQUIPMENT_TYPES.sort,
           parsed.values.filter_map { |item| item[:equipment_type] }.uniq.sort
       end
 
@@ -38,7 +38,7 @@ module ScData
 
         assert_equal %w[hacking_tool medical],
           consumables.filter_map { |item| item[:equipment_type] }.uniq.sort
-        assert_equal %w[data_drive keycard medical_consumable],
+        assert_equal %w[cryptokey data_drive keycard medical_consumable],
           consumables.filter_map { |item| item[:item_type] }.uniq.sort
       end
 
@@ -52,6 +52,23 @@ module ScData
           drives.map { |item| item[:name] }.sort
         assert_equal ["data_drive"], drives.map { |item| item[:item_type] }.uniq
         assert_equal ["hacking_tool"], drives.map { |item| item[:equipment_type] }.uniq
+      end
+
+      test "the six mining gadgets are filed as mining gadgets" do
+        gadgets = parsed.values.select { |item| item[:equipment_type] == "mining_gadget" }
+
+        assert_equal %w[BoreMax Okunis OptiMax Sabir Stalwart Waveshift], gadgets.map { |item| item[:name] }.sort
+      end
+
+      # The carryables folders hold the harvestables and SLAM too, which the
+      # commodities parser loads from the same records. Only the commodities a
+      # player holds in hand can collide -- an empty food tin is not the metal.
+      test "no carried prop is also a commodity" do
+        commodity_names = real_tree_loader(::ScData::Loader::CommoditiesLoader).load_items("commodities")
+          .select { |commodity| commodity[:counted] || commodity[:consumable] }.pluck(:name)
+        carried = parsed.values.select { |item| %w[carryable container sustenance].include?(item[:equipment_type]) }
+
+        assert_empty carried.map { |item| item[:name] } & commodity_names
       end
 
       test "the two clothing torso layers land in different slots" do
