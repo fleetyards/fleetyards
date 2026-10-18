@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { groupIntoStacks } from "@/frontend/components/Models/Hardpoints/stacks";
+import { partContents } from "@/frontend/components/Models/Hardpoints/contents";
 import HardpointItem from "@/frontend/components/Models/Hardpoints/Item/index.vue";
 // eslint-disable-next-line import/no-self-import
 import HardpointBaseItem from "@/frontend/components/Models/Hardpoints/BaseItem/index.vue";
@@ -128,27 +129,7 @@ const inlineStats = computed(() => {
   return typeof statLimit === "number" ? stats.slice(0, statLimit) : stats;
 });
 
-// Cosmetic geometry (turret shells, weapon shrouds, wingtip covers) sits on
-// child ports as nameless `Misc`/`AttachedPart` items that stay uncategorised —
-// they'd render as bare "TBD" rows, unlike a genuinely empty slot, which keeps
-// its category.
-const isCosmetic = (hp: Hardpoint) =>
-  hp.category === HardpointCategoryEnum.UNKNOWN && !hp.component?.name;
-
-const loadout = computed(() => {
-  if (hardpoint.value.hardpoints?.length) {
-    return hardpoint.value.hardpoints.filter((hp) => !isCosmetic(hp));
-  }
-
-  if (
-    hardpoint.value.component?.hardpoints?.length &&
-    hardpoint.value.component.hardpoints[0].component
-  ) {
-    return hardpoint.value.component.hardpoints.filter((hp) => !isCosmetic(hp));
-  }
-
-  return [];
-});
+const loadout = computed(() => partContents(hardpoint.value));
 
 const groupedLoadout = computed(() => {
   return groupIntoStacks(loadout.value);
