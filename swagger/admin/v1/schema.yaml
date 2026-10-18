@@ -13329,6 +13329,8 @@ components:
           "$ref": "#/components/schemas/ThrusterClassEnum"
         fuelBurnRatePer10KNewton:
           type: number
+        fuelBurnScuPer10KNewton:
+          type: number
         vtolOnly:
           type: boolean
         gimbal:
