@@ -10,7 +10,11 @@ import type { LoadoutSocketSlot } from "@/frontend/components/Loadout/Socket/typ
 import { useForm } from "vee-validate";
 import { useQueryClient } from "@tanstack/vue-query";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
+import {
+  BtnSizesEnum,
+  BtnTypesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import Loader from "@/shared/components/Loader/index.vue";
@@ -20,6 +24,7 @@ import {
   AlertVariantsEnum,
 } from "@/shared/components/base/Alert/types";
 import { useLoadoutProblems } from "@/frontend/composables/useLoadoutProblems";
+import { useLoadoutPlanners } from "@/frontend/composables/useLoadoutPlanners";
 import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
@@ -103,6 +108,9 @@ type LoadoutValues = {
   // which the change detection leaves out.
   loadoutPublic: boolean;
   loadoutActive: boolean;
+  // A build planned on another site, which a new loadout can be instead of a
+  // fitting of its own.
+  linkUrl: string;
   fittedModules: Record<string, string>;
   // Only parts that differ from the slot's stock one: a slot left alone keeps
   // the part it came with.
@@ -153,6 +161,7 @@ const savedValues = (): LoadoutValues => {
       editedLoadout.value?.public ??
       (!!props.vehicle.public && !props.vehicle.activeLoadout),
     loadoutActive: editedLoadout.value?.active ?? !props.vehicle.activeLoadout,
+    linkUrl: "",
     fittedModules: modules,
     fittedComponents: components,
   };
@@ -173,7 +182,7 @@ const INSTANT_FIELDS: (keyof LoadoutValues)[] = [
 
 const changed = computed(() =>
   (Object.keys(savedValues()) as (keyof LoadoutValues)[])
-    .filter((field) => !INSTANT_FIELDS.includes(field))
+    .filter((field) => !INSTANT_FIELDS.includes(field) && field !== "linkUrl")
     .some((field) => isFieldDirty(field)),
 );
 
@@ -200,6 +209,18 @@ const [fittedComponents] = defineField("fittedComponents");
 const [loadoutPublic] = defineField("loadoutPublic");
 
 const [loadoutActive] = defineField("loadoutActive");
+
+const [linkUrl] = defineField("linkUrl");
+
+// A new loadout can be a link to a build planned elsewhere instead of a
+// fitting: the footer switches the modal to the link alone and back.
+const linkMode = ref(false);
+
+const linking = computed(() => !editedLoadout.value && linkMode.value);
+
+const linkMissing = computed(() => linking.value && !linkUrl.value?.trim());
+
+const { erkulUrl, spviewerUrl } = useLoadoutPlanners(() => props.vehicle.model);
 
 const loadoutProblems = useLoadoutProblems(
   () => props.vehicle.id,
@@ -980,6 +1001,42 @@ const createdLoadout = ref<VehicleLoadout>();
  * only when nothing else is: replacing an active build stays a choice made on
  * the loadouts page.
  */
+// A new loadout that links a build: no fitting, the switches as picked.
+const saveLink = async (values: LoadoutValues) => {
+  saving.value = true;
+
+  try {
+    createdLoadout.value ??= await createVehicleLoadout(props.vehicle.id, {
+      kind: VehicleLoadoutKindEnum.LINK,
+      name: values.loadoutName.trim(),
+      url: values.linkUrl.trim(),
+      public: values.loadoutPublic,
+    });
+
+    if (values.loadoutActive) {
+      await activateVehicleLoadout(props.vehicle.id, createdLoadout.value.id);
+    }
+
+    await Promise.all([
+      invalidateHangarQueries(),
+      invalidateVehiclePage(props.vehicle),
+      queryClient.invalidateQueries({
+        queryKey: getVehicleLoadoutsQueryKey(props.vehicle.id),
+      }),
+    ]);
+
+    comlink.emit("close-modal");
+  } catch (error) {
+    displayAlert({
+      text: [t("messages.vehicleLoadout.failure"), firstErrorMessageFrom(error)]
+        .filter(Boolean)
+        .join(": "),
+    });
+  } finally {
+    saving.value = false;
+  }
+};
+
 const save = async (values: LoadoutValues, asNew: boolean) => {
   if (
     !props.editable ||
@@ -987,6 +1044,11 @@ const save = async (values: LoadoutValues, asNew: boolean) => {
     loadoutPending.value ||
     !(asNew ? changed.value : savable.value)
   ) {
+    return;
+  }
+
+  if (!asNew && linking.value) {
+    if (!linkMissing.value) await saveLink(values);
     return;
   }
 
@@ -1108,7 +1170,11 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
         data-test="vehicle-loadout-loading"
       />
 
-      <aside class="vehicle-loadout__ship" data-test="vehicle-loadout-ship">
+      <aside
+        v-show="!linking"
+        class="vehicle-loadout__ship"
+        data-test="vehicle-loadout-ship"
+      >
         <p class="vehicle-loadout__model">
           <!-- eslint-disable-next-line vue/no-v-html -->
           <span v-html="vehicle.model.manufacturer?.name" />
@@ -1176,6 +1242,41 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
           <SavedIndicator v-if="editedLoadout" ref="activeSaved" />
         </div>
 
+        <div
+          v-if="editable && flightReady && linking"
+          class="vehicle-loadout__link"
+          data-test="vehicle-loadout-link"
+          @keydown.enter.prevent
+        >
+          <FormInput
+            name="linkUrl"
+            :label="t('labels.vehicleLoadout.linkBuild')"
+            :placeholder="t('labels.loadout.urlPlaceholder')"
+            class="vehicle-loadout__link-url"
+            data-test="vehicle-loadout-link-url"
+          />
+          <div v-if="erkulUrl || spviewerUrl" class="vehicle-loadout__planners">
+            <Btn
+              v-if="erkulUrl"
+              :href="erkulUrl"
+              :size="BtnSizesEnum.SM"
+              class="erkul-link"
+            >
+              <i />
+              {{ t("labels.hardpoints.erkul") }}
+            </Btn>
+            <Btn
+              v-if="spviewerUrl"
+              :href="spviewerUrl"
+              :size="BtnSizesEnum.SM"
+              class="spviewer-link"
+            >
+              <i />
+              {{ t("labels.hardpoints.spviewer") }}
+            </Btn>
+          </div>
+        </div>
+
         <p
           v-if="!flightReady"
           class="vehicle-loadout__hint"
@@ -1200,6 +1301,7 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
         </Alert>
 
         <FormTabs
+          v-show="!linking"
           :default-tab="tab"
           @update:active-tab="(id) => (pickedTab = id)"
           :sync-url="false"
@@ -1396,10 +1498,28 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
 
     <template v-if="editable" #footer>
       <Btn
+        v-if="flightReady && !editedLoadout"
+        :variant="BtnVariantsEnum.GHOST"
+        class="vehicle-loadout__mode"
+        data-test="vehicle-loadout-mode"
+        @click="linkMode = !linkMode"
+      >
+        <i
+          :class="
+            linkMode ? 'fa-duotone fa-screwdriver-wrench' : 'fa-duotone fa-link'
+          "
+        />
+        {{
+          linkMode
+            ? t("actions.vehicleLoadout.createOnFleetyards")
+            : t("actions.vehicleLoadout.linkInstead")
+        }}
+      </Btn>
+      <Btn
         :type="BtnTypesEnum.SUBMIT"
         :form="`vehicle-loadout-${vehicle.id}`"
         :loading="saving"
-        :disabled="!flightReady || loadoutPending || !savable"
+        :disabled="!flightReady || loadoutPending || !savable || linkMissing"
         data-test="vehicle-loadout-save"
       >
         {{ t("actions.vehicleLoadout.saveLoadout") }}

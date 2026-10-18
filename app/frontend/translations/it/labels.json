@@ -4402,6 +4402,7 @@
         "unavailableModule": "Modulo non più disponibile",
         "noFigureChange": "Non cambia nessun valore della nave",
         "loadoutName": "Nome della configurazione",
+        "linkBuild": "Link a una build pianificata altrove",
         "stock": "Di serie",
         "notFlightReady": "Le configurazioni sono disponibili solo per le navi pronte al volo",
         "slots": {

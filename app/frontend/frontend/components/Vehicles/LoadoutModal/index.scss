@@ -245,6 +245,33 @@
   margin: 0;
 }
 
+// A new loadout can link a build planned elsewhere instead of fitting one: the
+// address, and the sites to plan it on.
+.vehicle-loadout__link {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 8px 16px;
+  margin-bottom: 16px;
+}
+
+.vehicle-loadout__link-url {
+  flex: 1 1 260px;
+  max-width: 480px;
+  margin: 0;
+}
+
+.vehicle-loadout__planners {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+// Apart from the saves, at the footer's other end.
+.vehicle-loadout__mode {
+  margin-inline-end: auto;
+}
+
 .vehicle-loadout__refused {
   margin: 4px 0 0;
   padding-left: 18px;

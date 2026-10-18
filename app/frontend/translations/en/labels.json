@@ -4416,6 +4416,7 @@
         "unavailableModule": "Module no longer available",
         "noFigureChange": "Changes none of the ship's figures",
         "loadoutName": "Loadout name",
+        "linkBuild": "Link to a build planned elsewhere",
         "stock": "Stock",
         "notFlightReady": "Loadouts are only available for flight-ready ships",
         "slots": {

@@ -115,4 +115,15 @@ describe("HangarVehicleLoadoutsPage", () => {
         .attributes("disabled"),
     ).toBeUndefined();
   });
+
+  it("starts every new loadout in the editor, a linked build included", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { vehicle },
+    });
+
+    expect(wrapper.find("[data-test='loadouts-add']").exists()).toBe(false);
+    expect(wrapper.find("[data-test='loadouts-new-fleetyards']").exists()).toBe(
+      true,
+    );
+  });
 });

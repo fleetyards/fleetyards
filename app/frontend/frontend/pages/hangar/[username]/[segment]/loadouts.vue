@@ -19,6 +19,7 @@ import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
 import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useLoadoutEditor } from "@/frontend/composables/useLoadoutEditor";
+import { useLoadoutPlanners } from "@/frontend/composables/useLoadoutPlanners";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 import { VehicleLoadoutTabsEnum } from "@/frontend/components/Vehicles/LoadoutModal/types";
 import {
@@ -47,18 +48,8 @@ const props = defineProps<Props>();
 const { t } = useI18n();
 const queryClient = useQueryClient();
 
-const erkulShipUrl = computed(() => {
-  const identifier =
-    props.vehicle.model?.erkulIdentifier || props.vehicle.model?.scIdentifier;
-  if (!identifier) return undefined;
-  return `https://www.erkul.games/ship/${identifier}`;
-});
-
-const spviewerShipUrl = computed(() => {
-  const identifier = props.vehicle.model?.scIdentifier;
-  if (!identifier) return undefined;
-  return `https://www.spviewer.eu/performance?ship=${identifier}`;
-});
+const { erkulUrl: erkulShipUrl, spviewerUrl: spviewerShipUrl } =
+  useLoadoutPlanners(() => props.vehicle.model);
 
 const { data: loadouts, isLoading } = useVehicleLoadouts(props.vehicle.id);
 
@@ -382,7 +373,9 @@ const onToggleVisibility = async (record: VehicleLoadout) => {
         "
         class="loadouts-page__add-wrapper"
       >
+        <!-- With the editor, a link is one of the ways a new loadout starts. -->
         <Btn
+          v-if="!editorEnabled"
           class="loadouts-page__add"
           :disabled="editableList?.creating || !flightReady"
           data-test="loadouts-add"
@@ -404,7 +397,7 @@ const onToggleVisibility = async (record: VehicleLoadout) => {
       </span>
 
       <MetricsCard
-        v-if="erkulShipUrl || spviewerShipUrl"
+        v-if="!editorEnabled && (erkulShipUrl || spviewerShipUrl)"
         :title="t('labels.vehicleOverview.planLoadout')"
         variant="slim"
       >

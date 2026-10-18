@@ -651,6 +651,74 @@ describe("VehicleLoadoutModal", () => {
     expect(activateVehicleLoadout).toHaveBeenCalledWith("v1", "new");
   });
 
+  it("switches a new loadout to a link to a build planned elsewhere, and back", async () => {
+    const wrapper = await mountModal(vehicle(["m1"]), { newLoadout: true });
+    await flushPromises();
+
+    expect(wrapper.find("[data-test='vehicle-loadout-link']").exists()).toBe(
+      false,
+    );
+
+    await wrapper.get("[data-test='vehicle-loadout-mode']").trigger("click");
+
+    expect(wrapper.get("[data-test='vehicle-loadout-ship']").isVisible()).toBe(
+      false,
+    );
+    expect(
+      wrapper.get("[data-test='vehicle-loadout-save']").attributes("disabled"),
+    ).toBeDefined();
+
+    await wrapper
+      .get("[data-test='vehicle-loadout-link-url'] input")
+      .setValue("https://www.erkul.games/loadout/abc");
+    await flushPromises();
+    await save(wrapper);
+
+    expect(createVehicleLoadout).toHaveBeenCalledWith("v1", {
+      kind: "link",
+      name: "",
+      url: "https://www.erkul.games/loadout/abc",
+      public: false,
+    });
+    expect(activateVehicleLoadout).toHaveBeenCalledWith("v1", "new");
+  });
+
+  it("goes back to the fitting from the link", async () => {
+    const wrapper = await mountModal(vehicle(["m1"]), { newLoadout: true });
+    await flushPromises();
+
+    const mode = wrapper.get("[data-test='vehicle-loadout-mode']");
+    await mode.trigger("click");
+    await mode.trigger("click");
+
+    expect(wrapper.find("[data-test='vehicle-loadout-link']").exists()).toBe(
+      false,
+    );
+    expect(wrapper.get("[data-test='vehicle-loadout-ship']").isVisible()).toBe(
+      true,
+    );
+  });
+
+  it("offers a link only for a new loadout", async () => {
+    loadouts.value = [
+      {
+        id: "l2",
+        name: "Medical run",
+        public: false,
+        kind: "fleetyards",
+        active: false,
+        updatedAt: "2026-10-01T00:00:00Z",
+        items: [],
+      },
+    ];
+    const wrapper = await mountModal(vehicle(["m1"]), { loadoutId: "l2" });
+    await flushPromises();
+
+    expect(wrapper.find("[data-test='vehicle-loadout-mode']").exists()).toBe(
+      false,
+    );
+  });
+
   it("does not save the loadout when Enter is pressed in its name", async () => {
     loadouts.value = [
       {
