@@ -167,14 +167,21 @@ const savedValues = (): LoadoutValues => {
   };
 };
 
-const { defineField, handleSubmit, resetForm, resetField, isFieldDirty } =
-  useForm<LoadoutValues>({
-    initialValues: savedValues(),
-  });
+const {
+  defineField,
+  handleSubmit,
+  resetForm,
+  resetField,
+  setFieldValue,
+  isFieldDirty,
+} = useForm<LoadoutValues>({
+  initialValues: savedValues(),
+});
 
-// Against the loadout as saved: the fitting, or its name. Undoing a pick
-// undoes the change. Visibility is saved as it is switched, so it is never a
-// change waiting on the save.
+// Against the loadout as saved: the fitting, its name, its link. Undoing a
+// pick undoes the change. A saved loadout's switches are saved as they are
+// switched, so they never wait on the save; a new one's go with its first
+// save, and count until then.
 const INSTANT_FIELDS: (keyof LoadoutValues)[] = [
   "loadoutPublic",
   "loadoutActive",
@@ -182,7 +189,7 @@ const INSTANT_FIELDS: (keyof LoadoutValues)[] = [
 
 const changed = computed(() =>
   (Object.keys(savedValues()) as (keyof LoadoutValues)[])
-    .filter((field) => !INSTANT_FIELDS.includes(field))
+    .filter((field) => !(editedLoadout.value && INSTANT_FIELDS.includes(field)))
     .some((field) => isFieldDirty(field)),
 );
 
@@ -879,9 +886,6 @@ const { displayAlert, displayConfirm } = useAppNotifications();
 const { invalidateHangarQueries, invalidateVehiclePage } =
   useVehicleMutations();
 
-// Whether the saved loadout shows in the public hangar, saved as it is
-// switched. Settled as the field's starting value either way, so it never
-// counts as a change the fitting's save is waiting on.
 // The list the loadouts tab shows, set from the answer at once rather than
 // left to the refetch the invalidation starts.
 const updateCachedLoadouts = (
@@ -898,9 +902,23 @@ const savingPublic = ref(false);
 
 const publicSaved = ref<InstanceType<typeof SavedIndicator>>();
 
+// On a new loadout Public follows Active, as the server's default does --
+// public when it becomes a public ship's default -- until it is picked.
+const publicPicked = ref(false);
+
+watch(loadoutActive, (active) => {
+  if (editedLoadout.value || publicPicked.value) return;
+
+  setFieldValue("loadoutPublic", !!props.vehicle.public && !!active);
+});
+
 const onTogglePublic = async (value: boolean) => {
   const loadout = editedLoadout.value;
-  if (!loadout || savingPublic.value) return;
+  if (!loadout) {
+    publicPicked.value = true;
+    return;
+  }
+  if (savingPublic.value) return;
 
   savingPublic.value = true;
 
@@ -1009,13 +1027,17 @@ const saveLink = async (values: LoadoutValues) => {
   const url = values.linkUrl.trim();
 
   try {
-    if (editedLoadout.value) {
-      await updateVehicleLoadout(props.vehicle.id, editedLoadout.value.id, {
+    // A retry after a failed switch-on finishes the loadout it created.
+    const target = editedLoadout.value ?? createdLoadout.value;
+
+    if (target) {
+      await updateVehicleLoadout(props.vehicle.id, target.id, {
         name,
         url,
+        ...(editedLoadout.value ? {} : { public: values.loadoutPublic }),
       });
     } else {
-      createdLoadout.value ??= await createVehicleLoadout(props.vehicle.id, {
+      createdLoadout.value = await createVehicleLoadout(props.vehicle.id, {
         kind: VehicleLoadoutKindEnum.LINK,
         name,
         url,
@@ -1514,7 +1536,7 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
 
     <template v-if="editable" #footer>
       <Btn
-        v-if="flightReady && !editedLoadout"
+        v-if="flightReady && !editedLoadout && !createdLoadout"
         :variant="BtnVariantsEnum.GHOST"
         class="vehicle-loadout__mode"
         data-test="vehicle-loadout-mode"

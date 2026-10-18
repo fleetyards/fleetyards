@@ -718,6 +718,60 @@ describe("VehicleLoadoutModal", () => {
     expect(createVehicleLoadout).not.toHaveBeenCalled();
   });
 
+  it("keeps a new loadout's switches through a refresh, and Public following Active until picked", async () => {
+    const ship = {
+      ...vehicle(["m1"], { activeLoadout: { id: "l1", kind: "fleetyards" } }),
+      public: true,
+    } as Vehicle;
+    const wrapper = await mountModal(ship, { newLoadout: true });
+    await flushPromises();
+
+    const isPublic = () =>
+      wrapper.get("[data-test='toggle-loadoutPublic']")
+        .element as HTMLInputElement;
+    const isActive = wrapper.get("[data-test='toggle-loadoutActive']");
+    expect(isPublic().checked).toBe(false);
+
+    (isActive.element as HTMLInputElement).checked = true;
+    await isActive.trigger("change");
+    await flushPromises();
+    expect(isPublic().checked).toBe(true);
+
+    await wrapper.setProps({ vehicle: { ...ship } });
+    await flushPromises();
+    expect((isActive.element as HTMLInputElement).checked).toBe(true);
+    expect(isPublic().checked).toBe(true);
+  });
+
+  it("finishes the link it created when switching it on failed", async () => {
+    activateVehicleLoadout.mockImplementationOnce(() =>
+      Promise.reject(new Error("timeout")),
+    );
+    const wrapper = await mountModal(vehicle(["m1"]), { newLoadout: true });
+    await flushPromises();
+
+    await wrapper.get("[data-test='vehicle-loadout-mode']").trigger("click");
+    const url = wrapper.get("[data-test='vehicle-loadout-link-url'] input");
+    await url.setValue("https://www.erkul.games/loadout/abc");
+    await flushPromises();
+    await save(wrapper);
+
+    expect(wrapper.find("[data-test='vehicle-loadout-mode']").exists()).toBe(
+      false,
+    );
+
+    await url.setValue("https://www.erkul.games/loadout/fixed");
+    await flushPromises();
+    await save(wrapper);
+
+    expect(createVehicleLoadout).toHaveBeenCalledTimes(1);
+    expect(updateVehicleLoadout).toHaveBeenCalledWith(
+      "v1",
+      "new",
+      expect.objectContaining({ url: "https://www.erkul.games/loadout/fixed" }),
+    );
+  });
+
   it("goes back to the fitting from the link", async () => {
     const wrapper = await mountModal(vehicle(["m1"]), { newLoadout: true });
     await flushPromises();
