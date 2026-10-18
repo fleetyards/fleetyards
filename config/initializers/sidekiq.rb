@@ -20,9 +20,11 @@ Sidekiq.configure_server do |config|
   # Every crop and representation decodes a whole render -- a 7694px colored
   # view peaks around 350 MB -- and a ship's import queues one per view. At the
   # worker's full concurrency they took it past its 3 GB limit and the kernel
-  # killed it mid-upload, so they run in a capsule of their own.
+  # killed it mid-upload, so they run in a capsule of their own. Two at a time
+  # still peaked at 2.6 GB, and the worker shares an 8 GB host with Puma, so
+  # one it is.
   config.capsule("preprocessing") do |capsule|
-    capsule.concurrency = 2
+    capsule.concurrency = 1
     capsule.queues = %w[preprocessing]
   end
 
