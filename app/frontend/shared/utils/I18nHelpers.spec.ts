@@ -97,13 +97,4 @@ describe("i18nHelpers", () => {
       "29 September 2026 at 12:00 UTC",
     );
   });
-
-  it("keeps a small fuel burn readable instead of rounding it to nothing", () => {
-    const i18n = new I18n(translations);
-    i18n.locale = "en";
-    const { toNumber } = i18nHelpers(i18n);
-
-    expect(toNumber(0.03125, "fuelRate")).toBe("0.031");
-    expect(toNumber(0.0655375, "fuelRate")).toBe("0.066");
-  });
 });

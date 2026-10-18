@@ -1538,13 +1538,22 @@ const hardpointStatsBuilder = (count?: MaybeRefOrGetter<number>) => {
           stat("thrusters.thrust", thruster.thrustCapacity, "thrust", true),
         );
       }
-      if (thruster.fuelBurnRatePer10KNewton) {
+      // What the stack draws from the fuel network at full thrust, as erkul
+      // shows it: the rate per 10 kN times the thrust.
+      if (thruster.fuelBurnScuPer10KNewton && thruster.thrustCapacity) {
+        const stackCount = Math.max(1, Math.round(Number(toValue(count) ?? 1)));
+        const microScuPerSecond =
+          (thruster.thrustCapacity / 10_000) *
+          thruster.fuelBurnScuPer10KNewton *
+          1_000_000 *
+          stackCount;
+
         result.push({
           key: "thrusters.fuelBurn",
           label: t("labels.hardpoint.thrusters.fuelBurn"),
-          value: String(
-            toNumber(thruster.fuelBurnRatePer10KNewton, "fuelRate"),
-          ),
+          value: String(toNumber(microScuPerSecond, "fuelFlow")),
+          raw: microScuPerSecond,
+          format: "fuelFlow",
         });
       }
       if (thruster.vtolOnly) {

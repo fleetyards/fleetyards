@@ -81,4 +81,31 @@ describe("HardpointThrusterItem", () => {
 
     wrapper.unmount();
   });
+
+  it("shows the fuel a stack draws at full thrust, as erkul does", async () => {
+    const main = {
+      ...thruster,
+      component: {
+        ...thruster.component,
+        typeData: {
+          thrustCapacity: 3_800_000,
+          fuelBurnScuPer10KNewton: 1.274e-6,
+        },
+      },
+    } as unknown as Hardpoint;
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        hardpoints: ["1", "2", "3", "4"].map((id) => ({ ...main, id })),
+      },
+    });
+
+    const fuel = wrapper
+      .findAll(".hardpoint-item__stat")
+      .map((row) => row.text())
+      .find((row) => row.includes("µSCU/s"));
+    expect(fuel?.replace(/\s/g, "")).toMatch(/1936[.,]5µSCU\/s/);
+
+    wrapper.unmount();
+  });
 });

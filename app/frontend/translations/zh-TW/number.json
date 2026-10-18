@@ -56,6 +56,7 @@
       "spoolTime": "%{count}s",
       "cooldownTime": "%{count}s",
       "fuelRate": "%{count}",
+      "fuelFlow": "%{count} µSCU/s",
       "aimAssistRange": "%{count} m",
       "fuel": "%{count}",
       "ships": {
