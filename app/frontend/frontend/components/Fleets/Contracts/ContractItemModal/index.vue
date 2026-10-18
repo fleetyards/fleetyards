@@ -144,6 +144,8 @@ const EQUIPMENT_CATEGORIES: InventoryCategoryEnum[] = [
   InventoryCategoryEnum.WEAPON,
   InventoryCategoryEnum.EQUIPMENT,
   InventoryCategoryEnum.AMMUNITION,
+  InventoryCategoryEnum.CONSUMABLE,
+  InventoryCategoryEnum.OTHER,
 ];
 
 const isEquipment = computed(() =>
@@ -160,7 +162,11 @@ const EQUIPMENT_TYPES_FOR_CATEGORY: Record<string, string[]> = {
     "tool",
     "medical",
     "hacking_tool",
+    "mining_gadget",
+    "container",
   ],
+  [InventoryCategoryEnum.CONSUMABLE]: ["sustenance", "medical"],
+  [InventoryCategoryEnum.OTHER]: ["carryable", "flair"],
 };
 
 // Unfiltered while crafting: the two-way select cannot say which slice of the

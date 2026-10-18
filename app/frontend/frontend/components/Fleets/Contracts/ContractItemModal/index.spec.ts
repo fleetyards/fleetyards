@@ -137,6 +137,19 @@ describe("FleetContractsItemModal", () => {
     expect(picker.props("equipmentTypes")).toEqual([]);
   });
 
+  it("offers food and drink under consumables", async () => {
+    const subject = await mount("procurement");
+
+    subject
+      .findComponent({ name: "BaseSelect" })
+      .vm.$emit("update:modelValue", "consumable");
+    await subject.vm.$nextTick();
+
+    const picker = subject.findComponent({ name: "LogisticsEquipmentPicker" });
+
+    expect(picker.props("equipmentTypes")).toEqual(["sustenance", "medical"]);
+  });
+
   // A line that was entered wrongly has to be fixable; before this the only
   // repair was deleting it and asking again.
   it("opens on an existing line with its values filled in", async () => {
