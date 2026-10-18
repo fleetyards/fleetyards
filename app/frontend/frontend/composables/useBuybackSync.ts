@@ -17,6 +17,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
   RsiPageKindEnum,
   syncRsiBuybacks,
+  hangarBuybacks,
   type BuybackSyncResult,
   type RsiBuybackItemInput,
 } from "@/services/fyApi";
@@ -46,6 +47,16 @@ const currentPage = ref(1);
 
 const buybacks = ref<RsiBuybackItemInput[]>([]);
 
+// How many buy-backs are stored, taken when a run starts: the last sync left
+// the list that way, so it is what this run reads against.
+const lastCount = ref<number>();
+
+// The list's length in pages: RSI's pager where a page shows one, otherwise an
+// estimate from the stored count and the first page's size.
+const totalPages = ref<number>();
+
+const pagesEstimated = ref(false);
+
 const result = ref<BuybackSyncResult | undefined>();
 
 // The price pass outlives the run; its counts only describe a pass this run
@@ -60,6 +71,19 @@ let options: BuybackSyncOptions = { readDetails: false };
 
 let seenIds = new Set<string>();
 
+// The first page's size, for the estimate: RSI shows the same number per page.
+let firstPageSize = 0;
+
+// Runs when the stored count or the first page arrives, whichever is last. A
+// pager, once seen, wins over the estimate.
+const estimatePages = () => {
+  if (totalPages.value && !pagesEstimated.value) return;
+  if (!lastCount.value || !firstPageSize) return;
+
+  totalPages.value = Math.ceil(lastCount.value / firstPageSize);
+  pagesEstimated.value = true;
+};
+
 let abort = new AbortController();
 
 // Every start, cancel and reset moves this on, so an answer still out for an
@@ -72,9 +96,13 @@ const clear = () => {
   status.value = "idle";
   currentPage.value = 1;
   buybacks.value = [];
+  lastCount.value = undefined;
+  totalPages.value = undefined;
+  pagesEstimated.value = false;
   result.value = undefined;
   detailsStarted.value = false;
   seenIds = new Set();
+  firstPageSize = 0;
 };
 
 // An extension released before buy-backs answers the action it does not know
@@ -178,6 +206,17 @@ export const useBuybackSync = () => {
       return;
     }
 
+    if (page.lastPage) {
+      totalPages.value = Math.max(
+        pagesEstimated.value ? 0 : (totalPages.value ?? 0),
+        page.lastPage,
+      );
+      pagesEstimated.value = false;
+    } else if (currentPage.value === 1) {
+      firstPageSize = page.pledges.length;
+      estimatePages();
+    }
+
     newBuybacks.forEach((pledge) => seenIds.add(pledge.id));
     // RSI gives a pledge no address of its own, so the page it was read from
     // is what a link to it can go by.
@@ -235,6 +274,20 @@ export const useBuybackSync = () => {
 
     displayInfo({ text: t("messages.buybackSync.started") });
 
+    const id = runId;
+
+    // Only a measure to read the run against; without it the run reads all the
+    // same.
+    hangarBuybacks({ perPage: "1" })
+      .then((stored) => {
+        const count = stored.meta.pagination?.totalCount;
+        if (id !== runId || !count) return;
+
+        lastCount.value = count;
+        estimatePages();
+      })
+      .catch(() => undefined);
+
     void fetchPage(runId);
   };
 
@@ -258,6 +311,9 @@ export const useBuybackSync = () => {
   return {
     status,
     currentPage,
+    totalPages,
+    pagesEstimated,
+    lastCount,
     buybacks,
     result,
     detailsStarted,
