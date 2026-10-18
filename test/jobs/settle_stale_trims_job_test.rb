@@ -8,7 +8,7 @@ class SettleStaleTrimsJobTest < ActiveSupport::TestCase
   test "#perform takes lost crops off and tells admins" do
     admin_user = create(:admin_user, resource_access: [:models])
     model = create(:model)
-    model.update_columns(pending_trims: {"top_view" => 16.minutes.ago.iso8601(6)})
+    model.update_columns(pending_trims: {"top_view" => (ActiveStorageVariants::PENDING_TRIM_TTL + 1.minute).ago.iso8601(6)})
 
     assert_broadcasts(AdminModelMediaChannel.broadcasting_for(admin_user), 1) do
       SettleStaleTrimsJob.new.perform

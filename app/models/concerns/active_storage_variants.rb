@@ -24,9 +24,12 @@ module ActiveStorageVariants
   INLINE_TRIM_LIMIT = 1
 
   # How long a queued crop counts as on its way. TrimAttachmentJob's five
-  # retries back off for about ten minutes in all, so a crop still listed after
-  # this was lost rather than slow -- and nothing else would ever take it off.
-  PENDING_TRIM_TTL = 15.minutes
+  # retries back off for about ten minutes in all, but the preprocessing queue
+  # runs one job at a time per worker, and a whole ship's views with their
+  # representations can keep a crop waiting about as long again before its
+  # first attempt. A crop still listed after this was lost rather than slow --
+  # and nothing else would ever take it off.
+  PENDING_TRIM_TTL = 30.minutes
 
   included do
     class_attribute :trimmed_attachment_names, default: [], instance_writer: false

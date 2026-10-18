@@ -151,7 +151,7 @@ class ActiveStorageVariantsTest < ActiveSupport::TestCase
   class PendingTrimsTest < ActiveStorageVariantsTest
     test "a crop past its time is no longer reported as pending" do
       @model.update_columns(pending_trims: {
-        "top_view" => 16.minutes.ago.iso8601(6),
+        "top_view" => (ActiveStorageVariants::PENDING_TRIM_TTL + 1.minute).ago.iso8601(6),
         "port_view" => 1.minute.ago.iso8601(6)
       })
 
@@ -160,7 +160,7 @@ class ActiveStorageVariantsTest < ActiveSupport::TestCase
 
     test "the sweep drops only the crops past their time" do
       @model.update_columns(pending_trims: {
-        "top_view" => 16.minutes.ago.iso8601(6),
+        "top_view" => (ActiveStorageVariants::PENDING_TRIM_TTL + 1.minute).ago.iso8601(6),
         "port_view" => 1.minute.ago.iso8601(6)
       })
 

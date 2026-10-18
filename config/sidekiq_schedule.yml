@@ -166,4 +166,4 @@ fleet_rsi_refresh_job:
 settle_stale_trims_job:
   cron: '*/5 * * * *' # Every 5 Minutes
   class: 'SettleStaleTrimsJob'
-  queue: 'preprocessing'
+  queue: 'cleanup'
