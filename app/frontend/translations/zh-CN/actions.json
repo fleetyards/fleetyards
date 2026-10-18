@@ -606,6 +606,8 @@
         "saveLoadout": "保存配置",
         "saveAsNewLoadout": "另存为新配置",
         "openLoadoutPage": "打开配置页面",
+        "makePublic": "设为公开",
+        "makePrivate": "设为私密",
         "linkInstead": "改为链接配置",
         "createOnFleetyards": "在 Fleetyards 上创建配置",
         "viewLoadout": "查看配置"

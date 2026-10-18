@@ -3,8 +3,9 @@ import { describe, expect, it, vi } from "vitest";
 import { ModelProductionStatusEnum, type Vehicle } from "@/services/fyApi";
 import Component from "./loadouts.vue";
 
-const { updateLoadout, loadouts, mutation, openLoadoutModal } = vi.hoisted(
-  () => ({
+const { updateLoadout, loadouts, mutation, openLoadoutModal, editor } =
+  vi.hoisted(() => ({
+    editor: { enabled: true },
     openLoadoutModal: vi.fn(),
     mutation:
       (mutateAsync = vi.fn(() => Promise.resolve())) =>
@@ -47,8 +48,7 @@ const { updateLoadout, loadouts, mutation, openLoadoutModal } = vi.hoisted(
         updatedAt: "2026-10-01T00:00:00Z",
       },
     ],
-  }),
-);
+  }));
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
@@ -69,7 +69,7 @@ vi.mock("@/frontend/composables/useVehicleModals", () => ({
 }));
 
 vi.mock("@/frontend/composables/useFeatures", () => ({
-  useFeatures: () => ({ isFeatureEnabled: () => true }),
+  useFeatures: () => ({ isFeatureEnabled: () => editor.enabled }),
 }));
 
 vi.mock("@/frontend/composables/useVehicleMutations", () => ({
@@ -167,5 +167,25 @@ describe("HangarVehicleLoadoutsPage", () => {
     expect(
       wrapper.get("[data-test='loadout-activate-l2']").attributes("disabled"),
     ).toBeUndefined();
+  });
+
+  it("switches visibility on the row where the editor is not available", async () => {
+    editor.enabled = false;
+    updateLoadout.mockClear();
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: { vehicle },
+    });
+
+    expect(wrapper.find("[data-test='loadout-edit-l1']").exists()).toBe(false);
+    await wrapper.get("[data-test='loadout-visibility-l1']").trigger("click");
+
+    expect(updateLoadout).toHaveBeenCalledWith({
+      vehicleId: "v1",
+      id: "l1",
+      data: { public: true },
+    });
+
+    editor.enabled = true;
   });
 });

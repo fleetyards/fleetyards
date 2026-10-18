@@ -18,6 +18,8 @@ import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useLoadoutEditor } from "@/frontend/composables/useLoadoutEditor";
 import { useLoadoutPlanners } from "@/frontend/composables/useLoadoutPlanners";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { firstErrorMessageFrom } from "@/shared/utils/ApiErrors";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 import { VehicleLoadoutTabsEnum } from "@/frontend/components/Vehicles/LoadoutModal/types";
 import {
@@ -208,6 +210,34 @@ const onActivate = async (record: VehicleLoadout) => {
     id: record.id,
   });
 };
+
+// Visibility is set in the editor; where the editor is not available it is
+// switched here, or a loadout made public could not be hidden again.
+const visibilityMutation = useUpdateVehicleLoadout({
+  mutation: { onSettled: invalidateLoadouts },
+});
+
+const visibilitySaving = visibilityMutation.isPending;
+
+const { displayAlert } = useAppNotifications();
+
+const onToggleVisibility = async (record: VehicleLoadout) => {
+  if (visibilitySaving.value) return;
+
+  try {
+    await visibilityMutation.mutateAsync({
+      vehicleId: props.vehicle.id,
+      id: record.id,
+      data: { public: !record.public },
+    });
+  } catch (error) {
+    displayAlert({
+      text: [t("messages.vehicleLoadout.failure"), firstErrorMessageFrom(error)]
+        .filter(Boolean)
+        .join(": "),
+    });
+  }
+};
 </script>
 
 <template>
@@ -315,6 +345,29 @@ const onActivate = async (record: VehicleLoadout) => {
           @click="onActivate(item)"
         >
           <i class="fa-duotone fa-circle-check" />
+        </Btn>
+        <Btn
+          v-if="!fittingEditable"
+          v-tooltip="
+            item.public
+              ? t('actions.vehicleLoadout.makePrivate')
+              : t('actions.vehicleLoadout.makePublic')
+          "
+          :aria-label="
+            item.public
+              ? t('actions.vehicleLoadout.makePrivate')
+              : t('actions.vehicleLoadout.makePublic')
+          "
+          :aria-pressed="item.public"
+          :disabled="visibilitySaving"
+          :data-test="`loadout-visibility-${item.id}`"
+          @click="onToggleVisibility(item)"
+        >
+          <i
+            :class="
+              item.public ? 'fa-duotone fa-eye' : 'fa-duotone fa-eye-slash'
+            "
+          />
         </Btn>
         <Btn
           v-if="fittingEditable"

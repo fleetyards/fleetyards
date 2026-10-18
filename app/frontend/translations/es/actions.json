@@ -606,6 +606,8 @@
         "saveLoadout": "Guardar equipamiento",
         "saveAsNewLoadout": "Guardar como nuevo equipamiento",
         "openLoadoutPage": "Abrir la página del loadout",
+        "makePublic": "Hacer público",
+        "makePrivate": "Hacer privado",
         "linkInstead": "Enlazar una configuración",
         "createOnFleetyards": "Crear un loadout en Fleetyards",
         "viewLoadout": "Ver equipamiento"
