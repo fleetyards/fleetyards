@@ -138,6 +138,12 @@ const RECYCLE = rotations(
 const CRANE =
   "M332.7 90.7 L458.7 90.7 L480 69.6 L32 69.6 L53.1 90.7 L182.8 90.7 L182.8 110.9 L197.9 126.3 L88.6 126.3 L109.4 147 L210.4 147 L210.4 246.5 L196.1 260.7 L196.1 345.2 L210.4 359.8 L232.5 359.8 C233.7 384.3 236.4 397.7 255.4 415.1 A35.1 35.1 0 0 1 269.8 439.6 A28 28 0 0 1 213.9 440.4 A5.3 5.3 0 0 0 208.5 435.4 A6.1 6.1 0 0 0 202.9 441 S202.9 442.3 202.9 442.4 A53 53 0 1 0 288.7 401.4 A51.4 51.4 0 0 1 272.5 360.2 L302.3 360.2 L316.5 345.6 L316.5 306.2 L307.1 296.5 L307.1 147 L401.8 147 L423.3 125.9 L317 125.9 L332.7 110.2 Z M284.9 274.5 L257.3 246.5 L232.8 246.5 L232.8 147 L284.9 147 Z";
 
+// Three rounds: their tips, then their casings.
+const WEAPONS = knockout({
+  secondary: `<g transform="rotate(45 256 256)">${ROUNDS.map((r) => r.casing).join("")}</g>`,
+  primary: `<g transform="rotate(45 256 256)">${ROUNDS.map((r) => r.tip).join("")}</g>`,
+});
+
 export const HARDPOINT_GLYPHS: Record<HardpointCategoryEnum, Glyph> = {
   // A scope: its crosshair and range ring, and the sweep that finds a contact.
   [HardpointCategoryEnum.RADAR]: knockout({
@@ -256,16 +262,9 @@ export const HARDPOINT_GLYPHS: Record<HardpointCategoryEnum, Glyph> = {
     secondary: `<path d="M224 120 Q152 72 88 112" ${SECONDARY_LINE}/>${secondary("M48 128 L112 72 L120 156 Z", 8)}<path d="M288 120 Q360 72 424 112" ${SECONDARY_LINE}/>${secondary("M464 128 L400 72 L392 156 Z", 8)}`,
     primary: smallThruster(128, 352, true) + smallThruster(384, 352),
   }),
-  // Three rounds: their tips, then their casings.
-  [HardpointCategoryEnum.WEAPONS]: knockout({
-    secondary: `<g transform="rotate(45 256 256)">${ROUNDS.map((r) => r.casing).join("")}</g>`,
-    primary: `<g transform="rotate(45 256 256)">${ROUNDS.map((r) => r.tip).join("")}</g>`,
-  }),
-  // A ring and the point it holds: the mount rather than its weapon.
-  [HardpointCategoryEnum.WEAPON_MOUNTS]: knockout({
-    secondary: `<circle cx="256" cy="256" r="196" ${line(SECONDARY_STROKE, 64)}/>`,
-    primary: '<circle cx="256" cy="256" r="96"/>',
-  }),
+  [HardpointCategoryEnum.WEAPONS]: WEAPONS,
+  // A mount is read as the weapon it carries.
+  [HardpointCategoryEnum.WEAPON_MOUNTS]: WEAPONS,
   // Twin barrels on their tripod.
   [HardpointCategoryEnum.TURRET]: knockout({
     secondary: `<g ${SECONDARY_LINE}><path d="M184 352 L96 472"/><path d="M184 352 L272 472"/></g><circle cx="184" cy="344" r="48"/>`,
