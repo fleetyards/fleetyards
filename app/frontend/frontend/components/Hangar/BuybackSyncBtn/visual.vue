@@ -132,6 +132,7 @@ const setRun = ({
   buybackSync.lastCount.value = lastCount;
   buybackSync.totalPages.value = totalPages;
   buybackSync.pagesEstimated.value = false;
+  buybackSync.readsDetails.value = true;
   buybackSync.buybacks.value = samplePledges(found);
   buybackSync.result.value = result
     ? { total: found, ...result, detailsPending: [] }

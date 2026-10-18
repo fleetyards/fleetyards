@@ -83,6 +83,7 @@ const {
   totalPages,
   pagesEstimated,
   lastCount,
+  readsDetails,
   buybacks,
   result,
   detailsStarted,
@@ -121,8 +122,7 @@ const settled = computed(
 );
 
 const detailsUnsupported = computed(
-  () =>
-    !!result.value?.detailsPending.length && !extensionSupportsDetails.value,
+  () => !!result.value?.detailsPending.length && !readsDetails.value,
 );
 
 // Prices missing for any reason is not a success worth celebrating.
@@ -204,7 +204,7 @@ const steps = computed<SyncStep[]>(() => {
   // A finished run whose price pass never started had nothing to price, and
   // ends with the save.
   const withPrices =
-    detailsStarted.value || (extensionSupportsDetails.value && !settled.value);
+    detailsStarted.value || (readsDetails.value && !settled.value);
   const reading = readingPages(
     currentPage.value,
     totalPages.value,
@@ -536,11 +536,8 @@ const cancelRun = () => {
         <!-- The run and its result read as one: a step the run has moved on
              from folds away, and the result sits under the last step. -->
         <SyncSteps v-if="status !== 'failed' || failedAt" :steps="steps">
-          <template #step-fetching>
-            <SyncCountList
-              v-if="buybacks.length + (lastCount ?? 0)"
-              :counts="readCounts"
-            />
+          <template v-if="buybacks.length + (lastCount ?? 0)" #step-fetching>
+            <SyncCountList :counts="readCounts" />
           </template>
           <template
             v-if="settled && resultStep === 'submitting'"

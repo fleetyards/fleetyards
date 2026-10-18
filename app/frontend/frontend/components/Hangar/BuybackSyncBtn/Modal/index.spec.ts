@@ -350,6 +350,55 @@ describe("HangarBuybackSyncModal", () => {
     ).toBe("labels.syncExtension.lastSync.fewer");
   });
 
+  it("measures nothing against a stored count that answers after the save", async () => {
+    type Stored = Awaited<ReturnType<typeof storedBuybacks>>;
+    let answerStored: (value: Stored) => void = () => {};
+    storedBuybacks.mockImplementation(
+      () =>
+        new Promise<Stored>((resolve) => {
+          answerStored = resolve;
+        }),
+    );
+    await startSync();
+
+    await answerNextPage(buybackPage("1"));
+    await answerNextPage(emptyBuybackPage);
+    expect(useBuybackSync().status.value).toBe("finished");
+
+    answerStored({ meta: { pagination: { totalCount: 1 } }, items: [] });
+    await flushPromises();
+
+    expect(useBuybackSync().lastCount.value).toBeUndefined();
+  });
+
+  // Reopened on a finished run before the extension has said what it can do:
+  // the run read every price, and that is what the modal goes by.
+  it("judges missing prices by what the run did, not by the extension now", async () => {
+    const buybackSync = useBuybackSync();
+    buybackSync.status.value = "finished";
+    buybackSync.readsDetails.value = true;
+    buybackSync.detailsStarted.value = true;
+    buybackSync.result.value = {
+      total: 1,
+      added: 1,
+      removed: 0,
+      detailsPending: ["1"],
+    };
+    const details = useBuybackDetailsSync();
+    details.status.value = "finished";
+    details.total.value = 1;
+    details.done.value = 1;
+
+    const wrapper = await mountModal();
+
+    expect(
+      wrapper.find("[data-test='buyback-sync-details-unsupported']").exists(),
+    ).toBe(false);
+    expect(
+      wrapper.get("[data-test='sync-step-prices']").attributes("data-status"),
+    ).toBe("done");
+  });
+
   it("keeps reading the list once the modal is closed", async () => {
     const wrapper = await startSync();
 

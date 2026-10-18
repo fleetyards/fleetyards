@@ -57,6 +57,10 @@ const totalPages = ref<number>();
 
 const pagesEstimated = ref(false);
 
+// Whether this run reads prices after the list: decided when it starts, by the
+// extension it started with, and not by whichever extension answers later.
+const readsDetails = ref(false);
+
 const result = ref<BuybackSyncResult | undefined>();
 
 // The price pass outlives the run; its counts only describe a pass this run
@@ -99,6 +103,7 @@ const clear = () => {
   lastCount.value = undefined;
   totalPages.value = undefined;
   pagesEstimated.value = false;
+  readsDetails.value = false;
   result.value = undefined;
   detailsStarted.value = false;
   seenIds = new Set();
@@ -270,6 +275,7 @@ export const useBuybackSync = () => {
     clear();
     abort = new AbortController();
     options = syncOptions;
+    readsDetails.value = syncOptions.readDetails;
     status.value = "fetching";
 
     displayInfo({ text: t("messages.buybackSync.started") });
@@ -281,7 +287,8 @@ export const useBuybackSync = () => {
     hangarBuybacks({ perPage: "1" })
       .then((stored) => {
         const count = stored.meta.pagination?.totalCount;
-        if (id !== runId || !count) return;
+        // Once the list is saved the stored count is this run's own.
+        if (id !== runId || status.value !== "fetching" || !count) return;
 
         lastCount.value = count;
         estimatePages();
@@ -314,6 +321,7 @@ export const useBuybackSync = () => {
     totalPages,
     pagesEstimated,
     lastCount,
+    readsDetails,
     buybacks,
     result,
     detailsStarted,
