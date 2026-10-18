@@ -506,7 +506,8 @@
         "hangar": {
           "import": "Les vaisseaux importés seront ajoutés à votre Hangar sans correspondance avec les vaisseaux existants.<br><br>Les formats supportés sont : Fleetyards Export ou HangarXplor.<br><br>Voulez-vous continuer ?",
           "destroySelected": "Êtes-vous sûr de vouloir supprimer tous les vaisseaux sélectionnés de votre Hangar ? Cette action ne peut pas être annulée.",
-          "destroyAll": "Êtes-vous sûr de vouloir supprimer tous les vaisseaux de votre Hangar ? Cette action ne peut pas être annulée."
+          "destroyAll": "Êtes-vous sûr de vouloir supprimer tous les vaisseaux de votre Hangar ? Cette action ne peut pas être annulée.",
+          "destroyAllTitle": "Supprimer tous les vaisseaux ?"
         },
         "wishlist": {
           "destroyAll": "Êtes-vous sûr de vouloir supprimer tous les vaisseaux de votre liste de souhaits ? Cette action ne peut pas être annulée."

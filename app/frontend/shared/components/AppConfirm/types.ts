@@ -13,6 +13,8 @@ export enum AppConfirmTonesEnum {
 }
 
 export type AppConfirmOptions = {
+  // A short question above the text, for a confirm whose text explains it.
+  title?: string;
   text?: string;
   onConfirm?: () => void | Promise<unknown>;
   onClose?: () => void | Promise<unknown>;

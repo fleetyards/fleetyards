@@ -506,7 +506,8 @@
         "hangar": {
           "import": "匯入的飛船將新增至您的機庫，不會與現有飛船匹配。<br><br>支援的格式為：Fleetyards匯出、Starship42或HangarXplor。<br><br>您要繼續嗎？",
           "destroySelected": "您確定要從機庫移除所有選中的飛船嗎？此操作無法復原。",
-          "destroyAll": "您確定要從機庫移除所有飛船嗎？此操作無法復原。"
+          "destroyAll": "您確定要從機庫移除所有飛船嗎？此操作無法復原。",
+          "destroyAllTitle": "移除所有飛船？"
         },
         "wishlist": {
           "destroyAll": "您確定要從願望清單移除所有飛船嗎？此操作無法復原。"

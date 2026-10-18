@@ -318,6 +318,7 @@ const destroyAll = async () => {
   deleting.value = true;
 
   displayConfirm({
+    title: t("messages.confirm.hangar.destroyAllTitle"),
     text: t("messages.confirm.hangar.destroyAll"),
     onConfirm: async () => {
       await destroyMutation
