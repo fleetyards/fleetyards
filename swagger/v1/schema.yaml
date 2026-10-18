@@ -22629,6 +22629,8 @@ components:
       properties:
         nameCont:
           type: string
+        searchNameCont:
+          type: string
         soldAtShop:
           type: string
         descriptionCont:

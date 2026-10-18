@@ -53,6 +53,20 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /components finds an ore pod by what players call it" do
+    pod = create(:component, name: "MISC Ore Pod", sc_key: "cargo_shipmining_pod_prospector")
+
+    assert_api_response :get, 200, params: {q: {"searchNameCont" => "mining bag"}} do
+      assert_equal [pod.id], parsed_body["items"].pluck("id")
+    end
+  end
+
+  test "GET /components searchNameCont still matches the name" do
+    assert_api_response :get, 200, params: {q: {"searchNameCont" => @components.first.name}} do
+      assert_equal [@components.first.id], parsed_body["items"].pluck("id")
+    end
+  end
+
   test "GET /components paginates with perPage" do
     create(:component)
 
