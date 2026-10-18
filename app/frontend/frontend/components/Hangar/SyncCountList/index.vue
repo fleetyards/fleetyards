@@ -8,6 +8,7 @@ export default {
 import NumberFlow from "@number-flow/vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import SyncProgressBar from "@/frontend/components/Hangar/SyncProgressBar/index.vue";
+import SyncNumberText from "@/frontend/components/Hangar/SyncNumberText/index.vue";
 import type { SyncCount } from "./types";
 
 type Props = {
@@ -39,7 +40,10 @@ const aside = (count: SyncCount) => {
     if (delta === 0) return undefined;
 
     return {
-      short: delta > 0 ? `+${delta}` : `−${Math.abs(delta)}`,
+      short: {
+        template: delta > 0 ? "+%{count}" : "−%{count}",
+        values: { count: Math.abs(delta) },
+      },
       long: t(
         delta > 0
           ? "labels.syncExtension.lastSync.more"
@@ -54,14 +58,17 @@ const aside = (count: SyncCount) => {
     const more = count.value - count.reference;
 
     return {
-      short: `+${more}`,
+      short: { template: "+%{count}", values: { count: more } },
       long: t("labels.syncExtension.lastSync.more", { count: more }),
       tone: "more",
     };
   }
 
   return {
-    short: t("labels.syncExtension.lastSync.of", { count: count.reference }),
+    short: {
+      key: "labels.syncExtension.lastSync.of",
+      values: { count: count.reference },
+    },
     long: t("labels.syncExtension.lastSync.ofLong", {
       count: count.reference,
     }),
@@ -113,7 +120,11 @@ const aside = (count: SyncCount) => {
         :data-test="`sync-count-${count.key}-aside`"
       >
         <template v-if="aside(count)">
-          <span aria-hidden="true">{{ aside(count)?.short }}</span>
+          <SyncNumberText
+            v-if="aside(count)?.short"
+            aria-hidden="true"
+            :text="aside(count)!.short"
+          />
           <span class="sr-only">{{ aside(count)?.long }}</span>
         </template>
       </dd>

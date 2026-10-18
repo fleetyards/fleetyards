@@ -15,6 +15,7 @@ import type {
   SyncStep,
   SyncStepStatus,
 } from "@/frontend/components/Hangar/SyncSteps/types";
+import SyncNumberText from "@/frontend/components/Hangar/SyncNumberText/index.vue";
 import SyncCountList from "@/frontend/components/Hangar/SyncCountList/index.vue";
 import type { SyncCount } from "@/frontend/components/Hangar/SyncCountList/types";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -158,24 +159,30 @@ const readTotal = computed(() =>
   allReadCounts.value.reduce((sum, count) => sum + Number(count.value), 0),
 );
 
-const lastReadCaption = () => {
+const lastReadCaption = (): SyncStep["caption"] => {
   if (!props.lastRead) return undefined;
 
   const difference = readTotal.value - props.lastRead.total;
 
   if (!readingDone.value && difference <= 0) {
-    return t("labels.syncExtension.lastSync.reading", {
-      count: readTotal.value,
-      total: props.lastRead.total,
-    });
+    return {
+      key: "labels.syncExtension.lastSync.reading",
+      values: { count: readTotal.value, total: props.lastRead.total },
+    };
   }
 
   if (difference > 0) {
-    return t("labels.syncExtension.lastSync.more", { count: difference });
+    return {
+      key: "labels.syncExtension.lastSync.more",
+      values: { count: difference },
+    };
   }
 
   if (difference < 0) {
-    return t("labels.syncExtension.lastSync.fewer", { count: -difference });
+    return {
+      key: "labels.syncExtension.lastSync.fewer",
+      values: { count: -difference },
+    };
   }
 
   return t("labels.syncExtension.lastSync.same");
@@ -189,26 +196,30 @@ const STEP_STATUS: Record<SyncProcessStepStatus, SyncStepStatus> = {
   backendFailure: "failed",
 };
 
-const stepDetail = (step: SyncProcessStep) => {
+const stepDetail = (step: SyncProcessStep): SyncStep["detail"] => {
   if (step.name === "fetchHangar") {
     if (step.status === "pending") return undefined;
 
     // While reading, the list under the step carries the counts.
     if (step.status === "processing") {
       return props.totalPages
-        ? t("labels.syncExtension.stepDetails.pageOf", {
-            page: Math.min(props.currentPage, props.totalPages),
-            total: props.totalPages,
-          })
-        : t("labels.syncExtension.stepDetails.page", {
-            page: props.currentPage,
-          });
+        ? {
+            key: "labels.syncExtension.stepDetails.pageOf",
+            values: {
+              page: Math.min(props.currentPage, props.totalPages),
+              total: props.totalPages,
+            },
+          }
+        : {
+            key: "labels.syncExtension.stepDetails.page",
+            values: { page: props.currentPage },
+          };
     }
 
-    return t("labels.syncExtension.stepDetails.read", {
-      pages: pagesRead.value,
-      count: readTotal.value,
-    });
+    return {
+      key: "labels.syncExtension.stepDetails.read",
+      values: { pages: pagesRead.value, count: readTotal.value },
+    };
   }
 
   if (step.status === "processing") {
@@ -438,12 +449,12 @@ const hasWarnings = computed(
             {{ t("labels.syncExtension.readFromRsi") }}
           </span>
           <span class="hangar-sync-result__summary-detail">
-            {{
-              t("labels.syncExtension.stepDetails.read", {
-                pages: pagesRead,
-                count: readTotal,
-              })
-            }}
+            <SyncNumberText
+              :text="{
+                key: 'labels.syncExtension.stepDetails.read',
+                values: { pages: pagesRead, count: readTotal },
+              }"
+            />
           </span>
         </button>
         <Collapsed

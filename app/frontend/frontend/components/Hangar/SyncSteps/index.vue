@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
 import SyncProgressBar from "@/frontend/components/Hangar/SyncProgressBar/index.vue";
+import SyncNumberText from "@/frontend/components/Hangar/SyncNumberText/index.vue";
 import type { SyncStep } from "./types";
 
 type Props = {
@@ -44,7 +45,10 @@ const { t } = useI18n();
             {{ t(`labels.syncExtension.stepStatus.${step.status}`) }}
           </span>
           <span v-if="step.detail" class="sync-steps__detail">
-            {{ step.detail }}
+            <template v-if="typeof step.detail === 'string'">
+              {{ step.detail }}
+            </template>
+            <SyncNumberText v-else :text="step.detail" />
           </span>
         </div>
         <SyncProgressBar
@@ -59,7 +63,10 @@ const { t } = useI18n();
           class="sync-steps__caption"
           :data-test="`sync-step-${step.key}-caption`"
         >
-          {{ step.caption }}
+          <template v-if="typeof step.caption === 'string'">
+            {{ step.caption }}
+          </template>
+          <SyncNumberText v-else :text="step.caption" />
         </p>
         <slot :name="`step-${step.key}`" />
       </div>

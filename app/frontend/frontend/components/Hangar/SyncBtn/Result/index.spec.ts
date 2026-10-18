@@ -146,7 +146,9 @@ describe("HangarSyncResult", () => {
           .attributes("data-count"),
       ).toBe("0");
       expect(
-        wrapper.get("[data-test='sync-step-fetchHangar-caption']").text(),
+        wrapper
+          .get("[data-test='sync-step-fetchHangar-caption'] [data-text]")
+          .attributes("data-text"),
       ).toBe("2 of about 4 items");
     });
 
@@ -160,7 +162,9 @@ describe("HangarSyncResult", () => {
         wrapper.get("[data-test='sync-count-hangarFlair-aside']").text(),
       ).toContain("+1");
       expect(
-        wrapper.get("[data-test='sync-step-fetchHangar-caption']").text(),
+        wrapper
+          .get("[data-test='sync-step-fetchHangar-caption'] [data-text]")
+          .attributes("data-text"),
       ).toBe("2 fewer than the last sync");
 
       // Each kind measures itself against the last sync on its own bar.
