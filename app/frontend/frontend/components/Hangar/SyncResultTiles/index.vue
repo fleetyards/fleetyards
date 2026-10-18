@@ -7,8 +7,10 @@ export default {
 <script lang="ts" setup>
 export type SyncResultTile = {
   key: string;
-  value: number;
+  value: number | string;
   label: string;
+  // For a caller whose tests read the number on its own.
+  valueTest?: string;
 };
 
 type Props = {
@@ -27,7 +29,9 @@ defineProps<Props>();
       :data-test="`sync-result-tile-${tile.key}`"
     >
       <dt class="sync-result-tiles__label">{{ tile.label }}</dt>
-      <dd class="sync-result-tiles__value">{{ tile.value }}</dd>
+      <dd class="sync-result-tiles__value" :data-test="tile.valueTest">
+        {{ tile.value }}
+      </dd>
     </div>
   </dl>
 </template>

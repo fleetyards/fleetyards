@@ -332,7 +332,12 @@
         "detailsIncomplete": "Certains prix n'ont pas pu être lus sur RSI. La prochaine synchronisation réessaiera.",
         "detailsBackground": "Les prix et assurances sont maintenant lus en arrière-plan. Vous pouvez fermer cette fenêtre et continuer à utiliser Fleetyards ; gardez cet onglet ouvert jusqu'à la fin.",
         "detailsRunning": "Les prix et assurances de la dernière synchronisation sont encore en cours de lecture. Une nouvelle synchronisation pourra démarrer une fois celle-ci terminée.",
-        "sessionHint": "La synchronisation lit votre liste de rachat via cette session."
+        "sessionHint": "La synchronisation lit votre liste de rachat via cette session.",
+        "pointReplace": "Lit chaque page de votre liste de rachat RSI et remplace par celle-ci les pledges rachetables enregistrés ici.",
+        "pointUntouched": "Votre hangar n'est pas modifié.",
+        "pointBackground": "S'exécute en arrière-plan : vous pouvez fermer cette fenêtre, gardez simplement l'onglet ouvert.",
+        "finished": "Vos pledges rachetables correspondent à votre liste RSI.",
+        "keepsRunning": "Elle continue si vous fermez cette fenêtre. Gardez l'onglet ouvert jusqu'à la fin."
       },
       "addToHangar": {
         "hangarHint": "Vous possédez ce vaisseau.",

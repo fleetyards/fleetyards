@@ -6,7 +6,22 @@ export default {
 
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
+import Alert from "@/shared/components/base/Alert/index.vue";
+import {
+  AlertSizesEnum,
+  AlertVariantsEnum,
+} from "@/shared/components/base/Alert/types";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import SupportHint from "@/shared/components/SupportHint/index.vue";
+import SyncSteps from "@/frontend/components/Hangar/SyncSteps/index.vue";
+import type {
+  SyncStep,
+  SyncStepStatus,
+} from "@/frontend/components/Hangar/SyncSteps/types";
+import SyncResultTiles, {
+  type SyncResultTile,
+} from "@/frontend/components/Hangar/SyncResultTiles/index.vue";
+import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import SyncSessionStatus from "@/frontend/components/Hangar/SyncSessionStatus/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -91,6 +106,148 @@ const showsRun = computed(() =>
 );
 
 const working = computed(() => loadingIdentity.value || running.value);
+
+// The price pass is part of the run: it is only over once that is.
+const settled = computed(
+  () => status.value === "finished" && !detailsRunning.value,
+);
+
+// The run only says it failed, not where; the modal remembers the phase it
+// last saw running. One opened onto a failed run never saw it, and says less.
+const failedAt = ref<"fetching" | "submitting">();
+
+watch(
+  status,
+  (current) => {
+    if (current === "fetching" || current === "submitting") {
+      failedAt.value = current;
+    } else if (current === "idle") {
+      failedAt.value = undefined;
+    }
+  },
+  { immediate: true },
+);
+
+const stepStatus = (index: number, current: number, failed = false) => {
+  if (index < current) return "done";
+  if (index > current) return "pending";
+
+  return (failed ? "failed" : "active") as SyncStepStatus;
+};
+
+const steps = computed<SyncStep[]>(() => {
+  const failed = status.value === "failed";
+  // Where a failure stopped: the list is read until it is submitted.
+  const current = detailsRunning.value
+    ? 2
+    : status.value === "submitting" || failedAt.value === "submitting"
+      ? 1
+      : 0;
+  const list: SyncStep[] = [
+    {
+      key: "fetching",
+      label: t("labels.buybackSync.status.fetching"),
+      detail: t("labels.buybackSync.stepDetails.reading", {
+        page: currentPage.value,
+        count: buybacks.value.length,
+      }),
+      status: stepStatus(0, current, failed),
+      // The list's pages are read until one comes back empty.
+      progress: current === 0 && !failed ? "indeterminate" : undefined,
+    },
+    {
+      key: "submitting",
+      label: t("labels.buybackSync.status.submitting"),
+      detail: result.value
+        ? t("labels.buybackSync.stepDetails.saved", {
+            added: result.value.added,
+            removed: result.value.removed,
+          })
+        : undefined,
+      status: stepStatus(1, current, failed),
+      progress: current === 1 && !failed ? "indeterminate" : undefined,
+    },
+  ];
+
+  if (extensionSupportsDetails.value || detailsStarted.value) {
+    list.push({
+      key: "prices",
+      label: t("labels.buybackSync.detailsProgress"),
+      detail: detailsTotal.value
+        ? t("labels.buybackSync.stepDetails.prices", {
+            done: detailsDone.value,
+            total: detailsTotal.value,
+          })
+        : t("labels.buybackSync.stepDetails.pricesPending"),
+      status: stepStatus(2, current, failed),
+      progress:
+        current === 2 && detailsTotal.value
+          ? { value: detailsDone.value, max: detailsTotal.value }
+          : undefined,
+    });
+  }
+
+  return list;
+});
+
+const resultTiles = computed<SyncResultTile[]>(() => [
+  {
+    key: "found",
+    label: t("labels.buybackSync.found"),
+    value: buybacks.value.length,
+  },
+  {
+    key: "added",
+    label: t("labels.buybackSync.added"),
+    value: result.value?.added ?? 0,
+    valueTest: "buyback-sync-added",
+  },
+  {
+    key: "removed",
+    label: t("labels.buybackSync.removed"),
+    value: result.value?.removed ?? 0,
+    valueTest: "buyback-sync-removed",
+  },
+  ...(detailsStarted.value && detailsTotal.value
+    ? [
+        {
+          key: "prices",
+          label: t("labels.buybackSync.prices"),
+          value: `${detailsDone.value} / ${detailsTotal.value}`,
+          valueTest: "buyback-sync-prices",
+        },
+      ]
+    : []),
+]);
+
+const headline = computed(() => t("headlines.buybackSync"));
+
+const title = computed(() => {
+  if (!showsRun.value && !extensionReady.value) {
+    return t("labels.syncExtension.extensionNeededTitle");
+  }
+  if (
+    status.value === "unsupported" ||
+    (!showsRun.value && !extensionSupportsBuybacks.value)
+  ) {
+    return t("labels.buybackSync.updateExtensionTitle");
+  }
+  if (status.value === "idle") return headline.value;
+  if (status.value === "failed") return t("labels.syncExtension.failedTitle");
+  if (settled.value) return t("labels.buybackSync.finishedTitle");
+
+  return t("labels.buybackSync.runningTitle");
+});
+
+const eyebrow = computed(() =>
+  title.value === headline.value ? undefined : headline.value,
+);
+
+const supportPrompt = useSupportPrompt();
+const supportHintDismissed = ref(false);
+const showSupportHint = computed(
+  () => settled.value && !supportHintDismissed.value && supportPrompt.canShow(),
+);
 
 const extension = useSyncExtension();
 
@@ -188,102 +345,133 @@ const cancelRun = () => {
 </script>
 
 <template>
-  <Modal :title="t('headlines.buybackSync')" :loading="working">
+  <Modal :title="title" :eyebrow="eyebrow" :loading="working">
     <!-- A run already going is shown at once, not after the extension check. -->
-    <div v-if="!showsRun && !extensionReady">
-      <p>{{ t("texts.syncExtension.gettingStarted") }}</p>
-      <SyncExtensionLinks />
+    <div v-if="!showsRun && !extensionReady" class="buyback-sync">
+      <p class="buyback-sync__text">
+        {{ t("texts.syncExtension.gettingStarted") }}
+      </p>
+      <SyncExtensionLinks list />
     </div>
     <div
       v-else-if="!showsRun && !extensionSupportsBuybacks"
+      class="buyback-sync"
       data-test="buyback-sync-outdated"
     >
-      <p class="text-warning">{{ t("texts.buybackSync.unsupported") }}</p>
-      <p v-if="extensionInfo.version">
-        {{ t("labels.buybackSync.extensionVersion") }}:
-        {{ extensionInfo.version }}
-      </p>
-      <SyncExtensionLinks />
+      <Alert
+        :variant="AlertVariantsEnum.WARNING"
+        :size="AlertSizesEnum.COMPACT"
+      >
+        {{ t("texts.buybackSync.unsupported") }}
+        <template v-if="extensionInfo.version">
+          {{ t("labels.buybackSync.extensionVersion") }}:
+          {{ extensionInfo.version }}
+        </template>
+      </Alert>
+      <SyncExtensionLinks list update />
     </div>
-    <div v-else-if="status === 'idle'">
+    <div v-else-if="status === 'idle'" class="buyback-sync">
       <SyncSessionStatus
         :status="identityStatus"
         :loading="loadingIdentity"
         :handle="rsiHandle"
+        :hint="t('texts.buybackSync.sessionHint')"
         @recheck="checkRSIIdentity"
       />
-      <p>{{ t("texts.buybackSync.info") }}</p>
-      <p v-if="extensionSupportsDetails">
+      <ul class="buyback-sync__points">
+        <li>
+          <i class="fa-light fa-arrow-right" aria-hidden="true" />
+          {{ t("texts.buybackSync.pointReplace") }}
+        </li>
+        <li>
+          <i class="fa-light fa-check" aria-hidden="true" />
+          {{ t("texts.buybackSync.pointUntouched") }}
+        </li>
+        <li>
+          <i class="fa-light fa-clock" aria-hidden="true" />
+          {{ t("texts.buybackSync.pointBackground") }}
+        </li>
+      </ul>
+      <Alert
+        v-if="extensionSupportsDetails"
+        :variant="AlertVariantsEnum.INFO"
+        :size="AlertSizesEnum.COMPACT"
+        :title="t('labels.buybackSync.firstSyncTitle')"
+      >
         {{ t("texts.buybackSync.detailsInfo") }}
-      </p>
-      <p
+      </Alert>
+      <Alert
         v-if="detailsRunning"
-        class="text-warning"
+        :variant="AlertVariantsEnum.WARNING"
+        :size="AlertSizesEnum.COMPACT"
         data-test="buyback-sync-details-running"
       >
         {{ t("texts.buybackSync.detailsRunning") }}
-      </p>
+      </Alert>
     </div>
-    <div v-else class="buyback-sync-progress" data-test="buyback-sync-progress">
-      <p
-        class="text-uppercase text-center"
-        :class="{
-          'text-warning': working || status === 'unsupported',
-          'text-success': status === 'finished',
-          'text-danger': status === 'failed',
-        }"
+    <div v-else class="buyback-sync" data-test="buyback-sync-progress">
+      <Alert
+        v-if="status === 'unsupported'"
+        :variant="AlertVariantsEnum.WARNING"
+        :size="AlertSizesEnum.COMPACT"
       >
-        <b>{{ t(`labels.buybackSync.status.${status}`) }}</b>
-      </p>
-      <p v-if="status === 'unsupported'" class="text-warning">
         {{ t("texts.buybackSync.unsupported") }}
-      </p>
-      <dl v-else class="row">
-        <dt class="col-sm-7">{{ t("labels.buybackSync.pages") }}:</dt>
-        <dd class="col-sm-5 text-right">{{ currentPage }}</dd>
-        <dt class="col-sm-7">{{ t("labels.buybackSync.found") }}:</dt>
-        <dd class="col-sm-5 text-right">{{ buybacks.length }}</dd>
-        <template v-if="result">
-          <dt class="col-sm-7">{{ t("labels.buybackSync.added") }}:</dt>
-          <dd class="col-sm-5 text-right" data-test="buyback-sync-added">
-            {{ result.added }}
-          </dd>
-          <dt class="col-sm-7">{{ t("labels.buybackSync.removed") }}:</dt>
-          <dd class="col-sm-5 text-right" data-test="buyback-sync-removed">
-            {{ result.removed }}
-          </dd>
-        </template>
-        <template v-if="detailsStarted && detailsTotal">
-          <dt class="col-sm-7">{{ t("labels.buybackSync.prices") }}:</dt>
-          <dd class="col-sm-5 text-right" data-test="buyback-sync-prices">
-            {{ detailsDone }} / {{ detailsTotal }}
-          </dd>
-        </template>
-      </dl>
-      <p
-        v-if="status === 'finished' && detailsRunning"
-        data-test="buyback-sync-details-background"
-      >
-        {{ t("texts.buybackSync.detailsBackground") }}
-      </p>
-      <p
-        v-if="detailsIncomplete"
-        class="text-warning"
-        data-test="buyback-sync-details-incomplete"
-      >
-        {{ t("texts.buybackSync.detailsIncomplete") }}
-      </p>
-      <p
-        v-if="
-          status === 'finished' &&
-          result?.detailsPending.length &&
-          !extensionSupportsDetails
-        "
-        class="text-warning"
-        data-test="buyback-sync-details-unsupported"
-      >
-        {{ t("texts.buybackSync.detailsUnsupported") }}
-      </p>
+      </Alert>
+      <template v-else-if="settled">
+        <Alert
+          :variant="AlertVariantsEnum.SUCCESS"
+          :size="AlertSizesEnum.COMPACT"
+        >
+          {{ t("texts.buybackSync.finished") }}
+        </Alert>
+        <SyncResultTiles :tiles="resultTiles" />
+        <Alert
+          v-if="detailsIncomplete"
+          :variant="AlertVariantsEnum.WARNING"
+          :size="AlertSizesEnum.COMPACT"
+          data-test="buyback-sync-details-incomplete"
+        >
+          {{ t("texts.buybackSync.detailsIncomplete") }}
+        </Alert>
+        <Alert
+          v-if="result?.detailsPending.length && !extensionSupportsDetails"
+          :variant="AlertVariantsEnum.WARNING"
+          :size="AlertSizesEnum.COMPACT"
+          data-test="buyback-sync-details-unsupported"
+        >
+          {{ t("texts.buybackSync.detailsUnsupported") }}
+        </Alert>
+        <transition name="fade">
+          <SupportHint
+            v-if="showSupportHint"
+            inline
+            context="hangarSync"
+            :meta="{ count: result?.added ?? 0 }"
+            @dismiss="supportHintDismissed = true"
+          />
+        </transition>
+      </template>
+      <template v-else>
+        <Alert
+          v-if="status === 'failed'"
+          :variant="AlertVariantsEnum.DANGER"
+          :size="AlertSizesEnum.COMPACT"
+          :title="t('labels.buybackSync.status.failed')"
+        />
+        <SyncSteps v-if="status !== 'failed' || failedAt" :steps="steps" />
+        <p
+          v-if="status === 'finished' && detailsRunning"
+          class="buyback-sync__note"
+          data-test="buyback-sync-details-background"
+        >
+          <i class="fa-light fa-circle-info" aria-hidden="true" />
+          {{ t("texts.buybackSync.detailsBackground") }}
+        </p>
+        <p v-else-if="running" class="buyback-sync__note">
+          <i class="fa-light fa-circle-info" aria-hidden="true" />
+          {{ t("texts.buybackSync.keepsRunning") }}
+        </p>
+      </template>
     </div>
     <template #footer>
       <Btn
@@ -323,7 +511,51 @@ const cancelRun = () => {
 </template>
 
 <style lang="scss" scoped>
-.sync-extension-platforms {
-  margin-bottom: 20px;
+.buyback-sync {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.buyback-sync__text {
+  margin: 0;
+  line-height: 1.55;
+}
+
+.buyback-sync__points {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    line-height: 1.5;
+  }
+
+  i {
+    flex-shrink: 0;
+    width: 16px;
+    color: var(--color-muted, #7a8288);
+    text-align: center;
+  }
+}
+
+.buyback-sync__note {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0;
+  color: var(--color-text-dim, #959595);
+  font-size: 14px;
+  line-height: 1.5;
+
+  i {
+    color: var(--color-muted, #7a8288);
+  }
 }
 </style>

@@ -2877,7 +2877,17 @@
           "finished": "Abgeschlossen",
           "unsupported": "Nicht unterstützt",
           "failed": "Fehlgeschlagen"
-        }
+        },
+        "stepDetails": {
+          "reading": "Seite %{page} · Bisher gefundene Rückkauf-Pledges: %{count}",
+          "saved": "Neu: %{added} · Entfernt: %{removed}",
+          "prices": "%{done} von %{total}",
+          "pricesPending": "Für die seit der letzten Synchronisierung neuen Pledges"
+        },
+        "firstSyncTitle": "Die erste Synchronisierung dauert länger",
+        "updateExtensionTitle": "Sync-Erweiterung aktualisieren",
+        "finishedTitle": "Rückkauf-Pledges synchronisiert",
+        "runningTitle": "Rückkauf-Pledges werden synchronisiert"
       },
       "syncExtension": {
         "warnings": "Warnungen",

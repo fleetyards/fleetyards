@@ -2877,7 +2877,17 @@
           "finished": "Terminé",
           "unsupported": "Non pris en charge",
           "failed": "Échec"
-        }
+        },
+        "stepDetails": {
+          "reading": "Page %{page} · Pledges rachetables trouvés jusqu'ici : %{count}",
+          "saved": "Nouveaux : %{added} · Retirés : %{removed}",
+          "prices": "%{done} sur %{total}",
+          "pricesPending": "Pour les pledges nouveaux depuis la dernière synchronisation"
+        },
+        "firstSyncTitle": "La première synchronisation est plus longue",
+        "updateExtensionTitle": "Mettez à jour l'extension de synchronisation",
+        "finishedTitle": "Pledges rachetables synchronisés",
+        "runningTitle": "Synchronisation des pledges rachetables"
       },
       "syncExtension": {
         "warnings": "Avertissements",

@@ -670,7 +670,14 @@ describe("HangarBuybackSyncModal", () => {
     it("finishes the list sync while prices are still being read", async () => {
       const wrapper = await syncList(detailExtension);
 
-      expect(wrapper.text()).toContain("labels.buybackSync.status.finished");
+      expect(
+        wrapper.get("[data-test='sync-step-submitting']").attributes(
+          "data-status",
+        ),
+      ).toBe("done");
+      expect(
+        wrapper.get("[data-test='sync-step-prices']").attributes("data-status"),
+      ).toBe("active");
       expect(
         wrapper.find("[data-test='buyback-sync-details-background']").exists(),
       ).toBe(true);

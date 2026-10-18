@@ -2877,7 +2877,17 @@
           "finished": "Finished",
           "unsupported": "Not supported",
           "failed": "Failed"
-        }
+        },
+        "stepDetails": {
+          "reading": "Page %{page} · Buy-back pledges so far: %{count}",
+          "saved": "New: %{added} · Removed: %{removed}",
+          "prices": "%{done} of %{total}",
+          "pricesPending": "For the pledges new since the last sync"
+        },
+        "firstSyncTitle": "The first sync takes longer",
+        "updateExtensionTitle": "Update the sync extension",
+        "finishedTitle": "Buy-back pledges synced",
+        "runningTitle": "Syncing buy-back pledges"
       },
       "syncExtension": {
         "warnings": "Warnings",

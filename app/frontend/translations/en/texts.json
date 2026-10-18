@@ -333,7 +333,12 @@
         "detailsIncomplete": "Some prices could not be read from RSI. The next sync tries them again.",
         "detailsBackground": "Prices and insurance are now read in the background. You can close this window and keep using Fleetyards; keep this tab open until it finishes.",
         "detailsRunning": "Prices and insurance from the last sync are still being read. A new sync can start once that has finished.",
-        "sessionHint": "The sync reads your buy-back list through this session."
+        "sessionHint": "The sync reads your buy-back list through this session.",
+        "pointReplace": "Reads every page of your RSI buy-back list and replaces the buy-back pledges stored here with it.",
+        "pointUntouched": "Your hangar is not touched.",
+        "pointBackground": "Runs in the background: you can close this window, just keep the tab open.",
+        "finished": "Your buy-back pledges match your RSI list.",
+        "keepsRunning": "It keeps running if you close this window. Keep the tab open until it finishes."
       },
       "addToHangar": {
         "hangarHint": "You own this ship.",

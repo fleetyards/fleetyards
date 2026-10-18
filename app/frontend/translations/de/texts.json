@@ -333,7 +333,12 @@
         "detailsIncomplete": "Einige Preise konnten nicht von RSI gelesen werden. Die nächste Synchronisierung versucht es erneut.",
         "detailsBackground": "Preise und Versicherungen werden jetzt im Hintergrund gelesen. Du kannst dieses Fenster schließen und Fleetyards weiter nutzen; lass den Tab offen, bis es fertig ist.",
         "detailsRunning": "Preise und Versicherungen der letzten Synchronisierung werden noch gelesen. Eine neue Synchronisierung kann starten, sobald das abgeschlossen ist.",
-        "sessionHint": "Die Synchronisierung liest deine Rückkaufliste über diese Sitzung."
+        "sessionHint": "Die Synchronisierung liest deine Rückkaufliste über diese Sitzung.",
+        "pointReplace": "Liest jede Seite deiner RSI-Rückkaufliste und ersetzt damit die hier gespeicherten Rückkauf-Pledges.",
+        "pointUntouched": "Dein Hangar bleibt unverändert.",
+        "pointBackground": "Läuft im Hintergrund: Du kannst dieses Fenster schließen, lass nur den Tab offen.",
+        "finished": "Deine Rückkauf-Pledges entsprechen deiner RSI-Liste.",
+        "keepsRunning": "Es läuft weiter, wenn du dieses Fenster schließt. Lass den Tab offen, bis es fertig ist."
       },
       "addToHangar": {
         "hangarHint": "Du besitzt dieses Schiff.",

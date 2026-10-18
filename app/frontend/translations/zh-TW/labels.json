@@ -2877,7 +2877,17 @@
           "finished": "已完成",
           "unsupported": "不支援",
           "failed": "失敗"
-        }
+        },
+        "stepDetails": {
+          "reading": "第 %{page} 頁 · 目前找到的可回購承諾：%{count}",
+          "saved": "新增：%{added} · 移除：%{removed}",
+          "prices": "%{done} / %{total}",
+          "pricesPending": "針對上次同步後新增的承諾"
+        },
+        "firstSyncTitle": "首次同步耗時較長",
+        "updateExtensionTitle": "更新同步擴充功能",
+        "finishedTitle": "可回購承諾已同步",
+        "runningTitle": "正在同步可回購承諾"
       },
       "syncExtension": {
         "warnings": "警告",

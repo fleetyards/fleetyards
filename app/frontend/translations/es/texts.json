@@ -332,7 +332,12 @@
         "detailsIncomplete": "No se pudieron leer algunos precios de RSI. La próxima sincronización lo volverá a intentar.",
         "detailsBackground": "Los precios y seguros se leen ahora en segundo plano. Puedes cerrar esta ventana y seguir usando Fleetyards; mantén esta pestaña abierta hasta que termine.",
         "detailsRunning": "Todavía se están leyendo los precios y seguros de la última sincronización. Podrás iniciar una nueva cuando termine.",
-        "sessionHint": "La sincronización lee tu lista de recompra a través de esta sesión."
+        "sessionHint": "La sincronización lee tu lista de recompra a través de esta sesión.",
+        "pointReplace": "Lee cada página de tu lista de recompra de RSI y reemplaza con ella los pledges de recompra guardados aquí.",
+        "pointUntouched": "Tu hangar no se modifica.",
+        "pointBackground": "Se ejecuta en segundo plano: puedes cerrar esta ventana, solo mantén la pestaña abierta.",
+        "finished": "Tus pledges de recompra coinciden con tu lista de RSI.",
+        "keepsRunning": "Sigue ejecutándose si cierras esta ventana. Mantén la pestaña abierta hasta que termine."
       },
       "addToHangar": {
         "hangarHint": "Tienes esta nave.",

@@ -2877,7 +2877,17 @@
           "finished": "Completato",
           "unsupported": "Non supportato",
           "failed": "Non riuscito"
-        }
+        },
+        "stepDetails": {
+          "reading": "Pagina %{page} · Pledge riacquistabili finora: %{count}",
+          "saved": "Nuovi: %{added} · Rimossi: %{removed}",
+          "prices": "%{done} di %{total}",
+          "pricesPending": "Per i pledge nuovi dall'ultima sincronizzazione"
+        },
+        "firstSyncTitle": "La prima sincronizzazione richiede più tempo",
+        "updateExtensionTitle": "Aggiorna l'estensione di sincronizzazione",
+        "finishedTitle": "Pledge riacquistabili sincronizzati",
+        "runningTitle": "Sincronizzazione dei pledge riacquistabili"
       },
       "syncExtension": {
         "warnings": "Avvisi",
