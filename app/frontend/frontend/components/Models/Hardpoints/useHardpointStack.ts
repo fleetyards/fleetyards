@@ -1,4 +1,3 @@
-import type { Ref } from "vue";
 import type { Hardpoint } from "@/services/fyApi";
 
 /**
@@ -11,16 +10,7 @@ export const useHardpointStack = (
   collapsible: () => boolean,
   fold: () => void,
 ) => {
-  const density = inject<Ref<"compact" | "expanded">>(
-    "hardpointDensity",
-    ref("compact"),
-  );
-
-  const expanded = ref(density.value === "expanded");
-
-  watch(density, (value) => {
-    expanded.value = value === "expanded";
-  });
+  const expanded = ref(false);
 
   const isGroup = computed(() => hardpoints().length > 1);
 
@@ -28,8 +18,7 @@ export const useHardpointStack = (
     expanded.value = !expanded.value;
   };
 
-  // Only a real stack (>1 identical mount) collapses to a summary row; single
-  // items always render, even when the global density is "expanded".
+  // Only a real stack (>1 identical mount) collapses to a summary row.
   const stackExpanded = computed(() => isGroup.value && expanded.value);
 
   const onRowClick = () => {

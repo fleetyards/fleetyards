@@ -2096,11 +2096,6 @@
           "game_files": "Archivos del juego",
           "ship_matrix": "Ship Matrix"
         },
-        "density": {
-          "title": "Vista",
-          "compact": "Compacta",
-          "expanded": "Expandida"
-        },
         "fuelTanks": {
           "hydrogen": "Tanque de combustible de hidrógeno",
           "quantum": "Tanque de combustible Quantum"

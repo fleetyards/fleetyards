@@ -2096,11 +2096,6 @@
           "game_files": "Fichiers du jeu",
           "ship_matrix": "Ship Matrix"
         },
-        "density": {
-          "title": "Vue",
-          "compact": "Compacte",
-          "expanded": "Détaillée"
-        },
         "fuelTanks": {
           "hydrogen": "Réservoir de carburant hydrogène",
           "quantum": "Réservoir de carburant Quantum"

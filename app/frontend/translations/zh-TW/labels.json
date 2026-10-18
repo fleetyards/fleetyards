@@ -2096,11 +2096,6 @@
           "game_files": "遊戲檔案",
           "ship_matrix": "Ship Matrix"
         },
-        "density": {
-          "title": "檢視",
-          "compact": "精簡",
-          "expanded": "展開"
-        },
         "fuelTanks": {
           "hydrogen": "氫燃料箱",
           "quantum": "量子燃料箱"
