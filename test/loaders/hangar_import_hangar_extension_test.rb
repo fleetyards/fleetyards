@@ -72,6 +72,21 @@ class HangarImportHangarExtensionTest < ActiveSupport::TestCase
     assert_equal ["Carrack", "Carrack"], result[:imported]
   end
 
+  # Each Ursa the Carrack created stands in for one included entry, not for
+  # every entry that names the same craft.
+  test "imports the included craft beyond what the parent created" do
+    give_the_carrack_an_ursa
+    import = import_for([
+      {matrix: "Carrack", name: "Carrack"},
+      {matrix: "Ursa", name: "Ursa", included_with: "Carrack"},
+      {matrix: "Ursa", name: "Ursa", included_with: "Carrack"}
+    ])
+
+    result = ::HangarImporter.new(import).run
+
+    assert_equal ["Carrack", "Ursa"], result[:imported]
+  end
+
   # A rejected parent creates no loaners, so nothing stands in for the craft.
   test "imports the craft of a parent the hangar rejected" do
     give_the_carrack_an_ursa
