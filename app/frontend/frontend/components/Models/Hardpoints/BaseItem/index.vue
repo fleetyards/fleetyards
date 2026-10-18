@@ -7,6 +7,8 @@ export default {
 <script lang="ts" setup>
 import { groupIntoStacks } from "@/frontend/components/Models/Hardpoints/stacks";
 import { partContents } from "@/frontend/components/Models/Hardpoints/contents";
+import { useHardpointStack } from "@/frontend/components/Models/Hardpoints/useHardpointStack";
+import HardpointStackToggle from "@/frontend/components/Models/Hardpoints/StackToggle/index.vue";
 import HardpointItem from "@/frontend/components/Models/Hardpoints/Item/index.vue";
 // eslint-disable-next-line import/no-self-import
 import HardpointBaseItem from "@/frontend/components/Models/Hardpoints/BaseItem/index.vue";
@@ -44,24 +46,12 @@ const emit = defineEmits<{ toggle: [] }>();
 
 const { t } = useI18n();
 
-const density = inject<Ref<"compact" | "expanded">>(
-  "hardpointDensity",
-  ref("compact"),
-);
-
-const expanded = ref(density.value === "expanded");
-
-watch(density, (value) => {
-  expanded.value = value === "expanded";
-});
-
-const isGroup = computed(() => {
-  return props.hardpoints.length > 1;
-});
-
-const toggleExpanded = () => {
-  expanded.value = !expanded.value;
-};
+const { isGroup, stackExpanded, toggleExpanded, onRowClick } =
+  useHardpointStack(
+    () => props.hardpoints,
+    () => props.collapsible,
+    () => emit("toggle"),
+  );
 
 // What sits inside the part -- a turret's guns, a rack's missiles -- shown
 // until folded away, as the loadout editor does. Its category folds them all
@@ -73,18 +63,6 @@ const childrenOpen = ref(!partsFolded.value);
 watch(partsFolded, (value) => {
   childrenOpen.value = !value;
 });
-
-// Only a real stack (>1 identical mount) collapses to a summary row; single
-// items always render, even when the global density is "expanded".
-const stackExpanded = computed(() => isGroup.value && expanded.value);
-
-const onRowClick = () => {
-  if (props.collapsible) {
-    emit("toggle");
-  } else if (isGroup.value) {
-    toggleExpanded();
-  }
-};
 
 const hardpoint = computed(() => {
   return props.hardpoints[0];
@@ -179,23 +157,9 @@ const hardpointNames = computed(() => {
         />
       </button>
     </template>
-    <!-- The loadout editor's stack control: split a stack into its slots, or
-      fold a split one back. The rest of the row toggles it too. -->
+    <!-- The rest of the row toggles the stack too. -->
     <template v-if="isGroup || collapsible" #stack>
-      <button
-        type="button"
-        class="hardpoint-item__ctl hardpoint-stack-toggle"
-        :aria-expanded="collapsible"
-        :aria-label="t(collapsible ? 'labels.collapse' : 'labels.expand')"
-        data-test="hardpoint-stack-toggle"
-        @click.stop="onRowClick"
-      >
-        <i
-          class="fa-solid"
-          :class="collapsible ? 'fa-compress' : 'fa-layer-group'"
-          aria-hidden="true"
-        />
-      </button>
+      <HardpointStackToggle :split="collapsible" @toggle="onRowClick" />
     </template>
     <template #default>
       <HardpointSize :size="hardpoint.maxSize" />
