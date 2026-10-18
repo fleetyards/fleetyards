@@ -10,7 +10,7 @@
 
   :deep(.hardpoint-item__inner) {
     min-height: 64px;
-    padding: 12px 14px 12px 18px;
+    padding: 12px 14px;
     transition:
       border-color $transition-base-speed,
       background-color $transition-base-speed,
