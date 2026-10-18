@@ -166,4 +166,13 @@ class PaintsImporterTest < ActiveSupport::TestCase
 
     assert_equal ["Dark Green", "Invictus Blue and Gold"], andromeda.paints.order(:name).pluck(:name)
   end
+
+  test "#run files the unprefixed Aurora blue paints under the Aurora Mk I" do
+    aurora_mr = create(:model, name: "Aurora Mk I MR")
+    hangar_sync("Aurora Electric Blue Paint", "Aurora Shocking Blue Paint")
+
+    PaintsImporter.new.run
+
+    assert_equal ["Electric Blue", "Shocking Blue"], aurora_mr.paints.order(:name).pluck(:name)
+  end
 end
