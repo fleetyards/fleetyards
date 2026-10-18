@@ -51,9 +51,14 @@ en:
           medium_heavy: Medium & Heavy
         equipment_types:
           armor: Armor
+          carryable: Carryable
           clothing: Clothing
+          container: Container
+          flair: Flair
           hacking_tool: Hacking Tool
           medical: Medical
+          mining_gadget: Mining Gadget
+          sustenance: Food & Drink
           tool: Tool
           undersuit: Undersuit
           weapon: Weapon
@@ -79,6 +84,7 @@ en:
           chef: Chef
           combat: Combat
           crossbow: Crossbow
+          cryptokey: Cryptokey
           data_drive: Data Drive
           displaycore: Display Core
           displayhelmet: Display Helmet
@@ -124,6 +130,7 @@ en:
           medium: Medium
           medium_armor: Medium Armor
           medium_backpack: Medium Backpack
+          mining_gadget: Mining Gadget
           mining_tool: Mining Tool
           missile_launcher: Missile Launcher
           multitool: Multitool

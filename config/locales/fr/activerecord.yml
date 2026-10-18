@@ -51,9 +51,14 @@ fr:
           medium_heavy: Medium & Heavy
         equipment_types:
           armor: Blindage
+          carryable: Objet transportable
           clothing: Vêtements
+          container: Conteneur
+          flair: Décoration
           hacking_tool: Outil de piratage
           medical: Médical
+          mining_gadget: Gadget de minage
+          sustenance: Nourriture et boissons
           tool: Outil
           undersuit: Sous-combinaison
           weapon: Arme
@@ -79,6 +84,7 @@ fr:
           chef: Chef cuisinier
           combat: Combat
           crossbow: Arbalète
+          cryptokey: Cryptoclé
           data_drive: Lecteur de données
           displaycore: Noyau d'exposition
           displayhelmet: Casque d'exposition
@@ -124,6 +130,7 @@ fr:
           medium: Moyen
           medium_armor: Blindage moyen
           medium_backpack: Medium Backpack
+          mining_gadget: Gadget de minage
           mining_tool: Outil de minage
           missile_launcher: Lance-missiles
           multitool: Multi-outil

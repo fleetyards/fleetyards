@@ -205,9 +205,11 @@ class Equipment < ApplicationRecord
 
   # The game's own split, from AttachDef Type. Armour and clothing join these
   # when the character trees land; they are the same kind of thing worn or
-  # carried by a player, and share this table.
+  # carried by a player, and share this table. So do the props a player picks
+  # up and carries -- flair, food, portable containers.
   EQUIPMENT_TYPES = %w[
     weapon weapon_attachment tool armor clothing undersuit medical hacking_tool
+    mining_gadget flair carryable container sustenance
   ].freeze
 
   # Kept as free strings rather than an enum: CIG adds weapon classes between

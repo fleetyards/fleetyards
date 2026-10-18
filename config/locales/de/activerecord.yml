@@ -51,9 +51,14 @@ de:
           medium_heavy: Medium & Heavy
         equipment_types:
           armor: Panzerung
+          carryable: Tragbarer Gegenstand
           clothing: Kleidung
+          container: Behälter
+          flair: Flair
           hacking_tool: Hacking-Werkzeug
           medical: Medizinisch
+          mining_gadget: Bergbau-Gadget
+          sustenance: Essen & Trinken
           tool: Werkzeug
           undersuit: Unteranzug
           weapon: Waffe
@@ -79,6 +84,7 @@ de:
           chef: Koch
           combat: Kampf
           crossbow: Armbrust
+          cryptokey: Kryptoschlüssel
           data_drive: Datenlaufwerk
           displaycore: Ausstellungskern
           displayhelmet: Ausstellungshelm
@@ -124,6 +130,7 @@ de:
           medium: Mittel
           medium_armor: Mittlere Panzerung
           medium_backpack: Medium Backpack
+          mining_gadget: Bergbau-Gadget
           mining_tool: Bergbauwerkzeug
           missile_launcher: Raketenwerfer
           multitool: Multitool

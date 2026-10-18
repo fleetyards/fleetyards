@@ -23987,6 +23987,11 @@ components:
       - undersuit
       - medical
       - hacking_tool
+      - mining_gadget
+      - flair
+      - carryable
+      - container
+      - sustenance
       x-enumNames:
       - WEAPON
       - WEAPON_ATTACHMENT
@@ -23996,6 +24001,11 @@ components:
       - UNDERSUIT
       - MEDICAL
       - HACKING_TOOL
+      - MINING_GADGET
+      - FLAIR
+      - CARRYABLE
+      - CONTAINER
+      - SUSTENANCE
       title: EquipmentTypeEnum
     Equipments:
       type: object
