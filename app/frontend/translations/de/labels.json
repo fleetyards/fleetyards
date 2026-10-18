@@ -2892,8 +2892,8 @@
           "cancelled": "Import abgebrochen"
         },
         "processSteps": {
-          "fetchHangar": "Daten aus dem RSI-Hangar abrufen",
-          "submitData": "Daten an das Fleetyards.net-Backend senden"
+          "fetchHangar": "Dein RSI-Hangar wird gelesen",
+          "submitData": "Speichern auf Fleetyards"
         },
         "sessionStatus": "RSI-Sitzungsstatus",
         "signedInAs": "Bei RSI angemeldet als %{handle}",
@@ -2970,7 +2970,22 @@
           "missingUpgrades": "Upgrades nicht gefunden",
           "missingUpgradeVehicles": "Kein passendes Schiff für Upgrades gefunden"
         },
-        "incomplete": "Einige Gegenstände in deinem RSI-Hangar konnten nicht gelesen werden, daher wurden fehlende Schiffe dieses Mal unverändert gelassen."
+        "incomplete": "Einige Gegenstände in deinem RSI-Hangar konnten nicht gelesen werden, daher wurden fehlende Schiffe dieses Mal unverändert gelassen.",
+        "stepDetails": {
+          "reading": "Seite %{page} · Bisher gelesene Pledges: %{count}",
+          "read": "Gelesene Seiten: %{pages} · Pledges: %{count}",
+          "saving": "Deine Pledges werden deinem Hangar zugeordnet …"
+        },
+        "unmatchedCount": {
+          "one": "1 Eintrag konnte nicht zugeordnet werden",
+          "other": "%{count} Einträge konnten nicht zugeordnet werden"
+        },
+        "unmatchedHeading": "Nicht zugeordnet",
+        "readFromRsi": "Was von RSI gelesen wurde",
+        "failedStep": {
+          "fetchHangar": "Dein RSI-Hangar konnte nicht gelesen werden",
+          "submitData": "Speichern auf Fleetyards fehlgeschlagen"
+        }
       },
       "cargoGridViewer": {
         "capacity": "Kapazität",

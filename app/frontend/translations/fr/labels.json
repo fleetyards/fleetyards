@@ -2892,8 +2892,8 @@
           "cancelled": "Importation annulée"
         },
         "processSteps": {
-          "fetchHangar": "Récupération des données du hangar RSI",
-          "submitData": "Envoi des données au backend de Fleetyards.net"
+          "fetchHangar": "Lecture de votre hangar RSI",
+          "submitData": "Enregistrement sur Fleetyards"
         },
         "sessionStatus": "Statut de session RSI",
         "signedInAs": "Connecté à RSI en tant que %{handle}",
@@ -2970,7 +2970,22 @@
           "missingUpgrades": "Améliorations non trouvées",
           "missingUpgradeVehicles": "Aucun vaisseau correspondant trouvé pour les améliorations"
         },
-        "incomplete": "Certains éléments de votre hangar RSI n'ont pas pu être lus, les vaisseaux manquants ont donc été laissés tels quels cette fois-ci."
+        "incomplete": "Certains éléments de votre hangar RSI n'ont pas pu être lus, les vaisseaux manquants ont donc été laissés tels quels cette fois-ci.",
+        "stepDetails": {
+          "reading": "Page %{page} · Pledges lus jusqu'ici : %{count}",
+          "read": "Pages lues : %{pages} · Pledges : %{count}",
+          "saving": "Association de vos pledges à votre hangar…"
+        },
+        "unmatchedCount": {
+          "one": "1 élément n'a pas pu être associé",
+          "other": "%{count} éléments n'ont pas pu être associés"
+        },
+        "unmatchedHeading": "Non associés",
+        "readFromRsi": "Ce qui a été lu sur RSI",
+        "failedStep": {
+          "fetchHangar": "La lecture de votre hangar RSI a échoué",
+          "submitData": "L'enregistrement sur Fleetyards a échoué"
+        }
       },
       "cargoGridViewer": {
         "capacity": "Capacité",

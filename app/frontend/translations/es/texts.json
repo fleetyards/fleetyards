@@ -349,7 +349,10 @@
         "notSyncing": "Fuera de la sincronización:",
         "signedOutTitle": "No has iniciado sesión en RSI",
         "signedOut": "Inicia sesión en la web de RSI en este navegador y vuelve a comprobarlo.",
-        "sessionHint": "La sincronización lee tus pledges a través de esta sesión."
+        "sessionHint": "La sincronización lee tus pledges a través de esta sesión.",
+        "finished": "Tu hangar coincide con tus pledges de RSI. No quedó nada sin emparejar.",
+        "unmatched": "Todo lo demás se sincronizó. Nada de lo que aparece abajo se añadió a tu hangar.",
+        "partialFailure": "Puede que algunos cambios ya estén en tu hangar. Reintentar es seguro: las naves ya sincronizadas se emparejan de nuevo, no se añaden dos veces."
       },
       "setEmail": "Para establecer una contraseña, activar la autenticación de dos factores o recibir notificaciones por correo, necesitas añadir una dirección de correo a tu cuenta. Recibirás un correo de confirmación para verificar la dirección.",
       "oauthApplications": {

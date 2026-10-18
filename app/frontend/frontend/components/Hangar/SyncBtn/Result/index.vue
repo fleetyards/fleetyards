@@ -5,12 +5,23 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import LoadingDots from "@/shared/components/LoadingDots/index.vue";
+import Alert from "@/shared/components/base/Alert/index.vue";
+import {
+  AlertSizesEnum,
+  AlertVariantsEnum,
+} from "@/shared/components/base/Alert/types";
 import SupportHint from "@/shared/components/SupportHint/index.vue";
-import BaseText from "@/shared/components/base/Text/index.vue";
+import SyncSteps from "@/frontend/components/Hangar/SyncSteps/index.vue";
+import type {
+  SyncStep,
+  SyncStepStatus,
+} from "@/frontend/components/Hangar/SyncSteps/types";
+import SyncResultTiles, {
+  type SyncResultTile,
+} from "@/frontend/components/Hangar/SyncResultTiles/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import type { RsiHangarItemInput, HangarSyncResult } from "@/services/fyApi";
-import type { SyncProcessStep } from "./types";
+import type { SyncProcessStep, SyncProcessStepStatus } from "./types";
 
 type Props = {
   processSteps: SyncProcessStep[];
@@ -43,557 +54,481 @@ defineEmits<{
 
 const { t } = useI18n();
 
+const ITEM_TYPES = [
+  "ship",
+  "component",
+  "upgrade",
+  "skin",
+  "flair",
+  "equipment",
+  "ccu",
+  "extra",
+];
+
 const items = computed(() =>
-  props.pledges.filter((pledge) =>
-    [
-      "ship",
-      "component",
-      "upgrade",
-      "skin",
-      "flair",
-      "equipment",
-      "ccu",
-      "extra",
-    ].includes(pledge.type),
-  ),
+  props.pledges.filter((pledge) => ITEM_TYPES.includes(pledge.type)),
 );
 
-const ships = computed(() =>
-  props.pledges.filter((pledge) => pledge.type === "ship"),
-);
-
-const components = computed(() =>
-  props.pledges.filter((pledge) => pledge.type === "component"),
-);
-
-const upgrades = computed(() =>
-  props.pledges.filter((pledge) => pledge.type === "upgrade"),
-);
+const countOf = (type: string) =>
+  props.pledges.filter((pledge) => pledge.type === type).length;
 
 // The sync keeps one row per name in a pledge, with a quantity, so a poster
 // listed twice is counted once here too and the two steps agree.
-const pledgeRows = (type: string) =>
+const rowsOf = (type: string) =>
   new Set(
     props.pledges
       .filter((pledge) => pledge.type === type)
       .map((pledge) => `${pledge.id}:${pledge.name.trim()}`),
-  );
+  ).size;
 
-const paints = computed(() => pledgeRows("skin"));
+type ReadCount = {
+  key: string;
+  label: string;
+  count: number;
+  dataTest?: string;
+};
 
-const hangarFlair = computed(() => pledgeRows("flair"));
+// What a pledge type the sync leaves out says about itself: it is still
+// counted, so the two steps agree, but marked as not synced.
+const optional = (
+  key: string,
+  count: number,
+  synced: boolean,
+  dataTest: string,
+): ReadCount => ({
+  key,
+  count,
+  label: t(
+    `labels.syncExtension.pledgeItems.${synced ? key : `${key}NotSynced`}`,
+  ),
+  dataTest: synced ? undefined : dataTest,
+});
 
-const equipment = computed(() => pledgeRows("equipment"));
-const ccus = computed(() => pledgeRows("ccu"));
-
-// Sorted into flair or equipment only once the server stores them.
-const extras = computed(() => pledgeRows("extra"));
-
-const importedVehicles = computed(() => props.result?.importedVehicles || []);
-const foundVehicles = computed(() => props.result?.foundVehicles || []);
-const movedVehiclesToWanted = computed(
-  () => props.result?.movedVehiclesToWanted || [],
+const readCounts = computed<ReadCount[]>(() =>
+  [
+    {
+      key: "ships",
+      label: t("labels.syncExtension.pledgeItems.ships"),
+      count: countOf("ship"),
+    },
+    {
+      key: "components",
+      label: t("labels.syncExtension.pledgeItems.components"),
+      count: countOf("component"),
+    },
+    {
+      key: "upgrades",
+      label: t("labels.syncExtension.pledgeItems.upgrades"),
+      count: countOf("upgrade"),
+    },
+    optional("paints", rowsOf("skin"), props.syncPaints, "paints-not-synced"),
+    optional(
+      "hangarFlair",
+      rowsOf("flair"),
+      props.syncHangarFlair,
+      "hangar-flair-not-synced",
+    ),
+    optional(
+      "equipment",
+      rowsOf("equipment"),
+      props.syncEquipment,
+      "equipment-not-synced",
+    ),
+    optional("ccus", rowsOf("ccu"), props.syncCcus, "ccus-not-synced"),
+    // Sorted into flair or equipment only once the server stores them.
+    {
+      key: "extras",
+      label: t("labels.syncExtension.pledgeItems.extras"),
+      count: rowsOf("extra"),
+    },
+  ].filter((entry) => entry.count > 0),
 );
-const deletedVehicles = computed(() => props.result?.deletedVehicles || []);
-const groupedVehicles = computed(() => props.result?.groupedVehicles || []);
-const unchangedVehicles = computed(() => props.result?.unchangedVehicles || []);
-const missingModels = computed(() => props.result?.missingModels || []);
-const importedComponents = computed(
-  () => props.result?.importedComponents || [],
-);
-const foundComponents = computed(() => props.result?.foundComponents || []);
-const missingComponents = computed(() => props.result?.missingComponents || []);
-const missingComponentVehicles = computed(
-  () => props.result?.missingComponentVehicles || [],
-);
-const importedUpgrades = computed(() => props.result?.importedUpgrades || []);
-const foundUpgrades = computed(() => props.result?.foundUpgrades || []);
-const syncedPaints = computed(() => props.result?.syncedPaints || []);
-const syncedHangarFlair = computed(() => props.result?.syncedHangarFlair || []);
-const syncedEquipment = computed(() => props.result?.syncedEquipment || []);
-const syncedCcus = computed(() => props.result?.syncedCcus || []);
-const missingUpgrades = computed(() => props.result?.missingUpgrades || []);
-const missingUpgradeVehicles = computed(
-  () => props.result?.missingUpgradeVehicles || [],
+
+const STEP_STATUS: Record<SyncProcessStepStatus, SyncStepStatus> = {
+  pending: "pending",
+  processing: "active",
+  success: "done",
+  failure: "failed",
+  backendFailure: "failed",
+};
+
+const stepDetail = (step: SyncProcessStep) => {
+  if (step.name === "fetchHangar") {
+    if (step.status === "pending") return undefined;
+
+    return step.status === "processing"
+      ? t("labels.syncExtension.stepDetails.reading", {
+          page: props.currentPage,
+          count: items.value.length,
+        })
+      : t("labels.syncExtension.stepDetails.read", {
+          pages: props.currentPage,
+          count: items.value.length,
+        });
+  }
+
+  if (step.status === "processing") {
+    return t("labels.syncExtension.stepDetails.saving");
+  }
+
+  return undefined;
+};
+
+// Neither step knows how far along it is: the hangar's pages are read until
+// one comes back empty, and the save is a single request.
+const steps = computed<SyncStep[]>(() =>
+  props.processSteps.map((step) => ({
+    key: step.name,
+    label: t(`labels.syncExtension.processSteps.${step.name}`),
+    detail: stepDetail(step),
+    status: STEP_STATUS[step.status],
+    progress: step.status === "processing" ? "indeterminate" : undefined,
+  })),
 );
 
-const visibleSteps = computed(() =>
-  props.processSteps.filter((step) => step.status !== "pending"),
+const failedStep = computed(() =>
+  props.processSteps.find(
+    (step) => step.status === "failure" || step.status === "backendFailure",
+  ),
+);
+
+const RESULT_KEYS = [
+  "importedVehicles",
+  "foundVehicles",
+  "movedVehiclesToWanted",
+  "deletedVehicles",
+  "groupedVehicles",
+  "unchangedVehicles",
+  "importedComponents",
+  "foundComponents",
+  "importedUpgrades",
+  "foundUpgrades",
+  "syncedPaints",
+  "syncedHangarFlair",
+  "syncedEquipment",
+  "syncedCcus",
+] as const;
+
+const resultTiles = computed<SyncResultTile[]>(() =>
+  RESULT_KEYS.map((key) => ({
+    key,
+    value: props.result?.[key]?.length ?? 0,
+    label: t(`labels.syncExtension.importedItems.${key}`),
+  })).filter((tile) => tile.value > 0),
+);
+
+const UNMATCHED_KEYS = [
+  "missingModels",
+  "missingComponents",
+  "missingComponentVehicles",
+  "missingUpgrades",
+  "missingUpgradeVehicles",
+] as const;
+
+const unmatchedGroups = computed(() =>
+  UNMATCHED_KEYS.map((key) => ({
+    key,
+    label: t(`labels.syncExtension.importedItems.${key}`),
+    items: props.result?.[key] ?? [],
+  })).filter((group) => group.items.length > 0),
+);
+
+const unmatchedTotal = computed(() =>
+  unmatchedGroups.value.reduce((sum, group) => sum + group.items.length, 0),
 );
 
 const incomplete = computed(() => !!props.result?.incomplete);
 
 const hasWarnings = computed(
-  () =>
-    incomplete.value ||
-    missingModels.value.length > 0 ||
-    missingComponents.value.length > 0 ||
-    missingComponentVehicles.value.length > 0 ||
-    missingUpgrades.value.length > 0 ||
-    missingUpgradeVehicles.value.length > 0,
+  () => incomplete.value || unmatchedTotal.value > 0,
 );
 </script>
 
 <template>
-  <div class="hangar-sync-result flex flex-col gap-4">
-    <BaseText
-      no-spacing
-      class="flex justify-center text-uppercase"
-      :class="{
-        'text-warning': !finished && !finishedWithErrors,
-        'text-success': finished,
-        'text-danger': finishedWithErrors && !cancelled,
-      }"
-      data-test="sync-result-status"
-    >
-      <b v-if="finished">{{ t("labels.syncExtension.status.finished") }}</b>
-      <b v-else-if="cancelled">
-        {{ t("labels.syncExtension.status.cancelled") }}
-      </b>
-      <b v-else-if="finishedWithErrors">
-        {{ t("labels.syncExtension.status.failed") }}
-      </b>
-      <b v-else>{{ t("labels.syncExtension.status.started") }}</b>
-    </BaseText>
-    <ul v-if="processSteps.length" class="list-unstyled process-steps-list">
-      <li
-        v-for="step in visibleSteps"
-        :key="step.name"
-        class="process-steps-item"
-        :class="{ 'text-muted': step.status === 'pending' }"
-      >
-        <div class="process-steps-item-title">
-          <p>{{ t(`labels.syncExtension.processSteps.${step.name}`) }}</p>
-          <!-- Where the step's tick lands once it is done. -->
-          <LoadingDots
-            :loading="step.status === 'processing'"
-            :label="
-              t('labels.loadingNamed', {
-                name: t(`labels.syncExtension.processSteps.${step.name}`),
-              })
-            "
-          />
-          <i
-            v-if="step.status === 'success'"
-            class="fa-light fa-check text-success"
-          />
-          <i
-            v-if="step.status === 'failure'"
-            class="fa-light fa-times text-danger"
-          />
-        </div>
-        <div v-if="step.name === 'fetchHangar'" class="process-steps-item-info">
-          <dl class="row">
-            <dt class="col-sm-7">
-              {{ t("labels.syncExtension.pledgeItems.pages") }}:
-            </dt>
-            <dd class="col-sm-5 text-right">{{ currentPage }}</dd>
-            <template v-if="items.length">
-              <dt class="col-sm-7">
-                {{ t("labels.syncExtension.pledgeItems.all") }}:
-              </dt>
-              <dd class="col-sm-5 text-right">{{ items.length }}</dd>
-            </template>
-            <template v-if="ships.length">
-              <dt class="col-sm-7">
-                {{ t("labels.syncExtension.pledgeItems.ships") }}:
-              </dt>
-              <dd class="col-sm-5 text-right">{{ ships.length }}</dd>
-            </template>
-            <template v-if="components.length">
-              <dt class="col-sm-7">
-                {{ t("labels.syncExtension.pledgeItems.components") }}:
-              </dt>
-              <dd class="col-sm-5 text-right">{{ components.length }}</dd>
-            </template>
-            <template v-if="upgrades.length">
-              <dt class="col-sm-7">
-                {{ t("labels.syncExtension.pledgeItems.upgrades") }}:
-              </dt>
-              <dd class="col-sm-5 text-right">{{ upgrades.length }}</dd>
-            </template>
-            <template v-if="paints.size">
-              <dt
-                class="col-sm-7"
-                :data-test="syncPaints ? undefined : 'paints-not-synced'"
-              >
-                {{
-                  t(
-                    syncPaints
-                      ? "labels.syncExtension.pledgeItems.paints"
-                      : "labels.syncExtension.pledgeItems.paintsNotSynced",
-                  )
-                }}:
-              </dt>
-              <dd class="col-sm-5 text-right">{{ paints.size }}</dd>
-            </template>
-            <template v-if="hangarFlair.size">
-              <dt
-                class="col-sm-7"
-                :data-test="
-                  syncHangarFlair ? undefined : 'hangar-flair-not-synced'
-                "
-              >
-                {{
-                  t(
-                    syncHangarFlair
-                      ? "labels.syncExtension.pledgeItems.hangarFlair"
-                      : "labels.syncExtension.pledgeItems.hangarFlairNotSynced",
-                  )
-                }}:
-              </dt>
-              <dd class="col-sm-5 text-right">{{ hangarFlair.size }}</dd>
-            </template>
-            <template v-if="equipment.size">
-              <dt
-                class="col-sm-7"
-                :data-test="syncEquipment ? undefined : 'equipment-not-synced'"
-              >
-                {{
-                  t(
-                    syncEquipment
-                      ? "labels.syncExtension.pledgeItems.equipment"
-                      : "labels.syncExtension.pledgeItems.equipmentNotSynced",
-                  )
-                }}:
-              </dt>
-              <dd class="col-sm-5 text-right">{{ equipment.size }}</dd>
-            </template>
-            <template v-if="ccus.size">
-              <dt
-                class="col-sm-7"
-                :data-test="syncCcus ? undefined : 'ccus-not-synced'"
-              >
-                {{
-                  t(
-                    syncCcus
-                      ? "labels.syncExtension.pledgeItems.ccus"
-                      : "labels.syncExtension.pledgeItems.ccusNotSynced",
-                  )
-                }}:
-              </dt>
-              <dd class="col-sm-5 text-right">{{ ccus.size }}</dd>
-            </template>
-            <template v-if="extras.size">
-              <dt class="col-sm-7">
-                {{ t("labels.syncExtension.pledgeItems.extras") }}:
-              </dt>
-              <dd class="col-sm-5 text-right">{{ extras.size }}</dd>
-            </template>
-          </dl>
-        </div>
-        <div v-if="step.name === 'submitData'" class="process-steps-item-info">
-          <dl class="row">
-            <template v-if="importedVehicles.length">
-              <dt class="col-sm-8">
-                {{ t("labels.syncExtension.importedItems.importedVehicles") }}:
-              </dt>
-              <dd class="col-sm-4 text-right">
-                {{ importedVehicles.length }}
-              </dd>
-            </template>
-            <template v-if="foundVehicles.length">
-              <dt class="col-sm-8">
-                {{ t("labels.syncExtension.importedItems.foundVehicles") }}:
-              </dt>
-              <dd class="col-sm-4 text-right">
-                {{ foundVehicles.length }}
-              </dd>
-            </template>
-            <template v-if="movedVehiclesToWanted.length">
-              <dt class="col-sm-8">
-                {{
-                  t("labels.syncExtension.importedItems.movedVehiclesToWanted")
-                }}:
-              </dt>
-              <dd class="col-sm-4 text-right">
-                {{ movedVehiclesToWanted.length }}
-              </dd>
-            </template>
-            <template v-if="deletedVehicles.length">
-              <dt class="col-sm-8">
-                {{ t("labels.syncExtension.importedItems.deletedVehicles") }}:
-              </dt>
-              <dd class="col-sm-4 text-right">
-                {{ deletedVehicles.length }}
-              </dd>
-            </template>
-            <template v-if="groupedVehicles.length">
-              <dt class="col-sm-8">
-                {{ t("labels.syncExtension.importedItems.groupedVehicles") }}:
-              </dt>
-              <dd class="col-sm-4 text-right">
-                {{ groupedVehicles.length }}
-              </dd>
-            </template>
-            <template v-if="unchangedVehicles.length">
-              <dt class="col-sm-8">
-                {{ t("labels.syncExtension.importedItems.unchangedVehicles") }}:
-              </dt>
-              <dd class="col-sm-4 text-right">
-                {{ unchangedVehicles.length }}
-              </dd>
-            </template>
-            <template v-if="importedComponents.length">
-              <dt class="col-sm-8">
-                {{
-                  t("labels.syncExtension.importedItems.importedComponents")
-                }}:
-              </dt>
-              <dd class="col-sm-4 text-right">
-                {{ importedComponents.length }}
-              </dd>
-            </template>
-            <template v-if="foundComponents.length">
-              <dt class="col-sm-8">
-                {{ t("labels.syncExtension.importedItems.foundComponents") }}:
-              </dt>
-              <dd class="col-sm-4 text-right">
-                {{ foundComponents.length }}
-              </dd>
-            </template>
-            <template v-if="importedUpgrades.length">
-              <dt class="col-sm-8">
-                {{ t("labels.syncExtension.importedItems.importedUpgrades") }}:
-              </dt>
-              <dd class="col-sm-4 text-right">
-                {{ importedUpgrades.length }}
-              </dd>
-            </template>
-            <template v-if="foundUpgrades.length">
-              <dt class="col-sm-8">
-                {{ t("labels.syncExtension.importedItems.foundUpgrades") }}:
-              </dt>
-              <dd class="col-sm-4 text-right">{{ foundUpgrades.length }}</dd>
-            </template>
-            <template v-if="syncedPaints.length">
-              <dt class="col-sm-8">
-                {{ t("labels.syncExtension.importedItems.syncedPaints") }}:
-              </dt>
-              <dd class="col-sm-4 text-right">{{ syncedPaints.length }}</dd>
-            </template>
-            <template v-if="syncedHangarFlair.length">
-              <dt class="col-sm-8">
-                {{ t("labels.syncExtension.importedItems.syncedHangarFlair") }}:
-              </dt>
-              <dd class="col-sm-4 text-right">
-                {{ syncedHangarFlair.length }}
-              </dd>
-            </template>
-            <template v-if="syncedEquipment.length">
-              <dt class="col-sm-8">
-                {{ t("labels.syncExtension.importedItems.syncedEquipment") }}:
-              </dt>
-              <dd class="col-sm-4 text-right">
-                {{ syncedEquipment.length }}
-              </dd>
-            </template>
-            <template v-if="syncedCcus.length">
-              <dt class="col-sm-8">
-                {{ t("labels.syncExtension.importedItems.syncedCcus") }}:
-              </dt>
-              <dd class="col-sm-4 text-right">
-                {{ syncedCcus.length }}
-              </dd>
-            </template>
-          </dl>
-        </div>
-        <div
-          v-if="step.name === 'submitData' && hasWarnings"
-          class="sync-warnings"
+  <div class="hangar-sync-result">
+    <template v-if="finished">
+      <div data-test="sync-result-status">
+        <Alert
+          v-if="hasWarnings"
+          :variant="AlertVariantsEnum.WARNING"
+          :size="AlertSizesEnum.COMPACT"
+          :title="
+            unmatchedTotal
+              ? t('labels.syncExtension.unmatchedCount', {
+                  count: unmatchedTotal,
+                })
+              : t('labels.syncExtension.warnings')
+          "
         >
-          <h6 class="sync-warnings__title">
-            {{ t("labels.syncExtension.warnings") }}
-          </h6>
-          <div class="sync-warnings__body">
-            <p v-if="incomplete" data-test="sync-incomplete">
-              {{ t("labels.syncExtension.incomplete") }}
-            </p>
-            <dl class="row">
-              <template v-if="missingModels.length">
-                <dt class="col-sm-8">
-                  {{ t("labels.syncExtension.importedItems.missingModels") }}:
-                </dt>
-                <dd class="col-sm-4 text-right">
-                  {{ missingModels.length }}
-                </dd>
-                <dd class="col-12 missing-items">
-                  <ul>
-                    <li
-                      v-for="item in missingModels"
-                      :key="`missing-ship-${item}`"
-                    >
-                      {{ item }}
-                    </li>
-                  </ul>
-                </dd>
-              </template>
-              <template v-if="missingComponents.length">
-                <dt class="col-sm-8">
-                  {{
-                    t("labels.syncExtension.importedItems.missingComponents")
-                  }}:
-                </dt>
-                <dd class="col-sm-4 text-right">
-                  {{ missingComponents.length }}
-                </dd>
-                <dd class="col-12 missing-items">
-                  <ul>
-                    <li
-                      v-for="item in missingComponents"
-                      :key="`missing-component-${item}`"
-                    >
-                      {{ item }}
-                    </li>
-                  </ul>
-                </dd>
-              </template>
-              <template v-if="missingComponentVehicles.length">
-                <dt class="col-sm-8">
-                  {{
-                    t(
-                      "labels.syncExtension.importedItems.missingComponentVehicles",
-                    )
-                  }}:
-                </dt>
-                <dd class="col-sm-4 text-right">
-                  {{ missingComponentVehicles.length }}
-                </dd>
-                <dd class="col-12 missing-items">
-                  <ul>
-                    <li
-                      v-for="item in missingComponentVehicles"
-                      :key="`missing-component-vehicle-${item}`"
-                    >
-                      {{ item }}
-                    </li>
-                  </ul>
-                </dd>
-              </template>
-              <template v-if="missingUpgrades.length">
-                <dt class="col-sm-8">
-                  {{ t("labels.syncExtension.importedItems.missingUpgrades") }}:
-                </dt>
-                <dd class="col-sm-4 text-right">
-                  {{ missingUpgrades.length }}
-                </dd>
-                <dd class="col-12 missing-items">
-                  <ul>
-                    <li
-                      v-for="item in missingUpgrades"
-                      :key="`missing-upgrade-${item}`"
-                    >
-                      {{ item }}
-                    </li>
-                  </ul>
-                </dd>
-              </template>
-              <template v-if="missingUpgradeVehicles.length">
-                <dt class="col-sm-8">
-                  {{
-                    t(
-                      "labels.syncExtension.importedItems.missingUpgradeVehicles",
-                    )
-                  }}:
-                </dt>
-                <dd class="col-sm-4 text-right">
-                  {{ missingUpgradeVehicles.length }}
-                </dd>
-                <dd class="col-12 missing-items">
-                  <ul>
-                    <li
-                      v-for="item in missingUpgradeVehicles"
-                      :key="`missing-upgrade-vehicle-${item}`"
-                    >
-                      {{ item }}
-                    </li>
-                  </ul>
-                </dd>
-              </template>
-            </dl>
-          </div>
+          <p v-if="unmatchedTotal" class="hangar-sync-result__alert-text">
+            {{ t("texts.syncExtension.unmatched") }}
+          </p>
+          <p
+            v-if="incomplete"
+            class="hangar-sync-result__alert-text"
+            data-test="sync-incomplete"
+          >
+            {{ t("labels.syncExtension.incomplete") }}
+          </p>
+        </Alert>
+        <Alert
+          v-else
+          :variant="AlertVariantsEnum.SUCCESS"
+          :size="AlertSizesEnum.COMPACT"
+        >
+          {{ t("texts.syncExtension.finished") }}
+        </Alert>
+      </div>
+
+      <SyncResultTiles v-if="resultTiles.length" :tiles="resultTiles" />
+
+      <section
+        v-if="unmatchedGroups.length"
+        class="hangar-sync-result__section"
+        data-test="sync-unmatched"
+      >
+        <h3 class="hangar-sync-result__heading">
+          {{ t("labels.syncExtension.unmatchedHeading") }}
+        </h3>
+        <div class="hangar-sync-result__groups">
+          <details
+            v-for="(group, index) in unmatchedGroups"
+            :key="group.key"
+            class="hangar-sync-result__group"
+            :open="index === 0"
+            :data-test="`sync-unmatched-${group.key}`"
+          >
+            <summary class="hangar-sync-result__summary">
+              <i
+                class="fa-light fa-chevron-right hangar-sync-result__chevron"
+                aria-hidden="true"
+              />
+              <span class="hangar-sync-result__summary-label">
+                {{ group.label }}
+              </span>
+              <span class="hangar-sync-result__count">
+                {{ group.items.length }}
+              </span>
+            </summary>
+            <ul class="hangar-sync-result__items">
+              <li v-for="item in group.items" :key="`${group.key}-${item}`">
+                {{ item }}
+              </li>
+            </ul>
+          </details>
         </div>
-      </li>
-    </ul>
-    <transition name="fade">
-      <SupportHint
-        v-if="showSupportHint"
-        inline
-        context="hangarSync"
-        :meta="{ count: importedVehicles.length }"
-        @dismiss="$emit('support-hint-dismiss')"
-      />
-    </transition>
+      </section>
+
+      <details
+        class="hangar-sync-result__group hangar-sync-result__read"
+        data-test="sync-read"
+      >
+        <summary class="hangar-sync-result__summary">
+          <i
+            class="fa-light fa-chevron-right hangar-sync-result__chevron"
+            aria-hidden="true"
+          />
+          <span class="hangar-sync-result__summary-label">
+            {{ t("labels.syncExtension.readFromRsi") }}
+          </span>
+          <span class="hangar-sync-result__summary-detail">
+            {{
+              t("labels.syncExtension.stepDetails.read", {
+                pages: currentPage,
+                count: items.length,
+              })
+            }}
+          </span>
+        </summary>
+        <dl class="hangar-sync-result__chips">
+          <div
+            v-for="entry in readCounts"
+            :key="entry.key"
+            class="hangar-sync-result__chip"
+          >
+            <dt :data-test="entry.dataTest">{{ entry.label }}</dt>
+            <dd>{{ entry.count }}</dd>
+          </div>
+        </dl>
+      </details>
+
+      <transition name="fade">
+        <SupportHint
+          v-if="showSupportHint"
+          inline
+          context="hangarSync"
+          :meta="{ count: result?.importedVehicles?.length ?? 0 }"
+          @dismiss="$emit('support-hint-dismiss')"
+        />
+      </transition>
+    </template>
+
+    <template v-else>
+      <div v-if="finishedWithErrors" data-test="sync-result-status">
+        <Alert
+          v-if="cancelled"
+          :variant="AlertVariantsEnum.NEUTRAL"
+          :size="AlertSizesEnum.COMPACT"
+          :title="t('labels.syncExtension.status.cancelled')"
+        />
+        <Alert
+          v-else
+          :variant="AlertVariantsEnum.DANGER"
+          :size="AlertSizesEnum.COMPACT"
+          :title="
+            failedStep
+              ? t(`labels.syncExtension.failedStep.${failedStep.name}`)
+              : t('labels.syncExtension.status.failed')
+          "
+        >
+          <template v-if="failedStep?.name === 'submitData'">
+            {{ t("texts.syncExtension.partialFailure") }}
+          </template>
+        </Alert>
+      </div>
+
+      <SyncSteps :steps="steps">
+        <template #step-fetchHangar>
+          <dl v-if="readCounts.length" class="hangar-sync-result__chips">
+            <div
+              v-for="entry in readCounts"
+              :key="entry.key"
+              class="hangar-sync-result__chip"
+            >
+              <dt :data-test="entry.dataTest">{{ entry.label }}</dt>
+              <dd>{{ entry.count }}</dd>
+            </div>
+          </dl>
+        </template>
+      </SyncSteps>
+    </template>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.process-steps-list {
-  .process-steps-item {
-    margin-bottom: 10px;
+.hangar-sync-result {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
 
-    .process-steps-item-title {
-      position: relative;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-right: 10px;
-      margin-bottom: 10px;
+.hangar-sync-result__alert-text {
+  margin: 0;
 
-      p {
-        margin-bottom: 0;
-      }
-    }
+  & + & {
+    margin-top: 6px;
+  }
+}
 
-    .process-steps-item-info {
-      margin-left: 30px;
-      margin-right: 10px;
+.hangar-sync-result__section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 
-      dl {
-        font-size: 90%;
-      }
+.hangar-sync-result__heading {
+  margin: 0;
+  color: var(--color-text-dim, #959595);
+  font-size: 12px;
+  font-weight: normal;
+  font-family: inherit;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
 
-      dt {
-        font-weight: normal;
-      }
-    }
+.hangar-sync-result__groups {
+  border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+  border-radius: var(--radius-surface-slim, 12px);
+}
 
-    .sync-warnings {
-      margin-top: 1rem;
-      margin-right: 10px;
+.hangar-sync-result__group + .hangar-sync-result__group {
+  border-top: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));
+}
 
-      &__title {
-        color: $warning;
-        font-weight: bold;
-        text-transform: uppercase;
-        font-size: 0.85rem;
-        letter-spacing: 0.05em;
-        margin-bottom: 0.5rem;
-      }
+.hangar-sync-result__read {
+  border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+  border-radius: var(--radius-surface-slim, 12px);
+}
 
-      &__body {
-        margin-left: 30px;
+.hangar-sync-result__summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  cursor: pointer;
+  list-style: none;
 
-        dl {
-          font-size: 90%;
-        }
+  &::-webkit-details-marker {
+    display: none;
+  }
+}
 
-        dt {
-          font-weight: normal;
-        }
+.hangar-sync-result__chevron {
+  color: var(--color-muted, #7a8288);
+  transition: transform 150ms ease;
+}
 
-        .missing-items {
-          margin-bottom: 0.5rem;
+details[open] > .hangar-sync-result__summary .hangar-sync-result__chevron {
+  transform: rotate(90deg);
+}
 
-          ul {
-            margin: 0;
-            padding-left: 1rem;
-            list-style: disc;
-          }
-        }
-      }
-    }
+.hangar-sync-result__summary-label {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.hangar-sync-result__summary-detail {
+  color: var(--color-text-dim, #959595);
+  font-size: 13px;
+}
+
+.hangar-sync-result__count {
+  min-width: 22px;
+  padding: 1px 8px;
+  font-size: 12px;
+  text-align: center;
+  border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
+  border-radius: 999px;
+  font-variant-numeric: tabular-nums;
+}
+
+.hangar-sync-result__items {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0 14px 12px 38px;
+  list-style: none;
+}
+
+.hangar-sync-result__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+}
+
+.hangar-sync-result__read .hangar-sync-result__chips {
+  padding: 0 14px 12px;
+}
+
+.hangar-sync-result__chip {
+  display: inline-flex;
+  gap: 6px;
+  padding: 3px 10px;
+  font-size: 13px;
+  border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+  border-radius: 999px;
+
+  dt {
+    font-weight: normal;
+  }
+
+  dd {
+    margin: 0;
+    color: var(--color-lifted, #eee);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
   }
 }
 </style>

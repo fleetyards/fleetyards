@@ -349,7 +349,10 @@
         "notSyncing": "Fuori dalla sincronizzazione:",
         "signedOutTitle": "Non hai effettuato l'accesso a RSI",
         "signedOut": "Accedi al sito di RSI in questo browser, poi controlla di nuovo.",
-        "sessionHint": "La sincronizzazione legge i tuoi pledge tramite questa sessione."
+        "sessionHint": "La sincronizzazione legge i tuoi pledge tramite questa sessione.",
+        "finished": "Il tuo hangar corrisponde ai tuoi pledge RSI. Tutto è stato abbinato.",
+        "unmatched": "Tutto il resto è stato sincronizzato. Niente di quanto elencato sotto è stato aggiunto al tuo hangar.",
+        "partialFailure": "Alcune modifiche potrebbero essere già nel tuo hangar. Riprovare è sicuro: le navi già sincronizzate vengono abbinate di nuovo, non aggiunte due volte."
       },
       "setEmail": "Per impostare una password, abilitare l'autenticazione a due fattori o ricevere notifiche via email, devi aggiungere un indirizzo email al tuo account. Riceverai un'email di conferma per verificare l'indirizzo.",
       "oauthApplications": {

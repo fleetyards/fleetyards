@@ -350,7 +350,10 @@
         "notSyncing": "Not syncing:",
         "signedOutTitle": "You're not signed in to RSI",
         "signedOut": "Sign in on the RSI website in this browser, then check again.",
-        "sessionHint": "The sync reads your pledges through this session."
+        "sessionHint": "The sync reads your pledges through this session.",
+        "finished": "Your hangar matches your RSI pledges. Nothing was left unmatched.",
+        "unmatched": "Everything else was synced. Nothing listed below was added to your hangar.",
+        "partialFailure": "Some changes may already be in your hangar. Retrying is safe: ships that are already synced are matched again, not added twice."
       },
       "setEmail": "To set a password, enable two-factor authentication, or receive email notifications, you need to add an email address to your account. You will receive a confirmation email to verify the address.",
       "oauthApplications": {

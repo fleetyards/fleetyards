@@ -19,19 +19,24 @@ const mount = (processSteps: SyncProcessStep[]) =>
   });
 
 describe("HangarSyncResult", () => {
-  it("runs the dots on the step in progress, and announces it by name", async () => {
+  it("runs a bar on the step in progress, named by the step", async () => {
     const wrapper = await mount([
       { name: "fetchHangar", status: "success" },
       { name: "submitData", status: "processing" },
     ]);
 
-    const dots = wrapper.findAll("[data-test='loading-dots']");
-    expect(dots).toHaveLength(2);
-    expect(dots[0].find(".loading-dots__dots").exists()).toBe(false);
-    expect(dots[1].find(".loading-dots__dots").exists()).toBe(true);
-    await vi.waitFor(() =>
-      expect(dots[1].find("[role='status']").text()).toContain("…"),
+    expect(
+      wrapper
+        .find("[data-test='sync-step-fetchHangar'] [role='progressbar']")
+        .exists(),
+    ).toBe(false);
+
+    const bar = wrapper.get(
+      "[data-test='sync-step-submitData'] [role='progressbar']",
     );
+    expect(bar.attributes("aria-label")).toBe("Saving to Fleetyards");
+    // Saving is one request: it knows no fraction to report.
+    expect(bar.attributes("aria-valuenow")).toBeUndefined();
   });
 
   it("counts paints and hangar flair among the pledge items, as the sync stores them", async () => {
@@ -76,9 +81,9 @@ describe("HangarSyncResult", () => {
         ]),
     );
 
-    expect(rows["All Pledge Items:"]).toBe("5");
-    expect(rows["Paints:"]).toBe("1");
-    expect(rows["Hangar Flair:"]).toBe("2");
+    expect(wrapper.text()).toContain("Pledge items: 5");
+    expect(rows["Paints"]).toBe("1");
+    expect(rows["Hangar Flair"]).toBe("2");
   });
 
   it("marks paints and hangar flair the sync leaves out as not synced", async () => {
@@ -116,7 +121,7 @@ describe("HangarSyncResult", () => {
     ).toBe(false);
 
     expect(paintsOff.find("[data-test='paints-not-synced']").text()).toBe(
-      "Paints (not synced):",
+      "Paints (not synced)",
     );
 
     const flairOff = await mountWith(true, false);
@@ -176,8 +181,8 @@ describe("HangarSyncResult", () => {
     });
 
     const text = wrapper.text();
-    expect(text).toContain("FPS Gear (not synced):");
-    expect(text).toContain("Other Items (sorted into flair and FPS gear):");
+    expect(text).toContain("FPS Gear (not synced)");
+    expect(text).toContain("Other Items (sorted into flair and FPS gear)");
     expect(wrapper.find("[data-test='equipment-not-synced'] + dd").text()).toBe(
       "1",
     );
@@ -220,6 +225,107 @@ describe("HangarSyncResult", () => {
       "could not be read",
     );
     expect(complete.find("[data-test='sync-incomplete']").exists()).toBe(false);
+  });
+
+  describe("once it has finished", () => {
+    const emptyResult: Result = {
+      importedVehicles: [],
+      foundVehicles: [],
+      movedVehiclesToWanted: [],
+      deletedVehicles: [],
+      groupedVehicles: [],
+      unchangedVehicles: [],
+      missingModels: [],
+      importedComponents: [],
+      foundComponents: [],
+      missingComponents: [],
+      missingComponentVehicles: [],
+      importedUpgrades: [],
+      foundUpgrades: [],
+      missingUpgrades: [],
+      missingUpgradeVehicles: [],
+    };
+    const mountFinished = (extra: Partial<Result>) =>
+      mountWithDefaults(HangarSyncResult, {
+        props: {
+          processSteps: [
+            { name: "fetchHangar", status: "success" },
+            { name: "submitData", status: "success" },
+          ],
+          currentPage: 1,
+          pledges: [],
+          finished: true,
+          finishedWithErrors: false,
+          result: { ...emptyResult, ...extra },
+        },
+      });
+
+    it("leads with the outcome and counts what changed", async () => {
+      const wrapper = await mountFinished({
+        importedVehicles: ["v-1", "v-2"],
+        foundVehicles: ["v-3"],
+      });
+
+      expect(
+        wrapper
+          .find("[data-test='sync-result-status'] .base-alert--success")
+          .exists(),
+      ).toBe(true);
+      expect(
+        wrapper
+          .get("[data-test='sync-result-tile-importedVehicles'] dd")
+          .text(),
+      ).toBe("2");
+      // Nothing to show is not a tile reading zero.
+      expect(
+        wrapper.find("[data-test='sync-result-tile-deletedVehicles']").exists(),
+      ).toBe(false);
+    });
+
+    it("lists what it could not match, the first group open", async () => {
+      const wrapper = await mountFinished({
+        missingModels: ["Mystery Ship", "Unknown Variant"],
+        missingUpgrades: ["Upgrade X"],
+      });
+
+      expect(
+        wrapper
+          .get("[data-test='sync-result-status'] .base-alert--warning")
+          .text(),
+      ).toContain("3 items could not be matched");
+
+      const ships = wrapper.get("[data-test='sync-unmatched-missingModels']");
+      expect(ships.attributes("open")).toBeDefined();
+      expect(ships.findAll("li").map((item) => item.text())).toEqual([
+        "Mystery Ship",
+        "Unknown Variant",
+      ]);
+      expect(
+        wrapper
+          .get("[data-test='sync-unmatched-missingUpgrades']")
+          .attributes("open"),
+      ).toBeUndefined();
+    });
+  });
+
+  // The job writes ship by ship without a transaction, so a failed save may
+  // have changed some already; retrying matches them again.
+  it("names the step that failed, and says a failed save may be partly in", async () => {
+    const wrapper = await mount([
+      { name: "fetchHangar", status: "success" },
+      { name: "submitData", status: "backendFailure" },
+    ]);
+    await wrapper.setProps({ finishedWithErrors: true });
+
+    const status = wrapper.get("[data-test='sync-result-status']");
+    expect(status.find(".base-alert--danger").exists()).toBe(true);
+    expect(status.text()).toContain("Saving to Fleetyards failed");
+    expect(status.text()).toContain("Retrying is safe");
+    expect(
+      wrapper
+        .get("[data-test='sync-step-submitData']")
+        .attributes("data-status"),
+    ).toBe("failed");
   });
 
   it("tells a cancelled run apart from a failed one", async () => {

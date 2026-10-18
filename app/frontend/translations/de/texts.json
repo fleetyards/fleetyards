@@ -350,7 +350,10 @@
         "notSyncing": "Nicht synchronisiert:",
         "signedOutTitle": "Du bist nicht bei RSI angemeldet",
         "signedOut": "Melde dich in diesem Browser auf der RSI-Website an und prüfe dann erneut.",
-        "sessionHint": "Die Synchronisierung liest deine Pledges über diese Sitzung."
+        "sessionHint": "Die Synchronisierung liest deine Pledges über diese Sitzung.",
+        "finished": "Dein Hangar entspricht deinen RSI-Pledges. Alles wurde zugeordnet.",
+        "unmatched": "Alles andere wurde synchronisiert. Nichts von dem unten Aufgeführten wurde deinem Hangar hinzugefügt.",
+        "partialFailure": "Einige Änderungen sind möglicherweise schon in deinem Hangar. Ein erneuter Versuch ist sicher: Bereits synchronisierte Schiffe werden wieder zugeordnet, nicht doppelt hinzugefügt."
       },
       "setEmail": "Um ein Passwort festzulegen, Zwei-Faktor-Authentifizierung zu aktivieren oder E-Mail-Benachrichtigungen zu erhalten, musst du eine E-Mail-Adresse zu deinem Konto hinzufügen. Du erhältst eine Bestätigungs-E-Mail zur Verifizierung.",
       "oauthApplications": {

@@ -2892,8 +2892,8 @@
           "cancelled": "导入已取消"
         },
         "processSteps": {
-          "fetchHangar": "正在从 RSI 机库获取数据",
-          "submitData": "正在提交数据到 Fleetyards.net 后台"
+          "fetchHangar": "正在读取你的 RSI 机库",
+          "submitData": "正在保存到 Fleetyards"
         },
         "sessionStatus": "RSI 会话状态",
         "signedInAs": "已以 %{handle} 登录 RSI",
@@ -2970,7 +2970,22 @@
           "missingUpgrades": "未找到升级",
           "missingUpgradeVehicles": "未找到匹配的飞船用于升级"
         },
-        "incomplete": "您的 RSI 机库中有部分物品无法读取，因此本次未找到的飞船保持不变。"
+        "incomplete": "您的 RSI 机库中有部分物品无法读取，因此本次未找到的飞船保持不变。",
+        "stepDetails": {
+          "reading": "第 %{page} 页 · 目前已读取承诺：%{count}",
+          "read": "已读取页数：%{pages} · 承诺：%{count}",
+          "saving": "正在将你的承诺与机库匹配…"
+        },
+        "unmatchedCount": {
+          "one": "有 1 项无法匹配",
+          "other": "有 %{count} 项无法匹配"
+        },
+        "unmatchedHeading": "无法匹配",
+        "readFromRsi": "从 RSI 读取的内容",
+        "failedStep": {
+          "fetchHangar": "读取你的 RSI 机库失败",
+          "submitData": "保存到 Fleetyards 失败"
+        }
       },
       "cargoGridViewer": {
         "capacity": "容量",

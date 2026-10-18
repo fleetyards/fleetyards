@@ -2892,8 +2892,8 @@
           "cancelled": "Import Cancelled"
         },
         "processSteps": {
-          "fetchHangar": "Fetching Data from the RSI Hangar",
-          "submitData": "Submitting Data to the Fleetyards.net Backend"
+          "fetchHangar": "Reading your RSI hangar",
+          "submitData": "Saving to Fleetyards"
         },
         "sessionStatus": "RSI Session status",
         "signedInAs": "Signed in to RSI as %{handle}",
@@ -2970,7 +2970,22 @@
           "missingUpgrades": "Upgrades not found",
           "missingUpgradeVehicles": "No matching Ship found for Upgrades"
         },
-        "incomplete": "Some items in your RSI hangar could not be read, so ships missing from it were left as they are this time."
+        "incomplete": "Some items in your RSI hangar could not be read, so ships missing from it were left as they are this time.",
+        "stepDetails": {
+          "reading": "Page %{page} · Pledge items so far: %{count}",
+          "read": "Pages read: %{pages} · Pledge items: %{count}",
+          "saving": "Matching your pledges to your hangar…"
+        },
+        "unmatchedCount": {
+          "one": "1 item could not be matched",
+          "other": "%{count} items could not be matched"
+        },
+        "unmatchedHeading": "Could not be matched",
+        "readFromRsi": "What it read from RSI",
+        "failedStep": {
+          "fetchHangar": "Reading your RSI hangar failed",
+          "submitData": "Saving to Fleetyards failed"
+        }
       },
       "cargoGridViewer": {
         "capacity": "Capacity",
