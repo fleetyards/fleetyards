@@ -28,7 +28,8 @@ const submit = (selection: ModelPickerSelection[]) => {
     comlink.emit("trade-routes-model-picked", picked.option.slug);
   }
 
-  comlink.emit("close-modal");
+  // The picker reports its selection as unsaved; it has been used.
+  comlink.emit("close-modal", true);
 };
 </script>
 

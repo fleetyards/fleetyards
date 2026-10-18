@@ -444,20 +444,16 @@ const clearSelection = () => {
   selection.value = [];
 };
 
-const submitted = ref(false);
-
 const save = () => {
   if (!selection.value.length) return;
 
-  submitted.value = true;
   emit("submit", selection.value);
 };
 
 // The search and filters only narrow what is shown, so a pick is the one edit
-// that closing the modal would lose.
-useModalDirty(
-  () => !props.single && !submitted.value && selection.value.length > 0,
-);
+// that closing the modal would lose. Whoever handles the submit closes with
+// force once the pick has been used, so a save that fails still asks.
+useModalDirty(() => !props.single && selection.value.length > 0);
 </script>
 
 <template>

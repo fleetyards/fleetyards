@@ -19,6 +19,7 @@ import { refDebounced } from "@vueuse/core";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
+import { useModalDirty } from "@/shared/components/AppModal/dirty";
 import {
   type Fleet,
   type FleetSquadron,
@@ -134,6 +135,10 @@ const blockedBy = (member: FleetMember) => {
 const options = computed(() => records.value.filter((m) => !alreadyIn(m)));
 
 const selection = ref<FleetMember[]>([]);
+
+// Added members leave the selection, so after a save only the ones that
+// failed are still unsaved.
+useModalDirty(() => selection.value.length > 0);
 
 const isSelected = (member: FleetMember) =>
   selection.value.some((held) => held.id === member.id);
