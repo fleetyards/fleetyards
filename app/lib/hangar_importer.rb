@@ -42,7 +42,14 @@ class HangarImporter
     # user made to a ship that already existed.
     cancelled = false
 
-    items = @import.import_data || []
+    # The Star Citizen: Hangar Extension lists the craft that come with a ship
+    # as entries of their own, `included_with` naming the parent by its matrix
+    # name. A vehicle creates most of those itself, as bundled snub crafts or
+    # loaners, so they run after every parent and only the craft no imported
+    # parent created are kept.
+    standalone, included = (@import.import_data || []).partition { |item| item[:included_with].blank? }
+    items = standalone + included
+    derived_model_ids = {}
 
     PaperTrail.request(enabled: false) do
       items.each_with_index do |item, index|
@@ -55,7 +62,7 @@ class HangarImporter
         # `name` and the ship-matrix name to `matrix`. The alias is the one that
         # misleads -- "F7C-M Super Hornet Heartseeker" maps to the plain Super
         # Hornet -- so the matrix name goes first.
-        names = [item[:matrix], item[:name]].compact_blank.uniq.map { |raw| mapped_name(raw) }
+        names = [item[:matrix], item[:name]].compact_blank.map { |raw| mapped_name(raw) }.uniq
 
         slug = item[:slug].downcase if item[:slug].present?
         slug = item[:paint_slug].downcase if item[:paint_slug].present?
@@ -83,6 +90,12 @@ class HangarImporter
         }
 
         model, model_paint = find_model_or_paint(names, slug)
+        matched_model_id = model&.id || model_paint&.model_id
+
+        next if item[:included_with].present? && derived_model_ids[item[:included_with]]&.include?(matched_model_id)
+
+        record_derived_model_ids(derived_model_ids, item[:matrix], matched_model_id)
+
         if model.present?
           Vehicle.create(params.merge(
             model_id: model.id,
@@ -105,11 +118,12 @@ class HangarImporter
           next
         end
 
-        # The identifier the lookup actually used: `slug` already holds
-        # `paint_slug` where the item carried one. Reporting `item[:slug]`
-        # instead would name a slug that was never queried, and on an item that
-        # carried only a paint it would report nothing -- `missing` is sorted,
-        # and one nil beside a string raises rather than naming either.
+        # The first identifier the lookup used: the matrix name before the
+        # export alias, and `slug` already holds `paint_slug` where the item
+        # carried one. Reporting `item[:slug]` instead would name a slug that was
+        # never queried, and on an item that carried only a paint it would
+        # report nothing -- `missing` is sorted, and one nil beside a string
+        # raises rather than naming either.
         missing_models << (item[:matrix].presence || item[:name].presence || slug)
       end
     end
@@ -185,21 +199,33 @@ class HangarImporter
       .any? { |standard_name| standard_name.to_s.squish.casecmp?(name.to_s.squish) }
   end
 
-  # Each name in turn, the model before a paint, so a paint matched by the
-  # first name never shadows a model matched by the second.
+  # Every name against the models before any against the paints, so a paint
+  # matched by the first name never shadows a model matched by the second.
   private def find_model_or_paint(names, slug)
-    (names.presence || [nil]).each do |name|
-      normalized_name = normalize(name)
-      binds = {name: name&.downcase, slug:, normalized_name:}
+    binds = (names.presence || [nil]).map do |name|
+      {name: name&.downcase, slug:, normalized_name: normalize(name)}
+    end
 
-      model = Model.where((MODEL_FIND_QUERY + MODEL_LEGACY_SLUG_QUERY).join(" OR "), binds).first
+    binds.each do |bind|
+      model = Model.where((MODEL_FIND_QUERY + MODEL_LEGACY_SLUG_QUERY).join(" OR "), bind).first
       return [model, nil] if model.present?
+    end
 
-      model_paint = ModelPaint.includes(:model).where(MODEL_FIND_QUERY.join(" OR "), binds).first
+    binds.each do |bind|
+      model_paint = ModelPaint.includes(:model).where(MODEL_FIND_QUERY.join(" OR "), bind).first
       return [nil, model_paint] if model_paint.present?
     end
 
     [nil, nil]
+  end
+
+  # The models a vehicle of this one creates alongside itself, which
+  # `Vehicle#add_loaners` and `#add_bundled_snub_crafts` draw from.
+  private def record_derived_model_ids(derived_model_ids, matrix, model_id)
+    return if matrix.blank? || model_id.blank? || derived_model_ids.key?(matrix)
+
+    model = Model.find(model_id)
+    derived_model_ids[matrix] = Set.new(model.loaners.ids + model.snub_crafts.ids)
   end
 
   private def mapped_name(name)

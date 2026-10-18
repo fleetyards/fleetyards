@@ -37,11 +37,6 @@ module Imports
           .transform_keys(&:to_sym)
       end.filter do |item|
         item[:type].blank? || item[:type] == "ship"
-      end.reject do |item|
-        # The Star Citizen: Hangar Extension lists the craft bundled with a
-        # ship as entries of their own. A vehicle creates those itself, as
-        # bundled snub crafts or loaners, so importing them doubles each one.
-        item[:included_with].present?
       end
     rescue JSON::ParserError
       nil

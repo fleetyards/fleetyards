@@ -19,21 +19,43 @@ class HangarImportHangarExtensionTest < ActiveSupport::TestCase
     result = ::HangarImporter.new(import_of_example).run
 
     assert_empty result[:missing]
-    assert_equal ["Avenger Titan", "Carrack", "F7C-M Super Hornet Heartseeker Mk I"], result[:imported]
+    assert_includes result[:imported], "Carrack"
     assert_predicate Vehicle.where(user_id: @user.id).purchased, :any?
   end
 
-  test "drops the craft listed as included with another ship" do
-    import = import_of_example
+  # The Carrack creates its Ursa and C8X Pisces itself, as a loaner or a
+  # bundled snub craft. Importing the extension's entries for them as well
+  # would put each one in the hangar twice.
+  test "skips a craft the parent ship already creates" do
+    ursa = Model.find_by!(name: "Ursa")
+    pisces = Model.find_by!(name: "C8X Pisces Expedition")
+    carrack = Model.find_by!(name: "Carrack")
+    ModelLoaner.create!(model: carrack, loaner_model: ursa)
+    ModelLoaner.create!(model: carrack, loaner_model: pisces)
 
-    assert_equal ["Avenger Titan", "Carrack w/C8X", "F7C-M Super Hornet Heartseeker Mk I"],
-      import.import_data.pluck(:matrix)
+    result = ::HangarImporter.new(import_of_example).run
 
-    ::HangarImporter.new(import).run
+    assert_equal ["Avenger Titan", "Carrack", "F7C-M Super Hornet Heartseeker Mk I"], result[:imported]
+    assert_empty Vehicle.where(user_id: @user.id, model: [ursa, pisces], loaner: false, bundled: false)
+  end
 
-    owned = Vehicle.where(user_id: @user.id, loaner: false, bundled: false)
-    assert_equal ["Avenger Titan", "Carrack", "F7C-M Super Hornet Heartseeker Mk I"],
-      owned.joins(:model).order("models.name").pluck("models.name")
+  test "imports an included craft its parent does not create" do
+    result = ::HangarImporter.new(import_of_example).run
+
+    assert_equal ["Avenger Titan", "C8X Pisces Expedition", "Carrack", "F7C-M Super Hornet Heartseeker Mk I", "Ursa"],
+      result[:imported]
+  end
+
+  test "imports an included craft whose parent matched nothing" do
+    import = import_for([
+      {matrix: "Ursa", name: "Ursa", included_with: "Bengal Carrier"},
+      {matrix: "Bengal Carrier", name: "Bengal"}
+    ])
+
+    result = ::HangarImporter.new(import).run
+
+    assert_equal ["Ursa"], result[:imported]
+    assert_equal ["Bengal Carrier"], result[:missing]
   end
 
   test "prefers the matrix name over the export alias" do
