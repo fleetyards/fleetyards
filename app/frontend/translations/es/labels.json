@@ -1371,6 +1371,10 @@
         "fuel": "Combustible",
         "fuelHydrogen": "Hidrógeno",
         "fuelQuantum": "Quantum",
+        "fuelFullMain": "Empuje máximo, principales",
+        "fuelFullAll": "Empuje máximo, todos los propulsores",
+        "durationHoursMinutes": "%{hours} h %{minutes} min",
+        "durationMinutes": "%{minutes} min",
         "hint": "El manejo con boost escala con los pips del motor; todo queda a cero cuando el motor no tiene energía."
       },
       "base": {

@@ -1371,6 +1371,10 @@
         "fuel": "Carburant",
         "fuelHydrogen": "Hydrogène",
         "fuelQuantum": "Quantum",
+        "fuelFullMain": "Pleine poussée, principaux",
+        "fuelFullAll": "Pleine poussée, tous les propulseurs",
+        "durationHoursMinutes": "%{hours} h %{minutes} min",
+        "durationMinutes": "%{minutes} min",
         "hint": "La maniabilité boostée dépend des pips alloués au moteur ; tout est à zéro lorsque le moteur n'est pas alimenté."
       },
       "base": {

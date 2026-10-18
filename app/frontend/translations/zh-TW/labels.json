@@ -1371,6 +1371,10 @@
         "fuel": "燃料",
         "fuelHydrogen": "氫",
         "fuelQuantum": "量子",
+        "fuelFullMain": "全推力，主推進器",
+        "fuelFullAll": "全推力，所有推進器",
+        "durationHoursMinutes": "%{hours} 小時 %{minutes} 分鐘",
+        "durationMinutes": "%{minutes} 分鐘",
         "hint": "加速後的操控性會隨引擎的電力格提升；引擎沒有供電時全部為零。"
       },
       "base": {

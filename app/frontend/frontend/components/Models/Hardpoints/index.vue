@@ -289,6 +289,7 @@ useMetricsMasonry(metricsGrid);
         <ModelFlightMetrics
           :model="model"
           :boost-capacitor="flightController?.boostCapacitor"
+          :hardpoints="loadoutHardpoints"
         />
         <ModelCargoMetrics :model="model" :cargo-holds="cargoHolds" />
         <ModelExternalFuelTanks :model="model" />

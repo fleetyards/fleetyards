@@ -135,3 +135,35 @@ describe("FlightMetrics boost capacitor", () => {
     expect(wrapper.text()).not.toContain("labels.flight.boostCapacitor");
   });
 });
+
+describe("FlightMetrics fuel", () => {
+  it("shows the draw at full thrust and how long the hydrogen lasts", () => {
+    const main = {
+      category: "main_thrusters",
+      component: {
+        typeData: {
+          thrustCapacity: 3_800_000,
+          fuelBurnScuPer10KNewton: 1.274e-6,
+        },
+      },
+    };
+    const wrapper = mount(FlightMetrics, {
+      props: {
+        model: {
+          speeds: { scmSpeed: 110, maxSpeed: 1000 },
+          metrics: { isGroundVehicle: false, hydrogenFuelTankSize: 8.6 },
+        },
+        hardpoints: [main, main, main, main],
+      } as never,
+      global: {
+        provide: { enginePowerRatio: ref(1), enginePowered: ref(true) },
+        stubs: { MetricsCard: { template: "<div><slot /></div>" } },
+      },
+    });
+
+    const mains = wrapper.get("[data-test='flight-fuel-main']").text();
+    expect(mains).toContain("labels.flight.fuelFullMain");
+    expect(mains).toContain("1936.48");
+    expect(mains).toContain("labels.flight.durationHoursMinutes");
+  });
+});

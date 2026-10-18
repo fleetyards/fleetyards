@@ -1371,6 +1371,10 @@
         "fuel": "Fuel",
         "fuelHydrogen": "Hydrogen",
         "fuelQuantum": "Quantum",
+        "fuelFullMain": "Full thrust, main",
+        "fuelFullAll": "Full thrust, all thrusters",
+        "durationHoursMinutes": "%{hours} h %{minutes} min",
+        "durationMinutes": "%{minutes} min",
         "hint": "Boosted handling scales with the engine pips; all zero when the engine is unpowered."
       },
       "base": {

@@ -8,15 +8,25 @@ export default {
 import { useTransition, TransitionPresets } from "@vueuse/core";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import { formatBoostFigure } from "@/frontend/composables/useHardpointStats";
-import type { ComponentBoostCapacitor, Model } from "@/services/fyApi";
+import { fuelDraw, fuelEndurance } from "@/frontend/composables/fuelDraw";
+import type {
+  ComponentBoostCapacitor,
+  Hardpoint,
+  Model,
+} from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
   model: Model;
   boostCapacitor?: ComponentBoostCapacitor;
+  // The ship's hardpoints as fitted, whose thrusters the fuel draw is read off.
+  hardpoints?: Hardpoint[];
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  boostCapacitor: undefined,
+  hardpoints: () => [],
+});
 
 const { t, toNumber } = useI18n();
 
@@ -51,6 +61,45 @@ const hasFuel = computed(
     !!props.model.metrics.hydrogenFuelTankSize ||
     !!props.model.metrics.quantumFuelTankSize,
 );
+
+const duration = (seconds: number) => {
+  const minutes = Math.max(1, Math.round(seconds / 60));
+
+  return minutes >= 60
+    ? t("labels.flight.durationHoursMinutes", {
+        hours: Math.floor(minutes / 60),
+        minutes: minutes % 60,
+      })
+    : t("labels.flight.durationMinutes", { minutes });
+};
+
+// What the thrusters draw at full thrust, and how long the hydrogen lasts at
+// it: on the mains, burning forward, and with every thruster firing, which no
+// ship does for long.
+const fuelRows = computed(() => {
+  const draw = fuelDraw(props.hardpoints);
+  const tank = props.model.metrics.hydrogenFuelTankSize || 0;
+
+  return [
+    { key: "main", label: t("labels.flight.fuelFullMain"), draw: draw.main },
+    { key: "all", label: t("labels.flight.fuelFullAll"), draw: draw.all },
+  ]
+    .filter((row) => row.draw > 0)
+    .map((row) => {
+      const seconds = fuelEndurance(tank, row.draw);
+
+      return {
+        key: row.key,
+        label: row.label,
+        value: [
+          String(toNumber(row.draw, "fuelFlow")),
+          seconds ? duration(seconds) : undefined,
+        ]
+          .filter(Boolean)
+          .join(" · "),
+      };
+    });
+});
 
 // The installed flight controller's boost pool. Ground vehicles have none.
 const boostRows = computed(() => {
@@ -257,6 +306,15 @@ const rotations = computed(() =>
           <span class="metrics-card__row__value">
             {{ toNumber(model.metrics.quantumFuelTankSize, "cargo") }}
           </span>
+        </div>
+        <div
+          v-for="row in fuelRows"
+          :key="row.key"
+          class="metrics-card__row"
+          :data-test="`flight-fuel-${row.key}`"
+        >
+          <span class="metrics-card__row__label">{{ row.label }}</span>
+          <span class="metrics-card__row__value">{{ row.value }}</span>
         </div>
       </div>
     </template>

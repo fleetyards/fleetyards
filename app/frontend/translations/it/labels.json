@@ -1371,6 +1371,10 @@
         "fuel": "Carburante",
         "fuelHydrogen": "Idrogeno",
         "fuelQuantum": "Quantum",
+        "fuelFullMain": "Spinta massima, principali",
+        "fuelFullAll": "Spinta massima, tutti i propulsori",
+        "durationHoursMinutes": "%{hours} h %{minutes} min",
+        "durationMinutes": "%{minutes} min",
         "hint": "La manovrabilità potenziata dipende dai pips del motore; tutto a zero quando il motore non è alimentato."
       },
       "base": {

@@ -1371,6 +1371,10 @@
         "fuel": "Treibstoff",
         "fuelHydrogen": "Hydrogen",
         "fuelQuantum": "Quantum",
+        "fuelFullMain": "Volllast, Haupttriebwerke",
+        "fuelFullAll": "Volllast, alle Triebwerke",
+        "durationHoursMinutes": "%{hours} h %{minutes} min",
+        "durationMinutes": "%{minutes} min",
         "hint": "Das geboostete Handling skaliert mit den Triebwerks-Pips; alles ist null, wenn das Triebwerk keine Energie hat."
       },
       "base": {
