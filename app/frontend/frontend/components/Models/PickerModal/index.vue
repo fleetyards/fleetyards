@@ -143,6 +143,14 @@ const moreFiltersLabel = computed(() =>
   mobile.value ? t("labels.filter") : t("modelPicker.actions.moreFilters"),
 );
 
+// The aria-label replaces the button's content as its name, badge included, so
+// the count has to be spoken from here.
+const moreFiltersAriaLabel = computed(() =>
+  moreFiltersCount.value
+    ? `${moreFiltersLabel.value} (${moreFiltersCount.value})`
+    : moreFiltersLabel.value,
+);
+
 // The sizes the API knows, as the literal keys ContainerFitQuery declares - so
 // the counts below index it without a cast, and a size added on the Ruby side
 // reaches this filter without an edit.
@@ -488,7 +496,7 @@ const save = () => {
             :aria-expanded="moreFiltersOpen"
             aria-controls="model-picker-more-filters"
             v-tooltip="moreFiltersLabel"
-            :aria-label="moreFiltersLabel"
+            :aria-label="moreFiltersAriaLabel"
             data-test="model-picker-more-filters"
             @click="moreFiltersOpen = !moreFiltersOpen"
           >

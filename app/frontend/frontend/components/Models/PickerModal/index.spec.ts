@@ -189,6 +189,11 @@ describe("Models/PickerModal", () => {
     await nextTick();
 
     expect(wrapper.find(".model-picker__filter-count").text()).toBe("1");
+    expect(
+      wrapper
+        .find('[data-test="model-picker-more-filters"]')
+        .attributes("aria-label"),
+    ).toBe("Filter (1)");
     expect(lastQuery()).toEqual({ manufacturerIn: ["misc"] });
   });
 
