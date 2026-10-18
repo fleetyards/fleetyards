@@ -3026,7 +3026,8 @@
           "pending": "未开始",
           "active": "进行中",
           "done": "已完成",
-          "failed": "失败"
+          "failed": "失败",
+          "warning": "已完成，但有警告"
         },
         "lastSync": {
           "of": "/ %{count}",

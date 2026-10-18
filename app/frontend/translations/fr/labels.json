@@ -3026,7 +3026,8 @@
           "pending": "Pas commencé",
           "active": "En cours",
           "done": "Terminé",
-          "failed": "Échoué"
+          "failed": "Échoué",
+          "warning": "Terminé avec des avertissements"
         },
         "lastSync": {
           "of": "sur %{count}",

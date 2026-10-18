@@ -2,6 +2,7 @@ import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { describe, expect, it, vi } from "vitest";
 import Component from "./index.vue";
 import type { SyncStep } from "./types";
+import { h } from "vue";
 
 // jsdom has no matchMedia; a finished step asks it for reduced motion before
 // it folds away.
@@ -61,7 +62,7 @@ describe("HangarSyncSteps", () => {
           { key: "save", label: "Saving", status: "active" },
         ],
       },
-      slots: { "step-read": "<ul class='read-list'><li>Ships</li></ul>" },
+      slots: { "step-read": () => [h("ul", [h("li", "Ships")])] },
     });
 
     const heading = wrapper.get("[data-test='sync-step-read-heading']");

@@ -35,7 +35,9 @@ const hasBody = (step: SyncStep) =>
 // now running is the one in view; its heading opens it again. The last step
 // stays open: it ends the run, and what it says is the run's news.
 const collapsible = (step: SyncStep, index: number) =>
-  step.status === "done" && index < props.steps.length - 1 && hasBody(step);
+  (step.status === "done" || step.status === "warning") &&
+  index < props.steps.length - 1 &&
+  hasBody(step);
 
 const toggled = ref<Record<string, boolean>>({});
 
@@ -61,6 +63,10 @@ const toggle = (step: SyncStep, index: number) => {
       <div class="sync-steps__rail" aria-hidden="true">
         <span class="sync-steps__marker">
           <i v-if="step.status === 'done'" class="fa-solid fa-check" />
+          <i
+            v-else-if="step.status === 'warning'"
+            class="fa-solid fa-exclamation"
+          />
           <i v-else-if="step.status === 'failed'" class="fa-solid fa-xmark" />
           <template v-else>{{ index + 1 }}</template>
         </span>
@@ -245,6 +251,7 @@ const toggle = (step: SyncStep, index: number) => {
 
 .sync-steps__step--active,
 .sync-steps__step--done,
+.sync-steps__step--warning,
 .sync-steps__step--failed {
   .sync-steps__label {
     color: var(--color-lifted, #eee);
@@ -259,6 +266,11 @@ const toggle = (step: SyncStep, index: number) => {
 .sync-steps__step--done .sync-steps__marker {
   color: #8fd18f;
   border-color: var(--color-success, #5cb85c);
+}
+
+.sync-steps__step--warning .sync-steps__marker {
+  color: var(--color-warning, #fa6800);
+  border-color: var(--color-warning, #fa6800);
 }
 
 .sync-steps__step--failed .sync-steps__marker {
