@@ -115,8 +115,10 @@ watch(
   },
 );
 
+// A loadout's fitting is grafted onto the game files' hardpoints, whatever the
+// model's flag says.
 const source = ref(
-  props.model.inGame
+  props.model.inGame || props.fitting
     ? HardpointSourceEnum.GAME_FILES
     : HardpointSourceEnum.SHIP_MATRIX,
 );
