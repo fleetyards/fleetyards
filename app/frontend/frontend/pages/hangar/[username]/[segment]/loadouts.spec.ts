@@ -51,6 +51,10 @@ vi.mock("@/shared/composables/useMobile", () => ({
   useMobile: () => ref(false),
 }));
 
+vi.mock("@/frontend/composables/useFeatures", () => ({
+  useFeatures: () => ({ isFeatureEnabled: () => true }),
+}));
+
 vi.mock("@/shared/composables/useAppNotifications", () => ({
   useAppNotifications: () => ({ displayAlert, displayConfirm: vi.fn() }),
 }));
@@ -98,5 +102,17 @@ describe("HangarVehicleLoadoutsPage", () => {
     await flushPromises();
 
     expect(displayAlert).toHaveBeenCalled();
+  });
+
+  it("starts a new loadout on a ship without modules, which still has parts to fit", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { vehicle },
+    });
+
+    expect(
+      wrapper
+        .get("[data-test='loadouts-new-fleetyards']")
+        .attributes("disabled"),
+    ).toBeUndefined();
   });
 });

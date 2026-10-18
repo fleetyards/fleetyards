@@ -394,7 +394,7 @@ const onToggleVisibility = async (record: VehicleLoadout) => {
         <Btn
           v-if="editorEnabled"
           class="loadouts-page__add"
-          :disabled="!flightReady || !vehicle.model?.hasModules"
+          :disabled="!flightReady"
           data-test="loadouts-new-fleetyards"
           @click="newFleetyardsLoadout"
         >
