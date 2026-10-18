@@ -2776,3 +2776,13 @@ GET /vehicles/{vehicle_id}/loadouts/{id} added the new `Empty` enum value to the
 PUT /vehicles/{vehicle_id}/loadouts/{id} added the new `Empty` enum value to the `items/items/itemType` response property for the response status `200`
 PUT /vehicles/{vehicle_id}/loadouts/{id}/activate added the new `Empty` enum value to the `items/items/itemType` response property for the response status `200`
 GET /wishlist added the new `Empty` enum value to the `items/items/activeLoadout/items/items/itemType` response property for the response status `200`
+GET /equipment added the new `carryable` enum value to the `items/items/equipmentType` response property for the response status `200`
+GET /equipment added the new `container` enum value to the `items/items/equipmentType` response property for the response status `200`
+GET /equipment added the new `flair` enum value to the `items/items/equipmentType` response property for the response status `200`
+GET /equipment added the new `mining_gadget` enum value to the `items/items/equipmentType` response property for the response status `200`
+GET /equipment added the new `sustenance` enum value to the `items/items/equipmentType` response property for the response status `200`
+GET /equipment/{slug} added the new `carryable` enum value to the `equipmentType` response property for the response status `200`
+GET /equipment/{slug} added the new `container` enum value to the `equipmentType` response property for the response status `200`
+GET /equipment/{slug} added the new `flair` enum value to the `equipmentType` response property for the response status `200`
+GET /equipment/{slug} added the new `mining_gadget` enum value to the `equipmentType` response property for the response status `200`
+GET /equipment/{slug} added the new `sustenance` enum value to the `equipmentType` response property for the response status `200`

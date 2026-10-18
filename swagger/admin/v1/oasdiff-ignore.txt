@@ -330,3 +330,23 @@ GET /vehicles removed the optional property `items/items/paint` from the respons
 DELETE /vehicles/{id} removed the optional property `paint` from the response with the `200` status
 GET /vehicles/{id} removed the optional property `paint` from the response with the `200` status
 PUT /vehicles/{id} removed the optional property `paint` from the response with the `200` status
+GET /equipment added the new `carryable` enum value to the `items/items/equipmentType` response property for the response status `200`
+GET /equipment added the new `container` enum value to the `items/items/equipmentType` response property for the response status `200`
+GET /equipment added the new `flair` enum value to the `items/items/equipmentType` response property for the response status `200`
+GET /equipment added the new `mining_gadget` enum value to the `items/items/equipmentType` response property for the response status `200`
+GET /equipment added the new `sustenance` enum value to the `items/items/equipmentType` response property for the response status `200`
+DELETE /equipment/{id} added the new `carryable` enum value to the `equipmentType` response property for the response status `200`
+DELETE /equipment/{id} added the new `container` enum value to the `equipmentType` response property for the response status `200`
+DELETE /equipment/{id} added the new `flair` enum value to the `equipmentType` response property for the response status `200`
+DELETE /equipment/{id} added the new `mining_gadget` enum value to the `equipmentType` response property for the response status `200`
+DELETE /equipment/{id} added the new `sustenance` enum value to the `equipmentType` response property for the response status `200`
+GET /equipment/{id} added the new `carryable` enum value to the `equipmentType` response property for the response status `200`
+GET /equipment/{id} added the new `container` enum value to the `equipmentType` response property for the response status `200`
+GET /equipment/{id} added the new `flair` enum value to the `equipmentType` response property for the response status `200`
+GET /equipment/{id} added the new `mining_gadget` enum value to the `equipmentType` response property for the response status `200`
+GET /equipment/{id} added the new `sustenance` enum value to the `equipmentType` response property for the response status `200`
+PUT /equipment/{id} added the new `carryable` enum value to the `equipmentType` response property for the response status `200`
+PUT /equipment/{id} added the new `container` enum value to the `equipmentType` response property for the response status `200`
+PUT /equipment/{id} added the new `flair` enum value to the `equipmentType` response property for the response status `200`
+PUT /equipment/{id} added the new `mining_gadget` enum value to the `equipmentType` response property for the response status `200`
+PUT /equipment/{id} added the new `sustenance` enum value to the `equipmentType` response property for the response status `200`
