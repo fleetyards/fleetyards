@@ -400,6 +400,35 @@ const figures = computed(() =>
   loadoutDiff.diff(measuredSaved.value, measuredNow.value, COMPONENT_TABS),
 );
 
+// The ship as the game files deliver it: the modules it comes with, and the
+// stock part in every other slot.
+const stockModules = computed(() => modules.value.filter((mod) => mod.stock));
+
+const measuredStock = computed(() =>
+  loadoutDiff.measure({
+    hullCargo: hullCargo.value,
+    modules: stockModules.value,
+    hardpoints: modelHardpoints.value ?? [],
+    tree: fitting.resolve(
+      hullSlots.value ?? [],
+      Object.fromEntries(
+        stockModules.value.flatMap((mod) =>
+          mod.slot ? [[mod.slot, mod.id]] : [],
+        ),
+      ),
+    ),
+    weaponPoolSize: model.value?.metrics.weaponPoolSize,
+  }),
+);
+
+// What the fitting on screen changes against the stock ship, as the loadout's
+// page and read view list it.
+const changesFromStock = computed(
+  () =>
+    loadoutDiff.diff(measuredStock.value, measuredNow.value, COMPONENT_TABS)
+      .changed,
+);
+
 // The open tab's figures, each with how far it moved from the saved loadout.
 const tabMetrics = computed(() => {
   if (currentTab.value === VehicleLoadoutTabsEnum.MODULES) {
@@ -975,6 +1004,13 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
           :title="t('labels.loadoutPicker.changed')"
           :figures="changedFigures"
           test-id="vehicle-loadout-changes"
+        />
+
+        <LoadoutChanges
+          v-if="changesFromStock.length"
+          :title="t('labels.vehicleLoadout.againstStock')"
+          :figures="changesFromStock"
+          test-id="vehicle-loadout-changes-from-stock"
         />
       </aside>
 

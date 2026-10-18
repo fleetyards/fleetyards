@@ -224,6 +224,21 @@ describe("VehicleLoadoutModal", () => {
     expect(cargo(wrapper)).toContain("+32");
   });
 
+  it("lists what the fitting changes from the stock ship beside what changed since saving", async () => {
+    const wrapper = await mountModal(
+      vehicle(["m1", "m2"], { fitted: { hardpoint_module: "m1" } }),
+    );
+
+    expect(wrapper.find("[data-test='vehicle-loadout-changes']").exists()).toBe(
+      false,
+    );
+    expect(
+      wrapper
+        .get("[data-test='vehicle-loadout-changes-from-stock-cargo']")
+        .text(),
+    ).toContain("+32");
+  });
+
   it("previews the option under the pointer, then returns to what is picked", async () => {
     const wrapper = await mountModal(
       vehicle(["m1", "m2"], { fitted: { hardpoint_module: "m2" } }),
