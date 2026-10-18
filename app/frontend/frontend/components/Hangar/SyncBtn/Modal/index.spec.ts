@@ -699,6 +699,23 @@ describe("HangarSyncModal", () => {
     );
   });
 
+  it("links no import while a retry's save is still out", async () => {
+    const { wrapper } = await mountModal();
+
+    await submitHangar(wrapper);
+    useHangarSync().receive({
+      status: "failed",
+      error: "boom",
+    } as HangarSyncData);
+    await flushPromises();
+
+    mutateAsync.mockImplementationOnce(() => new Promise(() => {}));
+    await wrapper.find("[data-test='start-sync']").trigger("click");
+    await flushPromises();
+
+    expect(useHangarSync().importId.value).toBeUndefined();
+  });
+
   it("offers Refresh, not Back, when the extension goes away in the settings", async () => {
     const { wrapper, hangarStore } = await mountModal();
 

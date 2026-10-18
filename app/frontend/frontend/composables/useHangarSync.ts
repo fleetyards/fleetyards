@@ -195,6 +195,9 @@ export const useHangarSync = () => {
 
     updateStep("submitData", "processing");
     submitted.value = false;
+    // A retry's import is a new one: until the server answers, the failed one
+    // is neither linked nor reported as sent.
+    importId.value = undefined;
 
     const version = reportExtensionVersion(extensionVersion);
 
