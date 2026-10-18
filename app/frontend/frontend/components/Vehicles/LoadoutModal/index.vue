@@ -1495,42 +1495,42 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
     </form>
 
     <template v-if="editable && flightReady" #footer-start>
-    <div
-      class="vehicle-loadout__identity"
-      data-test="vehicle-loadout-identity"
-    >
-      <FormInput
-        name="loadoutName"
-        :label="t('labels.vehicleLoadout.loadoutName')"
-        :placeholder="t('labels.vehicleLoadout.loadoutName')"
-        no-label
-        inline
-        class="vehicle-loadout__name"
-        data-test="vehicle-loadout-name"
-      />
-      <FormToggle
-        :model-value="loadoutPublic"
-        name="loadoutPublic"
-        :label="t('labels.loadout.public')"
-        :disabled="savingPublic"
-        no-placeholder
-        class="vehicle-loadout__switch"
-        data-test="vehicle-loadout-public"
-        @update:model-value="onTogglePublic"
-      />
-      <SavedIndicator v-if="editedLoadout" ref="publicSaved" />
-      <FormToggle
-        :model-value="loadoutActive"
-        name="loadoutActive"
-        :label="t('labels.loadout.active')"
-        :disabled="activating || (!!editedLoadout && editedLoadout.active)"
-        no-placeholder
-        class="vehicle-loadout__switch"
-        data-test="vehicle-loadout-active"
-        @update:model-value="onToggleActive"
-      />
-      <SavedIndicator v-if="editedLoadout" ref="activeSaved" />
-    </div>
+      <div
+        class="vehicle-loadout__identity"
+        data-test="vehicle-loadout-identity"
+      >
+        <FormInput
+          name="loadoutName"
+          :label="t('labels.vehicleLoadout.loadoutName')"
+          :placeholder="t('labels.vehicleLoadout.loadoutName')"
+          no-label
+          inline
+          class="vehicle-loadout__name"
+          data-test="vehicle-loadout-name"
+        />
+        <FormToggle
+          :model-value="loadoutPublic"
+          name="loadoutPublic"
+          :label="t('labels.loadout.public')"
+          :disabled="savingPublic"
+          no-placeholder
+          class="vehicle-loadout__switch"
+          data-test="vehicle-loadout-public"
+          @update:model-value="onTogglePublic"
+        />
+        <SavedIndicator v-if="editedLoadout" ref="publicSaved" />
+        <FormToggle
+          :model-value="loadoutActive"
+          name="loadoutActive"
+          :label="t('labels.loadout.active')"
+          :disabled="activating || (!!editedLoadout && editedLoadout.active)"
+          no-placeholder
+          class="vehicle-loadout__switch"
+          data-test="vehicle-loadout-active"
+          @update:model-value="onToggleActive"
+        />
+        <SavedIndicator v-if="editedLoadout" ref="activeSaved" />
+      </div>
     </template>
 
     <template v-if="editable" #footer>
