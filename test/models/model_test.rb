@@ -394,6 +394,22 @@ class ModelTest < ActiveSupport::TestCase
     assert_not model.changed?, "nothing was assigned"
   end
 
+  # The Scorpius's four mains: 15.2 MN at 1.274 µSCU/s per 10 kN is 1936.48
+  # µSCU/s, which erkul rounds to 1936.5.
+  test "#fuel_consumption_from_hardpoints sums what every thruster draws at full thrust" do
+    model = create(:model)
+    main = create(:component, category: "thrusters", type_data: {
+      "thruster_type" => "Main", "thrust_capacity" => 3_800_000.0, "fuel_burn_scu_per10_k_newton" => 1.274e-06
+    })
+    legacy = create(:component, category: "thrusters", type_data: {
+      "thruster_type" => "Retro", "thrust_capacity" => 2_000_000.0, "fuel_burn_rate_per10_k_newton" => 0.03125
+    })
+    4.times { create(:hardpoint, parent: model, component: main) }
+    create(:hardpoint, parent: model, component: legacy)
+
+    assert_in_delta 1936.48, model.reload.fuel_consumption_from_hardpoints
+  end
+
   test "#update_with_facts carries a fuel consumption correction to the build" do
     model = create(:model, fuel_consumption: 1.0)
     create(:model_build, model:, fuel_consumption: 42.5)

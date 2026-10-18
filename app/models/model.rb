@@ -875,12 +875,20 @@ class Model < ApplicationRecord
   # Returns rather than assigns, so the loader can put it through `update_params`
   # like every other game-file fact and it reaches the build as well as the row.
   # Assigning it here is what kept it out of both.
+  #
+  # What the ship's thrusters draw from its fuel network at full thrust, in
+  # µSCU per second: each one's draw per 10 kN of thrust times its thrust, as
+  # erkul works it out. A thruster from a tree parsed before the draw was read
+  # adds nothing rather than a guess.
   def fuel_consumption_from_hardpoints(source = ::ScData::Source.current)
     thrusters = thruster_components(source)
 
     thrusters.sum do |thruster|
-      thruster.dig("fuel_burn_rate_per10_k_newton").to_f
-    end
+      thrust = thruster["thrust_capacity"].to_f
+      draw = thruster["fuel_burn_scu_per10_k_newton"].to_f
+
+      thrust / 10_000 * draw * 1_000_000
+    end.round(2)
   end
 
   def rsi_store_url
