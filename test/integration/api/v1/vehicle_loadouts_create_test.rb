@@ -53,6 +53,48 @@ class Api::V1::VehicleLoadoutsCreateTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "POST /vehicles/:vehicle_id/loadouts makes the first loadout of a public ship public" do
+    @vehicle.update!(public: true)
+    sign_in @user
+
+    assert_api_response :post, 201,
+      path_params: {vehicle_id: @vehicle.id},
+      body: {url: "https://erkul.games/loadout/first"} do
+      assert parsed_body["public"]
+    end
+  end
+
+  test "POST /vehicles/:vehicle_id/loadouts keeps a loadout private beside an active one, or on a hidden ship" do
+    @vehicle.update!(public: true)
+    create(:vehicle_loadout, vehicle: @vehicle, active: true)
+    sign_in @user
+
+    assert_api_response :post, 201,
+      path_params: {vehicle_id: @vehicle.id},
+      body: {url: "https://erkul.games/loadout/second"} do
+      refute parsed_body["public"]
+    end
+
+    other = create(:vehicle, user: @user, public: false, model: create(:model, production_status: "flight-ready"))
+
+    assert_api_response :post, 201,
+      path_params: {vehicle_id: other.id},
+      body: {url: "https://erkul.games/loadout/hidden"} do
+      refute parsed_body["public"]
+    end
+  end
+
+  test "POST /vehicles/:vehicle_id/loadouts takes the visibility it is given" do
+    @vehicle.update!(public: true)
+    sign_in @user
+
+    assert_api_response :post, 201,
+      path_params: {vehicle_id: @vehicle.id},
+      body: {url: "https://erkul.games/loadout/private", public: false} do
+      refute parsed_body["public"]
+    end
+  end
+
   test "POST /vehicles/:vehicle_id/loadouts returns 404 for missing vehicle" do
     sign_in @user
 

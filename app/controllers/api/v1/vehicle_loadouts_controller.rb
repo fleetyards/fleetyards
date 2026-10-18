@@ -27,6 +27,7 @@ module Api
         authorize! with: VehicleLoadoutPolicy
 
         @vehicle_loadout = @vehicle.vehicle_loadouts.new(vehicle_loadout_params)
+        @vehicle_loadout.public = @vehicle_loadout.public_by_default? unless vehicle_loadout_params.key?(:public)
 
         if @vehicle_loadout.save
           render status: :created

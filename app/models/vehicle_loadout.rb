@@ -59,6 +59,13 @@ class VehicleLoadout < ApplicationRecord
   # active one on the ship's plaque.
   scope :public_loadouts, -> { where(public: true) }
 
+  # A ship's first loadout becomes its default, and on a ship its owner shows
+  # publicly that one is shown too, as the plaque showed the active loadout
+  # before loadouts had a visibility. Any other starts private.
+  def public_by_default?
+    vehicle.public? && vehicle.vehicle_loadouts.active.where.not(id:).none?
+  end
+
   # Iterated rather than `update_all` so the loadout that stops being active
   # files a version too: a history saying only what was switched on would not
   # say what it replaced. Scoped to the active ones, which the switch itself
