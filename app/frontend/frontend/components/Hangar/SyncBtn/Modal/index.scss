@@ -9,29 +9,6 @@
   line-height: 1.55;
 }
 
-.hangar-sync__points {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-
-  li {
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-    line-height: 1.5;
-  }
-
-  i {
-    flex-shrink: 0;
-    width: 16px;
-    color: var(--color-muted, #7a8288);
-    text-align: center;
-  }
-}
-
 // One frame around rows that belong together, divided rather than boxed.
 .hangar-sync__list {
   margin: 0;

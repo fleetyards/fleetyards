@@ -11,6 +11,7 @@ import { AlertVariantsEnum } from "@/shared/components/base/Alert/types";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import SupportHint from "@/shared/components/SupportHint/index.vue";
 import SyncSteps from "@/frontend/components/Hangar/SyncSteps/index.vue";
+import SyncPoints from "@/frontend/components/Hangar/SyncPoints/index.vue";
 import type {
   SyncStep,
   SyncStepStatus,
@@ -386,20 +387,22 @@ const cancelRun = () => {
         :hint="t('texts.buybackSync.sessionHint')"
         @recheck="checkRSIIdentity"
       />
-      <ul class="buyback-sync__points">
-        <li>
-          <i class="fa-light fa-arrow-right" aria-hidden="true" />
-          {{ t("texts.buybackSync.pointReplace") }}
-        </li>
-        <li>
-          <i class="fa-light fa-check" aria-hidden="true" />
-          {{ t("texts.buybackSync.pointUntouched") }}
-        </li>
-        <li>
-          <i class="fa-light fa-clock" aria-hidden="true" />
-          {{ t("texts.buybackSync.pointBackground") }}
-        </li>
-      </ul>
+      <SyncPoints
+        :points="[
+          {
+            icon: 'fa-light fa-arrow-right',
+            text: t('texts.buybackSync.pointReplace'),
+          },
+          {
+            icon: 'fa-light fa-check',
+            text: t('texts.buybackSync.pointUntouched'),
+          },
+          {
+            icon: 'fa-light fa-clock',
+            text: t('texts.buybackSync.pointBackground'),
+          },
+        ]"
+      />
       <Alert
         v-if="extensionSupportsDetails"
         :variant="AlertVariantsEnum.INFO"
@@ -523,29 +526,6 @@ const cancelRun = () => {
 .buyback-sync__text {
   margin: 0;
   line-height: 1.55;
-}
-
-.buyback-sync__points {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-
-  li {
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-    line-height: 1.5;
-  }
-
-  i {
-    flex-shrink: 0;
-    width: 16px;
-    color: var(--color-muted, #7a8288);
-    text-align: center;
-  }
 }
 
 .buyback-sync__note {

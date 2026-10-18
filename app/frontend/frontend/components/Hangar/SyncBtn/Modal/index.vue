@@ -16,6 +16,7 @@ import { useHangarStore } from "@/frontend/stores/hangar";
 import { useRouter, useRoute } from "vue-router";
 import SyncExtensionLinks from "@/frontend/components/SyncExtensionLinks/index.vue";
 import SyncSessionStatus from "@/frontend/components/Hangar/SyncSessionStatus/index.vue";
+import SyncPoints from "@/frontend/components/Hangar/SyncPoints/index.vue";
 import HangarGroupsSelect from "@/frontend/components/base/HangarGroupsSelect/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
@@ -297,11 +298,7 @@ const refreshPage = async () => {
         <SyncExtensionLinks list />
       </div>
       <div v-else-if="!started" class="hangar-sync">
-        <div
-          v-if="settingsOpen"
-          class="hangar-sync hangar-sync--settings"
-          data-test="sync-settings"
-        >
+        <div v-if="settingsOpen" class="hangar-sync" data-test="sync-settings">
           <section class="hangar-sync__section">
             <h3 class="hangar-sync__heading">
               {{ t("labels.syncExtension.whatToSync") }}
@@ -365,16 +362,18 @@ const refreshPage = async () => {
             :hint="t('texts.syncExtension.sessionHint')"
             @recheck="checkRSIIdentity"
           />
-          <ul class="hangar-sync__points">
-            <li>
-              <i class="fa-light fa-arrow-right" aria-hidden="true" />
-              {{ t("texts.syncExtension.pointMatch") }}
-            </li>
-            <li>
-              <i class="fa-light fa-plus" aria-hidden="true" />
-              {{ t("texts.syncExtension.pointAdd") }}
-            </li>
-          </ul>
+          <SyncPoints
+            :points="[
+              {
+                icon: 'fa-light fa-arrow-right',
+                text: t('texts.syncExtension.pointMatch'),
+              },
+              {
+                icon: 'fa-light fa-plus',
+                text: t('texts.syncExtension.pointAdd'),
+              },
+            ]"
+          />
           <dl class="hangar-sync__list hangar-sync__summary">
             <div class="hangar-sync__summary-row">
               <div class="hangar-sync__summary-text">
