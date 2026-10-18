@@ -2861,7 +2861,6 @@
         "extensionVersion": "Version installée de l'extension",
         "detailsProgress": "Lecture des prix de rachat",
         "pages": "Pages",
-        "found": "Pledges rachetables trouvés",
         "added": "Nouveaux",
         "removed": "Supprimés",
         "prices": "Prix lus",
@@ -2879,7 +2878,6 @@
           "failed": "Échec"
         },
         "stepDetails": {
-          "reading": "Page %{page} · Pledges rachetables trouvés jusqu'ici : %{count}",
           "saved": "Nouveaux : %{added} · Retirés : %{removed}",
           "prices": "%{done} sur %{total}",
           "pricesPending": "Pour les pledges nouveaux depuis la dernière synchronisation",

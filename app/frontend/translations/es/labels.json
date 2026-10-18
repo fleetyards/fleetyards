@@ -2861,7 +2861,6 @@
         "extensionVersion": "Versión instalada de la extensión",
         "detailsProgress": "Leyendo precios de recompra",
         "pages": "Páginas",
-        "found": "Pledges de recompra encontrados",
         "added": "Nuevos",
         "removed": "Eliminados",
         "prices": "Precios leídos",
@@ -2879,7 +2878,6 @@
           "failed": "Fallido"
         },
         "stepDetails": {
-          "reading": "Página %{page} · Pledges de recompra hasta ahora: %{count}",
           "saved": "Nuevos: %{added} · Eliminados: %{removed}",
           "prices": "%{done} de %{total}",
           "pricesPending": "Para los pledges nuevos desde la última sincronización",

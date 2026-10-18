@@ -2861,7 +2861,6 @@
         "extensionVersion": "Installierte Erweiterungsversion",
         "detailsProgress": "Rückkaufpreise werden gelesen",
         "pages": "Seiten",
-        "found": "Gefundene Rückkauf-Pledges",
         "added": "Neu",
         "removed": "Entfernt",
         "prices": "Preise gelesen",
@@ -2879,7 +2878,6 @@
           "failed": "Fehlgeschlagen"
         },
         "stepDetails": {
-          "reading": "Seite %{page} · Bisher gefundene Rückkauf-Pledges: %{count}",
           "saved": "Neu: %{added} · Entfernt: %{removed}",
           "prices": "%{done} von %{total}",
           "pricesPending": "Für die seit der letzten Synchronisierung neuen Pledges",

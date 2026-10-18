@@ -2861,7 +2861,6 @@
         "extensionVersion": "Versione installata dell'estensione",
         "detailsProgress": "Lettura dei prezzi di riacquisto",
         "pages": "Pagine",
-        "found": "Pledge riacquistabili trovati",
         "added": "Nuovi",
         "removed": "Rimossi",
         "prices": "Prezzi letti",
@@ -2879,7 +2878,6 @@
           "failed": "Non riuscito"
         },
         "stepDetails": {
-          "reading": "Pagina %{page} · Pledge riacquistabili finora: %{count}",
           "saved": "Nuovi: %{added} · Rimossi: %{removed}",
           "prices": "%{done} di %{total}",
           "pricesPending": "Per i pledge nuovi dall'ultima sincronizzazione",

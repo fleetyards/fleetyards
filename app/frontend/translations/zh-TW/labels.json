@@ -2861,7 +2861,6 @@
         "extensionVersion": "已安裝的擴充功能版本",
         "detailsProgress": "正在讀取回購價格",
         "pages": "頁數",
-        "found": "找到的可回購承諾",
         "added": "新增",
         "removed": "已移除",
         "prices": "已讀取價格",
@@ -2879,7 +2878,6 @@
           "failed": "失敗"
         },
         "stepDetails": {
-          "reading": "第 %{page} 頁 · 目前找到的可回購承諾：%{count}",
           "saved": "新增：%{added} · 移除：%{removed}",
           "prices": "%{done} / %{total}",
           "pricesPending": "針對上次同步後新增的承諾",

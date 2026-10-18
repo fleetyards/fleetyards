@@ -2861,7 +2861,6 @@
         "extensionVersion": "已安装的扩展版本",
         "detailsProgress": "正在读取回购价格",
         "pages": "页数",
-        "found": "找到的可回购承诺",
         "added": "新增",
         "removed": "已移除",
         "prices": "已读取价格",
@@ -2879,7 +2878,6 @@
           "failed": "失败"
         },
         "stepDetails": {
-          "reading": "第 %{page} 页 · 目前找到的可回购承诺：%{count}",
           "saved": "新增：%{added} · 移除：%{removed}",
           "prices": "%{done} / %{total}",
           "pricesPending": "针对上次同步后新增的承诺",

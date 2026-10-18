@@ -2861,7 +2861,6 @@
         "extensionVersion": "Installed extension version",
         "detailsProgress": "Reading buy-back prices",
         "pages": "Pages",
-        "found": "Buy-back pledges found",
         "added": "New",
         "removed": "Removed",
         "prices": "Prices read",
@@ -2879,7 +2878,6 @@
           "failed": "Failed"
         },
         "stepDetails": {
-          "reading": "Page %{page} · Buy-back pledges so far: %{count}",
           "saved": "New: %{added} · Removed: %{removed}",
           "prices": "%{done} of %{total}",
           "pricesPending": "For the pledges new since the last sync",
