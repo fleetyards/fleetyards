@@ -56,6 +56,59 @@ module ScData
         assert_equal [gun], slots.sole.children.map(&:component)
       end
 
+      # A parsed item for the loader to read a part's own default from.
+      private def with_parsed_item(key, default_loadout)
+        Dir.mktmpdir do |dir|
+          loader = ::ScData::Loader::BaseLoader.new(base_folder: dir)
+          path = loader.export_path.join("items", "#{key.downcase}.json")
+          FileUtils.mkdir_p(path.dirname)
+          path.write({key:, default_loadout:}.to_json)
+
+          yield loader
+        end
+      end
+
+      test "fits a turret the ship names without contents as the turret comes" do
+        create(:component, sc_key: "remote_turret", category: "turret")
+        gimbal = create(:component, sc_key: "gimbal_s3", category: "weapon_mounts")
+        gun = create(:component, sc_key: "gun_s3", category: "weapons")
+
+        with_parsed_item("remote_turret", [{
+          "name" => "turret_top", "key" => "gimbal_s3",
+          "default_loadout" => [{"name" => "hardpoint_class_2", "key" => "gun_s3", "default_loadout" => []}]
+        }]) do |loader|
+          turret = loader.send(:resolve_loadout, {"loadout" => [{"name" => "hardpoint_remote_turret", "key" => "remote_turret"}]}).sole
+
+          assert_equal [gimbal], turret.children.map(&:component)
+          assert_equal [gun], turret.children.sole.children.map(&:component)
+          assert_empty turret.children.sole.children.sole.children
+        end
+      end
+
+      test "keeps a slot the ship says holds nothing empty" do
+        create(:component, sc_key: "remote_turret", category: "turret")
+        create(:component, sc_key: "gimbal_s3", category: "weapon_mounts")
+
+        with_parsed_item("remote_turret", [{"name" => "turret_top", "key" => "gimbal_s3"}]) do |loader|
+          turret = loader.send(:resolve_loadout, {"loadout" => [
+            {"name" => "hardpoint_remote_turret", "key" => "remote_turret", "loadout" => []}
+          ]}).sole
+
+          assert_empty turret.children
+        end
+      end
+
+      test "leaves a part that holds no fitted gear to the ship's own loadout" do
+        create(:component, sc_key: "cargo_lift", category: "doors")
+        create(:component, sc_key: "lift_panel")
+
+        with_parsed_item("cargo_lift", [{"name" => "panel", "key" => "lift_panel"}]) do |loader|
+          lift = loader.send(:resolve_loadout, {"loadout" => [{"name" => "hardpoint_lift", "key" => "cargo_lift"}]}).sole
+
+          assert_empty lift.children
+        end
+      end
+
       test "omits a blacklisted entry entirely" do
         slots = resolve({"loadout" => [
           {"name" => "hardpoint_fuelpod_2_console"},

@@ -2,7 +2,11 @@ import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { describe, expect, it } from "vitest";
 import Component from "./index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
-import type { LoadoutPickerOption, LoadoutPickerSort } from "./types";
+import type {
+  LoadoutPickerFacet,
+  LoadoutPickerOption,
+  LoadoutPickerSort,
+} from "./types";
 
 const MANUFACTURERS = ["Behring", "Klaus & Werner", "Hurston Dynamics"];
 
@@ -24,6 +28,7 @@ type Props = {
   selectedId?: string;
   sorts?: LoadoutPickerSort[];
   clearable?: boolean;
+  facets?: LoadoutPickerFacet[];
 };
 
 const mount = (props: Props = {}, attachTo?: Element) =>
@@ -133,8 +138,51 @@ describe("LoadoutPicker", () => {
     );
   });
 
+  it("filters by a facet behind the filter button, leaving out one that narrows nothing", async () => {
+    const wrapper = await mount({
+      options: [
+        {
+          id: "a",
+          name: "Repeater",
+          facets: { type: "Laser Repeater", grade: "A" },
+        },
+        {
+          id: "b",
+          name: "Cannon",
+          facets: { type: "Laser Cannon", grade: "A" },
+        },
+      ],
+      facets: [
+        { key: "type", label: "Type" },
+        { key: "grade", label: "Grade" },
+      ],
+    });
+
+    await wrapper
+      .get("[data-test='loadout-picker-filters-toggle']")
+      .trigger("click");
+
+    expect(
+      wrapper.find("[data-test='loadout-picker-facet-grade']").exists(),
+    ).toBe(false);
+
+    await wrapper
+      .findAllComponents({ name: "BaseChip" })
+      .find((chip) => chip.text().includes("Laser Cannon"))!
+      .vm.$emit("toggle");
+    await nextTick();
+
+    expect(names(wrapper)).toEqual(["Cannon"]);
+    expect(
+      wrapper.get("[data-test='loadout-picker-filters-count']").text(),
+    ).toBe("1");
+  });
+
   it("filters by maker, offered only where there is more than one", async () => {
     const wrapper = await mount();
+    await wrapper
+      .get("[data-test='loadout-picker-filters-toggle']")
+      .trigger("click");
 
     selectFor(wrapper, "loadout-picker-manufacturer")?.vm.$emit(
       "update:modelValue",

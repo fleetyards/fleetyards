@@ -17,8 +17,19 @@ const resolved = () => ({
   error: ref(undefined),
 });
 
+const loadoutSlots = ref<unknown[]>([]);
+const loadoutProblems = ref<unknown[]>([]);
+const hullSlots = ref<unknown[]>([]);
+const modelHardpoints = ref<unknown[]>([]);
+// Whether the cargo module is the one the ship comes with.
+const cargoStock = ref(false);
+
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
+  useVehicleLoadoutSlots: () => ({ data: loadoutSlots, ...resolved() }),
+  useVehicleLoadoutProblems: () => ({ data: loadoutProblems, ...resolved() }),
+  useModelLoadoutSlots: () => ({ data: hullSlots, ...resolved() }),
+  useModelHardpoints: () => ({ data: modelHardpoints, ...resolved() }),
   useModelModules: () => ({
     data: ref({
       items: [
@@ -27,6 +38,7 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
           name: "Cargo Module",
           slot: "hardpoint_front_module",
           metrics: { cargo: 32 },
+          stock: cargoStock.value,
         },
         { id: "m2", name: "Living Module", slot: "hardpoint_rear_module" },
         { id: "m3", name: "Spare Module", slot: "hardpoint_rear_module" },
@@ -95,6 +107,90 @@ describe("VehicleLoadoutView", () => {
     expect(fitted[0]).toContain("Cargo Module");
     expect(fitted[1]).toContain("Living Module");
     expect(wrapper.text()).not.toContain("Spare Module");
+  });
+
+  it("sums up what the modules change against the stock ship", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { vehicle, loadout },
+    });
+
+    expect(
+      wrapper.get("[data-test='vehicle-loadout-view-changes-cargo']").text(),
+    ).toContain("+32");
+  });
+
+  it("counts no change for the module the ship comes with", async () => {
+    cargoStock.value = true;
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: { vehicle, loadout },
+    });
+
+    expect(
+      wrapper.find("[data-test='vehicle-loadout-view-changes-cargo']").exists(),
+    ).toBe(false);
+
+    cargoStock.value = false;
+  });
+
+  it("sums up what a swapped part changes, by the editor's figures, for the owner", async () => {
+    const shield = (id: string, name: string, maxHealth: number) => ({
+      id,
+      name,
+      size: "1",
+      category: "shieldgenerator",
+      type: "Shield",
+      typeData: { maxHealth, maxRegen: 100 },
+    });
+    const stock = shield("s1", "Stock Shield", 1000);
+    const better = shield("s2", "Better Shield", 3000);
+    const slot = {
+      name: "hardpoint_shield_generator",
+      hardpointId: "hull-shield",
+      category: "shieldgenerator",
+      minSize: 1,
+      maxSize: 1,
+      types: ["Shield"],
+      editable: true,
+      stock,
+      slots: [],
+    };
+    hullSlots.value = [slot];
+    loadoutSlots.value = [{ ...slot, fitted: better }];
+    modelHardpoints.value = [
+      {
+        id: "hp-shield",
+        name: "hardpoint_shield_generator",
+        category: "shieldgenerator",
+        component: stock,
+        hardpoints: [],
+      },
+    ];
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        vehicle,
+        loadout: {
+          ...loadout,
+          items: [
+            {
+              slotPath: "hardpoint_shield_generator",
+              itemType: "Component",
+              itemId: "s2",
+            },
+          ],
+        },
+        editable: true,
+      },
+    });
+
+    expect(
+      wrapper.get("[data-test='vehicle-loadout-view-changes-shieldHp']").text(),
+    ).toContain("+2");
+
+    hullSlots.value = [];
+    loadoutSlots.value = [];
+    modelHardpoints.value = [];
   });
 
   it("counts the fitted cargo in the ship's stats", async () => {
@@ -171,5 +267,110 @@ describe("VehicleLoadoutView", () => {
     expect(
       wrapper.find("[data-test='vehicle-loadout-view-edit']").exists(),
     ).toBe(false);
+  });
+});
+
+describe("VehicleLoadoutView components", () => {
+  it("tells the owner which items a new build refuses, and marks the ones still listed", async () => {
+    loadoutProblems.value = [
+      {
+        slotPath: "hardpoint_rear_module",
+        itemType: "ModelModule",
+        itemId: "m2",
+        itemName: "Living Module",
+        code: "module_not_in_slot",
+      },
+      {
+        slotPath: "hardpoint_gone",
+        itemType: "Component",
+        itemId: "x1",
+        itemName: "Gone Gun",
+        code: "slot_unknown",
+      },
+    ];
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: { vehicle, loadout, editable: true },
+    });
+
+    const notice = wrapper.get("[data-test='vehicle-loadout-view-refused']");
+    expect(notice.text()).toContain("Living Module");
+    expect(notice.text()).toContain("Gone Gun");
+    const living = wrapper
+      .findAll("[data-test='vehicle-loadout-view-item']")
+      .find((row) => row.text().includes("Living Module"));
+    expect(living?.text()).toContain("No longer fits");
+
+    loadoutProblems.value = [];
+  });
+
+  it("lists the parts swapped in, by category, for the owner", async () => {
+    loadoutSlots.value = [
+      {
+        name: "hardpoint_gun_nose",
+        hardpointId: "hull-nose",
+        category: "weapon_mounts",
+        types: ["Turret"],
+        editable: true,
+        stock: { id: "g1", name: "Stock Gimbal" },
+        slots: [
+          {
+            name: "hardpoint_class_2",
+            hardpointId: "port",
+            category: "weapons",
+            types: ["WeaponGun"],
+            editable: true,
+            stock: { id: "gun1", name: "Stock Gun" },
+            fitted: { id: "gun2", name: "Other Gun", size: "3" },
+            slots: [],
+          },
+        ],
+      },
+    ];
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: { vehicle, loadout, editable: true },
+    });
+
+    const section = wrapper.get("[data-test='vehicle-loadout-view-weapons']");
+    expect(section.text()).toContain("Gun Nose › Class 2");
+    expect(section.text()).toContain("Other Gun");
+    expect(section.text()).not.toContain("Stock Gimbal");
+
+    loadoutSlots.value = [];
+  });
+
+  it("lists a part swapped in inside a fitted module under its category", async () => {
+    loadoutSlots.value = [
+      {
+        name: "hardpoint_module",
+        hardpointId: "hull-module",
+        category: "module",
+        types: ["Module"],
+        editable: true,
+        slots: [
+          {
+            name: "hardpoint_shield_generator_module",
+            hardpointId: "module-shield",
+            category: "shieldgenerator",
+            types: ["Shield"],
+            editable: true,
+            stock: { id: "s1", name: "Module Shield" },
+            fitted: { id: "s2", name: "Better Shield", size: "1" },
+            slots: [],
+          },
+        ],
+      },
+    ];
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: { vehicle, loadout, editable: true },
+    });
+
+    expect(
+      wrapper.get("[data-test='vehicle-loadout-view-shields']").text(),
+    ).toContain("Better Shield");
+
+    loadoutSlots.value = [];
   });
 });

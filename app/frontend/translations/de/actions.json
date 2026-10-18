@@ -599,9 +599,12 @@
         "showPublic": "Logbuch"
       },
       "vehicleLoadout": {
+        "swapModule": "Modul tauschen",
+        "removeModule": "Modul entfernen",
         "editLoadout": "Loadout bearbeiten",
         "newLoadout": "Neues Loadout",
         "saveLoadout": "Loadout speichern",
+        "saveAsNewLoadout": "Als neues Loadout speichern",
         "viewLoadout": "Loadout ansehen"
       }
     }

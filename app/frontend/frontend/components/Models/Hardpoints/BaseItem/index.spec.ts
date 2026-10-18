@@ -134,6 +134,50 @@ describe("HardpointBaseItem", () => {
     expect(expanded(wrapper)).toBe(true);
   });
 
+  it("splits a stack from its stack button and folds it back from a slot's", async () => {
+    const wrapper = await mountStack(true);
+
+    const split = wrapper.get("[data-test='hardpoint-stack-toggle']");
+    expect(split.find(".fa-layer-group").exists()).toBe(true);
+
+    await split.trigger("click");
+    expect(expanded(wrapper)).toBe(true);
+
+    const fold = wrapper
+      .findAll("[data-test='hardpoint-stack-toggle']")
+      .find((button) => button.find(".fa-compress").exists());
+    await fold!.trigger("click");
+    expect(expanded(wrapper)).toBe(false);
+  });
+
+  it("shows what sits inside a part until its chevron folds it away", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        hardpoints: [
+          {
+            ...gun("mount", true),
+            name: "hardpoint_turret",
+            groupKey: "turret",
+            hardpoints: [gun("inner", true)],
+          } as unknown as Hardpoint,
+        ],
+      },
+      plugins: [router()],
+    });
+    wrappers.push(wrapper);
+
+    const children = () =>
+      wrapper.get(".hardpoint-item__loadout").element.parentElement!.style
+        .display;
+    expect(children()).not.toBe("none");
+
+    await wrapper
+      .get("[data-test='hardpoint-children-toggle']")
+      .trigger("click");
+
+    expect(children()).toBe("none");
+  });
+
   it("shows the figures a quantum drive ranks, in their order, on a row with a stats card", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: { hardpoints: [quantumDrive(HardpointSourceEnum.GAME_FILES)] },

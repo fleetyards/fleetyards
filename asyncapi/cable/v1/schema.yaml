@@ -1515,6 +1515,8 @@ components:
           "$ref": "#/components/schemas/ThrusterClassEnum"
         fuelBurnRatePer10KNewton:
           type: number
+        fuelBurnScuPer10KNewton:
+          type: number
         vtolOnly:
           type: boolean
         gimbal:
@@ -5212,19 +5214,21 @@ components:
         itemId:
           type: string
           format: uuid
+          description: Left out on an Empty item, which holds nothing
       additionalProperties: false
       required:
       - slotPath
       - itemType
-      - itemId
     VehicleLoadoutItemTypeEnum:
       type: string
       enum:
       - ModelModule
       - Component
+      - Empty
       x-enumNames:
       - MODEL_MODULE
       - COMPONENT
+      - EMPTY
     VehicleLoadoutKindEnum:
       type: string
       enum:

@@ -62,9 +62,6 @@ provide(
   computed(() => props.model.metrics?.quantumFuelTankSize),
 );
 
-const density = ref<"compact" | "expanded">("compact");
-provide("hardpointDensity", density);
-
 const { t } = useI18n();
 
 const erkulUrl = computed(() => {
@@ -316,24 +313,6 @@ useMetricsMasonry(metricsGrid);
             aria-hidden="true"
           />
         </a>
-      </div>
-      <div v-if="hardpoints?.length" class="hardpoints__viewbar">
-        <BtnGroup segmented :aria-label="t('labels.hardpoint.density.title')">
-          <Btn
-            :active="density === 'compact'"
-            :aria-pressed="density === 'compact'"
-            @click="density = 'compact'"
-          >
-            {{ t("labels.hardpoint.density.compact") }}
-          </Btn>
-          <Btn
-            :active="density === 'expanded'"
-            :aria-pressed="density === 'expanded'"
-            @click="density = 'expanded'"
-          >
-            {{ t("labels.hardpoint.density.expanded") }}
-          </Btn>
-        </BtnGroup>
       </div>
       <div
         class="hardpoints__list"

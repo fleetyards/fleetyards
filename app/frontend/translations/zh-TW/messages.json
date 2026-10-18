@@ -488,6 +488,12 @@
         "confirmReset": "Are you sure you want to reset all ships and container settings?"
       },
       "confirm": {
+        "vehicleLoadout": {
+          "moduleContents": {
+            "one": "此模組中安裝的部件將一併移除。",
+            "other": "此模組中安裝的 %{count} 個部件將一併移除。"
+          }
+        },
         "vehicle": {
           "destroy": "您確定要從機庫移除此飛船嗎？"
         },

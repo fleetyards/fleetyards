@@ -5,7 +5,11 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { groupBy } from "@/shared/utils/Array";
+import { groupIntoStacks } from "@/frontend/components/Models/Hardpoints/stacks";
+import { partContents } from "@/frontend/components/Models/Hardpoints/contents";
+import { rowPresentation } from "@/frontend/components/Models/Hardpoints/rowPresentation";
+import { useHardpointStack } from "@/frontend/components/Models/Hardpoints/useHardpointStack";
+import HardpointStackToggle from "@/frontend/components/Models/Hardpoints/StackToggle/index.vue";
 import HardpointItem from "@/frontend/components/Models/Hardpoints/Item/index.vue";
 // eslint-disable-next-line import/no-self-import
 import HardpointBaseItem from "@/frontend/components/Models/Hardpoints/BaseItem/index.vue";
@@ -41,38 +45,25 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{ toggle: [] }>();
 
-const { t } = useI18n();
+const { t, toNumber } = useI18n();
 
-const density = inject<Ref<"compact" | "expanded">>(
-  "hardpointDensity",
-  ref("compact"),
-);
+const { isGroup, stackExpanded, toggleExpanded, onRowClick } =
+  useHardpointStack(
+    () => props.hardpoints,
+    () => props.collapsible,
+    () => emit("toggle"),
+  );
 
-const expanded = ref(density.value === "expanded");
+// What sits inside the part -- a turret's guns, a rack's missiles -- shown
+// until folded away, as the loadout editor does. Its category folds them all
+// at once; a row's own chevron still opens or folds it alone afterwards.
+const partsFolded = inject<Ref<boolean>>("hardpointPartsFolded", ref(false));
 
-watch(density, (value) => {
-  expanded.value = value === "expanded";
+const childrenOpen = ref(!partsFolded.value);
+
+watch(partsFolded, (value) => {
+  childrenOpen.value = !value;
 });
-
-const isGroup = computed(() => {
-  return props.hardpoints.length > 1;
-});
-
-const toggleExpanded = () => {
-  expanded.value = !expanded.value;
-};
-
-// Only a real stack (>1 identical mount) collapses to a summary row; single
-// items always render, even when the global density is "expanded".
-const stackExpanded = computed(() => isGroup.value && expanded.value);
-
-const onRowClick = () => {
-  if (props.collapsible) {
-    emit("toggle");
-  } else if (isGroup.value) {
-    toggleExpanded();
-  }
-};
 
 const hardpoint = computed(() => {
   return props.hardpoints[0];
@@ -94,6 +85,23 @@ const detailStats = useHardpointStats(
 );
 const primaryStat = computed(() => detailStats.value.find((s) => s.primary));
 
+// What this kind of hardpoint shows in place of a part's name and figures.
+const presentation = computed(() => rowPresentation(hardpoint.value.category));
+
+const presentedLabel = computed(() =>
+  presentation.value.label?.(hardpoint.value, t),
+);
+
+const headline = computed(() => {
+  if (presentation.value.headline) {
+    return presentation.value.headline(hardpoint.value, t, toNumber);
+  }
+
+  return primaryStat.value
+    ? { value: primaryStat.value.value, unit: primaryStat.value.label }
+    : undefined;
+});
+
 // A consumer that repeats this row across many columns — the compare table — can cap the
 // strip so a cell shows the key metrics instead of the component's whole stat set. The
 // gold headline is never capped; it is the key figure.
@@ -101,11 +109,13 @@ const statLimit = inject<number | undefined>("hardpointStatLimit", undefined);
 
 // A named game-files component opens its stats card from the name, and the
 // card lists every figure, so the row keeps to the ones its type ranks. A row
-// without a card is the only place its figures appear and keeps them all.
+// without a card is the only place its figures appear and keeps them all --
+// as is one whose kind shows a label in place of the name.
 const hasStatsCard = computed(
   () =>
     hardpoint.value.source === HardpointSourceEnum.GAME_FILES &&
-    !!hardpoint.value.component?.name,
+    !!hardpoint.value.component?.name &&
+    !presentedLabel.value,
 );
 
 // Everything except the headline, rather than everything not flagged key. A
@@ -113,6 +123,10 @@ const hasStatsCard = computed(
 // DPS -- and only the first becomes the gold headline, so filtering on the flag
 // dropped the others off the row altogether.
 const inlineStats = computed(() => {
+  if (presentation.value.stats) {
+    return presentation.value.stats(hardpoint.value, t, toNumber);
+  }
+
   let stats = detailStats.value.filter((s) => s !== primaryStat.value);
 
   if (hasStatsCard.value) {
@@ -124,30 +138,10 @@ const inlineStats = computed(() => {
   return typeof statLimit === "number" ? stats.slice(0, statLimit) : stats;
 });
 
-// Cosmetic geometry (turret shells, weapon shrouds, wingtip covers) sits on
-// child ports as nameless `Misc`/`AttachedPart` items that stay uncategorised —
-// they'd render as bare "TBD" rows, unlike a genuinely empty slot, which keeps
-// its category.
-const isCosmetic = (hp: Hardpoint) =>
-  hp.category === HardpointCategoryEnum.UNKNOWN && !hp.component?.name;
-
-const loadout = computed(() => {
-  if (hardpoint.value.hardpoints?.length) {
-    return hardpoint.value.hardpoints.filter((hp) => !isCosmetic(hp));
-  }
-
-  if (
-    hardpoint.value.component?.hardpoints?.length &&
-    hardpoint.value.component.hardpoints[0].component
-  ) {
-    return hardpoint.value.component.hardpoints.filter((hp) => !isCosmetic(hp));
-  }
-
-  return [];
-});
+const loadout = computed(() => partContents(hardpoint.value));
 
 const groupedLoadout = computed(() => {
-  return groupBy<Hardpoint>(loadout.value, "groupKey");
+  return groupIntoStacks(loadout.value);
 });
 
 const hardpointNames = computed(() => {
@@ -171,20 +165,35 @@ const hardpointNames = computed(() => {
     :class="{ 'hardpoint-item--clickable': isGroup || collapsible }"
     @click="onRowClick"
   >
-    <template v-if="isGroup || collapsible" #actions>
-      <span class="hardpoint-item__controls">
+    <template v-if="loadout.length" #actions>
+      <button
+        type="button"
+        class="hardpoint-item__ctl"
+        :aria-expanded="childrenOpen"
+        :aria-label="t(childrenOpen ? 'labels.collapse' : 'labels.expand')"
+        data-test="hardpoint-children-toggle"
+        @click.stop="childrenOpen = !childrenOpen"
+      >
         <i
-          class="fa-solid hardpoint-item__ctl hardpoint-stack-chevron"
-          :class="collapsible ? 'fa-chevron-up' : 'fa-chevron-down'"
+          class="fa-solid"
+          :class="childrenOpen ? 'fa-chevron-up' : 'fa-chevron-down'"
+          aria-hidden="true"
         />
-      </span>
+      </button>
+    </template>
+    <!-- The rest of the row toggles the stack too. -->
+    <template v-if="isGroup || collapsible" #stack>
+      <HardpointStackToggle :split="collapsible" @toggle="onRowClick" />
     </template>
     <template #default>
-      <HardpointSize :size="hardpoint.maxSize" />
+      <HardpointSize v-if="!presentation.sizeless" :size="hardpoint.maxSize" />
       <div class="hardpoint-item__main">
         <HardpointComponent>
           <template v-if="hardpoint.source === HardpointSourceEnum.GAME_FILES">
-            <template v-if="hardpoint.component && hardpoint.component.name">
+            <template v-if="presentedLabel">{{ presentedLabel }}</template>
+            <template
+              v-else-if="hardpoint.component && hardpoint.component.name"
+            >
               <!-- The catalogue link. Only when the component has a slug -- one
                    without a name never got one, and a link to nowhere is worse
                    than plain text -- and only when the catalogue actually
@@ -233,22 +242,24 @@ const hardpointNames = computed(() => {
         />
       </div>
       <HardpointHeadline
-        v-if="primaryStat"
-        :value="primaryStat.value"
-        :unit="primaryStat.label"
+        v-if="headline"
+        :value="headline.value"
+        :unit="headline.unit"
       />
       <HardpointStats :stats="inlineStats" />
     </template>
     <template #loadout>
-      <div v-if="loadout.length" class="hardpoint-item__loadout">
-        <HardpointBaseItem
-          v-for="(items, key) in groupedLoadout"
-          :key="key"
-          :hardpoints="items"
-          :count-multiplier="effectiveCount"
-          intended
-        />
-      </div>
+      <Collapsed v-if="loadout.length" :visible="childrenOpen" :duration="200">
+        <div class="hardpoint-item__loadout">
+          <HardpointBaseItem
+            v-for="(items, key) in groupedLoadout"
+            :key="key"
+            :hardpoints="items"
+            :count-multiplier="effectiveCount"
+            intended
+          />
+        </div>
+      </Collapsed>
     </template>
   </HardpointItem>
 

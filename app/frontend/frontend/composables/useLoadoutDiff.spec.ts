@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 import type { ModelModule } from "@/services/fyApi";
-import { useFittingDiff } from "./useFittingDiff";
+import { useLoadoutDiff, useModuleDiff } from "./useLoadoutDiff";
 
 vi.mock("@/shared/composables/useI18n", () => ({
   useI18n: () => ({
@@ -34,9 +34,9 @@ const medical = (tier: number, name: string, beds: number) =>
     hardpoints: [],
   }) as unknown as ModelModule;
 
-describe("useFittingDiff", () => {
+describe("useLoadoutDiff", () => {
   it("tells medical modules apart by their beds, tier by tier", () => {
-    const { metrics, rows } = useFittingDiff();
+    const { metrics, rows } = useModuleDiff();
 
     const byKey = Object.fromEntries(
       rows(
@@ -60,7 +60,7 @@ describe("useFittingDiff", () => {
   });
 
   it("adds the fitted modules to the hull's figures", () => {
-    const { metrics } = useFittingDiff();
+    const { metrics } = useModuleDiff();
 
     expect(Object.fromEntries(metrics(100, [cargo, torpedoes]))).toEqual({
       cargo: 132,
@@ -69,7 +69,7 @@ describe("useFittingDiff", () => {
   });
 
   it("reads a swap as the compare tool reads two ships", () => {
-    const { metrics, rows } = useFittingDiff();
+    const { metrics, rows } = useModuleDiff();
 
     const [cargoRow, torpedoRow] = rows(
       metrics(100, [torpedoes]),
@@ -95,10 +95,50 @@ describe("useFittingDiff", () => {
   });
 
   it("marks nothing for a swap that changes nothing", () => {
-    const { metrics, rows } = useFittingDiff();
+    const { metrics, rows } = useModuleDiff();
 
     expect(rows(metrics(100, [cargo]), metrics(100, [cargo]))).toEqual([
       expect.objectContaining({ key: "cargo", deltaLabel: undefined }),
     ]);
+  });
+
+  describe("a whole fitting", () => {
+    const fittingWith = (modules: ModelModule[]) => ({
+      hullCargo: 100,
+      modules,
+      hardpoints: [],
+      tree: [],
+    });
+
+    it("sums up what moved, modules included, in one list", () => {
+      const { measure, diff } = useLoadoutDiff();
+
+      const figures = diff(
+        measure(fittingWith([])),
+        measure(fittingWith([cargo, torpedoes])),
+        [],
+      );
+
+      expect(figures.modules.map((figure) => figure.key)).toEqual([
+        "cargo",
+        "torpedoes",
+      ]);
+      expect(figures.changed).toEqual([
+        expect.objectContaining({ key: "cargo", deltaLabel: "+32 SCU" }),
+        expect.objectContaining({ key: "torpedoes", deltaLabel: "+2" }),
+      ]);
+    });
+
+    it("leaves the ship's cards empty until its hardpoints are known", () => {
+      const { measure, diff } = useLoadoutDiff();
+
+      const figures = diff(measure(fittingWith([])), measure(fittingWith([])), [
+        { id: "shields", categories: [] },
+      ]);
+
+      expect(figures.cards.defense).toEqual([]);
+      expect(figures.tabs.shields).toEqual([]);
+      expect(figures.changed).toEqual([]);
+    });
   });
 });

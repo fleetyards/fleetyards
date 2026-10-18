@@ -13,12 +13,18 @@ describe("HardpointCategoryIcon", () => {
     },
   );
 
-  it("draws every category differently", () => {
-    const drawings = Object.values(HARDPOINT_GLYPHS).map(
-      (glyph) => `${glyph.secondary}|${glyph.primary}`,
-    );
+  it("draws every category differently, a mount aside", () => {
+    const drawings = Object.entries(HARDPOINT_GLYPHS)
+      .filter(([category]) => category !== HardpointCategoryEnum.WEAPON_MOUNTS)
+      .map(([, glyph]) => `${glyph.secondary}|${glyph.primary}`);
 
     expect(new Set(drawings).size).toBe(drawings.length);
+  });
+
+  it("draws a weapon mount as the weapon it carries", () => {
+    expect(categoryIcon(HardpointCategoryEnum.WEAPON_MOUNTS)).toBe(
+      HARDPOINT_GLYPHS[HardpointCategoryEnum.WEAPONS],
+    );
   });
 
   it("draws the main thruster for a component's thrusters category", () => {

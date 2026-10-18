@@ -576,6 +576,22 @@ module ScData
         ], parsed_item("radr_multi")["type_data"]["contact_sensitivity"]
       end
 
+      test "reads the fuel a thruster draws from the ship's fuel network" do
+        write_item("thruster_rn", name: "@item_Namethruster_rn", category: "thrusters", components: <<~XML)
+          <SCItemThrusterParams thrustCapacity="3800000" fuelBurnRatePer10KNewton="0.03125" thrusterType="Retro">
+            <fuelBurnRatePer10KNewtonRN>
+              <SStandardResourceUnit standardResourceUnits="1.274E-06" />
+            </fuelBurnRatePer10KNewtonRN>
+          </SCItemThrusterParams>
+        XML
+        write_item("thruster_old", name: "@item_Namethruster_old", category: "thrusters", components: <<~XML)
+          <SCItemThrusterParams thrustCapacity="1000" fuelBurnRatePer10KNewton="0.05" thrusterType="Main" />
+        XML
+
+        assert_in_delta 1.274e-06, parsed_item("thruster_rn")["type_data"]["fuel_burn_scu_per10_k_newton"]
+        assert_nil parsed_item("thruster_old")["type_data"]["fuel_burn_scu_per10_k_newton"]
+      end
+
       test "reads a flex thruster's vectoring range and a VTOL-only thruster" do
         write_item("thruster_flex", name: "@item_Namethruster_flex", category: "thrusters", components: <<~XML)
           <SCItemThrusterParams thrustCapacity="1282107" fuelBurnRatePer10KNewton="0.05" thrusterType="Retro" onlyActiveInVTOL="1">

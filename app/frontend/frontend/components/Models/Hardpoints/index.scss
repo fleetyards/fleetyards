@@ -2,9 +2,8 @@
   min-height: 400px;
 
   // The loadout links and the source switch share one line - they used to be two
-  // stacked rows, which only read as two rows while the metrics grid separated
-  // them from the density switch further down. A ship-matrix view has no
-  // metrics, so all three collapsed into one stack of controls.
+  // stacked rows. A ship-matrix view has no metrics, so they collapsed into one
+  // stack of controls.
   //
   // BtnGroup ships no margin of its own and controls.scss only restores spacing
   // for controls dropped into a grid column, a form or a float - not a flex row
@@ -117,12 +116,6 @@
 
   // Density stays with the hardpoint groups it controls rather than joining the
   // row above, where it would be nowhere near what it changes.
-  &__viewbar {
-    display: flex;
-    align-items: center;
-    margin: 4px 0 16px;
-  }
-
   // The loader sits where the groups arrive rather than over the metrics above
   // them. Before the first answer the slot is empty, so it keeps room for it.
   &__list {

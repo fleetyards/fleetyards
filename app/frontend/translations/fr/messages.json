@@ -488,6 +488,12 @@
         "confirmReset": "Are you sure you want to reset all ships and container settings?"
       },
       "confirm": {
+        "vehicleLoadout": {
+          "moduleContents": {
+            "one": "La pièce montée dans ce module part avec lui.",
+            "other": "Les %{count} pièces montées dans ce module partent avec lui."
+          }
+        },
         "vehicle": {
           "destroy": "Êtes-vous sûr de vouloir supprimer ce vaisseau de votre Hangar ?"
         },

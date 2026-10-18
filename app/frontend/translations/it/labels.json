@@ -2096,11 +2096,6 @@
           "game_files": "File di gioco",
           "ship_matrix": "Ship Matrix"
         },
-        "density": {
-          "title": "Vista",
-          "compact": "Compatta",
-          "expanded": "Estesa"
-        },
         "fuelTanks": {
           "hydrogen": "Serbatoio carburante idrogeno",
           "quantum": "Serbatoio carburante Quantum"
@@ -4380,6 +4375,21 @@
         "comingSoon": "Prossimamente",
         "ownedModules": "I tuoi moduli",
         "nothingFitted": "Niente montato",
+        "refused": {
+          "title": "Non è più compatibile da un aggiornamento del gioco",
+          "removedOnSave": "Salvando, questi vengono rimossi dal loadout.",
+          "editToReplace": "Modifica il loadout per sostituirli.",
+          "badge": "Non più compatibile",
+          "reasons": {
+            "slot_unknown": "la nave non ha più questo slot",
+            "parent_not_fitted": "ciò in cui era montato non c'è più",
+            "module_not_in_slot": "il modulo non è più compatibile con questo slot",
+            "component_not_in_slot": "non è più compatibile con questo slot",
+            "slot_not_editable": "la nave ora blocca questo slot",
+            "nothing_to_empty": "lo slot non contiene più un componente da rimuovere"
+          }
+        },
+        "againstStock": "Modifiche rispetto alla nave di serie",
         "owned": "Posseduto",
         "noSlots": "Su questa nave non si può ancora montare nulla qui",
         "unavailableModule": "Modulo non più disponibile",
@@ -4414,6 +4424,10 @@
         },
         "reset": "Reimposta filtri",
         "leaveEmpty": "Lascia vuoto",
+        "type": "Tipo",
+        "fixedByShip": "Fisso sulla nave",
+        "noOtherPart": "Nessun altro pezzo è compatibile",
+        "changed": "Modificato",
         "noMatches": "Nessun risultato",
         "close": "Chiudi"
       }

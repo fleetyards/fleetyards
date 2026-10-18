@@ -13,6 +13,8 @@ module Shared
             thrusterType: {type: :string},
             thrusterClass: ::Shared::V1::Schemas::Enums::ThrusterClassEnum,
             fuelBurnRatePer10KNewton: {type: :number},
+            # SCU per second for every 10 kN of thrust, drawn from the fuel network.
+            fuelBurnScuPer10KNewton: {type: :number},
             vtolOnly: {type: :boolean},
             gimbal: ComponentThrusterGimbal,
             powerConsumption: {type: :number},

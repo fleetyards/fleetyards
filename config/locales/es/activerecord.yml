@@ -319,6 +319,7 @@ es:
               slot_unknown: "deben indicar una ranura que tenga la nave"
               component_not_in_slot: "deben coincidir con el tipo y el tamaño de su ranura"
               slot_not_editable: "no pueden sustituir una pieza que la ranura tiene fija"
+              nothing_to_empty: "solo pueden vaciar una ranura que tenga una pieza"
         payout_entry:
           attributes:
             entry_type:

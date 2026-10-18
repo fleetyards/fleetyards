@@ -55,6 +55,7 @@ describe("useHardpointStats for mounts", () => {
         label: "labels.hardpoint.turrets.turnRate",
         value: "80 °/s",
         primary: true,
+        raw: 80,
       },
     ]);
   });

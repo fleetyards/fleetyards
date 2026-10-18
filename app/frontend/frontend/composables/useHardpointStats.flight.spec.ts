@@ -110,6 +110,7 @@ describe("useHardpointStats for flight controllers", () => {
         key: "signatureEm",
         label: "labels.hardpoint.signatureEm",
         value: "10",
+        raw: 10,
       },
     ]);
   });

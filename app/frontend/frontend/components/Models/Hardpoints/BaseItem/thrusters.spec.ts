@@ -1,0 +1,111 @@
+import { describe, expect, it } from "vitest";
+import { mountWithDefaults } from "@/shared/utils/TestUtils";
+import {
+  HardpointCategoryEnum,
+  HardpointSourceEnum,
+  type Hardpoint,
+} from "@/services/fyApi";
+import Component from "./index.vue";
+
+const thruster = {
+  id: "1",
+  name: "hardpoint_thruster_retro",
+  source: HardpointSourceEnum.GAME_FILES,
+  category: HardpointCategoryEnum.RETRO_THRUSTERS,
+  maxSize: 2,
+  component: {
+    id: "c1",
+    name: "Retro Thruster",
+    subType: "FlexThruster",
+    typeData: {
+      thrustCapacity: 1_282_107,
+      vtolOnly: true,
+      gimbal: { minPitch: -90, maxPitch: 90 },
+    },
+  },
+} as unknown as Hardpoint;
+
+describe("HardpointBaseItem for thrusters", () => {
+  it("shows a ship thruster's VTOL and vectoring rows beside its thrust", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { hardpoints: [thruster] },
+    });
+
+    const rows = wrapper
+      .findAll(".hardpoint-item__stat")
+      .map((row) => row.text());
+    expect(rows.some((row) => row.includes("VTOL"))).toBe(true);
+    expect(rows.some((row) => row.includes("±90°"))).toBe(true);
+
+    wrapper.unmount();
+  });
+
+  it("leads a stack with the thrust of every thruster in it", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { hardpoints: [thruster, { ...thruster, id: "2" }] },
+    });
+
+    const one = await mountWithDefaults(Component, {
+      props: { hardpoints: [thruster] },
+    });
+    const value = (mounted: typeof wrapper) =>
+      Number(
+        mounted
+          .get(".hardpoint-headline__value")
+          .text()
+          .replace(/[^0-9]/g, ""),
+      );
+
+    expect(value(wrapper)).toBe(value(one) * 2);
+
+    wrapper.unmount();
+    one.unmount();
+  });
+
+  it("splits a stack into its thrusters and folds it back", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { hardpoints: [thruster, { ...thruster, id: "2" }] },
+      attachTo: document.body,
+    });
+    const summary = () =>
+      (wrapper.find(".hardpoint-item").element as HTMLElement).style.display;
+
+    await wrapper.get("[data-test='hardpoint-stack-toggle']").trigger("click");
+    expect(summary()).toBe("none");
+
+    await wrapper
+      .findAll("[data-test='hardpoint-stack-toggle']")
+      .find((button) => button.find(".fa-compress").exists())!
+      .trigger("click");
+    expect(summary()).not.toBe("none");
+
+    wrapper.unmount();
+  });
+
+  it("shows the fuel a stack draws at full thrust, as erkul does", async () => {
+    const main = {
+      ...thruster,
+      component: {
+        ...thruster.component,
+        typeData: {
+          thrustCapacity: 3_800_000,
+          fuelBurnScuPer10KNewton: 1.274e-6,
+        },
+      },
+    } as unknown as Hardpoint;
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        hardpoints: ["1", "2", "3", "4"].map((id) => ({ ...main, id })),
+      },
+    });
+
+    const fuel = wrapper
+      .findAll(".hardpoint-item__stat")
+      .map((row) => row.text())
+      .find((row) => row.includes("µSCU/s"));
+    expect(fuel?.replace(/\s/g, "")).toMatch(/1936[.,]5µSCU\/s/);
+
+    wrapper.unmount();
+  });
+});

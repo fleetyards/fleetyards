@@ -10,7 +10,7 @@ json.url_source vehicle_loadout.url_source if vehicle_loadout.url_source.present
 json.items vehicle_loadout.items do |item|
   json.slot_path item.slot_path
   json.item_type item.item_type
-  json.item_id item.item_id
+  json.item_id item.item_id if item.item_id
 end
 
 json.partial! "api/shared/dates", record: vehicle_loadout

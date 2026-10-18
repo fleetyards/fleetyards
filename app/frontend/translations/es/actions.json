@@ -599,9 +599,12 @@
         "showPublic": "Cuaderno de bitácora"
       },
       "vehicleLoadout": {
+        "swapModule": "Cambiar módulo",
+        "removeModule": "Quitar módulo",
         "editLoadout": "Editar equipamiento",
         "newLoadout": "Nuevo equipamiento",
         "saveLoadout": "Guardar equipamiento",
+        "saveAsNewLoadout": "Guardar como nuevo equipamiento",
         "viewLoadout": "Ver equipamiento"
       }
     }

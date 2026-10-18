@@ -1,22 +1,16 @@
-// Group rows (a stack summary, or an individual mount inside an expanded
-// stack) are clickable to toggle the group; the chevron just indicates state.
+// Group rows (a stack summary, or an individual mount inside a split stack)
+// toggle the group from anywhere on the row; the button says which way.
 .hardpoint-item--clickable {
   cursor: pointer;
 
-  &:hover .hardpoint-stack-chevron {
+  &:hover .hardpoint-stack-toggle {
     color: lighten($text-color, 15%);
+    border-color: rgba($gray-light, 0.6);
   }
 }
 
-// Fixed control rail: details toggle + stack chevron in reserved slots, so the
-// controls sit in the same place on every row regardless of content.
-.hardpoint-item__controls {
-  flex: none;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
+// The loadout editor's row control: a fixed square in the row's rail, so it
+// sits in the same place on every row.
 .hardpoint-item__ctl {
   flex: none;
   width: 24px;
@@ -34,10 +28,16 @@
   transition:
     color 0.15s,
     border-color 0.15s;
-}
 
-.hardpoint-stack-chevron {
-  transition: color 0.2s;
+  &:hover {
+    color: lighten($text-color, 15%);
+    border-color: rgba($gray-light, 0.6);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary, #428bca);
+    outline-offset: 2px;
+  }
 }
 
 // A basis rather than `auto`: the name block asks for enough room to read

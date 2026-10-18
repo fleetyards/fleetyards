@@ -38,6 +38,41 @@
     }
   }
 
+  // The loadout editor's fold-all control, at the heading's end.
+  &__fold {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    margin-left: auto;
+    padding: 0;
+    color: $gray-light;
+    font-size: 11px;
+    background: none;
+    border: 1px solid rgba($gray-light, 0.35);
+    border-radius: 6px;
+    cursor: pointer;
+    transition:
+      color 0.15s,
+      border-color 0.15s;
+
+    &:hover {
+      color: lighten($text-color, 15%);
+      border-color: rgba($gray-light, 0.6);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-primary, #428bca);
+      outline-offset: 2px;
+    }
+  }
+
+  &__link + &__fold {
+    margin-left: 8px;
+  }
+
   &__stat {
     margin-left: auto;
     color: $gold;

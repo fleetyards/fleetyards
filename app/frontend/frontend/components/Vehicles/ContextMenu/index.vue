@@ -85,7 +85,8 @@ const loadoutVisible = computed(() => {
     );
   }
 
-  return !!props.vehicle.model.hasModules;
+  // Every flight-ready ship has something to fit, modules or not.
+  return true;
 });
 
 const { useUpdateMutation, useDestroyMutation } = useVehicleMutations();

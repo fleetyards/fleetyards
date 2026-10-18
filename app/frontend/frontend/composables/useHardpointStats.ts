@@ -63,6 +63,10 @@ export type HardpointStat = {
   // Position on a ship page's hardpoint row; unset when only the stats card
   // shows the figure.
   row?: number;
+  // The number behind `value`, where it is one, so two parts can be compared
+  // on it, and the format `value` was written in, so a sum of them can be too.
+  raw?: number;
+  format?: string;
 };
 
 const ROW_STATS = {
@@ -142,10 +146,7 @@ const THRUSTER_CATEGORIES: HardpointCategoryEnum[] = [
   HardpointCategoryEnum.VTOL_THRUSTERS,
 ];
 
-export const useHardpointStats = (
-  hardpoint: MaybeRefOrGetter<Hardpoint | undefined>,
-  count?: MaybeRefOrGetter<number>,
-) => {
+const hardpointStatsBuilder = (count?: MaybeRefOrGetter<number>) => {
   const { t, toNumber } = useI18n();
 
   // Ship-level quantum fuel capacity (SCU), provided by the hardpoints page.
@@ -180,6 +181,8 @@ export const useHardpointStats = (
     label: t(`labels.hardpoint.${labelKey}`),
     value: String(toNumber(Math.round(value), format)),
     primary,
+    raw: value,
+    format,
   });
 
   // One decimal, not rounded to a whole second: spool, cooldown and
@@ -188,6 +191,8 @@ export const useHardpointStats = (
     key: labelKey,
     label: t(`labels.hardpoint.${labelKey}`),
     value: String(toNumber(value, "seconds")),
+    raw: value,
+    format: "seconds",
   });
 
   // For figures the one-decimal stat format would misstate -- a 0.25 km/s²
@@ -210,6 +215,7 @@ export const useHardpointStats = (
     key: labelKey,
     label: t(`labels.hardpoint.${labelKey}`),
     value: `${precise(value, 2)} s`,
+    raw: value,
   });
 
   const splineAccel = (stageOne: number, stageTwo: number) =>
@@ -475,6 +481,7 @@ export const useHardpointStats = (
           minimum < full
             ? `${precise(minimum)} – ${String(toNumber(full))} ${t("labels.hardpoint.powerSegments")}`
             : `${String(toNumber(full))} ${t("labels.hardpoint.powerSegments")}`,
+        raw: full,
       });
     }
     if (typeof data.signatureEm === "number" && data.signatureEm) {
@@ -482,6 +489,7 @@ export const useHardpointStats = (
         key: "signatureEm",
         label: t("labels.hardpoint.signatureEm"),
         value: String(toNumber(data.signatureEm, "integer")),
+        raw: data.signatureEm,
       });
     }
     if (typeof data.signatureIr === "number" && data.signatureIr) {
@@ -489,6 +497,7 @@ export const useHardpointStats = (
         key: "signatureIr",
         label: t("labels.hardpoint.signatureIr"),
         value: String(toNumber(data.signatureIr, "integer")),
+        raw: data.signatureIr,
       });
     }
 
@@ -564,6 +573,8 @@ export const useHardpointStats = (
     key: labelKey,
     label: t(`labels.hardpoint.${labelKey}`),
     value: String(toNumber(value, format)),
+    raw: value,
+    format,
   });
 
   // One figure when both ends agree, which most blast radii do. Compared at
@@ -580,8 +591,7 @@ export const useHardpointStats = (
     return `${String(toNumber(low, format))} - ${String(toNumber(high, format))}`;
   };
 
-  return computed<HardpointStat[]>(() => {
-    const hp = toValue(hardpoint);
+  return (hp: Hardpoint | undefined): HardpointStat[] => {
     const typeData = hp?.component?.typeData;
     if (!hp || !typeData) return [];
 
@@ -1340,6 +1350,7 @@ export const useHardpointStats = (
               "integer",
             ),
           )} Gm`,
+          raw: (quantumFuelTank * 1000) / qd.quantumFuelConsumption,
         });
       }
       if (qd.quantumFuelConsumption) {
@@ -1347,6 +1358,7 @@ export const useHardpointStats = (
           key: "quantumDrives.fuelConsumption",
           label: t("labels.hardpoint.quantumDrives.fuelConsumption"),
           value: `${String(toNumber(qd.quantumFuelConsumption, "integer"))} mSCU/Gm`,
+          raw: qd.quantumFuelConsumption,
         });
       }
       if (qd.spoolUpTime) {
@@ -1520,19 +1532,35 @@ export const useHardpointStats = (
       }
     } else if (category && THRUSTER_CATEGORIES.includes(category)) {
       const thruster = typeData as ComponentThruster;
+      // A stack pushes, and burns, with every thruster in it, as erkul sums
+      // them.
+      const stackCount = Math.max(1, Math.round(Number(toValue(count) ?? 1)));
 
       if (thruster.thrustCapacity) {
         result.push(
-          stat("thrusters.thrust", thruster.thrustCapacity, "thrust", true),
+          stat(
+            "thrusters.thrust",
+            thruster.thrustCapacity * stackCount,
+            "thrust",
+            true,
+          ),
         );
       }
-      if (thruster.fuelBurnRatePer10KNewton) {
+      // What the stack draws from the fuel network at full thrust, as erkul
+      // shows it: the rate per 10 kN times the thrust.
+      if (thruster.fuelBurnScuPer10KNewton && thruster.thrustCapacity) {
+        const microScuPerSecond =
+          (thruster.thrustCapacity / 10_000) *
+          thruster.fuelBurnScuPer10KNewton *
+          1_000_000 *
+          stackCount;
+
         result.push({
           key: "thrusters.fuelBurn",
           label: t("labels.hardpoint.thrusters.fuelBurn"),
-          value: String(
-            toNumber(thruster.fuelBurnRatePer10KNewton, "fuelRate"),
-          ),
+          value: String(toNumber(microScuPerSecond, "fuelFlow")),
+          raw: microScuPerSecond,
+          format: "fuelFlow",
         });
       }
       if (thruster.vtolOnly) {
@@ -1675,6 +1703,7 @@ export const useHardpointStats = (
           label: t("labels.hardpoint.turrets.turnRate"),
           value: `${value} °/s`,
           primary: true,
+          raw: Math.max(...speeds),
         });
       }
       const yawRange = turretRange(
@@ -1728,6 +1757,7 @@ export const useHardpointStats = (
           label: t("labels.hardpoint.lifeSupport.output"),
           value: `${precise(lifeSupport.lifeSupportGeneration)}/s`,
           primary: true,
+          raw: lifeSupport.lifeSupportGeneration,
         });
       }
     } else if (category === HardpointCategoryEnum.CONTROLLER) {
@@ -2012,5 +2042,18 @@ export const useHardpointStats = (
 
       return row >= 0 ? { ...entry, row } : entry;
     });
-  });
+  };
 };
+
+export const useHardpointStats = (
+  hardpoint: MaybeRefOrGetter<Hardpoint | undefined>,
+  count?: MaybeRefOrGetter<number>,
+) => {
+  const statsFor = hardpointStatsBuilder(count);
+
+  return computed<HardpointStat[]>(() => statsFor(toValue(hardpoint)));
+};
+
+// The same figures for any number of hardpoints, such as each part a loadout
+// slot could take, from one call made during setup.
+export const useHardpointStatsFor = () => hardpointStatsBuilder();

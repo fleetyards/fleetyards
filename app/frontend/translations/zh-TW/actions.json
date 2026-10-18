@@ -599,9 +599,12 @@
         "showPublic": "艦長日誌"
       },
       "vehicleLoadout": {
+        "swapModule": "更換模組",
+        "removeModule": "移除模組",
         "editLoadout": "編輯配置",
         "newLoadout": "新增配置",
         "saveLoadout": "儲存配置",
+        "saveAsNewLoadout": "另存為新配置",
         "viewLoadout": "查看配置"
       }
     }

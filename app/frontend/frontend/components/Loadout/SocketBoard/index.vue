@@ -5,7 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import Socket from "@/frontend/components/Loadout/Socket/index.vue";
+import SocketTree from "@/frontend/components/Loadout/SocketTree/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
 import type { LoadoutSocketGroup } from "@/frontend/components/Loadout/Socket/types";
 
 type Props = {
@@ -24,12 +25,26 @@ const emit = defineEmits<{
   "update:active": [slotId: string];
 }>();
 
+const { t } = useI18n();
+
+// Folds every socket's contents at once, for a ship whose board runs long; a
+// row's own chevron still opens or folds it alone afterwards.
+const folded = ref(false);
+provide("loadoutSocketsFolded", folded);
+
+const nests = computed(() =>
+  props.groups.some((group) =>
+    group.slots.some((slot) => !!slot.children?.length),
+  ),
+);
+
 const root = ref<HTMLElement>();
 
 const sockets = () =>
   Array.from(
-    root.value?.querySelectorAll<HTMLButtonElement>("button.loadout-socket") ||
-      [],
+    root.value?.querySelectorAll<HTMLElement>(
+      "[data-loadout-socket][role='button']",
+    ) || [],
   );
 
 // Up and down walk the sockets the way they read, across groups, so a long
@@ -39,7 +54,7 @@ const onKeydown = (event: KeyboardEvent) => {
   if (!step || !props.editable) return;
 
   const all = sockets();
-  const index = all.indexOf(document.activeElement as HTMLButtonElement);
+  const index = all.indexOf(document.activeElement as HTMLElement);
   if (index < 0) return;
 
   event.preventDefault();
@@ -54,6 +69,22 @@ const onKeydown = (event: KeyboardEvent) => {
     data-test="loadout-socket-board"
     @keydown="onKeydown"
   >
+    <button
+      v-if="nests"
+      type="button"
+      class="loadout-socket-board__fold"
+      v-tooltip="t(folded ? 'labels.expand' : 'labels.collapse')"
+      :aria-label="t(folded ? 'labels.expand' : 'labels.collapse')"
+      :aria-pressed="folded"
+      data-test="loadout-socket-board-fold"
+      @click="folded = !folded"
+    >
+      <i
+        class="fa-solid"
+        :class="folded ? 'fa-chevron-down' : 'fa-chevron-up'"
+        aria-hidden="true"
+      />
+    </button>
     <section
       v-for="group in groups"
       :key="group.key"
@@ -63,30 +94,52 @@ const onKeydown = (event: KeyboardEvent) => {
       <h4 v-if="group.label" class="loadout-socket-board__heading">
         {{ group.label }}
       </h4>
-      <ul class="loadout-socket-board__sockets">
-        <li v-for="socket in group.slots" :key="socket.id">
-          <Socket
-            :socket="socket"
-            :active="editable && socket.id === active"
-            :editable="editable"
-            @select="emit('update:active', socket.id)"
-          />
-          <!-- Directly under the socket it fills, for a caller with no room
-               beside the board, such as a phone's width. -->
-          <div
-            v-if="editable && socket.id === active && $slots.active"
-            class="loadout-socket-board__active"
-            data-test="loadout-socket-board-active"
-          >
-            <slot name="active" />
-          </div>
-        </li>
-      </ul>
+      <SocketTree
+        :slots="group.slots"
+        :active="active"
+        :editable="editable"
+        @select="(id) => emit('update:active', id)"
+      >
+        <template v-if="$slots.active" #active>
+          <slot name="active" />
+        </template>
+      </SocketTree>
     </section>
   </div>
 </template>
 
 <style lang="scss" scoped>
+// The rows' own control, the same small square, folding them all.
+.loadout-socket-board__fold {
+  display: flex;
+  flex: none;
+  align-self: flex-end;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  color: $gray-light;
+  font-size: 11px;
+  background: none;
+  border: 1px solid rgba($gray-light, 0.35);
+  border-radius: 6px;
+  cursor: pointer;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
+
+  &:hover {
+    color: lighten($text-color, 15%);
+    border-color: rgba($gray-light, 0.6);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary, #428bca);
+    outline-offset: 2px;
+  }
+}
+
 .loadout-socket-board {
   display: flex;
   flex-direction: column;
@@ -99,18 +152,5 @@ const onKeydown = (event: KeyboardEvent) => {
   font-size: 12px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-}
-
-.loadout-socket-board__sockets {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 10px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.loadout-socket-board__active {
-  margin-top: 8px;
 }
 </style>

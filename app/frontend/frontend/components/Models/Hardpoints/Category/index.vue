@@ -11,6 +11,7 @@ import { type Hardpoint, HardpointCategoryEnum } from "@/services/fyApi";
 import HardpointItems from "@/frontend/components/Models/Hardpoints/Items/index.vue";
 import HardpointCategoryIcon from "@/frontend/components/Models/Hardpoints/CategoryIcon/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import { partContents } from "@/frontend/components/Models/Hardpoints/contents";
 import {
   powerPlantContextKey,
   type PowerPlantContext,
@@ -24,6 +25,15 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t } = useI18n();
+
+// Folds what sits inside every part of the category at once, as the loadout
+// editor's board does; a row's own chevron still opens or folds it alone.
+const folded = ref(false);
+provide("hardpointPartsFolded", folded);
+
+const nests = computed(() =>
+  props.hardpoints.some((hardpoint) => partContents(hardpoint).length),
+);
 
 const powerPlantContext = computed<PowerPlantContext | null>(() => {
   if (props.category !== HardpointCategoryEnum.POWERPLANT) return null;
@@ -72,6 +82,22 @@ const cargoGridsRoute = computed(() => ({
         <i class="fa-light fa-cube" />
         3D
       </Btn>
+      <button
+        v-if="nests"
+        v-tooltip="t(folded ? 'labels.expand' : 'labels.collapse')"
+        type="button"
+        class="hardpoint-category__fold"
+        :aria-label="t(folded ? 'labels.expand' : 'labels.collapse')"
+        :aria-pressed="folded"
+        data-test="hardpoint-category-fold"
+        @click="folded = !folded"
+      >
+        <i
+          class="fa-solid"
+          :class="folded ? 'fa-chevron-down' : 'fa-chevron-up'"
+          aria-hidden="true"
+        />
+      </button>
     </div>
     <HardpointItems
       :hardpoints="hardpoints"

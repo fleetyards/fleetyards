@@ -134,39 +134,11 @@
     margin: 0;
   }
 
-  &__figure {
-    dt {
-      color: var(--color-text-dim);
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    // Not Orbitron: its slashed zero reads as an empty-set sign on the counts.
-    dd {
-      margin: 0;
-      color: var(--color-text);
-      font-size: 1.15rem;
-      font-weight: 600;
-    }
-  }
-
-  &__figure-delta {
-    margin-left: 4px;
-    font-size: 0.75rem;
-
-    &--better {
-      color: var(--color-success, #{$success});
-    }
-
-    &--worse {
-      color: var(--color-danger, #{$danger});
-    }
-
-    &--even {
-      color: var(--color-text-dim);
-    }
+  // The open tab's leading figures, across the column's whole width: the
+  // column lines its title up on the right and would shrink them to fit.
+  &__card {
+    align-self: stretch;
+    text-align: left;
   }
 }
 
@@ -176,8 +148,13 @@
     // so the ship has room behind the controls instead of an empty band below.
     min-height: calc(100dvh - 260px);
 
+    // As tall as the form is at its least, from the top, rather than as tall as
+    // the form: sized to the content, the ship slid and rescaled whenever a
+    // picker opened or a turret unfolded.
     &::before {
       display: block;
+      bottom: auto;
+      height: calc(100dvh - 260px);
     }
 
     // The ship's figures in the corner, over the backdrop, where the terminal
@@ -200,6 +177,10 @@
     &__panel {
       padding-right: 260px;
     }
+
+    &__ship {
+      width: 240px;
+    }
   }
 }
 
@@ -209,6 +190,11 @@
     width: 62%;
   }
 
+  // The rest of the width beside the panel, for the card.
+  .vehicle-loadout__ship {
+    width: calc(38% - 24px);
+  }
+
   // A socket wider than this only stretches its name across the ship.
   .vehicle-loadout__sockets {
     max-width: 440px;
@@ -216,8 +202,10 @@
 
   // The picker takes the room: it holds the long list, the sockets only a
   // name each.
+  // The sockets keep the width they have with the picker shut, so opening it
+  // never rewraps them.
   .vehicle-loadout__category--picking {
-    grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 440px) minmax(0, 1fr);
   }
 
   // No taller than the modal's body below the tab strip: the modal's title and
@@ -228,6 +216,12 @@
     top: 0;
     max-height: calc(100dvh - 340px);
   }
+
+  // The room the picker takes, held while it is closed too, or the modal grows
+  // and the footer jumps each time it opens.
+  .vehicle-loadout__category {
+    min-height: calc(100dvh - 340px);
+  }
 }
 
 // In the footer, beside the save it names: as wide as a name needs, no wider,
@@ -236,4 +230,9 @@
   flex: 1 1 160px;
   max-width: 280px;
   margin: 0;
+}
+
+.vehicle-loadout__refused {
+  margin: 4px 0 0;
+  padding-left: 18px;
 }

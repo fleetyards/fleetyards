@@ -2096,11 +2096,6 @@
           "game_files": "Archivos del juego",
           "ship_matrix": "Ship Matrix"
         },
-        "density": {
-          "title": "Vista",
-          "compact": "Compacta",
-          "expanded": "Expandida"
-        },
         "fuelTanks": {
           "hydrogen": "Tanque de combustible de hidrógeno",
           "quantum": "Tanque de combustible Quantum"
@@ -4380,6 +4375,21 @@
         "comingSoon": "Próximamente",
         "ownedModules": "Tus módulos",
         "nothingFitted": "Nada equipado",
+        "refused": {
+          "title": "Ya no encaja desde una actualización del juego",
+          "removedOnSave": "Al guardar se quitan del loadout.",
+          "editToReplace": "Edita el loadout para reemplazarlos.",
+          "badge": "Ya no encaja",
+          "reasons": {
+            "slot_unknown": "la nave ya no tiene esta ranura",
+            "parent_not_fitted": "lo que lo contenía ya no está",
+            "module_not_in_slot": "el módulo ya no encaja en esta ranura",
+            "component_not_in_slot": "ya no encaja en esta ranura",
+            "slot_not_editable": "la nave ahora fija esta ranura",
+            "nothing_to_empty": "la ranura ya no tiene una pieza que quitar"
+          }
+        },
+        "againstStock": "Cambios respecto a la nave de serie",
         "owned": "En propiedad",
         "noSlots": "Todavía no se puede equipar nada de esta nave aquí",
         "unavailableModule": "Módulo ya no disponible",
@@ -4414,6 +4424,10 @@
         },
         "reset": "Restablecer filtros",
         "leaveEmpty": "Dejar vacío",
+        "type": "Tipo",
+        "fixedByShip": "Fijo en la nave",
+        "noOtherPart": "Ninguna otra pieza encaja",
+        "changed": "Cambiado",
         "noMatches": "Sin resultados",
         "close": "Cerrar"
       }

@@ -82,12 +82,47 @@
   gap: 4px 8px;
 }
 
-// Count badge and row controls stay pinned to the right on the first line
-// however the content behind them wraps, so the chevron never moves.
+// The row controls stay pinned to the right, the chevron on top and the count
+// under it, however the content behind them wraps, so the chevron never moves.
+// Stacked rather than side by side, they leave the content more of the row.
 .hardpoint-item__rail {
   flex: none;
   align-self: flex-start;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-end;
   gap: 4px;
+}
+
+// As large as a row control.
+.hardpoint-item__actions-space {
+  flex: none;
+  width: 24px;
+  height: 24px;
+}
+
+.hardpoint-item__stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+// A row whose headline went to a line of its own: the rail stays where it was
+// on the first line, and the lines below run to the row's edge.
+.hardpoint-item__inner--wrapped {
+  .hardpoint-item__rail {
+    position: absolute;
+    top: var(--hardpoint-rail-top);
+    right: var(--hardpoint-rail-right);
+  }
+
+  .hardpoint-item__content {
+    padding-right: var(--hardpoint-rail-room);
+  }
+
+  :slotted(.hardpoint-headline) {
+    position: relative;
+    left: var(--hardpoint-rail-room);
+  }
 }

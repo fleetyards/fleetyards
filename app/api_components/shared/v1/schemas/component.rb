@@ -6,6 +6,37 @@ module Shared
       class Component
         include OpenapiRuby::Components::Base
 
+        # The shapes a component's type data takes, shared with the slimmer
+        # records that carry it.
+        TYPE_DATA = {
+          anyOf: [
+            ::Shared::V1::Schemas::ComponentQuantumDrive,
+            ::Shared::V1::Schemas::ComponentJumpDrive,
+            ::Shared::V1::Schemas::ComponentArmor,
+            ::Shared::V1::Schemas::CargoHold,
+            ::Shared::V1::Schemas::FuelTank,
+            ::Shared::V1::Schemas::ComponentThruster,
+            ::Shared::V1::Schemas::ComponentWeapon,
+            ::Shared::V1::Schemas::ComponentMissile,
+            ::Shared::V1::Schemas::ComponentBomb,
+            ::Shared::V1::Schemas::ComponentMissileRack,
+            ::Shared::V1::Schemas::ComponentTractorBeam,
+            ::Shared::V1::Schemas::ComponentShield,
+            ::Shared::V1::Schemas::ComponentCooler,
+            ::Shared::V1::Schemas::ComponentRadar,
+            ::Shared::V1::Schemas::ComponentController,
+            ::Shared::V1::Schemas::ComponentShieldController,
+            ::Shared::V1::Schemas::ComponentMissileController,
+            ::Shared::V1::Schemas::ComponentTurret,
+            ::Shared::V1::Schemas::ComponentPowerPlant,
+            ::Shared::V1::Schemas::ComponentMiningModule,
+            ::Shared::V1::Schemas::ComponentSalvageModifier,
+            ::Shared::V1::Schemas::ComponentEmp,
+            ::Shared::V1::Schemas::ComponentQuantumEnforcement,
+            ::Shared::V1::Schemas::ComponentLifeSupport
+          ]
+        }.freeze
+
         schema({
           type: :object,
           properties: {
@@ -56,34 +87,7 @@ module Shared
 
             media: Shared::V1::Schemas::StoreImageMedia,
 
-            typeData: {
-              anyOf: [
-                ::Shared::V1::Schemas::ComponentQuantumDrive,
-                ::Shared::V1::Schemas::ComponentJumpDrive,
-                ::Shared::V1::Schemas::ComponentArmor,
-                ::Shared::V1::Schemas::CargoHold,
-                ::Shared::V1::Schemas::FuelTank,
-                ::Shared::V1::Schemas::ComponentThruster,
-                ::Shared::V1::Schemas::ComponentWeapon,
-                ::Shared::V1::Schemas::ComponentMissile,
-                ::Shared::V1::Schemas::ComponentBomb,
-                ::Shared::V1::Schemas::ComponentMissileRack,
-                ::Shared::V1::Schemas::ComponentTractorBeam,
-                ::Shared::V1::Schemas::ComponentShield,
-                ::Shared::V1::Schemas::ComponentCooler,
-                ::Shared::V1::Schemas::ComponentRadar,
-                ::Shared::V1::Schemas::ComponentController,
-                ::Shared::V1::Schemas::ComponentShieldController,
-                ::Shared::V1::Schemas::ComponentMissileController,
-                ::Shared::V1::Schemas::ComponentTurret,
-                ::Shared::V1::Schemas::ComponentPowerPlant,
-                ::Shared::V1::Schemas::ComponentMiningModule,
-                ::Shared::V1::Schemas::ComponentSalvageModifier,
-                ::Shared::V1::Schemas::ComponentEmp,
-                ::Shared::V1::Schemas::ComponentQuantumEnforcement,
-                ::Shared::V1::Schemas::ComponentLifeSupport
-              ]
-            },
+            typeData: TYPE_DATA,
 
             durability: ::Shared::V1::Schemas::ComponentDurability,
 
