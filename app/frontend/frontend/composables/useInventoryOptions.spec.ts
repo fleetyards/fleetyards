@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { unitsForCategory } from "./useInventoryOptions";
+import {
+  INVENTORY_CATEGORIES,
+  INVENTORY_EQUIPMENT_TYPES,
+  inventoryCategoryForEquipment,
+  unitsForCategory,
+} from "./useInventoryOptions";
 
 describe("unitsForCategory", () => {
   it("measures bulk cargo in SCU and gear per piece", () => {
@@ -35,5 +40,39 @@ describe("unitsForCategory", () => {
 
   it("offers both for a category nothing has a habit for", () => {
     expect(unitsForCategory(undefined)).toEqual(["scu", "units"]);
+  });
+});
+
+describe("INVENTORY_EQUIPMENT_TYPES", () => {
+  // Commodities and components have catalogues of their own; every other
+  // category picks from the equipment table.
+  it("gives every category without its own catalogue a slice of equipment", () => {
+    expect(
+      INVENTORY_CATEGORIES.filter(
+        (category) => !(category in INVENTORY_EQUIPMENT_TYPES),
+      ),
+    ).toEqual(["commodity", "component"]);
+  });
+});
+
+// A crafting contract files its line by the pick, and Progress matches a
+// deposit on the category -- so the two have to agree.
+describe("inventoryCategoryForEquipment", () => {
+  it("files a piece under the category whose picker offers it", () => {
+    expect(inventoryCategoryForEquipment("weapon")).toBe("weapon");
+    expect(inventoryCategoryForEquipment("weapon_attachment")).toBe(
+      "ammunition",
+    );
+    expect(inventoryCategoryForEquipment("sustenance")).toBe("consumable");
+    expect(inventoryCategoryForEquipment("flair")).toBe("other");
+    expect(inventoryCategoryForEquipment("armor")).toBe("equipment");
+  });
+
+  it("keeps medical gear under equipment", () => {
+    expect(inventoryCategoryForEquipment("medical")).toBe("equipment");
+  });
+
+  it("falls back to equipment for a type no picker offers", () => {
+    expect(inventoryCategoryForEquipment(undefined)).toBe("equipment");
   });
 });

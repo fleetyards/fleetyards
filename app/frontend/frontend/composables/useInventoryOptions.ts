@@ -54,6 +54,39 @@ export const unitsForCategory = (category?: string, counted?: boolean) => {
   ] as const satisfies readonly (typeof INVENTORY_UNITS)[number][];
 };
 
+/**
+ * Which slice of the equipment table each category picks from. One table backs
+ * them all -- the game files magazines as weapon attachments, so ammunition is
+ * not a catalogue of its own. Without it a picker offers every type in the
+ * table, mostly armour and clothing, whatever category is selected.
+ */
+export const INVENTORY_EQUIPMENT_TYPES: Record<string, string[]> = {
+  weapon: ["weapon"],
+  ammunition: ["weapon_attachment"],
+  equipment: [
+    "armor",
+    "clothing",
+    "undersuit",
+    "tool",
+    "medical",
+    "hacking_tool",
+    "mining_gadget",
+    "container",
+  ],
+  consumable: ["sustenance", "medical"],
+  other: ["carryable", "flair"],
+};
+
+/**
+ * The category a picker files a piece of equipment under: the first one whose
+ * slice holds its type. Medical sits in two, and equipment comes first, which
+ * is where it was filed before consumables could pick it.
+ */
+export const inventoryCategoryForEquipment = (equipmentType?: string | null) =>
+  Object.keys(INVENTORY_EQUIPMENT_TYPES).find((category) =>
+    INVENTORY_EQUIPMENT_TYPES[category].includes(equipmentType ?? ""),
+  ) ?? "equipment";
+
 export const INVENTORY_ENTRY_TYPES = ["deposit", "withdrawal"] as const;
 
 export const useInventoryOptions = () => {

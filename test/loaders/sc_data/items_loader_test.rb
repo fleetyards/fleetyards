@@ -48,6 +48,26 @@ module ScData
         assert_equal ScData::Source.version, kept.reload.version
       end
 
+      test "#all files the ore pods apart from the utility parts, without their template" do
+        items_loader.all
+
+        pod = Component.find_by!(sc_key: "cargo_shipmining_pod_prospector")
+        template = Component.find_by!(sc_key: "cargo_shipmining_pod_template")
+
+        assert_equal ["ore_pods", false], [pod.category, pod.hidden]
+        assert_equal ["ore_pods", true], [template.category, template.hidden]
+      end
+
+      # A stowed pod is not an ore pod a ship carries, and Hardpoint files its
+      # slot by the component's category.
+      test "#all leaves the folded copy of an ore pod a hidden utility part" do
+        items_loader.all
+
+        collapsed = Component.find_by!(sc_key: "cargo_shipmining_pod_prospector_collapsed")
+
+        assert_equal ["utility", true], [collapsed.category, collapsed.hidden]
+      end
+
       test "#all writes a component's ports to this build" do
         # A ship slot described by this build, as a models load leaves one:
         # until the environment has any, `in_build` passes every slot through.

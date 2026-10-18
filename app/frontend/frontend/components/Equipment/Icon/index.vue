@@ -17,9 +17,14 @@ const props = defineProps<Props>();
 // the export leaves out -- so the type is the leading mark.
 const TYPE_ICONS: Record<string, string> = {
   armor: "fa-shield-halved",
+  carryable: "fa-hand-holding-box",
   clothing: "fa-shirt",
+  container: "fa-box-open",
+  flair: "fa-lamp",
   hacking_tool: "fa-microchip",
   medical: "fa-briefcase-medical",
+  mining_gadget: "fa-gem",
+  sustenance: "fa-burger-soda",
   tool: "fa-screwdriver-wrench",
   undersuit: "fa-user-astronaut",
   weapon: "fa-crosshairs",

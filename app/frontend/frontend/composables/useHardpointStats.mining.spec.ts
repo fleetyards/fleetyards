@@ -152,4 +152,18 @@ describe("useHardpointStats for mining and salvage", () => {
       statsFor(hardpointWith({ capacity: 32 }, HardpointCategoryEnum.UTILITY)),
     ).toHaveLength(1);
   });
+
+  it("shows an ore pod's capacity under either name the game gives it", () => {
+    expect(
+      statsFor(hardpointWith({ capacity: 8 }, HardpointCategoryEnum.ORE_PODS)),
+    ).toHaveLength(1);
+    expect(
+      statsFor(
+        hardpointWith(
+          { storage: 1.2 } as never,
+          HardpointCategoryEnum.ORE_PODS,
+        ),
+      ),
+    ).toHaveLength(1);
+  });
 });

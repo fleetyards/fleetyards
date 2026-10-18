@@ -43,7 +43,11 @@ const asList = (value: unknown): string[] => {
 };
 
 const prefillFormValues = (): ComponentQuery => ({
-  nameCont: filters.value.nameCont,
+  // Searched alongside what players call a part, so "mining bag" finds the ore
+  // pods. A link from before still carries `nameCont`; left in the URL it would
+  // narrow every search typed into the box.
+  searchNameCont: filters.value.searchNameCont || filters.value.nameCont,
+  nameCont: undefined,
   descriptionCont: filters.value.descriptionCont,
   manufacturerSlugIn: asList(filters.value.manufacturerSlugIn),
   categoryIn: asList(filters.value.categoryIn),
@@ -118,7 +122,7 @@ watch(subTypes, (options) => {
     <!-- The name search belongs in the header, where every other list puts it. -->
     <Teleport v-if="!hideQuicksearch" to="#header-left">
       <FormInput
-        v-model="form.nameCont"
+        v-model="form.searchNameCont"
         :size="InputSizesEnum.MEDIUM"
         name="search"
         translation-key="filters.components.name"

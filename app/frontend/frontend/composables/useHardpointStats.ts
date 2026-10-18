@@ -1929,6 +1929,13 @@ const hardpointStatsBuilder = (count?: MaybeRefOrGetter<number>) => {
       } else if (typeof utility.capacity === "number" && utility.capacity > 0) {
         result.push(stat("utility.capacity", utility.capacity, "cargo", true));
       }
+    } else if (category === HardpointCategoryEnum.ORE_PODS) {
+      // The ROC's pods name their volume `storage` rather than `capacity`.
+      const pod = typeData as Record<string, unknown>;
+      const capacity = pod.capacity ?? pod.storage;
+      if (typeof capacity === "number" && capacity > 0) {
+        result.push(stat("utility.capacity", capacity, "cargo", true));
+      }
     } else if (category === HardpointCategoryEnum.SELFDESTRUCT) {
       // Stored as strings in the export, so coerced rather than type-checked.
       const sd = typeData as Record<string, unknown>;

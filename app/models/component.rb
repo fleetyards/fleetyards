@@ -433,12 +433,27 @@ class Component < ApplicationRecord
     Component.fact_sql(:tracking_signal)
   end
 
+  # What players call a part where the game calls it something else, keyed by
+  # a fragment of the game's key. Searched alongside the name and never shown:
+  # to most people asking for one, an ore pod is a mining bag.
+  SEARCH_ALIASES = {"mining_pod" => "mining bag"}.freeze
+
+  # One CASE per alias, so a key several fragments match carries all of them.
+  # `strpos` rather than LIKE: the fragments are full of underscores.
+  ransacker :search_name do
+    aliases = SEARCH_ALIASES.map { |fragment, words|
+      "CASE WHEN strpos(components.sc_key, #{connection.quote(fragment)}) > 0 THEN #{connection.quote(words)} END"
+    }
+
+    Arel.sql("concat_ws(' ', #{[fact_sql(:name), *aliases].join(", ")})")
+  end
+
   def self.ransackable_attributes(auth_object = nil)
     [
       "ammunition", "category", "component_sub_type", "component_type",
       "created_at", "description", "durability", "grade",
       "heat_connection", "hidden", "id", "id_value", "item_class", "manufacturer_id", "name",
-      "power_connection", "size", "slug", "store_image", "tracking_signal",
+      "power_connection", "search_name", "size", "slug", "store_image", "tracking_signal",
       "type_data", "updated_at", "version"
     ] + ItemPriceConcern::RANSACKABLE_ATTRIBUTES + METRICS.keys.map(&:underscore) +
       # Sort-only, but it has to be listed all the same: ransack drops a sort on

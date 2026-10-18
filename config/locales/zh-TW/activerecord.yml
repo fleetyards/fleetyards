@@ -51,9 +51,14 @@ zh-TW:
           medium_heavy: Medium & Heavy
         equipment_types:
           armor: 裝甲
+          carryable: 可攜帶物品
           clothing: 服裝
+          container: 容器
+          flair: 裝飾
           hacking_tool: 駭客工具
           medical: 醫療
+          mining_gadget: 採礦裝置
+          sustenance: 食物與飲品
           tool: 工具
           undersuit: 內襯
           weapon: 武器
@@ -79,6 +84,7 @@ zh-TW:
           chef: 廚師
           combat: 戰鬥
           crossbow: 弩
+          cryptokey: 密鑰晶片
           data_drive: 資料驅動器
           displaycore: 展示核心
           displayhelmet: 展示頭盔
@@ -124,8 +130,10 @@ zh-TW:
           medium: 中型
           medium_armor: 中型裝甲
           medium_backpack: Medium Backpack
+          mining_gadget: 採礦裝置
           mining_tool: 採礦工具
           missile_launcher: 導彈發射器
+          mobiglas_casing: mobiGlas 外殼
           multitool: 多功能工具
           nurse: 護士
           nvtc: NVTC
@@ -154,6 +162,7 @@ zh-TW:
           suit: 西裝
           super_heavy_armor: 超重型護甲
           surgeon: 外科醫生
+          thruster_pack: 推進背包
           tiesim: Tiesim
           tophat: 高頂禮帽
           toxic: 防化服

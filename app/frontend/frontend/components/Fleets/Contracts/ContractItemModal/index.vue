@@ -17,7 +17,11 @@ import ComponentPicker from "@/frontend/components/Logistics/ComponentPicker/ind
 import CommodityPicker from "@/frontend/components/Logistics/CommodityPicker/index.vue";
 import EquipmentPicker from "@/frontend/components/Logistics/EquipmentPicker/index.vue";
 import { type PickedItem } from "@/frontend/components/Logistics/types";
-import { useInventoryOptions } from "@/frontend/composables/useInventoryOptions";
+import {
+  INVENTORY_EQUIPMENT_TYPES,
+  inventoryCategoryForEquipment,
+  useInventoryOptions,
+} from "@/frontend/composables/useInventoryOptions";
 import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -79,13 +83,8 @@ const availableCategories = computed(() =>
 // the depositor's word, not the contract author's: `Contracts::Progress` matches
 // on (name, category, unit), so a line filed as `equipment` would never see a
 // rifle the courier's ledger recorded as `weapon`.
-const categoryForEquipment = (equipmentType?: string | null) => {
-  if (equipmentType === "weapon") return InventoryCategoryEnum.WEAPON;
-  if (equipmentType === "weapon_attachment")
-    return InventoryCategoryEnum.AMMUNITION;
-
-  return InventoryCategoryEnum.EQUIPMENT;
-};
+const categoryForEquipment = (equipmentType?: string | null) =>
+  inventoryCategoryForEquipment(equipmentType) as InventoryCategoryEnum;
 
 const submitting = ref(false);
 
@@ -138,35 +137,12 @@ const isCommodity = computed(
   () => category.value === InventoryCategoryEnum.COMMODITY,
 );
 
-// One table backs all three: the game files file magazines as weapon
-// attachments, so ammunition is not a catalogue of its own.
-const EQUIPMENT_CATEGORIES: InventoryCategoryEnum[] = [
-  InventoryCategoryEnum.WEAPON,
-  InventoryCategoryEnum.EQUIPMENT,
-  InventoryCategoryEnum.AMMUNITION,
-];
-
-const isEquipment = computed(() =>
-  EQUIPMENT_CATEGORIES.includes(category.value),
-);
-
-const EQUIPMENT_TYPES_FOR_CATEGORY: Record<string, string[]> = {
-  [InventoryCategoryEnum.WEAPON]: ["weapon"],
-  [InventoryCategoryEnum.AMMUNITION]: ["weapon_attachment"],
-  [InventoryCategoryEnum.EQUIPMENT]: [
-    "armor",
-    "clothing",
-    "undersuit",
-    "tool",
-    "medical",
-    "hacking_tool",
-  ],
-};
+const isEquipment = computed(() => category.value in INVENTORY_EQUIPMENT_TYPES);
 
 // Unfiltered while crafting: the two-way select cannot say which slice of the
 // table the author means, so the picker offers all of it and the pick decides.
 const equipmentTypes = computed(() =>
-  isCrafting.value ? [] : EQUIPMENT_TYPES_FOR_CATEGORY[category.value] || [],
+  isCrafting.value ? [] : INVENTORY_EQUIPMENT_TYPES[category.value] || [],
 );
 
 // A counted commodity is the only thing that puts `units` on offer under the

@@ -18,12 +18,53 @@ module ScData
         entities/scitem/consumables
       ].freeze
 
-      # Folders holding a few pieces of gear among props, read only for those.
-      # The game files the flares with the flair and calls them grenades, and
-      # the tool cases are "Misc", so each takes its type from here.
-      PICKED_RECORDS = {
-        "entities/scitem/flair/carryables" => [/_glowstick_/, "tool", "flare"],
-        "entities/scitem/carryables/2h" => [/_container_anim_(medgun|(grin_)?multitool)_/, "tool", "tool_case"]
+      # Folders of things a player picks up and carries rather than wears or
+      # fires. A folder with a type files everything in it under that type; the
+      # carryables mix food, containers, keepsakes and keycards, so each of
+      # those records is typed on its own.
+      CARRIED_PATHS = {
+        "entities/scitem/weapons/devices" => "mining_gadget",
+        "entities/scitem/flair" => "flair",
+        "entities/scitem/carryables/1h" => nil,
+        "entities/scitem/carryables/2h" => nil,
+        "entities/scitem/carryables/tractorbeamonly" => nil,
+        "entities/scitem/suit" => :suit
+      }.freeze
+
+      # The suit folder holds the mobiGlas casings and the thruster packs: worn
+      # gear whose AttachDef names neither a slot nor a family. The rest of it --
+      # radar, displays, a test armour -- is part of a suit rather than something
+      # bought for one.
+      SUIT_TYPES = {
+        "MobiGlas" => %w[clothing mobiglas_casing],
+        "ThrusterPack" => %w[armor thruster_pack]
+      }.freeze
+
+      CARRIED_EQUIPMENT_TYPES = %w[mining_gadget flair carryable container sustenance].freeze
+
+      SUIT_ITEM_TYPES = SUIT_TYPES.values.map(&:last).freeze
+
+      # Gear the carried folders hold among props. The game files the flares
+      # with the flair and calls them grenades, and the tool cases are "Misc",
+      # so each takes its type from here.
+      PICKED_RECORDS = [
+        [/_(glowstick|flare)_/, "tool", "flare"],
+        [/_container_anim_(medgun|(grin_)?multitool)_/, "tool", "tool_case"]
+      ].freeze
+
+      # Carried records that never reach a player's inventory: mission props,
+      # datapads, the templates the game clones a prop from, and the lootable
+      # boxes that are part of a location rather than something to take away.
+      CARRIED_NOISE = /missionitem|datapad|template|lootableitem|destroyedinventory|miningbase/
+
+      # Carried AttachDef Types that file a record whatever its key. A crate is
+      # hauled cargo, which the commodities parser owns.
+      CARRIED_TYPES = {
+        "Food" => "sustenance",
+        "Drink" => "sustenance",
+        "InventoryContainer" => "container",
+        "Container" => "container",
+        "Cargo" => nil
       }.freeze
 
       # AttachDef Type is the game's own split between a weapon and the things
@@ -104,6 +145,8 @@ module ScData
 
       CONSUMABLE_ATTACH_TYPES = %w[FPS_Consumable RemovableChip].freeze
 
+      COMMODITY_NAME_PREFIX = ScData::Parser::CommoditiesParser::NAME_PREFIX
+
       # "All", "Light", "Medium & Heavy" -- the spec block writes the pairs with
       # an ampersand or a comma depending on the field.
       COMPATIBILITY = {
@@ -150,16 +193,28 @@ module ScData
       # Both tests earn their place. Without the name, a rifle's magazine would
       # be hidden by the rifle it shares a prefix with; without the prefix, the
       # two makers who both ship a "BR-2 Shotgun" would collapse into one.
+      #
+      # A carried prop's key names no maker -- the same plushie is filed as
+      # plushy_orison_whale_1_a and carryable_1h_cy_toy_plushy_orison_whale_1_a
+      # -- so its type stands in for the prefix. The suit gear's keys name the
+      # wearer's sex instead, so its item type does.
       private def mark_skins(parsed)
         parsed.group_by { |item| item[:name] }.each_value do |named|
           next if named.one?
 
-          named.group_by { |item| item[:key].split("_").first(2).join("_") }.each_value do |family|
+          named.group_by { |item| skin_family(item) }.each_value do |family|
             family.sort_by { |item| item[:key] }.drop(1).each { |item| item[:hidden] = true }
           end
         end
 
         parsed
+      end
+
+      private def skin_family(item)
+        return item[:equipment_type] if CARRIED_EQUIPMENT_TYPES.include?(item[:equipment_type])
+        return item[:item_type] if SUIT_ITEM_TYPES.include?(item[:item_type])
+
+        item[:key].split("_").first(2).join("_")
       end
 
       private def parse_equipment(item)
@@ -176,8 +231,13 @@ module ScData
         segments = key.split("_")
         described = describe(translate(attach_def.dig("Localization", "Description")))
         worn_type, slot = CHAR_TYPES[attach_def["Type"]]
-        picked_type, picked_item_type = item[:types]
         carried_type, carried_item_type = consumable_types(attach_def, key)
+
+        if item.key?(:carried)
+          picked_type, picked_item_type = carried_types(item, attach_def, values)
+
+          return if picked_type.blank?
+        end
 
         {
           key:,
@@ -189,7 +249,7 @@ module ScData
           # The description header is written by hand and says "Assault Rifle"
           # where the record key only says "rifle", so it wins where it exists --
           # bar a picked record, whose header would call a flare a grenade.
-          item_type: picked_item_type || described[:item_type] || carried_item_type || item_type(segments),
+          item_type: picked_item_type || described[:item_type] || carried_item_type || (item_type(segments) unless item.key?(:carried)),
           weapon_class: described[:weapon_class] || WEAPON_CLASSES.find { |klass| segments.include?(klass) },
           rate_of_fire: described[:rate_of_fire],
           range: described[:range],
@@ -212,6 +272,42 @@ module ScData
         }
       end
 
+      private def carried_types(item, attach_def, values)
+        key = item[:key]
+        picked = PICKED_RECORDS.find { |pattern, *| pattern.match?(key) }
+
+        return picked.drop(1) if picked
+        return if CARRIED_NOISE.match?(key)
+        return if names_commodity?(attach_def, values)
+        return SUIT_TYPES[attach_def["Type"]] || SUIT_TYPES[attach_def["SubType"]] if item[:carried] == :suit
+        return [item[:carried]] if item[:carried].present?
+        return carried_consumable_types(attach_def, key) if CONSUMABLE_ATTACH_TYPES.include?(attach_def["Type"])
+        return [CARRIED_TYPES[attach_def["Type"]]] if CARRIED_TYPES.key?(attach_def["Type"])
+        return ["sustenance"] if values.dig("Components", "SCItemConsumableParams").present?
+        return [EQUIPMENT_TYPES[attach_def["Type"]]] if attach_def["Type"] == "WeaponPersonal"
+        return ["flair"] if attach_def["SubType"].to_s.start_with?("Flair") || key.include?("_flair_")
+
+        ["carryable"]
+      end
+
+      # A harvestable, the vent slug and SLAM carry a commodity's name, and the
+      # commodities parser already loads them from the same records.
+      private def names_commodity?(attach_def, values)
+        names = [attach_def.dig("Localization", "Name")] +
+          Array.wrap(values.dig("Components", "SCItemPurchasableParams")).map { |params| params["displayName"] }
+
+        names.any? { |name| name.to_s.delete("@").downcase.start_with?(COMMODITY_NAME_PREFIX) }
+      end
+
+      # The Hacking chips a player carries are the cryptokeys -- Tigersclaw,
+      # icePick, Walesko -- rather than the orbital keycards filed under the
+      # same subtype in the consumables folder.
+      private def carried_consumable_types(attach_def, key)
+        return ["hacking_tool", "cryptokey"] if attach_def["SubType"] == "Hacking"
+
+        consumable_types(attach_def, key)
+      end
+
       private def consumable_types(attach_def, key)
         return unless CONSUMABLE_ATTACH_TYPES.include?(attach_def["Type"])
 
@@ -232,7 +328,7 @@ module ScData
       # same pair -- so it reads as unmeasured rather than as "vanishingly
       # small", and stays nil.
       private def occupancy(attach_def)
-        micro_scu = attach_def.dig("inventoryOccupancyVolume", "SMicroCargoUnit", "microSCU").to_f
+        micro_scu = micro_scu(attach_def["inventoryOccupancyVolume"] || {})
         dimensions = attach_def["inventoryOccupancyDimensions"] || {}
         x, y, z = %w[x y z].map { |axis| dimensions[axis].to_f }
 
@@ -242,6 +338,14 @@ module ScData
           volume: (micro_scu / 1_000_000 if micro_scu > UNMEASURED_MICRO_SCU),
           volume_dimensions: ({x:, y:, z:} if [x, y, z].all?(&:positive?))
         }.compact
+      end
+
+      # Hand-held gear states its volume in microSCU; a crate you haul with a
+      # tractor beam states it in whole SCU instead.
+      private def micro_scu(volume)
+        volume.dig("SMicroCargoUnit", "microSCU").to_f +
+          volume.dig("SCentiCargoUnit", "centiSCU").to_f * 10_000 +
+          volume.dig("SStandardCargoUnit", "standardCargoUnits").to_f * 1_000_000
       end
 
       # Most descriptions open with a spec block -- "Item Type: Assault Rifle",
@@ -340,11 +444,11 @@ module ScData
       end
 
       private def load_equipment_data
-        picked = PICKED_RECORDS.flat_map do |path, (pattern, *types)|
-          load_records(path).select { |item| pattern.match?(item[:key]) }.map { |item| item.merge(types:) }
+        carried = CARRIED_PATHS.flat_map do |path, type|
+          load_records(path).map { |item| item.merge(carried: type) }
         end
 
-        SOURCE_PATHS.flat_map { |path| load_records(path) } + picked
+        SOURCE_PATHS.flat_map { |path| load_records(path) } + carried
       end
 
       private def load_records(path)

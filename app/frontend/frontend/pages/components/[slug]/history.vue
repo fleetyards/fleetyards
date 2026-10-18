@@ -93,6 +93,7 @@ const METRIC_SCOPES: Record<string, string> = {
   fueltanks: "fuelTanks",
   jumpdrive: "jumpDrives",
   missile_racks: "missiles",
+  ore_pods: "utility",
   powerplant: "powerPlants",
   quantumdrive: "quantumDrives",
   quantumenforcementdevice: "quantumEnforcement",

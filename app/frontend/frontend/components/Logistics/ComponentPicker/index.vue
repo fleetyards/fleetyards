@@ -19,7 +19,7 @@ const emit = defineEmits<{
   select: [component: GameComponent];
 }>();
 
-const { t } = useI18n();
+const { t, toNumber } = useI18n();
 
 const categoryOptions = ref<FilterOption[]>([]);
 const category = ref<string | undefined>(undefined);
@@ -45,7 +45,7 @@ const componentQuery = ({ search, page }: { search?: string; page?: number }) =>
       currentVersion: true,
       hiddenEq: false,
       ...(category.value ? { categoryIn: [category.value] } : {}),
-      ...(search ? { nameCont: search } : {}),
+      ...(search ? { searchNameCont: search } : {}),
     },
   });
 
@@ -61,8 +61,25 @@ const componentOptions = (response: Components): FilterOption[] => {
 
   return items.map((item) => ({
     value: item.id,
-    label: item.size ? `${item.name} (${item.size})` : item.name,
+    label: optionLabel(item),
   }));
+};
+
+// Every ore pod is size 1, so the size tells them apart no better than the
+// name does -- what they hold does. The ROC's pods write it as `storage`.
+const podCapacity = (item: GameComponent) => {
+  const data = item.typeData as
+    { capacity?: number; storage?: number } | undefined;
+
+  return data?.capacity ?? data?.storage;
+};
+
+const optionLabel = (item: GameComponent) => {
+  const capacity = item.category === "ore_pods" && podCapacity(item);
+
+  if (capacity) return `${item.name} (${toNumber(capacity, "cargo")})`;
+
+  return item.size ? `${item.name} (${item.size})` : item.name;
 };
 
 watch(category, () => {

@@ -51,9 +51,14 @@ es:
           medium_heavy: Medium & Heavy
         equipment_types:
           armor: Blindaje
+          carryable: Objeto transportable
           clothing: Ropa
+          container: Contenedor
+          flair: Decoración
           hacking_tool: Herramienta de hackeo
           medical: Médico
+          mining_gadget: Dispositivo de minería
+          sustenance: Comida y bebida
           tool: Herramienta
           undersuit: Traje interior
           weapon: Arma
@@ -79,6 +84,7 @@ es:
           chef: Chef
           combat: Combate
           crossbow: Ballesta
+          cryptokey: Criptollave
           data_drive: Unidad de datos
           displaycore: Núcleo de exhibición
           displayhelmet: Casco de exhibición
@@ -124,8 +130,10 @@ es:
           medium: Medio
           medium_armor: Blindaje medio
           medium_backpack: Medium Backpack
+          mining_gadget: Dispositivo de minería
           mining_tool: Herramienta de minería
           missile_launcher: Lanzamisiles
+          mobiglas_casing: Carcasa de mobiGlas
           multitool: Multiherramienta
           nurse: Enfermería
           nvtc: NVTC
@@ -154,6 +162,7 @@ es:
           suit: Traje
           super_heavy_armor: Armadura superpesada
           surgeon: Cirujano
+          thruster_pack: Mochila propulsora
           tiesim: Tiesim
           tophat: Sombrero de copa
           toxic: Traje de materiales peligrosos
