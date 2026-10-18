@@ -1,8 +1,0 @@
-// A basis rather than `width: 100%`, which made the name claim the whole row as
-// its hypothetical size and left the other two parts fighting over what was
-// left once the row could not wrap.
-.hardpoint-item__cargo-component {
-  flex: 1 1 120px;
-  margin-right: 5px;
-  text-transform: capitalize;
-}

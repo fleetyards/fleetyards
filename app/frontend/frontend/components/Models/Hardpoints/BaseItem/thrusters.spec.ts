@@ -25,7 +25,7 @@ const thruster = {
   },
 } as unknown as Hardpoint;
 
-describe("HardpointThrusterItem", () => {
+describe("HardpointBaseItem for thrusters", () => {
   it("shows a ship thruster's VTOL and vectoring rows beside its thrust", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: { hardpoints: [thruster] },

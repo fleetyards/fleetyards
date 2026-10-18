@@ -9,11 +9,7 @@ import { groupBy } from "@/shared/utils/Array";
 import { groupByHoldName } from "@/shared/utils/CargoHolds";
 import { groupIntoStacks } from "@/frontend/components/Models/Hardpoints/stacks";
 import HardpointBaseItem from "@/frontend/components/Models/Hardpoints/BaseItem/index.vue";
-import HardpointCargoItem from "@/frontend/components/Models/Hardpoints/CargoItem/index.vue";
-import HardpointFuelItem from "@/frontend/components/Models/Hardpoints/FuelItem/index.vue";
 import HardpointModuleItem from "@/frontend/components/Models/Hardpoints/ModuleItem/index.vue";
-import HardpointThrusterItem from "@/frontend/components/Models/Hardpoints/ThrusterItem/index.vue";
-import HardpointSeatItem from "@/frontend/components/Models/Hardpoints/SeatItem/index.vue";
 import { type Hardpoint } from "@/services/fyApi";
 import { HardpointCategoryEnum } from "@/services/fyAdminApi";
 
@@ -49,34 +45,13 @@ const cargoHoldGroups = computed(() => {
   return groupByHoldName(entries, (e) => e.name);
 });
 
-const itemComponent = computed(() => {
-  if (props.category === HardpointCategoryEnum.CARGOGRID) {
-    return HardpointCargoItem;
-  }
-  if (props.category === HardpointCategoryEnum.MODULE) {
-    return HardpointModuleItem;
-  }
-  if (
-    props.category === HardpointCategoryEnum.FUELTANKS ||
-    props.category === HardpointCategoryEnum.EXTERNAL_FUEL_TANKS ||
-    props.category === HardpointCategoryEnum.ORE_PODS ||
-    props.category === HardpointCategoryEnum.SALVAGE_STORAGE
-  ) {
-    return HardpointFuelItem;
-  }
-  if (
-    props.category === HardpointCategoryEnum.MAIN_THRUSTERS ||
-    props.category === HardpointCategoryEnum.MANEUVERING_THRUSTERS ||
-    props.category === HardpointCategoryEnum.RETRO_THRUSTERS ||
-    props.category === HardpointCategoryEnum.VTOL_THRUSTERS
-  ) {
-    return HardpointThrusterItem;
-  }
-  if (props.category === HardpointCategoryEnum.SEAT) {
-    return HardpointSeatItem;
-  }
-  return HardpointBaseItem;
-});
+// A module slot opens the module picker; every other kind of hardpoint is a
+// part's row, which draws what its kind shows differently.
+const itemComponent = computed(() =>
+  props.category === HardpointCategoryEnum.MODULE
+    ? HardpointModuleItem
+    : HardpointBaseItem,
+);
 </script>
 
 <template>
@@ -93,7 +68,7 @@ const itemComponent = computed(() => {
         >
           {{ holdGroup.label }}
         </div>
-        <HardpointCargoItem
+        <HardpointBaseItem
           v-for="entry in holdGroup.items"
           :key="entry.groupKey"
           :hardpoints="entry.hardpoints"
