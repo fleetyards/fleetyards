@@ -467,6 +467,13 @@ module ScData
           item[:type_data] = {
             thrust_capacity: thruster["thrustCapacity"].to_f,
             fuel_burn_rate_per10_k_newton: thruster["fuelBurnRatePer10KNewton"].to_f,
+            # What the ship's fuel network draws: SCU per second for every 10 kN
+            # of thrust. The attribute above predates the resource network and
+            # takes a handful of placeholder values (a Scorpius's two retros
+            # read 0.031 and 0.066 there and burn the same here).
+            fuel_burn_scu_per10_k_newton: thruster.dig(
+              "fuelBurnRatePer10KNewtonRN", "SStandardResourceUnit", "standardResourceUnits"
+            )&.to_f,
             thruster_type: thruster["thrusterType"],
             thruster_class:,
             vtol_only: (thruster["onlyActiveInVTOL"] == "1") || nil,
