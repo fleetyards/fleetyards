@@ -252,7 +252,9 @@
         "showResult": "Ergebnis anzeigen",
         "close": "Schließen",
         "refresh": "Seite aktualisieren",
-        "checkAgain": "Erneut prüfen"
+        "checkAgain": "Erneut prüfen",
+        "addExtension": "Hinzufügen",
+        "updateExtension": "Aktualisieren"
       },
       "empty": {
         "hangarGuide": "Tour starten",

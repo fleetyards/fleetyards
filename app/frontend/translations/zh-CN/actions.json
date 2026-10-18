@@ -252,7 +252,9 @@
         "showResult": "查看结果",
         "close": "关闭",
         "refresh": "刷新页面",
-        "checkAgain": "再次检查"
+        "checkAgain": "再次检查",
+        "addExtension": "添加",
+        "updateExtension": "更新"
       },
       "empty": {
         "hangarGuide": "开始导览",

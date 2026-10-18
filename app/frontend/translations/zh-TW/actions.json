@@ -252,7 +252,9 @@
         "showResult": "查看結果",
         "close": "關閉",
         "refresh": "重新整理頁面",
-        "checkAgain": "再次檢查"
+        "checkAgain": "再次檢查",
+        "addExtension": "新增",
+        "updateExtension": "更新"
       },
       "empty": {
         "hangarGuide": "開始導覽",

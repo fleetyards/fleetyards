@@ -252,7 +252,9 @@
         "showResult": "Show Result",
         "close": "Close",
         "refresh": "Refresh Page",
-        "checkAgain": "Check again"
+        "checkAgain": "Check again",
+        "addExtension": "Add",
+        "updateExtension": "Update"
       },
       "empty": {
         "hangarGuide": "Take the tour",
