@@ -88,7 +88,7 @@ module HangarImportFixtures
     "Defender", "Dragonfly Black", "Dragonfly Starkitten Edition", "Dragonfly Yellowjacket",
     "Eclipse", "Endeavor",
     "F7A Hornet Mk I", "F7C Hornet Mk I", "F7C Hornet Wildfire Mk I",
-    "F7C-M Super Hornet Mk I", "F7C-M Super Hornet Mk I", "F7C-R Hornet Tracker Mk I",
+    "F7C-M Super Hornet Heartseeker Mk I", "F7C-M Super Hornet Mk I", "F7C-R Hornet Tracker Mk I",
     "F7C-S Hornet Ghost Mk I", "F8C Lightning", "F8C Lightning Executive Edition",
     "Freelancer", "Freelancer DUR", "Freelancer MAX", "Freelancer MIS",
     "Genesis", "Gladiator", "Gladius", "Gladius Valiant", "Glaive",
