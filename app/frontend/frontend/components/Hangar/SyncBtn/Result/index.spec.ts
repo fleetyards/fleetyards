@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import HangarSyncResult from "./index.vue";
 import type { SyncProcessStep } from "./types";

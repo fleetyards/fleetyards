@@ -186,6 +186,12 @@ const steps = computed<SyncStep[]>(() =>
   })),
 );
 
+const readingDone = computed(
+  () =>
+    props.processSteps.find((step) => step.name === "fetchHangar")?.status ===
+    "success",
+);
+
 const failedStep = computed(() =>
   props.processSteps.find(
     (step) => step.status === "failure" || step.status === "backendFailure",
@@ -388,8 +394,14 @@ const hasWarnings = computed(
       </div>
 
       <SyncSteps :steps="steps">
+        <!-- Only once reading is over: while pages come in, the counts change
+             and new kinds appear, and the row would keep reflowing. The step's
+             detail line carries the running total meanwhile. -->
         <template #step-fetchHangar>
-          <dl v-if="readCounts.length" class="hangar-sync-result__chips">
+          <dl
+            v-if="readingDone && readCounts.length"
+            class="hangar-sync-result__chips"
+          >
             <div
               v-for="entry in readCounts"
               :key="entry.key"
