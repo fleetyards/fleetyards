@@ -14,6 +14,7 @@ import VehicleTabLayout from "@/frontend/components/Vehicles/TabLayout/index.vue
 
 import { useI18n } from "@/shared/composables/useI18n";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
+import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useLoadoutEditor } from "@/frontend/composables/useLoadoutEditor";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
@@ -175,6 +176,13 @@ const editFitting = (record: VehicleLoadout) => {
   });
 };
 
+const vehicleRoute = useVehicleRoute();
+
+const loadoutPage = (record: VehicleLoadout) =>
+  vehicleRoute("hangar-vehicle-loadout", props.vehicle, {
+    loadout: record.id,
+  });
+
 const viewFitting = (record: VehicleLoadout) => {
   openLoadoutView(props.vehicle, { editable: true, loadout: record });
 };
@@ -240,6 +248,15 @@ const onActivate = async (record: VehicleLoadout) => {
       </template>
 
       <template #actions="{ item }">
+        <Btn
+          v-if="item.kind === VehicleLoadoutKindEnum.FLEETYARDS"
+          v-tooltip="t('actions.vehicleLoadout.openLoadoutPage')"
+          :to="loadoutPage(item)"
+          :aria-label="t('actions.vehicleLoadout.openLoadoutPage')"
+          :data-test="`loadout-page-${item.id}`"
+        >
+          <i class="fa-duotone fa-file-lines" />
+        </Btn>
         <Btn
           v-if="item.kind === VehicleLoadoutKindEnum.FLEETYARDS"
           v-tooltip="t('actions.vehicleLoadout.viewLoadout')"

@@ -24,6 +24,7 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useModuleContents } from "@/frontend/composables/useModuleContents";
 import { useLoadoutSlotLabel } from "@/frontend/composables/useLoadoutSlotLabel";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
+import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
 import { useLoadoutEditor } from "@/frontend/composables/useLoadoutEditor";
 import { useLoadoutModules } from "@/frontend/composables/useLoadoutModules";
 import {
@@ -247,6 +248,17 @@ const comlink = useComlink();
 
 const { openLoadoutModal } = useVehicleModals();
 
+const vehicleRoute = useVehicleRoute();
+
+// The loadout's own page, with the ship page's hardpoints and figures.
+const loadoutPage = computed(() =>
+  props.loadout?.id
+    ? vehicleRoute("hangar-vehicle-loadout", props.vehicle as Vehicle, {
+        loadout: props.loadout.id,
+      })
+    : undefined,
+);
+
 const edit = () => {
   comlink.emit("close-modal");
   openLoadoutModal(props.vehicle, {
@@ -386,8 +398,21 @@ const edit = () => {
       </p>
     </div>
 
-    <template v-if="editVisible" #footer>
-      <Btn data-test="vehicle-loadout-view-edit" @click="edit">
+    <template v-if="editVisible || (editable && loadoutPage)" #footer>
+      <Btn
+        v-if="editable && loadoutPage"
+        :to="loadoutPage"
+        data-test="vehicle-loadout-view-page"
+        @click="comlink.emit('close-modal')"
+      >
+        <i class="fa-duotone fa-file-lines" />
+        {{ t("actions.vehicleLoadout.openLoadoutPage") }}
+      </Btn>
+      <Btn
+        v-if="editVisible"
+        data-test="vehicle-loadout-view-edit"
+        @click="edit"
+      >
         <i class="fa-duotone fa-screwdriver-wrench" />
         {{ t("actions.vehicleLoadout.editLoadout") }}
       </Btn>

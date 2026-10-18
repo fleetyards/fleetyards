@@ -321,6 +321,12 @@ export const routes: RouteRecordRaw[] = [
     beforeEnter: legacyVehicleGuard("hangar-vehicle-cargo-item"),
     meta: { needsAuthentication: true },
   },
+  {
+    path: ":id/loadouts/:loadout/",
+    component: legacyVehicleShell,
+    beforeEnter: legacyVehicleGuard("hangar-vehicle-loadout"),
+    meta: { needsAuthentication: true },
+  },
   ...vehicleRoutes
     .filter((tab) => tab.name)
     .map((tab) => ({

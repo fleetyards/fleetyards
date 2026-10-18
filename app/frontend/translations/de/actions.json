@@ -605,6 +605,7 @@
         "newLoadout": "Neues Loadout",
         "saveLoadout": "Loadout speichern",
         "saveAsNewLoadout": "Als neues Loadout speichern",
+        "openLoadoutPage": "Loadout-Seite öffnen",
         "viewLoadout": "Loadout ansehen"
       }
     }

@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { VehicleEditTabsEnum } from "@/frontend/components/Vehicles/EditModal/types";
+import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
@@ -132,16 +133,21 @@ const openFullscreenHolo = () => {
   });
 };
 
-const { openEditModal: openVehicleEdit, openLoadoutView } = useVehicleModals();
+const { openEditModal: openVehicleEdit } = useVehicleModals();
 
 const activeLoadout = computed(() => props.vehicle.activeLoadout);
 
-// The owner gets a way into the editor from the view, as the panel's marker
-// gives it.
-const openActiveLoadout = () =>
-  openLoadoutView(props.vehicle, {
-    editable: !props.vehicle.loaner && !props.vehicle.wanted,
-  });
+const vehicleRoute = useVehicleRoute();
+
+// A fleetyards loadout has a page of its own; a linked build lives on the site
+// it links to.
+const activeLoadoutPage = computed(() =>
+  activeLoadout.value && !activeLoadout.value.url
+    ? vehicleRoute("hangar-vehicle-loadout", props.vehicle, {
+        loadout: activeLoadout.value.id,
+      })
+    : undefined,
+);
 
 const openImageModal = () =>
   openVehicleEdit(props.vehicle, { tab: VehicleEditTabsEnum.IMAGE });
@@ -244,16 +250,20 @@ const openImageModal = () =>
               }}
             </button>
             <component
-              :is="activeLoadout.url ? 'a' : 'button'"
+              :is="activeLoadoutPage ? 'router-link' : 'a'"
               v-if="activeLoadout"
-              :href="activeLoadout.url"
-              :target="activeLoadout.url ? '_blank' : undefined"
-              :rel="activeLoadout.url ? 'noopener' : undefined"
-              :type="activeLoadout.url ? undefined : 'button'"
+              v-bind="
+                activeLoadoutPage
+                  ? { to: activeLoadoutPage }
+                  : {
+                      href: activeLoadout.url,
+                      target: '_blank',
+                      rel: 'noopener',
+                    }
+              "
               :tabindex="compact ? -1 : undefined"
               class="vehicle-hero__badge vehicle-hero__badge--toggle vehicle-hero__badge--loadout"
               data-test="vehicle-badge-loadout"
-              @click="activeLoadout.url || openActiveLoadout()"
             >
               <i class="fa-duotone fa-crosshairs" />
               {{ t("labels.loadout.marker", { name: activeLoadout.name }) }}

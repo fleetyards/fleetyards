@@ -32,7 +32,6 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
 }));
 
 const openEditModal = vi.fn();
-const openLoadoutView = vi.fn();
 const mutateAsync = vi.fn().mockResolvedValue({});
 
 vi.mock("@/frontend/composables/useVehicleMutations", () => ({
@@ -42,7 +41,7 @@ vi.mock("@/frontend/composables/useVehicleMutations", () => ({
 }));
 
 vi.mock("@/frontend/composables/useVehicleModals", () => ({
-  useVehicleModals: () => ({ openEditModal, openLoadoutView }),
+  useVehicleModals: () => ({ openEditModal }),
 }));
 
 const vehicle = {
@@ -222,7 +221,7 @@ describe("VehicleHero", () => {
     ).toBe(0);
   });
 
-  it("says which loadout the ship flies with and opens it", async () => {
+  it("says which loadout the ship flies with and links its page", async () => {
     const bare = await mount(false);
     expect(bare.find('[data-test="vehicle-badge-loadout"]').exists()).toBe(
       false,
@@ -241,12 +240,8 @@ describe("VehicleHero", () => {
     const badge = wrapper.find('[data-test="vehicle-badge-loadout"]');
 
     expect(badge.text()).toContain("Hauler");
-
-    await badge.trigger("click");
-
-    expect(openLoadoutView).toHaveBeenLastCalledWith(
-      expect.objectContaining({ id: "vehicle-1" }),
-      { editable: true },
+    expect(badge.attributes("href")).toContain(
+      "/hangar/vehicle-1/loadouts/loadout-1/",
     );
   });
 

@@ -605,6 +605,7 @@
         "newLoadout": "Nuevo equipamiento",
         "saveLoadout": "Guardar equipamiento",
         "saveAsNewLoadout": "Guardar como nuevo equipamiento",
+        "openLoadoutPage": "Abrir la página del loadout",
         "viewLoadout": "Ver equipamiento"
       }
     }

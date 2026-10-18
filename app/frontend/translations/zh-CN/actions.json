@@ -605,6 +605,7 @@
         "newLoadout": "新建配置",
         "saveLoadout": "保存配置",
         "saveAsNewLoadout": "另存为新配置",
+        "openLoadoutPage": "打开配置页面",
         "viewLoadout": "查看配置"
       }
     }
