@@ -1,9 +1,10 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { nextTick, type Ref, ref } from "vue";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import FocusSelect from "@/frontend/components/base/ModelFocusSelect/index.vue";
 import SizeSelect from "@/frontend/components/base/ModelSizeSelect/index.vue";
 import ProductionStatusSelect from "@/frontend/components/base/ProductionStatusSelect/index.vue";
+import ManufacturerSelect from "@/frontend/components/base/ManufacturerSelect/index.vue";
 import { type ModelQuery } from "@/services/fyApi";
 import Component from "./index.vue";
 
@@ -41,10 +42,12 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   },
 }));
 
+const viewport = vi.hoisted(() => ({ mobile: false }));
+
 vi.stubGlobal(
   "matchMedia",
-  vi.fn(() => ({
-    matches: false,
+  vi.fn((query: string) => ({
+    matches: viewport.mobile && query.includes("max-width"),
     addEventListener: vi.fn(),
     removeEventListener: vi.fn(),
   })),
@@ -65,6 +68,10 @@ const mount = (props: Record<string, unknown> = {}) =>
   });
 
 describe("Models/PickerModal", () => {
+  afterEach(() => {
+    viewport.mobile = false;
+  });
+
   it("collects picks until they are submitted", async () => {
     const wrapper = await mount();
 
@@ -122,6 +129,51 @@ describe("Models/PickerModal", () => {
       .trigger("click");
 
     expect(display()).toBe("");
+  });
+
+  it("labels the filter toggle with an icon, not text", async () => {
+    const wrapper = await mount();
+    const toggle = wrapper.find('[data-test="model-picker-more-filters"]');
+
+    expect(toggle.text()).toBe("");
+    expect(toggle.find(".fa-filter").exists()).toBe(true);
+  });
+
+  it("keeps manufacturer and classification in the toolbar on a desktop", async () => {
+    const wrapper = await mount();
+
+    expect(
+      wrapper
+        .find(".model-picker__toolbar--more")
+        .findComponent(ManufacturerSelect)
+        .exists(),
+    ).toBe(false);
+    expect(wrapper.findComponent(ManufacturerSelect).exists()).toBe(true);
+  });
+
+  it("folds every filter but the search away on a phone", async () => {
+    viewport.mobile = true;
+
+    const wrapper = await mount();
+    const more = wrapper.find(".model-picker__toolbar--more");
+
+    expect(more.findComponent(ManufacturerSelect).exists()).toBe(true);
+    expect(wrapper.findAllComponents(ManufacturerSelect)).toHaveLength(1);
+    expect(more.element.parentElement?.style.display).toBe("none");
+  });
+
+  it("counts a folded manufacturer pick on a phone", async () => {
+    viewport.mobile = true;
+
+    const wrapper = await mount();
+
+    wrapper
+      .findComponent(ManufacturerSelect)
+      .vm.$emit("update:modelValue", ["misc"]);
+    await nextTick();
+
+    expect(wrapper.find(".model-picker__filter-count").text()).toBe("1");
+    expect(lastQuery()).toEqual({ manufacturerIn: ["misc"] });
   });
 
   it("offers no production status filter when the caller pins one", async () => {

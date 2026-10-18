@@ -38,6 +38,7 @@ import { useSessionStore } from "@/frontend/stores/session";
 import { keepPreviousData } from "@tanstack/vue-query";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useReducedMotion } from "@/shared/composables/useReducedMotion";
+import { useMobile } from "@/shared/composables/useMobile";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
@@ -115,17 +116,31 @@ const moreFiltersOpen = ref(false);
 
 const { prefersReducedMotion } = useReducedMotion();
 
+const mobile = useMobile();
+
 // The cargo grid and trade route pickers pin flight-ready ships. Offering the
 // filter there would let it override the pin and widen the list instead.
 const productionStatusOffered = computed(
   () => !props.query?.productionStatusIn,
 );
 
-const moreFiltersCount = computed(
-  () =>
-    [focusIn, sizeIn, productionStatusIn].filter(
-      (filter) => filter.value.length,
-    ).length,
+// On a phone the manufacturer, classification and hangar filters fold away
+// too, so the count has to cover them or a folded pick goes unannounced.
+const moreFiltersCount = computed(() => {
+  const folded = [focusIn, sizeIn, productionStatusIn];
+
+  if (mobile.value) {
+    folded.push(manufacturerIn, classificationIn);
+  }
+
+  return (
+    folded.filter((filter) => filter.value.length).length +
+    (mobile.value && hangarOnly.value ? 1 : 0)
+  );
+});
+
+const moreFiltersLabel = computed(() =>
+  mobile.value ? t("labels.filter") : t("modelPicker.actions.moreFilters"),
 );
 
 // The sizes the API knows, as the literal keys ContainerFitQuery declares - so
@@ -439,38 +454,42 @@ const save = () => {
             clearable
           />
 
-          <ManufacturerSelect
-            v-model="manufacturerIn"
-            class="model-picker__filter"
-            name="model-picker-manufacturer"
-          />
+          <template v-if="!mobile">
+            <ManufacturerSelect
+              v-model="manufacturerIn"
+              class="model-picker__filter"
+              name="model-picker-manufacturer"
+            />
 
-          <ClassificationSelect
-            v-model="classificationIn"
-            class="model-picker__filter"
-            name="model-picker-classification"
-          />
+            <ClassificationSelect
+              v-model="classificationIn"
+              class="model-picker__filter"
+              name="model-picker-classification"
+            />
 
-          <Btn
-            v-if="hangarOffered"
-            class="model-picker__hangar"
-            :active="hangarOnly"
-            data-test="model-picker-hangar-only"
-            @click="hangarOnly = !hangarOnly"
-          >
-            {{ t("modelPicker.labels.hangarOnly") }}
-          </Btn>
+            <Btn
+              v-if="hangarOffered"
+              class="model-picker__hangar"
+              :active="hangarOnly"
+              data-test="model-picker-hangar-only"
+              @click="hangarOnly = !hangarOnly"
+            >
+              {{ t("modelPicker.labels.hangarOnly") }}
+            </Btn>
+          </template>
 
           <Btn
             class="model-picker__more-filters"
             :active="moreFiltersOpen"
             :aria-expanded="moreFiltersOpen"
             aria-controls="model-picker-more-filters"
+            v-tooltip="moreFiltersLabel"
+            :aria-label="moreFiltersLabel"
             data-test="model-picker-more-filters"
             @click="moreFiltersOpen = !moreFiltersOpen"
           >
-            <i class="fa-light fa-sliders" />
-            {{ t("modelPicker.actions.moreFilters") }}
+            <i v-if="moreFiltersCount" class="fa-solid fa-filter" />
+            <i v-else class="fa-regular fa-filter" />
             <span v-if="moreFiltersCount" class="model-picker__filter-count">
               {{ moreFiltersCount }}
             </span>
@@ -478,8 +497,9 @@ const save = () => {
         </div>
 
         <!--
-          Behind a toggle because the header is sticky: six fields wrap to three
-          rows on a phone and leave no room for the ships under them.
+          Behind a toggle because the header is sticky: the filters wrap to
+          several rows on a phone and leave no room for the ships under them,
+          so there every filter but the search folds away.
         -->
         <Collapsed
           id="model-picker-more-filters"
@@ -487,6 +507,30 @@ const save = () => {
           :duration="prefersReducedMotion ? 1 : 200"
         >
           <div class="model-picker__toolbar model-picker__toolbar--more">
+            <template v-if="mobile">
+              <ManufacturerSelect
+                v-model="manufacturerIn"
+                class="model-picker__filter"
+                name="model-picker-manufacturer"
+              />
+
+              <ClassificationSelect
+                v-model="classificationIn"
+                class="model-picker__filter"
+                name="model-picker-classification"
+              />
+
+              <Btn
+                v-if="hangarOffered"
+                class="model-picker__hangar"
+                :active="hangarOnly"
+                data-test="model-picker-hangar-only"
+                @click="hangarOnly = !hangarOnly"
+              >
+                {{ t("modelPicker.labels.hangarOnly") }}
+              </Btn>
+            </template>
+
             <FocusSelect
               v-model="focusIn"
               class="model-picker__filter"
@@ -656,6 +700,14 @@ const save = () => {
 
 .model-picker__filter {
   @apply min-w-[200px] flex-1;
+}
+
+/* On a phone the search shares its row with the filter toggle alone, and at
+   240px the toggle would drop to a row of its own on the narrowest screens. */
+@media (max-width: 992px) {
+  .model-picker__search {
+    @apply min-w-0;
+  }
 }
 
 /*
