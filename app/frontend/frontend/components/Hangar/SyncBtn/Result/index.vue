@@ -27,6 +27,7 @@ import type { SyncProcessStep, SyncProcessStepStatus } from "./types";
 type Props = {
   processSteps: SyncProcessStep[];
   currentPage: number;
+  totalPages?: number;
   pledges: RsiHangarItemInput[];
   result?: HangarSyncResult;
   finished: boolean;
@@ -41,6 +42,7 @@ type Props = {
 
 const props = withDefaults(defineProps<Props>(), {
   result: undefined,
+  totalPages: undefined,
   cancelled: false,
   showSupportHint: false,
   syncPaints: true,
@@ -144,12 +146,21 @@ const stepDetail = (step: SyncProcessStep) => {
     if (step.status === "pending") return undefined;
 
     // While reading, the tiles under the step carry the counts.
-    return step.status === "processing"
-      ? t("labels.syncExtension.stepDetails.page", { page: props.currentPage })
-      : t("labels.syncExtension.stepDetails.read", {
-          pages: props.currentPage,
-          count: items.value.length,
-        });
+    if (step.status === "processing") {
+      return props.totalPages
+        ? t("labels.syncExtension.stepDetails.pageOf", {
+            page: Math.min(props.currentPage, props.totalPages),
+            total: props.totalPages,
+          })
+        : t("labels.syncExtension.stepDetails.page", {
+            page: props.currentPage,
+          });
+    }
+
+    return t("labels.syncExtension.stepDetails.read", {
+      pages: props.currentPage,
+      count: items.value.length,
+    });
   }
 
   if (step.status === "processing") {
@@ -159,8 +170,17 @@ const stepDetail = (step: SyncProcessStep) => {
   return undefined;
 };
 
-// Neither step knows how far along it is: the hangar's pages are read until
-// one comes back empty, and the save is a single request.
+// Reading fills toward the last page RSI's pager names; without a pager it
+// only shows that it is working, as the save, a single request, always does.
+const stepProgress = (step: SyncProcessStep): SyncStep["progress"] => {
+  if (step.status !== "processing") return undefined;
+  if (step.name === "fetchHangar" && props.totalPages) {
+    return { value: props.currentPage, max: props.totalPages };
+  }
+
+  return "indeterminate";
+};
+
 const steps = computed<SyncStep[]>(() =>
   props.processSteps.map((step) => ({
     key: step.name,
@@ -171,7 +191,7 @@ const steps = computed<SyncStep[]>(() =>
       props.cancelled && step.status === "failure"
         ? "pending"
         : STEP_STATUS[step.status],
-    progress: step.status === "processing" ? "indeterminate" : undefined,
+    progress: stepProgress(step),
   })),
 );
 

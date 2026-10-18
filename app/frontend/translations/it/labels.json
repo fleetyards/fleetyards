@@ -2986,7 +2986,8 @@
           "reading": "Pagina %{page} · Pledge letti finora: %{count}",
           "read": "Pagine lette: %{pages} · Pledge: %{count}",
           "saving": "Abbinamento dei tuoi pledge al tuo hangar…",
-          "page": "Pagina %{page}"
+          "page": "Pagina %{page}",
+          "pageOf": "Pagina %{page} di %{total}"
         },
         "unmatchedCount": {
           "one": "1 elemento non è stato abbinato",

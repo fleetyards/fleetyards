@@ -20,6 +20,8 @@ export type RSIHangarPage =
       pledges: RSIHangarItem[];
       pledgeIds: string[];
       unread?: RSIHangarUnread;
+      // The list's last page, from RSI's pager, where the page shows one.
+      lastPage?: number;
     }
   | { status: RsiPageStatus.END }
   | {
@@ -133,6 +135,26 @@ type RSIPledgeInfo = Pick<
 
 export class RSIHangarParser {
   parser = new DOMParser();
+
+  // RSI's pager under the list links every page it shows and, while there are
+  // more, the last one ("»"); the highest of them is the list's length. A
+  // script-driven pager elsewhere on the page links by `rel`, not `href`.
+  lastPage(htmlDoc: Document): number | undefined {
+    const pages = Array.from(
+      htmlDoc.querySelectorAll<HTMLAnchorElement>(".pager a[href*='page=']"),
+    )
+      .map((link) =>
+        Number(
+          new URL(
+            link.getAttribute("href") || "",
+            "https://robertsspaceindustries.com",
+          ).searchParams.get("page"),
+        ),
+      )
+      .filter((page) => Number.isInteger(page) && page > 0);
+
+    return pages.length ? Math.max(...pages) : undefined;
+  }
 
   extractPage(html: string): RSIHangarPage {
     const htmlDoc = this.parser.parseFromString(html, "text/html");
@@ -299,6 +321,7 @@ export class RSIHangarParser {
       status: RsiPageStatus.PAGE,
       pledges,
       pledgeIds,
+      lastPage: this.lastPage(htmlDoc),
       unread: this.unread(
         shipsWithoutKind,
         unknownKinds,

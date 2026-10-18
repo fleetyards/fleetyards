@@ -2986,7 +2986,8 @@
           "reading": "Page %{page} · Pledge items so far: %{count}",
           "read": "Pages read: %{pages} · Pledge items: %{count}",
           "saving": "Matching your pledges to your hangar…",
-          "page": "Page %{page}"
+          "page": "Page %{page}",
+          "pageOf": "Page %{page} of %{total}"
         },
         "unmatchedCount": {
           "one": "1 item could not be matched",

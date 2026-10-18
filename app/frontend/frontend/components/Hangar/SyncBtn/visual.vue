@@ -27,6 +27,7 @@ type State = {
   description: string;
   processSteps: SyncProcessStep[];
   currentPage: number;
+  totalPages?: number;
   pledges: RsiHangarItemInput[];
   result?: HangarSyncResult;
   finished: boolean;
@@ -101,6 +102,7 @@ const states: State[] = [
       { name: "submitData", status: "pending" },
     ],
     currentPage: 3,
+    totalPages: 5,
     pledges: samplePledges,
     finished: false,
     finishedWithErrors: false,
@@ -258,6 +260,7 @@ const openState = (state: State) => {
       title: `Hangar Sync — ${state.label}`,
       processSteps: state.processSteps,
       currentPage: state.currentPage,
+      totalPages: state.totalPages,
       pledges: state.pledges,
       result: state.result,
       finished: state.finished,

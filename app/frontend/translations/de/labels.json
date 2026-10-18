@@ -2986,7 +2986,8 @@
           "reading": "Seite %{page} · Bisher gelesene Pledges: %{count}",
           "read": "Gelesene Seiten: %{pages} · Pledges: %{count}",
           "saving": "Deine Pledges werden deinem Hangar zugeordnet …",
-          "page": "Seite %{page}"
+          "page": "Seite %{page}",
+          "pageOf": "Seite %{page} von %{total}"
         },
         "unmatchedCount": {
           "one": "1 Eintrag konnte nicht zugeordnet werden",

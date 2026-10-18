@@ -52,6 +52,10 @@ const processSteps = ref<SyncProcessStep[]>(initialSteps());
 
 const currentPage = ref(1);
 
+// The list's length from RSI's pager, so the reading step can fill toward it;
+// unknown until a page shows the pager.
+const totalPages = ref<number>();
+
 const pledges = ref<RsiHangarItemInput[]>([]);
 
 const result = ref<HangarSyncResult | undefined>();
@@ -140,6 +144,7 @@ const clear = () => {
   started.value = false;
   processSteps.value = initialSteps();
   currentPage.value = 1;
+  totalPages.value = undefined;
   pledges.value = [];
   result.value = undefined;
   submitted.value = false;
@@ -283,6 +288,10 @@ export const useHangarSync = () => {
       ...newPledges.map((pledge) => ({ ...pledge, page: currentPage.value })),
     ];
 
+    if (page.lastPage) {
+      totalPages.value = Math.max(totalPages.value ?? 0, page.lastPage);
+    }
+
     currentPage.value += 1;
     setTimeout(() => void fetchPage(id), PAGE_DELAY);
   };
@@ -413,6 +422,7 @@ export const useHangarSync = () => {
     started,
     processSteps,
     currentPage,
+    totalPages,
     pledges,
     result,
     finished,

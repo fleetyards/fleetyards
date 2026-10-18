@@ -2986,7 +2986,8 @@
           "reading": "Página %{page} · Pledges leídos hasta ahora: %{count}",
           "read": "Páginas leídas: %{pages} · Pledges: %{count}",
           "saving": "Emparejando tus pledges con tu hangar…",
-          "page": "Página %{page}"
+          "page": "Página %{page}",
+          "pageOf": "Página %{page} de %{total}"
         },
         "unmatchedCount": {
           "one": "No se pudo emparejar 1 elemento",

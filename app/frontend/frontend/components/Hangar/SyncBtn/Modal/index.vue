@@ -57,6 +57,7 @@ const {
   started,
   processSteps,
   currentPage,
+  totalPages,
   pledges,
   result,
   finished,
@@ -438,6 +439,7 @@ const refreshPage = async () => {
         <SyncResultPanel
           :process-steps="processSteps"
           :current-page="currentPage"
+          :total-pages="totalPages"
           :pledges="pledges"
           :result="result"
           :finished="finished"

@@ -18,6 +18,7 @@ type Props = {
   title?: string;
   processSteps: SyncProcessStep[];
   currentPage: number;
+  totalPages?: number;
   pledges: RsiHangarItemInput[];
   result?: HangarSyncResult;
   finished: boolean;
@@ -27,6 +28,7 @@ type Props = {
 const props = withDefaults(defineProps<Props>(), {
   title: "Hangar Sync",
   result: undefined,
+  totalPages: undefined,
 });
 
 const working = computed(() => isSyncStepRunning(props.processSteps));
@@ -45,6 +47,7 @@ const close = () => {
     <SyncResultPanel
       :process-steps="processSteps"
       :current-page="currentPage"
+      :total-pages="totalPages"
       :pledges="pledges"
       :result="result"
       :finished="finished"

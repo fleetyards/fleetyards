@@ -2986,7 +2986,8 @@
           "reading": "Page %{page} · Pledges lus jusqu'ici : %{count}",
           "read": "Pages lues : %{pages} · Pledges : %{count}",
           "saving": "Association de vos pledges à votre hangar…",
-          "page": "Page %{page}"
+          "page": "Page %{page}",
+          "pageOf": "Page %{page} sur %{total}"
         },
         "unmatchedCount": {
           "one": "1 élément n'a pas pu être associé",

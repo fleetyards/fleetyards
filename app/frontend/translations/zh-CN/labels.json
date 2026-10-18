@@ -2986,7 +2986,8 @@
           "reading": "第 %{page} 页 · 目前已读取承诺：%{count}",
           "read": "已读取页数：%{pages} · 承诺：%{count}",
           "saving": "正在将你的承诺与机库匹配…",
-          "page": "第 %{page} 页"
+          "page": "第 %{page} 页",
+          "pageOf": "第 %{page} 页，共 %{total} 页"
         },
         "unmatchedCount": {
           "one": "有 1 项无法匹配",
