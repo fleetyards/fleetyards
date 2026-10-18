@@ -1145,7 +1145,6 @@
         "urlPlaceholder": "Loadout-URL von erkul.games oder spviewer.eu einfügen...",
         "activateHint": "Klicken, um dies zum aktiven Loadout zu machen",
         "activeHint": "Dies ist das aktive Loadout",
-        "activateListHint": "Ein Loadout anklicken, um es zu aktivieren",
         "kinds": {
           "fleetyards": "Fleetyards",
           "erkul": "Erkul",

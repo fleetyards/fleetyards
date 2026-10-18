@@ -81,10 +81,6 @@ describe("VehicleOverviewLoadoutsCard", () => {
     expect(wrapper.find(row("combat")).classes()).not.toContain(
       "addon-option--selected",
     );
-    // Nothing on a row says a click switches it on, so the card does.
-    expect(
-      wrapper.find("[data-test='vehicle-overview-loadouts-hint']").exists(),
-    ).toBe(true);
   });
 
   it("switches to a loadout picked from the list", async () => {

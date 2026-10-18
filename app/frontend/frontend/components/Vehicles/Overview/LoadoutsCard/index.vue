@@ -157,14 +157,6 @@ const loadoutsRoute = computed(() =>
       </li>
     </ul>
 
-    <p
-      v-if="all.some((loadout) => !loadout.active)"
-      class="overview-card-muted"
-      data-test="vehicle-overview-loadouts-hint"
-    >
-      {{ t("labels.loadout.activateListHint") }}
-    </p>
-
     <template #footer>
       <router-link :to="loadoutsRoute" class="overview-card-footer-link">
         {{ t("actions.hangar.manageLoadouts") }}
