@@ -192,6 +192,19 @@ describe("useSwipeToDismiss", () => {
     wrapper.unmount();
   });
 
+  it("stays open when the flick back is shorter than the measured stretch", async () => {
+    const { onDismiss, panel, wrapper } = await render("left");
+
+    panel.dispatchEvent(touch("touchstart", 0, 150));
+    panel.dispatchEvent(touch("touchmove", 16, 80));
+    panel.dispatchEvent(touch("touchmove", 32, 100));
+    await release(panel, 42);
+
+    expect(onDismiss).not.toHaveBeenCalled();
+
+    wrapper.unmount();
+  });
+
   it("stays open when flicked back after a long drag", async () => {
     const { onDismiss, panel, wrapper } = await render("left");
 

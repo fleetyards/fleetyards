@@ -15,6 +15,8 @@ const FLICK_VELOCITY = 0.4;
  * FLICK_SPAN_MS, not between its last two moves: those can arrive a
  * millisecond apart and read as any speed at all. A finger whose last move is
  * older than FLICK_WINDOW_MS came to rest before lifting, and has not flicked.
+ * The stretch never reaches back past the finger's last turn, or a flick back
+ * would be averaged into the drag before it.
  */
 const FLICK_SPAN_MS = 20;
 const FLICK_WINDOW_MS = 100;
@@ -180,9 +182,20 @@ export const useSwipeToDismiss = ({
       return 0;
     }
 
+    let turn = samples.length - 1;
+    const direction = Math.sign(last.x - (samples[turn - 1]?.x ?? last.x));
+
+    while (
+      turn > 0 &&
+      Math.sign(samples[turn].x - samples[turn - 1].x) !== -direction
+    ) {
+      turn -= 1;
+    }
+
+    const since = samples.slice(turn);
     const from =
-      samples.findLast(({ time }) => last.time - time >= FLICK_SPAN_MS) ||
-      samples[0];
+      since.findLast(({ time }) => last.time - time >= FLICK_SPAN_MS) ||
+      since[0];
     const span = last.time - from.time;
 
     return span > 0 ? towardsClosed(last.x - from.x) / span : 0;
