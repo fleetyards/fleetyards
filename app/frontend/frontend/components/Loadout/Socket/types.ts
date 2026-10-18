@@ -1,5 +1,4 @@
 import type { HardpointStat } from "@/frontend/composables/useHardpointStats";
-import type { HardpointCategoryEnum } from "@/services/fyApi";
 
 // What a socket holds, as the socket shows it: no slot type's own record, so
 // modules, weapons and the rest all reach it through their caller.
@@ -9,8 +8,6 @@ export interface LoadoutSocketItem {
   image?: string;
   // One figure that says what the item brings, already formatted.
   figure?: string;
-  // The glyph shown where there is no image; a module's when left out.
-  category?: HardpointCategoryEnum;
   // The one figure the part is fitted for, set in gold at the socket's end the
   // way a ship page's hardpoint row sets its headline.
   headline?: { value: string; label: string };

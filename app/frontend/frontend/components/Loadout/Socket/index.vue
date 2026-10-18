@@ -10,7 +10,6 @@ import HardpointItem from "@/frontend/components/Models/Hardpoints/Item/index.vu
 import HardpointSize from "@/frontend/components/Models/Hardpoints/Size/index.vue";
 import HardpointHeadline from "@/frontend/components/Models/Hardpoints/Headline/index.vue";
 import HardpointStats from "@/frontend/components/Models/Hardpoints/Stats/index.vue";
-import HardpointCategoryIcon from "@/frontend/components/Models/Hardpoints/CategoryIcon/index.vue";
 import type { LoadoutSocketSlot } from "@/frontend/components/Loadout/Socket/types";
 
 type Props = {
@@ -130,13 +129,8 @@ const select = (event: Event) => {
           class="loadout-socket__image"
           loading="lazy"
         />
-        <HardpointCategoryIcon
-          v-else-if="socket.item?.category"
-          :category="socket.item.category"
-          class="loadout-socket__glyph"
-        />
         <i
-          v-else-if="!socket.item"
+          v-else
           class="loadout-socket__glyph fa-light fa-plus"
           aria-hidden="true"
         />

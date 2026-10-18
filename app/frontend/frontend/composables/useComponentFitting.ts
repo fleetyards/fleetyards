@@ -449,14 +449,6 @@ export const useComponentFitting = () => {
     return undefined;
   };
 
-  const glyphCategory = (
-    category: HardpointCategoryEnum | undefined,
-    part: LoadoutComponentRef,
-  ) =>
-    category && category !== HardpointCategoryEnum.UNKNOWN
-      ? category
-      : ((part.category as HardpointCategoryEnum | undefined) ?? category);
-
   // The figures a ship page's hardpoint row shows beside its gold headline.
   const rowStats = (
     component: LoadoutComponentRef,
@@ -496,9 +488,6 @@ export const useComponentFitting = () => {
             id: entry.content.id,
             name: entry.content.name,
             figure: componentFigure(entry.content),
-            // A port inside a part often names no category of its own; the part
-            // in it does.
-            category: glyphCategory(entry.slot.category, entry.content),
             headline: headlineOf(entry.content, entry.slot.category),
             stats: rowStats(entry.content, entry.slot.category),
           }
@@ -625,7 +614,6 @@ export const useComponentFitting = () => {
                   id: port.stock.id,
                   name: port.stock.name,
                   figure: componentFigure(port.stock),
-                  category: glyphCategory(port.category, port.stock),
                   headline: headlineOf(port.stock, port.category),
                   stats: rowStats(port.stock, port.category),
                 }
