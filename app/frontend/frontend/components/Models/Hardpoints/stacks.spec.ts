@@ -2,8 +2,17 @@ import { describe, expect, it } from "vitest";
 import type { Hardpoint } from "@/services/fyApi";
 import { groupIntoStacks } from "./stacks";
 
-const turret = (id: string, componentId: string, groupKey = "tractor-beam") =>
-  ({ id, groupKey, component: { id: componentId } }) as unknown as Hardpoint;
+const turret = (
+  id: string,
+  componentId: string,
+  groupKey = "tractor-beam",
+  name = componentId,
+) =>
+  ({
+    id,
+    groupKey,
+    component: { id: componentId, name },
+  }) as unknown as Hardpoint;
 
 describe("groupIntoStacks", () => {
   it("stacks hardpoints with the same contents and the same part", () => {
@@ -25,5 +34,14 @@ describe("groupIntoStacks", () => {
     expect(Object.values(stacks).map((stack) => stack.length)).toEqual([
       1, 1, 1,
     ]);
+  });
+
+  it("stacks one part the game files carry as several records", () => {
+    const stacks = groupIntoStacks([
+      turret("left", "rack-left", "racks", "Side Missile Rack"),
+      turret("right", "rack-right", "racks", "Side Missile Rack"),
+    ]);
+
+    expect(Object.values(stacks).map((stack) => stack.length)).toEqual([2]);
   });
 });
