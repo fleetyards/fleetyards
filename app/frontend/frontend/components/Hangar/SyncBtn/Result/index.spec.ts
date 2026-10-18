@@ -405,7 +405,7 @@ describe("HangarSyncResult", () => {
       expect(status.text()).toContain("nothing was changed");
     });
 
-    it("lists what it could not match, the first group open", async () => {
+    it("lists everything it could not match, by kind", async () => {
       const wrapper = await mountFinished({
         missingModels: ["Mystery Ship", "Unknown Variant"],
         missingUpgrades: ["Upgrade X"],
@@ -417,17 +417,19 @@ describe("HangarSyncResult", () => {
           .text(),
       ).toContain("3 items could not be matched");
 
+      // Every group is listed in full, none of them folded away.
       const ships = wrapper.get("[data-test='sync-unmatched-missingModels']");
-      expect(ships.get("button").attributes("aria-expanded")).toBe("true");
+      expect(ships.find("button").exists()).toBe(false);
       expect(ships.findAll("li").map((item) => item.text())).toEqual([
         "Mystery Ship",
         "Unknown Variant",
       ]);
       expect(
         wrapper
-          .get("[data-test='sync-unmatched-missingUpgrades'] button")
-          .attributes("aria-expanded"),
-      ).toBe("false");
+          .get("[data-test='sync-unmatched-missingUpgrades']")
+          .findAll("li")
+          .map((item) => item.text()),
+      ).toEqual(["Upgrade X"]);
     });
   });
 

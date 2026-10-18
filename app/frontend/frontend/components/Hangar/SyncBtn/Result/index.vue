@@ -339,21 +339,6 @@ const disclosureId = useId();
 
 const readOpen = ref(false);
 
-// The first group starts open, so the most common miss - a ship it could not
-// find - is in view without a click; any group the reader toggles keeps
-// their choice.
-const toggledGroups = ref<Record<string, boolean>>({});
-
-const groupOpen = (key: string, index: number) =>
-  toggledGroups.value[key] ?? index === 0;
-
-const toggleGroup = (key: string, index: number) => {
-  toggledGroups.value = {
-    ...toggledGroups.value,
-    [key]: !groupOpen(key, index),
-  };
-};
-
 const incomplete = computed(() => !!props.result?.incomplete);
 
 // A run that found nothing to change, or only kinds it is set to skip, is no
@@ -412,41 +397,27 @@ const hasWarnings = computed(
           {{ t("labels.syncExtension.unmatchedHeading") }}
         </h3>
         <div class="hangar-sync-result__groups">
+          <!-- What the sync could not match is what the reader has to act on,
+               so it is never folded away. -->
           <div
-            v-for="(group, index) in unmatchedGroups"
+            v-for="group in unmatchedGroups"
             :key="group.key"
             class="hangar-sync-result__group"
             :data-test="`sync-unmatched-${group.key}`"
           >
-            <button
-              type="button"
-              class="hangar-sync-result__summary"
-              :aria-expanded="groupOpen(group.key, index)"
-              :aria-controls="`${disclosureId}-${group.key}`"
-              @click="toggleGroup(group.key, index)"
-            >
-              <i
-                class="fa-light fa-chevron-right hangar-sync-result__chevron"
-                aria-hidden="true"
-              />
+            <h4 class="hangar-sync-result__group-heading">
               <span class="hangar-sync-result__summary-label">
                 {{ group.label }}
               </span>
               <span class="hangar-sync-result__count">
                 {{ group.items.length }}
               </span>
-            </button>
-            <Collapsed
-              :id="`${disclosureId}-${group.key}`"
-              :visible="groupOpen(group.key, index)"
-              :duration="collapseDuration"
-            >
-              <ul class="hangar-sync-result__items">
-                <li v-for="item in group.items" :key="`${group.key}-${item}`">
-                  {{ item }}
-                </li>
-              </ul>
-            </Collapsed>
+            </h4>
+            <ul class="hangar-sync-result__items">
+              <li v-for="item in group.items" :key="`${group.key}-${item}`">
+                {{ item }}
+              </li>
+            </ul>
           </div>
         </div>
       </section>
@@ -573,6 +544,18 @@ const hasWarnings = computed(
   border-top: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));
 }
 
+.hangar-sync-result__group-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 11px 14px 8px;
+  color: var(--color-lifted, #eee);
+  font-size: 15px;
+  font-weight: normal;
+  font-family: inherit;
+}
+
 .hangar-sync-result__read {
   border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
   border-radius: var(--radius-surface-slim, 12px);
@@ -637,7 +620,8 @@ const hasWarnings = computed(
   flex-direction: column;
   gap: 6px;
   margin: 0;
-  padding: 0 14px 12px 38px;
+  padding: 0 14px 12px;
+  color: var(--color-text-dim, #959595);
   list-style: none;
 }
 
