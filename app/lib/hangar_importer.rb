@@ -22,6 +22,8 @@ class HangarImporter
   # YAML blob back from the database on every check.
   CANCEL_CHECK_INTERVAL = 25
 
+  HANGAR_XPLOR_SHIP_NAMES = YAML.load_file(Rails.root.join("config/hangar_xplor_ship_names.yml")).freeze
+
   def initialize(import)
     @import = import
   end
@@ -75,7 +77,6 @@ class HangarImporter
         params = {
           notify: false,
           user_id: @import.user_id,
-          name: item[:ship_name] || item[:custom_name],
           # An export carries whatever serial the ship had, including ones from
           # before the game format; one of those would fail validation and lose
           # the whole ship rather than just its serial.
@@ -97,7 +98,11 @@ class HangarImporter
         ]
         model = Model.where(model_query).first
         if model.present?
-          Vehicle.create(params.merge(model_id: model.id, model_paint_ids: owned_paint_ids(item, model.id)))
+          Vehicle.create(params.merge(
+            model_id: model.id,
+            name: custom_name(item, model),
+            model_paint_ids: owned_paint_ids(item, model.id)
+          ))
           imported_models << model.name
           next
         end
@@ -108,6 +113,7 @@ class HangarImporter
         if model_paint.present?
           Vehicle.create(params.merge(
             model_id: model_paint.model_id,
+            name: custom_name(item, model_paint.model),
             model_paint_ids: owned_paint_ids(item, model_paint.model_id) | [model_paint.id]
           ))
           imported_models << model_paint.name
@@ -172,6 +178,18 @@ class HangarImporter
     return [@import.hangar_group_id] if @import.hangar_group_id.present?
 
     HangarGroup.where(user_id: @import.user_id, name: item[:groups]).pluck(:id)
+  end
+
+  # Hangar XPLORer exports a ship's standard name in `ship_name` unless its
+  # owner named it, and a ship newer than the vendored list still carries the
+  # model's own name; neither is a name the owner gave it.
+  private def custom_name(item, model)
+    name = (item[:ship_name] || item[:custom_name]).to_s.strip
+    return if name.blank?
+    return if HANGAR_XPLOR_SHIP_NAMES[item[:ship_code]].to_s.strip.casecmp?(name)
+    return if [model.name, model.rsi_name].compact_blank.any? { |model_name| normalize(model_name) == normalize(name) }
+
+    name
   end
 
   private def stop_requested?(index)
