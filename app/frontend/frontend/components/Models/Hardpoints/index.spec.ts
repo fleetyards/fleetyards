@@ -58,6 +58,7 @@ describe("Hardpoints with a loadout's fitting", () => {
     expect(wrapper.text()).toContain("Cargo Module");
     expect(wrapper.find(".module-select-btn").exists()).toBe(false);
     expect(wrapper.find(".hardpoints__source").exists()).toBe(false);
+    expect(wrapper.find(".hardpoints__controls").exists()).toBe(false);
 
     wrapper.unmount();
   });

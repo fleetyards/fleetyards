@@ -255,7 +255,9 @@ useMetricsMasonry(metricsGrid);
 <template>
   <div id="hardpoints" class="row hardpoints">
     <div class="col-12">
-      <div class="hardpoints__controls">
+      <!-- The ship as built: planning tools and the data source. A loadout's
+           fitting is one plan, read from the game files. -->
+      <div v-if="!fitting" class="hardpoints__controls">
         <template v-if="model.inGame">
           <span class="hardpoints__links-label text-muted">
             {{ t("labels.hardpoints.prefix") }}
@@ -275,7 +277,7 @@ useMetricsMasonry(metricsGrid);
             </Btn>
           </BtnGroup>
         </template>
-        <BtnGroup v-if="!fitting" segmented class="hardpoints__source">
+        <BtnGroup segmented class="hardpoints__source">
           <Btn
             :active="source === HardpointSourceEnum.GAME_FILES"
             :disabled="!model.inGame"
