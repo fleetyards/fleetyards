@@ -23,7 +23,7 @@ export const useLoadoutProblems = (
 ) => {
   const { t } = useI18n();
 
-  const { data } = useVehicleLoadoutProblems(
+  const { data, isLoading } = useVehicleLoadoutProblems(
     vehicleId,
     () => toValue(loadoutId) ?? "",
     {
@@ -77,5 +77,5 @@ export const useLoadoutProblems = (
     }));
   };
 
-  return { problems, reason, describe, markRefused };
+  return { problems, reason, describe, markRefused, loading: isLoading };
 };

@@ -52,21 +52,29 @@ export const useLoadoutFitting = ({
 
   const wanted = () => toValue(enabled) && !!slug();
 
-  const { data: hullSlots } = useModelLoadoutSlots(slug, {
-    query: { enabled: wanted },
-  });
-
-  const { data: modelHardpoints } = useModelHardpoints(
+  const { data: hullSlots, isLoading: hullSlotsLoading } = useModelLoadoutSlots(
     slug,
-    { source: HardpointSourceEnum.GAME_FILES },
-    { query: { enabled: wanted } },
+    {
+      query: { enabled: wanted },
+    },
   );
+
+  const { data: modelHardpoints, isLoading: hardpointsLoading } =
+    useModelHardpoints(
+      slug,
+      { source: HardpointSourceEnum.GAME_FILES },
+      { query: { enabled: wanted } },
+    );
 
   // Every module the model takes: a module the loadout swapped out still has
   // its slots known.
-  const { data: allModules } = useModelModules(slug, undefined, {
-    query: { enabled: () => !!slug() },
-  });
+  const { data: allModules, isLoading: modulesLoading } = useModelModules(
+    slug,
+    undefined,
+    {
+      query: { enabled: () => !!slug() },
+    },
+  );
 
   const modelModules = computed(() => allModules.value?.items ?? []);
 
@@ -158,8 +166,15 @@ export const useLoadoutFitting = ({
     ).changed;
   });
 
+  // Whether what the fitting is measured from is still on its way.
+  const loading = computed(
+    () =>
+      hullSlotsLoading.value || hardpointsLoading.value || modulesLoading.value,
+  );
+
   return {
     fitting,
+    loading,
     hullSlots,
     modelHardpoints,
     modelModules,

@@ -23,7 +23,7 @@ export const useLoadoutModules = (
   );
 
   // Only a loadout with modules fitted needs the model's list to name them.
-  const { data } = useModelModules(slug, undefined, {
+  const { data, isLoading } = useModelModules(slug, undefined, {
     query: { enabled: computed(() => !!slug.value && !!fitted.value.length) },
   });
 
@@ -50,5 +50,5 @@ export const useLoadoutModules = (
       ).get(CARGO) || 0,
   );
 
-  return { moduleRows, moduleCargo };
+  return { moduleRows, moduleCargo, loading: isLoading };
 };
