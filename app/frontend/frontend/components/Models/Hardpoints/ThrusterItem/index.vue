@@ -11,6 +11,11 @@ import HardpointManufacturer from "@/frontend/components/Models/Hardpoints/Manuf
 import HardpointComponent from "@/frontend/components/Models/Hardpoints/Component/index.vue";
 import HardpointHeadline from "@/frontend/components/Models/Hardpoints/Headline/index.vue";
 import HardpointStats from "@/frontend/components/Models/Hardpoints/Stats/index.vue";
+import HardpointStackToggle from "@/frontend/components/Models/Hardpoints/StackToggle/index.vue";
+// eslint-disable-next-line import/no-self-import
+import HardpointThrusterItem from "@/frontend/components/Models/Hardpoints/ThrusterItem/index.vue";
+import Collapsed from "@/shared/components/Collapsed.vue";
+import { useHardpointStack } from "@/frontend/components/Models/Hardpoints/useHardpointStack";
 import { useHardpointStats } from "@/frontend/composables/useHardpointStats";
 import {
   HardpointSourceEnum,
@@ -21,9 +26,21 @@ import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
   hardpoints: Hardpoint[];
+  collapsible?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  collapsible: false,
+});
+
+const emit = defineEmits<{ toggle: [] }>();
+
+const { isGroup, stackExpanded, toggleExpanded, onRowClick } =
+  useHardpointStack(
+    () => props.hardpoints,
+    () => props.collapsible,
+    () => emit("toggle"),
+  );
 
 const { t, toNumber } = useI18n();
 
@@ -65,7 +82,16 @@ const subTypeLabel = computed(() => {
 </script>
 
 <template>
-  <HardpointItem :count="count">
+  <HardpointItem
+    v-show="!stackExpanded"
+    :count="count"
+    :class="{ 'hardpoint-item--clickable': isGroup || collapsible }"
+    @click="onRowClick"
+  >
+    <!-- The rest of the row toggles the stack too. -->
+    <template v-if="isGroup || collapsible" #stack>
+      <HardpointStackToggle :split="collapsible" @toggle="onRowClick" />
+    </template>
     <template #default>
       <HardpointSize :size="hardpoint.maxSize" />
       <div class="hardpoint-item__main">
@@ -98,9 +124,24 @@ const subTypeLabel = computed(() => {
       <HardpointStats :stats="rowStats" />
     </template>
   </HardpointItem>
+
+  <Collapsed v-if="isGroup" :visible="stackExpanded" :duration="200">
+    <HardpointThrusterItem
+      v-for="hp in hardpoints"
+      :key="hp.id"
+      :hardpoints="[hp]"
+      collapsible
+      @toggle="toggleExpanded"
+    />
+  </Collapsed>
 </template>
 
 <style lang="scss" scoped>
+// A stack, or a thruster split out of one, toggles from anywhere on its row.
+.hardpoint-item--clickable {
+  cursor: pointer;
+}
+
 // The name with the maker under it, as on every other hardpoint row.
 .hardpoint-item__main {
   flex: 1 1 120px;

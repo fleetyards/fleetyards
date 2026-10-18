@@ -61,4 +61,24 @@ describe("HardpointThrusterItem", () => {
     wrapper.unmount();
     one.unmount();
   });
+
+  it("splits a stack into its thrusters and folds it back", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { hardpoints: [thruster, { ...thruster, id: "2" }] },
+      attachTo: document.body,
+    });
+    const summary = () =>
+      (wrapper.find(".hardpoint-item").element as HTMLElement).style.display;
+
+    await wrapper.get("[data-test='hardpoint-stack-toggle']").trigger("click");
+    expect(summary()).toBe("none");
+
+    await wrapper
+      .findAll("[data-test='hardpoint-stack-toggle']")
+      .find((button) => button.find(".fa-compress").exists())!
+      .trigger("click");
+    expect(summary()).not.toBe("none");
+
+    wrapper.unmount();
+  });
 });
