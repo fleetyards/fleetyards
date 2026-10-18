@@ -5,13 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-export type SyncResultTile = {
-  key: string;
-  value: number | string;
-  label: string;
-  // For a caller whose tests read the number on its own.
-  valueTest?: string;
-};
+import type { SyncResultTile } from "./types";
 
 type Props = {
   tiles: SyncResultTile[];
@@ -28,7 +22,12 @@ defineProps<Props>();
       class="sync-result-tiles__tile"
       :data-test="`sync-result-tile-${tile.key}`"
     >
-      <dt class="sync-result-tiles__label">{{ tile.label }}</dt>
+      <dt class="sync-result-tiles__label">
+        {{ tile.label }}
+        <span v-if="tile.note" class="sync-result-tiles__note">
+          {{ tile.note }}
+        </span>
+      </dt>
       <dd class="sync-result-tiles__value" :data-test="tile.valueTest">
         {{ tile.value }}
       </dd>
@@ -62,6 +61,12 @@ defineProps<Props>();
   font-size: 22px;
   line-height: 1.2;
   font-variant-numeric: tabular-nums;
+}
+
+.sync-result-tiles__note {
+  display: block;
+  color: var(--color-success, #5cb85c);
+  font-size: 12px;
 }
 
 .sync-result-tiles__label {

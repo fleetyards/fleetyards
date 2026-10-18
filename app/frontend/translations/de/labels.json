@@ -3004,7 +3004,26 @@
         "extensionNeededTitle": "Sync-Erweiterung hinzufügen",
         "finishedTitle": "Hangar synchronisiert",
         "failedTitle": "Die Synchronisierung wurde nicht abgeschlossen",
-        "savedAsYouChange": "Wird beim Ändern gespeichert"
+        "savedAsYouChange": "Wird beim Ändern gespeichert",
+        "resultKinds": {
+          "ships": "Schiffe",
+          "components": "Module",
+          "upgrades": "Upgrades",
+          "paints": "Lackierungen",
+          "hangarFlair": "Hangar-Deko",
+          "equipment": "FPS-Ausrüstung",
+          "ccus": "CCUs"
+        },
+        "newCount": {
+          "one": "+1 neu",
+          "other": "+%{count} neu"
+        },
+        "resultActions": {
+          "movedVehiclesToWanted": "Auf die Wunschliste verschoben",
+          "deletedVehicles": "Gelöscht",
+          "groupedVehicles": "In eine Gruppe einsortiert",
+          "unchangedVehicles": "Unverändert gelassen"
+        }
       },
       "cargoGridViewer": {
         "capacity": "Kapazität",

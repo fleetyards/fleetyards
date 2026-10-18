@@ -3004,7 +3004,26 @@
         "extensionNeededTitle": "Aggiungi l'estensione di sincronizzazione",
         "finishedTitle": "Hangar sincronizzato",
         "failedTitle": "La sincronizzazione non è terminata",
-        "savedAsYouChange": "Salvate appena le modifichi"
+        "savedAsYouChange": "Salvate appena le modifichi",
+        "resultKinds": {
+          "ships": "Navi",
+          "components": "Moduli",
+          "upgrades": "Potenziamenti",
+          "paints": "Verniciature",
+          "hangarFlair": "Decorazioni dell'hangar",
+          "equipment": "Equipaggiamento FPS",
+          "ccus": "CCU"
+        },
+        "newCount": {
+          "one": "+1 nuovo",
+          "other": "+%{count} nuovi"
+        },
+        "resultActions": {
+          "movedVehiclesToWanted": "Spostate nella lista dei desideri",
+          "deletedVehicles": "Eliminate",
+          "groupedVehicles": "Inserite in un gruppo",
+          "unchangedVehicles": "Lasciate invariate"
+        }
       },
       "cargoGridViewer": {
         "capacity": "Capacità",

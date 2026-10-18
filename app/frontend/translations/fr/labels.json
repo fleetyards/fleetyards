@@ -3004,7 +3004,26 @@
         "extensionNeededTitle": "Ajoutez l'extension de synchronisation",
         "finishedTitle": "Hangar synchronisé",
         "failedTitle": "La synchronisation n'a pas abouti",
-        "savedAsYouChange": "Enregistrés dès que vous les modifiez"
+        "savedAsYouChange": "Enregistrés dès que vous les modifiez",
+        "resultKinds": {
+          "ships": "Vaisseaux",
+          "components": "Modules",
+          "upgrades": "Améliorations",
+          "paints": "Peintures",
+          "hangarFlair": "Décorations de hangar",
+          "equipment": "Équipement FPS",
+          "ccus": "CCU"
+        },
+        "newCount": {
+          "one": "+1 nouveau",
+          "other": "+%{count} nouveaux"
+        },
+        "resultActions": {
+          "movedVehiclesToWanted": "Déplacés vers la liste de souhaits",
+          "deletedVehicles": "Supprimés",
+          "groupedVehicles": "Rangés dans un groupe",
+          "unchangedVehicles": "Laissés tels quels"
+        }
       },
       "cargoGridViewer": {
         "capacity": "Capacité",

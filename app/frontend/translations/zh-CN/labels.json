@@ -3004,7 +3004,26 @@
         "extensionNeededTitle": "添加同步扩展",
         "finishedTitle": "机库已同步",
         "failedTitle": "同步未完成",
-        "savedAsYouChange": "更改后即自动保存"
+        "savedAsYouChange": "更改后即自动保存",
+        "resultKinds": {
+          "ships": "舰船",
+          "components": "模块",
+          "upgrades": "升级",
+          "paints": "涂装",
+          "hangarFlair": "机库装饰",
+          "equipment": "FPS 装备",
+          "ccus": "CCU"
+        },
+        "newCount": {
+          "one": "新增 1",
+          "other": "新增 %{count}"
+        },
+        "resultActions": {
+          "movedVehiclesToWanted": "已移至愿望单",
+          "deletedVehicles": "已删除",
+          "groupedVehicles": "已归入分组",
+          "unchangedVehicles": "保持不变"
+        }
       },
       "cargoGridViewer": {
         "capacity": "容量",

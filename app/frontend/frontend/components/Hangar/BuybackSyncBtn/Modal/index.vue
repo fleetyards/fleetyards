@@ -18,9 +18,8 @@ import type {
   SyncStep,
   SyncStepStatus,
 } from "@/frontend/components/Hangar/SyncSteps/types";
-import SyncResultTiles, {
-  type SyncResultTile,
-} from "@/frontend/components/Hangar/SyncResultTiles/index.vue";
+import SyncResultTiles from "@/frontend/components/Hangar/SyncResultTiles/index.vue";
+import type { SyncResultTile } from "@/frontend/components/Hangar/SyncResultTiles/types";
 import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import SyncSessionStatus from "@/frontend/components/Hangar/SyncSessionStatus/index.vue";

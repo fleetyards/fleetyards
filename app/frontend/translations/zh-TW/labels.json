@@ -3004,7 +3004,26 @@
         "extensionNeededTitle": "新增同步擴充功能",
         "finishedTitle": "機庫已同步",
         "failedTitle": "同步未完成",
-        "savedAsYouChange": "變更後即自動儲存"
+        "savedAsYouChange": "變更後即自動儲存",
+        "resultKinds": {
+          "ships": "艦船",
+          "components": "模組",
+          "upgrades": "升級",
+          "paints": "塗裝",
+          "hangarFlair": "機庫裝飾",
+          "equipment": "FPS 裝備",
+          "ccus": "CCU"
+        },
+        "newCount": {
+          "one": "新增 1",
+          "other": "新增 %{count}"
+        },
+        "resultActions": {
+          "movedVehiclesToWanted": "已移至願望清單",
+          "deletedVehicles": "已刪除",
+          "groupedVehicles": "已歸入分組",
+          "unchangedVehicles": "保持不變"
+        }
       },
       "cargoGridViewer": {
         "capacity": "容量",

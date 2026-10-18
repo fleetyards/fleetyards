@@ -18,9 +18,10 @@ import type {
   SyncStep,
   SyncStepStatus,
 } from "@/frontend/components/Hangar/SyncSteps/types";
-import SyncResultTiles, {
-  type SyncResultTile,
-} from "@/frontend/components/Hangar/SyncResultTiles/index.vue";
+import SyncResultTiles from "@/frontend/components/Hangar/SyncResultTiles/index.vue";
+import SyncReadCounts from "@/frontend/components/Hangar/SyncReadCounts/index.vue";
+import type { SyncReadCount } from "@/frontend/components/Hangar/SyncReadCounts/types";
+import type { SyncResultTile } from "@/frontend/components/Hangar/SyncResultTiles/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import type { RsiHangarItemInput, HangarSyncResult } from "@/services/fyApi";
 import type { SyncProcessStep, SyncProcessStepStatus } from "./types";
@@ -83,68 +84,47 @@ const rowsOf = (type: string) =>
       .map((pledge) => `${pledge.id}:${pledge.name.trim()}`),
   ).size;
 
-type ReadCount = {
-  key: string;
-  label: string;
-  count: number;
-  dataTest?: string;
-};
-
-// What a pledge type the sync leaves out says about itself: it is still
-// counted, so the two steps agree, but marked as not synced.
-const optional = (
+// A kind the run leaves out is still counted, so the two steps agree, but
+// marked as not synced.
+const kind = (
   key: string,
   count: number,
-  synced: boolean,
-  dataTest: string,
-): ReadCount => ({
+  synced = true,
+  dataTest?: string,
+): SyncReadCount => ({
   key,
   count,
   label: t(
     `labels.syncExtension.pledgeItems.${synced ? key : `${key}NotSynced`}`,
   ),
+  skipped: !synced,
   dataTest: synced ? undefined : dataTest,
 });
 
-const readCounts = computed<ReadCount[]>(() =>
-  [
-    {
-      key: "ships",
-      label: t("labels.syncExtension.pledgeItems.ships"),
-      count: countOf("ship"),
-    },
-    {
-      key: "components",
-      label: t("labels.syncExtension.pledgeItems.components"),
-      count: countOf("component"),
-    },
-    {
-      key: "upgrades",
-      label: t("labels.syncExtension.pledgeItems.upgrades"),
-      count: countOf("upgrade"),
-    },
-    optional("paints", rowsOf("skin"), props.syncPaints, "paints-not-synced"),
-    optional(
-      "hangarFlair",
-      rowsOf("flair"),
-      props.syncHangarFlair,
-      "hangar-flair-not-synced",
-    ),
-    optional(
-      "equipment",
-      rowsOf("equipment"),
-      props.syncEquipment,
-      "equipment-not-synced",
-    ),
-    optional("ccus", rowsOf("ccu"), props.syncCcus, "ccus-not-synced"),
-    // Sorted into flair or equipment only once the server stores them.
-    {
-      key: "extras",
-      label: t("labels.syncExtension.pledgeItems.extras"),
-      count: rowsOf("extra"),
-    },
-  ].filter((entry) => entry.count > 0),
-);
+// Every kind, zeros included: the grid is laid out once, when reading starts,
+// and only its numbers move after that.
+const readCounts = computed<SyncReadCount[]>(() => [
+  kind("pages", props.currentPage),
+  kind("ships", countOf("ship")),
+  kind("components", countOf("component")),
+  kind("upgrades", countOf("upgrade")),
+  kind("paints", rowsOf("skin"), props.syncPaints, "paints-not-synced"),
+  kind(
+    "hangarFlair",
+    rowsOf("flair"),
+    props.syncHangarFlair,
+    "hangar-flair-not-synced",
+  ),
+  kind(
+    "equipment",
+    rowsOf("equipment"),
+    props.syncEquipment,
+    "equipment-not-synced",
+  ),
+  kind("ccus", rowsOf("ccu"), props.syncCcus, "ccus-not-synced"),
+  // Sorted into flair or equipment only once the server stores them.
+  kind("extras", rowsOf("extra")),
+]);
 
 const STEP_STATUS: Record<SyncProcessStepStatus, SyncStepStatus> = {
   pending: "pending",
@@ -158,11 +138,9 @@ const stepDetail = (step: SyncProcessStep) => {
   if (step.name === "fetchHangar") {
     if (step.status === "pending") return undefined;
 
+    // While reading, the grid under the step carries the numbers.
     return step.status === "processing"
-      ? t("labels.syncExtension.stepDetails.reading", {
-          page: props.currentPage,
-          count: items.value.length,
-        })
+      ? undefined
       : t("labels.syncExtension.stepDetails.read", {
           pages: props.currentPage,
           count: items.value.length,
@@ -188,11 +166,13 @@ const steps = computed<SyncStep[]>(() =>
   })),
 );
 
-const readingDone = computed(
-  () =>
-    props.processSteps.find((step) => step.name === "fetchHangar")?.status ===
-    "success",
-);
+const readingStarted = computed(() => {
+  const status = props.processSteps.find(
+    (step) => step.name === "fetchHangar",
+  )?.status;
+
+  return !!status && status !== "pending";
+});
 
 const failedStep = computed(() =>
   props.processSteps.find(
@@ -200,29 +180,47 @@ const failedStep = computed(() =>
   ),
 );
 
-const RESULT_KEYS = [
-  "importedVehicles",
-  "foundVehicles",
+// A kind's tile counts all of it, found and added alike, and notes how many
+// are new: under "Hangar synced", "found" and "synced" said nothing more.
+const KIND_TILES = [
+  { key: "ships", found: "foundVehicles", added: "importedVehicles" },
+  { key: "components", found: "foundComponents", added: "importedComponents" },
+  { key: "upgrades", found: "foundUpgrades", added: "importedUpgrades" },
+  { key: "paints", found: "syncedPaints" },
+  { key: "hangarFlair", found: "syncedHangarFlair" },
+  { key: "equipment", found: "syncedEquipment" },
+  { key: "ccus", found: "syncedCcus" },
+] as const;
+
+// What happened to the ships not in the RSI hangar: actions, named as such.
+const ACTION_TILES = [
   "movedVehiclesToWanted",
   "deletedVehicles",
   "groupedVehicles",
   "unchangedVehicles",
-  "importedComponents",
-  "foundComponents",
-  "importedUpgrades",
-  "foundUpgrades",
-  "syncedPaints",
-  "syncedHangarFlair",
-  "syncedEquipment",
-  "syncedCcus",
 ] as const;
 
 const resultTiles = computed<SyncResultTile[]>(() =>
-  RESULT_KEYS.map((key) => ({
-    key,
-    value: props.result?.[key]?.length ?? 0,
-    label: t(`labels.syncExtension.importedItems.${key}`),
-  })).filter((tile) => tile.value > 0),
+  [
+    ...KIND_TILES.map((tile) => {
+      const added =
+        "added" in tile ? (props.result?.[tile.added]?.length ?? 0) : 0;
+
+      return {
+        key: tile.key,
+        value: (props.result?.[tile.found]?.length ?? 0) + added,
+        label: t(`labels.syncExtension.resultKinds.${tile.key}`),
+        note: added
+          ? t("labels.syncExtension.newCount", { count: added })
+          : undefined,
+      };
+    }),
+    ...ACTION_TILES.map((key) => ({
+      key,
+      value: props.result?.[key]?.length ?? 0,
+      label: t(`labels.syncExtension.resultActions.${key}`),
+    })),
+  ].filter((tile) => tile.value > 0),
 );
 
 const UNMATCHED_KEYS = [
@@ -390,16 +388,9 @@ const hasWarnings = computed(
           :visible="readOpen"
           :duration="collapseDuration"
         >
-          <dl class="hangar-sync-result__chips">
-            <div
-              v-for="entry in readCounts"
-              :key="entry.key"
-              class="hangar-sync-result__chip"
-            >
-              <dt :data-test="entry.dataTest">{{ entry.label }}</dt>
-              <dd>{{ entry.count }}</dd>
-            </div>
-          </dl>
+          <div class="hangar-sync-result__read-counts">
+            <SyncReadCounts :counts="readCounts" />
+          </div>
         </Collapsed>
       </div>
 
@@ -439,23 +430,8 @@ const hasWarnings = computed(
       </div>
 
       <SyncSteps :steps="steps">
-        <!-- Only once reading is over: while pages come in, the counts change
-             and new kinds appear, and the row would keep reflowing. The step's
-             detail line carries the running total meanwhile. -->
         <template #step-fetchHangar>
-          <dl
-            v-if="readingDone && readCounts.length"
-            class="hangar-sync-result__chips"
-          >
-            <div
-              v-for="entry in readCounts"
-              :key="entry.key"
-              class="hangar-sync-result__chip"
-            >
-              <dt :data-test="entry.dataTest">{{ entry.label }}</dt>
-              <dd>{{ entry.count }}</dd>
-            </div>
-          </dl>
+          <SyncReadCounts v-if="readingStarted" :counts="readCounts" />
         </template>
       </SyncSteps>
     </template>
@@ -570,34 +546,9 @@ const hasWarnings = computed(
   list-style: none;
 }
 
-.hangar-sync-result__chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin: 0;
-}
-
-.hangar-sync-result__read .hangar-sync-result__chips {
+// Inside the element Collapsed animates, not on it: it holds the animated
+// element's padding at zero until the end, and the content would jump.
+.hangar-sync-result__read-counts {
   padding: 0 14px 12px;
-}
-
-.hangar-sync-result__chip {
-  display: inline-flex;
-  gap: 6px;
-  padding: 3px 10px;
-  font-size: 13px;
-  border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
-  border-radius: 999px;
-
-  dt {
-    font-weight: normal;
-  }
-
-  dd {
-    margin: 0;
-    color: var(--color-lifted, #eee);
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-  }
 }
 </style>

@@ -87,7 +87,8 @@ describe("HangarSyncResult", () => {
         .findAll("dt")
         .map((dt) => [
           dt.text(),
-          dt.element.nextElementSibling?.textContent?.trim(),
+          dt.element.nextElementSibling?.getAttribute("data-count") ??
+            dt.element.nextElementSibling?.textContent?.trim(),
         ]),
     );
 
@@ -159,7 +160,11 @@ describe("HangarSyncResult", () => {
         syncCcus: false,
       },
     });
-    expect(wrapper.find("[data-test='ccus-not-synced'] + dd").text()).toBe("1");
+    expect(
+      wrapper
+        .find("[data-test='ccus-not-synced'] + dd")
+        .attributes("data-count"),
+    ).toBe("1");
   });
 
   it("counts FPS equipment, and the extras the server sorts on storing", async () => {
@@ -193,9 +198,11 @@ describe("HangarSyncResult", () => {
     const text = wrapper.text();
     expect(text).toContain("FPS Gear (not synced)");
     expect(text).toContain("Other Items (sorted into flair and FPS gear)");
-    expect(wrapper.find("[data-test='equipment-not-synced'] + dd").text()).toBe(
-      "1",
-    );
+    expect(
+      wrapper
+        .find("[data-test='equipment-not-synced'] + dd")
+        .attributes("data-count"),
+    ).toBe("1");
   });
 
   it("says when the sync could not read every item and left unmatched ships alone", async () => {
@@ -281,11 +288,10 @@ describe("HangarSyncResult", () => {
           .find("[data-test='sync-result-status'] .base-alert--success")
           .exists(),
       ).toBe(true);
-      expect(
-        wrapper
-          .get("[data-test='sync-result-tile-importedVehicles'] dd")
-          .text(),
-      ).toBe("2");
+      // A kind counts all of it, found and added; the new ones are a note.
+      const ships = wrapper.get("[data-test='sync-result-tile-ships']");
+      expect(ships.get("dd").text()).toBe("3");
+      expect(ships.get("dt").text()).toContain("+2 new");
       // Nothing to show is not a tile reading zero.
       expect(
         wrapper.find("[data-test='sync-result-tile-deletedVehicles']").exists(),
