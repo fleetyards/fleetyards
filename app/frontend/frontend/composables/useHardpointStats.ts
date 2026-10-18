@@ -1532,16 +1532,23 @@ const hardpointStatsBuilder = (count?: MaybeRefOrGetter<number>) => {
       }
     } else if (category && THRUSTER_CATEGORIES.includes(category)) {
       const thruster = typeData as ComponentThruster;
+      // A stack pushes, and burns, with every thruster in it, as erkul sums
+      // them.
+      const stackCount = Math.max(1, Math.round(Number(toValue(count) ?? 1)));
 
       if (thruster.thrustCapacity) {
         result.push(
-          stat("thrusters.thrust", thruster.thrustCapacity, "thrust", true),
+          stat(
+            "thrusters.thrust",
+            thruster.thrustCapacity * stackCount,
+            "thrust",
+            true,
+          ),
         );
       }
       // What the stack draws from the fuel network at full thrust, as erkul
       // shows it: the rate per 10 kN times the thrust.
       if (thruster.fuelBurnScuPer10KNewton && thruster.thrustCapacity) {
-        const stackCount = Math.max(1, Math.round(Number(toValue(count) ?? 1)));
         const microScuPerSecond =
           (thruster.thrustCapacity / 10_000) *
           thruster.fuelBurnScuPer10KNewton *
