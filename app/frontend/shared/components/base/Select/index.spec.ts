@@ -123,6 +123,20 @@ describe("BaseSelect", () => {
       expect(wrapper.find('[id^="ships-selected-"]').exists()).toBe(false);
     });
 
+    // A form around the select, and a modal asking about unsaved edits, only
+    // hear native events.
+    it("announces a pick as a change that bubbles", async () => {
+      const wrapper = await mount({ multiple: true, modelValue: ["a"] });
+      const changed = vi.fn();
+      wrapper.element.parentElement?.addEventListener("change", changed);
+
+      await wrapper
+        .findAll('[id^="ships-options-"] .base-select-item')[2]
+        .trigger("click");
+
+      expect(changed).toHaveBeenCalledTimes(1);
+    });
+
     it("adds to the selection rather than replacing it", async () => {
       const wrapper = await mount({ multiple: true, modelValue: ["a"] });
 

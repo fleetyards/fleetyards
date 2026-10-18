@@ -975,6 +975,12 @@ const emits = defineEmits(["update:modelValue"]);
 
 const savedIndicator = ref<InstanceType<typeof SavedIndicator>>();
 
+// A pick changes the value without a native input event, so a form around
+// the select - and a modal asking about unsaved edits - would never hear of it.
+const announceChange = () => {
+  baseSelect.value?.dispatchEvent(new Event("change", { bubbles: true }));
+};
+
 const select = async (optionValue: FilterOptionValue) => {
   clearSearch();
 
@@ -985,9 +991,11 @@ const select = async (optionValue: FilterOptionValue) => {
         selectedValues.value.filter((item) => item !== optionValue),
       );
       savedIndicator.value?.show();
+      announceChange();
     } else if (props.nullable) {
       emits("update:modelValue", null);
       savedIndicator.value?.show();
+      announceChange();
     }
   } else if (props.multiple) {
     const values: FilterOptionValue[] = [...selectedValues.value];
@@ -996,11 +1004,13 @@ const select = async (optionValue: FilterOptionValue) => {
 
     emits("update:modelValue", values);
     savedIndicator.value?.show();
+    announceChange();
 
     await focusSearch();
   } else {
     emits("update:modelValue", optionValue);
     savedIndicator.value?.show();
+    announceChange();
 
     await toggle();
   }
@@ -1173,6 +1183,7 @@ defineExpose({
           :variant="InputVariantsEnum.CLEAN"
           :no-label="true"
           :clearable="true"
+          data-unsaved-ignore
           @input="onSearch"
         />
         <div class="base-select-items">

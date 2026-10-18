@@ -39,6 +39,7 @@ import { keepPreviousData } from "@tanstack/vue-query";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useReducedMotion } from "@/shared/composables/useReducedMotion";
 import { useMobile } from "@/shared/composables/useMobile";
+import { useModalDirty } from "@/shared/components/AppModal/dirty";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
@@ -443,11 +444,20 @@ const clearSelection = () => {
   selection.value = [];
 };
 
+const submitted = ref(false);
+
 const save = () => {
   if (!selection.value.length) return;
 
+  submitted.value = true;
   emit("submit", selection.value);
 };
+
+// The search and filters only narrow what is shown, so a pick is the one edit
+// that closing the modal would lose.
+useModalDirty(
+  () => !props.single && !submitted.value && selection.value.length > 0,
+);
 </script>
 
 <template>

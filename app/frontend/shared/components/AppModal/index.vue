@@ -12,6 +12,7 @@ import { useOverlayStore } from "@/shared/stores/overlay";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { popoverLayerKey } from "@/shared/components/Popover/layer";
+import { modalDirtyKey } from "./dirty";
 import { type AppModalOptions } from "./types";
 
 interface ModalComponent extends HTMLElement {
@@ -46,8 +47,12 @@ const isOpen = ref(false);
 // Content that knows better exposes `dirty` itself.
 const formEdited = ref(false);
 
+// A field that only narrows what is shown, such as a select's search, opts out
+// with `data-unsaved-ignore`.
 const onFormEdit = (event: Event) => {
-  if ((event.target as Element | null)?.closest?.("form")) {
+  const target = event.target as Element | null;
+
+  if (target?.closest?.("form") && !target.closest("[data-unsaved-ignore]")) {
     formEdited.value = true;
   }
 };
@@ -56,6 +61,26 @@ const onFormEdit = (event: Event) => {
 // without forcing it, so a submit is what clears the edit.
 const onFormSubmit = () => {
   formEdited.value = false;
+};
+
+const dirtySources = new Set<() => boolean>();
+
+provide(modalDirtyKey, (source) => {
+  dirtySources.add(source);
+
+  return () => dirtySources.delete(source);
+});
+
+const contentDirty = () => {
+  if (modalComponent.value?.dirty !== undefined) {
+    return modalComponent.value.dirty;
+  }
+
+  if (dirtySources.size) {
+    return [...dirtySources].some((source) => source());
+  }
+
+  return formEdited.value;
 };
 
 // Matches `.app-modal` in index.scss, so a popover opened from the modal's
@@ -141,7 +166,7 @@ const close = async (force = false) => {
 
   // A forced close is the modal closing itself after it saved: what was typed
   // is not lost, so there is nothing to confirm.
-  if (!force && (modalComponent.value?.dirty ?? formEdited.value)) {
+  if (!force && contentDirty()) {
     displayConfirm({
       text:
         modalComponent.value?.dirtyText ?? t("appModal.messages.confirm.dirty"),

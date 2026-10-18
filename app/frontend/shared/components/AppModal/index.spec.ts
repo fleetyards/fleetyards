@@ -4,6 +4,7 @@ import { flushPromises, type VueWrapper } from "@vue/test-utils";
 import { defineComponent, h } from "vue";
 import { useComlink } from "@/shared/composables/useComlink";
 import Component from "./index.vue";
+import { useModalDirty } from "./dirty";
 import { createMemoryHistory, createRouter } from "vue-router";
 
 const DirtyForm = defineComponent({
@@ -24,6 +25,22 @@ const PlainForm = defineComponent({
         ),
         h("input", { "data-test": "search" }),
       ]);
+  },
+});
+
+const reportsDirty = { value: true };
+
+const NestedPicker = defineComponent({
+  setup() {
+    useModalDirty(() => reportsDirty.value);
+    return () => h("input", { "data-test": "picker-search" });
+  },
+});
+
+// Wrapped, the way a picker sits inside its caller's modal.
+const WrappedPicker = defineComponent({
+  setup() {
+    return () => h("form", [h(NestedPicker)]);
   },
 });
 
@@ -219,6 +236,26 @@ describe("AppModal", () => {
       const { modal, confirm } = await openWith(PlainForm);
 
       await wrapper!.get("[data-test='search']").trigger("input");
+      await modal.close();
+
+      expect(confirm).not.toHaveBeenCalled();
+    });
+  });
+  describe("with a nested component that reports its own state", () => {
+    it("asks while it reports unsaved state", async () => {
+      reportsDirty.value = true;
+      const { modal, confirm } = await openWith(WrappedPicker);
+
+      await modal.close();
+
+      expect(confirm).toHaveBeenCalledTimes(1);
+    });
+
+    it("trusts it over form events", async () => {
+      reportsDirty.value = false;
+      const { modal, confirm } = await openWith(WrappedPicker);
+
+      await wrapper!.get("[data-test='picker-search']").trigger("input");
       await modal.close();
 
       expect(confirm).not.toHaveBeenCalled();
