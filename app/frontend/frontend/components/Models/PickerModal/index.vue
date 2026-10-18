@@ -121,6 +121,7 @@ const mobile = useMobile();
 // Per instance: the Teleport finds its target with a document-wide lookup, and
 // a closing picker can still be in the DOM while the next one mounts.
 const foldedFiltersId = `model-picker-folded-${useId()}`;
+const foldedContainersId = `model-picker-folded-containers-${useId()}`;
 
 // The cargo grid and trade route pickers pin flight-ready ships. Offering the
 // filter there would let it override the pin and widen the list instead.
@@ -139,7 +140,8 @@ const moreFiltersCount = computed(() => {
 
   return (
     folded.filter((filter) => filter.value.length).length +
-    (mobile.value && hangarOnly.value ? 1 : 0)
+    (mobile.value && hangarOnly.value ? 1 : 0) +
+    (mobile.value && containerFit.value ? 1 : 0)
   );
 });
 
@@ -548,28 +550,37 @@ const save = () => {
               name="model-picker-production-status"
             />
           </div>
+
+          <div :id="foldedContainersId" />
         </Collapsed>
 
-        <div v-if="containerFilter" class="model-picker__containers">
-          <span class="model-picker__containers-label">
-            {{ t("modelPicker.labels.containerFit") }}
-          </span>
-          <FormInput
-            v-for="size in CONTAINER_SIZES"
-            :key="size"
-            v-model.number="containerCounts[size]"
-            class="model-picker__container"
-            :class="{
-              'model-picker__container--set': containerCount(size) > 0,
-            }"
-            :name="`model-picker-container-${size}`"
-            :label="`${size} SCU`"
-            :type="InputTypesEnum.NUMBER"
-            :min="0"
-            :step="1"
-            :alignment="InputAlignmentsEnum.RIGHT"
-          />
-        </div>
+        <Teleport
+          v-if="containerFilter"
+          :to="`#${foldedContainersId}`"
+          :disabled="!mobile"
+          defer
+        >
+          <div class="model-picker__containers">
+            <span class="model-picker__containers-label">
+              {{ t("modelPicker.labels.containerFit") }}
+            </span>
+            <FormInput
+              v-for="size in CONTAINER_SIZES"
+              :key="size"
+              v-model.number="containerCounts[size]"
+              class="model-picker__container"
+              :class="{
+                'model-picker__container--set': containerCount(size) > 0,
+              }"
+              :name="`model-picker-container-${size}`"
+              :label="`${size} SCU`"
+              :type="InputTypesEnum.NUMBER"
+              :min="0"
+              :step="1"
+              :alignment="InputAlignmentsEnum.RIGHT"
+            />
+          </div>
+        </Teleport>
 
         <div class="model-picker__summary">
           <span class="model-picker__count">

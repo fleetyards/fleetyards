@@ -70,11 +70,11 @@ const mount = (props: Record<string, unknown> = {}) =>
 // The folded filters teleport by id, which only resolves in the document.
 const attached: { unmount: () => void }[] = [];
 
-const mountOnPhone = async () => {
+const mountOnPhone = async (props: Record<string, unknown> = {}) => {
   viewport.mobile = true;
 
   const wrapper = await mountWithDefaults(Component, {
-    props: { title: "Pick", submitLabel: "Add ships" },
+    props: { title: "Pick", submitLabel: "Add ships", ...props },
     attachTo: document.body,
   });
 
@@ -178,6 +178,20 @@ describe("Models/PickerModal", () => {
     expect(manufacturer).toHaveLength(1);
     expect(more.element.contains(manufacturer[0]?.element ?? null)).toBe(true);
     expect(more.element.parentElement?.style.display).toBe("none");
+  });
+
+  it("folds the container load away on a phone and counts it", async () => {
+    const wrapper = await mountOnPhone({
+      containerFilter: true,
+      containerFit: { "32": 2 },
+    });
+
+    expect(
+      wrapper
+        .find("#model-picker-more-filters")
+        .element.contains(wrapper.find(".model-picker__containers").element),
+    ).toBe(true);
+    expect(wrapper.find(".model-picker__filter-count").text()).toBe("1");
   });
 
   it("counts a folded manufacturer pick on a phone", async () => {
