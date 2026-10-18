@@ -73,6 +73,7 @@ module ScData
 
       assert_empty TrimAttachmentJob.jobs
       assert_equal ["holo"], MeasureHoloJob.jobs.map { |job| job["args"].second }
+      assert_nil @model.holo.blob.metadata[:trimmed]
       assert_equal [@model.front_view.blob.id, @model.top_view.blob.id].sort,
         PreprocessRepresentationsJob.jobs.map { |job| job["args"].first }.sort
     end
