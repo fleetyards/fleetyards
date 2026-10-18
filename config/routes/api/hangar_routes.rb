@@ -73,6 +73,9 @@ namespace :public do
     resources :hangar_groups, path: "groups", only: %i[index]
     resources :vehicles, controller: "hangar_vehicles", only: %i[show] do
       resources :log_entries, path: "log-entries", controller: "vehicle_log_entries", only: %i[index]
+      resources :loadouts, controller: "vehicle_loadouts", only: %i[show] do
+        get :slots, on: :member
+      end
     end
   end
 
