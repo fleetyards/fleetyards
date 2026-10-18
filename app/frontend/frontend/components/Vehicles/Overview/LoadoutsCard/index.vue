@@ -117,7 +117,14 @@ const loadoutsRoute = computed(() =>
         :key="loadout.id"
         class="overview-loadouts__item"
       >
+        <!-- A click on a row switches that loadout on, which nothing else on
+             the row says. -->
         <AddonOption
+          v-tooltip="
+            loadout.active
+              ? t('labels.loadout.activeHint')
+              : t('labels.loadout.activateHint')
+          "
           :name="name(loadout)"
           :icon="icon(loadout)"
           :contents="source(loadout)"
@@ -149,6 +156,14 @@ const loadoutsRoute = computed(() =>
         </Btn>
       </li>
     </ul>
+
+    <p
+      v-if="all.some((loadout) => !loadout.active)"
+      class="overview-card-muted"
+      data-test="vehicle-overview-loadouts-hint"
+    >
+      {{ t("labels.loadout.activateListHint") }}
+    </p>
 
     <template #footer>
       <router-link :to="loadoutsRoute" class="overview-card-footer-link">

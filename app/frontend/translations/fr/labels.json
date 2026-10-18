@@ -1143,6 +1143,9 @@
         "fleetyards": "Configuration Fleetyards",
         "namePlaceholder": "Nom de la configuration...",
         "urlPlaceholder": "Coller l'URL de configuration erkul.games ou spviewer.eu...",
+        "activateHint": "Cliquer pour en faire le loadout actif",
+        "activeHint": "C'est le loadout actif",
+        "activateListHint": "Cliquer sur un loadout pour l'activer",
         "kinds": {
           "fleetyards": "Fleetyards",
           "erkul": "Erkul",

@@ -1143,6 +1143,9 @@
         "fleetyards": "Fleetyards loadout",
         "namePlaceholder": "Loadout name...",
         "urlPlaceholder": "Paste erkul.games or spviewer.eu loadout URL...",
+        "activateHint": "Click to make this the active loadout",
+        "activeHint": "This is the active loadout",
+        "activateListHint": "Click a loadout to make it the active one",
         "kinds": {
           "fleetyards": "Fleetyards",
           "erkul": "Erkul",

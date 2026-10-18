@@ -1143,6 +1143,9 @@
         "fleetyards": "Fleetyards 配裝",
         "namePlaceholder": "配置名稱...",
         "urlPlaceholder": "貼上 erkul.games 或 spviewer.eu 的配置網址...",
+        "activateHint": "點擊將其設為目前配置",
+        "activeHint": "這是目前配置",
+        "activateListHint": "點擊配置即可將其設為目前配置",
         "kinds": {
           "fleetyards": "Fleetyards",
           "erkul": "Erkul",
