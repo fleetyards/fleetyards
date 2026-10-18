@@ -606,6 +606,8 @@
         "saveLoadout": "Enregistrer l’équipement",
         "saveAsNewLoadout": "Enregistrer comme nouvel équipement",
         "openLoadoutPage": "Ouvrir la page du loadout",
+        "makePublic": "Rendre public",
+        "makePrivate": "Rendre privé",
         "viewLoadout": "Voir l’équipement"
       }
     }

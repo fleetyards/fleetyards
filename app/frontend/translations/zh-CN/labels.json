@@ -1143,6 +1143,8 @@
         "fleetyards": "Fleetyards 配装",
         "namePlaceholder": "配置名称...",
         "urlPlaceholder": "粘贴 erkul.games 或 spviewer.eu 的配置链接...",
+        "public": "公开",
+        "private": "私密",
         "empty": "暂无配置。创建一个以开始使用。",
         "active": "使用中",
         "activate": "设为使用中"
@@ -4400,6 +4402,7 @@
         "unavailableModule": "模块已不可用",
         "noFigureChange": "不改变舰船的任何数值",
         "loadoutName": "配装名称",
+        "publicToggle": "在我的公开机库中显示",
         "stock": "原厂",
         "notFlightReady": "只有可飞行的舰船才能使用配装",
         "slots": {

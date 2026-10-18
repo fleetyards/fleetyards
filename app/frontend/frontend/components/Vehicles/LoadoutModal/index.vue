@@ -22,6 +22,7 @@ import {
 import { useLoadoutProblems } from "@/frontend/composables/useLoadoutProblems";
 import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormTabs from "@/shared/components/base/FormTabs/index.vue";
 import FormTab from "@/shared/components/base/FormTabs/Tab/index.vue";
 import SocketBoard from "@/frontend/components/Loadout/SocketBoard/index.vue";
@@ -96,6 +97,8 @@ const { t } = useI18n();
  */
 type LoadoutValues = {
   loadoutName: string;
+  // Shown in the owner's public hangar.
+  loadoutPublic: boolean;
   fittedModules: Record<string, string>;
   // Only parts that differ from the slot's stock one: a slot left alone keeps
   // the part it came with.
@@ -140,6 +143,7 @@ const savedValues = (): LoadoutValues => {
 
   return {
     loadoutName: editedLoadout.value?.name ?? "",
+    loadoutPublic: editedLoadout.value?.public ?? false,
     fittedModules: modules,
     fittedComponents: components,
   };
@@ -168,6 +172,8 @@ watch([() => props.vehicle, () => editedLoadout.value?.updatedAt], () => {
 const [fittedModules] = defineField("fittedModules");
 
 const [fittedComponents] = defineField("fittedComponents");
+
+const [loadoutPublic] = defineField("loadoutPublic");
 
 const loadoutProblems = useLoadoutProblems(
   () => props.vehicle.id,
@@ -917,12 +923,14 @@ const save = async (values: LoadoutValues, asNew: boolean) => {
     if (target) {
       await updateVehicleLoadout(props.vehicle.id, target.id, {
         name,
+        public: values.loadoutPublic,
         items,
       });
     } else {
       createdLoadout.value = await createVehicleLoadout(props.vehicle.id, {
         kind: VehicleLoadoutKindEnum.FLEETYARDS,
         name,
+        public: values.loadoutPublic,
         items,
       });
     }
@@ -1240,6 +1248,14 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
         inline
         class="vehicle-loadout__name"
         data-test="vehicle-loadout-name"
+      />
+      <FormToggle
+        v-if="flightReady"
+        v-model="loadoutPublic"
+        name="loadoutPublic"
+        :label="t('labels.vehicleLoadout.publicToggle')"
+        class="vehicle-loadout__public"
+        data-test="vehicle-loadout-public"
       />
       <Btn
         :type="BtnTypesEnum.SUBMIT"

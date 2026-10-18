@@ -606,6 +606,8 @@
         "saveLoadout": "Loadout speichern",
         "saveAsNewLoadout": "Als neues Loadout speichern",
         "openLoadoutPage": "Loadout-Seite öffnen",
+        "makePublic": "Öffentlich machen",
+        "makePrivate": "Privat machen",
         "viewLoadout": "Loadout ansehen"
       }
     }

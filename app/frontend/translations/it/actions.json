@@ -606,6 +606,8 @@
         "saveLoadout": "Salva equipaggiamento",
         "saveAsNewLoadout": "Salva come nuovo equipaggiamento",
         "openLoadoutPage": "Apri la pagina del loadout",
+        "makePublic": "Rendi pubblico",
+        "makePrivate": "Rendi privato",
         "viewLoadout": "Visualizza equipaggiamento"
       }
     }

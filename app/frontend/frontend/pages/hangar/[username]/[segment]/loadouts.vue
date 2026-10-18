@@ -206,6 +206,20 @@ const onActivate = async (record: VehicleLoadout) => {
     id: record.id,
   });
 };
+
+// Visibility: a public loadout has its page in the public hangar, and shows on
+// the plaque while it is the active one.
+const visibilityMutation = useUpdateVehicleLoadout({
+  mutation: { onSettled: invalidateLoadouts },
+});
+
+const onToggleVisibility = async (record: VehicleLoadout) => {
+  await visibilityMutation.mutateAsync({
+    vehicleId: props.vehicle.id,
+    id: record.id,
+    data: { public: !record.public },
+  });
+};
 </script>
 
 <template>
@@ -230,6 +244,14 @@ const onActivate = async (record: VehicleLoadout) => {
             uppercase
           >
             {{ t("labels.loadout.active") }}
+          </Pill>
+          <Pill
+            v-if="item.public"
+            :variant="PillVariantsEnum.NEUTRAL"
+            uppercase
+            :data-test="`loadout-public-${item.id}`"
+          >
+            {{ t("labels.loadout.public") }}
           </Pill>
           <div class="loadouts-page__item-info">
             <span class="loadouts-page__item-name">
@@ -274,6 +296,27 @@ const onActivate = async (record: VehicleLoadout) => {
           @click="editFitting(item)"
         >
           <i class="fa-duotone fa-screwdriver-wrench" />
+        </Btn>
+        <Btn
+          v-tooltip="
+            item.public
+              ? t('actions.vehicleLoadout.makePrivate')
+              : t('actions.vehicleLoadout.makePublic')
+          "
+          :aria-label="
+            item.public
+              ? t('actions.vehicleLoadout.makePrivate')
+              : t('actions.vehicleLoadout.makePublic')
+          "
+          :aria-pressed="item.public"
+          :data-test="`loadout-visibility-${item.id}`"
+          @click="onToggleVisibility(item)"
+        >
+          <i
+            :class="
+              item.public ? 'fa-duotone fa-eye' : 'fa-duotone fa-eye-slash'
+            "
+          />
         </Btn>
         <Btn
           v-if="!item.active"

@@ -1143,6 +1143,8 @@
         "fleetyards": "Fleetyards loadout",
         "namePlaceholder": "Loadout name...",
         "urlPlaceholder": "Paste erkul.games or spviewer.eu loadout URL...",
+        "public": "Public",
+        "private": "Private",
         "empty": "No loadouts yet. Create one to get started.",
         "active": "Active",
         "activate": "Set Active"
@@ -4414,6 +4416,7 @@
         "unavailableModule": "Module no longer available",
         "noFigureChange": "Changes none of the ship's figures",
         "loadoutName": "Loadout name",
+        "publicToggle": "Show in my public hangar",
         "stock": "Stock",
         "notFlightReady": "Loadouts are only available for flight-ready ships",
         "slots": {

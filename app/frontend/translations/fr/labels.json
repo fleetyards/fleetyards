@@ -1143,6 +1143,8 @@
         "fleetyards": "Configuration Fleetyards",
         "namePlaceholder": "Nom de la configuration...",
         "urlPlaceholder": "Coller l'URL de configuration erkul.games ou spviewer.eu...",
+        "public": "Public",
+        "private": "Privé",
         "empty": "Aucune configuration pour le moment. Créez-en une pour commencer.",
         "active": "Active",
         "activate": "Définir comme active"
@@ -4400,6 +4402,7 @@
         "unavailableModule": "Module plus disponible",
         "noFigureChange": "Ne change aucune valeur du vaisseau",
         "loadoutName": "Nom de la configuration",
+        "publicToggle": "Afficher dans mon hangar public",
         "stock": "D'origine",
         "notFlightReady": "Les configurations ne sont disponibles que pour les vaisseaux prêts à voler",
         "slots": {

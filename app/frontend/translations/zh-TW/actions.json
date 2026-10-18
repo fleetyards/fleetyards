@@ -606,6 +606,8 @@
         "saveLoadout": "儲存配置",
         "saveAsNewLoadout": "另存為新配置",
         "openLoadoutPage": "開啟配置頁面",
+        "makePublic": "設為公開",
+        "makePrivate": "設為私密",
         "viewLoadout": "查看配置"
       }
     }

@@ -1143,6 +1143,8 @@
         "fleetyards": "Fleetyards-Loadout",
         "namePlaceholder": "Loadout-Name...",
         "urlPlaceholder": "Loadout-URL von erkul.games oder spviewer.eu einfügen...",
+        "public": "Öffentlich",
+        "private": "Privat",
         "empty": "Noch keine Loadouts. Erstelle eines, um loszulegen.",
         "active": "Aktiv",
         "activate": "Als aktiv setzen"
@@ -4400,6 +4402,7 @@
         "unavailableModule": "Modul nicht mehr verfügbar",
         "noFigureChange": "Ändert keine Werte des Schiffs",
         "loadoutName": "Name des Loadouts",
+        "publicToggle": "In meinem öffentlichen Hangar zeigen",
         "stock": "Serienmäßig",
         "notFlightReady": "Loadouts gibt es nur für flugbereite Schiffe",
         "slots": {
