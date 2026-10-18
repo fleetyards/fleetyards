@@ -40,6 +40,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useTransferModal } from "@/frontend/composables/useTransferModal";
 import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
+import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
 type Props = {
   vehicle: Vehicle;
@@ -183,6 +184,7 @@ const destroyItemMutation = useDestroyVehicleInventoryItem();
 
 const destroyEntry = (entry: InventoryItem) => {
   displayConfirm({
+    tone: AppConfirmTonesEnum.DANGER,
     text: t("messages.logistics.inventoryItem.destroy.confirm"),
     onConfirm: async () => {
       try {
@@ -209,6 +211,7 @@ const clearCargoMutation = useDestroyVehicleInventory();
 
 const clearCargo = () => {
   displayConfirm({
+    tone: AppConfirmTonesEnum.DANGER,
     text: t("messages.logistics.vehicleInventory.clear.confirm"),
     onConfirm: async () => {
       try {

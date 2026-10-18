@@ -14,6 +14,7 @@ import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useQueryClient } from "@tanstack/vue-query";
+import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
 type Props = {
   commodity: Commodity;
@@ -43,6 +44,7 @@ const destroy = () => {
   if (!props.commodity.id) return;
 
   displayConfirm({
+    tone: AppConfirmTonesEnum.DANGER,
     text: t("messages.confirm.commodity.destroy"),
     onConfirm: async () => {
       await destroyMutation.mutateAsync({ id: props.commodity.id! });

@@ -10,6 +10,7 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
 type Props = {
   selected: string[];
@@ -140,6 +141,7 @@ const destroyBulk = async () => {
   deleting.value = true;
 
   displayConfirm({
+    tone: AppConfirmTonesEnum.DANGER,
     text: t("messages.confirm.hangar.destroySelected"),
     onConfirm: async () => {
       await destroyBulkMutation

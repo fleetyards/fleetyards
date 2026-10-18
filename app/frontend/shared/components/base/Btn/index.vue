@@ -14,6 +14,7 @@ import {
 } from "@/shared/components/base/Btn/types";
 import { BTN_CONTAINER } from "@/shared/components/base/Btn/context";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 import { useI18n } from "@/shared/composables/useI18n";
 
 export type Props = {
@@ -178,6 +179,11 @@ const handleClick = (event: MouseEvent) => {
 
   displayConfirm({
     text: props.confirm === true ? undefined : props.confirm,
+    // A button already dressed as a danger asks in the same tone.
+    tone:
+      props.tone === BtnTonesEnum.DANGER
+        ? AppConfirmTonesEnum.DANGER
+        : undefined,
     onConfirm: () => {
       internalDisabled.value = false;
       if (props.href) {

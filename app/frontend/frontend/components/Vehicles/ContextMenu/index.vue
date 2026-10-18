@@ -27,6 +27,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
 import { useLoadoutEditor } from "@/frontend/composables/useLoadoutEditor";
+import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
 type Props = {
   vehicle: Vehicle;
@@ -181,6 +182,7 @@ const remove = () => {
   deleting.value = true;
 
   displayConfirm({
+    tone: AppConfirmTonesEnum.DANGER,
     text: t("messages.confirm.vehicle.destroy"),
     onConfirm: async () => {
       await destroy();

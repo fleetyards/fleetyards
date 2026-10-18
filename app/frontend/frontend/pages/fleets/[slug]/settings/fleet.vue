@@ -31,6 +31,7 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { narrowerAudienceDisabled } from "@/frontend/utils/audienceToggles";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useFleetProfileLabels } from "@/frontend/composables/useFleetProfileLabels";
+import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
 type Props = {
   fleet: Fleet;
@@ -221,6 +222,7 @@ const onDestroy = async () => {
   deleting.value = true;
 
   displayConfirm({
+    tone: AppConfirmTonesEnum.DANGER,
     text: t("messages.confirm.fleet.destroy"),
     onConfirm: async () => {
       await destroyMutation

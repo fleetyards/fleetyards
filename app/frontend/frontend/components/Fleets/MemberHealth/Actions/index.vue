@@ -27,6 +27,7 @@ import {
   type FleetMembershipCapabilities,
   type FleetSquadron,
 } from "@/services/fyApi";
+import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
 // What resolves the row, and only that: a member in no squadron is added to
 // one, a stale invitation withdrawn, a candidate promoted into the gap. Where
@@ -194,6 +195,7 @@ const remind = () =>
 
 const remove = () => {
   displayConfirm({
+    tone: AppConfirmTonesEnum.DANGER,
     text: t("messages.confirm.fleet.members.destroy"),
     onConfirm: () =>
       run("messages.fleet.members.destroy", () =>

@@ -28,6 +28,7 @@ import {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
+import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
 type Props = {
   fleet: Fleet;
@@ -94,6 +95,7 @@ const grant = async () => {
 
 const revoke = (admin: FleetEventAdmin) => {
   displayConfirm({
+    tone: AppConfirmTonesEnum.DANGER,
     text: t("messages.fleets.eventAdmin.destroy.confirm", {
       username: admin.user.username,
     }),

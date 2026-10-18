@@ -19,6 +19,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useQueryClient } from "@tanstack/vue-query";
 import { useImportLoading } from "@/admin/composables/useImportLoading";
 import { ImportTypeEnum } from "@/services/fyAdminApi";
+import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
 type Props = {
   model: Model;
@@ -136,6 +137,7 @@ const destroy = () => {
   if (!props.model.id) return;
 
   displayConfirm({
+    tone: AppConfirmTonesEnum.DANGER,
     text: t("messages.confirm.model.destroy"),
     onConfirm: async () => {
       await destroyMutation.mutateAsync({ id: props.model.id! });

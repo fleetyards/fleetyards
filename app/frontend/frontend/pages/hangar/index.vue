@@ -64,6 +64,7 @@ import {
   useDestroyHangar as useDestroyHangarMutation,
   type HangarParams,
 } from "@/services/fyApi";
+import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
 const { t, toDollar, toUEC, toNumber } = useI18n();
 
@@ -318,6 +319,7 @@ const destroyAll = async () => {
   deleting.value = true;
 
   displayConfirm({
+    tone: AppConfirmTonesEnum.DANGER,
     title: t("messages.confirm.hangar.destroyAllTitle"),
     text: t("messages.confirm.hangar.destroyAll"),
     onConfirm: async () => {

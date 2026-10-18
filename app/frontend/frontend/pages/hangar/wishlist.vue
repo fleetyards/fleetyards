@@ -46,6 +46,7 @@ import {
   exportWishlist,
   useDestroyWishlist as useDestroyWishlistMutation,
 } from "@/services/fyApi";
+import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
 const { t } = useI18n();
 
@@ -220,6 +221,7 @@ const destroyAll = async () => {
   deleting.value = true;
 
   displayConfirm({
+    tone: AppConfirmTonesEnum.DANGER,
     text: t("messages.confirm.hangar.destroyAll"),
     onConfirm: async () => {
       await destroyMutation

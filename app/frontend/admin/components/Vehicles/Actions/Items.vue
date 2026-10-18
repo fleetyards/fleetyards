@@ -15,6 +15,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useQueryClient } from "@tanstack/vue-query";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
+import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
 type Props = {
   vehicle: Vehicle;
@@ -45,6 +46,7 @@ const destroy = () => {
   if (!props.vehicle.id) return;
 
   displayConfirm({
+    tone: AppConfirmTonesEnum.DANGER,
     text: t("messages.confirm.adminVehicle.destroy"),
     onConfirm: async () => {
       await destroyMutation.mutateAsync({ id: props.vehicle.id! });

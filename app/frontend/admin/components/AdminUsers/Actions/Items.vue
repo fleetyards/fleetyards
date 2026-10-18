@@ -16,6 +16,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useQueryClient } from "@tanstack/vue-query";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
 import { useSessionStore } from "@/admin/stores/session";
+import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
 type Props = {
   adminUser: AdminUser;
@@ -51,6 +52,7 @@ const destroy = () => {
   if (!props.adminUser.id) return;
 
   displayConfirm({
+    tone: AppConfirmTonesEnum.DANGER,
     text: t("messages.confirm.adminUser.destroy"),
     onConfirm: async () => {
       await destroyMutation.mutateAsync({ id: props.adminUser.id! });

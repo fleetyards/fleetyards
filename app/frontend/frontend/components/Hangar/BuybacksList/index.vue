@@ -28,6 +28,7 @@ import {
   useDestroyHangarBuyback,
   type BuybackPledge,
 } from "@/services/fyApi";
+import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
 type Props = {
   buybacks: BuybackPledge[];
@@ -92,6 +93,7 @@ const destroyMutation = useDestroyHangarBuyback();
 
 const remove = (buyback: BuybackPledge) => {
   displayConfirm({
+    tone: AppConfirmTonesEnum.DANGER,
     text: t("messages.confirm.buyback.destroy"),
     confirmText: t("actions.remove"),
     onConfirm: async () => {

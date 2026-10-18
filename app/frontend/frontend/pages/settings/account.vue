@@ -25,6 +25,7 @@ import {
   useDestroyAccount as useDestroyAccountMutation,
 } from "@/services/fyApi";
 import { validationErrorFrom } from "@/shared/utils/ApiErrors";
+import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
 const sessionStore = useSessionStore();
 
@@ -142,6 +143,7 @@ const runDestroy = async (destroyFleets: boolean) => {
         deleting.value = true;
         setTimeout(() => {
           displayConfirm({
+            tone: AppConfirmTonesEnum.DANGER,
             text: t("messages.confirm.account.destroyWithFleets", { fleets }),
             onConfirm: () => {
               void runDestroy(true);
@@ -172,6 +174,7 @@ const destroy = async () => {
   deleting.value = true;
 
   displayConfirm({
+    tone: AppConfirmTonesEnum.DANGER,
     text: t("messages.confirm.account.destroy"),
     onConfirm: () => {
       void runDestroy(false);
