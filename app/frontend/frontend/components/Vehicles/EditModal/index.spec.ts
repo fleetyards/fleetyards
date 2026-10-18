@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import Component from "./index.vue";
 import { flushPromises } from "@vue/test-utils";
 import { VehicleEditTabsEnum } from "./types";
+import { modalDirtyKey } from "@/shared/components/AppModal/dirty";
 
 const mutateAsync = vi.fn().mockResolvedValue({});
 
@@ -171,6 +172,27 @@ describe("VehicleEditModal", () => {
         data: { modelPaintIds: ["paint-pledged"] },
       }),
     );
+  });
+
+  it("does not ask before closing over the untouched paint suggestion", async () => {
+    const sources: (() => boolean)[] = [];
+    const painted = vehicle(false);
+    painted.model.hasPaints = true;
+    await mountWithDefaults(Component, {
+      props: { vehicle: painted, tab: VehicleEditTabsEnum.PAINT },
+      plugins: [
+        {
+          install: (app) =>
+            app.provide(modalDirtyKey, (source) => {
+              sources.push(source);
+              return () => {};
+            }),
+        },
+      ],
+    });
+    await flushPromises();
+
+    expect(sources.map((source) => source())).toEqual([false]);
   });
 
   it("leaves the pledged paints unsaved while the paint tab stays closed", async () => {

@@ -160,7 +160,24 @@ watch(activeTab, (tab) => {
 
 const imagePanel = ref<InstanceType<typeof ImagePanel> | null>(null);
 
-const formDirty = useFormDirty(values, savedValues);
+// The paint tab fills in the pledged paints as a suggestion. Left as it was
+// suggested, closing loses nothing the user did, so it does not ask.
+const suggestedPaintIds = ref<string[]>();
+
+const suggestedValues = (): VehicleEditValues => ({
+  ...savedValues(),
+  ...(suggestedPaintIds.value
+    ? { modelPaintIds: suggestedPaintIds.value }
+    : {}),
+});
+
+const editedFromSaved = useFormDirty(values, savedValues);
+
+const editedFromSuggestion = useFormDirty(values, suggestedValues);
+
+const formDirty = computed(
+  () => editedFromSaved.value && editedFromSuggestion.value,
+);
 
 // The picture is picked outside the form, so its tab answers for itself.
 useModalDirty(() => formDirty.value || !!imagePanel.value?.changes());
@@ -357,6 +374,7 @@ const vehicleName = computed(
           <Paint
             v-if="paintTabOpened && equipmentVisible && vehicle.model.hasPaints"
             :vehicle="vehicle"
+            @suggest="suggestedPaintIds = $event"
           />
         </FormTab>
       </FormTabs>
