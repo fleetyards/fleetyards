@@ -246,7 +246,6 @@
       "syncExtension": {
         "cancel": "取消",
         "start": "Start Sync",
-        "changeInSettings": "在设置中更改",
         "retry": "重试同步",
         "runInBackground": "在后台继续",
         "showResult": "查看结果",
@@ -254,7 +253,8 @@
         "refresh": "刷新页面",
         "checkAgain": "再次检查",
         "addExtension": "添加",
-        "updateExtension": "更新"
+        "updateExtension": "更新",
+        "change": "更改"
       },
       "empty": {
         "hangarGuide": "开始导览",

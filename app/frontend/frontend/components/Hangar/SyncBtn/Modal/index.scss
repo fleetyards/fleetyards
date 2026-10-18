@@ -1,26 +1,133 @@
-.sync-extension-platforms {
-  margin-bottom: 20px;
-}
-
-.sync-settings-notes {
+.hangar-sync {
   display: flex;
-  gap: 1rem;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 1rem;
+  flex-direction: column;
+  gap: 18px;
+}
 
-  p,
-  ul {
-    margin-bottom: 0.5rem;
+.hangar-sync__text {
+  margin: 0;
+  line-height: 1.55;
+}
+
+.hangar-sync__points {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    line-height: 1.5;
   }
 
-  ul {
-    padding-left: 1.25rem;
-    list-style: disc;
+  i {
+    flex-shrink: 0;
+    width: 16px;
+    color: var(--color-muted, #7a8288);
+    text-align: center;
   }
 }
 
-.sync-settings-notes-text {
-  flex: 1;
+// One frame around rows that belong together, divided rather than boxed.
+.hangar-sync__list {
+  margin: 0;
+  border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+  border-radius: var(--radius-surface-slim, 12px);
+}
+
+.hangar-sync__summary-row,
+.hangar-sync__setting {
+  & + & {
+    border-top: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));
+  }
+}
+
+.hangar-sync__summary-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 8px 8px 16px;
+}
+
+.hangar-sync__summary-text {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 4px;
   min-width: 0;
+
+  dt {
+    color: var(--color-text-dim, #959595);
+    font-size: 13px;
+    font-weight: normal;
+  }
+
+  dd {
+    margin: 0;
+    color: var(--color-lifted, #eee);
+  }
+}
+
+.hangar-sync__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.hangar-sync__chip {
+  padding: 2px 10px;
+  color: var(--color-text, #c8c8c8);
+  font-size: 13px;
+  border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+  border-radius: 999px;
+}
+
+.hangar-sync__section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hangar-sync__heading {
+  margin: 0;
+  color: var(--color-text-dim, #959595);
+  font-size: 12px;
+  font-weight: normal;
+  font-family: inherit;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hangar-sync__setting {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 16px;
+
+  // The toggle sits flush in its row; the list frames it.
+  :deep(.form-toggle) {
+    margin: 0;
+  }
+
+  .hangar-sync__hint {
+    // In line with the toggle's label rather than its switch.
+    padding-left: 52px;
+  }
+}
+
+.hangar-sync__hint {
+  margin: 0;
+  color: var(--color-text-dim, #959595);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.hangar-sync__fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
 }

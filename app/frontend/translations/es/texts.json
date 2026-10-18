@@ -343,16 +343,16 @@
       },
       "syncExtension": {
         "gettingStarted": "To sync your RSI Hangar with Fleetyards you first need to install the Fleetyards Sync Extension for Firefox or Chromium based Browsers.",
-        "info": "We will try to match the ships from your RSI Hangar with your existing ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar.<br><br>Do you want to continue?",
         "alreadyRunning": "Ya hay una sincronización de hangar en progreso. Espere a que termine.",
         "missingUnmatchedGroup": "Elige antes de empezar el grupo en el que archivar las naves que la sincronización no encuentre.",
-        "notSyncing": "Fuera de la sincronización:",
         "signedOutTitle": "No has iniciado sesión en RSI",
         "signedOut": "Inicia sesión en la web de RSI en este navegador y vuelve a comprobarlo.",
         "sessionHint": "La sincronización lee tus pledges a través de esta sesión.",
         "finished": "Tu hangar coincide con tus pledges de RSI. No quedó nada sin emparejar.",
         "unmatched": "Todo lo demás se sincronizó. Nada de lo que aparece abajo se añadió a tu hangar.",
-        "partialFailure": "Puede que algunos cambios ya estén en tu hangar. Reintentar es seguro: las naves ya sincronizadas se emparejan de nuevo, no se añaden dos veces."
+        "partialFailure": "Puede que algunos cambios ya estén en tu hangar. Reintentar es seguro: las naves ya sincronizadas se emparejan de nuevo, no se añaden dos veces.",
+        "pointMatch": "Encuentra las naves de tu hangar de RSI que ya están aquí, por nombre e ID del pledge.",
+        "pointAdd": "Añade las que aún no están aquí."
       },
       "setEmail": "Para establecer una contraseña, activar la autenticación de dos factores o recibir notificaciones por correo, necesitas añadir una dirección de correo a tu cuenta. Recibirás un correo de confirmación para verificar la dirección.",
       "oauthApplications": {

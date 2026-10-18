@@ -246,7 +246,6 @@
       "syncExtension": {
         "cancel": "Annuler",
         "start": "Démarrer la synchronisation",
-        "changeInSettings": "Modifier dans les paramètres",
         "retry": "Réessayer la synchronisation",
         "runInBackground": "Continuer en arrière-plan",
         "showResult": "Afficher le résultat",
@@ -254,7 +253,8 @@
         "refresh": "Actualiser la page",
         "checkAgain": "Vérifier à nouveau",
         "addExtension": "Ajouter",
-        "updateExtension": "Mettre à jour"
+        "updateExtension": "Mettre à jour",
+        "change": "Modifier"
       },
       "empty": {
         "hangarGuide": "Faire la visite",

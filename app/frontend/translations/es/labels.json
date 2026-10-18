@@ -2985,7 +2985,14 @@
         "failedStep": {
           "fetchHangar": "No se pudo leer tu hangar de RSI",
           "submitData": "No se pudo guardar en Fleetyards"
-        }
+        },
+        "whatToSync": "Qué sincronizar",
+        "unmatchedActionLabel": "Qué pasa con ellas",
+        "notSyncing": "No se sincroniza",
+        "targetGroupHint": "Cada nave que la sincronización encuentra o añade se archiva en este grupo, además de los grupos en los que ya esté.",
+        "extensionNeededTitle": "Añade la extensión de sincronización",
+        "finishedTitle": "Hangar sincronizado",
+        "failedTitle": "La sincronización no terminó"
       },
       "cargoGridViewer": {
         "capacity": "Capacidad",

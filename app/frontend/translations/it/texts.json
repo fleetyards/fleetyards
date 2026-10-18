@@ -343,16 +343,16 @@
       },
       "syncExtension": {
         "gettingStarted": "To sync your RSI Hangar with Fleetyards you first need to install the Fleetyards Sync Extension for Firefox or Chromium based Browsers.",
-        "info": "We will try to match the ships from your RSI Hangar with your existing ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar.<br><br>Do you want to continue?",
         "alreadyRunning": "Una sincronizzazione dell'hangar è già in corso. Attendere il completamento.",
         "missingUnmatchedGroup": "Prima di iniziare, scegli il gruppo in cui archiviare le navi che la sincronizzazione non trova.",
-        "notSyncing": "Fuori dalla sincronizzazione:",
         "signedOutTitle": "Non hai effettuato l'accesso a RSI",
         "signedOut": "Accedi al sito di RSI in questo browser, poi controlla di nuovo.",
         "sessionHint": "La sincronizzazione legge i tuoi pledge tramite questa sessione.",
         "finished": "Il tuo hangar corrisponde ai tuoi pledge RSI. Tutto è stato abbinato.",
         "unmatched": "Tutto il resto è stato sincronizzato. Niente di quanto elencato sotto è stato aggiunto al tuo hangar.",
-        "partialFailure": "Alcune modifiche potrebbero essere già nel tuo hangar. Riprovare è sicuro: le navi già sincronizzate vengono abbinate di nuovo, non aggiunte due volte."
+        "partialFailure": "Alcune modifiche potrebbero essere già nel tuo hangar. Riprovare è sicuro: le navi già sincronizzate vengono abbinate di nuovo, non aggiunte due volte.",
+        "pointMatch": "Trova le navi del tuo hangar RSI che sono già qui, per nome e ID del pledge.",
+        "pointAdd": "Aggiunge quelle che non sono ancora qui."
       },
       "setEmail": "Per impostare una password, abilitare l'autenticazione a due fattori o ricevere notifiche via email, devi aggiungere un indirizzo email al tuo account. Riceverai un'email di conferma per verificare l'indirizzo.",
       "oauthApplications": {

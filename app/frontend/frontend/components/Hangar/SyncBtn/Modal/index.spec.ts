@@ -501,7 +501,7 @@ describe("HangarSyncModal", () => {
 
     const skippedItems = () =>
       wrapper
-        .findAll("[data-test='sync-skipped-items'] li")
+        .findAll("[data-test='sync-skipped-items'] .hangar-sync__chip")
         .map((item) => item.text());
 
     hangarStore.syncPaints = false;

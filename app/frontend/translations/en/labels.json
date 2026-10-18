@@ -2985,7 +2985,14 @@
         "failedStep": {
           "fetchHangar": "Reading your RSI hangar failed",
           "submitData": "Saving to Fleetyards failed"
-        }
+        },
+        "whatToSync": "What to sync",
+        "unmatchedActionLabel": "What happens to them",
+        "notSyncing": "Not syncing",
+        "targetGroupHint": "Every ship the sync finds or adds is filed into this group, on top of any groups it is already in.",
+        "extensionNeededTitle": "Add the sync extension",
+        "finishedTitle": "Hangar synced",
+        "failedTitle": "The sync did not finish"
       },
       "cargoGridViewer": {
         "capacity": "Capacity",

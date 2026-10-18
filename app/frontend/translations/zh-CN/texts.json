@@ -343,16 +343,16 @@
       },
       "syncExtension": {
         "gettingStarted": "To sync your RSI Hangar with Fleetyards you first need to install the Fleetyards Sync Extension for Firefox or Chromium based Browsers.",
-        "info": "We will try to match the ships from your RSI Hangar with your existing ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar.<br><br>Do you want to continue?",
         "alreadyRunning": "机库同步已在进行中。请等待完成。",
         "missingUnmatchedGroup": "开始前，请选择用于归档同步找不到的飞船的分组。",
-        "notSyncing": "不同步：",
         "signedOutTitle": "你尚未登录 RSI",
         "signedOut": "请在此浏览器中登录 RSI 网站，然后再检查一次。",
         "sessionHint": "同步会通过此会话读取你的承诺。",
         "finished": "你的机库与 RSI 承诺一致，所有内容均已匹配。",
         "unmatched": "其余内容均已同步。下方列出的内容都没有添加到你的机库。",
-        "partialFailure": "部分更改可能已写入你的机库。重试是安全的：已同步的舰船会重新匹配，不会重复添加。"
+        "partialFailure": "部分更改可能已写入你的机库。重试是安全的：已同步的舰船会重新匹配，不会重复添加。",
+        "pointMatch": "按名称和承诺 ID，找出你 RSI 机库中已在这里的舰船。",
+        "pointAdd": "添加尚未在这里的舰船。"
       },
       "setEmail": "要设置密码、启用双重认证或接收邮件通知，您需要为账户添加电子邮件地址。您将收到一封确认邮件来验证该地址。",
       "oauthApplications": {

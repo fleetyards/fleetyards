@@ -2985,7 +2985,14 @@
         "failedStep": {
           "fetchHangar": "Dein RSI-Hangar konnte nicht gelesen werden",
           "submitData": "Speichern auf Fleetyards fehlgeschlagen"
-        }
+        },
+        "whatToSync": "Was synchronisiert wird",
+        "unmatchedActionLabel": "Was mit ihnen passiert",
+        "notSyncing": "Wird nicht synchronisiert",
+        "targetGroupHint": "Jedes Schiff, das die Synchronisierung findet oder hinzufügt, kommt in diese Gruppe, zusätzlich zu seinen bisherigen Gruppen.",
+        "extensionNeededTitle": "Sync-Erweiterung hinzufügen",
+        "finishedTitle": "Hangar synchronisiert",
+        "failedTitle": "Die Synchronisierung wurde nicht abgeschlossen"
       },
       "cargoGridViewer": {
         "capacity": "Kapazität",
