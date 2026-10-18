@@ -197,7 +197,7 @@ class HangarImporter
 
     [HANGAR_XPLOR_SHIP_NAMES[item[:ship_code]], item[:name], model.name, model.rsi_name]
       .compact_blank
-      .any? { |standard_name| standard_name.squish.casecmp?(name.squish) }
+      .any? { |standard_name| standard_name.to_s.squish.casecmp?(name.to_s.squish) }
   end
 
   private def stop_requested?(index)

@@ -91,6 +91,14 @@ class HangarImportHangarXplorTest < ActiveSupport::TestCase
     assert_equal "The  Red  One", Vehicle.find_by!(user_id: @user.id).name
   end
 
+  test "imports a ship whose name the file gives as a number" do
+    import = import_for([xplor_row(name: "Aurora ES", ship_code: "RSI_Aurora_Mk_I_ES", ship_name: 7)])
+
+    ::HangarImporter.new(import).run
+
+    assert_equal "7", Vehicle.find_by!(user_id: @user.id).name
+  end
+
   # The file the import modal offers as a download. A sample that stops
   # importing is worse than none, so it is imported here rather than trusted.
   test "the published example file imports cleanly" do
