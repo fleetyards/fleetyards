@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import type { Hardpoint, LoadoutSlot } from "@/services/fyApi";
+import type { Hardpoint, LoadoutSlot, ModelModule } from "@/services/fyApi";
 import { lowerIsBetter, useComponentFitting } from "./useComponentFitting";
 
 vi.mock("@/shared/composables/useI18n", () => ({
@@ -76,5 +76,25 @@ describe("graft", () => {
       "hardpoint_class_2",
     ]);
     expect(nose.hardpoints?.[0].hardpoints).toEqual([]);
+  });
+
+  it("fills a module slot with the module the loadout fits", () => {
+    const fitting = useComponentFitting();
+    const hull = port("hardpoint_rear_module", { category: "module" });
+    fitting.learn([hull]);
+    fitting.learnModules([
+      {
+        id: "cargo-module",
+        name: "Cargo Module",
+        slot: "hardpoint_rear_module",
+      } as ModelModule,
+    ]);
+
+    const [slot] = fitting.graft(
+      [{ id: "hp-rear", name: "hardpoint_rear_module" } as Hardpoint],
+      fitting.resolve([hull], { hardpoint_rear_module: "cargo-module" }),
+    );
+
+    expect(slot.component?.name).toBe("Cargo Module");
   });
 });

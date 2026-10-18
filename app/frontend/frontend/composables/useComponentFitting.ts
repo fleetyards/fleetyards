@@ -393,8 +393,15 @@ export const useComponentFitting = () => {
     };
   };
 
+  // A module is what its slot holds, as a part is: known by name, so a fitted
+  // module slot is not read as empty.
   const learnModules = (modules: ModelModule[]) =>
     modules.forEach((mod) => {
+      remember({
+        id: mod.id,
+        name: mod.name,
+        category: HardpointCategoryEnum.MODULE,
+      });
       if (mod.slot)
         learnBelow(mod.slot, mod.id, (mod.hardpoints ?? []).map(toSlot));
     });
