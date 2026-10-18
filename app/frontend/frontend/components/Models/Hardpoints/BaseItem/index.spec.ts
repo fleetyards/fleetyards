@@ -134,6 +134,22 @@ describe("HardpointBaseItem", () => {
     expect(expanded(wrapper)).toBe(true);
   });
 
+  it("splits a stack from its stack button and folds it back from a slot's", async () => {
+    const wrapper = await mountStack(true);
+
+    const split = wrapper.get("[data-test='hardpoint-stack-toggle']");
+    expect(split.find(".fa-layer-group").exists()).toBe(true);
+
+    await split.trigger("click");
+    expect(expanded(wrapper)).toBe(true);
+
+    const fold = wrapper
+      .findAll("[data-test='hardpoint-stack-toggle']")
+      .find((button) => button.find(".fa-compress").exists());
+    await fold!.trigger("click");
+    expect(expanded(wrapper)).toBe(false);
+  });
+
   it("shows the figures a quantum drive ranks, in their order, on a row with a stats card", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: { hardpoints: [quantumDrive(HardpointSourceEnum.GAME_FILES)] },

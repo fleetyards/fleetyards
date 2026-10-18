@@ -171,13 +171,23 @@ const hardpointNames = computed(() => {
     :class="{ 'hardpoint-item--clickable': isGroup || collapsible }"
     @click="onRowClick"
   >
-    <template v-if="isGroup || collapsible" #actions>
-      <span class="hardpoint-item__controls">
+    <!-- The loadout editor's stack control: split a stack into its slots, or
+      fold a split one back. The rest of the row toggles it too. -->
+    <template v-if="isGroup || collapsible" #stack>
+      <button
+        type="button"
+        class="hardpoint-item__ctl hardpoint-stack-toggle"
+        :aria-expanded="collapsible"
+        :aria-label="t(collapsible ? 'labels.collapse' : 'labels.expand')"
+        data-test="hardpoint-stack-toggle"
+        @click.stop="onRowClick"
+      >
         <i
-          class="fa-solid hardpoint-item__ctl hardpoint-stack-chevron"
-          :class="collapsible ? 'fa-chevron-up' : 'fa-chevron-down'"
+          class="fa-solid"
+          :class="collapsible ? 'fa-compress' : 'fa-layer-group'"
+          aria-hidden="true"
         />
-      </span>
+      </button>
     </template>
     <template #default>
       <HardpointSize :size="hardpoint.maxSize" />
