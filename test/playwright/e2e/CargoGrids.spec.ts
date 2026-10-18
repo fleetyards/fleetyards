@@ -181,7 +181,7 @@ test.describe("Cargo Grids", () => {
       page.getByTestId("model-picker-card-drak-caterpillar"),
     ).toBeVisible();
 
-    await page.locator(".modal-header a.close").click();
+    await page.locator(".modal-header .close").click();
     await page.getByTestId("modal").waitFor({ state: "hidden" });
 
     await expect(page.locator('input[name="container-32"]')).toHaveValue("3");

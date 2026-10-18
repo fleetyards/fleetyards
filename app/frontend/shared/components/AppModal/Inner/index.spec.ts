@@ -5,7 +5,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import Component from "./index.vue";
 
 describe("AppModalInner", () => {
-  it("sizes the footer's buttons large and leaves the body's alone", async () => {
+  it("sizes the footer's buttons medium and leaves the body's alone", async () => {
     const wrapper = await mountWithDefaults<typeof Component>(Component, {
       slots: {
         default: () => [h(Btn, { "data-test": "body-btn" }, () => "Body")],
@@ -14,7 +14,7 @@ describe("AppModalInner", () => {
     });
 
     expect(wrapper.get("[data-test='footer-btn']").classes()).toContain(
-      "btn--lg",
+      "btn--md",
     );
     expect(wrapper.get("[data-test='body-btn']").classes()).toContain(
       "btn--sm",

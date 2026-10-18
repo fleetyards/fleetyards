@@ -6,7 +6,7 @@
   left: 0;
   z-index: 1050;
   display: none;
-  align-items: flex-start;
+  align-items: center;
   overflow: hidden;
   background-color: rgba(black, 0.7);
   outline: 0;
@@ -24,8 +24,8 @@
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    width: 600px;
-    max-width: 600px;
+    width: 640px;
+    max-width: 640px;
     max-height: calc(100% - 60px);
     margin: 30px auto;
     transition: $transition-base-speed ease-in-out;
