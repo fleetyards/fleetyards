@@ -2,6 +2,7 @@
 
 require "test_helper"
 require "aws-sdk-s3"
+require "vips"
 
 module ScData
   class ShipViewsImportJobTest < ActiveJob::TestCase
@@ -65,24 +66,27 @@ module ScData
       assert_equal Digest::MD5.hexdigest(PNG), @model.ship_view_md5s["top_view"]
     end
 
-    test "crops the views and measures the holos" do
+    test "measures the holos and builds the views' representations without cropping them" do
       publish({"flight_top.png" => PNG, "flight_front.png" => PNG, "flight_holo.gltf" => HOLO})
 
       perform
 
-      assert_equal %w[front_view top_view], TrimAttachmentJob.jobs.map { |job| job["args"].third }.sort
+      assert_empty TrimAttachmentJob.jobs
       assert_equal ["holo"], MeasureHoloJob.jobs.map { |job| job["args"].second }
+      assert_equal [@model.front_view.blob.id, @model.top_view.blob.id].sort,
+        PreprocessRepresentationsJob.jobs.map { |job| job["args"].first }.sort
     end
 
-    # The render is in storage before the save, so a lone view is cropped there
-    # and then rather than queued.
-    test "crops a single view in the import itself" do
-      publish({"flight_top.png" => PNG})
+    test "keeps a render with transparent padding as it was published" do
+      padded = Vips::Image.black(200, 150, bands: 4).cast(:uchar)
+        .insert(Vips::Image.black(100, 40, bands: 3).new_from_image([255, 0, 0]).bandjoin(255).cast(:uchar), 50, 55)
+        .write_to_buffer(".png")
+      publish({"flight_top.png" => padded})
 
       perform
 
-      assert_empty TrimAttachmentJob.jobs
-      assert @model.top_view.blob.metadata[:trimmed]
+      assert_equal Digest::MD5.hexdigest(padded), @model.top_view.blob.checksum.unpack1("m0").unpack1("H*")
+      assert_equal [@model.top_view.blob.id], PreprocessRepresentationsJob.jobs.map { |job| job["args"].first }
     end
 
     test "attaches a render only once its bytes are in storage" do

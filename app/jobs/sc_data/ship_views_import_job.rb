@@ -3,7 +3,9 @@
 module ScData
   # Attaches the renders sc-tools publishes to the ship-views bucket, the way the
   # admin's folder upload would: the same filename rules, and a plain save, so
-  # views are cropped and holos measured by the model's own callbacks.
+  # holos are measured and representations built by the model's own callbacks.
+  # Views are not cropped: sc-tools already crops them to the hull, and the
+  # trim would only download and decode each render to find that out.
   #
   # Renders go live without review, so every run logs what it attached.
   #
@@ -119,7 +121,7 @@ module ScData
         # blob row in the save and the bytes only in an `after_commit`, so a
         # worker killed in between leaves an attachment naming a file storage
         # never received. This way a kill leaves at most an unattached blob.
-        model.public_send(:"#{field}=", ActiveStorage::Blob.create_and_upload!(io: file, filename: name))
+        model.public_send(:"#{field}=", ActiveStorage::Blob.create_and_upload!(io: file, filename: name, metadata: {trimmed: true}))
         md5s[field] = md5
       end
 
