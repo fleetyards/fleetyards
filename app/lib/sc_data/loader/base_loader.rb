@@ -363,7 +363,7 @@ module ScData
           Slot.new(
             name: item["name"].downcase,
             component:,
-            children: nested_slots(item),
+            children: nested_slots(item, component),
             min_size: item["min_size"],
             max_size: item["max_size"],
             types: item["types"],
@@ -453,10 +453,30 @@ module ScData
         item.merge("key" => derived_key)
       end
 
-      private def nested_slots(item)
-        return [] if item["loadout"].blank? && item["default_loadout"].blank?
+      private def nested_slots(item, component = nil)
+        return resolve_loadout(item) if item["loadout"].present? || item["default_loadout"].present?
+        # An empty list says what sits there: nothing.
+        return [] unless item["loadout"].nil? && item["default_loadout"].nil?
 
-        resolve_loadout(item)
+        own = part_default_loadout(component)
+        own.present? ? resolve_loadout({"default_loadout" => own}) : []
+      end
+
+      # Parts that hold fitted gear and come with it: the Scorpius's remote
+      # turret, an Idris's point-defence turrets. A ship that names one without
+      # saying what sits in it gets what the part comes with, as in the game;
+      # doors, relays and the rest carry defaults the ship pages have no use for.
+      FITTED_DEFAULT_CATEGORIES = %w[turret weapon_mounts missile_racks].freeze
+
+      # The part's own default loadout, from its parsed item.
+      private def part_default_loadout(component)
+        return if component.blank? || component.sc_key.blank?
+        return unless FITTED_DEFAULT_CATEGORIES.include?(component.category)
+
+        @part_default_loadouts ||= {}
+        return @part_default_loadouts[component.sc_key] if @part_default_loadouts.key?(component.sc_key)
+
+        @part_default_loadouts[component.sc_key] = load_item("items/#{component.sc_key.downcase}")&.dig("default_loadout")
       end
 
       private def persist_loadout(parent, slots, cleanup: true)
