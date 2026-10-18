@@ -2992,7 +2992,8 @@
         "targetGroupHint": "同步找到或添加的每艘舰船都会归入此分组，并保留它原有的分组。",
         "extensionNeededTitle": "添加同步扩展",
         "finishedTitle": "机库已同步",
-        "failedTitle": "同步未完成"
+        "failedTitle": "同步未完成",
+        "savedAsYouChange": "更改后即自动保存"
       },
       "cargoGridViewer": {
         "capacity": "容量",

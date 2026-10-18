@@ -2992,7 +2992,8 @@
         "targetGroupHint": "Jedes Schiff, das die Synchronisierung findet oder hinzufügt, kommt in diese Gruppe, zusätzlich zu seinen bisherigen Gruppen.",
         "extensionNeededTitle": "Sync-Erweiterung hinzufügen",
         "finishedTitle": "Hangar synchronisiert",
-        "failedTitle": "Die Synchronisierung wurde nicht abgeschlossen"
+        "failedTitle": "Die Synchronisierung wurde nicht abgeschlossen",
+        "savedAsYouChange": "Wird beim Ändern gespeichert"
       },
       "cargoGridViewer": {
         "capacity": "Kapazität",

@@ -314,12 +314,11 @@ const refreshPage = async () => {
                   v-model="hangarStore[setting.name]"
                   :name="setting.name"
                   autosaved
+                  switch-end
                   :label="t(`labels.syncExtension.${setting.label}`)"
+                  :description="t(`labels.syncExtension.${setting.label}Hint`)"
                   no-placeholder
                 />
-                <p class="hangar-sync__hint">
-                  {{ t(`labels.syncExtension.${setting.label}Hint`) }}
-                </p>
               </div>
             </div>
           </section>
@@ -527,6 +526,9 @@ const refreshPage = async () => {
           {{ t("actions.syncExtension.refresh") }}
         </Btn>
       </template>
+      <span v-else class="hangar-sync__saved-note">
+        {{ t("labels.syncExtension.savedAsYouChange") }}
+      </span>
     </template>
   </Modal>
 </template>

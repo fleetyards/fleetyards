@@ -103,9 +103,6 @@
 }
 
 .hangar-sync__setting {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
   padding: 10px 16px;
 
   // The toggle sits flush in its row; the list frames it.
@@ -113,9 +110,8 @@
     margin: 0;
   }
 
-  .hangar-sync__hint {
-    // In line with the toggle's label rather than its switch.
-    padding-left: 52px;
+  :deep(.form-toggle-label) {
+    color: var(--color-lifted, #eee);
   }
 }
 
@@ -130,4 +126,10 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 12px;
+}
+
+.hangar-sync__saved-note {
+  padding: 0 12px;
+  color: var(--color-text-dim, #959595);
+  font-size: 13px;
 }

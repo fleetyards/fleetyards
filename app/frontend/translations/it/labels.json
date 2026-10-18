@@ -2992,7 +2992,8 @@
         "targetGroupHint": "Ogni nave che la sincronizzazione trova o aggiunge viene inserita in questo gruppo, oltre ai gruppi in cui si trova già.",
         "extensionNeededTitle": "Aggiungi l'estensione di sincronizzazione",
         "finishedTitle": "Hangar sincronizzato",
-        "failedTitle": "La sincronizzazione non è terminata"
+        "failedTitle": "La sincronizzazione non è terminata",
+        "savedAsYouChange": "Salvate appena le modifichi"
       },
       "cargoGridViewer": {
         "capacity": "Capacità",
