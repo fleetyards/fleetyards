@@ -131,6 +131,13 @@ describe("BaseBtn", () => {
     expect(displayConfirm.mock.calls[1][0].tone).toBeUndefined();
   });
 
+  it("marks a button that commits rather than leads to a confirm", () => {
+    expect(mountBtn().classes()).not.toContain("btn--commit");
+    expect(
+      mountBtn({ tone: BtnTonesEnum.DANGER, commit: true }).classes(),
+    ).toContain("btn--commit");
+  });
+
   it("adapts to a group container without the group styling it", () => {
     // BtnGroup states that it contains buttons; Btn decides what that means, so
     // the group never needs descendant selectors into these internals.

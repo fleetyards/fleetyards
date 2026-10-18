@@ -43,6 +43,12 @@ export type Props = {
    * that carries something meant to overhang it, such as a badge.
    */
   clipLabel?: boolean;
+  /**
+   * For the click that commits something it cannot take back, rather than one
+   * that leads to a confirm: a danger button then wears an outline and tint
+   * instead of caps.
+   */
+  commit?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -61,6 +67,7 @@ const props = withDefaults(defineProps<Props>(), {
   confirm: false,
   routeActiveClass: undefined,
   clipLabel: true,
+  commit: false,
 });
 
 const emit = defineEmits(["click"]);
@@ -159,6 +166,7 @@ const cssClasses = computed(() => [
       container?.container === "group" && container.block.value,
     "btn--menu-item": container?.container === "menu",
     "btn--unclipped": !props.clipLabel,
+    "btn--commit": props.commit,
     active: props.active,
     "is-loading": props.loading,
   },
@@ -440,6 +448,21 @@ const handleClick = (event: MouseEvent) => {
 .btn--tone-danger.btn--solid:focus-visible,
 .btn--tone-danger.btn--ghost:focus-visible {
   --btn-cap: rgb(255 255 255 / 0.65);
+}
+/*
+ * The one red outline in the app: a click that cannot be taken back, such as a
+ * danger confirm's button. Every other danger button leads to that confirm
+ * and keeps the quieter caps, so the outline never says "delete" twice. Hover
+ * still floods it like any danger button.
+ */
+.btn--tone-danger.btn--commit {
+  border-color: var(--color-danger, #dc3545);
+  background-color: rgb(220 53 69 / 0.16);
+  color: #f2b8be;
+}
+.btn--tone-danger.btn--commit::before,
+.btn--tone-danger.btn--commit::after {
+  content: none;
 }
 .btn--tone-danger.btn--bare:hover:not([disabled]) {
   @apply text-white;

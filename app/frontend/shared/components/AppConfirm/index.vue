@@ -176,6 +176,7 @@ const handleCancel = async () => {
         <Btn
           ref="confirmRef"
           :tone="confirmButtonTone"
+          commit
           data-test="confirm-ok"
           @click="handleConfirm"
         >

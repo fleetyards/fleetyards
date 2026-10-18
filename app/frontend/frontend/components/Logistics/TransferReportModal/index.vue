@@ -94,6 +94,7 @@ const onSubmit = async () => {
         :loading="submitting"
         :disabled="invalid"
         :tone="BtnTonesEnum.DANGER"
+        commit
         data-test="report-submit"
       >
         {{ t("actions.logistics.reportTransfer") }}

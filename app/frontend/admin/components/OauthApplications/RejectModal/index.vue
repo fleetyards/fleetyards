@@ -125,6 +125,7 @@ const submit = async () => {
         :loading="submitting"
         :disabled="!canSubmit"
         :tone="BtnTonesEnum.DANGER"
+        commit
       >
         {{ t("actions.oauthApplications.reject") }}
       </Btn>

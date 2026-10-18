@@ -95,6 +95,7 @@ const onSubmit = handleSubmit(async (values) => {
         form="payout-entry-decline-form"
         :loading="submitting"
         :tone="BtnTonesEnum.DANGER"
+        commit
         data-test="payout-entry-decline-submit"
       >
         {{ t("actions.payouts.declineExpense") }}
