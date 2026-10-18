@@ -251,7 +251,8 @@
         "runInBackground": "Im Hintergrund fortsetzen",
         "showResult": "Ergebnis anzeigen",
         "close": "Schließen",
-        "refresh": "Seite aktualisieren"
+        "refresh": "Seite aktualisieren",
+        "checkAgain": "Erneut prüfen"
       },
       "empty": {
         "hangarGuide": "Tour starten",

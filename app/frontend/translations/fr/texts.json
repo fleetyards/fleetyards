@@ -331,7 +331,8 @@
         "detailsUnsupported": "Mettez à jour votre extension Fleetyards Sync pour lire aussi les prix et les assurances.",
         "detailsIncomplete": "Certains prix n'ont pas pu être lus sur RSI. La prochaine synchronisation réessaiera.",
         "detailsBackground": "Les prix et assurances sont maintenant lus en arrière-plan. Vous pouvez fermer cette fenêtre et continuer à utiliser Fleetyards ; gardez cet onglet ouvert jusqu'à la fin.",
-        "detailsRunning": "Les prix et assurances de la dernière synchronisation sont encore en cours de lecture. Une nouvelle synchronisation pourra démarrer une fois celle-ci terminée."
+        "detailsRunning": "Les prix et assurances de la dernière synchronisation sont encore en cours de lecture. Une nouvelle synchronisation pourra démarrer une fois celle-ci terminée.",
+        "sessionHint": "La synchronisation lit votre liste de rachat via cette session."
       },
       "addToHangar": {
         "hangarHint": "Vous possédez ce vaisseau.",
@@ -345,7 +346,10 @@
         "info": "We will try to match the ships from your RSI Hangar with your existing ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar.<br><br>Do you want to continue?",
         "alreadyRunning": "Une synchronisation du hangar est déjà en cours. Veuillez attendre qu'elle se termine.",
         "missingUnmatchedGroup": "Choisissez avant de commencer le groupe où classer les vaisseaux que la synchronisation ne trouve pas.",
-        "notSyncing": "Hors synchronisation :"
+        "notSyncing": "Hors synchronisation :",
+        "signedOutTitle": "Vous n'êtes pas connecté à RSI",
+        "signedOut": "Connectez-vous au site de RSI dans ce navigateur, puis vérifiez à nouveau.",
+        "sessionHint": "La synchronisation lit vos pledges via cette session."
       },
       "setEmail": "Pour définir un mot de passe, activer l'authentification à deux facteurs ou recevoir des notifications par e-mail, vous devez ajouter une adresse e-mail à votre compte. Vous recevrez un e-mail de confirmation pour vérifier l'adresse.",
       "oauthApplications": {

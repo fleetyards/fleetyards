@@ -331,7 +331,8 @@
         "detailsUnsupported": "請更新你的 Fleetyards Sync 擴充功能，以便同時讀取價格和保險。",
         "detailsIncomplete": "部分價格無法從 RSI 讀取。下次同步時會再試一次。",
         "detailsBackground": "價格和保險現在在背景讀取。你可以關閉此視窗並繼續使用 Fleetyards；在完成之前請保持此分頁開啟。",
-        "detailsRunning": "上次同步的價格和保險仍在讀取中。完成後才能開始新的同步。"
+        "detailsRunning": "上次同步的價格和保險仍在讀取中。完成後才能開始新的同步。",
+        "sessionHint": "同步會透過此工作階段讀取你的回購清單。"
       },
       "addToHangar": {
         "hangarHint": "你擁有這艘飛船。",
@@ -345,7 +346,10 @@
         "info": "We will try to match the ships from your RSI Hangar with your existing ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar.<br><br>Do you want to continue?",
         "alreadyRunning": "機庫同步已在進行中。請等待完成。",
         "missingUnmatchedGroup": "開始前，請選擇用於歸檔同步找不到的飛船的群組。",
-        "notSyncing": "不同步："
+        "notSyncing": "不同步：",
+        "signedOutTitle": "你尚未登入 RSI",
+        "signedOut": "請在此瀏覽器中登入 RSI 網站，然後再檢查一次。",
+        "sessionHint": "同步會透過此工作階段讀取你的承諾。"
       },
       "setEmail": "要設定密碼、啟用雙重認證或接收郵件通知，您需要為帳戶添加電子郵件地址。您將收到一封確認郵件來驗證該地址。",
       "oauthApplications": {

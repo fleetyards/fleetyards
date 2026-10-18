@@ -251,7 +251,8 @@
         "runInBackground": "Continuer en arrière-plan",
         "showResult": "Afficher le résultat",
         "close": "Fermer",
-        "refresh": "Actualiser la page"
+        "refresh": "Actualiser la page",
+        "checkAgain": "Vérifier à nouveau"
       },
       "empty": {
         "hangarGuide": "Faire la visite",

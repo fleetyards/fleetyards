@@ -251,7 +251,8 @@
         "runInBackground": "Continue in background",
         "showResult": "Show Result",
         "close": "Close",
-        "refresh": "Refresh Page"
+        "refresh": "Refresh Page",
+        "checkAgain": "Check again"
       },
       "empty": {
         "hangarGuide": "Take the tour",

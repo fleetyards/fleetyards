@@ -331,7 +331,8 @@
         "detailsUnsupported": "Actualiza tu extensión Fleetyards Sync para leer también precios y seguros.",
         "detailsIncomplete": "No se pudieron leer algunos precios de RSI. La próxima sincronización lo volverá a intentar.",
         "detailsBackground": "Los precios y seguros se leen ahora en segundo plano. Puedes cerrar esta ventana y seguir usando Fleetyards; mantén esta pestaña abierta hasta que termine.",
-        "detailsRunning": "Todavía se están leyendo los precios y seguros de la última sincronización. Podrás iniciar una nueva cuando termine."
+        "detailsRunning": "Todavía se están leyendo los precios y seguros de la última sincronización. Podrás iniciar una nueva cuando termine.",
+        "sessionHint": "La sincronización lee tu lista de recompra a través de esta sesión."
       },
       "addToHangar": {
         "hangarHint": "Tienes esta nave.",
@@ -345,7 +346,10 @@
         "info": "We will try to match the ships from your RSI Hangar with your existing ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar.<br><br>Do you want to continue?",
         "alreadyRunning": "Ya hay una sincronización de hangar en progreso. Espere a que termine.",
         "missingUnmatchedGroup": "Elige antes de empezar el grupo en el que archivar las naves que la sincronización no encuentre.",
-        "notSyncing": "Fuera de la sincronización:"
+        "notSyncing": "Fuera de la sincronización:",
+        "signedOutTitle": "No has iniciado sesión en RSI",
+        "signedOut": "Inicia sesión en la web de RSI en este navegador y vuelve a comprobarlo.",
+        "sessionHint": "La sincronización lee tus pledges a través de esta sesión."
       },
       "setEmail": "Para establecer una contraseña, activar la autenticación de dos factores o recibir notificaciones por correo, necesitas añadir una dirección de correo a tu cuenta. Recibirás un correo de confirmación para verificar la dirección.",
       "oauthApplications": {
