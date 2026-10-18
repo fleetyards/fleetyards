@@ -70,4 +70,5 @@ A page per vehicle loadout showing the ship detail page's hardpoints and metrics
 - [x] Phase 2 — `fitting` prop on `Models/Hardpoints`; module slots render as read-only rows with their fitted contents (`hardpointsReadOnly`)
 - [x] Phase 3 — one route for owner and visitor (no owner guard); `useLoadoutFitting` shared with the read view
 - [x] Phase 4 — `GET /public/hangars/:username/vehicles/:vehicle_id/loadouts/:id(/slots)`, gated by `PublicHangarOwnerConcern`
-- [ ] Phase 5
+- [x] Phase 5 — hero badge links the page; read view and loadouts list link it
+- [x] Changes from stock: highlighted rows and summary on the page, a summary in the editor; the read view reworked into a quick summary
