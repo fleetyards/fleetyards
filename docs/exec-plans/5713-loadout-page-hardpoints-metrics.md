@@ -8,7 +8,6 @@ A page per vehicle loadout showing the ship detail page's hardpoints and metrics
 
 ## Open questions
 
-- Who may see a loadout page besides its owner, and through which route: today every vehicle page is owner-only (`vehicleOwnerGuard`), the only public single-vehicle API is the plaque's (`purchased.public` and the owner's `vehicle_overview` flag), and no public endpoint returns a loadout's fitted parts.
 - The fuel intake's `fuelPushRate` unit (25 on 19 intakes, 0 on the Scorpius's): needed before the endurance can be net of refuelling.
 
 ## What changed
@@ -27,8 +26,9 @@ A page per vehicle loadout showing the ship detail page's hardpoints and metrics
 2. Build the fitting as `LoadoutView` does: loadout slots, hull slots, game-files hardpoints, modules; learn, resolve, graft.
 3. The owner gets "Edit loadout" into the editor.
 
-### Phase 4 — Visitors (depends on the open question)
-1. A public read endpoint for a loadout and its slots, and a route outside the owner guard.
+### Phase 4 — Visitors
+1. A public read endpoint for a loadout and its slots, gated like the plaque (`purchased.public`, the owner's `vehicle_overview`).
+2. A route outside the owner guard, read-only.
 
 ### Phase 5 — Links
 1. The hero's loadout badge, `LoadoutView`'s footer and the loadouts list rows link to the page.
