@@ -294,7 +294,8 @@
         "targetGroupHint": "Choisissez un groupe de hangar et chaque vaisseau importé y sera classé. Laissez vide pour utiliser les groupes indiqués dans le fichier.",
         "types": {
           "Imports::HangarImport": "Import de hangar",
-          "Imports::HangarSync": "Synchronisation du hangar RSI"
+          "Imports::HangarSync": "Synchronisation du hangar RSI",
+          "Imports::BuybackSync": "Synchronisation des rachats RSI"
         },
         "summary": {
           "imported": "Importés",

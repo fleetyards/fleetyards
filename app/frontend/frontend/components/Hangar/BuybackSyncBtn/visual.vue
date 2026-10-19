@@ -135,7 +135,12 @@ const setRun = ({
   buybackSync.readsDetails.value = true;
   buybackSync.buybacks.value = samplePledges(found);
   buybackSync.result.value = result
-    ? { total: found, ...result, detailsPending: [] }
+    ? {
+        total: found,
+        ...result,
+        detailsPending: [],
+        importId: "00000000-0000-4000-8000-000000000002",
+      }
     : undefined;
   buybackSync.detailsStarted.value = pricesTotal !== undefined;
   details.total.value = pricesTotal ?? 0;

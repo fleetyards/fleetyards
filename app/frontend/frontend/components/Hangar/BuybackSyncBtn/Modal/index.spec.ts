@@ -1,7 +1,11 @@
-import { mount, flushPromises } from "@vue/test-utils";
+import { mount, flushPromises, RouterLinkStub } from "@vue/test-utils";
 import { createTestingPinia } from "@pinia/testing";
 import { useHangarStore } from "@/frontend/stores/hangar";
-import { RsiPageCheckEnum, RsiPageKindEnum } from "@/services/fyApi";
+import {
+  RsiPageCheckEnum,
+  RsiPageKindEnum,
+  type BuybackSyncLastRead,
+} from "@/services/fyApi";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { useBuybackSync } from "@/frontend/composables/useBuybackSync";
 import { useBuybackDetailsSync } from "@/frontend/composables/useBuybackDetailsSync";
@@ -25,9 +29,16 @@ const mutateAsync = vi.fn<
     added: number;
     removed: number;
     detailsPending: string[];
+    importId?: string;
   }>
 >(() =>
-  Promise.resolve({ total: 2, added: 2, removed: 0, detailsPending: [] }),
+  Promise.resolve({
+    total: 2,
+    added: 2,
+    removed: 0,
+    detailsPending: [],
+    importId: "import-1",
+  }),
 );
 
 const submitDetails = vi.hoisted(() =>
@@ -70,9 +81,9 @@ vi.mock("@/frontend/composables/useSyncExtension", async (importOriginal) => {
   };
 });
 
-// How many buy-backs are stored before a run, which the run reads against.
-const storedBuybacks = vi.fn((count = 0) =>
-  Promise.resolve({ meta: { pagination: { totalCount: count } }, items: [] }),
+// What the last finished sync read, which a run reads against.
+const lastRead = vi.fn((): Promise<BuybackSyncLastRead> =>
+  Promise.resolve({ finishedAt: null, pages: null, total: 0 }),
 );
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
@@ -80,7 +91,7 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   syncRsiBuybacks: (data: unknown) => mutateAsync({ data }),
   syncRsiBuybackDetails: submitDetails,
   reportRsiPage: (data: unknown) => reportMutateAsync({ data }),
-  hangarBuybacks: () => storedBuybacks(),
+  syncRsiBuybacksLastRead: () => lastRead(),
 }));
 
 const comlinkEmit = vi.fn();
@@ -197,6 +208,7 @@ const mountModal = async (health?: unknown) => {
       plugins: [createTestingPinia()],
       stubs: {
         Modal: { template: "<div><slot /><slot name='footer' /></div>" },
+        RouterLink: RouterLinkStub,
       },
       directives: { Tooltip: {} },
     },
@@ -225,10 +237,10 @@ const startSync = async () => {
 
 describe("HangarBuybackSyncModal", () => {
   beforeEach(() => {
-    storedBuybacks
+    lastRead
       .mockReset()
       .mockImplementation(() =>
-        Promise.resolve({ meta: { pagination: { totalCount: 0 } }, items: [] }),
+        Promise.resolve({ finishedAt: null, pages: null, total: 0 }),
       );
     rsiRateLimiter.reset();
     mutateAsync.mockClear();
@@ -319,8 +331,8 @@ describe("HangarBuybackSyncModal", () => {
   });
 
   it("estimates the list's pages from the buy-backs stored now", async () => {
-    storedBuybacks.mockImplementation(() =>
-      Promise.resolve({ meta: { pagination: { totalCount: 4 } }, items: [] }),
+    lastRead.mockImplementation(() =>
+      Promise.resolve({ finishedAt: null, pages: null, total: 4 }),
     );
     const wrapper = await startSync();
 
@@ -334,9 +346,20 @@ describe("HangarBuybackSyncModal", () => {
     ).toBe("labels.syncExtension.stepDetails.pageOfAbout");
   });
 
+  it("takes the list's pages from the last sync where it knows them", async () => {
+    lastRead.mockImplementation(() =>
+      Promise.resolve({ finishedAt: null, pages: 3, total: 4 }),
+    );
+    await startSync();
+
+    await answerNextPage(buybackPage("1"));
+
+    expect(useBuybackSync().totalPages.value).toBe(3);
+  });
+
   it("measures the list it read against the buy-backs stored now", async () => {
-    storedBuybacks.mockImplementation(() =>
-      Promise.resolve({ meta: { pagination: { totalCount: 4 } }, items: [] }),
+    lastRead.mockImplementation(() =>
+      Promise.resolve({ finishedAt: null, pages: null, total: 4 }),
     );
     const wrapper = await startSync();
 
@@ -351,11 +374,11 @@ describe("HangarBuybackSyncModal", () => {
   });
 
   it("measures nothing against a stored count that answers after the save", async () => {
-    type Stored = Awaited<ReturnType<typeof storedBuybacks>>;
-    let answerStored: (value: Stored) => void = () => {};
-    storedBuybacks.mockImplementation(
+    type LastRead = Awaited<ReturnType<typeof lastRead>>;
+    let answerStored: (value: LastRead) => void = () => {};
+    lastRead.mockImplementation(
       () =>
-        new Promise<Stored>((resolve) => {
+        new Promise<LastRead>((resolve) => {
           answerStored = resolve;
         }),
     );
@@ -365,7 +388,7 @@ describe("HangarBuybackSyncModal", () => {
     await answerNextPage(emptyBuybackPage);
     expect(useBuybackSync().status.value).toBe("finished");
 
-    answerStored({ meta: { pagination: { totalCount: 1 } }, items: [] });
+    answerStored({ finishedAt: null, pages: null, total: 1 });
     await flushPromises();
 
     expect(useBuybackSync().lastCount.value).toBeUndefined();
@@ -383,6 +406,7 @@ describe("HangarBuybackSyncModal", () => {
       added: 1,
       removed: 0,
       detailsPending: ["1"],
+      importId: "import-1",
     };
     const details = useBuybackDetailsSync();
     details.status.value = "finished";
@@ -397,6 +421,20 @@ describe("HangarBuybackSyncModal", () => {
     expect(
       wrapper.get("[data-test='sync-step-prices']").attributes("data-status"),
     ).toBe("done");
+  });
+
+  it("links the import the save recorded", async () => {
+    const wrapper = await startSync();
+
+    await answerNextPage(buybackPage("1"));
+    await answerNextPage(emptyBuybackPage);
+
+    expect(
+      wrapper
+        .get("[data-test='buyback-sync-import-link']")
+        .findComponent(RouterLinkStub)
+        .props("to"),
+    ).toEqual({ name: "hangar-import", params: { id: "import-1" } });
   });
 
   it("keeps reading the list once the modal is closed", async () => {

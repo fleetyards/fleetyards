@@ -294,7 +294,8 @@
         "targetGroupHint": "Elige un grupo de hangar y cada nave importada se archivará allí. Déjalo vacío para usar los grupos indicados en el archivo.",
         "types": {
           "Imports::HangarImport": "Importación de hangar",
-          "Imports::HangarSync": "Sincronización de hangar RSI"
+          "Imports::HangarSync": "Sincronización de hangar RSI",
+          "Imports::BuybackSync": "Sincronización de recompras RSI"
         },
         "summary": {
           "imported": "Importadas",
