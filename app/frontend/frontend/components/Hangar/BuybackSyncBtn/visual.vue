@@ -49,7 +49,18 @@ useVisualApiMock([
   {
     method: "PUT",
     path: /^\/hangar\/sync-rsi-buybacks$/,
-    respond: () => ({ total: 2, added: 2, removed: 0, detailsPending: [] }),
+    respond: () => ({
+      total: 2,
+      added: 2,
+      removed: 0,
+      detailsPending: [],
+      importId: "00000000-0000-4000-8000-000000000002",
+    }),
+  },
+  {
+    method: "GET",
+    path: /^\/hangar\/sync-rsi-buybacks\/last-read$/,
+    respond: () => ({ finishedAt: null, pages: 1, total: 3 }),
   },
 ]);
 const startScreens: StartScreen[] = [
