@@ -56,8 +56,9 @@ test.describe("Hangar Inventories", () => {
 
     await expect(page).toHaveURL(/\/hangar\/inventories\/test-depot\//);
 
-    // Only the name is filled: the form defaults the category to commodity and
-    // the quantity to 1, which is enough for the entry to post.
+    // The goods are named in the item picker -- here as a custom item, since
+    // the scenario carries no catalogue -- and the amount on the form, where a
+    // resource asks for its grade as well as its quantity.
     const entryCreated = page.waitForResponse(
       (response) =>
         response.url().includes("/items") &&
@@ -67,7 +68,17 @@ test.describe("Hangar Inventories", () => {
     await page.getByTestId("inventory-deposit").click();
     await page.getByTestId("modal").waitFor({ state: "visible" });
 
-    await page.getByTestId("input-name").fill("Titanium");
+    await page.getByTestId("item-picker-field-open").click();
+    await page
+      .getByTestId("base-select-item-picker-category")
+      .getByTestId("base-select-title")
+      .click();
+    await page.getByRole("option", { name: "Commodity", exact: true }).click();
+    await page.getByTestId("input-item-picker-search").fill("Titanium");
+    await page.getByTestId("item-picker-custom").click();
+
+    await page.getByTestId("input-quantity").fill("10");
+    await page.getByTestId("input-quality").fill("500");
     await page.getByTestId("inventory-item-save").click();
 
     await entryCreated;
