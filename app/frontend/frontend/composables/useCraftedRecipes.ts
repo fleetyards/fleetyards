@@ -27,6 +27,11 @@ export const useCraftedRecipes = (
     ),
   });
 
+  // Until the recipes are in, a crafted part reads as catalogued.
+  const loading = computed(() =>
+    queries.value.some((query) => query.isPending),
+  );
+
   watch(
     () => queries.value.map((query) => query.data),
     (recipes) =>
@@ -35,4 +40,6 @@ export const useCraftedRecipes = (
       }),
     { immediate: true },
   );
+
+  return { loading };
 };

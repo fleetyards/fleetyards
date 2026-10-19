@@ -94,7 +94,10 @@ export const useLoadoutFitting = ({
 
   const values = computed(() => loadoutValues(toValue(items)));
 
-  useCraftedRecipes(fitting, () => values.value.crafted);
+  const { loading: recipesLoading } = useCraftedRecipes(
+    fitting,
+    () => values.value.crafted,
+  );
 
   const tree = computed(() =>
     fitting.resolve(
@@ -183,7 +186,10 @@ export const useLoadoutFitting = ({
   // Whether what the fitting is measured from is still on its way.
   const loading = computed(
     () =>
-      hullSlotsLoading.value || hardpointsLoading.value || modulesLoading.value,
+      hullSlotsLoading.value ||
+      hardpointsLoading.value ||
+      modulesLoading.value ||
+      recipesLoading.value,
   );
 
   return {
