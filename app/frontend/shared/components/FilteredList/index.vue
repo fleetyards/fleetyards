@@ -268,12 +268,7 @@ const saveFilters = () => {
 
   const query = getQuery();
 
-  // A page that knows its own defaults says whether the list is filtered; a
-  // sort or a default it wrote into the URL is no filter worth keeping.
-  const filtered =
-    Object.keys(query).length > 0 && (props.isFilterSelected ?? true);
-
-  if (!filtered) {
+  if (!Object.keys(query).length) {
     filtersStore.removeFilter(route.path);
 
     return;
@@ -285,12 +280,7 @@ const saveFilters = () => {
   });
 };
 
-// After the render, so a page's own `isFilterSelected` has caught up with the
-// route it is computed from.
-watch([() => route.query, () => props.isFilterSelected], saveFilters, {
-  deep: true,
-  flush: "post",
-});
+watch(() => route.query, saveFilters, { deep: true });
 
 const onOffCanvasClosed = ref();
 

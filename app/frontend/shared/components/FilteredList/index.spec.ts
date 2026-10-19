@@ -621,7 +621,7 @@ describe("FilteredList", () => {
   });
 
   // The testing pinia stubs every action with a spy, which `spyOn` hands back.
-  const mountForFilterActions = async (isFilterSelected?: boolean) => {
+  const mountForFilterActions = async () => {
     await router.push({ name: "ships" });
 
     await mountWithDefaults<typeof ListComponent>(ListComponent, {
@@ -630,7 +630,6 @@ describe("FilteredList", () => {
         records: [],
         asyncStatus: loaded(),
         viewKeys: ["t"],
-        isFilterSelected,
       },
       plugins: [router],
     });
@@ -668,16 +667,6 @@ describe("FilteredList", () => {
       query: { searchCont: "carrack" },
       viewKeys: ["t"],
     });
-  });
-
-  it("takes the page's word that what the URL holds is no filter", async () => {
-    const { saveFilter, removeFilter } = await mountForFilterActions(false);
-
-    await router.push({ name: "ships", query: { s: "name asc" } });
-    await flushPromises();
-
-    expect(saveFilter).not.toHaveBeenCalled();
-    expect(removeFilter).toHaveBeenLastCalledWith("/ships");
   });
 
   it("forgets the filter once the list is cleared", async () => {
