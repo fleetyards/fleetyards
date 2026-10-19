@@ -624,6 +624,16 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT /hangar/sync-rsi-buybacks writes off a sync a killed process left running" do
+    user = create(:user)
+    stuck = Imports::BuybackSync.create!(user:, aasm_state: "started", started_at: 2.hours.ago)
+    sign_in user
+
+    assert_api_response :put, 200, api_path: "/hangar/sync-rsi-buybacks", body: {items: []}
+
+    assert_predicate stuck.reload, :failed?
+  end
+
   test "PUT /hangar/sync-rsi-buybacks records a list it refused as a failed import" do
     user = create(:user)
     sign_in user

@@ -7,21 +7,28 @@ module Imports
   class BuybackSync < ::Import
     belongs_to :user
 
+    # A process killed mid-request leaves its import started for good, so a new
+    # sync writes off the user's abandoned ones first, as a hangar sync does.
     def self.record!(user, items)
+      release_abandoned!(user.id)
+
       import = create!(user:, input: items.map { |item| item.to_h.deep_transform_keys(&:to_s) })
       import.start!
 
       sync = ::BuybackPledges::Sync.new(user, items)
-      result = sync.run
+
+      begin
+        result = sync.run
+      rescue => error
+        import.update_columns(info: error.class.name.demodulize.underscore.humanize)
+        import.fail!
+        raise
+      end
 
       import.update!(output: result.merge(added_names: sync.added_names, removed_names: sync.removed_names))
       import.finish!
 
       [import, result]
-    rescue => error
-      import&.update_columns(info: error.class.name.demodulize.underscore.humanize) if import&.persisted?
-      import&.fail! if import&.may_fail?
-      raise
     end
 
     def result_details
