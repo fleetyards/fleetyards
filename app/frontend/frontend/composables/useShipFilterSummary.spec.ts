@@ -81,6 +81,50 @@ describe("ship filter summaries", () => {
     ]);
   });
 
+  it("marks exclusion filters", () => {
+    expect(
+      summarizeShipFilters(
+        { classificationNotIn: ["combat"] },
+        (key) => key,
+      ).map((item) => item.label),
+    ).toEqual(["classificationNotIn: ≠ combat"]);
+  });
+
+  it("names slugs, price buckets and passed labels, and leaves other values alone", async () => {
+    const router = createRouter({
+      history: createMemoryHistory(),
+      routes: [{ path: "/hangar", component: { template: "<div />" } }],
+    });
+    await router.push({
+      path: "/hangar",
+      query: {
+        manufacturerIn: "anvil-aerospace",
+        memberIn: "john-doe",
+        nameCont: "c2-hercules",
+        priceIn: "200000-500000",
+        hangarGroupsIn: "group-id",
+      },
+    });
+    let summary: ReturnType<typeof useShipFilterSummary> | undefined;
+    const component = defineComponent({
+      setup() {
+        summary = useShipFilterSummary(() => ({
+          hangarGroupsIn: { "group-id": "Pirates" },
+        }));
+        return () => h("div");
+      },
+    });
+    const wrapper = await mountWithDefaults(component, { plugins: [router] });
+    expect(summary!.activeFilters.value.map((item) => item.label)).toEqual([
+      "Manufacturer: Anvil Aerospace",
+      "Member: john-doe",
+      "Name: c2-hercules",
+      "Price: 200K labels.uec - 500K labels.uec",
+      "Hangar Groups: Pirates",
+    ]);
+    wrapper.unmount();
+  });
+
   it("removes both range bounds, resets pagination and preserves the view and other filters", async () => {
     const router = createRouter({
       history: createMemoryHistory(),

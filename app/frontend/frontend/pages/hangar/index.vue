@@ -5,7 +5,10 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { useShipFilterSummary } from "@/frontend/composables/useShipFilterSummary";
+import {
+  hangarGroupLabels,
+  useShipFilterSummary,
+} from "@/frontend/composables/useShipFilterSummary";
 
 import DuotoneGlyph from "@/shared/components/DuotoneGlyph/index.vue";
 import { SHIP_GLYPH } from "@/shared/glyphs/ships";
@@ -422,7 +425,9 @@ const openDisplayOptionsModal = () => {
       import("@/frontend/components/Hangar/DisplayOptionsModal/index.vue"),
   });
 };
-const { activeFilters } = useShipFilterSummary();
+const { activeFilters } = useShipFilterSummary(() =>
+  hangarGroupLabels(hangarGroups.value),
+);
 </script>
 
 <template>

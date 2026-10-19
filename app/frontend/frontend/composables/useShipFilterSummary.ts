@@ -1,21 +1,24 @@
+import { toValue, type MaybeRefOrGetter } from "vue";
 import type { LocationQuery, LocationQueryRaw } from "vue-router";
 import type { ActiveFilter } from "@/shared/components/ActiveFilters/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useFilterOptions } from "@/shared/composables/useFilterOptions";
+import { FILTER_EXCLUDE_KEYS } from "@/shared/composables/useFilters";
+import { hasFilterValue } from "@/shared/utils/Filters";
 import { HANGAR_VIEW_KEYS } from "./useHangarFilters";
 
-const ignoredKeys = new Set([
-  "s",
-  "sorts",
-  "page",
-  "perPage",
-  "tab",
-  "view",
-  "direction",
-  "fleetchart",
-  ...HANGAR_VIEW_KEYS,
-]);
-const present = (value: unknown) =>
-  value != null && value !== "" && (!Array.isArray(value) || value.length > 0);
+const ignoredKeys = new Set([...FILTER_EXCLUDE_KEYS, ...HANGAR_VIEW_KEYS]);
+const present = hasFilterValue;
+
+// Values that are catalogue slugs, so title-casing them gives the name. Any
+// other value - a username, a search term, an id - is shown as it is.
+const SLUG_KEYS = [
+  "manufacturerIn",
+  "classificationIn",
+  "focusIn",
+  "sizeIn",
+  "productionStatusIn",
+];
 
 const isNested = (value: unknown): value is Record<string, unknown> =>
   typeof value === "object" && value !== null && !Array.isArray(value);
@@ -25,7 +28,7 @@ const isNested = (value: unknown): value is Record<string, unknown> =>
 export const summarizeShipFilters = (
   query: LocationQuery,
   label: (key: string) => string,
-  formatValue: (value: string) => string = (value) => value,
+  formatValue: (value: string, key: string) => string = (value) => value,
 ): { id: string; label: string; keys: string[] }[] => {
   const summarize = (
     source: Record<string, unknown>,
@@ -56,7 +59,10 @@ export const summarizeShipFilters = (
         } else {
           const raw = source[key];
           const values = Array.isArray(raw) ? raw : [raw];
-          value = values.map((item) => formatValue(String(item))).join(", ");
+          value = values
+            .map((item) => formatValue(String(item), key))
+            .join(", ");
+          if (key.endsWith("NotIn")) value = `≠ ${value}`;
         }
         return [
           {
@@ -70,29 +76,45 @@ export const summarizeShipFilters = (
   return summarize(query, "");
 };
 
-export const useShipFilterSummary = () => {
+// Group filters hold ids; a page that has the groups passes their names.
+export const hangarGroupLabels = (
+  groups: { id: string; name: string }[] | undefined,
+) => {
+  const labels = Object.fromEntries(
+    (groups || []).map((group) => [group.id, group.name]),
+  );
+  return { hangarGroupsIn: labels, hangarGroupsNotIn: labels };
+};
+
+export const useShipFilterSummary = (
+  valueLabels: MaybeRefOrGetter<Record<string, Record<string, string>>> = {},
+) => {
   const route = useRoute();
   const router = useRouter();
   const { t, tExists } = useI18n();
+  const { priceOptions, pledgePriceOptions } = useFilterOptions();
+  const optionLabels = (options: { label: string; value: string }[]) =>
+    Object.fromEntries(options.map((option) => [option.value, option.label]));
   const label = (key: string) => {
     if (key === "cargo") return "SCU";
     const aliases: Record<string, string> = {
-      searchCont: "models.name",
-      nameCont: "models.name",
-      modelNameCont: "models.name",
-      modelNameOrModelDescriptionCont: "models.name",
-      nameOrDescriptionCont: "models.name",
-      loanerEq: "vehicles.loaner",
-      bundledEq: "vehicles.bundled",
-      hiddenByUserEq: "vehicles.hiddenByUser",
-      publicEq: "vehicles.public",
-      boughtViaEq: "vehicles.boughtVia",
-      memberIn: "vehicles.owner",
-      hangarGroupsIn: "vehicles.group",
-      hangarGroupsNotIn: "vehicles.group",
+      searchCont: "labels.filters.models.name",
+      nameCont: "labels.filters.models.name",
+      modelNameCont: "labels.filters.models.name",
+      modelNameOrModelDescriptionCont: "labels.filters.models.name",
+      nameOrDescriptionCont: "labels.filters.models.name",
+      loanerEq: "labels.filters.vehicles.loaner",
+      bundledEq: "labels.filters.vehicles.bundled",
+      hiddenByUserEq: "labels.filters.vehicles.hiddenByUser",
+      publicEq: "labels.filters.vehicles.public",
+      boughtViaEq: "labels.filters.vehicles.boughtVia",
+      memberIn: "labels.filters.fleets.member",
+      squadronSlugIn: "labels.fleet.members.card.squadrons",
+      hangarGroupsIn: "labels.filters.vehicles.group",
+      hangarGroupsNotIn: "labels.filters.vehicles.group",
     };
     const stem = key.replace(/(?:NotIn|In|Eq|Cont)$/, "");
-    const path = `labels.filters.${aliases[key] || "models." + stem}`;
+    const path = aliases[key] || `labels.filters.models.${stem}`;
     if (tExists(path)) return t(path);
     const rangePath = `labels.filters.models.${stem}Gt`;
     if (tExists(rangePath)) return t(rangePath).replace(/\s*>=?$/, "");
@@ -100,9 +122,16 @@ export const useShipFilterSummary = () => {
       .replace(/([A-Z])/g, " $1")
       .replace(/^./, (char) => char.toUpperCase());
   };
-  const formatValue = (value: string) => {
+  const formatValue = (value: string, key: string) => {
+    const labels: Record<string, Record<string, string>> = {
+      priceIn: optionLabels(priceOptions),
+      pledgePriceIn: optionLabels(pledgePriceOptions),
+      ...toValue(valueLabels),
+    };
+    const known = labels[key]?.[value];
+    if (known) return known;
     if (value === "true" || value === "false") return t(`labels.${value}`);
-    if (!/^[a-z][a-z0-9-]*$/.test(value)) return value;
+    if (!SLUG_KEYS.includes(key.replace(/NotIn$/, "In"))) return value;
     return value
       .split("-")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
