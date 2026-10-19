@@ -45,6 +45,8 @@ const prefillFormValues = () => {
     priceGteq: filters.value.priceGteq,
     pledgePriceLteq: filters.value.pledgePriceLteq,
     pledgePriceGteq: filters.value.pledgePriceGteq,
+    cargoGteq: filters.value.cargoGteq,
+    cargoLteq: filters.value.cargoLteq,
     lengthLteq: filters.value.lengthLteq,
     lengthGteq: filters.value.lengthGteq,
     beamLteq: filters.value.beamLteq,
@@ -142,6 +144,29 @@ const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
     />
 
     <WillItFitSelect v-model="form.willItFit" name="will-it-fit" />
+
+    <div class="row">
+      <div class="col-6">
+        <FormInput
+          v-model="form.cargoGteq"
+          name="model-cargo-gteq"
+          type="number"
+          :min="0"
+          translation-key="filters.models.cargoGt"
+          :no-placeholder="true"
+        />
+      </div>
+      <div class="col-6">
+        <FormInput
+          v-model="form.cargoLteq"
+          name="model-cargo-lteq"
+          type="number"
+          :min="0"
+          translation-key="filters.models.cargoLt"
+          :no-placeholder="true"
+        />
+      </div>
+    </div>
 
     <div class="row">
       <div class="col-6">

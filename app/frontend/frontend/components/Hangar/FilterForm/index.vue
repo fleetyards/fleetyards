@@ -51,6 +51,8 @@ const prefillFormValues = () => {
     priceGteq: filters.value.priceGteq,
     pledgePriceLteq: filters.value.pledgePriceLteq,
     pledgePriceGteq: filters.value.pledgePriceGteq,
+    cargoGteq: filters.value.cargoGteq,
+    cargoLteq: filters.value.cargoLteq,
     lengthLteq: filters.value.lengthLteq,
     lengthGteq: filters.value.lengthGteq,
     beamLteq: filters.value.beamLteq,
@@ -155,6 +157,29 @@ const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
     <HangarGroupsSelect v-model="form.hangarGroupsIn" name="will-it-fit" />
 
     <BoughtViaSelect v-model="form.boughtViaEq" name="bought-via" />
+
+    <div class="row">
+      <div class="col-6">
+        <FormInput
+          v-model="form.cargoGteq"
+          name="vehicle-cargo-gteq"
+          type="number"
+          :min="0"
+          translation-key="filters.models.cargoGt"
+          :no-placeholder="true"
+        />
+      </div>
+      <div class="col-6">
+        <FormInput
+          v-model="form.cargoLteq"
+          name="vehicle-cargo-lteq"
+          type="number"
+          :min="0"
+          translation-key="filters.models.cargoLt"
+          :no-placeholder="true"
+        />
+      </div>
+    </div>
 
     <div class="row">
       <div class="col-6">

@@ -9,6 +9,8 @@ module V1
         schema({
           type: :object,
           properties: {
+            cargoGteq: {type: :number},
+            cargoLteq: {type: :number},
             beamGteq: {type: :number},
             beamLteq: {type: :number},
             classificationIn: {type: :array, items: {type: :string}},

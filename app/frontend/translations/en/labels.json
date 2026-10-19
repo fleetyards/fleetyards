@@ -2504,6 +2504,8 @@
         "vehicles": {
           "name": "Name or Ship name",
           "lengthLt": "Length <=",
+          "cargoGt": "SCU >=",
+          "cargoLt": "SCU <=",
           "lengthGt": "Length >=",
           "pledgePriceLt": "Pledge Price <=",
           "pledgePriceGt": "Pledge Price >=",
@@ -2528,6 +2530,8 @@
         },
         "models": {
           "name": "Name",
+          "cargoGt": "SCU >=",
+          "cargoLt": "SCU <=",
           "classification": "Classification",
           "focus": "Focus",
           "manufacturer": "Manufacturer",

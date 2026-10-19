@@ -56,6 +56,25 @@ class Api::V1::FleetsVehiclesIndexTest < ActionDispatch::IntegrationTest
     Sidekiq::Testing.fake!
   end
 
+  test "filters by inclusive cargo bounds in SCU" do
+    owner = create(:user)
+    fleet = create(:fleet, admins: [owner])
+    sign_in owner
+    models = [0, 0.5, 32, 64].map { |cargo| create(:model, cargo:, keep_cargo: true) }
+    models.each { |model| create(:vehicle, user: owner, model:) }
+
+    [
+      [{cargoGteq: 0.5}, models.drop(1)],
+      [{cargoLteq: 0.5}, models.first(2)],
+      [{cargoGteq: 0.5, cargoLteq: 32}, models[1..2]],
+      [{cargoGteq: 0, cargoLteq: 0}, models.first(1)]
+    ].each do |query, expected|
+      assert_api_response :get, 200, path_params: {fleetSlug: fleet.slug}, params: {q: query} do
+        assert_equal expected.map(&:id).sort, parsed_body["items"].map { |item| item.dig("model", "id") }.sort
+      end
+    end
+  end
+
   test "GET /fleets/:slug/vehicles lists fleet vehicles" do
     sign_in @admin
 

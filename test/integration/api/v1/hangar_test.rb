@@ -65,6 +65,24 @@ class Api::V1::HangarTest < ActionDispatch::IntegrationTest
   # Hash to `or`, which Rails refuses outright -- so this filter answered with a
   # 500 for exactly the three ships anybody would pick: Polaris, Carrack, 890
   # Jump.
+  test "filters by inclusive cargo bounds in SCU" do
+    user = create(:user)
+    sign_in user
+    models = [0, 0.5, 32, 64].map { |cargo| create(:model, cargo:, keep_cargo: true) }
+    models.each { |model| create(:vehicle, user: user, model:) }
+
+    [
+      [{cargoGteq: 0.5}, models.drop(1)],
+      [{cargoLteq: 0.5}, models.first(2)],
+      [{cargoGteq: 0.5, cargoLteq: 32}, models[1..2]],
+      [{cargoGteq: 0, cargoLteq: 0}, models.first(1)]
+    ].each do |query, expected|
+      assert_api_response :get, 200, params: {q: query} do
+        assert_equal expected.map(&:id).sort, parsed_body["items"].map { |item| item.dig("model", "id") }.sort
+      end
+    end
+  end
+
   test "GET /hangar filters by a carrier that takes both ships and vehicles" do
     user = create(:user)
     carrier = create(:model, slug: "carrier-with-both")

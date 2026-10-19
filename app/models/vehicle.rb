@@ -238,6 +238,7 @@ class Vehicle < ApplicationRecord
 
   ransack_alias :search, :name_or_model_name_or_model_slug
   ransack_alias :on_sale, :model_on_sale
+  ransack_alias :cargo, :model_cargo
   ransack_alias :length, :model_length
   ransack_alias :beam, :model_beam
   ransack_alias :height, :model_height
@@ -305,7 +306,7 @@ class Vehicle < ApplicationRecord
 
   def self.ransackable_attributes(auth_object = nil)
     [
-      "alternative_names", "beam", "bought_via", "bundled", "classification", "created_at", "flagship",
+      "alternative_names", "beam", "bought_via", "cargo", "bundled", "classification", "created_at", "flagship",
       "focus", "hangar_groups", "has_dedication", "height", "hidden", "id", "id_value", "length", "loaner",
       "manufacturer", "model_id", "module_package_id", "name", "name_visible",
       "notify", "on_sale", "pledge_price", "price", "production_status", "public", "rank", "rsi_pledge_id",

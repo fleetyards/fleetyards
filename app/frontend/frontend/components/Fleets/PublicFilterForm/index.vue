@@ -35,6 +35,8 @@ function prefillFormValues(): FleetVehicleQuery {
     priceGteq: filters.value.priceGteq,
     pledgePriceLteq: filters.value.pledgePriceLteq,
     pledgePriceGteq: filters.value.pledgePriceGteq,
+    cargoGteq: filters.value.cargoGteq,
+    cargoLteq: filters.value.cargoLteq,
     lengthLteq: filters.value.lengthLteq,
     lengthGteq: filters.value.lengthGteq,
     manufacturerIn: filters.value.manufacturerIn || [],
@@ -120,6 +122,28 @@ const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
       :no-label="true"
     />
 
+    <div class="row">
+      <div class="col-6">
+        <FormInput
+          v-model="form.cargoGteq"
+          name="public-fleet-cargo-gteq"
+          type="number"
+          :min="0"
+          translation-key="filters.models.cargoGt"
+          :no-placeholder="true"
+        />
+      </div>
+      <div class="col-6">
+        <FormInput
+          v-model="form.cargoLteq"
+          name="public-fleet-cargo-lteq"
+          type="number"
+          :min="0"
+          translation-key="filters.models.cargoLt"
+          :no-placeholder="true"
+        />
+      </div>
+    </div>
     <div class="row">
       <div class="col-6">
         <FormInput
