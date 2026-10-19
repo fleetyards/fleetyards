@@ -44,9 +44,8 @@ describe("useStockLots", () => {
 });
 
 describe("lotEntry", () => {
-  // A grade left from the last lot picked must not be withdrawn from this one.
-  it("clears the grade for an ungraded lot", () => {
-    expect(lotEntry(lot({ quality: null }))).toEqual({ quality: undefined });
+  it("carries nothing for a lot that was not crafted", () => {
+    expect(lotEntry(lot({ quality: 800 }))).toEqual({});
   });
 
   it("carries a crafted lot's part and grades", () => {

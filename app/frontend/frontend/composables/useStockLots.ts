@@ -32,23 +32,16 @@ const lotKey = (lot: StockLot) =>
   ]);
 
 /**
- * What a withdrawal out of a lot carries: the lot's grade, and for a crafted
- * part the part and the grades it was made from, without which it would come
- * out of stock that was never crafted.
+ * What a withdrawal out of a crafted lot carries besides its grade: the part
+ * and the grades it was made from, without which it would come out of stock
+ * that was never crafted.
  */
 export const lotEntry = (
   lot: StockLot,
-): {
-  quality?: number;
-  item?: PickedItem;
-  crafted?: CraftedSelection;
-} => {
-  if (!lot.crafted || !lot.item) {
-    return { quality: lot.quality ?? undefined };
-  }
+): { item?: PickedItem; crafted?: CraftedSelection } => {
+  if (!lot.crafted || !lot.item) return {};
 
   return {
-    quality: lot.quality ?? undefined,
     item: { type: lot.item.type, id: lot.item.id, name: lot.name },
     crafted: {
       blueprintId: lot.crafted.blueprint.id,

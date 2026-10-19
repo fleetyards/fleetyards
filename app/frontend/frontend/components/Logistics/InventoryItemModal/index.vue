@@ -94,7 +94,7 @@ const countedSelection = computed(() =>
 const isDeposit = computed(() => entryType.value === "deposit");
 
 const modalTitle = computed(() => {
-  if (picking.value) return pickTitle;
+  if (picking.value) return pickTitle.value;
   if (step.value === "crafting") return t("headlines.logistics.crafting");
 
   return isDeposit.value
@@ -108,9 +108,9 @@ const validationSchema = {
   quality: "required|between:0,1000",
 };
 
-// Left blank rather than defaulted, so the amount and grade are entered for
-// the goods at hand instead of slipping through as a 1 and a 0 nobody chose.
-// Stock is held per grade, so a withdrawal has to say which one it takes too.
+// Left blank rather than defaulted, so the amount and grade of a deposit are
+// entered for the goods at hand instead of slipping through as a 1 and a 0
+// nobody chose.
 
 const initialValues = {
   name: "",
@@ -242,11 +242,8 @@ watch(selectedStockItem, (val) => {
   const picked = lotAt(val);
   if (!picked) return;
 
-  // Set whether or not the lot has one, so a grade left from the last lot
-  // picked is not withdrawn from this one.
   const entry = lotEntry(picked);
 
-  setFieldValue("quality", entry.quality);
   pickedItem.value = entry.item;
   crafted.value = entry.crafted;
 });
@@ -260,11 +257,16 @@ watch(entryType, (val) => {
   pickedItem.value = undefined;
 });
 
-const selectedStockMax = computed(() => {
-  if (!selectedStockItem.value) return undefined;
+// A withdrawal comes out of the grade its stock row is held at -- 800, 0, or
+// NULL for stock nobody graded -- exactly, since stock is grouped by it and a
+// withdrawal at any other grade would leave the row it came from untouched.
+const withdrawnQuality = computed(
+  () => lotAt(selectedStockItem.value)?.quality ?? null,
+);
 
-  return lotAt(selectedStockItem.value)?.netQuantity;
-});
+const selectedStockMax = computed(
+  () => lotAt(selectedStockItem.value)?.netQuantity,
+);
 
 const createHangarItem = useCreateHangarInventoryItem();
 const createVehicleItem = useCreateVehicleInventoryItem();
@@ -306,10 +308,11 @@ const onSubmit = handleSubmit(async (values) => {
         : Math.round(Number(values.quantity)),
     unit: values.unit,
     entryType: entryType.value,
-    quality:
-      graded.value && values.quality != null
+    quality: isDeposit.value
+      ? graded.value && values.quality != null
         ? Number(values.quality)
-        : undefined,
+        : undefined
+      : withdrawnQuality.value,
     image: values.image || undefined,
     notes: values.notes || undefined,
     itemType: pickedItem.value?.type,
@@ -446,7 +449,9 @@ const onSubmit = handleSubmit(async (values) => {
           </FormInput>
         </div>
 
-        <div v-if="graded" class="col-6">
+        <!-- A withdrawal's grade is the stock row's, named in the row it
+             picked. -->
+        <div v-if="graded && isDeposit" class="col-6">
           <FormInput
             v-model="quality"
             v-bind="qualityProps"
