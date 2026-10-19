@@ -36,7 +36,17 @@ module HangarModuleMapping
   }.freeze
 
   def component_mapping(name)
-    normalized = name.strip.downcase.tr("\u2013", "-").tr("\u00A0", " ")
-    COMPONENT_MAPPING[normalized]
+    COMPONENT_MAPPING[HangarModuleMapping.normalize(name)]
+  end
+
+  def self.normalize(name)
+    name.to_s.strip.downcase.tr("\u2013", "-").tr("\u00A0", " ")
+  end
+
+  # RSI lists ship modules and ship parts alike as components. A module is one
+  # the mapping knows, or one named as a module: those are fitted to a ship,
+  # the rest are kept as ship components.
+  def self.module?(name)
+    COMPONENT_MAPPING.key?(normalize(name)) || normalize(name).match?(/\bmodule\z/)
   end
 end

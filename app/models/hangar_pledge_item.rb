@@ -1,19 +1,24 @@
 # frozen_string_literal: true
 
-# A paint, piece of hangar flair, FPS equipment or CCU in the user's RSI hangar,
-# as read by the hangar sync. None becomes a vehicle, so all are kept as RSI
-# lists them.
+# A paint, piece of hangar flair, FPS equipment, CCU or ship component in the
+# user's RSI hangar, as read by the hangar sync. None becomes a vehicle, so all
+# are kept as RSI lists them.
 class HangarPledgeItem < ApplicationRecord
   paginates_per 48
   max_paginates_per 240
   per_page_steps PageSizes.up_to(max_per_page)
 
-  KINDS = %w[paint flair equipment ccu].freeze
+  KINDS = %w[paint flair equipment ccu ship_component].freeze
 
   DEFAULT_SORTING_PARAMS = [].freeze
   ALLOWED_SORTING_PARAMS = ["meltValue asc", "meltValue desc"].freeze
 
   belongs_to :user
+
+  # The catalogue item a ship component or piece of gear was matched to, where
+  # one was found.
+  belongs_to :catalogue_component, class_name: "Component", foreign_key: :component_id, optional: true
+  belongs_to :catalogue_equipment, class_name: "Equipment", foreign_key: :equipment_id, optional: true
 
   has_many :model_paint_links, class_name: "HangarPledgeItemModelPaint", dependent: nil
   has_many :model_paints, through: :model_paint_links
@@ -26,6 +31,7 @@ class HangarPledgeItem < ApplicationRecord
   scope :paints, -> { where(kind: "paint") }
   scope :flair, -> { where(kind: "flair") }
   scope :equipment, -> { where(kind: "equipment") }
+  scope :ship_components, -> { where(kind: "ship_component") }
   scope :with_value, -> { where(pledge_value: 0.01..) }
 
   scope :upgrade_from_model_slug_eq, ->(slug) { upgrade_for_model(slug, 1) }
