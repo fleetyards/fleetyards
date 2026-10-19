@@ -47,6 +47,9 @@ type StockItem = {
   category: string;
   unit: string;
   netQuantity: number;
+  // The grade this row of stock is held at; a position holding several grades
+  // is one row per grade.
+  quality?: number | null;
 };
 
 type Props = {
@@ -93,7 +96,7 @@ const countedSelection = computed(() =>
 const isDeposit = computed(() => entryType.value === "deposit");
 
 const modalTitle = computed(() => {
-  if (picking.value) return pickTitle;
+  if (picking.value) return pickTitle.value;
 
   return isDeposit.value
     ? t("headlines.logistics.deposit")
@@ -106,9 +109,9 @@ const validationSchema = {
   quality: "required|between:0,1000",
 };
 
-// Left blank rather than defaulted, so the amount and grade are entered for
-// the goods at hand instead of slipping through as a 1 and a 0 nobody chose.
-// Stock is held per grade, so a withdrawal has to say which one it takes too.
+// Left blank rather than defaulted, so the amount and grade of a deposit are
+// entered for the goods at hand instead of slipping through as a 1 and a 0
+// nobody chose. A withdrawal takes its grade from the stock row it picks.
 
 const initialValues = {
   name: "",
@@ -187,12 +190,20 @@ const loadStockItems = async () => {
   }
 };
 
+// Keyed by row rather than by position: a position holding several grades is
+// several rows, and a withdrawal comes out of one of them.
 const stockItemOptions = computed<FilterOption[]>(() =>
-  stockItems.value.map((item) => ({
-    value: item.id,
-    label: `${item.name} (${item.netQuantity} ${t(`labels.logistics.units.${item.unit}`)})`,
+  stockItems.value.map((item, index) => ({
+    value: String(index),
+    label:
+      item.quality != null && item.category === "commodity"
+        ? `${item.name} · ${t("labels.logistics.qualityShort", { quality: item.quality })} (${item.netQuantity} ${t(`labels.logistics.units.${item.unit}`)})`
+        : `${item.name} (${item.netQuantity} ${t(`labels.logistics.units.${item.unit}`)})`,
   })),
 );
+
+const stockRowAt = (key?: string | null) =>
+  key ? stockItems.value[Number(key)] : undefined;
 
 const existingItemOptions = computed<FilterOption[]>(() =>
   stockItems.value.map((item) => ({
@@ -221,7 +232,21 @@ const applyPickedItem = (val: string | undefined) => {
 };
 
 watch(selectedExistingItem, applyPickedItem);
-watch(selectedStockItem, applyPickedItem);
+
+watch(selectedStockItem, (val) => {
+  const picked = stockRowAt(val);
+  if (!picked) return;
+
+  selectedPosition.value = picked;
+  setFieldValue("name", picked.name);
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  setFieldValue("category", picked.category as any);
+  setFieldValue("unit", picked.unit as any);
+  /* eslint-enable @typescript-eslint/no-explicit-any */
+  pickedItem.value = undefined;
+  // The grade of the row it comes out of, blank for ungraded stock.
+  setFieldValue("quality", picked.quality ?? undefined);
+});
 
 watch(entryType, (val) => {
   if (val === "withdrawal") {
@@ -232,11 +257,12 @@ watch(entryType, (val) => {
   pickedItem.value = undefined;
 });
 
-const selectedStockMax = computed(() => {
-  if (!selectedStockItem.value) return undefined;
+// Ungraded stock is held as NULL, and an omitted grade is stored as 0 -- a
+// group no deposit occupies -- so a withdrawal out of it says null outright.
+const withdrawnUngraded = computed(() => (isDeposit.value ? undefined : null));
 
-  return stockItems.value.find((item) => item.id === selectedStockItem.value)
-    ?.netQuantity;
+const selectedStockMax = computed(() => {
+  return stockRowAt(selectedStockItem.value)?.netQuantity;
 });
 
 const createHangarItem = useCreateHangarInventoryItem();
@@ -281,7 +307,7 @@ const onSubmit = handleSubmit(async (values) => {
     quality:
       graded.value && values.quality != null
         ? Number(values.quality)
-        : undefined,
+        : withdrawnUngraded.value,
     image: values.image || undefined,
     notes: values.notes || undefined,
     itemType: pickedItem.value?.type,
@@ -408,7 +434,7 @@ const onSubmit = handleSubmit(async (values) => {
             v-bind="qualityProps"
             name="quality"
             :type="InputTypesEnum.NUMBER"
-            :rules="validationSchema.quality"
+            :rules="isDeposit ? validationSchema.quality : ''"
             :label="t('labels.logistics.quality')"
             :min="0"
             :step="1"

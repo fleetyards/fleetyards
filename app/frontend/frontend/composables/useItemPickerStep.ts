@@ -45,7 +45,9 @@ export const useItemPickerStep = ({
     picking.value = shown;
   };
 
-  const pickTitle = t("headlines.logistics.pickItem");
+  // Read when asked for, so a language changed while the modal is open is
+  // the one the picker opens in.
+  const pickTitle = computed(() => t("headlines.logistics.pickItem"));
 
   // Only raw resources carry a grade. A crafted part's worth lies in the
   // materials that went into it, which a single number cannot say. Nothing is

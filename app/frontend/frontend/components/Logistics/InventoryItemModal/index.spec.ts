@@ -1,5 +1,13 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
+import {
+  afterEach,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 import { flushPromises, type VueWrapper } from "@vue/test-utils";
 import { defineRule } from "vee-validate";
 import { between, required, min, min_value } from "@vee-validate/rules";
@@ -15,10 +23,21 @@ beforeAll(() => {
   defineRule("between", between);
 });
 
+const api = vi.hoisted(() => ({
+  stock: vi.fn(),
+  create: vi.fn(),
+}));
+
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@/services/fyApi")>()),
-  hangarInventoryStock: vi.fn().mockResolvedValue([]),
+  hangarInventoryStock: api.stock,
+  useCreateHangarInventoryItem: () => ({ mutateAsync: api.create }),
 }));
+
+beforeEach(() => {
+  api.stock.mockResolvedValue([]);
+  api.create.mockResolvedValue({});
+});
 
 // Its upload chain reaches the 3D viewer, whose ESM build Vitest cannot load.
 vi.mock("@/shared/components/base/FormFileInput/index.vue", () => ({
@@ -189,5 +208,74 @@ describe("LogisticsInventoryItemModal", () => {
       .trigger("click");
 
     expect(field(subject).text()).not.toContain("Grandma's teapot");
+  });
+
+  describe("a withdrawal", () => {
+    const withdraw = async (row: number) => {
+      api.stock.mockResolvedValue([
+        {
+          id: "pos-1",
+          name: "Gold",
+          category: "commodity",
+          unit: "scu",
+          netQuantity: 4,
+          quality: 800,
+        },
+        {
+          id: "pos-1",
+          name: "Gold",
+          category: "commodity",
+          unit: "scu",
+          netQuantity: 10,
+          quality: null,
+        },
+      ]);
+
+      const subject = await mount();
+
+      select(subject, "entryType").vm.$emit("update:modelValue", "withdrawal");
+      await flushPromises();
+      select(subject, "stockItem").vm.$emit("update:modelValue", String(row));
+      await flushPromises();
+      await subject.find("[data-test='input-quantity']").setValue("2");
+
+      return subject;
+    };
+
+    // Stock is held per grade, and the grade of the row picked is the one the
+    // withdrawal comes out of.
+    it("takes the grade of the row it comes out of", async () => {
+      const subject = await withdraw(0);
+
+      await subject.find("form").trigger("submit");
+      await flushPromises();
+
+      expect(api.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            entryType: "withdrawal",
+            quality: 800,
+          }),
+        }),
+      );
+    });
+
+    // Ungraded stock is held as NULL; an omitted grade would be stored as 0, a
+    // group no deposit occupies, and the stock row would never go down.
+    it("comes out of ungraded stock without a grade", async () => {
+      const subject = await withdraw(1);
+
+      await subject.find("form").trigger("submit");
+      await flushPromises();
+
+      expect(api.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            entryType: "withdrawal",
+            quality: null,
+          }),
+        }),
+      );
+    });
   });
 });
