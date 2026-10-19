@@ -47,12 +47,14 @@ A fitted component with a blueprint can be marked crafted in the loadout editor,
 | `app/frontend/frontend/components/Blueprints/Slot/index.vue` | per-slot quality UI |
 
 ## Not in scope (deferred)
-- **Power-pip modifiers carry no figures** — the parser reads only `modifierAtStart/End`; additive ramps use `additiveModifierAtStart/End`. Needs a parser change and a re-parse; crafted power plants keep catalogue pips until then.
+- Nothing open. The power-pip modifiers are parsed and both trees are re-parsed and pushed.
 
 ## Discovery Log
 
 - **2026-10-19** Initial research and plan creation. Recipe and stat mapping exist only for the blueprint page; no component payload names its blueprint.
 - **2026-10-19** The editor finds a part's recipe through the blueprint list filtered by craftable, as the component page does; the item stores the blueprint id and renders its slug so read-only views fetch the recipe by slug. The "open the recipe" link was dropped: it would navigate away from an unsaved editor.
+
+- **2026-10-19** Re-parsing live and ptu with this branch's parser also changed what this PR does not touch: 37 jetpack equipment files on live (#5806's parser, never pushed) and ~2,450 item and model files on ptu. Pushed only the 75 blueprint files per tree, restoring the rest from the bucket; that drift is a separate decision.
 
 ## Progress
 - [x] Phase 1
