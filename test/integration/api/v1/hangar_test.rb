@@ -61,10 +61,6 @@ class Api::V1::HangarTest < ActionDispatch::IntegrationTest
     end
   end
 
-  # A carrier holding a dock of each kind takes the branch that used to hand a
-  # Hash to `or`, which Rails refuses outright -- so this filter answered with a
-  # 500 for exactly the three ships anybody would pick: Polaris, Carrack, 890
-  # Jump.
   test "filters by inclusive cargo bounds in SCU" do
     user = create(:user)
     sign_in user
@@ -83,6 +79,10 @@ class Api::V1::HangarTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # A carrier holding a dock of each kind takes the branch that used to hand a
+  # Hash to `or`, which Rails refuses outright -- so this filter answered with a
+  # 500 for exactly the three ships anybody would pick: Polaris, Carrack, 890
+  # Jump.
   test "GET /hangar filters by a carrier that takes both ships and vehicles" do
     user = create(:user)
     carrier = create(:model, slug: "carrier-with-both")
