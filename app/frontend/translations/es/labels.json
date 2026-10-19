@@ -3340,7 +3340,10 @@
           "custom": "Añadir «%{name}» como objeto personalizado",
           "search": "Buscar por nombre",
           "chooseCategory": "Elige una categoría para explorar sus objetos.",
-          "results": "%{count} objetos",
+          "results": {
+            "one": "%{count} objeto",
+            "other": "%{count} objetos"
+          },
           "noResults": "Ningún objeto coincide con estos filtros.",
           "clear": "Quitar el objeto del catálogo",
           "capacity": "Capacidad"
@@ -3840,7 +3843,6 @@
           "pendingCrew": "Esperando unirse",
           "minQuality": "calidad mín. %{value}",
           "pickedUp": "%{quantity} recogido",
-          "itemName": "Artículo",
           "itemCategory": "Categoría",
           "itemUnit": "Unidad",
           "itemQuantity": "Cantidad",

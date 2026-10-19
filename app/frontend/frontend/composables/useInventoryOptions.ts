@@ -77,6 +77,18 @@ export const INVENTORY_EQUIPMENT_TYPES: Record<string, string[]> = {
   other: ["carryable", "flair"],
 };
 
+/**
+ * The one category a piece of equipment is filed under: the first whose slice
+ * holds its type. Medical sits in two slices, and equipment comes first, which
+ * is where it was filed before consumables could pick it. Contract progress
+ * matches deposits on the category, so browsing to a medpen under consumables
+ * must not file it somewhere a contract asking for it would never look.
+ */
+export const inventoryCategoryForEquipment = (equipmentType?: string | null) =>
+  Object.keys(INVENTORY_EQUIPMENT_TYPES).find((category) =>
+    INVENTORY_EQUIPMENT_TYPES[category].includes(equipmentType ?? ""),
+  ) ?? "equipment";
+
 export const INVENTORY_ENTRY_TYPES = ["deposit", "withdrawal"] as const;
 
 export const useInventoryOptions = () => {

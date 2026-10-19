@@ -15,6 +15,7 @@ import Loader from "@/shared/components/Loader/index.vue";
 import Row from "@/frontend/components/Logistics/ItemPicker/Row/index.vue";
 import {
   INVENTORY_EQUIPMENT_TYPES,
+  inventoryCategoryForEquipment,
   useInventoryOptions,
 } from "@/frontend/composables/useInventoryOptions";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -193,7 +194,7 @@ const fetchPage = async (): Promise<PickerPage> => {
   );
 };
 
-const { data, isFetching } = useQuery({
+const { data, isFetching, isPlaceholderData } = useQuery({
   queryKey: computed(() => [
     "inventory-item-picker",
     category.value,
@@ -204,18 +205,27 @@ const { data, isFetching } = useQuery({
   queryFn: fetchPage,
   enabled: computed(() => !!catalogue.value),
   refetchOnWindowFocus: false,
-  // Holds the last page while the next one loads, so the count and the
-  // sentinel do not flicker off between pages.
+  // Holds the last list on screen, dimmed, while a re-filtered one loads.
   placeholderData: keepPreviousData,
 });
 
+// What the last real response said. Placeholder data is the previous query's,
+// so neither the count nor "load more" may be read from it.
+const totalCount = ref<number | undefined>(undefined);
+const totalPages = ref(1);
+
 // Which page arrived decides whether it extends the list or replaces it, and
 // the response says so itself: a stale page 2 must not land on a list a filter
-// change already reset.
+// change already reset. Watched together with the placeholder flag, because a
+// return to a cached query can hand back the very object the placeholder was,
+// and the data ref alone would not change.
 watch(
-  data,
-  (response) => {
-    if (!response || !catalogue.value) return;
+  [data, isPlaceholderData],
+  ([response, placeholder]) => {
+    if (!response || placeholder || !catalogue.value) return;
+
+    totalCount.value = response.totalCount;
+    totalPages.value = response.totalPages;
 
     if (response.currentPage <= 1) {
       records.value = response.entries;
@@ -233,7 +243,7 @@ watch(
 );
 
 const hasMore = computed(
-  () => !!data.value && page.value < data.value.totalPages,
+  () => !isPlaceholderData.value && page.value < totalPages.value,
 );
 
 const initialLoading = computed(
@@ -256,6 +266,8 @@ watch(search, (value) => {
 watch(category, () => {
   itemType.value = undefined;
   records.value = [];
+  totalCount.value = undefined;
+  totalPages.value = 1;
   page.value = 1;
 });
 
@@ -313,25 +325,41 @@ onUnmounted(() => {
   applySearch.cancel();
 });
 
-const customName = computed(() => searchTerm.value.trim());
+// The live input, not the debounced term: a click straight after typing must
+// not name the goods by half the word.
+const customName = computed(() => search.value.trim());
 
-const emitSelection = (name: string, item?: PickedItem) => {
+const emitSelection = (
+  name: string,
+  item?: PickedItem,
+  filedUnder?: InventoryCategoryEnum,
+) => {
   if (!category.value) return;
 
   emit("select", {
     item,
     name,
-    category: category.value as InventoryCategoryEnum,
+    category: filedUnder ?? (category.value as InventoryCategoryEnum),
   });
 };
 
 const pick = (entry: ItemPickerEntry) => {
-  emitSelection(entry.record.name, {
+  const item: PickedItem = {
     type: entry.type,
     id: entry.record.id,
     name: entry.record.name,
     counted: entry.type === "Commodity" ? entry.record.counted : undefined,
-  });
+  };
+
+  // A piece of equipment has one category whichever slice it was browsed in.
+  const filedUnder =
+    entry.type === "Equipment"
+      ? (inventoryCategoryForEquipment(
+          entry.record.equipmentType,
+        ) as InventoryCategoryEnum)
+      : undefined;
+
+  emitSelection(entry.record.name, item, filedUnder);
 };
 
 // Goods the catalogue does not carry are still goods: the search names them
@@ -382,12 +410,11 @@ const pickCustom = () => {
         standalone
       />
 
-      <p v-if="catalogue && data" class="item-picker__count">
-        {{
-          t("labels.logistics.itemPicker.results", {
-            count: data.totalCount,
-          })
-        }}
+      <p
+        v-if="catalogue && totalCount !== undefined"
+        class="item-picker__count"
+      >
+        {{ t("labels.logistics.itemPicker.results", { count: totalCount }) }}
       </p>
 
       <Btn

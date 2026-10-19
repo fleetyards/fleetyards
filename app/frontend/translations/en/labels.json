@@ -3354,7 +3354,10 @@
           "custom": "Add “%{name}” as a custom item",
           "search": "Search by name",
           "chooseCategory": "Choose a category to browse its items.",
-          "results": "%{count} Items",
+          "results": {
+            "one": "%{count} Item",
+            "other": "%{count} Items"
+          },
           "noResults": "No items match these filters.",
           "clear": "Remove the catalogue item",
           "capacity": "Capacity"
@@ -3854,7 +3857,6 @@
           "pendingCrew": "Waiting to join",
           "minQuality": "min. quality %{value}",
           "pickedUp": "%{quantity} picked up",
-          "itemName": "Item",
           "itemCategory": "Category",
           "itemUnit": "Unit",
           "itemQuantity": "Quantity",

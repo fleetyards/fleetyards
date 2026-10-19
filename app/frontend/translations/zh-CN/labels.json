@@ -3340,7 +3340,10 @@
           "custom": "将“%{name}”添加为自定义物品",
           "search": "按名称搜索",
           "chooseCategory": "选择一个类别以浏览其物品。",
-          "results": "%{count} 件物品",
+          "results": {
+            "one": "%{count} 件物品",
+            "other": "%{count} 件物品"
+          },
           "noResults": "没有符合这些筛选条件的物品。",
           "clear": "移除目录物品",
           "capacity": "容量"
@@ -3840,7 +3843,6 @@
           "pendingCrew": "等待加入",
           "minQuality": "最低品质 %{value}",
           "pickedUp": "已取 %{quantity}",
-          "itemName": "物品",
           "itemCategory": "类别",
           "itemUnit": "单位",
           "itemQuantity": "数量",

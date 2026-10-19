@@ -3340,7 +3340,10 @@
           "custom": "將「%{name}」新增為自訂物品",
           "search": "按名稱搜尋",
           "chooseCategory": "選擇一個類別以瀏覽其物品。",
-          "results": "%{count} 件物品",
+          "results": {
+            "one": "%{count} 件物品",
+            "other": "%{count} 件物品"
+          },
           "noResults": "沒有符合這些篩選條件的物品。",
           "clear": "移除目錄物品",
           "capacity": "容量"
@@ -3840,7 +3843,6 @@
           "pendingCrew": "等待加入",
           "minQuality": "最低品質 %{value}",
           "pickedUp": "已取 %{quantity}",
-          "itemName": "物品",
           "itemCategory": "類別",
           "itemUnit": "單位",
           "itemQuantity": "數量",

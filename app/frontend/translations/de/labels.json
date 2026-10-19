@@ -3340,7 +3340,10 @@
           "custom": "„%{name}“ als eigenen Gegenstand hinzufügen",
           "search": "Nach Namen suchen",
           "chooseCategory": "Wähle eine Kategorie, um ihre Gegenstände zu durchsuchen.",
-          "results": "%{count} Gegenstände",
+          "results": {
+            "one": "%{count} Gegenstand",
+            "other": "%{count} Gegenstände"
+          },
           "noResults": "Keine Gegenstände passen zu diesen Filtern.",
           "clear": "Katalogeintrag entfernen",
           "capacity": "Kapazität"
@@ -3840,7 +3843,6 @@
           "pendingCrew": "Wartet auf Aufnahme",
           "minQuality": "min. Qualität %{value}",
           "pickedUp": "%{quantity} abgeholt",
-          "itemName": "Ware",
           "itemCategory": "Kategorie",
           "itemUnit": "Einheit",
           "itemQuantity": "Menge",

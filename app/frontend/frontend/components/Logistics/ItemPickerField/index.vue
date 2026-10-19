@@ -100,7 +100,7 @@ const errorId = computed(() => `${props.name}-error`);
 }
 
 // Drawn as the select trigger is -- a dark fill in a lighter edge, capped top
-// and bottom -- because it stands in the form where three selects used to.
+// and bottom -- so it reads as a field among the form's other fields.
 .item-picker-field__trigger {
   appearance: none;
   position: relative;

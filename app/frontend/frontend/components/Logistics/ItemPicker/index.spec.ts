@@ -142,6 +142,27 @@ describe("LogisticsItemPicker", () => {
     ]);
   });
 
+  // Contract progress matches deposits on the category, so a piece of
+  // equipment is filed under one wherever it was browsed to.
+  it("files equipment under its own category", async () => {
+    vi.mocked(fetchEquipment).mockResolvedValue(
+      page([
+        { id: "medpen", name: "MedPen", equipmentType: "medical" },
+      ]) as never,
+    );
+
+    const subject = await mount();
+
+    await chooseCategory(subject, "consumable");
+    await subject
+      .find("[data-test='item-picker-row-medpen'] button")
+      .trigger("click");
+
+    expect(subject.emitted("select")?.[0]?.[0]).toMatchObject({
+      category: "equipment",
+    });
+  });
+
   // Whether a commodity is counted is what puts `units` on offer, and only the
   // catalogue record knows.
   it("says whether a picked commodity is counted", async () => {
