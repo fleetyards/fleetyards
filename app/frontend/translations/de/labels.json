@@ -2825,7 +2825,15 @@
         "pledgeValue": "Pledge-Wert",
         "quantity": "Anzahl",
         "search": "Nach Namen suchen",
-        "shipComponents": "Schiffskomponenten"
+        "shipComponents": "Schiffskomponenten",
+        "addToInventory": "Zum Inventar hinzufügen",
+        "inventory": "Inventar",
+        "inInventory": "In %{name}",
+        "select": "Auswählen",
+        "andMore": {
+          "one": "und %{count} weiterer",
+          "other": "und %{count} weitere"
+        }
       },
       "buybacks": {
         "name": "Rückkauf-Pledges",

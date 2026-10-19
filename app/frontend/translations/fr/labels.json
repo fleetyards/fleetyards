@@ -2825,7 +2825,15 @@
         "pledgeValue": "Valeur du pledge",
         "quantity": "Quantité",
         "search": "Rechercher par nom",
-        "shipComponents": "Composants de vaisseau"
+        "shipComponents": "Composants de vaisseau",
+        "addToInventory": "Ajouter à l'inventaire",
+        "inventory": "Inventaire",
+        "inInventory": "Dans %{name}",
+        "select": "Sélectionner",
+        "andMore": {
+          "one": "et %{count} autre",
+          "other": "et %{count} autres"
+        }
       },
       "buybacks": {
         "name": "Pledges rachetables",

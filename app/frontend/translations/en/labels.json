@@ -2825,7 +2825,15 @@
         "pledgeValue": "Pledge value",
         "quantity": "Quantity",
         "search": "Search by name",
-        "shipComponents": "Ship Components"
+        "shipComponents": "Ship Components",
+        "addToInventory": "Add to inventory",
+        "inventory": "Inventory",
+        "inInventory": "In %{name}",
+        "select": "Select",
+        "andMore": {
+          "one": "and %{count} more",
+          "other": "and %{count} more"
+        }
       },
       "buybacks": {
         "name": "Buy-back pledges",

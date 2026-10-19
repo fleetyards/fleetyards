@@ -5,6 +5,7 @@ import {
   type HangarPledgeItem,
 } from "@/services/fyApi";
 import Component from "./index.vue";
+import { createMemoryHistory, createRouter } from "vue-router";
 
 const pledgeItem = (
   attrs: Partial<HangarPledgeItem> = {},
@@ -135,6 +136,80 @@ describe("Hangar/PledgeItemsList", () => {
 
     expect(wrapper.text()).toContain("Coolers");
     expect(wrapper.text()).toContain("1");
+  });
+
+  describe("inventory actions", () => {
+    const part = (attrs: Partial<HangarPledgeItem> = {}) =>
+      pledgeItem({
+        id: "part",
+        kind: HangarPledgeItemKindEnum.SHIP_COMPONENT,
+        name: "BriskAir IC-20",
+        ...attrs,
+      });
+
+    // The link names the inventory page, which the shared test router lacks.
+    const router = createRouter({
+      history: createMemoryHistory(),
+      routes: [
+        { path: "/", component: { template: "<div />" } },
+        {
+          path: "/hangar/inventories/:inventory/",
+          name: "hangar-inventory",
+          component: { template: "<div />" },
+        },
+      ],
+    });
+
+    const mountWithActions = (items: HangarPledgeItem[]) =>
+      mountWithDefaults(Component, {
+        plugins: [router],
+        props: {
+          items,
+          icon: "fa-duotone fa-microchip",
+          inventoryActions: true,
+          selectable: true,
+          selectedIds: ["part"],
+        },
+      });
+
+    it("offers to add what can be kept in an inventory, and only that", async () => {
+      const wrapper = await mountWithActions([part(), pledgeItem()]);
+
+      const buttons = wrapper.findAll(
+        "[data-test='pledge-item-add-to-inventory']",
+      );
+      expect(buttons).toHaveLength(1);
+
+      await buttons[0].trigger("click");
+
+      expect(wrapper.emitted("add-to-inventory")?.[0]?.[0]).toMatchObject({
+        id: "part",
+      });
+    });
+
+    it("names the inventory an item went to instead of offering it again", async () => {
+      const wrapper = await mountWithActions([
+        part({ inventory: { name: "Spare Parts", slug: "spare-parts" } }),
+      ]);
+
+      expect(
+        wrapper.find("[data-test='pledge-item-add-to-inventory']").exists(),
+      ).toBe(false);
+      expect(
+        wrapper.get("[data-test='pledge-item-inventory']").text(),
+      ).toContain("In Spare Parts");
+    });
+
+    it("selects a row with its checkbox", async () => {
+      const wrapper = await mountWithActions([part()]);
+
+      const checkbox = wrapper.get("[data-test='pledge-item-select'] input");
+      expect((checkbox.element as HTMLInputElement).checked).toBe(true);
+
+      await checkbox.trigger("change");
+
+      expect(wrapper.emitted("toggle")?.[0]).toEqual(["part"]);
+    });
   });
 
   it("opens the image full size on click", async () => {

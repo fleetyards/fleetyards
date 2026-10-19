@@ -15,6 +15,10 @@ import FilterForm from "@/frontend/components/Hangar/PledgeItemsFilterForm/index
 import PledgeItemsList from "@/frontend/components/Hangar/PledgeItemsList/index.vue";
 import PledgeItemsSwitch from "@/frontend/components/Hangar/PledgeItemsSwitch/index.vue";
 import HangarSyncBtn from "@/frontend/components/Hangar/SyncBtn/index.vue";
+import BulkSelectionBar from "@/shared/components/BulkSelectionBar/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { useBulkSelection } from "@/shared/composables/useBulkSelection";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -31,6 +35,8 @@ import {
   getHangarEquipmentQueryKey,
   useHangarShipComponents,
   getHangarShipComponentsQueryKey,
+  FeatureFlagName,
+  type HangarPledgeItem,
   type HangarPledgeItemQuery,
 } from "@/services/fyApi";
 
@@ -105,6 +111,51 @@ const {
 
 const comlink = useComlink();
 
+const { isFeatureEnabled } = useFeatures();
+
+// Ship components and FPS gear are things to keep in an inventory.
+const inventoryActions = computed(
+  () =>
+    ["shipComponents", "equipment"].includes(props.kind) &&
+    isFeatureEnabled(FeatureFlagName.HANGAR_INVENTORIES),
+);
+
+const records = computed(() => pledgeItems.value?.items ?? []);
+
+// The endpoint takes the items themselves, not a query, so a selection stays
+// within the page: the matching count is the page's.
+const {
+  selectedIds,
+  allMatchingSelected,
+  selectedCount,
+  matchingCount,
+  pageSelected,
+  pagePartiallySelected,
+  canSelectAllMatching,
+  toggle: toggleSelection,
+  togglePage,
+  selectAllMatching,
+  clear: clearSelection,
+} = useBulkSelection(
+  records,
+  () => queryParams.value.q,
+  () => records.value.length,
+);
+
+const openAddToInventory = (items: HangarPledgeItem[]) => {
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Hangar/AddToInventoryModal/index.vue"),
+    props: { items, onAdded: clearSelection },
+  });
+};
+
+const addSelectedToInventory = () => {
+  openAddToInventory(
+    records.value.filter((item) => selectedIds.value.includes(item.id)),
+  );
+};
+
 let offSyncFinished: (() => void) | undefined;
 
 onMounted(() => {
@@ -168,12 +219,39 @@ onUnmounted(() => {
       <RowsSkeleton :count="count" meta />
     </template>
 
-    <template #default="{ records, emptyVisible }">
+    <template #default="{ records: listed, emptyVisible }">
+      <BulkSelectionBar
+        v-if="inventoryActions && listed.length"
+        :selected-count="selectedCount"
+        :matching-count="matchingCount"
+        :page-selected="pageSelected"
+        :page-partially-selected="pagePartiallySelected"
+        :can-select-all-matching="canSelectAllMatching"
+        :all-matching-selected="allMatchingSelected"
+        data-test="pledge-items-selection"
+        @toggle-page="togglePage"
+        @select-all-matching="selectAllMatching"
+        @clear="clearSelection"
+      >
+        <Btn
+          :disabled="!selectedCount"
+          data-test="pledge-items-add-selected"
+          @click="addSelectedToInventory"
+        >
+          <i class="fa-light fa-box-open" />
+          <span>{{ t("actions.hangarPledgeItems.addToInventory") }}</span>
+        </Btn>
+      </BulkSelectionBar>
       <PledgeItemsList
-        :items="records"
+        :items="listed"
         :empty-visible="emptyVisible"
         :empty-name="t(config.emptyName)"
         :icon="config.icon"
+        :selectable="inventoryActions"
+        :selected-ids="selectedIds"
+        :inventory-actions="inventoryActions"
+        @toggle="toggleSelection"
+        @add-to-inventory="(item) => openAddToInventory([item])"
       />
     </template>
 

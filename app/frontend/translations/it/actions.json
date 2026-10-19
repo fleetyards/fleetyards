@@ -614,6 +614,14 @@
         "linkInstead": "Collega una build",
         "createOnFleetyards": "Crea un loadout su Fleetyards",
         "viewLoadout": "Visualizza equipaggiamento"
+      },
+      "hangarPledgeItems": {
+        "addToInventory": "Aggiungi all'inventario",
+        "addCount": {
+          "one": "Aggiungi %{count} elemento",
+          "other": "Aggiungi %{count} elementi"
+        },
+        "createInventory": "Crea un inventario"
       }
     }
   }

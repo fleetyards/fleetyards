@@ -2825,7 +2825,14 @@
         "pledgeValue": "承諾價值",
         "quantity": "數量",
         "search": "按名稱搜尋",
-        "shipComponents": "飛船部件"
+        "shipComponents": "飛船部件",
+        "addToInventory": "加入庫存",
+        "inventory": "庫存",
+        "inInventory": "位於 %{name}",
+        "select": "選擇",
+        "andMore": {
+          "other": "以及另外 %{count} 項"
+        }
       },
       "buybacks": {
         "name": "可回購承諾",

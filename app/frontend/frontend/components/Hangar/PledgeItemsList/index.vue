@@ -8,6 +8,7 @@ export default {
 import RowList from "@/shared/components/RowList/index.vue";
 import RowListItem from "@/shared/components/RowListItem/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import {
   RowListItemTonesEnum,
@@ -28,9 +29,33 @@ type Props = {
   emptyVisible?: boolean;
   emptyName?: string;
   icon: string;
+  // A checkbox per row, for an action on several at once.
+  selectable?: boolean;
+  selectedIds?: string[];
+  // "Add to inventory" on what can be kept in one, or where it went.
+  inventoryActions?: boolean;
 };
 
-defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  emptyVisible: false,
+  emptyName: undefined,
+  selectable: false,
+  selectedIds: () => [],
+  inventoryActions: false,
+});
+
+const emit = defineEmits<{
+  toggle: [id: string];
+  "add-to-inventory": [item: HangarPledgeItem];
+}>();
+
+const INVENTORY_KINDS: string[] = [
+  HangarPledgeItemKindEnum.SHIP_COMPONENT,
+  HangarPledgeItemKindEnum.EQUIPMENT,
+];
+
+const inventoryable = (item: HangarPledgeItem) =>
+  props.inventoryActions && INVENTORY_KINDS.includes(item.kind);
 
 const { t, l, tExists } = useI18n();
 
@@ -148,6 +173,17 @@ const sub = (item: HangarPledgeItem) =>
         data-test="pledge-item-row"
       >
         <template #leading>
+          <FormCheckbox
+            v-if="selectable"
+            v-tooltip="t('labels.hangarPledgeItems.select')"
+            :model-value="selectedIds.includes(record.id)"
+            :aria-label="t('labels.hangarPledgeItems.select')"
+            name="pledge-item-selection"
+            no-label
+            inline
+            data-test="pledge-item-select"
+            @update:model-value="emit('toggle', record.id)"
+          />
           <button
             v-if="record.image"
             type="button"
@@ -177,10 +213,50 @@ const sub = (item: HangarPledgeItem) =>
           {{ sub(record) }}
         </template>
 
-        <!-- A CCU is applied in the RSI hangar, the next step towards the
-             ship it leads to. -->
-        <template v-if="record.kind === HangarPledgeItemKindEnum.CCU" #actions>
+        <template
+          v-if="
+            record.kind === HangarPledgeItemKindEnum.CCU ||
+            inventoryable(record)
+          "
+          #actions
+        >
+          <!-- An item added already names where it went: a second add would
+               double the stock. -->
+          <template v-if="inventoryable(record)">
+            <Btn
+              v-if="record.inventory?.slug"
+              :to="{
+                name: 'hangar-inventory',
+                params: { inventory: record.inventory.slug },
+              }"
+              :variant="BtnVariantsEnum.GHOST"
+              data-test="pledge-item-inventory"
+            >
+              <i class="fa-light fa-box-open" />
+              <span>
+                {{
+                  t("labels.hangarPledgeItems.inInventory", {
+                    name: record.inventory.name,
+                  })
+                }}
+              </span>
+            </Btn>
+            <Btn
+              v-else
+              :variant="BtnVariantsEnum.GHOST"
+              :aria-label="t('actions.hangarPledgeItems.addToInventory')"
+              mobile-icon-only
+              data-test="pledge-item-add-to-inventory"
+              @click="emit('add-to-inventory', record)"
+            >
+              <i class="fa-light fa-box-open" />
+              <span>{{ t("actions.hangarPledgeItems.addToInventory") }}</span>
+            </Btn>
+          </template>
+          <!-- A CCU is applied in the RSI hangar, the next step towards the
+               ship it leads to. -->
           <Btn
+            v-if="record.kind === HangarPledgeItemKindEnum.CCU"
             :href="rsiHangarUrl(record)"
             :variant="BtnVariantsEnum.GHOST"
             :aria-label="t('labels.hangarPledgeItems.openOnRsi')"

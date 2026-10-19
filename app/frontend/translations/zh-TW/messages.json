@@ -1278,6 +1278,12 @@
       },
       "vehicleLoadout": {
         "failure": "無法儲存裝配。"
+      },
+      "hangarPledgeItems": {
+        "addedToInventory": {
+          "other": "已將 %{count} 項加入 %{inventory}"
+        },
+        "addToInventoryFailed": "無法將物品加入庫存。"
       }
     }
   }

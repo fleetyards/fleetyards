@@ -614,6 +614,14 @@
         "linkInstead": "Link a build instead",
         "createOnFleetyards": "Create a loadout on Fleetyards",
         "viewLoadout": "View loadout"
+      },
+      "hangarPledgeItems": {
+        "addToInventory": "Add to inventory",
+        "addCount": {
+          "one": "Add %{count} item",
+          "other": "Add %{count} items"
+        },
+        "createInventory": "Create an inventory"
       }
     }
   }
