@@ -46,11 +46,15 @@ const recipe = (craftableId: string) => ({
 
 const bulwark = { id: "bulwark", typeData: { maxHealth: 1000 } };
 
-const craft = (record: typeof bulwark, factors: Map<string, number>) => ({
+const craft = (
+  record: typeof bulwark,
+  factors: Map<string, { additive: boolean; value: number }>,
+) => ({
   ...record,
   typeData: {
     maxHealth:
-      record.typeData.maxHealth * (factors.get("gpp_shield_maxhealth") ?? 1),
+      record.typeData.maxHealth *
+      (factors.get("gpp_shield_maxhealth")?.value ?? 1),
   },
 });
 

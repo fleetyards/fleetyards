@@ -1,7 +1,10 @@
 import type { Ref } from "vue";
 import type { LocationQuery } from "vue-router";
 import { craftedGrades } from "@/frontend/components/Logistics/crafted";
-import { craftedFactors } from "@/frontend/components/Logistics/craftedRecord";
+import {
+  type CraftedEffect,
+  craftedFactors,
+} from "@/frontend/components/Logistics/craftedRecord";
 import { type InventoryCraftedRef, useBlueprint } from "@/services/fyApi";
 
 /**
@@ -39,7 +42,7 @@ const parseGrades = (value: string) =>
  */
 export const useCraftedFromRoute = <T extends { id: string }>(
   record: Ref<T | undefined>,
-  craft: (record: T, factors: Map<string, number>) => T,
+  craft: (record: T, factors: Map<string, CraftedEffect>) => T,
 ) => {
   const route = useRoute();
 
