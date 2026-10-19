@@ -3,6 +3,7 @@ import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import { flushPromises, type VueWrapper } from "@vue/test-utils";
 import { defineRule } from "vee-validate";
 import { required, min, min_value } from "@vee-validate/rules";
+import { modalDirtyKey } from "@/shared/components/AppModal/dirty";
 import Component from "./index.vue";
 
 // The form's fields carry vee-validate rule names. Without them registered
@@ -361,6 +362,73 @@ describe("FleetContractsItemModal", () => {
         }),
         expect.anything(),
       );
+    });
+  });
+
+  // Opening a line and closing it again loses nothing, so it must not ask.
+  describe("unchanged", () => {
+    const dirtySources: (() => boolean)[] = [];
+
+    const modal = {
+      install(app: { provide: (key: unknown, value: unknown) => void }) {
+        app.provide(modalDirtyKey, (source: () => boolean) => {
+          dirtySources.push(source);
+
+          return () => undefined;
+        });
+      },
+    };
+
+    const open = async (item: unknown) => {
+      dirtySources.length = 0;
+      wrapper = await mountWithDefaults<typeof Component>(Component, {
+        props: {
+          fleet: { slug: "test-fleet" } as never,
+          contract: contract("procurement"),
+          kind: "procurement" as never,
+          item: item as never,
+        },
+        plugins: [modal as never],
+      });
+      await flushPromises();
+    };
+
+    it.each([
+      ["a graded resource line", existingItem],
+      [
+        "a crafted line",
+        {
+          id: "line-2",
+          name: "Bulwark",
+          category: "component",
+          unit: "units",
+          quantity: "2.0",
+          quality: null,
+          qualityMatch: "at_least",
+          item: { id: "bulwark", type: "Component", name: "Bulwark" },
+          crafted: {
+            blueprint: {
+              id: "bp-1",
+              name: "Bulwark Blueprint",
+              slug: "bulwark-bp",
+            },
+            qualities: { 1: 700 },
+          },
+        },
+      ],
+    ])("does not ask before closing %s nobody changed", async (_, item) => {
+      await open(item);
+
+      expect(dirtySources.length).toBeGreaterThan(0);
+      expect(dirtySources.map((source) => source())).not.toContain(true);
+    });
+
+    it("asks once something did change", async () => {
+      await open(existingItem);
+
+      await wrapper!.find("[data-test='input-itemQuantity']").setValue("43");
+
+      expect(dirtySources.map((source) => source())).toContain(true);
     });
   });
 });

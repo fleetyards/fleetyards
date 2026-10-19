@@ -131,7 +131,19 @@ const { defineField, handleSubmit, setFieldValue, setErrors, values } = useForm(
   { initialValues },
 );
 
-const formDirty = useFormDirty(values, initialValues);
+// Only the form's own fields: the inputs register under their own names --
+// `itemQuantity` beside `quantity` -- and a key the form did not open with
+// would read as a change before anyone typed.
+const formValues = computed(() =>
+  Object.fromEntries(
+    Object.keys(initialValues).map((key) => [
+      key,
+      values[key as keyof typeof values],
+    ]),
+  ),
+);
+
+const formDirty = useFormDirty(formValues, initialValues);
 
 // Named by the picker rather than typed, so the rule lives here instead of on
 // an input.
