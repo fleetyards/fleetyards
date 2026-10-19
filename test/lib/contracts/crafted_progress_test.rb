@@ -60,6 +60,44 @@ module Contracts
       assert_equal 0.to_d, progress.lines.first.delivered
     end
 
+    # One crafted part cannot fill the crafted line and the plain line beside
+    # it: it goes to the narrowest line that still has room.
+    test "a contract asks for one part plain and crafted, and counts each part once" do
+      crafted_line = line(qualities: {1 => 700}, quantity: 1)
+      plain = create(:fleet_contract_item, fleet_contract: @contract, name: "Bulwark",
+        category: :component, unit: :units, quantity: 2, item: @component)
+
+      deliver(qualities: {1 => 800, 2 => 100}, quantity: 2)
+      deliver(quantity: 1)
+
+      lines = progress.lines.index_by { |line| line.item.id }
+
+      assert_equal 1.to_d, lines[crafted_line.id].delivered
+      assert_equal 2.to_d, lines[plain.id].delivered
+    end
+
+    test "a part answering two crafted lines goes to the stricter one" do
+      strict = line(qualities: {1 => 800}, quantity: 1)
+      loose = line(qualities: {1 => 500}, quantity: 1)
+
+      deliver(qualities: {1 => 900, 2 => 100}, quantity: 1)
+      deliver(qualities: {1 => 600, 2 => 100}, quantity: 1)
+
+      lines = progress.lines.index_by { |line| line.item.id }
+
+      assert_equal 1.to_d, lines[strict.id].delivered
+      assert_equal 1.to_d, lines[loose.id].delivered
+    end
+
+    test "a contract cannot ask for the same crafted part twice the same way" do
+      line(qualities: {1 => 700})
+
+      twin = build_line(qualities: {1 => 700})
+
+      assert_not twin.valid?
+      assert twin.errors[:name].any?
+    end
+
     # They are that part, whatever went into them.
     test "a plain line takes crafted parts too" do
       create(:fleet_contract_item, fleet_contract: @contract, name: "Bulwark", category: :component,
@@ -111,9 +149,9 @@ module Contracts
       assert line.errors[:crafted_blueprint_id].any?
     end
 
-    private def build_line(qualities:, blueprint: @blueprint, quality_match: :at_least)
+    private def build_line(qualities:, blueprint: @blueprint, quality_match: :at_least, quantity: 5)
       build(:fleet_contract_item, fleet_contract: @contract, name: "Bulwark", category: :component,
-        unit: :units, quantity: 5, item: @component, quality_match:,
+        unit: :units, quantity:, item: @component, quality_match:,
         crafted_blueprint: blueprint, crafted_qualities: qualities)
     end
 

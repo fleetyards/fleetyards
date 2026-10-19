@@ -86,18 +86,31 @@ class FleetContractItem < ApplicationRecord
     [name.to_s.downcase, category, unit]
   end
 
-  # Two lines with the same identity would both match the same deposits, so one
-  # delivery would satisfy both and fulfil the contract at half the goods. The
-  # unique index is the backstop; this is what makes it a readable 400.
+  # How narrowly the line asks. Several lines may share a position -- a part
+  # plain and crafted, or crafted at two sets of grades -- and a delivery that
+  # answers more than one goes to the narrowest that still has room, so one
+  # part cannot fill two lines. Higher sorts first.
+  def specificity
+    return [0, 0, 0] unless crafted?
+
+    grades = crafted_qualities || {}
+
+    [1, grades.size, grades.values.sum]
+  end
+
+  # Two lines asking for the same thing the same way would compete for every
+  # delivery, and the contract could not say which was meant. The unique index
+  # is the backstop; this is what makes it a readable 400.
   private def identity_is_not_already_asked_for
     return if fleet_contract.blank? || name.blank?
 
     twin = fleet_contract.fleet_contract_items
       .where.not(id: id)
-      .where(category: category, unit: unit)
+      .where(category: category, unit: unit, crafted_blueprint_id: crafted_blueprint_id)
       .where("LOWER(name) = ?", name.to_s.downcase)
+      .any? { |other| (other.crafted_qualities || {}) == (crafted_qualities || {}) }
 
-    return unless twin.exists?
+    return unless twin
 
     # Not a bare :taken -- "Name has already been taken" reads as though the
     # name alone were the conflict, when what collides is the whole identity the

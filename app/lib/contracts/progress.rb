@@ -138,7 +138,13 @@ module Contracts
     end
 
     def lines
-      @lines ||= @contract.fleet_contract_items.preload(:item, :crafted_blueprint).ordered.map { |item| build_line(item) }
+      @lines ||= begin
+        items = @contract.fleet_contract_items.preload(:item, :crafted_blueprint).ordered.to_a
+        delivered = allocate(items, deposits)
+        picked_up = allocate(items, withdrawals)
+
+        items.map { |item| build_line(item, delivered[item.id], picked_up[item.id]) }
+      end
     end
 
     def complete?
@@ -165,24 +171,55 @@ module Contracts
       weights.values.sum(0.to_d)
     end
 
-    private def build_line(item)
-      identity = item.position_identity
-      delivered_rows = deposits.fetch(identity, [])
-
-      # The line decides, because it also decides *how* -- at or above the
-      # grade, or exactly it, and for a crafted part in every slot it names.
-      counted = delivered_rows.select { |row| answers?(item, row) }
-
+    private def build_line(item, counted, picked_up)
       LineProgress.new(
         item: item,
         requested: item.quantity,
         delivered: counted.sum(0.to_d) { |row| row[:quantity] },
-        # By the same rule as a delivery: goods picked up that could never count
-        # toward the line are not progress on it.
-        picked_up: withdrawals.fetch(identity, []).select { |row| answers?(item, row) }
-          .sum(0.to_d) { |row| row[:quantity] },
+        picked_up: picked_up.sum(0.to_d) { |row| row[:quantity] },
         contributions: contributions_for(item, counted)
       )
+    end
+
+    # Which rows go to which line, for every position the contract asks for.
+    #
+    # The line decides whether a row answers it, because it also decides *how*
+    # -- at or above the grade, or exactly it, and for a crafted part in every
+    # slot it names. Several lines may share a position, and a row answering
+    # more than one goes to the narrowest that still has room, then on to the
+    # next: one crafted part cannot both fill the crafted line and the plain
+    # line beside it. What no line has room for stays with the narrowest it
+    # answers, as an over-delivery.
+    #
+    # Goods picked up are allocated the same way, so a pickup that could never
+    # count toward a line is not progress on it.
+    private def allocate(items, rollup)
+      allocated = Hash.new { |hash, id| hash[id] = [] }
+
+      items.group_by(&:position_identity).each do |identity, group|
+        ordered = group.sort_by.with_index { |item, index| [item.specificity.map(&:-@), index] }
+        room = ordered.to_h { |item| [item.id, item.quantity] }
+
+        rollup.fetch(identity, []).each do |row|
+          takers = ordered.select { |item| answers?(item, row) }
+          next if takers.empty?
+
+          left = row[:quantity]
+
+          takers.each do |item|
+            take = [left, room[item.id]].min
+            next if take <= 0
+
+            allocated[item.id] << row.merge(quantity: take)
+            room[item.id] -= take
+            left -= take
+          end
+
+          allocated[takers.first.id] << row.merge(quantity: left) if left.positive?
+        end
+      end
+
+      allocated
     end
 
     private def answers?(item, row)
