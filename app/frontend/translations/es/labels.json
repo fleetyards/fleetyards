@@ -4503,6 +4503,8 @@
           }
         },
         "againstStock": "Cambios respecto a la nave de serie",
+        "crafted": "Fabricado",
+        "craftedPart": "%{name} (fabricado)",
         "fitted": "Equipado",
         "owned": "En propiedad",
         "noSlots": "Todavía no se puede equipar nada de esta nave aquí",

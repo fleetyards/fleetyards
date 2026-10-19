@@ -35,6 +35,10 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   useVehicleLoadoutProblems: () => ({ data: loadoutProblems, ...resolved() }),
   useModelLoadoutSlots: () => ({ data: hullSlots, ...resolved() }),
   useModelHardpoints: () => ({ data: modelHardpoints, ...resolved() }),
+  getBlueprintQueryOptions: (slug: string) => ({
+    queryKey: ["blueprints", slug],
+    queryFn: () => Promise.resolve({ id: "bp", slug, costSlots: [] }),
+  }),
   useModelModules: () => ({
     data: ref({
       items: [
@@ -365,6 +369,49 @@ describe("VehicleLoadoutView components", () => {
     const section = wrapper.get("[data-test='vehicle-loadout-view-weapons']");
     expect(section.text()).toContain("Other Gun");
     expect(section.text()).not.toContain("Stock Gimbal");
+
+    loadoutSlots.value = [];
+  });
+
+  it("names a crafted part as crafted", async () => {
+    loadoutSlots.value = [
+      {
+        name: "hardpoint_gun",
+        hardpointId: "hull-gun",
+        category: "weapons",
+        types: ["WeaponGun"],
+        editable: true,
+        stock: { id: "gun1", name: "Stock Gun" },
+        fitted: { id: "gun1", name: "Stock Gun", size: "3" },
+        slots: [],
+      },
+    ];
+
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        vehicle,
+        loadout: {
+          ...loadout,
+          items: [
+            {
+              slotPath: "hardpoint_gun",
+              itemType: "Component",
+              itemId: "gun1",
+              crafted: {
+                blueprintId: "bp",
+                blueprintSlug: "bp-gun",
+                qualities: [{ position: 0, quality: 900 }],
+              },
+            },
+          ],
+        } as unknown as VehicleLoadoutMinimal,
+        editable: true,
+      },
+    });
+
+    expect(
+      wrapper.get("[data-test='vehicle-loadout-view-weapons']").text(),
+    ).toContain("Stock Gun (crafted)");
 
     loadoutSlots.value = [];
   });

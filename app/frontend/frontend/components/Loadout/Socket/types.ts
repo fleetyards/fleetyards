@@ -13,6 +13,10 @@ export interface LoadoutSocketItem {
   headline?: { value: string; label: string };
   // The figures a ship page's hardpoint row shows beside its headline.
   stats?: HardpointStat[];
+  // Made from a recipe rather than bought, its figures as crafted.
+  crafted?: boolean;
+  // Tells two craftings of one part apart, so they never stack as one row.
+  craftingKey?: string;
 }
 
 export interface LoadoutSocketSlot {

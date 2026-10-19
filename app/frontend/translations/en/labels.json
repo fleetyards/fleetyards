@@ -4517,6 +4517,8 @@
           }
         },
         "againstStock": "Changes from the stock ship",
+        "crafted": "Crafted",
+        "craftedPart": "%{name} (crafted)",
         "fitted": "Fitted",
         "owned": "Owned",
         "noSlots": "Nothing on this ship can be fitted here yet",

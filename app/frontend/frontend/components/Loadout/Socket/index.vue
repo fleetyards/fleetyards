@@ -71,6 +71,7 @@ const accessibleName = computed(() =>
     props.socket.size,
     props.socket.item?.name || t("labels.loadoutPicker.emptySocket"),
     props.socket.item?.figure,
+    props.socket.item?.crafted ? t("labels.vehicleLoadout.crafted") : undefined,
     props.socket.item?.headline
       ? `${props.socket.item.headline.value} ${props.socket.item.headline.label}`
       : undefined,
@@ -158,6 +159,14 @@ const select = (event: Event) => {
         </span>
         <span v-if="socket.item?.figure" class="loadout-socket__figure">
           {{ socket.item.figure }}
+        </span>
+        <span
+          v-if="socket.item?.crafted"
+          class="loadout-socket__crafted"
+          data-test="loadout-socket-crafted"
+        >
+          <i class="fa-solid fa-hammer" aria-hidden="true" />
+          {{ t("labels.vehicleLoadout.crafted") }}
         </span>
         <span
           v-if="socket.refused"

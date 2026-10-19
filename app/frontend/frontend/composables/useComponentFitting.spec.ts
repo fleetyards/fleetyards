@@ -1,6 +1,19 @@
 import { describe, expect, it, vi } from "vitest";
-import type { Hardpoint, LoadoutSlot, ModelModule } from "@/services/fyApi";
-import { lowerIsBetter, useComponentFitting } from "./useComponentFitting";
+import {
+  type BlueprintCostSlot,
+  BlueprintRampEnum,
+  type Hardpoint,
+  type LoadoutSlot,
+  type ModelModule,
+  VehicleLoadoutItemTypeEnum,
+} from "@/services/fyApi";
+import {
+  COMPONENT_TABS,
+  type CraftedPart,
+  loadoutValues,
+  lowerIsBetter,
+  useComponentFitting,
+} from "./useComponentFitting";
 
 vi.mock("@/shared/composables/useI18n", () => ({
   useI18n: () => ({
@@ -96,5 +109,128 @@ describe("graft", () => {
     );
 
     expect(slot.component?.name).toBe("Cargo Module");
+  });
+});
+
+describe("crafting", () => {
+  const recipe: BlueprintCostSlot[] = [
+    {
+      position: 0,
+      options: [],
+      modifiers: [
+        {
+          propertyKey: "gpp_shield_maxhealth",
+          ramp: BlueprintRampEnum.LINEAR,
+          startQuality: 0,
+          endQuality: 1000,
+          modifierAtStart: 0.8,
+          modifierAtEnd: 1.2,
+        },
+      ],
+    },
+  ];
+
+  const shieldSlot = (name: string) =>
+    ({
+      name,
+      hardpointId: `port-${name}`,
+      category: "shieldgenerator",
+      types: ["Shield"],
+      editable: true,
+      stock: { id: "shield", name: "Shield", typeData: { maxHealth: 1000 } },
+      slots: [],
+    }) as LoadoutSlot;
+
+  const crafted = (quality: number): CraftedPart => ({
+    blueprintId: "bp",
+    blueprintSlug: "bp-shield",
+    qualities: { 0: quality },
+  });
+
+  const shieldsTab = COMPONENT_TABS.find((tab) => tab.id === "shields")!;
+
+  it("reads a crafted part's figures off its recipe once the recipe is in", () => {
+    const fitting = useComponentFitting();
+    const slots = [shieldSlot("hardpoint_shield")];
+    fitting.learn(slots);
+
+    const before = fitting.resolve(slots, {}, { hardpoint_shield: crafted(0) });
+    expect(before[0].content?.typeData).toEqual({ maxHealth: 1000 });
+
+    fitting.learnRecipe("bp", recipe);
+    const [entry] = fitting.resolve(
+      slots,
+      {},
+      { hardpoint_shield: crafted(0) },
+    );
+
+    expect(entry.crafted).toEqual(crafted(0));
+    expect(entry.content?.typeData).toEqual({ maxHealth: 800 });
+  });
+
+  it("marks a socket crafted, and changed when only its crafting moved", () => {
+    const fitting = useComponentFitting();
+    const slots = [shieldSlot("hardpoint_shield")];
+    fitting.learn(slots);
+    fitting.learnRecipe("bp", recipe);
+
+    const saved = fitting.resolve(slots, {}, { hardpoint_shield: crafted(0) });
+    const now = fitting.resolve(slots, {}, { hardpoint_shield: crafted(900) });
+
+    const [socket] = fitting.groups(now, shieldsTab, { saved })[0].slots;
+    expect(socket.item?.crafted).toBe(true);
+    expect(socket.changed).toBe(true);
+
+    const [unchanged] = fitting.groups(saved, shieldsTab, { saved })[0].slots;
+    expect(unchanged.changed).toBe(false);
+  });
+
+  it("stacks two slots only when they are crafted alike", () => {
+    const fitting = useComponentFitting();
+    const slots = [shieldSlot("shield_left"), shieldSlot("shield_right")];
+    fitting.learn(slots);
+
+    const alike = fitting.resolve(
+      slots,
+      {},
+      { shield_left: crafted(700), shield_right: crafted(700) },
+    );
+    const apart = fitting.resolve(slots, {}, { shield_left: crafted(700) });
+
+    const count = (tree: ReturnType<typeof fitting.resolve>) =>
+      fitting.groups(tree, shieldsTab).flatMap((group) => group.slots).length;
+
+    expect(count(alike)).toBe(1);
+    expect(count(apart)).toBe(2);
+  });
+});
+
+describe("loadoutValues", () => {
+  it("reads a crafted item's recipe and qualities by slot path", () => {
+    const { crafted } = loadoutValues([
+      {
+        slotPath: "hardpoint_shield",
+        itemType: VehicleLoadoutItemTypeEnum.COMPONENT,
+        itemId: "shield",
+        crafted: {
+          blueprintId: "bp",
+          blueprintSlug: "bp-shield",
+          qualities: [{ position: 1, quality: 250 }],
+        },
+      },
+      {
+        slotPath: "hardpoint_cooler",
+        itemType: VehicleLoadoutItemTypeEnum.COMPONENT,
+        itemId: "cooler",
+      },
+    ]);
+
+    expect(crafted).toEqual({
+      hardpoint_shield: {
+        blueprintId: "bp",
+        blueprintSlug: "bp-shield",
+        qualities: { 1: 250 },
+      },
+    });
   });
 });

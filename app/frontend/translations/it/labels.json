@@ -4503,6 +4503,8 @@
           }
         },
         "againstStock": "Modifiche rispetto alla nave di serie",
+        "crafted": "Fabbricato",
+        "craftedPart": "%{name} (fabbricato)",
         "fitted": "Montato",
         "owned": "Posseduto",
         "noSlots": "Su questa nave non si può ancora montare nulla qui",

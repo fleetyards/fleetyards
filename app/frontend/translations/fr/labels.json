@@ -4503,6 +4503,8 @@
           }
         },
         "againstStock": "Changements par rapport au vaisseau d'origine",
+        "crafted": "Fabriqué",
+        "craftedPart": "%{name} (fabriqué)",
         "fitted": "Équipé",
         "owned": "Possédé",
         "noSlots": "Rien sur ce vaisseau ne peut encore être équipé ici",

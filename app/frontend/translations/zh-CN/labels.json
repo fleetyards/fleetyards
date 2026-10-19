@@ -4500,6 +4500,8 @@
           }
         },
         "againstStock": "相对原厂飞船的变化",
+        "crafted": "已制作",
+        "craftedPart": "%{name}（已制作）",
         "fitted": "已装配",
         "owned": "已拥有",
         "noSlots": "这艘舰船目前还没有可在此装配的内容",

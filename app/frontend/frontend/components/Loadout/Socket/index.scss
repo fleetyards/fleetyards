@@ -194,6 +194,20 @@
   }
 }
 
+.loadout-socket__crafted {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+  color: var(--color-text-dim);
+  font-size: 12px;
+
+  i {
+    color: var(--color-muted);
+    font-size: 10px;
+  }
+}
+
 .loadout-socket__refused {
   display: inline-flex;
   align-items: center;
