@@ -2,9 +2,10 @@ import type { Ref } from "vue";
 import type { LocationQuery } from "vue-router";
 import { craftedGrades } from "@/frontend/components/Logistics/crafted";
 import {
-  type CraftedEffect,
+  type CraftedChanges,
   craftedFactors,
-} from "@/frontend/components/Logistics/craftedRecord";
+} from "@/frontend/composables/craftedComponent";
+import { NEUTRAL_QUALITY } from "@/frontend/composables/useQualityRamp";
 import { type InventoryCraftedRef, useBlueprint } from "@/services/fyApi";
 
 /**
@@ -42,7 +43,7 @@ const parseGrades = (value: string) =>
  */
 export const useCraftedFromRoute = <T extends { id: string }>(
   record: Ref<T | undefined>,
-  craft: (record: T, factors: Map<string, CraftedEffect>) => T,
+  craft: (record: T, changes: CraftedChanges) => T,
 ) => {
   const route = useRoute();
 
@@ -76,7 +77,13 @@ export const useCraftedFromRoute = <T extends { id: string }>(
 
     if (!complete) return undefined;
 
-    return craft(record.value, craftedFactors(slots, qualities.value));
+    return craft(
+      record.value,
+      craftedFactors(
+        slots,
+        (position) => qualities.value[position] ?? NEUTRAL_QUALITY,
+      ),
+    );
   });
 
   const gradesLabel = computed(() =>

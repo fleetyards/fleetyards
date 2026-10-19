@@ -26,7 +26,7 @@ import { useComponentDurability } from "@/frontend/composables/useComponentDurab
 import HardpointCategoryIcon from "@/frontend/components/Models/Hardpoints/CategoryIcon/index.vue";
 import Alert from "@/shared/components/base/Alert/index.vue";
 import { useCraftedFromRoute } from "@/frontend/composables/useCraftedFromRoute";
-import { craftComponent } from "@/frontend/components/Logistics/craftedRecord";
+import { craftedCatalogueComponent } from "@/frontend/composables/craftedComponent";
 import {
   type Component,
   useBlueprints as useBlueprintsQuery,
@@ -54,7 +54,7 @@ const {
   recipe: craftedRecipe,
   gradesLabel: craftedGradesLabel,
   stockRoute,
-} = useCraftedFromRoute(stock, craftComponent);
+} = useCraftedFromRoute(stock, craftedCatalogueComponent);
 
 const component = computed(() => crafted.value ?? stock.value);
 

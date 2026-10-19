@@ -19,7 +19,7 @@ import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import EquipmentStatsCard from "@/frontend/components/StatsCard/Equipment/index.vue";
 import Alert from "@/shared/components/base/Alert/index.vue";
 import { useCraftedFromRoute } from "@/frontend/composables/useCraftedFromRoute";
-import { craftEquipment } from "@/frontend/components/Logistics/craftedRecord";
+import { craftedEquipment } from "@/frontend/composables/craftedComponent";
 import {
   BlueprintCraftableTypeEnum,
   useBlueprints as useBlueprintsQuery,
@@ -43,7 +43,7 @@ const {
   recipe: craftedRecipe,
   gradesLabel: craftedGradesLabel,
   stockRoute,
-} = useCraftedFromRoute(stock, craftEquipment);
+} = useCraftedFromRoute(stock, craftedEquipment);
 
 const equipment = computed(() => crafted.value ?? stock.value);
 
