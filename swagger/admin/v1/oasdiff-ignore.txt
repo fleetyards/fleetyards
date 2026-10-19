@@ -350,3 +350,6 @@ PUT /equipment/{id} added the new `container` enum value to the `equipmentType` 
 PUT /equipment/{id} added the new `flair` enum value to the `equipmentType` response property for the response status `200`
 PUT /equipment/{id} added the new `mining_gadget` enum value to the `equipmentType` response property for the response status `200`
 PUT /equipment/{id} added the new `sustenance` enum value to the `equipmentType` response property for the response status `200`
+GET /imports added the new `Imports::BuybackSync` enum value to the `items/items/type` response property for the response status `200`
+GET /imports/{id} added the new `Imports::BuybackSync` enum value to the `type` response property for the response status `200`
+PUT /imports/{id}/cleanup added the new `Imports::BuybackSync` enum value to the `type` response property for the response status `200`
