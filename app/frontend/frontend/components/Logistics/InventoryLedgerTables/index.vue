@@ -17,6 +17,7 @@ import { catalogueItemRoute } from "@/frontend/utils/catalogueItemRoute";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { type InventoryCraftedRef } from "@/services/fyApi";
 import { craftedGrades } from "@/frontend/components/Logistics/crafted";
+import { lotKey } from "@/frontend/composables/useStockLots";
 import type {
   InventoryLedgerRecord,
   InventoryStockRecord,
@@ -218,6 +219,7 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
     :records="stockRecords"
     :columns="stockColumns"
     primary-key="id"
+    :row-key="lotKey"
     :loading="stockLoading"
     :selectable="stockSelectable"
     :empty-visible="!stockLoading && !stockRecords.length"

@@ -1,5 +1,10 @@
 import { describe, expect, it, vi } from "vitest";
-import { lotEntry, useStockLots, type StockLot } from "./useStockLots";
+import {
+  lotEntry,
+  usePositionLots,
+  useStockLots,
+  type StockLot,
+} from "./useStockLots";
 
 vi.mock("@/shared/composables/useI18n", () => ({
   useI18n: () => ({ t: (key: string) => key }),
@@ -64,5 +69,39 @@ describe("lotEntry", () => {
       item: { type: "Component", id: "bulwark" },
       crafted: { blueprintId: "bp-1", qualities: { 1: 750 } },
     });
+  });
+});
+
+describe("usePositionLots", () => {
+  const crafted = {
+    blueprint: { id: "bp-1", name: "Bulwark Blueprint", slug: "bulwark-bp" },
+    qualities: { 1: 750 },
+  };
+
+  it("lists every lot of the position, and only those", () => {
+    const { lots, showLots } = usePositionLots(
+      ref([
+        lot({ quality: 0 }),
+        lot({ quality: 0, crafted }),
+        lot({ id: "pos-2", name: "Titanium" }),
+      ]),
+      ref("pos-1"),
+    );
+
+    expect(lots.value).toHaveLength(2);
+    expect(showLots.value).toBe(true);
+  });
+
+  it("lists a lone crafted lot", () => {
+    const { showLots } = usePositionLots(ref([lot({ crafted })]), ref("pos-1"));
+
+    expect(showLots.value).toBe(true);
+  });
+
+  // The position's own total already says everything a single plain lot would.
+  it("lists nothing for a single plain lot", () => {
+    const { showLots } = usePositionLots(ref([lot()]), ref("pos-1"));
+
+    expect(showLots.value).toBe(false);
   });
 });
