@@ -55,6 +55,17 @@ class Api::V1::ModelsLoadoutSlotsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models/:slug/loadout-slots says which parts a recipe makes" do
+    create(:blueprint, craftable: @gun)
+
+    assert_api_response :get, 200, path_params: {slug: @model.slug} do
+      nose = parsed_body.sole
+
+      assert nose.dig("slots", 0, "stock", "craftable")
+      assert_equal false, nose.dig("stock", "craftable")
+    end
+  end
+
   test "GET /models/:slug/loadout-slots returns 404 for unknown model" do
     assert_api_response :get, 404, path_params: {slug: "unknown-model"}
   end

@@ -3,6 +3,8 @@
 module Api
   module V1
     class VehicleLoadoutsController < ::Api::BaseController
+      include CraftableComponentsConcern
+
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
         unless: -> { warden.authenticate?(scope: :user) },

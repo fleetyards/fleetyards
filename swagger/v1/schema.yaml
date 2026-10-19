@@ -33389,6 +33389,9 @@ components:
           - "$ref": "#/components/schemas/ComponentEmp"
           - "$ref": "#/components/schemas/ComponentQuantumEnforcement"
           - "$ref": "#/components/schemas/ComponentLifeSupport"
+        craftable:
+          type: boolean
+          description: A recipe in the build being served makes it
       additionalProperties: false
       required:
       - id

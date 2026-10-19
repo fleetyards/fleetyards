@@ -6,6 +6,7 @@ module Api
       include WillItFitConcern
       include ViteRails::TagHelpers
       include ModelCargoFiltersConcern
+      include CraftableComponentsConcern
 
       skip_verify_authorized
 
