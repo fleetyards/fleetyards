@@ -26,7 +26,14 @@ import { useModalDirty } from "@/shared/components/AppModal/dirty";
 import { useFormDirty } from "@/shared/composables/useFormDirty";
 import ItemPicker from "@/frontend/components/Logistics/ItemPicker/index.vue";
 import ItemPickerField from "@/frontend/components/Logistics/ItemPickerField/index.vue";
+import CraftingStep from "@/frontend/components/Logistics/CraftingStep/index.vue";
+import { craftedQualities } from "@/frontend/components/Logistics/crafted";
 import { type PickedItem } from "@/frontend/components/Logistics/types";
+import { useCraftingStep } from "@/frontend/composables/useCraftingStep";
+import {
+  type StockLot,
+  useStockLots,
+} from "@/frontend/composables/useStockLots";
 import {
   type Fleet,
   type FleetInventory,
@@ -42,13 +49,7 @@ import { type BaseSelectParams } from "@/shared/components/base/Select/index.vue
 import { useInventoryOptions } from "@/frontend/composables/useInventoryOptions";
 import { useItemPickerStep } from "@/frontend/composables/useItemPickerStep";
 
-type StockItem = {
-  id: string;
-  name: string;
-  category: string;
-  unit: string;
-  netQuantity: number;
-};
+type StockItem = StockLot;
 
 type Props = {
   fleet: Fleet;
@@ -96,6 +97,7 @@ const isDeposit = computed(() => entryType.value === "deposit");
 
 const modalTitle = computed(() => {
   if (picking.value) return pickTitle;
+  if (step.value === "crafting") return t("headlines.logistics.crafting");
 
   return isDeposit.value
     ? t("headlines.logistics.deposit")
@@ -138,6 +140,8 @@ const { value: name, errorMessage: nameError } = useField<string>(
 const [category] = defineField("category");
 
 const {
+  step,
+  showStep,
   picking,
   showPicker,
   pickTitle,
@@ -156,6 +160,18 @@ const {
     selectedPosition.value = undefined;
   },
 });
+
+const {
+  crafted,
+  draft: craftingDraft,
+  draftValid: craftingValid,
+  craftable,
+  craftedRecipe,
+  craftedGrades,
+  openCrafting,
+  applyCrafting,
+  clearCrafted,
+} = useCraftingStep({ pickedItem, isDeposit, showStep });
 
 const [quantity, quantityProps] = defineField("quantity");
 const [unit] = defineField("unit");
@@ -187,31 +203,23 @@ const loadStockItems = async () => {
   }
 };
 
-const stockItemOptions = computed<FilterOption[]>(() =>
-  stockItems.value.map((item) => ({
-    value: item.id,
-    label: `${item.name} (${item.netQuantity} ${t(`labels.logistics.units.${item.unit}`)})`,
-  })),
-);
+const {
+  lotOptions: stockItemOptions,
+  positionOptions: existingItemOptions,
+  lotAt,
+} = useStockLots(stockItems);
 
 // Load stock on mount for both withdrawal picker and deposit name suggestions
 onMounted(() => {
   void loadStockItems();
 });
 
-const existingItemOptions = computed<FilterOption[]>(() =>
-  stockItems.value.map((item) => ({
-    value: item.id,
-    label: `${item.name} (${t(`labels.logistics.categories.${item.category}`)})`,
-  })),
-);
-
 const selectedExistingItem = ref<string | undefined>(undefined);
 
 watch(selectedExistingItem, (val) => {
   if (!val) return;
 
-  const picked = stockItems.value.find((item) => item.id === val);
+  const picked = lotAt(val);
   if (!picked) return;
 
   selectedPosition.value = picked;
@@ -221,6 +229,7 @@ watch(selectedExistingItem, (val) => {
   setFieldValue("unit", picked.unit as any);
   /* eslint-enable @typescript-eslint/no-explicit-any */
   pickedItem.value = undefined;
+  crafted.value = undefined;
 });
 
 // When switching to withdrawal, load stock
@@ -233,26 +242,39 @@ watch(entryType, (val) => {
   pickedItem.value = undefined;
 });
 
-// When stock item is picked, auto-fill fields
+// A withdrawal takes from one lot, so it carries that lot's grade -- and for a
+// crafted part, the part and the grades it was made from, without which it
+// would come out of stock that was never crafted.
 watch(selectedStockItem, (val) => {
-  if (!val) return;
-
-  const picked = stockItems.value.find((item) => item.id === val);
+  const picked = lotAt(val);
   if (!picked) return;
 
   selectedPosition.value = picked;
   pickedItem.value = undefined;
+  crafted.value = undefined;
   setFieldValue("name", picked.name);
   /* eslint-disable @typescript-eslint/no-explicit-any */
   setFieldValue("category", picked.category as any);
   setFieldValue("unit", picked.unit as any);
   /* eslint-enable @typescript-eslint/no-explicit-any */
+
+  if (picked.quality != null) setFieldValue("quality", picked.quality);
+
+  if (picked.crafted && picked.item) {
+    pickedItem.value = {
+      type: picked.item.type,
+      id: picked.item.id,
+      name: picked.name,
+    };
+    crafted.value = {
+      blueprintId: picked.crafted.blueprint.id,
+      qualities: picked.crafted.qualities,
+    };
+  }
 });
 
 const selectedStockMax = computed(() => {
-  if (!selectedStockItem.value) return undefined;
-  return stockItems.value.find((item) => item.id === selectedStockItem.value)
-    ?.netQuantity;
+  return lotAt(selectedStockItem.value)?.netQuantity;
 });
 
 const fetchMembers = (params: BaseSelectParams<FilterOption>) => {
@@ -276,6 +298,7 @@ const entryChoice = computed(() => ({
   selectedStockItem: selectedStockItem.value,
   selectedExistingItem: selectedExistingItem.value,
   pickedItemId: pickedItem.value?.id,
+  crafted: crafted.value,
 }));
 
 const formDirty = useFormDirty(values, initialValues);
@@ -308,6 +331,10 @@ const onSubmit = handleSubmit(async (values) => {
         notes: values.notes || undefined,
         itemType: pickedItem.value?.type,
         itemId: pickedItem.value?.id,
+        craftedBlueprintId: crafted.value?.blueprintId,
+        craftedQualities: crafted.value
+          ? craftedQualities(crafted.value)
+          : undefined,
       },
     })
     .then(() => {
@@ -340,10 +367,17 @@ const onSubmit = handleSubmit(async (values) => {
       @select="applySelection"
     />
 
-    <!-- Hidden rather than unmounted while the catalogue is open, so nothing
+    <CraftingStep
+      v-if="step === 'crafting' && pickedItem"
+      v-model="craftingDraft"
+      :item="pickedItem"
+      @valid="craftingValid = $event"
+    />
+
+    <!-- Hidden rather than unmounted while another step is open, so nothing
          typed into it is lost. -->
     <form
-      v-show="!picking"
+      v-show="step === 'form'"
       id="create-inventory-item-form"
       ref="itemPickerForm"
       @submit.prevent="onSubmit"
@@ -401,6 +435,17 @@ const onSubmit = handleSubmit(async (values) => {
           :error="nameError"
           @open="showPicker(true)"
           @clear="clearItem"
+        />
+        <ItemPickerField
+          v-if="craftable"
+          name="crafted"
+          :value="craftedRecipe?.name ?? undefined"
+          :category-label="craftedGrades"
+          :label="t('labels.logistics.crafted.field')"
+          :placeholder="t('labels.logistics.crafted.placeholder')"
+          :clear-label="t('labels.logistics.crafted.clear')"
+          @open="openCrafting"
+          @clear="clearCrafted"
         />
       </template>
 
@@ -470,14 +515,23 @@ const onSubmit = handleSubmit(async (values) => {
     </form>
 
     <template #footer>
-      <Btn
-        v-if="picking"
-        :variant="BtnVariantsEnum.BARE"
-        data-test="item-picker-back"
-        @click="showPicker(false)"
-      >
-        {{ t("actions.back") }}
-      </Btn>
+      <template v-if="step !== 'form'">
+        <Btn
+          :variant="BtnVariantsEnum.BARE"
+          data-test="item-picker-back"
+          @click="showStep('form')"
+        >
+          {{ t("actions.back") }}
+        </Btn>
+        <Btn
+          v-if="step === 'crafting'"
+          :disabled="!craftingValid"
+          data-test="crafting-apply"
+          @click="applyCrafting"
+        >
+          {{ t("actions.apply") }}
+        </Btn>
+      </template>
       <Btn
         v-else
         :type="BtnTypesEnum.SUBMIT"

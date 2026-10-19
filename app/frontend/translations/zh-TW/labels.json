@@ -3334,6 +3334,17 @@
         "componentCategory": "組件類型",
         "commodityType": "商品類型",
         "equipmentItemType": "裝備類型",
+        "crafted": {
+          "field": "已製作",
+          "placeholder": "未製作",
+          "clear": "未製作",
+          "blueprint": "藍圖",
+          "hint": "製作%{name}所用的藍圖，以及每個槽位所用材料的品質。",
+          "slot": "槽位 %{position}",
+          "lot": "已製作",
+          "grade": "品質 %{quality}",
+          "slotGrade": "槽位 %{position}：%{quality}"
+        },
         "itemPicker": {
           "field": "物品",
           "placeholder": "選擇物品",

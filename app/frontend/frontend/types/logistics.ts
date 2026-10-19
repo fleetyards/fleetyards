@@ -1,3 +1,4 @@
+import type { InventoryCraftedRef } from "@/services/fyApi";
 export type InventoryReference = {
   name?: string;
   slug?: string;
@@ -118,4 +119,6 @@ export type InventoryLedgerRecord = {
   createdAt?: string | null;
   inventory?: InventoryReference;
   item?: InventoryItemReference | null;
+  // Present on a crafted part only.
+  crafted?: InventoryCraftedRef;
 };

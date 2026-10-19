@@ -3334,6 +3334,17 @@
         "componentCategory": "Type de composant",
         "commodityType": "Type de marchandise",
         "equipmentItemType": "Type d'équipement",
+        "crafted": {
+          "field": "Fabriqué",
+          "placeholder": "Non fabriqué",
+          "clear": "Non fabriqué",
+          "blueprint": "Plan",
+          "hint": "Le plan à partir duquel %{name} a été fabriqué, et la qualité du matériau utilisé dans chaque emplacement.",
+          "slot": "Emplacement %{position}",
+          "lot": "Fabriqué",
+          "grade": "Q %{quality}",
+          "slotGrade": "Emplacement %{position} : %{quality}"
+        },
         "itemPicker": {
           "field": "Objet",
           "placeholder": "Choisir un objet",

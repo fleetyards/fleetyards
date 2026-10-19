@@ -3334,6 +3334,17 @@
         "componentCategory": "Tipo de componente",
         "commodityType": "Tipo de mercancía",
         "equipmentItemType": "Tipo de equipo",
+        "crafted": {
+          "field": "Fabricado",
+          "placeholder": "No fabricado",
+          "clear": "No fabricado",
+          "blueprint": "Plano",
+          "hint": "El plano con el que se fabricó %{name} y la calidad del material usado en cada ranura.",
+          "slot": "Ranura %{position}",
+          "lot": "Fabricado",
+          "grade": "C %{quality}",
+          "slotGrade": "Ranura %{position}: %{quality}"
+        },
         "itemPicker": {
           "field": "Objeto",
           "placeholder": "Elegir un objeto",

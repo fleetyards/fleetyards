@@ -1,5 +1,13 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
+import {
+  afterEach,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 import { flushPromises, type VueWrapper } from "@vue/test-utils";
 import { defineRule } from "vee-validate";
 import { between, required, min, min_value } from "@vee-validate/rules";
@@ -15,9 +23,43 @@ beforeAll(() => {
   defineRule("between", between);
 });
 
-vi.mock("@/services/fyApi", async (importOriginal) => ({
-  ...(await importOriginal<typeof import("@/services/fyApi")>()),
-  hangarInventoryStock: vi.fn().mockResolvedValue([]),
+const api = vi.hoisted(() => ({
+  stock: vi.fn(),
+  create: vi.fn(),
+}));
+
+// The hooks, not the fetchers: a generated hook calls its own fetcher from
+// inside the module, which a mocked export never reaches.
+vi.mock("@/services/fyApi", async (importOriginal) => {
+  const { computed } = await import("vue");
+
+  return {
+    ...(await importOriginal<typeof import("@/services/fyApi")>()),
+    hangarInventoryStock: api.stock,
+    useCreateHangarInventoryItem: () => ({ mutateAsync: api.create }),
+    // A recipe makes the Bulwark and nothing else.
+    useBlueprints: vi.fn(
+      (params: { value: { q: { craftableIdEq?: string } } }) => ({
+        data: computed(() => ({
+          items:
+            params.value.q.craftableIdEq === "bulwark"
+              ? [{ id: "bp-1", name: "Bulwark Blueprint", slug: "bulwark-bp" }]
+              : [],
+          meta: {},
+        })),
+      }),
+    ),
+  };
+});
+
+// The step's own page is specced on its own.
+vi.mock("@/frontend/components/Logistics/CraftingStep/index.vue", () => ({
+  default: {
+    name: "LogisticsCraftingStep",
+    props: ["modelValue", "item"],
+    emits: ["update:modelValue", "valid"],
+    render: () => null,
+  },
 }));
 
 // Its upload chain reaches the 3D viewer, whose ESM build Vitest cannot load.
@@ -40,6 +82,11 @@ let wrapper: VueWrapper | undefined;
 afterEach(() => {
   wrapper?.unmount();
   wrapper = undefined;
+});
+
+beforeEach(() => {
+  api.stock.mockResolvedValue([]);
+  api.create.mockResolvedValue({});
 });
 
 const mount = async () => {
@@ -189,5 +236,160 @@ describe("LogisticsInventoryItemModal", () => {
       .trigger("click");
 
     expect(field(subject).text()).not.toContain("Grandma's teapot");
+  });
+
+  describe("crafting", () => {
+    const craftBulwark = async (subject: VueWrapper) => {
+      await pick(subject, bulwark);
+      await subject
+        .find(
+          "[data-test='item-picker-field-crafted'] [data-test='item-picker-field-open']",
+        )
+        .trigger("click");
+
+      const step = subject.findComponent({ name: "LogisticsCraftingStep" });
+
+      step.vm.$emit("update:modelValue", {
+        blueprintId: "bp-1",
+        qualities: { 1: 750, 2: 500 },
+      });
+      step.vm.$emit("valid", true);
+      await flushPromises();
+      await subject.find("[data-test='crafting-apply']").trigger("click");
+    };
+
+    it("offers crafting only for an item a recipe makes", async () => {
+      const subject = await mount();
+
+      await pick(subject, gold);
+
+      expect(
+        subject.find("[data-test='item-picker-field-crafted']").exists(),
+      ).toBe(false);
+
+      await pick(subject, bulwark);
+
+      expect(
+        subject.find("[data-test='item-picker-field-crafted']").exists(),
+      ).toBe(true);
+    });
+
+    // Its own page, like the picker, so the form underneath keeps its state.
+    it("opens crafting as a step of its own", async () => {
+      const subject = await mount();
+
+      await pick(subject, bulwark);
+      await subject
+        .find(
+          "[data-test='item-picker-field-crafted'] [data-test='item-picker-field-open']",
+        )
+        .trigger("click");
+
+      expect(
+        subject.findComponent({ name: "LogisticsCraftingStep" }).exists(),
+      ).toBe(true);
+      expect(subject.find("form").attributes("style")).toContain(
+        "display: none",
+      );
+    });
+
+    it("takes the recipe and grades once applied", async () => {
+      const subject = await mount();
+
+      await craftBulwark(subject);
+
+      const field = subject.find("[data-test='item-picker-field-crafted']");
+
+      expect(field.text()).toContain("Bulwark Blueprint");
+      expect(field.text()).toContain("750 · 500");
+    });
+
+    it("sends the recipe and grades with the deposit", async () => {
+      const subject = await mount();
+
+      await craftBulwark(subject);
+      await subject.find("[data-test='input-quantity']").setValue("1");
+      await subject.find("form").trigger("submit");
+      await flushPromises();
+
+      expect(api.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            itemType: "Component",
+            itemId: "bulwark",
+            craftedBlueprintId: "bp-1",
+            craftedQualities: { 1: 750, 2: 500 },
+          }),
+        }),
+      );
+    });
+
+    // Backing out of the step leaves the form's crafting as it was.
+    it("keeps the crafting as it was when the step is left", async () => {
+      const subject = await mount();
+
+      await pick(subject, bulwark);
+      await subject
+        .find(
+          "[data-test='item-picker-field-crafted'] [data-test='item-picker-field-open']",
+        )
+        .trigger("click");
+      subject
+        .findComponent({ name: "LogisticsCraftingStep" })
+        .vm.$emit("update:modelValue", {
+          blueprintId: "bp-1",
+          qualities: { 1: 9 },
+        });
+      await subject.find("[data-test='item-picker-back']").trigger("click");
+
+      expect(
+        subject.find("[data-test='item-picker-field-crafted']").text(),
+      ).not.toContain("Bulwark Blueprint");
+    });
+
+    // Without the lot's recipe and grades a withdrawal would come out of stock
+    // that was never crafted.
+    it("withdraws a crafted lot with what it was made from", async () => {
+      api.stock.mockResolvedValue([
+        {
+          id: "pos-1",
+          name: "Bulwark",
+          category: "component",
+          unit: "units",
+          netQuantity: 2,
+          quality: null,
+          item: { id: "bulwark", type: "Component" },
+          crafted: {
+            blueprint: {
+              id: "bp-1",
+              name: "Bulwark Blueprint",
+              slug: "bulwark-bp",
+            },
+            qualities: { 1: 750, 2: 500 },
+          },
+        },
+      ]);
+
+      const subject = await mount();
+
+      select(subject, "entryType").vm.$emit("update:modelValue", "withdrawal");
+      await flushPromises();
+      select(subject, "stockItem").vm.$emit("update:modelValue", "0");
+      await flushPromises();
+      await subject.find("[data-test='input-quantity']").setValue("1");
+      await subject.find("form").trigger("submit");
+      await flushPromises();
+
+      expect(api.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            entryType: "withdrawal",
+            itemId: "bulwark",
+            craftedBlueprintId: "bp-1",
+            craftedQualities: { 1: 750, 2: 500 },
+          }),
+        }),
+      );
+    });
   });
 });

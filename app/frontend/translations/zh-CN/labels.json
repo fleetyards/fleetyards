@@ -3334,6 +3334,17 @@
         "componentCategory": "组件类型",
         "commodityType": "商品类型",
         "equipmentItemType": "装备类型",
+        "crafted": {
+          "field": "已制作",
+          "placeholder": "未制作",
+          "clear": "未制作",
+          "blueprint": "蓝图",
+          "hint": "制作%{name}所用的蓝图，以及每个槽位所用材料的品质。",
+          "slot": "槽位 %{position}",
+          "lot": "已制作",
+          "grade": "品质 %{quality}",
+          "slotGrade": "槽位 %{position}：%{quality}"
+        },
         "itemPicker": {
           "field": "物品",
           "placeholder": "选择物品",

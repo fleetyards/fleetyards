@@ -32,18 +32,24 @@ export const useItemPickerStep = ({
 }: Options) => {
   const { t } = useI18n();
 
-  const picking = ref(false);
+  // Which page of the modal is showing. Every step but the form takes the
+  // modal's body; the form stays mounted underneath.
+  const step = ref<"form" | "picker" | "crafting">("form");
+
+  const picking = computed(() => step.value === "picker");
 
   // The form element, for the scrolling body it sits in.
   const form = useTemplateRef<HTMLFormElement>("itemPickerForm");
 
-  const showPicker = (shown: boolean) => {
+  const showStep = (next: typeof step.value) => {
     // The body scrolls, and whichever view comes in starts at its top.
     const body = form.value?.closest(".modal-body");
     if (body) body.scrollTop = 0;
 
-    picking.value = shown;
+    step.value = next;
   };
+
+  const showPicker = (shown: boolean) => showStep(shown ? "picker" : "form");
 
   const pickTitle = t("headlines.logistics.pickItem");
 
@@ -80,6 +86,8 @@ export const useItemPickerStep = ({
   };
 
   return {
+    step,
+    showStep,
     picking,
     showPicker,
     pickTitle,

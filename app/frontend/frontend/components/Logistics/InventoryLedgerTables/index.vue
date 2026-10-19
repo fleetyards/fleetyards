@@ -14,6 +14,7 @@ import { BaseTableColAlignmentEnum } from "@/shared/components/base/Table/types"
 import { useI18n } from "@/shared/composables/useI18n";
 import { catalogueItemRoute } from "@/frontend/utils/catalogueItemRoute";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
+import { type InventoryCraftedRef } from "@/services/fyApi";
 import type {
   InventoryLedgerRecord,
   InventoryStockRecord,
@@ -44,6 +45,17 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { t, l } = useI18n();
+
+// The recipe and the grade in each slot, in slot order.
+const craftedSummary = (crafted: InventoryCraftedRef) =>
+  [
+    crafted.blueprint.name,
+    ...Object.entries(crafted.qualities)
+      .sort(([a], [b]) => Number(a) - Number(b))
+      .map(([position, grade]) =>
+        t("labels.logistics.crafted.slotGrade", { position, quality: grade }),
+      ),
+  ].join(" · ");
 
 const stockColumns = computed<BaseTableCol<InventoryStockRecord>[]>(() => [
   {
@@ -323,6 +335,21 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
     </template>
     <template #col-category="{ record }">
       {{ t(`labels.logistics.categories.${record.category}`) }}
+    </template>
+    <!-- A crafted part has no single grade; what it was made from is the
+         recipe and a grade per slot, which the tooltip spells out. -->
+    <template #col-quality="{ record }">
+      <span
+        v-if="record.crafted"
+        v-tooltip="craftedSummary(record.crafted)"
+        class="ledger-crafted"
+        :data-test="`ledger-crafted-${record.id}`"
+      >
+        {{ t("labels.logistics.crafted.lot") }}
+      </span>
+      <template v-else-if="record.quality != null">
+        {{ record.quality }}
+      </template>
     </template>
     <template #col-quantity="{ record }">
       {{ record.quantity }}

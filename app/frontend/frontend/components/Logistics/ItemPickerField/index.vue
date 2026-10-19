@@ -15,12 +15,19 @@ type Props = {
   // What the item is filed under, beside its name.
   categoryLabel?: string;
   error?: string;
+  // For a field that opens another step than the item picker.
+  label?: string;
+  placeholder?: string;
+  clearLabel?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   value: undefined,
   categoryLabel: undefined,
   error: undefined,
+  label: undefined,
+  placeholder: undefined,
+  clearLabel: undefined,
 });
 
 const emit = defineEmits<{
@@ -37,7 +44,7 @@ const errorId = computed(() => `${props.name}-error`);
 <template>
   <div class="item-picker-field" :data-test="`item-picker-field-${name}`">
     <label class="item-picker-field__label" :for="triggerId">
-      {{ t("labels.logistics.itemPicker.field") }}
+      {{ label ?? t("labels.logistics.itemPicker.field") }}
     </label>
 
     <div class="item-picker-field__control">
@@ -58,7 +65,7 @@ const errorId = computed(() => `${props.name}-error`);
           </span>
         </span>
         <span v-else class="item-picker-field__placeholder">
-          {{ t("labels.logistics.itemPicker.placeholder") }}
+          {{ placeholder ?? t("labels.logistics.itemPicker.placeholder") }}
         </span>
         <i class="fa fa-chevron-right" />
       </button>
@@ -66,10 +73,10 @@ const errorId = computed(() => `${props.name}-error`);
       <!-- Beside the trigger, not inside it: a button cannot hold another. -->
       <button
         v-if="value"
-        v-tooltip="t('labels.logistics.itemPicker.clear')"
+        v-tooltip="clearLabel ?? t('labels.logistics.itemPicker.clear')"
         type="button"
         class="item-picker-field__clear"
-        :aria-label="t('labels.logistics.itemPicker.clear')"
+        :aria-label="clearLabel ?? t('labels.logistics.itemPicker.clear')"
         data-test="item-picker-field-clear"
         @click="emit('clear')"
       >

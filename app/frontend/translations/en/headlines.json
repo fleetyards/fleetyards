@@ -512,6 +512,7 @@
         "transfers": "Transfers",
         "acceptTransfer": "Accept Transfer",
         "pickItem": "Choose an Item",
+        "crafting": "Crafting",
         "reportTransfer": "Report Transfer"
       },
       "notifications": {

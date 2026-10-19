@@ -31,3 +31,11 @@ export type ItemPickerSelection = {
   name: string;
   category: InventoryCategoryEnum;
 };
+
+// A crafted part: the recipe it was made from and the grade of material in each
+// of the recipe's graded slots, keyed by the slot's position. A grade stays
+// undefined until it is entered.
+export type CraftedSelection = {
+  blueprintId: string;
+  qualities: Record<string, number | undefined>;
+};

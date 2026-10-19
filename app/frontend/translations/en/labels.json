@@ -3348,6 +3348,17 @@
         "componentCategory": "Component Type",
         "commodityType": "Commodity Type",
         "equipmentItemType": "Equipment Type",
+        "crafted": {
+          "field": "Crafted",
+          "placeholder": "Not crafted",
+          "clear": "Not crafted",
+          "blueprint": "Recipe",
+          "hint": "The recipe %{name} was crafted from, and the quality of the material that went into each slot.",
+          "slot": "Slot %{position}",
+          "lot": "Crafted",
+          "grade": "Q %{quality}",
+          "slotGrade": "Slot %{position}: %{quality}"
+        },
         "itemPicker": {
           "field": "Item",
           "placeholder": "Choose an item",
