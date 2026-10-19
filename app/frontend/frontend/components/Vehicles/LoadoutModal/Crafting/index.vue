@@ -54,11 +54,19 @@ const recipes = computed(() => recipesData.value?.items ?? []);
 
 // Three parts have two recipes, each with its own slots; the one it was
 // crafted from stays chosen.
-const recipe = computed(
-  () =>
-    recipes.value.find((entry) => entry.id === props.crafted?.blueprintId) ??
-    recipes.value[0],
-);
+//
+// A saved crafting whose recipe a new build dropped is no longer in the list,
+// and still has to be shown -- and undone.
+const recipe = computed(() => {
+  const crafted = props.crafted;
+
+  return (
+    recipes.value.find((entry) => entry.id === crafted?.blueprintId) ??
+    (crafted
+      ? { id: crafted.blueprintId, slug: crafted.blueprintSlug }
+      : recipes.value[0])
+  );
+});
 
 // Another recipe has other slots, so its qualities start over.
 const chooseRecipe = (blueprintId: string) => {
