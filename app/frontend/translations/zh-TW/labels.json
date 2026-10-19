@@ -3337,6 +3337,8 @@
         "commodityType": "商品類型",
         "equipmentItemType": "裝備類型",
         "crafted": {
+          "request": "要求製作的部件",
+          "requestHint": "製作%{name}所用的藍圖，以及每個槽位要求的品質。留空的槽位接受任意品質。",
           "page": "由 %{recipe} 以品質 %{grades} 製作。醒目標示的數值與目錄不同。",
           "showStock": "顯示原廠數值",
           "edit": "記錄製作方式",
@@ -3857,6 +3859,9 @@
           "lead": "負責人",
           "pendingCrew": "等待加入",
           "minQuality": "最低品質 %{value}",
+          "craftedAny": "已製作，任意品質",
+          "craftedAtLeast": "已製作，至少 %{grades}",
+          "craftedExact": "已製作，恰好 %{grades}",
           "pickedUp": "已取 %{quantity}",
           "itemCategory": "類別",
           "itemUnit": "單位",

@@ -29,6 +29,39 @@ vi.mock("@/frontend/components/Logistics/ItemPicker/index.vue", () => ({
   },
 }));
 
+// A recipe makes the Bulwark and nothing else.
+vi.mock("@/services/fyApi", async (importOriginal) => {
+  const { computed } = await import("vue");
+
+  return {
+    ...(await importOriginal<typeof import("@/services/fyApi")>()),
+    useBlueprints: (params: { value: { q: { craftableIdEq?: string } } }) => ({
+      isPlaceholderData: computed(() => false),
+      data: computed(() => ({
+        items:
+          params.value.q.craftableIdEq === "bulwark"
+            ? [{ id: "bp-1", name: "Bulwark Blueprint", slug: "bulwark-bp" }]
+            : [],
+        meta: {},
+      })),
+    }),
+  };
+});
+
+// The step's own page is specced on its own.
+vi.mock("@/frontend/components/Logistics/CraftingStep/index.vue", () => ({
+  default: {
+    name: "LogisticsCraftingStep",
+    props: {
+      modelValue: { type: Object, default: undefined },
+      item: { type: Object, default: undefined },
+      optional: { type: Boolean, default: false },
+    },
+    emits: ["update:modelValue", "valid"],
+    render: () => null,
+  },
+}));
+
 const contract = (kind = "procurement") =>
   ({ slug: "haul", kind, items: [] }) as never;
 
@@ -50,13 +83,18 @@ afterEach(() => {
   wrapper = undefined;
 });
 
-const mount = async (kind?: string, item?: unknown) => {
+const mount = async (
+  kind?: string,
+  item?: unknown,
+  onDraft?: (values: unknown) => void,
+) => {
   wrapper = await mountWithDefaults<typeof Component>(Component, {
     props: {
       fleet: { slug: "test-fleet" } as never,
-      contract: contract(kind),
+      contract: onDraft ? undefined : contract(kind),
       kind: (kind ?? "procurement") as never,
       item: item as never,
+      onDraft: onDraft as never,
     },
   });
 
@@ -198,5 +236,102 @@ describe("FleetContractsItemModal", () => {
     expect(subject.find("[data-test='input-itemQuantity']").exists()).toBe(
       true,
     );
+  });
+
+  describe("a crafted part", () => {
+    const pickBulwark = async (subject: VueWrapper) => {
+      await subject
+        .find("[data-test='item-picker-field-open']")
+        .trigger("click");
+      subject
+        .findComponent({ name: "LogisticsItemPicker" })
+        .vm.$emit("select", {
+          item: { type: "Component", id: "bulwark", name: "Bulwark" },
+          name: "Bulwark",
+          category: "component",
+        });
+      await flushPromises();
+    };
+
+    it("asks for the recipe and the grades the step names", async () => {
+      const onDraft = vi.fn();
+      const subject = await mount("crafting", undefined, onDraft);
+
+      await pickBulwark(subject);
+      await subject
+        .find("[data-test='item-picker-field-craft']")
+        .trigger("click");
+
+      const step = subject.findComponent({ name: "LogisticsCraftingStep" });
+
+      // A request may leave a slot open.
+      expect(step.props("optional")).toBe(true);
+
+      step.vm.$emit("update:modelValue", {
+        blueprintId: "bp-1",
+        qualities: { 1: 700, 2: undefined },
+      });
+      step.vm.$emit("valid", true);
+      await flushPromises();
+      await subject.find("[data-test='crafting-apply']").trigger("click");
+
+      expect(
+        subject.find("[data-test='input-wrapper-itemQuantity']").exists(),
+      ).toBe(true);
+
+      await subject.find("[data-test='input-itemQuantity']").setValue("2");
+      await subject.find("form").trigger("submit");
+      await flushPromises();
+
+      expect(onDraft).toHaveBeenCalledWith(
+        expect.objectContaining({
+          itemId: "bulwark",
+          craftedBlueprintId: "bp-1",
+          craftedQualities: { 1: 700 },
+        }),
+      );
+    });
+
+    it("opens on a crafted line with its crafting", async () => {
+      const subject = await mount("crafting", {
+        id: "line-2",
+        name: "Bulwark",
+        category: "component",
+        unit: "units",
+        quantity: "2",
+        qualityMatch: "at_least",
+        item: { id: "bulwark", type: "Component", name: "Bulwark" },
+        crafted: {
+          blueprint: {
+            id: "bp-1",
+            name: "Bulwark Blueprint",
+            slug: "bulwark-bp",
+          },
+          qualities: { 1: 700 },
+        },
+      });
+
+      expect(
+        subject.find("[data-test='item-picker-field-catalogueItem']").text(),
+      ).toContain("Crafted 700");
+    });
+
+    // An edit that drops the crafting must clear it, not leave it be.
+    it("sends no crafting for a plain line", async () => {
+      const onDraft = vi.fn();
+      const subject = await mount("crafting", undefined, onDraft);
+
+      await pickBulwark(subject);
+      await subject.find("[data-test='input-itemQuantity']").setValue("2");
+      await subject.find("form").trigger("submit");
+      await flushPromises();
+
+      expect(onDraft).toHaveBeenCalledWith(
+        expect.objectContaining({
+          craftedBlueprintId: null,
+          craftedQualities: null,
+        }),
+      );
+    });
   });
 });

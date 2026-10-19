@@ -59,9 +59,13 @@ afterEach(() => {
   wrapper = undefined;
 });
 
-const mount = async (qualities: Record<string, number | undefined> = {}) => {
+const mount = async (
+  qualities: Record<string, number | undefined> = {},
+  optional = false,
+) => {
   wrapper = await mountWithDefaults<typeof Component>(Component, {
     props: {
+      optional,
       item: { type: "Component", id: "bulwark-item", name: "Bulwark" },
       modelValue: { blueprintId: "bp-1", qualities },
       "onUpdate:modelValue": (value: unknown) =>
@@ -109,6 +113,18 @@ describe("LogisticsCraftingStep", () => {
     const subject = await mount({ 1: 750 });
 
     await subject.find("[data-test='input-craftedQuality2']").setValue("1200");
+    await flushPromises();
+
+    expect(subject.emitted("valid")?.at(-1)).toEqual([false]);
+  });
+
+  // A contract asking for a crafted part may leave a slot open.
+  it("takes blank slots when the grades are a request", async () => {
+    const subject = await mount({}, true);
+
+    expect(subject.emitted("valid")?.at(-1)).toEqual([true]);
+
+    await subject.find("[data-test='input-craftedQuality1']").setValue("1200");
     await flushPromises();
 
     expect(subject.emitted("valid")?.at(-1)).toEqual([false]);

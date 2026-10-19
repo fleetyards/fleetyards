@@ -3337,6 +3337,8 @@
         "commodityType": "Type de marchandise",
         "equipmentItemType": "Type d'équipement",
         "crafted": {
+          "request": "Demander une pièce fabriquée",
+          "requestHint": "Le plan à partir duquel %{name} doit être fabriqué, et la qualité voulue dans chaque emplacement. Un emplacement vide accepte toute qualité.",
           "page": "Fabriqué à partir de %{recipe} avec les qualités %{grades}. Les valeurs mises en évidence diffèrent du catalogue.",
           "showStock": "Afficher les valeurs de série",
           "edit": "Indiquer comment il a été fabriqué",
@@ -3857,6 +3859,9 @@
           "lead": "Responsable",
           "pendingCrew": "En attente",
           "minQuality": "qualité min. %{value}",
+          "craftedAny": "Fabriqué, toute qualité",
+          "craftedAtLeast": "Fabriqué, au moins %{grades}",
+          "craftedExact": "Fabriqué, exactement %{grades}",
           "pickedUp": "%{quantity} récupéré",
           "itemCategory": "Catégorie",
           "itemUnit": "Unité",

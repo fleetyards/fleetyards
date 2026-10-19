@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { craftedLineLabel } from "@/frontend/components/Fleets/Contracts/craftedLabel";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BasePill from "@/shared/components/base/Pill/index.vue";
@@ -54,13 +55,24 @@ type Row = FleetContractItem & { draftIndex?: number };
 const rows = computed<Row[]>(() => {
   if (props.contract) return props.contract.items as Row[];
 
+  // A draft carries its references as ids; the row reads them as the saved
+  // shapes, so reopening a draft keeps the part it named and how it was to be
+  // crafted.
   return (props.drafts ?? []).map(
     (draft, index) =>
       ({
         ...draft,
         id: `draft-${index}`,
         draftIndex: index,
-        item: null,
+        item: draft.itemId
+          ? { id: draft.itemId, type: draft.itemType, name: draft.name }
+          : null,
+        crafted: draft.craftedBlueprintId
+          ? {
+              blueprint: { id: draft.craftedBlueprintId, name: "", slug: "" },
+              qualities: draft.craftedQualities ?? {},
+            }
+          : undefined,
       }) as unknown as Row,
   );
 });
@@ -175,6 +187,13 @@ const qualityLabel = (item: Row) =>
         </span>
         <span v-if="item.quality != null" class="contract-items__quality">
           {{ qualityLabel(item as Row) }}
+        </span>
+        <span
+          v-if="item.crafted"
+          class="contract-items__quality"
+          data-test="contract-item-crafted"
+        >
+          {{ craftedLineLabel(t, item.crafted, item.qualityMatch) }}
         </span>
       </template>
 

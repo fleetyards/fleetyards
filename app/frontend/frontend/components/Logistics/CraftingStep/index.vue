@@ -21,9 +21,13 @@ import { type BlueprintCostSlot, useBlueprint } from "@/services/fyApi";
 type Props = {
   // The part being deposited; only one some recipe makes reaches this step.
   item: PickedItem;
+  // A request rather than a record: a slot left blank takes any grade.
+  optional?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  optional: false,
+});
 
 // The draft the step edits. The form only takes it once it is applied, so
 // backing out leaves the form's crafting as it was.
@@ -99,7 +103,11 @@ const gradeValid = (grade?: number) =>
 const valid = computed(
   () =>
     !!recipe.value &&
-    gradedSlots.value.every((slot) => gradeValid(qualityOf(slot.position))),
+    gradedSlots.value.every((slot) => {
+      const grade = qualityOf(slot.position);
+
+      return props.optional && grade === undefined ? true : gradeValid(grade);
+    }),
 );
 
 watch(valid, (value) => emit("valid", value), { immediate: true });
@@ -113,7 +121,14 @@ const previewQualityFor = (position: number) =>
 <template>
   <div class="crafting-step">
     <p class="crafting-step__hint">
-      {{ t("labels.logistics.crafted.hint", { name: item.name }) }}
+      {{
+        t(
+          optional
+            ? "labels.logistics.crafted.requestHint"
+            : "labels.logistics.crafted.hint",
+          { name: item.name },
+        )
+      }}
     </p>
 
     <BaseSelect

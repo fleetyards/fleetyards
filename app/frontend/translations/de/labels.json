@@ -3337,6 +3337,8 @@
         "commodityType": "Warentyp",
         "equipmentItemType": "Ausrüstungstyp",
         "crafted": {
+          "request": "Hergestelltes Teil anfordern",
+          "requestHint": "Der Bauplan, aus dem %{name} hergestellt werden soll, und die gewünschte Qualität je Slot. Ein leerer Slot nimmt jede.",
           "page": "Hergestellt aus %{recipe} mit den Qualitäten %{grades}. Hervorgehobene Werte weichen vom Katalog ab.",
           "showStock": "Serienwerte anzeigen",
           "edit": "Festhalten, wie es hergestellt wurde",
@@ -3857,6 +3859,9 @@
           "lead": "Leitung",
           "pendingCrew": "Wartet auf Aufnahme",
           "minQuality": "min. Qualität %{value}",
+          "craftedAny": "Hergestellt, beliebige Qualität",
+          "craftedAtLeast": "Hergestellt, mindestens %{grades}",
+          "craftedExact": "Hergestellt, genau %{grades}",
           "pickedUp": "%{quantity} abgeholt",
           "itemCategory": "Kategorie",
           "itemUnit": "Einheit",

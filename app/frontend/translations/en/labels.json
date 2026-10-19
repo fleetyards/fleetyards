@@ -3351,6 +3351,8 @@
         "commodityType": "Commodity Type",
         "equipmentItemType": "Equipment Type",
         "crafted": {
+          "request": "Ask for a crafted part",
+          "requestHint": "The recipe %{name} is to be crafted from, and the quality wanted in each slot. A blank slot takes any.",
           "page": "Crafted from %{recipe} at grades %{grades}. Highlighted figures differ from the catalogue's.",
           "showStock": "Show stock values",
           "edit": "Record how it was crafted",
@@ -3871,6 +3873,9 @@
           "lead": "Lead",
           "pendingCrew": "Waiting to join",
           "minQuality": "min. quality %{value}",
+          "craftedAny": "Crafted, any quality",
+          "craftedAtLeast": "Crafted, at least %{grades}",
+          "craftedExact": "Crafted, exactly %{grades}",
           "pickedUp": "%{quantity} picked up",
           "itemCategory": "Category",
           "itemUnit": "Unit",
