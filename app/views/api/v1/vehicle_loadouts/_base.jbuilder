@@ -12,6 +12,16 @@ json.items vehicle_loadout.items do |item|
   json.slot_path item.slot_path
   json.item_type item.item_type
   json.item_id item.item_id if item.item_id
+  if item.blueprint
+    json.crafted do
+      json.blueprint_id item.blueprint_id
+      json.blueprint_slug item.blueprint.slug
+      json.qualities item.crafted_qualities.sort_by { |position, _| position.to_i } do |position, quality|
+        json.position position.to_i
+        json.quality quality
+      end
+    end
+  end
 end
 
 json.partial! "api/shared/dates", record: vehicle_loadout

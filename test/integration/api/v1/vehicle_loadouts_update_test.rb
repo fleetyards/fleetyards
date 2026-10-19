@@ -113,6 +113,55 @@ class Api::V1::VehicleLoadoutsUpdateTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT /vehicles/:vehicle_id/loadouts/:id saves a crafted part" do
+    shield = create(:component, component_type: "Shield", category: "shieldgenerator", size: "1")
+    create(:hardpoint, parent: @vehicle.model, sc_name: "hardpoint_shield", source: :game_files,
+      types: ["Shield"], min_size: 1, max_size: 1, component: shield)
+    blueprint = create(:blueprint, craftable: shield)
+    create(:blueprint_cost_slot, build: blueprint.build, position: 0)
+    create(:blueprint_cost_slot, build: blueprint.build, position: 1)
+    loadout = create(:vehicle_loadout, :fleetyards, vehicle: @vehicle)
+    sign_in @user
+
+    assert_api_response :put, 200,
+      path_params: {vehicle_id: @vehicle.id, id: loadout.id},
+      body: {items: [{
+        slotPath: "hardpoint_shield",
+        itemType: "Component",
+        itemId: shield.id,
+        crafted: {blueprintId: blueprint.id, qualities: [{position: 1, quality: 250}, {position: 0, quality: 1000}]}
+      }]} do
+      assert_equal(
+        {
+          "blueprintId" => blueprint.id,
+          "blueprintSlug" => blueprint.slug,
+          "qualities" => [{"position" => 0, "quality" => 1000}, {"position" => 1, "quality" => 250}]
+        },
+        parsed_body["items"].sole["crafted"]
+      )
+    end
+  end
+
+  test "PUT /vehicles/:vehicle_id/loadouts/:id refuses crafting a part from another part's recipe" do
+    shield = create(:component, component_type: "Shield", category: "shieldgenerator", size: "1")
+    create(:hardpoint, parent: @vehicle.model, sc_name: "hardpoint_shield", source: :game_files,
+      types: ["Shield"], min_size: 1, max_size: 1, component: shield)
+    blueprint = create(:blueprint, :for_component)
+    loadout = create(:vehicle_loadout, :fleetyards, vehicle: @vehicle)
+    sign_in @user
+
+    put "/api/v1/vehicles/#{@vehicle.id}/loadouts/#{loadout.id}", as: :json,
+      params: {items: [{
+        slotPath: "hardpoint_shield",
+        itemType: "Component",
+        itemId: shield.id,
+        crafted: {blueprintId: blueprint.id, qualities: []}
+      }]}
+
+    assert_response :bad_request
+    assert_empty loadout.reload.items
+  end
+
   test "PUT /vehicles/:vehicle_id/loadouts/:id keeps the kind it was created with" do
     loadout = create(:vehicle_loadout, :fleetyards, vehicle: @vehicle)
     sign_in @user

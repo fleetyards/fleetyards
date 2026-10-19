@@ -16,7 +16,7 @@ module Api
 
       VEHICLE_RENDER_INCLUDES = [
         :module_package,
-        {vehicle_loadouts: :items},
+        {vehicle_loadouts: {items: :blueprint}},
         {user: [:omniauth_connections]},
         {model: [:manufacturer]},
         {vehicle_modules: :model_module},
