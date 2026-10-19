@@ -29,4 +29,13 @@ if catalogued.present?
   end
 end
 
+# The inventory the item was added to, so a list can say where it went.
+inventory = hangar_pledge_item.inventory_item&.inventory
+if inventory.present?
+  json.inventory do
+    json.name inventory.name
+    json.slug inventory.slug
+  end
+end
+
 json.partial! "api/shared/dates", record: hangar_pledge_item

@@ -11134,6 +11134,58 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/inventories/{hangarInventorySlug}/items/from-pledge-items":
+    parameters:
+    - name: hangarInventorySlug
+      in: path
+      schema:
+        type: string
+      description: Inventory slug
+      required: true
+    post:
+      summary: Add Hangar Pledge Items to an Inventory
+      tags:
+      - HangarInventoryItems
+      operationId: addPledgeItemsToHangarInventory
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/AddPledgeItemsToInventoryInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AddPledgeItemsToInventoryResult"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/hangar/inventories/{hangarInventorySlug}/items/{id}":
     parameters:
     - name: hangarInventorySlug
@@ -20695,6 +20747,39 @@ components:
           format: email
       additionalProperties: false
       title: AccountUpdateInput
+    AddPledgeItemsToInventoryInput:
+      type: object
+      properties:
+        pledgeItemIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Ship components and FPS gear to add; any other pledge item
+            is ignored
+      additionalProperties: false
+      required:
+      - pledgeItemIds
+      title: AddPledgeItemsToInventoryInput
+    AddPledgeItemsToInventoryResult:
+      type: object
+      properties:
+        addedPledgeItemIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        skippedPledgeItemIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Items already in an inventory, left as they were
+      additionalProperties: false
+      required:
+      - addedPledgeItemIds
+      - skippedPledgeItemIds
+      title: AddPledgeItemsToInventoryResult
     AlliedFleet:
       type: object
       properties:
@@ -31299,6 +31384,8 @@ components:
           description: The page of the RSI hangar the pledge was last read from
         catalogueItem:
           "$ref": "#/components/schemas/HangarPledgeItemCatalogueItem"
+        inventory:
+          "$ref": "#/components/schemas/InventoryRef"
         createdAt:
           type: string
           format: date-time

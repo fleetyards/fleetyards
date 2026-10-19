@@ -40,7 +40,7 @@ module Api
         # The hangar order breaks ties within a requested sort, and is the
         # whole order without one.
         @hangar_pledge_items = @q.result
-          .includes(:catalogue_component, :catalogue_equipment)
+          .includes(:catalogue_component, :catalogue_equipment, inventory_item: :inventory)
           .order(*HangarPledgeItem.sort_order(sorts), HangarPledgeItem.hangar_order)
           .page(page_params)
           .per(per_page(HangarPledgeItem))

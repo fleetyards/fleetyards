@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_19_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_19_130000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1432,8 +1432,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_19_120000) do
     t.integer "rsi_page"
     t.uuid "component_id"
     t.uuid "equipment_id"
+    t.uuid "inventory_item_id"
     t.index ["component_id"], name: "index_hangar_pledge_items_on_component_id"
     t.index ["equipment_id"], name: "index_hangar_pledge_items_on_equipment_id"
+    t.index ["inventory_item_id"], name: "index_hangar_pledge_items_on_inventory_item_id"
     t.index ["user_id", "kind", "rsi_pledge_id", "name"], name: "index_hangar_pledge_items_on_user_kind_pledge_name", unique: true
   end
 
@@ -2960,6 +2962,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_19_120000) do
   add_foreign_key "hangar_pledge_item_model_paints", "model_paints", on_delete: :cascade
   add_foreign_key "hangar_pledge_items", "components", on_delete: :nullify
   add_foreign_key "hangar_pledge_items", "equipment", on_delete: :nullify
+  add_foreign_key "hangar_pledge_items", "inventory_items", on_delete: :nullify
   add_foreign_key "hangar_pledge_items", "users", on_delete: :cascade
   add_foreign_key "hardpoint_builds", "hardpoints", on_delete: :cascade
   add_foreign_key "hardpoints", "components"

@@ -50,6 +50,7 @@ resource :hangar, only: %i[show destroy] do
   resources :hangar_inventories, path: "inventories", param: :slug, only: %i[index show create update destroy] do
     resources :hangar_inventory_items, path: "items", only: %i[index create update destroy] do
       post :import, on: :collection
+      post "from-pledge-items", on: :collection, to: "hangar_inventory_items#add_pledge_items"
     end
     get "stock", to: "hangar_inventory_stock#index"
     get "stock/:slug", to: "hangar_inventory_stock#show", as: "stock_item"

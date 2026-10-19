@@ -10,6 +10,12 @@ class HangarPledgeItem < ApplicationRecord
 
   KINDS = %w[paint flair equipment ccu ship_component].freeze
 
+  # The kinds that are things to keep in an inventory.
+  INVENTORY_KINDS = %w[ship_component equipment].freeze
+
+  # The component categories the inventory ledger files as weapons.
+  WEAPON_CATEGORIES = %w[weapons weapon_mounts turret].freeze
+
   DEFAULT_SORTING_PARAMS = [].freeze
   ALLOWED_SORTING_PARAMS = ["meltValue asc", "meltValue desc"].freeze
 
@@ -19,6 +25,10 @@ class HangarPledgeItem < ApplicationRecord
   # one was found.
   belongs_to :catalogue_component, class_name: "Component", foreign_key: :component_id, optional: true
   belongs_to :catalogue_equipment, class_name: "Equipment", foreign_key: :equipment_id, optional: true
+
+  # The deposit the item became, once added to an inventory: a second add skips
+  # it rather than doubling the stock.
+  belongs_to :inventory_item, optional: true
 
   has_many :model_paint_links, class_name: "HangarPledgeItemModelPaint", dependent: nil
   has_many :model_paints, through: :model_paint_links
@@ -32,6 +42,7 @@ class HangarPledgeItem < ApplicationRecord
   scope :flair, -> { where(kind: "flair") }
   scope :equipment, -> { where(kind: "equipment") }
   scope :ship_components, -> { where(kind: "ship_component") }
+  scope :for_inventory, -> { where(kind: INVENTORY_KINDS) }
   scope :with_value, -> { where(pledge_value: 0.01..) }
 
   scope :upgrade_from_model_slug_eq, ->(slug) { upgrade_for_model(slug, 1) }
@@ -112,5 +123,27 @@ class HangarPledgeItem < ApplicationRecord
 
   def self.ransackable_associations(_auth_object = nil)
     []
+  end
+
+  # The deposit this item makes in an inventory: as many as the pledge lists,
+  # referring to the catalogue item where the sync matched one.
+  def inventory_entry_attributes
+    catalogued = catalogue_component || catalogue_equipment
+
+    {
+      name:,
+      category: inventory_category,
+      quantity:,
+      unit: "units",
+      entry_type: "deposit",
+      item_type: catalogued&.class&.name,
+      item_id: catalogued&.id
+    }
+  end
+
+  private def inventory_category
+    return "equipment" if kind == "equipment"
+
+    WEAPON_CATEGORIES.include?(catalogue_component&.category) ? "weapon" : "component"
   end
 end

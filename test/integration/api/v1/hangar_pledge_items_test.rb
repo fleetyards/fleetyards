@@ -182,6 +182,19 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/ship-components names the inventory an item was added to" do
+    user = create(:user)
+    inventory = create(:inventory, holder: user, name: "Spare Parts")
+    entry = inventory.inventory_items.create!(name: "BriskAir IC-20", category: "component", quantity: 1,
+      unit: "units", entry_type: "deposit")
+    create(:hangar_pledge_item, user:, kind: "ship_component", name: "BriskAir IC-20", inventory_item: entry)
+    sign_in user
+
+    assert_api_response :get, 200, api_path: "/hangar/ship-components" do
+      assert_equal({"name" => "Spare Parts", "slug" => inventory.slug}, parsed_body["items"].sole["inventory"])
+    end
+  end
+
   test "GET /hangar/equipment names the catalogue gear a piece was matched to" do
     user = create(:user)
     rifle = create(:equipment, name: "P4-AR Rifle", equipment_type: "weapon")

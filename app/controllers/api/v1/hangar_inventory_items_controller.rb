@@ -12,10 +12,40 @@ module Api
         only: %i[index]
       before_action -> { doorkeeper_authorize! "hangar", "hangar:write" },
         unless: :user_signed_in?,
-        only: %i[create update destroy import]
+        only: %i[create update destroy import add_pledge_items]
 
       before_action :check_hangar_inventories_feature
       before_action :set_inventory_item, only: %i[update destroy]
+
+      # Deposits each given ship component or piece of gear once, and links it to
+      # its deposit. An item already added is skipped, so adding a selection
+      # twice never doubles the stock. The items are locked while they are
+      # added, so two requests cannot both find one not yet added.
+      def add_pledge_items
+        authorize! provisioned_inventory.inventory_items.new, to: :create?, with: inventory_item_policy
+
+        added = []
+        skipped = []
+
+        ActiveRecord::Base.transaction do
+          pledge_items = current_resource_owner.hangar_pledge_items.for_inventory
+            .where(id: Array(params[:pledge_item_ids]))
+            .includes(:catalogue_component, :catalogue_equipment)
+            .lock
+
+          added, skipped = pledge_items.partition { |item| item.inventory_item_id.nil? }
+
+          added.each do |item|
+            entry = provisioned_inventory.inventory_items.create!(item.inventory_entry_attributes)
+            item.update!(inventory_item: entry)
+          end
+        end
+
+        render json: {addedPledgeItemIds: added.map(&:id), skippedPledgeItemIds: skipped.map(&:id)}
+      rescue ActiveRecord::RecordInvalid => error
+        render json: ValidationError.new("#{validation_error_scope}.add_pledge_items", errors: error.record.errors),
+          status: :bad_request
+      end
 
       private def inventory
         @inventory ||= current_resource_owner.inventories.addressable_by_slug.find_by!(slug: params[:hangar_inventory_slug])
