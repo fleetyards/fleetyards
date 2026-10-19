@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import FilterGroup from "@/shared/components/FilterGroup/index.vue";
 import RadioList from "@/shared/components/base/RadioList/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
@@ -95,6 +96,15 @@ watch(
 const submit = () => {
   filter(form.value);
 };
+const hasGroupFilters = (keys: string[]) =>
+  keys.some((key) => {
+    const value = (filters.value as Record<string, unknown>)[key];
+    return (
+      value != null &&
+      value !== "" &&
+      (!Array.isArray(value) || value.length > 0)
+    );
+  });
 </script>
 
 <template>
@@ -109,167 +119,207 @@ const submit = () => {
         :clearable="true"
       />
     </Teleport>
+    <FilterGroup
+      :label="t('filteredList.groups.ship')"
+      :active="
+        hasGroupFilters([
+          'modelNameCont',
+          'manufacturerIn',
+          'productionStatusIn',
+          'classificationIn',
+          'focusIn',
+          'sizeIn',
+        ])
+      "
+      default-open
+    >
+      <FormInput
+        id="model-name"
+        name="model-name"
+        v-model="form.modelNameCont"
+        translation-key="filters.models.name"
+        :no-label="true"
+        :clearable="true"
+      />
 
-    <FormInput
-      id="model-name"
-      name="model-name"
-      v-model="form.modelNameCont"
-      translation-key="filters.models.name"
-      :no-label="true"
-      :clearable="true"
-    />
+      <ManufacturerSelect v-model="form.manufacturerIn" name="manufacturer" />
 
-    <FleetMemberSelect
-      v-model="form.memberIn"
-      :fleet-slug="route.params.slug as string"
-      name="member"
-    />
+      <ProductionStatusSelect
+        v-model="form.productionStatusIn"
+        name="production-status"
+      />
 
-    <ManufacturerSelect v-model="form.manufacturerIn" name="manufacturer" />
+      <ClassificationSelect
+        v-model="form.classificationIn"
+        name="classification"
+      />
 
-    <ProductionStatusSelect
-      v-model="form.productionStatusIn"
-      name="production-status"
-    />
+      <FocusSelect v-model="form.focusIn" name="focus" />
 
-    <ClassificationSelect
-      v-model="form.classificationIn"
-      name="classification"
-    />
+      <SizeSelect v-model="form.sizeIn" name="size" />
+    </FilterGroup>
 
-    <FocusSelect v-model="form.focusIn" name="focus" />
-
-    <SizeSelect v-model="form.sizeIn" name="size" />
-
-    <BaseSelect
-      v-model="form.pledgePriceIn"
-      :options="pledgePriceOptions"
-      :label="t('labels.filters.models.pledgePrice')"
-      name="pledge-price"
-      :multiple="true"
-      :no-label="true"
-    />
-
-    <BaseSelect
-      v-model="form.priceIn"
-      :options="priceOptions"
-      :label="t('labels.filters.models.price')"
-      name="price"
-      :multiple="true"
-      :no-label="true"
-    />
-
-    <div class="row">
-      <div class="col-6">
-        <FormInput
-          v-model="form.cargoGteq"
-          name="fleet-cargo-gteq"
-          type="number"
-          :min="0"
-          translation-key="filters.models.cargoGt"
-          :no-placeholder="true"
-        />
-      </div>
-      <div class="col-6">
-        <FormInput
-          v-model="form.cargoLteq"
-          name="fleet-cargo-lteq"
-          type="number"
-          :min="0"
-          translation-key="filters.models.cargoLt"
-          :no-placeholder="true"
-        />
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-6">
-        <FormInput
-          id="model-length-gteq"
-          name="model-length-gteq"
-          v-model="form.lengthGteq"
-          type="number"
-          translation-key="filters.vehicles.lengthGt"
-          :no-placeholder="true"
-        />
-      </div>
-      <div class="col-6">
-        <FormInput
-          id="model-length-lteq"
-          name="model-length-lteq"
-          v-model="form.lengthLteq"
-          type="number"
-          translation-key="filters.vehicles.lengthLt"
-          no-placeholder
-        />
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-6">
-        <FormInput
-          id="model-pledge-price-gteq"
-          name="model-pledge-price-gteq"
-          v-model="form.pledgePriceGteq"
-          type="number"
-          translation-key="filters.vehicles.pledgePriceGt"
-          :no-placeholder="true"
-        />
+    <FilterGroup
+      :label="t('filteredList.groups.capacity')"
+      :active="
+        hasGroupFilters(['cargoGteq', 'cargoLteq', 'lengthGteq', 'lengthLteq'])
+      "
+    >
+      <div class="row">
+        <div class="col-6">
+          <FormInput
+            v-model="form.cargoGteq"
+            name="fleet-cargo-gteq"
+            type="number"
+            :min="0"
+            translation-key="filters.models.cargoGt"
+            :no-placeholder="true"
+          />
+        </div>
+        <div class="col-6">
+          <FormInput
+            v-model="form.cargoLteq"
+            name="fleet-cargo-lteq"
+            type="number"
+            :min="0"
+            translation-key="filters.models.cargoLt"
+            :no-placeholder="true"
+          />
+        </div>
       </div>
 
-      <div class="col-6">
-        <FormInput
-          id="model-pledge-price-lteq"
-          name="model-pledge-price-lteq"
-          v-model="form.pledgePriceLteq"
-          type="number"
-          translation-key="filters.vehicles.pledgePriceLt"
-          :no-placeholder="true"
-        />
+      <div class="row">
+        <div class="col-6">
+          <FormInput
+            id="model-length-gteq"
+            name="model-length-gteq"
+            v-model="form.lengthGteq"
+            type="number"
+            translation-key="filters.vehicles.lengthGt"
+            :no-placeholder="true"
+          />
+        </div>
+        <div class="col-6">
+          <FormInput
+            id="model-length-lteq"
+            name="model-length-lteq"
+            v-model="form.lengthLteq"
+            type="number"
+            translation-key="filters.vehicles.lengthLt"
+            no-placeholder
+          />
+        </div>
       </div>
-    </div>
+    </FilterGroup>
 
-    <FormInput
-      id="model-price-gteq"
-      name="model-price-gteq"
-      v-model="form.priceGteq"
-      type="number"
-      translation-key="filters.vehicles.priceGt"
-    />
+    <FilterGroup
+      :label="t('filteredList.groups.price')"
+      :active="
+        hasGroupFilters([
+          'pledgePriceIn',
+          'priceIn',
+          'pledgePriceGteq',
+          'pledgePriceLteq',
+          'priceGteq',
+          'priceLteq',
+          'onSaleEq',
+        ])
+      "
+    >
+      <BaseSelect
+        v-model="form.pledgePriceIn"
+        :options="pledgePriceOptions"
+        :label="t('labels.filters.models.pledgePrice')"
+        name="pledge-price"
+        :multiple="true"
+        :no-label="true"
+      />
 
-    <FormInput
-      id="model-price-lteq"
-      name="model-price-lteq"
-      v-model="form.priceLteq"
-      type="number"
-      translation-key="filters.vehicles.priceLt"
-    />
+      <BaseSelect
+        v-model="form.priceIn"
+        :options="priceOptions"
+        :label="t('labels.filters.models.price')"
+        name="price"
+        :multiple="true"
+        :no-label="true"
+      />
 
-    <RadioList
-      v-model="form.onSaleEq"
-      :label="t('labels.filters.models.onSale')"
-      :reset-label="t('labels.all')"
-      :options="booleanOptions"
-      name="sale"
-    />
+      <div class="row">
+        <div class="col-6">
+          <FormInput
+            id="model-pledge-price-gteq"
+            name="model-pledge-price-gteq"
+            v-model="form.pledgePriceGteq"
+            type="number"
+            translation-key="filters.vehicles.pledgePriceGt"
+            :no-placeholder="true"
+          />
+        </div>
 
-    <RadioList
-      v-model="form.loanerEq"
-      :label="t('labels.filters.vehicles.loaner')"
-      :reset-label="t('labels.hide')"
-      :options="[
-        {
-          label: 'Show',
-          value: 'true',
-        },
-        {
-          label: 'Only',
-          value: 'only',
-        },
-      ]"
-      name="loaner"
-    />
+        <div class="col-6">
+          <FormInput
+            id="model-pledge-price-lteq"
+            name="model-pledge-price-lteq"
+            v-model="form.pledgePriceLteq"
+            type="number"
+            translation-key="filters.vehicles.pledgePriceLt"
+            :no-placeholder="true"
+          />
+        </div>
+      </div>
 
+      <FormInput
+        id="model-price-gteq"
+        name="model-price-gteq"
+        v-model="form.priceGteq"
+        type="number"
+        translation-key="filters.vehicles.priceGt"
+      />
+
+      <FormInput
+        id="model-price-lteq"
+        name="model-price-lteq"
+        v-model="form.priceLteq"
+        type="number"
+        translation-key="filters.vehicles.priceLt"
+      />
+
+      <RadioList
+        v-model="form.onSaleEq"
+        :label="t('labels.filters.models.onSale')"
+        :reset-label="t('labels.all')"
+        :options="booleanOptions"
+        name="sale"
+      />
+    </FilterGroup>
+
+    <FilterGroup
+      :label="t('filteredList.groups.ownership')"
+      :active="hasGroupFilters(['memberIn', 'loanerEq'])"
+    >
+      <FleetMemberSelect
+        v-model="form.memberIn"
+        :fleet-slug="route.params.slug as string"
+        name="member"
+      />
+
+      <RadioList
+        v-model="form.loanerEq"
+        :label="t('labels.filters.vehicles.loaner')"
+        :reset-label="t('labels.hide')"
+        :options="[
+          {
+            label: 'Show',
+            value: 'true',
+          },
+          {
+            label: 'Only',
+            value: 'only',
+          },
+        ]"
+        name="loaner"
+      />
+    </FilterGroup>
     <Btn :disabled="!isFilterSelected" :block="true" @click="resetFilter">
       <i class="fa-light fa-times" />
       {{ t("actions.resetFilter") }}

@@ -15,6 +15,8 @@ type Props = {
   dot?: string;
   count?: number;
   disabled?: boolean;
+  /** One-shot actions, such as removing a filter, have no pressed state. */
+  toggleable?: boolean;
   /** Renders a secondary action button inside the frame and emits `edit`. */
   editable?: boolean;
   editLabel?: string;
@@ -39,6 +41,7 @@ const props = withDefaults(defineProps<Props>(), {
   dot: undefined,
   count: undefined,
   disabled: false,
+  toggleable: true,
   editable: false,
   editLabel: undefined,
   sortable: false,
@@ -93,7 +96,9 @@ const toggleProps = computed(() => {
   return {
     type: "button",
     disabled: props.disabled,
-    "aria-pressed": props.state === ChipStatesEnum.INCLUDED,
+    "aria-pressed": props.toggleable
+      ? props.state === ChipStatesEnum.INCLUDED
+      : undefined,
   };
 });
 

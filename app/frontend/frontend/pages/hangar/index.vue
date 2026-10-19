@@ -5,6 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { useShipFilterSummary } from "@/frontend/composables/useShipFilterSummary";
+
 import DuotoneGlyph from "@/shared/components/DuotoneGlyph/index.vue";
 import { SHIP_GLYPH } from "@/shared/glyphs/ships";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
@@ -420,6 +422,7 @@ const openDisplayOptionsModal = () => {
       import("@/frontend/components/Hangar/DisplayOptionsModal/index.vue"),
   });
 };
+const { activeFilters } = useShipFilterSummary();
 </script>
 
 <template>
@@ -584,6 +587,7 @@ const openDisplayOptionsModal = () => {
   </Teleport>
 
   <FilteredList
+    :active-filters="activeFilters"
     key="hangar"
     :hide-loading="fleetchartVisible || !gridView || showTourExample"
     :hide-empty="!gridView || showTourExample"

@@ -4,6 +4,16 @@
       "actions": {
         "showFilter": "Show Filters",
         "hideFilter": "Hide Filters"
+      },
+      "selected": "Selected filters",
+      "remove": "Remove %{filter}",
+      "more": "+%{count} more",
+      "title": "Filters",
+      "groups": {
+        "ship": "Ship",
+        "capacity": "Capacity & dimensions",
+        "price": "Price",
+        "ownership": "Ownership"
       }
     }
   }

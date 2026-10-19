@@ -5,6 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup generic="T">
+import ActiveFilters from "@/shared/components/ActiveFilters/index.vue";
+import type { ActiveFilter } from "@/shared/components/ActiveFilters/types";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import PaginatorAboveList from "@/shared/components/Paginator/AboveList/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
@@ -36,6 +38,7 @@ type Props = {
   records: T[];
   asyncStatus: AsyncStatus;
   staticFilters?: boolean;
+  activeFilters?: ActiveFilter[];
   hideEmpty?: boolean;
   hideLoading?: boolean;
   isFilterSelected?: boolean;
@@ -51,6 +54,7 @@ type Props = {
 
 const props = withDefaults(defineProps<Props>(), {
   staticFilters: false,
+  activeFilters: undefined,
   hideEmpty: false,
   hideLoading: false,
   isFilterSelected: undefined,
@@ -324,6 +328,9 @@ const toggleFilter = () => {
     filtersStore.toggle(props.name);
   }
 };
+const openFilters = () => {
+  if (!filterVisible.value) toggleFilter();
+};
 </script>
 
 <template>
@@ -343,10 +350,20 @@ const toggleFilter = () => {
               v-tooltip="filterTooltip"
               :active="filterVisible"
               :aria-label="filterTooltip"
+              :aria-expanded="filterVisible"
               @click="toggleFilter"
             >
-              <i v-if="isFilterSelected" class="fa-solid fa-filter" />
+              <i
+                v-if="isFilterSelected || activeFilters?.length"
+                class="fa-solid fa-filter"
+              />
               <i v-else class="fa-regular fa-filter" />
+              <span v-if="activeFilters !== undefined"
+                >{{ t("filteredList.title")
+                }}<template v-if="activeFilters.length">
+                  · {{ activeFilters.length }}</template
+                ></span
+              >
             </Btn>
             <slot name="actions-left" :records="records" />
           </div>
@@ -378,10 +395,20 @@ const toggleFilter = () => {
             @after-leave="toggleFullscreen"
           >
             <div v-show="filterVisible" class="col-12 col-md-3 col-xxl-2">
+              <ActiveFilters
+                v-if="activeFilters"
+                :filters="activeFilters"
+                expanded
+              />
               <slot v-if="!filterFormReset" name="filter" />
             </div>
           </transition>
           <div v-else v-show="filterVisible">
+            <ActiveFilters
+              v-if="activeFilters"
+              :filters="activeFilters"
+              expanded
+            />
             <slot v-if="!filterFormReset" name="filter" />
           </div>
         </Teleport>
@@ -396,6 +423,11 @@ const toggleFilter = () => {
                gone until the first page arrives -- and the sort line is a
                control, not a result. It stays put while the list loads, while
                it is empty, and while it refetches under a new order. -->
+          <ActiveFilters
+            v-if="activeFilters"
+            :filters="activeFilters"
+            @open="openFilters"
+          />
           <slot name="sort" />
 
           <slot v-if="error" name="error">

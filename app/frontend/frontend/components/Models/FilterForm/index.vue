@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import FilterGroup from "@/shared/components/FilterGroup/index.vue";
 import RadioList from "@/shared/components/base/RadioList/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import ManufacturerSelect from "@/frontend/components/base/ManufacturerSelect/index.vue";
@@ -87,6 +88,15 @@ watch(
 );
 
 const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
+const hasGroupFilters = (keys: string[]) =>
+  keys.some((key) => {
+    const value = (filters.value as Record<string, unknown>)[key];
+    return (
+      value != null &&
+      value !== "" &&
+      (!Array.isArray(value) || value.length > 0)
+    );
+  });
 </script>
 
 <template>
@@ -101,199 +111,246 @@ const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
         :clearable="true"
       />
     </Teleport>
-    <FormInput
-      v-model="form.nameCont"
-      name="model-name"
-      translation-key="filters.models.name"
-      :no-label="true"
-      :clearable="true"
-    />
+    <FilterGroup
+      :label="t('filteredList.groups.ship')"
+      :active="
+        hasGroupFilters([
+          'nameCont',
+          'manufacturerIn',
+          'productionStatusIn',
+          'classificationIn',
+          'focusIn',
+          'sizeIn',
+          'ingameOnlyEq',
+        ])
+      "
+      default-open
+    >
+      <FormInput
+        v-model="form.nameCont"
+        name="model-name"
+        translation-key="filters.models.name"
+        :no-label="true"
+        :clearable="true"
+      />
 
-    <ManufacturerSelect v-model="form.manufacturerIn" name="manufacturer" />
+      <ManufacturerSelect v-model="form.manufacturerIn" name="manufacturer" />
 
-    <ProductionStatusSelect
-      v-model="form.productionStatusIn"
-      name="production-status"
-    />
+      <ProductionStatusSelect
+        v-model="form.productionStatusIn"
+        name="production-status"
+      />
 
-    <ClassificationSelect
-      v-model="form.classificationIn"
-      name="classification"
-    />
+      <ClassificationSelect
+        v-model="form.classificationIn"
+        name="classification"
+      />
 
-    <FocusSelect v-model="form.focusIn" name="focus" />
+      <FocusSelect v-model="form.focusIn" name="focus" />
 
-    <SizeSelect v-model="form.sizeIn" name="size" />
+      <SizeSelect v-model="form.sizeIn" name="size" />
 
-    <BaseSelect
-      v-model="form.pledgePriceIn"
-      :options="pledgePriceOptions"
-      :label="t('labels.filters.models.pledgePrice')"
-      name="pledge-price"
-      :multiple="true"
-      :no-label="true"
-    />
+      <RadioList
+        v-model="form.ingameOnlyEq"
+        :label="t('labels.filters.models.ingameOnly')"
+        :reset-label="t('labels.all')"
+        :options="booleanOptions"
+        name="ingame-only"
+      />
+    </FilterGroup>
 
-    <BaseSelect
-      v-model="form.priceIn"
-      :options="priceOptions"
-      :label="t('labels.filters.models.price')"
-      name="price"
-      :multiple="true"
-      :no-label="true"
-    />
+    <FilterGroup
+      :label="t('filteredList.groups.capacity')"
+      :active="
+        hasGroupFilters([
+          'willItFit',
+          'cargoGteq',
+          'cargoLteq',
+          'lengthGteq',
+          'lengthLteq',
+          'beamGteq',
+          'beamLteq',
+          'heightGteq',
+          'heightLteq',
+          'withCargo',
+        ])
+      "
+    >
+      <WillItFitSelect v-model="form.willItFit" name="will-it-fit" />
 
-    <WillItFitSelect v-model="form.willItFit" name="will-it-fit" />
-
-    <div class="row">
-      <div class="col-6">
-        <FormInput
-          v-model="form.cargoGteq"
-          name="model-cargo-gteq"
-          type="number"
-          :min="0"
-          translation-key="filters.models.cargoGt"
-          :no-placeholder="true"
-        />
-      </div>
-      <div class="col-6">
-        <FormInput
-          v-model="form.cargoLteq"
-          name="model-cargo-lteq"
-          type="number"
-          :min="0"
-          translation-key="filters.models.cargoLt"
-          :no-placeholder="true"
-        />
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-6">
-        <FormInput
-          v-model="form.lengthGteq"
-          name="model-length-gteq"
-          :type="InputTypesEnum.NUMBER"
-          translation-key="filters.models.lengthGt"
-          :no-placeholder="true"
-        />
-      </div>
-
-      <div class="col-6">
-        <FormInput
-          v-model="form.lengthLteq"
-          name="model-length-lteq"
-          :type="InputTypesEnum.NUMBER"
-          translation-key="filters.models.lengthLt"
-          :no-placeholder="true"
-        />
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-6">
-        <FormInput
-          v-model="form.beamGteq"
-          name="model-beam-gteq"
-          :type="InputTypesEnum.NUMBER"
-          translation-key="filters.models.beamGt"
-          :no-placeholder="true"
-        />
+      <div class="row">
+        <div class="col-6">
+          <FormInput
+            v-model="form.cargoGteq"
+            name="model-cargo-gteq"
+            type="number"
+            :min="0"
+            translation-key="filters.models.cargoGt"
+            :no-placeholder="true"
+          />
+        </div>
+        <div class="col-6">
+          <FormInput
+            v-model="form.cargoLteq"
+            name="model-cargo-lteq"
+            type="number"
+            :min="0"
+            translation-key="filters.models.cargoLt"
+            :no-placeholder="true"
+          />
+        </div>
       </div>
 
-      <div class="col-6">
-        <FormInput
-          v-model="form.beamLteq"
-          name="model-beam-lteq"
-          :type="InputTypesEnum.NUMBER"
-          translation-key="filters.models.beamLt"
-          :no-placeholder="true"
-        />
+      <div class="row">
+        <div class="col-6">
+          <FormInput
+            v-model="form.lengthGteq"
+            name="model-length-gteq"
+            :type="InputTypesEnum.NUMBER"
+            translation-key="filters.models.lengthGt"
+            :no-placeholder="true"
+          />
+        </div>
+
+        <div class="col-6">
+          <FormInput
+            v-model="form.lengthLteq"
+            name="model-length-lteq"
+            :type="InputTypesEnum.NUMBER"
+            translation-key="filters.models.lengthLt"
+            :no-placeholder="true"
+          />
+        </div>
       </div>
-    </div>
 
-    <div class="row">
-      <div class="col-6">
-        <FormInput
-          v-model="form.heightGteq"
-          name="model-height-gteq"
-          :type="InputTypesEnum.NUMBER"
-          translation-key="filters.models.heightGt"
-          :no-placeholder="true"
-        />
+      <div class="row">
+        <div class="col-6">
+          <FormInput
+            v-model="form.beamGteq"
+            name="model-beam-gteq"
+            :type="InputTypesEnum.NUMBER"
+            translation-key="filters.models.beamGt"
+            :no-placeholder="true"
+          />
+        </div>
+
+        <div class="col-6">
+          <FormInput
+            v-model="form.beamLteq"
+            name="model-beam-lteq"
+            :type="InputTypesEnum.NUMBER"
+            translation-key="filters.models.beamLt"
+            :no-placeholder="true"
+          />
+        </div>
       </div>
 
-      <div class="col-6">
-        <FormInput
-          v-model="form.heightLteq"
-          name="model-height-lteq"
-          :type="InputTypesEnum.NUMBER"
-          translation-key="filters.models.heightLt"
-          :no-placeholder="true"
-        />
+      <div class="row">
+        <div class="col-6">
+          <FormInput
+            v-model="form.heightGteq"
+            name="model-height-gteq"
+            :type="InputTypesEnum.NUMBER"
+            translation-key="filters.models.heightGt"
+            :no-placeholder="true"
+          />
+        </div>
+
+        <div class="col-6">
+          <FormInput
+            v-model="form.heightLteq"
+            name="model-height-lteq"
+            :type="InputTypesEnum.NUMBER"
+            translation-key="filters.models.heightLt"
+            :no-placeholder="true"
+          />
+        </div>
       </div>
-    </div>
 
-    <div class="row">
-      <div class="col-6">
-        <FormInput
-          v-model="form.pledgePriceGteq"
-          name="model-pledge-price-gteq"
-          :type="InputTypesEnum.NUMBER"
-          translation-key="filters.models.pledgePriceGt"
-          :no-placeholder="true"
-        />
+      <FormToggle
+        v-model="form.withCargo"
+        :label="t('labels.filters.models.withCargo')"
+        name="withCargo"
+      />
+    </FilterGroup>
+
+    <FilterGroup
+      :label="t('filteredList.groups.price')"
+      :active="
+        hasGroupFilters([
+          'pledgePriceIn',
+          'priceIn',
+          'pledgePriceGteq',
+          'pledgePriceLteq',
+          'priceGteq',
+          'priceLteq',
+          'onSaleEq',
+        ])
+      "
+    >
+      <BaseSelect
+        v-model="form.pledgePriceIn"
+        :options="pledgePriceOptions"
+        :label="t('labels.filters.models.pledgePrice')"
+        name="pledge-price"
+        :multiple="true"
+        :no-label="true"
+      />
+
+      <BaseSelect
+        v-model="form.priceIn"
+        :options="priceOptions"
+        :label="t('labels.filters.models.price')"
+        name="price"
+        :multiple="true"
+        :no-label="true"
+      />
+
+      <div class="row">
+        <div class="col-6">
+          <FormInput
+            v-model="form.pledgePriceGteq"
+            name="model-pledge-price-gteq"
+            :type="InputTypesEnum.NUMBER"
+            translation-key="filters.models.pledgePriceGt"
+            :no-placeholder="true"
+          />
+        </div>
+        <div class="col-6">
+          <FormInput
+            v-model="form.pledgePriceLteq"
+            name="model-pledge-price-lteq"
+            :type="InputTypesEnum.NUMBER"
+            translation-key="filters.models.pledgePriceLt"
+            :no-placeholder="true"
+          />
+        </div>
       </div>
-      <div class="col-6">
-        <FormInput
-          v-model="form.pledgePriceLteq"
-          name="model-pledge-price-lteq"
-          :type="InputTypesEnum.NUMBER"
-          translation-key="filters.models.pledgePriceLt"
-          :no-placeholder="true"
-        />
-      </div>
-    </div>
 
-    <FormInput
-      v-model="form.priceGteq"
-      name="model-price-gteq"
-      :type="InputTypesEnum.NUMBER"
-      translation-key="filters.models.priceGt"
-      :no-placeholder="true"
-    />
+      <FormInput
+        v-model="form.priceGteq"
+        name="model-price-gteq"
+        :type="InputTypesEnum.NUMBER"
+        translation-key="filters.models.priceGt"
+        :no-placeholder="true"
+      />
 
-    <FormInput
-      v-model="form.priceLteq"
-      name="model-price-lteq"
-      :type="InputTypesEnum.NUMBER"
-      translation-key="filters.models.priceLt"
-      :no-placeholder="true"
-    />
+      <FormInput
+        v-model="form.priceLteq"
+        name="model-price-lteq"
+        :type="InputTypesEnum.NUMBER"
+        translation-key="filters.models.priceLt"
+        :no-placeholder="true"
+      />
 
-    <RadioList
-      v-model="form.onSaleEq"
-      :label="t('labels.filters.models.onSale')"
-      :reset-label="t('labels.all')"
-      :options="booleanOptions"
-      name="sale"
-    />
-
-    <RadioList
-      v-model="form.ingameOnlyEq"
-      :label="t('labels.filters.models.ingameOnly')"
-      :reset-label="t('labels.all')"
-      :options="booleanOptions"
-      name="ingame-only"
-    />
-
-    <FormToggle
-      v-model="form.withCargo"
-      :label="t('labels.filters.models.withCargo')"
-      name="withCargo"
-    />
-
-    <br />
+      <RadioList
+        v-model="form.onSaleEq"
+        :label="t('labels.filters.models.onSale')"
+        :reset-label="t('labels.all')"
+        :options="booleanOptions"
+        name="sale"
+      />
+    </FilterGroup>
     <Btn :disabled="!isFilterSelected" :block="true" @click="resetFilter">
       <i class="fa-light fa-times" />
       {{ t("actions.resetFilter") }}
