@@ -109,6 +109,9 @@ export default defineConfig({
           "": "/vite/",
         },
         globPatterns: ["**/*.{js,css,ico,png,svg,woff2}"],
+        // The shared app chunk sat a few hundred bytes under the 2 MiB default,
+        // and a chunk over it fails the build rather than going uncached.
+        maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
       },
     }),
     Components({
