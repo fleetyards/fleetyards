@@ -6,6 +6,7 @@ import { useRoute } from "vue-router";
 import { flushPromises } from "@vue/test-utils";
 import Component from "./index.vue";
 import { usePaginationStore } from "@/shared/stores/pagination";
+import { useFiltersStore } from "@/shared/stores/filters";
 import type { AsyncStatus } from "@/shared/components/AsyncData.types";
 
 // The filter panel teleports to the off-canvas container the layout provides;
@@ -69,6 +70,11 @@ const router = createRouter({
     {
       path: "/ships",
       name: "ships",
+      component: { template: "<div />" },
+    },
+    {
+      path: "/elsewhere",
+      name: "elsewhere",
       component: { template: "<div />" },
     },
   ],
@@ -612,6 +618,71 @@ describe("FilteredList", () => {
     expect(wrapper.get(".filtered-list").classes()).toContain(
       "filtered-list--pagination-only",
     );
+  });
+
+  // The testing pinia stubs every action with a spy, which `spyOn` hands back.
+  const mountForFilterActions = async () => {
+    await router.push({ name: "ships" });
+
+    await mountWithDefaults<typeof ListComponent>(ListComponent, {
+      props: {
+        name: "test-list",
+        records: [],
+        asyncStatus: loaded(),
+        viewKeys: ["t"],
+      },
+      plugins: [router],
+    });
+
+    const store = useFiltersStore();
+
+    return {
+      saveFilter: vi.spyOn(store, "saveFilter"),
+      removeFilter: vi.spyOn(store, "removeFilter"),
+    };
+  };
+
+  it("saves the filter and sort it is shown with, not its view or page", async () => {
+    const { saveFilter } = await mountForFilterActions();
+
+    await router.push({
+      name: "ships",
+      query: { searchCont: "carrack", s: "name asc", t: "archive", page: "2" },
+    });
+    await flushPromises();
+
+    expect(saveFilter).toHaveBeenLastCalledWith("/ships", {
+      query: { searchCont: "carrack", s: "name asc" },
+      viewKeys: ["t"],
+    });
+  });
+
+  it("forgets the filter once the list is cleared", async () => {
+    const { removeFilter } = await mountForFilterActions();
+
+    await router.push({ name: "ships", query: { searchCont: "carrack" } });
+    await flushPromises();
+    removeFilter.mockClear();
+
+    await router.push({ name: "ships", query: { t: "archive" } });
+    await flushPromises();
+
+    expect(removeFilter).toHaveBeenCalledWith("/ships");
+  });
+
+  it("leaves its filter alone when the route moves on to another page", async () => {
+    const { saveFilter, removeFilter } = await mountForFilterActions();
+
+    await router.push({ name: "ships", query: { searchCont: "carrack" } });
+    await flushPromises();
+    saveFilter.mockClear();
+    removeFilter.mockClear();
+
+    await router.push({ path: "/elsewhere" });
+    await flushPromises();
+
+    expect(saveFilter).not.toHaveBeenCalled();
+    expect(removeFilter).not.toHaveBeenCalled();
   });
 
   it("leaves the paginator on the edge once it shares the toolbar", async () => {

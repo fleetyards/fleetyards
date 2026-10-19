@@ -94,9 +94,9 @@ const filterVisible = computed(() => {
 
 const route = useRoute();
 
-const filters = computed(() => {
-  return route.query.q || {};
-});
+// The route moves on before the list unmounts, and what it reads then is the
+// next page's query, not this list's.
+const listPath = route.path;
 
 const slots = useSlots();
 
@@ -226,6 +226,7 @@ const {
   resetFilter,
   hasResettableQuery,
   isFilterSelected: routeFiltered,
+  getQuery,
 } = useFilters({
   viewKeys: props.viewKeys,
 });
@@ -242,7 +243,7 @@ const resetQuery = async () => {
   filterFormReset.value = true;
   await nextTick();
 
-  filtersStore.removeFilter(props.name);
+  filtersStore.removeFilter(listPath);
   await resetFilter();
 
   filterFormReset.value = false;
@@ -261,13 +262,24 @@ const emptyVisible = computed(() => {
   );
 });
 
-watch(
-  () => filters.value,
-  () => {
-    saveFilters();
-  },
-  { deep: true },
-);
+const saveFilters = () => {
+  if (route.path !== listPath) return;
+
+  const query = getQuery();
+
+  if (!Object.keys(query).length) {
+    filtersStore.removeFilter(listPath);
+
+    return;
+  }
+
+  filtersStore.saveFilter(listPath, {
+    query,
+    viewKeys: props.viewKeys,
+  });
+};
+
+watch(() => route.query, saveFilters, { deep: true });
 
 const onOffCanvasClosed = ref();
 
@@ -296,18 +308,6 @@ watch(mobile, (isMobile, wasMobile) => {
     comlink.emit("close-off-canvas");
   }
 });
-
-const saveFilters = () => {
-  if (props.isFilterSelected) {
-    filtersStore.setFilter(props.name, {
-      ...filters.value,
-    });
-
-    return;
-  }
-
-  filtersStore.removeFilter(props.name);
-};
 
 const toggleFullscreen = () => {
   fullscreen.value = !filterVisible.value;

@@ -3,6 +3,7 @@ import { useRedirectBackStore } from "@/shared/stores/redirectBack";
 import { createWebHistory, type RouteLocation } from "vue-router";
 import { routes } from "@/admin/pages/routes";
 import { setupRouter, type FyRedirectRoute } from "@/shared/plugins/Router";
+import { restoreSavedFilter } from "@/shared/stores/filters";
 
 const beforeResolve = (to: RouteLocation): FyRedirectRoute | undefined => {
   const sessionStore = useSessionStore();
@@ -22,5 +23,7 @@ const router = setupRouter({
   beforeResolve,
   routes,
 });
+
+router.beforeEach(restoreSavedFilter);
 
 export default router;

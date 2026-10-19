@@ -5,6 +5,7 @@ import { useRedirectBackStore } from "@/shared/stores/redirectBack";
 import { type RouteLocation } from "vue-router";
 import { routes } from "@/frontend/pages/routes";
 import { setupRouter, type FyRedirectRoute } from "@/shared/plugins/Router";
+import { restoreSavedFilter } from "@/shared/stores/filters";
 import { ensureQueryData } from "@/frontend/utils/RouteGuards/queryData";
 import { featuresQueryOptions } from "@/frontend/composables/useFeatures";
 import { getFleetQueryOptions, type FeatureFlagName } from "@/services/fyApi";
@@ -128,5 +129,7 @@ const router = setupRouter({
   beforeEach,
   routes,
 });
+
+router.beforeEach(restoreSavedFilter);
 
 export default router;

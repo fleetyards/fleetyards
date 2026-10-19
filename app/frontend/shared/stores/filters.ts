@@ -1,27 +1,32 @@
 import { defineStore } from "pinia";
+import type { LocationQuery, RouteLocationNormalized } from "vue-router";
+import { FILTER_EXCLUDE_KEYS } from "@/shared/composables/useFilters";
 
-type FilterValue = {
-  [key: string]: string | number | boolean | null | string[] | number[];
+type SavedFilter = {
+  query: LocationQuery;
+  // A list's own view keys are no filter, so a link carrying only those still
+  // arrives unfiltered.
+  viewKeys: string[];
 };
 
 type FiltersState = {
   visibleFilters: string[];
-  filters: {
-    [key: string]: FilterValue;
+  savedFilters: {
+    [path: string]: SavedFilter;
   };
 };
+
+// `/ships` and `/ships/` are one list; see pageKey.
+export const filterKey = (path: string) => path.replace(/(.)\/$/, "$1");
 
 export const useFiltersStore = defineStore("filters", {
   state: (): FiltersState => ({
     visibleFilters: [],
-    filters: {},
+    savedFilters: {},
   }),
   getters: {
     isVisible: (state) => {
       return (filterName: string) => state.visibleFilters.includes(filterName);
-    },
-    getFilters: (state) => {
-      return (filterName: string) => state.filters[filterName] || {};
     },
   },
   actions: {
@@ -40,12 +45,46 @@ export const useFiltersStore = defineStore("filters", {
         (name) => name !== filterName,
       );
     },
-    setFilter(filterName: string, filterValue: FilterValue) {
-      this.filters[filterName] = filterValue;
+    saveFilter(path: string, filter: SavedFilter) {
+      this.savedFilters[filterKey(path)] = filter;
     },
-    removeFilter(filterName: string) {
-      delete this.filters[filterName];
+    removeFilter(path: string) {
+      delete this.savedFilters[filterKey(path)];
     },
   },
-  persist: true,
+  persist: {
+    pick: ["visibleFilters", "savedFilters"],
+  },
 });
+
+/*
+ * Arriving on a list without a filter of its own brings back the one it was
+ * left with. A link that does carry one wins, and so does a navigation within
+ * the list -- clearing the filters is one, and must stay cleared.
+ */
+export const restoreSavedFilter = (
+  to: RouteLocationNormalized,
+  from: RouteLocationNormalized,
+) => {
+  const key = filterKey(to.path);
+
+  if (from.matched.length && filterKey(from.path) === key) return;
+
+  const saved = useFiltersStore().savedFilters[key];
+
+  if (!saved) return;
+
+  const ownFilter = Object.keys(to.query).some(
+    (queryKey) =>
+      !FILTER_EXCLUDE_KEYS.includes(queryKey) &&
+      !saved.viewKeys.includes(queryKey),
+  );
+
+  if (ownFilter) return;
+
+  return {
+    path: to.path,
+    hash: to.hash,
+    query: { ...saved.query, ...to.query },
+  };
+};
