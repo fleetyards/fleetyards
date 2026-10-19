@@ -444,7 +444,7 @@ onUnmounted(() => {
             <TableRow
               v-for="record in props.records"
               v-else
-              :id="String(primaryValue(record))"
+              :id="String(props.rowKey?.(record) ?? primaryValue(record))"
               :key="props.rowKey?.(record) ?? primaryValue(record)"
               :clickable="props.rowClickable || selecting"
               :disabled="props.rowDisabled?.(record)"
