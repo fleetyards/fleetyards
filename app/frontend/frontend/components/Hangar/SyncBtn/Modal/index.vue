@@ -112,6 +112,7 @@ const syncToggles = [
   { name: "syncHangarFlair", label: "syncHangarFlair" },
   { name: "syncEquipment", label: "syncEquipment" },
   { name: "syncCcus", label: "syncCcus" },
+  { name: "syncShipComponents", label: "syncShipComponents" },
 ] as const;
 
 const filesUnmatchedIntoGroup = computed(
@@ -142,6 +143,9 @@ const skippedItems = computed(() => [
     ? []
     : [t("labels.syncExtension.pledgeItems.equipment")]),
   ...(hangarStore.syncCcus ? [] : [t("labels.syncExtension.pledgeItems.ccus")]),
+  ...(hangarStore.syncShipComponents
+    ? []
+    : [t("labels.syncExtension.pledgeItems.shipComponents")]),
 ]);
 
 // Only once Start could be pressed: a check mid-run would spend an RSI request
@@ -284,6 +288,7 @@ const start = () => {
     syncHangarFlair: hangarStore.syncHangarFlair,
     syncEquipment: hangarStore.syncEquipment,
     syncCcus: hangarStore.syncCcus,
+    syncShipComponents: hangarStore.syncShipComponents,
     unmatchedVehiclesAction: hangarStore.syncUnmatchedVehiclesAction,
     unmatchedHangarGroupId: filesUnmatchedIntoGroup.value
       ? hangarStore.syncUnmatchedHangarGroupId
@@ -467,6 +472,7 @@ const refreshPage = async () => {
           :sync-hangar-flair="hangarStore.syncHangarFlair"
           :sync-equipment="hangarStore.syncEquipment"
           :sync-ccus="hangarStore.syncCcus"
+          :sync-ship-components="hangarStore.syncShipComponents"
           @support-hint-dismiss="supportHintDismissed = true"
         />
       </div>

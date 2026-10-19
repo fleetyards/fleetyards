@@ -1278,6 +1278,13 @@
       },
       "vehicleLoadout": {
         "failure": "Impossibile salvare la configurazione."
+      },
+      "hangarPledgeItems": {
+        "addedToInventory": {
+          "one": "%{count} elemento aggiunto a %{inventory}",
+          "other": "%{count} elementi aggiunti a %{inventory}"
+        },
+        "addToInventoryFailed": "Non è stato possibile aggiungere gli elementi all'inventario."
       }
     }
   }

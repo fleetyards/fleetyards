@@ -56,7 +56,8 @@
         "imports": "Importaciones",
         "transfers": "Transferencias",
         "vehicleOverview": "Resumen de la nave",
-        "vehicleLog": "Cuaderno de bitácora"
+        "vehicleLog": "Cuaderno de bitácora",
+        "shipComponents": "Componentes de nave"
       },
       "requestPassword": "Solicitar contraseña",
       "changePassword": "Cambiar contraseña",

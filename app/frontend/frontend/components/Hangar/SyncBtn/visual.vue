@@ -61,6 +61,7 @@ const lastReadOf = (
     equipment: 0,
     ccu: 0,
     extra: 0,
+    shipComponent: 0,
     ...counts,
   };
 

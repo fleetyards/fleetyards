@@ -11134,6 +11134,58 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/inventories/{hangarInventorySlug}/items/from-pledge-items":
+    parameters:
+    - name: hangarInventorySlug
+      in: path
+      schema:
+        type: string
+      description: Inventory slug
+      required: true
+    post:
+      summary: Add Hangar Pledge Items to an Inventory
+      tags:
+      - HangarInventoryItems
+      operationId: addPledgeItemsToHangarInventory
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/AddPledgeItemsToInventoryInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AddPledgeItemsToInventoryResult"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/hangar/inventories/{hangarInventorySlug}/items/{id}":
     parameters:
     - name: hangarInventorySlug
@@ -12092,6 +12144,50 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/hangar/ship-components":
+    get:
+      summary: Hangar Ship Components
+      tags:
+      - Hangar
+      operationId: hangarShipComponents
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 48
+        required: false
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/HangarPledgeItemQuery"
+        style: deepObject
+        explode: true
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPledgeItems"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/hangar/stats":
     get:
       summary: Your Hangar Stats
@@ -20651,6 +20747,39 @@ components:
           format: email
       additionalProperties: false
       title: AccountUpdateInput
+    AddPledgeItemsToInventoryInput:
+      type: object
+      properties:
+        pledgeItemIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Ship components and FPS gear to add; any other pledge item
+            is ignored
+      additionalProperties: false
+      required:
+      - pledgeItemIds
+      title: AddPledgeItemsToInventoryInput
+    AddPledgeItemsToInventoryResult:
+      type: object
+      properties:
+        addedPledgeItemIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        skippedPledgeItemIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Items already in an inventory, left as they were
+      additionalProperties: false
+      required:
+      - addedPledgeItemIds
+      - skippedPledgeItemIds
+      title: AddPledgeItemsToInventoryResult
     AlliedFleet:
       type: object
       properties:
@@ -31253,6 +31382,10 @@ components:
         rsiPage:
           type: integer
           description: The page of the RSI hangar the pledge was last read from
+        catalogueItem:
+          "$ref": "#/components/schemas/HangarPledgeItemCatalogueItem"
+        inventory:
+          "$ref": "#/components/schemas/InventoryRef"
         createdAt:
           type: string
           format: date-time
@@ -31271,6 +31404,34 @@ components:
       - createdAt
       - updatedAt
       title: HangarPledgeItem
+    HangarPledgeItemCatalogueItem:
+      type: object
+      description: The catalogue item a ship component or piece of FPS gear was matched
+        to
+      properties:
+        itemType:
+          type: string
+          enum:
+          - Component
+          - Equipment
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        category:
+          type: string
+          description: The component's category, or the equipment's type
+        size:
+          type: string
+      additionalProperties: false
+      required:
+      - itemType
+      - id
+      - name
+      title: HangarPledgeItemCatalogueItem
     HangarPledgeItemKindEnum:
       type: string
       enum:
@@ -31278,11 +31439,13 @@ components:
       - flair
       - equipment
       - ccu
+      - ship_component
       x-enumNames:
       - PAINT
       - FLAIR
       - EQUIPMENT
       - CCU
+      - SHIP_COMPONENT
       title: HangarPledgeItemKindEnum
     HangarPledgeItemQuery:
       type: object
@@ -31557,6 +31720,8 @@ components:
               type: integer
             extra:
               type: integer
+            shipComponent:
+              type: integer
           additionalProperties: false
           required:
           - ship
@@ -31567,6 +31732,7 @@ components:
           - equipment
           - ccu
           - extra
+          - shipComponent
       additionalProperties: false
       required:
       - total
@@ -31671,6 +31837,11 @@ components:
             type: string
             format: uuid
         syncedCcus:
+          type: array
+          items:
+            type: string
+            format: uuid
+        syncedShipComponents:
           type: array
           items:
             type: string
@@ -39679,6 +39850,9 @@ components:
           type: boolean
           default: false
         syncEquipment:
+          type: boolean
+          default: false
+        syncShipComponents:
           type: boolean
           default: false
         unmatchedVehiclesAction:

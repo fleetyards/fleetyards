@@ -252,6 +252,7 @@
         "flair": "Decoración de hangar",
         "upgrades": "Mejoras / CCU",
         "equipment": "Equipo FPS",
+        "shipComponents": "Componentes de nave",
         "imports": "Importaciones"
       },
       "buybackSync": "Sincronizar pledges de recompra de RSI",

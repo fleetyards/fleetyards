@@ -415,6 +415,14 @@
       },
       "model": {
         "sectionEmpty": "%{model} n'a pas de %{section}."
+      },
+      "hangarPledgeItems": {
+        "addToInventory": "Chacun est ajouté autant de fois que son pledge le contient.",
+        "alreadyInInventory": {
+          "one": "%{count} élément est déjà dans un inventaire et y reste.",
+          "other": "%{count} éléments sont déjà dans un inventaire et y restent."
+        },
+        "noInventories": "Vous n'avez pas encore d'inventaire. Créez-en un, puis ajoutez-y vos éléments."
       }
     }
   }

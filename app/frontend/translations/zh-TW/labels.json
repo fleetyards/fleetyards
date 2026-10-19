@@ -2824,7 +2824,15 @@
         "partOf": "屬於 %{name}",
         "pledgeValue": "承諾價值",
         "quantity": "數量",
-        "search": "按名稱搜尋"
+        "search": "按名稱搜尋",
+        "shipComponents": "飛船部件",
+        "addToInventory": "加入庫存",
+        "inventory": "庫存",
+        "inInventory": "位於 %{name}",
+        "select": "選擇",
+        "andMore": {
+          "other": "以及另外 %{count} 項"
+        }
       },
       "buybacks": {
         "name": "可回購承諾",
@@ -2951,7 +2959,9 @@
           "ccus": "升級 / CCU",
           "ccusNotSynced": "CCU（未同步）",
           "equipmentNotSynced": "FPS 裝備（不會同步）",
-          "extras": "其他"
+          "extras": "其他",
+          "shipComponents": "飛船部件",
+          "shipComponentsNotSynced": "飛船部件（未同步）"
         },
         "importedItems": {
           "importedVehicles": "已新增飛船",
@@ -3012,7 +3022,8 @@
           "paints": "塗裝",
           "hangarFlair": "機庫裝飾",
           "equipment": "FPS 裝備",
-          "ccus": "CCU"
+          "ccus": "CCU",
+          "shipComponents": "飛船部件"
         },
         "newCount": {
           "one": "新增 1",
@@ -3041,7 +3052,9 @@
           "reading": "%{count} / 約 %{total} 項"
         },
         "viewImport": "檢視本次同步的匯入",
-        "lastSynced": "上次同步："
+        "lastSynced": "上次同步：",
+        "syncShipComponents": "同步飛船部件",
+        "syncShipComponentsHint": "用你 RSI 機庫中的飛船部件（冷卻器、發電機、武器等）取代已儲存的部件。關閉時保留已儲存的飛船部件。"
       },
       "cargoGridViewer": {
         "capacity": "容量",

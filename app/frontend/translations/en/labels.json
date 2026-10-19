@@ -2824,7 +2824,16 @@
         "partOf": "Part of %{name}",
         "pledgeValue": "Pledge value",
         "quantity": "Quantity",
-        "search": "Search by name"
+        "search": "Search by name",
+        "shipComponents": "Ship Components",
+        "addToInventory": "Add to inventory",
+        "inventory": "Inventory",
+        "inInventory": "In %{name}",
+        "select": "Select",
+        "andMore": {
+          "one": "and %{count} more",
+          "other": "and %{count} more"
+        }
       },
       "buybacks": {
         "name": "Buy-back pledges",
@@ -2951,7 +2960,9 @@
           "ccus": "Upgrades / CCUs",
           "ccusNotSynced": "CCUs (not synced)",
           "equipmentNotSynced": "FPS gear (not synced)",
-          "extras": "Other"
+          "extras": "Other",
+          "shipComponents": "Ship components",
+          "shipComponentsNotSynced": "Ship components (not synced)"
         },
         "importedItems": {
           "importedVehicles": "Added Ships",
@@ -3014,7 +3025,8 @@
           "paints": "Paints",
           "hangarFlair": "Hangar flair",
           "equipment": "FPS gear",
-          "ccus": "CCUs"
+          "ccus": "CCUs",
+          "shipComponents": "Ship components"
         },
         "newCount": {
           "one": "+1 new",
@@ -3043,7 +3055,9 @@
           "reading": "%{count} of about %{total} items"
         },
         "viewImport": "View this sync's import",
-        "lastSynced": "Last synced"
+        "lastSynced": "Last synced",
+        "syncShipComponents": "Sync ship components",
+        "syncShipComponentsHint": "Replaces your ship components (coolers, power plants, weapons, …) with those in your RSI hangar. Off keeps stored ship components unchanged."
       },
       "cargoGridViewer": {
         "capacity": "Capacity",

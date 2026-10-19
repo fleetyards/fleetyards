@@ -44,6 +44,7 @@ type Props = {
   syncHangarFlair?: boolean;
   syncEquipment?: boolean;
   syncCcus?: boolean;
+  syncShipComponents?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -57,6 +58,7 @@ const props = withDefaults(defineProps<Props>(), {
   syncHangarFlair: true,
   syncEquipment: true,
   syncCcus: true,
+  syncShipComponents: true,
 });
 
 defineEmits<{
@@ -65,15 +67,32 @@ defineEmits<{
 
 const { t } = useI18n();
 
-const countOf = (type: string) =>
-  props.pledges.filter((pledge) => pledge.type === type).length;
+type PledgeFilter = (pledge: RsiHangarItemInput) => boolean;
+
+const ofType =
+  (type: string): PledgeFilter =>
+  (pledge) =>
+    pledge.type === type;
+
+// RSI lists ship modules and ship parts alike as components. A module is named
+// as one, as the server tells them apart: it is fitted to a ship, and a part is
+// kept as a ship component.
+const MODULE_NAME = /\bmodule\b/i;
+
+const isModule: PledgeFilter = (pledge) =>
+  pledge.type === "component" && MODULE_NAME.test(pledge.name);
+
+const isShipPart: PledgeFilter = (pledge) =>
+  pledge.type === "component" && !MODULE_NAME.test(pledge.name);
+
+const countOf = (filter: PledgeFilter) => props.pledges.filter(filter).length;
 
 // The sync keeps one row per name in a pledge, with a quantity, so a poster
 // listed twice is counted once here too and the two steps agree.
-const rowsOf = (type: string) =>
+const rowsOf = (filter: PledgeFilter) =>
   new Set(
     props.pledges
-      .filter((pledge) => pledge.type === type)
+      .filter(filter)
       .map((pledge) => `${pledge.id}:${pledge.name.trim()}`),
   ).size;
 
@@ -121,28 +140,41 @@ const kind = (
 });
 
 const allReadCounts = computed<SyncCount[]>(() => [
-  kind("ships", "ship", countOf("ship")),
-  kind("components", "component", countOf("component")),
-  kind("upgrades", "upgrade", countOf("upgrade")),
-  kind("paints", "skin", rowsOf("skin"), props.syncPaints, "paints-not-synced"),
+  kind("ships", "ship", countOf(ofType("ship"))),
+  kind("components", "component", countOf(isModule)),
+  kind("upgrades", "upgrade", countOf(ofType("upgrade"))),
+  kind(
+    "paints",
+    "skin",
+    rowsOf(ofType("skin")),
+    props.syncPaints,
+    "paints-not-synced",
+  ),
   kind(
     "hangarFlair",
     "flair",
-    rowsOf("flair"),
+    rowsOf(ofType("flair")),
     props.syncHangarFlair,
     "hangar-flair-not-synced",
   ),
   kind(
     "equipment",
     "equipment",
-    rowsOf("equipment"),
+    rowsOf(ofType("equipment")),
     props.syncEquipment,
     "equipment-not-synced",
   ),
-  kind("ccus", "ccu", rowsOf("ccu"), props.syncCcus, "ccus-not-synced"),
+  kind("ccus", "ccu", rowsOf(ofType("ccu")), props.syncCcus, "ccus-not-synced"),
+  kind(
+    "shipComponents",
+    "shipComponent",
+    rowsOf(isShipPart),
+    props.syncShipComponents,
+    "ship-components-not-synced",
+  ),
   // Sorted into flair or equipment only once the server stores them.
   {
-    ...kind("extras", "extra", rowsOf("extra")),
+    ...kind("extras", "extra", rowsOf(ofType("extra"))),
     label: t("labels.syncExtension.pledgeItems.extras"),
   },
 ]);
@@ -297,6 +329,7 @@ const RESULT_KINDS = [
   { key: "hangarFlair", found: "syncedHangarFlair" },
   { key: "equipment", found: "syncedEquipment" },
   { key: "ccus", found: "syncedCcus" },
+  { key: "shipComponents", found: "syncedShipComponents" },
 ] as const;
 
 // What happened to the ships not in the RSI hangar: actions, named as such.

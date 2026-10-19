@@ -614,6 +614,13 @@
         "linkInstead": "改為連結配置",
         "createOnFleetyards": "在 Fleetyards 上建立配置",
         "viewLoadout": "查看配置"
+      },
+      "hangarPledgeItems": {
+        "addToInventory": "加入庫存",
+        "addCount": {
+          "other": "加入 %{count} 項"
+        },
+        "createInventory": "建立庫存"
       }
     }
   }

@@ -31,7 +31,8 @@
         "imports": "Imports",
         "transfers": "Transferts",
         "vehicleOverview": "Aperçu",
-        "vehicleLog": "Journal de bord"
+        "vehicleLog": "Journal de bord",
+        "shipComponents": "Composants de vaisseau"
       },
       "login": "Connexion",
       "installApp": "Installer l'app",

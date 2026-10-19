@@ -252,6 +252,7 @@
         "flair": "Décorations de hangar",
         "upgrades": "Améliorations / CCU",
         "equipment": "Équipement FPS",
+        "shipComponents": "Composants de vaisseau",
         "imports": "Imports"
       },
       "buybackSync": "Synchroniser les pledges rachetables RSI",

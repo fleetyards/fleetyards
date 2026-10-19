@@ -31,7 +31,8 @@
         "imports": "Imports",
         "transfers": "Transfers",
         "vehicleOverview": "Overview",
-        "vehicleLog": "Captain's Log"
+        "vehicleLog": "Captain's Log",
+        "shipComponents": "Ship Components"
       },
       "login": "Login",
       "installApp": "Install app",

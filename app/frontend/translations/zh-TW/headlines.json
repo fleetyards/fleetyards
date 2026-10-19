@@ -252,6 +252,7 @@
         "flair": "機庫裝飾",
         "upgrades": "升級 / CCU",
         "equipment": "FPS 裝備",
+        "shipComponents": "飛船部件",
         "imports": "匯入記錄"
       },
       "buybackSync": "同步 RSI 可回購承諾",

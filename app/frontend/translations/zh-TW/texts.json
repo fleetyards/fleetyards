@@ -415,6 +415,13 @@
       },
       "model": {
         "sectionEmpty": "%{model} 沒有任何%{section}。"
+      },
+      "hangarPledgeItems": {
+        "addToInventory": "每項按其禮包所含數量加入。",
+        "alreadyInInventory": {
+          "other": "%{count} 項已在庫存中，保持不變。"
+        },
+        "noInventories": "你還沒有庫存。請先建立一個，再加入物品。"
       }
     }
   }

@@ -1,11 +1,15 @@
 # frozen_string_literal: true
 
 module HangarPledgeItems
-  # Replaces a user's paints, hangar flair, FPS equipment and CCUs with the ones a
-  # hangar sync read. The pledge list is the whole truth: a melted or gifted
+  # Replaces a user's paints, hangar flair, FPS equipment, CCUs and ship
+  # components with the ones a hangar sync read. The pledge list is the whole truth: a melted or gifted
   # pledge simply stops being listed, so anything not in `items` goes.
   class Sync
     KINDS_BY_ITEM_TYPE = {"ccu" => "ccu", "skin" => "paint", "flair" => "flair", "equipment" => "equipment"}.freeze
+
+    # RSI lists ship modules and ship parts alike as components; the modules are
+    # fitted to a ship by the hangar sync, the parts are kept here.
+    COMPONENT_ITEM_TYPE = "component"
 
     # RSI gives the items it lists under "Also Contains" no kind at all, and
     # labels coins, statues and ship models "FPS Equipment" as often as gear.
@@ -28,6 +32,9 @@ module HangarPledgeItems
         next unless item[:id].present? && item[:name].present?
 
         type = item[:type].to_s
+        if type == COMPONENT_ITEM_TYPE
+          next(::HangarModuleMapping.module?(item[:name]) ? nil : "ship_component")
+        end
         next KINDS_BY_ITEM_TYPE[type] unless CATALOGUED_ITEM_TYPES.include?(type)
 
         if type == EXTRA_ITEM_TYPE && EquipmentCatalogue.words(item[:name]).intersect?(PAINT_WORDS)
@@ -71,21 +78,32 @@ module HangarPledgeItems
       end
 
       def initialize
-        @names = Equipment.where.not(name: nil).distinct.pluck(:name).map { |name| self.class.words(name) }
+        entries = Equipment.where.not(name: nil).order(:name, :id).pluck(:name, :id).uniq(&:first)
+        @ids = entries.map(&:last)
+        @names = entries.map { |name, _id| self.class.words(name) }
         @by_word = Hash.new { |hash, word| hash[word] = [] }
         @names.each_with_index { |words, index| words.each { |word| @by_word[word] << index } }
       end
 
       def include?(name)
+        !find(name).nil?
+      end
+
+      # The id of the catalogued gear the name reads as, if any.
+      def find(name)
         name = ALIASES.fetch(name.to_s.strip, name)
         words = self.class.words(name)
         prefix = words.pop if name.strip.match?(TRUNCATION)
 
-        candidates(words, prefix).any? do |index|
+        matches = candidates(words, prefix).select do |index|
           catalogued = @names[index]
 
           names_gear?(words, prefix, catalogued) || names_whole?(catalogued, words, prefix)
         end
+
+        # The closest name wins: the same words, then the fewest.
+        match = matches.min_by { |index| [(@names[index] == words) ? 0 : 1, @names[index].size, index] }
+        @ids[match] if match
       end
 
       # Names sharing a word with the RSI one, or starting the word it was cut
@@ -123,6 +141,51 @@ module HangarPledgeItems
       private def same_word?(word, other)
         word == other || word.delete_suffix("s") == other.delete_suffix("s") ||
           ([word.size, other.size].min >= 5 && DidYouMean::Levenshtein.distance(word, other) <= 1)
+      end
+    end
+
+    # RSI names a ship part as the game does, but adds its size to some ("CF-117
+    # Bulldog (S1)") and drops a word from others ("S2 Gimbal Mount" for
+    # "VariPuck S2 Gimbal Mount"). The same name wins; otherwise the shortest
+    # catalogued name holding every word of RSI's, so a plain repeater is
+    # picked over its named variants. The game lists one name at several sizes
+    # ("M9A Cannon" at 7, 8, 9 and 12), so the size RSI gives decides between
+    # them, and the smallest otherwise: the same part on every run.
+    class ComponentCatalogue
+      SIZE = /\(s(\d+)\)/i
+
+      def self.words(name)
+        name.to_s.downcase.gsub(SIZE, " ").gsub(/[^[:alnum:]\s-]/, " ").split
+      end
+
+      # Current, shown and in the catalogue: a retired row or a ship's door is
+      # no part a player owns. The same rule as `Component.catalogued`, flight
+      # blades and all.
+      def initialize
+        @entries = Component.current_version.named.where(hidden: false)
+          .order(:name, :id)
+          .pluck(:id, :name, :size, :category, :component_type)
+          .select { |_id, _name, _size, category, type| catalogued?(category, type) }
+          .map { |id, name, size, _category, _type| {id:, name:, size: size.to_s, words: self.class.words(name)} }
+      end
+
+      def find(name)
+        words = self.class.words(name)
+        return if words.empty?
+
+        size = name.to_s[SIZE, 1]
+        same = @entries.select { |entry| entry[:name].casecmp?(name.to_s.strip) }
+        matches = same.presence || @entries.select { |entry| (words - entry[:words]).empty? }
+
+        matches.min_by do |entry|
+          [entry[:words].size, (entry[:size] == size) ? 0 : 1, entry[:size].to_i, entry[:name], entry[:id]]
+        end&.dig(:id)
+      end
+
+      private def catalogued?(category, type)
+        return true unless Component::CATALOGUE_EXCLUDED_CATEGORIES.include?(category)
+
+        category == "controller" && Component::CATALOGUED_CONTROLLER_TYPES.include?(type)
       end
     end
 
@@ -174,6 +237,8 @@ module HangarPledgeItems
       items.group_by { |item| [item[:kind], item[:id].to_s, item[:name].strip] }
         .map do |(kind, rsi_pledge_id, name), group|
           {
+            component_id: (component_catalogue.find(name) if kind == "ship_component"),
+            equipment_id: (equipment_catalogue.find(name) if kind == "equipment"),
             user_id: user.id,
             kind:,
             rsi_pledge_id:,
@@ -188,6 +253,16 @@ module HangarPledgeItems
             meltable: ActiveModel::Type::Boolean.new.cast(group.first[:meltable]) || false
           }
         end
+    end
+
+    # Built only for a run that has items of their kind: each reads a whole
+    # catalogue.
+    private def component_catalogue
+      @component_catalogue ||= ComponentCatalogue.new
+    end
+
+    private def equipment_catalogue
+      @equipment_catalogue ||= EquipmentCatalogue.new
     end
   end
 end

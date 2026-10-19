@@ -2824,7 +2824,16 @@
         "partOf": "Fait partie de %{name}",
         "pledgeValue": "Valeur du pledge",
         "quantity": "Quantité",
-        "search": "Rechercher par nom"
+        "search": "Rechercher par nom",
+        "shipComponents": "Composants de vaisseau",
+        "addToInventory": "Ajouter à l'inventaire",
+        "inventory": "Inventaire",
+        "inInventory": "Dans %{name}",
+        "select": "Sélectionner",
+        "andMore": {
+          "one": "et %{count} autre",
+          "other": "et %{count} autres"
+        }
       },
       "buybacks": {
         "name": "Pledges rachetables",
@@ -2951,7 +2960,9 @@
           "ccus": "Améliorations / CCU",
           "ccusNotSynced": "CCU (non synchronisés)",
           "equipmentNotSynced": "Équipement FPS (non synchronisé)",
-          "extras": "Autres"
+          "extras": "Autres",
+          "shipComponents": "Composants de vaisseau",
+          "shipComponentsNotSynced": "Composants de vaisseau (non synchronisés)"
         },
         "importedItems": {
           "importedVehicles": "Vaisseaux ajoutés",
@@ -3014,7 +3025,8 @@
           "paints": "Peintures",
           "hangarFlair": "Décorations de hangar",
           "equipment": "Équipement FPS",
-          "ccus": "CCU"
+          "ccus": "CCU",
+          "shipComponents": "Composants de vaisseau"
         },
         "newCount": {
           "one": "+1 nouveau",
@@ -3043,7 +3055,9 @@
           "reading": "%{count} sur environ %{total} éléments"
         },
         "viewImport": "Voir l'import de cette synchronisation",
-        "lastSynced": "Dernière synchronisation"
+        "lastSynced": "Dernière synchronisation",
+        "syncShipComponents": "Synchroniser les composants de vaisseau",
+        "syncShipComponentsHint": "Remplace vos composants de vaisseau (refroidisseurs, centrales, armes, …) par ceux de votre hangar RSI. Désactivé, les composants enregistrés restent inchangés."
       },
       "cargoGridViewer": {
         "capacity": "Capacité",

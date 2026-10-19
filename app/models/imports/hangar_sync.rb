@@ -26,13 +26,15 @@ module Imports
     # Counted the way the sync modal counts a run while it reads, so a new run
     # can be measured against this one: ships, modules and upgrades per item,
     # the rest once per name in a pledge, as the sync stores them.
+    # A component RSI lists is a module or a ship part, told apart as the sync
+    # tells them apart.
     COUNTED_PER_ITEM = %w[ship component upgrade].freeze
-    READ_KINDS = %w[ship component upgrade skin flair equipment ccu extra].freeze
+    READ_KINDS = %w[ship component upgrade skin flair equipment ccu extra ship_component].freeze
 
     def read_summary
       items = Array(input)
       counts = READ_KINDS.index_with do |kind|
-        of_kind = items.select { |item| item["type"] == kind }
+        of_kind = items.select { |item| read_kind(item) == kind }
         next of_kind.size if COUNTED_PER_ITEM.include?(kind)
 
         of_kind.map { |item| "#{item["id"]}:#{item["name"].to_s.strip}" }.uniq.size
@@ -44,6 +46,12 @@ module Imports
         total: counts.values.sum,
         counts:
       }
+    end
+
+    private def read_kind(item)
+      return item["type"] unless item["type"] == "component"
+
+      ::HangarModuleMapping.module?(item["name"]) ? "component" : "ship_component"
     end
 
     private def vehicle_names(ids)

@@ -2789,3 +2789,7 @@ GET /equipment/{slug} added the new `sustenance` enum value to the `equipmentTyp
 GET /imports added the new `Imports::BuybackSync` enum value to the `items/items/type` response property for the response status `200`
 GET /imports/{id} added the new `Imports::BuybackSync` enum value to the `type` response property for the response status `200`
 PUT /imports/{id}/cancel added the new `Imports::BuybackSync` enum value to the `type` response property for the response status `200`
+GET /hangar/equipment added the new `ship_component` enum value to the `items/items/kind` response property for the response status `200`
+GET /hangar/flair added the new `ship_component` enum value to the `items/items/kind` response property for the response status `200`
+GET /hangar/paints added the new `ship_component` enum value to the `items/items/kind` response property for the response status `200`
+GET /hangar/upgrades added the new `ship_component` enum value to the `items/items/kind` response property for the response status `200`

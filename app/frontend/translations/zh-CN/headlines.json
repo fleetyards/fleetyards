@@ -252,6 +252,7 @@
         "flair": "机库装饰",
         "upgrades": "升级 / CCU",
         "equipment": "FPS 装备",
+        "shipComponents": "飞船部件",
         "imports": "导入记录"
       },
       "buybackSync": "同步 RSI 可回购承诺",

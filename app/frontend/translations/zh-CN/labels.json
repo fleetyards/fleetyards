@@ -2824,7 +2824,15 @@
         "partOf": "属于 %{name}",
         "pledgeValue": "承诺价值",
         "quantity": "数量",
-        "search": "按名称搜索"
+        "search": "按名称搜索",
+        "shipComponents": "飞船部件",
+        "addToInventory": "添加到库存",
+        "inventory": "库存",
+        "inInventory": "位于 %{name}",
+        "select": "选择",
+        "andMore": {
+          "other": "以及另外 %{count} 项"
+        }
       },
       "buybacks": {
         "name": "可回购承诺",
@@ -2951,7 +2959,9 @@
           "ccus": "升级 / CCU",
           "ccusNotSynced": "CCU（未同步）",
           "equipmentNotSynced": "FPS 装备（不会同步）",
-          "extras": "其他"
+          "extras": "其他",
+          "shipComponents": "飞船部件",
+          "shipComponentsNotSynced": "飞船部件（未同步）"
         },
         "importedItems": {
           "importedVehicles": "已添加飞船",
@@ -3012,7 +3022,8 @@
           "paints": "涂装",
           "hangarFlair": "机库装饰",
           "equipment": "FPS 装备",
-          "ccus": "CCU"
+          "ccus": "CCU",
+          "shipComponents": "飞船部件"
         },
         "newCount": {
           "one": "新增 1",
@@ -3041,7 +3052,9 @@
           "reading": "%{count} / 约 %{total} 项"
         },
         "viewImport": "查看本次同步的导入",
-        "lastSynced": "上次同步："
+        "lastSynced": "上次同步：",
+        "syncShipComponents": "同步飞船部件",
+        "syncShipComponentsHint": "用你 RSI 机库中的飞船部件（冷却器、发电机、武器等）替换已保存的部件。关闭时保留已保存的飞船部件。"
       },
       "cargoGridViewer": {
         "capacity": "容量",

@@ -56,6 +56,22 @@ class Api::V1::HangarSyncRsiLastReadTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/sync-rsi-hangar/last-read counts modules and ship parts apart" do
+    user = create(:user)
+    sign_in user
+    Imports::HangarSync.create!(user:, aasm_state: "finished", finished_at: 1.day.ago, input: [
+      {id: "1", name: "Retaliator Cargo Module - Bow", type: "component", page: 1},
+      {id: "1", name: "BriskAir IC-20", type: "component", page: 1},
+      {id: "1", name: "BriskAir IC-20", type: "component", page: 1}
+    ])
+
+    get "/api/v1/hangar/sync-rsi-hangar/last-read", as: :json
+
+    assert_response :ok
+    assert_equal 1, response.parsed_body.dig("counts", "component")
+    assert_equal 1, response.parsed_body.dig("counts", "shipComponent")
+  end
+
   test "GET /hangar/sync-rsi-hangar/last-read skips a newer run that did not finish" do
     user = create(:user)
     sign_in user
