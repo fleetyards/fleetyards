@@ -3,13 +3,13 @@
 module V1
   module Schemas
     module Enums
-      # Only the two types a user can own. The public imports resource is scoped
+      # Only the types a user can own. The public imports resource is scoped
       # by `user_id`, which reaches exactly these; the admin schema carries the
       # full list.
       class ImportTypeEnum
         include OpenapiRuby::Components::Base
 
-        TYPES = %w[Imports::HangarImport Imports::HangarSync].freeze
+        TYPES = %w[Imports::HangarImport Imports::HangarSync Imports::BuybackSync].freeze
 
         schema({
           type: :string,

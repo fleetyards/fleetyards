@@ -74,8 +74,9 @@ class Import < ApplicationRecord
 
   # Only a finished run is left out: a no-op that was cancelled or failed is
   # still news to the user, and so is one that could not read every RSI page.
-  # COALESCE because a missing key makes the condition NULL, and NOT NULL would
-  # drop the row.
+  # A buy-back sync is a no-op when it added and removed nothing. COALESCE
+  # because a missing key makes the condition NULL, and NOT NULL would drop the
+  # row.
   scope :without_no_op_syncs, -> {
     where(<<~SQL.squish, ::HangarSync::NO_OP_OUTCOMES)
       NOT COALESCE(
@@ -83,6 +84,13 @@ class Import < ApplicationRecord
         AND imports.aasm_state = 'finished'
         AND imports.output->>'outcome' IN (?)
         AND imports.output->>'incomplete' IS NULL,
+        false
+      )
+      AND NOT COALESCE(
+        imports.type = 'Imports::BuybackSync'
+        AND imports.aasm_state = 'finished'
+        AND imports.output->>'added' = '0'
+        AND imports.output->>'removed' = '0',
         false
       )
     SQL

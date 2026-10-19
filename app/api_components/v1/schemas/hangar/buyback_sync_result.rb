@@ -12,10 +12,11 @@ module V1
             total: {type: :integer},
             added: {type: :integer},
             removed: {type: :integer},
-            detailsPending: {type: :array, items: {type: :string}}
+            detailsPending: {type: :array, items: {type: :string}},
+            importId: {type: :string, format: :uuid}
           },
           additionalProperties: false,
-          required: %w[total added removed detailsPending]
+          required: %w[total added removed detailsPending importId]
         })
       end
     end

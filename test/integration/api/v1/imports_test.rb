@@ -222,6 +222,17 @@ class Api::V1::ImportsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /imports leaves out a buy-back sync that added and removed nothing" do
+    user = create(:user)
+    changed = Imports::BuybackSync.create!(user:, aasm_state: "finished", output: {"added" => 1, "removed" => 0})
+    Imports::BuybackSync.create!(user:, aasm_state: "finished", output: {"added" => 0, "removed" => 0})
+    sign_in user
+
+    assert_api_response :get, 200 do
+      assert_equal [changed.id], parsed_body["items"].pluck("id")
+    end
+  end
+
   test "GET /imports still lists a sync with nothing to do that did not simply finish" do
     user = create(:user)
     cancelled = create_import(user, state: "cancelled")
