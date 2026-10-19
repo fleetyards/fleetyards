@@ -23,10 +23,14 @@ type Props = {
   // Off where the crafted figures are listed elsewhere, such as a loadout's
   // crafter: the slot is then its material and quality control alone.
   ramps?: boolean;
+  // Off inside an editor with unsaved changes, which a link would leave: the
+  // material and where it is held are then named without one.
+  links?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   ramps: true,
+  links: true,
 });
 
 const emit = defineEmits<{
@@ -104,7 +108,9 @@ const prepositionOf = (entry: MaterialStock) =>
 // the hand-made ones only -- so linking one would land on a not-found. It is
 // named without a link instead.
 const placeRoute = (entry: MaterialStock) => {
-  if (entry.vehicleName || !entry.inventorySlug) return undefined;
+  if (!props.links || entry.vehicleName || !entry.inventorySlug) {
+    return undefined;
+  }
 
   if (entry.ownerSlug) {
     return {
@@ -207,6 +213,7 @@ const onQuality = (event: Event) => {
             slug: option.commodity.slug,
             name: option.commodity.name,
           }"
+          :link="props.links"
         />
         <span v-else class="blueprint-slot__unmapped">
           {{ option.commodityKey }}
