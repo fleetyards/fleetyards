@@ -105,8 +105,9 @@ const canVerifyRsiHandle = computed(
 
 const rsiHandleVerifiedViaCitizenid = computed(
   () =>
+    rsiHandleVerified.value &&
     sessionStore.currentUser?.rsiHandleVerifiedVia ===
-    RsiHandleVerifiedViaEnum.CITIZENID,
+      RsiHandleVerifiedViaEnum.CITIZENID,
 );
 
 const revokeMutation = useDestroyMyRsiVerification();
