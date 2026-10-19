@@ -140,6 +140,9 @@
       "hideStatusColor": "Nascondi stato come colori",
       "addToHangar": "Aggiungi all'hangar",
       "blueprint": {
+        "apply": "Applica",
+        "discard": "Scarta",
+        "removeCrafting": "Rimuovi la fabbricazione",
         "own": "Segna come posseduto",
         "unown": "Rimuovi il contrassegno"
       },
@@ -603,9 +606,6 @@
       },
       "vehicleLoadout": {
         "craft": "Fabbrica",
-        "applyCrafting": "Applica",
-        "discardCrafting": "Scarta",
-        "removeCrafting": "Rimuovi la fabbricazione",
         "swapModule": "Cambia modulo",
         "removeModule": "Rimuovi modulo",
         "editLoadout": "Modifica equipaggiamento",

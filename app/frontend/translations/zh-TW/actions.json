@@ -140,6 +140,9 @@
       "hideStatusColor": "隱藏狀態顏色",
       "addToHangar": "新增至機庫",
       "blueprint": {
+        "apply": "套用",
+        "discard": "放棄",
+        "removeCrafting": "移除製作",
         "own": "標記為已擁有",
         "unown": "取消已擁有標記"
       },
@@ -603,9 +606,6 @@
       },
       "vehicleLoadout": {
         "craft": "製作",
-        "applyCrafting": "套用",
-        "discardCrafting": "放棄",
-        "removeCrafting": "移除製作",
         "swapModule": "更換模組",
         "removeModule": "移除模組",
         "editLoadout": "編輯配置",

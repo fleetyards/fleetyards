@@ -4241,6 +4241,11 @@
         "friend": "Amici"
       },
       "blueprint": {
+        "crafter": {
+          "title": "Fabbrica · %{name}",
+          "recipe": "Progetto %{number}",
+          "noRecipe": "Nessun progetto per questo oggetto nella build attuale."
+        },
         "name": "Nome",
         "craftTime": "Tempo di fabbricazione",
         "slots": "Slot",
@@ -4505,11 +4510,6 @@
         "againstStock": "Modifiche rispetto alla nave di serie",
         "crafted": "Fabbricato",
         "craftedPart": "%{name} (fabbricato)",
-        "crafting": {
-          "title": "Fabbrica · %{name}",
-          "recipe": "Progetto %{number}",
-          "noRecipe": "Nessun progetto per questo pezzo nella build attuale."
-        },
         "fitted": "Montato",
         "owned": "Posseduto",
         "noSlots": "Su questa nave non si può ancora montare nulla qui",

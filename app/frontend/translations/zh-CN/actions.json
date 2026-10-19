@@ -140,6 +140,9 @@
       "hideStatusColor": "隐藏状态颜色",
       "addToHangar": "添加到机库",
       "blueprint": {
+        "apply": "应用",
+        "discard": "放弃",
+        "removeCrafting": "移除制作",
         "own": "标记为已拥有",
         "unown": "取消已拥有标记"
       },
@@ -603,9 +606,6 @@
       },
       "vehicleLoadout": {
         "craft": "制作",
-        "applyCrafting": "应用",
-        "discardCrafting": "放弃",
-        "removeCrafting": "移除制作",
         "swapModule": "更换模块",
         "removeModule": "移除模块",
         "editLoadout": "编辑配置",

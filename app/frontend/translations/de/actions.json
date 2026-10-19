@@ -140,6 +140,9 @@
       "hideStatusColor": "Status als Farbe ausblenden",
       "addToHangar": "Zum Hangar hinzufügen",
       "blueprint": {
+        "apply": "Übernehmen",
+        "discard": "Verwerfen",
+        "removeCrafting": "Herstellung entfernen",
         "own": "Als besessen markieren",
         "unown": "Markierung entfernen"
       },
@@ -603,9 +606,6 @@
       },
       "vehicleLoadout": {
         "craft": "Herstellen",
-        "applyCrafting": "Übernehmen",
-        "discardCrafting": "Verwerfen",
-        "removeCrafting": "Herstellung entfernen",
         "swapModule": "Modul tauschen",
         "removeModule": "Modul entfernen",
         "editLoadout": "Loadout bearbeiten",

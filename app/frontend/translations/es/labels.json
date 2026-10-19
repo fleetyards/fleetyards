@@ -4241,6 +4241,11 @@
         "friend": "Amigos"
       },
       "blueprint": {
+        "crafter": {
+          "title": "Fabricar · %{name}",
+          "recipe": "Plano %{number}",
+          "noRecipe": "No hay plano para este objeto en la versión actual."
+        },
         "name": "Nombre",
         "craftTime": "Tiempo de fabricación",
         "slots": "Ranuras",
@@ -4505,11 +4510,6 @@
         "againstStock": "Cambios respecto a la nave de serie",
         "crafted": "Fabricado",
         "craftedPart": "%{name} (fabricado)",
-        "crafting": {
-          "title": "Fabricar · %{name}",
-          "recipe": "Plano %{number}",
-          "noRecipe": "No hay plano para esta pieza en la versión actual."
-        },
         "fitted": "Equipado",
         "owned": "En propiedad",
         "noSlots": "Todavía no se puede equipar nada de esta nave aquí",

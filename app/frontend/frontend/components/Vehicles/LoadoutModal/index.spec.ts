@@ -130,6 +130,7 @@ vi.mock("@/frontend/composables/useMaterialStock", () => ({
   useMaterialStock: () => ({
     forCommodity: () => ({ own: [], fleet: [] }),
   }),
+  useMaterialStockUpdates: () => undefined,
 }));
 
 vi.mock("@/frontend/composables/useVehicleMutations", () => ({
@@ -1390,7 +1391,7 @@ describe("VehicleLoadoutModal component tabs", () => {
     // Every recipe slot of the draft at one grade, through each slot's input.
     const setQualities = async (wrapper: Wrapper, quality: number) => {
       for (const input of wrapper.findAll(
-        "[data-test='vehicle-loadout-crafting-slots'] input[type='number']",
+        "[data-test='blueprint-crafter-slots'] input[type='number']",
       )) {
         await input.setValue(String(quality));
       }
@@ -1421,16 +1422,16 @@ describe("VehicleLoadoutModal component tabs", () => {
       await flushPromises();
 
       await craft(wrapper);
-      expect(
-        wrapper.find("[data-test='vehicle-loadout-crafter']").exists(),
-      ).toBe(true);
+      expect(wrapper.find("[data-test='blueprint-crafter']").exists()).toBe(
+        true,
+      );
       expect(wrapper.find("[data-test='loadout-picker']").exists()).toBe(false);
 
       await socket(wrapper, GUN).trigger("click");
       await flushPromises();
-      expect(
-        wrapper.find("[data-test='vehicle-loadout-crafter']").exists(),
-      ).toBe(false);
+      expect(wrapper.find("[data-test='blueprint-crafter']").exists()).toBe(
+        false,
+      );
       expect(wrapper.find("[data-test='loadout-picker']").exists()).toBe(true);
     });
 
@@ -1446,11 +1447,11 @@ describe("VehicleLoadoutModal component tabs", () => {
         "labels.vehicleLoadout.crafted",
       );
 
-      await press(wrapper, "vehicle-loadout-crafter-apply");
+      await press(wrapper, "blueprint-crafter-apply");
 
-      expect(
-        wrapper.find("[data-test='vehicle-loadout-crafter']").exists(),
-      ).toBe(false);
+      expect(wrapper.find("[data-test='blueprint-crafter']").exists()).toBe(
+        false,
+      );
       expect(socket(wrapper, GUN).text()).toContain(
         "labels.vehicleLoadout.crafted",
       );
@@ -1484,8 +1485,8 @@ describe("VehicleLoadoutModal component tabs", () => {
       await flushPromises();
 
       await craft(wrapper);
-      await press(wrapper, "vehicle-loadout-crafting-recipe-bp2");
-      await press(wrapper, "vehicle-loadout-crafter-apply");
+      await press(wrapper, "blueprint-crafter-recipe-bp2");
+      await press(wrapper, "blueprint-crafter-apply");
       await save(wrapper);
 
       expect(savedItems()).toEqual([
@@ -1505,23 +1506,23 @@ describe("VehicleLoadoutModal component tabs", () => {
       await craft(wrapper);
       expect(
         wrapper.findAll(
-          "[data-test='vehicle-loadout-crafting-slots'] .blueprint-slot",
+          "[data-test='blueprint-crafter-slots'] .blueprint-slot",
         ),
       ).toHaveLength(2);
       // The slots' ramps are the blueprint page's; the crafter lists the
       // figures under the slots instead.
-      const slots = wrapper.get("[data-test='vehicle-loadout-crafting-slots']");
+      const slots = wrapper.get("[data-test='blueprint-crafter-slots']");
       expect(slots.find(".blueprint-slot__stats").exists()).toBe(false);
       expect(slots.find(".blueprint-slot__no-stats").exists()).toBe(false);
       expect(slots.get("[data-test='blueprint-slot-moves']").text()).toBe(
         "Integrity, Coolant Rating",
       );
       expect(
-        wrapper.find("[data-test='vehicle-loadout-crafter-remove']").exists(),
+        wrapper.find("[data-test='blueprint-crafter-remove']").exists(),
       ).toBe(false);
 
       await setQualities(wrapper, 1000);
-      await press(wrapper, "vehicle-loadout-crafter-discard");
+      await press(wrapper, "blueprint-crafter-discard");
       await save(wrapper);
 
       expect(savedItems()).toEqual([]);
@@ -1534,18 +1535,16 @@ describe("VehicleLoadoutModal component tabs", () => {
       await craft(wrapper);
       await setQualities(wrapper, 1000);
 
-      const stats = wrapper.get("[data-test='vehicle-loadout-crafter-stats']");
+      const stats = wrapper.get("[data-test='blueprint-crafter-stats']");
       expect(
         stats
-          .get(
-            "[data-test='vehicle-loadout-crafter-stat-gpp_health_maxhealth']",
-          )
+          .get("[data-test='blueprint-crafter-stat-gpp_health_maxhealth']")
           .text(),
       ).toContain("+10.0%");
       expect(
         stats
           .get(
-            "[data-test='vehicle-loadout-crafter-stat-gpp_itemresource_coolantgeneration']",
+            "[data-test='blueprint-crafter-stat-gpp_itemresource_coolantgeneration']",
           )
           .text(),
       ).toContain("+20.0%");
@@ -1559,14 +1558,14 @@ describe("VehicleLoadoutModal component tabs", () => {
       document.body.dispatchEvent(new PointerEvent("pointerdown"));
       await flushPromises();
 
-      expect(
-        wrapper.find("[data-test='vehicle-loadout-crafter']").exists(),
-      ).toBe(true);
+      expect(wrapper.find("[data-test='blueprint-crafter']").exists()).toBe(
+        true,
+      );
 
       await save(wrapper);
       expect(savedItems()).toBeUndefined();
 
-      await press(wrapper, "vehicle-loadout-crafter-apply");
+      await press(wrapper, "blueprint-crafter-apply");
       await save(wrapper);
       expect(savedItems()).toHaveLength(1);
     });
@@ -1577,16 +1576,16 @@ describe("VehicleLoadoutModal component tabs", () => {
 
       await craft(wrapper);
       await setQualities(wrapper, 250);
-      await press(wrapper, "vehicle-loadout-crafter-apply");
+      await press(wrapper, "blueprint-crafter-apply");
 
       await craft(wrapper);
       expect(
         wrapper.get(
-          "[data-test='vehicle-loadout-crafting-slots'] input[type='number']",
+          "[data-test='blueprint-crafter-slots'] input[type='number']",
         ).element,
       ).toHaveProperty("value", "250");
 
-      await press(wrapper, "vehicle-loadout-crafter-remove");
+      await press(wrapper, "blueprint-crafter-remove");
       expect(socket(wrapper, GUN).text()).not.toContain(
         "labels.vehicleLoadout.crafted",
       );
@@ -1600,7 +1599,7 @@ describe("VehicleLoadoutModal component tabs", () => {
       await flushPromises();
 
       await craft(wrapper);
-      await press(wrapper, "vehicle-loadout-crafter-apply");
+      await press(wrapper, "blueprint-crafter-apply");
       await choose(wrapper, GUN, "Other Gun");
       await save(wrapper);
 

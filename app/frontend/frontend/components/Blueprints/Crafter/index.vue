@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  name: "VehicleLoadoutModalCrafter",
+  name: "BlueprintCrafter",
 };
 </script>
 
@@ -14,110 +14,126 @@ import {
 import BlueprintSlot from "@/frontend/components/Blueprints/Slot/index.vue";
 import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import type { CraftedPart } from "@/frontend/composables/useComponentFitting";
+import type { CraftedPart } from "@/frontend/composables/craftedComponent";
 import { useCraftedStats } from "@/frontend/composables/useCraftedStats";
+import { useMaterialStockUpdates } from "@/frontend/composables/useMaterialStock";
 import { NEUTRAL_QUALITY } from "@/frontend/composables/useQualityRamp";
 import {
   BlueprintCraftableTypeEnum,
-  type LoadoutComponentRef,
   useBlueprint,
   useBlueprints,
 } from "@/services/fyApi";
 
+/*
+ * Crafting one item: the recipe that makes it and the material quality in each
+ * of its slots, worked on as a draft that reaches the caller only on Apply.
+ * The caller places it -- a loadout's socket, an inventory's item picker --
+ * and decides what applying means there.
+ */
 type Props = {
-  // The slot the part sits in.
+  // What it is crafted for, such as the slot the item sits in.
   title: string;
-  // The part as catalogued.
-  component: LoadoutComponentRef;
-  // The crafting being worked on, which reaches the loadout only on Apply.
-  draft?: CraftedPart;
-  // Whether the loadout already holds the part as crafted, which can then be
-  // taken back.
-  crafted?: boolean;
+  // The item as catalogued.
+  item: { id: string; name: string; slug?: string | null };
+  // Which catalogue the item is in, which the recipes are looked up by.
+  craftableType?: BlueprintCraftableTypeEnum;
+  // How the item is crafted now, if it is: the draft starts from it, and it
+  // can be taken back.
+  crafted?: CraftedPart;
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  draft: undefined,
-  crafted: false,
+  craftableType: BlueprintCraftableTypeEnum.COMPONENT,
+  crafted: undefined,
 });
 
 const emit = defineEmits<{
-  "update:draft": [value: CraftedPart];
-  apply: [];
+  apply: [crafted: CraftedPart];
   remove: [];
   close: [];
 }>();
+
+const draft = ref<CraftedPart | undefined>(
+  props.crafted ? structuredClone(toRaw(props.crafted)) : undefined,
+);
 
 const { t } = useI18n();
 
 const { data: recipesData, isPending: recipesPending } = useBlueprints(
   () => ({
     q: {
-      craftableTypeEq: BlueprintCraftableTypeEnum.COMPONENT,
-      craftableIdEq: props.component.id,
+      craftableTypeEq: props.craftableType,
+      craftableIdEq: props.item.id,
     },
   }),
-  { query: { enabled: () => !!props.component.id } },
+  { query: { enabled: () => !!props.item.id } },
 );
 
 const recipes = computed(() => recipesData.value?.items ?? []);
 
-// A crafted part opens on how it was crafted -- a recipe a new build dropped
-// included, which the list no longer names. A part not crafted yet opens as
+// The slots mark the material grades held, which an inventory change while
+// the crafter is open would otherwise leave stale.
+useMaterialStockUpdates();
+
+// A crafted item opens on how it was crafted -- a recipe a new build dropped
+// included, which the list no longer names. An item not crafted yet opens as
 // crafted from its first recipe, every slot at the neutral grade, as soon as
 // the recipe list says which that is.
 watch(
   () => recipes.value[0],
   (first) => {
-    if (props.draft || !first) return;
+    if (draft.value || !first) return;
 
-    emit("update:draft", {
+    draft.value = {
       blueprintId: first.id,
       blueprintSlug: first.slug,
       qualities: {},
-    });
+    };
   },
   { immediate: true },
 );
 
 const { data: blueprint } = useBlueprint(
-  () => props.draft?.blueprintSlug ?? "",
-  { query: { enabled: () => !!props.draft } },
+  () => draft.value?.blueprintSlug ?? "",
+  { query: { enabled: () => !!draft.value } },
 );
 
 const costSlots = computed(() => blueprint.value?.costSlots ?? []);
 
 const qualityFor = (position: number) =>
-  props.draft?.qualities[position] ?? NEUTRAL_QUALITY;
+  draft.value?.qualities[position] ?? NEUTRAL_QUALITY;
 
-// Every stat the recipe moves, as the blueprint page composes them -- those a
-// loadout's figures never read, such as a part's integrity, included.
+// Every stat the recipe moves, as the blueprint page composes them -- a
+// part's integrity included, which a loadout's own figures never read.
 const { stats } = useCraftedStats(costSlots, qualityFor);
 
 // Another recipe has other slots, so its qualities start over.
 const chooseRecipe = (blueprintId: string) => {
   const chosen = recipes.value.find((entry) => entry.id === blueprintId);
-  if (!chosen || chosen.id === props.draft?.blueprintId) return;
+  if (!chosen || chosen.id === draft.value?.blueprintId) return;
 
-  emit("update:draft", {
+  draft.value = {
     blueprintId: chosen.id,
     blueprintSlug: chosen.slug,
     qualities: {},
-  });
+  };
 };
 
 const setQuality = (position: number, quality: number) => {
-  if (!props.draft) return;
+  if (!draft.value) return;
 
-  emit("update:draft", {
-    ...props.draft,
-    qualities: { ...props.draft.qualities, [position]: quality },
-  });
+  draft.value = {
+    ...draft.value,
+    qualities: { ...draft.value.qualities, [position]: quality },
+  };
 };
 
-// The draft is only ever applied or discarded on purpose, so unlike the
-// picker a press elsewhere -- a material's popover, the modal's own save --
-// leaves the crafter open.
+const apply = () => {
+  if (draft.value) emit("apply", draft.value);
+};
+
+// The draft is only ever applied or discarded on purpose, so a press elsewhere
+// -- a material's popover, the caller's own save -- leaves the crafter open.
 const root = ref<HTMLElement>();
 
 const onKeydown = (event: KeyboardEvent) => {
@@ -137,42 +153,42 @@ defineExpose({ focus });
 <template>
   <section
     ref="root"
-    class="loadout-crafter"
-    data-test="vehicle-loadout-crafter"
-    :aria-label="t('labels.vehicleLoadout.crafting.title', { name: title })"
+    class="blueprint-crafter"
+    data-test="blueprint-crafter"
+    :aria-label="t('labels.blueprint.crafter.title', { name: title })"
     tabindex="-1"
     @keydown="onKeydown"
   >
-    <header class="loadout-crafter__header">
-      <h4 class="loadout-crafter__title">
-        {{ t("labels.vehicleLoadout.crafting.title", { name: title }) }}
+    <header class="blueprint-crafter__header">
+      <h4 class="blueprint-crafter__title">
+        {{ t("labels.blueprint.crafter.title", { name: title }) }}
       </h4>
       <button
         type="button"
-        class="loadout-crafter__close"
+        class="blueprint-crafter__close"
         :aria-label="t('labels.loadoutPicker.close')"
-        data-test="vehicle-loadout-crafter-close"
+        data-test="blueprint-crafter-close"
         @click="emit('close')"
       >
         <i class="fa-light fa-times" aria-hidden="true" />
       </button>
     </header>
 
-    <div class="loadout-crafter__controls">
+    <div class="blueprint-crafter__controls">
       <!-- The catalogue's card on hover, as the part was made rather than
         crafted: the crafted figures are the crafter's own list. No link, which
         would leave an editor with unsaved changes. -->
-      <p class="loadout-crafter__part" data-test="vehicle-loadout-crafter-part">
+      <p class="blueprint-crafter__part" data-test="blueprint-crafter-part">
         <CatalogueItemPopover
           :item="{
-            type: 'Component',
-            slug: component.slug,
-            name: component.name,
+            type: craftableType,
+            slug: item.slug,
+            name: item.name,
           }"
           :link="false"
         />
       </p>
-      <div v-if="draft && recipes.length > 1" class="loadout-crafter__row">
+      <div v-if="draft && recipes.length > 1" class="blueprint-crafter__row">
         <Btn
           v-for="(entry, index) in recipes"
           :key="entry.id"
@@ -180,28 +196,26 @@ defineExpose({ focus });
           :variant="BtnVariantsEnum.GHOST"
           :active="entry.id === draft.blueprintId"
           :aria-pressed="entry.id === draft.blueprintId"
-          :data-test="`vehicle-loadout-crafting-recipe-${entry.id}`"
+          :data-test="`blueprint-crafter-recipe-${entry.id}`"
           @click="chooseRecipe(entry.id)"
         >
-          {{
-            t("labels.vehicleLoadout.crafting.recipe", { number: index + 1 })
-          }}
+          {{ t("labels.blueprint.crafter.recipe", { number: index + 1 }) }}
         </Btn>
       </div>
     </div>
 
     <p
       v-if="!draft && !recipesPending"
-      class="loadout-crafter__empty"
-      data-test="vehicle-loadout-crafter-no-recipe"
+      class="blueprint-crafter__empty"
+      data-test="blueprint-crafter-no-recipe"
     >
-      {{ t("labels.vehicleLoadout.crafting.noRecipe") }}
+      {{ t("labels.blueprint.crafter.noRecipe") }}
     </p>
 
     <div
       v-if="draft"
-      class="loadout-crafter__slots"
-      data-test="vehicle-loadout-crafting-slots"
+      class="blueprint-crafter__slots"
+      data-test="blueprint-crafter-slots"
     >
       <BlueprintSlot
         v-for="slot in costSlots"
@@ -209,27 +223,28 @@ defineExpose({ focus });
         :slot-data="slot"
         :quality="qualityFor(slot.position)"
         :ramps="false"
+        :links="false"
         @update:quality="setQuality(slot.position, $event)"
       />
     </div>
 
     <dl
       v-if="draft && stats.length"
-      class="loadout-crafter__stats"
-      data-test="vehicle-loadout-crafter-stats"
+      class="blueprint-crafter__stats"
+      data-test="blueprint-crafter-stats"
     >
       <div
         v-for="stat in stats"
         :key="stat.key"
-        class="loadout-crafter__stat"
-        :data-test="`vehicle-loadout-crafter-stat-${stat.key}`"
+        class="blueprint-crafter__stat"
+        :data-test="`blueprint-crafter-stat-${stat.key}`"
       >
         <dt>{{ stat.name }}</dt>
         <dd>
           <strong>{{ stat.value }}</strong>
           <span
-            class="loadout-crafter__delta"
-            :class="`loadout-crafter__delta--${stat.trend}`"
+            class="blueprint-crafter__delta"
+            :class="`blueprint-crafter__delta--${stat.trend}`"
           >
             {{ stat.delta }}
           </span>
@@ -237,33 +252,33 @@ defineExpose({ focus });
       </div>
     </dl>
 
-    <footer class="loadout-crafter__actions">
+    <footer class="blueprint-crafter__actions">
       <Btn
         v-if="crafted"
         :size="BtnSizesEnum.SM"
         :variant="BtnVariantsEnum.GHOST"
         :tone="BtnTonesEnum.DANGER"
-        class="loadout-crafter__remove"
-        data-test="vehicle-loadout-crafter-remove"
+        class="blueprint-crafter__remove"
+        data-test="blueprint-crafter-remove"
         @click="emit('remove')"
       >
-        {{ t("actions.vehicleLoadout.removeCrafting") }}
+        {{ t("actions.blueprint.removeCrafting") }}
       </Btn>
       <Btn
         :size="BtnSizesEnum.SM"
         :variant="BtnVariantsEnum.GHOST"
-        data-test="vehicle-loadout-crafter-discard"
+        data-test="blueprint-crafter-discard"
         @click="emit('close')"
       >
-        {{ t("actions.vehicleLoadout.discardCrafting") }}
+        {{ t("actions.blueprint.discard") }}
       </Btn>
       <Btn
         :size="BtnSizesEnum.SM"
         :disabled="!draft"
-        data-test="vehicle-loadout-crafter-apply"
-        @click="emit('apply')"
+        data-test="blueprint-crafter-apply"
+        @click="apply"
       >
-        {{ t("actions.vehicleLoadout.applyCrafting") }}
+        {{ t("actions.blueprint.apply") }}
       </Btn>
     </footer>
   </section>

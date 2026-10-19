@@ -15,7 +15,7 @@ import {
 import { useI18n } from "@/shared/composables/useI18n";
 import { figureDelta } from "@/frontend/composables/figureDelta";
 import {
-  type CraftedQualities,
+  type CraftedPart,
   craftedComponent,
 } from "@/frontend/composables/craftedComponent";
 import { NEUTRAL_QUALITY } from "@/frontend/composables/useQualityRamp";
@@ -67,12 +67,6 @@ export interface FittedSlot {
   // `content` already carries the crafted figures once the recipe is known.
   crafted?: CraftedPart;
   children: FittedSlot[];
-}
-
-export interface CraftedPart {
-  blueprintId: string;
-  blueprintSlug: string;
-  qualities: CraftedQualities;
 }
 
 // A slot whose stock part the loadout took out, in a fitting keyed by path.

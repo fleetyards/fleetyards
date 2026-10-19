@@ -28,6 +28,14 @@ const WEAPON_DAMAGE = "gpp_weapon_damage";
 
 export type CraftedQualities = Record<number, number>;
 
+// How a part was crafted: the recipe, and the material quality in each of its
+// slots by position. A slot left out was filled at the neutral grade.
+export interface CraftedPart {
+  blueprintId: string;
+  blueprintSlug: string;
+  qualities: CraftedQualities;
+}
+
 /**
  * The factor every stat ends up at for the qualities chosen, by property key.
  *

@@ -35,7 +35,8 @@ import SocketBoard from "@/frontend/components/Loadout/SocketBoard/index.vue";
 import Picker from "@/frontend/components/Loadout/Picker/index.vue";
 import Comparison from "./Comparison/index.vue";
 import ComponentComparison from "./ComponentComparison/index.vue";
-import Crafter from "./Crafter/index.vue";
+import Crafter from "@/frontend/components/Blueprints/Crafter/index.vue";
+import type { CraftedPart } from "@/frontend/composables/craftedComponent";
 import { useCraftedRecipes } from "@/frontend/composables/useCraftedRecipes";
 import LoadoutMetrics from "./Metrics/index.vue";
 import LoadoutChanges from "@/frontend/components/Loadout/Changes/index.vue";
@@ -51,7 +52,6 @@ import { useModuleSockets } from "@/frontend/composables/useModuleSockets";
 import {
   COMPONENT_TABS,
   type ComponentTab,
-  type CraftedPart,
   EMPTIED,
   loadoutValues,
   slotName,
@@ -306,7 +306,12 @@ const { data: savedSlots } = useVehicleLoadoutSlots(
 
 watch(hullSlots, (slots) => fitting.learn(slots), { immediate: true });
 watch(savedSlots, (slots) => fitting.learn(slots), { immediate: true });
-watch(modules, (list) => fitting.learnModules(list), { immediate: true });
+watch(
+  modulesData,
+  (data) =>
+    fitting.learnModules(data?.items ?? [], data?.craftableComponentIds),
+  { immediate: true },
+);
 
 // Opening on a ship, until its slots and modules are in: one loader in the
 // middle of the editor rather than one at the start of a tab.
@@ -328,10 +333,6 @@ const componentTree = computed(() =>
     craftedComponents.value || {},
   ),
 );
-
-// The crafting the crafter is working on, which reaches the fitting only once
-// applied.
-const craftDraft = ref<CraftedPart>();
 
 // The saved fitting's recipes as well as the edited one's, so the changes
 // against the save read both as crafted.
@@ -664,7 +665,6 @@ const onSocketSelect = async (
   activeTab.value = tabId;
   activeMode.value = "pick";
   hovered.value = undefined;
-  craftDraft.value = undefined;
 
   // On desktop the picker comes after every socket in the page's order, so
   // the keyboard is handed to it rather than left to tab its way there.
@@ -682,9 +682,6 @@ const onCraft = async (slot: string, tabId: string) => {
   activeTab.value = tabId;
   activeMode.value = "craft";
   hovered.value = undefined;
-  // Opens on how the part is crafted now; the crafter starts a part not
-  // crafted yet on its first recipe.
-  craftDraft.value = opening ? activeComponentSlot.value?.crafted : undefined;
 
   if (opening) {
     await nextTick();
@@ -903,27 +900,23 @@ const withoutCrafting = (paths: string[]) =>
     ),
   );
 
-// The crafter's socket: its part as catalogued and as crafted, and how far the
-// crafting moves its figures. A stacked row is crafted as one: a change reaches
-// every slot it stands for.
+// The crafter's socket: its part as catalogued, and how it is crafted now. A
+// stacked row is crafted as one: an applied crafting reaches every slot it
+// stands for.
 const activeCrafting = computed(() => {
   const entry = activeComponentSlot.value;
   if (activeMode.value !== "craft" || !entry?.content) return undefined;
 
   return {
     title: slotName(entry.slot.name),
-    component: fitting.components.value[entry.content.id] ?? entry.content,
-    draft: craftDraft.value,
-    crafted: !!entry.crafted,
+    item: fitting.components.value[entry.content.id] ?? entry.content,
+    crafted: entry.crafted,
   };
 });
 
 const crafterListeners = {
-  "update:draft": (draft: CraftedPart) => {
-    craftDraft.value = draft;
-  },
-  apply: () => {
-    onCrafted(craftDraft.value);
+  apply: (crafted: CraftedPart) => {
+    onCrafted(crafted);
     void closePicker();
   },
   remove: () => {
@@ -955,14 +948,13 @@ const closePicker = async () => {
   const hadFocus =
     !!slot &&
     !!formRoot.value
-      ?.querySelector(".loadout-picker, .loadout-crafter")
+      ?.querySelector(".loadout-picker, .blueprint-crafter")
       ?.contains(document.activeElement);
 
   const crafting = activeMode.value === "craft";
 
   activeSlot.value = undefined;
   hovered.value = undefined;
-  craftDraft.value = undefined;
 
   // The crafter goes back to the control that opened it: a socket the ship
   // locks takes no focus of its own.

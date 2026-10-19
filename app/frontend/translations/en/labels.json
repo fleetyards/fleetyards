@@ -4255,6 +4255,11 @@
         "friend": "Friends"
       },
       "blueprint": {
+        "crafter": {
+          "title": "Craft · %{name}",
+          "recipe": "Recipe %{number}",
+          "noRecipe": "No recipe for this item in the current build."
+        },
         "name": "Name",
         "craftTime": "Craft time",
         "slots": "Slots",
@@ -4519,11 +4524,6 @@
         "againstStock": "Changes from the stock ship",
         "crafted": "Crafted",
         "craftedPart": "%{name} (crafted)",
-        "crafting": {
-          "title": "Craft · %{name}",
-          "recipe": "Recipe %{number}",
-          "noRecipe": "No recipe for this part in the current build."
-        },
         "fitted": "Fitted",
         "owned": "Owned",
         "noSlots": "Nothing on this ship can be fitted here yet",

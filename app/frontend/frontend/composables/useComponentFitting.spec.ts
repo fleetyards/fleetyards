@@ -9,11 +9,11 @@ import {
 } from "@/services/fyApi";
 import {
   COMPONENT_TABS,
-  type CraftedPart,
   loadoutValues,
   lowerIsBetter,
   useComponentFitting,
 } from "./useComponentFitting";
+import type { CraftedPart } from "./craftedComponent";
 
 vi.mock("@/shared/composables/useI18n", () => ({
   useI18n: () => ({

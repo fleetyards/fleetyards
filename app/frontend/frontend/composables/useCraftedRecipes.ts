@@ -1,9 +1,7 @@
 import { useQueries } from "@tanstack/vue-query";
 import type { MaybeRefOrGetter } from "vue";
-import type {
-  CraftedPart,
-  useComponentFitting,
-} from "@/frontend/composables/useComponentFitting";
+import type { CraftedPart } from "@/frontend/composables/craftedComponent";
+import type { useComponentFitting } from "@/frontend/composables/useComponentFitting";
 import { getBlueprintQueryOptions } from "@/services/fyApi";
 
 /**

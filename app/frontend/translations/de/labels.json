@@ -4241,6 +4241,11 @@
         "friend": "Befreundet"
       },
       "blueprint": {
+        "crafter": {
+          "title": "Herstellen · %{name}",
+          "recipe": "Bauplan %{number}",
+          "noRecipe": "Für diesen Gegenstand gibt es im aktuellen Build keinen Bauplan."
+        },
         "name": "Name",
         "craftTime": "Fertigungszeit",
         "slots": "Plätze",
@@ -4505,11 +4510,6 @@
         "againstStock": "Änderungen gegenüber dem Serienschiff",
         "crafted": "Hergestellt",
         "craftedPart": "%{name} (hergestellt)",
-        "crafting": {
-          "title": "Herstellen · %{name}",
-          "recipe": "Bauplan %{number}",
-          "noRecipe": "Für dieses Teil gibt es im aktuellen Build keinen Bauplan."
-        },
         "fitted": "Verbaut",
         "owned": "Im Besitz",
         "noSlots": "An diesem Schiff lässt sich hier noch nichts ausrüsten",
