@@ -1209,7 +1209,10 @@ const save = async (values: LoadoutValues, asNew: boolean) => {
       slotPath,
       itemType,
       itemId,
-      ...(crafting[slotPath] ? { crafted: crafting[slotPath] } : {}),
+      ...(itemType === VehicleLoadoutItemTypeEnum.COMPONENT &&
+      crafting[slotPath]
+        ? { crafted: crafting[slotPath] }
+        : {}),
     }));
 
   const components = fittedComponentsToSave(values);
