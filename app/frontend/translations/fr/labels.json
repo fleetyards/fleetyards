@@ -4510,7 +4510,8 @@
           "qualityAll": "Qualité %{quality} dans chaque emplacement",
           "qualityRange": "Qualité %{low}–%{high}",
           "showQualities": "Régler les qualités",
-          "hideQualities": "Masquer les qualités"
+          "hideQualities": "Masquer les qualités",
+          "recipe": "Plan %{number}"
         },
         "fitted": "Équipé",
         "owned": "Possédé",

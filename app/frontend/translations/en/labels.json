@@ -4524,7 +4524,8 @@
           "qualityAll": "Quality %{quality} in every slot",
           "qualityRange": "Quality %{low}–%{high}",
           "showQualities": "Set qualities",
-          "hideQualities": "Hide qualities"
+          "hideQualities": "Hide qualities",
+          "recipe": "Recipe %{number}"
         },
         "fitted": "Fitted",
         "owned": "Owned",

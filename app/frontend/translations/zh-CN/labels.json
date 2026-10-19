@@ -4507,7 +4507,8 @@
           "qualityAll": "每个槽位品质 %{quality}",
           "qualityRange": "品质 %{low}–%{high}",
           "showQualities": "设置品质",
-          "hideQualities": "隐藏品质"
+          "hideQualities": "隐藏品质",
+          "recipe": "蓝图 %{number}"
         },
         "fitted": "已装配",
         "owned": "已拥有",

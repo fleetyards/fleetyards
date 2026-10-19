@@ -4507,7 +4507,8 @@
           "qualityAll": "每個槽位品質 %{quality}",
           "qualityRange": "品質 %{low}–%{high}",
           "showQualities": "設定品質",
-          "hideQualities": "隱藏品質"
+          "hideQualities": "隱藏品質",
+          "recipe": "藍圖 %{number}"
         },
         "fitted": "已裝配",
         "owned": "已擁有",

@@ -4510,7 +4510,8 @@
           "qualityAll": "Calidad %{quality} en cada ranura",
           "qualityRange": "Calidad %{low}–%{high}",
           "showQualities": "Ajustar calidades",
-          "hideQualities": "Ocultar calidades"
+          "hideQualities": "Ocultar calidades",
+          "recipe": "Plano %{number}"
         },
         "fitted": "Equipado",
         "owned": "En propiedad",

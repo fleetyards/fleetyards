@@ -4510,7 +4510,8 @@
           "qualityAll": "Qualità %{quality} in ogni slot",
           "qualityRange": "Qualità %{low}–%{high}",
           "showQualities": "Imposta le qualità",
-          "hideQualities": "Nascondi le qualità"
+          "hideQualities": "Nascondi le qualità",
+          "recipe": "Progetto %{number}"
         },
         "fitted": "Montato",
         "owned": "Posseduto",

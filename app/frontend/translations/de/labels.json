@@ -4510,7 +4510,8 @@
           "qualityAll": "Qualität %{quality} in jedem Slot",
           "qualityRange": "Qualität %{low}–%{high}",
           "showQualities": "Qualitäten einstellen",
-          "hideQualities": "Qualitäten ausblenden"
+          "hideQualities": "Qualitäten ausblenden",
+          "recipe": "Bauplan %{number}"
         },
         "fitted": "Verbaut",
         "owned": "Im Besitz",

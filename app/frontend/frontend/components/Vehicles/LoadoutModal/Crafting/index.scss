@@ -34,6 +34,12 @@
   overscroll-behavior: contain;
 }
 
+.loadout-crafting__recipes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
 .loadout-crafting__quickset {
   display: flex;
   flex-wrap: wrap;

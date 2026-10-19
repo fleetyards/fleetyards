@@ -1393,6 +1393,33 @@ describe("VehicleLoadoutModal component tabs", () => {
       ]);
     });
 
+    it("crafts a part that has two recipes from the one picked", async () => {
+      recipes.value = {
+        items: [
+          { id: "bp", slug: "bp-gun" },
+          { id: "bp2", slug: "bp-gun-2" },
+        ],
+      };
+      const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
+      await flushPromises();
+
+      await craft(wrapper);
+      await wrapper
+        .get("[data-test='vehicle-loadout-crafting-recipe-bp2']")
+        .trigger("click");
+      await flushPromises();
+      await save(wrapper);
+
+      expect(savedItems()).toEqual([
+        {
+          slotPath: GUN,
+          itemType: "Component",
+          itemId: "gun1",
+          crafted: { blueprintId: "bp2", qualities: [] },
+        },
+      ]);
+    });
+
     it("drops the crafting when another part is picked for the slot", async () => {
       const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
       await flushPromises();

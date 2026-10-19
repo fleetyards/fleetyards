@@ -50,14 +50,27 @@ const { data: recipesData } = useBlueprints(
   { query: { enabled: () => !!props.component.id } },
 );
 
-// Three parts have two recipes; the one it was crafted from stays chosen.
-const recipe = computed(() => {
-  const list = recipesData.value?.items ?? [];
+const recipes = computed(() => recipesData.value?.items ?? []);
 
-  return (
-    list.find((entry) => entry.id === props.crafted?.blueprintId) ?? list[0]
-  );
-});
+// Three parts have two recipes, each with its own slots; the one it was
+// crafted from stays chosen.
+const recipe = computed(
+  () =>
+    recipes.value.find((entry) => entry.id === props.crafted?.blueprintId) ??
+    recipes.value[0],
+);
+
+// Another recipe has other slots, so its qualities start over.
+const chooseRecipe = (blueprintId: string) => {
+  const chosen = recipes.value.find((entry) => entry.id === blueprintId);
+  if (!chosen || chosen.id === props.crafted?.blueprintId) return;
+
+  emit("update:crafted", {
+    blueprintId: chosen.id,
+    blueprintSlug: chosen.slug,
+    qualities: {},
+  });
+};
 
 const { data: blueprint } = useBlueprint(
   () => props.crafted?.blueprintSlug ?? "",
@@ -169,6 +182,23 @@ const summary = computed(() => {
       class="loadout-crafting__body"
       data-test="vehicle-loadout-crafting-slots"
     >
+      <div v-if="recipes.length > 1" class="loadout-crafting__recipes">
+        <Btn
+          v-for="(entry, index) in recipes"
+          :key="entry.id"
+          :size="BtnSizesEnum.SM"
+          :variant="BtnVariantsEnum.GHOST"
+          :active="entry.id === crafted.blueprintId"
+          :aria-pressed="entry.id === crafted.blueprintId"
+          :data-test="`vehicle-loadout-crafting-recipe-${entry.id}`"
+          @click="chooseRecipe(entry.id)"
+        >
+          {{
+            t("labels.vehicleLoadout.crafting.recipe", { number: index + 1 })
+          }}
+        </Btn>
+      </div>
+
       <div v-if="costSlots.length" class="loadout-crafting__quickset">
         <span>{{ t("labels.blueprint.setEverySlot") }}</span>
         <Btn
