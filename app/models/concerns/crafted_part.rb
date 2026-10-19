@@ -12,7 +12,7 @@ module CraftedPart
 
   # What a player can craft and hold: parts and gear. A crafted commodity is
   # just more of that commodity, which its grade already describes.
-  ITEM_TYPES = %w[Component Equipment].freeze
+  CRAFTED_ITEM_TYPES = %w[Component Equipment].freeze
 
   # The slots whose material moves a stat, which are the ones a crafted part
   # says the grade of. A slot without modifiers takes any grade and changes
@@ -42,12 +42,13 @@ module CraftedPart
     super(value.presence)
   end
 
-  # Checked when the crafting is written, not on every later save: a recipe the
-  # game retires or reshapes must not make what was recorded against it
-  # uneditable.
+  # Checked when the crafting is written, or the part it is for changes -- not
+  # on every later save: a recipe the game retires or reshapes must not make
+  # what was recorded against it uneditable.
   private def crafting_written?
     (crafted_blueprint_id? || crafted_qualities.present?) &&
-      (new_record? || will_save_change_to_crafted_blueprint_id? || will_save_change_to_crafted_qualities?)
+      (new_record? || will_save_change_to_crafted_blueprint_id? || will_save_change_to_crafted_qualities? ||
+        will_save_change_to_item_id? || will_save_change_to_item_type?)
   end
 
   # Whether every graded slot must carry a grade.
@@ -61,7 +62,7 @@ module CraftedPart
       return
     end
 
-    part = item if item_type.in?(ITEM_TYPES) && item_id.present?
+    part = item if item_type.in?(CRAFTED_ITEM_TYPES) && item_id.present?
 
     if part.blank?
       errors.add(:crafted_blueprint_id, :invalid, message: "only a component or equipment item can be crafted")

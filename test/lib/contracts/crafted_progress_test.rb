@@ -71,6 +71,30 @@ module Contracts
       assert_equal 2.to_d, progress.lines.first.delivered
     end
 
+    # Goods picked up that could never count toward the line are not progress
+    # on it.
+    test "a crafted line counts only crafted parts as picked up" do
+      line(qualities: {1 => 700})
+      source = create(:fleet_inventory, fleet: @fleet)
+      @contract.update!(kind: :transport, source_fleet_inventory: source)
+
+      pick_up(source, quantity: 2)
+      pick_up(source, quantity: 1, qualities: {1 => 800, 2 => 100})
+
+      assert_equal 1.to_d, progress.lines.first.picked_up
+    end
+
+    # The stored recipe makes one part; pointing the line at another would ask
+    # for something the recipe can never deliver.
+    test "a line cannot move to a part its recipe does not make" do
+      saved = line(qualities: nil)
+
+      saved.item = create(:component, name: "Palisade")
+
+      assert_not saved.valid?
+      assert saved.errors[:crafted_blueprint_id].any?
+    end
+
     test "a line asks only for grades in slots that move a stat" do
       create(:blueprint_cost_slot, build: @blueprint.build, position: 3)
 
@@ -97,6 +121,24 @@ module Contracts
       build_line(**).tap(&:save!)
     end
 
+    private def pick_up(source, quantity:, qualities: :plain)
+      create(:fleet_inventory_item, fleet_inventory: source, name: "Bulwark", category: :component,
+        unit: :units, item: @component, quantity: 5, quality: nil,
+        **crafted_attributes(qualities))
+
+      transfer = create(:inventory_transfer, fleet_contract: @contract, initiated_by: @contractor,
+        aasm_state: "completed", source_inventory: nil, source_fleet_inventory: source,
+        destination_fleet_inventory: nil, recipient: @contractor, expires_at: 14.days.from_now)
+
+      create(:fleet_inventory_item, fleet_inventory: source, inventory_transfer: transfer,
+        entry_type: :withdrawal, name: "Bulwark", category: :component, unit: :units,
+        item: @component, quantity:, quality: nil, **crafted_attributes(qualities))
+    end
+
+    private def crafted_attributes(qualities, blueprint = @blueprint)
+      (qualities == :plain) ? {} : {crafted_blueprint: blueprint, crafted_qualities: qualities}
+    end
+
     private def progress
       Contracts::Progress.new(@contract.reload)
     end
@@ -106,7 +148,7 @@ module Contracts
         aasm_state: "completed", source_inventory: create(:inventory, holder: @contractor),
         destination_fleet_inventory: @destination)
 
-      crafted = (qualities == :plain) ? {} : {crafted_blueprint: blueprint, crafted_qualities: qualities}
+      crafted = crafted_attributes(qualities, blueprint)
 
       create(:fleet_inventory_item, fleet_inventory: @destination, inventory_transfer: transfer,
         entry_type: :deposit, name: "Bulwark", category: :component, unit: :units,

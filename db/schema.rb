@@ -2896,7 +2896,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_19_150000) do
   add_foreign_key "fleet_contract_assignments", "fleet_contracts", on_delete: :cascade
   add_foreign_key "fleet_contract_assignments", "users", column: "approved_by_id", on_delete: :nullify
   add_foreign_key "fleet_contract_assignments", "users", on_delete: :cascade
-  add_foreign_key "fleet_contract_items", "blueprints", column: "crafted_blueprint_id", on_delete: :nullify
+  add_foreign_key "fleet_contract_items", "blueprints", column: "crafted_blueprint_id", on_delete: :restrict
   add_foreign_key "fleet_contract_items", "fleet_contracts", on_delete: :cascade
   add_foreign_key "fleet_contracts", "fleet_inventories", column: "destination_fleet_inventory_id", on_delete: :nullify
   add_foreign_key "fleet_contracts", "fleet_inventories", column: "source_fleet_inventory_id", on_delete: :nullify

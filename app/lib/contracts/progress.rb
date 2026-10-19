@@ -171,20 +171,25 @@ module Contracts
 
       # The line decides, because it also decides *how* -- at or above the
       # grade, or exactly it, and for a crafted part in every slot it names.
-      counted = delivered_rows.select do |row|
-        item.satisfied_by?(
-          grade: row[:quality],
-          crafted_blueprint_id: row[:crafted_blueprint_id],
-          crafted_qualities: row[:crafted_qualities]
-        )
-      end
+      counted = delivered_rows.select { |row| answers?(item, row) }
 
       LineProgress.new(
         item: item,
         requested: item.quantity,
         delivered: counted.sum(0.to_d) { |row| row[:quantity] },
-        picked_up: withdrawals.fetch(identity, []).sum(0.to_d) { |row| row[:quantity] },
+        # By the same rule as a delivery: goods picked up that could never count
+        # toward the line are not progress on it.
+        picked_up: withdrawals.fetch(identity, []).select { |row| answers?(item, row) }
+          .sum(0.to_d) { |row| row[:quantity] },
         contributions: contributions_for(item, counted)
+      )
+    end
+
+    private def answers?(item, row)
+      item.satisfied_by?(
+        grade: row[:quality],
+        crafted_blueprint_id: row[:crafted_blueprint_id],
+        crafted_qualities: row[:crafted_qualities]
       )
     end
 

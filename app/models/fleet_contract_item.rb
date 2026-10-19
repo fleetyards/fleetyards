@@ -41,6 +41,7 @@ class FleetContractItem < ApplicationRecord
   validate :crafted_from_a_recipe_for_the_item, if: :crafting_written?
 
   before_validation :set_name_from_item
+  before_validation :drop_grades_without_a_recipe
   before_create :set_position
 
   scope :ordered, -> { order(:position, :created_at) }
@@ -107,6 +108,13 @@ class FleetContractItem < ApplicationRecord
 
   private def crafted_grades_required?
     false
+  end
+
+  # A line that stops asking for a crafted part stops asking for its grades.
+  # Sent as null, the grades never reach the model -- a permitted hash drops
+  # an explicit null -- so clearing the recipe has to clear them here.
+  private def drop_grades_without_a_recipe
+    self.crafted_qualities = nil if crafted_blueprint_id.blank?
   end
 
   private def set_name_from_item
