@@ -18,11 +18,9 @@ import BaseSelect from "@/shared/components/base/Select/index.vue";
 import { BaseSelectVariantsEnum } from "@/shared/components/base/Select/types";
 import ItemPicker from "@/frontend/components/Logistics/ItemPicker/index.vue";
 import ItemPickerField from "@/frontend/components/Logistics/ItemPickerField/index.vue";
-import {
-  type ItemPickerSelection,
-  type PickedItem,
-} from "@/frontend/components/Logistics/types";
+import { type PickedItem } from "@/frontend/components/Logistics/types";
 import { useInventoryOptions } from "@/frontend/composables/useInventoryOptions";
+import { useItemPickerStep } from "@/frontend/composables/useItemPickerStep";
 import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -61,7 +59,7 @@ const editing = computed(() => props.item != null);
 const { t } = useI18n();
 
 const modalTitle = computed(() => {
-  if (picking.value) return t("headlines.logistics.pickItem");
+  if (picking.value) return pickTitle;
 
   return editing.value
     ? t("headlines.fleets.contracts.editItem")
@@ -103,10 +101,6 @@ const pickedItem = ref<PickedItem | undefined>(
     : undefined,
 );
 
-// The catalogue opens in place of the form rather than as a modal of its own:
-// there is only one app modal, and opening another would discard this form.
-const picking = ref(false);
-
 const validationSchema = {
   name: "required|min:2",
   quantity: "required|min_value:0",
@@ -140,19 +134,26 @@ const { value: name, errorMessage: nameError } = useField<string>(
 );
 const [category] = defineField("category");
 
-// Only raw resources carry a grade. A crafted part's worth lies in the
-// materials that went into it, which a single number cannot say.
-const graded = computed(
-  () => category.value === InventoryCategoryEnum.COMMODITY,
-);
+const {
+  picking,
+  showPicker,
+  pickTitle,
+  graded,
+  categoryLabel,
+  pickerCategory,
+  applySelection,
+  clearItem,
+} = useItemPickerStep({
+  name,
+  category,
+  pickedItem,
+  setFieldValue,
+});
+
 const [quantity, quantityProps] = defineField("quantity");
 const [unit] = defineField("unit");
 const [quality, qualityProps] = defineField("quality");
 const [qualityMatch] = defineField("qualityMatch");
-
-const categoryLabel = computed(() =>
-  name.value ? t(`labels.logistics.categories.${category.value}`) : undefined,
-);
 
 // A counted commodity is the only thing that puts `units` on offer under the
 // commodity category, and only the picked item knows -- so the options follow
@@ -173,33 +174,6 @@ const qualityMatchOptions = computed<FilterOption[]>(() =>
     label: t(`labels.fleets.contracts.qualityMatches.${value}`),
   })),
 );
-
-const form = ref<HTMLFormElement>();
-
-const showPicker = (shown: boolean) => {
-  // The body scrolls, and whichever view comes in starts at its top.
-  const body = form.value?.closest(".modal-body");
-  if (body) body.scrollTop = 0;
-
-  picking.value = shown;
-};
-
-// The category comes from the picker, which is the depositor's word too:
-// `Contracts::Progress` matches on (name, category, unit), so a line has to be
-// filed where the courier's ledger files the same goods.
-const applyCatalogueItem = (selection: ItemPickerSelection) => {
-  pickedItem.value = selection.item;
-
-  setFieldValue("category", selection.category);
-  setFieldValue("name", selection.name);
-  showPicker(false);
-};
-
-const clearItem = () => {
-  pickedItem.value = undefined;
-
-  setFieldValue("name", "");
-};
 
 const createItem = useCreateFleetContractItem();
 const updateItem = useUpdateFleetContractItem();
@@ -277,9 +251,9 @@ const onSubmit = handleSubmit(async (values) => {
   <Modal :title="modalTitle" :flush="picking">
     <ItemPicker
       v-if="picking"
-      :category="name ? category : undefined"
+      :category="pickerCategory"
       :categories="availableCategories.map((option) => String(option.value))"
-      @select="applyCatalogueItem"
+      @select="applySelection"
     />
 
     <!-- Hidden rather than unmounted while the catalogue is open, so nothing
@@ -287,7 +261,7 @@ const onSubmit = handleSubmit(async (values) => {
     <form
       v-show="!picking"
       id="fleet-contract-item-form"
-      ref="form"
+      ref="itemPickerForm"
       @submit.prevent="onSubmit"
     >
       <ItemPickerField
@@ -300,7 +274,7 @@ const onSubmit = handleSubmit(async (values) => {
       />
 
       <div class="row">
-        <div :class="graded ? 'col-6' : 'col-12'">
+        <div class="col-6">
           <FormInput
             v-model="quantity"
             v-bind="quantityProps"

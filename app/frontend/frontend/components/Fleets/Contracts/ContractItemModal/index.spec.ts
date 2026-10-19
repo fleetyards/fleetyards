@@ -63,10 +63,26 @@ const mount = async (kind?: string, item?: unknown) => {
   return wrapper;
 };
 
+const pickCommodity = async (subject: VueWrapper) => {
+  await subject.find("[data-test='item-picker-field-open']").trigger("click");
+  subject.findComponent({ name: "LogisticsItemPicker" }).vm.$emit("select", {
+    item: { type: "Commodity", id: "quantanium", name: "Quantanium" },
+    name: "Quantanium",
+    category: "commodity",
+  });
+  await flushPromises();
+};
+
 describe("FleetContractsItemModal", () => {
-  // A resource line carries a grade; the procurement default is a commodity.
+  // Only raw resources carry a grade, and nothing does before it is named.
   it("offers the grade on a resource line", async () => {
     const subject = await mount("procurement");
+
+    expect(subject.find("[data-test='input-itemQuality']").exists()).toBe(
+      false,
+    );
+
+    await pickCommodity(subject);
 
     expect(subject.find("[data-test='input-itemQuality']").exists()).toBe(true);
   });
@@ -76,6 +92,8 @@ describe("FleetContractsItemModal", () => {
   // has nowhere to render.
   it("keeps the number field beside the match selector", async () => {
     const subject = await mount();
+
+    await pickCommodity(subject);
 
     const prefix = subject.find(".base-input__prefix");
 

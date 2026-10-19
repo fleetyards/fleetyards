@@ -149,18 +149,15 @@ describe("LogisticsInventoryItemModal", () => {
 
   // Left blank rather than defaulted, so a deposit cannot slip through as a
   // 1 and a 0 nobody chose.
-  it("asks for an item, a quantity and a grade before depositing", async () => {
+  it("asks for an item and a quantity before depositing", async () => {
     const subject = await mount();
-
-    await pick(subject, gold);
-    await subject
-      .find("[data-test='item-picker-field-clear']")
-      .trigger("click");
 
     expect(
       (subject.find("[data-test='input-quantity']").element as HTMLInputElement)
         .value,
     ).toBe("");
+    // Nothing is graded before the goods are named.
+    expect(subject.find("[data-test='input-quality']").exists()).toBe(false);
 
     await subject.find("form").trigger("submit");
     await flushPromises();
@@ -169,6 +166,15 @@ describe("LogisticsInventoryItemModal", () => {
     expect(
       subject.find("[data-test='input-wrapper-quantity']").classes(),
     ).toContain("base-input--with-error");
+  });
+
+  it("asks for the grade of a resource", async () => {
+    const subject = await mount();
+
+    await pick(subject, gold);
+    await subject.find("form").trigger("submit");
+    await flushPromises();
+
     expect(
       subject.find("[data-test='input-wrapper-quality']").classes(),
     ).toContain("base-input--with-error");

@@ -26,10 +26,7 @@ import { useModalDirty } from "@/shared/components/AppModal/dirty";
 import { useFormDirty } from "@/shared/composables/useFormDirty";
 import ItemPicker from "@/frontend/components/Logistics/ItemPicker/index.vue";
 import ItemPickerField from "@/frontend/components/Logistics/ItemPickerField/index.vue";
-import {
-  type ItemPickerSelection,
-  type PickedItem,
-} from "@/frontend/components/Logistics/types";
+import { type PickedItem } from "@/frontend/components/Logistics/types";
 import {
   type Fleet,
   type FleetInventory,
@@ -43,6 +40,7 @@ import {
 } from "@/services/fyApi";
 import { type BaseSelectParams } from "@/shared/components/base/Select/index.vue";
 import { useInventoryOptions } from "@/frontend/composables/useInventoryOptions";
+import { useItemPickerStep } from "@/frontend/composables/useItemPickerStep";
 
 type StockItem = {
   id: string;
@@ -76,10 +74,6 @@ const stockItems = ref<StockItem[]>([]);
 // Declared before `unitOptions`, which reads it.
 const pickedItem = ref<PickedItem | undefined>(undefined);
 
-// The catalogue opens in place of the form rather than as a modal of its own:
-// there is only one app modal, and opening another would discard this form.
-const picking = ref(false);
-
 // Picking an existing position copies its unit but drops the catalogue
 // reference on purpose -- a new entry is not a reference to what the old ones
 // pointed at. That reference is also what says `units` is on offer, so the
@@ -101,7 +95,7 @@ const countedSelection = computed(() =>
 const isDeposit = computed(() => entryType.value === "deposit");
 
 const modalTitle = computed(() => {
-  if (picking.value) return t("headlines.logistics.pickItem");
+  if (picking.value) return pickTitle;
 
   return isDeposit.value
     ? t("headlines.logistics.deposit")
@@ -116,10 +110,7 @@ const validationSchema = {
 
 // Left blank rather than defaulted, so the amount and grade are entered for
 // the goods at hand instead of slipping through as a 1 and a 0 nobody chose.
-// A withdrawal takes its grade from what is in stock, so only a deposit asks.
-const qualityRules = computed(() =>
-  isDeposit.value ? validationSchema.quality : "",
-);
+// Stock is held per grade, so a withdrawal has to say which one it takes too.
 
 const initialValues = {
   name: "",
@@ -146,21 +137,32 @@ const { value: name, errorMessage: nameError } = useField<string>(
 );
 const [category] = defineField("category");
 
-// Only raw resources carry a grade. A crafted part's worth lies in the
-// materials that went into it, which a single number cannot say.
-const graded = computed(
-  () => category.value === InventoryCategoryEnum.COMMODITY,
-);
+const {
+  picking,
+  showPicker,
+  pickTitle,
+  graded,
+  categoryLabel,
+  pickerCategory,
+  applySelection,
+  clearItem,
+} = useItemPickerStep({
+  name,
+  category,
+  pickedItem,
+  setFieldValue,
+  onReset: () => {
+    selectedExistingItem.value = undefined;
+    selectedPosition.value = undefined;
+  },
+});
+
 const [quantity, quantityProps] = defineField("quantity");
 const [unit] = defineField("unit");
 const [quality, qualityProps] = defineField("quality");
 const [memberId] = defineField("memberId");
 const [image, imageProps] = defineField("image");
 const [notes, notesProps] = defineField("notes");
-
-const categoryLabel = computed(() =>
-  name.value ? t(`labels.logistics.categories.${category.value}`) : undefined,
-);
 
 // A counted commodity is the only thing that puts `units` on offer under the
 // commodity category, and only the picked item knows -- so the options follow
@@ -220,34 +222,6 @@ watch(selectedExistingItem, (val) => {
   /* eslint-enable @typescript-eslint/no-explicit-any */
   pickedItem.value = undefined;
 });
-
-const form = ref<HTMLFormElement>();
-
-const showPicker = (shown: boolean) => {
-  // The body scrolls, and whichever view comes in starts at its top.
-  const body = form.value?.closest(".modal-body");
-  if (body) body.scrollTop = 0;
-
-  picking.value = shown;
-};
-
-const applyCatalogueItem = (selection: ItemPickerSelection) => {
-  pickedItem.value = selection.item;
-  selectedExistingItem.value = undefined;
-  selectedPosition.value = undefined;
-
-  setFieldValue("category", selection.category);
-  setFieldValue("name", selection.name);
-  showPicker(false);
-};
-
-const clearItem = () => {
-  pickedItem.value = undefined;
-  selectedExistingItem.value = undefined;
-  selectedPosition.value = undefined;
-
-  setFieldValue("name", "");
-};
 
 // When switching to withdrawal, load stock
 watch(entryType, (val) => {
@@ -362,8 +336,8 @@ const onSubmit = handleSubmit(async (values) => {
   <Modal :title="modalTitle" :flush="picking">
     <ItemPicker
       v-if="picking"
-      :category="name ? category : undefined"
-      @select="applyCatalogueItem"
+      :category="pickerCategory"
+      @select="applySelection"
     />
 
     <!-- Hidden rather than unmounted while the catalogue is open, so nothing
@@ -371,7 +345,7 @@ const onSubmit = handleSubmit(async (values) => {
     <form
       v-show="!picking"
       id="create-inventory-item-form"
-      ref="form"
+      ref="itemPickerForm"
       @submit.prevent="onSubmit"
     >
       <BaseSelect
@@ -431,7 +405,7 @@ const onSubmit = handleSubmit(async (values) => {
       </template>
 
       <div class="row">
-        <div :class="graded ? 'col-6' : 'col-12'">
+        <div class="col-6">
           <FormInput
             v-model="quantity"
             v-bind="quantityProps"
@@ -467,7 +441,7 @@ const onSubmit = handleSubmit(async (values) => {
             v-bind="qualityProps"
             name="quality"
             :type="InputTypesEnum.NUMBER"
-            :rules="qualityRules"
+            :rules="validationSchema.quality"
             :label="t('labels.logistics.quality')"
             :min="0"
             :step="1"
