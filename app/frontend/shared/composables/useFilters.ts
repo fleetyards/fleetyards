@@ -5,7 +5,7 @@ const FILTER_BURST_MS = 1500;
 
 const DEFAULT_IGNORE_KEYS = ["s", "sorts"];
 const PAGINATION_KEYS = ["page", "perPage"];
-const VIEW_STATE_KEYS = ["tab", "view", "direction", "fleetchart"];
+export const VIEW_STATE_KEYS = ["tab", "view", "direction", "fleetchart"];
 
 // Every route query key that is never a filter, whatever list it is on.
 export const FILTER_EXCLUDE_KEYS = [

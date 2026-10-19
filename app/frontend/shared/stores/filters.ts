@@ -1,11 +1,11 @@
 import { defineStore } from "pinia";
 import type { LocationQuery, RouteLocationNormalized } from "vue-router";
-import { FILTER_EXCLUDE_KEYS } from "@/shared/composables/useFilters";
+import { VIEW_STATE_KEYS } from "@/shared/composables/useFilters";
 
 type SavedFilter = {
   query: LocationQuery;
-  // A list's own view keys are no filter, so a link carrying only those still
-  // arrives unfiltered.
+  // A list's own view keys only pick what it shows, so a link carrying nothing
+  // else still gets the filter back.
   viewKeys: string[];
 };
 
@@ -63,9 +63,11 @@ export const useFiltersStore = defineStore("filters", {
 });
 
 /*
- * Arriving on a list without a filter of its own brings back the one it was
- * left with. A link that does carry one wins, and so does a navigation within
- * the list -- clearing the filters is one, and must stay cleared.
+ * Arriving on a list with nothing but view state in the URL brings back the
+ * filter and sort it was left with. A link that carries anything else -- a
+ * filter, a sort, a page -- shows what it was shared with, and a navigation
+ * within the list is left alone: clearing the filters is one, and must stay
+ * cleared.
  */
 export const restoreSavedFilter = (
   to: RouteLocationNormalized,
@@ -79,13 +81,14 @@ export const restoreSavedFilter = (
 
   if (!saved) return;
 
-  const ownFilter = Object.keys(to.query).some(
+  // The restored query always carries a key of its own, which is what ends the
+  // redirect it starts.
+  const ownQuery = Object.keys(to.query).some(
     (queryKey) =>
-      !FILTER_EXCLUDE_KEYS.includes(queryKey) &&
-      !saved.viewKeys.includes(queryKey),
+      !VIEW_STATE_KEYS.includes(queryKey) && !saved.viewKeys.includes(queryKey),
   );
 
-  if (ownFilter) return;
+  if (ownQuery) return;
 
   return {
     path: to.path,

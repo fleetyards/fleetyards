@@ -54,18 +54,56 @@ describe("restoreSavedFilter", () => {
     ).toBeUndefined();
   });
 
-  it("keeps the view and sort a link did carry", () => {
+  it("keeps the view a link did carry", () => {
     expect(
       restoreSavedFilter(
-        location("/ships", { t: "archive", s: "scu desc", page: "2" }),
+        location("/ships", { t: "archive", tab: "grid" }),
         location("/hangar"),
       )?.query,
     ).toEqual({
       manufacturerIn: ["rsi"],
+      s: "name asc",
       t: "archive",
-      s: "scu desc",
-      page: "2",
+      tab: "grid",
     });
+  });
+
+  it("lets a link's own sort or page win", () => {
+    expect(
+      restoreSavedFilter(
+        location("/ships", { s: "scu desc" }),
+        location("/hangar"),
+      ),
+    ).toBeUndefined();
+    expect(
+      restoreSavedFilter(
+        location("/ships", { page: "3" }),
+        location("/hangar"),
+      ),
+    ).toBeUndefined();
+  });
+
+  it("lets its own redirect through, even when only a sort was saved", () => {
+    useFiltersStore().saveFilter("/ships", {
+      query: { s: "name asc" },
+      viewKeys: [],
+    });
+
+    const restored = restoreSavedFilter(
+      location("/ships"),
+      location("/hangar"),
+    );
+
+    expect(restored?.query).toEqual({ s: "name asc" });
+    expect(
+      restoreSavedFilter(
+        location(
+          restored?.path ?? "",
+          restored?.query as Record<string, string>,
+        ),
+        location("/hangar"),
+      ),
+    ).toBeUndefined();
   });
 
   it("leaves a cleared filter cleared within the list", () => {
