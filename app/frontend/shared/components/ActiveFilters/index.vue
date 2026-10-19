@@ -73,6 +73,7 @@ const visibleFilters = computed(() =>
     ref="root"
     class="active-filters"
     :class="{ 'active-filters--expanded': expanded }"
+    role="group"
     :aria-label="t('filteredList.selected')"
   >
     <div
