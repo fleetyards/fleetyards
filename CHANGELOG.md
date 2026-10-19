@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.16.0](https://github.com/fleetyards/fleetyards/compare/v9.15.0...v9.16.0) (2026-10-19)
+
+
+### Features
+
+* **filters:** keep a list's filters when leaving and coming back ([#5845](https://github.com/fleetyards/fleetyards/issues/5845)) ([ab28bc5](https://github.com/fleetyards/fleetyards/commit/ab28bc513748e691d9e68036ba2ec0213deff6de))
+
+
+### Bug Fixes
+
+* **filters:** drop an emptied nested q when removing its last chip ([535bebc](https://github.com/fleetyards/fleetyards/commit/535bebc091e3158c24a82cec86afb2e9421913d9))
+* **filters:** keep the sort options right of a selectable toolbar ([18f53a1](https://github.com/fleetyards/fleetyards/commit/18f53a1a798b7b30140aee9af846b4081edcf756))
+* **filters:** show the selected filters beside the filter button ([77ba537](https://github.com/fleetyards/fleetyards/commit/77ba5377f3865227b3334be1535bd5499c5baa16))
+* **navigation:** restore saved filters as top-level query keys ([b47aff3](https://github.com/fleetyards/fleetyards/commit/b47aff3dfb567d69ae4bbd3b2ba727bcad61704b))
+
+
+### Refactorings
+
+* **hangar:** drop the hidden ships toggle from the bulk actions ([2721b8a](https://github.com/fleetyards/fleetyards/commit/2721b8a1db7d0738fdf84a6d435543552e104979))
+
 ## [9.15.0](https://github.com/fleetyards/fleetyards/compare/v9.14.0...v9.15.0) (2026-10-19)
 
 
