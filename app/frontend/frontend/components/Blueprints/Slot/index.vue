@@ -20,9 +20,14 @@ import { type BlueprintCostSlot } from "@/services/fyApi";
 type Props = {
   slotData: BlueprintCostSlot;
   quality: number;
+  // Off where the crafted figures are listed elsewhere, such as a loadout's
+  // crafter: the slot is then its material and quality control alone.
+  ramps?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  ramps: true,
+});
 
 const emit = defineEmits<{
   "update:quality": [value: number];
@@ -155,6 +160,8 @@ const { ramps } = useQualityRamp(
   () => props.quality,
 );
 
+const moves = computed(() => ramps.value.map((ramp) => ramp.name).join(", "));
+
 // A number input reports "" mid-edit -- cleared, or a lone "-" -- and
 // Number("") is 0, which would slam the slot to zero under the cursor. An
 // unparseable value leaves it where it was.
@@ -170,9 +177,21 @@ const onQuality = (event: Event) => {
 </script>
 
 <template>
-  <div class="blueprint-slot">
+  <div
+    class="blueprint-slot"
+    :class="{ 'blueprint-slot--without-ramps': !props.ramps }"
+  >
     <div class="blueprint-slot__head">
       <span class="blueprint-slot__name">{{ slotData.name }}</span>
+      <!-- Without its ramps the slot still says what it moves, so a quality
+           is never set blind. -->
+      <span
+        v-if="!props.ramps && moves"
+        class="blueprint-slot__moves"
+        data-test="blueprint-slot-moves"
+      >
+        {{ moves }}
+      </span>
       <span v-if="gate" class="blueprint-slot__gate">
         {{ t("labels.blueprint.minQuality", { quality: gate }) }}
       </span>
@@ -318,7 +337,7 @@ const onQuality = (event: Event) => {
         </div>
       </div>
 
-      <div v-if="ramps.length" class="blueprint-slot__stats">
+      <div v-if="props.ramps && ramps.length" class="blueprint-slot__stats">
         <div v-for="ramp in ramps" :key="ramp.key" class="blueprint-slot__stat">
           <div class="blueprint-slot__stat-head">
             <span class="blueprint-slot__stat-name">{{ ramp.name }}</span>
@@ -405,7 +424,7 @@ const onQuality = (event: Event) => {
         </div>
       </div>
 
-      <p v-else class="blueprint-slot__no-stats">
+      <p v-else-if="props.ramps" class="blueprint-slot__no-stats">
         {{ t("labels.blueprint.noStats") }}
       </p>
     </div>

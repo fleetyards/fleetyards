@@ -36,6 +36,16 @@
     color: $gray-light;
   }
 
+  // What a slot moves, beside its name, where its ramps are not shown.
+  &__moves {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--color-text-dim);
+    font-size: 12px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   &__gate {
     font-family: "Orbitron", tahoma, sans-serif;
     font-size: 11px;
@@ -385,6 +395,11 @@
   &__stats {
     min-width: 0;
     padding: 0 0 6px;
+  }
+
+  // With nothing beside it, the control takes the whole width.
+  &--without-ramps &__body {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   // A column rather than one long row. Squeezed onto a single line the figure

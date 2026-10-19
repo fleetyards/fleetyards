@@ -126,6 +126,12 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
     activateVehicleLoadout(...args),
 }));
 
+vi.mock("@/frontend/composables/useMaterialStock", () => ({
+  useMaterialStock: () => ({
+    forCommodity: () => ({ own: [], fleet: [] }),
+  }),
+}));
+
 vi.mock("@/frontend/composables/useVehicleMutations", () => ({
   useVehicleMutations: () => ({
     invalidateHangarQueries: () => Promise.resolve(),
@@ -1489,7 +1495,7 @@ describe("VehicleLoadoutModal component tabs", () => {
       await craft(wrapper);
       expect(
         wrapper.findAll(
-          "[data-test='vehicle-loadout-crafting-slots'] .loadout-crafter__slot",
+          "[data-test='vehicle-loadout-crafting-slots'] .blueprint-slot",
         ),
       ).toHaveLength(2);
       expect(
