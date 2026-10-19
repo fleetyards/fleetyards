@@ -329,6 +329,10 @@ fr:
               component_not_in_slot: "doivent chacun correspondre au type et à la taille de leur emplacement"
               slot_not_editable: "ne peuvent pas remplacer une pièce que l'emplacement verrouille"
               nothing_to_empty: "ne peuvent vider qu'un emplacement qui contient une pièce"
+              crafted_not_component: "ne peuvent être fabriqués que s'il s'agit de composants"
+              crafted_not_craftable: "doivent être fabriqués à partir d'un plan de cette pièce"
+              crafted_slot_unknown: "ne peuvent nommer que des emplacements que le plan possède"
+              crafted_quality_out_of_range: "doivent utiliser une qualité de matériau de 0 à 1000"
         payout_entry:
           attributes:
             entry_type:
