@@ -2,6 +2,53 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.15.0](https://github.com/fleetyards/fleetyards/compare/v9.14.0...v9.15.0) (2026-10-19)
+
+
+### Features
+
+* **buyback-sync:** record each sync as an import, like hangar syncs ([#5832](https://github.com/fleetyards/fleetyards/issues/5832)) ([73d592b](https://github.com/fleetyards/fleetyards/commit/73d592bcbb88cb723f9f8ff839ad8ec4ebfbc510))
+* close the mobile drawers with a swipe ([#5808](https://github.com/fleetyards/fleetyards/issues/5808)) ([07bfd48](https://github.com/fleetyards/fleetyards/commit/07bfd48d2c0464423af5e92a074ccbeb93026f2e))
+* **components:** show the category icon on the component stats card ([#5797](https://github.com/fleetyards/fleetyards/issues/5797)) ([d381239](https://github.com/fleetyards/fleetyards/commit/d38123959d38b6eab057dca7b5b30c13912554a9))
+* **contracts:** ask for crafted parts on contract lines ([#5838](https://github.com/fleetyards/fleetyards/issues/5838)) ([6543701](https://github.com/fleetyards/fleetyards/commit/6543701cb2d120230195733716284a8cd4703fd3))
+* **filters:** add SCU ranges and streamline ship filters ([#5842](https://github.com/fleetyards/fleetyards/issues/5842)) ([0c71639](https://github.com/fleetyards/fleetyards/commit/0c71639b0cfa0b5b5db2d81572226e0a0d155f8f))
+* **hangar:** import Star Citizen: Hangar Extension exports ([#5801](https://github.com/fleetyards/fleetyards/issues/5801)) ([9871e7e](https://github.com/fleetyards/fleetyards/commit/9871e7ea7a3f5e11a80e6de6e68e33d19bc3586d))
+* **hangar:** keep ship components, and add them and FPS gear to inventories ([#5839](https://github.com/fleetyards/fleetyards/issues/5839)) ([bc95cc7](https://github.com/fleetyards/fleetyards/commit/bc95cc72c88760c9ef6b0298f1d02336ff7536f3))
+* **loadouts:** a page per loadout with the ship's hardpoints, figures and fuel ([#5798](https://github.com/fleetyards/fleetyards/issues/5798)) ([b635464](https://github.com/fleetyards/fleetyards/commit/b635464b69465596d8fb8472f8d528f033258801))
+* **loadouts:** crafted parts in the loadout editor ([#5833](https://github.com/fleetyards/fleetyards/issues/5833)) ([7c394c2](https://github.com/fleetyards/fleetyards/commit/7c394c24e502761b0b563837f9829921cb474a17))
+* **loadouts:** fit components in the editor's category tabs ([#5775](https://github.com/fleetyards/fleetyards/issues/5775)) ([96d9d01](https://github.com/fleetyards/fleetyards/commit/96d9d01f6510590658790e001687d2f6eed2ff7b))
+* **logistics:** item picker for inventory deposits and contract lines ([#5835](https://github.com/fleetyards/fleetyards/issues/5835)) ([236d2b2](https://github.com/fleetyards/fleetyards/commit/236d2b269cade376a54ccb013d391b0b34991d7b))
+* **logistics:** record crafted components and equipment with their material qualities ([#5836](https://github.com/fleetyards/fleetyards/issues/5836)) ([4c00b58](https://github.com/fleetyards/fleetyards/commit/4c00b58ec0ea1443ecd8734779b599a578c967d6))
+* **modals:** redesign modals and confirms around a docked action plate ([#5807](https://github.com/fleetyards/fleetyards/issues/5807)) ([2e7422d](https://github.com/fleetyards/fleetyards/commit/2e7422d323beebee3b1b3802364463ae48b4db2f))
+* **sync:** redesign the hangar and buy-back sync modals ([#5812](https://github.com/fleetyards/fleetyards/issues/5812)) ([98bea69](https://github.com/fleetyards/fleetyards/commit/98bea69161c73d43d738a5f35d693518cc99c348))
+
+
+### Bug Fixes
+
+* **hangar-sync:** sync the Galaxy's cargo, med bay and refinery modules ([#5813](https://github.com/fleetyards/fleetyards/issues/5813)) ([e8a40c7](https://github.com/fleetyards/fleetyards/commit/e8a40c773a4f8e2f689dcb1c8c98393156b8b9bb))
+* **hangar:** stop storing a Hangar XPLORer ship's standard name as its custom name ([#5803](https://github.com/fleetyards/fleetyards/issues/5803)) ([65d7cd8](https://github.com/fleetyards/fleetyards/commit/65d7cd8f2266422746c82b5142f2d7a5f77836ae))
+* **items:** load the mining gadgets, flair, carryables and ore pods players carry ([#5806](https://github.com/fleetyards/fleetyards/issues/5806)) ([6398cad](https://github.com/fleetyards/fleetyards/commit/6398cadf5294530eea5a330623ea768e190bd12d))
+* **model-picker:** fold every filter but the search away on a phone ([#5805](https://github.com/fleetyards/fleetyards/issues/5805)) ([a248e6d](https://github.com/fleetyards/fleetyards/commit/a248e6d5feb238aceee6fc4ccc79f84deee72bbd))
+* **paints:** map the Aurora Electric Blue and Shocking Blue paints to the Aurora Mk I ([#5811](https://github.com/fleetyards/fleetyards/issues/5811)) ([3120f9d](https://github.com/fleetyards/fleetyards/commit/3120f9d1e07edd142dfb78502621866917f66746))
+* **users:** allow revoking an RSI handle verified through Citizen iD ([#5843](https://github.com/fleetyards/fleetyards/issues/5843)) ([2dbe422](https://github.com/fleetyards/fleetyards/commit/2dbe4222a094ce253db700d97dcda74e6c7ad005))
+
+
+### Chores
+
+* **deps-dev:** bump @tanstack/eslint-plugin-query ([#5824](https://github.com/fleetyards/fleetyards/issues/5824)) ([90d5321](https://github.com/fleetyards/fleetyards/commit/90d53216dc899468ba864eb77fbd1da119ee2fd2))
+* **deps-dev:** bump @typescript-eslint/eslint-plugin ([#5827](https://github.com/fleetyards/fleetyards/issues/5827)) ([d85f631](https://github.com/fleetyards/fleetyards/commit/d85f6311459976cf06a8165fad6e8d313fd76e69))
+* **deps-dev:** bump @vue/compiler-sfc from 3.5.43 to 3.5.44 ([#5823](https://github.com/fleetyards/fleetyards/issues/5823)) ([71308e0](https://github.com/fleetyards/fleetyards/commit/71308e07c6c503fc0e4101346d025cedfa6f341d))
+* **deps-dev:** bump sass from 1.105.1 to 1.105.2 ([#5826](https://github.com/fleetyards/fleetyards/issues/5826)) ([b9a34db](https://github.com/fleetyards/fleetyards/commit/b9a34dbc01411aefe36bc49bee589c126ba151d9))
+* **deps-dev:** bump the playwright group with 2 updates ([#5816](https://github.com/fleetyards/fleetyards/issues/5816)) ([ecfa1a7](https://github.com/fleetyards/fleetyards/commit/ecfa1a7d926f5f52efe61167ffc72b65e67ed40d))
+* **deps-dev:** bump uniform_notifier from 1.18.0 to 1.18.1 ([#5818](https://github.com/fleetyards/fleetyards/issues/5818)) ([46c5f1c](https://github.com/fleetyards/fleetyards/commit/46c5f1ca18b4a8c279222bb59f523be6562dbe4e))
+* **deps-dev:** bump vitest from 5.0.4 to 5.0.5 ([#5825](https://github.com/fleetyards/fleetyards/issues/5825)) ([35d03b2](https://github.com/fleetyards/fleetyards/commit/35d03b2c7fa29193d78ce1fba6695ea0ec9a9319))
+* **deps-dev:** bump webmock from 3.30.0 to 3.34.0 ([#5819](https://github.com/fleetyards/fleetyards/issues/5819)) ([130eeae](https://github.com/fleetyards/fleetyards/commit/130eeaefbd1f5b203a1c53b53fa815098560abec))
+* **deps:** bump @tanstack/vue-query from 5.104.2 to 5.104.3 ([#5821](https://github.com/fleetyards/fleetyards/issues/5821)) ([304bc58](https://github.com/fleetyards/fleetyards/commit/304bc586b7232775579ef4b4d2ea190ba3fcaa90))
+* **deps:** bump appsignal from 5.0.4 to 5.0.5 ([#5817](https://github.com/fleetyards/fleetyards/issues/5817)) ([821623a](https://github.com/fleetyards/fleetyards/commit/821623a848ce3296b41000c45caf296780658e15))
+* **deps:** bump pinia from 4.0.3 to 4.1.0 ([#5828](https://github.com/fleetyards/fleetyards/issues/5828)) ([126b509](https://github.com/fleetyards/fleetyards/commit/126b5090588c2816f51515ae2bcefda2328efd57))
+* **deps:** bump qs from 6.16.0 to 6.16.1 ([#5822](https://github.com/fleetyards/fleetyards/issues/5822)) ([76ba19c](https://github.com/fleetyards/fleetyards/commit/76ba19cd099747de76a94378c4e2ecd9d0392693))
+* **deps:** bump the tiptap group with 8 updates ([#5820](https://github.com/fleetyards/fleetyards/issues/5820)) ([8505e1a](https://github.com/fleetyards/fleetyards/commit/8505e1a30914b17cfa239b8f528cdfb8429e8f66))
+
 ## [9.14.0](https://github.com/fleetyards/fleetyards/compare/v9.13.0...v9.14.0) (2026-10-18)
 
 
