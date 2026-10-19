@@ -61,6 +61,18 @@ class Api::V1::VehicleLoadoutsSlotsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /vehicles/:vehicle_id/loadouts/:id/slots says which parts a recipe makes" do
+    create(:blueprint, craftable: @upgrade)
+    sign_in @user
+
+    assert_api_response :get, 200, path_params: {vehicle_id: @vehicle.id, id: @loadout.id} do
+      plant = parsed_body.sole
+
+      assert plant.dig("fitted", "craftable")
+      assert_equal false, plant.dig("stock", "craftable")
+    end
+  end
+
   test "GET /vehicles/:vehicle_id/loadouts/:id/slots returns 401 when not signed in" do
     assert_api_response :get, 401, path_params: {vehicle_id: @vehicle.id, id: @loadout.id}
   end
