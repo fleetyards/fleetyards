@@ -69,6 +69,39 @@ describe("InventoryLedgerTables", () => {
     expect(subject.find(".fa-book-open").exists()).toBe(false);
   });
 
+  // The lots of one position share its id, which alone would key both rows
+  // alike and let a reorder patch one lot's figures onto the other.
+  it("tells the lots of one position apart", async () => {
+    const plain = {
+      ...stockRow,
+      quality: 0,
+      crafted: undefined,
+      netQuantity: 3,
+    };
+    const lot = { ...stockRow, quality: 0, netQuantity: 1 };
+    const subject = await mount({
+      activeTab: "stock",
+      stockRecords: [plain, lot],
+      logRecords: [],
+    });
+
+    await subject.setProps({ stockRecords: [lot, plain] } as never);
+
+    const rows = subject
+      .findAll(".base-table-row")
+      .filter((row) => row.find("[data-test='catalogue-popover']").exists());
+
+    expect(rows).toHaveLength(2);
+    expect(rows[0].find(".ledger-crafted").exists()).toBe(true);
+    expect(rows[1].find(".ledger-crafted").exists()).toBe(false);
+    const keys = subject
+      .findAllComponents({ name: "BaseTableRow" })
+      .filter((row) => row.find("[data-test='catalogue-popover']").exists())
+      .map((row) => row.vm.$.vnode.key);
+
+    expect(new Set(keys).size).toBe(2);
+  });
+
   it("marks a crafted entry in the log", async () => {
     const subject = await mount({
       activeTab: "log",

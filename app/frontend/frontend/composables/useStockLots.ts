@@ -19,7 +19,7 @@ export type StockLot = {
 
 // Stable across a refetch, unlike an index: the position, the grade and what
 // the part was crafted from are what tell a lot apart.
-const lotKey = (lot: StockLot) =>
+export const lotKey = (lot: Pick<StockLot, "id" | "quality" | "crafted">) =>
   JSON.stringify([
     lot.id,
     lot.quality ?? null,
