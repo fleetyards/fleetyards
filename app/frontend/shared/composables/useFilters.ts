@@ -3,6 +3,17 @@ import debounce from "lodash.debounce";
 // How long after one filter change the next still counts as the same edit.
 const FILTER_BURST_MS = 1500;
 
+const DEFAULT_IGNORE_KEYS = ["s", "sorts"];
+const PAGINATION_KEYS = ["page", "perPage"];
+const VIEW_STATE_KEYS = ["tab", "view", "direction", "fleetchart"];
+
+// Every route query key that is never a filter, whatever list it is on.
+export const FILTER_EXCLUDE_KEYS = [
+  ...DEFAULT_IGNORE_KEYS,
+  ...PAGINATION_KEYS,
+  ...VIEW_STATE_KEYS,
+];
+
 export const useFilters = <T>({
   ignoreKeys,
   viewKeys = [],
@@ -14,18 +25,16 @@ export const useFilters = <T>({
 } = {}) => {
   const route = useRoute();
 
-  const defaultIgnoreKeys = ["s", "sorts"];
-  const paginationKeys = ["page", "perPage"];
   // View state that lives in the URL so a reload restores it, and that no
   // endpoint has ever been asked to filter on. `getQuery` spreads the whole
   // route query into `q`, and the query schemas are `additionalProperties:
   // false` -- so a key like this reaches the API as an unknown filter and comes
   // back a 400, which reads as a server error.
-  const viewStateKeys = ["tab", "view", "direction", "fleetchart", ...viewKeys];
+  const viewStateKeys = [...VIEW_STATE_KEYS, ...viewKeys];
 
   const excludeKeys = [
-    ...defaultIgnoreKeys,
-    ...paginationKeys,
+    ...DEFAULT_IGNORE_KEYS,
+    ...PAGINATION_KEYS,
     ...viewStateKeys,
   ];
 
@@ -81,7 +90,7 @@ export const useFilters = <T>({
       .forEach((key) => delete query[key]);
 
     Object.keys(query)
-      .filter((key) => [...paginationKeys, ...viewStateKeys].includes(key))
+      .filter((key) => [...PAGINATION_KEYS, ...viewStateKeys].includes(key))
       .forEach((key) => delete query[key]);
 
     return query;
@@ -92,7 +101,7 @@ export const useFilters = <T>({
 
     Object.keys(query)
       .filter((key) => {
-        return [...(ignoreKeys || []), ...defaultIgnoreKeys].includes(key);
+        return [...(ignoreKeys || []), ...DEFAULT_IGNORE_KEYS].includes(key);
       })
       .forEach((key) => delete query[key]);
 

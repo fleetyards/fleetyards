@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import FilterGroup from "@/shared/components/FilterGroup/index.vue";
+import { hasActiveFilters } from "@/shared/utils/Filters";
 import RadioList from "@/shared/components/base/RadioList/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
@@ -98,14 +99,7 @@ watch(
 
 const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
 const hasGroupFilters = (keys: string[]) =>
-  keys.some((key) => {
-    const value = (filters.value as Record<string, unknown>)[key];
-    return (
-      value != null &&
-      value !== "" &&
-      (!Array.isArray(value) || value.length > 0)
-    );
-  });
+  hasActiveFilters(filters.value, keys);
 </script>
 
 <template>
