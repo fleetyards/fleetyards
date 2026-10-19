@@ -31,7 +31,8 @@
         "imports": "Importe",
         "transfers": "Transfers",
         "vehicleOverview": "Übersicht",
-        "vehicleLog": "Logbuch"
+        "vehicleLog": "Logbuch",
+        "shipComponents": "Schiffskomponenten"
       },
       "login": "Anmelden",
       "installApp": "App installieren",

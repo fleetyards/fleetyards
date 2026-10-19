@@ -10,6 +10,7 @@ const routerOn = async (name: string) => {
       "hangar-paints",
       "hangar-flair",
       "hangar-equipment",
+      "hangar-ship-components",
       "hangar-upgrades",
       "hangar-buybacks",
     ].map((routeName) => ({
@@ -39,7 +40,7 @@ describe("Hangar/PledgeItemsSwitch", () => {
     setViewport(false);
   });
 
-  it("links paints, hangar flair, equipment and buy-backs, marking the current page", async () => {
+  it("links paints, hangar flair, equipment, ship components and buy-backs, marking the current page", async () => {
     const wrapper = await mountWithDefaults(Component, {
       plugins: [await routerOn("hangar-flair")],
     });
@@ -48,6 +49,7 @@ describe("Hangar/PledgeItemsSwitch", () => {
       "paints",
       "flair",
       "equipment",
+      "shipComponents",
       "upgrades",
       "buybacks",
     ].map((key) => wrapper.find(`[data-test='pledge-items-switch-${key}']`));
@@ -56,12 +58,14 @@ describe("Hangar/PledgeItemsSwitch", () => {
       "#/hangar-paints",
       "#/hangar-flair",
       "#/hangar-equipment",
+      "#/hangar-ship-components",
       "#/hangar-upgrades",
       "#/hangar-buybacks",
     ]);
     expect(segments.map((segment) => segment.classes("active"))).toEqual([
       false,
       true,
+      false,
       false,
       false,
       false,

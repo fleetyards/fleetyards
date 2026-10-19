@@ -29,11 +29,13 @@ import {
   getHangarUpgradesQueryKey,
   useHangarEquipment,
   getHangarEquipmentQueryKey,
+  useHangarShipComponents,
+  getHangarShipComponentsQueryKey,
   type HangarPledgeItemQuery,
 } from "@/services/fyApi";
 
 type Props = {
-  kind: "paints" | "flair" | "equipment" | "upgrades";
+  kind: "paints" | "flair" | "equipment" | "shipComponents" | "upgrades";
 };
 
 const props = defineProps<Props>();
@@ -66,6 +68,13 @@ const KINDS = {
     headline: "headlines.hangar.equipment",
     emptyName: "labels.hangarPledgeItems.equipment",
     icon: "fa-duotone fa-shirt",
+  },
+  shipComponents: {
+    useItems: useHangarShipComponents,
+    getQueryKey: getHangarShipComponentsQueryKey,
+    headline: "headlines.hangar.shipComponents",
+    emptyName: "labels.hangarPledgeItems.shipComponents",
+    icon: "fa-duotone fa-microchip",
   },
 };
 

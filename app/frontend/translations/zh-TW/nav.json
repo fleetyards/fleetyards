@@ -31,7 +31,8 @@
         "imports": "匯入記錄",
         "transfers": "轉移",
         "vehicleOverview": "概覽",
-        "vehicleLog": "艦長日誌"
+        "vehicleLog": "艦長日誌",
+        "shipComponents": "飛船部件"
       },
       "login": "登入",
       "installApp": "安裝應用程式",

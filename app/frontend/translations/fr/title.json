@@ -56,7 +56,8 @@
         "imports": "Imports",
         "transfers": "Transferts",
         "vehicleOverview": "Aperçu du vaisseau",
-        "vehicleLog": "Journal de bord"
+        "vehicleLog": "Journal de bord",
+        "shipComponents": "Composants de vaisseau"
       },
       "requestPassword": "Demander un mot de passe",
       "changePassword": "Modifier le mot de passe",

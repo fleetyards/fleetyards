@@ -254,6 +254,7 @@
         "flair": "Hangar Flair",
         "upgrades": "Upgrades / CCUs",
         "equipment": "FPS Gear",
+        "shipComponents": "Ship Components",
         "imports": "Imports"
       },
       "buybackSync": "Sync RSI Buy-Back Pledges",

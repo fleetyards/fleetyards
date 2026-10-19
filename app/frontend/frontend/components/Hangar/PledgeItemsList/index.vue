@@ -32,7 +32,7 @@ type Props = {
 
 defineProps<Props>();
 
-const { t, l } = useI18n();
+const { t, l, tExists } = useI18n();
 
 const { formatCents } = useCurrencyFormat();
 
@@ -48,8 +48,30 @@ const viewImage = (event: MouseEvent, name: string) => {
 
 const usd = (value: number) => formatCents(Math.round(value * 100), "USD");
 
+// A ship component matched to the catalogue says what part it is, named as
+// the components catalogue names it.
+const shipComponent = (item: HangarPledgeItem) =>
+  item.kind === HangarPledgeItemKindEnum.SHIP_COMPONENT
+    ? item.catalogueItem
+    : undefined;
+
+const categoryLabel = (category: string) => {
+  const path = `labels.hardpoint.categories.${category}`;
+
+  return tExists(path) ? t(path) : category;
+};
+
 const badges = (item: HangarPledgeItem): RowListItemBadge[] => {
   const result: RowListItemBadge[] = [];
+
+  const size = shipComponent(item)?.size;
+  if (size) {
+    result.push({
+      key: "size",
+      label: t("labels.hardpoint.size"),
+      value: size,
+    });
+  }
 
   if (item.quantity > 1) {
     result.push({
@@ -85,16 +107,24 @@ const badges = (item: HangarPledgeItem): RowListItemBadge[] => {
   return result;
 };
 
-const tags = (item: HangarPledgeItem): RowListItemTag[] =>
-  item.meltable
-    ? [
-        {
-          key: "meltable",
-          label: t("labels.hangarPledgeItems.meltable"),
-          tone: RowListItemTonesEnum.PRIMARY,
-        },
-      ]
-    : [];
+const tags = (item: HangarPledgeItem): RowListItemTag[] => {
+  const result: RowListItemTag[] = [];
+
+  const category = shipComponent(item)?.category;
+  if (category) {
+    result.push({ key: "category", label: categoryLabel(category) });
+  }
+
+  if (item.meltable) {
+    result.push({
+      key: "meltable",
+      label: t("labels.hangarPledgeItems.meltable"),
+      tone: RowListItemTonesEnum.PRIMARY,
+    });
+  }
+
+  return result;
+};
 
 // Melting returns what the whole pledge is worth, so an item that came with
 // others names the pledge its value belongs to.

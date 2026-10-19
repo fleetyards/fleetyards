@@ -2824,7 +2824,8 @@
         "partOf": "Part of %{name}",
         "pledgeValue": "Pledge value",
         "quantity": "Quantity",
-        "search": "Search by name"
+        "search": "Search by name",
+        "shipComponents": "Ship Components"
       },
       "buybacks": {
         "name": "Buy-back pledges",

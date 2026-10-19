@@ -118,6 +118,25 @@ describe("Hangar/PledgeItemsList", () => {
     expect(rows[1].text()).not.toContain("Meltable");
   });
 
+  it("says what part a matched ship component is", async () => {
+    const wrapper = await mount([
+      pledgeItem({
+        kind: HangarPledgeItemKindEnum.SHIP_COMPONENT,
+        name: "BriskAir IC-20",
+        catalogueItem: {
+          itemType: "Component",
+          id: "c0c0c0c0-c0c0-c0c0-c0c0-c0c0c0c0c0c0",
+          name: "BriskAir IC-20",
+          category: "cooler",
+          size: "1",
+        },
+      }),
+    ]);
+
+    expect(wrapper.text()).toContain("Coolers");
+    expect(wrapper.text()).toContain("1");
+  });
+
   it("opens the image full size on click", async () => {
     const init = vi.fn();
     const on = vi.fn();

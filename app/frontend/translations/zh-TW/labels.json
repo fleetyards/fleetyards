@@ -2824,7 +2824,8 @@
         "partOf": "屬於 %{name}",
         "pledgeValue": "承諾價值",
         "quantity": "數量",
-        "search": "按名稱搜尋"
+        "search": "按名稱搜尋",
+        "shipComponents": "飛船部件"
       },
       "buybacks": {
         "name": "可回購承諾",
