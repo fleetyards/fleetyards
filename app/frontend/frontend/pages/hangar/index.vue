@@ -406,6 +406,11 @@ const pledgeItemPages = [
     label: "nav.hangar.equipment",
   },
   {
+    route: "hangar-ship-components",
+    icon: "fa-light fa-microchip",
+    label: "nav.hangar.shipComponents",
+  },
+  {
     route: "hangar-upgrades",
     icon: "fa-light fa-arrow-up",
     label: "nav.hangar.upgrades",
