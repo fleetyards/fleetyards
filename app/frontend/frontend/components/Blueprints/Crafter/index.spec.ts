@@ -1,7 +1,7 @@
 import { flushPromises } from "@vue/test-utils";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { describe, expect, it, vi } from "vitest";
-import { ref } from "vue";
+import { reactive, ref } from "vue";
 import { BlueprintCraftableTypeEnum } from "@/services/fyApi";
 import Component from "./index.vue";
 
@@ -170,6 +170,22 @@ describe("BlueprintCrafter", () => {
     exposed.apply();
 
     expect(wrapper.emitted("apply")).toHaveLength(1);
+  });
+
+  it("opens on a crafting whose grades are reactive", async () => {
+    const crafted = {
+      blueprintId: "bp",
+      blueprintSlug: "bp-armor",
+      qualities: reactive({ 0: 250 }),
+    };
+    const wrapper = await mount({ crafted });
+    await flushPromises();
+
+    (wrapper.vm as unknown as { apply: () => void }).apply();
+
+    expect(wrapper.emitted("apply")?.[0][0]).toMatchObject({
+      qualities: { 0: 250 },
+    });
   });
 
   it("offers Remove only for an item already crafted, and leaves the caller's crafting alone", async () => {
