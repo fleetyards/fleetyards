@@ -44,9 +44,11 @@ module HangarModuleMapping
   end
 
   # RSI lists ship modules and ship parts alike as components. A module is one
-  # the mapping knows, or one named as a module: those are fitted to a ship,
-  # the rest are kept as ship components.
+  # the mapping knows, or one named as a module ("Retaliator Cargo Module -
+  # Bow"): those are fitted to a ship, the rest are kept as ship components.
+  # The sync modal tells them apart by the same word before the server sees
+  # them.
   def self.module?(name)
-    COMPONENT_MAPPING.key?(normalize(name)) || normalize(name).match?(/\bmodule\z/)
+    COMPONENT_MAPPING.key?(normalize(name)) || normalize(name).match?(/\bmodule\b/)
   end
 end

@@ -31720,6 +31720,8 @@ components:
               type: integer
             extra:
               type: integer
+            shipComponent:
+              type: integer
           additionalProperties: false
           required:
           - ship
@@ -31730,6 +31732,7 @@ components:
           - equipment
           - ccu
           - extra
+          - shipComponent
       additionalProperties: false
       required:
       - total

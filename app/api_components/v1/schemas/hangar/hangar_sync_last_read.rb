@@ -6,6 +6,8 @@ module V1
       class HangarSyncLastRead
         include OpenapiRuby::Components::Base
 
+        COUNT_KEYS = ::Imports::HangarSync::READ_KINDS.map { |kind| kind.camelize(:lower) }.freeze
+
         schema({
           type: :object,
           properties: {
@@ -14,9 +16,9 @@ module V1
             total: {type: :integer},
             counts: {
               type: :object,
-              properties: %w[ship component upgrade skin flair equipment ccu extra].index_with { {type: :integer} },
+              properties: COUNT_KEYS.index_with { {type: :integer} },
               additionalProperties: false,
-              required: %w[ship component upgrade skin flair equipment ccu extra]
+              required: COUNT_KEYS
             }
           },
           additionalProperties: false,
