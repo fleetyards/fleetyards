@@ -110,7 +110,10 @@ class AdminWeeklyReport
           Imports::HangarSync.where(created_at: range, aasm_state: "failed").count
         end,
         windowed(:failed_imports) do |range|
-          Import.where(created_at: range, aasm_state: "failed").where.not(type: "Imports::HangarSync").count
+          # A user's own sync refusing a list it read is that user's news, not a
+          # failed import.
+          Import.where(created_at: range, aasm_state: "failed")
+            .where.not(type: %w[Imports::HangarSync Imports::BuybackSync]).count
         end,
         windowed(:email_rejections) { |range| EmailRejection.where(created_at: range).count },
         gauge(:unresolved_rsi_blocks, RsiRequestLog.where(resolved: false).count)

@@ -89,6 +89,20 @@ describe("extractBuybackPage", () => {
     window.RSI_ENDPOINT = "https://robertsspaceindustries.com";
   });
 
+  // The same pager as the hangar list, for the run's page bar to fill toward.
+  it("reads the list's last page from RSI's pager", () => {
+    const page = readPage(
+      buybackPage(packageArticle) +
+        '<div class="pager"><div class="right"><a class="active" href="/account/buy-back-pledges?page=1">1</a><a class="raquo btn" href="/account/buy-back-pledges?page=7"></a></div></div>',
+    );
+
+    expect(page.lastPage).toBe(7);
+  });
+
+  it("leaves the last page unknown without a pager", () => {
+    expect(readPage(buybackPage(packageArticle)).lastPage).toBeUndefined();
+  });
+
   it("reads a package entry", () => {
     const page = readPage(buybackPage(packageArticle));
 

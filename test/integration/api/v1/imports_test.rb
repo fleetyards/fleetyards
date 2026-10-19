@@ -222,6 +222,17 @@ class Api::V1::ImportsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /imports leaves out a buy-back sync that added and removed nothing" do
+    user = create(:user)
+    changed = Imports::BuybackSync.create!(user:, aasm_state: "finished", output: {"added" => 1, "removed" => 0})
+    Imports::BuybackSync.create!(user:, aasm_state: "finished", output: {"added" => 0, "removed" => 0})
+    sign_in user
+
+    assert_api_response :get, 200 do
+      assert_equal [changed.id], parsed_body["items"].pluck("id")
+    end
+  end
+
   test "GET /imports still lists a sync with nothing to do that did not simply finish" do
     user = create(:user)
     cancelled = create_import(user, state: "cancelled")
@@ -273,6 +284,18 @@ class Api::V1::ImportsTest < ActionDispatch::IntegrationTest
 
     assert_predicate import.reload, :cancelled?
     assert_not_nil import.cancel_requested_at
+  end
+
+  # It runs inside one request: a cancel landing meanwhile would only turn the
+  # sync's own answer into an error after it replaced the list.
+  test "PUT /imports/{id}/cancel leaves a running buy-back sync alone" do
+    user = create(:user)
+    import = Imports::BuybackSync.create!(user:, aasm_state: "started", started_at: Time.current)
+    sign_in user
+
+    assert_api_response :put, 400, params: {id: import.id}
+
+    assert_predicate import.reload, :started?
   end
 
   test "PUT /imports/{id}/cancel cancels one that has not started yet" do

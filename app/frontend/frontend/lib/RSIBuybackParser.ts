@@ -5,6 +5,7 @@ import {
   type RsiBuybackItemInput,
 } from "@/services/fyApi";
 import { RsiPageStatus } from "@/frontend/lib/RsiPageStatus";
+import { rsiLastPage } from "@/frontend/lib/rsiPager";
 
 const KIND_PREFIXES: [string, BuybackPledgeKindEnum][] = [
   ["Package", BuybackPledgeKindEnum.PACKAGE],
@@ -28,6 +29,8 @@ export type RSIBuybackPage =
       status: RsiPageStatus.PAGE;
       pledges: RsiBuybackItemInput[];
       pledgeIds: string[];
+      // The list's last page, from RSI's pager, where the page shows one.
+      lastPage?: number;
     }
   | { status: RsiPageStatus.END }
   | { status: RsiPageStatus.UNRECOGNISED; check: RsiPageCheckEnum };
@@ -82,6 +85,7 @@ export const extractBuybackPage = (html: string): RSIBuybackPage => {
     status: RsiPageStatus.PAGE,
     pledges,
     pledgeIds: pledges.map((pledge) => pledge.id),
+    lastPage: rsiLastPage(htmlDoc),
   };
 };
 

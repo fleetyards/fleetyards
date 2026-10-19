@@ -37,6 +37,12 @@ const sections = [
     label: "nav.hangar.equipment",
   },
   {
+    key: "shipComponents",
+    route: "hangar-ship-components",
+    icon: "fa-light fa-microchip",
+    label: "nav.hangar.shipComponents",
+  },
+  {
     key: "upgrades",
     route: "hangar-upgrades",
     icon: "fa-light fa-arrow-up",

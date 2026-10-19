@@ -11378,10 +11378,14 @@ components:
           type:
           - number
           - 'null'
+          description: A factor on the stat for a linear ramp; a whole amount added
+            to it for linear_integer_additive
         modifierAtEnd:
           type:
           - number
           - 'null'
+          description: A factor on the stat for a linear ramp; a whole amount added
+            to it for linear_integer_additive
         unit:
           type:
           - string
@@ -16699,6 +16703,7 @@ components:
       - Imports::ScData::ModelImport
       - Imports::HangarSync
       - Imports::HangarImport
+      - Imports::BuybackSync
       - Imports::ModulesImport
       - Imports::PaintsImport
       - Imports::LoanersImport
@@ -16714,6 +16719,7 @@ components:
       - IMPORTS_SC_DATA_MODEL_IMPORT
       - IMPORTS_HANGAR_SYNC
       - IMPORTS_HANGAR_IMPORT
+      - IMPORTS_BUYBACK_SYNC
       - IMPORTS_MODULES_IMPORT
       - IMPORTS_PAINTS_IMPORT
       - IMPORTS_LOANERS_IMPORT

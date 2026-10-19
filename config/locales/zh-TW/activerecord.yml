@@ -329,6 +329,11 @@ zh-TW:
               component_not_in_slot: "必須與所在槽位的類型和尺寸相符"
               slot_not_editable: "不能替換槽位鎖定的部件"
               nothing_to_empty: "只能清空裝有部件的槽位"
+              crafted_not_component: "只有部件才能標記為製作"
+              crafted_not_craftable: "必須使用該部件的藍圖製作"
+              crafted_slot_unknown: "只能指定藍圖中存在的槽位"
+              crafted_slot_repeated: "每個藍圖槽位只能指定一次"
+              crafted_quality_out_of_range: "材料品質必須在 0 到 1000 之間"
         payout_entry:
           attributes:
             entry_type:

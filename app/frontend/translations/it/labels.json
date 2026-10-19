@@ -294,7 +294,8 @@
         "targetGroupHint": "Scegli un gruppo dell'hangar e ogni nave importata verrà archiviata lì. Lascia vuoto per usare i gruppi indicati nel file.",
         "types": {
           "Imports::HangarImport": "Importazione hangar",
-          "Imports::HangarSync": "Sincronizzazione hangar RSI"
+          "Imports::HangarSync": "Sincronizzazione hangar RSI",
+          "Imports::BuybackSync": "Sincronizzazione riacquisti RSI"
         },
         "summary": {
           "imported": "Importate",
@@ -2825,7 +2826,16 @@
         "partOf": "Parte di %{name}",
         "pledgeValue": "Valore del pledge",
         "quantity": "Quantità",
-        "search": "Cerca per nome"
+        "search": "Cerca per nome",
+        "shipComponents": "Componenti di nave",
+        "addToInventory": "Aggiungi all'inventario",
+        "inventory": "Inventario",
+        "inInventory": "In %{name}",
+        "select": "Seleziona",
+        "andMore": {
+          "one": "e %{count} altro",
+          "other": "e altri %{count}"
+        }
       },
       "buybacks": {
         "name": "Pledge riacquistabili",
@@ -2863,7 +2873,6 @@
         "extensionVersion": "Versione installata dell'estensione",
         "detailsProgress": "Lettura dei prezzi di riacquisto",
         "pages": "Pagine",
-        "found": "Pledge riacquistabili trovati",
         "added": "Nuovi",
         "removed": "Rimossi",
         "prices": "Prezzi letti",
@@ -2879,7 +2888,18 @@
           "finished": "Completato",
           "unsupported": "Non supportato",
           "failed": "Non riuscito"
-        }
+        },
+        "stepDetails": {
+          "saved": "Nuovi: %{added} · Rimossi: %{removed}",
+          "prices": "%{done} di %{total}",
+          "pricesPending": "Per i pledge nuovi dall'ultima sincronizzazione",
+          "read": "Pagine lette: %{page} · Pledge riacquistabili: %{count}"
+        },
+        "firstSyncTitle": "La prima sincronizzazione richiede più tempo",
+        "updateExtensionTitle": "Aggiorna l'estensione di sincronizzazione",
+        "finishedTitle": "Pledge riacquistabili sincronizzati",
+        "runningTitle": "Sincronizzazione dei pledge riacquistabili",
+        "pledges": "Pledge riacquistabili"
       },
       "syncExtension": {
         "warnings": "Avvisi",
@@ -2888,16 +2908,13 @@
         "backgroundFailed": "Sincronizzazione dell'hangar non riuscita",
         "backgroundCancelled": "Sincronizzazione dell'hangar annullata",
         "status": {
-          "started": "Importazione avviata...",
-          "finished": "Importazione completata",
           "failed": "Importazione fallita!",
           "cancelled": "Importazione annullata"
         },
         "processSteps": {
-          "fetchHangar": "Recupero dati dall'hangar RSI",
-          "submitData": "Invio dati al backend di Fleetyards.net"
+          "fetchHangar": "Lettura del tuo hangar RSI",
+          "submitData": "Salvataggio su Fleetyards"
         },
-        "sessionStatus": "Stato sessione RSI",
         "signedInAs": "Accesso a RSI effettuato come %{handle}",
         "signInToRsi": "Accedi a RSI",
         "checkIdentity": "Verifica sessione RSI",
@@ -2937,10 +2954,6 @@
         },
         "pledgeItems": {
           "pages": "Pagine",
-          "all": "Tutti gli oggetti Pledge",
-          "ships": "Navi",
-          "components": "Moduli",
-          "upgrades": "Upgrade",
           "paints": "Verniciature",
           "hangarFlair": "Decorazioni per l'hangar",
           "paintsNotSynced": "Verniciature (non sincronizzate)",
@@ -2949,7 +2962,9 @@
           "ccus": "Potenziamenti / CCU",
           "ccusNotSynced": "CCU (non sincronizzati)",
           "equipmentNotSynced": "Equipaggiamento FPS (non sincronizzato)",
-          "extras": "Altri oggetti (smistati tra decorazioni ed equipaggiamento FPS)"
+          "extras": "Altro",
+          "shipComponents": "Componenti di nave",
+          "shipComponentsNotSynced": "Componenti di nave (non sincronizzati)"
         },
         "importedItems": {
           "importedVehicles": "Navi aggiunte",
@@ -2972,7 +2987,79 @@
           "missingUpgrades": "Upgrade non trovati",
           "missingUpgradeVehicles": "Nessuna nave corrispondente trovata per gli upgrade"
         },
-        "incomplete": "Alcuni elementi del tuo hangar RSI non sono stati letti, quindi questa volta le navi mancanti sono state lasciate come erano."
+        "incomplete": "Alcuni elementi del tuo hangar RSI non sono stati letti, quindi questa volta le navi mancanti sono state lasciate come erano.",
+        "stepDetails": {
+          "read": "Pagine lette: %{pages} · Pledge: %{count}",
+          "saving": "Abbinamento dei tuoi pledge al tuo hangar…",
+          "page": "Pagina %{page}",
+          "pageOf": "Pagina %{page} di %{total}",
+          "sending": {
+            "one": "Invio di %{count} elemento",
+            "other": "Invio di %{count} elementi"
+          },
+          "sent": {
+            "one": "%{count} elemento inviato",
+            "other": "%{count} elementi inviati"
+          },
+          "pageOfAbout": "Pagina %{page} di circa %{total}"
+        },
+        "unmatchedCount": {
+          "one": "1 elemento non è stato abbinato",
+          "other": "%{count} elementi non sono stati abbinati"
+        },
+        "unmatchedHeading": "Non abbinati",
+        "failedStep": {
+          "fetchHangar": "Impossibile leggere il tuo hangar RSI",
+          "submitData": "Salvataggio su Fleetyards non riuscito"
+        },
+        "whatToSync": "Cosa sincronizzare",
+        "unmatchedActionLabel": "Cosa succede a queste navi",
+        "notSyncing": "Non sincronizzato",
+        "targetGroupHint": "Ogni nave che la sincronizzazione trova o aggiunge viene inserita in questo gruppo, oltre ai gruppi in cui si trova già.",
+        "extensionNeededTitle": "Aggiungi l'estensione di sincronizzazione",
+        "finishedTitle": "Hangar sincronizzato",
+        "failedTitle": "La sincronizzazione non è terminata",
+        "savedAsYouChange": "Salvate appena le modifichi",
+        "resultKinds": {
+          "ships": "Navi",
+          "components": "Moduli",
+          "upgrades": "Upgrade",
+          "paints": "Verniciature",
+          "hangarFlair": "Decorazioni per l'hangar",
+          "equipment": "Equipaggiamento FPS",
+          "ccus": "CCU",
+          "shipComponents": "Componenti di nave"
+        },
+        "newCount": {
+          "one": "+1 nuovo",
+          "other": "+%{count} nuovi"
+        },
+        "resultActions": {
+          "movedVehiclesToWanted": "Spostate nella lista dei desideri",
+          "deletedVehicles": "Eliminate",
+          "groupedVehicles": "Inserite in un gruppo",
+          "unchangedVehicles": "Lasciate invariate"
+        },
+        "nothingChangedTitle": "Nulla è cambiato",
+        "stepStatus": {
+          "pending": "Non iniziato",
+          "active": "In corso",
+          "done": "Completato",
+          "failed": "Non riuscito",
+          "warning": "Completato con avvisi"
+        },
+        "lastSync": {
+          "of": "su %{count}",
+          "ofLong": "%{count} nell'ultima sincronizzazione",
+          "more": "%{count} in più rispetto all'ultima sincronizzazione",
+          "fewer": "%{count} in meno rispetto all'ultima sincronizzazione",
+          "same": "Tanti quanti nell'ultima sincronizzazione",
+          "reading": "%{count} di circa %{total} elementi"
+        },
+        "viewImport": "Vedi l'importazione di questa sincronizzazione",
+        "lastSynced": "Ultima sincronizzazione",
+        "syncShipComponents": "Sincronizza componenti di nave",
+        "syncShipComponentsHint": "Sostituisce i tuoi componenti di nave (raffreddatori, generatori, armi, …) con quelli del tuo hangar RSI. Disattivato, i componenti salvati restano invariati."
       },
       "cargoGridViewer": {
         "capacity": "Capacità",
@@ -4169,6 +4256,12 @@
         "friend": "Amici"
       },
       "blueprint": {
+        "anyGrade": "Qualsiasi qualità",
+        "crafter": {
+          "title": "Fabbrica · %{name}",
+          "recipe": "Progetto %{number}",
+          "noRecipe": "Nessun progetto per questo oggetto nella build attuale."
+        },
         "name": "Nome",
         "craftTime": "Tempo di fabbricazione",
         "slots": "Slot",
@@ -4431,6 +4524,8 @@
           }
         },
         "againstStock": "Modifiche rispetto alla nave di serie",
+        "crafted": "Fabbricato",
+        "craftedPart": "%{name} (fabbricato)",
         "fitted": "Montato",
         "owned": "Posseduto",
         "noSlots": "Su questa nave non si può ancora montare nulla qui",

@@ -79,6 +79,15 @@ const changed = computed(() =>
   props.hardpoints.some((hp) => changedHardpoints.value?.has(hp.id)),
 );
 
+const craftedHardpoints = inject<Ref<Set<string> | undefined>>(
+  "hardpointsCrafted",
+  ref(undefined),
+);
+
+const crafted = computed(() =>
+  props.hardpoints.some((hp) => craftedHardpoints.value?.has(hp.id)),
+);
+
 const count = computed(() => {
   return props.hardpoints.length;
 });
@@ -229,6 +238,14 @@ const hardpointNames = computed(() => {
                 {{ hardpoint.component.itemClassLabel }}
                 {{ t("labels.component.grade") }}
                 {{ hardpoint.component.gradeLabel }}
+              </span>
+              <span
+                v-if="crafted"
+                class="hardpoint-item__crafted"
+                data-test="hardpoint-crafted"
+              >
+                <i class="fa-solid fa-hammer" aria-hidden="true" />
+                {{ t("labels.vehicleLoadout.crafted") }}
               </span>
             </template>
             <template v-else>

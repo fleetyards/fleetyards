@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_19_130000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_19_142000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1433,6 +1433,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_19_130000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "rsi_page"
+    t.uuid "component_id"
+    t.uuid "equipment_id"
+    t.index ["component_id"], name: "index_hangar_pledge_items_on_component_id"
+    t.index ["equipment_id"], name: "index_hangar_pledge_items_on_equipment_id"
     t.index ["user_id", "kind", "rsi_pledge_id", "name"], name: "index_hangar_pledge_items_on_user_kind_pledge_name", unique: true
   end
 
@@ -1520,6 +1524,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_19_130000) do
     t.boolean "sync_hangar_flair", default: true, null: false
     t.boolean "sync_equipment", default: true, null: false
     t.boolean "sync_ccus", default: false, null: false
+    t.boolean "sync_ship_components", default: true, null: false
     t.index ["aasm_state", "type"], name: "index_imports_on_aasm_state_and_type"
     t.index ["admin_user_id"], name: "index_imports_on_admin_user_id"
     t.index ["hangar_group_id"], name: "index_imports_on_hangar_group_id"
@@ -1562,12 +1567,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_19_130000) do
     t.datetime "updated_at", null: false
     t.uuid "inventory_position_id", null: false
     t.uuid "inventory_transfer_id"
+    t.string "source_pledge_item_key"
     t.uuid "crafted_blueprint_id"
     t.jsonb "crafted_qualities"
     t.index ["crafted_blueprint_id"], name: "index_inventory_items_on_crafted_blueprint_id"
     t.index ["inventory_id"], name: "index_inventory_items_on_inventory_id"
     t.index ["inventory_position_id"], name: "index_inventory_items_on_inventory_position_id"
     t.index ["inventory_transfer_id"], name: "index_inventory_items_on_inventory_transfer_id"
+    t.index ["source_pledge_item_key"], name: "index_inventory_items_on_source_pledge_item_key"
   end
 
   create_table "inventory_positions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -2722,6 +2729,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_19_130000) do
     t.uuid "item_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "blueprint_id"
+    t.jsonb "crafted_qualities", default: {}, null: false
+    t.index ["blueprint_id"], name: "index_vehicle_loadout_items_on_blueprint_id"
     t.index ["item_type", "item_id"], name: "index_vehicle_loadout_items_on_item"
     t.index ["vehicle_loadout_id", "slot_path"], name: "index_vehicle_loadout_items_on_loadout_and_slot_path", unique: true
   end
@@ -2960,6 +2970,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_19_130000) do
   add_foreign_key "game_mission_rewards", "game_mission_builds", on_delete: :cascade
   add_foreign_key "hangar_pledge_item_model_paints", "hangar_pledge_items", on_delete: :cascade
   add_foreign_key "hangar_pledge_item_model_paints", "model_paints", on_delete: :cascade
+  add_foreign_key "hangar_pledge_items", "components", on_delete: :nullify
+  add_foreign_key "hangar_pledge_items", "equipment", on_delete: :nullify
   add_foreign_key "hangar_pledge_items", "users", on_delete: :cascade
   add_foreign_key "hardpoint_builds", "hardpoints", on_delete: :cascade
   add_foreign_key "hardpoints", "components"
@@ -3056,6 +3068,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_19_130000) do
   add_foreign_key "user_blueprints", "users", on_delete: :cascade
   add_foreign_key "users", "fleets", column: "supported_fleet_id", on_delete: :nullify
   add_foreign_key "users", "locations", column: "current_location_id", on_delete: :nullify
+  add_foreign_key "vehicle_loadout_items", "blueprints", on_delete: :nullify
   add_foreign_key "vehicle_loadout_items", "vehicle_loadouts", on_delete: :cascade
   add_foreign_key "vehicle_loadouts", "vehicles"
   add_foreign_key "vehicle_log_entries", "vehicles", on_delete: :cascade

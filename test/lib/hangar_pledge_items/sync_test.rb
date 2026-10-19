@@ -30,6 +30,65 @@ class HangarPledgeItems::SyncTest < ActiveSupport::TestCase
     assert ccu.reload
   end
 
+  test "keeps ship parts as ship components, linked to the part they are" do
+    cooler = create(:component, name: "BriskAir IC-20")
+    repeater = create(:component, name: "CF-117 Bulldog Repeater")
+    create(:component, name: "CF-117 Bulldog \"Hazard-Zone\" Repeater")
+    items = [
+      {id: "2001", type: "component", name: "BriskAir IC-20"},
+      {id: "2001", type: "component", name: "CF-117 Bulldog (S1)"},
+      {id: "2001", type: "component", name: "J-Span Cryo-Star Cooler"}
+    ]
+
+    result = HangarPledgeItems::Sync.new(@user, items, kinds: ["ship_component"]).run
+
+    stored = @user.hangar_pledge_items.ship_components.index_by(&:name)
+    assert_equal stored.values.map(&:id).sort, result["ship_component"].sort
+    assert_equal cooler, stored["BriskAir IC-20"].catalogue_component
+    assert_equal repeater, stored["CF-117 Bulldog (S1)"].catalogue_component
+    assert_nil stored["J-Span Cryo-Star Cooler"].catalogue_component
+  end
+
+  test "picks the size RSI names among parts of one name, the smallest otherwise, and never a retired one" do
+    create(:component, name: "M9A Cannon", size: "12", with_build: false)
+    small = create(:component, name: "M9A Cannon", size: "7")
+    large = create(:component, name: "M9A Cannon", size: "8")
+    catalogue = HangarPledgeItems::Sync::ComponentCatalogue.new
+
+    assert_equal small.id, catalogue.find("M9A Cannon")
+    assert_equal large.id, catalogue.find("M9A Cannon (S8)")
+    # The size-12 cannon is retired: the smallest current one stands in.
+    assert_equal small.id, catalogue.find("M9A Cannon (S12)")
+  end
+
+  test "matches a flight blade, but no ship internal" do
+    blade = create(:component, name: "Agility Blade", category: "controller", component_type: "FlightController")
+    create(:component, name: "Cargo Door", category: "doors")
+    catalogue = HangarPledgeItems::Sync::ComponentCatalogue.new
+
+    assert_equal blade.id, catalogue.find("Agility Blade")
+    assert_nil catalogue.find("Cargo Door")
+  end
+
+  # Modules are fitted to a ship by the hangar sync, whether it knows them or not.
+  test "leaves ship modules to the hangar sync" do
+    items = [
+      {id: "2002", type: "component", name: "Aurora Mk II Cargo Module"},
+      {id: "2002", type: "component", name: "Mystery Ship - Science Module"}
+    ]
+
+    assert_equal [nil, nil], HangarPledgeItems::Sync.kinds_for(items)
+  end
+
+  test "links FPS gear to the catalogue item it is" do
+    rifle = create(:equipment, name: "P4-AR Rifle")
+    items = [{id: "2003", type: "equipment", name: "P4-AR Rifle"}]
+
+    HangarPledgeItems::Sync.new(@user, items, kinds: ["equipment"]).run
+
+    assert_equal rifle, @user.hangar_pledge_items.equipment.sole.catalogue_equipment
+  end
+
   test "remembers the RSI hangar page a CCU was read from" do
     item = {id: "1003", type: "ccu", name: "Upgrade - Aurora To Cutter", page: 4}
 

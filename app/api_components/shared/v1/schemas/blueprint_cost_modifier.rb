@@ -22,8 +22,14 @@ module Shared
             # with different quality windows.
             startQuality: {type: [:integer, :null]},
             endQuality: {type: [:integer, :null]},
-            modifierAtStart: {type: [:number, :null]},
-            modifierAtEnd: {type: [:number, :null]},
+            modifierAtStart: {
+              type: [:number, :null],
+              description: "A factor on the stat for a linear ramp; a whole amount added to it for linear_integer_additive"
+            },
+            modifierAtEnd: {
+              type: [:number, :null],
+              description: "A factor on the stat for a linear ramp; a whole amount added to it for linear_integer_additive"
+            },
 
             # The unit the stat is measured in, lifted out of unitFormat.
             unit: {type: [:string, :null]},

@@ -709,6 +709,34 @@ class HangarSyncTest < ActiveSupport::TestCase
       assert_equal 1, result[:imported_components].size
       assert_equal cargo.id, vehicle.vehicle_modules.sole.model_module_id
     end
+
+    test "reports a module it cannot fit as not found rather than dropping it" do
+      result = ::HangarSync.new([
+        {"id" => "00012346", "name" => "Mystery Ship - Science Module", "type" => "component"}
+      ]).run(@user.id)
+
+      assert_equal ["Mystery Ship - Science Module"], result[:missing_components]
+      assert_empty @user.hangar_pledge_items
+    end
+
+    test "keeps a ship part as a ship component instead of a module" do
+      result = ::HangarSync.new([
+        {"id" => "00012347", "name" => "BriskAir IC-20", "type" => "component"}
+      ]).run(@user.id)
+
+      assert_empty result[:missing_components]
+      assert_equal @user.hangar_pledge_items.ship_components.pluck(:id), result[:synced_ship_components]
+    end
+
+    test "leaves stored ship components alone when the run does not sync them" do
+      stored = create(:hangar_pledge_item, user: @user, kind: "ship_component", name: "Sovereign IP-10")
+      import = ::Imports::HangarSync.create!(user_id: @user.id, input: [], sync_ship_components: false)
+
+      ::HangarSync.new([{"id" => "00012348", "name" => "BriskAir IC-20", "type" => "component"}])
+        .run_with_import(import)
+
+      assert_equal [stored], @user.hangar_pledge_items.ship_components.to_a
+    end
   end
 
   class NothingToSyncTest < HangarSyncTest

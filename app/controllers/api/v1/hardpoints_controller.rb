@@ -3,6 +3,8 @@
 module Api
   module V1
     class HardpointsController < ::Api::PublicBaseController
+      include CraftableComponentsConcern
+
       skip_verify_authorized only: %i[loadout_options]
 
       # Any port a loadout slot names by `hardpointId`: on a hull, on a module,

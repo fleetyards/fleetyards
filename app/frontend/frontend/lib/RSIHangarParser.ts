@@ -1,6 +1,7 @@
 import { type RSIHangarItem, type RSIHangarItemKind } from "@/frontend/types";
 import { RsiPageCheckEnum } from "@/services/fyApi";
 import { RsiPageStatus } from "@/frontend/lib/RsiPageStatus";
+import { rsiLastPage } from "@/frontend/lib/rsiPager";
 
 // What a page could not read. The rest of it still counts: the sync goes on,
 // and the server leaves unmatched ships alone, since a ship among these would
@@ -20,6 +21,8 @@ export type RSIHangarPage =
       pledges: RSIHangarItem[];
       pledgeIds: string[];
       unread?: RSIHangarUnread;
+      // The list's last page, from RSI's pager, where the page shows one.
+      lastPage?: number;
     }
   | { status: RsiPageStatus.END }
   | {
@@ -299,6 +302,7 @@ export class RSIHangarParser {
       status: RsiPageStatus.PAGE,
       pledges,
       pledgeIds,
+      lastPage: rsiLastPage(htmlDoc),
       unread: this.unread(
         shipsWithoutKind,
         unknownKinds,

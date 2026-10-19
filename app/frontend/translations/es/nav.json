@@ -31,7 +31,8 @@
         "imports": "Importaciones",
         "transfers": "Transferencias",
         "vehicleOverview": "Resumen",
-        "vehicleLog": "Cuaderno de bitácora"
+        "vehicleLog": "Cuaderno de bitácora",
+        "shipComponents": "Componentes de nave"
       },
       "login": "Iniciar sesión",
       "installApp": "Instalar app",

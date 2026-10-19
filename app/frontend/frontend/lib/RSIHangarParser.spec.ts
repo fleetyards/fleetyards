@@ -749,4 +749,41 @@ describe("RSIHangarParser.extractPage", () => {
       ],
     });
   });
+
+  describe("the list's length", () => {
+    // RSI's pager as it sits under the list, with the script-driven pager
+    // that links by rel elsewhere on the page.
+    const pager = (links: string) => `
+<div class="js-pager"><div class="right"><a rel="1">1</a><a rel="6">6</a></div></div>
+<div class="pager clearfix"><div class="right">${links}</div></div>`;
+
+    const withPager = (links: string) =>
+      extract(
+        pledgesPage(pledge("101", item("Ship", "Cutter"))) + pager(links),
+      );
+
+    it("reads the last page from the pager's last link", () => {
+      const page = withPager(
+        '<a class="active" href="/account/pledges?page=1">1</a><a href="/account/pledges?page=2">2</a><a class="gt btn" href="/account/pledges?page=2"></a><a class="raquo btn" href="/account/pledges?page=58"></a>',
+      );
+
+      expect(page).toMatchObject({ lastPage: 58 });
+    });
+
+    // The last page has no "»": its own number is the highest link.
+    it("reads it from the page links on the last page", () => {
+      const page = withPager(
+        '<a class="laquo btn" href="/account/pledges?page=1"></a><a href="/account/pledges?page=57">57</a><a class="active" href="/account/pledges?page=58">58</a>',
+      );
+
+      expect(page).toMatchObject({ lastPage: 58 });
+    });
+
+    it("leaves it unknown without a pager", () => {
+      const page = extract(pledgesPage(pledge("101", item("Ship", "Cutter"))));
+
+      expect(page).toMatchObject({ status: RsiPageStatus.PAGE });
+      expect("lastPage" in page && page.lastPage).toBeFalsy();
+    });
+  });
 });

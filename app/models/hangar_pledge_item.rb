@@ -1,19 +1,31 @@
 # frozen_string_literal: true
 
-# A paint, piece of hangar flair, FPS equipment or CCU in the user's RSI hangar,
-# as read by the hangar sync. None becomes a vehicle, so all are kept as RSI
-# lists them.
+# A paint, piece of hangar flair, FPS equipment, CCU or ship component in the
+# user's RSI hangar, as read by the hangar sync. None becomes a vehicle, so all
+# are kept as RSI lists them.
 class HangarPledgeItem < ApplicationRecord
   paginates_per 48
   max_paginates_per 240
   per_page_steps PageSizes.up_to(max_per_page)
 
-  KINDS = %w[paint flair equipment ccu].freeze
+  KINDS = %w[paint flair equipment ccu ship_component].freeze
+
+  # The kinds that are things to keep in an inventory.
+  INVENTORY_KINDS = %w[ship_component equipment].freeze
+
+  # The component categories the inventory ledger files as weapons: those a
+  # ship's hardpoints group as weapons.
+  WEAPON_CATEGORIES = %w[weapons weapon_mounts turret missile_racks bombcompartments quantumenforcementdevice].freeze
 
   DEFAULT_SORTING_PARAMS = [].freeze
   ALLOWED_SORTING_PARAMS = ["meltValue asc", "meltValue desc"].freeze
 
   belongs_to :user
+
+  # The catalogue item a ship component or piece of gear was matched to, where
+  # one was found.
+  belongs_to :catalogue_component, class_name: "Component", foreign_key: :component_id, optional: true
+  belongs_to :catalogue_equipment, class_name: "Equipment", foreign_key: :equipment_id, optional: true
 
   has_many :model_paint_links, class_name: "HangarPledgeItemModelPaint", dependent: nil
   has_many :model_paints, through: :model_paint_links
@@ -26,6 +38,8 @@ class HangarPledgeItem < ApplicationRecord
   scope :paints, -> { where(kind: "paint") }
   scope :flair, -> { where(kind: "flair") }
   scope :equipment, -> { where(kind: "equipment") }
+  scope :ship_components, -> { where(kind: "ship_component") }
+  scope :for_inventory, -> { where(kind: INVENTORY_KINDS) }
   scope :with_value, -> { where(pledge_value: 0.01..) }
 
   scope :upgrade_from_model_slug_eq, ->(slug) { upgrade_for_model(slug, 1) }
@@ -106,5 +120,48 @@ class HangarPledgeItem < ApplicationRecord
 
   def self.ransackable_associations(_auth_object = nil)
     []
+  end
+
+  # What identifies the item across syncs. A sync, or a cleared hangar synced
+  # again, recreates the row but not the pledge, so a deposit remembers this
+  # rather than the row, and the item is never offered for a second add.
+  def source_key
+    [kind, rsi_pledge_id, name].join(":")
+  end
+
+  # The user's deposits that came from these items, by source key.
+  def self.deposits_for(user, items)
+    keys = items.select { |item| INVENTORY_KINDS.include?(item.kind) }.map(&:source_key)
+    return {} if keys.empty?
+
+    InventoryItem.joins(:inventory)
+      .where(inventories: {holder_type: user.class.name, holder_id: user.id}, source_pledge_item_key: keys)
+      .includes(:inventory)
+      .index_by(&:source_pledge_item_key)
+  end
+
+  # The deposit this item makes in an inventory: as many as the pledge lists,
+  # referring to the catalogue item where the sync matched one.
+  def inventory_entry_attributes
+    catalogued = catalogue_component || catalogue_equipment
+
+    # The catalogue's name, so the deposit joins the position of the same part
+    # entered by hand; RSI's only where nothing was matched.
+    {
+      name: catalogued&.name.presence || name,
+      category: inventory_category,
+      quantity:,
+      unit: "units",
+      entry_type: "deposit",
+      item_type: catalogued&.class&.name,
+      item_id: catalogued&.id,
+      source_pledge_item_key: source_key
+    }
+  end
+
+  private def inventory_category
+    return "equipment" if kind == "equipment"
+
+    WEAPON_CATEGORIES.include?(catalogue_component&.category) ? "weapon" : "component"
   end
 end

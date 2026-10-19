@@ -56,7 +56,8 @@
         "imports": "导入记录",
         "transfers": "转移",
         "vehicleOverview": "舰船概览",
-        "vehicleLog": "舰长日志"
+        "vehicleLog": "舰长日志",
+        "shipComponents": "飞船部件"
       },
       "requestPassword": "请求密码",
       "changePassword": "更改密码",

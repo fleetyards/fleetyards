@@ -5,7 +5,9 @@ resource :hangar, only: %i[show destroy] do
   get "export/hangar-link", to: "hangars#export_hangar_link"
   put "sync-rsi-hangar", to: "hangars#sync_rsi_hangar"
   get "sync-rsi-hangar/status", to: "hangars#sync_rsi_hangar_status"
+  get "sync-rsi-hangar/last-read", to: "hangars#sync_rsi_hangar_last_read"
   put "sync-rsi-buybacks", to: "hangar_buybacks#sync"
+  get "sync-rsi-buybacks/last-read", to: "hangar_buybacks#sync_last_read"
   put "sync-rsi-buyback-details", to: "hangar_buybacks#sync_details"
   post "rsi-page-reports", to: "hangar_rsi_page_reports#create"
   get "buybacks", to: "hangar_buybacks#index"
@@ -15,6 +17,7 @@ resource :hangar, only: %i[show destroy] do
   get "flair", to: "hangar_pledge_items#flair"
   get "upgrades", to: "hangar_pledge_items#upgrades"
   get "equipment", to: "hangar_pledge_items#equipment"
+  get "ship-components", to: "hangar_pledge_items#ship_components"
 
   put "move-all-ingame-to-wishlist", to: "hangars#move_all_ingame_to_wishlist"
 
@@ -47,6 +50,7 @@ resource :hangar, only: %i[show destroy] do
   resources :hangar_inventories, path: "inventories", param: :slug, only: %i[index show create update destroy] do
     resources :hangar_inventory_items, path: "items", only: %i[index create update destroy] do
       post :import, on: :collection
+      post "from-pledge-items", on: :collection, to: "hangar_inventory_items#add_pledge_items"
     end
     get "stock", to: "hangar_inventory_stock#index"
     get "stock/:slug", to: "hangar_inventory_stock#show", as: "stock_item"

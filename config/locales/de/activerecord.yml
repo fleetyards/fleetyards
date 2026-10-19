@@ -329,6 +329,11 @@ de:
               component_not_in_slot: "müssen jeweils zu Typ und Größe ihres Slots passen"
               slot_not_editable: "können kein Teil ersetzen, das der Slot fest verbaut"
               nothing_to_empty: "können nur einen Slot leeren, in dem ein Teil sitzt"
+              crafted_not_component: "können nur hergestellt sein, wenn sie Komponenten sind"
+              crafted_not_craftable: "müssen aus einem Bauplan für dieses Teil hergestellt sein"
+              crafted_slot_unknown: "dürfen nur Slots nennen, die der Bauplan hat"
+              crafted_slot_repeated: "dürfen jeden Slot des Bauplans nur einmal nennen"
+              crafted_quality_out_of_range: "brauchen eine Materialqualität von 0 bis 1000"
         payout_entry:
           attributes:
             entry_type:

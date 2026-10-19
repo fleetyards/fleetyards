@@ -11,13 +11,20 @@ import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import SyncResultPanel from "@/frontend/components/Hangar/SyncBtn/Result/index.vue";
 import type { SyncProcessStep } from "@/frontend/components/Hangar/SyncBtn/Result/types";
 import { isSyncStepRunning } from "@/frontend/components/Hangar/SyncBtn/Result/status";
-import type { HangarSyncResult, RsiHangarItemInput } from "@/services/fyApi";
+import type {
+  HangarSyncLastRead,
+  HangarSyncResult,
+  RsiHangarItemInput,
+} from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
 
 type Props = {
   title?: string;
   processSteps: SyncProcessStep[];
   currentPage: number;
+  totalPages?: number;
+  lastRead?: HangarSyncLastRead;
+  importId?: string;
   pledges: RsiHangarItemInput[];
   result?: HangarSyncResult;
   finished: boolean;
@@ -27,6 +34,9 @@ type Props = {
 const props = withDefaults(defineProps<Props>(), {
   title: "Hangar Sync",
   result: undefined,
+  totalPages: undefined,
+  lastRead: undefined,
+  importId: undefined,
 });
 
 const working = computed(() => isSyncStepRunning(props.processSteps));
@@ -45,6 +55,9 @@ const close = () => {
     <SyncResultPanel
       :process-steps="processSteps"
       :current-page="currentPage"
+      :total-pages="totalPages"
+      :last-read="lastRead"
+      :import-id="importId"
       :pledges="pledges"
       :result="result"
       :finished="finished"

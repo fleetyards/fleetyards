@@ -329,6 +329,11 @@ es:
               component_not_in_slot: "deben coincidir con el tipo y el tamaño de su ranura"
               slot_not_editable: "no pueden sustituir una pieza que la ranura tiene fija"
               nothing_to_empty: "solo pueden vaciar una ranura que tenga una pieza"
+              crafted_not_component: "solo pueden ser fabricados si son componentes"
+              crafted_not_craftable: "deben fabricarse con un plano de esa pieza"
+              crafted_slot_unknown: "solo pueden nombrar ranuras que tenga el plano"
+              crafted_slot_repeated: "solo pueden nombrar cada ranura del plano una vez"
+              crafted_quality_out_of_range: "deben usar una calidad de material de 0 a 1000"
         payout_entry:
           attributes:
             entry_type:

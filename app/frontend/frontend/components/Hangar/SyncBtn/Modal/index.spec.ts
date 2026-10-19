@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import type { HangarSyncData } from "@/services/fyCable/channels/HangarSyncChannel";
 import {
+  type HangarSyncLastRead,
   type HangarSyncStatus,
   HangarSyncOutcomeEnum,
   HangarSyncUnmatchedActionEnum,
@@ -15,9 +16,30 @@ import { rsiRateLimiter } from "@/frontend/lib/RsiRateLimiter";
 import Component from "./index.vue";
 import HangarSyncResult from "@/frontend/components/Hangar/SyncBtn/Result/index.vue";
 
-const mutateAsync = vi.fn((_input: unknown) => Promise.resolve());
+const mutateAsync = vi.fn((_input: unknown) =>
+  Promise.resolve({ id: "import-1", status: "pending" }),
+);
 
 const reportMutateAsync = vi.fn((_input: unknown) => Promise.resolve());
+
+const lastReadOf = (total: number) => ({
+  finishedAt: total ? "2026-10-11T18:00:00Z" : undefined,
+  pages: total ? 1 : undefined,
+  total,
+  counts: {
+    ship: total,
+    component: 0,
+    upgrade: 0,
+    skin: 0,
+    flair: 0,
+    equipment: 0,
+    ccu: 0,
+    extra: 0,
+    shipComponent: 0,
+  },
+});
+
+const lastRead = vi.fn(() => Promise.resolve(lastReadOf(0)));
 
 // What the extension says about the RSI session when the modal checks it
 // before reporting a page.
@@ -58,6 +80,7 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   syncRsiHangar: (data: unknown) => mutateAsync({ data }),
   reportRsiPage: (data: unknown) => reportMutateAsync({ data }),
+  syncRsiHangarLastRead: () => lastRead(),
 }));
 
 const comlinkEmit = vi.fn();
@@ -67,7 +90,13 @@ vi.mock("@/shared/composables/useComlink", () => ({
 }));
 
 vi.mock("@/shared/composables/useI18n", () => ({
-  useI18n: () => ({ t: (key: string) => key }),
+  useI18n: () => ({
+    t: (key: string) => key,
+    tExists: () => false,
+    currentLocale: () => "en",
+    l: (value: string) => value,
+    timeDistance: (value: string) => value,
+  }),
 }));
 
 const displayInfo = vi.fn();
@@ -232,6 +261,7 @@ describe("HangarSyncModal", () => {
     comlinkEmit.mockClear();
     supportPromptCanShow.mockReset().mockReturnValue(false);
     reportMutateAsync.mockClear();
+    lastRead.mockReset().mockResolvedValue(lastReadOf(0));
     // A queued answer a test never used would answer the next test's check.
     rsiIdentity.mockReset().mockResolvedValue({
       code: 200,
@@ -394,6 +424,49 @@ describe("HangarSyncModal", () => {
     ).toBe(false);
   });
 
+  it("says on the start screen when the last sync finished", async () => {
+    lastRead.mockResolvedValue(lastReadOf(3));
+    const { wrapper } = await mountModal();
+
+    expect(
+      wrapper.get("[data-test='sync-last-synced'] time").attributes("datetime"),
+    ).toBe("2026-10-11T18:00:00Z");
+  });
+
+  it("hands the run what the last finished sync read", async () => {
+    lastRead.mockResolvedValue(lastReadOf(3));
+    const { wrapper } = await mountModal();
+
+    await submitHangar(wrapper);
+
+    expect(
+      (
+        wrapper.findComponent(HangarSyncResult).props("lastRead") as
+          HangarSyncLastRead | undefined
+      )?.total,
+    ).toBe(3);
+  });
+
+  it("hands the run the import the save created", async () => {
+    const { wrapper } = await mountModal();
+
+    await submitHangar(wrapper);
+
+    expect(wrapper.findComponent(HangarSyncResult).props("importId")).toBe(
+      "import-1",
+    );
+  });
+
+  it("measures nothing before a first finished sync", async () => {
+    const { wrapper } = await mountModal();
+
+    await submitHangar(wrapper);
+
+    expect(
+      wrapper.findComponent(HangarSyncResult).props("lastRead"),
+    ).toBeUndefined();
+  });
+
   it("adds bundled snub crafts by default", async () => {
     const { wrapper, hangarStore } = await mountModal();
 
@@ -501,7 +574,7 @@ describe("HangarSyncModal", () => {
 
     const skippedItems = () =>
       wrapper
-        .findAll("[data-test='sync-skipped-items'] li")
+        .findAll("[data-test='sync-skipped-items'] .hangar-sync__chip")
         .map((item) => item.text());
 
     hangarStore.syncPaints = false;
@@ -642,6 +715,23 @@ describe("HangarSyncModal", () => {
     );
   });
 
+  it("links no import while a retry's save is still out", async () => {
+    const { wrapper } = await mountModal();
+
+    await submitHangar(wrapper);
+    useHangarSync().receive({
+      status: "failed",
+      error: "boom",
+    } as HangarSyncData);
+    await flushPromises();
+
+    mutateAsync.mockImplementationOnce(() => new Promise(() => {}));
+    await wrapper.find("[data-test='start-sync']").trigger("click");
+    await flushPromises();
+
+    expect(useHangarSync().importId.value).toBeUndefined();
+  });
+
   it("offers Refresh, not Back, when the extension goes away in the settings", async () => {
     const { wrapper, hangarStore } = await mountModal();
 
@@ -660,6 +750,7 @@ describe("HangarSyncModal", () => {
 
     hangarStore.syncPaints = false;
     hangarStore.syncEquipment = false;
+    hangarStore.syncShipComponents = false;
     await flushPromises();
 
     await submitHangar(wrapper);
@@ -670,6 +761,7 @@ describe("HangarSyncModal", () => {
         syncHangarFlair: true,
         syncEquipment: false,
         syncCcus: true,
+        syncShipComponents: false,
       }),
     });
   });

@@ -31,7 +31,8 @@
         "imports": "Importazioni",
         "transfers": "Trasferimenti",
         "vehicleOverview": "Panoramica",
-        "vehicleLog": "Diario di bordo"
+        "vehicleLog": "Diario di bordo",
+        "shipComponents": "Componenti di nave"
       },
       "login": "Accedi",
       "installApp": "Installa app",

@@ -141,6 +141,9 @@
       "hideStatusColor": "隐藏状态颜色",
       "addToHangar": "添加到机库",
       "blueprint": {
+        "apply": "应用",
+        "discard": "放弃",
+        "removeCrafting": "移除制作",
         "own": "标记为已拥有",
         "unown": "取消已拥有标记"
       },
@@ -247,12 +250,15 @@
       "syncExtension": {
         "cancel": "取消",
         "start": "Start Sync",
-        "changeInSettings": "在设置中更改",
         "retry": "重试同步",
         "runInBackground": "在后台继续",
         "showResult": "查看结果",
         "close": "关闭",
-        "refresh": "刷新页面"
+        "refresh": "刷新页面",
+        "checkAgain": "再次检查",
+        "addExtension": "添加",
+        "updateExtension": "更新",
+        "change": "更改"
       },
       "empty": {
         "hangarGuide": "开始导览",
@@ -600,6 +606,7 @@
         "showPublic": "舰长日志"
       },
       "vehicleLoadout": {
+        "craft": "制作",
         "swapModule": "更换模块",
         "removeModule": "移除模块",
         "editLoadout": "编辑配置",
@@ -612,6 +619,13 @@
         "linkInstead": "改为链接配置",
         "createOnFleetyards": "在 Fleetyards 上创建配置",
         "viewLoadout": "查看配置"
+      },
+      "hangarPledgeItems": {
+        "addToInventory": "添加到库存",
+        "addCount": {
+          "other": "添加 %{count} 项"
+        },
+        "createInventory": "创建库存"
       }
     }
   }

@@ -76,6 +76,21 @@ class Api::V1::HardpointsLoadoutOptionsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hardpoints/:id/loadout-options says which options a recipe makes" do
+    mount = create(:component, component_type: "Turret", category: "weapon_mounts", size: "4")
+    port = create(:hardpoint, parent: mount, sc_name: "hardpoint_weapon", source: :game_files,
+      types: %w[WeaponGun], min_size: 3, max_size: 3)
+    crafted = create(:component, name: "Crafted Gun", component_type: "WeaponGun", category: "weapons", size: "3")
+    create(:component, name: "Bought Gun", component_type: "WeaponGun", category: "weapons", size: "3")
+    create(:blueprint, craftable: crafted)
+
+    assert_api_response :get, 200, path_params: {id: port.id} do
+      craftable = parsed_body.to_h { |option| [option.dig("component", "name"), option.dig("component", "craftable")] }
+
+      assert_equal({"Crafted Gun" => true, "Bought Gun" => false}, craftable)
+    end
+  end
+
   test "GET /hardpoints/:id/loadout-options leaves out parts that demand another ship's tag" do
     model = create(:model)
     slot = create(:hardpoint, parent: model, sc_name: "hardpoint_gun", source: :game_files,
