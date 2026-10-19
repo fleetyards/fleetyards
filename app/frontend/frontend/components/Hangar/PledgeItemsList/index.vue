@@ -303,12 +303,20 @@ const sub = (item: HangarPledgeItem) =>
   }
 }
 
+// Without a picture there is nothing to make room for: the list's icon alone,
+// so a list of ship components does not stand on empty frames.
 .pledge-item-row__image--empty {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 40px;
+  height: 40px;
   font-size: 1.5rem;
   color: var(--color-muted);
-  background: var(--color-control);
+
+  @media (min-width: 992px) {
+    width: 40px;
+    height: 40px;
+  }
 }
 </style>
