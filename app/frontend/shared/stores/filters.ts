@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import type { LocationQuery, RouteLocationNormalized } from "vue-router";
 import { VIEW_STATE_KEYS } from "@/shared/composables/useFilters";
+import { withoutTrailingSlash } from "@/shared/utils/Paths";
 
 type SavedFilter = {
   query: LocationQuery;
@@ -15,9 +16,6 @@ type FiltersState = {
     [path: string]: SavedFilter;
   };
 };
-
-// `/ships` and `/ships/` are one list; see pageKey.
-export const filterKey = (path: string) => path.replace(/(.)\/$/, "$1");
 
 export const useFiltersStore = defineStore("filters", {
   state: (): FiltersState => ({
@@ -46,10 +44,10 @@ export const useFiltersStore = defineStore("filters", {
       );
     },
     saveFilter(path: string, filter: SavedFilter) {
-      this.savedFilters[filterKey(path)] = filter;
+      this.savedFilters[withoutTrailingSlash(path)] = filter;
     },
     removeFilter(path: string) {
-      delete this.savedFilters[filterKey(path)];
+      delete this.savedFilters[withoutTrailingSlash(path)];
     },
     // A search typed into a hangar is the reader's, not the next person's on
     // this browser.
@@ -73,9 +71,9 @@ export const restoreSavedFilter = (
   to: RouteLocationNormalized,
   from: RouteLocationNormalized,
 ) => {
-  const key = filterKey(to.path);
+  const key = withoutTrailingSlash(to.path);
 
-  if (from.matched.length && filterKey(from.path) === key) return;
+  if (from.matched.length && withoutTrailingSlash(from.path) === key) return;
 
   const saved = useFiltersStore().savedFilters[key];
 

@@ -38,6 +38,7 @@ import { useSubscription } from "@/shared/composables/useSubscription";
 import { AppVersionChannel } from "@/services/fyCable/channels/AppVersionChannel";
 import { useMe as useMeQuery } from "@/services/fyAdminApi";
 import { useQueryClient } from "@tanstack/vue-query";
+import { withoutTrailingSlash } from "@/shared/utils/Paths";
 
 const { t } = useI18n();
 
@@ -76,7 +77,7 @@ const { locale } = storeToRefs(i18nStore);
 // first `router.replace` a filter makes canonicalises it. Keyed on the raw path, that
 // one navigation throws the page away and rebuilds it mid-session.
 const pageKey = (viewRoute: { path: string }) =>
-  `${locale.value}-${viewRoute.path.replace(/\/$/, "")}`;
+  `${locale.value}-${withoutTrailingSlash(viewRoute.path)}`;
 
 const appStore = useAppStore();
 
