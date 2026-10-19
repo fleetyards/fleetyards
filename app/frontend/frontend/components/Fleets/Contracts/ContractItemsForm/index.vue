@@ -52,6 +52,15 @@ const saved = computed(() => props.contract != null);
 // id, a draft is identified by where it sits.
 type Row = FleetContractItem & { draftIndex?: number };
 
+// What a draft knows about its part that the API input does not carry --
+// whether the game counts it in pieces, which is what keeps `units` on offer
+// when the draft is reopened. Keyed by the draft itself, which the list keeps
+// as the same object until it is edited again -- read raw, since a prop hands
+// it back wrapped in a reactive proxy.
+type DraftPick = { counted?: boolean };
+
+const countedDrafts = new WeakMap<FleetContractItemInput, boolean>();
+
 const rows = computed<Row[]>(() => {
   if (props.contract) return props.contract.items as Row[];
 
@@ -65,7 +74,12 @@ const rows = computed<Row[]>(() => {
         id: `draft-${index}`,
         draftIndex: index,
         item: draft.itemId
-          ? { id: draft.itemId, type: draft.itemType, name: draft.name }
+          ? {
+              id: draft.itemId,
+              type: draft.itemType,
+              name: draft.name,
+              counted: countedDrafts.get(toRaw(draft)),
+            }
           : null,
         crafted: draft.craftedBlueprintId
           ? {
@@ -92,8 +106,10 @@ const openItemModal = (item?: Row) => {
       // to hand its values back instead of posting them.
       onDraft: saved.value
         ? undefined
-        : (values: FleetContractItemInput) => {
+        : (values: FleetContractItemInput, picked?: DraftPick) => {
             const next = [...(props.drafts ?? [])];
+
+            countedDrafts.set(toRaw(values), !!picked?.counted);
 
             if (item?.draftIndex != null) {
               next[item.draftIndex] = values;

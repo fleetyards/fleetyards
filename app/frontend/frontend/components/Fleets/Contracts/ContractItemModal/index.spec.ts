@@ -289,6 +289,7 @@ describe("FleetContractsItemModal", () => {
           craftedBlueprintId: "bp-1",
           craftedQualities: { 1: 700 },
         }),
+        expect.anything(),
       );
     });
 
@@ -358,6 +359,7 @@ describe("FleetContractsItemModal", () => {
           craftedBlueprintId: null,
           craftedQualities: null,
         }),
+        expect.anything(),
       );
     });
   });

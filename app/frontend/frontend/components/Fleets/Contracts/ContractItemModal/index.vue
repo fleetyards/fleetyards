@@ -52,7 +52,11 @@ type Props = {
   kind: FleetContractKindEnum;
   // Absent when the modal is asking for a new line.
   item?: FleetContractItem;
-  onDraft?: (values: FleetContractItemInput) => void;
+  // Hands the line back, with what the picked part is beyond its id.
+  onDraft?: (
+    values: FleetContractItemInput,
+    picked?: { counted?: boolean },
+  ) => void;
 };
 
 const props = defineProps<Props>();
@@ -238,7 +242,7 @@ const onSubmit = handleSubmit(async (values) => {
   // Nothing to post to yet: the line goes back to the form, which saves it
   // with the contract in one request.
   if (props.onDraft) {
-    props.onDraft(data);
+    props.onDraft(data, { counted: pickedItem.value?.counted });
     comlink.emit("close-modal", true);
     submitting.value = false;
 
