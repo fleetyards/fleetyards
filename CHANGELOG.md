@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.16.1](https://github.com/fleetyards/fleetyards/compare/v9.16.0...v9.16.1) (2026-10-19)
+
+
+### Bug Fixes
+
+* **hangar:** list ship components in the pledge items menu ([e482252](https://github.com/fleetyards/fleetyards/commit/e482252890e84e1a5e4792833b9b52d88ccfd409))
+
 ## [9.16.0](https://github.com/fleetyards/fleetyards/compare/v9.15.0...v9.16.0) (2026-10-19)
 
 
