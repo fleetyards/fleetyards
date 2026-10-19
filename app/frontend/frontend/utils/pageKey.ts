@@ -1,8 +1,7 @@
 import type { RouteLocationNormalizedLoaded } from "vue-router";
+import { withoutTrailingSlash } from "@/shared/utils/Paths";
 
 const SHARED_TABS = new Set(["editTabs", "pageTabs"]);
-
-const withoutTrailingSlash = (path: string) => path.replace(/\/$/, "");
 
 /*
  * The key the app's router-view mounts a page under. A new key throws the page

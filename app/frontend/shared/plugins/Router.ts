@@ -9,6 +9,7 @@ import {
 } from "vue-router";
 import qs from "qs";
 import { sameApartFromModalQuery } from "@/shared/utils/ModalQuery";
+import { restoreSavedFilter } from "@/shared/stores/filters";
 
 export type FyLocartionQueryValue = Record<
   string,
@@ -98,6 +99,8 @@ export const setupRouter = (options: FyRouterOptions) => {
       };
     }
   });
+
+  router.beforeEach(restoreSavedFilter);
 
   router.beforeEach((to) => {
     if (!options?.beforeEach) {

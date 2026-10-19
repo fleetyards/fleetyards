@@ -12,6 +12,7 @@ import {
   me,
 } from "@/services/fyApi";
 import { useSessionStore } from "./session";
+import { useFiltersStore } from "@/shared/stores/filters";
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
@@ -48,6 +49,17 @@ describe("session store", () => {
     expect(
       queryClient.getQueryData(getMySupporterClaimKeyQueryKey()),
     ).toBeUndefined();
+  });
+
+  it("forgets the filters saved on this browser on logout", async () => {
+    useFiltersStore().saveFilter("/hangar/", {
+      query: { searchCont: "idris" },
+      viewKeys: [],
+    });
+
+    await useSessionStore().logout();
+
+    expect(useFiltersStore().savedFilters).toEqual({});
   });
 
   // What a text's contract, event and user tokens resolve to is the reader's

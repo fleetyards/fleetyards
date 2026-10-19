@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { SHIP_GLYPH } from "@/shared/glyphs/ships";
-import { type LocationQueryRaw, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 import { useFleetRouteCheck } from "@/frontend/composables/useFleetRouteCheck";
 import { useI18n } from "@/shared/composables/useI18n";
 import AppNavigation from "@/shared/components/AppNavigation/index.vue";
@@ -23,7 +23,6 @@ import { usePendingFriendRequests } from "@/frontend/composables/usePendingFrien
 import { useInstallPrompt } from "@/frontend/composables/useInstallPrompt";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useHangarStore } from "@/frontend/stores/hangar";
-import { useFiltersStore } from "@/shared/stores/filters";
 import { storeToRefs } from "pinia";
 import { useMediaQuery } from "@vueuse/core";
 import rsiLogo from "@/images/rsi_logo.png";
@@ -55,10 +54,6 @@ const showInstall = computed(
 );
 
 const { isFleetRoute } = useFleetRouteCheck();
-
-const filtersStore = useFiltersStore();
-
-const { filters } = storeToRefs(filtersStore);
 
 const route = useRoute();
 
@@ -112,17 +107,6 @@ const isHangarRoute = computed(() => {
   return String(route.name).startsWith("hangar");
 });
 
-const filterFor = (routeName: string) => {
-  if (!filters.value[routeName]) {
-    return undefined;
-  }
-
-  // Filters are top-level query keys; nested under `q` the forms never see
-  // them, and removing their chips leaves an empty `q` that still reads as a
-  // filter until a reload.
-  return { ...filters.value[routeName] } as unknown as LocationQueryRaw;
-};
-
 const router = useRouter();
 
 const logout = () => {
@@ -169,10 +153,7 @@ const settingsActive = computed(() => {
         />
         <NavItem
           v-if="isAuthenticated || !hangarPreview"
-          :to="{
-            name: 'hangar',
-            query: filterFor('hangar'),
-          }"
+          :to="{ name: 'hangar' }"
           :label="t('nav.hangar.index')"
           :active="isHangarRoute"
           icon="fa-duotone fa-warehouse"
@@ -184,10 +165,7 @@ const settingsActive = computed(() => {
           icon="fa-light fa-warehouse"
         />
         <NavItem
-          :to="{
-            name: 'ships',
-            query: filterFor('ships'),
-          }"
+          :to="{ name: 'ships' }"
           :label="t('nav.ships.index')"
           :active="isShipRoute"
           :icon="SHIP_GLYPH"

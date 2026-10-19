@@ -94,9 +94,10 @@ const filterVisible = computed(() => {
 
 const route = useRoute();
 
-const filters = computed(() => {
-  return route.query.q || {};
-});
+// The route moves on before the list unmounts, and what it reads then is the
+// next page's query, not this list's. The record, not the path: `/ships` and
+// `/ships/` are one list, and so is the same list for another fleet.
+const listRecord = route.matched[route.matched.length - 1];
 
 const slots = useSlots();
 
@@ -228,6 +229,7 @@ const {
   resetFilter,
   hasResettableQuery,
   isFilterSelected: routeFiltered,
+  getQuery,
 } = useFilters({
   viewKeys: props.viewKeys,
 });
@@ -244,7 +246,7 @@ const resetQuery = async () => {
   filterFormReset.value = true;
   await nextTick();
 
-  filtersStore.removeFilter(props.name);
+  filtersStore.removeFilter(route.path);
   await resetFilter();
 
   filterFormReset.value = false;
@@ -263,13 +265,24 @@ const emptyVisible = computed(() => {
   );
 });
 
-watch(
-  () => filters.value,
-  () => {
-    saveFilters();
-  },
-  { deep: true },
-);
+const saveFilters = () => {
+  if (route.matched[route.matched.length - 1] !== listRecord) return;
+
+  const query = getQuery();
+
+  if (!Object.keys(query).length) {
+    filtersStore.removeFilter(route.path);
+
+    return;
+  }
+
+  filtersStore.saveFilter(route.path, {
+    query,
+    viewKeys: props.viewKeys,
+  });
+};
+
+watch(() => route.query, saveFilters, { deep: true });
 
 const onOffCanvasClosed = ref();
 
@@ -298,18 +311,6 @@ watch(mobile, (isMobile, wasMobile) => {
     comlink.emit("close-off-canvas");
   }
 });
-
-const saveFilters = () => {
-  if (props.isFilterSelected) {
-    filtersStore.setFilter(props.name, {
-      ...filters.value,
-    });
-
-    return;
-  }
-
-  filtersStore.removeFilter(props.name);
-};
 
 const toggleFullscreen = () => {
   fullscreen.value = !filterVisible.value;
