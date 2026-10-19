@@ -142,6 +142,27 @@ class Api::V1::HangarInventoryStockUpdateTest < ActionDispatch::IntegrationTest
     assert_equal ["commodity"], @inventory.inventory_items.pluck(:category).uniq
   end
 
+  test "PATCH keeps a catalogue position's name and category" do
+    gem = create(:commodity, name: "Hadanite", counted: true)
+    create(:inventory_item, inventory: @inventory, item: gem,
+      name: "Hadanite", category: :commodity, unit: :scu, quantity: 4)
+    slug = InventoryStockItem.slug_for(name: "Hadanite", category: "commodity", unit: "scu")
+    sign_in @user
+
+    assert_api_response :patch, 400,
+      path_params: {hangarInventorySlug: @inventory.slug, slug:},
+      body: {name: "Shiny rock"} do
+      assert_includes parsed_body["errors"].to_s, "is set by the catalogue item"
+    end
+
+    assert_api_response :patch, 200,
+      path_params: {hangarInventorySlug: @inventory.slug, slug:},
+      body: {unit: "units"} do
+      assert_equal "units", parsed_body["unit"]
+      assert parsed_body["catalogueIdentity"]
+    end
+  end
+
   test "PATCH rejects a blank name" do
     sign_in @user
 

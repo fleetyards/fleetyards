@@ -17,6 +17,9 @@ module V1
           qualityMin: {type: [:integer, :null]},
           qualityMax: {type: [:integer, :null]},
           entriesCount: {type: :integer},
+          # Whether a catalogue record names and files the position, so only
+          # its unit can be changed. Set on the detail endpoints only.
+          catalogueIdentity: {type: :boolean},
           lastEntryAt: {type: [:string, :null], format: "date-time"},
           image: ::Shared::V1::Schemas::MediaFile,
           item: {
