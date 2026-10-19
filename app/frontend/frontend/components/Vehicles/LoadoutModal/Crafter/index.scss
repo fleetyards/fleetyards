@@ -71,23 +71,13 @@
   gap: 6px;
 }
 
-// The label over the presets, so the five grades fit one row on a phone.
-.loadout-crafter__quickset {
-  color: var(--color-text-dim);
-  font-size: 12px;
-
-  > span {
-    flex-basis: 100%;
-  }
-}
-
 // The recipe's slots scroll on their own; the header and the figures stay put.
 .loadout-crafter__slots {
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
-  gap: 12px;
-  min-height: 120px;
+  gap: 8px;
+  min-height: 0;
   padding: 4px 14px 12px;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -172,14 +162,6 @@
   .loadout-crafter__slots {
     max-height: 60dvh;
   }
-}
-
-// The blueprint page sets a slot's slider and its stats side by side across a
-// wide card. The crafter is a picker's width, so the stats go under the
-// slider, each with the whole width for its name and figure.
-.loadout-crafter__slots :deep(.blueprint-slot__body) {
-  grid-template-columns: minmax(0, 1fr);
-  gap: 0;
 }
 
 // A slot card clips its own overflow, which lets a scrolling column squeeze it

@@ -1387,6 +1387,16 @@ describe("VehicleLoadoutModal component tabs", () => {
       await flushPromises();
     };
 
+    // Every recipe slot of the draft at one grade, through each slot's input.
+    const setQualities = async (wrapper: Wrapper, quality: number) => {
+      for (const input of wrapper.findAll(
+        "[data-test='vehicle-loadout-crafting-slots'] input[type='number']",
+      )) {
+        await input.setValue(String(quality));
+      }
+      await flushPromises();
+    };
+
     const press = async (wrapper: Wrapper, testId: string) => {
       await wrapper.get(`[data-test='${testId}']`).trigger("click");
       await flushPromises();
@@ -1429,7 +1439,7 @@ describe("VehicleLoadoutModal component tabs", () => {
       await flushPromises();
 
       await craft(wrapper);
-      await press(wrapper, "vehicle-loadout-crafting-preset-750");
+      await setQualities(wrapper, 750);
 
       // Nothing reaches the loadout before Apply.
       expect(socket(wrapper, GUN).text()).not.toContain(
@@ -1498,11 +1508,19 @@ describe("VehicleLoadoutModal component tabs", () => {
           "[data-test='vehicle-loadout-crafting-slots'] .blueprint-slot",
         ),
       ).toHaveLength(2);
+      // The slots' ramps are the blueprint page's; the crafter lists the
+      // figures under the slots instead.
+      const slots = wrapper.get("[data-test='vehicle-loadout-crafting-slots']");
+      expect(slots.find(".blueprint-slot__stats").exists()).toBe(false);
+      expect(slots.find(".blueprint-slot__no-stats").exists()).toBe(false);
+      expect(slots.get("[data-test='blueprint-slot-moves']").text()).toBe(
+        "Integrity, Coolant Rating",
+      );
       expect(
         wrapper.find("[data-test='vehicle-loadout-crafter-remove']").exists(),
       ).toBe(false);
 
-      await press(wrapper, "vehicle-loadout-crafting-preset-1000");
+      await setQualities(wrapper, 1000);
       await press(wrapper, "vehicle-loadout-crafter-discard");
       await save(wrapper);
 
@@ -1514,7 +1532,7 @@ describe("VehicleLoadoutModal component tabs", () => {
       await flushPromises();
 
       await craft(wrapper);
-      await press(wrapper, "vehicle-loadout-crafting-preset-1000");
+      await setQualities(wrapper, 1000);
 
       const stats = wrapper.get("[data-test='vehicle-loadout-crafter-stats']");
       expect(
@@ -1558,7 +1576,7 @@ describe("VehicleLoadoutModal component tabs", () => {
       await flushPromises();
 
       await craft(wrapper);
-      await press(wrapper, "vehicle-loadout-crafting-preset-250");
+      await setQualities(wrapper, 250);
       await press(wrapper, "vehicle-loadout-crafter-apply");
 
       await craft(wrapper);

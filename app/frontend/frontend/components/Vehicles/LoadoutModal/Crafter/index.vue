@@ -50,8 +50,6 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 
-const PRESETS = [0, 250, 500, 750, 1000];
-
 const { data: recipesData, isPending: recipesPending } = useBlueprints(
   () => ({
     q: {
@@ -114,17 +112,6 @@ const setQuality = (position: number, quality: number) => {
   emit("update:draft", {
     ...props.draft,
     qualities: { ...props.draft.qualities, [position]: quality },
-  });
-};
-
-const setEveryQuality = (quality: number) => {
-  if (!props.draft) return;
-
-  emit("update:draft", {
-    ...props.draft,
-    qualities: Object.fromEntries(
-      costSlots.value.map((slot) => [slot.position, quality]),
-    ),
   });
 };
 
@@ -201,23 +188,6 @@ defineExpose({ focus });
           }}
         </Btn>
       </div>
-
-      <div
-        v-if="draft && costSlots.length"
-        class="loadout-crafter__row loadout-crafter__quickset"
-      >
-        <span>{{ t("labels.blueprint.setEverySlot") }}</span>
-        <Btn
-          v-for="preset in PRESETS"
-          :key="preset"
-          :size="BtnSizesEnum.SM"
-          :variant="BtnVariantsEnum.GHOST"
-          :data-test="`vehicle-loadout-crafting-preset-${preset}`"
-          @click="setEveryQuality(preset)"
-        >
-          {{ preset }}
-        </Btn>
-      </div>
     </div>
 
     <p
@@ -238,6 +208,7 @@ defineExpose({ focus });
         :key="slot.position"
         :slot-data="slot"
         :quality="qualityFor(slot.position)"
+        :ramps="false"
         @update:quality="setQuality(slot.position, $event)"
       />
     </div>
