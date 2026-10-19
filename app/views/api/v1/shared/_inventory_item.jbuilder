@@ -69,4 +69,7 @@ else
   json.item nil
 end
 
+json.partial! "api/v1/shared/inventory_crafted",
+  blueprint: inventory_item.crafted_blueprint, qualities: inventory_item.crafted_qualities
+
 json.partial! "api/shared/dates", record: inventory_item

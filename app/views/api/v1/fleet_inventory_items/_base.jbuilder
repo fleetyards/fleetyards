@@ -87,4 +87,7 @@ else
   json.added_by nil
 end
 
+json.partial! "api/v1/shared/inventory_crafted",
+  blueprint: fleet_inventory_item.crafted_blueprint, qualities: fleet_inventory_item.crafted_qualities
+
 json.partial! "api/shared/dates", record: fleet_inventory_item

@@ -20,7 +20,7 @@ module Api
         scope = InventoryItem
           .joins(:inventory)
           .where(inventories: {holder: current_resource_owner})
-          .includes(:inventory).preload(item: %i[build last_build])
+          .includes(:inventory).preload(:crafted_blueprint, item: %i[build last_build])
 
         scope = scope.where(inventories: {vehicle_id: nil}) unless ship_inventories_enabled?
 

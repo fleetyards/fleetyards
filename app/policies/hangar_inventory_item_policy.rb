@@ -15,7 +15,8 @@ class HangarInventoryItemPolicy < ApplicationPolicy
     if record.try(:persisted?)
       params.permit(:name, :notes, :category, :unit)
     else
-      params.permit(:name, :category, :quantity, :unit, :entry_type, :quality, :image, :notes, :item_type, :item_id)
+      params.permit(:name, :category, :quantity, :unit, :entry_type, :quality, :image, :notes, :item_type, :item_id,
+        :crafted_blueprint_id, crafted_qualities: {})
     end
   end
 end

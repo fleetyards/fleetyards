@@ -29,6 +29,14 @@ else
   json.item nil
 end
 
+# A crafted lot, where the row is one: `current_stock` holds crafted parts
+# apart, `stock_positions` rolls every lot of a position into one row.
+if position.respond_to?(:has_attribute?) && position.has_attribute?(:crafted_blueprint_id)
+  blueprint = local_assigns.fetch(:crafted_blueprints, {})[position.crafted_blueprint_id]
+
+  json.partial! "api/v1/shared/inventory_crafted", blueprint:, qualities: position.crafted_qualities
+end
+
 if position.respond_to?(:inventory_name) && position.inventory_name.present?
   json.inventory do
     json.name position.inventory_name

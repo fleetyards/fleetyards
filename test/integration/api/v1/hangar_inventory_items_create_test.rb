@@ -65,6 +65,43 @@ class Api::V1::HangarInventoryItemsCreateTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "POST /hangar/inventories/:slug/items records a crafted part" do
+    component = create(:component, name: "Bulwark")
+    blueprint = create(:blueprint, craftable: component)
+    slot = create(:blueprint_cost_slot, build: blueprint.build, position: 1)
+    create(:blueprint_cost_modifier, slot:)
+
+    sign_in @user
+
+    assert_api_response :post, 201,
+      path_params: {hangarInventorySlug: @inventory.slug},
+      body: item_body(
+        name: "Bulwark", category: "component", unit: "units", quantity: 1,
+        itemType: "Component", itemId: component.id,
+        craftedBlueprintId: blueprint.id, craftedQualities: {"1" => 820}
+      ) do
+      assert_equal blueprint.slug, parsed_body.dig("crafted", "blueprint", "slug")
+      assert_equal({"1" => 820}, parsed_body.dig("crafted", "qualities"))
+    end
+  end
+
+  test "POST /hangar/inventories/:slug/items refuses a crafted part missing a slot's grade" do
+    component = create(:component, name: "Bulwark")
+    blueprint = create(:blueprint, craftable: component)
+    slot = create(:blueprint_cost_slot, build: blueprint.build, position: 1)
+    create(:blueprint_cost_modifier, slot:)
+
+    sign_in @user
+
+    assert_api_response :post, 400,
+      path_params: {hangarInventorySlug: @inventory.slug},
+      body: item_body(
+        name: "Bulwark", category: "component", unit: "units", quantity: 1,
+        itemType: "Component", itemId: component.id,
+        craftedBlueprintId: blueprint.id, craftedQualities: {}
+      )
+  end
+
   test "POST /hangar/inventories/:slug/items returns 400 for a zero quantity" do
     sign_in @user
 
