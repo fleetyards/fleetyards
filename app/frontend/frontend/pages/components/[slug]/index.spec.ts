@@ -9,7 +9,10 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@/services/fyApi")>()),
   useBlueprints: () => ({ data: ref({ items: [] }), isPending: ref(false) }),
   // The recipe a crafted part's address names; none of these do.
-  useBlueprint: () => ({ data: ref(craftedRecipe.value) }),
+  useBlueprint: () => ({
+    data: ref(craftedRecipe.value),
+    isPlaceholderData: ref(false),
+  }),
 }));
 
 vi.mock("@/shared/composables/useI18n", () => ({

@@ -46,12 +46,18 @@ export const useCraftedFromRoute = <T extends { id: string }>(
   const recipeSlug = computed(() => single(route.query.crafted));
   const qualities = computed(() => parseGrades(single(route.query.grades)));
 
-  const { data: recipe } = useBlueprint(recipeSlug, {
+  const { data: fetched, isPlaceholderData } = useBlueprint(recipeSlug, {
     query: {
       enabled: computed(() => !!recipeSlug.value),
       refetchOnWindowFocus: false,
     },
   });
+
+  // The app keeps a query's last answer while the next one loads, so a page
+  // left for its stock values would otherwise go on showing the recipe it had.
+  const recipe = computed(() =>
+    recipeSlug.value && !isPlaceholderData.value ? fetched.value : undefined,
+  );
 
   const crafted = computed(() => {
     if (!record.value || !recipe.value) return undefined;

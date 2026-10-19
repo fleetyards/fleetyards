@@ -12,7 +12,11 @@ const { enabled, query, settle } = vi.hoisted(() => {
   const enabled: Record<string, () => boolean> = {};
   const states: Record<
     string,
-    { data: Ref<unknown>; isPending: Ref<boolean> }
+    {
+      data: Ref<unknown>;
+      isPending: Ref<boolean>;
+      isPlaceholderData: Ref<boolean>;
+    }
   > = {};
 
   // `at` is where the options sit: after a fleet's slug, or an event's params.
@@ -21,7 +25,11 @@ const { enabled, query, settle } = vi.hoisted(() => {
     (...args: unknown[]) => {
       const options = args[at] as QueryOptions;
       enabled[key] = () => options.query.enabled.value;
-      states[key] = { data: ref(undefined), isPending: ref(true) };
+      states[key] = {
+        data: ref(undefined),
+        isPending: ref(true),
+        isPlaceholderData: ref(false),
+      };
 
       return states[key];
     };

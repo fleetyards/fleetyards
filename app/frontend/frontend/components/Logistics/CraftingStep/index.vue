@@ -52,12 +52,17 @@ const recipeSlug = computed(
     recipes.value.find((recipe) => recipe.id === recipeId.value)?.slug ?? "",
 );
 
-const { data: recipe } = useBlueprint(recipeSlug, {
+const { data: fetchedRecipe, isPlaceholderData } = useBlueprint(recipeSlug, {
   query: {
     enabled: computed(() => !!recipeSlug.value),
     refetchOnWindowFocus: false,
   },
 });
+
+// Not the last recipe's slots while another one loads.
+const recipe = computed(() =>
+  isPlaceholderData.value ? undefined : fetchedRecipe.value,
+);
 
 // Only a slot whose material moves a stat asks for a grade; the API asks for
 // exactly these.

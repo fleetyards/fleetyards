@@ -177,16 +177,22 @@ const equipment = computed(
 // as crafting left them rather than as the catalogue lists them.
 const craftedRecipeSlug = computed(() => props.crafted?.blueprint.slug ?? "");
 
-const { data: craftedRecipe } = useBlueprintQuery(craftedRecipeSlug, {
-  query: {
-    enabled: computed(
-      () =>
-        requested.value &&
-        !!craftedRecipeSlug.value &&
-        (isComponent.value || isEquipment.value),
-    ),
-  },
-});
+const { data: fetchedCraftedRecipe, isPlaceholderData: recipePlaceholder } =
+  useBlueprintQuery(craftedRecipeSlug, {
+    query: {
+      enabled: computed(
+        () =>
+          requested.value &&
+          !!craftedRecipeSlug.value &&
+          (isComponent.value || isEquipment.value),
+      ),
+    },
+  });
+
+// Another card's recipe is not this part's, while this one's loads.
+const craftedRecipe = computed(() =>
+  recipePlaceholder.value ? undefined : fetchedCraftedRecipe.value,
+);
 
 const factors = computed(() =>
   props.crafted && craftedRecipe.value

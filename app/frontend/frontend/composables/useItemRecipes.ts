@@ -8,7 +8,7 @@ import { type FilterOption, useBlueprints } from "@/services/fyApi";
 export const useItemRecipes = (
   itemId: MaybeRefOrGetter<string | undefined>,
 ) => {
-  const { data } = useBlueprints(
+  const { data, isPlaceholderData } = useBlueprints(
     computed(() => ({
       perPage: "10",
       q: { craftableIdEq: toValue(itemId) },
@@ -21,7 +21,12 @@ export const useItemRecipes = (
     },
   );
 
-  const recipes = computed(() => data.value?.items || []);
+  // Not the last item's recipes while this item's load: the app keeps a
+  // query's previous answer as a placeholder, which would offer crafting for a
+  // part no recipe makes.
+  const recipes = computed(() =>
+    toValue(itemId) && !isPlaceholderData.value ? data.value?.items || [] : [],
+  );
 
   const recipeOptions = computed<FilterOption[]>(() =>
     recipes.value.map((recipe) => ({

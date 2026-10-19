@@ -40,6 +40,7 @@ vi.mock("@/services/fyApi", async (importOriginal) => {
     // A recipe makes the Bulwark and nothing else.
     useBlueprints: vi.fn(
       (params: { value: { q: { craftableIdEq?: string } } }) => ({
+        isPlaceholderData: computed(() => false),
         data: computed(() => ({
           items:
             params.value.q.craftableIdEq === "bulwark"

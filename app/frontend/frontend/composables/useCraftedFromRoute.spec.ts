@@ -5,6 +5,7 @@ import { craftedRouteQuery, useCraftedFromRoute } from "./useCraftedFromRoute";
 const state = vi.hoisted(() => ({
   query: {} as Record<string, unknown>,
   recipe: undefined as unknown,
+  placeholder: false,
 }));
 
 vi.mock("vue-router", async (importOriginal) => ({
@@ -17,7 +18,10 @@ vi.mock("@/services/fyApi", async (importOriginal) => {
 
   return {
     ...(await importOriginal<typeof import("@/services/fyApi")>()),
-    useBlueprint: () => ({ data: ref(state.recipe) }),
+    useBlueprint: () => ({
+      data: ref(state.recipe),
+      isPlaceholderData: ref(state.placeholder),
+    }),
   };
 });
 
@@ -90,5 +94,28 @@ describe("useCraftedFromRoute", () => {
 
     // The slot reads as the neutral grade, the catalogue's own figure.
     expect(crafted.value?.typeData.maxHealth).toBeCloseTo(1000);
+  });
+
+  // The app keeps a query's last answer while the next loads, so the recipe
+  // can still be there once the address no longer names one.
+  it("shows the stock part once the address names no recipe", () => {
+    state.query = {};
+    state.recipe = recipe("bulwark");
+
+    const { crafted } = useCraftedFromRoute(ref(bulwark), craft);
+
+    expect(crafted.value).toBeUndefined();
+  });
+
+  it("ignores a recipe kept from the last query", () => {
+    state.query = { crafted: "other-bp", grades: "1:1000" };
+    state.recipe = recipe("bulwark");
+    state.placeholder = true;
+
+    const { crafted } = useCraftedFromRoute(ref(bulwark), craft);
+
+    expect(crafted.value).toBeUndefined();
+
+    state.placeholder = false;
   });
 });

@@ -30,12 +30,14 @@ vi.mock("@/services/fyApi", async (importOriginal) => {
   return {
     ...(await importOriginal<typeof import("@/services/fyApi")>()),
     useBlueprints: vi.fn(() => ({
+      isPlaceholderData: ref(false),
       data: ref({
         items: [{ id: "bp-1", name: "Bulwark", slug: "bulwark" }],
         meta: {},
       }),
     })),
     useBlueprint: vi.fn(() => ({
+      isPlaceholderData: ref(false),
       data: ref({
         id: "bp-1",
         name: "Bulwark",
