@@ -27,9 +27,8 @@
     gap: 10px;
   }
 
-  // Selected filters where the sort options used to start, the sort options
-  // on the right. The margin moves from the toolbar to the row, so the two
-  // sides share one baseline and one gap to the list.
+  // The sort options on the right. The margin moves from the toolbar to the
+  // row, so a row that holds nothing leaves no gap above the list.
   &__sort-row {
     display: flex;
     flex-wrap: wrap;
@@ -42,7 +41,13 @@
     }
   }
 
+  // Beside the filter button that opens them, in whatever the toolbar's
+  // buttons leave over: a zero basis never wraps the row, the chips that do not
+  // fit go into the overflow chip instead. Centred as a block rather than made
+  // a flex container, which would shrink the chips' row to the chips it shows
+  // and leave it measuring room for only those.
   &__selected-filters {
+    align-self: center;
     flex: 1 1 0;
     min-width: 0;
 
@@ -123,11 +128,16 @@
 
 @media (max-width: $desktop-breakpoint) {
   .filtered-list {
-    // No room for two sides on a phone: the selected filters take one line, the
-    // sort options the next, both from the left edge.
+    // No room beside the buttons on a phone: the selected filters take a line
+    // of their own under the toolbar, and the sort options start from the left
+    // edge.
     &__selected-filters,
     &__sort {
       flex-basis: 100%;
+    }
+
+    &__selected-filters {
+      order: 1;
     }
 
     &__sort {

@@ -110,6 +110,8 @@ const hasFilterSlot = computed(() => {
 const hasActions = computed(
   () =>
     hasFilterSlot.value ||
+    !!props.activeFilters?.length ||
+    !!slots["selected-filters"] ||
     !!slots["actions-left"] ||
     !!slots["actions-right"] ||
     !!slots["pagination-top"],
@@ -361,6 +363,20 @@ const openFilters = () => {
             </Btn>
             <slot name="actions-left" :records="records" />
           </div>
+          <div class="filtered-list__selected-filters">
+            <slot
+              name="selected-filters"
+              :filter-visible="filterVisible"
+              :open-filters="openFilters"
+            >
+              <ActiveFilters
+                v-if="activeFilters"
+                :filters="activeFilters"
+                :expanded="filterVisible && !mobile"
+                @open="openFilters"
+              />
+            </slot>
+          </div>
           <div v-if="hasActionsRight" class="filtered-list__actions-right">
             <slot name="actions-right" :records="records" />
           </div>
@@ -414,20 +430,6 @@ const openFilters = () => {
                control, not a result. It stays put while the list loads, while
                it is empty, and while it refetches under a new order. -->
           <div class="filtered-list__sort-row">
-            <div class="filtered-list__selected-filters">
-              <slot
-                name="selected-filters"
-                :filter-visible="filterVisible"
-                :open-filters="openFilters"
-              >
-                <ActiveFilters
-                  v-if="activeFilters"
-                  :filters="activeFilters"
-                  :expanded="filterVisible && !mobile"
-                  @open="openFilters"
-                />
-              </slot>
-            </div>
             <div class="filtered-list__sort">
               <slot name="sort" />
             </div>
