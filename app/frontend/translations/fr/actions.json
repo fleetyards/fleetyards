@@ -48,7 +48,6 @@
       "resolve": "Résoudre",
       "sortBy": "Trier par",
       "back": "Précédent",
-      "apply": "Appliquer",
       "open": "Ouvrir",
       "copy": "Copier",
       "download": "Télécharger",
@@ -141,6 +140,9 @@
       "hideStatusColor": "Masquer le statut en tant que couleur",
       "addToHangar": "Ajouter à votre Hangar",
       "blueprint": {
+        "apply": "Appliquer",
+        "discard": "Annuler",
+        "removeCrafting": "Retirer la fabrication",
         "own": "Marquer comme possédé",
         "unown": "Retirer la marque"
       },
@@ -247,12 +249,15 @@
       "syncExtension": {
         "cancel": "Annuler",
         "start": "Démarrer la synchronisation",
-        "changeInSettings": "Modifier dans les paramètres",
         "retry": "Réessayer la synchronisation",
         "runInBackground": "Continuer en arrière-plan",
         "showResult": "Afficher le résultat",
         "close": "Fermer",
-        "refresh": "Actualiser la page"
+        "refresh": "Actualiser la page",
+        "checkAgain": "Vérifier à nouveau",
+        "addExtension": "Ajouter",
+        "updateExtension": "Mettre à jour",
+        "change": "Modifier"
       },
       "empty": {
         "hangarGuide": "Faire la visite",
@@ -600,6 +605,7 @@
         "showPublic": "Journal de bord"
       },
       "vehicleLoadout": {
+        "craft": "Fabriquer",
         "swapModule": "Changer de module",
         "removeModule": "Retirer le module",
         "editLoadout": "Modifier l’équipement",
@@ -612,6 +618,14 @@
         "linkInstead": "Lier un build à la place",
         "createOnFleetyards": "Créer un loadout sur Fleetyards",
         "viewLoadout": "Voir l’équipement"
+      },
+      "hangarPledgeItems": {
+        "addToInventory": "Ajouter à l'inventaire",
+        "addCount": {
+          "one": "Ajouter %{count} élément",
+          "other": "Ajouter %{count} éléments"
+        },
+        "createInventory": "Créer un inventaire"
       }
     }
   }

@@ -1288,6 +1288,13 @@
       },
       "vehicleLoadout": {
         "failure": "The loadout could not be saved."
+      },
+      "hangarPledgeItems": {
+        "addedToInventory": {
+          "one": "Added %{count} item to %{inventory}",
+          "other": "Added %{count} items to %{inventory}"
+        },
+        "addToInventoryFailed": "The items could not be added to the inventory."
       }
     }
   }

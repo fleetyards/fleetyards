@@ -48,7 +48,6 @@
       "resolve": "Auflösen",
       "sortBy": "Sortieren nach",
       "back": "Zurück",
-      "apply": "Übernehmen",
       "open": "Öffnen",
       "copy": "Kopieren",
       "download": "Herunterladen",
@@ -141,6 +140,9 @@
       "hideStatusColor": "Status als Farbe ausblenden",
       "addToHangar": "Zum Hangar hinzufügen",
       "blueprint": {
+        "apply": "Übernehmen",
+        "discard": "Verwerfen",
+        "removeCrafting": "Herstellung entfernen",
         "own": "Als besessen markieren",
         "unown": "Markierung entfernen"
       },
@@ -247,12 +249,15 @@
       "syncExtension": {
         "cancel": "Abbrechen",
         "start": "Synchronisation starten",
-        "changeInSettings": "In den Einstellungen ändern",
         "retry": "Synchronisierung wiederholen",
         "runInBackground": "Im Hintergrund fortsetzen",
         "showResult": "Ergebnis anzeigen",
         "close": "Schließen",
-        "refresh": "Seite aktualisieren"
+        "refresh": "Seite aktualisieren",
+        "checkAgain": "Erneut prüfen",
+        "addExtension": "Hinzufügen",
+        "updateExtension": "Aktualisieren",
+        "change": "Ändern"
       },
       "empty": {
         "hangarGuide": "Tour starten",
@@ -600,6 +605,7 @@
         "showPublic": "Logbuch"
       },
       "vehicleLoadout": {
+        "craft": "Herstellen",
         "swapModule": "Modul tauschen",
         "removeModule": "Modul entfernen",
         "editLoadout": "Loadout bearbeiten",
@@ -612,6 +618,14 @@
         "linkInstead": "Stattdessen einen Build verlinken",
         "createOnFleetyards": "Loadout auf Fleetyards erstellen",
         "viewLoadout": "Loadout ansehen"
+      },
+      "hangarPledgeItems": {
+        "addToInventory": "Zum Inventar hinzufügen",
+        "addCount": {
+          "one": "%{count} Eintrag hinzufügen",
+          "other": "%{count} Einträge hinzufügen"
+        },
+        "createInventory": "Inventar anlegen"
       }
     }
   }

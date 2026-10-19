@@ -294,7 +294,8 @@
         "targetGroupHint": "选择一个机库分组，所有导入的舰船都会归入其中。留空则使用文件中指定的分组。",
         "types": {
           "Imports::HangarImport": "机库导入",
-          "Imports::HangarSync": "RSI 机库同步"
+          "Imports::HangarSync": "RSI 机库同步",
+          "Imports::BuybackSync": "RSI 回购同步"
         },
         "summary": {
           "imported": "已导入",
@@ -2825,7 +2826,15 @@
         "partOf": "属于 %{name}",
         "pledgeValue": "承诺价值",
         "quantity": "数量",
-        "search": "按名称搜索"
+        "search": "按名称搜索",
+        "shipComponents": "飞船部件",
+        "addToInventory": "添加到库存",
+        "inventory": "库存",
+        "inInventory": "位于 %{name}",
+        "select": "选择",
+        "andMore": {
+          "other": "以及另外 %{count} 项"
+        }
       },
       "buybacks": {
         "name": "可回购承诺",
@@ -2863,7 +2872,6 @@
         "extensionVersion": "已安装的扩展版本",
         "detailsProgress": "正在读取回购价格",
         "pages": "页数",
-        "found": "找到的可回购承诺",
         "added": "新增",
         "removed": "已移除",
         "prices": "已读取价格",
@@ -2879,7 +2887,18 @@
           "finished": "已完成",
           "unsupported": "不支持",
           "failed": "失败"
-        }
+        },
+        "stepDetails": {
+          "saved": "新增：%{added} · 移除：%{removed}",
+          "prices": "%{done} / %{total}",
+          "pricesPending": "针对上次同步后新增的承诺",
+          "read": "已读取页数：%{page} · 可回购承诺：%{count}"
+        },
+        "firstSyncTitle": "首次同步耗时更长",
+        "updateExtensionTitle": "更新同步扩展",
+        "finishedTitle": "可回购承诺已同步",
+        "runningTitle": "正在同步可回购承诺",
+        "pledges": "可回购承诺"
       },
       "syncExtension": {
         "warnings": "警告",
@@ -2888,16 +2907,13 @@
         "backgroundFailed": "机库同步失败",
         "backgroundCancelled": "机库同步已取消",
         "status": {
-          "started": "导入已开始...",
-          "finished": "导入完成",
           "failed": "导入失败!",
           "cancelled": "导入已取消"
         },
         "processSteps": {
-          "fetchHangar": "正在从 RSI 机库获取数据",
-          "submitData": "正在提交数据到 Fleetyards.net 后台"
+          "fetchHangar": "正在读取你的 RSI 机库",
+          "submitData": "正在保存到 Fleetyards"
         },
-        "sessionStatus": "RSI 会话状态",
         "signedInAs": "已以 %{handle} 登录 RSI",
         "signInToRsi": "登录 RSI",
         "checkIdentity": "检查 RSI 会话",
@@ -2937,10 +2953,6 @@
         },
         "pledgeItems": {
           "pages": "页面",
-          "all": "所有质押物品",
-          "ships": "飞船",
-          "components": "模块",
-          "upgrades": "升级",
           "paints": "涂装",
           "hangarFlair": "机库装饰",
           "paintsNotSynced": "涂装（不会同步）",
@@ -2949,7 +2961,9 @@
           "ccus": "升级 / CCU",
           "ccusNotSynced": "CCU（未同步）",
           "equipmentNotSynced": "FPS 装备（不会同步）",
-          "extras": "其他物品（归入机库装饰和 FPS 装备）"
+          "extras": "其他",
+          "shipComponents": "飞船部件",
+          "shipComponentsNotSynced": "飞船部件（未同步）"
         },
         "importedItems": {
           "importedVehicles": "已添加飞船",
@@ -2972,7 +2986,77 @@
           "missingUpgrades": "未找到升级",
           "missingUpgradeVehicles": "未找到匹配的飞船用于升级"
         },
-        "incomplete": "您的 RSI 机库中有部分物品无法读取，因此本次未找到的飞船保持不变。"
+        "incomplete": "您的 RSI 机库中有部分物品无法读取，因此本次未找到的飞船保持不变。",
+        "stepDetails": {
+          "read": "已读取页数：%{pages} · 承诺：%{count}",
+          "saving": "正在将你的承诺与机库匹配…",
+          "page": "第 %{page} 页",
+          "pageOf": "第 %{page} 页，共 %{total} 页",
+          "sending": {
+            "other": "正在发送 %{count} 项"
+          },
+          "sent": {
+            "other": "已发送 %{count} 项"
+          },
+          "pageOfAbout": "第 %{page} 页，共约 %{total} 页"
+        },
+        "unmatchedCount": {
+          "one": "有 1 项无法匹配",
+          "other": "有 %{count} 项无法匹配"
+        },
+        "unmatchedHeading": "无法匹配",
+        "failedStep": {
+          "fetchHangar": "读取你的 RSI 机库失败",
+          "submitData": "保存到 Fleetyards 失败"
+        },
+        "whatToSync": "同步内容",
+        "unmatchedActionLabel": "如何处理它们",
+        "notSyncing": "不同步",
+        "targetGroupHint": "同步找到或添加的每艘舰船都会归入此分组，并保留它原有的分组。",
+        "extensionNeededTitle": "添加同步扩展",
+        "finishedTitle": "机库已同步",
+        "failedTitle": "同步未完成",
+        "savedAsYouChange": "更改后即自动保存",
+        "resultKinds": {
+          "ships": "飞船",
+          "components": "模块",
+          "upgrades": "升级",
+          "paints": "涂装",
+          "hangarFlair": "机库装饰",
+          "equipment": "FPS 装备",
+          "ccus": "CCU",
+          "shipComponents": "飞船部件"
+        },
+        "newCount": {
+          "one": "新增 1",
+          "other": "新增 %{count}"
+        },
+        "resultActions": {
+          "movedVehiclesToWanted": "已移至愿望单",
+          "deletedVehicles": "已删除",
+          "groupedVehicles": "已归入分组",
+          "unchangedVehicles": "保持不变"
+        },
+        "nothingChangedTitle": "没有任何更改",
+        "stepStatus": {
+          "pending": "未开始",
+          "active": "进行中",
+          "done": "已完成",
+          "failed": "失败",
+          "warning": "已完成，但有警告"
+        },
+        "lastSync": {
+          "of": "/ %{count}",
+          "ofLong": "上次同步为 %{count}",
+          "more": "比上次同步多 %{count}",
+          "fewer": "比上次同步少 %{count}",
+          "same": "与上次同步相同",
+          "reading": "%{count} / 约 %{total} 项"
+        },
+        "viewImport": "查看本次同步的导入",
+        "lastSynced": "上次同步：",
+        "syncShipComponents": "同步飞船部件",
+        "syncShipComponentsHint": "用你 RSI 机库中的飞船部件（冷却器、发电机、武器等）替换已保存的部件。关闭时保留已保存的飞船部件。"
       },
       "cargoGridViewer": {
         "capacity": "容量",
@@ -3343,10 +3427,6 @@
           "showStock": "显示原厂数值",
           "edit": "记录制作方式",
           "summary": "已制作 %{grades}",
-          "clear": "未制作",
-          "blueprint": "蓝图",
-          "hint": "制作%{name}所用的蓝图，以及每个槽位所用材料的品质。",
-          "slot": "槽位 %{position}",
           "lot": "已制作",
           "grade": "品质 %{quality}",
           "slotGrade": "槽位 %{position}：%{quality}"
@@ -4174,6 +4254,12 @@
         "friend": "已是好友"
       },
       "blueprint": {
+        "anyGrade": "任意品质",
+        "crafter": {
+          "title": "制作 · %{name}",
+          "recipe": "蓝图 %{number}",
+          "noRecipe": "当前版本中没有该物品的蓝图。"
+        },
         "name": "名称",
         "craftTime": "制造时间",
         "slots": "槽位",
@@ -4436,6 +4522,8 @@
           }
         },
         "againstStock": "相对原厂飞船的变化",
+        "crafted": "已制作",
+        "craftedPart": "%{name}（已制作）",
         "fitted": "已装配",
         "owned": "已拥有",
         "noSlots": "这艘舰船目前还没有可在此装配的内容",

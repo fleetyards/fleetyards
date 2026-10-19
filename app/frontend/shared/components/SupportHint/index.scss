@@ -33,25 +33,15 @@
     align-items: center;
   }
 
-  &--inline {
-    border: 1px solid $panel-inner-border;
-    border-radius: $panel-content-border-radius;
-    background: $panel-bg;
-    padding: 1rem 1.25rem;
+  &--inline .support-hint__body {
+    display: block;
+    margin: 0;
+    font-size: inherit;
+    opacity: 1;
+  }
 
-    .support-hint__icon {
-      color: var(--color-primary, #428bca);
-      opacity: 1;
-    }
-
-    .support-hint__heading h5 {
-      font-size: 1rem;
-    }
-
-    .support-hint__body {
-      font-size: 0.9rem;
-      margin-bottom: 1rem;
-    }
+  &--inline .support-hint__actions {
+    margin-top: 10px;
   }
 
   &--notification {

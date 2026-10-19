@@ -25,7 +25,8 @@ module V1
             itemClassLabel: {type: :string},
             # What the ship page reads a part's figures from, so a loadout ranks
             # parts on the same ones.
-            typeData: ::Shared::V1::Schemas::Component::TYPE_DATA
+            typeData: ::Shared::V1::Schemas::Component::TYPE_DATA,
+            craftable: {type: :boolean, description: "A recipe in the build being served makes it"}
           },
           additionalProperties: false,
           required: %w[id name]

@@ -48,7 +48,6 @@
       "resolve": "解決",
       "sortBy": "排序方式",
       "back": "返回",
-      "apply": "套用",
       "open": "開啟",
       "copy": "複製",
       "download": "下載",
@@ -141,6 +140,9 @@
       "hideStatusColor": "隱藏狀態顏色",
       "addToHangar": "新增至機庫",
       "blueprint": {
+        "apply": "套用",
+        "discard": "放棄",
+        "removeCrafting": "移除製作",
         "own": "標記為已擁有",
         "unown": "取消已擁有標記"
       },
@@ -247,12 +249,15 @@
       "syncExtension": {
         "cancel": "取消",
         "start": "Start Sync",
-        "changeInSettings": "在設定中變更",
         "retry": "重試同步",
         "runInBackground": "在背景繼續",
         "showResult": "查看結果",
         "close": "關閉",
-        "refresh": "重新整理頁面"
+        "refresh": "重新整理頁面",
+        "checkAgain": "再次檢查",
+        "addExtension": "新增",
+        "updateExtension": "更新",
+        "change": "變更"
       },
       "empty": {
         "hangarGuide": "開始導覽",
@@ -600,6 +605,7 @@
         "showPublic": "艦長日誌"
       },
       "vehicleLoadout": {
+        "craft": "製作",
         "swapModule": "更換模組",
         "removeModule": "移除模組",
         "editLoadout": "編輯配置",
@@ -612,6 +618,13 @@
         "linkInstead": "改為連結配置",
         "createOnFleetyards": "在 Fleetyards 上建立配置",
         "viewLoadout": "查看配置"
+      },
+      "hangarPledgeItems": {
+        "addToInventory": "加入庫存",
+        "addCount": {
+          "other": "加入 %{count} 項"
+        },
+        "createInventory": "建立庫存"
       }
     }
   }

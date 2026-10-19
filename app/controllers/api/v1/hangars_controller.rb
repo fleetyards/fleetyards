@@ -142,6 +142,7 @@ module Api
           sync_paints: sync_pledge_items?(:sync_paints),
           sync_hangar_flair: sync_pledge_items?(:sync_hangar_flair),
           sync_ccus: sync_pledge_items?(:sync_ccus),
+          sync_ship_components: sync_pledge_items?(:sync_ship_components),
           sync_equipment: sync_pledge_items?(:sync_equipment),
           unmatched_vehicles_action: unmatched_vehicles_action,
           unmatched_hangar_group_id: unmatched_hangar_group_id,
@@ -176,6 +177,25 @@ module Api
         end
 
         render json: {active:, status:, result:}
+      end
+
+      # What the last finished sync read from RSI, for a new run to be measured
+      # against. A user who never finished one gets a total of 0.
+      def sync_rsi_hangar_last_read
+        authorize! to: :update?, with: ::HangarPolicy
+
+        last_import = Imports::HangarSync.where(user_id: current_resource_owner.id, aasm_state: "finished")
+          .order(finished_at: :desc)
+          .first
+
+        summary = last_import&.read_summary || {
+          finished_at: nil,
+          pages: nil,
+          total: 0,
+          counts: Imports::HangarSync::READ_KINDS.index_with { 0 }
+        }
+
+        render json: summary.deep_transform_keys { |key| key.to_s.camelize(:lower) }
       end
 
       def items
@@ -235,7 +255,7 @@ module Api
       private def sync_params
         @sync_params ||= params.permit(
           :hangar_group_id, :add_bundled_vehicles, :sync_paints, :sync_hangar_flair, :sync_equipment, :sync_ccus,
-          :unmatched_vehicles_action,
+          :sync_ship_components, :unmatched_vehicles_action,
           :unmatched_hangar_group_id, :extension_version,
           items: [:id, :name, :image, :type, :custom_name, :pledge_name, :pledge_value, :pledge_item_count, :pledge_created_on, :meltable, :page],
           unread_pages: [:check, :page_number, details: [], markup: []]

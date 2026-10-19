@@ -24,6 +24,8 @@ import type { HangarSyncData } from "@/services/fyCable/channels/HangarSyncChann
 import {
   RsiPageKindEnum,
   syncRsiHangar,
+  syncRsiHangarLastRead,
+  type HangarSyncLastRead,
   type HangarSyncResult,
   type HangarSyncStatus,
   type RsiHangarItemInput,
@@ -52,7 +54,19 @@ const processSteps = ref<SyncProcessStep[]>(initialSteps());
 
 const currentPage = ref(1);
 
+// The list's length from RSI's pager, so the reading step can fill toward it;
+// unknown until a page shows the pager.
+const totalPages = ref<number>();
+
 const pledges = ref<RsiHangarItemInput[]>([]);
+
+// What the last finished sync read, taken when a run starts: fetched any later,
+// it could already be this run's own.
+const lastRead = ref<HangarSyncLastRead>();
+
+// The import the save created, for its page to be linked while the server
+// works through it and after.
+const importId = ref<string>();
 
 const result = ref<HangarSyncResult | undefined>();
 
@@ -140,6 +154,9 @@ const clear = () => {
   started.value = false;
   processSteps.value = initialSteps();
   currentPage.value = 1;
+  totalPages.value = undefined;
+  lastRead.value = undefined;
+  importId.value = undefined;
   pledges.value = [];
   result.value = undefined;
   submitted.value = false;
@@ -178,16 +195,21 @@ export const useHangarSync = () => {
 
     updateStep("submitData", "processing");
     submitted.value = false;
+    // A retry's import is a new one: until the server answers, the failed one
+    // is neither linked nor reported as sent.
+    importId.value = undefined;
 
     const version = reportExtensionVersion(extensionVersion);
 
     try {
-      await syncRsiHangar({
+      const submittedImport = await syncRsiHangar({
         ...input,
         items: pledges.value,
         ...(version ? { extensionVersion: version } : {}),
         ...(unreadPages.length ? { unreadPages } : {}),
       });
+
+      if (id === runId) importId.value = submittedImport.id;
     } catch (error) {
       if (id !== runId) return;
 
@@ -283,6 +305,10 @@ export const useHangarSync = () => {
       ...newPledges.map((pledge) => ({ ...pledge, page: currentPage.value })),
     ];
 
+    if (page.lastPage) {
+      totalPages.value = Math.max(totalPages.value ?? 0, page.lastPage);
+    }
+
     currentPage.value += 1;
     setTimeout(() => void fetchPage(id), PAGE_DELAY);
   };
@@ -323,6 +349,16 @@ export const useHangarSync = () => {
     input = syncInput;
     extensionVersion = version;
     started.value = true;
+
+    const id = runId;
+
+    // Only a measure to read the run against; without it the run reads all the
+    // same.
+    syncRsiHangarLastRead()
+      .then((read) => {
+        if (id === runId && read.total > 0) lastRead.value = read;
+      })
+      .catch(() => undefined);
 
     void fetchPage(runId);
 
@@ -413,6 +449,9 @@ export const useHangarSync = () => {
     started,
     processSteps,
     currentPage,
+    totalPages,
+    lastRead,
+    importId,
     pledges,
     result,
     finished,

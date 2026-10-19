@@ -294,7 +294,8 @@
         "targetGroupHint": "Pick a hangar group and every imported ship is filed there. Leave it empty to use the groups named in the file.",
         "types": {
           "Imports::HangarImport": "Hangar Import",
-          "Imports::HangarSync": "RSI Hangar Sync"
+          "Imports::HangarSync": "RSI Hangar Sync",
+          "Imports::BuybackSync": "RSI Buy-back Sync"
         },
         "summary": {
           "imported": "Imported",
@@ -2825,7 +2826,16 @@
         "partOf": "Part of %{name}",
         "pledgeValue": "Pledge value",
         "quantity": "Quantity",
-        "search": "Search by name"
+        "search": "Search by name",
+        "shipComponents": "Ship Components",
+        "addToInventory": "Add to inventory",
+        "inventory": "Inventory",
+        "inInventory": "In %{name}",
+        "select": "Select",
+        "andMore": {
+          "one": "and %{count} more",
+          "other": "and %{count} more"
+        }
       },
       "buybacks": {
         "name": "Buy-back pledges",
@@ -2863,7 +2873,6 @@
         "extensionVersion": "Installed extension version",
         "detailsProgress": "Reading buy-back prices",
         "pages": "Pages",
-        "found": "Buy-back pledges found",
         "added": "New",
         "removed": "Removed",
         "prices": "Prices read",
@@ -2879,7 +2888,18 @@
           "finished": "Finished",
           "unsupported": "Not supported",
           "failed": "Failed"
-        }
+        },
+        "stepDetails": {
+          "saved": "New: %{added} · Removed: %{removed}",
+          "prices": "%{done} of %{total}",
+          "pricesPending": "For the pledges new since the last sync",
+          "read": "Pages read: %{page} · Buy-back pledges: %{count}"
+        },
+        "firstSyncTitle": "The first sync takes longer",
+        "updateExtensionTitle": "Update the sync extension",
+        "finishedTitle": "Buy-back pledges synced",
+        "runningTitle": "Syncing buy-back pledges",
+        "pledges": "Buy-back pledges"
       },
       "syncExtension": {
         "warnings": "Warnings",
@@ -2888,16 +2908,13 @@
         "backgroundFailed": "Hangar sync failed",
         "backgroundCancelled": "Hangar sync cancelled",
         "status": {
-          "started": "Import Started...",
-          "finished": "Import Finished",
           "failed": "Import Failed!",
           "cancelled": "Import Cancelled"
         },
         "processSteps": {
-          "fetchHangar": "Fetching Data from the RSI Hangar",
-          "submitData": "Submitting Data to the Fleetyards.net Backend"
+          "fetchHangar": "Reading your RSI hangar",
+          "submitData": "Saving to Fleetyards"
         },
-        "sessionStatus": "RSI Session status",
         "signedInAs": "Signed in to RSI as %{handle}",
         "signInToRsi": "Sign in to RSI",
         "checkIdentity": "Check RSI Session",
@@ -2937,19 +2954,17 @@
         },
         "pledgeItems": {
           "pages": "Pages",
-          "all": "All Pledge Items",
-          "ships": "Ships",
-          "components": "Modules",
-          "upgrades": "Upgrades",
           "paints": "Paints",
           "hangarFlair": "Hangar Flair",
           "paintsNotSynced": "Paints (not synced)",
-          "hangarFlairNotSynced": "Hangar Flair (not synced)",
+          "hangarFlairNotSynced": "Hangar flair (not synced)",
           "equipment": "FPS Gear",
           "ccus": "Upgrades / CCUs",
           "ccusNotSynced": "CCUs (not synced)",
-          "equipmentNotSynced": "FPS Gear (not synced)",
-          "extras": "Other Items (sorted into flair and FPS gear)"
+          "equipmentNotSynced": "FPS gear (not synced)",
+          "extras": "Other",
+          "shipComponents": "Ship components",
+          "shipComponentsNotSynced": "Ship components (not synced)"
         },
         "importedItems": {
           "importedVehicles": "Added Ships",
@@ -2972,7 +2987,79 @@
           "missingUpgrades": "Upgrades not found",
           "missingUpgradeVehicles": "No matching Ship found for Upgrades"
         },
-        "incomplete": "Some items in your RSI hangar could not be read, so ships missing from it were left as they are this time."
+        "incomplete": "Some items in your RSI hangar could not be read, so ships missing from it were left as they are this time.",
+        "stepDetails": {
+          "read": "Pages read: %{pages} · Pledge items: %{count}",
+          "saving": "Matching your pledges to your hangar…",
+          "page": "Page %{page}",
+          "pageOf": "Page %{page} of %{total}",
+          "sending": {
+            "one": "Sending %{count} item",
+            "other": "Sending %{count} items"
+          },
+          "sent": {
+            "one": "Sent %{count} item",
+            "other": "Sent %{count} items"
+          },
+          "pageOfAbout": "Page %{page} of about %{total}"
+        },
+        "unmatchedCount": {
+          "one": "1 item could not be matched",
+          "other": "%{count} items could not be matched"
+        },
+        "unmatchedHeading": "Could not be matched",
+        "failedStep": {
+          "fetchHangar": "Reading your RSI hangar failed",
+          "submitData": "Saving to Fleetyards failed"
+        },
+        "whatToSync": "What to sync",
+        "unmatchedActionLabel": "What happens to them",
+        "notSyncing": "Not syncing",
+        "targetGroupHint": "Every ship the sync finds or adds is filed into this group, on top of any groups it is already in.",
+        "extensionNeededTitle": "Add the sync extension",
+        "finishedTitle": "Hangar synced",
+        "failedTitle": "The sync did not finish",
+        "savedAsYouChange": "Saved as you change them",
+        "resultKinds": {
+          "ships": "Ships",
+          "components": "Modules",
+          "upgrades": "Upgrades",
+          "paints": "Paints",
+          "hangarFlair": "Hangar flair",
+          "equipment": "FPS gear",
+          "ccus": "CCUs",
+          "shipComponents": "Ship components"
+        },
+        "newCount": {
+          "one": "+1 new",
+          "other": "+%{count} new"
+        },
+        "resultActions": {
+          "movedVehiclesToWanted": "Moved to the wishlist",
+          "deletedVehicles": "Deleted",
+          "groupedVehicles": "Filed into a group",
+          "unchangedVehicles": "Left unchanged"
+        },
+        "nothingChangedTitle": "Nothing changed",
+        "stepStatus": {
+          "pending": "Not started",
+          "active": "In progress",
+          "done": "Done",
+          "failed": "Failed",
+          "warning": "Done with warnings"
+        },
+        "lastSync": {
+          "of": "of %{count}",
+          "ofLong": "%{count} in the last sync",
+          "more": "%{count} more than the last sync",
+          "fewer": "%{count} fewer than the last sync",
+          "same": "As many as the last sync",
+          "reading": "%{count} of about %{total} items"
+        },
+        "viewImport": "View this sync's import",
+        "lastSynced": "Last synced",
+        "syncShipComponents": "Sync ship components",
+        "syncShipComponentsHint": "Replaces your ship components (coolers, power plants, weapons, …) with those in your RSI hangar. Off keeps stored ship components unchanged."
       },
       "cargoGridViewer": {
         "capacity": "Capacity",
@@ -3357,10 +3444,6 @@
           "showStock": "Show stock values",
           "edit": "Record how it was crafted",
           "summary": "Crafted %{grades}",
-          "clear": "Not crafted",
-          "blueprint": "Recipe",
-          "hint": "The recipe %{name} was crafted from, and the quality of the material that went into each slot.",
-          "slot": "Slot %{position}",
           "lot": "Crafted",
           "grade": "Q %{quality}",
           "slotGrade": "Slot %{position}: %{quality}"
@@ -4188,6 +4271,12 @@
         "friend": "Friends"
       },
       "blueprint": {
+        "anyGrade": "Any grade",
+        "crafter": {
+          "title": "Craft · %{name}",
+          "recipe": "Recipe %{number}",
+          "noRecipe": "No recipe for this item in the current build."
+        },
         "name": "Name",
         "craftTime": "Craft time",
         "slots": "Slots",
@@ -4450,6 +4539,8 @@
           }
         },
         "againstStock": "Changes from the stock ship",
+        "crafted": "Crafted",
+        "craftedPart": "%{name} (crafted)",
         "fitted": "Fitted",
         "owned": "Owned",
         "noSlots": "Nothing on this ship can be fitted here yet",

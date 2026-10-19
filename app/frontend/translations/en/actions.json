@@ -48,7 +48,6 @@
       "resolve": "Resolve",
       "sortBy": "Sort by",
       "back": "Back",
-      "apply": "Apply",
       "open": "Open",
       "copy": "Copy",
       "download": "Download",
@@ -141,6 +140,9 @@
       "hideStatusColor": "Hide Status as Color",
       "addToHangar": "Add to Hangar",
       "blueprint": {
+        "apply": "Apply",
+        "discard": "Discard",
+        "removeCrafting": "Remove crafting",
         "own": "Mark as owned",
         "unown": "Remove owned mark"
       },
@@ -247,12 +249,15 @@
       "syncExtension": {
         "cancel": "Cancel",
         "start": "Start Sync",
-        "changeInSettings": "Change this in Settings",
         "retry": "Retry Sync",
         "runInBackground": "Continue in background",
         "showResult": "Show Result",
         "close": "Close",
-        "refresh": "Refresh Page"
+        "refresh": "Refresh Page",
+        "checkAgain": "Check again",
+        "addExtension": "Add",
+        "updateExtension": "Update",
+        "change": "Change"
       },
       "empty": {
         "hangarGuide": "Take the tour",
@@ -600,6 +605,7 @@
         "showPublic": "Captain's Log"
       },
       "vehicleLoadout": {
+        "craft": "Craft",
         "swapModule": "Swap module",
         "removeModule": "Remove module",
         "editLoadout": "Edit loadout",
@@ -612,6 +618,14 @@
         "linkInstead": "Link a build instead",
         "createOnFleetyards": "Create a loadout on Fleetyards",
         "viewLoadout": "View loadout"
+      },
+      "hangarPledgeItems": {
+        "addToInventory": "Add to inventory",
+        "addCount": {
+          "one": "Add %{count} item",
+          "other": "Add %{count} items"
+        },
+        "createInventory": "Create an inventory"
       }
     }
   }

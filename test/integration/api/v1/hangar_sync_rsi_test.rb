@@ -137,7 +137,7 @@ class Api::V1::HangarSyncRsiTest < ActionDispatch::IntegrationTest
     sign_in user
 
     body = {items: [{id: "1", name: "Constellation Andromeda", type: "ship"}], syncPaints: false, syncHangarFlair: false,
-            syncEquipment: true, syncCcus: true}
+            syncEquipment: true, syncCcus: true, syncShipComponents: true}
     assert_api_response :put, 200, body: body
 
     import = Imports::HangarSync.find_by(user_id: user.id)
@@ -145,6 +145,7 @@ class Api::V1::HangarSyncRsiTest < ActionDispatch::IntegrationTest
     refute_predicate import, :sync_hangar_flair?
     assert_predicate import, :sync_equipment?
     assert_predicate import, :sync_ccus?
+    assert_predicate import, :sync_ship_components?
   end
 
   test "PUT /hangar/sync-rsi-hangar leaves paints and hangar flair alone when the flags are absent" do
@@ -159,6 +160,7 @@ class Api::V1::HangarSyncRsiTest < ActionDispatch::IntegrationTest
     refute_predicate import, :sync_hangar_flair?
     refute_predicate import, :sync_equipment?
     refute_predicate import, :sync_ccus?
+    refute_predicate import, :sync_ship_components?
   end
 
   test "PUT /hangar/sync-rsi-hangar records what to do with the ships it does not find" do

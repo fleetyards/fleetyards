@@ -13,9 +13,9 @@
 # `base * modifier` well defined rather than a guess.
 #
 # Only keys that resolve to a figure we actually store appear below. The rest
-# -- component health, weapon recoil, quantum fuel burn, hull scraping -- have
-# no counterpart in the catalogue, and the page keeps showing their factor
-# rather than inventing a number to multiply.
+# -- weapon recoil, quantum fuel burn, hull scraping -- have no counterpart in
+# the catalogue, and the page keeps showing their factor rather than inventing
+# a number to multiply.
 class BlueprintStatBases
   EQUIPMENT = {
     "gpp_armor_damagemitigation" => :damage_reduction,
@@ -25,6 +25,8 @@ class BlueprintStatBases
 
   COMPONENT = {
     "gpp_itemresource_coolantgeneration" => "cooling_rate",
+    # Additive: the pips a crafted power plant gains or loses on this.
+    "gpp_itemresource_powergeneration" => "power_base",
     "gpp_shield_maxhealth" => "max_health",
     "gpp_radar_minaimassistdistance" => "aim_assist_min",
     "gpp_radar_maxaimassistdistance" => "aim_assist_range",
@@ -37,6 +39,10 @@ class BlueprintStatBases
   # Armour states its band as one rendered string rather than as two columns.
   # 15 of the 850 omit the degree sign, so it is optional here.
   TEMPERATURE = /\A\s*(-?[\d.]+)\s*\/\s*(-?[\d.]+)\s*°?\s*C\s*\z/
+
+  # A component's integrity is its hit points, which sit with the rest of what
+  # it takes to destroy it rather than in its type's own figures.
+  COMPONENT_HEALTH = "gpp_health_maxhealth"
 
   # A weapon's damage is split across the types it deals, almost always with
   # one of them carrying the whole figure.
@@ -78,6 +84,8 @@ class BlueprintStatBases
   end
 
   def component_value(property_key)
+    return numeric(craftable.durability.to_h.with_indifferent_access[:health]) if property_key == COMPONENT_HEALTH
+
     data = craftable.type_data
     return if data.blank?
 

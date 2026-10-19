@@ -224,6 +224,11 @@ module ScData
       # How good the material has to be, and what it buys. Each modifier ramps
       # one stat over quality 0 to 1000; a record may carry several ranges for
       # one stat, so they are flattened into one list rather than nested.
+      #
+      # A scaling ramp states a factor (`modifierAtStart`); an additive one, a
+      # whole amount added to the stat (`additiveModifierAtStart`) -- the pips a
+      # crafted power plant gains or loses. Both land in the same two columns,
+      # and `ramp` says which of the two they are.
       private def modifiers(slot)
         Array.wrap(slot.dig(*MODIFIER_PATH)).flat_map { |modifier|
           ref = value_or_nil(modifier["gameplayPropertyRecord"])
@@ -247,8 +252,8 @@ module ScData
                   unit_format: property[:unit_format],
                   start_quality: range["startQuality"]&.to_i,
                   end_quality: range["endQuality"]&.to_i,
-                  modifier_at_start: range["modifierAtStart"]&.to_f,
-                  modifier_at_end: range["modifierAtEnd"]&.to_f
+                  modifier_at_start: (range["modifierAtStart"] || range["additiveModifierAtStart"])&.to_f,
+                  modifier_at_end: (range["modifierAtEnd"] || range["additiveModifierAtEnd"])&.to_f
                 }
               end
             end

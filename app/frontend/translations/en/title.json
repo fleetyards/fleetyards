@@ -56,7 +56,8 @@
         "imports": "Imports",
         "transfers": "Transfers",
         "vehicleOverview": "Vehicle Overview",
-        "vehicleLog": "Captain's Log"
+        "vehicleLog": "Captain's Log",
+        "shipComponents": "Ship Components"
       },
       "requestPassword": "Request Password",
       "changePassword": "Change Password",

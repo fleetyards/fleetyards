@@ -252,6 +252,7 @@
         "flair": "Hangar-Flair",
         "upgrades": "Upgrades / CCUs",
         "equipment": "FPS-Ausrüstung",
+        "shipComponents": "Schiffskomponenten",
         "imports": "Importe"
       },
       "buybackSync": "RSI-Rückkauf-Pledges synchronisieren",

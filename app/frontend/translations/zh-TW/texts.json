@@ -331,7 +331,13 @@
         "detailsUnsupported": "請更新你的 Fleetyards Sync 擴充功能，以便同時讀取價格和保險。",
         "detailsIncomplete": "部分價格無法從 RSI 讀取。下次同步時會再試一次。",
         "detailsBackground": "價格和保險現在在背景讀取。你可以關閉此視窗並繼續使用 Fleetyards；在完成之前請保持此分頁開啟。",
-        "detailsRunning": "上次同步的價格和保險仍在讀取中。完成後才能開始新的同步。"
+        "detailsRunning": "上次同步的價格和保險仍在讀取中。完成後才能開始新的同步。",
+        "sessionHint": "同步會透過此工作階段讀取你的回購清單。",
+        "pointReplace": "讀取你的 RSI 回購清單的每一頁，並用它取代這裡儲存的可回購承諾。",
+        "pointUntouched": "你的機庫不會被變更。",
+        "pointBackground": "在背景執行：你可以關閉此視窗，只需保持分頁開啟。",
+        "finished": "你的可回購承諾與 RSI 清單一致。",
+        "keepsRunning": "關閉此視窗後它仍會繼續執行。請保持分頁開啟，直到完成。"
       },
       "addToHangar": {
         "hangarHint": "你擁有這艘飛船。",
@@ -342,10 +348,16 @@
       },
       "syncExtension": {
         "gettingStarted": "To sync your RSI Hangar with Fleetyards you first need to install the Fleetyards Sync Extension for Firefox or Chromium based Browsers.",
-        "info": "We will try to match the ships from your RSI Hangar with your existing ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar.<br><br>Do you want to continue?",
         "alreadyRunning": "機庫同步已在進行中。請等待完成。",
         "missingUnmatchedGroup": "開始前，請選擇用於歸檔同步找不到的飛船的群組。",
-        "notSyncing": "不同步："
+        "signedOutTitle": "你尚未登入 RSI",
+        "signedOut": "請在此瀏覽器中登入 RSI 網站，然後再檢查一次。",
+        "sessionHint": "同步會透過此工作階段讀取你的承諾。",
+        "finished": "你的機庫與 RSI 承諾一致，所有內容皆已比對。",
+        "unmatched": "其餘內容皆已同步。下方列出的內容都沒有加入你的機庫。",
+        "partialFailure": "部分變更可能已寫入你的機庫。重試是安全的：已同步的艦船會重新比對，不會重複加入。",
+        "pointMatch": "依名稱和承諾 ID，找出你 RSI 機庫中已在這裡的艦船。",
+        "pointAdd": "加入尚未在這裡的艦船。"
       },
       "setEmail": "要設定密碼、啟用雙重認證或接收郵件通知，您需要為帳戶添加電子郵件地址。您將收到一封確認郵件來驗證該地址。",
       "oauthApplications": {
@@ -403,6 +415,13 @@
       },
       "model": {
         "sectionEmpty": "%{model} 沒有任何%{section}。"
+      },
+      "hangarPledgeItems": {
+        "addToInventory": "每項按其禮包所含數量加入。",
+        "alreadyInInventory": {
+          "other": "%{count} 項已在庫存中，保持不變。"
+        },
+        "noInventories": "你還沒有庫存。請先建立一個，再加入物品。"
       }
     }
   }

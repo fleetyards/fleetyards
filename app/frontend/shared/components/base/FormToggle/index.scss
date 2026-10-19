@@ -159,3 +159,46 @@
   align-self: center;
   margin-left: 8px;
 }
+
+.form-toggle__description {
+  width: 100%;
+  margin: 2px 0 0;
+  padding-left: 54px;
+  color: var(--color-text-dim, #959595);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+/*
+ * The label and its description in one column, the switch at the row's end,
+ * centred on both lines. The switch is placed against the whole control, not
+ * the label, so it stays centred however many lines the description takes;
+ * the label keeps its box, so a click anywhere on it still toggles.
+ */
+.form-toggle--switch-end {
+  position: relative;
+  // Room for the switch, so neither the label line nor the description runs
+  // under it.
+  padding-right: 60px;
+
+  // Grows to fill the line beside the saved indicator, so the indicator no
+  // longer wraps below and moves the centred switch. A half-width basis still
+  // pushes the full-width description onto a line of its own.
+  input + label {
+    position: static;
+    flex: 1 1 50%;
+    min-width: 0;
+  }
+
+  input + label .form-toggle-switch {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+  }
+
+  .form-toggle__description {
+    order: 1;
+    padding-left: 0;
+  }
+}

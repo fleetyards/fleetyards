@@ -33,6 +33,7 @@ class HangarSync < HangarImporter
     synced_hangar_flair
     synced_equipment
     synced_ccus
+    synced_ship_components
   ].freeze
 
   WARNING_KEYS = %i[
@@ -50,7 +51,9 @@ class HangarSync < HangarImporter
   def initialize(data)
     @data = data.map { |item| item.deep_transform_keys { |key| key.to_s.underscore.to_sym } }
     @ships = @data.select { |item| item[:type] == "ship" }
-    @components = @data.select { |item| item[:type] == "component" }
+    # Ship parts are listed as components too; those are pledge items, and only
+    # the modules are fitted to a ship here.
+    @components = @data.select { |item| item[:type] == "component" && ::HangarModuleMapping.module?(item[:name]) }
     @upgrades = @data.select { |item| item[:type] == "upgrade" }
   end
 
@@ -173,7 +176,8 @@ class HangarSync < HangarImporter
       synced_paints: pledge_items.fetch("paint", []),
       synced_hangar_flair: pledge_items.fetch("flair", []),
       synced_equipment: pledge_items.fetch("equipment", []),
-      synced_ccus: pledge_items.fetch("ccu", [])
+      synced_ccus: pledge_items.fetch("ccu", []),
+      synced_ship_components: pledge_items.fetch("ship_component", [])
     }
   end
 
@@ -477,11 +481,14 @@ class HangarSync < HangarImporter
     @components.each_with_index do |item, index|
       break if stop_requested?(index)
 
+      # A module the mapping does not know, or whose ship is not in the
+      # catalogue, could not be matched: said so rather than dropped.
       mapped = component_mapping(item[:name])
-      next if mapped.blank?
-
-      model = Model.where(name: mapped[:model_names]).first
-      next if model.blank?
+      model = Model.where(name: mapped[:model_names]).first if mapped.present?
+      if model.blank?
+        missing_components << item[:name]
+        next
+      end
 
       component_query = generate_module_query(mapped[:module_name])
       component = model.modules.where(component_query).first
@@ -705,6 +712,7 @@ class HangarSync < HangarImporter
     kinds << "flair" if @import.nil? || @import.sync_hangar_flair?
     kinds << "ccu" if @import.nil? || @import.sync_ccus?
     kinds << "equipment" if @import.nil? || @import.sync_equipment?
+    kinds << "ship_component" if @import.nil? || @import.sync_ship_components?
     kinds
   end
 

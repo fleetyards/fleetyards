@@ -51,17 +51,25 @@ type Props = {
   fitting?: Hardpoint[];
   // The ids of the fitting's hardpoints that differ from the stock ship.
   changed?: Set<string>;
+  // The ids of the fitting's hardpoints holding a crafted part.
+  crafted?: Set<string>;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   cargoHolds: () => [],
   fitting: undefined,
   changed: undefined,
+  crafted: undefined,
 });
 
 provide(
   "hardpointsChanged",
   computed(() => props.changed),
+);
+
+provide(
+  "hardpointsCrafted",
+  computed(() => props.crafted),
 );
 
 provide(

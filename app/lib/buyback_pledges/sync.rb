@@ -17,6 +17,9 @@ module BuybackPledges
 
     attr_reader :user, :items
 
+    # The names behind the counts, for the run's import to list. Set by `run`.
+    attr_reader :added_names, :removed_names
+
     def initialize(user, items)
       @user = user
       @items = items.map { |item| item.to_h.deep_transform_keys { |key| key.to_s.underscore.to_sym } }
@@ -30,7 +33,11 @@ module BuybackPledges
       # their own list before either inserted, and leave the union of both.
       user.with_lock do
         existing_ids = user.buyback_pledges.pluck(:rsi_pledge_id)
-        removed = user.buyback_pledges.where.not(rsi_pledge_id: pledge_ids).delete_all
+        leaving = user.buyback_pledges.where.not(rsi_pledge_id: pledge_ids)
+        @removed_names = leaving.pluck(:name).sort
+        removed = leaving.delete_all
+        stored = existing_ids.to_set
+        @added_names = rows.reject { |row| stored.include?(row[:rsi_pledge_id]) }.pluck(:name).sort
 
         # One `upsert_all` per set of columns, since it writes every column it
         # is given: rows without availability must leave the stored one alone.

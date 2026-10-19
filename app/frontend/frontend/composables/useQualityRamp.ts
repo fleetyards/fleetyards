@@ -1,4 +1,7 @@
-import { type BlueprintCostModifier } from "@/services/fyApi";
+import {
+  type BlueprintCostModifier,
+  BlueprintRampEnum,
+} from "@/services/fyApi";
 
 export type Segment = {
   from: number;
@@ -110,6 +113,21 @@ export const valueAt = (segments: Segment[], at: number) => {
   return segments[segments.length - 1].b;
 };
 
+/**
+ * Whether a stat's ramp adds a whole amount -- the pips a crafted power plant
+ * gains or loses -- rather than scaling it. Every range of one stat ramps the
+ * same way.
+ */
+export const isAdditive = (modifiers: BlueprintCostModifier[]) =>
+  modifiers[0]?.ramp === BlueprintRampEnum.LINEAR_INTEGER_ADDITIVE;
+
+/** What an additive ramp adds at one quality, in whole units as the game does. */
+export const amountAt = (segments: Segment[], at: number) =>
+  Math.round(valueAt(segments, at));
+
+export const signed = (value: number) =>
+  `${value > 0 ? "+" : ""}${formatNumber(value)}`;
+
 /** Modifiers grouped by the stat they move, in the order they first appear. */
 export const byStat = (modifiers: BlueprintCostModifier[]) => {
   const groups = new Map<string, BlueprintCostModifier[]>();
@@ -180,35 +198,44 @@ export const useQualityRamp = (
 
       const segments = segmentsOf(group);
 
-      // A stat the game names and gives no figures for. 598 modifiers are in
-      // exactly that position, and they are not an error.
+      // A stat the game names and gives no figures for, which is not an
+      // error.
       if (!segments.length) {
         return { key, name, plotted: false };
       }
 
       const { points, x, y, from, to } = shape(segments);
-      const now = valueAt(segments, at);
-      const factor = `${now.toFixed(3)}×`;
+      const additive = isAdditive(group);
+      const now = additive ? amountAt(segments, at) : valueAt(segments, at);
+      const factor = additive ? signed(now) : `${now.toFixed(3)}×`;
 
       // 2,060 of the build's modifiers move a stat the catalogue holds no
-      // figure for -- component health, weapon recoil, quantum fuel burn --
-      // and there the multiplier is the whole answer.
+      // figure for -- weapon recoil, quantum fuel burn -- and there the
+      // multiplier, or the amount added, is the whole answer.
       const hasBase = base !== undefined && base !== null;
-      const shift = (now - 1) * 100;
+      const shift = additive ? now : (now - 1) * 100;
       const direction = segments[segments.length - 1].b - segments[0].a;
+      const first = segments[0].a;
+      const last = segments[segments.length - 1].b;
 
       return {
         key,
         name,
         plotted: true,
-        headline: hasBase ? withUnit(base * now, unit) : factor,
+        headline: hasBase
+          ? withUnit(additive ? base + now : base * now, unit)
+          : factor,
         base: hasBase ? withUnit(base, unit) : undefined,
-        delta: `${shift > 0 ? "+" : ""}${shift.toFixed(1)}%`,
+        delta: additive
+          ? signed(now)
+          : `${shift > 0 ? "+" : ""}${shift.toFixed(1)}%`,
         trend: trendOf(shift, direction),
         factor,
         // The domain comes off the segments. Claiming Q0–1000 for a stat that
         // only starts at 500 would state a range the files do not.
-        span: `${segments[0].a.toFixed(2)}× → ${segments[segments.length - 1].b.toFixed(2)}×`,
+        span: additive
+          ? `${signed(first)} → ${signed(last)}`
+          : `${first.toFixed(2)}× → ${last.toFixed(2)}×`,
         domain: `Q${from}–${to}`,
         showFactor: hasBase,
         points,

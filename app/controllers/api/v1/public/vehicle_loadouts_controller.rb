@@ -7,6 +7,7 @@ module Api
       # its page: the loadout, and its fitting slot by slot.
       class VehicleLoadoutsController < ::Api::PublicBaseController
         include PublicHangarOwnerConcern
+        include CraftableComponentsConcern
 
         before_action :set_vehicle_loadout
 

@@ -8,6 +8,7 @@ import {
   useComponentFitting,
 } from "@/frontend/composables/useComponentFitting";
 import { useLoadoutDiff } from "@/frontend/composables/useLoadoutDiff";
+import { useCraftedRecipes } from "@/frontend/composables/useCraftedRecipes";
 import {
   type Hardpoint,
   HardpointSourceEnum,
@@ -19,7 +20,10 @@ import {
   useModelModules,
 } from "@/services/fyApi";
 
-type Item = Pick<VehicleLoadoutItem, "slotPath" | "itemType" | "itemId">;
+type Item = Pick<
+  VehicleLoadoutItem,
+  "slotPath" | "itemType" | "itemId" | "crafted"
+>;
 
 type FittedModel = {
   slug: string;
@@ -90,11 +94,19 @@ export const useLoadoutFitting = ({
 
   const values = computed(() => loadoutValues(toValue(items)));
 
+  const { loading: recipesLoading } = useCraftedRecipes(fitting, () =>
+    Object.values(values.value.crafted),
+  );
+
   const tree = computed(() =>
-    fitting.resolve(hullSlots.value ?? [], {
-      ...values.value.modules,
-      ...values.value.components,
-    }),
+    fitting.resolve(
+      hullSlots.value ?? [],
+      {
+        ...values.value.modules,
+        ...values.value.components,
+      },
+      values.value.crafted,
+    ),
   );
 
   const hardpoints = computed(() =>
@@ -121,9 +133,11 @@ export const useLoadoutFitting = ({
   });
 
   // The ids of every hardpoint the loadout fits differently from the stock
-  // ship: a part swapped in or taken out, another module.
+  // ship -- a part swapped in, crafted or taken out, another module -- and of
+  // those holding a crafted part.
   const changed = computed(() => {
     const marked = new Set<string>();
+    const crafted = new Set<string>();
 
     const walk = (
       list: Hardpoint[],
@@ -135,14 +149,16 @@ export const useLoadoutFitting = ({
         if (!entry) return;
 
         const was = stock.find((slot) => slot.slot.name === hardpoint.name);
-        if (entry.content?.id !== was?.content?.id) marked.add(hardpoint.id);
+        if (entry.content?.id !== was?.content?.id || entry.crafted)
+          marked.add(hardpoint.id);
+        if (entry.crafted) crafted.add(hardpoint.id);
 
         walk(hardpoint.hardpoints ?? [], entry.children, was?.children ?? []);
       });
 
     walk(hardpoints.value ?? [], tree.value, stockTree.value);
 
-    return marked;
+    return { marked, crafted };
   });
 
   const loadoutDiff = useLoadoutDiff(fitting);
@@ -169,7 +185,10 @@ export const useLoadoutFitting = ({
   // Whether what the fitting is measured from is still on its way.
   const loading = computed(
     () =>
-      hullSlotsLoading.value || hardpointsLoading.value || modulesLoading.value,
+      hullSlotsLoading.value ||
+      hardpointsLoading.value ||
+      modulesLoading.value ||
+      recipesLoading.value,
   );
 
   return {
@@ -181,7 +200,8 @@ export const useLoadoutFitting = ({
     modelModules,
     tree,
     hardpoints,
-    changed,
+    changed: computed(() => changed.value.marked),
+    crafted: computed(() => changed.value.crafted),
     changesFromStock,
   };
 };

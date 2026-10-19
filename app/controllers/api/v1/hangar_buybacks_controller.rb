@@ -11,7 +11,7 @@ module Api
         only: %i[index insurance_terms]
       before_action -> { doorkeeper_authorize! "hangar", "hangar:write" },
         unless: :user_signed_in?,
-        only: %i[sync sync_details destroy]
+        only: %i[sync sync_details sync_last_read destroy]
 
       def index
         authorize! with: ::BuybackPledgePolicy
@@ -53,9 +53,30 @@ module Api
           return
         end
 
-        render json: ::BuybackPledges::Sync.new(current_resource_owner, sync_params.fetch(:items, [])).run
+        import, result = ::Imports::BuybackSync.record!(current_resource_owner, sync_params.fetch(:items, []))
+
+        render json: result.merge(importId: import.id)
       rescue ::BuybackPledges::Sync::InvalidSnapshot
         render json: ValidationError.new("buyback_pledges.sync"), status: :bad_request
+      end
+
+      # What the last finished sync read, for a new one to be measured against.
+      # Before a first recorded sync, the stored list is what an earlier one
+      # left, so its size stands in.
+      def sync_last_read
+        authorize! with: ::BuybackPledgePolicy
+
+        last_import = ::Imports::BuybackSync.where(user_id: current_resource_owner.id, aasm_state: "finished")
+          .order(finished_at: :desc)
+          .first
+
+        summary = last_import&.read_summary || {
+          finished_at: nil,
+          pages: nil,
+          total: authorized_scope(BuybackPledge.all).count
+        }
+
+        render json: summary.transform_keys { |key| key.to_s.camelize(:lower) }
       end
 
       def sync_details

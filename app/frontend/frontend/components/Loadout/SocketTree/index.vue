@@ -14,19 +14,28 @@ import { useI18n } from "@/shared/composables/useI18n";
 type Props = {
   slots: LoadoutSocketSlot[];
   active?: string;
+  // The socket whose part is being crafted.
+  crafting?: string;
   editable?: boolean;
   nested?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   active: undefined,
+  crafting: undefined,
   editable: false,
   nested: false,
 });
 
 const emit = defineEmits<{
   select: [slotId: string];
+  craft: [slotId: string];
 }>();
+
+// A part a recipe makes can be crafted wherever it sits, a slot the ship locks
+// included: what it holds there is still made by somebody.
+const craftable = (socket: LoadoutSocketSlot) =>
+  props.editable && !!socket.item?.craftable;
 
 const { t } = useI18n();
 
@@ -49,9 +58,12 @@ const contains = (socket: LoadoutSocketSlot, id: string): boolean =>
   ) ||
   (socket.stack ?? []).some((slot) => slot.id === id || contains(slot, id));
 
-// The socket being filled stays in sight, whichever way its parent was folded.
+// The socket being filled or crafted stays in sight, whichever way its parent
+// was folded.
+const open = computed(() => props.active ?? props.crafting);
+
 const expanded = (socket: LoadoutSocketSlot) =>
-  (!!props.active && contains(socket, props.active)) ||
+  (!!open.value && contains(socket, open.value)) ||
   (toggled.value[socket.id] ?? !folded.value);
 
 const toggle = (socket: LoadoutSocketSlot) => {
@@ -61,7 +73,7 @@ const toggle = (socket: LoadoutSocketSlot) => {
 const isSplit = (socket: LoadoutSocketSlot) =>
   !!socket.stack?.length &&
   (split.value[socket.id] ||
-    socket.stack.some((slot) => slot.id === props.active));
+    socket.stack.some((slot) => slot.id === open.value));
 
 const toggleSplit = (socket: LoadoutSocketSlot) => {
   split.value = { ...split.value, [socket.id]: !split.value[socket.id] };
@@ -88,8 +100,9 @@ const groupOf = (row: LoadoutSocketSlot) =>
         :editable="editable && !socket.locked"
         @select="emit('select', socket.id)"
       >
-        <template v-if="socket.children?.length" #actions>
+        <template v-if="socket.children?.length || craftable(socket)" #actions>
           <button
+            v-if="socket.children?.length"
             type="button"
             class="loadout-socket-tree__toggle"
             :aria-expanded="expanded(socket)"
@@ -104,6 +117,24 @@ const groupOf = (row: LoadoutSocketSlot) =>
               :class="expanded(socket) ? 'fa-chevron-up' : 'fa-chevron-down'"
               aria-hidden="true"
             />
+          </button>
+          <!-- The fold control's place, so the craft control sits at the same
+            height on every row. -->
+          <span v-else class="loadout-socket-tree__space" aria-hidden="true" />
+          <button
+            v-if="craftable(socket)"
+            type="button"
+            class="loadout-socket-tree__toggle"
+            :class="{
+              'loadout-socket-tree__toggle--active': socket.id === crafting,
+            }"
+            v-tooltip="t('actions.vehicleLoadout.craft')"
+            :aria-label="t('actions.vehicleLoadout.craft')"
+            :aria-pressed="socket.id === crafting"
+            :data-test="`loadout-socket-craft-${socket.id}`"
+            @click.stop="emit('craft', socket.id)"
+          >
+            <i class="fa-solid fa-hammer" aria-hidden="true" />
           </button>
         </template>
         <template v-if="socket.stack?.length || groupOf(socket)" #stack>
@@ -129,9 +160,11 @@ const groupOf = (row: LoadoutSocketSlot) =>
             <LoadoutSocketTree
               :slots="socket.children"
               :active="active"
+              :crafting="crafting"
               :editable="editable"
               nested
               @select="(id) => emit('select', id)"
+              @craft="(id) => emit('craft', id)"
             >
               <template v-if="$slots.active" #active>
                 <slot name="active" />
@@ -145,7 +178,11 @@ const groupOf = (row: LoadoutSocketSlot) =>
       <!-- A press inside the picker is the picker's: under a nested socket it
            sits inside the parent's row, which would take the click as its own. -->
       <div
-        v-if="editable && socket.id === active && $slots.active"
+        v-if="
+          editable &&
+          (socket.id === active || socket.id === crafting) &&
+          $slots.active
+        "
         class="loadout-socket-tree__active"
         data-test="loadout-socket-board-active"
         @click.stop
@@ -168,6 +205,12 @@ const groupOf = (row: LoadoutSocketSlot) =>
 
 // The ship page's row control: a fixed square in the row's rail, so it sits in
 // the same place on every row.
+.loadout-socket-tree__space {
+  flex: none;
+  width: 24px;
+  height: 24px;
+}
+
 .loadout-socket-tree__toggle {
   flex: none;
   display: flex;
@@ -195,6 +238,11 @@ const groupOf = (row: LoadoutSocketSlot) =>
     outline: 2px solid var(--color-primary, #428bca);
     outline-offset: 2px;
   }
+}
+
+.loadout-socket-tree__toggle--active {
+  color: $primary;
+  border-color: rgba($primary, 0.6);
 }
 
 // The rail the ship page's hardpoint list hangs a mount's contents on.

@@ -39,6 +39,41 @@ const componentOptions = ref<unknown[]>([]);
 const optionsStale = ref(false);
 let optionsParams: () => Record<string, unknown> = () => ({});
 const modelHardpoints = ref<unknown[]>([]);
+const recipes = ref<{ items: unknown[] }>({ items: [] });
+const RECIPE = {
+  id: "bp",
+  slug: "bp-gun",
+  costSlots: [
+    {
+      position: 0,
+      name: "Frame",
+      options: [],
+      modifiers: [
+        {
+          propertyKey: "gpp_health_maxhealth",
+          name: "Integrity",
+          ramp: "linear",
+          startQuality: 0,
+          endQuality: 1000,
+          modifierAtStart: 0.9,
+          modifierAtEnd: 1.1,
+          baseValue: 110,
+        },
+        {
+          propertyKey: "gpp_itemresource_coolantgeneration",
+          name: "Coolant Rating",
+          ramp: "linear",
+          startQuality: 0,
+          endQuality: 1000,
+          modifierAtStart: 0.8,
+          modifierAtEnd: 1.2,
+          baseValue: 100,
+        },
+      ],
+    },
+    { position: 1, name: "Barrel", options: [], modifiers: [] },
+  ],
+};
 
 const resolved = () => ({
   isPending: ref(false),
@@ -79,10 +114,23 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
       isPlaceholderData: optionsStale,
     };
   },
+  useBlueprints: () => ({ data: recipes, ...resolved() }),
+  useBlueprint: () => ({ data: ref(RECIPE), ...resolved() }),
+  getBlueprintQueryOptions: (slug: string) => ({
+    queryKey: ["blueprints", slug],
+    queryFn: () => Promise.resolve(RECIPE),
+  }),
   createVehicleLoadout: (...args: unknown[]) => createVehicleLoadout(...args),
   updateVehicleLoadout: (...args: unknown[]) => updateVehicleLoadout(...args),
   activateVehicleLoadout: (...args: unknown[]) =>
     activateVehicleLoadout(...args),
+}));
+
+vi.mock("@/frontend/composables/useMaterialStock", () => ({
+  useMaterialStock: () => ({
+    forCommodity: () => ({ own: [], fleet: [] }),
+  }),
+  useMaterialStockUpdates: () => undefined,
 }));
 
 vi.mock("@/frontend/composables/useVehicleMutations", () => ({
@@ -1301,6 +1349,265 @@ describe("VehicleLoadoutModal component tabs", () => {
         itemId: "gun2",
       },
     ]);
+  });
+
+  describe("crafting", () => {
+    const CRAFTABLE_GUN = { ...STOCK_GUN, craftable: true };
+
+    beforeEach(() => {
+      recipes.value = { items: [{ id: "bp", slug: "bp-gun" }] };
+      componentOptions.value = [
+        { component: CRAFTABLE_GUN, slots: [] },
+        { component: OTHER_GUN, slots: [] },
+      ];
+      hullSlots.value = [
+        {
+          name: "hardpoint_gun_nose",
+          hardpointId: "hull-nose",
+          category: "weapon_mounts",
+          minSize: 3,
+          maxSize: 3,
+          types: ["Turret"],
+          editable: true,
+          stock: STOCK_GIMBAL,
+          slots: [gunPort("hardpoint_class_2", CRAFTABLE_GUN)],
+        },
+      ];
+    });
+
+    afterEach(() => {
+      recipes.value = { items: [] };
+    });
+
+    const GUN = "hardpoint_gun_nose/hardpoint_class_2";
+
+    const craft = async (wrapper: Wrapper) => {
+      await wrapper
+        .get(`[data-test='loadout-socket-craft-${GUN}']`)
+        .trigger("click");
+      await flushPromises();
+    };
+
+    // Every recipe slot of the draft at one grade, through each slot's input.
+    const setQualities = async (wrapper: Wrapper, quality: number) => {
+      for (const input of wrapper.findAll(
+        "[data-test='blueprint-crafter-slots'] input[type='number']",
+      )) {
+        await input.setValue(String(quality));
+      }
+      await flushPromises();
+    };
+
+    const press = async (wrapper: Wrapper, testId: string) => {
+      await wrapper.get(`[data-test='${testId}']`).trigger("click");
+      await flushPromises();
+    };
+
+    it("offers crafting on a socket only for a part a recipe makes", async () => {
+      const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
+      await flushPromises();
+
+      expect(
+        wrapper.find(`[data-test='loadout-socket-craft-${GUN}']`).exists(),
+      ).toBe(true);
+      expect(
+        wrapper
+          .find("[data-test='loadout-socket-craft-hardpoint_gun_nose']")
+          .exists(),
+      ).toBe(false);
+    });
+
+    it("opens the crafter in the picker's place, and the socket's own press goes back to picking", async () => {
+      const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
+      await flushPromises();
+
+      await craft(wrapper);
+      expect(wrapper.find("[data-test='blueprint-crafter']").exists()).toBe(
+        true,
+      );
+      expect(wrapper.find("[data-test='loadout-picker']").exists()).toBe(false);
+
+      await socket(wrapper, GUN).trigger("click");
+      await flushPromises();
+      expect(wrapper.find("[data-test='blueprint-crafter']").exists()).toBe(
+        false,
+      );
+      expect(wrapper.find("[data-test='loadout-picker']").exists()).toBe(true);
+    });
+
+    it("saves the stock part as crafted, with a quality per recipe slot", async () => {
+      const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
+      await flushPromises();
+
+      await craft(wrapper);
+      await setQualities(wrapper, 750);
+
+      // Nothing reaches the loadout before Apply.
+      expect(socket(wrapper, GUN).text()).not.toContain(
+        "labels.vehicleLoadout.crafted",
+      );
+
+      await press(wrapper, "blueprint-crafter-apply");
+
+      expect(wrapper.find("[data-test='blueprint-crafter']").exists()).toBe(
+        false,
+      );
+      expect(socket(wrapper, GUN).text()).toContain(
+        "labels.vehicleLoadout.crafted",
+      );
+
+      await save(wrapper);
+
+      expect(savedItems()).toEqual([
+        {
+          slotPath: GUN,
+          itemType: "Component",
+          itemId: "gun1",
+          crafted: {
+            blueprintId: "bp",
+            // The second slot moves no stat, so it carries no grade.
+            qualities: [{ position: 0, quality: 750 }],
+          },
+        },
+      ]);
+    });
+
+    it("crafts a part that has two recipes from the one picked", async () => {
+      recipes.value = {
+        items: [
+          { id: "bp", slug: "bp-gun" },
+          { id: "bp2", slug: "bp-gun-2" },
+        ],
+      };
+      const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
+      await flushPromises();
+
+      await craft(wrapper);
+      await press(wrapper, "blueprint-crafter-recipe-bp2");
+      await press(wrapper, "blueprint-crafter-apply");
+      await save(wrapper);
+
+      expect(savedItems()).toEqual([
+        {
+          slotPath: GUN,
+          itemType: "Component",
+          itemId: "gun1",
+          crafted: {
+            blueprintId: "bp2",
+            qualities: [{ position: 0, quality: 500 }],
+          },
+        },
+      ]);
+    });
+
+    it("opens a part not crafted yet as crafted, and Discard leaves the loadout as it was", async () => {
+      const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
+      await flushPromises();
+
+      await craft(wrapper);
+      expect(
+        wrapper.findAll(
+          "[data-test='blueprint-crafter-slots'] .blueprint-slot",
+        ),
+      ).toHaveLength(2);
+      // The slots' ramps are the blueprint page's; the crafter lists the
+      // figures under the slots instead.
+      const slots = wrapper.get("[data-test='blueprint-crafter-slots']");
+      expect(slots.find(".blueprint-slot__stats").exists()).toBe(false);
+      expect(slots.find(".blueprint-slot__no-stats").exists()).toBe(false);
+      expect(slots.get("[data-test='blueprint-slot-moves']").text()).toBe(
+        "Integrity, Coolant Rating",
+      );
+      expect(
+        wrapper.find("[data-test='blueprint-crafter-remove']").exists(),
+      ).toBe(false);
+
+      await setQualities(wrapper, 1000);
+      await press(wrapper, "blueprint-crafter-discard");
+      await save(wrapper);
+
+      expect(savedItems()).toEqual([]);
+    });
+
+    it("lists every stat the recipe moves, those the loadout does not measure included", async () => {
+      const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
+      await flushPromises();
+
+      await craft(wrapper);
+      await setQualities(wrapper, 1000);
+
+      const stats = wrapper.get("[data-test='blueprint-crafter-stats']");
+      expect(
+        stats
+          .get("[data-test='blueprint-crafter-stat-gpp_health_maxhealth']")
+          .text(),
+      ).toContain("+10.0%");
+      expect(
+        stats
+          .get(
+            "[data-test='blueprint-crafter-stat-gpp_itemresource_coolantgeneration']",
+          )
+          .text(),
+      ).toContain("+20.0%");
+    });
+
+    it("stays open on a press elsewhere, and holds the save until applied or discarded", async () => {
+      const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
+      await flushPromises();
+
+      await craft(wrapper);
+      document.body.dispatchEvent(new PointerEvent("pointerdown"));
+      await flushPromises();
+
+      expect(wrapper.find("[data-test='blueprint-crafter']").exists()).toBe(
+        true,
+      );
+
+      await save(wrapper);
+      expect(savedItems()).toBeUndefined();
+
+      await press(wrapper, "blueprint-crafter-apply");
+      await save(wrapper);
+      expect(savedItems()).toHaveLength(1);
+    });
+
+    it("reopens a crafted part on its crafting, which Remove takes back", async () => {
+      const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
+      await flushPromises();
+
+      await craft(wrapper);
+      await setQualities(wrapper, 250);
+      await press(wrapper, "blueprint-crafter-apply");
+
+      await craft(wrapper);
+      expect(
+        wrapper.get(
+          "[data-test='blueprint-crafter-slots'] input[type='number']",
+        ).element,
+      ).toHaveProperty("value", "250");
+
+      await press(wrapper, "blueprint-crafter-remove");
+      expect(socket(wrapper, GUN).text()).not.toContain(
+        "labels.vehicleLoadout.crafted",
+      );
+
+      await save(wrapper);
+      expect(savedItems()).toEqual([]);
+    });
+
+    it("drops the crafting when another part is picked for the slot", async () => {
+      const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
+      await flushPromises();
+
+      await craft(wrapper);
+      await press(wrapper, "blueprint-crafter-apply");
+      await choose(wrapper, GUN, "Other Gun");
+      await save(wrapper);
+
+      expect(savedItems()).toEqual([
+        { slotPath: GUN, itemType: "Component", itemId: "gun2" },
+      ]);
+    });
   });
 
   it("a swapped mount brings its own empty ports and drops the old gun", async () => {

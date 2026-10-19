@@ -544,7 +544,7 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     ]}
 
     assert_api_response :put, 200, api_path: "/hangar/sync-rsi-buybacks", body: body do
-      assert_equal({"total" => 2, "added" => 2, "removed" => 0}, parsed_body.except("detailsPending"))
+      assert_equal({"total" => 2, "added" => 2, "removed" => 0}, parsed_body.except("detailsPending", "importId"))
       assert_equal %w[44725819], parsed_body["detailsPending"]
     end
 
@@ -599,11 +599,48 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     ]}
 
     assert_api_response :put, 200, api_path: "/hangar/sync-rsi-buybacks", body: body do
-      assert_equal({"total" => 2, "added" => 1, "removed" => 1}, parsed_body.except("detailsPending"))
+      assert_equal({"total" => 2, "added" => 1, "removed" => 1}, parsed_body.except("detailsPending", "importId"))
     end
 
     assert_equal %w[1 3], user.buyback_pledges.order(:rsi_pledge_id).pluck(:rsi_pledge_id)
     assert_equal "Standalone Ship - Cutlass Black", kept.reload.name
+  end
+
+  test "PUT /hangar/sync-rsi-buybacks records the run as an import" do
+    user = create(:user)
+    buyback(user, rsi_pledge_id: "2", name: "Standalone Ship - Aurora MR")
+    sign_in user
+
+    body = {items: [{id: "1", kind: "ship", name: "Standalone Ship - Cutlass Black", page: 1}]}
+
+    assert_api_response :put, 200, api_path: "/hangar/sync-rsi-buybacks", body: body do
+      import = Imports::BuybackSync.find(parsed_body["importId"])
+
+      assert_predicate import, :finished?
+      assert_equal user, import.user
+      assert_equal "1", import.input.sole["id"]
+      assert_equal({imported: ["Standalone Ship - Cutlass Black"], deleted: ["Standalone Ship - Aurora MR"]},
+        import.result_details)
+    end
+  end
+
+  test "PUT /hangar/sync-rsi-buybacks writes off a sync a killed process left running" do
+    user = create(:user)
+    stuck = Imports::BuybackSync.create!(user:, aasm_state: "started", started_at: 2.hours.ago)
+    sign_in user
+
+    assert_api_response :put, 200, api_path: "/hangar/sync-rsi-buybacks", body: {items: []}
+
+    assert_predicate stuck.reload, :failed?
+  end
+
+  test "PUT /hangar/sync-rsi-buybacks records a list it refused as a failed import" do
+    user = create(:user)
+    sign_in user
+
+    assert_api_response :put, 400, api_path: "/hangar/sync-rsi-buybacks", body: {items: [{id: "1", kind: "ship", name: ""}]}
+
+    assert_predicate Imports::BuybackSync.where(user:).sole, :failed?
   end
 
   test "PUT /hangar/sync-rsi-buybacks with an empty list clears it" do

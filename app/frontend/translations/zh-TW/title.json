@@ -56,7 +56,8 @@
         "imports": "匯入記錄",
         "transfers": "轉移",
         "vehicleOverview": "艦船概覽",
-        "vehicleLog": "艦長日誌"
+        "vehicleLog": "艦長日誌",
+        "shipComponents": "飛船部件"
       },
       "requestPassword": "請求密碼",
       "changePassword": "更改密碼",

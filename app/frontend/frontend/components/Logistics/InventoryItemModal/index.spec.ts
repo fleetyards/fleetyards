@@ -53,15 +53,41 @@ vi.mock("@/services/fyApi", async (importOriginal) => {
   };
 });
 
-// The step's own page is specced on its own.
-vi.mock("@/frontend/components/Logistics/CraftingStep/index.vue", () => ({
-  default: {
-    name: "LogisticsCraftingStep",
-    props: ["modelValue", "item"],
-    emits: ["update:modelValue", "valid"],
-    render: () => null,
-  },
+// What the crafter would hand over on apply; its own page is specced with it.
+const crafterDraft = vi.hoisted(() => ({
+  value: {
+    blueprintId: "bp-1",
+    blueprintSlug: "bulwark-bp",
+    qualities: { 1: 750, 2: 500 },
+  } as unknown,
 }));
+
+vi.mock("@/frontend/components/Blueprints/Crafter/index.vue", async () => {
+  const { defineComponent } = await import("vue");
+
+  return {
+    default: defineComponent({
+      name: "BlueprintCrafter",
+      props: {
+        title: { type: String, default: undefined },
+        item: { type: Object, default: undefined },
+        craftableType: { type: String, default: undefined },
+        crafted: { type: Object, default: undefined },
+        embedded: { type: Boolean, default: false },
+      },
+      emits: ["apply", "remove", "close"],
+      setup(_, { emit, expose }) {
+        expose({
+          canApply: true,
+          apply: () => emit("apply", crafterDraft.value),
+          remove: () => emit("remove"),
+        });
+
+        return () => null;
+      },
+    }),
+  };
+});
 
 // Its upload chain reaches the 3D viewer, whose ESM build Vitest cannot load.
 vi.mock("@/shared/components/base/FormFileInput/index.vue", () => ({
@@ -246,15 +272,8 @@ describe("LogisticsInventoryItemModal", () => {
         .find("[data-test='item-picker-field-craft']")
         .trigger("click");
 
-      const step = subject.findComponent({ name: "LogisticsCraftingStep" });
-
-      step.vm.$emit("update:modelValue", {
-        blueprintId: "bp-1",
-        qualities: { 1: 750, 2: 500 },
-      });
-      step.vm.$emit("valid", true);
-      await flushPromises();
       await subject.find("[data-test='crafting-apply']").trigger("click");
+      await flushPromises();
     };
 
     it("offers crafting only for an item a recipe makes", async () => {
@@ -282,9 +301,9 @@ describe("LogisticsInventoryItemModal", () => {
         .find("[data-test='item-picker-field-craft']")
         .trigger("click");
 
-      expect(
-        subject.findComponent({ name: "LogisticsCraftingStep" }).exists(),
-      ).toBe(true);
+      expect(subject.findComponent({ name: "BlueprintCrafter" }).exists()).toBe(
+        true,
+      );
       expect(subject.find("form").attributes("style")).toContain(
         "display: none",
       );
@@ -349,12 +368,7 @@ describe("LogisticsInventoryItemModal", () => {
       await subject
         .find("[data-test='item-picker-field-craft']")
         .trigger("click");
-      subject
-        .findComponent({ name: "LogisticsCraftingStep" })
-        .vm.$emit("update:modelValue", {
-          blueprintId: "bp-1",
-          qualities: { 1: 9 },
-        });
+      // Changing grades in the crafter and backing out applies nothing.
       await subject.find("[data-test='item-picker-back']").trigger("click");
 
       expect(
@@ -364,6 +378,23 @@ describe("LogisticsInventoryItemModal", () => {
 
     // Without the lot's recipe and grades a withdrawal would come out of stock
     // that was never crafted.
+    // The step is the shared crafter, opened on the part's catalogue and on
+    // how it is crafted now.
+    it("opens the shared crafter on the part", async () => {
+      const subject = await mount();
+
+      await pick(subject, bulwark);
+      await subject
+        .find("[data-test='item-picker-field-craft']")
+        .trigger("click");
+
+      const crafter = subject.findComponent({ name: "BlueprintCrafter" });
+
+      expect(crafter.props("embedded")).toBe(true);
+      expect(crafter.props("craftableType")).toBe("Component");
+      expect(crafter.props("item")).toMatchObject({ id: "bulwark" });
+    });
+
     it("withdraws a crafted lot with what it was made from", async () => {
       api.stock.mockResolvedValue([
         {

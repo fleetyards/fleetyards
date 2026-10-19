@@ -1278,6 +1278,12 @@
       },
       "vehicleLoadout": {
         "failure": "无法保存配装。"
+      },
+      "hangarPledgeItems": {
+        "addedToInventory": {
+          "other": "已将 %{count} 项添加到 %{inventory}"
+        },
+        "addToInventoryFailed": "无法将物品添加到库存。"
       }
     }
   }

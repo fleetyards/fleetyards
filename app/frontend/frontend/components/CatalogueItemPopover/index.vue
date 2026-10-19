@@ -17,10 +17,11 @@ import EventStatsCard from "@/frontend/components/StatsCard/Event/index.vue";
 import UserStatsCard from "@/frontend/components/StatsCard/User/index.vue";
 import LocationStatsCard from "@/frontend/components/StatsCard/Location/index.vue";
 import {
-  craftComponent,
-  craftEquipment,
+  craftedCatalogueComponent,
+  craftedEquipment as craftEquipment,
   craftedFactors,
-} from "@/frontend/components/Logistics/craftedRecord";
+} from "@/frontend/composables/craftedComponent";
+import { NEUTRAL_QUALITY } from "@/frontend/composables/useQualityRamp";
 import { craftedRouteQuery } from "@/frontend/composables/useCraftedFromRoute";
 import { catalogueItemRoute } from "@/frontend/utils/catalogueItemRoute";
 import {
@@ -198,14 +199,14 @@ const factors = computed(() =>
   props.crafted && craftedRecipe.value
     ? craftedFactors(
         craftedRecipe.value.costSlots || [],
-        props.crafted.qualities,
+        (position) => props.crafted?.qualities[position] ?? NEUTRAL_QUALITY,
       )
     : undefined,
 );
 
 const craftedComponent = computed(() =>
   factors.value && component.value
-    ? craftComponent(component.value, factors.value)
+    ? craftedCatalogueComponent(component.value, factors.value)
     : undefined,
 );
 

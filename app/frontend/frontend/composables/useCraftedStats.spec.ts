@@ -32,6 +32,55 @@ describe("useCraftedStats", () => {
     expect(stat.base).toBe("100,000");
   });
 
+  // A power plant's pips: a step down, none, a step up, by quality band.
+  const pips = (attrs = {}) =>
+    [
+      {
+        startQuality: 0,
+        endQuality: 399,
+        modifierAtStart: -1,
+        modifierAtEnd: -1,
+      },
+      {
+        startQuality: 400,
+        endQuality: 899,
+        modifierAtStart: 0,
+        modifierAtEnd: 0,
+      },
+      {
+        startQuality: 900,
+        endQuality: 1000,
+        modifierAtStart: 1,
+        modifierAtEnd: 1,
+      },
+    ].map((range) =>
+      modifier({
+        name: "Power Pips",
+        propertyKey: "gpp_itemresource_powergeneration",
+        ramp: "linear_integer_additive",
+        baseValue: 28,
+        ...range,
+        ...attrs,
+      }),
+    );
+
+  it("adds an additive ramp's amount to the figure, and sums two slots", () => {
+    const [top] = statsFor([slot(0, pips())], { 0: 950 });
+    expect(top.value).toBe("29");
+    expect(top.delta).toBe("+1");
+    expect(top.trend).toBe("better");
+
+    const [neutral] = statsFor([slot(0, pips())], { 0: 500 });
+    expect(neutral.value).toBe("28");
+
+    const [both] = statsFor([slot(0, pips()), slot(1, pips())], {
+      0: 100,
+      1: 200,
+    });
+    expect(both.value).toBe("26");
+    expect(both.delta).toBe("-2");
+  });
+
   it("lands on the catalogue figure at the neutral grade", () => {
     const [stat] = statsFor([slot(0, [modifier()])], { 0: 500 });
 
@@ -70,7 +119,7 @@ describe("useCraftedStats", () => {
     expect(stat.base).toBeUndefined();
   });
 
-  // 598 modifiers name a stat and carry no figures at all.
+  // A modifier can name a stat and carry no figures at all.
   it("leaves out a stat with no figures", () => {
     const stats = statsFor(
       [slot(0, [modifier({ modifierAtStart: null, modifierAtEnd: null })])],

@@ -26,8 +26,7 @@ import { useModalDirty } from "@/shared/components/AppModal/dirty";
 import { useFormDirty } from "@/shared/composables/useFormDirty";
 import ItemPicker from "@/frontend/components/Logistics/ItemPicker/index.vue";
 import ItemPickerField from "@/frontend/components/Logistics/ItemPickerField/index.vue";
-import CraftingStep from "@/frontend/components/Logistics/CraftingStep/index.vue";
-import { craftedQualities } from "@/frontend/components/Logistics/crafted";
+import BlueprintCrafter from "@/frontend/components/Blueprints/Crafter/index.vue";
 import { type PickedItem } from "@/frontend/components/Logistics/types";
 import { useCraftingStep } from "@/frontend/composables/useCraftingStep";
 import {
@@ -164,12 +163,14 @@ const {
 
 const {
   crafted,
-  draft: craftingDraft,
-  draftValid: craftingValid,
+  canApply: craftingCanApply,
   craftable,
+  craftableType,
   craftedLabel,
   openCrafting,
   applyCrafting,
+  removeCrafting,
+  onCrafted,
   clearCrafted,
 } = useCraftingStep({ pickedItem, isDeposit, showStep });
 
@@ -334,9 +335,7 @@ const onSubmit = handleSubmit(async (values) => {
         itemType: pickedItem.value?.type,
         itemId: pickedItem.value?.id,
         craftedBlueprintId: crafted.value?.blueprintId,
-        craftedQualities: crafted.value
-          ? craftedQualities(crafted.value)
-          : undefined,
+        craftedQualities: crafted.value?.qualities,
       },
     })
     .then(() => {
@@ -369,11 +368,17 @@ const onSubmit = handleSubmit(async (values) => {
       @select="applySelection"
     />
 
-    <CraftingStep
+    <!-- The shared crafter, with this modal's footer driving it. -->
+    <BlueprintCrafter
       v-if="step === 'crafting' && pickedItem"
-      v-model="craftingDraft"
+      ref="itemCrafter"
+      :title="pickedItem.name"
       :item="pickedItem"
-      @valid="craftingValid = $event"
+      :craftable-type="craftableType"
+      :crafted="crafted"
+      embedded
+      @apply="onCrafted"
+      @remove="clearCrafted"
     />
 
     <!-- Hidden rather than unmounted while another step is open, so nothing
@@ -525,17 +530,17 @@ const onSubmit = handleSubmit(async (values) => {
           v-if="step === 'crafting' && crafted"
           :variant="BtnVariantsEnum.BARE"
           data-test="crafting-clear"
-          @click="clearCrafted"
+          @click="removeCrafting"
         >
-          {{ t("labels.logistics.crafted.clear") }}
+          {{ t("actions.blueprint.removeCrafting") }}
         </Btn>
         <Btn
           v-if="step === 'crafting'"
-          :disabled="!craftingValid"
+          :disabled="!craftingCanApply"
           data-test="crafting-apply"
           @click="applyCrafting"
         >
-          {{ t("actions.apply") }}
+          {{ t("actions.blueprint.apply") }}
         </Btn>
       </template>
       <Btn

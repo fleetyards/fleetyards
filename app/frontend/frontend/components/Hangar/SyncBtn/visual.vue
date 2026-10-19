@@ -9,7 +9,11 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import type { SyncProcessStep } from "@/frontend/components/Hangar/SyncBtn/Result/types";
-import type { HangarSyncResult, RsiHangarItemInput } from "@/services/fyApi";
+import type {
+  HangarSyncLastRead,
+  HangarSyncResult,
+  RsiHangarItemInput,
+} from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import { FleetyardsSyncAction } from "@/frontend/lib/FleetyardsSyncHandler";
@@ -27,6 +31,9 @@ type State = {
   description: string;
   processSteps: SyncProcessStep[];
   currentPage: number;
+  totalPages?: number;
+  lastRead?: HangarSyncLastRead;
+  importId?: string;
   pledges: RsiHangarItemInput[];
   result?: HangarSyncResult;
   finished: boolean;
@@ -41,6 +48,47 @@ const samplePledges = [
   { id: "5", type: "skin", name: "Aurora - Dark Green Paint" },
   { id: "6", type: "flair", name: "Takuetsu Freelancer Model" },
 ] as unknown as RsiHangarItemInput[];
+
+const lastReadOf = (
+  counts: Partial<HangarSyncLastRead["counts"]>,
+): HangarSyncLastRead => {
+  const all = {
+    ship: 0,
+    component: 0,
+    upgrade: 0,
+    skin: 0,
+    flair: 0,
+    equipment: 0,
+    ccu: 0,
+    extra: 0,
+    shipComponent: 0,
+    ...counts,
+  };
+
+  return {
+    finishedAt: "2026-10-11T18:00:00Z",
+    pages: 5,
+    total: Object.values(all).reduce((sum, count) => sum + count, 0),
+    counts: all,
+  };
+};
+
+// More than the sample pledges hold, so a run measured against it reads less.
+const biggerLastRead = lastReadOf({
+  ship: 3,
+  component: 1,
+  upgrade: 1,
+  skin: 2,
+  flair: 1,
+  equipment: 2,
+});
+
+const smallerLastRead = lastReadOf({
+  ship: 1,
+  component: 1,
+  upgrade: 1,
+  skin: 1,
+});
 
 const successResult = {
   importedVehicles: ["v-1", "v-2", "v-3"],
@@ -101,6 +149,52 @@ const states: State[] = [
       { name: "submitData", status: "pending" },
     ],
     currentPage: 3,
+    totalPages: 5,
+    pledges: samplePledges,
+    finished: false,
+    finishedWithErrors: false,
+  },
+  {
+    key: "fetching-last",
+    label: "Fetching — against the last sync",
+    description: "Reading, measured against a last sync that read more.",
+    processSteps: [
+      { name: "fetchHangar", status: "processing" },
+      { name: "submitData", status: "pending" },
+    ],
+    currentPage: 3,
+    totalPages: 5,
+    lastRead: biggerLastRead,
+    pledges: samplePledges,
+    finished: false,
+    finishedWithErrors: false,
+  },
+  {
+    key: "submitting-more",
+    label: "Submitting — more than the last sync",
+    description: "Read everything, and more than the last sync did.",
+    processSteps: [
+      { name: "fetchHangar", status: "success" },
+      { name: "submitData", status: "processing" },
+    ],
+    currentPage: 6,
+    lastRead: smallerLastRead,
+    importId: "00000000-0000-4000-8000-000000000001",
+    pledges: samplePledges,
+    finished: false,
+    finishedWithErrors: false,
+  },
+  {
+    key: "submitting-fewer",
+    label: "Submitting — fewer than the last sync",
+    description: "Read everything, and less than the last sync did.",
+    processSteps: [
+      { name: "fetchHangar", status: "success" },
+      { name: "submitData", status: "processing" },
+    ],
+    currentPage: 6,
+    lastRead: biggerLastRead,
+    importId: "00000000-0000-4000-8000-000000000001",
     pledges: samplePledges,
     finished: false,
     finishedWithErrors: false,
@@ -127,6 +221,7 @@ const states: State[] = [
       { name: "submitData", status: "success" },
     ],
     currentPage: 5,
+    importId: "00000000-0000-4000-8000-000000000001",
     pledges: samplePledges,
     result: successResult,
     finished: true,
@@ -141,6 +236,7 @@ const states: State[] = [
       { name: "submitData", status: "success" },
     ],
     currentPage: 5,
+    importId: "00000000-0000-4000-8000-000000000001",
     pledges: samplePledges,
     result: partialResult,
     finished: true,
@@ -203,6 +299,14 @@ useVisualApiMock([
     path: /^\/hangar\/sync-rsi-hangar\/status$/,
     respond: () => ({ status: "finished", result: successResult }),
   },
+  {
+    method: "GET",
+    path: /^\/hangar\/sync-rsi-hangar\/last-read$/,
+    respond: () => ({
+      ...biggerLastRead,
+      finishedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+    }),
+  },
 ]);
 
 type StartScreen = {
@@ -258,6 +362,9 @@ const openState = (state: State) => {
       title: `Hangar Sync — ${state.label}`,
       processSteps: state.processSteps,
       currentPage: state.currentPage,
+      totalPages: state.totalPages,
+      lastRead: state.lastRead,
+      importId: state.importId,
       pledges: state.pledges,
       result: state.result,
       finished: state.finished,

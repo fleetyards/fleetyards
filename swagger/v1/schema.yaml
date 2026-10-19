@@ -11134,6 +11134,58 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/inventories/{hangarInventorySlug}/items/from-pledge-items":
+    parameters:
+    - name: hangarInventorySlug
+      in: path
+      schema:
+        type: string
+      description: Inventory slug
+      required: true
+    post:
+      summary: Add Hangar Pledge Items to an Inventory
+      tags:
+      - HangarInventoryItems
+      operationId: addPledgeItemsToHangarInventory
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/AddPledgeItemsToInventoryInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AddPledgeItemsToInventoryResult"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/hangar/inventories/{hangarInventorySlug}/items/{id}":
     parameters:
     - name: hangarInventorySlug
@@ -12092,6 +12144,50 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/hangar/ship-components":
+    get:
+      summary: Hangar Ship Components
+      tags:
+      - Hangar
+      operationId: hangarShipComponents
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 48
+        required: false
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/HangarPledgeItemQuery"
+        style: deepObject
+        explode: true
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPledgeItems"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/hangar/stats":
     get:
       summary: Your Hangar Stats
@@ -12315,6 +12411,33 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/hangar/sync-rsi-buybacks/last-read":
+    get:
+      summary: Sync RSI Buy-back Pledges Last Read
+      tags:
+      - Hangar
+      operationId: syncRsiBuybacksLastRead
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/BuybackSyncLastRead"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/hangar/sync-rsi-hangar":
     put:
       summary: Sync RSI Hangar
@@ -12350,6 +12473,33 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/hangar/sync-rsi-hangar/last-read":
+    get:
+      summary: Sync RSI Hangar Last Read
+      tags:
+      - Hangar
+      operationId: syncRsiHangarLastRead
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarSyncLastRead"
+        '401':
+          description: unauthorized
           content:
             application/json:
               schema:
@@ -20597,6 +20747,39 @@ components:
           format: email
       additionalProperties: false
       title: AccountUpdateInput
+    AddPledgeItemsToInventoryInput:
+      type: object
+      properties:
+        pledgeItemIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Ship components and FPS gear to add; any other pledge item
+            is ignored
+      additionalProperties: false
+      required:
+      - pledgeItemIds
+      title: AddPledgeItemsToInventoryInput
+    AddPledgeItemsToInventoryResult:
+      type: object
+      properties:
+        addedPledgeItemIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        skippedPledgeItemIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: Items already in an inventory, left as they were
+      additionalProperties: false
+      required:
+      - addedPledgeItemIds
+      - skippedPledgeItemIds
+      title: AddPledgeItemsToInventoryResult
     AlliedFleet:
       type: object
       properties:
@@ -20798,10 +20981,14 @@ components:
           type:
           - number
           - 'null'
+          description: A factor on the stat for a linear ramp; a whole amount added
+            to it for linear_integer_additive
         modifierAtEnd:
           type:
           - number
           - 'null'
+          description: A factor on the stat for a linear ramp; a whole amount added
+            to it for linear_integer_additive
         unit:
           type:
           - string
@@ -21247,6 +21434,24 @@ components:
       - meta
       - items
       title: BuybackPledges
+    BuybackSyncLastRead:
+      type: object
+      properties:
+        finishedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        pages:
+          type:
+          - integer
+          - 'null'
+        total:
+          type: integer
+      additionalProperties: false
+      required:
+      - total
+      title: BuybackSyncLastRead
     BuybackSyncResult:
       type: object
       properties:
@@ -21260,12 +21465,16 @@ components:
           type: array
           items:
             type: string
+        importId:
+          type: string
+          format: uuid
       additionalProperties: false
       required:
       - total
       - added
       - removed
       - detailsPending
+      - importId
       title: BuybackSyncResult
     CalendarSubscription:
       type: object
@@ -23727,6 +23936,23 @@ components:
       items:
         "$ref": "#/components/schemas/ContractDeliveryTarget"
       title: ContractDeliveryTargetsList
+    CraftedSlotQuality:
+      type: object
+      properties:
+        position:
+          type: integer
+          minimum: 0
+          description: The recipe slot, by its position in the blueprint
+        quality:
+          type: integer
+          minimum: 0
+          maximum: 1000
+          description: Material quality on the game's 0-1000 scale
+      additionalProperties: false
+      required:
+      - position
+      - quality
+      title: CraftedSlotQuality
     DockCount:
       type: object
       properties:
@@ -31228,6 +31454,10 @@ components:
         rsiPage:
           type: integer
           description: The page of the RSI hangar the pledge was last read from
+        catalogueItem:
+          "$ref": "#/components/schemas/HangarPledgeItemCatalogueItem"
+        inventory:
+          "$ref": "#/components/schemas/InventoryRef"
         createdAt:
           type: string
           format: date-time
@@ -31246,6 +31476,34 @@ components:
       - createdAt
       - updatedAt
       title: HangarPledgeItem
+    HangarPledgeItemCatalogueItem:
+      type: object
+      description: The catalogue item a ship component or piece of FPS gear was matched
+        to
+      properties:
+        itemType:
+          type: string
+          enum:
+          - Component
+          - Equipment
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        category:
+          type: string
+          description: The component's category, or the equipment's type
+        size:
+          type: string
+      additionalProperties: false
+      required:
+      - itemType
+      - id
+      - name
+      title: HangarPledgeItemCatalogueItem
     HangarPledgeItemKindEnum:
       type: string
       enum:
@@ -31253,11 +31511,13 @@ components:
       - flair
       - equipment
       - ccu
+      - ship_component
       x-enumNames:
       - PAINT
       - FLAIR
       - EQUIPMENT
       - CCU
+      - SHIP_COMPONENT
       title: HangarPledgeItemKindEnum
     HangarPledgeItemQuery:
       type: object
@@ -31499,6 +31759,57 @@ components:
       - groups
       - metrics
       title: HangarStatsPublic
+    HangarSyncLastRead:
+      type: object
+      properties:
+        finishedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        pages:
+          type:
+          - integer
+          - 'null'
+        total:
+          type: integer
+        counts:
+          type: object
+          properties:
+            ship:
+              type: integer
+            component:
+              type: integer
+            upgrade:
+              type: integer
+            skin:
+              type: integer
+            flair:
+              type: integer
+            equipment:
+              type: integer
+            ccu:
+              type: integer
+            extra:
+              type: integer
+            shipComponent:
+              type: integer
+          additionalProperties: false
+          required:
+          - ship
+          - component
+          - upgrade
+          - skin
+          - flair
+          - equipment
+          - ccu
+          - extra
+          - shipComponent
+      additionalProperties: false
+      required:
+      - total
+      - counts
+      title: HangarSyncLastRead
     HangarSyncOutcomeEnum:
       type: string
       enum:
@@ -31598,6 +31909,11 @@ components:
             type: string
             format: uuid
         syncedCcus:
+          type: array
+          items:
+            type: string
+            format: uuid
+        syncedShipComponents:
           type: array
           items:
             type: string
@@ -32136,9 +32452,11 @@ components:
       enum:
       - Imports::HangarImport
       - Imports::HangarSync
+      - Imports::BuybackSync
       x-enumNames:
       - IMPORTS_HANGAR_IMPORT
       - IMPORTS_HANGAR_SYNC
+      - IMPORTS_BUYBACK_SYNC
       title: ImportTypeEnum
     Imports:
       type: object
@@ -33171,6 +33489,9 @@ components:
           - "$ref": "#/components/schemas/ComponentEmp"
           - "$ref": "#/components/schemas/ComponentQuantumEnforcement"
           - "$ref": "#/components/schemas/ComponentLifeSupport"
+        craftable:
+          type: boolean
+          description: A recipe in the build being served makes it
       additionalProperties: false
       required:
       - id
@@ -35624,6 +35945,13 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/ModelModule"
+        craftableComponentIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The parts in these modules' ports a recipe makes, for a loadout
+            to offer crafting on
       additionalProperties: false
       required:
       - meta
@@ -39651,6 +39979,9 @@ components:
         syncEquipment:
           type: boolean
           default: false
+        syncShipComponents:
+          type: boolean
+          default: false
         unmatchedVehiclesAction:
           "$ref": "#/components/schemas/HangarSyncUnmatchedActionEnum"
         unmatchedHangarGroupId:
@@ -41059,11 +41390,49 @@ components:
           type: string
           format: uuid
           description: Left out on an Empty item, which holds nothing
+        crafted:
+          "$ref": "#/components/schemas/VehicleLoadoutItemCrafted"
       additionalProperties: false
       required:
       - slotPath
       - itemType
       title: VehicleLoadoutItem
+    VehicleLoadoutItemCrafted:
+      type: object
+      properties:
+        blueprintId:
+          type: string
+          format: uuid
+        blueprintSlug:
+          type: string
+        qualities:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CraftedSlotQuality"
+          description: A recipe slot left out was filled at the neutral grade, 500
+      additionalProperties: false
+      required:
+      - blueprintId
+      - blueprintSlug
+      - qualities
+      title: VehicleLoadoutItemCrafted
+    VehicleLoadoutItemCraftedInput:
+      type: object
+      properties:
+        blueprintId:
+          type: string
+          format: uuid
+          description: A recipe that makes the fitted component
+        qualities:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CraftedSlotQuality"
+          description: A recipe slot left out was filled at the neutral grade, 500
+      additionalProperties: false
+      required:
+      - blueprintId
+      - qualities
+      title: VehicleLoadoutItemCraftedInput
     VehicleLoadoutItemInput:
       type: object
       properties:
@@ -41076,6 +41445,8 @@ components:
           type: string
           format: uuid
           description: Left out on an Empty item, which holds nothing
+        crafted:
+          "$ref": "#/components/schemas/VehicleLoadoutItemCraftedInput"
       additionalProperties: false
       required:
       - slotPath

@@ -1,0 +1,180 @@
+/*
+ * How one item is crafted: the recipe's slots and the material quality in
+ * each, in a picker's panel beside whatever it is crafted for.
+ */
+.blueprint-crafter {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-height: min(72dvh, 760px);
+  background: rgba($gray-darker, 0.96);
+  border: 1px solid var(--color-edge-soft);
+  border-radius: $panel-border-radius;
+  box-shadow: 0 12px 32px rgb(0 0 0 / 0.45);
+
+  // Focused only to hand the keyboard into it on opening; its controls show
+  // their own focus.
+  &:focus {
+    outline: none;
+  }
+}
+
+// The host's panel is the frame; the crafter is only its content.
+.blueprint-crafter--embedded {
+  max-height: none;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.blueprint-crafter__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px 0;
+}
+
+.blueprint-crafter__title {
+  margin: 0;
+  color: $text-color;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.blueprint-crafter__close {
+  margin: 0;
+  padding: 4px 8px;
+  color: var(--color-muted);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+
+  &:hover {
+    color: $text-color;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary, #428bca);
+  }
+}
+
+.blueprint-crafter__controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 14px;
+}
+
+.blueprint-crafter__part {
+  margin: 0;
+  color: var(--color-text-dim);
+  font-size: 13px;
+}
+
+.blueprint-crafter__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+// The recipe's slots scroll on their own; the header and the figures stay put.
+.blueprint-crafter__slots {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+  padding: 4px 14px 12px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.blueprint-crafter__empty {
+  margin: 0;
+  padding: 4px 14px 12px;
+  color: var(--color-text-dim);
+  font-size: 13px;
+}
+
+// Apply and Discard at the panel's end, Remove apart on the other side.
+.blueprint-crafter__actions {
+  display: flex;
+  flex: none;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 10px 14px 12px;
+  border-top: 1px solid var(--color-edge-soft);
+}
+
+.blueprint-crafter__remove {
+  margin-right: auto;
+}
+
+// What the draft makes of the part, stat by stat, under the slots that set it.
+.blueprint-crafter__stats {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  margin: 0;
+  padding: 8px 14px 10px;
+  border-top: 1px solid var(--color-edge-soft);
+}
+
+.blueprint-crafter__stat {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 0;
+  font-size: 13px;
+
+  dt {
+    color: var(--color-text);
+    font-weight: normal;
+  }
+
+  dd {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin: 0;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+// Colour states what the change is worth, not which way the number moved:
+// a recoil stat falling is an improvement and reads as one.
+.blueprint-crafter__delta {
+  min-width: 52px;
+  color: var(--color-text-dim);
+  font-size: 11.5px;
+  font-weight: 700;
+  text-align: right;
+
+  &--better {
+    color: var(--color-success, #5cb85c);
+  }
+
+  &--worse {
+    color: var(--color-danger, #dc3545);
+  }
+}
+
+@media (max-width: $tablet-breakpoint) {
+  .blueprint-crafter {
+    max-height: none;
+  }
+
+  .blueprint-crafter__slots {
+    max-height: 60dvh;
+  }
+}
+
+// A slot card clips its own overflow, which lets a scrolling column squeeze it
+// and cut off its ramp; each keeps its height and the column scrolls instead.
+.blueprint-crafter__slots :deep(.blueprint-slot) {
+  flex: none;
+}

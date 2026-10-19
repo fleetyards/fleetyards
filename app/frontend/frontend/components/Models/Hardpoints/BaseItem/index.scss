@@ -85,3 +85,16 @@
   > :deep(.hardpoint-item__wrapper > .hardpoint-item__inner) {
   border-color: var(--color-warning, #{$warning});
 }
+
+.hardpoint-item__crafted {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-text-dim);
+  font-size: 12px;
+
+  i {
+    color: var(--color-muted);
+    font-size: 10px;
+  }
+}

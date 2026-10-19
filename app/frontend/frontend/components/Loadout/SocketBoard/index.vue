@@ -13,16 +13,20 @@ type Props = {
   groups: LoadoutSocketGroup[];
   // The socket the picker is filling.
   active?: string;
+  // The socket whose part is being crafted.
+  crafting?: string;
   editable?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   active: undefined,
+  crafting: undefined,
   editable: false,
 });
 
 const emit = defineEmits<{
   "update:active": [slotId: string];
+  craft: [slotId: string];
 }>();
 
 const { t } = useI18n();
@@ -97,8 +101,10 @@ const onKeydown = (event: KeyboardEvent) => {
       <SocketTree
         :slots="group.slots"
         :active="active"
+        :crafting="crafting"
         :editable="editable"
         @select="(id) => emit('update:active', id)"
+        @craft="(id) => emit('craft', id)"
       >
         <template v-if="$slots.active" #active>
           <slot name="active" />
