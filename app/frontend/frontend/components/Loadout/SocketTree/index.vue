@@ -58,9 +58,12 @@ const contains = (socket: LoadoutSocketSlot, id: string): boolean =>
   ) ||
   (socket.stack ?? []).some((slot) => slot.id === id || contains(slot, id));
 
-// The socket being filled stays in sight, whichever way its parent was folded.
+// The socket being filled or crafted stays in sight, whichever way its parent
+// was folded.
+const open = computed(() => props.active ?? props.crafting);
+
 const expanded = (socket: LoadoutSocketSlot) =>
-  (!!props.active && contains(socket, props.active)) ||
+  (!!open.value && contains(socket, open.value)) ||
   (toggled.value[socket.id] ?? !folded.value);
 
 const toggle = (socket: LoadoutSocketSlot) => {
@@ -70,7 +73,7 @@ const toggle = (socket: LoadoutSocketSlot) => {
 const isSplit = (socket: LoadoutSocketSlot) =>
   !!socket.stack?.length &&
   (split.value[socket.id] ||
-    socket.stack.some((slot) => slot.id === props.active));
+    socket.stack.some((slot) => slot.id === open.value));
 
 const toggleSplit = (socket: LoadoutSocketSlot) => {
   split.value = { ...split.value, [socket.id]: !split.value[socket.id] };
