@@ -3,7 +3,10 @@ import {
   type CraftedSelection,
   type PickedItem,
 } from "@/frontend/components/Logistics/types";
-import { craftedGrades } from "@/frontend/components/Logistics/crafted";
+import {
+  craftedGrades,
+  craftedQualities,
+} from "@/frontend/components/Logistics/crafted";
 import { useItemRecipes } from "@/frontend/composables/useItemRecipes";
 import { useI18n } from "@/shared/composables/useI18n";
 
@@ -48,13 +51,17 @@ export const useCraftingStep = ({
   );
 
   // What the item's field shows of it: the grades, in slot order.
-  const craftedLabel = computed(() =>
-    crafted.value
-      ? t("labels.logistics.crafted.summary", {
-          grades: craftedGrades(crafted.value.qualities).join(" / "),
-        })
-      : undefined,
-  );
+  // A request may name no grade at all, which reads as crafted and nothing
+  // more.
+  const craftedLabel = computed(() => {
+    if (!crafted.value) return undefined;
+
+    const grades = craftedGrades(craftedQualities(crafted.value));
+
+    return grades.length
+      ? t("labels.logistics.crafted.summary", { grades: grades.join(" / ") })
+      : t("labels.logistics.crafted.lot");
+  });
 
   const openCrafting = () => {
     draft.value = crafted.value
@@ -67,7 +74,11 @@ export const useCraftingStep = ({
   const applyCrafting = () => {
     if (!draftValid.value) return;
 
-    crafted.value = draft.value;
+    // A slot typed into and cleared again is a slot left open, not a grade.
+    crafted.value = {
+      blueprintId: draft.value.blueprintId,
+      qualities: craftedQualities(draft.value),
+    };
     showStep("form");
   };
 

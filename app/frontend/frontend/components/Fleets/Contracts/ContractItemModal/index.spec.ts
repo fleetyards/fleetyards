@@ -292,6 +292,33 @@ describe("FleetContractsItemModal", () => {
       );
     });
 
+    // A slot typed into and cleared again is a slot left open.
+    it("names no grade for a slot left open", async () => {
+      const subject = await mount("crafting", undefined, vi.fn());
+
+      await pickBulwark(subject);
+      await subject
+        .find("[data-test='item-picker-field-craft']")
+        .trigger("click");
+
+      const step = subject.findComponent({ name: "LogisticsCraftingStep" });
+
+      step.vm.$emit("update:modelValue", {
+        blueprintId: "bp-1",
+        qualities: { 1: undefined },
+      });
+      step.vm.$emit("valid", true);
+      await flushPromises();
+      await subject.find("[data-test='crafting-apply']").trigger("click");
+
+      const field = subject.find(
+        "[data-test='item-picker-field-catalogueItem']",
+      );
+
+      expect(field.text()).toContain("Crafted");
+      expect(field.text()).not.toContain("undefined");
+    });
+
     it("opens on a crafted line with its crafting", async () => {
       const subject = await mount("crafting", {
         id: "line-2",

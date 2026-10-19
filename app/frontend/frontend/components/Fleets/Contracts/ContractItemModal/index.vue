@@ -127,7 +127,7 @@ const { defineField, handleSubmit, setFieldValue, setErrors, values } = useForm(
   { initialValues },
 );
 
-useModalDirty(useFormDirty(values, initialValues));
+const formDirty = useFormDirty(values, initialValues);
 
 // Named by the picker rather than typed, so the rule lives here instead of on
 // an input.
@@ -175,6 +175,14 @@ if (props.item?.crafted) {
     qualities: props.item.crafted.qualities,
   };
 }
+
+// The crafting lives outside the form, so closing has to ask about it too.
+const craftedAtOpen = JSON.stringify(crafted.value ?? null);
+
+useModalDirty(
+  () =>
+    formDirty.value || JSON.stringify(crafted.value ?? null) !== craftedAtOpen,
+);
 
 // The item, where it is filed, and how it is to be crafted, on one line.
 const itemMeta = computed(() =>
