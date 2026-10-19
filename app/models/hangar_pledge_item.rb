@@ -13,8 +13,9 @@ class HangarPledgeItem < ApplicationRecord
   # The kinds that are things to keep in an inventory.
   INVENTORY_KINDS = %w[ship_component equipment].freeze
 
-  # The component categories the inventory ledger files as weapons.
-  WEAPON_CATEGORIES = %w[weapons weapon_mounts turret].freeze
+  # The component categories the inventory ledger files as weapons: those a
+  # ship's hardpoints group as weapons.
+  WEAPON_CATEGORIES = %w[weapons weapon_mounts turret missile_racks bombcompartments quantumenforcementdevice].freeze
 
   DEFAULT_SORTING_PARAMS = [].freeze
   ALLOWED_SORTING_PARAMS = ["meltValue asc", "meltValue desc"].freeze
@@ -25,10 +26,6 @@ class HangarPledgeItem < ApplicationRecord
   # one was found.
   belongs_to :catalogue_component, class_name: "Component", foreign_key: :component_id, optional: true
   belongs_to :catalogue_equipment, class_name: "Equipment", foreign_key: :equipment_id, optional: true
-
-  # The deposit the item became, once added to an inventory: a second add skips
-  # it rather than doubling the stock.
-  belongs_to :inventory_item, optional: true
 
   has_many :model_paint_links, class_name: "HangarPledgeItemModelPaint", dependent: nil
   has_many :model_paints, through: :model_paint_links
@@ -125,19 +122,40 @@ class HangarPledgeItem < ApplicationRecord
     []
   end
 
+  # What identifies the item across syncs. A sync, or a cleared hangar synced
+  # again, recreates the row but not the pledge, so a deposit remembers this
+  # rather than the row, and the item is never offered for a second add.
+  def source_key
+    [kind, rsi_pledge_id, name].join(":")
+  end
+
+  # The user's deposits that came from these items, by source key.
+  def self.deposits_for(user, items)
+    keys = items.select { |item| INVENTORY_KINDS.include?(item.kind) }.map(&:source_key)
+    return {} if keys.empty?
+
+    InventoryItem.joins(:inventory)
+      .where(inventories: {holder_type: user.class.name, holder_id: user.id}, source_pledge_item_key: keys)
+      .includes(:inventory)
+      .index_by(&:source_pledge_item_key)
+  end
+
   # The deposit this item makes in an inventory: as many as the pledge lists,
   # referring to the catalogue item where the sync matched one.
   def inventory_entry_attributes
     catalogued = catalogue_component || catalogue_equipment
 
+    # The catalogue's name, so the deposit joins the position of the same part
+    # entered by hand; RSI's only where nothing was matched.
     {
-      name:,
+      name: catalogued&.name.presence || name,
       category: inventory_category,
       quantity:,
       unit: "units",
       entry_type: "deposit",
       item_type: catalogued&.class&.name,
-      item_id: catalogued&.id
+      item_id: catalogued&.id,
+      source_pledge_item_key: source_key
     }
   end
 

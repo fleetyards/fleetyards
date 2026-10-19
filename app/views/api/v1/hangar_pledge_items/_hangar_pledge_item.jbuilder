@@ -30,7 +30,7 @@ if catalogued.present?
 end
 
 # The inventory the item was added to, so a list can say where it went.
-inventory = hangar_pledge_item.inventory_item&.inventory
+inventory = local_assigns[:deposits]&.dig(hangar_pledge_item.source_key)&.inventory
 if inventory.present?
   json.inventory do
     json.name inventory.name

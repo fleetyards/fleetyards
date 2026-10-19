@@ -185,9 +185,9 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
   test "GET /hangar/ship-components names the inventory an item was added to" do
     user = create(:user)
     inventory = create(:inventory, holder: user, name: "Spare Parts")
-    entry = inventory.inventory_items.create!(name: "BriskAir IC-20", category: "component", quantity: 1,
-      unit: "units", entry_type: "deposit")
-    create(:hangar_pledge_item, user:, kind: "ship_component", name: "BriskAir IC-20", inventory_item: entry)
+    item = create(:hangar_pledge_item, user:, kind: "ship_component", name: "BriskAir IC-20")
+    inventory.inventory_items.create!(name: "BriskAir IC-20", category: "component", quantity: 1,
+      unit: "units", entry_type: "deposit", source_pledge_item_key: item.source_key)
     sign_in user
 
     assert_api_response :get, 200, api_path: "/hangar/ship-components" do

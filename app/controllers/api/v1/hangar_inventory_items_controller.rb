@@ -17,8 +17,8 @@ module Api
       before_action :check_hangar_inventories_feature
       before_action :set_inventory_item, only: %i[update destroy]
 
-      # Deposits each given ship component or piece of gear once, and links it to
-      # its deposit. An item already added is skipped, so adding a selection
+      # Deposits each given ship component or piece of gear once. An item one of
+      # the user's deposits already came from is skipped, so adding a selection
       # twice never doubles the stock. The items are locked while they are
       # added, so two requests cannot both find one not yet added.
       def add_pledge_items
@@ -33,12 +33,10 @@ module Api
             .includes(:catalogue_component, :catalogue_equipment)
             .lock
 
-          added, skipped = pledge_items.partition { |item| item.inventory_item_id.nil? }
+          deposited = HangarPledgeItem.deposits_for(current_resource_owner, pledge_items)
+          added, skipped = pledge_items.partition { |item| !deposited.key?(item.source_key) }
 
-          added.each do |item|
-            entry = provisioned_inventory.inventory_items.create!(item.inventory_entry_attributes)
-            item.update!(inventory_item: entry)
-          end
+          added.each { |item| provisioned_inventory.inventory_items.create!(item.inventory_entry_attributes) }
         end
 
         render json: {addedPledgeItemIds: added.map(&:id), skippedPledgeItemIds: skipped.map(&:id)}

@@ -1432,10 +1432,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_19_130000) do
     t.integer "rsi_page"
     t.uuid "component_id"
     t.uuid "equipment_id"
-    t.uuid "inventory_item_id"
     t.index ["component_id"], name: "index_hangar_pledge_items_on_component_id"
     t.index ["equipment_id"], name: "index_hangar_pledge_items_on_equipment_id"
-    t.index ["inventory_item_id"], name: "index_hangar_pledge_items_on_inventory_item_id"
     t.index ["user_id", "kind", "rsi_pledge_id", "name"], name: "index_hangar_pledge_items_on_user_kind_pledge_name", unique: true
   end
 
@@ -1566,9 +1564,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_19_130000) do
     t.datetime "updated_at", null: false
     t.uuid "inventory_position_id", null: false
     t.uuid "inventory_transfer_id"
+    t.string "source_pledge_item_key"
     t.index ["inventory_id"], name: "index_inventory_items_on_inventory_id"
     t.index ["inventory_position_id"], name: "index_inventory_items_on_inventory_position_id"
     t.index ["inventory_transfer_id"], name: "index_inventory_items_on_inventory_transfer_id"
+    t.index ["source_pledge_item_key"], name: "index_inventory_items_on_source_pledge_item_key"
   end
 
   create_table "inventory_positions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -2962,7 +2962,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_19_130000) do
   add_foreign_key "hangar_pledge_item_model_paints", "model_paints", on_delete: :cascade
   add_foreign_key "hangar_pledge_items", "components", on_delete: :nullify
   add_foreign_key "hangar_pledge_items", "equipment", on_delete: :nullify
-  add_foreign_key "hangar_pledge_items", "inventory_items", on_delete: :nullify
   add_foreign_key "hangar_pledge_items", "users", on_delete: :cascade
   add_foreign_key "hardpoint_builds", "hardpoints", on_delete: :cascade
   add_foreign_key "hardpoints", "components"

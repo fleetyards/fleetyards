@@ -72,7 +72,7 @@ class Api::V1::HangarInventoryItemsFromPledgeItemsTest < ActionDispatch::Integra
     assert_equal "weapon", entries["M3A Cannon"].category
     assert_equal ["equipment", rifle], entries["P4-AR Rifle"].then { [it.category, it.item] }
     assert_nil entries["J-Span Cryo-Star Cooler"].item
-    assert(parts.all? { it.reload.inventory_item.present? })
+    assert_equal parts.map(&:source_key).sort, @inventory.inventory_items.pluck(:source_pledge_item_key).sort
   end
 
   test "skips an item already added, so the stock is never doubled" do
@@ -85,6 +85,34 @@ class Api::V1::HangarInventoryItemsFromPledgeItemsTest < ActionDispatch::Integra
     assert_response :ok
     assert_equal [part.id], response.parsed_body["skippedPledgeItemIds"]
     assert_equal 1, @inventory.inventory_items.count
+  end
+
+  # A cleared hangar synced again recreates the row, not the pledge.
+  test "skips an item whose deposit came from the same pledge item before it was recreated" do
+    part = create(:hangar_pledge_item, user: @user, kind: "ship_component", name: "BriskAir IC-20",
+      rsi_pledge_id: "123")
+    sign_in @user
+    post "/api/v1/hangar/inventories/#{@inventory.slug}/items/from-pledge-items", params: {pledgeItemIds: [part.id]}, as: :json
+    part.destroy!
+    again = create(:hangar_pledge_item, user: @user, kind: "ship_component", name: "BriskAir IC-20",
+      rsi_pledge_id: "123")
+
+    post "/api/v1/hangar/inventories/#{@inventory.slug}/items/from-pledge-items", params: {pledgeItemIds: [again.id]}, as: :json
+
+    assert_equal [again.id], response.parsed_body["skippedPledgeItemIds"]
+    assert_equal 1, @inventory.inventory_items.count
+  end
+
+  # The catalogue's name, so it joins the position of the same part entered by hand.
+  test "names a matched part's deposit as the catalogue does" do
+    repeater = create(:component, name: "CF-117 Bulldog Repeater", category: "weapons")
+    part = create(:hangar_pledge_item, user: @user, kind: "ship_component", name: "CF-117 Bulldog (S1)",
+      catalogue_component: repeater)
+    sign_in @user
+
+    post "/api/v1/hangar/inventories/#{@inventory.slug}/items/from-pledge-items", params: {pledgeItemIds: [part.id]}, as: :json
+
+    assert_equal ["CF-117 Bulldog Repeater", "weapon"], @inventory.inventory_items.sole.then { [it.name, it.category] }
   end
 
   test "ignores paints, other users' items and anything not to keep in an inventory" do
@@ -107,7 +135,7 @@ class Api::V1::HangarInventoryItemsFromPledgeItemsTest < ActionDispatch::Integra
     assert_api_response :post, 404, path_params: {hangarInventorySlug: create(:inventory).slug},
       body: {pledgeItemIds: [part.id]}
 
-    assert_nil part.reload.inventory_item
+    assert_empty InventoryItem.where(source_pledge_item_key: part.source_key)
   end
 
   test "requires a session or token" do

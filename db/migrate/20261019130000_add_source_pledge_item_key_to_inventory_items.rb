@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-class AddInventoryItemToHangarPledgeItems < ActiveRecord::Migration[8.1]
+class AddSourcePledgeItemKeyToInventoryItems < ActiveRecord::Migration[8.1]
   def change
-    add_reference :hangar_pledge_items, :inventory_item, type: :uuid, index: true,
-      foreign_key: {on_delete: :nullify}
+    add_column :inventory_items, :source_pledge_item_key, :string
+    add_index :inventory_items, :source_pledge_item_key
   end
 end
