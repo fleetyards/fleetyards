@@ -431,6 +431,15 @@ describe("LogisticsInventoryItemModal", () => {
           netQuantity: 10,
           quality: null,
         },
+        // Deposited before parts stopped taking a grade, which stored 0.
+        {
+          id: "pos-2",
+          name: "Bulwark",
+          category: "component",
+          unit: "units",
+          netQuantity: 3,
+          quality: 0,
+        },
       ]);
 
       const subject = await mount();
@@ -483,6 +492,25 @@ describe("LogisticsInventoryItemModal", () => {
           data: expect.objectContaining({
             entryType: "withdrawal",
             quality: null,
+          }),
+        }),
+      );
+    });
+
+    // Stock is grouped by grade, so a part held at 0 has to come out at 0.
+    it("comes out at exactly the grade a part is held at", async () => {
+      const subject = await withdraw(2);
+
+      expect(subject.find("[data-test='input-quality']").exists()).toBe(false);
+
+      await subject.find("form").trigger("submit");
+      await flushPromises();
+
+      expect(api.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            entryType: "withdrawal",
+            quality: 0,
           }),
         }),
       );
