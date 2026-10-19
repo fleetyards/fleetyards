@@ -69,6 +69,7 @@ The hangar sync keeps the ship parts RSI lists (coolers, power plants, weapons, 
 
 ## Discovery Log
 
+- **2026-10-19** The module rule is "the mapping knows it, or its name has the word *module*" on both sides: the Retaliator's modules end in "- Bow" and "- Stern", so "ends in Module" missed them in the modal, which cannot see the mapping.
 - **2026-10-19** Phase 3 takes one "add to inventory" modal for one item or many (pick an inventory, add each with its pledge quantity) instead of prefilling the generic inventory item modal; the endpoint is `POST /hangar/inventories/:slug/items/from-pledge-items`. The kind is `ship_component`, not `component`, which the sync already uses for ship modules.
 - **2026-10-19** Ship part matching probed on a real hangar: the same name, else the shortest catalogue name holding every word (size tags dropped), matched 12 of 15; modules are anything the mapping knows or named "… Module", and an unknown one is now reported as not found.
 - **2026-10-18** Decided with the user: added items are remembered and skipped; FPS gear is in scope (see the issue's Decisions).
@@ -78,5 +79,5 @@ The hangar sync keeps the ship parts RSI lists (coolers, power plants, weapons, 
 
 - [x] Phase 1 — Store ship components
 - [x] Phase 2 — List them
-- [ ] Phase 3 — Add to inventory
-- [ ] Phase 4 — Sync modal
+- [x] Phase 3 — Add to inventory
+- [x] Phase 4 — Sync modal
