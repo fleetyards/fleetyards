@@ -3,9 +3,13 @@ import { mount } from "@vue/test-utils";
 import { createRouter, createMemoryHistory } from "vue-router";
 import type { Component } from "@/services/fyApi";
 
+const craftedRecipe = vi.hoisted(() => ({ value: undefined as unknown }));
+
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@/services/fyApi")>()),
   useBlueprints: () => ({ data: ref({ items: [] }), isPending: ref(false) }),
+  // The recipe a crafted part's address names; none of these do.
+  useBlueprint: () => ({ data: ref(craftedRecipe.value) }),
 }));
 
 vi.mock("@/shared/composables/useI18n", () => ({
@@ -38,7 +42,7 @@ const record = (overrides: Partial<Component> = {}): Component =>
     ...overrides,
   }) as Component;
 
-const mountPage = async (component: Component) => {
+const mountPage = async (component: Component, path = "/") => {
   const router = createRouter({
     history: createMemoryHistory(),
     routes: [
@@ -50,7 +54,7 @@ const mountPage = async (component: Component) => {
       },
     ],
   });
-  await router.push("/");
+  await router.push(path);
   await router.isReady();
 
   return mount(ComponentPage, {
@@ -117,5 +121,39 @@ describe("ComponentPage", () => {
     expect(metrics?.text()).not.toContain(
       "labels.hardpoint.quantumDrives.splineSpeed",
     );
+  });
+
+  // A crafted part's card links here with its recipe and grades in the
+  // address, and the page shows the part as they left it.
+  it("shows a crafted part's figures when the address names its recipe", async () => {
+    craftedRecipe.value = {
+      name: "Hull Plate Blueprint",
+      slug: "hull-plate-bp",
+      craftable: { id: "c0000000-0000-0000-0000-000000000001" },
+      costSlots: [
+        {
+          position: 1,
+          modifiers: [
+            {
+              propertyKey: "gpp_health_maxhealth",
+              startQuality: 0,
+              endQuality: 1000,
+              modifierAtStart: 0.8,
+              modifierAtEnd: 1.2,
+            },
+          ],
+        },
+      ],
+    };
+
+    const wrapper = await mountPage(
+      record({ durability: { health: 100 } }),
+      "/?crafted=hull-plate-bp&grades=1:1000",
+    );
+
+    expect(wrapper.find("[data-test='component-crafted']").exists()).toBe(true);
+    expect(wrapper.text()).toContain("120");
+
+    craftedRecipe.value = undefined;
   });
 });

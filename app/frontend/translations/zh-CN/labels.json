@@ -3337,6 +3337,8 @@
         "commodityType": "商品类型",
         "equipmentItemType": "装备类型",
         "crafted": {
+          "page": "由 %{recipe} 以品质 %{grades} 制作。高亮的数值与目录不同。",
+          "showStock": "显示原厂数值",
           "edit": "记录制作方式",
           "summary": "已制作 %{grades}",
           "clear": "未制作",
@@ -3432,6 +3434,7 @@
         "linkedItem": "Linked item",
         "itemUnavailable": "Not in current patch",
         "itemUnavailableHint": "The current game build no longer ships this item. Entries keep it, but it cannot be picked for new ones.",
+        "openInCatalogue": "在目录中打开",
         "qualityRange": "Quality",
         "stockItem": "Stock Item",
         "overCapacity": "超出货舱容量",

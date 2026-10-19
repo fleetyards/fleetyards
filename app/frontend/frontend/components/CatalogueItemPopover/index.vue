@@ -21,6 +21,7 @@ import {
   craftEquipment,
   craftedFactors,
 } from "@/frontend/components/Logistics/craftedRecord";
+import { craftedRouteQuery } from "@/frontend/composables/useCraftedFromRoute";
 import { catalogueItemRoute } from "@/frontend/utils/catalogueItemRoute";
 import {
   useComponent as useComponentQuery,
@@ -73,7 +74,19 @@ const props = withDefaults(defineProps<Props>(), {
   crafted: undefined,
 });
 
-const route = computed(() => catalogueItemRoute(props.item));
+// A crafted part's card opens the catalogue page with its recipe and grades
+// applied, which is the page that describes this part.
+const route = computed(() => {
+  const target = catalogueItemRoute(props.item);
+
+  if (!target || !props.crafted || !(isComponent.value || isEquipment.value)) {
+    return target;
+  }
+
+  return typeof target === "string"
+    ? target
+    : { ...target, query: craftedRouteQuery(props.crafted) };
+});
 
 const slug = computed(() => props.item.slug || "");
 const fleetSlug = computed(() => props.item.fleetSlug || "");

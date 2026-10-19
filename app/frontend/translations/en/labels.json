@@ -3351,6 +3351,8 @@
         "commodityType": "Commodity Type",
         "equipmentItemType": "Equipment Type",
         "crafted": {
+          "page": "Crafted from %{recipe} at grades %{grades}. Highlighted figures differ from the catalogue's.",
+          "showStock": "Show stock values",
           "edit": "Record how it was crafted",
           "summary": "Crafted %{grades}",
           "clear": "Not crafted",
@@ -3446,6 +3448,7 @@
         "linkedItem": "Linked item",
         "itemUnavailable": "Not in current patch",
         "itemUnavailableHint": "The current game build no longer ships this item. Entries keep it, but it cannot be picked for new ones.",
+        "openInCatalogue": "Open in the catalogue",
         "qualityRange": "Quality",
         "stockItem": "Stock Item",
         "overCapacity": "over cargo capacity",

@@ -24,6 +24,9 @@ import {
 } from "@/frontend/composables/useComponentStats";
 import { useComponentDurability } from "@/frontend/composables/useComponentDurability";
 import HardpointCategoryIcon from "@/frontend/components/Models/Hardpoints/CategoryIcon/index.vue";
+import Alert from "@/shared/components/base/Alert/index.vue";
+import { useCraftedFromRoute } from "@/frontend/composables/useCraftedFromRoute";
+import { craftComponent } from "@/frontend/components/Logistics/craftedRecord";
 import {
   type Component,
   useBlueprints as useBlueprintsQuery,
@@ -42,7 +45,18 @@ const { updateMetaInfo } = useMetaInfo();
 // The shell above resolved it, so every reader below is the prop rather than a
 // query of its own -- the history tab is a sibling route and would otherwise
 // fetch the same component a second time.
-const component = computed(() => props.component);
+const stock = computed(() => props.component);
+
+// A crafted part, where the address names its recipe and grades: the page
+// shows the figures they leave, marked against the catalogue's.
+const {
+  crafted,
+  recipe: craftedRecipe,
+  gradesLabel: craftedGradesLabel,
+  stockRoute,
+} = useCraftedFromRoute(stock, craftComponent);
+
+const component = computed(() => crafted.value ?? stock.value);
 
 const stats = useComponentStats(component);
 
@@ -214,6 +228,25 @@ watch(
       {{ component.description }}
     </p>
 
+    <Alert
+      v-if="crafted && craftedRecipe"
+      :title="t('labels.logistics.crafted.lot')"
+      size="compact"
+      data-test="component-crafted"
+    >
+      {{
+        t("labels.logistics.crafted.page", {
+          recipe: craftedRecipe.name,
+          grades: craftedGradesLabel,
+        })
+      }}
+      <template #actions>
+        <router-link :to="stockRoute">
+          {{ t("labels.logistics.crafted.showStock") }}
+        </router-link>
+      </template>
+    </Alert>
+
     <div class="component-page__columns">
       <div class="component-page__main">
         <ComponentStatsCard
@@ -221,6 +254,7 @@ watch(
             itemStats.length || !(durabilityGroups.length || modeGroups.length)
           "
           :component="component"
+          :stock="crafted ? stock : undefined"
         />
 
         <DurabilityMetrics :durability="component.durability" />

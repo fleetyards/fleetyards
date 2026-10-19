@@ -3337,6 +3337,8 @@
         "commodityType": "商品類型",
         "equipmentItemType": "裝備類型",
         "crafted": {
+          "page": "由 %{recipe} 以品質 %{grades} 製作。醒目標示的數值與目錄不同。",
+          "showStock": "顯示原廠數值",
           "edit": "記錄製作方式",
           "summary": "已製作 %{grades}",
           "clear": "未製作",
@@ -3432,6 +3434,7 @@
         "linkedItem": "Linked item",
         "itemUnavailable": "Not in current patch",
         "itemUnavailableHint": "The current game build no longer ships this item. Entries keep it, but it cannot be picked for new ones.",
+        "openInCatalogue": "在目錄中開啟",
         "qualityRange": "Quality",
         "stockItem": "Stock Item",
         "overCapacity": "超出貨艙容量",

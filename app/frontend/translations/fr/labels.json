@@ -3337,6 +3337,8 @@
         "commodityType": "Type de marchandise",
         "equipmentItemType": "Type d'équipement",
         "crafted": {
+          "page": "Fabriqué à partir de %{recipe} avec les qualités %{grades}. Les valeurs mises en évidence diffèrent du catalogue.",
+          "showStock": "Afficher les valeurs de série",
           "edit": "Indiquer comment il a été fabriqué",
           "summary": "Fabriqué %{grades}",
           "clear": "Non fabriqué",
@@ -3432,6 +3434,7 @@
         "linkedItem": "Linked item",
         "itemUnavailable": "Not in current patch",
         "itemUnavailableHint": "The current game build no longer ships this item. Entries keep it, but it cannot be picked for new ones.",
+        "openInCatalogue": "Ouvrir dans le catalogue",
         "qualityRange": "Quality",
         "stockItem": "Stock Item",
         "overCapacity": "au-delà de la capacité de fret",

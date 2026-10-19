@@ -12,6 +12,7 @@ import BaseTable, {
 } from "@/shared/components/base/Table/index.vue";
 import { BaseTableColAlignmentEnum } from "@/shared/components/base/Table/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useMobile } from "@/shared/composables/useMobile";
 import { catalogueItemRoute } from "@/frontend/utils/catalogueItemRoute";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { type InventoryCraftedRef } from "@/services/fyApi";
@@ -46,6 +47,8 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { t, l } = useI18n();
+
+const mobile = useMobile();
 
 // The recipe and the grade in each slot, in slot order.
 const craftedSummary = (crafted: InventoryCraftedRef) =>
@@ -207,6 +210,9 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
 </script>
 
 <template>
+  <!-- On a desktop the name opens the catalogue card on hover. A phone opens
+       it with a tap, which the name's own link would take for itself, so
+       there the card hangs off an icon beside the name instead. -->
   <BaseTable
     v-if="activeTab === 'stock'"
     :records="stockRecords"
@@ -228,14 +234,28 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
          crafted lot. -->
     <template #col-name="{ record }">
       <CatalogueItemPopover
-        v-if="catalogueItemRoute(record.item)"
+        v-if="!mobile && catalogueItemRoute(record.item)"
         :item="record.item ?? {}"
         :crafted="record.crafted"
         :link="false"
       >
         <slot name="stock-name" :record="record">{{ record.name }}</slot>
       </CatalogueItemPopover>
-      <slot v-else name="stock-name" :record="record">{{ record.name }}</slot>
+      <template v-else>
+        <slot name="stock-name" :record="record">{{ record.name }}</slot>
+        <span
+          v-if="catalogueItemRoute(record.item)"
+          class="ledger-catalogue-link"
+        >
+          <CatalogueItemPopover
+            :item="record.item ?? {}"
+            :crafted="record.crafted"
+            :link-label="t('labels.logistics.openInCatalogue')"
+          >
+            <i class="fa-light fa-book-open" />
+          </CatalogueItemPopover>
+        </span>
+      </template>
     </template>
     <template #col-inventory="{ record }">
       <span class="text-muted">{{ record.inventory?.name }}</span>
@@ -315,14 +335,28 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
     </template>
     <template #col-name="{ record }">
       <CatalogueItemPopover
-        v-if="catalogueItemRoute(record.item)"
+        v-if="!mobile && catalogueItemRoute(record.item)"
         :item="record.item ?? {}"
         :crafted="record.crafted"
         :link="false"
       >
         <slot name="log-name" :record="record">{{ record.name }}</slot>
       </CatalogueItemPopover>
-      <slot v-else name="log-name" :record="record">{{ record.name }}</slot>
+      <template v-else>
+        <slot name="log-name" :record="record">{{ record.name }}</slot>
+        <span
+          v-if="catalogueItemRoute(record.item)"
+          class="ledger-catalogue-link"
+        >
+          <CatalogueItemPopover
+            :item="record.item ?? {}"
+            :crafted="record.crafted"
+            :link-label="t('labels.logistics.openInCatalogue')"
+          >
+            <i class="fa-light fa-book-open" />
+          </CatalogueItemPopover>
+        </span>
+      </template>
       <BasePill
         v-if="record.item && record.item.available === false"
         :variant="PillVariantsEnum.WARNING"
@@ -394,5 +428,20 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
 
 .ledger-date {
   white-space: nowrap;
+}
+
+.ledger-catalogue-link {
+  margin-left: 0.4rem;
+  color: var(--color-muted);
+
+  // The link is rendered by the catalogue popover, outside this scope.
+  :deep(a) {
+    color: inherit;
+  }
+
+  &:hover,
+  &:focus-within {
+    color: var(--color-text);
+  }
 }
 </style>
