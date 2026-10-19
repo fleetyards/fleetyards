@@ -294,7 +294,8 @@
         "targetGroupHint": "Pick a hangar group and every imported ship is filed there. Leave it empty to use the groups named in the file.",
         "types": {
           "Imports::HangarImport": "Hangar Import",
-          "Imports::HangarSync": "RSI Hangar Sync"
+          "Imports::HangarSync": "RSI Hangar Sync",
+          "Imports::BuybackSync": "RSI Buy-back Sync"
         },
         "summary": {
           "imported": "Imported",
@@ -3041,7 +3042,8 @@
           "same": "As many as the last sync",
           "reading": "%{count} of about %{total} items"
         },
-        "viewImport": "View this sync's import"
+        "viewImport": "View this sync's import",
+        "lastSynced": "Last synced"
       },
       "cargoGridViewer": {
         "capacity": "Capacity",

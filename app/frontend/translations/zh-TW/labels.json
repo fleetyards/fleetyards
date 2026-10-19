@@ -294,7 +294,8 @@
         "targetGroupHint": "選擇一個機庫分組，所有匯入的艦船都會歸入其中。留空則使用檔案中指定的分組。",
         "types": {
           "Imports::HangarImport": "機庫匯入",
-          "Imports::HangarSync": "RSI 機庫同步"
+          "Imports::HangarSync": "RSI 機庫同步",
+          "Imports::BuybackSync": "RSI 回購同步"
         },
         "summary": {
           "imported": "已匯入",
@@ -3039,7 +3040,8 @@
           "same": "與上次同步相同",
           "reading": "%{count} / 約 %{total} 項"
         },
-        "viewImport": "檢視本次同步的匯入"
+        "viewImport": "檢視本次同步的匯入",
+        "lastSynced": "上次同步："
       },
       "cargoGridViewer": {
         "capacity": "容量",

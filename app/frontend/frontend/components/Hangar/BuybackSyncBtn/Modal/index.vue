@@ -23,6 +23,8 @@ import type { SyncCount } from "@/frontend/components/Hangar/SyncCountList/types
 import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import SyncSessionStatus from "@/frontend/components/Hangar/SyncSessionStatus/index.vue";
+import SyncLastSynced from "@/frontend/components/Hangar/SyncLastSynced/index.vue";
+import { syncRsiBuybacksLastRead } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -74,6 +76,18 @@ const identityStatus = ref<"pending" | "connected" | "notFound">("pending");
 const rsiHandle = ref<string>();
 
 const loadingIdentity = ref(false);
+
+// When the last recorded sync finished, so the start screen says how old the
+// stored list is.
+const lastSyncedAt = ref<string | null>();
+
+onMounted(() => {
+  syncRsiBuybacksLastRead()
+    .then((read) => {
+      lastSyncedAt.value = read.finishedAt;
+    })
+    .catch(() => undefined);
+});
 
 const buybackSync = useBuybackSync();
 
@@ -282,6 +296,21 @@ const steps = computed<SyncStep[]>(() => {
 // The run's result sits under its last step, as the hangar sync's does.
 const resultStep = computed(() => steps.value[steps.value.length - 1].key);
 
+// The import the save recorded, linked under the save once the server has
+// answered.
+const importRoute = computed(() =>
+  result.value?.importId
+    ? { name: "hangar-import", params: { id: result.value.importId } }
+    : undefined,
+);
+
+// Under the save while the price pass runs, with the result once it is over.
+const linkStep = computed(() => {
+  if (!importRoute.value) return undefined;
+
+  return settled.value ? resultStep.value : "submitting";
+});
+
 const resultCounts = computed<SyncCount[]>(() => [
   {
     key: "added",
@@ -465,6 +494,7 @@ const cancelRun = () => {
         :hint="t('texts.buybackSync.sessionHint')"
         @recheck="checkRSIIdentity"
       />
+      <SyncLastSynced :finished-at="lastSyncedAt" />
       <SyncPoints
         :points="[
           {
@@ -540,13 +570,34 @@ const cancelRun = () => {
             <SyncCountList :counts="readCounts" />
           </template>
           <template
-            v-if="settled && resultStep === 'submitting'"
+            v-if="
+              (settled && resultStep === 'submitting') ||
+              linkStep === 'submitting'
+            "
             #step-submitting
           >
-            <SyncCountList :counts="resultCounts" />
+            <SyncCountList v-if="settled" :counts="resultCounts" />
+            <router-link
+              v-if="importRoute && linkStep === 'submitting'"
+              :to="importRoute"
+              class="buyback-sync__import-link"
+              data-test="buyback-sync-import-link"
+            >
+              {{ t("labels.syncExtension.viewImport") }}
+              <i class="fa-light fa-arrow-right" aria-hidden="true" />
+            </router-link>
           </template>
           <template v-if="settled && resultStep === 'prices'" #step-prices>
             <SyncCountList :counts="resultCounts" />
+            <router-link
+              v-if="importRoute && linkStep === 'prices'"
+              :to="importRoute"
+              class="buyback-sync__import-link"
+              data-test="buyback-sync-import-link"
+            >
+              {{ t("labels.syncExtension.viewImport") }}
+              <i class="fa-light fa-arrow-right" aria-hidden="true" />
+            </router-link>
           </template>
         </SyncSteps>
 
@@ -621,6 +672,14 @@ const cancelRun = () => {
 .buyback-sync__text {
   margin: 0;
   line-height: 1.55;
+}
+
+.buyback-sync__import-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  font-size: 14px;
 }
 
 .buyback-sync__note {

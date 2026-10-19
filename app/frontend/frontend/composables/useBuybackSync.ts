@@ -17,7 +17,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
   RsiPageKindEnum,
   syncRsiBuybacks,
-  hangarBuybacks,
+  syncRsiBuybacksLastRead,
   type BuybackSyncResult,
   type RsiBuybackItemInput,
 } from "@/services/fyApi";
@@ -47,12 +47,15 @@ const currentPage = ref(1);
 
 const buybacks = ref<RsiBuybackItemInput[]>([]);
 
-// How many buy-backs are stored, taken when a run starts: the last sync left
-// the list that way, so it is what this run reads against.
+// What the last finished sync read, taken when a run starts, for this run to
+// read against; before a first recorded sync, the stored list's size.
 const lastCount = ref<number>();
 
+const lastPages = ref<number>();
+
 // The list's length in pages: RSI's pager where a page shows one, otherwise an
-// estimate from the stored count and the first page's size.
+// estimate from the last sync's pages, or from its count and the first page's
+// size.
 const totalPages = ref<number>();
 
 const pagesEstimated = ref(false);
@@ -78,13 +81,19 @@ let seenIds = new Set<string>();
 // The first page's size, for the estimate: RSI shows the same number per page.
 let firstPageSize = 0;
 
-// Runs when the stored count or the first page arrives, whichever is last. A
+// Runs when the last read or the first page arrives, whichever is last. A
 // pager, once seen, wins over the estimate.
 const estimatePages = () => {
   if (totalPages.value && !pagesEstimated.value) return;
-  if (!lastCount.value || !firstPageSize) return;
 
-  totalPages.value = Math.ceil(lastCount.value / firstPageSize);
+  const pages =
+    lastPages.value ??
+    (lastCount.value && firstPageSize
+      ? Math.ceil(lastCount.value / firstPageSize)
+      : undefined);
+  if (!pages) return;
+
+  totalPages.value = pages;
   pagesEstimated.value = true;
 };
 
@@ -101,6 +110,7 @@ const clear = () => {
   currentPage.value = 1;
   buybacks.value = [];
   lastCount.value = undefined;
+  lastPages.value = undefined;
   totalPages.value = undefined;
   pagesEstimated.value = false;
   readsDetails.value = false;
@@ -284,13 +294,13 @@ export const useBuybackSync = () => {
 
     // Only a measure to read the run against; without it the run reads all the
     // same.
-    hangarBuybacks({ perPage: "1" })
-      .then((stored) => {
-        const count = stored.meta.pagination?.totalCount;
-        // Once the list is saved the stored count is this run's own.
-        if (id !== runId || status.value !== "fetching" || !count) return;
+    syncRsiBuybacksLastRead()
+      .then((read) => {
+        // Once the list is saved, the last read is this run's own.
+        if (id !== runId || status.value !== "fetching" || !read.total) return;
 
-        lastCount.value = count;
+        lastCount.value = read.total;
+        lastPages.value = read.pages ?? undefined;
         estimatePages();
       })
       .catch(() => undefined);

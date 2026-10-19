@@ -16,6 +16,7 @@ import { useHangarStore } from "@/frontend/stores/hangar";
 import { useRouter, useRoute } from "vue-router";
 import SyncExtensionLinks from "@/frontend/components/SyncExtensionLinks/index.vue";
 import SyncSessionStatus from "@/frontend/components/Hangar/SyncSessionStatus/index.vue";
+import SyncLastSynced from "@/frontend/components/Hangar/SyncLastSynced/index.vue";
 import SyncPoints from "@/frontend/components/Hangar/SyncPoints/index.vue";
 import HangarGroupsSelect from "@/frontend/components/base/HangarGroupsSelect/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
@@ -27,6 +28,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
   HangarSyncOutcomeEnum,
   HangarSyncUnmatchedActionEnum,
+  syncRsiHangarLastRead,
 } from "@/services/fyApi";
 import {
   FleetyardsSyncAction,
@@ -48,6 +50,18 @@ const rsiHandle = ref<string>();
 const loadingIdentity = ref(false);
 
 const hangarStore = useHangarStore();
+
+// When the last sync finished, so the start screen says how old what is
+// stored here is.
+const lastSyncedAt = ref<string | null>();
+
+onMounted(() => {
+  syncRsiHangarLastRead()
+    .then((read) => {
+      lastSyncedAt.value = read.finishedAt;
+    })
+    .catch(() => undefined);
+});
 
 const hangarSync = useHangarSync();
 
@@ -364,6 +378,7 @@ const refreshPage = async () => {
             :hint="t('texts.syncExtension.sessionHint')"
             @recheck="checkRSIIdentity"
           />
+          <SyncLastSynced :finished-at="lastSyncedAt" />
           <SyncPoints
             :points="[
               {

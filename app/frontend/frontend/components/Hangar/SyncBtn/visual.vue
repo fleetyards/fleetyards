@@ -298,6 +298,14 @@ useVisualApiMock([
     path: /^\/hangar\/sync-rsi-hangar\/status$/,
     respond: () => ({ status: "finished", result: successResult }),
   },
+  {
+    method: "GET",
+    path: /^\/hangar\/sync-rsi-hangar\/last-read$/,
+    respond: () => ({
+      ...biggerLastRead,
+      finishedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+    }),
+  },
 ]);
 
 type StartScreen = {

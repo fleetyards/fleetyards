@@ -12315,6 +12315,33 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/hangar/sync-rsi-buybacks/last-read":
+    get:
+      summary: Sync RSI Buy-back Pledges Last Read
+      tags:
+      - Hangar
+      operationId: syncRsiBuybacksLastRead
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/BuybackSyncLastRead"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/hangar/sync-rsi-hangar":
     put:
       summary: Sync RSI Hangar
@@ -21274,6 +21301,24 @@ components:
       - meta
       - items
       title: BuybackPledges
+    BuybackSyncLastRead:
+      type: object
+      properties:
+        finishedAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        pages:
+          type:
+          - integer
+          - 'null'
+        total:
+          type: integer
+      additionalProperties: false
+      required:
+      - total
+      title: BuybackSyncLastRead
     BuybackSyncResult:
       type: object
       properties:
@@ -21287,12 +21332,16 @@ components:
           type: array
           items:
             type: string
+        importId:
+          type: string
+          format: uuid
       additionalProperties: false
       required:
       - total
       - added
       - removed
       - detailsPending
+      - importId
       title: BuybackSyncResult
     CalendarSubscription:
       type: object
@@ -32160,9 +32209,11 @@ components:
       enum:
       - Imports::HangarImport
       - Imports::HangarSync
+      - Imports::BuybackSync
       x-enumNames:
       - IMPORTS_HANGAR_IMPORT
       - IMPORTS_HANGAR_SYNC
+      - IMPORTS_BUYBACK_SYNC
       title: ImportTypeEnum
     Imports:
       type: object

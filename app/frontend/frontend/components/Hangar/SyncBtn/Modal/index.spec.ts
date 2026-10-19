@@ -93,6 +93,8 @@ vi.mock("@/shared/composables/useI18n", () => ({
     t: (key: string) => key,
     tExists: () => false,
     currentLocale: () => "en",
+    l: (value: string) => value,
+    timeDistance: (value: string) => value,
   }),
 }));
 
@@ -419,6 +421,15 @@ describe("HangarSyncModal", () => {
     expect(
       wrapper.find("[data-test='sync-extension-signed-in-as']").exists(),
     ).toBe(false);
+  });
+
+  it("says on the start screen when the last sync finished", async () => {
+    lastRead.mockResolvedValue(lastReadOf(3));
+    const { wrapper } = await mountModal();
+
+    expect(
+      wrapper.get("[data-test='sync-last-synced'] time").attributes("datetime"),
+    ).toBe("2026-10-11T18:00:00Z");
   });
 
   it("hands the run what the last finished sync read", async () => {

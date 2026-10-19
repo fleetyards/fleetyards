@@ -18,6 +18,7 @@ import {
   useImports,
   cancelImport,
   ImportStatusEnum,
+  ImportTypeEnum,
   type Import,
 } from "@/services/fyApi";
 import { useQueryClient } from "@tanstack/vue-query";
@@ -33,6 +34,10 @@ const RUNNING_STATES: ImportStatusEnum[] = [
 ];
 
 const isRunning = (item: Import) => RUNNING_STATES.includes(item.status);
+
+// A buy-back sync runs inside one request, with nothing to stop part way.
+const isCancellable = (item: Import) =>
+  isRunning(item) && item.type !== ImportTypeEnum.IMPORTS_BUYBACK_SYNC;
 
 const { perPage, page, updatePerPage } = usePagination();
 
@@ -188,7 +193,7 @@ const summary = (item: Import) => {
       </Btn>
 
       <Btn
-        v-if="isRunning(item)"
+        v-if="isCancellable(item)"
         :tone="BtnTonesEnum.DANGER"
         :aria-label="t('actions.imports.cancel')"
         data-test="import-cancel"

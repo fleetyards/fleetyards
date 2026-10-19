@@ -7,6 +7,7 @@ resource :hangar, only: %i[show destroy] do
   get "sync-rsi-hangar/status", to: "hangars#sync_rsi_hangar_status"
   get "sync-rsi-hangar/last-read", to: "hangars#sync_rsi_hangar_last_read"
   put "sync-rsi-buybacks", to: "hangar_buybacks#sync"
+  get "sync-rsi-buybacks/last-read", to: "hangar_buybacks#sync_last_read"
   put "sync-rsi-buyback-details", to: "hangar_buybacks#sync_details"
   post "rsi-page-reports", to: "hangar_rsi_page_reports#create"
   get "buybacks", to: "hangar_buybacks#index"

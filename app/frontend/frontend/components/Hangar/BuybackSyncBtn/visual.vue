@@ -49,7 +49,22 @@ useVisualApiMock([
   {
     method: "PUT",
     path: /^\/hangar\/sync-rsi-buybacks$/,
-    respond: () => ({ total: 2, added: 2, removed: 0, detailsPending: [] }),
+    respond: () => ({
+      total: 2,
+      added: 2,
+      removed: 0,
+      detailsPending: [],
+      importId: "00000000-0000-4000-8000-000000000002",
+    }),
+  },
+  {
+    method: "GET",
+    path: /^\/hangar\/sync-rsi-buybacks\/last-read$/,
+    respond: () => ({
+      finishedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+      pages: 1,
+      total: 3,
+    }),
   },
 ]);
 const startScreens: StartScreen[] = [
@@ -135,7 +150,12 @@ const setRun = ({
   buybackSync.readsDetails.value = true;
   buybackSync.buybacks.value = samplePledges(found);
   buybackSync.result.value = result
-    ? { total: found, ...result, detailsPending: [] }
+    ? {
+        total: found,
+        ...result,
+        detailsPending: [],
+        importId: "00000000-0000-4000-8000-000000000002",
+      }
     : undefined;
   buybackSync.detailsStarted.value = pricesTotal !== undefined;
   details.total.value = pricesTotal ?? 0;
