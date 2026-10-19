@@ -4503,12 +4503,10 @@
         "crafted": "已制作",
         "craftedPart": "%{name}（已制作）",
         "crafting": {
+          "title": "制作 · %{name}",
           "toggle": "已制作",
-          "qualityAll": "每个槽位品质 %{quality}",
-          "qualityRange": "品质 %{low}–%{high}",
-          "showQualities": "设置品质",
-          "hideQualities": "隐藏品质",
-          "recipe": "蓝图 %{number}"
+          "recipe": "蓝图 %{number}",
+          "hint": "将部件标记为已制作，即可设置每个蓝图槽位的材料品质。"
         },
         "fitted": "已装配",
         "owned": "已拥有",

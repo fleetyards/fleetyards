@@ -4520,12 +4520,10 @@
         "crafted": "Crafted",
         "craftedPart": "%{name} (crafted)",
         "crafting": {
+          "title": "Craft · %{name}",
           "toggle": "Crafted",
-          "qualityAll": "Quality %{quality} in every slot",
-          "qualityRange": "Quality %{low}–%{high}",
-          "showQualities": "Set qualities",
-          "hideQualities": "Hide qualities",
-          "recipe": "Recipe %{number}"
+          "recipe": "Recipe %{number}",
+          "hint": "Mark the part as crafted to set the material quality in each recipe slot."
         },
         "fitted": "Fitted",
         "owned": "Owned",

@@ -4506,12 +4506,10 @@
         "crafted": "Fabbricato",
         "craftedPart": "%{name} (fabbricato)",
         "crafting": {
+          "title": "Fabbrica · %{name}",
           "toggle": "Fabbricato",
-          "qualityAll": "Qualità %{quality} in ogni slot",
-          "qualityRange": "Qualità %{low}–%{high}",
-          "showQualities": "Imposta le qualità",
-          "hideQualities": "Nascondi le qualità",
-          "recipe": "Progetto %{number}"
+          "recipe": "Progetto %{number}",
+          "hint": "Contrassegna il pezzo come fabbricato per impostare la qualità del materiale in ogni slot del progetto."
         },
         "fitted": "Montato",
         "owned": "Posseduto",

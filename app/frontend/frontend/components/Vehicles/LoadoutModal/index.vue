@@ -35,7 +35,7 @@ import SocketBoard from "@/frontend/components/Loadout/SocketBoard/index.vue";
 import Picker from "@/frontend/components/Loadout/Picker/index.vue";
 import Comparison from "./Comparison/index.vue";
 import ComponentComparison from "./ComponentComparison/index.vue";
-import Crafting from "./Crafting/index.vue";
+import Crafter from "./Crafter/index.vue";
 import { useCraftedRecipes } from "@/frontend/composables/useCraftedRecipes";
 import LoadoutMetrics from "./Metrics/index.vue";
 import LoadoutChanges from "@/frontend/components/Loadout/Changes/index.vue";
@@ -572,6 +572,10 @@ const activeKind = ref<"module" | "component">("module");
 
 const activeTab = ref<string>();
 
+// Whether the open socket is being filled or its part crafted: the craft
+// control on a socket opens the crafter in the picker's place.
+const activeMode = ref<"pick" | "craft">("pick");
+
 const pickerOpen = computed(() => props.editable && !!activeSlot.value);
 
 const pickerOpenFor = (tabId: string) =>
@@ -579,15 +583,21 @@ const pickerOpenFor = (tabId: string) =>
   activeKind.value === "component" &&
   activeTab.value === tabId;
 
+const crafterOpenFor = (tabId: string) =>
+  pickerOpenFor(tabId) && activeMode.value === "craft";
+
+const choosingFor = (tabId: string) =>
+  pickerOpenFor(tabId) && activeMode.value === "pick";
+
 const fitted = computed(() => fittedModules.value || {});
 
 const formRoot = ref<HTMLElement>();
 
-const picker = ref<InstanceType<typeof Picker>>();
+const picker = ref<{ focus: () => void }>();
 
-// One picker shows at a time, in whichever tab is open.
+// One picker or crafter shows at a time, in whichever tab is open.
 const setPicker = (instance: unknown) => {
-  if (instance) picker.value = instance as InstanceType<typeof Picker>;
+  if (instance) picker.value = instance as { focus: () => void };
 };
 
 const socketButton = (slot: string) =>
@@ -630,15 +640,34 @@ const onSocketSelect = async (
   kind: "module" | "component" = "module",
   tabId?: string,
 ) => {
-  const opening = activeSlot.value !== slot || activeKind.value !== kind;
+  const opening =
+    activeSlot.value !== slot ||
+    activeKind.value !== kind ||
+    activeMode.value !== "pick";
 
   activeSlot.value = opening ? slot : undefined;
   activeKind.value = kind;
   activeTab.value = tabId;
+  activeMode.value = "pick";
   hovered.value = undefined;
 
   // On desktop the picker comes after every socket in the page's order, so
   // the keyboard is handed to it rather than left to tab its way there.
+  if (opening) {
+    await nextTick();
+    picker.value?.focus();
+  }
+};
+
+const onCraft = async (slot: string, tabId: string) => {
+  const opening = activeSlot.value !== slot || activeMode.value !== "craft";
+
+  activeSlot.value = opening ? slot : undefined;
+  activeKind.value = "component";
+  activeTab.value = tabId;
+  activeMode.value = "craft";
+  hovered.value = undefined;
+
   if (opening) {
     await nextTick();
     picker.value?.focus();
@@ -683,7 +712,11 @@ const {
     modelSlug: model.value.slug,
     ancestorIds: ancestorIds.value,
   }),
-  { query: { enabled: () => !!activeComponentSlot.value } },
+  {
+    query: {
+      enabled: () => !!activeComponentSlot.value && activeMode.value === "pick",
+    },
+  },
 );
 
 const pickerOptions = computed(() => {
@@ -852,15 +885,25 @@ const withoutCrafting = (paths: string[]) =>
     ),
   );
 
-// The active socket's part and how it was crafted, for the crafting panel. A
-// stacked row is crafted as one: a change reaches every slot it stands for.
+// The crafter's socket: its part as catalogued and as crafted, and how far the
+// crafting moves its figures. A stacked row is crafted as one: a change reaches
+// every slot it stands for.
 const activeCrafting = computed(() => {
   const entry = activeComponentSlot.value;
-  if (!entry?.content) return undefined;
+  if (activeMode.value !== "craft" || !entry?.content) return undefined;
+
+  const catalogued =
+    fitting.components.value[entry.content.id] ?? entry.content;
 
   return {
-    component: fitting.components.value[entry.content.id] ?? entry.content,
+    title: slotName(entry.slot.name),
+    component: catalogued,
     crafted: entry.crafted,
+    comparison: {
+      from: catalogued,
+      to: entry.content,
+      rows: fitting.compare(catalogued, entry.content, entry.slot.category),
+    },
   };
 });
 
@@ -884,7 +927,7 @@ const closePicker = async () => {
   const hadFocus =
     !!slot &&
     !!formRoot.value
-      ?.querySelector(".loadout-picker")
+      ?.querySelector(".loadout-picker, .loadout-crafter")
       ?.contains(document.activeElement);
 
   activeSlot.value = undefined;
@@ -1552,36 +1595,42 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
                     >
                       <SocketBoard
                         :active="
-                          activeKind === 'component' ? activeSlot : undefined
+                          activeKind === 'component' && activeMode === 'pick'
+                            ? activeSlot
+                            : undefined
+                        "
+                        :crafting="
+                          crafterOpenFor(tab.id) ? activeSlot : undefined
                         "
                         :groups="componentTabs[tab.id].groups"
                         :editable="editable"
                         @update:active="
                           (slot) => onSocketSelect(slot, 'component', tab.id)
                         "
+                        @craft="(slot) => onCraft(slot, tab.id)"
                       >
                         <template
                           v-if="pickerOpenFor(tab.id) && mobile"
                           #active
                         >
+                          <Crafter
+                            v-if="activeCrafting"
+                            :key="`craft-${activeSlot}`"
+                            :ref="setPicker"
+                            v-bind="activeCrafting"
+                            @update:crafted="onCrafted"
+                            @close="closePicker"
+                          />
                           <Picker
+                            v-else-if="choosingFor(tab.id)"
                             :key="activeSlot"
                             :ref="setPicker"
                             v-bind="pickerBindings"
                             v-on="pickerListeners"
                           >
-                            <template
-                              v-if="componentComparison || activeCrafting"
-                              #comparison
-                            >
+                            <template v-if="componentComparison" #comparison>
                               <ComponentComparison
-                                v-if="componentComparison"
                                 v-bind="componentComparison"
-                              />
-                              <Crafting
-                                v-if="activeCrafting"
-                                v-bind="activeCrafting"
-                                @update:crafted="onCrafted"
                               />
                             </template>
                           </Picker>
@@ -1589,27 +1638,25 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
                       </SocketBoard>
                     </div>
 
+                    <Crafter
+                      v-if="crafterOpenFor(tab.id) && !mobile && activeCrafting"
+                      :key="`craft-${activeSlot}`"
+                      :ref="setPicker"
+                      class="vehicle-loadout__picker"
+                      v-bind="activeCrafting"
+                      @update:crafted="onCrafted"
+                      @close="closePicker"
+                    />
                     <Picker
-                      v-if="pickerOpenFor(tab.id) && !mobile"
+                      v-else-if="choosingFor(tab.id) && !mobile"
                       :key="activeSlot"
                       :ref="setPicker"
                       class="vehicle-loadout__picker"
                       v-bind="pickerBindings"
                       v-on="pickerListeners"
                     >
-                      <template
-                        v-if="componentComparison || activeCrafting"
-                        #comparison
-                      >
-                        <ComponentComparison
-                          v-if="componentComparison"
-                          v-bind="componentComparison"
-                        />
-                        <Crafting
-                          v-if="activeCrafting"
-                          v-bind="activeCrafting"
-                          @update:crafted="onCrafted"
-                        />
+                      <template v-if="componentComparison" #comparison>
+                        <ComponentComparison v-bind="componentComparison" />
                       </template>
                     </Picker>
 

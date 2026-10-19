@@ -1325,11 +1325,26 @@ describe("VehicleLoadoutModal component tabs", () => {
   });
 
   describe("crafting", () => {
+    const CRAFTABLE_GUN = { ...STOCK_GUN, craftable: true };
+
     beforeEach(() => {
       recipes.value = { items: [{ id: "bp", slug: "bp-gun" }] };
       componentOptions.value = [
-        { component: STOCK_GUN, slots: [] },
+        { component: CRAFTABLE_GUN, slots: [] },
         { component: OTHER_GUN, slots: [] },
+      ];
+      hullSlots.value = [
+        {
+          name: "hardpoint_gun_nose",
+          hardpointId: "hull-nose",
+          category: "weapon_mounts",
+          minSize: 3,
+          maxSize: 3,
+          types: ["Turret"],
+          editable: true,
+          stock: STOCK_GIMBAL,
+          slots: [gunPort("hardpoint_class_2", CRAFTABLE_GUN)],
+        },
       ];
     });
 
@@ -1340,7 +1355,9 @@ describe("VehicleLoadoutModal component tabs", () => {
     const GUN = "hardpoint_gun_nose/hardpoint_class_2";
 
     const craft = async (wrapper: Wrapper) => {
-      await socket(wrapper, GUN).trigger("click");
+      await wrapper
+        .get(`[data-test='loadout-socket-craft-${GUN}']`)
+        .trigger("click");
       await flushPromises();
       await wrapper
         .get("[data-test='vehicle-loadout-crafted-toggle']")
@@ -1348,17 +1365,36 @@ describe("VehicleLoadoutModal component tabs", () => {
       await flushPromises();
     };
 
-    it("offers crafting only for a part that has a recipe", async () => {
-      recipes.value = { items: [] };
+    it("offers crafting on a socket only for a part a recipe makes", async () => {
       const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
       await flushPromises();
 
-      await socket(wrapper, GUN).trigger("click");
+      expect(
+        wrapper.find(`[data-test='loadout-socket-craft-${GUN}']`).exists(),
+      ).toBe(true);
+      expect(
+        wrapper
+          .find("[data-test='loadout-socket-craft-hardpoint_gun_nose']")
+          .exists(),
+      ).toBe(false);
+    });
+
+    it("opens the crafter in the picker's place, and the socket's own press goes back to picking", async () => {
+      const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
       await flushPromises();
 
+      await craft(wrapper);
       expect(
-        wrapper.find("[data-test='vehicle-loadout-crafting']").exists(),
+        wrapper.find("[data-test='vehicle-loadout-crafter']").exists(),
+      ).toBe(true);
+      expect(wrapper.find("[data-test='loadout-picker']").exists()).toBe(false);
+
+      await socket(wrapper, GUN).trigger("click");
+      await flushPromises();
+      expect(
+        wrapper.find("[data-test='vehicle-loadout-crafter']").exists(),
       ).toBe(false);
+      expect(wrapper.find("[data-test='loadout-picker']").exists()).toBe(true);
     });
 
     it("saves the stock part as crafted, with a quality per recipe slot", async () => {
@@ -1425,7 +1461,9 @@ describe("VehicleLoadoutModal component tabs", () => {
       await flushPromises();
 
       await craft(wrapper);
-      await wrapper.get("[data-test='loadout-picker-close']").trigger("click");
+      await wrapper
+        .get("[data-test='vehicle-loadout-crafter-close']")
+        .trigger("click");
       await flushPromises();
       await choose(wrapper, GUN, "Other Gun");
       await save(wrapper);

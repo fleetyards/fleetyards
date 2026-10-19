@@ -4506,12 +4506,10 @@
         "crafted": "Fabricado",
         "craftedPart": "%{name} (fabricado)",
         "crafting": {
+          "title": "Fabricar · %{name}",
           "toggle": "Fabricado",
-          "qualityAll": "Calidad %{quality} en cada ranura",
-          "qualityRange": "Calidad %{low}–%{high}",
-          "showQualities": "Ajustar calidades",
-          "hideQualities": "Ocultar calidades",
-          "recipe": "Plano %{number}"
+          "recipe": "Plano %{number}",
+          "hint": "Marca la pieza como fabricada para ajustar la calidad del material en cada ranura del plano."
         },
         "fitted": "Equipado",
         "owned": "En propiedad",

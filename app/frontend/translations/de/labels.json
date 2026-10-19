@@ -4506,12 +4506,10 @@
         "crafted": "Hergestellt",
         "craftedPart": "%{name} (hergestellt)",
         "crafting": {
+          "title": "Herstellen · %{name}",
           "toggle": "Hergestellt",
-          "qualityAll": "Qualität %{quality} in jedem Slot",
-          "qualityRange": "Qualität %{low}–%{high}",
-          "showQualities": "Qualitäten einstellen",
-          "hideQualities": "Qualitäten ausblenden",
-          "recipe": "Bauplan %{number}"
+          "recipe": "Bauplan %{number}",
+          "hint": "Markiere das Teil als hergestellt, um die Materialqualität in jedem Slot des Bauplans einzustellen."
         },
         "fitted": "Verbaut",
         "owned": "Im Besitz",
