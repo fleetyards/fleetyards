@@ -3335,8 +3335,8 @@
         "commodityType": "Tipo de mercancía",
         "equipmentItemType": "Tipo de equipo",
         "crafted": {
-          "field": "Fabricado",
-          "placeholder": "No fabricado",
+          "edit": "Indicar cómo se fabricó",
+          "summary": "Fabricado %{grades}",
           "clear": "No fabricado",
           "blueprint": "Plano",
           "hint": "El plano con el que se fabricó %{name} y la calidad del material usado en cada ranura.",

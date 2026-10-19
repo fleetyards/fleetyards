@@ -3335,8 +3335,8 @@
         "commodityType": "Tipo di merce",
         "equipmentItemType": "Tipo di equipaggiamento",
         "crafted": {
-          "field": "Fabbricato",
-          "placeholder": "Non fabbricato",
+          "edit": "Indica come è stato fabbricato",
+          "summary": "Fabbricato %{grades}",
           "clear": "Non fabbricato",
           "blueprint": "Progetto",
           "hint": "Il progetto con cui è stato fabbricato %{name} e la qualità del materiale usato in ogni slot.",

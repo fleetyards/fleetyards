@@ -162,12 +162,16 @@ const {
   draft: craftingDraft,
   draftValid: craftingValid,
   craftable,
-  craftedRecipe,
-  craftedGrades,
+  craftedLabel,
   openCrafting,
   applyCrafting,
   clearCrafted,
 } = useCraftingStep({ pickedItem, isDeposit, showStep });
+
+// The item, where it is filed, and how it was crafted, on one line.
+const itemMeta = computed(() =>
+  [categoryLabel.value, craftedLabel.value].filter(Boolean).join(" · "),
+);
 
 const [quantity, quantityProps] = defineField("quantity");
 const [unit] = defineField("unit");
@@ -406,21 +410,15 @@ const onSubmit = handleSubmit(async (values) => {
         <ItemPickerField
           name="catalogueItem"
           :value="name"
-          :category-label="categoryLabel"
+          :category-label="itemMeta"
+          :craft-label="
+            craftable ? t('labels.logistics.crafted.edit') : undefined
+          "
+          :crafted="!!crafted"
           :error="nameError"
           @open="showPicker(true)"
           @clear="clearItem"
-        />
-        <ItemPickerField
-          v-if="craftable"
-          name="crafted"
-          :value="craftedRecipe?.name ?? undefined"
-          :category-label="craftedGrades"
-          :label="t('labels.logistics.crafted.field')"
-          :placeholder="t('labels.logistics.crafted.placeholder')"
-          :clear-label="t('labels.logistics.crafted.clear')"
-          @open="openCrafting"
-          @clear="clearCrafted"
+          @craft="openCrafting"
         />
       </template>
 
@@ -497,6 +495,14 @@ const onSubmit = handleSubmit(async (values) => {
           @click="showStep('form')"
         >
           {{ t("actions.back") }}
+        </Btn>
+        <Btn
+          v-if="step === 'crafting' && crafted"
+          :variant="BtnVariantsEnum.BARE"
+          data-test="crafting-clear"
+          @click="clearCrafted"
+        >
+          {{ t("labels.logistics.crafted.clear") }}
         </Btn>
         <Btn
           v-if="step === 'crafting'"

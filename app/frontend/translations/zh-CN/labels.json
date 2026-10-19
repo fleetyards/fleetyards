@@ -3335,8 +3335,8 @@
         "commodityType": "商品类型",
         "equipmentItemType": "装备类型",
         "crafted": {
-          "field": "已制作",
-          "placeholder": "未制作",
+          "edit": "记录制作方式",
+          "summary": "已制作 %{grades}",
           "clear": "未制作",
           "blueprint": "蓝图",
           "hint": "制作%{name}所用的蓝图，以及每个槽位所用材料的品质。",

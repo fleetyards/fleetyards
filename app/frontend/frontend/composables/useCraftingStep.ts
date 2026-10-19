@@ -4,6 +4,7 @@ import {
   type PickedItem,
 } from "@/frontend/components/Logistics/types";
 import { useItemRecipes } from "@/frontend/composables/useItemRecipes";
+import { useI18n } from "@/shared/composables/useI18n";
 
 type Options = {
   pickedItem: Ref<PickedItem | undefined>;
@@ -14,9 +15,9 @@ type Options = {
 };
 
 /**
- * Crafting as a step of a ledger form: the form says whether the part was
- * crafted and from what, and a page of its own takes the recipe and the grade
- * of material in each slot. The page edits a draft, which the form takes only
+ * Crafting as a step of a ledger form: the item's field says whether the part
+ * was crafted and with what grades, and a page of its own takes the recipe and
+ * the grade of material in each slot. The page edits a draft, which the form takes only
  * when it is applied.
  */
 export const useCraftingStep = ({
@@ -24,6 +25,8 @@ export const useCraftingStep = ({
   isDeposit,
   showStep,
 }: Options) => {
+  const { t } = useI18n();
+
   const crafted = ref<CraftedSelection | undefined>(undefined);
   const draft = ref<CraftedSelection>({ blueprintId: "", qualities: {} });
   const draftValid = ref(false);
@@ -43,17 +46,15 @@ export const useCraftingStep = ({
     () => !!craftableItemId.value && recipes.value.length > 0,
   );
 
-  const craftedRecipe = computed(() =>
-    recipes.value.find((recipe) => recipe.id === crafted.value?.blueprintId),
-  );
-
-  // What the form shows of it: the recipe, and the grades in slot order.
-  const craftedGrades = computed(() =>
+  // What the item's field shows of it: the grades, in slot order.
+  const craftedLabel = computed(() =>
     crafted.value
-      ? Object.entries(crafted.value.qualities)
-          .sort(([a], [b]) => Number(a) - Number(b))
-          .map(([, grade]) => grade)
-          .join(" · ")
+      ? t("labels.logistics.crafted.summary", {
+          grades: Object.entries(crafted.value.qualities)
+            .sort(([a], [b]) => Number(a) - Number(b))
+            .map(([, grade]) => grade)
+            .join(" / "),
+        })
       : undefined,
   );
 
@@ -74,6 +75,7 @@ export const useCraftingStep = ({
 
   const clearCrafted = () => {
     crafted.value = undefined;
+    showStep("form");
   };
 
   // A different item has a different recipe, if any.
@@ -89,8 +91,7 @@ export const useCraftingStep = ({
     draft,
     draftValid,
     craftable,
-    craftedRecipe,
-    craftedGrades,
+    craftedLabel,
     openCrafting,
     applyCrafting,
     clearCrafted,

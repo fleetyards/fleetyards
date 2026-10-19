@@ -3335,8 +3335,8 @@
         "commodityType": "Type de marchandise",
         "equipmentItemType": "Type d'équipement",
         "crafted": {
-          "field": "Fabriqué",
-          "placeholder": "Non fabriqué",
+          "edit": "Indiquer comment il a été fabriqué",
+          "summary": "Fabriqué %{grades}",
           "clear": "Non fabriqué",
           "blueprint": "Plan",
           "hint": "Le plan à partir duquel %{name} a été fabriqué, et la qualité du matériau utilisé dans chaque emplacement.",

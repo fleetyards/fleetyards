@@ -3349,8 +3349,8 @@
         "commodityType": "Commodity Type",
         "equipmentItemType": "Equipment Type",
         "crafted": {
-          "field": "Crafted",
-          "placeholder": "Not crafted",
+          "edit": "Record how it was crafted",
+          "summary": "Crafted %{grades}",
           "clear": "Not crafted",
           "blueprint": "Recipe",
           "hint": "The recipe %{name} was crafted from, and the quality of the material that went into each slot.",

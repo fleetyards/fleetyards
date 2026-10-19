@@ -15,24 +15,24 @@ type Props = {
   // What the item is filed under, beside its name.
   categoryLabel?: string;
   error?: string;
-  // For a field that opens another step than the item picker.
-  label?: string;
-  placeholder?: string;
-  clearLabel?: string;
+  // Offers the crafting step beside the item, under this name, where the item
+  // is one a recipe makes.
+  craftLabel?: string;
+  crafted?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   value: undefined,
   categoryLabel: undefined,
   error: undefined,
-  label: undefined,
-  placeholder: undefined,
-  clearLabel: undefined,
+  craftLabel: undefined,
+  crafted: false,
 });
 
 const emit = defineEmits<{
   open: [];
   clear: [];
+  craft: [];
 }>();
 
 const { t } = useI18n();
@@ -44,7 +44,7 @@ const errorId = computed(() => `${props.name}-error`);
 <template>
   <div class="item-picker-field" :data-test="`item-picker-field-${name}`">
     <label class="item-picker-field__label" :for="triggerId">
-      {{ label ?? t("labels.logistics.itemPicker.field") }}
+      {{ t("labels.logistics.itemPicker.field") }}
     </label>
 
     <div class="item-picker-field__control">
@@ -65,18 +65,32 @@ const errorId = computed(() => `${props.name}-error`);
           </span>
         </span>
         <span v-else class="item-picker-field__placeholder">
-          {{ placeholder ?? t("labels.logistics.itemPicker.placeholder") }}
+          {{ t("labels.logistics.itemPicker.placeholder") }}
         </span>
         <i class="fa fa-chevron-right" />
       </button>
 
       <!-- Beside the trigger, not inside it: a button cannot hold another. -->
       <button
-        v-if="value"
-        v-tooltip="clearLabel ?? t('labels.logistics.itemPicker.clear')"
+        v-if="value && craftLabel"
+        v-tooltip="craftLabel"
         type="button"
-        class="item-picker-field__clear"
-        :aria-label="clearLabel ?? t('labels.logistics.itemPicker.clear')"
+        class="item-picker-field__action"
+        :class="{ 'item-picker-field__action--on': crafted }"
+        :aria-label="craftLabel"
+        :aria-pressed="crafted"
+        data-test="item-picker-field-craft"
+        @click="emit('craft')"
+      >
+        <i :class="crafted ? 'fa-solid fa-hammer' : 'fa-light fa-hammer'" />
+      </button>
+
+      <button
+        v-if="value"
+        v-tooltip="t('labels.logistics.itemPicker.clear')"
+        type="button"
+        class="item-picker-field__action"
+        :aria-label="t('labels.logistics.itemPicker.clear')"
         data-test="item-picker-field-clear"
         @click="emit('clear')"
       >
@@ -181,9 +195,14 @@ const errorId = computed(() => `${props.name}-error`);
   text-overflow: ellipsis;
 }
 
+// Gives way to the name: the grades of a crafted part can run long.
 .item-picker-field__meta {
-  flex: none;
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
   font-size: 12px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   color: var(--color-text-dim, #959595);
 }
 
@@ -194,7 +213,7 @@ const errorId = computed(() => `${props.name}-error`);
   color: var(--color-text-dim, #959595);
 }
 
-.item-picker-field__clear {
+.item-picker-field__action {
   appearance: none;
   flex: none;
   width: var(--field-h, 43px);
@@ -211,5 +230,11 @@ const errorId = computed(() => `${props.name}-error`);
     color: var(--color-lifted, #eee);
     background: var(--color-control-hover, rgb(52 58 64 / 0.95));
   }
+}
+
+// Crafted: the glyph fills and takes the primary colour, so the row says so
+// before anyone reads the grades beside the name.
+.item-picker-field__action--on {
+  color: var(--color-primary, #428bca);
 }
 </style>

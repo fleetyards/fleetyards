@@ -3335,8 +3335,8 @@
         "commodityType": "Warentyp",
         "equipmentItemType": "Ausrüstungstyp",
         "crafted": {
-          "field": "Hergestellt",
-          "placeholder": "Nicht hergestellt",
+          "edit": "Festhalten, wie es hergestellt wurde",
+          "summary": "Hergestellt %{grades}",
           "clear": "Nicht hergestellt",
           "blueprint": "Bauplan",
           "hint": "Der Bauplan, aus dem %{name} hergestellt wurde, und die Qualität des Materials in jedem Slot.",

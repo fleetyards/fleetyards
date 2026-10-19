@@ -242,9 +242,7 @@ describe("LogisticsInventoryItemModal", () => {
     const craftBulwark = async (subject: VueWrapper) => {
       await pick(subject, bulwark);
       await subject
-        .find(
-          "[data-test='item-picker-field-crafted'] [data-test='item-picker-field-open']",
-        )
+        .find("[data-test='item-picker-field-craft']")
         .trigger("click");
 
       const step = subject.findComponent({ name: "LogisticsCraftingStep" });
@@ -264,13 +262,13 @@ describe("LogisticsInventoryItemModal", () => {
       await pick(subject, gold);
 
       expect(
-        subject.find("[data-test='item-picker-field-crafted']").exists(),
+        subject.find("[data-test='item-picker-field-craft']").exists(),
       ).toBe(false);
 
       await pick(subject, bulwark);
 
       expect(
-        subject.find("[data-test='item-picker-field-crafted']").exists(),
+        subject.find("[data-test='item-picker-field-craft']").exists(),
       ).toBe(true);
     });
 
@@ -280,9 +278,7 @@ describe("LogisticsInventoryItemModal", () => {
 
       await pick(subject, bulwark);
       await subject
-        .find(
-          "[data-test='item-picker-field-crafted'] [data-test='item-picker-field-open']",
-        )
+        .find("[data-test='item-picker-field-craft']")
         .trigger("click");
 
       expect(
@@ -298,10 +294,16 @@ describe("LogisticsInventoryItemModal", () => {
 
       await craftBulwark(subject);
 
-      const field = subject.find("[data-test='item-picker-field-crafted']");
+      const field = subject.find(
+        "[data-test='item-picker-field-catalogueItem']",
+      );
 
-      expect(field.text()).toContain("Bulwark Blueprint");
-      expect(field.text()).toContain("750 · 500");
+      expect(field.text()).toContain("Crafted 750 / 500");
+      expect(
+        subject
+          .find("[data-test='item-picker-field-craft']")
+          .attributes("aria-pressed"),
+      ).toBe("true");
     });
 
     it("sends the recipe and grades with the deposit", async () => {
@@ -324,15 +326,27 @@ describe("LogisticsInventoryItemModal", () => {
       );
     });
 
+    it("marks a part as not crafted again", async () => {
+      const subject = await mount();
+
+      await craftBulwark(subject);
+      await subject
+        .find("[data-test='item-picker-field-craft']")
+        .trigger("click");
+      await subject.find("[data-test='crafting-clear']").trigger("click");
+
+      expect(
+        subject.find("[data-test='item-picker-field-catalogueItem']").text(),
+      ).not.toContain("Crafted");
+    });
+
     // Backing out of the step leaves the form's crafting as it was.
     it("keeps the crafting as it was when the step is left", async () => {
       const subject = await mount();
 
       await pick(subject, bulwark);
       await subject
-        .find(
-          "[data-test='item-picker-field-crafted'] [data-test='item-picker-field-open']",
-        )
+        .find("[data-test='item-picker-field-craft']")
         .trigger("click");
       subject
         .findComponent({ name: "LogisticsCraftingStep" })
@@ -343,8 +357,8 @@ describe("LogisticsInventoryItemModal", () => {
       await subject.find("[data-test='item-picker-back']").trigger("click");
 
       expect(
-        subject.find("[data-test='item-picker-field-crafted']").text(),
-      ).not.toContain("Bulwark Blueprint");
+        subject.find("[data-test='item-picker-field-catalogueItem']").text(),
+      ).not.toContain("Crafted");
     });
 
     // Without the lot's recipe and grades a withdrawal would come out of stock
