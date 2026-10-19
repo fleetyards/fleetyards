@@ -49,6 +49,12 @@ module Imports
       }
     end
 
+    # The sync is one request with nothing to stop part way: by the time a
+    # cancel could land it has replaced the list or is about to.
+    def request_cancel!
+      false
+    end
+
     def notify_admin
       # a user's own sync is no admin news
     end

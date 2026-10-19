@@ -286,6 +286,18 @@ class Api::V1::ImportsTest < ActionDispatch::IntegrationTest
     assert_not_nil import.cancel_requested_at
   end
 
+  # It runs inside one request: a cancel landing meanwhile would only turn the
+  # sync's own answer into an error after it replaced the list.
+  test "PUT /imports/{id}/cancel leaves a running buy-back sync alone" do
+    user = create(:user)
+    import = Imports::BuybackSync.create!(user:, aasm_state: "started", started_at: Time.current)
+    sign_in user
+
+    assert_api_response :put, 400, params: {id: import.id}
+
+    assert_predicate import.reload, :started?
+  end
+
   test "PUT /imports/{id}/cancel cancels one that has not started yet" do
     user = create(:user)
     import = create_import(user)
