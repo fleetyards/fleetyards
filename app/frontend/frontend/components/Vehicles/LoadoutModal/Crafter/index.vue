@@ -11,13 +11,13 @@ import {
   BtnTonesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
-import BlueprintSlot from "@/frontend/components/Blueprints/Slot/index.vue";
 import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import type { CraftedPart } from "@/frontend/composables/useComponentFitting";
 import { useCraftedStats } from "@/frontend/composables/useCraftedStats";
 import { NEUTRAL_QUALITY } from "@/frontend/composables/useQualityRamp";
 import {
+  type BlueprintCostSlot,
   BlueprintCraftableTypeEnum,
   type LoadoutComponentRef,
   useBlueprint,
@@ -115,6 +115,44 @@ const setQuality = (position: number, quality: number) => {
     ...props.draft,
     qualities: { ...props.draft.qualities, [position]: quality },
   });
+};
+
+// A number input reports "" mid-edit -- cleared, or a lone "-" -- and
+// Number("") is 0, which would slam the slot to zero under the cursor. An
+// unparseable value leaves it where it was.
+const onQuality = (position: number, event: Event) => {
+  const raw = (event.target as HTMLInputElement).value;
+  if (raw === "") return;
+
+  const parsed = Number(raw);
+  if (!Number.isFinite(parsed)) return;
+
+  setQuality(position, Math.min(Math.max(Math.round(parsed), 0), 1000));
+};
+
+// What one slot takes, in a few words: the amount and the material.
+const costOf = (slot: BlueprintCostSlot) => {
+  const option = slot.options?.[0];
+  if (!option) return undefined;
+
+  const quantity = option.quantity;
+  const amount =
+    quantity === undefined || quantity === null
+      ? undefined
+      : option.type === "resource"
+        ? t("labels.blueprint.scu", { amount: quantity })
+        : t("labels.blueprint.pieces", { count: Math.round(quantity) });
+
+  return [amount, option.commodity?.name ?? option.commodityKey]
+    .filter(Boolean)
+    .join(" ");
+};
+
+// Only a real gate: 4,267 of the 4,289 slots ask for 0 or 1.
+const gateOf = (slot: BlueprintCostSlot) => {
+  const min = slot.options?.[0]?.minQuality;
+
+  return min === undefined || min === null || min <= 1 ? undefined : min;
 };
 
 const setEveryQuality = (quality: number) => {
@@ -233,13 +271,48 @@ defineExpose({ focus });
       class="loadout-crafter__slots"
       data-test="vehicle-loadout-crafting-slots"
     >
-      <BlueprintSlot
+      <div
         v-for="slot in costSlots"
         :key="slot.position"
-        :slot-data="slot"
-        :quality="qualityFor(slot.position)"
-        @update:quality="setQuality(slot.position, $event)"
-      />
+        class="loadout-crafter__slot"
+        :data-test="`vehicle-loadout-crafting-slot-${slot.position}`"
+      >
+        <div class="loadout-crafter__slot-head">
+          <span class="loadout-crafter__slot-name">{{ slot.name }}</span>
+          <span class="loadout-crafter__slot-cost">{{ costOf(slot) }}</span>
+        </div>
+        <div class="loadout-crafter__slot-quality">
+          <input
+            type="range"
+            min="0"
+            max="1000"
+            step="1"
+            :value="qualityFor(slot.position)"
+            :aria-label="`${slot.name} ${t('labels.blueprint.quality')}`"
+            @input="onQuality(slot.position, $event)"
+          />
+          <input
+            type="number"
+            min="0"
+            max="1000"
+            step="1"
+            :value="qualityFor(slot.position)"
+            :aria-label="`${slot.name} ${t('labels.blueprint.quality')}`"
+            class="loadout-crafter__slot-number"
+            :class="{
+              'loadout-crafter__slot-number--below':
+                !!gateOf(slot) && qualityFor(slot.position) < gateOf(slot)!,
+            }"
+            @input="onQuality(slot.position, $event)"
+          />
+        </div>
+        <p
+          v-if="gateOf(slot) && qualityFor(slot.position) < gateOf(slot)!"
+          class="loadout-crafter__slot-gate"
+        >
+          {{ t("labels.blueprint.belowGate", { quality: gateOf(slot) }) }}
+        </p>
+      </div>
     </div>
 
     <dl
