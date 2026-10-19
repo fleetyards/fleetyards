@@ -117,9 +117,10 @@ const filterFor = (routeName: string) => {
     return undefined;
   }
 
-  return {
-    q: filters.value[routeName],
-  } as unknown as LocationQueryRaw;
+  // Filters are top-level query keys; nested under `q` the forms never see
+  // them, and removing their chips leaves an empty `q` that still reads as a
+  // filter until a reload.
+  return { ...filters.value[routeName] } as unknown as LocationQueryRaw;
 };
 
 const router = useRouter();
