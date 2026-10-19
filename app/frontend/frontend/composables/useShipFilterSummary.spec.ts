@@ -1,5 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
-import { createRouter, createMemoryHistory } from "vue-router";
+import {
+  createRouter,
+  createMemoryHistory,
+  type LocationQuery,
+} from "vue-router";
 import { defineComponent, h } from "vue";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import {
@@ -57,6 +61,24 @@ describe("ship filter summaries", () => {
         (key) => key,
       ).map((item) => item.label),
     ).toEqual(["manufacturerIn: anvil, aegis", "onSaleEq: false"]);
+  });
+
+  it("reads filters nested under q and skips its sorts", () => {
+    expect(
+      summarizeShipFilters(
+        {
+          q: { sorts: ["name asc"], sizeIn: ["large"], cargoGteq: "10" },
+        } as unknown as LocationQuery,
+        (key) => key,
+      ),
+    ).toEqual([
+      { id: "q.sizeIn", label: "sizeIn: large", keys: ["q.sizeIn"] },
+      {
+        id: "q.cargo",
+        label: "cargo: ≥ 10",
+        keys: ["q.cargoGteq", "q.cargoLteq"],
+      },
+    ]);
   });
 
   it("removes both range bounds, resets pagination and preserves the view and other filters", async () => {
