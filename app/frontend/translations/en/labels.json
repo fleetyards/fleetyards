@@ -3439,7 +3439,6 @@
         "equipmentItemType": "Equipment Type",
         "crafted": {
           "request": "Ask for a crafted part",
-          "requestHint": "The recipe %{name} is to be crafted from, and the quality wanted in each slot. A blank slot takes any.",
           "page": "Crafted from %{recipe} at grades %{grades}. Highlighted figures differ from the catalogue's.",
           "showStock": "Show stock values",
           "edit": "Record how it was crafted",

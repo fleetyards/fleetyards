@@ -3422,7 +3422,6 @@
         "equipmentItemType": "装备类型",
         "crafted": {
           "request": "要求制作的部件",
-          "requestHint": "制作%{name}所用的蓝图，以及每个槽位要求的品质。留空的槽位接受任意品质。",
           "page": "由 %{recipe} 以品质 %{grades} 制作。高亮的数值与目录不同。",
           "showStock": "显示原厂数值",
           "edit": "记录制作方式",

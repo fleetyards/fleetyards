@@ -3425,7 +3425,6 @@
         "equipmentItemType": "Tipo di equipaggiamento",
         "crafted": {
           "request": "Richiedi un pezzo fabbricato",
-          "requestHint": "Il progetto con cui fabbricare %{name} e la qualità voluta in ogni slot. Uno slot vuoto accetta qualsiasi qualità.",
           "page": "Fabbricato da %{recipe} con le qualità %{grades}. I valori evidenziati differiscono dal catalogo.",
           "showStock": "Mostra i valori di serie",
           "edit": "Indica come è stato fabbricato",

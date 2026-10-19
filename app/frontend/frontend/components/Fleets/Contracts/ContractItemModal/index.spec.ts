@@ -2,7 +2,7 @@ import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import { flushPromises, type VueWrapper } from "@vue/test-utils";
 import { defineRule } from "vee-validate";
-import { required, min, min_value } from "@vee-validate/rules";
+import { between, required, min, min_value } from "@vee-validate/rules";
 import { modalDirtyKey } from "@/shared/components/AppModal/dirty";
 import Component from "./index.vue";
 
@@ -14,6 +14,7 @@ beforeAll(() => {
   defineRule("required", required);
   defineRule("min", min);
   defineRule("min_value", min_value);
+  defineRule("between", between);
 });
 
 // The picker fetches its catalogues, which is not what this is about.
@@ -49,19 +50,38 @@ vi.mock("@/services/fyApi", async (importOriginal) => {
   };
 });
 
-// The step's own page is specced on its own.
-vi.mock("@/frontend/components/Logistics/CraftingStep/index.vue", () => ({
-  default: {
-    name: "LogisticsCraftingStep",
-    props: {
-      modelValue: { type: Object, default: undefined },
-      item: { type: Object, default: undefined },
-      optional: { type: Boolean, default: false },
-    },
-    emits: ["update:modelValue", "valid"],
-    render: () => null,
-  },
+// What the crafter would hand over on apply; its own page is specced with it.
+const crafterDraft = vi.hoisted(() => ({
+  value: undefined as unknown,
 }));
+
+vi.mock("@/frontend/components/Blueprints/Crafter/index.vue", async () => {
+  const { defineComponent } = await import("vue");
+
+  return {
+    default: defineComponent({
+      name: "BlueprintCrafter",
+      props: {
+        title: { type: String, default: undefined },
+        item: { type: Object, default: undefined },
+        craftableType: { type: String, default: undefined },
+        crafted: { type: Object, default: undefined },
+        embedded: { type: Boolean, default: false },
+        openSlots: { type: Boolean, default: false },
+      },
+      emits: ["apply", "remove", "close"],
+      setup(_, { emit, expose }) {
+        expose({
+          canApply: true,
+          apply: () => emit("apply", crafterDraft.value),
+          remove: () => emit("remove"),
+        });
+
+        return () => null;
+      },
+    }),
+  };
+});
 
 const contract = (kind = "procurement") =>
   ({ slug: "haul", kind, items: [] }) as never;
@@ -124,6 +144,28 @@ describe("FleetContractsItemModal", () => {
     await pickCommodity(subject);
 
     expect(subject.find("[data-test='input-itemQuality']").exists()).toBe(true);
+  });
+
+  it("holds the grade to 0 to 1000, blank asking for any", async () => {
+    const onDraft = vi.fn();
+    const subject = await mount("procurement", undefined, onDraft);
+
+    await pickCommodity(subject);
+    await subject.find("[data-test='input-itemQuantity']").setValue("2");
+    await subject.find("[data-test='input-itemQuality']").setValue("5000");
+    await subject.find("form").trigger("submit");
+    await flushPromises();
+
+    expect(onDraft).not.toHaveBeenCalled();
+
+    await subject.find("[data-test='input-itemQuality']").setValue("");
+    await subject.find("form").trigger("submit");
+    await flushPromises();
+
+    expect(onDraft).toHaveBeenCalledWith(
+      expect.objectContaining({ quality: null }),
+      expect.anything(),
+    );
   });
 
   // FormInput wraps its suffix slot but not its prefix slot, so an unwrapped
@@ -254,7 +296,12 @@ describe("FleetContractsItemModal", () => {
       await flushPromises();
     };
 
-    it("asks for the recipe and the grades the step names", async () => {
+    it("asks for the recipe and the grades the crafter names", async () => {
+      crafterDraft.value = {
+        blueprintId: "bp-1",
+        blueprintSlug: "bulwark-bp",
+        qualities: { 1: 700 },
+      };
       const onDraft = vi.fn();
       const subject = await mount("crafting", undefined, onDraft);
 
@@ -263,17 +310,12 @@ describe("FleetContractsItemModal", () => {
         .find("[data-test='item-picker-field-craft']")
         .trigger("click");
 
-      const step = subject.findComponent({ name: "LogisticsCraftingStep" });
+      const crafter = subject.findComponent({ name: "BlueprintCrafter" });
 
       // A request may leave a slot open.
-      expect(step.props("optional")).toBe(true);
+      expect(crafter.props("openSlots")).toBe(true);
+      expect(crafter.props("embedded")).toBe(true);
 
-      step.vm.$emit("update:modelValue", {
-        blueprintId: "bp-1",
-        qualities: { 1: 700, 2: undefined },
-      });
-      step.vm.$emit("valid", true);
-      await flushPromises();
       await subject.find("[data-test='crafting-apply']").trigger("click");
 
       expect(
@@ -290,27 +332,23 @@ describe("FleetContractsItemModal", () => {
           craftedBlueprintId: "bp-1",
           craftedQualities: { 1: 700 },
         }),
-        expect.anything(),
+        // The draft keeps the recipe's slug, which the crafter loads it by.
+        expect.objectContaining({ craftedBlueprintSlug: "bulwark-bp" }),
       );
     });
 
-    // A slot typed into and cleared again is a slot left open.
-    it("names no grade for a slot left open", async () => {
+    it("reads as crafted where every slot is left open", async () => {
+      crafterDraft.value = {
+        blueprintId: "bp-1",
+        blueprintSlug: "bulwark-bp",
+        qualities: {},
+      };
       const subject = await mount("crafting", undefined, vi.fn());
 
       await pickBulwark(subject);
       await subject
         .find("[data-test='item-picker-field-craft']")
         .trigger("click");
-
-      const step = subject.findComponent({ name: "LogisticsCraftingStep" });
-
-      step.vm.$emit("update:modelValue", {
-        blueprintId: "bp-1",
-        qualities: { 1: undefined },
-      });
-      step.vm.$emit("valid", true);
-      await flushPromises();
       await subject.find("[data-test='crafting-apply']").trigger("click");
 
       const field = subject.find(

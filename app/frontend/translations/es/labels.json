@@ -3425,7 +3425,6 @@
         "equipmentItemType": "Tipo de equipo",
         "crafted": {
           "request": "Pedir una pieza fabricada",
-          "requestHint": "El plano con el que se debe fabricar %{name} y la calidad deseada en cada ranura. Una ranura vacía acepta cualquiera.",
           "page": "Fabricado con %{recipe} con las calidades %{grades}. Los valores resaltados difieren del catálogo.",
           "showStock": "Mostrar valores de serie",
           "edit": "Indicar cómo se fabricó",

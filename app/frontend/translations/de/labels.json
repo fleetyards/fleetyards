@@ -3425,7 +3425,6 @@
         "equipmentItemType": "Ausrüstungstyp",
         "crafted": {
           "request": "Hergestelltes Teil anfordern",
-          "requestHint": "Der Bauplan, aus dem %{name} hergestellt werden soll, und die gewünschte Qualität je Slot. Ein leerer Slot nimmt jede.",
           "page": "Hergestellt aus %{recipe} mit den Qualitäten %{grades}. Hervorgehobene Werte weichen vom Katalog ab.",
           "showStock": "Serienwerte anzeigen",
           "edit": "Festhalten, wie es hergestellt wurde",

@@ -138,6 +138,7 @@ describe("FleetContractsItemsForm", () => {
           itemType: "Component",
           itemId: "bulwark",
           craftedBlueprintId: "bp-1",
+          craftedBlueprintSlug: "bulwark-bp",
           craftedQualities: { 1: 700 },
         },
       ]);
@@ -149,7 +150,7 @@ describe("FleetContractsItemsForm", () => {
       await subject.find("[data-test='edit-item']").trigger("click");
 
       expect(modalCalls()[0][1].props.item.crafted).toMatchObject({
-        blueprint: { id: "bp-1" },
+        blueprint: { id: "bp-1", slug: "bulwark-bp" },
         qualities: { 1: 700 },
       });
     });

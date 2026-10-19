@@ -5,7 +5,10 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { type ContractItemDraft } from "@/frontend/components/Fleets/Contracts/types";
+import {
+  type ContractItemDraft,
+  type ContractItemDraftExtras,
+} from "@/frontend/components/Fleets/Contracts/types";
 import { craftedLineLabel } from "@/frontend/components/Fleets/Contracts/craftedLabel";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -75,7 +78,11 @@ const rows = computed<Row[]>(() => {
           : null,
         crafted: draft.craftedBlueprintId
           ? {
-              blueprint: { id: draft.craftedBlueprintId, name: "", slug: "" },
+              blueprint: {
+                id: draft.craftedBlueprintId,
+                name: "",
+                slug: draft.craftedBlueprintSlug ?? "",
+              },
               qualities: draft.craftedQualities ?? {},
             }
           : undefined,
@@ -98,11 +105,8 @@ const openItemModal = (item?: Row) => {
       // to hand its values back instead of posting them.
       onDraft: saved.value
         ? undefined
-        : (input: FleetContractItemInput, picked?: { counted?: boolean }) => {
-            const values: ContractItemDraft = {
-              ...input,
-              counted: picked?.counted,
-            };
+        : (input: FleetContractItemInput, extras?: ContractItemDraftExtras) => {
+            const values: ContractItemDraft = { ...input, ...extras };
             const next = [...(props.drafts ?? [])];
 
             if (item?.draftIndex != null) {

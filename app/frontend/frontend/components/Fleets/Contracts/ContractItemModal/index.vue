@@ -22,8 +22,8 @@ import { type PickedItem } from "@/frontend/components/Logistics/types";
 import { useInventoryOptions } from "@/frontend/composables/useInventoryOptions";
 import { useItemPickerStep } from "@/frontend/composables/useItemPickerStep";
 import { useCraftingStep } from "@/frontend/composables/useCraftingStep";
-import CraftingStep from "@/frontend/components/Logistics/CraftingStep/index.vue";
-import { craftedQualities } from "@/frontend/components/Logistics/crafted";
+import BlueprintCrafter from "@/frontend/components/Blueprints/Crafter/index.vue";
+import { type ContractItemDraftExtras } from "@/frontend/components/Fleets/Contracts/types";
 import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -55,7 +55,7 @@ type Props = {
   // Hands the line back, with what the picked part is beyond its id.
   onDraft?: (
     values: FleetContractItemInput,
-    picked?: { counted?: boolean },
+    extras?: ContractItemDraftExtras,
   ) => void;
 };
 
@@ -112,6 +112,8 @@ const pickedItem = ref<PickedItem | undefined>(
 const validationSchema = {
   name: "required|min:2",
   quantity: "required|min_value:0",
+  // Blank asks for any grade, which the rule lets through.
+  quality: "between:0,1000",
 };
 
 const initialValues = {
@@ -176,18 +178,21 @@ const {
 // line is always written fresh, so crafting goes with the part it was set for.
 const {
   crafted,
-  draft: craftingDraft,
-  draftValid: craftingValid,
+  canApply: craftingCanApply,
   craftable,
+  craftableType,
   craftedLabel,
   openCrafting,
   applyCrafting,
+  removeCrafting,
+  onCrafted,
   clearCrafted,
 } = useCraftingStep({ pickedItem, isDeposit: computed(() => true), showStep });
 
 if (props.item?.crafted) {
   crafted.value = {
     blueprintId: props.item.crafted.blueprint.id,
+    blueprintSlug: props.item.crafted.blueprint.slug,
     qualities: props.item.crafted.qualities,
   };
 }
@@ -254,13 +259,16 @@ const onSubmit = handleSubmit(async (values) => {
     itemId: pickedItem.value?.id,
     // Null rather than left out, so an edit that drops the crafting clears it.
     craftedBlueprintId: crafted.value?.blueprintId ?? null,
-    craftedQualities: crafted.value ? craftedQualities(crafted.value) : null,
+    craftedQualities: crafted.value?.qualities ?? null,
   };
 
   // Nothing to post to yet: the line goes back to the form, which saves it
   // with the contract in one request.
   if (props.onDraft) {
-    props.onDraft(data, { counted: pickedItem.value?.counted });
+    props.onDraft(data, {
+      counted: pickedItem.value?.counted,
+      craftedBlueprintSlug: crafted.value?.blueprintSlug,
+    });
     comlink.emit("close-modal", true);
     submitting.value = false;
 
@@ -313,12 +321,17 @@ const onSubmit = handleSubmit(async (values) => {
 
 <template>
   <Modal :title="modalTitle" :flush="picking">
-    <CraftingStep
+    <BlueprintCrafter
       v-if="step === 'crafting' && pickedItem"
-      v-model="craftingDraft"
+      ref="itemCrafter"
+      :title="pickedItem.name"
       :item="pickedItem"
-      optional
-      @valid="craftingValid = $event"
+      :craftable-type="craftableType"
+      :crafted="crafted"
+      embedded
+      open-slots
+      @apply="onCrafted"
+      @remove="clearCrafted"
     />
 
     <ItemPicker
@@ -389,6 +402,7 @@ const onSubmit = handleSubmit(async (values) => {
             v-bind="qualityProps"
             name="itemQuality"
             :type="InputTypesEnum.NUMBER"
+            :rules="validationSchema.quality"
             :label="t('labels.logistics.quality')"
             :min="0"
             :step="1"
@@ -436,17 +450,17 @@ const onSubmit = handleSubmit(async (values) => {
           v-if="step === 'crafting' && crafted"
           :variant="BtnVariantsEnum.BARE"
           data-test="crafting-clear"
-          @click="clearCrafted"
+          @click="removeCrafting"
         >
-          {{ t("labels.logistics.crafted.clear") }}
+          {{ t("actions.blueprint.removeCrafting") }}
         </Btn>
         <Btn
           v-if="step === 'crafting'"
-          :disabled="!craftingValid"
+          :disabled="!craftingCanApply"
           data-test="crafting-apply"
           @click="applyCrafting"
         >
-          {{ t("actions.apply") }}
+          {{ t("actions.blueprint.apply") }}
         </Btn>
       </template>
       <Btn
