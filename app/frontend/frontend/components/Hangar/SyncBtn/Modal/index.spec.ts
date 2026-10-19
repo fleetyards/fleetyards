@@ -35,6 +35,7 @@ const lastReadOf = (total: number) => ({
     equipment: 0,
     ccu: 0,
     extra: 0,
+    shipComponent: 0,
   },
 });
 
@@ -749,6 +750,7 @@ describe("HangarSyncModal", () => {
 
     hangarStore.syncPaints = false;
     hangarStore.syncEquipment = false;
+    hangarStore.syncShipComponents = false;
     await flushPromises();
 
     await submitHangar(wrapper);
@@ -759,6 +761,7 @@ describe("HangarSyncModal", () => {
         syncHangarFlair: true,
         syncEquipment: false,
         syncCcus: true,
+        syncShipComponents: false,
       }),
     });
   });

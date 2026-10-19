@@ -2960,7 +2960,9 @@
           "ccus": "Mejoras / CCU",
           "ccusNotSynced": "CCU (sin sincronizar)",
           "equipmentNotSynced": "Equipo FPS (no se sincroniza)",
-          "extras": "Otros"
+          "extras": "Otros",
+          "shipComponents": "Componentes de nave",
+          "shipComponentsNotSynced": "Componentes de nave (no sincronizados)"
         },
         "importedItems": {
           "importedVehicles": "Naves agregadas",
@@ -3023,7 +3025,8 @@
           "paints": "Pinturas",
           "hangarFlair": "Decoración de hangar",
           "equipment": "Equipo FPS",
-          "ccus": "CCUs"
+          "ccus": "CCUs",
+          "shipComponents": "Componentes de nave"
         },
         "newCount": {
           "one": "+1 nueva",
@@ -3052,7 +3055,9 @@
           "reading": "%{count} de unos %{total} elementos"
         },
         "viewImport": "Ver la importación de esta sincronización",
-        "lastSynced": "Última sincronización"
+        "lastSynced": "Última sincronización",
+        "syncShipComponents": "Sincronizar componentes de nave",
+        "syncShipComponentsHint": "Sustituye tus componentes de nave (refrigeradores, plantas de energía, armas, …) por los de tu hangar de RSI. Desactivado, los componentes guardados no cambian."
       },
       "cargoGridViewer": {
         "capacity": "Capacidad",

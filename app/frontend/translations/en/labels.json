@@ -2960,7 +2960,9 @@
           "ccus": "Upgrades / CCUs",
           "ccusNotSynced": "CCUs (not synced)",
           "equipmentNotSynced": "FPS gear (not synced)",
-          "extras": "Other"
+          "extras": "Other",
+          "shipComponents": "Ship components",
+          "shipComponentsNotSynced": "Ship components (not synced)"
         },
         "importedItems": {
           "importedVehicles": "Added Ships",
@@ -3023,7 +3025,8 @@
           "paints": "Paints",
           "hangarFlair": "Hangar flair",
           "equipment": "FPS gear",
-          "ccus": "CCUs"
+          "ccus": "CCUs",
+          "shipComponents": "Ship components"
         },
         "newCount": {
           "one": "+1 new",
@@ -3052,7 +3055,9 @@
           "reading": "%{count} of about %{total} items"
         },
         "viewImport": "View this sync's import",
-        "lastSynced": "Last synced"
+        "lastSynced": "Last synced",
+        "syncShipComponents": "Sync ship components",
+        "syncShipComponentsHint": "Replaces your ship components (coolers, power plants, weapons, …) with those in your RSI hangar. Off keeps stored ship components unchanged."
       },
       "cargoGridViewer": {
         "capacity": "Capacity",

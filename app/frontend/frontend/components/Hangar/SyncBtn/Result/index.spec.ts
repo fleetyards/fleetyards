@@ -172,6 +172,7 @@ describe("HangarSyncResult", () => {
         equipment: 1,
         ccu: 0,
         extra: 0,
+        shipComponent: 0,
       },
     };
 
@@ -271,6 +272,42 @@ describe("HangarSyncResult", () => {
         wrapper.find("[data-test='sync-step-fetchHangar-caption']").exists(),
       ).toBe(false);
     });
+  });
+
+  it("counts ship modules and ship parts apart", async () => {
+    const wrapper = await mountWithDefaults(HangarSyncResult, {
+      props: {
+        processSteps: [{ name: "fetchHangar", status: "processing" }],
+        currentPage: 1,
+        pledges: [
+          {
+            id: "1",
+            name: "Retaliator Cargo Module - Bow",
+            type: RsiHangarItemKindEnum.COMPONENT,
+          },
+          {
+            id: "1",
+            name: "BriskAir IC-20",
+            type: RsiHangarItemKindEnum.COMPONENT,
+          },
+          {
+            id: "1",
+            name: "Sovereign IP-10",
+            type: RsiHangarItemKindEnum.COMPONENT,
+          },
+        ],
+        finished: false,
+        finishedWithErrors: false,
+      },
+    });
+
+    const count = (key: string) =>
+      wrapper
+        .get(`[data-test='sync-count-${key}'] [data-count]`)
+        .attributes("data-count");
+
+    expect(count("components")).toBe("1");
+    expect(count("shipComponents")).toBe("2");
   });
 
   it("marks paints and hangar flair the sync leaves out as not synced", async () => {
