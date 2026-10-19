@@ -4,14 +4,16 @@ import { createMemoryHistory, createRouter } from "vue-router";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import {
   HangarPledgeItemKindEnum,
+  type AddPledgeItemsToInventoryResult,
   type HangarPledgeItem,
 } from "@/services/fyApi";
 import Component from "./index.vue";
 
 const inventories = ref<{ items: { name: string; slug: string }[] }>();
 
-const mutateAsync = vi.fn((_input: unknown) =>
-  Promise.resolve({ addedPledgeItemIds: ["part"], skippedPledgeItemIds: [] }),
+const mutateAsync = vi.fn(
+  (_input: unknown): Promise<AddPledgeItemsToInventoryResult> =>
+    Promise.resolve({ addedPledgeItemIds: ["part"], skippedPledgeItemIds: [] }),
 );
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
@@ -30,9 +32,14 @@ vi.mock("@/shared/composables/useComlink", () => ({
 }));
 
 const displaySuccess = vi.fn();
+const displayInfo = vi.fn();
 
 vi.mock("@/shared/composables/useAppNotifications", () => ({
-  useAppNotifications: () => ({ displaySuccess, displayAlert: vi.fn() }),
+  useAppNotifications: () => ({
+    displaySuccess,
+    displayInfo,
+    displayAlert: vi.fn(),
+  }),
 }));
 
 vi.mock("@/shared/components/AppModal/Inner/index.vue", () => ({
@@ -69,6 +76,7 @@ describe("Hangar/AddToInventoryModal", () => {
     mutateAsync.mockClear();
     comlinkEmit.mockClear();
     displaySuccess.mockClear();
+    displayInfo.mockClear();
   });
 
   it("adds what is not in an inventory yet to the one picked", async () => {
@@ -104,6 +112,23 @@ describe("Hangar/AddToInventoryModal", () => {
     });
     expect(onAdded).toHaveBeenCalled();
     expect(comlinkEmit).toHaveBeenCalledWith("close-modal", true);
+  });
+
+  it("says so when everything was already in an inventory", async () => {
+    mutateAsync.mockResolvedValueOnce({
+      addedPledgeItemIds: [],
+      skippedPledgeItemIds: ["part"],
+    });
+    const wrapper = await mountWithDefaults(Component, {
+      props: { items: [item()] },
+    });
+    mounted = wrapper;
+
+    await wrapper.get("form").trigger("submit");
+    await flushPromises();
+
+    expect(displaySuccess).not.toHaveBeenCalled();
+    expect(displayInfo).toHaveBeenCalled();
   });
 
   it("points to creating an inventory when there is none", async () => {

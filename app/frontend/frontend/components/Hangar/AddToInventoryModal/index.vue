@@ -35,7 +35,7 @@ const props = withDefaults(defineProps<Props>(), {
 const { t } = useI18n();
 const comlink = useComlink();
 const queryClient = useQueryClient();
-const { displaySuccess, displayAlert } = useAppNotifications();
+const { displaySuccess, displayInfo, displayAlert } = useAppNotifications();
 
 // The list a user keeps by hand; a ship's cargo is reached through the ship.
 const { data: inventories, isLoading } = useHangarInventories({
@@ -89,12 +89,21 @@ const onSubmit = async () => {
 
     const inventory = options.value.find((option) => option.value === slug);
 
-    displaySuccess({
-      text: t("messages.hangarPledgeItems.addedToInventory", {
-        count: result.addedPledgeItemIds.length,
-        inventory: inventory?.label,
-      }),
-    });
+    // A list shown before another tab added them offers what is already in.
+    if (result.addedPledgeItemIds.length) {
+      displaySuccess({
+        text: t("messages.hangarPledgeItems.addedToInventory", {
+          count: result.addedPledgeItemIds.length,
+          inventory: inventory?.label,
+        }),
+      });
+    } else {
+      displayInfo({
+        text: t("texts.hangarPledgeItems.alreadyInInventory", {
+          count: result.skippedPledgeItemIds.length,
+        }),
+      });
+    }
 
     props.onAdded?.();
     comlink.emit("close-modal", true);
