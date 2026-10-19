@@ -3386,6 +3386,7 @@
         },
         "searchItems": "Search items...",
         "quality": "Quality (0-1000)",
+        "qualityShort": "C %{quality}",
         "qualityMin": "Quality >=",
         "qualityMax": "Quality <=",
         "existingItem": "Select existing item",

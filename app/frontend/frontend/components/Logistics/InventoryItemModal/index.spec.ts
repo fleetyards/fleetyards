@@ -411,4 +411,81 @@ describe("LogisticsInventoryItemModal", () => {
       );
     });
   });
+
+  describe("a withdrawal", () => {
+    const withdraw = async (row: number) => {
+      api.stock.mockResolvedValue([
+        {
+          id: "pos-1",
+          name: "Gold",
+          category: "commodity",
+          unit: "scu",
+          netQuantity: 4,
+          quality: 800,
+        },
+        {
+          id: "pos-1",
+          name: "Gold",
+          category: "commodity",
+          unit: "scu",
+          netQuantity: 10,
+          quality: null,
+        },
+      ]);
+
+      const subject = await mount();
+
+      select(subject, "entryType").vm.$emit("update:modelValue", "withdrawal");
+      await flushPromises();
+
+      const lots = select(subject, "stockItem").props("options") as {
+        value: string;
+      }[];
+
+      select(subject, "stockItem").vm.$emit(
+        "update:modelValue",
+        lots[row].value,
+      );
+      await flushPromises();
+      await subject.find("[data-test='input-quantity']").setValue("2");
+
+      return subject;
+    };
+
+    // Stock is held per grade, and the grade of the row picked is the one the
+    // withdrawal comes out of.
+    it("takes the grade of the row it comes out of", async () => {
+      const subject = await withdraw(0);
+
+      await subject.find("form").trigger("submit");
+      await flushPromises();
+
+      expect(api.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            entryType: "withdrawal",
+            quality: 800,
+          }),
+        }),
+      );
+    });
+
+    // Ungraded stock is held as NULL; an omitted grade would be stored as 0, a
+    // group no deposit occupies, and the stock row would never go down.
+    it("comes out of ungraded stock without a grade", async () => {
+      const subject = await withdraw(1);
+
+      await subject.find("form").trigger("submit");
+      await flushPromises();
+
+      expect(api.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: expect.objectContaining({
+            entryType: "withdrawal",
+            quality: null,
+          }),
+        }),
+      );
+    });
+  });
 });

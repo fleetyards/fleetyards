@@ -59,7 +59,7 @@ const editing = computed(() => props.item != null);
 const { t } = useI18n();
 
 const modalTitle = computed(() => {
-  if (picking.value) return pickTitle;
+  if (picking.value) return pickTitle.value;
 
   return editing.value
     ? t("headlines.fleets.contracts.editItem")
@@ -186,8 +186,14 @@ const onSubmit = handleSubmit(async (values) => {
     category: values.category,
     unit: values.unit,
     quantity: String(values.quantity),
-    quality:
-      graded.value && values.quality != null ? Number(values.quality) : null,
+    // A line that is not a resource shows no grade, but one written before
+    // that rule keeps the grade it was given: an edit to its quantity must
+    // not quietly start accepting goods it turned away.
+    quality: graded.value
+      ? values.quality != null
+        ? Number(values.quality)
+        : null
+      : (props.item?.quality ?? null),
     qualityMatch: values.qualityMatch,
     itemType: pickedItem.value?.type,
     itemId: pickedItem.value?.id,

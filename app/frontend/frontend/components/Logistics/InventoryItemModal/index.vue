@@ -94,7 +94,7 @@ const countedSelection = computed(() =>
 const isDeposit = computed(() => entryType.value === "deposit");
 
 const modalTitle = computed(() => {
-  if (picking.value) return pickTitle;
+  if (picking.value) return pickTitle.value;
   if (step.value === "crafting") return t("headlines.logistics.crafting");
 
   return isDeposit.value
@@ -108,9 +108,9 @@ const validationSchema = {
   quality: "required|between:0,1000",
 };
 
-// Left blank rather than defaulted, so the amount and grade are entered for
-// the goods at hand instead of slipping through as a 1 and a 0 nobody chose.
-// Stock is held per grade, so a withdrawal has to say which one it takes too.
+// Left blank rather than defaulted, so the amount and grade of a deposit are
+// entered for the goods at hand instead of slipping through as a 1 and a 0
+// nobody chose. A withdrawal takes its grade from the stock row it picks.
 
 const initialValues = {
   name: "",
@@ -260,11 +260,13 @@ watch(entryType, (val) => {
   pickedItem.value = undefined;
 });
 
-const selectedStockMax = computed(() => {
-  if (!selectedStockItem.value) return undefined;
+// Ungraded stock is held as NULL, and an omitted grade is stored as 0 -- a
+// group no deposit occupies -- so a withdrawal out of it says null outright.
+const withdrawnUngraded = computed(() => (isDeposit.value ? undefined : null));
 
-  return lotAt(selectedStockItem.value)?.netQuantity;
-});
+const selectedStockMax = computed(
+  () => lotAt(selectedStockItem.value)?.netQuantity,
+);
 
 const createHangarItem = useCreateHangarInventoryItem();
 const createVehicleItem = useCreateVehicleInventoryItem();
@@ -309,7 +311,7 @@ const onSubmit = handleSubmit(async (values) => {
     quality:
       graded.value && values.quality != null
         ? Number(values.quality)
-        : undefined,
+        : withdrawnUngraded.value,
     image: values.image || undefined,
     notes: values.notes || undefined,
     itemType: pickedItem.value?.type,
@@ -452,7 +454,7 @@ const onSubmit = handleSubmit(async (values) => {
             v-bind="qualityProps"
             name="quality"
             :type="InputTypesEnum.NUMBER"
-            :rules="validationSchema.quality"
+            :rules="isDeposit ? validationSchema.quality : ''"
             :label="t('labels.logistics.quality')"
             :min="0"
             :step="1"
