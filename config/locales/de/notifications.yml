@@ -24,6 +24,7 @@ de:
         synced_hangar_flair: Synchronisiertes Hangar-Flair
         synced_equipment: Synchronisierte FPS-Ausrüstung
         synced_ccus: Synchronisierte CCUs
+        synced_ship_components: Synchronisierte Schiffskomponenten
         missing_models: Schiffe nicht gefunden
         missing_components: Komponenten nicht gefunden
         missing_component_vehicles: Kein passendes Schiff für Komponenten

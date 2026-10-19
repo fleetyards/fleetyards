@@ -2878,6 +2878,11 @@ components:
           items:
             type: string
             format: uuid
+        syncedShipComponents:
+          type: array
+          items:
+            type: string
+            format: uuid
         outcome:
           "$ref": "#/components/schemas/HangarSyncOutcomeEnum"
         incomplete:

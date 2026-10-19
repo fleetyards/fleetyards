@@ -31278,11 +31278,13 @@ components:
       - flair
       - equipment
       - ccu
+      - ship_component
       x-enumNames:
       - PAINT
       - FLAIR
       - EQUIPMENT
       - CCU
+      - SHIP_COMPONENT
       title: HangarPledgeItemKindEnum
     HangarPledgeItemQuery:
       type: object
@@ -31671,6 +31673,11 @@ components:
             type: string
             format: uuid
         syncedCcus:
+          type: array
+          items:
+            type: string
+            format: uuid
+        syncedShipComponents:
           type: array
           items:
             type: string
@@ -39679,6 +39686,9 @@ components:
           type: boolean
           default: false
         syncEquipment:
+          type: boolean
+          default: false
+        syncShipComponents:
           type: boolean
           default: false
         unmatchedVehiclesAction:

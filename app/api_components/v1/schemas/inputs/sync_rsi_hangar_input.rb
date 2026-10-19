@@ -19,6 +19,7 @@ module V1
             syncHangarFlair: {type: :boolean, default: false},
             syncCcus: {type: :boolean, default: false},
             syncEquipment: {type: :boolean, default: false},
+            syncShipComponents: {type: :boolean, default: false},
             unmatchedVehiclesAction: ::V1::Schemas::Enums::HangarSyncUnmatchedActionEnum,
             unmatchedHangarGroupId: {type: :string, format: :uuid},
             extensionVersion: {type: :string, pattern: "^[0-9A-Za-z.+-]{1,32}$"},
