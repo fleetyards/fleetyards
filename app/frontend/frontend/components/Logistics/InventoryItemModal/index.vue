@@ -111,7 +111,7 @@ const validationSchema = {
 
 // Left blank rather than defaulted, so the amount and grade of a deposit are
 // entered for the goods at hand instead of slipping through as a 1 and a 0
-// nobody chose. A withdrawal takes its grade from the stock row it picks.
+// nobody chose.
 
 const initialValues = {
   name: "",
@@ -244,8 +244,6 @@ watch(selectedStockItem, (val) => {
   setFieldValue("unit", picked.unit as any);
   /* eslint-enable @typescript-eslint/no-explicit-any */
   pickedItem.value = undefined;
-  // The grade of the row it comes out of, blank for ungraded stock.
-  setFieldValue("quality", picked.quality ?? undefined);
 });
 
 watch(entryType, (val) => {
@@ -257,9 +255,12 @@ watch(entryType, (val) => {
   pickedItem.value = undefined;
 });
 
-// Ungraded stock is held as NULL, and an omitted grade is stored as 0 -- a
-// group no deposit occupies -- so a withdrawal out of it says null outright.
-const withdrawnUngraded = computed(() => (isDeposit.value ? undefined : null));
+// A withdrawal comes out of the grade its stock row is held at -- 800, 0, or
+// NULL for stock nobody graded -- exactly, since stock is grouped by it and a
+// withdrawal at any other grade would leave the row it came from untouched.
+const withdrawnQuality = computed(
+  () => stockRowAt(selectedStockItem.value)?.quality ?? null,
+);
 
 const selectedStockMax = computed(() => {
   return stockRowAt(selectedStockItem.value)?.netQuantity;
@@ -304,10 +305,11 @@ const onSubmit = handleSubmit(async (values) => {
         : Math.round(Number(values.quantity)),
     unit: values.unit,
     entryType: entryType.value,
-    quality:
-      graded.value && values.quality != null
+    quality: isDeposit.value
+      ? graded.value && values.quality != null
         ? Number(values.quality)
-        : withdrawnUngraded.value,
+        : undefined
+      : withdrawnQuality.value,
     image: values.image || undefined,
     notes: values.notes || undefined,
     itemType: pickedItem.value?.type,
@@ -428,13 +430,15 @@ const onSubmit = handleSubmit(async (values) => {
           </FormInput>
         </div>
 
-        <div v-if="graded" class="col-6">
+        <!-- A withdrawal's grade is the stock row's, named in the row it
+             picked. -->
+        <div v-if="graded && isDeposit" class="col-6">
           <FormInput
             v-model="quality"
             v-bind="qualityProps"
             name="quality"
             :type="InputTypesEnum.NUMBER"
-            :rules="isDeposit ? validationSchema.quality : ''"
+            :rules="validationSchema.quality"
             :label="t('labels.logistics.quality')"
             :min="0"
             :step="1"
