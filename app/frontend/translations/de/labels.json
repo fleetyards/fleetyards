@@ -2287,7 +2287,7 @@
           "title": "RSI-Handle verifizieren",
           "token": "Verifizierungscode",
           "verifiedSince": "Verifiziert seit %{date}",
-          "revokeCitizenidQuestion": "Citizen iD verifiziert dein Handle beim nächsten Login über Citizen iD erneut. Trotzdem widerrufen?",
+          "revokeCitizenidQuestion": "Kommt beim nächsten Citizen-iD-Login zurück. Sicher?",
           "openProfileSettings": "RSI-Profil bearbeiten",
           "steps": {
             "copy": "Kopiere deinen Verifizierungscode",

@@ -2287,7 +2287,7 @@
           "title": "Vérifier ton pseudo RSI",
           "token": "Code de vérification",
           "verifiedSince": "Vérifié depuis le %{date}",
-          "revokeCitizenidQuestion": "Citizen iD vérifiera à nouveau ton pseudo lors de ta prochaine connexion avec lui. Révoquer quand même ?",
+          "revokeCitizenidQuestion": "Revient à la prochaine connexion Citizen iD. Sûr ?",
           "openProfileSettings": "Modifier ton profil RSI",
           "steps": {
             "copy": "Copie ton code de vérification",
