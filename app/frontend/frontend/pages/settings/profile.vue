@@ -93,23 +93,17 @@ const rsiHandleVerified = computed(
   () => sessionStore.currentUser?.rsiHandleVerified ?? false,
 );
 
-const citizenIdConnected = computed(() =>
-  sessionStore.currentUser?.authConnections?.includes("citizenid"),
-);
-
 // The check reads the saved handle, so one still being typed has nothing to
 // verify yet.
 const canVerifyRsiHandle = computed(
   () => !!sessionStore.currentUser?.rsiHandle && !rsiHandleVerified.value,
 );
 
-// Citizen iD would verify the handle again at the next sign-in, so a handle it
-// proved is released by disconnecting it instead.
-const rsiHandleRevocable = computed(
+const rsiHandleVerifiedViaCitizenid = computed(
   () =>
     rsiHandleVerified.value &&
     sessionStore.currentUser?.rsiHandleVerifiedVia ===
-      RsiHandleVerifiedViaEnum.RSI_PROFILE,
+      RsiHandleVerifiedViaEnum.CITIZENID,
 );
 
 const revokeMutation = useDestroyMyRsiVerification();
@@ -293,7 +287,12 @@ const onSubmit = handleSubmit(async (values) => {
             </template>
           </FormInput>
           <BtnConfirm
-            v-if="rsiHandleRevocable"
+            v-if="rsiHandleVerified"
+            :question="
+              rsiHandleVerifiedViaCitizenid
+                ? t('labels.user.rsiVerification.revokeCitizenidQuestion')
+                : undefined
+            "
             :size="BtnSizesEnum.SM"
             :disabled="revokeMutation.isPending.value"
             data-test="rsi-handle-revoke"
@@ -310,7 +309,7 @@ const onSubmit = handleSubmit(async (values) => {
             {{ t("actions.user.rsiVerification.verify") }}
           </Btn>
           <OauthBtn
-            v-if="!citizenIdConnected && !rsiHandleVerified"
+            v-if="!rsiHandleVerified"
             :provider="OmniauthProviderEnum.CITIZENID"
             :size="BtnSizesEnum.SM"
             inline

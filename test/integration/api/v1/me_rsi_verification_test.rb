@@ -63,10 +63,6 @@ class Api::V1::MeRsiVerificationTest < ActionDispatch::IntegrationTest
         schema ::V1::Schemas::UserRsiVerification
       end
 
-      response(400, "bad request") do
-        schema ::Shared::V1::Schemas::ValidationError
-      end
-
       response(401, "unauthorized") do
         schema ::Shared::V1::Schemas::StandardError
       end
@@ -122,15 +118,17 @@ class Api::V1::MeRsiVerificationTest < ActionDispatch::IntegrationTest
     assert_equal token, @user.rsi_verification_token
   end
 
-  test "DELETE /me/rsi-verification leaves a Citizen iD verification to the disconnect" do
+  test "DELETE /me/rsi-verification unlocks a handle proved through Citizen iD" do
     @user.verify_rsi_handle("TestPilot", via: :citizenid)
     @user.save!
     sign_in @user
 
-    assert_api_response :delete, 400
+    assert_api_response :delete, 200
 
-    assert_equal "validation_error.user_rsi_verification.destroy", response.parsed_body["code"]
-    assert @user.reload.rsi_handle_verified?
+    @user.reload
+    assert_not @user.rsi_handle_verified?
+    assert_nil @user.rsi_handle_verified_via
+    assert_equal "TestPilot", @user.rsi_handle
   end
 
   test "DELETE /me/rsi-verification returns 401 when not signed in" do

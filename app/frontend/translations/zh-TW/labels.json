@@ -2287,6 +2287,7 @@
           "title": "驗證你的 RSI 使用者名",
           "token": "驗證碼",
           "verifiedSince": "自 %{date} 起已驗證",
+          "revokeCitizenidQuestion": "下次 Citizen iD 登入時會恢復。確定嗎？",
           "openProfileSettings": "編輯你的 RSI 個人資料",
           "steps": {
             "copy": "複製你的驗證碼",

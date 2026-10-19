@@ -13410,12 +13410,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/UserRsiVerification"
-        '400':
-          description: bad request
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ValidationError"
         '401':
           description: unauthorized
           content:

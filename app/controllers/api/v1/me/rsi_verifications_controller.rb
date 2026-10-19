@@ -56,14 +56,8 @@ module Api
           render :show
         end
 
-        # Citizen iD would verify the handle again on the next sign-in, so a
-        # handle it proved is released by disconnecting it instead.
+        # A handle Citizen iD proved comes back at the next Citizen iD sign-in.
         def destroy
-          if @user.rsi_handle_verified_via_citizenid?
-            render json: ValidationError.new("user_rsi_verification.destroy"), status: :bad_request
-            return
-          end
-
           @user.revoke_rsi_handle_verification!
 
           render :show
