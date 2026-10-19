@@ -49,6 +49,18 @@ class HangarPledgeItems::SyncTest < ActiveSupport::TestCase
     assert_nil stored["J-Span Cryo-Star Cooler"].catalogue_component
   end
 
+  test "picks the size RSI names among parts of one name, the smallest otherwise, and never a retired one" do
+    create(:component, name: "M9A Cannon", size: "12", with_build: false)
+    small = create(:component, name: "M9A Cannon", size: "7")
+    large = create(:component, name: "M9A Cannon", size: "8")
+    catalogue = HangarPledgeItems::Sync::ComponentCatalogue.new
+
+    assert_equal small.id, catalogue.find("M9A Cannon")
+    assert_equal large.id, catalogue.find("M9A Cannon (S8)")
+    # The size-12 cannon is retired: the smallest current one stands in.
+    assert_equal small.id, catalogue.find("M9A Cannon (S12)")
+  end
+
   # Modules are fitted to a ship by the hangar sync, whether it knows them or not.
   test "leaves ship modules to the hangar sync" do
     items = [

@@ -148,28 +148,37 @@ module HangarPledgeItems
     # Bulldog (S1)") and drops a word from others ("S2 Gimbal Mount" for
     # "VariPuck S2 Gimbal Mount"). The same name wins; otherwise the shortest
     # catalogued name holding every word of RSI's, so a plain repeater is
-    # picked over its named variants.
+    # picked over its named variants. The game lists one name at several sizes
+    # ("M9A Cannon" at 7, 8, 9 and 12), so the size RSI gives decides between
+    # them, and the smallest otherwise: the same part on every run.
     class ComponentCatalogue
-      SIZE = /\(s\d+\)/i
+      SIZE = /\(s(\d+)\)/i
 
       def self.words(name)
         name.to_s.downcase.gsub(SIZE, " ").gsub(/[^[:alnum:]\s-]/, " ").split
       end
 
+      # Current, shown and named: a retired row or a ship's door is no part a
+      # player owns.
       def initialize
-        @entries = Component.named.where(hidden: false).pluck(:id, :name)
-          .map { |id, name| [id, name, self.class.words(name)] }
+        @entries = Component.current_version.named.where(hidden: false)
+          .order(:name, :id)
+          .pluck(:id, :name, :size, :category)
+          .reject { |_id, _name, _size, category| Component::CATALOGUE_EXCLUDED_CATEGORIES.include?(category) }
+          .map { |id, name, size, _category| {id:, name:, size: size.to_s, words: self.class.words(name)} }
       end
 
       def find(name)
-        same = @entries.find { |_id, catalogued, _words| catalogued.casecmp?(name.to_s.strip) }
-        return same.first if same
-
         words = self.class.words(name)
         return if words.empty?
 
-        @entries.select { |_id, _name, catalogued| (words - catalogued).empty? }
-          .min_by { |_id, catalogued, catalogued_words| [catalogued_words.size, catalogued] }&.first
+        size = name.to_s[SIZE, 1]
+        same = @entries.select { |entry| entry[:name].casecmp?(name.to_s.strip) }
+        matches = same.presence || @entries.select { |entry| (words - entry[:words]).empty? }
+
+        matches.min_by do |entry|
+          [entry[:words].size, (entry[:size] == size) ? 0 : 1, entry[:size].to_i, entry[:name], entry[:id]]
+        end&.dig(:id)
       end
     end
 
