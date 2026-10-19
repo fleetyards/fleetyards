@@ -4,6 +4,15 @@
       "actions": {
         "showFilter": "Show Filters",
         "hideFilter": "Hide Filters"
+      },
+      "selected": "已選篩選條件",
+      "remove": "移除 %{filter}",
+      "more": "+%{count} 項",
+      "groups": {
+        "ship": "艦船",
+        "capacity": "容量與尺寸",
+        "price": "價格",
+        "ownership": "擁有情況"
       }
     }
   }

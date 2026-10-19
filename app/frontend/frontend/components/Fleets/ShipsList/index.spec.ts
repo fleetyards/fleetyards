@@ -73,7 +73,8 @@ vi.mock("@/shared/composables/useI18n", () => ({
   }),
 }));
 
-vi.mock("@/shared/composables/useFilters", () => ({
+vi.mock("@/shared/composables/useFilters", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/shared/composables/useFilters")>()),
   useFilters: () => ({ getQuery: () => ({}) }),
 }));
 

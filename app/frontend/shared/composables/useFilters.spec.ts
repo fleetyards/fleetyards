@@ -37,6 +37,20 @@ describe("useFilters#getQuery", () => {
     });
   });
 
+  it("keeps zero as a numeric cargo bound and drops cleared bounds", () => {
+    query.value = {};
+    const filters = useFilters<{
+      cargoGteq?: number | null;
+      cargoLteq?: number | null;
+    }>();
+
+    expect(filters.getQuery({ cargoGteq: 0, cargoLteq: 32 })).toEqual({
+      cargoGteq: 0,
+      cargoLteq: 32,
+    });
+    expect(filters.getQuery({ cargoGteq: null, cargoLteq: null })).toEqual({});
+  });
+
   // The whole route query is spread into `q`, and the query schemas are
   // `additionalProperties: false` -- so anything in the URL that is not a
   // filter comes back a 400 that reads as a server error.

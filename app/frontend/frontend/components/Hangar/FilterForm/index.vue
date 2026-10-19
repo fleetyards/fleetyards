@@ -5,6 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import FilterGroup from "@/shared/components/FilterGroup/index.vue";
+import { hasActiveFilters } from "@/shared/utils/Filters";
 import RadioList from "@/shared/components/base/RadioList/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
@@ -51,6 +53,8 @@ const prefillFormValues = () => {
     priceGteq: filters.value.priceGteq,
     pledgePriceLteq: filters.value.pledgePriceLteq,
     pledgePriceGteq: filters.value.pledgePriceGteq,
+    cargoGteq: filters.value.cargoGteq,
+    cargoLteq: filters.value.cargoLteq,
     lengthLteq: filters.value.lengthLteq,
     lengthGteq: filters.value.lengthGteq,
     beamLteq: filters.value.beamLteq,
@@ -94,6 +98,8 @@ watch(
 );
 
 const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
+const hasGroupFilters = (keys: string[]) =>
+  hasActiveFilters(filters.value, keys);
 </script>
 
 <template>
@@ -108,192 +114,275 @@ const { booleanOptions, priceOptions, pledgePriceOptions } = useFilterOptions();
         :clearable="true"
       />
     </Teleport>
-    <FormInput
-      v-model="form.nameCont"
-      name="vehicle-name"
-      translation-key="filters.vehicles.name"
-      :no-label="true"
-      :clearable="true"
-    />
+    <FilterGroup
+      :label="t('filteredList.groups.ship')"
+      :active="
+        hasGroupFilters([
+          'nameCont',
+          'manufacturerIn',
+          'productionStatusIn',
+          'classificationIn',
+          'focusIn',
+          'sizeIn',
+        ])
+      "
+      default-open
+    >
+      <FormInput
+        v-model="form.nameCont"
+        name="vehicle-name"
+        translation-key="filters.vehicles.name"
+        :no-label="true"
+        :clearable="true"
+      />
 
-    <ManufacturerSelect v-model="form.manufacturerIn" name="manufacturer" />
+      <ManufacturerSelect v-model="form.manufacturerIn" name="manufacturer" />
 
-    <ProductionStatusSelect
-      v-model="form.productionStatusIn"
-      name="production-status"
-    />
+      <ProductionStatusSelect
+        v-model="form.productionStatusIn"
+        name="production-status"
+      />
 
-    <ClassificationSelect
-      v-model="form.classificationIn"
-      name="classification"
-    />
+      <ClassificationSelect
+        v-model="form.classificationIn"
+        name="classification"
+      />
 
-    <FocusSelect v-model="form.focusIn" name="focus" />
+      <FocusSelect v-model="form.focusIn" name="focus" />
 
-    <SizeSelect v-model="form.sizeIn" name="size" />
+      <SizeSelect v-model="form.sizeIn" name="size" />
+    </FilterGroup>
 
-    <BaseSelect
-      v-model="form.pledgePriceIn"
-      :options="pledgePriceOptions"
-      :label="t('labels.filters.models.pledgePrice')"
-      name="pledge-price"
-      :multiple="true"
-      :no-label="true"
-    />
+    <FilterGroup
+      :label="t('filteredList.groups.capacity')"
+      :active="
+        hasGroupFilters([
+          'willItFit',
+          'cargoGteq',
+          'cargoLteq',
+          'lengthGteq',
+          'lengthLteq',
+          'withCargo',
+        ])
+      "
+    >
+      <WillItFitSelect v-model="form.willItFit" name="will-it-fit" no-label />
 
-    <BaseSelect
-      v-model="form.priceIn"
-      :options="priceOptions"
-      :label="t('labels.filters.models.price')"
-      name="price"
-      :multiple="true"
-      :no-label="true"
-    />
-
-    <WillItFitSelect v-model="form.willItFit" name="will-it-fit" no-label />
-
-    <HangarGroupsSelect v-model="form.hangarGroupsIn" name="will-it-fit" />
-
-    <BoughtViaSelect v-model="form.boughtViaEq" name="bought-via" />
-
-    <div class="row">
-      <div class="col-6">
-        <FormInput
-          v-model="form.lengthGteq"
-          name="vehicle-length-gteq"
-          :type="InputTypesEnum.NUMBER"
-          translation-key="filters.vehicles.lengthGt"
-          :no-placeholder="true"
-        />
-      </div>
-      <div class="col-6">
-        <FormInput
-          v-model="form.lengthLteq"
-          name="vehicle-length-lteq"
-          :type="InputTypesEnum.NUMBER"
-          translation-key="filters.vehicles.lengthLt"
-          :no-placeholder="true"
-        />
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-6">
-        <FormInput
-          v-model="form.pledgePriceGteq"
-          name="vehicle-pledge-price-gteq"
-          :type="InputTypesEnum.NUMBER"
-          translation-key="filters.vehicles.pledgePriceGt"
-          :no-placeholder="true"
-        />
+      <div class="row">
+        <div class="col-6">
+          <FormInput
+            v-model="form.cargoGteq"
+            name="vehicle-cargo-gteq"
+            type="number"
+            :min="0"
+            translation-key="filters.vehicles.cargoGt"
+            :no-placeholder="true"
+          />
+        </div>
+        <div class="col-6">
+          <FormInput
+            v-model="form.cargoLteq"
+            name="vehicle-cargo-lteq"
+            type="number"
+            :min="0"
+            translation-key="filters.vehicles.cargoLt"
+            :no-placeholder="true"
+          />
+        </div>
       </div>
 
-      <div class="col-6">
-        <FormInput
-          v-model="form.pledgePriceLteq"
-          name="vehicle-pledge-price-lteq"
-          :type="InputTypesEnum.NUMBER"
-          translation-key="filters.vehicles.pledgePriceLt"
-          :no-placeholder="true"
-        />
+      <div class="row">
+        <div class="col-6">
+          <FormInput
+            v-model="form.lengthGteq"
+            name="vehicle-length-gteq"
+            :type="InputTypesEnum.NUMBER"
+            translation-key="filters.vehicles.lengthGt"
+            :no-placeholder="true"
+          />
+        </div>
+        <div class="col-6">
+          <FormInput
+            v-model="form.lengthLteq"
+            name="vehicle-length-lteq"
+            :type="InputTypesEnum.NUMBER"
+            translation-key="filters.vehicles.lengthLt"
+            :no-placeholder="true"
+          />
+        </div>
       </div>
-    </div>
 
-    <FormInput
-      v-model="form.priceGteq"
-      name="vehicle-price-gteq"
-      :type="InputTypesEnum.NUMBER"
-      translation-key="filters.vehicles.priceGt"
-      :no-placeholder="true"
-    />
+      <FormToggle
+        v-model="form.withCargo"
+        :label="t('labels.filters.models.withCargo')"
+        name="withCargo"
+      />
+    </FilterGroup>
 
-    <FormInput
-      v-model="form.priceLteq"
-      name="vehicle-price-lteq"
-      :type="InputTypesEnum.NUMBER"
-      translation-key="filters.vehicles.priceLt"
-      :no-placeholder="true"
-    />
+    <FilterGroup
+      :label="t('filteredList.groups.price')"
+      :active="
+        hasGroupFilters([
+          'pledgePriceIn',
+          'priceIn',
+          'pledgePriceGteq',
+          'pledgePriceLteq',
+          'priceGteq',
+          'priceLteq',
+          'onSaleEq',
+        ])
+      "
+    >
+      <BaseSelect
+        v-model="form.pledgePriceIn"
+        :options="pledgePriceOptions"
+        :label="t('labels.filters.models.pledgePrice')"
+        name="pledge-price"
+        :multiple="true"
+        :no-label="true"
+      />
 
-    <RadioList
-      v-if="$route.name === 'hangar' || $route.name === 'hangar-wishlist'"
-      v-model="form.loanerEq"
-      :label="t('labels.filters.vehicles.loaner')"
-      :reset-label="t('labels.hide')"
-      :options="[
-        {
-          label: t('labels.show'),
-          value: 'true',
-        },
-        {
-          label: t('labels.only'),
-          value: 'only',
-        },
-      ]"
-      name="loaner"
-    />
+      <BaseSelect
+        v-model="form.priceIn"
+        :options="priceOptions"
+        :label="t('labels.filters.models.price')"
+        name="price"
+        :multiple="true"
+        :no-label="true"
+      />
 
-    <RadioList
-      v-if="$route.name === 'hangar' || $route.name === 'hangar-wishlist'"
-      v-model="form.bundledEq"
-      :label="t('labels.filters.vehicles.bundled')"
-      :reset-label="t('labels.all')"
-      :options="[
-        {
-          label: t('labels.hide'),
-          value: 'false',
-        },
-        {
-          label: t('labels.only'),
-          value: 'only',
-        },
-      ]"
-      name="bundled"
-    />
+      <div class="row">
+        <div class="col-6">
+          <FormInput
+            v-model="form.pledgePriceGteq"
+            name="vehicle-pledge-price-gteq"
+            :type="InputTypesEnum.NUMBER"
+            translation-key="filters.vehicles.pledgePriceGt"
+            :no-placeholder="true"
+          />
+        </div>
 
-    <RadioList
-      v-if="$route.name === 'hangar'"
-      v-model="form.hiddenByUserEq"
-      :label="t('labels.filters.vehicles.hiddenByUser')"
-      :reset-label="t('labels.hide')"
-      :options="[
-        {
-          label: t('labels.show'),
-          value: 'true',
-        },
-        {
-          label: t('labels.only'),
-          value: 'only',
-        },
-      ]"
-      name="hidden-by-user"
-    />
+        <div class="col-6">
+          <FormInput
+            v-model="form.pledgePriceLteq"
+            name="vehicle-pledge-price-lteq"
+            :type="InputTypesEnum.NUMBER"
+            translation-key="filters.vehicles.pledgePriceLt"
+            :no-placeholder="true"
+          />
+        </div>
+      </div>
 
-    <RadioList
-      v-model="form.onSaleEq"
-      :label="t('labels.filters.models.onSale')"
-      :reset-label="t('labels.all')"
-      :options="booleanOptions"
-      name="sale"
-    />
+      <div class="row">
+        <div class="col-6">
+          <FormInput
+            v-model="form.priceGteq"
+            name="vehicle-price-gteq"
+            :type="InputTypesEnum.NUMBER"
+            translation-key="filters.vehicles.priceGt"
+            :no-placeholder="true"
+          />
+        </div>
+        <div class="col-6">
+          <FormInput
+            v-model="form.priceLteq"
+            name="vehicle-price-lteq"
+            :type="InputTypesEnum.NUMBER"
+            translation-key="filters.vehicles.priceLt"
+            :no-placeholder="true"
+          />
+        </div>
+      </div>
 
-    <RadioList
-      v-if="$route.name === 'hangar' || $route.name === 'hangar-wishlist'"
-      v-model="form.publicEq"
-      :label="t('labels.filters.vehicles.public')"
-      :reset-label="t('labels.all')"
-      :options="booleanOptions"
-      name="public"
-    />
+      <RadioList
+        v-model="form.onSaleEq"
+        :label="t('labels.filters.models.onSale')"
+        :reset-label="t('labels.all')"
+        :options="booleanOptions"
+        name="sale"
+      />
+    </FilterGroup>
 
-    <FormToggle
-      v-model="form.withCargo"
-      :label="t('labels.filters.models.withCargo')"
-      name="withCargo"
-    />
+    <FilterGroup
+      :label="t('filteredList.groups.ownership')"
+      :active="
+        hasGroupFilters([
+          'hangarGroupsIn',
+          'boughtViaEq',
+          'loanerEq',
+          'bundledEq',
+          'hiddenByUserEq',
+          'publicEq',
+        ])
+      "
+    >
+      <HangarGroupsSelect v-model="form.hangarGroupsIn" name="will-it-fit" />
 
-    <br />
+      <BoughtViaSelect v-model="form.boughtViaEq" name="bought-via" />
 
+      <RadioList
+        v-if="$route.name === 'hangar' || $route.name === 'hangar-wishlist'"
+        v-model="form.loanerEq"
+        :label="t('labels.filters.vehicles.loaner')"
+        :reset-label="t('labels.hide')"
+        :options="[
+          {
+            label: t('labels.show'),
+            value: 'true',
+          },
+          {
+            label: t('labels.only'),
+            value: 'only',
+          },
+        ]"
+        name="loaner"
+      />
+
+      <RadioList
+        v-if="$route.name === 'hangar' || $route.name === 'hangar-wishlist'"
+        v-model="form.bundledEq"
+        :label="t('labels.filters.vehicles.bundled')"
+        :reset-label="t('labels.all')"
+        :options="[
+          {
+            label: t('labels.hide'),
+            value: 'false',
+          },
+          {
+            label: t('labels.only'),
+            value: 'only',
+          },
+        ]"
+        name="bundled"
+      />
+
+      <RadioList
+        v-if="$route.name === 'hangar'"
+        v-model="form.hiddenByUserEq"
+        :label="t('labels.filters.vehicles.hiddenByUser')"
+        :reset-label="t('labels.hide')"
+        :options="[
+          {
+            label: t('labels.show'),
+            value: 'true',
+          },
+          {
+            label: t('labels.only'),
+            value: 'only',
+          },
+        ]"
+        name="hidden-by-user"
+      />
+
+      <RadioList
+        v-if="$route.name === 'hangar' || $route.name === 'hangar-wishlist'"
+        v-model="form.publicEq"
+        :label="t('labels.filters.vehicles.public')"
+        :reset-label="t('labels.all')"
+        :options="booleanOptions"
+        name="public"
+      />
+    </FilterGroup>
     <Btn :disabled="!isFilterSelected" :block="true" @click="resetFilter">
       <i class="fa-light fa-times" />
       {{ t("actions.resetFilter") }}

@@ -27,6 +27,53 @@
     gap: 10px;
   }
 
+  // Selected filters where the sort options used to start, the sort options
+  // on the right. The margin moves from the toolbar to the row, so the two
+  // sides share one baseline and one gap to the list.
+  &__sort-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 16px;
+    margin-bottom: 14px;
+
+    &:not(:has(> * > *)) {
+      display: none;
+    }
+  }
+
+  &__selected-filters {
+    flex: 1 1 0;
+    min-width: 0;
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  &__sort {
+    margin-left: auto;
+
+    :deep(.base-list-toolbar) {
+      justify-content: flex-end;
+      margin-bottom: 0;
+    }
+
+    // Select-all and the bulk actions line up with the table below, so a
+    // selectable toolbar keeps the full row.
+    &:has(.base-list-toolbar--selectable) {
+      flex-basis: 100%;
+
+      :deep(.base-list-toolbar) {
+        justify-content: flex-start;
+      }
+    }
+  }
+
+  &__off-canvas-filters {
+    margin-bottom: 16px;
+  }
+
   // Whichever of the two right-hand blocks comes first carries the row: an
   // auto margin rather than `space-between`, which would strand the actions in
   // the middle of the row now that the paginator is a third child.
@@ -61,6 +108,21 @@
 
 @media (max-width: $desktop-breakpoint) {
   .filtered-list {
+    // No room for two sides on a phone: the selected filters take one line, the
+    // sort options the next, both from the left edge.
+    &__selected-filters,
+    &__sort {
+      flex-basis: 100%;
+    }
+
+    &__sort {
+      margin-left: 0;
+
+      :deep(.base-list-toolbar) {
+        justify-content: flex-start;
+      }
+    }
+
     &__actions {
       // A row gap as well: a row that wraps puts the paginator directly under
       // the buttons, and without air between them the two read as one block.

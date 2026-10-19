@@ -5,6 +5,8 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { useShipFilterSummary } from "@/frontend/composables/useShipFilterSummary";
+
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import GridSkeleton from "@/shared/components/GridSkeleton/index.vue";
 import Grid from "@/shared/components/base/Grid/index.vue";
@@ -210,6 +212,7 @@ useSubscription({
     }
   },
 });
+const { activeFilters } = useShipFilterSummary();
 </script>
 
 <template>
@@ -274,6 +277,7 @@ useSubscription({
       </div>
 
       <FilteredList
+        :active-filters="activeFilters"
         name="fleet-ships"
         :records="fleetVehicles?.items || []"
         :async-status="asyncStatus"

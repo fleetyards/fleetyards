@@ -4,6 +4,15 @@
       "actions": {
         "showFilter": "Filter anzeigen",
         "hideFilter": "Filter ausblenden"
+      },
+      "selected": "Ausgewählte Filter",
+      "remove": "%{filter} entfernen",
+      "more": "+%{count} weitere",
+      "groups": {
+        "ship": "Schiff",
+        "capacity": "Kapazität & Abmessungen",
+        "price": "Preis",
+        "ownership": "Besitz"
       }
     }
   }

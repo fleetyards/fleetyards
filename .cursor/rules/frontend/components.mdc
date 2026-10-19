@@ -61,6 +61,8 @@ Fleetyards frontend. Components here should be:
 - **MetricsList/** — Metrics/statistics list
 - **NotFound/** — Not found/404 message
 - **Paginator/** — Pagination controls (with PerPageDropdown)
+- **ActiveFilters/** — Compact removable filter chips with an overflow action and an expanded panel view
+- **FilterGroup/** — Collapsible sections for related filters
 - **FilteredList/** — List with filtering
 - **BreadCrumbs/** — Breadcrumb navigation
 - **Chart/** — Chart/graph component

@@ -5,6 +5,11 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import {
+  hangarGroupLabels,
+  useShipFilterSummary,
+} from "@/frontend/composables/useShipFilterSummary";
+
 import DuotoneGlyph from "@/shared/components/DuotoneGlyph/index.vue";
 import { SHIP_GLYPH } from "@/shared/glyphs/ships";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
@@ -43,6 +48,7 @@ import { EmptyVariantsEnum } from "@/shared/components/Empty/types";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
   useWishlist as useWishlistQuery,
+  useHangarGroups as useHangarGroupsQuery,
   exportWishlist,
   useDestroyWishlist as useDestroyWishlistMutation,
 } from "@/services/fyApi";
@@ -245,6 +251,10 @@ const openDisplayOptionsModal = () => {
       import("@/frontend/components/Wishlist/DisplayOptionsModal/index.vue"),
   });
 };
+const { data: hangarGroups } = useHangarGroupsQuery();
+const { activeFilters } = useShipFilterSummary(() =>
+  hangarGroupLabels(hangarGroups.value),
+);
 </script>
 
 <template>
@@ -278,6 +288,7 @@ const openDisplayOptionsModal = () => {
   </Teleport>
 
   <FilteredList
+    :active-filters="activeFilters"
     key="wishlist"
     :hide-loading="fleetchartVisible || !gridView"
     :hide-empty="!gridView"

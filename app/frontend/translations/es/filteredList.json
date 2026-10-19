@@ -4,6 +4,15 @@
       "actions": {
         "showFilter": "Show Filters",
         "hideFilter": "Hide Filters"
+      },
+      "selected": "Filtros seleccionados",
+      "remove": "Quitar %{filter}",
+      "more": "+%{count} más",
+      "groups": {
+        "ship": "Nave",
+        "capacity": "Capacidad y dimensiones",
+        "price": "Precio",
+        "ownership": "Propiedad"
       }
     }
   }

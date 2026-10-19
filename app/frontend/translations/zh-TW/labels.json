@@ -2507,6 +2507,8 @@
         "vehicles": {
           "name": "Name or Ship name",
           "lengthLt": "Length <=",
+          "cargoGt": "SCU >=",
+          "cargoLt": "SCU <=",
           "lengthGt": "Length >=",
           "pledgePriceLt": "Pledge Price <=",
           "pledgePriceGt": "Pledge Price >=",
@@ -2531,6 +2533,8 @@
         },
         "models": {
           "name": "名稱",
+          "cargoGt": "SCU >=",
+          "cargoLt": "SCU <=",
           "classification": "分類",
           "focus": "定位",
           "manufacturer": "製造商",

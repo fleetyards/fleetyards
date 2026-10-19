@@ -30092,6 +30092,10 @@ components:
     FleetVehicleQuery:
       type: object
       properties:
+        cargoGteq:
+          type: number
+        cargoLteq:
+          type: number
         beamGteq:
           type: number
         beamLteq:
@@ -31576,6 +31580,10 @@ components:
     HangarQuery:
       type: object
       properties:
+        cargoGteq:
+          type: number
+        cargoLteq:
+          type: number
         beamGteq:
           type: number
         beamLteq:
@@ -36420,6 +36428,10 @@ components:
     ModelQuery:
       type: object
       properties:
+        cargoGteq:
+          type: number
+        cargoLteq:
+          type: number
         beamGteq:
           type: number
         beamLteq:

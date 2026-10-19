@@ -4,6 +4,15 @@
       "actions": {
         "showFilter": "Afficher les filtres",
         "hideFilter": "Masquer les filtres"
+      },
+      "selected": "Filtres sélectionnés",
+      "remove": "Retirer %{filter}",
+      "more": "+%{count} de plus",
+      "groups": {
+        "ship": "Vaisseau",
+        "capacity": "Capacité et dimensions",
+        "price": "Prix",
+        "ownership": "Possession"
       }
     }
   }

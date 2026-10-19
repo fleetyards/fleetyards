@@ -33,6 +33,21 @@ class Api::V1::ModelsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "filters by inclusive cargo bounds in SCU" do
+    models = [0, 0.5, 32, 64].map { |cargo| create(:model, cargo:, keep_cargo: true) }
+
+    [
+      [{cargoGteq: 0.5}, models.drop(1)],
+      [{cargoLteq: 0.5}, models.first(2)],
+      [{cargoGteq: 0.5, cargoLteq: 32}, models[1..2]],
+      [{cargoGteq: 0, cargoLteq: 0}, models.first(1)]
+    ].each do |query, expected|
+      assert_api_response :get, 200, params: {q: query} do
+        assert_equal expected.map(&:id).sort, parsed_body["items"].map { |item| item["id"] }.sort
+      end
+    end
+  end
+
   test "GET /models returns a list of models" do
     create_list(:model, 6)
 
