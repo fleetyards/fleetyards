@@ -3042,7 +3042,8 @@
           "same": "Genauso viele wie beim letzten Sync",
           "reading": "%{count} von etwa %{total} Einträgen"
         },
-        "viewImport": "Import dieses Syncs ansehen"
+        "viewImport": "Import dieses Syncs ansehen",
+        "lastSynced": "Zuletzt synchronisiert"
       },
       "cargoGridViewer": {
         "capacity": "Kapazität",

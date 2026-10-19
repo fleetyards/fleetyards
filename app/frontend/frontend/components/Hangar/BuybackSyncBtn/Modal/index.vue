@@ -23,6 +23,8 @@ import type { SyncCount } from "@/frontend/components/Hangar/SyncCountList/types
 import { useSupportPrompt } from "@/shared/composables/useSupportPrompt";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import SyncSessionStatus from "@/frontend/components/Hangar/SyncSessionStatus/index.vue";
+import SyncLastSynced from "@/frontend/components/Hangar/SyncLastSynced/index.vue";
+import { syncRsiBuybacksLastRead } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -74,6 +76,18 @@ const identityStatus = ref<"pending" | "connected" | "notFound">("pending");
 const rsiHandle = ref<string>();
 
 const loadingIdentity = ref(false);
+
+// When the last recorded sync finished, so the start screen says how old the
+// stored list is.
+const lastSyncedAt = ref<string | null>();
+
+onMounted(() => {
+  syncRsiBuybacksLastRead()
+    .then((read) => {
+      lastSyncedAt.value = read.finishedAt;
+    })
+    .catch(() => undefined);
+});
 
 const buybackSync = useBuybackSync();
 
@@ -480,6 +494,7 @@ const cancelRun = () => {
         :hint="t('texts.buybackSync.sessionHint')"
         @recheck="checkRSIIdentity"
       />
+      <SyncLastSynced :finished-at="lastSyncedAt" />
       <SyncPoints
         :points="[
           {

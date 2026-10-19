@@ -3042,7 +3042,8 @@
           "same": "Autant que lors de la dernière synchronisation",
           "reading": "%{count} sur environ %{total} éléments"
         },
-        "viewImport": "Voir l'import de cette synchronisation"
+        "viewImport": "Voir l'import de cette synchronisation",
+        "lastSynced": "Dernière synchronisation"
       },
       "cargoGridViewer": {
         "capacity": "Capacité",

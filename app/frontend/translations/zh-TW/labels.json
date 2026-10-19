@@ -3040,7 +3040,8 @@
           "same": "與上次同步相同",
           "reading": "%{count} / 約 %{total} 項"
         },
-        "viewImport": "檢視本次同步的匯入"
+        "viewImport": "檢視本次同步的匯入",
+        "lastSynced": "上次同步："
       },
       "cargoGridViewer": {
         "capacity": "容量",

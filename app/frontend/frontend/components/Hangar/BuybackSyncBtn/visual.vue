@@ -60,7 +60,11 @@ useVisualApiMock([
   {
     method: "GET",
     path: /^\/hangar\/sync-rsi-buybacks\/last-read$/,
-    respond: () => ({ finishedAt: null, pages: 1, total: 3 }),
+    respond: () => ({
+      finishedAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+      pages: 1,
+      total: 3,
+    }),
   },
 ]);
 const startScreens: StartScreen[] = [

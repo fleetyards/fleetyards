@@ -105,6 +105,8 @@ vi.mock("@/shared/composables/useI18n", () => ({
     t: (key: string) => key,
     tExists: () => false,
     currentLocale: () => "en",
+    l: (value: string) => value,
+    timeDistance: (value: string) => value,
   }),
 }));
 
@@ -435,6 +437,27 @@ describe("HangarBuybackSyncModal", () => {
         .findComponent(RouterLinkStub)
         .props("to"),
     ).toEqual({ name: "hangar-import", params: { id: "import-1" } });
+  });
+
+  it("says on the start screen when the last sync finished", async () => {
+    lastRead.mockImplementation(() =>
+      Promise.resolve({
+        finishedAt: "2026-10-11T18:00:00Z",
+        pages: 2,
+        total: 12,
+      }),
+    );
+    const wrapper = await mountModal(currentExtension);
+
+    expect(
+      wrapper.get("[data-test='sync-last-synced'] time").attributes("datetime"),
+    ).toBe("2026-10-11T18:00:00Z");
+  });
+
+  it("shows no date before a first recorded sync", async () => {
+    const wrapper = await mountModal(currentExtension);
+
+    expect(wrapper.find("[data-test='sync-last-synced']").exists()).toBe(false);
   });
 
   it("keeps reading the list once the modal is closed", async () => {
