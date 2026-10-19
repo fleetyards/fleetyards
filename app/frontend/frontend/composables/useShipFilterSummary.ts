@@ -153,7 +153,13 @@ export const useShipFilterSummary = (
             ...(query[parent] as unknown as Record<string, unknown>),
           };
           delete nested[child];
-          query[parent] = nested as unknown as LocationQueryRaw[string];
+          // The URL drops an empty `q` but `route.query` keeps it, and an
+          // empty object still counts as a selected filter.
+          if (Object.keys(nested).length) {
+            query[parent] = nested as unknown as LocationQueryRaw[string];
+          } else {
+            delete query[parent];
+          }
         });
         delete query.page;
         await router.push({ path: route.path, query, hash: route.hash });

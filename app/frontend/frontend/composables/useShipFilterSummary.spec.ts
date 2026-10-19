@@ -161,4 +161,26 @@ describe("ship filter summaries", () => {
     });
     wrapper.unmount();
   });
+
+  it("drops the nested q once its last filter is removed", async () => {
+    const router = createRouter({
+      history: createMemoryHistory(),
+      routes: [{ path: "/hangar", component: { template: "<div />" } }],
+    });
+    await router.push({
+      path: "/hangar",
+      query: { q: { manufacturerIn: ["rsi"] } } as unknown as LocationQuery,
+    });
+    let summary: ReturnType<typeof useShipFilterSummary> | undefined;
+    const component = defineComponent({
+      setup() {
+        summary = useShipFilterSummary();
+        return () => h("div");
+      },
+    });
+    const wrapper = await mountWithDefaults(component, { plugins: [router] });
+    await summary!.activeFilters.value[0].remove();
+    expect(router.currentRoute.value.query).not.toHaveProperty("q");
+    wrapper.unmount();
+  });
 });
