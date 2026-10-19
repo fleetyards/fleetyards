@@ -87,6 +87,8 @@ module InventoryStock
 
   NET_QUANTITY = "SUM(CASE WHEN entry_type = 0 THEN quantity ELSE -quantity END)"
 
+  CRAFTED_COLUMNS = %w[crafted_blueprint_id crafted_qualities].freeze
+
   # Grouped by the position rather than by the labels on the entries. The labels
   # are still on the entries and still agree, but they are no longer what decides
   # which rows belong together -- which is the whole point of the position having
@@ -95,10 +97,16 @@ module InventoryStock
   # Still driven from the entries, so a position holding none of them does not
   # appear here. `stock_item` resolves one directly and is where an emptied
   # position keeps answering.
+  #
+  # A crafted part is held apart from the same part bought or looted, and from
+  # one crafted with other material, the way a grade of ore is held apart from
+  # the next: what it is worth depends on what went into it.
   def current_stock
     position_scope
-      .select(position_columns, "quality", "#{NET_QUANTITY} AS net_quantity", *agreed_item_columns)
-      .group(position_group, :quality)
+      .select(
+        position_columns, "quality", *CRAFTED_COLUMNS, "#{NET_QUANTITY} AS net_quantity", *agreed_item_columns
+      )
+      .group(position_group, :quality, *CRAFTED_COLUMNS)
       .having("#{NET_QUANTITY} > 0")
       .order(position_name)
   end

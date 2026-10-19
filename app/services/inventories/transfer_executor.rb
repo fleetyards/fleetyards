@@ -24,7 +24,7 @@ module Inventories
     # `member_id` is deliberately never filled. It records which member the
     # goods physically belong to, which a transfer from outside the fleet cannot
     # know and must not guess.
-    CARRIED = %i[name category unit item_type item_id].freeze
+    CARRIED = %i[name category unit item_type item_id crafted_blueprint_id crafted_qualities].freeze
 
     def initialize(transfer, actor:)
       @transfer = transfer

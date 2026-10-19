@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_18_130000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_19_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -998,6 +998,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_18_130000) do
     t.integer "quality", default: 0
     t.uuid "fleet_inventory_position_id", null: false
     t.uuid "inventory_transfer_id"
+    t.uuid "crafted_blueprint_id"
+    t.jsonb "crafted_qualities"
+    t.index ["crafted_blueprint_id"], name: "index_fleet_inventory_items_on_crafted_blueprint_id"
     t.index ["fleet_inventory_id"], name: "index_fleet_inventory_items_on_fleet_inventory_id"
     t.index ["fleet_inventory_position_id"], name: "index_fleet_inventory_items_on_fleet_inventory_position_id"
     t.index ["inventory_transfer_id"], name: "index_fleet_inventory_items_on_inventory_transfer_id"
@@ -1559,6 +1562,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_18_130000) do
     t.datetime "updated_at", null: false
     t.uuid "inventory_position_id", null: false
     t.uuid "inventory_transfer_id"
+    t.uuid "crafted_blueprint_id"
+    t.jsonb "crafted_qualities"
+    t.index ["crafted_blueprint_id"], name: "index_inventory_items_on_crafted_blueprint_id"
     t.index ["inventory_id"], name: "index_inventory_items_on_inventory_id"
     t.index ["inventory_position_id"], name: "index_inventory_items_on_inventory_position_id"
     t.index ["inventory_transfer_id"], name: "index_inventory_items_on_inventory_transfer_id"
@@ -2924,6 +2930,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_18_130000) do
   add_foreign_key "fleet_inventories", "fleets"
   add_foreign_key "fleet_inventories", "locations", on_delete: :nullify
   add_foreign_key "fleet_inventories", "users", column: "managed_by"
+  add_foreign_key "fleet_inventory_items", "blueprints", column: "crafted_blueprint_id", on_delete: :nullify
   add_foreign_key "fleet_inventory_items", "fleet_inventories"
   add_foreign_key "fleet_inventory_items", "fleet_inventory_positions", on_delete: :restrict
   add_foreign_key "fleet_inventory_items", "inventory_transfers", on_delete: :nullify
@@ -2961,6 +2968,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_18_130000) do
   add_foreign_key "imports", "hangar_groups", on_delete: :nullify
   add_foreign_key "inventories", "locations", on_delete: :nullify
   add_foreign_key "inventories", "vehicles", on_delete: :nullify
+  add_foreign_key "inventory_items", "blueprints", column: "crafted_blueprint_id", on_delete: :nullify
   add_foreign_key "inventory_items", "inventories"
   add_foreign_key "inventory_items", "inventory_positions", on_delete: :restrict
   add_foreign_key "inventory_items", "inventory_transfers", on_delete: :nullify

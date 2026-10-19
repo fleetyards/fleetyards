@@ -226,13 +226,17 @@ module Inventories
       end
     end
 
-    # What the position holds, per quality grade. `current_stock` is the same
-    # rollup the list renders, so a line can only be spent on grades the reader
-    # can see.
+    # What the position holds, per lot: a quality grade, or a crafted part with
+    # the grades it was made from. `current_stock` is the same rollup the list
+    # renders, so a line can only be spent on lots the reader can see.
     private def grades_for(position)
       @grades ||= @source.current_stock.group_by { |row| row.position_id }
 
-      (@grades[position.id] || []).map { |row| [row.quality, row.net_quantity] }
+      (@grades[position.id] || []).map do |row|
+        lot = TransferLine::Lot.new(row.quality, row.crafted_blueprint_id, row.crafted_qualities)
+
+        [lot, row.net_quantity]
+      end
     end
 
     private def resolve_line(line)
