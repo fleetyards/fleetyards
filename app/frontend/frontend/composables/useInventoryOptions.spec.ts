@@ -55,8 +55,8 @@ describe("INVENTORY_EQUIPMENT_TYPES", () => {
   });
 });
 
-// A crafting contract files its line by the pick, and Progress matches a
-// deposit on the category -- so the two have to agree.
+// Contract progress matches a deposit on the category, so a piece of
+// equipment has to land under the same one wherever it was browsed to.
 describe("inventoryCategoryForEquipment", () => {
   it("files a piece under the category whose picker offers it", () => {
     expect(inventoryCategoryForEquipment("weapon")).toBe("weapon");

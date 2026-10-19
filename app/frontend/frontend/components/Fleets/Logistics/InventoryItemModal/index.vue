@@ -5,10 +5,13 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { useForm } from "vee-validate";
+import { useField, useForm } from "vee-validate";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
+import {
+  BtnTypesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
@@ -21,14 +24,10 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useModalDirty } from "@/shared/components/AppModal/dirty";
 import { useFormDirty } from "@/shared/composables/useFormDirty";
-import ComponentPicker from "@/frontend/components/Logistics/ComponentPicker/index.vue";
-import CommodityPicker from "@/frontend/components/Logistics/CommodityPicker/index.vue";
-import EquipmentPicker from "@/frontend/components/Logistics/EquipmentPicker/index.vue";
+import ItemPicker from "@/frontend/components/Logistics/ItemPicker/index.vue";
+import ItemPickerField from "@/frontend/components/Logistics/ItemPickerField/index.vue";
 import { type PickedItem } from "@/frontend/components/Logistics/types";
 import {
-  type Commodity,
-  type Component as GameComponent,
-  type Equipment as GameEquipment,
   type Fleet,
   type FleetInventory,
   type FilterOption,
@@ -40,10 +39,8 @@ import {
   InventoryUnitEnum,
 } from "@/services/fyApi";
 import { type BaseSelectParams } from "@/shared/components/base/Select/index.vue";
-import {
-  INVENTORY_EQUIPMENT_TYPES,
-  useInventoryOptions,
-} from "@/frontend/composables/useInventoryOptions";
+import { useInventoryOptions } from "@/frontend/composables/useInventoryOptions";
+import { useItemPickerStep } from "@/frontend/composables/useItemPickerStep";
 
 type StockItem = {
   id: string;
@@ -51,6 +48,9 @@ type StockItem = {
   category: string;
   unit: string;
   netQuantity: number;
+  // The grade this row of stock is held at; a position holding several grades
+  // is one row per grade.
+  quality?: number | null;
 };
 
 type Props = {
@@ -64,8 +64,7 @@ const props = defineProps<Props>();
 const { t } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
 const comlink = useComlink();
-const { categoryOptions, unitOptionsFor, entryTypeOptions } =
-  useInventoryOptions();
+const { unitOptionsFor, entryTypeOptions } = useInventoryOptions();
 
 const submitting = ref(false);
 const entryType = ref<"deposit" | "withdrawal">(
@@ -73,7 +72,7 @@ const entryType = ref<"deposit" | "withdrawal">(
 );
 const selectedStockItem = ref<string | undefined>(undefined);
 const stockItems = ref<StockItem[]>([]);
-// One slot for whichever catalogue the category exposes, so the submit and the
+// One slot for whichever catalogue the item came from, so the submit and the
 // name-edit rule stay single rather than growing a branch per item type.
 // Declared before `unitOptions`, which reads it.
 const pickedItem = ref<PickedItem | undefined>(undefined);
@@ -98,23 +97,30 @@ const countedSelection = computed(() =>
 
 const isDeposit = computed(() => entryType.value === "deposit");
 
-const modalTitle = computed(() =>
-  isDeposit.value
+const modalTitle = computed(() => {
+  if (picking.value) return pickTitle.value;
+
+  return isDeposit.value
     ? t("headlines.logistics.deposit")
-    : t("headlines.logistics.withdrawal"),
-);
+    : t("headlines.logistics.withdrawal");
+});
 
 const validationSchema = {
   name: "required|min:2",
   quantity: "required|min_value:0",
+  quality: "required|between:0,1000",
 };
+
+// Left blank rather than defaulted, so the amount and grade of a deposit are
+// entered for the goods at hand instead of slipping through as a 1 and a 0
+// nobody chose.
 
 const initialValues = {
   name: "",
   category: InventoryCategoryEnum.COMMODITY as InventoryCategoryEnum,
-  quantity: 1,
+  quantity: undefined as number | undefined,
   unit: InventoryUnitEnum.SCU as InventoryUnitEnum,
-  quality: 0,
+  quality: undefined as number | undefined,
   memberId: undefined as string | undefined,
   image: undefined as string | undefined,
   notes: "",
@@ -124,28 +130,42 @@ const { defineField, handleSubmit, setFieldValue, values } = useForm({
   initialValues,
 });
 
-const [name, nameProps] = defineField("name");
-const [category, categoryProps] = defineField("category");
+// Named by the picker or by an existing position rather than typed, so the
+// rule lives here instead of on an input. A withdrawal names its goods by the
+// stock position it picks, so only a deposit asks.
+const { value: name, errorMessage: nameError } = useField<string>(
+  "name",
+  computed(() => (isDeposit.value ? validationSchema.name : "")),
+  { label: t("labels.logistics.itemPicker.field") },
+);
+const [category] = defineField("category");
+
+const {
+  picking,
+  showPicker,
+  pickTitle,
+  graded,
+  categoryLabel,
+  pickerCategory,
+  applySelection,
+  clearItem,
+} = useItemPickerStep({
+  name,
+  category,
+  pickedItem,
+  setFieldValue,
+  onReset: () => {
+    selectedExistingItem.value = undefined;
+    selectedPosition.value = undefined;
+  },
+});
+
 const [quantity, quantityProps] = defineField("quantity");
 const [unit] = defineField("unit");
 const [quality, qualityProps] = defineField("quality");
 const [memberId] = defineField("memberId");
 const [image, imageProps] = defineField("image");
 const [notes, notesProps] = defineField("notes");
-
-const isComponent = computed(
-  () => category.value === InventoryCategoryEnum.COMPONENT,
-);
-
-const isCommodity = computed(
-  () => category.value === InventoryCategoryEnum.COMMODITY,
-);
-
-const isEquipment = computed(() => category.value in INVENTORY_EQUIPMENT_TYPES);
-
-const equipmentTypes = computed(
-  () => INVENTORY_EQUIPMENT_TYPES[category.value] || [],
-);
 
 // A counted commodity is the only thing that puts `units` on offer under the
 // commodity category, and only the picked item knows -- so the options follow
@@ -170,12 +190,20 @@ const loadStockItems = async () => {
   }
 };
 
+// Keyed by row rather than by position: a position holding several grades is
+// several rows, and a withdrawal comes out of one of them.
 const stockItemOptions = computed<FilterOption[]>(() =>
-  stockItems.value.map((item) => ({
-    value: item.id,
-    label: `${item.name} (${item.netQuantity} ${t(`labels.logistics.units.${item.unit}`)})`,
+  stockItems.value.map((item, index) => ({
+    value: String(index),
+    label:
+      item.quality != null && item.category === "commodity"
+        ? `${item.name} · ${t("labels.logistics.qualityShort", { quality: item.quality })} (${item.netQuantity} ${t(`labels.logistics.units.${item.unit}`)})`
+        : `${item.name} (${item.netQuantity} ${t(`labels.logistics.units.${item.unit}`)})`,
   })),
 );
+
+const stockRowAt = (key?: string | null) =>
+  key ? stockItems.value[Number(key)] : undefined;
 
 // Load stock on mount for both withdrawal picker and deposit name suggestions
 onMounted(() => {
@@ -206,64 +234,6 @@ watch(selectedExistingItem, (val) => {
   pickedItem.value = undefined;
 });
 
-const applyPickedComponent = (component: GameComponent) => {
-  pickedItem.value = {
-    type: "Component",
-    id: component.id,
-    name: component.name,
-  };
-
-  setFieldValue("name", component.name);
-};
-
-const applyPickedCommodity = (commodity: Commodity) => {
-  pickedItem.value = {
-    type: "Commodity",
-    id: commodity.id,
-    name: commodity.name,
-    counted: commodity.counted,
-  };
-
-  setFieldValue("name", commodity.name);
-};
-
-const applyPickedEquipment = (equipment: GameEquipment) => {
-  pickedItem.value = {
-    type: "Equipment",
-    id: equipment.id,
-    name: equipment.name,
-  };
-
-  setFieldValue("name", equipment.name);
-};
-
-// A hand-edited name no longer describes the picked item, so the reference goes
-// with it rather than mislabeling a real catalogue entry. Typing a name that
-// isn't in the catalogue at all stays allowed; it just isn't a reference.
-watch(name, (val) => {
-  if (pickedItem.value && val !== pickedItem.value.name) {
-    pickedItem.value = undefined;
-  }
-
-  if (selectedPosition.value && val !== selectedPosition.value.name) {
-    selectedPosition.value = undefined;
-  }
-});
-
-// Switching away from the category that offered the picker leaves the reference
-// pointing at the wrong kind of thing.
-watch([isComponent, isCommodity, isEquipment], () => {
-  if (!pickedItem.value) return;
-
-  const stillOffered = {
-    Component: isComponent.value,
-    Commodity: isCommodity.value,
-    Equipment: isEquipment.value,
-  }[pickedItem.value.type];
-
-  if (!stillOffered) pickedItem.value = undefined;
-});
-
 // When switching to withdrawal, load stock
 watch(entryType, (val) => {
   if (val === "withdrawal") {
@@ -276,9 +246,7 @@ watch(entryType, (val) => {
 
 // When stock item is picked, auto-fill fields
 watch(selectedStockItem, (val) => {
-  if (!val) return;
-
-  const picked = stockItems.value.find((item) => item.id === val);
+  const picked = stockRowAt(val);
   if (!picked) return;
 
   selectedPosition.value = picked;
@@ -290,10 +258,15 @@ watch(selectedStockItem, (val) => {
   /* eslint-enable @typescript-eslint/no-explicit-any */
 });
 
+// A withdrawal comes out of the grade its stock row is held at -- 800, 0, or
+// NULL for stock nobody graded -- exactly, since stock is grouped by it and a
+// withdrawal at any other grade would leave the row it came from untouched.
+const withdrawnQuality = computed(
+  () => stockRowAt(selectedStockItem.value)?.quality ?? null,
+);
+
 const selectedStockMax = computed(() => {
-  if (!selectedStockItem.value) return undefined;
-  return stockItems.value.find((item) => item.id === selectedStockItem.value)
-    ?.netQuantity;
+  return stockRowAt(selectedStockItem.value)?.netQuantity;
 });
 
 const fetchMembers = (params: BaseSelectParams<FilterOption>) => {
@@ -340,7 +313,11 @@ const onSubmit = handleSubmit(async (values) => {
             : Math.round(Number(values.quantity)),
         unit: values.unit,
         entryType: entryType.value,
-        quality: values.quality != null ? Number(values.quality) : undefined,
+        quality: isDeposit.value
+          ? graded.value && values.quality != null
+            ? Number(values.quality)
+            : undefined
+          : withdrawnQuality.value,
         memberId: values.memberId || undefined,
         image: values.image || undefined,
         notes: values.notes || undefined,
@@ -371,8 +348,21 @@ const onSubmit = handleSubmit(async (values) => {
 </script>
 
 <template>
-  <Modal :title="modalTitle">
-    <form id="create-inventory-item-form" @submit.prevent="onSubmit">
+  <Modal :title="modalTitle" :flush="picking">
+    <ItemPicker
+      v-if="picking"
+      :category="pickerCategory"
+      @select="applySelection"
+    />
+
+    <!-- Hidden rather than unmounted while the catalogue is open, so nothing
+         typed into it is lost. -->
+    <form
+      v-show="!picking"
+      id="create-inventory-item-form"
+      ref="itemPickerForm"
+      @submit.prevent="onSubmit"
+    >
       <BaseSelect
         v-model="entryType"
         :options="entryTypeOptions"
@@ -419,28 +409,13 @@ const onSubmit = handleSubmit(async (values) => {
           :searchable="true"
           :nullable="true"
         />
-        <FormInput
-          v-model="name"
-          v-bind="nameProps"
-          name="name"
-          translation-key="logistics.itemName"
-          :rules="validationSchema.name"
-          :label="t('labels.logistics.itemName')"
-        />
-        <BaseSelect
-          v-model="category"
-          v-bind="categoryProps"
-          name="category"
-          :options="categoryOptions"
-          :label="t('labels.logistics.category')"
-          :searchable="false"
-        />
-        <ComponentPicker v-if="isComponent" @select="applyPickedComponent" />
-        <CommodityPicker v-if="isCommodity" @select="applyPickedCommodity" />
-        <EquipmentPicker
-          v-if="isEquipment"
-          :equipment-types="equipmentTypes"
-          @select="applyPickedEquipment"
+        <ItemPickerField
+          name="catalogueItem"
+          :value="name"
+          :category-label="categoryLabel"
+          :error="nameError"
+          @open="showPicker(true)"
+          @clear="clearItem"
         />
       </template>
 
@@ -475,12 +450,15 @@ const onSubmit = handleSubmit(async (values) => {
           </FormInput>
         </div>
 
-        <div class="col-6">
+        <!-- A withdrawal's grade is the stock row's, named in the row it
+             picked. -->
+        <div v-if="graded && isDeposit" class="col-6">
           <FormInput
             v-model="quality"
             v-bind="qualityProps"
             name="quality"
             :type="InputTypesEnum.NUMBER"
+            :rules="validationSchema.quality"
             :label="t('labels.logistics.quality')"
             :min="0"
             :step="1"
@@ -510,6 +488,15 @@ const onSubmit = handleSubmit(async (values) => {
 
     <template #footer>
       <Btn
+        v-if="picking"
+        :variant="BtnVariantsEnum.BARE"
+        data-test="item-picker-back"
+        @click="showPicker(false)"
+      >
+        {{ t("actions.back") }}
+      </Btn>
+      <Btn
+        v-else
         :type="BtnTypesEnum.SUBMIT"
         form="create-inventory-item-form"
         :loading="submitting"

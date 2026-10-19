@@ -511,6 +511,7 @@
         "transfer": "Transfer Stock",
         "transfers": "Transfers",
         "acceptTransfer": "Accept Transfer",
+        "pickItem": "Choose an Item",
         "reportTransfer": "Report Transfer"
       },
       "notifications": {

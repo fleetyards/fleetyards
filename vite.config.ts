@@ -150,6 +150,13 @@ export default defineConfig({
         manualChunks(id) {
           if (id.includes("node_modules/vue/")) return "vue";
           if (id.includes("node_modules/vue-router/")) return "vue-router";
+
+          // A chunk per locale. Every locale is loaded up front, and left to
+          // the bundler they all landed in one shared chunk that grows with
+          // every label; past 2 MiB the service worker refuses to precache it
+          // and the build fails.
+          const locale = id.match(/\/app\/frontend\/translations\/([^/]+)\//)?.[1];
+          if (locale) return `translations-${locale}`;
         },
       },
     },

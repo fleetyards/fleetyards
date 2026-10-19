@@ -1,6 +1,6 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
-import type { VueWrapper } from "@vue/test-utils";
+import { flushPromises, type VueWrapper } from "@vue/test-utils";
 import { defineRule } from "vee-validate";
 import { required, min, min_value } from "@vee-validate/rules";
 import Component from "./index.vue";
@@ -15,18 +15,16 @@ beforeAll(() => {
   defineRule("min_value", min_value);
 });
 
-// The pickers fetch their catalogues on mount, which is not what this is about.
-vi.mock("@/frontend/components/Logistics/CommodityPicker/index.vue", () => ({
-  default: { name: "LogisticsCommodityPicker", render: () => null },
-}));
-vi.mock("@/frontend/components/Logistics/ComponentPicker/index.vue", () => ({
-  default: { name: "LogisticsComponentPicker", render: () => null },
-}));
-vi.mock("@/frontend/components/Logistics/EquipmentPicker/index.vue", () => ({
+// The picker fetches its catalogues, which is not what this is about.
+vi.mock("@/frontend/components/Logistics/ItemPicker/index.vue", () => ({
   default: {
-    name: "LogisticsEquipmentPicker",
-    // Declared so the filter arrives as a prop rather than falling through.
-    props: { equipmentTypes: { type: Array, default: undefined } },
+    name: "LogisticsItemPicker",
+    // Declared so they arrive as props rather than falling through.
+    props: {
+      category: { type: String, default: undefined },
+      categories: { type: Array, default: undefined },
+    },
+    emits: ["select"],
     render: () => null,
   },
 }));
@@ -65,10 +63,26 @@ const mount = async (kind?: string, item?: unknown) => {
   return wrapper;
 };
 
+const pickCommodity = async (subject: VueWrapper) => {
+  await subject.find("[data-test='item-picker-field-open']").trigger("click");
+  subject.findComponent({ name: "LogisticsItemPicker" }).vm.$emit("select", {
+    item: { type: "Commodity", id: "quantanium", name: "Quantanium" },
+    name: "Quantanium",
+    category: "commodity",
+  });
+  await flushPromises();
+};
+
 describe("FleetContractsItemModal", () => {
-  // The grade belongs to the goods, not to crafting — every kind can ask for one.
-  it("offers the grade on a contract that is not crafting", async () => {
+  // Only raw resources carry a grade, and nothing does before it is named.
+  it("offers the grade on a resource line", async () => {
     const subject = await mount("procurement");
+
+    expect(subject.find("[data-test='input-itemQuality']").exists()).toBe(
+      false,
+    );
+
+    await pickCommodity(subject);
 
     expect(subject.find("[data-test='input-itemQuality']").exists()).toBe(true);
   });
@@ -79,6 +93,8 @@ describe("FleetContractsItemModal", () => {
   it("keeps the number field beside the match selector", async () => {
     const subject = await mount();
 
+    await pickCommodity(subject);
+
     const prefix = subject.find(".base-input__prefix");
 
     expect(prefix.exists()).toBe(true);
@@ -86,18 +102,20 @@ describe("FleetContractsItemModal", () => {
     expect(subject.find("[data-test='input-itemQuality']").exists()).toBe(true);
   });
 
-  // You cannot craft a commodity — those are mined, bought or hauled.
+  const pickerCategories = async (kind: string) => {
+    const subject = await mount(kind);
+
+    await subject.find("[data-test='item-picker-field-open']").trigger("click");
+
+    return subject
+      .findComponent({ name: "LogisticsItemPicker" })
+      .props("categories") as string[];
+  };
+
+  // You cannot craft a commodity — those are mined, bought or hauled — so the
+  // catalogue offers everything the ledger knows except that.
   it("offers only craftable categories on a crafting contract", async () => {
-    const subject = await mount("crafting");
-
-    const options = subject
-      .findComponent({ name: "BaseSelect" })
-      .props("options") as { value: string }[];
-
-    // Everything the ledger knows except commodity: that is the only thing you
-    // cannot craft.
-    expect(options.map((option) => option.value)).not.toContain("commodity");
-    expect(options.map((option) => option.value)).toEqual([
+    expect(await pickerCategories("crafting")).toEqual([
       "component",
       "weapon",
       "equipment",
@@ -108,46 +126,57 @@ describe("FleetContractsItemModal", () => {
   });
 
   it("offers every category on a contract that is not crafting", async () => {
-    const subject = await mount("procurement");
-
-    const options = subject
-      .findComponent({ name: "BaseSelect" })
-      .props("options") as { value: string }[];
-
-    expect(options.map((option) => option.value)).toContain("commodity");
+    expect(await pickerCategories("procurement")).toContain("commodity");
   });
 
-  // The picker is unfiltered while crafting, so the stored category has to come
-  // from the pick — a rifle the ledger records as `weapon` must be asked for as
-  // `weapon` or Progress will never match it.
-  // A Galant is a `weapon`: under an "Equipment" filtered to armour and tools it
-  // could be neither searched for nor scrolled to.
-  it("offers the whole equipment catalogue while crafting", async () => {
+  // The catalogue takes the form's place instead of opening a modal of its
+  // own, which would throw this form away.
+  it("keeps what was typed while the catalogue is open", async () => {
+    const subject = await mount();
+
+    await subject.find("[data-test='input-itemQuantity']").setValue("7");
+    await subject.find("[data-test='item-picker-field-open']").trigger("click");
+
+    expect(subject.find("form").attributes("style")).toContain("display: none");
+
+    await subject.find("[data-test='item-picker-back']").trigger("click");
+
+    expect(subject.find("form").attributes("style") ?? "").not.toContain(
+      "display: none",
+    );
+    expect(
+      (
+        subject.find("[data-test='input-itemQuantity']")
+          .element as HTMLInputElement
+      ).value,
+    ).toBe("7");
+  });
+
+  // A rifle the ledger records as `weapon` must be asked for as `weapon`, or
+  // Progress will never match it -- so the line takes the category the item
+  // was picked under.
+  it("files a pick under the category it was found in", async () => {
     const subject = await mount("crafting");
 
-    subject
-      .findComponent({ name: "BaseSelect" })
-      .vm.$emit("update:modelValue", "equipment");
-    await subject.vm.$nextTick();
+    await subject.find("[data-test='item-picker-field-open']").trigger("click");
+    subject.findComponent({ name: "LogisticsItemPicker" }).vm.$emit("select", {
+      item: { type: "Equipment", id: "galant", name: "Galant Rifle" },
+      name: "Galant Rifle",
+      category: "weapon",
+    });
+    await flushPromises();
 
-    const picker = subject.findComponent({ name: "LogisticsEquipmentPicker" });
+    expect(
+      subject.findComponent({ name: "LogisticsItemPicker" }).exists(),
+    ).toBe(false);
+    const field = subject.find("[data-test='item-picker-field-catalogueItem']");
 
-    expect(picker.exists()).toBe(true);
-    // Unfiltered — an armour-and-tools filter is what hid the rifles.
-    expect(picker.props("equipmentTypes")).toEqual([]);
-  });
-
-  it("offers food and drink under consumables", async () => {
-    const subject = await mount("procurement");
-
-    subject
-      .findComponent({ name: "BaseSelect" })
-      .vm.$emit("update:modelValue", "consumable");
-    await subject.vm.$nextTick();
-
-    const picker = subject.findComponent({ name: "LogisticsEquipmentPicker" });
-
-    expect(picker.props("equipmentTypes")).toEqual(["sustenance", "medical"]);
+    expect(field.text()).toContain("Galant Rifle");
+    expect(field.text()).toContain("Weapon");
+    // Only raw resources carry a grade.
+    expect(subject.find("[data-test='input-itemQuality']").exists()).toBe(
+      false,
+    );
   });
 
   // A line that was entered wrongly has to be fixable; before this the only
@@ -155,12 +184,11 @@ describe("FleetContractsItemModal", () => {
   it("opens on an existing line with its values filled in", async () => {
     const subject = await mount("procurement", existingItem);
 
-    const name = subject.find("[data-test='input-itemName']")
-      .element as HTMLInputElement;
+    const field = subject.find("[data-test='item-picker-field-catalogueItem']");
     const quantity = subject.find("[data-test='input-itemQuantity']")
       .element as HTMLInputElement;
 
-    expect(name.value).toBe("Quantanium");
+    expect(field.text()).toContain("Quantanium");
     expect(quantity.value).toBe("42");
   });
 
@@ -169,6 +197,38 @@ describe("FleetContractsItemModal", () => {
 
     expect(subject.find("[data-test='input-itemQuantity']").exists()).toBe(
       true,
+    );
+  });
+
+  // A grade given to a line before only resources took one is kept: an edit
+  // to its quantity must not quietly start accepting goods it turned away.
+  it("keeps the grade of an older line that is not a resource", async () => {
+    const onDraft = vi.fn();
+
+    wrapper = await mountWithDefaults<typeof Component>(Component, {
+      props: {
+        fleet: { slug: "test-fleet" } as never,
+        kind: "procurement" as never,
+        item: {
+          id: "line-3",
+          name: "Bulwark",
+          category: "component",
+          unit: "units",
+          quantity: "4.0",
+          quality: 500,
+          qualityMatch: "at_least",
+          item: { id: "bulwark", type: "Component", name: "Bulwark" },
+        } as never,
+        onDraft: onDraft as never,
+      },
+    });
+
+    await wrapper.find("[data-test='input-itemQuantity']").setValue("5");
+    await wrapper.find("form").trigger("submit");
+    await flushPromises();
+
+    expect(onDraft).toHaveBeenCalledWith(
+      expect.objectContaining({ quantity: "5", quality: 500 }),
     );
   });
 });

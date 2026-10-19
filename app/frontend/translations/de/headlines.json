@@ -509,6 +509,7 @@
         "transfer": "Bestand transferieren",
         "transfers": "Transfers",
         "acceptTransfer": "Transfer annehmen",
+        "pickItem": "Gegenstand wählen",
         "reportTransfer": "Transfer melden"
       },
       "notifications": {

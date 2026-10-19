@@ -5,23 +5,22 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { useForm } from "vee-validate";
+import { useField, useForm } from "vee-validate";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
+import {
+  BtnTypesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import { BaseSelectVariantsEnum } from "@/shared/components/base/Select/types";
-import ComponentPicker from "@/frontend/components/Logistics/ComponentPicker/index.vue";
-import CommodityPicker from "@/frontend/components/Logistics/CommodityPicker/index.vue";
-import EquipmentPicker from "@/frontend/components/Logistics/EquipmentPicker/index.vue";
+import ItemPicker from "@/frontend/components/Logistics/ItemPicker/index.vue";
+import ItemPickerField from "@/frontend/components/Logistics/ItemPickerField/index.vue";
 import { type PickedItem } from "@/frontend/components/Logistics/types";
-import {
-  INVENTORY_EQUIPMENT_TYPES,
-  inventoryCategoryForEquipment,
-  useInventoryOptions,
-} from "@/frontend/composables/useInventoryOptions";
+import { useInventoryOptions } from "@/frontend/composables/useInventoryOptions";
+import { useItemPickerStep } from "@/frontend/composables/useItemPickerStep";
 import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -30,9 +29,6 @@ import { useModalDirty } from "@/shared/components/AppModal/dirty";
 import { useFormDirty } from "@/shared/composables/useFormDirty";
 import {
   type Fleet,
-  type Commodity,
-  type Equipment as GameEquipment,
-  type Component as GameComponent,
   type FilterOption,
   type FleetContractDetail,
   type FleetContractItem,
@@ -61,6 +57,14 @@ const props = defineProps<Props>();
 const editing = computed(() => props.item != null);
 
 const { t } = useI18n();
+
+const modalTitle = computed(() => {
+  if (picking.value) return pickTitle.value;
+
+  return editing.value
+    ? t("headlines.fleets.contracts.editItem")
+    : t("headlines.fleets.contracts.addItem");
+});
 const { displayAlert } = useAppNotifications();
 const comlink = useComlink();
 const { categoryOptions, unitOptionsFor } = useInventoryOptions();
@@ -80,13 +84,6 @@ const availableCategories = computed(() =>
       )
     : categoryOptions.value,
 );
-
-// Which ledger category a piece of equipment is deposited under. It has to be
-// the depositor's word, not the contract author's: `Contracts::Progress` matches
-// on (name, category, unit), so a line filed as `equipment` would never see a
-// rifle the courier's ledger recorded as `weapon`.
-const categoryForEquipment = (equipmentType?: string | null) =>
-  inventoryCategoryForEquipment(equipmentType) as InventoryCategoryEnum;
 
 const submitting = ref(false);
 
@@ -128,28 +125,35 @@ const { defineField, handleSubmit, setFieldValue, setErrors, values } = useForm(
 
 useModalDirty(useFormDirty(values, initialValues));
 
-const [name, nameProps] = defineField("name");
-const [category, categoryProps] = defineField("category");
+// Named by the picker rather than typed, so the rule lives here instead of on
+// an input.
+const { value: name, errorMessage: nameError } = useField<string>(
+  "name",
+  validationSchema.name,
+  { label: t("labels.logistics.itemPicker.field") },
+);
+const [category] = defineField("category");
+
+const {
+  picking,
+  showPicker,
+  pickTitle,
+  graded,
+  categoryLabel,
+  pickerCategory,
+  applySelection,
+  clearItem,
+} = useItemPickerStep({
+  name,
+  category,
+  pickedItem,
+  setFieldValue,
+});
+
 const [quantity, quantityProps] = defineField("quantity");
 const [unit] = defineField("unit");
 const [quality, qualityProps] = defineField("quality");
 const [qualityMatch] = defineField("qualityMatch");
-
-const isComponent = computed(
-  () => category.value === InventoryCategoryEnum.COMPONENT,
-);
-
-const isCommodity = computed(
-  () => category.value === InventoryCategoryEnum.COMMODITY,
-);
-
-const isEquipment = computed(() => category.value in INVENTORY_EQUIPMENT_TYPES);
-
-// Unfiltered while crafting: the two-way select cannot say which slice of the
-// table the author means, so the picker offers all of it and the pick decides.
-const equipmentTypes = computed(() =>
-  isCrafting.value ? [] : INVENTORY_EQUIPMENT_TYPES[category.value] || [],
-);
 
 // A counted commodity is the only thing that puts `units` on offer under the
 // commodity category, and only the picked item knows -- so the options follow
@@ -171,64 +175,6 @@ const qualityMatchOptions = computed<FilterOption[]>(() =>
   })),
 );
 
-const applyPickedComponent = (component: GameComponent) => {
-  pickedItem.value = {
-    type: "Component",
-    id: component.id,
-    name: component.name,
-  };
-
-  setFieldValue("name", component.name);
-};
-
-const applyPickedCommodity = (commodity: Commodity) => {
-  pickedItem.value = {
-    type: "Commodity",
-    id: commodity.id,
-    name: commodity.name,
-    counted: commodity.counted,
-  };
-
-  setFieldValue("name", commodity.name);
-};
-
-const applyPickedEquipment = (equipment: GameEquipment) => {
-  pickedItem.value = {
-    type: "Equipment",
-    id: equipment.id,
-    name: equipment.name,
-  };
-
-  setFieldValue("name", equipment.name);
-
-  if (isCrafting.value) {
-    setFieldValue("category", categoryForEquipment(equipment.equipmentType));
-  }
-};
-
-// A hand-edited name no longer describes the picked item, so the reference goes
-// with it rather than mislabelling a real catalogue entry. Asking for something
-// the catalogue does not carry stays allowed; it just is not a reference.
-watch(name, (val) => {
-  if (pickedItem.value && val !== pickedItem.value.name) {
-    pickedItem.value = undefined;
-  }
-});
-
-// Switching away from the category that offered the picker leaves the reference
-// pointing at the wrong kind of thing.
-watch([isComponent, isCommodity, isEquipment], () => {
-  if (!pickedItem.value) return;
-
-  const stillOffered = {
-    Component: isComponent.value,
-    Commodity: isCommodity.value,
-    Equipment: isEquipment.value,
-  }[pickedItem.value.type];
-
-  if (!stillOffered) pickedItem.value = undefined;
-});
-
 const createItem = useCreateFleetContractItem();
 const updateItem = useUpdateFleetContractItem();
 
@@ -240,7 +186,14 @@ const onSubmit = handleSubmit(async (values) => {
     category: values.category,
     unit: values.unit,
     quantity: String(values.quantity),
-    quality: values.quality != null ? Number(values.quality) : null,
+    // A line that is not a resource shows no grade, but one written before
+    // that rule keeps the grade it was given: an edit to its quantity must
+    // not quietly start accepting goods it turned away.
+    quality: graded.value
+      ? values.quality != null
+        ? Number(values.quality)
+        : null
+      : (props.item?.quality ?? null),
     qualityMatch: values.qualityMatch,
     itemType: pickedItem.value?.type,
     itemId: pickedItem.value?.id,
@@ -278,7 +231,6 @@ const onSubmit = handleSubmit(async (values) => {
       // The API says *why* -- asking for the same goods twice is the common
       // refusal, and a generic toast leaves the author guessing.
       const { message, formErrors } = validationErrorFrom(error, {
-        name: "itemName",
         quantity: "itemQuantity",
         quality: "itemQuality",
       });
@@ -302,39 +254,29 @@ const onSubmit = handleSubmit(async (values) => {
 </script>
 
 <template>
-  <Modal
-    :title="
-      t(
-        editing
-          ? 'headlines.fleets.contracts.editItem'
-          : 'headlines.fleets.contracts.addItem',
-      )
-    "
-  >
-    <form id="fleet-contract-item-form" @submit.prevent="onSubmit">
-      <FormInput
-        v-model="name"
-        v-bind="nameProps"
-        name="itemName"
-        :rules="validationSchema.name"
-        :label="t('labels.fleets.contracts.itemName')"
-      />
+  <Modal :title="modalTitle" :flush="picking">
+    <ItemPicker
+      v-if="picking"
+      :category="pickerCategory"
+      :categories="availableCategories.map((option) => String(option.value))"
+      @select="applySelection"
+    />
 
-      <BaseSelect
-        v-model="category"
-        v-bind="categoryProps"
-        name="itemCategory"
-        :options="availableCategories"
-        :label="t('labels.logistics.category')"
-        :searchable="false"
-      />
-
-      <ComponentPicker v-if="isComponent" @select="applyPickedComponent" />
-      <CommodityPicker v-if="isCommodity" @select="applyPickedCommodity" />
-      <EquipmentPicker
-        v-if="isEquipment"
-        :equipment-types="equipmentTypes"
-        @select="applyPickedEquipment"
+    <!-- Hidden rather than unmounted while the catalogue is open, so nothing
+         typed into it is lost. -->
+    <form
+      v-show="!picking"
+      id="fleet-contract-item-form"
+      ref="itemPickerForm"
+      @submit.prevent="onSubmit"
+    >
+      <ItemPickerField
+        name="catalogueItem"
+        :value="name"
+        :category-label="categoryLabel"
+        :error="nameError"
+        @open="showPicker(true)"
+        @clear="clearItem"
       />
 
       <div class="row">
@@ -369,9 +311,8 @@ const onSubmit = handleSubmit(async (values) => {
 
         <!-- The grade, and how it is read. "At least" is the ordinary case; a
              job that wants exactly 500 and no better cannot say so otherwise.
-             Offered on every kind, because the ledger records a grade on every
-             entry -- leaving it blank is what asks for any. -->
-        <div class="col-6">
+             Leaving it blank is what asks for any. -->
+        <div v-if="graded" class="col-6">
           <FormInput
             v-model="quality"
             v-bind="qualityProps"
@@ -401,6 +342,15 @@ const onSubmit = handleSubmit(async (values) => {
 
     <template #footer>
       <Btn
+        v-if="picking"
+        :variant="BtnVariantsEnum.BARE"
+        data-test="item-picker-back"
+        @click="showPicker(false)"
+      >
+        {{ t("actions.back") }}
+      </Btn>
+      <Btn
+        v-else
         :type="BtnTypesEnum.SUBMIT"
         form="fleet-contract-item-form"
         :loading="submitting"

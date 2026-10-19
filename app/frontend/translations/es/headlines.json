@@ -509,6 +509,7 @@
         "transfer": "Transferir existencias",
         "transfers": "Transferencias",
         "acceptTransfer": "Aceptar transferencia",
+        "pickItem": "Elegir un objeto",
         "reportTransfer": "Denunciar transferencia"
       },
       "notifications": {
