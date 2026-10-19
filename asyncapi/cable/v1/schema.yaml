@@ -1982,6 +1982,22 @@ components:
         decay:
           type: number
       additionalProperties: false
+    CraftedSlotQuality:
+      type: object
+      properties:
+        position:
+          type: integer
+          minimum: 0
+          description: The recipe slot, by its position in the blueprint
+        quality:
+          type: integer
+          minimum: 0
+          maximum: 1000
+          description: Material quality on the game's 0-1000 scale
+      additionalProperties: false
+      required:
+      - position
+      - quality
     ExternalFuelTank:
       type: object
       properties:
@@ -5220,10 +5236,30 @@ components:
           type: string
           format: uuid
           description: Left out on an Empty item, which holds nothing
+        crafted:
+          "$ref": "#/components/schemas/VehicleLoadoutItemCrafted"
       additionalProperties: false
       required:
       - slotPath
       - itemType
+    VehicleLoadoutItemCrafted:
+      type: object
+      properties:
+        blueprintId:
+          type: string
+          format: uuid
+        blueprintSlug:
+          type: string
+        qualities:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CraftedSlotQuality"
+          description: A recipe slot left out was filled at the neutral grade, 500
+      additionalProperties: false
+      required:
+      - blueprintId
+      - blueprintSlug
+      - qualities
     VehicleLoadoutItemTypeEnum:
       type: string
       enum:

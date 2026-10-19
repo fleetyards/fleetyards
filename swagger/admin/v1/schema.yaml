@@ -11378,10 +11378,14 @@ components:
           type:
           - number
           - 'null'
+          description: A factor on the stat for a linear ramp; a whole amount added
+            to it for linear_integer_additive
         modifierAtEnd:
           type:
           - number
           - 'null'
+          description: A factor on the stat for a linear ramp; a whole amount added
+            to it for linear_integer_additive
         unit:
           type:
           - string

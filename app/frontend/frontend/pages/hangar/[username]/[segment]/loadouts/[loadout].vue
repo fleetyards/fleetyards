@@ -152,6 +152,7 @@ const { data: model, isLoading: modelLoading } = useModel(
 const {
   hardpoints,
   changed,
+  crafted,
   changesFromStock,
   fittedModules,
   loading: fittingLoading,
@@ -292,6 +293,7 @@ const edit = () => {
               :model="model"
               :fitting="hardpoints"
               :changed="changed"
+              :crafted="crafted"
               :cargo-holds="cargoHolds"
             />
 

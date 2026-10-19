@@ -330,6 +330,11 @@ en:
               component_not_in_slot: "must each match the type and size of their slot"
               slot_not_editable: "cannot replace a part the slot locks in place"
               nothing_to_empty: "can only empty a slot that holds a part"
+              crafted_not_component: "can only be crafted when they are components"
+              crafted_not_craftable: "must be crafted from a recipe for that part"
+              crafted_slot_unknown: "must name slots the recipe has"
+              crafted_slot_repeated: "must name each recipe slot only once"
+              crafted_quality_out_of_range: "must use a material quality from 0 to 1000"
         fleet_subscription:
           attributes:
             ended_at:

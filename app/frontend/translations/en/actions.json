@@ -140,6 +140,9 @@
       "hideStatusColor": "Hide Status as Color",
       "addToHangar": "Add to Hangar",
       "blueprint": {
+        "apply": "Apply",
+        "discard": "Discard",
+        "removeCrafting": "Remove crafting",
         "own": "Mark as owned",
         "unown": "Remove owned mark"
       },
@@ -602,6 +605,7 @@
         "showPublic": "Captain's Log"
       },
       "vehicleLoadout": {
+        "craft": "Craft",
         "swapModule": "Swap module",
         "removeModule": "Remove module",
         "editLoadout": "Edit loadout",

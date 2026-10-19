@@ -12,6 +12,13 @@ class VehicleLoadoutItem < ApplicationRecord
   # whole: one item per slot path, each in a slot it fits.
   belongs_to :vehicle_loadout, touch: true
   belongs_to :item, polymorphic: true, optional: true
+  # The recipe a crafted component was made from; `crafted_qualities` holds the
+  # material quality per recipe slot position.
+  belongs_to :blueprint, optional: true
+
+  def crafted?
+    blueprint_id.present?
+  end
 
   validates :item_type, inclusion: {in: ITEM_TYPES}
   validates :item_id, presence: true, unless: :empty?

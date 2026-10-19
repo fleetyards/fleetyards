@@ -9,7 +9,12 @@ module V1
 
           schema({
             properties: {
-              items: {type: :array, items: {"$ref": "#/components/schemas/ModelModule"}}
+              items: {type: :array, items: {"$ref": "#/components/schemas/ModelModule"}},
+              craftableComponentIds: {
+                type: :array,
+                items: {type: :string, format: :uuid},
+                description: "The parts in these modules' ports a recipe makes, for a loadout to offer crafting on"
+              }
             },
             required: %w[items]
           })

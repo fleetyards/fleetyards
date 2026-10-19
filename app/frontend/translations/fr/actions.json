@@ -140,6 +140,9 @@
       "hideStatusColor": "Masquer le statut en tant que couleur",
       "addToHangar": "Ajouter à votre Hangar",
       "blueprint": {
+        "apply": "Appliquer",
+        "discard": "Annuler",
+        "removeCrafting": "Retirer la fabrication",
         "own": "Marquer comme possédé",
         "unown": "Retirer la marque"
       },
@@ -602,6 +605,7 @@
         "showPublic": "Journal de bord"
       },
       "vehicleLoadout": {
+        "craft": "Fabriquer",
         "swapModule": "Changer de module",
         "removeModule": "Retirer le module",
         "editLoadout": "Modifier l’équipement",

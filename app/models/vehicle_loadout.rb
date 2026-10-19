@@ -35,6 +35,7 @@ class VehicleLoadout < ApplicationRecord
   validates :name, uniqueness: {scope: :vehicle_id}, allow_nil: true
   validate :ship_is_flight_ready, on: :create
   validate :item_list_fits, unless: -> { item_list.nil? }
+  validate :crafted_items_fit, unless: -> { item_list.nil? }
 
   after_save :write_item_list, unless: -> { item_list.nil? }
 
@@ -42,13 +43,17 @@ class VehicleLoadout < ApplicationRecord
 
   # The whole fitting at once: a list of `{slot_path:, item_type:, item_id:}`
   # that replaces whatever was fitted before, written after the loadout
-  # validates.
+  # validates. A crafted component adds `crafted: {blueprint_id:, qualities:
+  # [{position:, quality:}]}`, which is stored as the recipe and a quality per
+  # recipe slot.
   def item_list=(list)
+    @crafted_slot_repeated = false
+    @saved_craftings = nil
     @item_list = Array(list).map do |item|
       item = item.to_h.symbolize_keys
       item_type = item[:item_type].to_s
       item_id = (item_type == VehicleLoadoutItem::EMPTY) ? nil : item[:item_id].to_s.downcase
-      {slot_path: item[:slot_path].to_s, item_type:, item_id:}
+      {slot_path: item[:slot_path].to_s, item_type:, item_id:, **crafting_of(item[:crafted])}
     end
     @loadout_slots = nil
   end
@@ -201,6 +206,62 @@ class VehicleLoadout < ApplicationRecord
     end
   end
 
+  private def crafting_of(crafted)
+    crafted = crafted.to_h.symbolize_keys
+    return {blueprint_id: nil, crafted_qualities: {}} if crafted[:blueprint_id].blank?
+
+    pairs = Array(crafted[:qualities]).map do |entry|
+      entry = entry.to_h.symbolize_keys
+      [entry[:position].to_s, entry[:quality]]
+    end
+    qualities = pairs.to_h
+    @crafted_slot_repeated ||= qualities.size != pairs.size
+
+    {blueprint_id: crafted[:blueprint_id].to_s.downcase, crafted_qualities: qualities}
+  end
+
+  # A crafted part is a component made from a recipe for it, in the build in
+  # force, with a quality on the game's 0-1000 scale for slots the recipe has. A
+  # slot left out was filled at the neutral grade.
+  #
+  # A crafting saved before and sent back unchanged is kept as it is: a new
+  # build can drop or reshape the recipe, and refusing it then would refuse
+  # every later save of the loadout, whatever else it changed.
+  private def crafted_items_fit
+    return errors.add(:items, :crafted_slot_repeated) if @crafted_slot_repeated
+
+    crafted = item_list.select { |item| item[:blueprint_id].present? }.reject { |item| saved_crafting?(item) }
+    return if crafted.empty?
+
+    return errors.add(:items, :crafted_not_component) if crafted.any? { |item| item[:item_type] != "Component" }
+
+    builds = Blueprint.readable_builds(Blueprint.served_source)
+      .where(blueprint_id: crafted.pluck(:blueprint_id), craftable_type: "Component")
+      .includes(:cost_slots)
+      .index_by { |build| [build.blueprint_id, build.craftable_id] }
+    crafted.each do |item|
+      build = builds[[item[:blueprint_id], item[:item_id]]]
+      next errors.add(:items, :crafted_not_craftable) if build.nil?
+
+      positions = build.cost_slots.map { |slot| slot.position.to_s }
+      qualities = item[:crafted_qualities]
+      errors.add(:items, :crafted_slot_unknown) unless (qualities.keys - positions).empty?
+      errors.add(:items, :crafted_quality_out_of_range) unless qualities.values.all? { |quality| valid_quality?(quality) }
+    end
+  end
+
+  private def saved_crafting?(item)
+    @saved_craftings ||= persisted? ? items.reload.select(&:crafted?).index_by(&:slot_path) : {}
+    saved = @saved_craftings[item[:slot_path]]
+
+    saved.present? && saved.item_id == item[:item_id] && saved.blueprint_id == item[:blueprint_id] &&
+      saved.crafted_qualities == item[:crafted_qualities]
+  end
+
+  private def valid_quality?(quality)
+    quality.is_a?(Integer) && quality.between?(0, 1000)
+  end
+
   private def loadout_slots
     @loadout_slots ||= LoadoutSlots.new(vehicle.model, item_list)
   end
@@ -227,6 +288,7 @@ class VehicleLoadout < ApplicationRecord
     items.insert_all!(item_list) if item_list.any?
     @item_list = nil
     @loadout_slots = nil
+    @saved_craftings = nil
     touch
   end
 

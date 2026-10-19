@@ -4241,6 +4241,12 @@
         "friend": "Amis"
       },
       "blueprint": {
+        "anyGrade": "Toute qualité",
+        "crafter": {
+          "title": "Fabriquer · %{name}",
+          "recipe": "Plan %{number}",
+          "noRecipe": "Aucun plan pour cet objet dans la version actuelle."
+        },
         "name": "Nom",
         "craftTime": "Temps de fabrication",
         "slots": "Emplacements",
@@ -4503,6 +4509,8 @@
           }
         },
         "againstStock": "Changements par rapport au vaisseau d'origine",
+        "crafted": "Fabriqué",
+        "craftedPart": "%{name} (fabriqué)",
         "fitted": "Équipé",
         "owned": "Possédé",
         "noSlots": "Rien sur ce vaisseau ne peut encore être équipé ici",

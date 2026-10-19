@@ -4238,6 +4238,12 @@
         "friend": "已是好友"
       },
       "blueprint": {
+        "anyGrade": "任意品質",
+        "crafter": {
+          "title": "製作 · %{name}",
+          "recipe": "藍圖 %{number}",
+          "noRecipe": "目前版本中沒有該物品的藍圖。"
+        },
         "name": "名稱",
         "craftTime": "製造時間",
         "slots": "槽位",
@@ -4500,6 +4506,8 @@
           }
         },
         "againstStock": "相對原廠飛船的變化",
+        "crafted": "已製作",
+        "craftedPart": "%{name}（已製作）",
         "fitted": "已裝配",
         "owned": "已擁有",
         "noSlots": "這艘艦船目前還沒有可在此裝配的內容",

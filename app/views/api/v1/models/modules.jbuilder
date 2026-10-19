@@ -14,4 +14,7 @@ json.items do
     json.stock @stock_module_ids.include?(model_module.id)
   end
 end
+# Outside the cached items: which parts a recipe makes follows the build being
+# served, not the module rows.
+json.craftable_component_ids @craftable_module_component_ids.to_a
 json.partial! "api/shared/meta", result: @model_modules

@@ -1,6 +1,9 @@
 import {
+  amountAt,
   byStat,
+  isAdditive,
   segmentsOf,
+  signed,
   trendOf,
   valueAt,
   withUnit,
@@ -10,7 +13,7 @@ import { type BlueprintCostSlot } from "@/services/fyApi";
 export type CraftedStat = {
   key: string;
   name: string;
-  /** The stat as it comes out, or the combined factor where we hold no base. */
+  /** The stat as it comes out, or the combined factor -- or amount -- where we hold no base. */
   value: string;
   /** What it is at the neutral grade, where the catalogue holds the figure. */
   base?: string;
@@ -34,7 +37,8 @@ export type CraftedStat = {
  * They are composed by multiplying. The files state each slot's contribution
  * as an independent factor on the same stat and say nothing about how two of
  * them combine, and a product is what independent factors mean; no recipe in
- * the build stacks more than two.
+ * the build stacks more than two. An additive ramp -- a power plant's pips --
+ * states an amount instead, and amounts add up.
  */
 export const useCraftedStats = (
   slots: MaybeRefOrGetter<BlueprintCostSlot[]>,
@@ -47,7 +51,9 @@ export const useCraftedStats = (
         name: string;
         unit?: string | null;
         base?: number | null;
+        // A product of factors, or for an additive stat a sum of amounts.
         factor: number;
+        additive: boolean;
         direction: number;
         slots: number;
       }
@@ -58,18 +64,21 @@ export const useCraftedStats = (
 
       byStat(slot.modifiers || []).forEach((group, key) => {
         const segments = segmentsOf(group);
-        // 598 modifiers name a stat and carry no figures at all; there is
+        // A modifier can name a stat and carry no figures at all; there is
         // nothing to compose for those.
         if (!segments.length) return;
 
         const held = combined.get(key);
-        const factor = valueAt(segments, at);
+        const additive = isAdditive(group);
 
         combined.set(key, {
           name: held?.name || group[0].name || key,
           unit: held?.unit ?? group[0].unit,
           base: held?.base ?? group[0].baseValue,
-          factor: (held?.factor ?? 1) * factor,
+          factor: additive
+            ? (held?.factor ?? 0) + amountAt(segments, at)
+            : (held?.factor ?? 1) * valueAt(segments, at),
+          additive,
           // Every slot moving one stat moves it the same way, so either
           // slot's ramp answers which way the stat improves.
           direction:
@@ -81,6 +90,25 @@ export const useCraftedStats = (
 
     return [...combined.entries()].map(([key, stat]) => {
       const base = stat.base ?? undefined;
+
+      if (stat.additive) {
+        const amount = signed(stat.factor);
+
+        return {
+          key,
+          name: stat.name,
+          value:
+            base === undefined
+              ? amount
+              : withUnit(base + stat.factor, stat.unit),
+          base: base === undefined ? undefined : withUnit(base, stat.unit),
+          factor: amount,
+          delta: amount,
+          trend: trendOf(stat.factor, stat.direction),
+          slots: stat.slots,
+        };
+      }
+
       const factor = `${stat.factor.toFixed(3)}×`;
       const shift = (stat.factor - 1) * 100;
 

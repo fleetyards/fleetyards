@@ -20,12 +20,28 @@ import { type BlueprintCostSlot } from "@/services/fyApi";
 type Props = {
   slotData: BlueprintCostSlot;
   quality: number;
+  // Off where the crafted figures are listed elsewhere, such as a loadout's
+  // crafter: the slot is then its material and quality control alone.
+  ramps?: boolean;
+  // Off inside an editor with unsaved changes, which a link would leave: the
+  // material and where it is held are then named without one.
+  links?: boolean;
+  // No grade chosen: a request for the item takes any. The control shows
+  // "any" until a grade is set, and `clearable` offers going back to it.
+  open?: boolean;
+  clearable?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  ramps: true,
+  links: true,
+  open: false,
+  clearable: false,
+});
 
 const emit = defineEmits<{
   "update:quality": [value: number];
+  clear: [];
 }>();
 
 const { t } = useI18n();
@@ -64,7 +80,7 @@ const amount = computed(() => {
 });
 
 const belowGate = computed(
-  () => gate.value !== undefined && props.quality < gate.value,
+  () => !props.open && gate.value !== undefined && props.quality < gate.value,
 );
 
 // What the reader already holds of this slot's material, if they are signed
@@ -99,7 +115,9 @@ const prepositionOf = (entry: MaterialStock) =>
 // the hand-made ones only -- so linking one would land on a not-found. It is
 // named without a link instead.
 const placeRoute = (entry: MaterialStock) => {
-  if (entry.vehicleName || !entry.inventorySlug) return undefined;
+  if (!props.links || entry.vehicleName || !entry.inventorySlug) {
+    return undefined;
+  }
 
   if (entry.ownerSlug) {
     return {
@@ -155,6 +173,8 @@ const { ramps } = useQualityRamp(
   () => props.quality,
 );
 
+const moves = computed(() => ramps.value.map((ramp) => ramp.name).join(", "));
+
 // A number input reports "" mid-edit -- cleared, or a lone "-" -- and
 // Number("") is 0, which would slam the slot to zero under the cursor. An
 // unparseable value leaves it where it was.
@@ -170,9 +190,21 @@ const onQuality = (event: Event) => {
 </script>
 
 <template>
-  <div class="blueprint-slot">
+  <div
+    class="blueprint-slot"
+    :class="{ 'blueprint-slot--without-ramps': !props.ramps }"
+  >
     <div class="blueprint-slot__head">
       <span class="blueprint-slot__name">{{ slotData.name }}</span>
+      <!-- Without its ramps the slot still says what it moves, so a quality
+           is never set blind. -->
+      <span
+        v-if="!props.ramps && moves"
+        class="blueprint-slot__moves"
+        data-test="blueprint-slot-moves"
+      >
+        {{ moves }}
+      </span>
       <span v-if="gate" class="blueprint-slot__gate">
         {{ t("labels.blueprint.minQuality", { quality: gate }) }}
       </span>
@@ -188,6 +220,7 @@ const onQuality = (event: Event) => {
             slug: option.commodity.slug,
             name: option.commodity.name,
           }"
+          :link="props.links"
         />
         <span v-else class="blueprint-slot__unmapped">
           {{ option.commodityKey }}
@@ -234,6 +267,7 @@ const onQuality = (event: Event) => {
               step="1"
               :value="quality"
               :aria-label="t('labels.blueprint.quality')"
+              :class="{ 'blueprint-slot__range--open': open }"
               @input="onQuality"
             />
           </div>
@@ -242,11 +276,21 @@ const onQuality = (event: Event) => {
             min="0"
             max="1000"
             step="1"
-            :value="quality"
+            :value="open ? '' : quality"
+            :placeholder="open ? t('labels.blueprint.anyGrade') : undefined"
             :aria-label="t('labels.blueprint.quality')"
-            :class="{ 'blueprint-slot__number--below': belowGate }"
+            :class="{ 'blueprint-slot__number--below': belowGate && !open }"
             @input="onQuality"
           />
+          <button
+            v-if="clearable && !open"
+            type="button"
+            class="blueprint-slot__clear"
+            data-test="blueprint-slot-clear"
+            @click="emit('clear')"
+          >
+            {{ t("labels.blueprint.anyGrade") }}
+          </button>
         </div>
 
         <p v-if="belowGate" class="blueprint-slot__below">
@@ -318,7 +362,7 @@ const onQuality = (event: Event) => {
         </div>
       </div>
 
-      <div v-if="ramps.length" class="blueprint-slot__stats">
+      <div v-if="props.ramps && ramps.length" class="blueprint-slot__stats">
         <div v-for="ramp in ramps" :key="ramp.key" class="blueprint-slot__stat">
           <div class="blueprint-slot__stat-head">
             <span class="blueprint-slot__stat-name">{{ ramp.name }}</span>
@@ -334,7 +378,7 @@ const onQuality = (event: Event) => {
               {{ ramp.headline }}
             </span>
 
-            <!-- 598 modifiers name a stat and carry no figures at all.
+            <!-- A modifier can name a stat and carry no figures at all.
                Rendering the nils would print 0 → 0 and invent a number. -->
             <span v-else class="blueprint-slot__stat-unvalued">
               {{ t("labels.blueprint.unvalued") }}
@@ -405,7 +449,7 @@ const onQuality = (event: Event) => {
         </div>
       </div>
 
-      <p v-else class="blueprint-slot__no-stats">
+      <p v-else-if="props.ramps" class="blueprint-slot__no-stats">
         {{ t("labels.blueprint.noStats") }}
       </p>
     </div>

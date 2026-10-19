@@ -200,6 +200,24 @@ const tabSlots = (
     return swappedIn([slot], undefined, parentPath);
   });
 
+const craftedPaths = computed(
+  () =>
+    new Set(
+      (props.loadout?.items ?? [])
+        .filter((item) => item.crafted)
+        .map((item) => item.slotPath),
+    ),
+);
+
+const componentLabel = (row: ComponentRow) => {
+  const name = row.slot.fitted?.name;
+  if (!name) return t("labels.loadoutPicker.emptySocket");
+
+  return craftedPaths.value.has(row.slotPath)
+    ? t("labels.vehicleLoadout.craftedPart", { name })
+    : name;
+};
+
 const componentSections = computed(() =>
   COMPONENT_TABS.map((tab) => ({
     key: tab.id,
@@ -264,7 +282,7 @@ const summarySections = computed(() =>
       items: grouped(
         section.rows.map((row) => ({
           key: row.slotPath,
-          label: row.slot.fitted?.name || t("labels.loadoutPicker.emptySocket"),
+          label: componentLabel(row),
           slot: row.label,
           refused: refusedReason(row.slotPath),
           changed: true,

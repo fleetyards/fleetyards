@@ -2723,6 +2723,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_19_140000) do
     t.uuid "item_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "blueprint_id"
+    t.jsonb "crafted_qualities", default: {}, null: false
+    t.index ["blueprint_id"], name: "index_vehicle_loadout_items_on_blueprint_id"
     t.index ["item_type", "item_id"], name: "index_vehicle_loadout_items_on_item"
     t.index ["vehicle_loadout_id", "slot_path"], name: "index_vehicle_loadout_items_on_loadout_and_slot_path", unique: true
   end
@@ -3057,6 +3060,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_19_140000) do
   add_foreign_key "user_blueprints", "users", on_delete: :cascade
   add_foreign_key "users", "fleets", column: "supported_fleet_id", on_delete: :nullify
   add_foreign_key "users", "locations", column: "current_location_id", on_delete: :nullify
+  add_foreign_key "vehicle_loadout_items", "blueprints", on_delete: :nullify
   add_foreign_key "vehicle_loadout_items", "vehicle_loadouts", on_delete: :cascade
   add_foreign_key "vehicle_loadouts", "vehicles"
   add_foreign_key "vehicle_log_entries", "vehicles", on_delete: :cascade

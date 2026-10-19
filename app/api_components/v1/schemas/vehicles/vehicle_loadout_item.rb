@@ -11,7 +11,8 @@ module V1
           properties: {
             slotPath: {type: :string, description: "Hardpoint names from the hull down, joined by /"},
             itemType: ::V1::Schemas::Enums::VehicleLoadoutItemTypeEnum,
-            itemId: {type: :string, format: :uuid, description: "Left out on an Empty item, which holds nothing"}
+            itemId: {type: :string, format: :uuid, description: "Left out on an Empty item, which holds nothing"},
+            crafted: ::V1::Schemas::Vehicles::VehicleLoadoutItemCrafted
           },
           additionalProperties: false,
           required: %w[slotPath itemType]

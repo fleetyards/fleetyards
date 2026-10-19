@@ -51,6 +51,25 @@ class Api::V1::ModelsModulesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models/:slug/modules says which parts in its ports a recipe makes, all the way down" do
+    model = create(:model)
+    combat = create(:model_module, name: "Combat Module")
+    create(:module_hardpoint, model:, model_module: combat)
+
+    shield = create(:component, component_type: "Shield", category: "shieldgenerator", size: "2")
+    turret = create(:component, component_type: "Turret", category: "turret", size: "3")
+    gun = create(:component, component_type: "WeaponGun", category: "weapons", size: "3")
+    create(:hardpoint, parent: combat, sc_name: "hardpoint_shield", source: :game_files, component: shield)
+    create(:hardpoint, parent: combat, sc_name: "hardpoint_turret", source: :game_files, component: turret)
+    create(:hardpoint, parent: turret, sc_name: "hardpoint_gun", source: :game_files, component: gun)
+    create(:blueprint, craftable: shield)
+    create(:blueprint, craftable: gun)
+
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      assert_equal [gun.id, shield.id].sort, parsed_body["craftableComponentIds"].sort
+    end
+  end
+
   test "GET /models/:slug/modules serialises the slot when set on module_hardpoint" do
     model = create(:model)
     create(:module_hardpoint, model: model, slot: "hardpoint_front_module")

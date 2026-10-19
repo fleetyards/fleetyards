@@ -15,6 +15,12 @@ import {
 import { useI18n } from "@/shared/composables/useI18n";
 import { figureDelta } from "@/frontend/composables/figureDelta";
 import {
+  type CraftedPart,
+  craftedComponent,
+} from "@/frontend/composables/craftedComponent";
+import { NEUTRAL_QUALITY } from "@/frontend/composables/useQualityRamp";
+import {
+  type BlueprintCostSlot,
   type Component,
   type Hardpoint,
   type ModelModule,
@@ -57,13 +63,19 @@ export interface FittedSlot {
   path: string;
   slot: LoadoutSlot;
   content?: LoadoutComponentRef;
+  // The recipe the part was crafted from, and the quality per recipe slot;
+  // `content` already carries the crafted figures once the recipe is known.
+  crafted?: CraftedPart;
   children: FittedSlot[];
 }
 
 // A slot whose stock part the loadout took out, in a fitting keyed by path.
 export const EMPTIED = "";
 
-type ItemValue = Pick<VehicleLoadoutItem, "slotPath" | "itemType" | "itemId">;
+type ItemValue = Pick<
+  VehicleLoadoutItem,
+  "slotPath" | "itemType" | "itemId" | "crafted"
+>;
 
 // The ship as the game files deliver it: the modules it comes with, by the slot
 // each sits in. Every other slot keeps its stock part by default.
@@ -78,7 +90,8 @@ export const stockModuleValues = (modules: ModelModule[]) =>
   );
 
 // A saved loadout's items as a fitting holds them, by slot path: the modules,
-// and the parts in component slots, an emptied one holding EMPTIED.
+// the parts in component slots, an emptied one holding EMPTIED, and how each
+// crafted part was crafted.
 export const loadoutValues = (items: ItemValue[] = []) => {
   const of = (type: VehicleLoadoutItemTypeEnum) =>
     items.filter((item) => item.itemType === type);
@@ -97,8 +110,41 @@ export const loadoutValues = (items: ItemValue[] = []) => {
       ),
       ...byPath(of(VehicleLoadoutItemTypeEnum.EMPTY), () => EMPTIED),
     },
+    crafted: Object.fromEntries(
+      items.flatMap((item): [string, CraftedPart][] =>
+        item.crafted
+          ? [
+              [
+                item.slotPath,
+                {
+                  blueprintId: item.crafted.blueprintId,
+                  blueprintSlug: item.crafted.blueprintSlug,
+                  qualities: Object.fromEntries(
+                    item.crafted.qualities.map((entry) => [
+                      entry.position,
+                      entry.quality,
+                    ]),
+                  ),
+                },
+              ],
+            ]
+          : [],
+      ),
+    ),
   };
 };
+
+// Two craftings alike: the same recipe, and the same quality in every slot,
+// a slot left out reading as the neutral grade it was filled at.
+export const craftingKey = (crafted?: CraftedPart) =>
+  crafted
+    ? JSON.stringify([
+        crafted.blueprintId,
+        Object.entries(crafted.qualities)
+          .filter(([, quality]) => quality !== NEUTRAL_QUALITY)
+          .sort(([a], [b]) => Number(a) - Number(b)),
+      ])
+    : undefined;
 
 // Marks a stacked row's id, which is otherwise its first slot's path.
 export const GROUP_SUFFIX = "#stack";
@@ -349,6 +395,25 @@ export const useComponentFitting = () => {
     if (component) components.value[component.id] = component;
   };
 
+  // blueprint id -> the recipe's slots, once fetched
+  const recipes = ref<Record<string, BlueprintCostSlot[]>>({});
+
+  const learnRecipe = (blueprintId: string, slots: BlueprintCostSlot[]) => {
+    recipes.value[blueprintId] = slots;
+  };
+
+  // The part as crafted, where the recipe is in; until then, as catalogued.
+  const craft = (component: LoadoutComponentRef, crafted?: CraftedPart) => {
+    const recipe = crafted && recipes.value[crafted.blueprintId];
+    if (!crafted || !recipe) return component;
+
+    return craftedComponent(
+      component,
+      recipe,
+      (position) => crafted.qualities[position] ?? NEUTRAL_QUALITY,
+    );
+  };
+
   const learnBelow = (path: string, partId: string, slots: LoadoutSlot[]) => {
     below.value[path] = { ...below.value[path], [partId]: slots };
   };
@@ -370,8 +435,18 @@ export const useComponentFitting = () => {
 
   // A module's ports, from the module list the editor already holds: the
   // hull's tree only knows a module's slots once a loadout has saved it there.
+  // The parts in modules' ports a recipe makes: the module list carries the
+  // flag beside its items, where a slot tree carries it on each part.
+  const craftableInModules = ref(new Set<string>());
+
   const toSlot = (hardpoint: Hardpoint): LoadoutSlot => {
-    const stock = hardpoint.component as LoadoutComponentRef | undefined;
+    const part = hardpoint.component as LoadoutComponentRef | undefined;
+    const stock = part
+      ? {
+          ...part,
+          craftable: part.craftable ?? craftableInModules.value.has(part.id),
+        }
+      : undefined;
     remember(stock);
 
     return {
@@ -395,7 +470,12 @@ export const useComponentFitting = () => {
 
   // A module is what its slot holds, as a part is: known by name, so a fitted
   // module slot is not read as empty.
-  const learnModules = (modules: ModelModule[]) =>
+  const learnModules = (
+    modules: ModelModule[],
+    craftableIds: string[] = [],
+  ) => {
+    craftableInModules.value = new Set(craftableIds);
+
     modules.forEach((mod) => {
       remember({
         id: mod.id,
@@ -405,6 +485,7 @@ export const useComponentFitting = () => {
       if (mod.slot)
         learnBelow(mod.slot, mod.id, (mod.hardpoints ?? []).map(toSlot));
     });
+  };
 
   // What an option brings, unless the slot already knows that part: the trees
   // describe a part as the ship holds it, stock parts inside included, where
@@ -420,6 +501,7 @@ export const useComponentFitting = () => {
   const resolve = (
     slots: LoadoutSlot[],
     fitted: Record<string, string>,
+    crafting: Record<string, CraftedPart> = {},
     parentPath?: string,
   ): FittedSlot[] =>
     slots.map((slot) => {
@@ -427,13 +509,16 @@ export const useComponentFitting = () => {
       // A path the loadout emptied holds EMPTIED, which reads as no part.
       const partId =
         path in fitted ? fitted[path] || undefined : slot.stock?.id;
+      const part = partId ? components.value[partId] : undefined;
+      const crafted = part ? crafting[path] : undefined;
 
       return {
         path,
         slot,
-        content: partId ? components.value[partId] : undefined,
+        content: part ? craft(part, crafted) : undefined,
+        crafted,
         children: partId
-          ? resolve(below.value[path]?.[partId] ?? [], fitted, path)
+          ? resolve(below.value[path]?.[partId] ?? [], fitted, crafting, path)
           : [],
       };
     });
@@ -500,12 +585,14 @@ export const useComponentFitting = () => {
         : entry.slot.swappable === false
           ? "noAlternatives"
           : undefined,
-      changed:
-        !!saved && find(saved, entry.path)?.content?.id !== entry.content?.id,
+      changed: !!saved && changedFrom(find(saved, entry.path), entry),
       item: entry.content
         ? {
             id: entry.content.id,
             name: entry.content.name,
+            crafted: !!entry.crafted,
+            craftable: !!entry.content.craftable,
+            craftingKey: craftingKey(entry.crafted),
             figure: componentFigure(entry.content),
             headline: headlineOf(entry.content, entry.slot.category),
             stats: rowStats(entry.content, entry.slot.category),
@@ -516,6 +603,10 @@ export const useComponentFitting = () => {
     };
   };
 
+  const changedFrom = (before: FittedSlot | undefined, now: FittedSlot) =>
+    before?.content?.id !== now.content?.id ||
+    craftingKey(before?.crafted) !== craftingKey(now.crafted);
+
   // What makes two sibling slots the same row: the part in them, the room they
   // offer, and the same again all the way down, under the same names -- a pick
   // on the stack reaches each member's slots by the first member's paths.
@@ -524,6 +615,7 @@ export const useComponentFitting = () => {
   const signature = (slot: LoadoutSocketSlot): string =>
     JSON.stringify([
       slot.item?.name || slot.item?.id,
+      slot.item?.craftingKey,
       slot.kind,
       slot.size,
       slot.locked,
@@ -743,6 +835,13 @@ export const useComponentFitting = () => {
         // id is the same for both.
         id: original?.id ?? entry.path,
         name: entry.slot.name,
+        // Two parts crafted apart are two parts on a hardpoint list too, so
+        // they never stack into one row reading the first one's figures.
+        ...(entry.crafted
+          ? {
+              groupKey: `${original?.groupKey ?? ""}|${craftingKey(entry.crafted)}`,
+            }
+          : {}),
         // A port inside a part names no category of its own; the ship's copy
         // does, and failing that the part in it, which is what the figures
         // read a gun or a shield by.
@@ -918,6 +1017,7 @@ export const useComponentFitting = () => {
     learnModules,
     moduleContents,
     learnOption,
+    learnRecipe,
     resolve,
     groups,
     hasSlots,

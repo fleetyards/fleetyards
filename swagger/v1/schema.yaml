@@ -20981,10 +20981,14 @@ components:
           type:
           - number
           - 'null'
+          description: A factor on the stat for a linear ramp; a whole amount added
+            to it for linear_integer_additive
         modifierAtEnd:
           type:
           - number
           - 'null'
+          description: A factor on the stat for a linear ramp; a whole amount added
+            to it for linear_integer_additive
         unit:
           type:
           - string
@@ -23932,6 +23936,23 @@ components:
       items:
         "$ref": "#/components/schemas/ContractDeliveryTarget"
       title: ContractDeliveryTargetsList
+    CraftedSlotQuality:
+      type: object
+      properties:
+        position:
+          type: integer
+          minimum: 0
+          description: The recipe slot, by its position in the blueprint
+        quality:
+          type: integer
+          minimum: 0
+          maximum: 1000
+          description: Material quality on the game's 0-1000 scale
+      additionalProperties: false
+      required:
+      - position
+      - quality
+      title: CraftedSlotQuality
     DockCount:
       type: object
       properties:
@@ -33372,6 +33393,9 @@ components:
           - "$ref": "#/components/schemas/ComponentEmp"
           - "$ref": "#/components/schemas/ComponentQuantumEnforcement"
           - "$ref": "#/components/schemas/ComponentLifeSupport"
+        craftable:
+          type: boolean
+          description: A recipe in the build being served makes it
       additionalProperties: false
       required:
       - id
@@ -35825,6 +35849,13 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/ModelModule"
+        craftableComponentIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: The parts in these modules' ports a recipe makes, for a loadout
+            to offer crafting on
       additionalProperties: false
       required:
       - meta
@@ -41263,11 +41294,49 @@ components:
           type: string
           format: uuid
           description: Left out on an Empty item, which holds nothing
+        crafted:
+          "$ref": "#/components/schemas/VehicleLoadoutItemCrafted"
       additionalProperties: false
       required:
       - slotPath
       - itemType
       title: VehicleLoadoutItem
+    VehicleLoadoutItemCrafted:
+      type: object
+      properties:
+        blueprintId:
+          type: string
+          format: uuid
+        blueprintSlug:
+          type: string
+        qualities:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CraftedSlotQuality"
+          description: A recipe slot left out was filled at the neutral grade, 500
+      additionalProperties: false
+      required:
+      - blueprintId
+      - blueprintSlug
+      - qualities
+      title: VehicleLoadoutItemCrafted
+    VehicleLoadoutItemCraftedInput:
+      type: object
+      properties:
+        blueprintId:
+          type: string
+          format: uuid
+          description: A recipe that makes the fitted component
+        qualities:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CraftedSlotQuality"
+          description: A recipe slot left out was filled at the neutral grade, 500
+      additionalProperties: false
+      required:
+      - blueprintId
+      - qualities
+      title: VehicleLoadoutItemCraftedInput
     VehicleLoadoutItemInput:
       type: object
       properties:
@@ -41280,6 +41349,8 @@ components:
           type: string
           format: uuid
           description: Left out on an Empty item, which holds nothing
+        crafted:
+          "$ref": "#/components/schemas/VehicleLoadoutItemCraftedInput"
       additionalProperties: false
       required:
       - slotPath
