@@ -367,6 +367,7 @@
         }
       },
       "statsCard": {
+        "stock": "原廠：%{value}",
         "more": "詳情頁另有 %{count} 項",
         "unavailable": "無法載入這些詳情。",
         "loading": "正在載入 %{name}…",
@@ -3483,8 +3484,7 @@
         "transferFromFriends": "我的好友",
         "towardsContract": "計入合約",
         "noContract": "不計入合約",
-        "forContract": "用於",
-        "openInCatalogue": "在目錄中開啟"
+        "forContract": "用於"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {

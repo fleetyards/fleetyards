@@ -367,6 +367,7 @@
         }
       },
       "statsCard": {
+        "stock": "原厂：%{value}",
         "more": "详情页另有 %{count} 项",
         "unavailable": "无法加载这些详情。",
         "loading": "正在加载 %{name}…",
@@ -3483,8 +3484,7 @@
         "transferFromFriends": "我的好友",
         "towardsContract": "计入合约",
         "noContract": "不计入合约",
-        "forContract": "用于",
-        "openInCatalogue": "在目录中打开"
+        "forContract": "用于"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {

@@ -367,6 +367,7 @@
         }
       },
       "statsCard": {
+        "stock": "Serie: %{value}",
         "more": "+%{count} weitere auf der Detailseite",
         "unavailable": "Diese Details konnten nicht geladen werden.",
         "loading": "%{name} wird geladen…",
@@ -3483,8 +3484,7 @@
         "transferFromFriends": "Meine Freunde",
         "towardsContract": "Für einen Auftrag",
         "noContract": "Kein Auftrag",
-        "forContract": "für",
-        "openInCatalogue": "Im Katalog öffnen"
+        "forContract": "für"
       },
       "hangarInventories": "Inventare",
       "adminNotifications": {

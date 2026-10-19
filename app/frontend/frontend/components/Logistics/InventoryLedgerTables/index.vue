@@ -223,21 +223,19 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
       <slot name="stock-selected-actions" :selected="selected" />
     </template>
 
+    <!-- The name opens the stock position, and hovering it shows the catalogue
+         record the position holds -- with what it was crafted to, for a
+         crafted lot. -->
     <template #col-name="{ record }">
-      <slot name="stock-name" :record="record">{{ record.name }}</slot>
-      <!-- The name opens the stock position; this opens the catalogue record
-           the position holds, which is a different page. -->
-      <span
+      <CatalogueItemPopover
         v-if="catalogueItemRoute(record.item)"
-        class="ledger-catalogue-link"
+        :item="record.item ?? {}"
+        :crafted="record.crafted"
+        :link="false"
       >
-        <CatalogueItemPopover
-          :item="record.item ?? {}"
-          :link-label="t('labels.logistics.openInCatalogue')"
-        >
-          <i class="fa-light fa-book-open" />
-        </CatalogueItemPopover>
-      </span>
+        <slot name="stock-name" :record="record">{{ record.name }}</slot>
+      </CatalogueItemPopover>
+      <slot v-else name="stock-name" :record="record">{{ record.name }}</slot>
     </template>
     <template #col-inventory="{ record }">
       <span class="text-muted">{{ record.inventory?.name }}</span>
@@ -246,7 +244,14 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
       {{ t(`labels.logistics.categories.${record.category}`) }}
     </template>
     <template #col-quality="{ record }">
-      <template v-if="record.qualityMin != null">
+      <span
+        v-if="record.crafted"
+        v-tooltip="craftedSummary(record.crafted)"
+        class="ledger-crafted"
+      >
+        {{ t("labels.logistics.crafted.lot") }}
+      </span>
+      <template v-else-if="record.qualityMin != null">
         <template v-if="record.qualityMin === record.qualityMax">
           {{ record.qualityMin }}
         </template>
@@ -309,18 +314,15 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
       </span>
     </template>
     <template #col-name="{ record }">
-      <slot name="log-name" :record="record">{{ record.name }}</slot>
-      <span
+      <CatalogueItemPopover
         v-if="catalogueItemRoute(record.item)"
-        class="ledger-catalogue-link"
+        :item="record.item ?? {}"
+        :crafted="record.crafted"
+        :link="false"
       >
-        <CatalogueItemPopover
-          :item="record.item ?? {}"
-          :link-label="t('labels.logistics.openInCatalogue')"
-        >
-          <i class="fa-light fa-book-open" />
-        </CatalogueItemPopover>
-      </span>
+        <slot name="log-name" :record="record">{{ record.name }}</slot>
+      </CatalogueItemPopover>
+      <slot v-else name="log-name" :record="record">{{ record.name }}</slot>
       <BasePill
         v-if="record.item && record.item.available === false"
         :variant="PillVariantsEnum.WARNING"
@@ -392,20 +394,5 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
 
 .ledger-date {
   white-space: nowrap;
-}
-
-.ledger-catalogue-link {
-  margin-left: 0.4rem;
-  color: var(--color-muted);
-
-  // The link is rendered by the catalogue popover, outside this scope.
-  :deep(a) {
-    color: inherit;
-  }
-
-  &:hover,
-  &:focus-within {
-    color: var(--color-text);
-  }
 }
 </style>

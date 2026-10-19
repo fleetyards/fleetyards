@@ -194,6 +194,12 @@
     white-space: nowrap;
   }
 
+  // Moved off the catalogue's figure -- a crafted part. Scoped under the card
+  // so it outranks the hero and row value colours wherever they are declared.
+  & &__value--changed {
+    color: var(--color-primary, #428bca);
+  }
+
   &__specs--prominent &__spec {
     gap: 6px;
     padding-top: 12px;

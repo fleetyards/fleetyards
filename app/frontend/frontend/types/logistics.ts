@@ -41,6 +41,8 @@ export type InventoryStockRecord = {
     slug?: string | null;
     listed?: boolean;
   } | null;
+  // A crafted lot: the recipe and the grades it was made from.
+  crafted?: InventoryCraftedRef;
 };
 
 export type InventoryVehicleReference = {

@@ -16,6 +16,11 @@ import ContractStatsCard from "@/frontend/components/StatsCard/Contract/index.vu
 import EventStatsCard from "@/frontend/components/StatsCard/Event/index.vue";
 import UserStatsCard from "@/frontend/components/StatsCard/User/index.vue";
 import LocationStatsCard from "@/frontend/components/StatsCard/Location/index.vue";
+import {
+  craftComponent,
+  craftEquipment,
+  craftedFactors,
+} from "@/frontend/components/Logistics/craftedRecord";
 import { catalogueItemRoute } from "@/frontend/utils/catalogueItemRoute";
 import {
   useComponent as useComponentQuery,
@@ -38,6 +43,7 @@ import {
   type Location,
   type Model,
   type UserPublic,
+  type InventoryCraftedRef,
 } from "@/services/fyApi";
 import { type CatalogueItemRef, type CatalogueRecord } from "./types";
 
@@ -54,6 +60,8 @@ type Props = {
   linkLabel?: string;
   // Off for the same list-row name: the row's own link is the focus stop.
   focusable?: boolean;
+  // A crafted part: the card adds the stats its recipe and grades give.
+  crafted?: InventoryCraftedRef;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -62,6 +70,7 @@ const props = withDefaults(defineProps<Props>(), {
   linkClass: undefined,
   linkLabel: undefined,
   focusable: true,
+  crafted: undefined,
 });
 
 const route = computed(() => catalogueItemRoute(props.item));
@@ -150,6 +159,42 @@ const component = computed(
 const equipment = computed(
   () => (props.record as Equipment | undefined) ?? fetchedEquipment.value,
 );
+
+// A crafted part's recipe, fetched with the card, so its figures can be shown
+// as crafting left them rather than as the catalogue lists them.
+const craftedRecipeSlug = computed(() => props.crafted?.blueprint.slug ?? "");
+
+const { data: craftedRecipe } = useBlueprintQuery(craftedRecipeSlug, {
+  query: {
+    enabled: computed(
+      () =>
+        requested.value &&
+        !!craftedRecipeSlug.value &&
+        (isComponent.value || isEquipment.value),
+    ),
+  },
+});
+
+const factors = computed(() =>
+  props.crafted && craftedRecipe.value
+    ? craftedFactors(
+        craftedRecipe.value.costSlots || [],
+        props.crafted.qualities,
+      )
+    : undefined,
+);
+
+const craftedComponent = computed(() =>
+  factors.value && component.value
+    ? craftComponent(component.value, factors.value)
+    : undefined,
+);
+
+const craftedEquipment = computed(() =>
+  factors.value && equipment.value
+    ? craftEquipment(equipment.value, factors.value)
+    : undefined,
+);
 const commodity = computed(
   () => (props.record as Commodity | undefined) ?? fetchedCommodity.value,
 );
@@ -237,7 +282,8 @@ const label = computed(() => props.item.name || props.linkLabel || "");
         compact
         :to="route ?? false"
         :name="label"
-        :component="component"
+        :component="craftedComponent ?? component"
+        :stock="craftedComponent ? component : undefined"
         :loading="componentLoading"
         @navigate="close"
       />
@@ -246,7 +292,8 @@ const label = computed(() => props.item.name || props.linkLabel || "");
         compact
         :to="route ?? false"
         :name="label"
-        :equipment="equipment"
+        :equipment="craftedEquipment ?? equipment"
+        :stock="craftedEquipment ? equipment : undefined"
         :loading="equipmentLoading"
         @navigate="close"
       />

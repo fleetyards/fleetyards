@@ -11,6 +11,7 @@ import DuotoneGlyph from "@/shared/components/DuotoneGlyph/index.vue";
 import { categoryIcon } from "@/frontend/components/Models/Hardpoints/categoryIcon";
 import { type StatsCardBadge } from "@/frontend/components/StatsCard/types";
 import { useComponentStats } from "@/frontend/composables/useComponentStats";
+import { markedAgainstStock } from "@/frontend/components/StatsCard/stock";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type Component } from "@/services/fyApi";
 
@@ -25,6 +26,9 @@ type Props = {
   // drops the link.
   to?: RouteLocationRaw | false;
   loading?: boolean;
+  // The catalogue's record, where `component` is a crafted one: the figures
+  // crafting moved are marked against it.
+  stock?: Component;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -33,13 +37,22 @@ const props = withDefaults(defineProps<Props>(), {
   name: undefined,
   to: undefined,
   loading: false,
+  stock: undefined,
 });
 
 const emit = defineEmits<{ navigate: [] }>();
 
 const { t, tExists } = useI18n();
 
-const allStats = useComponentStats(() => props.component);
+const craftedStats = useComponentStats(() => props.component);
+const stockStats = useComponentStats(() => props.stock);
+
+const allStats = computed(() =>
+  markedAgainstStock(
+    craftedStats.value,
+    props.stock ? stockStats.value : undefined,
+  ),
+);
 
 // On the detail page a mode of the item gets a card of its own beside this
 // one; floating over a list, the card is all there is, so it keeps them.
