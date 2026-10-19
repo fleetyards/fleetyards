@@ -4505,6 +4505,13 @@
         "againstStock": "Cambios respecto a la nave de serie",
         "crafted": "Fabricado",
         "craftedPart": "%{name} (fabricado)",
+        "crafting": {
+          "toggle": "Fabricado",
+          "qualityAll": "Calidad %{quality} en cada ranura",
+          "qualityRange": "Calidad %{low}–%{high}",
+          "showQualities": "Ajustar calidades",
+          "hideQualities": "Ocultar calidades"
+        },
         "fitted": "Equipado",
         "owned": "En propiedad",
         "noSlots": "Todavía no se puede equipar nada de esta nave aquí",

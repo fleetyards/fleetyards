@@ -1,0 +1,44 @@
+.loadout-crafting {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--color-edge-soft);
+}
+
+.loadout-crafting__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.loadout-crafting__summary {
+  color: var(--color-text-dim);
+  font-size: 12px;
+}
+
+.loadout-crafting__expand {
+  margin-left: auto;
+}
+
+// The recipe's slots scroll on their own, so the part list above keeps its
+// room however many slots a recipe has.
+.loadout-crafting__body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 40dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.loadout-crafting__quickset {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-text-dim);
+  font-size: 12px;
+}

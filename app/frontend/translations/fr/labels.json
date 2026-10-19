@@ -4505,6 +4505,13 @@
         "againstStock": "Changements par rapport au vaisseau d'origine",
         "crafted": "Fabriqué",
         "craftedPart": "%{name} (fabriqué)",
+        "crafting": {
+          "toggle": "Fabriqué",
+          "qualityAll": "Qualité %{quality} dans chaque emplacement",
+          "qualityRange": "Qualité %{low}–%{high}",
+          "showQualities": "Régler les qualités",
+          "hideQualities": "Masquer les qualités"
+        },
         "fitted": "Équipé",
         "owned": "Possédé",
         "noSlots": "Rien sur ce vaisseau ne peut encore être équipé ici",

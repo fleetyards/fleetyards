@@ -39,6 +39,15 @@ const componentOptions = ref<unknown[]>([]);
 const optionsStale = ref(false);
 let optionsParams: () => Record<string, unknown> = () => ({});
 const modelHardpoints = ref<unknown[]>([]);
+const recipes = ref<{ items: unknown[] }>({ items: [] });
+const RECIPE = {
+  id: "bp",
+  slug: "bp-gun",
+  costSlots: [
+    { position: 0, name: "Frame", options: [], modifiers: [] },
+    { position: 1, name: "Barrel", options: [], modifiers: [] },
+  ],
+};
 
 const resolved = () => ({
   isPending: ref(false),
@@ -79,10 +88,22 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
       isPlaceholderData: optionsStale,
     };
   },
+  useBlueprints: () => ({ data: recipes, ...resolved() }),
+  useBlueprint: () => ({ data: ref(RECIPE), ...resolved() }),
+  getBlueprintQueryOptions: (slug: string) => ({
+    queryKey: ["blueprints", slug],
+    queryFn: () => Promise.resolve(RECIPE),
+  }),
   createVehicleLoadout: (...args: unknown[]) => createVehicleLoadout(...args),
   updateVehicleLoadout: (...args: unknown[]) => updateVehicleLoadout(...args),
   activateVehicleLoadout: (...args: unknown[]) =>
     activateVehicleLoadout(...args),
+}));
+
+vi.mock("@/frontend/composables/useMaterialStock", () => ({
+  useMaterialStock: () => ({
+    forCommodity: () => ({ own: [], fleet: [] }),
+  }),
 }));
 
 vi.mock("@/frontend/composables/useVehicleMutations", () => ({
@@ -1301,6 +1322,91 @@ describe("VehicleLoadoutModal component tabs", () => {
         itemId: "gun2",
       },
     ]);
+  });
+
+  describe("crafting", () => {
+    beforeEach(() => {
+      recipes.value = { items: [{ id: "bp", slug: "bp-gun" }] };
+      componentOptions.value = [
+        { component: STOCK_GUN, slots: [] },
+        { component: OTHER_GUN, slots: [] },
+      ];
+    });
+
+    afterEach(() => {
+      recipes.value = { items: [] };
+    });
+
+    const GUN = "hardpoint_gun_nose/hardpoint_class_2";
+
+    const craft = async (wrapper: Wrapper) => {
+      await socket(wrapper, GUN).trigger("click");
+      await flushPromises();
+      await wrapper
+        .get("[data-test='vehicle-loadout-crafted-toggle']")
+        .trigger("click");
+      await flushPromises();
+    };
+
+    it("offers crafting only for a part that has a recipe", async () => {
+      recipes.value = { items: [] };
+      const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
+      await flushPromises();
+
+      await socket(wrapper, GUN).trigger("click");
+      await flushPromises();
+
+      expect(
+        wrapper.find("[data-test='vehicle-loadout-crafting']").exists(),
+      ).toBe(false);
+    });
+
+    it("saves the stock part as crafted, with a quality per recipe slot", async () => {
+      const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
+      await flushPromises();
+
+      await craft(wrapper);
+      await wrapper
+        .get("[data-test='vehicle-loadout-crafting-preset-750']")
+        .trigger("click");
+      await flushPromises();
+
+      expect(socket(wrapper, GUN).text()).toContain(
+        "labels.vehicleLoadout.crafted",
+      );
+
+      await save(wrapper);
+
+      expect(savedItems()).toEqual([
+        {
+          slotPath: GUN,
+          itemType: "Component",
+          itemId: "gun1",
+          crafted: {
+            blueprintId: "bp",
+            qualities: [
+              { position: 0, quality: 750 },
+              { position: 1, quality: 750 },
+            ],
+          },
+        },
+      ]);
+    });
+
+    it("drops the crafting when another part is picked for the slot", async () => {
+      const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
+      await flushPromises();
+
+      await craft(wrapper);
+      await wrapper.get("[data-test='loadout-picker-close']").trigger("click");
+      await flushPromises();
+      await choose(wrapper, GUN, "Other Gun");
+      await save(wrapper);
+
+      expect(savedItems()).toEqual([
+        { slotPath: GUN, itemType: "Component", itemId: "gun2" },
+      ]);
+    });
   });
 
   it("a swapped mount brings its own empty ports and drops the old gun", async () => {

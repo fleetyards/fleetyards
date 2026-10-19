@@ -35,6 +35,8 @@ import SocketBoard from "@/frontend/components/Loadout/SocketBoard/index.vue";
 import Picker from "@/frontend/components/Loadout/Picker/index.vue";
 import Comparison from "./Comparison/index.vue";
 import ComponentComparison from "./ComponentComparison/index.vue";
+import Crafting from "./Crafting/index.vue";
+import { useCraftedRecipes } from "@/frontend/composables/useCraftedRecipes";
 import LoadoutMetrics from "./Metrics/index.vue";
 import LoadoutChanges from "@/frontend/components/Loadout/Changes/index.vue";
 import { VehicleLoadoutTabsEnum } from "./types";
@@ -49,6 +51,7 @@ import { useModuleSockets } from "@/frontend/composables/useModuleSockets";
 import {
   COMPONENT_TABS,
   type ComponentTab,
+  type CraftedPart,
   EMPTIED,
   loadoutValues,
   slotName,
@@ -60,6 +63,7 @@ import { useMobile } from "@/shared/composables/useMobile";
 import {
   type Vehicle,
   type VehicleLoadout,
+  type VehicleLoadoutItemCraftedInput,
   type VehicleLoadoutItemInput,
   ModelProductionStatusEnum,
   VehicleLoadoutItemTypeEnum,
@@ -115,6 +119,9 @@ type LoadoutValues = {
   // Only parts that differ from the slot's stock one: a slot left alone keeps
   // the part it came with.
   fittedComponents: Record<string, string>;
+  // How the crafted parts were crafted, by slot path -- a crafted stock part
+  // included, which `fittedComponents` leaves out.
+  craftedComponents: Record<string, CraftedPart>;
 };
 
 const { data: loadoutsData, isPending: loadoutsPending } = useVehicleLoadouts(
@@ -151,7 +158,9 @@ const loadoutPending = computed(
 );
 
 const savedValues = (): LoadoutValues => {
-  const { modules, components } = loadoutValues(editedLoadout.value?.items);
+  const { modules, components, crafted } = loadoutValues(
+    editedLoadout.value?.items,
+  );
 
   return {
     loadoutName: editedLoadout.value?.name ?? "",
@@ -164,6 +173,7 @@ const savedValues = (): LoadoutValues => {
     linkUrl: editedLoadout.value?.url ?? "",
     fittedModules: modules,
     fittedComponents: components,
+    craftedComponents: crafted,
   };
 };
 
@@ -212,6 +222,8 @@ watch([() => props.vehicle, () => editedLoadout.value?.updatedAt], () => {
 const [fittedModules] = defineField("fittedModules");
 
 const [fittedComponents] = defineField("fittedComponents");
+
+const [craftedComponents] = defineField("craftedComponents");
 
 const [loadoutPublic] = defineField("loadoutPublic");
 
@@ -307,11 +319,22 @@ const initialising = computed(
 );
 
 const componentTree = computed(() =>
-  fitting.resolve(hullSlots.value ?? [], {
-    ...(fittedModules.value || {}),
-    ...(fittedComponents.value || {}),
-  }),
+  fitting.resolve(
+    hullSlots.value ?? [],
+    {
+      ...(fittedModules.value || {}),
+      ...(fittedComponents.value || {}),
+    },
+    craftedComponents.value || {},
+  ),
 );
+
+// The saved fitting's recipes as well as the edited one's, so the changes
+// against the save read both as crafted.
+useCraftedRecipes(fitting, () => ({
+  ...savedValues().craftedComponents,
+  ...(craftedComponents.value || {}),
+}));
 
 const SYSTEM_TAB_IDS = [
   "radar",
@@ -433,10 +456,14 @@ const { data: modelHardpoints } = useModelHardpoints(
 );
 
 const savedTree = computed(() =>
-  fitting.resolve(hullSlots.value ?? [], {
-    ...savedValues().fittedModules,
-    ...savedValues().fittedComponents,
-  }),
+  fitting.resolve(
+    hullSlots.value ?? [],
+    {
+      ...savedValues().fittedModules,
+      ...savedValues().fittedComponents,
+    },
+    savedValues().craftedComponents,
+  ),
 );
 
 const loadoutDiff = useLoadoutDiff(fitting);
@@ -742,6 +769,17 @@ const onPick = (itemId: string | null) => {
       (entry) => entry.component.id === itemId,
     );
 
+    // Another part is not the crafted one, and what sat inside the old part
+    // went with it.
+    const swapped = activeMembers.value.filter(
+      (path) =>
+        (itemId ?? undefined) !==
+        fitting.find(componentTree.value, path)?.content?.id,
+    );
+    if (swapped.length) {
+      craftedComponents.value = withoutCrafting(swapped);
+    }
+
     // A stacked row stands for every identical slot: the pick fills them all.
     fittedComponents.value = activeMembers.value.reduce((next, path) => {
       const entry = fitting.find(componentTree.value, path);
@@ -777,6 +815,7 @@ const onPick = (itemId: string | null) => {
         ([path]) => !path.startsWith(`${slot}/`),
       ),
     );
+    craftedComponents.value = withoutCrafting([slot]);
 
     // The pick is the answer the picker was opened for.
     void closePicker();
@@ -802,6 +841,39 @@ const onPick = (itemId: string | null) => {
     tone: AppConfirmTonesEnum.WARNING,
     onConfirm: swap,
   });
+};
+
+// The crafting of these slots and of everything inside them dropped.
+const withoutCrafting = (paths: string[]) =>
+  Object.fromEntries(
+    Object.entries(craftedComponents.value || {}).filter(
+      ([path]) =>
+        !paths.some((gone) => path === gone || path.startsWith(`${gone}/`)),
+    ),
+  );
+
+// The active socket's part and how it was crafted, for the crafting panel. A
+// stacked row is crafted as one: a change reaches every slot it stands for.
+const activeCrafting = computed(() => {
+  const entry = activeComponentSlot.value;
+  if (!entry?.content) return undefined;
+
+  return {
+    component: fitting.components.value[entry.content.id] ?? entry.content,
+    crafted: entry.crafted,
+  };
+});
+
+const onCrafted = (crafted: CraftedPart | undefined) => {
+  const next = { ...(craftedComponents.value || {}) };
+  activeMembers.value.forEach((path) => {
+    if (crafted) {
+      next[path] = crafted;
+    } else {
+      delete next[path];
+    }
+  });
+  craftedComponents.value = next;
 };
 
 // Focus inside the picker goes back to the socket it was filling, or it would
@@ -1000,11 +1072,48 @@ const fittedComponentsToSave = (values: LoadoutValues) => {
     ),
   );
 
+  // A crafted part the slot came with is saved as an item of its own.
+  const craftedStock = Object.fromEntries(
+    Object.keys(values.craftedComponents || {}).flatMap((path) => {
+      const id = fitting.find(componentTree.value, path)?.content?.id;
+      return id && !(path in components) ? [[path, id]] : [];
+    }),
+  );
+
   return {
     ...fitting.reachable(componentTree.value, components),
     ...insideModule,
+    ...craftedStock,
   };
 };
+
+/**
+ * How each crafted part the tree still holds was crafted, as the API takes
+ * it. A crafted stock part is saved as an item of its own, holding the part
+ * the slot came with, since a slot left alone carries no item to craft.
+ */
+const craftingToSave = (values: LoadoutValues) =>
+  Object.fromEntries(
+    Object.entries(values.craftedComponents || {}).flatMap(
+      ([path, crafted]): [string, VehicleLoadoutItemCraftedInput][] =>
+        fitting.find(componentTree.value, path)?.content
+          ? [
+              [
+                path,
+                {
+                  blueprintId: crafted.blueprintId,
+                  qualities: Object.entries(crafted.qualities).map(
+                    ([position, quality]) => ({
+                      position: Number(position),
+                      quality,
+                    }),
+                  ),
+                },
+              ],
+            ]
+          : [],
+    ),
+  );
 
 const saving = ref(false);
 
@@ -1090,6 +1199,8 @@ const save = async (values: LoadoutValues, asNew: boolean) => {
     return;
   }
 
+  const crafting = craftingToSave(values);
+
   const asItems = (
     fitted: Record<string, string>,
     itemType: VehicleLoadoutItemTypeEnum,
@@ -1098,6 +1209,7 @@ const save = async (values: LoadoutValues, asNew: boolean) => {
       slotPath,
       itemType,
       itemId,
+      ...(crafting[slotPath] ? { crafted: crafting[slotPath] } : {}),
     }));
 
   const components = fittedComponentsToSave(values);
@@ -1455,9 +1567,18 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
                             v-bind="pickerBindings"
                             v-on="pickerListeners"
                           >
-                            <template v-if="componentComparison" #comparison>
+                            <template
+                              v-if="componentComparison || activeCrafting"
+                              #comparison
+                            >
                               <ComponentComparison
+                                v-if="componentComparison"
                                 v-bind="componentComparison"
+                              />
+                              <Crafting
+                                v-if="activeCrafting"
+                                v-bind="activeCrafting"
+                                @update:crafted="onCrafted"
                               />
                             </template>
                           </Picker>
@@ -1473,8 +1594,19 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
                       v-bind="pickerBindings"
                       v-on="pickerListeners"
                     >
-                      <template v-if="componentComparison" #comparison>
-                        <ComponentComparison v-bind="componentComparison" />
+                      <template
+                        v-if="componentComparison || activeCrafting"
+                        #comparison
+                      >
+                        <ComponentComparison
+                          v-if="componentComparison"
+                          v-bind="componentComparison"
+                        />
+                        <Crafting
+                          v-if="activeCrafting"
+                          v-bind="activeCrafting"
+                          @update:crafted="onCrafted"
+                        />
                       </template>
                     </Picker>
 

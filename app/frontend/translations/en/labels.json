@@ -4519,6 +4519,13 @@
         "againstStock": "Changes from the stock ship",
         "crafted": "Crafted",
         "craftedPart": "%{name} (crafted)",
+        "crafting": {
+          "toggle": "Crafted",
+          "qualityAll": "Quality %{quality} in every slot",
+          "qualityRange": "Quality %{low}–%{high}",
+          "showQualities": "Set qualities",
+          "hideQualities": "Hide qualities"
+        },
         "fitted": "Fitted",
         "owned": "Owned",
         "noSlots": "Nothing on this ship can be fitted here yet",

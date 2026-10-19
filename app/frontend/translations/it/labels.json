@@ -4505,6 +4505,13 @@
         "againstStock": "Modifiche rispetto alla nave di serie",
         "crafted": "Fabbricato",
         "craftedPart": "%{name} (fabbricato)",
+        "crafting": {
+          "toggle": "Fabbricato",
+          "qualityAll": "Qualità %{quality} in ogni slot",
+          "qualityRange": "Qualità %{low}–%{high}",
+          "showQualities": "Imposta le qualità",
+          "hideQualities": "Nascondi le qualità"
+        },
         "fitted": "Montato",
         "owned": "Posseduto",
         "noSlots": "Su questa nave non si può ancora montare nulla qui",

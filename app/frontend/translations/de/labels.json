@@ -4505,6 +4505,13 @@
         "againstStock": "Änderungen gegenüber dem Serienschiff",
         "crafted": "Hergestellt",
         "craftedPart": "%{name} (hergestellt)",
+        "crafting": {
+          "toggle": "Hergestellt",
+          "qualityAll": "Qualität %{quality} in jedem Slot",
+          "qualityRange": "Qualität %{low}–%{high}",
+          "showQualities": "Qualitäten einstellen",
+          "hideQualities": "Qualitäten ausblenden"
+        },
         "fitted": "Verbaut",
         "owned": "Im Besitz",
         "noSlots": "An diesem Schiff lässt sich hier noch nichts ausrüsten",
