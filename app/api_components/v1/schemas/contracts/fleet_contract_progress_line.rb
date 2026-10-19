@@ -18,6 +18,8 @@ module V1
             unit: ::V1::Schemas::Enums::InventoryUnitEnum,
             quality: {type: [:integer, :null]},
             qualityMatch: ::V1::Schemas::Enums::FleetContractQualityMatchEnum,
+            # Present on a line asking for a crafted part only.
+            crafted: ::V1::Schemas::InventoryCraftedRef,
             requested: {type: :string},
             delivered: {type: :string},
             # Out of the source inventory and into the contractor's hold. Always

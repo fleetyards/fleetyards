@@ -11,4 +11,7 @@ json.position fleet_contract_item.position
 
 json.partial! "api/v1/fleet_contract_items/item_ref", fleet_contract_item: fleet_contract_item
 
+json.partial! "api/v1/shared/inventory_crafted",
+  blueprint: fleet_contract_item.crafted_blueprint, qualities: fleet_contract_item.crafted_qualities
+
 json.partial! "api/shared/dates", record: fleet_contract_item

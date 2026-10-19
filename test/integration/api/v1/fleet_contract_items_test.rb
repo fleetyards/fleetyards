@@ -164,6 +164,24 @@ class Api::V1::FleetContractItemsTest < ActionDispatch::IntegrationTest
 
   # Asking for something no catalogue carries stays allowed; it just is not a
   # reference. The ledger is matched by name, category and unit either way.
+  test "POST asks for a crafted part, at the grades it names" do
+    component = create(:component, name: "Bulwark")
+    blueprint = create(:blueprint, craftable: component)
+    slot = create(:blueprint_cost_slot, build: blueprint.build, position: 1)
+    create(:blueprint_cost_modifier, slot:)
+    sign_in @officer
+
+    assert_api_response :post, 201,
+      api_path: COLLECTION_PATH,
+      path_params: {fleetSlug: @fleet.slug, fleetContractSlug: @contract.slug},
+      body: {name: component.name, category: "component", unit: "units", quantity: "2",
+             itemType: "Component", itemId: component.id,
+             craftedBlueprintId: blueprint.id, craftedQualities: {"1" => 700}} do
+      assert_equal blueprint.slug, parsed_body.dig("crafted", "blueprint", "slug")
+      assert_equal({"1" => 700}, parsed_body.dig("crafted", "qualities"))
+    end
+  end
+
   test "POST without a reference stores the line all the same" do
     sign_in @officer
 

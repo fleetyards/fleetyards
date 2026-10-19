@@ -13,6 +13,10 @@
 # `InventoryLedgerEntry` rather than re-typed, so a category added there cannot
 # be asked for here without also being depositable.
 class FleetContractItem < ApplicationRecord
+  # A line may ask for a crafted part: the recipe, and the grades it wants.
+  # Unlike a part someone holds, a request may leave a slot open.
+  include CraftedPart
+
   belongs_to :fleet_contract, touch: true
   belongs_to :item, polymorphic: true, optional: true
 
@@ -34,6 +38,7 @@ class FleetContractItem < ApplicationRecord
   validate :referenced_item_exists, if: :item_id?
   validate :unit_fits_category
   validate :identity_is_not_already_asked_for
+  validate :crafted_from_a_recipe_for_the_item, if: :crafting_written?
 
   before_validation :set_name_from_item
   before_create :set_position
@@ -45,6 +50,21 @@ class FleetContractItem < ApplicationRecord
   # can. Nil is the permissive default and is what most lines carry.
   def required_quality
     quality
+  end
+
+  # Whether a delivered lot answers what this line asked for. A crafted line
+  # takes only parts crafted from its recipe, each named grade met under the
+  # line's match rule. A plain line takes crafted parts too: they are that part.
+  def satisfied_by?(grade:, crafted_blueprint_id: nil, crafted_qualities: nil)
+    return quality_satisfied_by?(grade) unless crafted?
+    return false unless crafted_blueprint_id == self.crafted_blueprint_id
+
+    (self.crafted_qualities || {}).all? do |position, required|
+      held = (crafted_qualities || {})[position.to_s]
+      next false if held.nil?
+
+      quality_exact? ? held == required : held >= required
+    end
   end
 
   # Whether a deposit recorded at `grade` answers what this line asked for. A
@@ -83,6 +103,10 @@ class FleetContractItem < ApplicationRecord
     # ledger is matched on.
     errors.add(:name, :taken,
       message: I18n.t("activerecord.errors.messages.contract_item_already_asked_for"))
+  end
+
+  private def crafted_grades_required?
+    false
   end
 
   private def set_name_from_item

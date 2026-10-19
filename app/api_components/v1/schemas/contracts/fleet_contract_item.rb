@@ -18,6 +18,8 @@ module V1
             qualityMatch: ::V1::Schemas::Enums::FleetContractQualityMatchEnum,
             position: {type: :integer},
             item: ::V1::Schemas::Contracts::FleetContractItemRef,
+            # Present on a line asking for a crafted part only.
+            crafted: ::V1::Schemas::InventoryCraftedRef,
             createdAt: {type: [:string, :null], format: "date-time"},
             updatedAt: {type: [:string, :null], format: "date-time"}
           },
