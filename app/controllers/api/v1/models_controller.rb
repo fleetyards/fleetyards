@@ -3,6 +3,9 @@
 module Api
   module V1
     class ModelsController < ::Api::BaseController
+      # Module, port, part, the part's own port: deeper than any module nests.
+      MODULE_PORT_DEPTH = 4
+
       include WillItFitConcern
       include ViteRails::TagHelpers
       include ModelCargoFiltersConcern
@@ -264,6 +267,7 @@ module Api
           .pluck(:model_module_id, :slot)
           .to_h
         @stock_module_ids = ModuleHardpoint.stock_modules(model).values
+        @craftable_module_component_ids = module_component_ids(@model_modules) & craftable_component_ids
       end
 
       def module_packages
@@ -379,6 +383,29 @@ module Api
           .visible
           .active
           .order(name: :asc)
+      end
+
+      # Every part the listed modules' ports hold, all the way down: a module's
+      # own ports, the ports inside those, and a fitted part's own ports. One
+      # query per level, for the whole page rather than per module.
+      private def module_component_ids(model_modules)
+        ids = Set.new
+        parents = {"ModelModule" => model_modules.map(&:id)}
+
+        MODULE_PORT_DEPTH.times do
+          ports = parents.flat_map do |type, parent_ids|
+            next [] if parent_ids.empty?
+
+            Hardpoint.in_build.where(parent_type: type, parent_id: parent_ids).pluck(:id, :component_id)
+          end
+          break if ports.empty?
+
+          component_ids = ports.filter_map(&:last).uniq.reject { |id| ids.include?(id) }
+          ids.merge(component_ids)
+          parents = {"Hardpoint" => ports.map(&:first), "Component" => component_ids}
+        end
+
+        ids
       end
 
       private def price_range
