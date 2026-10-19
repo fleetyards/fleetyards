@@ -54,7 +54,7 @@ A fitted component with a blueprint can be marked crafted in the loadout editor,
 - **2026-10-19** Initial research and plan creation. Recipe and stat mapping exist only for the blueprint page; no component payload names its blueprint.
 - **2026-10-19** The editor finds a part's recipe through the blueprint list filtered by craftable, as the component page does; the item stores the blueprint id and renders its slug so read-only views fetch the recipe by slug. The "open the recipe" link was dropped: it would navigate away from an unsaved editor.
 
-- **2026-10-19** Re-parsing live and ptu with this branch's parser also changed what this PR does not touch: 37 jetpack equipment files on live (#5806's parser, never pushed) and ~2,450 item and model files on ptu. Pushed only the 75 blueprint files per tree, restoring the rest from the bucket; that drift is a separate decision.
+- **2026-10-19** Re-parsing live and ptu with this branch's parser also changed what this PR does not touch: 37 jetpack equipment files on live (#5806's parser, never pushed) and ~2,450 item and model files on ptu. First pushed only the 75 blueprint files per tree; then, as asked, re-parsed in full and pushed the drift too: on live 37 equipment files, on ptu 643 equipment files, `fuel_burn_scu_per10_k_newton` on 1,347 thruster items and `interior` on 1,105 models — all additions from parser changes on main that were never pushed.
 
 ## Progress
 - [x] Phase 1
