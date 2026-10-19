@@ -327,21 +327,26 @@ const hasGroupFilters = (keys: string[]) =>
         </div>
       </div>
 
-      <FormInput
-        v-model="form.priceGteq"
-        name="model-price-gteq"
-        :type="InputTypesEnum.NUMBER"
-        translation-key="filters.models.priceGt"
-        :no-placeholder="true"
-      />
-
-      <FormInput
-        v-model="form.priceLteq"
-        name="model-price-lteq"
-        :type="InputTypesEnum.NUMBER"
-        translation-key="filters.models.priceLt"
-        :no-placeholder="true"
-      />
+      <div class="row">
+        <div class="col-6">
+          <FormInput
+            v-model="form.priceGteq"
+            name="model-price-gteq"
+            :type="InputTypesEnum.NUMBER"
+            translation-key="filters.models.priceGt"
+            :no-placeholder="true"
+          />
+        </div>
+        <div class="col-6">
+          <FormInput
+            v-model="form.priceLteq"
+            name="model-price-lteq"
+            :type="InputTypesEnum.NUMBER"
+            translation-key="filters.models.priceLt"
+            :no-placeholder="true"
+          />
+        </div>
+      </div>
 
       <RadioList
         v-model="form.onSaleEq"
