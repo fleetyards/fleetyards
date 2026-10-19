@@ -126,13 +126,14 @@ module InventoryLedgerEntry
     validates :item_type, presence: true, if: :item_id?
     validate :withdrawal_does_not_exceed_stock, if: :withdrawal?
     validate :referenced_item_exists, if: :item_id?
-    # Checked when the crafting is written, not on every later save: a recipe
-    # the game retires or reshapes must not make the entries crafted from it
-    # uneditable. A transfer carries a lot as it was recorded, for the same
-    # reason.
+    # Checked when the crafting is written, or the part it is for changes --
+    # not on every later save: a recipe the game retires or reshapes must not
+    # make the entries crafted from it uneditable. A transfer carries a lot as
+    # it was recorded, for the same reason.
     validate :crafted_from_a_recipe_for_the_item, if: -> {
       (crafted_blueprint_id? || crafted_qualities.present?) && !from_transfer? &&
-        (new_record? || will_save_change_to_crafted_blueprint_id? || will_save_change_to_crafted_qualities?)
+        (new_record? || will_save_change_to_crafted_blueprint_id? || will_save_change_to_crafted_qualities? ||
+          will_save_change_to_item_id? || will_save_change_to_item_type?)
     }
     # Existing rows predate the pairing, so only entries that touch either side
     # of it have to satisfy it. The item is a third side of it now: repointing a
@@ -497,10 +498,12 @@ module InventoryLedgerEntry
 
   # A crafted lot is stock of its own: the position holding enough does not
   # mean this lot does, and an overdrawn lot drops out of the stock unseen.
+  # Matched on everything `current_stock` groups a lot by, the grade column
+  # included.
   private def crafted_withdrawal_does_not_exceed_lot
     lot = self.class.where(
       self.class.inventory_foreign_key => inventory_id, :name => name, :category => category, :unit => unit,
-      :crafted_blueprint_id => crafted_blueprint_id
+      :quality => quality, :crafted_blueprint_id => crafted_blueprint_id
     )
     lot = crafted_qualities.nil? ? lot.where(crafted_qualities: nil) : lot.where("crafted_qualities = ?::jsonb", crafted_qualities.to_json)
     current = lot.sum("CASE WHEN entry_type = 0 THEN quantity ELSE -quantity END")
