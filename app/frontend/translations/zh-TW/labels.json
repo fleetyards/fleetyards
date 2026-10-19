@@ -3514,6 +3514,7 @@
         "history": "History",
         "lots": "批次",
         "linkedItem": "Linked item",
+        "catalogueIdentity": "名稱和類別取自關聯的目錄物品。",
         "itemUnavailable": "Not in current patch",
         "itemUnavailableHint": "The current game build no longer ships this item. Entries keep it, but it cannot be picked for new ones.",
         "openInCatalogue": "在目錄中開啟",

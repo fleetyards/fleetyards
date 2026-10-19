@@ -278,6 +278,28 @@ class InventoryTest < ActiveSupport::TestCase
     end
   end
 
+  test "update_stock_item keeps a catalogue position's name and category" do
+    gem = create(:commodity, name: "Hadanite", counted: true)
+    create(:inventory_item, inventory: @inventory, item: gem,
+      name: "Hadanite", category: :commodity, unit: :scu, quantity: 4)
+
+    stock_item = @inventory.stock_item(
+      InventoryStockItem.slug_for(name: "Hadanite", category: "commodity", unit: "scu")
+    )
+
+    changed = @inventory.update_stock_item(stock_item, {name: "Shiny rock", category: "other"})
+
+    assert_includes changed.errors[:name], "is set by the catalogue item"
+    assert_includes changed.errors[:category], "is set by the catalogue item"
+    assert_equal ["Hadanite"], @inventory.inventory_items.reload.pluck(:name).uniq
+  end
+
+  test "update_stock_item still renames a free-text position" do
+    stock_item = stock_position(quantity: 100)
+
+    assert_predicate @inventory.update_stock_item(stock_item, {name: "Quantanium Ore"}), :valid?
+  end
+
   # The rename validator is the second gate on the pairing, and it runs off the
   # position rather than off an entry -- so it has to reach the item the same
   # way, or a position the picker now offers to move into pieces is rejected.
