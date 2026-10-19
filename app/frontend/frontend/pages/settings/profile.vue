@@ -93,10 +93,6 @@ const rsiHandleVerified = computed(
   () => sessionStore.currentUser?.rsiHandleVerified ?? false,
 );
 
-const citizenIdConnected = computed(() =>
-  sessionStore.currentUser?.authConnections?.includes("citizenid"),
-);
-
 // The check reads the saved handle, so one still being typed has nothing to
 // verify yet.
 const canVerifyRsiHandle = computed(
@@ -313,7 +309,7 @@ const onSubmit = handleSubmit(async (values) => {
             {{ t("actions.user.rsiVerification.verify") }}
           </Btn>
           <OauthBtn
-            v-if="!citizenIdConnected && !rsiHandleVerified"
+            v-if="!rsiHandleVerified"
             :provider="OmniauthProviderEnum.CITIZENID"
             :size="BtnSizesEnum.SM"
             inline
