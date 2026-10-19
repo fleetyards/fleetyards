@@ -32870,6 +32870,8 @@ components:
           - 'null'
         entriesCount:
           type: integer
+        catalogueIdentity:
+          type: boolean
         lastEntryAt:
           type:
           - string

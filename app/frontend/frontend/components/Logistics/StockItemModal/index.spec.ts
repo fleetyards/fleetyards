@@ -10,7 +10,7 @@ beforeAll(() => {
   defineRule("min", min);
 });
 
-const position = (item: unknown) =>
+const position = (item: unknown, catalogueIdentity: boolean) =>
   ({
     id: "pos-1",
     slug: "bulwark--component--units",
@@ -19,6 +19,7 @@ const position = (item: unknown) =>
     unit: "units",
     netQuantity: 2,
     item,
+    catalogueIdentity,
   }) as never;
 
 let wrapper: VueWrapper | undefined;
@@ -28,9 +29,12 @@ afterEach(() => {
   wrapper = undefined;
 });
 
-const mount = async (item: unknown) => {
+const mount = async (item: unknown, catalogueIdentity: boolean) => {
   wrapper = await mountWithDefaults<typeof Component>(Component, {
-    props: { stockItem: position(item), onSave: async () => undefined },
+    props: {
+      stockItem: position(item, catalogueIdentity),
+      onSave: async () => undefined,
+    },
   });
 
   return wrapper;
@@ -38,7 +42,7 @@ const mount = async (item: unknown) => {
 
 describe("LogisticsStockItemModal", () => {
   it("keeps a catalogue position's name and category", async () => {
-    const subject = await mount({ id: "bulwark", type: "Component" });
+    const subject = await mount({ id: "bulwark", type: "Component" }, true);
 
     expect(
       subject.find("[data-test='input-name']").attributes("disabled"),
@@ -48,8 +52,18 @@ describe("LogisticsStockItemModal", () => {
     ).toBe(true);
   });
 
+  // The position's item is its newest entry's; an older one can still tie it
+  // to the catalogue, and the API answers for the whole position.
+  it("keeps a position whose newest entry is free text", async () => {
+    const subject = await mount(null, true);
+
+    expect(
+      subject.find("[data-test='input-name']").attributes("disabled"),
+    ).toBeDefined();
+  });
+
   it("renames a free-text position", async () => {
-    const subject = await mount(null);
+    const subject = await mount(null, false);
 
     expect(
       subject.find("[data-test='input-name']").attributes("disabled"),

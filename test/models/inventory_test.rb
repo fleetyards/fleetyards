@@ -294,6 +294,23 @@ class InventoryTest < ActiveSupport::TestCase
     assert_equal ["Hadanite"], @inventory.inventory_items.reload.pluck(:name).uniq
   end
 
+  # The reference entry is the newest one, so a free-text deposit landing last
+  # must not hide the catalogue record an older entry points at.
+  test "catalogue_identity? reads every entry of the position" do
+    gem = create(:commodity, name: "Hadanite", counted: true)
+    create(:inventory_item, inventory: @inventory, item: gem,
+      name: "Hadanite", category: :commodity, unit: :scu, quantity: 4, created_at: 1.day.ago)
+    create(:inventory_item, inventory: @inventory,
+      name: "Hadanite", category: :commodity, unit: :scu, quantity: 1)
+
+    stock_item = @inventory.stock_item(
+      InventoryStockItem.slug_for(name: "Hadanite", category: "commodity", unit: "scu")
+    )
+
+    assert_nil stock_item.item
+    assert_predicate stock_item, :catalogue_identity?
+  end
+
   test "update_stock_item still renames a free-text position" do
     stock_item = stock_position(quantity: 100)
 

@@ -224,6 +224,13 @@ module InventoryStock
     changed
   end
 
+  # Whether any entry of the position points at a catalogue record, which then
+  # names and files the position. The same answer `update_stock_item` checks a
+  # rename against, so the form can lock what the API would refuse.
+  def catalogue_identity?(stock_item)
+    items_in_position(stock_item).any?(&:present?)
+  end
+
   # Pending transfers are counted through the entries rather than through the
   # transfer's own columns, because either end of one may be in either ledger.
   def entries_in_transit

@@ -41,7 +41,7 @@ const { displayAlert } = useAppNotifications();
 const submitting = ref(false);
 
 // A catalogue record names and files its position; only the unit may move.
-const catalogueIdentity = computed(() => !!props.stockItem.item);
+const catalogueIdentity = computed(() => !!props.stockItem.catalogueIdentity);
 
 const validationSchema = {
   name: "required|min:2",
