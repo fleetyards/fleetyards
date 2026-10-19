@@ -12,6 +12,11 @@ class VehicleLoadoutCraftingTest < ActiveSupport::TestCase
     create(:hardpoint, parent: @model, sc_name: "hardpoint_shield", source: :game_files,
       types: ["Shield"], min_size: 1, max_size: 1, component: @shield)
 
+    cooler = create(:component, component_type: "Cooler", category: "cooler", size: "1")
+    @other_cooler = create(:component, component_type: "Cooler", category: "cooler", size: "1")
+    create(:hardpoint, parent: @model, sc_name: "hardpoint_cooler", source: :game_files,
+      types: ["Cooler"], min_size: 1, max_size: 1, component: cooler)
+
     @blueprint = create(:blueprint, craftable: @shield)
     [0, 1].each { |position| create(:blueprint_cost_slot, build: @blueprint.build, position:) }
   end
@@ -79,6 +84,24 @@ class VehicleLoadoutCraftingTest < ActiveSupport::TestCase
       :crafted_quality_out_of_range
     assert_refused fleetyards_loadout([crafted_item(qualities: [{position: 0, quality: -1}])]),
       :crafted_quality_out_of_range
+  end
+
+  test "keeps a saved crafting whose recipe a new build dropped, while the rest of the loadout changes" do
+    loadout = fleetyards_loadout([crafted_item])
+    assert loadout.save, loadout.errors.full_messages.to_sentence
+
+    @blueprint.builds.destroy_all
+
+    loadout = VehicleLoadout.find(loadout.id)
+    loadout.item_list = [
+      crafted_item,
+      {slot_path: "hardpoint_cooler", item_type: "Component", item_id: @other_cooler.id}
+    ]
+    assert loadout.save, loadout.errors.full_messages.to_sentence
+    assert loadout.items.find_by(slot_path: "hardpoint_shield").crafted?
+
+    loadout.item_list = [crafted_item(qualities: [{position: 0, quality: 100}])]
+    assert_refused loadout, :crafted_not_craftable
   end
 
   test "refuses crafting on an emptied slot" do

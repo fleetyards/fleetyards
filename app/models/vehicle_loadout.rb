@@ -219,22 +219,37 @@ class VehicleLoadout < ApplicationRecord
   # A crafted part is a component made from a recipe for it, in the build in
   # force, with a quality on the game's 0-1000 scale for slots the recipe has. A
   # slot left out was filled at the neutral grade.
+  #
+  # A crafting saved before and sent back unchanged is kept as it is: a new
+  # build can drop or reshape the recipe, and refusing it then would refuse
+  # every later save of the loadout, whatever else it changed.
   private def crafted_items_fit
-    crafted = item_list.select { |item| item[:blueprint_id].present? }
+    crafted = item_list.select { |item| item[:blueprint_id].present? }.reject { |item| saved_crafting?(item) }
     return if crafted.empty?
 
     return errors.add(:items, :crafted_not_component) if crafted.any? { |item| item[:item_type] != "Component" }
 
     builds = Blueprint.readable_builds(Blueprint.served_source)
+      .where(blueprint_id: crafted.pluck(:blueprint_id), craftable_type: "Component")
+      .includes(:cost_slots)
+      .index_by { |build| [build.blueprint_id, build.craftable_id] }
     crafted.each do |item|
-      build = builds.find_by(blueprint_id: item[:blueprint_id], craftable_type: "Component", craftable_id: item[:item_id])
+      build = builds[[item[:blueprint_id], item[:item_id]]]
       next errors.add(:items, :crafted_not_craftable) if build.nil?
 
-      positions = build.cost_slots.pluck(:position).map(&:to_s)
+      positions = build.cost_slots.map { |slot| slot.position.to_s }
       qualities = item[:crafted_qualities]
       errors.add(:items, :crafted_slot_unknown) unless (qualities.keys - positions).empty?
       errors.add(:items, :crafted_quality_out_of_range) unless qualities.values.all? { |quality| valid_quality?(quality) }
     end
+  end
+
+  private def saved_crafting?(item)
+    @saved_craftings ||= persisted? ? items.reload.select(&:crafted?).index_by(&:slot_path) : {}
+    saved = @saved_craftings[item[:slot_path]]
+
+    saved.present? && saved.item_id == item[:item_id] && saved.blueprint_id == item[:blueprint_id] &&
+      saved.crafted_qualities == item[:crafted_qualities]
   end
 
   private def valid_quality?(quality)
@@ -267,6 +282,7 @@ class VehicleLoadout < ApplicationRecord
     items.insert_all!(item_list) if item_list.any?
     @item_list = nil
     @loadout_slots = nil
+    @saved_craftings = nil
     touch
   end
 
