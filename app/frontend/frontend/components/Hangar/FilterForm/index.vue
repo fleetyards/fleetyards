@@ -175,7 +175,7 @@ const hasGroupFilters = (keys: string[]) =>
             name="vehicle-cargo-gteq"
             type="number"
             :min="0"
-            translation-key="filters.models.cargoGt"
+            translation-key="filters.vehicles.cargoGt"
             :no-placeholder="true"
           />
         </div>
@@ -185,7 +185,7 @@ const hasGroupFilters = (keys: string[]) =>
             name="vehicle-cargo-lteq"
             type="number"
             :min="0"
-            translation-key="filters.models.cargoLt"
+            translation-key="filters.vehicles.cargoLt"
             :no-placeholder="true"
           />
         </div>
