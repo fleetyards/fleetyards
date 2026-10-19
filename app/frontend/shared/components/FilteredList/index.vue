@@ -95,8 +95,9 @@ const filterVisible = computed(() => {
 const route = useRoute();
 
 // The route moves on before the list unmounts, and what it reads then is the
-// next page's query, not this list's.
-const listPath = route.path;
+// next page's query, not this list's. The record, not the path: `/ships` and
+// `/ships/` are one list, and so is the same list for another fleet.
+const listRecord = route.matched[route.matched.length - 1];
 
 const slots = useSlots();
 
@@ -243,7 +244,7 @@ const resetQuery = async () => {
   filterFormReset.value = true;
   await nextTick();
 
-  filtersStore.removeFilter(listPath);
+  filtersStore.removeFilter(route.path);
   await resetFilter();
 
   filterFormReset.value = false;
@@ -263,17 +264,17 @@ const emptyVisible = computed(() => {
 });
 
 const saveFilters = () => {
-  if (route.path !== listPath) return;
+  if (route.matched[route.matched.length - 1] !== listRecord) return;
 
   const query = getQuery();
 
   if (!Object.keys(query).length) {
-    filtersStore.removeFilter(listPath);
+    filtersStore.removeFilter(route.path);
 
     return;
   }
 
-  filtersStore.saveFilter(listPath, {
+  filtersStore.saveFilter(route.path, {
     query,
     viewKeys: props.viewKeys,
   });

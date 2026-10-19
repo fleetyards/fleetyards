@@ -657,6 +657,18 @@ describe("FilteredList", () => {
     });
   });
 
+  it("keeps saving once a filter adds the trailing slash", async () => {
+    const { saveFilter } = await mountForFilterActions();
+
+    await router.push({ path: "/ships/", query: { searchCont: "carrack" } });
+    await flushPromises();
+
+    expect(saveFilter).toHaveBeenLastCalledWith("/ships/", {
+      query: { searchCont: "carrack" },
+      viewKeys: ["t"],
+    });
+  });
+
   it("forgets the filter once the list is cleared", async () => {
     const { removeFilter } = await mountForFilterActions();
 
