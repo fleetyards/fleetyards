@@ -3,6 +3,7 @@ import {
   type CraftedSelection,
   type PickedItem,
 } from "@/frontend/components/Logistics/types";
+import { craftedGrades } from "@/frontend/components/Logistics/crafted";
 import { useItemRecipes } from "@/frontend/composables/useItemRecipes";
 import { useI18n } from "@/shared/composables/useI18n";
 
@@ -50,10 +51,7 @@ export const useCraftingStep = ({
   const craftedLabel = computed(() =>
     crafted.value
       ? t("labels.logistics.crafted.summary", {
-          grades: Object.entries(crafted.value.qualities)
-            .sort(([a], [b]) => Number(a) - Number(b))
-            .map(([, grade]) => grade)
-            .join(" / "),
+          grades: craftedGrades(crafted.value.qualities).join(" / "),
         })
       : undefined,
   );
@@ -85,6 +83,12 @@ export const useCraftingStep = ({
       if (isDeposit.value) crafted.value = undefined;
     },
   );
+
+  // A withdrawal takes its crafting from the lot it picks, never from what
+  // was entered for a deposit before the switch.
+  watch(isDeposit, () => {
+    crafted.value = undefined;
+  });
 
   return {
     crafted,

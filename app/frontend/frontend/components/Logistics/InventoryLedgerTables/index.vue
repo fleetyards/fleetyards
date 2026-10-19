@@ -15,6 +15,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { catalogueItemRoute } from "@/frontend/utils/catalogueItemRoute";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { type InventoryCraftedRef } from "@/services/fyApi";
+import { craftedGrades } from "@/frontend/components/Logistics/crafted";
 import type {
   InventoryLedgerRecord,
   InventoryStockRecord,
@@ -50,11 +51,9 @@ const { t, l } = useI18n();
 const craftedSummary = (crafted: InventoryCraftedRef) =>
   [
     crafted.blueprint.name,
-    ...Object.entries(crafted.qualities)
-      .sort(([a], [b]) => Number(a) - Number(b))
-      .map(([position, grade]) =>
-        t("labels.logistics.crafted.slotGrade", { position, quality: grade }),
-      ),
+    ...craftedGrades(crafted.qualities, (position, grade) =>
+      t("labels.logistics.crafted.slotGrade", { position, quality: grade }),
+    ),
   ].join(" · ");
 
 const stockColumns = computed<BaseTableCol<InventoryStockRecord>[]>(() => [

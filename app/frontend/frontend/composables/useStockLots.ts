@@ -1,6 +1,9 @@
 import type { Ref } from "vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { type PickedItem } from "@/frontend/components/Logistics/types";
+import {
+  type CraftedSelection,
+  type PickedItem,
+} from "@/frontend/components/Logistics/types";
 import { type FilterOption, type InventoryCraftedRef } from "@/services/fyApi";
 
 // One lot of a position: a quality grade, or a crafted part with the grades it
@@ -14,6 +17,44 @@ export type StockLot = {
   quality?: number | null;
   item?: { id: string; type: PickedItem["type"] } | null;
   crafted?: InventoryCraftedRef;
+};
+
+// Stable across a refetch, unlike an index: the position, the grade and what
+// the part was crafted from are what tell a lot apart.
+const lotKey = (lot: StockLot) =>
+  JSON.stringify([
+    lot.id,
+    lot.quality ?? null,
+    lot.crafted?.blueprint.id ?? null,
+    Object.entries(lot.crafted?.qualities || {}).sort(([a], [b]) =>
+      a.localeCompare(b),
+    ),
+  ]);
+
+/**
+ * What a withdrawal out of a lot carries: the lot's grade, and for a crafted
+ * part the part and the grades it was made from, without which it would come
+ * out of stock that was never crafted.
+ */
+export const lotEntry = (
+  lot: StockLot,
+): {
+  quality?: number;
+  item?: PickedItem;
+  crafted?: CraftedSelection;
+} => {
+  if (!lot.crafted || !lot.item) {
+    return { quality: lot.quality ?? undefined };
+  }
+
+  return {
+    quality: lot.quality ?? undefined,
+    item: { type: lot.item.type, id: lot.item.id, name: lot.name },
+    crafted: {
+      blueprintId: lot.crafted.blueprint.id,
+      qualities: lot.crafted.qualities,
+    },
+  };
 };
 
 /**
@@ -36,8 +77,8 @@ export const useStockLots = (lots: Ref<StockLot[]>) => {
   };
 
   const lotOptions = computed<FilterOption[]>(() =>
-    lots.value.map((lot, index) => ({
-      value: String(index),
+    lots.value.map((lot) => ({
+      value: lotKey(lot),
       label: [
         lot.name,
         lotLabel(lot),
@@ -52,19 +93,18 @@ export const useStockLots = (lots: Ref<StockLot[]>) => {
   // offered once.
   const positionOptions = computed<FilterOption[]>(() =>
     lots.value
-      .map((lot, index) => ({ lot, index }))
       .filter(
-        ({ lot }, at, rows) =>
-          rows.findIndex((row) => row.lot.id === lot.id) === at,
+        (lot, at, rows) => rows.findIndex((row) => row.id === lot.id) === at,
       )
-      .map(({ lot, index }) => ({
-        value: String(index),
+      .map((lot) => ({
+        value: lotKey(lot),
         label: `${lot.name} (${t(`labels.logistics.categories.${lot.category}`)})`,
       })),
   );
 
-  const lotAt = (key?: string) =>
-    key === undefined ? undefined : lots.value[Number(key)];
+  // A cleared select reports null as often as undefined; neither is a lot.
+  const lotAt = (key?: string | null) =>
+    key ? lots.value.find((lot) => lotKey(lot) === key) : undefined;
 
   return { lotOptions, positionOptions, lotAt };
 };

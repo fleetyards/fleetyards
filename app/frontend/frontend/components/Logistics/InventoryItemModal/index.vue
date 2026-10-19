@@ -32,6 +32,7 @@ import CraftingStep from "@/frontend/components/Logistics/CraftingStep/index.vue
 import { craftedQualities } from "@/frontend/components/Logistics/crafted";
 import {
   type StockLot,
+  lotEntry,
   useStockLots,
 } from "@/frontend/composables/useStockLots";
 import { type PickedItem } from "@/frontend/components/Logistics/types";
@@ -234,28 +235,20 @@ const applyPickedItem = (val: string | undefined) => {
 
 watch(selectedExistingItem, applyPickedItem);
 
-// A withdrawal takes from one lot, so it carries that lot's grade -- and for a
-// crafted part, the part and the grades it was made from, without which it
-// would come out of stock that was never crafted.
+// A withdrawal comes out of one lot, and carries what that lot is.
 watch(selectedStockItem, (val) => {
   applyPickedItem(val);
 
   const picked = lotAt(val);
   if (!picked) return;
 
-  if (picked.quality != null) setFieldValue("quality", picked.quality);
+  // Set whether or not the lot has one, so a grade left from the last lot
+  // picked is not withdrawn from this one.
+  const entry = lotEntry(picked);
 
-  if (picked.crafted && picked.item) {
-    pickedItem.value = {
-      type: picked.item.type,
-      id: picked.item.id,
-      name: picked.name,
-    };
-    crafted.value = {
-      blueprintId: picked.crafted.blueprint.id,
-      qualities: picked.crafted.qualities,
-    };
-  }
+  setFieldValue("quality", entry.quality);
+  pickedItem.value = entry.item;
+  crafted.value = entry.crafted;
 });
 
 watch(entryType, (val) => {

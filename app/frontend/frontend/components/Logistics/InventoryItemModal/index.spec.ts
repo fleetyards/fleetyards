@@ -388,7 +388,11 @@ describe("LogisticsInventoryItemModal", () => {
 
       select(subject, "entryType").vm.$emit("update:modelValue", "withdrawal");
       await flushPromises();
-      select(subject, "stockItem").vm.$emit("update:modelValue", "0");
+      const [lot] = select(subject, "stockItem").props("options") as {
+        value: string;
+      }[];
+
+      select(subject, "stockItem").vm.$emit("update:modelValue", lot.value);
       await flushPromises();
       await subject.find("[data-test='input-quantity']").setValue("1");
       await subject.find("form").trigger("submit");
