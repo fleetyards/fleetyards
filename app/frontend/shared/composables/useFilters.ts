@@ -73,7 +73,11 @@ export const useFilters = <T>({
     });
 
     Object.keys(query)
-      .filter((key) => !query[key] || query[key]?.length === 0)
+      .filter(
+        (key) =>
+          (!query[key] && !Object.is(query[key], 0)) ||
+          query[key]?.length === 0,
+      )
       .forEach((key) => delete query[key]);
 
     Object.keys(query)
