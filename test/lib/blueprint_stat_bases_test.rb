@@ -29,6 +29,12 @@ class BlueprintStatBasesTest < ActiveSupport::TestCase
     end
   end
 
+  test "reads a component's integrity off its durability" do
+    component = build(:component, type_data: {"max_health" => 10.0}, durability: {"health" => 110.0})
+
+    assert_in_delta 110.0, BlueprintStatBases.new(component).for("gpp_health_maxhealth")
+  end
+
   test "says nothing for a stat the catalogue holds no figure for" do
     component = build(:component, type_data: {"max_health" => 10.0})
 
