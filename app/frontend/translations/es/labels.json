@@ -3428,10 +3428,6 @@
           "showStock": "Mostrar valores de serie",
           "edit": "Indicar cómo se fabricó",
           "summary": "Fabricado %{grades}",
-          "clear": "No fabricado",
-          "blueprint": "Plano",
-          "hint": "El plano con el que se fabricó %{name} y la calidad del material usado en cada ranura.",
-          "slot": "Ranura %{position}",
           "lot": "Fabricado",
           "grade": "C %{quality}",
           "slotGrade": "Ranura %{position}: %{quality}"

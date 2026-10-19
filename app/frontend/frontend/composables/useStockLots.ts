@@ -1,9 +1,7 @@
 import type { Ref } from "vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import {
-  type CraftedSelection,
-  type PickedItem,
-} from "@/frontend/components/Logistics/types";
+import { type PickedItem } from "@/frontend/components/Logistics/types";
+import { type CraftedPart } from "@/frontend/composables/craftedComponent";
 import { type FilterOption, type InventoryCraftedRef } from "@/services/fyApi";
 
 // One lot of a position: a quality grade, or a crafted part with the grades it
@@ -38,13 +36,14 @@ const lotKey = (lot: StockLot) =>
  */
 export const lotEntry = (
   lot: StockLot,
-): { item?: PickedItem; crafted?: CraftedSelection } => {
+): { item?: PickedItem; crafted?: CraftedPart } => {
   if (!lot.crafted || !lot.item) return {};
 
   return {
     item: { type: lot.item.type, id: lot.item.id, name: lot.name },
     crafted: {
       blueprintId: lot.crafted.blueprint.id,
+      blueprintSlug: lot.crafted.blueprint.slug,
       qualities: lot.crafted.qualities,
     },
   };

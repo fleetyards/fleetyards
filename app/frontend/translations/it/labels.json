@@ -3428,10 +3428,6 @@
           "showStock": "Mostra i valori di serie",
           "edit": "Indica come è stato fabbricato",
           "summary": "Fabbricato %{grades}",
-          "clear": "Non fabbricato",
-          "blueprint": "Progetto",
-          "hint": "Il progetto con cui è stato fabbricato %{name} e la qualità del materiale usato in ogni slot.",
-          "slot": "Slot %{position}",
           "lot": "Fabbricato",
           "grade": "Q %{quality}",
           "slotGrade": "Slot %{position}: %{quality}"

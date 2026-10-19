@@ -3425,10 +3425,6 @@
           "showStock": "顯示原廠數值",
           "edit": "記錄製作方式",
           "summary": "已製作 %{grades}",
-          "clear": "未製作",
-          "blueprint": "藍圖",
-          "hint": "製作%{name}所用的藍圖，以及每個槽位所用材料的品質。",
-          "slot": "槽位 %{position}",
           "lot": "已製作",
           "grade": "品質 %{quality}",
           "slotGrade": "槽位 %{position}：%{quality}"
