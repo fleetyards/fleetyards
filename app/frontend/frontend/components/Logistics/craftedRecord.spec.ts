@@ -135,4 +135,26 @@ describe("craftEquipment", () => {
 
     expect(crafted.damageReduction).toBeCloseTo(0.33);
   });
+
+  // The band is one string, so crafting rewrites the string.
+  it("moves an armour's temperature band", () => {
+    const crafted = craftEquipment(
+      { name: "Antium", temperatureRating: "-70 / 100 °C" } as never,
+      new Map([
+        ["gpp_armor_temperaturemin", { additive: false, value: 1.1 }],
+        ["gpp_armor_temperaturemax", { additive: false, value: 1.1 }],
+      ]),
+    );
+
+    expect(crafted.temperatureRating).toBe("-77 / 110 °C");
+  });
+
+  it("leaves a band it cannot read alone", () => {
+    const crafted = craftEquipment(
+      { name: "Antium", temperatureRating: "cold-rated" } as never,
+      new Map([["gpp_armor_temperaturemin", { additive: false, value: 1.1 }]]),
+    );
+
+    expect(crafted.temperatureRating).toBe("cold-rated");
+  });
 });

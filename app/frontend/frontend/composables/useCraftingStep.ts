@@ -48,13 +48,22 @@ export const useCraftingStep = ({
   );
 
   // What the item's field shows of it: the grades, in slot order.
-  const craftedLabel = computed(() =>
-    crafted.value
-      ? t("labels.logistics.crafted.summary", {
-          grades: craftedGrades(crafted.value.qualities).join(" / "),
-        })
-      : undefined,
-  );
+  // Where more than one recipe makes the part, which one it was crafted from
+  // too: the same grades read alike from either.
+  const craftedLabel = computed(() => {
+    if (!crafted.value) return undefined;
+
+    const summary = t("labels.logistics.crafted.summary", {
+      grades: craftedGrades(crafted.value.qualities).join(" / "),
+    });
+    const recipe = recipes.value.find(
+      (entry) => entry.id === crafted.value?.blueprintId,
+    );
+
+    return recipes.value.length > 1 && recipe?.name
+      ? `${summary} · ${recipe.name}`
+      : summary;
+  });
 
   const openCrafting = () => {
     draft.value = crafted.value

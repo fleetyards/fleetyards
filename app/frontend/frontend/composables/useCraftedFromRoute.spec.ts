@@ -90,14 +90,19 @@ describe("useCraftedFromRoute", () => {
     expect(crafted.value).toBeUndefined();
   });
 
-  it("drops a grade outside 0 to 1000", () => {
-    state.query = { crafted: "bulwark-bp", grades: "1:5000" };
+  // Filling a gap with the neutral grade would show figures nobody crafted.
+  it("shows no crafted part for grades that do not cover the recipe", () => {
     state.recipe = recipe("bulwark");
 
-    const { crafted } = useCraftedFromRoute(ref(bulwark), craft);
+    state.query = { crafted: "bulwark-bp", grades: "1:5000" };
+    expect(
+      useCraftedFromRoute(ref(bulwark), craft).crafted.value,
+    ).toBeUndefined();
 
-    // The slot reads as the neutral grade, the catalogue's own figure.
-    expect(crafted.value?.typeData.maxHealth).toBeCloseTo(1000);
+    state.query = { crafted: "bulwark-bp" };
+    expect(
+      useCraftedFromRoute(ref(bulwark), craft).crafted.value,
+    ).toBeUndefined();
   });
 
   // The app keeps a query's last answer while the next loads, so the recipe

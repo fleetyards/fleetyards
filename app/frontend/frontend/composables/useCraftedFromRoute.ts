@@ -66,10 +66,17 @@ export const useCraftedFromRoute = <T extends { id: string }>(
     if (!record.value || !recipe.value) return undefined;
     if (recipe.value.craftable?.id !== record.value.id) return undefined;
 
-    return craft(
-      record.value,
-      craftedFactors(recipe.value.costSlots || [], qualities.value),
-    );
+    // An address missing a graded slot's grade -- or naming one out of range,
+    // which is dropped -- describes no part anyone recorded, and filling the
+    // gap with the neutral grade would show figures nobody crafted.
+    const slots = recipe.value.costSlots || [];
+    const complete = slots
+      .filter((slot) => slot.modifiers?.length)
+      .every((slot) => qualities.value[slot.position] !== undefined);
+
+    if (!complete) return undefined;
+
+    return craft(record.value, craftedFactors(slots, qualities.value));
   });
 
   const gradesLabel = computed(() =>

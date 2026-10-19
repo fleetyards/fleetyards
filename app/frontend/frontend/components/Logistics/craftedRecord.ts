@@ -138,5 +138,43 @@ export const craftEquipment = (
     if (field) crafted[field] = applied(crafted[field], effect);
   });
 
+  crafted.temperatureRating = craftedTemperature(
+    equipment.temperatureRating,
+    factors,
+  );
+
   return crafted as unknown as Equipment;
+};
+
+// Armour states its band as one string -- "-75 / 98 °C" -- rather than two
+// figures, and some leave the degree sign off. The same pattern
+// `BlueprintStatBases` reads it with on the API.
+const TEMPERATURE = /^\s*(-?[\d.]+)\s*\/\s*(-?[\d.]+)\s*°?\s*C\s*$/;
+const TEMPERATURE_KEY = "gpp_armor_temperature";
+
+const roundedDegrees = (value: number) => Math.round(value * 10) / 10;
+
+const craftedTemperature = (
+  rating: string | null | undefined,
+  factors: Map<string, CraftedEffect>,
+) => {
+  const match = rating?.match(TEMPERATURE);
+  if (!match) return rating;
+
+  let min = Number(match[1]);
+  let max = Number(match[2]);
+  let moved = false;
+
+  factors.forEach((effect, key) => {
+    if (!key.startsWith(TEMPERATURE_KEY)) return;
+
+    moved = true;
+    if (key.endsWith("min")) {
+      min = applied(min, effect) as number;
+    } else {
+      max = applied(max, effect) as number;
+    }
+  });
+
+  return moved ? `${roundedDegrees(min)} / ${roundedDegrees(max)} °C` : rating;
 };

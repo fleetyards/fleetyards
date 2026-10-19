@@ -257,7 +257,10 @@ watch(
           :stock="crafted ? stock : undefined"
         />
 
-        <DurabilityMetrics :durability="component.durability" />
+        <DurabilityMetrics
+          :durability="component.durability"
+          :stock="crafted ? stock.durability : undefined"
+        />
 
         <div class="component-page__extras">
           <StatGroups :groups="modeGroups" test-prefix="mode" />
