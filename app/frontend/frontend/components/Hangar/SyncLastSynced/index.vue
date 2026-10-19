@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { useIntervalFn, useNow } from "@vueuse/core";
 import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
@@ -17,6 +18,15 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { t, l, timeDistance } = useI18n();
+
+// Ticks once a minute, so a modal left open keeps the age current.
+const now = useNow({ scheduler: (tick) => useIntervalFn(tick, 60_000) });
+
+const age = computed(() => {
+  void now.value;
+
+  return props.finishedAt ? timeDistance(props.finishedAt) : undefined;
+});
 </script>
 
 <template>
@@ -29,7 +39,7 @@ const { t, l, timeDistance } = useI18n();
     <span>
       {{ t("labels.syncExtension.lastSynced") }}
       <time v-tooltip="l(props.finishedAt)" :datetime="props.finishedAt">
-        {{ timeDistance(props.finishedAt) }}
+        {{ age }}
       </time>
     </span>
   </p>
