@@ -246,12 +246,15 @@
       "syncExtension": {
         "cancel": "Cancel",
         "start": "Start Sync",
-        "changeInSettings": "Change this in Settings",
         "retry": "Retry Sync",
         "runInBackground": "Continue in background",
         "showResult": "Show Result",
         "close": "Close",
-        "refresh": "Refresh Page"
+        "refresh": "Refresh Page",
+        "checkAgain": "Check again",
+        "addExtension": "Add",
+        "updateExtension": "Update",
+        "change": "Change"
       },
       "empty": {
         "hangarGuide": "Take the tour",

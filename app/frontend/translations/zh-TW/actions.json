@@ -246,12 +246,15 @@
       "syncExtension": {
         "cancel": "取消",
         "start": "Start Sync",
-        "changeInSettings": "在設定中變更",
         "retry": "重試同步",
         "runInBackground": "在背景繼續",
         "showResult": "查看結果",
         "close": "關閉",
-        "refresh": "重新整理頁面"
+        "refresh": "重新整理頁面",
+        "checkAgain": "再次檢查",
+        "addExtension": "新增",
+        "updateExtension": "更新",
+        "change": "變更"
       },
       "empty": {
         "hangarGuide": "開始導覽",

@@ -2861,7 +2861,6 @@
         "extensionVersion": "Installierte Erweiterungsversion",
         "detailsProgress": "Rückkaufpreise werden gelesen",
         "pages": "Seiten",
-        "found": "Gefundene Rückkauf-Pledges",
         "added": "Neu",
         "removed": "Entfernt",
         "prices": "Preise gelesen",
@@ -2877,7 +2876,18 @@
           "finished": "Abgeschlossen",
           "unsupported": "Nicht unterstützt",
           "failed": "Fehlgeschlagen"
-        }
+        },
+        "stepDetails": {
+          "saved": "Neu: %{added} · Entfernt: %{removed}",
+          "prices": "%{done} von %{total}",
+          "pricesPending": "Für die seit der letzten Synchronisierung neuen Pledges",
+          "read": "Gelesene Seiten: %{page} · Rückkauf-Pledges: %{count}"
+        },
+        "firstSyncTitle": "Die erste Synchronisierung dauert länger",
+        "updateExtensionTitle": "Sync-Erweiterung aktualisieren",
+        "finishedTitle": "Rückkauf-Pledges synchronisiert",
+        "runningTitle": "Rückkauf-Pledges werden synchronisiert",
+        "pledges": "Rückkauf-Pledges"
       },
       "syncExtension": {
         "warnings": "Warnungen",
@@ -2886,16 +2896,13 @@
         "backgroundFailed": "Hangar-Synchronisierung fehlgeschlagen",
         "backgroundCancelled": "Hangar-Synchronisierung abgebrochen",
         "status": {
-          "started": "Import gestartet...",
-          "finished": "Import abgeschlossen",
           "failed": "Import fehlgeschlagen!",
           "cancelled": "Import abgebrochen"
         },
         "processSteps": {
-          "fetchHangar": "Daten aus dem RSI-Hangar abrufen",
-          "submitData": "Daten an das Fleetyards.net-Backend senden"
+          "fetchHangar": "Dein RSI-Hangar wird gelesen",
+          "submitData": "Speichern auf Fleetyards"
         },
-        "sessionStatus": "RSI-Sitzungsstatus",
         "signedInAs": "Bei RSI angemeldet als %{handle}",
         "signInToRsi": "Bei RSI anmelden",
         "checkIdentity": "RSI-Sitzung prüfen",
@@ -2935,10 +2942,6 @@
         },
         "pledgeItems": {
           "pages": "Seiten",
-          "all": "Alle Pledge-Gegenstände",
-          "ships": "Schiffe",
-          "components": "Module",
-          "upgrades": "Upgrades",
           "paints": "Lackierungen",
           "hangarFlair": "Hangar-Flair",
           "paintsNotSynced": "Lackierungen (nicht synchronisiert)",
@@ -2947,7 +2950,7 @@
           "ccus": "Upgrades / CCUs",
           "ccusNotSynced": "CCUs (nicht synchronisiert)",
           "equipmentNotSynced": "FPS-Ausrüstung (nicht synchronisiert)",
-          "extras": "Weitere Gegenstände (werden Flair und FPS-Ausrüstung zugeordnet)"
+          "extras": "Sonstiges"
         },
         "importedItems": {
           "importedVehicles": "Hinzugefügte Schiffe",
@@ -2970,7 +2973,75 @@
           "missingUpgrades": "Upgrades nicht gefunden",
           "missingUpgradeVehicles": "Kein passendes Schiff für Upgrades gefunden"
         },
-        "incomplete": "Einige Gegenstände in deinem RSI-Hangar konnten nicht gelesen werden, daher wurden fehlende Schiffe dieses Mal unverändert gelassen."
+        "incomplete": "Einige Gegenstände in deinem RSI-Hangar konnten nicht gelesen werden, daher wurden fehlende Schiffe dieses Mal unverändert gelassen.",
+        "stepDetails": {
+          "read": "Gelesene Seiten: %{pages} · Pledges: %{count}",
+          "saving": "Deine Pledges werden deinem Hangar zugeordnet …",
+          "page": "Seite %{page}",
+          "pageOf": "Seite %{page} von %{total}",
+          "sending": {
+            "one": "%{count} Eintrag wird gesendet",
+            "other": "%{count} Einträge werden gesendet"
+          },
+          "sent": {
+            "one": "%{count} Eintrag gesendet",
+            "other": "%{count} Einträge gesendet"
+          },
+          "pageOfAbout": "Seite %{page} von etwa %{total}"
+        },
+        "unmatchedCount": {
+          "one": "1 Eintrag konnte nicht zugeordnet werden",
+          "other": "%{count} Einträge konnten nicht zugeordnet werden"
+        },
+        "unmatchedHeading": "Nicht zugeordnet",
+        "failedStep": {
+          "fetchHangar": "Dein RSI-Hangar konnte nicht gelesen werden",
+          "submitData": "Speichern auf Fleetyards fehlgeschlagen"
+        },
+        "whatToSync": "Was synchronisiert wird",
+        "unmatchedActionLabel": "Was mit ihnen passiert",
+        "notSyncing": "Wird nicht synchronisiert",
+        "targetGroupHint": "Jedes Schiff, das die Synchronisierung findet oder hinzufügt, kommt in diese Gruppe, zusätzlich zu seinen bisherigen Gruppen.",
+        "extensionNeededTitle": "Sync-Erweiterung hinzufügen",
+        "finishedTitle": "Hangar synchronisiert",
+        "failedTitle": "Die Synchronisierung wurde nicht abgeschlossen",
+        "savedAsYouChange": "Wird beim Ändern gespeichert",
+        "resultKinds": {
+          "ships": "Schiffe",
+          "components": "Module",
+          "upgrades": "Upgrades",
+          "paints": "Lackierungen",
+          "hangarFlair": "Hangar-Flair",
+          "equipment": "FPS-Ausrüstung",
+          "ccus": "CCUs"
+        },
+        "newCount": {
+          "one": "+1 neu",
+          "other": "+%{count} neu"
+        },
+        "resultActions": {
+          "movedVehiclesToWanted": "Auf die Wunschliste verschoben",
+          "deletedVehicles": "Gelöscht",
+          "groupedVehicles": "In eine Gruppe einsortiert",
+          "unchangedVehicles": "Unverändert gelassen"
+        },
+        "nothingChangedTitle": "Nichts geändert",
+        "stepStatus": {
+          "pending": "Noch nicht begonnen",
+          "active": "Läuft",
+          "done": "Erledigt",
+          "failed": "Fehlgeschlagen",
+          "warning": "Mit Warnungen abgeschlossen"
+        },
+        "lastSync": {
+          "of": "von %{count}",
+          "ofLong": "%{count} beim letzten Sync",
+          "more": "%{count} mehr als beim letzten Sync",
+          "fewer": "%{count} weniger als beim letzten Sync",
+          "same": "Genauso viele wie beim letzten Sync",
+          "reading": "%{count} von etwa %{total} Einträgen"
+        },
+        "viewImport": "Import dieses Syncs ansehen"
       },
       "cargoGridViewer": {
         "capacity": "Kapazität",

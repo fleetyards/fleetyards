@@ -332,7 +332,13 @@
         "detailsUnsupported": "Aktualisiere deine Fleetyards-Sync-Erweiterung, um auch Preise und Versicherungen zu lesen.",
         "detailsIncomplete": "Einige Preise konnten nicht von RSI gelesen werden. Die nächste Synchronisierung versucht es erneut.",
         "detailsBackground": "Preise und Versicherungen werden jetzt im Hintergrund gelesen. Du kannst dieses Fenster schließen und Fleetyards weiter nutzen; lass den Tab offen, bis es fertig ist.",
-        "detailsRunning": "Preise und Versicherungen der letzten Synchronisierung werden noch gelesen. Eine neue Synchronisierung kann starten, sobald das abgeschlossen ist."
+        "detailsRunning": "Preise und Versicherungen der letzten Synchronisierung werden noch gelesen. Eine neue Synchronisierung kann starten, sobald das abgeschlossen ist.",
+        "sessionHint": "Die Synchronisierung liest deine Rückkaufliste über diese Sitzung.",
+        "pointReplace": "Liest jede Seite deiner RSI-Rückkaufliste und ersetzt damit die hier gespeicherten Rückkauf-Pledges.",
+        "pointUntouched": "Dein Hangar bleibt unverändert.",
+        "pointBackground": "Läuft im Hintergrund: Du kannst dieses Fenster schließen, lass nur den Tab offen.",
+        "finished": "Deine Rückkauf-Pledges entsprechen deiner RSI-Liste.",
+        "keepsRunning": "Es läuft weiter, wenn du dieses Fenster schließt. Lass den Tab offen, bis es fertig ist."
       },
       "addToHangar": {
         "hangarHint": "Du besitzt dieses Schiff.",
@@ -343,10 +349,16 @@
       },
       "syncExtension": {
         "gettingStarted": "To sync your RSI Hangar with Fleetyards you first need to install the Fleetyards Sync Extension for Firefox or Chromium based Browsers.",
-        "info": "We will try to match the ships from your RSI Hangar with your existing ships in your Fleetyards Hangar by using the name and the pledge-id. Ships from the RSI Hangar without a match will be added to your Fleetyards Hangar.<br><br>Do you want to continue?",
         "alreadyRunning": "Eine Hangar-Synchronisierung läuft bereits. Bitte warten Sie, bis sie abgeschlossen ist.",
         "missingUnmatchedGroup": "Wähle vor dem Start die Gruppe, in die Schiffe einsortiert werden, die die Synchronisierung nicht findet.",
-        "notSyncing": "Nicht synchronisiert:"
+        "signedOutTitle": "Du bist nicht bei RSI angemeldet",
+        "signedOut": "Melde dich in diesem Browser auf der RSI-Website an und prüfe dann erneut.",
+        "sessionHint": "Die Synchronisierung liest deine Pledges über diese Sitzung.",
+        "finished": "Dein Hangar entspricht deinen RSI-Pledges. Alles wurde zugeordnet.",
+        "unmatched": "Alles andere wurde synchronisiert. Nichts von dem unten Aufgeführten wurde deinem Hangar hinzugefügt.",
+        "partialFailure": "Einige Änderungen sind möglicherweise schon in deinem Hangar. Ein erneuter Versuch ist sicher: Bereits synchronisierte Schiffe werden wieder zugeordnet, nicht doppelt hinzugefügt.",
+        "pointMatch": "Findet die Schiffe aus deinem RSI-Hangar, die schon hier sind, anhand von Name und Pledge-ID.",
+        "pointAdd": "Fügt die hinzu, die noch nicht hier sind."
       },
       "setEmail": "Um ein Passwort festzulegen, Zwei-Faktor-Authentifizierung zu aktivieren oder E-Mail-Benachrichtigungen zu erhalten, musst du eine E-Mail-Adresse zu deinem Konto hinzufügen. Du erhältst eine Bestätigungs-E-Mail zur Verifizierung.",
       "oauthApplications": {

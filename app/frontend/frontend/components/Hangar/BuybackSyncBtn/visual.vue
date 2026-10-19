@@ -9,6 +9,9 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import { useComlink } from "@/shared/composables/useComlink";
 import { FleetyardsSyncAction } from "@/frontend/lib/FleetyardsSyncHandler";
+import { useBuybackSync } from "@/frontend/composables/useBuybackSync";
+import { useBuybackDetailsSync } from "@/frontend/composables/useBuybackDetailsSync";
+import type { RsiBuybackItemInput } from "@/services/fyApi";
 import { useVisualApiMock } from "@/frontend/composables/useVisualApiMock";
 import {
   type ExtensionStubConfig,
@@ -84,11 +87,145 @@ const startScreens: StartScreen[] = [
   },
 ];
 
+type RunState = {
+  key: string;
+  label: string;
+  description: string;
+  apply: () => void;
+};
+
+const buybackSync = useBuybackSync();
+const details = useBuybackDetailsSync();
+
+const samplePledges = (count: number) =>
+  Array.from({ length: count }, (_, index) => ({
+    id: String(1000001 + index),
+    name: `Standalone Ship - Pledge ${index + 1}`,
+    page: Math.floor(index / 10) + 1,
+  })) as unknown as RsiBuybackItemInput[];
+
+// The run's state is shared and outlives the modal, so a preview sets it and
+// opens the real modal on it, as one opened on a run going in the background.
+const setRun = ({
+  status,
+  page = 1,
+  found = 0,
+  result,
+  pricesDone,
+  pricesTotal,
+  pricesRunning = false,
+  lastCount,
+  totalPages,
+}: {
+  status: "fetching" | "submitting" | "finished" | "failed";
+  page?: number;
+  found?: number;
+  result?: { added: number; removed: number };
+  pricesDone?: number;
+  pricesTotal?: number;
+  pricesRunning?: boolean;
+  lastCount?: number;
+  totalPages?: number;
+}) => {
+  buybackSync.status.value = status;
+  buybackSync.currentPage.value = page;
+  buybackSync.lastCount.value = lastCount;
+  buybackSync.totalPages.value = totalPages;
+  buybackSync.pagesEstimated.value = false;
+  buybackSync.readsDetails.value = true;
+  buybackSync.buybacks.value = samplePledges(found);
+  buybackSync.result.value = result
+    ? { total: found, ...result, detailsPending: [] }
+    : undefined;
+  buybackSync.detailsStarted.value = pricesTotal !== undefined;
+  details.total.value = pricesTotal ?? 0;
+  details.done.value = pricesDone ?? 0;
+  details.status.value = pricesRunning
+    ? "running"
+    : pricesTotal !== undefined
+      ? "finished"
+      : "idle";
+};
+
+const runStates: RunState[] = [
+  {
+    key: "reading",
+    label: "Reading the list",
+    description:
+      "Page 4 of 7 of the buy-back list, 24 pledges so far, against 40 stored.",
+    apply: () =>
+      setRun({
+        status: "fetching",
+        page: 4,
+        found: 24,
+        lastCount: 40,
+        totalPages: 7,
+      }),
+  },
+  {
+    key: "saving",
+    label: "Saving",
+    description:
+      "The whole list is read and being submitted; 3 fewer than stored.",
+    apply: () =>
+      setRun({ status: "submitting", page: 8, found: 37, lastCount: 40 }),
+  },
+  {
+    key: "prices",
+    label: "Reading prices",
+    description: "The list is saved; 12 of 37 prices are read.",
+    apply: () =>
+      setRun({
+        status: "finished",
+        page: 4,
+        found: 37,
+        result: { added: 3, removed: 1 },
+        pricesDone: 12,
+        pricesTotal: 37,
+        pricesRunning: true,
+      }),
+  },
+  {
+    key: "finished",
+    label: "Finished",
+    description: "List and prices are in.",
+    apply: () =>
+      setRun({
+        status: "finished",
+        page: 4,
+        found: 37,
+        result: { added: 3, removed: 1 },
+        pricesDone: 37,
+        pricesTotal: 37,
+      }),
+  },
+  {
+    key: "failed",
+    label: "Failed",
+    description: "A run that failed before this modal opened on it.",
+    apply: () => setRun({ status: "failed", page: 2, found: 10 }),
+  },
+];
+
 const extension = useVisualExtensionStub();
 
 const comlink = useComlink();
 
+const openRun = (state: RunState) => {
+  extension.configure(startScreens[0].answers);
+  state.apply();
+
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Hangar/BuybackSyncBtn/Modal/index.vue"),
+  });
+};
+
+// A run preview opened before leaves its state running, which a plain reset
+// keeps.
 const open = (screen: StartScreen) => {
+  buybackSync.reset(true);
+  details.status.value = "idle";
   extension.configure(screen.answers);
 
   comlink.emit("open-modal", {
@@ -111,6 +248,23 @@ const open = (screen: StartScreen) => {
       <Btn
         :data-test="`open-buyback-sync-modal-${screen.key}`"
         @click="open(screen)"
+      >
+        Open
+      </Btn>
+    </div>
+  </div>
+  <Heading :level="HeadingLevelEnum.H3">A run</Heading>
+  <div class="row">
+    <div
+      v-for="state in runStates"
+      :key="state.key"
+      class="col-12 col-md-6 col-lg-4 sync-state-card"
+    >
+      <h4>{{ state.label }}</h4>
+      <p class="text-muted">{{ state.description }}</p>
+      <Btn
+        :data-test="`open-buyback-sync-modal-${state.key}`"
+        @click="openRun(state)"
       >
         Open
       </Btn>

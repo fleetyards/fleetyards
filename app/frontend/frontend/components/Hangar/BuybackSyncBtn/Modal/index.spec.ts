@@ -8,6 +8,17 @@ import { useBuybackDetailsSync } from "@/frontend/composables/useBuybackDetailsS
 import { rsiRateLimiter } from "@/frontend/lib/RsiRateLimiter";
 import Component from "./index.vue";
 
+// jsdom has no matchMedia; a finished step asks it for reduced motion before
+// it folds away.
+vi.stubGlobal(
+  "matchMedia",
+  vi.fn(() => ({
+    matches: false,
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+  })),
+);
+
 const mutateAsync = vi.fn<
   (_input: unknown) => Promise<{
     total: number;
@@ -59,11 +70,17 @@ vi.mock("@/frontend/composables/useSyncExtension", async (importOriginal) => {
   };
 });
 
+// How many buy-backs are stored before a run, which the run reads against.
+const storedBuybacks = vi.fn((count = 0) =>
+  Promise.resolve({ meta: { pagination: { totalCount: count } }, items: [] }),
+);
+
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   syncRsiBuybacks: (data: unknown) => mutateAsync({ data }),
   syncRsiBuybackDetails: submitDetails,
   reportRsiPage: (data: unknown) => reportMutateAsync({ data }),
+  hangarBuybacks: () => storedBuybacks(),
 }));
 
 const comlinkEmit = vi.fn();
@@ -73,7 +90,11 @@ vi.mock("@/shared/composables/useComlink", () => ({
 }));
 
 vi.mock("@/shared/composables/useI18n", () => ({
-  useI18n: () => ({ t: (key: string) => key }),
+  useI18n: () => ({
+    t: (key: string) => key,
+    tExists: () => false,
+    currentLocale: () => "en",
+  }),
 }));
 
 const displayWarning = vi.hoisted(() => vi.fn());
@@ -204,6 +225,11 @@ const startSync = async () => {
 
 describe("HangarBuybackSyncModal", () => {
   beforeEach(() => {
+    storedBuybacks
+      .mockReset()
+      .mockImplementation(() =>
+        Promise.resolve({ meta: { pagination: { totalCount: 0 } }, items: [] }),
+      );
     rsiRateLimiter.reset();
     mutateAsync.mockClear();
     submitDetails.mockClear();
@@ -287,7 +313,90 @@ describe("HangarBuybackSyncModal", () => {
         ],
       },
     });
-    expect(wrapper.find("[data-test='buyback-sync-added']").text()).toBe("2");
+    expect(
+      wrapper.find("[data-test='buyback-sync-added']").attributes("data-count"),
+    ).toBe("2");
+  });
+
+  it("estimates the list's pages from the buy-backs stored now", async () => {
+    storedBuybacks.mockImplementation(() =>
+      Promise.resolve({ meta: { pagination: { totalCount: 4 } }, items: [] }),
+    );
+    const wrapper = await startSync();
+
+    await answerNextPage(buybackPage("1"));
+
+    expect(useBuybackSync().totalPages.value).toBe(4);
+    expect(
+      wrapper
+        .get("[data-test='sync-step-fetching'] .sync-steps__detail [data-text]")
+        .attributes("data-text"),
+    ).toBe("labels.syncExtension.stepDetails.pageOfAbout");
+  });
+
+  it("measures the list it read against the buy-backs stored now", async () => {
+    storedBuybacks.mockImplementation(() =>
+      Promise.resolve({ meta: { pagination: { totalCount: 4 } }, items: [] }),
+    );
+    const wrapper = await startSync();
+
+    await answerNextPage(buybackPage("1"));
+    await answerNextPage(emptyBuybackPage);
+
+    expect(
+      wrapper
+        .get("[data-test='sync-step-fetching-caption'] [data-text]")
+        .attributes("data-text"),
+    ).toBe("labels.syncExtension.lastSync.fewer");
+  });
+
+  it("measures nothing against a stored count that answers after the save", async () => {
+    type Stored = Awaited<ReturnType<typeof storedBuybacks>>;
+    let answerStored: (value: Stored) => void = () => {};
+    storedBuybacks.mockImplementation(
+      () =>
+        new Promise<Stored>((resolve) => {
+          answerStored = resolve;
+        }),
+    );
+    await startSync();
+
+    await answerNextPage(buybackPage("1"));
+    await answerNextPage(emptyBuybackPage);
+    expect(useBuybackSync().status.value).toBe("finished");
+
+    answerStored({ meta: { pagination: { totalCount: 1 } }, items: [] });
+    await flushPromises();
+
+    expect(useBuybackSync().lastCount.value).toBeUndefined();
+  });
+
+  // Reopened on a finished run before the extension has said what it can do:
+  // the run read every price, and that is what the modal goes by.
+  it("judges missing prices by what the run did, not by the extension now", async () => {
+    const buybackSync = useBuybackSync();
+    buybackSync.status.value = "finished";
+    buybackSync.readsDetails.value = true;
+    buybackSync.detailsStarted.value = true;
+    buybackSync.result.value = {
+      total: 1,
+      added: 1,
+      removed: 0,
+      detailsPending: ["1"],
+    };
+    const details = useBuybackDetailsSync();
+    details.status.value = "finished";
+    details.total.value = 1;
+    details.done.value = 1;
+
+    const wrapper = await mountModal();
+
+    expect(
+      wrapper.find("[data-test='buyback-sync-details-unsupported']").exists(),
+    ).toBe(false);
+    expect(
+      wrapper.get("[data-test='sync-step-prices']").attributes("data-status"),
+    ).toBe("done");
   });
 
   it("keeps reading the list once the modal is closed", async () => {
@@ -336,7 +445,9 @@ describe("HangarBuybackSyncModal", () => {
 
     const wrapper = await mountModal(currentExtension);
 
-    expect(wrapper.find("[data-test='buyback-sync-added']").text()).toBe("2");
+    expect(
+      wrapper.find("[data-test='buyback-sync-added']").attributes("data-count"),
+    ).toBe("2");
     // A result offers no Start, so it needs no session check.
     expect(rsiIdentity).not.toHaveBeenCalled();
     wrapper.unmount();
@@ -670,7 +781,14 @@ describe("HangarBuybackSyncModal", () => {
     it("finishes the list sync while prices are still being read", async () => {
       const wrapper = await syncList(detailExtension);
 
-      expect(wrapper.text()).toContain("labels.buybackSync.status.finished");
+      expect(
+        wrapper
+          .get("[data-test='sync-step-submitting']")
+          .attributes("data-status"),
+      ).toBe("done");
+      expect(
+        wrapper.get("[data-test='sync-step-prices']").attributes("data-status"),
+      ).toBe("active");
       expect(
         wrapper.find("[data-test='buyback-sync-details-background']").exists(),
       ).toBe(true);
@@ -767,6 +885,9 @@ describe("HangarBuybackSyncModal", () => {
       expect(
         wrapper.find("[data-test='buyback-sync-details-incomplete']").exists(),
       ).toBe(true);
+      expect(wrapper.find("[data-test='buyback-sync-finished']").exists()).toBe(
+        false,
+      );
     });
 
     it("reads prices while a hangar sync runs", async () => {

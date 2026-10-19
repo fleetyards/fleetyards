@@ -246,12 +246,15 @@
       "syncExtension": {
         "cancel": "Abbrechen",
         "start": "Synchronisation starten",
-        "changeInSettings": "In den Einstellungen ändern",
         "retry": "Synchronisierung wiederholen",
         "runInBackground": "Im Hintergrund fortsetzen",
         "showResult": "Ergebnis anzeigen",
         "close": "Schließen",
-        "refresh": "Seite aktualisieren"
+        "refresh": "Seite aktualisieren",
+        "checkAgain": "Erneut prüfen",
+        "addExtension": "Hinzufügen",
+        "updateExtension": "Aktualisieren",
+        "change": "Ändern"
       },
       "empty": {
         "hangarGuide": "Tour starten",

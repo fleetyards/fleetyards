@@ -2861,7 +2861,6 @@
         "extensionVersion": "Versión instalada de la extensión",
         "detailsProgress": "Leyendo precios de recompra",
         "pages": "Páginas",
-        "found": "Pledges de recompra encontrados",
         "added": "Nuevos",
         "removed": "Eliminados",
         "prices": "Precios leídos",
@@ -2877,7 +2876,18 @@
           "finished": "Finalizado",
           "unsupported": "No compatible",
           "failed": "Fallido"
-        }
+        },
+        "stepDetails": {
+          "saved": "Nuevos: %{added} · Eliminados: %{removed}",
+          "prices": "%{done} de %{total}",
+          "pricesPending": "Para los pledges nuevos desde la última sincronización",
+          "read": "Páginas leídas: %{page} · Pledges de recompra: %{count}"
+        },
+        "firstSyncTitle": "La primera sincronización tarda más",
+        "updateExtensionTitle": "Actualiza la extensión de sincronización",
+        "finishedTitle": "Pledges de recompra sincronizados",
+        "runningTitle": "Sincronizando pledges de recompra",
+        "pledges": "Pledges de recompra"
       },
       "syncExtension": {
         "warnings": "Avisos",
@@ -2886,16 +2896,13 @@
         "backgroundFailed": "La sincronización del hangar ha fallado",
         "backgroundCancelled": "Sincronización del hangar cancelada",
         "status": {
-          "started": "Importación iniciada...",
-          "finished": "Importación finalizada",
           "failed": "¡Importación fallida!",
           "cancelled": "Importación cancelada"
         },
         "processSteps": {
-          "fetchHangar": "Obteniendo datos del hangar RSI",
-          "submitData": "Enviando datos al backend de Fleetyards.net"
+          "fetchHangar": "Leyendo tu hangar de RSI",
+          "submitData": "Guardando en Fleetyards"
         },
-        "sessionStatus": "Estado de sesión RSI",
         "signedInAs": "Sesión iniciada en RSI como %{handle}",
         "signInToRsi": "Iniciar sesión en RSI",
         "checkIdentity": "Verificar sesión RSI",
@@ -2935,10 +2942,6 @@
         },
         "pledgeItems": {
           "pages": "Páginas",
-          "all": "Todos los objetos de Pledge",
-          "ships": "Naves",
-          "components": "Módulos",
-          "upgrades": "Mejoras",
           "paints": "Pinturas",
           "hangarFlair": "Decoración de hangar",
           "paintsNotSynced": "Pinturas (no se sincronizan)",
@@ -2947,7 +2950,7 @@
           "ccus": "Mejoras / CCU",
           "ccusNotSynced": "CCU (sin sincronizar)",
           "equipmentNotSynced": "Equipo FPS (no se sincroniza)",
-          "extras": "Otros objetos (se reparten entre decoración y equipo FPS)"
+          "extras": "Otros"
         },
         "importedItems": {
           "importedVehicles": "Naves agregadas",
@@ -2970,7 +2973,75 @@
           "missingUpgrades": "Mejoras no encontradas",
           "missingUpgradeVehicles": "No se encontró nave coincidente para mejoras"
         },
-        "incomplete": "Algunos elementos de su hangar RSI no se pudieron leer, por lo que esta vez las naves que faltan se dejaron como estaban."
+        "incomplete": "Algunos elementos de su hangar RSI no se pudieron leer, por lo que esta vez las naves que faltan se dejaron como estaban.",
+        "stepDetails": {
+          "read": "Páginas leídas: %{pages} · Pledges: %{count}",
+          "saving": "Emparejando tus pledges con tu hangar…",
+          "page": "Página %{page}",
+          "pageOf": "Página %{page} de %{total}",
+          "sending": {
+            "one": "Enviando %{count} elemento",
+            "other": "Enviando %{count} elementos"
+          },
+          "sent": {
+            "one": "%{count} elemento enviado",
+            "other": "%{count} elementos enviados"
+          },
+          "pageOfAbout": "Página %{page} de unas %{total}"
+        },
+        "unmatchedCount": {
+          "one": "No se pudo emparejar 1 elemento",
+          "other": "No se pudieron emparejar %{count} elementos"
+        },
+        "unmatchedHeading": "Sin emparejar",
+        "failedStep": {
+          "fetchHangar": "No se pudo leer tu hangar de RSI",
+          "submitData": "No se pudo guardar en Fleetyards"
+        },
+        "whatToSync": "Qué sincronizar",
+        "unmatchedActionLabel": "Qué pasa con ellas",
+        "notSyncing": "No se sincroniza",
+        "targetGroupHint": "Cada nave que la sincronización encuentra o añade se archiva en este grupo, además de los grupos en los que ya esté.",
+        "extensionNeededTitle": "Añade la extensión de sincronización",
+        "finishedTitle": "Hangar sincronizado",
+        "failedTitle": "La sincronización no terminó",
+        "savedAsYouChange": "Se guardan al cambiarlos",
+        "resultKinds": {
+          "ships": "Naves",
+          "components": "Módulos",
+          "upgrades": "Mejoras",
+          "paints": "Pinturas",
+          "hangarFlair": "Decoración de hangar",
+          "equipment": "Equipo FPS",
+          "ccus": "CCUs"
+        },
+        "newCount": {
+          "one": "+1 nueva",
+          "other": "+%{count} nuevas"
+        },
+        "resultActions": {
+          "movedVehiclesToWanted": "Movidas a la lista de deseos",
+          "deletedVehicles": "Eliminadas",
+          "groupedVehicles": "Archivadas en un grupo",
+          "unchangedVehicles": "Sin cambios"
+        },
+        "nothingChangedTitle": "No ha cambiado nada",
+        "stepStatus": {
+          "pending": "Sin empezar",
+          "active": "En curso",
+          "done": "Completado",
+          "failed": "Error",
+          "warning": "Completado con advertencias"
+        },
+        "lastSync": {
+          "of": "de %{count}",
+          "ofLong": "%{count} en la última sincronización",
+          "more": "%{count} más que en la última sincronización",
+          "fewer": "%{count} menos que en la última sincronización",
+          "same": "Los mismos que en la última sincronización",
+          "reading": "%{count} de unos %{total} elementos"
+        },
+        "viewImport": "Ver la importación de esta sincronización"
       },
       "cargoGridViewer": {
         "capacity": "Capacidad",

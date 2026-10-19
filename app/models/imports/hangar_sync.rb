@@ -23,6 +23,29 @@ module Imports
       }.reject { |_key, names| names.empty? }
     end
 
+    # Counted the way the sync modal counts a run while it reads, so a new run
+    # can be measured against this one: ships, modules and upgrades per item,
+    # the rest once per name in a pledge, as the sync stores them.
+    COUNTED_PER_ITEM = %w[ship component upgrade].freeze
+    READ_KINDS = %w[ship component upgrade skin flair equipment ccu extra].freeze
+
+    def read_summary
+      items = Array(input)
+      counts = READ_KINDS.index_with do |kind|
+        of_kind = items.select { |item| item["type"] == kind }
+        next of_kind.size if COUNTED_PER_ITEM.include?(kind)
+
+        of_kind.map { |item| "#{item["id"]}:#{item["name"].to_s.strip}" }.uniq.size
+      end
+
+      {
+        finished_at: finished_at,
+        pages: items.filter_map { |item| item["page"] }.max,
+        total: counts.values.sum,
+        counts:
+      }
+    end
+
     private def vehicle_names(ids)
       return [] if ids.blank?
 

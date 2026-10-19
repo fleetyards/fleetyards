@@ -6,17 +6,17 @@ export default {
 
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
+import Alert from "@/shared/components/base/Alert/index.vue";
+import { AlertVariantsEnum } from "@/shared/components/base/Alert/types";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import { useRouter, useRoute } from "vue-router";
 import SyncExtensionLinks from "@/frontend/components/SyncExtensionLinks/index.vue";
 import SyncSessionStatus from "@/frontend/components/Hangar/SyncSessionStatus/index.vue";
+import SyncPoints from "@/frontend/components/Hangar/SyncPoints/index.vue";
 import HangarGroupsSelect from "@/frontend/components/base/HangarGroupsSelect/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
@@ -55,6 +55,9 @@ const {
   started,
   processSteps,
   currentPage,
+  totalPages,
+  lastRead,
+  importId,
   pledges,
   result,
   finished,
@@ -80,6 +83,22 @@ const unmatchedActionOptions = computed(() =>
     label: t(`labels.syncExtension.unmatchedVehiclesActions.${value}`),
   })),
 );
+
+const unmatchedActionLabel = computed(() =>
+  t(
+    `labels.syncExtension.unmatchedVehiclesActions.${hangarStore.syncUnmatchedVehiclesAction}`,
+  ),
+);
+
+// The settings a run reads, in the order they are listed: the least
+// destructive first, as the sync options have always been shown.
+const syncToggles = [
+  { name: "syncAddBundledVehicles", label: "addBundledVehicles" },
+  { name: "syncPaints", label: "syncPaints" },
+  { name: "syncHangarFlair", label: "syncHangarFlair" },
+  { name: "syncEquipment", label: "syncEquipment" },
+  { name: "syncCcus", label: "syncCcus" },
+] as const;
 
 const filesUnmatchedIntoGroup = computed(
   () =>
@@ -180,6 +199,35 @@ const checkRSIIdentity = async ({ quiet = false } = {}) => {
   }
 };
 
+// The run's state names the dialog; the sync it is stays above as the eyebrow.
+const headline = computed(() => t("headlines.syncExtension"));
+
+const title = computed(() => {
+  if (!hangarStore.extensionReady) {
+    return t("labels.syncExtension.extensionNeededTitle");
+  }
+  if (!started.value) {
+    return settingsOpen.value
+      ? t("labels.syncExtension.settings")
+      : headline.value;
+  }
+  if (finished.value) {
+    return syncedSomething.value
+      ? t("labels.syncExtension.finishedTitle")
+      : t("labels.syncExtension.nothingChangedTitle");
+  }
+  if (cancelled.value) return t("labels.syncExtension.backgroundCancelled");
+  if (finishedWithErrors.value || retryable.value) {
+    return t("labels.syncExtension.failedTitle");
+  }
+
+  return t("labels.syncExtension.backgroundProgress");
+});
+
+const eyebrow = computed(() =>
+  title.value === headline.value ? undefined : headline.value,
+);
+
 // Checking the RSI identity or running a step: the modal's bottom cap says so.
 const working = computed(
   () => loadingIdentity.value || isSyncStepRunning(processSteps.value),
@@ -243,135 +291,157 @@ const refreshPage = async () => {
 </script>
 
 <template>
-  <Modal :title="t('headlines.syncExtension')" :loading="working">
+  <Modal :title="title" :eyebrow="eyebrow" :loading="working">
     <transition name="fade" mode="out-in">
-      <div v-if="!hangarStore.extensionReady">
-        <p>{{ t("texts.syncExtension.gettingStarted") }}</p>
-        <SyncExtensionLinks />
+      <div v-if="!hangarStore.extensionReady" class="hangar-sync">
+        <p class="hangar-sync__text">
+          {{ t("texts.syncExtension.gettingStarted") }}
+        </p>
+        <SyncExtensionLinks list />
       </div>
-      <div v-else-if="!started">
-        <div v-if="settingsOpen" data-test="sync-settings">
-          <FormToggle
-            v-model="hangarStore.syncAddBundledVehicles"
-            name="syncAddBundledVehicles"
-            autosaved
-            :label="t('labels.syncExtension.addBundledVehicles')"
-            :info="t('labels.syncExtension.addBundledVehiclesHint')"
-            no-placeholder
-          />
-          <FormToggle
-            v-model="hangarStore.syncPaints"
-            name="syncPaints"
-            autosaved
-            :label="t('labels.syncExtension.syncPaints')"
-            :info="t('labels.syncExtension.syncPaintsHint')"
-            no-placeholder
-          />
-          <FormToggle
-            v-model="hangarStore.syncHangarFlair"
-            name="syncHangarFlair"
-            autosaved
-            :label="t('labels.syncExtension.syncHangarFlair')"
-            :info="t('labels.syncExtension.syncHangarFlairHint')"
-            no-placeholder
-          />
-          <FormToggle
-            v-model="hangarStore.syncEquipment"
-            name="syncEquipment"
-            autosaved
-            :label="t('labels.syncExtension.syncEquipment')"
-            :info="t('labels.syncExtension.syncEquipmentHint')"
-            no-placeholder
-          />
-          <FormToggle
-            v-model="hangarStore.syncCcus"
-            name="syncCcus"
-            autosaved
-            :label="t('labels.syncExtension.syncCcus')"
-            :info="t('labels.syncExtension.syncCcusHint')"
-            no-placeholder
-          />
-          <BaseSelect
-            v-model="hangarStore.syncUnmatchedVehiclesAction"
-            name="syncUnmatchedVehiclesAction"
-            autosaved
-            :options="unmatchedActionOptions"
-            :label="t('labels.syncExtension.unmatchedVehiclesAction')"
-            :info="t('labels.syncExtension.unmatchedVehiclesActionHint')"
-            :searchable="false"
-            :paginated="false"
-            :nullable="false"
-            :no-label="false"
-            unsorted
-          />
-          <HangarGroupsSelect
-            v-if="filesUnmatchedIntoGroup"
-            v-model="hangarStore.syncUnmatchedHangarGroupId"
-            name="syncUnmatchedHangarGroupId"
-            autosaved
-            :multiple="false"
-            :no-label="false"
-            :label="t('labels.syncExtension.unmatchedHangarGroup')"
-            :info="t('labels.syncExtension.unmatchedHangarGroupHint')"
-          />
+      <div v-else-if="!started" class="hangar-sync">
+        <div v-if="settingsOpen" class="hangar-sync" data-test="sync-settings">
+          <section class="hangar-sync__section">
+            <h3 class="hangar-sync__heading">
+              {{ t("labels.syncExtension.whatToSync") }}
+            </h3>
+            <div class="hangar-sync__list">
+              <div
+                v-for="setting in syncToggles"
+                :key="setting.name"
+                class="hangar-sync__setting"
+              >
+                <FormToggle
+                  v-model="hangarStore[setting.name]"
+                  :name="setting.name"
+                  autosaved
+                  switch-end
+                  :label="t(`labels.syncExtension.${setting.label}`)"
+                  :description="t(`labels.syncExtension.${setting.label}Hint`)"
+                  no-placeholder
+                />
+              </div>
+            </div>
+          </section>
+          <section class="hangar-sync__section">
+            <h3 class="hangar-sync__heading">
+              {{ t("labels.syncExtension.unmatchedVehiclesAction") }}
+            </h3>
+            <p class="hangar-sync__hint">
+              {{ t("labels.syncExtension.unmatchedVehiclesActionHint") }}
+            </p>
+            <div class="hangar-sync__fields">
+              <BaseSelect
+                v-model="hangarStore.syncUnmatchedVehiclesAction"
+                name="syncUnmatchedVehiclesAction"
+                autosaved
+                :options="unmatchedActionOptions"
+                :label="t('labels.syncExtension.unmatchedActionLabel')"
+                :searchable="false"
+                :paginated="false"
+                :nullable="false"
+                :no-label="false"
+                unsorted
+              />
+              <HangarGroupsSelect
+                v-if="filesUnmatchedIntoGroup"
+                v-model="hangarStore.syncUnmatchedHangarGroupId"
+                name="syncUnmatchedHangarGroupId"
+                autosaved
+                :multiple="false"
+                :no-label="false"
+                :label="t('labels.syncExtension.unmatchedHangarGroup')"
+                :info="t('labels.syncExtension.unmatchedHangarGroupHint')"
+              />
+            </div>
+          </section>
         </div>
-        <div v-else>
+        <div v-else class="hangar-sync">
           <SyncSessionStatus
             :status="identityStatus"
             :loading="loadingIdentity"
             :handle="rsiHandle"
+            :hint="t('texts.syncExtension.sessionHint')"
             @recheck="checkRSIIdentity"
           />
-          <p v-html="t('texts.syncExtension.info')" />
-          <hr />
+          <SyncPoints
+            :points="[
+              {
+                icon: 'fa-light fa-arrow-right',
+                text: t('texts.syncExtension.pointMatch'),
+              },
+              {
+                icon: 'fa-light fa-plus',
+                text: t('texts.syncExtension.pointAdd'),
+              },
+            ]"
+          />
+          <dl class="hangar-sync__list hangar-sync__summary">
+            <div class="hangar-sync__summary-row">
+              <div class="hangar-sync__summary-text">
+                <dt>{{ t("labels.syncExtension.unmatchedVehiclesAction") }}</dt>
+                <dd>{{ unmatchedActionLabel }}</dd>
+              </div>
+              <Btn
+                :variant="BtnVariantsEnum.BARE"
+                data-test="open-sync-settings"
+                @click="settingsOpen = true"
+              >
+                {{ t("actions.syncExtension.change") }}
+              </Btn>
+            </div>
+            <div
+              v-if="skippedItems.length"
+              class="hangar-sync__summary-row"
+              data-test="sync-skipped-items"
+            >
+              <div class="hangar-sync__summary-text">
+                <dt>{{ t("labels.syncExtension.notSyncing") }}</dt>
+                <dd class="hangar-sync__chips">
+                  <span
+                    v-for="item in skippedItems"
+                    :key="item"
+                    class="hangar-sync__chip"
+                  >
+                    {{ item }}
+                  </span>
+                </dd>
+              </div>
+              <Btn :variant="BtnVariantsEnum.BARE" @click="settingsOpen = true">
+                {{ t("actions.syncExtension.change") }}
+              </Btn>
+            </div>
+          </dl>
+          <Alert
+            v-if="missingUnmatchedGroup"
+            :variant="AlertVariantsEnum.WARNING"
+            data-test="sync-missing-unmatched-group"
+          >
+            {{ t("texts.syncExtension.missingUnmatchedGroup") }}
+          </Alert>
           <HangarGroupsSelect
             v-model="hangarGroupId"
             name="hangarGroupId"
             :multiple="false"
             :no-label="false"
             :label="t('labels.syncExtension.targetGroup')"
-            :info="t('labels.imports.targetGroupHint')"
+            :info="t('labels.syncExtension.targetGroupHint')"
           />
-          <div
-            v-if="missingUnmatchedGroup || skippedItems.length"
-            class="sync-settings-notes"
+          <Alert
+            v-if="hangarStore.syncRunning"
+            :variant="AlertVariantsEnum.WARNING"
           >
-            <div class="sync-settings-notes-text">
-              <p
-                v-if="missingUnmatchedGroup"
-                class="text-warning"
-                data-test="sync-missing-unmatched-group"
-              >
-                {{ t("texts.syncExtension.missingUnmatchedGroup") }}
-              </p>
-              <div
-                v-if="skippedItems.length"
-                class="text-muted"
-                data-test="sync-skipped-items"
-              >
-                <p>{{ t("texts.syncExtension.notSyncing") }}</p>
-                <ul>
-                  <li v-for="item in skippedItems" :key="item">{{ item }}</li>
-                </ul>
-              </div>
-            </div>
-            <Btn
-              :size="BtnSizesEnum.SM"
-              data-test="open-sync-settings"
-              @click="settingsOpen = true"
-            >
-              {{ t("actions.syncExtension.changeInSettings") }}
-            </Btn>
-          </div>
-          <p v-if="hangarStore.syncRunning" class="text-warning">
             {{ t("texts.syncExtension.alreadyRunning") }}
-          </p>
+          </Alert>
         </div>
       </div>
       <div v-else>
         <SyncResultPanel
           :process-steps="processSteps"
           :current-page="currentPage"
+          :total-pages="totalPages"
+          :last-read="lastRead"
+          :import-id="importId"
           :pledges="pledges"
           :result="result"
           :finished="finished"
@@ -460,6 +530,9 @@ const refreshPage = async () => {
           {{ t("actions.syncExtension.refresh") }}
         </Btn>
       </template>
+      <span v-else class="hangar-sync__saved-note">
+        {{ t("labels.syncExtension.savedAsYouChange") }}
+      </span>
     </template>
   </Modal>
 </template>

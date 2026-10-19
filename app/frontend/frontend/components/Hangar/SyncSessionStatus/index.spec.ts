@@ -29,4 +29,32 @@ describe("HangarSyncSessionStatus", () => {
 
     expect(wrapper.emitted("recheck")).toHaveLength(1);
   });
+
+  it("says what the session is for, under the account", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        status: "connected",
+        handle: "TestPilot",
+        hint: "The sync reads your pledges through this session.",
+      },
+    });
+
+    expect(wrapper.text()).toContain(
+      "The sync reads your pledges through this session.",
+    );
+    expect(wrapper.find('[data-test="alert"]').exists()).toBe(false);
+  });
+
+  // Only a missing session is news; a connected or pending one stays a row.
+  it("raises a notice only without a session", async () => {
+    const pending = await mountWithDefaults(Component, {
+      props: { status: "pending" },
+    });
+    const missing = await mountWithDefaults(Component, {
+      props: { status: "notFound" },
+    });
+
+    expect(pending.find('[data-test="alert"]').exists()).toBe(false);
+    expect(missing.find('[data-test="alert"]').exists()).toBe(true);
+  });
 });
