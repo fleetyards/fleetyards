@@ -233,7 +233,9 @@ module Inventories
       @grades ||= @source.current_stock.group_by { |row| row.position_id }
 
       (@grades[position.id] || []).map do |row|
-        lot = TransferLine::Lot.new(row.quality, row.crafted_blueprint_id, row.crafted_qualities)
+        lot = TransferLine::Lot.new(
+          row.quality, row.crafted_blueprint_id, row.crafted_qualities, row.item_type, row.item_id
+        )
 
         [lot, row.net_quantity]
       end

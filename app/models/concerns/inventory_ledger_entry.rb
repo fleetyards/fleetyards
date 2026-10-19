@@ -126,7 +126,14 @@ module InventoryLedgerEntry
     validates :item_type, presence: true, if: :item_id?
     validate :withdrawal_does_not_exceed_stock, if: :withdrawal?
     validate :referenced_item_exists, if: :item_id?
-    validate :crafted_from_a_recipe_for_the_item, if: -> { crafted_blueprint_id? || crafted_qualities.present? }
+    # Checked when the crafting is written, not on every later save: a recipe
+    # the game retires or reshapes must not make the entries crafted from it
+    # uneditable. A transfer carries a lot as it was recorded, for the same
+    # reason.
+    validate :crafted_from_a_recipe_for_the_item, if: -> {
+      (crafted_blueprint_id? || crafted_qualities.present?) && !from_transfer? &&
+        (new_record? || will_save_change_to_crafted_blueprint_id? || will_save_change_to_crafted_qualities?)
+    }
     # Existing rows predate the pairing, so only entries that touch either side
     # of it have to satisfy it. The item is a third side of it now: repointing a
     # `units` entry from a counted commodity to a bulk one would otherwise store
@@ -376,7 +383,9 @@ module InventoryLedgerEntry
   end
 
   private def crafted_qualities_cover_the_recipe
-    qualities = crafted_qualities
+    # A recipe with no graded slot is recorded with no grades, which is stored
+    # as NULL.
+    qualities = crafted_qualities || {}
 
     unless qualities.is_a?(Hash)
       errors.add(:crafted_qualities, :invalid, message: "must name a grade per recipe slot")
@@ -480,6 +489,24 @@ module InventoryLedgerEntry
 
     if quantity > current
       errors.add(:quantity, :insufficient_stock, message: "exceeds current stock (#{current})")
+      return
     end
+
+    crafted_withdrawal_does_not_exceed_lot if crafted?
+  end
+
+  # A crafted lot is stock of its own: the position holding enough does not
+  # mean this lot does, and an overdrawn lot drops out of the stock unseen.
+  private def crafted_withdrawal_does_not_exceed_lot
+    lot = self.class.where(
+      self.class.inventory_foreign_key => inventory_id, :name => name, :category => category, :unit => unit,
+      :crafted_blueprint_id => crafted_blueprint_id
+    )
+    lot = crafted_qualities.nil? ? lot.where(crafted_qualities: nil) : lot.where("crafted_qualities = ?::jsonb", crafted_qualities.to_json)
+    current = lot.sum("CASE WHEN entry_type = 0 THEN quantity ELSE -quantity END")
+
+    return if quantity <= current
+
+    errors.add(:quantity, :insufficient_stock, message: "exceeds the crafted lot's stock (#{current})")
   end
 end

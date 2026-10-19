@@ -124,6 +124,67 @@ class InventoryItemCraftedTest < ActiveSupport::TestCase
     assert_nil destination.reload.inventory_items.sole.crafted_blueprint_id
   end
 
+  test "records a recipe with no graded slot without grades" do
+    plain = create(:blueprint, craftable: @component)
+    create(:blueprint_cost_slot, build: plain.build, position: 1)
+
+    entry = crafted(qualities: {}, blueprint: plain.reload)
+
+    assert_predicate entry, :valid?, entry.errors.full_messages.to_sentence
+    assert_nil entry.crafted_qualities
+  end
+
+  # A recipe the game retires must not make what was crafted from it
+  # uneditable.
+  test "keeps an entry editable once its recipe is reshaped" do
+    entry = crafted(qualities: {1 => 750, 2 => 500})
+    entry.save!
+
+    create(:blueprint_cost_modifier, slot: @blueprint.build.cost_slots.find_by(position: 3))
+
+    entry.reload.notes = "Kept in the forward bay"
+
+    assert_predicate entry, :valid?, entry.errors.full_messages.to_sentence
+  end
+
+  test "does not withdraw more than a crafted lot holds" do
+    create(:inventory_item, :component, inventory: @inventory, item: @component, name: "Bulwark",
+      quantity: 10, quality: nil)
+    crafted(qualities: {1 => 750, 2 => 500}, quantity: 1).save!
+
+    withdrawal = crafted(qualities: {1 => 750, 2 => 500}, quantity: 2)
+    withdrawal.entry_type = :withdrawal
+
+    assert_not withdrawal.valid?
+    assert_includes withdrawal.errors[:quantity].join, "crafted lot"
+
+    withdrawal.quantity = 1
+
+    assert_predicate withdrawal, :valid?, withdrawal.errors.full_messages.to_sentence
+  end
+
+  # The position's reference entry can be another lot's, or one typed by hand
+  # with a picture and no item; a crafted lot travels as its own part.
+  test "a crafted lot moves as its own part" do
+    Flipper.enable_actor(:hangar_inventories, @user)
+    destination = create(:inventory, holder: @user)
+    crafted(qualities: {1 => 750, 2 => 500}, quantity: 1).save!
+    create(:inventory_item, :component, inventory: @inventory, name: "Bulwark", quantity: 1, quality: nil,
+      image: Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/test.png"), "image/png"))
+    position = @inventory.positions.first
+
+    builder = Inventories::TransferBuilder.new(
+      source: @inventory, actor: @user, destination:,
+      lines: [{position_id: position.id, quantity: 2}]
+    )
+
+    assert builder.call, builder.errors.full_messages.to_sentence
+
+    arrived = destination.reload.inventory_items.find_by!(crafted_blueprint_id: @blueprint.id)
+
+    assert_equal @component.id, arrived.item_id
+  end
+
   private def crafted(qualities:, blueprint: @blueprint, quantity: 1)
     build(:inventory_item, :component, inventory: @inventory, item: @component, name: "Bulwark",
       quantity:, quality: nil, crafted_blueprint: blueprint, crafted_qualities: qualities)

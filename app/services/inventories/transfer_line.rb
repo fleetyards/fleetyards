@@ -20,7 +20,9 @@ module Inventories
   # A crafted part is a lot of its own in the same way, and travels with the
   # recipe and grades it was made from.
   class TransferLine
-    Lot = Struct.new(:quality, :crafted_blueprint_id, :crafted_qualities) do
+    # A crafted lot names its own part: the position's reference entry may be
+    # another lot's, or one typed by hand.
+    Lot = Struct.new(:quality, :crafted_blueprint_id, :crafted_qualities, :item_type, :item_id) do
       def crafted?
         crafted_blueprint_id.present?
       end
@@ -74,8 +76,8 @@ module Inventories
         unit: position.unit,
         quantity: allocation.quantity,
         quality: allocation.quality,
-        item_type: reference&.item_type,
-        item_id: reference&.item_id,
+        item_type: allocation.lot.crafted? ? allocation.lot.item_type : reference&.item_type,
+        item_id: allocation.lot.crafted? ? allocation.lot.item_id : reference&.item_id,
         crafted_blueprint_id: allocation.lot.crafted_blueprint_id,
         crafted_qualities: allocation.lot.crafted_qualities
       }
