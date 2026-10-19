@@ -169,9 +169,8 @@ const qualityLabel = (item: Row) =>
 </script>
 
 <template>
-  <div class="contract-items">
+  <div class="contract-items" data-test="contract-items">
     <InlineEditableList
-      data-test="contract-items"
       :items="rows"
       :empty-name="t('headlines.fleets.contracts.items')"
       :confirm-destroy-text="t('messages.confirm.fleets.contractItem.destroy')"
