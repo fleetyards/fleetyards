@@ -509,6 +509,7 @@
         "transfer": "Trasferisci scorte",
         "transfers": "Trasferimenti",
         "acceptTransfer": "Accetta trasferimento",
+        "pickItem": "Scegli un oggetto",
         "reportTransfer": "Segnala trasferimento"
       },
       "notifications": {

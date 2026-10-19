@@ -509,6 +509,7 @@
         "transfer": "Transférer du stock",
         "transfers": "Transferts",
         "acceptTransfer": "Accepter le transfert",
+        "pickItem": "Choisir un objet",
         "reportTransfer": "Signaler le transfert"
       },
       "notifications": {

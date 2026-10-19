@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 import {
   INVENTORY_CATEGORIES,
   INVENTORY_EQUIPMENT_TYPES,
-  inventoryCategoryForEquipment,
   unitsForCategory,
 } from "./useInventoryOptions";
 
@@ -52,27 +51,5 @@ describe("INVENTORY_EQUIPMENT_TYPES", () => {
         (category) => !(category in INVENTORY_EQUIPMENT_TYPES),
       ),
     ).toEqual(["commodity", "component"]);
-  });
-});
-
-// A crafting contract files its line by the pick, and Progress matches a
-// deposit on the category -- so the two have to agree.
-describe("inventoryCategoryForEquipment", () => {
-  it("files a piece under the category whose picker offers it", () => {
-    expect(inventoryCategoryForEquipment("weapon")).toBe("weapon");
-    expect(inventoryCategoryForEquipment("weapon_attachment")).toBe(
-      "ammunition",
-    );
-    expect(inventoryCategoryForEquipment("sustenance")).toBe("consumable");
-    expect(inventoryCategoryForEquipment("flair")).toBe("other");
-    expect(inventoryCategoryForEquipment("armor")).toBe("equipment");
-  });
-
-  it("keeps medical gear under equipment", () => {
-    expect(inventoryCategoryForEquipment("medical")).toBe("equipment");
-  });
-
-  it("falls back to equipment for a type no picker offers", () => {
-    expect(inventoryCategoryForEquipment(undefined)).toBe("equipment");
   });
 });

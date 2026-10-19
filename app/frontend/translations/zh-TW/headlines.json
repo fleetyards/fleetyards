@@ -509,6 +509,7 @@
         "transfer": "轉移庫存",
         "transfers": "轉移",
         "acceptTransfer": "接受轉移",
+        "pickItem": "選擇物品",
         "reportTransfer": "檢舉轉移"
       },
       "notifications": {
