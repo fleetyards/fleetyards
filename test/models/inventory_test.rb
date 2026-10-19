@@ -294,6 +294,17 @@ class InventoryTest < ActiveSupport::TestCase
     assert_equal ["Hadanite"], @inventory.inventory_items.reload.pluck(:name).uniq
   end
 
+  # A game build that renames the record leaves the position on the old name;
+  # following it is the one rename the catalogue allows.
+  test "a catalogue position may take its record's current name" do
+    stock_item = stock_position(quantity: 100)
+    renamed = Struct.new(:name).new("Quantanium Ore")
+
+    change = InventoryStockItemChange.new(stock_item, {name: "Quantanium Ore"}, items: [renamed])
+
+    assert_predicate change, :valid?
+  end
+
   # The reference entry is the newest one, so a free-text deposit landing last
   # must not hide the catalogue record an older entry points at.
   test "catalogue_identity? reads every entry of the position" do

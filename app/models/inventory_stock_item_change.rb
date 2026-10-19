@@ -63,11 +63,15 @@ class InventoryStockItemChange
 
   # A position holding a catalogue record is named and filed by that record --
   # a crafted lot's grades included, which mean nothing under another name. Only
-  # its unit may move, where the record allows more than one.
+  # its unit may move, where the record allows more than one, and its name may
+  # follow the record's own when a game build renames it.
   private def catalogue_identity_kept
-    return if items.none?(&:present?)
+    records = items.compact
+    return if records.empty?
 
-    errors.add(:name, :invalid, message: "is set by the catalogue item") if name != @current_name
+    if name != @current_name && records.none? { |record| record.name == name }
+      errors.add(:name, :invalid, message: "is set by the catalogue item")
+    end
     errors.add(:category, :invalid, message: "is set by the catalogue item") if category != @current_category
   end
 
