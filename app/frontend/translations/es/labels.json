@@ -1845,6 +1845,7 @@
         "subType": "Subtipo",
         "retired": "Ya no está en la compilación actual",
         "noMetrics": "No hay métricas registradas para este componente.",
+        "integrity": "Integridad",
         "durability": {
           "health": "Salud",
           "mass": "Masa",

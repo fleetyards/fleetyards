@@ -1845,6 +1845,7 @@
         "subType": "Sub Type",
         "retired": "No longer in the current build",
         "noMetrics": "No metrics are recorded for this component.",
+        "integrity": "Integrity",
         "durability": {
           "health": "Health",
           "mass": "Mass",

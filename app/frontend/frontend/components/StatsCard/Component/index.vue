@@ -14,6 +14,7 @@ import { useComponentStats } from "@/frontend/composables/useComponentStats";
 import { markedAgainstStock } from "@/frontend/components/StatsCard/stock";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type Component } from "@/services/fyApi";
+import { type HardpointStat } from "@/frontend/composables/useHardpointStats";
 
 type Props = {
   component?: Component;
@@ -42,15 +43,35 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{ navigate: [] }>();
 
-const { t, tExists } = useI18n();
+const { t, tExists, toNumber } = useI18n();
 
 const craftedStats = useComponentStats(() => props.component);
 const stockStats = useComponentStats(() => props.stock);
 
+// How much damage the part takes before it fails -- the figure crafting moves
+// on most recipes -- which the detail page shows with the rest of its
+// durability, and the card floating over a list has nowhere else to say. First
+// among the rows, so the card's row limit never cuts it.
+const withIntegrity = (stats: HardpointStat[], component?: Component) => {
+  const health = component?.durability?.health;
+
+  if (!props.compact || !health) return stats;
+
+  return [
+    {
+      key: "component.integrity",
+      label: t("labels.component.integrity"),
+      value: String(toNumber(Math.round(health), "integer")),
+      raw: health,
+    },
+    ...stats,
+  ];
+};
+
 const allStats = computed(() =>
   markedAgainstStock(
-    craftedStats.value,
-    props.stock ? stockStats.value : undefined,
+    withIntegrity(craftedStats.value, props.component),
+    props.stock ? withIntegrity(stockStats.value, props.stock) : undefined,
   ),
 );
 

@@ -89,7 +89,19 @@ export const craftComponent = (
     if (field) typeData[field] = scaled(typeData[field], factor);
   });
 
-  return { ...component, typeData } as Component;
+  // Integrity: how much damage the part takes, kept with its durability
+  // rather than in the type's own figures.
+  const integrity = factors.get("gpp_health_maxhealth");
+  const durability =
+    integrity && component.durability
+      ? {
+          ...component.durability,
+          health: scaled(component.durability.health, integrity) as
+            number | undefined,
+        }
+      : component.durability;
+
+  return { ...component, typeData, durability } as Component;
 };
 
 export const craftEquipment = (

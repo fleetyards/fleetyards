@@ -66,6 +66,19 @@ describe("craftComponent", () => {
     ).toBeCloseTo(12);
   });
 
+  it("scales a part's integrity", () => {
+    const crafted = craftComponent(
+      {
+        name: "Bulwark",
+        typeData: {},
+        durability: { health: 500, mass: 9 },
+      } as never,
+      new Map([["gpp_health_maxhealth", 1.2]]),
+    );
+
+    expect(crafted.durability).toEqual({ health: 600, mass: 9 });
+  });
+
   it("does not touch the catalogue's own record", () => {
     const stock = { name: "Bulwark", typeData: { maxHealth: 1000 } };
 

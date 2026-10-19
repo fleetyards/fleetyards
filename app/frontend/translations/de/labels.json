@@ -1845,6 +1845,7 @@
         "subType": "Untertyp",
         "retired": "Nicht mehr im aktuellen Build",
         "noMetrics": "Für diese Komponente sind keine Werte hinterlegt.",
+        "integrity": "Integrität",
         "durability": {
           "health": "Trefferpunkte",
           "mass": "Masse",

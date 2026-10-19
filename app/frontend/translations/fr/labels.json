@@ -1845,6 +1845,7 @@
         "subType": "Sous-type",
         "retired": "Absent de la version actuelle",
         "noMetrics": "Aucune donnée n'est enregistrée pour ce composant.",
+        "integrity": "Intégrité",
         "durability": {
           "health": "Santé",
           "mass": "Masse",

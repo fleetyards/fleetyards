@@ -1845,6 +1845,7 @@
         "subType": "子类型",
         "retired": "已不在当前版本中",
         "noMetrics": "该部件没有记录任何数据。",
+        "integrity": "完整度",
         "durability": {
           "health": "耐久",
           "mass": "质量",
