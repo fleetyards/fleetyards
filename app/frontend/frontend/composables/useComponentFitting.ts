@@ -1008,6 +1008,7 @@ export const useComponentFitting = () => {
     moduleContents,
     learnOption,
     learnRecipe,
+    craft,
     resolve,
     groups,
     hasSlots,

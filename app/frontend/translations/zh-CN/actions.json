@@ -603,6 +603,9 @@
       },
       "vehicleLoadout": {
         "craft": "制作",
+        "applyCrafting": "应用",
+        "discardCrafting": "放弃",
+        "removeCrafting": "移除制作",
         "swapModule": "更换模块",
         "removeModule": "移除模块",
         "editLoadout": "编辑配置",

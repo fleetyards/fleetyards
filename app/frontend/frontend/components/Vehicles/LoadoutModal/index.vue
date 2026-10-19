@@ -329,12 +329,17 @@ const componentTree = computed(() =>
   ),
 );
 
+// The crafting the crafter is working on, which reaches the fitting only once
+// applied.
+const craftDraft = ref<CraftedPart>();
+
 // The saved fitting's recipes as well as the edited one's, so the changes
-// against the save read both as crafted.
-useCraftedRecipes(fitting, () => ({
-  ...savedValues().craftedComponents,
-  ...(craftedComponents.value || {}),
-}));
+// against the save read both as crafted, and the draft's for its preview.
+useCraftedRecipes(fitting, () => [
+  ...Object.values(savedValues().craftedComponents),
+  ...Object.values(craftedComponents.value || {}),
+  ...(craftDraft.value ? [craftDraft.value] : []),
+]);
 
 const SYSTEM_TAB_IDS = [
   "radar",
@@ -583,6 +588,11 @@ const pickerOpenFor = (tabId: string) =>
   activeKind.value === "component" &&
   activeTab.value === tabId;
 
+// A draft waits on Apply or Discard; saving past it would drop it unseen.
+const crafterOpen = computed(
+  () => pickerOpen.value && activeMode.value === "craft",
+);
+
 const crafterOpenFor = (tabId: string) =>
   pickerOpenFor(tabId) && activeMode.value === "craft";
 
@@ -603,6 +613,11 @@ const setPicker = (instance: unknown) => {
 const socketButton = (slot: string) =>
   formRoot.value?.querySelector<HTMLElement>(
     `[data-test="loadout-socket-${slot}"]`,
+  );
+
+const craftButton = (slot: string) =>
+  formRoot.value?.querySelector<HTMLElement>(
+    `[data-test="loadout-socket-craft-${slot}"]`,
   );
 
 const socketIn = (
@@ -650,6 +665,7 @@ const onSocketSelect = async (
   activeTab.value = tabId;
   activeMode.value = "pick";
   hovered.value = undefined;
+  craftDraft.value = undefined;
 
   // On desktop the picker comes after every socket in the page's order, so
   // the keyboard is handed to it rather than left to tab its way there.
@@ -667,6 +683,9 @@ const onCraft = async (slot: string, tabId: string) => {
   activeTab.value = tabId;
   activeMode.value = "craft";
   hovered.value = undefined;
+  // Opens on how the part is crafted now; the crafter starts a part not
+  // crafted yet on its first recipe.
+  craftDraft.value = opening ? activeComponentSlot.value?.crafted : undefined;
 
   if (opening) {
     await nextTick();
@@ -894,18 +913,37 @@ const activeCrafting = computed(() => {
 
   const catalogued =
     fitting.components.value[entry.content.id] ?? entry.content;
+  const drafted = fitting.craft(catalogued, craftDraft.value);
 
   return {
     title: slotName(entry.slot.name),
     component: catalogued,
-    crafted: entry.crafted,
+    draft: craftDraft.value,
+    crafted: !!entry.crafted,
     comparison: {
       from: catalogued,
-      to: entry.content,
-      rows: fitting.compare(catalogued, entry.content, entry.slot.category),
+      to: drafted,
+      rows: fitting.compare(catalogued, drafted, entry.slot.category),
     },
   };
 });
+
+const crafterListeners = {
+  "update:draft": (draft: CraftedPart) => {
+    craftDraft.value = draft;
+  },
+  apply: () => {
+    onCrafted(craftDraft.value);
+    void closePicker();
+  },
+  remove: () => {
+    onCrafted(undefined);
+    void closePicker();
+  },
+  close: () => {
+    void closePicker();
+  },
+};
 
 const onCrafted = (crafted: CraftedPart | undefined) => {
   const next = { ...(craftedComponents.value || {}) };
@@ -930,12 +968,17 @@ const closePicker = async () => {
       ?.querySelector(".loadout-picker, .loadout-crafter")
       ?.contains(document.activeElement);
 
+  const crafting = activeMode.value === "craft";
+
   activeSlot.value = undefined;
   hovered.value = undefined;
+  craftDraft.value = undefined;
 
+  // The crafter goes back to the control that opened it: a socket the ship
+  // locks takes no focus of its own.
   if (hadFocus) {
     await nextTick();
-    socketButton(slot)?.focus();
+    (crafting ? craftButton(slot) : socketButton(slot))?.focus();
   }
 };
 
@@ -1232,7 +1275,8 @@ const save = async (values: LoadoutValues, asNew: boolean) => {
     !props.editable ||
     !flightReady.value ||
     loadoutPending.value ||
-    !(asNew ? changed.value : savable.value)
+    !(asNew ? changed.value : savable.value) ||
+    crafterOpen.value
   ) {
     return;
   }
@@ -1618,8 +1662,7 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
                             :key="`craft-${activeSlot}`"
                             :ref="setPicker"
                             v-bind="activeCrafting"
-                            @update:crafted="onCrafted"
-                            @close="closePicker"
+                            v-on="crafterListeners"
                           />
                           <Picker
                             v-else-if="choosingFor(tab.id)"
@@ -1644,8 +1687,7 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
                       :ref="setPicker"
                       class="vehicle-loadout__picker"
                       v-bind="activeCrafting"
-                      @update:crafted="onCrafted"
-                      @close="closePicker"
+                      v-on="crafterListeners"
                     />
                     <Picker
                       v-else-if="choosingFor(tab.id) && !mobile"
@@ -1738,7 +1780,13 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
         :type="BtnTypesEnum.SUBMIT"
         :form="`vehicle-loadout-${vehicle.id}`"
         :loading="saving"
-        :disabled="!flightReady || loadoutPending || !savable || linkMissing"
+        :disabled="
+          !flightReady ||
+          loadoutPending ||
+          !savable ||
+          linkMissing ||
+          crafterOpen
+        "
         data-test="vehicle-loadout-save"
       >
         {{ t("actions.vehicleLoadout.saveLoadout") }}
@@ -1746,7 +1794,7 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
       <Btn
         v-if="editedLoadout && changed && !linking"
         :loading="saving"
-        :disabled="!flightReady || loadoutPending"
+        :disabled="!flightReady || loadoutPending || crafterOpen"
         data-test="vehicle-loadout-save-as-new"
         @click="onSaveAsNew"
       >

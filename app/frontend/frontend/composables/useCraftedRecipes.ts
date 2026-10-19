@@ -13,12 +13,10 @@ import { getBlueprintQueryOptions } from "@/services/fyApi";
  */
 export const useCraftedRecipes = (
   fitting: ReturnType<typeof useComponentFitting>,
-  crafting: MaybeRefOrGetter<Record<string, CraftedPart> | undefined>,
+  crafting: MaybeRefOrGetter<CraftedPart[]>,
 ) => {
   const slugs = computed(() => [
-    ...new Set(
-      Object.values(toValue(crafting) ?? {}).map((part) => part.blueprintSlug),
-    ),
+    ...new Set(toValue(crafting).map((part) => part.blueprintSlug)),
   ]);
 
   const queries = useQueries({

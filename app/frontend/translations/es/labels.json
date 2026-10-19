@@ -4507,9 +4507,8 @@
         "craftedPart": "%{name} (fabricado)",
         "crafting": {
           "title": "Fabricar · %{name}",
-          "toggle": "Fabricado",
           "recipe": "Plano %{number}",
-          "hint": "Marca la pieza como fabricada para ajustar la calidad del material en cada ranura del plano."
+          "noRecipe": "No hay plano para esta pieza en la versión actual."
         },
         "fitted": "Equipado",
         "owned": "En propiedad",

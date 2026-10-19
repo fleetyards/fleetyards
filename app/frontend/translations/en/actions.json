@@ -603,6 +603,9 @@
       },
       "vehicleLoadout": {
         "craft": "Craft",
+        "applyCrafting": "Apply",
+        "discardCrafting": "Discard",
+        "removeCrafting": "Remove crafting",
         "swapModule": "Swap module",
         "removeModule": "Remove module",
         "editLoadout": "Edit loadout",

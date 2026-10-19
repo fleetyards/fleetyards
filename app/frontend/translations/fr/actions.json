@@ -603,6 +603,9 @@
       },
       "vehicleLoadout": {
         "craft": "Fabriquer",
+        "applyCrafting": "Appliquer",
+        "discardCrafting": "Annuler",
+        "removeCrafting": "Retirer la fabrication",
         "swapModule": "Changer de module",
         "removeModule": "Retirer le module",
         "editLoadout": "Modifier l’équipement",

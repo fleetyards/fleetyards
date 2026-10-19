@@ -4507,9 +4507,8 @@
         "craftedPart": "%{name} (hergestellt)",
         "crafting": {
           "title": "Herstellen · %{name}",
-          "toggle": "Hergestellt",
           "recipe": "Bauplan %{number}",
-          "hint": "Markiere das Teil als hergestellt, um die Materialqualität in jedem Slot des Bauplans einzustellen."
+          "noRecipe": "Für dieses Teil gibt es im aktuellen Build keinen Bauplan."
         },
         "fitted": "Verbaut",
         "owned": "Im Besitz",

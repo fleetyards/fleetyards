@@ -94,9 +94,8 @@ export const useLoadoutFitting = ({
 
   const values = computed(() => loadoutValues(toValue(items)));
 
-  const { loading: recipesLoading } = useCraftedRecipes(
-    fitting,
-    () => values.value.crafted,
+  const { loading: recipesLoading } = useCraftedRecipes(fitting, () =>
+    Object.values(values.value.crafted),
   );
 
   const tree = computed(() =>

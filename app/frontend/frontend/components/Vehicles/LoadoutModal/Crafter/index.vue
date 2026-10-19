@@ -8,6 +8,7 @@ export default {
 import Btn from "@/shared/components/base/Btn/index.vue";
 import {
   BtnSizesEnum,
+  BtnTonesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
 import BlueprintSlot from "@/frontend/components/Blueprints/Slot/index.vue";
@@ -28,10 +29,14 @@ import {
 type Props = {
   // The slot the part sits in.
   title: string;
-  // The part as catalogued, and as crafted at the qualities chosen.
+  // The part as catalogued.
   component: LoadoutComponentRef;
-  crafted?: CraftedPart;
-  // How the crafted part's figures differ from the catalogued one's.
+  // The crafting being worked on, which reaches the loadout only on Apply.
+  draft?: CraftedPart;
+  // Whether the loadout already holds the part as crafted, which can then be
+  // taken back.
+  crafted?: boolean;
+  // How far the draft moves the part's figures from the catalogued one's.
   comparison: {
     from?: LoadoutComponentRef;
     to?: LoadoutComponentRef;
@@ -40,11 +45,14 @@ type Props = {
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  crafted: undefined,
+  draft: undefined,
+  crafted: false,
 });
 
 const emit = defineEmits<{
-  "update:crafted": [value: CraftedPart | undefined];
+  "update:draft": [value: CraftedPart];
+  apply: [];
+  remove: [];
   close: [];
 }>();
 
@@ -52,7 +60,7 @@ const { t } = useI18n();
 
 const PRESETS = [0, 250, 500, 750, 1000];
 
-const { data: recipesData } = useBlueprints(
+const { data: recipesData, isPending: recipesPending } = useBlueprints(
   () => ({
     q: {
       craftableTypeEq: BlueprintCraftableTypeEnum.COMPONENT,
@@ -64,53 +72,40 @@ const { data: recipesData } = useBlueprints(
 
 const recipes = computed(() => recipesData.value?.items ?? []);
 
-// Three parts have two recipes, each with its own slots; the one it was
-// crafted from stays chosen.
-//
-// A saved crafting whose recipe a new build dropped is no longer in the list,
-// and still has to be shown -- and undone.
-const recipe = computed(() => {
-  const crafted = props.crafted;
+// A crafted part opens on how it was crafted -- a recipe a new build dropped
+// included, which the list no longer names. A part not crafted yet opens as
+// crafted from its first recipe, every slot at the neutral grade, as soon as
+// the recipe list says which that is.
+watch(
+  () => recipes.value[0],
+  (first) => {
+    if (props.draft || !first) return;
 
-  return (
-    recipes.value.find((entry) => entry.id === crafted?.blueprintId) ??
-    (crafted
-      ? { id: crafted.blueprintId, slug: crafted.blueprintSlug }
-      : recipes.value[0])
-  );
-});
+    emit("update:draft", {
+      blueprintId: first.id,
+      blueprintSlug: first.slug,
+      qualities: {},
+    });
+  },
+  { immediate: true },
+);
 
 const { data: blueprint } = useBlueprint(
-  () => props.crafted?.blueprintSlug ?? "",
-  { query: { enabled: () => !!props.crafted } },
+  () => props.draft?.blueprintSlug ?? "",
+  { query: { enabled: () => !!props.draft } },
 );
 
 const costSlots = computed(() => blueprint.value?.costSlots ?? []);
 
 const qualityFor = (position: number) =>
-  props.crafted?.qualities[position] ?? NEUTRAL_QUALITY;
-
-const toggle = () => {
-  if (props.crafted) {
-    emit("update:crafted", undefined);
-    return;
-  }
-
-  if (!recipe.value) return;
-
-  emit("update:crafted", {
-    blueprintId: recipe.value.id,
-    blueprintSlug: recipe.value.slug,
-    qualities: {},
-  });
-};
+  props.draft?.qualities[position] ?? NEUTRAL_QUALITY;
 
 // Another recipe has other slots, so its qualities start over.
 const chooseRecipe = (blueprintId: string) => {
   const chosen = recipes.value.find((entry) => entry.id === blueprintId);
-  if (!chosen || chosen.id === props.crafted?.blueprintId) return;
+  if (!chosen || chosen.id === props.draft?.blueprintId) return;
 
-  emit("update:crafted", {
+  emit("update:draft", {
     blueprintId: chosen.id,
     blueprintSlug: chosen.slug,
     qualities: {},
@@ -118,47 +113,29 @@ const chooseRecipe = (blueprintId: string) => {
 };
 
 const setQuality = (position: number, quality: number) => {
-  if (!props.crafted) return;
+  if (!props.draft) return;
 
-  emit("update:crafted", {
-    ...props.crafted,
-    qualities: { ...props.crafted.qualities, [position]: quality },
+  emit("update:draft", {
+    ...props.draft,
+    qualities: { ...props.draft.qualities, [position]: quality },
   });
 };
 
 const setEveryQuality = (quality: number) => {
-  if (!props.crafted) return;
+  if (!props.draft) return;
 
-  emit("update:crafted", {
-    ...props.crafted,
+  emit("update:draft", {
+    ...props.draft,
     qualities: Object.fromEntries(
       costSlots.value.map((slot) => [slot.position, quality]),
     ),
   });
 };
 
+// The draft is only ever applied or discarded on purpose, so unlike the
+// picker a press elsewhere -- a material's popover, the modal's own save --
+// leaves the crafter open.
 const root = ref<HTMLElement>();
-
-/*
- * As the picker: a press anywhere else closes it, except on a socket, which
- * switches what it is open for. Captured, so a control that stops the event on
- * its way up still counts.
- */
-const onDocumentPointerdown = (event: PointerEvent) => {
-  const target = event.target as Element | null;
-  if (!target || root.value?.contains(target)) return;
-  if (target.closest?.(".loadout-socket")) return;
-
-  emit("close");
-};
-
-onMounted(() => {
-  document.addEventListener("pointerdown", onDocumentPointerdown, true);
-});
-
-onBeforeUnmount(() => {
-  document.removeEventListener("pointerdown", onDocumentPointerdown, true);
-});
 
 const onKeydown = (event: KeyboardEvent) => {
   if (event.key !== "Escape" || event.defaultPrevented) return;
@@ -200,39 +177,25 @@ defineExpose({ focus });
 
     <div class="loadout-crafter__controls">
       <p class="loadout-crafter__part">{{ component.name }}</p>
-      <div class="loadout-crafter__row">
+      <div v-if="draft && recipes.length > 1" class="loadout-crafter__row">
         <Btn
+          v-for="(entry, index) in recipes"
+          :key="entry.id"
           :size="BtnSizesEnum.SM"
           :variant="BtnVariantsEnum.GHOST"
-          :active="!!crafted"
-          :aria-pressed="!!crafted"
-          :disabled="!recipe"
-          data-test="vehicle-loadout-crafted-toggle"
-          @click="toggle"
+          :active="entry.id === draft.blueprintId"
+          :aria-pressed="entry.id === draft.blueprintId"
+          :data-test="`vehicle-loadout-crafting-recipe-${entry.id}`"
+          @click="chooseRecipe(entry.id)"
         >
-          <i class="fa-solid fa-hammer" aria-hidden="true" />
-          {{ t("labels.vehicleLoadout.crafting.toggle") }}
+          {{
+            t("labels.vehicleLoadout.crafting.recipe", { number: index + 1 })
+          }}
         </Btn>
-        <template v-if="crafted && recipes.length > 1">
-          <Btn
-            v-for="(entry, index) in recipes"
-            :key="entry.id"
-            :size="BtnSizesEnum.SM"
-            :variant="BtnVariantsEnum.GHOST"
-            :active="entry.id === crafted.blueprintId"
-            :aria-pressed="entry.id === crafted.blueprintId"
-            :data-test="`vehicle-loadout-crafting-recipe-${entry.id}`"
-            @click="chooseRecipe(entry.id)"
-          >
-            {{
-              t("labels.vehicleLoadout.crafting.recipe", { number: index + 1 })
-            }}
-          </Btn>
-        </template>
       </div>
 
       <div
-        v-if="crafted && costSlots.length"
+        v-if="draft && costSlots.length"
         class="loadout-crafter__row loadout-crafter__quickset"
       >
         <span>{{ t("labels.blueprint.setEverySlot") }}</span>
@@ -249,8 +212,16 @@ defineExpose({ focus });
       </div>
     </div>
 
+    <p
+      v-if="!draft && !recipesPending"
+      class="loadout-crafter__empty"
+      data-test="vehicle-loadout-crafter-no-recipe"
+    >
+      {{ t("labels.vehicleLoadout.crafting.noRecipe") }}
+    </p>
+
     <div
-      v-if="crafted"
+      v-if="draft"
       class="loadout-crafter__slots"
       data-test="vehicle-loadout-crafting-slots"
     >
@@ -262,17 +233,40 @@ defineExpose({ focus });
         @update:quality="setQuality(slot.position, $event)"
       />
     </div>
-    <p
-      v-else
-      class="loadout-crafter__hint"
-      data-test="vehicle-loadout-crafter-hint"
-    >
-      {{ t("labels.vehicleLoadout.crafting.hint") }}
-    </p>
 
     <div v-if="comparison.rows.length" class="loadout-crafter__comparison">
       <ComponentComparison v-bind="comparison" />
     </div>
+
+    <footer class="loadout-crafter__actions">
+      <Btn
+        v-if="crafted"
+        :size="BtnSizesEnum.SM"
+        :variant="BtnVariantsEnum.GHOST"
+        :tone="BtnTonesEnum.DANGER"
+        class="loadout-crafter__remove"
+        data-test="vehicle-loadout-crafter-remove"
+        @click="emit('remove')"
+      >
+        {{ t("actions.vehicleLoadout.removeCrafting") }}
+      </Btn>
+      <Btn
+        :size="BtnSizesEnum.SM"
+        :variant="BtnVariantsEnum.GHOST"
+        data-test="vehicle-loadout-crafter-discard"
+        @click="emit('close')"
+      >
+        {{ t("actions.vehicleLoadout.discardCrafting") }}
+      </Btn>
+      <Btn
+        :size="BtnSizesEnum.SM"
+        :disabled="!draft"
+        data-test="vehicle-loadout-crafter-apply"
+        @click="emit('apply')"
+      >
+        {{ t("actions.vehicleLoadout.applyCrafting") }}
+      </Btn>
+    </footer>
   </section>
 </template>
 

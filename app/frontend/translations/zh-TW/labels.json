@@ -4504,9 +4504,8 @@
         "craftedPart": "%{name}（已製作）",
         "crafting": {
           "title": "製作 · %{name}",
-          "toggle": "已製作",
           "recipe": "藍圖 %{number}",
-          "hint": "將部件標記為已製作，即可設定每個藍圖槽位的材料品質。"
+          "noRecipe": "目前版本中沒有該部件的藍圖。"
         },
         "fitted": "已裝配",
         "owned": "已擁有",

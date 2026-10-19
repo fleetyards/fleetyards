@@ -603,6 +603,9 @@
       },
       "vehicleLoadout": {
         "craft": "製作",
+        "applyCrafting": "套用",
+        "discardCrafting": "放棄",
+        "removeCrafting": "移除製作",
         "swapModule": "更換模組",
         "removeModule": "移除模組",
         "editLoadout": "編輯配置",

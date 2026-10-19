@@ -4507,9 +4507,8 @@
         "craftedPart": "%{name} (fabbricato)",
         "crafting": {
           "title": "Fabbrica · %{name}",
-          "toggle": "Fabbricato",
           "recipe": "Progetto %{number}",
-          "hint": "Contrassegna il pezzo come fabbricato per impostare la qualità del materiale in ogni slot del progetto."
+          "noRecipe": "Nessun progetto per questo pezzo nella build attuale."
         },
         "fitted": "Montato",
         "owned": "Posseduto",

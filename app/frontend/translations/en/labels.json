@@ -4521,9 +4521,8 @@
         "craftedPart": "%{name} (crafted)",
         "crafting": {
           "title": "Craft · %{name}",
-          "toggle": "Crafted",
           "recipe": "Recipe %{number}",
-          "hint": "Mark the part as crafted to set the material quality in each recipe slot."
+          "noRecipe": "No recipe for this part in the current build."
         },
         "fitted": "Fitted",
         "owned": "Owned",

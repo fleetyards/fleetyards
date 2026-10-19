@@ -88,11 +88,25 @@
   overscroll-behavior: contain;
 }
 
-.loadout-crafter__hint {
+.loadout-crafter__empty {
   margin: 0;
   padding: 4px 14px 12px;
   color: var(--color-text-dim);
   font-size: 13px;
+}
+
+// Apply and Discard at the panel's end, Remove apart on the other side.
+.loadout-crafter__actions {
+  display: flex;
+  flex: none;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 10px 14px 12px;
+  border-top: 1px solid var(--color-edge-soft);
+}
+
+.loadout-crafter__remove {
+  margin-right: auto;
 }
 
 .loadout-crafter__comparison {

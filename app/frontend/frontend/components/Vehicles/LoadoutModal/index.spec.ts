@@ -1359,9 +1359,10 @@ describe("VehicleLoadoutModal component tabs", () => {
         .get(`[data-test='loadout-socket-craft-${GUN}']`)
         .trigger("click");
       await flushPromises();
-      await wrapper
-        .get("[data-test='vehicle-loadout-crafted-toggle']")
-        .trigger("click");
+    };
+
+    const press = async (wrapper: Wrapper, testId: string) => {
+      await wrapper.get(`[data-test='${testId}']`).trigger("click");
       await flushPromises();
     };
 
@@ -1402,11 +1403,18 @@ describe("VehicleLoadoutModal component tabs", () => {
       await flushPromises();
 
       await craft(wrapper);
-      await wrapper
-        .get("[data-test='vehicle-loadout-crafting-preset-750']")
-        .trigger("click");
-      await flushPromises();
+      await press(wrapper, "vehicle-loadout-crafting-preset-750");
 
+      // Nothing reaches the loadout before Apply.
+      expect(socket(wrapper, GUN).text()).not.toContain(
+        "labels.vehicleLoadout.crafted",
+      );
+
+      await press(wrapper, "vehicle-loadout-crafter-apply");
+
+      expect(
+        wrapper.find("[data-test='vehicle-loadout-crafter']").exists(),
+      ).toBe(false);
       expect(socket(wrapper, GUN).text()).toContain(
         "labels.vehicleLoadout.crafted",
       );
@@ -1440,10 +1448,8 @@ describe("VehicleLoadoutModal component tabs", () => {
       await flushPromises();
 
       await craft(wrapper);
-      await wrapper
-        .get("[data-test='vehicle-loadout-crafting-recipe-bp2']")
-        .trigger("click");
-      await flushPromises();
+      await press(wrapper, "vehicle-loadout-crafting-recipe-bp2");
+      await press(wrapper, "vehicle-loadout-crafter-apply");
       await save(wrapper);
 
       expect(savedItems()).toEqual([
@@ -1456,15 +1462,77 @@ describe("VehicleLoadoutModal component tabs", () => {
       ]);
     });
 
+    it("opens a part not crafted yet as crafted, and Discard leaves the loadout as it was", async () => {
+      const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
+      await flushPromises();
+
+      await craft(wrapper);
+      expect(
+        wrapper.findAll(
+          "[data-test='vehicle-loadout-crafting-slots'] .blueprint-slot",
+        ),
+      ).toHaveLength(2);
+      expect(
+        wrapper.find("[data-test='vehicle-loadout-crafter-remove']").exists(),
+      ).toBe(false);
+
+      await press(wrapper, "vehicle-loadout-crafting-preset-1000");
+      await press(wrapper, "vehicle-loadout-crafter-discard");
+      await save(wrapper);
+
+      expect(savedItems()).toEqual([]);
+    });
+
+    it("stays open on a press elsewhere, and holds the save until applied or discarded", async () => {
+      const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
+      await flushPromises();
+
+      await craft(wrapper);
+      document.body.dispatchEvent(new PointerEvent("pointerdown"));
+      await flushPromises();
+
+      expect(
+        wrapper.find("[data-test='vehicle-loadout-crafter']").exists(),
+      ).toBe(true);
+
+      await save(wrapper);
+      expect(savedItems()).toBeUndefined();
+
+      await press(wrapper, "vehicle-loadout-crafter-apply");
+      await save(wrapper);
+      expect(savedItems()).toHaveLength(1);
+    });
+
+    it("reopens a crafted part on its crafting, which Remove takes back", async () => {
+      const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
+      await flushPromises();
+
+      await craft(wrapper);
+      await press(wrapper, "vehicle-loadout-crafting-preset-250");
+      await press(wrapper, "vehicle-loadout-crafter-apply");
+
+      await craft(wrapper);
+      expect(
+        wrapper.get(
+          "[data-test='vehicle-loadout-crafting-slots'] input[type='number']",
+        ).element,
+      ).toHaveProperty("value", "250");
+
+      await press(wrapper, "vehicle-loadout-crafter-remove");
+      expect(socket(wrapper, GUN).text()).not.toContain(
+        "labels.vehicleLoadout.crafted",
+      );
+
+      await save(wrapper);
+      expect(savedItems()).toEqual([]);
+    });
+
     it("drops the crafting when another part is picked for the slot", async () => {
       const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
       await flushPromises();
 
       await craft(wrapper);
-      await wrapper
-        .get("[data-test='vehicle-loadout-crafter-close']")
-        .trigger("click");
-      await flushPromises();
+      await press(wrapper, "vehicle-loadout-crafter-apply");
       await choose(wrapper, GUN, "Other Gun");
       await save(wrapper);
 
