@@ -61,6 +61,15 @@ class HangarPledgeItems::SyncTest < ActiveSupport::TestCase
     assert_equal small.id, catalogue.find("M9A Cannon (S12)")
   end
 
+  test "matches a flight blade, but no ship internal" do
+    blade = create(:component, name: "Agility Blade", category: "controller", component_type: "FlightController")
+    create(:component, name: "Cargo Door", category: "doors")
+    catalogue = HangarPledgeItems::Sync::ComponentCatalogue.new
+
+    assert_equal blade.id, catalogue.find("Agility Blade")
+    assert_nil catalogue.find("Cargo Door")
+  end
+
   # Modules are fitted to a ship by the hangar sync, whether it knows them or not.
   test "leaves ship modules to the hangar sync" do
     items = [

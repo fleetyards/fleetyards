@@ -158,14 +158,15 @@ module HangarPledgeItems
         name.to_s.downcase.gsub(SIZE, " ").gsub(/[^[:alnum:]\s-]/, " ").split
       end
 
-      # Current, shown and named: a retired row or a ship's door is no part a
-      # player owns.
+      # Current, shown and in the catalogue: a retired row or a ship's door is
+      # no part a player owns. The same rule as `Component.catalogued`, flight
+      # blades and all.
       def initialize
         @entries = Component.current_version.named.where(hidden: false)
           .order(:name, :id)
-          .pluck(:id, :name, :size, :category)
-          .reject { |_id, _name, _size, category| Component::CATALOGUE_EXCLUDED_CATEGORIES.include?(category) }
-          .map { |id, name, size, _category| {id:, name:, size: size.to_s, words: self.class.words(name)} }
+          .pluck(:id, :name, :size, :category, :component_type)
+          .select { |_id, _name, _size, category, type| catalogued?(category, type) }
+          .map { |id, name, size, _category, _type| {id:, name:, size: size.to_s, words: self.class.words(name)} }
       end
 
       def find(name)
@@ -179,6 +180,12 @@ module HangarPledgeItems
         matches.min_by do |entry|
           [entry[:words].size, (entry[:size] == size) ? 0 : 1, entry[:size].to_i, entry[:name], entry[:id]]
         end&.dig(:id)
+      end
+
+      private def catalogued?(category, type)
+        return true unless Component::CATALOGUE_EXCLUDED_CATEGORIES.include?(category)
+
+        category == "controller" && Component::CATALOGUED_CONTROLLER_TYPES.include?(type)
       end
     end
 
