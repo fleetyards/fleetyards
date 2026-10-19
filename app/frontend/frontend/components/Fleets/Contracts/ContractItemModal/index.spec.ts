@@ -199,4 +199,36 @@ describe("FleetContractsItemModal", () => {
       true,
     );
   });
+
+  // A grade given to a line before only resources took one is kept: an edit
+  // to its quantity must not quietly start accepting goods it turned away.
+  it("keeps the grade of an older line that is not a resource", async () => {
+    const onDraft = vi.fn();
+
+    wrapper = await mountWithDefaults<typeof Component>(Component, {
+      props: {
+        fleet: { slug: "test-fleet" } as never,
+        kind: "procurement" as never,
+        item: {
+          id: "line-3",
+          name: "Bulwark",
+          category: "component",
+          unit: "units",
+          quantity: "4.0",
+          quality: 500,
+          qualityMatch: "at_least",
+          item: { id: "bulwark", type: "Component", name: "Bulwark" },
+        } as never,
+        onDraft: onDraft as never,
+      },
+    });
+
+    await wrapper.find("[data-test='input-itemQuantity']").setValue("5");
+    await wrapper.find("form").trigger("submit");
+    await flushPromises();
+
+    expect(onDraft).toHaveBeenCalledWith(
+      expect.objectContaining({ quantity: "5", quality: 500 }),
+    );
+  });
 });
