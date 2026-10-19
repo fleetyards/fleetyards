@@ -86,16 +86,16 @@ class FleetContractItem < ApplicationRecord
     [name.to_s.downcase, category, unit]
   end
 
-  # How narrowly the line asks. Several lines may share a position -- a part
-  # plain and crafted, or crafted at two sets of grades -- and a delivery that
-  # answers more than one goes to the narrowest that still has room, so one
-  # part cannot fill two lines. Higher sorts first.
-  def specificity
-    return [0, 0, 0] unless crafted?
-
-    grades = crafted_qualities || {}
-
-    [1, grades.size, grades.values.sum]
+  # What makes two lines the same request: the position, and -- for a crafted
+  # part -- the recipe, the grades and how they are read. The unique index
+  # says the same thing.
+  def request_identity
+    [
+      *position_identity,
+      crafted_blueprint_id,
+      (crafted_qualities || {}).transform_keys(&:to_s).sort.to_h,
+      crafted? ? quality_match : nil
+    ]
   end
 
   # Two lines asking for the same thing the same way would compete for every
@@ -104,13 +104,14 @@ class FleetContractItem < ApplicationRecord
   private def identity_is_not_already_asked_for
     return if fleet_contract.blank? || name.blank?
 
-    twin = fleet_contract.fleet_contract_items
+    twins = fleet_contract.fleet_contract_items
       .where.not(id: id)
       .where(category: category, unit: unit, crafted_blueprint_id: crafted_blueprint_id)
       .where("LOWER(name) = ?", name.to_s.downcase)
-      .any? { |other| (other.crafted_qualities || {}) == (crafted_qualities || {}) }
+      .where("COALESCE(crafted_qualities, '{}'::jsonb) = ?::jsonb", (crafted_qualities || {}).to_json)
+    twins = twins.where(quality_match: quality_match) if crafted?
 
-    return unless twin
+    return unless twins.exists?
 
     # Not a bare :taken -- "Name has already been taken" reads as though the
     # name alone were the conflict, when what collides is the whole identity the

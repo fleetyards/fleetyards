@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_19_150000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_19_160000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -722,7 +722,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_19_150000) do
     t.integer "quality_match", default: 0, null: false
     t.uuid "crafted_blueprint_id"
     t.jsonb "crafted_qualities"
-    t.index "fleet_contract_id, lower((name)::text), category, unit, COALESCE(crafted_blueprint_id, '00000000-0000-0000-0000-000000000000'::uuid), COALESCE(crafted_qualities, '{}'::jsonb)", name: "index_fleet_contract_items_on_identity", unique: true
+    t.index "fleet_contract_id, lower((name)::text), category, unit, COALESCE(crafted_blueprint_id, '00000000-0000-0000-0000-000000000000'::uuid), COALESCE(crafted_qualities, '{}'::jsonb), (CASE WHEN (crafted_blueprint_id IS NULL) THEN 0 ELSE quality_match END)", name: "index_fleet_contract_items_on_identity", unique: true
     t.index ["crafted_blueprint_id"], name: "index_fleet_contract_items_on_crafted_blueprint_id"
     t.index ["fleet_contract_id", "position"], name: "index_fleet_contract_items_on_fleet_contract_id_and_position"
     t.index ["item_type", "item_id"], name: "index_fleet_contract_items_on_item_type_and_item_id"

@@ -89,6 +89,39 @@ module Contracts
       assert_equal 1.to_d, lines[loose.id].delivered
     end
 
+    # Greedily, the part answering both would fill the line that names more
+    # slots, and the part only that line takes would have nowhere to go.
+    test "the deliveries fill every line they can, whatever order they arrive in" do
+      narrow = line(qualities: {1 => 800}, quantity: 1)
+      broad = line(qualities: {1 => 500, 2 => 100}, quantity: 1)
+
+      deliver(qualities: {1 => 900, 2 => 200}, quantity: 1)
+      deliver(qualities: {1 => 600, 2 => 200}, quantity: 1)
+
+      lines = progress.lines.index_by { |line| line.item.id }
+
+      assert_equal 1.to_d, lines[narrow.id].delivered
+      assert_equal 1.to_d, lines[broad.id].delivered
+    end
+
+    test "a line may ask for the same grades by another rule" do
+      line(qualities: {1 => 700})
+
+      assert_predicate build_line(qualities: {1 => 700}, quality_match: :exact), :valid?
+    end
+
+    test "a new contract cannot ask for the same crafted part twice" do
+      attributes = {name: "Bulwark", category: :component, unit: :units, quantity: 1,
+                    item_type: "Component", item_id: @component.id,
+                    crafted_blueprint_id: @blueprint.id, crafted_qualities: {"1" => 700}}
+
+      contract = build(:fleet_contract, fleet: @fleet, destination_fleet_inventory: @destination,
+        fleet_contract_items_attributes: [attributes, attributes])
+
+      assert_not contract.valid?
+      assert contract.errors[:fleet_contract_items].any?
+    end
+
     test "a contract cannot ask for the same crafted part twice the same way" do
       line(qualities: {1 => 700})
 

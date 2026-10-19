@@ -80,6 +80,7 @@ class FleetContract < ApplicationRecord
   validates :source_fleet_inventory, absence: true, unless: :transport?
   validate :inventories_belong_to_the_fleet
   validate :destination_is_not_the_source
+  validate :goods_asked_for_once
   validate :hangar_destination_is_the_authors
   validate :destination_selectable_by_editor, if: :destination_changing?
 
@@ -418,6 +419,21 @@ class FleetContract < ApplicationRecord
 
       errors.add(:base, :inventory_not_in_fleet)
     end
+  end
+
+  # A line checks itself against the lines already saved, which misses the
+  # ones written in the same request -- a new contract and its goods are one
+  # save, and two identical lines there would only meet the unique index.
+  #
+  # Read from the lines in memory only: loading the association here would
+  # cache it, and lines created through it afterwards would go missing from
+  # that cache.
+  private def goods_asked_for_once
+    lines = fleet_contract_items.target.reject(&:marked_for_destruction?)
+    return if lines.map(&:request_identity).uniq.size == lines.size
+
+    errors.add(:fleet_contract_items, :taken,
+      message: I18n.t("activerecord.errors.messages.contract_item_already_asked_for"))
   end
 
   private def destination_is_not_the_source
