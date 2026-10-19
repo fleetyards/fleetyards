@@ -12,7 +12,11 @@ const { enabled, query, settle } = vi.hoisted(() => {
   const enabled: Record<string, () => boolean> = {};
   const states: Record<
     string,
-    { data: Ref<unknown>; isPending: Ref<boolean> }
+    {
+      data: Ref<unknown>;
+      isPending: Ref<boolean>;
+      isPlaceholderData: Ref<boolean>;
+    }
   > = {};
 
   // `at` is where the options sit: after a fleet's slug, or an event's params.
@@ -21,7 +25,11 @@ const { enabled, query, settle } = vi.hoisted(() => {
     (...args: unknown[]) => {
       const options = args[at] as QueryOptions;
       enabled[key] = () => options.query.enabled.value;
-      states[key] = { data: ref(undefined), isPending: ref(true) };
+      states[key] = {
+        data: ref(undefined),
+        isPending: ref(true),
+        isPlaceholderData: ref(false),
+      };
 
       return states[key];
     };
@@ -42,6 +50,7 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   useFleetContract: query("contract", 2),
   useFleetEvent: query("event", 3),
   usePublicUser: query("user", 2),
+  useBlueprint: query("blueprint"),
 }));
 
 import Component from "./index.vue";
@@ -283,5 +292,71 @@ describe("CatalogueItemPopover", () => {
       document.querySelector("[data-test='stats-card-unavailable']"),
     ).not.toBeNull();
     expect(card()?.textContent).toContain("Gone");
+  });
+
+  describe("a crafted part", () => {
+    const crafted = {
+      blueprint: { id: "bp-1", name: "Glacier", slug: "glacier-bp" },
+      qualities: { 1: 1000 },
+    };
+
+    const recipe = {
+      costSlots: [
+        {
+          position: 1,
+          modifiers: [
+            {
+              propertyKey: "gpp_itemresource_coolantgeneration",
+              startQuality: 0,
+              endQuality: 1000,
+              modifierAtStart: 0.9,
+              modifierAtEnd: 1.1,
+            },
+          ],
+        },
+      ],
+    };
+
+    const glacier = {
+      name: "Glacier",
+      slug: "glacier",
+      category: "cooler",
+      typeData: { coolingRate: 100 },
+    };
+
+    // The card shows the part as crafting left it, against the catalogue's.
+    it("shows the stats as the recipe and grades left them", async () => {
+      const wrapper = await mount({
+        item: { type: "Component", slug: "glacier", name: "Glacier" },
+        crafted,
+      });
+
+      await tapOpen(wrapper);
+
+      expect(enabled.blueprint()).toBe(true);
+
+      settle("component", glacier);
+      settle("blueprint", recipe);
+      await nextTick();
+
+      const card = wrapper.findComponent({ name: "ComponentStatsCard" });
+
+      expect(card.props("stock")).toEqual(glacier);
+      expect(
+        (card.props("component") as { typeData: { coolingRate: number } })
+          .typeData.coolingRate,
+      ).toBeCloseTo(110);
+    });
+
+    it("fetches no recipe for goods that are not a part", async () => {
+      const wrapper = await mount({
+        item: { type: "Commodity", slug: "gold", name: "Gold" },
+        crafted,
+      });
+
+      await tapOpen(wrapper);
+
+      expect(enabled.blueprint()).toBe(false);
+    });
   });
 });

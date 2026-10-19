@@ -1,3 +1,4 @@
+import type { InventoryCraftedRef } from "@/services/fyApi";
 export type InventoryReference = {
   name?: string;
   slug?: string;
@@ -40,6 +41,8 @@ export type InventoryStockRecord = {
     slug?: string | null;
     listed?: boolean;
   } | null;
+  // A crafted lot: the recipe and the grades it was made from.
+  crafted?: InventoryCraftedRef;
 };
 
 export type InventoryVehicleReference = {
@@ -118,4 +121,6 @@ export type InventoryLedgerRecord = {
   createdAt?: string | null;
   inventory?: InventoryReference;
   item?: InventoryItemReference | null;
+  // Present on a crafted part only.
+  crafted?: InventoryCraftedRef;
 };

@@ -66,7 +66,21 @@ module InventoryLedgerEntry
       .index_by { |record| [record.class.name, record.id] }
   end
 
+  # The recipes the crafted lots among these rows were made from, in one
+  # query, keyed by id.
+  def self.crafted_blueprints(rows)
+    ids = rows.filter_map { |row| row.try(:crafted_blueprint_id) if row.try(:has_attribute?, :crafted_blueprint_id) }
+
+    return {} if ids.empty?
+
+    ::Blueprint.where(id: ids.uniq).index_by(&:id)
+  end
+
   ENTRY_TYPES = {deposit: 0, withdrawal: 1}.freeze
+
+  # What a player can craft and hold: parts and gear. A crafted commodity is
+  # just more of that commodity, which its grade already describes.
+  CRAFTED_ITEM_TYPES = %w[Component Equipment].freeze
 
   # What makes two entries the same stock position, and so the columns no single
   # entry may move on its own -- `InventoryStock#update_stock_item` moves all of
@@ -84,6 +98,12 @@ module InventoryLedgerEntry
 
   included do
     belongs_to :item, polymorphic: true, optional: true
+
+    # The recipe a crafted part was made from. Its worth lies in the grade of
+    # material that went into each of the recipe's slots, which
+    # `crafted_qualities` holds keyed by the slot's position: a re-parse
+    # rewrites every slot row under a new id, but the position stays.
+    belongs_to :crafted_blueprint, class_name: "Blueprint", optional: true
 
     # The transfer that wrote this entry, if one did. Both ledger tables point
     # at the same `inventory_transfers`, because a transfer may have one end in
@@ -106,6 +126,15 @@ module InventoryLedgerEntry
     validates :item_type, presence: true, if: :item_id?
     validate :withdrawal_does_not_exceed_stock, if: :withdrawal?
     validate :referenced_item_exists, if: :item_id?
+    # Checked when the crafting is written, or the part it is for changes --
+    # not on every later save: a recipe the game retires or reshapes must not
+    # make the entries crafted from it uneditable. A transfer carries a lot as
+    # it was recorded, for the same reason.
+    validate :crafted_from_a_recipe_for_the_item, if: -> {
+      (crafted_blueprint_id? || crafted_qualities.present?) && !from_transfer? &&
+        (new_record? || will_save_change_to_crafted_blueprint_id? || will_save_change_to_crafted_qualities? ||
+          will_save_change_to_item_id? || will_save_change_to_item_type?)
+    }
     # Existing rows predate the pairing, so only entries that touch either side
     # of it have to satisfy it. The item is a third side of it now: repointing a
     # `units` entry from a counted commodity to a bulk one would otherwise store
@@ -311,6 +340,71 @@ module InventoryLedgerEntry
     self.name = item.name
   end
 
+  def crafted?
+    crafted_blueprint_id.present?
+  end
+
+  # Keyed by the slot's position as a string, whichever way the caller wrote
+  # it: JSON object keys are strings anyway, and a jsonb column compares and
+  # groups them as written. An absent value stays NULL rather than becoming
+  # `{}`, which the stock would group apart from every entry without grades.
+  def crafted_qualities=(value)
+    value = value.to_h.transform_keys(&:to_s) if value.is_a?(Hash) || value.is_a?(ActionController::Parameters)
+
+    super(value.presence)
+  end
+
+  # The slots whose material moves a stat, which are the ones a crafted part
+  # has to say the grade of. A slot without modifiers takes any grade and
+  # changes nothing.
+  def self.graded_slot_positions(blueprint)
+    blueprint.cost_slots
+      .where(id: ::BlueprintCostModifier.select(:blueprint_cost_slot_id))
+      .pluck(:position)
+      .sort
+  end
+
+  private def crafted_from_a_recipe_for_the_item
+    if crafted_blueprint.blank?
+      errors.add(:crafted_blueprint_id, :blank)
+      return
+    end
+
+    unless item_type.in?(CRAFTED_ITEM_TYPES) && referenced_item?
+      errors.add(:crafted_blueprint_id, :invalid, message: "only a component or equipment item can be crafted")
+      return
+    end
+
+    unless ::Blueprint.making(item).exists?(id: crafted_blueprint_id)
+      errors.add(:crafted_blueprint_id, :invalid, message: "does not make #{item.name}")
+      return
+    end
+
+    crafted_qualities_cover_the_recipe
+  end
+
+  private def crafted_qualities_cover_the_recipe
+    # A recipe with no graded slot is recorded with no grades, which is stored
+    # as NULL.
+    qualities = crafted_qualities || {}
+
+    unless qualities.is_a?(Hash)
+      errors.add(:crafted_qualities, :invalid, message: "must name a grade per recipe slot")
+      return
+    end
+
+    expected = ::InventoryLedgerEntry.graded_slot_positions(crafted_blueprint).map(&:to_s)
+
+    unless qualities.keys.map(&:to_s).sort == expected.sort
+      errors.add(:crafted_qualities, :invalid, message: "must name a grade for slots #{expected.join(", ")}")
+      return
+    end
+
+    return if qualities.values.all? { |grade| grade.is_a?(Integer) && grade.between?(0, 1000) }
+
+    errors.add(:crafted_qualities, :invalid, message: "grades must be whole numbers from 0 to 1000")
+  end
+
   private def referenced_item_exists
     return unless item_type.in?(ITEM_TYPES)
 
@@ -396,6 +490,26 @@ module InventoryLedgerEntry
 
     if quantity > current
       errors.add(:quantity, :insufficient_stock, message: "exceeds current stock (#{current})")
+      return
     end
+
+    crafted_withdrawal_does_not_exceed_lot if crafted?
+  end
+
+  # A crafted lot is stock of its own: the position holding enough does not
+  # mean this lot does, and an overdrawn lot drops out of the stock unseen.
+  # Matched on everything `current_stock` groups a lot by, the grade column
+  # included.
+  private def crafted_withdrawal_does_not_exceed_lot
+    lot = self.class.where(
+      self.class.inventory_foreign_key => inventory_id, :name => name, :category => category, :unit => unit,
+      :quality => quality, :crafted_blueprint_id => crafted_blueprint_id
+    )
+    lot = crafted_qualities.nil? ? lot.where(crafted_qualities: nil) : lot.where("crafted_qualities = ?::jsonb", crafted_qualities.to_json)
+    current = lot.sum("CASE WHEN entry_type = 0 THEN quantity ELSE -quantity END")
+
+    return if quantity <= current
+
+    errors.add(:quantity, :insufficient_stock, message: "exceeds the crafted lot's stock (#{current})")
   end
 end

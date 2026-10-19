@@ -511,6 +511,7 @@
         "transfers": "轉移",
         "acceptTransfer": "接受轉移",
         "pickItem": "選擇物品",
+        "crafting": "製作",
         "reportTransfer": "檢舉轉移"
       },
       "notifications": {

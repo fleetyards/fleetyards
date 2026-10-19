@@ -5,7 +5,12 @@ import {
   segmentsOf,
   valueAt,
 } from "@/frontend/composables/useQualityRamp";
-import type { BlueprintCostSlot, LoadoutComponentRef } from "@/services/fyApi";
+import type {
+  BlueprintCostSlot,
+  Component,
+  Equipment,
+  LoadoutComponentRef,
+} from "@/services/fyApi";
 
 /**
  * The part figure each crafted stat scales, by the stat's property key.
@@ -40,6 +45,8 @@ export interface CraftedPart {
 }
 
 export type CraftedChange = { additive: boolean; value: number };
+
+export type CraftedChanges = Map<string, CraftedChange>;
 
 /**
  * What every stat ends up at for the qualities chosen, by property key: a
@@ -81,6 +88,37 @@ const changed = (value: unknown, change: CraftedChange) => {
   return change.additive ? value + change.value : value * change.value;
 };
 
+// A part's own figures as the changes leave them. Everything the changes do
+// not name is the catalogue's.
+const craftedTypeData = (
+  typeData: Record<string, unknown>,
+  changes: CraftedChanges,
+) => {
+  const crafted: Record<string, unknown> = { ...typeData };
+
+  changes.forEach((change, key) => {
+    if (key === WEAPON_DAMAGE) {
+      const perShot = crafted.damagePerShot;
+      if (perShot && typeof perShot === "object") {
+        crafted.damagePerShot = Object.fromEntries(
+          Object.entries(perShot).map(([type, value]) => [
+            type,
+            changed(value, change),
+          ]),
+        );
+      }
+      return;
+    }
+
+    const field = CRAFTED_COMPONENT_FIELDS[key];
+    if (field && field in crafted) {
+      crafted[field] = changed(crafted[field], change);
+    }
+  });
+
+  return crafted;
+};
+
 /**
  * The part as crafted: its figures moved by the recipe's factors at the
  * qualities chosen. The catalogue's figure is the neutral grade's, so a part
@@ -93,30 +131,103 @@ export const craftedComponent = (
 ): LoadoutComponentRef => {
   if (!component.typeData) return component;
 
-  const typeData: Record<string, unknown> = { ...component.typeData };
+  return {
+    ...component,
+    typeData: craftedTypeData(
+      component.typeData as Record<string, unknown>,
+      craftedFactors(slots, qualityFor),
+    ) as LoadoutComponentRef["typeData"],
+  };
+};
 
-  craftedFactors(slots, qualityFor).forEach((change, key) => {
-    if (key === WEAPON_DAMAGE) {
-      const perShot = typeData.damagePerShot;
-      if (perShot && typeof perShot === "object") {
-        typeData.damagePerShot = Object.fromEntries(
-          Object.entries(perShot).map(([type, value]) => [
-            type,
-            changed(value, change),
-          ]),
-        );
-      }
-      return;
-    }
+// How much damage a part takes before it fails, kept with its durability
+// rather than with its type's own figures.
+const INTEGRITY = "gpp_health_maxhealth";
 
-    const field = CRAFTED_COMPONENT_FIELDS[key];
-    if (field && field in typeData) {
-      typeData[field] = changed(typeData[field], change);
-    }
-  });
+/**
+ * A catalogue component as crafted -- its integrity included, which a loadout
+ * socket's slimmer record does not carry.
+ */
+export const craftedCatalogueComponent = (
+  component: Component,
+  changes: CraftedChanges,
+): Component => {
+  const integrity = changes.get(INTEGRITY);
+  const durability =
+    integrity && component.durability
+      ? {
+          ...component.durability,
+          health: changed(component.durability.health, integrity) as
+            number | undefined,
+        }
+      : component.durability;
 
   return {
     ...component,
-    typeData: typeData as LoadoutComponentRef["typeData"],
+    typeData: craftedTypeData(
+      (component.typeData ?? {}) as Record<string, unknown>,
+      changes,
+    ) as Component["typeData"],
+    durability,
   };
+};
+
+// The equipment figures a recipe moves, as `BlueprintStatBases::EQUIPMENT`
+// pairs them on the server.
+const CRAFTED_EQUIPMENT_FIELDS: Record<string, keyof Equipment> = {
+  gpp_armor_damagemitigation: "damageReduction",
+  gpp_weapon_firerate: "rateOfFire",
+  gpp_armor_radiationdissipation: "radiationScrubRate",
+};
+
+// Armour states its band as one string -- "-75 / 98 °C" -- and some leave the
+// degree sign off; the pattern `BlueprintStatBases` reads it with.
+const TEMPERATURE = /^\s*(-?[\d.]+)\s*\/\s*(-?[\d.]+)\s*°?\s*C\s*$/;
+const TEMPERATURE_KEY = "gpp_armor_temperature";
+
+const roundedDegrees = (value: number) => Math.round(value * 10) / 10;
+
+const craftedTemperature = (
+  rating: string | null | undefined,
+  changes: CraftedChanges,
+) => {
+  const match = rating?.match(TEMPERATURE);
+  if (!match) return rating;
+
+  let min = Number(match[1]);
+  let max = Number(match[2]);
+  let moved = false;
+
+  changes.forEach((change, key) => {
+    if (!key.startsWith(TEMPERATURE_KEY)) return;
+
+    moved = true;
+    if (key.endsWith("min")) {
+      min = changed(min, change) as number;
+    } else {
+      max = changed(max, change) as number;
+    }
+  });
+
+  return moved ? `${roundedDegrees(min)} / ${roundedDegrees(max)} °C` : rating;
+};
+
+/** A piece of equipment as crafted, its temperature band included. */
+export const craftedEquipment = (
+  equipment: Equipment,
+  changes: CraftedChanges,
+): Equipment => {
+  const crafted = { ...equipment } as unknown as Record<string, unknown>;
+
+  changes.forEach((change, key) => {
+    const field = CRAFTED_EQUIPMENT_FIELDS[key];
+    if (field) crafted[field] = changed(crafted[field], change);
+  });
+
+  crafted.temperatureRating = craftedTemperature(
+    equipment.temperatureRating,
+    changes,
+  );
+
+  return crafted as unknown as Equipment;
 };

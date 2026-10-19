@@ -9,6 +9,7 @@ json.net_quantity stock_item.net_quantity.to_f
 json.quality_min stock_item.quality_min
 json.quality_max stock_item.quality_max
 json.entries_count stock_item.entries_count
+json.catalogue_identity stock_item.catalogue_identity?
 
 json.last_entry_at stock_item.last_entry_at
 

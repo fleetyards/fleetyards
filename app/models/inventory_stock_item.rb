@@ -35,6 +35,12 @@ class InventoryStockItem
     reference_entry&.item
   end
 
+  # Asked of the inventory rather than read off the reference entry: one entry
+  # pointing at the catalogue is enough, whichever entry is the newest.
+  def catalogue_identity?
+    inventory ? inventory.catalogue_identity?(self) : item.present?
+  end
+
   def item_available?
     reference_entry.nil? || reference_entry.item_available?
   end

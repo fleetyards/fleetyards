@@ -98,6 +98,10 @@ const rowStats = computed(() =>
 
 const hidden = computed(() => restStats.value.length - rowStats.value.length);
 
+// A figure that differs from the catalogue's says what the catalogue has.
+const stockLabel = (stat: HardpointStat) =>
+  stat.stock ? t("labels.statsCard.stock", { value: stat.stock }) : undefined;
+
 const hasRows = computed(() => rowStats.value.length > 0 || !!slots.rows);
 
 const typeLabel = computed(() =>
@@ -287,7 +291,13 @@ const hasBody = computed(
           data-test="stats-card-hero"
         >
           <span class="stats-card__label">{{ stat.label }}</span>
-          <span class="stats-card__hero-value">{{ stat.value }}</span>
+          <span
+            v-tooltip="stockLabel(stat)"
+            class="stats-card__hero-value"
+            :class="{ 'stats-card__value--changed': stat.stock }"
+          >
+            {{ stat.value }}
+          </span>
         </div>
 
         <div v-if="hasRows" class="stats-card__rows">
@@ -299,7 +309,12 @@ const hasBody = computed(
             data-test="stats-card-row"
           >
             <span class="stats-card__label">{{ stat.label }}</span>
-            <span class="stats-card__row-value" :title="stat.value">
+            <span
+              v-tooltip="stockLabel(stat)"
+              class="stats-card__row-value"
+              :class="{ 'stats-card__value--changed': stat.stock }"
+              :title="stat.stock ? undefined : stat.value"
+            >
               {{ stat.value }}
             </span>
           </div>

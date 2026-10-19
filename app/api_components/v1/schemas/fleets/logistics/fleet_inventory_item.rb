@@ -24,6 +24,8 @@ module V1
               transfer: ::V1::Schemas::Transfers::InventoryEntryTransfer,
               image: ::Shared::V1::Schemas::MediaFile,
               item: ::V1::Schemas::InventoryItemRef,
+              # Present on a crafted part only.
+              crafted: ::V1::Schemas::InventoryCraftedRef,
               inventory: ::V1::Schemas::InventoryRef,
               member: ::V1::Schemas::UserRef,
               addedBy: ::V1::Schemas::UserRef,

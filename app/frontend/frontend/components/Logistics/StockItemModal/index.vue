@@ -40,6 +40,9 @@ const { displayAlert } = useAppNotifications();
 
 const submitting = ref(false);
 
+// A catalogue record names and files its position; only the unit may move.
+const catalogueIdentity = computed(() => !!props.stockItem.catalogueIdentity);
+
 const validationSchema = {
   name: "required|min:2",
 };
@@ -107,6 +110,12 @@ const onSubmit = handleSubmit(async (values) => {
         translation-key="logistics.itemName"
         :rules="validationSchema.name"
         :label="t('labels.logistics.itemName')"
+        :disabled="catalogueIdentity"
+        :info="
+          catalogueIdentity
+            ? t('labels.logistics.catalogueIdentity')
+            : undefined
+        "
       />
       <BaseSelect
         v-model="category"
@@ -115,6 +124,7 @@ const onSubmit = handleSubmit(async (values) => {
         :options="categoryOptions"
         :label="t('labels.logistics.category')"
         :searchable="false"
+        :disabled="catalogueIdentity"
       />
       <BaseSelect
         v-if="unitOptions.length > 1"

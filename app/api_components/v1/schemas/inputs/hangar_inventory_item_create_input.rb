@@ -18,7 +18,14 @@ module V1
             image: {type: [:string, :null]},
             notes: {type: [:string, :null]},
             itemType: ::V1::Schemas::Enums::NullableInventoryItemTypeEnum,
-            itemId: {type: [:string, :null], format: :uuid}
+            itemId: {type: [:string, :null], format: :uuid},
+            # A crafted part: the recipe it was made from, and the grade of material
+            # in each of the recipe's graded slots, keyed by the slot's position.
+            craftedBlueprintId: {type: [:string, :null], format: :uuid},
+            craftedQualities: {
+              type: [:object, :null],
+              additionalProperties: {type: :integer, minimum: 0, maximum: 1000}
+            }
           },
           required: %w[name quantity],
           additionalProperties: false

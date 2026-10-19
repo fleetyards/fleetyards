@@ -56,4 +56,48 @@ describe("ComponentStatsCard", () => {
       HARDPOINT_GLYPHS[HardpointCategoryEnum.QUANTUMDRIVE],
     );
   });
+
+  describe("integrity", () => {
+    const shield = {
+      id: "2",
+      name: "Bulwark",
+      slug: "bulwark",
+      category: "shieldgenerator",
+      typeData: { maxHealth: 1000 },
+      durability: { health: 500 },
+    } as unknown as Component;
+
+    const rows = async (props: Record<string, unknown>) => {
+      const wrapper = await mountWithDefaults(ComponentStatsCard, {
+        props: { component: shield, compact: true, ...props },
+        plugins: [router()],
+      });
+
+      return wrapper.findAll("[data-test='stats-card-row']");
+    };
+
+    it("shows a part's integrity when floating over a list", async () => {
+      const integrity = (await rows({})).find((row) =>
+        row.text().includes("Integrity"),
+      );
+
+      expect(integrity?.text()).toContain("500");
+    });
+
+    // A crafted part against the catalogue's: what crafting moved is marked.
+    it("marks the figures crafting moved", async () => {
+      const crafted = {
+        ...shield,
+        durability: { health: 600 },
+      } as unknown as Component;
+
+      const integrity = (
+        await rows({ component: crafted, stock: shield })
+      ).find((row) => row.text().includes("Integrity"));
+
+      expect(integrity?.find(".stats-card__value--changed").exists()).toBe(
+        true,
+      );
+    });
+  });
 });

@@ -24,11 +24,14 @@ class InventoryStockItemChange
   validate :category_is_known
   validate :unit_is_known
   validate :unit_fits_category
+  validate :catalogue_identity_kept
 
   def initialize(stock_item, attributes = {}, items: nil)
     @name = attributes.fetch(:name, stock_item.name).to_s.strip
     @category = attributes.fetch(:category, stock_item.category).to_s
     @unit = attributes.fetch(:unit, stock_item.unit).to_s
+    @current_name = stock_item.name
+    @current_category = stock_item.category.to_s
     # The reference entry's item is the fallback for a caller that has no
     # inventory to ask -- the console and the tests.
     @items = items.presence || [stock_item.item]
@@ -56,6 +59,20 @@ class InventoryStockItemChange
     return if InventoryLedgerEntry::UNITS.key?(unit.to_sym)
 
     errors.add(:unit, :inclusion)
+  end
+
+  # A position holding a catalogue record is named and filed by that record --
+  # a crafted lot's grades included, which mean nothing under another name. Only
+  # its unit may move, where the record allows more than one, and its name may
+  # follow the record's own when a game build renames it.
+  private def catalogue_identity_kept
+    records = items.compact
+    return if records.empty?
+
+    if name != @current_name && records.none? { |record| record.name == name }
+      errors.add(:name, :invalid, message: "is set by the catalogue item")
+    end
+    errors.add(:category, :invalid, message: "is set by the catalogue item") if category != @current_category
   end
 
   private def unit_fits_category

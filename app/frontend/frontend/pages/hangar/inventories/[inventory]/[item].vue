@@ -18,11 +18,13 @@ import {
   type InventoryStockPositionInput,
   useHangarInventory,
   useHangarInventoryStockItem,
+  useHangarInventoryStock,
   useHangarInventoryItems,
   useDestroyHangarInventoryItem,
   useUpdateHangarInventoryStockItem,
   useDestroyHangarInventoryStockItem,
 } from "@/services/fyApi";
+import { usePositionLots } from "@/frontend/composables/useStockLots";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -44,6 +46,14 @@ const {
   refetch: refetchStockItem,
   ...asyncStatus
 } = useHangarInventoryStockItem(inventorySlug, itemSlug);
+
+const { data: stock, refetch: refetchStock } =
+  useHangarInventoryStock(inventorySlug);
+
+const { lots, showLots } = usePositionLots(
+  stock,
+  computed(() => stockItem.value?.id),
+);
 
 const historyQuery = computed(() => ({
   q: {
@@ -81,7 +91,11 @@ const destroyEntry = (entry: HangarInventoryItem) => {
           text: t("messages.logistics.inventoryItem.destroy.success"),
         });
 
-        await Promise.all([refetchStockItem(), refetchHistory()]);
+        await Promise.all([
+          refetchStockItem(),
+          refetchHistory(),
+          refetchStock(),
+        ]);
       } catch {
         displayAlert({
           text: t("messages.logistics.inventoryItem.destroy.failure"),
@@ -126,7 +140,11 @@ const openEditModal = () => {
             params: { inventory: inventorySlug.value, item: updated.slug },
           });
         } else {
-          await Promise.all([refetchStockItem(), refetchHistory()]);
+          await Promise.all([
+            refetchStockItem(),
+            refetchHistory(),
+            refetchStock(),
+          ]);
         }
       },
     },
@@ -213,6 +231,18 @@ const crumbs = computed<Crumb[]>(() => [
         </Teleport>
 
         <StockItemPanel :stock-item="stockItem" />
+
+        <template v-if="showLots">
+          <Heading size="lg">
+            {{ t("labels.logistics.lots") }}
+          </Heading>
+
+          <InventoryLedgerTables
+            active-tab="stock"
+            :stock-records="lots"
+            :log-records="[]"
+          />
+        </template>
 
         <Heading size="lg">
           {{ t("labels.logistics.history") }}

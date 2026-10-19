@@ -9,6 +9,7 @@ import { type RouteLocationRaw } from "vue-router";
 import StatsCard from "@/frontend/components/StatsCard/index.vue";
 import { type StatsCardBadge } from "@/frontend/components/StatsCard/types";
 import { useEquipmentStats } from "@/frontend/composables/useEquipmentStats";
+import { markedAgainstStock } from "@/frontend/components/StatsCard/stock";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type Equipment } from "@/services/fyApi";
 
@@ -23,10 +24,14 @@ type Props = {
   // drops the link.
   to?: RouteLocationRaw | false;
   loading?: boolean;
+  // The catalogue's record, where `equipment` is a crafted one: the figures
+  // crafting moved are marked against it.
+  stock?: Equipment;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   equipment: undefined,
+  stock: undefined,
   compact: false,
   name: undefined,
   to: undefined,
@@ -37,7 +42,15 @@ const emit = defineEmits<{ navigate: [] }>();
 
 const { t } = useI18n();
 
-const stats = useEquipmentStats(() => props.equipment);
+const craftedStats = useEquipmentStats(() => props.equipment);
+const stockStats = useEquipmentStats(() => props.stock);
+
+const stats = computed(() =>
+  markedAgainstStock(
+    craftedStats.value,
+    props.stock ? stockStats.value : undefined,
+  ),
+);
 
 const subtitle = computed(() =>
   [props.equipment?.manufacturer?.name, props.equipment?.itemTypeLabel]

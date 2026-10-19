@@ -368,6 +368,7 @@
         }
       },
       "statsCard": {
+        "stock": "原廠：%{value}",
         "more": "詳情頁另有 %{count} 項",
         "unavailable": "無法載入這些詳情。",
         "loading": "正在載入 %{name}…",
@@ -1845,6 +1846,7 @@
         "subType": "子類型",
         "retired": "已不在目前版本中",
         "noMetrics": "該部件沒有記錄任何數據。",
+        "integrity": "完整度",
         "durability": {
           "health": "耐久",
           "mass": "質量",
@@ -3418,6 +3420,15 @@
         "componentCategory": "組件類型",
         "commodityType": "商品類型",
         "equipmentItemType": "裝備類型",
+        "crafted": {
+          "page": "由 %{recipe} 以品質 %{grades} 製作。醒目標示的數值與目錄不同。",
+          "showStock": "顯示原廠數值",
+          "edit": "記錄製作方式",
+          "summary": "已製作 %{grades}",
+          "lot": "已製作",
+          "grade": "品質 %{quality}",
+          "slotGrade": "槽位 %{position}：%{quality}"
+        },
         "itemPicker": {
           "field": "物品",
           "placeholder": "選擇物品",
@@ -3501,9 +3512,12 @@
         "entries": "Entries",
         "lastEntry": "Last entry",
         "history": "History",
+        "lots": "批次",
         "linkedItem": "Linked item",
+        "catalogueIdentity": "名稱和類別取自關聯的目錄物品。",
         "itemUnavailable": "Not in current patch",
         "itemUnavailableHint": "The current game build no longer ships this item. Entries keep it, but it cannot be picked for new ones.",
+        "openInCatalogue": "在目錄中開啟",
         "qualityRange": "Quality",
         "stockItem": "Stock Item",
         "overCapacity": "超出貨艙容量",
@@ -3557,8 +3571,7 @@
         "transferFromFriends": "我的好友",
         "towardsContract": "計入合約",
         "noContract": "不計入合約",
-        "forContract": "用於",
-        "openInCatalogue": "在目錄中開啟"
+        "forContract": "用於"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {

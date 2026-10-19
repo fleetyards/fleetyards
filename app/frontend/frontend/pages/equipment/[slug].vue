@@ -17,6 +17,9 @@ import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import EquipmentStatsCard from "@/frontend/components/StatsCard/Equipment/index.vue";
+import Alert from "@/shared/components/base/Alert/index.vue";
+import { useCraftedFromRoute } from "@/frontend/composables/useCraftedFromRoute";
+import { craftedEquipment } from "@/frontend/composables/craftedComponent";
 import {
   BlueprintCraftableTypeEnum,
   useBlueprints as useBlueprintsQuery,
@@ -31,7 +34,18 @@ const route = useRoute();
 
 const slug = computed(() => route.params.slug as string);
 
-const { data: equipment, ...asyncStatus } = useEquipmentItemQuery(slug);
+const { data: stock, ...asyncStatus } = useEquipmentItemQuery(slug);
+
+// A crafted part, where the address names its recipe and grades: the page
+// shows the figures they leave, marked against the catalogue's.
+const {
+  crafted,
+  recipe: craftedRecipe,
+  gradesLabel: craftedGradesLabel,
+  stockRoute,
+} = useCraftedFromRoute(stock, craftedEquipment);
+
+const equipment = computed(() => crafted.value ?? stock.value);
 
 // Which recipes make this. Looked up by id, so only once the item has arrived.
 const { data: blueprints, isPending: recipesPending } = useBlueprintsQuery(
@@ -141,8 +155,30 @@ watch(
           {{ equipment.description }}
         </p>
 
+        <Alert
+          v-if="crafted && craftedRecipe"
+          :title="t('labels.logistics.crafted.lot')"
+          size="compact"
+          data-test="equipment-crafted"
+        >
+          {{
+            t("labels.logistics.crafted.page", {
+              recipe: craftedRecipe.name,
+              grades: craftedGradesLabel,
+            })
+          }}
+          <template #actions>
+            <router-link :to="stockRoute">
+              {{ t("labels.logistics.crafted.showStock") }}
+            </router-link>
+          </template>
+        </Alert>
+
         <div class="equipment-page__columns">
-          <EquipmentStatsCard :equipment="equipment" />
+          <EquipmentStatsCard
+            :equipment="equipment"
+            :stock="crafted ? stock : undefined"
+          />
 
           <div class="equipment-page__rail">
             <MetricsCard

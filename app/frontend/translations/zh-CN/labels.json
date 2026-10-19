@@ -368,6 +368,7 @@
         }
       },
       "statsCard": {
+        "stock": "原厂：%{value}",
         "more": "详情页另有 %{count} 项",
         "unavailable": "无法加载这些详情。",
         "loading": "正在加载 %{name}…",
@@ -1845,6 +1846,7 @@
         "subType": "子类型",
         "retired": "已不在当前版本中",
         "noMetrics": "该部件没有记录任何数据。",
+        "integrity": "完整度",
         "durability": {
           "health": "耐久",
           "mass": "质量",
@@ -3418,6 +3420,15 @@
         "componentCategory": "组件类型",
         "commodityType": "商品类型",
         "equipmentItemType": "装备类型",
+        "crafted": {
+          "page": "由 %{recipe} 以品质 %{grades} 制作。高亮的数值与目录不同。",
+          "showStock": "显示原厂数值",
+          "edit": "记录制作方式",
+          "summary": "已制作 %{grades}",
+          "lot": "已制作",
+          "grade": "品质 %{quality}",
+          "slotGrade": "槽位 %{position}：%{quality}"
+        },
         "itemPicker": {
           "field": "物品",
           "placeholder": "选择物品",
@@ -3501,9 +3512,12 @@
         "entries": "Entries",
         "lastEntry": "Last entry",
         "history": "History",
+        "lots": "批次",
         "linkedItem": "Linked item",
+        "catalogueIdentity": "名称和类别取自关联的目录物品。",
         "itemUnavailable": "Not in current patch",
         "itemUnavailableHint": "The current game build no longer ships this item. Entries keep it, but it cannot be picked for new ones.",
+        "openInCatalogue": "在目录中打开",
         "qualityRange": "Quality",
         "stockItem": "Stock Item",
         "overCapacity": "超出货舱容量",
@@ -3557,8 +3571,7 @@
         "transferFromFriends": "我的好友",
         "towardsContract": "计入合约",
         "noContract": "不计入合约",
-        "forContract": "用于",
-        "openInCatalogue": "在目录中打开"
+        "forContract": "用于"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {

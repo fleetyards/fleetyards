@@ -175,6 +175,22 @@ describe("Popover on touch", () => {
     expect(panel()).toBeNull();
   });
 
+  // A finger dragged across a card taller than the space under it scrolls the
+  // page; that is reading the card, not leaving it.
+  it("stays open when the page scrolls under a touch on the card", async () => {
+    const wrapper = mountPopover();
+    const trigger = wrapper.find("[data-test='popover-trigger']");
+
+    tap(trigger.element);
+    await vi.advanceTimersByTimeAsync(0);
+
+    panel()!.dispatchEvent(new Event("pointerdown", { bubbles: true }));
+    window.dispatchEvent(new Event("scroll"));
+    await vi.advanceTimersByTimeAsync(0);
+
+    expect(panel()).not.toBeNull();
+  });
+
   it("keeps the second tap from reaching a clickable row around it too", async () => {
     const onRowClick = vi.fn();
     const row = document.createElement("div");

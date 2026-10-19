@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import {
+  craftedCatalogueComponent,
   craftedComponent,
+  craftedEquipment,
   craftedFactors,
 } from "@/frontend/composables/craftedComponent";
 import {
@@ -145,5 +147,66 @@ describe("craftedComponent", () => {
     );
 
     expect(crafted.typeData).toEqual(shield.typeData);
+  });
+});
+
+describe("craftedCatalogueComponent", () => {
+  it("scales a part's integrity", () => {
+    const crafted = craftedCatalogueComponent(
+      {
+        name: "Bulwark",
+        typeData: {},
+        durability: { health: 500, mass: 9 },
+      } as never,
+      new Map([["gpp_health_maxhealth", { additive: false, value: 1.2 }]]),
+    );
+
+    expect(crafted.durability).toEqual({ health: 600, mass: 9 });
+  });
+
+  it("does not touch the catalogue's own record", () => {
+    const stock = { name: "Bulwark", typeData: { maxHealth: 1000 } };
+
+    craftedCatalogueComponent(
+      stock as never,
+      new Map([["gpp_shield_maxhealth", { additive: false, value: 1.1 }]]),
+    );
+
+    expect(stock.typeData.maxHealth).toBe(1000);
+  });
+});
+
+describe("craftedEquipment", () => {
+  it("scales an armour's damage reduction", () => {
+    const crafted = craftedEquipment(
+      { name: "Antium", damageReduction: 0.3 } as never,
+      new Map([
+        ["gpp_armor_damagemitigation", { additive: false, value: 1.1 }],
+      ]),
+    );
+
+    expect(crafted.damageReduction).toBeCloseTo(0.33);
+  });
+
+  // The band is one string, so crafting rewrites the string.
+  it("moves an armour's temperature band", () => {
+    const crafted = craftedEquipment(
+      { name: "Antium", temperatureRating: "-70 / 100 °C" } as never,
+      new Map([
+        ["gpp_armor_temperaturemin", { additive: false, value: 1.1 }],
+        ["gpp_armor_temperaturemax", { additive: false, value: 1.1 }],
+      ]),
+    );
+
+    expect(crafted.temperatureRating).toBe("-77 / 110 °C");
+  });
+
+  it("leaves a band it cannot read alone", () => {
+    const crafted = craftedEquipment(
+      { name: "Antium", temperatureRating: "cold-rated" } as never,
+      new Map([["gpp_armor_temperaturemin", { additive: false, value: 1.1 }]]),
+    );
+
+    expect(crafted.temperatureRating).toBe("cold-rated");
   });
 });

@@ -368,6 +368,7 @@
         }
       },
       "statsCard": {
+        "stock": "Serie: %{value}",
         "more": "+%{count} weitere auf der Detailseite",
         "unavailable": "Diese Details konnten nicht geladen werden.",
         "loading": "%{name} wird geladen…",
@@ -1845,6 +1846,7 @@
         "subType": "Untertyp",
         "retired": "Nicht mehr im aktuellen Build",
         "noMetrics": "Für diese Komponente sind keine Werte hinterlegt.",
+        "integrity": "Integrität",
         "durability": {
           "health": "Trefferpunkte",
           "mass": "Masse",
@@ -3421,6 +3423,15 @@
         "componentCategory": "Komponententyp",
         "commodityType": "Warentyp",
         "equipmentItemType": "Ausrüstungstyp",
+        "crafted": {
+          "page": "Hergestellt aus %{recipe} mit den Qualitäten %{grades}. Hervorgehobene Werte weichen vom Katalog ab.",
+          "showStock": "Serienwerte anzeigen",
+          "edit": "Festhalten, wie es hergestellt wurde",
+          "summary": "Hergestellt %{grades}",
+          "lot": "Hergestellt",
+          "grade": "Q %{quality}",
+          "slotGrade": "Slot %{position}: %{quality}"
+        },
         "itemPicker": {
           "field": "Gegenstand",
           "placeholder": "Gegenstand wählen",
@@ -3504,9 +3515,12 @@
         "entries": "Entries",
         "lastEntry": "Last entry",
         "history": "History",
+        "lots": "Chargen",
         "linkedItem": "Linked item",
+        "catalogueIdentity": "Name und Kategorie stammen vom verknüpften Katalogeintrag.",
         "itemUnavailable": "Not in current patch",
         "itemUnavailableHint": "The current game build no longer ships this item. Entries keep it, but it cannot be picked for new ones.",
+        "openInCatalogue": "Im Katalog öffnen",
         "qualityRange": "Quality",
         "stockItem": "Stock Item",
         "overCapacity": "über der Frachtkapazität",
@@ -3560,8 +3574,7 @@
         "transferFromFriends": "Meine Freunde",
         "towardsContract": "Für einen Auftrag",
         "noContract": "Kein Auftrag",
-        "forContract": "für",
-        "openInCatalogue": "Im Katalog öffnen"
+        "forContract": "für"
       },
       "hangarInventories": "Inventare",
       "adminNotifications": {

@@ -511,6 +511,7 @@
         "transfers": "Transfers",
         "acceptTransfer": "Transfer annehmen",
         "pickItem": "Gegenstand wählen",
+        "crafting": "Herstellung",
         "reportTransfer": "Transfer melden"
       },
       "notifications": {

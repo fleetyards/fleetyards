@@ -11,8 +11,10 @@ import DuotoneGlyph from "@/shared/components/DuotoneGlyph/index.vue";
 import { categoryIcon } from "@/frontend/components/Models/Hardpoints/categoryIcon";
 import { type StatsCardBadge } from "@/frontend/components/StatsCard/types";
 import { useComponentStats } from "@/frontend/composables/useComponentStats";
+import { markedAgainstStock } from "@/frontend/components/StatsCard/stock";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type Component } from "@/services/fyApi";
+import { type HardpointStat } from "@/frontend/composables/useHardpointStats";
 
 type Props = {
   component?: Component;
@@ -25,6 +27,9 @@ type Props = {
   // drops the link.
   to?: RouteLocationRaw | false;
   loading?: boolean;
+  // The catalogue's record, where `component` is a crafted one: the figures
+  // crafting moved are marked against it.
+  stock?: Component;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -33,13 +38,42 @@ const props = withDefaults(defineProps<Props>(), {
   name: undefined,
   to: undefined,
   loading: false,
+  stock: undefined,
 });
 
 const emit = defineEmits<{ navigate: [] }>();
 
-const { t, tExists } = useI18n();
+const { t, tExists, toNumber } = useI18n();
 
-const allStats = useComponentStats(() => props.component);
+const craftedStats = useComponentStats(() => props.component);
+const stockStats = useComponentStats(() => props.stock);
+
+// How much damage the part takes before it fails -- the figure crafting moves
+// on most recipes -- which the detail page shows with the rest of its
+// durability, and the card floating over a list has nowhere else to say. First
+// among the rows, so the card's row limit never cuts it.
+const withIntegrity = (stats: HardpointStat[], component?: Component) => {
+  const health = component?.durability?.health;
+
+  if (!props.compact || !health) return stats;
+
+  return [
+    {
+      key: "component.integrity",
+      label: t("labels.component.integrity"),
+      value: String(toNumber(Math.round(health), "integer")),
+      raw: health,
+    },
+    ...stats,
+  ];
+};
+
+const allStats = computed(() =>
+  markedAgainstStock(
+    withIntegrity(craftedStats.value, props.component),
+    props.stock ? withIntegrity(stockStats.value, props.stock) : undefined,
+  ),
+);
 
 // On the detail page a mode of the item gets a card of its own beside this
 // one; floating over a list, the card is all there is, so it keeps them.

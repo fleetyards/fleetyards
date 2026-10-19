@@ -27520,6 +27520,8 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         item:
           "$ref": "#/components/schemas/InventoryItemRef"
+        crafted:
+          "$ref": "#/components/schemas/InventoryCraftedRef"
         inventory:
           "$ref": "#/components/schemas/InventoryRef"
         member:
@@ -27582,6 +27584,19 @@ components:
           - string
           - 'null'
           format: uuid
+        craftedBlueprintId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        craftedQualities:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: integer
+            minimum: 0
+            maximum: 1000
       required:
       - name
       - quantity
@@ -27695,6 +27710,8 @@ components:
           type: number
         item:
           "$ref": "#/components/schemas/InventoryStockItemRef"
+        crafted:
+          "$ref": "#/components/schemas/InventoryCraftedRef"
         inventory:
           "$ref": "#/components/schemas/InventoryRef"
       required:
@@ -31092,6 +31109,8 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         item:
           "$ref": "#/components/schemas/InventoryItemRef"
+        crafted:
+          "$ref": "#/components/schemas/InventoryCraftedRef"
         inventory:
           "$ref": "#/components/schemas/InventoryRef"
         createdAt:
@@ -31145,6 +31164,19 @@ components:
           - string
           - 'null'
           format: uuid
+        craftedBlueprintId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        craftedQualities:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: integer
+            minimum: 0
+            maximum: 1000
       required:
       - name
       - quantity
@@ -31239,6 +31271,8 @@ components:
           type: number
         item:
           "$ref": "#/components/schemas/InventoryStockItemRef"
+        crafted:
+          "$ref": "#/components/schemas/InventoryCraftedRef"
         inventory:
           "$ref": "#/components/schemas/InventoryRef"
       required:
@@ -32506,6 +32540,36 @@ components:
       - CONSUMABLE
       - OTHER
       title: InventoryCategoryEnum
+    InventoryCraftedBlueprintRef:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+      required:
+      - id
+      - name
+      - slug
+      title: InventoryCraftedBlueprintRef
+    InventoryCraftedRef:
+      type: object
+      properties:
+        blueprint:
+          "$ref": "#/components/schemas/InventoryCraftedBlueprintRef"
+        qualities:
+          type: object
+          additionalProperties:
+            type: integer
+            minimum: 0
+            maximum: 1000
+      required:
+      - blueprint
+      - qualities
+      title: InventoryCraftedRef
     InventoryEntryTransfer:
       type:
       - object
@@ -32597,6 +32661,8 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         item:
           "$ref": "#/components/schemas/InventoryItemRef"
+        crafted:
+          "$ref": "#/components/schemas/InventoryCraftedRef"
         inventory:
           "$ref": "#/components/schemas/InventoryRef"
         createdAt:
@@ -32650,6 +32716,19 @@ components:
           - string
           - 'null'
           format: uuid
+        craftedBlueprintId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        craftedQualities:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: integer
+            minimum: 0
+            maximum: 1000
       required:
       - name
       - quantity
@@ -32791,6 +32870,8 @@ components:
           - 'null'
         entriesCount:
           type: integer
+        catalogueIdentity:
+          type: boolean
         lastEntryAt:
           type:
           - string

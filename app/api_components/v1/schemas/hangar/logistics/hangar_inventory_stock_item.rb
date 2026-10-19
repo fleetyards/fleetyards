@@ -24,6 +24,8 @@ module V1
               # they agree on one. A position's own name is whatever the owner
               # typed, so this is the only thing a caller can match on.
               item: ::V1::Schemas::InventoryStockItemRef,
+              # Present on a crafted part only.
+              crafted: ::V1::Schemas::InventoryCraftedRef,
               inventory: ::V1::Schemas::InventoryRef
             },
             required: %w[id name category unit netQuantity]

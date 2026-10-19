@@ -368,6 +368,7 @@
         }
       },
       "statsCard": {
+        "stock": "Stock: %{value}",
         "more": "+%{count} more on the detail page",
         "unavailable": "Could not load these details.",
         "loading": "Loading %{name}…",
@@ -1845,6 +1846,7 @@
         "subType": "Sub Type",
         "retired": "No longer in the current build",
         "noMetrics": "No metrics are recorded for this component.",
+        "integrity": "Integrity",
         "durability": {
           "health": "Health",
           "mass": "Mass",
@@ -3435,6 +3437,15 @@
         "componentCategory": "Component Type",
         "commodityType": "Commodity Type",
         "equipmentItemType": "Equipment Type",
+        "crafted": {
+          "page": "Crafted from %{recipe} at grades %{grades}. Highlighted figures differ from the catalogue's.",
+          "showStock": "Show stock values",
+          "edit": "Record how it was crafted",
+          "summary": "Crafted %{grades}",
+          "lot": "Crafted",
+          "grade": "Q %{quality}",
+          "slotGrade": "Slot %{position}: %{quality}"
+        },
         "itemPicker": {
           "field": "Item",
           "placeholder": "Choose an item",
@@ -3518,9 +3529,12 @@
         "entries": "Entries",
         "lastEntry": "Last entry",
         "history": "History",
+        "lots": "Lots",
         "linkedItem": "Linked item",
+        "catalogueIdentity": "Name and category come from the linked catalogue item.",
         "itemUnavailable": "Not in current patch",
         "itemUnavailableHint": "The current game build no longer ships this item. Entries keep it, but it cannot be picked for new ones.",
+        "openInCatalogue": "Open in the catalogue",
         "qualityRange": "Quality",
         "stockItem": "Stock Item",
         "overCapacity": "over cargo capacity",
@@ -3574,8 +3588,7 @@
         "transferFromFriends": "My friends",
         "towardsContract": "Towards a contract",
         "noContract": "No contract",
-        "forContract": "for",
-        "openInCatalogue": "Open in the catalogue"
+        "forContract": "for"
       },
       "hangarInventories": "Inventories",
       "adminNotifications": {

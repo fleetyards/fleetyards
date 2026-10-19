@@ -26,6 +26,8 @@ module V1
               transfer: ::V1::Schemas::Transfers::InventoryEntryTransfer,
               image: ::Shared::V1::Schemas::MediaFile,
               item: ::V1::Schemas::InventoryItemRef,
+              # Present on a crafted part only.
+              crafted: ::V1::Schemas::InventoryCraftedRef,
               inventory: ::V1::Schemas::InventoryRef,
               createdAt: {type: :string, format: "date-time"},
               updatedAt: {type: :string, format: "date-time"}

@@ -36,6 +36,9 @@ type Props = {
   records: T[];
   columns: BaseTableCol<T>[];
   primaryKey: keyof T;
+  // Where several rows share a primary key -- the lots of one stock position --
+  // what tells them apart for rendering. Selection still goes by the key.
+  rowKey?: (record: T) => string | number;
   id?: string;
   defaultSort?: string;
   title?: string;
@@ -64,6 +67,7 @@ type Props = {
 
 const props = withDefaults(defineProps<Props>(), {
   id: undefined,
+  rowKey: undefined,
   title: undefined,
   defaultSort: undefined,
   titleLevel: HeadingLevelEnum.H2,
@@ -440,8 +444,8 @@ onUnmounted(() => {
             <TableRow
               v-for="record in props.records"
               v-else
-              :id="String(primaryValue(record))"
-              :key="primaryValue(record)"
+              :id="String(props.rowKey?.(record) ?? primaryValue(record))"
+              :key="props.rowKey?.(record) ?? primaryValue(record)"
               :clickable="props.rowClickable || selecting"
               :disabled="props.rowDisabled?.(record)"
               :holdable="

@@ -179,13 +179,20 @@ const moves = computed(() => ramps.value.map((ramp) => ramp.name).join(", "));
 // Number("") is 0, which would slam the slot to zero under the cursor. An
 // unparseable value leaves it where it was.
 const onQuality = (event: Event) => {
-  const raw = (event.target as HTMLInputElement).value;
+  const input = event.target as HTMLInputElement;
+  const raw = input.value;
   if (raw === "") return;
 
   const parsed = Number(raw);
   if (!Number.isFinite(parsed)) return;
 
-  emit("update:quality", Math.min(Math.max(Math.round(parsed), 0), 1000));
+  const grade = Math.min(Math.max(Math.round(parsed), 0), 1000);
+
+  // Written back into the field too: where the grade it settles on is the
+  // one already held, nothing re-renders, and a typed 5000 would stand.
+  if (String(grade) !== raw) input.value = String(grade);
+
+  emit("update:quality", grade);
 };
 </script>
 

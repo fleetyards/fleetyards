@@ -67,6 +67,9 @@ export type HardpointStat = {
   // on it, and the format `value` was written in, so a sum of them can be too.
   raw?: number;
   format?: string;
+  // Where the figure differs from the catalogue's -- a crafted part -- what
+  // the catalogue says.
+  stock?: string;
 };
 
 const ROW_STATS = {
