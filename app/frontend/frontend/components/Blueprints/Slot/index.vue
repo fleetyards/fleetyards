@@ -360,7 +360,7 @@ const onQuality = (event: Event) => {
               {{ ramp.headline }}
             </span>
 
-            <!-- 598 modifiers name a stat and carry no figures at all.
+            <!-- A modifier can name a stat and carry no figures at all.
                Rendering the nils would print 0 → 0 and invent a number. -->
             <span v-else class="blueprint-slot__stat-unvalued">
               {{ t("labels.blueprint.unvalued") }}

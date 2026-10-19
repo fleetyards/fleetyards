@@ -1,5 +1,7 @@
 import {
+  amountAt,
   byStat,
+  isAdditive,
   segmentsOf,
   valueAt,
 } from "@/frontend/composables/useQualityRamp";
@@ -13,6 +15,7 @@ import type { BlueprintCostSlot, LoadoutComponentRef } from "@/services/fyApi";
  */
 export const CRAFTED_COMPONENT_FIELDS: Record<string, string> = {
   gpp_itemresource_coolantgeneration: "coolingRate",
+  gpp_itemresource_powergeneration: "powerBase",
   gpp_shield_maxhealth: "maxHealth",
   gpp_radar_minaimassistdistance: "aimAssistMin",
   gpp_radar_maxaimassistdistance: "aimAssistRange",
@@ -36,35 +39,47 @@ export interface CraftedPart {
   qualities: CraftedQualities;
 }
 
+export type CraftedChange = { additive: boolean; value: number };
+
 /**
- * The factor every stat ends up at for the qualities chosen, by property key.
+ * What every stat ends up at for the qualities chosen, by property key: a
+ * factor, or for an additive stat -- a power plant's pips -- an amount added.
  *
  * Two slots moving one stat are independent factors on it and so multiply, as
- * the blueprint page composes them.
+ * the blueprint page composes them; amounts add up.
  */
 export const craftedFactors = (
   slots: BlueprintCostSlot[],
   qualityFor: (position: number) => number,
 ) => {
-  const factors = new Map<string, number>();
+  const changes = new Map<string, CraftedChange>();
 
   slots.forEach((slot) => {
     byStat(slot.modifiers || []).forEach((group, key) => {
       const segments = segmentsOf(group);
       if (!segments.length) return;
 
-      factors.set(
-        key,
-        (factors.get(key) ?? 1) * valueAt(segments, qualityFor(slot.position)),
-      );
+      const at = qualityFor(slot.position);
+      const additive = isAdditive(group);
+      const held = changes.get(key)?.value;
+
+      changes.set(key, {
+        additive,
+        value: additive
+          ? (held ?? 0) + amountAt(segments, at)
+          : (held ?? 1) * valueAt(segments, at),
+      });
     });
   });
 
-  return factors;
+  return changes;
 };
 
-const scaled = (value: unknown, factor: number) =>
-  typeof value === "number" ? value * factor : value;
+const changed = (value: unknown, change: CraftedChange) => {
+  if (typeof value !== "number") return value;
+
+  return change.additive ? value + change.value : value * change.value;
+};
 
 /**
  * The part as crafted: its figures moved by the recipe's factors at the
@@ -80,14 +95,14 @@ export const craftedComponent = (
 
   const typeData: Record<string, unknown> = { ...component.typeData };
 
-  craftedFactors(slots, qualityFor).forEach((factor, key) => {
+  craftedFactors(slots, qualityFor).forEach((change, key) => {
     if (key === WEAPON_DAMAGE) {
       const perShot = typeData.damagePerShot;
       if (perShot && typeof perShot === "object") {
         typeData.damagePerShot = Object.fromEntries(
           Object.entries(perShot).map(([type, value]) => [
             type,
-            scaled(value, factor),
+            changed(value, change),
           ]),
         );
       }
@@ -96,7 +111,7 @@ export const craftedComponent = (
 
     const field = CRAFTED_COMPONENT_FIELDS[key];
     if (field && field in typeData) {
-      typeData[field] = scaled(typeData[field], factor);
+      typeData[field] = changed(typeData[field], change);
     }
   });
 

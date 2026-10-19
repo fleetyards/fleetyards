@@ -48,7 +48,7 @@ describe("craftedFactors", () => {
       at({ 0: 1000, 1: 1000 }),
     );
 
-    expect(factors.get("gpp_shield_maxhealth")).toBeCloseTo(1.44);
+    expect(factors.get("gpp_shield_maxhealth")?.value).toBeCloseTo(1.44);
   });
 
   it("skips a modifier that carries no figures", () => {
@@ -107,6 +107,34 @@ describe("craftedComponent", () => {
       fireRate: 600,
       damagePerShot: { physical: 120, energy: 0 },
     });
+  });
+
+  it("adds a power plant's pips rather than scaling its output", () => {
+    const plant = {
+      id: "plant",
+      name: "Plant",
+      typeData: { powerBase: 28 },
+    } as LoadoutComponentRef;
+    const pips = [
+      [0, 399, -1],
+      [400, 899, 0],
+      [900, 1000, 1],
+    ].map(([from, to, amount]) =>
+      modifier("gpp_itemresource_powergeneration", {
+        ramp: BlueprintRampEnum.LINEAR_INTEGER_ADDITIVE,
+        startQuality: from,
+        endQuality: to,
+        modifierAtStart: amount,
+        modifierAtEnd: amount,
+      }),
+    );
+
+    expect(
+      craftedComponent(plant, [slot(0, pips)], at({ 0: 1000 })).typeData,
+    ).toEqual({ powerBase: 29 });
+    expect(
+      craftedComponent(plant, [slot(0, pips)], at({ 0: 0 })).typeData,
+    ).toEqual({ powerBase: 27 });
   });
 
   it("leaves a stat the catalogue holds no figure for alone", () => {
