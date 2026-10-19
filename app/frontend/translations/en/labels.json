@@ -2287,6 +2287,7 @@
           "title": "Verify your RSI handle",
           "token": "Verification token",
           "verifiedSince": "Verified since %{date}",
+          "revokeCitizenidQuestion": "Citizen iD verifies your handle again the next time you sign in with it. Revoke anyway?",
           "openProfileSettings": "Edit your RSI profile",
           "steps": {
             "copy": "Copy your verification token",

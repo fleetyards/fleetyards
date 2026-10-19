@@ -2287,6 +2287,7 @@
           "title": "Verifica il tuo handle RSI",
           "token": "Codice di verifica",
           "verifiedSince": "Verificato dal %{date}",
+          "revokeCitizenidQuestion": "Citizen iD verificherà di nuovo il tuo handle al prossimo accesso con Citizen iD. Revocare comunque?",
           "openProfileSettings": "Modifica il tuo profilo RSI",
           "steps": {
             "copy": "Copia il tuo codice di verifica",
