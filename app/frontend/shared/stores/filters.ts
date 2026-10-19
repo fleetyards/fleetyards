@@ -51,6 +51,11 @@ export const useFiltersStore = defineStore("filters", {
     removeFilter(path: string) {
       delete this.savedFilters[filterKey(path)];
     },
+    // A search typed into a hangar is the reader's, not the next person's on
+    // this browser.
+    clearSavedFilters() {
+      this.savedFilters = {};
+    },
   },
   persist: {
     pick: ["visibleFilters", "savedFilters"],

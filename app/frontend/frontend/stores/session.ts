@@ -1,6 +1,7 @@
 import { formatISO, parseISO, differenceInMinutes } from "date-fns";
 import { defineStore } from "pinia";
 import { useHangarStore } from "./hangar";
+import { useFiltersStore } from "@/shared/stores/filters";
 import { queryClient } from "@/frontend/plugins/QueryClient";
 import {
   type User,
@@ -91,6 +92,8 @@ export const useSessionStore = defineStore("session", {
 
       const hangarStore = useHangarStore();
       hangarStore.ships = [];
+
+      useFiltersStore().clearSavedFilters();
 
       // A disabled query still serves whatever is cached, so the supporter
       // claim key would survive the logout and greet the next person here.

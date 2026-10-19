@@ -1,5 +1,6 @@
 import { formatISO, parseISO, differenceInMinutes } from "date-fns";
 import { defineStore } from "pinia";
+import { useFiltersStore } from "@/shared/stores/filters";
 import { type AdminUser } from "@/services/fyAdminApi";
 import { me as fetchMe, destroySession } from "@/services/fyAdminApi";
 
@@ -51,6 +52,8 @@ export const useSessionStore = defineStore("session", {
     clearSession() {
       this.authenticated = false;
       this.currentUser = undefined;
+
+      useFiltersStore().clearSavedFilters();
     },
     async logout() {
       this.clearSession();
