@@ -12092,6 +12092,50 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/hangar/ship-components":
+    get:
+      summary: Hangar Ship Components
+      tags:
+      - Hangar
+      operationId: hangarShipComponents
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 48
+        required: false
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/HangarPledgeItemQuery"
+        style: deepObject
+        explode: true
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPledgeItems"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/hangar/stats":
     get:
       summary: Your Hangar Stats
@@ -31253,6 +31297,8 @@ components:
         rsiPage:
           type: integer
           description: The page of the RSI hangar the pledge was last read from
+        catalogueItem:
+          "$ref": "#/components/schemas/HangarPledgeItemCatalogueItem"
         createdAt:
           type: string
           format: date-time
@@ -31271,6 +31317,34 @@ components:
       - createdAt
       - updatedAt
       title: HangarPledgeItem
+    HangarPledgeItemCatalogueItem:
+      type: object
+      description: The catalogue item a ship component or piece of FPS gear was matched
+        to
+      properties:
+        itemType:
+          type: string
+          enum:
+          - Component
+          - Equipment
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        category:
+          type: string
+          description: The component's category, or the equipment's type
+        size:
+          type: string
+      additionalProperties: false
+      required:
+      - itemType
+      - id
+      - name
+      title: HangarPledgeItemCatalogueItem
     HangarPledgeItemKindEnum:
       type: string
       enum:

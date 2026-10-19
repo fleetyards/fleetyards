@@ -11,7 +11,8 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
     "/hangar/paints" => ["Hangar Paints", "hangarPaints"],
     "/hangar/flair" => ["Hangar Flair", "hangarFlair"],
     "/hangar/upgrades" => ["Hangar Upgrades", "hangarUpgrades"],
-    "/hangar/equipment" => ["Hangar Equipment", "hangarEquipment"]
+    "/hangar/equipment" => ["Hangar Equipment", "hangarEquipment"],
+    "/hangar/ship-components" => ["Hangar Ship Components", "hangarShipComponents"]
   }.each do |path, (summary, operation_id)|
     api_path path do
       get(summary) do
@@ -159,6 +160,37 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, api_path: "/hangar/equipment" do
       assert_equal [rifle.id], parsed_body["items"].pluck("id")
       assert_equal "equipment", parsed_body["items"].first["kind"]
+    end
+  end
+
+  test "GET /hangar/ship-components lists the caller's ship components with the part they are" do
+    user = create(:user)
+    cooler = create(:component, name: "BriskAir IC-20", category: "cooler", size: "1")
+    matched = create(:hangar_pledge_item, user:, kind: "ship_component", name: "BriskAir IC-20", catalogue_component: cooler)
+    unmatched = create(:hangar_pledge_item, user:, kind: "ship_component", name: "J-Span Cryo-Star Cooler")
+    create(:hangar_pledge_item, user:, kind: "equipment", name: "Gallant Rifle")
+    create(:hangar_pledge_item, kind: "ship_component", name: "Sovereign IP-10")
+    sign_in user
+
+    assert_api_response :get, 200, api_path: "/hangar/ship-components" do
+      items = parsed_body["items"].index_by { |item| item["id"] }
+
+      assert_equal [matched.id, unmatched.id].sort, items.keys.sort
+      assert_equal({"itemType" => "Component", "id" => cooler.id, "name" => "BriskAir IC-20",
+        "slug" => cooler.slug, "category" => "cooler", "size" => "1"}, items[matched.id]["catalogueItem"].compact)
+      assert_nil items[unmatched.id]["catalogueItem"]
+    end
+  end
+
+  test "GET /hangar/equipment names the catalogue gear a piece was matched to" do
+    user = create(:user)
+    rifle = create(:equipment, name: "P4-AR Rifle", equipment_type: "weapon")
+    create(:hangar_pledge_item, user:, kind: "equipment", name: "P4-AR Rifle", catalogue_equipment: rifle)
+    sign_in user
+
+    assert_api_response :get, 200, api_path: "/hangar/equipment" do
+      assert_equal ["Equipment", rifle.id, "weapon"],
+        parsed_body["items"].sole["catalogueItem"].values_at("itemType", "id", "category")
     end
   end
 

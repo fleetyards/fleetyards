@@ -3,12 +3,12 @@
 module Api
   module V1
     class HangarPledgeItemsController < ::Api::BaseController
-      after_action -> { pagination_header(:hangar_pledge_items) }, only: %i[paints flair equipment upgrades]
+      after_action -> { pagination_header(:hangar_pledge_items) }, only: %i[paints flair equipment upgrades ship_components]
 
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
         unless: :user_signed_in?,
-        only: %i[paints flair equipment upgrades]
+        only: %i[paints flair equipment upgrades ship_components]
 
       def upgrades
         list(HangarPledgeItem.upgrades)
@@ -26,6 +26,10 @@ module Api
         list(HangarPledgeItem.equipment)
       end
 
+      def ship_components
+        list(HangarPledgeItem.ship_components)
+      end
+
       private def list(scope)
         authorize! with: ::HangarPledgeItemPolicy, to: :index?
 
@@ -36,6 +40,7 @@ module Api
         # The hangar order breaks ties within a requested sort, and is the
         # whole order without one.
         @hangar_pledge_items = @q.result
+          .includes(:catalogue_component, :catalogue_equipment)
           .order(*HangarPledgeItem.sort_order(sorts), HangarPledgeItem.hangar_order)
           .page(page_params)
           .per(per_page(HangarPledgeItem))
