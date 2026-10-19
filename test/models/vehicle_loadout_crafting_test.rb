@@ -86,6 +86,11 @@ class VehicleLoadoutCraftingTest < ActiveSupport::TestCase
       :crafted_quality_out_of_range
   end
 
+  test "refuses a recipe slot named twice" do
+    assert_refused fleetyards_loadout([crafted_item(qualities: [{position: 0, quality: 900}, {position: 0, quality: 100}])]),
+      :crafted_slot_repeated
+  end
+
   test "keeps a saved crafting whose recipe a new build dropped, while the rest of the loadout changes" do
     loadout = fleetyards_loadout([crafted_item])
     assert loadout.save, loadout.errors.full_messages.to_sentence

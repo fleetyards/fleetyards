@@ -332,6 +332,7 @@ it:
               crafted_not_component: "possono essere fabbricati solo se sono componenti"
               crafted_not_craftable: "devono essere fabbricati con un progetto per quel pezzo"
               crafted_slot_unknown: "possono indicare solo slot presenti nel progetto"
+              crafted_slot_repeated: "possono indicare ogni slot del progetto una sola volta"
               crafted_quality_out_of_range: "devono usare una qualità del materiale da 0 a 1000"
         payout_entry:
           attributes:

@@ -47,6 +47,7 @@ class VehicleLoadout < ApplicationRecord
   # [{position:, quality:}]}`, which is stored as the recipe and a quality per
   # recipe slot.
   def item_list=(list)
+    @crafted_slot_repeated = false
     @item_list = Array(list).map do |item|
       item = item.to_h.symbolize_keys
       item_type = item[:item_type].to_s
@@ -208,10 +209,12 @@ class VehicleLoadout < ApplicationRecord
     crafted = crafted.to_h.symbolize_keys
     return {blueprint_id: nil, crafted_qualities: {}} if crafted[:blueprint_id].blank?
 
-    qualities = Array(crafted[:qualities]).to_h do |entry|
+    pairs = Array(crafted[:qualities]).map do |entry|
       entry = entry.to_h.symbolize_keys
       [entry[:position].to_s, entry[:quality]]
     end
+    qualities = pairs.to_h
+    @crafted_slot_repeated ||= qualities.size != pairs.size
 
     {blueprint_id: crafted[:blueprint_id].to_s.downcase, crafted_qualities: qualities}
   end
@@ -228,6 +231,7 @@ class VehicleLoadout < ApplicationRecord
     return if crafted.empty?
 
     return errors.add(:items, :crafted_not_component) if crafted.any? { |item| item[:item_type] != "Component" }
+    errors.add(:items, :crafted_slot_repeated) if @crafted_slot_repeated
 
     builds = Blueprint.readable_builds(Blueprint.served_source)
       .where(blueprint_id: crafted.pluck(:blueprint_id), craftable_type: "Component")

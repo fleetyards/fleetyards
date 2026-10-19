@@ -332,6 +332,7 @@ de:
               crafted_not_component: "können nur hergestellt sein, wenn sie Komponenten sind"
               crafted_not_craftable: "müssen aus einem Bauplan für dieses Teil hergestellt sein"
               crafted_slot_unknown: "dürfen nur Slots nennen, die der Bauplan hat"
+              crafted_slot_repeated: "dürfen jeden Slot des Bauplans nur einmal nennen"
               crafted_quality_out_of_range: "brauchen eine Materialqualität von 0 bis 1000"
         payout_entry:
           attributes:

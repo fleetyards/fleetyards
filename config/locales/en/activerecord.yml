@@ -333,6 +333,7 @@ en:
               crafted_not_component: "can only be crafted when they are components"
               crafted_not_craftable: "must be crafted from a recipe for that part"
               crafted_slot_unknown: "must name slots the recipe has"
+              crafted_slot_repeated: "must name each recipe slot only once"
               crafted_quality_out_of_range: "must use a material quality from 0 to 1000"
         fleet_subscription:
           attributes:

@@ -332,6 +332,7 @@ zh-CN:
               crafted_not_component: "只有部件才能标记为制作"
               crafted_not_craftable: "必须使用该部件的蓝图制作"
               crafted_slot_unknown: "只能指定蓝图中存在的槽位"
+              crafted_slot_repeated: "每个蓝图槽位只能指定一次"
               crafted_quality_out_of_range: "材料品质必须在 0 到 1000 之间"
         payout_entry:
           attributes:
