@@ -44,7 +44,33 @@ const RECIPE = {
   id: "bp",
   slug: "bp-gun",
   costSlots: [
-    { position: 0, name: "Frame", options: [], modifiers: [] },
+    {
+      position: 0,
+      name: "Frame",
+      options: [],
+      modifiers: [
+        {
+          propertyKey: "gpp_health_maxhealth",
+          name: "Integrity",
+          ramp: "linear",
+          startQuality: 0,
+          endQuality: 1000,
+          modifierAtStart: 0.9,
+          modifierAtEnd: 1.1,
+          baseValue: 110,
+        },
+        {
+          propertyKey: "gpp_itemresource_coolantgeneration",
+          name: "Coolant Rating",
+          ramp: "linear",
+          startQuality: 0,
+          endQuality: 1000,
+          modifierAtStart: 0.8,
+          modifierAtEnd: 1.2,
+          baseValue: 100,
+        },
+      ],
+    },
     { position: 1, name: "Barrel", options: [], modifiers: [] },
   ],
 };
@@ -1481,6 +1507,30 @@ describe("VehicleLoadoutModal component tabs", () => {
       await save(wrapper);
 
       expect(savedItems()).toEqual([]);
+    });
+
+    it("lists every stat the recipe moves, those the loadout does not measure included", async () => {
+      const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
+      await flushPromises();
+
+      await craft(wrapper);
+      await press(wrapper, "vehicle-loadout-crafting-preset-1000");
+
+      const stats = wrapper.get("[data-test='vehicle-loadout-crafter-stats']");
+      expect(
+        stats
+          .get(
+            "[data-test='vehicle-loadout-crafter-stat-gpp_health_maxhealth']",
+          )
+          .text(),
+      ).toContain("+10.0%");
+      expect(
+        stats
+          .get(
+            "[data-test='vehicle-loadout-crafter-stat-gpp_itemresource_coolantgeneration']",
+          )
+          .text(),
+      ).toContain("+20.0%");
     });
 
     it("stays open on a press elsewhere, and holds the save until applied or discarded", async () => {

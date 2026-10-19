@@ -334,11 +334,10 @@ const componentTree = computed(() =>
 const craftDraft = ref<CraftedPart>();
 
 // The saved fitting's recipes as well as the edited one's, so the changes
-// against the save read both as crafted, and the draft's for its preview.
+// against the save read both as crafted.
 useCraftedRecipes(fitting, () => [
   ...Object.values(savedValues().craftedComponents),
   ...Object.values(craftedComponents.value || {}),
-  ...(craftDraft.value ? [craftDraft.value] : []),
 ]);
 
 const SYSTEM_TAB_IDS = [
@@ -911,20 +910,11 @@ const activeCrafting = computed(() => {
   const entry = activeComponentSlot.value;
   if (activeMode.value !== "craft" || !entry?.content) return undefined;
 
-  const catalogued =
-    fitting.components.value[entry.content.id] ?? entry.content;
-  const drafted = fitting.craft(catalogued, craftDraft.value);
-
   return {
     title: slotName(entry.slot.name),
-    component: catalogued,
+    component: fitting.components.value[entry.content.id] ?? entry.content,
     draft: craftDraft.value,
     crafted: !!entry.crafted,
-    comparison: {
-      from: catalogued,
-      to: drafted,
-      rows: fitting.compare(catalogued, drafted, entry.slot.category),
-    },
   };
 });
 

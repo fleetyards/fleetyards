@@ -12,12 +12,10 @@ import {
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
 import BlueprintSlot from "@/frontend/components/Blueprints/Slot/index.vue";
-import ComponentComparison from "../ComponentComparison/index.vue";
+import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import type {
-  CraftedPart,
-  FigureChange,
-} from "@/frontend/composables/useComponentFitting";
+import type { CraftedPart } from "@/frontend/composables/useComponentFitting";
+import { useCraftedStats } from "@/frontend/composables/useCraftedStats";
 import { NEUTRAL_QUALITY } from "@/frontend/composables/useQualityRamp";
 import {
   BlueprintCraftableTypeEnum,
@@ -36,12 +34,6 @@ type Props = {
   // Whether the loadout already holds the part as crafted, which can then be
   // taken back.
   crafted?: boolean;
-  // How far the draft moves the part's figures from the catalogued one's.
-  comparison: {
-    from?: LoadoutComponentRef;
-    to?: LoadoutComponentRef;
-    rows: FigureChange[];
-  };
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -99,6 +91,10 @@ const costSlots = computed(() => blueprint.value?.costSlots ?? []);
 
 const qualityFor = (position: number) =>
   props.draft?.qualities[position] ?? NEUTRAL_QUALITY;
+
+// Every stat the recipe moves, as the blueprint page composes them -- those a
+// loadout's figures never read, such as a part's integrity, included.
+const { stats } = useCraftedStats(costSlots, qualityFor);
 
 // Another recipe has other slots, so its qualities start over.
 const chooseRecipe = (blueprintId: string) => {
@@ -176,7 +172,19 @@ defineExpose({ focus });
     </header>
 
     <div class="loadout-crafter__controls">
-      <p class="loadout-crafter__part">{{ component.name }}</p>
+      <!-- The catalogue's card on hover, as the part was made rather than
+        crafted: the crafted figures are the crafter's own list. No link, which
+        would leave an editor with unsaved changes. -->
+      <p class="loadout-crafter__part" data-test="vehicle-loadout-crafter-part">
+        <CatalogueItemPopover
+          :item="{
+            type: 'Component',
+            slug: component.slug,
+            name: component.name,
+          }"
+          :link="false"
+        />
+      </p>
       <div v-if="draft && recipes.length > 1" class="loadout-crafter__row">
         <Btn
           v-for="(entry, index) in recipes"
@@ -234,9 +242,29 @@ defineExpose({ focus });
       />
     </div>
 
-    <div v-if="comparison.rows.length" class="loadout-crafter__comparison">
-      <ComponentComparison v-bind="comparison" />
-    </div>
+    <dl
+      v-if="draft && stats.length"
+      class="loadout-crafter__stats"
+      data-test="vehicle-loadout-crafter-stats"
+    >
+      <div
+        v-for="stat in stats"
+        :key="stat.key"
+        class="loadout-crafter__stat"
+        :data-test="`vehicle-loadout-crafter-stat-${stat.key}`"
+      >
+        <dt>{{ stat.name }}</dt>
+        <dd>
+          <strong>{{ stat.value }}</strong>
+          <span
+            class="loadout-crafter__delta"
+            :class="`loadout-crafter__delta--${stat.trend}`"
+          >
+            {{ stat.delta }}
+          </span>
+        </dd>
+      </div>
+    </dl>
 
     <footer class="loadout-crafter__actions">
       <Btn

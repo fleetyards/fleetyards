@@ -71,9 +71,14 @@
   gap: 6px;
 }
 
+// The label over the presets, so the five grades fit one row on a phone.
 .loadout-crafter__quickset {
   color: var(--color-text-dim);
   font-size: 12px;
+
+  > span {
+    flex-basis: 100%;
+  }
 }
 
 // The recipe's slots scroll on their own; the header and the figures stay put.
@@ -109,10 +114,54 @@
   margin-right: auto;
 }
 
-.loadout-crafter__comparison {
+// What the draft makes of the part, stat by stat, under the slots that set it.
+.loadout-crafter__stats {
+  display: flex;
   flex: none;
-  padding: 10px 14px 12px;
+  flex-direction: column;
+  margin: 0;
+  padding: 8px 14px 10px;
   border-top: 1px solid var(--color-edge-soft);
+}
+
+.loadout-crafter__stat {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 0;
+  font-size: 13px;
+
+  dt {
+    color: var(--color-text);
+    font-weight: normal;
+  }
+
+  dd {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin: 0;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+// Colour states what the change is worth, not which way the number moved:
+// a recoil stat falling is an improvement and reads as one.
+.loadout-crafter__delta {
+  min-width: 52px;
+  color: var(--color-text-dim);
+  font-size: 11.5px;
+  font-weight: 700;
+  text-align: right;
+
+  &--better {
+    color: var(--color-success, #5cb85c);
+  }
+
+  &--worse {
+    color: var(--color-danger, #dc3545);
+  }
 }
 
 @media (max-width: $tablet-breakpoint) {
@@ -123,4 +172,18 @@
   .loadout-crafter__slots {
     max-height: 60dvh;
   }
+}
+
+// The blueprint page sets a slot's slider and its stats side by side across a
+// wide card. The crafter is a picker's width, so the stats go under the
+// slider, each with the whole width for its name and figure.
+.loadout-crafter__slots :deep(.blueprint-slot__body) {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+}
+
+// A slot card clips its own overflow, which lets a scrolling column squeeze it
+// and cut off its ramp; each keeps its height and the column scrolls instead.
+.loadout-crafter__slots :deep(.blueprint-slot) {
+  flex: none;
 }
