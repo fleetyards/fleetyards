@@ -16,13 +16,13 @@ A fitted component with a blueprint can be marked crafted in the loadout editor,
 5. Tests: model validation, create/update/show integration.
 
 ### Phase 2 — Frontend: crafted figures
-1. `craftedComponent(component, costSlots, qualityFor)`: scales `typeData` fields by the composed factor per `propertyKey` (mirrors `BlueprintStatBases::COMPONENT` + weapon damage per type). Factor composition shared with `useCraftedStats`.
+1. `craftedComponent(component, costSlots, qualityFor)`: scales `typeData` fields by the composed factor per `propertyKey` (mirrors `BlueprintStatBases::COMPONENT` + weapon damage per type). Factors compose by multiplying, as `useCraftedStats` does.
 2. `useComponentFitting.resolve` takes the crafted map and puts the crafted copy on `content`; socket `changed` and stacking signature account for crafting; socket item shows a crafted badge.
-3. Recipes fetched by blueprint slug (`useBlueprint`), cached per blueprint.
+3. Recipes fetched by blueprint slug (`useCraftedRecipes`), one request per recipe.
 
 ### Phase 3 — Frontend: editor UI
 1. Form field `craftedComponents: Record<slotPath, {blueprintId, blueprintSlug, qualities}>`; picking another part drops the slot's crafting.
-2. A crafting panel for the active socket's fitted part: "Crafted" toggle (only when the part has a blueprint), per-slot quality using `BlueprintSlot`.
+2. A crafting panel in the picker for the active socket's part: "Crafted" toggle (only when the part has a blueprint), quick-set presets, per-slot quality using `BlueprintSlot`.
 3. Save sends `crafted` per component item, keeping a crafted stock part as an explicit item.
 4. Read-only views (`useLoadoutFitting`) apply crafting.
 5. Specs.
@@ -52,8 +52,10 @@ A fitted component with a blueprint can be marked crafted in the loadout editor,
 ## Discovery Log
 
 - **2026-10-19** Initial research and plan creation. Recipe and stat mapping exist only for the blueprint page; no component payload names its blueprint.
+- **2026-10-19** The editor finds a part's recipe through the blueprint list filtered by craftable, as the component page does; the item stores the blueprint id and renders its slug so read-only views fetch the recipe by slug. The "open the recipe" link was dropped: it would navigate away from an unsaved editor.
 
 ## Progress
-- [ ] Phase 1
-- [ ] Phase 2
-- [ ] Phase 3
+- [x] Phase 1
+- [x] Phase 2
+- [x] Phase 3
+- [ ] Review
