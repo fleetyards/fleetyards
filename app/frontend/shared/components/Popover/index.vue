@@ -125,8 +125,15 @@ const within = (node: EventTarget | null) =>
     !!host.value?.contains(node) ||
     !!panel.value?.contains(node));
 
+// Whether the last touch began on the card or its trigger. A finger dragged
+// across a card taller than the space under it scrolls the page, and that is
+// reading the card, not leaving it.
+let touchedWithin = false;
+
 const onDocumentPointerdown = (event: PointerEvent) => {
-  if (!within(event.target)) close();
+  touchedWithin = within(event.target);
+
+  if (!touchedWithin) close();
 };
 
 const onDocumentKeydown = (event: KeyboardEvent) => {
@@ -144,7 +151,7 @@ const onDocumentKeydown = (event: KeyboardEvent) => {
 const onWindowScroll = (event: Event) => {
   if (within(event.target)) return;
 
-  if (openedBy.value === "tap") {
+  if (openedBy.value === "tap" && !touchedWithin) {
     close();
   } else {
     place();
@@ -197,6 +204,7 @@ const show = async (by: PopoverTrigger) => {
   if (open.value) return;
 
   claimActive(close);
+  touchedWithin = false;
   open.value = true;
   listen();
   setDescribedBy(true);
