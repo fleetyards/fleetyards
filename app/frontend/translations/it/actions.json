@@ -602,6 +602,7 @@
         "showPublic": "Diario di bordo"
       },
       "vehicleLoadout": {
+        "craft": "Fabbrica",
         "swapModule": "Cambia modulo",
         "removeModule": "Rimuovi modulo",
         "editLoadout": "Modifica equipaggiamento",

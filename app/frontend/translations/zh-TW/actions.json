@@ -602,6 +602,7 @@
         "showPublic": "艦長日誌"
       },
       "vehicleLoadout": {
+        "craft": "製作",
         "swapModule": "更換模組",
         "removeModule": "移除模組",
         "editLoadout": "編輯配置",

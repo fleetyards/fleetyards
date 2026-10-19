@@ -602,6 +602,7 @@
         "showPublic": "Cuaderno de bitácora"
       },
       "vehicleLoadout": {
+        "craft": "Fabricar",
         "swapModule": "Cambiar módulo",
         "removeModule": "Quitar módulo",
         "editLoadout": "Editar equipamiento",

@@ -602,6 +602,7 @@
         "showPublic": "Captain's Log"
       },
       "vehicleLoadout": {
+        "craft": "Craft",
         "swapModule": "Swap module",
         "removeModule": "Remove module",
         "editLoadout": "Edit loadout",

@@ -581,6 +581,7 @@ export const useComponentFitting = () => {
             id: entry.content.id,
             name: entry.content.name,
             crafted: !!entry.crafted,
+            craftable: !!entry.content.craftable,
             craftingKey: craftingKey(entry.crafted),
             figure: componentFigure(entry.content),
             headline: headlineOf(entry.content, entry.slot.category),
