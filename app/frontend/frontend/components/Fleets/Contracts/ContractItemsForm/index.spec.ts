@@ -88,4 +88,71 @@ describe("FleetContractsItemsForm", () => {
     expect(modalCalls()).toHaveLength(1);
     expect(modalCalls()[0][1].props.item).toMatchObject({ id: "line-1" });
   });
+
+  describe("drafts", () => {
+    const mountDrafts = async (drafts: unknown[] = []) => {
+      wrapper = await mountWithDefaults(Component, {
+        props: { fleet, kind: "crafting" as never, drafts: drafts as never },
+      });
+
+      return wrapper;
+    };
+
+    // The API input carries the part's id, not whether the game counts it in
+    // pieces; reopening a draft must still offer `units` for it.
+    it("reopens a draft with its part and how the game counts it", async () => {
+      const subject = await mountDrafts();
+
+      await subject.find("[data-test='add-item']").trigger("click");
+
+      const draft = {
+        name: "Hadanite",
+        category: "commodity",
+        unit: "units",
+        quantity: "3",
+        itemType: "Commodity",
+        itemId: "hadanite",
+      };
+
+      modalCalls()[0][1].props.onDraft(draft, { counted: true });
+
+      const [next] = subject.emitted("update:drafts")!.at(-1) as unknown[][];
+
+      await subject.setProps({ drafts: next } as never);
+      await subject.find("[data-test='edit-item']").trigger("click");
+
+      expect(modalCalls()[1][1].props.item.item).toMatchObject({
+        id: "hadanite",
+        type: "Commodity",
+        counted: true,
+      });
+    });
+
+    it("reopens a draft with its crafting", async () => {
+      const subject = await mountDrafts([
+        {
+          name: "Bulwark",
+          category: "component",
+          unit: "units",
+          quantity: "1",
+          itemType: "Component",
+          itemId: "bulwark",
+          craftedBlueprintId: "bp-1",
+          craftedBlueprintSlug: "bulwark-bp",
+          craftedQualities: { 1: 700 },
+        },
+      ]);
+
+      expect(subject.find("[data-test='contract-item-crafted']").exists()).toBe(
+        true,
+      );
+
+      await subject.find("[data-test='edit-item']").trigger("click");
+
+      expect(modalCalls()[0][1].props.item.crafted).toMatchObject({
+        blueprint: { id: "bp-1", slug: "bulwark-bp" },
+        qualities: { 1: 700 },
+      });
+    });
+  });
 });

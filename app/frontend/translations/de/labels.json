@@ -3424,6 +3424,7 @@
         "commodityType": "Warentyp",
         "equipmentItemType": "Ausrüstungstyp",
         "crafted": {
+          "request": "Hergestelltes Teil anfordern",
           "page": "Hergestellt aus %{recipe} mit den Qualitäten %{grades}. Hervorgehobene Werte weichen vom Katalog ab.",
           "showStock": "Serienwerte anzeigen",
           "edit": "Festhalten, wie es hergestellt wurde",
@@ -3943,6 +3944,9 @@
           "lead": "Leitung",
           "pendingCrew": "Wartet auf Aufnahme",
           "minQuality": "min. Qualität %{value}",
+          "craftedAny": "Hergestellt, beliebige Qualität",
+          "craftedAtLeast": "Hergestellt, mindestens %{grades}",
+          "craftedExact": "Hergestellt, genau %{grades}",
           "pickedUp": "%{quantity} abgeholt",
           "itemCategory": "Kategorie",
           "itemUnit": "Einheit",

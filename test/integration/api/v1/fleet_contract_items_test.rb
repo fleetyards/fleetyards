@@ -162,6 +162,24 @@ class Api::V1::FleetContractItemsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "POST asks for a crafted part, at the grades it names" do
+    component = create(:component, name: "Bulwark")
+    blueprint = create(:blueprint, craftable: component)
+    slot = create(:blueprint_cost_slot, build: blueprint.build, position: 1)
+    create(:blueprint_cost_modifier, slot:)
+    sign_in @officer
+
+    assert_api_response :post, 201,
+      api_path: COLLECTION_PATH,
+      path_params: {fleetSlug: @fleet.slug, fleetContractSlug: @contract.slug},
+      body: {name: component.name, category: "component", unit: "units", quantity: "2",
+             itemType: "Component", itemId: component.id,
+             craftedBlueprintId: blueprint.id, craftedQualities: {"1" => 700}} do
+      assert_equal blueprint.slug, parsed_body.dig("crafted", "blueprint", "slug")
+      assert_equal({"1" => 700}, parsed_body.dig("crafted", "qualities"))
+    end
+  end
+
   # Asking for something no catalogue carries stays allowed; it just is not a
   # reference. The ledger is matched by name, category and unit either way.
   test "POST without a reference stores the line all the same" do
@@ -256,6 +274,28 @@ class Api::V1::FleetContractItemsTest < ActionDispatch::IntegrationTest
       body: {name: item.name, category: item.category, unit: item.unit, quantity: "250"} do
       assert_equal "250.0", parsed_body["quantity"]
     end
+  end
+
+  # Sent as null, the grades never reach the model -- a permitted hash drops
+  # an explicit null -- so dropping the recipe has to drop them too.
+  test "PATCH stops asking for a crafted part" do
+    component = create(:component, name: "Bulwark")
+    blueprint = create(:blueprint, craftable: component)
+    slot = create(:blueprint_cost_slot, build: blueprint.build, position: 1)
+    create(:blueprint_cost_modifier, slot:)
+    line = create(:fleet_contract_item, fleet_contract: @contract, name: "Bulwark", category: :component,
+      unit: :units, quantity: 2, item: component, crafted_blueprint: blueprint, crafted_qualities: {1 => 700})
+    sign_in @officer
+
+    assert_api_response :patch, 200,
+      api_path: MEMBER_PATH,
+      path_params: {fleetSlug: @fleet.slug, fleetContractSlug: @contract.slug, id: line.id},
+      body: {name: "Bulwark", category: "component", unit: "units", quantity: "2",
+             craftedBlueprintId: nil, craftedQualities: nil} do
+      assert_nil parsed_body["crafted"]
+    end
+
+    assert_nil line.reload.crafted_qualities
   end
 
   test "DELETE removes a line" do

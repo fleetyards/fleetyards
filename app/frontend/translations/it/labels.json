@@ -3424,6 +3424,7 @@
         "commodityType": "Tipo di merce",
         "equipmentItemType": "Tipo di equipaggiamento",
         "crafted": {
+          "request": "Richiedi un pezzo fabbricato",
           "page": "Fabbricato da %{recipe} con le qualità %{grades}. I valori evidenziati differiscono dal catalogo.",
           "showStock": "Mostra i valori di serie",
           "edit": "Indica come è stato fabbricato",
@@ -3943,6 +3944,9 @@
           "lead": "Responsabile",
           "pendingCrew": "In attesa",
           "minQuality": "qualità min. %{value}",
+          "craftedAny": "Fabbricato, qualsiasi qualità",
+          "craftedAtLeast": "Fabbricato, almeno %{grades}",
+          "craftedExact": "Fabbricato, esattamente %{grades}",
           "pickedUp": "%{quantity} ritirato",
           "itemCategory": "Categoria",
           "itemUnit": "Unità",

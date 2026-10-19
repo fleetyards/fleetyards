@@ -109,6 +109,6 @@ class FleetContractPolicy < FleetBasePolicy
       :source_fleet_inventory_id, :destination_fleet_inventory_id, :destination_inventory_id,
       :visibility, fleet_squadron_ids: [],
       items: [:name, :category, :unit, :quantity, :quality, :quality_match, :item_type,
-        :item_id, :position])
+        :item_id, :position, :crafted_blueprint_id, {crafted_qualities: {}}])
   end
 end

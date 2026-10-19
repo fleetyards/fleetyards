@@ -21,6 +21,9 @@ import ItemPickerField from "@/frontend/components/Logistics/ItemPickerField/ind
 import { type PickedItem } from "@/frontend/components/Logistics/types";
 import { useInventoryOptions } from "@/frontend/composables/useInventoryOptions";
 import { useItemPickerStep } from "@/frontend/composables/useItemPickerStep";
+import { useCraftingStep } from "@/frontend/composables/useCraftingStep";
+import BlueprintCrafter from "@/frontend/components/Blueprints/Crafter/index.vue";
+import { type ContractItemDraftExtras } from "@/frontend/components/Fleets/Contracts/types";
 import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -49,7 +52,11 @@ type Props = {
   kind: FleetContractKindEnum;
   // Absent when the modal is asking for a new line.
   item?: FleetContractItem;
-  onDraft?: (values: FleetContractItemInput) => void;
+  // Hands the line back, with what the picked part is beyond its id.
+  onDraft?: (
+    values: FleetContractItemInput,
+    extras?: ContractItemDraftExtras,
+  ) => void;
 };
 
 const props = defineProps<Props>();
@@ -60,6 +67,7 @@ const { t } = useI18n();
 
 const modalTitle = computed(() => {
   if (picking.value) return pickTitle.value;
+  if (step.value === "crafting") return t("headlines.logistics.crafting");
 
   return editing.value
     ? t("headlines.fleets.contracts.editItem")
@@ -104,6 +112,8 @@ const pickedItem = ref<PickedItem | undefined>(
 const validationSchema = {
   name: "required|min:2",
   quantity: "required|min_value:0",
+  // Blank asks for any grade, which the rule lets through.
+  quality: "between:0,1000",
 };
 
 const initialValues = {
@@ -123,7 +133,19 @@ const { defineField, handleSubmit, setFieldValue, setErrors, values } = useForm(
   { initialValues },
 );
 
-useModalDirty(useFormDirty(values, initialValues));
+// Only the form's own fields: the inputs register under their own names --
+// `itemQuantity` beside `quantity` -- and a key the form did not open with
+// would read as a change before anyone typed.
+const formValues = computed(() =>
+  Object.fromEntries(
+    Object.keys(initialValues).map((key) => [
+      key,
+      values[key as keyof typeof values],
+    ]),
+  ),
+);
+
+const formDirty = useFormDirty(formValues, initialValues);
 
 // Named by the picker rather than typed, so the rule lives here instead of on
 // an input.
@@ -135,6 +157,8 @@ const { value: name, errorMessage: nameError } = useField<string>(
 const [category] = defineField("category");
 
 const {
+  step,
+  showStep,
   picking,
   showPicker,
   pickTitle,
@@ -149,6 +173,42 @@ const {
   pickedItem,
   setFieldValue,
 });
+
+// A line may ask for a crafted part: the recipe, and the grades it wants. A
+// line is always written fresh, so crafting goes with the part it was set for.
+const {
+  crafted,
+  canApply: craftingCanApply,
+  craftable,
+  craftableType,
+  craftedLabel,
+  openCrafting,
+  applyCrafting,
+  removeCrafting,
+  onCrafted,
+  clearCrafted,
+} = useCraftingStep({ pickedItem, isDeposit: computed(() => true), showStep });
+
+if (props.item?.crafted) {
+  crafted.value = {
+    blueprintId: props.item.crafted.blueprint.id,
+    blueprintSlug: props.item.crafted.blueprint.slug,
+    qualities: props.item.crafted.qualities,
+  };
+}
+
+// The crafting lives outside the form, so closing has to ask about it too.
+const craftedAtOpen = JSON.stringify(crafted.value ?? null);
+
+useModalDirty(
+  () =>
+    formDirty.value || JSON.stringify(crafted.value ?? null) !== craftedAtOpen,
+);
+
+// The item, where it is filed, and how it is to be crafted, on one line.
+const itemMeta = computed(() =>
+  [categoryLabel.value, craftedLabel.value].filter(Boolean).join(" · "),
+);
 
 const [quantity, quantityProps] = defineField("quantity");
 const [unit] = defineField("unit");
@@ -197,12 +257,18 @@ const onSubmit = handleSubmit(async (values) => {
     qualityMatch: values.qualityMatch,
     itemType: pickedItem.value?.type,
     itemId: pickedItem.value?.id,
+    // Null rather than left out, so an edit that drops the crafting clears it.
+    craftedBlueprintId: crafted.value?.blueprintId ?? null,
+    craftedQualities: crafted.value?.qualities ?? null,
   };
 
   // Nothing to post to yet: the line goes back to the form, which saves it
   // with the contract in one request.
   if (props.onDraft) {
-    props.onDraft(data);
+    props.onDraft(data, {
+      counted: pickedItem.value?.counted,
+      craftedBlueprintSlug: crafted.value?.blueprintSlug,
+    });
     comlink.emit("close-modal", true);
     submitting.value = false;
 
@@ -255,6 +321,19 @@ const onSubmit = handleSubmit(async (values) => {
 
 <template>
   <Modal :title="modalTitle" :flush="picking">
+    <BlueprintCrafter
+      v-if="step === 'crafting' && pickedItem"
+      ref="itemCrafter"
+      :title="pickedItem.name"
+      :item="pickedItem"
+      :craftable-type="craftableType"
+      :crafted="crafted"
+      embedded
+      open-slots
+      @apply="onCrafted"
+      @remove="clearCrafted"
+    />
+
     <ItemPicker
       v-if="picking"
       :category="pickerCategory"
@@ -262,10 +341,10 @@ const onSubmit = handleSubmit(async (values) => {
       @select="applySelection"
     />
 
-    <!-- Hidden rather than unmounted while the catalogue is open, so nothing
+    <!-- Hidden rather than unmounted while another step is open, so nothing
          typed into it is lost. -->
     <form
-      v-show="!picking"
+      v-show="step === 'form'"
       id="fleet-contract-item-form"
       ref="itemPickerForm"
       @submit.prevent="onSubmit"
@@ -273,10 +352,15 @@ const onSubmit = handleSubmit(async (values) => {
       <ItemPickerField
         name="catalogueItem"
         :value="name"
-        :category-label="categoryLabel"
+        :category-label="itemMeta"
         :error="nameError"
+        :craft-label="
+          craftable ? t('labels.logistics.crafted.request') : undefined
+        "
+        :crafted="!!crafted"
         @open="showPicker(true)"
         @clear="clearItem"
+        @craft="openCrafting"
       />
 
       <div class="row">
@@ -318,6 +402,7 @@ const onSubmit = handleSubmit(async (values) => {
             v-bind="qualityProps"
             name="itemQuality"
             :type="InputTypesEnum.NUMBER"
+            :rules="validationSchema.quality"
             :label="t('labels.logistics.quality')"
             :min="0"
             :step="1"
@@ -337,18 +422,47 @@ const onSubmit = handleSubmit(async (values) => {
             </template>
           </FormInput>
         </div>
+
+        <!-- A crafted part has a grade per slot rather than one, and the rule
+             they are read by is the line's. -->
+        <div v-else-if="crafted" class="col-6">
+          <BaseSelect
+            v-model="qualityMatch"
+            :options="qualityMatchOptions"
+            :label="t('labels.fleets.contracts.qualityMatch')"
+            name="itemQualityMatch"
+            :searchable="false"
+          />
+        </div>
       </div>
     </form>
 
     <template #footer>
-      <Btn
-        v-if="picking"
-        :variant="BtnVariantsEnum.BARE"
-        data-test="item-picker-back"
-        @click="showPicker(false)"
-      >
-        {{ t("actions.back") }}
-      </Btn>
+      <template v-if="step !== 'form'">
+        <Btn
+          :variant="BtnVariantsEnum.BARE"
+          data-test="item-picker-back"
+          @click="showStep('form')"
+        >
+          {{ t("actions.back") }}
+        </Btn>
+        <Btn
+          v-if="step === 'crafting' && crafted"
+          :variant="BtnVariantsEnum.BARE"
+          data-test="crafting-clear"
+          @click="removeCrafting"
+        >
+          {{ t("actions.blueprint.removeCrafting") }}
+        </Btn>
+        <Btn
+          v-if="step === 'crafting'"
+          :disabled="!craftingCanApply"
+          data-test="crafting-apply"
+          @click="applyCrafting"
+        >
+          {{ t("actions.blueprint.apply") }}
+        </Btn>
+      </template>
       <Btn
         v-else
         :type="BtnTypesEnum.SUBMIT"

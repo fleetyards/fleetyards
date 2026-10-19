@@ -3421,6 +3421,7 @@
         "commodityType": "商品类型",
         "equipmentItemType": "装备类型",
         "crafted": {
+          "request": "要求制作的部件",
           "page": "由 %{recipe} 以品质 %{grades} 制作。高亮的数值与目录不同。",
           "showStock": "显示原厂数值",
           "edit": "记录制作方式",
@@ -3940,6 +3941,9 @@
           "lead": "负责人",
           "pendingCrew": "等待加入",
           "minQuality": "最低品质 %{value}",
+          "craftedAny": "已制作，任意品质",
+          "craftedAtLeast": "已制作，至少 %{grades}",
+          "craftedExact": "已制作，恰好 %{grades}",
           "pickedUp": "已取 %{quantity}",
           "itemCategory": "类别",
           "itemUnit": "单位",

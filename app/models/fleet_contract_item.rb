@@ -13,6 +13,10 @@
 # `InventoryLedgerEntry` rather than re-typed, so a category added there cannot
 # be asked for here without also being depositable.
 class FleetContractItem < ApplicationRecord
+  # A line may ask for a crafted part: the recipe, and the grades it wants.
+  # Unlike a part someone holds, a request may leave a slot open.
+  include CraftedPart
+
   belongs_to :fleet_contract, touch: true
   belongs_to :item, polymorphic: true, optional: true
 
@@ -34,8 +38,10 @@ class FleetContractItem < ApplicationRecord
   validate :referenced_item_exists, if: :item_id?
   validate :unit_fits_category
   validate :identity_is_not_already_asked_for
+  validate :crafted_from_a_recipe_for_the_item, if: :crafting_written?
 
   before_validation :set_name_from_item
+  before_validation :drop_grades_without_a_recipe
   before_create :set_position
 
   scope :ordered, -> { order(:position, :created_at) }
@@ -45,6 +51,21 @@ class FleetContractItem < ApplicationRecord
   # can. Nil is the permissive default and is what most lines carry.
   def required_quality
     quality
+  end
+
+  # Whether a delivered lot answers what this line asked for. A crafted line
+  # takes only parts crafted from its recipe, each named grade met under the
+  # line's match rule. A plain line takes crafted parts too: they are that part.
+  def satisfied_by?(grade:, crafted_blueprint_id: nil, crafted_qualities: nil)
+    return quality_satisfied_by?(grade) unless crafted?
+    return false unless crafted_blueprint_id == self.crafted_blueprint_id
+
+    (self.crafted_qualities || {}).all? do |position, required|
+      held = (crafted_qualities || {})[position.to_s]
+      next false if held.nil?
+
+      quality_exact? ? held == required : held >= required
+    end
   end
 
   # Whether a deposit recorded at `grade` answers what this line asked for. A
@@ -65,24 +86,49 @@ class FleetContractItem < ApplicationRecord
     [name.to_s.downcase, category, unit]
   end
 
-  # Two lines with the same identity would both match the same deposits, so one
-  # delivery would satisfy both and fulfil the contract at half the goods. The
-  # unique index is the backstop; this is what makes it a readable 400.
+  # What makes two lines the same request: the position, and -- for a crafted
+  # part -- the recipe, the grades and how they are read. The unique index
+  # says the same thing.
+  def request_identity
+    [
+      *position_identity,
+      crafted_blueprint_id,
+      (crafted_qualities || {}).transform_keys(&:to_s).sort.to_h,
+      crafted? ? quality_match : nil
+    ]
+  end
+
+  # Two lines asking for the same thing the same way would compete for every
+  # delivery, and the contract could not say which was meant. The unique index
+  # is the backstop; this is what makes it a readable 400.
   private def identity_is_not_already_asked_for
     return if fleet_contract.blank? || name.blank?
 
-    twin = fleet_contract.fleet_contract_items
+    twins = fleet_contract.fleet_contract_items
       .where.not(id: id)
-      .where(category: category, unit: unit)
+      .where(category: category, unit: unit, crafted_blueprint_id: crafted_blueprint_id)
       .where("LOWER(name) = ?", name.to_s.downcase)
+      .where("COALESCE(crafted_qualities, '{}'::jsonb) = ?::jsonb", (crafted_qualities || {}).to_json)
+    twins = twins.where(quality_match: quality_match) if crafted?
 
-    return unless twin.exists?
+    return unless twins.exists?
 
     # Not a bare :taken -- "Name has already been taken" reads as though the
     # name alone were the conflict, when what collides is the whole identity the
     # ledger is matched on.
     errors.add(:name, :taken,
       message: I18n.t("activerecord.errors.messages.contract_item_already_asked_for"))
+  end
+
+  private def crafted_grades_required?
+    false
+  end
+
+  # A line that stops asking for a crafted part stops asking for its grades.
+  # Sent as null, the grades never reach the model -- a permitted hash drops
+  # an explicit null -- so clearing the recipe has to clear them here.
+  private def drop_grades_without_a_recipe
+    self.crafted_qualities = nil if crafted_blueprint_id.blank?
   end
 
   private def set_name_from_item

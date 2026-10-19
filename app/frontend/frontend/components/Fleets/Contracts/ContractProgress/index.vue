@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { craftedLineLabel } from "@/frontend/components/Fleets/Contracts/craftedLabel";
 import {
   type FleetContractProgress,
   type FleetContractProgressLine,
@@ -82,7 +83,7 @@ const pickedWidth = (line: FleetContractProgressLine) => {
     >
       <div class="contract-progress__head">
         <span class="contract-progress__name">
-          <CatalogueItemPopover :item="line.item ?? {}">
+          <CatalogueItemPopover :item="line.item ?? {}" :crafted="line.crafted">
             {{ line.name }}
           </CatalogueItemPopover>
         </span>
@@ -92,6 +93,13 @@ const pickedWidth = (line: FleetContractProgressLine) => {
           data-test="contract-progress-quality"
         >
           {{ qualityLabel(line) }}
+        </span>
+        <span
+          v-if="line.crafted"
+          class="contract-progress__quality"
+          data-test="contract-progress-crafted"
+        >
+          {{ craftedLineLabel(t, line.crafted, line.qualityMatch) }}
         </span>
         <span class="contract-progress__counts">
           {{ quantity(line.delivered) }} / {{ quantity(line.requested) }}

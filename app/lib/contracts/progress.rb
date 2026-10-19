@@ -16,7 +16,7 @@ module Contracts
   # addressed to its courier, so it never counts as delivered.
   #
   # Two queries, not two per line: the entries are aggregated in the database
-  # down to one row per (position, quality, transfer) and bucketed into lines in
+  # down to one row per (position, quality, crafted lot, transfer) and bucketed into lines in
   # Ruby, because the quality threshold differs per line and a per-line query
   # would be N round trips to apply it.
   class Progress
@@ -98,14 +98,16 @@ module Contracts
         .where(column => inventory_ids, :entry_type => entry_type)
         .where(inventory_transfer_id: transfer_ids)
         .group(column, Arel.sql("LOWER(name)"), :category, :unit, :quality,
-          :inventory_transfer_id)
+          :crafted_blueprint_id, :crafted_qualities, :inventory_transfer_id)
         .sum(:quantity)
 
       rows.each_with_object({}) do |(key, quantity), result|
-        inventory_id, name, category, unit, quality, transfer_id = key
+        inventory_id, name, category, unit, quality, blueprint_id, qualities, transfer_id = key
 
         ((result[inventory_id] ||= {})[[name, category, unit]] ||= []) << {
           quality: quality,
+          crafted_blueprint_id: blueprint_id,
+          crafted_qualities: qualities,
           quantity: quantity,
           inventory_transfer_id: transfer_id
         }
@@ -136,7 +138,13 @@ module Contracts
     end
 
     def lines
-      @lines ||= @contract.fleet_contract_items.preload(:item).ordered.map { |item| build_line(item) }
+      @lines ||= begin
+        items = @contract.fleet_contract_items.preload(:item, :crafted_blueprint).ordered.to_a
+        delivered = allocate(items, deposits)
+        picked_up = allocate(items, withdrawals)
+
+        items.map { |item| build_line(item, delivered.fetch(item.id, []), picked_up.fetch(item.id, [])) }
+      end
     end
 
     def complete?
@@ -163,20 +171,39 @@ module Contracts
       weights.values.sum(0.to_d)
     end
 
-    private def build_line(item)
-      identity = item.position_identity
-      delivered_rows = deposits.fetch(identity, [])
-
-      # The line decides, because it also decides *how* -- at or above the
-      # grade, or exactly it.
-      counted = delivered_rows.select { |row| item.quality_satisfied_by?(row[:quality]) }
-
+    private def build_line(item, counted, picked_up)
       LineProgress.new(
         item: item,
         requested: item.quantity,
         delivered: counted.sum(0.to_d) { |row| row[:quantity] },
-        picked_up: withdrawals.fetch(identity, []).sum(0.to_d) { |row| row[:quantity] },
+        picked_up: picked_up.sum(0.to_d) { |row| row[:quantity] },
         contributions: contributions_for(item, counted)
+      )
+    end
+
+    # Which rows go to which line, for every position the contract asks for.
+    #
+    # The line decides whether a row answers it, because it also decides *how*
+    # -- at or above the grade, or exactly it, and for a crafted part in every
+    # slot it names. Several lines may share a position, and a row counts
+    # toward one of them only; `Allocation` spreads the rows so as many lines
+    # fill as the goods can fill.
+    #
+    # Goods picked up are allocated the same way, so a pickup that could never
+    # count toward a line is not progress on it.
+    private def allocate(items, rollup)
+      items.group_by(&:position_identity).each_with_object({}) do |(identity, group), allocated|
+        allocated.merge!(
+          Allocation.new(group, rollup.fetch(identity, [])) { |item, row| answers?(item, row) }.call
+        )
+      end
+    end
+
+    private def answers?(item, row)
+      item.satisfied_by?(
+        grade: row[:quality],
+        crafted_blueprint_id: row[:crafted_blueprint_id],
+        crafted_qualities: row[:crafted_qualities]
       )
     end
 
@@ -305,7 +332,9 @@ module Contracts
           refund = returned_rows
             .select do |other|
               other[:inventory_transfer_id] == row[:inventory_transfer_id] &&
-                other[:quality] == row[:quality]
+                other[:quality] == row[:quality] &&
+                other[:crafted_blueprint_id] == row[:crafted_blueprint_id] &&
+                other[:crafted_qualities] == row[:crafted_qualities]
             end
             .sum(0.to_d) { |other| other[:quantity] }
 
@@ -329,7 +358,7 @@ module Contracts
       end
     end
 
-    # Grouped down to one row per position, grade and transfer. Keyed by the
+    # Grouped down to one row per position, grade, crafted lot and transfer. Keyed by the
     # same downcased triple `FleetContractItem#position_identity` produces, so a
     # deposit entered as "titanium" answers a contract written as "Titanium".
     private def rollup(inventory_id, entry_type, ledger: ::FleetInventoryItem)
@@ -339,15 +368,18 @@ module Contracts
       rows = ledger
         .where(self.class.ledger_column(ledger) => inventory_id, :entry_type => entry_type)
         .where(inventory_transfer_id: transfers_by_id.keys)
-        .group(Arel.sql("LOWER(name)"), :category, :unit, :quality, :inventory_transfer_id)
+        .group(Arel.sql("LOWER(name)"), :category, :unit, :quality, :crafted_blueprint_id,
+          :crafted_qualities, :inventory_transfer_id)
         .sum(:quantity)
 
       rows.each_with_object({}) do |(key, quantity), result|
-        name, category, unit, quality, transfer_id = key
+        name, category, unit, quality, blueprint_id, qualities, transfer_id = key
         identity = [name, category, unit]
 
         (result[identity] ||= []) << {
           quality: quality,
+          crafted_blueprint_id: blueprint_id,
+          crafted_qualities: qualities,
           quantity: quantity,
           inventory_transfer_id: transfer_id
         }

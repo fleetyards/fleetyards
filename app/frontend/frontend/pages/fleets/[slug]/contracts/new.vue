@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { type ContractItemDraft } from "@/frontend/components/Fleets/Contracts/types";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import Heading from "@/shared/components/base/Heading/index.vue";
@@ -13,7 +14,6 @@ import ContractItemsForm from "@/frontend/components/Fleets/Contracts/ContractIt
 import {
   type Fleet,
   type FleetMember,
-  type FleetContractItemInput,
   FleetContractKindEnum,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -32,7 +32,7 @@ const router = useRouter();
 
 // Held here until the contract they belong to exists; the form sends both in
 // one request.
-const items = ref<FleetContractItemInput[]>([]);
+const items = ref<ContractItemDraft[]>([]);
 const kind = ref<FleetContractKindEnum>(FleetContractKindEnum.PROCUREMENT);
 
 const cancel = () => {

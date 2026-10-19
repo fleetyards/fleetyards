@@ -25517,6 +25517,8 @@ components:
           type: integer
         item:
           "$ref": "#/components/schemas/FleetContractItemRef"
+        crafted:
+          "$ref": "#/components/schemas/InventoryCraftedRef"
         createdAt:
           type:
           - string
@@ -25563,6 +25565,19 @@ components:
           - string
           - 'null'
           format: uuid
+        craftedBlueprintId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        craftedQualities:
+          type:
+          - object
+          - 'null'
+          additionalProperties:
+            type: integer
+            minimum: 0
+            maximum: 1000
       additionalProperties: false
       required:
       - name
@@ -25649,6 +25664,8 @@ components:
           - 'null'
         qualityMatch:
           "$ref": "#/components/schemas/FleetContractQualityMatchEnum"
+        crafted:
+          "$ref": "#/components/schemas/InventoryCraftedRef"
         requested:
           type: string
         delivered:

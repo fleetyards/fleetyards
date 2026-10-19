@@ -14,6 +14,8 @@ json.lines do
     json.unit line.item.unit
     json.quality line.item.quality
     json.quality_match line.item.quality_match
+    json.partial! "api/v1/shared/inventory_crafted",
+      blueprint: line.item.crafted_blueprint, qualities: line.item.crafted_qualities
     json.requested line.requested
     json.delivered line.delivered
     json.picked_up line.picked_up
