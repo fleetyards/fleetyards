@@ -48,6 +48,7 @@ class VehicleLoadout < ApplicationRecord
   # recipe slot.
   def item_list=(list)
     @crafted_slot_repeated = false
+    @saved_craftings = nil
     @item_list = Array(list).map do |item|
       item = item.to_h.symbolize_keys
       item_type = item[:item_type].to_s
@@ -227,11 +228,12 @@ class VehicleLoadout < ApplicationRecord
   # build can drop or reshape the recipe, and refusing it then would refuse
   # every later save of the loadout, whatever else it changed.
   private def crafted_items_fit
+    return errors.add(:items, :crafted_slot_repeated) if @crafted_slot_repeated
+
     crafted = item_list.select { |item| item[:blueprint_id].present? }.reject { |item| saved_crafting?(item) }
     return if crafted.empty?
 
     return errors.add(:items, :crafted_not_component) if crafted.any? { |item| item[:item_type] != "Component" }
-    errors.add(:items, :crafted_slot_repeated) if @crafted_slot_repeated
 
     builds = Blueprint.readable_builds(Blueprint.served_source)
       .where(blueprint_id: crafted.pluck(:blueprint_id), craftable_type: "Component")
