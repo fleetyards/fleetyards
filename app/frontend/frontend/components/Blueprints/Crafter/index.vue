@@ -63,8 +63,12 @@ const emit = defineEmits<{
   close: [];
 }>();
 
+// Copied by hand: the caller's crafting can hold reactive grades, which
+// structuredClone refuses, and a toRaw only unwraps the outer object.
 const draft = ref<CraftedPart | undefined>(
-  props.crafted ? structuredClone(toRaw(props.crafted)) : undefined,
+  props.crafted
+    ? { ...props.crafted, qualities: { ...props.crafted.qualities } }
+    : undefined,
 );
 
 const { t } = useI18n();
