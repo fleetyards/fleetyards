@@ -58,4 +58,4 @@ A fitted component with a blueprint can be marked crafted in the loadout editor,
 - [x] Phase 1
 - [x] Phase 2
 - [x] Phase 3
-- [ ] Review
+- [x] Review (3 rounds, settled)
