@@ -4241,6 +4241,7 @@
         "friend": "Amigos"
       },
       "blueprint": {
+        "anyGrade": "Cualquier calidad",
         "crafter": {
           "title": "Fabricar · %{name}",
           "recipe": "Plano %{number}",

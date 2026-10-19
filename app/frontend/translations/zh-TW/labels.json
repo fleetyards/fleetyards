@@ -4238,6 +4238,7 @@
         "friend": "已是好友"
       },
       "blueprint": {
+        "anyGrade": "任意品質",
         "crafter": {
           "title": "製作 · %{name}",
           "recipe": "藍圖 %{number}",

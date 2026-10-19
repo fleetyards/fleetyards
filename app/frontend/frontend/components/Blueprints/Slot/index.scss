@@ -36,6 +36,32 @@
     color: $gray-light;
   }
 
+  // No grade chosen yet: the thumb sits at the neutral grade it is read as,
+  // quieter, until one is set.
+  &__range--open {
+    opacity: 0.45;
+  }
+
+  &__clear {
+    flex: none;
+    padding: 2px 8px;
+    color: var(--color-text-dim);
+    font-size: 11px;
+    background: none;
+    border: 1px solid rgba($gray-light, 0.35);
+    border-radius: 4px;
+    cursor: pointer;
+
+    &:hover {
+      color: $text-color;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-primary, #428bca);
+      outline-offset: 2px;
+    }
+  }
+
   // What a slot moves, beside its name, where its ramps are not shown.
   &__moves {
     min-width: 0;

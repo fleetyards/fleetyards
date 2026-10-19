@@ -4255,6 +4255,7 @@
         "friend": "Friends"
       },
       "blueprint": {
+        "anyGrade": "Any grade",
         "crafter": {
           "title": "Craft · %{name}",
           "recipe": "Recipe %{number}",

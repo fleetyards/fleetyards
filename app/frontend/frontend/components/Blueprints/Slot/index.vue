@@ -26,15 +26,22 @@ type Props = {
   // Off inside an editor with unsaved changes, which a link would leave: the
   // material and where it is held are then named without one.
   links?: boolean;
+  // No grade chosen: a request for the item takes any. The control shows
+  // "any" until a grade is set, and `clearable` offers going back to it.
+  open?: boolean;
+  clearable?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   ramps: true,
   links: true,
+  open: false,
+  clearable: false,
 });
 
 const emit = defineEmits<{
   "update:quality": [value: number];
+  clear: [];
 }>();
 
 const { t } = useI18n();
@@ -73,7 +80,7 @@ const amount = computed(() => {
 });
 
 const belowGate = computed(
-  () => gate.value !== undefined && props.quality < gate.value,
+  () => !props.open && gate.value !== undefined && props.quality < gate.value,
 );
 
 // What the reader already holds of this slot's material, if they are signed
@@ -260,6 +267,7 @@ const onQuality = (event: Event) => {
               step="1"
               :value="quality"
               :aria-label="t('labels.blueprint.quality')"
+              :class="{ 'blueprint-slot__range--open': open }"
               @input="onQuality"
             />
           </div>
@@ -268,11 +276,21 @@ const onQuality = (event: Event) => {
             min="0"
             max="1000"
             step="1"
-            :value="quality"
+            :value="open ? '' : quality"
+            :placeholder="open ? t('labels.blueprint.anyGrade') : undefined"
             :aria-label="t('labels.blueprint.quality')"
-            :class="{ 'blueprint-slot__number--below': belowGate }"
+            :class="{ 'blueprint-slot__number--below': belowGate && !open }"
             @input="onQuality"
           />
+          <button
+            v-if="clearable && !open"
+            type="button"
+            class="blueprint-slot__clear"
+            data-test="blueprint-slot-clear"
+            @click="emit('clear')"
+          >
+            {{ t("labels.blueprint.anyGrade") }}
+          </button>
         </div>
 
         <p v-if="belowGate" class="blueprint-slot__below">
