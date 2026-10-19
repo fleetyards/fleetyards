@@ -9,6 +9,8 @@ const RECIPE = {
   id: "bp",
   slug: "bp-armor",
   costSlots: [
+    // Moves nothing: a record has no grade to state for it.
+    { position: 1, name: "Binding", options: [], modifiers: [] },
     {
       position: 0,
       name: "Plating",
@@ -86,7 +88,9 @@ describe("BlueprintCrafter", () => {
     await flushPromises();
 
     await wrapper
-      .get("[data-test='blueprint-crafter-slots'] input[type='number']")
+      .get(
+        "[data-test='blueprint-crafter-slots'] .blueprint-slot:last-child input[type='number']",
+      )
       .setValue("1000");
     await flushPromises();
 
@@ -108,6 +112,64 @@ describe("BlueprintCrafter", () => {
         },
       ],
     ]);
+  });
+
+  it("states the neutral grade for a slot a record leaves untouched", async () => {
+    const wrapper = await mount();
+    await flushPromises();
+
+    await wrapper.get("[data-test='blueprint-crafter-apply']").trigger("click");
+
+    expect(wrapper.emitted("apply")).toEqual([
+      [{ blueprintId: "bp", blueprintSlug: "bp-armor", qualities: { 0: 500 } }],
+    ]);
+  });
+
+  it("leaves a request's untouched slot open, and clears a set one back to any", async () => {
+    const wrapper = await mount({ openSlots: true });
+    await flushPromises();
+
+    const number = () =>
+      wrapper.get(
+        "[data-test='blueprint-crafter-slots'] .blueprint-slot:last-child input[type='number']",
+      );
+    expect((number().element as HTMLInputElement).value).toBe("");
+
+    await number().setValue("800");
+    await flushPromises();
+    await wrapper.get("[data-test='blueprint-slot-clear']").trigger("click");
+    await flushPromises();
+    await wrapper.get("[data-test='blueprint-crafter-apply']").trigger("click");
+
+    expect(wrapper.emitted("apply")).toEqual([
+      [{ blueprintId: "bp", blueprintSlug: "bp-armor", qualities: {} }],
+    ]);
+  });
+
+  it("leaves its frame and actions to a host it is embedded in", async () => {
+    const wrapper = await mount({ embedded: true });
+    await flushPromises();
+
+    expect(wrapper.find("[data-test='blueprint-crafter-close']").exists()).toBe(
+      false,
+    );
+    expect(wrapper.find("[data-test='blueprint-crafter-apply']").exists()).toBe(
+      false,
+    );
+
+    await wrapper.get("[data-test='blueprint-crafter']").trigger("keydown", {
+      key: "Escape",
+    });
+    expect(wrapper.emitted("close")).toBeUndefined();
+
+    const exposed = wrapper.vm as unknown as {
+      canApply: boolean;
+      apply: () => void;
+    };
+    expect(exposed.canApply).toBe(true);
+    exposed.apply();
+
+    expect(wrapper.emitted("apply")).toHaveLength(1);
   });
 
   it("offers Remove only for an item already crafted, and leaves the caller's crafting alone", async () => {

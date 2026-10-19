@@ -1465,10 +1465,8 @@ describe("VehicleLoadoutModal component tabs", () => {
           itemId: "gun1",
           crafted: {
             blueprintId: "bp",
-            qualities: [
-              { position: 0, quality: 750 },
-              { position: 1, quality: 750 },
-            ],
+            // The second slot moves no stat, so it carries no grade.
+            qualities: [{ position: 0, quality: 750 }],
           },
         },
       ]);
@@ -1494,7 +1492,10 @@ describe("VehicleLoadoutModal component tabs", () => {
           slotPath: GUN,
           itemType: "Component",
           itemId: "gun1",
-          crafted: { blueprintId: "bp2", qualities: [] },
+          crafted: {
+            blueprintId: "bp2",
+            qualities: [{ position: 0, quality: 500 }],
+          },
         },
       ]);
     });

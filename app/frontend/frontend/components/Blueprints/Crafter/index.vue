@@ -40,11 +40,21 @@ type Props = {
   // How the item is crafted now, if it is: the draft starts from it, and it
   // can be taken back.
   crafted?: CraftedPart;
+  // Inside a host whose own footer carries the actions, such as a modal's
+  // docked plate: the crafter shows no header or footer of its own, leaves
+  // Escape to the host, and is driven through what it exposes.
+  embedded?: boolean;
+  // For a request rather than a record: a slot left untouched takes any
+  // grade, and a set one can be cleared back to that. Without it, applying
+  // states a grade for every slot that moves a stat.
+  openSlots?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   craftableType: BlueprintCraftableTypeEnum.COMPONENT,
   crafted: undefined,
+  embedded: false,
+  openSlots: false,
 });
 
 const emit = defineEmits<{
@@ -128,8 +138,42 @@ const setQuality = (position: number, quality: number) => {
   };
 };
 
+const isOpen = (position: number) =>
+  props.openSlots && !(position in (draft.value?.qualities ?? {}));
+
+const clearQuality = (position: number) => {
+  if (!draft.value) return;
+
+  const { [position]: _cleared, ...qualities } = draft.value.qualities;
+  draft.value = { ...draft.value, qualities };
+};
+
+// A record states every grade that went in, the neutral one included; only a
+// request leaves a slot open.
+const settled = computed<CraftedPart | undefined>(() => {
+  if (!draft.value || props.openSlots) return draft.value;
+
+  return {
+    ...draft.value,
+    qualities: Object.fromEntries(
+      costSlots.value
+        .filter((slot) => slot.modifiers?.length)
+        .map((slot) => [slot.position, qualityFor(slot.position)]),
+    ),
+  };
+});
+
+// Its slots are known once the recipe is in, which a record's grades need.
+const canApply = computed(
+  () => !!draft.value && (props.openSlots || !!blueprint.value),
+);
+
 const apply = () => {
-  if (draft.value) emit("apply", draft.value);
+  if (canApply.value && settled.value) emit("apply", settled.value);
+};
+
+const remove = () => {
+  emit("remove");
 };
 
 // The draft is only ever applied or discarded on purpose, so a press elsewhere
@@ -137,6 +181,7 @@ const apply = () => {
 const root = ref<HTMLElement>();
 
 const onKeydown = (event: KeyboardEvent) => {
+  if (props.embedded) return;
   if (event.key !== "Escape" || event.defaultPrevented) return;
 
   event.stopPropagation();
@@ -147,19 +192,20 @@ const focus = () => {
   root.value?.focus();
 };
 
-defineExpose({ focus });
+defineExpose({ focus, apply, remove, canApply });
 </script>
 
 <template>
   <section
     ref="root"
     class="blueprint-crafter"
+    :class="{ 'blueprint-crafter--embedded': embedded }"
     data-test="blueprint-crafter"
     :aria-label="t('labels.blueprint.crafter.title', { name: title })"
     tabindex="-1"
     @keydown="onKeydown"
   >
-    <header class="blueprint-crafter__header">
+    <header v-if="!embedded" class="blueprint-crafter__header">
       <h4 class="blueprint-crafter__title">
         {{ t("labels.blueprint.crafter.title", { name: title }) }}
       </h4>
@@ -224,7 +270,10 @@ defineExpose({ focus });
         :quality="qualityFor(slot.position)"
         :ramps="false"
         :links="false"
+        :open="isOpen(slot.position)"
+        :clearable="openSlots"
         @update:quality="setQuality(slot.position, $event)"
+        @clear="clearQuality(slot.position)"
       />
     </div>
 
@@ -252,7 +301,7 @@ defineExpose({ focus });
       </div>
     </dl>
 
-    <footer class="blueprint-crafter__actions">
+    <footer v-if="!embedded" class="blueprint-crafter__actions">
       <Btn
         v-if="crafted"
         :size="BtnSizesEnum.SM"
@@ -260,7 +309,7 @@ defineExpose({ focus });
         :tone="BtnTonesEnum.DANGER"
         class="blueprint-crafter__remove"
         data-test="blueprint-crafter-remove"
-        @click="emit('remove')"
+        @click="remove"
       >
         {{ t("actions.blueprint.removeCrafting") }}
       </Btn>
@@ -274,7 +323,7 @@ defineExpose({ focus });
       </Btn>
       <Btn
         :size="BtnSizesEnum.SM"
-        :disabled="!draft"
+        :disabled="!canApply"
         data-test="blueprint-crafter-apply"
         @click="apply"
       >

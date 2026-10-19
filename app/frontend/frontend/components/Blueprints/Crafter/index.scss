@@ -19,6 +19,15 @@
   }
 }
 
+// The host's panel is the frame; the crafter is only its content.
+.blueprint-crafter--embedded {
+  max-height: none;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
 .blueprint-crafter__header {
   display: flex;
   align-items: center;
