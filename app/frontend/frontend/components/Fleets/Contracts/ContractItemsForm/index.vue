@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { type ContractItemDraft } from "@/frontend/components/Fleets/Contracts/types";
 import { craftedLineLabel } from "@/frontend/components/Fleets/Contracts/craftedLabel";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -32,14 +33,14 @@ type Props = {
   // round.
   contract?: FleetContractDetail;
   kind: FleetContractKindEnum;
-  drafts?: FleetContractItemInput[];
+  drafts?: ContractItemDraft[];
 };
 
 const props = defineProps<Props>();
 
 const emit = defineEmits<{
   changed: [];
-  "update:drafts": [FleetContractItemInput[]];
+  "update:drafts": [ContractItemDraft[]];
 }>();
 
 const { t } = useI18n();
@@ -51,15 +52,6 @@ const saved = computed(() => props.contract != null);
 // One shape for the list whichever side it came from: a saved line carries an
 // id, a draft is identified by where it sits.
 type Row = FleetContractItem & { draftIndex?: number };
-
-// What a draft knows about its part that the API input does not carry --
-// whether the game counts it in pieces, which is what keeps `units` on offer
-// when the draft is reopened. Keyed by the draft itself, which the list keeps
-// as the same object until it is edited again -- read raw, since a prop hands
-// it back wrapped in a reactive proxy.
-type DraftPick = { counted?: boolean };
-
-const countedDrafts = new WeakMap<FleetContractItemInput, boolean>();
 
 const rows = computed<Row[]>(() => {
   if (props.contract) return props.contract.items as Row[];
@@ -78,7 +70,7 @@ const rows = computed<Row[]>(() => {
               id: draft.itemId,
               type: draft.itemType,
               name: draft.name,
-              counted: countedDrafts.get(toRaw(draft)),
+              counted: draft.counted,
             }
           : null,
         crafted: draft.craftedBlueprintId
@@ -106,10 +98,12 @@ const openItemModal = (item?: Row) => {
       // to hand its values back instead of posting them.
       onDraft: saved.value
         ? undefined
-        : (values: FleetContractItemInput, picked?: DraftPick) => {
+        : (input: FleetContractItemInput, picked?: { counted?: boolean }) => {
+            const values: ContractItemDraft = {
+              ...input,
+              counted: picked?.counted,
+            };
             const next = [...(props.drafts ?? [])];
-
-            countedDrafts.set(toRaw(values), !!picked?.counted);
 
             if (item?.draftIndex != null) {
               next[item.draftIndex] = values;

@@ -5,6 +5,10 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import {
+  type ContractItemDraft,
+  contractItemInput,
+} from "@/frontend/components/Fleets/Contracts/types";
 import { useForm } from "vee-validate";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormMarkdownEditor from "@/shared/components/base/FormMarkdownEditor/index.vue";
@@ -26,7 +30,6 @@ import {
   type Fleet,
   type FilterOption,
   type FleetContract,
-  type FleetContractItemInput,
   type FleetContractDetail,
   type FleetContractDestination,
   type FleetContractEndpoint,
@@ -45,7 +48,7 @@ type Props = {
   contract?: FleetContract | FleetContractDetail;
   // Goods written alongside a contract that does not exist yet. Sent with it,
   // so the two are saved in one transaction.
-  items?: FleetContractItemInput[];
+  items?: ContractItemDraft[];
 };
 
 const props = defineProps<Props>();
@@ -296,7 +299,7 @@ const onSubmit = handleSubmit(async (values) => {
       })
     : createMutation.mutateAsync({
         fleetSlug: props.fleet.slug,
-        data: { ...data, items: props.items },
+        data: { ...data, items: props.items?.map(contractItemInput) },
       });
 
   await mutation
