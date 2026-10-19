@@ -59,13 +59,28 @@
       margin-bottom: 0;
     }
 
-    // Select-all and the bulk actions line up with the table below, so a
-    // selectable toolbar keeps the full row.
+    // Select-all lines up with the table below, so a selectable toolbar keeps
+    // the full row - with the sort options still on the right of it.
     &:has(.base-list-toolbar--selectable) {
       flex-basis: 100%;
 
       :deep(.base-list-toolbar) {
         justify-content: flex-start;
+      }
+
+      :deep(.base-list-toolbar__label) {
+        margin-left: auto;
+      }
+
+      // Next to the box that picked the rows, not past the sort options.
+      :deep(.base-list-toolbar__select-all) {
+        order: -2;
+      }
+
+      :deep(.base-list-toolbar__bulk) {
+        order: -1;
+        justify-content: flex-start;
+        margin-left: 0;
       }
     }
   }
@@ -120,6 +135,11 @@
 
       :deep(.base-list-toolbar) {
         justify-content: flex-start;
+      }
+
+      // As specific as the desktop rule, or its :has() would win here.
+      &:has(.base-list-toolbar--selectable) :deep(.base-list-toolbar__label) {
+        margin-left: 0;
       }
     }
 
