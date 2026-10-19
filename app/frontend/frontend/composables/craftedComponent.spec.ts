@@ -180,7 +180,9 @@ describe("craftedEquipment", () => {
   it("scales an armour's damage reduction", () => {
     const crafted = craftedEquipment(
       { name: "Antium", damageReduction: 0.3 } as never,
-      new Map([["gpp_armor_damagemitigation", { additive: false, value: 1.1 }]]),
+      new Map([
+        ["gpp_armor_damagemitigation", { additive: false, value: 1.1 }],
+      ]),
     );
 
     expect(crafted.damageReduction).toBeCloseTo(0.33);
