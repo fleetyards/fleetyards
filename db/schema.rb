@@ -2934,7 +2934,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_19_160000) do
   add_foreign_key "fleet_inventories", "fleets"
   add_foreign_key "fleet_inventories", "locations", on_delete: :nullify
   add_foreign_key "fleet_inventories", "users", column: "managed_by"
-  add_foreign_key "fleet_inventory_items", "blueprints", column: "crafted_blueprint_id", on_delete: :nullify
+  add_foreign_key "fleet_inventory_items", "blueprints", column: "crafted_blueprint_id", on_delete: :restrict
   add_foreign_key "fleet_inventory_items", "fleet_inventories"
   add_foreign_key "fleet_inventory_items", "fleet_inventory_positions", on_delete: :restrict
   add_foreign_key "fleet_inventory_items", "inventory_transfers", on_delete: :nullify
@@ -2972,7 +2972,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_19_160000) do
   add_foreign_key "imports", "hangar_groups", on_delete: :nullify
   add_foreign_key "inventories", "locations", on_delete: :nullify
   add_foreign_key "inventories", "vehicles", on_delete: :nullify
-  add_foreign_key "inventory_items", "blueprints", column: "crafted_blueprint_id", on_delete: :nullify
+  add_foreign_key "inventory_items", "blueprints", column: "crafted_blueprint_id", on_delete: :restrict
   add_foreign_key "inventory_items", "inventories"
   add_foreign_key "inventory_items", "inventory_positions", on_delete: :restrict
   add_foreign_key "inventory_items", "inventory_transfers", on_delete: :nullify

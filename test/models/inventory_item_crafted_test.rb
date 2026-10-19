@@ -185,6 +185,38 @@ class InventoryItemCraftedTest < ActiveSupport::TestCase
     assert_equal @component.id, arrived.item_id
   end
 
+  # A lot is grouped by its grade column too; one grade holding the lot's
+  # stock must not cover a withdrawal at another.
+  test "does not withdraw a crafted lot's stock from another grade" do
+    crafted(qualities: {1 => 750, 2 => 500}, quantity: 3).tap { |entry| entry.quality = 0 }.save!
+
+    withdrawal = crafted(qualities: {1 => 750, 2 => 500}, quantity: 1)
+    withdrawal.entry_type = :withdrawal
+    withdrawal.quality = nil
+
+    assert_not withdrawal.valid?
+    assert_includes withdrawal.errors[:quantity].join, "crafted lot"
+  end
+
+  # The stored recipe makes one part; pointing the entry at another would name
+  # a part the recipe never made.
+  test "cannot move to a part its recipe does not make" do
+    entry = crafted(qualities: {1 => 750, 2 => 500})
+    entry.save!
+
+    entry.item = create(:component, name: "Palisade")
+
+    assert_not entry.valid?
+    assert entry.errors[:crafted_blueprint_id].any?
+  end
+
+  # Two lots told apart only by their recipe must not run together.
+  test "a recipe a lot was crafted from cannot be deleted" do
+    crafted(qualities: {1 => 750, 2 => 500}).save!
+
+    assert_raises(ActiveRecord::InvalidForeignKey) { Blueprint.where(id: @blueprint.id).delete_all }
+  end
+
   private def crafted(qualities:, blueprint: @blueprint, quantity: 1)
     build(:inventory_item, :component, inventory: @inventory, item: @component, name: "Bulwark",
       quantity:, quality: nil, crafted_blueprint: blueprint, crafted_qualities: qualities)

@@ -32239,23 +32239,26 @@ components:
       - CONSUMABLE
       - OTHER
       title: InventoryCategoryEnum
+    InventoryCraftedBlueprintRef:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+      required:
+      - id
+      - name
+      - slug
+      title: InventoryCraftedBlueprintRef
     InventoryCraftedRef:
       type: object
       properties:
         blueprint:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            name:
-              type: string
-            slug:
-              type: string
-          required:
-          - id
-          - name
-          - slug
+          "$ref": "#/components/schemas/InventoryCraftedBlueprintRef"
         qualities:
           type: object
           additionalProperties:

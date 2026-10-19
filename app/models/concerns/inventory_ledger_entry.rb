@@ -418,10 +418,12 @@ module InventoryLedgerEntry
 
   # A crafted lot is stock of its own: the position holding enough does not
   # mean this lot does, and an overdrawn lot drops out of the stock unseen.
+  # Matched on everything `current_stock` groups a lot by, the grade column
+  # included.
   private def crafted_withdrawal_does_not_exceed_lot
     lot = self.class.where(
       self.class.inventory_foreign_key => inventory_id, :name => name, :category => category, :unit => unit,
-      :crafted_blueprint_id => crafted_blueprint_id
+      :quality => quality, :crafted_blueprint_id => crafted_blueprint_id
     )
     lot = crafted_qualities.nil? ? lot.where(crafted_qualities: nil) : lot.where("crafted_qualities = ?::jsonb", crafted_qualities.to_json)
     current = lot.sum("CASE WHEN entry_type = 0 THEN quantity ELSE -quantity END")

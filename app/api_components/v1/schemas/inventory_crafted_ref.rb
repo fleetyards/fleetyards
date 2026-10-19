@@ -10,15 +10,7 @@ module V1
       schema({
         type: :object,
         properties: {
-          blueprint: {
-            type: :object,
-            properties: {
-              id: {type: :string, format: :uuid},
-              name: {type: :string},
-              slug: {type: :string}
-            },
-            required: %w[id name slug]
-          },
+          blueprint: ::V1::Schemas::InventoryCraftedBlueprintRef,
           qualities: {
             type: :object,
             additionalProperties: {type: :integer, minimum: 0, maximum: 1000}
