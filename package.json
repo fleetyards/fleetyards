@@ -81,7 +81,7 @@
     "pinia-plugin-persistedstate": "^4.7.1",
     "pnp-webpack-plugin": "1.7.0",
     "prismjs": "^1.30.0",
-    "qs": "^6.16.0",
+    "qs": "^6.16.1",
     "sortablejs": "^1.15.7",
     "swagger-ui-dist": "^5.33.2",
     "three": "0.186.1",
