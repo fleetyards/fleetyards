@@ -441,8 +441,18 @@ export const useComponentFitting = () => {
 
   // A module's ports, from the module list the editor already holds: the
   // hull's tree only knows a module's slots once a loadout has saved it there.
+  // The parts in modules' ports a recipe makes: the module list carries the
+  // flag beside its items, where a slot tree carries it on each part.
+  const craftableInModules = ref(new Set<string>());
+
   const toSlot = (hardpoint: Hardpoint): LoadoutSlot => {
-    const stock = hardpoint.component as LoadoutComponentRef | undefined;
+    const part = hardpoint.component as LoadoutComponentRef | undefined;
+    const stock = part
+      ? {
+          ...part,
+          craftable: part.craftable ?? craftableInModules.value.has(part.id),
+        }
+      : undefined;
     remember(stock);
 
     return {
@@ -466,7 +476,12 @@ export const useComponentFitting = () => {
 
   // A module is what its slot holds, as a part is: known by name, so a fitted
   // module slot is not read as empty.
-  const learnModules = (modules: ModelModule[]) =>
+  const learnModules = (
+    modules: ModelModule[],
+    craftableIds: string[] = [],
+  ) => {
+    craftableInModules.value = new Set(craftableIds);
+
     modules.forEach((mod) => {
       remember({
         id: mod.id,
@@ -476,6 +491,7 @@ export const useComponentFitting = () => {
       if (mod.slot)
         learnBelow(mod.slot, mod.id, (mod.hardpoints ?? []).map(toSlot));
     });
+  };
 
   // What an option brings, unless the slot already knows that part: the trees
   // describe a part as the ship holds it, stock parts inside included, where
@@ -829,7 +845,7 @@ export const useComponentFitting = () => {
         // they never stack into one row reading the first one's figures.
         ...(entry.crafted
           ? {
-              groupKey: `${original?.groupKey ?? entry.path}|${craftingKey(entry.crafted)}`,
+              groupKey: `${original?.groupKey ?? ""}|${craftingKey(entry.crafted)}`,
             }
           : {}),
         // A port inside a part names no category of its own; the ship's copy

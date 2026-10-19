@@ -249,6 +249,87 @@ describe("graft of crafted parts", () => {
   });
 });
 
+describe("crafted parts in new ports", () => {
+  const port = (name: string, attributes: Partial<LoadoutSlot> = {}) =>
+    ({
+      name,
+      hardpointId: `port-${name}`,
+      category: "weapons",
+      types: ["WeaponGun"],
+      editable: true,
+      slots: [],
+      ...attributes,
+    }) as LoadoutSlot;
+
+  it("stacks parts crafted alike in ports a swapped-in mount brings", () => {
+    const fitting = useComponentFitting();
+    const gun = { id: "gun", name: "Gun" };
+    const hull = port("hardpoint_turret", {
+      category: "turret",
+      types: ["Turret"],
+      stock: { id: "turret", name: "Turret" },
+      slots: [
+        port("gun_left", { stock: gun }),
+        port("gun_right", { stock: gun }),
+      ],
+    } as Partial<LoadoutSlot>);
+    fitting.learn([hull]);
+    const crafted: CraftedPart = {
+      blueprintId: "bp",
+      blueprintSlug: "bp-gun",
+      qualities: { 0: 800 },
+    };
+
+    const [turret] = fitting.graft(
+      [{ id: "hp-turret", name: "hardpoint_turret" } as Hardpoint],
+      fitting.resolve(
+        [hull],
+        {},
+        {
+          "hardpoint_turret/gun_left": crafted,
+          "hardpoint_turret/gun_right": crafted,
+        },
+      ),
+    );
+
+    const [left, right] = turret.hardpoints ?? [];
+    expect(left.groupKey).toEqual(right.groupKey);
+  });
+});
+
+describe("learnModules", () => {
+  it("marks the parts in a module's ports a recipe makes", () => {
+    const fitting = useComponentFitting();
+    fitting.learnModules(
+      [
+        {
+          id: "m1",
+          name: "Combat Module",
+          slot: "hardpoint_module",
+          hardpoints: [
+            {
+              id: "hp-shield",
+              name: "hardpoint_shield",
+              category: "shieldgenerator",
+              component: { id: "shield", name: "Shield" },
+            },
+            {
+              id: "hp-cooler",
+              name: "hardpoint_cooler",
+              category: "cooler",
+              component: { id: "cooler", name: "Cooler" },
+            },
+          ],
+        } as unknown as ModelModule,
+      ],
+      ["shield"],
+    );
+
+    expect(fitting.components.value.shield.craftable).toBe(true);
+    expect(fitting.components.value.cooler.craftable).toBe(false);
+  });
+});
+
 describe("loadoutValues", () => {
   it("reads a crafted item's recipe and qualities by slot path", () => {
     const { crafted } = loadoutValues([
