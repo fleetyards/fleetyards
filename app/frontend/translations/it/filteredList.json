@@ -5,15 +5,14 @@
         "showFilter": "Mostra filtri",
         "hideFilter": "Nascondi filtri"
       },
-      "selected": "Selected filters",
-      "remove": "Remove %{filter}",
-      "more": "+%{count} more",
-      "title": "Filters",
+      "selected": "Filtri selezionati",
+      "remove": "Rimuovi %{filter}",
+      "more": "+%{count} altri",
       "groups": {
-        "ship": "Ship",
-        "capacity": "Capacity & dimensions",
-        "price": "Price",
-        "ownership": "Ownership"
+        "ship": "Nave",
+        "capacity": "Capacità e dimensioni",
+        "price": "Prezzo",
+        "ownership": "Proprietà"
       }
     }
   }

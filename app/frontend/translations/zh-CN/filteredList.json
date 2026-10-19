@@ -5,15 +5,14 @@
         "showFilter": "Show Filters",
         "hideFilter": "Hide Filters"
       },
-      "selected": "Selected filters",
-      "remove": "Remove %{filter}",
-      "more": "+%{count} more",
-      "title": "Filters",
+      "selected": "已选筛选条件",
+      "remove": "移除 %{filter}",
+      "more": "+%{count} 项",
       "groups": {
-        "ship": "Ship",
-        "capacity": "Capacity & dimensions",
-        "price": "Price",
-        "ownership": "Ownership"
+        "ship": "舰船",
+        "capacity": "容量与尺寸",
+        "price": "价格",
+        "ownership": "拥有情况"
       }
     }
   }

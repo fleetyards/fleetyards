@@ -8,7 +8,6 @@
       "selected": "Selected filters",
       "remove": "Remove %{filter}",
       "more": "+%{count} more",
-      "title": "Filters",
       "groups": {
         "ship": "Ship",
         "capacity": "Capacity & dimensions",
