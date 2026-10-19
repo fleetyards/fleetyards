@@ -160,6 +160,22 @@ module ScData
         )
       end
 
+      # The power plants' pip ramps: a step down, none, a step up.
+      test "#blueprints reads the amounts an additive ramp adds" do
+        crafted_property("GPP_ItemResource_PowerGeneration", ref: DAMAGE_REF, property_name: "@StatName_Pips")
+        blueprint("vehiclegear/powerplant/bp_craft_example", modifiers: [
+          {ref: DAMAGE_REF, type: "CraftingGameplayPropertyModifierValueRange_LinearIntegerAdditive", ranges: [
+            {start_quality: 0, end_quality: 399, at_start: "-1", at_end: "-1"},
+            {start_quality: 400, end_quality: 899, at_start: "0", at_end: "0"},
+            {start_quality: 900, end_quality: 1000, at_start: "1", at_end: "1"}
+          ]}
+        ])
+
+        modifiers = @parser.blueprints.first[:slots].first[:modifiers]
+
+        assert_equal [[-1.0, -1.0], [0.0, 0.0], [1.0, 1.0]], modifiers.map { |m| [m[:modifier_at_start], m[:modifier_at_end]] }
+      end
+
       test "#blueprints skips a record carrying no mandatory cost" do
         write("crafting/blueprints/crafting/fpsgear/bp_craft_empty", <<~XML)
           <blueprint>
@@ -254,8 +270,10 @@ module ScData
       end
 
       private def range_xml(type, range)
+        prefix = type.end_with?("Additive") ? "additiveModifier" : "modifier"
+
         %(<#{type} startQuality="#{range[:start_quality]}" endQuality="#{range[:end_quality]}" ) +
-          %(modifierAtStart="#{range[:at_start]}" modifierAtEnd="#{range[:at_end]}" />)
+          %(#{prefix}AtStart="#{range[:at_start]}" #{prefix}AtEnd="#{range[:at_end]}" />)
       end
 
       private def crafted_property(name, ref:, property_name:, unit: "@LOC_EMPTY")
