@@ -358,12 +358,6 @@ const openFilters = () => {
                 class="fa-solid fa-filter"
               />
               <i v-else class="fa-regular fa-filter" />
-              <span v-if="activeFilters !== undefined"
-                >{{ t("filteredList.title")
-                }}<template v-if="activeFilters.length">
-                  · {{ activeFilters.length }}</template
-                ></span
-              >
             </Btn>
             <slot name="actions-left" :records="records" />
           </div>
@@ -395,11 +389,6 @@ const openFilters = () => {
             @after-leave="toggleFullscreen"
           >
             <div v-show="filterVisible" class="col-12 col-md-3 col-xxl-2">
-              <ActiveFilters
-                v-if="activeFilters"
-                :filters="activeFilters"
-                expanded
-              />
               <slot v-if="!filterFormReset" name="filter" />
             </div>
           </transition>
@@ -407,6 +396,7 @@ const openFilters = () => {
             <ActiveFilters
               v-if="activeFilters"
               :filters="activeFilters"
+              class="filtered-list__off-canvas-filters"
               expanded
             />
             <slot v-if="!filterFormReset" name="filter" />
@@ -423,12 +413,25 @@ const openFilters = () => {
                gone until the first page arrives -- and the sort line is a
                control, not a result. It stays put while the list loads, while
                it is empty, and while it refetches under a new order. -->
-          <ActiveFilters
-            v-if="activeFilters"
-            :filters="activeFilters"
-            @open="openFilters"
-          />
-          <slot name="sort" />
+          <div class="filtered-list__sort-row">
+            <div class="filtered-list__selected-filters">
+              <slot
+                name="selected-filters"
+                :filter-visible="filterVisible"
+                :open-filters="openFilters"
+              >
+                <ActiveFilters
+                  v-if="activeFilters"
+                  :filters="activeFilters"
+                  :expanded="filterVisible && !mobile"
+                  @open="openFilters"
+                />
+              </slot>
+            </div>
+            <div class="filtered-list__sort">
+              <slot name="sort" />
+            </div>
+          </div>
 
           <slot v-if="error" name="error">
             <transition name="fade">

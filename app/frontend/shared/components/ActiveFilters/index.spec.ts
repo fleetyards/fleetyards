@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import Component from "./index.vue";
 
@@ -9,20 +9,51 @@ const filters = () =>
     remove: vi.fn(),
   }));
 
+// jsdom has no layout: the row is 500px, a chip 100px and the overflow chip
+// 60px, so four chips and the overflow chip fit.
+const stubWidths = () => {
+  vi.spyOn(HTMLElement.prototype, "clientWidth", "get").mockImplementation(
+    function (this: HTMLElement) {
+      return this.classList.contains("active-filters") ? 500 : 0;
+    },
+  );
+  vi.spyOn(HTMLElement.prototype, "offsetWidth", "get").mockImplementation(
+    function (this: HTMLElement) {
+      if (this.classList.contains("active-filters__chip")) return 100;
+      if (this.classList.contains("active-filters__more")) return 60;
+      return 0;
+    },
+  );
+};
+
 describe("ActiveFilters", () => {
-  it("limits the toolbar to two chips and one overflow control", async () => {
+  beforeEach(stubWidths);
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it("shows as many chips as fit the row and one overflow control", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: { filters: filters() },
     });
-    expect(wrapper.findAll(".active-filters__chip")).toHaveLength(2);
+    await nextTick();
     expect(
-      wrapper.find(".active-filters__chip button").attributes("aria-pressed"),
+      wrapper.findAll(".active-filters > .active-filters__chip"),
+    ).toHaveLength(4);
+    expect(
+      wrapper
+        .find(".active-filters > .active-filters__chip button")
+        .attributes("aria-pressed"),
     ).toBeUndefined();
-    expect(wrapper.find(".active-filters__chip button").text()).toContain(
-      "Remove Filter 0",
+    expect(
+      wrapper.find(".active-filters > .active-filters__chip button").text(),
+    ).toContain("Remove Filter 0");
+    expect(wrapper.find(".active-filters > .active-filters__more").text()).toBe(
+      "+4 more",
     );
-    expect(wrapper.find(".active-filters__more").text()).toBe("+6 more");
-    await wrapper.find(".active-filters__more button").trigger("click");
+    await wrapper
+      .find(".active-filters > .active-filters__more button")
+      .trigger("click");
     expect(wrapper.emitted("open")).toHaveLength(1);
   });
   it("shows every filter in the panel and removes the selected filter", async () => {
