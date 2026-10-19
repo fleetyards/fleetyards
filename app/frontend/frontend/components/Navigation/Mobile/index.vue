@@ -14,9 +14,7 @@ import { useSessionStore } from "@/frontend/stores/session";
 import { storeToRefs } from "pinia";
 import { useFleetRouteCheck } from "@/frontend/composables/useFleetRouteCheck";
 import { useFleetNavAccess } from "@/frontend/composables/useFleetNavAccess";
-import { useFiltersStore } from "@/shared/stores/filters";
 import { useHangarStore } from "@/frontend/stores/hangar";
-import { type LocationQueryRaw } from "vue-router";
 import {
   useFleet as useFleetQuery,
   usePublicFleet as usePublicFleetQuery,
@@ -30,21 +28,6 @@ const { isAuthenticated } = storeToRefs(sessionStore);
 const route = useRoute();
 
 const { isFleetRoute } = useFleetRouteCheck();
-
-const filtersStore = useFiltersStore();
-
-const { filters } = storeToRefs(filtersStore);
-
-const filterFor = (routeName: string) => {
-  if (!filters.value[routeName]) {
-    return undefined;
-  }
-
-  // Filters are top-level query keys; nested under `q` the forms never see
-  // them, and removing their chips leaves an empty `q` that still reads as a
-  // filter until a reload.
-  return { ...filters.value[routeName] } as unknown as LocationQueryRaw;
-};
 
 const hangarStore = useHangarStore();
 
@@ -155,19 +138,10 @@ const primaryFleet = computed(() => myFleets.value?.[0]);
         :active="routeActive('home')"
         icon="fa-duotone fa-home-alt"
       />
-      <NavItem
-        :to="{
-          name: 'ships',
-          query: filterFor('ships'),
-        }"
-        :icon="SHIP_GLYPH"
-      />
+      <NavItem :to="{ name: 'ships' }" :icon="SHIP_GLYPH" />
       <NavItem
         v-if="isAuthenticated || !hangarPreview"
-        :to="{
-          name: 'hangar',
-          query: filterFor('hangar'),
-        }"
+        :to="{ name: 'hangar' }"
         icon="fa-duotone fa-warehouse"
       />
       <NavItem
