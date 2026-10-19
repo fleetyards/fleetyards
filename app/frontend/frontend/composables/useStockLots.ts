@@ -3,6 +3,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { type PickedItem } from "@/frontend/components/Logistics/types";
 import { type CraftedPart } from "@/frontend/composables/craftedComponent";
 import { type FilterOption, type InventoryCraftedRef } from "@/services/fyApi";
+import type { InventoryStockRecord } from "@/frontend/types/logistics";
 
 // One lot of a position: a quality grade, or a crafted part with the grades it
 // was made from. A position holding several lots appears once per lot.
@@ -99,4 +100,24 @@ export const useStockLots = (lots: Ref<StockLot[]>) => {
     key ? lots.value.find((lot) => lotKey(lot) === key) : undefined;
 
   return { lotOptions, positionOptions, lotAt };
+};
+
+/**
+ * The lots one position holds, each on its own row: plain stock per grade, and
+ * a crafted part per recipe and grades. Worth listing only where there is more
+ * to them than the position's own total.
+ */
+export const usePositionLots = (
+  stock: Ref<InventoryStockRecord[] | undefined>,
+  positionId: Ref<string | undefined>,
+) => {
+  const lots = computed(() =>
+    (stock.value ?? []).filter((lot) => lot.id === positionId.value),
+  );
+
+  const showLots = computed(
+    () => lots.value.length > 1 || lots.value.some((lot) => !!lot.crafted),
+  );
+
+  return { lots, showLots };
 };

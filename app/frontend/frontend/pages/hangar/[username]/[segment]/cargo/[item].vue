@@ -19,11 +19,13 @@ import {
   type InventoryStockPositionInput,
   useShowVehicle,
   useVehicleInventoryStockItem,
+  useVehicleInventoryStock,
   useVehicleInventoryItems,
   useDestroyVehicleInventoryItem,
   useUpdateVehicleInventoryStockItem,
   useDestroyVehicleInventoryStockItem,
 } from "@/services/fyApi";
+import { usePositionLots } from "@/frontend/composables/useStockLots";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -56,6 +58,18 @@ const {
 } = useVehicleInventoryStockItem(vehicleId, itemSlug, {
   query: { enabled: computed(() => !!vehicle.value) },
 });
+
+const { data: stock, refetch: refetchStock } = useVehicleInventoryStock(
+  vehicleId,
+  {
+    query: { enabled: computed(() => !!vehicle.value) },
+  },
+);
+
+const { lots, showLots } = usePositionLots(
+  stock,
+  computed(() => stockItem.value?.id),
+);
 
 const historyQuery = computed(() => ({
   q: {
@@ -107,7 +121,11 @@ const destroyEntry = (entry: InventoryItem) => {
           text: t("messages.logistics.inventoryItem.destroy.success"),
         });
 
-        await Promise.all([refetchStockItem(), refetchHistory()]);
+        await Promise.all([
+          refetchStockItem(),
+          refetchHistory(),
+          refetchStock(),
+        ]);
       } catch {
         displayAlert({
           text: t("messages.logistics.inventoryItem.destroy.failure"),
@@ -147,7 +165,11 @@ const openEditModal = () => {
             params: { ...route.params, item: updated.slug },
           });
         } else {
-          await Promise.all([refetchStockItem(), refetchHistory()]);
+          await Promise.all([
+            refetchStockItem(),
+            refetchHistory(),
+            refetchStock(),
+          ]);
         }
       },
     },
@@ -236,6 +258,18 @@ const crumbs = computed<Crumb[]>(() => [
             </Teleport>
 
             <StockItemPanel :stock-item="stockItem" />
+
+            <template v-if="showLots">
+              <Heading size="lg">
+                {{ t("labels.logistics.lots") }}
+              </Heading>
+
+              <InventoryLedgerTables
+                active-tab="stock"
+                :stock-records="lots"
+                :log-records="[]"
+              />
+            </template>
 
             <Heading size="lg">
               {{ t("labels.logistics.history") }}

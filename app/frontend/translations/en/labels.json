@@ -3529,6 +3529,7 @@
         "entries": "Entries",
         "lastEntry": "Last entry",
         "history": "History",
+        "lots": "Lots",
         "linkedItem": "Linked item",
         "itemUnavailable": "Not in current patch",
         "itemUnavailableHint": "The current game build no longer ships this item. Entries keep it, but it cannot be picked for new ones.",
