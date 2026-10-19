@@ -25,6 +25,8 @@ class BlueprintStatBases
 
   COMPONENT = {
     "gpp_itemresource_coolantgeneration" => "cooling_rate",
+    # Additive: the pips a crafted power plant gains or loses on this.
+    "gpp_itemresource_powergeneration" => "power_base",
     "gpp_shield_maxhealth" => "max_health",
     "gpp_radar_minaimassistdistance" => "aim_assist_min",
     "gpp_radar_maxaimassistdistance" => "aim_assist_range",
