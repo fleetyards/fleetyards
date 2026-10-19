@@ -102,7 +102,7 @@
     "@pinia/testing": "^2.0.1",
     "@playwright/test": "^1.64.1",
     "@tailwindcss/vite": "^4.3.3",
-    "@tanstack/eslint-plugin-query": "^5.104.2",
+    "@tanstack/eslint-plugin-query": "^5.104.3",
     "@tanstack/vue-query-devtools": "^6.3.2",
     "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@types/ahoy.js": "^0.4.2",
