@@ -205,6 +205,50 @@ describe("crafting", () => {
   });
 });
 
+describe("graft of crafted parts", () => {
+  it("keeps two parts crafted apart from stacking on the hardpoint list", () => {
+    const fitting = useComponentFitting();
+    const slot = (name: string) =>
+      ({
+        name,
+        hardpointId: `port-${name}`,
+        category: "shieldgenerator",
+        types: ["Shield"],
+        editable: true,
+        stock: { id: "shield", name: "Shield" },
+        slots: [],
+      }) as LoadoutSlot;
+    const slots = [slot("shield_left"), slot("shield_right")];
+    fitting.learn(slots);
+    const crafted = (quality: number): CraftedPart => ({
+      blueprintId: "bp",
+      blueprintSlug: "bp-shield",
+      qualities: { 0: quality },
+    });
+
+    const keys = (left: number, right: number) =>
+      fitting
+        .graft(
+          [
+            { id: "hp-left", name: "shield_left", groupKey: "shield" },
+            { id: "hp-right", name: "shield_right", groupKey: "shield" },
+          ] as Hardpoint[],
+          fitting.resolve(
+            slots,
+            {},
+            { shield_left: crafted(left), shield_right: crafted(right) },
+          ),
+        )
+        .map((hardpoint) => hardpoint.groupKey);
+
+    const [left, right] = keys(100, 900);
+    expect(left).not.toEqual(right);
+
+    const [same, alike] = keys(700, 700);
+    expect(same).toEqual(alike);
+  });
+});
+
 describe("loadoutValues", () => {
   it("reads a crafted item's recipe and qualities by slot path", () => {
     const { crafted } = loadoutValues([

@@ -824,6 +824,13 @@ export const useComponentFitting = () => {
         // id is the same for both.
         id: original?.id ?? entry.path,
         name: entry.slot.name,
+        // Two parts crafted apart are two parts on a hardpoint list too, so
+        // they never stack into one row reading the first one's figures.
+        ...(entry.crafted
+          ? {
+              groupKey: `${original?.groupKey ?? entry.path}|${craftingKey(entry.crafted)}`,
+            }
+          : {}),
         // A port inside a part names no category of its own; the ship's copy
         // does, and failing that the part in it, which is what the figures
         // read a gun or a shield by.
