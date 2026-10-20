@@ -215,6 +215,7 @@ const sub = (item: HangarPledgeItem) =>
               type: record.catalogueItem.itemType,
               slug: record.catalogueItem.slug,
               name: record.catalogueItem.name,
+              listed: record.catalogueItem.listed,
             }"
           >
             {{ record.name }}

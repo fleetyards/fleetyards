@@ -31496,11 +31496,16 @@ components:
           description: The component's category, or the equipment's type
         size:
           type: string
+        listed:
+          type: boolean
+          description: False for an item the catalogue leaves out, whose page would
+            404
       additionalProperties: false
       required:
       - itemType
       - id
       - name
+      - listed
       title: HangarPledgeItemCatalogueItem
     HangarPledgeItemKindEnum:
       type: string

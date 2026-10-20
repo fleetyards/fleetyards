@@ -15,10 +15,11 @@ module V1
             name: {type: :string},
             slug: {type: :string},
             category: {type: :string, description: "The component's category, or the equipment's type"},
-            size: {type: :string}
+            size: {type: :string},
+            listed: {type: :boolean, description: "False for an item the catalogue leaves out, whose page would 404"}
           },
           additionalProperties: false,
-          required: %w[itemType id name]
+          required: %w[itemType id name listed]
         })
       end
     end
