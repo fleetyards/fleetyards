@@ -16,6 +16,19 @@ module HangarPlans
     end
 
     def missing_sources
+      @missing_sources ||= find_missing_sources
+    end
+
+    def changed_sources
+      @changed_sources ||= find_changed_sources
+    end
+
+    def new_vehicles
+      @new_vehicles ||= plan.live_vehicles.where(created_at: plan.based_on_at..).where.not(id: plan.used_vehicle_ids)
+        .includes(model: MODEL_PRELOAD).order(:created_at).to_a
+    end
+
+    private def find_missing_sources
       routes = acquisitions.select(&:source_missing?).map do |acquisition|
         SourceIssue.new(kind: "acquisition", record_id: acquisition.id, planned_model: acquisition.start_model, current_model: nil)
       end
@@ -29,7 +42,7 @@ module HangarPlans
       routes + steps + gone
     end
 
-    def changed_sources
+    private def find_changed_sources
       routes = acquisitions.select(&:source_changed?).map do |acquisition|
         SourceIssue.new(kind: "acquisition", record_id: acquisition.id, planned_model: acquisition.start_model,
           current_model: acquisition.source_vehicle.model)
@@ -41,11 +54,6 @@ module HangarPlans
       routes + changed
     end
 
-    def new_vehicles
-      plan.live_vehicles.where(created_at: plan.based_on_at..).where.not(id: plan.used_vehicle_ids)
-        .includes(model: MODEL_PRELOAD).order(:created_at)
-    end
-
     def previous_total
       summary.decided_spend(snapshot: true) - summary.melt_credit_at(snapshot: true)
     end
@@ -55,7 +63,7 @@ module HangarPlans
     end
 
     def drifted?
-      missing_sources.any? || changed_sources.any? || new_vehicles.exists? || previous_total != current_total
+      missing_sources.any? || changed_sources.any? || new_vehicles.any? || previous_total != current_total
     end
 
     # Brings the plan up to the live hangar without discarding the user's
@@ -63,7 +71,7 @@ module HangarPlans
     # flagged, and prices are taken again as of now.
     def rebase!
       HangarPlan.transaction do
-        new_ships = new_vehicles.to_a
+        new_ships = new_vehicles
         Builder.new(plan).copy_vehicles(Vehicle.where(id: new_ships.map(&:id)), keep: true) if new_ships.any?
 
         plan.acquisitions.includes(:start_model, :buyback_pledge).find_each do |acquisition|

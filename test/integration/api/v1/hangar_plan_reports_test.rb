@@ -196,6 +196,16 @@ class Api::V1::HangarPlanReportsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT add-to-wishlist a second time adds nothing" do
+    HangarPlans::WishlistApply.new(@plan).run
+
+    assert_no_difference -> { @user.vehicles.wanted.count } do
+      assert_api_response :put, 200, api_path: "/hangar/plans/{id}/add-to-wishlist", path_params: {id: @plan.id} do
+        assert_equal 0, parsed_body["added"]
+      end
+    end
+  end
+
   test "GET resources lists what the plan can spend, and what it already spends" do
     create(:hangar_pledge_item, user: @user, kind: "ccu", name: "Upgrade - Cutlass Black To Carrack")
     create(:buyback_pledge, user: @user, name: "Standalone Ship - Carrack")

@@ -98,6 +98,17 @@ class HangarPlans::SummaryTest < ActiveSupport::TestCase
     assert_not summary.complete?
   end
 
+  test "a ship held once covers one undecided slot, not every one" do
+    create(:vehicle, user: @user, model: @cutlass)
+    2.times do
+      slot = create(:hangar_plan_slot, hangar_plan: @plan)
+      create(:hangar_plan_candidate, slot:, model: @cutlass)
+      create(:hangar_plan_candidate, slot:, model: @carrack)
+    end
+
+    assert_equal 100, HangarPlans::Summary.new(@plan).spend_min
+  end
+
   test "melts credit today's price unless overridden, and credit pays first" do
     candidate = decided_slot(@carrack)
     @plan.acquisitions.create!(candidate:, start_kind: "store", start_model: @carrack)

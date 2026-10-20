@@ -8,6 +8,6 @@ json.totals do
   json.right { json.partial! "api/v1/hangar_plans/totals", summary: @summaries.last }
 end
 json.metrics do
-  json.left { json.partial! "api/v1/hangar_plans/metrics", metrics: HangarPlans::Metrics.for(HangarPlans::Metrics.plan_models(@hangar_plan)) }
-  json.right { json.partial! "api/v1/hangar_plans/metrics", metrics: HangarPlans::Metrics.for(HangarPlans::Metrics.plan_models(@other_plan)) }
+  json.left { json.partial! "api/v1/hangar_plans/metrics", metrics: HangarPlans::Metrics.for(@plan_models.first) }
+  json.right { json.partial! "api/v1/hangar_plans/metrics", metrics: HangarPlans::Metrics.for(@plan_models.last) }
 end

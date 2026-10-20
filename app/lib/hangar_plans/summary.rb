@@ -97,22 +97,28 @@ module HangarPlans
         unresolved_count: unresolved, complete: unresolved.zero? && costs.none?(&:nil?))
     end
 
+    # A ship already held covers one unit of one slot only: the cheapest
+    # candidate takes the held ships it counted, so the next undecided slot
+    # wanting that model does not count them again.
     private def undecided_cost(slot)
-      costs = slot.candidates.map do |candidate|
-        needed = [slot.quantity - owned_available.fetch(candidate.model_id, 0), 0].max
-        next 0 if needed.zero?
+      options = slot.candidates.filter_map do |candidate|
+        held = [owned_pool.fetch(candidate.model_id, 0), slot.quantity].min
+        needed = slot.quantity - held
 
         unit = sum_known([candidate.model.pledge_price, *candidate.extras.map(&:pledge_price)])
-        if unit.nil?
+        if unit.nil? && needed.positive?
           issue("missing_price", candidate.model.name, slot.id)
           next
         end
 
-        needed * unit
+        {model_id: candidate.model_id, held:, cost: needed.zero? ? 0 : needed * unit}
       end
 
-      known = costs.compact
-      SlotCost.new(slot_id: slot.id, state: "undecided", min_cost: known.min || 0, max_cost: known.max || 0,
+      cheapest = options.min_by { |option| option[:cost] }
+      owned_pool[cheapest[:model_id]] = owned_pool.fetch(cheapest[:model_id], 0) - cheapest[:held] if cheapest
+
+      costs = options.map { |option| option[:cost] }
+      SlotCost.new(slot_id: slot.id, state: "undecided", min_cost: costs.min || 0, max_cost: costs.max || 0,
         unresolved_count: 0, complete: false)
     end
 
@@ -149,8 +155,8 @@ module HangarPlans
       value || 0
     end
 
-    private def owned_available
-      @owned_available ||= plan.live_vehicles.where.not(id: plan.used_vehicle_ids).group(:model_id).count
+    private def owned_pool
+      @owned_pool ||= plan.live_vehicles.where.not(id: plan.used_vehicle_ids).group(:model_id).count
     end
 
     private def sum_known(prices)

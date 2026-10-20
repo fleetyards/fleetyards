@@ -30,6 +30,15 @@ class HangarPlans::ComparisonTest < ActiveSupport::TestCase
     assert_equal({kept.id => "kept", upgraded.id => "upgraded", melted.id => "melted", unassigned.id => "unassigned"}, statuses)
   end
 
+  test "a route on a slot that has not picked its ship leaves the ship unassigned" do
+    vehicle = create(:vehicle, user: @user, model: @cutlass)
+    candidate = slot_for(@cutlass)
+    create(:hangar_plan_candidate, slot: candidate.slot, model: @carrack)
+    @plan.acquisitions.create!(candidate:, start_kind: "owned", source_vehicle: vehicle)
+
+    assert_equal ["unassigned"], HangarPlans::Comparison.new(@plan).vehicles.map(&:status)
+  end
+
   test "model counts change between the hangar and the plan's decided slots" do
     create(:vehicle, user: @user, model: @cutlass)
     create(:vehicle, user: @user, model: @constellation)

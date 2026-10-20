@@ -40,7 +40,8 @@ module HangarPlans
 
     def vehicles
       melted = plan.melts.pluck(:vehicle_id).to_set
-      routes = plan.acquisitions.where(start_kind: "owned").includes(upgrade_steps: {target_model: MODEL_PRELOAD})
+      routes = plan.acquisitions.where(start_kind: "owned", hangar_plan_candidate_id: decided_candidate_ids)
+        .includes(upgrade_steps: {target_model: MODEL_PRELOAD})
         .index_by(&:source_vehicle_id)
 
       live_vehicles.map do |vehicle|
@@ -73,6 +74,12 @@ module HangarPlans
 
     def metrics
       {live: Metrics.for(live_vehicles.map(&:model)), plan: Metrics.for(Metrics.plan_models(plan))}
+    end
+
+    # Routes on a slot that has not picked its ship yet say nothing about what
+    # happens to the hangar.
+    private def decided_candidate_ids
+      plan.slots.includes(:candidates).filter_map { |slot| slot.decided_candidate&.id }
     end
 
     private def live_vehicles

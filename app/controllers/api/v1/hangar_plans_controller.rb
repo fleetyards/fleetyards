@@ -69,10 +69,8 @@ module Api
       def compare
         @other_plan = authorized_scope(HangarPlan.all, with: HangarPlanPolicy).find(params[:other_id])
 
-        @models = HangarPlans::Comparison.diff(
-          HangarPlans::Metrics.plan_models(@hangar_plan),
-          HangarPlans::Metrics.plan_models(@other_plan)
-        )
+        @plan_models = [HangarPlans::Metrics.plan_models(@hangar_plan), HangarPlans::Metrics.plan_models(@other_plan)]
+        @models = HangarPlans::Comparison.diff(*@plan_models)
         @summaries = [HangarPlans::Summary.new(@hangar_plan), HangarPlans::Summary.new(@other_plan)]
       end
 
