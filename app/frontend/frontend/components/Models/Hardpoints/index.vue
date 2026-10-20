@@ -89,6 +89,15 @@ provide(
 
 const { t } = useI18n();
 
+// The angled view, coloured where there is one, as the loadout editor shows it.
+const backdrop = computed(() => {
+  const media = props.model.media;
+  const file =
+    media?.angledViewColored || media?.angledView || media?.storeImage;
+
+  return file ? file.largeUrl || file.url : undefined;
+});
+
 const erkulUrl = computed(() => {
   if (!props.model.scIdentifier) {
     return undefined;
@@ -325,9 +334,12 @@ useMetricsMasonry(metricsGrid);
         />
         <ModelPowerDistribution
           v-model="powerOverrides"
+          :model-name="model.name"
+          :backdrop="backdrop"
           v-model:mode="flightMode"
           :hardpoints="loadoutHardpoints"
           :weapon-pool-size="model.metrics?.weaponPoolSize"
+          :regen-modifier="regenModifier"
           :cross-section="model.metrics?.signatureCrossSection"
           :loading="loadingHardpoints"
         />

@@ -132,7 +132,7 @@ function collectWeaponHardpoints(
   return collected;
 }
 
-function isMissile(weapon: ComponentWeapon): boolean {
+export function isMissile(weapon: ComponentWeapon): boolean {
   return "trackingSignal" in (weapon as Record<string, unknown>);
 }
 
