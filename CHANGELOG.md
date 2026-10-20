@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.17.0](https://github.com/fleetyards/fleetyards/compare/v9.16.1...v9.17.0) (2026-10-20)
+
+
+### Features
+
+* count cargo modules in ship and vehicle cargo ([#5847](https://github.com/fleetyards/fleetyards/issues/5847)) ([874c583](https://github.com/fleetyards/fleetyards/commit/874c58341af967dd2e0626b9976b9f276d26a329))
+* **hangar:** rework the states and groups columns of the list view ([#5848](https://github.com/fleetyards/fleetyards/issues/5848)) ([53b83c2](https://github.com/fleetyards/fleetyards/commit/53b83c246c477b9e4ef427910e4381e908cd1e49))
+* use the width on wide screens for ship, vehicle and loadout pages ([#5861](https://github.com/fleetyards/fleetyards/issues/5861)) ([3213441](https://github.com/fleetyards/fleetyards/commit/3213441a8df729b611c6458259c3134a04831ed3))
+
+
+### Chores
+
+* **deps-dev:** bump @axe-core/playwright from 4.13.0 to 4.14.0 ([#5850](https://github.com/fleetyards/fleetyards/issues/5850)) ([2a1f6d6](https://github.com/fleetyards/fleetyards/commit/2a1f6d6e30db9348e87af5dc01b2e09dbd47aab0))
+* **deps-dev:** bump @tanstack/vue-query-devtools from 6.3.2 to 6.3.3 ([#5855](https://github.com/fleetyards/fleetyards/issues/5855)) ([75ab9fb](https://github.com/fleetyards/fleetyards/commit/75ab9fbd7f82db05f294ac145b8fe7e7d647d631))
+* **deps-dev:** bump @types/rails__activestorage from 8.0.1 to 8.0.2 ([#5857](https://github.com/fleetyards/fleetyards/issues/5857)) ([edcd52d](https://github.com/fleetyards/fleetyards/commit/edcd52d4292a56db4a5eabd3a87bb5a9e0c3a75e))
+* **deps-dev:** bump eslint from 10.12.0 to 10.13.0 ([#5851](https://github.com/fleetyards/fleetyards/issues/5851)) ([02bdf7f](https://github.com/fleetyards/fleetyards/commit/02bdf7f03868d2da1612702517db69ba5fced888))
+* **deps-dev:** bump eslint-plugin-prettier from 5.5.6 to 5.5.7 ([#5858](https://github.com/fleetyards/fleetyards/issues/5858)) ([e010c4d](https://github.com/fleetyards/fleetyards/commit/e010c4dd0225023d58d8efee958a3842fce4f3e6))
+* **deps-dev:** bump jsdom from 30.1.2 to 30.1.3 ([#5856](https://github.com/fleetyards/fleetyards/issues/5856)) ([702a456](https://github.com/fleetyards/fleetyards/commit/702a456ad9f2710d4b7148047205102cffd7faac))
+* **deps-dev:** bump msw from 2.15.0 to 3.0.3 ([#5859](https://github.com/fleetyards/fleetyards/issues/5859)) ([91334ff](https://github.com/fleetyards/fleetyards/commit/91334ffd6cebe20ee59f62965964e5a550f98771))
+* **deps-dev:** bump orval from 8.41.0 to 8.43.0 ([#5854](https://github.com/fleetyards/fleetyards/issues/5854)) ([e32cd4f](https://github.com/fleetyards/fleetyards/commit/e32cd4fc7f19b0b2fbb69b02955e07bd952213d5))
+* **deps:** bump @event-calendar/core from 5.17.1 to 5.17.2 ([#5852](https://github.com/fleetyards/fleetyards/issues/5852)) ([0cd2861](https://github.com/fleetyards/fleetyards/commit/0cd286178948d1bae190f19bc6dac4bb09bc7809))
+* **deps:** bump swagger-ui-dist from 5.33.2 to 5.33.3 ([#5853](https://github.com/fleetyards/fleetyards/issues/5853)) ([4513e70](https://github.com/fleetyards/fleetyards/commit/4513e707346a45ab182a4cde0c507c27831d9af2))
+
 ## [9.16.1](https://github.com/fleetyards/fleetyards/compare/v9.16.0...v9.16.1) (2026-10-19)
 
 
