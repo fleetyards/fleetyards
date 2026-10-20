@@ -77,9 +77,21 @@
     content: "";
   }
 
+  // At least as tall as the ship, which would otherwise hang below shorter
+  // content and give the modal body something to scroll.
   @media (min-width: $tablet-breakpoint) {
+    min-height: calc(100dvh - 260px);
+
     &::before {
       display: block;
+    }
+  }
+
+  @media (min-width: map-get($grid-breakpoints, xxl)) {
+    min-height: min(calc(100dvh - 260px), 1400px);
+
+    &::before {
+      height: min(calc(100dvh - 260px), 1400px);
     }
   }
 }
