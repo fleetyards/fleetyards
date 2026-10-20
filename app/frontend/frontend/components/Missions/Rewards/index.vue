@@ -89,9 +89,9 @@ const currencyAmount = (reward: GameMissionReward) => {
           </template>
 
           <!-- The name the parser resolved out of the export's entity tree.
-               405 of the 410 awards have one; the five that do not are the only
-               place a ref is shown, because an award with neither would be a
-               blank line. The weight says it is one of several sets. -->
+               An award without one shows its ref, because an award with
+               neither would be a blank line. The weight says it is one of
+               several sets. -->
           <template v-else-if="reward.kind === 'item'">
             <span class="mission-rewards__value">
               {{ reward.amount ?? 1 }}&times; {{ reward.entityName }}

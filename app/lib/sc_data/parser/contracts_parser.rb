@@ -66,7 +66,14 @@ module ScData
       # nothing else -- no name, no type -- and 234 of the 410 item awards in
       # 4.10.1 point at physical currency ("MG Scrip", "Council Scrip"), which
       # is the closest thing to a payout the export states per contract.
-      ENTITIES_PATH = "entities"
+      #
+      # `actor` because a vehicle is one: Wikelo's ATLS variants are defined
+      # there and nowhere under `entities`.
+      ENTITY_PATHS = %w[entities actor].freeze
+
+      # The weighted sets an award can name by ref rather than state inline.
+      # Two of Wikelo's contracts do, both naming the same set of 34.
+      ITEM_AWARD_RECORDS_PATH = "contracts/contractrewards"
 
       # A difficulty band is a designer's sentence with the level on the end --
       # "Hard_PvE_or_Easy_PvP_action_5", "Basically_a_Dev_7". The prose is
@@ -508,7 +515,7 @@ module ScData
       private def entity_names(refs)
         wanted = refs.to_set
 
-        Dir.glob("#{import_path}/#{ENTITIES_PATH}/**/*.xml").each_with_object({}) do |file, index|
+        ENTITY_PATHS.flat_map { |path| Dir.glob("#{import_path}/#{path}/**/*.xml") }.each_with_object({}) do |file, index|
           ref = File.open(file) { |handle| handle.readline(chomp: true) }[/__ref="([^"]+)"/, 1]
 
           next if ref.blank? || !wanted.include?(ref)
@@ -538,7 +545,7 @@ module ScData
       # set's weight, because a set is not a thing the catalogue can show.
       private def weighted_item_rewards(value)
         Array.wrap(value).flat_map do |result|
-          Array.wrap(result.dig("itemAwardStructure", "ItemAwardWeightings")).flat_map do |weighting|
+          weightings(result["itemAwardStructure"]).flat_map do |weighting|
             Array.wrap(weighting.dig("awards", "ItemAwardEntityClass")).filter_map do |award|
               entity_class = value_or_nil(award["entityClass"])
 
@@ -547,6 +554,25 @@ module ScData
               {kind: "item", entity_class:, amount: award["amountToAward"]&.to_i, weight: weighting["weighting"]&.to_f}.compact
             end
           end
+        end
+      end
+
+      # Stated inline, or named by ref as `ItemAwardWeightingsParams`. Followed
+      # one level, which is as deep as the export nests them.
+      private def weightings(structure)
+        return [] unless structure.is_a?(Hash)
+
+        record = item_award_records[value_or_nil(structure.dig("ItemAwardWeightingsParams", "awardsRecord"))]
+
+        Array.wrap((record || structure)["ItemAwardWeightings"])
+      end
+
+      private def item_award_records
+        @item_award_records ||= load_data(ITEM_AWARD_RECORDS_PATH).each_with_object({}) do |item, index|
+          ref = value_or_nil(item[:values]["__ref"])
+          structure = item[:values]["itemAwardStructure"]
+
+          index[ref] = structure if ref.present? && structure.is_a?(Hash)
         end
       end
 

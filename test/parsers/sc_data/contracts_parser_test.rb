@@ -19,6 +19,8 @@ module ScData
       PROFILE_REF = "9c0a1f22-0000-4000-8000-0000000000a1"
       REPUTATION_REWARD_REF = "9c0a1f22-0000-4000-8000-0000000000b1"
       TITLE_KEY = "@Foxwell_ShipAmbush_VE_title_001"
+      ENTITY_REF = "5d1e0c3a-0000-4000-8000-0000000000c1"
+      AWARD_RECORD_REF = "5d1e0c3a-0000-4000-8000-0000000000c3"
 
       setup do
         @base_folder = Dir.mktmpdir
@@ -389,6 +391,49 @@ module ScData
         assert_empty @parser.missions.sole[:rewards]
       end
 
+      test "#missions names an item reward from the entity it awards" do
+        translate("Item_Palatino_Helmet" => "Palatino Helmet Mark I")
+        named_entity("entities/scitem/characters/palatino_helmet", ref: ENTITY_REF, name: "@Item_Palatino_Helmet")
+        generator("gen", results: %(<ContractResult_Item entityClass="#{ENTITY_REF}" amount="1" />))
+
+        assert_equal "Palatino Helmet Mark I", @parser.missions.sole[:rewards].sole[:entity_name]
+      end
+
+      # A vehicle is an actor, and Wikelo hands out ATLS variants.
+      test "#missions names a reward defined under the actor tree" do
+        translate("TheCollector_Mod_ATLS_Name" => "ATLS Orange Line")
+        named_entity("actor/actors/argo_atls_collector", ref: ENTITY_REF, name: "@TheCollector_Mod_ATLS_Name")
+        generator("gen", results: %(<ContractResult_Item entityClass="#{ENTITY_REF}" amount="1" />))
+
+        assert_equal "ATLS Orange Line", @parser.missions.sole[:rewards].sole[:entity_name]
+      end
+
+      test "#missions follows a weighted award stated as a record of its own" do
+        write("contracts/contractrewards/iawr_foodorderreward", "ItemAwardWeightingsRecord", AWARD_RECORD_REF, <<~XML)
+          <itemAwardStructure>
+            <ItemAwardWeightings weighting="1">
+              <awards>
+                <ItemAwardEntityClass amountToAward="2" entityClass="#{ENTITY_REF}" />
+              </awards>
+            </ItemAwardWeightings>
+          </itemAwardStructure>
+        XML
+        generator("gen", results: <<~XML)
+          <ContractResult_ItemsWeighting>
+            <itemAwardStructure>
+              <ItemAwardWeightingsParams awardsRecord="#{AWARD_RECORD_REF}" />
+            </itemAwardStructure>
+          </ContractResult_ItemsWeighting>
+        XML
+
+        reward = @parser.missions.sole[:rewards].sole
+
+        assert_equal ENTITY_REF, reward[:entity_class]
+        assert_equal 2, reward[:amount]
+        assert_equal 1.0, reward[:weight]
+      end
+
+
       # `@LOC_UNINITIALIZED` is a real entry in the localisation file rather than
       # a missing key, so it resolves happily and would ship as a mission name.
       test "#missions leaves an uninitialized title blank rather than shipping the marker" do
@@ -456,14 +501,15 @@ module ScData
       private def generator(key, handler: "ContractGeneratorHandler_Career", contract_kind: "CareerContract",
         org_ref: ORG_REF, min_standing: RANK0_REF, max_standing: RANK6_REF, pool_ref: POOL_REF,
         sibling_org: nil, second_org: nil, container: "contracts", contract_ids: [CONTRACT_ID],
-        debug_name: nil, title: TITLE_KEY, description: nil, released: true, difficulty: nil, results: nil)
+        debug_name: nil, title: TITLE_KEY, description: nil, released: true, difficulty: nil, results: nil,
+        properties: nil)
         siblings = [sibling_org, second_org].compact.map.with_index do |ref, index|
           %(<ContractGeneratorHandler_Career debugName="Sibling#{index}" factionReputation="#{ref}" />)
         end
 
         listed = contract_ids.map do |id|
           contract(contract_kind, id:, debug_name: debug_name || "#{key}_VeryEasy", min_standing:,
-            max_standing:, pool_ref:, title:, description:, released:, difficulty:, results:)
+            max_standing:, pool_ref:, title:, description:, released:, difficulty:, results:, properties:)
         end
 
         write("contracts/contractgenerator/guild/#{key}", "ContractGenerator", "00000000-0000-0000-0000-0000000000aa", <<~XML)
@@ -479,7 +525,7 @@ module ScData
       end
 
       private def contract(kind, id:, debug_name:, min_standing:, max_standing:, pool_ref:,
-        title:, description:, released:, difficulty:, results:)
+        title:, description:, released:, difficulty:, results:, properties:)
         params = [%(<ContractStringParam param="Title" value="#{title}" />)]
         params << %(<ContractStringParam param="Description" value="#{description}" />) if description
 
@@ -490,6 +536,7 @@ module ScData
               <stringParamOverrides>
                 #{params.join}
               </stringParamOverrides>
+              #{"<propertyOverrides>#{properties}</propertyOverrides>" if properties}
             </paramOverrides>
             <contractResults>
               <contractResults>
@@ -571,6 +618,18 @@ module ScData
       private def standing(key, ref:, display_name:, name: nil)
         write("reputation/standings/scope/#{key}", "SReputationStandingParams", ref, "",
           displayName: display_name, **(name ? {name:} : {}))
+      end
+
+      private def named_entity(path, ref:, name:)
+        write(path, "EntityClassDefinition", ref, <<~XML)
+          <Components>
+            <SAttachableComponentParams>
+              <AttachDef>
+                <Localization Name="#{name}" />
+              </AttachDef>
+            </SAttachableComponentParams>
+          </Components>
+        XML
       end
 
       private def write(path, type, ref, body, **attributes)
