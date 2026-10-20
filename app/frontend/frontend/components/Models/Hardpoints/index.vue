@@ -262,7 +262,10 @@ useMetricsMasonry(metricsGrid);
 
 <template>
   <div id="hardpoints" class="row hardpoints">
-    <div class="col-12">
+    <div
+      class="col-12 hardpoints__layout"
+      :class="{ 'hardpoints__layout--split': showMetrics }"
+    >
       <!-- The ship as built: planning tools and the data source. A loadout's
            fitting is one plan, read from the game files. -->
       <div v-if="!fitting" class="hardpoints__controls">

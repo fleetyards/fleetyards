@@ -26,6 +26,27 @@
   }
 }
 
+// The views join the hero as a third column once there is room for one; the
+// figures between them only need a narrow strip, so the shares are uneven.
+@media (min-width: map-get($grid-breakpoints, xxl)) {
+  .ship-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 2.5fr) minmax(0, 4.5fr);
+
+    // Tailwind's `col-12` is a grid placement too and would stack all three in
+    // its twelfth track.
+    > [class*="col-"] {
+      grid-column: auto;
+      max-width: none;
+    }
+  }
+
+  .ship-hero :deep(.holo-viewer--inline) {
+    height: 400px;
+    max-height: none;
+  }
+}
+
 .ship-detail-left-col {
   display: flex;
   flex-direction: column;

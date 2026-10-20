@@ -125,6 +125,63 @@
   &__list--loading {
     min-height: 160px;
   }
+
+  // On a wide screen the groups flow as one list balanced by height: the three
+  // fixed stacks step aside.
+  @media (min-width: map-get($grid-breakpoints, xxl)) {
+    &__list > .row {
+      display: block;
+      columns: 4;
+      column-gap: 20px;
+      margin-inline: 0;
+
+      > [class*="col-"] {
+        display: contents;
+      }
+
+      :deep(.hardpoint-group) {
+        break-inside: avoid;
+      }
+    }
+
+    // The metrics keep their three columns on the left and the list runs down
+    // beside them in three of its own, rather than starting below the last
+    // card: six even columns across the page.
+    &__layout--split {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      // The list is usually the taller side; what it adds lands under the
+      // credit instead of opening a gap between it and the cards.
+      grid-template-rows: auto auto 1fr;
+      column-gap: 20px;
+      align-items: start;
+
+      .hardpoints__controls {
+        grid-column: 1 / -1;
+      }
+
+      // Rows by number, not flow: a loadout's fitting has no controls row, and
+      // auto-placed the cards would take it and push the list down a row.
+      .metrics-grid {
+        grid-column: 1;
+        grid-row: 2;
+      }
+
+      .hardpoints__credit {
+        grid-column: 1;
+        grid-row: 3;
+      }
+
+      .hardpoints__list {
+        grid-column: 2;
+        grid-row: 2 / -1;
+      }
+
+      .hardpoints__list > .row {
+        columns: 3;
+      }
+    }
+  }
 }
 
 // Metrics cards are packed rather than assigned to fixed columns: each spans a
