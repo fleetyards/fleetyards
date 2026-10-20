@@ -349,7 +349,8 @@
       "updatedAt": "Actualizado el",
       "addToHangar": "Agregar al hangar",
       "home": {
-        "search": "Buscar naves..."
+        "search": "Buscar naves...",
+        "submitSearch": "Buscar naves"
       },
       "shop": {
         "sellPrice": "vende por",

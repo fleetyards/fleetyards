@@ -349,7 +349,8 @@
       "updatedAt": "Aggiornato il",
       "addToHangar": "Aggiungi all'hangar",
       "home": {
-        "search": "Cerca Navi..."
+        "search": "Cerca Navi...",
+        "submitSearch": "Cerca navi"
       },
       "shop": {
         "sellPrice": "vende per",

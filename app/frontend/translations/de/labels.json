@@ -349,7 +349,8 @@
       "updatedAt": "Aktualisiert am",
       "addToHangar": "Zum Hangar hinzufügen",
       "home": {
-        "search": "Schiffe suchen..."
+        "search": "Schiffe suchen...",
+        "submitSearch": "Schiffe suchen"
       },
       "shop": {
         "sellPrice": "verkauft für",

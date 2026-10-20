@@ -349,7 +349,8 @@
       "updatedAt": "更新於",
       "addToHangar": "新增到機庫",
       "home": {
-        "search": "搜尋飛船..."
+        "search": "搜尋飛船...",
+        "submitSearch": "搜尋艦船"
       },
       "shop": {
         "sellPrice": "出售價格",

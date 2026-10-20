@@ -349,7 +349,8 @@
       "updatedAt": "Mis à jour le",
       "addToHangar": "Ajouter au hangar",
       "home": {
-        "search": "Recherche de vaisseaux"
+        "search": "Recherche de vaisseaux",
+        "submitSearch": "Rechercher des vaisseaux"
       },
       "shop": {
         "sellPrice": "prix de vente",

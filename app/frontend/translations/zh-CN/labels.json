@@ -349,7 +349,8 @@
       "updatedAt": "更新于",
       "addToHangar": "添加到机库",
       "home": {
-        "search": "搜索飞船..."
+        "search": "搜索飞船...",
+        "submitSearch": "搜索舰船"
       },
       "shop": {
         "sellPrice": "出售价格",

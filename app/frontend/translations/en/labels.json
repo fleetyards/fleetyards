@@ -349,7 +349,8 @@
       "updatedAt": "Updated at",
       "addToHangar": "Add to Hangar",
       "home": {
-        "search": "Search for Ships..."
+        "search": "Search for Ships...",
+        "submitSearch": "Search ships"
       },
       "shop": {
         "sellPrice": "sells for",
