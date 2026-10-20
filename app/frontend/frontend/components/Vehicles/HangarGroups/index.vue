@@ -28,12 +28,14 @@ const props = withDefaults(defineProps<Props>(), {
   highlightedId: undefined,
 });
 
+const expanded = ref(false);
+
 const visibleGroups = computed(() => {
-  if (!props.stacked || props.groups.length <= props.max) {
+  if (!props.stacked || expanded.value || props.groups.length <= props.max) {
     return props.groups;
   }
 
-  return props.groups.slice(0, props.max - 1);
+  return props.groups.slice(0, Math.max(props.max - 1, 1));
 });
 
 const hiddenGroups = computed(() =>
@@ -109,6 +111,7 @@ const filter = async (event: Event, filterSlug: string) => {
         ),
       }"
       data-test="hangar-group-overflow"
+      @click.exact="expanded = true"
     >
       +{{ hiddenGroups.length }}
     </div>

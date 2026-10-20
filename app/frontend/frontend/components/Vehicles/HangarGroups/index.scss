@@ -45,9 +45,11 @@
       margin-left: 0;
     }
 
-    &:hover {
-      transform: translateY(-2px);
-      z-index: 2;
+    @media (hover: hover) {
+      &:hover {
+        transform: translateY(-2px);
+        z-index: 2;
+      }
     }
   }
 
@@ -70,8 +72,8 @@
     font-weight: 600;
     line-height: 1;
     color: var(--color-text, #c8c8c8);
+    cursor: pointer;
     // Opaque: the control fill is translucent and lets the dot beneath through.
     background-color: rgb(39 43 48);
-    cursor: default;
   }
 }
