@@ -219,6 +219,13 @@ json.metrics do
   end
   json.quantum_fuel_tank_size model.quantum_fuel_tank_size&.to_f
   json.weapon_pool_size model.weapon_pool_size if model.weapon_pool_size.present?
+  if model.weapon_regen_modifier.present?
+    json.weapon_regen_modifier do
+      json.power_ratio model.weapon_regen_modifier["power_ratio"].to_f
+      json.max_ammo_load model.weapon_regen_modifier["max_ammo_load"].to_f
+      json.max_regen_per_second model.weapon_regen_modifier["max_regen_per_second"].to_f
+    end
+  end
   if model.signature_cross_section.present?
     json.signature_cross_section do
       json.x model.signature_cross_section["x"].to_f

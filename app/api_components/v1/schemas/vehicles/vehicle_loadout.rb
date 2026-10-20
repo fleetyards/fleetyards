@@ -17,11 +17,12 @@ module V1
             url: {type: :string},
             urlSource: {type: :string},
             items: {type: :array, items: ::V1::Schemas::Vehicles::VehicleLoadoutItem},
+            powerPresets: {type: :array, items: ::V1::Schemas::Vehicles::PowerPreset},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id active public kind items createdAt updatedAt]
+          required: %w[id active public kind items powerPresets createdAt updatedAt]
         })
       end
     end

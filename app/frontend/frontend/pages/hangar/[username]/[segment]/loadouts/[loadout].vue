@@ -34,9 +34,17 @@ import {
   usePublicVehicleLoadoutSlots,
   useModel,
   useShowVehicle,
+  useUpdateVehicleLoadout,
   useVehicleLoadout,
   useVehicleLoadoutSlots,
+  getVehicleLoadoutQueryKey,
+  getVehicleLoadoutsQueryKey,
+  type PowerPreset,
 } from "@/services/fyApi";
+import { useQueryClient } from "@tanstack/vue-query";
+import { providePowerPresets } from "@/frontend/composables/usePowerPresets";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { firstErrorMessageFrom } from "@/shared/utils/ApiErrors";
 
 const { t } = useI18n();
 
@@ -115,6 +123,46 @@ const vehicle = computed(() =>
 const loadout = computed(() =>
   isOwner.value ? ownLoadout.value : publicLoadout.value,
 );
+
+const queryClient = useQueryClient();
+
+const presetsMutation = useUpdateVehicleLoadout();
+
+const { displayAlert } = useAppNotifications();
+
+// The whole list is written at once, as the loadout keeps it; the answer
+// replaces the cached loadout so the planner shows what was stored.
+const savePowerPresets = async (powerPresets: PowerPreset[]) => {
+  try {
+    const saved = await presetsMutation.mutateAsync({
+      vehicleId: ownVehicleId.value,
+      id: loadoutId.value,
+      data: { powerPresets },
+    });
+    queryClient.setQueryData(
+      getVehicleLoadoutQueryKey(ownVehicleId.value, loadoutId.value),
+      saved,
+    );
+    void queryClient.invalidateQueries({
+      queryKey: getVehicleLoadoutsQueryKey(ownVehicleId.value),
+    });
+    return true;
+  } catch (error) {
+    displayAlert({
+      text: [t("messages.vehicleLoadout.failure"), firstErrorMessageFrom(error)]
+        .filter(Boolean)
+        .join(": "),
+    });
+    return false;
+  }
+};
+
+providePowerPresets({
+  presets: () => loadout.value?.powerPresets,
+  editable: isOwner,
+  saving: () => presetsMutation.isPending.value,
+  save: savePowerPresets,
+});
 
 const vehicleStatus = computed(() =>
   isOwner.value ? ownVehicleStatus : publicVehicleStatus,

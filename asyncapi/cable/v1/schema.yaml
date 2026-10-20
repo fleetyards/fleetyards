@@ -3781,6 +3781,8 @@ components:
           type: number
         weaponPoolSize:
           type: number
+        weaponRegenModifier:
+          "$ref": "#/components/schemas/ModelWeaponRegenModifier"
         signatureCrossSection:
           "$ref": "#/components/schemas/ModelSignatureCrossSection"
         size:
@@ -4125,6 +4127,22 @@ components:
       - media
       - createdAt
       - updatedAt
+    ModelWeaponRegenModifier:
+      type: object
+      description: 'The ship''s engineering buff on its energy guns: multipliers on
+        the weapon power ratio, each gun''s ammo load and its regen'
+      properties:
+        powerRatio:
+          type: number
+        maxAmmoLoad:
+          type: number
+        maxRegenPerSecond:
+          type: number
+      additionalProperties: false
+      required:
+      - powerRatio
+      - maxAmmoLoad
+      - maxRegenPerSecond
     Notification:
       type: object
       properties:
@@ -4908,6 +4926,42 @@ components:
       - guest
       - weight
       additionalProperties: false
+    PowerPreset:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 40
+        scm:
+          type: array
+          items:
+            "$ref": "#/components/schemas/PowerPresetOverride"
+          description: Pips set by hand in SCM; a power port left out follows the
+            automatic balance
+        nav:
+          type: array
+          items:
+            "$ref": "#/components/schemas/PowerPresetOverride"
+          description: Pips set by hand in NAV; a power port left out follows the
+            automatic balance
+      additionalProperties: false
+      required:
+      - name
+      - scm
+      - nav
+    PowerPresetOverride:
+      type: object
+      properties:
+        portPath:
+          type: string
+        pips:
+          type: integer
+          minimum: 0
+          maximum: 100
+      additionalProperties: false
+      required:
+      - portPath
+      - pips
     RefuelBoom:
       type: object
       properties:
@@ -5308,6 +5362,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/VehicleLoadoutItem"
+        powerPresets:
+          type: array
+          items:
+            "$ref": "#/components/schemas/PowerPreset"
         createdAt:
           type: string
           format: date-time
@@ -5322,6 +5380,7 @@ components:
       - public
       - kind
       - items
+      - powerPresets
       - createdAt
       - updatedAt
     VehiclePlaqueStyleEnum:

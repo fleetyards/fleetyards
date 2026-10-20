@@ -245,6 +245,23 @@ class Api::V1::ModelsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models/:slug serves the engineering buff on its guns" do
+    model = create(:model, weapon_regen_modifier: {"power_ratio" => 1.0, "max_ammo_load" => 9.0, "max_regen_per_second" => 1.0})
+
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      assert_equal({"powerRatio" => 1.0, "maxAmmoLoad" => 9.0, "maxRegenPerSecond" => 1.0},
+        parsed_body.dig("metrics", "weaponRegenModifier"))
+    end
+  end
+
+  test "GET /models/:slug leaves the engineering buff off a ship without one" do
+    model = create(:model)
+
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      assert_not parsed_body["metrics"].key?("weaponRegenModifier")
+    end
+  end
+
   test "GET /models/:slug returns the model" do
     model = create(:model, :with_description, :with_store_image, :with_fleetchart_image)
 

@@ -102,10 +102,6 @@ const nozzleLabel = computed(() => {
         <span class="metrics-card__aux-value">{{ nozzleLabel }}</span>
       </div>
     </template>
-
-    <div class="metrics-card__footer">
-      <span class="metrics-card__hint">{{ t("labels.refuelBoom.hint") }}</span>
-    </div>
   </MetricsCard>
 </template>
 

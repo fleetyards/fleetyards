@@ -104,10 +104,6 @@ const hasData = computed(() => containerCapacities.value.length > 0);
         </div>
       </div>
     </div>
-
-    <div class="metrics-card__footer">
-      <span class="metrics-card__hint">{{ t("labels.cargo.hint") }}</span>
-    </div>
   </MetricsCard>
 </template>
 

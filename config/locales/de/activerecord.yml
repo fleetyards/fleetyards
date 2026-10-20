@@ -334,6 +334,14 @@ de:
               crafted_slot_unknown: "dürfen nur Slots nennen, die der Bauplan hat"
               crafted_slot_repeated: "dürfen jeden Slot des Bauplans nur einmal nennen"
               crafted_quality_out_of_range: "brauchen eine Materialqualität von 0 bis 1000"
+            power_presets:
+              too_many: "können höchstens %{count} sein"
+              name_blank: "brauchen jeweils einen Namen"
+              name_taken: "brauchen jeweils einen eigenen Namen"
+              pips_invalid: "müssen jedem Energieanschluss 0 bis 100 Segmente geben"
+              not_fleetyards: "gibt es nur für eine Fleetyards-Ausstattung"
+              name_too_long: "dürfen jeweils höchstens %{count} Zeichen lang heißen"
+              port_repeated: "müssen jeden Energieanschluss je Flugmodus nur einmal setzen"
         payout_entry:
           attributes:
             entry_type:

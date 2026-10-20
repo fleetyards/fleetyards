@@ -28,7 +28,6 @@ const props = defineProps<Props>();
 type Card = {
   kind: StorageContainerKindEnum;
   title: string;
-  hint: string;
   total: number;
   count: number;
   groups: CapacityGroup[];
@@ -37,11 +36,6 @@ type Card = {
 const TITLES: Record<StorageContainerKindEnum, string> = {
   [StorageContainerKindEnum.ORE]: "labels.model.orePods",
   [StorageContainerKindEnum.SALVAGE]: "labels.model.salvageStorage",
-};
-
-const HINTS: Record<StorageContainerKindEnum, string> = {
-  [StorageContainerKindEnum.ORE]: "labels.storageContainers.hintOre",
-  [StorageContainerKindEnum.SALVAGE]: "labels.storageContainers.hintSalvage",
 };
 
 /**
@@ -59,7 +53,6 @@ const cards = computed<Card[]>(() =>
       return {
         kind,
         title: t(TITLES[kind]),
-        hint: t(HINTS[kind]),
         total: containers.reduce(
           (sum, container) => sum + (container.capacity || 0),
           0,
@@ -118,10 +111,6 @@ const cards = computed<Card[]>(() =>
           />
         </div>
       </div>
-    </div>
-
-    <div class="metrics-card__footer">
-      <span class="metrics-card__hint">{{ card.hint }}</span>
     </div>
   </MetricsCard>
 </template>

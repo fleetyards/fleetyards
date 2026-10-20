@@ -334,6 +334,14 @@ it:
               crafted_slot_unknown: "possono indicare solo slot presenti nel progetto"
               crafted_slot_repeated: "possono indicare ogni slot del progetto una sola volta"
               crafted_quality_out_of_range: "devono usare una qualità del materiale da 0 a 1000"
+            power_presets:
+              too_many: "possono essere al massimo %{count}"
+              name_blank: "hanno bisogno ciascuno di un nome"
+              name_taken: "devono avere ciascuno un nome proprio"
+              pips_invalid: "devono dare a ogni porta di energia da 0 a 100 segmenti"
+              not_fleetyards: "si possono tenere solo con un allestimento Fleetyards"
+              name_too_long: "devono avere ciascuno un nome di al massimo %{count} caratteri"
+              port_repeated: "devono impostare ogni porta di energia una sola volta per modalità di volo"
         payout_entry:
           attributes:
             entry_type:

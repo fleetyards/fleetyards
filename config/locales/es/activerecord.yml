@@ -334,6 +334,14 @@ es:
               crafted_slot_unknown: "solo pueden nombrar ranuras que tenga el plano"
               crafted_slot_repeated: "solo pueden nombrar cada ranura del plano una vez"
               crafted_quality_out_of_range: "deben usar una calidad de material de 0 a 1000"
+            power_presets:
+              too_many: "pueden ser como máximo %{count}"
+              name_blank: "necesitan un nombre cada uno"
+              name_taken: "deben tener cada uno un nombre propio"
+              pips_invalid: "deben dar a cada puerto de energía de 0 a 100 segmentos"
+              not_fleetyards: "solo pueden guardarse con un equipamiento de Fleetyards"
+              name_too_long: "deben tener cada uno un nombre de como máximo %{count} caracteres"
+              port_repeated: "deben ajustar cada puerto de energía una sola vez por modo de vuelo"
         payout_entry:
           attributes:
             entry_type:

@@ -1,3 +1,7 @@
+import {
+  NO_REGEN_MODIFIER,
+  type WeaponRegenModifier,
+} from "@/frontend/composables/powerSim";
 import { computed, toValue, type MaybeRefOrGetter } from "vue";
 import {
   HardpointCategoryEnum,
@@ -72,6 +76,7 @@ function isMissile(weapon: ComponentWeapon): boolean {
 export function collectLoadoutWeapons(
   hardpoints: Hardpoint[] | undefined,
   powerRatio = 1,
+  regenModifier: WeaponRegenModifier = NO_REGEN_MODIFIER,
 ): LoadoutWeapon[] {
   const byComponent = new Map<string, LoadoutWeapon>();
 
@@ -98,7 +103,7 @@ export function collectLoadoutWeapons(
         if (existing) {
           existing.count += 1;
         } else {
-          const duty = dutyCycle(weapon, powerRatio);
+          const duty = dutyCycle(weapon, powerRatio, regenModifier);
           // An unpowered weapon system fires nothing, heat-limited guns included.
           const powered = powerRatio > 0 ? 1 : 0;
           const rate = weapon.beam ? 1 : shotsPerSecond(weapon);

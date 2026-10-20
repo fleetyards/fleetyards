@@ -44,6 +44,7 @@ module ScData
             mass: extract_mass(values.dig("Components", "VehicleComponentParams")),
             inventory_container_ref: value_or_nil(values.dig("Components", "VehicleComponentParams", "inventoryContainerParams")),
             weapon_pool_size: extract_weapon_pool_size(values),
+            weapon_regen_modifier: extract_weapon_regen_modifier(values),
             signature_cross_section: extract_cross_section(values),
             **extract_hull(values.dig("Components", "VehicleComponentParams")),
             metrics: {
@@ -504,6 +505,56 @@ module ScData
         pools = [pools] if pools.is_a?(Hash)
         weapon_pool = pools.find { |pool| pool["itemType"] == "WeaponGun" }
         weapon_pool&.dig("poolSize")&.to_i
+      end
+
+      # A multi-crew ship fits an engineering buff in its `engineeringBuff` port
+      # that scales every gun's ammo regen: the Constellation Mk V's guns hold
+      # nine times their listed capacitor. The port names the buff by GUID, so
+      # the buffs are indexed by their `__ref`. Ships without one, or with one
+      # that changes nothing, have none.
+      private def extract_weapon_regen_modifier(values)
+        port_defs = Array.wrap(values.dig("Components", "SItemPortContainerComponentParams", "Ports", "SItemPortDef"))
+        ref = port_defs.filter_map { |port| value_or_nil(port.dig("defaultItem", "entityClass")) }
+          .find { |entity_class| engineering_buffs.key?(entity_class) }
+
+        engineering_buffs[ref] if ref
+      end
+
+      private def engineering_buffs
+        @engineering_buffs ||= load_data("entities/scitem/ships/utility/engineering").each_with_object({}) do |item, buffs|
+          ref = value_or_nil(item[:values]["__ref"])
+          modifier = find_regen_modifier(item[:values])
+          next if ref.blank? || modifier.blank?
+
+          buff = {
+            power_ratio: modifier["powerRatioMultiplier"].to_f,
+            max_ammo_load: modifier["maxAmmoLoadMultiplier"].to_f,
+            max_regen_per_second: modifier["maxRegenPerSecMultiplier"].to_f
+          }
+          buffs[ref] = buff unless buff.values.all? { |multiplier| (multiplier - 1).abs < 0.0001 }
+        end
+      end
+
+      # The modifier sits several levels into the buff's WeaponGun traversing
+      # modifier; searched rather than dug so a reshuffle of the wrappers above
+      # it does not lose it.
+      private def find_regen_modifier(node)
+        case node
+        when Hash
+          return node["regenModifier"] if node["regenModifier"].is_a?(Hash)
+
+          node.each_value do |child|
+            found = find_regen_modifier(child)
+            return found if found
+          end
+          nil
+        when Array
+          node.each do |child|
+            found = find_regen_modifier(child)
+            return found if found
+          end
+          nil
+        end
       end
 
       # The ship's manual radar cross-section per axis — its passive

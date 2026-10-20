@@ -35691,6 +35691,8 @@ components:
           type: number
         weaponPoolSize:
           type: number
+        weaponRegenModifier:
+          "$ref": "#/components/schemas/ModelWeaponRegenModifier"
         signatureCrossSection:
           "$ref": "#/components/schemas/ModelSignatureCrossSection"
         size:
@@ -36772,6 +36774,23 @@ components:
       items:
         "$ref": "#/components/schemas/ModelUpgrade"
       title: ModelUpgradesList
+    ModelWeaponRegenModifier:
+      type: object
+      description: 'The ship''s engineering buff on its energy guns: multipliers on
+        the weapon power ratio, each gun''s ammo load and its regen'
+      properties:
+        powerRatio:
+          type: number
+        maxAmmoLoad:
+          type: number
+        maxRegenPerSecond:
+          type: number
+      additionalProperties: false
+      required:
+      - powerRatio
+      - maxAmmoLoad
+      - maxRegenPerSecond
+      title: ModelWeaponRegenModifier
     Models:
       type: object
       properties:
@@ -38680,6 +38699,44 @@ components:
       items:
         "$ref": "#/components/schemas/PieChartStats"
       title: PieChartStatsList
+    PowerPreset:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 40
+        scm:
+          type: array
+          items:
+            "$ref": "#/components/schemas/PowerPresetOverride"
+          description: Pips set by hand in SCM; a power port left out follows the
+            automatic balance
+        nav:
+          type: array
+          items:
+            "$ref": "#/components/schemas/PowerPresetOverride"
+          description: Pips set by hand in NAV; a power port left out follows the
+            automatic balance
+      additionalProperties: false
+      required:
+      - name
+      - scm
+      - nav
+      title: PowerPreset
+    PowerPresetOverride:
+      type: object
+      properties:
+        portPath:
+          type: string
+        pips:
+          type: integer
+          minimum: 0
+          maximum: 100
+      additionalProperties: false
+      required:
+      - portPath
+      - pips
+      title: PowerPresetOverride
     PublicFleetSquadron:
       type: object
       properties:
@@ -41357,6 +41414,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/VehicleLoadoutItem"
+        powerPresets:
+          type: array
+          items:
+            "$ref": "#/components/schemas/PowerPreset"
         createdAt:
           type: string
           format: date-time
@@ -41370,6 +41431,7 @@ components:
       - public
       - kind
       - items
+      - powerPresets
       - createdAt
       - updatedAt
       title: VehicleLoadout
@@ -41392,6 +41454,12 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/VehicleLoadoutItemInput"
+        powerPresets:
+          type: array
+          items:
+            "$ref": "#/components/schemas/PowerPreset"
+          maxItems: 5
+          description: Replaces every saved preset
       additionalProperties: false
       title: VehicleLoadoutInput
     VehicleLoadoutItem:
@@ -41527,6 +41595,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/VehicleLoadoutItem"
+        powerPresets:
+          type: array
+          items:
+            "$ref": "#/components/schemas/PowerPreset"
         createdAt:
           type: string
           format: date-time
@@ -41541,6 +41613,7 @@ components:
       - public
       - kind
       - items
+      - powerPresets
       - createdAt
       - updatedAt
       title: VehicleLoadoutMinimal

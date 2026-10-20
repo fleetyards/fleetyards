@@ -1384,11 +1384,12 @@
         "fuel": "Carburant",
         "fuelHydrogen": "Hydrogène",
         "fuelQuantum": "Quantum",
-        "fuelFullMain": "Pleine poussée, principaux",
-        "fuelFullAll": "Pleine poussée, tous les propulseurs",
+        "fuelBurnMain": "Autonomie, principaux",
+        "fuelBurnAll": "Autonomie, tous",
+        "fuelDrawMain": "Débit, principaux",
+        "fuelDrawAll": "Débit, tous",
         "durationHoursMinutes": "%{hours} h %{minutes} min",
-        "durationMinutes": "%{minutes} min",
-        "hint": "La maniabilité boostée dépend des pips alloués au moteur ; tout est à zéro lorsque le moteur n'est pas alimenté."
+        "durationMinutes": "%{minutes} min"
       },
       "base": {
         "price": "Prix",
@@ -1423,8 +1424,7 @@
         "title": "Cargaison",
         "holdsSub": "réparties sur %{count} soutes",
         "maxContainerSub": "plus grande caisse acceptée",
-        "containers": "Capacité en conteneurs",
-        "hint": "Nombre maximal de conteneurs de chaque taille pouvant tenir sur les grilles de cargaison ; la barre indique la part de la capacité totale ainsi remplie."
+        "containers": "Capacité en conteneurs"
       },
       "weaponRacks": {
         "slots": "Emplacements",
@@ -1445,29 +1445,24 @@
           "multitool": "Multi-outil",
           "medical_injection": "Stylos médicaux",
           "grenade": "Grenades"
-        },
-        "hint": "Emplacements de tous les râteliers à bord, par contenu et taille."
+        }
       },
       "storageContainers": {
         "total": "Capacité totale",
         "count": "Conteneurs",
-        "perContainer": "chacun",
-        "hintOre": "Contient du minerai extrait, pas de cargaison.",
-        "hintSalvage": "Contient des matériaux récupérés, pas de cargaison."
+        "perContainer": "chacun"
       },
       "fuelTanks": {
         "capacitySub": "réparti sur %{count} nacelles",
         "podsSub": "supports externes",
         "components": "Types de nacelles",
-        "perPod": "par nacelle",
-        "hint": "Carburant transporté dans des nacelles montées sur des points d'attache externes ; la barre indique la part de chaque type dans la capacité totale."
+        "perPod": "par nacelle"
       },
       "refuelBoom": {
         "fuelFlowSub": "transfert d'hydrogène",
         "quantumFlowSub": "transfert de quantum",
         "captureRadiusSub": "tolérance d'amarrage",
-        "equipment": "Équipement",
-        "hint": "Débits de transfert du bras de ravitaillement et tolérance d'amarrage de sa buse."
+        "equipment": "Équipement"
       },
       "combat": {
         "title": "Combat",
@@ -1493,10 +1488,57 @@
           "manned": "Tourelle habitée",
           "remote": "Tourelle téléopérée",
           "pds": "Défense rapprochée"
-        },
-        "hint": "DPS de l'équipement par défaut. Le DPS soutenu tient compte de la régénération de la réserve d'énergie de chaque arme et de son cycle de surchauffe. Les missiles sont exclus."
+        }
       },
       "power": {
+        "planner": {
+          "sustained": "%{dps} DPS soutenu",
+          "weaponPower": "énergie des armes %{percent}",
+          "weaponsOff": "Armes hors ligne",
+          "regen": "%{regen} HP/s de régénération",
+          "shieldsDown": "Boucliers tombés",
+          "engineOff": "Moteur sans énergie",
+          "engineOffSub": "aucun vol possible",
+          "boostedHandling": "Maniabilité boostée %{percent}",
+          "engineBase": "Poussée de base seulement",
+          "engineBaseSub": "le boost demande plus de segments",
+          "radarOff": "Radar éteint",
+          "coolant": "%{rate} de liquide de refroidissement par seconde",
+          "noCooling": "Aucun refroidissement",
+          "ready": "Prêt à l'amorçage",
+          "off": "Éteint",
+          "needsBlock": "a besoin de son bloc de %{min} pour démarrer",
+          "powered": "Alimenté",
+          "segments": "Segments utilisés",
+          "signatures": "Signatures",
+          "plantSegments": "%{segments} segments",
+          "segmentsTotal": "segments",
+          "setPips": "%{name} : %{count} segments",
+          "weaponEnergy": "Énergie des armes",
+          "energyGun": "Énergie · tire depuis son condensateur",
+          "heatGun": "Balistique · limitée par la chaleur",
+          "sustainedEach": "soutenu, chacune",
+          "capacitor": "Condensateur",
+          "shots": "%{count} sur %{max} tirs",
+          "firing": "Temps de tir",
+          "emptiesIn": "Vide en",
+          "overheatsIn": "Surchauffe en",
+          "refillsIn": "Rechargé en",
+          "recoversIn": "Récupère en",
+          "regenLabel": "Régénération",
+          "shotsPerSecond": "%{rate} tirs/s",
+          "presets": {
+            "title": "Préréglages",
+            "name": "Nom du préréglage",
+            "save": "Enregistrer le préréglage",
+            "rename": "Renommer %{name}",
+            "delete": "Supprimer %{name}",
+            "add": "Ajouter un préréglage"
+          },
+          "title": "Planificateur d'énergie",
+          "titleFor": "Planificateur d'énergie · %{name}",
+          "open": "Planificateur"
+        },
         "title": "Répartition de l'énergie",
         "scm": "SCM",
         "nav": "NAV",
@@ -1509,7 +1551,6 @@
         "cs": "CS",
         "csAxisHint": "Cliquez pour changer d'axe (x / y / z)",
         "segmentsUsed": "%{used} / %{total} segments",
-        "hint": "Répartissez l'énergie entre les systèmes. Le DPS soutenu des armes dépend de l'énergie qu'elles reçoivent ; le reste est équilibré automatiquement.",
         "families": {
           "weapon": "Armes",
           "shield": "Boucliers",
@@ -1556,7 +1597,6 @@
           "infrared": "IR",
           "crossSection": "CS"
         },
-        "hint": "Valeurs de bouclier, de blindage et de contre-mesures de l'équipement par défaut. Une absorption inférieure à 100 % signifie que ce type de dégâts atteint la coque alors que les boucliers sont encore actifs.",
         "openDeflectionCheck": "Test de déflexion"
       },
       "penetrationCheck": {
@@ -1622,7 +1662,6 @@
         "doors": "Portes",
         "doorsNote": "Les portes intérieures destructibles forment une zone à part — elles disposent de leur propre santé et ne comptent pas dans les HP de la coque.",
         "doorsSub": "%{count} destructibles",
-        "hint": "Les HP de la coque sont la somme de la santé de toutes les pièces.",
         "hullHp": "HP de la coque",
         "hullHpSub": "total sur toutes les pièces",
         "integrity": "Intégrité de la coque",
@@ -1958,7 +1997,7 @@
           "spreadFirstShot": "Dispersion au premier tir",
           "spreadPerShot": "Dispersion/tir",
           "spreadRecovery": "Récupération de dispersion",
-          "pool": "Réserve d'énergie",
+          "pool": "Condensateur",
           "maxRegen": "Régén. max/s",
           "costPerShot": "Énergie/tir",
           "heatPerShot": "Chaleur/tir",

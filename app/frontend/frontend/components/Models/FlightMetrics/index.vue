@@ -73,32 +73,44 @@ const duration = (seconds: number) => {
     : t("labels.flight.durationMinutes", { minutes });
 };
 
-// What the thrusters draw at full thrust, and how long the hydrogen lasts at
-// it: on the mains, burning forward, and with every thruster firing, which no
-// ship does for long.
+// How long the hydrogen lasts at full thrust, and what the thrusters draw: on
+// the mains, burning forward, and with every thruster firing, which no ship
+// does for long. One figure a row, burn times on one line and draws on the
+// next, so mains and all sit side by side.
 const fuelRows = computed(() => {
   const draw = fuelDraw(props.hardpoints);
   const tank = props.model.metrics.hydrogenFuelTankSize || 0;
+  const thrust = [
+    { key: "main", draw: draw.main },
+    { key: "all", draw: draw.all },
+  ].filter((entry) => entry.draw > 0);
 
-  return [
-    { key: "main", label: t("labels.flight.fuelFullMain"), draw: draw.main },
-    { key: "all", label: t("labels.flight.fuelFullAll"), draw: draw.all },
-  ]
-    .filter((row) => row.draw > 0)
-    .map((row) => {
-      const seconds = fuelEndurance(tank, row.draw);
-
-      return {
-        key: row.key,
-        label: row.label,
-        value: [
-          String(toNumber(row.draw, "fuelFlow")),
-          seconds ? duration(seconds) : undefined,
+  const burns = thrust.flatMap((entry) => {
+    const seconds = fuelEndurance(tank, entry.draw);
+    return seconds
+      ? [
+          {
+            key: `burn-${entry.key}`,
+            label:
+              entry.key === "main"
+                ? t("labels.flight.fuelBurnMain")
+                : t("labels.flight.fuelBurnAll"),
+            value: duration(seconds),
+          },
         ]
-          .filter(Boolean)
-          .join(" · "),
-      };
-    });
+      : [];
+  });
+
+  const draws = thrust.map((entry) => ({
+    key: `draw-${entry.key}`,
+    label:
+      entry.key === "main"
+        ? t("labels.flight.fuelDrawMain")
+        : t("labels.flight.fuelDrawAll"),
+    value: String(toNumber(Math.round(entry.draw), "fuelFlow")),
+  }));
+
+  return [...burns, ...draws];
 });
 
 // The installed flight controller's boost pool. Ground vehicles have none.
@@ -318,10 +330,6 @@ const rotations = computed(() =>
         </div>
       </div>
     </template>
-
-    <div v-if="hasSpeeds" class="metrics-card__footer">
-      <span class="metrics-card__hint">{{ t("labels.flight.hint") }}</span>
-    </div>
   </MetricsCard>
 </template>
 

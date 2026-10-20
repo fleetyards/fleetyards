@@ -162,6 +162,44 @@ class Api::V1::VehicleLoadoutsUpdateTest < ActionDispatch::IntegrationTest
     assert_empty loadout.reload.items
   end
 
+  test "PUT /vehicles/:vehicle_id/loadouts/:id saves the power presets" do
+    loadout = create(:vehicle_loadout, :fleetyards, vehicle: @vehicle)
+    sign_in @user
+
+    presets = [{name: "Dogfight", scm: [{portPath: "hardpoint_Shield_Generator_Left", pips: 3}], nav: []}]
+
+    assert_api_response :put, 200,
+      path_params: {vehicle_id: @vehicle.id, id: loadout.id},
+      body: {powerPresets: presets} do
+      assert_equal presets.map(&:deep_stringify_keys), parsed_body["powerPresets"]
+    end
+    assert_equal "hardpoint_Shield_Generator_Left", loadout.reload.power_presets.sole["scm"].sole["port_path"]
+  end
+
+  test "PUT /vehicles/:vehicle_id/loadouts/:id deletes the last power preset" do
+    loadout = create(:vehicle_loadout, :fleetyards, vehicle: @vehicle,
+      power_presets: [{name: "Dogfight", scm: [], nav: []}])
+    sign_in @user
+
+    assert_api_response :put, 200,
+      path_params: {vehicle_id: @vehicle.id, id: loadout.id},
+      body: {powerPresets: []} do
+      assert_empty parsed_body["powerPresets"]
+    end
+    assert_empty loadout.reload.power_presets
+  end
+
+  test "PUT /vehicles/:vehicle_id/loadouts/:id refuses two power presets of one name" do
+    loadout = create(:vehicle_loadout, :fleetyards, vehicle: @vehicle)
+    sign_in @user
+
+    put "/api/v1/vehicles/#{@vehicle.id}/loadouts/#{loadout.id}", as: :json,
+      params: {powerPresets: [{name: "A", scm: [], nav: []}, {name: "a", scm: [], nav: []}]}
+
+    assert_response :bad_request
+    assert_empty loadout.reload.power_presets
+  end
+
   test "PUT /vehicles/:vehicle_id/loadouts/:id keeps the kind it was created with" do
     loadout = create(:vehicle_loadout, :fleetyards, vehicle: @vehicle)
     sign_in @user

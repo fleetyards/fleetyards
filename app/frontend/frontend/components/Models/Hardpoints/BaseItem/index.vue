@@ -126,35 +126,29 @@ const headline = computed(() => {
 // gold headline is never capped; it is the key figure.
 const statLimit = inject<number | undefined>("hardpointStatLimit", undefined);
 
-// A named game-files component opens its stats card from the name, and the
-// card lists every figure, so the row keeps to the ones its type ranks. A row
-// without a card is the only place its figures appear and keeps them all --
-// as is one whose kind shows a label in place of the name.
-const hasStatsCard = computed(
-  () =>
-    hardpoint.value.source === HardpointSourceEnum.GAME_FILES &&
-    !!hardpoint.value.component?.name &&
-    !presentedLabel.value,
-);
+// The row keeps to the few figures its type ranks; the rest are a click away
+// in the component's overlay or on its page.
+const ROW_STAT_LIMIT = 4;
 
 // Everything except the headline, rather than everything not flagged key. A
 // category can mark more than one figure key -- a gun marks sustained and burst
 // DPS -- and only the first becomes the gold headline, so filtering on the flag
 // dropped the others off the row altogether.
 const inlineStats = computed(() => {
+  const limit = Math.min(statLimit ?? ROW_STAT_LIMIT, ROW_STAT_LIMIT);
+
   if (presentation.value.stats) {
-    return presentation.value.stats(hardpoint.value, t, toNumber);
+    return presentation.value
+      .stats(hardpoint.value, t, toNumber)
+      .slice(0, limit);
   }
 
-  let stats = detailStats.value.filter((s) => s !== primaryStat.value);
+  const stats = detailStats.value.filter((s) => s !== primaryStat.value);
+  const ranked = stats
+    .filter((s) => typeof s.row === "number")
+    .sort((a, b) => (a.row ?? 0) - (b.row ?? 0));
 
-  if (hasStatsCard.value) {
-    stats = stats
-      .filter((s) => typeof s.row === "number")
-      .sort((a, b) => (a.row ?? 0) - (b.row ?? 0));
-  }
-
-  return typeof statLimit === "number" ? stats.slice(0, statLimit) : stats;
+  return (ranked.length ? ranked : stats).slice(0, limit);
 });
 
 const loadout = computed(() => partContents(hardpoint.value));

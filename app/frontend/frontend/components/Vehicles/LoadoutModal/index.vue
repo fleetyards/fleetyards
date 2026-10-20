@@ -482,6 +482,7 @@ const measuredNow = computed(() =>
     hardpoints: modelHardpoints.value ?? [],
     tree: componentTree.value,
     weaponPoolSize: model.value?.metrics.weaponPoolSize,
+    weaponRegenModifier: model.value?.metrics.weaponRegenModifier,
   }),
 );
 
@@ -492,6 +493,7 @@ const measuredSaved = computed(() =>
     hardpoints: modelHardpoints.value ?? [],
     tree: savedTree.value,
     weaponPoolSize: model.value?.metrics.weaponPoolSize,
+    weaponRegenModifier: model.value?.metrics.weaponRegenModifier,
   }),
 );
 
@@ -511,6 +513,7 @@ const measuredStock = computed(() =>
       stockModuleValues(modules.value),
     ),
     weaponPoolSize: model.value?.metrics.weaponPoolSize,
+    weaponRegenModifier: model.value?.metrics.weaponRegenModifier,
   }),
 );
 

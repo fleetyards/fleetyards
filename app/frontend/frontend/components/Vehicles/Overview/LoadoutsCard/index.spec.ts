@@ -41,6 +41,7 @@ const loadout = (overrides: Partial<VehicleLoadout> = {}): VehicleLoadout => ({
   public: false,
   kind: VehicleLoadoutKindEnum.FLEETYARDS,
   items: [],
+  powerPresets: [],
   createdAt: NOW,
   updatedAt: NOW,
   ...overrides,

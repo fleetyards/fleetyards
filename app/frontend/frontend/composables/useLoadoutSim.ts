@@ -9,6 +9,7 @@ import {
   weaponPoolBlocks,
   weaponPoolRatio,
   WEAPON_POOL_PORT,
+  NO_REGEN_MODIFIER,
   type Allocation,
   type AllocationState,
   type FlightMode,
@@ -16,6 +17,7 @@ import {
   type PortOverrides,
   type PowerFamily,
   type PowerPort,
+  type WeaponRegenModifier,
 } from "./powerSim";
 import { findArmor } from "./useArmorStats";
 
@@ -335,9 +337,10 @@ function computeWeaponMaxRatio(
   consumption: number,
   segments: number,
   otherPorts: PowerPort[],
+  draw = consumption,
 ): number {
   if (pool <= 0 || consumption <= 0) return 1;
-  const uncapped = Math.min(1, pool / consumption);
+  const uncapped = Math.min(1, pool / draw);
   if (segments <= 0) return uncapped;
 
   const nonWeaponCritical = otherPorts
@@ -348,7 +351,7 @@ function computeWeaponMaxRatio(
     0,
     Math.min(enabled, segments - nonWeaponCritical),
   );
-  return Math.min(uncapped, weaponMax / consumption);
+  return Math.min(uncapped, weaponMax / draw);
 }
 
 // Group the allocation into display columns: one member per component (+ the
@@ -619,6 +622,7 @@ export function simulateLoadoutPower(
   mode: FlightMode = "SCM",
   overrides?: PortOverrides,
   shieldMaxItemCount: number = DEFAULT_SHIELD_MAX_ITEM_COUNT,
+  regenModifier: WeaponRegenModifier = NO_REGEN_MODIFIER,
 ): LoadoutSimResult {
   const modifiers = signatureModifiers(hardpoints);
   const acc = collectPorts(
@@ -636,6 +640,8 @@ export function simulateLoadoutPower(
   );
   const pool = weaponPoolSize ?? 0;
   const segments = totalSegments(acc.plants);
+  // Whole segments for the allocation; the ratio divides by the exact draw,
+  // as the game does: a Mk V's four pips feed 4/12.2 of its guns, not 4/13.
   const consumption = Math.ceil(acc.weaponUnits);
 
   const ports: PowerPort[] = [
@@ -733,7 +739,12 @@ export function simulateLoadoutPower(
 
   const usedSegments = segments - state.remaining;
   const heat = computeHeat(acc.components, acc.weaponUnits, state);
-  const weaponRatioValue = pool <= 0 ? 1 : weaponPoolRatio(state, consumption);
+  // A buff on the power ratio lets the same pips feed more of the guns' draw.
+  const boost = regenModifier.powerRatio || 1;
+  const weaponRatioValue =
+    pool <= 0
+      ? 1
+      : Math.min(1, weaponPoolRatio(state, acc.weaponUnits) * boost);
   const emittedEm = computeEm(
     acc.plants,
     acc.weaponEmSources,
@@ -753,11 +764,15 @@ export function simulateLoadoutPower(
     columns,
     // No fixed weapon pool → the ship's guns are power-unlimited (ratio 1).
     weaponPoolRatio: weaponRatioValue,
-    weaponMaxRatio: computeWeaponMaxRatio(
-      pool,
-      consumption,
-      segments,
-      acc.otherPorts,
+    weaponMaxRatio: Math.min(
+      1,
+      computeWeaponMaxRatio(
+        pool,
+        consumption,
+        segments,
+        acc.otherPorts,
+        acc.weaponUnits,
+      ) * boost,
     ),
     shieldPoolRatio,
     enginePowerRatio,
@@ -781,6 +796,8 @@ export function useLoadoutSim(
   mode: MaybeRefOrGetter<FlightMode> = () => "SCM",
   overrides: MaybeRefOrGetter<PortOverrides | undefined> = () => undefined,
   shieldMaxItemCount: MaybeRefOrGetter<number | undefined> = () => undefined,
+  regenModifier: MaybeRefOrGetter<WeaponRegenModifier | undefined> = () =>
+    undefined,
 ) {
   return computed<LoadoutSimResult>(() =>
     simulateLoadoutPower(
@@ -789,6 +806,7 @@ export function useLoadoutSim(
       toValue(mode),
       toValue(overrides),
       toValue(shieldMaxItemCount) ?? DEFAULT_SHIELD_MAX_ITEM_COUNT,
+      toValue(regenModifier) ?? NO_REGEN_MODIFIER,
     ),
   );
 }
