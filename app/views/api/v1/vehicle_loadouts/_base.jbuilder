@@ -26,10 +26,11 @@ end
 
 json.power_presets vehicle_loadout.power_presets do |preset|
   json.name preset["name"]
-  json.mode preset["mode"]
-  json.overrides preset["overrides"] do |override|
-    json.port_path override["port_path"]
-    json.pips override["pips"]
+  VehicleLoadout::POWER_MODES.each do |mode|
+    json.set! mode, Array(preset[mode]) do |override|
+      json.port_path override["port_path"]
+      json.pips override["pips"]
+    end
   end
 end
 

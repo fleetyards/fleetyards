@@ -338,8 +338,10 @@ zh-TW:
               too_many: "最多只能有 %{count} 個"
               name_blank: "每個都需要名稱"
               name_taken: "名稱不能重複"
-              mode_invalid: "必須為 SCM 或 NAV"
-              pips_invalid: "每個電源端口的段數必須為零或以上"
+              pips_invalid: "每個電源端口的段數必須在 0 到 100 之間"
+              not_fleetyards: "只能儲存在 Fleetyards 配裝中"
+              name_too_long: "名稱不能超過 %{count} 個字元"
+              port_repeated: "每種飛行模式下每個電源端口只能設定一次"
         payout_entry:
           attributes:
             entry_type:

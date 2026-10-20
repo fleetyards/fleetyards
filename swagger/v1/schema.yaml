@@ -38699,33 +38699,29 @@ components:
       items:
         "$ref": "#/components/schemas/PieChartStats"
       title: PieChartStatsList
-    PowerFlightModeEnum:
-      type: string
-      enum:
-      - SCM
-      - NAV
-      x-enumNames:
-      - SCM
-      - NAV
-      title: PowerFlightModeEnum
     PowerPreset:
       type: object
       properties:
         name:
           type: string
-        mode:
-          "$ref": "#/components/schemas/PowerFlightModeEnum"
-        overrides:
+          maxLength: 40
+        scm:
           type: array
           items:
             "$ref": "#/components/schemas/PowerPresetOverride"
-          description: Pips set by hand; a power port left out follows the automatic
-            balance
+          description: Pips set by hand in SCM; a power port left out follows the
+            automatic balance
+        nav:
+          type: array
+          items:
+            "$ref": "#/components/schemas/PowerPresetOverride"
+          description: Pips set by hand in NAV; a power port left out follows the
+            automatic balance
       additionalProperties: false
       required:
       - name
-      - mode
-      - overrides
+      - scm
+      - nav
       title: PowerPreset
     PowerPresetOverride:
       type: object
@@ -38735,6 +38731,7 @@ components:
         pips:
           type: integer
           minimum: 0
+          maximum: 100
       additionalProperties: false
       required:
       - portPath
@@ -41461,7 +41458,7 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/PowerPreset"
-          maxItems: 20
+          maxItems: 5
           description: Replaces every saved preset
       additionalProperties: false
       title: VehicleLoadoutInput

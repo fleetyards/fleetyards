@@ -89,10 +89,10 @@ class Api::V1::PublicHangarsVehicleLoadoutsTest < ActionDispatch::IntegrationTes
   end
 
   test "GET /public/hangars/:username/vehicles/:vehicle_id/loadouts/:id hands visitors the power presets" do
-    @loadout.update!(power_presets: [{name: "Haul", mode: "NAV", overrides: [{port_path: "hardpoint_power_plant", pips: 1}]}])
+    @loadout.update!(power_presets: [{name: "Haul", scm: [], nav: [{port_path: "hardpoint_power_plant", pips: 1}]}])
 
     assert_api_response :get, 200, api_path: SHOW, path_params: path do
-      assert_equal [{"name" => "Haul", "mode" => "NAV", "overrides" => [{"portPath" => "hardpoint_power_plant", "pips" => 1}]}],
+      assert_equal [{"name" => "Haul", "scm" => [], "nav" => [{"portPath" => "hardpoint_power_plant", "pips" => 1}]}],
         parsed_body["powerPresets"]
     end
   end

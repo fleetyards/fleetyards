@@ -7,17 +7,20 @@ class VehicleLoadoutPowerPresetsTest < ActiveSupport::TestCase
     @loadout = create(:vehicle_loadout, :fleetyards)
   end
 
-  def preset(name: "Dogfight", mode: "SCM", overrides: [{port_path: "hardpoint_shield", pips: 2}])
-    {name:, mode:, overrides:}
+  def preset(name: "Dogfight", scm: [{port_path: "hardpoint_shield", pips: 2}], nav: [])
+    {name:, scm:, nav:}
   end
 
-  test "keeps named splits with the loadout" do
-    @loadout.update!(power_presets: [preset(name: " Dogfight "), preset(name: "Travel", mode: "NAV", overrides: [])])
+  test "keeps named splits for both flight modes with the loadout" do
+    @loadout.update!(power_presets: [
+      preset(name: " Dogfight "),
+      preset(name: "Travel", scm: [], nav: [{port_path: "hardpoint_quantum_drive", pips: 3}])
+    ])
 
     assert_equal(
       [
-        {"name" => "Dogfight", "mode" => "SCM", "overrides" => [{"port_path" => "hardpoint_shield", "pips" => 2}]},
-        {"name" => "Travel", "mode" => "NAV", "overrides" => []}
+        {"name" => "Dogfight", "scm" => [{"port_path" => "hardpoint_shield", "pips" => 2}], "nav" => []},
+        {"name" => "Travel", "scm" => [], "nav" => [{"port_path" => "hardpoint_quantum_drive", "pips" => 3}]}
       ],
       @loadout.reload.power_presets
     )
@@ -37,26 +40,48 @@ class VehicleLoadoutPowerPresetsTest < ActiveSupport::TestCase
     assert @loadout.errors.added?(:power_presets, :name_blank)
   end
 
-  test "refuses a flight mode the game does not have" do
-    @loadout.power_presets = [preset(mode: "QT")]
+  test "refuses negative or fractional pips in either mode" do
+    [{scm: [{port_path: "hardpoint_shield", pips: -1}]}, {nav: [{port_path: "hardpoint_shield", pips: 1.5}]}, {scm: [{port_path: "hardpoint_shield", pips: "2"}]}].each do |split|
+      @loadout.power_presets = [preset(**split)]
 
-    assert_not @loadout.valid?
-    assert @loadout.errors.added?(:power_presets, :mode_invalid)
-  end
-
-  test "refuses negative or fractional pips" do
-    [-1, 1.5, "2"].each do |pips|
-      @loadout.power_presets = [preset(overrides: [{port_path: "hardpoint_shield", pips:}])]
-
-      assert_not @loadout.valid?, "#{pips.inspect} pips were accepted"
+      assert_not @loadout.valid?, "#{split.inspect} was accepted"
       assert @loadout.errors.added?(:power_presets, :pips_invalid)
     end
   end
 
-  test "refuses more presets than the limit" do
-    @loadout.power_presets = (VehicleLoadout::MAX_POWER_PRESETS + 1).times.map { |index| preset(name: "Split #{index}") }
+  test "refuses a name longer than forty characters" do
+    @loadout.power_presets = [preset(name: "x" * 41)]
 
     assert_not @loadout.valid?
-    assert @loadout.errors.added?(:power_presets, :too_many, count: VehicleLoadout::MAX_POWER_PRESETS)
+    assert @loadout.errors.added?(:power_presets, :name_too_long, count: 40)
+  end
+
+  test "refuses more pips than a port takes" do
+    @loadout.power_presets = [preset(scm: [{port_path: "hardpoint_shield", pips: 101}])]
+
+    assert_not @loadout.valid?
+    assert @loadout.errors.added?(:power_presets, :pips_invalid)
+  end
+
+  test "refuses a port set twice in one mode" do
+    @loadout.power_presets = [preset(scm: [{port_path: "hardpoint_shield", pips: 1}, {port_path: "hardpoint_shield", pips: 2}])]
+
+    assert_not @loadout.valid?
+    assert @loadout.errors.added?(:power_presets, :port_repeated)
+  end
+
+  test "keeps no presets with a linked loadout" do
+    linked = create(:vehicle_loadout)
+    linked.power_presets = [preset]
+
+    assert_not linked.valid?
+    assert linked.errors.added?(:power_presets, :not_fleetyards)
+  end
+
+  test "refuses more than five presets" do
+    @loadout.power_presets = 6.times.map { |index| preset(name: "Split #{index}") }
+
+    assert_not @loadout.valid?
+    assert @loadout.errors.added?(:power_presets, :too_many, count: 5)
   end
 end

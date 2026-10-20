@@ -338,8 +338,10 @@ fr:
               too_many: "ne peuvent pas dépasser %{count}"
               name_blank: "ont chacun besoin d'un nom"
               name_taken: "doivent chacun avoir leur propre nom"
-              mode_invalid: "doivent chacun être pour SCM ou NAV"
-              pips_invalid: "doivent donner à chaque port d'énergie zéro segment ou plus"
+              pips_invalid: "doivent donner à chaque port d'énergie de 0 à 100 segments"
+              not_fleetyards: "ne peuvent être gardés qu'avec un équipement Fleetyards"
+              name_too_long: "doivent chacun avoir un nom d'au plus %{count} caractères"
+              port_repeated: "doivent régler chaque port d'énergie une seule fois par mode de vol"
         payout_entry:
           attributes:
             entry_type:

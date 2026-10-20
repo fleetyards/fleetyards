@@ -339,8 +339,10 @@ en:
               too_many: "must be %{count} or fewer"
               name_blank: "each need a name"
               name_taken: "must each have a name of their own"
-              mode_invalid: "must each be for SCM or NAV"
-              pips_invalid: "must set each power port to zero pips or more"
+              pips_invalid: "must set each power port to 0 to 100 pips"
+              not_fleetyards: "can only be kept with a fleetyards loadout"
+              name_too_long: "must each have a name of at most %{count} characters"
+              port_repeated: "must set each power port once per flight mode"
         fleet_subscription:
           attributes:
             ended_at:

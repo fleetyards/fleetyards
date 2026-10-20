@@ -338,8 +338,10 @@ zh-CN:
               too_many: "最多只能有 %{count} 个"
               name_blank: "每个都需要名称"
               name_taken: "名称不能重复"
-              mode_invalid: "必须为 SCM 或 NAV"
-              pips_invalid: "每个电源端口的段数必须为零或以上"
+              pips_invalid: "每个电源端口的段数必须在 0 到 100 之间"
+              not_fleetyards: "只能保存在 Fleetyards 配装中"
+              name_too_long: "名称不能超过 %{count} 个字符"
+              port_repeated: "每种飞行模式下每个电源端口只能设置一次"
         payout_entry:
           attributes:
             entry_type:

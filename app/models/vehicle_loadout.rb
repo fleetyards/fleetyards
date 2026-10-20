@@ -59,20 +59,25 @@ class VehicleLoadout < ApplicationRecord
     @loadout_slots = nil
   end
 
-  POWER_MODES = %w[SCM NAV].freeze
-  MAX_POWER_PRESETS = 20
+  POWER_MODES = %w[scm nav].freeze
+  MAX_POWER_PRESETS = 5
+  MAX_POWER_PRESET_NAME = 40
+  # More than any power port takes: the largest systems run to a dozen pips.
+  MAX_POWER_PRESET_PIPS = 100
 
-  # Named power splits the owner keeps with the loadout: a flight mode and the
-  # pips set by hand, `{port_path:, pips:}` per power port. Ports left out
+  # Named power splits the owner keeps with the loadout, one per flight mode:
+  # the pips set by hand, `{port_path:, pips:}` per power port. Ports left out
   # follow the game's automatic balance.
   def power_presets=(list)
     super(Array(list).map do |preset|
       preset = preset.to_h.symbolize_keys
-      overrides = Array(preset[:overrides]).map do |override|
-        override = override.to_h.symbolize_keys
-        {"port_path" => override[:port_path].to_s, "pips" => override[:pips]}
+      splits = POWER_MODES.index_with do |mode|
+        Array(preset[mode.to_sym]).map do |override|
+          override = override.to_h.symbolize_keys
+          {"port_path" => override[:port_path].to_s, "pips" => override[:pips]}
+        end
       end
-      {"name" => preset[:name].to_s.strip, "mode" => preset[:mode].to_s, "overrides" => overrides}
+      {"name" => preset[:name].to_s.strip, **splits}
     end)
   end
 
@@ -270,16 +275,22 @@ class VehicleLoadout < ApplicationRecord
 
   private def power_presets_fit
     presets = Array(power_presets)
+    return if presets.empty?
+    # A linked loadout fits nothing here, so there is no split to keep.
+    return errors.add(:power_presets, :not_fleetyards) unless kind_fleetyards?
+
     errors.add(:power_presets, :too_many, count: MAX_POWER_PRESETS) if presets.size > MAX_POWER_PRESETS
 
     names = presets.map { |preset| preset["name"].to_s.downcase }
     errors.add(:power_presets, :name_blank) if names.any?(&:blank?)
     errors.add(:power_presets, :name_taken) if names.uniq.size != names.size
-    errors.add(:power_presets, :mode_invalid) unless presets.all? { |preset| POWER_MODES.include?(preset["mode"]) }
+    errors.add(:power_presets, :name_too_long, count: MAX_POWER_PRESET_NAME) if names.any? { |name| name.length > MAX_POWER_PRESET_NAME }
 
-    overrides = presets.flat_map { |preset| Array(preset["overrides"]) }
-    valid = overrides.all? do |override|
-      override["port_path"].present? && override["pips"].is_a?(Integer) && override["pips"] >= 0
+    splits = presets.flat_map { |preset| POWER_MODES.map { |mode| Array(preset[mode]) } }
+    errors.add(:power_presets, :port_repeated) if splits.any? { |split| split.pluck("port_path").uniq.size != split.size }
+
+    valid = splits.flatten.all? do |override|
+      override["port_path"].present? && override["pips"].is_a?(Integer) && override["pips"].between?(0, MAX_POWER_PRESET_PIPS)
     end
     errors.add(:power_presets, :pips_invalid) unless valid
   end

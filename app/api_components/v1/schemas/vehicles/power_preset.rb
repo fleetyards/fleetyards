@@ -9,16 +9,20 @@ module V1
         schema({
           type: :object,
           properties: {
-            name: {type: :string},
-            mode: ::V1::Schemas::Enums::PowerFlightModeEnum,
-            overrides: {
+            name: {type: :string, maxLength: ::VehicleLoadout::MAX_POWER_PRESET_NAME},
+            scm: {
               type: :array,
               items: ::V1::Schemas::Vehicles::PowerPresetOverride,
-              description: "Pips set by hand; a power port left out follows the automatic balance"
+              description: "Pips set by hand in SCM; a power port left out follows the automatic balance"
+            },
+            nav: {
+              type: :array,
+              items: ::V1::Schemas::Vehicles::PowerPresetOverride,
+              description: "Pips set by hand in NAV; a power port left out follows the automatic balance"
             }
           },
           additionalProperties: false,
-          required: %w[name mode overrides]
+          required: %w[name scm nav]
         })
       end
     end

@@ -10,7 +10,7 @@ module V1
           type: :object,
           properties: {
             portPath: {type: :string},
-            pips: {type: :integer, minimum: 0}
+            pips: {type: :integer, minimum: 0, maximum: ::VehicleLoadout::MAX_POWER_PRESET_PIPS}
           },
           additionalProperties: false,
           required: %w[portPath pips]
