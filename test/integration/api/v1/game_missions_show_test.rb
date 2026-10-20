@@ -139,6 +139,31 @@ class Api::V1::GameMissionsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /missions/{slug} states the buy-in, the time it takes and how it comes round again" do
+    @mission.build.update!(buy_in: 1000, time_to_complete: 7.8, max_instances_per_player: 1, respawn_time: 5)
+
+    assert_api_response :get, 200, params: {slug: @mission.slug} do
+      assert_equal [1000, 7.8, 1, 5.0],
+        parsed_body.values_at("buyIn", "timeToComplete", "maxInstancesPerPlayer", "respawnTime")
+    end
+  end
+
+  # A requirement links the missions that grant it, and only those the
+  # catalogue offers.
+  test "GET /missions/{slug} lists the prerequisites and links the missions they name" do
+    intro = create(:game_mission, name: "Wikelo Arrive to System")
+    create(:game_mission_prerequisite, build: @mission.build, position: 0)
+    create(:game_mission_prerequisite, :completed_missions, build: @mission.build, position: 1,
+      mission_refs: [intro.sc_ref, "not-in-the-catalogue"])
+
+    assert_api_response :get, 200, params: {slug: @mission.slug} do
+      crime_stat, completed = parsed_body["prerequisites"]
+
+      assert_equal ["crime_stat", 0, 2], crime_stat.values_at("kind", "min", "max")
+      assert_equal [intro.slug], completed["missions"].pluck("slug")
+    end
+  end
+
   # The run-time spans reach the payload as the export writes them: stripping
   # one here would break the sentence around it, and what to do with it is the
   # renderer's decision.

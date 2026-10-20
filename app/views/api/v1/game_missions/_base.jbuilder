@@ -23,6 +23,14 @@ json.released mission.released
 json.location_kind mission.location_kind
 json.needs_landing mission.needs_landing
 
+# What taking it costs and how it comes round again, in aUEC and minutes. Null
+# where the files leave them unset.
+json.buy_in mission.buy_in
+json.time_to_complete mission.time_to_complete&.to_f
+json.max_instances_per_player mission.max_instances_per_player
+json.respawn_time mission.respawn_time&.to_f
+json.respawn_variation mission.respawn_variation&.to_f
+
 # Who offers it. Null on 197: a handler naming no faction takes its generator's
 # org, and only where that generator names exactly one -- a wrong org is worse
 # than none when "who gives me this" is the question the row answers.

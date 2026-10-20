@@ -31,7 +31,7 @@ module Api
           .where(location_id: Location.current_version.select(:id))
           .includes(location: [:parent, :build, :last_build])
           .sort_by { |link| [link.location.name.to_s, link.source] }
-          .uniq(&:location_id)
+          .uniq { |link| [link.location_id, link.source == "offered"] }
       end
 
       def index

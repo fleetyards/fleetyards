@@ -8,6 +8,7 @@ json.description @mission.description
 
 json.partial! "api/v1/game_missions/rewards", mission: @mission
 json.partial! "api/v1/game_missions/hand_ins", mission: @mission
+json.partial! "api/v1/game_missions/prerequisites", mission: @mission
 
 # The recipes this mission hands out, through the pools it names. Asked with
 # the pool refs the build carries rather than by joining `blueprint_sources`

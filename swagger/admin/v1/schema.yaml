@@ -15781,6 +15781,26 @@ components:
           "$ref": "#/components/schemas/NullableGameMissionLocationKindEnum"
         needsLanding:
           type: boolean
+        buyIn:
+          type:
+          - integer
+          - 'null'
+        timeToComplete:
+          type:
+          - number
+          - 'null'
+        maxInstancesPerPlayer:
+          type:
+          - integer
+          - 'null'
+        respawnTime:
+          type:
+          - number
+          - 'null'
+        respawnVariation:
+          type:
+          - number
+          - 'null'
         org:
           anyOf:
           - "$ref": "#/components/schemas/GameMissionOrg"
@@ -15813,6 +15833,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/GameMissionHandIn"
+        prerequisites:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMissionPrerequisite"
         blueprints:
           type: array
           items:
@@ -15984,6 +16008,23 @@ components:
       - CAREER
       - CONTRACT
       title: GameMissionKindEnum
+    GameMissionLink:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - id
+      - slug
+      title: GameMissionLink
     GameMissionLocation:
       type: object
       properties:
@@ -16014,9 +16055,11 @@ components:
       enum:
       - template
       - text
+      - offered
       x-enumNames:
       - TEMPLATE
       - TEXT
+      - OFFERED
       title: GameMissionLocationSourceEnum
     GameMissionOrg:
       type: object
@@ -16037,6 +16080,64 @@ components:
       required:
       - name
       title: GameMissionOrg
+    GameMissionPrerequisite:
+      type: object
+      properties:
+        kind:
+          "$ref": "#/components/schemas/GameMissionPrerequisiteKindEnum"
+        min:
+          type:
+          - integer
+          - 'null'
+        max:
+          type:
+          - integer
+          - 'null'
+        orgName:
+          type:
+          - string
+          - 'null'
+        orgKey:
+          type:
+          - string
+          - 'null'
+        minStanding:
+          type:
+          - string
+          - 'null'
+        maxStanding:
+          type:
+          - string
+          - 'null'
+        excluded:
+          type: boolean
+        count:
+          type:
+          - integer
+          - 'null'
+        missions:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMissionLink"
+      additionalProperties: false
+      required:
+      - kind
+      - excluded
+      - missions
+      title: GameMissionPrerequisite
+    GameMissionPrerequisiteKindEnum:
+      type: string
+      enum:
+      - crime_stat
+      - reputation
+      - completed_missions
+      - excluded_missions
+      x-enumNames:
+      - CRIME_STAT
+      - REPUTATION
+      - COMPLETED_MISSIONS
+      - EXCLUDED_MISSIONS
+      title: GameMissionPrerequisiteKindEnum
     GameMissionQuery:
       type: object
       properties:
