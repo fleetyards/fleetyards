@@ -126,27 +126,10 @@
     min-height: 160px;
   }
 
-  // On a wide screen the groups flow as one list balanced by height: the three
-  // fixed stacks step aside.
   @media (min-width: map-get($grid-breakpoints, xxl)) {
-    &__list > .row {
-      display: block;
-      columns: 4;
-      column-gap: 20px;
-      margin-inline: 0;
-
-      > [class*="col-"] {
-        display: contents;
-      }
-
-      :deep(.hardpoint-group) {
-        break-inside: avoid;
-      }
-    }
-
-    // The metrics keep their three columns on the left and the list runs down
-    // beside them in three of its own, rather than starting below the last
-    // card: six even columns across the page.
+    // The metrics keep their three columns on the left and the list's three
+    // stacks run down beside them, rather than starting below the last card:
+    // six even columns across the page.
     &__layout--split {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -175,10 +158,6 @@
       .hardpoints__list {
         grid-column: 2;
         grid-row: 2 / -1;
-      }
-
-      .hardpoints__list > .row {
-        columns: 3;
       }
     }
   }
