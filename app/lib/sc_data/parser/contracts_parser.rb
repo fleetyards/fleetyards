@@ -298,12 +298,10 @@ module ScData
 
         return parsed if items.blank?
 
-        names = entity_names(items.pluck(:entity_class).uniq)
+        details = entity_details(items.pluck(:entity_class).uniq)
 
         items.each do |entry|
-          name = names[entry[:entity_class]]
-
-          entry[:entity_name] = name if name.present?
+          entry.merge!(details[entry[:entity_class]] || {})
         end
 
         parsed
@@ -517,7 +515,7 @@ module ScData
       # because most of these are in none of them: 107 of the 162 are equipment
       # or components, and the rest are carryables -- the scrip, a Banu favour --
       # that no Fleetyards catalogue carries and a GUID is not a reward.
-      private def entity_names(refs)
+      private def entity_details(refs)
         wanted = refs.to_set
 
         ENTITY_PATHS.flat_map { |path| Dir.glob("#{import_path}/#{path}/**/*.xml") }.each_with_object({}) do |file, index|
@@ -526,9 +524,9 @@ module ScData
           next if ref.blank? || !wanted.include?(ref)
 
           values = Hash.from_xml(File.read(file)).values.first
-          name = entity_name(values)
+          details = {entity_name: entity_name(values), commodity_key: entity_commodity_key(values)}.compact
 
-          index[ref] = name if name.present?
+          index[ref] = details if details.present?
         rescue EOFError, ArgumentError
           next
         end
@@ -549,6 +547,21 @@ module ScData
           (purchasable["displayName"] if purchasable.is_a?(Hash)),
           values["orderDisplayName"]
         ].lazy.filter_map { |key| localize_name(key) }.first
+      end
+
+      # A gem or an ore is a commodity crate whose own ref is not the one our
+      # commodity row carries, so the loader finds it by the commodity's key,
+      # which its purchase name is.
+      private def entity_commodity_key(values)
+        purchasable = Array.wrap(find_node(values, "SCItemPurchasableParams")).first
+
+        commodity_key(purchasable["displayName"]) if purchasable.is_a?(Hash)
+      end
+
+      private def commodity_key(display_name)
+        key = display_name.to_s.delete("@").sub(/,P\z/, "").downcase
+
+        key if key.start_with?(::ScData::Parser::BlueprintsParser::COMMODITY_PREFIX)
       end
 
       # One reward drawn from several weighted sets, each of which awards
@@ -623,7 +636,7 @@ module ScData
 
           next if ref.blank? || amounts.nil?
 
-          amounts.merge(kind: "resource", resource_ref: ref, resource_name: resource_names[ref]).compact
+          amounts.merge(kind: "resource", resource_ref: ref, **resource_details.fetch(ref, {})).compact
         end
 
         items.filter_map { |ref, order|
@@ -646,9 +659,9 @@ module ScData
       end
 
       # Resource ref to the commodity name a player reads -- "Quartz", "Recycled
-      # Material Composite".
-      private def resource_names
-        @resource_names ||= begin
+      # Material Composite" -- and the key the commodity row carries.
+      private def resource_details
+        @resource_details ||= begin
           root = Hash.from_xml(File.read("#{import_path}/#{RESOURCE_TYPES_PATH}")).values.first
           records = root.is_a?(Hash) ? root.each_value.flat_map { |values| Array.wrap(values) } : []
 
@@ -659,7 +672,9 @@ module ScData
             ref = value_or_nil(values["__ref"])
             name = localize_name(values["displayName"])
 
-            index[ref] = name if ref.present? && name.present?
+            next if ref.blank? || name.blank?
+
+            index[ref] = {resource_name: name, commodity_key: commodity_key(values["displayName"])}.compact
           end
         rescue Errno::ENOENT
           {}

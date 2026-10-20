@@ -464,7 +464,10 @@ module ScData
           %(<HaulingOrderContent_EntityClass entityClass="#{ENTITY_REF}" minAmount="15" maxAmount="15" />)
         ))
 
-        assert_equal "Ranta Dung", @parser.missions.sole[:hand_ins].sole[:entity_name]
+        hand_in = @parser.missions.sole[:hand_ins].sole
+
+        assert_equal "Ranta Dung", hand_in[:entity_name]
+        assert_equal "items_commodities_rantadung", hand_in[:commodity_key]
       end
 
       test "#missions names a hand-in that accepts any of a group" do
@@ -505,6 +508,7 @@ module ScData
         resource, item = @parser.missions.sole[:hand_ins]
 
         assert_equal ["resource", "Quartz", RESOURCE_REF, 2, 0], resource.values_at(:kind, :resource_name, :resource_ref, :amount, :option)
+        assert_equal "items_commodities_quartz", resource[:commodity_key]
         assert_equal ["item", 5, 1], item.values_at(:kind, :amount, :option)
       end
 
