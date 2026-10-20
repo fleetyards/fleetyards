@@ -207,9 +207,7 @@ class Model < ApplicationRecord
   # takes -- the most the ship can carry once fitted. Modules of one slot are
   # alternatives, so they do not add up; modules with no known slot are taken
   # to share one. Mirrors `#max_cargo`.
-  def self.max_cargo_sql(source = ::ScData::Source.current.served_for(ModelModuleBuild))
-    in_build = sanitize_sql_array([ModelModule::IN_BUILD_SQL, {environment: source.environment, version: source.version}])
-
+  def self.max_cargo_sql
     <<~SQL.squish
       COALESCE(models.cargo, 0) + COALESCE((
         SELECT SUM(slot_cargo) FROM (
@@ -217,10 +215,7 @@ class Model < ApplicationRecord
             FROM module_hardpoints
             JOIN model_modules ON model_modules.id = module_hardpoints.model_module_id
            WHERE module_hardpoints.model_id = models.id
-             AND model_modules.hidden = FALSE
-             AND model_modules.active = TRUE
-             AND model_modules.cargo > 0
-             AND (#{in_build})
+             AND #{ModelModule.carrying_cargo_sql}
            GROUP BY module_hardpoints.slot
         ) cargo_slots
       ), 0)
@@ -260,15 +255,12 @@ class Model < ApplicationRecord
   # the Galaxy's med bay carries a vehicle lift, its refinery does not.
   has_many :module_docks, through: :modules, source: :docks
 
-  # The slots a cargo module can fill, carrying the module's capacity as
-  # `module_cargo`, under the same conditions the ship page lists its modules.
+  # The slots a cargo module can fill, under the same conditions the ship page
+  # lists its modules. A subquery rather than a join, so the scope survives
+  # being eager loaded: a hangar filtering on a model column turns every
+  # `includes` under the vehicle into one.
   has_many :cargo_module_hardpoints,
-    -> {
-      joins(:model_module)
-        .merge(ModelModule.in_build.visible.active)
-        .where(model_modules: {cargo: 0.01..})
-        .select("module_hardpoints.*", "model_modules.cargo AS module_cargo")
-    },
+    -> { where(model_module_id: ModelModule.carrying_cargo.select(:id)) },
     class_name: "ModuleHardpoint",
     inverse_of: false
 
@@ -348,7 +340,7 @@ class Model < ApplicationRecord
       # Without them a ship list is two extra queries per row rather than two
       # for the page -- and the ships and hangar endpoints are the slow ones.
       :build, :last_build,
-      {item_prices: ItemPrice::SHOP_LINK}, :loaners, :cargo_holds_db, :cargo_module_hardpoints,
+      {item_prices: ItemPrice::SHOP_LINK}, :loaners, :cargo_holds_db, {cargo_module_hardpoints: :model_module},
       {manufacturer: Manufacturer.attachment_preloads},
       {model_loaners: :loaner_model}
     ] + list_attachment_preloads
@@ -1010,35 +1002,39 @@ class Model < ApplicationRecord
   end
 
   def cargo_label
-    return if cargo.blank? || cargo.zero?
+    scu_label(cargo)
+  end
+
+  def scu_label(value)
+    return if value.blank? || value.zero?
 
     number = number_with_precision(
-      cargo,
+      value,
       precision: 2,
       strip_insignificant_zeros: true
     )
 
     [number, "SCU"].join(" ")
+  end
+
+  def reload(*)
+    @cargo_modules_by_slot = nil
+
+    super
+  end
+
+  # The cargo modules each module slot takes, by slot.
+  def cargo_modules_by_slot
+    @cargo_modules_by_slot ||= cargo_module_hardpoints.group_by(&:slot)
+      .transform_values { |hardpoints| hardpoints.map(&:model_module) }
   end
 
   def max_cargo
-    module_cargo = cargo_module_hardpoints.group_by(&:slot).sum do |_slot, hardpoints|
-      hardpoints.map(&:module_cargo).max
-    end
-
-    (cargo || 0) + module_cargo
+    (cargo || 0) + cargo_modules_by_slot.values.sum { |modules| modules.map(&:cargo).max }
   end
 
   def max_cargo_label
-    return if max_cargo.zero?
-
-    number = number_with_precision(
-      max_cargo,
-      precision: 2,
-      strip_insignificant_zeros: true
-    )
-
-    [number, "SCU"].join(" ")
+    scu_label(max_cargo)
   end
 
   # The ship's own storage container, which the game keeps apart from the cargo

@@ -233,6 +233,18 @@ class ModelTest < ActiveSupport::TestCase
     assert_equal 82.0, Model.where(id: model.id).pick(Arel.sql(Model.max_cargo_sql)).to_f
   end
 
+  # A hangar filtering on a model column turns every `includes` below the
+  # vehicle into one joined query, which drops any custom select.
+  test "max cargo survives the cargo modules being eager loaded" do
+    model = create(:model, cargo: 2.0, keep_cargo: true)
+    create(:module_hardpoint, model:, slot: "hardpoint_module", model_module: create(:model_module, cargo: 6.0))
+    vehicle = create(:vehicle, model:)
+
+    loaded = Vehicle.includes(Vehicle.rendered_associations).where(models: {id: model.id}).find(vehicle.id)
+
+    assert_in_delta 8.0, loaded.model.max_cargo
+  end
+
   test "max cargo of a ship without cargo modules is its own cargo" do
     model = create(:model, cargo: 64.0, keep_cargo: true)
     create(:module_hardpoint, model:, model_module: create(:model_module))

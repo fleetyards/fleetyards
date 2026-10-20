@@ -456,7 +456,7 @@ module Api
         end
 
         scope = scope.with_dock if model_query_params.delete("with_dock")
-        scope = scope.where("#{Model.max_cargo_sql} > 0") if model_query_params.delete("with_cargo")
+        scope = scope.where("#{Model.max_cargo_sql} >= 0.1") if model_query_params.delete("with_cargo")
         scope = with_cargo_grids(scope) if model_query_params.delete("with_cargo_grids")
         scope = scope.where(id: current_resource_owner.models.select(:id)) if model_query_params.delete("in_hangar") && current_resource_owner.present?
         scope = container_fit(scope) if container_fit_params.present?
