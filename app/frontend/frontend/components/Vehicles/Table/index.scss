@@ -15,30 +15,37 @@
   }
 }
 
-.vehicle-states {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 5px;
-  font-size: 150%;
-  width: 100%;
-
-  .on-sale {
-    color: $success;
-  }
-
-  .flagship-icon {
-    color: $gold;
-  }
-
-  .full-public-icon {
-    color: $gray-lighter;
-  }
+.vehicles-table-flagship {
+  margin-left: 6px;
+  color: $gold;
 }
 
-@media (max-width: $desktop-breakpoint) {
-  .vehicle-states,
-  .hangar-groups {
-    justify-content: center;
+.vehicles-table-mobile-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+// A row carries its tone the way a card in the grid does on its caps: the
+// table's own edge rails, lit at both ends, over a faint wash of the same tone.
+:deep(.vehicles-table-row--flagship) {
+  --row-tone: var(--color-gold, #{$gold});
+}
+
+:deep(.vehicles-table-row--highlight) {
+  --row-tone: var(--color-primary, #428bca);
+}
+
+:deep(.vehicles-table-row--flagship),
+:deep(.vehicles-table-row--highlight) {
+  > td {
+    background-color: color-mix(in srgb, var(--row-tone) 8%, transparent);
+  }
+
+  > td:first-child::before,
+  > td:last-child::after {
+    background-color: var(--row-tone);
+    opacity: 1;
   }
 }

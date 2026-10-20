@@ -13,6 +13,7 @@ import VehicleContextMenu from "@/frontend/components/Vehicles/ContextMenu/index
 import HangarGroups from "@/frontend/components/Vehicles/HangarGroups/index.vue";
 import HangarEmpty from "@/frontend/components/Hangar/Empty/index.vue";
 import ListActions from "@/frontend/components/Vehicles/Table/ListActions.vue";
+import VehicleStates from "@/frontend/components/Vehicles/Table/States.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useVehicleCargo } from "@/frontend/composables/useVehicleCargo";
 import { FeatureFlagName, type Vehicle } from "@/services/fyApi";
@@ -48,10 +49,12 @@ type Props = {
   // Off where the list's toolbar carries the select-all box and the bulk
   // actions; the page then binds `selected` to hand them the picked rows.
   selectionControls?: boolean;
+  highlightedGroupId?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   selectionControls: true,
+  highlightedGroupId: undefined,
 });
 
 const emit = defineEmits<{
@@ -146,6 +149,21 @@ const extraImageColumns = computed<BaseTableCol<Vehicle>[]>(() => {
     });
 });
 
+// The same two tones a card's caps take in the grid, and the same precedence:
+// the hovered group wins, or a flagship in it would be the one row whose
+// membership you cannot read.
+const rowClass = (record: Vehicle) => {
+  const highlighted =
+    !!props.highlightedGroupId &&
+    record.hangarGroupIds.includes(props.highlightedGroupId);
+
+  return {
+    "vehicles-table-row--highlight": highlighted,
+    "vehicles-table-row--flagship":
+      !highlighted && !!record.flagship && !props.wishlist,
+  };
+};
+
 const manufacturerColumnVisible = computed(() => {
   return extraColumns.value.some(
     (column) => column.name === "modelManufacturerName",
@@ -178,13 +196,14 @@ const tableColumns = computed<BaseTableCol<Vehicle>[]>(() => {
     {
       name: "states",
       label: t("labels.vehicle.states"),
-      width: "10%",
+      width: "110px",
+      alignment: BaseTableColAlignmentEnum.RIGHT,
       mobile: false,
     },
     {
       name: "groups",
       label: t("labels.vehicle.hangarGroups"),
-      width: "10%",
+      width: "120px",
       mobile: false,
     },
   ];
@@ -249,6 +268,7 @@ const resetSelected = () => {
       :sortable="sortable"
       sort-handle=".vehicles-table-grip"
       :selection-controls="selectionControls"
+      :row-class="rowClass"
       @selected-change="onSelectedChange"
       @sort="(keys, moved) => emit('sort', keys, moved)"
     >
@@ -309,7 +329,7 @@ const resetSelected = () => {
           <i class="fa-duotone fa-grip-vertical" />
         </button>
       </template>
-      <template #col-name="{ record }">
+      <template #col-name="{ record, mobile }">
         <div class="name">
           <router-link
             :to="nameRoute(record)"
@@ -322,6 +342,12 @@ const resetSelected = () => {
 
             <span v-else>{{ record.model.name }}</span>
           </router-link>
+          <i
+            v-if="record.flagship && !wishlist"
+            v-tooltip="t('labels.vehicle.flagship')"
+            class="fa fa-certificate vehicles-table-flagship"
+            data-test="vehicle-table-flagship"
+          />
           <br />
           <small>
             <!-- eslint-disable vue/no-v-html -->
@@ -333,6 +359,15 @@ const resetSelected = () => {
               {{ record.model.name }}
             </template>
           </small>
+          <div v-if="mobile" class="vehicles-table-mobile-meta">
+            <VehicleStates :vehicle="record" :wishlist="wishlist" compact />
+            <HangarGroups
+              v-if="record.hangarGroups.length"
+              :groups="record.hangarGroups"
+              :highlighted-id="highlightedGroupId"
+              stacked
+            />
+          </div>
         </div>
       </template>
       <template #col-modelManufacturerName="{ record }">
@@ -402,41 +437,14 @@ const resetSelected = () => {
         <span class="no-break">{{ toDollar(record.model.pledgePrice) }}</span>
       </template>
       <template #col-states="{ record }">
-        <div class="vehicle-states">
-          <i
-            v-if="record.flagship && !wishlist"
-            v-tooltip="t('labels.vehicle.flagship')"
-            class="fa fa-certificate flagship-icon"
-          />
-          <i
-            v-if="record.model.onSale"
-            v-tooltip="t('labels.model.onSale')"
-            class="fa-duotone fa-dollar-sign on-sale"
-          />
-          <i
-            v-if="record.hiddenByUser"
-            v-tooltip="t('labels.vehicle.hiddenByUser')"
-            class="fa-duotone fa-ghost"
-          />
-          <i
-            v-else-if="record.public && record.nameVisible"
-            v-tooltip="t('labels.vehicle.fullPublic')"
-            class="fa-duotone fa-eye-evil full-public-icon"
-          />
-          <i
-            v-else-if="record.public"
-            v-tooltip="t('labels.vehicle.public')"
-            class="fa-duotone fa-eye"
-          />
-          <i
-            v-if="wishlist && record.saleNotify"
-            v-tooltip="t('labels.vehicle.saleNotify')"
-            class="fa-duotone fa-bell"
-          />
-        </div>
+        <VehicleStates :vehicle="record" :wishlist="wishlist" />
       </template>
       <template #col-groups="{ record }">
-        <HangarGroups :groups="record.hangarGroups" size="large" />
+        <HangarGroups
+          :groups="record.hangarGroups"
+          :highlighted-id="highlightedGroupId"
+          stacked
+        />
       </template>
       <template #actions="{ record }">
         <BtnGroup class="vehicles-table-btn-group">

@@ -2371,6 +2371,7 @@
         "hiddenByUser": "Aus deinem Hangar ausgeblendet",
         "public": "Öffentlich sichtbar",
         "fullPublic": "Öffentlich sichtbar inkl. Name",
+        "private": "Nicht öffentlich sichtbar",
         "publicShort": "Öffentlich",
         "saleNotifyOn": "Angebotsbenachrichtigung an",
         "saleNotifyOff": "Angebotsbenachrichtigung aus",

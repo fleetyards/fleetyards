@@ -2371,6 +2371,7 @@
         "hiddenByUser": "已从机库中隐藏",
         "public": "公开可见",
         "fullPublic": "公开可见（包括名称）",
+        "private": "不公开可见",
         "publicShort": "公开",
         "saleNotifyOn": "销售通知已开启",
         "saleNotifyOff": "销售通知已关闭",

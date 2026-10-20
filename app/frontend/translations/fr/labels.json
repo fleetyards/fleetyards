@@ -2371,6 +2371,7 @@
         "hiddenByUser": "Masqué de votre Hangar",
         "public": "Visibilité publique",
         "fullPublic": "Visibilité Publique incluant le nom",
+        "private": "Non visible publiquement",
         "publicShort": "Publique",
         "saleNotifyOn": "Notifications de vente activées",
         "saleNotifyOff": "Notifications de vente désactivées",
