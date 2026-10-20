@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_19_160000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_20_170000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1283,6 +1283,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_19_160000) do
     t.date "ended_at"
     t.index ["effective_from"], name: "index_funding_goals_on_effective_from"
     t.index ["ended_at"], name: "index_funding_goals_on_ended_at"
+  end
+
+  create_table "game_events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "title", null: false
+    t.text "description"
+    t.string "location"
+    t.string "url"
+    t.integer "category", default: 0, null: false
+    t.datetime "starts_at", null: false
+    t.datetime "ends_at"
+    t.boolean "published", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["published"], name: "index_game_events_on_published"
+    t.index ["starts_at"], name: "index_game_events_on_starts_at"
   end
 
   create_table "game_mission_builds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

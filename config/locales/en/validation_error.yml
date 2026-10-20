@@ -239,6 +239,10 @@ en:
       create: Funding goal could not be created.
       destroy: Funding goal could not be destroyed.
       update: Funding goal could not be updated.
+    game_event:
+      create: Game event could not be created.
+      destroy: Game event could not be destroyed.
+      update: Game event could not be updated.
     hardpoint:
       create: Hardpoint could not be created.
       update: Hardpoint could not be updated.

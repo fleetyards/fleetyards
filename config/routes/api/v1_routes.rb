@@ -63,6 +63,8 @@ v1_api_routes = lambda do
   draw "api/trade_routes_routes"
   draw "api/equipment_routes"
   draw "api/game_missions_routes"
+
+  resources :game_events, path: "game-events", only: %i[index]
   draw "api/locations_routes"
   draw "api/shops_routes"
   draw "api/imports_routes"

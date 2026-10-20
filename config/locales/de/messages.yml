@@ -38,6 +38,7 @@ de:
     subscription_required: "Diese Flotte hat kein Abonnement für diese Funktion."
     supporter_required: "Die weiteren Stile für Widmungstafeln sind ein Vorteil für Unterstützer."
     record_not_found:
+      game_event: Kein Spiel-Event gefunden
       fleet_subscription: Kein Flotten-Abonnement gefunden
       announcement: Keine Ankündigung gefunden
       announcement_delivery: Keine Ankündigungs-Zustellung gefunden

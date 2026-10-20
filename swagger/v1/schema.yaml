@@ -10341,6 +10341,29 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/game-events":
+    get:
+      summary: Game events list
+      tags:
+      - Game Events
+      operationId: gameEvents
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 24
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/GameEvents"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/hangar":
     delete:
       summary: Clear your personal Hangar
@@ -30439,6 +30462,57 @@ components:
       - name
       - slug
       title: Gallery
+    GameEvent:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type: string
+        location:
+          type: string
+        url:
+          type: string
+        category:
+          "$ref": "#/components/schemas/MissionCategoryEnum"
+        startsAt:
+          type: string
+          format: date-time
+        endsAt:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - title
+      - category
+      - startsAt
+      - createdAt
+      - updatedAt
+      title: GameEvent
+    GameEvents:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameEvent"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: GameEvents
     GameMission:
       type: object
       properties:

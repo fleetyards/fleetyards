@@ -38,6 +38,7 @@ fr:
     subscription_required: "Cette flotte n'a pas d'abonnement pour cette fonctionnalité."
     supporter_required: "Les autres styles de plaque sont un avantage réservé aux soutiens."
     record_not_found:
+      game_event: Aucun événement du jeu trouvé
       fleet_subscription: Aucun abonnement de flotte trouvé
       announcement: Aucune annonce trouvée
       announcement_delivery: Aucun envoi d'annonce trouvé

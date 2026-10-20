@@ -200,6 +200,10 @@ de:
       create: Finanzierungsziel konnte nicht erstellt werden.
       destroy: Finanzierungsziel konnte nicht gelöscht werden.
       update: Finanzierungsziel konnte nicht aktualisiert werden.
+    game_event:
+      create: Spiel-Event konnte nicht erstellt werden.
+      destroy: Spiel-Event konnte nicht gelöscht werden.
+      update: Spiel-Event konnte nicht aktualisiert werden.
     hardpoint:
       create: Hardpoint konnte nicht erstellt werden.
       update: Hardpoint konnte nicht aktualisiert werden.

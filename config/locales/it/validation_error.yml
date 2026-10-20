@@ -192,6 +192,10 @@ it:
       create: Impossibile creare l'obiettivo di finanziamento.
       destroy: Impossibile eliminare l'obiettivo di finanziamento.
       update: Impossibile aggiornare l'obiettivo di finanziamento.
+    game_event:
+      create: "Impossibile creare l'evento di gioco."
+      destroy: "Impossibile eliminare l'evento di gioco."
+      update: "Impossibile aggiornare l'evento di gioco."
     hardpoint:
       create: Impossibile creare l'attacco.
       update: Impossibile aggiornare l'attacco.
