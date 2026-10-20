@@ -4356,6 +4356,8 @@
         "sourceSummary": "%{count} fuentes · %{orgs} organizaciones",
         "unattributed": "Sin atribuir",
         "minPoints": "Desde %{points} puntos",
+        "limitedEvent": "Evento por tiempo limitado",
+        "eventHint": "Las recompensas de evento solo se obtienen mientras CIG mantiene el evento activo. Los archivos del juego conservan sus niveles de recompensa entre ediciones, así que no indican si está activo ahora mismo.",
         "noKnownSource": "Sin fuente conocida",
         "noSourceLead": "Ninguna misión ni escenario entrega esta receta.",
         "noSourceBody": "Los archivos del juego no la incluyen en ningún grupo de recompensas, así que no hay nada que señalar.",
@@ -4372,7 +4374,7 @@
         },
         "kinds": {
           "contract": "Contrato",
-          "scenario": "Escenario"
+          "scenario": "Evento"
         },
         "duration": {
           "hours": "%{count} h",

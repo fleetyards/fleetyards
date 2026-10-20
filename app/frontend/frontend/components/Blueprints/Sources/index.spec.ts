@@ -71,4 +71,34 @@ describe("Blueprints/Sources", () => {
       "Lawful",
     ]);
   });
+
+  // XenoThreat's reward track stays in the export between runs, so a scenario
+  // source has to say the recipe only drops while the event is on.
+  it("marks a scenario source as a limited-time event", async () => {
+    const wrapper = await mount([
+      source({
+        kind: "scenario",
+        missionName: undefined,
+        minStanding: undefined,
+        minPoints: 30000,
+      }),
+    ]);
+
+    expect(wrapper.find(".blueprint-sources__mission-name").text()).toBe(
+      "Event",
+    );
+    expect(wrapper.find(".blueprint-sources__event").text()).toBe(
+      "Limited-time event",
+    );
+    expect(wrapper.find(".blueprint-sources__legend").text()).toContain(
+      "only while CIG runs the event",
+    );
+  });
+
+  it("marks no contract source as an event", async () => {
+    const wrapper = await mount([source()]);
+
+    expect(wrapper.find(".blueprint-sources__event").exists()).toBe(false);
+    expect(wrapper.find(".blueprint-sources__legend").exists()).toBe(false);
+  });
 });
