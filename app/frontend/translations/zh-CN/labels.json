@@ -1384,8 +1384,10 @@
         "fuel": "燃料",
         "fuelHydrogen": "氢",
         "fuelQuantum": "量子",
-        "fuelFullMain": "全推力，主推进器",
-        "fuelFullAll": "全推力，所有推进器",
+        "fuelBurnMain": "续航，主推进器",
+        "fuelBurnAll": "续航，全部",
+        "fuelDrawMain": "耗量，主推进器",
+        "fuelDrawAll": "耗量，全部",
         "durationHoursMinutes": "%{hours} 小时 %{minutes} 分钟",
         "durationMinutes": "%{minutes} 分钟"
       },

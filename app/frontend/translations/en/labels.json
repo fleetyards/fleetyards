@@ -1384,8 +1384,10 @@
         "fuel": "Fuel",
         "fuelHydrogen": "Hydrogen",
         "fuelQuantum": "Quantum",
-        "fuelFullMain": "Full thrust, main",
-        "fuelFullAll": "Full thrust, all thrusters",
+        "fuelBurnMain": "Burn, mains",
+        "fuelBurnAll": "Burn, all",
+        "fuelDrawMain": "Draw, mains",
+        "fuelDrawAll": "Draw, all",
         "durationHoursMinutes": "%{hours} h %{minutes} min",
         "durationMinutes": "%{minutes} min"
       },

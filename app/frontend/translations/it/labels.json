@@ -1384,8 +1384,10 @@
         "fuel": "Carburante",
         "fuelHydrogen": "Idrogeno",
         "fuelQuantum": "Quantum",
-        "fuelFullMain": "Spinta massima, principali",
-        "fuelFullAll": "Spinta massima, tutti i propulsori",
+        "fuelBurnMain": "Autonomia, principali",
+        "fuelBurnAll": "Autonomia, tutti",
+        "fuelDrawMain": "Consumo, principali",
+        "fuelDrawAll": "Consumo, tutti",
         "durationHoursMinutes": "%{hours} h %{minutes} min",
         "durationMinutes": "%{minutes} min"
       },

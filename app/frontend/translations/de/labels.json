@@ -1384,8 +1384,10 @@
         "fuel": "Treibstoff",
         "fuelHydrogen": "Hydrogen",
         "fuelQuantum": "Quantum",
-        "fuelFullMain": "Volllast, Haupttriebwerke",
-        "fuelFullAll": "Volllast, alle Triebwerke",
+        "fuelBurnMain": "Brenndauer, Haupt",
+        "fuelBurnAll": "Brenndauer, alle",
+        "fuelDrawMain": "Verbrauch, Haupt",
+        "fuelDrawAll": "Verbrauch, alle",
         "durationHoursMinutes": "%{hours} h %{minutes} min",
         "durationMinutes": "%{minutes} min"
       },

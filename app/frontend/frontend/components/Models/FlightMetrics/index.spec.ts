@@ -161,9 +161,13 @@ describe("FlightMetrics fuel", () => {
       },
     });
 
-    const mains = wrapper.get("[data-test='flight-fuel-main']").text();
-    expect(mains).toContain("labels.flight.fuelFullMain");
-    expect(mains).toContain("1936.48");
-    expect(mains).toContain("labels.flight.durationHoursMinutes");
+    const burn = wrapper.get("[data-test='flight-fuel-burn-main']").text();
+    expect(burn).toContain("labels.flight.fuelBurnMain");
+    expect(burn).toContain("labels.flight.durationHoursMinutes");
+
+    const draw = wrapper.get("[data-test='flight-fuel-draw-main']").text();
+    expect(draw).toContain("labels.flight.fuelDrawMain");
+    expect(draw).toContain("1936");
+    expect(draw).not.toContain("1936.48");
   });
 });
