@@ -1533,11 +1533,6 @@
           "recoversIn": "Si riprende in",
           "regenLabel": "Rigenerazione",
           "shotsPerSecond": "%{rate} colpi/s",
-          "legendBlock": "Blocco minimo: la parte funziona con questo o per niente",
-          "legendOn": "Segmento alimentato",
-          "legendFree": "Libero da assegnare",
-          "legendShared": "Separa le parti che condividono un sistema",
-          "legendHeadroom": "Nessun segmento libero: togli prima energia a un altro sistema",
           "presets": {
             "title": "Preimpostazioni",
             "name": "Nome della preimpostazione",

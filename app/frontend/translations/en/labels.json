@@ -1533,11 +1533,6 @@
           "recoversIn": "Recovers in",
           "regenLabel": "Regen",
           "shotsPerSecond": "%{rate} shots/s",
-          "legendBlock": "Minimum block: the part runs at this or not at all",
-          "legendOn": "Powered segment",
-          "legendFree": "Free to fill",
-          "legendShared": "Separates parts sharing a system",
-          "legendHeadroom": "No segment free: take power from another system first",
           "presets": {
             "title": "Presets",
             "name": "Preset name",

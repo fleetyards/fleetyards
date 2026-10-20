@@ -1022,73 +1022,31 @@ const seconds = (value: number) =>
         <span class="power-view__trunk" />
       </div>
 
-      <div class="power-view__source">
-        <div class="power-view__plant-card">
-          <div class="power-view__plant-label">
-            {{ t("labels.hardpoint.categories.powerplant") }}
-          </div>
-          <div class="power-view__plant-list">
-            <div
-              v-for="plant in plants"
-              :key="plant.key"
-              class="power-view__plant"
-            >
-              <strong>{{ plant.name }}</strong>
-              <span v-if="plant.count > 1"> ×{{ plant.count }}</span>
-              <span class="power-view__muted">
-                {{
-                  t("labels.power.planner.plantSegments", {
-                    segments: num(plantSegments(plant.hardpoint)),
-                  })
-                }}
-              </span>
-            </div>
-          </div>
-          <div class="power-view__plant-total">
-            {{ used }} / {{ sim.totalSegments }}
-            <span>{{ t("labels.power.planner.segmentsTotal") }}</span>
+      <div class="power-view__plant-card">
+        <div class="power-view__plant-label">
+          {{ t("labels.hardpoint.categories.powerplant") }}
+        </div>
+        <div class="power-view__plant-list">
+          <div
+            v-for="plant in plants"
+            :key="plant.key"
+            class="power-view__plant"
+          >
+            <strong>{{ plant.name }}</strong>
+            <span v-if="plant.count > 1"> ×{{ plant.count }}</span>
+            <span class="power-view__muted">
+              {{
+                t("labels.power.planner.plantSegments", {
+                  segments: num(plantSegments(plant.hardpoint)),
+                })
+              }}
+            </span>
           </div>
         </div>
-        <ul class="power-view__legend">
-          <li>
-            <span class="power-view__sample" aria-hidden="true">
-              <span
-                class="power-view__sample-pip power-view__sample-pip--block"
-              >
-                2
-              </span>
-            </span>
-            {{ t("labels.power.planner.legendBlock") }}
-          </li>
-          <li>
-            <span class="power-view__sample" aria-hidden="true">
-              <span class="power-view__sample-pip power-view__sample-pip--on" />
-            </span>
-            {{ t("labels.power.planner.legendOn") }}
-          </li>
-          <li>
-            <span class="power-view__sample" aria-hidden="true">
-              <span class="power-view__sample-pip" />
-            </span>
-            {{ t("labels.power.planner.legendFree") }}
-          </li>
-          <li>
-            <span class="power-view__sample" aria-hidden="true">
-              <span
-                class="power-view__sample-pip power-view__sample-pip--headroom"
-              />
-            </span>
-            {{ t("labels.power.planner.legendHeadroom") }}
-          </li>
-          <li>
-            <span class="power-view__sample" aria-hidden="true">
-              <span class="power-view__sample-pip power-view__sample-pip--on" />
-              <span class="power-view__divider" />
-              <span class="power-view__sample-pip power-view__sample-pip--on" />
-            </span>
-            {{ t("labels.power.planner.legendShared") }}
-          </li>
-        </ul>
+        <div class="power-view__plant-total">
+          {{ used }} / {{ sim.totalSegments }}
+          <span>{{ t("labels.power.planner.segmentsTotal") }}</span>
+        </div>
       </div>
 
       <section v-if="energyGuns.length" class="power-view__energy">

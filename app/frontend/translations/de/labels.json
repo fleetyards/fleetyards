@@ -1533,11 +1533,6 @@
           "recoversIn": "Erholt in",
           "regenLabel": "Regeneration",
           "shotsPerSecond": "%{rate} Schuss/s",
-          "legendBlock": "Mindestblock: Das Teil läuft damit oder gar nicht",
-          "legendOn": "Belegtes Segment",
-          "legendFree": "Frei belegbar",
-          "legendShared": "Trennt Teile, die sich ein System teilen",
-          "legendHeadroom": "Kein freies Segment: erst woanders Energie abziehen",
           "presets": {
             "title": "Voreinstellungen",
             "name": "Name der Voreinstellung",

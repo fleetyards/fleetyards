@@ -1533,11 +1533,6 @@
           "recoversIn": "Se recupera en",
           "regenLabel": "Regeneración",
           "shotsPerSecond": "%{rate} disparos/s",
-          "legendBlock": "Bloque mínimo: la pieza funciona con esto o no funciona",
-          "legendOn": "Segmento con energía",
-          "legendFree": "Libre para asignar",
-          "legendShared": "Separa piezas que comparten un sistema",
-          "legendHeadroom": "Sin segmento libre: quita energía de otro sistema primero",
           "presets": {
             "title": "Preajustes",
             "name": "Nombre del preajuste",

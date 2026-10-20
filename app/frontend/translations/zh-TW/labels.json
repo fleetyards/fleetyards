@@ -1533,11 +1533,6 @@
           "recoversIn": "恢復於",
           "regenLabel": "回復",
           "shotsPerSecond": "%{rate} 發/秒",
-          "legendBlock": "最小區塊：部件要嘛以此運作，要嘛完全不運作",
-          "legendOn": "已供電段",
-          "legendFree": "可自由分配",
-          "legendShared": "分隔共用同一系統的部件",
-          "legendHeadroom": "沒有空閒段：先從其他系統撤下電力",
           "presets": {
             "title": "預設",
             "name": "預設名稱",

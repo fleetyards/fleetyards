@@ -1533,11 +1533,6 @@
           "recoversIn": "恢复于",
           "regenLabel": "回复",
           "shotsPerSecond": "%{rate} 发/秒",
-          "legendBlock": "最小块：部件要么以此运行，要么完全不运行",
-          "legendOn": "已供能格",
-          "legendFree": "可自由分配",
-          "legendShared": "分隔共用同一系统的部件",
-          "legendHeadroom": "没有空闲段：先从其他系统撤下电力",
           "presets": {
             "title": "预设",
             "name": "预设名称",

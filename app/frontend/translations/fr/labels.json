@@ -1533,11 +1533,6 @@
           "recoversIn": "Récupère en",
           "regenLabel": "Régénération",
           "shotsPerSecond": "%{rate} tirs/s",
-          "legendBlock": "Bloc minimum : la pièce fonctionne avec ceci ou pas du tout",
-          "legendOn": "Segment alimenté",
-          "legendFree": "Libre à attribuer",
-          "legendShared": "Sépare les pièces qui partagent un système",
-          "legendHeadroom": "Aucun segment libre : retirez d'abord l'énergie d'un autre système",
           "presets": {
             "title": "Préréglages",
             "name": "Nom du préréglage",
