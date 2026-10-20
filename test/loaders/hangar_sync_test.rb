@@ -458,7 +458,10 @@ class HangarSyncTest < ActiveSupport::TestCase
       paint = ModelPaint.find_by!(slug: "constellation-phoenix-emerald")
       existing = create(:vehicle, user: @user, model: paint.model, bought_via: :pledge_store, model_paint_ids: [paint.id])
 
-      result = ::HangarSync.new([{"id" => "99999", "type" => "ship", "name" => "Constellation Mk IV Phoenix Emerald"}]).run(@user.id)
+      result = ::HangarSync.new([
+        {"id" => "99999", "type" => "ship", "name" => "Constellation Mk IV Phoenix Emerald"},
+        {"id" => "11111", "type" => "ship", "name" => "Gladius"}
+      ]).run(@user.id)
 
       assert_empty result[:missing_models]
       assert_not existing.reload.wanted
