@@ -28,9 +28,9 @@ export function useDirectUpload() {
       try {
         const upload = new DirectUpload(file, DIRECT_UPLOAD_URL, callbacks);
 
-        upload.create((error: Error | null, blob?: Blob) => {
+        upload.create((error: string | null, blob?: Blob) => {
           if (error) {
-            errorHandler(error);
+            errorHandler(new Error(error));
           } else if (blob) {
             successHandler(blob);
           } else {

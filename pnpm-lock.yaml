@@ -359,8 +359,8 @@ importers:
         specifier: ^6.15.1
         version: 6.15.1
       '@types/rails__activestorage':
-        specifier: ^8.0.1
-        version: 8.0.1
+        specifier: ^8.0.2
+        version: 8.0.2
       '@types/sortablejs':
         specifier: ^1.15.9
         version: 1.15.9
@@ -3375,8 +3375,8 @@ packages:
   '@types/qs@6.15.1':
     resolution: {integrity: sha512-GZHUBZR9hckSUhrxmp1nG6NwdpM9fCunJwyThLW1X3AyHgd9IlHb6VANpQQqDr2o/qQp6McZ3y/IA2rVzKzSbw==}
 
-  '@types/rails__activestorage@8.0.1':
-    resolution: {integrity: sha512-gwUZjLHyllzSEmegCXfkL11PrpZ/3Z+vCXBbYWgIdtX0ChfjtZcKq7HGfXYO5v5UYGLYenjGH3u8U+PpnA3dhg==}
+  '@types/rails__activestorage@8.0.2':
+    resolution: {integrity: sha512-Yoapky5E5lbH/H0cy50iVZvUq2T+sxWeR/CPMzot8As3UKz5rkul5bFFzNWcWZtzDbEM+etbEMbXJDpsnkXWaQ==}
 
   '@types/resolve@1.20.2':
     resolution: {integrity: sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==}
@@ -10435,7 +10435,7 @@ snapshots:
 
   '@types/qs@6.15.1': {}
 
-  '@types/rails__activestorage@8.0.1': {}
+  '@types/rails__activestorage@8.0.2': {}
 
   '@types/resolve@1.20.2': {}
 
