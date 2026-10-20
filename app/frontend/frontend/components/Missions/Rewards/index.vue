@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import MissionItemName from "@/frontend/components/Missions/ItemName/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   type GameMissionReward,
@@ -94,7 +95,11 @@ const currencyAmount = (reward: GameMissionReward) => {
                several sets. -->
           <template v-else-if="reward.kind === 'item'">
             <span class="mission-rewards__value">
-              {{ reward.amount ?? 1 }}&times; {{ reward.entityName }}
+              {{ reward.amount ?? 1 }}&times;
+              <MissionItemName
+                :name="reward.entityName"
+                :catalogue-item="reward.catalogueItem"
+              />
             </span>
             <span
               v-if="!reward.entityName"

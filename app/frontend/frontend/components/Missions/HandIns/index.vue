@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import MissionItemName from "@/frontend/components/Missions/ItemName/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   type GameMissionHandIn,
@@ -62,7 +63,11 @@ const amount = (handIn: GameMissionHandIn) => {
           class="mission-rewards__item"
         >
           <span class="mission-rewards__value">
-            {{ amount(handIn) }} {{ handIn.name }}
+            {{ amount(handIn) }}
+            <MissionItemName
+              :name="handIn.name"
+              :catalogue-item="handIn.catalogueItem"
+            />
           </span>
           <span
             v-if="!handIn.name"
@@ -90,7 +95,11 @@ const amount = (handIn: GameMissionHandIn) => {
           >
             <span v-if="position" class="mission-rewards__note">+</span>
             <span class="mission-rewards__value">
-              {{ amount(handIn) }} {{ handIn.name }}
+              {{ amount(handIn) }}
+              <MissionItemName
+                :name="handIn.name"
+                :catalogue-item="handIn.catalogueItem"
+              />
             </span>
             <span
               v-if="!handIn.name"

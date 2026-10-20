@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
+import { createRouter, createWebHashHistory } from "vue-router";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import {
   type GameMissionHandIn,
+  GameMissionCatalogueItemTypeEnum,
   GameMissionHandInKindEnum,
 } from "@/services/fyApi";
 import Component from "./index.vue";
@@ -14,8 +16,26 @@ const handIn = (attrs: Partial<GameMissionHandIn> = {}): GameMissionHandIn => ({
   ...attrs,
 });
 
+// A catalogue link resolves its target by route name, which the default
+// single-route test router cannot.
+const catalogueRouter = () =>
+  createRouter({
+    history: createWebHashHistory(),
+    routes: [
+      { path: "/", name: "home", component: { template: "<div />" } },
+      {
+        path: "/commodities/:slug",
+        name: "commodity",
+        component: { template: "<div />" },
+      },
+    ],
+  });
+
 const mount = (handIns: GameMissionHandIn[]) =>
-  mountWithDefaults(Component, { props: { handIns } });
+  mountWithDefaults(Component, {
+    props: { handIns },
+    plugins: [catalogueRouter()],
+  });
 
 describe("MissionHandIns", () => {
   it("lists an item by count and a resource in SCU", async () => {
@@ -65,6 +85,35 @@ describe("MissionHandIns", () => {
 
     expect(items).toHaveLength(1);
     expect(items[0].text()).toMatch(/15× Aphorite\s*\+\s*5× Hadanite/);
+  });
+
+  it("opens the catalogue card for a hand-in the catalogue carries", async () => {
+    const wrapper = await mount([
+      handIn({
+        kind: GameMissionHandInKindEnum.RESOURCE,
+        name: "Quartz",
+        amount: 2,
+        catalogueItem: {
+          type: GameMissionCatalogueItemTypeEnum.COMMODITY,
+          id: "5d1e0c3a-0000-4000-8000-0000000000c2",
+          name: "Quartz",
+          slug: "quartz",
+          listed: true,
+        },
+      }),
+      handIn(),
+    ]);
+
+    const popovers = wrapper.findAllComponents({
+      name: "CatalogueItemPopover",
+    });
+
+    expect(popovers).toHaveLength(1);
+    expect(popovers[0].props("item")).toMatchObject({
+      type: "Commodity",
+      slug: "quartz",
+    });
+    expect(wrapper.text()).toContain("14× Yormandi Eye");
   });
 
   it("falls back to the ref for an entry the files do not name", async () => {
