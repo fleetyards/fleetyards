@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type LocationResourceGroup } from "@/services/fyApi";
 
@@ -40,7 +41,15 @@ const kindLabel = (kind: string) => {
             :to="{ name: 'commodity', params: { slug: item.commodity.slug } }"
             class="location-resources__item location-resources__item--link"
           >
-            {{ item.name }}
+            <CatalogueItemPopover
+              :item="{
+                type: 'Commodity',
+                slug: item.commodity.slug,
+                name: item.name,
+              }"
+              :link="false"
+              :focusable="false"
+            />
             <span v-if="item.note" class="location-resources__note">
               {{ item.note }}
             </span>
