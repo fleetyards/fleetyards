@@ -68,6 +68,7 @@ module Shared
             # `<EM4>` emphasis markup.
             description: {type: [:string, :null]},
             rewards: {type: :array, items: ::Shared::V1::Schemas::GameMissionReward},
+            handIns: {type: :array, items: ::Shared::V1::Schemas::GameMissionHandIn},
 
             # The recipes this mission hands out, through the reward pools it
             # names. 786 of the 2,536 contracts hand one out.

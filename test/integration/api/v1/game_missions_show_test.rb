@@ -111,6 +111,18 @@ class Api::V1::GameMissionsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /missions/{slug} lists what the mission asks to be brought, choices included" do
+    create(:game_mission_hand_in, build: @mission.build, name: "Yormandi Eye", amount: 14, position: 0)
+    create(:game_mission_hand_in, :resource, build: @mission.build, name: "Quartz", amount: 2, option: 0, position: 1)
+
+    assert_api_response :get, 200, params: {slug: @mission.slug} do
+      eye, quartz = parsed_body["handIns"]
+
+      assert_equal ["item", "Yormandi Eye", 14, nil], eye.values_at("kind", "name", "amount", "option")
+      assert_equal ["resource", "Quartz", 2, 0], quartz.values_at("kind", "name", "amount", "option")
+    end
+  end
+
   # The run-time spans reach the payload as the export writes them: stripping
   # one here would break the sentence around it, and what to do with it is the
   # renderer's decision.

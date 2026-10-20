@@ -31,6 +31,7 @@ module ScData
           build = apply_build(mission, update_params.except(:sc_ref, :sc_key, :version))
 
           persist_rewards(build, mission_data["rewards"])
+          persist_hand_ins(build, mission_data["hand_ins"])
           persist_locations(mission, mission_data)
         end
 
@@ -215,6 +216,42 @@ module ScData
         stats[GameMissionReward.name][:created] += rows.size
 
         build.association(:rewards).reset
+      end
+
+      # Rewritten wholesale for the reason the rewards are. An entry the parser
+      # could not identify is skipped rather than stored as a blank line.
+      private def persist_hand_ins(build, hand_ins)
+        now = Time.zone.now
+
+        rows = Array.wrap(hand_ins).filter_map.with_index do |hand_in, position|
+          ref = hand_in["entity_class"] || hand_in["resource_ref"]
+
+          next if ref.blank? || hand_in["amount"].nil?
+
+          {
+            id: SecureRandom.uuid,
+            game_mission_build_id: build.id,
+            kind: hand_in["kind"],
+            ref:,
+            name: hand_in["entity_name"] || hand_in["resource_name"],
+            amount: hand_in["amount"],
+            max: hand_in["max"],
+            option: hand_in["option"],
+            position:,
+            created_at: now,
+            updated_at: now
+          }
+        end
+
+        build.hand_ins.delete_all unless build.previously_new_record?
+
+        return if rows.blank?
+
+        GameMissionHandIn.insert_all!(rows)
+
+        stats[GameMissionHandIn.name][:created] += rows.size
+
+        build.association(:hand_ins).reset
       end
     end
   end

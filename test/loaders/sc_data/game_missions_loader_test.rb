@@ -13,6 +13,7 @@ module ScData
         LocationBuild.delete_all
         Location.delete_all
         GameMissionReward.delete_all
+        GameMissionHandIn.delete_all
         GameMissionBuild.delete_all
         GameMission.delete_all
       end
@@ -179,6 +180,18 @@ module ScData
         assert_equal ["MG Scrip"], GameMissionReward.of_kind("item").distinct.pluck(:entity_name)
       end
 
+      test "#all carries what a contract asks to be brought to it" do
+        loader.all
+
+        hand_in = GameMissionHandIn.sole
+
+        assert_equal "resource", hand_in.kind
+        assert_equal "Recycled Material Composite", hand_in.name
+        assert_equal 5, hand_in.amount
+        assert_equal "adagio_resourcegathering_shipsalvage_adagio_rg_shipsalvage_nyx_rank0_rmcsmall",
+          hand_in.build.game_mission.sc_key
+      end
+
       # A second run of the same build rewrites the build in place rather than
       # colliding on the unique index, and the rewards go with it rather than
       # doubling.
@@ -187,11 +200,13 @@ module ScData
 
         missions = GameMission.count
         rewards = GameMissionReward.count
+        hand_ins = GameMissionHandIn.count
 
         loader.all
 
         assert_equal missions, GameMission.count
         assert_equal rewards, GameMissionReward.count
+        assert_equal hand_ins, GameMissionHandIn.count
         assert_equal missions, GameMissionBuild.current(fixture_source).count
       end
 

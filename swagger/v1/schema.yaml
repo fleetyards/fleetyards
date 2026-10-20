@@ -30493,6 +30493,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/GameMissionReward"
+        handIns:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMissionHandIn"
         blueprints:
           type: array
           items:
@@ -30571,6 +30575,42 @@ components:
       additionalProperties: false
       required: []
       title: GameMissionDifficulty
+    GameMissionHandIn:
+      type: object
+      properties:
+        kind:
+          "$ref": "#/components/schemas/GameMissionHandInKindEnum"
+        ref:
+          type: string
+        name:
+          type:
+          - string
+          - 'null'
+        amount:
+          type: integer
+        max:
+          type:
+          - integer
+          - 'null'
+        option:
+          type:
+          - integer
+          - 'null'
+      additionalProperties: false
+      required:
+      - kind
+      - ref
+      - amount
+      title: GameMissionHandIn
+    GameMissionHandInKindEnum:
+      type: string
+      enum:
+      - item
+      - resource
+      x-enumNames:
+      - ITEM
+      - RESOURCE
+      title: GameMissionHandInKindEnum
     GameMissionKindEnum:
       type: string
       enum:
