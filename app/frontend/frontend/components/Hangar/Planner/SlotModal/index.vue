@@ -51,11 +51,6 @@ const initialValues = {
   label: props.slot?.label ?? "",
   description: props.slot?.description ?? "",
   quantity: props.slot?.quantity ?? 1,
-  classificationIn: filters.classificationIn ?? [],
-  focusIn: filters.focusIn ?? [],
-  sizeIn: filters.sizeIn ?? [],
-  manufacturerIn: filters.manufacturerIn ?? [],
-  productionStatusIn: filters.productionStatusIn ?? [],
   pledgePriceGteq: filters.pledgePriceGteq?.toString() ?? "",
   pledgePriceLteq: filters.pledgePriceLteq?.toString() ?? "",
   cargoGteq: filters.cargoGteq?.toString() ?? "",
@@ -64,16 +59,33 @@ const initialValues = {
 
 const { defineField, handleSubmit, values } = useForm({ initialValues });
 
-useModalDirty(useFormDirty(values, initialValues));
+// The list filters stay out of the form: the selects replace their whole
+// value on every pick, the way the ship filters drive them, and the form
+// keeping its own copy of the array left their rows unmarked after a pick.
+const initialLists = {
+  classificationIn: [...(filters.classificationIn ?? [])],
+  focusIn: [...(filters.focusIn ?? [])],
+  sizeIn: [...(filters.sizeIn ?? [])],
+  manufacturerIn: [...(filters.manufacturerIn ?? [])],
+  productionStatusIn: [...(filters.productionStatusIn ?? [])],
+};
+const lists = reactive({
+  classificationIn: [...initialLists.classificationIn],
+  focusIn: [...initialLists.focusIn],
+  sizeIn: [...initialLists.sizeIn],
+  manufacturerIn: [...initialLists.manufacturerIn],
+  productionStatusIn: [...initialLists.productionStatusIn],
+});
+
+const formDirty = useFormDirty(values, initialValues);
+const listsDirty = computed(
+  () => JSON.stringify(lists) !== JSON.stringify(initialLists),
+);
+useModalDirty(computed(() => toValue(formDirty) || listsDirty.value));
 
 const [label, labelProps] = defineField("label");
 const [quantity, quantityProps] = defineField("quantity");
 const [description, descriptionProps] = defineField("description");
-const [classificationIn] = defineField("classificationIn");
-const [focusIn] = defineField("focusIn");
-const [sizeIn] = defineField("sizeIn");
-const [manufacturerIn] = defineField("manufacturerIn");
-const [productionStatusIn] = defineField("productionStatusIn");
 const [pledgePriceGteq, pledgePriceGteqProps] = defineField("pledgePriceGteq");
 const [pledgePriceLteq, pledgePriceLteqProps] = defineField("pledgePriceLteq");
 const [cargoGteq, cargoGteqProps] = defineField("cargoGteq");
@@ -89,11 +101,11 @@ const toList = (value: string | string[] | undefined) =>
 // wherever it is shown and an emptied field really clears its filter.
 const filterValues = (values: typeof initialValues): HangarPlanSlotFilters => {
   const result: HangarPlanSlotFilters = {
-    classificationIn: toList(values.classificationIn),
-    focusIn: toList(values.focusIn),
-    sizeIn: toList(values.sizeIn),
-    manufacturerIn: toList(values.manufacturerIn),
-    productionStatusIn: toList(values.productionStatusIn),
+    classificationIn: toList(lists.classificationIn),
+    focusIn: toList(lists.focusIn),
+    sizeIn: toList(lists.sizeIn),
+    manufacturerIn: toList(lists.manufacturerIn),
+    productionStatusIn: toList(lists.productionStatusIn),
     pledgePriceGteq: toNumber(values.pledgePriceGteq),
     pledgePriceLteq: toNumber(values.pledgePriceLteq),
     cargoGteq: toNumber(values.cargoGteq),
@@ -176,19 +188,19 @@ const onSubmit = handleSubmit(async (values) => {
           {{ t("hangarPlanner.fields.filtersInfo") }}
         </p>
         <ClassificationSelect
-          v-model="classificationIn"
+          v-model="lists.classificationIn"
           name="classificationIn"
           :no-label="false"
         />
-        <FocusSelect v-model="focusIn" name="focusIn" :no-label="false" />
-        <SizeSelect v-model="sizeIn" name="sizeIn" :no-label="false" />
+        <FocusSelect v-model="lists.focusIn" name="focusIn" :no-label="false" />
+        <SizeSelect v-model="lists.sizeIn" name="sizeIn" :no-label="false" />
         <ManufacturerSelect
-          v-model="manufacturerIn"
+          v-model="lists.manufacturerIn"
           name="manufacturerIn"
           :no-label="false"
         />
         <ProductionStatusSelect
-          v-model="productionStatusIn"
+          v-model="lists.productionStatusIn"
           name="productionStatusIn"
           :no-label="false"
         />
