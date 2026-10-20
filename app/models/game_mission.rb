@@ -204,7 +204,8 @@ class GameMission < ApplicationRecord
     refs = prerequisites.flat_map(&:mission_refs).uniq
     return {} if refs.empty?
 
-    ::GameMission.named(::GameMission.served_source).where(sc_ref: refs).index_by(&:sc_ref)
+    ::GameMission.named(::GameMission.served_source).where(sc_ref: refs)
+      .includes(:build, :last_build).index_by(&:sc_ref)
   end
 
   def retired?
