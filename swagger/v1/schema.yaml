@@ -13258,6 +13258,75 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/me/events":
+    get:
+      summary: My agenda
+      tags:
+      - Me
+      operationId: myEvents
+      parameters:
+      - name: from
+        in: query
+        schema:
+          type: string
+          format: date-time
+        required: false
+      - name: to
+        in: query
+        schema:
+          type: string
+          format: date-time
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+        - user:read
+      - OpenId:
+        - user
+        - user:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MyEventsList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/me/fleets":
+    get:
+      summary: My fleets at a glance
+      tags:
+      - Me
+      operationId: myFleetSummaries
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+        - user:read
+      - OpenId:
+        - user
+        - user:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MyFleetSummariesList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/me/hangar/share":
     post:
       summary: Create hangar share link
@@ -13354,6 +13423,33 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/HangarShare"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/me/patch-changes":
+    get:
+      summary: What the current build changed about my ships
+      tags:
+      - Me
+      operationId: myPatchChanges
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MyPatchChanges"
         '401':
           description: unauthorized
           content:
@@ -36865,6 +36961,169 @@ components:
       items:
         "$ref": "#/components/schemas/Model"
       title: ModelsList
+    MyEvent:
+      type: object
+      properties:
+        type:
+          "$ref": "#/components/schemas/MyEventTypeEnum"
+        startsAt:
+          type: string
+          format: date-time
+        fleet:
+          "$ref": "#/components/schemas/FleetRef"
+        fleetEvent:
+          "$ref": "#/components/schemas/FleetEvent"
+        gameEvent:
+          "$ref": "#/components/schemas/GameEvent"
+      additionalProperties: false
+      required:
+      - type
+      - startsAt
+      title: MyEvent
+    MyEventTypeEnum:
+      type: string
+      enum:
+      - fleet_event
+      - game_event
+      x-enumNames:
+      - FLEET_EVENT
+      - GAME_EVENT
+      title: MyEventTypeEnum
+    MyEventsList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/MyEvent"
+      additionalProperties: false
+      required:
+      - items
+      title: MyEventsList
+    MyFleetAnnouncementExcerpt:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        excerpt:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - excerpt
+      - createdAt
+      title: MyFleetAnnouncementExcerpt
+    MyFleetSummariesList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/MyFleetSummary"
+      additionalProperties: false
+      required:
+      - items
+      title: MyFleetSummariesList
+    MyFleetSummary:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        logo:
+          "$ref": "#/components/schemas/MediaFile"
+        roleName:
+          type: string
+        primary:
+          type: boolean
+        memberCount:
+          type: integer
+        onlineCount:
+          type: integer
+        latestAnnouncement:
+          "$ref": "#/components/schemas/MyFleetAnnouncementExcerpt"
+        pendingJoinRequestsCount:
+          type: integer
+        pendingTransfersCount:
+          type: integer
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - primary
+      - memberCount
+      title: MyFleetSummary
+    MyPatchChange:
+      type: object
+      properties:
+        model:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+            slug:
+              type: string
+            manufacturerName:
+              type: string
+            storeImage:
+              "$ref": "#/components/schemas/MediaFile"
+          additionalProperties: false
+          required:
+          - id
+          - name
+          - slug
+        ownedCount:
+          type: integer
+        wanted:
+          type: boolean
+        changeCount:
+          type: integer
+        changes:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelBuildChange"
+      additionalProperties: false
+      required:
+      - model
+      - ownedCount
+      - wanted
+      - changeCount
+      - changes
+      title: MyPatchChange
+    MyPatchChanges:
+      type: object
+      properties:
+        environment:
+          type: string
+        version:
+          type: string
+        fromVersion:
+          type: string
+        totalCount:
+          type: integer
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/MyPatchChange"
+      additionalProperties: false
+      required:
+      - environment
+      - version
+      - totalCount
+      - items
+      title: MyPatchChanges
     MySupportedFleet:
       type: object
       properties:

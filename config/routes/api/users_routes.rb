@@ -27,6 +27,9 @@ namespace :me, defaults: {format: :json} do
   resource :supporter_claim_key, path: "supporter/claim-key", only: %i[show]
   resources :supporter_contributions, path: "supporter/contributions", only: %i[index update]
   resource :supported_fleet, path: "supporter/fleet", only: %i[show update]
+  resources :events, only: %i[index]
+  resources :fleets, only: %i[index]
+  resources :patch_changes, path: "patch-changes", only: %i[index]
   get "calendar/events.ics", to: "calendar_subscriptions#ics",
     as: :calendar_feed, defaults: {format: "ics"}, constraints: {format: "ics"}
 end
