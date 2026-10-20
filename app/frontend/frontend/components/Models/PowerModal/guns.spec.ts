@@ -39,6 +39,12 @@ describe("poweredGuns", () => {
     ]);
   });
 
+  it("keeps a stack's part, for its catalogue card", () => {
+    const [repeater] = poweredGuns([mount([gun()]), mount([gun()])]);
+
+    expect(repeater.component?.name).toBe("Repeater");
+  });
+
   it("leaves out missiles, mining lasers and parts that do no damage", () => {
     const guns = poweredGuns([
       gun("Missile", {
