@@ -1,4 +1,4 @@
-import { resolve } from "path";
+import { resolve } from "node:path";
 import { execFileSync, execFile } from "node:child_process";
 import { defineConfig, type Plugin } from "vite";
 import ViteRails from "vite-plugin-rails";
