@@ -34,6 +34,27 @@ class Api::V1::StatsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /stats/quick-stats counts the fleets and the ships the current build changed" do
+    admin = create(:user)
+    2.times { create(:fleet, admins: [admin]) }
+    create(:fleet, admins: [admin]).update_column(:discarded_at, Time.current)
+    changed = create(:model)
+    hidden = create(:model, hidden: true)
+    [changed, hidden].each do |model|
+      2.times do |index|
+        ModelBuildChange.create!(
+          model:, field: "field_#{index}", old_value: 1, new_value: 2, recorded_at: 1.day.ago,
+          environment: ScData::Source.environment, from_version: "4.9.0", to_version: ScData::Source.version
+        )
+      end
+    end
+
+    assert_api_response :get, 200 do
+      assert_equal 2, parsed_body["fleetsCount"]
+      assert_equal 1, parsed_body["patchChangedShipsCount"]
+    end
+  end
+
   # A loaner's paint is not a choice anyone made, so it counts on neither side.
   test "GET /stats/quick-stats leaves loaners out of the paint share" do
     model = create(:model)

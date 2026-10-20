@@ -39862,6 +39862,10 @@ components:
           type: integer
         paintedVehiclesPercent:
           type: number
+        fleetsCount:
+          type: integer
+        patchChangedShipsCount:
+          type: integer
       additionalProperties: false
       required:
       - shipsCountYear
@@ -39873,6 +39877,8 @@ components:
       - wishlistsCount
       - shipOfTheMonthCount
       - paintedVehiclesPercent
+      - fleetsCount
+      - patchChangedShipsCount
       title: Stats
     StorageContainer:
       type: object
