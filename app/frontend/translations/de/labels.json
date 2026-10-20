@@ -1474,7 +1474,7 @@
         "openPenetrationCheck": "Durchschlagsprüfung",
         "dps": "Burst DPS",
         "dpsSub": "%{count} Waffen",
-        "sustained": "Dauer-DPS",
+        "sustained": "Anhaltend",
         "sustainedSub": "mit Regen & Hitze",
         "alpha": "Alpha",
         "alphaSub": "pro Salve",

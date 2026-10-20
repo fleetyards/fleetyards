@@ -1474,7 +1474,7 @@
         "openPenetrationCheck": "Penetration check",
         "dps": "Burst DPS",
         "dpsSub": "%{count} weapons",
-        "sustained": "Sustained DPS",
+        "sustained": "Sustained",
         "sustainedSub": "with regen & heat",
         "alpha": "Alpha",
         "alphaSub": "per volley",

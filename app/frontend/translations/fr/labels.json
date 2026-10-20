@@ -1474,7 +1474,7 @@
         "openPenetrationCheck": "Test de pénétration",
         "dps": "DPS en rafale",
         "dpsSub": "%{count} armes",
-        "sustained": "DPS soutenu",
+        "sustained": "Soutenu",
         "sustainedSub": "avec régénération et chaleur",
         "alpha": "Alpha",
         "alphaSub": "par salve",

@@ -1474,7 +1474,7 @@
         "openPenetrationCheck": "穿透检测",
         "dps": "爆发 DPS",
         "dpsSub": "%{count} 件武器",
-        "sustained": "持续 DPS",
+        "sustained": "持续",
         "sustainedSub": "计入能量回复与过热",
         "alpha": "齐射伤害",
         "alphaSub": "每次齐射",
