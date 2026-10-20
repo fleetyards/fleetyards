@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.18.0](https://github.com/fleetyards/fleetyards/compare/v9.17.0...v9.18.0) (2026-10-20)
+
+
+### Features
+
+* power planner, loadout power presets and gun capacitors ([#5864](https://github.com/fleetyards/fleetyards/issues/5864)) ([2d499d8](https://github.com/fleetyards/fleetyards/commit/2d499d8d4eb6ab191131a5b1614a67329ef9a096))
+* **ships:** label the sustained combat tile without the DPS unit ([ea4dc5f](https://github.com/fleetyards/fleetyards/commit/ea4dc5f6e38c001a9b2d2c40e5eb128f4b8f0808))
+
+
+### Bug Fixes
+
+* **ships:** keep the base metrics at the right edge on wide screens ([e6ccfd1](https://github.com/fleetyards/fleetyards/commit/e6ccfd15bc77c5d1b6e4109430a072b56ba370e0))
+* **ships:** put the erkul credit under the hardpoint list on wide screens ([665782b](https://github.com/fleetyards/fleetyards/commit/665782be9c1d0adf7e801a6eb53b4cad00e1702e))
+
+
+### Chores
+
+* **vite:** load the config as an ES module ([#5867](https://github.com/fleetyards/fleetyards/issues/5867)) ([8373127](https://github.com/fleetyards/fleetyards/commit/837312726af4b5aa3bb741f8d852cff94a3a2fff))
+
 ## [9.17.0](https://github.com/fleetyards/fleetyards/compare/v9.16.1...v9.17.0) (2026-10-20)
 
 
