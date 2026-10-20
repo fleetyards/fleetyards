@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useTradeRouteFormat } from "@/frontend/composables/useTradeRouteFormat";
 import { type TradeRoute } from "@/services/fyApi";
@@ -78,7 +79,15 @@ const othersLink = computed(() => ({
         class="run-row__name"
         :to="{ name: 'commodity', params: { slug: route.commodity.slug } }"
       >
-        {{ route.commodity.name }}
+        <CatalogueItemPopover
+          :item="{
+            type: 'Commodity',
+            slug: route.commodity.slug,
+            name: route.commodity.name,
+          }"
+          :link="false"
+          :focusable="false"
+        />
       </router-link>
       <router-link
         v-if="route.otherDestinations"
