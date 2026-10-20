@@ -210,7 +210,9 @@
           "one": "%{count} vaisseau ajouté à votre liste de souhaits.",
           "other": "%{count} vaisseaux ajoutés à votre liste de souhaits."
         },
-        "rebased": "Plan mis à jour depuis votre hangar."
+        "rebased": "Plan mis à jour depuis votre hangar.",
+        "sharingOn": "Le partage est activé. Toute personne disposant du lien peut voir ce plan.",
+        "copyFailed": "Le lien n'a pas pu être copié. Copiez-le depuis le champ."
       },
       "filterChips": {
         "priceFrom": "à partir de %{price}",
@@ -218,7 +220,8 @@
         "cargo": "%{cargo} SCU ou plus",
         "onSale": "en vente"
       },
-      "outsideFilters": "hors des filtres de cet emplacement"
+      "outsideFilters": "hors des filtres de cet emplacement",
+      "shareLink": "Lien de partage"
     }
   }
 }

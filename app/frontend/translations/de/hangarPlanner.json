@@ -210,7 +210,9 @@
           "one": "%{count} Schiff zu deiner Wunschliste hinzugefügt.",
           "other": "%{count} Schiffe zu deiner Wunschliste hinzugefügt."
         },
-        "rebased": "Plan aus deinem Hangar aktualisiert."
+        "rebased": "Plan aus deinem Hangar aktualisiert.",
+        "sharingOn": "Teilen ist an. Jeder mit dem Link kann diesen Plan ansehen.",
+        "copyFailed": "Der Link konnte nicht kopiert werden. Kopiere ihn stattdessen aus dem Feld."
       },
       "filterChips": {
         "priceFrom": "ab %{price}",
@@ -218,7 +220,8 @@
         "cargo": "ab %{cargo} SCU",
         "onSale": "im Verkauf"
       },
-      "outsideFilters": "passt nicht zu den Filtern dieses Slots"
+      "outsideFilters": "passt nicht zu den Filtern dieses Slots",
+      "shareLink": "Link zum Teilen"
     }
   }
 }

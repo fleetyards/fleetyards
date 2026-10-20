@@ -22,6 +22,7 @@ import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
 import Loader from "@/shared/components/Loader/index.vue";
+import FormInput from "@/shared/components/base/FormInput/index.vue";
 import SlotCard from "@/frontend/components/Hangar/Planner/SlotCard/index.vue";
 import SummaryPanel from "@/frontend/components/Hangar/Planner/SummaryPanel/index.vue";
 import ComparisonPanel from "@/frontend/components/Hangar/Planner/ComparisonPanel/index.vue";
@@ -125,13 +126,21 @@ const unshare = useUnshareHangarPlan();
 const onShare = async () => {
   try {
     updatePlan(await share.mutateAsync({ id: planId.value }));
-    if (shareUrl.value) {
-      await copyText(shareUrl.value);
-      displaySuccess({ text: t("hangarPlanner.messages.shareCopied") });
-    }
+    displaySuccess({ text: t("hangarPlanner.messages.sharingOn") });
   } catch {
     displayAlert({ text: t("hangarPlanner.messages.saveFailed") });
   }
+};
+
+// Copied straight from the click, with nothing awaited first: a browser only
+// lets a page write the clipboard while the click that asked for it is fresh.
+const onCopyShareLink = () => {
+  if (!shareUrl.value) return;
+
+  copyText(shareUrl.value).then(
+    () => displaySuccess({ text: t("hangarPlanner.messages.shareCopied") }),
+    () => displayAlert({ text: t("hangarPlanner.messages.copyFailed") }),
+  );
 };
 
 const onUnshare = async () => {
@@ -202,16 +211,22 @@ const onDestroy = async () => {
           {{ t("hangarPlanner.editPlan") }}
         </Btn>
         <Btn
+          v-if="!plan.shared"
           :variant="BtnVariantsEnum.BARE"
           data-test="hangar-plan-share"
           @click="onShare"
         >
           <i class="fa-light fa-share-nodes" />
-          {{
-            plan.shared
-              ? t("hangarPlanner.copyShareLink")
-              : t("hangarPlanner.share")
-          }}
+          {{ t("hangarPlanner.share") }}
+        </Btn>
+        <Btn
+          v-else
+          :variant="BtnVariantsEnum.BARE"
+          data-test="hangar-plan-copy-share-link"
+          @click="onCopyShareLink"
+        >
+          <i class="fa-light fa-copy" />
+          {{ t("hangarPlanner.copyShareLink") }}
         </Btn>
         <Btn
           v-if="plan.shared"
@@ -253,6 +268,16 @@ const onDestroy = async () => {
         </Btn>
       </BtnDropdown>
     </PageActions>
+
+    <FormInput
+      v-if="shareUrl"
+      :model-value="shareUrl"
+      name="shareUrl"
+      :label="t('hangarPlanner.shareLink')"
+      readonly
+      standalone
+      data-test="hangar-plan-share-link"
+    />
 
     <DriftAlert v-if="drift?.drifted" :plan-id="plan.id" :drift="drift" />
 

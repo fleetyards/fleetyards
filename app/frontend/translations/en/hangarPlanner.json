@@ -210,7 +210,9 @@
           "one": "%{count} ship added to your wishlist.",
           "other": "%{count} ships added to your wishlist."
         },
-        "rebased": "Plan updated from your hangar."
+        "rebased": "Plan updated from your hangar.",
+        "sharingOn": "Sharing is on. Anyone with the link can view this plan.",
+        "copyFailed": "The link could not be copied. Copy it from the field instead."
       },
       "filterChips": {
         "priceFrom": "from %{price}",
@@ -218,7 +220,8 @@
         "cargo": "%{cargo} SCU or more",
         "onSale": "on sale"
       },
-      "outsideFilters": "outside this slot's filters"
+      "outsideFilters": "outside this slot's filters",
+      "shareLink": "Share link"
     }
   }
 }

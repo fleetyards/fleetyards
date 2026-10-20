@@ -210,7 +210,9 @@
           "one": "%{count} nave aggiunta alla tua wishlist.",
           "other": "%{count} navi aggiunte alla tua wishlist."
         },
-        "rebased": "Piano aggiornato dal tuo hangar."
+        "rebased": "Piano aggiornato dal tuo hangar.",
+        "sharingOn": "La condivisione è attiva. Chiunque abbia il link può vedere questo piano.",
+        "copyFailed": "Impossibile copiare il link. Copialo dal campo."
       },
       "filterChips": {
         "priceFrom": "da %{price}",
@@ -218,7 +220,8 @@
         "cargo": "%{cargo} SCU o più",
         "onSale": "in vendita"
       },
-      "outsideFilters": "fuori dai filtri di questo slot"
+      "outsideFilters": "fuori dai filtri di questo slot",
+      "shareLink": "Link di condivisione"
     }
   }
 }

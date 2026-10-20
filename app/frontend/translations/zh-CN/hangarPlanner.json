@@ -210,7 +210,9 @@
           "one": "已将 %{count} 艘飞船加入你的愿望清单。",
           "other": "已将 %{count} 艘飞船加入你的愿望清单。"
         },
-        "rebased": "方案已根据你的机库更新。"
+        "rebased": "方案已根据你的机库更新。",
+        "sharingOn": "已开启分享。任何拥有链接的人都可以查看此计划。",
+        "copyFailed": "无法复制链接，请从输入框中复制。"
       },
       "filterChips": {
         "priceFrom": "%{price} 起",
@@ -218,7 +220,8 @@
         "cargo": "%{cargo} SCU 以上",
         "onSale": "在售"
       },
-      "outsideFilters": "不符合此槽位的筛选条件"
+      "outsideFilters": "不符合此槽位的筛选条件",
+      "shareLink": "分享链接"
     }
   }
 }
