@@ -476,13 +476,33 @@
   background: var(--color-primary, #428bca);
 }
 
+// The plant card under the trunk, the legend beside it on the right: a
+// middle column the card's width, so the card stays under the wires.
+.power-view__source {
+  display: grid;
+  gap: 16px;
+  justify-items: center;
+
+  @media (min-width: $desktop-breakpoint) {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+
+    .power-view__plant-card {
+      grid-column: 2;
+    }
+
+    .power-view__legend {
+      justify-self: start;
+    }
+  }
+}
+
 .power-view__plant-card {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   gap: 8px 24px;
-  align-self: center;
   max-width: 100%;
   padding: 10px 20px;
   @include power-surface;
@@ -591,23 +611,23 @@
   }
 }
 
-/* Each entry drawn as a piece of the bars it explains, at their width. */
+/* Each entry drawn as a small piece of the bars it explains. */
 .power-view__legend {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 10px 24px;
+  grid-template-columns: repeat(2, auto);
+  gap: 4px 16px;
   margin: 0;
-  padding: 14px 16px;
-  @include power-surface;
+  padding: 0;
   list-style: none;
-  font-size: 12px;
-  line-height: 1.4;
+  font-size: 11px;
+  line-height: 1.3;
   color: var(--color-text-dim, #959595);
 
   li {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
+    max-width: 220px;
   }
 }
 
@@ -616,12 +636,12 @@
   flex: none;
   flex-direction: column-reverse;
   justify-content: center;
-  gap: 3px;
-  width: 48px;
-  min-height: 48px;
+  gap: 2px;
+  width: 22px;
+  min-height: 20px;
 
   .power-view__divider {
-    margin: 0 6px;
+    margin: 0 3px;
   }
 }
 
@@ -629,15 +649,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 9px;
+  height: 6px;
   border-radius: 2px;
   background: rgba($gray-light, 0.18);
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 600;
   color: $text-color;
 
   &--block {
-    height: 24px;
+    height: 16px;
   }
 
   &--on {
