@@ -2750,6 +2750,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_20_120000) do
     t.string "url"
     t.string "kind", default: "link", null: false
     t.boolean "public", default: false, null: false
+    t.jsonb "power_presets", default: [], null: false
     t.index ["vehicle_id", "name"], name: "index_vehicle_loadouts_on_vehicle_id_and_name", unique: true
   end
 

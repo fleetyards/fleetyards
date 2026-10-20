@@ -334,6 +334,12 @@ de:
               crafted_slot_unknown: "dürfen nur Slots nennen, die der Bauplan hat"
               crafted_slot_repeated: "dürfen jeden Slot des Bauplans nur einmal nennen"
               crafted_quality_out_of_range: "brauchen eine Materialqualität von 0 bis 1000"
+            power_presets:
+              too_many: "können höchstens %{count} sein"
+              name_blank: "brauchen jeweils einen Namen"
+              name_taken: "brauchen jeweils einen eigenen Namen"
+              mode_invalid: "müssen jeweils für SCM oder NAV sein"
+              pips_invalid: "müssen jedem Energieanschluss null oder mehr Segmente geben"
         payout_entry:
           attributes:
             entry_type:

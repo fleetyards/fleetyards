@@ -334,6 +334,12 @@ es:
               crafted_slot_unknown: "solo pueden nombrar ranuras que tenga el plano"
               crafted_slot_repeated: "solo pueden nombrar cada ranura del plano una vez"
               crafted_quality_out_of_range: "deben usar una calidad de material de 0 a 1000"
+            power_presets:
+              too_many: "pueden ser como máximo %{count}"
+              name_blank: "necesitan un nombre cada uno"
+              name_taken: "deben tener cada uno un nombre propio"
+              mode_invalid: "deben ser cada uno para SCM o NAV"
+              pips_invalid: "deben dar a cada puerto de energía cero segmentos o más"
         payout_entry:
           attributes:
             entry_type:

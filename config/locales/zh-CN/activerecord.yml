@@ -334,6 +334,12 @@ zh-CN:
               crafted_slot_unknown: "只能指定蓝图中存在的槽位"
               crafted_slot_repeated: "每个蓝图槽位只能指定一次"
               crafted_quality_out_of_range: "材料品质必须在 0 到 1000 之间"
+            power_presets:
+              too_many: "最多只能有 %{count} 个"
+              name_blank: "每个都需要名称"
+              name_taken: "名称不能重复"
+              mode_invalid: "必须为 SCM 或 NAV"
+              pips_invalid: "每个电源端口的段数必须为零或以上"
         payout_entry:
           attributes:
             entry_type:

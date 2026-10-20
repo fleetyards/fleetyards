@@ -13,7 +13,13 @@ module V1
             kind: ::V1::Schemas::Enums::VehicleLoadoutKindEnum,
             url: {type: [:string, :null]},
             public: {type: :boolean},
-            items: {type: :array, items: ::V1::Schemas::Inputs::VehicleLoadoutItemInput}
+            items: {type: :array, items: ::V1::Schemas::Inputs::VehicleLoadoutItemInput},
+            powerPresets: {
+              type: :array,
+              items: ::V1::Schemas::Vehicles::PowerPreset,
+              maxItems: ::VehicleLoadout::MAX_POWER_PRESETS,
+              description: "Replaces every saved preset"
+            }
           },
           additionalProperties: false
         })

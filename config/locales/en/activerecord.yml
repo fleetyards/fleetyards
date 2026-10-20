@@ -335,6 +335,12 @@ en:
               crafted_slot_unknown: "must name slots the recipe has"
               crafted_slot_repeated: "must name each recipe slot only once"
               crafted_quality_out_of_range: "must use a material quality from 0 to 1000"
+            power_presets:
+              too_many: "must be %{count} or fewer"
+              name_blank: "each need a name"
+              name_taken: "must each have a name of their own"
+              mode_invalid: "must each be for SCM or NAV"
+              pips_invalid: "must set each power port to zero pips or more"
         fleet_subscription:
           attributes:
             ended_at:

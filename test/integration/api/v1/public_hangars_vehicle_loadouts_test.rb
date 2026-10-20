@@ -88,6 +88,15 @@ class Api::V1::PublicHangarsVehicleLoadoutsTest < ActionDispatch::IntegrationTes
     end
   end
 
+  test "GET /public/hangars/:username/vehicles/:vehicle_id/loadouts/:id hands visitors the power presets" do
+    @loadout.update!(power_presets: [{name: "Haul", mode: "NAV", overrides: [{port_path: "hardpoint_power_plant", pips: 1}]}])
+
+    assert_api_response :get, 200, api_path: SHOW, path_params: path do
+      assert_equal [{"name" => "Haul", "mode" => "NAV", "overrides" => [{"portPath" => "hardpoint_power_plant", "pips" => 1}]}],
+        parsed_body["powerPresets"]
+    end
+  end
+
   test "GET /public/hangars/:username/vehicles/:vehicle_id/loadouts/:id/slots names what is fitted" do
     assert_api_response :get, 200, api_path: SLOTS, path_params: path do
       assert_equal "Better Plant", parsed_body.sole.dig("fitted", "name")

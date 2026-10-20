@@ -334,6 +334,12 @@ fr:
               crafted_slot_unknown: "ne peuvent nommer que des emplacements que le plan possède"
               crafted_slot_repeated: "ne peuvent nommer chaque emplacement du plan qu'une fois"
               crafted_quality_out_of_range: "doivent utiliser une qualité de matériau de 0 à 1000"
+            power_presets:
+              too_many: "ne peuvent pas dépasser %{count}"
+              name_blank: "ont chacun besoin d'un nom"
+              name_taken: "doivent chacun avoir leur propre nom"
+              mode_invalid: "doivent chacun être pour SCM ou NAV"
+              pips_invalid: "doivent donner à chaque port d'énergie zéro segment ou plus"
         payout_entry:
           attributes:
             entry_type:
