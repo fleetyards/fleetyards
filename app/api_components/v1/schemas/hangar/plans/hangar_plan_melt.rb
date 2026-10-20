@@ -20,7 +20,7 @@ module V1
               vehicleMissing: {type: :boolean}
             },
             additionalProperties: false,
-            required: %w[id vehicleId model estimated vehicleMissing]
+            required: %w[id model estimated vehicleMissing]
           })
         end
       end

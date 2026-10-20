@@ -17,7 +17,8 @@ slots.flat_map(&:candidates).flat_map(&:acquisitions).each do |acquisition|
 end
 melts.each { |melt| melt.association(:hangar_plan).target = hangar_plan }
 
-owned = hangar_plan.live_vehicles.where.not(id: hangar_plan.used_vehicle_ids).group(:model_id).count
+# A shared plan does not show what the owner holds, only what they planned.
+owned = local_assigns[:public_view] ? {} : hangar_plan.live_vehicles.where.not(id: hangar_plan.used_vehicle_ids).group(:model_id).count
 
 json.id hangar_plan.id
 json.name hangar_plan.name
@@ -47,16 +48,20 @@ json.slots slots do |slot|
     json.paint_name candidate.model_paint&.name
     json.model_module_ids candidate.model_module_ids
     json.model_upgrade_ids candidate.model_upgrade_ids
-    json.owned_count owned.fetch(candidate.model_id, 0)
+    json.owned_count owned.fetch(candidate.model_id, 0) unless local_assigns[:public_view]
     json.matches_filters slot.matches?(candidate.model)
-    json.acquisitions candidate.acquisitions, partial: "api/v1/hangar_plans/acquisition", as: :acquisition
+    json.acquisitions candidate.acquisitions do |acquisition|
+      json.partial! "api/v1/hangar_plans/acquisition", acquisition:, public_view: local_assigns[:public_view]
+    end
   end
 end
 
 json.melts melts do |melt|
   json.id melt.id
-  json.vehicle_id melt.vehicle_id
-  json.vehicle_name melt.vehicle&.name unless local_assigns[:public_view]
+  unless local_assigns[:public_view]
+    json.vehicle_id melt.vehicle_id
+    json.vehicle_name melt.vehicle&.name
+  end
   json.model do
     json.partial! "api/v1/hangar_plans/model", model: melt.model
   end

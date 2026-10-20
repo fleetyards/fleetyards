@@ -33403,7 +33403,8 @@ components:
           description: Whether the ship meets every filter its slot sets
         ownedCount:
           type: integer
-          description: Ships of this model in the hangar the plan does not use yet
+          description: Ships of this model in the hangar the plan does not use yet;
+            left out of a shared plan
         acquisitions:
           type: array
           items:
@@ -33416,7 +33417,6 @@ components:
       - modelModuleIds
       - modelUpgradeIds
       - matchesFilters
-      - ownedCount
       - acquisitions
       title: HangarPlanCandidate
     HangarPlanCandidateCreateInput:
@@ -33735,7 +33735,6 @@ components:
       additionalProperties: false
       required:
       - id
-      - vehicleId
       - model
       - estimated
       - vehicleMissing

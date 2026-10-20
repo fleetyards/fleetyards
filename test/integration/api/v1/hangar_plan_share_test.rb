@@ -101,12 +101,20 @@ class Api::V1::HangarPlanShareTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 404, api_path: "/public/hangar-plans/{token}", path_params: {token:}
   end
 
-  test "GET a shared plan by its link, signed out and without the token" do
+  test "GET a shared plan by its link, signed out and without the owner's hangar" do
+    model = create(:model)
+    candidate = create(:hangar_plan_candidate, slot: create(:hangar_plan_slot, hangar_plan: @plan), model:)
+    @plan.acquisitions.create!(candidate:, start_kind: "owned", source_vehicle: create(:vehicle, user: @user, model:))
+    create(:hangar_plan_melt, hangar_plan: @plan, vehicle: create(:vehicle, user: @user))
     @plan.share!
 
     assert_api_response :get, 200, api_path: "/public/hangar-plans/{token}", path_params: {token: @plan.share_token} do
       assert_equal "Showcase", parsed_body["name"]
       assert_not parsed_body.key?("shareToken")
+      candidate = parsed_body.dig("slots", 0, "candidates", 0)
+      assert_not candidate.key?("ownedCount")
+      assert_not candidate.dig("acquisitions", 0).key?("sourceVehicleId")
+      assert_not parsed_body.dig("melts", 0).key?("vehicleId")
     end
   end
 

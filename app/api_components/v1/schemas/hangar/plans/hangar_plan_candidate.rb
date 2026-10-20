@@ -18,11 +18,11 @@ module V1
               modelModuleIds: {type: :array, items: {type: :string, format: :uuid}},
               modelUpgradeIds: {type: :array, items: {type: :string, format: :uuid}},
               matchesFilters: {type: :boolean, description: "Whether the ship meets every filter its slot sets"},
-              ownedCount: {type: :integer, description: "Ships of this model in the hangar the plan does not use yet"},
+              ownedCount: {type: :integer, description: "Ships of this model in the hangar the plan does not use yet; left out of a shared plan"},
               acquisitions: {type: :array, items: ::V1::Schemas::Hangar::Plans::HangarPlanAcquisition}
             },
             additionalProperties: false,
-            required: %w[id position model modelModuleIds modelUpgradeIds matchesFilters ownedCount acquisitions]
+            required: %w[id position model modelModuleIds modelUpgradeIds matchesFilters acquisitions]
           })
         end
       end
