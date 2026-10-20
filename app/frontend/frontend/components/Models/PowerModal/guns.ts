@@ -1,4 +1,5 @@
 import {
+  type Component,
   type ComponentWeapon,
   type ComponentWeaponDamage,
   type Hardpoint,
@@ -18,6 +19,7 @@ export interface PoweredGun {
   key: string;
   name: string;
   count: number;
+  component?: Component;
   weapon: ComponentWeapon;
   // Per gun, at the weapon power the guns are given.
   sustainedDps: number;
@@ -81,6 +83,7 @@ export function poweredGuns(
             key: hardpoint.id,
             name,
             count: 1,
+            component: hardpoint.component,
             weapon,
             sustainedDps: sustainedDps(weapon, powerRatio, modifier),
           });
