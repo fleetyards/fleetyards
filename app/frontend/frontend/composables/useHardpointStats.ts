@@ -1146,9 +1146,15 @@ const hardpointStatsBuilder = (count?: MaybeRefOrGetter<number>) => {
           result.push(
             stat("weapons.pool", charge.shots * stackCount, "integer"),
           );
-          result.push(
-            stat("weapons.maxRegen", charge.regenPerSecond, "integer"),
-          );
+          if (charge.regenPerSecond > 0) {
+            result.push(
+              stat(
+                "weapons.maxRegen",
+                charge.regenPerSecond * stackCount,
+                "integer",
+              ),
+            );
+          }
         }
         if (weapon.regen?.costPerBullet) {
           result.push(

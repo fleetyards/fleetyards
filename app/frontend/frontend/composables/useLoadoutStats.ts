@@ -180,13 +180,13 @@ export function capacitor(
   modifier: WeaponRegenModifier = NO_REGEN_MODIFIER,
 ): Capacitor | undefined {
   const regen = weapon.regen;
-  if (!regen?.maxAmmoLoad || !regen.maxRegenPerSecond) return undefined;
+  if (!regen?.maxAmmoLoad) return undefined;
 
   return {
     shots: Math.round(regen.maxAmmoLoad * powerRatio * modifier.maxAmmoLoad),
     maxShots: Math.round(regen.maxAmmoLoad * modifier.maxAmmoLoad),
     regenPerSecond:
-      regen.maxRegenPerSecond * powerRatio * modifier.maxRegenPerSecond,
+      (regen.maxRegenPerSecond || 0) * powerRatio * modifier.maxRegenPerSecond,
   };
 }
 
@@ -198,7 +198,9 @@ export function dutyCycle(
   const fireRate = weapon.fireRate ? weapon.fireRate / 60 : 0;
   if (fireRate <= 0) return CONTINUOUS;
 
-  const charge = capacitor(weapon, powerRatio, modifier);
+  const charge = weapon.regen?.maxRegenPerSecond
+    ? capacitor(weapon, powerRatio, modifier)
+    : undefined;
   if (charge) {
     const { shots: pool, regenPerSecond } = charge;
     if (pool <= 0 || regenPerSecond <= 0) return SILENT;
