@@ -22,29 +22,16 @@ module Api
         from = parse_date(params[:from]) || Time.current.beginning_of_month
         to = parse_date(params[:to]) || from + 35.days
 
-        one_off = @fleet.fleet_events
-          .where(archived_at: nil, recurring: false)
-          .where("starts_at >= ? AND starts_at <= ?", from, to)
+        calendar = ::Calendars::FleetEntries.new(
+          fleet: @fleet,
+          membership: current_fleet_membership,
+          from:,
+          to:,
+          manager: allowed_to?(:manage?, @fleet, with: FleetEventPolicy)
+        )
 
-        recurring = @fleet.fleet_events
-          .where(archived_at: nil, recurring: true)
-          .where("starts_at <= ?", to)
-
-        # The same events the list shows this reader, and no more.
-        unless allowed_to?(:manage?, @fleet, with: FleetEventPolicy)
-          one_off = narrow_to_squadron_access(one_off)
-          recurring = narrow_to_squadron_access(recurring)
-        end
-
-        entries = one_off.map { |e| [e, nil] }
-        recurring.each do |event|
-          event.occurrences(from: from, to: to).each do |occurrence|
-            entries << [event, occurrence]
-          end
-        end
-
-        @calendar_entries = entries.sort_by { |(event, occurrence)| occurrence || event.starts_at }
-        @viewer_signups = viewer_signups_for(@calendar_entries.map(&:first).uniq)
+        @calendar_entries = calendar.entries
+        @viewer_signups = calendar.viewer_signups
       end
 
       # Past horizon: 90 days. Calendar clients don't need the full history
@@ -102,17 +89,6 @@ module Api
           calendar_name: "#{@fleet.name} — Events",
           organizer_name: @fleet.name).to_ics
         render plain: ics, content_type: "text/calendar; charset=utf-8"
-      end
-
-      # Keyed the way a signup names its occurrence: the event, and the day for
-      # a recurring one. A withdrawn signup is no longer the reader's plan.
-      private def viewer_signups_for(events)
-        return {} if current_fleet_membership.blank? || events.empty?
-
-        FleetEventSignup
-          .where(fleet_membership: current_fleet_membership, fleet_event_id: events.map(&:id))
-          .where.not(status: "withdrawn")
-          .index_by { |signup| [signup.fleet_event_id, signup.occurrence_date] }
       end
 
       private def parse_date(value)
