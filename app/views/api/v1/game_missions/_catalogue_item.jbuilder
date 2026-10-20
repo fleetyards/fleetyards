@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-if entry.catalogue_item.present?
+# A component with no slug has no page to link to or card to fetch.
+if entry.catalogue_item&.slug.present?
   json.catalogue_item do
     json.type entry.catalogue_item_type
     json.id entry.catalogue_item.id
