@@ -315,6 +315,38 @@ es:
         blank: no puede estar en blanco
         record_invalid: Datos incorrectos
       models:
+        hangar_plan:
+          attributes:
+            base:
+              plan_limit_reached: "puede tener como máximo %{count} planes"
+        hangar_plan_slot:
+          attributes:
+            base:
+              slot_limit_reached: "puede tener como máximo %{count} huecos"
+        hangar_plan_acquisition:
+          attributes:
+            base:
+              slot_filled: "este hueco ya tiene una ruta para cada una de sus naves"
+              chain_mismatch: "la ruta tiene que terminar en la nave del hueco"
+              chain_broken: "cada mejora tiene que empezar en la nave en la que terminó el paso anterior"
+              upgrade_taken: "se usa una mejora más veces de las que tienes"
+            source_vehicle_id:
+              melted: "se funde en este plan"
+              taken: "ya se usa en este plan"
+            buyback_pledge_id:
+              taken: "ya se usa en este plan"
+        hangar_plan_upgrade_step:
+          attributes:
+            to_model_id:
+              same_as_from: "tiene que ser otra nave distinta de la de origen"
+            hangar_pledge_item_id:
+              taken: "ya se usa en este plan"
+            buyback_pledge_id:
+              taken: "ya se usa en este plan"
+        hangar_plan_melt:
+          attributes:
+            vehicle_id:
+              taken: "ya se usa en este plan"
         vehicle_loadout:
           attributes:
             base:

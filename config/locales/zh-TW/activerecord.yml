@@ -315,6 +315,38 @@ zh-TW:
         blank: 不能為空
         record_invalid: 無效資料
       models:
+        hangar_plan:
+          attributes:
+            base:
+              plan_limit_reached: "最多只能有 %{count} 個計畫"
+        hangar_plan_slot:
+          attributes:
+            base:
+              slot_limit_reached: "最多只能有 %{count} 個欄位"
+        hangar_plan_acquisition:
+          attributes:
+            base:
+              slot_filled: "此欄位的每艘艦船都已有取得路線"
+              chain_mismatch: "取得路線必須以該欄位的艦船結束"
+              chain_broken: "每次升級都必須從上一步結束的艦船開始"
+              upgrade_taken: "某個升級的使用次數超過了你擁有的數量"
+            source_vehicle_id:
+              melted: "已在此計畫中熔煉"
+              taken: "已在此計畫中使用"
+            buyback_pledge_id:
+              taken: "已在此計畫中使用"
+        hangar_plan_upgrade_step:
+          attributes:
+            to_model_id:
+              same_as_from: "必須與升級前的艦船不同"
+            hangar_pledge_item_id:
+              taken: "已在此計畫中使用"
+            buyback_pledge_id:
+              taken: "已在此計畫中使用"
+        hangar_plan_melt:
+          attributes:
+            vehicle_id:
+              taken: "已在此計畫中使用"
         vehicle_loadout:
           attributes:
             base:

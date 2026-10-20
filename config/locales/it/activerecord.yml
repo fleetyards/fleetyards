@@ -315,6 +315,38 @@ it:
         blank: non può essere vuoto
         record_invalid: Dati non validi
       models:
+        hangar_plan:
+          attributes:
+            base:
+              plan_limit_reached: "può contenere al massimo %{count} piani"
+        hangar_plan_slot:
+          attributes:
+            base:
+              slot_limit_reached: "può contenere al massimo %{count} slot"
+        hangar_plan_acquisition:
+          attributes:
+            base:
+              slot_filled: "questo slot ha già un percorso per ciascuna delle sue navi"
+              chain_mismatch: "il percorso deve terminare sulla nave dello slot"
+              chain_broken: "ogni upgrade deve partire dalla nave su cui è terminato il passo precedente"
+              upgrade_taken: "un upgrade viene usato più volte di quante ne possiedi"
+            source_vehicle_id:
+              melted: "viene fuso in questo piano"
+              taken: "è già usato in questo piano"
+            buyback_pledge_id:
+              taken: "è già usato in questo piano"
+        hangar_plan_upgrade_step:
+          attributes:
+            to_model_id:
+              same_as_from: "deve essere una nave diversa da quella di partenza"
+            hangar_pledge_item_id:
+              taken: "è già usato in questo piano"
+            buyback_pledge_id:
+              taken: "è già usato in questo piano"
+        hangar_plan_melt:
+          attributes:
+            vehicle_id:
+              taken: "è già usato in questo piano"
         vehicle_loadout:
           attributes:
             base:
