@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.19.0](https://github.com/fleetyards/fleetyards/compare/v9.18.1...v9.19.0) (2026-10-20)
+
+
+### Features
+
+* **missions:** hand-ins, and every Wikelo reward named ([#5874](https://github.com/fleetyards/fleetyards/issues/5874)) ([8ce26ef](https://github.com/fleetyards/fleetyards/commit/8ce26ef17bc739f00ffd482990ec59b6f7578506))
+* show catalogue cards on more record names ([#5871](https://github.com/fleetyards/fleetyards/issues/5871)) ([e96eb60](https://github.com/fleetyards/fleetyards/commit/e96eb608390e1a3a144ec4a0ff948114e23164ca))
+
+
+### Bug Fixes
+
+* **hangar:** match the Phoenix Emerald under its Mk IV name ([#5870](https://github.com/fleetyards/fleetyards/issues/5870)) ([19bd5a7](https://github.com/fleetyards/fleetyards/commit/19bd5a71a1543f32bef5cf4b5bb4eeab6a0d25e9))
+
 ## [9.18.1](https://github.com/fleetyards/fleetyards/compare/v9.18.0...v9.18.1) (2026-10-20)
 
 
