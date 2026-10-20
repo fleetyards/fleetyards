@@ -1,6 +1,7 @@
 {
   "name": "fleetyards",
   "private": true,
+  "type": "module",
   "version": "9.17.0",
   "packageManager": "pnpm@12.3.4",
   "scripts": {

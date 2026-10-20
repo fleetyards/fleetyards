@@ -10,7 +10,7 @@ import tailwindcss from "@tailwindcss/vite";
 import { templateCompilerOptions } from "@tresjs/core";
 
 const generateClients = (): Plugin => {
-  const script = resolve(__dirname, "bin/generate-clients");
+  const script = resolve(import.meta.dirname, "bin/generate-clients");
 
   const generate = () => execFileSync(script, { stdio: "inherit" });
 
@@ -143,7 +143,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      "@": resolve(__dirname, "app/frontend"),
+      "@": resolve(import.meta.dirname, "app/frontend"),
     },
   },
   build: {
