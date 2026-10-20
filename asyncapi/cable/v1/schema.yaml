@@ -4926,6 +4926,42 @@ components:
       - guest
       - weight
       additionalProperties: false
+    PowerPreset:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 40
+        scm:
+          type: array
+          items:
+            "$ref": "#/components/schemas/PowerPresetOverride"
+          description: Pips set by hand in SCM; a power port left out follows the
+            automatic balance
+        nav:
+          type: array
+          items:
+            "$ref": "#/components/schemas/PowerPresetOverride"
+          description: Pips set by hand in NAV; a power port left out follows the
+            automatic balance
+      additionalProperties: false
+      required:
+      - name
+      - scm
+      - nav
+    PowerPresetOverride:
+      type: object
+      properties:
+        portPath:
+          type: string
+        pips:
+          type: integer
+          minimum: 0
+          maximum: 100
+      additionalProperties: false
+      required:
+      - portPath
+      - pips
     RefuelBoom:
       type: object
       properties:
@@ -5326,6 +5362,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/VehicleLoadoutItem"
+        powerPresets:
+          type: array
+          items:
+            "$ref": "#/components/schemas/PowerPreset"
         createdAt:
           type: string
           format: date-time
@@ -5340,6 +5380,7 @@ components:
       - public
       - kind
       - items
+      - powerPresets
       - createdAt
       - updatedAt
     VehiclePlaqueStyleEnum:

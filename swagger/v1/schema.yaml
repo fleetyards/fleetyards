@@ -41598,6 +41598,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/VehicleLoadoutItem"
+        powerPresets:
+          type: array
+          items:
+            "$ref": "#/components/schemas/PowerPreset"
         createdAt:
           type: string
           format: date-time
@@ -41612,6 +41616,7 @@ components:
       - public
       - kind
       - items
+      - powerPresets
       - createdAt
       - updatedAt
       title: VehicleLoadoutMinimal
