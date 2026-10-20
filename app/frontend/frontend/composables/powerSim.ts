@@ -105,6 +105,11 @@ export const WEAPON_POOL_PORT = "weaponPool";
 // keyed by WEAPON_POOL_PORT.
 export type PortOverrides = Record<string, number>;
 
+// The pips set by hand in each flight mode: the game keeps one split per mode.
+export type PowerSplits = Record<FlightMode, PortOverrides>;
+
+export const emptySplits = (): PowerSplits => ({ SCM: {}, NAV: {} });
+
 // A ship's engineering buff on its guns: a multi-crew ship fits one that
 // scales the weapon power ratio, every gun's ammo load (the Constellation
 // Mk V's by 9) and its regen. Most ships fit none.

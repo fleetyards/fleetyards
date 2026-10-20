@@ -5,10 +5,15 @@ import type { PowerPreset } from "@/services/fyApi";
 import type { PowerPresets } from "@/frontend/composables/usePowerPresets";
 import Component from "./index.vue";
 
+vi.mock("@/shared/composables/useMobile", async () => {
+  const { ref } = await import("vue");
+  return { useMobile: () => ref(false) };
+});
+
 const dogfight: PowerPreset = {
   name: "Dogfight",
-  mode: "NAV",
-  overrides: [{ portPath: "hardpoint_shield", pips: 2 }],
+  scm: [],
+  nav: [{ portPath: "hardpoint_shield", pips: 2 }],
 };
 
 const presetsFor = (presets: PowerPreset[], editable: boolean) => {
@@ -39,9 +44,14 @@ describe("PowerPlannerModal presets", () => {
     const onChange = vi.fn();
     const wrapper = await mount(context, onChange);
 
-    await wrapper.get('[data-test="power-preset-apply"]').trigger("click");
+    await wrapper
+      .get('[data-test="power-preset-apply"] button')
+      .trigger("click");
 
-    expect(onChange).toHaveBeenLastCalledWith({ hardpoint_shield: 2 }, "NAV");
+    expect(onChange).toHaveBeenLastCalledWith(
+      { SCM: {}, NAV: { hardpoint_shield: 2 } },
+      "SCM",
+    );
     expect(wrapper.find('[data-test="power-preset-delete"]').exists()).toBe(
       false,
     );
@@ -61,12 +71,13 @@ describe("PowerPlannerModal presets", () => {
     const { context, save } = presetsFor([dogfight], true);
     const wrapper = await mount(context);
 
+    await wrapper.get('[data-test="power-preset-add"]').trigger("click");
     await wrapper.get('input[name="powerPresetName"]').setValue("Cruise");
     await wrapper.get('[data-test="power-preset-save"]').trigger("submit");
 
     expect(save).toHaveBeenCalledWith([
       dogfight,
-      { name: "Cruise", mode: "SCM", overrides: [] },
+      { name: "Cruise", scm: [], nav: [] },
     ]);
   });
 
@@ -74,18 +85,19 @@ describe("PowerPlannerModal presets", () => {
     const { context, save } = presetsFor([dogfight], true);
     const wrapper = await mount(context);
 
+    await wrapper.get('[data-test="power-preset-add"]').trigger("click");
     await wrapper.get('input[name="powerPresetName"]').setValue("dogfight");
     await wrapper.get('[data-test="power-preset-save"]').trigger("submit");
 
-    expect(save).toHaveBeenCalledWith([
-      { name: "dogfight", mode: "SCM", overrides: [] },
-    ]);
+    expect(save).toHaveBeenCalledWith([{ name: "dogfight", scm: [], nav: [] }]);
   });
 
   it("deletes a preset", async () => {
     const { context, save } = presetsFor([dogfight], true);
     const wrapper = await mount(context);
 
+    await wrapper.get('[data-test="power-presets-edit"]').trigger("click");
+    await wrapper.get('[data-test="chip-edit"]').trigger("click");
     await wrapper.get('[data-test="power-preset-delete"]').trigger("click");
 
     expect(save).toHaveBeenCalledWith([]);

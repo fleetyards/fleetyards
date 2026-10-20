@@ -25,7 +25,11 @@ import {
   useLoadoutSim,
   type PortOverrides,
 } from "@/frontend/composables/useLoadoutSim";
-import type { FlightMode } from "@/frontend/composables/powerSim";
+import {
+  emptySplits,
+  type FlightMode,
+  type PowerSplits,
+} from "@/frontend/composables/powerSim";
 import { useMetricsMasonry } from "@/frontend/composables/useMetricsMasonry";
 import {
   useEquippedHardpoints,
@@ -201,21 +205,34 @@ const flightController = computed(() =>
   findFlightController(toValue(loadoutHardpoints)),
 );
 
-// User pip choices from the Power Distribution control; empty = auto (default).
-const powerOverrides = ref<PortOverrides>({});
+// User pip choices from the Power Distribution control, one split per flight
+// mode; empty = auto (default). Everything on the page reads the split of the
+// mode the card is in.
+const powerSplits = ref<PowerSplits>(emptySplits());
 const flightMode = ref<FlightMode>("SCM");
+
+const powerOverrides = computed<PortOverrides>({
+  get: () => powerSplits.value[flightMode.value],
+  set: (overrides) => {
+    powerSplits.value = { ...powerSplits.value, [flightMode.value]: overrides };
+  },
+});
 
 // Reset overrides when the ship (or hardpoint source) changes.
 watch([() => props.model.slug, source], () => {
-  powerOverrides.value = {};
+  powerSplits.value = emptySplits();
 });
 
 const regenModifier = computed(() => props.model.metrics?.weaponRegenModifier);
 
+// Combat figures are what the ship does in a fight, so they read the SCM
+// split whatever mode the power card shows.
+const combatOverrides = computed(() => powerSplits.value.SCM);
+
 const combatStats = useLoadoutStats(
   loadoutHardpoints,
   () => props.model.metrics?.weaponPoolSize,
-  powerOverrides,
+  combatOverrides,
   regenModifier,
 );
 
@@ -224,9 +241,8 @@ provide(
   computed(() => props.model.metrics?.weaponPoolSize),
 );
 
-// The user's pip choices, so the Combat card totals recompute from the same
-// distribution the control shows.
-provide("powerOverrides", powerOverrides);
+// The SCM split, so the Combat card totals recompute from the pips set there.
+provide("powerOverrides", combatOverrides);
 
 // The ship's engineering buff, which every gun's capacitor and the weapon
 // power ratio are scaled by.
@@ -334,6 +350,7 @@ useMetricsMasonry(metricsGrid);
         />
         <ModelPowerDistribution
           v-model="powerOverrides"
+          v-model:splits="powerSplits"
           :model-name="model.name"
           :backdrop="backdrop"
           v-model:mode="flightMode"

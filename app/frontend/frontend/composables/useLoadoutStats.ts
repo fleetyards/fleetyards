@@ -8,7 +8,11 @@ import {
   ComponentTurretControlEnum,
 } from "@/services/fyApi";
 import { simulateLoadoutPower, type PortOverrides } from "./useLoadoutSim";
-import { NO_REGEN_MODIFIER, type WeaponRegenModifier } from "./powerSim";
+import {
+  NO_REGEN_MODIFIER,
+  type FlightMode,
+  type WeaponRegenModifier,
+} from "./powerSim";
 import { computeControllerStats } from "@/frontend/composables/useControllerStats";
 
 export type DamageBreakdown = {
@@ -230,13 +234,14 @@ export function computeLoadoutStats(
   weaponPoolSize?: number,
   overrides?: PortOverrides,
   regenModifier: WeaponRegenModifier = NO_REGEN_MODIFIER,
+  mode: FlightMode = "SCM",
 ): LoadoutStats {
   const weaponHardpoints = collectWeaponHardpoints(hardpoints);
   const controllers = computeControllerStats(hardpoints);
   const sim = simulateLoadoutPower(
     hardpoints,
     weaponPoolSize,
-    "SCM",
+    mode,
     overrides,
     undefined,
     regenModifier,
@@ -337,6 +342,7 @@ export function useLoadoutStats(
   weaponPoolSize?: MaybeRefOrGetter<number | undefined>,
   overrides?: MaybeRefOrGetter<PortOverrides | undefined>,
   regenModifier?: MaybeRefOrGetter<WeaponRegenModifier | undefined>,
+  mode?: MaybeRefOrGetter<FlightMode | undefined>,
 ) {
   return computed(() =>
     computeLoadoutStats(
@@ -344,6 +350,7 @@ export function useLoadoutStats(
       toValue(weaponPoolSize),
       toValue(overrides),
       toValue(regenModifier) ?? NO_REGEN_MODIFIER,
+      toValue(mode) ?? "SCM",
     ),
   );
 }

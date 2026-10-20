@@ -1,7 +1,50 @@
+// The surface every card in the planner sits on: the site's panel grey, a
+// little see-through so the ship behind it still shows.
+@mixin power-surface {
+  border: 1px solid rgba($gray-light, 0.28);
+  border-radius: 8px;
+  background: rgba($gray-darker, 0.78);
+  backdrop-filter: blur(6px);
+}
+
 .power-view__actions {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 10px;
+}
+
+// The power card's SCM/NAV switch.
+.power-view__seg {
+  display: inline-flex;
+  border: 1px solid rgba($gray-light, 0.28);
+  border-radius: 4px;
+}
+
+.power-view__seg-btn {
+  @include touch-tap-target;
+  padding: 5px 14px;
+  border: 0;
+  background: transparent;
+  font-family: "Orbitron", tahoma, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-text-dim, #959595);
+  cursor: pointer;
+
+  &:first-child {
+    border-radius: 3px 0 0 3px;
+  }
+
+  &:last-child {
+    border-radius: 0 3px 3px 0;
+  }
+
+  &--active {
+    background: rgba($primary, 0.18);
+    color: $text-color;
+  }
 }
 
 /* The ship behind the planner as the loadout editor shows it: the angled view
@@ -54,111 +97,129 @@
   line-height: 1.6;
 }
 
+// The power card's head, at the planner's width: the switch and the segment
+// budget, the signatures, then the cooling and aim assist rows.
+.power-view__head {
+  gap: 16px;
+}
+
 .power-view__readouts {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px 32px;
-  margin: 0;
+  gap: 14px 48px;
+
+  @media (min-width: $desktop-breakpoint) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.power-view__sigs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px 40px;
+}
+
+.power-view__sig {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  color: $text-color;
+  font-variant-numeric: tabular-nums;
+
+  i {
+    font-size: 16px;
+    color: $primary;
+  }
+
+  small {
+    margin-left: 2px;
+    font-size: 12px;
+    color: var(--color-text-dim, #959595);
+  }
+
+  &--toggle {
+    @include touch-tap-target;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+
+    &:hover,
+    &:hover i {
+      color: $primary;
+    }
+  }
 }
 
 .power-view__readout {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
-  min-width: 0;
-
-  dt {
-    font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
-    font-weight: normal;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--color-text-dim, #959595);
-  }
-
-  dd {
-    margin: 0;
-    font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 20px;
-  }
-
-  &--over dd {
-    color: var(--color-warning, #fa6800);
-  }
-
-  &--over .power-view__track > div {
-    background: var(--color-warning, #fa6800);
-  }
-}
-
-/* The readouts share their rows, so every bar sits on one line whether or not
-   a readout has a line under its figure. */
-.power-view__readouts > .power-view__readout {
-  display: grid;
-  grid-row: span 4;
-  grid-template-rows: subgrid;
-  row-gap: 6px;
   align-items: center;
+  gap: 14px;
 
-  > dt {
-    grid-row: 1;
+  // Under-cooled: heat load exceeds the coolers' output.
+  &--over .power-view__track > div {
+    background: $danger;
   }
 
-  > dd:first-of-type {
-    grid-row: 2;
-  }
-
-  > .power-view__plants {
-    grid-row: 3;
-  }
-
-  > .power-view__track {
-    grid-row: 4;
+  &--over .power-view__readout-value {
+    color: $danger;
   }
 }
 
-.power-view__readout .power-view__plants {
-  font-family: "Open Sans", sans-serif;
+// In a gun card the label sits above its track, which keeps the full width.
+.power-view__readout--gun {
+  flex-wrap: wrap;
+  gap: 6px 10px;
+
+  .power-view__readout-label {
+    flex: 1 0 auto;
+    min-width: 0;
+    font-size: 11px;
+  }
+
+  .power-view__readout-value {
+    min-width: 0;
+  }
+
+  .power-view__track {
+    flex: 1 0 100%;
+    order: 3;
+  }
+}
+
+.power-view__readout-label {
+  min-width: 110px;
+  font-family: "Orbitron", tahoma, sans-serif;
   font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: var(--color-text-dim, #959595);
 }
 
+.power-view__readout-value {
+  min-width: 80px;
+  font-size: 14px;
+  text-align: right;
+  color: $text-color;
+  font-variant-numeric: tabular-nums;
+}
+
 .power-view__track {
-  height: 6px;
+  flex: 1;
+  height: 8px;
   overflow: hidden;
-  border-radius: 3px;
-  background: rgb(122 130 136 / 0.16);
+  border: 1px solid rgba($gray-light, 0.28);
+  border-radius: 999px;
+  background: $gray-black;
 
   > div {
     max-width: 100%;
     height: 100%;
-    border-radius: 3px;
-    background: var(--color-primary, #428bca);
-  }
-}
-
-.power-view__signatures {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 8px 18px;
-}
-
-.power-view__axis {
-  min-height: 44px;
-  padding: 0 10px;
-  border: 1px solid rgb(122 130 136 / 0.28);
-  border-radius: 6px;
-  background: transparent;
-  font: inherit;
-  color: inherit;
-  cursor: pointer;
-
-  small {
-    margin-left: 4px;
-    font-family: "Open Sans", sans-serif;
-    font-size: 11px;
-    color: var(--color-text-dim, #959595);
+    border-radius: 999px;
+    background: $primary;
+    transition: width 0.4s ease;
   }
 }
 
@@ -183,14 +244,25 @@
   min-width: 0;
   margin-bottom: 12px;
   padding: 14px 12px 12px;
-  border: 1px solid rgb(122 130 136 / 0.16);
-  border-radius: 10px;
-  background: rgb(0 0 0 / 0.18);
-  backdrop-filter: blur(8px) brightness(0.45);
   text-align: center;
+  @include power-surface;
 
+  // A column with no pips reads as off, as on the power card.
   &--off {
-    opacity: 0.7;
+    .power-view__count {
+      color: $gray;
+      opacity: 0.5;
+    }
+
+    .power-view__icon {
+      color: $gray;
+      opacity: 0.4;
+    }
+
+    .power-view__family,
+    .power-view__effect {
+      opacity: 0.6;
+    }
   }
 
   @media (min-width: $desktop-breakpoint) {
@@ -207,7 +279,8 @@
 
 .power-view__count {
   font-size: 12px;
-  color: var(--color-text-dim, #959595);
+  color: $text-color;
+  font-variant-numeric: tabular-nums;
 }
 
 /* A segment's height follows the screen's: what is left once the readouts,
@@ -223,49 +296,71 @@
   display: flex;
   flex-direction: column-reverse;
   align-items: stretch;
-  gap: 8px;
+  gap: 4px;
 }
 
 .power-view__member {
   display: flex;
   flex-direction: column-reverse;
-  gap: 4px;
+  gap: 3px;
 }
 
+// The power card's pips: lit up to the allocation, the top one solid, a
+// headroom pip outlined; weapons in the weapon colour.
 .power-view__pip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   height: calc(
-    var(--pip-unit) * var(--pip-span, 1) + (var(--pip-span, 1) - 1) * 4px
+    var(--pip-unit) * var(--pip-span, 1) + (var(--pip-span, 1) - 1) * 3px
   );
   padding: 0;
-  border: 1px solid rgb(122 130 136 / 0.35);
-  border-radius: 3px;
-  background: transparent;
+  border: 0;
+  border-radius: 2px;
+  background: rgba($gray-light, 0.18);
   font-size: 11px;
-  font-weight: 700;
-  color: #0b0d10;
+  font-weight: 600;
+  color: $text-color;
+  font-variant-numeric: tabular-nums;
   cursor: pointer;
+  transition: background 0.1s ease;
 
   &:hover:not(:disabled) {
-    border-color: var(--color-primary, #428bca);
+    background: rgba($gray-light, 0.32);
   }
 
-  &--on {
-    border-color: var(--color-primary, #428bca);
-    background: var(--color-primary, #428bca);
+  &--on,
+  &--on:hover:not(:disabled) {
+    background: rgba($primary, 0.4);
+  }
+
+  &--top,
+  &--top:hover:not(:disabled) {
+    background: $primary;
   }
 
   &--headroom {
-    border-style: dashed;
-    cursor: default;
+    border: 1px solid rgba($gray-light, 0.16);
+    background: transparent;
+    cursor: not-allowed;
+  }
+}
+
+.power-view__column--weapon {
+  .power-view__pip--on {
+    background: rgba(#fa6800, 0.45);
+  }
+
+  .power-view__pip--top {
+    background: #fa6800;
   }
 }
 
 .power-view__divider {
-  height: 2px;
-  margin: 0 8px;
-  border-radius: 1px;
-  background: rgb(122 130 136 / 0.35);
+  height: 0;
+  margin: 1px 0;
+  border-top: 1px dashed rgba($gray-light, 0.35);
 }
 
 .power-view__family {
@@ -276,8 +371,9 @@
   min-width: 0;
   font-family: "Orbitron", tahoma, sans-serif;
   font-size: 11px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
+  color: var(--color-text-dim, #959595);
 
   span {
     overflow: hidden;
@@ -287,9 +383,10 @@
 }
 
 .power-view__icon {
+  --hardpoint-category-icon-size: 17px;
+
   flex: none;
-  width: 16px;
-  height: 16px;
+  color: $primary;
 }
 
 .power-view__parts {
@@ -369,7 +466,7 @@
   }
 
   &--off::before {
-    background: rgb(122 130 136 / 0.35);
+    background: rgba($gray-light, 0.35);
   }
 }
 
@@ -388,10 +485,7 @@
   align-self: center;
   max-width: 100%;
   padding: 10px 20px;
-  border: 1px solid rgb(122 130 136 / 0.28);
-  border-radius: 12px;
-  background: rgb(0 0 0 / 0.18);
-  backdrop-filter: blur(8px) brightness(0.45);
+  @include power-surface;
 }
 
 .power-view__plant-list {
@@ -451,10 +545,7 @@
   flex-direction: column;
   gap: 12px;
   padding: 14px 16px;
-  border: 1px solid rgb(122 130 136 / 0.16);
-  border-radius: 10px;
-  background: rgb(0 0 0 / 0.18);
-  backdrop-filter: blur(8px) brightness(0.45);
+  @include power-surface;
 }
 
 .power-view__gun-head {
@@ -507,9 +598,7 @@
   gap: 10px 24px;
   margin: 0;
   padding: 14px 16px;
-  border: 1px solid rgb(122 130 136 / 0.16);
-  border-radius: 10px;
-  backdrop-filter: blur(8px) brightness(0.45);
+  @include power-surface;
   list-style: none;
   font-size: 12px;
   line-height: 1.4;
@@ -527,7 +616,7 @@
   flex: none;
   flex-direction: column-reverse;
   justify-content: center;
-  gap: 4px;
+  gap: 3px;
   width: 48px;
   min-height: 48px;
 
@@ -540,101 +629,83 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 12px;
-  border: 1px solid rgb(122 130 136 / 0.35);
-  border-radius: 3px;
+  height: 9px;
+  border-radius: 2px;
+  background: rgba($gray-light, 0.18);
   font-size: 10px;
-  font-weight: 700;
-  color: #0b0d10;
+  font-weight: 600;
+  color: $text-color;
 
   &--block {
-    height: 28px;
+    height: 24px;
   }
 
-  &--block,
   &--on {
-    border-color: var(--color-primary, #428bca);
-    background: var(--color-primary, #428bca);
+    background: rgba($primary, 0.4);
+  }
+
+  &--block {
+    background: $primary;
   }
 
   &--headroom {
-    border-style: dashed;
+    border: 1px solid rgba($gray-light, 0.16);
+    background: transparent;
   }
 }
 
+// As tall as the name field, with the row centred in it, so opening the field
+// moves neither the chips nor the bars below.
 .power-view__presets {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 10px;
+  min-height: 43px;
 }
 
-.power-view__preset-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
+// Revealed with the row, as the hangar's group chips reveal theirs.
+@media (hover: hover) {
+  .power-view__presets-edit {
+    opacity: 0;
+    transition: opacity 150ms ease-in-out;
+  }
 
-.power-view__preset {
-  display: flex;
-  align-items: center;
-  border: 1px solid rgb(122 130 136 / 0.28);
-  border-radius: 8px;
-  backdrop-filter: blur(8px) brightness(0.45);
-
-  &--applied {
-    border-color: var(--color-primary, #428bca);
+  .power-view__presets:hover,
+  .power-view__presets:has(:focus-visible),
+  .power-view__presets--editing {
+    .power-view__presets-edit {
+      opacity: 1;
+    }
   }
 }
 
-.power-view__preset-apply,
-.power-view__preset-action {
-  min-height: 36px;
-  border: 0;
-  background: transparent;
-  color: inherit;
-  cursor: pointer;
-
-  &:disabled {
-    cursor: default;
-    opacity: 0.5;
-  }
-}
-
-.power-view__preset-apply {
-  padding: 0 12px;
-  font-weight: 600;
-
-  small {
-    margin-left: 6px;
-    font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 10px;
-    font-weight: normal;
-    letter-spacing: 0.12em;
-    color: var(--color-text-dim, #959595);
-  }
-}
-
-.power-view__preset-action {
-  width: 32px;
-  font-size: 12px;
-  color: var(--color-muted, #959595);
-
-  &:hover:not(:disabled) {
-    color: var(--color-text, #fff);
-  }
-}
-
+// Inline in the chip row, where the plus was: one line, input first.
 .power-view__preset-form {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+}
 
-  :deep(.base-input) {
-    width: min(100%, 260px);
-    margin: 0;
-  }
+.power-view__preset-input {
+  width: 220px;
+  margin: 0;
+}
+
+// The row's dropdown on a phone, laid out as the group labels' menu.
+.power-view__presets-menu {
+  display: contents;
+}
+
+.power-view__presets-menu-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 8px 6px 16px;
+}
+
+.power-view__presets-menu-name {
+  flex: 1;
+  min-width: 0;
 }

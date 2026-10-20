@@ -1,8 +1,8 @@
 import type { ComputedRef, InjectionKey, MaybeRefOrGetter } from "vue";
-import type { PowerPreset } from "@/services/fyApi";
+import type { PowerPreset, PowerPresetOverride } from "@/services/fyApi";
 import type {
-  FlightMode,
   PortOverrides,
+  PowerSplits,
 } from "@/frontend/composables/powerSim";
 
 export interface PowerPresets {
@@ -33,35 +33,39 @@ export const providePowerPresets = (options: {
 // Only a saved loadout has presets; on a ship's own page there are none.
 export const injectPowerPresets = () => inject(POWER_PRESETS, undefined);
 
-export const presetOverrides = (preset: PowerPreset): PortOverrides =>
+const toOverrides = (list: PowerPresetOverride[]): PortOverrides =>
   Object.fromEntries(
-    preset.overrides.map((override) => [override.portPath, override.pips]),
+    list.map((override) => [override.portPath, override.pips]),
   );
 
-export const presetFrom = (
-  name: string,
-  mode: FlightMode,
-  overrides: PortOverrides,
-): PowerPreset => ({
-  name,
-  mode,
-  overrides: Object.entries(overrides)
+const toList = (overrides: PortOverrides): PowerPresetOverride[] =>
+  Object.entries(overrides)
     .sort(([a], [b]) => a.localeCompare(b))
-    .map(([portPath, pips]) => ({ portPath, pips })),
+    .map(([portPath, pips]) => ({ portPath, pips }));
+
+export const presetSplits = (preset: PowerPreset): PowerSplits => ({
+  SCM: toOverrides(preset.scm),
+  NAV: toOverrides(preset.nav),
 });
 
-export const presetMatches = (
-  preset: PowerPreset,
-  mode: FlightMode,
-  overrides: PortOverrides,
-) => {
-  if (preset.mode !== mode) return false;
+export const presetFrom = (name: string, splits: PowerSplits): PowerPreset => ({
+  name,
+  scm: toList(splits.SCM),
+  nav: toList(splits.NAV),
+});
 
-  const own = presetOverrides(preset);
-  const keys = new Set([...Object.keys(own), ...Object.keys(overrides)]);
-
-  return [...keys].every((key) => own[key] === overrides[key]);
+const sameOverrides = (a: PortOverrides, b: PortOverrides) => {
+  const keys = new Set([...Object.keys(a), ...Object.keys(b)]);
+  return [...keys].every((key) => a[key] === b[key]);
 };
 
-// As many as the API keeps.
-export const MAX_POWER_PRESETS = 20;
+export const presetMatches = (preset: PowerPreset, splits: PowerSplits) => {
+  const own = presetSplits(preset);
+  return (
+    sameOverrides(own.SCM, splits.SCM) && sameOverrides(own.NAV, splits.NAV)
+  );
+};
+
+// As many as the API keeps, and as long a name.
+export const MAX_POWER_PRESETS = 5;
+export const MAX_POWER_PRESET_NAME = 40;

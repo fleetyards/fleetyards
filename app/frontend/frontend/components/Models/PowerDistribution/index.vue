@@ -19,8 +19,10 @@ import {
   type PowerColumnMember,
 } from "@/frontend/composables/useLoadoutSim";
 import {
+  emptySplits,
   type FlightMode,
   type PowerFamily,
+  type PowerSplits,
   type WeaponRegenModifier,
 } from "@/frontend/composables/powerSim";
 
@@ -32,6 +34,8 @@ type Props = {
   regenModifier?: WeaponRegenModifier;
   crossSection?: { x?: number; y?: number; z?: number };
   modelValue?: PortOverrides;
+  // Both modes' splits, for the planner, which plans SCM and NAV together.
+  splits?: PowerSplits;
   mode?: FlightMode;
   loading?: boolean;
 };
@@ -44,12 +48,14 @@ const props = withDefaults(defineProps<Props>(), {
   regenModifier: undefined,
   crossSection: undefined,
   modelValue: () => ({}),
+  splits: undefined,
   mode: "SCM",
   loading: false,
 });
 
 const emit = defineEmits<{
   "update:modelValue": [value: PortOverrides];
+  "update:splits": [value: PowerSplits];
   "update:mode": [value: FlightMode];
 }>();
 
@@ -211,10 +217,13 @@ const openPlanner = () =>
       weaponPoolSize: props.weaponPoolSize,
       regenModifier: props.regenModifier,
       crossSection: props.crossSection,
-      overrides: props.modelValue,
+      splits: props.splits ?? {
+        ...emptySplits(),
+        [props.mode]: props.modelValue,
+      },
       mode: props.mode,
-      onChange: (overrides: PortOverrides, mode: FlightMode) => {
-        emit("update:modelValue", overrides);
+      onChange: (splits: PowerSplits, mode: FlightMode) => {
+        emit("update:splits", splits);
         emit("update:mode", mode);
       },
     },
