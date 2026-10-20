@@ -41,9 +41,27 @@
     }
   }
 
-  .ship-hero :deep(.holo-viewer--inline) {
+  // A ship without views keeps the two columns it has below this width rather
+  // than an empty third.
+  .ship-hero:has(> .ship-hero__views:empty) {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+
+    > .ship-hero__views {
+      display: none;
+    }
+  }
+
+  // The picture that stands in for the holo while the large viewer is open
+  // takes its height, so the figures below it stay where they were.
+  .ship-hero :deep(.holo-viewer--inline),
+  .ship-hero .side-image {
     height: 400px;
     max-height: none;
+  }
+
+  .ship-hero .side-image :deep(.lazy-image__img) {
+    height: 100%;
+    object-fit: cover;
   }
 }
 

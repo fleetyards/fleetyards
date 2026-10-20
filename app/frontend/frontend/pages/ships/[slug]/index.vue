@@ -637,7 +637,7 @@ const adiMap = computed(() => {
         </div>
         <!-- Beside the hero once there is room for a third column, under it
              before. -->
-        <div class="col-12">
+        <div class="col-12 ship-hero__views">
           <FleetchartImages
             :model="model"
             :state="activeState"
