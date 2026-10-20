@@ -2369,6 +2369,7 @@
         "hiddenByUser": "Oculta de tu hangar",
         "public": "Visible públicamente",
         "fullPublic": "Visible públicamente incluyendo nombre",
+        "private": "No visible públicamente",
         "publicShort": "Público",
         "saleNotifyOn": "Notificaciones de venta activadas",
         "saleNotifyOff": "Notificaciones de venta desactivadas",

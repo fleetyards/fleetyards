@@ -2369,6 +2369,7 @@
         "hiddenByUser": "已從機庫中隱藏",
         "public": "公開可見",
         "fullPublic": "公開可見（包括名稱）",
+        "private": "不公開可見",
         "publicShort": "公開",
         "saleNotifyOn": "銷售通知已開啟",
         "saleNotifyOff": "銷售通知已關閉",

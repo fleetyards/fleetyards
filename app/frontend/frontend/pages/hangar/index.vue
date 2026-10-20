@@ -793,6 +793,7 @@ const { activeFilters } = useShipFilterSummary(() =>
         :editable="true"
         :sortable="canSort"
         :selection-controls="false"
+        :highlighted-group-id="highlightedGroup"
         @sort="onSort"
         @move="moveBy"
         @open-guide="openGuide"

@@ -2,7 +2,11 @@ import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createRouter, createWebHashHistory } from "vue-router";
 import Component from "./index.vue";
-import { type Vehicle, BoughtViaEnum } from "@/services/fyApi";
+import {
+  type HangarGroup,
+  type Vehicle,
+  BoughtViaEnum,
+} from "@/services/fyApi";
 
 const vehicleOverviewEnabled = ref(false);
 
@@ -65,16 +69,31 @@ const router = createRouter({
   ],
 });
 
-const mount = async (record: Vehicle, editable = true) => {
+const group = (id: string) =>
+  ({
+    id,
+    name: `Group ${id}`,
+    slug: `group-${id}`,
+    color: "#ff0000",
+  }) as HangarGroup;
+
+const mount = async (
+  record: Vehicle,
+  editable = true,
+  props: Record<string, unknown> = {},
+) => {
   await router.push({ name: "hangar" });
   await router.isReady();
 
   return mountWithDefaults<typeof Component>(Component, {
     initialState: { session: { currentUser: { username: "me" } } },
-    props: { vehicles: [record], editable },
+    props: { vehicles: [record], editable, ...props },
     plugins: [router],
   });
 };
+
+const rowClasses = (wrapper: Awaited<ReturnType<typeof mount>>) =>
+  wrapper.get("tr#vehicle-1").classes();
 
 const nameHref = (wrapper: Awaited<ReturnType<typeof mount>>) =>
   wrapper.find('[data-test="vehicle-table-name"]').attributes("href");
@@ -119,5 +138,63 @@ describe("VehiclesTable", () => {
     expect(
       wrapper.get('[data-test="vehicle-table-name"]').attributes("data-tour"),
     ).toBeUndefined();
+  });
+
+  it("marks the flagship beside its name and tones its row", async () => {
+    const wrapper = await mount(vehicle({ flagship: true }));
+
+    expect(wrapper.find('[data-test="vehicle-table-flagship"]').exists()).toBe(
+      true,
+    );
+    expect(rowClasses(wrapper)).toContain("vehicles-table-row--flagship");
+  });
+
+  it("tones the rows in the hovered group over the flagship", async () => {
+    const wrapper = await mount(
+      vehicle({ flagship: true, hangarGroupIds: ["group-1"] }),
+      true,
+      { highlightedGroupId: "group-1" },
+    );
+
+    expect(rowClasses(wrapper)).toContain("vehicles-table-row--highlight");
+    expect(rowClasses(wrapper)).not.toContain("vehicles-table-row--flagship");
+  });
+
+  it("leaves rows outside the hovered group untoned", async () => {
+    const wrapper = await mount(vehicle(), true, {
+      highlightedGroupId: "group-1",
+    });
+
+    expect(rowClasses(wrapper)).not.toContain("vehicles-table-row--highlight");
+  });
+
+  it("shows a private ship's visibility rather than an empty cell", async () => {
+    const wrapper = await mount(vehicle({ public: false }));
+
+    expect(
+      wrapper.find('[data-test="vehicle-state-visibility"] .fa-lock').exists(),
+    ).toBe(true);
+  });
+
+  it("folds the groups past the fourth into a count", async () => {
+    const wrapper = await mount(
+      vehicle({ hangarGroups: ["1", "2", "3", "4", "5", "6"].map(group) }),
+    );
+
+    expect(wrapper.findAll('[data-test="hangar-group"]')).toHaveLength(3);
+    expect(wrapper.get('[data-test="hangar-group-overflow"]').text()).toBe(
+      "+3",
+    );
+  });
+
+  it("shows four groups without a count", async () => {
+    const wrapper = await mount(
+      vehicle({ hangarGroups: ["1", "2", "3", "4"].map(group) }),
+    );
+
+    expect(wrapper.findAll('[data-test="hangar-group"]')).toHaveLength(4);
+    expect(wrapper.find('[data-test="hangar-group-overflow"]').exists()).toBe(
+      false,
+    );
   });
 });
