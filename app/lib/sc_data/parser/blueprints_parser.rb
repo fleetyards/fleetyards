@@ -15,8 +15,6 @@ module ScData
       RESOURCE_TYPES_PATH = "resourcetypedatabase/resourcetypedatabase.records.xml"
       RESOURCE_TYPE = "ResourceType"
 
-      COMMODITY_PREFIX = "items_commodities_"
-
       # Only the trees a crafted output has ever been found in. All 1603 outputs
       # that resolve in 4.10.1 live under one of them; scanning the whole of
       # `entities` to catch a hypothetical fifth would read 26,871 files for 15
@@ -320,12 +318,6 @@ module ScData
         rescue Errno::ENOENT
           {}
         end
-      end
-
-      private def commodity_key(display_name)
-        key = display_name.to_s.delete("@").sub(/,P\z/, "").downcase
-
-        key if key.start_with?(COMMODITY_PREFIX)
       end
 
       private def entity_paths

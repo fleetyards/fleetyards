@@ -558,12 +558,6 @@ module ScData
         commodity_key(purchasable["displayName"]) if purchasable.is_a?(Hash)
       end
 
-      private def commodity_key(display_name)
-        key = display_name.to_s.delete("@").sub(/,P\z/, "").downcase
-
-        key if key.start_with?(::ScData::Parser::BlueprintsParser::COMMODITY_PREFIX)
-      end
-
       # One reward drawn from several weighted sets, each of which awards
       # everything in it. Flattened to one entry per entity class carrying its
       # set's weight, because a set is not a thing the catalogue can show.

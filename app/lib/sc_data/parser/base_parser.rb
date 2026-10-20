@@ -3,6 +3,7 @@ module ScData
     class BaseParser
       attr_accessor :base_path, :export_path, :import_path, :definition_path, :translations
 
+      COMMODITY_PREFIX = "items_commodities_"
       FOUNDRY_PATH = "Data/Libs/Foundry/Records"
 
       # In precedence order: a vector is served as it is and drawn at whatever
@@ -306,6 +307,14 @@ module ScData
         return if value.blank? || value == "@LOC_EMPTY"
 
         value.gsub('\\n', "\n").strip
+      end
+
+      # The key a commodity row carries, read off the display name an entity or
+      # a resource states -- nil for anything that is not a commodity.
+      private def commodity_key(display_name)
+        key = display_name.to_s.delete("@").sub(/,P\z/, "").downcase
+
+        key if key.start_with?(COMMODITY_PREFIX)
       end
 
       # What a record's display name resolves to. `localize` answers the index
