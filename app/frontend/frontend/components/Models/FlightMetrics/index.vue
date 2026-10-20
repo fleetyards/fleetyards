@@ -318,10 +318,6 @@ const rotations = computed(() =>
         </div>
       </div>
     </template>
-
-    <div v-if="hasSpeeds" class="metrics-card__footer">
-      <span class="metrics-card__hint">{{ t("labels.flight.hint") }}</span>
-    </div>
   </MetricsCard>
 </template>
 

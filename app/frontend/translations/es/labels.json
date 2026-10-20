@@ -1387,8 +1387,7 @@
         "fuelFullMain": "Empuje máximo, principales",
         "fuelFullAll": "Empuje máximo, todos los propulsores",
         "durationHoursMinutes": "%{hours} h %{minutes} min",
-        "durationMinutes": "%{minutes} min",
-        "hint": "El manejo con boost escala con los pips del motor; todo queda a cero cuando el motor no tiene energía."
+        "durationMinutes": "%{minutes} min"
       },
       "base": {
         "price": "Precio",
@@ -1423,8 +1422,7 @@
         "title": "Carga",
         "holdsSub": "en %{count} bodegas",
         "maxContainerSub": "la caja más grande que cabe",
-        "containers": "Capacidad de contenedores",
-        "hint": "Número máximo de contenedores de cada tamaño que caben en las grillas de carga; la barra muestra qué parte de la capacidad total ocupan."
+        "containers": "Capacidad de contenedores"
       },
       "weaponRacks": {
         "slots": "Ranuras",
@@ -1445,29 +1443,24 @@
           "multitool": "Multiherramienta",
           "medical_injection": "Medpens",
           "grenade": "Granadas"
-        },
-        "hint": "Ranuras de todos los armeros a bordo, por lo que admiten y su tamaño."
+        }
       },
       "storageContainers": {
         "total": "Capacidad total",
         "count": "Contenedores",
-        "perContainer": "cada uno",
-        "hintOre": "Guarda mineral extraído, no carga.",
-        "hintSalvage": "Guarda material recuperado, no carga."
+        "perContainer": "cada uno"
       },
       "fuelTanks": {
         "capacitySub": "en %{count} pods",
         "podsSub": "montajes externos",
         "components": "Tipos de pod",
-        "perPod": "por pod",
-        "hint": "Combustible transportado en pods montados en puntos de montaje externos; la barra muestra la parte de la capacidad total que aporta cada tipo."
+        "perPod": "por pod"
       },
       "refuelBoom": {
         "fuelFlowSub": "transferencia de hidrógeno",
         "quantumFlowSub": "transferencia de quantum",
         "captureRadiusSub": "tolerancia de acoplamiento",
-        "equipment": "Equipamiento",
-        "hint": "Tasas de transferencia del brazo de repostaje y tolerancia de acoplamiento de su boquilla."
+        "equipment": "Equipamiento"
       },
       "combat": {
         "title": "Combate",
@@ -1493,8 +1486,7 @@
           "manned": "Torreta tripulada",
           "remote": "Torreta remota",
           "pds": "Defensa puntual"
-        },
-        "hint": "DPS de la configuración por defecto. El sostenido tiene en cuenta la regeneración de la reserva de energía de cada arma y su ciclo de sobrecalentamiento. Los misiles quedan excluidos."
+        }
       },
       "power": {
         "planner": {
@@ -1557,7 +1549,6 @@
         "cs": "CS",
         "csAxisHint": "Haz clic para cambiar de eje (x / y / z)",
         "segmentsUsed": "%{used} / %{total} segmentos",
-        "hint": "Reparte la energía entre los sistemas. El DPS sostenido de las armas escala con la energía que reciben; el resto se equilibra automáticamente.",
         "families": {
           "weapon": "Armas",
           "shield": "Escudos",
@@ -1604,7 +1595,6 @@
           "infrared": "IR",
           "crossSection": "CS"
         },
-        "hint": "Valores de escudo, blindaje y contramedidas de la configuración por defecto. Una absorción inferior al 100 % significa que ese tipo de daño alcanza el casco incluso con los escudos activos.",
         "openDeflectionCheck": "Comprobación de deflexión"
       },
       "penetrationCheck": {
@@ -1670,7 +1660,6 @@
         "doors": "Puertas",
         "doorsNote": "Las puertas interiores rompibles son un apartado aparte: tienen su propia salud y no forman parte de los HP del casco.",
         "doorsSub": "%{count} rompibles",
-        "hint": "Los HP del casco son la suma de la salud de todas las piezas.",
         "hullHp": "HP del casco",
         "hullHpSub": "total de todas las piezas",
         "integrity": "Integridad del casco",

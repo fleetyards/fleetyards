@@ -438,10 +438,6 @@ const cellHeight = (span: number) =>
         {{ t("labels.power.planner.open") }}
       </button>
     </div>
-
-    <div class="metrics-card__footer">
-      <span class="metrics-card__hint">{{ t("labels.power.hint") }}</span>
-    </div>
   </MetricsCard>
 </template>
 

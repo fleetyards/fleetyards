@@ -322,12 +322,6 @@ const openDeflectionCheck = () => {
         {{ t("labels.defense.openDeflectionCheck") }}
       </button>
     </div>
-
-    <div class="metrics-card__footer">
-      <span class="metrics-card__hint">
-        {{ t("labels.defense.hint") }}
-      </span>
-    </div>
   </MetricsCard>
 </template>
 

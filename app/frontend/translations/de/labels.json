@@ -1387,8 +1387,7 @@
         "fuelFullMain": "Volllast, Haupttriebwerke",
         "fuelFullAll": "Volllast, alle Triebwerke",
         "durationHoursMinutes": "%{hours} h %{minutes} min",
-        "durationMinutes": "%{minutes} min",
-        "hint": "Das geboostete Handling skaliert mit den Triebwerks-Pips; alles ist null, wenn das Triebwerk keine Energie hat."
+        "durationMinutes": "%{minutes} min"
       },
       "base": {
         "price": "Preis",
@@ -1423,8 +1422,7 @@
         "title": "Fracht",
         "holdsSub": "in %{count} Frachträumen",
         "maxContainerSub": "größte passende Box",
-        "containers": "Containerkapazität",
-        "hint": "Maximale Anzahl an Containern jeder Größe, die auf die Frachtraster passen; der Balken zeigt, welchen Anteil der Gesamtkapazität das ausfüllt."
+        "containers": "Containerkapazität"
       },
       "weaponRacks": {
         "slots": "Plätze",
@@ -1445,29 +1443,24 @@
           "multitool": "Multi-Tool",
           "medical_injection": "Medi-Pens",
           "grenade": "Granaten"
-        },
-        "hint": "Plätze aller Ständer an Bord, nach Inhalt und Größe."
+        }
       },
       "storageContainers": {
         "total": "Gesamtkapazität",
         "count": "Behälter",
-        "perContainer": "je",
-        "hintOre": "Fasst abgebautes Erz, keine Fracht.",
-        "hintSalvage": "Fasst geborgenes Material, keine Fracht."
+        "perContainer": "je"
       },
       "fuelTanks": {
         "capacitySub": "in %{count} Pods",
         "podsSub": "externe Aufhängungen",
         "components": "Pod-Typen",
-        "perPod": "pro Pod",
-        "hint": "Treibstoff in Pods an externen Aufhängungspunkten; der Balken zeigt den Anteil jedes Typs an der Gesamtkapazität."
+        "perPod": "pro Pod"
       },
       "refuelBoom": {
         "fuelFlowSub": "Hydrogen-Transfer",
         "quantumFlowSub": "Quantum-Transfer",
         "captureRadiusSub": "Andocktoleranz",
-        "equipment": "Ausrüstung",
-        "hint": "Transferraten des Betankungsauslegers und die Andocktoleranz seiner Düse."
+        "equipment": "Ausrüstung"
       },
       "combat": {
         "title": "Kampf",
@@ -1493,8 +1486,7 @@
           "manned": "Bemannter Geschützturm",
           "remote": "Ferngesteuerter Geschützturm",
           "pds": "Punktverteidigung"
-        },
-        "hint": "DPS aus dem Standard-Loadout. Der Dauerwert berücksichtigt die Energiepool-Regeneration und den Überhitzungszyklus jeder Waffe. Raketen sind ausgenommen."
+        }
       },
       "power": {
         "planner": {
@@ -1557,7 +1549,6 @@
         "cs": "CS",
         "csAxisHint": "Klicke, um die Achse zu wechseln (x / y / z)",
         "segmentsUsed": "%{used} / %{total} Segmente",
-        "hint": "Verteile Energie zwischen den Systemen. Der Dauer-DPS der Waffen skaliert mit der Energie, die sie erhalten; der Rest wird automatisch ausbalanciert.",
         "families": {
           "weapon": "Waffen",
           "shield": "Schilde",
@@ -1604,7 +1595,6 @@
           "infrared": "IR",
           "crossSection": "CS"
         },
-        "hint": "Schild-, Panzerungs- und Gegenmaßnahmenwerte aus dem Standard-Loadout. Eine Absorption unter 100 % bedeutet, dass dieser Schadenstyp den Rumpf erreicht, während die Schilde noch stehen.",
         "openDeflectionCheck": "Ablenkungsprüfung"
       },
       "penetrationCheck": {
@@ -1670,7 +1660,6 @@
         "doors": "Türen",
         "doorsNote": "Zerstörbare Innentüren sind ein eigener Bereich — sie haben ihre eigene Gesundheit und zählen nicht zu den Rumpf-HP.",
         "doorsSub": "%{count} zerstörbar",
-        "hint": "Die Rumpf-HP sind die Summe der Gesundheit aller Teile.",
         "hullHp": "Rumpf-HP",
         "hullHpSub": "gesamt über alle Teile",
         "integrity": "Rumpfintegrität",

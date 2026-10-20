@@ -1387,8 +1387,7 @@
         "fuelFullMain": "全推力，主推进器",
         "fuelFullAll": "全推力，所有推进器",
         "durationHoursMinutes": "%{hours} 小时 %{minutes} 分钟",
-        "durationMinutes": "%{minutes} 分钟",
-        "hint": "加速后的操控表现随引擎能量档位变化；引擎未通电时全部为零。"
+        "durationMinutes": "%{minutes} 分钟"
       },
       "base": {
         "price": "价格",
@@ -1423,8 +1422,7 @@
         "title": "货物",
         "holdsSub": "分布于 %{count} 个货舱",
         "maxContainerSub": "可容纳的最大箱体",
-        "containers": "集装箱容量",
-        "hint": "每种尺寸的集装箱在货物网格中可容纳的最大数量；进度条显示其占总容量的比例。"
+        "containers": "集装箱容量"
       },
       "weaponRacks": {
         "slots": "槽位",
@@ -1445,29 +1443,24 @@
           "multitool": "多功能工具",
           "medical_injection": "医疗笔",
           "grenade": "手雷"
-        },
-        "hint": "船上所有武器架的槽位，按可放置物品和尺寸分组。"
+        }
       },
       "storageContainers": {
         "total": "总容量",
         "count": "容器",
-        "perContainer": "每个",
-        "hintOre": "存放开采的矿石，不是货物。",
-        "hintSalvage": "存放回收的材料，不是货物。"
+        "perContainer": "每个"
       },
       "fuelTanks": {
         "capacitySub": "分布于 %{count} 个挂舱",
         "podsSub": "外部挂点",
         "components": "挂舱类型",
-        "perPod": "每个挂舱",
-        "hint": "挂载在外部挂点上的燃料舱所携带的燃料；进度条显示每种类型占总容量的比例。"
+        "perPod": "每个挂舱"
       },
       "refuelBoom": {
         "fuelFlowSub": "氢燃料传输",
         "quantumFlowSub": "量子燃料传输",
         "captureRadiusSub": "对接容差",
-        "equipment": "装备",
-        "hint": "加油臂的传输速率及其喷嘴的对接容差。"
+        "equipment": "装备"
       },
       "combat": {
         "title": "战斗",
@@ -1493,8 +1486,7 @@
           "manned": "有人炮塔",
           "remote": "遥控炮塔",
           "pds": "点防御"
-        },
-        "hint": "数据来自默认配置的 DPS。持续 DPS 计入每件武器的能量池回复和过热循环。不含导弹。"
+        }
       },
       "power": {
         "planner": {
@@ -1557,7 +1549,6 @@
         "cs": "CS",
         "csAxisHint": "点击切换轴（x / y / z）",
         "segmentsUsed": "%{used} / %{total} 格",
-        "hint": "在各系统间分配能量。武器的持续 DPS 随其获得的能量变化；其余部分会自动平衡。",
         "families": {
           "weapon": "武器",
           "shield": "护盾",
@@ -1604,7 +1595,6 @@
           "infrared": "IR",
           "crossSection": "CS"
         },
-        "hint": "护盾、装甲与干扰措施数值来自默认配置。吸收率低于 100% 表示该伤害类型在护盾仍在时就能打到船体。",
         "openDeflectionCheck": "偏转检测"
       },
       "penetrationCheck": {
@@ -1670,7 +1660,6 @@
         "doors": "舱门",
         "doorsNote": "可破坏的内部舱门属于独立区域 — 它们有各自的耐久度，不计入船体 HP。",
         "doorsSub": "%{count} 个可破坏",
-        "hint": "船体 HP 是所有部件耐久度的总和。",
         "hullHp": "船体 HP",
         "hullHpSub": "所有部件合计",
         "integrity": "船体完整度",

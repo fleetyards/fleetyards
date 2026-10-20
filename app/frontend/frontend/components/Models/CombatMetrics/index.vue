@@ -260,10 +260,6 @@ const showControlComposition = computed(() =>
         {{ t("labels.combat.openPenetrationCheck") }}
       </button>
     </div>
-
-    <div class="metrics-card__footer">
-      <span class="metrics-card__hint">{{ t("labels.combat.hint") }}</span>
-    </div>
   </MetricsCard>
 </template>
 
