@@ -17,6 +17,10 @@ import {
 import { useForm } from "vee-validate";
 import { useFormFeedback } from "@/admin/composables/useFormFeedback";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
+import {
+  InputAlignmentsEnum,
+  InputTypesEnum,
+} from "@/shared/components/base/FormInput/types";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
@@ -42,6 +46,7 @@ const initialValues = ref<ModelModuleInput>({
   name: props.modelModule.name,
   description: props.modelModule.description,
   scKey: props.modelModule.scKey,
+  cargo: props.modelModule.cargo,
   manufacturerId: props.modelModule.manufacturer?.id ?? undefined,
   productionStatus: props.modelModule.productionStatus,
   active: props.modelModule.active,
@@ -62,6 +67,7 @@ const { defineField, handleSubmit, meta, setErrors } =
 const [name, nameProps] = defineField("name");
 const [description, descriptionProps] = defineField("description");
 const [scKey, scKeyProps] = defineField("scKey");
+const [cargo, cargoProps] = defineField("cargo");
 const [manufacturerId, manufacturerIdProps] = defineField("manufacturerId");
 const [productionStatus, productionStatusProps] =
   defineField("productionStatus");
@@ -128,6 +134,15 @@ const handleCancel = async () => {
           v-bind="scKeyProps"
           translation-key="modelModule.scKey"
           name="scKey"
+        />
+        <FormInput
+          v-model="cargo"
+          v-bind="cargoProps"
+          :alignment="InputAlignmentsEnum.RIGHT"
+          :type="InputTypesEnum.NUMBER"
+          translation-key="modelModule.cargo"
+          :suffix="t('number.units.cargo')"
+          name="cargo"
         />
         <ManufacturerSelect
           v-model="manufacturerId"

@@ -1713,6 +1713,7 @@
         "pledgePrice": "承诺价格",
         "productionStatus": "生产状态",
         "scKey": "SC Key",
+        "cargo": "货物",
         "storeImage": "商店图片",
         "active": "激活？",
         "hidden": "隐藏？"

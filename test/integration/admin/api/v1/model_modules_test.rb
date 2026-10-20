@@ -342,6 +342,19 @@ class Admin::Api::V1::ModelModulesTest < ActionDispatch::IntegrationTest
     assert_api_response :put, 200, path_params: {id: mod.id}, body: {name: "Updated Module"}
   end
 
+  # The RSI-store modules the game files do not describe have no holds to
+  # derive their cargo from, so an admin enters it.
+  test "PUT /model-modules/:id sets the cargo of a module without holds" do
+    mod = create(:model_module)
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: mod.id}, body: {cargo: 128} do
+      assert_in_delta 128.0, parsed_body["cargo"]
+    end
+
+    assert_in_delta 128.0, mod.reload.cargo
+  end
+
   # Clearing sends a null -- that is what the file input emits -- so the request
   # schema has to accept one, or the admin UI cannot remove a picture at all.
   test "PUT /model-modules/:id clears the store image" do

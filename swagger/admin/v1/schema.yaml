@@ -18508,6 +18508,8 @@ components:
           type: boolean
         hidden:
           type: boolean
+        cargo:
+          type: number
         models:
           type: array
           items:
@@ -18586,6 +18588,12 @@ components:
       title: ModelModuleInput
     ModelModuleMedicalBeds:
       type: object
+        cargo:
+          type:
+          - number
+          - 'null'
+          description: In SCU. Re-derived from the cargo holds whenever a load changes
+            them
       properties:
         tiers:
           type: array

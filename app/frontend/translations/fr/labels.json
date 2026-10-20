@@ -1713,6 +1713,7 @@
         "pledgePrice": "Prix Pledge",
         "productionStatus": "Statut de Production",
         "scKey": "SC Key",
+        "cargo": "Cargaison",
         "storeImage": "Image de Boutique",
         "active": "Actif ?",
         "hidden": "Caché ?"

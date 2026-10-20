@@ -48,6 +48,7 @@ if model_module.manufacturer.present?
   end
 end
 
+json.cargo model_module.cargo&.to_f
 json.cargo_holds model_module.cargo_holds
 
 json.hardpoints do
