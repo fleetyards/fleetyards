@@ -29,10 +29,13 @@ module Shared
             # Completed or excluded missions: how many, and the missions that
             # count towards it.
             count: {type: [:integer, :null]},
+            # Whether this mission is among them: excluded, it can be done once
+            # only; required, it counts its own repeats.
+            includesSelf: {type: :boolean},
             missions: {type: :array, items: ::Shared::V1::Schemas::GameMissionLink}
           },
           additionalProperties: false,
-          required: %w[kind excluded missions]
+          required: %w[kind excluded includesSelf missions]
         })
       end
     end

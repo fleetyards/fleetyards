@@ -321,7 +321,7 @@ module ScData
           case key
           when "ContractPrerequisite_CrimeStat" then crime_stat_prerequisite(node)
           when "ContractPrerequisite_Reputation" then reputation_prerequisite(node)
-          when "ContractPrerequisite_CompletedContractTags" then completed_prerequisites(node)
+          when "ContractPrerequisite_CompletedContractTags" then completed_prerequisites(node, value_or_nil(contract["id"]))
           else []
           end
         end
@@ -356,7 +356,11 @@ module ScData
       # excluded set, none of them. A tag is granted by the contracts whose
       # results carry it, so the requirement is carried as those contracts:
       # "IntroDone" reads as Wikelo's arrival mission rather than as a tag.
-      private def completed_prerequisites(node)
+      #
+      # A contract that grants the tag it asks about is carried as a flag rather
+      # than as a link to itself: excluded, that is a contract done once only
+      # (67 of them); required, it is a count of its own repeats (50).
+      private def completed_prerequisites(node, sc_ref)
         [
           ["completed_missions", node["requiredCompletedContractTags"], node["requiredCountValue"]],
           ["excluded_missions", node["excludedCompletedContractTags"], node["excludedCountValue"]]
@@ -365,7 +369,14 @@ module ScData
 
           next if refs.empty?
 
-          {kind:, count: count.to_i.clamp(1..), mission_refs: refs.flat_map { |ref| completion_grants[ref] }.uniq.sort}
+          granted = refs.flat_map { |ref| completion_grants[ref] }.uniq
+
+          {
+            kind:,
+            count: count.to_i.clamp(1..),
+            mission_refs: (granted - [sc_ref]).sort,
+            includes_self: (true if granted.include?(sc_ref))
+          }.compact
         end
       end
 

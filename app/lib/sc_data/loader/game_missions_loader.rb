@@ -253,6 +253,7 @@ module ScData
             excluded: prerequisite.fetch("excluded", false),
             count: prerequisite["count"],
             mission_refs: Array.wrap(prerequisite["mission_refs"]),
+            includes_self: prerequisite.fetch("includes_self", false),
             position:,
             created_at: now,
             updated_at: now

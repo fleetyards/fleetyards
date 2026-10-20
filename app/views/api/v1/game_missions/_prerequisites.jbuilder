@@ -13,6 +13,7 @@ json.prerequisites prerequisites do |prerequisite|
   json.max_standing prerequisite.max_standing
   json.excluded prerequisite.excluded
   json.count prerequisite.count
+  json.includes_self prerequisite.includes_self
 
   # The missions that grant what this one asks for, as far as the catalogue
   # offers them.

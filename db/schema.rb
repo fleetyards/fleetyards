@@ -1367,6 +1367,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_21_120000) do
     t.boolean "excluded", default: false, null: false
     t.integer "count"
     t.text "mission_refs", default: [], null: false, array: true
+    t.boolean "includes_self", default: false, null: false
     t.integer "position", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

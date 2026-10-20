@@ -16115,6 +16115,8 @@ components:
           type:
           - integer
           - 'null'
+        includesSelf:
+          type: boolean
         missions:
           type: array
           items:
@@ -16123,6 +16125,7 @@ components:
       required:
       - kind
       - excluded
+      - includesSelf
       - missions
       title: GameMissionPrerequisite
     GameMissionPrerequisiteKindEnum:

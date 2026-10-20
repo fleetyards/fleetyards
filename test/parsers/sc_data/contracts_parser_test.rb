@@ -598,6 +598,27 @@ module ScData
         assert_equal ["excluded_missions", 1, [SECOND_CONTRACT_ID]], excluded.values_at(:kind, :count, :mission_refs)
       end
 
+      test "#missions carries a contract that grants what it asks for as a flag, not a link to itself" do
+        tag = "5d1e0c3a-0000-4000-8000-0000000000d2"
+        generator("gen", results: <<~XML, extra: <<~PREREQUISITES)
+          <ContractResult_CompletionTags>
+            <completionTags>
+              <ContractResult_CompletionTag count="1" tag="#{tag}" />
+            </completionTags>
+          </ContractResult_CompletionTags>
+        XML
+          <additionalPrerequisites>
+            <ContractPrerequisite_CompletedContractTags requiredCountValue="1" excludedCountValue="1">
+              <excludedCompletedContractTags><tags><Reference value="#{tag}" /></tags></excludedCompletedContractTags>
+            </ContractPrerequisite_CompletedContractTags>
+          </additionalPrerequisites>
+        PREREQUISITES
+
+        excluded = @parser.missions.sole[:prerequisites].sole
+
+        assert_equal ["excluded_missions", [], true], excluded.values_at(:kind, :mission_refs, :includes_self)
+      end
+
       test "#missions lists the places a contract is offered at" do
         locality_place = "5d1e0c3a-0000-4000-8000-0000000000e1"
         place = "5d1e0c3a-0000-4000-8000-0000000000e2"

@@ -29,6 +29,9 @@ class CreateGameMissionPrerequisites < ActiveRecord::Migration[8.1]
       # required tags, and those contracts by `sc_ref`.
       t.integer :count
       t.text :mission_refs, array: true, default: [], null: false
+      # Whether the mission itself grants what it asks about: excluded, it can
+      # be done once only; required, it counts its own repeats.
+      t.boolean :includes_self, default: false, null: false
 
       t.integer :position, null: false
 
