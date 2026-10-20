@@ -1023,9 +1023,12 @@ class Model < ApplicationRecord
     super
   end
 
-  # The cargo modules each module slot takes, by slot.
+  # The cargo modules each module slot takes, by slot. Read off the target
+  # rather than the reader: the reader builds a relation from the scope even
+  # when preloaded, and the scope resolves the served build -- two queries a
+  # row on a ship list.
   def cargo_modules_by_slot
-    @cargo_modules_by_slot ||= cargo_module_hardpoints.group_by(&:slot)
+    @cargo_modules_by_slot ||= association(:cargo_module_hardpoints).load_target.group_by(&:slot)
       .transform_values { |hardpoints| hardpoints.map(&:model_module) }
   end
 
