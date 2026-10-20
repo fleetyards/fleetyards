@@ -337,9 +337,10 @@ function computeWeaponMaxRatio(
   consumption: number,
   segments: number,
   otherPorts: PowerPort[],
+  draw = consumption,
 ): number {
   if (pool <= 0 || consumption <= 0) return 1;
-  const uncapped = Math.min(1, pool / consumption);
+  const uncapped = Math.min(1, pool / draw);
   if (segments <= 0) return uncapped;
 
   const nonWeaponCritical = otherPorts
@@ -350,7 +351,7 @@ function computeWeaponMaxRatio(
     0,
     Math.min(enabled, segments - nonWeaponCritical),
   );
-  return Math.min(uncapped, weaponMax / consumption);
+  return Math.min(uncapped, weaponMax / draw);
 }
 
 // Group the allocation into display columns: one member per component (+ the
@@ -639,6 +640,8 @@ export function simulateLoadoutPower(
   );
   const pool = weaponPoolSize ?? 0;
   const segments = totalSegments(acc.plants);
+  // Whole segments for the allocation; the ratio divides by the exact draw,
+  // as the game does: a Mk V's four pips feed 4/12.2 of its guns, not 4/13.
   const consumption = Math.ceil(acc.weaponUnits);
 
   const ports: PowerPort[] = [
@@ -739,7 +742,9 @@ export function simulateLoadoutPower(
   // A buff on the power ratio lets the same pips feed more of the guns' draw.
   const boost = regenModifier.powerRatio || 1;
   const weaponRatioValue =
-    pool <= 0 ? 1 : Math.min(1, weaponPoolRatio(state, consumption) * boost);
+    pool <= 0
+      ? 1
+      : Math.min(1, weaponPoolRatio(state, acc.weaponUnits) * boost);
   const emittedEm = computeEm(
     acc.plants,
     acc.weaponEmSources,
@@ -761,8 +766,13 @@ export function simulateLoadoutPower(
     weaponPoolRatio: weaponRatioValue,
     weaponMaxRatio: Math.min(
       1,
-      computeWeaponMaxRatio(pool, consumption, segments, acc.otherPorts) *
-        boost,
+      computeWeaponMaxRatio(
+        pool,
+        consumption,
+        segments,
+        acc.otherPorts,
+        acc.weaponUnits,
+      ) * boost,
     ),
     shieldPoolRatio,
     enginePowerRatio,

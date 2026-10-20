@@ -676,3 +676,18 @@ describe("engineering buff", () => {
     expect(boosted.weaponMaxRatio).toBeCloseTo(0.75);
   });
 });
+
+describe("weapon ratio against a fractional draw", () => {
+  it("divides the pips by the exact draw, as the game does (Mk V)", () => {
+    // Four pilot guns at 1.05 and eight turret guns at 1 draw 12.2: four
+    // pips feed 4/12.2 of them, not 4/13.
+    const sim = simulateLoadoutPower(
+      [plant(40, 2), ...weapons(4, 1.05), ...weapons(8, 1)],
+      4,
+    );
+
+    expect(sim.perFamily.weapon).toBe(4);
+    expect(sim.weaponPoolRatio).toBeCloseTo(4 / 12.2);
+    expect(sim.weaponMaxRatio).toBeCloseTo(4 / 12.2);
+  });
+});
