@@ -125,6 +125,11 @@
           "new": "Nuevo objetivo de financiación",
           "edit": "Editar objetivo de financiación"
         },
+        "gameEvents": {
+          "index": "Eventos del juego",
+          "new": "Nuevo evento del juego",
+          "edit": "Editar evento del juego"
+        },
         "users": {
           "index": "Usuarios",
           "edit": "Editar usuario",

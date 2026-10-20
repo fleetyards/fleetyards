@@ -217,6 +217,13 @@
         "createFailed": "Could not create funding goal.",
         "updateFailed": "Could not update funding goal."
       },
+      "gameEvent": {
+        "created": "Game event created.",
+        "updated": "Game event updated.",
+        "destroyed": "Game event deleted.",
+        "createFailed": "Could not create game event.",
+        "updateFailed": "Could not update game event."
+      },
       "supporterNomination": {
         "update": {
           "success": "Fleet selection updated.",
@@ -577,6 +584,9 @@
         },
         "fundingGoal": {
           "destroy": "Are you sure you want to delete this funding goal? This action can't be reverted."
+        },
+        "gameEvent": {
+          "destroy": "Are you sure you want to delete this game event? This action can't be reverted."
         },
         "supporterContribution": {
           "destroy": "Are you sure you want to delete this supporter contribution? This action can't be reverted."

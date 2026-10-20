@@ -1666,6 +1666,17 @@
         "effectiveFrom": "生效日",
         "endedAt": "結束於"
       },
+      "gameEvent": {
+        "title": "標題",
+        "description": "描述",
+        "location": "地點",
+        "url": "連結",
+        "category": "類別",
+        "startsAt": "開始時間",
+        "endsAt": "結束時間",
+        "published": "已發佈",
+        "publishedInfo": "只有已發佈的活動才會出現在首頁。"
+      },
       "supporterContribution": {
         "name": "支持者名稱",
         "user": "已連結帳戶",

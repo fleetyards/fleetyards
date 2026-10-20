@@ -289,6 +289,11 @@
           "new": "Neues Finanzierungsziel",
           "edit": "Finanzierungsziel bearbeiten"
         },
+        "gameEvents": {
+          "index": "Spiel-Events",
+          "new": "Neues Spiel-Event",
+          "edit": "Spiel-Event bearbeiten"
+        },
         "users": {
           "index": "Benutzer",
           "edit": "Benutzer bearbeiten",

@@ -124,6 +124,12 @@
         "effectiveFrom": "2026-01-01",
         "endedAt": "持續進行請留空"
       },
+      "gameEvent": {
+        "title": "Invictus Launch Week",
+        "description": "活動內容以及飛行員為何應該參加",
+        "location": "New Babbage, microTech",
+        "url": "https://robertsspaceindustries.com/..."
+      },
       "supporterContribution": {
         "name": "公開顯示的支持者名稱",
         "amount": "5.00",

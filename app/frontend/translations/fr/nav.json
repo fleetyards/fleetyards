@@ -333,6 +333,11 @@
           "new": "Nouvel objectif de financement",
           "edit": "Modifier l'objectif de financement"
         },
+        "gameEvents": {
+          "index": "Événements du jeu",
+          "new": "Nouvel événement du jeu",
+          "edit": "Modifier l'événement du jeu"
+        },
         "notifications": {
           "index": "Notifications"
         },

@@ -124,6 +124,12 @@
         "effectiveFrom": "2026-01-01",
         "endedAt": "déjalo en blanco si sigue vigente"
       },
+      "gameEvent": {
+        "title": "Invictus Launch Week",
+        "description": "Qué pasa y por qué los pilotos deberían ir",
+        "location": "New Babbage, microTech",
+        "url": "https://robertsspaceindustries.com/..."
+      },
       "supporterContribution": {
         "name": "Nombre del patrocinador mostrado públicamente",
         "amount": "5.00",

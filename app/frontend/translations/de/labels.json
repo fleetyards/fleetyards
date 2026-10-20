@@ -1666,6 +1666,17 @@
         "effectiveFrom": "Gültig ab",
         "endedAt": "Beendet am"
       },
+      "gameEvent": {
+        "title": "Titel",
+        "description": "Beschreibung",
+        "location": "Ort",
+        "url": "Link",
+        "category": "Kategorie",
+        "startsAt": "Beginnt am",
+        "endsAt": "Endet am",
+        "published": "Veröffentlicht",
+        "publishedInfo": "Nur veröffentlichte Events erscheinen auf der Startseite."
+      },
       "supporterContribution": {
         "name": "Unterstützer-Name",
         "user": "Verknüpftes Konto",

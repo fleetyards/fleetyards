@@ -333,6 +333,11 @@
           "new": "New Funding Goal",
           "edit": "Edit Funding Goal"
         },
+        "gameEvents": {
+          "index": "Game Events",
+          "new": "New Game Event",
+          "edit": "Edit Game Event"
+        },
         "notifications": {
           "index": "Notifications"
         },

@@ -1666,6 +1666,17 @@
         "effectiveFrom": "生效日期",
         "endedAt": "结束于"
       },
+      "gameEvent": {
+        "title": "标题",
+        "description": "描述",
+        "location": "地点",
+        "url": "链接",
+        "category": "类别",
+        "startsAt": "开始时间",
+        "endsAt": "结束时间",
+        "published": "已发布",
+        "publishedInfo": "只有已发布的活动才会出现在首页。"
+      },
       "supporterContribution": {
         "name": "支持者名称",
         "user": "关联账户",

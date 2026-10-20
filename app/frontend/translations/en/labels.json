@@ -1666,6 +1666,17 @@
         "effectiveFrom": "Effective from",
         "endedAt": "Ended at"
       },
+      "gameEvent": {
+        "title": "Title",
+        "description": "Description",
+        "location": "Location",
+        "url": "Link",
+        "category": "Category",
+        "startsAt": "Starts at",
+        "endsAt": "Ends at",
+        "published": "Published",
+        "publishedInfo": "Only published events appear on the homepage."
+      },
       "supporterContribution": {
         "name": "Supporter Name",
         "user": "Linked Account",
