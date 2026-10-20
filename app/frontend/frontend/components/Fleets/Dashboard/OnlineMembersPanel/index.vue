@@ -6,10 +6,10 @@ export default {
 
 <script lang="ts" setup>
 import { useDebounceFn } from "@vueuse/core";
-import DashboardPanel from "@/frontend/components/Fleets/Dashboard/DashboardPanel/index.vue";
-import DashboardEmpty from "@/frontend/components/Fleets/Dashboard/DashboardEmpty/index.vue";
+import DashboardPanel from "@/shared/components/Dashboard/Panel/index.vue";
+import DashboardEmpty from "@/shared/components/Dashboard/Empty/index.vue";
 import Avatar from "@/shared/components/Avatar/index.vue";
-import { liveQuery } from "@/frontend/components/Fleets/Dashboard/liveQuery";
+import { liveQuery } from "@/shared/components/Dashboard/liveQuery";
 import { useI18n } from "@/shared/composables/useI18n";
 import { usePresence } from "@/shared/composables/usePresence";
 import { useQueryClient } from "@tanstack/vue-query";

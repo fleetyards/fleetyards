@@ -5,10 +5,10 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { liveQuery } from "@/frontend/components/Fleets/Dashboard/liveQuery";
+import { liveQuery } from "@/shared/components/Dashboard/liveQuery";
 import { useQueryClient } from "@tanstack/vue-query";
-import DashboardPanel from "@/frontend/components/Fleets/Dashboard/DashboardPanel/index.vue";
-import DashboardEmpty from "@/frontend/components/Fleets/Dashboard/DashboardEmpty/index.vue";
+import DashboardPanel from "@/shared/components/Dashboard/Panel/index.vue";
+import DashboardEmpty from "@/shared/components/Dashboard/Empty/index.vue";
 import Avatar from "@/shared/components/Avatar/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";

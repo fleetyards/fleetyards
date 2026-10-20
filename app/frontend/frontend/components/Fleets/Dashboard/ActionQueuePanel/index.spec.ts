@@ -139,9 +139,7 @@ describe("FleetDashboardActionQueuePanel", () => {
     const subject = await mount({ canCheckMemberHealth: true });
 
     expect(healthLink(subject).exists()).toBe(false);
-    expect(subject.find("[data-test='fleet-dashboard-empty']").exists()).toBe(
-      true,
-    );
+    expect(subject.find("[data-test='dashboard-empty']").exists()).toBe(true);
   });
 
   it("does not ask for the roster's health without the right to act on it", async () => {

@@ -415,7 +415,7 @@ describe("FleetShow dashboard", () => {
     // The feed stands for every member, with its empty state when quiet.
     expect(
       tests(subject, "fleet-dashboard-")
-        .filter((name) => name !== "fleet-dashboard-empty")
+        .filter((name) => name !== "dashboard-empty")
         .sort(),
     ).toEqual(["fleet-dashboard-about", "fleet-dashboard-activity"]);
   });

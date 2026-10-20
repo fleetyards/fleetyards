@@ -1,0 +1,9 @@
+{
+  "zh-CN": {
+    "dashboard": {
+      "showAll": "查看全部",
+      "empty": "暂无内容。",
+      "failed": "暂时无法加载。"
+    }
+  }
+}

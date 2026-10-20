@@ -18,7 +18,7 @@ import {
   BtnSizesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
-import { liveQuery } from "@/frontend/components/Fleets/Dashboard/liveQuery";
+import { liveQuery } from "@/shared/components/Dashboard/liveQuery";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import {

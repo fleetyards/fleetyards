@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { liveQuery } from "@/frontend/components/Fleets/Dashboard/liveQuery";
+import { liveQuery } from "@/shared/components/Dashboard/liveQuery";
 import CalendarGrid from "@/frontend/components/Fleets/Events/CalendarGrid/index.vue";
 import WeekStrip from "@/frontend/components/Fleets/Dashboard/WeekStrip/index.vue";
 import { useMobile } from "@/shared/composables/useMobile";
@@ -66,7 +66,7 @@ const { t } = useI18n();
         class="week-calendar__failed"
         data-test="fleet-dashboard-calendar-failed"
       >
-        {{ t("fleetDashboard.failed") }}
+        {{ t("dashboard.failed") }}
       </p>
     </template>
   </CalendarGrid>

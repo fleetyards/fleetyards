@@ -5,11 +5,11 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { liveQuery } from "@/frontend/components/Fleets/Dashboard/liveQuery";
+import { liveQuery } from "@/shared/components/Dashboard/liveQuery";
 import { addDays } from "date-fns";
 import { useToday } from "@/frontend/components/Fleets/Dashboard/useToday";
-import DashboardPanel from "@/frontend/components/Fleets/Dashboard/DashboardPanel/index.vue";
-import DashboardEmpty from "@/frontend/components/Fleets/Dashboard/DashboardEmpty/index.vue";
+import DashboardPanel from "@/shared/components/Dashboard/Panel/index.vue";
+import DashboardEmpty from "@/shared/components/Dashboard/Empty/index.vue";
 import EventCard from "@/frontend/components/Fleets/Dashboard/EventCard/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";

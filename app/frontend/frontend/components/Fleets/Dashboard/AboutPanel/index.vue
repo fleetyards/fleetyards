@@ -5,9 +5,9 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { liveQuery } from "@/frontend/components/Fleets/Dashboard/liveQuery";
-import DashboardPanel from "@/frontend/components/Fleets/Dashboard/DashboardPanel/index.vue";
-import DashboardEmpty from "@/frontend/components/Fleets/Dashboard/DashboardEmpty/index.vue";
+import { liveQuery } from "@/shared/components/Dashboard/liveQuery";
+import DashboardPanel from "@/shared/components/Dashboard/Panel/index.vue";
+import DashboardEmpty from "@/shared/components/Dashboard/Empty/index.vue";
 import SquadronStrip from "@/frontend/components/Fleets/SquadronStrip/index.vue";
 import Markdown from "@/shared/components/Markdown/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
