@@ -20,6 +20,7 @@ module ScData
       REPUTATION_REWARD_REF = "9c0a1f22-0000-4000-8000-0000000000b1"
       TITLE_KEY = "@Foxwell_ShipAmbush_VE_title_001"
       ENTITY_REF = "5d1e0c3a-0000-4000-8000-0000000000c1"
+      RESOURCE_REF = "5d1e0c3a-0000-4000-8000-0000000000c2"
       AWARD_RECORD_REF = "5d1e0c3a-0000-4000-8000-0000000000c3"
 
       setup do
@@ -433,6 +434,85 @@ module ScData
         assert_equal 1.0, reward[:weight]
       end
 
+      test "#missions reads what a contract asks to be brought to it" do
+        translate("Item_Yormandi_Eye" => "Yormandi Eye")
+        named_entity("entities/carryables/yormandi_eye", ref: ENTITY_REF, name: "@Item_Yormandi_Eye")
+        generator("gen", properties: hand_in_property(
+          %(<HaulingOrderContent_EntityClass entityClass="#{ENTITY_REF}" minAmount="14" maxAmount="0" />)
+        ))
+
+        hand_in = @parser.missions.sole[:hand_ins].sole
+
+        assert_equal "item", hand_in[:kind]
+        assert_equal ENTITY_REF, hand_in[:entity_class]
+        assert_equal "Yormandi Eye", hand_in[:entity_name]
+        assert_equal 14, hand_in[:amount]
+        assert_not_includes hand_in, :max
+        assert_not_includes hand_in, :option
+      end
+
+      # Ranta Dung has no `Localization` node and names itself only through
+      # its purchase params.
+      test "#missions names a commodity hand-in from its purchase params" do
+        translate("items_commodities_rantadung" => "Ranta Dung")
+        write("entities/commodities/rantadung", "EntityClassDefinition", ENTITY_REF, <<~XML)
+          <Components>
+            <SCItemPurchasableParams displayName="@items_commodities_rantadung" />
+          </Components>
+        XML
+        generator("gen", properties: hand_in_property(
+          %(<HaulingOrderContent_EntityClass entityClass="#{ENTITY_REF}" minAmount="15" maxAmount="15" />)
+        ))
+
+        assert_equal "Ranta Dung", @parser.missions.sole[:hand_ins].sole[:entity_name]
+      end
+
+      test "#missions names a hand-in that accepts any of a group" do
+        translate("Salvage_SRT_Cannister_Name" => "SRT Canister")
+        write("entities/haulingentityclass/haulingentityclass_srt", "Hauling_EntityClasses", ENTITY_REF, "",
+          orderDisplayName: "@Salvage_SRT_Cannister_Name")
+        generator("gen", properties: hand_in_property(
+          %(<HaulingOrderContent_EntityClasses haulingEntityClasses="#{ENTITY_REF}" minAmount="1" maxAmount="4" />)
+        ))
+
+        hand_in = @parser.missions.sole[:hand_ins].sole
+
+        assert_equal "SRT Canister", hand_in[:entity_name]
+        assert_equal 1, hand_in[:amount]
+        assert_equal 4, hand_in[:max]
+      end
+
+      test "#missions reads a resource hand-in in SCU and the choice a contract offers" do
+        translate("items_commodities_quartz" => "Quartz")
+        resource_types(%(<ResourceType.Quartz displayName="@items_commodities_quartz" __type="ResourceType" __ref="#{RESOURCE_REF}" />))
+        generator("gen", properties: hand_in_property(<<~XML))
+          <HaulingOrderContent_Or>
+            <options>
+              <HaulingOrder_OrOption_And>
+                <orders>
+                  <HaulingOrderContent_Resource resource="#{RESOURCE_REF}" maxContainerSize="-1" minSCU="2" maxSCU="2" />
+                </orders>
+              </HaulingOrder_OrOption_And>
+              <HaulingOrder_OrOption_And>
+                <orders>
+                  <HaulingOrderContent_EntityClass entityClass="#{ENTITY_REF}" minAmount="5" maxAmount="5" />
+                </orders>
+              </HaulingOrder_OrOption_And>
+            </options>
+          </HaulingOrderContent_Or>
+        XML
+
+        resource, item = @parser.missions.sole[:hand_ins]
+
+        assert_equal ["resource", "Quartz", RESOURCE_REF, 2, 0], resource.values_at(:kind, :resource_name, :resource_ref, :amount, :option)
+        assert_equal ["item", 5, 1], item.values_at(:kind, :amount, :option)
+      end
+
+      test "#missions leaves the hand-ins empty for a contract that asks for nothing" do
+        generator("gen")
+
+        assert_empty @parser.missions.sole[:hand_ins]
+      end
 
       # `@LOC_UNINITIALIZED` is a real entry in the localisation file rather than
       # a missing key, so it resolves happily and would ship as a mission name.
@@ -620,6 +700,20 @@ module ScData
           displayName: display_name, **(name ? {name:} : {}))
       end
 
+      private def hand_in_property(orders)
+        <<~XML
+          <MissionProperty missionVariableName="HaulingOverride">
+            <value>
+              <MissionPropertyValue_HaulingOrders>
+                <haulingOrderContent>
+                  #{orders}
+                </haulingOrderContent>
+              </MissionPropertyValue_HaulingOrders>
+            </value>
+          </MissionProperty>
+        XML
+      end
+
       private def named_entity(path, ref:, name:)
         write(path, "EntityClassDefinition", ref, <<~XML)
           <Components>
@@ -630,6 +724,13 @@ module ScData
             </SAttachableComponentParams>
           </Components>
         XML
+      end
+
+      private def resource_types(records)
+        target = "#{@raw_path}/#{RECORDS_PATH}/resourcetypedatabase/resourcetypedatabase.records.xml"
+
+        FileUtils.mkdir_p(File.dirname(target))
+        File.write(target, "<ResourceTypeDatabase>#{records}</ResourceTypeDatabase>")
       end
 
       private def write(path, type, ref, body, **attributes)

@@ -75,6 +75,13 @@ module ScData
       # Two of Wikelo's contracts do, both naming the same set of 34.
       ITEM_AWARD_RECORDS_PATH = "contracts/contractrewards"
 
+      # What a contract asks to be brought to it: Wikelo's trades, the ore a
+      # mining contract wants, the salvage a salvage contract wants. Read only
+      # off the contract's own overrides -- the 18 a `SubContract` declares are
+      # a step inside a contract, not what taking it asks of you.
+      HAND_IN_PROPERTY = "HaulingOverride"
+      RESOURCE_TYPES_PATH = "resourcetypedatabase/resourcetypedatabase.records.xml"
+
       # A difficulty band is a designer's sentence with the level on the end --
       # "Hard_PvE_or_Easy_PvP_action_5", "Basically_a_Dev_7". The prose is
       # developer-facing and the 1-7 is the only half worth showing, so the
@@ -268,11 +275,12 @@ module ScData
             difficulty: difficulty(contract),
             rewards: contract_rewards(contract),
             blueprint_pools: contract_pools(contract),
+            hand_ins: hand_ins(contract),
             **mission_locations.classify(contract, entry[:handler])
           }.compact
         end
 
-        name_item_rewards(parsed)
+        name_items(parsed)
       end
 
       # Built once per parse: it loads the tag database and every location
@@ -282,23 +290,20 @@ module ScData
       end
 
       # Done in one pass over the finished records rather than per award: the
-      # entity tree is walked once for every ref the whole catalogue names.
-      private def name_item_rewards(parsed)
-        refs = parsed.flat_map { |mission| mission[:rewards].to_a }
-          .select { |reward| reward[:kind] == "item" }
-          .filter_map { |reward| reward[:entity_class] }
-          .uniq
+      # entity tree is walked once for every ref the whole catalogue names,
+      # awards and hand-ins alike.
+      private def name_items(parsed)
+        items = parsed.flat_map { |mission| mission[:rewards].to_a + mission[:hand_ins].to_a }
+          .select { |entry| entry[:kind] == "item" && entry[:entity_class].present? }
 
-        return parsed if refs.blank?
+        return parsed if items.blank?
 
-        names = entity_names(refs)
+        names = entity_names(items.pluck(:entity_class).uniq)
 
-        parsed.each do |mission|
-          mission[:rewards].to_a.each do |reward|
-            name = names[reward[:entity_class]]
+        items.each do |entry|
+          name = names[entry[:entity_class]]
 
-            reward[:entity_name] = name if name.present?
-          end
+          entry[:entity_name] = name if name.present?
         end
 
         parsed
@@ -531,13 +536,19 @@ module ScData
 
       # The name hangs off a `Localization` node inside the attachable component
       # params, at a depth that varies per entity, so it is found rather than
-      # dug at.
+      # dug at. A commodity has none and is named by its purchase params --
+      # Ranta Dung, which a Rayari contract wants 15 of. A hand-in that accepts
+      # any of a group -- "any SRT canister" -- names a group record instead,
+      # which states its name on the root.
       private def entity_name(values)
         localization = Array.wrap(find_node(values, "Localization")).first
+        purchasable = Array.wrap(find_node(values, "SCItemPurchasableParams")).first
 
-        return unless localization.is_a?(Hash)
-
-        localize_name(localization["Name"])
+        [
+          (localization["Name"] if localization.is_a?(Hash)),
+          (purchasable["displayName"] if purchasable.is_a?(Hash)),
+          values["orderDisplayName"]
+        ].lazy.filter_map { |key| localize_name(key) }.first
       end
 
       # One reward drawn from several weighted sets, each of which awards
@@ -573,6 +584,77 @@ module ScData
           structure = item[:values]["itemAwardStructure"]
 
           index[ref] = structure if ref.present? && structure.is_a?(Hash)
+        end
+      end
+
+      # One entry per thing to bring. An `Or` is the contract offering a choice
+      # -- three ores, deliver any one -- and its entries carry the option they
+      # belong to; an entry without one is always asked for. No override holds
+      # more than one `Or`, so the option alone identifies the choice.
+      #
+      # A `maxAmount` of zero is the field unset, as it is on all 113 of
+      # Wikelo's; where it equals the minimum it says nothing either.
+      private def hand_ins(contract)
+        property = Array.wrap(contract.dig("paramOverrides", "propertyOverrides", "MissionProperty"))
+          .find { |entry| entry.is_a?(Hash) && entry["missionVariableName"] == HAND_IN_PROPERTY }
+
+        content = property&.dig("value", "MissionPropertyValue_HaulingOrders", "haulingOrderContent")
+
+        return [] unless content.is_a?(Hash)
+
+        options = Array.wrap(content.dig("HaulingOrderContent_Or", "options", "HaulingOrder_OrOption_And"))
+
+        hand_in_orders(content) + options.each_with_index.flat_map { |option, index|
+          hand_in_orders(option["orders"]).map { |entry| entry.merge(option: index) }
+        }
+      end
+
+      private def hand_in_orders(orders)
+        return [] unless orders.is_a?(Hash)
+
+        items = Array.wrap(orders["HaulingOrderContent_EntityClass"]).map { |order| [value_or_nil(order["entityClass"]), order] } +
+          Array.wrap(orders["HaulingOrderContent_EntityClasses"]).map { |order| [value_or_nil(order["haulingEntityClasses"]), order] }
+
+        resources = Array.wrap(orders["HaulingOrderContent_Resource"]).filter_map do |order|
+          ref = value_or_nil(order["resource"])
+
+          next if ref.blank?
+
+          hand_in_amounts(order["minSCU"], order["maxSCU"])
+            .merge(kind: "resource", resource_ref: ref, resource_name: resource_names[ref]).compact
+        end
+
+        items.filter_map { |ref, order|
+          next if ref.blank?
+
+          hand_in_amounts(order["minAmount"], order["maxAmount"]).merge(kind: "item", entity_class: ref)
+        } + resources
+      end
+
+      private def hand_in_amounts(min, max)
+        amount = min.to_i
+        max = max.to_i
+
+        {amount:, max: (max if max > amount)}.compact
+      end
+
+      # Resource ref to the commodity name a player reads -- "Quartz", "Recycled
+      # Material Composite".
+      private def resource_names
+        @resource_names ||= begin
+          root = Hash.from_xml(File.read("#{import_path}/#{RESOURCE_TYPES_PATH}")).values.first
+          records = root.is_a?(Hash) ? root.each_value.flat_map { |values| Array.wrap(values) } : []
+
+          records.each_with_object({}) do |values, index|
+            next unless values.is_a?(Hash)
+
+            ref = value_or_nil(values["__ref"])
+            name = localize_name(values["displayName"])
+
+            index[ref] = name if ref.present? && name.present?
+          end
+        rescue Errno::ENOENT
+          {}
         end
       end
 
