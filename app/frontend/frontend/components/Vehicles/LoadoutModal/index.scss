@@ -224,6 +224,51 @@
   }
 }
 
+// Two columns of sockets on a wide screen, with the picker still beside them.
+// A mount keeps its contents with it rather than splitting across the columns.
+// The height held for the ship and the picker stops growing with the window
+// too: past this a 4K screen only adds empty room under the sockets.
+@media (min-width: map-get($grid-breakpoints, xxl)) {
+  .vehicle-loadout {
+    min-height: min(calc(100dvh - 260px), 1400px);
+
+    &::before {
+      height: min(calc(100dvh - 260px), 1400px);
+    }
+  }
+
+  .vehicle-loadout__category {
+    min-height: min(calc(100dvh - 340px), 1320px);
+  }
+
+  .vehicle-loadout__category .vehicle-loadout__picker {
+    max-height: min(calc(100dvh - 340px), 1320px);
+  }
+
+  .vehicle-loadout__panel {
+    max-width: 1900px;
+  }
+
+  .vehicle-loadout__sockets {
+    max-width: 904px;
+
+    :deep(.loadout-socket-tree:not(.loadout-socket-tree--nested)) {
+      display: block;
+      columns: 2;
+      column-gap: 24px;
+
+      > li {
+        break-inside: avoid;
+        padding-bottom: 10px;
+      }
+    }
+  }
+
+  .vehicle-loadout__category--picking {
+    grid-template-columns: minmax(0, 904px) minmax(0, 1fr);
+  }
+}
+
 // The loadout's name, and beside it whether it shows in the public hangar and
 // whether it is the ship's active one, on the plate's start side.
 .vehicle-loadout__identity {
