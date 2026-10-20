@@ -113,7 +113,7 @@
     "@types/lodash.merge": "^4.6.9",
     "@types/node": "^26.6.5",
     "@types/qs": "^6.15.1",
-    "@types/rails__activestorage": "^8.0.1",
+    "@types/rails__activestorage": "^8.0.2",
     "@types/sortablejs": "^1.15.9",
     "@types/swagger-ui": "^5.32.0",
     "@types/swagger-ui-dist": "^3.30.6",
