@@ -121,6 +121,10 @@ const cargoVisible = computed(
         break-inside: avoid;
         margin-bottom: 20px;
       }
+
+      > :last-child {
+        margin-bottom: 0;
+      }
     }
   }
 
