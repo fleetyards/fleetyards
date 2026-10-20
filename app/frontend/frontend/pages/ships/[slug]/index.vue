@@ -522,7 +522,7 @@ const adiMap = computed(() => {
             </Btn>
           </blockquote>
         </div>
-        <div class="col-12 col-lg-4">
+        <div class="col-12 col-lg-4 ship-hero__side">
           <template v-if="inlinePreview && holoModel">
             <LazyImage
               v-if="holoviewerVisible || quickLookOpen"
