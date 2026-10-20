@@ -210,7 +210,7 @@ class User < ApplicationRecord
   # The pages under /hangar/ that are not a user's hangar: a user given one of
   # these names would have their public hangar shadowed by the page.
   RESERVED_USERNAMES = %w[
-    blueprints buybacks equipment fleetchart flair imports inventories paints preview ship-components
+    blueprints buybacks equipment fleetchart flair imports inventories paints plans preview ship-components
     stats transactions transfers upgrades wishlist
   ].freeze
 
