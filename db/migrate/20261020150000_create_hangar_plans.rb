@@ -15,8 +15,6 @@ class CreateHangarPlans < ActiveRecord::Migration[8.1]
     create_table :hangar_plan_slots, id: :uuid do |t|
       t.references :hangar_plan, type: :uuid, null: false, foreign_key: {on_delete: :cascade}
       t.string :label, null: false
-      t.text :description
-      t.jsonb :filters, null: false, default: {}
       t.integer :quantity, null: false, default: 1
       t.integer :position, null: false, default: 0
       t.timestamps
