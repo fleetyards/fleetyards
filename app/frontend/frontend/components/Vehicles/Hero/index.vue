@@ -10,6 +10,7 @@ import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
+import LocationName from "@/frontend/components/LocationName/index.vue";
 import VehicleContextMenu from "@/frontend/components/Vehicles/ContextMenu/index.vue";
 import Specs from "@/frontend/components/Vehicles/Overview/Specs/index.vue";
 import { useVehicleViewStore } from "@/frontend/stores/vehicleView";
@@ -278,7 +279,10 @@ const openImageModal = () =>
             </router-link>
             <span v-if="vehicle.location" data-test="vehicle-hero-location">
               <i class="fa-duotone fa-location-dot" />
-              {{ vehicle.location }}
+              <LocationName
+                :text="vehicle.location"
+                :linked="vehicle.linkedLocation"
+              />
             </span>
             <span v-if="vehicle.serial">
               {{

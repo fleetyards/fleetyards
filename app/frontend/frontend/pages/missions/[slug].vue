@@ -8,6 +8,7 @@ export default {
 import AsyncData from "@/shared/components/AsyncData.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import MissionText from "@/frontend/components/MissionText/index.vue";
+import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import MissionRewards from "@/frontend/components/Missions/Rewards/index.vue";
 import { missionTextPlain } from "@/frontend/components/MissionText/index";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -238,11 +239,13 @@ watch(
               :key="blueprint.id"
               class="mission-page__blueprint"
             >
-              <router-link
-                :to="{ name: 'blueprint', params: { slug: blueprint.slug } }"
-              >
-                {{ blueprint.name }}
-              </router-link>
+              <CatalogueItemPopover
+                :item="{
+                  type: 'Blueprint',
+                  slug: blueprint.slug,
+                  name: blueprint.name,
+                }"
+              />
             </li>
           </ul>
         </section>

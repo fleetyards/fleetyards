@@ -26,6 +26,7 @@ if catalogued.present?
     json.slug catalogued.slug if catalogued.slug.present?
     json.category category if category.present?
     json.size catalogued.size if catalogued.size.present?
+    json.listed catalogued.is_a?(Component) ? catalogued.catalogued? : catalogued.listed?
   end
 end
 

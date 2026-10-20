@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
 import BaseTable from "@/shared/components/base/Table/index.vue";
+import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import VehicleContextMenu from "@/frontend/components/Vehicles/ContextMenu/index.vue";
@@ -336,11 +337,22 @@ const resetSelected = () => {
             data-test="vehicle-table-name"
             :data-tour="hasOverview(record) ? 'vehicle-overview' : undefined"
           >
-            <span v-if="record.name">
-              {{ record.name }}
-            </span>
+            <CatalogueItemPopover
+              :item="{
+                type: 'Model',
+                slug: record.model.slug,
+                name: record.model.name,
+              }"
+              :record="record.model"
+              :link="false"
+              :focusable="false"
+            >
+              <span v-if="record.name">
+                {{ record.name }}
+              </span>
 
-            <span v-else>{{ record.model.name }}</span>
+              <span v-else>{{ record.model.name }}</span>
+            </CatalogueItemPopover>
           </router-link>
           <i
             v-if="record.flagship && !wishlist"

@@ -24,6 +24,11 @@ const router = async () => {
         component: Stub,
       },
       {
+        path: "/fleets/:slug/contracts/:contract",
+        name: "fleet-contract",
+        component: Stub,
+      },
+      {
         path: "/fleets/:slug/members",
         name: "fleet-members-index",
         component: Stub,
@@ -75,6 +80,50 @@ describe("FleetDashboardActivityList", () => {
     expect(link.attributes("href")).toBe("#/fleets/maru/events/mining-op");
     expect(link.text()).toBe("Mining op");
     expect(subject.find(".activity-list__meta").text()).toContain("mortik");
+  });
+
+  it("opens an event's or a contract's card, and nothing else's", async () => {
+    const subject = await mount([
+      entry({}),
+      entry({
+        id: "contract",
+        kind: FleetActivityKindEnum.CONTRACT_PUBLISHED,
+        category: FleetActivityCategoryEnum.CONTRACTS,
+        subject: {
+          type: FleetActivitySubjectTypeEnum.CONTRACT,
+          id: "c",
+          slug: "ore-run",
+          title: "Ore run",
+        },
+      }),
+      entry({
+        id: "member",
+        kind: FleetActivityKindEnum.MEMBER_JOINED,
+        category: FleetActivityCategoryEnum.MEMBERS,
+        subject: {
+          type: FleetActivitySubjectTypeEnum.MEMBER,
+          id: "m",
+          slug: "mortik",
+          title: "mortik",
+        },
+      }),
+    ]);
+
+    const cards = subject.findAllComponents({ name: "CatalogueItemPopover" });
+    expect(cards.map((card) => card.props("item"))).toEqual([
+      {
+        type: "FleetEvent",
+        slug: "mining-op",
+        fleetSlug: "maru",
+        name: "Mining op",
+      },
+      {
+        type: "FleetContract",
+        slug: "ore-run",
+        fleetSlug: "maru",
+        name: "Ore run",
+      },
+    ]);
   });
 
   // A transfer is only named by a note, which most do not carry; the store it

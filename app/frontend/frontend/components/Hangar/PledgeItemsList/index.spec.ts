@@ -5,6 +5,14 @@ import {
   type HangarPledgeItem,
 } from "@/services/fyApi";
 import Component from "./index.vue";
+
+vi.mock("@/frontend/components/CatalogueItemPopover/index.vue", () => ({
+  default: {
+    name: "CatalogueItemPopover",
+    props: ["item"],
+    template: '<span data-test="catalogue-popover"><slot /></span>',
+  },
+}));
 import { createMemoryHistory, createRouter } from "vue-router";
 
 const pledgeItem = (
@@ -130,12 +138,43 @@ describe("Hangar/PledgeItemsList", () => {
           name: "BriskAir IC-20",
           category: "cooler",
           size: "1",
+          listed: true,
         },
       }),
     ]);
 
     expect(wrapper.text()).toContain("Coolers");
     expect(wrapper.text()).toContain("1");
+  });
+
+  it("opens the catalogue card of a matched item, and only of one", async () => {
+    const wrapper = await mount([
+      pledgeItem({
+        kind: HangarPledgeItemKindEnum.EQUIPMENT,
+        name: "P4-AR Rifle Lumberjack",
+        catalogueItem: {
+          itemType: "Equipment",
+          id: "e0e0e0e0-e0e0-e0e0-e0e0-e0e0e0e0e0e0",
+          name: "P4-AR Rifle",
+          slug: "p4-ar-rifle-lumberjack",
+          listed: false,
+        },
+      }),
+      pledgeItem({ id: "unmatched" }),
+    ]);
+
+    const popovers = wrapper.findAllComponents({
+      name: "CatalogueItemPopover",
+    });
+
+    expect(popovers).toHaveLength(1);
+    expect(popovers[0].text()).toBe("P4-AR Rifle Lumberjack");
+    expect(popovers[0].props("item")).toEqual({
+      type: "Equipment",
+      slug: "p4-ar-rifle-lumberjack",
+      name: "P4-AR Rifle",
+      listed: false,
+    });
   });
 
   describe("inventory actions", () => {

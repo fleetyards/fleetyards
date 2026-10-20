@@ -9,6 +9,7 @@ import BaseTable from "@/shared/components/base/Table/index.vue";
 import type { BaseTableCol } from "@/shared/components/base/Table/types";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
+import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import {
   BtnSizesEnum,
   BtnTonesEnum,
@@ -192,7 +193,16 @@ const canCancel = (transfer: InventoryTransfer) =>
             data-test="transfer-contract-link"
           >
             <i class="fa-duotone fa-clipboard-list" />
-            {{ (record as InventoryTransfer).contract!.title }}
+            <CatalogueItemPopover
+              :item="{
+                type: 'FleetContract',
+                slug: (record as InventoryTransfer).contract!.slug,
+                fleetSlug: (record as InventoryTransfer).contract!.fleetSlug,
+                name: (record as InventoryTransfer).contract!.title,
+              }"
+              :link="false"
+              :focusable="false"
+            />
           </router-link>
         </span>
       </div>

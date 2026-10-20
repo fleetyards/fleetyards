@@ -177,7 +177,8 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
 
       assert_equal [matched.id, unmatched.id].sort, items.keys.sort
       assert_equal({"itemType" => "Component", "id" => cooler.id, "name" => "BriskAir IC-20",
-        "slug" => cooler.slug, "category" => "cooler", "size" => "1"}, items[matched.id]["catalogueItem"].compact)
+        "slug" => cooler.slug, "category" => "cooler", "size" => "1", "listed" => true},
+        items[matched.id]["catalogueItem"].compact)
       assert_nil items[unmatched.id]["catalogueItem"]
     end
   end
@@ -204,6 +205,17 @@ class Api::V1::HangarPledgeItemsTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, api_path: "/hangar/equipment" do
       assert_equal ["Equipment", rifle.id, "weapon"],
         parsed_body["items"].sole["catalogueItem"].values_at("itemType", "id", "category")
+    end
+  end
+
+  test "GET /hangar/equipment says when the matched gear is left out of the catalogue" do
+    user = create(:user)
+    variant = create(:equipment, name: "P4-AR Rifle Lumberjack", equipment_type: "weapon", hidden: true)
+    create(:hangar_pledge_item, user:, kind: "equipment", name: "P4-AR Rifle Lumberjack", catalogue_equipment: variant)
+    sign_in user
+
+    assert_api_response :get, 200, api_path: "/hangar/equipment" do
+      assert_equal false, parsed_body["items"].sole["catalogueItem"]["listed"]
     end
   end
 

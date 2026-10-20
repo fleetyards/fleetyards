@@ -12,6 +12,7 @@ import Chart from "@/shared/components/Chart/index.vue";
 import Chip from "@/shared/components/base/Chip/index.vue";
 import CommodityIcon from "@/frontend/components/Commodities/Icon/index.vue";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
+import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import CommodityStatsCard from "@/frontend/components/StatsCard/Commodity/index.vue";
 import { useCommodityStats } from "@/frontend/composables/useCommodityStats";
 import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
@@ -240,7 +241,16 @@ watch(
                   class="metrics-card__row metrics-card__row--stack commodity-page__link-row"
                 >
                   <span class="metrics-card__row__label">
-                    {{ recipe.name }}
+                    <CatalogueItemPopover
+                      :item="{
+                        type: 'Blueprint',
+                        slug: recipe.slug,
+                        name: recipe.name,
+                      }"
+                      :record="recipe"
+                      :link="false"
+                      :focusable="false"
+                    />
                   </span>
                   <span class="metrics-card__row__value">
                     {{

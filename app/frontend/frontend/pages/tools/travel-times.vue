@@ -23,6 +23,7 @@ import {
   BaseTableColAlignmentEnum,
 } from "@/shared/components/base/Table/types";
 import TravelTime from "@/frontend/components/TravelTime/index.vue";
+import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import {
   useComponents as useComponentsQuery,
   type ComponentQuantumDrive,
@@ -508,13 +509,14 @@ const columns = computed<BaseTableCol<Component>[]>(() => {
                      figures this table leaves out. No category icon beside it:
                      every row here is a quantum drive, so the same glyph on all
                      of them says nothing. -->
-                <router-link
-                  v-if="record.slug"
-                  :to="{ name: 'component', params: { slug: record.slug } }"
-                >
-                  {{ record.name }}
-                </router-link>
-                <span v-else>{{ record.name }}</span>
+                <CatalogueItemPopover
+                  :item="{
+                    type: 'Component',
+                    slug: record.slug,
+                    name: record.name,
+                  }"
+                  :record="record"
+                />
                 <span class="travel-times__bar">
                   <span
                     class="travel-times__bar-fill"

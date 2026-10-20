@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import BaseTable from "@/shared/components/base/Table/index.vue";
+import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -204,12 +205,23 @@ const openOwnersModal = (modelSlug: string) => {
               },
             }"
           >
-            <span v-if="record.name"
-              >{{ countLabel(record) }}{{ record.name }}</span
+            <CatalogueItemPopover
+              :item="{
+                type: 'Model',
+                slug: getModel(record).slug,
+                name: getModel(record).name,
+              }"
+              :record="getModel(record)"
+              :link="false"
+              :focusable="false"
             >
-            <span v-else
-              >{{ countLabel(record) }}{{ getModel(record).name }}</span
-            >
+              <span v-if="record.name"
+                >{{ countLabel(record) }}{{ record.name }}</span
+              >
+              <span v-else
+                >{{ countLabel(record) }}{{ getModel(record).name }}</span
+              >
+            </CatalogueItemPopover>
           </router-link>
           <br />
           <small>

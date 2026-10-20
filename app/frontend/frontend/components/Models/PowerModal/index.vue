@@ -13,6 +13,7 @@ import {
 } from "@/services/fyApi";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import HardpointCategoryIcon from "@/frontend/components/Models/Hardpoints/CategoryIcon/index.vue";
+import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Chip from "@/shared/components/base/Chip/index.vue";
@@ -1017,7 +1018,19 @@ const seconds = (value: number) =>
             :key="plant.key"
             class="power-view__plant"
           >
-            <strong>{{ plant.name }}</strong>
+            <strong>
+              <CatalogueItemPopover
+                v-if="plant.hardpoint.component"
+                :item="{
+                  type: 'Component',
+                  slug: plant.hardpoint.component.slug,
+                  name: plant.name,
+                  listed: plant.hardpoint.component.catalogued,
+                }"
+                :record="plant.hardpoint.component"
+              />
+              <template v-else>{{ plant.name }}</template>
+            </strong>
             <span v-if="plant.count > 1"> ×{{ plant.count }}</span>
             <span class="power-view__muted">
               {{
@@ -1047,7 +1060,17 @@ const seconds = (value: number) =>
             <header class="power-view__gun-head">
               <div>
                 <div class="power-view__gun-name">
-                  {{ gun.name }}
+                  <CatalogueItemPopover
+                    v-if="gun.component"
+                    :item="{
+                      type: 'Component',
+                      slug: gun.component.slug,
+                      name: gun.name,
+                      listed: gun.component.catalogued,
+                    }"
+                    :record="gun.component"
+                  />
+                  <template v-else>{{ gun.name }}</template>
                   <span v-if="gun.count > 1">×{{ gun.count }}</span>
                 </div>
                 <div class="power-view__muted">

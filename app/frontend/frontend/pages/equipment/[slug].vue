@@ -12,6 +12,7 @@ import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Chip from "@/shared/components/base/Chip/index.vue";
 import EquipmentIcon from "@/frontend/components/Equipment/Icon/index.vue";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
+import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -223,7 +224,16 @@ watch(
                   class="metrics-card__row metrics-card__row--stack equipment-page__link-row"
                 >
                   <span class="metrics-card__row__label">
-                    {{ recipe.name }}
+                    <CatalogueItemPopover
+                      :item="{
+                        type: 'Blueprint',
+                        slug: recipe.slug,
+                        name: recipe.name,
+                      }"
+                      :record="recipe"
+                      :link="false"
+                      :focusable="false"
+                    />
                   </span>
                   <span class="metrics-card__row__value">
                     {{
