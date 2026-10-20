@@ -381,7 +381,8 @@ class HangarImporter
       "Crusader E1 Spirit" => "E1 Spirit",
       "MOLE - Carbon Edition" => "Carbon",
       "MOLE - Talus Edition" => "Talus",
-      "Gladius Dunlevy" => "Dunlevy"
+      "Gladius Dunlevy" => "Dunlevy",
+      "Constellation Mk IV Phoenix Emerald" => "Constellation Phoenix Emerald"
     }
   end
 

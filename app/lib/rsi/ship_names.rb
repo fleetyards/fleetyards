@@ -61,6 +61,7 @@ module Rsi
       "Crusader E1 Spirit" => "E1 Spirit",
       "Gladius Dunlevy" => "Dunlevy",
       "Constellation Phoenix" => "Constellation Mk IV Phoenix",
+      "Constellation Mk IV Phoenix Emerald" => "Constellation Phoenix Emerald",
       "Vanduul Blade" => "Blade",
       "X1 - FORCE" => "X1 Force",
       "X1 - VELOCITY" => "X1 Velocity",
