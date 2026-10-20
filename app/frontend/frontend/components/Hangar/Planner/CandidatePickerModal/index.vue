@@ -31,8 +31,7 @@ const { updatePlan } = useHangarPlanCache();
 const submitting = ref(false);
 const mutation = useCreateHangarPlanCandidate();
 
-// The slot's filters are where the picker starts; its own filters only
-// narrow them further.
+// The slot's filters bound the picker; its own filters narrow within them.
 const query = computed(() => ({ ...props.slot.filters }));
 
 const taken = computed(() =>

@@ -270,4 +270,24 @@ describe("Models/PickerModal", () => {
       focusIn: ["mining"],
     });
   });
+
+  it("narrows a list the caller pinned instead of replacing it", async () => {
+    const wrapper = await mount({
+      query: { sizeIn: ["medium", "large"] },
+    });
+
+    expect(lastQuery()).toEqual({ sizeIn: ["medium", "large"] });
+
+    wrapper
+      .findComponent(SizeSelect)
+      .vm.$emit("update:modelValue", ["large", "small"]);
+    await nextTick();
+
+    expect(lastQuery()).toEqual({ sizeIn: ["large"] });
+
+    wrapper.findComponent(SizeSelect).vm.$emit("update:modelValue", ["small"]);
+    await nextTick();
+
+    expect(lastQuery()?.sizeIn).toEqual(["-"]);
+  });
 });
