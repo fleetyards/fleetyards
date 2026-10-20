@@ -111,3 +111,6 @@ vehicle_overview:
 
 loadout_editor:
   description: "Loadout editor — fit modules slot by slot and save fleetyards loadouts for each ship"
+
+hangar_planner:
+  description: "Hangar planner — plan the hangar you want in slots, compare it with your current hangar and work out melts, upgrades and buy-backs to get there"

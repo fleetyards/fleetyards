@@ -40,6 +40,33 @@ class Api::V1::ListEndpointQueryCountsTest < ActionDispatch::IntegrationTest
       "hangar queries grew from #{for_one} to #{for_many} between 1 and 9 vehicles"
   end
 
+  test "a hangar plan issues the same number of queries for one slot as for many" do
+    Flipper.enable(:hangar_planner)
+    user = create(:user)
+    sign_in user
+    plan = create(:hangar_plan, user:)
+
+    add_slot = lambda do
+      model = create(:model)
+      candidate = create(:hangar_plan_candidate, slot: create(:hangar_plan_slot, hangar_plan: plan), model:)
+      plan.acquisitions.create!(candidate:, start_kind: "owned", source_vehicle: create(:vehicle, user:, model:))
+      create(:hangar_plan_melt, hangar_plan: plan, vehicle: create(:vehicle, user:))
+    end
+
+    add_slot.call
+    get "/api/v1/hangar/plans/#{plan.id}"
+    assert_response :success
+    for_one = count_queries { get "/api/v1/hangar/plans/#{plan.id}" }
+
+    4.times { add_slot.call }
+    for_many = count_queries { get "/api/v1/hangar/plans/#{plan.id}" }
+
+    assert_response :success
+    assert_equal 5, response.parsed_body["slots"].size
+    assert_equal for_one, for_many,
+      "hangar plan queries grew from #{for_one} to #{for_many} between 1 and 5 slots"
+  end
+
   # The blueprint row renders through `facts`, which is the build we are on or
   # the last one that described the recipe -- so the fallback build has to be
   # preloaded as well as the current one. Asked with `currentVersion=false`,
