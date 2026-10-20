@@ -321,6 +321,8 @@ zh-CN:
               plan_limit_reached: "最多只能有 %{count} 个计划"
         hangar_plan_slot:
           attributes:
+            quantity:
+              below_routes: "已有 %{count} 艘舰船的获取途径，请先删除途径"
             base:
               slot_limit_reached: "最多只能有 %{count} 个槽位"
         hangar_plan_acquisition:

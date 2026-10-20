@@ -321,6 +321,8 @@ es:
               plan_limit_reached: "puede tener como máximo %{count} planes"
         hangar_plan_slot:
           attributes:
+            quantity:
+              below_routes: "tiene vías para %{count} naves; elimina antes alguna vía"
             base:
               slot_limit_reached: "puede tener como máximo %{count} huecos"
         hangar_plan_acquisition:

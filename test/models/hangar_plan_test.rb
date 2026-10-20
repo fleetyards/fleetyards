@@ -87,6 +87,30 @@ class HangarPlanTest < ActiveSupport::TestCase
     assert second.errors.of_kind?(:source_vehicle_id, :taken)
   end
 
+  test "an owned route starts on its ship's model whatever was sent" do
+    vehicle = create(:vehicle, user: @user, model: @carrack)
+
+    acquisition = create_acquisition(start_kind: "owned", source_vehicle: vehicle, start_model: @cutlass)
+
+    assert_equal @carrack, acquisition.start_model
+  end
+
+  test "a route whose ship left the hangar can still be edited" do
+    vehicle = create(:vehicle, user: @user, model: @carrack)
+    acquisition = create_acquisition(start_kind: "owned", source_vehicle: vehicle)
+    vehicle.destroy!
+
+    assert acquisition.reload.update(price_override: 10)
+  end
+
+  test "a slot cannot drop below the routes it has" do
+    @slot.update!(quantity: 2)
+    2.times { create_acquisition(start_kind: "store", start_model: @carrack) }
+
+    assert_not @slot.update(quantity: 1)
+    assert @slot.errors.of_kind?(:quantity, :below_routes)
+  end
+
   test "another user's ship cannot start a route" do
     vehicle = create(:vehicle, model: @carrack)
 

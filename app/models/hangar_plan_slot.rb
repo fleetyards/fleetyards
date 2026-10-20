@@ -25,6 +25,7 @@ class HangarPlanSlot < ApplicationRecord
   validate :filters_known
   validates :quantity, numericality: {only_integer: true, greater_than: 0, less_than_or_equal_to: MAX_QUANTITY}
   validate :slot_limit, on: :create
+  validate :quantity_covers_routes, on: :update
 
   before_validation :normalize_filters
   before_create :append_position
@@ -82,6 +83,16 @@ class HangarPlanSlot < ApplicationRecord
       end
       errors.add(:filters, :invalid) unless valid
     end
+  end
+
+  # Routes beyond the quantity would still hold on to the ships and upgrades
+  # they spend, so they have to go first.
+  private def quantity_covers_routes
+    return unless quantity_changed?
+
+    routes = HangarPlanAcquisition.where(hangar_plan_candidate_id: candidates.select(:id))
+      .group(:hangar_plan_candidate_id).count.values.max || 0
+    errors.add(:quantity, :below_routes, count: routes) if quantity.to_i < routes
   end
 
   private def slot_limit

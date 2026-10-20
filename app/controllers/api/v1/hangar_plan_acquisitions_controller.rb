@@ -24,7 +24,7 @@ module Api
       end
 
       def update
-        @acquisition.assign_attributes(acquisition_params)
+        @acquisition.assign_attributes(params.permit(:price_override))
 
         steps = params.key?(:steps) ? params.fetch(:steps, []) : nil
         if save_with_steps(@acquisition, steps)

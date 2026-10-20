@@ -321,6 +321,8 @@ fr:
               plan_limit_reached: "peut contenir au plus %{count} plans"
         hangar_plan_slot:
           attributes:
+            quantity:
+              below_routes: "a des voies pour %{count} vaisseaux ; supprimez d'abord des voies"
             base:
               slot_limit_reached: "peut contenir au plus %{count} emplacements"
         hangar_plan_acquisition:

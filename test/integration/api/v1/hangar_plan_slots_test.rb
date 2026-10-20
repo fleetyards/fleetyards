@@ -162,6 +162,15 @@ class Api::V1::HangarPlanSlotsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT rejects a quantity below the slot's routes" do
+    candidate = create(:hangar_plan_candidate, slot: @slot)
+    @slot.update!(quantity: 2)
+    2.times { @plan.acquisitions.create!(candidate:, start_kind: "store", start_model: candidate.model) }
+
+    assert_api_response :put, 400, api_path: "/hangar/plans/{hangarPlanId}/slots/{id}",
+      path_params: {hangarPlanId: @plan.id, id: @slot.id}, body: {quantity: 1}
+  end
+
   test "PUT rejects a quantity of zero" do
     assert_api_response :put, 400, api_path: "/hangar/plans/{hangarPlanId}/slots/{id}",
       path_params: {hangarPlanId: @plan.id, id: @slot.id}, body: {quantity: 0}

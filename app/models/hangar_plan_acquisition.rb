@@ -20,7 +20,7 @@ class HangarPlanAcquisition < ApplicationRecord
 
   validates :start_kind, inclusion: {in: START_KINDS}
   validates :price_override, numericality: {greater_than_or_equal_to: 0}, allow_nil: true
-  validate :start_source
+  validate :start_source, on: :create
   validate :quantity_available, on: :create
   validate :chain_ends_on_candidate
   validate :chain_resources_available
@@ -74,7 +74,7 @@ class HangarPlanAcquisition < ApplicationRecord
   end
 
   private def assign_start_model
-    self.start_model_id = source_vehicle.model_id if start_kind == "owned" && source_vehicle.present? && start_model_id.blank?
+    self.start_model_id = source_vehicle.model_id if start_kind == "owned" && source_vehicle.present?
   end
 
   private def start_source

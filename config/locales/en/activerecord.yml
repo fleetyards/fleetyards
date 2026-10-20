@@ -322,6 +322,8 @@ en:
               plan_limit_reached: "can hold at most %{count} plans"
         hangar_plan_slot:
           attributes:
+            quantity:
+              below_routes: "has routes for %{count} ships; remove routes first"
             base:
               slot_limit_reached: "can hold at most %{count} slots"
         hangar_plan_acquisition:

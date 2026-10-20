@@ -321,6 +321,8 @@ zh-TW:
               plan_limit_reached: "最多只能有 %{count} 個計畫"
         hangar_plan_slot:
           attributes:
+            quantity:
+              below_routes: "已有 %{count} 艘艦船的取得途徑，請先刪除途徑"
             base:
               slot_limit_reached: "最多只能有 %{count} 個欄位"
         hangar_plan_acquisition:
