@@ -24500,6 +24500,7 @@ components:
       - hangar_inventories
       - holo_ar
       - holo_textured
+      - homepage_redesign
       - loadout_editor
       - oauth-applications
       - oauth-bluesky
@@ -24523,6 +24524,7 @@ components:
       - HANGAR_INVENTORIES
       - HOLO_AR
       - HOLO_TEXTURED
+      - HOMEPAGE_REDESIGN
       - LOADOUT_EDITOR
       - OAUTH_APPLICATIONS
       - OAUTH_BLUESKY
