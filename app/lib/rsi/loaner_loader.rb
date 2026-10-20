@@ -97,6 +97,7 @@ module Rsi
         "Constellation Aquila" => ["Constellation Mk IV Aquila"],
         "Constellation Phoenix" => ["Constellation Mk IV Phoenix"],
         "Constellation Phoenix Emerald" => ["Constellation Mk IV Phoenix"],
+        "Constellation Mk IV Phoenix Emerald" => ["Constellation Mk IV Phoenix"],
         "Constellation Taurus" => ["Constellation Mk IV Taurus"],
         "Mole" => ["MOLE"],
         "G12A" => ["G12a"],
