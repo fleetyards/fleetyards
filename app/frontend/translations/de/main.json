@@ -9,6 +9,7 @@
       "size": "Größe",
       "beam": "Breite",
       "cargo": "Fracht",
+      "cargoWithModules": "mit Modulen",
       "personalInventory": "Schiffsinventar",
       "beds": {
         "one": "%{count} Bett",

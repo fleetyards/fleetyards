@@ -21,7 +21,8 @@ module Admin
               active: {type: :boolean},
               hidden: {type: :boolean},
               storeImage: {type: [:string, :null]},
-              scKey: {type: [:string, :null]}
+              scKey: {type: [:string, :null]},
+              cargo: {type: [:number, :null], description: "In SCU. Re-derived from the cargo holds whenever a load changes them"}
             },
             additionalProperties: false
           })

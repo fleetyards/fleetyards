@@ -53,6 +53,21 @@ class Api::V1::HangarStatsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/stats totals the cargo each vehicle carries as fitted" do
+    user = create(:user)
+    model = create(:model, production_status: "flight-ready", cargo: 2, keep_cargo: true)
+    cargo_module = create(:model_module, cargo: 36)
+    create(:module_hardpoint, model:, model_module: cargo_module, slot: "hardpoint_module")
+    create(:vehicle_loadout, :fleetyards, :active, vehicle: create(:vehicle, user:, model:),
+      item_list: [{slot_path: "hardpoint_module", item_type: "ModelModule", item_id: cargo_module.id}])
+    create(:vehicle, user:, model:)
+    sign_in user
+
+    assert_api_response :get, 200 do
+      assert_equal 40, parsed_body.dig("metrics", "totalCargo")
+    end
+  end
+
   test "GET /hangar/stats leaves out the ships their owner hid" do
     user = create(:user)
     create(:vehicle, user:, wanted: false)

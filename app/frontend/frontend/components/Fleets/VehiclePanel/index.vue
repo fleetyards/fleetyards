@@ -15,6 +15,7 @@ import type {
   FleetModelCountsStats,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useVehicleCargo } from "@/frontend/composables/useVehicleCargo";
 import type { MemberContact } from "@/frontend/components/base/MemberContactMenu/types";
 
 const { t } = useI18n();
@@ -32,6 +33,15 @@ const props = withDefaults(defineProps<Props>(), {
   showOwner: true,
   modelCounts: undefined,
 });
+
+const { cargoLabel } = useVehicleCargo();
+
+// A grouped list holds ships rather than vehicles, and a ship has no fitting.
+const vehicleCargoLabel = computed(() =>
+  (props.fleetVehicle as VehiclePublic).model
+    ? String(cargoLabel(props.fleetVehicle as VehiclePublic))
+    : undefined,
+);
 
 const model = computed(() => {
   if ((props.fleetVehicle as VehiclePublic).model) {
@@ -151,6 +161,7 @@ const route = useRoute();
     class="fleet-vehicle-panel"
     :details="details"
     :store-image="storeImage"
+    :cargo-label="vehicleCargoLabel"
   >
     <template #heading-title>
       <router-link

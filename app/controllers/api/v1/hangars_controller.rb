@@ -33,12 +33,14 @@ module Api
 
         scope = loaner_included?(scope)
         scope = bundled_included?(scope)
-        scope = scope.where(models: {cargo: 0.1..}) if vehicle_query_params.delete("with_cargo")
+        scope = scope.where("#{Vehicle.fitted_cargo_sql} >= 0.1") if vehicle_query_params.delete("with_cargo")
         scope = will_it_fit?(scope) if vehicle_query_params["will_it_fit"].present?
 
         normalize_sort_params(vehicle_query_params)
         vehicle_query_params["sorts"] = Vehicle.with_rank_tiebreak(
-          sorting_params(Vehicle, vehicle_query_params["sorts"], current_resource_owner.hangar_sorting_params)
+          Vehicle.fitted_cargo_sorts(
+            sorting_params(Vehicle, vehicle_query_params["sorts"], current_resource_owner.hangar_sorting_params)
+          )
         )
 
         @q = scope.ransack(vehicle_query_params)

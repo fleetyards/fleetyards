@@ -173,7 +173,10 @@ const angledImage = (record: Model) => {
       </template>
       <template #col-cargo="{ record }">
         <span class="no-break">{{
-          toNumber(record.metrics.cargo || "", "cargo")
+          toNumber(
+            record.metrics.maxCargo || record.metrics.cargo || "",
+            "cargo",
+          )
         }}</span>
       </template>
       <template #col-hydrogenFuelTankSize="{ record }">

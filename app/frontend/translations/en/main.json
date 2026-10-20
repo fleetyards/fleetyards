@@ -9,6 +9,7 @@
       "size": "Size",
       "beam": "Beam",
       "cargo": "Cargo",
+      "cargoWithModules": "with modules",
       "personalInventory": "Ship Inventory",
       "beds": {
         "one": "%{count} bed",

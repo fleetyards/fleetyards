@@ -6,7 +6,6 @@ import Component from "./index.vue";
 import {
   type Vehicle,
   BoughtViaEnum,
-  VehicleLoadoutItemTypeEnum,
   VehicleLoadoutKindEnum,
 } from "@/services/fyApi";
 
@@ -22,13 +21,6 @@ vi.mock("@/frontend/components/Vehicles/ContextMenu/index.vue", () => ({
     props: ["hideShipPage"],
     template: "<div />",
   },
-}));
-
-vi.mock("@/services/fyApi", async (importOriginal) => ({
-  ...(await importOriginal<Record<string, unknown>>()),
-  useModelModules: () => ({
-    data: ref({ items: [{ id: "module-1", metrics: { cargo: 32 } }] }),
-  }),
 }));
 
 const openEditModal = vi.fn();
@@ -189,36 +181,17 @@ describe("VehicleHero", () => {
     );
   });
 
-  it("counts the active loadout's modules into the stats", async () => {
-    const loadout = (kind: VehicleLoadoutKindEnum) => ({
-      id: "loadout-1",
-      name: "Hauler",
-      active: true,
-      kind,
-      items: [
-        {
-          itemType: VehicleLoadoutItemTypeEnum.MODEL_MODULE,
-          itemId: "module-1",
-          slotPath: "hardpoint_front_module",
-        },
-      ],
-    });
+  it("shows the cargo the vehicle carries as fitted, and what modules would add", async () => {
     const cargo = async (overrides: Partial<Vehicle> = {}) =>
       (await mount(false, overrides))
         .findComponent({ name: "VehicleOverviewSpecs" })
-        .props("moduleCargo");
+        .props("cargoLabel");
 
-    expect(await cargo()).toBe(0);
-    expect(
-      await cargo({
-        activeLoadout: loadout(VehicleLoadoutKindEnum.FLEETYARDS),
-      } as Partial<Vehicle>),
-    ).toBe(32);
-    expect(
-      await cargo({
-        activeLoadout: loadout(VehicleLoadoutKindEnum.LINK),
-      } as Partial<Vehicle>),
-    ).toBe(0);
+    expect(await cargo({ cargo: 96 })).toContain("96");
+
+    const withModules = await cargo({ cargo: 0, cargoWithModules: 74 });
+    expect(withModules).toContain("0");
+    expect(withModules).toContain("74");
   });
 
   it("says which loadout the ship flies with and links its page", async () => {

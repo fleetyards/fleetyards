@@ -136,8 +136,8 @@ export const useModelSections = (
       label: t("model.cargo"),
       direction: "higher",
       counts: { unit: "SCU" },
-      raw: (m) => m.metrics.cargo,
-      value: (m) => number(m.metrics.cargo, "cargo"),
+      raw: (m) => m.metrics.maxCargo ?? m.metrics.cargo,
+      value: (m) => number(m.metrics.maxCargo ?? m.metrics.cargo, "cargo"),
     },
     {
       key: "price",

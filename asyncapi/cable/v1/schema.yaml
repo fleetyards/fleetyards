@@ -3703,6 +3703,10 @@ components:
           type: number
         cargoLabel:
           type: string
+        maxCargo:
+          type: number
+        maxCargoLabel:
+          type: string
         personalInventory:
           type: number
         personalInventoryLabel:
@@ -5069,6 +5073,10 @@ components:
           items:
             type: string
             format: uuid
+        cargo:
+          type: number
+        cargoWithModules:
+          type: number
         modelUpgradeIds:
           type: array
           items:

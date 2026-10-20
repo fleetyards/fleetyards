@@ -75,6 +75,29 @@ class Api::V1::FleetsVehiclesIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "counts a member's loadout towards the cargo filter only once they make it public" do
+    owner = create(:user)
+    fleet = create(:fleet, admins: [owner])
+    sign_in owner
+    model = create(:model, production_status: "flight-ready", cargo: 0, keep_cargo: true)
+    cargo_module = create(:model_module, cargo: 36)
+    create(:module_hardpoint, model:, model_module: cargo_module, slot: "hardpoint_module")
+    vehicle = create(:vehicle, user: owner, model:)
+    loadout = create(:vehicle_loadout, :fleetyards, :active, vehicle:,
+      item_list: [{slot_path: "hardpoint_module", item_type: "ModelModule", item_id: cargo_module.id}])
+
+    assert_api_response :get, 200, path_params: {fleetSlug: fleet.slug}, params: {q: {cargoGteq: 30}} do
+      assert_empty parsed_body["items"]
+    end
+
+    loadout.update!(public: true)
+
+    assert_api_response :get, 200, path_params: {fleetSlug: fleet.slug}, params: {q: {cargoGteq: 30}} do
+      assert_equal [model.id], parsed_body["items"].map { |item| item.dig("model", "id") }
+      assert_equal [36.0], parsed_body["items"].map { |item| item["cargo"] }
+    end
+  end
+
   test "GET /fleets/:slug/vehicles lists fleet vehicles" do
     sign_in @admin
 

@@ -1713,6 +1713,7 @@
         "pledgePrice": "Prezzo Pledge",
         "productionStatus": "Stato di Produzione",
         "scKey": "SC Key",
+        "cargo": "Carico",
         "storeImage": "Immagine Negozio",
         "active": "Attivo?",
         "hidden": "Nascosto?"
@@ -2356,6 +2357,7 @@
         "passwordConfirmation": "Conferma password"
       },
       "vehicle": {
+        "cargoWithModules": "%{cargo} (%{withModules} con moduli)",
         "customOrder": "Personalizzato",
         "name": "Nome",
         "states": "Stati",

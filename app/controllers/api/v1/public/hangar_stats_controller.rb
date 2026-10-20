@@ -51,7 +51,7 @@ module Api
                 slug: group.slug
               )
             end,
-            metrics: hangar_metrics(models, non_loaner_models)
+            metrics: hangar_metrics(models, non_loaner_models, total_cargo: Vehicle.fitted_cargo_total(vehicles, public_only: true))
           )
         end
 
@@ -106,7 +106,7 @@ module Api
 
         private
 
-        def hangar_metrics(models, non_loaner_models)
+        def hangar_metrics(models, non_loaner_models, total_cargo:)
           lengths = models.filter_map { |m| m.length if m.length&.positive? }
           unique_model_ids = non_loaner_models.each_with_object(Set.new) { |m, set| set.add(m.id) }
           manufacturer_ids = non_loaner_models.each_with_object(Set.new) { |m, set| set.add(m.manufacturer_id) if m.manufacturer_id }
@@ -115,7 +115,7 @@ module Api
 
           {
             total_crew: models.map(&:crew).sum(&:to_i),
-            total_cargo: models.map(&:cargo).sum(&:to_i),
+            total_cargo:,
             largest_ship: lengths.max,
             smallest_ship: lengths.min,
             flight_ready_count: non_loaner_models.count { |m| m.production_status == "flight-ready" },

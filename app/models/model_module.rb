@@ -74,6 +74,17 @@ class ModelModule < ApplicationRecord
     where(sanitize_sql_array([IN_BUILD_SQL, {environment: source.environment, version: source.version}]))
   }
 
+  # The modules that add cargo to a ship, under the conditions the ship page
+  # lists its modules. One expression, so the catalogue's and the hangar's SQL
+  # and the Ruby that renders them count the same modules.
+  def self.carrying_cargo_sql(source = ::ScData::Source.current.served_for(ModelModuleBuild))
+    in_build = sanitize_sql_array([IN_BUILD_SQL, {environment: source.environment, version: source.version}])
+
+    "(model_modules.hidden = FALSE AND model_modules.active = TRUE AND model_modules.cargo > 0 AND (#{in_build}))"
+  end
+
+  scope :carrying_cargo, -> { where(carrying_cargo_sql) }
+
   # Read through the build, falling back to the column. The column still answers
   # for a module no load has given a build -- an RSI-store module the game files
   # do not name, or one an admin filled in by hand.

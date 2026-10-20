@@ -18364,6 +18364,10 @@ components:
           type: number
         cargoLabel:
           type: string
+        maxCargo:
+          type: number
+        maxCargoLabel:
+          type: string
         personalInventory:
           type: number
         personalInventoryLabel:
@@ -18504,6 +18508,8 @@ components:
           format: date-time
         price:
           type: number
+        cargo:
+          type: number
         active:
           type: boolean
         hidden:
@@ -18582,6 +18588,12 @@ components:
           type:
           - string
           - 'null'
+        cargo:
+          type:
+          - number
+          - 'null'
+          description: In SCU. Re-derived from the cargo holds whenever a load changes
+            them
       additionalProperties: false
       title: ModelModuleInput
     ModelModuleMedicalBeds:

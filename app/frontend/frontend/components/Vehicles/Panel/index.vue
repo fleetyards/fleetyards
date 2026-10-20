@@ -21,6 +21,7 @@ import {
 } from "@/services/fyApi";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useVehicleCargo } from "@/frontend/composables/useVehicleCargo";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
@@ -56,6 +57,8 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{ move: [offset: number] }>();
 
 const { t } = useI18n();
+
+const { cargoLabel } = useVehicleCargo();
 
 // Only a ship with something shared gets the button; the count is already in
 // the payload, so empty logs cost no request.
@@ -255,6 +258,7 @@ const tone = computed(() => {
     :details="details"
     :tone="tone"
     :store-image="image"
+    :cargo-label="String(cargoLabel(vehicle))"
   >
     <template #heading-title>
       <span class="flex items-baseline gap-2 max-w-full">

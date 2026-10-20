@@ -44,6 +44,11 @@ module V1
             userDiscordProfileUrl: {type: :string, format: :uri},
             userCitizenidProfileUrl: {type: :string, format: :uri},
             modelModuleIds: {type: :array, items: {type: :string, format: :uuid}},
+            # The hull plus the cargo modules fitted: the active loadout's, or the
+            # ones the ship comes with.
+            cargo: {type: :number},
+            # Sent without a loadout, when the ship's cargo modules would add more.
+            cargoWithModules: {type: :number},
             modelUpgradeIds: {type: :array, items: {type: :string, format: :uuid}},
             modulePackage: {"$ref": "#/components/schemas/ModelModulePackage"},
             upgrade: {"$ref": "#/components/schemas/ModelUpgrade"},

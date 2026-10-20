@@ -1713,6 +1713,7 @@
         "pledgePrice": "承諾價格",
         "productionStatus": "生產狀態",
         "scKey": "SC Key",
+        "cargo": "貨物",
         "storeImage": "商店圖片",
         "active": "啟用？",
         "hidden": "隱藏？"
@@ -2356,6 +2357,7 @@
         "passwordConfirmation": "確認密碼"
       },
       "vehicle": {
+        "cargoWithModules": "%{cargo}（含模組 %{withModules}）",
         "customOrder": "自訂",
         "name": "名稱",
         "states": "狀態",

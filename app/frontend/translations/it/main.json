@@ -9,6 +9,7 @@
       "size": "Dimensione",
       "beam": "Raggio",
       "cargo": "Carico",
+      "cargoWithModules": "con moduli",
       "personalInventory": "Inventario della nave",
       "beds": {
         "one": "%{count} letto",

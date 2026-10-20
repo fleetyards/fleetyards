@@ -79,6 +79,38 @@ class Api::V1::HangarTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "filters, sorts and lists the cargo a vehicle carries as fitted" do
+    user = create(:user)
+    sign_in user
+    model = create(:model, production_status: "flight-ready", cargo: 0, keep_cargo: true)
+    front_cargo = create(:model_module, cargo: 38)
+    rear_cargo = create(:model_module, cargo: 36)
+    create(:module_hardpoint, model:, model_module: front_cargo, slot: "hardpoint_front_module")
+    create(:module_hardpoint, model:, model_module: rear_cargo, slot: "hardpoint_rear_module")
+    fitted = create(:vehicle, user:, model:)
+    create(:vehicle_loadout, :fleetyards, :active, vehicle: fitted,
+      item_list: [{slot_path: "hardpoint_rear_module", item_type: "ModelModule", item_id: rear_cargo.id}])
+    bare = create(:vehicle, user:, model:)
+
+    [
+      [{cargoGteq: 30}, [fitted]],
+      [{cargoLteq: 30}, [bare]],
+      [{withCargo: true}, [fitted]]
+    ].each do |query, expected|
+      assert_api_response :get, 200, params: {q: query} do
+        assert_equal expected.map(&:id), parsed_body["items"].map { |item| item["id"] }
+      end
+    end
+
+    assert_api_response :get, 200, params: {q: {sorts: ["modelCargo desc"]}} do
+      items = parsed_body["items"]
+
+      assert_equal [fitted.id, bare.id], items.map { |item| item["id"] }
+      assert_equal [36.0, 0.0], items.map { |item| item["cargo"] }
+      assert_equal [nil, 74.0], items.map { |item| item["cargoWithModules"] }
+    end
+  end
+
   # A carrier holding a dock of each kind takes the branch that used to hand a
   # Hash to `or`, which Rails refuses outright -- so this filter answered with a
   # 500 for exactly the three ships anybody would pick: Polaris, Carrack, 890

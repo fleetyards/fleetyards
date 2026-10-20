@@ -11,6 +11,7 @@ module Admin
             schema({
               properties: {
                 price: {type: :number},
+                cargo: {type: :number},
                 active: {type: :boolean},
                 hidden: {type: :boolean},
                 models: {type: :array, items: {"$ref": "#/components/schemas/Model"}},

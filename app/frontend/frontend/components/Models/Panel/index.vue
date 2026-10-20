@@ -29,6 +29,7 @@ type Props = {
   id?: string;
   storeImage?: string;
   level?: HeadingLevelEnum;
+  cargoLabel?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -37,6 +38,7 @@ const props = withDefaults(defineProps<Props>(), {
   id: undefined,
   storeImage: undefined,
   level: HeadingLevelEnum.H2,
+  cargoLabel: undefined,
 });
 
 const { t } = useI18n();
@@ -148,7 +150,7 @@ const route = useRoute();
             </template>
           </strong>
         </div>
-        <ModelPanelMetrics :model="model" />
+        <ModelPanelMetrics :model="model" :cargo-label="cargoLabel" />
       </Collapsed>
     </template>
   </Panel>

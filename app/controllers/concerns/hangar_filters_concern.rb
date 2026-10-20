@@ -4,7 +4,14 @@ module HangarFiltersConcern
   include WillItFitConcern
 
   private def vehicle_query_params
-    @vehicle_query_params ||= params.permit(q: ParamsHelper.new("v1/schema.yaml").to_params("HangarQuery")).fetch(:q, {})
+    @vehicle_query_params ||= Vehicle.fitted_cargo_filters(
+      params.permit(q: ParamsHelper.new("v1/schema.yaml").to_params("HangarQuery")).fetch(:q, {}),
+      public_only: public_vehicle_list?
+    )
+  end
+
+  private def public_vehicle_list?
+    self.class.name.start_with?("Api::V1::Public::")
   end
 
   private def will_it_fit?(scope)

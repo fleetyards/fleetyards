@@ -71,7 +71,7 @@ module Api
               label: classification.humanize
             )
           end,
-          metrics: fleet_metrics(models, non_loaner_models, pledge_store_models, ingame_models, modules, upgrades)
+          metrics: fleet_metrics(models, non_loaner_models, pledge_store_models, ingame_models, modules, upgrades, total_cargo: Vehicle.fitted_cargo_total(vehicles, public_only: true))
         )
       end
 
@@ -188,7 +188,7 @@ module Api
 
       private
 
-      def fleet_metrics(models, non_loaner_models, pledge_store_models, ingame_models, modules, upgrades)
+      def fleet_metrics(models, non_loaner_models, pledge_store_models, ingame_models, modules, upgrades, total_cargo:)
         lengths = models.filter_map { |m| m.length if m.length&.positive? }
         unique_model_ids = non_loaner_models.each_with_object(Set.new) { |m, set| set.add(m.id) }
         manufacturer_ids = non_loaner_models.each_with_object(Set.new) { |m, set| set.add(m.manufacturer_id) if m.manufacturer_id }
@@ -200,7 +200,7 @@ module Api
           total_credits: ingame_models.map(&:price).sum(&:to_i),
           total_ingame_value: non_loaner_models.map(&:price).sum(&:to_i),
           total_crew: models.map(&:crew).sum(&:to_i),
-          total_cargo: models.map(&:cargo).sum(&:to_i),
+          total_cargo:,
           largest_ship: lengths.max&.to_f,
           smallest_ship: lengths.min&.to_f,
           average_pledge_price: pledge_store_models.any? ? (pledge_store_models.map(&:pledge_price).sum(&:to_i) / pledge_store_models.size) : 0,

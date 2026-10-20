@@ -48,6 +48,28 @@ class Api::V1::ModelsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "filters and sorts by the cargo a ship carries with its modules fitted" do
+    hull_only = create(:model, cargo: 46, keep_cargo: true)
+    modular = create(:model, cargo: 0, keep_cargo: true)
+    create(:module_hardpoint, model: modular, slot: "hardpoint_front_module", model_module: create(:model_module, cargo: 38))
+    create(:module_hardpoint, model: modular, slot: "hardpoint_rear_module", model_module: create(:model_module, cargo: 36))
+
+    [
+      [{cargoGteq: 50}, [modular]],
+      [{cargoLteq: 50}, [hull_only]],
+      [{withCargo: true}, [hull_only, modular]]
+    ].each do |query, expected|
+      assert_api_response :get, 200, params: {q: query} do
+        assert_equal expected.map(&:id).sort, parsed_body["items"].map { |item| item["id"] }.sort
+      end
+    end
+
+    assert_api_response :get, 200, params: {q: {sorts: ["cargo desc"]}} do
+      assert_equal [modular.id, hull_only.id], parsed_body["items"].map { |item| item["id"] }
+      assert_equal [74.0, 46.0], parsed_body["items"].map { |item| item.dig("metrics", "maxCargo") }
+    end
+  end
+
   test "GET /models returns a list of models" do
     create_list(:model, 6)
 

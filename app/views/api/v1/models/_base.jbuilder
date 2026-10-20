@@ -179,6 +179,8 @@ json.metrics do
   json.beam_label model.beam_label
   json.cargo model.cargo.to_f
   json.cargo_label model.cargo_label
+  json.max_cargo model.max_cargo.to_f
+  json.max_cargo_label model.max_cargo_label
   json.personal_inventory model.personal_inventory.to_f
   json.personal_inventory_label model.personal_inventory_label
   json.beds model.beds

@@ -38,6 +38,7 @@ class FleetVehicle < ApplicationRecord
   # vehicle's dates have no counterpart and fall back to the name.
   def self.model_sorts(sorts)
     Array(sorts).filter_map { |sort| sort.delete_prefix("model_") if sort.start_with?("model_") }
+      .map { |sort| sort.sub(/\Acargo /, "max_cargo ") }
       .presence || ["name asc"]
   end
 
@@ -51,7 +52,7 @@ class FleetVehicle < ApplicationRecord
   # The sorts a list of vehicles can follow. Each row is one vehicle, so the
   # count sort falls back to the default like any other it cannot answer.
   def self.vehicle_sorts(sorts)
-    Array(sorts).reject { |sort| count_sort?(sort) }
+    Vehicle.fitted_cargo_sorts(Array(sorts).reject { |sort| count_sort?(sort) }, public_only: true)
       .presence || DEFAULT_SORTING_PARAMS
   end
 end

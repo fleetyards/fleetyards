@@ -35,6 +35,8 @@ type I18nHelpers = Pick<
 export const useModelMetricRows = (
   model: () => Model,
   { t, toNumber, toUEC }: I18nHelpers,
+  // A vehicle's own cargo, fitted, in place of the most the ship can carry.
+  cargoLabel: () => string | undefined = () => undefined,
 ) => {
   // Ship-matrix speeds are not meaningful, so they are only shown for models
   // whose figures come from the game files. isGroundVehicle rather than a
@@ -82,14 +84,17 @@ export const useModelMetricRows = (
   });
 
   const dimensions = computed<MetricRow[]>(() => {
-    const { length, beam, height, mass, cargo } = model().metrics;
+    const { length, beam, height, mass, cargo, maxCargo } = model().metrics;
 
     const rows: MetricRow[] = [
       { label: t("model.length"), value: toNumber(length, "distance") },
       { label: t("model.beam"), value: toNumber(beam, "distance") },
       { label: t("model.height"), value: toNumber(height, "distance") },
       { label: t("model.mass"), value: toNumber(mass, "weight") },
-      { label: t("model.cargo"), value: toNumber(cargo, "cargo") },
+      {
+        label: t("model.cargo"),
+        value: cargoLabel() ?? toNumber(maxCargo ?? cargo, "cargo"),
+      },
     ];
 
     if (model().price) {
