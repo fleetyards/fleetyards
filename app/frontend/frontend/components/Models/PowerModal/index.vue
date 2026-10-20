@@ -53,10 +53,7 @@ import {
   pipCells,
   pipClickTarget,
 } from "@/frontend/components/Models/PowerDistribution/allocation";
-import {
-  type GunStack,
-  weaponStations,
-} from "@/frontend/components/Models/Hardpoints/weaponStations";
+import { poweredGuns } from "./guns";
 
 type Props = {
   modelName?: string;
@@ -329,60 +326,48 @@ const cycleAxis = () => {
 // decide how big each one is and how fast it refills, which is where
 // sustained fire comes from.
 const energyGuns = computed(() =>
-  weaponStations(
+  poweredGuns(
     props.hardpoints,
     stats.value.weaponPowerRatio,
     props.regenModifier,
-  )
-    .flatMap((station) =>
-      station.guns.map((gun) => ({ ...gun, count: gun.count * station.count })),
-    )
-    .filter((gun) => !gun.missile && gun.armed)
-    .reduce<GunStack[]>((stacks, gun) => {
-      const existing = stacks.find((entry) => entry.name === gun.name);
-      if (existing) existing.count += gun.count;
-      else stacks.push({ ...gun });
-      return stacks;
-    }, [])
-    .map((gun) => {
-      const ratio = stats.value.weaponPowerRatio;
-      const shotsPerSecond = (gun.weapon.fireRate || 0) / 60;
-      const cycle = dutyCycle(gun.weapon, ratio, props.regenModifier);
-      const charge = capacitor(gun.weapon, ratio, props.regenModifier);
+  ).map((gun) => {
+    const ratio = stats.value.weaponPowerRatio;
+    const shotsPerSecond = (gun.weapon.fireRate || 0) / 60;
+    const cycle = dutyCycle(gun.weapon, ratio, props.regenModifier);
+    const charge = capacitor(gun.weapon, ratio, props.regenModifier);
 
-      if (charge) {
-        return {
-          ...gun,
-          energy: true,
-          capacity: charge.shots,
-          // The most this ship's pool can give the gun, rather than the load
-          // it would hold with the pool feeding it alone.
-          capacityMax:
-            capacitor(gun.weapon, sim.value.weaponMaxRatio, props.regenModifier)
-              ?.shots ?? charge.shots,
-          regen: charge.regenPerSecond,
-          emptyIn: shotsPerSecond ? charge.shots / shotsPerSecond : 0,
-          refillIn: cycle.offTime,
-          share: cycle.ratio,
-        };
-      }
-
-      const heat = gun.weapon.heat;
+    if (charge) {
       return {
         ...gun,
-        energy: false,
-        capacity: 0,
-        capacityMax: 0,
-        regen: 0,
-        emptyIn:
-          heat?.overheatTemperature && gun.weapon.heatPerShot && shotsPerSecond
-            ? heat.overheatTemperature /
-              (gun.weapon.heatPerShot * shotsPerSecond)
-            : 0,
-        refillIn: heat?.overheatFixTime || 0,
+        energy: true,
+        capacity: charge.shots,
+        // The most this ship's pool can give the gun, rather than the load
+        // it would hold with the pool feeding it alone.
+        capacityMax:
+          capacitor(gun.weapon, sim.value.weaponMaxRatio, props.regenModifier)
+            ?.shots ?? charge.shots,
+        regen: charge.regenPerSecond,
+        emptyIn: shotsPerSecond ? charge.shots / shotsPerSecond : 0,
+        refillIn: cycle.offTime,
         share: cycle.ratio,
       };
-    }),
+    }
+
+    const heat = gun.weapon.heat;
+    return {
+      ...gun,
+      energy: false,
+      capacity: 0,
+      capacityMax: 0,
+      regen: 0,
+      emptyIn:
+        heat?.overheatTemperature && gun.weapon.heatPerShot && shotsPerSecond
+          ? heat.overheatTemperature / (gun.weapon.heatPerShot * shotsPerSecond)
+          : 0,
+      refillIn: heat?.overheatFixTime || 0,
+      share: cycle.ratio,
+    };
+  }),
 );
 
 // The modal store makes its props deeply reactive, which unwraps the
