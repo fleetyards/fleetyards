@@ -30,8 +30,15 @@ import {
   ComponentShieldFaceTypeEnum,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
-import { sustainedRatio } from "@/frontend/composables/useLoadoutStats";
-import { criticalSize } from "@/frontend/composables/powerSim";
+import {
+  capacitor,
+  sustainedRatio,
+} from "@/frontend/composables/useLoadoutStats";
+import {
+  criticalSize,
+  NO_REGEN_MODIFIER,
+  type WeaponRegenModifier,
+} from "@/frontend/composables/powerSim";
 import {
   powerPlantContextKey,
   powerPlantPips,
@@ -166,6 +173,10 @@ const hardpointStatsBuilder = (count?: MaybeRefOrGetter<number>) => {
     "weaponPowerRatio",
     undefined,
   );
+  // The ship's engineering buff on its guns, provided next to the ratio.
+  const weaponRegenModifier = inject<
+    MaybeRefOrGetter<WeaponRegenModifier | undefined>
+  >("weaponRegenModifier", undefined);
 
   // Ship-level power-plant context (plant count + size sum), provided by the
   // power-plant Category, so each plant can show its own pip share.
@@ -810,6 +821,7 @@ const hardpointStatsBuilder = (count?: MaybeRefOrGetter<number>) => {
       const efficiency = sustainedRatio(
         weapon,
         Number(toValue(weaponPowerRatio) ?? 1),
+        toValue(weaponRegenModifier) ?? NO_REGEN_MODIFIER,
       );
       // Stacked identical mounts collapse to one compact summary row, so the DPS
       // figures are summed across the stack (like erkul's `dps × count`). Other

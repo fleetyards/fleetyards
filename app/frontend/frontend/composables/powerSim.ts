@@ -105,6 +105,21 @@ export const WEAPON_POOL_PORT = "weaponPool";
 // keyed by WEAPON_POOL_PORT.
 export type PortOverrides = Record<string, number>;
 
+// A ship's engineering buff on its guns: a multi-crew ship fits one that
+// scales the weapon power ratio, every gun's ammo load (the Constellation
+// Mk V's by 9) and its regen. Most ships fit none.
+export interface WeaponRegenModifier {
+  powerRatio: number;
+  maxAmmoLoad: number;
+  maxRegenPerSecond: number;
+}
+
+export const NO_REGEN_MODIFIER: WeaponRegenModifier = {
+  powerRatio: 1,
+  maxAmmoLoad: 1,
+  maxRegenPerSecond: 1,
+};
+
 export type AllocateOptions = {
   mode?: FlightMode;
   // Weapon fill target = min(weaponConsumptionPoints, weaponPoolSize).

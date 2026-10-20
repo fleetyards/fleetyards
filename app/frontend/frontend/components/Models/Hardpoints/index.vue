@@ -201,10 +201,13 @@ watch([() => props.model.slug, source], () => {
   powerOverrides.value = {};
 });
 
+const regenModifier = computed(() => props.model.metrics?.weaponRegenModifier);
+
 const combatStats = useLoadoutStats(
   loadoutHardpoints,
   () => props.model.metrics?.weaponPoolSize,
   powerOverrides,
+  regenModifier,
 );
 
 provide(
@@ -216,12 +219,18 @@ provide(
 // distribution the control shows.
 provide("powerOverrides", powerOverrides);
 
+// The ship's engineering buff, which every gun's capacitor and the weapon
+// power ratio are scaled by.
+provide("weaponRegenModifier", regenModifier);
+
 // Shield power allocation → Defense card scales shield HP/regen with the pips.
 const powerSim = useLoadoutSim(
   loadoutHardpoints,
   () => props.model.metrics?.weaponPoolSize,
   flightMode,
   powerOverrides,
+  undefined,
+  regenModifier,
 );
 provide(
   "shieldPoolRatio",

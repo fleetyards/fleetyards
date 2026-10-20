@@ -652,3 +652,27 @@ describe("POWER_FAMILY_BY_CATEGORY", () => {
     ).toBeUndefined();
   });
 });
+
+describe("engineering buff", () => {
+  const ship = (): Hardpoint[] => [plant(40, 2), ...weapons(4, 2)];
+
+  it("scales the weapon ratio by the buff's power multiplier, up to full", () => {
+    const plain = simulateLoadoutPower(ship(), 4);
+    const boosted = simulateLoadoutPower(
+      ship(),
+      4,
+      "SCM",
+      undefined,
+      undefined,
+      {
+        powerRatio: 1.5,
+        maxAmmoLoad: 1,
+        maxRegenPerSecond: 1,
+      },
+    );
+
+    expect(plain.weaponPoolRatio).toBeCloseTo(0.5);
+    expect(boosted.weaponPoolRatio).toBeCloseTo(0.75);
+    expect(boosted.weaponMaxRatio).toBeCloseTo(0.75);
+  });
+});

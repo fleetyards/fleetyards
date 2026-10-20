@@ -9,6 +9,7 @@ import {
   weaponPoolBlocks,
   weaponPoolRatio,
   WEAPON_POOL_PORT,
+  NO_REGEN_MODIFIER,
   type Allocation,
   type AllocationState,
   type FlightMode,
@@ -16,6 +17,7 @@ import {
   type PortOverrides,
   type PowerFamily,
   type PowerPort,
+  type WeaponRegenModifier,
 } from "./powerSim";
 import { findArmor } from "./useArmorStats";
 
@@ -619,6 +621,7 @@ export function simulateLoadoutPower(
   mode: FlightMode = "SCM",
   overrides?: PortOverrides,
   shieldMaxItemCount: number = DEFAULT_SHIELD_MAX_ITEM_COUNT,
+  regenModifier: WeaponRegenModifier = NO_REGEN_MODIFIER,
 ): LoadoutSimResult {
   const modifiers = signatureModifiers(hardpoints);
   const acc = collectPorts(
@@ -733,7 +736,10 @@ export function simulateLoadoutPower(
 
   const usedSegments = segments - state.remaining;
   const heat = computeHeat(acc.components, acc.weaponUnits, state);
-  const weaponRatioValue = pool <= 0 ? 1 : weaponPoolRatio(state, consumption);
+  // A buff on the power ratio lets the same pips feed more of the guns' draw.
+  const boost = regenModifier.powerRatio || 1;
+  const weaponRatioValue =
+    pool <= 0 ? 1 : Math.min(1, weaponPoolRatio(state, consumption) * boost);
   const emittedEm = computeEm(
     acc.plants,
     acc.weaponEmSources,
@@ -753,11 +759,10 @@ export function simulateLoadoutPower(
     columns,
     // No fixed weapon pool → the ship's guns are power-unlimited (ratio 1).
     weaponPoolRatio: weaponRatioValue,
-    weaponMaxRatio: computeWeaponMaxRatio(
-      pool,
-      consumption,
-      segments,
-      acc.otherPorts,
+    weaponMaxRatio: Math.min(
+      1,
+      computeWeaponMaxRatio(pool, consumption, segments, acc.otherPorts) *
+        boost,
     ),
     shieldPoolRatio,
     enginePowerRatio,
@@ -781,6 +786,8 @@ export function useLoadoutSim(
   mode: MaybeRefOrGetter<FlightMode> = () => "SCM",
   overrides: MaybeRefOrGetter<PortOverrides | undefined> = () => undefined,
   shieldMaxItemCount: MaybeRefOrGetter<number | undefined> = () => undefined,
+  regenModifier: MaybeRefOrGetter<WeaponRegenModifier | undefined> = () =>
+    undefined,
 ) {
   return computed<LoadoutSimResult>(() =>
     simulateLoadoutPower(
@@ -789,6 +796,7 @@ export function useLoadoutSim(
       toValue(mode),
       toValue(overrides),
       toValue(shieldMaxItemCount) ?? DEFAULT_SHIELD_MAX_ITEM_COUNT,
+      toValue(regenModifier) ?? NO_REGEN_MODIFIER,
     ),
   );
 }

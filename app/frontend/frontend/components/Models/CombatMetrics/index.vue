@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import type { WeaponRegenModifier } from "@/frontend/composables/powerSim";
 import { useTransition, TransitionPresets } from "@vueuse/core";
 import type { Hardpoint } from "@/services/fyApi";
 import CompositionBar from "@/frontend/components/Models/CompositionBar/index.vue";
@@ -50,10 +51,16 @@ const powerOverrides = inject<Ref<PortOverrides | undefined>>(
   ref(undefined),
 );
 
+const weaponRegenModifier = inject<Ref<WeaponRegenModifier | undefined>>(
+  "weaponRegenModifier",
+  ref(undefined),
+);
+
 const stats = useLoadoutStats(
   () => props.hardpoints,
   () => toValue(weaponPoolSize),
   () => toValue(powerOverrides),
+  () => toValue(weaponRegenModifier),
 );
 
 const round = (value: number) => Math.round(value);
