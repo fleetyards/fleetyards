@@ -26,6 +26,45 @@
   }
 }
 
+// The views join the hero as a third column once there is room for one; the
+// figures between them only need a narrow strip, so the shares are uneven.
+@media (min-width: map-get($grid-breakpoints, xxl)) {
+  .ship-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 2.5fr) minmax(0, 4.5fr);
+
+    // Tailwind's `col-12` is a grid placement too and would stack all three in
+    // its twelfth track.
+    > [class*="col-"] {
+      grid-column: auto;
+      max-width: none;
+    }
+  }
+
+  // A ship without views keeps the two columns it has below this width rather
+  // than an empty third.
+  .ship-hero:has(> .ship-hero__views:empty) {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+
+    > .ship-hero__views {
+      display: none;
+    }
+  }
+
+  // The picture that stands in for the holo while the large viewer is open
+  // takes its height, so the figures below it stay where they were.
+  .ship-hero :deep(.holo-viewer--inline),
+  .ship-hero .side-image {
+    height: 400px;
+    max-height: none;
+  }
+
+  .ship-hero .side-image :deep(.lazy-image__img) {
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
 .ship-detail-left-col {
   display: flex;
   flex-direction: column;

@@ -125,6 +125,42 @@
   &__list--loading {
     min-height: 160px;
   }
+
+  @media (min-width: map-get($grid-breakpoints, xxl)) {
+    // The metrics keep their three columns on the left and the list's three
+    // stacks run down beside them, rather than starting below the last card:
+    // six even columns across the page.
+    &__layout--split {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      // The list is usually the taller side; what it adds lands under the
+      // credit instead of opening a gap between it and the cards.
+      grid-template-rows: auto auto 1fr;
+      column-gap: 20px;
+      align-items: start;
+
+      .hardpoints__controls {
+        grid-column: 1 / -1;
+      }
+
+      // Rows by number, not flow: a loadout's fitting has no controls row, and
+      // auto-placed the cards would take it and push the list down a row.
+      .metrics-grid {
+        grid-column: 1;
+        grid-row: 2;
+      }
+
+      .hardpoints__credit {
+        grid-column: 1;
+        grid-row: 3;
+      }
+
+      .hardpoints__list {
+        grid-column: 2;
+        grid-row: 2 / -1;
+      }
+    }
+  }
 }
 
 // Metrics cards are packed rather than assigned to fixed columns: each spans a

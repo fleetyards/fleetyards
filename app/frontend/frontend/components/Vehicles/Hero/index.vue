@@ -348,6 +348,11 @@ const openImageModal = () =>
     position: relative;
     height: clamp(300px, 42vw, 560px);
     transition: height 0.35s ease;
+
+    // Held at 560px a page-wide picture is a sliver of the ship.
+    @media (min-width: map-get($grid-breakpoints, xxl)) {
+      height: clamp(560px, 21vw, 820px);
+    }
   }
 
   &__specs {

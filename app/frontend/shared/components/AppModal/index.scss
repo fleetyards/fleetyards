@@ -82,6 +82,13 @@
   }
 }
 
+// Even a large workspace runs out of things to put across a 4K screen.
+@media (min-width: map-get($grid-breakpoints, xxl)) {
+  .app-modal.large .modal-dialog {
+    max-width: 2800px;
+  }
+}
+
 @media (min-width: $tablet-breakpoint) and (max-width: $desktop-breakpoint) {
   .app-modal.large .modal-dialog {
     width: calc(100% - 40px);

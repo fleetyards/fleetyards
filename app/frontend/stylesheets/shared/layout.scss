@@ -127,7 +127,9 @@ body {
     position: relative;
     left: 0;
     width: 100%;
-    max-width: 100%;
+    // Past this a row's label and value drift a screen apart; the pages lay
+    // out more columns instead of stretching the ones they have.
+    max-width: min(100%, $content-max-width);
     margin-bottom: 50px;
     padding-inline: 15px;
     margin-inline: auto;

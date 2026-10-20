@@ -379,7 +379,7 @@ const adiMap = computed(() => {
           </h1>
         </div>
       </div>
-      <div class="row">
+      <div class="row ship-hero">
         <div class="col-12 col-lg-8 ship-detail-left-col">
           <div
             :class="{
@@ -635,12 +635,16 @@ const adiMap = computed(() => {
             </BtnDropdown>
           </div>
         </div>
+        <!-- Beside the hero once there is room for a third column, under it
+             before. -->
+        <div class="col-12 ship-hero__views">
+          <FleetchartImages
+            :model="model"
+            :state="activeState"
+            @update:state="setModelState"
+          />
+        </div>
       </div>
-      <FleetchartImages
-        :model="model"
-        :state="activeState"
-        @update:state="setModelState"
-      />
       <hr />
       <Hardpoints :model="model" :cargo-holds="combinedCargoHolds" />
       <CrewPositions :model="model" />
