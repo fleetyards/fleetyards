@@ -82,6 +82,10 @@ module ScData
       HAND_IN_PROPERTY = "HaulingOverride"
       RESOURCE_TYPES_PATH = "resourcetypedatabase/resourcetypedatabase.records.xml"
 
+      # Lists of starmap places a contract is offered at, named by a
+      # `ContractPrerequisite_Locality`.
+      LOCALITIES_PATH = "missiondata/pu_missionlocality"
+
       # A difficulty band is a designer's sentence with the level on the end --
       # "Hard_PvE_or_Easy_PvP_action_5", "Basically_a_Dev_7". The prose is
       # developer-facing and the 1-7 is the only half worth showing, so the
@@ -276,11 +280,140 @@ module ScData
             rewards: contract_rewards(contract),
             blueprint_pools: contract_pools(contract),
             hand_ins: hand_ins(contract),
+            **contract_terms(contract),
+            prerequisites: prerequisites(contract, entry[:handler]),
+            offered_location_refs: offered_location_refs(contract, entry[:handler]),
             **mission_locations.classify(contract, entry[:handler])
           }.compact
         end
 
         name_items(parsed)
+      end
+
+      # What taking the contract costs and how it comes round again. Each is
+      # unset at zero -- 543 contracts state a `timeToComplete` of 0 -- and a
+      # `maxInstancesPerPlayer` of -1 is no limit at all, so neither is carried.
+      private def contract_terms(contract)
+        results = contract["contractResults"].is_a?(Hash) ? contract["contractResults"] : {}
+        generation = contract.dig("generationParams", "ContractGenerationParams_Legacy")
+        generation = {} unless generation.is_a?(Hash)
+
+        {
+          buy_in: positive(results["contractBuyInAmount"]&.to_i),
+          time_to_complete: positive(results["timeToComplete"]&.to_f),
+          max_instances_per_player: positive(generation["maxInstancesPerPlayer"]&.to_i),
+          respawn_time: positive(generation["respawnTime"]&.to_f),
+          respawn_variation: positive(generation["respawnTimeVariation"]&.to_f)
+        }.compact
+      end
+
+      private def positive(value)
+        value if value&.positive?
+      end
+
+      # What a player has to have, or not have, before the contract is offered:
+      # the contract's own requirements and its handler's defaults. A
+      # `SubContract`'s are a step inside the contract and are not read.
+      #
+      # Where it is offered is not here -- `offered_location_refs` carries that.
+      private def prerequisites(contract, handler)
+        prerequisite_nodes(contract, handler).flat_map do |key, node|
+          case key
+          when "ContractPrerequisite_CrimeStat" then crime_stat_prerequisite(node)
+          when "ContractPrerequisite_Reputation" then reputation_prerequisite(node)
+          when "ContractPrerequisite_CompletedContractTags" then completed_prerequisites(node)
+          else []
+          end
+        end
+      end
+
+      private def prerequisite_nodes(contract, handler)
+        [contract["additionalPrerequisites"], handler.dig("defaultAvailability", "prerequisites")]
+          .select { |group| group.is_a?(Hash) }
+          .flat_map { |group| group.flat_map { |key, nodes| Array.wrap(nodes).select { |node| node.is_a?(Hash) }.map { |node| [key, node] } } }
+      end
+
+      private def crime_stat_prerequisite(node)
+        [{kind: "crime_stat", min: node["minCrimeStat"]&.to_i, max: node["maxCrimeStat"]&.to_i}.compact]
+      end
+
+      # Standing with an org, which is not always the one offering the contract.
+      # `exclude` turns the band into one the player must be outside of.
+      private def reputation_prerequisite(node)
+        org = orgs[value_or_nil(node["factionReputation"])] || {}
+
+        [{
+          kind: "reputation",
+          org_key: org[:key],
+          org_name: org[:name],
+          min_standing: standings[value_or_nil(node["minStanding"])],
+          max_standing: standings[value_or_nil(node["maxStanding"])],
+          excluded: (true if node["exclude"] == "1")
+        }.compact]
+      end
+
+      # Complete `count` contracts carrying one of the tags -- or, for the
+      # excluded set, none of them. A tag is granted by the contracts whose
+      # results carry it, so the requirement is carried as those contracts:
+      # "IntroDone" reads as Wikelo's arrival mission rather than as a tag.
+      private def completed_prerequisites(node)
+        [
+          ["completed_missions", node["requiredCompletedContractTags"], node["requiredCountValue"]],
+          ["excluded_missions", node["excludedCompletedContractTags"], node["excludedCountValue"]]
+        ].filter_map do |kind, tags, count|
+          refs = Array.wrap(tags.is_a?(Hash) ? tags.dig("tags", "Reference") : nil).filter_map { |tag| value_or_nil(tag["value"]) if tag.is_a?(Hash) }
+
+          next if refs.empty?
+
+          {kind:, count: count.to_i.clamp(1..), mission_refs: refs.flat_map { |ref| completion_grants[ref] }.uniq.sort}
+        end
+      end
+
+      # Tag ref to the contracts whose results grant it.
+      private def completion_grants
+        @completion_grants ||= contract_entries.each_with_object(Hash.new { |all, ref| all[ref] = [] }) do |entry, grants|
+          sc_ref = value_or_nil(entry[:contract]["id"])
+
+          next if sc_ref.blank?
+
+          completion_tags(entry[:contract]["contractResults"]).each { |tag| grants[tag] << sc_ref }
+        end
+      end
+
+      private def completion_tags(node)
+        case node
+        when Hash
+          node.flat_map do |key, value|
+            next Array.wrap(value).filter_map { |tag| value_or_nil(tag["tag"]) if tag.is_a?(Hash) } if key == "ContractResult_CompletionTag"
+
+            completion_tags(value)
+          end
+        when Array
+          node.flat_map { |entry| completion_tags(entry) }
+        else
+          []
+        end
+      end
+
+      # The starmap places the contract is offered at: a `Locality` names a
+      # list of them, a `Location` names one.
+      private def offered_location_refs(contract, handler)
+        prerequisite_nodes(contract, handler).flat_map { |key, node|
+          case key
+          when "ContractPrerequisite_Locality" then localities[value_or_nil(node["localityAvailable"])] || []
+          when "ContractPrerequisite_Location" then [value_or_nil(node["locationAvailable"])].compact
+          else []
+          end
+        }.uniq.sort
+      end
+
+      private def localities
+        @localities ||= load_data(LOCALITIES_PATH).each_with_object({}) do |item, index|
+          ref = value_or_nil(item[:values]["__ref"])
+          refs = Array.wrap(item[:values].dig("availableLocations", "Reference")).filter_map { |entry| value_or_nil(entry["value"]) if entry.is_a?(Hash) }
+
+          index[ref] = refs if ref.present?
+        end
       end
 
       # Built once per parse: it loads the tag database and every location
