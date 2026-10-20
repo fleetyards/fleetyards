@@ -197,4 +197,27 @@ describe("VehiclesTable", () => {
       false,
     );
   });
+
+  it("shows no lock on the wishlist, which is public regardless", async () => {
+    const wrapper = await mount(vehicle({ public: false }), true, {
+      wishlist: true,
+    });
+
+    expect(
+      wrapper.find('[data-test="vehicle-state-visibility"] i').exists(),
+    ).toBe(false);
+  });
+
+  it("unfolds the hidden groups when their count is clicked", async () => {
+    const wrapper = await mount(
+      vehicle({ hangarGroups: ["1", "2", "3", "4", "5", "6"].map(group) }),
+    );
+
+    await wrapper.get('[data-test="hangar-group-overflow"]').trigger("click");
+
+    expect(wrapper.findAll('[data-test="hangar-group"]')).toHaveLength(6);
+    expect(wrapper.find('[data-test="hangar-group-overflow"]').exists()).toBe(
+      false,
+    );
+  });
 });

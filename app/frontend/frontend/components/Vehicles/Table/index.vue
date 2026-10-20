@@ -48,7 +48,6 @@ type Props = {
   // Off where the list's toolbar carries the select-all box and the bulk
   // actions; the page then binds `selected` to hand them the picked rows.
   selectionControls?: boolean;
-  // The group whose label the pointer is on above the list.
   highlightedGroupId?: string;
 };
 
@@ -358,8 +357,9 @@ const resetSelected = () => {
             </template>
           </small>
           <div v-if="mobile" class="vehicles-table-mobile-meta">
-            <VehicleStates :vehicle="record" :wishlist="wishlist" />
+            <VehicleStates :vehicle="record" :wishlist="wishlist" compact />
             <HangarGroups
+              v-if="record.hangarGroups.length"
               :groups="record.hangarGroups"
               :highlighted-id="highlightedGroupId"
               stacked

@@ -11,10 +11,13 @@ import { useI18n } from "@/shared/composables/useI18n";
 type Props = {
   vehicle: Vehicle;
   wishlist?: boolean;
+  // Drops the empty slots: on one free-flowing line they only indent.
+  compact?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   wishlist: false,
+  compact: false,
 });
 
 const { t } = useI18n();
@@ -38,6 +41,12 @@ const visibility = computed(() => {
     return { icon: "fa-duotone fa-eye", label: t("labels.vehicle.public") };
   }
 
+  // A public wishlist lists every wanted ship whatever its flag says, so a
+  // lock there would claim a privacy it does not have.
+  if (props.wishlist) {
+    return undefined;
+  }
+
   return {
     icon: "fa-duotone fa-lock vehicle-state-private",
     label: t("labels.vehicle.private"),
@@ -49,18 +58,30 @@ const visibility = computed(() => {
   <!-- Every slot keeps its place when empty, so a state sits in the same
        column on every row. -->
   <div class="vehicle-states">
-    <span class="vehicle-state" data-test="vehicle-state-on-sale">
+    <span
+      v-if="!compact || vehicle.model.onSale"
+      class="vehicle-state"
+      data-test="vehicle-state-on-sale"
+    >
       <i
         v-if="vehicle.model.onSale"
         v-tooltip="t('labels.model.onSale')"
         class="fa-duotone fa-dollar-sign vehicle-state-on-sale"
       />
     </span>
-    <span class="vehicle-state" data-test="vehicle-state-visibility">
-      <i v-tooltip="visibility.label" :class="visibility.icon" />
+    <span
+      v-if="!compact || visibility"
+      class="vehicle-state"
+      data-test="vehicle-state-visibility"
+    >
+      <i
+        v-if="visibility"
+        v-tooltip="visibility.label"
+        :class="visibility.icon"
+      />
     </span>
     <span
-      v-if="wishlist"
+      v-if="wishlist && (!compact || vehicle.saleNotify)"
       class="vehicle-state"
       data-test="vehicle-state-sale-notify"
     >
