@@ -207,6 +207,7 @@ describe("VehicleHero", () => {
       public: false,
       kind: VehicleLoadoutKindEnum.FLEETYARDS,
       items: [],
+      powerPresets: [],
       createdAt: "2026-10-12T12:00:00Z",
       updatedAt: "2026-10-12T12:00:00Z",
     };
@@ -230,6 +231,7 @@ describe("VehicleHero", () => {
         url: "https://www.erkul.games/loadout/abc",
         urlSource: "erkul",
         items: [],
+        powerPresets: [],
         createdAt: "2026-10-12T12:00:00Z",
         updatedAt: "2026-10-12T12:00:00Z",
       },
