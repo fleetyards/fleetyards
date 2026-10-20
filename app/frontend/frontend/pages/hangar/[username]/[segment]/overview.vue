@@ -104,6 +104,26 @@ const cargoVisible = computed(
     }
   }
 
+  // Half the width each on a wide screen, the side cards flowing in two
+  // columns of their own: four columns across, and the side no longer runs
+  // far below the log.
+  @media (min-width: map-get($grid-breakpoints, xxl)) {
+    &__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    &__side {
+      display: block;
+      columns: 2;
+      column-gap: 20px;
+
+      > * {
+        break-inside: avoid;
+        margin-bottom: 20px;
+      }
+    }
+  }
+
   // Each card keeps its own height: stretched to its neighbour's, a short one
   // grew an empty band above its link row.
   &__pair {
