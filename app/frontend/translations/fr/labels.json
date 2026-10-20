@@ -2357,6 +2357,7 @@
         "passwordConfirmation": "Confirmation du mot de passe"
       },
       "vehicle": {
+        "cargoWithModules": "%{cargo} (%{withModules} avec modules)",
         "customOrder": "Personnalisé",
         "name": "Nom",
         "states": "États",

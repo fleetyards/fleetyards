@@ -2357,6 +2357,7 @@
         "passwordConfirmation": "确认密码"
       },
       "vehicle": {
+        "cargoWithModules": "%{cargo}（含模块 %{withModules}）",
         "customOrder": "自定义",
         "name": "名称",
         "states": "状态",

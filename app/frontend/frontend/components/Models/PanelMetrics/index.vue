@@ -12,17 +12,22 @@ import type { Model } from "@/services/fyApi";
 
 type Props = {
   model: Model;
+  cargoLabel?: string;
 };
 
 const props = defineProps<Props>();
 
 const { t, toNumber, toUEC } = useI18n();
 
-const { groups } = useModelMetricRows(() => props.model, {
-  t,
-  toNumber,
-  toUEC,
-});
+const { groups } = useModelMetricRows(
+  () => props.model,
+  {
+    t,
+    toNumber,
+    toUEC,
+  },
+  () => props.cargoLabel,
+);
 </script>
 
 <template>

@@ -14,6 +14,7 @@ import {
   useVehicleInventoryStock,
 } from "@/services/fyApi";
 import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
+import { useVehicleCargo } from "@/frontend/composables/useVehicleCargo";
 
 type Props = {
   vehicle: Vehicle;
@@ -40,7 +41,9 @@ const hasCargo = computed(() => (inventory.value?.entriesCount ?? 0) > 0);
 // `toNumber` reads an empty hold as "not available"; here it is just empty.
 const scu = (value: number) => (value ? String(toNumber(value)) : "0");
 
-const capacity = computed(() => props.vehicle.model.metrics.cargo || 0);
+const { cargoOf } = useVehicleCargo();
+
+const capacity = computed(() => cargoOf(props.vehicle));
 
 // The measured volume of everything aboard, boxed gear included -- what the
 // cargo tab fills its hold with.

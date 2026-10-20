@@ -14,6 +14,7 @@ import HangarGroups from "@/frontend/components/Vehicles/HangarGroups/index.vue"
 import HangarEmpty from "@/frontend/components/Hangar/Empty/index.vue";
 import ListActions from "@/frontend/components/Vehicles/Table/ListActions.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useVehicleCargo } from "@/frontend/composables/useVehicleCargo";
 import { FeatureFlagName, type Vehicle } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useFeatures } from "@/frontend/composables/useFeatures";
@@ -61,6 +62,8 @@ const emit = defineEmits<{
 }>();
 
 const { t, toNumber, toUEC, toDollar } = useI18n();
+
+const { cargoLabel } = useVehicleCargo();
 
 // Held here unless the page binds it: a table on its own keeps its selection
 // to itself, a table under a toolbar shares it.
@@ -356,9 +359,7 @@ const resetSelected = () => {
         }}</span>
       </template>
       <template #col-modelCargo="{ record }">
-        <span class="no-break">{{
-          toNumber(record.model.metrics.cargo || "", "cargo")
-        }}</span>
+        <span class="no-break">{{ cargoLabel(record) }}</span>
       </template>
       <template #col-modelCrew="{ record }">
         <span class="no-break">{{

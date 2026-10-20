@@ -24,8 +24,8 @@ import { useMobile } from "@/shared/composables/useMobile";
 import { isLowPowerDevice } from "@/shared/composables/useLowPowerDevice";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
-import { useLoadoutModules } from "@/frontend/composables/useLoadoutModules";
-import { type Vehicle, VehicleLoadoutKindEnum } from "@/services/fyApi";
+import { useVehicleCargo } from "@/frontend/composables/useVehicleCargo";
+import type { Vehicle } from "@/services/fyApi";
 
 type Props = {
   vehicle: Vehicle;
@@ -101,15 +101,7 @@ const holoModel = computed(() => {
   return { path, length, size: holo?.size };
 });
 
-// The stats follow the loadout the ship flies with; a linked build is read on
-// its own site and changes nothing here.
-const { moduleCargo } = useLoadoutModules(
-  () => props.vehicle.model.slug,
-  () =>
-    props.vehicle.activeLoadout?.kind === VehicleLoadoutKindEnum.FLEETYARDS
-      ? props.vehicle.activeLoadout
-      : undefined,
-);
+const { cargoLabel } = useVehicleCargo();
 
 // Remembered per vehicle, apart from the ship page's switch.
 const vehicleViewStore = useVehicleViewStore();
@@ -333,7 +325,7 @@ const openImageModal = () =>
     </div>
     <Specs
       :model="vehicle.model"
-      :module-cargo="moduleCargo"
+      :cargo-label="String(cargoLabel(vehicle))"
       overlay
       class="vehicle-hero__specs"
     />

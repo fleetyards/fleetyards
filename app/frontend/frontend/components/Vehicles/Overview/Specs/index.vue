@@ -12,13 +12,13 @@ type Props = {
   model: Model;
   // Laid over the bottom of the vehicle's picture rather than standing alone.
   overlay?: boolean;
-  // Carried by fitted modules on top of the hull's own hold.
-  moduleCargo?: number;
+  // The vehicle's own cargo, fitted, in place of the hull's.
+  cargoLabel?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   overlay: false,
-  moduleCargo: 0,
+  cargoLabel: undefined,
 });
 
 const { t, toNumber } = useI18n();
@@ -28,10 +28,6 @@ type Spec = {
   label: string;
   value: string;
 };
-
-const cargo = computed(
-  () => (props.model.metrics.cargo || 0) + props.moduleCargo,
-);
 
 // The figures a captain looks up most, from the same model data the ship page
 // shows; a stat the model has no value for is left out rather than shown as
@@ -61,7 +57,11 @@ const specs = computed(() =>
       {
         key: "cargo",
         label: t("labels.model.cargo"),
-        value: cargo.value ? toNumber(cargo.value, "cargo") : undefined,
+        value:
+          props.cargoLabel ??
+          (props.model.metrics.cargo
+            ? toNumber(props.model.metrics.cargo, "cargo")
+            : undefined),
       },
       {
         key: "scmSpeed",

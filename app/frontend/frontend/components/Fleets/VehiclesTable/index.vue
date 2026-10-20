@@ -9,6 +9,7 @@ import BaseTable from "@/shared/components/base/Table/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useVehicleCargo } from "@/frontend/composables/useVehicleCargo";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useMobile } from "@/shared/composables/useMobile";
 import type {
@@ -55,6 +56,8 @@ const countLabel = (record: FleetVehicle) => {
 const comlink = useComlink();
 
 const { t, toNumber, toUEC, toDollar } = useI18n();
+
+const { cargoLabel } = useVehicleCargo();
 
 const mobile = useMobile();
 
@@ -261,7 +264,9 @@ const openOwnersModal = (modelSlug: string) => {
       </template>
       <template #col-modelCargo="{ record }">
         <span class="no-break">{{
-          toNumber(getModel(record).metrics.cargo || "", "cargo")
+          (record as VehiclePublic).model
+            ? cargoLabel(record as VehiclePublic)
+            : toNumber(getModel(record).metrics.maxCargo || "", "cargo")
         }}</span>
       </template>
       <template #col-modelCrew="{ record }">
