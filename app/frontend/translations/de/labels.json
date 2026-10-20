@@ -4431,6 +4431,8 @@
         "templatedNote": "Die markierten Stellen füllt das Spiel aus, wenn es die Mission vergibt.",
         "payoutNote": "Das Spiel berechnet die Auszahlung erst beim Erzeugen der Mission, deshalb nennen die Dateien nur für eine Handvoll Aufträge eine Auszahlung.",
         "noRewards": "Die Dateien nennen für diesen Auftrag keine Belohnung.",
+        "handIns": "Abzugeben",
+        "handInsChoice": "Eines davon",
         "unreleased": "Nicht im Release",
         "retired": "Entfernt"
       },
