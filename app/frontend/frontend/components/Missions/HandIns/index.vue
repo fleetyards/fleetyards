@@ -38,13 +38,17 @@ const options = computed(() => {
 });
 
 const amount = (handIn: GameMissionHandIn) => {
+  if (handIn.kind === GameMissionHandInKindEnum.RESOURCE) {
+    const top = toNumber(handIn.max || handIn.amount, "cargo");
+
+    return handIn.max ? `${toNumber(handIn.amount)} – ${top}` : top;
+  }
+
   const range = handIn.max
     ? `${toNumber(handIn.amount)} – ${toNumber(handIn.max)}`
     : toNumber(handIn.amount);
 
-  return handIn.kind === GameMissionHandInKindEnum.RESOURCE
-    ? `${range} SCU`
-    : `${range}×`;
+  return `${range}×`;
 };
 </script>
 
@@ -80,13 +84,20 @@ const amount = (handIn: GameMissionHandIn) => {
           :key="index"
           class="mission-rewards__item"
         >
-          <span
+          <template
             v-for="(handIn, position) in option"
             :key="`${handIn.ref}-${position}`"
-            class="mission-rewards__value"
           >
-            {{ amount(handIn) }} {{ handIn.name || handIn.ref }}
-          </span>
+            <span v-if="position" class="mission-rewards__note">+</span>
+            <span class="mission-rewards__value">
+              {{ amount(handIn) }} {{ handIn.name }}
+            </span>
+            <span
+              v-if="!handIn.name"
+              class="mission-rewards__note mission-rewards__note--ref"
+              >{{ handIn.ref }}</span
+            >
+          </template>
         </li>
       </ul>
     </div>

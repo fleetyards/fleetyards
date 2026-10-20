@@ -55,6 +55,18 @@ describe("MissionHandIns", () => {
     expect(items[1].text()).toContain("5× Hadanite");
   });
 
+  it("joins the entries of one option", async () => {
+    const wrapper = await mount([
+      handIn({ name: "Aphorite", amount: 15, option: 0 }),
+      handIn({ name: "Hadanite", amount: 5, option: 0 }),
+    ]);
+
+    const items = wrapper.findAll(".mission-rewards__item");
+
+    expect(items).toHaveLength(1);
+    expect(items[0].text()).toMatch(/15× Aphorite\s*\+\s*5× Hadanite/);
+  });
+
   it("falls back to the ref for an entry the files do not name", async () => {
     const wrapper = await mount([handIn({ name: null })]);
 
