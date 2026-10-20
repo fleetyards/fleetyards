@@ -11,12 +11,13 @@ import MissionText from "@/frontend/components/MissionText/index.vue";
 import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import MissionRewards from "@/frontend/components/Missions/Rewards/index.vue";
 import MissionHandIns from "@/frontend/components/Missions/HandIns/index.vue";
+import MissionAvailability from "@/frontend/components/Missions/Availability/index.vue";
 import { missionTextPlain } from "@/frontend/components/MissionText/index";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useGameMission as useMissionQuery } from "@/services/fyApi";
 
-const { t } = useI18n();
+const { t, toNumber } = useI18n();
 const { updateMetaInfo } = useMetaInfo();
 const route = useRoute();
 
@@ -45,6 +46,24 @@ const difficultyAxes = computed(() => {
 
 const hasCalculatedPayout = computed(() =>
   (mission.value?.rewards || []).some((reward) => reward.calculated),
+);
+
+// Where it takes place, apart from where it is offered: a contract offered
+// anywhere around Hurston names up to 37 places, which would bury the few it
+// actually sends a player to.
+const placesTakenPlace = computed(() =>
+  (mission.value?.locations || []).filter((link) => link.source !== "offered"),
+);
+
+const placesOffered = computed(() =>
+  (mission.value?.locations || []).filter((link) => link.source === "offered"),
+);
+
+const hasAvailability = computed(
+  () =>
+    !!mission.value?.maxInstancesPerPlayer ||
+    !!mission.value?.respawnTime ||
+    !!mission.value?.prerequisites?.length,
 );
 
 const standing = computed(() => {
@@ -142,6 +161,36 @@ watch(
             </span>
 
             <span
+              v-if="mission.buyIn"
+              class="mission-page__badge"
+              data-test="mission-buy-in"
+            >
+              <span class="mission-page__badge-label">
+                {{ t("labels.gameMission.buyIn") }}
+              </span>
+              <span class="mission-page__badge-value">
+                {{ toNumber(mission.buyIn) }} {{ t("number.units.uec") }}
+              </span>
+            </span>
+
+            <span
+              v-if="mission.timeToComplete"
+              class="mission-page__badge"
+              data-test="mission-time-to-complete"
+            >
+              <span class="mission-page__badge-label">
+                {{ t("labels.gameMission.timeToComplete") }}
+              </span>
+              <span class="mission-page__badge-value">
+                {{
+                  t("labels.gameMission.minutes", {
+                    time: toNumber(mission.timeToComplete),
+                  })
+                }}
+              </span>
+            </span>
+
+            <span
               v-if="mission.locationKind && mission.locationKind !== 'unknown'"
               class="mission-page__badge"
               data-test="mission-location"
@@ -215,14 +264,26 @@ watch(
         <!-- The specific places its location templates stand for, and the
              places its text names. Most templates only resolve to a whole
              planet or moon, which is not a place to link to. -->
-        <section v-if="mission.locations?.length" class="mission-page__panel">
+        <section
+          v-if="hasAvailability"
+          class="mission-page__panel"
+          data-test="mission-availability"
+        >
+          <h2 class="mission-page__panel-title">
+            {{ t("labels.gameMission.availability.title") }}
+          </h2>
+
+          <MissionAvailability :mission="mission" />
+        </section>
+
+        <section v-if="placesTakenPlace.length" class="mission-page__panel">
           <h2 class="mission-page__panel-title">
             {{ t("labels.gameMission.locations") }}
           </h2>
 
           <ul class="mission-page__places">
             <li
-              v-for="link in mission.locations"
+              v-for="link in placesTakenPlace"
               :key="`${link.source}-${link.location.id}`"
               class="mission-page__place"
             >
@@ -237,6 +298,30 @@ watch(
               <span v-if="link.source === 'text'">
                 {{ t("labels.gameMission.locationNamedInText") }}
               </span>
+            </li>
+          </ul>
+        </section>
+
+        <section
+          v-if="placesOffered.length"
+          class="mission-page__panel"
+          data-test="mission-offered-at"
+        >
+          <h2 class="mission-page__panel-title">
+            {{ t("labels.gameMission.offeredAt") }}
+          </h2>
+
+          <ul class="mission-page__offered">
+            <li
+              v-for="link in placesOffered"
+              :key="link.location.id"
+              class="mission-page__offered-place"
+            >
+              <router-link
+                :to="{ name: 'location', params: { slug: link.location.slug } }"
+              >
+                {{ link.location.name }}
+              </router-link>
             </li>
           </ul>
         </section>
