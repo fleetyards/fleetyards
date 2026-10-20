@@ -7,6 +7,8 @@ export default {
 <script lang="ts" setup>
 import type { RouteLocationRaw } from "vue-router";
 import Avatar from "@/shared/components/Avatar/index.vue";
+import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
+import { type CatalogueItemRef } from "@/frontend/components/CatalogueItemPopover/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   FleetActivityKindEnum,
@@ -75,6 +77,24 @@ const linkFor = (entry: FleetActivity): RouteLocationRaw | undefined => {
   }
 };
 
+const CARD_TYPES: Partial<Record<FleetActivitySubjectTypeEnum, string>> = {
+  [FleetActivitySubjectTypeEnum.EVENT]: "FleetEvent",
+  [FleetActivitySubjectTypeEnum.CONTRACT]: "FleetContract",
+};
+
+const cardFor = (entry: FleetActivity): CatalogueItemRef | undefined => {
+  const type = CARD_TYPES[entry.subject.type];
+
+  return type && entry.subject.slug
+    ? {
+        type,
+        slug: entry.subject.slug,
+        fleetSlug: props.fleet.slug,
+        name: titleFor(entry),
+      }
+    : undefined;
+};
+
 const metaFor = (entry: FleetActivity) =>
   [
     props.showKind ? t(`fleetDashboard.activity.kinds.${entry.kind}`) : null,
@@ -115,7 +135,13 @@ const metaFor = (entry: FleetActivity) =>
           :to="linkFor(entry)"
           class="activity-list__title"
         >
-          {{ titleFor(entry) }}
+          <CatalogueItemPopover
+            v-if="cardFor(entry)"
+            :item="cardFor(entry)!"
+            :link="false"
+            :focusable="false"
+          />
+          <template v-else>{{ titleFor(entry) }}</template>
         </component>
         <span class="activity-list__meta">
           <span
