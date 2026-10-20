@@ -19,7 +19,7 @@ module Api
         # link should not reach either.
         @mission = GameMission
           .named(GameMission.served_source)
-          .includes(build: [:rewards, :hand_ins], last_build: [:rewards, :hand_ins])
+          .includes(build: ::GameMissionBuild::DETAIL_INCLUDES, last_build: ::GameMissionBuild::DETAIL_INCLUDES)
           .find_by!(slug:)
 
         # A second query rather than a join: a mission hands out pools, a pool

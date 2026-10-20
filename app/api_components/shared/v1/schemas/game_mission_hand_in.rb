@@ -25,7 +25,12 @@ module Shared
             # Set where the contract offers a choice: entries sharing an option
             # are one alternative, and any one option satisfies it. Null is
             # always asked for.
-            option: {type: [:integer, :null]}
+            option: {type: [:integer, :null]},
+
+            # The catalogue row it names, where one exists.
+            catalogueItem: {
+              anyOf: [::Shared::V1::Schemas::GameMissionCatalogueItem, {type: :null}]
+            }
           },
           additionalProperties: false,
           required: %w[kind ref amount]

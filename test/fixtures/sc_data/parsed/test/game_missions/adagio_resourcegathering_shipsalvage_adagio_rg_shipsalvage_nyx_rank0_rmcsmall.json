@@ -40,7 +40,8 @@
       "amount": 5,
       "kind": "resource",
       "resource_ref": "a0e6c4cf-face-4f52-a020-dfa869607901",
-      "resource_name": "Recycled Material Composite"
+      "resource_name": "Recycled Material Composite",
+      "commodity_key": "items_commodities_type_rmc"
     }
   ],
   "location_kind": "space",

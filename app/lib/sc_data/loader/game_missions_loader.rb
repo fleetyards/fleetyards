@@ -198,6 +198,7 @@ module ScData
             entity_name: reward["entity_name"],
             weight: reward["weight"],
             badge: reward["badge"],
+            **catalogue_item(reward["entity_class"], reward["commodity_key"]),
             position:,
             created_at: Time.zone.now,
             updated_at: Time.zone.now
@@ -216,6 +217,29 @@ module ScData
         stats[GameMissionReward.name][:created] += rows.size
 
         build.association(:rewards).reset
+      end
+
+      # The catalogue row an award or a hand-in names, the way a blueprint finds
+      # what it makes: a component or equipment by the entity ref, a commodity
+      # by its key -- a gem or an ore is a crate whose own ref is not the one
+      # the commodity row carries.
+      private def catalogue_item(entity_class, commodity_key)
+        type, id = catalogue_refs[entity_class] if entity_class.present?
+        type, id = "Commodity", commodity_keys[commodity_key] if id.nil? && commodity_key.present?
+
+        id ? {catalogue_item_type: type, catalogue_item_id: id} : {catalogue_item_type: nil, catalogue_item_id: nil}
+      end
+
+      # Loaded once per run: a full load names about 500 distinct entities, and
+      # asking for each would be a query per reward line.
+      private def catalogue_refs
+        @catalogue_refs ||= [Commodity, Equipment, Component].each_with_object({}) do |model, index|
+          model.where.not(sc_ref: nil).pluck(:sc_ref, :id).each { |ref, id| index[ref] = [model.name, id] }
+        end
+      end
+
+      private def commodity_keys
+        @commodity_keys ||= Commodity.where.not(sc_key: nil).pluck(:sc_key, :id).to_h
       end
 
       # Rewritten wholesale for the reason the rewards are. An entry the parser
@@ -237,6 +261,7 @@ module ScData
             amount: hand_in["amount"],
             max: hand_in["max"],
             option: hand_in["option"],
+            **catalogue_item(hand_in["entity_class"], hand_in["commodity_key"]),
             position:,
             created_at: now,
             updated_at: now

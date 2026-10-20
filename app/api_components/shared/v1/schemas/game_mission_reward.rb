@@ -57,6 +57,11 @@ module Shared
             # rather than all of them.
             weight: {type: [:number, :null]},
 
+            # Item only: the catalogue row the award names, where one exists.
+            catalogueItem: {
+              anyOf: [::Shared::V1::Schemas::GameMissionCatalogueItem, {type: :null}]
+            },
+
             # Badge only. The export states the key and nothing that resolves
             # it to a name or a picture.
             badge: {type: [:string, :null]}

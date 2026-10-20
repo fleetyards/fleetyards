@@ -9,6 +9,12 @@ class GameMissionReward < ApplicationRecord
   belongs_to :build, class_name: "GameMissionBuild", inverse_of: :rewards,
     foreign_key: :game_mission_build_id
 
+  # The component, equipment or commodity an item award names, where the
+  # catalogue carries one.
+  belongs_to :catalogue_item, polymorphic: true, optional: true
+
+  CATALOGUE_ITEM_TYPES = %w[Component Equipment Commodity].freeze
+
   # Reputation and items are most of it; a badge is a cosmetic the game tracks;
   # currency is the eight contracts that state a figure.
   #

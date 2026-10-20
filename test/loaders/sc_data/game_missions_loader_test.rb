@@ -192,6 +192,24 @@ module ScData
           hand_in.build.game_mission.sc_key
       end
 
+      # A resource is found by its commodity key: the crate a commodity row
+      # carries the ref of is not the resource the contract names.
+      test "#all links a hand-in to the commodity it names" do
+        rmc = create(:commodity, sc_key: "items_commodities_type_rmc")
+
+        loader.all
+
+        assert_equal rmc, GameMissionHandIn.sole.catalogue_item
+      end
+
+      test "#all links an item reward to the catalogue row whose ref it names" do
+        equipment = create(:equipment, sc_ref: "0df18692-2cc7-4d9d-af85-95b8a7a45419")
+
+        loader.all
+
+        assert_equal [equipment], GameMissionReward.of_kind("item").map(&:catalogue_item).uniq
+      end
+
       # A second run of the same build rewrites the build in place rather than
       # colliding on the unique index, and the rewards go with it rather than
       # doubling.

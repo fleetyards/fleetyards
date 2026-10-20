@@ -29,6 +29,11 @@ class CreateGameMissionHandIns < ActiveRecord::Migration[8.1]
       # one alternative, and any one option satisfies it. Null is always asked.
       t.integer :option
 
+      # The catalogue row it names, where one exists: a component, a piece of
+      # equipment or a commodity. Null for the rest -- carryables no catalogue
+      # holds, and "any of" groups.
+      t.references :catalogue_item, polymorphic: true, type: :uuid, index: false
+
       t.integer :position, null: false
 
       t.timestamps

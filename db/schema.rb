@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_20_150000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_20_210000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1330,6 +1330,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_20_150000) do
     t.integer "amount", null: false
     t.integer "max"
     t.integer "option"
+    t.string "catalogue_item_type"
+    t.uuid "catalogue_item_id"
     t.integer "position", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -1363,6 +1365,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_20_150000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "entity_name"
+    t.string "catalogue_item_type"
+    t.uuid "catalogue_item_id"
     t.index ["game_mission_build_id", "position"], name: "index_game_mission_rewards_on_build_and_position", unique: true
     t.index ["game_mission_build_id"], name: "index_game_mission_rewards_on_build"
     t.index ["kind"], name: "index_game_mission_rewards_on_kind"

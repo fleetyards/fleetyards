@@ -126,7 +126,7 @@ module Admin
 
         private def set_mission
           @mission = GameMission
-            .includes(build: [:rewards, :hand_ins], last_build: [:rewards, :hand_ins])
+            .includes(build: ::GameMissionBuild::DETAIL_INCLUDES, last_build: ::GameMissionBuild::DETAIL_INCLUDES)
             .find(params[:id])
 
           authorize! @mission, with: ::Admin::GameMissionPolicy
