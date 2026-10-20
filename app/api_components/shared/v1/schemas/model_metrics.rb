@@ -62,6 +62,7 @@ module Shared
             },
             quantumFuelTankSize: {type: :number},
             weaponPoolSize: {type: :number},
+            weaponRegenModifier: Shared::V1::Schemas::ModelWeaponRegenModifier,
             signatureCrossSection: Shared::V1::Schemas::ModelSignatureCrossSection,
             size: {type: :string},
             sizeLabel: {type: :string},

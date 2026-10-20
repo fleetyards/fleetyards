@@ -35691,6 +35691,8 @@ components:
           type: number
         weaponPoolSize:
           type: number
+        weaponRegenModifier:
+          "$ref": "#/components/schemas/ModelWeaponRegenModifier"
         signatureCrossSection:
           "$ref": "#/components/schemas/ModelSignatureCrossSection"
         size:
@@ -36772,6 +36774,23 @@ components:
       items:
         "$ref": "#/components/schemas/ModelUpgrade"
       title: ModelUpgradesList
+    ModelWeaponRegenModifier:
+      type: object
+      description: 'The ship''s engineering buff on its energy guns: multipliers on
+        the weapon power ratio, each gun''s ammo load and its regen'
+      properties:
+        powerRatio:
+          type: number
+        maxAmmoLoad:
+          type: number
+        maxRegenPerSecond:
+          type: number
+      additionalProperties: false
+      required:
+      - powerRatio
+      - maxAmmoLoad
+      - maxRegenPerSecond
+      title: ModelWeaponRegenModifier
     Models:
       type: object
       properties:
