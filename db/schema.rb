@@ -1313,6 +1313,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_21_120000) do
     t.datetime "updated_at", null: false
     t.string "location_kind"
     t.boolean "needs_landing", default: false, null: false
+    t.integer "buy_in"
+    t.decimal "time_to_complete", precision: 8, scale: 2
+    t.integer "max_instances_per_player"
+    t.decimal "respawn_time", precision: 8, scale: 2
+    t.decimal "respawn_variation", precision: 8, scale: 2
     t.index ["blueprint_pool_refs"], name: "index_game_mission_builds_on_blueprint_pool_refs", using: :gin
     t.index ["environment", "name"], name: "index_game_mission_builds_on_environment_and_name"
     t.index ["environment", "org_name"], name: "index_game_mission_builds_on_environment_and_org_name"
@@ -1348,6 +1353,25 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_21_120000) do
     t.index ["game_mission_id", "location_id", "source"], name: "index_game_mission_locations_uniqueness", unique: true
     t.index ["game_mission_id"], name: "index_game_mission_locations_on_game_mission_id"
     t.index ["location_id"], name: "index_game_mission_locations_on_location_id"
+  end
+
+  create_table "game_mission_prerequisites", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "game_mission_build_id", null: false
+    t.string "kind", null: false
+    t.integer "min"
+    t.integer "max"
+    t.string "org_key"
+    t.string "org_name"
+    t.string "min_standing"
+    t.string "max_standing"
+    t.boolean "excluded", default: false, null: false
+    t.integer "count"
+    t.text "mission_refs", default: [], null: false, array: true
+    t.integer "position", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_mission_build_id", "position"], name: "index_game_mission_prerequisites_on_build_and_position", unique: true
+    t.index ["game_mission_build_id"], name: "index_game_mission_prerequisites_on_build"
   end
 
   create_table "game_mission_rewards", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -1401,6 +1425,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_21_120000) do
     t.datetime "updated_at", null: false
     t.string "location_kind"
     t.boolean "needs_landing", default: false, null: false
+    t.integer "buy_in"
+    t.decimal "time_to_complete", precision: 8, scale: 2
+    t.integer "max_instances_per_player"
+    t.decimal "respawn_time", precision: 8, scale: 2
+    t.decimal "respawn_variation", precision: 8, scale: 2
     t.index ["org_name"], name: "index_game_missions_on_org_name"
     t.index ["sc_key"], name: "index_game_missions_on_sc_key", unique: true
     t.index ["sc_ref"], name: "index_game_missions_on_sc_ref", unique: true
@@ -2995,6 +3024,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_21_120000) do
   add_foreign_key "game_mission_hand_ins", "game_mission_builds", on_delete: :cascade
   add_foreign_key "game_mission_locations", "game_missions", on_delete: :cascade
   add_foreign_key "game_mission_locations", "locations", on_delete: :cascade
+  add_foreign_key "game_mission_prerequisites", "game_mission_builds", on_delete: :cascade
   add_foreign_key "game_mission_rewards", "game_mission_builds", on_delete: :cascade
   add_foreign_key "hangar_pledge_item_model_paints", "hangar_pledge_items", on_delete: :cascade
   add_foreign_key "hangar_pledge_item_model_paints", "model_paints", on_delete: :cascade
