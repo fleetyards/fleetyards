@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.18.1](https://github.com/fleetyards/fleetyards/compare/v9.18.0...v9.18.1) (2026-10-20)
+
+
+### Bug Fixes
+
+* **hangar:** count a concept ship's max cargo in the cargo filter ([72ecd9a](https://github.com/fleetyards/fleetyards/commit/72ecd9a313a7e578093892db3a262d04bfd57643))
+* **power:** keep the planner as tall as its backdrop so the modal does not scroll ([3c458bb](https://github.com/fleetyards/fleetyards/commit/3c458bb3f64049e1b52263235406c8d1e0e7a761))
+
 ## [9.18.0](https://github.com/fleetyards/fleetyards/compare/v9.17.0...v9.18.0) (2026-10-20)
 
 
