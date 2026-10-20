@@ -9,6 +9,7 @@ import ExternalLinks from "@/shared/components/ExternalLinks/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
+import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import ComponentThermalMetrics from "@/frontend/components/Components/ThermalMetrics/index.vue";
 import Availability from "@/frontend/components/Availability/index.vue";
 import DurabilityMetrics from "@/frontend/components/Components/DurabilityMetrics/index.vue";
@@ -309,7 +310,18 @@ watch(
               :to="{ name: 'blueprint', params: { slug: recipe.slug } }"
               class="metrics-card__row metrics-card__row--stack component-page__recipe"
             >
-              <span class="metrics-card__row__label">{{ recipe.name }}</span>
+              <span class="metrics-card__row__label">
+                <CatalogueItemPopover
+                  :item="{
+                    type: 'Blueprint',
+                    slug: recipe.slug,
+                    name: recipe.name,
+                  }"
+                  :record="recipe"
+                  :link="false"
+                  :focusable="false"
+                />
+              </span>
               <span class="metrics-card__row__value">
                 {{ (recipe.materials || []).map((m) => m.name).join(" · ") }}
               </span>
