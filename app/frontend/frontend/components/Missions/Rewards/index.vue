@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import MissionItemName from "@/frontend/components/Missions/ItemName/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   type GameMissionReward,
@@ -89,15 +90,19 @@ const currencyAmount = (reward: GameMissionReward) => {
           </template>
 
           <!-- The name the parser resolved out of the export's entity tree.
-               405 of the 410 awards have one; the five that do not are the only
-               place a ref is shown, because an award with neither would be a
-               blank line. The weight says it is one of several sets. -->
+               An award without one shows its ref, because an award with
+               neither would be a blank line. The weight says it is one of
+               several sets. -->
           <template v-else-if="reward.kind === 'item'">
             <span class="mission-rewards__value">
-              {{ reward.amount ?? 1 }}&times; {{ reward.entityName }}
+              {{ reward.amount ?? 1 }}&times;
+              <MissionItemName
+                :name="reward.entityName"
+                :catalogue-item="reward.catalogueItem"
+              />
             </span>
             <span
-              v-if="!reward.entityName"
+              v-if="!reward.entityName && !reward.catalogueItem"
               class="mission-rewards__note mission-rewards__note--ref"
               >{{ reward.entityClass }}</span
             >

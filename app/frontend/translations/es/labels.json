@@ -4431,6 +4431,8 @@
         "templatedNote": "El juego rellena las partes marcadas cuando entrega la misión.",
         "payoutNote": "El juego calcula el pago al generar la misión, por eso los archivos solo indican uno para unos pocos contratos.",
         "noRewards": "Los archivos no indican ninguna recompensa para esta misión.",
+        "handIns": "Entregas",
+        "handInsChoice": "Una de estas",
         "unreleased": "Fuera de la versión",
         "retired": "Retirada"
       },

@@ -30493,6 +30493,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/GameMissionReward"
+        handIns:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMissionHandIn"
         blueprints:
           type: array
           items:
@@ -30545,6 +30549,39 @@ components:
       - id
       - slug
       title: GameMissionBlueprint
+    GameMissionCatalogueItem:
+      type: object
+      properties:
+        type:
+          "$ref": "#/components/schemas/GameMissionCatalogueItemTypeEnum"
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type: string
+        listed:
+          type: boolean
+      additionalProperties: false
+      required:
+      - type
+      - id
+      - slug
+      title: GameMissionCatalogueItem
+    GameMissionCatalogueItemTypeEnum:
+      type: string
+      enum:
+      - Component
+      - Equipment
+      - Commodity
+      x-enumNames:
+      - COMPONENT
+      - EQUIPMENT
+      - COMMODITY
+      title: GameMissionCatalogueItemTypeEnum
     GameMissionDifficulty:
       type: object
       properties:
@@ -30571,6 +30608,46 @@ components:
       additionalProperties: false
       required: []
       title: GameMissionDifficulty
+    GameMissionHandIn:
+      type: object
+      properties:
+        kind:
+          "$ref": "#/components/schemas/GameMissionHandInKindEnum"
+        ref:
+          type: string
+        name:
+          type:
+          - string
+          - 'null'
+        amount:
+          type: integer
+        max:
+          type:
+          - integer
+          - 'null'
+        option:
+          type:
+          - integer
+          - 'null'
+        catalogueItem:
+          anyOf:
+          - "$ref": "#/components/schemas/GameMissionCatalogueItem"
+          - type: 'null'
+      additionalProperties: false
+      required:
+      - kind
+      - ref
+      - amount
+      title: GameMissionHandIn
+    GameMissionHandInKindEnum:
+      type: string
+      enum:
+      - item
+      - resource
+      x-enumNames:
+      - ITEM
+      - RESOURCE
+      title: GameMissionHandInKindEnum
     GameMissionKindEnum:
       type: string
       enum:
@@ -30750,6 +30827,10 @@ components:
           type:
           - number
           - 'null'
+        catalogueItem:
+          anyOf:
+          - "$ref": "#/components/schemas/GameMissionCatalogueItem"
+          - type: 'null'
         badge:
           type:
           - string

@@ -47,16 +47,20 @@ module Shared
             entityClass: {type: [:string, :null]},
 
             # What that entity is called, resolved by the parser against the
-            # export's own entity tree -- 405 of the 410 awards resolve. The two
-            # commonest are physical currency, "MG Scrip" and "Council Scrip",
-            # which is the closest the export comes to stating a payout per
-            # contract.
+            # export's own entity and actor trees. The two commonest are
+            # physical currency, "MG Scrip" and "Council Scrip", which is the
+            # closest the export comes to stating a payout per contract.
             entityName: {type: [:string, :null]},
 
             # Item only, and only where the award is drawn from weighted sets:
             # which set this entry belonged to, so a page can say one of these
             # rather than all of them.
             weight: {type: [:number, :null]},
+
+            # Item only: the catalogue row the award names, where one exists.
+            catalogueItem: {
+              anyOf: [::Shared::V1::Schemas::GameMissionCatalogueItem, {type: :null}]
+            },
 
             # Badge only. The export states the key and nothing that resolves
             # it to a name or a picture.

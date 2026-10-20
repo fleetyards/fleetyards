@@ -111,6 +111,34 @@ class Api::V1::GameMissionsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /missions/{slug} lists what the mission asks to be brought, choices included" do
+    create(:game_mission_hand_in, build: @mission.build, name: "Yormandi Eye", amount: 14, position: 0)
+    create(:game_mission_hand_in, :resource, build: @mission.build, name: "Quartz", amount: 2, option: 0, position: 1)
+
+    assert_api_response :get, 200, params: {slug: @mission.slug} do
+      eye, quartz = parsed_body["handIns"]
+
+      assert_equal ["item", "Yormandi Eye", 14, nil], eye.values_at("kind", "name", "amount", "option")
+      assert_equal ["resource", "Quartz", 2, 0], quartz.values_at("kind", "name", "amount", "option")
+    end
+  end
+
+  test "GET /missions/{slug} links a reward and a hand-in to the catalogue rows they name" do
+    equipment = create(:equipment, name: "Palatino Helmet Mark I")
+    commodity = create(:commodity, name: "Quartz")
+    create(:game_mission_reward, :item, build: @mission.build, entity_name: "Palatino Helmet Mark I",
+      catalogue_item: equipment, position: 2)
+    create(:game_mission_hand_in, :resource, build: @mission.build, catalogue_item: commodity, position: 0)
+
+    assert_api_response :get, 200, params: {slug: @mission.slug} do
+      item = parsed_body["rewards"].find { |reward| reward["kind"] == "item" }
+
+      assert_equal ["Equipment", equipment.slug], item["catalogueItem"].values_at("type", "slug")
+      assert_equal ["Commodity", commodity.slug], parsed_body["handIns"].sole["catalogueItem"].values_at("type", "slug")
+      assert_nil parsed_body["rewards"].find { |reward| reward["kind"] == "reputation" }["catalogueItem"]
+    end
+  end
+
   # The run-time spans reach the payload as the export writes them: stripping
   # one here would break the sentence around it, and what to do with it is the
   # renderer's decision.

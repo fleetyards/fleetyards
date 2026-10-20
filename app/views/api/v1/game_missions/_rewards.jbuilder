@@ -30,6 +30,7 @@ json.rewards mission.facts&.rewards.to_a do |reward|
   json.entity_class reward.entity_class
   json.entity_name reward.entity_name
   json.weight reward.weight
+  json.partial! "api/v1/game_missions/catalogue_item", entry: reward
 
   json.badge reward.badge
 end

@@ -4431,6 +4431,8 @@
         "templatedNote": "Le jeu remplit les parties marquées au moment où il attribue la mission.",
         "payoutNote": "Le jeu calcule le paiement à la génération de la mission ; les fichiers n'en indiquent donc un que pour une poignée de contrats.",
         "noRewards": "Les fichiers n'indiquent aucune récompense pour celle-ci.",
+        "handIns": "À remettre",
+        "handInsChoice": "L’un de ceux-ci",
         "unreleased": "Hors version",
         "retired": "Retirée"
       },

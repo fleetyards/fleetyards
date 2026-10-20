@@ -4428,6 +4428,8 @@
         "templatedNote": "标记的部分由游戏在发布任务时填入。",
         "payoutNote": "报酬由游戏在生成任务时计算，因此游戏文件只为少数合同写明了金额。",
         "noRewards": "游戏文件未为此任务写明奖励。",
+        "handIns": "需上交",
+        "handInsChoice": "以下任选其一",
         "unreleased": "未在正式版",
         "retired": "已移除"
       },

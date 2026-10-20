@@ -4445,6 +4445,8 @@
         "templatedNote": "The game fills the marked parts in when it hands the mission out.",
         "payoutNote": "The game works the payout out when the mission is generated, so the files state one for only a handful of contracts.",
         "noRewards": "The files state no reward for this one.",
+        "handIns": "Hand-ins",
+        "handInsChoice": "One of these",
         "unreleased": "Not in release",
         "retired": "Retired"
       },

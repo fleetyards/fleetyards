@@ -16,6 +16,7 @@ module ScData
         require_real_tree
 
         GameMissionReward.delete_all
+        GameMissionHandIn.delete_all
         GameMissionBuild.delete_all
         GameMission.delete_all
       end
@@ -68,6 +69,13 @@ module ScData
         # a payout per contract.
         assert_operator GameMissionReward.of_kind("item").where.not(entity_name: nil).count, :>=, 390
         assert_includes GameMissionReward.of_kind("item").distinct.pluck(:entity_name), "MG Scrip"
+
+        # Wikelo's trades, and the ore and salvage the resource contracts want.
+        # Every one of them names what it asks for.
+        assert_operator GameMissionHandIn.distinct.count(:game_mission_build_id), :>=, 250
+        assert_operator GameMissionHandIn.where(kind: "resource").count, :>=, 450
+        assert_operator GameMissionHandIn.where.not(option: nil).count, :>=, 20
+        assert_empty GameMissionHandIn.where(name: nil).pluck(:ref)
 
         # The link to the crafting catalogue, which is the reverse of what a
         # blueprint's sources already answer.

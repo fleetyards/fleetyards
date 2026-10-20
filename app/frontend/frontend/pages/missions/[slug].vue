@@ -10,6 +10,7 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import MissionText from "@/frontend/components/MissionText/index.vue";
 import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import MissionRewards from "@/frontend/components/Missions/Rewards/index.vue";
+import MissionHandIns from "@/frontend/components/Missions/HandIns/index.vue";
 import { missionTextPlain } from "@/frontend/components/MissionText/index";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
@@ -171,6 +172,18 @@ watch(
           <p class="mission-page__note">
             {{ t("labels.gameMission.templatedNote") }}
           </p>
+        </section>
+
+        <section
+          v-if="mission.handIns?.length"
+          class="mission-page__panel"
+          data-test="mission-hand-ins"
+        >
+          <h2 class="mission-page__panel-title">
+            {{ t("labels.gameMission.handIns") }}
+          </h2>
+
+          <MissionHandIns :hand-ins="mission.handIns" />
         </section>
 
         <section class="mission-page__panel">

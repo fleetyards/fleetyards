@@ -4428,6 +4428,8 @@
         "templatedNote": "標記的部分由遊戲在發布任務時填入。",
         "payoutNote": "報酬由遊戲在產生任務時計算，因此遊戲檔案只為少數合約寫明金額。",
         "noRewards": "遊戲檔案未為此任務寫明獎勵。",
+        "handIns": "需上繳",
+        "handInsChoice": "以下任選其一",
         "unreleased": "未在正式版",
         "retired": "已移除"
       },

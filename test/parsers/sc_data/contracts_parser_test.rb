@@ -19,6 +19,9 @@ module ScData
       PROFILE_REF = "9c0a1f22-0000-4000-8000-0000000000a1"
       REPUTATION_REWARD_REF = "9c0a1f22-0000-4000-8000-0000000000b1"
       TITLE_KEY = "@Foxwell_ShipAmbush_VE_title_001"
+      ENTITY_REF = "5d1e0c3a-0000-4000-8000-0000000000c1"
+      RESOURCE_REF = "5d1e0c3a-0000-4000-8000-0000000000c2"
+      AWARD_RECORD_REF = "5d1e0c3a-0000-4000-8000-0000000000c3"
 
       setup do
         @base_folder = Dir.mktmpdir
@@ -389,6 +392,140 @@ module ScData
         assert_empty @parser.missions.sole[:rewards]
       end
 
+      test "#missions names an item reward from the entity it awards" do
+        translate("Item_Palatino_Helmet" => "Palatino Helmet Mark I")
+        named_entity("entities/scitem/characters/palatino_helmet", ref: ENTITY_REF, name: "@Item_Palatino_Helmet")
+        generator("gen", results: %(<ContractResult_Item entityClass="#{ENTITY_REF}" amount="1" />))
+
+        assert_equal "Palatino Helmet Mark I", @parser.missions.sole[:rewards].sole[:entity_name]
+      end
+
+      # A vehicle is an actor, and Wikelo hands out ATLS variants.
+      test "#missions names a reward defined under the actor tree" do
+        translate("TheCollector_Mod_ATLS_Name" => "ATLS Orange Line")
+        named_entity("actor/actors/argo_atls_collector", ref: ENTITY_REF, name: "@TheCollector_Mod_ATLS_Name")
+        generator("gen", results: %(<ContractResult_Item entityClass="#{ENTITY_REF}" amount="1" />))
+
+        assert_equal "ATLS Orange Line", @parser.missions.sole[:rewards].sole[:entity_name]
+      end
+
+      test "#missions follows a weighted award stated as a record of its own" do
+        write("contracts/contractrewards/iawr_foodorderreward", "ItemAwardWeightingsRecord", AWARD_RECORD_REF, <<~XML)
+          <itemAwardStructure>
+            <ItemAwardWeightings weighting="1">
+              <awards>
+                <ItemAwardEntityClass amountToAward="2" entityClass="#{ENTITY_REF}" />
+              </awards>
+            </ItemAwardWeightings>
+          </itemAwardStructure>
+        XML
+        generator("gen", results: <<~XML)
+          <ContractResult_ItemsWeighting>
+            <itemAwardStructure>
+              <ItemAwardWeightingsParams awardsRecord="#{AWARD_RECORD_REF}" />
+            </itemAwardStructure>
+          </ContractResult_ItemsWeighting>
+        XML
+
+        reward = @parser.missions.sole[:rewards].sole
+
+        assert_equal ENTITY_REF, reward[:entity_class]
+        assert_equal 2, reward[:amount]
+        assert_equal 1.0, reward[:weight]
+      end
+
+      test "#missions reads what a contract asks to be brought to it" do
+        translate("Item_Yormandi_Eye" => "Yormandi Eye")
+        named_entity("entities/carryables/yormandi_eye", ref: ENTITY_REF, name: "@Item_Yormandi_Eye")
+        generator("gen", properties: hand_in_property(
+          %(<HaulingOrderContent_EntityClass entityClass="#{ENTITY_REF}" minAmount="14" maxAmount="0" />)
+        ))
+
+        hand_in = @parser.missions.sole[:hand_ins].sole
+
+        assert_equal "item", hand_in[:kind]
+        assert_equal ENTITY_REF, hand_in[:entity_class]
+        assert_equal "Yormandi Eye", hand_in[:entity_name]
+        assert_equal 14, hand_in[:amount]
+        assert_not_includes hand_in, :max
+        assert_not_includes hand_in, :option
+      end
+
+      # Ranta Dung has no `Localization` node and names itself only through
+      # its purchase params.
+      test "#missions names a commodity hand-in from its purchase params" do
+        translate("items_commodities_rantadung" => "Ranta Dung")
+        write("entities/commodities/rantadung", "EntityClassDefinition", ENTITY_REF, <<~XML)
+          <Components>
+            <SCItemPurchasableParams displayName="@items_commodities_rantadung" />
+          </Components>
+        XML
+        generator("gen", properties: hand_in_property(
+          %(<HaulingOrderContent_EntityClass entityClass="#{ENTITY_REF}" minAmount="15" maxAmount="15" />)
+        ))
+
+        hand_in = @parser.missions.sole[:hand_ins].sole
+
+        assert_equal "Ranta Dung", hand_in[:entity_name]
+        assert_equal "items_commodities_rantadung", hand_in[:commodity_key]
+      end
+
+      test "#missions names a hand-in that accepts any of a group" do
+        translate("Salvage_SRT_Cannister_Name" => "SRT Canister")
+        write("entities/haulingentityclass/haulingentityclass_srt", "Hauling_EntityClasses", ENTITY_REF, "",
+          orderDisplayName: "@Salvage_SRT_Cannister_Name")
+        generator("gen", properties: hand_in_property(
+          %(<HaulingOrderContent_EntityClasses haulingEntityClasses="#{ENTITY_REF}" minAmount="1" maxAmount="4" />)
+        ))
+
+        hand_in = @parser.missions.sole[:hand_ins].sole
+
+        assert_equal "SRT Canister", hand_in[:entity_name]
+        assert_equal 1, hand_in[:amount]
+        assert_equal 4, hand_in[:max]
+      end
+
+      test "#missions reads a resource hand-in in SCU and the choice a contract offers" do
+        translate("items_commodities_quartz" => "Quartz")
+        resource_types(%(<ResourceType.Quartz displayName="@items_commodities_quartz" __type="ResourceType" __ref="#{RESOURCE_REF}" />))
+        generator("gen", properties: hand_in_property(<<~XML))
+          <HaulingOrderContent_Or>
+            <options>
+              <HaulingOrder_OrOption_And>
+                <orders>
+                  <HaulingOrderContent_Resource resource="#{RESOURCE_REF}" maxContainerSize="-1" minSCU="2" maxSCU="2" />
+                </orders>
+              </HaulingOrder_OrOption_And>
+              <HaulingOrder_OrOption_And>
+                <orders>
+                  <HaulingOrderContent_EntityClass entityClass="#{ENTITY_REF}" minAmount="5" maxAmount="5" />
+                </orders>
+              </HaulingOrder_OrOption_And>
+            </options>
+          </HaulingOrderContent_Or>
+        XML
+
+        resource, item = @parser.missions.sole[:hand_ins]
+
+        assert_equal ["resource", "Quartz", RESOURCE_REF, 2, 0], resource.values_at(:kind, :resource_name, :resource_ref, :amount, :option)
+        assert_equal "items_commodities_quartz", resource[:commodity_key]
+        assert_equal ["item", 5, 1], item.values_at(:kind, :amount, :option)
+      end
+
+      test "#missions skips an order that asks for none of something" do
+        generator("gen", properties: hand_in_property(
+          %(<HaulingOrderContent_EntityClass entityClass="#{ENTITY_REF}" minAmount="0" maxAmount="4" />)
+        ))
+
+        assert_empty @parser.missions.sole[:hand_ins]
+      end
+
+      test "#missions leaves the hand-ins empty for a contract that asks for nothing" do
+        generator("gen")
+
+        assert_empty @parser.missions.sole[:hand_ins]
+      end
+
       # `@LOC_UNINITIALIZED` is a real entry in the localisation file rather than
       # a missing key, so it resolves happily and would ship as a mission name.
       test "#missions leaves an uninitialized title blank rather than shipping the marker" do
@@ -456,14 +593,15 @@ module ScData
       private def generator(key, handler: "ContractGeneratorHandler_Career", contract_kind: "CareerContract",
         org_ref: ORG_REF, min_standing: RANK0_REF, max_standing: RANK6_REF, pool_ref: POOL_REF,
         sibling_org: nil, second_org: nil, container: "contracts", contract_ids: [CONTRACT_ID],
-        debug_name: nil, title: TITLE_KEY, description: nil, released: true, difficulty: nil, results: nil)
+        debug_name: nil, title: TITLE_KEY, description: nil, released: true, difficulty: nil, results: nil,
+        properties: nil)
         siblings = [sibling_org, second_org].compact.map.with_index do |ref, index|
           %(<ContractGeneratorHandler_Career debugName="Sibling#{index}" factionReputation="#{ref}" />)
         end
 
         listed = contract_ids.map do |id|
           contract(contract_kind, id:, debug_name: debug_name || "#{key}_VeryEasy", min_standing:,
-            max_standing:, pool_ref:, title:, description:, released:, difficulty:, results:)
+            max_standing:, pool_ref:, title:, description:, released:, difficulty:, results:, properties:)
         end
 
         write("contracts/contractgenerator/guild/#{key}", "ContractGenerator", "00000000-0000-0000-0000-0000000000aa", <<~XML)
@@ -479,7 +617,7 @@ module ScData
       end
 
       private def contract(kind, id:, debug_name:, min_standing:, max_standing:, pool_ref:,
-        title:, description:, released:, difficulty:, results:)
+        title:, description:, released:, difficulty:, results:, properties:)
         params = [%(<ContractStringParam param="Title" value="#{title}" />)]
         params << %(<ContractStringParam param="Description" value="#{description}" />) if description
 
@@ -490,6 +628,7 @@ module ScData
               <stringParamOverrides>
                 #{params.join}
               </stringParamOverrides>
+              #{"<propertyOverrides>#{properties}</propertyOverrides>" if properties}
             </paramOverrides>
             <contractResults>
               <contractResults>
@@ -571,6 +710,39 @@ module ScData
       private def standing(key, ref:, display_name:, name: nil)
         write("reputation/standings/scope/#{key}", "SReputationStandingParams", ref, "",
           displayName: display_name, **(name ? {name:} : {}))
+      end
+
+      private def hand_in_property(orders)
+        <<~XML
+          <MissionProperty missionVariableName="HaulingOverride">
+            <value>
+              <MissionPropertyValue_HaulingOrders>
+                <haulingOrderContent>
+                  #{orders}
+                </haulingOrderContent>
+              </MissionPropertyValue_HaulingOrders>
+            </value>
+          </MissionProperty>
+        XML
+      end
+
+      private def named_entity(path, ref:, name:)
+        write(path, "EntityClassDefinition", ref, <<~XML)
+          <Components>
+            <SAttachableComponentParams>
+              <AttachDef>
+                <Localization Name="#{name}" />
+              </AttachDef>
+            </SAttachableComponentParams>
+          </Components>
+        XML
+      end
+
+      private def resource_types(records)
+        target = "#{@raw_path}/#{RECORDS_PATH}/resourcetypedatabase/resourcetypedatabase.records.xml"
+
+        FileUtils.mkdir_p(File.dirname(target))
+        File.write(target, "<ResourceTypeDatabase>#{records}</ResourceTypeDatabase>")
       end
 
       private def write(path, type, ref, body, **attributes)

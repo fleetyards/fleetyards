@@ -13,6 +13,15 @@ class GameMissionBuild < ApplicationRecord
     class_name: "GameMissionReward", inverse_of: :build,
     foreign_key: :game_mission_build_id, dependent: :destroy
 
+  # What this build says the mission asks to be brought to it.
+  has_many :hand_ins,
+    -> { order(:position) },
+    class_name: "GameMissionHandIn", inverse_of: :build,
+    foreign_key: :game_mission_build_id, dependent: :destroy
+
+  # What a detail response renders, catalogue links included.
+  DETAIL_INCLUDES = {rewards: :catalogue_item, hand_ins: :catalogue_item}.freeze
+
   # A recipe is handed out through a reward pool rather than as a contract
   # result, so it is not a `GameMissionReward` row -- but it is something the
   # mission pays, and `reward_kinds` carries it so a reader can filter for it
