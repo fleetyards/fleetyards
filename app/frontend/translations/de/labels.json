@@ -4444,6 +4444,10 @@
         "minutes": "%{time} Min.",
         "offeredAt": "Angeboten bei",
         "availability": {
+          "orHigher": "%{standing} oder höher",
+          "reputationAny": "Beliebiges Ansehen bei %{org}",
+          "onceOnly": "Nur einmal",
+          "thisMission": "diese Mission",
           "title": "Verfügbarkeit",
           "onePerPlayer": "Einer gleichzeitig pro Spieler",
           "perPlayer": "Bis zu %{count} gleichzeitig pro Spieler",

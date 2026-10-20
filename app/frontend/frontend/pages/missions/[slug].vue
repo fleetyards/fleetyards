@@ -261,9 +261,6 @@ watch(
              missions that drop it -- is text today and stays text until
              `blueprint_sources` points at a mission instead of carrying its
              own copy of the name. -->
-        <!-- The specific places its location templates stand for, and the
-             places its text names. Most templates only resolve to a whole
-             planet or moon, which is not a place to link to. -->
         <section
           v-if="hasAvailability"
           class="mission-page__panel"
@@ -276,6 +273,9 @@ watch(
           <MissionAvailability :mission="mission" />
         </section>
 
+        <!-- The specific places its location templates stand for, and the
+             places its text names. Most templates only resolve to a whole
+             planet or moon, which is not a place to link to. -->
         <section v-if="placesTakenPlace.length" class="mission-page__panel">
           <h2 class="mission-page__panel-title">
             {{ t("labels.gameMission.locations") }}

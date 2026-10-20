@@ -4441,6 +4441,10 @@
         "minutes": "%{time} 分钟",
         "offeredAt": "发布地点",
         "availability": {
+          "orHigher": "%{standing} 或以上",
+          "reputationAny": "%{org} 任意声望",
+          "onceOnly": "仅限一次",
+          "thisMission": "本任务",
           "title": "可接取条件",
           "onePerPlayer": "每名玩家同时限一个",
           "perPlayer": "每名玩家同时最多 %{count} 个",

@@ -28,6 +28,7 @@ const prerequisite = (
 ): GameMissionPrerequisite => ({
   kind: GameMissionPrerequisiteKindEnum.CRIME_STAT,
   excluded: false,
+  includesSelf: false,
   missions: [],
   ...attrs,
 });
@@ -128,6 +129,35 @@ describe("MissionAvailability", () => {
     expect(wrapper.text()).toContain("Complete 5 of");
     expect(wrapper.text()).toContain(
       "Complete 500 missions not in the catalogue",
+    );
+  });
+
+  it("says once only where the mission rules itself out", async () => {
+    const wrapper = await mount({
+      prerequisites: [
+        prerequisite({
+          kind: GameMissionPrerequisiteKindEnum.EXCLUDED_MISSIONS,
+          includesSelf: true,
+        }),
+      ],
+    });
+
+    expect(wrapper.text()).toContain("Once only");
+  });
+
+  it("reads a band open at the top as a minimum", async () => {
+    const wrapper = await mount({
+      prerequisites: [
+        prerequisite({
+          kind: GameMissionPrerequisiteKindEnum.REPUTATION,
+          orgName: "Shubin Interstellar",
+          minStanding: "Neutral",
+        }),
+      ],
+    });
+
+    expect(wrapper.text()).toContain(
+      "Neutral or higher with Shubin Interstellar",
     );
   });
 

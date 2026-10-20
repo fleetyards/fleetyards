@@ -45,22 +45,57 @@ const respawn = computed(() => {
     : t("labels.gameMission.availability.respawn", { time: toNumber(time) });
 });
 
-const prerequisites = computed(() => props.mission.prerequisites || []);
+// An excluded set the catalogue offers none of, and that is not this mission
+// either, has nothing left to name.
+const prerequisites = computed(() =>
+  (props.mission.prerequisites || []).filter(
+    (prerequisite) =>
+      prerequisite.kind !== GameMissionPrerequisiteKindEnum.EXCLUDED_MISSIONS ||
+      prerequisite.missions.length ||
+      prerequisite.includesSelf,
+  ),
+);
 
+// The files state a band, which can be open at the top: "at least Neutral".
 const band = (prerequisite: GameMissionPrerequisite) => {
   const { minStanding: min, maxStanding: max } = prerequisite;
 
-  if (!max || max === min) return min || max || "";
+  if (min && max) return min === max ? min : `${min} – ${max}`;
+  if (min) {
+    return t("labels.gameMission.availability.orHigher", { standing: min });
+  }
 
-  return min ? `${min} – ${max}` : max;
+  return max || "";
 };
+
+const reputationLabel = (prerequisite: GameMissionPrerequisite) => {
+  const org = prerequisite.orgName || "";
+  const standing = band(prerequisite);
+
+  if (!standing) {
+    return t("labels.gameMission.availability.reputationAny", { org });
+  }
+
+  return t(
+    prerequisite.excluded
+      ? "labels.gameMission.availability.reputationExcluded"
+      : "labels.gameMission.availability.reputation",
+    { band: standing, org },
+  );
+};
+
+// Done once only: the mission is the one thing that rules itself out.
+const onceOnly = (prerequisite: GameMissionPrerequisite) =>
+  prerequisite.kind === GameMissionPrerequisiteKindEnum.EXCLUDED_MISSIONS &&
+  prerequisite.includesSelf &&
+  !prerequisite.missions.length;
 
 // One mission to finish first reads as a step; several, or a count above one,
 // as a tally towards them.
 const completedLabel = (prerequisite: GameMissionPrerequisite) => {
   const count = prerequisite.count ?? 1;
 
-  if (!prerequisite.missions.length) {
+  if (!prerequisite.missions.length && !prerequisite.includesSelf) {
     return t("labels.gameMission.availability.completeUnlisted", { count });
   }
 
@@ -107,14 +142,11 @@ const hasAny = computed(
           prerequisite.kind === GameMissionPrerequisiteKindEnum.REPUTATION
         "
       >
-        {{
-          t(
-            prerequisite.excluded
-              ? "labels.gameMission.availability.reputationExcluded"
-              : "labels.gameMission.availability.reputation",
-            { band: band(prerequisite), org: prerequisite.orgName || "" },
-          )
-        }}
+        {{ reputationLabel(prerequisite) }}
+      </template>
+
+      <template v-else-if="onceOnly(prerequisite)">
+        {{ t("labels.gameMission.availability.onceOnly") }}
       </template>
 
       <template v-else>
@@ -140,6 +172,12 @@ const hasAny = computed(
           >
             <MissionText :text="linked.name" />
           </CatalogueItemPopover>
+        </span>
+        <span
+          v-if="prerequisite.includesSelf"
+          class="mission-availability__mission"
+        >
+          {{ t("labels.gameMission.availability.thisMission") }}
         </span>
       </template>
     </li>

@@ -4458,6 +4458,10 @@
         "minutes": "%{time} min",
         "offeredAt": "Offered at",
         "availability": {
+          "orHigher": "%{standing} or higher",
+          "reputationAny": "Any standing with %{org}",
+          "onceOnly": "Once only",
+          "thisMission": "this mission",
           "title": "Availability",
           "onePerPlayer": "One at a time per player",
           "perPlayer": "Up to %{count} at a time per player",
