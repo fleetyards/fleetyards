@@ -602,7 +602,9 @@ module ScData
 
         return [] unless content.is_a?(Hash)
 
-        options = Array.wrap(content.dig("HaulingOrderContent_Or", "options", "HaulingOrder_OrOption_And"))
+        options = Array.wrap(content["HaulingOrderContent_Or"]).select { |choice| choice.is_a?(Hash) }.flat_map { |choice|
+          Array.wrap(choice.dig("options", "HaulingOrder_OrOption_And"))
+        }.select { |option| option.is_a?(Hash) }
 
         hand_in_orders(content) + options.each_with_index.flat_map { |option, index|
           hand_in_orders(option["orders"]).map { |entry| entry.merge(option: index) }
@@ -617,23 +619,28 @@ module ScData
 
         resources = Array.wrap(orders["HaulingOrderContent_Resource"]).filter_map do |order|
           ref = value_or_nil(order["resource"])
+          amounts = hand_in_amounts(order["minSCU"], order["maxSCU"])
 
-          next if ref.blank?
+          next if ref.blank? || amounts.nil?
 
-          hand_in_amounts(order["minSCU"], order["maxSCU"])
-            .merge(kind: "resource", resource_ref: ref, resource_name: resource_names[ref]).compact
+          amounts.merge(kind: "resource", resource_ref: ref, resource_name: resource_names[ref]).compact
         end
 
         items.filter_map { |ref, order|
-          next if ref.blank?
+          amounts = hand_in_amounts(order["minAmount"], order["maxAmount"])
 
-          hand_in_amounts(order["minAmount"], order["maxAmount"]).merge(kind: "item", entity_class: ref)
+          next if ref.blank? || amounts.nil?
+
+          amounts.merge(kind: "item", entity_class: ref)
         } + resources
       end
 
+      # Nil for an order that asks for nothing, which is not a hand-in.
       private def hand_in_amounts(min, max)
         amount = min.to_i
         max = max.to_i
+
+        return unless amount.positive?
 
         {amount:, max: (max if max > amount)}.compact
       end
@@ -645,8 +652,9 @@ module ScData
           root = Hash.from_xml(File.read("#{import_path}/#{RESOURCE_TYPES_PATH}")).values.first
           records = root.is_a?(Hash) ? root.each_value.flat_map { |values| Array.wrap(values) } : []
 
+          # A group record carries a category label, not a commodity name.
           records.each_with_object({}) do |values, index|
-            next unless values.is_a?(Hash)
+            next unless values.is_a?(Hash) && values["__type"] == "ResourceType"
 
             ref = value_or_nil(values["__ref"])
             name = localize_name(values["displayName"])

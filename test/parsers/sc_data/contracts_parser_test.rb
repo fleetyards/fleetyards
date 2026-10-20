@@ -508,6 +508,14 @@ module ScData
         assert_equal ["item", 5, 1], item.values_at(:kind, :amount, :option)
       end
 
+      test "#missions skips an order that asks for none of something" do
+        generator("gen", properties: hand_in_property(
+          %(<HaulingOrderContent_EntityClass entityClass="#{ENTITY_REF}" minAmount="0" maxAmount="4" />)
+        ))
+
+        assert_empty @parser.missions.sole[:hand_ins]
+      end
+
       test "#missions leaves the hand-ins empty for a contract that asks for nothing" do
         generator("gen")
 
