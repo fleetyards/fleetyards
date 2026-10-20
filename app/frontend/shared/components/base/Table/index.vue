@@ -51,6 +51,7 @@ type Props = {
   selected?: string[];
   rowClickable?: boolean;
   rowDisabled?: (record: T) => boolean;
+  rowClass?: (record: T) => Record<string, boolean>;
   fillHeight?: boolean;
   // Placeholder rows to hold the table open with while it waits for its first
   // records. A table inside a list takes the count from the list instead, so
@@ -79,6 +80,7 @@ const props = withDefaults(defineProps<Props>(), {
   selected: () => [],
   rowClickable: false,
   rowDisabled: undefined,
+  rowClass: undefined,
   fillHeight: false,
   skeletonRows: undefined,
   sortable: false,
@@ -448,6 +450,7 @@ onUnmounted(() => {
               :key="props.rowKey?.(record) ?? primaryValue(record)"
               :clickable="props.rowClickable || selecting"
               :disabled="props.rowDisabled?.(record)"
+              :class="props.rowClass?.(record)"
               :holdable="
                 props.selectable && mobile && !props.rowDisabled?.(record)
               "
