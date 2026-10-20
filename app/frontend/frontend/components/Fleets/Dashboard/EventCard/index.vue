@@ -10,29 +10,64 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useMissionCover } from "@/frontend/composables/useMissionCover";
 import { useEventStatus } from "@/frontend/composables/useEventStatus";
 import { coverStyle } from "@/frontend/components/Fleets/Dashboard/coverStyle";
-import type { Fleet, FleetEvent } from "@/services/fyApi";
+import type { Fleet, FleetEvent, GameEvent } from "@/services/fyApi";
 
+// A fleet event links to its page; a game event links out to wherever the team
+// pointed it, or nowhere. Both take the same card so an agenda that mixes them
+// reads as one list.
 type Props = {
-  fleet: Fleet;
-  event: FleetEvent;
+  fleet?: Pick<Fleet, "slug">;
+  event: FleetEvent | GameEvent;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  fleet: undefined,
+});
+
+const fleetEvent = computed(() =>
+  props.fleet && "slug" in props.event
+    ? (props.event as FleetEvent)
+    : undefined,
+);
+
+const externalUrl = computed(() =>
+  "url" in props.event ? props.event.url : undefined,
+);
 
 const { t, l } = useI18n();
 
 const { resolve: resolveCover } = useMissionCover();
 
-const link = computed(() => ({
-  name: "fleet-event",
-  params: {
-    slug: props.fleet.slug,
-    event: props.event.parentEventSlug || props.event.slug,
-  },
-  query: props.event.occurrenceDate
-    ? { occurrence: props.event.occurrenceDate }
-    : undefined,
-}));
+const link = computed(() => {
+  if (!props.fleet || !fleetEvent.value) return undefined;
+
+  return {
+    name: "fleet-event",
+    params: {
+      slug: props.fleet.slug,
+      event: fleetEvent.value.parentEventSlug || fleetEvent.value.slug,
+    },
+    query: fleetEvent.value.occurrenceDate
+      ? { occurrence: fleetEvent.value.occurrenceDate }
+      : undefined,
+  };
+});
+
+const tag = computed(() => {
+  if (link.value) return "router-link";
+  if (externalUrl.value) return "a";
+
+  return "div";
+});
+
+const linkAttrs = computed(() => {
+  if (link.value) return { to: link.value };
+  if (externalUrl.value) {
+    return { href: externalUrl.value, target: "_blank", rel: "noopener" };
+  }
+
+  return {};
+});
 
 const cover = computed(() => coverStyle(resolveCover(props.event)));
 
@@ -42,7 +77,7 @@ const { signupPillVariantFor } = useEventStatus();
 <template>
   <!-- The whole card is the link, so the sign-up hint inside it is a label
        rather than a second link nested in the first. -->
-  <router-link :to="link" class="event-card" :style="cover">
+  <component :is="tag" v-bind="linkAttrs" class="event-card" :style="cover">
     <div class="event-card__date" aria-hidden="true">
       <span class="event-card__weekday">
         {{ l(event.startsAt, "fleetDashboard.formats.weekday") }}
@@ -60,24 +95,28 @@ const { signupPillVariantFor } = useEventStatus();
         <template v-if="event.location"> · {{ event.location }}</template>
       </span>
     </div>
-    <Pill
-      v-if="event.viewerSignup"
-      :variant="signupPillVariantFor(event.viewerSignup.status)"
-      data-test="fleet-dashboard-event-signup"
-    >
-      {{
-        t(`labels.fleets.events.signupStatuses.${event.viewerSignup.status}`)
-      }}
-    </Pill>
-    <span
-      v-else-if="event.signupsOpen"
-      class="event-card__signup"
-      data-test="fleet-dashboard-event-signup-cta"
-    >
-      {{ t("fleetDashboard.events.signUp") }}
-      <i class="fa-light fa-chevron-right" aria-hidden="true" />
-    </span>
-  </router-link>
+    <slot name="badge">
+      <Pill
+        v-if="fleetEvent?.viewerSignup"
+        :variant="signupPillVariantFor(fleetEvent.viewerSignup.status)"
+        data-test="fleet-dashboard-event-signup"
+      >
+        {{
+          t(
+            `labels.fleets.events.signupStatuses.${fleetEvent.viewerSignup.status}`,
+          )
+        }}
+      </Pill>
+      <span
+        v-else-if="fleetEvent?.signupsOpen"
+        class="event-card__signup"
+        data-test="fleet-dashboard-event-signup-cta"
+      >
+        {{ t("fleetDashboard.events.signUp") }}
+        <i class="fa-light fa-chevron-right" aria-hidden="true" />
+      </span>
+    </slot>
+  </component>
 </template>
 
 <style lang="scss" scoped>
