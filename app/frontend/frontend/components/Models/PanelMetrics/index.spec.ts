@@ -105,6 +105,18 @@ describe("PanelMetrics", () => {
     }
   });
 
+  it("shows the cargo a ship carries with its modules fitted", () => {
+    const wrapper = mount(PanelMetrics, {
+      props: {
+        model: model({
+          metrics: { isGroundVehicle: false, cargo: 0, maxCargo: 74 },
+        }),
+      },
+    });
+
+    expect(valueFor(wrapper, "model.cargo")).toBe("74");
+  });
+
   it("renders no empty group for a model carrying no figures", () => {
     // The e2e fixtures are exactly this: a name and a manufacturer. With speed
     // gated on inGame the summary has nothing left to show, and an empty rows

@@ -13,6 +13,9 @@ module Shared
             beamLabel: {type: :string},
             cargo: {type: :number},
             cargoLabel: {type: :string},
+            # The hull's cargo plus the largest cargo module each slot takes.
+            maxCargo: {type: :number},
+            maxCargoLabel: {type: :string},
             personalInventory: {type: :number},
             personalInventoryLabel: {type: [:string, :null]},
             # Berths, so a bunk counts twice. Absent rather than 0 for an interior

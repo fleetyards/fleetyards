@@ -9,6 +9,7 @@
       "size": "尺寸",
       "beam": "舰宽",
       "cargo": "货舱",
+      "cargoWithModules": "含模块",
       "personalInventory": "飞船库存",
       "beds": {
         "one": "%{count} 个床位",

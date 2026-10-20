@@ -456,7 +456,7 @@ module Api
         end
 
         scope = scope.with_dock if model_query_params.delete("with_dock")
-        scope = scope.where(cargo: 0.1..) if model_query_params.delete("with_cargo")
+        scope = scope.where("#{Model.max_cargo_sql} > 0") if model_query_params.delete("with_cargo")
         scope = with_cargo_grids(scope) if model_query_params.delete("with_cargo_grids")
         scope = scope.where(id: current_resource_owner.models.select(:id)) if model_query_params.delete("in_hangar") && current_resource_owner.present?
         scope = container_fit(scope) if container_fit_params.present?
@@ -464,8 +464,24 @@ module Api
 
         normalize_sort_params(model_query_params)
         model_query_params["sorts"] = sorting_params(Model, model_query_params["sorts"])
+        read_cargo_as_max_cargo
 
         scope.ransack(model_query_params)
+      end
+
+      # The catalogue answers for what a ship can carry once fitted, so a
+      # Retaliator with an empty hull still counts as a hauler here. The
+      # hangar and fleet filters keep the hull figure: a vehicle carries
+      # the modules it has, not every one it could take.
+      private def read_cargo_as_max_cargo
+        %w[gteq lteq].each do |predicate|
+          value = model_query_params.delete("cargo_#{predicate}")
+          model_query_params["max_cargo_#{predicate}"] = value unless value.nil?
+        end
+
+        model_query_params["sorts"] = Array(model_query_params["sorts"]).map do |sort|
+          sort.sub(/\Acargo /, "max_cargo ")
+        end
       end
 
       private def find_model_by_slug!(*includes, joins: nil)

@@ -214,6 +214,33 @@ class ModelTest < ActiveSupport::TestCase
     assert_equal 5400.0, model.reload.cargo
   end
 
+  test "max cargo adds the largest cargo module of each slot to the hull" do
+    model = create(:model, cargo: 2.0, keep_cargo: true)
+    {
+      ["hardpoint_front_module", 38.0] => {},
+      ["hardpoint_front_module", 10.0] => {},
+      ["hardpoint_rear_module", 36.0] => {},
+      ["hardpoint_rear_module", 99.0] => {hidden: true},
+      ["hardpoint_rear_module", 98.0] => {active: false},
+      [nil, 6.0] => {},
+      [nil, 4.0] => {}
+    }.each do |(slot, cargo), attributes|
+      create(:module_hardpoint, model:, slot:, model_module: create(:model_module, cargo:, **attributes))
+    end
+
+    assert_equal 82.0, model.reload.max_cargo
+    assert_equal "82 SCU", model.max_cargo_label
+    assert_equal 82.0, Model.where(id: model.id).pick(Arel.sql(Model.max_cargo_sql)).to_f
+  end
+
+  test "max cargo of a ship without cargo modules is its own cargo" do
+    model = create(:model, cargo: 64.0, keep_cargo: true)
+    create(:module_hardpoint, model:, model_module: create(:model_module))
+
+    assert_equal 64.0, model.reload.max_cargo
+    assert_equal 64.0, Model.where(id: model.id).pick(Arel.sql(Model.max_cargo_sql)).to_f
+  end
+
   test "a flying ship the game files do not know keeps the official cargo figure" do
     model = create(:model, production_status: "flight-ready", cargo: 96.0, rsi_cargo: 96.0)
 

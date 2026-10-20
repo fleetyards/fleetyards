@@ -9,6 +9,7 @@
       "size": "Taille",
       "beam": "Rayon",
       "cargo": "Soute",
+      "cargoWithModules": "avec modules",
       "personalInventory": "Inventaire du vaisseau",
       "beds": {
         "one": "%{count} lit",

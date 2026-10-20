@@ -43,6 +43,14 @@ const displayBeam = computed(() => stateMetrics.value.beam);
 
 const displayHeight = computed(() => stateMetrics.value.height);
 
+const maxCargo = computed(
+  () => props.model.metrics.maxCargo ?? props.model.metrics.cargo,
+);
+
+const cargoNeedsModules = computed(
+  () => (maxCargo.value ?? 0) > (props.model.metrics.cargo ?? 0),
+);
+
 const hasPrice = computed(
   () => !!props.model.price || !!props.model.pledgePrice,
 );
@@ -134,8 +142,15 @@ const openAvailability = () => {
       <div class="metrics-card__tile">
         <div class="metrics-card__tile__label">{{ t("model.cargo") }}</div>
         <div class="metrics-card__tile__value">
-          {{ toNumber(model.metrics.cargo || "", "integer") }}
+          {{ toNumber(maxCargo || "", "integer") }}
           <span class="metrics-card__tile__unit">SCU</span>
+          <span
+            v-if="cargoNeedsModules"
+            class="metrics-card__tile__unit"
+            data-test="model-cargo-with-modules"
+          >
+            · {{ t("model.cargoWithModules") }}
+          </span>
         </div>
       </div>
       <div v-if="model.metrics.personalInventory" class="metrics-card__tile">

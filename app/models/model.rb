@@ -203,6 +203,32 @@ class Model < ApplicationRecord
     ransacker(fact) { Arel.sql(Model.fact_sql(fact)) }
   end
 
+  # The hull's cargo plus, for every module slot, the largest cargo module it
+  # takes -- the most the ship can carry once fitted. Modules of one slot are
+  # alternatives, so they do not add up; modules with no known slot are taken
+  # to share one. Mirrors `#max_cargo`.
+  def self.max_cargo_sql(source = ::ScData::Source.current.served_for(ModelModuleBuild))
+    in_build = sanitize_sql_array([ModelModule::IN_BUILD_SQL, {environment: source.environment, version: source.version}])
+
+    <<~SQL.squish
+      COALESCE(models.cargo, 0) + COALESCE((
+        SELECT SUM(slot_cargo) FROM (
+          SELECT MAX(model_modules.cargo) AS slot_cargo
+            FROM module_hardpoints
+            JOIN model_modules ON model_modules.id = module_hardpoints.model_module_id
+           WHERE module_hardpoints.model_id = models.id
+             AND model_modules.hidden = FALSE
+             AND model_modules.active = TRUE
+             AND model_modules.cargo > 0
+             AND (#{in_build})
+           GROUP BY module_hardpoints.slot
+        ) cargo_slots
+      ), 0)
+    SQL
+  end
+
+  ransacker(:max_cargo) { Arel.sql(Model.max_cargo_sql) }
+
   # The column still answers for a model no build describes -- every concept ship,
   # and every ship the export dropped before this table existed.
   ModelBuild::FACTS.each do |fact|
@@ -233,6 +259,18 @@ class Model < ApplicationRecord
   # Berths that arrive with a module rather than being built into the hull --
   # the Galaxy's med bay carries a vehicle lift, its refinery does not.
   has_many :module_docks, through: :modules, source: :docks
+
+  # The slots a cargo module can fill, carrying the module's capacity as
+  # `module_cargo`, under the same conditions the ship page lists its modules.
+  has_many :cargo_module_hardpoints,
+    -> {
+      joins(:model_module)
+        .merge(ModelModule.in_build.visible.active)
+        .where(model_modules: {cargo: 0.01..})
+        .select("module_hardpoints.*", "model_modules.cargo AS module_cargo")
+    },
+    class_name: "ModuleHardpoint",
+    inverse_of: false
 
   has_many :module_packages,
     class_name: "ModelModulePackage",
@@ -310,7 +348,7 @@ class Model < ApplicationRecord
       # Without them a ship list is two extra queries per row rather than two
       # for the page -- and the ships and hangar endpoints are the slow ones.
       :build, :last_build,
-      {item_prices: ItemPrice::SHOP_LINK}, :loaners, :cargo_holds_db,
+      {item_prices: ItemPrice::SHOP_LINK}, :loaners, :cargo_holds_db, :cargo_module_hardpoints,
       {manufacturer: Manufacturer.attachment_preloads},
       {model_loaners: :loaner_model}
     ] + list_attachment_preloads
@@ -504,7 +542,7 @@ class Model < ApplicationRecord
       "ground_deceleration", "ground_max_speed", "ground_reverse_speed", "height", "hidden",
       "holo", "holo_colored", "hydrogen_fuel_tank_size", "hydrogen_fuel_tanks", "id", "id_value", "in_game", "ingame_only", "can_land_on_planets",
       "images_count", "last_updated_at", "length", "loaners_count",
-      "manufacturer", "manufacturer_id", "mass", "max_speed", "model_paints_count", "module_hardpoints_count",
+      "manufacturer", "manufacturer_id", "mass", "max_cargo", "max_speed", "model_paints_count", "module_hardpoints_count",
       "name", "notified", "on_sale", "personal_inventory", "pitch", "player_ownable", "pledge_price", "positions_need_curation", "price",
       "production_note",
       "production_status", "quantum_fuel_tank_size", "quantum_fuel_tanks", "roll", "rsi_beam",
@@ -976,6 +1014,26 @@ class Model < ApplicationRecord
 
     number = number_with_precision(
       cargo,
+      precision: 2,
+      strip_insignificant_zeros: true
+    )
+
+    [number, "SCU"].join(" ")
+  end
+
+  def max_cargo
+    module_cargo = cargo_module_hardpoints.group_by(&:slot).sum do |_slot, hardpoints|
+      hardpoints.map(&:module_cargo).max
+    end
+
+    (cargo || 0) + module_cargo
+  end
+
+  def max_cargo_label
+    return if max_cargo.zero?
+
+    number = number_with_precision(
+      max_cargo,
       precision: 2,
       strip_insignificant_zeros: true
     )

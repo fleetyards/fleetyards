@@ -9,6 +9,7 @@
       "size": "尺寸",
       "beam": "寬度",
       "cargo": "貨物",
+      "cargoWithModules": "含模組",
       "personalInventory": "飛船庫存",
       "beds": {
         "one": "%{count} 個床位",

@@ -9,6 +9,7 @@
       "size": "Tamaño",
       "beam": "Manga",
       "cargo": "Carga",
+      "cargoWithModules": "con módulos",
       "personalInventory": "Inventario de la nave",
       "beds": {
         "one": "%{count} cama",

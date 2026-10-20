@@ -82,14 +82,14 @@ export const useModelMetricRows = (
   });
 
   const dimensions = computed<MetricRow[]>(() => {
-    const { length, beam, height, mass, cargo } = model().metrics;
+    const { length, beam, height, mass, cargo, maxCargo } = model().metrics;
 
     const rows: MetricRow[] = [
       { label: t("model.length"), value: toNumber(length, "distance") },
       { label: t("model.beam"), value: toNumber(beam, "distance") },
       { label: t("model.height"), value: toNumber(height, "distance") },
       { label: t("model.mass"), value: toNumber(mass, "weight") },
-      { label: t("model.cargo"), value: toNumber(cargo, "cargo") },
+      { label: t("model.cargo"), value: toNumber(maxCargo ?? cargo, "cargo") },
     ];
 
     if (model().price) {
