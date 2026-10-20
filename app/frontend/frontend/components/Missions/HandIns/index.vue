@@ -70,7 +70,7 @@ const amount = (handIn: GameMissionHandIn) => {
             />
           </span>
           <span
-            v-if="!handIn.name"
+            v-if="!handIn.name && !handIn.catalogueItem"
             class="mission-rewards__note mission-rewards__note--ref"
             >{{ handIn.ref }}</span
           >
@@ -102,7 +102,7 @@ const amount = (handIn: GameMissionHandIn) => {
               />
             </span>
             <span
-              v-if="!handIn.name"
+              v-if="!handIn.name && !handIn.catalogueItem"
               class="mission-rewards__note mission-rewards__note--ref"
               >{{ handIn.ref }}</span
             >

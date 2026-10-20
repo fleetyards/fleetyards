@@ -102,7 +102,7 @@ const currencyAmount = (reward: GameMissionReward) => {
               />
             </span>
             <span
-              v-if="!reward.entityName"
+              v-if="!reward.entityName && !reward.catalogueItem"
               class="mission-rewards__note mission-rewards__note--ref"
               >{{ reward.entityClass }}</span
             >
