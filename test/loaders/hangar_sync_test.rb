@@ -454,6 +454,17 @@ class HangarSyncTest < ActiveSupport::TestCase
       assert_equal 1, Vehicle.where(user: @user, model: gladius).count
     end
 
+    test "matches a paint pledge RSI renamed along with its ship" do
+      paint = ModelPaint.find_by!(slug: "constellation-phoenix-emerald")
+      existing = create(:vehicle, user: @user, model: paint.model, bought_via: :pledge_store, model_paint_ids: [paint.id])
+
+      result = ::HangarSync.new([{"id" => "99999", "type" => "ship", "name" => "Constellation Mk IV Phoenix Emerald"}]).run(@user.id)
+
+      assert_empty result[:missing_models]
+      assert_not existing.reload.wanted
+      assert_equal "99999", existing.vehicle_paints.sole.rsi_pledge_id
+    end
+
     test "leaves a plain pledge's hull to it when a painted pledge comes first" do
       gladius = Model.find_by!(slug: "aegs-gladius")
       create(:model_paint, model: gladius, name: "Dunlevy")
