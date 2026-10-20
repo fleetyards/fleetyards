@@ -131,6 +131,12 @@ body {
     margin-bottom: 50px;
     padding-inline: 15px;
     margin-inline: auto;
+
+    // Past this a row's label and value drift a screen apart; the pages lay
+    // out more columns instead of stretching the ones they have.
+    @media (min-width: map-get($grid-breakpoints, xxl)) {
+      max-width: $content-max-width;
+    }
   }
 }
 
