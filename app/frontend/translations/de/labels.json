@@ -2014,7 +2014,7 @@
           "spreadFirstShot": "Streuung erster Schuss",
           "spreadPerShot": "Streuung/Schuss",
           "spreadRecovery": "Streuungsabbau",
-          "pool": "Energiepool",
+          "pool": "Kondensator",
           "maxRegen": "Max. Regen/s",
           "costPerShot": "Energie/Schuss",
           "heatPerShot": "Hitze/Schuss",

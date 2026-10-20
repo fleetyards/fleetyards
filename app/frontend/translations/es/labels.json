@@ -2014,7 +2014,7 @@
           "spreadFirstShot": "Dispersión del primer disparo",
           "spreadPerShot": "Dispersión/disparo",
           "spreadRecovery": "Recuperación de dispersión",
-          "pool": "Reserva de energía",
+          "pool": "Condensador",
           "maxRegen": "Regen máx./s",
           "costPerShot": "Energía/disparo",
           "heatPerShot": "Calor/disparo",

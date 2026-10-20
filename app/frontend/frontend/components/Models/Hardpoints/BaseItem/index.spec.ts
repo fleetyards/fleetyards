@@ -190,13 +190,27 @@ describe("HardpointBaseItem", () => {
     ).toEqual(["Spool Up", "Cooldown"]);
   });
 
-  it("lists every figure on a row without a stats card", async () => {
+  it("keeps a row without a stats card to the same ranked figures", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: { hardpoints: [quantumDrive(HardpointSourceEnum.SHIP_MATRIX)] },
       plugins: [router()],
     });
     wrappers.push(wrapper);
 
-    expect(wrapper.findAll(".hardpoint-item__stat").length).toBeGreaterThan(4);
+    expect(
+      wrapper.findAll(".hardpoint-item__stat-k").map((label) => label.text()),
+    ).toEqual(["Spool Up", "Cooldown"]);
+  });
+
+  it("shows at most four figures on a row", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { hardpoints: [gun("gun", true)] },
+      plugins: [router()],
+    });
+    wrappers.push(wrapper);
+
+    expect(wrapper.findAll(".hardpoint-item__stat").length).toBeLessThanOrEqual(
+      4,
+    );
   });
 });

@@ -80,8 +80,12 @@ export type HardpointStat = {
 };
 
 const ROW_STATS = {
+  // A gun holds a magazine or a capacitor, never both, so one of the two
+  // ammo figures takes the second place.
   gun: [
     "weapons.burstDps",
+    "weapons.ammo",
+    "weapons.pool",
     "weapons.fireRate",
     "weapons.speed",
     "weapons.range",
@@ -1000,8 +1004,12 @@ const hardpointStatsBuilder = (count?: MaybeRefOrGetter<number>) => {
             ),
           });
         }
+        // Ammo sums across a stacked row, as DPS does: four guns carry four
+        // magazines.
         if (weapon.maxAmmo) {
-          result.push(stat("weapons.ammo", weapon.maxAmmo, "integer"));
+          result.push(
+            stat("weapons.ammo", weapon.maxAmmo * stackCount, "integer"),
+          );
         }
         const magazine = magazineTotals(weapon);
         if (magazine) {
@@ -1127,14 +1135,19 @@ const hardpointStatsBuilder = (count?: MaybeRefOrGetter<number>) => {
             stat("weapons.heatPerShot", weapon.heatPerShot, "integer"),
           );
         }
-        if (weapon.regen?.maxAmmoLoad) {
+        // The capacitor at the weapon power the page is set to, summed across
+        // the stack like the magazines.
+        const charge = capacitor(
+          weapon,
+          Number(toValue(weaponPowerRatio) ?? 1),
+          toValue(weaponRegenModifier) ?? NO_REGEN_MODIFIER,
+        );
+        if (charge) {
           result.push(
-            stat("weapons.pool", weapon.regen.maxAmmoLoad, "integer"),
+            stat("weapons.pool", charge.shots * stackCount, "integer"),
           );
-        }
-        if (weapon.regen?.maxRegenPerSecond) {
           result.push(
-            stat("weapons.maxRegen", weapon.regen.maxRegenPerSecond, "integer"),
+            stat("weapons.maxRegen", charge.regenPerSecond, "integer"),
           );
         }
         if (weapon.regen?.costPerBullet) {

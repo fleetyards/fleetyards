@@ -2014,7 +2014,7 @@
           "spreadFirstShot": "首发散布",
           "spreadPerShot": "散布/发",
           "spreadRecovery": "散布恢复",
-          "pool": "能量池",
+          "pool": "电容",
           "maxRegen": "最大回复/秒",
           "costPerShot": "能量/发",
           "heatPerShot": "热量/发",

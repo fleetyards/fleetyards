@@ -2014,7 +2014,7 @@
           "spreadFirstShot": "First Shot Spread",
           "spreadPerShot": "Spread/Shot",
           "spreadRecovery": "Spread Recovery",
-          "pool": "Energy Pool",
+          "pool": "Capacitor",
           "maxRegen": "Max Regen/s",
           "costPerShot": "Energy/Shot",
           "heatPerShot": "Heat/Shot",
