@@ -1,0 +1,169 @@
+{
+  "es": {
+    "home": {
+      "landing": {
+        "title": "Cada nave del 'verso. Toda tu flota en un solo lugar.",
+        "lede": "Consulta cualquier nave, con sus estadísticas y equipamientos tal como están hoy en el juego. Gestiona tu hangar, planifica con tu org y mira qué cambió cada parche.",
+        "signUp": "Crear una cuenta gratuita",
+        "browseShips": "Ver todas las naves",
+        "stats": {
+          "ships": "Naves y vehículos",
+          "vehicles": "Naves en hangares",
+          "fleets": "Flotas",
+          "changed": "Cambiadas en este parche"
+        },
+        "features": {
+          "title": "Qué puedes hacer aquí",
+          "subline": "Gratis para todos los pilotos. Todo empieza con tu hangar.",
+          "hangar": {
+            "title": "Hangar",
+            "text": "Sincroniza tus pledges desde RSI, agrúpalos, añade pinturas y mejoras, lleva una lista de deseos y compártelo todo con un enlace.",
+            "action": "Ver un hangar de ejemplo"
+          },
+          "fleets": {
+            "title": "Flotas",
+            "text": "Dirige tu org: eventos con inscripciones, anuncios, contratos, un inventario compartido y quién está conectado ahora.",
+            "action": "Qué obtienen las flotas"
+          },
+          "ships": {
+            "title": "Naves",
+            "text": "Cada nave y vehículo con las estadísticas, hardpoints y componentes de los archivos del juego.",
+            "action": "Ver naves"
+          },
+          "compare": {
+            "title": "Comparar",
+            "text": "Pon naves lado a lado, desde la carga hasta el combustible cuántico.",
+            "action": "Comparar naves"
+          },
+          "trade": {
+            "title": "Comercio",
+            "text": "Precios de mercancías con su historial y las mejores rutas entre terminales.",
+            "action": "Buscar una ruta"
+          },
+          "patches": {
+            "title": "Parches",
+            "text": "Mira qué naves cambió cada nueva build y cuánto.",
+            "action": "Ver los últimos cambios"
+          }
+        },
+        "patch": {
+          "title": "Este parche",
+          "subline": "Directo de los archivos del juego, actualizado con cada build.",
+          "mostChanged": "Más cambiadas",
+          "changes": "Cambios"
+        },
+        "gameEvents": {
+          "title": "En el 'verso",
+          "subline": "Lo que pasa en el juego, elegido por el equipo de Fleetyards."
+        },
+        "latestShips": {
+          "title": "Últimas naves",
+          "all": "Todas las naves"
+        },
+        "signUpPanel": {
+          "title": "Trae tu hangar",
+          "text": "Regístrate, sincroniza desde RSI y tu flota estará aquí en un minuto."
+        }
+      },
+      "patch": {
+        "title": "Alpha %{version}",
+        "shipsChanged": "Naves cambiadas",
+        "inYourHangar": "En tu hangar",
+        "whatChanged": "Qué ha cambiado",
+        "yoursChanged": {
+          "one": "%{count} de tus naves cambió en esta build.",
+          "other": "%{count} de tus naves cambiaron en esta build."
+        }
+      },
+      "dashboard": {
+        "welcome": "Bienvenido de nuevo, %{name}",
+        "welcomeAnonymous": "Bienvenido de nuevo",
+        "invites": {
+          "title": "%{fleet} te ha invitado",
+          "text": "Acepta para ver sus eventos, anuncios y miembros.",
+          "accept": "Aceptar",
+          "decline": "Rechazar",
+          "failed": "No ha funcionado. Inténtalo de nuevo desde la página de invitaciones de flota."
+        },
+        "comingUp": {
+          "title": "Próximamente",
+          "calendar": "Calendario",
+          "groups": {
+            "today": "Hoy",
+            "week": "Esta semana",
+            "later": "Más adelante"
+          },
+          "inGame": "En el juego",
+          "answer": "Inscribirse",
+          "signupFailed": "No se pudo guardar tu inscripción. Abre el evento para intentarlo de nuevo.",
+          "empty": {
+            "title": "Nada planeado",
+            "hint": "Aquí aparecen los eventos de tus flotas y del juego.",
+            "action": "Buscar una flota"
+          }
+        },
+        "fleets": {
+          "title": "Mis flotas",
+          "online": {
+            "one": "%{count} de %{total} conectado",
+            "other": "%{count} de %{total} conectados"
+          },
+          "members": {
+            "one": "%{count} miembro",
+            "other": "%{count} miembros"
+          },
+          "requests": "Solicitudes",
+          "transfers": "Transferencias",
+          "empty": {
+            "title": "Aún sin flota",
+            "hint": "Únete a una org para planificar eventos y compartir inventario.",
+            "action": "Explorar flotas"
+          }
+        },
+        "changes": {
+          "title": "Tus naves en %{version}",
+          "titleWithoutVersion": "Tus naves en este parche",
+          "owned": {
+            "one": "En tu hangar",
+            "other": "%{count} en tu hangar"
+          },
+          "wanted": "En tu lista de deseos",
+          "changes": "Cambios",
+          "hangar": "Hangar",
+          "empty": {
+            "title": "Ninguna de tus naves cambió",
+            "hint": "Las naves de tu hangar o de tu lista de deseos aparecen aquí cuando una build las cambia."
+          }
+        },
+        "hangar": {
+          "title": "Hangar",
+          "open": "Abrir",
+          "ships": "Naves",
+          "wishlist": "Lista de deseos",
+          "synced": "Sincronizado desde RSI",
+          "empty": {
+            "title": "Tu hangar está vacío",
+            "hint": "Añade naves a mano o sincronízalas desde RSI.",
+            "action": "Configurar tu hangar"
+          }
+        },
+        "notifications": {
+          "title": "Notificaciones",
+          "empty": "Estás al día."
+        },
+        "friends": {
+          "title": "Amigos",
+          "online": "Conectado",
+          "pending": {
+            "one": "%{count} solicitud de amistad",
+            "other": "%{count} solicitudes de amistad"
+          },
+          "empty": {
+            "title": "Aún sin amigos",
+            "hint": "Añade a los pilotos con los que vuelas para ver cuándo están conectados."
+          }
+        }
+      }
+    }
+  }
+}

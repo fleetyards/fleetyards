@@ -1,0 +1,169 @@
+{
+  "de": {
+    "home": {
+      "landing": {
+        "title": "Jedes Schiff im 'Verse. Deine ganze Flotte an einem Ort.",
+        "lede": "Schlag jedes Schiff nach, mit Werten und Loadouts so, wie sie heute im Spiel sind. Verwalte deinen Hangar, plane mit deiner Org und sieh, was jeder Patch geändert hat.",
+        "signUp": "Kostenloses Konto erstellen",
+        "browseShips": "Alle Schiffe ansehen",
+        "stats": {
+          "ships": "Schiffe und Fahrzeuge",
+          "vehicles": "Schiffe in Hangars",
+          "fleets": "Flotten",
+          "changed": "In diesem Patch geändert"
+        },
+        "features": {
+          "title": "Was du hier tun kannst",
+          "subline": "Kostenlos für alle Piloten. Alles beginnt mit deinem Hangar.",
+          "hangar": {
+            "title": "Hangar",
+            "text": "Synchronisiere deine Pledges von RSI, gruppiere sie, füge Lackierungen und Upgrades hinzu, führe eine Wunschliste und teile alles mit einem Link.",
+            "action": "Beispiel-Hangar ansehen"
+          },
+          "fleets": {
+            "title": "Flotten",
+            "text": "Leite deine Org: Events mit Anmeldungen, Ankündigungen, Aufträge, ein gemeinsames Inventar und wer gerade online ist.",
+            "action": "Was Flotten bekommen"
+          },
+          "ships": {
+            "title": "Schiffe",
+            "text": "Jedes Schiff und Fahrzeug mit den Werten, Hardpoints und Komponenten aus den Spieldateien.",
+            "action": "Schiffe ansehen"
+          },
+          "compare": {
+            "title": "Vergleichen",
+            "text": "Stell Schiffe nebeneinander, von Frachtrastern bis zum Quantentreibstoff.",
+            "action": "Schiffe vergleichen"
+          },
+          "trade": {
+            "title": "Handel",
+            "text": "Rohstoffpreise mit Verlauf und die besten Routen zwischen Terminals.",
+            "action": "Route finden"
+          },
+          "patches": {
+            "title": "Patches",
+            "text": "Sieh, welche Schiffe jeder neue Build verändert hat, und wie stark.",
+            "action": "Neueste Änderungen ansehen"
+          }
+        },
+        "patch": {
+          "title": "Dieser Patch",
+          "subline": "Direkt aus den Spieldateien, mit jedem Build aktualisiert.",
+          "mostChanged": "Am meisten geändert",
+          "changes": "Änderungen"
+        },
+        "gameEvents": {
+          "title": "Im 'Verse",
+          "subline": "Was gerade im Spiel los ist, ausgewählt vom Fleetyards-Team."
+        },
+        "latestShips": {
+          "title": "Neueste Schiffe",
+          "all": "Alle Schiffe"
+        },
+        "signUpPanel": {
+          "title": "Bring deinen Hangar mit",
+          "text": "Registriere dich, synchronisiere von RSI, und deine Flotte ist in etwa einer Minute da."
+        }
+      },
+      "patch": {
+        "title": "Alpha %{version}",
+        "shipsChanged": "Geänderte Schiffe",
+        "inYourHangar": "In deinem Hangar",
+        "whatChanged": "Was sich geändert hat",
+        "yoursChanged": {
+          "one": "%{count} deiner Schiffe wurde in diesem Build geändert.",
+          "other": "%{count} deiner Schiffe wurden in diesem Build geändert."
+        }
+      },
+      "dashboard": {
+        "welcome": "Willkommen zurück, %{name}",
+        "welcomeAnonymous": "Willkommen zurück",
+        "invites": {
+          "title": "%{fleet} hat dich eingeladen",
+          "text": "Nimm an, um ihre Events, Ankündigungen und Mitglieder zu sehen.",
+          "accept": "Annehmen",
+          "decline": "Ablehnen",
+          "failed": "Das hat nicht geklappt. Versuche es auf der Seite mit den Flotteneinladungen erneut."
+        },
+        "comingUp": {
+          "title": "Demnächst",
+          "calendar": "Kalender",
+          "groups": {
+            "today": "Heute",
+            "week": "Diese Woche",
+            "later": "Später"
+          },
+          "inGame": "Im Spiel",
+          "answer": "Anmelden",
+          "signupFailed": "Deine Anmeldung konnte nicht gespeichert werden. Öffne das Event, um es erneut zu versuchen.",
+          "empty": {
+            "title": "Nichts geplant",
+            "hint": "Events deiner Flotten und aus dem Spiel erscheinen hier.",
+            "action": "Flotte finden"
+          }
+        },
+        "fleets": {
+          "title": "Meine Flotten",
+          "online": {
+            "one": "%{count} von %{total} online",
+            "other": "%{count} von %{total} online"
+          },
+          "members": {
+            "one": "%{count} Mitglied",
+            "other": "%{count} Mitglieder"
+          },
+          "requests": "Beitrittsanfragen",
+          "transfers": "Transfers",
+          "empty": {
+            "title": "Noch keine Flotte",
+            "hint": "Tritt einer Org bei, um Events zu planen und ein Inventar zu teilen.",
+            "action": "Flotten durchsuchen"
+          }
+        },
+        "changes": {
+          "title": "Deine Schiffe in %{version}",
+          "titleWithoutVersion": "Deine Schiffe in diesem Patch",
+          "owned": {
+            "one": "In deinem Hangar",
+            "other": "%{count} in deinem Hangar"
+          },
+          "wanted": "Auf deiner Wunschliste",
+          "changes": "Änderungen",
+          "hangar": "Hangar",
+          "empty": {
+            "title": "Keines deiner Schiffe wurde geändert",
+            "hint": "Schiffe in deinem Hangar oder auf deiner Wunschliste erscheinen hier, wenn ein Build sie ändert."
+          }
+        },
+        "hangar": {
+          "title": "Hangar",
+          "open": "Öffnen",
+          "ships": "Schiffe",
+          "wishlist": "Wunschliste",
+          "synced": "Von RSI synchronisiert",
+          "empty": {
+            "title": "Dein Hangar ist leer",
+            "hint": "Füge Schiffe von Hand hinzu oder synchronisiere sie von RSI.",
+            "action": "Hangar einrichten"
+          }
+        },
+        "notifications": {
+          "title": "Benachrichtigungen",
+          "empty": "Du bist auf dem neuesten Stand."
+        },
+        "friends": {
+          "title": "Freunde",
+          "online": "Online",
+          "pending": {
+            "one": "%{count} Freundschaftsanfrage",
+            "other": "%{count} Freundschaftsanfragen"
+          },
+          "empty": {
+            "title": "Noch keine Freunde",
+            "hint": "Füge Piloten hinzu, mit denen du fliegst, um zu sehen, wann sie online sind."
+          }
+        }
+      }
+    }
+  }
+}

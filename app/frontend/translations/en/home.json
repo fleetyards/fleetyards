@@ -1,0 +1,169 @@
+{
+  "en": {
+    "home": {
+      "landing": {
+        "title": "Every ship in the 'verse. Your whole fleet in one place.",
+        "lede": "Look up any ship, its stats and loadouts as they are in the game today. Track your hangar, plan with your org, and see what each patch changed.",
+        "signUp": "Create a free account",
+        "browseShips": "Browse all ships",
+        "stats": {
+          "ships": "Ships and vehicles",
+          "vehicles": "Ships in hangars",
+          "fleets": "Fleets",
+          "changed": "Changed this patch"
+        },
+        "features": {
+          "title": "What you can do here",
+          "subline": "Free for every pilot. It starts with your hangar.",
+          "hangar": {
+            "title": "Hangar",
+            "text": "Sync your pledges from RSI, then group them, add paints and upgrades, keep a wishlist and share it all with one link.",
+            "action": "Preview a hangar"
+          },
+          "fleets": {
+            "title": "Fleets",
+            "text": "Run your org: events with sign-ups, announcements, contracts, a shared inventory, and who is online right now.",
+            "action": "See what fleets get"
+          },
+          "ships": {
+            "title": "Ships",
+            "text": "Every ship and vehicle with the stats, hardpoints and components the game files give it.",
+            "action": "Browse ships"
+          },
+          "compare": {
+            "title": "Compare",
+            "text": "Put ships side by side, from cargo grids to quantum fuel.",
+            "action": "Compare ships"
+          },
+          "trade": {
+            "title": "Trade",
+            "text": "Commodity prices with their history, and the best routes between terminals.",
+            "action": "Find a route"
+          },
+          "patches": {
+            "title": "Patches",
+            "text": "See which ships each new build changed, and by how much.",
+            "action": "See the latest changes"
+          }
+        },
+        "patch": {
+          "title": "This patch",
+          "subline": "Straight from the game files, updated with every build.",
+          "mostChanged": "Most changed",
+          "changes": "Changes"
+        },
+        "gameEvents": {
+          "title": "In the 'verse",
+          "subline": "What is on in the game, picked by the Fleetyards team."
+        },
+        "latestShips": {
+          "title": "Latest ships",
+          "all": "All ships"
+        },
+        "signUpPanel": {
+          "title": "Bring your hangar",
+          "text": "Sign up, sync from RSI, and your fleet is here in about a minute."
+        }
+      },
+      "patch": {
+        "title": "Alpha %{version}",
+        "shipsChanged": "Ships changed",
+        "inYourHangar": "In your hangar",
+        "whatChanged": "What changed",
+        "yoursChanged": {
+          "one": "%{count} of your ships changed in this build.",
+          "other": "%{count} of your ships changed in this build."
+        }
+      },
+      "dashboard": {
+        "welcome": "Welcome back, %{name}",
+        "welcomeAnonymous": "Welcome back",
+        "invites": {
+          "title": "%{fleet} invited you to join",
+          "text": "Accept to see its events, announcements and members.",
+          "accept": "Accept",
+          "decline": "Decline",
+          "failed": "That did not work. Try again from the fleet invites page."
+        },
+        "comingUp": {
+          "title": "Coming up",
+          "calendar": "Calendar",
+          "groups": {
+            "today": "Today",
+            "week": "This week",
+            "later": "Later"
+          },
+          "inGame": "In-game",
+          "answer": "Sign up",
+          "signupFailed": "Your sign-up could not be saved. Open the event to try again.",
+          "empty": {
+            "title": "Nothing planned",
+            "hint": "Events from your fleets and from the game show up here.",
+            "action": "Find a fleet"
+          }
+        },
+        "fleets": {
+          "title": "My fleets",
+          "online": {
+            "one": "%{count} of %{total} online",
+            "other": "%{count} of %{total} online"
+          },
+          "members": {
+            "one": "%{count} member",
+            "other": "%{count} members"
+          },
+          "requests": "Join requests",
+          "transfers": "Transfers",
+          "empty": {
+            "title": "No fleet yet",
+            "hint": "Join an org to plan events and share inventory.",
+            "action": "Browse fleets"
+          }
+        },
+        "changes": {
+          "title": "Your ships in %{version}",
+          "titleWithoutVersion": "Your ships this patch",
+          "owned": {
+            "one": "In your hangar",
+            "other": "%{count} in your hangar"
+          },
+          "wanted": "On your wishlist",
+          "changes": "Changes",
+          "hangar": "Hangar",
+          "empty": {
+            "title": "None of your ships changed",
+            "hint": "Ships in your hangar or on your wishlist show up here when a build changes them."
+          }
+        },
+        "hangar": {
+          "title": "Hangar",
+          "open": "Open",
+          "ships": "Ships",
+          "wishlist": "Wishlist",
+          "synced": "Synced from RSI",
+          "empty": {
+            "title": "Your hangar is empty",
+            "hint": "Add ships by hand or sync them from RSI.",
+            "action": "Set up your hangar"
+          }
+        },
+        "notifications": {
+          "title": "Notifications",
+          "empty": "You are all caught up."
+        },
+        "friends": {
+          "title": "Friends",
+          "online": "Online",
+          "pending": {
+            "one": "%{count} friend request",
+            "other": "%{count} friend requests"
+          },
+          "empty": {
+            "title": "No friends yet",
+            "hint": "Add pilots you fly with to see when they are online."
+          }
+        }
+      }
+    }
+  }
+}

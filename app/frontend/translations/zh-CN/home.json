@@ -1,0 +1,169 @@
+{
+  "zh-CN": {
+    "home": {
+      "landing": {
+        "title": "宇宙中的每一艘舰船，你的整支舰队尽在一处。",
+        "lede": "查询任意舰船及其当前游戏内的数据和配装。管理你的机库，与组织一起规划，并了解每个补丁的改动。",
+        "signUp": "创建免费账户",
+        "browseShips": "浏览所有舰船",
+        "stats": {
+          "ships": "舰船与载具",
+          "vehicles": "机库中的舰船",
+          "fleets": "舰队",
+          "changed": "本补丁改动"
+        },
+        "features": {
+          "title": "你可以在这里做什么",
+          "subline": "所有飞行员免费使用，一切从你的机库开始。",
+          "hangar": {
+            "title": "机库",
+            "text": "从 RSI 同步你的 Pledge，分组管理，添加涂装和升级，维护愿望单，并用一个链接分享全部内容。",
+            "action": "查看示例机库"
+          },
+          "fleets": {
+            "title": "舰队",
+            "text": "管理你的组织：带报名的活动、公告、合约、共享库存，以及当前在线的成员。",
+            "action": "了解舰队功能"
+          },
+          "ships": {
+            "title": "舰船",
+            "text": "每艘舰船和载具，附带来自游戏文件的数据、挂点和组件。",
+            "action": "浏览舰船"
+          },
+          "compare": {
+            "title": "对比",
+            "text": "并排比较舰船，从货舱到量子燃料。",
+            "action": "对比舰船"
+          },
+          "trade": {
+            "title": "贸易",
+            "text": "商品价格及其历史，以及终端之间的最佳路线。",
+            "action": "查找路线"
+          },
+          "patches": {
+            "title": "补丁",
+            "text": "查看每个新版本改动了哪些舰船，以及改动幅度。",
+            "action": "查看最新改动"
+          }
+        },
+        "patch": {
+          "title": "本补丁",
+          "subline": "直接来自游戏文件，每个版本都会更新。",
+          "mostChanged": "改动最多",
+          "changes": "改动"
+        },
+        "gameEvents": {
+          "title": "宇宙动态",
+          "subline": "游戏中正在进行的活动，由 Fleetyards 团队精选。"
+        },
+        "latestShips": {
+          "title": "最新舰船",
+          "all": "所有舰船"
+        },
+        "signUpPanel": {
+          "title": "带上你的机库",
+          "text": "注册并从 RSI 同步，大约一分钟后你的舰队就会出现在这里。"
+        }
+      },
+      "patch": {
+        "title": "Alpha %{version}",
+        "shipsChanged": "改动的舰船",
+        "inYourHangar": "你机库中的",
+        "whatChanged": "查看改动",
+        "yoursChanged": {
+          "one": "此版本改动了你的 %{count} 艘舰船。",
+          "other": "此版本改动了你的 %{count} 艘舰船。"
+        }
+      },
+      "dashboard": {
+        "welcome": "欢迎回来，%{name}",
+        "welcomeAnonymous": "欢迎回来",
+        "invites": {
+          "title": "%{fleet} 邀请你加入",
+          "text": "接受后即可查看其活动、公告和成员。",
+          "accept": "接受",
+          "decline": "拒绝",
+          "failed": "操作失败。请在舰队邀请页面重试。"
+        },
+        "comingUp": {
+          "title": "即将到来",
+          "calendar": "日历",
+          "groups": {
+            "today": "今天",
+            "week": "本周",
+            "later": "之后"
+          },
+          "inGame": "游戏内",
+          "answer": "报名",
+          "signupFailed": "无法保存你的报名。请打开活动页面重试。",
+          "empty": {
+            "title": "暂无安排",
+            "hint": "你的舰队活动和游戏活动会显示在这里。",
+            "action": "寻找舰队"
+          }
+        },
+        "fleets": {
+          "title": "我的舰队",
+          "online": {
+            "one": "%{total} 人中 %{count} 人在线",
+            "other": "%{total} 人中 %{count} 人在线"
+          },
+          "members": {
+            "one": "%{count} 名成员",
+            "other": "%{count} 名成员"
+          },
+          "requests": "入队申请",
+          "transfers": "转移",
+          "empty": {
+            "title": "还没有舰队",
+            "hint": "加入一个组织来规划活动和共享库存。",
+            "action": "浏览舰队"
+          }
+        },
+        "changes": {
+          "title": "你在 %{version} 中的舰船",
+          "titleWithoutVersion": "你在本补丁中的舰船",
+          "owned": {
+            "one": "在你的机库中",
+            "other": "机库中有 %{count} 艘"
+          },
+          "wanted": "在你的愿望单中",
+          "changes": "改动",
+          "hangar": "机库",
+          "empty": {
+            "title": "你的舰船都没有改动",
+            "hint": "当某个版本改动了你机库或愿望单中的舰船时，它们会显示在这里。"
+          }
+        },
+        "hangar": {
+          "title": "机库",
+          "open": "打开",
+          "ships": "舰船",
+          "wishlist": "愿望单",
+          "synced": "已从 RSI 同步",
+          "empty": {
+            "title": "你的机库是空的",
+            "hint": "手动添加舰船，或从 RSI 同步。",
+            "action": "设置机库"
+          }
+        },
+        "notifications": {
+          "title": "通知",
+          "empty": "你已全部看完。"
+        },
+        "friends": {
+          "title": "好友",
+          "online": "在线",
+          "pending": {
+            "one": "%{count} 个好友请求",
+            "other": "%{count} 个好友请求"
+          },
+          "empty": {
+            "title": "还没有好友",
+            "hint": "添加一起飞行的飞行员，即可看到他们何时在线。"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,169 @@
+{
+  "zh-TW": {
+    "home": {
+      "landing": {
+        "title": "宇宙中的每一艘艦船，你的整支艦隊盡在一處。",
+        "lede": "查詢任何艦船及其目前遊戲內的數據和配裝。管理你的機庫，與組織一起規劃，並了解每個補丁的改動。",
+        "signUp": "建立免費帳號",
+        "browseShips": "瀏覽所有艦船",
+        "stats": {
+          "ships": "艦船與載具",
+          "vehicles": "機庫中的艦船",
+          "fleets": "艦隊",
+          "changed": "本補丁改動"
+        },
+        "features": {
+          "title": "你可以在這裡做什麼",
+          "subline": "所有飛行員免費使用，一切從你的機庫開始。",
+          "hangar": {
+            "title": "機庫",
+            "text": "從 RSI 同步你的 Pledge，分組管理，加入塗裝和升級，維護願望清單，並用一個連結分享全部內容。",
+            "action": "查看範例機庫"
+          },
+          "fleets": {
+            "title": "艦隊",
+            "text": "管理你的組織：附報名的活動、公告、合約、共享庫存，以及目前在線的成員。",
+            "action": "了解艦隊功能"
+          },
+          "ships": {
+            "title": "艦船",
+            "text": "每艘艦船和載具，附帶來自遊戲檔案的數據、掛點和組件。",
+            "action": "瀏覽艦船"
+          },
+          "compare": {
+            "title": "比較",
+            "text": "並排比較艦船，從貨艙到量子燃料。",
+            "action": "比較艦船"
+          },
+          "trade": {
+            "title": "貿易",
+            "text": "商品價格及其歷史，以及終端之間的最佳路線。",
+            "action": "尋找路線"
+          },
+          "patches": {
+            "title": "補丁",
+            "text": "查看每個新版本改動了哪些艦船，以及改動幅度。",
+            "action": "查看最新改動"
+          }
+        },
+        "patch": {
+          "title": "本補丁",
+          "subline": "直接來自遊戲檔案，每個版本都會更新。",
+          "mostChanged": "改動最多",
+          "changes": "改動"
+        },
+        "gameEvents": {
+          "title": "宇宙動態",
+          "subline": "遊戲中正在進行的活動，由 Fleetyards 團隊精選。"
+        },
+        "latestShips": {
+          "title": "最新艦船",
+          "all": "所有艦船"
+        },
+        "signUpPanel": {
+          "title": "帶上你的機庫",
+          "text": "註冊並從 RSI 同步，大約一分鐘後你的艦隊就會出現在這裡。"
+        }
+      },
+      "patch": {
+        "title": "Alpha %{version}",
+        "shipsChanged": "改動的艦船",
+        "inYourHangar": "你機庫中的",
+        "whatChanged": "查看改動",
+        "yoursChanged": {
+          "one": "此版本改動了你的 %{count} 艘艦船。",
+          "other": "此版本改動了你的 %{count} 艘艦船。"
+        }
+      },
+      "dashboard": {
+        "welcome": "歡迎回來，%{name}",
+        "welcomeAnonymous": "歡迎回來",
+        "invites": {
+          "title": "%{fleet} 邀請你加入",
+          "text": "接受後即可查看其活動、公告和成員。",
+          "accept": "接受",
+          "decline": "拒絕",
+          "failed": "操作失敗。請在艦隊邀請頁面重試。"
+        },
+        "comingUp": {
+          "title": "即將到來",
+          "calendar": "日曆",
+          "groups": {
+            "today": "今天",
+            "week": "本週",
+            "later": "之後"
+          },
+          "inGame": "遊戲內",
+          "answer": "報名",
+          "signupFailed": "無法儲存你的報名。請開啟活動頁面重試。",
+          "empty": {
+            "title": "暫無安排",
+            "hint": "你的艦隊活動和遊戲活動會顯示在這裡。",
+            "action": "尋找艦隊"
+          }
+        },
+        "fleets": {
+          "title": "我的艦隊",
+          "online": {
+            "one": "%{total} 人中 %{count} 人在線",
+            "other": "%{total} 人中 %{count} 人在線"
+          },
+          "members": {
+            "one": "%{count} 名成員",
+            "other": "%{count} 名成員"
+          },
+          "requests": "入隊申請",
+          "transfers": "轉移",
+          "empty": {
+            "title": "還沒有艦隊",
+            "hint": "加入一個組織來規劃活動和共享庫存。",
+            "action": "瀏覽艦隊"
+          }
+        },
+        "changes": {
+          "title": "你在 %{version} 中的艦船",
+          "titleWithoutVersion": "你在本補丁中的艦船",
+          "owned": {
+            "one": "在你的機庫中",
+            "other": "機庫中有 %{count} 艘"
+          },
+          "wanted": "在你的願望清單中",
+          "changes": "改動",
+          "hangar": "機庫",
+          "empty": {
+            "title": "你的艦船都沒有改動",
+            "hint": "當某個版本改動了你機庫或願望清單中的艦船時，它們會顯示在這裡。"
+          }
+        },
+        "hangar": {
+          "title": "機庫",
+          "open": "開啟",
+          "ships": "艦船",
+          "wishlist": "願望清單",
+          "synced": "已從 RSI 同步",
+          "empty": {
+            "title": "你的機庫是空的",
+            "hint": "手動加入艦船，或從 RSI 同步。",
+            "action": "設定機庫"
+          }
+        },
+        "notifications": {
+          "title": "通知",
+          "empty": "你已全部看完。"
+        },
+        "friends": {
+          "title": "好友",
+          "online": "在線",
+          "pending": {
+            "one": "%{count} 個好友請求",
+            "other": "%{count} 個好友請求"
+          },
+          "empty": {
+            "title": "還沒有好友",
+            "hint": "加入一起飛行的飛行員，即可看到他們何時在線。"
+          }
+        }
+      }
+    }
+  }
+}
