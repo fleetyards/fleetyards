@@ -21,6 +21,8 @@ json.model do
   json.partial! "api/v1/models/model", model: vehicle.model if vehicle.model.present?
 end
 json.model_module_ids vehicle.model_module_ids
+json.cargo vehicle.fitted_cargo(public_only: true).to_f
+json.cargo_with_modules vehicle.cargo_with_modules(public_only: true)&.to_f
 json.model_upgrade_ids vehicle.model_upgrade_ids
 
 unless vehicle.user.hide_owner?

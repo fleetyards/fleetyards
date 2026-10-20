@@ -16,7 +16,10 @@ module Api
         def show
           normalize_sort_params(vehicle_query_params)
           vehicle_query_params["sorts"] = Vehicle.with_rank_tiebreak(
-            sorting_params(Vehicle, vehicle_query_params[:sorts], @user.hangar_sorting_params)
+            Vehicle.fitted_cargo_sorts(
+              sorting_params(Vehicle, vehicle_query_params[:sorts], @user.hangar_sorting_params),
+              public_only: true
+            )
           )
 
           scope = @user.vehicles
@@ -50,7 +53,10 @@ module Api
             .pluck(:id)
 
           normalize_sort_params(vehicle_query_params)
-          vehicle_query_params["sorts"] = sorting_params(Vehicle, vehicle_query_params[:sorts], ["model_name asc"])
+          vehicle_query_params["sorts"] = Vehicle.fitted_cargo_sorts(
+            sorting_params(Vehicle, vehicle_query_params[:sorts], ["model_name asc"]),
+            public_only: true
+          )
 
           @q = Vehicle.where(user_id: user_ids)
             .public

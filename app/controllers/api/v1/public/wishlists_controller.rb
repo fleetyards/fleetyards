@@ -11,7 +11,10 @@ module Api
 
         def show
           normalize_sort_params(vehicle_query_params)
-          vehicle_query_params["sorts"] = sorting_params(Vehicle, vehicle_query_params[:sorts], ["name asc", "model_name asc"])
+          vehicle_query_params["sorts"] = Vehicle.fitted_cargo_sorts(
+            sorting_params(Vehicle, vehicle_query_params[:sorts], ["name asc", "model_name asc"]),
+            public_only: true
+          )
 
           scope = @user.vehicles.wanted.where(loaner: false)
 

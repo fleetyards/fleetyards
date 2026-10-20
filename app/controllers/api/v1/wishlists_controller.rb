@@ -35,7 +35,9 @@ module Api
         scope = will_it_fit?(scope) if vehicle_query_params["will_it_fit"].present?
 
         normalize_sort_params(vehicle_query_params)
-        vehicle_query_params["sorts"] = sorting_params(Vehicle, vehicle_query_params["sorts"], ["name asc", "model_name asc"])
+        vehicle_query_params["sorts"] = Vehicle.fitted_cargo_sorts(
+          sorting_params(Vehicle, vehicle_query_params["sorts"], ["name asc", "model_name asc"])
+        )
 
         @q = scope.ransack(vehicle_query_params)
         result = Vehicle.where(

@@ -9,7 +9,7 @@ module FleetVehicleFiltersConcern
       model_slug_in: [], manufacturer_in: [], classification_in: [], classification_not_in: [], focus_in: [],
       size_in: [], price_in: [], pledge_price_in: [],
       production_status_in: [], sorts: [], member_in: [], squadron_slug_in: []
-    ]).fetch(:q, {})
+    ]).fetch(:q, {}).then { |query| Vehicle.fitted_cargo_filters(query, public_only: true) }
   end
 
   private def loaner_param

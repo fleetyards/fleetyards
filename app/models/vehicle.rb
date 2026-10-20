@@ -238,7 +238,6 @@ class Vehicle < ApplicationRecord
 
   ransack_alias :search, :name_or_model_name_or_model_slug
   ransack_alias :on_sale, :model_on_sale
-  ransack_alias :cargo, :model_cargo
   ransack_alias :length, :model_length
   ransack_alias :beam, :model_beam
   ransack_alias :height, :model_height
@@ -304,9 +303,83 @@ class Vehicle < ApplicationRecord
     Arel.sql("vehicles.dedication IS NOT NULL")
   end
 
+  # The cargo a vehicle carries as fitted: the hull, plus the cargo modules of
+  # its active loadout or, without one, the cargo modules it comes with. A
+  # loadout fits a module slot by choice or leaves it empty, so it does not keep
+  # the stock module of a slot it leaves out. A loadout kept on another site
+  # says nothing about what is fitted, so it counts as none. `public_only`
+  # leaves out a loadout its owner keeps private, for the lists other people
+  # see. Mirrors `#fitted_cargo`.
+  def self.fitted_cargo_sql(public_only: false)
+    loadout = <<~SQL.squish
+      fitted_loadouts.vehicle_id = vehicles.id
+        AND fitted_loadouts.active = TRUE
+        AND fitted_loadouts.kind = 'fleetyards'
+        #{"AND fitted_loadouts.public = TRUE" if public_only}
+    SQL
+
+    <<~SQL.squish
+      COALESCE((SELECT hulls.cargo FROM models hulls WHERE hulls.id = vehicles.model_id), 0)
+      + CASE WHEN EXISTS (SELECT 1 FROM vehicle_loadouts fitted_loadouts WHERE #{loadout})
+        THEN COALESCE((
+          SELECT SUM(model_modules.cargo)
+            FROM vehicle_loadouts fitted_loadouts
+            JOIN vehicle_loadout_items fitted_items
+              ON fitted_items.vehicle_loadout_id = fitted_loadouts.id
+             AND fitted_items.item_type = 'ModelModule'
+            JOIN model_modules ON model_modules.id = fitted_items.item_id
+           WHERE #{loadout}
+             AND #{ModelModule.carrying_cargo_sql}
+        ), 0)
+        ELSE COALESCE((
+          SELECT SUM(model_modules.cargo)
+            FROM module_hardpoints stock_slots
+            JOIN model_modules ON model_modules.id = stock_slots.model_module_id
+            JOIN hardpoints slot_hardpoints
+              ON slot_hardpoints.parent_type = 'Model'
+             AND slot_hardpoints.parent_id = stock_slots.model_id
+             AND slot_hardpoints.category = #{Hardpoint.categories[:module]}
+             AND slot_hardpoints.source = #{Hardpoint.sources[:game_files]}
+             AND slot_hardpoints.sc_name = stock_slots.slot
+            JOIN components stock_components
+              ON stock_components.id = slot_hardpoints.component_id
+             AND LOWER(stock_components.sc_key) = LOWER(model_modules.sc_key)
+           WHERE stock_slots.model_id = vehicles.model_id
+             AND #{ModelModule.carrying_cargo_sql}
+        ), 0)
+      END
+    SQL
+  end
+
+  ransacker(:cargo) { Arel.sql(Vehicle.fitted_cargo_sql) }
+  ransacker(:public_cargo) { Arel.sql(Vehicle.fitted_cargo_sql(public_only: true)) }
+
+  # The cargo filter and sort as the reader may see them: their own hangar
+  # counts every loadout, anybody else's only the public ones.
+  def self.fitted_cargo_filters(query_params, public_only: false)
+    column = public_only ? "public_cargo" : "cargo"
+
+    %w[gteq lteq].each do |predicate|
+      value = query_params.delete("cargo_#{predicate}")
+      query_params["#{column}_#{predicate}"] = value unless value.nil?
+    end
+
+    query_params
+  end
+
+  def self.fitted_cargo_total(vehicles, public_only: false)
+    where(id: vehicles.map(&:id)).sum(Arel.sql(fitted_cargo_sql(public_only:))).to_i
+  end
+
+  def self.fitted_cargo_sorts(sorts, public_only: false)
+    column = public_only ? "public_cargo" : "cargo"
+
+    Array(sorts).map { |sort| sort.sub(/\Amodel_cargo /, "#{column} ") }
+  end
+
   def self.ransackable_attributes(auth_object = nil)
     [
-      "alternative_names", "beam", "bought_via", "cargo", "bundled", "classification", "created_at", "flagship",
+      "alternative_names", "beam", "bought_via", "cargo", "public_cargo", "bundled", "classification", "created_at", "flagship",
       "focus", "hangar_groups", "has_dedication", "height", "hidden", "id", "id_value", "length", "loaner",
       "manufacturer", "model_id", "module_package_id", "name", "name_visible",
       "notify", "on_sale", "pledge_price", "price", "production_status", "public", "rank", "rsi_pledge_id",
@@ -800,6 +873,33 @@ class Vehicle < ApplicationRecord
   # The ship's picture: an upload, else the picked picture while it still has a
   # file to show. Without either the ship shows its stock render, which is the
   # client's to pick.
+  def fitted_loadout(public_only: false)
+    vehicle_loadouts.find do |loadout|
+      loadout.active? && loadout.kind_fleetyards? && (!public_only || loadout.public?)
+    end
+  end
+
+  def fitted_cargo(public_only: false)
+    loadout = fitted_loadout(public_only:)
+    return model.stock_cargo if loadout.nil?
+
+    modules = model.cargo_modules_by_slot.values.flatten.index_by(&:id)
+
+    (model.cargo || 0) + loadout.items.sum do |item|
+      (item.item_type == "ModelModule") && modules[item.item_id]&.cargo || 0
+    end
+  end
+
+  # What the ship would carry with its cargo modules fitted, for a vehicle
+  # whose owner has not said how it is fitted and whose stock modules leave
+  # room for more.
+  def cargo_with_modules(public_only: false)
+    return if fitted_loadout(public_only:).present?
+
+    max_cargo = model.max_cargo
+    max_cargo if max_cargo > fitted_cargo(public_only:)
+  end
+
   def display_image
     image.attached? ? image : picture_file
   end

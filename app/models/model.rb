@@ -1018,7 +1018,7 @@ class Model < ApplicationRecord
   end
 
   def reload(*)
-    @cargo_modules_by_slot = nil
+    @cargo_modules_by_slot = @stock_cargo_modules = nil
 
     super
   end
@@ -1035,6 +1035,22 @@ class Model < ApplicationRecord
 
   def max_cargo_label
     scu_label(max_cargo)
+  end
+
+  # The cargo modules the ship comes with, by slot. Only asked of the game
+  # files when the ship takes a cargo module at all, which few do.
+  def stock_cargo_modules
+    return {} if cargo_modules_by_slot.empty?
+
+    @stock_cargo_modules ||= ModuleHardpoint.stock_modules(self).filter_map do |slot, model_module_id|
+      model_module = cargo_modules_by_slot[slot]&.find { |candidate| candidate.id == model_module_id }
+
+      [slot, model_module] if model_module
+    end.to_h
+  end
+
+  def stock_cargo
+    (cargo || 0) + stock_cargo_modules.values.sum(&:cargo)
   end
 
   # The ship's own storage container, which the game keeps apart from the cargo

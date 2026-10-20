@@ -21,4 +21,11 @@ class FleetVehicleTest < ActiveSupport::TestCase
     assert_equal ["model_length asc"], FleetVehicle.vehicle_sorts(["vehicles_count desc", "model_length asc"])
     assert_equal FleetVehicle::DEFAULT_SORTING_PARAMS, FleetVehicle.vehicle_sorts(["vehicles_count desc"])
   end
+
+  # A grouped row is a ship, sorted by the most it can carry; a vehicle row by
+  # what it carries as its owner shows it to the fleet.
+  test "the cargo sort follows the figure each list shows" do
+    assert_equal ["max_cargo desc"], FleetVehicle.model_sorts(["model_cargo desc"])
+    assert_equal ["public_cargo desc"], FleetVehicle.vehicle_sorts(["model_cargo desc"])
+  end
 end
