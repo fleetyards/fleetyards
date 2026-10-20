@@ -25,3 +25,53 @@
     }
   }
 }
+
+// The ring separates overlapping dots of the same colour, and stays dark so it
+// reads on any surface the table sits on.
+.hangar-groups.hangar-groups-stacked {
+  flex-wrap: nowrap;
+  padding-top: 0;
+
+  .hangar-group {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    margin: 0 0 0 -6px;
+    position: relative;
+    box-shadow: 0 0 0 2px rgb(0 0 0 / 0.55);
+    transition: transform 0.15s ease;
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      z-index: 2;
+    }
+  }
+
+  .hangar-group-highlighted {
+    z-index: 1;
+    box-shadow:
+      0 0 0 2px rgb(0 0 0 / 0.55),
+      0 0 0 4px var(--color-primary, #428bca);
+  }
+
+  .hangar-group-overflow {
+    width: auto;
+    min-width: 20px;
+    padding: 0 6px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--color-text, #c8c8c8);
+    // Opaque: the control fill is translucent and lets the dot beneath through.
+    background-color: rgb(39 43 48);
+    cursor: default;
+  }
+}
