@@ -58,7 +58,9 @@
         "transfers": "轉移",
         "vehicleOverview": "艦船概覽",
         "vehicleLog": "艦長日誌",
-        "shipComponents": "飛船部件"
+        "shipComponents": "飛船部件",
+        "plans": "機庫規劃器",
+        "sharedPlan": "共享機庫計畫"
       },
       "requestPassword": "請求密碼",
       "changePassword": "更改密碼",

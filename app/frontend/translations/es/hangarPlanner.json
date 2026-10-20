@@ -1,0 +1,224 @@
+{
+  "es": {
+    "hangarPlanner": {
+      "title": "Planificador de hangar",
+      "lead": "Planifica el hangar que quieres en slots —los roles que quieres cubrir— y calcula cómo llegar desde el hangar que tienes: qué conservar, qué fundir (melt) y qué upgrades y buy-backs usar.",
+      "createPlan": "Nuevo plan",
+      "editPlan": "Editar plan",
+      "destroyPlan": "Eliminar plan",
+      "confirmDestroy": "¿Eliminar este plan? Tu hangar no se verá afectado.",
+      "more": "Más",
+      "share": "Compartir por enlace",
+      "copyShareLink": "Copiar enlace para compartir",
+      "unshare": "Dejar de compartir",
+      "shared": "Compartido",
+      "sharedMissing": "Este plan no está compartido o el enlace ha cambiado.",
+      "addToWishlist": "Añadir compras a la lista de deseos",
+      "confirmAddToWishlist": "¿Añadir a tu lista de deseos todas las naves que este plan aún tiene que conseguir?",
+      "compareWith": "Comparar con %{plan}",
+      "compareTitle": "%{left} vs. %{right}",
+      "slotsCount": {
+        "one": "%{count} slot",
+        "other": "%{count} slots"
+      },
+      "updatedAt": "Actualizado el %{date}",
+      "empty": {
+        "title": "Aún no hay planes",
+        "text": "Empieza un plan desde cero, desde tu hangar, desde tu lista de deseos o copiando otro plan."
+      },
+      "noSlots": "Este plan aún no tiene slots. Añade un slot por cada rol que quieras que cubra tu hangar.",
+      "addSlot": "Añadir slot",
+      "editSlot": "Editar slot",
+      "removeSlot": "Quitar slot",
+      "confirmRemoveSlot": "¿Quitar este slot junto con sus naves y vías de obtención?",
+      "openSlotHint": "Aún no has elegido ninguna nave. Añade una, o varias si estás indeciso.",
+      "addShips": "Añadir naves",
+      "addCandidates": "Naves para %{slot}",
+      "addToSlot": "Añadir al slot",
+      "inSlot": "En este slot",
+      "choose": "Elegir",
+      "removeCandidate": "Quitar nave",
+      "ownedCount": {
+        "one": "%{count} en tu hangar",
+        "other": "%{count} en tu hangar"
+      },
+      "notOnSale": "no está a la venta",
+      "routes": "Cómo conseguirlas",
+      "addRoute": "Añadir una vía para %{ship}",
+      "addRouteShort": "Añadir vía",
+      "editRoute": "Vía para %{ship}",
+      "removeRoute": "Quitar vía",
+      "unresolvedUnits": {
+        "one": "%{count} nave aún no tiene vía",
+        "other": "%{count} naves aún no tienen vía"
+      },
+      "routeMustEnd": "La vía tiene que terminar en la %{ship}.",
+      "upgradeSteps": "Upgrades",
+      "stepNumber": "Upgrade %{number}",
+      "addStep": "Añadir upgrade",
+      "removeStep": "Quitar upgrade",
+      "sourceMissing": "ya no está en tu hangar",
+      "melts": "Melts",
+      "noMelts": "No hay naves que fundir.",
+      "addMelt": "Fundir una nave",
+      "editMelt": "Editar melt",
+      "removeMelt": "Conservar la nave",
+      "estimated": "estimación",
+      "free": "Gratis",
+      "unknownPrice": "Desconocido",
+      "fields": {
+        "name": "Nombre",
+        "description": "Descripción",
+        "startingCredit": "Crédito de tienda",
+        "startingCreditInfo": "Crédito de tienda que ya tienes, en USD.",
+        "source": "Empezar desde",
+        "sourcePlan": "Plan a copiar",
+        "slotLabel": "Rol",
+        "slotLabelPlaceholder": "p. ej. Carguero principal",
+        "quantity": "Naves",
+        "startKind": "Empieza como",
+        "ownedShip": "Nave de tu hangar",
+        "buyback": "Pledge de buy-back",
+        "startModel": "Nave",
+        "priceOverride": "Precio pagado",
+        "priceOverrideInfo": "Déjalo vacío para usar el precio actual de la tienda, o introduce un precio de oferta o de warbond.",
+        "upgradeSource": "Upgrade desde",
+        "ownedUpgrade": "Upgrade en tu hangar de RSI",
+        "upgradeTo": "Upgrade a",
+        "meltShip": "Nave a fundir",
+        "meltValue": "Crédito",
+        "meltValueInfo": "Lo que pagaste por ella. Déjalo vacío para estimarlo según el precio actual de la tienda.",
+        "slotDescription": "Descripción",
+        "filters": "Naves que encajan",
+        "filtersInfo": "El selector de naves se abre con estos filtros. Las naves que no encajan se pueden añadir igualmente y se marcan.",
+        "priceFrom": "Precio desde",
+        "priceTo": "Precio hasta",
+        "minCargo": "Carga mínima",
+        "onSaleOnly": "Solo naves a la venta"
+      },
+      "sources": {
+        "empty": "Un plan vacío",
+        "hangar": "Mi hangar",
+        "wishlist": "Mi lista de deseos",
+        "plan": "Otro plan"
+      },
+      "states": {
+        "open": "Abierto",
+        "decided": "Decidido",
+        "undecided": "Indeciso"
+      },
+      "startKinds": {
+        "owned": "Conservada del hangar",
+        "store": "Compra en la tienda",
+        "ingame": "Comprada en el juego",
+        "buyback": "Buy-back"
+      },
+      "upgradeSources": {
+        "store": "Tienda",
+        "owned_ccu": "Mi hangar de RSI",
+        "buyback": "Buy-back"
+      },
+      "vehicleStatuses": {
+        "kept": "Conservada",
+        "upgraded": "Mejorada",
+        "melted": "Fundida",
+        "unassigned": "Fuera del plan"
+      },
+      "changes": {
+        "added": "Nueva",
+        "removed": "Fuera",
+        "more": "Más",
+        "fewer": "Menos",
+        "unchanged": "Igual"
+      },
+      "issues": {
+        "missing_price": "%{name} no tiene un precio conocido, así que el total no la incluye.",
+        "not_on_sale": "%{name} no está a la venta en este momento."
+      },
+      "summary": {
+        "title": "Costes",
+        "spend": "Gasto nuevo",
+        "meltCredit": "Crédito de los melts",
+        "startingCredit": "Crédito de tienda",
+        "net": "Coste neto",
+        "cashNeeded": "Aún por pagar",
+        "remainingCredit": "Crédito restante",
+        "estimatedMelts": {
+          "one": "%{count} estimado",
+          "other": "%{count} estimados"
+        },
+        "openSlots": {
+          "one": "%{count} slot sin nave",
+          "other": "%{count} slots sin nave"
+        },
+        "undecidedSlots": {
+          "one": "%{count} slot indeciso",
+          "other": "%{count} slots indecisos"
+        },
+        "unresolved": {
+          "one": "%{count} nave sin vía",
+          "other": "%{count} naves sin vía"
+        },
+        "incomplete": "El total está incompleto",
+        "complete": "Cada nave tiene una vía y un precio."
+      },
+      "comparison": {
+        "title": "Comparado con tu hangar",
+        "yourShips": "Tus naves",
+        "noShips": "Tu hangar no tiene naves.",
+        "changes": "Cambios",
+        "noChanges": "Sin cambios.",
+        "toAcquire": "Aún por conseguir",
+        "hangar": "Hangar",
+        "plan": "Plan"
+      },
+      "metrics": {
+        "title": "Estadísticas",
+        "total": "Naves",
+        "uniqueModelsCount": "Modelos distintos",
+        "manufacturerCount": "Fabricantes",
+        "flightReadyCount": "Listas para volar",
+        "totalCrew": "Tripulación",
+        "totalCargo": "Carga (SCU)",
+        "totalPledgeValue": "Valor en tienda",
+        "largestShip": "Nave más grande",
+        "smallestShip": "Nave más pequeña",
+        "classifications": "Clasificaciones",
+        "sizes": "Tamaños",
+        "productionStatuses": "Estado de producción"
+      },
+      "drift": {
+        "title": "Tu hangar ha cambiado desde que se hizo este plan",
+        "missing": {
+          "one": "%{count} nave o pledge que usa el plan ya no está.",
+          "other": "%{count} naves o pledges que usa el plan ya no están."
+        },
+        "changed": {
+          "one": "%{count} nave es ahora otro modelo.",
+          "other": "%{count} naves son ahora otros modelos."
+        },
+        "added": "Nuevo en tu hangar: %{ships}",
+        "prices": "Los precios han cambiado: %{before} al planificar, %{now} hoy.",
+        "rebase": "Actualizar desde el hangar"
+      },
+      "messages": {
+        "saved": "Plan guardado.",
+        "saveFailed": "No ha funcionado. Revisa los datos introducidos.",
+        "shareCopied": "Enlace para compartir copiado.",
+        "unshared": "El enlace para compartir ya no funciona.",
+        "addedToWishlist": {
+          "one": "%{count} nave añadida a tu lista de deseos.",
+          "other": "%{count} naves añadidas a tu lista de deseos."
+        },
+        "rebased": "Plan actualizado desde tu hangar."
+      },
+      "filterChips": {
+        "priceFrom": "desde %{price}",
+        "priceTo": "hasta %{price}",
+        "cargo": "%{cargo} SCU o más",
+        "onSale": "a la venta"
+      },
+      "outsideFilters": "fuera de los filtros de este slot"
+    }
+  }
+}

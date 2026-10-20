@@ -288,6 +288,50 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "plans/",
+    name: "hangar-plans",
+    component: () => import("@/frontend/pages/hangar/plans/index.vue"),
+    meta: {
+      mobileBack: true,
+      needsAuthentication: true,
+      title: "hangar.plans",
+      backgroundImage: "bg-5",
+      feature: FeatureFlagName.HANGAR_PLANNER,
+    },
+  },
+  {
+    path: "plans/shared/:token/",
+    name: "hangar-plan-shared",
+    component: () => import("@/frontend/pages/hangar/plans/shared.vue"),
+    meta: {
+      title: "hangar.sharedPlan",
+      backgroundImage: "bg-5",
+    },
+  },
+  {
+    path: "plans/:id/",
+    name: "hangar-plan",
+    component: () => import("@/frontend/pages/hangar/plans/[id].vue"),
+    meta: {
+      mobileBack: true,
+      needsAuthentication: true,
+      title: "hangar.plans",
+      backgroundImage: "bg-5",
+      feature: FeatureFlagName.HANGAR_PLANNER,
+    },
+  },
+  {
+    path: "plans/:id/compare/:otherId/",
+    name: "hangar-plan-compare",
+    component: () => import("@/frontend/pages/hangar/plans/[id]/compare.vue"),
+    meta: {
+      needsAuthentication: true,
+      title: "hangar.plans",
+      backgroundImage: "bg-5",
+      feature: FeatureFlagName.HANGAR_PLANNER,
+    },
+  },
+  {
     path: ":username/",
     component: () => import("@/frontend/pages/hangar/[username].vue"),
     children: publicHangarRoutes,

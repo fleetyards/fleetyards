@@ -1,0 +1,224 @@
+{
+  "fr": {
+    "hangarPlanner": {
+      "title": "Planificateur de hangar",
+      "lead": "Planifiez le hangar que vous voulez en emplacements (les rôles à couvrir) et déterminez comment y arriver depuis votre hangar actuel : ce que vous gardez, ce que vous melt et quels upgrades et buy-backs utiliser.",
+      "createPlan": "Nouveau plan",
+      "editPlan": "Modifier le plan",
+      "destroyPlan": "Supprimer le plan",
+      "confirmDestroy": "Supprimer ce plan ? Votre hangar n'est pas modifié.",
+      "more": "Plus",
+      "share": "Partager par lien",
+      "copyShareLink": "Copier le lien de partage",
+      "unshare": "Arrêter le partage",
+      "shared": "Partagé",
+      "sharedMissing": "Ce plan n'est pas partagé, ou le lien a changé.",
+      "addToWishlist": "Ajouter les achats à la liste de souhaits",
+      "confirmAddToWishlist": "Ajouter à votre liste de souhaits chaque vaisseau que ce plan doit encore obtenir ?",
+      "compareWith": "Comparer avec %{plan}",
+      "compareTitle": "%{left} vs. %{right}",
+      "slotsCount": {
+        "one": "%{count} emplacement",
+        "other": "%{count} emplacements"
+      },
+      "updatedAt": "Mis à jour le %{date}",
+      "empty": {
+        "title": "Aucun plan pour l'instant",
+        "text": "Commencez un plan de zéro, depuis votre hangar, depuis votre liste de souhaits ou en copiant un autre plan."
+      },
+      "noSlots": "Ce plan n'a pas encore d'emplacement. Ajoutez un emplacement pour chaque rôle que votre hangar doit couvrir.",
+      "addSlot": "Ajouter un emplacement",
+      "editSlot": "Modifier l'emplacement",
+      "removeSlot": "Retirer l'emplacement",
+      "confirmRemoveSlot": "Retirer cet emplacement avec ses vaisseaux et ses voies d'obtention ?",
+      "openSlotHint": "Aucun vaisseau choisi pour l'instant. Ajoutez-en un, ou plusieurs si vous hésitez.",
+      "addShips": "Ajouter des vaisseaux",
+      "addCandidates": "Vaisseaux pour %{slot}",
+      "addToSlot": "Ajouter à l'emplacement",
+      "inSlot": "Dans cet emplacement",
+      "choose": "Choisir",
+      "removeCandidate": "Retirer le vaisseau",
+      "ownedCount": {
+        "one": "%{count} dans votre hangar",
+        "other": "%{count} dans votre hangar"
+      },
+      "notOnSale": "non vendu",
+      "routes": "Comment les obtenir",
+      "addRoute": "Ajouter une voie vers %{ship}",
+      "addRouteShort": "Ajouter une voie",
+      "editRoute": "Voie vers %{ship}",
+      "removeRoute": "Retirer la voie",
+      "unresolvedUnits": {
+        "one": "%{count} vaisseau n'a pas encore de voie",
+        "other": "%{count} vaisseaux n'ont pas encore de voie"
+      },
+      "routeMustEnd": "La voie doit se terminer sur le %{ship}.",
+      "upgradeSteps": "Upgrades",
+      "stepNumber": "Upgrade %{number}",
+      "addStep": "Ajouter un upgrade",
+      "removeStep": "Retirer l'upgrade",
+      "sourceMissing": "n'est plus dans votre hangar",
+      "melts": "Melts",
+      "noMelts": "Aucun vaisseau à melt.",
+      "addMelt": "Melt un vaisseau",
+      "editMelt": "Modifier le melt",
+      "removeMelt": "Garder le vaisseau",
+      "estimated": "estimation",
+      "free": "Gratuit",
+      "unknownPrice": "Inconnu",
+      "fields": {
+        "name": "Nom",
+        "description": "Description",
+        "startingCredit": "Crédit boutique",
+        "startingCreditInfo": "Crédit boutique que vous avez déjà, en USD.",
+        "source": "Partir de",
+        "sourcePlan": "Plan à copier",
+        "slotLabel": "Rôle",
+        "slotLabelPlaceholder": "p. ex. Cargo principal",
+        "quantity": "Vaisseaux",
+        "startKind": "Commence comme",
+        "ownedShip": "Vaisseau de votre hangar",
+        "buyback": "Pledge de buy-back",
+        "startModel": "Vaisseau",
+        "priceOverride": "Prix payé",
+        "priceOverrideInfo": "Laissez vide pour utiliser le prix actuel de la boutique, ou saisissez un prix de promotion ou de warbond.",
+        "upgradeSource": "Upgrade depuis",
+        "ownedUpgrade": "Upgrade dans votre hangar RSI",
+        "upgradeTo": "Upgrade vers",
+        "meltShip": "Vaisseau à melt",
+        "meltValue": "Crédit",
+        "meltValueInfo": "Ce que vous l'avez payé. Laissez vide pour estimer d'après le prix actuel de la boutique.",
+        "slotDescription": "Description",
+        "filters": "Vaisseaux adaptés",
+        "filtersInfo": "Le sélecteur de vaisseaux s'ouvre avec ces filtres. Les vaisseaux hors filtres peuvent quand même être ajoutés et sont signalés.",
+        "priceFrom": "Prix à partir de",
+        "priceTo": "Prix jusqu'à",
+        "minCargo": "Cargo minimum",
+        "onSaleOnly": "Uniquement les vaisseaux en vente"
+      },
+      "sources": {
+        "empty": "Un plan vide",
+        "hangar": "Mon hangar",
+        "wishlist": "Ma liste de souhaits",
+        "plan": "Un autre plan"
+      },
+      "states": {
+        "open": "Ouvert",
+        "decided": "Décidé",
+        "undecided": "Indécis"
+      },
+      "startKinds": {
+        "owned": "Gardé du hangar",
+        "store": "Achat en boutique",
+        "ingame": "Acheté en jeu",
+        "buyback": "Buy-back"
+      },
+      "upgradeSources": {
+        "store": "Boutique",
+        "owned_ccu": "Mon hangar RSI",
+        "buyback": "Buy-back"
+      },
+      "vehicleStatuses": {
+        "kept": "Gardé",
+        "upgraded": "Upgradé",
+        "melted": "Melt",
+        "unassigned": "Hors plan"
+      },
+      "changes": {
+        "added": "Nouveau",
+        "removed": "Parti",
+        "more": "Plus",
+        "fewer": "Moins",
+        "unchanged": "Identique"
+      },
+      "issues": {
+        "missing_price": "%{name} n'a pas de prix connu, le total l'ignore donc.",
+        "not_on_sale": "%{name} n'est pas en vente actuellement."
+      },
+      "summary": {
+        "title": "Coûts",
+        "spend": "Nouvelles dépenses",
+        "meltCredit": "Crédit des melts",
+        "startingCredit": "Crédit boutique",
+        "net": "Coût net",
+        "cashNeeded": "Reste à payer",
+        "remainingCredit": "Crédit restant",
+        "estimatedMelts": {
+          "one": "%{count} estimé",
+          "other": "%{count} estimés"
+        },
+        "openSlots": {
+          "one": "%{count} emplacement sans vaisseau",
+          "other": "%{count} emplacements sans vaisseau"
+        },
+        "undecidedSlots": {
+          "one": "%{count} emplacement indécis",
+          "other": "%{count} emplacements indécis"
+        },
+        "unresolved": {
+          "one": "%{count} vaisseau sans voie",
+          "other": "%{count} vaisseaux sans voie"
+        },
+        "incomplete": "Le total est incomplet",
+        "complete": "Chaque vaisseau a une voie et un prix."
+      },
+      "comparison": {
+        "title": "Comparé à votre hangar",
+        "yourShips": "Vos vaisseaux",
+        "noShips": "Votre hangar n'a aucun vaisseau.",
+        "changes": "Changements",
+        "noChanges": "Aucun changement.",
+        "toAcquire": "Reste à obtenir",
+        "hangar": "Hangar",
+        "plan": "Plan"
+      },
+      "metrics": {
+        "title": "Statistiques",
+        "total": "Vaisseaux",
+        "uniqueModelsCount": "Modèles différents",
+        "manufacturerCount": "Constructeurs",
+        "flightReadyCount": "Prêts à voler",
+        "totalCrew": "Équipage",
+        "totalCargo": "Cargo (SCU)",
+        "totalPledgeValue": "Valeur boutique",
+        "largestShip": "Plus grand vaisseau",
+        "smallestShip": "Plus petit vaisseau",
+        "classifications": "Classifications",
+        "sizes": "Tailles",
+        "productionStatuses": "Statut de production"
+      },
+      "drift": {
+        "title": "Votre hangar a changé depuis la création de ce plan",
+        "missing": {
+          "one": "%{count} vaisseau ou pledge utilisé par le plan a disparu.",
+          "other": "%{count} vaisseaux ou pledges utilisés par le plan ont disparu."
+        },
+        "changed": {
+          "one": "%{count} vaisseau est maintenant un autre modèle.",
+          "other": "%{count} vaisseaux sont maintenant d'autres modèles."
+        },
+        "added": "Nouveau dans votre hangar : %{ships}",
+        "prices": "Les prix ont changé : %{before} lors de la planification, %{now} aujourd'hui.",
+        "rebase": "Mettre à jour depuis le hangar"
+      },
+      "messages": {
+        "saved": "Plan enregistré.",
+        "saveFailed": "Cela n'a pas fonctionné. Veuillez vérifier votre saisie.",
+        "shareCopied": "Lien de partage copié.",
+        "unshared": "Le lien de partage ne fonctionne plus.",
+        "addedToWishlist": {
+          "one": "%{count} vaisseau ajouté à votre liste de souhaits.",
+          "other": "%{count} vaisseaux ajoutés à votre liste de souhaits."
+        },
+        "rebased": "Plan mis à jour depuis votre hangar."
+      },
+      "filterChips": {
+        "priceFrom": "à partir de %{price}",
+        "priceTo": "jusqu'à %{price}",
+        "cargo": "%{cargo} SCU ou plus",
+        "onSale": "en vente"
+      },
+      "outsideFilters": "hors des filtres de cet emplacement"
+    }
+  }
+}

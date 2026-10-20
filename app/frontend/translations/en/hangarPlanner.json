@@ -1,0 +1,224 @@
+{
+  "en": {
+    "hangarPlanner": {
+      "title": "Hangar Planner",
+      "lead": "Plan the hangar you want in slots — the roles you want covered — and work out how to get there from the hangar you have: what to keep, what to melt and which upgrades and buy-backs to use.",
+      "createPlan": "New plan",
+      "editPlan": "Edit plan",
+      "destroyPlan": "Delete plan",
+      "confirmDestroy": "Delete this plan? Your hangar is not affected.",
+      "more": "More",
+      "share": "Share by link",
+      "copyShareLink": "Copy share link",
+      "unshare": "Stop sharing",
+      "shared": "Shared",
+      "sharedMissing": "This plan is not shared, or the link has changed.",
+      "addToWishlist": "Add purchases to wishlist",
+      "confirmAddToWishlist": "Add every ship this plan still has to obtain to your wishlist?",
+      "compareWith": "Compare with %{plan}",
+      "compareTitle": "%{left} vs. %{right}",
+      "slotsCount": {
+        "one": "%{count} slot",
+        "other": "%{count} slots"
+      },
+      "updatedAt": "Updated %{date}",
+      "empty": {
+        "title": "No plans yet",
+        "text": "Start a plan from scratch, from your hangar, from your wishlist or by copying another plan."
+      },
+      "noSlots": "This plan has no slots yet. Add a slot for each role you want your hangar to cover.",
+      "addSlot": "Add slot",
+      "editSlot": "Edit slot",
+      "removeSlot": "Remove slot",
+      "confirmRemoveSlot": "Remove this slot together with its ships and routes?",
+      "openSlotHint": "No ship picked yet. Add one ship, or several if you are undecided.",
+      "addShips": "Add ships",
+      "addCandidates": "Ships for %{slot}",
+      "addToSlot": "Add to slot",
+      "inSlot": "In this slot",
+      "choose": "Choose",
+      "removeCandidate": "Remove ship",
+      "ownedCount": {
+        "one": "%{count} in your hangar",
+        "other": "%{count} in your hangar"
+      },
+      "notOnSale": "not on sale",
+      "routes": "How you get them",
+      "addRoute": "Add a route to %{ship}",
+      "addRouteShort": "Add route",
+      "editRoute": "Route to %{ship}",
+      "removeRoute": "Remove route",
+      "unresolvedUnits": {
+        "one": "%{count} ship has no route yet",
+        "other": "%{count} ships have no route yet"
+      },
+      "routeMustEnd": "The route has to end on the %{ship}.",
+      "upgradeSteps": "Upgrades",
+      "stepNumber": "Upgrade %{number}",
+      "addStep": "Add upgrade",
+      "removeStep": "Remove upgrade",
+      "sourceMissing": "no longer in your hangar",
+      "melts": "Melts",
+      "noMelts": "No ships to melt.",
+      "addMelt": "Melt a ship",
+      "editMelt": "Edit melt",
+      "removeMelt": "Keep the ship",
+      "estimated": "estimate",
+      "free": "Free",
+      "unknownPrice": "Unknown",
+      "fields": {
+        "name": "Name",
+        "description": "Description",
+        "startingCredit": "Store credit",
+        "startingCreditInfo": "Store credit you already have, in USD.",
+        "source": "Start from",
+        "sourcePlan": "Plan to copy",
+        "slotLabel": "Role",
+        "slotLabelPlaceholder": "e.g. Main hauler",
+        "quantity": "Ships",
+        "startKind": "Starts as",
+        "ownedShip": "Ship from your hangar",
+        "buyback": "Buy-back pledge",
+        "startModel": "Ship",
+        "priceOverride": "Price paid",
+        "priceOverrideInfo": "Leave empty to use today's store price, or enter a sale or warbond price.",
+        "upgradeSource": "Upgrade from",
+        "ownedUpgrade": "Upgrade in your RSI hangar",
+        "upgradeTo": "Upgrade to",
+        "meltShip": "Ship to melt",
+        "meltValue": "Credit",
+        "meltValueInfo": "What you paid for it. Leave empty to estimate from today's store price.",
+        "slotDescription": "Description",
+        "filters": "Ships that fit",
+        "filtersInfo": "The ship picker opens on these filters. Ships outside them can still be added, and are marked.",
+        "priceFrom": "Price from",
+        "priceTo": "Price up to",
+        "minCargo": "Cargo at least",
+        "onSaleOnly": "Only ships on sale"
+      },
+      "sources": {
+        "empty": "An empty plan",
+        "hangar": "My hangar",
+        "wishlist": "My wishlist",
+        "plan": "Another plan"
+      },
+      "states": {
+        "open": "Open",
+        "decided": "Decided",
+        "undecided": "Undecided"
+      },
+      "startKinds": {
+        "owned": "Kept from hangar",
+        "store": "Store purchase",
+        "ingame": "Bought in game",
+        "buyback": "Buy-back"
+      },
+      "upgradeSources": {
+        "store": "Store",
+        "owned_ccu": "My RSI hangar",
+        "buyback": "Buy-back"
+      },
+      "vehicleStatuses": {
+        "kept": "Kept",
+        "upgraded": "Upgraded",
+        "melted": "Melted",
+        "unassigned": "Not in plan"
+      },
+      "changes": {
+        "added": "New",
+        "removed": "Gone",
+        "more": "More",
+        "fewer": "Fewer",
+        "unchanged": "Same"
+      },
+      "issues": {
+        "missing_price": "%{name} has no known price, so the total leaves it out.",
+        "not_on_sale": "%{name} is not on sale right now."
+      },
+      "summary": {
+        "title": "Costs",
+        "spend": "New spend",
+        "meltCredit": "Credit from melts",
+        "startingCredit": "Store credit",
+        "net": "Net cost",
+        "cashNeeded": "Still to pay",
+        "remainingCredit": "Credit left",
+        "estimatedMelts": {
+          "one": "%{count} estimated",
+          "other": "%{count} estimated"
+        },
+        "openSlots": {
+          "one": "%{count} slot without a ship",
+          "other": "%{count} slots without a ship"
+        },
+        "undecidedSlots": {
+          "one": "%{count} undecided slot",
+          "other": "%{count} undecided slots"
+        },
+        "unresolved": {
+          "one": "%{count} ship without a route",
+          "other": "%{count} ships without a route"
+        },
+        "incomplete": "The total is incomplete",
+        "complete": "Every ship has a route and a price."
+      },
+      "comparison": {
+        "title": "Compared with your hangar",
+        "yourShips": "Your ships",
+        "noShips": "Your hangar has no ships.",
+        "changes": "Changes",
+        "noChanges": "No changes.",
+        "toAcquire": "Still to obtain",
+        "hangar": "Hangar",
+        "plan": "Plan"
+      },
+      "metrics": {
+        "title": "Stats",
+        "total": "Ships",
+        "uniqueModelsCount": "Different models",
+        "manufacturerCount": "Manufacturers",
+        "flightReadyCount": "Flight ready",
+        "totalCrew": "Crew",
+        "totalCargo": "Cargo (SCU)",
+        "totalPledgeValue": "Store value",
+        "largestShip": "Largest ship",
+        "smallestShip": "Smallest ship",
+        "classifications": "Classifications",
+        "sizes": "Sizes",
+        "productionStatuses": "Production status"
+      },
+      "drift": {
+        "title": "Your hangar changed since this plan was made",
+        "missing": {
+          "one": "%{count} ship or pledge the plan uses is gone.",
+          "other": "%{count} ships or pledges the plan uses are gone."
+        },
+        "changed": {
+          "one": "%{count} ship is now another model.",
+          "other": "%{count} ships are now other models."
+        },
+        "added": "New in your hangar: %{ships}",
+        "prices": "Prices changed: %{before} when planned, %{now} today.",
+        "rebase": "Update from hangar"
+      },
+      "messages": {
+        "saved": "Plan saved.",
+        "saveFailed": "That did not work. Please check your input.",
+        "shareCopied": "Share link copied.",
+        "unshared": "The share link no longer works.",
+        "addedToWishlist": {
+          "one": "%{count} ship added to your wishlist.",
+          "other": "%{count} ships added to your wishlist."
+        },
+        "rebased": "Plan updated from your hangar."
+      },
+      "filterChips": {
+        "priceFrom": "from %{price}",
+        "priceTo": "up to %{price}",
+        "cargo": "%{cargo} SCU or more",
+        "onSale": "on sale"
+      },
+      "outsideFilters": "outside this slot's filters"
+    }
+  }
+}

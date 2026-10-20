@@ -33,7 +33,9 @@
         "transfers": "转移",
         "vehicleOverview": "概览",
         "vehicleLog": "舰长日志",
-        "shipComponents": "飞船部件"
+        "shipComponents": "飞船部件",
+        "plans": "规划器",
+        "sharedPlan": "共享计划"
       },
       "login": "登录",
       "installApp": "安装应用",

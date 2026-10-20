@@ -58,7 +58,9 @@
         "transfers": "Trasferimenti",
         "vehicleOverview": "Panoramica della nave",
         "vehicleLog": "Diario di bordo",
-        "shipComponents": "Componenti di nave"
+        "shipComponents": "Componenti di nave",
+        "plans": "Pianificatore hangar",
+        "sharedPlan": "Piano hangar condiviso"
       },
       "requestPassword": "Richiedi la password",
       "changePassword": "Cambia la password",

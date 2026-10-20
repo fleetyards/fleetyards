@@ -1,0 +1,224 @@
+{
+  "zh-CN": {
+    "hangarPlanner": {
+      "title": "机库规划器",
+      "lead": "用槽位（你想覆盖的角色）规划理想中的机库，并算出如何从现有机库走到那里：保留什么、熔毁（melt）什么，以及使用哪些升级（CCU）和回购（buy-back）。",
+      "createPlan": "新建方案",
+      "editPlan": "编辑方案",
+      "destroyPlan": "删除方案",
+      "confirmDestroy": "删除此方案？你的机库不会受到影响。",
+      "more": "更多",
+      "share": "通过链接分享",
+      "copyShareLink": "复制分享链接",
+      "unshare": "停止分享",
+      "shared": "已分享",
+      "sharedMissing": "此方案未分享，或链接已更改。",
+      "addToWishlist": "将待购飞船加入愿望清单",
+      "confirmAddToWishlist": "将此方案仍需获取的每艘飞船加入你的愿望清单？",
+      "compareWith": "与 %{plan} 比较",
+      "compareTitle": "%{left} 对比 %{right}",
+      "slotsCount": {
+        "one": "%{count} 个槽位",
+        "other": "%{count} 个槽位"
+      },
+      "updatedAt": "更新于 %{date}",
+      "empty": {
+        "title": "暂无方案",
+        "text": "可以从零开始、从你的机库、从你的愿望清单，或复制另一个方案来创建方案。"
+      },
+      "noSlots": "此方案还没有槽位。请为机库要覆盖的每个角色添加一个槽位。",
+      "addSlot": "添加槽位",
+      "editSlot": "编辑槽位",
+      "removeSlot": "移除槽位",
+      "confirmRemoveSlot": "移除此槽位及其中的飞船和获取途径？",
+      "openSlotHint": "尚未选择飞船。可添加一艘，如果还没想好也可添加多艘。",
+      "addShips": "添加飞船",
+      "addCandidates": "%{slot} 的飞船",
+      "addToSlot": "添加到槽位",
+      "inSlot": "在此槽位中",
+      "choose": "选定",
+      "removeCandidate": "移除飞船",
+      "ownedCount": {
+        "one": "你的机库中有 %{count} 艘",
+        "other": "你的机库中有 %{count} 艘"
+      },
+      "notOnSale": "未在售",
+      "routes": "获取方式",
+      "addRoute": "添加获取 %{ship} 的途径",
+      "addRouteShort": "添加途径",
+      "editRoute": "获取 %{ship} 的途径",
+      "removeRoute": "移除途径",
+      "unresolvedUnits": {
+        "one": "%{count} 艘飞船尚无获取途径",
+        "other": "%{count} 艘飞船尚无获取途径"
+      },
+      "routeMustEnd": "途径必须以 %{ship} 结束。",
+      "upgradeSteps": "升级",
+      "stepNumber": "升级 %{number}",
+      "addStep": "添加升级",
+      "removeStep": "移除升级",
+      "sourceMissing": "已不在你的机库中",
+      "melts": "熔毁",
+      "noMelts": "没有要熔毁的飞船。",
+      "addMelt": "熔毁一艘飞船",
+      "editMelt": "编辑熔毁",
+      "removeMelt": "保留飞船",
+      "estimated": "估算",
+      "free": "免费",
+      "unknownPrice": "未知",
+      "fields": {
+        "name": "名称",
+        "description": "描述",
+        "startingCredit": "商店积分",
+        "startingCreditInfo": "你已拥有的商店积分，单位为美元。",
+        "source": "起点",
+        "sourcePlan": "要复制的方案",
+        "slotLabel": "角色",
+        "slotLabelPlaceholder": "例如：主力货运船",
+        "quantity": "飞船数量",
+        "startKind": "起始状态",
+        "ownedShip": "你机库中的飞船",
+        "buyback": "回购 pledge",
+        "startModel": "飞船",
+        "priceOverride": "实付价格",
+        "priceOverrideInfo": "留空则使用当前商店价格，也可填写促销价或 warbond 价格。",
+        "upgradeSource": "升级自",
+        "ownedUpgrade": "你 RSI 机库中的升级",
+        "upgradeTo": "升级为",
+        "meltShip": "要熔毁的飞船",
+        "meltValue": "积分",
+        "meltValueInfo": "你购买时支付的金额。留空则按当前商店价格估算。",
+        "slotDescription": "描述",
+        "filters": "适合的舰船",
+        "filtersInfo": "舰船选择器会按这些筛选条件打开。不符合条件的舰船仍可添加，并会被标记。",
+        "priceFrom": "最低价格",
+        "priceTo": "最高价格",
+        "minCargo": "最少货舱",
+        "onSaleOnly": "仅限在售舰船"
+      },
+      "sources": {
+        "empty": "空方案",
+        "hangar": "我的机库",
+        "wishlist": "我的愿望清单",
+        "plan": "另一个方案"
+      },
+      "states": {
+        "open": "待定",
+        "decided": "已确定",
+        "undecided": "未决定"
+      },
+      "startKinds": {
+        "owned": "保留机库中的",
+        "store": "商店购买",
+        "ingame": "游戏内购买",
+        "buyback": "回购"
+      },
+      "upgradeSources": {
+        "store": "商店",
+        "owned_ccu": "我的 RSI 机库",
+        "buyback": "回购"
+      },
+      "vehicleStatuses": {
+        "kept": "保留",
+        "upgraded": "已升级",
+        "melted": "已熔毁",
+        "unassigned": "不在方案中"
+      },
+      "changes": {
+        "added": "新增",
+        "removed": "移除",
+        "more": "增多",
+        "fewer": "减少",
+        "unchanged": "不变"
+      },
+      "issues": {
+        "missing_price": "%{name} 没有已知价格，因此总价未计入它。",
+        "not_on_sale": "%{name} 目前未在售。"
+      },
+      "summary": {
+        "title": "费用",
+        "spend": "新增支出",
+        "meltCredit": "熔毁所得积分",
+        "startingCredit": "商店积分",
+        "net": "净成本",
+        "cashNeeded": "仍需支付",
+        "remainingCredit": "剩余积分",
+        "estimatedMelts": {
+          "one": "%{count} 项为估算",
+          "other": "%{count} 项为估算"
+        },
+        "openSlots": {
+          "one": "%{count} 个槽位没有飞船",
+          "other": "%{count} 个槽位没有飞船"
+        },
+        "undecidedSlots": {
+          "one": "%{count} 个槽位未决定",
+          "other": "%{count} 个槽位未决定"
+        },
+        "unresolved": {
+          "one": "%{count} 艘飞船没有途径",
+          "other": "%{count} 艘飞船没有途径"
+        },
+        "incomplete": "总价不完整",
+        "complete": "每艘飞船都有途径和价格。"
+      },
+      "comparison": {
+        "title": "与你的机库对比",
+        "yourShips": "你的飞船",
+        "noShips": "你的机库中没有飞船。",
+        "changes": "变化",
+        "noChanges": "没有变化。",
+        "toAcquire": "仍需获取",
+        "hangar": "机库",
+        "plan": "方案"
+      },
+      "metrics": {
+        "title": "统计",
+        "total": "飞船",
+        "uniqueModelsCount": "不同型号",
+        "manufacturerCount": "制造商",
+        "flightReadyCount": "可飞行",
+        "totalCrew": "船员",
+        "totalCargo": "货舱（SCU）",
+        "totalPledgeValue": "商店价值",
+        "largestShip": "最大的飞船",
+        "smallestShip": "最小的飞船",
+        "classifications": "分类",
+        "sizes": "尺寸",
+        "productionStatuses": "生产状态"
+      },
+      "drift": {
+        "title": "自创建此方案以来，你的机库发生了变化",
+        "missing": {
+          "one": "方案使用的 %{count} 艘飞船或 pledge 已不存在。",
+          "other": "方案使用的 %{count} 艘飞船或 pledge 已不存在。"
+        },
+        "changed": {
+          "one": "%{count} 艘飞船现在是另一个型号。",
+          "other": "%{count} 艘飞船现在是其他型号。"
+        },
+        "added": "你的机库新增：%{ships}",
+        "prices": "价格已变化：规划时为 %{before}，今天为 %{now}。",
+        "rebase": "从机库更新"
+      },
+      "messages": {
+        "saved": "方案已保存。",
+        "saveFailed": "操作失败，请检查你的输入。",
+        "shareCopied": "分享链接已复制。",
+        "unshared": "分享链接已失效。",
+        "addedToWishlist": {
+          "one": "已将 %{count} 艘飞船加入你的愿望清单。",
+          "other": "已将 %{count} 艘飞船加入你的愿望清单。"
+        },
+        "rebased": "方案已根据你的机库更新。"
+      },
+      "filterChips": {
+        "priceFrom": "%{price} 起",
+        "priceTo": "不超过 %{price}",
+        "cargo": "%{cargo} SCU 以上",
+        "onSale": "在售"
+      },
+      "outsideFilters": "不符合此槽位的筛选条件"
+    }
+  }
+}
