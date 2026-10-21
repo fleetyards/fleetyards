@@ -168,8 +168,9 @@
       background-color 150ms ease,
       color 150ms ease;
 
+    // Focus lands on the popover's link around the chip, not on the chip.
     &:hover,
-    &:focus-visible {
+    :focus-visible > & {
       color: var(--color-lifted, #eee);
       background-color: var(--color-control, rgb(39 43 48 / 0.9));
     }
