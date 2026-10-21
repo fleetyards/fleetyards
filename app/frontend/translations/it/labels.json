@@ -4356,6 +4356,8 @@
         "sourceSummary": "%{count} fonti · %{orgs} organizzazioni",
         "unattributed": "Non attribuito",
         "minPoints": "Da %{points} punti",
+        "limitedEvent": "Evento a tempo limitato",
+        "eventHint": "Le ricompense evento si ottengono solo mentre CIG tiene attivo l'evento. I file di gioco conservano i livelli di ricompensa tra un'edizione e l'altra, quindi non indicano se è attivo in questo momento.",
         "noKnownSource": "Nessuna fonte nota",
         "noSourceLead": "Nessuna missione o scenario rilascia questo progetto.",
         "noSourceBody": "I file di gioco non lo inseriscono in alcun gruppo di ricompense, quindi non c'è nulla da indicare.",
@@ -4372,7 +4374,7 @@
         },
         "kinds": {
           "contract": "Contratto",
-          "scenario": "Scenario"
+          "scenario": "Evento"
         },
         "duration": {
           "hours": "%{count} h",

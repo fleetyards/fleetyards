@@ -4356,6 +4356,8 @@
         "sourceSummary": "%{count} sources · %{orgs} organisations",
         "unattributed": "Non attribué",
         "minPoints": "À partir de %{points} points",
+        "limitedEvent": "Événement à durée limitée",
+        "eventHint": "Les récompenses d'événement ne sont obtenues que tant que CIG fait tourner l'événement. Les fichiers du jeu conservent ses paliers de récompense entre deux éditions, ils ne disent donc pas s'il est actif en ce moment.",
         "noKnownSource": "Aucune source connue",
         "noSourceLead": "Aucune mission ni aucun scénario ne distribue ce plan.",
         "noSourceBody": "Les fichiers du jeu ne le placent dans aucun lot de récompenses : il n'y a donc rien à indiquer.",
@@ -4372,7 +4374,7 @@
         },
         "kinds": {
           "contract": "Contrat",
-          "scenario": "Scénario"
+          "scenario": "Événement"
         },
         "duration": {
           "hours": "%{count} h",

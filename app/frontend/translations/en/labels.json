@@ -4370,6 +4370,8 @@
         "sourceSummary": "%{count} sources · %{orgs} orgs",
         "unattributed": "Unattributed",
         "minPoints": "From %{points} points",
+        "limitedEvent": "Limited-time event",
+        "eventHint": "Event rewards drop only while CIG runs the event. The game files keep its reward track between runs, so they cannot say whether it is live right now.",
         "noKnownSource": "No known source",
         "noSourceLead": "No mission or scenario hands this recipe out.",
         "noSourceBody": "The game files place it in no reward pool, so there is nothing to point you at.",
@@ -4386,7 +4388,7 @@
         },
         "kinds": {
           "contract": "Contract",
-          "scenario": "Scenario"
+          "scenario": "Event"
         },
         "duration": {
           "hours": "%{count}h",

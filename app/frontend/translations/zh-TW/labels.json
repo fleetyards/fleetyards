@@ -4353,6 +4353,8 @@
         "sourceSummary": "%{count} 個來源 · %{orgs} 個組織",
         "unattributed": "未標明組織",
         "minPoints": "%{points} 點起",
+        "limitedEvent": "限時活動",
+        "eventHint": "活動獎勵僅在 CIG 開啟該活動期間發放。遊戲檔案在兩次活動之間仍保留其獎勵階段，因此無法據此判斷活動目前是否開啟。",
         "noKnownSource": "無已知來源",
         "noSourceLead": "沒有任務或場景會發放此藍圖。",
         "noSourceBody": "遊戲檔案未將其列入任何獎勵池，因此無從指引。",
@@ -4369,7 +4371,7 @@
         },
         "kinds": {
           "contract": "合約",
-          "scenario": "場景"
+          "scenario": "活動"
         },
         "duration": {
           "hours": "%{count} 小時",

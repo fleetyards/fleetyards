@@ -37,6 +37,12 @@ const anyPlaceholder = computed(() =>
   ),
 );
 
+// A scenario is a server-side event: its reward tiers stay in the export
+// between runs, so a listed tier says nothing about whether it drops today.
+const anyEvent = computed(() =>
+  props.sources.some((source) => source.kind === "scenario"),
+);
+
 // Grouped by who hands the recipe out. One blueprint in the build carries 29
 // sources; flat, that is the whole rail.
 //
@@ -178,6 +184,17 @@ const summary = computed(() =>
                   &rarr; {{ entry.maxStanding }}
                 </template>
               </span>
+              <template v-else-if="entry.kind === 'scenario'">
+                <span class="blueprint-sources__event">
+                  {{ t("labels.blueprint.limitedEvent") }}
+                </span>
+                <span v-if="entry.minPoints">
+                  &middot;
+                  {{
+                    t("labels.blueprint.minPoints", { points: entry.minPoints })
+                  }}
+                </span>
+              </template>
               <span v-else-if="entry.minPoints">
                 {{
                   t("labels.blueprint.minPoints", { points: entry.minPoints })
@@ -187,6 +204,10 @@ const summary = computed(() =>
           </div>
         </div>
       </div>
+
+      <p v-if="anyEvent" class="blueprint-sources__legend">
+        {{ t("labels.blueprint.eventHint") }}
+      </p>
 
       <p v-if="anyPlaceholder" class="blueprint-sources__legend">
         {{ t("labels.blueprint.missionSlotsHint") }}
