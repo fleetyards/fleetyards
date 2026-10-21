@@ -541,6 +541,8 @@ module ScData
 
       private def template_properties
         @template_properties ||= load_data(TEMPLATES_PATH).each_with_object({}) do |item, index|
+          next unless item[:values].is_a?(Hash)
+
           ref = value_or_nil(item[:values]["__ref"])
 
           index[ref] = item[:values].dig("contractProperties", "MissionProperty") if ref.present?
