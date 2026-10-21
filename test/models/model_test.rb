@@ -887,6 +887,11 @@ class ModelSizeTest < ActiveSupport::TestCase
     assert_equal %w[destroyer warship], create(:model, foci: %w[destroyer]).foci
   end
 
+  test "the labels leave out an umbrella its own key already says" do
+    assert_equal ["Destroyer"], build(:model, foci: %w[destroyer warship]).foci_labels
+    assert_equal ["Fighter"], build(:model, foci: %w[fighter]).foci_labels
+  end
+
   test "a focus the catalogue does not know is refused" do
     model = build(:model, foci: %w[turret])
 

@@ -713,8 +713,12 @@ class Model < ApplicationRecord
     I18n.t("filter.model.focus.items.#{key}")
   end
 
+  # For reading rather than filtering: "Medium Fighter" says what "Medium
+  # Fighter, Fighter" does, so an umbrella is left out where one of its own keys
+  # is there.
   def foci_labels
-    foci.map { |key| Model.focus_label(key) }
+    implied = foci.filter_map { |key| FOCUS_UMBRELLAS[key] }
+    (foci - implied).map { |key| Model.focus_label(key) }
   end
 
   # The ladder a berth is measured against, smallest first. Only meaningful
