@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { useDebounceFn } from "@vueuse/core";
+import { useDebounceFn, useElementBounding, useWindowSize } from "@vueuse/core";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormInputGroup from "@/shared/components/base/FormInputGroup/index.vue";
 import AppIcon from "@/shared/components/AppIcon/index.vue";
@@ -176,6 +176,16 @@ const onBlur = () => {
 };
 
 const showList = computed(() => open.value && query.value.length >= MIN_LENGTH);
+
+// The hero sits the field halfway down the screen, so a height measured from
+// the top of the viewport runs the list off the bottom of it.
+const field = useTemplateRef<HTMLElement>("field");
+const { bottom: fieldBottom } = useElementBounding(field);
+const { height: windowHeight } = useWindowSize();
+
+const popoverStyle = computed(() => ({
+  maxHeight: `${Math.max(240, Math.min(560, windowHeight.value - fieldBottom.value - 22))}px`,
+}));
 </script>
 
 <template>
@@ -188,7 +198,7 @@ const showList = computed(() => open.value && query.value.length >= MIN_LENGTH);
     @focusin="open = true"
     @focusout="onBlur"
   >
-    <div class="home-search__field">
+    <div ref="field" class="home-search__field">
       <FormInputGroup>
         <FormInput
           :model-value="searchQuery"
@@ -214,6 +224,7 @@ const showList = computed(() => open.value && query.value.length >= MIN_LENGTH);
       <div
         v-if="showList"
         class="home-search__popover"
+        :style="popoverStyle"
         data-test="home-search-results"
       >
         <div
@@ -378,7 +389,6 @@ const showList = computed(() => open.value && query.value.length >= MIN_LENGTH);
   z-index: 2100;
   display: flex;
   flex-direction: column;
-  max-height: min(65vh, 560px);
   background-color: var(--color-gray-darker, #272b30);
   border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
   border-radius: var(--radius-control, 8px);
