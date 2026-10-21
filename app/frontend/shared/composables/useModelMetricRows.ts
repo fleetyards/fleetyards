@@ -1,5 +1,6 @@
 import type { Model } from "@/services/fyApi";
 import type { i18nHelpers } from "@/shared/utils/I18nHelpers";
+import { fociText } from "@/shared/utils/Foci";
 
 export type MetricRow = {
   label: string;
@@ -69,7 +70,7 @@ export const useModelMetricRows = (
 
   const summary = computed<MetricRow[]>(() => {
     const rows: MetricRow[] = [];
-    const { focus } = model();
+    const focus = fociText(model(), t("labels.model.stealth"));
 
     if (focus) {
       rows.push({ label: t("model.focus"), value: focus });

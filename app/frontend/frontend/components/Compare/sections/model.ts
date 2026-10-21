@@ -13,6 +13,7 @@ import {
 } from "@/frontend/components/CargoGridViewer/capacity";
 import { CONTAINER_DEFS } from "@/frontend/components/CargoGridViewer/constants";
 import { useI18n } from "@/shared/composables/useI18n";
+import { fociText } from "@/shared/utils/Foci";
 import {
   HardpointCategoryEnum,
   type ComponentQuantumDrive,
@@ -100,7 +101,11 @@ export const useModelSections = (
           ? t(`labels.model.productionStatus.${model.productionStatus}`)
           : undefined,
     },
-    { key: "focus", label: t("model.focus"), value: (m) => text(m.focus) },
+    {
+      key: "focus",
+      label: t("model.focus"),
+      value: (m) => fociText(m, t("labels.model.stealth")),
+    },
     {
       key: "classification",
       label: t("model.classification"),
