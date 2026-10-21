@@ -134,8 +134,11 @@ const filterStrip = computed<StatItem[]>(() => {
       label: t("labels.fleets.missions.classification"),
       value: f.classification,
     });
-  if (f.focus)
-    items.push({ label: t("labels.fleets.missions.focus"), value: f.focus });
+  if (f.fociLabels?.length)
+    items.push({
+      label: t("labels.fleets.missions.focus"),
+      value: f.fociLabels.join(", "),
+    });
   if (f.minSize)
     items.push({
       label: t("labels.fleets.missions.minSize"),
