@@ -150,36 +150,60 @@ done < "$REMOTE_LIST"
 pending_count=$(wc -l < "$PENDING" | tr -d ' ')
 
 # The mirror only ever adds, so objects deleted from the bucket stay on disk
-# until removed here. A key the local database still references is kept even
+# until removed here. A key some local database still references is kept even
 # when the bucket has dropped it: local sc_data loads and uploads write blobs
-# that never reach the bucket.
+# that never reach the bucket. bin/setup links storage/ into every worktree, so
+# that means every worktree's database, not just this checkout's.
+read_local_blob_keys() {
+  local databases database
+
+  databases=$(PGPASSWORD=password psql -qtAX -h localhost -U "$DB_USER" -p "$DB_PORT" -d postgres \
+    -c "SELECT datname FROM pg_database WHERE datname LIKE 'fleetyards_dev%' OR datname = '$DB_NAME'" 2> /dev/null) || return 1
+
+  [ -n "$databases" ] || return 1
+
+  for database in $databases; do
+    PGPASSWORD=password psql -qtAX -h localhost -U "$DB_USER" -p "$DB_PORT" -d "$database" \
+      -c "SELECT key FROM active_storage_blobs" 2> /dev/null || return 1
+  done
+}
+
 remove_deleted_objects() {
-  if ! PGPASSWORD=password psql -qtAX -h localhost -U "$DB_USER" -p "$DB_PORT" -d "$DB_NAME" \
-    -c "SELECT key FROM active_storage_blobs" > "$DB_KEYS" 2> /dev/null; then
-    echo "  Skipping cleanup: could not read blob keys from $DB_NAME on localhost:$DB_PORT."
+  if ! read_local_blob_keys > "$DB_KEYS"; then
+    echo "  Skipping cleanup: could not read blob keys from every database on localhost:$DB_PORT."
     return
   fi
 
-  sort -o "$DB_KEYS" "$DB_KEYS"
+  # An unrestored database answers with no keys, which would leave nothing kept.
+  if [ ! -s "$DB_KEYS" ]; then
+    echo "  Skipping cleanup: no local database references any blob."
+    return
+  fi
 
+  sort -u -o "$DB_KEYS" "$DB_KEYS"
   cut -f2 "$REMOTE_LIST" | sort > "$REMOTE_KEYS"
-  find "$LOCAL_ROOT" -type f ! -name '.*' | awk -F/ '{ print $NF }' | sort > "$LOCAL_KEYS"
+
+  # -H follows storage/ itself, which is a symlink in a worktree. Only files at
+  # the path Active Storage would give their key are candidates, so a stray file
+  # is never mistaken for an object.
+  find -H "$LOCAL_ROOT" -mindepth 3 -maxdepth 3 -type f ! -name '.*' |
+    awk -F/ '$(NF-2) == substr($NF, 1, 2) && $(NF-1) == substr($NF, 3, 2) { print $NF "\t" $0 }' |
+    sort -t$'\t' -k1,1 > "$LOCAL_KEYS"
 
   local removed=0
   local removed_bytes=0
-  local key target size
+  local key path size
 
-  while read -r key; do
-    target=$(target_path_for "$key")
-    size=$(stat -f%z "$target" 2> /dev/null || echo 0)
+  while IFS=$'\t' read -r key path; do
+    size=$(stat -f%z "$path") || continue
 
-    if rm -f "$target"; then
+    if rm "$path"; then
       removed=$((removed + 1))
       removed_bytes=$((removed_bytes + size))
     fi
-  done < <(comm -23 "$LOCAL_KEYS" "$REMOTE_KEYS" | comm -23 - "$DB_KEYS")
+  done < <(cut -f1 "$LOCAL_KEYS" | comm -23 - "$REMOTE_KEYS" | comm -23 - "$DB_KEYS" | join -t$'\t' - "$LOCAL_KEYS")
 
-  find "$LOCAL_ROOT" -mindepth 1 -type d -empty -delete
+  find -H "$LOCAL_ROOT" -mindepth 1 -type d -empty -delete
 
   echo "  Removed:         $removed deleted from the bucket ($(human_size "$removed_bytes"))"
 }
