@@ -18,6 +18,7 @@ resource :hangar, only: %i[show destroy] do
   get "upgrades", to: "hangar_pledge_items#upgrades"
   get "equipment", to: "hangar_pledge_items#equipment"
   get "ship-components", to: "hangar_pledge_items#ship_components"
+  get "blueprint-missions", to: "hangar_blueprint_missions#index"
 
   put "move-all-ingame-to-wishlist", to: "hangars#move_all_ingame_to_wishlist"
 

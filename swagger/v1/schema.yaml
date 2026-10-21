@@ -10540,6 +10540,50 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/hangar/blueprint-missions":
+    get:
+      summary: Missions that hand out a wanted blueprint
+      tags:
+      - Hangar
+      operationId: hangarBlueprintMissions
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 48
+        required: false
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/GameMissionQuery"
+        style: deepObject
+        explode: true
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarBlueprintMissions"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/hangar/buybacks":
     get:
       summary: Hangar Buy-back Pledges
@@ -31080,6 +31124,38 @@ components:
       - meta
       - items
       title: Hangar
+    HangarBlueprintMission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        mission:
+          "$ref": "#/components/schemas/GameMission"
+        wantedBlueprints:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMissionBlueprint"
+      additionalProperties: false
+      required:
+      - id
+      - mission
+      - wantedBlueprints
+      title: HangarBlueprintMission
+    HangarBlueprintMissions:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarBlueprintMission"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: HangarBlueprintMissions
     HangarClassificationMetric:
       type: object
       properties:
