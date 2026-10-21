@@ -55,7 +55,7 @@ class Api::V1::FleetsMissionTeamsShipsCreateTest < ActionDispatch::IntegrationTe
       path_params: {fleetSlug: @fleet.slug, missionSlug: @mission.slug, missionTeamId: @team.id},
       body: {classification: "Combat", minSize: "medium"} do
       assert_equal false, parsed_body["strict"]
-      assert_equal "Combat", parsed_body["filters"]["classification"]
+      assert_equal "combat", parsed_body["filters"]["classification"]
     end
   end
 

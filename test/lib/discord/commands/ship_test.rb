@@ -12,7 +12,7 @@ module Discord
           name: "Carrack",
           slug: "carrack",
           manufacturer: @manufacturer,
-          classification: "explorer",
+          classification: "exploration",
           price: 4_500_000,
           pledge_price: 600)
       end
@@ -37,7 +37,7 @@ module Discord
       test "the embed carries the labels the site uses" do
         fields = call("Carrack")[:embeds].first[:fields].to_h { |field| [field[:name], field[:value]] }
 
-        assert_equal "Explorer", fields[I18n.t("discord.commands.ship.fields.classification")]
+        assert_equal "Exploration", fields[I18n.t("discord.commands.ship.fields.classification")]
         assert_equal "4", fields[I18n.t("discord.commands.ship.fields.crew")]
         assert_equal @model.pledge_price_label, fields[I18n.t("discord.commands.ship.fields.pledge_price")]
         assert_equal @model.price_label, fields[I18n.t("discord.commands.ship.fields.price")]

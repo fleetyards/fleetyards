@@ -137,7 +137,7 @@ module ScData
         loader.load_model(model)
         model.reload
 
-        assert_equal "Medium Freight / Gun Ship", model.focus
+        assert_equal "Medium Freight / Gunship", model.focus
         assert_equal "multi", model.classification
         assert_equal "A classic.\nReimagined.", model.description
       end

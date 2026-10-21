@@ -507,6 +507,39 @@ class Model < ApplicationRecord
 
   validates :size, inclusion: {in: SIZES}, allow_nil: true
 
+  CLASSIFICATIONS = %w[combat competition exploration ground industrial multi support transport].freeze
+
+  # The ship matrix writes its own: "Combat" where we keep "combat", and a few
+  # words of its own for the ones we name differently. Each spelling the
+  # filters were handed became an option of its own beside ours.
+  CLASSIFICATION_ALIASES = {
+    "multi-role" => "multi",
+    "starter" => "multi",
+    "transporter" => "transport",
+    "destroyer" => "combat"
+  }.freeze
+
+  normalizes :classification, with: ->(classification) {
+    classification = classification.to_s.strip.downcase.presence
+    CLASSIFICATION_ALIASES.fetch(classification, classification)
+  }
+
+  validates :classification, inclusion: {in: CLASSIFICATIONS}, allow_nil: true
+
+  # Free text from the ship matrix and from admins, so the same focus arrived
+  # with a trailing space or in a spelling of its own and was listed twice.
+  FOCUS_SPELLINGS = {
+    "Gun Ship" => "Gunship",
+    "Interdictor" => "Interdiction",
+    "Anti-aircraft" => "Anti-Air",
+    "Medium Freighter" => "Medium Freight",
+    "Transporter" => "Transport"
+  }.freeze
+
+  normalizes :focus, with: ->(focus) {
+    FOCUS_SPELLINGS.reduce(focus.to_s.squish) { |text, (from, to)| text.gsub(/\b#{Regexp.escape(from)}\b/i, to) }.presence
+  }
+
   # NOT NULL columns whose default of 0 already reads as "unknown", so an admin
   # clearing one sends it back there rather than into a constraint violation.
   normalizes :length, :beam, :height, :mass, with: ->(value) { value || 0 }, apply_to_nil: true
@@ -587,7 +620,7 @@ class Model < ApplicationRecord
   end
 
   def self.classification_filters
-    Model.classifications.map do |item|
+    CLASSIFICATIONS.map do |item|
       Filter.new(
         category: "classification",
         label: item.humanize,

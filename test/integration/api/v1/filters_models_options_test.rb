@@ -70,7 +70,7 @@ class Api::V1::FiltersModelsOptionsTest < ActionDispatch::IntegrationTest
 
   test "GET /filters/models/options filters by classificationIn" do
     combat = create(:model, :with_store_image, classification: "combat")
-    create_list(:model, 2, :with_store_image, classification: "multi_role")
+    create_list(:model, 2, :with_store_image, classification: "multi")
 
     assert_api_response :get, 200, params: {q: {"classificationIn" => ["combat"]}} do
       items = parsed_body["items"]

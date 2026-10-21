@@ -137,7 +137,8 @@ module Rsi
         updates[attr] = value if (model_updated(model, data) && value != model.send(:"rsi_#{attr}")) || model.send(attr).blank? || model.send(attr).zero?
       end
 
-      updates[:ground] = true if data["type"] == "ground" && model_updated(model, data) && data["type"] != model.classification
+      type = ::Model.normalize_value_for(:classification, data["type"])
+      updates[:ground] = true if type == "ground" && model_updated(model, data) && type != model.classification
 
       updates["rsi_focus"] = data["focus"]
       updates["focus"] = data["focus"] if (model_updated(model, data) && data["focus"] != model.rsi_focus) || model.rsi_focus.blank?
@@ -165,8 +166,16 @@ module Rsi
         end
       end
 
+      # As with the size: a type we cannot place would fail the validation and
+      # take the whole update with it.
       updates[:rsi_classification] = data["type"]
-      updates[:classification] = data["type"] if (model_updated(model, data) && data["type"] != model.rsi_classification) || model.classification.blank?
+      if (model_updated(model, data) && data["type"] != model.rsi_classification) || model.classification.blank?
+        if ::Model::CLASSIFICATIONS.include?(type)
+          updates[:classification] = type
+        elsif type.present?
+          Rails.logger.warn("Rsi::ModelsLoader: #{data["name"]} has an unknown type #{data["type"].inspect}, not recorded")
+        end
+      end
 
       updates[:rsi_store_url] = data["url"]
       updates[:store_url] = data["url"] if (model_updated(model, data) && data["url"] != model.rsi_store_url) || model.store_url.blank?
@@ -174,7 +183,9 @@ module Rsi
       updates[:rsi_name] = data["name"].strip
       updates[:name] = strip_name(data["name"]) if (model_updated(model, data) && data["name"] != model.rsi_name) || model.name.blank?
 
-      model.update(updates.merge(update_reason: :rsi_loader))
+      unless model.update(updates.merge(update_reason: :rsi_loader))
+        Rails.logger.warn("Rsi::ModelsLoader: #{data["name"]} was not updated: #{model.errors.full_messages.to_sentence}")
+      end
 
       load_store_image(model, data["media"][0])
 

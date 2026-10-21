@@ -221,6 +221,29 @@ module Rsi
       assert_equal "Enormous", model.rsi_size
     end
 
+    test "#files a ship under the classification the catalogue uses" do
+      data = JSON.parse(File.read("test/fixtures/rsi/matrix.json"))["data"].find { |ship| ship["id"] == 7 }
+
+      @loader.send(:create_or_update_model, data.merge("type" => "Multi-Role"))
+
+      model = Model.find_by(rsi_id: 7)
+
+      assert_equal "multi", model.classification
+      assert_equal "Multi-Role", model.rsi_classification
+    end
+
+    test "#leaves a classification it does not recognise off the model" do
+      data = JSON.parse(File.read("test/fixtures/rsi/matrix.json"))["data"].find { |ship| ship["id"] == 7 }
+
+      @loader.send(:create_or_update_model, data.merge("type" => "Spaceship"))
+
+      model = Model.find_by(rsi_id: 7)
+
+      assert_nil model.classification
+      assert_equal "Spaceship", model.rsi_classification
+      assert_equal "Luxury Touring", model.focus
+    end
+
     # The matrix carries no size for the ten largest ground vehicles -- the Ursa
     # family, the Lynx, the Storms, the Novas -- which are exactly the ones
     # 20260920110000 fills in. Writing that absence back would undo the backfill

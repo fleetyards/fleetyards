@@ -862,6 +862,33 @@ class ModelSizeTest < ActiveSupport::TestCase
     assert_predicate build(:model, size: nil), :valid?
   end
 
+  test "a classification is kept in the catalogue's own words" do
+    assert_equal(
+      %w[combat multi transport combat multi],
+      ["Combat", "Multi-Role", "Transporter", "Destroyer", "Starter"].map { |word| create(:model, classification: word).classification }
+    )
+  end
+
+  test "an unknown classification is refused" do
+    model = build(:model, classification: "explorer")
+
+    assert_not model.valid?
+    assert_includes model.errors.attribute_names, :classification
+  end
+
+  test "a focus is listed under one spelling" do
+    assert_equal "Medium Freight / Gunship", create(:model, focus: " Medium  Freight / Gun Ship ").focus
+    assert_nil create(:model, focus: " ").focus
+    assert_equal "Interdiction", create(:model, focus: "Interdictor ").focus
+  end
+
+  test "the classification filters list each one once" do
+    create(:model, classification: "Combat")
+    create(:model, classification: "combat")
+
+    assert_equal ["combat"], Model.classification_filters.map(&:value).grep("combat")
+  end
+
   test "the filters offer exactly what the column may hold" do
     assert_equal Model::SIZES, Model.size_filters.map(&:value)
   end
