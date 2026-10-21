@@ -4153,6 +4153,67 @@ paths:
           description: no content
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/homepage-settings":
+    get:
+      summary: Homepage settings
+      tags:
+      - Homepage
+      operationId: homepageSettings
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HomepageSetting"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    put:
+      summary: Update the homepage settings
+      tags:
+      - Homepage
+      operationId: updateHomepageSettings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/HomepageSettingInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HomepageSetting"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/images":
     post:
       summary: Image create
@@ -11076,6 +11137,7 @@ components:
       - admins
       - announcements
       - game_events
+      - homepage
       - oauth_applications
       - maintenance
       - imports
@@ -11112,6 +11174,7 @@ components:
       - ADMINS
       - ANNOUNCEMENTS
       - GAME_EVENTS
+      - HOMEPAGE
       - OAUTH_APPLICATIONS
       - MAINTENANCE
       - IMPORTS
@@ -16691,6 +16754,37 @@ components:
       - SHIP_MATRIX
       - GAME_FILES
       title: HardpointSourceEnum
+    HomepageSetting:
+      type: object
+      properties:
+        featuredModelIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        featuredRandom:
+          type: boolean
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - featuredModelIds
+      - featuredRandom
+      title: HomepageSetting
+    HomepageSettingInput:
+      type: object
+      properties:
+        featuredModelIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          maxItems: 20
+        featuredRandom:
+          type: boolean
+      additionalProperties: false
+      title: HomepageSettingInput
     Image:
       type: object
       properties:

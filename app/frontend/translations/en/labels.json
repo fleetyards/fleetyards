@@ -1669,6 +1669,12 @@
         "effectiveFrom": "Effective from",
         "endedAt": "Ended at"
       },
+      "homepageSetting": {
+        "featuredModelsInfo": "Shown beside the homepage search. Leave empty to always centre the hero.",
+        "featuredRandom": "Pick at random",
+        "featuredRandomInfo": "Each visit features one of these ships, or now and then none. Off: always the first ship in the list.",
+        "clearFeaturedModels": "Remove all"
+      },
       "gameEvent": {
         "title": "Title",
         "description": "Description",
@@ -3377,6 +3383,7 @@
             "admins": "Admins",
             "announcements": "Announcements",
             "game_events": "Game events",
+            "homepage": "Homepage",
             "oauth_applications": "OAuth Applications",
             "maintenance": "Maintenance",
             "imports": "Imports",

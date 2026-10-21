@@ -207,6 +207,10 @@
         "createFailed": "Finanzierungsziel konnte nicht angelegt werden.",
         "updateFailed": "Finanzierungsziel konnte nicht aktualisiert werden."
       },
+      "homepageSetting": {
+        "updated": "Startseite gespeichert.",
+        "updateFailed": "Startseite konnte nicht gespeichert werden."
+      },
       "gameEvent": {
         "created": "Spiel-Event erstellt.",
         "updated": "Spiel-Event aktualisiert.",

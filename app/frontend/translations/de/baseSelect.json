@@ -1,6 +1,12 @@
 {
   "de": {
     "baseSelect": {
+      "homepageSetting": {
+        "featuredModels": {
+          "label": "Vorgestellte Schiffe",
+          "nullablePrompt": "Keine vorgestellten Schiffe"
+        }
+      },
       "actions": {
         "fetchMore": "Mehr laden"
       },

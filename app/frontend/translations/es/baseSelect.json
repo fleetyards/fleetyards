@@ -1,6 +1,12 @@
 {
   "es": {
     "baseSelect": {
+      "homepageSetting": {
+        "featuredModels": {
+          "label": "Naves destacadas",
+          "nullablePrompt": "Sin naves destacadas"
+        }
+      },
       "actions": {
         "fetchMore": "Cargar más"
       },

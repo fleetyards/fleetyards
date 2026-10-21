@@ -79,7 +79,7 @@ const GROUPS = [
   {
     key: "community",
     icon: "fa-duotone fa-users",
-    paths: ["/vehicles/", "/fleets/", "/game-events/"],
+    paths: ["/vehicles/", "/fleets/", "/game-events/", "/homepage/"],
   },
   {
     key: "people",

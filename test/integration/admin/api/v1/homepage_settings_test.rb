@@ -1,0 +1,97 @@
+# frozen_string_literal: true
+
+require "openapi_helper"
+
+class Admin::Api::V1::HomepageSettingsTest < ActionDispatch::IntegrationTest
+  include OpenapiRuby::Adapters::Minitest::DSL
+
+  openapi_schema :"admin/v1/schema"
+
+  api_path "/homepage-settings" do
+    get("Homepage settings") do
+      operationId "homepageSettings"
+      tags "Homepage"
+      produces "application/json"
+
+      response(200, "successful") do
+        schema ::Admin::V1::Schemas::HomepageSetting
+      end
+
+      response(403, "forbidden") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
+      response(401, "unauthorized") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+    end
+
+    put("Update the homepage settings") do
+      operationId "updateHomepageSettings"
+      tags "Homepage"
+      consumes "application/json"
+      produces "application/json"
+
+      request_body required: true, schema: ::Admin::V1::Schemas::Inputs::HomepageSettingInput
+
+      response(200, "successful") do
+        schema ::Admin::V1::Schemas::HomepageSetting
+      end
+
+      response(400, "bad request") do
+        schema ::Shared::V1::Schemas::ValidationError
+      end
+
+      response(403, "forbidden") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
+      response(401, "unauthorized") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+    end
+  end
+
+  setup do
+    @user = create(:admin_user, resource_access: [:homepage])
+  end
+
+  test "GET /homepage-settings answers before anything was saved" do
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      assert_equal [], parsed_body["featuredModelIds"]
+    end
+  end
+
+  test "PUT /homepage-settings saves the featured ships" do
+    ships = create_list(:model, 2)
+    sign_in @user
+
+    assert_api_response :put, 200, body: {featuredModelIds: ships.map(&:id), featuredRandom: false} do
+      assert_equal ships.map(&:id), parsed_body["featuredModelIds"]
+      assert_equal false, parsed_body["featuredRandom"]
+    end
+
+    assert_equal 1, HomepageSetting.count
+  end
+
+  test "PUT /homepage-settings clears the featured ships" do
+    HomepageSetting.create!(featured_model_ids: [create(:model).id])
+    sign_in @user
+
+    assert_api_response :put, 200, body: {featuredModelIds: []} do
+      assert_equal [], parsed_body["featuredModelIds"]
+    end
+  end
+
+  test "GET /homepage-settings returns 401 when not signed in" do
+    assert_api_response :get, 401
+  end
+
+  test "PUT /homepage-settings returns 403 for admin without access" do
+    sign_in create(:admin_user, resource_access: [])
+
+    assert_api_response :put, 403, body: {featuredModelIds: []}
+  end
+end

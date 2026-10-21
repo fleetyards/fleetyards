@@ -207,6 +207,10 @@
         "createFailed": "Non è stato possibile creare l'obiettivo di finanziamento.",
         "updateFailed": "Non è stato possibile aggiornare l'obiettivo di finanziamento."
       },
+      "homepageSetting": {
+        "updated": "Pagina iniziale salvata.",
+        "updateFailed": "Impossibile salvare la pagina iniziale."
+      },
       "gameEvent": {
         "created": "Evento di gioco creato.",
         "updated": "Evento di gioco aggiornato.",

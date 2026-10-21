@@ -217,6 +217,10 @@
         "createFailed": "Could not create funding goal.",
         "updateFailed": "Could not update funding goal."
       },
+      "homepageSetting": {
+        "updated": "Homepage saved.",
+        "updateFailed": "Could not save the homepage."
+      },
       "gameEvent": {
         "created": "Game event created.",
         "updated": "Game event updated.",

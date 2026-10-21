@@ -207,6 +207,10 @@
         "createFailed": "No se pudo crear el objetivo de financiación.",
         "updateFailed": "No se pudo actualizar el objetivo de financiación."
       },
+      "homepageSetting": {
+        "updated": "Página de inicio guardada.",
+        "updateFailed": "No se pudo guardar la página de inicio."
+      },
       "gameEvent": {
         "created": "Evento del juego creado.",
         "updated": "Evento del juego actualizado.",

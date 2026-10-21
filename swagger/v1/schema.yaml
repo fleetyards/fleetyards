@@ -12654,6 +12654,19 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/homepage":
+    get:
+      summary: Homepage
+      tags:
+      - Homepage
+      operationId: homepage
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Homepage"
   "/images":
     get:
       summary: Images list
@@ -32392,6 +32405,35 @@ components:
       - 'TRUE'
       - ONLY
       title: HiddenVehiclesFilterEnum
+    Homepage:
+      type: object
+      properties:
+        searchSuggestions:
+          type: array
+          items:
+            type: string
+        featuredShip:
+          "$ref": "#/components/schemas/HomepageFeaturedShip"
+      additionalProperties: false
+      required:
+      - searchSuggestions
+      title: Homepage
+    HomepageFeaturedShip:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        manufacturerName:
+          type: string
+        image:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      required:
+      - name
+      - slug
+      title: HomepageFeaturedShip
     Image:
       type: object
       properties:

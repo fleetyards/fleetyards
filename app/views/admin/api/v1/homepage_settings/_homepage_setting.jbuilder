@@ -1,0 +1,5 @@
+# frozen_string_literal: true
+
+json.featured_model_ids homepage_setting.featured_model_ids
+json.featured_random homepage_setting.featured_random
+json.updated_at homepage_setting.updated_at

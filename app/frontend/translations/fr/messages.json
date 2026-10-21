@@ -207,6 +207,10 @@
         "createFailed": "Impossible de créer l'objectif de financement.",
         "updateFailed": "Impossible de mettre à jour l'objectif de financement."
       },
+      "homepageSetting": {
+        "updated": "Page d’accueil enregistrée.",
+        "updateFailed": "Impossible d’enregistrer la page d’accueil."
+      },
       "gameEvent": {
         "created": "Événement du jeu créé.",
         "updated": "Événement du jeu mis à jour.",

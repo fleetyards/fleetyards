@@ -1669,6 +1669,12 @@
         "effectiveFrom": "Gültig ab",
         "endedAt": "Beendet am"
       },
+      "homepageSetting": {
+        "featuredModelsInfo": "Erscheint neben der Suche auf der Startseite. Leer lassen, um den Kopfbereich immer zu zentrieren.",
+        "featuredRandom": "Zufällig wählen",
+        "featuredRandomInfo": "Jeder Besuch zeigt eines dieser Schiffe, ab und zu auch keines. Aus: immer das erste Schiff der Liste.",
+        "clearFeaturedModels": "Alle entfernen"
+      },
       "gameEvent": {
         "title": "Titel",
         "description": "Beschreibung",
@@ -3363,6 +3369,7 @@
             "admins": "Admins",
             "announcements": "Ankündigungen",
             "game_events": "Spiel-Events",
+            "homepage": "Startseite",
             "oauth_applications": "OAuth-Anwendungen",
             "maintenance": "Wartung",
             "imports": "Importe",

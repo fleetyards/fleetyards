@@ -1669,6 +1669,12 @@
         "effectiveFrom": "Vigente desde",
         "endedAt": "Finalizado el"
       },
+      "homepageSetting": {
+        "featuredModelsInfo": "Se muestra junto a la búsqueda de la página de inicio. Déjalo vacío para centrar siempre la cabecera.",
+        "featuredRandom": "Elegir al azar",
+        "featuredRandomInfo": "Cada visita muestra una de estas naves, o de vez en cuando ninguna. Desactivado: siempre la primera nave de la lista.",
+        "clearFeaturedModels": "Quitar todas"
+      },
       "gameEvent": {
         "title": "Título",
         "description": "Descripción",
@@ -3363,6 +3369,7 @@
             "admins": "Administradores",
             "announcements": "Anuncios",
             "game_events": "Eventos del juego",
+            "homepage": "Página de inicio",
             "oauth_applications": "Aplicaciones OAuth",
             "maintenance": "Mantenimiento",
             "imports": "Importaciones",

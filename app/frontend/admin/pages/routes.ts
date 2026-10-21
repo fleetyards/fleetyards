@@ -251,6 +251,17 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "/homepage/",
+    name: "admin-homepage",
+    component: () => import("@/admin/pages/homepage.vue"),
+    meta: {
+      title: "admin.homepage",
+      needsAuthentication: true,
+      icon: "fa-duotone fa-house",
+      access: ["homepage"],
+    },
+  },
+  {
     path: "/game-events/",
     component: () => import("@/admin/pages/game-events.vue"),
     children: gameEventsRoutes,

@@ -1669,6 +1669,12 @@
         "effectiveFrom": "生效日期",
         "endedAt": "结束于"
       },
+      "homepageSetting": {
+        "featuredModelsInfo": "显示在首页搜索框旁边。留空则首屏始终居中显示。",
+        "featuredRandom": "随机挑选",
+        "featuredRandomInfo": "每次访问显示其中一艘，偶尔也一艘都不显示。关闭：始终显示列表中的第一艘。",
+        "clearFeaturedModels": "全部移除"
+      },
       "gameEvent": {
         "title": "标题",
         "description": "描述",
@@ -3360,6 +3366,7 @@
             "admins": "管理员",
             "announcements": "公告",
             "game_events": "游戏活动",
+            "homepage": "首页",
             "oauth_applications": "OAuth 应用",
             "maintenance": "维护",
             "imports": "导入",

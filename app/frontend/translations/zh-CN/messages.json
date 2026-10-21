@@ -207,6 +207,10 @@
         "createFailed": "无法创建筹款目标。",
         "updateFailed": "无法更新筹款目标。"
       },
+      "homepageSetting": {
+        "updated": "首页已保存。",
+        "updateFailed": "无法保存首页。"
+      },
       "gameEvent": {
         "created": "游戏活动已创建。",
         "updated": "游戏活动已更新。",

@@ -207,6 +207,10 @@
         "createFailed": "無法建立募資目標。",
         "updateFailed": "無法更新募資目標。"
       },
+      "homepageSetting": {
+        "updated": "首頁已儲存。",
+        "updateFailed": "無法儲存首頁。"
+      },
       "gameEvent": {
         "created": "遊戲活動已建立。",
         "updated": "遊戲活動已更新。",

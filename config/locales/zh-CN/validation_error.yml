@@ -195,6 +195,8 @@ zh-CN:
       create: 无法创建游戏活动。
       destroy: 无法删除游戏活动。
       update: 无法更新游戏活动。
+    homepage_setting:
+      update: 首页设置无法保存。
     hardpoint:
       create: 无法创建挂点。
       update: 无法更新挂点。

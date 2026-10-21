@@ -196,6 +196,8 @@ it:
       create: "Impossibile creare l'evento di gioco."
       destroy: "Impossibile eliminare l'evento di gioco."
       update: "Impossibile aggiornare l'evento di gioco."
+    homepage_setting:
+      update: Impossibile salvare le impostazioni della pagina iniziale.
     hardpoint:
       create: Impossibile creare l'attacco.
       update: Impossibile aggiornare l'attacco.

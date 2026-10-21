@@ -243,6 +243,8 @@ en:
       create: Game event could not be created.
       destroy: Game event could not be destroyed.
       update: Game event could not be updated.
+    homepage_setting:
+      update: Homepage settings could not be saved.
     hardpoint:
       create: Hardpoint could not be created.
       update: Hardpoint could not be updated.

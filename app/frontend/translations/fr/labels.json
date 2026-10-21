@@ -1669,6 +1669,12 @@
         "effectiveFrom": "En vigueur à partir du",
         "endedAt": "Terminé le"
       },
+      "homepageSetting": {
+        "featuredModelsInfo": "Affiché à côté de la recherche de la page d’accueil. Laissez vide pour toujours centrer l’en-tête.",
+        "featuredRandom": "Choisir au hasard",
+        "featuredRandomInfo": "Chaque visite met en avant l’un de ces vaisseaux, ou de temps en temps aucun. Désactivé : toujours le premier vaisseau de la liste.",
+        "clearFeaturedModels": "Tout retirer"
+      },
       "gameEvent": {
         "title": "Titre",
         "description": "Description",
@@ -3363,6 +3369,7 @@
             "admins": "Administrateurs",
             "announcements": "Annonces",
             "game_events": "Événements du jeu",
+            "homepage": "Page d’accueil",
             "oauth_applications": "Applications OAuth",
             "maintenance": "Maintenance",
             "imports": "Imports",
