@@ -19,6 +19,9 @@ module ScData
       PROFILE_REF = "9c0a1f22-0000-4000-8000-0000000000a1"
       REPUTATION_REWARD_REF = "9c0a1f22-0000-4000-8000-0000000000b1"
       TITLE_KEY = "@Foxwell_ShipAmbush_VE_title_001"
+      ENTITY_REF = "5d1e0c3a-0000-4000-8000-0000000000c1"
+      RESOURCE_REF = "5d1e0c3a-0000-4000-8000-0000000000c2"
+      AWARD_RECORD_REF = "5d1e0c3a-0000-4000-8000-0000000000c3"
 
       setup do
         @base_folder = Dir.mktmpdir
@@ -389,6 +392,317 @@ module ScData
         assert_empty @parser.missions.sole[:rewards]
       end
 
+      test "#missions names an item reward from the entity it awards" do
+        translate("Item_Palatino_Helmet" => "Palatino Helmet Mark I")
+        named_entity("entities/scitem/characters/palatino_helmet", ref: ENTITY_REF, name: "@Item_Palatino_Helmet")
+        generator("gen", results: %(<ContractResult_Item entityClass="#{ENTITY_REF}" amount="1" />))
+
+        assert_equal "Palatino Helmet Mark I", @parser.missions.sole[:rewards].sole[:entity_name]
+      end
+
+      # A vehicle is an actor, and Wikelo hands out ATLS variants.
+      test "#missions names a reward defined under the actor tree" do
+        translate("TheCollector_Mod_ATLS_Name" => "ATLS Orange Line")
+        named_entity("actor/actors/argo_atls_collector", ref: ENTITY_REF, name: "@TheCollector_Mod_ATLS_Name")
+        generator("gen", results: %(<ContractResult_Item entityClass="#{ENTITY_REF}" amount="1" />))
+
+        assert_equal "ATLS Orange Line", @parser.missions.sole[:rewards].sole[:entity_name]
+      end
+
+      test "#missions follows a weighted award stated as a record of its own" do
+        write("contracts/contractrewards/iawr_foodorderreward", "ItemAwardWeightingsRecord", AWARD_RECORD_REF, <<~XML)
+          <itemAwardStructure>
+            <ItemAwardWeightings weighting="1">
+              <awards>
+                <ItemAwardEntityClass amountToAward="2" entityClass="#{ENTITY_REF}" />
+              </awards>
+            </ItemAwardWeightings>
+          </itemAwardStructure>
+        XML
+        generator("gen", results: <<~XML)
+          <ContractResult_ItemsWeighting>
+            <itemAwardStructure>
+              <ItemAwardWeightingsParams awardsRecord="#{AWARD_RECORD_REF}" />
+            </itemAwardStructure>
+          </ContractResult_ItemsWeighting>
+        XML
+
+        reward = @parser.missions.sole[:rewards].sole
+
+        assert_equal ENTITY_REF, reward[:entity_class]
+        assert_equal 2, reward[:amount]
+        assert_equal 1.0, reward[:weight]
+      end
+
+      test "#missions reads what a contract asks to be brought to it" do
+        translate("Item_Yormandi_Eye" => "Yormandi Eye")
+        named_entity("entities/carryables/yormandi_eye", ref: ENTITY_REF, name: "@Item_Yormandi_Eye")
+        generator("gen", properties: hand_in_property(
+          %(<HaulingOrderContent_EntityClass entityClass="#{ENTITY_REF}" minAmount="14" maxAmount="0" />)
+        ))
+
+        hand_in = @parser.missions.sole[:hand_ins].sole
+
+        assert_equal "item", hand_in[:kind]
+        assert_equal ENTITY_REF, hand_in[:entity_class]
+        assert_equal "Yormandi Eye", hand_in[:entity_name]
+        assert_equal 14, hand_in[:amount]
+        assert_not_includes hand_in, :max
+        assert_not_includes hand_in, :option
+      end
+
+      # Ranta Dung has no `Localization` node and names itself only through
+      # its purchase params.
+      test "#missions names a commodity hand-in from its purchase params" do
+        translate("items_commodities_rantadung" => "Ranta Dung")
+        write("entities/commodities/rantadung", "EntityClassDefinition", ENTITY_REF, <<~XML)
+          <Components>
+            <SCItemPurchasableParams displayName="@items_commodities_rantadung" />
+          </Components>
+        XML
+        generator("gen", properties: hand_in_property(
+          %(<HaulingOrderContent_EntityClass entityClass="#{ENTITY_REF}" minAmount="15" maxAmount="15" />)
+        ))
+
+        hand_in = @parser.missions.sole[:hand_ins].sole
+
+        assert_equal "Ranta Dung", hand_in[:entity_name]
+        assert_equal "items_commodities_rantadung", hand_in[:commodity_key]
+      end
+
+      test "#missions names a hand-in that accepts any of a group" do
+        translate("Salvage_SRT_Cannister_Name" => "SRT Canister")
+        write("entities/haulingentityclass/haulingentityclass_srt", "Hauling_EntityClasses", ENTITY_REF, "",
+          orderDisplayName: "@Salvage_SRT_Cannister_Name")
+        generator("gen", properties: hand_in_property(
+          %(<HaulingOrderContent_EntityClasses haulingEntityClasses="#{ENTITY_REF}" minAmount="1" maxAmount="4" />)
+        ))
+
+        hand_in = @parser.missions.sole[:hand_ins].sole
+
+        assert_equal "SRT Canister", hand_in[:entity_name]
+        assert_equal 1, hand_in[:amount]
+        assert_equal 4, hand_in[:max]
+      end
+
+      test "#missions reads a resource hand-in in SCU and the choice a contract offers" do
+        translate("items_commodities_quartz" => "Quartz")
+        resource_types(%(<ResourceType.Quartz displayName="@items_commodities_quartz" __type="ResourceType" __ref="#{RESOURCE_REF}" />))
+        generator("gen", properties: hand_in_property(<<~XML))
+          <HaulingOrderContent_Or>
+            <options>
+              <HaulingOrder_OrOption_And>
+                <orders>
+                  <HaulingOrderContent_Resource resource="#{RESOURCE_REF}" maxContainerSize="-1" minSCU="2" maxSCU="2" />
+                </orders>
+              </HaulingOrder_OrOption_And>
+              <HaulingOrder_OrOption_And>
+                <orders>
+                  <HaulingOrderContent_EntityClass entityClass="#{ENTITY_REF}" minAmount="5" maxAmount="5" />
+                </orders>
+              </HaulingOrder_OrOption_And>
+            </options>
+          </HaulingOrderContent_Or>
+        XML
+
+        resource, item = @parser.missions.sole[:hand_ins]
+
+        assert_equal ["resource", "Quartz", RESOURCE_REF, 2, 0], resource.values_at(:kind, :resource_name, :resource_ref, :amount, :option)
+        assert_equal "items_commodities_quartz", resource[:commodity_key]
+        assert_equal ["item", 5, 1], item.values_at(:kind, :amount, :option)
+      end
+
+      test "#missions skips an order that asks for none of something" do
+        generator("gen", properties: hand_in_property(
+          %(<HaulingOrderContent_EntityClass entityClass="#{ENTITY_REF}" minAmount="0" maxAmount="4" />)
+        ))
+
+        assert_empty @parser.missions.sole[:hand_ins]
+      end
+
+      test "#missions leaves the hand-ins empty for a contract that asks for nothing" do
+        generator("gen")
+
+        assert_empty @parser.missions.sole[:hand_ins]
+      end
+
+      test "#missions reads the buy-in, the time it takes and how it comes round again" do
+        generator("gen", results_attributes: %(contractBuyInAmount="1000" timeToComplete="7.8"), extra: <<~XML)
+          <generationParams>
+            <ContractGenerationParams_Legacy maxInstances="-1" maxInstancesPerPlayer="1" respawnTime="5" respawnTimeVariation="2" />
+          </generationParams>
+        XML
+
+        mission = @parser.missions.sole
+
+        assert_equal [1000, 7.8, 1, 5.0, 2.0],
+          mission.values_at(:buy_in, :time_to_complete, :max_instances_per_player, :respawn_time, :respawn_variation)
+      end
+
+      # Zero is the field unset, and -1 instances per player is no limit.
+      test "#missions leaves out terms the contract leaves unset" do
+        generator("gen", results_attributes: %(contractBuyInAmount="0" timeToComplete="0"), extra: <<~XML)
+          <generationParams>
+            <ContractGenerationParams_Legacy maxInstancesPerPlayer="-1" respawnTime="0" respawnTimeVariation="0" />
+          </generationParams>
+        XML
+
+        mission = @parser.missions.sole
+
+        %i[buy_in time_to_complete max_instances_per_player respawn_time respawn_variation].each do |key|
+          assert_not_includes mission, key
+        end
+      end
+
+      test "#missions reads a crime stat band and a reputation band with another org" do
+        translate("Foxwell_RepUI_Name" => "Foxwell Enforcement", "RepScope_Contractor_Rank6" => "Elite Contractor")
+        faction_reputation("foxwellenforcement", ref: ORG_REF, display_name: "@Foxwell_RepUI_Name")
+        standing("rank6", ref: RANK6_REF, display_name: "@RepScope_Contractor_Rank6")
+        crime = %(<defaultAvailability><prerequisites><ContractPrerequisite_CrimeStat minCrimeStat="0" maxCrimeStat="2" /></prerequisites></defaultAvailability>)
+        generator("gen", handler_extra: crime, extra: <<~XML)
+          <additionalPrerequisites>
+            <ContractPrerequisite_Reputation factionReputation="#{ORG_REF}" exclude="1" minStanding="#{RANK6_REF}" maxStanding="#{RANK6_REF}" />
+          </additionalPrerequisites>
+        XML
+
+        reputation, crime_stat = @parser.missions.sole[:prerequisites]
+
+        assert_equal ["reputation", "Foxwell Enforcement", "Elite Contractor", true],
+          reputation.values_at(:kind, :org_name, :min_standing, :excluded)
+        assert_equal ["crime_stat", 0, 2], crime_stat.values_at(:kind, :min, :max)
+      end
+
+      # A tag is granted by the contracts whose results carry it, so the
+      # requirement arrives as those contracts rather than as the tag.
+      test "#missions resolves a completed-missions requirement to the contracts that grant it" do
+        tag = "5d1e0c3a-0000-4000-8000-0000000000d1"
+        generator("granter", contract_ids: [SECOND_CONTRACT_ID], results: <<~XML)
+          <ContractResult_CompletionTags>
+            <completionTags>
+              <ContractResult_CompletionTag count="1" tag="#{tag}" />
+            </completionTags>
+          </ContractResult_CompletionTags>
+        XML
+        generator("gen", extra: <<~XML)
+          <additionalPrerequisites>
+            <ContractPrerequisite_CompletedContractTags requiredCountValue="5" excludedCountValue="1">
+              <requiredCompletedContractTags><tags><Reference value="#{tag}" /></tags></requiredCompletedContractTags>
+              <excludedCompletedContractTags><tags><Reference value="#{tag}" /></tags></excludedCompletedContractTags>
+            </ContractPrerequisite_CompletedContractTags>
+          </additionalPrerequisites>
+        XML
+
+        required, excluded = @parser.missions.find { |mission| mission[:sc_ref] == CONTRACT_ID }[:prerequisites]
+
+        assert_equal ["completed_missions", 5, [SECOND_CONTRACT_ID]], required.values_at(:kind, :count, :mission_refs)
+        assert_equal ["excluded_missions", 1, [SECOND_CONTRACT_ID]], excluded.values_at(:kind, :count, :mission_refs)
+      end
+
+      test "#missions carries a contract that grants what it asks for as a flag, not a link to itself" do
+        tag = "5d1e0c3a-0000-4000-8000-0000000000d2"
+        generator("gen", results: <<~XML, extra: <<~PREREQUISITES)
+          <ContractResult_CompletionTags>
+            <completionTags>
+              <ContractResult_CompletionTag count="1" tag="#{tag}" />
+            </completionTags>
+          </ContractResult_CompletionTags>
+        XML
+          <additionalPrerequisites>
+            <ContractPrerequisite_CompletedContractTags requiredCountValue="1" excludedCountValue="1">
+              <excludedCompletedContractTags><tags><Reference value="#{tag}" /></tags></excludedCompletedContractTags>
+            </ContractPrerequisite_CompletedContractTags>
+          </additionalPrerequisites>
+        PREREQUISITES
+
+        excluded = @parser.missions.sole[:prerequisites].sole
+
+        assert_equal ["excluded_missions", [], true], excluded.values_at(:kind, :mission_refs, :includes_self)
+      end
+
+      test "#missions lists the places a contract is offered at" do
+        locality_place = "5d1e0c3a-0000-4000-8000-0000000000e1"
+        place = "5d1e0c3a-0000-4000-8000-0000000000e2"
+        locality = "5d1e0c3a-0000-4000-8000-0000000000e3"
+        write("missiondata/pu_missionlocality/stanton1", "MissionLocality", locality,
+          %(<availableLocations><Reference value="#{locality_place}" /></availableLocations>))
+        generator("gen", extra: <<~XML)
+          <additionalPrerequisites>
+            <ContractPrerequisite_Locality localityAvailable="#{locality}" />
+            <ContractPrerequisite_Location locationAvailable="#{place}" />
+          </additionalPrerequisites>
+        XML
+
+        assert_equal [locality_place, place].sort, @parser.missions.sole[:offered_location_refs]
+      end
+
+      test "#missions fills the placeholders a contract states, layered template, handler, contract" do
+        template_ref = "5d1e0c3a-0000-4000-8000-0000000000f1"
+        translate(
+          "Haul_Title" => "~mission(CargoGradeToken) Haul to ~mission(Destination|Address)",
+          "Haul_Desc" => "Use a ~mission(MissionMaxSCUSize) elevator in ~mission(System), ~mission(ReputationRank).",
+          "Grade_Small" => "Small", "Grade_Large" => "Large", "Elevator_4" => "4 SCU", "Elevator_32" => "32 SCU",
+          "Stanton" => "Stanton System", "Rank_1" => "Member"
+        )
+        write("contracts/contracttemplates/haul", "ContractTemplate", template_ref, <<~XML)
+          <contractProperties>
+            #{text_property("CargoGradeToken", "@Grade_Small")}
+            #{text_property("MissionMaxSCUSize", "@Elevator_4")}
+            #{text_property("System", "@Stanton")}
+            #{text_property("ReputationRank", "@LOC_UNINITIALIZED")}
+          </contractProperties>
+        XML
+        generator("gen", title: "@Haul_Title", description: "@Haul_Desc", template: template_ref,
+          handler_extra: "<contractParams><propertyOverrides>#{text_property("MissionMaxSCUSize", "@Elevator_32")}#{text_property("ReputationRank", "@Rank_1")}</propertyOverrides></contractParams>",
+          properties: text_property("CargoGradeToken", "@Grade_Large"))
+
+        values = @parser.missions.sole[:placeholder_values]
+
+        assert_equal({"CargoGradeToken" => "Large", "MissionMaxSCUSize" => "32 SCU", "System" => "Stanton System",
+          "ReputationRank" => "Member"}, values)
+      end
+
+      test "#missions fills a placeholder a value carries, and lists the options a contract offers" do
+        translate(
+          "Fuel_Desc" => "Bring ~mission(FuelType) to ~mission(Ship).",
+          "Fuel_Hydrogen" => "<EM4>~mission(HydrogenFuel) SCU of Hydrogen</EM4>",
+          "Fuel_Quantum" => "Quantum Fuel"
+        )
+        generator("gen", description: "@Fuel_Desc",
+          properties: text_property("FuelType", "@Fuel_Hydrogen", "@Fuel_Quantum") + integer_property("HydrogenFuel", 6))
+
+        assert_equal({"FuelType" => "<EM4>~mission(HydrogenFuel) SCU of Hydrogen</EM4> / Quantum Fuel", "HydrogenFuel" => "6"},
+          @parser.missions.sole[:placeholder_values])
+      end
+
+      test "#missions leaves a number the game rolls or works out as a placeholder" do
+        translate("Code_Desc" => "Code ~mission(ApprovalCode), ~mission(QTFuel) SCU, ~mission(ScripAmount) scrip.")
+        generator("gen", description: "@Code_Desc",
+          properties: integer_property("ApprovalCode", 1000, variation: 8000) + integer_property("QTFuel", 0) +
+            integer_property("ScripAmount", 25))
+
+        assert_equal({"ScripAmount" => "25"}, @parser.missions.sole[:placeholder_values])
+      end
+
+      test "#missions names a mission item, unless it could be more than three" do
+        refs = (1..4).map { |index| "5d1e0c3a-0000-4000-8000-0000000000d#{index}" }
+        translate("Item_Desc" => "Find ~mission(Item1) and ~mission(Item2).", "Item_Medical" => "Medical Supplies")
+        refs.each { |ref| named_entity("entities/carryables/#{ref}", ref:, name: "@Item_Medical") }
+        generator("gen", description: "@Item_Desc",
+          properties: item_property("Item1", refs.first(1)) + item_property("Item2", refs))
+
+        mission = @parser.missions.sole
+
+        assert_equal({"Item1" => "Medical Supplies"}, mission[:placeholder_values])
+        assert_not_includes mission, :placeholder_items
+      end
+
+      test "#missions carries no placeholder values for a contract that states none" do
+        translate("Plain_Desc" => "Go to ~mission(Location|Address).")
+        generator("gen", description: "@Plain_Desc")
+
+        assert_not_includes @parser.missions.sole, :placeholder_values
+      end
+
       # `@LOC_UNINITIALIZED` is a real entry in the localisation file rather than
       # a missing key, so it resolves happily and would ship as a mission name.
       test "#missions leaves an uninitialized title blank rather than shipping the marker" do
@@ -456,19 +770,22 @@ module ScData
       private def generator(key, handler: "ContractGeneratorHandler_Career", contract_kind: "CareerContract",
         org_ref: ORG_REF, min_standing: RANK0_REF, max_standing: RANK6_REF, pool_ref: POOL_REF,
         sibling_org: nil, second_org: nil, container: "contracts", contract_ids: [CONTRACT_ID],
-        debug_name: nil, title: TITLE_KEY, description: nil, released: true, difficulty: nil, results: nil)
+        debug_name: nil, title: TITLE_KEY, description: nil, released: true, difficulty: nil, results: nil,
+        properties: nil, extra: nil, results_attributes: "", handler_extra: nil, template: nil)
         siblings = [sibling_org, second_org].compact.map.with_index do |ref, index|
           %(<ContractGeneratorHandler_Career debugName="Sibling#{index}" factionReputation="#{ref}" />)
         end
 
         listed = contract_ids.map do |id|
           contract(contract_kind, id:, debug_name: debug_name || "#{key}_VeryEasy", min_standing:,
-            max_standing:, pool_ref:, title:, description:, released:, difficulty:, results:)
+            max_standing:, pool_ref:, title:, description:, released:, difficulty:, results:, properties:,
+            extra:, results_attributes:, template:)
         end
 
         write("contracts/contractgenerator/guild/#{key}", "ContractGenerator", "00000000-0000-0000-0000-0000000000aa", <<~XML)
           <generators>
             <#{handler} debugName="#{key}"#{%( factionReputation="#{org_ref}") if org_ref}>
+              #{handler_extra}
               <#{container}>
                 #{listed.join}
               </#{container}>
@@ -479,19 +796,22 @@ module ScData
       end
 
       private def contract(kind, id:, debug_name:, min_standing:, max_standing:, pool_ref:,
-        title:, description:, released:, difficulty:, results:)
+        title:, description:, released:, difficulty:, results:, properties:, extra:, results_attributes:,
+        template: nil)
         params = [%(<ContractStringParam param="Title" value="#{title}" />)]
         params << %(<ContractStringParam param="Description" value="#{description}" />) if description
 
         <<~XML
           <#{kind} id="#{id}" debugName="#{debug_name}" notForRelease="#{released ? 0 : 1}"
-            minStanding="#{min_standing}" maxStanding="#{max_standing}">
+            minStanding="#{min_standing}" maxStanding="#{max_standing}"#{%( template="#{template}") if template}>
             <paramOverrides>
               <stringParamOverrides>
                 #{params.join}
               </stringParamOverrides>
+              #{"<propertyOverrides>#{properties}</propertyOverrides>" if properties}
             </paramOverrides>
-            <contractResults>
+            #{extra}
+            <contractResults #{results_attributes}>
               <contractResults>
                 <contractResults>
                   <BlueprintRewards chance="1" blueprintPool="#{pool_ref}" />
@@ -571,6 +891,71 @@ module ScData
       private def standing(key, ref:, display_name:, name: nil)
         write("reputation/standings/scope/#{key}", "SReputationStandingParams", ref, "",
           displayName: display_name, **(name ? {name:} : {}))
+      end
+
+      private def hand_in_property(orders)
+        <<~XML
+          <MissionProperty missionVariableName="HaulingOverride">
+            <value>
+              <MissionPropertyValue_HaulingOrders>
+                <haulingOrderContent>
+                  #{orders}
+                </haulingOrderContent>
+              </MissionPropertyValue_HaulingOrders>
+            </value>
+          </MissionProperty>
+        XML
+      end
+
+      private def text_property(token, *text_ids)
+        options = text_ids.map { |id| %(<MissionPropertyValueOption_StringHash textId="#{id}" weighting="1" />) }
+
+        <<~XML
+          <MissionProperty extendedTextToken="#{token}">
+            <value><MissionPropertyValue_StringHash><options>#{options.join}</options></MissionPropertyValue_StringHash></value>
+          </MissionProperty>
+        XML
+      end
+
+      private def integer_property(token, value, variation: 0)
+        <<~XML
+          <MissionProperty missionVariableName="#{token}_BP" extendedTextToken="#{token}">
+            <value><MissionPropertyValue_Integer><options>
+              <MissionPropertyValueOption_Integer textId="@LOC_UNINITIALIZED" weighting="1" value="#{value}" variation="#{variation}" />
+            </options></MissionPropertyValue_Integer></value>
+          </MissionProperty>
+        XML
+      end
+
+      private def item_property(token, refs)
+        references = refs.map { |ref| %(<Reference value="#{ref}" />) }
+
+        <<~XML
+          <MissionProperty missionVariableName="#{token}" extendedTextToken="#{token}">
+            <value><MissionPropertyValue_MissionItem minItemsToFind="1" maxItemsToFind="1"><matchConditions>
+              <DataSetMatchCondition_SpecificItemsDef><items>#{references.join}</items></DataSetMatchCondition_SpecificItemsDef>
+            </matchConditions></MissionPropertyValue_MissionItem></value>
+          </MissionProperty>
+        XML
+      end
+
+      private def named_entity(path, ref:, name:)
+        write(path, "EntityClassDefinition", ref, <<~XML)
+          <Components>
+            <SAttachableComponentParams>
+              <AttachDef>
+                <Localization Name="#{name}" />
+              </AttachDef>
+            </SAttachableComponentParams>
+          </Components>
+        XML
+      end
+
+      private def resource_types(records)
+        target = "#{@raw_path}/#{RECORDS_PATH}/resourcetypedatabase/resourcetypedatabase.records.xml"
+
+        FileUtils.mkdir_p(File.dirname(target))
+        File.write(target, "<ResourceTypeDatabase>#{records}</ResourceTypeDatabase>")
       end
 
       private def write(path, type, ref, body, **attributes)

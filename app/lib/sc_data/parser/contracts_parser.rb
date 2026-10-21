@@ -66,7 +66,36 @@ module ScData
       # nothing else -- no name, no type -- and 234 of the 410 item awards in
       # 4.10.1 point at physical currency ("MG Scrip", "Council Scrip"), which
       # is the closest thing to a payout the export states per contract.
-      ENTITIES_PATH = "entities"
+      #
+      # `actor` because a vehicle is one: Wikelo's ATLS variants are defined
+      # there and nowhere under `entities`.
+      ENTITY_PATHS = %w[entities actor].freeze
+
+      # The weighted sets an award can name by ref rather than state inline.
+      # Two of Wikelo's contracts do, both naming the same set of 34.
+      ITEM_AWARD_RECORDS_PATH = "contracts/contractrewards"
+
+      # What a contract asks to be brought to it: Wikelo's trades, the ore a
+      # mining contract wants, the salvage a salvage contract wants. Read only
+      # off the contract's own overrides -- the 18 a `SubContract` declares are
+      # a step inside a contract, not what taking it asks of you.
+      HAND_IN_PROPERTY = "HaulingOverride"
+      RESOURCE_TYPES_PATH = "resourcetypedatabase/resourcetypedatabase.records.xml"
+
+      # Lists of starmap places a contract is offered at, named by a
+      # `ContractPrerequisite_Locality`.
+      LOCALITIES_PATH = "missiondata/pu_missionlocality"
+
+      TEMPLATES_PATH = "contracts/contracttemplates"
+
+      # A plain `~mission(Token)`. `Token|Modifier` is a field of something the
+      # game picks at run time -- a location's address, a ship's name -- and
+      # the files never state it.
+      PLACEHOLDER = /~mission\(([^|)]+)\)/
+
+      # A mission-item placeholder that could be any of more than this many
+      # items is a pick, not a value.
+      PLACEHOLDER_ITEM_LIMIT = 3
 
       # A difficulty band is a designer's sentence with the level on the end --
       # "Hard_PvE_or_Easy_PvP_action_5", "Basically_a_Dev_7". The prose is
@@ -239,6 +268,11 @@ module ScData
         parsed = identified.map do |entry, sc_ref, base|
           contract = entry[:contract]
           org = entry[:org]
+          title = contract_title(contract)
+          # Kept as the export writes it, `~mission(Location|Address)` spans
+          # and all: the game fills those in from the mission it generates,
+          # and deleting them here breaks the sentence around them.
+          description = contract_param(contract, "Description")
 
           {
             sc_key: (shared[base] > 1) ? "#{base}_#{sc_ref.delete("-")}" : base,
@@ -246,11 +280,9 @@ module ScData
             kind: entry[:kind],
             generator_key: entry[:generator_key],
             debug_name: value_or_nil(contract["debugName"]),
-            title: contract_title(contract),
-            # Kept as the export writes it, `~mission(Location|Address)` spans
-            # and all: the game fills those in from the mission it generates,
-            # and deleting them here breaks the sentence around them.
-            description: contract_param(contract, "Description"),
+            title:,
+            description:,
+            **placeholders(contract, entry[:handler], [title, description]),
             org_ref: entry[:org_ref],
             org_key: org[:key],
             org_name: org[:name],
@@ -261,11 +293,152 @@ module ScData
             difficulty: difficulty(contract),
             rewards: contract_rewards(contract),
             blueprint_pools: contract_pools(contract),
+            hand_ins: hand_ins(contract),
+            **contract_terms(contract),
+            prerequisites: prerequisites(contract, entry[:handler]),
+            offered_location_refs: offered_location_refs(contract, entry[:handler]),
             **mission_locations.classify(contract, entry[:handler])
           }.compact
         end
 
-        name_item_rewards(parsed)
+        name_items(parsed)
+      end
+
+      # What taking the contract costs and how it comes round again. Each is
+      # unset at zero -- 543 contracts state a `timeToComplete` of 0 -- and a
+      # `maxInstancesPerPlayer` of -1 is no limit at all, so neither is carried.
+      private def contract_terms(contract)
+        results = contract["contractResults"].is_a?(Hash) ? contract["contractResults"] : {}
+        generation = contract.dig("generationParams", "ContractGenerationParams_Legacy")
+        generation = {} unless generation.is_a?(Hash)
+
+        {
+          buy_in: positive(results["contractBuyInAmount"]&.to_i),
+          time_to_complete: positive(results["timeToComplete"]&.to_f),
+          max_instances_per_player: positive(generation["maxInstancesPerPlayer"]&.to_i),
+          respawn_time: positive(generation["respawnTime"]&.to_f),
+          respawn_variation: positive(generation["respawnTimeVariation"]&.to_f)
+        }.compact
+      end
+
+      private def positive(value)
+        value if value&.positive?
+      end
+
+      # What a player has to have, or not have, before the contract is offered:
+      # the contract's own requirements and its handler's defaults. A
+      # `SubContract`'s are a step inside the contract and are not read.
+      #
+      # Where it is offered is not here -- `offered_location_refs` carries that.
+      private def prerequisites(contract, handler)
+        prerequisite_nodes(contract, handler).flat_map do |key, node|
+          case key
+          when "ContractPrerequisite_CrimeStat" then crime_stat_prerequisite(node)
+          when "ContractPrerequisite_Reputation" then reputation_prerequisite(node)
+          when "ContractPrerequisite_CompletedContractTags" then completed_prerequisites(node, value_or_nil(contract["id"]))
+          else []
+          end
+        end
+      end
+
+      private def prerequisite_nodes(contract, handler)
+        [contract["additionalPrerequisites"], handler.dig("defaultAvailability", "prerequisites")]
+          .select { |group| group.is_a?(Hash) }
+          .flat_map { |group| group.flat_map { |key, nodes| Array.wrap(nodes).select { |node| node.is_a?(Hash) }.map { |node| [key, node] } } }
+      end
+
+      private def crime_stat_prerequisite(node)
+        [{kind: "crime_stat", min: node["minCrimeStat"]&.to_i, max: node["maxCrimeStat"]&.to_i}.compact]
+      end
+
+      # Standing with an org, which is not always the one offering the contract.
+      # `exclude` turns the band into one the player must be outside of.
+      private def reputation_prerequisite(node)
+        org = orgs[value_or_nil(node["factionReputation"])] || {}
+
+        [{
+          kind: "reputation",
+          org_key: org[:key],
+          org_name: org[:name],
+          min_standing: standings[value_or_nil(node["minStanding"])],
+          max_standing: standings[value_or_nil(node["maxStanding"])],
+          excluded: (true if node["exclude"] == "1")
+        }.compact]
+      end
+
+      # Complete `count` contracts carrying one of the tags -- or, for the
+      # excluded set, none of them. A tag is granted by the contracts whose
+      # results carry it, so the requirement is carried as those contracts:
+      # "IntroDone" reads as Wikelo's arrival mission rather than as a tag.
+      #
+      # A contract that grants the tag it asks about is carried as a flag rather
+      # than as a link to itself: excluded, that is a contract done once only
+      # (67 of them); required, it is a count of its own repeats (50).
+      private def completed_prerequisites(node, sc_ref)
+        [
+          ["completed_missions", node["requiredCompletedContractTags"], node["requiredCountValue"]],
+          ["excluded_missions", node["excludedCompletedContractTags"], node["excludedCountValue"]]
+        ].filter_map do |kind, tags, count|
+          refs = Array.wrap(tags.is_a?(Hash) ? tags.dig("tags", "Reference") : nil).filter_map { |tag| value_or_nil(tag["value"]) if tag.is_a?(Hash) }
+
+          next if refs.empty?
+
+          granted = refs.flat_map { |ref| completion_grants[ref] }.uniq
+
+          {
+            kind:,
+            count: count.to_i.clamp(1..),
+            mission_refs: (granted - [sc_ref]).sort,
+            includes_self: (true if granted.include?(sc_ref))
+          }.compact
+        end
+      end
+
+      # Tag ref to the contracts whose results grant it.
+      private def completion_grants
+        @completion_grants ||= contract_entries.each_with_object(Hash.new { |all, ref| all[ref] = [] }) do |entry, grants|
+          sc_ref = value_or_nil(entry[:contract]["id"])
+
+          next if sc_ref.blank?
+
+          completion_tags(entry[:contract]["contractResults"]).each { |tag| grants[tag] << sc_ref }
+        end
+      end
+
+      private def completion_tags(node)
+        case node
+        when Hash
+          node.flat_map do |key, value|
+            next Array.wrap(value).filter_map { |tag| value_or_nil(tag["tag"]) if tag.is_a?(Hash) } if key == "ContractResult_CompletionTag"
+
+            completion_tags(value)
+          end
+        when Array
+          node.flat_map { |entry| completion_tags(entry) }
+        else
+          []
+        end
+      end
+
+      # The starmap places the contract is offered at: a `Locality` names a
+      # list of them, a `Location` names one.
+      private def offered_location_refs(contract, handler)
+        prerequisite_nodes(contract, handler).flat_map { |key, node|
+          case key
+          when "ContractPrerequisite_Locality" then localities[value_or_nil(node["localityAvailable"])] || []
+          when "ContractPrerequisite_Location" then [value_or_nil(node["locationAvailable"])].compact
+          else []
+          end
+        }.uniq.sort
+      end
+
+      private def localities
+        @localities ||= load_data(LOCALITIES_PATH).each_with_object({}) do |item, index|
+          ref = value_or_nil(item[:values]["__ref"])
+          refs = Array.wrap(item[:values].dig("availableLocations", "Reference")).filter_map { |entry| value_or_nil(entry["value"]) if entry.is_a?(Hash) }
+
+          index[ref] = refs if ref.present?
+        end
       end
 
       # Built once per parse: it loads the tag database and every location
@@ -275,26 +448,152 @@ module ScData
       end
 
       # Done in one pass over the finished records rather than per award: the
-      # entity tree is walked once for every ref the whole catalogue names.
-      private def name_item_rewards(parsed)
-        refs = parsed.flat_map { |mission| mission[:rewards].to_a }
-          .select { |reward| reward[:kind] == "item" }
-          .filter_map { |reward| reward[:entity_class] }
-          .uniq
+      # entity tree is walked once for every ref the whole catalogue names,
+      # awards, hand-ins and placeholder items alike.
+      private def name_items(parsed)
+        items = parsed.flat_map { |mission| mission[:rewards].to_a + mission[:hand_ins].to_a }
+          .select { |entry| entry[:kind] == "item" && entry[:entity_class].present? }
+        placeholder_refs = parsed.flat_map { |mission| mission[:placeholder_items].to_h.values.flatten }
 
-        return parsed if refs.blank?
+        refs = (items.pluck(:entity_class) + placeholder_refs).uniq
 
-        names = entity_names(refs)
+        details = refs.present? ? entity_details(refs) : {}
+
+        items.each do |entry|
+          entry.merge!(details[entry[:entity_class]] || {})
+        end
 
         parsed.each do |mission|
-          mission[:rewards].to_a.each do |reward|
-            name = names[reward[:entity_class]]
-
-            reward[:entity_name] = name if name.present?
-          end
+          name_placeholder_items(mission, details)
         end
 
         parsed
+      end
+
+      # Only filled when every item it could be has a name: a list missing one
+      # reads as the whole choice.
+      private def name_placeholder_items(mission, details)
+        items = mission.delete(:placeholder_items)
+
+        return if items.blank?
+
+        named = items.filter_map { |token, refs|
+          names = refs.map { |ref| details.dig(ref, :entity_name) }
+
+          [token, names.uniq.join(" / ")] if names.all?(&:present?)
+        }.to_h
+
+        values = (mission[:placeholder_values] || {}).merge(named)
+
+        mission[:placeholder_values] = values if values.present?
+      end
+
+      # The values a contract states for the plain placeholders in its title
+      # and description, layered template, then handler, then contract -- the
+      # order the game applies overrides in. A value can carry a placeholder of
+      # its own (`FuelType_Hydrogen` names `~mission(HydrogenFuel)`), so the
+      # ones a value uses are looked up too.
+      #
+      # Matched without case: a title can be `~mission(title)` where the
+      # property says `Title`.
+      private def placeholders(contract, handler, texts)
+        properties = placeholder_properties(contract, handler)
+        pending = texts.flat_map { |text| placeholder_tokens(text) }
+        values = {}
+        items = {}
+
+        while (token = pending.shift)
+          next if values.key?(token) || items.key?(token)
+
+          value = placeholder_value(properties[token.downcase])
+
+          case value
+          when String
+            values[token] = value
+            pending.concat(placeholder_tokens(value))
+          when Array
+            items[token] = value
+          end
+        end
+
+        {placeholder_values: values.presence, placeholder_items: items.presence}.compact
+      end
+
+      private def placeholder_tokens(text)
+        text.to_s.scan(PLACEHOLDER).flatten.map(&:strip).uniq
+      end
+
+      private def placeholder_properties(contract, handler)
+        [
+          template_properties[value_or_nil(contract["template"])],
+          handler&.dig("contractParams", "propertyOverrides", "MissionProperty"),
+          contract.dig("paramOverrides", "propertyOverrides", "MissionProperty")
+        ].each_with_object({}) do |layer, merged|
+          Array.wrap(layer).each do |property|
+            next unless property.is_a?(Hash)
+
+            token = value_or_nil(property["extendedTextToken"])
+
+            merged[token.downcase] = property["value"] if token.present?
+          end
+        end
+      end
+
+      private def template_properties
+        @template_properties ||= load_data(TEMPLATES_PATH).each_with_object({}) do |item, index|
+          next unless item[:values].is_a?(Hash)
+
+          ref = value_or_nil(item[:values]["__ref"])
+
+          index[ref] = item[:values].dig("contractProperties", "MissionProperty") if ref.present?
+        end
+      end
+
+      # A string for a stated value, the entity refs for a mission item still
+      # to be named, nil for anything the game decides at run time.
+      private def placeholder_value(value)
+        return unless value.is_a?(Hash)
+
+        if (text = value["MissionPropertyValue_StringHash"])
+          text_value(text)
+        elsif (number = value["MissionPropertyValue_Integer"])
+          integer_value(number)
+        elsif (item = value["MissionPropertyValue_MissionItem"])
+          item_refs(item)
+        end
+      end
+
+      private def placeholder_options(node, type)
+        Array.wrap(node.is_a?(Hash) ? node.dig("options", type) : nil)
+          .select { |option| option.is_a?(Hash) && option["weighting"].to_f.positive? }
+      end
+
+      private def text_value(node)
+        texts = placeholder_options(node, "MissionPropertyValueOption_StringHash").map { |option|
+          localize(option["textId"])
+        }
+
+        return if texts.empty? || texts.any? { |text| text.blank? || text == UNINITIALIZED }
+
+        texts.uniq.join(" / ")
+      end
+
+      # A variation is a range the game rolls in, and a value of zero is the
+      # field unset -- the fuel amounts it works out per ship.
+      private def integer_value(node)
+        options = placeholder_options(node, "MissionPropertyValueOption_Integer")
+
+        return if options.empty? || options.any? { |option| option["variation"].to_i != 0 || option["value"].to_i <= 0 }
+
+        options.map { |option| option["value"].to_i.to_s }.uniq.join(" / ")
+      end
+
+      private def item_refs(node)
+        refs = Array.wrap(node.dig("matchConditions", "DataSetMatchCondition_SpecificItemsDef")).flat_map { |condition|
+          Array.wrap(condition.is_a?(Hash) ? condition.dig("items", "Reference") : nil)
+        }.filter_map { |reference| value_or_nil(reference["value"]) if reference.is_a?(Hash) }.uniq
+
+        refs if refs.size.between?(1, PLACEHOLDER_ITEM_LIMIT)
       end
 
       # `generator_key` alone repeats, and `debugName` alone collides across
@@ -505,18 +804,18 @@ module ScData
       # because most of these are in none of them: 107 of the 162 are equipment
       # or components, and the rest are carryables -- the scrip, a Banu favour --
       # that no Fleetyards catalogue carries and a GUID is not a reward.
-      private def entity_names(refs)
+      private def entity_details(refs)
         wanted = refs.to_set
 
-        Dir.glob("#{import_path}/#{ENTITIES_PATH}/**/*.xml").each_with_object({}) do |file, index|
+        ENTITY_PATHS.flat_map { |path| Dir.glob("#{import_path}/#{path}/**/*.xml") }.each_with_object({}) do |file, index|
           ref = File.open(file) { |handle| handle.readline(chomp: true) }[/__ref="([^"]+)"/, 1]
 
           next if ref.blank? || !wanted.include?(ref)
 
           values = Hash.from_xml(File.read(file)).values.first
-          name = entity_name(values)
+          details = {entity_name: entity_name(values), commodity_key: entity_commodity_key(values)}.compact
 
-          index[ref] = name if name.present?
+          index[ref] = details if details.present?
         rescue EOFError, ArgumentError
           next
         end
@@ -524,13 +823,28 @@ module ScData
 
       # The name hangs off a `Localization` node inside the attachable component
       # params, at a depth that varies per entity, so it is found rather than
-      # dug at.
+      # dug at. A commodity has none and is named by its purchase params --
+      # Ranta Dung, which a Rayari contract wants 15 of. A hand-in that accepts
+      # any of a group -- "any SRT canister" -- names a group record instead,
+      # which states its name on the root.
       private def entity_name(values)
         localization = Array.wrap(find_node(values, "Localization")).first
+        purchasable = Array.wrap(find_node(values, "SCItemPurchasableParams")).first
 
-        return unless localization.is_a?(Hash)
+        [
+          (localization["Name"] if localization.is_a?(Hash)),
+          (purchasable["displayName"] if purchasable.is_a?(Hash)),
+          values["orderDisplayName"]
+        ].lazy.filter_map { |key| localize_name(key) }.first
+      end
 
-        localize_name(localization["Name"])
+      # A gem or an ore is a commodity crate whose own ref is not the one our
+      # commodity row carries, so the loader finds it by the commodity's key,
+      # which its purchase name is.
+      private def entity_commodity_key(values)
+        purchasable = Array.wrap(find_node(values, "SCItemPurchasableParams")).first
+
+        commodity_key(purchasable["displayName"]) if purchasable.is_a?(Hash)
       end
 
       # One reward drawn from several weighted sets, each of which awards
@@ -538,7 +852,7 @@ module ScData
       # set's weight, because a set is not a thing the catalogue can show.
       private def weighted_item_rewards(value)
         Array.wrap(value).flat_map do |result|
-          Array.wrap(result.dig("itemAwardStructure", "ItemAwardWeightings")).flat_map do |weighting|
+          weightings(result["itemAwardStructure"]).flat_map do |weighting|
             Array.wrap(weighting.dig("awards", "ItemAwardEntityClass")).filter_map do |award|
               entity_class = value_or_nil(award["entityClass"])
 
@@ -547,6 +861,106 @@ module ScData
               {kind: "item", entity_class:, amount: award["amountToAward"]&.to_i, weight: weighting["weighting"]&.to_f}.compact
             end
           end
+        end
+      end
+
+      # Stated inline, or named by ref as `ItemAwardWeightingsParams`. Followed
+      # one level, which is as deep as the export nests them.
+      private def weightings(structure)
+        return [] unless structure.is_a?(Hash)
+
+        record = item_award_records[value_or_nil(structure.dig("ItemAwardWeightingsParams", "awardsRecord"))]
+
+        Array.wrap((record || structure)["ItemAwardWeightings"])
+      end
+
+      private def item_award_records
+        @item_award_records ||= load_data(ITEM_AWARD_RECORDS_PATH).each_with_object({}) do |item, index|
+          ref = value_or_nil(item[:values]["__ref"])
+          structure = item[:values]["itemAwardStructure"]
+
+          index[ref] = structure if ref.present? && structure.is_a?(Hash)
+        end
+      end
+
+      # One entry per thing to bring. An `Or` is the contract offering a choice
+      # -- three ores, deliver any one -- and its entries carry the option they
+      # belong to; an entry without one is always asked for. No override holds
+      # more than one `Or`, so the option alone identifies the choice.
+      #
+      # A `maxAmount` of zero is the field unset, as it is on all 113 of
+      # Wikelo's; where it equals the minimum it says nothing either.
+      private def hand_ins(contract)
+        property = Array.wrap(contract.dig("paramOverrides", "propertyOverrides", "MissionProperty"))
+          .find { |entry| entry.is_a?(Hash) && entry["missionVariableName"] == HAND_IN_PROPERTY }
+
+        content = property&.dig("value", "MissionPropertyValue_HaulingOrders", "haulingOrderContent")
+
+        return [] unless content.is_a?(Hash)
+
+        options = Array.wrap(content["HaulingOrderContent_Or"]).select { |choice| choice.is_a?(Hash) }.flat_map { |choice|
+          Array.wrap(choice.dig("options", "HaulingOrder_OrOption_And"))
+        }.select { |option| option.is_a?(Hash) }
+
+        hand_in_orders(content) + options.each_with_index.flat_map { |option, index|
+          hand_in_orders(option["orders"]).map { |entry| entry.merge(option: index) }
+        }
+      end
+
+      private def hand_in_orders(orders)
+        return [] unless orders.is_a?(Hash)
+
+        items = Array.wrap(orders["HaulingOrderContent_EntityClass"]).map { |order| [value_or_nil(order["entityClass"]), order] } +
+          Array.wrap(orders["HaulingOrderContent_EntityClasses"]).map { |order| [value_or_nil(order["haulingEntityClasses"]), order] }
+
+        resources = Array.wrap(orders["HaulingOrderContent_Resource"]).filter_map do |order|
+          ref = value_or_nil(order["resource"])
+          amounts = hand_in_amounts(order["minSCU"], order["maxSCU"])
+
+          next if ref.blank? || amounts.nil?
+
+          amounts.merge(kind: "resource", resource_ref: ref, **resource_details.fetch(ref, {})).compact
+        end
+
+        items.filter_map { |ref, order|
+          amounts = hand_in_amounts(order["minAmount"], order["maxAmount"])
+
+          next if ref.blank? || amounts.nil?
+
+          amounts.merge(kind: "item", entity_class: ref)
+        } + resources
+      end
+
+      # Nil for an order that asks for nothing, which is not a hand-in.
+      private def hand_in_amounts(min, max)
+        amount = min.to_i
+        max = max.to_i
+
+        return unless amount.positive?
+
+        {amount:, max: (max if max > amount)}.compact
+      end
+
+      # Resource ref to the commodity name a player reads -- "Quartz", "Recycled
+      # Material Composite" -- and the key the commodity row carries.
+      private def resource_details
+        @resource_details ||= begin
+          root = Hash.from_xml(File.read("#{import_path}/#{RESOURCE_TYPES_PATH}")).values.first
+          records = root.is_a?(Hash) ? root.each_value.flat_map { |values| Array.wrap(values) } : []
+
+          # A group record carries a category label, not a commodity name.
+          records.each_with_object({}) do |values, index|
+            next unless values.is_a?(Hash) && values["__type"] == "ResourceType"
+
+            ref = value_or_nil(values["__ref"])
+            name = localize_name(values["displayName"])
+
+            next if ref.blank? || name.blank?
+
+            index[ref] = {resource_name: name, commodity_key: commodity_key(values["displayName"])}.compact
+          end
+        rescue Errno::ENOENT
+          {}
         end
       end
 

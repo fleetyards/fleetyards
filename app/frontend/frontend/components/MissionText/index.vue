@@ -5,17 +5,22 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { missionTextParts } from "@/frontend/components/MissionText/index";
+import {
+  type MissionTextValue,
+  missionTextParts,
+} from "@/frontend/components/MissionText/index";
 
 type Props = {
   text?: string | null;
   /** Keeps the line breaks the game writes. Off for a title, on for prose. */
   multiline?: boolean;
+  /** What the files state for its placeholders, filled in before rendering. */
+  values?: MissionTextValue[] | null;
 };
 
 const props = defineProps<Props>();
 
-const parts = computed(() => missionTextParts(props.text));
+const parts = computed(() => missionTextParts(props.text, props.values));
 </script>
 
 <template>
@@ -24,9 +29,8 @@ const parts = computed(() => missionTextParts(props.text));
       <em v-if="part.kind === 'emphasis'" class="mission-text__emphasis">{{
         part.value
       }}</em>
-      <!-- What the game will fill in, named rather than guessed at. Not a
-           link and not a value: nothing here knows which location or which
-           target the generated mission will pick. -->
+      <!-- What the game will fill in, named rather than guessed at: a
+           placeholder left here is one the files state no value for. -->
       <span v-else-if="part.kind === 'token'" class="mission-text__token">{{
         part.value
       }}</span>

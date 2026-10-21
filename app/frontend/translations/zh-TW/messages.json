@@ -1,6 +1,12 @@
 {
   "zh-TW": {
     "messages": {
+      "blueprint": {
+        "own": { "success": "%{blueprint} 已標記為已擁有" },
+        "unown": { "success": "%{blueprint} 不再標記為已擁有" },
+        "want": { "success": "%{blueprint} 已加入你的願望清單" },
+        "unwant": { "success": "%{blueprint} 已從你的願望清單移除" }
+      },
       "fleetchartScreenshot": {
         "failure": "艦隊圖表未能儲存為圖片"
       },
@@ -270,7 +276,7 @@
         },
         "blueprint": {
           "accountRequired": "註冊或登入後即可記錄你擁有的藍圖。",
-          "own": "無法更新該藍圖，請稍後再試。"
+          "update": "無法更新該藍圖，請稍後再試。"
         },
         "default": "<b>發生了錯誤。</b><br>您試過重新啟動嗎？"
       },

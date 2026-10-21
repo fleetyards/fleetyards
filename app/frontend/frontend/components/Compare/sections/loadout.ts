@@ -178,6 +178,8 @@ export const useLoadoutSections = (
           computeLoadoutStats(
             hardpointsFor(model),
             model.metrics.weaponPoolSize,
+            undefined,
+            model.metrics.weaponRegenModifier,
           ),
         ]),
       ),

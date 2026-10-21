@@ -160,6 +160,10 @@
     margin-top: 2px;
   }
 
+  &__event {
+    color: var(--color-warning, #fa6800);
+  }
+
   &__legend {
     margin: 10px 0 0;
     font-size: 11.5px;

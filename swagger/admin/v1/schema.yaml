@@ -11542,6 +11542,8 @@ components:
           type: boolean
         owned:
           type: boolean
+        wanted:
+          type: boolean
         sourceUnknown:
           type: boolean
         sourceAlignments:
@@ -16194,6 +16196,26 @@ components:
           "$ref": "#/components/schemas/NullableGameMissionLocationKindEnum"
         needsLanding:
           type: boolean
+        buyIn:
+          type:
+          - integer
+          - 'null'
+        timeToComplete:
+          type:
+          - number
+          - 'null'
+        maxInstancesPerPlayer:
+          type:
+          - integer
+          - 'null'
+        respawnTime:
+          type:
+          - number
+          - 'null'
+        respawnVariation:
+          type:
+          - number
+          - 'null'
         org:
           anyOf:
           - "$ref": "#/components/schemas/GameMissionOrg"
@@ -16218,10 +16240,22 @@ components:
           type:
           - string
           - 'null'
+        placeholderValues:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMissionPlaceholderValue"
         rewards:
           type: array
           items:
             "$ref": "#/components/schemas/GameMissionReward"
+        handIns:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMissionHandIn"
+        prerequisites:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMissionPrerequisite"
         blueprints:
           type: array
           items:
@@ -16285,6 +16319,39 @@ components:
       - id
       - slug
       title: GameMissionBlueprint
+    GameMissionCatalogueItem:
+      type: object
+      properties:
+        type:
+          "$ref": "#/components/schemas/GameMissionCatalogueItemTypeEnum"
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type: string
+        listed:
+          type: boolean
+      additionalProperties: false
+      required:
+      - type
+      - id
+      - slug
+      title: GameMissionCatalogueItem
+    GameMissionCatalogueItemTypeEnum:
+      type: string
+      enum:
+      - Component
+      - Equipment
+      - Commodity
+      x-enumNames:
+      - COMPONENT
+      - EQUIPMENT
+      - COMMODITY
+      title: GameMissionCatalogueItemTypeEnum
     GameMissionDifficulty:
       type: object
       properties:
@@ -16311,6 +16378,46 @@ components:
       additionalProperties: false
       required: []
       title: GameMissionDifficulty
+    GameMissionHandIn:
+      type: object
+      properties:
+        kind:
+          "$ref": "#/components/schemas/GameMissionHandInKindEnum"
+        ref:
+          type: string
+        name:
+          type:
+          - string
+          - 'null'
+        amount:
+          type: integer
+        max:
+          type:
+          - integer
+          - 'null'
+        option:
+          type:
+          - integer
+          - 'null'
+        catalogueItem:
+          anyOf:
+          - "$ref": "#/components/schemas/GameMissionCatalogueItem"
+          - type: 'null'
+      additionalProperties: false
+      required:
+      - kind
+      - ref
+      - amount
+      title: GameMissionHandIn
+    GameMissionHandInKindEnum:
+      type: string
+      enum:
+      - item
+      - resource
+      x-enumNames:
+      - ITEM
+      - RESOURCE
+      title: GameMissionHandInKindEnum
     GameMissionKindEnum:
       type: string
       enum:
@@ -16320,6 +16427,23 @@ components:
       - CAREER
       - CONTRACT
       title: GameMissionKindEnum
+    GameMissionLink:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - id
+      - slug
+      title: GameMissionLink
     GameMissionLocation:
       type: object
       properties:
@@ -16350,9 +16474,15 @@ components:
       enum:
       - template
       - text
+      - offered
+      x-extensible-enum:
+      - template
+      - text
+      - offered
       x-enumNames:
       - TEMPLATE
       - TEXT
+      - OFFERED
       title: GameMissionLocationSourceEnum
     GameMissionOrg:
       type: object
@@ -16373,6 +16503,79 @@ components:
       required:
       - name
       title: GameMissionOrg
+    GameMissionPlaceholderValue:
+      type: object
+      properties:
+        token:
+          type: string
+        value:
+          type: string
+      additionalProperties: false
+      required:
+      - token
+      - value
+      title: GameMissionPlaceholderValue
+    GameMissionPrerequisite:
+      type: object
+      properties:
+        kind:
+          "$ref": "#/components/schemas/GameMissionPrerequisiteKindEnum"
+        min:
+          type:
+          - integer
+          - 'null'
+        max:
+          type:
+          - integer
+          - 'null'
+        orgName:
+          type:
+          - string
+          - 'null'
+        orgKey:
+          type:
+          - string
+          - 'null'
+        minStanding:
+          type:
+          - string
+          - 'null'
+        maxStanding:
+          type:
+          - string
+          - 'null'
+        excluded:
+          type: boolean
+        count:
+          type:
+          - integer
+          - 'null'
+        includesSelf:
+          type: boolean
+        missions:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMissionLink"
+      additionalProperties: false
+      required:
+      - kind
+      - excluded
+      - includesSelf
+      - missions
+      title: GameMissionPrerequisite
+    GameMissionPrerequisiteKindEnum:
+      type: string
+      enum:
+      - crime_stat
+      - reputation
+      - completed_missions
+      - excluded_missions
+      x-enumNames:
+      - CRIME_STAT
+      - REPUTATION
+      - COMPLETED_MISSIONS
+      - EXCLUDED_MISSIONS
+      title: GameMissionPrerequisiteKindEnum
     GameMissionQuery:
       type: object
       properties:
@@ -16481,6 +16684,10 @@ components:
           type:
           - number
           - 'null'
+        catalogueItem:
+          anyOf:
+          - "$ref": "#/components/schemas/GameMissionCatalogueItem"
+          - type: 'null'
         badge:
           type:
           - string
@@ -18893,6 +19100,8 @@ components:
           type: number
         weaponPoolSize:
           type: number
+        weaponRegenModifier:
+          "$ref": "#/components/schemas/ModelWeaponRegenModifier"
         signatureCrossSection:
           "$ref": "#/components/schemas/ModelSignatureCrossSection"
         size:
@@ -20608,6 +20817,23 @@ components:
       - meta
       - items
       title: ModelUpgrades
+    ModelWeaponRegenModifier:
+      type: object
+      description: 'The ship''s engineering buff on its energy guns: multipliers on
+        the weapon power ratio, each gun''s ammo load and its regen'
+      properties:
+        powerRatio:
+          type: number
+        maxAmmoLoad:
+          type: number
+        maxRegenPerSecond:
+          type: number
+      additionalProperties: false
+      required:
+      - powerRatio
+      - maxAmmoLoad
+      - maxRegenPerSecond
+      title: ModelWeaponRegenModifier
     Models:
       type: object
       properties:

@@ -5,10 +5,13 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { injectPowerPresets } from "@/frontend/composables/usePowerPresets";
 import { type Hardpoint, HardpointCategoryEnum } from "@/services/fyApi";
 import HardpointCategoryIcon from "@/frontend/components/Models/Hardpoints/CategoryIcon/index.vue";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
+import { pipCells, pipClickTarget, toggleColumnOverrides } from "./allocation";
 import {
   useLoadoutSim,
   type PortOverrides,
@@ -16,30 +19,43 @@ import {
   type PowerColumnMember,
 } from "@/frontend/composables/useLoadoutSim";
 import {
+  emptySplits,
   type FlightMode,
   type PowerFamily,
+  type PowerSplits,
+  type WeaponRegenModifier,
 } from "@/frontend/composables/powerSim";
 
 type Props = {
+  modelName?: string;
+  backdrop?: string;
   hardpoints?: Hardpoint[];
   weaponPoolSize?: number;
+  regenModifier?: WeaponRegenModifier;
   crossSection?: { x?: number; y?: number; z?: number };
   modelValue?: PortOverrides;
+  // Both modes' splits, for the planner, which plans SCM and NAV together.
+  splits?: PowerSplits;
   mode?: FlightMode;
   loading?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
+  modelName: undefined,
+  backdrop: undefined,
   hardpoints: () => [],
   weaponPoolSize: undefined,
+  regenModifier: undefined,
   crossSection: undefined,
   modelValue: () => ({}),
+  splits: undefined,
   mode: "SCM",
   loading: false,
 });
 
 const emit = defineEmits<{
   "update:modelValue": [value: PortOverrides];
+  "update:splits": [value: PowerSplits];
   "update:mode": [value: FlightMode];
 }>();
 
@@ -89,6 +105,8 @@ const sim = useLoadoutSim(
   () => props.weaponPoolSize,
   () => props.mode,
   () => props.modelValue,
+  undefined,
+  () => props.regenModifier,
 );
 
 const columns = computed(() => sim.value.columns);
@@ -153,58 +171,63 @@ const columnLabel = (column: PowerColumn) => familyLabel(column.family);
 const memberLabel = (column: PowerColumn, member: PowerColumnMember) =>
   member.label ?? familyLabel(column.family);
 
-// Set a member (a single component or the weapon pool) toward `desired`
-// segments, honoring the rules: it is off (0) or on at ≥ its mandatory floor,
-// and an increase can't exceed the pips available in the pool (so clicking with
-// an empty pool does nothing).
-const applyTarget = (member: PowerColumnMember, desired: number) => {
-  let target = Math.max(0, Math.min(member.fillable, desired));
-  if (target > 0 && target < member.min) target = 0;
-
-  if (target > member.allocated) {
-    const available = sim.value.remaining;
-    if (member.allocated === 0) {
-      if (available < member.min) return; // can't afford to turn it on
-      target = Math.min(target, available);
-    } else {
-      target = Math.min(target, member.allocated + available);
-    }
-  }
-
-  if (target === member.allocated) return;
-  emit("update:modelValue", { ...props.modelValue, [member.portPath]: target });
+const emitOverrides = (next: PortOverrides | undefined) => {
+  if (next) emit("update:modelValue", next);
 };
 
-// Click a pip cell at `level` (bottom-up). In a stacked column the merged base
-// block sets that generator/beam to its minimum, or toggles it off when it is
-// already at the minimum — so a member with headroom (e.g. 4 + 1) can still be
-// reduced to 4 or switched off without jumping straight to full. Every other
-// pip allocates exactly `level` segments to that member.
 const onCellClick = (
   column: PowerColumn,
   member: PowerColumnMember,
   level: number,
-) => {
-  if (level > member.fillable) return; // headroom slot — not fillable
-  if (column.members.length > 1 && level === member.min) {
-    applyTarget(member, member.allocated === member.min ? 0 : member.min);
-  } else {
-    applyTarget(member, level);
-  }
-};
+) =>
+  emitOverrides(
+    pipClickTarget(
+      props.modelValue,
+      column,
+      member,
+      level,
+      sim.value.remaining,
+    ),
+  );
 
 // Click the icon: drain the whole column to 0 if any member has pips, else fill
 // every member from the pool.
-const toggleColumn = (column: PowerColumn) => {
-  const anyOn = column.members.some((member) => member.allocated > 0);
-  const next: PortOverrides = { ...props.modelValue };
-  for (const member of column.members) {
-    next[member.portPath] = anyOn ? 0 : member.fillable;
-  }
-  emit("update:modelValue", next);
-};
+const toggleColumn = (column: PowerColumn) =>
+  emitOverrides(toggleColumnOverrides(props.modelValue, column));
 
 const reset = () => emit("update:modelValue", {});
+
+const comlink = useComlink();
+
+const powerPresets = injectPowerPresets();
+
+// The planner works on the card's own pips and mode: it opens on the split
+// shown here and hands every change back, so the card and every figure on the
+// page follow it.
+const openPlanner = () =>
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Models/PowerModal/index.vue"),
+    large: true,
+    props: {
+      modelName: props.modelName,
+      backdrop: props.backdrop,
+      presets: powerPresets,
+      hardpoints: props.hardpoints,
+      weaponPoolSize: props.weaponPoolSize,
+      regenModifier: props.regenModifier,
+      crossSection: props.crossSection,
+      splits: props.splits ?? {
+        ...emptySplits(),
+        [props.mode]: props.modelValue,
+      },
+      mode: props.mode,
+      onChange: (splits: PowerSplits, mode: FlightMode) => {
+        emit("update:splits", splits);
+        emit("update:mode", mode);
+      },
+    },
+  });
 
 // Hover preview: while hovering a pip, the member renders as if allocated to the
 // hovered level (fills up going higher, empties going lower) so the click result
@@ -222,17 +245,7 @@ const clearHover = () => {
 const shownLevel = (member: PowerColumnMember) =>
   hoveredPort.value === member.portPath ? hoveredLevel.value : member.allocated;
 
-// Pip cells for a member: the mandatory floor renders as one taller block, then
-// each optional segment as its own cell. `level` is the allocation this cell
-// represents (its top).
-const cells = (member: PowerColumnMember) => {
-  const list: { level: number; span: number }[] = [];
-  if (member.min > 0) list.push({ level: member.min, span: member.min });
-  for (let level = member.min + 1; level <= member.capacity; level += 1) {
-    list.push({ level, span: 1 });
-  }
-  return list;
-};
+const cells = pipCells;
 
 const PIP_HEIGHT = 9;
 const PIP_GAP = 2;
@@ -416,16 +429,27 @@ const cellHeight = (span: number) =>
       >
         {{ t("labels.power.reset") }}
       </button>
-    </div>
-
-    <div class="metrics-card__footer">
-      <span class="metrics-card__hint">{{ t("labels.power.hint") }}</span>
+      <button
+        type="button"
+        class="metrics-card__toggle"
+        data-test="power-planner-open"
+        @click="openPlanner"
+      >
+        {{ t("labels.power.planner.open") }}
+      </button>
     </div>
   </MetricsCard>
 </template>
 
 <style lang="scss" scoped>
 @import "@/shared/components/metricsCard";
+
+// Reset and the planner side by side.
+.metrics-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
 
 .power-panel {
   &__toolbar {

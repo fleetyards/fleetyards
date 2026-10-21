@@ -1,0 +1,26 @@
+.mission-availability {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  &__item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 14px;
+  }
+
+  &__label {
+    color: var(--color-text-dim, #959595);
+  }
+
+  &__mission + &__mission::before {
+    content: "·";
+    margin-right: 8px;
+    color: var(--color-text-dim, #959595);
+  }
+}

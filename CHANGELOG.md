@@ -2,6 +2,46 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.19.0](https://github.com/fleetyards/fleetyards/compare/v9.18.1...v9.19.0) (2026-10-20)
+
+
+### Features
+
+* **missions:** hand-ins, and every Wikelo reward named ([#5874](https://github.com/fleetyards/fleetyards/issues/5874)) ([8ce26ef](https://github.com/fleetyards/fleetyards/commit/8ce26ef17bc739f00ffd482990ec59b6f7578506))
+* show catalogue cards on more record names ([#5871](https://github.com/fleetyards/fleetyards/issues/5871)) ([e96eb60](https://github.com/fleetyards/fleetyards/commit/e96eb608390e1a3a144ec4a0ff948114e23164ca))
+
+
+### Bug Fixes
+
+* **hangar:** match the Phoenix Emerald under its Mk IV name ([#5870](https://github.com/fleetyards/fleetyards/issues/5870)) ([19bd5a7](https://github.com/fleetyards/fleetyards/commit/19bd5a71a1543f32bef5cf4b5bb4eeab6a0d25e9))
+
+## [9.18.1](https://github.com/fleetyards/fleetyards/compare/v9.18.0...v9.18.1) (2026-10-20)
+
+
+### Bug Fixes
+
+* **hangar:** count a concept ship's max cargo in the cargo filter ([72ecd9a](https://github.com/fleetyards/fleetyards/commit/72ecd9a313a7e578093892db3a262d04bfd57643))
+* **power:** keep the planner as tall as its backdrop so the modal does not scroll ([3c458bb](https://github.com/fleetyards/fleetyards/commit/3c458bb3f64049e1b52263235406c8d1e0e7a761))
+
+## [9.18.0](https://github.com/fleetyards/fleetyards/compare/v9.17.0...v9.18.0) (2026-10-20)
+
+
+### Features
+
+* power planner, loadout power presets and gun capacitors ([#5864](https://github.com/fleetyards/fleetyards/issues/5864)) ([2d499d8](https://github.com/fleetyards/fleetyards/commit/2d499d8d4eb6ab191131a5b1614a67329ef9a096))
+* **ships:** label the sustained combat tile without the DPS unit ([ea4dc5f](https://github.com/fleetyards/fleetyards/commit/ea4dc5f6e38c001a9b2d2c40e5eb128f4b8f0808))
+
+
+### Bug Fixes
+
+* **ships:** keep the base metrics at the right edge on wide screens ([e6ccfd1](https://github.com/fleetyards/fleetyards/commit/e6ccfd15bc77c5d1b6e4109430a072b56ba370e0))
+* **ships:** put the erkul credit under the hardpoint list on wide screens ([665782b](https://github.com/fleetyards/fleetyards/commit/665782be9c1d0adf7e801a6eb53b4cad00e1702e))
+
+
+### Chores
+
+* **vite:** load the config as an ES module ([#5867](https://github.com/fleetyards/fleetyards/issues/5867)) ([8373127](https://github.com/fleetyards/fleetyards/commit/837312726af4b5aa3bb741f8d852cff94a3a2fff))
+
 ## [9.17.0](https://github.com/fleetyards/fleetyards/compare/v9.16.1...v9.17.0) (2026-10-20)
 
 

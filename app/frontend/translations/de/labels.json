@@ -1387,11 +1387,12 @@
         "fuel": "Treibstoff",
         "fuelHydrogen": "Hydrogen",
         "fuelQuantum": "Quantum",
-        "fuelFullMain": "Volllast, Haupttriebwerke",
-        "fuelFullAll": "Volllast, alle Triebwerke",
+        "fuelBurnMain": "Brenndauer, Haupt",
+        "fuelBurnAll": "Brenndauer, alle",
+        "fuelDrawMain": "Verbrauch, Haupt",
+        "fuelDrawAll": "Verbrauch, alle",
         "durationHoursMinutes": "%{hours} h %{minutes} min",
-        "durationMinutes": "%{minutes} min",
-        "hint": "Das geboostete Handling skaliert mit den Triebwerks-Pips; alles ist null, wenn das Triebwerk keine Energie hat."
+        "durationMinutes": "%{minutes} min"
       },
       "base": {
         "price": "Preis",
@@ -1426,8 +1427,7 @@
         "title": "Fracht",
         "holdsSub": "in %{count} Frachträumen",
         "maxContainerSub": "größte passende Box",
-        "containers": "Containerkapazität",
-        "hint": "Maximale Anzahl an Containern jeder Größe, die auf die Frachtraster passen; der Balken zeigt, welchen Anteil der Gesamtkapazität das ausfüllt."
+        "containers": "Containerkapazität"
       },
       "weaponRacks": {
         "slots": "Plätze",
@@ -1448,36 +1448,31 @@
           "multitool": "Multi-Tool",
           "medical_injection": "Medi-Pens",
           "grenade": "Granaten"
-        },
-        "hint": "Plätze aller Ständer an Bord, nach Inhalt und Größe."
+        }
       },
       "storageContainers": {
         "total": "Gesamtkapazität",
         "count": "Behälter",
-        "perContainer": "je",
-        "hintOre": "Fasst abgebautes Erz, keine Fracht.",
-        "hintSalvage": "Fasst geborgenes Material, keine Fracht."
+        "perContainer": "je"
       },
       "fuelTanks": {
         "capacitySub": "in %{count} Pods",
         "podsSub": "externe Aufhängungen",
         "components": "Pod-Typen",
-        "perPod": "pro Pod",
-        "hint": "Treibstoff in Pods an externen Aufhängungspunkten; der Balken zeigt den Anteil jedes Typs an der Gesamtkapazität."
+        "perPod": "pro Pod"
       },
       "refuelBoom": {
         "fuelFlowSub": "Hydrogen-Transfer",
         "quantumFlowSub": "Quantum-Transfer",
         "captureRadiusSub": "Andocktoleranz",
-        "equipment": "Ausrüstung",
-        "hint": "Transferraten des Betankungsauslegers und die Andocktoleranz seiner Düse."
+        "equipment": "Ausrüstung"
       },
       "combat": {
         "title": "Kampf",
         "openPenetrationCheck": "Durchschlagsprüfung",
         "dps": "Burst DPS",
         "dpsSub": "%{count} Waffen",
-        "sustained": "Dauer-DPS",
+        "sustained": "Anhaltend",
         "sustainedSub": "mit Regen & Hitze",
         "alpha": "Alpha",
         "alphaSub": "pro Salve",
@@ -1496,10 +1491,57 @@
           "manned": "Bemannter Geschützturm",
           "remote": "Ferngesteuerter Geschützturm",
           "pds": "Punktverteidigung"
-        },
-        "hint": "DPS aus dem Standard-Loadout. Der Dauerwert berücksichtigt die Energiepool-Regeneration und den Überhitzungszyklus jeder Waffe. Raketen sind ausgenommen."
+        }
       },
       "power": {
+        "planner": {
+          "sustained": "%{dps} Dauer-DPS",
+          "weaponPower": "Waffenenergie %{percent}",
+          "weaponsOff": "Waffen offline",
+          "regen": "%{regen} HP/s Regeneration",
+          "shieldsDown": "Schilde aus",
+          "engineOff": "Triebwerk ohne Energie",
+          "engineOffSub": "überhaupt kein Flug",
+          "boostedHandling": "Geboostetes Handling %{percent}",
+          "engineBase": "Nur Grundschub",
+          "engineBaseSub": "Boost braucht mehr Segmente",
+          "radarOff": "Radar dunkel",
+          "coolant": "%{rate} Kühlmittel pro Sekunde",
+          "noCooling": "Keine Kühlung",
+          "ready": "Bereit zum Spool-Up",
+          "off": "Aus",
+          "needsBlock": "braucht seinen Block von %{min} zum Start",
+          "powered": "Mit Energie",
+          "segments": "Belegte Segmente",
+          "signatures": "Signaturen",
+          "plantSegments": "%{segments} Segmente",
+          "segmentsTotal": "Segmente",
+          "setPips": "%{name}: %{count} Segmente",
+          "weaponEnergy": "Waffenenergie",
+          "energyGun": "Energie · feuert aus ihrem Kondensator",
+          "heatGun": "Ballistisch · durch Hitze begrenzt",
+          "sustainedEach": "Dauer-DPS je",
+          "capacitor": "Kondensator",
+          "shots": "%{count} von %{max} Schuss",
+          "firing": "Zeit am Abzug",
+          "emptiesIn": "Leer in",
+          "overheatsIn": "Überhitzt in",
+          "refillsIn": "Aufgefüllt in",
+          "recoversIn": "Erholt in",
+          "regenLabel": "Regeneration",
+          "shotsPerSecond": "%{rate} Schuss/s",
+          "presets": {
+            "title": "Voreinstellungen",
+            "name": "Name der Voreinstellung",
+            "save": "Voreinstellung speichern",
+            "rename": "%{name} umbenennen",
+            "delete": "%{name} löschen",
+            "add": "Voreinstellung hinzufügen"
+          },
+          "title": "Energieplaner",
+          "titleFor": "Energieplaner · %{name}",
+          "open": "Energieplaner"
+        },
         "title": "Energieverteilung",
         "scm": "SCM",
         "nav": "NAV",
@@ -1512,7 +1554,6 @@
         "cs": "CS",
         "csAxisHint": "Klicke, um die Achse zu wechseln (x / y / z)",
         "segmentsUsed": "%{used} / %{total} Segmente",
-        "hint": "Verteile Energie zwischen den Systemen. Der Dauer-DPS der Waffen skaliert mit der Energie, die sie erhalten; der Rest wird automatisch ausbalanciert.",
         "families": {
           "weapon": "Waffen",
           "shield": "Schilde",
@@ -1559,7 +1600,6 @@
           "infrared": "IR",
           "crossSection": "CS"
         },
-        "hint": "Schild-, Panzerungs- und Gegenmaßnahmenwerte aus dem Standard-Loadout. Eine Absorption unter 100 % bedeutet, dass dieser Schadenstyp den Rumpf erreicht, während die Schilde noch stehen.",
         "openDeflectionCheck": "Ablenkungsprüfung"
       },
       "penetrationCheck": {
@@ -1625,7 +1665,6 @@
         "doors": "Türen",
         "doorsNote": "Zerstörbare Innentüren sind ein eigener Bereich — sie haben ihre eigene Gesundheit und zählen nicht zu den Rumpf-HP.",
         "doorsSub": "%{count} zerstörbar",
-        "hint": "Die Rumpf-HP sind die Summe der Gesundheit aller Teile.",
         "hullHp": "Rumpf-HP",
         "hullHpSub": "gesamt über alle Teile",
         "integrity": "Rumpfintegrität",
@@ -1980,7 +2019,7 @@
           "spreadFirstShot": "Streuung erster Schuss",
           "spreadPerShot": "Streuung/Schuss",
           "spreadRecovery": "Streuungsabbau",
-          "pool": "Energiepool",
+          "pool": "Kondensator",
           "maxRegen": "Max. Regen/s",
           "costPerShot": "Energie/Schuss",
           "heatPerShot": "Hitze/Schuss",
@@ -3610,6 +3649,11 @@
         "forContract": "für"
       },
       "hangarInventories": "Inventare",
+      "hangarBlueprints": {
+        "owned": "Vorhanden",
+        "wanted": "Gewünscht",
+        "missions": "Missionen"
+      },
       "adminNotifications": {
         "inbox": "Posteingang",
         "archive": "Archiv",
@@ -4341,6 +4385,8 @@
         "sourceSummary": "%{count} Quellen · %{orgs} Organisationen",
         "unattributed": "Ohne Zuordnung",
         "minPoints": "Ab %{points} Punkten",
+        "limitedEvent": "Zeitlich begrenztes Event",
+        "eventHint": "Event-Belohnungen gibt es nur, solange CIG das Event laufen lässt. Die Spieldateien behalten die Belohnungsstufen auch zwischen den Durchläufen, daher lässt sich daraus nicht ablesen, ob es gerade aktiv ist.",
         "noKnownSource": "Keine bekannte Quelle",
         "noSourceLead": "Keine Mission und kein Szenario vergibt diesen Bauplan.",
         "noSourceBody": "Die Spieldateien führen ihn in keinem Belohnungspool, es gibt also nichts, worauf wir verweisen könnten.",
@@ -4357,7 +4403,7 @@
         },
         "kinds": {
           "contract": "Auftrag",
-          "scenario": "Szenario"
+          "scenario": "Event"
         },
         "duration": {
           "hours": "%{count} Std.",
@@ -4416,6 +4462,30 @@
         "templatedNote": "Die markierten Stellen füllt das Spiel aus, wenn es die Mission vergibt.",
         "payoutNote": "Das Spiel berechnet die Auszahlung erst beim Erzeugen der Mission, deshalb nennen die Dateien nur für eine Handvoll Aufträge eine Auszahlung.",
         "noRewards": "Die Dateien nennen für diesen Auftrag keine Belohnung.",
+        "handIns": "Abzugeben",
+        "handInsChoice": "Eines davon",
+        "buyIn": "Einsatz",
+        "timeToComplete": "Dauer",
+        "minutes": "%{time} Min.",
+        "offeredAt": "Angeboten bei",
+        "availability": {
+          "orHigher": "%{standing} oder höher",
+          "reputationAny": "Beliebiges Ansehen bei %{org}",
+          "onceOnly": "Nur einmal",
+          "thisMission": "diese Mission",
+          "title": "Verfügbarkeit",
+          "onePerPlayer": "Einer gleichzeitig pro Spieler",
+          "perPlayer": "Bis zu %{count} gleichzeitig pro Spieler",
+          "respawn": "Erneut angeboten nach %{time} Min.",
+          "respawnVaried": "Erneut angeboten nach %{time} ± %{variation} Min.",
+          "crimeStat": "CrimeStat %{min} – %{max}",
+          "reputation": "%{band} bei %{org}",
+          "reputationExcluded": "Nicht %{band} bei %{org}",
+          "completeFirst": "Vorher abschließen",
+          "completeCount": "%{count} davon abschließen",
+          "completeUnlisted": "%{count} Missionen abschließen, die nicht im Katalog sind",
+          "excluded": "Nicht mehr, sobald abgeschlossen"
+        },
         "unreleased": "Nicht im Release",
         "retired": "Entfernt"
       },

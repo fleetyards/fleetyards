@@ -91,4 +91,11 @@ class VehicleFittedCargoTest < ActiveSupport::TestCase
 
     assert_fitted_cargo 38, public_only: true
   end
+
+  test "a concept ship carries the most it can" do
+    @model.update!(production_status: "in-concept")
+
+    assert_fitted_cargo 76
+    assert_nil @vehicle.reload.cargo_with_modules
+  end
 end

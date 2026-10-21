@@ -6,7 +6,7 @@ import {
   type ComponentTurret,
   ComponentTurretControlEnum,
 } from "@/services/fyApi";
-import { computeLoadoutStats } from "./useLoadoutStats";
+import { capacitor, computeLoadoutStats } from "./useLoadoutStats";
 import { WEAPON_POOL_PORT } from "./useLoadoutSim";
 
 function weaponHardpoint(
@@ -404,6 +404,36 @@ describe("computeLoadoutStats", () => {
       expect(stats.dpsByControl.manned).toBe(25);
       expect(stats.dpsByControl.remote).toBe(0);
       expect(stats.weapons[0].control).toBe("manned");
+    });
+  });
+});
+
+describe("capacitor", () => {
+  // A CF-557 Galdereen as the game files describe it.
+  const galdereen = {
+    fireRate: 750,
+    regen: {
+      maxAmmoLoad: 75,
+      maxRegenPerSecond: 15,
+      regenerationCooldown: 0.882,
+    },
+  } as ComponentWeapon;
+
+  // The Constellation Mk V's engineering buff.
+  const mk5 = { powerRatio: 1, maxAmmoLoad: 9, maxRegenPerSecond: 1 };
+
+  it("holds what the game shows on a Mk V at every weapon pip", () => {
+    // Pool of 4 against the 12.2 its pilot and turret guns draw together.
+    expect(
+      [1, 2, 3, 4].map((pips) => capacitor(galdereen, pips / 12.2, mk5)?.shots),
+    ).toEqual([55, 111, 166, 221]);
+  });
+
+  it("holds the listed load on a ship without a buff", () => {
+    expect(capacitor(galdereen, 0.5)).toEqual({
+      shots: 38,
+      maxShots: 75,
+      regenPerSecond: 7.5,
     });
   });
 });

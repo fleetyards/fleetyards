@@ -1387,11 +1387,12 @@
         "fuel": "燃料",
         "fuelHydrogen": "氫",
         "fuelQuantum": "量子",
-        "fuelFullMain": "全推力，主推進器",
-        "fuelFullAll": "全推力，所有推進器",
+        "fuelBurnMain": "續航，主推進器",
+        "fuelBurnAll": "續航，全部",
+        "fuelDrawMain": "耗量，主推進器",
+        "fuelDrawAll": "耗量，全部",
         "durationHoursMinutes": "%{hours} 小時 %{minutes} 分鐘",
-        "durationMinutes": "%{minutes} 分鐘",
-        "hint": "加速後的操控性會隨引擎的電力格提升；引擎沒有供電時全部為零。"
+        "durationMinutes": "%{minutes} 分鐘"
       },
       "base": {
         "price": "價格",
@@ -1426,8 +1427,7 @@
         "title": "貨物",
         "holdsSub": "分佈於 %{count} 個貨艙",
         "maxContainerSub": "可容納的最大貨櫃",
-        "containers": "貨櫃容量",
-        "hint": "各種尺寸的貨櫃在貨物網格上最多可放置的數量；長條顯示它佔總容量的比例。"
+        "containers": "貨櫃容量"
       },
       "weaponRacks": {
         "slots": "槽位",
@@ -1448,36 +1448,31 @@
           "multitool": "多功能工具",
           "medical_injection": "醫療筆",
           "grenade": "手榴彈"
-        },
-        "hint": "船上所有武器架的槽位，依可放置物品與尺寸分組。"
+        }
       },
       "storageContainers": {
         "total": "總容量",
         "count": "容器",
-        "perContainer": "每個",
-        "hintOre": "存放開採的礦石，不是貨物。",
-        "hintSalvage": "存放回收的材料，不是貨物。"
+        "perContainer": "每個"
       },
       "fuelTanks": {
         "capacitySub": "分佈於 %{count} 個燃料艙",
         "podsSub": "外部掛點",
         "components": "燃料艙類型",
-        "perPod": "每個燃料艙",
-        "hint": "掛在外部掛載點的燃料艙所攜帶的燃料；長條顯示每種類型佔總容量的比例。"
+        "perPod": "每個燃料艙"
       },
       "refuelBoom": {
         "fuelFlowSub": "氫燃料輸送",
         "quantumFlowSub": "量子燃料輸送",
         "captureRadiusSub": "對接容許範圍",
-        "equipment": "裝備",
-        "hint": "加油臂的輸送速率，以及噴嘴的對接容許範圍。"
+        "equipment": "裝備"
       },
       "combat": {
         "title": "戰鬥",
         "openPenetrationCheck": "穿透檢測",
         "dps": "爆發 DPS",
         "dpsSub": "%{count} 件武器",
-        "sustained": "持續 DPS",
+        "sustained": "持續",
         "sustainedSub": "計入能量回復與熱量",
         "alpha": "Alpha",
         "alphaSub": "每次齊射",
@@ -1496,10 +1491,57 @@
           "manned": "有人砲塔",
           "remote": "遙控砲塔",
           "pds": "點防禦"
-        },
-        "hint": "以預設配置計算的 DPS。持續值會計入每件武器的能量池回復與過熱循環。不含飛彈。"
+        }
       },
       "power": {
+        "planner": {
+          "sustained": "%{dps} 持續 DPS",
+          "weaponPower": "武器能量 %{percent}",
+          "weaponsOff": "武器離線",
+          "regen": "回復 %{regen} HP/s",
+          "shieldsDown": "護盾關閉",
+          "engineOff": "引擎未供電",
+          "engineOffSub": "完全無法飛行",
+          "boostedHandling": "加力操控 %{percent}",
+          "engineBase": "僅基礎推力",
+          "engineBaseSub": "加力需要更多能量段",
+          "radarOff": "雷達關閉",
+          "coolant": "每秒 %{rate} 冷卻液",
+          "noCooling": "無冷卻",
+          "ready": "可預熱",
+          "off": "關閉",
+          "needsBlock": "需要 %{min} 段的啟動區塊才能啟動",
+          "powered": "已供電",
+          "segments": "已用能量段",
+          "signatures": "訊號特徵",
+          "plantSegments": "%{segments} 段",
+          "segmentsTotal": "段",
+          "setPips": "%{name}：%{count} 段",
+          "weaponEnergy": "武器能量",
+          "energyGun": "能量 · 從電容開火",
+          "heatGun": "實彈 · 受熱量限制",
+          "sustainedEach": "每門持續",
+          "capacitor": "電容",
+          "shots": "%{count} / %{max} 發",
+          "firing": "扣扳機時間",
+          "emptiesIn": "打空於",
+          "overheatsIn": "過熱於",
+          "refillsIn": "回滿於",
+          "recoversIn": "恢復於",
+          "regenLabel": "回復",
+          "shotsPerSecond": "%{rate} 發/秒",
+          "presets": {
+            "title": "預設",
+            "name": "預設名稱",
+            "save": "儲存預設",
+            "rename": "重新命名 %{name}",
+            "delete": "刪除 %{name}",
+            "add": "新增預設"
+          },
+          "title": "能量規劃器",
+          "titleFor": "能量規劃器 · %{name}",
+          "open": "能量規劃器"
+        },
         "title": "能量分配",
         "scm": "SCM",
         "nav": "NAV",
@@ -1512,7 +1554,6 @@
         "cs": "CS",
         "csAxisHint": "點擊以切換軸向（x / y / z）",
         "segmentsUsed": "%{used} / %{total} 段",
-        "hint": "在各系統之間分配能量。武器的持續 DPS 會隨分配到的能量提升；其餘部分會自動平衡。",
         "families": {
           "weapon": "武器",
           "shield": "護盾",
@@ -1559,7 +1600,6 @@
           "infrared": "IR",
           "crossSection": "CS"
         },
-        "hint": "以預設配置計算的護盾、裝甲與干擾措施數值。吸收率低於 100% 表示該傷害類型在護盾還撐著的時候就會打到船體。",
         "openDeflectionCheck": "偏轉檢測"
       },
       "penetrationCheck": {
@@ -1625,7 +1665,6 @@
         "doors": "門",
         "doorsNote": "可破壞的內部艙門屬於獨立區域 — 它們有自己的血量，不計入船體 HP。",
         "doorsSub": "%{count} 個可破壞",
-        "hint": "船體 HP 是所有部件血量的總和。",
         "hullHp": "船體 HP",
         "hullHpSub": "所有部件的總和",
         "integrity": "船體完整度",
@@ -1980,7 +2019,7 @@
           "spreadFirstShot": "首發散布",
           "spreadPerShot": "散布/發",
           "spreadRecovery": "散布恢復",
-          "pool": "能量池",
+          "pool": "電容",
           "maxRegen": "最大回復/秒",
           "costPerShot": "能量/發",
           "heatPerShot": "熱量/發",
@@ -3607,6 +3646,11 @@
         "forContract": "用於"
       },
       "hangarInventories": "Inventories",
+      "hangarBlueprints": {
+        "owned": "已擁有",
+        "wanted": "想要",
+        "missions": "任務"
+      },
       "adminNotifications": {
         "inbox": "收件匣",
         "archive": "封存",
@@ -4338,6 +4382,8 @@
         "sourceSummary": "%{count} 個來源 · %{orgs} 個組織",
         "unattributed": "未標明組織",
         "minPoints": "%{points} 點起",
+        "limitedEvent": "限時活動",
+        "eventHint": "活動獎勵僅在 CIG 開啟該活動期間發放。遊戲檔案在兩次活動之間仍保留其獎勵階段，因此無法據此判斷活動目前是否開啟。",
         "noKnownSource": "無已知來源",
         "noSourceLead": "沒有任務或場景會發放此藍圖。",
         "noSourceBody": "遊戲檔案未將其列入任何獎勵池，因此無從指引。",
@@ -4354,7 +4400,7 @@
         },
         "kinds": {
           "contract": "合約",
-          "scenario": "場景"
+          "scenario": "活動"
         },
         "duration": {
           "hours": "%{count} 小時",
@@ -4413,6 +4459,30 @@
         "templatedNote": "標記的部分由遊戲在發布任務時填入。",
         "payoutNote": "報酬由遊戲在產生任務時計算，因此遊戲檔案只為少數合約寫明金額。",
         "noRewards": "遊戲檔案未為此任務寫明獎勵。",
+        "handIns": "需上繳",
+        "handInsChoice": "以下任選其一",
+        "buyIn": "押金",
+        "timeToComplete": "時長",
+        "minutes": "%{time} 分鐘",
+        "offeredAt": "發布地點",
+        "availability": {
+          "orHigher": "%{standing} 或以上",
+          "reputationAny": "%{org} 任意聲望",
+          "onceOnly": "僅限一次",
+          "thisMission": "本任務",
+          "title": "可接取條件",
+          "onePerPlayer": "每名玩家同時限一個",
+          "perPlayer": "每名玩家同時最多 %{count} 個",
+          "respawn": "%{time} 分鐘後再次發布",
+          "respawnVaried": "%{time} ± %{variation} 分鐘後再次發布",
+          "crimeStat": "CrimeStat %{min} – %{max}",
+          "reputation": "%{org} 聲望：%{band}",
+          "reputationExcluded": "%{org} 聲望不在：%{band}",
+          "completeFirst": "需先完成",
+          "completeCount": "需完成其中 %{count} 個",
+          "completeUnlisted": "需完成 %{count} 個未收錄的任務",
+          "excluded": "完成以下任務後不再提供"
+        },
         "unreleased": "未在正式版",
         "retired": "已移除"
       },

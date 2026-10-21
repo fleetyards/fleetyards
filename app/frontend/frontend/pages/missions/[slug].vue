@@ -8,13 +8,19 @@ export default {
 import AsyncData from "@/shared/components/AsyncData.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import MissionText from "@/frontend/components/MissionText/index.vue";
+import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import MissionRewards from "@/frontend/components/Missions/Rewards/index.vue";
-import { missionTextPlain } from "@/frontend/components/MissionText/index";
+import MissionHandIns from "@/frontend/components/Missions/HandIns/index.vue";
+import MissionAvailability from "@/frontend/components/Missions/Availability/index.vue";
+import {
+  missionTextParts,
+  missionTextPlain,
+} from "@/frontend/components/MissionText/index";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useGameMission as useMissionQuery } from "@/services/fyApi";
 
-const { t } = useI18n();
+const { t, toNumber } = useI18n();
 const { updateMetaInfo } = useMetaInfo();
 const route = useRoute();
 
@@ -45,6 +51,32 @@ const hasCalculatedPayout = computed(() =>
   (mission.value?.rewards || []).some((reward) => reward.calculated),
 );
 
+// Where it takes place, apart from where it is offered: a contract offered
+// anywhere around Hurston names up to 37 places, which would bury the few it
+// actually sends a player to.
+const placesTakenPlace = computed(() =>
+  (mission.value?.locations || []).filter((link) => link.source !== "offered"),
+);
+
+const placesOffered = computed(() =>
+  (mission.value?.locations || []).filter((link) => link.source === "offered"),
+);
+
+// A briefing whose every placeholder the files state is the finished text.
+const briefingIsTemplated = computed(() =>
+  missionTextParts(
+    mission.value?.description,
+    mission.value?.placeholderValues,
+  ).some((part) => part.kind === "token"),
+);
+
+const hasAvailability = computed(
+  () =>
+    !!mission.value?.maxInstancesPerPlayer ||
+    !!mission.value?.respawnTime ||
+    !!mission.value?.prerequisites?.length,
+);
+
 const standing = computed(() => {
   const min = mission.value?.minStanding;
   const max = mission.value?.maxStanding;
@@ -60,12 +92,14 @@ watch(
   (value) => {
     if (!value) return;
 
-    // The run-time spans are stripped to a bracketed name here rather than
-    // rendered: a meta title is plain text, and `~mission(TargetName)` in a
-    // browser tab or a link preview reads as a bug.
+    // The run-time spans left after filling are stripped to a bracketed name
+    // here rather than rendered: a meta title is plain text, and
+    // `~mission(TargetName)` in a browser tab or a link preview reads as a bug.
     updateMetaInfo({
-      title: missionTextPlain(value.name) || t("headlines.missions.index"),
-      description: missionTextPlain(value.description),
+      title:
+        missionTextPlain(value.name, value.placeholderValues) ||
+        t("headlines.missions.index"),
+      description: missionTextPlain(value.description, value.placeholderValues),
     });
   },
   { immediate: true },
@@ -82,7 +116,10 @@ watch(
         <div class="mission-page__masthead">
           <div class="mission-page__title">
             <Heading hero>
-              <MissionText :text="mission.name" />
+              <MissionText
+                :text="mission.name"
+                :values="mission.placeholderValues"
+              />
             </Heading>
 
             <div class="mission-page__sub">
@@ -140,6 +177,36 @@ watch(
             </span>
 
             <span
+              v-if="mission.buyIn"
+              class="mission-page__badge"
+              data-test="mission-buy-in"
+            >
+              <span class="mission-page__badge-label">
+                {{ t("labels.gameMission.buyIn") }}
+              </span>
+              <span class="mission-page__badge-value">
+                {{ toNumber(mission.buyIn) }} {{ t("number.units.uec") }}
+              </span>
+            </span>
+
+            <span
+              v-if="mission.timeToComplete"
+              class="mission-page__badge"
+              data-test="mission-time-to-complete"
+            >
+              <span class="mission-page__badge-label">
+                {{ t("labels.gameMission.timeToComplete") }}
+              </span>
+              <span class="mission-page__badge-value">
+                {{
+                  t("labels.gameMission.minutes", {
+                    time: toNumber(mission.timeToComplete),
+                  })
+                }}
+              </span>
+            </span>
+
+            <span
               v-if="mission.locationKind && mission.locationKind !== 'unknown'"
               class="mission-page__badge"
               data-test="mission-location"
@@ -156,20 +223,36 @@ watch(
           </div>
         </div>
 
-        <!-- The briefing as the game writes it, spans and emphasis intact.
-             2,344 of the 2,475 descriptions carry a substitution the game
-             fills in when it generates the mission, so this is a template
-             rather than the sentence a player will read. -->
+        <!-- The briefing as the game writes it, with the values the files
+             state filled in. What remains is picked when the game generates
+             the mission, so this is still a template rather than the
+             sentence a player will read. -->
         <section v-if="mission.description" class="mission-page__panel">
           <h2 class="mission-page__panel-title">
             {{ t("labels.gameMission.briefing") }}
           </h2>
           <p class="mission-page__description">
-            <MissionText :text="mission.description" multiline />
+            <MissionText
+              :text="mission.description"
+              :values="mission.placeholderValues"
+              multiline
+            />
           </p>
-          <p class="mission-page__note">
+          <p v-if="briefingIsTemplated" class="mission-page__note">
             {{ t("labels.gameMission.templatedNote") }}
           </p>
+        </section>
+
+        <section
+          v-if="mission.handIns?.length"
+          class="mission-page__panel"
+          data-test="mission-hand-ins"
+        >
+          <h2 class="mission-page__panel-title">
+            {{ t("labels.gameMission.handIns") }}
+          </h2>
+
+          <MissionHandIns :hand-ins="mission.handIns" />
         </section>
 
         <section class="mission-page__panel">
@@ -198,17 +281,29 @@ watch(
              missions that drop it -- is text today and stays text until
              `blueprint_sources` points at a mission instead of carrying its
              own copy of the name. -->
+        <section
+          v-if="hasAvailability"
+          class="mission-page__panel"
+          data-test="mission-availability"
+        >
+          <h2 class="mission-page__panel-title">
+            {{ t("labels.gameMission.availability.title") }}
+          </h2>
+
+          <MissionAvailability :mission="mission" />
+        </section>
+
         <!-- The specific places its location templates stand for, and the
              places its text names. Most templates only resolve to a whole
              planet or moon, which is not a place to link to. -->
-        <section v-if="mission.locations?.length" class="mission-page__panel">
+        <section v-if="placesTakenPlace.length" class="mission-page__panel">
           <h2 class="mission-page__panel-title">
             {{ t("labels.gameMission.locations") }}
           </h2>
 
           <ul class="mission-page__places">
             <li
-              v-for="link in mission.locations"
+              v-for="link in placesTakenPlace"
               :key="`${link.source}-${link.location.id}`"
               class="mission-page__place"
             >
@@ -227,6 +322,34 @@ watch(
           </ul>
         </section>
 
+        <section
+          v-if="placesOffered.length"
+          class="mission-page__panel"
+          data-test="mission-offered-at"
+        >
+          <h2 class="mission-page__panel-title">
+            {{ t("labels.gameMission.offeredAt") }}
+          </h2>
+
+          <ul class="mission-page__offered">
+            <li
+              v-for="link in placesOffered"
+              :key="link.location.id"
+              class="mission-page__offered-place"
+            >
+              <CatalogueItemPopover
+                :item="{
+                  type: 'Location',
+                  slug: link.location.slug,
+                  name: link.location.name,
+                }"
+              >
+                <span class="mission-page__chip">{{ link.location.name }}</span>
+              </CatalogueItemPopover>
+            </li>
+          </ul>
+        </section>
+
         <section v-if="mission.blueprints?.length" class="mission-page__panel">
           <h2 class="mission-page__panel-title">
             {{ t("labels.gameMission.blueprints") }}
@@ -238,11 +361,15 @@ watch(
               :key="blueprint.id"
               class="mission-page__blueprint"
             >
-              <router-link
-                :to="{ name: 'blueprint', params: { slug: blueprint.slug } }"
+              <CatalogueItemPopover
+                :item="{
+                  type: 'Blueprint',
+                  slug: blueprint.slug,
+                  name: blueprint.name,
+                }"
               >
-                {{ blueprint.name }}
-              </router-link>
+                <span class="mission-page__chip">{{ blueprint.name }}</span>
+              </CatalogueItemPopover>
             </li>
           </ul>
         </section>

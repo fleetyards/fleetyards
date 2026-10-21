@@ -309,7 +309,9 @@ class Vehicle < ApplicationRecord
   # the stock module of a slot it leaves out. A loadout kept on another site
   # says nothing about what is fitted, so it counts as none. `public_only`
   # leaves out a loadout its owner keeps private, for the lists other people
-  # see. Mirrors `#fitted_cargo`.
+  # see. A concept ship has no game files to say what it comes with and nobody
+  # flies it yet, so it counts the most it can carry, as the catalogue does.
+  # Mirrors `#fitted_cargo`.
   def self.fitted_cargo_sql(public_only: false)
     loadout = <<~SQL.squish
       fitted_loadouts.vehicle_id = vehicles.id
@@ -319,7 +321,11 @@ class Vehicle < ApplicationRecord
     SQL
 
     <<~SQL.squish
-      COALESCE((SELECT hulls.cargo FROM models hulls WHERE hulls.id = vehicles.model_id), 0)
+      CASE WHEN EXISTS (
+        SELECT 1 FROM models concepts WHERE concepts.id = vehicles.model_id AND concepts.production_status = 'in-concept'
+      )
+      THEN (SELECT #{Model.max_cargo_sql} FROM models WHERE models.id = vehicles.model_id)
+      ELSE COALESCE((SELECT hulls.cargo FROM models hulls WHERE hulls.id = vehicles.model_id), 0)
       + CASE WHEN EXISTS (SELECT 1 FROM vehicle_loadouts fitted_loadouts WHERE #{loadout})
         THEN COALESCE((
           SELECT SUM(model_modules.cargo)
@@ -347,6 +353,7 @@ class Vehicle < ApplicationRecord
            WHERE stock_slots.model_id = vehicles.model_id
              AND #{ModelModule.carrying_cargo_sql}
         ), 0)
+      END
       END
     SQL
   end
@@ -880,6 +887,8 @@ class Vehicle < ApplicationRecord
   end
 
   def fitted_cargo(public_only: false)
+    return model.max_cargo if model.production_status == "in-concept"
+
     loadout = fitted_loadout(public_only:)
     return model.stock_cargo if loadout.nil?
 

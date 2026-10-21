@@ -1,4 +1,5 @@
 import { useI18n } from "@/shared/composables/useI18n";
+import type { WeaponRegenModifier } from "@/frontend/composables/powerSim";
 import { UNINFORMATIVE } from "@/frontend/composables/useModuleContents";
 import {
   type CompareDelta,
@@ -62,6 +63,7 @@ export interface LoadoutFitting {
   hardpoints: Hardpoint[];
   tree: FittedSlot[];
   weaponPoolSize?: number;
+  weaponRegenModifier?: WeaponRegenModifier;
 }
 
 // One fitting, measured once, so two can be compared card by card without
@@ -215,6 +217,7 @@ export const useLoadoutDiff = (fitting = useComponentFitting()) => {
             blade: bladeIn(loadout.tree),
           },
           loadout.weaponPoolSize,
+          loadout.weaponRegenModifier,
         )
       : undefined,
     tree: loadout.tree,

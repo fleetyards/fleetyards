@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
-# A recipe somebody holds.
+# A recipe somebody holds, or is after.
 #
-# The row is the whole statement: it exists, therefore they have it. What a
+# The row is the whole statement: it exists, therefore they have it -- unless
+# it is `wanted`, in which case it is on their wishlist instead. What a
 # blueprint can still be used for is an announced game feature that has not
 # shipped, so nothing here counts anything -- see the migration.
 #
@@ -15,6 +16,11 @@ class UserBlueprint < ApplicationRecord
   belongs_to :blueprint
 
   validates :blueprint_id, uniqueness: {scope: :user_id}
+
+  # Every reader of "who holds this" has to ask through `owned`: a bare
+  # `UserBlueprint` relation counts the wishlist as held.
+  scope :owned, -> { where(wanted: false) }
+  scope :wanted, -> { where(wanted: true) }
 
   # Read and nothing else. Every other group carries create/update/delete
   # because the fleet owns the records; these belong to the members, and the

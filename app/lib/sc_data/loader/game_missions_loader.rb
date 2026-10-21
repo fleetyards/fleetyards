@@ -31,6 +31,8 @@ module ScData
           build = apply_build(mission, update_params.except(:sc_ref, :sc_key, :version))
 
           persist_rewards(build, mission_data["rewards"])
+          persist_hand_ins(build, mission_data["hand_ins"])
+          persist_prerequisites(build, mission_data["prerequisites"])
           persist_locations(mission, mission_data)
         end
 
@@ -78,6 +80,12 @@ module ScData
           # reads as unknown rather than as "in space".
           location_kind: mission_data["location_kind"],
           needs_landing: mission_data.fetch("needs_landing", false),
+          buy_in: mission_data["buy_in"],
+          time_to_complete: mission_data["time_to_complete"],
+          max_instances_per_player: mission_data["max_instances_per_player"],
+          respawn_time: mission_data["respawn_time"],
+          respawn_variation: mission_data["respawn_variation"],
+          placeholder_values: mission_data["placeholder_values"].presence,
           version: sc_version
         }
       end
@@ -115,7 +123,8 @@ module ScData
         return if !default_environment? && mission.game_mission_locations.exists?
 
         links = template_locations(mission_data["location_template_refs"]).map { |id| [id, "template"] } +
-          text_locations(mission_data).map { |id| [id, "text"] }
+          text_locations(mission_data).map { |id| [id, "text"] } +
+          offered_locations(mission_data["offered_location_refs"]).map { |id| [id, "offered"] }
 
         mission.game_mission_locations.delete_all unless mission.previously_new_record?
 
@@ -137,6 +146,13 @@ module ScData
         return [] if refs.empty?
 
         current_locations.where("mission_template_refs && ARRAY[?]::text[]", refs).pluck(:id)
+      end
+
+      private def offered_locations(refs)
+        refs = Array.wrap(refs)
+        return [] if refs.empty?
+
+        current_locations.where("sc_refs && ARRAY[?]::text[]", refs).pluck(:id)
       end
 
       private def text_locations(mission_data)
@@ -197,6 +213,7 @@ module ScData
             entity_name: reward["entity_name"],
             weight: reward["weight"],
             badge: reward["badge"],
+            **catalogue_item(reward["entity_class"], reward["commodity_key"]),
             position:,
             created_at: Time.zone.now,
             updated_at: Time.zone.now
@@ -215,6 +232,104 @@ module ScData
         stats[GameMissionReward.name][:created] += rows.size
 
         build.association(:rewards).reset
+      end
+
+      # Rewritten wholesale for the reason the rewards are.
+      private def persist_prerequisites(build, prerequisites)
+        now = Time.zone.now
+
+        rows = Array.wrap(prerequisites).filter_map.with_index do |prerequisite, position|
+          next unless ::GameMissionPrerequisite::KINDS.include?(prerequisite["kind"])
+
+          {
+            id: SecureRandom.uuid,
+            game_mission_build_id: build.id,
+            kind: prerequisite["kind"],
+            min: prerequisite["min"],
+            max: prerequisite["max"],
+            org_key: prerequisite["org_key"],
+            org_name: prerequisite["org_name"],
+            min_standing: prerequisite["min_standing"],
+            max_standing: prerequisite["max_standing"],
+            excluded: prerequisite.fetch("excluded", false),
+            count: prerequisite["count"],
+            mission_refs: Array.wrap(prerequisite["mission_refs"]),
+            includes_self: prerequisite.fetch("includes_self", false),
+            position:,
+            created_at: now,
+            updated_at: now
+          }
+        end
+
+        build.prerequisites.delete_all unless build.previously_new_record?
+
+        return if rows.blank?
+
+        GameMissionPrerequisite.insert_all!(rows)
+
+        stats[GameMissionPrerequisite.name][:created] += rows.size
+
+        build.association(:prerequisites).reset
+      end
+
+      # The catalogue row an award or a hand-in names, the way a blueprint finds
+      # what it makes: a component or equipment by the entity ref, a commodity
+      # by its key -- a gem or an ore is a crate whose own ref is not the one
+      # the commodity row carries.
+      private def catalogue_item(entity_class, commodity_key)
+        type, id = catalogue_refs[entity_class] if entity_class.present?
+        type, id = "Commodity", commodity_keys[commodity_key] if id.nil? && commodity_key.present?
+
+        id ? {catalogue_item_type: type, catalogue_item_id: id} : {catalogue_item_type: nil, catalogue_item_id: nil}
+      end
+
+      # Loaded once per run: a full load names about 500 distinct entities, and
+      # asking for each would be a query per reward line.
+      private def catalogue_refs
+        @catalogue_refs ||= [Commodity, Equipment, Component].each_with_object({}) do |model, index|
+          model.where.not(sc_ref: nil).pluck(:sc_ref, :id).each { |ref, id| index[ref] = [model.name, id] }
+        end
+      end
+
+      private def commodity_keys
+        @commodity_keys ||= Commodity.where.not(sc_key: nil).pluck(:sc_key, :id).to_h
+      end
+
+      # Rewritten wholesale for the reason the rewards are. An entry the parser
+      # could not identify is skipped rather than stored as a blank line.
+      private def persist_hand_ins(build, hand_ins)
+        now = Time.zone.now
+
+        rows = Array.wrap(hand_ins).filter_map.with_index do |hand_in, position|
+          ref = hand_in["entity_class"] || hand_in["resource_ref"]
+
+          next if ref.blank? || hand_in["amount"].nil?
+
+          {
+            id: SecureRandom.uuid,
+            game_mission_build_id: build.id,
+            kind: hand_in["kind"],
+            ref:,
+            name: hand_in["entity_name"] || hand_in["resource_name"],
+            amount: hand_in["amount"],
+            max: hand_in["max"],
+            option: hand_in["option"],
+            **catalogue_item(hand_in["entity_class"], hand_in["commodity_key"]),
+            position:,
+            created_at: now,
+            updated_at: now
+          }
+        end
+
+        build.hand_ins.delete_all unless build.previously_new_record?
+
+        return if rows.blank?
+
+        GameMissionHandIn.insert_all!(rows)
+
+        stats[GameMissionHandIn.name][:created] += rows.size
+
+        build.association(:hand_ins).reset
       end
     end
   end

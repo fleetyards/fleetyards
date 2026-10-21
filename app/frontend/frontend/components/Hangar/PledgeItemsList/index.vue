@@ -8,6 +8,7 @@ export default {
 import RowList from "@/shared/components/RowList/index.vue";
 import RowListItem from "@/shared/components/RowListItem/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import {
@@ -207,7 +208,20 @@ const sub = (item: HangarPledgeItem) =>
           </span>
         </template>
 
-        <template #name>{{ record.name }}</template>
+        <template #name>
+          <CatalogueItemPopover
+            v-if="record.catalogueItem"
+            :item="{
+              type: record.catalogueItem.itemType,
+              slug: record.catalogueItem.slug,
+              name: record.catalogueItem.name,
+              listed: record.catalogueItem.listed,
+            }"
+          >
+            {{ record.name }}
+          </CatalogueItemPopover>
+          <template v-else>{{ record.name }}</template>
+        </template>
 
         <template #sub>
           {{ sub(record) }}

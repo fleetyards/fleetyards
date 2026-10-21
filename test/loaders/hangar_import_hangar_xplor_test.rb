@@ -57,6 +57,16 @@ class HangarImportHangarXplorTest < ActiveSupport::TestCase
     assert_nil vehicle.name
   end
 
+  test "imports a painted ship RSI renamed along with its hull" do
+    paint = ModelPaint.find_by!(slug: "constellation-phoenix-emerald")
+    import = import_for([xplor_row(name: "Constellation Mk IV Phoenix Emerald", ship_code: "RSI_Constellation_Phoenix_Emerald")])
+
+    result = ::HangarImporter.new(import).run
+
+    assert_empty result[:missing]
+    assert_equal paint.model_id, Vehicle.find_by!(user_id: @user.id).model_id
+  end
+
   test "falls back to a custom name beside a standard ship name" do
     import = import_for([xplor_row(name: "Aurora ES", ship_code: "RSI_Aurora_Mk_I_ES", ship_name: "Aurora Mk I ES", custom_name: "Bob's Bus")])
 

@@ -1,0 +1,658 @@
+// The surface every card in the planner sits on: the site's panel grey, a
+// little see-through so the ship behind it still shows.
+@mixin power-surface {
+  border: 1px solid rgba($gray-light, 0.28);
+  border-radius: 8px;
+  background: rgba($gray-darker, 0.78);
+  backdrop-filter: blur(6px);
+}
+
+.power-view__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+// The power card's SCM/NAV switch.
+.power-view__seg {
+  display: inline-flex;
+  border: 1px solid rgba($gray-light, 0.28);
+  border-radius: 4px;
+}
+
+.power-view__seg-btn {
+  @include touch-tap-target;
+  padding: 5px 14px;
+  border: 0;
+  background: transparent;
+  font-family: "Orbitron", tahoma, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-text-dim, #959595);
+  cursor: pointer;
+
+  &:first-child {
+    border-radius: 3px 0 0 3px;
+  }
+
+  &:last-child {
+    border-radius: 0 3px 3px 0;
+  }
+
+  &--active {
+    background: rgba($primary, 0.18);
+    color: $text-color;
+  }
+}
+
+/* The ship behind the planner as the loadout editor shows it: the angled view
+   on the right, faded in from the left, as tall as the screen the modal was
+   given rather than as tall as the content, so it never rescales. */
+.power-view {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  > * {
+    position: relative;
+  }
+
+  &::before {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 30%;
+    height: calc(100dvh - 260px);
+    background-image: var(--power-backdrop, none);
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: contain;
+    mask-image: linear-gradient(90deg, transparent 0%, black 45%);
+    opacity: 0.85;
+    pointer-events: none;
+    content: "";
+  }
+
+  // At least as tall as the ship, which would otherwise hang below shorter
+  // content and give the modal body something to scroll.
+  @media (min-width: $tablet-breakpoint) {
+    min-height: calc(100dvh - 260px);
+
+    &::before {
+      display: block;
+    }
+  }
+
+  @media (min-width: map-get($grid-breakpoints, xxl)) {
+    min-height: min(calc(100dvh - 260px), 1400px);
+
+    &::before {
+      height: min(calc(100dvh - 260px), 1400px);
+    }
+  }
+}
+
+.power-view__head {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.power-view__text {
+  max-width: 860px;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+// The power card's head, at the planner's width: the switch and the segment
+// budget, the signatures, then the cooling and aim assist rows.
+.power-view__head {
+  gap: 16px;
+}
+
+.power-view__readouts {
+  display: grid;
+  gap: 14px 48px;
+
+  @media (min-width: $desktop-breakpoint) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.power-view__sigs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px 40px;
+}
+
+.power-view__sig {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  color: $text-color;
+  font-variant-numeric: tabular-nums;
+
+  i {
+    font-size: 16px;
+    color: $primary;
+  }
+
+  small {
+    margin-left: 2px;
+    font-size: 12px;
+    color: var(--color-text-dim, #959595);
+  }
+
+  &--toggle {
+    @include touch-tap-target;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+
+    &:hover,
+    &:hover i {
+      color: $primary;
+    }
+  }
+}
+
+.power-view__readout {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  // Under-cooled: heat load exceeds the coolers' output.
+  &--over .power-view__track > div {
+    background: $danger;
+  }
+
+  &--over .power-view__readout-value {
+    color: $danger;
+  }
+}
+
+// In a gun card the label sits above its track, which keeps the full width.
+.power-view__readout--gun {
+  flex-wrap: wrap;
+  gap: 6px 10px;
+
+  .power-view__readout-label {
+    flex: 1 0 auto;
+    min-width: 0;
+    font-size: 11px;
+  }
+
+  .power-view__readout-value {
+    min-width: 0;
+  }
+
+  .power-view__track {
+    flex: 1 0 100%;
+    order: 3;
+  }
+}
+
+.power-view__readout-label {
+  min-width: 110px;
+  font-family: "Orbitron", tahoma, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-text-dim, #959595);
+}
+
+.power-view__readout-value {
+  min-width: 80px;
+  font-size: 14px;
+  text-align: right;
+  color: $text-color;
+  font-variant-numeric: tabular-nums;
+}
+
+.power-view__track {
+  flex: 1;
+  height: 8px;
+  overflow: hidden;
+  border: 1px solid rgba($gray-light, 0.28);
+  border-radius: 999px;
+  background: $gray-black;
+
+  > div {
+    max-width: 100%;
+    height: 100%;
+    border-radius: 999px;
+    background: $primary;
+    transition: width 0.4s ease;
+  }
+}
+
+/* The power card's columns, grown to the width of the modal: one per system,
+   pips bottom-up, then what the system is and what its share buys. The rows
+   are shared so every bar ends on the same line. */
+.power-view__columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 0 12px;
+
+  @media (min-width: $desktop-breakpoint) {
+    grid-template-columns: repeat(var(--power-columns, 6), minmax(0, 1fr));
+  }
+}
+
+.power-view__column {
+  display: grid;
+  grid-row: span 4;
+  grid-template-rows: subgrid;
+  row-gap: 8px;
+  min-width: 0;
+  margin-bottom: 12px;
+  padding: 14px 12px 12px;
+  text-align: center;
+  @include power-surface;
+
+  // A column with no pips reads as off, as on the power card.
+  &--off {
+    .power-view__count {
+      color: $gray;
+      opacity: 0.5;
+    }
+
+    .power-view__icon {
+      color: $gray;
+      opacity: 0.4;
+    }
+
+    .power-view__family,
+    .power-view__effect {
+      opacity: 0.6;
+    }
+  }
+
+  @media (min-width: $desktop-breakpoint) {
+    margin-bottom: 0;
+  }
+}
+
+.power-view__bar {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.power-view__count {
+  font-size: 12px;
+  color: $text-color;
+  font-variant-numeric: tabular-nums;
+}
+
+/* A segment's height follows the screen's: what is left once the readouts,
+   the plants and the start of the weapon energy below have their room,
+   shared across the tallest bar. */
+.power-view__stack {
+  --pip-unit: clamp(
+    6px,
+    calc((100dvh - 800px) / var(--power-tallest, 6) - 4px),
+    22px
+  );
+
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: stretch;
+  gap: 4px;
+}
+
+.power-view__member {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 3px;
+}
+
+// The power card's pips: lit up to the allocation, the top one solid, a
+// headroom pip outlined; weapons in the weapon colour.
+.power-view__pip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: calc(
+    var(--pip-unit) * var(--pip-span, 1) + (var(--pip-span, 1) - 1) * 3px
+  );
+  padding: 0;
+  border: 0;
+  border-radius: 2px;
+  background: rgba($gray-light, 0.18);
+  font-size: 11px;
+  font-weight: 600;
+  color: $text-color;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: background 0.1s ease;
+
+  &:hover:not(:disabled) {
+    background: rgba($gray-light, 0.32);
+  }
+
+  &--on,
+  &--on:hover:not(:disabled) {
+    background: rgba($primary, 0.4);
+  }
+
+  &--top,
+  &--top:hover:not(:disabled) {
+    background: $primary;
+  }
+
+  &--headroom {
+    border: 1px solid rgba($gray-light, 0.16);
+    background: transparent;
+    cursor: not-allowed;
+  }
+}
+
+.power-view__column--weapon {
+  .power-view__pip--on {
+    background: rgba(#fa6800, 0.45);
+  }
+
+  .power-view__pip--top {
+    background: #fa6800;
+  }
+}
+
+.power-view__divider {
+  height: 0;
+  margin: 1px 0;
+  border-top: 1px dashed rgba($gray-light, 0.35);
+}
+
+.power-view__family {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 0;
+  font-family: "Orbitron", tahoma, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-dim, #959595);
+
+  span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.power-view__icon {
+  --hardpoint-category-icon-size: 17px;
+
+  flex: none;
+  color: $primary;
+}
+
+.power-view__parts {
+  font-size: 12px;
+  color: var(--color-text-dim, #959595);
+}
+
+.power-view__effect {
+  font-size: 13px;
+  font-weight: 600;
+
+  small {
+    display: block;
+    margin-top: 2px;
+    font-size: 11.5px;
+    font-weight: normal;
+    color: var(--color-text-dim, #959595);
+  }
+}
+
+/* Where the power comes from: a wire down from every bar onto one bus, and a
+   trunk from its middle to the plants. Only while the bars sit in one row. */
+.power-view__feed {
+  display: none;
+  margin: -24px 0;
+
+  @media (min-width: $desktop-breakpoint) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.power-view__wires {
+  display: grid;
+  grid-template-columns: repeat(var(--power-columns, 6), minmax(0, 1fr));
+  gap: 12px;
+  width: 100%;
+}
+
+.power-view__wire {
+  position: relative;
+  height: 24px;
+
+  // Down from the bar.
+  &::before {
+    position: absolute;
+    top: 0;
+    left: calc(50% - 1px);
+    width: 2px;
+    height: 100%;
+    background: var(--color-primary, #428bca);
+    content: "";
+  }
+
+  // Its stretch of the bus, across to the neighbours' wires.
+  &::after {
+    position: absolute;
+    right: -7px;
+    bottom: 0;
+    left: -7px;
+    height: 2px;
+    background: var(--color-primary, #428bca);
+    content: "";
+  }
+
+  &:first-child::after {
+    left: calc(50% - 1px);
+  }
+
+  &:last-child::after {
+    right: calc(50% - 1px);
+  }
+
+  &:only-child::after {
+    display: none;
+  }
+
+  &--off::before {
+    background: rgba($gray-light, 0.35);
+  }
+}
+
+.power-view__trunk {
+  width: 2px;
+  height: 24px;
+  background: var(--color-primary, #428bca);
+}
+
+.power-view__plant-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 24px;
+  align-self: center;
+  max-width: 100%;
+  padding: 10px 20px;
+  @include power-surface;
+}
+
+.power-view__plant-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+
+  .power-view__muted {
+    margin: 0 0 0 6px;
+  }
+}
+
+.power-view__plant-label {
+  font-family: "Orbitron", tahoma, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-gold, #d4af37);
+}
+
+.power-view__plant-total {
+  font-family: "Orbitron", tahoma, sans-serif;
+  font-size: 22px;
+
+  span {
+    margin-left: 6px;
+    font-family: "Open Sans", sans-serif;
+    font-size: 13px;
+    color: var(--color-text-dim, #959595);
+  }
+}
+
+.power-view__section-label {
+  margin: 0;
+  font-family: "Orbitron", tahoma, sans-serif;
+  font-size: 11px;
+  font-weight: normal;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-text-dim, #959595);
+}
+
+.power-view__energy {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.power-view__guns {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 12px;
+}
+
+.power-view__gun {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px 16px;
+  @include power-surface;
+}
+
+.power-view__gun-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.power-view__gun-name {
+  font-weight: 600;
+}
+
+.power-view__muted {
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--color-text-dim, #959595);
+}
+
+.power-view__gun-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+}
+
+.power-view__gun-figures {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+  font-size: 13px;
+
+  dt {
+    font-size: 12px;
+    font-weight: normal;
+    color: var(--color-text-dim, #959595);
+  }
+
+  dd {
+    margin: 0;
+    font-weight: 600;
+  }
+}
+
+.power-view__presets {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  min-height: 43px;
+}
+
+// Revealed with the row, as the hangar's group chips reveal theirs.
+@media (hover: hover) {
+  .power-view__presets-edit {
+    opacity: 0;
+    transition: opacity 150ms ease-in-out;
+  }
+
+  .power-view__presets:hover,
+  .power-view__presets:has(:focus-visible),
+  .power-view__presets--editing {
+    .power-view__presets-edit {
+      opacity: 1;
+    }
+  }
+}
+
+// Inline in the chip row, where the plus was: one line, input first.
+.power-view__preset-form {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.power-view__preset-input {
+  width: 220px;
+  margin: 0;
+}
+
+// The row's dropdown on a phone, laid out as the group labels' menu.
+.power-view__presets-menu {
+  display: contents;
+}
+
+.power-view__presets-menu-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 8px 6px 16px;
+}
+
+.power-view__presets-menu-name {
+  flex: 1;
+  min-width: 0;
+}

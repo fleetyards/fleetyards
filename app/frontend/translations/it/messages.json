@@ -1,6 +1,18 @@
 {
   "it": {
     "messages": {
+      "blueprint": {
+        "own": { "success": "%{blueprint} è contrassegnato come posseduto" },
+        "unown": {
+          "success": "%{blueprint} non è più contrassegnato come posseduto"
+        },
+        "want": {
+          "success": "%{blueprint} è stato aggiunto alla tua lista dei desideri"
+        },
+        "unwant": {
+          "success": "%{blueprint} è stato rimosso dalla tua lista dei desideri"
+        }
+      },
       "fleetchartScreenshot": {
         "failure": "Non è stato possibile salvare il grafico flotta come immagine"
       },
@@ -270,7 +282,7 @@
         },
         "blueprint": {
           "accountRequired": "Registrati o accedi per tenere traccia dei progetti che possiedi.",
-          "own": "Non è stato possibile aggiornare il progetto. Riprova."
+          "update": "Non è stato possibile aggiornare il progetto. Riprova."
         },
         "default": "<b>Si è verificato un errore.</b> <br>Hai provato a spegnere e riaccendere?"
       },

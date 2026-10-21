@@ -27,6 +27,14 @@ vi.mock("@/shared/composables/useI18n", () => ({
   }),
 }));
 
+vi.mock("@/frontend/components/CatalogueItemPopover/index.vue", () => ({
+  default: {
+    name: "CatalogueItemPopover",
+    props: ["item", "record", "link", "focusable"],
+    template: "<span><slot>{{ item.name }}</slot></span>",
+  },
+}));
+
 vi.mock("@/shared/composables/useMetaInfo", () => ({
   useMetaInfo: () => ({ updateMetaInfo: vi.fn() }),
 }));

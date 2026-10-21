@@ -47,6 +47,12 @@ describe("vehicle routes", () => {
     });
   });
 
+  // A static page under `/hangar/` and `/hangar/:username/` take the same
+  // shape of address.
+  it("opens the blueprints page rather than a hangar of that name", async () => {
+    expect((await land("/hangar/blueprints/")).name).toBe("hangar-blueprints");
+  });
+
   it("leaves the public hangar's own pages alone", async () => {
     expect((await land("/hangar/me/stats/")).name).toBe("hangar-public-stats");
     expect((await land("/hangar/me/wishlist/")).name).toBe("wishlist-public");

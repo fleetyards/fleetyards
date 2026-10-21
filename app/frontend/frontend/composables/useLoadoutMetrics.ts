@@ -1,4 +1,5 @@
 import type { CompareDeltaTone } from "@/frontend/components/Compare/delta";
+import type { WeaponRegenModifier } from "@/frontend/composables/powerSim";
 import { figureDelta } from "@/frontend/composables/figureDelta";
 import {
   type LoadoutStats,
@@ -75,13 +76,29 @@ export const useLoadoutMetrics = () => {
   const delta = (before: number, after: number, lowerIsBetter = false) =>
     figureDelta(before, after, lowerIsBetter, number);
 
-  const measure = (fitting: Fitting, poolSize?: number): FittingMeasure => {
-    const power = simulateLoadoutPower(fitting.hardpoints, poolSize);
+  const measure = (
+    fitting: Fitting,
+    poolSize?: number,
+    regenModifier?: WeaponRegenModifier,
+  ): FittingMeasure => {
+    const power = simulateLoadoutPower(
+      fitting.hardpoints,
+      poolSize,
+      "SCM",
+      undefined,
+      undefined,
+      regenModifier,
+    );
 
     return {
       power,
       shields: computeShieldStats(fitting.hardpoints, power.shieldPoolRatio),
-      combat: computeLoadoutStats(fitting.hardpoints, poolSize),
+      combat: computeLoadoutStats(
+        fitting.hardpoints,
+        poolSize,
+        undefined,
+        regenModifier,
+      ),
       blade: fitting.blade,
     };
   };

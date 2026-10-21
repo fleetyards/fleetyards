@@ -380,6 +380,7 @@ describe("loadout marker", () => {
     public: false,
     kind: VehicleLoadoutKindEnum.FLEETYARDS,
     items: [],
+    powerPresets: [],
     createdAt: "2026-10-01T00:00:00Z",
     updatedAt: "2026-10-01T00:00:00Z",
   };

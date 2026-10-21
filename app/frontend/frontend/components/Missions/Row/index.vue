@@ -14,12 +14,19 @@ import {
   type RowListItemTag,
 } from "@/shared/components/RowListItem/types";
 import { useI18n } from "@/shared/composables/useI18n";
-import { type GameMission, type ModelExtended } from "@/services/fyApi";
+import {
+  type GameMission,
+  type GameMissionBlueprint,
+  type ModelExtended,
+} from "@/services/fyApi";
 
 type Props = {
   mission: GameMission;
   // The pilot's ship, when one is chosen: its contracts are marked, not hidden.
   ship?: Pick<ModelExtended, "name" | "canLandOnPlanets">;
+  // On the reader's blueprint missions: the wanted blueprints this mission can
+  // hand out, which is the reason it is on that list at all.
+  wantedBlueprints?: GameMissionBlueprint[];
 };
 
 const props = defineProps<Props>();
@@ -197,11 +204,47 @@ const badges = computed<RowListItemBadge[]>(() => {
         <i class="fa-light fa-ban" aria-hidden="true" />
         {{ cannotLand.text }}
       </span>
+      <span
+        v-if="wantedBlueprints?.length"
+        class="mission-row__wanted"
+        data-test="mission-row-wanted"
+      >
+        <i class="fa-light fa-wand-sparkles" aria-hidden="true" />
+        <router-link
+          v-for="blueprint in wantedBlueprints"
+          :key="blueprint.id"
+          class="mission-row__wanted-blueprint"
+          :to="{ name: 'blueprint', params: { slug: blueprint.slug } }"
+        >
+          {{ blueprint.name }}
+        </router-link>
+      </span>
     </template>
   </RowListItem>
 </template>
 
 <style lang="scss" scoped>
+.mission-row__wanted {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+
+  i {
+    color: var(--color-muted, #7a8288);
+  }
+}
+
+.mission-row__wanted-blueprint {
+  color: var(--color-text-dim, #959595);
+  transition: color 150ms ease;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--color-text, #c8c8c8);
+  }
+}
+
 // Dimmed, not hidden, and dimmed by colour rather than opacity: the quiet text
 // colour keeps the name readable, where opacity took it below AA contrast. The
 // reason keeps its own colour, since it is the one thing on the row to read.

@@ -1387,11 +1387,12 @@
         "fuel": "Combustible",
         "fuelHydrogen": "Hidrógeno",
         "fuelQuantum": "Quantum",
-        "fuelFullMain": "Empuje máximo, principales",
-        "fuelFullAll": "Empuje máximo, todos los propulsores",
+        "fuelBurnMain": "Autonomía, principales",
+        "fuelBurnAll": "Autonomía, todos",
+        "fuelDrawMain": "Consumo, principales",
+        "fuelDrawAll": "Consumo, todos",
         "durationHoursMinutes": "%{hours} h %{minutes} min",
-        "durationMinutes": "%{minutes} min",
-        "hint": "El manejo con boost escala con los pips del motor; todo queda a cero cuando el motor no tiene energía."
+        "durationMinutes": "%{minutes} min"
       },
       "base": {
         "price": "Precio",
@@ -1426,8 +1427,7 @@
         "title": "Carga",
         "holdsSub": "en %{count} bodegas",
         "maxContainerSub": "la caja más grande que cabe",
-        "containers": "Capacidad de contenedores",
-        "hint": "Número máximo de contenedores de cada tamaño que caben en las grillas de carga; la barra muestra qué parte de la capacidad total ocupan."
+        "containers": "Capacidad de contenedores"
       },
       "weaponRacks": {
         "slots": "Ranuras",
@@ -1448,36 +1448,31 @@
           "multitool": "Multiherramienta",
           "medical_injection": "Medpens",
           "grenade": "Granadas"
-        },
-        "hint": "Ranuras de todos los armeros a bordo, por lo que admiten y su tamaño."
+        }
       },
       "storageContainers": {
         "total": "Capacidad total",
         "count": "Contenedores",
-        "perContainer": "cada uno",
-        "hintOre": "Guarda mineral extraído, no carga.",
-        "hintSalvage": "Guarda material recuperado, no carga."
+        "perContainer": "cada uno"
       },
       "fuelTanks": {
         "capacitySub": "en %{count} pods",
         "podsSub": "montajes externos",
         "components": "Tipos de pod",
-        "perPod": "por pod",
-        "hint": "Combustible transportado en pods montados en puntos de montaje externos; la barra muestra la parte de la capacidad total que aporta cada tipo."
+        "perPod": "por pod"
       },
       "refuelBoom": {
         "fuelFlowSub": "transferencia de hidrógeno",
         "quantumFlowSub": "transferencia de quantum",
         "captureRadiusSub": "tolerancia de acoplamiento",
-        "equipment": "Equipamiento",
-        "hint": "Tasas de transferencia del brazo de repostaje y tolerancia de acoplamiento de su boquilla."
+        "equipment": "Equipamiento"
       },
       "combat": {
         "title": "Combate",
         "openPenetrationCheck": "Comprobación de penetración",
         "dps": "DPS de ráfaga",
         "dpsSub": "%{count} armas",
-        "sustained": "DPS sostenido",
+        "sustained": "Sostenido",
         "sustainedSub": "con regeneración y calor",
         "alpha": "Alpha",
         "alphaSub": "por descarga",
@@ -1496,10 +1491,57 @@
           "manned": "Torreta tripulada",
           "remote": "Torreta remota",
           "pds": "Defensa puntual"
-        },
-        "hint": "DPS de la configuración por defecto. El sostenido tiene en cuenta la regeneración de la reserva de energía de cada arma y su ciclo de sobrecalentamiento. Los misiles quedan excluidos."
+        }
       },
       "power": {
+        "planner": {
+          "sustained": "%{dps} DPS sostenido",
+          "weaponPower": "energía de armas %{percent}",
+          "weaponsOff": "Armas desconectadas",
+          "regen": "%{regen} HP/s de regeneración",
+          "shieldsDown": "Escudos caídos",
+          "engineOff": "Motor sin energía",
+          "engineOffSub": "no puede volar",
+          "boostedHandling": "Manejo con impulso %{percent}",
+          "engineBase": "Solo empuje base",
+          "engineBaseSub": "el impulso necesita más segmentos",
+          "radarOff": "Radar apagado",
+          "coolant": "%{rate} de refrigerante por segundo",
+          "noCooling": "Sin refrigeración",
+          "ready": "Listo para preparar",
+          "off": "Apagado",
+          "needsBlock": "necesita su bloque de %{min} para arrancar",
+          "powered": "Con energía",
+          "segments": "Segmentos en uso",
+          "signatures": "Firmas",
+          "plantSegments": "%{segments} segmentos",
+          "segmentsTotal": "segmentos",
+          "setPips": "%{name}: %{count} segmentos",
+          "weaponEnergy": "Energía de armas",
+          "energyGun": "Energía · dispara desde su condensador",
+          "heatGun": "Balística · limitada por el calor",
+          "sustainedEach": "sostenido, cada una",
+          "capacitor": "Condensador",
+          "shots": "%{count} de %{max} disparos",
+          "firing": "Tiempo de disparo",
+          "emptiesIn": "Se vacía en",
+          "overheatsIn": "Se sobrecalienta en",
+          "refillsIn": "Se recarga en",
+          "recoversIn": "Se recupera en",
+          "regenLabel": "Regeneración",
+          "shotsPerSecond": "%{rate} disparos/s",
+          "presets": {
+            "title": "Preajustes",
+            "name": "Nombre del preajuste",
+            "save": "Guardar preajuste",
+            "rename": "Renombrar %{name}",
+            "delete": "Eliminar %{name}",
+            "add": "Añadir preajuste"
+          },
+          "title": "Planificador de energía",
+          "titleFor": "Planificador de energía · %{name}",
+          "open": "Planificador"
+        },
         "title": "Distribución de energía",
         "scm": "SCM",
         "nav": "NAV",
@@ -1512,7 +1554,6 @@
         "cs": "CS",
         "csAxisHint": "Haz clic para cambiar de eje (x / y / z)",
         "segmentsUsed": "%{used} / %{total} segmentos",
-        "hint": "Reparte la energía entre los sistemas. El DPS sostenido de las armas escala con la energía que reciben; el resto se equilibra automáticamente.",
         "families": {
           "weapon": "Armas",
           "shield": "Escudos",
@@ -1559,7 +1600,6 @@
           "infrared": "IR",
           "crossSection": "CS"
         },
-        "hint": "Valores de escudo, blindaje y contramedidas de la configuración por defecto. Una absorción inferior al 100 % significa que ese tipo de daño alcanza el casco incluso con los escudos activos.",
         "openDeflectionCheck": "Comprobación de deflexión"
       },
       "penetrationCheck": {
@@ -1625,7 +1665,6 @@
         "doors": "Puertas",
         "doorsNote": "Las puertas interiores rompibles son un apartado aparte: tienen su propia salud y no forman parte de los HP del casco.",
         "doorsSub": "%{count} rompibles",
-        "hint": "Los HP del casco son la suma de la salud de todas las piezas.",
         "hullHp": "HP del casco",
         "hullHpSub": "total de todas las piezas",
         "integrity": "Integridad del casco",
@@ -1980,7 +2019,7 @@
           "spreadFirstShot": "Dispersión del primer disparo",
           "spreadPerShot": "Dispersión/disparo",
           "spreadRecovery": "Recuperación de dispersión",
-          "pool": "Reserva de energía",
+          "pool": "Condensador",
           "maxRegen": "Regen máx./s",
           "costPerShot": "Energía/disparo",
           "heatPerShot": "Calor/disparo",
@@ -3610,6 +3649,11 @@
         "forContract": "para"
       },
       "hangarInventories": "Inventories",
+      "hangarBlueprints": {
+        "owned": "Tuyos",
+        "wanted": "Deseados",
+        "missions": "Misiones"
+      },
       "adminNotifications": {
         "inbox": "Bandeja de entrada",
         "archive": "Archivo",
@@ -4341,6 +4385,8 @@
         "sourceSummary": "%{count} fuentes · %{orgs} organizaciones",
         "unattributed": "Sin atribuir",
         "minPoints": "Desde %{points} puntos",
+        "limitedEvent": "Evento por tiempo limitado",
+        "eventHint": "Las recompensas de evento solo se obtienen mientras CIG mantiene el evento activo. Los archivos del juego conservan sus niveles de recompensa entre ediciones, así que no indican si está activo ahora mismo.",
         "noKnownSource": "Sin fuente conocida",
         "noSourceLead": "Ninguna misión ni escenario entrega esta receta.",
         "noSourceBody": "Los archivos del juego no la incluyen en ningún grupo de recompensas, así que no hay nada que señalar.",
@@ -4357,7 +4403,7 @@
         },
         "kinds": {
           "contract": "Contrato",
-          "scenario": "Escenario"
+          "scenario": "Evento"
         },
         "duration": {
           "hours": "%{count} h",
@@ -4416,6 +4462,30 @@
         "templatedNote": "El juego rellena las partes marcadas cuando entrega la misión.",
         "payoutNote": "El juego calcula el pago al generar la misión, por eso los archivos solo indican uno para unos pocos contratos.",
         "noRewards": "Los archivos no indican ninguna recompensa para esta misión.",
+        "handIns": "Entregas",
+        "handInsChoice": "Una de estas",
+        "buyIn": "Coste de entrada",
+        "timeToComplete": "Duración",
+        "minutes": "%{time} min",
+        "offeredAt": "Se ofrece en",
+        "availability": {
+          "orHigher": "%{standing} o superior",
+          "reputationAny": "Cualquier reputación con %{org}",
+          "onceOnly": "Solo una vez",
+          "thisMission": "esta misión",
+          "title": "Disponibilidad",
+          "onePerPlayer": "Una a la vez por jugador",
+          "perPlayer": "Hasta %{count} a la vez por jugador",
+          "respawn": "Se vuelve a ofrecer tras %{time} min",
+          "respawnVaried": "Se vuelve a ofrecer tras %{time} ± %{variation} min",
+          "crimeStat": "CrimeStat %{min} – %{max}",
+          "reputation": "%{band} con %{org}",
+          "reputationExcluded": "No %{band} con %{org}",
+          "completeFirst": "Completa antes",
+          "completeCount": "Completa %{count} de",
+          "completeUnlisted": "Completa %{count} misiones que no están en el catálogo",
+          "excluded": "Ya no si has completado"
+        },
         "unreleased": "Fuera de la versión",
         "retired": "Retirada"
       },

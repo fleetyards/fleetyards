@@ -19,7 +19,7 @@ module Api
         # link should not reach either.
         @mission = GameMission
           .named(GameMission.served_source)
-          .includes(build: :rewards, last_build: :rewards)
+          .includes(build: ::GameMissionBuild::DETAIL_INCLUDES, last_build: ::GameMissionBuild::DETAIL_INCLUDES)
           .find_by!(slug:)
 
         # A second query rather than a join: a mission hands out pools, a pool
@@ -31,7 +31,7 @@ module Api
           .where(location_id: Location.current_version.select(:id))
           .includes(location: [:parent, :build, :last_build])
           .sort_by { |link| [link.location.name.to_s, link.source] }
-          .uniq(&:location_id)
+          .uniq { |link| [link.location_id, link.source == "offered"] }
       end
 
       def index

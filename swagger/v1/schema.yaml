@@ -134,6 +134,73 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/blueprints/{slug}/want":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      required: true
+    put:
+      summary: Put a blueprint on the wishlist
+      tags:
+      - Blueprints
+      operationId: wantBlueprint
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    delete:
+      summary: Take a blueprint off the wishlist
+      tags:
+      - Blueprints
+      operationId: unwantBlueprint
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '204':
+          description: successful
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/catalogue/lookup":
     get:
       summary: Resolve the catalogue items a text names inline
@@ -1710,6 +1777,68 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FleetBlueprints"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/blueprints/wanted":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      required: true
+    get:
+      summary: Blueprints the fleet's members want
+      tags:
+      - Blueprints
+      operationId: fleetWantedBlueprints
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 48
+        required: false
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/BlueprintQuery"
+        style: deepObject
+        explode: true
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetWantedBlueprints"
         '403':
           description: forbidden
           content:
@@ -10434,6 +10563,50 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/hangar/blueprint-missions":
+    get:
+      summary: Missions that hand out a wanted blueprint
+      tags:
+      - Hangar
+      operationId: hangarBlueprintMissions
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 48
+        required: false
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/GameMissionQuery"
+        style: deepObject
+        explode: true
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarBlueprintMissions"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/hangar/buybacks":
     get:
       summary: Hangar Buy-back Pledges
@@ -21059,6 +21232,8 @@ components:
           type: boolean
         owned:
           type: boolean
+        wanted:
+          type: boolean
         sourceUnknown:
           type: boolean
         sourceAlignments:
@@ -21303,6 +21478,8 @@ components:
         withKnownSource:
           type: boolean
         owned:
+          type: boolean
+        wanted:
           type: boolean
         currentVersion:
           type: boolean
@@ -30465,6 +30642,41 @@ components:
       - classifications
       - metrics
       title: FleetVehiclesStats
+    FleetWantedBlueprint:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        blueprint:
+          "$ref": "#/components/schemas/Blueprint"
+        wanterCount:
+          type: integer
+        wanters:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetBlueprintOwner"
+      additionalProperties: false
+      required:
+      - id
+      - blueprint
+      - wanterCount
+      - wanters
+      title: FleetWantedBlueprint
+    FleetWantedBlueprints:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetWantedBlueprint"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: FleetWantedBlueprints
     FleetchartView:
       type: object
       properties:
@@ -30692,6 +30904,26 @@ components:
           "$ref": "#/components/schemas/NullableGameMissionLocationKindEnum"
         needsLanding:
           type: boolean
+        buyIn:
+          type:
+          - integer
+          - 'null'
+        timeToComplete:
+          type:
+          - number
+          - 'null'
+        maxInstancesPerPlayer:
+          type:
+          - integer
+          - 'null'
+        respawnTime:
+          type:
+          - number
+          - 'null'
+        respawnVariation:
+          type:
+          - number
+          - 'null'
         org:
           anyOf:
           - "$ref": "#/components/schemas/GameMissionOrg"
@@ -30716,10 +30948,22 @@ components:
           type:
           - string
           - 'null'
+        placeholderValues:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMissionPlaceholderValue"
         rewards:
           type: array
           items:
             "$ref": "#/components/schemas/GameMissionReward"
+        handIns:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMissionHandIn"
+        prerequisites:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMissionPrerequisite"
         blueprints:
           type: array
           items:
@@ -30772,6 +31016,39 @@ components:
       - id
       - slug
       title: GameMissionBlueprint
+    GameMissionCatalogueItem:
+      type: object
+      properties:
+        type:
+          "$ref": "#/components/schemas/GameMissionCatalogueItemTypeEnum"
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type: string
+        listed:
+          type: boolean
+      additionalProperties: false
+      required:
+      - type
+      - id
+      - slug
+      title: GameMissionCatalogueItem
+    GameMissionCatalogueItemTypeEnum:
+      type: string
+      enum:
+      - Component
+      - Equipment
+      - Commodity
+      x-enumNames:
+      - COMPONENT
+      - EQUIPMENT
+      - COMMODITY
+      title: GameMissionCatalogueItemTypeEnum
     GameMissionDifficulty:
       type: object
       properties:
@@ -30798,6 +31075,46 @@ components:
       additionalProperties: false
       required: []
       title: GameMissionDifficulty
+    GameMissionHandIn:
+      type: object
+      properties:
+        kind:
+          "$ref": "#/components/schemas/GameMissionHandInKindEnum"
+        ref:
+          type: string
+        name:
+          type:
+          - string
+          - 'null'
+        amount:
+          type: integer
+        max:
+          type:
+          - integer
+          - 'null'
+        option:
+          type:
+          - integer
+          - 'null'
+        catalogueItem:
+          anyOf:
+          - "$ref": "#/components/schemas/GameMissionCatalogueItem"
+          - type: 'null'
+      additionalProperties: false
+      required:
+      - kind
+      - ref
+      - amount
+      title: GameMissionHandIn
+    GameMissionHandInKindEnum:
+      type: string
+      enum:
+      - item
+      - resource
+      x-enumNames:
+      - ITEM
+      - RESOURCE
+      title: GameMissionHandInKindEnum
     GameMissionKindEnum:
       type: string
       enum:
@@ -30807,6 +31124,23 @@ components:
       - CAREER
       - CONTRACT
       title: GameMissionKindEnum
+    GameMissionLink:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type: string
+      additionalProperties: false
+      required:
+      - id
+      - slug
+      title: GameMissionLink
     GameMissionLocation:
       type: object
       properties:
@@ -30837,9 +31171,15 @@ components:
       enum:
       - template
       - text
+      - offered
+      x-extensible-enum:
+      - template
+      - text
+      - offered
       x-enumNames:
       - TEMPLATE
       - TEXT
+      - OFFERED
       title: GameMissionLocationSourceEnum
     GameMissionOrg:
       type: object
@@ -30860,6 +31200,79 @@ components:
       required:
       - name
       title: GameMissionOrg
+    GameMissionPlaceholderValue:
+      type: object
+      properties:
+        token:
+          type: string
+        value:
+          type: string
+      additionalProperties: false
+      required:
+      - token
+      - value
+      title: GameMissionPlaceholderValue
+    GameMissionPrerequisite:
+      type: object
+      properties:
+        kind:
+          "$ref": "#/components/schemas/GameMissionPrerequisiteKindEnum"
+        min:
+          type:
+          - integer
+          - 'null'
+        max:
+          type:
+          - integer
+          - 'null'
+        orgName:
+          type:
+          - string
+          - 'null'
+        orgKey:
+          type:
+          - string
+          - 'null'
+        minStanding:
+          type:
+          - string
+          - 'null'
+        maxStanding:
+          type:
+          - string
+          - 'null'
+        excluded:
+          type: boolean
+        count:
+          type:
+          - integer
+          - 'null'
+        includesSelf:
+          type: boolean
+        missions:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMissionLink"
+      additionalProperties: false
+      required:
+      - kind
+      - excluded
+      - includesSelf
+      - missions
+      title: GameMissionPrerequisite
+    GameMissionPrerequisiteKindEnum:
+      type: string
+      enum:
+      - crime_stat
+      - reputation
+      - completed_missions
+      - excluded_missions
+      x-enumNames:
+      - CRIME_STAT
+      - REPUTATION
+      - COMPLETED_MISSIONS
+      - EXCLUDED_MISSIONS
+      title: GameMissionPrerequisiteKindEnum
     GameMissionQuery:
       type: object
       properties:
@@ -30977,6 +31390,10 @@ components:
           type:
           - number
           - 'null'
+        catalogueItem:
+          anyOf:
+          - "$ref": "#/components/schemas/GameMissionCatalogueItem"
+          - type: 'null'
         badge:
           type:
           - string
@@ -31058,6 +31475,38 @@ components:
       - meta
       - items
       title: Hangar
+    HangarBlueprintMission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        mission:
+          "$ref": "#/components/schemas/GameMission"
+        wantedBlueprints:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMissionBlueprint"
+      additionalProperties: false
+      required:
+      - id
+      - mission
+      - wantedBlueprints
+      title: HangarBlueprintMission
+    HangarBlueprintMissions:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarBlueprintMission"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: HangarBlueprintMissions
     HangarClassificationMetric:
       type: object
       properties:
@@ -31723,11 +32172,16 @@ components:
           description: The component's category, or the equipment's type
         size:
           type: string
+        listed:
+          type: boolean
+          description: False for an item the catalogue leaves out, whose page would
+            404
       additionalProperties: false
       required:
       - itemType
       - id
       - name
+      - listed
       title: HangarPledgeItemCatalogueItem
     HangarPledgeItemKindEnum:
       type: string
@@ -35947,6 +36401,8 @@ components:
           type: number
         weaponPoolSize:
           type: number
+        weaponRegenModifier:
+          "$ref": "#/components/schemas/ModelWeaponRegenModifier"
         signatureCrossSection:
           "$ref": "#/components/schemas/ModelSignatureCrossSection"
         size:
@@ -37028,6 +37484,23 @@ components:
       items:
         "$ref": "#/components/schemas/ModelUpgrade"
       title: ModelUpgradesList
+    ModelWeaponRegenModifier:
+      type: object
+      description: 'The ship''s engineering buff on its energy guns: multipliers on
+        the weapon power ratio, each gun''s ammo load and its regen'
+      properties:
+        powerRatio:
+          type: number
+        maxAmmoLoad:
+          type: number
+        maxRegenPerSecond:
+          type: number
+      additionalProperties: false
+      required:
+      - powerRatio
+      - maxAmmoLoad
+      - maxRegenPerSecond
+      title: ModelWeaponRegenModifier
     Models:
       type: object
       properties:
@@ -39099,6 +39572,44 @@ components:
       items:
         "$ref": "#/components/schemas/PieChartStats"
       title: PieChartStatsList
+    PowerPreset:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 40
+        scm:
+          type: array
+          items:
+            "$ref": "#/components/schemas/PowerPresetOverride"
+          description: Pips set by hand in SCM; a power port left out follows the
+            automatic balance
+        nav:
+          type: array
+          items:
+            "$ref": "#/components/schemas/PowerPresetOverride"
+          description: Pips set by hand in NAV; a power port left out follows the
+            automatic balance
+      additionalProperties: false
+      required:
+      - name
+      - scm
+      - nav
+      title: PowerPreset
+    PowerPresetOverride:
+      type: object
+      properties:
+        portPath:
+          type: string
+        pips:
+          type: integer
+          minimum: 0
+          maximum: 100
+      additionalProperties: false
+      required:
+      - portPath
+      - pips
+      title: PowerPresetOverride
     PublicFleetSquadron:
       type: object
       properties:
@@ -42070,6 +42581,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/VehicleLoadoutItem"
+        powerPresets:
+          type: array
+          items:
+            "$ref": "#/components/schemas/PowerPreset"
         createdAt:
           type: string
           format: date-time
@@ -42083,6 +42598,7 @@ components:
       - public
       - kind
       - items
+      - powerPresets
       - createdAt
       - updatedAt
       title: VehicleLoadout
@@ -42105,6 +42621,12 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/VehicleLoadoutItemInput"
+        powerPresets:
+          type: array
+          items:
+            "$ref": "#/components/schemas/PowerPreset"
+          maxItems: 5
+          description: Replaces every saved preset
       additionalProperties: false
       title: VehicleLoadoutInput
     VehicleLoadoutItem:
@@ -42240,6 +42762,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/VehicleLoadoutItem"
+        powerPresets:
+          type: array
+          items:
+            "$ref": "#/components/schemas/PowerPreset"
         createdAt:
           type: string
           format: date-time
@@ -42254,6 +42780,7 @@ components:
       - public
       - kind
       - items
+      - powerPresets
       - createdAt
       - updatedAt
       title: VehicleLoadoutMinimal

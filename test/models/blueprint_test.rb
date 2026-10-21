@@ -486,6 +486,28 @@ class BlueprintTest < ActiveSupport::TestCase
     assert_equal [blueprint], Blueprint.not_owned_by(nil).to_a
   end
 
+  # A wishlist entry is a marker row too, and the owned scopes are what every
+  # "who holds this" reads -- so they must not count it.
+  test ".owned_by leaves out the wishlist, and .wanted_by is only the wishlist" do
+    user = create(:user)
+    held = create(:blueprint)
+    wanted = create(:blueprint)
+    create(:user_blueprint, user:, blueprint: held)
+    create(:user_blueprint, :wanted, user:, blueprint: wanted)
+
+    assert_equal [held], Blueprint.owned_by(user).to_a
+    assert_equal [wanted], Blueprint.not_owned_by(user).to_a
+    assert_equal [wanted], Blueprint.wanted_by(user).to_a
+    assert_equal [held], Blueprint.not_wanted_by(user).to_a
+  end
+
+  test ".wanted_by is empty without a holder, and .not_wanted_by is everything" do
+    blueprint = create(:blueprint)
+
+    assert_empty Blueprint.wanted_by(nil)
+    assert_equal [blueprint], Blueprint.not_wanted_by(nil).to_a
+  end
+
   test "destroying a blueprint takes the marks on it with it" do
     blueprint = create(:blueprint)
     create(:user_blueprint, blueprint:)

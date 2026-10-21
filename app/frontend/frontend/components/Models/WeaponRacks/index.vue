@@ -104,12 +104,6 @@ const groupSize = (group: RackSlotGroup) => {
         </div>
       </div>
     </div>
-
-    <div class="metrics-card__footer">
-      <span class="metrics-card__hint">
-        {{ t("labels.weaponRacks.hint") }}
-      </span>
-    </div>
   </MetricsCard>
 </template>
 

@@ -81,7 +81,8 @@ module Api
         @vehicle_loadout_params ||= begin
           # The kind is chosen once: a link turned fleetyards loadout, or the
           # other way round, would keep fields the new kind does not allow.
-          keys = [:name, :url, :public, {items: [:slot_path, :item_type, :item_id, {crafted: [:blueprint_id, {qualities: %i[position quality]}]}]}]
+          keys = [:name, :url, :public, {items: [:slot_path, :item_type, :item_id, {crafted: [:blueprint_id, {qualities: %i[position quality]}]}]},
+            {power_presets: [:name, {scm: %i[port_path pips]}, {nav: %i[port_path pips]}]}]
           keys << :kind if action_name == "create"
           permitted = params.transform_keys(&:underscore).permit(*keys)
 

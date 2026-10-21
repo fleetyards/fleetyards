@@ -198,6 +198,16 @@ class GameMission < ApplicationRecord
     build || last_build
   end
 
+  # The missions a set of prerequisites names, by `sc_ref`, limited to the ones
+  # the catalogue offers: a link to an unnamed one would 404.
+  def prerequisite_missions(prerequisites)
+    refs = prerequisites.flat_map(&:mission_refs).uniq
+    return {} if refs.empty?
+
+    ::GameMission.named(::GameMission.served_source).where(sc_ref: refs)
+      .includes(:build, :last_build).index_by(&:sc_ref)
+  end
+
   def retired?
     build.blank?
   end
@@ -260,17 +270,31 @@ class GameMission < ApplicationRecord
   #
   # A placeholder becomes its parameter in brackets: dropping it outright
   # breaks the sentence around it, and 902 of the 2472 titles carry one.
+  #
+  # A placeholder the files state a value for is filled first, as `MissionText`
+  # fills it, and a value can name a placeholder of its own.
   PLACEHOLDER = /~mission\(([^)]*)\)/
   EMPHASIS_TAG = %r{</?EM\d*>}
+  FILL_PASSES = 3
 
-  def self.plain_text(text)
+  def self.plain_text(text, values = nil)
     return if text.blank?
 
-    text
+    fill_placeholders(text, values || {})
       .gsub(PLACEHOLDER) { "[#{::Regexp.last_match(1).split("|").first}]" }
       .gsub(EMPHASIS_TAG, "")
       .squish
       .presence
+  end
+
+  def self.fill_placeholders(text, values)
+    FILL_PASSES.times.reduce(text) do |filled, _|
+      filled.gsub(PLACEHOLDER) do |match|
+        token = ::Regexp.last_match(1)
+
+        token.include?("|") ? match : values.fetch(token.strip, match)
+      end
+    end
   end
 
   private def update_slugs

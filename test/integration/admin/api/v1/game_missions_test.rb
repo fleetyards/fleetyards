@@ -143,14 +143,16 @@ class Admin::Api::V1::GameMissionsTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET /missions/{id} returns the mission with its rewards" do
+  test "GET /missions/{id} returns the mission with its rewards and hand-ins" do
     mission = create(:game_mission, name: "Simple Hit")
     create(:game_mission_reward, build: mission.build, amount: 100)
+    create(:game_mission_hand_in, build: mission.build, name: "Yormandi Eye")
     sign_in @user
 
     assert_api_response :get, 200, params: {id: mission.id} do
       assert_equal "Simple Hit", parsed_body["name"]
       assert_equal ["reputation"], parsed_body["rewards"].pluck("kind")
+      assert_equal ["Yormandi Eye"], parsed_body["handIns"].pluck("name")
       assert parsed_body.dig("build", "current")
     end
   end

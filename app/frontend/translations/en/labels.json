@@ -1387,11 +1387,12 @@
         "fuel": "Fuel",
         "fuelHydrogen": "Hydrogen",
         "fuelQuantum": "Quantum",
-        "fuelFullMain": "Full thrust, main",
-        "fuelFullAll": "Full thrust, all thrusters",
+        "fuelBurnMain": "Burn, mains",
+        "fuelBurnAll": "Burn, all",
+        "fuelDrawMain": "Draw, mains",
+        "fuelDrawAll": "Draw, all",
         "durationHoursMinutes": "%{hours} h %{minutes} min",
-        "durationMinutes": "%{minutes} min",
-        "hint": "Boosted handling scales with the engine pips; all zero when the engine is unpowered."
+        "durationMinutes": "%{minutes} min"
       },
       "base": {
         "price": "Price",
@@ -1426,8 +1427,7 @@
         "title": "Cargo",
         "holdsSub": "across %{count} holds",
         "maxContainerSub": "largest box that fits",
-        "containers": "Container Capacity",
-        "hint": "Maximum number of containers of each size that fit the cargo grids; the bar shows how much of the total capacity that fills."
+        "containers": "Container Capacity"
       },
       "weaponRacks": {
         "slots": "Slots",
@@ -1448,36 +1448,31 @@
           "multitool": "Multi-Tool",
           "medical_injection": "Med Pens",
           "grenade": "Grenades"
-        },
-        "hint": "Slots across every rack on board, by what they take and its size."
+        }
       },
       "storageContainers": {
         "total": "Total Capacity",
         "count": "Containers",
-        "perContainer": "each",
-        "hintOre": "Holds mined ore, not cargo.",
-        "hintSalvage": "Holds salvaged material, not cargo."
+        "perContainer": "each"
       },
       "fuelTanks": {
         "capacitySub": "across %{count} pods",
         "podsSub": "external mounts",
         "components": "Pod Types",
-        "perPod": "per pod",
-        "hint": "Fuel carried in pods mounted on external hardpoints; the bar shows each type's share of the total capacity."
+        "perPod": "per pod"
       },
       "refuelBoom": {
         "fuelFlowSub": "hydrogen transfer",
         "quantumFlowSub": "quantum transfer",
         "captureRadiusSub": "docking tolerance",
-        "equipment": "Equipment",
-        "hint": "Transfer rates of the refueling arm and the docking tolerance of its nozzle."
+        "equipment": "Equipment"
       },
       "combat": {
         "title": "Combat",
         "openPenetrationCheck": "Penetration check",
         "dps": "Burst DPS",
         "dpsSub": "%{count} weapons",
-        "sustained": "Sustained DPS",
+        "sustained": "Sustained",
         "sustainedSub": "with regen & heat",
         "alpha": "Alpha",
         "alphaSub": "per volley",
@@ -1496,10 +1491,57 @@
           "manned": "Manned Turret",
           "remote": "Remote Turret",
           "pds": "Point Defense"
-        },
-        "hint": "DPS from the default loadout. Sustained factors in each weapon's energy-pool regen and overheat cycle. Missiles excluded."
+        }
       },
       "power": {
+        "planner": {
+          "sustained": "%{dps} DPS sustained",
+          "weaponPower": "weapon power %{percent}",
+          "weaponsOff": "Weapons offline",
+          "regen": "%{regen} HP/s regen",
+          "shieldsDown": "Shields down",
+          "engineOff": "Engine unpowered",
+          "engineOffSub": "no flight at all",
+          "boostedHandling": "Boosted handling %{percent}",
+          "engineBase": "Base thrust only",
+          "engineBaseSub": "boost needs more segments",
+          "radarOff": "Radar dark",
+          "coolant": "%{rate} coolant per second",
+          "noCooling": "No cooling",
+          "ready": "Ready to spool",
+          "off": "Off",
+          "needsBlock": "needs its block of %{min} to start",
+          "powered": "Powered",
+          "segments": "Segments in use",
+          "signatures": "Signatures",
+          "plantSegments": "%{segments} segments",
+          "segmentsTotal": "segments",
+          "setPips": "%{name}: %{count} segments",
+          "weaponEnergy": "Weapon energy",
+          "energyGun": "Energy · fires from its capacitor",
+          "heatGun": "Ballistic · limited by heat",
+          "sustainedEach": "sustained, each",
+          "capacitor": "Capacitor",
+          "shots": "%{count} of %{max} shots",
+          "firing": "Time on the trigger",
+          "emptiesIn": "Empties in",
+          "overheatsIn": "Overheats in",
+          "refillsIn": "Refills in",
+          "recoversIn": "Recovers in",
+          "regenLabel": "Regen",
+          "shotsPerSecond": "%{rate} shots/s",
+          "presets": {
+            "title": "Presets",
+            "name": "Preset name",
+            "save": "Save preset",
+            "rename": "Rename %{name}",
+            "delete": "Delete %{name}",
+            "add": "Add preset"
+          },
+          "title": "Power planner",
+          "titleFor": "Power planner · %{name}",
+          "open": "Power planner"
+        },
         "title": "Power Distribution",
         "scm": "SCM",
         "nav": "NAV",
@@ -1512,7 +1554,6 @@
         "cs": "CS",
         "csAxisHint": "Click to switch axis (x / y / z)",
         "segmentsUsed": "%{used} / %{total} segments",
-        "hint": "Move power between systems. Weapons' sustained DPS scales with the power they get; the rest is auto-balanced.",
         "families": {
           "weapon": "Weapons",
           "shield": "Shields",
@@ -1559,7 +1600,6 @@
           "infrared": "IR",
           "crossSection": "CS"
         },
-        "hint": "Shield, armor and countermeasure values from the default loadout. Absorption below 100% means that damage type reaches the hull while the shields are still up.",
         "openDeflectionCheck": "Deflection check"
       },
       "penetrationCheck": {
@@ -1625,7 +1665,6 @@
         "doors": "Doors",
         "doorsNote": "Breakable interior doors are a separate area — they carry their own health and are not part of hull HP.",
         "doorsSub": "%{count} breakable",
-        "hint": "Hull HP is the sum of all part health.",
         "hullHp": "Hull HP",
         "hullHpSub": "total across all parts",
         "integrity": "Hull Integrity",
@@ -1980,7 +2019,7 @@
           "spreadFirstShot": "First Shot Spread",
           "spreadPerShot": "Spread/Shot",
           "spreadRecovery": "Spread Recovery",
-          "pool": "Energy Pool",
+          "pool": "Capacitor",
           "maxRegen": "Max Regen/s",
           "costPerShot": "Energy/Shot",
           "heatPerShot": "Heat/Shot",
@@ -3624,6 +3663,11 @@
         "forContract": "for"
       },
       "hangarInventories": "Inventories",
+      "hangarBlueprints": {
+        "owned": "Owned",
+        "wanted": "Wanted",
+        "missions": "Missions"
+      },
       "adminNotifications": {
         "inbox": "Inbox",
         "archive": "Archive",
@@ -4355,6 +4399,8 @@
         "sourceSummary": "%{count} sources · %{orgs} orgs",
         "unattributed": "Unattributed",
         "minPoints": "From %{points} points",
+        "limitedEvent": "Limited-time event",
+        "eventHint": "Event rewards drop only while CIG runs the event. The game files keep its reward track between runs, so they cannot say whether it is live right now.",
         "noKnownSource": "No known source",
         "noSourceLead": "No mission or scenario hands this recipe out.",
         "noSourceBody": "The game files place it in no reward pool, so there is nothing to point you at.",
@@ -4371,7 +4417,7 @@
         },
         "kinds": {
           "contract": "Contract",
-          "scenario": "Scenario"
+          "scenario": "Event"
         },
         "duration": {
           "hours": "%{count}h",
@@ -4430,6 +4476,30 @@
         "templatedNote": "The game fills the marked parts in when it hands the mission out.",
         "payoutNote": "The game works the payout out when the mission is generated, so the files state one for only a handful of contracts.",
         "noRewards": "The files state no reward for this one.",
+        "handIns": "Hand-ins",
+        "handInsChoice": "One of these",
+        "buyIn": "Buy-in",
+        "timeToComplete": "Time",
+        "minutes": "%{time} min",
+        "offeredAt": "Offered at",
+        "availability": {
+          "orHigher": "%{standing} or higher",
+          "reputationAny": "Any standing with %{org}",
+          "onceOnly": "Once only",
+          "thisMission": "this mission",
+          "title": "Availability",
+          "onePerPlayer": "One at a time per player",
+          "perPlayer": "Up to %{count} at a time per player",
+          "respawn": "Offered again after %{time} min",
+          "respawnVaried": "Offered again after %{time} ± %{variation} min",
+          "crimeStat": "CrimeStat %{min} – %{max}",
+          "reputation": "%{band} with %{org}",
+          "reputationExcluded": "Not %{band} with %{org}",
+          "completeFirst": "Complete first",
+          "completeCount": "Complete %{count} of",
+          "completeUnlisted": "Complete %{count} missions not in the catalogue",
+          "excluded": "Not once you have completed"
+        },
         "unreleased": "Not in release",
         "retired": "Retired"
       },

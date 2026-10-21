@@ -334,6 +334,14 @@ zh-TW:
               crafted_slot_unknown: "只能指定藍圖中存在的槽位"
               crafted_slot_repeated: "每個藍圖槽位只能指定一次"
               crafted_quality_out_of_range: "材料品質必須在 0 到 1000 之間"
+            power_presets:
+              too_many: "最多只能有 %{count} 個"
+              name_blank: "每個都需要名稱"
+              name_taken: "名稱不能重複"
+              pips_invalid: "每個電源端口的段數必須在 0 到 100 之間"
+              not_fleetyards: "只能儲存在 Fleetyards 配裝中"
+              name_too_long: "名稱不能超過 %{count} 個字元"
+              port_repeated: "每種飛行模式下每個電源端口只能設定一次"
         payout_entry:
           attributes:
             entry_type:

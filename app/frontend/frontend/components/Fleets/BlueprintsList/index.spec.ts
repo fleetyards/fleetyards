@@ -5,6 +5,7 @@ import {
   type Blueprint,
   type FleetBlueprint,
   type FleetBlueprintOwner,
+  type FleetWantedBlueprint,
 } from "@/services/fyApi";
 import Component from "./index.vue";
 
@@ -40,7 +41,7 @@ const row = (attrs: Partial<FleetBlueprint> = {}): FleetBlueprint => ({
 // Its own router, like the catalogue's list spec: the row links to the recipe,
 // to every material and now to each owner's hangar, and TestUtils' default
 // router knows only `home`.
-const mount = async (blueprints: FleetBlueprint[]) => {
+const mount = async (blueprints: (FleetBlueprint | FleetWantedBlueprint)[]) => {
   const router = createRouter({
     history: createWebHashHistory(),
     routes: [
@@ -116,5 +117,20 @@ describe("FleetBlueprintsList", () => {
 
     expect(wrapper.findAll(".blueprint-row__owner")).toHaveLength(3);
     expect(wrapper.find(".blueprint-row__owner-more").text()).toBe("+6");
+  });
+
+  it("names who wants it on the wanted list", async () => {
+    const wanted: FleetWantedBlueprint = {
+      id: "id",
+      blueprint: blueprint(),
+      wanterCount: 1,
+      wanters: [owner({ username: "hunter" })],
+    };
+
+    const wrapper = await mount([wanted]);
+
+    expect(
+      wrapper.findAll(".blueprint-row__owner").map((link) => link.text()),
+    ).toEqual(["hunter"]);
   });
 });

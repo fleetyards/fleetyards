@@ -1,3 +1,4 @@
+import type { WeaponRegenModifier } from "@/frontend/composables/powerSim";
 import type { MaybeRefOrGetter } from "vue";
 import {
   COMPONENT_TABS,
@@ -27,7 +28,11 @@ type Item = Pick<
 
 type FittedModel = {
   slug: string;
-  metrics: { cargo?: number; weaponPoolSize?: number };
+  metrics: {
+    cargo?: number;
+    weaponPoolSize?: number;
+    weaponRegenModifier?: WeaponRegenModifier;
+  };
 };
 
 /**
@@ -173,6 +178,7 @@ export const useLoadoutFitting = ({
         hardpoints: modelHardpoints.value ?? [],
         tree: fitted,
         weaponPoolSize: metrics?.weaponPoolSize,
+        weaponRegenModifier: metrics?.weaponRegenModifier,
       });
 
     return loadoutDiff.diff(

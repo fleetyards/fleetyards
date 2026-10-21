@@ -144,7 +144,8 @@
         "discard": "Descartar",
         "removeCrafting": "Quitar la fabricación",
         "own": "Marcar como en posesión",
-        "unown": "Quitar la marca"
+        "unown": "Quitar la marca",
+        "unwant": "Quitar de la lista de deseos"
       },
       "resetFilter": "Restablecer filtro",
       "requestPassword": "Solicitar email de contraseña",

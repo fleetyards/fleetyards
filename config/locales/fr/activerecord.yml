@@ -334,6 +334,14 @@ fr:
               crafted_slot_unknown: "ne peuvent nommer que des emplacements que le plan possède"
               crafted_slot_repeated: "ne peuvent nommer chaque emplacement du plan qu'une fois"
               crafted_quality_out_of_range: "doivent utiliser une qualité de matériau de 0 à 1000"
+            power_presets:
+              too_many: "ne peuvent pas dépasser %{count}"
+              name_blank: "ont chacun besoin d'un nom"
+              name_taken: "doivent chacun avoir leur propre nom"
+              pips_invalid: "doivent donner à chaque port d'énergie de 0 à 100 segments"
+              not_fleetyards: "ne peuvent être gardés qu'avec un équipement Fleetyards"
+              name_too_long: "doivent chacun avoir un nom d'au plus %{count} caractères"
+              port_repeated: "doivent régler chaque port d'énergie une seule fois par mode de vol"
         payout_entry:
           attributes:
             entry_type:

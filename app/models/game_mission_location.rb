@@ -4,7 +4,8 @@
 class GameMissionLocation < ApplicationRecord
   # `template`: a location template one of the mission's slots can pick stands
   # for this place. `text`: the mission's title or description names it.
-  SOURCES = %w[template text].freeze
+  # `offered`: the contract is offered there.
+  SOURCES = %w[template text offered].freeze
 
   belongs_to :game_mission
   belongs_to :location

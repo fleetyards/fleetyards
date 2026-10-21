@@ -129,12 +129,6 @@ const openPartsModal = () => {
         {{ t("labels.hull.showParts") }}
       </button>
     </div>
-
-    <div class="metrics-card__footer">
-      <span class="metrics-card__hint">
-        {{ t("labels.hull.hint") }}
-      </span>
-    </div>
   </MetricsCard>
 </template>
 

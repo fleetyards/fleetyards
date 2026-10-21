@@ -8,6 +8,11 @@ import {
   ComponentTurretControlEnum,
 } from "@/services/fyApi";
 import { simulateLoadoutPower, type PortOverrides } from "./useLoadoutSim";
+import {
+  NO_REGEN_MODIFIER,
+  type FlightMode,
+  type WeaponRegenModifier,
+} from "./powerSim";
 import { computeControllerStats } from "@/frontend/composables/useControllerStats";
 
 export type DamageBreakdown = {
@@ -131,7 +136,7 @@ function collectWeaponHardpoints(
   return collected;
 }
 
-function isMissile(weapon: ComponentWeapon): boolean {
+export function isMissile(weapon: ComponentWeapon): boolean {
   return "trackingSignal" in (weapon as Record<string, unknown>);
 }
 
@@ -148,8 +153,9 @@ export function shotsPerSecond(weapon: ComponentWeapon): number {
 export function sustainedRatio(
   weapon: ComponentWeapon,
   powerRatio = 1,
+  modifier: WeaponRegenModifier = NO_REGEN_MODIFIER,
 ): number {
-  return dutyCycle(weapon, powerRatio).ratio;
+  return dutyCycle(weapon, powerRatio, modifier).ratio;
 }
 
 export type DutyCycle = {
@@ -163,17 +169,48 @@ export type DutyCycle = {
 const CONTINUOUS: DutyCycle = { ratio: 1, offTime: 0, cycle: 0 };
 const SILENT: DutyCycle = { ratio: 0, offTime: Infinity, cycle: Infinity };
 
-export function dutyCycle(weapon: ComponentWeapon, powerRatio = 1): DutyCycle {
+export type Capacitor = {
+  // Shots held at this power, and at full power.
+  shots: number;
+  maxShots: number;
+  regenPerSecond: number;
+};
+
+// The game rounds the load the weapon power leaves a gun: the Mk V's CF-557,
+// 75 × 9 × 4/12.2, holds 221 shots.
+export function capacitor(
+  weapon: ComponentWeapon,
+  powerRatio = 1,
+  modifier: WeaponRegenModifier = NO_REGEN_MODIFIER,
+): Capacitor | undefined {
+  const regen = weapon.regen;
+  if (!regen?.maxAmmoLoad) return undefined;
+
+  return {
+    shots: Math.round(regen.maxAmmoLoad * powerRatio * modifier.maxAmmoLoad),
+    maxShots: Math.round(regen.maxAmmoLoad * modifier.maxAmmoLoad),
+    regenPerSecond:
+      (regen.maxRegenPerSecond || 0) * powerRatio * modifier.maxRegenPerSecond,
+  };
+}
+
+export function dutyCycle(
+  weapon: ComponentWeapon,
+  powerRatio = 1,
+  modifier: WeaponRegenModifier = NO_REGEN_MODIFIER,
+): DutyCycle {
   const fireRate = weapon.fireRate ? weapon.fireRate / 60 : 0;
   if (fireRate <= 0) return CONTINUOUS;
 
-  const regen = weapon.regen;
-  if (regen?.maxAmmoLoad && regen.maxRegenPerSecond) {
-    const pool = Math.round(regen.maxAmmoLoad * powerRatio);
-    const regenPerSecond = regen.maxRegenPerSecond * powerRatio;
+  const charge = weapon.regen?.maxRegenPerSecond
+    ? capacitor(weapon, powerRatio, modifier)
+    : undefined;
+  if (charge) {
+    const { shots: pool, regenPerSecond } = charge;
     if (pool <= 0 || regenPerSecond <= 0) return SILENT;
     const timeFiring = pool / fireRate;
-    const offTime = (regen.regenerationCooldown || 0) + pool / regenPerSecond;
+    const offTime =
+      (weapon.regen?.regenerationCooldown || 0) + pool / regenPerSecond;
     return cycleOf(timeFiring, offTime);
   }
 
@@ -196,14 +233,18 @@ export function computeLoadoutStats(
   hardpoints: Hardpoint[] | undefined,
   weaponPoolSize?: number,
   overrides?: PortOverrides,
+  regenModifier: WeaponRegenModifier = NO_REGEN_MODIFIER,
+  mode: FlightMode = "SCM",
 ): LoadoutStats {
   const weaponHardpoints = collectWeaponHardpoints(hardpoints);
   const controllers = computeControllerStats(hardpoints);
   const sim = simulateLoadoutPower(
     hardpoints,
     weaponPoolSize,
-    "SCM",
+    mode,
     overrides,
+    undefined,
+    regenModifier,
   );
   // Weapon power follows the actual pip allocation shown in the power UI — the
   // default distribution until the user assigns pips, their choices afterwards.
@@ -229,7 +270,7 @@ export function computeLoadoutStats(
     const component = hardpoint.component!;
     const weapon = component.typeData as ComponentWeapon;
     const weaponDps = emptyBreakdown();
-    const ratio = sustainedRatio(weapon, powerRatio) * powered;
+    const ratio = sustainedRatio(weapon, powerRatio, regenModifier) * powered;
 
     if (weapon.beam && weapon.damagePerSecond) {
       addBreakdown(dps, weapon.damagePerSecond, powered);
@@ -300,12 +341,16 @@ export function useLoadoutStats(
   hardpoints: MaybeRefOrGetter<Hardpoint[] | undefined>,
   weaponPoolSize?: MaybeRefOrGetter<number | undefined>,
   overrides?: MaybeRefOrGetter<PortOverrides | undefined>,
+  regenModifier?: MaybeRefOrGetter<WeaponRegenModifier | undefined>,
+  mode?: MaybeRefOrGetter<FlightMode | undefined>,
 ) {
   return computed(() =>
     computeLoadoutStats(
       toValue(hardpoints),
       toValue(weaponPoolSize),
       toValue(overrides),
+      toValue(regenModifier) ?? NO_REGEN_MODIFIER,
+      toValue(mode) ?? "SCM",
     ),
   );
 }

@@ -42,6 +42,7 @@
         "public": "%{user} 机库",
         "publicStats": "%{user} 机库统计",
         "wishlist": "心愿单",
+        "blueprints": "我的蓝图",
         "publicWishlist": "%{user} 心愿单",
         "vehicleLoadouts": "飞船配装",
         "inventories": "My Hangar Inventories",

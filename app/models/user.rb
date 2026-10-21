@@ -115,11 +115,13 @@ class User < ApplicationRecord
 
   has_many :inventories, as: :holder, dependent: :destroy
 
-  # The crafting recipes this person holds. Personal like a hangar, and reaching
-  # a fleet only through the membership that says it may -- see
-  # `FleetMembership#blueprints_filter`.
+  # The crafting recipes this person holds, and the ones they are after.
+  # Personal like a hangar, and reaching a fleet only through the membership
+  # that says it may -- see `FleetMembership#blueprints_filter`.
   has_many :user_blueprints, dependent: :destroy
-  has_many :blueprints, through: :user_blueprints
+  has_many :blueprints, -> { merge(UserBlueprint.owned) }, through: :user_blueprints
+  has_many :wanted_blueprints, -> { merge(UserBlueprint.wanted) },
+    through: :user_blueprints, source: :blueprint
 
   has_many :fleet_contract_assignments, dependent: :destroy
   has_many :fleet_contracts, through: :fleet_contract_assignments
@@ -207,7 +209,7 @@ class User < ApplicationRecord
   # The pages under /hangar/ that are not a user's hangar: a user given one of
   # these names would have their public hangar shadowed by the page.
   RESERVED_USERNAMES = %w[
-    buybacks equipment fleetchart flair imports inventories paints preview ship-components
+    blueprints buybacks equipment fleetchart flair imports inventories paints preview ship-components
     stats transactions transfers upgrades wishlist
   ].freeze
 

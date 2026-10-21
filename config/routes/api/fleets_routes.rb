@@ -98,6 +98,7 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
   # markers rather than a resource the fleet owns, so there is nothing here to
   # create or destroy.
   get "blueprints", to: "fleet_blueprints#index"
+  get "blueprints/wanted", to: "fleet_blueprints#wanted"
 
   get "inventory-items", to: "fleet_all_inventory_items#index"
   get "inventory-stock", to: "fleet_all_inventory_stock#index"

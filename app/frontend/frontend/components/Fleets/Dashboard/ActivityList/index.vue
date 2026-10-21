@@ -7,6 +7,9 @@ export default {
 <script lang="ts" setup>
 import type { RouteLocationRaw } from "vue-router";
 import Avatar from "@/shared/components/Avatar/index.vue";
+import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
+import { type CatalogueItemRef } from "@/frontend/components/CatalogueItemPopover/types";
+import { catalogueItemRoute } from "@/frontend/utils/catalogueItemRoute";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   FleetActivityKindEnum,
@@ -48,21 +51,39 @@ const ICONS: Record<FleetActivityKindEnum, string> = {
 const titleFor = (entry: FleetActivity) =>
   entry.subject.title || entry.inventory?.name || t("fleetDashboard.unnamed");
 
+const CARD_TYPES: Partial<Record<FleetActivitySubjectTypeEnum, string>> = {
+  [FleetActivitySubjectTypeEnum.EVENT]: "FleetEvent",
+  [FleetActivitySubjectTypeEnum.CONTRACT]: "FleetContract",
+};
+
+const cards = computed(
+  () =>
+    new Map(
+      props.entries.map((entry): [string, CatalogueItemRef | undefined] => {
+        const type = CARD_TYPES[entry.subject.type];
+
+        return [
+          entry.id,
+          type
+            ? {
+                type,
+                slug: entry.subject.slug,
+                fleetSlug: props.fleet.slug,
+                name: titleFor(entry),
+              }
+            : undefined,
+        ];
+      }),
+    ),
+);
+
 const linkFor = (entry: FleetActivity): RouteLocationRaw | undefined => {
   const slug = props.fleet.slug;
+  const card = cards.value.get(entry.id);
+
+  if (card) return catalogueItemRoute(card);
 
   switch (entry.subject.type) {
-    case FleetActivitySubjectTypeEnum.EVENT:
-      return entry.subject.slug
-        ? { name: "fleet-event", params: { slug, event: entry.subject.slug } }
-        : undefined;
-    case FleetActivitySubjectTypeEnum.CONTRACT:
-      return entry.subject.slug
-        ? {
-            name: "fleet-contract",
-            params: { slug, contract: entry.subject.slug },
-          }
-        : undefined;
     case FleetActivitySubjectTypeEnum.MEMBER:
       return { name: "fleet-members-index", params: { slug } };
     default:
@@ -115,7 +136,13 @@ const metaFor = (entry: FleetActivity) =>
           :to="linkFor(entry)"
           class="activity-list__title"
         >
-          {{ titleFor(entry) }}
+          <CatalogueItemPopover
+            v-if="cards.get(entry.id)?.slug"
+            :item="cards.get(entry.id)!"
+            :link="false"
+            :focusable="false"
+          />
+          <template v-else>{{ titleFor(entry) }}</template>
         </component>
         <span class="activity-list__meta">
           <span

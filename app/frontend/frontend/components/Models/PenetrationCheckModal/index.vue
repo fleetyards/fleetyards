@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import type { WeaponRegenModifier } from "@/frontend/composables/powerSim";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import type { Hardpoint } from "@/services/fyApi";
@@ -29,12 +30,15 @@ type Props = {
   hardpoints?: Hardpoint[];
   // Share of the weapon pool the power allocation feeds, as on the combat card.
   powerRatio?: number;
+  // The ship's engineering buff on its guns' capacitors.
+  regenModifier?: WeaponRegenModifier;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   modelName: "",
   hardpoints: () => [],
   powerRatio: 1,
+  regenModifier: undefined,
 });
 
 const { t, toNumber } = useI18n();
@@ -51,7 +55,11 @@ const SIZE_ORDER = [
 ];
 
 const loadoutWeapons = computed(() =>
-  collectLoadoutWeapons(props.hardpoints, props.powerRatio),
+  collectLoadoutWeapons(
+    props.hardpoints,
+    props.powerRatio,
+    props.regenModifier,
+  ),
 );
 
 const testable = computed(() => hasAlphaGuns(loadoutWeapons.value));

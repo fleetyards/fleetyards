@@ -90,10 +90,6 @@ const groups = computed<CapacityGroup[]>(() =>
         </div>
       </div>
     </div>
-
-    <div class="metrics-card__footer">
-      <span class="metrics-card__hint">{{ t("labels.fuelTanks.hint") }}</span>
-    </div>
   </MetricsCard>
 </template>
 

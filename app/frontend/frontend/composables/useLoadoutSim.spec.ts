@@ -652,3 +652,42 @@ describe("POWER_FAMILY_BY_CATEGORY", () => {
     ).toBeUndefined();
   });
 });
+
+describe("engineering buff", () => {
+  const ship = (): Hardpoint[] => [plant(40, 2), ...weapons(4, 2)];
+
+  it("scales the weapon ratio by the buff's power multiplier, up to full", () => {
+    const plain = simulateLoadoutPower(ship(), 4);
+    const boosted = simulateLoadoutPower(
+      ship(),
+      4,
+      "SCM",
+      undefined,
+      undefined,
+      {
+        powerRatio: 1.5,
+        maxAmmoLoad: 1,
+        maxRegenPerSecond: 1,
+      },
+    );
+
+    expect(plain.weaponPoolRatio).toBeCloseTo(0.5);
+    expect(boosted.weaponPoolRatio).toBeCloseTo(0.75);
+    expect(boosted.weaponMaxRatio).toBeCloseTo(0.75);
+  });
+});
+
+describe("weapon ratio against a fractional draw", () => {
+  it("divides the pips by the exact draw, as the game does (Mk V)", () => {
+    // Four pilot guns at 1.05 and eight turret guns at 1 draw 12.2: four
+    // pips feed 4/12.2 of them, not 4/13.
+    const sim = simulateLoadoutPower(
+      [plant(40, 2), ...weapons(4, 1.05), ...weapons(8, 1)],
+      4,
+    );
+
+    expect(sim.perFamily.weapon).toBe(4);
+    expect(sim.weaponPoolRatio).toBeCloseTo(4 / 12.2);
+    expect(sim.weaponMaxRatio).toBeCloseTo(4 / 12.2);
+  });
+});
