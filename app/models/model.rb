@@ -410,6 +410,15 @@ class Model < ApplicationRecord
   has_one_attached :landed_front_view_colored
   has_one_attached :landed_angled_view_colored
 
+  # The picture a ship is shown by where there is room for one small image, best
+  # first. An angled render is a cut-out, which reads at that size where the store
+  # image -- a whole scene -- does not; the coloured one exists for some ships.
+  PREVIEW_VIEWS = %i[angled_view_colored angled_view store_image].freeze
+
+  def preview_view
+    PREVIEW_VIEWS.map { |name| public_send(name) }.find(&:attached?)
+  end
+
   # Only the ship page shows these, so a list neither preloads nor renders them:
   # the views are already about half the bytes of a model in one.
   DETAIL_VIEW_ATTACHMENT_NAMES = %i[

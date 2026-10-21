@@ -147,10 +147,14 @@ module Catalogue
 
     # A ship's name is its row's; the game-file catalogues read theirs off the
     # build the listed scope joined.
-    private def name_sql(prefix)
+    def self.name_sql(prefix)
       return "models.name" if prefix == "ship"
 
       CATALOGUES.fetch(prefix).fact_sql(:name).to_s
+    end
+
+    private def name_sql(prefix)
+      self.class.name_sql(prefix)
     end
   end
 end

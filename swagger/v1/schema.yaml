@@ -17858,6 +17858,27 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ScDataVersion"
+  "/search":
+    get:
+      summary: Search the catalogues
+      tags:
+      - Search
+      operationId: search
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SearchResults"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/sessions":
     post:
       summary: create session
@@ -39828,6 +39849,68 @@ components:
       required:
       - version
       title: ScDataVersion
+    SearchAppearance:
+      type: object
+      properties:
+        kind:
+          "$ref": "#/components/schemas/LocationKindEnum"
+        color:
+          type: string
+        bodyType:
+          type: string
+        flare:
+          type: boolean
+      additionalProperties: false
+      required:
+      - kind
+      - flare
+      title: SearchAppearance
+    SearchGroup:
+      type: object
+      properties:
+        type:
+          type: string
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/SearchResult"
+      additionalProperties: false
+      required:
+      - type
+      - items
+      title: SearchGroup
+    SearchResult:
+      type: object
+      properties:
+        type:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        detail:
+          type: string
+        image:
+          "$ref": "#/components/schemas/MediaFile"
+        appearance:
+          "$ref": "#/components/schemas/SearchAppearance"
+      additionalProperties: false
+      required:
+      - type
+      - name
+      - slug
+      title: SearchResult
+    SearchResults:
+      type: object
+      properties:
+        groups:
+          type: array
+          items:
+            "$ref": "#/components/schemas/SearchGroup"
+      additionalProperties: false
+      required:
+      - groups
+      title: SearchResults
     SessionInput:
       type: object
       properties:

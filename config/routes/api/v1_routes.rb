@@ -26,6 +26,7 @@ v1_api_routes = lambda do
 
   get "catalogue/lookup", to: "catalogue#lookup"
   get "catalogue/search", to: "catalogue#search"
+  get "search", to: "search#index"
 
   resource :sessions, only: %i[create destroy] do
     collection do
