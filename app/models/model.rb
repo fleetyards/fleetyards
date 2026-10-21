@@ -688,19 +688,30 @@ class Model < ApplicationRecord
     Model.visible.active.order(:classification).distinct.pluck(:classification).compact_blank
   end
 
-  # As `classifications`, and with an order it did not have: the list was
-  # whatever order the rows came back in, which is no order at all once ninety
-  # of them are in a filter.
+  # Every key, in the vocabulary's order. Narrowed to one classification, only
+  # the keys its ships carry, so picking "industrial" offers no fighters.
   def self.focus_filters(classification: nil)
-    scope = Model.visible.active
-    scope = scope.where(classification: classification) if classification.present?
-    scope.order(:focus).distinct.pluck(:focus).compact_blank.map do |item|
+    keys = FOCI
+    if classification.present?
+      present = Model.visible.active.where(classification:).pluck(Arel.sql("DISTINCT unnest(foci)"))
+      keys &= present
+    end
+
+    keys.map do |key|
       Filter.new(
         category: "focus",
-        label: item.humanize,
-        value: item
+        label: focus_label(key),
+        value: key
       )
     end
+  end
+
+  def self.focus_label(key)
+    I18n.t("filter.model.focus.items.#{key}")
+  end
+
+  def foci_labels
+    foci.map { |key| Model.focus_label(key) }
   end
 
   # The ladder a berth is measured against, smallest first. Only meaningful
