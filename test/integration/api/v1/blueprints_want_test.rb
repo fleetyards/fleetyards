@@ -79,15 +79,14 @@ class Api::V1::BlueprintsWantTest < ActionDispatch::IntegrationTest
     assert_equal 1, UserBlueprint.where(user: @user, blueprint: @blueprint).count
   end
 
-  # A held recipe that was lost, in a wipe say, goes back on the wishlist in
-  # one write rather than being dropped and re-added.
-  test "PUT on a held recipe moves it to the wishlist" do
+  # Wanting what you already have is not a demotion.
+  test "PUT on a held recipe keeps it held" do
     create(:user_blueprint, user: @user, blueprint: @blueprint)
     sign_in @user
 
     assert_api_response :put, 204, api_path: PATH, path_params: {slug: @blueprint.slug}
 
-    assert_equal [true], UserBlueprint.where(user: @user, blueprint: @blueprint).pluck(:wanted)
+    assert_equal [false], UserBlueprint.where(user: @user, blueprint: @blueprint).pluck(:wanted)
   end
 
   test "DELETE takes the recipe off the wishlist" do

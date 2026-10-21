@@ -145,8 +145,7 @@
         "removeCrafting": "Retirer la fabrication",
         "own": "Marquer comme possédé",
         "unown": "Retirer la marque",
-        "unwant": "Retirer de la liste de souhaits",
-        "moveToWishlist": "Déplacer vers la liste de souhaits"
+        "unwant": "Retirer de la liste de souhaits"
       },
       "resetFilter": "Réinitialiser les filtres",
       "requestPassword": "Demande de mot de passe par e-mail",

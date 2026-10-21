@@ -67,8 +67,8 @@ module Api
         head :no_content
       end
 
-      # Wanting a held recipe moves it to the wishlist -- it was lost, in a
-      # wipe say -- in one write, so there is no moment where it is neither.
+      # A held recipe stays held: a recipe once had is not lost, so wanting it
+      # is the same answer rather than a demotion.
       def want
         blueprint = find_blueprint
 
@@ -95,14 +95,18 @@ module Api
       private def mark(blueprint, wanted:)
         marker = UserBlueprint.find_or_initialize_by(user_id: current_resource_owner.id, blueprint_id: blueprint.id)
 
-        return if marker.persisted? && marker.wanted == wanted
+        # The one change an existing marker takes is wanted to held: a held
+        # recipe stays held, and wanting a wanted one again changes nothing.
+        return if marker.persisted? && (!marker.wanted || wanted)
 
         marker.update!(wanted:, created_at: Time.current)
       rescue ActiveRecord::RecordNotUnique
         # Two requests landing together, and the other one inserted first --
-        # possibly in the other state. The last one asked for is the answer.
-        UserBlueprint.where(user_id: current_resource_owner.id, blueprint_id: blueprint.id)
-          .update_all(wanted:, created_at: Time.current, updated_at: Time.current)
+        # possibly as a wanted marker, which owning still has to promote.
+        return if wanted
+
+        UserBlueprint.wanted.where(user_id: current_resource_owner.id, blueprint_id: blueprint.id)
+          .update_all(wanted: false, created_at: Time.current, updated_at: Time.current)
       end
 
       private def find_blueprint

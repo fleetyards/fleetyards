@@ -82,13 +82,10 @@ describe("BlueprintAddToHangarModal", () => {
     ]);
   });
 
-  it("offers moving or dropping a held recipe", async () => {
+  it("only offers removing a held recipe", async () => {
     const wrapper = await mount({ owned: true });
 
-    expect(choiceKeys(wrapper)).toEqual([
-      "blueprint-add-to-hangar-move",
-      "blueprint-add-to-hangar-unown",
-    ]);
+    expect(choiceKeys(wrapper)).toEqual(["blueprint-add-to-hangar-unown"]);
   });
 
   it("puts a recipe on the wishlist and closes", async () => {
@@ -101,18 +98,5 @@ describe("BlueprintAddToHangarModal", () => {
 
     expect(calls).toEqual(["want"]);
     expect(emit).toHaveBeenCalledWith("close-modal");
-  });
-
-  // One request: the server moves a held recipe to the wishlist in a single
-  // write, so a failure cannot leave it neither held nor wanted.
-  it("moves a held recipe with a single want", async () => {
-    const wrapper = await mount({ owned: true });
-
-    await wrapper
-      .find("[data-test='blueprint-add-to-hangar-move']")
-      .trigger("click");
-    await flushPromises();
-
-    expect(calls).toEqual(["want"]);
   });
 });

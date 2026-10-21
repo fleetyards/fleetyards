@@ -344,8 +344,7 @@
         "ownHint": "You have this blueprint.",
         "wishlistHint": "You want to get this blueprint.",
         "unownHint": "You no longer have this blueprint.",
-        "unwantHint": "You no longer want this blueprint.",
-        "moveHint": "You lost it, for example in a wipe, and want it back."
+        "unwantHint": "You no longer want this blueprint."
       },
       "addToHangar": {
         "hangarHint": "You own this ship.",

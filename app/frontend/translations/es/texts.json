@@ -343,8 +343,7 @@
         "ownHint": "Tienes este plano.",
         "wishlistHint": "Quieres conseguir este plano.",
         "unownHint": "Ya no tienes este plano.",
-        "unwantHint": "Ya no quieres este plano.",
-        "moveHint": "Lo perdiste, por ejemplo en un wipe, y quieres recuperarlo."
+        "unwantHint": "Ya no quieres este plano."
       },
       "addToHangar": {
         "hangarHint": "Tienes esta nave.",

@@ -343,8 +343,7 @@
         "ownHint": "你擁有這張藍圖。",
         "wishlistHint": "你想取得這張藍圖。",
         "unownHint": "你不再擁有這張藍圖。",
-        "unwantHint": "你不再想要這張藍圖。",
-        "moveHint": "你失去了它（例如因為重置），想要重新取得。"
+        "unwantHint": "你不再想要這張藍圖。"
       },
       "addToHangar": {
         "hangarHint": "你擁有這艘飛船。",

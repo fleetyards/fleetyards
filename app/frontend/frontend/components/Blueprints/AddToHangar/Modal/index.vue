@@ -64,21 +64,12 @@ const wantChoice = (): Choice => ({
   success: "messages.blueprint.want.success",
 });
 
-// Two choices whatever state the recipe is in. Unmarked, the ship modal's
-// pair. Wanted, getting it is the next step, so owning sits beside the way
-// back off the wishlist. Held, losing it is what a wipe does -- the hangar's
-// own reset moves ships to the wishlist for the same reason.
+// Unmarked, the ship modal's pair. Wanted, getting it is the next step, so
+// owning sits beside the way back off the wishlist. Held, a recipe once had
+// is not lost, so the only thing left is removing the mark.
 const choices = computed<Choice[]>(() => {
   if (props.blueprint.owned) {
     return [
-      {
-        key: "move",
-        icon: "fa-light fa-star",
-        title: t("actions.blueprint.moveToWishlist"),
-        hint: t("texts.blueprintAddToHangar.moveHint"),
-        run: want,
-        success: "messages.blueprint.want.success",
-      },
       {
         key: "unown",
         icon: "fa-light fa-trash",

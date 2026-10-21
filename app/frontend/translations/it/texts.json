@@ -343,8 +343,7 @@
         "ownHint": "Hai questo progetto.",
         "wishlistHint": "Vuoi ottenere questo progetto.",
         "unownHint": "Non hai più questo progetto.",
-        "unwantHint": "Non vuoi più questo progetto.",
-        "moveHint": "L'hai perso, ad esempio con un wipe, e lo rivuoi."
+        "unwantHint": "Non vuoi più questo progetto."
       },
       "addToHangar": {
         "hangarHint": "Possiedi questa nave.",

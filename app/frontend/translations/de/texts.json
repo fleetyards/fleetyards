@@ -344,8 +344,7 @@
         "ownHint": "Du hast diese Blaupause.",
         "wishlistHint": "Du möchtest diese Blaupause bekommen.",
         "unownHint": "Du hast diese Blaupause nicht mehr.",
-        "unwantHint": "Du möchtest diese Blaupause nicht mehr.",
-        "moveHint": "Du hast sie verloren, etwa durch einen Wipe, und willst sie zurück."
+        "unwantHint": "Du möchtest diese Blaupause nicht mehr."
       },
       "addToHangar": {
         "hangarHint": "Du besitzt dieses Schiff.",
