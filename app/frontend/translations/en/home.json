@@ -3,7 +3,7 @@
     "home": {
       "landing": {
         "title": "Every ship in the 'verse. Your whole fleet in one place.",
-        "lede": "Look up any ship, its stats and loadouts as they are in the game today. Track your hangar, plan with your org, and see what each patch changed.",
+        "lede": "Look up any ship, its stats and loadouts as they are in the game today.",
         "signUp": "Create a free account",
         "browseShips": "Browse all ships",
         "scrollDown": "Scroll down",
@@ -21,8 +21,7 @@
         "stats": {
           "ships": "Ships and vehicles",
           "vehicles": "Ships in hangars",
-          "fleets": "Fleets",
-          "changed": "Changed this patch"
+          "fleets": "Fleets"
         },
         "features": {
           "title": "What you can do here",

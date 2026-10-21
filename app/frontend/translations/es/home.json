@@ -3,7 +3,7 @@
     "home": {
       "landing": {
         "title": "Cada nave del 'verso. Toda tu flota en un solo lugar.",
-        "lede": "Consulta cualquier nave, con sus estadísticas y equipamientos tal como están hoy en el juego. Gestiona tu hangar, planifica con tu org y mira qué cambió cada parche.",
+        "lede": "Consulta cualquier nave, con sus estadísticas y equipamientos tal como están hoy en el juego.",
         "signUp": "Crear una cuenta gratuita",
         "browseShips": "Ver todas las naves",
         "scrollDown": "Desplazarse hacia abajo",
@@ -21,8 +21,7 @@
         "stats": {
           "ships": "Naves y vehículos",
           "vehicles": "Naves en hangares",
-          "fleets": "Flotas",
-          "changed": "Cambiadas en este parche"
+          "fleets": "Flotas"
         },
         "features": {
           "title": "Qué puedes hacer aquí",

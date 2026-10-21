@@ -3,7 +3,7 @@
     "home": {
       "landing": {
         "title": "Jedes Schiff im 'Verse. Deine ganze Flotte an einem Ort.",
-        "lede": "Schlag jedes Schiff nach, mit Werten und Loadouts so, wie sie heute im Spiel sind. Verwalte deinen Hangar, plane mit deiner Org und sieh, was jeder Patch geändert hat.",
+        "lede": "Schlag jedes Schiff nach, mit Werten und Loadouts so, wie sie heute im Spiel sind.",
         "signUp": "Kostenloses Konto erstellen",
         "browseShips": "Alle Schiffe ansehen",
         "scrollDown": "Nach unten scrollen",
@@ -21,8 +21,7 @@
         "stats": {
           "ships": "Schiffe und Fahrzeuge",
           "vehicles": "Schiffe in Hangars",
-          "fleets": "Flotten",
-          "changed": "In diesem Patch geändert"
+          "fleets": "Flotten"
         },
         "features": {
           "title": "Was du hier tun kannst",

@@ -3,7 +3,7 @@
     "home": {
       "landing": {
         "title": "Chaque vaisseau du 'verse. Toute votre flotte au même endroit.",
-        "lede": "Consultez n'importe quel vaisseau, ses statistiques et ses équipements tels qu'ils sont aujourd'hui en jeu. Gérez votre hangar, planifiez avec votre org et voyez ce que chaque patch a changé.",
+        "lede": "Consultez n'importe quel vaisseau, ses statistiques et ses équipements tels qu'ils sont aujourd'hui en jeu.",
         "signUp": "Créer un compte gratuit",
         "browseShips": "Voir tous les vaisseaux",
         "scrollDown": "Faire défiler vers le bas",
@@ -21,8 +21,7 @@
         "stats": {
           "ships": "Vaisseaux et véhicules",
           "vehicles": "Vaisseaux en hangar",
-          "fleets": "Flottes",
-          "changed": "Modifiés par ce patch"
+          "fleets": "Flottes"
         },
         "features": {
           "title": "Ce que vous pouvez faire ici",
