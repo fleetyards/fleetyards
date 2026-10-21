@@ -317,11 +317,13 @@ watch(
               :key="link.location.id"
               class="mission-page__offered-place"
             >
-              <router-link
-                :to="{ name: 'location', params: { slug: link.location.slug } }"
-              >
-                {{ link.location.name }}
-              </router-link>
+              <CatalogueItemPopover
+                :item="{
+                  type: 'Location',
+                  slug: link.location.slug,
+                  name: link.location.name,
+                }"
+              />
             </li>
           </ul>
         </section>
