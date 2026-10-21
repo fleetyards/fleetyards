@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.21.0](https://github.com/fleetyards/fleetyards/compare/v9.20.0...v9.21.0) (2026-10-21)
+
+
+### Features
+
+* **homepage:** feature one ship a day, the same for every visitor ([92ce2ef](https://github.com/fleetyards/fleetyards/commit/92ce2ef4e27e886313d9d67364cfafd2cfb13685))
+
+
+### Bug Fixes
+
+* **bsky:** post only from production ([8411ed5](https://github.com/fleetyards/fleetyards/commit/8411ed5f050622a994359758b57d2a67f4b75d4d))
+* **models:** one spelling per ship classification and focus ([#5894](https://github.com/fleetyards/fleetyards/issues/5894)) ([8475563](https://github.com/fleetyards/fleetyards/commit/8475563c886bc24679d10863d8ed34204082db0c))
+
+
+### Chores
+
+* **credentials:** drop the Bluesky posting account from development ([8c952f9](https://github.com/fleetyards/fleetyards/commit/8c952f92e6824ad156aa29c43ad28461464a44c7))
+* **credentials:** rotate the Bluesky app password ([db31d48](https://github.com/fleetyards/fleetyards/commit/db31d48a2219fa9cdb2dcd7cb4e46c31c782c13e))
+
 ## [9.20.0](https://github.com/fleetyards/fleetyards/compare/v9.19.0...v9.20.0) (2026-10-21)
 
 
