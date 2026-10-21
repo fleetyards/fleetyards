@@ -2,6 +2,14 @@
 
 set -u
 
+# Load .env.local if present (worktree config)
+if [ -f .env.local ]; then
+  set -a
+  # shellcheck disable=SC1091
+  source .env.local
+  set +a
+fi
+
 S3_BUCKET="fltyrd-live-storage"
 S3_ENDPOINT="fsn1.your-objectstorage.com"
 
@@ -11,6 +19,10 @@ STAGE_ROOT="./tmp/s3_stage"
 # than bandwidth: batching amortizes s3cmd startup, workers hide the latency.
 PARALLEL="${PARALLEL:-8}"
 BATCH_SIZE="${BATCH_SIZE:-200}"
+
+DB_PORT="${DB_PORT:-8271}"
+DB_NAME="${DB_NAME:-fleetyards_dev${WORKTREE_SUFFIX:-}}"
+DB_USER="${DB_USER:-root}"
 
 # Credentials travel through the environment, where s3cmd picks them up on its
 # own. Passing them as flags would expose them to any local `ps`.
@@ -90,7 +102,10 @@ mkdir -p "$LOCAL_ROOT" "$STAGE_ROOT"
 
 REMOTE_LIST=$(mktemp)
 PENDING=$(mktemp)
-trap 'rm -f "$REMOTE_LIST" "$PENDING"' EXIT
+REMOTE_KEYS=$(mktemp)
+LOCAL_KEYS=$(mktemp)
+DB_KEYS=$(mktemp)
+trap 'rm -f "$REMOTE_LIST" "$PENDING" "$REMOTE_KEYS" "$LOCAL_KEYS" "$DB_KEYS"' EXIT
 trap 'echo ""; echo "Interrupted — re-run to resume where this left off."; exit 130' INT
 
 echo "Listing s3://$S3_BUCKET..."
@@ -100,6 +115,14 @@ s3 ls "s3://$S3_BUCKET/" | awk -v bucket="$S3_BUCKET" '
     if (key != "") print $3 "\t" key
   }
 ' > "$REMOTE_LIST"
+list_status=${PIPESTATUS[0]}
+
+# A listing cut short by a failed request would read as most of storage/ having
+# left the bucket, and the cleanup below would delete it.
+if [ "$list_status" != "0" ]; then
+  echo "ERROR: listing s3://$S3_BUCKET/ failed (s3cmd exited $list_status)"
+  exit 1
+fi
 
 remote_count=$(wc -l < "$REMOTE_LIST" | tr -d ' ')
 if [ "$remote_count" = "0" ]; then
@@ -125,6 +148,43 @@ while IFS=$'\t' read -r size key; do
 done < "$REMOTE_LIST"
 
 pending_count=$(wc -l < "$PENDING" | tr -d ' ')
+
+# The mirror only ever adds, so objects deleted from the bucket stay on disk
+# until removed here. A key the local database still references is kept even
+# when the bucket has dropped it: local sc_data loads and uploads write blobs
+# that never reach the bucket.
+remove_deleted_objects() {
+  if ! PGPASSWORD=password psql -qtAX -h localhost -U "$DB_USER" -p "$DB_PORT" -d "$DB_NAME" \
+    -c "SELECT key FROM active_storage_blobs" > "$DB_KEYS" 2> /dev/null; then
+    echo "  Skipping cleanup: could not read blob keys from $DB_NAME on localhost:$DB_PORT."
+    return
+  fi
+
+  sort -o "$DB_KEYS" "$DB_KEYS"
+
+  cut -f2 "$REMOTE_LIST" | sort > "$REMOTE_KEYS"
+  find "$LOCAL_ROOT" -type f ! -name '.*' | awk -F/ '{ print $NF }' | sort > "$LOCAL_KEYS"
+
+  local removed=0
+  local removed_bytes=0
+  local key target size
+
+  while read -r key; do
+    target=$(target_path_for "$key")
+    size=$(stat -f%z "$target" 2> /dev/null || echo 0)
+
+    if rm -f "$target"; then
+      removed=$((removed + 1))
+      removed_bytes=$((removed_bytes + size))
+    fi
+  done < <(comm -23 "$LOCAL_KEYS" "$REMOTE_KEYS" | comm -23 - "$DB_KEYS")
+
+  find "$LOCAL_ROOT" -mindepth 1 -type d -empty -delete
+
+  echo "  Removed:         $removed deleted from the bucket ($(human_size "$removed_bytes"))"
+}
+
+remove_deleted_objects
 
 echo "  Already present: $present"
 echo "  To download:     $pending_count ($(human_size "$pending_bytes"))"
