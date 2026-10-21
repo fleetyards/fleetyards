@@ -620,7 +620,7 @@ class Model < ApplicationRecord
   end
 
   def self.classification_filters
-    Model.classifications.map do |item|
+    CLASSIFICATIONS.map do |item|
       Filter.new(
         category: "classification",
         label: item.humanize,
