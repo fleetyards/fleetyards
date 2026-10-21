@@ -40909,6 +40909,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/ModelFocusEnum"
+        fociLabels:
+          type: array
+          items:
+            type: string
         minSize:
           type: string
         maxSize:

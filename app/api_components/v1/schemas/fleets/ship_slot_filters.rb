@@ -13,6 +13,7 @@ module V1
             classification: {type: :string},
             focus: {type: :string, deprecated: true, description: "Use foci instead"},
             foci: {type: :array, items: ::Shared::V1::Schemas::Enums::ModelFocusEnum},
+            fociLabels: {type: :array, items: {type: :string}},
             minSize: {type: :string},
             maxSize: {type: :string},
             minCrew: {type: :integer},
