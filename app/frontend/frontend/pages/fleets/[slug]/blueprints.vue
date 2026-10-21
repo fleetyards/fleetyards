@@ -6,8 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import Avatar from "@/shared/components/Avatar/index.vue";
-import Btn from "@/shared/components/base/Btn/index.vue";
-import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
+import BlueprintsTabs from "@/frontend/components/Blueprints/Tabs/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import RowsSkeleton from "@/shared/components/RowsSkeleton/index.vue";
@@ -125,26 +124,7 @@ watch(
     </template>
 
     <template #actions-left>
-      <BtnGroup segmented>
-        <Btn
-          :active="activeTab === 'owned'"
-          mobile-icon-only
-          data-test="fleet-blueprints-tab-owned"
-          @click="activeTab = 'owned'"
-        >
-          <i class="fa-duotone fa-bookmark" />
-          {{ t("labels.hangarBlueprints.owned") }}
-        </Btn>
-        <Btn
-          :active="activeTab === 'wanted'"
-          mobile-icon-only
-          data-test="fleet-blueprints-tab-wanted"
-          @click="activeTab = 'wanted'"
-        >
-          <i class="fa-duotone fa-wand-sparkles" />
-          {{ t("labels.hangarBlueprints.wanted") }}
-        </Btn>
-      </BtnGroup>
+      <BlueprintsTabs />
     </template>
 
     <template #pagination-top>
