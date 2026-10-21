@@ -7,6 +7,17 @@
         "signUp": "建立免費帳號",
         "browseShips": "瀏覽所有艦船",
         "scrollDown": "向下捲動",
+        "searchTry": "試試",
+        "featuredShip": "精選艦船",
+        "searchResults": "搜尋結果",
+        "searchNoResults": "沒有與「%{query}」相符的結果",
+        "searchNoResultsHint": "試試艦船、組件、任務或地點。",
+        "searching": "搜尋中…",
+        "searchKeys": {
+          "move": "移動",
+          "open": "開啟",
+          "close": "關閉"
+        },
         "stats": {
           "ships": "艦船與載具",
           "vehicles": "機庫中的艦船",

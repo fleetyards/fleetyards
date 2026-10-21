@@ -349,6 +349,8 @@
       "updatedAt": "Mis à jour le",
       "addToHangar": "Ajouter au hangar",
       "home": {
+        "catalogueSearch": "Rechercher des vaisseaux, objets, missions et lieux",
+        "submitCatalogueSearch": "Rechercher",
         "search": "Recherche de vaisseaux",
         "submitSearch": "Rechercher des vaisseaux"
       },

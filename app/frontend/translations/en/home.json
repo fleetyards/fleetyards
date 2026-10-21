@@ -7,6 +7,17 @@
         "signUp": "Create a free account",
         "browseShips": "Browse all ships",
         "scrollDown": "Scroll down",
+        "searchTry": "Try",
+        "featuredShip": "Featured ship",
+        "searchResults": "Search results",
+        "searchNoResults": "Nothing matches “%{query}”",
+        "searchNoResultsHint": "Try a ship, a component, a mission or a place.",
+        "searching": "Searching…",
+        "searchKeys": {
+          "move": "to move",
+          "open": "to open",
+          "close": "to close"
+        },
         "stats": {
           "ships": "Ships and vehicles",
           "vehicles": "Ships in hangars",

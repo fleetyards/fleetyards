@@ -7,6 +7,17 @@
         "signUp": "创建免费账户",
         "browseShips": "浏览所有舰船",
         "scrollDown": "向下滚动",
+        "searchTry": "试试",
+        "featuredShip": "精选舰船",
+        "searchResults": "搜索结果",
+        "searchNoResults": "没有与“%{query}”匹配的结果",
+        "searchNoResultsHint": "试试舰船、组件、任务或地点。",
+        "searching": "正在搜索…",
+        "searchKeys": {
+          "move": "移动",
+          "open": "打开",
+          "close": "关闭"
+        },
         "stats": {
           "ships": "舰船与载具",
           "vehicles": "机库中的舰船",

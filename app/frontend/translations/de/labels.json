@@ -349,6 +349,8 @@
       "updatedAt": "Aktualisiert am",
       "addToHangar": "Zum Hangar hinzufügen",
       "home": {
+        "catalogueSearch": "Schiffe, Gegenstände, Missionen und Orte suchen",
+        "submitCatalogueSearch": "Suchen",
         "search": "Schiffe suchen...",
         "submitSearch": "Schiffe suchen"
       },

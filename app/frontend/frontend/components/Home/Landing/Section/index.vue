@@ -197,6 +197,12 @@ $bleed: $grid-gutter-width * 0.5;
     opacity: 1;
     transform: none;
   }
+
+  // Above the next section, which paints later: the search's matches open
+  // downwards and would otherwise slide under its picture.
+  .landing-section--hero & {
+    z-index: 2;
+  }
 }
 
 .landing-section__next {

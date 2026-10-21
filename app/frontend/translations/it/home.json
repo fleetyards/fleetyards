@@ -7,6 +7,17 @@
         "signUp": "Crea un account gratuito",
         "browseShips": "Vedi tutte le navi",
         "scrollDown": "Scorri verso il basso",
+        "searchTry": "Prova",
+        "featuredShip": "Nave in evidenza",
+        "searchResults": "Risultati della ricerca",
+        "searchNoResults": "Nessun risultato per «%{query}»",
+        "searchNoResultsHint": "Prova con una nave, un componente, una missione o un luogo.",
+        "searching": "Ricerca in corso…",
+        "searchKeys": {
+          "move": "per spostarti",
+          "open": "per aprire",
+          "close": "per chiudere"
+        },
         "stats": {
           "ships": "Navi e veicoli",
           "vehicles": "Navi negli hangar",

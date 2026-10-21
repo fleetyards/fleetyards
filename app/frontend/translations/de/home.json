@@ -7,6 +7,17 @@
         "signUp": "Kostenloses Konto erstellen",
         "browseShips": "Alle Schiffe ansehen",
         "scrollDown": "Nach unten scrollen",
+        "searchTry": "Probier",
+        "featuredShip": "Vorgestelltes Schiff",
+        "searchResults": "Suchergebnisse",
+        "searchNoResults": "Nichts passt zu „%{query}“",
+        "searchNoResultsHint": "Versuch es mit einem Schiff, einer Komponente, einer Mission oder einem Ort.",
+        "searching": "Suche läuft…",
+        "searchKeys": {
+          "move": "zum Wechseln",
+          "open": "zum Öffnen",
+          "close": "zum Schließen"
+        },
         "stats": {
           "ships": "Schiffe und Fahrzeuge",
           "vehicles": "Schiffe in Hangars",

@@ -349,6 +349,8 @@
       "updatedAt": "更新於",
       "addToHangar": "新增到機庫",
       "home": {
+        "catalogueSearch": "搜尋艦船、物品、任務和地點",
+        "submitCatalogueSearch": "搜尋",
         "search": "搜尋飛船...",
         "submitSearch": "搜尋艦船"
       },

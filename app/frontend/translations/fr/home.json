@@ -7,6 +7,17 @@
         "signUp": "Créer un compte gratuit",
         "browseShips": "Voir tous les vaisseaux",
         "scrollDown": "Faire défiler vers le bas",
+        "searchTry": "Essayez",
+        "featuredShip": "Vaisseau à la une",
+        "searchResults": "Résultats de recherche",
+        "searchNoResults": "Aucun résultat pour « %{query} »",
+        "searchNoResultsHint": "Essayez un vaisseau, un composant, une mission ou un lieu.",
+        "searching": "Recherche…",
+        "searchKeys": {
+          "move": "pour naviguer",
+          "open": "pour ouvrir",
+          "close": "pour fermer"
+        },
         "stats": {
           "ships": "Vaisseaux et véhicules",
           "vehicles": "Vaisseaux en hangar",
