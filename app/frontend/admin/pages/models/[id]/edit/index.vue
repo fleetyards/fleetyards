@@ -52,7 +52,8 @@ const initialValues = ref<ModelUpdateInput>({
   productionStatus: props.model.productionStatus,
   productionNote: props.model.productionNote,
   classification: props.model.classification,
-  focus: props.model.focus,
+  foci: props.model.foci,
+  stealth: props.model.stealth,
   storeImage: undefined,
   brochure: undefined,
 });
@@ -86,9 +87,23 @@ const [productionStatus, productionStatusProps] =
   defineField("productionStatus");
 const [productionNote, productionNoteProps] = defineField("productionNote");
 const [classification, classificationProps] = defineField("classification");
-const [focus, focusProps] = defineField("focus");
+const [foci, fociProps] = defineField("foci");
+const [stealth, stealthProps] = defineField("stealth");
 const [storeImage, storeImageProps] = defineField("storeImage");
 const [brochure, brochureProps] = defineField("brochure");
+
+// What the ship matrix and the game files called the focus, so the keys can be
+// picked against it. Admin only: a public page shows the keys alone.
+const sourceFoci = computed(() =>
+  [
+    props.model.rsiFocus &&
+      t("labels.model.rsiFocus", { value: props.model.rsiFocus }),
+    props.model.scRole &&
+      t("labels.model.scRole", { value: props.model.scRole }),
+  ]
+    .filter(Boolean)
+    .join(" · "),
+);
 </script>
 
 <template>
@@ -236,11 +251,18 @@ const [brochure, brochureProps] = defineField("brochure");
           </div>
           <div class="col-12 col-md-6">
             <ModelFocusSelect
-              v-model="focus"
-              v-bind="focusProps"
+              v-model="foci"
+              v-bind="fociProps"
               :no-label="false"
-              :multiple="false"
-              name="focus"
+              :multiple="true"
+              name="foci"
+            />
+            <p v-if="sourceFoci" class="text-muted">{{ sourceFoci }}</p>
+            <FormToggle
+              v-model="stealth"
+              translation-key="model.stealth"
+              v-bind="stealthProps"
+              name="stealth"
             />
           </div>
         </div>

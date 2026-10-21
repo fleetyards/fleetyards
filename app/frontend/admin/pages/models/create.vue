@@ -40,7 +40,7 @@ const validationSchema = {
 const { defineField, handleSubmit, meta, setErrors } =
   useForm<ModelCreateInput>({
     validationSchema,
-    initialValues: { canLandOnPlanets: true },
+    initialValues: { canLandOnPlanets: true, foci: [], stealth: false },
   });
 
 const [name, nameProps] = defineField("name");
@@ -60,7 +60,8 @@ const [productionStatus, productionStatusProps] =
   defineField("productionStatus");
 const [productionNote, productionNoteProps] = defineField("productionNote");
 const [classification, classificationProps] = defineField("classification");
-const [focus, focusProps] = defineField("focus");
+const [foci, fociProps] = defineField("foci");
+const [stealth, stealthProps] = defineField("stealth");
 const [storeImageNew, storeImageNewProps] = defineField("storeImageNew");
 
 const submitting = ref(false);
@@ -217,11 +218,17 @@ const handleCancel = async () => {
           </div>
           <div class="col-12 col-md-6">
             <ModelFocusSelect
-              v-model="focus"
-              v-bind="focusProps"
+              v-model="foci"
+              v-bind="fociProps"
               :no-label="false"
-              :multiple="false"
-              name="focus"
+              :multiple="true"
+              name="foci"
+            />
+            <FormToggle
+              v-model="stealth"
+              translation-key="model.stealth"
+              v-bind="stealthProps"
+              name="stealth"
             />
           </div>
         </div>
