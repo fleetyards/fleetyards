@@ -85,6 +85,16 @@ class Admin::Api::V1::HomepageSettingsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT /homepage-settings switches the featured ship off" do
+    sign_in @user
+
+    assert_api_response :put, 200, body: {featuredHidden: true} do
+      assert parsed_body["featuredHidden"]
+    end
+
+    assert HomepageSetting.current.featured_hidden
+  end
+
   test "GET /homepage-settings returns 401 when not signed in" do
     assert_api_response :get, 401
   end

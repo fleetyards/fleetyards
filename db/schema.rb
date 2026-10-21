@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_21_190000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_21_220000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1337,6 +1337,23 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_21_190000) do
     t.index ["reward_kinds"], name: "index_game_mission_builds_on_reward_kinds", using: :gin
   end
 
+  create_table "game_mission_hand_ins", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "game_mission_build_id", null: false
+    t.string "kind", null: false
+    t.string "ref", null: false
+    t.string "name"
+    t.integer "amount", null: false
+    t.integer "max"
+    t.integer "option"
+    t.string "catalogue_item_type"
+    t.uuid "catalogue_item_id"
+    t.integer "position", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_mission_build_id", "position"], name: "index_game_mission_hand_ins_on_build_and_position", unique: true
+    t.index ["game_mission_build_id"], name: "index_game_mission_hand_ins_on_build"
+  end
+
   create_table "game_mission_locations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "game_mission_id", null: false
     t.uuid "location_id", null: false
@@ -1363,6 +1380,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_21_190000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "entity_name"
+    t.string "catalogue_item_type"
+    t.uuid "catalogue_item_id"
     t.index ["game_mission_build_id", "position"], name: "index_game_mission_rewards_on_build_and_position", unique: true
     t.index ["game_mission_build_id"], name: "index_game_mission_rewards_on_build"
     t.index ["kind"], name: "index_game_mission_rewards_on_kind"
@@ -1508,6 +1527,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_21_190000) do
     t.boolean "featured_random", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "featured_hidden", default: false, null: false
   end
 
   create_table "images", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
@@ -1999,6 +2019,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_21_190000) do
     t.integer "beds"
     t.string "weapon_racks"
     t.integer "lockers"
+    t.jsonb "weapon_regen_modifier"
     t.index ["environment", "version"], name: "index_model_builds_on_environment_and_version"
     t.index ["model_id", "environment", "version"], name: "index_model_builds_on_model_and_build", unique: true
   end
@@ -2253,6 +2274,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_21_190000) do
     t.integer "lockers"
     t.string "ship_views_digest"
     t.jsonb "ship_view_md5s", default: {}, null: false
+    t.jsonb "weapon_regen_modifier"
     t.string "first_seen_version"
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
     t.index ["classification"], name: "index_models_on_classification"
@@ -2781,6 +2803,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_21_190000) do
     t.string "url"
     t.string "kind", default: "link", null: false
     t.boolean "public", default: false, null: false
+    t.jsonb "power_presets", default: [], null: false
     t.index ["vehicle_id", "name"], name: "index_vehicle_loadouts_on_vehicle_id_and_name", unique: true
   end
 
@@ -3002,6 +3025,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_21_190000) do
   add_foreign_key "friendships", "users", column: "addressee_id", on_delete: :cascade
   add_foreign_key "friendships", "users", column: "requester_id", on_delete: :cascade
   add_foreign_key "game_mission_builds", "game_missions", on_delete: :cascade
+  add_foreign_key "game_mission_hand_ins", "game_mission_builds", on_delete: :cascade
   add_foreign_key "game_mission_locations", "game_missions", on_delete: :cascade
   add_foreign_key "game_mission_locations", "locations", on_delete: :cascade
   add_foreign_key "game_mission_rewards", "game_mission_builds", on_delete: :cascade

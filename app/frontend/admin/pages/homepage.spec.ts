@@ -5,10 +5,15 @@ import { computed, ref } from "vue";
 import type { HomepageSetting } from "@/services/fyAdminApi";
 import Page from "./homepage.vue";
 
-let settings: HomepageSetting = { featuredModelIds: [], featuredRandom: true };
+let settings: HomepageSetting = {
+  featuredModelIds: [],
+  featuredRandom: true,
+  featuredHidden: false,
+};
 const mutateAsync = vi.fn(async ({ data }) => ({
   featuredModelIds: data.featuredModelIds,
   featuredRandom: data.featuredRandom,
+  featuredHidden: data.featuredHidden,
 }));
 
 vi.mock("@/services/fyAdminApi", async (importOriginal) => ({
@@ -45,38 +50,27 @@ const submit = async (
 };
 
 describe("AdminHomepagePage", () => {
-  it("removes every featured ship", async () => {
+  it("switches the featured ship off", async () => {
     mutateAsync.mockClear();
     settings = {
-      featuredModelIds: [
-        "8d0e3c7a-0000-4000-8000-000000000001",
-        "8d0e3c7a-0000-4000-8000-000000000002",
-      ],
-      featuredRandom: false,
+      featuredModelIds: ["8d0e3c7a-0000-4000-8000-000000000001"],
+      featuredRandom: true,
+      featuredHidden: false,
     };
     const wrapper = await mountWithDefaults(Page);
     await flushPromises();
 
     await wrapper
-      .find("[data-test='homepage-clear-featured-models']")
-      .trigger("click");
+      .find("[data-test='homepage-featured-hidden'] input")
+      .setValue(true);
     await submit(wrapper);
 
     expect(mutateAsync).toHaveBeenCalledWith({
-      data: { featuredModelIds: [], featuredRandom: false },
+      data: {
+        featuredModelIds: ["8d0e3c7a-0000-4000-8000-000000000001"],
+        featuredRandom: true,
+        featuredHidden: true,
+      },
     });
-    expect(
-      wrapper.find("[data-test='homepage-clear-featured-models']").exists(),
-    ).toBe(false);
-  });
-
-  it("offers no removal while no ship is featured", async () => {
-    settings = { featuredModelIds: [], featuredRandom: true };
-    const wrapper = await mountWithDefaults(Page);
-    await flushPromises();
-
-    expect(
-      wrapper.find("[data-test='homepage-clear-featured-models']").exists(),
-    ).toBe(false);
   });
 });

@@ -11,13 +11,13 @@ class HomepageSettingTest < ActiveSupport::TestCase
     assert_equal [shown], setting.featured_models.to_a
   end
 
-  test "features one of the ships, or now and then none" do
+  test "features only the chosen ships" do
     ships = create_list(:model, 2)
     setting = HomepageSetting.create!(featured_model_ids: ships.map(&:id))
 
     picks = Array.new(60) { |seed| setting.featured_ship(random: Random.new(seed)) }
 
-    assert_equal [*ships, nil].to_set, picks.to_set
+    assert_equal ships.to_set, picks.to_set
   end
 
   test "features the first ship of the list while the draw is off" do
@@ -29,8 +29,28 @@ class HomepageSettingTest < ActiveSupport::TestCase
     assert_equal [second], picks.uniq
   end
 
-  test "features nothing without ships" do
+  # Nobody curating is the usual case: the hero then takes any ship drawn with
+  # the picture it is built around.
+  test "features a ship with a coloured angled render when none are set" do
+    rendered = create(:model)
+    rendered.angled_view_colored.attach(io: File.open(Rails.root.join("test/fixtures/files/test.png")), filename: "angled.png")
+    create(:model)
+    create(:model, hidden: true).angled_view_colored.attach(io: File.open(Rails.root.join("test/fixtures/files/test.png")), filename: "angled.png")
+
+    assert_equal rendered, HomepageSetting.new.featured_ship
+  end
+
+  test "features nothing when no ship has a coloured angled render" do
+    create(:model)
+
     assert_nil HomepageSetting.new.featured_ship
+  end
+
+  test "features nothing while the feature is switched off" do
+    ship = create(:model)
+    setting = HomepageSetting.create!(featured_model_ids: [ship.id], featured_random: false, featured_hidden: true)
+
+    assert_nil setting.featured_ship
   end
 
   test "keeps each ship once and no more than the cap" do

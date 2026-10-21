@@ -1670,10 +1670,11 @@
         "endedAt": "Finalizado el"
       },
       "homepageSetting": {
-        "featuredModelsInfo": "Se muestra junto a la búsqueda de la página de inicio. Déjalo vacío para centrar siempre la cabecera.",
+        "featuredModelsInfo": "Se muestra junto a la búsqueda de la portada. Déjalo vacío para elegir al azar entre todas las naves con vista angular en color.",
+        "featuredHidden": "No destacar ninguna nave",
+        "featuredHiddenInfo": "La cabecera queda centrada, sin nave al lado.",
         "featuredRandom": "Elegir al azar",
-        "featuredRandomInfo": "Cada visita muestra una de estas naves, o de vez en cuando ninguna. Desactivado: siempre la primera nave de la lista.",
-        "clearFeaturedModels": "Quitar todas"
+        "featuredRandomInfo": "Cada visita destaca una de estas naves. Desactivado: siempre la primera nave de la lista."
       },
       "gameEvent": {
         "title": "Título",

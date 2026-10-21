@@ -1670,10 +1670,11 @@
         "endedAt": "Beendet am"
       },
       "homepageSetting": {
-        "featuredModelsInfo": "Erscheint neben der Suche auf der Startseite. Leer lassen, um den Kopfbereich immer zu zentrieren.",
+        "featuredModelsInfo": "Neben der Suche auf der Startseite gezeigt. Leer lassen, um zufällig aus allen Schiffen mit farbiger Schrägansicht zu wählen.",
+        "featuredHidden": "Kein Schiff hervorheben",
+        "featuredHiddenInfo": "Der Hero bleibt zentriert, ohne Schiff daneben.",
         "featuredRandom": "Zufällig wählen",
-        "featuredRandomInfo": "Jeder Besuch zeigt eines dieser Schiffe, ab und zu auch keines. Aus: immer das erste Schiff der Liste.",
-        "clearFeaturedModels": "Alle entfernen"
+        "featuredRandomInfo": "Jeder Besuch zeigt eines dieser Schiffe. Aus: immer das erste Schiff der Liste."
       },
       "gameEvent": {
         "title": "Titel",

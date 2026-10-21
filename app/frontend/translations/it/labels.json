@@ -1670,10 +1670,11 @@
         "endedAt": "Terminato il"
       },
       "homepageSetting": {
-        "featuredModelsInfo": "Mostrata accanto alla ricerca della pagina iniziale. Lascia vuoto per centrare sempre l’intestazione.",
+        "featuredModelsInfo": "Mostrato accanto alla ricerca della home. Lascia vuoto per scegliere a caso tra tutte le navi con una vista angolata a colori.",
+        "featuredHidden": "Non mostrare nessuna nave",
+        "featuredHiddenInfo": "L’intestazione resta centrata, senza nave accanto.",
         "featuredRandom": "Scegli a caso",
-        "featuredRandomInfo": "Ogni visita mostra una di queste navi, o ogni tanto nessuna. Disattivato: sempre la prima nave dell’elenco.",
-        "clearFeaturedModels": "Rimuovi tutte"
+        "featuredRandomInfo": "Ogni visita mette in evidenza una di queste navi. Disattivato: sempre la prima nave della lista."
       },
       "gameEvent": {
         "title": "Titolo",

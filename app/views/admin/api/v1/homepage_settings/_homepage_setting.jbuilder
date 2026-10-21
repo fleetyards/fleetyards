@@ -2,4 +2,5 @@
 
 json.featured_model_ids homepage_setting.featured_model_ids
 json.featured_random homepage_setting.featured_random
+json.featured_hidden homepage_setting.featured_hidden
 json.updated_at homepage_setting.updated_at

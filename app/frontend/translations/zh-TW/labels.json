@@ -1670,10 +1670,11 @@
         "endedAt": "結束於"
       },
       "homepageSetting": {
-        "featuredModelsInfo": "顯示在首頁搜尋框旁邊。留空則首屏始終置中顯示。",
+        "featuredModelsInfo": "顯示在首頁搜尋旁邊。留空則從所有帶彩色斜視圖的艦船中隨機選擇。",
+        "featuredHidden": "不展示艦船",
+        "featuredHiddenInfo": "首屏保持置中，旁邊不顯示艦船。",
         "featuredRandom": "隨機挑選",
-        "featuredRandomInfo": "每次造訪顯示其中一艘，偶爾也一艘都不顯示。關閉：始終顯示列表中的第一艘。",
-        "clearFeaturedModels": "全部移除"
+        "featuredRandomInfo": "每次造訪展示其中一艘艦船。關閉：始終展示清單中的第一艘。"
       },
       "gameEvent": {
         "title": "標題",

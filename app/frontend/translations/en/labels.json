@@ -1670,10 +1670,11 @@
         "endedAt": "Ended at"
       },
       "homepageSetting": {
-        "featuredModelsInfo": "Shown beside the homepage search. Leave empty to always centre the hero.",
+        "featuredModelsInfo": "Shown beside the homepage search. Leave empty to draw from every ship with a coloured angled render.",
+        "featuredHidden": "Show no featured ship",
+        "featuredHiddenInfo": "The hero stays centred, with no ship beside it.",
         "featuredRandom": "Pick at random",
-        "featuredRandomInfo": "Each visit features one of these ships, or now and then none. Off: always the first ship in the list.",
-        "clearFeaturedModels": "Remove all"
+        "featuredRandomInfo": "Each visit features one of these ships. Off: always the first ship in the list."
       },
       "gameEvent": {
         "title": "Title",

@@ -11,10 +11,11 @@ module Admin
           properties: {
             featuredModelIds: {type: :array, items: {type: :string, format: :uuid}},
             featuredRandom: {type: :boolean},
+            featuredHidden: {type: :boolean},
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[featuredModelIds featuredRandom]
+          required: %w[featuredModelIds featuredRandom featuredHidden]
         })
       end
     end

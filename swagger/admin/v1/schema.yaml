@@ -16774,6 +16774,8 @@ components:
             format: uuid
         featuredRandom:
           type: boolean
+        featuredHidden:
+          type: boolean
         updatedAt:
           type: string
           format: date-time
@@ -16781,6 +16783,7 @@ components:
       required:
       - featuredModelIds
       - featuredRandom
+      - featuredHidden
       title: HomepageSetting
     HomepageSettingInput:
       type: object
@@ -16792,6 +16795,8 @@ components:
             format: uuid
           maxItems: 20
         featuredRandom:
+          type: boolean
+        featuredHidden:
           type: boolean
       additionalProperties: false
       title: HomepageSettingInput

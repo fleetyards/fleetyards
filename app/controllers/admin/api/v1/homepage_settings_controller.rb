@@ -22,7 +22,7 @@ module Admin
         end
 
         private def homepage_setting_params
-          @homepage_setting_params ||= params.permit(:featured_random, featured_model_ids: [])
+          @homepage_setting_params ||= params.permit(:featured_random, :featured_hidden, featured_model_ids: [])
         end
       end
     end

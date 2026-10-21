@@ -1670,10 +1670,11 @@
         "endedAt": "Terminé le"
       },
       "homepageSetting": {
-        "featuredModelsInfo": "Affiché à côté de la recherche de la page d’accueil. Laissez vide pour toujours centrer l’en-tête.",
+        "featuredModelsInfo": "Affiché à côté de la recherche de l’accueil. Laissez vide pour tirer au sort parmi tous les vaisseaux avec une vue en angle colorée.",
+        "featuredHidden": "N’afficher aucun vaisseau",
+        "featuredHiddenInfo": "L’en-tête reste centré, sans vaisseau à côté.",
         "featuredRandom": "Choisir au hasard",
-        "featuredRandomInfo": "Chaque visite met en avant l’un de ces vaisseaux, ou de temps en temps aucun. Désactivé : toujours le premier vaisseau de la liste.",
-        "clearFeaturedModels": "Tout retirer"
+        "featuredRandomInfo": "Chaque visite met en avant l’un de ces vaisseaux. Désactivé : toujours le premier vaisseau de la liste."
       },
       "gameEvent": {
         "title": "Titre",

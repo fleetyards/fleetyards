@@ -12,10 +12,6 @@ import FormActions from "@/shared/components/base/FormActions/index.vue";
 import ModelSelect from "@/admin/components/base/ModelSelect/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
-import {
   useHomepageSettings,
   useUpdateHomepageSettings,
   getHomepageSettingsQueryKey,
@@ -36,12 +32,16 @@ const selectedModelIds = ref<string[]>([]);
 
 const featuredRandom = ref(true);
 
+const featuredHidden = ref(false);
+
 const savedModelIds = computed(() => settings.value?.featuredModelIds ?? []);
 const savedRandom = computed(() => settings.value?.featuredRandom ?? true);
+const savedHidden = computed(() => settings.value?.featuredHidden ?? false);
 
 const reset = () => {
   selectedModelIds.value = [...savedModelIds.value];
   featuredRandom.value = savedRandom.value;
+  featuredHidden.value = savedHidden.value;
 };
 
 // The settings arrive after the page is set up.
@@ -56,6 +56,7 @@ const onPick = (value?: string | string[]) => {
 const dirty = computed(
   () =>
     featuredRandom.value !== savedRandom.value ||
+    featuredHidden.value !== savedHidden.value ||
     JSON.stringify(selectedModelIds.value) !==
       JSON.stringify(savedModelIds.value),
 );
@@ -79,11 +80,13 @@ const onSubmit = async () => {
       data: {
         featuredModelIds: selectedModelIds.value,
         featuredRandom: featuredRandom.value,
+        featuredHidden: featuredHidden.value,
       },
     })
     .then((saved) => {
       selectedModelIds.value = [...saved.featuredModelIds];
       featuredRandom.value = saved.featuredRandom;
+      featuredHidden.value = saved.featuredHidden;
       displaySuccess({ text: t("messages.homepageSetting.updated") });
     })
     .catch((error) => {
@@ -115,16 +118,6 @@ const onSubmit = async () => {
             <p class="admin-homepage__info">
               {{ t("labels.homepageSetting.featuredModelsInfo") }}
             </p>
-            <Btn
-              v-if="selectedModelIds.length"
-              :size="BtnSizesEnum.SM"
-              :variant="BtnVariantsEnum.GHOST"
-              data-test="homepage-clear-featured-models"
-              @click="selectedModelIds = []"
-            >
-              <i class="fa-light fa-xmark" />
-              {{ t("labels.homepageSetting.clearFeaturedModels") }}
-            </Btn>
             <FormToggle
               v-model="featuredRandom"
               name="featuredRandom"
@@ -133,6 +126,15 @@ const onSubmit = async () => {
               :description="t('labels.homepageSetting.featuredRandomInfo')"
               no-placeholder
               data-test="homepage-featured-random"
+            />
+            <FormToggle
+              v-model="featuredHidden"
+              name="featuredHidden"
+              class="admin-homepage__random"
+              :label="t('labels.homepageSetting.featuredHidden')"
+              :description="t('labels.homepageSetting.featuredHiddenInfo')"
+              no-placeholder
+              data-test="homepage-featured-hidden"
             />
           </div>
         </div>

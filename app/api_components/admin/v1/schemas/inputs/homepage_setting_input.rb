@@ -11,7 +11,8 @@ module Admin
             type: :object,
             properties: {
               featuredModelIds: {type: :array, items: {type: :string, format: :uuid}, maxItems: ::HomepageSetting::MAX_FEATURED_MODELS},
-              featuredRandom: {type: :boolean}
+              featuredRandom: {type: :boolean},
+              featuredHidden: {type: :boolean}
             },
             additionalProperties: false
           })
