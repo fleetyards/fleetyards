@@ -65,15 +65,18 @@ describe("useBlueprintsTab", () => {
   });
 
   // Each catalogue's query schema refuses the other's filter keys.
-  it("drops the filters when crossing to the missions list", async () => {
+  it("drops the filters but keeps the page size when crossing to the missions list", async () => {
     const { router, tab } = await setup(
-      { tab: "wanted", craftableTypeIn: "Component" },
+      { tab: "wanted", craftableTypeIn: "Component", perPage: "96" },
       ["owned", "wanted", "missions"],
     );
 
     tab.value = "missions";
     await new Promise((resolve) => setTimeout(resolve));
 
-    expect(router.currentRoute.value.query).toEqual({ tab: "missions" });
+    expect(router.currentRoute.value.query).toEqual({
+      tab: "missions",
+      perPage: "96",
+    });
   });
 });

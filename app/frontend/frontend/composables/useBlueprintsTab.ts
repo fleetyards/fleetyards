@@ -1,6 +1,13 @@
+import type { LocationQuery } from "vue-router";
+
 export const BLUEPRINTS_TABS = ["owned", "wanted", "missions"] as const;
 
 export type BlueprintsTab = (typeof BLUEPRINTS_TABS)[number];
+
+export const DEFAULT_BLUEPRINTS_TABS: readonly BlueprintsTab[] = [
+  "owned",
+  "wanted",
+];
 
 /*
  * Which of a person's -- or a fleet's -- blueprint lists is open, held in the
@@ -11,7 +18,7 @@ export type BlueprintsTab = (typeof BLUEPRINTS_TABS)[number];
  * `tabs` is what the page offers; anything else in the URL opens the first.
  */
 export const useBlueprintsTab = (
-  tabs: readonly BlueprintsTab[] = ["owned", "wanted"],
+  tabs: readonly BlueprintsTab[] = DEFAULT_BLUEPRINTS_TABS,
 ) => {
   const route = useRoute();
   const router = useRouter();
@@ -27,10 +34,13 @@ export const useBlueprintsTab = (
 
       // The missions list takes the mission catalogue's filters and the other
       // two the blueprint catalogue's. Each query schema refuses the other's
-      // keys, so crossing between them starts from no filters at all; owned
-      // and wanted share theirs, and only the page number is dropped.
+      // keys, so crossing between them keeps only the page size; owned and
+      // wanted share theirs, and only the page number is dropped.
       const crossing = [activeTab.value, tab].includes("missions");
-      const query = crossing ? {} : { ...route.query };
+      const { perPage } = route.query;
+      const query: LocationQuery = crossing
+        ? { ...(perPage ? { perPage } : {}) }
+        : { ...route.query };
       delete query.page;
 
       if (tab === tabs[0]) {
