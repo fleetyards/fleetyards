@@ -635,6 +635,74 @@ module ScData
         assert_equal [locality_place, place].sort, @parser.missions.sole[:offered_location_refs]
       end
 
+      test "#missions fills the placeholders a contract states, layered template, handler, contract" do
+        template_ref = "5d1e0c3a-0000-4000-8000-0000000000f1"
+        translate(
+          "Haul_Title" => "~mission(CargoGradeToken) Haul to ~mission(Destination|Address)",
+          "Haul_Desc" => "Use a ~mission(MissionMaxSCUSize) elevator in ~mission(System), ~mission(ReputationRank).",
+          "Grade_Small" => "Small", "Grade_Large" => "Large", "Elevator_4" => "4 SCU", "Elevator_32" => "32 SCU",
+          "Stanton" => "Stanton System", "Rank_1" => "Member"
+        )
+        write("contracts/contracttemplates/haul", "ContractTemplate", template_ref, <<~XML)
+          <contractProperties>
+            #{text_property("CargoGradeToken", "@Grade_Small")}
+            #{text_property("MissionMaxSCUSize", "@Elevator_4")}
+            #{text_property("System", "@Stanton")}
+            #{text_property("ReputationRank", "@LOC_UNINITIALIZED")}
+          </contractProperties>
+        XML
+        generator("gen", title: "@Haul_Title", description: "@Haul_Desc", template: template_ref,
+          handler_extra: "<contractParams><propertyOverrides>#{text_property("MissionMaxSCUSize", "@Elevator_32")}#{text_property("ReputationRank", "@Rank_1")}</propertyOverrides></contractParams>",
+          properties: text_property("CargoGradeToken", "@Grade_Large"))
+
+        values = @parser.missions.sole[:placeholder_values]
+
+        assert_equal({"CargoGradeToken" => "Large", "MissionMaxSCUSize" => "32 SCU", "System" => "Stanton System",
+          "ReputationRank" => "Member"}, values)
+      end
+
+      test "#missions fills a placeholder a value carries, and lists the options a contract offers" do
+        translate(
+          "Fuel_Desc" => "Bring ~mission(FuelType) to ~mission(Ship).",
+          "Fuel_Hydrogen" => "<EM4>~mission(HydrogenFuel) SCU of Hydrogen</EM4>",
+          "Fuel_Quantum" => "Quantum Fuel"
+        )
+        generator("gen", description: "@Fuel_Desc",
+          properties: text_property("FuelType", "@Fuel_Hydrogen", "@Fuel_Quantum") + integer_property("HydrogenFuel", 6))
+
+        assert_equal({"FuelType" => "<EM4>~mission(HydrogenFuel) SCU of Hydrogen</EM4> / Quantum Fuel", "HydrogenFuel" => "6"},
+          @parser.missions.sole[:placeholder_values])
+      end
+
+      test "#missions leaves a number the game rolls or works out as a placeholder" do
+        translate("Code_Desc" => "Code ~mission(ApprovalCode), ~mission(QTFuel) SCU, ~mission(ScripAmount) scrip.")
+        generator("gen", description: "@Code_Desc",
+          properties: integer_property("ApprovalCode", 1000, variation: 8000) + integer_property("QTFuel", 0) +
+            integer_property("ScripAmount", 25))
+
+        assert_equal({"ScripAmount" => "25"}, @parser.missions.sole[:placeholder_values])
+      end
+
+      test "#missions names a mission item, unless it could be more than three" do
+        refs = (1..4).map { |index| "5d1e0c3a-0000-4000-8000-0000000000d#{index}" }
+        translate("Item_Desc" => "Find ~mission(Item1) and ~mission(Item2).", "Item_Medical" => "Medical Supplies")
+        refs.each { |ref| named_entity("entities/carryables/#{ref}", ref:, name: "@Item_Medical") }
+        generator("gen", description: "@Item_Desc",
+          properties: item_property("Item1", refs.first(1)) + item_property("Item2", refs))
+
+        mission = @parser.missions.sole
+
+        assert_equal({"Item1" => "Medical Supplies"}, mission[:placeholder_values])
+        assert_not_includes mission, :placeholder_items
+      end
+
+      test "#missions carries no placeholder values for a contract that states none" do
+        translate("Plain_Desc" => "Go to ~mission(Location|Address).")
+        generator("gen", description: "@Plain_Desc")
+
+        assert_not_includes @parser.missions.sole, :placeholder_values
+      end
+
       # `@LOC_UNINITIALIZED` is a real entry in the localisation file rather than
       # a missing key, so it resolves happily and would ship as a mission name.
       test "#missions leaves an uninitialized title blank rather than shipping the marker" do
@@ -703,7 +771,7 @@ module ScData
         org_ref: ORG_REF, min_standing: RANK0_REF, max_standing: RANK6_REF, pool_ref: POOL_REF,
         sibling_org: nil, second_org: nil, container: "contracts", contract_ids: [CONTRACT_ID],
         debug_name: nil, title: TITLE_KEY, description: nil, released: true, difficulty: nil, results: nil,
-        properties: nil, extra: nil, results_attributes: "", handler_extra: nil)
+        properties: nil, extra: nil, results_attributes: "", handler_extra: nil, template: nil)
         siblings = [sibling_org, second_org].compact.map.with_index do |ref, index|
           %(<ContractGeneratorHandler_Career debugName="Sibling#{index}" factionReputation="#{ref}" />)
         end
@@ -711,7 +779,7 @@ module ScData
         listed = contract_ids.map do |id|
           contract(contract_kind, id:, debug_name: debug_name || "#{key}_VeryEasy", min_standing:,
             max_standing:, pool_ref:, title:, description:, released:, difficulty:, results:, properties:,
-            extra:, results_attributes:)
+            extra:, results_attributes:, template:)
         end
 
         write("contracts/contractgenerator/guild/#{key}", "ContractGenerator", "00000000-0000-0000-0000-0000000000aa", <<~XML)
@@ -728,13 +796,14 @@ module ScData
       end
 
       private def contract(kind, id:, debug_name:, min_standing:, max_standing:, pool_ref:,
-        title:, description:, released:, difficulty:, results:, properties:, extra:, results_attributes:)
+        title:, description:, released:, difficulty:, results:, properties:, extra:, results_attributes:,
+        template: nil)
         params = [%(<ContractStringParam param="Title" value="#{title}" />)]
         params << %(<ContractStringParam param="Description" value="#{description}" />) if description
 
         <<~XML
           <#{kind} id="#{id}" debugName="#{debug_name}" notForRelease="#{released ? 0 : 1}"
-            minStanding="#{min_standing}" maxStanding="#{max_standing}">
+            minStanding="#{min_standing}" maxStanding="#{max_standing}"#{%( template="#{template}") if template}>
             <paramOverrides>
               <stringParamOverrides>
                 #{params.join}
@@ -834,6 +903,38 @@ module ScData
                 </haulingOrderContent>
               </MissionPropertyValue_HaulingOrders>
             </value>
+          </MissionProperty>
+        XML
+      end
+
+      private def text_property(token, *text_ids)
+        options = text_ids.map { |id| %(<MissionPropertyValueOption_StringHash textId="#{id}" weighting="1" />) }
+
+        <<~XML
+          <MissionProperty extendedTextToken="#{token}">
+            <value><MissionPropertyValue_StringHash><options>#{options.join}</options></MissionPropertyValue_StringHash></value>
+          </MissionProperty>
+        XML
+      end
+
+      private def integer_property(token, value, variation: 0)
+        <<~XML
+          <MissionProperty missionVariableName="#{token}_BP" extendedTextToken="#{token}">
+            <value><MissionPropertyValue_Integer><options>
+              <MissionPropertyValueOption_Integer textId="@LOC_UNINITIALIZED" weighting="1" value="#{value}" variation="#{variation}" />
+            </options></MissionPropertyValue_Integer></value>
+          </MissionProperty>
+        XML
+      end
+
+      private def item_property(token, refs)
+        references = refs.map { |ref| %(<Reference value="#{ref}" />) }
+
+        <<~XML
+          <MissionProperty missionVariableName="#{token}" extendedTextToken="#{token}">
+            <value><MissionPropertyValue_MissionItem minItemsToFind="1" maxItemsToFind="1"><matchConditions>
+              <DataSetMatchCondition_SpecificItemsDef><items>#{references.join}</items></DataSetMatchCondition_SpecificItemsDef>
+            </matchConditions></MissionPropertyValue_MissionItem></value>
           </MissionProperty>
         XML
       end

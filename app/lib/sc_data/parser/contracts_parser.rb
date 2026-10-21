@@ -86,6 +86,17 @@ module ScData
       # `ContractPrerequisite_Locality`.
       LOCALITIES_PATH = "missiondata/pu_missionlocality"
 
+      TEMPLATES_PATH = "contracts/contracttemplates"
+
+      # A plain `~mission(Token)`. `Token|Modifier` is a field of something the
+      # game picks at run time -- a location's address, a ship's name -- and
+      # the files never state it.
+      PLACEHOLDER = /~mission\(([^|)]+)\)/
+
+      # A mission-item placeholder that could be any of more than this many
+      # items is a pick, not a value.
+      PLACEHOLDER_ITEM_LIMIT = 3
+
       # A difficulty band is a designer's sentence with the level on the end --
       # "Hard_PvE_or_Easy_PvP_action_5", "Basically_a_Dev_7". The prose is
       # developer-facing and the 1-7 is the only half worth showing, so the
@@ -257,6 +268,11 @@ module ScData
         parsed = identified.map do |entry, sc_ref, base|
           contract = entry[:contract]
           org = entry[:org]
+          title = contract_title(contract)
+          # Kept as the export writes it, `~mission(Location|Address)` spans
+          # and all: the game fills those in from the mission it generates,
+          # and deleting them here breaks the sentence around them.
+          description = contract_param(contract, "Description")
 
           {
             sc_key: (shared[base] > 1) ? "#{base}_#{sc_ref.delete("-")}" : base,
@@ -264,11 +280,9 @@ module ScData
             kind: entry[:kind],
             generator_key: entry[:generator_key],
             debug_name: value_or_nil(contract["debugName"]),
-            title: contract_title(contract),
-            # Kept as the export writes it, `~mission(Location|Address)` spans
-            # and all: the game fills those in from the mission it generates,
-            # and deleting them here breaks the sentence around them.
-            description: contract_param(contract, "Description"),
+            title:,
+            description:,
+            **placeholders(contract, entry[:handler], [title, description]),
             org_ref: entry[:org_ref],
             org_key: org[:key],
             org_name: org[:name],
@@ -435,20 +449,149 @@ module ScData
 
       # Done in one pass over the finished records rather than per award: the
       # entity tree is walked once for every ref the whole catalogue names,
-      # awards and hand-ins alike.
+      # awards, hand-ins and placeholder items alike.
       private def name_items(parsed)
         items = parsed.flat_map { |mission| mission[:rewards].to_a + mission[:hand_ins].to_a }
           .select { |entry| entry[:kind] == "item" && entry[:entity_class].present? }
+        placeholder_refs = parsed.flat_map { |mission| mission[:placeholder_items].to_h.values.flatten }
 
-        return parsed if items.blank?
+        refs = (items.pluck(:entity_class) + placeholder_refs).uniq
 
-        details = entity_details(items.pluck(:entity_class).uniq)
+        details = refs.present? ? entity_details(refs) : {}
 
         items.each do |entry|
           entry.merge!(details[entry[:entity_class]] || {})
         end
 
+        parsed.each do |mission|
+          name_placeholder_items(mission, details)
+        end
+
         parsed
+      end
+
+      # Only filled when every item it could be has a name: a list missing one
+      # reads as the whole choice.
+      private def name_placeholder_items(mission, details)
+        items = mission.delete(:placeholder_items)
+
+        return if items.blank?
+
+        named = items.filter_map { |token, refs|
+          names = refs.map { |ref| details.dig(ref, :entity_name) }
+
+          [token, names.uniq.join(" / ")] if names.all?(&:present?)
+        }.to_h
+
+        values = (mission[:placeholder_values] || {}).merge(named)
+
+        mission[:placeholder_values] = values if values.present?
+      end
+
+      # The values a contract states for the plain placeholders in its title
+      # and description, layered template, then handler, then contract -- the
+      # order the game applies overrides in. A value can carry a placeholder of
+      # its own (`FuelType_Hydrogen` names `~mission(HydrogenFuel)`), so the
+      # ones a value uses are looked up too.
+      #
+      # Matched without case: a title can be `~mission(title)` where the
+      # property says `Title`.
+      private def placeholders(contract, handler, texts)
+        properties = placeholder_properties(contract, handler)
+        pending = texts.flat_map { |text| placeholder_tokens(text) }
+        values = {}
+        items = {}
+
+        while (token = pending.shift)
+          next if values.key?(token) || items.key?(token)
+
+          value = placeholder_value(properties[token.downcase])
+
+          case value
+          when String
+            values[token] = value
+            pending.concat(placeholder_tokens(value))
+          when Array
+            items[token] = value
+          end
+        end
+
+        {placeholder_values: values.presence, placeholder_items: items.presence}.compact
+      end
+
+      private def placeholder_tokens(text)
+        text.to_s.scan(PLACEHOLDER).flatten.map(&:strip).uniq
+      end
+
+      private def placeholder_properties(contract, handler)
+        [
+          template_properties[value_or_nil(contract["template"])],
+          handler&.dig("contractParams", "propertyOverrides", "MissionProperty"),
+          contract.dig("paramOverrides", "propertyOverrides", "MissionProperty")
+        ].each_with_object({}) do |layer, merged|
+          Array.wrap(layer).each do |property|
+            next unless property.is_a?(Hash)
+
+            token = value_or_nil(property["extendedTextToken"])
+
+            merged[token.downcase] = property["value"] if token.present?
+          end
+        end
+      end
+
+      private def template_properties
+        @template_properties ||= load_data(TEMPLATES_PATH).each_with_object({}) do |item, index|
+          ref = value_or_nil(item[:values]["__ref"])
+
+          index[ref] = item[:values].dig("contractProperties", "MissionProperty") if ref.present?
+        end
+      end
+
+      # A string for a stated value, the entity refs for a mission item still
+      # to be named, nil for anything the game decides at run time.
+      private def placeholder_value(value)
+        return unless value.is_a?(Hash)
+
+        if (text = value["MissionPropertyValue_StringHash"])
+          text_value(text)
+        elsif (number = value["MissionPropertyValue_Integer"])
+          integer_value(number)
+        elsif (item = value["MissionPropertyValue_MissionItem"])
+          item_refs(item)
+        end
+      end
+
+      private def placeholder_options(node, type)
+        Array.wrap(node.is_a?(Hash) ? node.dig("options", type) : nil)
+          .select { |option| option.is_a?(Hash) && option["weighting"].to_f.positive? }
+      end
+
+      private def text_value(node)
+        texts = placeholder_options(node, "MissionPropertyValueOption_StringHash").map { |option|
+          localize(option["textId"])
+        }
+
+        return if texts.empty? || texts.any? { |text| text.blank? || text == UNINITIALIZED }
+
+        texts.uniq.join(" / ")
+      end
+
+      # A variation is a range the game rolls in, and a value of zero is the
+      # field unset -- the fuel amounts it works out per ship.
+      private def integer_value(node)
+        options = placeholder_options(node, "MissionPropertyValueOption_Integer")
+
+        return if options.empty? || options.any? { |option| option["variation"].to_i != 0 || option["value"].to_i <= 0 }
+
+        options.map { |option| option["value"].to_i.to_s }.uniq.join(" / ")
+      end
+
+      private def item_refs(node)
+        refs = Array.wrap(node.dig("matchConditions", "DataSetMatchCondition_SpecificItemsDef")).flat_map { |condition|
+          Array.wrap(condition.is_a?(Hash) ? condition.dig("items", "Reference") : nil)
+        }.filter_map { |reference| value_or_nil(reference["value"]) if reference.is_a?(Hash) }.uniq
+
+        refs if refs.size.between?(1, PLACEHOLDER_ITEM_LIMIT)
       end
 
       # `generator_key` alone repeats, and `debugName` alone collides across
