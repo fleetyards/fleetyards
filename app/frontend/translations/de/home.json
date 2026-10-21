@@ -193,9 +193,83 @@
         },
         "patch": {
           "title": "Dieser Patch",
-          "subline": "Direkt aus den Spieldateien, mit jedem Build aktualisiert.",
-          "mostChanged": "Am meisten geändert",
-          "changes": "Änderungen"
+          "subline": "Direkt aus den Spieldateien, Build für Build verglichen.",
+          "version": "Alpha %{version}",
+          "comparedWith": "Verglichen mit %{version}",
+          "counts": {
+            "newShips": "neue Schiffe",
+            "changedShips": "überarbeitet",
+            "newComponents": "neue Komponenten",
+            "newEquipment": "neue FPS-Items"
+          },
+          "newThisPatch": "Neu in diesem Patch",
+          "newIn": "Neu in %{version}",
+          "biggestChange": "Größte Änderung",
+          "kinds": {
+            "models": "Schiff",
+            "components": "Komponente",
+            "equipment": "FPS-Item"
+          },
+          "noShipChanges": "Keine Schiffsänderungen in diesem Patch",
+          "noShipChangesText": "Dieser Patch ändert keine Werte eines Schiffs und bringt keine neuen.",
+          "browseShips": "Alle Schiffe ansehen",
+          "seeEveryChange": "Alle Änderungen ansehen",
+          "newShip": "neues Schiff",
+          "moreFields": {
+            "one": "und %{count} weitere",
+            "other": "und %{count} weitere"
+          },
+          "appeared": {
+            "components": {
+              "one": "%{count} neue Komponente",
+              "other": "%{count} neue Komponenten"
+            },
+            "equipment": {
+              "one": "%{count} neues FPS-Item",
+              "other": "%{count} neue FPS-Items"
+            }
+          },
+          "vanished": {
+            "equipment": {
+              "one": "%{count} FPS-Item entfernt",
+              "other": "%{count} FPS-Items entfernt"
+            }
+          },
+          "yes": "Ja",
+          "no": "Nein",
+          "fields": {
+            "mass": "Masse",
+            "hullHealth": "Hüllenstärke",
+            "personalInventory": "Persönliches Inventar",
+            "mainAcceleration": "Hauptbeschleunigung",
+            "retroAcceleration": "Rückwärtsbeschleunigung",
+            "scmSpeed": "SCM-Geschwindigkeit",
+            "scmSpeedBoosted": "SCM-Geschwindigkeit (Boost)",
+            "reverseSpeedBoosted": "Rückwärtsgeschwindigkeit (Boost)",
+            "maxSpeed": "Höchstgeschwindigkeit",
+            "pitch": "Nicken",
+            "yaw": "Gieren",
+            "roll": "Rollen",
+            "crew": "Crew",
+            "weaponPoolSize": "Waffenpool",
+            "beds": "Betten",
+            "lockers": "Spinde",
+            "rateOfFire": "Feuerrate",
+            "range": "Reichweite",
+            "storage": "Speicher",
+            "damageReduction": "Schadensreduktion",
+            "temperatureRating": "Temperaturbereich",
+            "radiationProtection": "Strahlenschutz",
+            "radiationScrubRate": "Strahlenabbau",
+            "name": "Name",
+            "size": "Größe",
+            "grade": "Klasse",
+            "hidden": "Versteckt",
+            "itemType": "Typ",
+            "coreCompatibility": "Core-Kompatibilität"
+          },
+          "loadingScreen": "Ladebildschirm von Alpha %{version}",
+          "openLoadingScreen": "Ladebildschirm öffnen"
         },
         "gameEvents": {
           "title": "Im 'Verse",

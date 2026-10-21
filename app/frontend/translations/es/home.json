@@ -193,9 +193,83 @@
         },
         "patch": {
           "title": "Este parche",
-          "subline": "Directo de los archivos del juego, actualizado con cada build.",
-          "mostChanged": "Más cambiadas",
-          "changes": "Cambios"
+          "subline": "Directo de los archivos del juego, comparado versión a versión.",
+          "version": "Alpha %{version}",
+          "comparedWith": "Comparado con %{version}",
+          "counts": {
+            "newShips": "naves nuevas",
+            "changedShips": "reequilibradas",
+            "newComponents": "componentes nuevos",
+            "newEquipment": "objetos FPS nuevos"
+          },
+          "newThisPatch": "Nueva en este parche",
+          "newIn": "Nueva en %{version}",
+          "biggestChange": "Mayor cambio",
+          "kinds": {
+            "models": "Nave",
+            "components": "Componente",
+            "equipment": "Objeto FPS"
+          },
+          "noShipChanges": "Sin cambios en naves este parche",
+          "noShipChangesText": "Este parche no cambia los valores de ninguna nave ni añade ninguna.",
+          "browseShips": "Ver todas las naves",
+          "seeEveryChange": "Ver todos los cambios",
+          "newShip": "nave nueva",
+          "moreFields": {
+            "one": "y %{count} más",
+            "other": "y %{count} más"
+          },
+          "appeared": {
+            "components": {
+              "one": "%{count} componente nuevo",
+              "other": "%{count} componentes nuevos"
+            },
+            "equipment": {
+              "one": "%{count} objeto FPS nuevo",
+              "other": "%{count} objetos FPS nuevos"
+            }
+          },
+          "vanished": {
+            "equipment": {
+              "one": "%{count} objeto FPS eliminado",
+              "other": "%{count} objetos FPS eliminados"
+            }
+          },
+          "yes": "Sí",
+          "no": "No",
+          "fields": {
+            "mass": "Masa",
+            "hullHealth": "Integridad del casco",
+            "personalInventory": "Inventario personal",
+            "mainAcceleration": "Aceleración principal",
+            "retroAcceleration": "Aceleración inversa",
+            "scmSpeed": "Velocidad SCM",
+            "scmSpeedBoosted": "Velocidad SCM con impulso",
+            "reverseSpeedBoosted": "Velocidad inversa con impulso",
+            "maxSpeed": "Velocidad máxima",
+            "pitch": "Cabeceo",
+            "yaw": "Guiñada",
+            "roll": "Alabeo",
+            "crew": "Tripulación",
+            "weaponPoolSize": "Reserva de armas",
+            "beds": "Camas",
+            "lockers": "Taquillas",
+            "rateOfFire": "Cadencia de fuego",
+            "range": "Alcance",
+            "storage": "Almacenamiento",
+            "damageReduction": "Reducción de daño",
+            "temperatureRating": "Rango de temperatura",
+            "radiationProtection": "Protección contra radiación",
+            "radiationScrubRate": "Eliminación de radiación",
+            "name": "Nombre",
+            "size": "Tamaño",
+            "grade": "Grado",
+            "hidden": "Oculto",
+            "itemType": "Tipo",
+            "coreCompatibility": "Compatibilidad del núcleo"
+          },
+          "loadingScreen": "Pantalla de carga de Alpha %{version}",
+          "openLoadingScreen": "Abrir la pantalla de carga"
         },
         "gameEvents": {
           "title": "En el 'verso",

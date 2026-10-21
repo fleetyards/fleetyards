@@ -193,9 +193,83 @@
         },
         "patch": {
           "title": "Questa patch",
-          "subline": "Direttamente dai file del gioco, aggiornato a ogni build.",
-          "mostChanged": "Più modificate",
-          "changes": "Modifiche"
+          "subline": "Direttamente dai file di gioco, confrontata build per build.",
+          "version": "Alpha %{version}",
+          "comparedWith": "Confrontata con %{version}",
+          "counts": {
+            "newShips": "nuove navi",
+            "changedShips": "ribilanciate",
+            "newComponents": "nuovi componenti",
+            "newEquipment": "nuovi oggetti FPS"
+          },
+          "newThisPatch": "Nuova in questa patch",
+          "newIn": "Nuova in %{version}",
+          "biggestChange": "Modifica più grande",
+          "kinds": {
+            "models": "Nave",
+            "components": "Componente",
+            "equipment": "Oggetto FPS"
+          },
+          "noShipChanges": "Nessuna modifica alle navi in questa patch",
+          "noShipChangesText": "Questa patch non cambia i valori di nessuna nave e non ne aggiunge.",
+          "browseShips": "Sfoglia tutte le navi",
+          "seeEveryChange": "Vedi tutte le modifiche",
+          "newShip": "nuova nave",
+          "moreFields": {
+            "one": "e altri %{count}",
+            "other": "e altri %{count}"
+          },
+          "appeared": {
+            "components": {
+              "one": "%{count} nuovo componente",
+              "other": "%{count} nuovi componenti"
+            },
+            "equipment": {
+              "one": "%{count} nuovo oggetto FPS",
+              "other": "%{count} nuovi oggetti FPS"
+            }
+          },
+          "vanished": {
+            "equipment": {
+              "one": "%{count} oggetto FPS rimosso",
+              "other": "%{count} oggetti FPS rimossi"
+            }
+          },
+          "yes": "Sì",
+          "no": "No",
+          "fields": {
+            "mass": "Massa",
+            "hullHealth": "Integrità dello scafo",
+            "personalInventory": "Inventario personale",
+            "mainAcceleration": "Accelerazione principale",
+            "retroAcceleration": "Accelerazione inversa",
+            "scmSpeed": "Velocità SCM",
+            "scmSpeedBoosted": "Velocità SCM con boost",
+            "reverseSpeedBoosted": "Velocità in retromarcia con boost",
+            "maxSpeed": "Velocità massima",
+            "pitch": "Beccheggio",
+            "yaw": "Imbardata",
+            "roll": "Rollio",
+            "crew": "Equipaggio",
+            "weaponPoolSize": "Riserva armi",
+            "beds": "Letti",
+            "lockers": "Armadietti",
+            "rateOfFire": "Cadenza di fuoco",
+            "range": "Gittata",
+            "storage": "Capienza",
+            "damageReduction": "Riduzione del danno",
+            "temperatureRating": "Intervallo di temperatura",
+            "radiationProtection": "Protezione dalle radiazioni",
+            "radiationScrubRate": "Smaltimento radiazioni",
+            "name": "Nome",
+            "size": "Dimensione",
+            "grade": "Classe",
+            "hidden": "Nascosto",
+            "itemType": "Tipo",
+            "coreCompatibility": "Compatibilità del core"
+          },
+          "loadingScreen": "Schermata di caricamento di Alpha %{version}",
+          "openLoadingScreen": "Apri la schermata di caricamento"
         },
         "gameEvents": {
           "title": "Nel 'verse",

@@ -193,9 +193,83 @@
         },
         "patch": {
           "title": "This patch",
-          "subline": "Straight from the game files, updated with every build.",
-          "mostChanged": "Most changed",
-          "changes": "Changes"
+          "subline": "Straight from the game files, compared build by build.",
+          "version": "Alpha %{version}",
+          "comparedWith": "Compared with %{version}",
+          "counts": {
+            "newShips": "new ships",
+            "changedShips": "rebalanced",
+            "newComponents": "new components",
+            "newEquipment": "new FPS items"
+          },
+          "newThisPatch": "New this patch",
+          "newIn": "New in %{version}",
+          "biggestChange": "Biggest change",
+          "kinds": {
+            "models": "Ship",
+            "components": "Component",
+            "equipment": "FPS item"
+          },
+          "noShipChanges": "No ship changes this patch",
+          "noShipChangesText": "This patch changes no ship's figures and adds none.",
+          "browseShips": "Browse all ships",
+          "seeEveryChange": "See every change",
+          "newShip": "new ship",
+          "moreFields": {
+            "one": "and %{count} more",
+            "other": "and %{count} more"
+          },
+          "appeared": {
+            "components": {
+              "one": "%{count} new component",
+              "other": "%{count} new components"
+            },
+            "equipment": {
+              "one": "%{count} new FPS item",
+              "other": "%{count} new FPS items"
+            }
+          },
+          "vanished": {
+            "equipment": {
+              "one": "%{count} FPS item removed",
+              "other": "%{count} FPS items removed"
+            }
+          },
+          "fields": {
+            "mass": "Mass",
+            "hullHealth": "Hull health",
+            "personalInventory": "Personal inventory",
+            "mainAcceleration": "Main acceleration",
+            "retroAcceleration": "Retro acceleration",
+            "scmSpeed": "SCM speed",
+            "scmSpeedBoosted": "Boosted SCM speed",
+            "reverseSpeedBoosted": "Boosted reverse speed",
+            "maxSpeed": "Top speed",
+            "pitch": "Pitch",
+            "yaw": "Yaw",
+            "roll": "Roll",
+            "crew": "Crew",
+            "weaponPoolSize": "Weapon pool",
+            "beds": "Beds",
+            "lockers": "Lockers",
+            "rateOfFire": "Rate of fire",
+            "range": "Range",
+            "storage": "Storage",
+            "damageReduction": "Damage reduction",
+            "temperatureRating": "Temperature rating",
+            "radiationProtection": "Radiation protection",
+            "radiationScrubRate": "Radiation scrub rate",
+            "name": "Name",
+            "size": "Size",
+            "grade": "Grade",
+            "hidden": "Hidden",
+            "itemType": "Type",
+            "coreCompatibility": "Core compatibility"
+          },
+          "yes": "Yes",
+          "no": "No",
+          "loadingScreen": "Loading screen of Alpha %{version}",
+          "openLoadingScreen": "Open the loading screen"
         },
         "gameEvents": {
           "title": "In the 'verse",

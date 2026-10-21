@@ -192,10 +192,84 @@
           }
         },
         "patch": {
-          "title": "本补丁",
-          "subline": "直接来自游戏文件，每个版本都会更新。",
-          "mostChanged": "改动最多",
-          "changes": "改动"
+          "title": "本次版本",
+          "subline": "直接来自游戏文件，逐个构建对比。",
+          "version": "Alpha %{version}",
+          "comparedWith": "对比 %{version}",
+          "counts": {
+            "newShips": "新舰船",
+            "changedShips": "重新平衡",
+            "newComponents": "新组件",
+            "newEquipment": "新 FPS 物品"
+          },
+          "newThisPatch": "本次版本新增",
+          "newIn": "%{version} 新增",
+          "biggestChange": "最大变化",
+          "kinds": {
+            "models": "舰船",
+            "components": "组件",
+            "equipment": "FPS 物品"
+          },
+          "noShipChanges": "本次版本没有舰船变化",
+          "noShipChangesText": "本次版本没有修改任何舰船的数据，也没有新增舰船。",
+          "browseShips": "浏览所有舰船",
+          "seeEveryChange": "查看所有变化",
+          "newShip": "新舰船",
+          "moreFields": {
+            "one": "以及另外 %{count} 项",
+            "other": "以及另外 %{count} 项"
+          },
+          "appeared": {
+            "components": {
+              "one": "%{count} 个新组件",
+              "other": "%{count} 个新组件"
+            },
+            "equipment": {
+              "one": "%{count} 个新 FPS 物品",
+              "other": "%{count} 个新 FPS 物品"
+            }
+          },
+          "vanished": {
+            "equipment": {
+              "one": "移除 %{count} 个 FPS 物品",
+              "other": "移除 %{count} 个 FPS 物品"
+            }
+          },
+          "yes": "是",
+          "no": "否",
+          "fields": {
+            "mass": "质量",
+            "hullHealth": "船体耐久",
+            "personalInventory": "个人储物",
+            "mainAcceleration": "主推进加速度",
+            "retroAcceleration": "反推加速度",
+            "scmSpeed": "SCM 速度",
+            "scmSpeedBoosted": "SCM 加力速度",
+            "reverseSpeedBoosted": "倒退加力速度",
+            "maxSpeed": "最高速度",
+            "pitch": "俯仰",
+            "yaw": "偏航",
+            "roll": "滚转",
+            "crew": "船员",
+            "weaponPoolSize": "武器池",
+            "beds": "床位",
+            "lockers": "储物柜",
+            "rateOfFire": "射速",
+            "range": "射程",
+            "storage": "容量",
+            "damageReduction": "伤害减免",
+            "temperatureRating": "温度范围",
+            "radiationProtection": "辐射防护",
+            "radiationScrubRate": "辐射清除速率",
+            "name": "名称",
+            "size": "尺寸",
+            "grade": "等级",
+            "hidden": "隐藏",
+            "itemType": "类型",
+            "coreCompatibility": "核心兼容性"
+          },
+          "loadingScreen": "Alpha %{version} 的加载画面",
+          "openLoadingScreen": "打开加载画面"
         },
         "gameEvents": {
           "title": "宇宙动态",

@@ -193,9 +193,83 @@
         },
         "patch": {
           "title": "Ce patch",
-          "subline": "Directement depuis les fichiers du jeu, mis à jour à chaque build.",
-          "mostChanged": "Les plus modifiés",
-          "changes": "Changements"
+          "subline": "Directement issu des fichiers du jeu, comparé build par build.",
+          "version": "Alpha %{version}",
+          "comparedWith": "Comparé à %{version}",
+          "counts": {
+            "newShips": "nouveaux vaisseaux",
+            "changedShips": "rééquilibrés",
+            "newComponents": "nouveaux composants",
+            "newEquipment": "nouveaux objets FPS"
+          },
+          "newThisPatch": "Nouveau dans ce patch",
+          "newIn": "Nouveau dans %{version}",
+          "biggestChange": "Plus gros changement",
+          "kinds": {
+            "models": "Vaisseau",
+            "components": "Composant",
+            "equipment": "Objet FPS"
+          },
+          "noShipChanges": "Aucun changement de vaisseau dans ce patch",
+          "noShipChangesText": "Ce patch ne modifie les valeurs d’aucun vaisseau et n’en ajoute aucun.",
+          "browseShips": "Voir tous les vaisseaux",
+          "seeEveryChange": "Voir tous les changements",
+          "newShip": "nouveau vaisseau",
+          "moreFields": {
+            "one": "et %{count} de plus",
+            "other": "et %{count} de plus"
+          },
+          "appeared": {
+            "components": {
+              "one": "%{count} nouveau composant",
+              "other": "%{count} nouveaux composants"
+            },
+            "equipment": {
+              "one": "%{count} nouvel objet FPS",
+              "other": "%{count} nouveaux objets FPS"
+            }
+          },
+          "vanished": {
+            "equipment": {
+              "one": "%{count} objet FPS retiré",
+              "other": "%{count} objets FPS retirés"
+            }
+          },
+          "yes": "Oui",
+          "no": "Non",
+          "fields": {
+            "mass": "Masse",
+            "hullHealth": "Intégrité de la coque",
+            "personalInventory": "Inventaire personnel",
+            "mainAcceleration": "Accélération principale",
+            "retroAcceleration": "Accélération arrière",
+            "scmSpeed": "Vitesse SCM",
+            "scmSpeedBoosted": "Vitesse SCM en boost",
+            "reverseSpeedBoosted": "Vitesse arrière en boost",
+            "maxSpeed": "Vitesse maximale",
+            "pitch": "Tangage",
+            "yaw": "Lacet",
+            "roll": "Roulis",
+            "crew": "Équipage",
+            "weaponPoolSize": "Réserve d’armes",
+            "beds": "Lits",
+            "lockers": "Casiers",
+            "rateOfFire": "Cadence de tir",
+            "range": "Portée",
+            "storage": "Stockage",
+            "damageReduction": "Réduction des dégâts",
+            "temperatureRating": "Plage de température",
+            "radiationProtection": "Protection contre les radiations",
+            "radiationScrubRate": "Élimination des radiations",
+            "name": "Nom",
+            "size": "Taille",
+            "grade": "Classe",
+            "hidden": "Masqué",
+            "itemType": "Type",
+            "coreCompatibility": "Compatibilité du noyau"
+          },
+          "loadingScreen": "Écran de chargement d’Alpha %{version}",
+          "openLoadingScreen": "Ouvrir l’écran de chargement"
         },
         "gameEvents": {
           "title": "Dans le 'verse",
