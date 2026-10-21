@@ -527,8 +527,18 @@ class Model < ApplicationRecord
   validates :classification, inclusion: {in: CLASSIFICATIONS}, allow_nil: true
 
   # Free text from the ship matrix and from admins, so the same focus arrived
-  # with a trailing space or as "Gun Ship" and was listed twice.
-  normalizes :focus, with: ->(focus) { focus.to_s.squish.gsub(/\bGun Ship\b/i, "Gunship").presence }
+  # with a trailing space or in a spelling of its own and was listed twice.
+  FOCUS_SPELLINGS = {
+    "Gun Ship" => "Gunship",
+    "Interdictor" => "Interdiction",
+    "Anti-aircraft" => "Anti-Air",
+    "Medium Freighter" => "Medium Freight",
+    "Transporter" => "Transport"
+  }.freeze
+
+  normalizes :focus, with: ->(focus) {
+    FOCUS_SPELLINGS.reduce(focus.to_s.squish) { |text, (from, to)| text.gsub(/\b#{Regexp.escape(from)}\b/i, to) }.presence
+  }
 
   # NOT NULL columns whose default of 0 already reads as "unknown", so an admin
   # clearing one sends it back there rather than into a constraint violation.

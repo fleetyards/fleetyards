@@ -879,6 +879,7 @@ class ModelSizeTest < ActiveSupport::TestCase
   test "a focus is listed under one spelling" do
     assert_equal "Medium Freight / Gunship", create(:model, focus: " Medium  Freight / Gun Ship ").focus
     assert_nil create(:model, focus: " ").focus
+    assert_equal "Interdiction", create(:model, focus: "Interdictor ").focus
   end
 
   test "the classification filters list each one once" do
