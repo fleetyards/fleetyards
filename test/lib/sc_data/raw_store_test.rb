@@ -166,6 +166,41 @@ module ScData
       assert_empty requests(:list_objects_v2)
     end
 
+    # --- Prune ------------------------------------------------------------
+
+    private def pruning_store(version)
+      root = Pathname.new(@root).join(version)
+      store = ::ScData::RawStore.new(version, client: @client, settings: SETTINGS)
+      store.define_singleton_method(:local_root) { root }
+      store
+    end
+
+    test "#prune removes older exports of the same environment" do
+      %w[4.9.0-live.12344265 4.10.0-live.12519617 4.10.2-live.12913470].each do |version|
+        write_local("#{version}/Data/Game2.dcb", "x")
+      end
+
+      removed = pruning_store("4.10.2-live.12913470").prune
+
+      assert_equal ["4.10.0-live.12519617", "4.9.0-live.12344265"], removed
+      assert_equal ["4.10.2-live.12913470"], Dir.children(@root)
+    end
+
+    # Syncing an old build on purpose, or the other environment, must not cost
+    # the export a parse is currently reading.
+    test "#prune keeps newer builds, other environments and unrelated folders" do
+      %w[4.10.1-live.12660092 4.10.2-live.12913470 4.10.1-ptu.12578875 scratch].each do |name|
+        write_local("#{name}/file", "x")
+      end
+
+      assert_empty pruning_store("4.10.1-live.12660092").prune
+      assert_equal 4, Dir.children(@root).size
+    end
+
+    test "#prune refuses a version it cannot place" do
+      assert_raises(ArgumentError) { pruning_store("latest").prune }
+    end
+
     test "raises NotConfigured naming the missing settings" do
       raw = ::ScData::RawStore.new(VERSION, client: @client, settings: SETTINGS.merge(bucket: nil))
 

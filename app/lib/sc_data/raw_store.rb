@@ -7,8 +7,9 @@ module ScData
   #
   # Download only, and never a mirror. An export is immutable once uploaded and
   # nothing local is authoritative, so there is nothing to push back and no
-  # reason to delete: a version folder is input to a parse rather than a tree
-  # whose absences mean something. (`ParsedStore` removes what the source
+  # reason to delete inside a version: a version folder is input to a parse
+  # rather than a tree whose absences mean something. Whole older versions are
+  # another matter -- see `#prune`. (`ParsedStore` removes what the source
   # dropped because `update_in_game_flag` reads in-game-ness off file existence;
   # nothing reads raw that way.)
   class RawStore < ObjectStore
@@ -69,6 +70,28 @@ module ScData
       downloaded = each_in_parallel(stale.keys) { |path| download(path) }
 
       {downloaded:, unchanged: remote.size - downloaded}
+    end
+
+    # Deletes the older exports of this one's environment from disk. At ~3.8 GB
+    # each they pile up a sync at a time, and `bin/scdata parse` reads the newest
+    # build of an environment on disk. Newer builds and other environments stay:
+    # syncing an old build on purpose must not cost the current one.
+    def prune
+      match = VERSION_PATTERN.match(version.to_s)
+      raise ArgumentError, "not an export version: #{version.inspect}" if match.nil?
+
+      root = local_root.dirname
+      return [] unless root.directory?
+
+      older = root.children.select do |folder|
+        other = VERSION_PATTERN.match(folder.basename.to_s)
+
+        folder.directory? && other && other[:environment] == match[:environment] &&
+          other[:build].to_i < match[:build].to_i
+      end
+
+      older.each { |folder| FileUtils.rm_rf(folder) }
+      older.map { |folder| folder.basename.to_s }.sort
     end
 
     def local_root
