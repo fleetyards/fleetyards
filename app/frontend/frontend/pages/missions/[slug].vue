@@ -81,12 +81,14 @@ watch(
   (value) => {
     if (!value) return;
 
-    // The run-time spans are stripped to a bracketed name here rather than
-    // rendered: a meta title is plain text, and `~mission(TargetName)` in a
-    // browser tab or a link preview reads as a bug.
+    // The run-time spans left after filling are stripped to a bracketed name
+    // here rather than rendered: a meta title is plain text, and
+    // `~mission(TargetName)` in a browser tab or a link preview reads as a bug.
     updateMetaInfo({
-      title: missionTextPlain(value.name) || t("headlines.missions.index"),
-      description: missionTextPlain(value.description),
+      title:
+        missionTextPlain(value.name, value.placeholderValues) ||
+        t("headlines.missions.index"),
+      description: missionTextPlain(value.description, value.placeholderValues),
     });
   },
   { immediate: true },
@@ -103,7 +105,10 @@ watch(
         <div class="mission-page__masthead">
           <div class="mission-page__title">
             <Heading hero>
-              <MissionText :text="mission.name" />
+              <MissionText
+                :text="mission.name"
+                :values="mission.placeholderValues"
+              />
             </Heading>
 
             <div class="mission-page__sub">
@@ -207,16 +212,20 @@ watch(
           </div>
         </div>
 
-        <!-- The briefing as the game writes it, spans and emphasis intact.
-             2,344 of the 2,475 descriptions carry a substitution the game
-             fills in when it generates the mission, so this is a template
-             rather than the sentence a player will read. -->
+        <!-- The briefing as the game writes it, with the values the files
+             state filled in. What remains is picked when the game generates
+             the mission, so this is still a template rather than the
+             sentence a player will read. -->
         <section v-if="mission.description" class="mission-page__panel">
           <h2 class="mission-page__panel-title">
             {{ t("labels.gameMission.briefing") }}
           </h2>
           <p class="mission-page__description">
-            <MissionText :text="mission.description" multiline />
+            <MissionText
+              :text="mission.description"
+              :values="mission.placeholderValues"
+              multiline
+            />
           </p>
           <p class="mission-page__note">
             {{ t("labels.gameMission.templatedNote") }}
