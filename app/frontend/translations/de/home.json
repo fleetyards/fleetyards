@@ -303,8 +303,11 @@
               "title": "API und Doku",
               "text": "Bau auf denselben Daten auf"
             }
-          }
-        }
+          },
+          "kickerSignedIn": "Die Community",
+          "titleSignedIn": "Dein Hangar wartet"
+        },
+        "openHangar": "Deinen Hangar öffnen"
       },
       "patch": {
         "title": "Alpha %{version}",

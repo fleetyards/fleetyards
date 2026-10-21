@@ -303,8 +303,11 @@
               "title": "API and docs",
               "text": "Build on the same data"
             }
-          }
-        }
+          },
+          "kickerSignedIn": "The community",
+          "titleSignedIn": "Your hangar is waiting"
+        },
+        "openHangar": "Open your hangar"
       },
       "patch": {
         "title": "Alpha %{version}",

@@ -16,12 +16,18 @@ import {
 import { useStats } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useModalQuery } from "@/frontend/composables/useModalQuery";
+import { storeToRefs } from "pinia";
+import { useSessionStore } from "@/frontend/stores/session";
 
 const { t } = useI18n();
 
 const { data: stats } = useStats();
 
 const { openModal } = useModalQuery();
+
+// A pilot already has the hangar the section sells; the way in becomes the
+// way back to it.
+const { isAuthenticated } = storeToRefs(useSessionStore());
 
 const counts = computed(() =>
   [
@@ -67,7 +73,13 @@ const links: CommunityLink[] = [
 <template>
   <section class="home-landing-sign-up" data-test="home-landing-sign-up">
     <span class="home-landing-sign-up__kicker">
-      {{ t("home.landing.signUpPanel.kicker") }}
+      {{
+        t(
+          isAuthenticated
+            ? "home.landing.signUpPanel.kickerSignedIn"
+            : "home.landing.signUpPanel.kicker",
+        )
+      }}
     </span>
     <dl v-if="counts.length" class="home-landing-sign-up__counts">
       <div v-for="count in counts" :key="count.key">
@@ -76,9 +88,21 @@ const links: CommunityLink[] = [
       </div>
     </dl>
     <h2 class="home-landing-sign-up__title">
-      {{ t("home.landing.signUpPanel.title") }}
+      {{
+        t(
+          isAuthenticated
+            ? "home.landing.signUpPanel.titleSignedIn"
+            : "home.landing.signUpPanel.title",
+        )
+      }}
     </h2>
-    <div class="home-landing-sign-up__actions">
+    <div v-if="isAuthenticated" class="home-landing-sign-up__actions">
+      <Btn :size="BtnSizesEnum.LG" :to="{ name: 'hangar' }">
+        <i class="fa-duotone fa-warehouse" />
+        {{ t("home.landing.openHangar") }}
+      </Btn>
+    </div>
+    <div v-else class="home-landing-sign-up__actions">
       <Btn :size="BtnSizesEnum.LG" :to="{ name: 'signup' }">
         <i class="fa-light fa-user-plus" />
         {{ t("home.landing.signUp") }}
@@ -88,7 +112,7 @@ const links: CommunityLink[] = [
       </span>
       <SocialLogins only-icons :block="false" :providers="providers" />
     </div>
-    <div class="home-landing-sign-up__login">
+    <div v-if="!isAuthenticated" class="home-landing-sign-up__login">
       {{ t("home.landing.signUpPanel.loggedIn") }}
       <Btn :variant="BtnVariantsEnum.BARE" :to="{ name: 'login' }">
         <i class="fa-light fa-right-to-bracket" />

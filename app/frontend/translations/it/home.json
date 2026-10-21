@@ -303,8 +303,11 @@
               "title": "API e documentazione",
               "text": "Costruisci sugli stessi dati"
             }
-          }
-        }
+          },
+          "kickerSignedIn": "La community",
+          "titleSignedIn": "Il tuo hangar ti aspetta"
+        },
+        "openHangar": "Apri il tuo hangar"
       },
       "patch": {
         "title": "Alpha %{version}",

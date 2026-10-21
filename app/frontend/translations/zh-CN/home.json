@@ -303,8 +303,11 @@
               "title": "API 与文档",
               "text": "基于同样的数据进行开发"
             }
-          }
-        }
+          },
+          "kickerSignedIn": "社区",
+          "titleSignedIn": "你的机库在等你"
+        },
+        "openHangar": "打开你的机库"
       },
       "patch": {
         "title": "Alpha %{version}",

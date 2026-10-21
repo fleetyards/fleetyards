@@ -59,9 +59,9 @@ describe("HomePage", () => {
     expect(shown(await mount(false))).toEqual(["landing"]);
   });
 
-  it("shows a signed-in pilot their dashboard", async () => {
+  it("shows a signed-in pilot the landing page too", async () => {
     enabled = true;
 
-    expect(shown(await mount(true))).toEqual(["dashboard"]);
+    expect(shown(await mount(true))).toEqual(["landing"]);
   });
 });

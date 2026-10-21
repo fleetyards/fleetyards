@@ -23,6 +23,8 @@ import { useGameEvents, useHomepage } from "@/services/fyApi";
 import { useMediaQuery } from "@vueuse/core";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
+import { storeToRefs } from "pinia";
+import { useSessionStore } from "@/frontend/stores/session";
 import { usePatchLoadingScreens } from "@/frontend/composables/usePatchLoadingScreens";
 import logo from "@/images/pride/logo-planet.png";
 import featuresArt from "@/images/bg-5.webp";
@@ -31,6 +33,8 @@ import shipsArt from "@/images/bg-6.webp";
 import signUpArt from "@/images/bg-0.webp";
 
 const { t } = useI18n();
+
+const { isAuthenticated } = storeToRefs(useSessionStore());
 
 const mobile = useMobile();
 
@@ -136,7 +140,11 @@ onBeforeUnmount(() =>
           :suggestions="homepage?.searchSuggestions"
         />
         <div class="home-landing__actions">
-          <Btn :to="{ name: 'signup' }">
+          <Btn v-if="isAuthenticated" :to="{ name: 'hangar' }">
+            <i class="fa-duotone fa-warehouse" />
+            {{ t("home.landing.openHangar") }}
+          </Btn>
+          <Btn v-else :to="{ name: 'signup' }">
             <i class="fa-light fa-user-plus" />
             {{ t("home.landing.signUp") }}
           </Btn>
@@ -155,7 +163,9 @@ onBeforeUnmount(() =>
     <LandingStats v-if="!featuredShip" class="home-landing__stats" />
   </LandingSection>
 
-  <LandingSection :image="featuresArt">
+  <!-- What a visitor can do here comes second; a pilot already knows, so for
+       them it moves down to just before the close. -->
+  <LandingSection v-if="!isAuthenticated" :image="featuresArt">
     <Heading :level="HeadingLevelEnum.H2" hero>
       {{ t("home.landing.features.title") }}
     </Heading>
@@ -175,6 +185,16 @@ onBeforeUnmount(() =>
   <LandingSection :image="shipsArt">
     <LandingGameEvents class="home-landing__events" />
     <LandingLatestShips v-if="!gameEventsPending" :rows="shipRows" />
+  </LandingSection>
+
+  <LandingSection v-if="isAuthenticated" :image="featuresArt">
+    <Heading :level="HeadingLevelEnum.H2" hero>
+      {{ t("home.landing.features.title") }}
+    </Heading>
+    <p class="home-landing__subline">
+      {{ t("home.landing.features.subline") }}
+    </p>
+    <LandingFeatures />
   </LandingSection>
 
   <LandingSection :image="signUpArt">
