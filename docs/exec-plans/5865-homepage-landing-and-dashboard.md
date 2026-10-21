@@ -44,6 +44,21 @@ Mockups: the Claude Design canvas linked from the issue, built from the app's ow
 3. `/sc-data/builds` items gain `loadingScreens`; the item is its own `ScDataBuild` component now.
 4. The patch panel draws one of the live build's screens per visit, falling back to the hangar art.
 
+### Phase 5c — Catalogue search
+1. `GET /search?q=`: up to five matches per catalogue (ships, components, equipment, commodities, blueprints, missions, places), grouped, each with a detail that tells same-named items apart (size and maker, mission giver, the place it sits in). Rows that read the same are collapsed; the catalogue with the strongest match comes first.
+2. The homepage search (landing and dashboard) suggests as you type: grouped, the typed text marked, the best match highlighted. Enter opens the highlighted match only; before the list answers it shows the list, and with no match it stays put.
+3. A results page is out of scope: it needs its own design.
+
+### Phase 5e — Hero from the design canvas
+1. Design C from the Claude Design canvas: welcome lockup, tagline, one-sentence lede, the search, quiet sign-up, live numbers; with a featured ship the copy goes left and the ship right, captioned as in design B.
+2. `GET /homepage`: three search suggestions drawn from the catalogue each visit (a ship, a recognisable place, a sought-after component or a commodity) and one featured ship picked at random from a pool.
+3. Admin `/homepage` (new `homepage` privilege): the pool of featured ships and whether to draw from it. Drawn: one ship each visit, or now and then none. Not drawn: the first ship of the list. A hidden, retired or deleted ship stays in the pool but is never shown.
+5. Approved 2026-10-21; the design pass below starts at the second section.
+4. Parts fade in as their data arrives; the hero waits for its layout so it never jumps from one column to two.
+
+### Phase 5d — Landing design and content pass
+1. Go through each landing section for layout and copy now that it is split into full-screen sections; decide the "Changed this patch" tile at zero.
+
 ### Phase 6 — Translations, tests, review
 1. All new keys in all 7 locales.
 2. Model, policy, integration (openapi) tests; component specs for the new panels.
@@ -75,6 +90,7 @@ Mockups: the Claude Design canvas linked from the issue, built from the app's ow
 
 - **2026-10-20** Initial research and plan creation.
 - **2026-10-20** The fleet calendar does not filter drafts or officers-only events for plain members; `/me/events` filters them itself rather than changing the calendar here.
+- **2026-10-21** `/catalogue/search` cannot serve the site search: it drops every name two items in one catalogue share (2,033 of 2,495 missions, 1,449 of 3,310 components on the dev DB), which is right for markdown tokens and wrong here.
 - **2026-10-21** The export now carries loading screens per build (3840×2160 PNGs, 10–15 MB, multipart ETags so no MD5 to compare); they are imported rather than parsed, so the parsed tree is untouched.
 - **2026-10-20** `FormInput` builds its aria-label from `labels.<translationKey>` even with `no-label`; `labels.search.default` does not exist, `labels.home.search` does.
 
