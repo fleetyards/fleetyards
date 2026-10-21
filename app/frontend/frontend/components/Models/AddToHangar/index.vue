@@ -38,11 +38,17 @@ const hangarStore = useHangarStore();
 
 const wishlistStore = useWishlistStore();
 
+// Both lists are persisted, so a session that ended without a logout leaves
+// the previous account's ships behind for whoever opens the page next.
 const inHangar = computed(() => {
+  if (!sessionStore.isAuthenticated) return false;
+
   return !!(hangarStore.ships || []).find((item) => item === props.model.slug);
 });
 
 const onWishlist = computed(() => {
+  if (!sessionStore.isAuthenticated) return false;
+
   return !!(wishlistStore.ships || []).find(
     (item) => item === props.model.slug,
   );
