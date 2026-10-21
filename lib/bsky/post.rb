@@ -26,8 +26,14 @@ module Bsky
 
     # The account FleetYards posts as. It shares the `bluesky` group with the
     # OAuth client's keys for signing in with Bluesky, which is a separate
-    # integration.
-    def self.credentials = Rails.application.credentials.bluesky || {}
+    # integration. The shared credentials file that development and test read
+    # carries the live account too, so anything but production would post for
+    # real, with localhost links, for every model a local data load saves.
+    def self.credentials
+      return {} unless Rails.env.production?
+
+      Rails.application.credentials.bluesky || {}
+    end
 
     def self.handle = credentials[:handle]
 

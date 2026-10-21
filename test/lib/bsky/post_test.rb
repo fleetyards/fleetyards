@@ -29,6 +29,18 @@ module Bsky
       refute Bsky::Post.configured?
     end
 
+    test ".credentials are empty outside production" do
+      Bsky::Post.unstub(:credentials)
+      Rails.application.credentials.stubs(:bluesky).returns(CREDENTIALS)
+
+      assert_empty Bsky::Post.credentials
+      refute Bsky::Post.configured?
+
+      Rails.env.stubs(:production?).returns(true)
+
+      assert_equal CREDENTIALS, Bsky::Post.credentials
+    end
+
     test "#create posts the text and returns the record's AT URI" do
       uri = "at://did:plc:fleetyards/app.bsky.feed.post/abc"
       request = stub_request(:post, "#{PDS}/xrpc/com.atproto.repo.createRecord")
