@@ -162,6 +162,12 @@ module ScData
         # which is the same moment said in terms of what is actually true.
         update_params[:production_status] = "flight-ready" if model.build.blank?
 
+        # The patch a ship arrived with. Live only, because a ptu build is a
+        # preview of a patch rather than the patch, and only for a ship no live
+        # build has described yet: one that was already there when builds
+        # started being kept arrived at some unknown point before.
+        update_params[:first_seen_version] = sc_version if first_live_build?(model)
+
         # Dual-write, the build first: saving the model broadcasts its payload,
         # which reads the build, so the build has to be what it says by then.
         # One transaction, so a model that fails validation does not leave its
@@ -185,6 +191,18 @@ module ScData
 
       # Whether this build ships a file for the model, which is what a build row
       # comes to express once one is written.
+      # A first load of an empty catalogue describes every ship for the first
+      # time, which says when the catalogue started rather than when any ship
+      # arrived -- so a ship counts as new only once an earlier live build is
+      # there to have not described it.
+      private def first_live_build?(model)
+        return false unless sc_environment == "live"
+        return false if model.first_seen_version.present?
+        return false if model.builds.where(environment: "live").where.not(version: sc_version).exists?
+
+        ModelBuild.where(environment: "live").where.not(version: sc_version).exists?
+      end
+
       private def parsed?(model)
         identifier = model.sc_data_identifier
         return false if identifier.blank?

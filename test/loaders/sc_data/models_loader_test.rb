@@ -309,6 +309,40 @@ module ScData
         assert_empty ModelsLoader::STORAGE_CONTAINER_KINDS.values - ::ModelBuild::STORAGE_KINDS
       end
 
+      test "#load_model stamps a ship no earlier live build described with this build" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        create(:model_build, model: create(:model), environment: "live", version: "1.0.0-live.1")
+        model = create(:model, name: "Arrival Test")
+        loader.stubs(:load_model_data).returns({"mass" => 1000.0, "loadout" => []})
+
+        loader.load_model(model)
+
+        assert_equal loader.sc_version, model.reload.first_seen_version
+      end
+
+      test "#load_model leaves a ship an earlier live build described unstamped" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "Veteran Test")
+        create(:model_build, model:, environment: "live", version: "1.0.0-live.1")
+        loader.stubs(:load_model_data).returns({"mass" => 1000.0, "loadout" => []})
+
+        loader.load_model(model)
+
+        assert_nil model.reload.first_seen_version
+      end
+
+      # The first load of an empty catalogue describes every ship for the first
+      # time, which dates the catalogue rather than any ship.
+      test "#load_model stamps nothing on the first load of an empty catalogue" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "Founding Test")
+        loader.stubs(:load_model_data).returns({"mass" => 1000.0, "loadout" => []})
+
+        loader.load_model(model)
+
+        assert_nil model.reload.first_seen_version
+      end
+
       test "#load_model takes the crew from the build" do
         loader = ::ScData::Loader::ModelsLoader.new
         model = create(:model, name: "Crew Test", crew: 6)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_21_170000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_21_190000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2253,6 +2253,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_21_170000) do
     t.integer "lockers"
     t.string "ship_views_digest"
     t.jsonb "ship_view_md5s", default: {}, null: false
+    t.string "first_seen_version"
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
     t.index ["classification"], name: "index_models_on_classification"
     t.index ["legacy_slug"], name: "index_models_on_legacy_slug"
