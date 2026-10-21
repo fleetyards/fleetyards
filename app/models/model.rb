@@ -25,7 +25,7 @@ class Model < ApplicationRecord
     rsi_id rsi_chassis_id rsi_name rsi_description rsi_classification rsi_focus rsi_size rsi_store_url
     rsi_length rsi_beam rsi_height rsi_mass rsi_cargo rsi_crew
     rsi_scm_speed rsi_max_speed rsi_pitch rsi_yaw rsi_roll
-    classification production_status production_note focus pledge_price length beam height mass
+    classification production_status production_note focus foci stealth sc_role pledge_price length beam height mass
     cargo personal_inventory size crew scm_speed max_speed ground_max_speed ground_reverse_speed
     ground_acceleration ground_deceleration pitch yaw roll price
     store_url hydrogen_fuel_tank_size quantum_fuel_tank_size cargo_holds hydrogen_fuel_tanks
@@ -539,6 +539,46 @@ class Model < ApplicationRecord
   normalizes :focus, with: ->(focus) {
     FOCUS_SPELLINGS.reduce(focus.to_s.squish) { |text, (from, to)| text.gsub(/\b#{Regexp.escape(from)}\b/i, to) }.presence
   }
+
+  # The catalogue's own words for what a ship is for, in the order a list of
+  # them is shown. A ship carries any number; the sources' wording stays in
+  # `rsi_focus` and `sc_role`.
+  FOCI = %w[
+    light_fighter medium_fighter heavy_fighter snub_fighter fighter
+    bomber gunship interdiction dropship minelayer
+    corvette frigate destroyer battlecruiser warship
+    tank anti_air assault
+    freight passenger touring carrier merchant
+    mining refining salvage construction science data
+    medical refuel repair recovery
+    expedition pathfinder recon racing starter generalist modular
+  ].freeze
+
+  # Each of these brings the broader key along, so "every fighter" is one pick
+  # in a filter that matches any of the keys it is given.
+  FOCUS_UMBRELLAS = {
+    "light_fighter" => "fighter",
+    "medium_fighter" => "fighter",
+    "heavy_fighter" => "fighter",
+    "snub_fighter" => "fighter",
+    "corvette" => "warship",
+    "frigate" => "warship",
+    "destroyer" => "warship",
+    "battlecruiser" => "warship"
+  }.freeze
+
+  # Without the umbrellas: a crew slot asking for a light fighter must not
+  # accept every fighter.
+  def self.ordered_foci(foci)
+    Array(foci).map { |key| key.to_s.strip }.compact_blank.uniq.sort_by { |key| FOCI.index(key) || FOCI.size }
+  end
+
+  normalizes :foci, with: ->(foci) {
+    keys = ordered_foci(foci)
+    ordered_foci(keys + keys.filter_map { |key| FOCUS_UMBRELLAS[key] })
+  }
+
+  validate :foci_must_be_known
 
   # NOT NULL columns whose default of 0 already reads as "unknown", so an admin
   # clearing one sends it back there rather than into a constraint violation.
@@ -1375,6 +1415,10 @@ class Model < ApplicationRecord
     return if vehicle_size.blank? || size == VEHICLE_SIZE
 
     errors.add(:vehicle_size, :not_a_vehicle)
+  end
+
+  private def foci_must_be_known
+    errors.add(:foci, :inclusion) if (foci - FOCI).any?
   end
 
   private def send_on_sale_notification

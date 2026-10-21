@@ -882,6 +882,18 @@ class ModelSizeTest < ActiveSupport::TestCase
     assert_equal "Interdiction", create(:model, focus: "Interdictor ").focus
   end
 
+  test "a fighter tier brings fighter along, and a capital class warship" do
+    assert_equal %w[heavy_fighter fighter bomber], create(:model, foci: %w[bomber heavy_fighter]).foci
+    assert_equal %w[destroyer warship], create(:model, foci: %w[destroyer]).foci
+  end
+
+  test "a focus the catalogue does not know is refused" do
+    model = build(:model, foci: %w[turret])
+
+    assert_not model.valid?
+    assert_includes model.errors.attribute_names, :foci
+  end
+
   test "the classification filters list each one once" do
     create(:model, classification: "Combat")
     create(:model, classification: "combat")
