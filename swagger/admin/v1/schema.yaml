@@ -18355,6 +18355,18 @@ components:
           type: string
         focus:
           type: string
+          deprecated: true
+          description: Use foci instead
+        foci:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelFocusEnum"
+        fociLabels:
+          type: array
+          items:
+            type: string
+        stealth:
+          type: boolean
         hasImages:
           type: boolean
         hasModules:
@@ -18472,6 +18484,14 @@ components:
           format: date-time
         lockers:
           type: integer
+        rsiFocus:
+          type:
+          - string
+          - 'null'
+        scRole:
+          type:
+          - string
+          - 'null'
       additionalProperties: false
       required:
       - id
@@ -18497,6 +18517,9 @@ components:
       - adiMap
       - createdAt
       - updatedAt
+      - foci
+      - fociLabels
+      - stealth
       - hidden
       - keepCargo
       - active
@@ -18581,6 +18604,14 @@ components:
           type: string
         focus:
           type: string
+          deprecated: true
+          description: Use foci instead
+        foci:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelFocusEnum"
+        stealth:
+          type: boolean
         size:
           type: string
         dockSize:
@@ -18672,6 +18703,18 @@ components:
           type: string
         focus:
           type: string
+          deprecated: true
+          description: Use foci instead
+        foci:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelFocusEnum"
+        fociLabels:
+          type: array
+          items:
+            type: string
+        stealth:
+          type: boolean
         hasImages:
           type: boolean
         hasModules:
@@ -18789,6 +18832,14 @@ components:
           format: date-time
         lockers:
           type: integer
+        rsiFocus:
+          type:
+          - string
+          - 'null'
+        scRole:
+          type:
+          - string
+          - 'null'
         baseModelId:
           type: string
           format: uuid
@@ -18832,6 +18883,9 @@ components:
       - adiMap
       - createdAt
       - updatedAt
+      - foci
+      - fociLabels
+      - stealth
       - hidden
       - keepCargo
       - active
@@ -18855,6 +18909,91 @@ components:
           format: uri
       additionalProperties: false
       title: ModelExtendedLinks
+    ModelFocusEnum:
+      type: string
+      enum:
+      - light_fighter
+      - medium_fighter
+      - heavy_fighter
+      - snub_fighter
+      - fighter
+      - bomber
+      - gunship
+      - interdiction
+      - dropship
+      - minelayer
+      - corvette
+      - frigate
+      - destroyer
+      - battlecruiser
+      - warship
+      - tank
+      - anti_air
+      - assault
+      - freight
+      - passenger
+      - touring
+      - carrier
+      - merchant
+      - mining
+      - refining
+      - salvage
+      - construction
+      - science
+      - data
+      - medical
+      - refuel
+      - repair
+      - recovery
+      - expedition
+      - pathfinder
+      - recon
+      - racing
+      - starter
+      - generalist
+      - modular
+      x-enumNames:
+      - LIGHT_FIGHTER
+      - MEDIUM_FIGHTER
+      - HEAVY_FIGHTER
+      - SNUB_FIGHTER
+      - FIGHTER
+      - BOMBER
+      - GUNSHIP
+      - INTERDICTION
+      - DROPSHIP
+      - MINELAYER
+      - CORVETTE
+      - FRIGATE
+      - DESTROYER
+      - BATTLECRUISER
+      - WARSHIP
+      - TANK
+      - ANTI_AIR
+      - ASSAULT
+      - FREIGHT
+      - PASSENGER
+      - TOURING
+      - CARRIER
+      - MERCHANT
+      - MINING
+      - REFINING
+      - SALVAGE
+      - CONSTRUCTION
+      - SCIENCE
+      - DATA
+      - MEDICAL
+      - REFUEL
+      - REPAIR
+      - RECOVERY
+      - EXPEDITION
+      - PATHFINDER
+      - RECON
+      - RACING
+      - STARTER
+      - GENERALIST
+      - MODULAR
+      title: ModelFocusEnum
     ModelHullDoor:
       type: object
       properties:
@@ -20349,6 +20488,14 @@ components:
           type: string
         focus:
           type: string
+          deprecated: true
+          description: Use foci instead
+        foci:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelFocusEnum"
+        stealth:
+          type: boolean
         size:
           type: string
         dockSize:

@@ -27018,6 +27018,12 @@ components:
           type:
           - string
           - 'null'
+          deprecated: true
+          description: Use foci instead
+        foci:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelFocusEnum"
         minSize:
           type:
           - string
@@ -27086,6 +27092,12 @@ components:
           type:
           - string
           - 'null'
+          deprecated: true
+          description: Use foci instead
+        foci:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelFocusEnum"
         minSize:
           type:
           - string
@@ -27253,6 +27265,12 @@ components:
           type: string
         focus:
           type: string
+          deprecated: true
+          description: Use foci instead
+        foci:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelFocusEnum"
         size:
           type: string
         crew:
@@ -30463,6 +30481,8 @@ components:
           type: array
           items:
             type: string
+        stealthEq:
+          type: boolean
         heightGteq:
           type: number
         heightLteq:
@@ -32283,6 +32303,8 @@ components:
           type: array
           items:
             type: string
+        stealthEq:
+          type: boolean
         heightGteq:
           type: number
         heightLteq:
@@ -35336,6 +35358,12 @@ components:
           type:
           - string
           - 'null'
+          deprecated: true
+          description: Use foci instead
+        foci:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelFocusEnum"
         minSize:
           type:
           - string
@@ -35392,6 +35420,12 @@ components:
           type:
           - string
           - 'null'
+          deprecated: true
+          description: Use foci instead
+        foci:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelFocusEnum"
         minSize:
           type:
           - string
@@ -35657,6 +35691,18 @@ components:
           type: string
         focus:
           type: string
+          deprecated: true
+          description: Use foci instead
+        foci:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelFocusEnum"
+        fociLabels:
+          type: array
+          items:
+            type: string
+        stealth:
+          type: boolean
         hasImages:
           type: boolean
         hasModules:
@@ -35777,6 +35823,9 @@ components:
       - adiMap
       - createdAt
       - updatedAt
+      - foci
+      - fociLabels
+      - stealth
       title: Model
     ModelAvailability:
       type: object
@@ -35963,6 +36012,18 @@ components:
           type: string
         focus:
           type: string
+          deprecated: true
+          description: Use foci instead
+        foci:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelFocusEnum"
+        fociLabels:
+          type: array
+          items:
+            type: string
+        stealth:
+          type: boolean
         hasImages:
           type: boolean
         hasModules:
@@ -36109,6 +36170,9 @@ components:
       - adiMap
       - createdAt
       - updatedAt
+      - foci
+      - fociLabels
+      - stealth
       - dockCounts
       - links
       - carriedBy
@@ -36128,6 +36192,91 @@ components:
           format: uri
       additionalProperties: false
       title: ModelExtendedLinks
+    ModelFocusEnum:
+      type: string
+      enum:
+      - light_fighter
+      - medium_fighter
+      - heavy_fighter
+      - snub_fighter
+      - fighter
+      - bomber
+      - gunship
+      - interdiction
+      - dropship
+      - minelayer
+      - corvette
+      - frigate
+      - destroyer
+      - battlecruiser
+      - warship
+      - tank
+      - anti_air
+      - assault
+      - freight
+      - passenger
+      - touring
+      - carrier
+      - merchant
+      - mining
+      - refining
+      - salvage
+      - construction
+      - science
+      - data
+      - medical
+      - refuel
+      - repair
+      - recovery
+      - expedition
+      - pathfinder
+      - recon
+      - racing
+      - starter
+      - generalist
+      - modular
+      x-enumNames:
+      - LIGHT_FIGHTER
+      - MEDIUM_FIGHTER
+      - HEAVY_FIGHTER
+      - SNUB_FIGHTER
+      - FIGHTER
+      - BOMBER
+      - GUNSHIP
+      - INTERDICTION
+      - DROPSHIP
+      - MINELAYER
+      - CORVETTE
+      - FRIGATE
+      - DESTROYER
+      - BATTLECRUISER
+      - WARSHIP
+      - TANK
+      - ANTI_AIR
+      - ASSAULT
+      - FREIGHT
+      - PASSENGER
+      - TOURING
+      - CARRIER
+      - MERCHANT
+      - MINING
+      - REFINING
+      - SALVAGE
+      - CONSTRUCTION
+      - SCIENCE
+      - DATA
+      - MEDICAL
+      - REFUEL
+      - REPAIR
+      - RECOVERY
+      - EXPEDITION
+      - PATHFINDER
+      - RECON
+      - RACING
+      - STARTER
+      - GENERALIST
+      - MODULAR
+      title: ModelFocusEnum
     ModelHullDoor:
       type: object
       properties:
@@ -37162,6 +37311,8 @@ components:
           type: array
           items:
             type: string
+        stealthEq:
+          type: boolean
         heightGteq:
           type: number
         heightLteq:
@@ -40752,6 +40903,12 @@ components:
           type: string
         focus:
           type: string
+          deprecated: true
+          description: Use foci instead
+        foci:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelFocusEnum"
         minSize:
           type: string
         maxSize:
