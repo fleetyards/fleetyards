@@ -3627,7 +3627,8 @@
       "hangarInventories": "Inventories",
       "hangarBlueprints": {
         "owned": "Tuyos",
-        "wanted": "Deseados"
+        "wanted": "Deseados",
+        "missions": "Misiones"
       },
       "adminNotifications": {
         "inbox": "Bandeja de entrada",

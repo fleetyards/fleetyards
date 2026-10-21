@@ -24,6 +24,11 @@ const routerOnList = async () => {
         name: "mission",
         component: { template: "<div />" },
       },
+      {
+        path: "/catalogue/blueprints/:slug",
+        name: "blueprint",
+        component: { template: "<div />" },
+      },
     ],
   });
 
@@ -230,5 +235,32 @@ describe("MissionRow", () => {
     );
 
     expect(wrapper.find(".mission-row__cannot-land").exists()).toBe(false);
+  });
+
+  it("names the wanted blueprints it hands out", async () => {
+    const wrapper = mountWithDefaults(Component, {
+      props: {
+        mission: mission(),
+        wantedBlueprints: [
+          { id: "a", name: "Bulldog Repeater", slug: "behr-repeater-s3" },
+        ],
+      },
+      plugins: [await routerOnList()],
+    });
+
+    const links = (await wrapper).findAll(".mission-row__wanted-blueprint");
+
+    expect(links.map((link) => link.text())).toEqual(["Bulldog Repeater"]);
+    expect(links[0].attributes("href")).toContain(
+      "/catalogue/blueprints/behr-repeater-s3",
+    );
+  });
+
+  it("says nothing of wanted blueprints on the catalogue", async () => {
+    const wrapper = await mount();
+
+    expect(wrapper.find("[data-test='mission-row-wanted']").exists()).toBe(
+      false,
+    );
   });
 });

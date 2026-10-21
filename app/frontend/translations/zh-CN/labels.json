@@ -3624,7 +3624,8 @@
       "hangarInventories": "Inventories",
       "hangarBlueprints": {
         "owned": "已拥有",
-        "wanted": "想要"
+        "wanted": "想要",
+        "missions": "任务"
       },
       "adminNotifications": {
         "inbox": "收件箱",

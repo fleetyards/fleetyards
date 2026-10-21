@@ -3627,7 +3627,8 @@
       "hangarInventories": "Inventories",
       "hangarBlueprints": {
         "owned": "Possédés",
-        "wanted": "Souhaités"
+        "wanted": "Souhaités",
+        "missions": "Missions"
       },
       "adminNotifications": {
         "inbox": "Boîte de réception",

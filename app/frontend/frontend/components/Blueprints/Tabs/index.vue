@@ -8,11 +8,23 @@ export default {
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useBlueprintsTab } from "@/frontend/composables/useBlueprintsTab";
+import {
+  type BlueprintsTab,
+  DEFAULT_BLUEPRINTS_TABS,
+  useBlueprintsTab,
+} from "@/frontend/composables/useBlueprintsTab";
+
+type Props = {
+  tabs?: readonly BlueprintsTab[];
+};
+
+const props = withDefaults(defineProps<Props>(), {
+  tabs: () => DEFAULT_BLUEPRINTS_TABS,
+});
 
 const { t } = useI18n();
 
-const { activeTab } = useBlueprintsTab();
+const { activeTab } = useBlueprintsTab(props.tabs);
 </script>
 
 <!-- The wand is the hangar wishlist's own icon, so the tab matches the page
@@ -36,6 +48,16 @@ const { activeTab } = useBlueprintsTab();
     >
       <i class="fa-duotone fa-wand-sparkles" />
       {{ t("labels.hangarBlueprints.wanted") }}
+    </Btn>
+    <Btn
+      v-if="tabs.includes('missions')"
+      :active="activeTab === 'missions'"
+      mobile-icon-only
+      data-test="blueprints-tab-missions"
+      @click="activeTab = 'missions'"
+    >
+      <i class="fa-duotone fa-file-contract" />
+      {{ t("labels.hangarBlueprints.missions") }}
     </Btn>
   </BtnGroup>
 </template>
