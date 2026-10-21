@@ -110,6 +110,12 @@ describe("missionTextParts with values", () => {
     ]);
   });
 
+  it("keeps an emphasised run whole when a value brings emphasis of its own", () => {
+    expect(
+      missionTextParts("<EM4>Bring ~mission(FuelType) now</EM4>", values),
+    ).toEqual([{ kind: "emphasis", value: "Bring 6 SCU of Hydrogen now" }]);
+  });
+
   it("never fills a token that names a field", () => {
     expect(
       missionTextParts("~mission(MissionMaxSCUSize|Name)", values),

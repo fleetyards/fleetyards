@@ -55,6 +55,10 @@ const FILL_PASSES = 3;
 
 const PLAIN_PLACEHOLDER = /~mission\(([^|)]*)\)/g;
 
+const insideEmphasis = (before: string) =>
+  (before.match(/<EM\d*>/g)?.length ?? 0) >
+  (before.match(/<\/EM\d*>/g)?.length ?? 0);
+
 /**
  * The text with every placeholder the files state a value for filled in. One
  * the game picks at run time -- a target, a location, any `Token|Field` -- is
@@ -73,7 +77,17 @@ export const fillMissionText = (
   for (let pass = 0; pass < FILL_PASSES; pass += 1) {
     const next = filled.replace(
       PLAIN_PLACEHOLDER,
-      (match, token: string) => byToken.get(token.trim()) ?? match,
+      (match, token: string, at: number, whole: string) => {
+        const value = byToken.get(token.trim());
+
+        if (value === undefined) return match;
+
+        // Emphasis does not nest: a value bringing its own into an emphasised
+        // run would close that run early.
+        return insideEmphasis(whole.slice(0, at))
+          ? value.replace(STRAY_TAG, "")
+          : value;
+      },
     );
 
     if (next === filled) break;
