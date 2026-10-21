@@ -82,11 +82,17 @@ const missionsQuery = useHangarBlueprintMissionsQuery(missionsParams, {
   query: { enabled: showMissions },
 });
 
-const statusOf = (query: typeof blueprintsQuery | typeof missionsQuery) => {
-  const { data: _data, refetch: _refetch, ...status } = query;
+const {
+  data: _blueprintsData,
+  refetch: _blueprintsRefetch,
+  ...blueprintsStatus
+} = blueprintsQuery;
 
-  return status;
-};
+const {
+  data: _missionsData,
+  refetch: _missionsRefetch,
+  ...missionsStatus
+} = missionsQuery;
 
 const blueprints = computed(() => blueprintsQuery.data.value);
 const missions = computed(() => missionsQuery.data.value);
@@ -127,7 +133,7 @@ const missionSortFields = useMissionSortFields();
     v-if="!showMissions"
     name="hangar-blueprints"
     :records="blueprints?.items || []"
-    :async-status="statusOf(blueprintsQuery)"
+    :async-status="blueprintsStatus"
     :is-filter-selected="isFilterSelected"
   >
     <template #filter>
@@ -173,7 +179,7 @@ const missionSortFields = useMissionSortFields();
     v-else
     name="hangar-blueprint-missions"
     :records="missions?.items || []"
-    :async-status="statusOf(missionsQuery)"
+    :async-status="missionsStatus"
     :is-filter-selected="isMissionFilterSelected"
     :view-keys="['ship']"
   >
