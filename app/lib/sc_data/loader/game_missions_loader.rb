@@ -85,6 +85,7 @@ module ScData
           max_instances_per_player: mission_data["max_instances_per_player"],
           respawn_time: mission_data["respawn_time"],
           respawn_variation: mission_data["respawn_variation"],
+          placeholder_values: mission_data["placeholder_values"].presence,
           version: sc_version
         }
       end

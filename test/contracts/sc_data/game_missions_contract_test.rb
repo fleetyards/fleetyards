@@ -83,6 +83,9 @@ module ScData
         assert_operator GameMission.where.not(time_to_complete: nil).count, :>=, 2000
         assert_operator GameMission.where.not(respawn_time: nil).count, :>=, 2000
 
+        # The values contracts state for their placeholders: 897 in 4.10.2.
+        assert_operator GameMission.where.not(placeholder_values: nil).count, :>=, 700
+
         # Mission chains: a requirement names the contracts that grant it, and
         # all but a handful resolve to at least one.
         completed = GameMissionPrerequisite.where(kind: "completed_missions")

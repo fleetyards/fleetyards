@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_21_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_21_150000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1318,6 +1318,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_21_120000) do
     t.integer "max_instances_per_player"
     t.decimal "respawn_time", precision: 8, scale: 2
     t.decimal "respawn_variation", precision: 8, scale: 2
+    t.jsonb "placeholder_values"
     t.index ["blueprint_pool_refs"], name: "index_game_mission_builds_on_blueprint_pool_refs", using: :gin
     t.index ["environment", "name"], name: "index_game_mission_builds_on_environment_and_name"
     t.index ["environment", "org_name"], name: "index_game_mission_builds_on_environment_and_org_name"
@@ -1431,6 +1432,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_21_120000) do
     t.integer "max_instances_per_player"
     t.decimal "respawn_time", precision: 8, scale: 2
     t.decimal "respawn_variation", precision: 8, scale: 2
+    t.jsonb "placeholder_values"
     t.index ["org_name"], name: "index_game_missions_on_org_name"
     t.index ["sc_key"], name: "index_game_missions_on_sc_key", unique: true
     t.index ["sc_ref"], name: "index_game_missions_on_sc_ref", unique: true
