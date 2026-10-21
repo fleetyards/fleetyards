@@ -38,6 +38,12 @@ Mockups: the Claude Design canvas linked from the issue, built from the app's ow
 ### Phase 5 — Dashboard (signed in)
 1. Panels: patch, invites alert, coming up (with RSVP), my fleets, your ships in this patch, hangar, notifications, friends online. Each owns its query and loading state; phone order by urgency.
 
+### Phase 5b — Patch loading screens
+1. The export uploads `loadingscreen*.png` (one or more) at the root of each version folder. `loading_screens` holds one row per image (version, environment, name, bucket ETag) with the image attached.
+2. `ScData::LoadingScreensImportJob` (daily, 22:45) attaches them for every configured or recorded build, skips an unchanged ETag, and drops rows of builds nothing knows about any more.
+3. `/sc-data/builds` items gain `loadingScreens`; the item is its own `ScDataBuild` component now.
+4. The patch panel draws one of the live build's screens per visit, falling back to the hangar art.
+
 ### Phase 6 — Translations, tests, review
 1. All new keys in all 7 locales.
 2. Model, policy, integration (openapi) tests; component specs for the new panels.
@@ -63,12 +69,13 @@ Mockups: the Claude Design canvas linked from the issue, built from the app's ow
 
 ## Not in scope (deferred)
 
-- **Patch loading screen extraction** — needs sc_data parser work to find and serve the loading-screen image per build; the patch panel uses existing background art until then. Becomes its own issue before the PR merges.
+- None.
 
 ## Discovery Log
 
 - **2026-10-20** Initial research and plan creation.
 - **2026-10-20** The fleet calendar does not filter drafts or officers-only events for plain members; `/me/events` filters them itself rather than changing the calendar here.
+- **2026-10-21** The export now carries loading screens per build (3840×2160 PNGs, 10–15 MB, multipart ETags so no MD5 to compare); they are imported rather than parsed, so the parsed tree is untouched.
 - **2026-10-20** `FormInput` builds its aria-label from `labels.<translationKey>` even with `no-label`; `labels.search.default` does not exist, `labels.home.search` does.
 
 ## Progress
