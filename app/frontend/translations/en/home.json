@@ -280,8 +280,30 @@
           "all": "All ships"
         },
         "signUpPanel": {
+          "kicker": "Join them",
           "title": "Bring your hangar",
-          "text": "Sign up, sync from RSI, and your fleet is here in about a minute."
+          "orWith": "or with",
+          "loggedIn": "Already flying with us?",
+          "login": "Log in",
+          "counts": {
+            "vehicles": "ships in Fleetyards hangars",
+            "fleets": "fleets organised here",
+            "ships": "ships in the database"
+          },
+          "links": {
+            "discord": {
+              "title": "Community Discord",
+              "text": "Questions, ideas and the dev log"
+            },
+            "support": {
+              "title": "Support Fleetyards",
+              "text": "Run by pilots, paid for by pilots"
+            },
+            "api": {
+              "title": "API and docs",
+              "text": "Build on the same data"
+            }
+          }
         }
       },
       "patch": {

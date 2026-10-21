@@ -280,8 +280,30 @@
           "all": "Todas las naves"
         },
         "signUpPanel": {
+          "kicker": "Únete",
           "title": "Trae tu hangar",
-          "text": "Regístrate, sincroniza desde RSI y tu flota estará aquí en un minuto."
+          "orWith": "o con",
+          "loggedIn": "¿Ya vuelas con nosotros?",
+          "login": "Iniciar sesión",
+          "counts": {
+            "vehicles": "naves en hangares de Fleetyards",
+            "fleets": "flotas organizadas aquí",
+            "ships": "naves en la base de datos"
+          },
+          "links": {
+            "discord": {
+              "title": "Discord de la comunidad",
+              "text": "Preguntas, ideas y el diario de desarrollo"
+            },
+            "support": {
+              "title": "Apoya Fleetyards",
+              "text": "Hecho por pilotos, pagado por pilotos"
+            },
+            "api": {
+              "title": "API y documentación",
+              "text": "Construye sobre los mismos datos"
+            }
+          }
         }
       },
       "patch": {

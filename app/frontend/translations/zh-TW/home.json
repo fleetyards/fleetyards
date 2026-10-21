@@ -280,8 +280,30 @@
           "all": "所有艦船"
         },
         "signUpPanel": {
+          "kicker": "加入他們",
           "title": "帶上你的機庫",
-          "text": "註冊並從 RSI 同步，大約一分鐘後你的艦隊就會出現在這裡。"
+          "orWith": "或使用",
+          "loggedIn": "已經和我們一起飛行？",
+          "login": "登入",
+          "counts": {
+            "vehicles": "艘艦船在 Fleetyards 機庫中",
+            "fleets": "個艦隊在這裡組織",
+            "ships": "艘艦船在資料庫中"
+          },
+          "links": {
+            "discord": {
+              "title": "社群 Discord",
+              "text": "問題、想法和開發日誌"
+            },
+            "support": {
+              "title": "支持 Fleetyards",
+              "text": "由飛行員營運，由飛行員資助"
+            },
+            "api": {
+              "title": "API 與文件",
+              "text": "基於同樣的資料進行開發"
+            }
+          }
         }
       },
       "patch": {

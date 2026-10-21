@@ -280,8 +280,30 @@
           "all": "所有舰船"
         },
         "signUpPanel": {
+          "kicker": "加入他们",
           "title": "带上你的机库",
-          "text": "注册并从 RSI 同步，大约一分钟后你的舰队就会出现在这里。"
+          "orWith": "或使用",
+          "loggedIn": "已经和我们一起飞行？",
+          "login": "登录",
+          "counts": {
+            "vehicles": "艘舰船在 Fleetyards 机库中",
+            "fleets": "个舰队在这里组织",
+            "ships": "艘舰船在数据库中"
+          },
+          "links": {
+            "discord": {
+              "title": "社区 Discord",
+              "text": "问题、想法和开发日志"
+            },
+            "support": {
+              "title": "支持 Fleetyards",
+              "text": "由飞行员运营，由飞行员资助"
+            },
+            "api": {
+              "title": "API 与文档",
+              "text": "基于同样的数据进行开发"
+            }
+          }
         }
       },
       "patch": {
