@@ -21,6 +21,7 @@ class AddAutumn2956GameEvents < ActiveRecord::Migration[8.1]
         "permanent rewards, and one contract unlocks a five-day rental of the Constellation Mk V " \
         "Centaurus with its Skylark.",
       location: "Stanton",
+      url: "https://robertsspaceindustries.com/en/comm-link/transmission/21334-Alpha-4102-RSI-Discovery-Month",
       starts_at: "2026-10-09 17:00:00",
       published: true
     },
@@ -40,6 +41,7 @@ class AddAutumn2956GameEvents < ActiveRecord::Migration[8.1]
         "Grey's Market, Kruger, Mirai and MISC, Aegis, then Aopoa, Banu, Esperia and Gatac. " \
         "Best in Show on 22 November, and from 23 November every IAE ship to try for free.",
       location: "New Babbage, microTech",
+      url: "https://robertsspaceindustries.com/",
       starts_at: "2026-11-13 17:00:00",
       ends_at: "2026-11-30 17:00:00",
       published: true
