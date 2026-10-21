@@ -97,6 +97,24 @@ class ModelBuildChangeTest < ActiveSupport::TestCase
     assert_equal 210, ModelBuildChange.sole.old_value
   end
 
+  # The newest other build is the previous one only while the build being
+  # recorded is the newest. Recording an older one again names its own.
+  test ".record! measures against the build it is given" do
+    older = create(
+      :model_build,
+      model: @model, environment: @environment, version: "4.8.0",
+      scm_speed: 100, created_at: 6.months.ago
+    )
+    build = previous_build(scm_speed: 210)
+    current_build(scm_speed: 190)
+
+    ModelBuildChange.record!(build, previous: older)
+
+    change = ModelBuildChange.sole
+    assert_equal 100, change.old_value
+    assert_equal 210, change.new_value
+  end
+
   test ".record! records a fact the previous build did not carry" do
     previous_build(scm_speed: 210, max_speed: nil)
     build = current_build(scm_speed: 210, max_speed: 1200)

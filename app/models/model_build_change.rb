@@ -20,8 +20,11 @@ class ModelBuildChange < ApplicationRecord
   # parsed twice can produce different values without a version bump, and the
   # second parse is the one to keep rather than a second set of rows beside the
   # first.
-  def self.record!(build)
-    previous = previous_build(build)
+  #
+  # The previous build is looked up as the newest other one, which is right only
+  # while `build` is the newest: a caller recording an older build again names
+  # the build that came before it.
+  def self.record!(build, previous: previous_build(build))
     return 0 if previous.blank?
 
     rows = changed_facts(previous, build).map do |field, (old_value, new_value)|
