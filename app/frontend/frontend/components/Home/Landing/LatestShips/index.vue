@@ -39,13 +39,17 @@ const models = computed(() => (data.value || []).slice(0, 8));
         <i class="fa-light fa-chevron-right" />
       </Btn>
     </div>
-    <div class="home-landing-latest-ships relative">
-      <ModelPanel
-        v-for="model in models"
-        :key="model.id"
-        :model="model"
-        :level="HeadingLevelEnum.H3"
-      />
+    <div class="home-landing-latest-ships__slot relative">
+      <Transition name="fade-quick" appear>
+        <div v-if="models.length" class="home-landing-latest-ships">
+          <ModelPanel
+            v-for="model in models"
+            :key="model.id"
+            :model="model"
+            :level="HeadingLevelEnum.H3"
+          />
+        </div>
+      </Transition>
       <Loader :loading="isLoading" />
     </div>
   </section>
@@ -58,6 +62,11 @@ const models = computed(() => (data.value || []).slice(0, 8));
   justify-content: space-between;
   gap: 16px;
   margin-bottom: 12px;
+}
+
+// Holds the loader's room until the ships fade in.
+.home-landing-latest-ships__slot {
+  min-height: 200px;
 }
 
 .home-landing-latest-ships {

@@ -29,21 +29,23 @@ const release = (version: string) => version.split("-")[0];
 </script>
 
 <template>
-  <div v-if="builds.length" class="home-build-pills">
-    <Pill
-      v-for="build in builds"
-      :key="build.environment"
-      :variant="
-        build.environment.toLowerCase() === 'live'
-          ? PillVariantsEnum.SUCCESS
-          : PillVariantsEnum.WARNING
-      "
-      :title="build.version"
-      uppercase
-    >
-      {{ build.environment }} {{ release(build.version) }}
-    </Pill>
-  </div>
+  <Transition name="fade-quick" appear>
+    <div v-if="builds.length" class="home-build-pills">
+      <Pill
+        v-for="build in builds"
+        :key="build.environment"
+        :variant="
+          build.environment.toLowerCase() === 'live'
+            ? PillVariantsEnum.SUCCESS
+            : PillVariantsEnum.WARNING
+        "
+        :title="build.version"
+        uppercase
+      >
+        {{ build.environment }} {{ release(build.version) }}
+      </Pill>
+    </div>
+  </Transition>
 </template>
 
 <style lang="scss" scoped>

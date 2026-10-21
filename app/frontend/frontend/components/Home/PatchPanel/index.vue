@@ -51,35 +51,37 @@ const background = computed(() => {
 </script>
 
 <template>
-  <Panel
-    v-if="live"
-    :bg-image="background"
-    class="home-patch-panel"
-    data-test="home-patch-panel"
-  >
-    <PanelHeading :level="HeadingLevelEnum.H3">
-      {{ t("home.patch.title", { version: live.version }) }}
-      <template #actions>
-        <Pill :variant="PillVariantsEnum.SUCCESS" uppercase>
-          {{ live.environment }}
-        </Pill>
-      </template>
-    </PanelHeading>
-    <PanelBody>
-      <p v-if="lede" class="home-patch-panel__lede">{{ lede }}</p>
-      <div class="metrics-card__rows">
-        <template v-for="fact in facts" :key="fact.key">
-          <div v-if="fact.value !== undefined" class="metrics-card__row">
-            <div class="metrics-card__row__label">{{ fact.label }}</div>
-            <div class="metrics-card__row__value">{{ fact.value }}</div>
-          </div>
+  <Transition name="fade-quick" appear>
+    <Panel
+      v-if="live"
+      :bg-image="background"
+      class="home-patch-panel"
+      data-test="home-patch-panel"
+    >
+      <PanelHeading :level="HeadingLevelEnum.H3">
+        {{ t("home.patch.title", { version: live.version }) }}
+        <template #actions>
+          <Pill :variant="PillVariantsEnum.SUCCESS" uppercase>
+            {{ live.environment }}
+          </Pill>
         </template>
-      </div>
-      <div v-if="$slots.default" class="home-patch-panel__actions">
-        <slot />
-      </div>
-    </PanelBody>
-  </Panel>
+      </PanelHeading>
+      <PanelBody>
+        <p v-if="lede" class="home-patch-panel__lede">{{ lede }}</p>
+        <div class="metrics-card__rows">
+          <template v-for="fact in facts" :key="fact.key">
+            <div v-if="fact.value !== undefined" class="metrics-card__row">
+              <div class="metrics-card__row__label">{{ fact.label }}</div>
+              <div class="metrics-card__row__value">{{ fact.value }}</div>
+            </div>
+          </template>
+        </div>
+        <div v-if="$slots.default" class="home-patch-panel__actions">
+          <slot />
+        </div>
+      </PanelBody>
+    </Panel>
+  </Transition>
 </template>
 
 <style lang="scss" scoped>

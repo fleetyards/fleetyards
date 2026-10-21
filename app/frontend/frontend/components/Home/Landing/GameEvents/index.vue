@@ -20,21 +20,23 @@ const gameEvents = computed(() => data.value?.items || []);
 
 <template>
   <!-- Curated, so a quiet week simply has no section rather than an empty one. -->
-  <section v-if="gameEvents.length" data-test="home-landing-game-events">
-    <Heading :level="HeadingLevelEnum.H2">
-      {{ t("home.landing.gameEvents.title") }}
-    </Heading>
-    <p class="home-landing-game-events__subline">
-      {{ t("home.landing.gameEvents.subline") }}
-    </p>
-    <div class="home-landing-game-events">
-      <EventCard
-        v-for="gameEvent in gameEvents"
-        :key="gameEvent.id"
-        :event="gameEvent"
-      />
-    </div>
-  </section>
+  <Transition name="fade-quick" appear>
+    <section v-if="gameEvents.length" data-test="home-landing-game-events">
+      <Heading :level="HeadingLevelEnum.H2">
+        {{ t("home.landing.gameEvents.title") }}
+      </Heading>
+      <p class="home-landing-game-events__subline">
+        {{ t("home.landing.gameEvents.subline") }}
+      </p>
+      <div class="home-landing-game-events">
+        <EventCard
+          v-for="gameEvent in gameEvents"
+          :key="gameEvent.id"
+          :event="gameEvent"
+        />
+      </div>
+    </section>
+  </Transition>
 </template>
 
 <style lang="scss" scoped>
