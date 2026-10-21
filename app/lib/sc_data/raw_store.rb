@@ -73,9 +73,9 @@ module ScData
     end
 
     # Deletes the older exports of this one's environment from disk. At ~3.8 GB
-    # each they pile up a sync at a time, and a parse only ever reads the newest
-    # build of an environment. Newer builds and other environments stay: syncing
-    # an old build on purpose must not cost the current one.
+    # each they pile up a sync at a time, and `bin/scdata parse` reads the newest
+    # build of an environment on disk. Newer builds and other environments stay:
+    # syncing an old build on purpose must not cost the current one.
     def prune
       match = VERSION_PATTERN.match(version.to_s)
       raise ArgumentError, "not an export version: #{version.inspect}" if match.nil?
