@@ -38,12 +38,22 @@ const { data: builds } = useScDataBuilds();
 const live = computed(() =>
   builds.value?.items.find((item) => item.environment.toLowerCase() === "live"),
 );
+
+// A patch can ship more than one loading screen; each visit draws one of them.
+const draw = Math.random();
+
+const background = computed(() => {
+  const screens = live.value?.loadingScreens || [];
+  const screen = screens[Math.floor(draw * screens.length)];
+
+  return screen?.largeUrl || screen?.url || patchArt;
+});
 </script>
 
 <template>
   <Panel
     v-if="live"
-    :bg-image="patchArt"
+    :bg-image="background"
     class="home-patch-panel"
     data-test="home-patch-panel"
   >
@@ -74,6 +84,21 @@ const live = computed(() =>
 
 <style lang="scss" scoped>
 @import "@/shared/components/metricsCard";
+
+// A loading screen is a bright, busy picture; the text needs a scrim to stay
+// readable over it.
+.home-patch-panel :deep(.panel-bg)::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.88) 0%,
+    rgba(0, 0, 0, 0.72) 50%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+  border-radius: inherit;
+  content: "";
+}
 
 .home-patch-panel__lede {
   margin: 0 0 12px;
