@@ -19,7 +19,8 @@ import LandingPatch from "@/frontend/components/Home/Landing/Patch/index.vue";
 import LandingGameEvents from "@/frontend/components/Home/Landing/GameEvents/index.vue";
 import LandingLatestShips from "@/frontend/components/Home/Landing/LatestShips/index.vue";
 import LandingSignUp from "@/frontend/components/Home/Landing/SignUp/index.vue";
-import { useHomepage } from "@/services/fyApi";
+import { useGameEvents, useHomepage } from "@/services/fyApi";
+import { useMediaQuery } from "@vueuse/core";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
 import { usePatchLoadingScreens } from "@/frontend/composables/usePatchLoadingScreens";
@@ -61,6 +62,25 @@ onMounted(() => {
 onBeforeUnmount(() => clearTimeout(heroFallback));
 
 const featuredShip = computed(() => homepage.value?.featuredShip);
+
+// The same query the events list asks, so this reads its answer rather than a
+// second request.
+const { data: gameEvents, isPending: gameEventsPending } = useGameEvents({
+  perPage: "6",
+});
+
+// The events grid lays out three a row from this width, one below it.
+const eventsInThree = useMediaQuery("(min-width: 992px)");
+
+const eventColumns = computed(() => (eventsInThree.value ? 3 : 1));
+
+// The events and the ships share one screen: two rows of events leave room
+// for one row of ships.
+const shipRows = computed(() => {
+  const events = gameEvents.value?.items.length || 0;
+
+  return Math.ceil(events / eventColumns.value) >= 2 ? 1 : 2;
+});
 
 const { pick: pickLoadingScreen, screens: loadingScreens } =
   usePatchLoadingScreens();
@@ -154,7 +174,7 @@ onBeforeUnmount(() =>
 
   <LandingSection :image="shipsArt">
     <LandingGameEvents class="home-landing__events" />
-    <LandingLatestShips />
+    <LandingLatestShips v-if="!gameEventsPending" :rows="shipRows" />
   </LandingSection>
 
   <LandingSection :image="signUpArt">
