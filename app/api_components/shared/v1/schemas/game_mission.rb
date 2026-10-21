@@ -41,6 +41,14 @@ module Shared
             # a surface target, where the fight happens in flight.
             needsLanding: {type: :boolean},
 
+            # What taking it costs and how it comes round again: aUEC, then
+            # minutes. Null where the files leave them unset.
+            buyIn: {type: [:integer, :null]},
+            timeToComplete: {type: [:number, :null]},
+            maxInstancesPerPlayer: {type: [:integer, :null]},
+            respawnTime: {type: [:number, :null]},
+            respawnVariation: {type: [:number, :null]},
+
             # Null on 197: a handler naming no faction takes its generator's
             # org, and only where that generator names exactly one.
             org: {anyOf: [::Shared::V1::Schemas::GameMissionOrg, {type: :null}]},
@@ -69,6 +77,7 @@ module Shared
             description: {type: [:string, :null]},
             rewards: {type: :array, items: ::Shared::V1::Schemas::GameMissionReward},
             handIns: {type: :array, items: ::Shared::V1::Schemas::GameMissionHandIn},
+            prerequisites: {type: :array, items: ::Shared::V1::Schemas::GameMissionPrerequisite},
 
             # The recipes this mission hands out, through the reward pools it
             # names. 786 of the 2,536 contracts hand one out.

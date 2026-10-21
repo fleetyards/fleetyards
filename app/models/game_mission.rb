@@ -198,6 +198,16 @@ class GameMission < ApplicationRecord
     build || last_build
   end
 
+  # The missions a set of prerequisites names, by `sc_ref`, limited to the ones
+  # the catalogue offers: a link to an unnamed one would 404.
+  def prerequisite_missions(prerequisites)
+    refs = prerequisites.flat_map(&:mission_refs).uniq
+    return {} if refs.empty?
+
+    ::GameMission.named(::GameMission.served_source).where(sc_ref: refs)
+      .includes(:build, :last_build).index_by(&:sc_ref)
+  end
+
   def retired?
     build.blank?
   end

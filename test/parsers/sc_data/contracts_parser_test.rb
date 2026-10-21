@@ -526,6 +526,115 @@ module ScData
         assert_empty @parser.missions.sole[:hand_ins]
       end
 
+      test "#missions reads the buy-in, the time it takes and how it comes round again" do
+        generator("gen", results_attributes: %(contractBuyInAmount="1000" timeToComplete="7.8"), extra: <<~XML)
+          <generationParams>
+            <ContractGenerationParams_Legacy maxInstances="-1" maxInstancesPerPlayer="1" respawnTime="5" respawnTimeVariation="2" />
+          </generationParams>
+        XML
+
+        mission = @parser.missions.sole
+
+        assert_equal [1000, 7.8, 1, 5.0, 2.0],
+          mission.values_at(:buy_in, :time_to_complete, :max_instances_per_player, :respawn_time, :respawn_variation)
+      end
+
+      # Zero is the field unset, and -1 instances per player is no limit.
+      test "#missions leaves out terms the contract leaves unset" do
+        generator("gen", results_attributes: %(contractBuyInAmount="0" timeToComplete="0"), extra: <<~XML)
+          <generationParams>
+            <ContractGenerationParams_Legacy maxInstancesPerPlayer="-1" respawnTime="0" respawnTimeVariation="0" />
+          </generationParams>
+        XML
+
+        mission = @parser.missions.sole
+
+        %i[buy_in time_to_complete max_instances_per_player respawn_time respawn_variation].each do |key|
+          assert_not_includes mission, key
+        end
+      end
+
+      test "#missions reads a crime stat band and a reputation band with another org" do
+        translate("Foxwell_RepUI_Name" => "Foxwell Enforcement", "RepScope_Contractor_Rank6" => "Elite Contractor")
+        faction_reputation("foxwellenforcement", ref: ORG_REF, display_name: "@Foxwell_RepUI_Name")
+        standing("rank6", ref: RANK6_REF, display_name: "@RepScope_Contractor_Rank6")
+        crime = %(<defaultAvailability><prerequisites><ContractPrerequisite_CrimeStat minCrimeStat="0" maxCrimeStat="2" /></prerequisites></defaultAvailability>)
+        generator("gen", handler_extra: crime, extra: <<~XML)
+          <additionalPrerequisites>
+            <ContractPrerequisite_Reputation factionReputation="#{ORG_REF}" exclude="1" minStanding="#{RANK6_REF}" maxStanding="#{RANK6_REF}" />
+          </additionalPrerequisites>
+        XML
+
+        reputation, crime_stat = @parser.missions.sole[:prerequisites]
+
+        assert_equal ["reputation", "Foxwell Enforcement", "Elite Contractor", true],
+          reputation.values_at(:kind, :org_name, :min_standing, :excluded)
+        assert_equal ["crime_stat", 0, 2], crime_stat.values_at(:kind, :min, :max)
+      end
+
+      # A tag is granted by the contracts whose results carry it, so the
+      # requirement arrives as those contracts rather than as the tag.
+      test "#missions resolves a completed-missions requirement to the contracts that grant it" do
+        tag = "5d1e0c3a-0000-4000-8000-0000000000d1"
+        generator("granter", contract_ids: [SECOND_CONTRACT_ID], results: <<~XML)
+          <ContractResult_CompletionTags>
+            <completionTags>
+              <ContractResult_CompletionTag count="1" tag="#{tag}" />
+            </completionTags>
+          </ContractResult_CompletionTags>
+        XML
+        generator("gen", extra: <<~XML)
+          <additionalPrerequisites>
+            <ContractPrerequisite_CompletedContractTags requiredCountValue="5" excludedCountValue="1">
+              <requiredCompletedContractTags><tags><Reference value="#{tag}" /></tags></requiredCompletedContractTags>
+              <excludedCompletedContractTags><tags><Reference value="#{tag}" /></tags></excludedCompletedContractTags>
+            </ContractPrerequisite_CompletedContractTags>
+          </additionalPrerequisites>
+        XML
+
+        required, excluded = @parser.missions.find { |mission| mission[:sc_ref] == CONTRACT_ID }[:prerequisites]
+
+        assert_equal ["completed_missions", 5, [SECOND_CONTRACT_ID]], required.values_at(:kind, :count, :mission_refs)
+        assert_equal ["excluded_missions", 1, [SECOND_CONTRACT_ID]], excluded.values_at(:kind, :count, :mission_refs)
+      end
+
+      test "#missions carries a contract that grants what it asks for as a flag, not a link to itself" do
+        tag = "5d1e0c3a-0000-4000-8000-0000000000d2"
+        generator("gen", results: <<~XML, extra: <<~PREREQUISITES)
+          <ContractResult_CompletionTags>
+            <completionTags>
+              <ContractResult_CompletionTag count="1" tag="#{tag}" />
+            </completionTags>
+          </ContractResult_CompletionTags>
+        XML
+          <additionalPrerequisites>
+            <ContractPrerequisite_CompletedContractTags requiredCountValue="1" excludedCountValue="1">
+              <excludedCompletedContractTags><tags><Reference value="#{tag}" /></tags></excludedCompletedContractTags>
+            </ContractPrerequisite_CompletedContractTags>
+          </additionalPrerequisites>
+        PREREQUISITES
+
+        excluded = @parser.missions.sole[:prerequisites].sole
+
+        assert_equal ["excluded_missions", [], true], excluded.values_at(:kind, :mission_refs, :includes_self)
+      end
+
+      test "#missions lists the places a contract is offered at" do
+        locality_place = "5d1e0c3a-0000-4000-8000-0000000000e1"
+        place = "5d1e0c3a-0000-4000-8000-0000000000e2"
+        locality = "5d1e0c3a-0000-4000-8000-0000000000e3"
+        write("missiondata/pu_missionlocality/stanton1", "MissionLocality", locality,
+          %(<availableLocations><Reference value="#{locality_place}" /></availableLocations>))
+        generator("gen", extra: <<~XML)
+          <additionalPrerequisites>
+            <ContractPrerequisite_Locality localityAvailable="#{locality}" />
+            <ContractPrerequisite_Location locationAvailable="#{place}" />
+          </additionalPrerequisites>
+        XML
+
+        assert_equal [locality_place, place].sort, @parser.missions.sole[:offered_location_refs]
+      end
+
       # `@LOC_UNINITIALIZED` is a real entry in the localisation file rather than
       # a missing key, so it resolves happily and would ship as a mission name.
       test "#missions leaves an uninitialized title blank rather than shipping the marker" do
@@ -594,19 +703,21 @@ module ScData
         org_ref: ORG_REF, min_standing: RANK0_REF, max_standing: RANK6_REF, pool_ref: POOL_REF,
         sibling_org: nil, second_org: nil, container: "contracts", contract_ids: [CONTRACT_ID],
         debug_name: nil, title: TITLE_KEY, description: nil, released: true, difficulty: nil, results: nil,
-        properties: nil)
+        properties: nil, extra: nil, results_attributes: "", handler_extra: nil)
         siblings = [sibling_org, second_org].compact.map.with_index do |ref, index|
           %(<ContractGeneratorHandler_Career debugName="Sibling#{index}" factionReputation="#{ref}" />)
         end
 
         listed = contract_ids.map do |id|
           contract(contract_kind, id:, debug_name: debug_name || "#{key}_VeryEasy", min_standing:,
-            max_standing:, pool_ref:, title:, description:, released:, difficulty:, results:, properties:)
+            max_standing:, pool_ref:, title:, description:, released:, difficulty:, results:, properties:,
+            extra:, results_attributes:)
         end
 
         write("contracts/contractgenerator/guild/#{key}", "ContractGenerator", "00000000-0000-0000-0000-0000000000aa", <<~XML)
           <generators>
             <#{handler} debugName="#{key}"#{%( factionReputation="#{org_ref}") if org_ref}>
+              #{handler_extra}
               <#{container}>
                 #{listed.join}
               </#{container}>
@@ -617,7 +728,7 @@ module ScData
       end
 
       private def contract(kind, id:, debug_name:, min_standing:, max_standing:, pool_ref:,
-        title:, description:, released:, difficulty:, results:, properties:)
+        title:, description:, released:, difficulty:, results:, properties:, extra:, results_attributes:)
         params = [%(<ContractStringParam param="Title" value="#{title}" />)]
         params << %(<ContractStringParam param="Description" value="#{description}" />) if description
 
@@ -630,7 +741,8 @@ module ScData
               </stringParamOverrides>
               #{"<propertyOverrides>#{properties}</propertyOverrides>" if properties}
             </paramOverrides>
-            <contractResults>
+            #{extra}
+            <contractResults #{results_attributes}>
               <contractResults>
                 <contractResults>
                   <BlueprintRewards chance="1" blueprintPool="#{pool_ref}" />

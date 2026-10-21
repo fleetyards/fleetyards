@@ -19,8 +19,14 @@ class GameMissionBuild < ApplicationRecord
     class_name: "GameMissionHandIn", inverse_of: :build,
     foreign_key: :game_mission_build_id, dependent: :destroy
 
+  # What a player has to have, or not have, before the mission is offered.
+  has_many :prerequisites,
+    -> { order(:position) },
+    class_name: "GameMissionPrerequisite", inverse_of: :build,
+    foreign_key: :game_mission_build_id, dependent: :destroy
+
   # What a detail response renders, catalogue links included.
-  DETAIL_INCLUDES = {rewards: :catalogue_item, hand_ins: :catalogue_item}.freeze
+  DETAIL_INCLUDES = {rewards: :catalogue_item, hand_ins: :catalogue_item, prerequisites: []}.freeze
 
   # A recipe is handed out through a reward pool rather than as a contract
   # result, so it is not a `GameMissionReward` row -- but it is something the
@@ -40,6 +46,7 @@ class GameMissionBuild < ApplicationRecord
     difficulty_risk_of_loss difficulty_game_knowledge
     reward_kinds blueprint_pool_refs
     location_kind needs_landing
+    buy_in time_to_complete max_instances_per_player respawn_time respawn_variation
   ].freeze
 
   # Everything: a mission has no associations served off a fact column, so

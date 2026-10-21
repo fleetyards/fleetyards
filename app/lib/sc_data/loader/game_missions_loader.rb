@@ -32,6 +32,7 @@ module ScData
 
           persist_rewards(build, mission_data["rewards"])
           persist_hand_ins(build, mission_data["hand_ins"])
+          persist_prerequisites(build, mission_data["prerequisites"])
           persist_locations(mission, mission_data)
         end
 
@@ -79,6 +80,11 @@ module ScData
           # reads as unknown rather than as "in space".
           location_kind: mission_data["location_kind"],
           needs_landing: mission_data.fetch("needs_landing", false),
+          buy_in: mission_data["buy_in"],
+          time_to_complete: mission_data["time_to_complete"],
+          max_instances_per_player: mission_data["max_instances_per_player"],
+          respawn_time: mission_data["respawn_time"],
+          respawn_variation: mission_data["respawn_variation"],
           version: sc_version
         }
       end
@@ -116,7 +122,8 @@ module ScData
         return if !default_environment? && mission.game_mission_locations.exists?
 
         links = template_locations(mission_data["location_template_refs"]).map { |id| [id, "template"] } +
-          text_locations(mission_data).map { |id| [id, "text"] }
+          text_locations(mission_data).map { |id| [id, "text"] } +
+          offered_locations(mission_data["offered_location_refs"]).map { |id| [id, "offered"] }
 
         mission.game_mission_locations.delete_all unless mission.previously_new_record?
 
@@ -138,6 +145,13 @@ module ScData
         return [] if refs.empty?
 
         current_locations.where("mission_template_refs && ARRAY[?]::text[]", refs).pluck(:id)
+      end
+
+      private def offered_locations(refs)
+        refs = Array.wrap(refs)
+        return [] if refs.empty?
+
+        current_locations.where("sc_refs && ARRAY[?]::text[]", refs).pluck(:id)
       end
 
       private def text_locations(mission_data)
@@ -217,6 +231,44 @@ module ScData
         stats[GameMissionReward.name][:created] += rows.size
 
         build.association(:rewards).reset
+      end
+
+      # Rewritten wholesale for the reason the rewards are.
+      private def persist_prerequisites(build, prerequisites)
+        now = Time.zone.now
+
+        rows = Array.wrap(prerequisites).filter_map.with_index do |prerequisite, position|
+          next unless ::GameMissionPrerequisite::KINDS.include?(prerequisite["kind"])
+
+          {
+            id: SecureRandom.uuid,
+            game_mission_build_id: build.id,
+            kind: prerequisite["kind"],
+            min: prerequisite["min"],
+            max: prerequisite["max"],
+            org_key: prerequisite["org_key"],
+            org_name: prerequisite["org_name"],
+            min_standing: prerequisite["min_standing"],
+            max_standing: prerequisite["max_standing"],
+            excluded: prerequisite.fetch("excluded", false),
+            count: prerequisite["count"],
+            mission_refs: Array.wrap(prerequisite["mission_refs"]),
+            includes_self: prerequisite.fetch("includes_self", false),
+            position:,
+            created_at: now,
+            updated_at: now
+          }
+        end
+
+        build.prerequisites.delete_all unless build.previously_new_record?
+
+        return if rows.blank?
+
+        GameMissionPrerequisite.insert_all!(rows)
+
+        stats[GameMissionPrerequisite.name][:created] += rows.size
+
+        build.association(:prerequisites).reset
       end
 
       # The catalogue row an award or a hand-in names, the way a blueprint finds

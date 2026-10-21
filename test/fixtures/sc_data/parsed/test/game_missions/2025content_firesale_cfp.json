@@ -57,5 +57,27 @@
     "10b628c2-48e3-4c6d-abcc-4d76dced81e0",
     "162c8449-28e4-4767-9e99-4ca46f386fae",
     "588b2195-850d-4bf4-956b-a97bae397dc1"
+  ],
+  "buy_in": 1000,
+  "time_to_complete": 7.8,
+  "max_instances_per_player": 1,
+  "respawn_time": 5.0,
+  "respawn_variation": 2.0,
+  "prerequisites": [
+    {
+      "kind": "crime_stat",
+      "min": 0,
+      "max": 2
+    },
+    {
+      "kind": "completed_missions",
+      "count": 1,
+      "mission_refs": [
+        "811b51c8-47a9-4919-9997-7b439efcf7cd"
+      ]
+    }
+  ],
+  "offered_location_refs": [
+    "f1759f46-e3c0-4dc1-94bc-c94488b58913"
   ]
 }

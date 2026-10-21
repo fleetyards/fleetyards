@@ -4,8 +4,10 @@ module Shared
   module V1
     module Schemas
       module Enums
-        # How a mission is known to take place at a place: through a location
-        # template one of its slots can pick, or because its text names it.
+        # How a place is linked to a mission: through a location template one
+        # of its slots can pick, because its text names it, or because the
+        # mission is offered there. Extensible, since each new way of linking
+        # one adds a value.
         class GameMissionLocationSourceEnum
           include OpenapiRuby::Components::Base
 
@@ -14,6 +16,7 @@ module Shared
           schema({
             type: :string,
             enum: VALUES,
+            "x-extensible-enum": VALUES,
             "x-enumNames": VALUES.map { |value| transform_enum_key(value) }
           })
         end

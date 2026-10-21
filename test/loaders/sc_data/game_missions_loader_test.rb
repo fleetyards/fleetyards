@@ -14,6 +14,7 @@ module ScData
         Location.delete_all
         GameMissionReward.delete_all
         GameMissionHandIn.delete_all
+        GameMissionPrerequisite.delete_all
         GameMissionBuild.delete_all
         GameMission.delete_all
       end
@@ -210,6 +211,36 @@ module ScData
         assert_equal [equipment], GameMissionReward.of_kind("item").map(&:catalogue_item).uniq
       end
 
+      test "#all carries what taking a mission costs and how it comes round again" do
+        loader.all
+
+        firesale = GameMission.find_by!(sc_key: "2025content_firesale_cfp")
+
+        assert_equal [1000, 7.8, 1, 5.0, 2.0],
+          [firesale.buy_in, firesale.time_to_complete, firesale.max_instances_per_player,
+            firesale.respawn_time, firesale.respawn_variation].map { |value| value.is_a?(BigDecimal) ? value.to_f : value }
+      end
+
+      test "#all carries the prerequisites a mission states" do
+        loader.all
+
+        prerequisites = GameMission.find_by!(sc_key: "2025content_firesale_cfp").builds.current(fixture_source).sole.prerequisites
+
+        assert_equal %w[crime_stat completed_missions], prerequisites.map(&:kind)
+        assert_equal [0, 2], prerequisites.first.values_at(:min, :max)
+        assert_equal ["811b51c8-47a9-4919-9997-7b439efcf7cd"], prerequisites.last.mission_refs
+      end
+
+      test "#all links a mission to the places it is offered at" do
+        fixture_loader(::ScData::Loader::LocationsLoader).all
+        default_loader.all
+
+        firesale = GameMission.find_by!(sc_key: "2025content_firesale_cfp")
+        offered = firesale.game_mission_locations.where(source: "offered").includes(:location).map { |link| link.location.name }
+
+        assert_equal ["Lorville"], offered
+      end
+
       # A second run of the same build rewrites the build in place rather than
       # colliding on the unique index, and the rewards go with it rather than
       # doubling.
@@ -258,7 +289,8 @@ module ScData
         loader.all
 
         firesale = GameMission.find_by!(sc_key: "2025content_firesale_cfp")
-        links = firesale.game_mission_locations.includes(:location).map { |link| [link.source, link.location.name] }
+        links = firesale.game_mission_locations.where(source: %w[template text]).includes(:location)
+          .map { |link| [link.source, link.location.name] }
 
         assert_equal [["template", "PYR2 L4"], ["text", "Pyro"]], links.sort
       end
@@ -290,7 +322,7 @@ module ScData
         default_loader.all
 
         assert_not GameMissionLocation.exists?(stale.id)
-        assert_equal ["PYR2 L4", "Pyro"], firesale.reload.locations.pluck(:name).sort
+        assert_equal ["Lorville", "PYR2 L4", "Pyro"], firesale.reload.locations.pluck(:name).sort
       end
 
       # The links are shared by every environment: a ptu load must not hand

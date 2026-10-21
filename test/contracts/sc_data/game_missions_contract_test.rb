@@ -17,6 +17,7 @@ module ScData
 
         GameMissionReward.delete_all
         GameMissionHandIn.delete_all
+        GameMissionPrerequisite.delete_all
         GameMissionBuild.delete_all
         GameMission.delete_all
       end
@@ -76,6 +77,19 @@ module ScData
         assert_operator GameMissionHandIn.where(kind: "resource").count, :>=, 450
         assert_operator GameMissionHandIn.where.not(option: nil).count, :>=, 20
         assert_empty GameMissionHandIn.where(name: nil).pluck(:ref)
+
+        # What taking a contract costs and how it comes round again.
+        assert_operator GameMission.where.not(buy_in: nil).count, :>=, 50
+        assert_operator GameMission.where.not(time_to_complete: nil).count, :>=, 2000
+        assert_operator GameMission.where.not(respawn_time: nil).count, :>=, 2000
+
+        # Mission chains: a requirement names the contracts that grant it, and
+        # all but a handful resolve to at least one.
+        completed = GameMissionPrerequisite.where(kind: "completed_missions")
+        assert_operator completed.count, :>=, 1000
+        assert_operator completed.where("cardinality(mission_refs) = 0").count, :<=, 20
+        assert_operator GameMissionPrerequisite.where(kind: "crime_stat").count, :>=, 900
+        assert_operator GameMissionPrerequisite.where(kind: "reputation").count, :>=, 250
 
         # The link to the crafting catalogue, which is the reverse of what a
         # blueprint's sources already answer.
