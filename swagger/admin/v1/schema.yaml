@@ -4034,6 +4034,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/GameEvent"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
         '404':
           description: not found
           content:
@@ -4052,8 +4058,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/hardpoints":
     get:
       summary: Hardpoints
@@ -16032,6 +16036,8 @@ components:
           format: date-time
         published:
           type: boolean
+        coverImage:
+          "$ref": "#/components/schemas/MediaFile"
         createdAt:
           type: string
           format: date-time
@@ -16092,6 +16098,10 @@ components:
           format: date-time
         published:
           type: boolean
+        coverImage:
+          type:
+          - string
+          - 'null'
       additionalProperties: false
       required:
       - title

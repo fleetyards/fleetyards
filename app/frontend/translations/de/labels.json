@@ -1683,6 +1683,7 @@
         "category": "Kategorie",
         "startsAt": "Beginnt am",
         "endsAt": "Endet am",
+        "coverImage": "Titelbild",
         "published": "Veröffentlicht",
         "publishedInfo": "Nur veröffentlichte Events erscheinen auf der Startseite."
       },

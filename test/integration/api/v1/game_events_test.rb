@@ -43,4 +43,15 @@ class Api::V1::GameEventsTest < ActionDispatch::IntegrationTest
       assert_equal [open_ended.id], parsed_body["items"].pluck("id")
     end
   end
+
+  test "GET /game-events carries the cover image when one is uploaded" do
+    game_event = create(:game_event, starts_at: 1.day.from_now)
+    game_event.cover_image.attach(
+      io: File.open(Rails.root.join("test/fixtures/files/test.png")), filename: "cover.png", content_type: "image/png"
+    )
+
+    assert_api_response :get, 200 do
+      assert parsed_body["items"].sole.dig("coverImage", "url").present?
+    end
+  end
 end

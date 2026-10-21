@@ -30635,6 +30635,8 @@ components:
         endsAt:
           type: string
           format: date-time
+        coverImage:
+          "$ref": "#/components/schemas/MediaFile"
         createdAt:
           type: string
           format: date-time

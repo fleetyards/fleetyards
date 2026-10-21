@@ -16,6 +16,7 @@ module V1
           category: ::V1::Schemas::Enums::MissionCategoryEnum,
           startsAt: {type: :string, format: "date-time"},
           endsAt: {type: :string, format: "date-time"},
+          coverImage: ::Shared::V1::Schemas::MediaFile,
           createdAt: {type: :string, format: "date-time"},
           updatedAt: {type: :string, format: "date-time"}
         },

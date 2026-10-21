@@ -17,7 +17,9 @@ module Admin
               category: ::Admin::V1::Schemas::Enums::GameEventCategoryEnum,
               startsAt: {type: :string, format: "date-time"},
               endsAt: {type: [:string, :null], format: "date-time"},
-              published: {type: :boolean}
+              published: {type: :boolean},
+              # A signed blob id replaces the picture, null removes it.
+              coverImage: {type: [:string, :null]}
             },
             additionalProperties: false,
             required: %w[title startsAt]

@@ -16,6 +16,8 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormDateTime from "@/shared/components/base/FormDateTime/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
+import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
+import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -47,6 +49,9 @@ type FormValues = {
   startsAt: string | null;
   endsAt: string | null;
   published: boolean;
+  // A signed blob id replaces the picture, null removes it, and undefined
+  // leaves what is attached.
+  coverImage?: string | null;
 };
 
 const { defineField, handleSubmit, meta } = useForm<FormValues>({
@@ -59,6 +64,7 @@ const { defineField, handleSubmit, meta } = useForm<FormValues>({
     startsAt: props.gameEvent?.startsAt ?? null,
     endsAt: props.gameEvent?.endsAt ?? null,
     published: props.gameEvent?.published ?? false,
+    coverImage: undefined,
   },
   validationSchema: {
     title: "required",
@@ -75,6 +81,7 @@ const [category, categoryProps] = defineField("category");
 const [startsAt, startsAtProps] = defineField("startsAt");
 const [endsAt, endsAtProps] = defineField("endsAt");
 const [published, publishedProps] = defineField("published");
+const [coverImage, coverImageProps] = defineField("coverImage");
 
 const categoryOptions = computed<FilterOption[]>(() =>
   Object.values(GameEventCategoryEnum).map((value) => ({
@@ -98,6 +105,7 @@ const onSubmit = handleSubmit((values) => {
     startsAt: toIso(values.startsAt) as string,
     endsAt: toIso(values.endsAt),
     published: values.published,
+    coverImage: values.coverImage,
   });
 });
 </script>
@@ -147,6 +155,15 @@ const onSubmit = handleSubmit((values) => {
         />
       </div>
       <div class="col-12 col-md-6">
+        <FormFileInput
+          v-model="coverImage"
+          v-bind="coverImageProps"
+          :file="gameEvent?.coverImage"
+          translation-key="gameEvent.coverImage"
+          name="coverImage"
+          :allowed-types="AllowedFileTypes.IMAGE"
+          clearable
+        />
         <FormTextarea
           v-model="description"
           v-bind="descriptionProps"

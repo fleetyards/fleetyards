@@ -18,6 +18,7 @@ module Admin
             startsAt: {type: :string, format: "date-time"},
             endsAt: {type: :string, format: "date-time"},
             published: {type: :boolean},
+            coverImage: ::Shared::V1::Schemas::MediaFile,
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },

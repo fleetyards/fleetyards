@@ -23,7 +23,10 @@ class GameEvent < ApplicationRecord
     exploration: 7
   }
 
+  has_one_attached :cover_image
+
   validates :title, presence: true
+  validates :cover_image, no_vector_image: true
   validates :starts_at, presence: true
   validates :url, format: {with: %r{\Ahttps?://\S+\z}}, allow_blank: true
   validate :ends_at_after_starts_at

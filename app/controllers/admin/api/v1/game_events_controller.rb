@@ -19,6 +19,7 @@ module Admin
           q = GameEvent.ransack(game_event_query_params)
 
           @game_events = q.result(distinct: true)
+            .with_attached_cover_image
             .page(page_params)
             .per(per_page(GameEvent))
         end
@@ -56,7 +57,7 @@ module Admin
 
         private def game_event_params
           @game_event_params ||= params.permit(
-            :title, :description, :location, :url, :category, :starts_at, :ends_at, :published
+            :title, :description, :location, :url, :category, :starts_at, :ends_at, :published, :cover_image
           )
         end
 

@@ -9,6 +9,7 @@ module Api
 
       def index
         @game_events = GameEvent.published.current
+          .with_attached_cover_image
           .order(:starts_at)
           .page(page_params)
           .per(per_page(GameEvent))

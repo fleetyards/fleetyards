@@ -120,6 +120,10 @@ class Admin::Api::V1::GameEventsTest < ActionDispatch::IntegrationTest
         schema ::Admin::V1::Schemas::GameEvent
       end
 
+      response(400, "bad request") do
+        schema ::Shared::V1::Schemas::ValidationError
+      end
+
       response(404, "not found") do
         schema ::Shared::V1::Schemas::StandardError
       end
@@ -249,6 +253,36 @@ class Admin::Api::V1::GameEventsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT /game-events/:id attaches a cover image" do
+    game_event = create(:game_event)
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: game_event.id}, body: {title: game_event.title, startsAt: game_event.starts_at.utc.iso8601, coverImage: uploaded("cover.png", "test.png", "image/png").signed_id} do
+      assert parsed_body.dig("coverImage", "url").present?
+    end
+
+    assert_equal "cover.png", game_event.reload.cover_image.filename.to_s
+  end
+
+  test "PUT /game-events/:id removes the cover image" do
+    game_event = create(:game_event)
+    game_event.cover_image.attach(uploaded("cover.png", "test.png", "image/png"))
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: game_event.id}, body: {title: game_event.title, startsAt: game_event.starts_at.utc.iso8601, coverImage: nil} do
+      assert_nil parsed_body["coverImage"]
+    end
+
+    assert_not game_event.reload.cover_image.attached?
+  end
+
+  test "PUT /game-events/:id rejects a vector cover image" do
+    game_event = create(:game_event)
+    sign_in @user
+
+    assert_api_response :put, 400, path_params: {id: game_event.id}, body: {title: game_event.title, startsAt: game_event.starts_at.utc.iso8601, coverImage: uploaded("cover.svg", "vector.svg", "image/svg+xml").signed_id}
+  end
+
   test "PUT /game-events/:id returns 404 for missing id" do
     sign_in @user
 
@@ -266,5 +300,13 @@ class Admin::Api::V1::GameEventsTest < ActionDispatch::IntegrationTest
     sign_in create(:admin_user, resource_access: [])
 
     assert_api_response :put, 403, path_params: {id: game_event.id}, body: {title: "Test", startsAt: 1.day.from_now.utc.iso8601}
+  end
+
+  private def uploaded(filename, fixture, content_type)
+    ActiveStorage::Blob.create_and_upload!(
+      io: File.open(Rails.root.join("test/fixtures/files", fixture)),
+      filename:,
+      content_type:
+    )
   end
 end

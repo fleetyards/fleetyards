@@ -1683,6 +1683,7 @@
         "category": "類別",
         "startsAt": "開始時間",
         "endsAt": "結束時間",
+        "coverImage": "封面圖片",
         "published": "已發佈",
         "publishedInfo": "只有已發佈的活動才會出現在首頁。"
       },

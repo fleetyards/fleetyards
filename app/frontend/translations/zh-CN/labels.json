@@ -1683,6 +1683,7 @@
         "category": "类别",
         "startsAt": "开始时间",
         "endsAt": "结束时间",
+        "coverImage": "封面图片",
         "published": "已发布",
         "publishedInfo": "只有已发布的活动才会出现在首页。"
       },

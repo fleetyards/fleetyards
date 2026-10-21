@@ -22,6 +22,17 @@ vi.mock("@/shared/components/base/FormDateTime/index.vue", () => ({
   },
 }));
 
+// The real field uploads through ActiveStorage; the form only cares about the
+// signed id or the null it hands back.
+vi.mock("@/shared/components/base/FormFileInput/index.vue", () => ({
+  default: {
+    name: "FormFileInput",
+    props: ["modelValue", "file"],
+    emits: ["update:modelValue"],
+    render: () => null,
+  },
+}));
+
 const gameEvent: GameEvent = {
   id: "8d0e3c7a-0000-4000-8000-000000000001",
   title: "Invictus Launch Week",
@@ -82,5 +93,29 @@ describe("GameEventForm", () => {
     await submit(wrapper);
 
     expect(wrapper.emitted("submit")).toBeUndefined();
+  });
+
+  it("leaves the cover image alone when the field was not touched", async () => {
+    const wrapper = await mountForm({ gameEvent });
+
+    await submit(wrapper);
+
+    expect(wrapper.emitted("submit")?.[0]?.[0]).toHaveProperty(
+      "coverImage",
+      undefined,
+    );
+  });
+
+  it("sends the cover image as null once it is cleared", async () => {
+    const wrapper = await mountForm({ gameEvent });
+
+    wrapper
+      .findComponent({ name: "FormFileInput" })
+      .vm.$emit("update:modelValue", null);
+    await submit(wrapper);
+
+    expect(wrapper.emitted("submit")?.[0]?.[0]).toMatchObject({
+      coverImage: null,
+    });
   });
 });

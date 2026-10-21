@@ -10,4 +10,10 @@ json.starts_at game_event.starts_at.utc.iso8601
 json.ends_at game_event.ends_at.utc.iso8601 if game_event.ends_at.present?
 json.published game_event.published
 
+if game_event.cover_image.attached?
+  json.cover_image do
+    json.partial! "api/v1/shared/file", record: game_event, attr: :cover_image
+  end
+end
+
 json.partial! "api/shared/dates", record: game_event

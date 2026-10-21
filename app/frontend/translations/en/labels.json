@@ -1683,6 +1683,7 @@
         "category": "Category",
         "startsAt": "Starts at",
         "endsAt": "Ends at",
+        "coverImage": "Cover image",
         "published": "Published",
         "publishedInfo": "Only published events appear on the homepage."
       },
