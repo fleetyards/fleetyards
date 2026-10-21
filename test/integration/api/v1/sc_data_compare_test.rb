@@ -64,6 +64,19 @@ class Api::V1::ScDataCompareTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /sc-data/builds carries each build's loading screens" do
+    build_for(OLD, "live")
+    build_for(NEW, "live")
+    create(:loading_screen, :with_image, version: NEW, name: "loadingscreen.png")
+    create(:loading_screen, :with_image, version: NEW, name: "loadingscreen_b.png")
+
+    assert_api_response :get, 200, api_path: "/sc-data/builds" do
+      screens = parsed_body["items"].to_h { |item| [item["version"], item["loadingScreens"].pluck("name")] }
+
+      assert_equal({NEW => %w[loadingscreen.png loadingscreen_b.png], OLD => []}, screens)
+    end
+  end
+
   # --- The comparison ---------------------------------------------------------
 
   test "GET /sc-data/compare reports what moved between two builds" do

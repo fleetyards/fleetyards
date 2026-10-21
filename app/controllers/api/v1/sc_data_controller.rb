@@ -24,6 +24,10 @@ module Api
       # config, which names one version per environment.
       def builds
         @builds = ::ScData::Source.recorded
+        @loading_screens = LoadingScreen.with_attached_image
+          .where(version: @builds.map(&:version))
+          .sort_by(&:name)
+          .group_by(&:version)
       end
 
       # What two builds say differently. Both sides are named by version alone,

@@ -39421,25 +39421,33 @@ components:
       - page
       - check
       title: RsiPageReportInput
+    ScDataBuild:
+      type: object
+      properties:
+        environment:
+          type: string
+        version:
+          type: string
+        default:
+          type: boolean
+        loadingScreens:
+          type: array
+          items:
+            "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      required:
+      - environment
+      - version
+      - default
+      - loadingScreens
+      title: ScDataBuild
     ScDataBuilds:
       type: object
       properties:
         items:
           type: array
           items:
-            type: object
-            properties:
-              environment:
-                type: string
-              version:
-                type: string
-              default:
-                type: boolean
-            additionalProperties: false
-            required:
-            - environment
-            - version
-            - default
+            "$ref": "#/components/schemas/ScDataBuild"
       additionalProperties: false
       required:
       - items

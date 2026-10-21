@@ -22,18 +22,16 @@ import { useI18n } from "@/shared/composables/useI18n";
 import {
   useScDataBuilds,
   useScDataCompare,
-  type ScDataBuildsItemsItem,
+  type ScDataBuild,
 } from "@/services/fyApi";
 
 const { t } = useI18n();
 
 const { data: buildList, isPending: buildsPending } = useScDataBuilds();
 
-const builds = computed<ScDataBuildsItemsItem[]>(
-  () => buildList.value?.items || [],
-);
+const builds = computed<ScDataBuild[]>(() => buildList.value?.items || []);
 
-const buildLabel = (build: ScDataBuildsItemsItem) =>
+const buildLabel = (build: ScDataBuild) =>
   `${build.environment} · ${build.version}`;
 
 const buildOptions = computed(() =>
