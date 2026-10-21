@@ -1,5 +1,5 @@
 class HangarPolicy < ApplicationPolicy
-  alias_rule :destroy?, :update?, :export?, :items?, :index?, to: :show?
+  alias_rule :destroy?, :update?, :export?, :items?, to: :show?
 
   def show?
     user.present?
