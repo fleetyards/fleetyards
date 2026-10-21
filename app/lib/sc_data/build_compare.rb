@@ -81,7 +81,9 @@ module ScData
     #
     # `ModelBuild` never had this problem: it carries no description at all,
     # which is why the change log it feeds has never needed the exclusion.
-    PROSE_FACTS = %i[description].freeze
+    #
+    # A mission's `placeholder_values` are pieces of that prose, filled into it.
+    PROSE_FACTS = %i[description placeholder_values].freeze
 
     # `type_data` is a whole metrics tree, and it used to be excluded for free
     # by the serialized check below. It is `jsonb` now, so it has to be named:
