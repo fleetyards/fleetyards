@@ -5,6 +5,7 @@ json.partial! "api/v1/game_missions/base", mission: @mission
 # The description is the detail page's alone: it runs to 1,200 characters on the
 # longest of them, and a list of 60 would carry 70KB of prose nothing renders.
 json.description @mission.description
+json.partial! "api/v1/game_missions/placeholder_values", mission: @mission
 
 json.partial! "api/v1/game_missions/rewards", mission: @mission
 json.partial! "api/v1/game_missions/hand_ins", mission: @mission

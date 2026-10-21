@@ -75,6 +75,11 @@ module Shared
             # of the 2475 carry a run-time span; it also carries the game's own
             # `<EM4>` emphasis markup.
             description: {type: [:string, :null]},
+
+            # The values the files state for the title's and the description's
+            # placeholders. A token missing here is the game's to pick.
+            placeholderValues: {type: :array, items: ::Shared::V1::Schemas::GameMissionPlaceholderValue},
+
             rewards: {type: :array, items: ::Shared::V1::Schemas::GameMissionReward},
             handIns: {type: :array, items: ::Shared::V1::Schemas::GameMissionHandIn},
             prerequisites: {type: :array, items: ::Shared::V1::Schemas::GameMissionPrerequisite},
