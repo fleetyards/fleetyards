@@ -22,6 +22,12 @@ export type MissionTextPart = {
   value: string;
 };
 
+/** What the files state for a placeholder, as the mission endpoints serve it. */
+export type MissionTextValue = {
+  token: string;
+  value: string;
+};
+
 // Non-greedy and bounded by the closing bracket: a description carries several,
 // and a greedy match would swallow the prose between two of them.
 const PLACEHOLDER = /~mission\(([^)]*)\)/g;
@@ -42,8 +48,63 @@ const STRAY_TAG = /<\/?EM\d*>/g;
 const tokenLabel = (parameter: string) =>
   (parameter.split("|")[0] || parameter).trim();
 
-export const missionTextParts = (text?: string | null): MissionTextPart[] => {
-  if (!text) return [];
+// A value can name a placeholder of its own -- "~mission(HydrogenFuel) SCU of
+// Hydrogen Fuel" -- so filling runs again over what it put in. Bounded, so a
+// value that names itself cannot loop.
+const FILL_PASSES = 3;
+
+const PLAIN_PLACEHOLDER = /~mission\(([^|)]*)\)/g;
+
+const insideEmphasis = (before: string) =>
+  (before.match(/<EM\d*>/g)?.length ?? 0) >
+  (before.match(/<\/EM\d*>/g)?.length ?? 0);
+
+/**
+ * The text with every placeholder the files state a value for filled in. One
+ * the game picks at run time -- a target, a location, any `Token|Field` -- is
+ * left as written, for `missionTextParts` to name.
+ */
+export const fillMissionText = (
+  text: string,
+  values?: MissionTextValue[] | null,
+) => {
+  if (!values?.length) return text;
+
+  const byToken = new Map(values.map((entry) => [entry.token, entry.value]));
+
+  let filled = text;
+
+  for (let pass = 0; pass < FILL_PASSES; pass += 1) {
+    const next = filled.replace(
+      PLAIN_PLACEHOLDER,
+      (match, token: string, at: number, whole: string) => {
+        const value = byToken.get(token.trim());
+
+        if (value === undefined) return match;
+
+        // Emphasis does not nest: a value bringing its own into an emphasised
+        // run would close that run early.
+        return insideEmphasis(whole.slice(0, at))
+          ? value.replace(STRAY_TAG, "")
+          : value;
+      },
+    );
+
+    if (next === filled) break;
+
+    filled = next;
+  }
+
+  return filled;
+};
+
+export const missionTextParts = (
+  source?: string | null,
+  values?: MissionTextValue[] | null,
+): MissionTextPart[] => {
+  if (!source) return [];
+
+  const text = fillMissionText(source, values);
 
   const parts: MissionTextPart[] = [];
 
@@ -96,7 +157,10 @@ const clean = (text: string) => text.replace(STRAY_TAG, "");
  * The same string with its spans removed rather than rendered, for the places
  * that can only take plain text -- a `title` attribute, a meta description.
  */
-export const missionTextPlain = (text?: string | null) =>
-  missionTextParts(text)
+export const missionTextPlain = (
+  text?: string | null,
+  values?: MissionTextValue[] | null,
+) =>
+  missionTextParts(text, values)
     .map((part) => (part.kind === "token" ? `[${part.value}]` : part.value))
     .join("");

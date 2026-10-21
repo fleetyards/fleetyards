@@ -47,6 +47,7 @@ class GameMissionBuild < ApplicationRecord
     reward_kinds blueprint_pool_refs
     location_kind needs_landing
     buy_in time_to_complete max_instances_per_player respawn_time respawn_variation
+    placeholder_values
   ].freeze
 
   # Everything: a mission has no associations served off a fact column, so

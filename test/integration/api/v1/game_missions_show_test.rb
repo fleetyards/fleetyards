@@ -148,6 +148,15 @@ class Api::V1::GameMissionsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /missions/{slug} lists the placeholder values with their tokens as the text writes them" do
+    @mission.build.update!(placeholder_values: {"Hint_Tool" => "Multi-Tool", "MissionMaxSCUSize" => "32 SCU"})
+
+    assert_api_response :get, 200, params: {slug: @mission.slug} do
+      assert_equal [{"token" => "Hint_Tool", "value" => "Multi-Tool"}, {"token" => "MissionMaxSCUSize", "value" => "32 SCU"}],
+        parsed_body["placeholderValues"]
+    end
+  end
+
   # A requirement links the missions that grant it, and only those the
   # catalogue offers.
   test "GET /missions/{slug} lists the prerequisites and links the missions they name" do

@@ -30721,6 +30721,10 @@ components:
           type:
           - string
           - 'null'
+        placeholderValues:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameMissionPlaceholderValue"
         rewards:
           type: array
           items:
@@ -30969,6 +30973,18 @@ components:
       required:
       - name
       title: GameMissionOrg
+    GameMissionPlaceholderValue:
+      type: object
+      properties:
+        token:
+          type: string
+        value:
+          type: string
+      additionalProperties: false
+      required:
+      - token
+      - value
+      title: GameMissionPlaceholderValue
     GameMissionPrerequisite:
       type: object
       properties:

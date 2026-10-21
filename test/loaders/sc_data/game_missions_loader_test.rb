@@ -221,6 +221,13 @@ module ScData
             firesale.respawn_time, firesale.respawn_variation].map { |value| value.is_a?(BigDecimal) ? value.to_f : value }
       end
 
+      test "#all carries the values a contract states for its placeholders" do
+        loader.all
+
+        assert_equal({"ScripAmount" => "30"}, GameMission.find_by!(sc_key: "2025content_huntthepolaris_fleetweek2025").placeholder_values)
+        assert_nil GameMission.find_by!(sc_key: "2025content_firesale_cfp").placeholder_values
+      end
+
       test "#all carries the prerequisites a mission states" do
         loader.all
 

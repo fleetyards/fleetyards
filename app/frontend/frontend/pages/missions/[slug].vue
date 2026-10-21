@@ -12,7 +12,10 @@ import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/ind
 import MissionRewards from "@/frontend/components/Missions/Rewards/index.vue";
 import MissionHandIns from "@/frontend/components/Missions/HandIns/index.vue";
 import MissionAvailability from "@/frontend/components/Missions/Availability/index.vue";
-import { missionTextPlain } from "@/frontend/components/MissionText/index";
+import {
+  missionTextParts,
+  missionTextPlain,
+} from "@/frontend/components/MissionText/index";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useGameMission as useMissionQuery } from "@/services/fyApi";
@@ -59,6 +62,14 @@ const placesOffered = computed(() =>
   (mission.value?.locations || []).filter((link) => link.source === "offered"),
 );
 
+// A briefing whose every placeholder the files state is the finished text.
+const briefingIsTemplated = computed(() =>
+  missionTextParts(
+    mission.value?.description,
+    mission.value?.placeholderValues,
+  ).some((part) => part.kind === "token"),
+);
+
 const hasAvailability = computed(
   () =>
     !!mission.value?.maxInstancesPerPlayer ||
@@ -81,12 +92,14 @@ watch(
   (value) => {
     if (!value) return;
 
-    // The run-time spans are stripped to a bracketed name here rather than
-    // rendered: a meta title is plain text, and `~mission(TargetName)` in a
-    // browser tab or a link preview reads as a bug.
+    // The run-time spans left after filling are stripped to a bracketed name
+    // here rather than rendered: a meta title is plain text, and
+    // `~mission(TargetName)` in a browser tab or a link preview reads as a bug.
     updateMetaInfo({
-      title: missionTextPlain(value.name) || t("headlines.missions.index"),
-      description: missionTextPlain(value.description),
+      title:
+        missionTextPlain(value.name, value.placeholderValues) ||
+        t("headlines.missions.index"),
+      description: missionTextPlain(value.description, value.placeholderValues),
     });
   },
   { immediate: true },
@@ -103,7 +116,10 @@ watch(
         <div class="mission-page__masthead">
           <div class="mission-page__title">
             <Heading hero>
-              <MissionText :text="mission.name" />
+              <MissionText
+                :text="mission.name"
+                :values="mission.placeholderValues"
+              />
             </Heading>
 
             <div class="mission-page__sub">
@@ -207,18 +223,22 @@ watch(
           </div>
         </div>
 
-        <!-- The briefing as the game writes it, spans and emphasis intact.
-             2,344 of the 2,475 descriptions carry a substitution the game
-             fills in when it generates the mission, so this is a template
-             rather than the sentence a player will read. -->
+        <!-- The briefing as the game writes it, with the values the files
+             state filled in. What remains is picked when the game generates
+             the mission, so this is still a template rather than the
+             sentence a player will read. -->
         <section v-if="mission.description" class="mission-page__panel">
           <h2 class="mission-page__panel-title">
             {{ t("labels.gameMission.briefing") }}
           </h2>
           <p class="mission-page__description">
-            <MissionText :text="mission.description" multiline />
+            <MissionText
+              :text="mission.description"
+              :values="mission.placeholderValues"
+              multiline
+            />
           </p>
-          <p class="mission-page__note">
+          <p v-if="briefingIsTemplated" class="mission-page__note">
             {{ t("labels.gameMission.templatedNote") }}
           </p>
         </section>

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { missionTextParts, missionTextPlain } from "./index";
+import { fillMissionText, missionTextParts, missionTextPlain } from "./index";
 
 // The strings the game ships are templates, not finished sentences: 902 of the
 // 2,472 titles and 2,344 of the 2,475 descriptions carry a substitution, and
@@ -75,5 +75,67 @@ describe("missionTextPlain", () => {
     expect(
       missionTextPlain("Bounty: <EM4>~mission(TargetName)</EM4> wanted"),
     ).toBe("Bounty: [TargetName] wanted");
+  });
+});
+
+// What the files state is filled in; what the game picks stays a token.
+describe("missionTextParts with values", () => {
+  const values = [
+    { token: "MissionMaxSCUSize", value: "32 SCU" },
+    {
+      token: "FuelType",
+      value: "<EM4>~mission(HydrogenFuel) SCU of Hydrogen</EM4>",
+    },
+    { token: "HydrogenFuel", value: "6" },
+  ];
+
+  it("fills a stated value and leaves a run-time one named", () => {
+    expect(
+      missionTextParts(
+        "Use a ~mission(MissionMaxSCUSize) elevator at ~mission(Destination|Address).",
+        values,
+      ),
+    ).toEqual([
+      { kind: "text", value: "Use a 32 SCU elevator at " },
+      { kind: "token", value: "Destination" },
+      { kind: "text", value: "." },
+    ]);
+  });
+
+  it("fills a placeholder a value carries, emphasis and all", () => {
+    expect(missionTextParts("Bring ~mission(FuelType).", values)).toEqual([
+      { kind: "text", value: "Bring " },
+      { kind: "emphasis", value: "6 SCU of Hydrogen" },
+      { kind: "text", value: "." },
+    ]);
+  });
+
+  it("keeps an emphasised run whole when a value brings emphasis of its own", () => {
+    expect(
+      missionTextParts("<EM4>Bring ~mission(FuelType) now</EM4>", values),
+    ).toEqual([{ kind: "emphasis", value: "Bring 6 SCU of Hydrogen now" }]);
+  });
+
+  it("never fills a token that names a field", () => {
+    expect(
+      missionTextParts("~mission(MissionMaxSCUSize|Name)", values),
+    ).toEqual([{ kind: "token", value: "MissionMaxSCUSize" }]);
+  });
+
+  it("stops filling a value that names itself", () => {
+    expect(
+      fillMissionText("~mission(Loop)", [
+        { token: "Loop", value: "a ~mission(Loop)" },
+      ]),
+    ).toBe("a a a ~mission(Loop)");
+  });
+
+  it("fills the plain text too", () => {
+    expect(
+      missionTextPlain(
+        "~mission(MissionMaxSCUSize) to ~mission(Location)",
+        values,
+      ),
+    ).toBe("32 SCU to [Location]");
   });
 });
