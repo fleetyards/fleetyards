@@ -100,7 +100,7 @@
     "@axe-core/playwright": "^4.14.0",
     "@eslint/js": "^10.0.1",
     "@faker-js/faker": "^10.6.0",
-    "@pinia/testing": "^2.0.1",
+    "@pinia/testing": "^2.0.2",
     "@playwright/test": "^1.64.1",
     "@tailwindcss/vite": "^4.3.3",
     "@tanstack/eslint-plugin-query": "^5.104.4",
