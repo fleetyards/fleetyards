@@ -15,7 +15,7 @@ module Api
       after_action -> { pagination_header(:missions) }, only: %i[index]
 
       def index
-        authorize! with: ::HangarPolicy
+        authorize! to: :show?, with: ::HangarPolicy
 
         pools = wanted_pools
         source = GameMission.served_source
@@ -31,15 +31,15 @@ module Api
       end
 
       # Each pool the reader's wanted blueprints drop from, with the blueprints
-      # in it. Through the build we are on, the way `GameMission#blueprints`
-      # resolves the same link from the other end.
+      # in it. Read from the builds the missions are read from: the served one,
+      # or each recipe's last one when retired missions are asked for too.
       private def wanted_pools
+        builds = Blueprint.readable_builds(Blueprint.served_source, current_only: current_version)
+          .where(blueprint_id: UserBlueprint.wanted.where(user_id: current_resource_owner.id).select(:blueprint_id))
+
         BlueprintSource
           .joins(:build)
-          .merge(BlueprintBuild.current)
-          .where(blueprint_builds: {
-            blueprint_id: UserBlueprint.wanted.where(user_id: current_resource_owner.id).select(:blueprint_id)
-          })
+          .where(blueprint_build_id: builds.select(:id))
           .pluck(:pool_sc_ref, "blueprint_builds.blueprint_id")
           .each_with_object(Hash.new { |hash, key| hash[key] = Set.new }) do |(pool, blueprint_id), pools|
             pools[pool] << blueprint_id

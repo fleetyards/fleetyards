@@ -118,6 +118,23 @@ class Api::V1::HangarBlueprintMissionsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # Asked for retired missions too, the wishlist side reads the same builds: a
+  # recipe and a mission the current build both dropped still meet.
+  test "GET with currentVersion false matches on the last builds of both" do
+    @wanted.build.update!(version: "4.0.0")
+    @hunt.build.update!(version: "4.0.0")
+    sign_in @user
+
+    assert_api_response :get, 200, api_path: PATH do
+      assert_empty parsed_body["items"]
+    end
+
+    assert_api_response :get, 200, api_path: PATH, params: {q: {"currentVersion" => false}} do
+      assert_equal [@hunt.id], parsed_body["items"].pluck("id")
+      assert_equal ["Bulldog Repeater"], parsed_body["items"].first["wantedBlueprints"].pluck("name")
+    end
+  end
+
   test "GET without a session is refused" do
     assert_api_response :get, 401, api_path: PATH
   end
