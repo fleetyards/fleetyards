@@ -16056,6 +16056,10 @@ components:
       - template
       - text
       - offered
+      x-extensible-enum:
+      - template
+      - text
+      - offered
       x-enumNames:
       - TEMPLATE
       - TEXT

@@ -2793,3 +2793,5 @@ GET /hangar/equipment added the new `ship_component` enum value to the `items/it
 GET /hangar/flair added the new `ship_component` enum value to the `items/items/kind` response property for the response status `200`
 GET /hangar/paints added the new `ship_component` enum value to the `items/items/kind` response property for the response status `200`
 GET /hangar/upgrades added the new `ship_component` enum value to the `items/items/kind` response property for the response status `200`
+GET /missions added the new `offered` enum value to the `items/items/locations/items/source` response property for the response status `200`
+GET /missions/{slug} added the new `offered` enum value to the `locations/items/source` response property for the response status `200`
