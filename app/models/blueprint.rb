@@ -24,7 +24,7 @@ class Blueprint < ApplicationRecord
   # Who holds this recipe. Not scoped to a build: a patch does not take away
   # what somebody already has, and a retired recipe still answers "I have this".
   has_many :user_blueprints, dependent: :destroy
-  has_many :owners, -> { where(user_blueprints: {wanted: false}) }, through: :user_blueprints, source: :user
+  has_many :owners, -> { merge(UserBlueprint.owned) }, through: :user_blueprints, source: :user
 
   # What each build of the game says about this blueprint.
   has_many :builds, class_name: "BlueprintBuild", dependent: :destroy

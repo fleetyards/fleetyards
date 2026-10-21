@@ -119,8 +119,8 @@ class User < ApplicationRecord
   # Personal like a hangar, and reaching a fleet only through the membership
   # that says it may -- see `FleetMembership#blueprints_filter`.
   has_many :user_blueprints, dependent: :destroy
-  has_many :blueprints, -> { where(user_blueprints: {wanted: false}) }, through: :user_blueprints
-  has_many :wanted_blueprints, -> { where(user_blueprints: {wanted: true}) },
+  has_many :blueprints, -> { merge(UserBlueprint.owned) }, through: :user_blueprints
+  has_many :wanted_blueprints, -> { merge(UserBlueprint.wanted) },
     through: :user_blueprints, source: :blueprint
 
   has_many :fleet_contract_assignments, dependent: :destroy
