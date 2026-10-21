@@ -232,6 +232,18 @@ module Rsi
       assert_equal "Multi-Role", model.rsi_classification
     end
 
+    test "#maps the matrix's focus onto the catalogue's keys" do
+      data = JSON.parse(File.read("test/fixtures/rsi/matrix.json"))["data"].find { |ship| ship["id"] == 7 }
+
+      @loader.send(:create_or_update_model, data.merge("focus" => "Stealth Fighter"))
+
+      model = Model.find_by(rsi_id: 7)
+
+      assert_equal %w[fighter], model.foci
+      assert model.stealth
+      assert_equal "Stealth Fighter", model.rsi_focus
+    end
+
     test "#leaves a classification it does not recognise off the model" do
       data = JSON.parse(File.read("test/fixtures/rsi/matrix.json"))["data"].find { |ship| ship["id"] == 7 }
 

@@ -140,8 +140,21 @@ module Rsi
       type = ::Model.normalize_value_for(:classification, data["type"])
       updates[:ground] = true if type == "ground" && model_updated(model, data) && type != model.classification
 
+      # The keys follow the matrix where the string always did. Stealth is only
+      # ever turned on: the matrix never says a ship is not stealthy, and an
+      # admin may have said it is.
       updates["rsi_focus"] = data["focus"]
-      updates["focus"] = data["focus"] if (model_updated(model, data) && data["focus"] != model.rsi_focus) || model.rsi_focus.blank?
+      if (model_updated(model, data) && data["focus"] != model.rsi_focus) || model.rsi_focus.blank?
+        updates["focus"] = data["focus"]
+
+        mapped = ::Models::FocusMapping.call(data["focus"])
+        updates[:foci] = mapped.foci if mapped.foci.any?
+        updates[:stealth] = true if mapped.stealth
+
+        if mapped.unknown.any?
+          Rails.logger.warn("Rsi::ModelsLoader: #{data["name"]} has a focus we cannot place: #{mapped.unknown.join(", ")}")
+        end
+      end
 
       # The matrix mixes its own spellings -- 109 ships "Small" against 3
       # "small" in one snapshot -- and `Model` downcases what it is given, so
