@@ -12,7 +12,7 @@ module Discord
       # "not found" query as a substring and answer with this ship.
       create(:model,
         name: "Carrack",
-        classification: "explorer",
+        classification: "exploration",
         manufacturer: create(:manufacturer, name: "Anvil Aerospace", code: "ANVL"))
     end
 

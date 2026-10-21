@@ -507,6 +507,29 @@ class Model < ApplicationRecord
 
   validates :size, inclusion: {in: SIZES}, allow_nil: true
 
+  CLASSIFICATIONS = %w[combat competition exploration ground industrial multi support transport].freeze
+
+  # The ship matrix writes its own: "Combat" where we keep "combat", and a few
+  # words of its own for the ones we name differently. Each spelling the
+  # filters were handed became an option of its own beside ours.
+  CLASSIFICATION_ALIASES = {
+    "multi-role" => "multi",
+    "starter" => "multi",
+    "transporter" => "transport",
+    "destroyer" => "combat"
+  }.freeze
+
+  normalizes :classification, with: ->(classification) {
+    classification = classification.to_s.strip.downcase.presence
+    CLASSIFICATION_ALIASES.fetch(classification, classification)
+  }
+
+  validates :classification, inclusion: {in: CLASSIFICATIONS}, allow_nil: true
+
+  # Free text from the ship matrix and from admins, so the same focus arrived
+  # with a trailing space or as "Gun Ship" and was listed twice.
+  normalizes :focus, with: ->(focus) { focus.to_s.squish.gsub(/\bGun Ship\b/i, "Gunship").presence }
+
   # NOT NULL columns whose default of 0 already reads as "unknown", so an admin
   # clearing one sends it back there rather than into a constraint violation.
   normalizes :length, :beam, :height, :mass, with: ->(value) { value || 0 }, apply_to_nil: true
