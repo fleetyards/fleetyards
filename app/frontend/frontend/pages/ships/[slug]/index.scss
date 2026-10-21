@@ -107,6 +107,10 @@
   .image-wrapper:not(.image-wrapper-holoviewer) {
     max-height: 800px;
   }
+
+  .image-wrapper-holoviewer {
+    max-height: 100svh;
+  }
 }
 
 .fleetchart-views {
