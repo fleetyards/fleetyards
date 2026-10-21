@@ -12,7 +12,10 @@ import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/ind
 import MissionRewards from "@/frontend/components/Missions/Rewards/index.vue";
 import MissionHandIns from "@/frontend/components/Missions/HandIns/index.vue";
 import MissionAvailability from "@/frontend/components/Missions/Availability/index.vue";
-import { missionTextPlain } from "@/frontend/components/MissionText/index";
+import {
+  missionTextParts,
+  missionTextPlain,
+} from "@/frontend/components/MissionText/index";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useGameMission as useMissionQuery } from "@/services/fyApi";
@@ -57,6 +60,14 @@ const placesTakenPlace = computed(() =>
 
 const placesOffered = computed(() =>
   (mission.value?.locations || []).filter((link) => link.source === "offered"),
+);
+
+// A briefing whose every placeholder the files state is the finished text.
+const briefingIsTemplated = computed(() =>
+  missionTextParts(
+    mission.value?.description,
+    mission.value?.placeholderValues,
+  ).some((part) => part.kind === "token"),
 );
 
 const hasAvailability = computed(
@@ -227,7 +238,7 @@ watch(
               multiline
             />
           </p>
-          <p class="mission-page__note">
+          <p v-if="briefingIsTemplated" class="mission-page__note">
             {{ t("labels.gameMission.templatedNote") }}
           </p>
         </section>
