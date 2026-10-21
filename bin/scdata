@@ -7,7 +7,7 @@ require_relative "../lib/cli_helpers"
 EXPORT_FOLDER = "data/sc_data"
 
 COMMANDS = {
-  "sync" => "Sync a raw SC data export from S3 (optionally specify an environment or version)",
+  "sync" => "Sync a raw SC data export from S3 and remove older ones of its environment (optionally specify an environment or version)",
   "parse" => "Parse SC data for the given environment",
   "check" => "Check the parsed tree for the given environment before it is pushed",
   "push" => "Upload the parsed tree for the given environment to S3",
@@ -180,6 +180,9 @@ when "sync"
   end
 
   puts "  Downloaded: #{result[:downloaded]}, unchanged: #{result[:unchanged]}"
+
+  removed = store.prune
+  puts "  Removed older exports: #{removed.join(", ")}" if removed.any?
 
 when "parse"
   CliHelpers.run_step("Booting Rails") {
