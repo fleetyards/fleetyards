@@ -10,6 +10,7 @@ import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   type BlueprintsTab,
+  DEFAULT_BLUEPRINTS_TABS,
   useBlueprintsTab,
 } from "@/frontend/composables/useBlueprintsTab";
 
@@ -18,7 +19,7 @@ type Props = {
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  tabs: () => ["owned", "wanted"],
+  tabs: () => DEFAULT_BLUEPRINTS_TABS,
 });
 
 const { t } = useI18n();
