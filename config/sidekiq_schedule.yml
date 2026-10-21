@@ -49,6 +49,11 @@ sc_data_ship_views_import_job:
   class: 'ScData::ShipViewsImportJob'
   queue: 'loaders'
   enabled: <%= Rails.env.production? && ScData::ShipViewsStore.configured? %>
+sc_data_loading_screens_import_job:
+  cron: '45 22 */1 * *' # Daily at 22:45
+  class: 'ScData::LoadingScreensImportJob'
+  queue: 'loaders'
+  enabled: <%= Rails.env.production? && ScData::RawStore.configured? %>
 patreon_supporter_sync_job:
   cron: '17 4 */1 * *' # Daily at 4:17 UTC, after Patreon's nightly settlement
   class: 'PatreonSupporterSyncJob'

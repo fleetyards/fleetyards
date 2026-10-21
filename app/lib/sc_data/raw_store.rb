@@ -17,6 +17,9 @@ module ScData
     # `4.10.0-live.12519617`.
     VERSION_PATTERN = /\A(?<release>.+)-(?<environment>[a-z]+)\.(?<build>\d+)\z/
 
+    # `loadingscreen.png`, `loadingscreen_b.png`: one or more per export.
+    LOADING_SCREEN_PATTERN = /\Aloadingscreen[^\/]*\.(png|jpe?g|webp)\z/i
+
     def self.versions(client: nil, settings: nil)
       new(nil, client:, settings:).versions
     end
@@ -69,6 +72,39 @@ module ScData
       downloaded = each_in_parallel(stale.keys) { |path| download(path) }
 
       {downloaded:, unchanged: remote.size - downloaded}
+    end
+
+    # The loading screens the exporter puts beside the game files, as
+    # name => RemoteObject. Listed one level deep, so asking does not page
+    # through the tens of thousands of objects under `Data/`.
+    def loading_screens
+      screens = {}
+
+      client.list_objects_v2(bucket:, prefix: "#{prefix}/", delimiter: "/").each do |page|
+        page.contents.each do |object|
+          name = object.key.delete_prefix("#{prefix}/")
+          next unless LOADING_SCREEN_PATTERN.match?(name)
+
+          screens[name] = RemoteObject.new(object.etag.delete('"'), object.size)
+        end
+      end
+
+      screens
+    end
+
+    # Downloads one object into a tempfile, which the caller owns.
+    def fetch(path)
+      file = Tempfile.new(["sc-data", File.extname(path)], binmode: true)
+
+      with_retries do
+        client.get_object(bucket:, key: key_for(path), response_target: file.path)
+      end
+
+      file.rewind
+      file
+    rescue
+      file&.close!
+      raise
     end
 
     def local_root
