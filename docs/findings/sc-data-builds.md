@@ -51,6 +51,24 @@ Timings from one developer machine, for budgeting:
 
 The compare also cannot reuse `ScData::Source.available`. That list deliberately hides every build behind the default, and those are exactly the builds a comparison needs.
 
+## What a patch brought: three more lessons (2026-10-21)
+
+The homepage's patch section (`ScData::PatchSummary`, `GET /sc-data/patch-summary`) taught three more lessons:
+
+- **Compare against the patch before, not the build before.** Two live builds of 4.10.2 differed by a few hundred cosmetic items and no ship at all. 4.10.2 against the last build of 4.10.1 is the patch a reader means. The change log follows the same rule: `ModelBuildChange.patch_changes` merges a patch's builds, hotfixes included, into one before-and-after per fact.
+- **A fact we derive moves every record when our formula changes.** #5775 redefined a ship's fuel consumption as what its thrusters draw at full thrust. Every build loaded before it kept the old figure, so 190 of the 194 "changed" ships between 4.10.1 and 4.10.2 were the formula, not the game. The fix was to work every retained build out again and re-record the change log, not to filter the fact. A filter would also hide a real thruster change. Component `category` (ore pods, #5726) is still filtered, because it is our classification and has no game value to recompute.
+- **Re-recording the change log must name each build's predecessor.** `ModelBuildChange.record!` takes the newest other build as the previous one. That is right only while the build is the newest. Called for an older build, it compares against a newer one and replaces history that cannot be rebuilt once the real predecessor is pruned. Pass `previous:`, and leave the oldest retained build alone.
+
+When a ship arrived is not derivable once its first builds are pruned. `Model#first_seen_version` is stamped on a ship's first live build, and never on the first load of an empty catalogue. Ships already there when builds started being kept stay blank.
+
+## Loading screens
+
+The export puts `loadingscreen*.png` at the root of each version folder: one or more per build, 3840×2160, 10–15 MB. They are uploaded in parts, so their ETag is not an MD5 that ActiveStorage could compare. `ScData::LoadingScreensImportJob` imports them as files rather than parsing them, so the parsed tree is untouched, and it skips an unchanged ETag. In 4.10.2 they are "Terra Gazette" news screens full of headlines. Shown behind content, they need dimming and a blur.
+
+## Site search is not `/catalogue/search`
+
+`/catalogue/search` resolves markdown tokens, so it drops every name that two items of one catalogue share. On the dev database that removes 2,033 of 2,495 missions and 1,449 of 3,310 components, which is right for tokens and wrong for a search box. `GET /search` (`Catalogue::Search`) keeps them, tells them apart by a detail (size and maker, mission giver, location), and collapses only rows that read exactly the same.
+
 ## Hardpoints per build: constraints, measured
 
 A hardpoint is split into a slot on `hardpoints` (`parent_type`, `parent_id`, `sc_name`, `source`), which stays stable across builds, and a `HardpointBuild` row holding what a build says about that slot. A slot that a build does not describe has no build row for it and is never destroyed.
