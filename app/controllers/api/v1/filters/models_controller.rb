@@ -94,7 +94,7 @@ module Api
         private def model_query_params
           @model_query_params ||= params.permit(
             q: [
-              :name_cont, :name_eq, :slug_eq, :search_cont, :in_hangar, :with_cargo_grids, :s, :sorts,
+              :name_cont, :name_eq, :slug_eq, :search_cont, :in_hangar, :with_cargo_grids, :stealth_eq, :s, :sorts,
               name_in: [], slug_in: [], id_in: [], id_not_in: [],
               manufacturer_in: [], classification_in: [], focus_in: [],
               size_in: [], production_status_in: []

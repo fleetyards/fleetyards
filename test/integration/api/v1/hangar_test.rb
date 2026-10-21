@@ -163,6 +163,18 @@ class Api::V1::HangarTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar filters by focusIn and stealthEq through each vehicle's model" do
+    user = create(:user)
+    ghost = create(:vehicle, user:, model: create(:model, foci: %w[medium_fighter], stealth: true))
+    create(:vehicle, user:, model: create(:model, foci: %w[medium_fighter]))
+    create(:vehicle, user:, model: create(:model, foci: %w[freight], stealth: true))
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {focusIn: %w[fighter], stealthEq: true}} do
+      assert_equal [ghost.id], parsed_body["items"].map { |item| item["id"] }
+    end
+  end
+
   test "GET /hangar leaves out the ships its owner hid, and lists them on request" do
     user = create(:user)
     shown = create(:vehicle, user:, wanted: false)

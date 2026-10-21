@@ -592,6 +592,9 @@ class Model < ApplicationRecord
   validate :vehicle_size_belongs_to_a_vehicle
 
   DEFAULT_SORTING_PARAMS = "name asc"
+  # The focus sorts order by the old `focus` string, which a list of foci has
+  # no counterpart for. Nothing offers them any more; they are still accepted
+  # until that column goes, so a client sending one is not refused.
   ALLOWED_SORTING_PARAMS = [
     "name asc", "name desc", "createdAt asc", "createdAt desc", "length asc", "length desc",
     "beam asc", "beam desc", "height asc", "height desc", "mass asc", "mass desc", "cargo asc",
@@ -625,7 +628,7 @@ class Model < ApplicationRecord
       "rsi_crew", "rsi_name", "rsi_pitch", "rsi_roll", "rsi_scm_speed", "rsi_size", "rsi_slug",
       "rsi_store_url", "rsi_yaw", "sales_page_url", "sc_beam", "sc_height", "sc_key",
       "sc_length", "scm_speed", "search",
-      "size", "slug", "store_images_updated_at", "store_url", "top_view_colored",
+      "size", "slug", "stealth", "store_images_updated_at", "store_url", "top_view_colored",
       "updated_at", "upgrade_kits_count", "videos_count", "yaw"
     ]
   end
@@ -797,8 +800,14 @@ class Model < ApplicationRecord
     end
   }
 
+  # Any of the keys, as `classification_in` matches any of its values. Named
+  # after the column it replaces, so `focusIn` keeps meaning what it always did.
+  scope :focus_in, ->(*keys) {
+    where("models.foci && ARRAY[?]::varchar[]", keys.flatten.map(&:to_s))
+  }
+
   def self.ransackable_scopes(auth_object = nil)
-    ["dimensions_drifted", "sold_at_shop"]
+    ["dimensions_drifted", "sold_at_shop", "focus_in"]
   end
 
   # A ship offers a berth either because one is built into it or because a
