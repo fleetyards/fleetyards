@@ -136,7 +136,7 @@ onBeforeUnmount(() =>
   </LandingSection>
 
   <LandingSection :image="featuresArt">
-    <Heading :level="HeadingLevelEnum.H2">
+    <Heading :level="HeadingLevelEnum.H2" hero>
       {{ t("home.landing.features.title") }}
     </Heading>
     <p class="home-landing__subline">

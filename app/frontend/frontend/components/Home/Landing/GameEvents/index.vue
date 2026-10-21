@@ -22,7 +22,7 @@ const gameEvents = computed(() => data.value?.items || []);
   <!-- Curated, so a quiet week simply has no section rather than an empty one. -->
   <Transition name="fade-quick" appear>
     <section v-if="gameEvents.length" data-test="home-landing-game-events">
-      <Heading :level="HeadingLevelEnum.H2">
+      <Heading :level="HeadingLevelEnum.H2" hero>
         {{ t("home.landing.gameEvents.title") }}
       </Heading>
       <p class="home-landing-game-events__subline">

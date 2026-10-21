@@ -27,7 +27,7 @@ const models = computed(() => (data.value || []).slice(0, 8));
 <template>
   <section data-test="home-landing-latest-ships">
     <div class="home-landing-latest-ships__head">
-      <Heading :level="HeadingLevelEnum.H2">
+      <Heading :level="HeadingLevelEnum.H2" hero>
         {{ t("home.landing.latestShips.title") }}
       </Heading>
       <Btn
