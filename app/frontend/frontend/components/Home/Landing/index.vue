@@ -393,7 +393,19 @@ onBeforeUnmount(() =>
 </style>
 
 <style lang="scss">
+// The last section runs into the footer: the page container's bottom margin
+// would leave a strip of the app background between them.
+.main.home:has(.landing-section) {
+  margin-bottom: 0;
+}
+
 html.home-landing-snap {
   scroll-snap-type: y proximity;
+
+  // A stop of its own past the last section, or snapping pulls the footer
+  // back out of view.
+  .app-footer {
+    scroll-snap-align: end;
+  }
 }
 </style>
