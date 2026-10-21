@@ -10,14 +10,11 @@ module ScData
   # both values of each, which is what a person can act on -- "hull health
   # 180,844 to 103,004" rather than "hull_health changed".
   class PatchSummary
-    # Facts we compute rather than read from the export. When the formula
-    # changes, every record changes with it, which says nothing about the patch:
-    # #5775 redefined a ship's fuel consumption as the sum of what its thrusters
-    # draw at full thrust, and 190 of the 194 ships "changed" between 4.10.1 and
-    # 4.10.2 were that. #5726 put ore pods in a category of their own the same
-    # way.
+    # Facts we derive rather than read from the export, where our own
+    # classification changed and every record moved with it: #5726 put ore
+    # pods in a category of their own.
     DERIVED_FACTS = {
-      "models" => %i[fuel_consumption],
+      "models" => [],
       "components" => %i[category],
       "equipment" => []
     }.freeze

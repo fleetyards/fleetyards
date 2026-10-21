@@ -77,18 +77,17 @@ module ScData
       assert_includes change[:fields], {field: "mass", from: 386_857.0, to: 367_247.0}
     end
 
-    # Fuel consumption is the sum of what a ship's thrusters draw, which we
-    # compute. A change to that formula moves every ship and says nothing about
-    # the patch.
+    # A component's category is our classification, not the export's: #5726
+    # put ore pods in one of their own, and every pod moved with it.
     test "#call leaves out the facts we derive ourselves" do
-      model = create(:model)
-      model_build(PREVIOUS, model:, fuel_consumption: 2.26)
-      model_build(CURRENT, model:, fuel_consumption: 7036.73)
+      component = create(:component, :without_build)
+      create(:component_build, component:, environment: "live", version: PREVIOUS.version, name: "Ore Pod", category: "cargo")
+      create(:component_build, component:, environment: "live", version: CURRENT.version, name: "Ore Pod", category: "ore_pod")
 
       result = ::ScData::PatchSummary.new(from: PREVIOUS, to: CURRENT).call
 
-      assert_empty result[:ship_changes]
-      assert_equal 0, result[:counts][:changed_ships]
+      assert_empty result[:item_changes]
+      assert_equal 0, result[:counts][:changed_components]
     end
 
     test "#call leads with what moved the most" do
