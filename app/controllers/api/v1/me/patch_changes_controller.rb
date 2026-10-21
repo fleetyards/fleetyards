@@ -3,8 +3,9 @@
 module Api
   module V1
     module Me
-      # What the build we are on changed about the ships the reader owns or
-      # wants, most changed first.
+      # What the patch we are on changed about the ships the reader owns or
+      # wants, most changed first -- its hotfixes included, against the patch
+      # before it.
       class PatchChangesController < ::Api::BaseController
         before_action :authenticate_user!, only: []
         before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
@@ -24,9 +25,8 @@ module Api
           wanted_ids = vehicles.where(wanted: true).distinct.pluck(:model_id).to_set
 
           changes = ModelBuildChange
-            .for_build(@environment, @version)
-            .where(model_id: owned_counts.keys | wanted_ids.to_a)
-            .order(:field)
+            .patch_changes(@environment, @version, model_ids: owned_counts.keys | wanted_ids.to_a)
+            .sort_by(&:field)
             .group_by(&:model_id)
 
           models = Model.visible.active

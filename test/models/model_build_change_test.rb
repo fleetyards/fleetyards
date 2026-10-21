@@ -147,6 +147,41 @@ class ModelBuildChangeTest < ActiveSupport::TestCase
     assert_equal 4, change.new_value
   end
 
+  # --- A whole patch -----------------------------------------------------------
+
+  private def change(from_version, to_version, old_value, new_value, field: "scm_speed", at: 1.day.ago)
+    ModelBuildChange.create!(
+      model: @model, environment: "live", field:, from_version:, to_version:,
+      old_value:, new_value:, recorded_at: at
+    )
+  end
+
+  test ".patch_changes counts a hotfix as part of its patch, against the patch before" do
+    change("4.10.1-live.1", "4.10.2-live.2", 210, 190, at: 3.days.ago)
+    change("4.10.2-live.2", "4.10.2-live.3", 190, 180, at: 1.day.ago)
+
+    merged = ModelBuildChange.patch_changes("live", "4.10.2-live.3").sole
+
+    assert_equal "4.10.1-live.1", merged.from_version
+    assert_equal "4.10.2-live.3", merged.to_version
+    assert_equal 210, merged.old_value
+    assert_equal 180, merged.new_value
+  end
+
+  test ".patch_changes leaves out what the patch before changed" do
+    change("4.10.0-live.0", "4.10.1-live.1", 230, 210, at: 1.month.ago)
+    change("4.10.1-live.1", "4.10.2-live.2", 210, 190)
+
+    assert_equal [210], ModelBuildChange.patch_changes("live", "4.10.2-live.2").map(&:old_value)
+  end
+
+  test ".patch_changes drops a fact a hotfix put back where it was" do
+    change("4.10.1-live.1", "4.10.2-live.2", 210, 190, at: 3.days.ago)
+    change("4.10.2-live.2", "4.10.2-live.3", 190, 210, at: 1.day.ago)
+
+    assert_empty ModelBuildChange.patch_changes("live", "4.10.2-live.3")
+  end
+
   private def previous_build(attributes)
     create(
       :model_build,

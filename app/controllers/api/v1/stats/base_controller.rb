@@ -105,18 +105,19 @@ module Api
           render json: most_wishlisted.to_json
         end
 
+        # The patch rather than the build: a hotfix adds to 4.10.2, so it is
+        # measured against 4.10.1 like the rest of it.
         private def patch_changed_ships_count
-          ModelBuildChange
-            .for_build(::ScData::Source.environment, ::ScData::Source.version)
-            .where(model_id: Model.visible.active.select(:id))
-            .distinct.count(:model_id)
+          changed = ModelBuildChange.patch_changes(::ScData::Source.environment, ::ScData::Source.version)
+
+          Model.visible.active.where(id: changed.map(&:model_id).uniq).count
         end
 
-        # Which ships the build we are on changed the most.
+        # Which ships the patch we are on changed the most.
         def patch_changes
           changed_facts = ModelBuildChange
-            .for_build(::ScData::Source.environment, ::ScData::Source.version)
-            .group(:model_id).count
+            .patch_changes(::ScData::Source.environment, ::ScData::Source.version)
+            .group_by(&:model_id).transform_values(&:size)
 
           names = Model.visible.active.where(id: changed_facts.keys).pluck(:id, :name).to_h
 
