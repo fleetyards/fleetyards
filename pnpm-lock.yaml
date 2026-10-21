@@ -151,8 +151,8 @@ importers:
         specifier: ^8.1.400
         version: 8.1.400
       '@tanstack/vue-query':
-        specifier: ^5.104.3
-        version: 5.104.3(vue@3.5.44(typescript@6.0.3))
+        specifier: ^5.104.4
+        version: 5.104.4(vue@3.5.44(typescript@6.0.3))
       '@tiptap/core':
         specifier: ^3.32.0
         version: 3.32.0(@tiptap/pm@3.32.0)
@@ -330,7 +330,7 @@ importers:
         version: 5.104.4(eslint@10.13.0(jiti@2.7.0)(supports-color@8.1.1))(supports-color@8.1.1)(typescript@6.0.3)
       '@tanstack/vue-query-devtools':
         specifier: ^6.3.3
-        version: 6.3.3(@tanstack/vue-query@5.104.3(vue@3.5.44(typescript@6.0.3)))(csstype@3.2.3)(vue@3.5.44(typescript@6.0.3))
+        version: 6.3.3(@tanstack/vue-query@5.104.4(vue@3.5.44(typescript@6.0.3)))(csstype@3.2.3)(vue@3.5.44(typescript@6.0.3))
       '@trivago/prettier-plugin-sort-imports':
         specifier: ^6.0.2
         version: 6.0.2(@vue/compiler-sfc@3.5.44)(prettier@3.9.10)(supports-color@8.1.1)(svelte@5.57.0(@typescript-eslint/types@8.70.0))
@@ -444,7 +444,7 @@ importers:
         version: 3.0.3(@types/node@26.6.5)(graphql@16.14.2)(supports-color@8.1.1)(typescript@6.0.3)(vite@8.3.4(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.105.2)(terser@5.46.2)(yaml@2.9.0))
       orval:
         specifier: ^8.43.0
-        version: 8.43.0(@faker-js/faker@10.6.0)(@tanstack/vue-query@5.104.3(vue@3.5.44(typescript@6.0.3)))(msw@3.0.3(@types/node@26.6.5)(graphql@16.14.2)(supports-color@8.1.1)(typescript@6.0.3)(vite@8.3.4(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.105.2)(terser@5.46.2)(yaml@2.9.0)))(prettier@3.9.10)(typedoc-plugin-markdown@4.13.0(typedoc@0.28.20(typescript@6.0.3)))(typedoc@0.28.20(typescript@6.0.3))(typescript@6.0.3)(zod@4.6.2)
+        version: 8.43.0(@faker-js/faker@10.6.0)(@tanstack/vue-query@5.104.4(vue@3.5.44(typescript@6.0.3)))(msw@3.0.3(@types/node@26.6.5)(graphql@16.14.2)(supports-color@8.1.1)(typescript@6.0.3)(vite@8.3.4(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.105.2)(terser@5.46.2)(yaml@2.9.0)))(prettier@3.9.10)(typedoc-plugin-markdown@4.13.0(typedoc@0.28.20(typescript@6.0.3)))(typedoc@0.28.20(typescript@6.0.3))(typescript@6.0.3)(zod@4.6.2)
       playwright:
         specifier: ^1.64.1
         version: 1.64.1
@@ -3035,6 +3035,9 @@ packages:
   '@tanstack/query-core@5.104.3':
     resolution: {integrity: sha512-DZY9TuJAOgU3UyHUhXb4CcTYEHNZszlwkPg4VViIwTxOKzLprPUU+rbaPZQd3srqkGOtpaDdKpW972UV/LKlcg==}
 
+  '@tanstack/query-core@5.104.4':
+    resolution: {integrity: sha512-nU4Yrb8Sjn0DeVb7PKG9uiepNavys3yoxy1FX0hViY4/P6Ng/mBje2SMl7i9812rtyHKtHyqiaC/td6GkI8StA==}
+
   '@tanstack/query-devtools@5.104.3':
     resolution: {integrity: sha512-2Hd8r9G7352GmM9Olu5rdgbslRFH71F5gVxknhgpkgPMgKse7IantVDu1NIeZbynlgsz6K3HhiY7dyq47mAb2A==}
 
@@ -3044,8 +3047,8 @@ packages:
       '@tanstack/vue-query': ^5.104.3
       vue: ^3.3.0
 
-  '@tanstack/vue-query@5.104.3':
-    resolution: {integrity: sha512-bdVlhyEFPllLfHioHx8kwtCAQ1YJQrvYczlsNzyiYFsp6n5yz9isNXiy6MIu+QGmG+RyghVdnp1UmiNDqLS22g==}
+  '@tanstack/vue-query@5.104.4':
+    resolution: {integrity: sha512-04aes43w/1sza2xyhJ2AvYMIy4qSp7N1UsvKuBRanmKuz7nt1npPYpJ/W+1wk3CEH9GuEsPB3lIhNlNEbN2z0Q==}
     peerDependencies:
       '@vue/composition-api': ^1.1.2
       vue: ^2.6.0 || ^3.3.0
@@ -9106,12 +9109,12 @@ snapshots:
       - '@faker-js/faker'
       - '@modelcontextprotocol/server'
 
-  '@orval/query@8.43.0(@faker-js/faker@10.6.0)(@tanstack/vue-query@5.104.3(vue@3.5.44(typescript@6.0.3)))':
+  '@orval/query@8.43.0(@faker-js/faker@10.6.0)(@tanstack/vue-query@5.104.4(vue@3.5.44(typescript@6.0.3)))':
     dependencies:
       '@orval/core': 8.43.0(@faker-js/faker@10.6.0)
       '@orval/fetch': 8.43.0(@faker-js/faker@10.6.0)
     optionalDependencies:
-      '@tanstack/vue-query': 5.104.3(vue@3.5.44(typescript@6.0.3))
+      '@tanstack/vue-query': 5.104.4(vue@3.5.44(typescript@6.0.3))
     transitivePeerDependencies:
       - '@faker-js/faker'
       - '@modelcontextprotocol/server'
@@ -10004,6 +10007,8 @@ snapshots:
 
   '@tanstack/query-core@5.104.3': {}
 
+  '@tanstack/query-core@5.104.4': {}
+
   '@tanstack/query-devtools@5.104.3(csstype@3.2.3)':
     dependencies:
       '@kobalte/core': 0.13.14(solid-js@1.9.15)
@@ -10020,18 +10025,18 @@ snapshots:
     transitivePeerDependencies:
       - csstype
 
-  '@tanstack/vue-query-devtools@6.3.3(@tanstack/vue-query@5.104.3(vue@3.5.44(typescript@6.0.3)))(csstype@3.2.3)(vue@3.5.44(typescript@6.0.3))':
+  '@tanstack/vue-query-devtools@6.3.3(@tanstack/vue-query@5.104.4(vue@3.5.44(typescript@6.0.3)))(csstype@3.2.3)(vue@3.5.44(typescript@6.0.3))':
     dependencies:
       '@tanstack/query-devtools': 5.104.3(csstype@3.2.3)
-      '@tanstack/vue-query': 5.104.3(vue@3.5.44(typescript@6.0.3))
+      '@tanstack/vue-query': 5.104.4(vue@3.5.44(typescript@6.0.3))
       vue: 3.5.44(typescript@6.0.3)
     transitivePeerDependencies:
       - csstype
 
-  '@tanstack/vue-query@5.104.3(vue@3.5.44(typescript@6.0.3))':
+  '@tanstack/vue-query@5.104.4(vue@3.5.44(typescript@6.0.3))':
     dependencies:
       '@tanstack/match-sorter-utils': 9.1.2
-      '@tanstack/query-core': 5.104.3
+      '@tanstack/query-core': 5.104.4
       '@vue/devtools-api': 6.6.4
       vue: 3.5.44(typescript@6.0.3)
       vue-demi: 0.14.10(vue@3.5.44(typescript@6.0.3))
@@ -13120,7 +13125,7 @@ snapshots:
 
   orderedmap@2.1.1: {}
 
-  orval@8.43.0(@faker-js/faker@10.6.0)(@tanstack/vue-query@5.104.3(vue@3.5.44(typescript@6.0.3)))(msw@3.0.3(@types/node@26.6.5)(graphql@16.14.2)(supports-color@8.1.1)(typescript@6.0.3)(vite@8.3.4(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.105.2)(terser@5.46.2)(yaml@2.9.0)))(prettier@3.9.10)(typedoc-plugin-markdown@4.13.0(typedoc@0.28.20(typescript@6.0.3)))(typedoc@0.28.20(typescript@6.0.3))(typescript@6.0.3)(zod@4.6.2):
+  orval@8.43.0(@faker-js/faker@10.6.0)(@tanstack/vue-query@5.104.4(vue@3.5.44(typescript@6.0.3)))(msw@3.0.3(@types/node@26.6.5)(graphql@16.14.2)(supports-color@8.1.1)(typescript@6.0.3)(vite@8.3.4(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.105.2)(terser@5.46.2)(yaml@2.9.0)))(prettier@3.9.10)(typedoc-plugin-markdown@4.13.0(typedoc@0.28.20(typescript@6.0.3)))(typedoc@0.28.20(typescript@6.0.3))(typescript@6.0.3)(zod@4.6.2):
     dependencies:
       '@commander-js/extra-typings': 15.0.0(commander@15.0.0)
       '@orval/angular': 8.43.0(@faker-js/faker@10.6.0)
@@ -13132,7 +13137,7 @@ snapshots:
       '@orval/mcp': 8.43.0(@faker-js/faker@10.6.0)(zod@4.6.2)
       '@orval/mock': 8.43.0(@faker-js/faker@10.6.0)(msw@3.0.3(@types/node@26.6.5)(graphql@16.14.2)(supports-color@8.1.1)(typescript@6.0.3)(vite@8.3.4(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.105.2)(terser@5.46.2)(yaml@2.9.0)))
       '@orval/pinia-colada': 8.43.0(@faker-js/faker@10.6.0)
-      '@orval/query': 8.43.0(@faker-js/faker@10.6.0)(@tanstack/vue-query@5.104.3(vue@3.5.44(typescript@6.0.3)))
+      '@orval/query': 8.43.0(@faker-js/faker@10.6.0)(@tanstack/vue-query@5.104.4(vue@3.5.44(typescript@6.0.3)))
       '@orval/solid-start': 8.43.0(@faker-js/faker@10.6.0)
       '@orval/swr': 8.43.0(@faker-js/faker@10.6.0)
       '@orval/zod': 8.43.0(@faker-js/faker@10.6.0)(zod@4.6.2)
