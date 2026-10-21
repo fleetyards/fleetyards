@@ -155,6 +155,13 @@ class GameMissionTest < ActiveSupport::TestCase
   end
 
   # 3,567 opens across the localisation file, four of which never close.
+  test ".plain_text fills the values the files state, a value's own placeholder too" do
+    values = {"FuelType" => "<EM4>~mission(HydrogenFuel) SCU of Hydrogen</EM4>", "HydrogenFuel" => "6"}
+
+    assert_equal "Bring 6 SCU of Hydrogen to [Ship]",
+      GameMission.plain_text("Bring ~mission(FuelType) to ~mission(Ship|Name)", values)
+  end
+
   test ".plain_text takes the game's emphasis markup out" do
     assert_equal "Resupply the depot",
       GameMission.plain_text("Resupply <EM4>the depot</EM4>")
