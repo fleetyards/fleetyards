@@ -21,6 +21,8 @@ type Props = {
   onlyIcons?: boolean;
   disconnectable?: boolean;
   primaryProviders?: OmniauthProviderEnum[];
+  // Narrows the list to these, in this order. Each still needs its feature flag.
+  providers?: OmniauthProviderEnum[];
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -28,6 +30,7 @@ const props = withDefaults(defineProps<Props>(), {
   onlyIcons: false,
   disconnectable: false,
   primaryProviders: () => [],
+  providers: undefined,
 });
 
 const { t } = useI18n();
@@ -56,7 +59,9 @@ const connections = computed(() => {
 });
 
 const activeProviders = computed(() => {
-  const providers = Object.values(OmniauthProviderEnum).filter(providerActive);
+  const providers = (
+    props.providers || Object.values(OmniauthProviderEnum)
+  ).filter(providerActive);
 
   return providers.sort((a, b) => {
     const aPrimary = props.primaryProviders.includes(a);
