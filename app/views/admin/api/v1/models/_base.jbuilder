@@ -39,6 +39,11 @@ end
 json.description model.description
 json.erkul_identifier model.erkul_identifier
 json.focus model.focus
+json.foci model.foci
+json.foci_labels model.foci_labels
+json.stealth model.stealth
+json.rsi_focus model.rsi_focus
+json.sc_role model.sc_role
 json.has_images model.images_count.positive?
 json.has_modules model.module_hardpoints_count.positive?
 json.has_paints model.model_paints_count.positive?

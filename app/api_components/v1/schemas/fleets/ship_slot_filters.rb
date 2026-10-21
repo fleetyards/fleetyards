@@ -11,7 +11,8 @@ module V1
           type: :object,
           properties: {
             classification: {type: :string},
-            focus: {type: :string},
+            focus: {type: :string, deprecated: true, description: "Use foci instead"},
+            foci: {type: :array, items: ::Shared::V1::Schemas::Enums::ModelFocusEnum},
             minSize: {type: :string},
             maxSize: {type: :string},
             minCrew: {type: :integer},

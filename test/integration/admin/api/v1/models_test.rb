@@ -372,6 +372,18 @@ class Admin::Api::V1::ModelsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT /models/:id sets the foci and the stealth flag, and shows what the sources said" do
+    model = create(:model, rsi_focus: "Stealth Fighter", sc_role: "Medium Fighter")
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: model.id}, body: {foci: %w[medium_fighter], stealth: true} do
+      assert_equal %w[medium_fighter fighter], parsed_body["foci"]
+      assert parsed_body["stealth"]
+      assert_equal "Stealth Fighter", parsed_body["rsiFocus"]
+      assert_equal "Medium Fighter", parsed_body["scRole"]
+    end
+  end
+
   test "PUT /models/:id marks a ship as in-game only" do
     model = create(:model)
     sign_in @user
