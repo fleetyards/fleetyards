@@ -339,6 +339,13 @@
         "finished": "Vos pledges rachetables correspondent à votre liste RSI.",
         "keepsRunning": "Elle continue si vous fermez cette fenêtre. Gardez l'onglet ouvert jusqu'à la fin."
       },
+      "blueprintAddToHangar": {
+        "ownHint": "Vous avez ce plan.",
+        "wishlistHint": "Vous voulez obtenir ce plan.",
+        "unownHint": "Vous n'avez plus ce plan.",
+        "unwantHint": "Vous ne voulez plus ce plan.",
+        "moveHint": "Vous l'avez perdu, par exemple lors d'un wipe, et voulez le récupérer."
+      },
       "addToHangar": {
         "hangarHint": "Vous possédez ce vaisseau.",
         "wishlistHint": "Vous voulez obtenir ce vaisseau plus tard."

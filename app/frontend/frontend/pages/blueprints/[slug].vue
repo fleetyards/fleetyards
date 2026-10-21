@@ -13,7 +13,7 @@ import BlueprintSlot from "@/frontend/components/Blueprints/Slot/index.vue";
 import BlueprintPreview from "@/frontend/components/Blueprints/Preview/index.vue";
 import BlueprintSources from "@/frontend/components/Blueprints/Sources/index.vue";
 import BlueprintFleetOwners from "@/frontend/components/Blueprints/FleetOwners/index.vue";
-import BlueprintOwnToggle from "@/frontend/components/Blueprints/OwnToggle/index.vue";
+import BlueprintAddToHangar from "@/frontend/components/Blueprints/AddToHangar/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import { useCraftTime } from "@/frontend/composables/useCraftTime";
@@ -103,8 +103,8 @@ watch(
               <Heading hero>{{ blueprint.name }}</Heading>
               <!-- Beside the name, because that is what it is about: the
                    badges are what the catalogue knows about the recipe, and
-                   this is the reader saying they have it. -->
-              <BlueprintOwnToggle :blueprint="blueprint" />
+                   this is the reader saying they have it, or want it. -->
+              <BlueprintAddToHangar :blueprint="blueprint" />
             </div>
             <div class="blueprint-page__sub">
               <template v-if="blueprint.craftable">

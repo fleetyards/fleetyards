@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
-import BlueprintOwnToggle from "@/frontend/components/Blueprints/OwnToggle/index.vue";
+import BlueprintAddToHangar from "@/frontend/components/Blueprints/AddToHangar/index.vue";
 import RowListItem from "@/shared/components/RowListItem/index.vue";
 import {
   RowListItemTonesEnum,
@@ -21,11 +21,12 @@ import { type Blueprint, type FleetBlueprintOwner } from "@/services/fyApi";
 type Props = {
   blueprint: Blueprint;
   /**
-   * Who holds it, on a fleet's list of what its members can craft. Absent on
-   * the public catalogue, which knows of no owner but the reader.
+   * The fleet members the row is about: who holds it on a fleet's list of what
+   * its members can craft, who is after it on its wanted list. Absent on the
+   * public catalogue, which knows of nobody but the reader.
    */
-  owners?: FleetBlueprintOwner[];
-  ownerCount?: number;
+  members?: FleetBlueprintOwner[];
+  memberCount?: number;
 };
 
 const props = defineProps<Props>();
@@ -53,18 +54,23 @@ const materials = computed<RowListItemChip[]>(() =>
   })),
 );
 
-const OWNERS_SHOWN = 3;
+const MEMBERS_SHOWN = 3;
 
-const shownOwners = computed(() => (props.owners || []).slice(0, OWNERS_SHOWN));
+const shownMembers = computed(() =>
+  (props.members || []).slice(0, MEMBERS_SHOWN),
+);
 
-const extraOwners = computed(() =>
-  Math.max((props.ownerCount ?? (props.owners || []).length) - OWNERS_SHOWN, 0),
+const extraMembers = computed(() =>
+  Math.max(
+    (props.memberCount ?? (props.members || []).length) - MEMBERS_SHOWN,
+    0,
+  ),
 );
 
 // The fleet's name for somebody where it has one, and their username
 // otherwise -- a nickname is optional and most memberships carry none.
-const ownerName = (owner: FleetBlueprintOwner) =>
-  owner.nickname || owner.username;
+const memberName = (member: FleetBlueprintOwner) =>
+  member.nickname || member.username;
 
 // Which sides of the law hand this recipe out, as the API states them: each
 // named once, in the order lawful, neutral, outlaw. An older cached payload
@@ -149,25 +155,25 @@ const badges = computed<RowListItemBadge[]>(() => {
       />
     </template>
 
-    <!-- Who in the fleet holds it. Capped at three names with a count for the
-         rest: a row is one line, and "and 11 others" is the part a reader acts
-         on anyway. -->
-    <span v-if="shownOwners.length" class="blueprint-row__owners">
+    <!-- Who in the fleet holds it, or wants it. Capped at three names with a
+         count for the rest: a row is one line, and "and 11 others" is the part
+         a reader acts on anyway. -->
+    <span v-if="shownMembers.length" class="blueprint-row__owners">
       <router-link
-        v-for="owner in shownOwners"
-        :key="owner.userId"
+        v-for="member in shownMembers"
+        :key="member.userId"
         class="blueprint-row__owner"
-        :to="{ name: 'hangar-public', params: { username: owner.username } }"
+        :to="{ name: 'hangar-public', params: { username: member.username } }"
       >
-        {{ ownerName(owner) }}
+        {{ memberName(member) }}
       </router-link>
-      <span v-if="extraOwners" class="blueprint-row__owner-more">
-        +{{ extraOwners }}
+      <span v-if="extraMembers" class="blueprint-row__owner-more">
+        +{{ extraMembers }}
       </span>
     </span>
 
     <template #actions>
-      <BlueprintOwnToggle :blueprint="blueprint" variant="row" />
+      <BlueprintAddToHangar :blueprint="blueprint" variant="row" />
     </template>
   </RowListItem>
 </template>

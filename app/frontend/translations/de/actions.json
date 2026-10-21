@@ -144,7 +144,9 @@
         "discard": "Verwerfen",
         "removeCrafting": "Herstellung entfernen",
         "own": "Als besessen markieren",
-        "unown": "Markierung entfernen"
+        "unown": "Markierung entfernen",
+        "unwant": "Von der Wunschliste entfernen",
+        "moveToWishlist": "Auf die Wunschliste verschieben"
       },
       "resetFilter": "Filter zurücksetzen",
       "requestPassword": "Passwort-E-Mail anfordern",

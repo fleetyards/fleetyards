@@ -42,6 +42,7 @@
         "public": "Hangar de %{user}",
         "publicStats": "%{user} Hangar Stats",
         "wishlist": "Lista de deseos",
+        "blueprints": "Mis planos",
         "publicWishlist": "Lista de deseos de %{user}",
         "vehicleLoadouts": "Loadouts de la nave",
         "inventories": "My Hangar Inventories",

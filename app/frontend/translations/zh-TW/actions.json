@@ -144,7 +144,9 @@
         "discard": "放棄",
         "removeCrafting": "移除製作",
         "own": "標記為已擁有",
-        "unown": "取消已擁有標記"
+        "unown": "取消已擁有標記",
+        "unwant": "從願望清單移除",
+        "moveToWishlist": "移到願望清單"
       },
       "resetFilter": "重置篩選器",
       "requestPassword": "請求密碼郵件",

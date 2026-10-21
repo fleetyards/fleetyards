@@ -1,6 +1,12 @@
 {
   "zh-CN": {
     "messages": {
+      "blueprint": {
+        "own": { "success": "%{blueprint} 已标记为已拥有" },
+        "unown": { "success": "%{blueprint} 不再标记为已拥有" },
+        "want": { "success": "%{blueprint} 已添加到你的心愿单" },
+        "unwant": { "success": "%{blueprint} 已从你的心愿单移除" }
+      },
       "fleetchartScreenshot": {
         "failure": "舰队图表未能保存为图片"
       },

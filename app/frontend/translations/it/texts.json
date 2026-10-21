@@ -339,6 +339,13 @@
         "finished": "I tuoi pledge riacquistabili corrispondono alla tua lista RSI.",
         "keepsRunning": "Continua anche se chiudi questa finestra. Lascia aperta la scheda finché non termina."
       },
+      "blueprintAddToHangar": {
+        "ownHint": "Hai questo progetto.",
+        "wishlistHint": "Vuoi ottenere questo progetto.",
+        "unownHint": "Non hai più questo progetto.",
+        "unwantHint": "Non vuoi più questo progetto.",
+        "moveHint": "L'hai perso, ad esempio con un wipe, e lo rivuoi."
+      },
       "addToHangar": {
         "hangarHint": "Possiedi questa nave.",
         "wishlistHint": "Vuoi ottenere questa nave più avanti."

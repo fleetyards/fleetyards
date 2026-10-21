@@ -543,6 +543,15 @@ const { activeFilters } = useShipFilterSummary(() =>
       {{ t("labels.hangarInventories") }}
     </Btn>
 
+    <Btn
+      :size="BtnSizesEnum.MD"
+      :to="{ name: 'hangar-blueprints' }"
+      data-test="hangar-blueprints-link"
+    >
+      <i class="fa-duotone fa-notes" />
+      {{ t("nav.hangar.blueprints") }}
+    </Btn>
+
     <BtnDropdown :size="BtnSizesEnum.MD" data-tour="hangar-pledge-items">
       <template #label>
         <i class="fa-duotone fa-box-open" />
@@ -637,6 +646,11 @@ const { activeFilters } = useShipFilterSummary(() =>
             >
               <i class="fa-duotone fa-boxes-stacked" />
               <span>{{ t("labels.hangarInventories") }}</span>
+            </Btn>
+
+            <Btn :to="{ name: 'hangar-blueprints' }">
+              <i class="fa-duotone fa-notes" />
+              <span>{{ t("nav.hangar.blueprints") }}</span>
             </Btn>
 
             <Btn data-test="fleetchart-link" @click="toggleFleetchart">

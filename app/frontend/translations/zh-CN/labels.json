@@ -3622,6 +3622,10 @@
         "forContract": "用于"
       },
       "hangarInventories": "Inventories",
+      "hangarBlueprints": {
+        "owned": "已拥有",
+        "wanted": "想要"
+      },
       "adminNotifications": {
         "inbox": "收件箱",
         "archive": "归档",

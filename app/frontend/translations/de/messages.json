@@ -1,6 +1,18 @@
 {
   "de": {
     "messages": {
+      "blueprint": {
+        "own": { "success": "%{blueprint} ist als vorhanden markiert" },
+        "unown": {
+          "success": "%{blueprint} ist nicht mehr als vorhanden markiert"
+        },
+        "want": {
+          "success": "%{blueprint} wurde zu deiner Wunschliste hinzugefügt"
+        },
+        "unwant": {
+          "success": "%{blueprint} wurde von deiner Wunschliste entfernt"
+        }
+      },
       "fleetchartScreenshot": {
         "failure": "Die Flottenübersicht konnte nicht als Bild gespeichert werden"
       },

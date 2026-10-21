@@ -144,7 +144,9 @@
         "discard": "Scarta",
         "removeCrafting": "Rimuovi la fabbricazione",
         "own": "Segna come posseduto",
-        "unown": "Rimuovi il contrassegno"
+        "unown": "Rimuovi il contrassegno",
+        "unwant": "Rimuovi dalla lista dei desideri",
+        "moveToWishlist": "Sposta nella lista dei desideri"
       },
       "resetFilter": "Resetta i filtri",
       "requestPassword": "Richiedi la password via email",

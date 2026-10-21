@@ -1,6 +1,16 @@
 {
   "fr": {
     "messages": {
+      "blueprint": {
+        "own": { "success": "%{blueprint} est marqué comme possédé" },
+        "unown": { "success": "%{blueprint} n'est plus marqué comme possédé" },
+        "want": {
+          "success": "%{blueprint} a été ajouté à votre liste de souhaits"
+        },
+        "unwant": {
+          "success": "%{blueprint} a été retiré de votre liste de souhaits"
+        }
+      },
       "fleetchartScreenshot": {
         "failure": "Le graphique de la flotte n'a pas pu être enregistré en image"
       },

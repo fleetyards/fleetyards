@@ -144,7 +144,9 @@
         "discard": "放弃",
         "removeCrafting": "移除制作",
         "own": "标记为已拥有",
-        "unown": "取消已拥有标记"
+        "unown": "取消已拥有标记",
+        "unwant": "从心愿单移除",
+        "moveToWishlist": "移到心愿单"
       },
       "resetFilter": "重置过滤器",
       "requestPassword": "请求密码邮件",

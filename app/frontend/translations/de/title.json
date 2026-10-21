@@ -42,6 +42,7 @@
         "public": "%{user} Hangar",
         "publicStats": "%{user} Hangar Statistiken",
         "wishlist": "Wunschliste",
+        "blueprints": "Meine Blaupausen",
         "publicWishlist": "%{user} Wunschliste",
         "vehicleLoadouts": "Schiffs-Loadouts",
         "inventories": "Meine Hangar Inventare",

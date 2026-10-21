@@ -1,6 +1,12 @@
 {
   "es": {
     "messages": {
+      "blueprint": {
+        "own": { "success": "%{blueprint} está marcado como tuyo" },
+        "unown": { "success": "%{blueprint} ya no está marcado como tuyo" },
+        "want": { "success": "%{blueprint} se añadió a tu lista de deseos" },
+        "unwant": { "success": "%{blueprint} se quitó de tu lista de deseos" }
+      },
       "fleetchartScreenshot": {
         "failure": "No se pudo guardar el gráfico de flota como imagen"
       },

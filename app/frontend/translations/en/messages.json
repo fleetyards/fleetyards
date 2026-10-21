@@ -1,6 +1,12 @@
 {
   "en": {
     "messages": {
+      "blueprint": {
+        "own": { "success": "%{blueprint} is marked as owned" },
+        "unown": { "success": "%{blueprint} is no longer marked as owned" },
+        "want": { "success": "%{blueprint} was added to your Wishlist" },
+        "unwant": { "success": "%{blueprint} was removed from your Wishlist" }
+      },
       "fleetchartScreenshot": {
         "failure": "The fleetchart could not be saved as an image"
       },

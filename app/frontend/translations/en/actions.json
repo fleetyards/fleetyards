@@ -144,7 +144,9 @@
         "discard": "Discard",
         "removeCrafting": "Remove crafting",
         "own": "Mark as owned",
-        "unown": "Remove owned mark"
+        "unown": "Remove owned mark",
+        "unwant": "Remove from Wishlist",
+        "moveToWishlist": "Move to Wishlist"
       },
       "resetFilter": "Reset Filter",
       "requestPassword": "Request Password email",
