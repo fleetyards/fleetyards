@@ -15,26 +15,43 @@ import RowsSkeleton from "@/shared/components/RowsSkeleton/index.vue";
 import ListToolbar from "@/shared/components/base/ListToolbar/index.vue";
 import BlueprintsList from "@/frontend/components/Blueprints/List/index.vue";
 import FilterForm from "@/frontend/components/Blueprints/FilterForm/index.vue";
+import MissionFilterForm from "@/frontend/components/Missions/FilterForm/index.vue";
+import WantedMissionsList from "@/frontend/components/Blueprints/WantedMissions/index.vue";
 import { useBlueprintSortFields } from "@/frontend/composables/useBlueprintSortFields";
 import { useBlueprintFilters } from "@/frontend/composables/useBlueprintFilters";
+import { useMissionSortFields } from "@/frontend/composables/useMissionSortFields";
+import { useMissionFilters } from "@/frontend/composables/useMissionFilters";
 import { useBlueprintsTab } from "@/frontend/composables/useBlueprintsTab";
+import { useMissionShip } from "@/frontend/composables/useMissionShip";
 import { useI18n } from "@/shared/composables/useI18n";
 import { usePagination } from "@/shared/composables/usePagination";
-import { useBlueprints as useBlueprintsQuery } from "@/services/fyApi";
+import {
+  useBlueprints as useBlueprintsQuery,
+  useHangarBlueprintMissions as useHangarBlueprintMissionsQuery,
+} from "@/services/fyApi";
 
 const { t } = useI18n();
 
-const { activeTab } = useBlueprintsTab();
+const TABS = ["owned", "wanted", "missions"] as const;
+
+const { activeTab } = useBlueprintsTab(TABS);
+
+const showMissions = computed(() => activeTab.value === "missions");
 
 const { perPage, page, updatePerPage } = usePagination();
 
 const { isFilterSelected, getQuery } = useBlueprintFilters(async () => {
-  await refetch();
+  if (!showMissions.value) await blueprintsQuery.refetch();
 });
+
+const { isFilterSelected: isMissionFilterSelected, getQuery: getMissionQuery } =
+  useMissionFilters(async () => {
+    if (showMissions.value) await missionsQuery.refetch();
+  });
 
 // The tab decides which marker is asked for, so the form's own owned filter
 // is not offered here and anything left of it in the URL is dropped.
-const queryParams = computed(() => {
+const blueprintsParams = computed(() => {
   const { owned: _owned, wanted: _wanted, ...query } = getQuery();
 
   return {
@@ -50,13 +67,40 @@ const queryParams = computed(() => {
   };
 });
 
-const {
-  data: blueprints,
-  refetch,
-  ...asyncStatus
-} = useBlueprintsQuery(queryParams);
+const missionsParams = computed(() => ({
+  page: page.value,
+  perPage: perPage.value,
+  q: getMissionQuery(),
+}));
+
+// One query per list, each asked only while its tab is open.
+const blueprintsQuery = useBlueprintsQuery(blueprintsParams, {
+  query: { enabled: computed(() => !showMissions.value) },
+});
+
+const missionsQuery = useHangarBlueprintMissionsQuery(missionsParams, {
+  query: { enabled: showMissions },
+});
+
+const statusOf = (query: typeof blueprintsQuery | typeof missionsQuery) => {
+  const { data: _data, refetch: _refetch, ...status } = query;
+
+  return status;
+};
+
+const blueprints = computed(() => blueprintsQuery.data.value);
+const missions = computed(() => missionsQuery.data.value);
+
+const shown = computed(() =>
+  showMissions.value ? missions.value : blueprints.value,
+);
+
+// The pilot's ship, from the mission filter form: it marks rows rather than
+// narrowing them.
+const { ship } = useMissionShip();
 
 const sortFields = useBlueprintSortFields();
+const missionSortFields = useMissionSortFields();
 </script>
 
 <template>
@@ -67,11 +111,11 @@ const sortFields = useBlueprintSortFields();
   <Heading hero>
     {{ t("headlines.hangar.blueprints") }}
     <HeadingSmall data-test="hangar-blueprints-count">
-      <template v-if="blueprints">
+      <template v-if="shown">
         {{
           t("headlines.pagination.count", {
-            current: blueprints.items.length,
-            total: blueprints.meta.pagination?.totalCount,
+            current: shown.items.length,
+            total: shown.meta.pagination?.totalCount,
           })
         }}
       </template>
@@ -80,9 +124,10 @@ const sortFields = useBlueprintSortFields();
   </Heading>
 
   <FilteredList
+    v-if="!showMissions"
     name="hangar-blueprints"
     :records="blueprints?.items || []"
-    :async-status="asyncStatus"
+    :async-status="statusOf(blueprintsQuery)"
     :is-filter-selected="isFilterSelected"
   >
     <template #filter>
@@ -90,7 +135,7 @@ const sortFields = useBlueprintSortFields();
     </template>
 
     <template #actions-left>
-      <BlueprintsTabs />
+      <BlueprintsTabs :tabs="TABS" />
     </template>
 
     <template #pagination-top>
@@ -116,6 +161,57 @@ const sortFields = useBlueprintSortFields();
     <template #pagination-bottom>
       <Paginator
         :query-result-ref="blueprints"
+        :per-page="perPage"
+        :update-per-page="updatePerPage"
+      />
+    </template>
+  </FilteredList>
+
+  <!-- Generated from the wanted blueprints: every mission whose reward pools
+       hold one, with the mission catalogue's own filters. -->
+  <FilteredList
+    v-else
+    name="hangar-blueprint-missions"
+    :records="missions?.items || []"
+    :async-status="statusOf(missionsQuery)"
+    :is-filter-selected="isMissionFilterSelected"
+    :view-keys="['ship']"
+  >
+    <template #filter>
+      <MissionFilterForm />
+    </template>
+
+    <template #actions-left>
+      <BlueprintsTabs :tabs="TABS" />
+    </template>
+
+    <template #pagination-top>
+      <Paginator
+        :query-result-ref="missions"
+        :per-page="perPage"
+        :update-per-page="updatePerPage"
+      />
+    </template>
+
+    <template #skeleton="{ count }">
+      <RowsSkeleton :count="count" meta trailing />
+    </template>
+
+    <template #sort>
+      <ListToolbar :columns="missionSortFields" default-sort="name asc" />
+    </template>
+
+    <template #default="{ records, emptyVisible: listEmpty }">
+      <WantedMissionsList
+        :missions="records"
+        :empty-visible="listEmpty"
+        :ship="ship"
+      />
+    </template>
+
+    <template #pagination-bottom>
+      <Paginator
+        :query-result-ref="missions"
         :per-page="perPage"
         :update-per-page="updatePerPage"
       />

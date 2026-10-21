@@ -4,7 +4,10 @@ import { defineComponent, h } from "vue";
 import { mount } from "@vue/test-utils";
 import { useBlueprintsTab } from "./useBlueprintsTab";
 
-const setup = async (query: Record<string, string> = {}) => {
+const setup = async (
+  query: Record<string, string> = {},
+  tabs?: Parameters<typeof useBlueprintsTab>[0],
+) => {
   const router = createRouter({
     history: createWebHashHistory(),
     routes: [{ path: "/", name: "list", component: { template: "<div />" } }],
@@ -17,7 +20,7 @@ const setup = async (query: Record<string, string> = {}) => {
   mount(
     defineComponent({
       setup() {
-        tab = useBlueprintsTab().activeTab;
+        tab = useBlueprintsTab(tabs).activeTab;
 
         return () => h("div");
       },
@@ -53,5 +56,24 @@ describe("useBlueprintsTab", () => {
       nameCont: "cannon",
       tab: "wanted",
     });
+  });
+
+  it("opens the first tab for one the page does not offer", async () => {
+    const { tab } = await setup({ tab: "missions" });
+
+    expect(tab.value).toBe("owned");
+  });
+
+  // Each catalogue's query schema refuses the other's filter keys.
+  it("drops the filters when crossing to the missions list", async () => {
+    const { router, tab } = await setup(
+      { tab: "wanted", craftableTypeIn: "Component" },
+      ["owned", "wanted", "missions"],
+    );
+
+    tab.value = "missions";
+    await new Promise((resolve) => setTimeout(resolve));
+
+    expect(router.currentRoute.value.query).toEqual({ tab: "missions" });
   });
 });
