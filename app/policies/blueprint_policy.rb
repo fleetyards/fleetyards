@@ -5,7 +5,7 @@
 # whether there is somebody to mark it for -- a recipe is not owned by anyone
 # in a way that could refuse.
 class BlueprintPolicy < ApplicationPolicy
-  alias_rule :unown?, to: :own?
+  alias_rule :unown?, :want?, :unwant?, to: :own?
 
   def own?
     user.present?

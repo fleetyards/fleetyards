@@ -78,6 +78,9 @@ module V1
             # error.
             owned: {type: :boolean},
 
+            # The same, for the reader's wishlist.
+            wanted: {type: :boolean},
+
             currentVersion: {type: :boolean},
             s: ::V1::Schemas::Enums::BlueprintSortingEnum,
             sorts: {type: :array, items: ::V1::Schemas::Enums::BlueprintSortingEnum}

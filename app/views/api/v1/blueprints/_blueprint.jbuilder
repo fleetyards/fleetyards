@@ -20,3 +20,4 @@ end
 # `owned` emitted inside would hand the first reader's answer to everyone who
 # opened the catalogue after them.
 json.owned @owned_blueprint_ids.include?(blueprint.id)
+json.wanted @wanted_blueprint_ids.include?(blueprint.id)

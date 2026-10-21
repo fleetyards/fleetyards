@@ -16,12 +16,7 @@ json.items do
 
     json.owner_count owners.size
     json.owners owners do |membership|
-      json.user_id membership.user_id
-      json.username membership.user.username
-      json.nickname membership.nickname
-      json.avatar do
-        json.partial! "api/v1/shared/file", record: membership.user, attr: :avatar
-      end
+      json.partial! "api/v1/fleet_blueprints/member", membership:
     end
   end
 end

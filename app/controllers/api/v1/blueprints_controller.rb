@@ -12,7 +12,7 @@ module Api
       # through, and anything else has to carry a token with the scope.
       before_action -> { doorkeeper_authorize! "hangar", "hangar:write" },
         unless: :user_signed_in?,
-        only: %i[own unown]
+        only: %i[own unown want unwant]
 
       after_action -> { pagination_header(:blueprints) }, only: [:index]
 
@@ -26,7 +26,7 @@ module Api
           :craftable, build: [{cost_slots: [{options: :commodity}, :modifiers]}, :sources]
         ).find_by!(slug:)
 
-        @owned_blueprint_ids = owned_ids_for([@blueprint])
+        @owned_blueprint_ids, @wanted_blueprint_ids = marked_ids_for([@blueprint])
       end
 
       def index
@@ -36,18 +36,22 @@ module Api
 
         # After pagination, so it asks about the 60 rows being rendered rather
         # than the 1,607.
-        @owned_blueprint_ids = owned_ids_for(@blueprints)
+        @owned_blueprint_ids, @wanted_blueprint_ids = marked_ids_for(@blueprints)
       end
 
       # Idempotent on purpose: holding a recipe is a state, not an event, so
       # marking one twice is the same answer rather than a duplicate row or a
       # validation error a client has to interpret.
+      #
+      # Owning a recipe on the wishlist takes it off the wishlist: the marker
+      # is updated rather than a second one written.
       def own
         blueprint = find_blueprint
 
         authorize! blueprint
 
-        UserBlueprint.find_or_create_by!(user_id: current_resource_owner.id, blueprint_id: blueprint.id)
+        mark = UserBlueprint.find_or_initialize_by(user_id: current_resource_owner.id, blueprint_id: blueprint.id)
+        mark.update!(wanted: false)
 
         head :no_content
       rescue ActiveRecord::RecordNotUnique
@@ -56,12 +60,39 @@ module Api
         head :no_content
       end
 
+      # Only drops a held marker: unowning something on the wishlist would
+      # otherwise quietly take it off the wishlist too.
       def unown
         blueprint = find_blueprint
 
         authorize! blueprint, to: :unown?
 
-        UserBlueprint.where(user_id: current_resource_owner.id, blueprint_id: blueprint.id).destroy_all
+        UserBlueprint.owned.where(user_id: current_resource_owner.id, blueprint_id: blueprint.id).destroy_all
+
+        head :no_content
+      end
+
+      # A recipe already held stays held. Wanting what you have is not a
+      # demotion, and the client never offers it.
+      def want
+        blueprint = find_blueprint
+
+        authorize! blueprint, to: :want?
+
+        UserBlueprint.create_with(wanted: true)
+          .find_or_create_by!(user_id: current_resource_owner.id, blueprint_id: blueprint.id)
+
+        head :no_content
+      rescue ActiveRecord::RecordNotUnique
+        head :no_content
+      end
+
+      def unwant
+        blueprint = find_blueprint
+
+        authorize! blueprint, to: :unwant?
+
+        UserBlueprint.wanted.where(user_id: current_resource_owner.id, blueprint_id: blueprint.id).destroy_all
 
         head :no_content
       end
