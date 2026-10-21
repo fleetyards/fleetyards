@@ -26,35 +26,169 @@
         "features": {
           "title": "What you can do here",
           "subline": "Free for every pilot. It starts with your hangar.",
+          "withAccount": "With a free account",
+          "openToEveryone": "Open to everyone",
           "hangar": {
+            "label": "Hangar",
+            "hint": "Your pledges, synced",
             "title": "Hangar",
-            "text": "Sync your pledges from RSI, then group them, add paints and upgrades, keep a wishlist and share it all with one link.",
-            "action": "Preview a hangar"
+            "action": "Preview a hangar",
+            "items": {
+              "sync": {
+                "title": "RSI hangar sync",
+                "text": "Pull every pledge from your RSI account, buy-backs included."
+              },
+              "paints": {
+                "title": "Paints and upgrades",
+                "text": "Track which paint and which CCU belongs to which hull."
+              },
+              "loadouts": {
+                "title": "Loadouts",
+                "text": "Keep the loadout you fly on each ship."
+              },
+              "fleetchart": {
+                "title": "Fleetchart",
+                "text": "Your whole hangar side by side, to scale."
+              },
+              "log": {
+                "title": "Captain's log",
+                "text": "Notes and history for every ship you own."
+              },
+              "share": {
+                "title": "Wishlist and public link",
+                "text": "Share the hangar, or just the ships you want."
+              }
+            }
           },
           "fleets": {
+            "label": "Fleets",
+            "hint": "Run your org",
             "title": "Fleets",
-            "text": "Run your org: events with sign-ups, announcements, contracts, a shared inventory, and who is online right now.",
-            "action": "See what fleets get"
+            "action": "See what fleets get",
+            "items": {
+              "members": {
+                "title": "Members and roles",
+                "text": "Invite your org, sort it into ranks and decide who may do what."
+              },
+              "squadrons": {
+                "title": "Squadrons",
+                "text": "Wings inside the fleet, each with its own members and Discord role."
+              },
+              "maps": {
+                "title": "World map and starmap",
+                "text": "Where your members live, and where they fly."
+              },
+              "ships": {
+                "title": "The fleet's ships",
+                "text": "Every member's hangar added up, with a fleetchart to scale."
+              },
+              "allies": {
+                "title": "Allies and directory",
+                "text": "Link up with allied orgs and get found by new pilots."
+              },
+              "discord": {
+                "title": "Discord",
+                "text": "Roles and announcements synced with your server."
+              }
+            }
           },
           "ships": {
-            "title": "Ships",
-            "text": "Every ship and vehicle with the stats, hardpoints and components the game files give it.",
-            "action": "Browse ships"
+            "label": "Ships and data",
+            "hint": "From the game files",
+            "title": "Ships and data",
+            "action": "Browse ships",
+            "items": {
+              "ships": {
+                "title": "Ships and vehicles",
+                "text": "Stats, hardpoints and the components each one ships with."
+              },
+              "viewer": {
+                "title": "3D viewer",
+                "text": "Turn every hull around in the browser."
+              },
+              "patches": {
+                "title": "Patch changes",
+                "text": "What each new build changed, and by how much."
+              },
+              "components": {
+                "title": "Components and gear",
+                "text": "Weapons, shields, drives and FPS equipment, with where to buy them."
+              },
+              "locations": {
+                "title": "Locations and shops",
+                "text": "Planets, moons and stations, and what each shop sells."
+              },
+              "crafting": {
+                "title": "Crafting and missions",
+                "text": "Every blueprint with its ingredients, and the missions that pay."
+              }
+            }
           },
-          "compare": {
-            "title": "Compare",
-            "text": "Put ships side by side, from cargo grids to quantum fuel.",
-            "action": "Compare ships"
+          "tools": {
+            "label": "Tools",
+            "hint": "Plan the run",
+            "title": "Tools",
+            "action": "Open the tools",
+            "items": {
+              "compare": {
+                "title": "Compare ships",
+                "text": "Ships side by side, cargo grids to quantum fuel."
+              },
+              "cargo": {
+                "title": "Cargo grids",
+                "text": "Every hold box by box, so you know what fits."
+              },
+              "trade": {
+                "title": "Trade routes",
+                "text": "Current commodity prices and the best runs between terminals."
+              },
+              "travel": {
+                "title": "Travel times",
+                "text": "How long a quantum jump takes, drive by drive."
+              },
+              "tours": {
+                "title": "Tours",
+                "text": "Plan a run with friends and split the payout."
+              },
+              "stats": {
+                "title": "Stats",
+                "text": "How the ship catalogue grows, patch by patch."
+              }
+            }
           },
-          "trade": {
-            "title": "Trade",
-            "text": "Commodity prices with their history, and the best routes between terminals.",
-            "action": "Find a route"
-          },
-          "patches": {
-            "title": "Patches",
-            "text": "See which ships each new build changed, and by how much.",
-            "action": "See the latest changes"
+          "developers": {
+            "label": "For developers",
+            "hint": "API, OAuth, embed",
+            "title": "For developers",
+            "action": "Read the API docs",
+            "codeComment": "every ship, as JSON",
+            "signIn": "Sign in with Fleetyards",
+            "items": {
+              "api": {
+                "title": "Public API",
+                "text": "Ships, components, locations and more, documented with OpenAPI."
+              },
+              "oauth": {
+                "title": "Sign in with Fleetyards",
+                "text": "OAuth and OpenID Connect for your own app."
+              },
+              "embed": {
+                "title": "Embed widget",
+                "text": "Show ships, a hangar or a fleet on your own site."
+              },
+              "discord": {
+                "title": "Discord bot",
+                "text": "Ships, loaners, items, hangars and locations as slash commands."
+              },
+              "app": {
+                "title": "Installable app",
+                "text": "Add Fleetyards to your phone's home screen."
+              },
+              "media": {
+                "title": "Ship media",
+                "text": "Store images, angled renders and videos, ready to link."
+              }
+            }
           }
         },
         "patch": {

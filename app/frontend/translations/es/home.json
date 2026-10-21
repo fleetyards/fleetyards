@@ -26,35 +26,169 @@
         "features": {
           "title": "Qué puedes hacer aquí",
           "subline": "Gratis para todos los pilotos. Todo empieza con tu hangar.",
+          "withAccount": "Con una cuenta gratuita",
+          "openToEveryone": "Abierto a todos",
           "hangar": {
+            "label": "Hangar",
+            "hint": "Tus pledges, sincronizados",
             "title": "Hangar",
-            "text": "Sincroniza tus pledges desde RSI, agrúpalos, añade pinturas y mejoras, lleva una lista de deseos y compártelo todo con un enlace.",
-            "action": "Ver un hangar de ejemplo"
+            "action": "Ver un hangar de ejemplo",
+            "items": {
+              "sync": {
+                "title": "Sincronización con RSI",
+                "text": "Trae cada pledge de tu cuenta de RSI, recompras incluidas."
+              },
+              "paints": {
+                "title": "Pinturas y mejoras",
+                "text": "Controla qué pintura y qué CCU corresponde a cada casco."
+              },
+              "loadouts": {
+                "title": "Configuraciones",
+                "text": "Guarda la configuración que vuelas en cada nave."
+              },
+              "fleetchart": {
+                "title": "Fleetchart",
+                "text": "Todo tu hangar lado a lado, a escala."
+              },
+              "log": {
+                "title": "Bitácora",
+                "text": "Notas e historial de cada nave que tienes."
+              },
+              "share": {
+                "title": "Lista de deseos y enlace público",
+                "text": "Comparte el hangar, o solo las naves que quieras."
+              }
+            }
           },
           "fleets": {
+            "label": "Flotas",
+            "hint": "Dirige tu org",
             "title": "Flotas",
-            "text": "Dirige tu org: eventos con inscripciones, anuncios, contratos, un inventario compartido y quién está conectado ahora.",
-            "action": "Qué obtienen las flotas"
+            "action": "Qué obtienen las flotas",
+            "items": {
+              "members": {
+                "title": "Miembros y roles",
+                "text": "Invita a tu org, ordénala en rangos y decide quién puede hacer qué."
+              },
+              "squadrons": {
+                "title": "Escuadrones",
+                "text": "Alas dentro de la flota, cada una con sus miembros y su rol de Discord."
+              },
+              "maps": {
+                "title": "Mapa mundial y mapa estelar",
+                "text": "Dónde viven tus miembros y dónde vuelan."
+              },
+              "ships": {
+                "title": "Las naves de la flota",
+                "text": "Los hangares de todos los miembros sumados, con un fleetchart a escala."
+              },
+              "allies": {
+                "title": "Aliados y directorio",
+                "text": "Conecta con orgs aliadas y deja que te encuentren nuevos pilotos."
+              },
+              "discord": {
+                "title": "Discord",
+                "text": "Roles y anuncios sincronizados con tu servidor."
+              }
+            }
           },
           "ships": {
-            "title": "Naves",
-            "text": "Cada nave y vehículo con las estadísticas, hardpoints y componentes de los archivos del juego.",
-            "action": "Ver naves"
+            "label": "Naves y datos",
+            "hint": "De los archivos del juego",
+            "title": "Naves y datos",
+            "action": "Ver naves",
+            "items": {
+              "ships": {
+                "title": "Naves y vehículos",
+                "text": "Estadísticas, puntos de anclaje y los componentes con los que sale cada una."
+              },
+              "viewer": {
+                "title": "Visor 3D",
+                "text": "Gira cada casco en el navegador."
+              },
+              "patches": {
+                "title": "Cambios por parche",
+                "text": "Qué cambió cada nueva versión, y cuánto."
+              },
+              "components": {
+                "title": "Componentes y equipo",
+                "text": "Armas, escudos, motores y equipo FPS, con dónde comprarlos."
+              },
+              "locations": {
+                "title": "Lugares y tiendas",
+                "text": "Planetas, lunas y estaciones, y lo que vende cada tienda."
+              },
+              "crafting": {
+                "title": "Fabricación y misiones",
+                "text": "Cada plano con sus ingredientes, y las misiones que pagan."
+              }
+            }
           },
-          "compare": {
-            "title": "Comparar",
-            "text": "Pon naves lado a lado, desde la carga hasta el combustible cuántico.",
-            "action": "Comparar naves"
+          "tools": {
+            "label": "Herramientas",
+            "hint": "Planifica la ruta",
+            "title": "Herramientas",
+            "action": "Abrir las herramientas",
+            "items": {
+              "compare": {
+                "title": "Comparar naves",
+                "text": "Naves lado a lado, de rejillas de carga a combustible cuántico."
+              },
+              "cargo": {
+                "title": "Rejillas de carga",
+                "text": "Cada bodega caja a caja, para saber qué cabe."
+              },
+              "trade": {
+                "title": "Rutas comerciales",
+                "text": "Precios actuales de mercancías y las mejores rutas entre terminales."
+              },
+              "travel": {
+                "title": "Tiempos de viaje",
+                "text": "Cuánto dura un salto cuántico, motor a motor."
+              },
+              "tours": {
+                "title": "Tours",
+                "text": "Planifica una ruta con amigos y reparte el pago."
+              },
+              "stats": {
+                "title": "Estadísticas",
+                "text": "Cómo crece el catálogo de naves, parche a parche."
+              }
+            }
           },
-          "trade": {
-            "title": "Comercio",
-            "text": "Precios de mercancías con su historial y las mejores rutas entre terminales.",
-            "action": "Buscar una ruta"
-          },
-          "patches": {
-            "title": "Parches",
-            "text": "Mira qué naves cambió cada nueva build y cuánto.",
-            "action": "Ver los últimos cambios"
+          "developers": {
+            "label": "Para desarrolladores",
+            "hint": "API, OAuth, embed",
+            "title": "Para desarrolladores",
+            "action": "Leer la documentación de la API",
+            "codeComment": "cada nave, en JSON",
+            "signIn": "Iniciar sesión con Fleetyards",
+            "items": {
+              "api": {
+                "title": "API pública",
+                "text": "Naves, componentes, lugares y más, documentados con OpenAPI."
+              },
+              "oauth": {
+                "title": "Iniciar sesión con Fleetyards",
+                "text": "OAuth y OpenID Connect para tu propia app."
+              },
+              "embed": {
+                "title": "Widget para insertar",
+                "text": "Muestra naves, un hangar o una flota en tu propio sitio."
+              },
+              "discord": {
+                "title": "Bot de Discord",
+                "text": "Naves, préstamos, objetos, hangares y lugares como comandos de barra."
+              },
+              "app": {
+                "title": "App instalable",
+                "text": "Añade Fleetyards a la pantalla de inicio de tu móvil."
+              },
+              "media": {
+                "title": "Medios de naves",
+                "text": "Imágenes de tienda, renders angulados y vídeos, listos para enlazar."
+              }
+            }
           }
         },
         "patch": {

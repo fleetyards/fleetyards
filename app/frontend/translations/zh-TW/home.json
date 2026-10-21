@@ -26,35 +26,169 @@
         "features": {
           "title": "你可以在這裡做什麼",
           "subline": "所有飛行員免費使用，一切從你的機庫開始。",
+          "withAccount": "免費註冊即可使用",
+          "openToEveryone": "所有人可用",
           "hangar": {
+            "label": "機庫",
+            "hint": "你的 Pledge，自動同步",
             "title": "機庫",
-            "text": "從 RSI 同步你的 Pledge，分組管理，加入塗裝和升級，維護願望清單，並用一個連結分享全部內容。",
-            "action": "查看範例機庫"
+            "action": "查看範例機庫",
+            "items": {
+              "sync": {
+                "title": "RSI 機庫同步",
+                "text": "從你的 RSI 帳號匯入所有 Pledge，包括回購項目。"
+              },
+              "paints": {
+                "title": "塗裝與升級",
+                "text": "記錄每艘船對應的塗裝和 CCU。"
+              },
+              "loadouts": {
+                "title": "配裝",
+                "text": "儲存你每艘船的配裝方案。"
+              },
+              "fleetchart": {
+                "title": "艦隊圖",
+                "text": "整個機庫並排展示，依真實比例。"
+              },
+              "log": {
+                "title": "艦長日誌",
+                "text": "為你擁有的每艘船記錄筆記和歷史。"
+              },
+              "share": {
+                "title": "願望清單與公開連結",
+                "text": "分享整個機庫，或只分享你想要的船。"
+              }
+            }
           },
           "fleets": {
+            "label": "艦隊",
+            "hint": "管理你的組織",
             "title": "艦隊",
-            "text": "管理你的組織：附報名的活動、公告、合約、共享庫存，以及目前在線的成員。",
-            "action": "了解艦隊功能"
+            "action": "了解艦隊功能",
+            "items": {
+              "members": {
+                "title": "成員與角色",
+                "text": "邀請你的組織成員，劃分階級並決定誰能做什麼。"
+              },
+              "squadrons": {
+                "title": "中隊",
+                "text": "艦隊內的編隊，各有自己的成員和 Discord 角色。"
+              },
+              "maps": {
+                "title": "世界地圖與星圖",
+                "text": "你的成員住在哪裡，又在哪裡飛行。"
+              },
+              "ships": {
+                "title": "艦隊的艦船",
+                "text": "彙整所有成員的機庫，並附依比例的艦隊圖。"
+              },
+              "allies": {
+                "title": "盟友與目錄",
+                "text": "與盟友組織建立聯繫，讓新飛行員找到你。"
+              },
+              "discord": {
+                "title": "Discord",
+                "text": "角色和公告與你的伺服器同步。"
+              }
+            }
           },
           "ships": {
-            "title": "艦船",
-            "text": "每艘艦船和載具，附帶來自遊戲檔案的數據、掛點和組件。",
-            "action": "瀏覽艦船"
+            "label": "艦船與數據",
+            "hint": "來自遊戲檔案",
+            "title": "艦船與數據",
+            "action": "瀏覽艦船",
+            "items": {
+              "ships": {
+                "title": "艦船與載具",
+                "text": "數據、掛點以及每艘船出廠自帶的組件。"
+              },
+              "viewer": {
+                "title": "3D 檢視器",
+                "text": "在瀏覽器中旋轉檢視每艘船。"
+              },
+              "patches": {
+                "title": "版本變化",
+                "text": "每個新版本改了什麼，改了多少。"
+              },
+              "components": {
+                "title": "組件與裝備",
+                "text": "武器、護盾、引擎和 FPS 裝備，以及購買地點。"
+              },
+              "locations": {
+                "title": "地點與商店",
+                "text": "行星、衛星和太空站，以及每間商店販售的商品。"
+              },
+              "crafting": {
+                "title": "製作與任務",
+                "text": "每張藍圖及其材料，以及報酬豐厚的任務。"
+              }
+            }
           },
-          "compare": {
-            "title": "比較",
-            "text": "並排比較艦船，從貨艙到量子燃料。",
-            "action": "比較艦船"
+          "tools": {
+            "label": "工具",
+            "hint": "規劃行程",
+            "title": "工具",
+            "action": "開啟工具",
+            "items": {
+              "compare": {
+                "title": "艦船比較",
+                "text": "艦船並排比較，從貨艙格到量子燃料。"
+              },
+              "cargo": {
+                "title": "貨艙格",
+                "text": "逐箱檢視每個貨艙，知道能裝下什麼。"
+              },
+              "trade": {
+                "title": "貿易路線",
+                "text": "目前商品價格以及終端之間的最佳路線。"
+              },
+              "travel": {
+                "title": "航行時間",
+                "text": "一次量子躍遷需要多久，按引擎逐一計算。"
+              },
+              "tours": {
+                "title": "行程",
+                "text": "和朋友一起規劃行程並分配收益。"
+              },
+              "stats": {
+                "title": "統計",
+                "text": "艦船目錄如何隨版本成長。"
+              }
+            }
           },
-          "trade": {
-            "title": "貿易",
-            "text": "商品價格及其歷史，以及終端之間的最佳路線。",
-            "action": "尋找路線"
-          },
-          "patches": {
-            "title": "補丁",
-            "text": "查看每個新版本改動了哪些艦船，以及改動幅度。",
-            "action": "查看最新改動"
+          "developers": {
+            "label": "開發者",
+            "hint": "API、OAuth、嵌入",
+            "title": "開發者",
+            "action": "閱讀 API 文件",
+            "codeComment": "每艘船，以 JSON 形式",
+            "signIn": "使用 Fleetyards 登入",
+            "items": {
+              "api": {
+                "title": "公開 API",
+                "text": "艦船、組件、地點等，使用 OpenAPI 撰寫文件。"
+              },
+              "oauth": {
+                "title": "使用 Fleetyards 登入",
+                "text": "為你自己的應用程式提供 OAuth 和 OpenID Connect。"
+              },
+              "embed": {
+                "title": "嵌入小工具",
+                "text": "在你自己的網站上展示艦船、機庫或艦隊。"
+              },
+              "discord": {
+                "title": "Discord 機器人",
+                "text": "透過斜線指令查詢艦船、借用船、物品、機庫和地點。"
+              },
+              "app": {
+                "title": "可安裝應用程式",
+                "text": "把 Fleetyards 加到手機主畫面。"
+              },
+              "media": {
+                "title": "艦船媒體",
+                "text": "商店圖片、角度渲染圖和影片，可直接連結。"
+              }
+            }
           }
         },
         "patch": {

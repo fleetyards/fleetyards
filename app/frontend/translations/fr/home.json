@@ -26,35 +26,169 @@
         "features": {
           "title": "Ce que vous pouvez faire ici",
           "subline": "Gratuit pour tous les pilotes. Tout commence par votre hangar.",
+          "withAccount": "Avec un compte gratuit",
+          "openToEveryone": "Ouvert à tous",
           "hangar": {
+            "label": "Hangar",
+            "hint": "Vos pledges, synchronisés",
             "title": "Hangar",
-            "text": "Synchronisez vos pledges depuis RSI, regroupez-les, ajoutez peintures et améliorations, tenez une liste de souhaits et partagez le tout avec un lien.",
-            "action": "Voir un hangar d'exemple"
+            "action": "Voir un hangar d’exemple",
+            "items": {
+              "sync": {
+                "title": "Synchro du hangar RSI",
+                "text": "Récupérez chaque pledge de votre compte RSI, rachats compris."
+              },
+              "paints": {
+                "title": "Peintures et améliorations",
+                "text": "Suivez quelle peinture et quel CCU vont avec quelle coque."
+              },
+              "loadouts": {
+                "title": "Configurations",
+                "text": "Gardez la configuration que vous pilotez sur chaque vaisseau."
+              },
+              "fleetchart": {
+                "title": "Fleetchart",
+                "text": "Tout votre hangar côte à côte, à l’échelle."
+              },
+              "log": {
+                "title": "Journal de bord",
+                "text": "Notes et historique pour chaque vaisseau que vous possédez."
+              },
+              "share": {
+                "title": "Liste de souhaits et lien public",
+                "text": "Partagez le hangar, ou seulement les vaisseaux de votre choix."
+              }
+            }
           },
           "fleets": {
+            "label": "Flottes",
+            "hint": "Gérez votre org",
             "title": "Flottes",
-            "text": "Dirigez votre org : événements avec inscriptions, annonces, contrats, un inventaire partagé et qui est en ligne.",
-            "action": "Ce que les flottes obtiennent"
+            "action": "Ce que les flottes obtiennent",
+            "items": {
+              "members": {
+                "title": "Membres et rôles",
+                "text": "Invitez votre org, classez-la par rangs et décidez qui peut faire quoi."
+              },
+              "squadrons": {
+                "title": "Escadrons",
+                "text": "Des ailes au sein de la flotte, chacune avec ses membres et son rôle Discord."
+              },
+              "maps": {
+                "title": "Carte du monde et carte stellaire",
+                "text": "Où vivent vos membres, et où ils volent."
+              },
+              "ships": {
+                "title": "Les vaisseaux de la flotte",
+                "text": "Les hangars de tous les membres réunis, avec un fleetchart à l’échelle."
+              },
+              "allies": {
+                "title": "Alliés et annuaire",
+                "text": "Liez-vous à des orgs alliées et soyez trouvés par de nouveaux pilotes."
+              },
+              "discord": {
+                "title": "Discord",
+                "text": "Rôles et annonces synchronisés avec votre serveur."
+              }
+            }
           },
           "ships": {
-            "title": "Vaisseaux",
-            "text": "Chaque vaisseau et véhicule avec les statistiques, points d'emport et composants des fichiers du jeu.",
-            "action": "Voir les vaisseaux"
+            "label": "Vaisseaux et données",
+            "hint": "Issus des fichiers du jeu",
+            "title": "Vaisseaux et données",
+            "action": "Parcourir les vaisseaux",
+            "items": {
+              "ships": {
+                "title": "Vaisseaux et véhicules",
+                "text": "Statistiques, points d’emport et composants livrés avec chacun."
+              },
+              "viewer": {
+                "title": "Visionneuse 3D",
+                "text": "Faites pivoter chaque coque dans le navigateur."
+              },
+              "patches": {
+                "title": "Changements par patch",
+                "text": "Ce que chaque nouveau build a changé, et de combien."
+              },
+              "components": {
+                "title": "Composants et équipement",
+                "text": "Armes, boucliers, moteurs et équipement FPS, avec où les acheter."
+              },
+              "locations": {
+                "title": "Lieux et boutiques",
+                "text": "Planètes, lunes et stations, et ce que vend chaque boutique."
+              },
+              "crafting": {
+                "title": "Artisanat et missions",
+                "text": "Chaque plan avec ses ingrédients, et les missions qui paient."
+              }
+            }
           },
-          "compare": {
-            "title": "Comparer",
-            "text": "Placez des vaisseaux côte à côte, de la soute au carburant quantique.",
-            "action": "Comparer des vaisseaux"
+          "tools": {
+            "label": "Outils",
+            "hint": "Préparez la mission",
+            "title": "Outils",
+            "action": "Ouvrir les outils",
+            "items": {
+              "compare": {
+                "title": "Comparer des vaisseaux",
+                "text": "Des vaisseaux côte à côte, des grilles de fret au carburant quantique."
+              },
+              "cargo": {
+                "title": "Grilles de fret",
+                "text": "Chaque soute caisse par caisse, pour savoir ce qui rentre."
+              },
+              "trade": {
+                "title": "Routes commerciales",
+                "text": "Les prix actuels des marchandises et les meilleures routes entre terminaux."
+              },
+              "travel": {
+                "title": "Temps de trajet",
+                "text": "Combien de temps dure un saut quantique, moteur par moteur."
+              },
+              "tours": {
+                "title": "Tours",
+                "text": "Planifiez une mission entre amis et partagez le gain."
+              },
+              "stats": {
+                "title": "Statistiques",
+                "text": "Comment le catalogue de vaisseaux grandit, patch après patch."
+              }
+            }
           },
-          "trade": {
-            "title": "Commerce",
-            "text": "Les prix des marchandises avec leur historique, et les meilleures routes entre terminaux.",
-            "action": "Trouver une route"
-          },
-          "patches": {
-            "title": "Patchs",
-            "text": "Voyez quels vaisseaux chaque nouvelle build a modifiés, et à quel point.",
-            "action": "Voir les derniers changements"
+          "developers": {
+            "label": "Pour les développeurs",
+            "hint": "API, OAuth, embed",
+            "title": "Pour les développeurs",
+            "action": "Lire la doc de l’API",
+            "codeComment": "chaque vaisseau, en JSON",
+            "signIn": "Se connecter avec Fleetyards",
+            "items": {
+              "api": {
+                "title": "API publique",
+                "text": "Vaisseaux, composants, lieux et plus, documentés avec OpenAPI."
+              },
+              "oauth": {
+                "title": "Se connecter avec Fleetyards",
+                "text": "OAuth et OpenID Connect pour votre propre app."
+              },
+              "embed": {
+                "title": "Widget intégrable",
+                "text": "Affichez des vaisseaux, un hangar ou une flotte sur votre site."
+              },
+              "discord": {
+                "title": "Bot Discord",
+                "text": "Vaisseaux, prêts, objets, hangars et lieux en commandes slash."
+              },
+              "app": {
+                "title": "App installable",
+                "text": "Ajoutez Fleetyards à l’écran d’accueil de votre téléphone."
+              },
+              "media": {
+                "title": "Médias des vaisseaux",
+                "text": "Images boutique, rendus en angle et vidéos, prêts à lier."
+              }
+            }
           }
         },
         "patch": {

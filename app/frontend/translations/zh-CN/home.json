@@ -26,35 +26,169 @@
         "features": {
           "title": "你可以在这里做什么",
           "subline": "所有飞行员免费使用，一切从你的机库开始。",
+          "withAccount": "免费注册即可使用",
+          "openToEveryone": "所有人可用",
           "hangar": {
+            "label": "机库",
+            "hint": "你的 Pledge，自动同步",
             "title": "机库",
-            "text": "从 RSI 同步你的 Pledge，分组管理，添加涂装和升级，维护愿望单，并用一个链接分享全部内容。",
-            "action": "查看示例机库"
+            "action": "查看示例机库",
+            "items": {
+              "sync": {
+                "title": "RSI 机库同步",
+                "text": "从你的 RSI 账户导入所有 Pledge，包括回购项目。"
+              },
+              "paints": {
+                "title": "涂装与升级",
+                "text": "记录每艘船对应的涂装和 CCU。"
+              },
+              "loadouts": {
+                "title": "配装",
+                "text": "保存你每艘船的配装方案。"
+              },
+              "fleetchart": {
+                "title": "舰队图",
+                "text": "整个机库并排展示，按真实比例。"
+              },
+              "log": {
+                "title": "舰长日志",
+                "text": "为你拥有的每艘船记录笔记和历史。"
+              },
+              "share": {
+                "title": "愿望单与公开链接",
+                "text": "分享整个机库，或只分享你想要的船。"
+              }
+            }
           },
           "fleets": {
+            "label": "舰队",
+            "hint": "管理你的组织",
             "title": "舰队",
-            "text": "管理你的组织：带报名的活动、公告、合约、共享库存，以及当前在线的成员。",
-            "action": "了解舰队功能"
+            "action": "了解舰队功能",
+            "items": {
+              "members": {
+                "title": "成员与角色",
+                "text": "邀请你的组织成员，划分等级并决定谁能做什么。"
+              },
+              "squadrons": {
+                "title": "中队",
+                "text": "舰队内的编队，各有自己的成员和 Discord 角色。"
+              },
+              "maps": {
+                "title": "世界地图与星图",
+                "text": "你的成员住在哪里，又在哪里飞行。"
+              },
+              "ships": {
+                "title": "舰队的舰船",
+                "text": "汇总所有成员的机库，并附按比例的舰队图。"
+              },
+              "allies": {
+                "title": "盟友与目录",
+                "text": "与盟友组织建立联系，让新飞行员找到你。"
+              },
+              "discord": {
+                "title": "Discord",
+                "text": "角色和公告与你的服务器同步。"
+              }
+            }
           },
           "ships": {
-            "title": "舰船",
-            "text": "每艘舰船和载具，附带来自游戏文件的数据、挂点和组件。",
-            "action": "浏览舰船"
+            "label": "舰船与数据",
+            "hint": "来自游戏文件",
+            "title": "舰船与数据",
+            "action": "浏览舰船",
+            "items": {
+              "ships": {
+                "title": "舰船与载具",
+                "text": "数据、挂点以及每艘船出厂自带的组件。"
+              },
+              "viewer": {
+                "title": "3D 查看器",
+                "text": "在浏览器中旋转查看每艘船。"
+              },
+              "patches": {
+                "title": "版本变化",
+                "text": "每个新版本改了什么，改了多少。"
+              },
+              "components": {
+                "title": "组件与装备",
+                "text": "武器、护盾、引擎和 FPS 装备，以及购买地点。"
+              },
+              "locations": {
+                "title": "地点与商店",
+                "text": "行星、卫星和空间站，以及每家商店出售的商品。"
+              },
+              "crafting": {
+                "title": "制作与任务",
+                "text": "每张蓝图及其材料，以及报酬丰厚的任务。"
+              }
+            }
           },
-          "compare": {
-            "title": "对比",
-            "text": "并排比较舰船，从货舱到量子燃料。",
-            "action": "对比舰船"
+          "tools": {
+            "label": "工具",
+            "hint": "规划行程",
+            "title": "工具",
+            "action": "打开工具",
+            "items": {
+              "compare": {
+                "title": "舰船对比",
+                "text": "舰船并排对比，从货舱格到量子燃料。"
+              },
+              "cargo": {
+                "title": "货舱格",
+                "text": "逐箱查看每个货舱，知道能装下什么。"
+              },
+              "trade": {
+                "title": "贸易路线",
+                "text": "当前商品价格以及终端之间的最佳路线。"
+              },
+              "travel": {
+                "title": "航行时间",
+                "text": "一次量子跃迁需要多久，按引擎逐一计算。"
+              },
+              "tours": {
+                "title": "行程",
+                "text": "和朋友一起规划行程并分配收益。"
+              },
+              "stats": {
+                "title": "统计",
+                "text": "舰船目录如何随版本增长。"
+              }
+            }
           },
-          "trade": {
-            "title": "贸易",
-            "text": "商品价格及其历史，以及终端之间的最佳路线。",
-            "action": "查找路线"
-          },
-          "patches": {
-            "title": "补丁",
-            "text": "查看每个新版本改动了哪些舰船，以及改动幅度。",
-            "action": "查看最新改动"
+          "developers": {
+            "label": "开发者",
+            "hint": "API、OAuth、嵌入",
+            "title": "开发者",
+            "action": "阅读 API 文档",
+            "codeComment": "每艘船，以 JSON 形式",
+            "signIn": "使用 Fleetyards 登录",
+            "items": {
+              "api": {
+                "title": "公开 API",
+                "text": "舰船、组件、地点等，使用 OpenAPI 编写文档。"
+              },
+              "oauth": {
+                "title": "使用 Fleetyards 登录",
+                "text": "为你自己的应用提供 OAuth 和 OpenID Connect。"
+              },
+              "embed": {
+                "title": "嵌入小部件",
+                "text": "在你自己的网站上展示舰船、机库或舰队。"
+              },
+              "discord": {
+                "title": "Discord 机器人",
+                "text": "通过斜杠命令查询舰船、借用船、物品、机库和地点。"
+              },
+              "app": {
+                "title": "可安装应用",
+                "text": "把 Fleetyards 添加到手机主屏幕。"
+              },
+              "media": {
+                "title": "舰船媒体",
+                "text": "商店图片、角度渲染图和视频，可直接链接。"
+              }
+            }
           }
         },
         "patch": {
