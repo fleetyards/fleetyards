@@ -183,7 +183,9 @@ module Rsi
       updates[:rsi_name] = data["name"].strip
       updates[:name] = strip_name(data["name"]) if (model_updated(model, data) && data["name"] != model.rsi_name) || model.name.blank?
 
-      model.update(updates.merge(update_reason: :rsi_loader))
+      unless model.update(updates.merge(update_reason: :rsi_loader))
+        Rails.logger.warn("Rsi::ModelsLoader: #{data["name"]} was not updated: #{model.errors.full_messages.to_sentence}")
+      end
 
       load_store_image(model, data["media"][0])
 
