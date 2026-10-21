@@ -42,7 +42,6 @@ export enum ModelSortFieldsEnum {
   SCM_SPEED = "scmSpeed",
   MAX_SPEED = "maxSpeed",
   GROUND_MAX_SPEED = "groundMaxSpeed",
-  FOCUS = "focus",
   PRODUCTION_STATUS = "productionStatus",
   PRICE = "price",
   PLEDGE_PRICE = "pledgePrice",

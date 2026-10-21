@@ -39,7 +39,6 @@ export enum WishlistSortFieldsEnum {
   SCM_SPEED = "modelScmSpeed",
   MAX_SPEED = "modelMaxSpeed",
   GROUND_MAX_SPEED = "modelGroundMaxSpeed",
-  FOCUS = "modelFocus",
   PRODUCTION_STATUS = "modelProductionStatus",
   PRICE = "modelPrice",
   PLEDGE_PRICE = "modelPledgePrice",

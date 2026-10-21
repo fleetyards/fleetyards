@@ -59,6 +59,7 @@ const prefillFormValues = () => {
     manufacturerIn: filters.value.manufacturerIn || [],
     classificationIn: filters.value.classificationIn || [],
     focusIn: filters.value.focusIn || [],
+    stealthEq: filters.value.stealthEq,
     productionStatusIn: filters.value.productionStatusIn || [],
     priceIn: filters.value.priceIn || [],
     pledgePriceIn: filters.value.pledgePriceIn || [],
@@ -114,6 +115,7 @@ const hasGroupFilters = (keys: string[]) =>
           'productionStatusIn',
           'classificationIn',
           'focusIn',
+          'stealthEq',
           'sizeIn',
           'ingameOnlyEq',
         ])
@@ -141,6 +143,14 @@ const hasGroupFilters = (keys: string[]) =>
       />
 
       <FocusSelect v-model="form.focusIn" name="focus" />
+
+      <RadioList
+        v-model="form.stealthEq"
+        :label="t('labels.filters.models.stealth')"
+        :reset-label="t('labels.all')"
+        :options="booleanOptions"
+        name="stealth"
+      />
 
       <SizeSelect v-model="form.sizeIn" name="size" />
 

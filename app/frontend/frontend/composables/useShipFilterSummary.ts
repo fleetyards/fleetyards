@@ -133,7 +133,7 @@ export const useShipFilterSummary = (
     if (value === "true" || value === "false") return t(`labels.${value}`);
     if (!SLUG_KEYS.includes(key.replace(/NotIn$/, "In"))) return value;
     return value
-      .split("-")
+      .split(/[-_]/)
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
   };
