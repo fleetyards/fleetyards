@@ -68,6 +68,7 @@ const image = computed(
 .home-featured-ship {
   position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   color: inherit;
@@ -93,7 +94,7 @@ const image = computed(
   width: 112%;
   max-width: 800px;
   height: auto;
-  max-height: min(55vh, 520px);
+  max-height: 70vh;
   object-fit: contain;
   filter: drop-shadow(0 30px 40px rgb(0 0 0 / 0.6));
   opacity: 0;
@@ -110,13 +111,13 @@ const image = computed(
   }
 }
 
-// Sits against the render's lower edge, so it waits for the render: shown
-// before, it would sit high on an empty frame and drop when the image lands.
-// It comes in after the render, settling downwards into place.
+// Under the render rather than on it: a large ship fills its frame to the
+// corners. It waits for the render, so it does not sit up against an empty
+// frame and drop when the image lands, and settles downwards into place.
 .home-featured-ship__caption {
-  position: absolute;
-  right: 8%;
-  bottom: 4%;
+  position: relative;
+  align-self: flex-end;
+  margin: 8px 8% 0 0;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -170,9 +171,9 @@ const image = computed(
   }
 
   .home-featured-ship__caption {
-    position: static;
+    align-self: center;
     align-items: center;
-    margin-top: 4px;
+    margin: 4px 0 0;
     text-align: center;
   }
 }
