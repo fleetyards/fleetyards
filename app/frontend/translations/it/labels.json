@@ -1713,7 +1713,7 @@
         "featuredHidden": "Non mostrare nessuna nave",
         "featuredHiddenInfo": "L’intestazione resta centrata, senza nave accanto.",
         "featuredRandom": "Scegli a caso",
-        "featuredRandomInfo": "Ogni visita mette in evidenza una di queste navi. Disattivato: sempre la prima nave della lista."
+        "featuredRandomInfo": "Ogni giorno mette in evidenza una di queste navi, la stessa per tutti i visitatori. Disattivato: sempre la prima nave della lista."
       },
       "gameEvent": {
         "title": "Titolo",

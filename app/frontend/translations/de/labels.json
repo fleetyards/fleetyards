@@ -1713,7 +1713,7 @@
         "featuredHidden": "Kein Schiff hervorheben",
         "featuredHiddenInfo": "Der Hero bleibt zentriert, ohne Schiff daneben.",
         "featuredRandom": "Zufällig wählen",
-        "featuredRandomInfo": "Jeder Besuch zeigt eines dieser Schiffe. Aus: immer das erste Schiff der Liste."
+        "featuredRandomInfo": "Jeden Tag wird eines dieser Schiffe gezeigt, für alle Besucher dasselbe. Aus: immer das erste Schiff der Liste."
       },
       "gameEvent": {
         "title": "Titel",

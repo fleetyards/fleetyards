@@ -25,12 +25,18 @@ class HomepageSetting < ApplicationRecord
     Model.visible.active.where(id: featured_model_ids)
   end
 
-  # Drawn: one of the chosen ships each visit, never anything else -- the
-  # centred hero is the switch's job. Not drawn: the first ship of the list,
-  # in the order it was set.
-  def featured_ship(random: Random)
+  # The ship of the day: drawn once per day and the same for every visitor,
+  # so the homepage reads as one site rather than a slot machine. Seeded by
+  # the day, so nothing has to be stored or expired.
+  #
+  # Drawn: one of the chosen ships, never anything else -- the centred hero is
+  # the switch's job. Not drawn: the first ship of the list, in the order it
+  # was set.
+  def featured_ship(day: Time.zone.today)
     return if featured_hidden
-    return any_rendered_ship if featured_model_ids.empty?
+
+    random = Random.new(day.jd)
+    return any_rendered_ship(random) if featured_model_ids.empty?
 
     ships = featured_models.index_by(&:id).values_at(*featured_model_ids).compact
     return if ships.empty?
@@ -39,11 +45,16 @@ class HomepageSetting < ApplicationRecord
     ships.sample(random:)
   end
 
-  private def any_rendered_ship
-    Model.visible.active
+  # Sorted before the draw, so the same day draws the same ship however the
+  # database happens to return the rows.
+  private def any_rendered_ship(random)
+    ids = Model.visible.active
       .joins(:angled_view_colored_attachment)
-      .reorder(Arel.sql("random()"))
-      .first
+      .order(:id)
+      .pluck(:id)
+    return if ids.empty?
+
+    Model.find(ids.sample(random:))
   end
 
   private def normalize_featured_model_ids

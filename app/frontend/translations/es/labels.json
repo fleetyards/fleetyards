@@ -1713,7 +1713,7 @@
         "featuredHidden": "No destacar ninguna nave",
         "featuredHiddenInfo": "La cabecera queda centrada, sin nave al lado.",
         "featuredRandom": "Elegir al azar",
-        "featuredRandomInfo": "Cada visita destaca una de estas naves. Desactivado: siempre la primera nave de la lista."
+        "featuredRandomInfo": "Cada día destaca una de estas naves, la misma para todos los visitantes. Desactivado: siempre la primera nave de la lista."
       },
       "gameEvent": {
         "title": "Título",

@@ -1713,7 +1713,7 @@
         "featuredHidden": "不展示舰船",
         "featuredHiddenInfo": "首屏保持居中，旁边不显示舰船。",
         "featuredRandom": "随机挑选",
-        "featuredRandomInfo": "每次访问展示其中一艘舰船。关闭：始终展示列表中的第一艘。"
+        "featuredRandomInfo": "每天展示其中一艘舰船，所有访客看到的都相同。关闭：始终展示列表中的第一艘。"
       },
       "gameEvent": {
         "title": "标题",

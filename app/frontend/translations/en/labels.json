@@ -1713,7 +1713,7 @@
         "featuredHidden": "Show no featured ship",
         "featuredHiddenInfo": "The hero stays centred, with no ship beside it.",
         "featuredRandom": "Pick at random",
-        "featuredRandomInfo": "Each visit features one of these ships. Off: always the first ship in the list."
+        "featuredRandomInfo": "Each day features one of these ships, the same for every visitor. Off: always the first ship in the list."
       },
       "gameEvent": {
         "title": "Title",

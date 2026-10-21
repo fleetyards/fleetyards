@@ -1713,7 +1713,7 @@
         "featuredHidden": "N’afficher aucun vaisseau",
         "featuredHiddenInfo": "L’en-tête reste centré, sans vaisseau à côté.",
         "featuredRandom": "Choisir au hasard",
-        "featuredRandomInfo": "Chaque visite met en avant l’un de ces vaisseaux. Désactivé : toujours le premier vaisseau de la liste."
+        "featuredRandomInfo": "Chaque jour met en avant l’un de ces vaisseaux, le même pour tous les visiteurs. Désactivé : toujours le premier vaisseau de la liste."
       },
       "gameEvent": {
         "title": "Titre",
