@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_21_150000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_21_220000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1285,6 +1285,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_21_150000) do
     t.index ["ended_at"], name: "index_funding_goals_on_ended_at"
   end
 
+  create_table "game_events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "title", null: false
+    t.text "description"
+    t.string "location"
+    t.string "url"
+    t.integer "category", default: 0, null: false
+    t.datetime "starts_at", null: false
+    t.datetime "ends_at"
+    t.boolean "published", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["published"], name: "index_game_events_on_published"
+    t.index ["starts_at"], name: "index_game_events_on_starts_at"
+  end
+
   create_table "game_mission_builds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "game_mission_id", null: false
     t.string "environment", null: false
@@ -1539,6 +1554,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_21_150000) do
     t.index ["parent_type", "parent_id"], name: "index_hardpoints_on_parent"
   end
 
+  create_table "homepage_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "featured_model_ids", default: [], null: false, array: true
+    t.boolean "featured_random", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "featured_hidden", default: false, null: false
+  end
+
   create_table "images", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "gallery_id"
     t.string "gallery_type", limit: 255
@@ -1758,6 +1781,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_21_150000) do
     t.index ["item_type", "item_id"], name: "index_item_prices_on_item"
     t.index ["shop_id"], name: "index_item_prices_on_shop_id"
     t.index ["terminal_id"], name: "index_item_prices_on_terminal_id"
+  end
+
+  create_table "loading_screens", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "environment", null: false
+    t.string "version", null: false
+    t.string "name", null: false
+    t.string "etag"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["version", "name"], name: "index_loading_screens_on_version_and_name", unique: true
   end
 
   create_table "location_builds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -2274,6 +2307,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_21_150000) do
     t.string "ship_views_digest"
     t.jsonb "ship_view_md5s", default: {}, null: false
     t.jsonb "weapon_regen_modifier"
+    t.string "first_seen_version"
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
     t.index ["classification"], name: "index_models_on_classification"
     t.index ["legacy_slug"], name: "index_models_on_legacy_slug"

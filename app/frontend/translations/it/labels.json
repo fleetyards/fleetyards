@@ -349,7 +349,10 @@
       "updatedAt": "Aggiornato il",
       "addToHangar": "Aggiungi all'hangar",
       "home": {
-        "search": "Cerca Navi..."
+        "catalogueSearch": "Cerca navi, oggetti, missioni e luoghi",
+        "submitCatalogueSearch": "Cerca",
+        "search": "Cerca Navi...",
+        "submitSearch": "Cerca navi"
       },
       "shop": {
         "sellPrice": "vende per",
@@ -1704,6 +1707,25 @@
         "currency": "Valuta",
         "effectiveFrom": "In vigore dal",
         "endedAt": "Terminato il"
+      },
+      "homepageSetting": {
+        "featuredModelsInfo": "Mostrato accanto alla ricerca della home. Lascia vuoto per scegliere a caso tra tutte le navi con una vista angolata a colori.",
+        "featuredHidden": "Non mostrare nessuna nave",
+        "featuredHiddenInfo": "L’intestazione resta centrata, senza nave accanto.",
+        "featuredRandom": "Scegli a caso",
+        "featuredRandomInfo": "Ogni visita mette in evidenza una di queste navi. Disattivato: sempre la prima nave della lista."
+      },
+      "gameEvent": {
+        "title": "Titolo",
+        "description": "Descrizione",
+        "location": "Luogo",
+        "url": "Link",
+        "category": "Categoria",
+        "startsAt": "Inizia il",
+        "endsAt": "Finisce il",
+        "coverImage": "Immagine di copertina",
+        "published": "Pubblicato",
+        "publishedInfo": "Solo gli eventi pubblicati compaiono nella home page."
       },
       "supporterContribution": {
         "name": "Nome del sostenitore",
@@ -3387,6 +3409,8 @@
             "supporters": "Sostenitori",
             "admins": "Admin",
             "announcements": "Annunci",
+            "game_events": "Eventi di gioco",
+            "homepage": "Pagina iniziale",
             "oauth_applications": "Applicazioni OAuth",
             "maintenance": "Manutenzione",
             "imports": "Importazioni",

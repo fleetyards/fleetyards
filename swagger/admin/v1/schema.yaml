@@ -3864,6 +3864,200 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/game-events":
+    post:
+      summary: Create Game Event
+      tags:
+      - GameEvents
+      operationId: createGameEvent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/GameEventInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/GameEvent"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    get:
+      summary: Game Events list
+      tags:
+      - GameEvents
+      operationId: gameEvents
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 24
+        required: false
+      - "$ref": "#/components/parameters/SortingParameter"
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/GameEventQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/GameEvents"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/game-events/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: Game Event id
+      schema:
+        type: string
+        format: uuid
+      required: true
+    delete:
+      summary: Destroy Game Event
+      tags:
+      - GameEvents
+      operationId: destroyGameEvent
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/GameEvent"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    get:
+      summary: Game Event Detail
+      tags:
+      - GameEvents
+      operationId: gameEvent
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/GameEvent"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Game Event
+      tags:
+      - GameEvents
+      operationId: updateGameEvent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/GameEventInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/GameEvent"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/hardpoints":
     get:
       summary: Hardpoints
@@ -3963,6 +4157,67 @@ paths:
           description: no content
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/homepage-settings":
+    get:
+      summary: Homepage settings
+      tags:
+      - Homepage
+      operationId: homepageSettings
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HomepageSetting"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    put:
+      summary: Update the homepage settings
+      tags:
+      - Homepage
+      operationId: updateHomepageSettings
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/HomepageSettingInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HomepageSetting"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/images":
     post:
       summary: Image create
@@ -10885,6 +11140,8 @@ components:
       - supporters
       - admins
       - announcements
+      - game_events
+      - homepage
       - oauth_applications
       - maintenance
       - imports
@@ -10920,6 +11177,8 @@ components:
       - SUPPORTERS
       - ADMINS
       - ANNOUNCEMENTS
+      - GAME_EVENTS
+      - HOMEPAGE
       - OAUTH_APPLICATIONS
       - MAINTENANCE
       - IMPORTS
@@ -15755,6 +16014,162 @@ components:
       - MODEL
       - ALBUM
       title: GalleryTypeEnum
+    GameEvent:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type: string
+        location:
+          type: string
+        url:
+          type: string
+        category:
+          "$ref": "#/components/schemas/GameEventCategoryEnum"
+        startsAt:
+          type: string
+          format: date-time
+        endsAt:
+          type: string
+          format: date-time
+        published:
+          type: boolean
+        coverImage:
+          "$ref": "#/components/schemas/MediaFile"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - title
+      - category
+      - startsAt
+      - published
+      - createdAt
+      - updatedAt
+      title: GameEvent
+    GameEventCategoryEnum:
+      type: string
+      enum:
+      - other
+      - ship_combat
+      - ground_combat
+      - combined_combat
+      - mining
+      - salvage
+      - cargo_hauling
+      - exploration
+      x-enumNames:
+      - OTHER
+      - SHIP_COMBAT
+      - GROUND_COMBAT
+      - COMBINED_COMBAT
+      - MINING
+      - SALVAGE
+      - CARGO_HAULING
+      - EXPLORATION
+      title: GameEventCategoryEnum
+    GameEventInput:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        location:
+          type: string
+        url:
+          type: string
+        category:
+          "$ref": "#/components/schemas/GameEventCategoryEnum"
+        startsAt:
+          type: string
+          format: date-time
+        endsAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        published:
+          type: boolean
+        coverImage:
+          type:
+          - string
+          - 'null'
+      additionalProperties: false
+      required:
+      - title
+      - startsAt
+      title: GameEventInput
+    GameEventQuery:
+      type: object
+      properties:
+        titleCont:
+          type: string
+        categoryEq:
+          "$ref": "#/components/schemas/GameEventCategoryEnum"
+        publishedEq:
+          type: boolean
+        startsAtGteq:
+          type: string
+          format: date-time
+        startsAtLteq:
+          type: string
+          format: date-time
+        s:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/GameEventSortEnum"
+          - "$ref": "#/components/schemas/GameEventSortEnum"
+        sorts:
+          anyOf:
+          - type: array
+            items:
+              "$ref": "#/components/schemas/GameEventSortEnum"
+          - "$ref": "#/components/schemas/GameEventSortEnum"
+      additionalProperties: false
+      example: {}
+      title: GameEventQuery
+    GameEventSortEnum:
+      type: string
+      enum:
+      - title asc
+      - title desc
+      - startsAt asc
+      - startsAt desc
+      - createdAt asc
+      - createdAt desc
+      x-enumNames:
+      - TITLE_ASC
+      - TITLE_DESC
+      - STARTS_AT_ASC
+      - STARTS_AT_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      title: GameEventSortEnum
+    GameEvents:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameEvent"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: GameEvents
     GameMission:
       type: object
       properties:
@@ -16556,6 +16971,42 @@ components:
       - SHIP_MATRIX
       - GAME_FILES
       title: HardpointSourceEnum
+    HomepageSetting:
+      type: object
+      properties:
+        featuredModelIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        featuredRandom:
+          type: boolean
+        featuredHidden:
+          type: boolean
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - featuredModelIds
+      - featuredRandom
+      - featuredHidden
+      title: HomepageSetting
+    HomepageSettingInput:
+      type: object
+      properties:
+        featuredModelIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          maxItems: 20
+        featuredRandom:
+          type: boolean
+        featuredHidden:
+          type: boolean
+      additionalProperties: false
+      title: HomepageSettingInput
     Image:
       type: object
       properties:

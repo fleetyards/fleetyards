@@ -92,9 +92,9 @@ describe("FleetDashboardOnlineMembersPanel", () => {
 
     const subject = await mount();
 
-    expect(
-      subject.find("[data-test='fleet-dashboard-empty']").text(),
-    ).toContain("Nobody else is online");
+    expect(subject.find("[data-test='dashboard-empty']").text()).toContain(
+      "Nobody else is online",
+    );
   });
 
   // A zero before the answer would read as nobody.
@@ -300,9 +300,7 @@ describe("FleetDashboardOnlineMembersPanel", () => {
 
     expect(ask).toHaveBeenCalledTimes(1);
     expect(subject.find(".panel--loading").exists()).toBe(true);
-    expect(subject.find("[data-test='fleet-dashboard-empty']").exists()).toBe(
-      false,
-    );
+    expect(subject.find("[data-test='dashboard-empty']").exists()).toBe(false);
 
     answer();
     await flushPromises();

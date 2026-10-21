@@ -219,6 +219,17 @@
         "createFailed": "Non è stato possibile creare l'obiettivo di finanziamento.",
         "updateFailed": "Non è stato possibile aggiornare l'obiettivo di finanziamento."
       },
+      "homepageSetting": {
+        "updated": "Pagina iniziale salvata.",
+        "updateFailed": "Impossibile salvare la pagina iniziale."
+      },
+      "gameEvent": {
+        "created": "Evento di gioco creato.",
+        "updated": "Evento di gioco aggiornato.",
+        "destroyed": "Evento di gioco eliminato.",
+        "createFailed": "Impossibile creare l'evento di gioco.",
+        "updateFailed": "Impossibile aggiornare l'evento di gioco."
+      },
       "supporterNomination": {
         "update": {
           "success": "Selezione della flotta aggiornata.",
@@ -579,6 +590,9 @@
         },
         "fundingGoal": {
           "destroy": "Sei sicuro di voler eliminare questo obiettivo di finanziamento? Questa azione non può essere annullata."
+        },
+        "gameEvent": {
+          "destroy": "Vuoi davvero eliminare questo evento di gioco? L'azione non può essere annullata."
         },
         "supporterContribution": {
           "destroy": "Sei sicuro di voler eliminare questo contributo del sostenitore? Questa azione non può essere annullata."

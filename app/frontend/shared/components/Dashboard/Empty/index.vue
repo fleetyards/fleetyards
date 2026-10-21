@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  name: "FleetDashboardEmpty",
+  name: "DashboardEmpty",
 };
 </script>
 
@@ -17,7 +17,7 @@ withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <div class="dashboard-empty" data-test="fleet-dashboard-empty">
+  <div class="dashboard-empty" data-test="dashboard-empty">
     <i
       :class="['fa-light', icon, 'dashboard-empty__icon']"
       aria-hidden="true"

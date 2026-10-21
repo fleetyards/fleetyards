@@ -1,0 +1,9 @@
+{
+  "de": {
+    "dashboard": {
+      "showAll": "Alle anzeigen",
+      "empty": "Hier gibt es noch nichts.",
+      "failed": "Konnte gerade nicht geladen werden."
+    }
+  }
+}

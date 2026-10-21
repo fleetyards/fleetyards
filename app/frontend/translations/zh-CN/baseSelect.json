@@ -1,6 +1,12 @@
 {
   "zh-CN": {
     "baseSelect": {
+      "homepageSetting": {
+        "featuredModels": {
+          "label": "精选舰船",
+          "nullablePrompt": "无精选舰船"
+        }
+      },
       "actions": {
         "fetchMore": "加载更多"
       },

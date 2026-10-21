@@ -1,6 +1,12 @@
 {
   "en": {
     "baseSelect": {
+      "homepageSetting": {
+        "featuredModels": {
+          "label": "Featured ships",
+          "nullablePrompt": "No featured ships"
+        }
+      },
       "actions": {
         "fetchMore": "Load more"
       },

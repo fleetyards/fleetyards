@@ -51,6 +51,7 @@
         "roadmap-progress-tracker": "搜尋"
       },
       "home": {
+        "catalogueSearch": "艦船、物品、任務、地點...",
         "search": "搜尋飛船..."
       },
       "image": {
@@ -123,6 +124,12 @@
         "currency": "EUR",
         "effectiveFrom": "2026-01-01",
         "endedAt": "持續進行請留空"
+      },
+      "gameEvent": {
+        "title": "Invictus Launch Week",
+        "description": "活動內容以及飛行員為何應該參加",
+        "location": "New Babbage, microTech",
+        "url": "https://robertsspaceindustries.com/..."
       },
       "supporterContribution": {
         "name": "公開顯示的支持者名稱",

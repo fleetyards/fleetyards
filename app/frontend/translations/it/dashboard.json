@@ -1,0 +1,9 @@
+{
+  "it": {
+    "dashboard": {
+      "showAll": "Mostra tutto",
+      "empty": "Ancora niente qui.",
+      "failed": "Al momento non è stato possibile caricarlo."
+    }
+  }
+}

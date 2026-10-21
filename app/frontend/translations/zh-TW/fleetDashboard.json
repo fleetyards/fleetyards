@@ -1,9 +1,6 @@
 {
   "zh-TW": {
     "fleetDashboard": {
-      "showAll": "查看全部",
-      "empty": "暫無內容。",
-      "failed": "暫時無法載入。",
       "unnamed": "未命名",
       "formats": {
         "weekday": "EEE",

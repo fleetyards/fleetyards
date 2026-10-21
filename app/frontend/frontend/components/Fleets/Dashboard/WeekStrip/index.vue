@@ -6,9 +6,9 @@ export default {
 
 <script lang="ts" setup>
 import { addDays, isSameDay, parseISO, startOfWeek } from "date-fns";
-import DashboardPanel from "@/frontend/components/Fleets/Dashboard/DashboardPanel/index.vue";
+import DashboardPanel from "@/shared/components/Dashboard/Panel/index.vue";
 import EventCard from "@/frontend/components/Fleets/Dashboard/EventCard/index.vue";
-import { liveQuery } from "@/frontend/components/Fleets/Dashboard/liveQuery";
+import { liveQuery } from "@/shared/components/Dashboard/liveQuery";
 import { useToday } from "@/frontend/components/Fleets/Dashboard/useToday";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
@@ -214,7 +214,7 @@ const dayLabel = (day: Date) =>
          and say it failed rather than that the day is free. Paging keeps the
          last week's answer as a placeholder, which says nothing of this one. -->
     <p v-else-if="isLoadingError" class="week-strip__empty">
-      {{ t("fleetDashboard.failed") }}
+      {{ t("dashboard.failed") }}
     </p>
     <p v-else-if="answered" class="week-strip__empty">
       {{ t("fleetDashboard.week.emptyDay", { day: dayLabel(selected) }) }}

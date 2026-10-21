@@ -35,6 +35,7 @@ zh-CN:
     subscription_required: "该舰队没有此功能的订阅。"
     supporter_required: "其他铭牌样式是支持者专属福利。"
     record_not_found:
+      game_event: 未找到游戏活动
       fleet_subscription: 未找到舰队订阅
       announcement: 未找到公告
       announcement_delivery: 未找到公告投递

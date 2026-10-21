@@ -1,6 +1,7 @@
 import { formatISO, parseISO, differenceInMinutes } from "date-fns";
 import { defineStore } from "pinia";
 import { useHangarStore } from "./hangar";
+import { useWishlistStore } from "./wishlist";
 import { useFiltersStore } from "@/shared/stores/filters";
 import { queryClient } from "@/frontend/plugins/QueryClient";
 import {
@@ -92,6 +93,7 @@ export const useSessionStore = defineStore("session", {
 
       const hangarStore = useHangarStore();
       hangarStore.ships = [];
+      useWishlistStore().ships = [];
 
       useFiltersStore().clearSavedFilters();
 

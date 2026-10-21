@@ -1,0 +1,9 @@
+{
+  "zh-TW": {
+    "dashboard": {
+      "showAll": "查看全部",
+      "empty": "暫無內容。",
+      "failed": "暫時無法載入。"
+    }
+  }
+}

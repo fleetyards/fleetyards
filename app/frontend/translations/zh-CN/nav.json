@@ -334,6 +334,12 @@
           "new": "新建资金目标",
           "edit": "编辑资金目标"
         },
+        "homepage": "首页",
+        "gameEvents": {
+          "index": "游戏活动",
+          "new": "新建游戏活动",
+          "edit": "编辑游戏活动"
+        },
         "notifications": {
           "index": "通知"
         },

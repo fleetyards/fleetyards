@@ -213,6 +213,17 @@
         "createFailed": "无法创建筹款目标。",
         "updateFailed": "无法更新筹款目标。"
       },
+      "homepageSetting": {
+        "updated": "首页已保存。",
+        "updateFailed": "无法保存首页。"
+      },
+      "gameEvent": {
+        "created": "游戏活动已创建。",
+        "updated": "游戏活动已更新。",
+        "destroyed": "游戏活动已删除。",
+        "createFailed": "无法创建游戏活动。",
+        "updateFailed": "无法更新游戏活动。"
+      },
       "supporterNomination": {
         "update": {
           "success": "舰队选择已更新。",
@@ -573,6 +584,9 @@
         },
         "fundingGoal": {
           "destroy": "确定要删除此筹款目标吗? 此操作无法撤销。"
+        },
+        "gameEvent": {
+          "destroy": "确定要删除此游戏活动吗？此操作无法撤销。"
         },
         "supporterContribution": {
           "destroy": "确定要删除此支持者捐助吗? 此操作无法撤销。"

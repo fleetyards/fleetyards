@@ -213,6 +213,17 @@
         "createFailed": "無法建立募資目標。",
         "updateFailed": "無法更新募資目標。"
       },
+      "homepageSetting": {
+        "updated": "首頁已儲存。",
+        "updateFailed": "無法儲存首頁。"
+      },
+      "gameEvent": {
+        "created": "遊戲活動已建立。",
+        "updated": "遊戲活動已更新。",
+        "destroyed": "遊戲活動已刪除。",
+        "createFailed": "無法建立遊戲活動。",
+        "updateFailed": "無法更新遊戲活動。"
+      },
       "supporterNomination": {
         "update": {
           "success": "艦隊選擇已更新。",
@@ -573,6 +584,9 @@
         },
         "fundingGoal": {
           "destroy": "確定要刪除此募資目標嗎？此操作無法復原。"
+        },
+        "gameEvent": {
+          "destroy": "確定要刪除此遊戲活動嗎？此動作無法復原。"
         },
         "supporterContribution": {
           "destroy": "確定要刪除此支持者捐助嗎？此操作無法復原。"

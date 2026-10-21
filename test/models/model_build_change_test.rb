@@ -97,6 +97,24 @@ class ModelBuildChangeTest < ActiveSupport::TestCase
     assert_equal 210, ModelBuildChange.sole.old_value
   end
 
+  # The newest other build is the previous one only while the build being
+  # recorded is the newest. Recording an older one again names its own.
+  test ".record! measures against the build it is given" do
+    older = create(
+      :model_build,
+      model: @model, environment: @environment, version: "4.8.0",
+      scm_speed: 100, created_at: 6.months.ago
+    )
+    build = previous_build(scm_speed: 210)
+    current_build(scm_speed: 190)
+
+    ModelBuildChange.record!(build, previous: older)
+
+    change = ModelBuildChange.sole
+    assert_equal 100, change.old_value
+    assert_equal 210, change.new_value
+  end
+
   test ".record! records a fact the previous build did not carry" do
     previous_build(scm_speed: 210, max_speed: nil)
     build = current_build(scm_speed: 210, max_speed: 1200)
@@ -127,6 +145,41 @@ class ModelBuildChangeTest < ActiveSupport::TestCase
     assert_equal "crew", change.field
     assert_equal 3, change.old_value
     assert_equal 4, change.new_value
+  end
+
+  # --- A whole patch -----------------------------------------------------------
+
+  private def change(from_version, to_version, old_value, new_value, field: "scm_speed", at: 1.day.ago)
+    ModelBuildChange.create!(
+      model: @model, environment: "live", field:, from_version:, to_version:,
+      old_value:, new_value:, recorded_at: at
+    )
+  end
+
+  test ".patch_changes counts a hotfix as part of its patch, against the patch before" do
+    change("4.10.1-live.1", "4.10.2-live.2", 210, 190, at: 3.days.ago)
+    change("4.10.2-live.2", "4.10.2-live.3", 190, 180, at: 1.day.ago)
+
+    merged = ModelBuildChange.patch_changes("live", "4.10.2-live.3").sole
+
+    assert_equal "4.10.1-live.1", merged.from_version
+    assert_equal "4.10.2-live.3", merged.to_version
+    assert_equal 210, merged.old_value
+    assert_equal 180, merged.new_value
+  end
+
+  test ".patch_changes leaves out what the patch before changed" do
+    change("4.10.0-live.0", "4.10.1-live.1", 230, 210, at: 1.month.ago)
+    change("4.10.1-live.1", "4.10.2-live.2", 210, 190)
+
+    assert_equal [210], ModelBuildChange.patch_changes("live", "4.10.2-live.2").map(&:old_value)
+  end
+
+  test ".patch_changes drops a fact a hotfix put back where it was" do
+    change("4.10.1-live.1", "4.10.2-live.2", 210, 190, at: 3.days.ago)
+    change("4.10.2-live.2", "4.10.2-live.3", 190, 210, at: 1.day.ago)
+
+    assert_empty ModelBuildChange.patch_changes("live", "4.10.2-live.3")
   end
 
   private def previous_build(attributes)

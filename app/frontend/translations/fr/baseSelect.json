@@ -1,6 +1,12 @@
 {
   "fr": {
     "baseSelect": {
+      "homepageSetting": {
+        "featuredModels": {
+          "label": "Vaisseaux à la une",
+          "nullablePrompt": "Aucun vaisseau à la une"
+        }
+      },
       "actions": {
         "fetchMore": "Charger plus"
       },

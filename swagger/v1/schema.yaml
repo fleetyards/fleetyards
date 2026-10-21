@@ -10470,6 +10470,29 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/game-events":
+    get:
+      summary: Game events list
+      tags:
+      - Game Events
+      operationId: gameEvents
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 24
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/GameEvents"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/hangar":
     delete:
       summary: Clear your personal Hangar
@@ -12804,6 +12827,19 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/homepage":
+    get:
+      summary: Homepage
+      tags:
+      - Homepage
+      operationId: homepage
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Homepage"
   "/images":
     get:
       summary: Images list
@@ -13408,6 +13444,75 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/me/events":
+    get:
+      summary: My agenda
+      tags:
+      - Me
+      operationId: myEvents
+      parameters:
+      - name: from
+        in: query
+        schema:
+          type: string
+          format: date-time
+        required: false
+      - name: to
+        in: query
+        schema:
+          type: string
+          format: date-time
+        required: false
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+        - user:read
+      - OpenId:
+        - user
+        - user:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MyEventsList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/me/fleets":
+    get:
+      summary: My fleets at a glance
+      tags:
+      - Me
+      operationId: myFleetSummaries
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - user
+        - user:read
+      - OpenId:
+        - user
+        - user:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MyFleetSummariesList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/me/hangar/share":
     post:
       summary: Create hangar share link
@@ -13504,6 +13609,33 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/HangarShare"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/me/patch-changes":
+    get:
+      summary: What the current build changed about my ships
+      tags:
+      - Me
+      operationId: myPatchChanges
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MyPatchChanges"
         '401':
           description: unauthorized
           content:
@@ -17886,6 +18018,25 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/sc-data/patch-summary":
+    get:
+      summary: SC Data patch summary
+      tags:
+      - Versions
+      operationId: scDataPatchSummary
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ScDataPatchSummary"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/sc-data/sources":
     get:
       summary: SC Data Sources
@@ -17912,6 +18063,27 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ScDataVersion"
+  "/search":
+    get:
+      summary: Search the catalogues
+      tags:
+      - Search
+      operationId: search
+      parameters:
+      - name: q
+        in: query
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SearchResults"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/sessions":
     post:
       summary: create session
@@ -24558,6 +24730,7 @@ components:
       - hangar_inventories
       - holo_ar
       - holo_textured
+      - homepage_redesign
       - loadout_editor
       - oauth-applications
       - oauth-bluesky
@@ -24581,6 +24754,7 @@ components:
       - HANGAR_INVENTORIES
       - HOLO_AR
       - HOLO_TEXTURED
+      - HOMEPAGE_REDESIGN
       - LOADOUT_EDITOR
       - OAUTH_APPLICATIONS
       - OAUTH_BLUESKY
@@ -30651,6 +30825,59 @@ components:
       - name
       - slug
       title: Gallery
+    GameEvent:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type: string
+        location:
+          type: string
+        url:
+          type: string
+        category:
+          "$ref": "#/components/schemas/MissionCategoryEnum"
+        startsAt:
+          type: string
+          format: date-time
+        endsAt:
+          type: string
+          format: date-time
+        coverImage:
+          "$ref": "#/components/schemas/MediaFile"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - title
+      - category
+      - startsAt
+      - createdAt
+      - updatedAt
+      title: GameEvent
+    GameEvents:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/GameEvent"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: GameEvents
     GameMission:
       type: object
       properties:
@@ -32653,6 +32880,35 @@ components:
       - 'TRUE'
       - ONLY
       title: HiddenVehiclesFilterEnum
+    Homepage:
+      type: object
+      properties:
+        searchSuggestions:
+          type: array
+          items:
+            type: string
+        featuredShip:
+          "$ref": "#/components/schemas/HomepageFeaturedShip"
+      additionalProperties: false
+      required:
+      - searchSuggestions
+      title: Homepage
+    HomepageFeaturedShip:
+      type: object
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        manufacturerName:
+          type: string
+        image:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      required:
+      - name
+      - slug
+      title: HomepageFeaturedShip
     Image:
       type: object
       properties:
@@ -37264,6 +37520,169 @@ components:
       items:
         "$ref": "#/components/schemas/Model"
       title: ModelsList
+    MyEvent:
+      type: object
+      properties:
+        type:
+          "$ref": "#/components/schemas/MyEventTypeEnum"
+        startsAt:
+          type: string
+          format: date-time
+        fleet:
+          "$ref": "#/components/schemas/FleetRef"
+        fleetEvent:
+          "$ref": "#/components/schemas/FleetEvent"
+        gameEvent:
+          "$ref": "#/components/schemas/GameEvent"
+      additionalProperties: false
+      required:
+      - type
+      - startsAt
+      title: MyEvent
+    MyEventTypeEnum:
+      type: string
+      enum:
+      - fleet_event
+      - game_event
+      x-enumNames:
+      - FLEET_EVENT
+      - GAME_EVENT
+      title: MyEventTypeEnum
+    MyEventsList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/MyEvent"
+      additionalProperties: false
+      required:
+      - items
+      title: MyEventsList
+    MyFleetAnnouncementExcerpt:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        excerpt:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - excerpt
+      - createdAt
+      title: MyFleetAnnouncementExcerpt
+    MyFleetSummariesList:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/MyFleetSummary"
+      additionalProperties: false
+      required:
+      - items
+      title: MyFleetSummariesList
+    MyFleetSummary:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        logo:
+          "$ref": "#/components/schemas/MediaFile"
+        roleName:
+          type: string
+        primary:
+          type: boolean
+        memberCount:
+          type: integer
+        onlineCount:
+          type: integer
+        latestAnnouncement:
+          "$ref": "#/components/schemas/MyFleetAnnouncementExcerpt"
+        pendingJoinRequestsCount:
+          type: integer
+        pendingTransfersCount:
+          type: integer
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - primary
+      - memberCount
+      title: MyFleetSummary
+    MyPatchChange:
+      type: object
+      properties:
+        model:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+            slug:
+              type: string
+            manufacturerName:
+              type: string
+            storeImage:
+              "$ref": "#/components/schemas/MediaFile"
+          additionalProperties: false
+          required:
+          - id
+          - name
+          - slug
+        ownedCount:
+          type: integer
+        wanted:
+          type: boolean
+        changeCount:
+          type: integer
+        changes:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelBuildChange"
+      additionalProperties: false
+      required:
+      - model
+      - ownedCount
+      - wanted
+      - changeCount
+      - changes
+      title: MyPatchChange
+    MyPatchChanges:
+      type: object
+      properties:
+        environment:
+          type: string
+        version:
+          type: string
+        fromVersion:
+          type: string
+        totalCount:
+          type: integer
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/MyPatchChange"
+      additionalProperties: false
+      required:
+      - environment
+      - version
+      - totalCount
+      - items
+      title: MyPatchChanges
     MySupportedFleet:
       type: object
       properties:
@@ -39597,25 +40016,33 @@ components:
       - page
       - check
       title: RsiPageReportInput
+    ScDataBuild:
+      type: object
+      properties:
+        environment:
+          type: string
+        version:
+          type: string
+        default:
+          type: boolean
+        loadingScreens:
+          type: array
+          items:
+            "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      required:
+      - environment
+      - version
+      - default
+      - loadingScreens
+      title: ScDataBuild
     ScDataBuilds:
       type: object
       properties:
         items:
           type: array
           items:
-            type: object
-            properties:
-              environment:
-                type: string
-              version:
-                type: string
-              default:
-                type: boolean
-            additionalProperties: false
-            required:
-            - environment
-            - version
-            - default
+            "$ref": "#/components/schemas/ScDataBuild"
       additionalProperties: false
       required:
       - items
@@ -39964,6 +40391,224 @@ components:
       - to
       - catalogues
       title: ScDataCompare
+    ScDataPatchSummary:
+      type: object
+      properties:
+        from:
+          type: object
+          properties:
+            environment:
+              type: string
+            version:
+              type: string
+          additionalProperties: false
+          required:
+          - environment
+          - version
+        to:
+          type: object
+          properties:
+            environment:
+              type: string
+            version:
+              type: string
+          additionalProperties: false
+          required:
+          - environment
+          - version
+        counts:
+          type: object
+          properties:
+            newShips:
+              type: integer
+            changedShips:
+              type: integer
+            vanishedShips:
+              type: integer
+            newComponents:
+              type: integer
+            changedComponents:
+              type: integer
+            newEquipment:
+              type: integer
+            changedEquipment:
+              type: integer
+            vanishedEquipment:
+              type: integer
+          additionalProperties: false
+          required:
+          - newShips
+          - changedShips
+          - vanishedShips
+          - newComponents
+          - changedComponents
+          - newEquipment
+          - changedEquipment
+          - vanishedEquipment
+        newShips:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              name:
+                type: string
+              slug:
+                type: string
+              manufacturerName:
+                type: string
+              storeImage:
+                "$ref": "#/components/schemas/MediaFile"
+              previewImage:
+                "$ref": "#/components/schemas/MediaFile"
+            additionalProperties: false
+            required:
+            - id
+            - name
+            - slug
+        latestArrivals:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              name:
+                type: string
+              slug:
+                type: string
+              manufacturerName:
+                type: string
+              storeImage:
+                "$ref": "#/components/schemas/MediaFile"
+              previewImage:
+                "$ref": "#/components/schemas/MediaFile"
+            additionalProperties: false
+            required:
+            - id
+            - name
+            - slug
+        latestArrivalsVersion:
+          type:
+          - string
+          - 'null'
+        shipChanges:
+          type: array
+          items:
+            type: object
+            properties:
+              model:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  name:
+                    type: string
+                  slug:
+                    type: string
+                  manufacturerName:
+                    type: string
+                  storeImage:
+                    "$ref": "#/components/schemas/MediaFile"
+                  previewImage:
+                    "$ref": "#/components/schemas/MediaFile"
+                additionalProperties: false
+                required:
+                - id
+                - name
+                - slug
+              fields:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    field:
+                      type: string
+                    from:
+                      type:
+                      - number
+                      - string
+                      - boolean
+                      - 'null'
+                    to:
+                      type:
+                      - number
+                      - string
+                      - boolean
+                      - 'null'
+                  additionalProperties: false
+                  required:
+                  - field
+                  - from
+                  - to
+            additionalProperties: false
+            required:
+            - model
+            - fields
+        itemChanges:
+          type: array
+          items:
+            type: object
+            properties:
+              kind:
+                type: string
+                enum:
+                - components
+                - equipment
+              id:
+                type: string
+                format: uuid
+              name:
+                type:
+                - string
+                - 'null'
+              slug:
+                type:
+                - string
+                - 'null'
+              fields:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    field:
+                      type: string
+                    from:
+                      type:
+                      - number
+                      - string
+                      - boolean
+                      - 'null'
+                    to:
+                      type:
+                      - number
+                      - string
+                      - boolean
+                      - 'null'
+                  additionalProperties: false
+                  required:
+                  - field
+                  - from
+                  - to
+            additionalProperties: false
+            required:
+            - kind
+            - id
+            - fields
+      additionalProperties: false
+      required:
+      - from
+      - to
+      - counts
+      - newShips
+      - latestArrivals
+      - shipChanges
+      - itemChanges
+      title: ScDataPatchSummary
     ScDataSources:
       type: object
       properties:
@@ -39996,6 +40641,68 @@ components:
       required:
       - version
       title: ScDataVersion
+    SearchAppearance:
+      type: object
+      properties:
+        kind:
+          "$ref": "#/components/schemas/LocationKindEnum"
+        color:
+          type: string
+        bodyType:
+          type: string
+        flare:
+          type: boolean
+      additionalProperties: false
+      required:
+      - kind
+      - flare
+      title: SearchAppearance
+    SearchGroup:
+      type: object
+      properties:
+        type:
+          type: string
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/SearchResult"
+      additionalProperties: false
+      required:
+      - type
+      - items
+      title: SearchGroup
+    SearchResult:
+      type: object
+      properties:
+        type:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        detail:
+          type: string
+        image:
+          "$ref": "#/components/schemas/MediaFile"
+        appearance:
+          "$ref": "#/components/schemas/SearchAppearance"
+      additionalProperties: false
+      required:
+      - type
+      - name
+      - slug
+      title: SearchResult
+    SearchResults:
+      type: object
+      properties:
+        groups:
+          type: array
+          items:
+            "$ref": "#/components/schemas/SearchGroup"
+      additionalProperties: false
+      required:
+      - groups
+      title: SearchResults
     SessionInput:
       type: object
       properties:
@@ -40299,6 +41006,10 @@ components:
           type: integer
         paintedVehiclesPercent:
           type: number
+        fleetsCount:
+          type: integer
+        patchChangedShipsCount:
+          type: integer
       additionalProperties: false
       required:
       - shipsCountYear
@@ -40310,6 +41021,8 @@ components:
       - wishlistsCount
       - shipOfTheMonthCount
       - paintedVehiclesPercent
+      - fleetsCount
+      - patchChangedShipsCount
       title: Stats
     StorageContainer:
       type: object

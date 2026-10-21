@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  name: "FleetDashboardPanel",
+  name: "DashboardPanel",
 };
 </script>
 
@@ -66,7 +66,7 @@ const { t } = useI18n();
       <template v-if="more || $slots.actions" #actions>
         <slot name="actions" />
         <router-link v-if="more" :to="more" class="dashboard-panel__more">
-          {{ moreLabel ?? t("fleetDashboard.showAll") }}
+          {{ moreLabel ?? t("dashboard.showAll") }}
           <i class="fa-light fa-chevron-right" aria-hidden="true" />
         </router-link>
       </template>
@@ -77,7 +77,7 @@ const { t } = useI18n();
         <p
           v-if="notice"
           class="dashboard-panel__notice"
-          data-test="fleet-dashboard-notice"
+          data-test="dashboard-notice"
         >
           {{ notice }}
         </p>
@@ -86,12 +86,12 @@ const { t } = useI18n();
       <p
         v-else-if="state === 'failed'"
         class="dashboard-panel__note"
-        data-test="fleet-dashboard-failed"
+        data-test="dashboard-failed"
       >
-        {{ t("fleetDashboard.failed") }}
+        {{ t("dashboard.failed") }}
       </p>
       <slot v-else name="empty">
-        <p class="dashboard-panel__note">{{ t("fleetDashboard.empty") }}</p>
+        <p class="dashboard-panel__note">{{ t("dashboard.empty") }}</p>
       </slot>
     </PanelBody>
   </Panel>

@@ -213,6 +213,17 @@
         "createFailed": "No se pudo crear el objetivo de financiación.",
         "updateFailed": "No se pudo actualizar el objetivo de financiación."
       },
+      "homepageSetting": {
+        "updated": "Página de inicio guardada.",
+        "updateFailed": "No se pudo guardar la página de inicio."
+      },
+      "gameEvent": {
+        "created": "Evento del juego creado.",
+        "updated": "Evento del juego actualizado.",
+        "destroyed": "Evento del juego eliminado.",
+        "createFailed": "No se pudo crear el evento del juego.",
+        "updateFailed": "No se pudo actualizar el evento del juego."
+      },
       "supporterNomination": {
         "update": {
           "success": "Selección de flota actualizada.",
@@ -573,6 +584,9 @@
         },
         "fundingGoal": {
           "destroy": "¿Seguro que quieres eliminar este objetivo de financiación? Esta acción no se puede revertir."
+        },
+        "gameEvent": {
+          "destroy": "¿Seguro que quieres eliminar este evento del juego? Esta acción no se puede deshacer."
         },
         "supporterContribution": {
           "destroy": "¿Seguro que quieres eliminar esta aportación de patrocinador? Esta acción no se puede revertir."

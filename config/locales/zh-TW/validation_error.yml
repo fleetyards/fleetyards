@@ -191,6 +191,12 @@ zh-TW:
       create: 無法建立募資目標。
       destroy: 無法刪除募資目標。
       update: 無法更新募資目標。
+    game_event:
+      create: 無法建立遊戲活動。
+      destroy: 無法刪除遊戲活動。
+      update: 無法更新遊戲活動。
+    homepage_setting:
+      update: 首頁設定無法儲存。
     hardpoint:
       create: 無法建立掛點。
       update: 無法更新掛點。

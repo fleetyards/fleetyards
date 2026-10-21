@@ -6,6 +6,7 @@ v1_api_routes = lambda do
   get "sc-data/sources", to: "sc_data#sources"
   get "sc-data/builds", to: "sc_data#builds"
   get "sc-data/compare", to: "sc_data#compare"
+  get "sc-data/patch-summary", to: "sc_data#patch_summary"
 
   resource :features, only: %i[show]
 
@@ -26,6 +27,7 @@ v1_api_routes = lambda do
 
   get "catalogue/lookup", to: "catalogue#lookup"
   get "catalogue/search", to: "catalogue#search"
+  get "search", to: "search#index"
 
   resource :sessions, only: %i[create destroy] do
     collection do
@@ -63,6 +65,9 @@ v1_api_routes = lambda do
   draw "api/trade_routes_routes"
   draw "api/equipment_routes"
   draw "api/game_missions_routes"
+
+  resources :game_events, path: "game-events", only: %i[index]
+  get "homepage", to: "homepage#show"
   draw "api/locations_routes"
   draw "api/shops_routes"
   draw "api/imports_routes"

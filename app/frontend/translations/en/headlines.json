@@ -127,6 +127,12 @@
           "new": "New Funding Goal",
           "edit": "Edit Funding Goal"
         },
+        "homepage": "Homepage",
+        "gameEvents": {
+          "index": "Game Events",
+          "new": "New Game Event",
+          "edit": "Edit Game Event"
+        },
         "users": {
           "index": "Users",
           "edit": "Edit User",

@@ -219,6 +219,17 @@
         "createFailed": "Finanzierungsziel konnte nicht angelegt werden.",
         "updateFailed": "Finanzierungsziel konnte nicht aktualisiert werden."
       },
+      "homepageSetting": {
+        "updated": "Startseite gespeichert.",
+        "updateFailed": "Startseite konnte nicht gespeichert werden."
+      },
+      "gameEvent": {
+        "created": "Spiel-Event erstellt.",
+        "updated": "Spiel-Event aktualisiert.",
+        "destroyed": "Spiel-Event gelöscht.",
+        "createFailed": "Spiel-Event konnte nicht erstellt werden.",
+        "updateFailed": "Spiel-Event konnte nicht aktualisiert werden."
+      },
       "supporterNomination": {
         "update": {
           "success": "Flottenauswahl aktualisiert.",
@@ -579,6 +590,9 @@
         },
         "fundingGoal": {
           "destroy": "Bist du sicher, dass du dieses Finanzierungsziel löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
+        },
+        "gameEvent": {
+          "destroy": "Willst du dieses Spiel-Event wirklich löschen? Das kann nicht rückgängig gemacht werden."
         },
         "supporterContribution": {
           "destroy": "Bist du sicher, dass du diesen Unterstützer-Beitrag löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."

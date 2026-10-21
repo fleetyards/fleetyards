@@ -349,7 +349,10 @@
       "updatedAt": "Actualizado el",
       "addToHangar": "Agregar al hangar",
       "home": {
-        "search": "Buscar naves..."
+        "catalogueSearch": "Buscar naves, objetos, misiones y lugares",
+        "submitCatalogueSearch": "Buscar",
+        "search": "Buscar naves...",
+        "submitSearch": "Buscar naves"
       },
       "shop": {
         "sellPrice": "vende por",
@@ -1704,6 +1707,25 @@
         "currency": "Moneda",
         "effectiveFrom": "Vigente desde",
         "endedAt": "Finalizado el"
+      },
+      "homepageSetting": {
+        "featuredModelsInfo": "Se muestra junto a la búsqueda de la portada. Déjalo vacío para elegir al azar entre todas las naves con vista angular en color.",
+        "featuredHidden": "No destacar ninguna nave",
+        "featuredHiddenInfo": "La cabecera queda centrada, sin nave al lado.",
+        "featuredRandom": "Elegir al azar",
+        "featuredRandomInfo": "Cada visita destaca una de estas naves. Desactivado: siempre la primera nave de la lista."
+      },
+      "gameEvent": {
+        "title": "Título",
+        "description": "Descripción",
+        "location": "Ubicación",
+        "url": "Enlace",
+        "category": "Categoría",
+        "startsAt": "Empieza el",
+        "endsAt": "Termina el",
+        "coverImage": "Imagen de portada",
+        "published": "Publicado",
+        "publishedInfo": "Solo los eventos publicados aparecen en la página de inicio."
       },
       "supporterContribution": {
         "name": "Nombre del patrocinador",
@@ -3387,6 +3409,8 @@
             "supporters": "Patrocinadores",
             "admins": "Administradores",
             "announcements": "Anuncios",
+            "game_events": "Eventos del juego",
+            "homepage": "Página de inicio",
             "oauth_applications": "Aplicaciones OAuth",
             "maintenance": "Mantenimiento",
             "imports": "Importaciones",

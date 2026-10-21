@@ -24,6 +24,10 @@ module Api
       # config, which names one version per environment.
       def builds
         @builds = ::ScData::Source.recorded
+        @loading_screens = LoadingScreen.with_attached_image
+          .where(version: @builds.map(&:version))
+          .sort_by(&:name)
+          .group_by(&:version)
       end
 
       # What two builds say differently. Both sides are named by version alone,
@@ -51,6 +55,46 @@ module Api
         @comparisons = CATALOGUES.transform_values do |build_class|
           ::ScData::BuildCompare.new(build_class, from: @from, to: @to).call
         end
+      end
+
+      # What the current live patch brought, for the landing page. Cached on the
+      # two builds and when the newer one was last written, so a re-load of the
+      # same version is picked up and every visitor in between reads one answer.
+      def patch_summary
+        summary = ::ScData::PatchSummary.for("live")
+        return not_found if summary.blank?
+
+        written = ::ScData::PatchSummary::CATALOGUES.values.map { |build_class|
+          build_class.where(environment: summary.to.environment, version: summary.to.version).maximum(:updated_at)
+        }.compact.max
+
+        @summary = Rails.cache.fetch(["sc-data/patch-summary", summary.from.version, summary.to.version, written&.to_i], expires_in: 1.day) do
+          summary.call
+        end
+
+        models = Model.visible.active
+          .where(id: @summary[:new_ship_ids] + @summary[:ship_changes].pluck(:id))
+          .index_by(&:id)
+        @new_ships = @summary[:new_ship_ids].filter_map { |id| models[id] }
+        @ship_changes = @summary[:ship_changes].filter_map { |change| {model: models[change[:id]], fields: change[:fields]} if models[change[:id]] }
+
+        slugs = {
+          "components" => Component.where(id: @summary[:item_changes].select { |change| change[:kind] == "components" }.pluck(:id)).pluck(:id, :slug).to_h,
+          "equipment" => Equipment.where(id: @summary[:item_changes].select { |change| change[:kind] == "equipment" }.pluck(:id)).pluck(:id, :slug).to_h
+        }
+        @item_changes = @summary[:item_changes].map { |change| change.merge(slug: slugs.dig(change[:kind], change[:id])) }
+
+        @latest_arrivals_version, @latest_arrivals = latest_arrivals
+      end
+
+      # The ships the most recent patch that brought any brought, for a patch
+      # that brought none -- so the section can still say what is newest.
+      private def latest_arrivals
+        version = Model.visible.active.where.not(first_seen_version: nil).distinct.pluck(:first_seen_version)
+          .max_by { |candidate| ::ScData::Source.new(environment: "live", version: candidate).precedence }
+        return [nil, []] if version.blank?
+
+        [version, Model.visible.active.where(first_seen_version: version).order(:name).to_a]
       end
 
       private def recorded_build(version)

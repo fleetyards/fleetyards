@@ -116,9 +116,7 @@ describe("FleetDashboardContractsPanel", () => {
   it("points everybody else at the board", async () => {
     const subject = await mount();
 
-    expect(subject.find("[data-test='fleet-dashboard-empty']").exists()).toBe(
-      true,
-    );
+    expect(subject.find("[data-test='dashboard-empty']").exists()).toBe(true);
     expect(
       subject.find("[data-test='fleet-dashboard-post-contract']").exists(),
     ).toBe(false);
@@ -135,9 +133,7 @@ describe("FleetDashboardContractsPanel", () => {
     const subject = await mount();
 
     expect(titles(subject, "mine")).toEqual(["Job a"]);
-    expect(subject.find("[data-test='fleet-dashboard-notice']").exists()).toBe(
-      true,
-    );
+    expect(subject.find("[data-test='dashboard-notice']").exists()).toBe(true);
   });
 
   // Without the reader's own work, their jobs would be offered back to them.
@@ -148,9 +144,7 @@ describe("FleetDashboardContractsPanel", () => {
     const subject = await mount();
 
     expect(titles(subject, "open")).toEqual([]);
-    expect(subject.find("[data-test='fleet-dashboard-failed']").exists()).toBe(
-      true,
-    );
+    expect(subject.find("[data-test='dashboard-failed']").exists()).toBe(true);
   });
 
   it("offers nothing for pickup until the reader's own work is in", async () => {

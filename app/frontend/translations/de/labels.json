@@ -349,7 +349,10 @@
       "updatedAt": "Aktualisiert am",
       "addToHangar": "Zum Hangar hinzufügen",
       "home": {
-        "search": "Schiffe suchen..."
+        "catalogueSearch": "Schiffe, Gegenstände, Missionen und Orte suchen",
+        "submitCatalogueSearch": "Suchen",
+        "search": "Schiffe suchen...",
+        "submitSearch": "Schiffe suchen"
       },
       "shop": {
         "sellPrice": "verkauft für",
@@ -1704,6 +1707,25 @@
         "currency": "Währung",
         "effectiveFrom": "Gültig ab",
         "endedAt": "Beendet am"
+      },
+      "homepageSetting": {
+        "featuredModelsInfo": "Neben der Suche auf der Startseite gezeigt. Leer lassen, um zufällig aus allen Schiffen mit farbiger Schrägansicht zu wählen.",
+        "featuredHidden": "Kein Schiff hervorheben",
+        "featuredHiddenInfo": "Der Hero bleibt zentriert, ohne Schiff daneben.",
+        "featuredRandom": "Zufällig wählen",
+        "featuredRandomInfo": "Jeder Besuch zeigt eines dieser Schiffe. Aus: immer das erste Schiff der Liste."
+      },
+      "gameEvent": {
+        "title": "Titel",
+        "description": "Beschreibung",
+        "location": "Ort",
+        "url": "Link",
+        "category": "Kategorie",
+        "startsAt": "Beginnt am",
+        "endsAt": "Endet am",
+        "coverImage": "Titelbild",
+        "published": "Veröffentlicht",
+        "publishedInfo": "Nur veröffentlichte Events erscheinen auf der Startseite."
       },
       "supporterContribution": {
         "name": "Unterstützer-Name",
@@ -3387,6 +3409,8 @@
             "supporters": "Unterstützer",
             "admins": "Admins",
             "announcements": "Ankündigungen",
+            "game_events": "Spiel-Events",
+            "homepage": "Startseite",
             "oauth_applications": "OAuth-Anwendungen",
             "maintenance": "Wartung",
             "imports": "Importe",

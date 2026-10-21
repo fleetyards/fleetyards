@@ -349,7 +349,10 @@
       "updatedAt": "Updated at",
       "addToHangar": "Add to Hangar",
       "home": {
-        "search": "Search for Ships..."
+        "catalogueSearch": "Search ships, items, missions and places",
+        "submitCatalogueSearch": "Search",
+        "search": "Search for Ships...",
+        "submitSearch": "Search ships"
       },
       "shop": {
         "sellPrice": "sells for",
@@ -1704,6 +1707,25 @@
         "currency": "Currency",
         "effectiveFrom": "Effective from",
         "endedAt": "Ended at"
+      },
+      "homepageSetting": {
+        "featuredModelsInfo": "Shown beside the homepage search. Leave empty to draw from every ship with a coloured angled render.",
+        "featuredHidden": "Show no featured ship",
+        "featuredHiddenInfo": "The hero stays centred, with no ship beside it.",
+        "featuredRandom": "Pick at random",
+        "featuredRandomInfo": "Each visit features one of these ships. Off: always the first ship in the list."
+      },
+      "gameEvent": {
+        "title": "Title",
+        "description": "Description",
+        "location": "Location",
+        "url": "Link",
+        "category": "Category",
+        "startsAt": "Starts at",
+        "endsAt": "Ends at",
+        "coverImage": "Cover image",
+        "published": "Published",
+        "publishedInfo": "Only published events appear on the homepage."
       },
       "supporterContribution": {
         "name": "Supporter Name",
@@ -3401,6 +3423,8 @@
             "supporters": "Supporters",
             "admins": "Admins",
             "announcements": "Announcements",
+            "game_events": "Game events",
+            "homepage": "Homepage",
             "oauth_applications": "OAuth Applications",
             "maintenance": "Maintenance",
             "imports": "Imports",

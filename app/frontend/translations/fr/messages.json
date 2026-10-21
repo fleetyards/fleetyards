@@ -217,6 +217,17 @@
         "createFailed": "Impossible de créer l'objectif de financement.",
         "updateFailed": "Impossible de mettre à jour l'objectif de financement."
       },
+      "homepageSetting": {
+        "updated": "Page d’accueil enregistrée.",
+        "updateFailed": "Impossible d’enregistrer la page d’accueil."
+      },
+      "gameEvent": {
+        "created": "Événement du jeu créé.",
+        "updated": "Événement du jeu mis à jour.",
+        "destroyed": "Événement du jeu supprimé.",
+        "createFailed": "Impossible de créer l'événement du jeu.",
+        "updateFailed": "Impossible de mettre à jour l'événement du jeu."
+      },
       "supporterNomination": {
         "update": {
           "success": "Sélection de la flotte mise à jour.",
@@ -577,6 +588,9 @@
         },
         "fundingGoal": {
           "destroy": "Êtes-vous sûr de vouloir supprimer cet objectif de financement ? Cette action est irréversible."
+        },
+        "gameEvent": {
+          "destroy": "Voulez-vous vraiment supprimer cet événement du jeu ? Cette action est irréversible."
         },
         "supporterContribution": {
           "destroy": "Êtes-vous sûr de vouloir supprimer cette contribution de soutien ? Cette action est irréversible."

@@ -37,6 +37,7 @@ it:
     subscription_required: "Questa flotta non ha un abbonamento per questa funzione."
     supporter_required: "Gli altri stili della targa sono un vantaggio per chi sostiene il progetto."
     record_not_found:
+      game_event: Nessun evento di gioco trovato
       fleet_subscription: Nessun abbonamento della flotta trovato
       announcement: Nessun annuncio trovato
       announcement_delivery: Nessuna consegna dell'annuncio trovata

@@ -1,0 +1,413 @@
+{
+  "it": {
+    "home": {
+      "landing": {
+        "title": "Ogni nave del 'verse. Tutta la tua flotta in un solo posto.",
+        "lede": "Consulta qualsiasi nave, con statistiche e loadout come sono oggi nel gioco.",
+        "signUp": "Crea un account gratuito",
+        "browseShips": "Vedi tutte le navi",
+        "scrollDown": "Scorri verso il basso",
+        "searchTry": "Prova",
+        "featuredShip": "Nave in evidenza",
+        "searchResults": "Risultati della ricerca",
+        "searchNoResults": "Nessun risultato per «%{query}»",
+        "searchNoResultsHint": "Prova con una nave, un componente, una missione o un luogo.",
+        "searching": "Ricerca in corso…",
+        "searchKeys": {
+          "move": "per spostarti",
+          "open": "per aprire",
+          "close": "per chiudere"
+        },
+        "stats": {
+          "ships": "Navi e veicoli",
+          "vehicles": "Navi negli hangar",
+          "fleets": "Flotte"
+        },
+        "features": {
+          "title": "Cosa puoi fare qui",
+          "subline": "Gratis per ogni pilota. Tutto parte dal tuo hangar.",
+          "withAccount": "Con un account gratuito",
+          "openToEveryone": "Aperto a tutti",
+          "hangar": {
+            "label": "Hangar",
+            "hint": "I tuoi pledge, sincronizzati",
+            "title": "Hangar",
+            "action": "Vedi un hangar di esempio",
+            "items": {
+              "sync": {
+                "title": "Sincronizzazione hangar RSI",
+                "text": "Importa ogni pledge dal tuo account RSI, buy-back inclusi."
+              },
+              "paints": {
+                "title": "Verniciature e upgrade",
+                "text": "Tieni traccia di quale verniciatura e quale CCU appartiene a quale scafo."
+              },
+              "loadouts": {
+                "title": "Loadout",
+                "text": "Salva il loadout che usi su ogni nave."
+              },
+              "fleetchart": {
+                "title": "Fleetchart",
+                "text": "Tutto il tuo hangar fianco a fianco, in scala."
+              },
+              "log": {
+                "title": "Diario di bordo",
+                "text": "Note e cronologia per ogni nave che possiedi."
+              },
+              "share": {
+                "title": "Lista dei desideri e link pubblico",
+                "text": "Condividi l’hangar, o solo le navi che vuoi."
+              }
+            }
+          },
+          "fleets": {
+            "label": "Flotte",
+            "hint": "Gestisci la tua org",
+            "title": "Flotte",
+            "action": "Cosa ottengono le flotte",
+            "items": {
+              "members": {
+                "title": "Membri e ruoli",
+                "text": "Invita la tua org, ordinala per gradi e decidi chi può fare cosa."
+              },
+              "squadrons": {
+                "title": "Squadriglie",
+                "text": "Stormi all’interno della flotta, ognuno con i suoi membri e il suo ruolo Discord."
+              },
+              "maps": {
+                "title": "Mappa del mondo e mappa stellare",
+                "text": "Dove vivono i tuoi membri, e dove volano."
+              },
+              "ships": {
+                "title": "Le navi della flotta",
+                "text": "Gli hangar di tutti i membri sommati, con un fleetchart in scala."
+              },
+              "allies": {
+                "title": "Alleati e directory",
+                "text": "Collegati con org alleate e fatti trovare da nuovi piloti."
+              },
+              "discord": {
+                "title": "Discord",
+                "text": "Ruoli e annunci sincronizzati con il tuo server."
+              }
+            }
+          },
+          "ships": {
+            "label": "Navi e dati",
+            "hint": "Dai file di gioco",
+            "title": "Navi e dati",
+            "action": "Sfoglia le navi",
+            "items": {
+              "ships": {
+                "title": "Navi e veicoli",
+                "text": "Statistiche, hardpoint e i componenti con cui viene consegnata ciascuna."
+              },
+              "viewer": {
+                "title": "Visualizzatore 3D",
+                "text": "Ruota ogni scafo nel browser."
+              },
+              "patches": {
+                "title": "Modifiche per patch",
+                "text": "Cosa ha cambiato ogni nuova build, e di quanto."
+              },
+              "components": {
+                "title": "Componenti ed equipaggiamento",
+                "text": "Armi, scudi, motori ed equipaggiamento FPS, con dove comprarli."
+              },
+              "locations": {
+                "title": "Luoghi e negozi",
+                "text": "Pianeti, lune e stazioni, e cosa vende ogni negozio."
+              },
+              "crafting": {
+                "title": "Crafting e missioni",
+                "text": "Ogni progetto con i suoi ingredienti, e le missioni che pagano."
+              }
+            }
+          },
+          "tools": {
+            "label": "Strumenti",
+            "hint": "Pianifica il giro",
+            "title": "Strumenti",
+            "action": "Apri gli strumenti",
+            "items": {
+              "compare": {
+                "title": "Confronta navi",
+                "text": "Navi a confronto, dalle griglie di carico al carburante quantico."
+              },
+              "cargo": {
+                "title": "Griglie di carico",
+                "text": "Ogni stiva cassa per cassa, per sapere cosa ci sta."
+              },
+              "trade": {
+                "title": "Rotte commerciali",
+                "text": "Prezzi attuali delle merci e le rotte migliori tra i terminali."
+              },
+              "travel": {
+                "title": "Tempi di viaggio",
+                "text": "Quanto dura un salto quantico, motore per motore."
+              },
+              "tours": {
+                "title": "Tour",
+                "text": "Pianifica un giro con gli amici e dividi il compenso."
+              },
+              "stats": {
+                "title": "Statistiche",
+                "text": "Come cresce il catalogo delle navi, patch dopo patch."
+              }
+            }
+          },
+          "developers": {
+            "label": "Per sviluppatori",
+            "hint": "API, OAuth, embed",
+            "title": "Per sviluppatori",
+            "action": "Leggi la documentazione API",
+            "codeComment": "ogni nave, in JSON",
+            "signIn": "Accedi con Fleetyards",
+            "items": {
+              "api": {
+                "title": "API pubblica",
+                "text": "Navi, componenti, luoghi e altro, documentati con OpenAPI."
+              },
+              "oauth": {
+                "title": "Accedi con Fleetyards",
+                "text": "OAuth e OpenID Connect per la tua app."
+              },
+              "embed": {
+                "title": "Widget da incorporare",
+                "text": "Mostra navi, un hangar o una flotta sul tuo sito."
+              },
+              "discord": {
+                "title": "Bot Discord",
+                "text": "Navi, prestiti, oggetti, hangar e luoghi come comandi slash."
+              },
+              "app": {
+                "title": "App installabile",
+                "text": "Aggiungi Fleetyards alla schermata home del telefono."
+              },
+              "media": {
+                "title": "Media delle navi",
+                "text": "Immagini dello store, render angolati e video, pronti da collegare."
+              }
+            }
+          }
+        },
+        "patch": {
+          "title": "Questa patch",
+          "subline": "Direttamente dai file di gioco, confrontata build per build.",
+          "version": "Alpha %{version}",
+          "comparedWith": "Confrontata con %{version}",
+          "counts": {
+            "newShips": "nuove navi",
+            "changedShips": "ribilanciate",
+            "newComponents": "nuovi componenti",
+            "newEquipment": "nuovi oggetti FPS"
+          },
+          "newThisPatch": "Nuova in questa patch",
+          "newIn": "Nuova in %{version}",
+          "biggestChange": "Modifica più grande",
+          "kinds": {
+            "models": "Nave",
+            "components": "Componente",
+            "equipment": "Oggetto FPS"
+          },
+          "noShipChanges": "Nessuna modifica alle navi in questa patch",
+          "noShipChangesText": "Questa patch non cambia i valori di nessuna nave e non ne aggiunge.",
+          "browseShips": "Sfoglia tutte le navi",
+          "seeEveryChange": "Vedi tutte le modifiche",
+          "newShip": "nuova nave",
+          "moreFields": {
+            "one": "e altri %{count}",
+            "other": "e altri %{count}"
+          },
+          "appeared": {
+            "components": {
+              "one": "%{count} nuovo componente",
+              "other": "%{count} nuovi componenti"
+            },
+            "equipment": {
+              "one": "%{count} nuovo oggetto FPS",
+              "other": "%{count} nuovi oggetti FPS"
+            }
+          },
+          "vanished": {
+            "equipment": {
+              "one": "%{count} oggetto FPS rimosso",
+              "other": "%{count} oggetti FPS rimossi"
+            }
+          },
+          "yes": "Sì",
+          "no": "No",
+          "fields": {
+            "mass": "Massa",
+            "hullHealth": "Integrità dello scafo",
+            "personalInventory": "Inventario personale",
+            "mainAcceleration": "Accelerazione principale",
+            "retroAcceleration": "Accelerazione inversa",
+            "scmSpeed": "Velocità SCM",
+            "scmSpeedBoosted": "Velocità SCM con boost",
+            "reverseSpeedBoosted": "Velocità in retromarcia con boost",
+            "maxSpeed": "Velocità massima",
+            "pitch": "Beccheggio",
+            "yaw": "Imbardata",
+            "roll": "Rollio",
+            "crew": "Equipaggio",
+            "weaponPoolSize": "Riserva armi",
+            "beds": "Letti",
+            "lockers": "Armadietti",
+            "rateOfFire": "Cadenza di fuoco",
+            "range": "Gittata",
+            "storage": "Capienza",
+            "damageReduction": "Riduzione del danno",
+            "temperatureRating": "Intervallo di temperatura",
+            "radiationProtection": "Protezione dalle radiazioni",
+            "radiationScrubRate": "Smaltimento radiazioni",
+            "name": "Nome",
+            "size": "Dimensione",
+            "grade": "Classe",
+            "hidden": "Nascosto",
+            "itemType": "Tipo",
+            "coreCompatibility": "Compatibilità del core"
+          },
+          "loadingScreen": "Schermata di caricamento di Alpha %{version}",
+          "openLoadingScreen": "Apri la schermata di caricamento"
+        },
+        "gameEvents": {
+          "title": "Nel 'verse",
+          "subline": "Cosa succede nel gioco, scelto dal team di Fleetyards."
+        },
+        "latestShips": {
+          "title": "Ultime navi",
+          "all": "Tutte le navi"
+        },
+        "signUpPanel": {
+          "kicker": "Unisciti a loro",
+          "title": "Porta il tuo hangar",
+          "orWith": "oppure con",
+          "loggedIn": "Voli già con noi?",
+          "login": "Accedi",
+          "counts": {
+            "vehicles": "navi negli hangar di Fleetyards",
+            "fleets": "flotte organizzate qui",
+            "ships": "navi nel database"
+          },
+          "links": {
+            "discord": {
+              "title": "Discord della community",
+              "text": "Domande, idee e il diario di sviluppo"
+            },
+            "support": {
+              "title": "Sostieni Fleetyards",
+              "text": "Gestito da piloti, pagato da piloti"
+            },
+            "api": {
+              "title": "API e documentazione",
+              "text": "Costruisci sugli stessi dati"
+            }
+          },
+          "kickerSignedIn": "La community",
+          "titleSignedIn": "Il tuo hangar ti aspetta"
+        },
+        "openHangar": "Apri il tuo hangar"
+      },
+      "patch": {
+        "title": "Alpha %{version}",
+        "shipsChanged": "Navi modificate",
+        "inYourHangar": "Nel tuo hangar",
+        "whatChanged": "Cosa è cambiato",
+        "yoursChanged": {
+          "one": "%{count} delle tue navi è cambiata in questa build.",
+          "other": "%{count} delle tue navi sono cambiate in questa build."
+        }
+      },
+      "dashboard": {
+        "welcome": "Bentornato, %{name}",
+        "welcomeAnonymous": "Bentornato",
+        "invites": {
+          "title": "%{fleet} ti ha invitato",
+          "text": "Accetta per vedere i suoi eventi, annunci e membri.",
+          "accept": "Accetta",
+          "decline": "Rifiuta",
+          "failed": "Non ha funzionato. Riprova dalla pagina degli inviti di flotta."
+        },
+        "comingUp": {
+          "title": "In arrivo",
+          "calendar": "Calendario",
+          "groups": {
+            "today": "Oggi",
+            "week": "Questa settimana",
+            "later": "Più avanti"
+          },
+          "inGame": "Nel gioco",
+          "answer": "Iscriviti",
+          "signupFailed": "Non è stato possibile salvare la tua iscrizione. Apri l'evento per riprovare.",
+          "empty": {
+            "title": "Niente in programma",
+            "hint": "Qui compaiono gli eventi delle tue flotte e del gioco.",
+            "action": "Trova una flotta"
+          }
+        },
+        "fleets": {
+          "title": "Le mie flotte",
+          "online": {
+            "one": "%{count} di %{total} online",
+            "other": "%{count} di %{total} online"
+          },
+          "members": {
+            "one": "%{count} membro",
+            "other": "%{count} membri"
+          },
+          "requests": "Richieste di adesione",
+          "transfers": "Trasferimenti",
+          "empty": {
+            "title": "Ancora nessuna flotta",
+            "hint": "Unisciti a una org per pianificare eventi e condividere l'inventario.",
+            "action": "Sfoglia le flotte"
+          }
+        },
+        "changes": {
+          "title": "Le tue navi in %{version}",
+          "titleWithoutVersion": "Le tue navi in questa patch",
+          "owned": {
+            "one": "Nel tuo hangar",
+            "other": "%{count} nel tuo hangar"
+          },
+          "wanted": "Nella tua lista dei desideri",
+          "changes": "Modifiche",
+          "hangar": "Hangar",
+          "empty": {
+            "title": "Nessuna delle tue navi è cambiata",
+            "hint": "Le navi del tuo hangar o della tua lista dei desideri compaiono qui quando una build le cambia."
+          }
+        },
+        "hangar": {
+          "title": "Hangar",
+          "open": "Apri",
+          "ships": "Navi",
+          "wishlist": "Lista dei desideri",
+          "synced": "Sincronizzato da RSI",
+          "empty": {
+            "title": "Il tuo hangar è vuoto",
+            "hint": "Aggiungi navi a mano o sincronizzale da RSI.",
+            "action": "Configura il tuo hangar"
+          }
+        },
+        "notifications": {
+          "title": "Notifiche",
+          "empty": "Sei in pari con tutto."
+        },
+        "friends": {
+          "title": "Amici",
+          "online": "Online",
+          "pending": {
+            "one": "%{count} richiesta di amicizia",
+            "other": "%{count} richieste di amicizia"
+          },
+          "empty": {
+            "title": "Ancora nessun amico",
+            "hint": "Aggiungi i piloti con cui voli per vedere quando sono online."
+          }
+        }
+      }
+    }
+  }
+}

@@ -12,23 +12,19 @@ const mount = async (props: Record<string, boolean>) =>
     },
   });
 
-describe("FleetDashboardPanel", () => {
+describe("DashboardPanel", () => {
   it("says nothing yet while the first answer is out", async () => {
     const subject = await mount({ pending: true, empty: true });
 
     expect(subject.find(".empty").exists()).toBe(false);
-    expect(subject.find("[data-test='fleet-dashboard-failed']").exists()).toBe(
-      false,
-    );
+    expect(subject.find("[data-test='dashboard-failed']").exists()).toBe(false);
     expect(subject.find(".panel--loading").exists()).toBe(true);
   });
 
   it("says it failed rather than that it has nothing", async () => {
     const subject = await mount({ failed: true, empty: true });
 
-    expect(subject.find("[data-test='fleet-dashboard-failed']").exists()).toBe(
-      true,
-    );
+    expect(subject.find("[data-test='dashboard-failed']").exists()).toBe(true);
     expect(subject.find(".empty").exists()).toBe(false);
   });
 

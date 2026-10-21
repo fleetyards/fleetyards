@@ -31,7 +31,9 @@ module Api
           # a public page, recomputed per visitor. Two of them count their way
           # through 1.57M vehicles. None of it is per-visitor, and none of it
           # changes meaningfully inside five minutes.
-          @quick_stats = Rails.cache.fetch("stats/quick_stats", expires_in: STATS_TTL) do
+          # Versioned by its shape: a deploy that adds a figure would otherwise
+          # serve the old hash, without it, for up to the TTL.
+          @quick_stats = Rails.cache.fetch("stats/quick_stats/v2", expires_in: STATS_TTL) do
             build_quick_stats
           end
         end
@@ -61,7 +63,9 @@ module Api
             wishlists_count: Vehicle.where(wanted: true).count,
             ship_of_the_month: ship_of_the_month_entry&.dimensions&.dig("name"),
             ship_of_the_month_count: ship_of_the_month_entry&.value&.to_i || 0,
-            painted_vehicles_percent: painted_vehicles_percent
+            painted_vehicles_percent: painted_vehicles_percent,
+            fleets_count: Fleet.kept.count,
+            patch_changed_ships_count: patch_changed_ships_count
           }
         end
 
@@ -101,11 +105,19 @@ module Api
           render json: most_wishlisted.to_json
         end
 
-        # Which ships the build we are on changed the most.
+        # The patch rather than the build: a hotfix adds to 4.10.2, so it is
+        # measured against 4.10.1 like the rest of it.
+        private def patch_changed_ships_count
+          changed = ModelBuildChange.patch_changes(::ScData::Source.environment, ::ScData::Source.version)
+
+          Model.visible.active.where(id: changed.map(&:model_id).uniq).count
+        end
+
+        # Which ships the patch we are on changed the most.
         def patch_changes
           changed_facts = ModelBuildChange
-            .for_build(::ScData::Source.environment, ::ScData::Source.version)
-            .group(:model_id).count
+            .patch_changes(::ScData::Source.environment, ::ScData::Source.version)
+            .group_by(&:model_id).transform_values(&:size)
 
           names = Model.visible.active.where(id: changed_facts.keys).pluck(:id, :name).to_h
 

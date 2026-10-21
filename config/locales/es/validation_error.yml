@@ -195,6 +195,12 @@ es:
       create: No se pudo crear el objetivo de financiación.
       destroy: No se pudo eliminar el objetivo de financiación.
       update: No se pudo actualizar el objetivo de financiación.
+    game_event:
+      create: No se pudo crear el evento del juego.
+      destroy: No se pudo eliminar el evento del juego.
+      update: No se pudo actualizar el evento del juego.
+    homepage_setting:
+      update: No se pudieron guardar los ajustes de la página de inicio.
     hardpoint:
       create: No se pudo crear el anclaje.
       update: No se pudo actualizar el anclaje.

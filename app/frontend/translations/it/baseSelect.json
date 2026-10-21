@@ -1,6 +1,12 @@
 {
   "it": {
     "baseSelect": {
+      "homepageSetting": {
+        "featuredModels": {
+          "label": "Navi in evidenza",
+          "nullablePrompt": "Nessuna nave in evidenza"
+        }
+      },
       "actions": {
         "fetchMore": "Carica altro"
       },

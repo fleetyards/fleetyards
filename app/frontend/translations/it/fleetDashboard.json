@@ -1,9 +1,6 @@
 {
   "it": {
     "fleetDashboard": {
-      "showAll": "Mostra tutto",
-      "empty": "Ancora niente qui.",
-      "failed": "Al momento non è stato possibile caricarlo.",
       "unnamed": "Senza titolo",
       "formats": {
         "weekday": "EEE",

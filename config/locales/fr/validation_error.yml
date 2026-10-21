@@ -192,6 +192,12 @@ fr:
       create: Impossible de créer l'objectif de financement.
       destroy: Impossible de supprimer l'objectif de financement.
       update: Impossible de mettre à jour l'objectif de financement.
+    game_event:
+      create: "L'événement du jeu n'a pas pu être créé."
+      destroy: "L'événement du jeu n'a pas pu être supprimé."
+      update: "L'événement du jeu n'a pas pu être mis à jour."
+    homepage_setting:
+      update: Les réglages de la page d’accueil n’ont pas pu être enregistrés.
     hardpoint:
       create: Impossible de créer le point d'ancrage.
       update: Impossible de mettre à jour le point d'ancrage.

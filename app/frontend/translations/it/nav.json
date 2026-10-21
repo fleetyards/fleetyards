@@ -334,6 +334,12 @@
           "new": "Nuovo obiettivo di finanziamento",
           "edit": "Modifica obiettivo di finanziamento"
         },
+        "homepage": "Pagina iniziale",
+        "gameEvents": {
+          "index": "Eventi di gioco",
+          "new": "Nuovo evento di gioco",
+          "edit": "Modifica evento di gioco"
+        },
         "notifications": {
           "index": "Notifiche"
         },

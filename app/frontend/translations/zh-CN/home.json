@@ -1,0 +1,413 @@
+{
+  "zh-CN": {
+    "home": {
+      "landing": {
+        "title": "宇宙中的每一艘舰船，你的整支舰队尽在一处。",
+        "lede": "查询任意舰船及其当前游戏内的数据和配装。",
+        "signUp": "创建免费账户",
+        "browseShips": "浏览所有舰船",
+        "scrollDown": "向下滚动",
+        "searchTry": "试试",
+        "featuredShip": "精选舰船",
+        "searchResults": "搜索结果",
+        "searchNoResults": "没有与“%{query}”匹配的结果",
+        "searchNoResultsHint": "试试舰船、组件、任务或地点。",
+        "searching": "正在搜索…",
+        "searchKeys": {
+          "move": "移动",
+          "open": "打开",
+          "close": "关闭"
+        },
+        "stats": {
+          "ships": "舰船与载具",
+          "vehicles": "机库中的舰船",
+          "fleets": "舰队"
+        },
+        "features": {
+          "title": "你可以在这里做什么",
+          "subline": "所有飞行员免费使用，一切从你的机库开始。",
+          "withAccount": "免费注册即可使用",
+          "openToEveryone": "所有人可用",
+          "hangar": {
+            "label": "机库",
+            "hint": "你的 Pledge，自动同步",
+            "title": "机库",
+            "action": "查看示例机库",
+            "items": {
+              "sync": {
+                "title": "RSI 机库同步",
+                "text": "从你的 RSI 账户导入所有 Pledge，包括回购项目。"
+              },
+              "paints": {
+                "title": "涂装与升级",
+                "text": "记录每艘船对应的涂装和 CCU。"
+              },
+              "loadouts": {
+                "title": "配装",
+                "text": "保存你每艘船的配装方案。"
+              },
+              "fleetchart": {
+                "title": "舰队图",
+                "text": "整个机库并排展示，按真实比例。"
+              },
+              "log": {
+                "title": "舰长日志",
+                "text": "为你拥有的每艘船记录笔记和历史。"
+              },
+              "share": {
+                "title": "愿望单与公开链接",
+                "text": "分享整个机库，或只分享你想要的船。"
+              }
+            }
+          },
+          "fleets": {
+            "label": "舰队",
+            "hint": "管理你的组织",
+            "title": "舰队",
+            "action": "了解舰队功能",
+            "items": {
+              "members": {
+                "title": "成员与角色",
+                "text": "邀请你的组织成员，划分等级并决定谁能做什么。"
+              },
+              "squadrons": {
+                "title": "中队",
+                "text": "舰队内的编队，各有自己的成员和 Discord 角色。"
+              },
+              "maps": {
+                "title": "世界地图与星图",
+                "text": "你的成员住在哪里，又在哪里飞行。"
+              },
+              "ships": {
+                "title": "舰队的舰船",
+                "text": "汇总所有成员的机库，并附按比例的舰队图。"
+              },
+              "allies": {
+                "title": "盟友与目录",
+                "text": "与盟友组织建立联系，让新飞行员找到你。"
+              },
+              "discord": {
+                "title": "Discord",
+                "text": "角色和公告与你的服务器同步。"
+              }
+            }
+          },
+          "ships": {
+            "label": "舰船与数据",
+            "hint": "来自游戏文件",
+            "title": "舰船与数据",
+            "action": "浏览舰船",
+            "items": {
+              "ships": {
+                "title": "舰船与载具",
+                "text": "数据、挂点以及每艘船出厂自带的组件。"
+              },
+              "viewer": {
+                "title": "3D 查看器",
+                "text": "在浏览器中旋转查看每艘船。"
+              },
+              "patches": {
+                "title": "版本变化",
+                "text": "每个新版本改了什么，改了多少。"
+              },
+              "components": {
+                "title": "组件与装备",
+                "text": "武器、护盾、引擎和 FPS 装备，以及购买地点。"
+              },
+              "locations": {
+                "title": "地点与商店",
+                "text": "行星、卫星和空间站，以及每家商店出售的商品。"
+              },
+              "crafting": {
+                "title": "制作与任务",
+                "text": "每张蓝图及其材料，以及报酬丰厚的任务。"
+              }
+            }
+          },
+          "tools": {
+            "label": "工具",
+            "hint": "规划行程",
+            "title": "工具",
+            "action": "打开工具",
+            "items": {
+              "compare": {
+                "title": "舰船对比",
+                "text": "舰船并排对比，从货舱格到量子燃料。"
+              },
+              "cargo": {
+                "title": "货舱格",
+                "text": "逐箱查看每个货舱，知道能装下什么。"
+              },
+              "trade": {
+                "title": "贸易路线",
+                "text": "当前商品价格以及终端之间的最佳路线。"
+              },
+              "travel": {
+                "title": "航行时间",
+                "text": "一次量子跃迁需要多久，按引擎逐一计算。"
+              },
+              "tours": {
+                "title": "行程",
+                "text": "和朋友一起规划行程并分配收益。"
+              },
+              "stats": {
+                "title": "统计",
+                "text": "舰船目录如何随版本增长。"
+              }
+            }
+          },
+          "developers": {
+            "label": "开发者",
+            "hint": "API、OAuth、嵌入",
+            "title": "开发者",
+            "action": "阅读 API 文档",
+            "codeComment": "每艘船，以 JSON 形式",
+            "signIn": "使用 Fleetyards 登录",
+            "items": {
+              "api": {
+                "title": "公开 API",
+                "text": "舰船、组件、地点等，使用 OpenAPI 编写文档。"
+              },
+              "oauth": {
+                "title": "使用 Fleetyards 登录",
+                "text": "为你自己的应用提供 OAuth 和 OpenID Connect。"
+              },
+              "embed": {
+                "title": "嵌入小部件",
+                "text": "在你自己的网站上展示舰船、机库或舰队。"
+              },
+              "discord": {
+                "title": "Discord 机器人",
+                "text": "通过斜杠命令查询舰船、借用船、物品、机库和地点。"
+              },
+              "app": {
+                "title": "可安装应用",
+                "text": "把 Fleetyards 添加到手机主屏幕。"
+              },
+              "media": {
+                "title": "舰船媒体",
+                "text": "商店图片、角度渲染图和视频，可直接链接。"
+              }
+            }
+          }
+        },
+        "patch": {
+          "title": "本次版本",
+          "subline": "直接来自游戏文件，逐个构建对比。",
+          "version": "Alpha %{version}",
+          "comparedWith": "对比 %{version}",
+          "counts": {
+            "newShips": "新舰船",
+            "changedShips": "重新平衡",
+            "newComponents": "新组件",
+            "newEquipment": "新 FPS 物品"
+          },
+          "newThisPatch": "本次版本新增",
+          "newIn": "%{version} 新增",
+          "biggestChange": "最大变化",
+          "kinds": {
+            "models": "舰船",
+            "components": "组件",
+            "equipment": "FPS 物品"
+          },
+          "noShipChanges": "本次版本没有舰船变化",
+          "noShipChangesText": "本次版本没有修改任何舰船的数据，也没有新增舰船。",
+          "browseShips": "浏览所有舰船",
+          "seeEveryChange": "查看所有变化",
+          "newShip": "新舰船",
+          "moreFields": {
+            "one": "以及另外 %{count} 项",
+            "other": "以及另外 %{count} 项"
+          },
+          "appeared": {
+            "components": {
+              "one": "%{count} 个新组件",
+              "other": "%{count} 个新组件"
+            },
+            "equipment": {
+              "one": "%{count} 个新 FPS 物品",
+              "other": "%{count} 个新 FPS 物品"
+            }
+          },
+          "vanished": {
+            "equipment": {
+              "one": "移除 %{count} 个 FPS 物品",
+              "other": "移除 %{count} 个 FPS 物品"
+            }
+          },
+          "yes": "是",
+          "no": "否",
+          "fields": {
+            "mass": "质量",
+            "hullHealth": "船体耐久",
+            "personalInventory": "个人储物",
+            "mainAcceleration": "主推进加速度",
+            "retroAcceleration": "反推加速度",
+            "scmSpeed": "SCM 速度",
+            "scmSpeedBoosted": "SCM 加力速度",
+            "reverseSpeedBoosted": "倒退加力速度",
+            "maxSpeed": "最高速度",
+            "pitch": "俯仰",
+            "yaw": "偏航",
+            "roll": "滚转",
+            "crew": "船员",
+            "weaponPoolSize": "武器池",
+            "beds": "床位",
+            "lockers": "储物柜",
+            "rateOfFire": "射速",
+            "range": "射程",
+            "storage": "容量",
+            "damageReduction": "伤害减免",
+            "temperatureRating": "温度范围",
+            "radiationProtection": "辐射防护",
+            "radiationScrubRate": "辐射清除速率",
+            "name": "名称",
+            "size": "尺寸",
+            "grade": "等级",
+            "hidden": "隐藏",
+            "itemType": "类型",
+            "coreCompatibility": "核心兼容性"
+          },
+          "loadingScreen": "Alpha %{version} 的加载画面",
+          "openLoadingScreen": "打开加载画面"
+        },
+        "gameEvents": {
+          "title": "宇宙动态",
+          "subline": "游戏中正在进行的活动，由 Fleetyards 团队精选。"
+        },
+        "latestShips": {
+          "title": "最新舰船",
+          "all": "所有舰船"
+        },
+        "signUpPanel": {
+          "kicker": "加入他们",
+          "title": "带上你的机库",
+          "orWith": "或使用",
+          "loggedIn": "已经和我们一起飞行？",
+          "login": "登录",
+          "counts": {
+            "vehicles": "艘舰船在 Fleetyards 机库中",
+            "fleets": "个舰队在这里组织",
+            "ships": "艘舰船在数据库中"
+          },
+          "links": {
+            "discord": {
+              "title": "社区 Discord",
+              "text": "问题、想法和开发日志"
+            },
+            "support": {
+              "title": "支持 Fleetyards",
+              "text": "由飞行员运营，由飞行员资助"
+            },
+            "api": {
+              "title": "API 与文档",
+              "text": "基于同样的数据进行开发"
+            }
+          },
+          "kickerSignedIn": "社区",
+          "titleSignedIn": "你的机库在等你"
+        },
+        "openHangar": "打开你的机库"
+      },
+      "patch": {
+        "title": "Alpha %{version}",
+        "shipsChanged": "改动的舰船",
+        "inYourHangar": "你机库中的",
+        "whatChanged": "查看改动",
+        "yoursChanged": {
+          "one": "此版本改动了你的 %{count} 艘舰船。",
+          "other": "此版本改动了你的 %{count} 艘舰船。"
+        }
+      },
+      "dashboard": {
+        "welcome": "欢迎回来，%{name}",
+        "welcomeAnonymous": "欢迎回来",
+        "invites": {
+          "title": "%{fleet} 邀请你加入",
+          "text": "接受后即可查看其活动、公告和成员。",
+          "accept": "接受",
+          "decline": "拒绝",
+          "failed": "操作失败。请在舰队邀请页面重试。"
+        },
+        "comingUp": {
+          "title": "即将到来",
+          "calendar": "日历",
+          "groups": {
+            "today": "今天",
+            "week": "本周",
+            "later": "之后"
+          },
+          "inGame": "游戏内",
+          "answer": "报名",
+          "signupFailed": "无法保存你的报名。请打开活动页面重试。",
+          "empty": {
+            "title": "暂无安排",
+            "hint": "你的舰队活动和游戏活动会显示在这里。",
+            "action": "寻找舰队"
+          }
+        },
+        "fleets": {
+          "title": "我的舰队",
+          "online": {
+            "one": "%{total} 人中 %{count} 人在线",
+            "other": "%{total} 人中 %{count} 人在线"
+          },
+          "members": {
+            "one": "%{count} 名成员",
+            "other": "%{count} 名成员"
+          },
+          "requests": "入队申请",
+          "transfers": "转移",
+          "empty": {
+            "title": "还没有舰队",
+            "hint": "加入一个组织来规划活动和共享库存。",
+            "action": "浏览舰队"
+          }
+        },
+        "changes": {
+          "title": "你在 %{version} 中的舰船",
+          "titleWithoutVersion": "你在本补丁中的舰船",
+          "owned": {
+            "one": "在你的机库中",
+            "other": "机库中有 %{count} 艘"
+          },
+          "wanted": "在你的愿望单中",
+          "changes": "改动",
+          "hangar": "机库",
+          "empty": {
+            "title": "你的舰船都没有改动",
+            "hint": "当某个版本改动了你机库或愿望单中的舰船时，它们会显示在这里。"
+          }
+        },
+        "hangar": {
+          "title": "机库",
+          "open": "打开",
+          "ships": "舰船",
+          "wishlist": "愿望单",
+          "synced": "已从 RSI 同步",
+          "empty": {
+            "title": "你的机库是空的",
+            "hint": "手动添加舰船，或从 RSI 同步。",
+            "action": "设置机库"
+          }
+        },
+        "notifications": {
+          "title": "通知",
+          "empty": "你已全部看完。"
+        },
+        "friends": {
+          "title": "好友",
+          "online": "在线",
+          "pending": {
+            "one": "%{count} 个好友请求",
+            "other": "%{count} 个好友请求"
+          },
+          "empty": {
+            "title": "还没有好友",
+            "hint": "添加一起飞行的飞行员，即可看到他们何时在线。"
+          }
+        }
+      }
+    }
+  }
+}

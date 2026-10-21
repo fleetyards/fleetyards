@@ -17,6 +17,7 @@ import { routes as maintenanceRoutes } from "@/admin/pages/maintenance/routes";
 import { routes as usersRoutes } from "@/admin/pages/users/routes";
 import { routes as supporterContributionsRoutes } from "@/admin/pages/supporter-contributions/routes";
 import { routes as announcementsRoutes } from "@/admin/pages/announcements/routes";
+import { routes as gameEventsRoutes } from "@/admin/pages/game-events/routes";
 import { RouteRecordRaw } from "vue-router";
 
 /*
@@ -247,6 +248,29 @@ export const routes: RouteRecordRaw[] = [
       nav: "hidden",
       activeRoute: "admin-notifications",
       access: ["announcements"],
+    },
+  },
+  {
+    path: "/homepage/",
+    name: "admin-homepage",
+    component: () => import("@/admin/pages/homepage.vue"),
+    meta: {
+      title: "admin.homepage",
+      needsAuthentication: true,
+      icon: "fa-duotone fa-house",
+      access: ["homepage"],
+    },
+  },
+  {
+    path: "/game-events/",
+    component: () => import("@/admin/pages/game-events.vue"),
+    children: gameEventsRoutes,
+    redirect: { name: gameEventsRoutes[0].name },
+    meta: {
+      title: "admin.gameEvents.index",
+      needsAuthentication: true,
+      icon: "fa-duotone fa-calendar-star",
+      access: ["game_events"],
     },
   },
   {

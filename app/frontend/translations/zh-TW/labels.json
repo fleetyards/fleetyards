@@ -349,7 +349,10 @@
       "updatedAt": "更新於",
       "addToHangar": "新增到機庫",
       "home": {
-        "search": "搜尋飛船..."
+        "catalogueSearch": "搜尋艦船、物品、任務和地點",
+        "submitCatalogueSearch": "搜尋",
+        "search": "搜尋飛船...",
+        "submitSearch": "搜尋艦船"
       },
       "shop": {
         "sellPrice": "出售價格",
@@ -1704,6 +1707,25 @@
         "currency": "幣別",
         "effectiveFrom": "生效日",
         "endedAt": "結束於"
+      },
+      "homepageSetting": {
+        "featuredModelsInfo": "顯示在首頁搜尋旁邊。留空則從所有帶彩色斜視圖的艦船中隨機選擇。",
+        "featuredHidden": "不展示艦船",
+        "featuredHiddenInfo": "首屏保持置中，旁邊不顯示艦船。",
+        "featuredRandom": "隨機挑選",
+        "featuredRandomInfo": "每次造訪展示其中一艘艦船。關閉：始終展示清單中的第一艘。"
+      },
+      "gameEvent": {
+        "title": "標題",
+        "description": "描述",
+        "location": "地點",
+        "url": "連結",
+        "category": "類別",
+        "startsAt": "開始時間",
+        "endsAt": "結束時間",
+        "coverImage": "封面圖片",
+        "published": "已發佈",
+        "publishedInfo": "只有已發佈的活動才會出現在首頁。"
       },
       "supporterContribution": {
         "name": "支持者名稱",
@@ -3384,6 +3406,8 @@
             "supporters": "支持者",
             "admins": "管理員",
             "announcements": "公告",
+            "game_events": "遊戲活動",
+            "homepage": "首頁",
             "oauth_applications": "OAuth 應用程式",
             "maintenance": "維護",
             "imports": "匯入",

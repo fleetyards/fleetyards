@@ -16,16 +16,7 @@ module V1
         properties: {
           items: {
             type: :array,
-            items: {
-              type: :object,
-              properties: {
-                environment: {type: :string},
-                version: {type: :string},
-                default: {type: :boolean}
-              },
-              additionalProperties: false,
-              required: %w[environment version default]
-            }
+            items: ::V1::Schemas::ScDataBuild
           }
         },
         additionalProperties: false,

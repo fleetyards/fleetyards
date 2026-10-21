@@ -13,6 +13,8 @@ import {
 } from "@/services/fyApi";
 import { useSessionStore } from "./session";
 import { useFiltersStore } from "@/shared/stores/filters";
+import { useHangarStore } from "./hangar";
+import { useWishlistStore } from "./wishlist";
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
@@ -60,6 +62,16 @@ describe("session store", () => {
     await useSessionStore().logout();
 
     expect(useFiltersStore().savedFilters).toEqual({});
+  });
+
+  it("forgets the hangar and wishlist ships on logout", async () => {
+    useHangarStore().ships = ["avenger-titan"];
+    useWishlistStore().ships = ["carrack"];
+
+    await useSessionStore().logout();
+
+    expect(useHangarStore().ships).toEqual([]);
+    expect(useWishlistStore().ships).toEqual([]);
   });
 
   // What a text's contract, event and user tokens resolve to is the reader's

@@ -236,9 +236,9 @@ describe("FleetDashboardUpcomingEventsPanel", () => {
   it("says nothing is planned to everybody else", async () => {
     const subject = await mount();
 
-    expect(
-      subject.find("[data-test='fleet-dashboard-empty']").text(),
-    ).toContain("Nothing planned for the next two weeks");
+    expect(subject.find("[data-test='dashboard-empty']").text()).toContain(
+      "Nothing planned for the next two weeks",
+    );
     expect(
       subject.find("[data-test='fleet-dashboard-plan-event']").exists(),
     ).toBe(false);
