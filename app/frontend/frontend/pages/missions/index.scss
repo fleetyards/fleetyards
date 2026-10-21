@@ -151,9 +151,10 @@
   }
 
   // Chips, the way a blueprint row lists its materials: these are things to go
-  // and look at, not prose about the mission.
-  &__blueprint a,
-  &__offered-place a {
+  // and look at, not prose about the mission. On a span passed into the
+  // catalogue popover's slot, because the link itself is the popover's and
+  // outside this page's scope.
+  &__chip {
     display: inline-flex;
     align-items: center;
     padding: 3px 9px;

@@ -323,7 +323,9 @@ watch(
                   slug: link.location.slug,
                   name: link.location.name,
                 }"
-              />
+              >
+                <span class="mission-page__chip">{{ link.location.name }}</span>
+              </CatalogueItemPopover>
             </li>
           </ul>
         </section>
@@ -345,7 +347,9 @@ watch(
                   slug: blueprint.slug,
                   name: blueprint.name,
                 }"
-              />
+              >
+                <span class="mission-page__chip">{{ blueprint.name }}</span>
+              </CatalogueItemPopover>
             </li>
           </ul>
         </section>
