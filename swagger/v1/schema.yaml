@@ -17845,6 +17845,25 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/sc-data/patch-summary":
+    get:
+      summary: SC Data patch summary
+      tags:
+      - Versions
+      operationId: scDataPatchSummary
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ScDataPatchSummary"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/sc-data/sources":
     get:
       summary: SC Data Sources
@@ -39859,6 +39878,224 @@ components:
       - to
       - catalogues
       title: ScDataCompare
+    ScDataPatchSummary:
+      type: object
+      properties:
+        from:
+          type: object
+          properties:
+            environment:
+              type: string
+            version:
+              type: string
+          additionalProperties: false
+          required:
+          - environment
+          - version
+        to:
+          type: object
+          properties:
+            environment:
+              type: string
+            version:
+              type: string
+          additionalProperties: false
+          required:
+          - environment
+          - version
+        counts:
+          type: object
+          properties:
+            newShips:
+              type: integer
+            changedShips:
+              type: integer
+            vanishedShips:
+              type: integer
+            newComponents:
+              type: integer
+            changedComponents:
+              type: integer
+            newEquipment:
+              type: integer
+            changedEquipment:
+              type: integer
+            vanishedEquipment:
+              type: integer
+          additionalProperties: false
+          required:
+          - newShips
+          - changedShips
+          - vanishedShips
+          - newComponents
+          - changedComponents
+          - newEquipment
+          - changedEquipment
+          - vanishedEquipment
+        newShips:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              name:
+                type: string
+              slug:
+                type: string
+              manufacturerName:
+                type: string
+              storeImage:
+                "$ref": "#/components/schemas/MediaFile"
+              previewImage:
+                "$ref": "#/components/schemas/MediaFile"
+            additionalProperties: false
+            required:
+            - id
+            - name
+            - slug
+        latestArrivals:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              name:
+                type: string
+              slug:
+                type: string
+              manufacturerName:
+                type: string
+              storeImage:
+                "$ref": "#/components/schemas/MediaFile"
+              previewImage:
+                "$ref": "#/components/schemas/MediaFile"
+            additionalProperties: false
+            required:
+            - id
+            - name
+            - slug
+        latestArrivalsVersion:
+          type:
+          - string
+          - 'null'
+        shipChanges:
+          type: array
+          items:
+            type: object
+            properties:
+              model:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  name:
+                    type: string
+                  slug:
+                    type: string
+                  manufacturerName:
+                    type: string
+                  storeImage:
+                    "$ref": "#/components/schemas/MediaFile"
+                  previewImage:
+                    "$ref": "#/components/schemas/MediaFile"
+                additionalProperties: false
+                required:
+                - id
+                - name
+                - slug
+              fields:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    field:
+                      type: string
+                    from:
+                      type:
+                      - number
+                      - string
+                      - boolean
+                      - 'null'
+                    to:
+                      type:
+                      - number
+                      - string
+                      - boolean
+                      - 'null'
+                  additionalProperties: false
+                  required:
+                  - field
+                  - from
+                  - to
+            additionalProperties: false
+            required:
+            - model
+            - fields
+        itemChanges:
+          type: array
+          items:
+            type: object
+            properties:
+              kind:
+                type: string
+                enum:
+                - components
+                - equipment
+              id:
+                type: string
+                format: uuid
+              name:
+                type:
+                - string
+                - 'null'
+              slug:
+                type:
+                - string
+                - 'null'
+              fields:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    field:
+                      type: string
+                    from:
+                      type:
+                      - number
+                      - string
+                      - boolean
+                      - 'null'
+                    to:
+                      type:
+                      - number
+                      - string
+                      - boolean
+                      - 'null'
+                  additionalProperties: false
+                  required:
+                  - field
+                  - from
+                  - to
+            additionalProperties: false
+            required:
+            - kind
+            - id
+            - fields
+      additionalProperties: false
+      required:
+      - from
+      - to
+      - counts
+      - newShips
+      - latestArrivals
+      - shipChanges
+      - itemChanges
+      title: ScDataPatchSummary
     ScDataSources:
       type: object
       properties:
