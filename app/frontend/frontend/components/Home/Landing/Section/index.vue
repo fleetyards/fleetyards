@@ -14,11 +14,15 @@ type Props = {
   image?: string;
   // The first screen: its content sits a little higher, under the header.
   hero?: boolean;
+  // A busy picture, a loading screen full of headlines, stays behind the
+  // content rather than competing with it.
+  quietArt?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   image: undefined,
   hero: false,
+  quietArt: false,
 });
 
 const { t } = useI18n();
@@ -94,6 +98,7 @@ onBeforeUnmount(() => {
       'landing-section--hero': hero,
       'landing-section--with-art': image,
       'landing-section--revealed': revealed,
+      'landing-section--quiet-art': quietArt,
     }"
   >
     <div v-if="image" class="landing-section__art-frame" aria-hidden="true">
@@ -182,6 +187,11 @@ $bleed: $grid-gutter-width * 0.5;
   opacity: 0.4;
   transform: translate3d(0, var(--parallax-offset, 0), 0);
   will-change: transform;
+
+  .landing-section--quiet-art & {
+    opacity: 0.22;
+    filter: blur(3px);
+  }
 }
 
 .landing-section__content {

@@ -22,11 +22,12 @@ import LandingSignUp from "@/frontend/components/Home/Landing/SignUp/index.vue";
 import { useHomepage } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
+import { usePatchLoadingScreens } from "@/frontend/composables/usePatchLoadingScreens";
 import logo from "@/images/pride/logo-planet.png";
-import featuresArt from "@/images/bg-3.webp";
-import patchArt from "@/images/bg-5.webp";
-import shipsArt from "@/images/bg-7.webp";
-import signUpArt from "@/images/bg-hangar.webp";
+import featuresArt from "@/images/bg-5.webp";
+import patchArt from "@/images/bg-3.webp";
+import shipsArt from "@/images/bg-6.webp";
+import signUpArt from "@/images/bg-0.webp";
 
 const { t } = useI18n();
 
@@ -60,6 +61,13 @@ onMounted(() => {
 onBeforeUnmount(() => clearTimeout(heroFallback));
 
 const featuredShip = computed(() => homepage.value?.featuredShip);
+
+const { pick: pickLoadingScreen, screens: loadingScreens } =
+  usePatchLoadingScreens();
+
+// The patch section stands on the patch's own loading screen when it shipped
+// one.
+const patchBackground = computed(() => pickLoadingScreen(0, patchArt));
 
 // Snapping belongs to this page alone, and `html` is the element that scrolls.
 onMounted(() => document.documentElement.classList.add("home-landing-snap"));
@@ -137,7 +145,10 @@ onBeforeUnmount(() =>
     <LandingFeatures />
   </LandingSection>
 
-  <LandingSection :image="patchArt">
+  <LandingSection
+    :image="patchBackground"
+    :quiet-art="loadingScreens.length > 0"
+  >
     <LandingPatch />
   </LandingSection>
 
