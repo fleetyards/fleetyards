@@ -86,12 +86,15 @@ const image = computed(
   }
 }
 
-// Capped, so a wide window does not blow the render up past its column.
+// Capped both ways: a wide window must not blow the render up past its
+// column, and a tall render must not push the hero past the screen.
 .home-featured-ship__image {
   position: relative;
   width: 112%;
   max-width: 800px;
   height: auto;
+  max-height: min(55vh, 520px);
+  object-fit: contain;
   filter: drop-shadow(0 30px 40px rgb(0 0 0 / 0.6));
   opacity: 0;
   transition:
