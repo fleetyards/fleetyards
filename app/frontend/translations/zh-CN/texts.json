@@ -339,6 +339,12 @@
         "finished": "你的可回购承诺与 RSI 列表一致。",
         "keepsRunning": "关闭此窗口后它仍会继续运行。请保持标签页打开，直到完成。"
       },
+      "blueprintAddToHangar": {
+        "ownHint": "你拥有这张蓝图。",
+        "wishlistHint": "你想获得这张蓝图。",
+        "unownHint": "你不再拥有这张蓝图。",
+        "unwantHint": "你不再想要这张蓝图。"
+      },
       "addToHangar": {
         "hangarHint": "你拥有这艘飞船。",
         "wishlistHint": "你想以后获得这艘飞船。"

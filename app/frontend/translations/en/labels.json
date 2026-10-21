@@ -3639,6 +3639,10 @@
         "forContract": "for"
       },
       "hangarInventories": "Inventories",
+      "hangarBlueprints": {
+        "owned": "Owned",
+        "wanted": "Wanted"
+      },
       "adminNotifications": {
         "inbox": "Inbox",
         "archive": "Archive",

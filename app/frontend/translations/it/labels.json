@@ -3625,6 +3625,10 @@
         "forContract": "per"
       },
       "hangarInventories": "Inventories",
+      "hangarBlueprints": {
+        "owned": "Posseduti",
+        "wanted": "Desiderati"
+      },
       "adminNotifications": {
         "inbox": "In arrivo",
         "archive": "Archivio",

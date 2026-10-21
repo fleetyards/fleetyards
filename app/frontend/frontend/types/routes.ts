@@ -42,6 +42,7 @@ type FrontendSimpleRoutes =
   | "hangar-flair"
   | "hangar-upgrades"
   | "hangar-equipment"
+  | "hangar-blueprints"
   | "hangar-transfers"
   | "fleet-logistics-transfers"
   | "hangar-inventories"

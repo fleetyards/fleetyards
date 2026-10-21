@@ -21,10 +21,13 @@ import {
 
 type Props = {
   hideQuicksearch?: boolean;
+  /** On a list that is already one of the reader's own marks. */
+  hideOwned?: boolean;
 };
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   hideQuicksearch: false,
+  hideOwned: false,
 });
 
 const { t } = useI18n();
@@ -149,7 +152,9 @@ const sourceValue = computed({
 // Signed out this can only ask for nothing or for everything, so it is not
 // offered -- the API still answers it, because a URL somebody shared is not
 // theirs to break.
-const ownedVisible = computed(() => sessionStore.isAuthenticated);
+const ownedVisible = computed(
+  () => sessionStore.isAuthenticated && !props.hideOwned,
+);
 
 const ownedOptions = computed(() => [
   { value: "true", label: t("labels.filters.blueprints.owned") },

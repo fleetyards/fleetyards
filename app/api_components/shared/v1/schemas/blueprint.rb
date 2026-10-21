@@ -38,6 +38,10 @@ module Shared
             # catalogue is not being asked what they personally hold.
             owned: {type: :boolean},
 
+            # Whether it is on the reader's wishlist. Never true together with
+            # `owned`: owning a wanted recipe takes it off the wishlist.
+            wanted: {type: :boolean},
+
             # Said outright rather than left to an empty `sources`: the export
             # says nothing about where 901 of the 1607 recipes come from, and
             # an empty array reads as a gap in our data rather than in the

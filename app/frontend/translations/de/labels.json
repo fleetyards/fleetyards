@@ -3625,6 +3625,10 @@
         "forContract": "für"
       },
       "hangarInventories": "Inventare",
+      "hangarBlueprints": {
+        "owned": "Vorhanden",
+        "wanted": "Gewünscht"
+      },
       "adminNotifications": {
         "inbox": "Posteingang",
         "archive": "Archiv",

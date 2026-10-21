@@ -3,11 +3,13 @@
 # the current build do.
 resources :blueprints, only: %i[index show], param: :slug do
   # The personal marker, as a sub-resource rather than as a field on an update:
-  # the catalogue row itself is not editable by anybody, and "I have this" is
-  # the only thing a reader can say about it.
+  # the catalogue row itself is not editable by anybody, and "I have this" and
+  # "I am after this" are the only things a reader can say about it.
   member do
     put :own
     delete :own, action: :unown
+    put :want
+    delete :want, action: :unwant
   end
 end
 

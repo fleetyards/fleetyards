@@ -1,6 +1,12 @@
 {
   "es": {
     "messages": {
+      "blueprint": {
+        "own": { "success": "%{blueprint} está marcado como tuyo" },
+        "unown": { "success": "%{blueprint} ya no está marcado como tuyo" },
+        "want": { "success": "%{blueprint} se añadió a tu lista de deseos" },
+        "unwant": { "success": "%{blueprint} se quitó de tu lista de deseos" }
+      },
       "fleetchartScreenshot": {
         "failure": "No se pudo guardar el gráfico de flota como imagen"
       },
@@ -259,7 +265,7 @@
         },
         "blueprint": {
           "accountRequired": "Regístrate o inicia sesión para llevar la cuenta de tus planos.",
-          "own": "No pudimos actualizar ese plano. Inténtalo de nuevo."
+          "update": "No pudimos actualizar ese plano. Inténtalo de nuevo."
         },
         "default": "<b>Algo salió mal.</b> <br>¿Has intentado apagarlo y volverlo a encender?"
       },

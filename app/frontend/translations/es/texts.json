@@ -339,6 +339,12 @@
         "finished": "Tus pledges de recompra coinciden con tu lista de RSI.",
         "keepsRunning": "Sigue ejecutándose si cierras esta ventana. Mantén la pestaña abierta hasta que termine."
       },
+      "blueprintAddToHangar": {
+        "ownHint": "Tienes este plano.",
+        "wishlistHint": "Quieres conseguir este plano.",
+        "unownHint": "Ya no tienes este plano.",
+        "unwantHint": "Ya no quieres este plano."
+      },
       "addToHangar": {
         "hangarHint": "Tienes esta nave.",
         "wishlistHint": "Quieres conseguir esta nave más adelante."

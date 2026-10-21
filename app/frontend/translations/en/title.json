@@ -42,6 +42,7 @@
         "public": "%{user} Hangar",
         "publicStats": "%{user} Hangar Stats",
         "wishlist": "Wishlist",
+        "blueprints": "My Blueprints",
         "publicWishlist": "%{user} Wishlist",
         "vehicleLoadouts": "Vehicle Loadouts",
         "inventories": "My Hangar Inventories",

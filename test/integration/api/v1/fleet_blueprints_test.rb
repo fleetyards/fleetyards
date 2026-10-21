@@ -93,6 +93,18 @@ class Api::V1::FleetBlueprintsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # A wishlist entry is a marker row too, and reading it as held would offer
+  # the fleet a recipe nobody can craft.
+  test "GET leaves out what members only want" do
+    create(:user_blueprint, :wanted, user: @crafter, blueprint: @other)
+
+    sign_in @reader
+
+    assert_api_response :get, 200, api_path: PATH, path_params: {fleetSlug: @fleet.slug} do
+      assert_equal [@blueprint.id], parsed_body["items"].pluck("blueprint").pluck("id")
+    end
+  end
+
   test "GET leaves out a member who is not sharing" do
     membership_for(@crafter).update!(blueprints_filter: "hide")
 

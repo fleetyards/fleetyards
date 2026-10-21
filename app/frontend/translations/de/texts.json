@@ -340,6 +340,12 @@
         "finished": "Deine Rückkauf-Pledges entsprechen deiner RSI-Liste.",
         "keepsRunning": "Es läuft weiter, wenn du dieses Fenster schließt. Lass den Tab offen, bis es fertig ist."
       },
+      "blueprintAddToHangar": {
+        "ownHint": "Du hast diese Blaupause.",
+        "wishlistHint": "Du möchtest diese Blaupause bekommen.",
+        "unownHint": "Du hast diese Blaupause nicht mehr.",
+        "unwantHint": "Du möchtest diese Blaupause nicht mehr."
+      },
       "addToHangar": {
         "hangarHint": "Du besitzt dieses Schiff.",
         "wishlistHint": "Du möchtest dieses Schiff später haben."

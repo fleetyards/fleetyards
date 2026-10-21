@@ -3625,6 +3625,10 @@
         "forContract": "para"
       },
       "hangarInventories": "Inventories",
+      "hangarBlueprints": {
+        "owned": "Tuyos",
+        "wanted": "Deseados"
+      },
       "adminNotifications": {
         "inbox": "Bandeja de entrada",
         "archive": "Archivo",

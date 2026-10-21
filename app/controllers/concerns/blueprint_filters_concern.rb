@@ -40,11 +40,11 @@ module BlueprintFiltersConcern
       )
       .ransack(
         blueprints_query_params.except(
-          :from_org, :source_alignment_in, :consuming_commodity, :with_known_source, :owned
+          :from_org, :source_alignment_in, :consuming_commodity, :with_known_source, :owned, :wanted
         )
       )
 
-    owned_filter(source_filters(@q.result))
+    wanted_filter(owned_filter(source_filters(@q.result)))
   end
 
   # The filters that read a build, applied here rather than through
@@ -97,17 +97,31 @@ module BlueprintFiltersConcern
     end
   end
 
-  # The subset of these blueprints the reader holds, in one query rather than
-  # one per row. Empty when signed out, which is what the payload's
-  # `owned: false` says.
-  private def owned_ids_for(blueprints)
+  private def wanted_filter(scope)
+    flag = blueprints_query_params[:wanted]
+
+    return scope if flag.nil?
+
+    if ActiveModel::Type::Boolean.new.cast(flag)
+      scope.wanted_by(current_resource_owner)
+    else
+      scope.not_wanted_by(current_resource_owner)
+    end
+  end
+
+  # The subsets of these blueprints the reader holds and wants, in one query
+  # rather than one per row. Empty when signed out, which is what the payload's
+  # `owned: false` and `wanted: false` say.
+  private def marked_ids_for(blueprints)
     holder = current_resource_owner
 
-    return Set.new if holder.blank?
+    return [Set.new, Set.new] if holder.blank?
 
-    Set.new(
-      UserBlueprint.where(user_id: holder.id, blueprint_id: blueprints.map(&:id)).pluck(:blueprint_id)
-    )
+    wanted, owned = UserBlueprint.where(user_id: holder.id, blueprint_id: blueprints.map(&:id))
+      .pluck(:blueprint_id, :wanted)
+      .partition(&:last)
+
+    [Set.new(owned.map(&:first)), Set.new(wanted.map(&:first))]
   end
 
   private def org_filter
@@ -147,7 +161,7 @@ module BlueprintFiltersConcern
       # `source_alignment_in` below. Permitted like any other: they are read
       # from here rather than off `params` directly, so an unpermitted one
       # would silently stop filtering.
-      :from_org, :with_known_source, :owned,
+      :from_org, :with_known_source, :owned, :wanted,
       :craft_time_lteq, :craft_time_gteq,
       :consuming_commodity,
       sorts: [], id_in: [], name_in: [], craftable_type_in: [],

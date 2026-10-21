@@ -3,7 +3,7 @@
 module Api
   module V1
     # What a fleet can craft between them: the recipes its members hold, and
-    # who holds each one.
+    # who holds each one -- and, beside it, what its members are after.
     #
     # Read through a join rather than out of a `fleet_blueprints` table. Ships
     # are denormalised because a hangar is large and its rows carry per-vehicle
@@ -18,7 +18,7 @@ module Api
 
       before_action :set_fleet
 
-      after_action -> { pagination_header(:blueprints) }, only: %i[index]
+      after_action -> { pagination_header(:blueprints) }, only: %i[index wanted]
 
       def index
         authorize! with: FleetBlueprintPolicy, context: {fleet: @fleet}
@@ -29,8 +29,21 @@ module Api
 
         # Both after pagination: the page being rendered is what either of them
         # is asked about.
-        @owned_blueprint_ids = owned_ids_for(@blueprints)
-        @owners = owners_for(@blueprints)
+        @owned_blueprint_ids, @wanted_blueprint_ids = marked_ids_for(@blueprints)
+        @owners = members_for(@blueprints, UserBlueprint.owned)
+      end
+
+      # Under the same privilege and the same sharing setting as what they
+      # hold: a member who shares their recipes shares their wishlist with them.
+      def wanted
+        authorize! with: FleetBlueprintPolicy, context: {fleet: @fleet}
+
+        @blueprints = filtered_blueprints(Blueprint.wanted_by(sharing_memberships.select(:user_id)))
+          .page(page_params)
+          .per(per_page(Blueprint))
+
+        @owned_blueprint_ids, @wanted_blueprint_ids = marked_ids_for(@blueprints)
+        @wanters = members_for(@blueprints, UserBlueprint.wanted)
       end
 
       # The members who let this fleet see what they hold.
@@ -43,17 +56,17 @@ module Api
           .blueprints_filter_all
       end
 
-      # Who holds each of these recipes, keyed by blueprint.
+      # Who holds -- or wants -- each of these recipes, keyed by blueprint.
       #
       # Two queries for the whole page: the memberships once, so a name, a
       # nickname and an avatar come from the fleet's own view of the person
       # rather than from the bare user, and the markers once.
-      private def owners_for(blueprints)
+      private def members_for(blueprints, marks)
         return {} if blueprints.empty?
 
         memberships = sharing_memberships.includes(:user).index_by(&:user_id)
 
-        UserBlueprint
+        marks
           .where(blueprint_id: blueprints.map(&:id), user_id: memberships.keys)
           .order(:created_at)
           .group_by(&:blueprint_id)

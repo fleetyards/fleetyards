@@ -6,6 +6,8 @@
 # its members' markers, not a table -- so this is a policy about the fleet, and
 # the privilege is declared on `UserBlueprint`.
 class FleetBlueprintPolicy < FleetBasePolicy
+  alias_rule :wanted?, to: :index?
+
   def index?
     accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:blueprints:read"])
   end

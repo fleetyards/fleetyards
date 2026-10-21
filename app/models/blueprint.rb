@@ -24,7 +24,7 @@ class Blueprint < ApplicationRecord
   # Who holds this recipe. Not scoped to a build: a patch does not take away
   # what somebody already has, and a retired recipe still answers "I have this".
   has_many :user_blueprints, dependent: :destroy
-  has_many :owners, through: :user_blueprints, source: :user
+  has_many :owners, -> { merge(UserBlueprint.owned) }, through: :user_blueprints, source: :user
 
   # What each build of the game says about this blueprint.
   has_many :builds, class_name: "BlueprintBuild", dependent: :destroy
@@ -162,7 +162,7 @@ class Blueprint < ApplicationRecord
   scope :owned_by, ->(holder) {
     return none if holder.nil?
 
-    where(id: UserBlueprint.where(user_id: holder).select(:blueprint_id))
+    where(id: UserBlueprint.owned.where(user_id: holder).select(:blueprint_id))
   }
 
   # Signed out, nobody holds anything, so "not mine" is the whole catalogue
@@ -170,7 +170,20 @@ class Blueprint < ApplicationRecord
   scope :not_owned_by, ->(holder) {
     return all if holder.nil?
 
-    where.not(id: UserBlueprint.where(user_id: holder).select(:blueprint_id))
+    where.not(id: UserBlueprint.owned.where(user_id: holder).select(:blueprint_id))
+  }
+
+  # The same pair for the wishlist.
+  scope :wanted_by, ->(holder) {
+    return none if holder.nil?
+
+    where(id: UserBlueprint.wanted.where(user_id: holder).select(:blueprint_id))
+  }
+
+  scope :not_wanted_by, ->(holder) {
+    return all if holder.nil?
+
+    where.not(id: UserBlueprint.wanted.where(user_id: holder).select(:blueprint_id))
   }
 
   before_save :update_slugs

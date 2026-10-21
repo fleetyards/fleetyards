@@ -11283,6 +11283,8 @@ components:
           type: boolean
         owned:
           type: boolean
+        wanted:
+          type: boolean
         sourceUnknown:
           type: boolean
         sourceAlignments:

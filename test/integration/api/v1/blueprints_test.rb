@@ -205,6 +205,34 @@ class Api::V1::BlueprintsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /blueprints says which recipes are on the reader's wishlist" do
+    user = create(:user)
+    create(:user_blueprint, :wanted, user:, blueprint: @blueprint)
+    sign_in user
+
+    assert_api_response :get, 200 do
+      item = parsed_body["items"].find { |row| row["id"] == @blueprint.id }
+
+      assert item["wanted"]
+      assert_not item["owned"]
+    end
+  end
+
+  test "GET /blueprints narrows to the reader's wishlist" do
+    user = create(:user)
+    create(:user_blueprint, :wanted, user:, blueprint: @blueprint)
+    create(:user_blueprint, user:, blueprint: @other)
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {"wanted" => true}} do
+      assert_equal [@blueprint.id], parsed_body["items"].pluck("id")
+    end
+
+    assert_api_response :get, 200, params: {q: {"owned" => true}} do
+      assert_equal [@other.id], parsed_body["items"].pluck("id")
+    end
+  end
+
   # The catalogue is public and its payload is fragment cached on the
   # blueprint, its build and the source -- no reader in the key. `owned` is
   # rendered outside that block for exactly this reason, and a second reader
