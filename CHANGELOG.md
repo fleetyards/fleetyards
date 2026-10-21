@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.20.0](https://github.com/fleetyards/fleetyards/compare/v9.19.0...v9.20.0) (2026-10-21)
+
+
+### Features
+
+* **blueprints:** a missions tab generated from the wishlist ([#5886](https://github.com/fleetyards/fleetyards/issues/5886)) ([1bcd675](https://github.com/fleetyards/fleetyards/commit/1bcd675dc10bf4586a2daaec5b0294a8176274ae))
+* **blueprints:** blueprint wishlist and a hangar blueprints page ([#5879](https://github.com/fleetyards/fleetyards/issues/5879)) ([db71f88](https://github.com/fleetyards/fleetyards/commit/db71f880c2d3aaa8f1afcc99a9f5de7ced5574a7))
+* **blueprints:** mark event sources as limited-time ([#5877](https://github.com/fleetyards/fleetyards/issues/5877)) ([4d57edd](https://github.com/fleetyards/fleetyards/commit/4d57edd9c7de86f5098c08dad4e7256aee68be90))
+* clean up after the local sync scripts ([#5889](https://github.com/fleetyards/fleetyards/issues/5889)) ([5c5f274](https://github.com/fleetyards/fleetyards/commit/5c5f27453e3e9b51235a194074356569c3264517))
+* **home:** a landing page for the new homepage ([#5890](https://github.com/fleetyards/fleetyards/issues/5890)) ([a577d13](https://github.com/fleetyards/fleetyards/commit/a577d13c99d5ce064f64debb717303a16c3d8d4c))
+* **missions:** buy-in, timing, repeat limits and prerequisites ([#5878](https://github.com/fleetyards/fleetyards/issues/5878)) ([863f14f](https://github.com/fleetyards/fleetyards/commit/863f14faf85b2584d5772011f690882db7437b55))
+* **missions:** fill the placeholder values contracts state ([#5887](https://github.com/fleetyards/fleetyards/issues/5887)) ([a3f0772](https://github.com/fleetyards/fleetyards/commit/a3f077266579c4eb3d8a789df68f46d827b2455e))
+
+
+### Bug Fixes
+
+* **ships:** cap the hero image height on wide screens ([ec51c94](https://github.com/fleetyards/fleetyards/commit/ec51c942bc682a78027ecfe6996d38fc569d2c90))
+* **ships:** cap the holo viewer at the screen height on wide screens ([59a39da](https://github.com/fleetyards/fleetyards/commit/59a39dad80a7a599070aeabd9f2bf937d6f58d85))
+
+
+### Chores
+
+* **deps-dev:** bump @pinia/testing from 2.0.1 to 2.0.2 ([#5883](https://github.com/fleetyards/fleetyards/issues/5883)) ([93cbf1f](https://github.com/fleetyards/fleetyards/commit/93cbf1f7a3d998fb71478848e9f027306be65840))
+* **deps-dev:** bump @tanstack/eslint-plugin-query ([#5884](https://github.com/fleetyards/fleetyards/issues/5884)) ([5e88b76](https://github.com/fleetyards/fleetyards/commit/5e88b7665dd392b33054eec400e92b7d44537313))
+* **deps:** bump @tanstack/vue-query from 5.104.3 to 5.104.4 ([#5885](https://github.com/fleetyards/fleetyards/issues/5885)) ([8617cea](https://github.com/fleetyards/fleetyards/commit/8617cea12f52c3492090a43c3c6ae255a475371b))
+* **deps:** bump vue from 3.5.43 to 3.5.44 ([#5882](https://github.com/fleetyards/fleetyards/issues/5882)) ([396a190](https://github.com/fleetyards/fleetyards/commit/396a190b73e3bdc7828f976701d166fdbeae3b4c))
+
 ## [9.19.0](https://github.com/fleetyards/fleetyards/compare/v9.18.1...v9.19.0) (2026-10-20)
 
 
