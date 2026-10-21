@@ -17,7 +17,11 @@ const { t } = useI18n();
 </script>
 
 <template>
-  <Panel :tone="PanelTonesEnum.PRIMARY" data-test="home-landing-sign-up">
+  <Panel
+    :tone="PanelTonesEnum.PRIMARY"
+    class="home-landing-sign-up-panel"
+    data-test="home-landing-sign-up"
+  >
     <PanelHeading :level="HeadingLevelEnum.H2">
       {{ t("home.landing.signUpPanel.title") }}
     </PanelHeading>
@@ -34,9 +38,25 @@ const { t } = useI18n();
 </template>
 
 <style lang="scss" scoped>
+.home-landing-sign-up-panel {
+  max-width: 560px;
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+
+  :deep(.panel-heading) {
+    justify-content: center;
+  }
+
+  :deep(.panel-heading__title) {
+    align-items: center;
+  }
+}
+
 .home-landing-sign-up {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 14px;
 
   p {

@@ -6,6 +6,7 @@
         "lede": "Look up any ship, its stats and loadouts as they are in the game today. Track your hangar, plan with your org, and see what each patch changed.",
         "signUp": "Create a free account",
         "browseShips": "Browse all ships",
+        "scrollDown": "Scroll down",
         "stats": {
           "ships": "Ships and vehicles",
           "vehicles": "Ships in hangars",

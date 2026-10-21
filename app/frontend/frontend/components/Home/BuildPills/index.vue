@@ -22,6 +22,10 @@ const builds = computed(() =>
     return build ? [build] : [];
   }),
 );
+
+// `4.10.2-live.12913470` already names its environment; the pill says that
+// part itself, so it shows the release and leaves the build id to the title.
+const release = (version: string) => version.split("-")[0];
 </script>
 
 <template>
@@ -34,9 +38,10 @@ const builds = computed(() =>
           ? PillVariantsEnum.SUCCESS
           : PillVariantsEnum.WARNING
       "
+      :title="build.version"
       uppercase
     >
-      {{ build.environment }} {{ build.version }}
+      {{ build.environment }} {{ release(build.version) }}
     </Pill>
   </div>
 </template>
@@ -47,5 +52,6 @@ const builds = computed(() =>
   flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 12px;
+  white-space: nowrap;
 }
 </style>

@@ -11,6 +11,14 @@ import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
 import { useI18n } from "@/shared/composables/useI18n";
 
+type Props = {
+  autofocus?: boolean;
+};
+
+withDefaults(defineProps<Props>(), {
+  autofocus: false,
+});
+
 const { t } = useI18n();
 const router = useRouter();
 
@@ -33,6 +41,7 @@ const search = async () => {
         v-model="searchQuery"
         name="search"
         :size="InputSizesEnum.LARGE"
+        :autofocus="autofocus"
         translation-key="home.search"
         no-label
         clearable
