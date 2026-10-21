@@ -97,6 +97,18 @@
   min-height: 600px;
 }
 
+// The wrapper grows with the column, whose height the figures beside it set, so
+// on a wide screen the picture would otherwise stretch with them.
+@media (min-width: map-get($grid-breakpoints, lg)) {
+  .ship-detail-left-col {
+    justify-content: flex-start;
+  }
+
+  .image-wrapper:not(.image-wrapper-holoviewer) {
+    max-height: 800px;
+  }
+}
+
 .fleetchart-views {
   margin: 20px 0;
   display: grid;
