@@ -103,8 +103,9 @@ describe("BlueprintAddToHangarModal", () => {
     expect(emit).toHaveBeenCalledWith("close-modal");
   });
 
-  // `want` keeps a held recipe held, so the held mark has to go first.
-  it("moves a held recipe by dropping the mark before wanting it", async () => {
+  // One request: the server moves a held recipe to the wishlist in a single
+  // write, so a failure cannot leave it neither held nor wanted.
+  it("moves a held recipe with a single want", async () => {
     const wrapper = await mount({ owned: true });
 
     await wrapper
@@ -112,6 +113,6 @@ describe("BlueprintAddToHangarModal", () => {
       .trigger("click");
     await flushPromises();
 
-    expect(calls).toEqual(["unown", "want"]);
+    expect(calls).toEqual(["want"]);
   });
 });

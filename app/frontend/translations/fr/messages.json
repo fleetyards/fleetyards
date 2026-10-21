@@ -269,7 +269,7 @@
         },
         "blueprint": {
           "accountRequired": "Inscrivez-vous ou connectez-vous pour suivre les plans que vous possédez.",
-          "own": "Impossible de mettre à jour ce plan. Veuillez réessayer."
+          "update": "Impossible de mettre à jour ce plan. Veuillez réessayer."
         },
         "default": "<b>Quelque chose s'est mal passé.</b> <br>Avez-vous essayé de l'éteindre et de le rallumer ?"
       },

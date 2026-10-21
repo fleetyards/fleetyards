@@ -50,13 +50,8 @@ module Api
 
         authorize! blueprint
 
-        mark = UserBlueprint.find_or_initialize_by(user_id: current_resource_owner.id, blueprint_id: blueprint.id)
-        mark.update!(wanted: false)
+        mark(blueprint, wanted: false)
 
-        head :no_content
-      rescue ActiveRecord::RecordNotUnique
-        # Two clicks landing together. The row exists either way, which is what
-        # was asked for.
         head :no_content
       end
 
@@ -72,18 +67,15 @@ module Api
         head :no_content
       end
 
-      # A recipe already held stays held. Wanting what you have is not a
-      # demotion, and the client never offers it.
+      # Wanting a held recipe moves it to the wishlist -- it was lost, in a
+      # wipe say -- in one write, so there is no moment where it is neither.
       def want
         blueprint = find_blueprint
 
         authorize! blueprint, to: :want?
 
-        UserBlueprint.create_with(wanted: true)
-          .find_or_create_by!(user_id: current_resource_owner.id, blueprint_id: blueprint.id)
+        mark(blueprint, wanted: true)
 
-        head :no_content
-      rescue ActiveRecord::RecordNotUnique
         head :no_content
       end
 
@@ -95,6 +87,22 @@ module Api
         UserBlueprint.wanted.where(user_id: current_resource_owner.id, blueprint_id: blueprint.id).destroy_all
 
         head :no_content
+      end
+
+      # A marker changing state starts its time in the new one: the fleet lists
+      # holders longest first, and a recipe wanted for months and acquired
+      # today has been held since today.
+      private def mark(blueprint, wanted:)
+        marker = UserBlueprint.find_or_initialize_by(user_id: current_resource_owner.id, blueprint_id: blueprint.id)
+
+        return if marker.persisted? && marker.wanted == wanted
+
+        marker.update!(wanted:, created_at: Time.current)
+      rescue ActiveRecord::RecordNotUnique
+        # Two requests landing together, and the other one inserted first --
+        # possibly in the other state. The last one asked for is the answer.
+        UserBlueprint.where(user_id: current_resource_owner.id, blueprint_id: blueprint.id)
+          .update_all(wanted:, created_at: Time.current, updated_at: Time.current)
       end
 
       private def find_blueprint

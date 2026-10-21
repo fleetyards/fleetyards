@@ -76,12 +76,7 @@ const choices = computed<Choice[]>(() => {
         icon: "fa-light fa-star",
         title: t("actions.blueprint.moveToWishlist"),
         hint: t("texts.blueprintAddToHangar.moveHint"),
-        // Two calls rather than a third endpoint: `want` keeps a held recipe
-        // held, so the held mark has to go first.
-        run: async (args) => {
-          await unown(args);
-          await want(args);
-        },
+        run: want,
         success: "messages.blueprint.want.success",
       },
       {
@@ -141,7 +136,7 @@ const choose = async (choice: Choice) => {
 
     comlink.emit("close-modal");
   } catch {
-    displayAlert({ text: t("messages.error.blueprint.own") });
+    displayAlert({ text: t("messages.error.blueprint.update") });
   } finally {
     pending.value = false;
   }

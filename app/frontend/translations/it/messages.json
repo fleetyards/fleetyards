@@ -271,7 +271,7 @@
         },
         "blueprint": {
           "accountRequired": "Registrati o accedi per tenere traccia dei progetti che possiedi.",
-          "own": "Non è stato possibile aggiornare il progetto. Riprova."
+          "update": "Non è stato possibile aggiornare il progetto. Riprova."
         },
         "default": "<b>Si è verificato un errore.</b> <br>Hai provato a spegnere e riaccendere?"
       },

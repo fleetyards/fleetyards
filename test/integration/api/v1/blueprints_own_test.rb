@@ -100,6 +100,17 @@ class Api::V1::BlueprintsOwnTest < ActionDispatch::IntegrationTest
     assert_not UserBlueprint.find_by!(user: @user, blueprint: @blueprint).wanted
   end
 
+  # The fleet lists holders longest first, and somebody who wanted a recipe
+  # for months and got it today has held it since today.
+  test "PUT on a wanted recipe starts its time as held now" do
+    mark = create(:user_blueprint, :wanted, user: @user, blueprint: @blueprint, created_at: 3.months.ago)
+    sign_in @user
+
+    assert_api_response :put, 204, api_path: PATH, path_params: {slug: @blueprint.slug}
+
+    assert_in_delta Time.current, mark.reload.created_at, 1.minute
+  end
+
   test "DELETE leaves a wishlist entry alone" do
     create(:user_blueprint, :wanted, user: @user, blueprint: @blueprint)
     sign_in @user

@@ -275,7 +275,7 @@
         },
         "blueprint": {
           "accountRequired": "Sign up or log in to keep track of the recipes you hold.",
-          "own": "We could not update that recipe. Please try again."
+          "update": "We could not update that recipe. Please try again."
         },
         "default": "<b>Something wrong happened.</b> <br>Have you tried turning it off and on again?"
       },
