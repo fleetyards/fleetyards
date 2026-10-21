@@ -338,7 +338,7 @@ GET https://api.fleetyards.net/v1/models/rsi-perseus
                 </h3>
               </div>
               <Btn :to="tab.to" :href="tab.href" :size="BtnSizesEnum.MD">
-                <i :class="tab.icon.replace('fa-duotone', 'fa-light')" />
+                <i :class="tab.icon" />
                 {{ t(`home.landing.features.${tab.key}.action`) }}
               </Btn>
             </div>
