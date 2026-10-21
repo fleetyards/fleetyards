@@ -8,9 +8,7 @@ A ship carries a list of foci from a fixed vocabulary plus a stealth flag, every
 
 ## Open questions
 
-- **Column strategy.** Add a new `foci` array column beside `focus` and drop `focus` in a later release, rather than converting `focus` in place. The pre-deploy migration runs before the new release boots, so an in-place type change breaks the old release mid-deploy. The API could then expose `foci` and keep `focus` (string, deprecated) for a release, which avoids breaking API clients.
-- **Sorting by focus.** Models, vehicles and fleet vehicles sort by `focus`/`modelFocus`. A list has no natural order. Drop the sort, or sort by the first key's label?
-- **Game-file roles not in the mapping.** `Turret` (ground turrets) and `Interceptor` (only used when a new ship has no focus yet).
+None. The column strategy, the dropped sort and the game-file roles are decided in the issue.
 
 ## What changed
 
@@ -63,16 +61,17 @@ A ship carries a list of foci from a fixed vocabulary plus a stealth flag, every
 
 ## Not in scope (deferred)
 
-- **Dropping the old `focus` column.** It needs a release after this one has deployed.
+- **Dropping the old `focus` column**, with the `focus`/`modelFocus` sorts and the deprecated `focus` API fields. It needs a release after this one has deployed.
 - **`Api::V1::ModelsController#focus`.** It has no route and looks dead.
 
 ## Discovery Log
 
+- **2026-10-22** Labels are server-side (`filter.model.focus.items.*` in the Rails locales), served as `fociLabels`, so Phase 5 landed with Phase 3. `focusIn` stays a plain string array in the query schemas: typing it as the enum would 400 an old bookmarked filter.
 - **2026-10-22** No backend code matches slots to ships; only `useShipMatch.ts` does. The parsed tree's roles add `Turret` and `Interceptor` to the mapping. `has_paper_trail` tracks `focus`, so the change history will show arrays.
 
 ## Progress
-- [ ] Phase 1
-- [ ] Phase 2
-- [ ] Phase 3
+- [x] Phase 1
+- [x] Phase 2
+- [x] Phase 3
 - [ ] Phase 4
 - [ ] Phase 5
