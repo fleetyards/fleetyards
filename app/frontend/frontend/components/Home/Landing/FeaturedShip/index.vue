@@ -38,6 +38,7 @@ const image = computed(
   <router-link
     :to="{ name: 'ship', params: { slug: ship.slug } }"
     class="home-featured-ship"
+    :class="{ 'home-featured-ship--loaded': loaded }"
     data-test="home-featured-ship"
   >
     <img
@@ -84,6 +85,14 @@ const image = computed(
     );
     content: "";
     pointer-events: none;
+    // Sized from the render, which has no height until it loads: shown
+    // before, the glow is a thin line across the column.
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+
+  &--loaded::before {
+    opacity: 1;
   }
 }
 
