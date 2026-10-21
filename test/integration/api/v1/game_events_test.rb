@@ -33,12 +33,14 @@ class Api::V1::GameEventsTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET /game-events keeps an event without an end for a day after it starts" do
-    tonight = create(:game_event, starts_at: 6.hours.ago, ends_at: nil)
-    create(:game_event, starts_at: 2.days.ago, ends_at: nil)
+  # RSI opens some events without saying when they close; the end is set once
+  # it is announced.
+  test "GET /game-events keeps an event without an end until one is set" do
+    open_ended = create(:game_event, starts_at: 12.days.ago, ends_at: nil)
+    create(:game_event, starts_at: 12.days.ago, ends_at: 2.days.ago)
 
     assert_api_response :get, 200 do
-      assert_equal [tonight.id], parsed_body["items"].pluck("id")
+      assert_equal [open_ended.id], parsed_body["items"].pluck("id")
     end
   end
 end

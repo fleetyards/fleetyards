@@ -30,15 +30,16 @@ class GameEvent < ApplicationRecord
 
   scope :published, -> { where(published: true) }
 
-  # Running or still to come: an event with no end counts as over once it has
-  # started a day ago, so a one-evening event does not linger on the homepage.
+  # Running or still to come. An event without an end is still running: RSI
+  # opens events like Discovery Month without saying when they close, so the
+  # end is set once it is announced.
   scope :current, ->(now = Time.current) {
-    where("COALESCE(game_events.ends_at, game_events.starts_at + INTERVAL '1 day') >= ?", now)
+    where("game_events.ends_at IS NULL OR game_events.ends_at >= ?", now)
   }
 
   scope :overlapping, ->(from, to) {
     where("game_events.starts_at <= ?", to)
-      .where("COALESCE(game_events.ends_at, game_events.starts_at) >= ?", from)
+      .where("game_events.ends_at IS NULL OR game_events.ends_at >= ?", from)
   }
 
   def self.ransackable_attributes(auth_object = nil)

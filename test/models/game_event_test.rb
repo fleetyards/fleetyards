@@ -29,4 +29,10 @@ class GameEventTest < ActiveSupport::TestCase
 
     assert_equal [inside], GameEvent.overlapping(Time.current, 7.days.from_now).to_a
   end
+
+  test "overlapping counts an event without an end as still running" do
+    open_ended = create(:game_event, starts_at: 12.days.ago, ends_at: nil)
+
+    assert_equal [open_ended], GameEvent.overlapping(Time.current, 7.days.from_now).to_a
+  end
 end
