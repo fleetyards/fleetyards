@@ -100,11 +100,15 @@ describe("VehiclePlaqueEditModal", () => {
       true,
     );
 
-    expect(wrapper.find(".plaque-edit__locked--open").exists()).toBe(false);
+    expect(wrapper.find(".plaque-style-picker__locked--open").exists()).toBe(
+      false,
+    );
 
     await styleTile(wrapper, "neon").trigger("click");
 
-    expect(wrapper.find(".plaque-edit__locked--open").exists()).toBe(true);
+    expect(wrapper.find(".plaque-style-picker__locked--open").exists()).toBe(
+      true,
+    );
 
     expect(styleTile(wrapper, "neon").attributes("aria-pressed")).toBe("false");
     expect(styleTile(wrapper, "brass").attributes("aria-pressed")).toBe("true");
