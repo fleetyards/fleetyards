@@ -1,6 +1,8 @@
 ---
 zh-TW:
   meta:
+    plaque_tool:
+      description: "為任意星際公民艦船製作獻詞銘牌，就像 CIG 為 The Only Constant 掛上的那塊，並以圖片形式分享。"
     admin_description: FleetYards.net Command App.
     compare_ships:
       description:

@@ -68,6 +68,8 @@ zh-TW:
       stats: 統計
       tools: 工具
       tools_travel-times: 旅行時間
+      tools_plaque: "獻詞銘牌"
+      tools_plaque_image: "The Only Constant 的獻詞銘牌，用此工具製作的範例"
       visual-tests: 視覺測試
       visual-tests_panels: Panels - Visual Tests
     api:

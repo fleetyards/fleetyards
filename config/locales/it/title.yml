@@ -68,6 +68,8 @@ it:
       stats: Statistiche
       tools: Strumenti
       tools_travel-times: Tempi di viaggio
+      tools_plaque: "Targhe di dedica"
+      tools_plaque_image: "La targa di dedica della The Only Constant, un esempio realizzato con lo strumento"
       visual-tests: Test visivi
       visual-tests_panels: Panels - Visual Tests
     api:

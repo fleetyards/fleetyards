@@ -67,6 +67,8 @@ en:
       stats: Stats
       tools: Tools
       tools_travel-times: Travel Times
+      tools_plaque: "Dedication Plaques"
+      tools_plaque_image: "The Only Constant's dedication plaque, an example made with the tool"
       visual-tests: "Visual Tests"
       visual-tests_panels: Panels - Visual Tests
     api:
