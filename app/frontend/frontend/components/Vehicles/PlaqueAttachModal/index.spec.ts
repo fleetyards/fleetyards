@@ -49,6 +49,7 @@ const hangarFailed = ref(false);
 const hangarParams = vi.fn();
 const wishlistItems = ref<Vehicle[]>([]);
 const wishlistFailed = ref(false);
+const wishlistLoading = ref(false);
 const wishlistParams = vi.fn();
 const mutateAsync = vi.fn((args: { id: string }) =>
   Promise.resolve(vehicle({ id: args.id })),
@@ -69,7 +70,7 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
     wishlistParams(params);
     return {
       data: computed(() => ({ items: wishlistItems.value })),
-      isLoading: ref(false),
+      isLoading: wishlistLoading,
       isError: wishlistFailed,
       refetch: vi.fn(),
     };
@@ -118,6 +119,7 @@ describe("VehiclePlaqueAttachModal", () => {
     hangarFailed.value = false;
     wishlistItems.value = [];
     wishlistFailed.value = false;
+    wishlistLoading.value = false;
     mutateAsync.mockClear();
     create.mockClear();
     upload.mockClear();
@@ -162,6 +164,23 @@ describe("VehiclePlaqueAttachModal", () => {
       id: "vehicle-wanted",
       data: lines,
     });
+  });
+
+  it("picks the only hangar ship only once the wishlist has none to add", async () => {
+    hangarItems.value = [vehicle()];
+    wishlistLoading.value = true;
+    const wrapper = await mount();
+    await flushPromises();
+
+    wishlistItems.value = [
+      vehicle({ id: "vehicle-wanted", name: "Kraken", wanted: true }),
+    ];
+    wishlistLoading.value = false;
+    await flushPromises();
+
+    expect(
+      wrapper.find('[data-test="plaque-attach-save"]').attributes("disabled"),
+    ).toBeDefined();
   });
 
   it("offers no new ship when the wishlist has one", async () => {

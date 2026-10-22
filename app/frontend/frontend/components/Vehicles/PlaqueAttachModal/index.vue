@@ -100,11 +100,12 @@ const options = computed(() =>
 
 const selectedId = ref<string>();
 
-// A single ship needs no choosing.
+// A single ship needs no choosing, once both lists are in: the first to load
+// may hold one ship while the other adds a second.
 watch(
-  vehicles,
-  (list) => {
-    if (!selectedId.value && list.length === 1) {
+  [vehicles, isLoading],
+  ([list, loading]) => {
+    if (!loading && !selectedId.value && list.length === 1) {
       selectedId.value = list[0].id;
     }
   },
