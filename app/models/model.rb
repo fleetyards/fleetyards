@@ -551,7 +551,7 @@ class Model < ApplicationRecord
     freight passenger touring carrier merchant
     mining refining salvage construction science data
     medical refuel repair recovery
-    expedition pathfinder recon racing starter generalist modular
+    expedition pathfinder racing starter generalist modular
   ].freeze
 
   # Each of these brings the broader key along, so "every fighter" is one pick

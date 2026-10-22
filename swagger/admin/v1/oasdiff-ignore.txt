@@ -355,3 +355,5 @@ GET /imports/{id} added the new `Imports::BuybackSync` enum value to the `type` 
 PUT /imports/{id}/cleanup added the new `Imports::BuybackSync` enum value to the `type` response property for the response status `200`
 GET /missions added the new `offered` enum value to the `items/items/locations/items/source` response property for the response status `200`
 GET /missions/{id} added the new `offered` enum value to the `locations/items/source` response property for the response status `200`
+POST /models removed the enum value `recon` of the request property `foci/items/`
+PUT /models/{id} removed the enum value `recon` of the request property `foci/items/`

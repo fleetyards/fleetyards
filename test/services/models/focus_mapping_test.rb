@@ -14,6 +14,10 @@ module Models
       assert_equal %w[heavy_fighter], map("Heavy Fighter").foci
     end
 
+    test "recon wording reads as a pathfinder" do
+      assert_equal %w[pathfinder], map("Reconnaissance / Intelligence").foci
+    end
+
     test "each part of a combination maps on its own" do
       assert_equal %w[freight starter], map("Starter / Light Freight").foci
       assert_equal %w[medium_fighter freight], map("Light Freight / Medium Fighter").foci
