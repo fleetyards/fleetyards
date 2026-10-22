@@ -1,0 +1,156 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Uploads the Vite build to Bunny Storage and removes files no recent release
+# references. Runs on a bare CI runner, so it uses the standard library only.
+#
+#   bin/cdn-assets upload <dir> <release>
+#   bin/cdn-assets cleanup
+#
+# Needs BUNNY_STORAGE_ENDPOINT, BUNNY_STORAGE_ZONE and BUNNY_STORAGE_PASSWORD.
+
+require "json"
+require "net/http"
+require "time"
+require "uri"
+
+PREFIX = "vite/"
+RELEASES_PREFIX = "#{PREFIX}releases/"
+KEEP_RELEASES = 3
+MIN_AGE_DAYS = 90
+THREADS = 20
+ATTEMPTS = 3
+
+$stdout.sync = true
+
+class Storage
+  def initialize
+    @base = URI("#{ENV.fetch("BUNNY_STORAGE_ENDPOINT").chomp("/")}/#{ENV.fetch("BUNNY_STORAGE_ZONE")}/")
+    @key = ENV.fetch("BUNNY_STORAGE_PASSWORD")
+  end
+
+  # Every file below the given directory, as {path => {size:, changed_at:}}.
+  def list(dir)
+    response = request(Net::HTTP::Get.new(uri(dir)), missing_ok: true)
+    return {} if response.is_a?(Net::HTTPNotFound)
+
+    JSON.parse(response.body).each_with_object({}) do |entry, files|
+      path = "#{dir}#{entry["ObjectName"]}"
+      if entry["IsDirectory"]
+        files.merge!(list("#{path}/"))
+      else
+        files[path] = {
+          size: entry["Length"],
+          changed_at: Time.parse("#{entry["LastChanged"].delete_suffix("Z")}Z")
+        }
+      end
+    end
+  end
+
+  def read(path)
+    request(Net::HTTP::Get.new(uri(path))).body
+  end
+
+  def write(path, body)
+    put = Net::HTTP::Put.new(uri(path))
+    put["Content-Type"] = "application/octet-stream"
+    put.body = body
+    request(put)
+  end
+
+  def delete(path)
+    request(Net::HTTP::Delete.new(uri(path)))
+  end
+
+  private
+
+  def uri(path)
+    URI.join(@base, path.split("/", -1).map { URI.encode_uri_component(it) }.join("/"))
+  end
+
+  def request(req, missing_ok: false)
+    req["AccessKey"] = @key
+    attempt = 0
+    begin
+      attempt += 1
+      response = Net::HTTP.start(req.uri.host, req.uri.port, use_ssl: req.uri.scheme == "https") do |http|
+        http.request(req)
+      end
+      return response if missing_ok && response.is_a?(Net::HTTPNotFound)
+      raise "#{req.method} #{req.uri.path}: HTTP #{response.code} #{response.body}" unless response.is_a?(Net::HTTPSuccess)
+
+      response
+    rescue => e
+      raise if attempt >= ATTEMPTS
+
+      warn "Retrying after: #{e.message}"
+      sleep attempt
+      retry
+    end
+  end
+end
+
+def in_parallel(items)
+  queue = Queue.new
+  items.each { queue << it }
+  queue.close
+  Array.new(THREADS) do
+    Thread.new do
+      while (item = queue.pop)
+        yield item
+      end
+    end
+  end.each(&:join)
+end
+
+# Hashed files never change content under the same name, so one already in
+# storage at the same size is skipped. Everything else is always rewritten.
+# The release list goes up last, so a listed release has all of its files.
+def upload(storage, dir, release)
+  abort "Usage: bin/cdn-assets upload <dir> <release>" if dir.nil? || release.nil?
+
+  files = Dir.glob("**/*", File::FNM_DOTMATCH, base: dir).select { File.file?(File.join(dir, it)) }.sort
+  existing = storage.list("#{PREFIX}assets/")
+  pending = files.reject do |file|
+    known = existing["#{PREFIX}#{file}"]
+    file.start_with?("assets/") && known && known[:size] == File.size(File.join(dir, file))
+  end
+
+  puts "Uploading #{pending.size} of #{files.size} files (#{files.size - pending.size} already in storage)..."
+  in_parallel(pending) { |file| storage.write("#{PREFIX}#{file}", File.binread(File.join(dir, file))) }
+
+  storage.write("#{RELEASES_PREFIX}#{release}.json", JSON.generate(files))
+  puts "Recorded release #{release}."
+end
+
+# A file goes once it is in none of the last KEEP_RELEASES releases and is
+# older than MIN_AGE_DAYS: the releases keep the previous build loadable for
+# open tabs however long ago it shipped, the age covers several releases a day.
+def cleanup(storage)
+  releases = storage.list(RELEASES_PREFIX).sort_by { -_2[:changed_at].to_f }
+  if releases.size < KEEP_RELEASES
+    puts "Only #{releases.size} releases recorded, need #{KEEP_RELEASES} before cleaning up."
+    return
+  end
+
+  kept = releases.first(KEEP_RELEASES).map(&:first)
+  puts "Keeping files of #{kept.map { File.basename(it, ".json") }.join(", ")}."
+  referenced = kept.flat_map { JSON.parse(storage.read(it)) }.map { "#{PREFIX}#{it}" }.to_set
+  referenced.merge(kept)
+
+  cutoff = Time.now - (MIN_AGE_DAYS * 24 * 60 * 60)
+  stale = storage.list(PREFIX).filter_map do |path, file|
+    path if !referenced.include?(path) && file[:changed_at] < cutoff
+  end
+
+  puts "Deleting #{stale.size} files..."
+  in_parallel(stale) { storage.delete(it) }
+end
+
+storage = Storage.new
+case ARGV[0]
+when "upload" then upload(storage, ARGV[1], ARGV[2])
+when "cleanup" then cleanup(storage)
+else abort "Usage: bin/cdn-assets upload <dir> <release> | cleanup"
+end
+puts "Done."
