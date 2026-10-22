@@ -73,12 +73,14 @@ export const useModelSections = (
       viewRow(
         "port-view",
         t("labels.model.portView"),
-        (model) => model.media.portView?.smallUrl,
+        (model) =>
+          (model.media.portViewColored || model.media.portView)?.smallUrl,
       ),
       viewRow(
         "top-view",
         t("labels.model.topView"),
-        (model) => model.media.topView?.smallUrl,
+        (model) =>
+          (model.media.topViewColored || model.media.topView)?.smallUrl,
       ),
     ]),
   );
