@@ -67,7 +67,7 @@ module Api
 
         authorize! @fleet_contract
 
-        if @fleet_contract.save
+        if save_fleet_contract { @fleet_contract.save }
           render :show, status: :created
         else
           render json: ValidationError.new("fleet_contracts.create", errors: @fleet_contract.errors),
@@ -80,7 +80,7 @@ module Api
 
         @fleet_contract.destination_chosen_by = current_resource_owner
 
-        if @fleet_contract.update(fleet_contract_params)
+        if save_fleet_contract { @fleet_contract.update(fleet_contract_params) }
           render :show
         else
           render json: ValidationError.new("fleet_contracts.update", errors: @fleet_contract.errors),
@@ -175,6 +175,19 @@ module Api
         return scope if allowed_to?(:manage?, @fleet, with: FleetContractPolicy)
 
         narrow_to_squadron_access(scope.where.not(aasm_state: "draft"))
+      end
+
+      # The model refuses a title whose slug is taken, but two saves racing onto
+      # the same one both pass that check and only the unique index on
+      # (fleet_id, slug) stops the second.
+      private def save_fleet_contract
+        yield
+      rescue ActiveRecord::RecordNotUnique => e
+        constraint = e.cause.try(:result)&.error_field(PG::Result::PG_DIAG_CONSTRAINT_NAME)
+        raise unless constraint == "index_fleet_contracts_on_fleet_id_and_slug"
+
+        @fleet_contract.errors.add(:title, :taken)
+        false
       end
 
       private def fleet_contract_params
