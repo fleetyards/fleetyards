@@ -11,6 +11,7 @@
 
 require "json"
 require "net/http"
+require "openssl"
 require "time"
 require "uri"
 
@@ -22,6 +23,10 @@ THREADS = 20
 ATTEMPTS = 3
 
 $stdout.sync = true
+
+class RequestError < StandardError; end
+
+class ServerError < RequestError; end
 
 class Storage
   def initialize
@@ -59,7 +64,7 @@ class Storage
   end
 
   def delete(path)
-    request(Net::HTTP::Delete.new(uri(path)))
+    request(Net::HTTP::Delete.new(uri(path)), missing_ok: true)
   end
 
   private
@@ -68,25 +73,37 @@ class Storage
     URI.join(@base, path.split("/", -1).map { URI.encode_uri_component(it) }.join("/"))
   end
 
+  # Only server errors and dropped connections are worth another attempt; a
+  # 4xx fails the same way every time.
   def request(req, missing_ok: false)
     req["AccessKey"] = @key
     attempt = 0
     begin
       attempt += 1
-      response = Net::HTTP.start(req.uri.host, req.uri.port, use_ssl: req.uri.scheme == "https") do |http|
-        http.request(req)
-      end
-      return response if missing_ok && response.is_a?(Net::HTTPNotFound)
-      raise "#{req.method} #{req.uri.path}: HTTP #{response.code} #{response.body}" unless response.is_a?(Net::HTTPSuccess)
+      response = connection.request(req)
+      return response if response.is_a?(Net::HTTPSuccess) || (missing_ok && response.is_a?(Net::HTTPNotFound))
 
-      response
-    rescue => e
+      message = "#{req.method} #{req.uri.path}: HTTP #{response.code} #{response.body}"
+      raise response.is_a?(Net::HTTPServerError) ? ServerError : RequestError, message
+    rescue ServerError, IOError, SystemCallError, Timeout::Error, OpenSSL::SSL::SSLError => e
+      reset_connection
       raise if attempt >= ATTEMPTS
 
       warn "Retrying after: #{e.message}"
       sleep attempt
       retry
     end
+  end
+
+  # One kept-alive connection per worker thread.
+  def connection
+    Thread.current[:bunny_storage] ||= Net::HTTP.start(@base.host, @base.port, use_ssl: @base.scheme == "https")
+  end
+
+  def reset_connection
+    http = Thread.current[:bunny_storage]
+    Thread.current[:bunny_storage] = nil
+    http.finish if http&.started?
   end
 end
 
@@ -107,8 +124,6 @@ end
 # storage at the same size is skipped. Everything else is always rewritten.
 # The release list goes up last, so a listed release has all of its files.
 def upload(storage, dir, release)
-  abort "Usage: bin/cdn-assets upload <dir> <release>" if dir.nil? || release.nil?
-
   files = Dir.glob("**/*", File::FNM_DOTMATCH, base: dir).select { File.file?(File.join(dir, it)) }.sort
   existing = storage.list("#{PREFIX}assets/")
   pending = files.reject do |file|
@@ -147,10 +162,9 @@ def cleanup(storage)
   in_parallel(stale) { storage.delete(it) }
 end
 
-storage = Storage.new
-case ARGV[0]
-when "upload" then upload(storage, ARGV[1], ARGV[2])
-when "cleanup" then cleanup(storage)
+case ARGV
+in ["upload", dir, release] then upload(Storage.new, dir, release)
+in ["cleanup"] then cleanup(Storage.new)
 else abort "Usage: bin/cdn-assets upload <dir> <release> | cleanup"
 end
 puts "Done."
