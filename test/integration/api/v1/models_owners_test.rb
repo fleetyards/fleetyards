@@ -61,6 +61,7 @@ class Api::V1::ModelsOwnersTest < ActionDispatch::IntegrationTest
   test "GET /models/:slug/owners lists the reader's own ships of the model" do
     own = create(:vehicle, user: @user, model: @model, name: "Rust Bucket")
     create(:vehicle, user: @user, model: @model, wanted: true)
+    create(:vehicle, user: @user, model: @model, loaner: true)
     create(:vehicle, user: @user, model: create(:model))
     sign_in @user
 

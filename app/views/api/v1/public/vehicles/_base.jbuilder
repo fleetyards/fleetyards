@@ -12,8 +12,9 @@ if vehicle.name_visible?
 end
 json.loaner vehicle.loaner
 json.public_log_entries_count vehicle.public_log_entries_count
-# Fleet lists render this partial for vehicles that are not public too, and the
-# public wishlist for ships the owner cannot give a plaque.
+# Fleet lists render this partial for vehicles that are not public too. A
+# wishlist ship's plaque stays private: a shared plaque opens the public hangar,
+# which has no wishlist ships.
 if vehicle.public? && !vehicle.wanted? && !vehicle.loaner?
   json.partial!("api/v1/vehicles/dedication_plaque", vehicle:)
 end

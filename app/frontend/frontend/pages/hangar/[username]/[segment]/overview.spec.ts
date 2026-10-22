@@ -189,7 +189,7 @@ describe("HangarVehicleOverviewPage", () => {
     expect(sideCards(wrapper)[0]).toBe("vehicle-overview-plaque");
   });
 
-  it("shows a wishlist ship's plaque without a way to edit it", async () => {
+  it("lets a wishlist ship's plaque be edited", async () => {
     const wrapper = await mount({
       vehicle: vehicle({ wanted: true, dedication: "To boldly go" }),
     });
@@ -198,15 +198,15 @@ describe("HangarVehicleOverviewPage", () => {
       true,
     );
     expect(wrapper.find('[data-test="vehicle-plaque-edit"]').exists()).toBe(
-      false,
+      true,
     );
   });
 
-  it("invites no plaque for a wishlist ship without one", async () => {
+  it("invites a plaque for a wishlist ship without one", async () => {
     const wrapper = await mount({ vehicle: vehicle({ wanted: true }) });
 
-    expect(wrapper.find('[data-test="vehicle-overview-plaque"]').exists()).toBe(
-      false,
+    expect(wrapper.find('[data-test="vehicle-plaque-empty"]').exists()).toBe(
+      true,
     );
   });
 

@@ -48,6 +48,10 @@ const lines: PlaqueLines = {
 const hangarItems = ref<Vehicle[]>([]);
 const hangarFailed = ref(false);
 const hangarParams = vi.fn();
+const wishlistItems = ref<Vehicle[]>([]);
+const wishlistFailed = ref(false);
+const wishlistLoading = ref(false);
+const wishlistParams = vi.fn();
 const mutateAsync = vi.fn((args: { id: string }) =>
   Promise.resolve(vehicle({ id: args.id })),
 );
@@ -60,6 +64,15 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
       data: computed(() => ({ items: hangarItems.value })),
       isLoading: ref(false),
       isError: hangarFailed,
+      refetch: vi.fn(),
+    };
+  },
+  useWishlist: (params: unknown) => {
+    wishlistParams(params);
+    return {
+      data: computed(() => ({ items: wishlistItems.value })),
+      isLoading: wishlistLoading,
+      isError: wishlistFailed,
       refetch: vi.fn(),
     };
   },
@@ -105,6 +118,9 @@ describe("VehiclePlaqueAttachModal", () => {
   afterEach(() => {
     hangarItems.value = [];
     hangarFailed.value = false;
+    wishlistItems.value = [];
+    wishlistFailed.value = false;
+    wishlistLoading.value = false;
     mutateAsync.mockClear();
     create.mockClear();
     upload.mockClear();
@@ -120,6 +136,64 @@ describe("VehiclePlaqueAttachModal", () => {
       expect.objectContaining({
         q: { modelSlugIn: ["corsair"], hiddenByUserEq: "true" },
       }),
+    );
+  });
+
+  it("asks the wishlist for the plaque's model too", async () => {
+    await mount();
+
+    expect(wishlistParams).toHaveBeenCalledWith(
+      expect.objectContaining({ q: { modelSlugIn: ["corsair"] } }),
+    );
+  });
+
+  it("puts the plaque on a wishlist ship, and says it is one", async () => {
+    hangarItems.value = [vehicle()];
+    wishlistItems.value = [
+      vehicle({ id: "vehicle-wanted", name: "Kraken", wanted: true }),
+    ];
+    const wrapper = await mount();
+    await flushPromises();
+
+    expect(wrapper.text()).toContain("Kraken · JR-0001-AA (Wishlist)");
+
+    await wrapper.findAll('input[type="radio"]')[1].setValue(true);
+    await wrapper.find('[data-test="plaque-attach-save"]').trigger("click");
+    await flushPromises();
+
+    expect(mutateAsync).toHaveBeenCalledWith({
+      id: "vehicle-wanted",
+      data: lines,
+    });
+  });
+
+  it("picks the only hangar ship only once the wishlist has none to add", async () => {
+    hangarItems.value = [vehicle()];
+    wishlistLoading.value = true;
+    const wrapper = await mount();
+    await flushPromises();
+
+    wishlistItems.value = [
+      vehicle({ id: "vehicle-wanted", name: "Kraken", wanted: true }),
+    ];
+    wishlistLoading.value = false;
+    await flushPromises();
+
+    expect(
+      wrapper.find('[data-test="plaque-attach-save"]').attributes("disabled"),
+    ).toBeDefined();
+  });
+
+  it("offers no new ship when the wishlist has one", async () => {
+    wishlistItems.value = [vehicle({ wanted: true })];
+    const wrapper = await mount();
+    await flushPromises();
+
+    expect(wrapper.find('[data-test="plaque-attach-create"]').exists()).toBe(
+      false,
+    );
+    expect(wrapper.find('[data-test="plaque-attach-save"]').exists()).toBe(
+      true,
     );
   });
 
@@ -146,6 +220,15 @@ describe("VehiclePlaqueAttachModal", () => {
     );
     expect(wrapper.find('[data-test="plaque-attach-empty"]').exists()).toBe(
       false,
+    );
+  });
+
+  it("tells a failed wishlist request from an empty one", async () => {
+    wishlistFailed.value = true;
+    const wrapper = await mount();
+
+    expect(wrapper.find('[data-test="plaque-attach-error"]').exists()).toBe(
+      true,
     );
   });
 
