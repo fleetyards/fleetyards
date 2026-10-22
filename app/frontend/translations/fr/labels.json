@@ -1435,7 +1435,11 @@
         "title": "Cargaison",
         "holdsSub": "réparties sur %{count} soutes",
         "maxContainerSub": "plus grande caisse acceptée",
-        "containers": "Capacité en conteneurs"
+        "containers": "Capacité en conteneurs",
+        "boxCount": {
+          "one": "%{count} × caisse de %{size} SCU",
+          "other": "%{count} × caisses de %{size} SCU"
+        }
       },
       "weaponRacks": {
         "slots": "Emplacements",

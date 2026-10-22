@@ -1434,8 +1434,12 @@
       "cargo": {
         "title": "Carga",
         "holdsSub": "en %{count} bodegas",
-        "maxContainerSub": "la caja más grande que cabe",
-        "containers": "Capacidad de contenedores"
+        "maxContainerSub": "la caja más grande que admite",
+        "containers": "Capacidad de contenedores",
+        "boxCount": {
+          "one": "%{count} × caja de %{size} SCU",
+          "other": "%{count} × cajas de %{size} SCU"
+        }
       },
       "weaponRacks": {
         "slots": "Ranuras",

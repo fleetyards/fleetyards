@@ -1434,8 +1434,12 @@
       "cargo": {
         "title": "Fracht",
         "holdsSub": "in %{count} Frachträumen",
-        "maxContainerSub": "größte passende Box",
-        "containers": "Containerkapazität"
+        "maxContainerSub": "größte Box, die sie aufnimmt",
+        "containers": "Containerkapazität",
+        "boxCount": {
+          "one": "%{count} × %{size}-SCU-Box",
+          "other": "%{count} × %{size}-SCU-Boxen"
+        }
       },
       "weaponRacks": {
         "slots": "Plätze",

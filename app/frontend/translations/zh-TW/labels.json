@@ -1434,8 +1434,12 @@
       "cargo": {
         "title": "貨物",
         "holdsSub": "分佈於 %{count} 個貨艙",
-        "maxContainerSub": "可容納的最大貨櫃",
-        "containers": "貨櫃容量"
+        "maxContainerSub": "可裝載的最大貨櫃",
+        "containers": "貨櫃容量",
+        "boxCount": {
+          "one": "%{count} × %{size} SCU 貨櫃",
+          "other": "%{count} × %{size} SCU 貨櫃"
+        }
       },
       "weaponRacks": {
         "slots": "槽位",

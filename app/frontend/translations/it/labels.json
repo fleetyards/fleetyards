@@ -1434,8 +1434,12 @@
       "cargo": {
         "title": "Carico",
         "holdsSub": "su %{count} stive",
-        "maxContainerSub": "il container più grande che ci sta",
-        "containers": "Capacità in container"
+        "maxContainerSub": "il container più grande che accetta",
+        "containers": "Capacità in container",
+        "boxCount": {
+          "one": "%{count} × container da %{size} SCU",
+          "other": "%{count} × container da %{size} SCU"
+        }
       },
       "weaponRacks": {
         "slots": "Slot",

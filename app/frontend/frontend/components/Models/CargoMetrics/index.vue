@@ -90,8 +90,14 @@ const hasData = computed(() => containerCapacities.value.length > 0);
     <div class="cargo-caps">
       <div v-for="cap in containerCapacities" :key="cap.size" class="cargo-cap">
         <div class="cargo-cap__head">
-          <span class="cargo-cap__label">{{ cap.size }} SCU</span>
-          <span class="cargo-cap__value">{{ cap.maxQuantity }}x</span>
+          <span class="cargo-cap__value">
+            {{
+              t("labels.cargo.boxCount", {
+                count: cap.maxQuantity,
+                size: cap.size,
+              })
+            }}
+          </span>
           <span class="cargo-cap__share">
             {{ toNumber(cap.scu, "integer") }} SCU · {{ cap.share }}%
           </span>
@@ -125,15 +131,6 @@ const hasData = computed(() => containerCapacities.value.length > 0);
     display: flex;
     align-items: baseline;
     gap: 8px;
-  }
-
-  &__label {
-    font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: $gray-light;
-    min-width: 52px;
   }
 
   &__value {

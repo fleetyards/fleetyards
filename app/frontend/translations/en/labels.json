@@ -1434,8 +1434,12 @@
       "cargo": {
         "title": "Cargo",
         "holdsSub": "across %{count} holds",
-        "maxContainerSub": "largest box that fits",
-        "containers": "Container Capacity"
+        "maxContainerSub": "largest box it takes",
+        "containers": "Container Capacity",
+        "boxCount": {
+          "one": "%{count} × %{size} SCU box",
+          "other": "%{count} × %{size} SCU boxes"
+        }
       },
       "weaponRacks": {
         "slots": "Slots",
