@@ -26,16 +26,6 @@ type ScalarKey = Exclude<
   "classifications" | "sizes" | "productionStatuses" | "manufacturers"
 >;
 
-const metric = (key: ScalarKey, side: HangarPlanMetrics) => {
-  const value = side[key];
-  if (value === null || value === undefined) return "-";
-  if (key === "totalPledgeValue") return amount(value);
-  if (key === "largestShip" || key === "smallestShip") {
-    return toNumber(value, "distance");
-  }
-  return toNumber(value);
-};
-
 const scalarKeys: ScalarKey[] = [
   "total",
   "uniqueModelsCount",
@@ -48,8 +38,49 @@ const scalarKeys: ScalarKey[] = [
   "smallestShip",
 ];
 
-// One row per group value either side has, so a class the plan drops still
-// shows as a zero next to what the hangar holds.
+// A length difference says little next to the two lengths themselves, so
+// those tiles show no difference.
+const withoutDelta: ScalarKey[] = ["largestShip", "smallestShip"];
+
+const format = (key: ScalarKey, value?: number | null) => {
+  if (value === null || value === undefined) return "–";
+  if (key === "totalPledgeValue") return amount(value);
+  if (withoutDelta.includes(key)) return toNumber(value, "distance");
+  return toNumber(value);
+};
+
+const signed = (key: ScalarKey, delta: number) => {
+  const size =
+    key === "totalPledgeValue"
+      ? amount(Math.abs(delta))
+      : toNumber(Math.abs(delta));
+  return `${delta > 0 ? "+" : "−"}${size}`;
+};
+
+const tiles = computed(() =>
+  scalarKeys.map((key) => {
+    const before = props.left[key];
+    const after = props.right[key];
+    const delta =
+      typeof before === "number" && typeof after === "number"
+        ? after - before
+        : 0;
+
+    return {
+      key,
+      before: format(key, before),
+      after: format(key, after),
+      changed: before !== after,
+      delta:
+        delta && !withoutDelta.includes(key)
+          ? { label: signed(key, delta), up: delta > 0 }
+          : undefined,
+    };
+  }),
+);
+
+// Every group value either side holds, so a class the plan drops still shows
+// as going to zero.
 const groupRows = (key: "classifications" | "sizes" | "productionStatuses") => {
   const names = new Set([
     ...props.left[key].map((entry) => entry.name),
@@ -58,84 +89,211 @@ const groupRows = (key: "classifications" | "sizes" | "productionStatuses") => {
   const count = (side: HangarPlanMetrics, name: string) =>
     side[key].find((entry) => entry.name === name)?.count ?? 0;
 
-  return [...names].sort().map((name) => ({
-    name,
-    left: count(props.left, name),
-    right: count(props.right, name),
-  }));
+  return [...names]
+    .map((name) => ({
+      name,
+      label: name.replace(/[-_]/g, " "),
+      before: count(props.left, name),
+      after: count(props.right, name),
+    }))
+    .sort((a, b) => b.after - a.after || a.label.localeCompare(b.label));
 };
 
 const groups = computed(() =>
-  (["classifications", "sizes", "productionStatuses"] as const).map((key) => ({
-    key,
-    rows: groupRows(key),
-  })),
+  (["classifications", "sizes", "productionStatuses"] as const)
+    .map((key) => ({ key, rows: groupRows(key) }))
+    .filter((group) => group.rows.length),
 );
 </script>
 
 <template>
-  <table class="plan-metrics" data-test="hangar-plan-metrics">
-    <thead>
-      <tr>
-        <th />
-        <th>{{ leftLabel }}</th>
-        <th>{{ rightLabel }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="key in scalarKeys" :key="key">
-        <th>{{ t(`hangarPlanner.metrics.${key}`) }}</th>
-        <td>{{ metric(key, left) }}</td>
-        <td :class="{ changed: left[key] !== right[key] }">
-          {{ metric(key, right) }}
-        </td>
-      </tr>
-    </tbody>
-    <template v-for="group in groups" :key="group.key">
-      <tbody v-if="group.rows.length">
-        <tr class="plan-metrics__group">
-          <th colspan="3">{{ t(`hangarPlanner.metrics.${group.key}`) }}</th>
-        </tr>
-        <tr v-for="row in group.rows" :key="row.name">
-          <th>{{ row.name }}</th>
-          <td>{{ row.left }}</td>
-          <td :class="{ changed: row.left !== row.right }">{{ row.right }}</td>
-        </tr>
-      </tbody>
-    </template>
-  </table>
+  <div class="plan-metrics" data-test="hangar-plan-metrics">
+    <p class="plan-metrics__legend">
+      {{ leftLabel }}
+      <i class="fa-light fa-arrow-right" aria-hidden="true" />
+      {{ rightLabel }}
+    </p>
+
+    <ul class="plan-metrics__tiles">
+      <li
+        v-for="tile in tiles"
+        :key="tile.key"
+        class="plan-metrics__tile"
+        :class="{ 'plan-metrics__tile--changed': tile.changed }"
+      >
+        <span class="plan-metrics__label">
+          {{ t(`hangarPlanner.metrics.${tile.key}`) }}
+        </span>
+        <span class="plan-metrics__values">
+          <span class="plan-metrics__before">{{ tile.before }}</span>
+          <i class="fa-light fa-arrow-right" aria-hidden="true" />
+          <strong>{{ tile.after }}</strong>
+        </span>
+        <span
+          v-if="tile.delta"
+          class="plan-metrics__delta"
+          :class="{ 'plan-metrics__delta--down': !tile.delta.up }"
+        >
+          {{ tile.delta.label }}
+        </span>
+      </li>
+    </ul>
+
+    <section
+      v-for="group in groups"
+      :key="group.key"
+      class="plan-metrics__group"
+    >
+      <h4>{{ t(`hangarPlanner.metrics.${group.key}`) }}</h4>
+      <ul>
+        <li
+          v-for="row in group.rows"
+          :key="row.name"
+          :class="{ 'plan-metrics__chip--changed': row.before !== row.after }"
+          class="plan-metrics__chip"
+        >
+          <span class="plan-metrics__chip-name">{{ row.label }}</span>
+          <span class="plan-metrics__before">{{ row.before }}</span>
+          <i class="fa-light fa-arrow-right" aria-hidden="true" />
+          <strong>{{ row.after }}</strong>
+        </li>
+      </ul>
+    </section>
+  </div>
 </template>
 
 <style lang="scss" scoped>
 .plan-metrics {
-  width: 100%;
-  border-collapse: collapse;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
 
-  th,
-  td {
-    padding: 4px 8px;
-    text-align: right;
-  }
+.plan-metrics__legend {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin: 0;
+  font-family: "Orbitron", tahoma, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
 
-  th:first-child {
-    text-align: left;
-    font-weight: normal;
-    color: var(--color-text-dim);
-  }
-
-  thead th {
-    color: var(--color-text-dim);
-  }
-
-  .changed {
-    color: var(--color-primary);
-    font-weight: 600;
+  i {
+    color: var(--color-muted);
   }
 }
 
-.plan-metrics__group th {
-  padding-top: 12px;
-  color: var(--color-text);
+.plan-metrics__tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.plan-metrics__tile {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  border: 1px solid var(--color-edge-faint);
+  border-radius: 8px;
+  background: var(--color-gray-black);
+}
+
+.plan-metrics__tile--changed {
+  border-color: var(--color-edge);
+}
+
+.plan-metrics__label {
+  font-family: "Orbitron", tahoma, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+}
+
+.plan-metrics__values {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: baseline;
+
+  strong {
+    font-size: 1.05rem;
+    color: var(--color-lifted);
+  }
+
+  i {
+    font-size: 0.7rem;
+    color: var(--color-muted);
+  }
+}
+
+.plan-metrics__before {
+  color: var(--color-text-dim);
+}
+
+.plan-metrics__delta {
+  align-self: flex-start;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--color-primary) 20%, transparent);
+  color: var(--color-primary-tint);
+  font-size: 0.75rem;
   font-weight: 600;
+}
+
+.plan-metrics__delta--down {
+  background: rgba(122, 130, 136, 0.18);
+  color: var(--color-text);
+}
+
+.plan-metrics__group {
+  h4 {
+    margin: 0 0 8px;
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--color-text-dim);
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+}
+
+.plan-metrics__chip {
+  display: inline-flex;
+  gap: 6px;
+  align-items: baseline;
+  padding: 4px 10px;
+  border: 1px solid var(--color-edge-faint);
+  border-radius: 8px;
+  font-size: 0.85rem;
+
+  strong {
+    color: var(--color-lifted);
+  }
+
+  i {
+    font-size: 0.65rem;
+    color: var(--color-muted);
+  }
+}
+
+.plan-metrics__chip--changed {
+  border-color: var(--color-edge);
+}
+
+.plan-metrics__chip-name {
+  text-transform: capitalize;
 }
 </style>

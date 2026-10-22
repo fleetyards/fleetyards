@@ -321,6 +321,17 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "plans/:id/hangar/",
+    name: "hangar-plan-hangar",
+    component: () => import("@/frontend/pages/hangar/plans/[id]/hangar.vue"),
+    meta: {
+      needsAuthentication: true,
+      title: "hangar.plans",
+      backgroundImage: "bg-5",
+      feature: FeatureFlagName.HANGAR_PLANNER,
+    },
+  },
+  {
     path: "plans/:id/compare/:otherId/",
     name: "hangar-plan-compare",
     component: () => import("@/frontend/pages/hangar/plans/[id]/compare.vue"),
