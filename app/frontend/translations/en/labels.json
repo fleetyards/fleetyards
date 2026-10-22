@@ -1469,6 +1469,20 @@
         "components": "Pod Types",
         "perPod": "per pod"
       },
+      "salvageMetrics": {
+        "heads": "Salvage Heads",
+        "largestCrate": "Largest Crate",
+        "fillTime": "%{time} s per SCU to fill",
+        "fillTimeLabel": "Fill Time",
+        "fieldSupporters": "Field Supporters",
+        "fracture": "Fracture",
+        "disintegration": "Disintegration",
+        "reach": "up to %{radius} m · %{time} s/m",
+        "yield": "Yield",
+        "yieldValue": "%{amount} SCU/m³ %{resource}",
+        "alignment": "Alignment Bonus",
+        "alignmentValue": "up to %{speed}× speed · %{yield}× yield"
+      },
       "refuelBoom": {
         "fuelFlowSub": "hydrogen transfer",
         "quantumFlowSub": "quantum transfer",

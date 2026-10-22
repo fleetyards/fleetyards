@@ -132,6 +132,16 @@ const cargoHolds = inject<Ref<CargoHold[]> | undefined>(
   undefined,
 );
 
+const parentName = inject<Ref<string> | undefined>(
+  "hardpointParentName",
+  undefined,
+);
+
+provide(
+  "hardpointParentName",
+  computed(() => hardpoint.value.name),
+);
+
 // The row keeps to the few figures its type ranks; the rest are a click away
 // in the component's overlay or on its page.
 const ROW_STAT_LIMIT = 4;
@@ -145,7 +155,10 @@ const inlineStats = computed(() => {
 
   if (presentation.value.stats) {
     return presentation.value
-      .stats(hardpoint.value, t, toNumber, { cargoHolds: cargoHolds?.value })
+      .stats(hardpoint.value, t, toNumber, {
+        cargoHolds: cargoHolds?.value,
+        parentName: parentName?.value,
+      })
       .slice(0, limit);
   }
 

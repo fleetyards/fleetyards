@@ -1469,6 +1469,20 @@
         "components": "燃料艙類型",
         "perPod": "每個燃料艙"
       },
+      "salvageMetrics": {
+        "heads": "打撈頭",
+        "largestCrate": "最大貨箱",
+        "fillTime": "每 SCU 裝填 %{time} 秒",
+        "fillTimeLabel": "裝填時間",
+        "fieldSupporters": "場支撐器",
+        "fracture": "破碎",
+        "disintegration": "分解",
+        "reach": "最遠 %{radius} 公尺 · 每公尺 %{time} 秒",
+        "yield": "產量",
+        "yieldValue": "%{amount} SCU/立方公尺 %{resource}",
+        "alignment": "對準加成",
+        "alignmentValue": "最高 %{speed}× 速度 · %{yield}× 產量"
+      },
       "refuelBoom": {
         "fuelFlowSub": "氫燃料輸送",
         "quantumFlowSub": "量子燃料輸送",

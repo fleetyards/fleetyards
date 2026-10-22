@@ -1469,6 +1469,20 @@
         "components": "挂舱类型",
         "perPod": "每个挂舱"
       },
+      "salvageMetrics": {
+        "heads": "回收头",
+        "largestCrate": "最大货箱",
+        "fillTime": "每 SCU 装填 %{time} 秒",
+        "fillTimeLabel": "装填时间",
+        "fieldSupporters": "场支撑器",
+        "fracture": "破碎",
+        "disintegration": "分解",
+        "reach": "最远 %{radius} 米 · 每米 %{time} 秒",
+        "yield": "产量",
+        "yieldValue": "%{amount} SCU/立方米 %{resource}",
+        "alignment": "对准加成",
+        "alignmentValue": "最高 %{speed}× 速度 · %{yield}× 产量"
+      },
       "refuelBoom": {
         "fuelFlowSub": "氢燃料传输",
         "quantumFlowSub": "量子燃料传输",

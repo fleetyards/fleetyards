@@ -55,6 +55,30 @@ describe("rowPresentation", () => {
     ]);
   });
 
+  it("reads a filler station grid's largest container from the hold named after both", () => {
+    const grid = rowPresentation(HardpointCategoryEnum.CARGOGRID);
+    const hold = hardpoint({
+      name: "hardpoint_cargo_grid",
+      category: HardpointCategoryEnum.CARGOGRID,
+      component: { typeData: { capacity: 96, maxContainerSize: { size: 24 } } },
+    });
+    const cargoHolds = [
+      {
+        name: "hardpoint_salvage_filler_left-hardpoint_cargo_grid",
+        maxContainerSize: { size: 1 },
+      },
+    ] as unknown as CargoHold[];
+
+    expect(
+      grid.stats?.(hold, t, toNumber, {
+        cargoHolds,
+        parentName: "hardpoint_salvage_filler_left",
+      }),
+    ).toEqual([
+      { label: "labels.hardpoint.maxContainerSize", value: "1 cargo" },
+    ]);
+  });
+
   it("names a tank by what it holds, and an ore pod by its volume", () => {
     const tank = rowPresentation(HardpointCategoryEnum.FUELTANKS);
 

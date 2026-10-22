@@ -18,6 +18,9 @@ export type RowContext = {
   // The holds as the ship serves them, which can carry a hand-set limit the
   // grid component knows nothing of.
   cargoHolds?: CargoHold[];
+  // The row this one sits under. A grid a part carries on its own port -- a
+  // salvage filler station's -- has its hold named after both.
+  parentName?: string;
 };
 
 /**
@@ -92,8 +95,12 @@ const cargoGrid: RowPresentation = {
   // The ship's hold is named after its hardpoint and wins over the component,
   // which is shared and so cannot carry a limit set on one ship's door.
   stats: (hardpoint, t, toNumber, context) => {
+    const names = [hardpoint.name];
+    if (context?.parentName) {
+      names.push(`${context.parentName}-${hardpoint.name}`);
+    }
     const hold = context?.cargoHolds?.find(
-      (cargoHold) => cargoHold.name === hardpoint.name,
+      (cargoHold) => !!cargoHold.name && names.includes(cargoHold.name),
     );
     const size =
       hold?.maxContainerSize?.size ??

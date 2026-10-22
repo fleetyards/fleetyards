@@ -1469,6 +1469,20 @@
         "components": "Types de nacelles",
         "perPod": "par nacelle"
       },
+      "salvageMetrics": {
+        "heads": "Têtes de récupération",
+        "largestCrate": "Plus grande caisse",
+        "fillTime": "%{time} s par SCU pour remplir",
+        "fillTimeLabel": "Temps de remplissage",
+        "fieldSupporters": "Supports de champ",
+        "fracture": "Fracture",
+        "disintegration": "Désintégration",
+        "reach": "jusqu'à %{radius} m · %{time} s/m",
+        "yield": "Rendement",
+        "yieldValue": "%{amount} SCU/m³ %{resource}",
+        "alignment": "Bonus d'alignement",
+        "alignmentValue": "jusqu'à %{speed}× vitesse · %{yield}× rendement"
+      },
       "refuelBoom": {
         "fuelFlowSub": "transfert d'hydrogène",
         "quantumFlowSub": "transfert de quantum",
