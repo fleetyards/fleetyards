@@ -51,6 +51,14 @@ class FleetEventSignupTest < ActiveSupport::TestCase
       assert_equal [:already_signed_up], loser.errors.where(:fleet_membership_id).map(&:type)
     end
 
+    test "answers a second active signup for the member on a one-off event with the signed-up error" do
+      create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: nil, fleet_membership: @fleet_membership, status: "interested")
+      loser = racing(build(:fleet_event_signup, fleet_event: @event, fleet_event_slot: nil, fleet_membership: @fleet_membership, status: "interested"))
+
+      assert_not loser.save_without_conflict
+      assert_equal [:already_signed_up], loser.errors.where(:fleet_membership_id).map(&:type)
+    end
+
     test "answers a slot deleted mid-save with the required error" do
       signup = create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: nil, fleet_membership: @fleet_membership, status: "interested")
       other_slot = create(:fleet_event_slot, slottable: @team)

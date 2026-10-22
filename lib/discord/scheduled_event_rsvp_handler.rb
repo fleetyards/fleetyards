@@ -30,13 +30,21 @@ module Discord
         if existing
           Result.new(status: :skipped, detail: "already signed up (#{existing.status})")
         else
-          event.fleet_event_signups.create!(
+          signup = event.fleet_event_signups.new(
             fleet_membership: membership,
             fleet_event_slot: nil,
             occurrence_date: occurrence_date,
             status: "interested"
           )
-          Result.new(status: :ok, detail: "created event-level interested signup")
+
+          if signup.save_without_conflict
+            Result.new(status: :ok, detail: "created event-level interested signup")
+          elsif signup.errors.of_kind?(:fleet_membership_id, :already_signed_up)
+            # A signup made on Fleetyards landed after the lookup above.
+            Result.new(status: :skipped, detail: "already signed up")
+          else
+            raise ActiveRecord::RecordInvalid, signup
+          end
         end
       end
     end
@@ -47,13 +55,21 @@ module Discord
 
         if signup.nil?
           Result.new(status: :skipped, detail: "no active signup")
-        elsif withdrawable?(signup)
-          signup.withdraw!
-          Result.new(status: :ok, detail: "withdrew signup #{signup.id}")
         else
-          # add! refuses to downgrade a commitment made on Fleetyards, so
-          # un-clicking Interested in Discord must not tear one down either.
-          Result.new(status: :skipped, detail: "kept stronger signup (#{signup.status})")
+          # Decided on the locked row: a promotion onto a slot can land between
+          # the lookup and the withdrawal, and must not be torn down.
+          signup.with_lock do
+            if signup.withdrawn?
+              Result.new(status: :skipped, detail: "no active signup")
+            elsif withdrawable?(signup)
+              signup.withdraw!
+              Result.new(status: :ok, detail: "withdrew signup #{signup.id}")
+            else
+              # add! refuses to downgrade a commitment made on Fleetyards, so
+              # un-clicking Interested in Discord must not tear one down either.
+              Result.new(status: :skipped, detail: "kept stronger signup (#{signup.status})")
+            end
+          end
         end
       end
     end
