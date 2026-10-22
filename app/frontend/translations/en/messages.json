@@ -987,7 +987,8 @@
           },
           "syncToDiscord": {
             "success": "Event pushed to Discord.",
-            "failure": "Could not push event to Discord."
+            "failure": "Could not push event to Discord.",
+            "discord_missing_permissions": "Discord refused: the bot is missing a permission it needs in your server. The fleet's Discord settings say which."
           },
           "destroy": {
             "success": "Event deleted.",
