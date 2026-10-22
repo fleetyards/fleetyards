@@ -1,3 +1,5 @@
+import { NullableVehicleOperationsGroupEnum } from "@/services/fyApi";
+
 // The plaque Cloud Imperium hung on the wall of The Only Constant, its
 // Constellation Phoenix prototype, line for line where the tool has the line.
 // The credits are the plaque's own, not the wall's.
@@ -14,6 +16,6 @@ export const EXAMPLE_PLAQUE = {
     launchPortLocationId: null,
     affiliation: "United Empire of Earth",
     plaqueCaptain: "Jared Huckaby",
-    operationsGroup: "uee" as const,
+    operationsGroup: NullableVehicleOperationsGroupEnum.UEE,
   },
 };
