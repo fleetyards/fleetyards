@@ -136,7 +136,9 @@ class Vehicle < ApplicationRecord
   PLAQUE_STYLES = %w[brass hud gunmetal blueprint salvage glass carbon walnut neon manufacturer].freeze
   DEFAULT_PLAQUE_STYLE = "brass"
   validates :plaque_style, inclusion: {in: PLAQUE_STYLES}, allow_blank: true
-  validates :plaque_locale, inclusion: {in: ->(_) { I18n.available_locales.map(&:to_s) }}, allow_blank: true
+  # The language a plaque is printed in; unset, it reads in English.
+  PLAQUE_LOCALES = I18n.available_locales.map(&:to_s).freeze
+  validates :plaque_locale, inclusion: {in: PLAQUE_LOCALES}, allow_blank: true
   PLAQUE_ATTRS = %w[dedication launched_on launch_port launch_port_location_id affiliation operations_group].freeze
 
   # The plaque as a picture, for the link preview of a shared plaque. The server

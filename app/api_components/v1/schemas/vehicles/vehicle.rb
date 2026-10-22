@@ -52,7 +52,7 @@ module V1
             # support until the plaque is next edited.
             plaqueStyle: ::V1::Schemas::Enums::VehiclePlaqueStyleEnum,
             # The language the plaque is printed in; English when unset.
-            plaqueLocale: {type: [:string, :null]},
+            plaqueLocale: ::V1::Schemas::Enums::NullableVehiclePlaqueLocaleEnum,
             shipyard: {type: [:string, :null]},
             image: ::Shared::V1::Schemas::MediaFile,
             # The editor's: whether `image` is an upload, and what is picked.

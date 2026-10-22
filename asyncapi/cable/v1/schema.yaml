@@ -4929,6 +4929,28 @@ components:
       - IMAGE
       - MODEL_PAINT
       - 'NULL'
+    NullableVehiclePlaqueLocaleEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - en
+      - de
+      - es
+      - fr
+      - it
+      - zh-CN
+      - zh-TW
+      -
+      x-enumNames:
+      - EN
+      - DE
+      - ES
+      - FR
+      - IT
+      - ZH_CN
+      - ZH_TW
+      - 'NULL'
     PayoutLedger:
       type: object
       properties:
@@ -5306,9 +5328,7 @@ components:
         plaqueStyle:
           "$ref": "#/components/schemas/VehiclePlaqueStyleEnum"
         plaqueLocale:
-          type:
-          - string
-          - 'null'
+          "$ref": "#/components/schemas/NullableVehiclePlaqueLocaleEnum"
         shipyard:
           type:
           - string

@@ -28,7 +28,7 @@ module V1
             operationsGroup: ::V1::Schemas::Enums::NullableVehicleOperationsGroupEnum,
             plaqueCaptain: {type: [:string, :null], maxLength: ::User::DISPLAY_NAME_LIMIT},
             plaqueStyle: ::V1::Schemas::Enums::NullableVehiclePlaqueStyleEnum,
-            plaqueLocale: {type: [:string, :null]},
+            plaqueLocale: ::V1::Schemas::Enums::NullableVehiclePlaqueLocaleEnum,
             # A signed blob id of the plaque rendered as a picture.
             plaqueImage: {type: [:string, :null]},
             image: {type: [:string, :null]},
