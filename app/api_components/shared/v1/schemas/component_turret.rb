@@ -22,6 +22,9 @@ module Shared
             maxPitch: {type: :number},
             pitchLimitsVary: {type: :boolean},
             control: ::Shared::V1::Schemas::Enums::ComponentTurretControlEnum,
+            # A salvage arm's hull work, which the game keeps on the ship's
+            # salvage controller.
+            salvage: ComponentSalvagePart,
             powerConsumption: {type: :number},
             powerMinimumFraction: {type: :number},
             powerRanges: ComponentPowerRanges,

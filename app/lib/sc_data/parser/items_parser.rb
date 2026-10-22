@@ -735,6 +735,14 @@ module ScData
           }.compact
         end
 
+        # How a ship salvages a hull whole -- fracturing it and grinding it
+        # down -- and the crates its filler stations pack, all of which the game
+        # keeps on the salvage controller rather than on the arm or the intake.
+        if (salvage_controller = values.dig("Components", "SCItemSalvageControllerParams"))
+          salvage = extract_salvage_controller_data(salvage_controller)
+          item[:type_data] = salvage if salvage.present?
+        end
+
         if values.dig("Components", "SCItemTurretParams")
           turret_data = values.dig("Components", "SCItemTurretParams")
           item[:type_data] = {
@@ -1408,6 +1416,59 @@ module ScData
         return if data.values.all? { |value| (value - 1).abs < 1e-9 }
 
         data.merge(salvage_modifier: true)
+      end
+
+      private def extract_salvage_controller_data(params)
+        structural = params.dig("structuralParams", "SSalvageStructuralParams") || {}
+        cargo = params.dig("cargoParams", "SSalvageCargoParams") || {}
+
+        {
+          heads: params["numSupportedSalvageHeads"]&.to_i,
+          field_supporters_required: structural["numFieldSupportersRequired"]&.to_i,
+          fracture: {
+            min_radius: structural["minFracturableRadius"]&.to_f,
+            max_radius: structural["maxFracturableRadius"]&.to_f,
+            time_per_metre: structural["fractureTimePerRadiusMetre"]&.to_f
+          }.compact.presence,
+          disintegration: {
+            max_radius: structural["maxDisintegratableRadius"]&.to_f,
+            time_per_metre: structural["disintegrationTimePerRadiusMetre"]&.to_f,
+            scu_per_cubic_metre: structural["disintegrationSCUPerCubicMetre"]&.to_f,
+            resource: resource_name(structural["disintegrationResourceType"])
+          }.compact.presence,
+          # Lining the ship up with the wreck: the most it speeds the work and
+          # raises the yield.
+          field_alignment: {
+            max_speed_multiplier: structural["fieldAlignmentMaxSpeedMultiplier"]&.to_f,
+            max_yield_multiplier: structural["fieldAlignmentMaxYieldMultiplier"]&.to_f
+          }.compact.presence,
+          crates: {
+            min_size: cargo["minCargoBoxSize"]&.to_i,
+            max_size: cargo["maxCargoBoxSize"]&.to_i,
+            fill_time_per_scu: cargo["boxFillingTimePerSCU"]&.to_f
+          }.compact.presence,
+          scraping_resource: resource_name(params.dig("scrapingParams", "SSalvageScrapingParams", "scrapingResourceType"))
+        }.compact.presence&.merge(salvage_controller: true)
+      end
+
+      # A resource by its record, named as the game names it: what a salvage
+      # controller scrapes or grinds a hull into.
+      private def resource_name(ref)
+        ref = value_or_nil(ref)
+        return if ref.blank?
+
+        @resource_names ||= begin
+          root = Hash.from_xml(File.read("#{import_path}/resourcetypedatabase/resourcetypedatabase.records.xml")).values.first
+          entries = root.is_a?(Hash) ? root.each_value.flat_map { |values| Array.wrap(values) }.select { |values| values.is_a?(Hash) } : []
+
+          entries.each_with_object({}) do |values, names|
+            names[values["__ref"]] = localize_name(values["displayName"]) if values["__ref"].present?
+          end
+        rescue Errno::ENOENT
+          {}
+        end
+
+        @resource_names[ref]
       end
 
       # Tractor and towing beams are WeaponGun-shaped items with no projectile,

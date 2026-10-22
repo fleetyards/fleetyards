@@ -327,11 +327,27 @@ module ScData
       private def part_cargo_holds(hardpoint)
         return [] if hardpoint.component.hidden?
 
+        crate_size = hardpoint.component.type_data&.dig("salvage", "crates", "max_size")
+
         hardpoint.component.hardpoints.sort_by { |h| h.sc_name.to_s }.filter_map do |sub_hardpoint|
           next if sub_hardpoint.component&.component_type != "CargoGrid"
 
-          sub_hardpoint.component.type_data&.merge("name" => "#{hardpoint.sc_name}-#{sub_hardpoint.sc_name}")
+          hold = sub_hardpoint.component.type_data&.merge("name" => "#{hardpoint.sc_name}-#{sub_hardpoint.sc_name}")
+          crate_size ? cap_container_size(hold, crate_size) : hold
         end
+      end
+
+      # A filler station's grid holds the crates the station packs, 1 SCU on
+      # most salvage ships where the grid's floor alone would take a 4 SCU box.
+      # The game's own `maxPermittedItemSize` reads 1 SCU on nearly every grid,
+      # cargo bays included, and is no help here.
+      private def cap_container_size(hold, size)
+        return hold if hold.blank? || hold.dig("max_container_size", "size").to_i <= size
+
+        container = ::ScData::CargoFinder::CARGO_CONTAINER_DIMENSIONS.find { |entry| entry[:size] == size }
+        return hold if container.blank?
+
+        hold.merge("max_container_size" => {"size" => size, "dimensions" => container[:dimensions].stringify_keys})
       end
 
       # One hardpoint the loadout says should exist: resolved, but unwritten.

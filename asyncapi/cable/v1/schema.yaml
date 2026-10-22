@@ -522,6 +522,8 @@ components:
           - "$ref": "#/components/schemas/ComponentPowerPlant"
           - "$ref": "#/components/schemas/ComponentMiningModule"
           - "$ref": "#/components/schemas/ComponentSalvageModifier"
+          - "$ref": "#/components/schemas/ComponentSalvageController"
+          - "$ref": "#/components/schemas/ComponentSalvageCarrier"
           - "$ref": "#/components/schemas/ComponentEmp"
           - "$ref": "#/components/schemas/ComponentQuantumEnforcement"
           - "$ref": "#/components/schemas/ComponentLifeSupport"
@@ -1339,6 +1341,78 @@ components:
       required:
       - sensitivityAddition
       - contactGroups
+    ComponentSalvageCarrier:
+      type: object
+      properties:
+        salvage:
+          "$ref": "#/components/schemas/ComponentSalvagePart"
+      required:
+      - salvage
+      additionalProperties: false
+    ComponentSalvageController:
+      type: object
+      properties:
+        salvageController:
+          type: boolean
+        heads:
+          type: integer
+        fieldSupportersRequired:
+          type: integer
+        fracture:
+          type: object
+          properties:
+            minRadius:
+              type: number
+            maxRadius:
+              type: number
+            timePerMetre:
+              type: number
+          additionalProperties: false
+        disintegration:
+          type: object
+          properties:
+            maxRadius:
+              type: number
+            timePerMetre:
+              type: number
+            scuPerCubicMetre:
+              type: number
+            resource:
+              type: string
+          additionalProperties: false
+        fieldAlignment:
+          type: object
+          properties:
+            maxSpeedMultiplier:
+              type: number
+            maxYieldMultiplier:
+              type: number
+          additionalProperties: false
+        crates:
+          type: object
+          properties:
+            minSize:
+              type: integer
+            maxSize:
+              type: integer
+            fillTimePerScu:
+              type: number
+          additionalProperties: false
+        scrapingResource:
+          type: string
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          "$ref": "#/components/schemas/ComponentPowerRanges"
+        signatureEm:
+          type: number
+        signatureIr:
+          type: number
+      required:
+      - salvageController
+      additionalProperties: false
     ComponentSalvageModifier:
       type: object
       properties:
@@ -1352,6 +1426,52 @@ components:
           type: number
       required:
       - salvageModifier
+      additionalProperties: false
+    ComponentSalvagePart:
+      type: object
+      properties:
+        fieldSupportersRequired:
+          type: integer
+        fracture:
+          type: object
+          properties:
+            minRadius:
+              type: number
+            maxRadius:
+              type: number
+            timePerMetre:
+              type: number
+          additionalProperties: false
+        disintegration:
+          type: object
+          properties:
+            maxRadius:
+              type: number
+            timePerMetre:
+              type: number
+            scuPerCubicMetre:
+              type: number
+            resource:
+              type: string
+          additionalProperties: false
+        fieldAlignment:
+          type: object
+          properties:
+            maxSpeedMultiplier:
+              type: number
+            maxYieldMultiplier:
+              type: number
+          additionalProperties: false
+        crates:
+          type: object
+          properties:
+            minSize:
+              type: integer
+            maxSize:
+              type: integer
+            fillTimePerScu:
+              type: number
+          additionalProperties: false
       additionalProperties: false
     ComponentSelfRepair:
       type: object
@@ -1651,6 +1771,8 @@ components:
           type: boolean
         control:
           "$ref": "#/components/schemas/ComponentTurretControlEnum"
+        salvage:
+          "$ref": "#/components/schemas/ComponentSalvagePart"
         powerConsumption:
           type: number
         powerMinimumFraction:

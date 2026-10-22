@@ -31,6 +31,8 @@ module Shared
             ::Shared::V1::Schemas::ComponentPowerPlant,
             ::Shared::V1::Schemas::ComponentMiningModule,
             ::Shared::V1::Schemas::ComponentSalvageModifier,
+            ::Shared::V1::Schemas::ComponentSalvageController,
+            ::Shared::V1::Schemas::ComponentSalvageCarrier,
             ::Shared::V1::Schemas::ComponentEmp,
             ::Shared::V1::Schemas::ComponentQuantumEnforcement,
             ::Shared::V1::Schemas::ComponentLifeSupport
