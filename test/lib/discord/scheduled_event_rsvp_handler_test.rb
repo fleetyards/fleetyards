@@ -78,6 +78,22 @@ module Discord
         assert result.skipped?, "expected skipped, got #{result.status}: #{result.detail}"
         assert_equal "confirmed", signup.reload.status
       end
+
+      test "keeps a signup promoted onto a slot after it was looked up" do
+        signup = @event.fleet_event_signups.create!(
+          fleet_membership: @membership, fleet_event_slot: nil, status: "interested"
+        )
+        stale = FleetEventSignup.find(signup.id)
+        slot = create(:fleet_event_slot, slottable: create(:fleet_event_team, fleet_event: @event))
+        signup.update!(fleet_event_slot: slot, status: "confirmed")
+        racing = handler
+        racing.stubs(:signups_for).returns([stale])
+
+        result = racing.remove!
+
+        assert result.skipped?, "expected skipped, got #{result.status}: #{result.detail}"
+        assert_equal ["confirmed", slot.id], signup.reload.slice(:status, :fleet_event_slot_id).values
+      end
     end
 
     class AddTest < ScheduledEventRsvpHandlerTest
@@ -132,6 +148,24 @@ module Discord
 
         assert_equal :skipped, result.status
         assert_equal "confirmed", @event.fleet_event_signups.find_by(fleet_membership: @membership).status
+      end
+
+      test "skips a signup made on Fleetyards after the lookup" do
+        @event.fleet_event_signups.create!(
+          fleet_membership: @membership, fleet_event_slot: nil, status: "tentative"
+        )
+        handler = ::Discord::ScheduledEventRsvpHandler.new(
+          guild_id: "100000000000000001",
+          scheduled_event_id: "scheduled-1",
+          discord_user_id: "discord-uid-1"
+        )
+        handler.stubs(:signups_for).returns([])
+        FleetEventSignup.any_instance.stubs(:valid?).returns(true)
+
+        result = handler.add!
+
+        assert result.skipped?, "expected skipped, got #{result.status}: #{result.detail}"
+        assert_equal ["tentative"], @event.fleet_event_signups.where(fleet_membership: @membership).pluck(:status)
       end
 
       test "skips when the user has no Discord connection" do
