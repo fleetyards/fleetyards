@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import downloadJs from "downloadjs";
-import { canSharePlaques, savePlaque } from "./download";
+import { canSharePlaques, savePlaque, savesPlaquesByShare } from "./download";
 
 vi.mock("downloadjs", () => ({ default: vi.fn() }));
 
@@ -82,5 +82,23 @@ describe("canSharePlaques", () => {
     vi.stubGlobal("navigator", {});
 
     expect(canSharePlaques()).toBe(false);
+  });
+});
+
+describe("savesPlaquesByShare", () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it("holds in the iOS Home Screen app, where saving opens the share sheet", () => {
+    vi.stubGlobal("navigator", { standalone: true, canShare: () => true });
+
+    expect(savesPlaquesByShare()).toBe(true);
+  });
+
+  it("does not hold in a browser tab", () => {
+    vi.stubGlobal("navigator", { canShare: () => true });
+
+    expect(savesPlaquesByShare()).toBe(false);
   });
 });

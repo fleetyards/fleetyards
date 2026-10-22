@@ -21,7 +21,10 @@ import { PLAQUE_LIMITS } from "@/frontend/components/Vehicles/PlaqueFields/rules
 import { plaqueMakerFor } from "@/frontend/components/Vehicles/Plaque/makers";
 import { defaultPlaqueStyle } from "@/frontend/components/Vehicles/Plaque/styles";
 import { ownerCaptain } from "@/frontend/components/Vehicles/Plaque/captain";
-import { canSharePlaques } from "@/frontend/components/Vehicles/Plaque/download";
+import {
+  canSharePlaques,
+  savesPlaquesByShare,
+} from "@/frontend/components/Vehicles/Plaque/download";
 import { type PlaqueContent } from "@/frontend/components/Vehicles/Plaque/types";
 import { type PlaqueLines } from "@/frontend/components/Vehicles/PlaqueAttachModal/types";
 import { useSessionStore } from "@/frontend/stores/session";
@@ -158,6 +161,7 @@ const shareTitle = computed(() =>
 );
 
 const canShare = canSharePlaques();
+const canDownload = !savesPlaquesByShare();
 
 // Signing in leaves the tool; the ship in the address brings it back to it.
 const redirectBackStore = useRedirectBackStore();
@@ -208,6 +212,7 @@ const attach = async () => {
           data-test="plaque-tool-share"
         />
         <PlaqueDownloadBtn
+          v-if="canDownload"
           :element="`vehicle-plaque-${plaque.id}`"
           :filename="filename"
           :variant="canShare ? BtnVariantsEnum.GHOST : undefined"
