@@ -227,7 +227,9 @@ class HangarPlans::SummaryTest < ActiveSupport::TestCase
     @plan.melts.create!(vehicle: first)
     @plan.melts.create!(vehicle: second)
 
-    assert_equal 300, HangarPlans::Summary.new(@plan).melt_credit
+    summary = HangarPlans::Summary.new(@plan)
+    assert_equal 300, summary.melt_credit
+    assert_equal [300, 300], [summary.melt_credit_at, summary.melt_credit_at(snapshot: true)]
   end
 
   private def decided_slot(model, quantity: 1)

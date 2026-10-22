@@ -74,7 +74,7 @@ module HangarPlans
     end
 
     def melt_credit_at(snapshot: false)
-      melts.sum { |melt| (snapshot ? melt.snapshot_value : melt.value) || 0 }
+      credited_melts.sum { |melt| (snapshot ? melt.snapshot_value : melt.value) || 0 }
     end
 
     # Marked beyond the tokens held, the dearest marked buy-backs keep theirs,
@@ -116,13 +116,16 @@ module HangarPlans
     # Melting any ship of a pledge melts the whole pledge, and every ship of it
     # carries the pledge's value, so that value is credited once per pledge.
     private def melt_credits
-      credited = Set.new
+      credited_melts.map { |melt| melt_value(melt) }
+    end
 
-      melts.map do |melt|
-        pledge = melt.vehicle&.rsi_pledge_id if melt.value_override.nil? && melt.vehicle&.rsi_pledge_melt_value
-        next 0 if pledge && !credited.add?(pledge)
-
-        melt_value(melt)
+    private def credited_melts
+      @credited_melts ||= begin
+        credited = Set.new
+        melts.reject do |melt|
+          pledge = melt.vehicle&.rsi_pledge_id if melt.value_override.nil? && melt.vehicle&.rsi_pledge_melt_value
+          pledge && !credited.add?(pledge)
+        end
       end
     end
 
