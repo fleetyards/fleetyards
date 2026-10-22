@@ -27,6 +27,27 @@ class HangarSyncPledgeDetailsTest < ActiveSupport::TestCase
     assert_nil @user.vehicles.find_by!(rsi_pledge_id: "2").rsi_pledge_meltable
   end
 
+  test "a sync that leaves a detail out keeps the one read before" do
+    sync([{id: "3", name: "Cutlass Black", type: "ship", pledge_value: "110.00", meltable: true, pledge_item_count: 2}])
+    sync([{id: "3", name: "Cutlass Black", type: "ship"}])
+
+    vehicle = @user.vehicles.find_by!(rsi_pledge_id: "3")
+    assert_in_delta 110.0, vehicle.rsi_pledge_melt_value
+    assert vehicle.rsi_pledge_meltable
+    assert_equal 2, vehicle.rsi_pledge_item_count
+  end
+
+  test "a ship moved to the wishlist drops its pledge's details" do
+    vehicle = create(:vehicle, user: @user, model: @model, rsi_pledge_id: "4", rsi_pledge_melt_value: 110,
+      rsi_pledge_meltable: true, rsi_pledge_item_count: 2)
+
+    vehicle.update!(wanted: true)
+
+    assert_nil vehicle.rsi_pledge_melt_value
+    assert_nil vehicle.rsi_pledge_meltable
+    assert_nil vehicle.rsi_pledge_item_count
+  end
+
   private def sync(items)
     HangarSync.new(items).run(@user.id)
   end
