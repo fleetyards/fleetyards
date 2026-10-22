@@ -114,6 +114,24 @@ class Api::V1::HangarPlanAcquisitionsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "POST says which upgrade another route already uses" do
+    ccu = create(:hangar_pledge_item, user: @user, kind: "ccu", name: "Upgrade - Constellation To Carrack")
+    @slot.update!(quantity: 2)
+    steps = [{sourceKind: "owned_ccu", hangarPledgeItemId: ccu.id, toModelId: @carrack.id}]
+    2.times do |index|
+      body = {candidateId: @candidate.id, startKind: "owned", sourceVehicleId: create(:vehicle, user: @user, model: @constellation).id, steps:}
+      status = index.zero? ? 201 : 400
+
+      assert_api_response :post, status, api_path: "/hangar/plans/{hangarPlanId}/acquisitions", path_params: {hangarPlanId: @plan.id}, body: do
+        next if index.zero?
+
+        messages = parsed_body["errors"].flat_map { |error| error["messages"].pluck("message") }
+        assert_includes messages, "Hangar pledge item is already used in this plan"
+        assert_not_includes messages, "Upgrade steps is invalid"
+      end
+    end
+  end
+
   test "POST rejects a chain that does not end on the slot's ship" do
     assert_api_response :post, 400, api_path: "/hangar/plans/{hangarPlanId}/acquisitions",
       path_params: {hangarPlanId: @plan.id}, body: {candidateId: @candidate.id, startKind: "store", startModelId: @cutlass.id}

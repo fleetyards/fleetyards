@@ -19,7 +19,7 @@ module Api
         if save_with_steps(@acquisition, params.fetch(:steps, []))
           render_hangar_plan(status: :created)
         else
-          render json: ValidationError.new("hangar_plan_acquisitions.create", errors: @acquisition.errors), status: :bad_request
+          render json: ValidationError.new("hangar_plan_acquisitions.create", errors: route_errors(@acquisition)), status: :bad_request
         end
       end
 
@@ -32,7 +32,7 @@ module Api
         if save_with_steps(@acquisition, steps)
           render_hangar_plan
         else
-          render json: ValidationError.new("hangar_plan_acquisitions.update", errors: @acquisition.errors), status: :bad_request
+          render json: ValidationError.new("hangar_plan_acquisitions.update", errors: route_errors(@acquisition)), status: :bad_request
         end
       end
 
@@ -44,6 +44,13 @@ module Api
 
       private def set_acquisition
         @acquisition = @hangar_plan.acquisitions.find(params[:id])
+      end
+
+      # A step that fails reports only "upgrade steps is invalid" on the route,
+      # so its own errors, which say what is wrong, are passed on instead.
+      private def route_errors(acquisition)
+        acquisition.errors.delete(:upgrade_steps)
+        [acquisition.errors, *acquisition.upgrade_steps.map(&:errors).select(&:any?)]
       end
 
       private def acquisition_params
