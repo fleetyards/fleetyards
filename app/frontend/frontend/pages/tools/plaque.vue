@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import { useForm } from "vee-validate";
 import { storeToRefs } from "pinia";
+import { refDebounced } from "@vueuse/core";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
@@ -151,6 +152,10 @@ const plaque = computed<PlaqueContent | undefined>(() => {
   };
 });
 
+// The styles draw the plaque once each, all of them on screen at once; they
+// catch up once typing pauses, so a keystroke redraws only the preview.
+const stylesPlaque = refDebounced(plaque, 300);
+
 const filename = computed(() =>
   ["plaque", model.value?.slug, serial.value].filter(Boolean).join("-"),
 );
@@ -287,7 +292,7 @@ const attach = async () => {
     </Heading>
     <PlaqueStylePicker
       v-model="plaqueStyle"
-      :vehicle="plaque"
+      :vehicle="stylesPlaque ?? plaque"
       :captain="captain"
       :is-supporter="isSupporter"
     />
