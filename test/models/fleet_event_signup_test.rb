@@ -81,6 +81,16 @@ class FleetEventSignupTest < ActiveSupport::TestCase
       end
     end
 
+    test "a slot destroy sweeps a signup that claimed it after the signups were loaded" do
+      slot = FleetEventSlot.find(@slot.id)
+      slot.fleet_event_signups.load
+      straggler = create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: @slot, fleet_membership: @fleet_membership, status: "confirmed")
+
+      slot.destroy!
+
+      assert_not FleetEventSignup.exists?(straggler.id)
+    end
+
     private def racing(signup)
       signup.define_singleton_method(:valid?) { |*| true }
       signup

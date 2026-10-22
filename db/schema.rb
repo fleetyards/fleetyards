@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_22_170000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_22_180000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -3112,7 +3112,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_22_170000) do
   add_foreign_key "fleet_event_ships", "fleet_event_teams"
   add_foreign_key "fleet_event_ships", "mission_ships", column: "source_ship_id", on_delete: :nullify
   add_foreign_key "fleet_event_ships", "models"
-  add_foreign_key "fleet_event_signups", "fleet_event_slots"
+  add_foreign_key "fleet_event_signups", "fleet_event_slots", on_delete: :cascade
   add_foreign_key "fleet_event_signups", "fleet_events"
   add_foreign_key "fleet_event_signups", "fleet_memberships"
   add_foreign_key "fleet_event_signups", "vehicles", on_delete: :nullify
