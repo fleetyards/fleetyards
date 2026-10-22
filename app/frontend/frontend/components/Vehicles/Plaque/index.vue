@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
-import { type Vehicle, type VehiclePublic } from "@/services/fyApi";
+import { type PlaqueContent } from "./types";
 import { inUniverseLaunchDate } from "./launchDate";
 import { PLAQUE_CREDITS } from "./credits";
 import {
@@ -17,7 +17,7 @@ import { emblemSize, plaqueMakerFor } from "./makers";
 import miscPattern from "@/images/plaque/misc-pattern.webp";
 
 type Props = {
-  vehicle: Vehicle | VehiclePublic;
+  vehicle: PlaqueContent;
   // The owner's name: the public payload carries it only when the owner shows
   // it, and the owner's own payload never does. A captain saved with the
   // plaque takes its place.

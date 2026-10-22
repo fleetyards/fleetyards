@@ -10,15 +10,15 @@ import VehiclePlaque from "@/frontend/components/Vehicles/Plaque/index.vue";
 import { plaqueMakerFor } from "@/frontend/components/Vehicles/Plaque/makers";
 import { FREE_PLAQUE_STYLE } from "@/frontend/components/Vehicles/Plaque/styles";
 import { useI18n } from "@/shared/composables/useI18n";
+import { type PlaqueContent } from "@/frontend/components/Vehicles/Plaque/types";
 import {
   NullableVehiclePlaqueStyleEnum,
-  type Vehicle,
   type VehiclePlaqueStyleEnum,
 } from "@/services/fyApi";
 
 type Props = {
   // The plaque as it will read, drawn once per style.
-  vehicle: Vehicle;
+  vehicle: PlaqueContent;
   captain?: string;
   isSupporter: boolean;
 };
@@ -59,7 +59,7 @@ const lockedOptions = computed(() =>
   options.value.filter((option) => option.locked),
 );
 
-const previewFor = (option: VehiclePlaqueStyleEnum): Vehicle => ({
+const previewFor = (option: VehiclePlaqueStyleEnum): PlaqueContent => ({
   ...props.vehicle,
   id: `${props.vehicle.id}-${option}`,
   plaqueStyle: option,
