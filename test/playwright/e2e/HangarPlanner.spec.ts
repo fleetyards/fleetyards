@@ -1,18 +1,5 @@
 import { test, expect } from "../support/commands";
-import type { Page } from "@playwright/test";
 import { app, appScenario } from "../support/on-rails";
-
-const pickOption = async (
-  page: Page,
-  name: string,
-  option: string,
-) => {
-  await page
-    .getByTestId(`base-select-${name}`)
-    .getByTestId("base-select-title")
-    .click();
-  await page.getByRole("option", { name: option, exact: true }).click();
-};
 
 test.describe("Hangar Planner", () => {
   test.beforeEach(async ({ page }) => {
@@ -55,14 +42,20 @@ test.describe("Hangar Planner", () => {
     await page.getByTestId("hangar-plan-add-route").click();
     await page.getByTestId("modal").waitFor({ state: "visible" });
 
-    await pickOption(page, "startKind", "Kept from hangar");
-    await pickOption(page, "sourceVehicleId", "Cutlass Black");
-    await page.getByTestId("hangar-plan-route-add-step").click();
-    await pickOption(page, "steps.0.sourceKind", "My RSI hangar");
-    await pickOption(
-      page,
-      "steps.0.hangarPledgeItemId",
-      "Upgrade - Cutlass Black To Carrack",
+    const modal = page.getByTestId("modal");
+    await modal.getByTestId("hangar-plan-route-start-owned").click();
+    await modal
+      .getByTestId("pick-list-sourceVehicleId")
+      .getByRole("button", { name: /Cutlass Black/ })
+      .click();
+
+    // The step opens on the RSI hangar, which holds an upgrade from the Cutlass.
+    await modal
+      .getByTestId("pick-list-steps.0.upgrade")
+      .getByRole("button", { name: /Carrack/ })
+      .click();
+    await expect(modal.getByTestId("hangar-plan-route-preview")).toContainText(
+      "The route ends on the Carrack.",
     );
 
     const routeCreated = page.waitForResponse(
@@ -74,14 +67,19 @@ test.describe("Hangar Planner", () => {
     await routeCreated;
     await page.getByTestId("modal").waitFor({ state: "hidden" });
 
-    await expect(page.getByTestId("hangar-plan-route")).toContainText(
-      "Cutlass Black → Carrack",
-    );
+    const route = page.getByTestId("hangar-plan-route");
+    await expect(route).toContainText("Cutlass Black");
+    await expect(route).toContainText("Carrack");
+    await expect(route).toContainText("My RSI hangar");
 
     // The Aurora is not needed, so it is melted for store credit.
     await page.getByTestId("hangar-plan-add-melt").click();
     await page.getByTestId("modal").waitFor({ state: "visible" });
-    await pickOption(page, "vehicleId", "Aurora MR");
+    await page
+      .getByTestId("modal")
+      .getByTestId("pick-list-vehicleId")
+      .getByRole("button", { name: /Aurora MR/ })
+      .click();
 
     const meltCreated = page.waitForResponse(
       (response) =>
@@ -96,6 +94,9 @@ test.describe("Hangar Planner", () => {
     await expect(
       page.getByTestId("hangar-plan-summary-meltCredit"),
     ).toContainText("30");
+
+    await page.getByTestId("hangar-plan-compare-hangar").click();
+    await expect(page).toHaveURL(/\/hangar\/plans\/[0-9a-f-]+\/hangar\//);
 
     const statuses = page.getByTestId("hangar-plan-vehicle-status");
     await expect(statuses.filter({ hasText: "Cutlass Black" })).toContainText(
