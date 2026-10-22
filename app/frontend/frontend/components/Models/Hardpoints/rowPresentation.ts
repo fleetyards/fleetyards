@@ -13,6 +13,13 @@ type Format = (value: number, units: string) => string | number;
 
 type Headline = { value: string; unit: string };
 
+// What the ship knows beyond the hardpoint itself.
+export type RowContext = {
+  // The holds as the ship serves them, which can carry a hand-set limit the
+  // grid component knows nothing of.
+  cargoHolds?: CargoHold[];
+};
+
 /**
  * What a kind of hardpoint shows differently from a part's row: one row draws
  * every kind -- the stack, the fold, the name over its maker -- and these only
@@ -32,6 +39,7 @@ export interface RowPresentation {
     hardpoint: Hardpoint,
     t: Translate,
     toNumber: Format,
+    context?: RowContext,
   ) => HardpointStat[];
   // A kind of hardpoint without a size worth a badge.
   sizeless?: boolean;
@@ -81,9 +89,16 @@ const cargoGrid: RowPresentation = {
       toNumber,
     ),
   // The largest container reads as a figure, like every other one on a row.
-  stats: (hardpoint, t, toNumber) => {
-    const size = (hardpoint.component?.typeData as CargoHold | undefined)
-      ?.maxContainerSize?.size;
+  // The ship's hold is named after its hardpoint and wins over the component,
+  // which is shared and so cannot carry a limit set on one ship's door.
+  stats: (hardpoint, t, toNumber, context) => {
+    const hold = context?.cargoHolds?.find(
+      (cargoHold) => cargoHold.name === hardpoint.name,
+    );
+    const size =
+      hold?.maxContainerSize?.size ??
+      (hardpoint.component?.typeData as CargoHold | undefined)?.maxContainerSize
+        ?.size;
 
     return size
       ? [

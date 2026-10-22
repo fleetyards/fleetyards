@@ -82,6 +82,11 @@ provide(
 );
 
 provide(
+  "hardpointCargoHolds",
+  computed(() => props.cargoHolds),
+);
+
+provide(
   "modelSlug",
   computed(() => props.model.slug),
 );

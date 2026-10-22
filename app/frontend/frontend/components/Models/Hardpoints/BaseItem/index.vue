@@ -24,6 +24,7 @@ import { useHardpointStats } from "@/frontend/composables/useHardpointStats";
 import {
   HardpointSourceEnum,
   HardpointCategoryEnum,
+  type CargoHold,
   type Hardpoint,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -126,6 +127,11 @@ const headline = computed(() => {
 // gold headline is never capped; it is the key figure.
 const statLimit = inject<number | undefined>("hardpointStatLimit", undefined);
 
+const cargoHolds = inject<Ref<CargoHold[]> | undefined>(
+  "hardpointCargoHolds",
+  undefined,
+);
+
 // The row keeps to the few figures its type ranks; the rest are a click away
 // in the component's overlay or on its page.
 const ROW_STAT_LIMIT = 4;
@@ -139,7 +145,7 @@ const inlineStats = computed(() => {
 
   if (presentation.value.stats) {
     return presentation.value
-      .stats(hardpoint.value, t, toNumber)
+      .stats(hardpoint.value, t, toNumber, { cargoHolds: cargoHolds?.value })
       .slice(0, limit);
   }
 
