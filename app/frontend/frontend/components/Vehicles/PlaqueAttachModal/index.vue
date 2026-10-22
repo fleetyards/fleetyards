@@ -21,6 +21,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
   useHangar,
   useUpdateVehicle,
+  useWishlist,
   type Model,
   type Vehicle,
 } from "@/services/fyApi";
@@ -46,18 +47,35 @@ const { displaySuccess, displayAlert } = useAppNotifications();
 
 // Only ships of the model the plaque was made for: its class line and emblem
 // come from the model, so on another one it would be a different plaque. A
-// ship hidden from the hangar list is still the user's to dedicate.
-const {
-  data: hangar,
-  isLoading,
-  isError,
-  refetch,
-} = useHangar({
+// ship hidden from the hangar list, or one still on the wishlist, is still the
+// user's to dedicate.
+const hangarQuery = useHangar({
   q: { modelSlugIn: [props.model.slug], hiddenByUserEq: "true" },
   perPage: "100",
 });
 
-const vehicles = computed(() => hangar.value?.items ?? []);
+const wishlistQuery = useWishlist({
+  q: { modelSlugIn: [props.model.slug] },
+  perPage: "100",
+});
+
+const isLoading = computed(
+  () => hangarQuery.isLoading.value || wishlistQuery.isLoading.value,
+);
+
+const isError = computed(
+  () => hangarQuery.isError.value || wishlistQuery.isError.value,
+);
+
+const refetch = () => {
+  void hangarQuery.refetch();
+  void wishlistQuery.refetch();
+};
+
+const vehicles = computed(() => [
+  ...(hangarQuery.data.value?.items ?? []),
+  ...(wishlistQuery.data.value?.items ?? []),
+]);
 
 const vehicleLabel = (vehicle: Vehicle) =>
   [vehicle.name || vehicle.model.name, vehicle.serial]
@@ -65,12 +83,19 @@ const vehicleLabel = (vehicle: Vehicle) =>
     .join(" · ");
 
 const options = computed(() =>
-  vehicles.value.map((vehicle) => ({
-    value: vehicle.id,
-    label: vehicle.dedication
-      ? `${vehicleLabel(vehicle)} (${t("labels.plaqueTool.hasPlaque")})`
-      : vehicleLabel(vehicle),
-  })),
+  vehicles.value.map((vehicle) => {
+    const notes = [
+      vehicle.wanted ? t("labels.wishlist") : undefined,
+      vehicle.dedication ? t("labels.plaqueTool.hasPlaque") : undefined,
+    ].filter(Boolean);
+
+    return {
+      value: vehicle.id,
+      label: notes.length
+        ? `${vehicleLabel(vehicle)} (${notes.join(", ")})`
+        : vehicleLabel(vehicle),
+    };
+  }),
 );
 
 const selectedId = ref<string>();

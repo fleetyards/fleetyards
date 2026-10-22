@@ -434,7 +434,7 @@
         "intro": "Dai a qualsiasi nave una targa di dedica. Scegli una nave, scrivi la sua dedica e condividi la targa come immagine.",
         "pickShip": "Scegli una nave per disegnarne la targa.",
         "signIn": "Accedi per mettere questa targa su una nave del tuo hangar.",
-        "noShips": "Nel tuo hangar non c'è nessuna nave %{model} su cui mettere la targa.",
+        "noShips": "Nel tuo hangar e nella tua lista dei desideri non c'è nessuna nave %{model} su cui mettere la targa.",
         "attachIntro": "La targa va sulla nave che scegli, con il nome e la matricola di quella nave.",
         "addShip": "Aggiungine una e riceverà la targa, con il nome e la matricola che le hai dato.",
         "example": "Un esempio: la targa che Cloud Imperium ha appeso per The Only Constant, il suo prototipo di Constellation Phoenix. Cambia una riga qualsiasi per renderla tua."
