@@ -77,10 +77,18 @@ class LoadoutSlots
   # A slot filed under a category its parts do not carry -- a mining laser's
   # slot is `mining_lasers`, the laser's own category `weapons` -- is matched on
   # the component types that category stands for.
+  #
+  # The SureGrip and ViseLock beams the game files type as SalvageHead are
+  # among a tractor slot's candidates; `fits?` tells them from the heads.
   def self.category_kind(category)
     types = ::Hardpoint::TYPE_CATEGORIES.filter_map { |type, filed| type if filed.to_s == category }
+    types << "SalvageHead" if category == "tractor_beams"
 
     types.any? ? [:component_type, types.sort] : [:category, category]
+  end
+
+  def self.filed_by_type?(category)
+    ::Hardpoint::TYPE_CATEGORIES.value?(category.to_s.to_sym)
   end
 
   # The game files carry one part several times over -- a gas-cloud-resistant
@@ -99,8 +107,13 @@ class LoadoutSlots
   def self.fits?(port, component, stock = port.facts.component, provided = nil)
     facts = port.facts
     types = types_taken(facts, stock)
-    kind, taken = types.any? ? [:component_type, types] : category_kind(facts.category)
-    kind_matches = Array(taken).include?(component.public_send(kind))
+    kind_matches = if types.any?
+      types.include?(component.component_type)
+    elsif filed_by_type?(facts.category)
+      ::Hardpoint::TYPE_CATEGORIES[::Hardpoint.filed_type(component)].to_s == facts.category
+    else
+      component.category == facts.category
+    end
     return false unless kind_matches
 
     size = Integer(component.size, exception: false)
