@@ -317,6 +317,14 @@ describe("VehicleContextMenu", () => {
     expect(items()).not.toContain("vehicle-manage-cargo");
   });
 
+  it("links a loaner to none of the vehicle page's tabs", async () => {
+    await mount({ vehicle: vehicle({ loaner: true }) });
+
+    expect(items()).not.toContain("vehicle-log");
+    expect(items()).not.toContain("vehicle-manage-loadouts");
+    expect(items()).not.toContain("vehicle-manage-cargo");
+  });
+
   it("offers to hide a ship, and to show a hidden one again", async () => {
     await mount();
 
