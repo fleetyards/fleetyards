@@ -1,4 +1,4 @@
-import { toValue, type MaybeRefOrGetter } from "vue";
+import { computed, toValue, type MaybeRefOrGetter } from "vue";
 import type { LocationQuery, LocationQueryRaw } from "vue-router";
 import type { ActiveFilter } from "@/shared/components/ActiveFilters/types";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -6,6 +6,7 @@ import { useFilterOptions } from "@/shared/composables/useFilterOptions";
 import { FILTER_EXCLUDE_KEYS } from "@/shared/composables/useFilters";
 import { hasFilterValue } from "@/shared/utils/Filters";
 import { HANGAR_VIEW_KEYS } from "./useHangarFilters";
+import { useModelFocusFilters, type FilterOption } from "@/services/fyApi";
 
 const ignoredKeys = new Set([...FILTER_EXCLUDE_KEYS, ...HANGAR_VIEW_KEYS]);
 const present = hasFilterValue;
@@ -95,6 +96,14 @@ export const useShipFilterSummary = (
   const { priceOptions, pledgePriceOptions } = useFilterOptions();
   const optionLabels = (options: { label: string; value: string }[]) =>
     Object.fromEntries(options.map((option) => [option.value, option.label]));
+
+  // A focus key's label is translated on the server, the same one the focus
+  // select shows. Asked for only while a focus filter is set.
+  const { data: focusFilters } = useModelFocusFilters(undefined, {
+    query: {
+      enabled: computed(() => JSON.stringify(route.query).includes("focusIn")),
+    },
+  });
   const label = (key: string) => {
     if (key === "cargo") return "SCU";
     const aliases: Record<string, string> = {
@@ -126,6 +135,11 @@ export const useShipFilterSummary = (
     const labels: Record<string, Record<string, string>> = {
       priceIn: optionLabels(priceOptions),
       pledgePriceIn: optionLabels(pledgePriceOptions),
+      focusIn: Object.fromEntries(
+        ((focusFilters.value as FilterOption[] | undefined) ?? []).map(
+          (option) => [String(option.value), option.label ?? ""],
+        ),
+      ),
       ...toValue(valueLabels),
     };
     const known = labels[key]?.[value];
