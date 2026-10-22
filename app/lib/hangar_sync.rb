@@ -759,7 +759,7 @@ class HangarSync < HangarImporter
   # whether RSI lets it be melted, and how many items go with it when it is.
   private def pledge_details(item)
     {
-      rsi_pledge_value: item[:pledge_value].presence,
+      rsi_pledge_melt_value: item[:pledge_value].presence,
       rsi_pledge_meltable: item.key?(:meltable) ? ActiveModel::Type::Boolean.new.cast(item[:meltable]) || false : nil,
       rsi_pledge_item_count: item[:pledge_item_count].presence
     }

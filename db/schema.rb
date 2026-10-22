@@ -2260,7 +2260,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_22_120000) do
     t.decimal "sc_height", precision: 15, scale: 2
     t.string "rsi_ctm_url"
     t.string "rsi_pledge_slug"
-    t.integer "rsi_pledge_value"
+    t.integer "rsi_pledge_melt_value"
     t.boolean "adi_map", default: false
     t.decimal "scm_speed_boosted", precision: 15, scale: 2
     t.decimal "pitch_boosted", precision: 15, scale: 2
@@ -2928,7 +2928,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_22_120000) do
     t.string "picture_type"
     t.uuid "picture_id"
     t.text "dedication_verse"
-    t.decimal "rsi_pledge_value", precision: 15, scale: 2
+    t.decimal "rsi_pledge_melt_value", precision: 15, scale: 2
     t.boolean "rsi_pledge_meltable"
     t.integer "rsi_pledge_item_count"
     t.index ["hidden", "loaner", "wanted"], name: "index_vehicles_on_hidden_and_loaner_and_wanted"

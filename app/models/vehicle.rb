@@ -623,7 +623,7 @@ class Vehicle < ApplicationRecord
 
     self.rsi_pledge_id = nil
     self.rsi_pledge_synced_at = nil
-    self.rsi_pledge_value = nil
+    self.rsi_pledge_melt_value = nil
     self.rsi_pledge_meltable = nil
     self.rsi_pledge_item_count = nil
   end

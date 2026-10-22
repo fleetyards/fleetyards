@@ -12,7 +12,7 @@ class HangarSyncPledgeDetailsTest < ActiveSupport::TestCase
     sync([{id: "1", name: "Cutlass Black", type: "ship", pledge_value: "110.00", meltable: true, pledge_item_count: 3}])
 
     vehicle = @user.vehicles.find_by!(rsi_pledge_id: "1")
-    assert_in_delta 110.0, vehicle.rsi_pledge_value
+    assert_in_delta 110.0, vehicle.rsi_pledge_melt_value
     assert vehicle.rsi_pledge_meltable
     assert_equal 3, vehicle.rsi_pledge_item_count
 
