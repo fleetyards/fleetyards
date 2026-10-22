@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_22_140000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_22_150000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1561,6 +1561,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_22_140000) do
     t.datetime "updated_at", null: false
     t.integer "buyback_tokens"
     t.decimal "vat_rate", precision: 5, scale: 2
+    t.uuid "based_on_vehicle_ids", array: true
     t.index ["share_token"], name: "index_hangar_plans_on_share_token", unique: true
     t.index ["user_id", "name"], name: "index_hangar_plans_on_user_id_and_name", unique: true
   end

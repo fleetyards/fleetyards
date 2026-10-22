@@ -23,6 +23,7 @@ module HangarPlans
         when "wishlist" then copy_vehicles(plan.user.vehicles.wanted.where(loaner: false, bundled: false), keep: false)
         when "plan" then copy_plan
         end
+        plan.update_columns(based_on_vehicle_ids: plan.live_vehicles.pluck(:id)) unless source == "plan"
         plan
       end
     end
@@ -49,7 +50,7 @@ module HangarPlans
     # Routes and melts reference the user's own ships and pledges, so a copy
     # keeps them; they stay one-per-plan, which a copy is.
     private def copy_plan
-      plan.update!(source_plan.slice(:starting_credit, :buyback_tokens, :vat_rate, :based_on_at))
+      plan.update!(source_plan.slice(:starting_credit, :buyback_tokens, :vat_rate, :based_on_at, :based_on_vehicle_ids))
 
       source_plan.slots.includes(candidates: {acquisitions: :upgrade_steps}).each do |source_slot|
         slot = plan.slots.create!(source_slot.slice(:label, :description, :filters, :quantity, :position))

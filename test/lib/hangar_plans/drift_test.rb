@@ -41,6 +41,16 @@ class HangarPlans::DriftTest < ActiveSupport::TestCase
     end
   end
 
+  test "a wishlist ship bought since the plan was based is listed" do
+    wanted = travel(-1.day) { create(:vehicle, user: @user, model: @carrack, wanted: true) }
+    plan = @user.hangar_plans.new(name: "Later")
+    HangarPlans::Builder.new(plan, source: "hangar").run
+
+    wanted.update!(wanted: false)
+
+    assert_equal [wanted], HangarPlans::Drift.new(plan.reload).new_vehicles
+  end
+
   test "a price change shows the old and the new total" do
     slot = @plan.slots.create!(label: "Carrack")
     candidate = slot.candidates.create!(model: @carrack)

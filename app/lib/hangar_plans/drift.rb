@@ -23,9 +23,18 @@ module HangarPlans
       @changed_sources ||= find_changed_sources
     end
 
+    # Against the hangar as it stood, not by creation date: a wishlist ship the
+    # user buys keeps its row, and with it a created_at from before the plan.
     def new_vehicles
-      @new_vehicles ||= plan.live_vehicles.where(created_at: plan.based_on_at..).where.not(id: plan.used_vehicle_ids)
-        .includes(model: MODEL_PRELOAD).order(:created_at).to_a
+      @new_vehicles ||= begin
+        scope = plan.live_vehicles.where.not(id: plan.used_vehicle_ids)
+        scope = if plan.based_on_vehicle_ids.nil?
+          scope.where(created_at: plan.based_on_at..)
+        else
+          scope.where.not(id: plan.based_on_vehicle_ids)
+        end
+        scope.includes(model: MODEL_PRELOAD).order(:created_at).to_a
+      end
     end
 
     private def find_missing_sources
@@ -82,7 +91,7 @@ module HangarPlans
         end
         plan.melts.includes(:model).find_each { |melt| melt.update_columns(value_snapshot: melt.list_value) }
 
-        plan.update!(based_on_at: Time.current)
+        plan.update!(based_on_at: Time.current, based_on_vehicle_ids: plan.live_vehicles.pluck(:id))
       end
     end
 
