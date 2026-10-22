@@ -21,7 +21,7 @@ class FleetEventShip < ApplicationRecord
   normalizes :foci, with: ->(value) { ::Model.ordered_foci(value) }
 
   validates :classification, inclusion: {in: ::Model::CLASSIFICATIONS}, allow_nil: true
-  validate :foci_must_be_known
+  include FociList
 
   validate :model_or_filter_required
   validate :model_must_be_in_game
@@ -43,10 +43,6 @@ class FleetEventShip < ApplicationRecord
 
   def display_title
     title.presence || model&.name || I18n.t("labels.fleet_event_ship.placeholder", default: "Unspecified Ship")
-  end
-
-  private def foci_must_be_known
-    errors.add(:foci, :inclusion) if (foci - ::Model::FOCI).any?
   end
 
   private def model_or_filter_required

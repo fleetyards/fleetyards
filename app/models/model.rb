@@ -578,7 +578,7 @@ class Model < ApplicationRecord
     ordered_foci(keys + keys.filter_map { |key| FOCUS_UMBRELLAS[key] })
   }
 
-  validate :foci_must_be_known
+  include FociList
 
   # NOT NULL columns whose default of 0 already reads as "unknown", so an admin
   # clearing one sends it back there rather than into a constraint violation.
@@ -1439,10 +1439,6 @@ class Model < ApplicationRecord
     return if vehicle_size.blank? || size == VEHICLE_SIZE
 
     errors.add(:vehicle_size, :not_a_vehicle)
-  end
-
-  private def foci_must_be_known
-    errors.add(:foci, :inclusion) if (foci - FOCI).any?
   end
 
   private def send_on_sale_notification

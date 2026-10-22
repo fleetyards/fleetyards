@@ -892,6 +892,14 @@ class ModelSizeTest < ActiveSupport::TestCase
     assert_equal ["Fighter"], build(:model, foci: %w[fighter]).foci_labels
   end
 
+  test "the old focus string follows the keys an admin picks" do
+    model = create(:model, focus: "Medium Fighter", foci: %w[medium_fighter])
+
+    model.update!(foci: %w[bomber])
+
+    assert_equal "Bomber", model.reload.focus
+  end
+
   test "a focus the catalogue does not know is refused" do
     model = build(:model, foci: %w[turret])
 
