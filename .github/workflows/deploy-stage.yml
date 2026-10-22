@@ -34,6 +34,14 @@ jobs:
       url: https://fleetyards.dev
     secrets: inherit
 
+  cdn-release:
+    needs: [deploy]
+    uses: ./.github/workflows/cdn-release.job.yml
+    with:
+      tag: stage-${{ github.sha }}
+      destination: stage
+    secrets: inherit
+
   notify-appsignal:
     needs: [deploy]
     uses: ./.github/workflows/notify-appsignal.job.yml

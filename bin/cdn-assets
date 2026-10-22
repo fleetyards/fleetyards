@@ -4,7 +4,8 @@
 # Uploads the Vite build to Bunny Storage and removes files no recent release
 # references. Runs on a bare CI runner, so it uses the standard library only.
 #
-#   bin/cdn-assets upload <dir> <release>
+#   bin/cdn-assets upload <dir> <release>   before the deploy
+#   bin/cdn-assets release <release>        once the deploy went live
 #   bin/cdn-assets cleanup
 #
 # Needs BUNNY_STORAGE_ENDPOINT, BUNNY_STORAGE_ZONE and BUNNY_STORAGE_PASSWORD.
@@ -17,6 +18,7 @@ require "uri"
 
 PREFIX = "vite/"
 RELEASES_PREFIX = "#{PREFIX}releases/"
+PENDING_PREFIX = "#{PREFIX}pending/"
 KEEP_RELEASES = 3
 MIN_AGE_DAYS = 90
 THREADS = 20
@@ -122,7 +124,9 @@ end
 
 # Hashed files never change content under the same name, so one already in
 # storage at the same size is skipped. Everything else is always rewritten.
-# The release list goes up last, so a listed release has all of its files.
+# The file list goes up last, so a listed release has all of its files. It
+# stays pending until the deploy succeeds: a build that never went live must
+# not push the one that is live out of the kept releases.
 def upload(storage, dir, release)
   files = Dir.glob("**/*", File::FNM_DOTMATCH, base: dir).select { File.file?(File.join(dir, it)) }.sort
   existing = storage.list("#{PREFIX}assets/")
@@ -134,7 +138,14 @@ def upload(storage, dir, release)
   puts "Uploading #{pending.size} of #{files.size} files (#{files.size - pending.size} already in storage)..."
   in_parallel(pending) { |file| storage.write("#{PREFIX}#{file}", File.binread(File.join(dir, file))) }
 
-  storage.write("#{RELEASES_PREFIX}#{release}.json", JSON.generate(files))
+  storage.write("#{PENDING_PREFIX}#{release}.json", JSON.generate(files))
+  puts "Uploaded release #{release}."
+end
+
+def release(storage, release)
+  pending = "#{PENDING_PREFIX}#{release}.json"
+  storage.write("#{RELEASES_PREFIX}#{release}.json", storage.read(pending))
+  storage.delete(pending)
   puts "Recorded release #{release}."
 end
 
@@ -164,7 +175,8 @@ end
 
 case ARGV
 in ["upload", dir, release] then upload(Storage.new, dir, release)
+in ["release", release] then release(Storage.new, release)
 in ["cleanup"] then cleanup(Storage.new)
-else abort "Usage: bin/cdn-assets upload <dir> <release> | cleanup"
+else abort "Usage: bin/cdn-assets upload <dir> <release> | release <release> | cleanup"
 end
 puts "Done."

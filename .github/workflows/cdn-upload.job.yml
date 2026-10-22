@@ -11,47 +11,22 @@ on:
         description: "Deployment destination (live, stage)"
         required: true
         type: string
-      cleanup:
-        description: "Remove assets no recent release references from storage"
-        required: false
-        type: boolean
-        default: false
 
 jobs:
   upload:
     runs-on: ubuntu-latest
 
     permissions:
+      contents: read
       packages: read
 
     steps:
       - uses: actions/checkout@v7
 
-      - uses: ruby/setup-ruby@v1
-
-      - name: Install 1Password CLI
-        run: |
-          curl -sSfo /tmp/op.zip "https://cache.agilebits.com/dist/1P/op2/pkg/v2.33.0/op_linux_amd64_v2.33.0.zip"
-          unzip -o /tmp/op.zip -d /usr/local/bin op
-          chmod +x /usr/local/bin/op
-
-      - name: Fetch Bunny Storage credentials
-        id: secrets
-        env:
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-          DESTINATION: ${{ inputs.destination }}
-        run: |
-          DEST_UPPER=$(echo "$DESTINATION" | tr '[:lower:]' '[:upper:]')
-
-          PASSWORD=$(op read "op://Fleetyards/BUNNY_STORAGE_${DEST_UPPER}/password")
-          echo "::add-mask::$PASSWORD"
-          echo "password=$PASSWORD" >> "$GITHUB_OUTPUT"
-
-          ZONE_NAME=$(op read "op://Fleetyards/BUNNY_STORAGE_${DEST_UPPER}/config/zone_name")
-          echo "zone_name=$ZONE_NAME" >> "$GITHUB_OUTPUT"
-
-          ENDPOINT=$(op read "op://Fleetyards/BUNNY_STORAGE_${DEST_UPPER}/config/endpoint")
-          echo "endpoint=$ENDPOINT" >> "$GITHUB_OUTPUT"
+      - uses: ./.github/workflows/bunny-storage-action
+        with:
+          destination: ${{ inputs.destination }}
+          op-service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v4.6.0
@@ -69,16 +44,4 @@ jobs:
           echo "Extracted $(find ./vite-assets -type f | wc -l) asset files"
 
       - name: Upload assets to Bunny Storage
-        env:
-          BUNNY_STORAGE_PASSWORD: ${{ steps.secrets.outputs.password }}
-          BUNNY_STORAGE_ZONE: ${{ steps.secrets.outputs.zone_name }}
-          BUNNY_STORAGE_ENDPOINT: ${{ steps.secrets.outputs.endpoint }}
         run: bin/cdn-assets upload vite-assets "${{ inputs.tag }}"
-
-      - name: Clean up old assets
-        if: inputs.cleanup
-        env:
-          BUNNY_STORAGE_PASSWORD: ${{ steps.secrets.outputs.password }}
-          BUNNY_STORAGE_ZONE: ${{ steps.secrets.outputs.zone_name }}
-          BUNNY_STORAGE_ENDPOINT: ${{ steps.secrets.outputs.endpoint }}
-        run: bin/cdn-assets cleanup

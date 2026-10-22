@@ -1,0 +1,40 @@
+name: CDN Release Job
+
+on:
+  workflow_call:
+    inputs:
+      tag:
+        description: "Docker image tag whose upload went live"
+        required: true
+        type: string
+      destination:
+        description: "Deployment destination (live, stage)"
+        required: true
+        type: string
+      cleanup:
+        description: "Remove assets no recent release references from storage"
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: ./.github/workflows/bunny-storage-action
+        with:
+          destination: ${{ inputs.destination }}
+          op-service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+
+      - name: Record the release
+        run: bin/cdn-assets release "${{ inputs.tag }}"
+
+      - name: Clean up old assets
+        if: inputs.cleanup
+        run: bin/cdn-assets cleanup
