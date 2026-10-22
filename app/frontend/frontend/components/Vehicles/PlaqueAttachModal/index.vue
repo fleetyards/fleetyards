@@ -68,8 +68,9 @@ const isError = computed(
 );
 
 const refetch = () => {
-  void hangarQuery.refetch();
-  void wishlistQuery.refetch();
+  [hangarQuery, wishlistQuery]
+    .filter((query) => query.isError.value)
+    .forEach((query) => void query.refetch());
 };
 
 const vehicles = computed(() => [
