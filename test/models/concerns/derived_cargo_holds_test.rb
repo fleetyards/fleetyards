@@ -6,12 +6,12 @@ class DerivedCargoHoldsTest < ActiveSupport::TestCase
   # `limits` is required by the CargoHold component and present on every hold in
   # the live catalogue, so a fixture without it renders a payload the API says
   # cannot exist — which cable validation now rejects.
-  private def hold(name, capacity: 32, size: 2.5)
+  private def hold(name, capacity: 32, size: 2.5, max_container_size: {"size" => 2, "dimensions" => {"x" => 2.5, "y" => 1.25, "z" => 1.25}})
     {
       "name" => name,
       "capacity" => capacity,
       "dimensions" => {"x" => size, "y" => size, "z" => size},
-      "max_container_size" => {"size" => 2, "dimensions" => {"x" => 2.5, "y" => 1.25, "z" => 1.25}},
+      "max_container_size" => max_container_size,
       "limits" => {
         "min" => {"dimensions" => {"x" => 1.25, "y" => 1.25, "z" => 1.25}, "capacity" => 1},
         "max" => {"dimensions" => {"x" => 2.5, "y" => 2.5, "z" => 2.5}, "capacity" => 8}
@@ -118,6 +118,29 @@ class DerivedCargoHoldsTest < ActiveSupport::TestCase
     rows = build_holds(@model, [hold("hold_a", size: 5.0)])
 
     assert_predicate rows.first.cargo_hold_container_capacities.count, :positive?
+  end
+
+  test "keeps a hand-set loadable crate size through a reload, and serves it as the hold's largest" do
+    grid_max = {"size" => 8, "dimensions" => {"x" => 2.5, "y" => 2.5, "z" => 2.5}}
+    build_holds(@model, [hold("hold_a", max_container_size: grid_max)])
+    @model.cargo_holds_db.find_by(name: "hold_a").update!(max_loadable_container_size_scu: 2)
+
+    rows = build_holds(@model, [hold("hold_a", capacity: 16, max_container_size: grid_max)])
+
+    assert_equal 2, rows.first.max_loadable_container_size_scu
+    assert_equal 8, rows.first.max_container_size_scu
+    assert_equal 0, rows.first.cargo_hold_container_capacities.find_by(container_size_scu: 8).max_quantity
+
+    served = @model.reload.cargo_holds_with_offsets.first
+    assert_equal({"size" => 2, "dimensions" => {"x" => 2.5, "y" => 1.25, "z" => 1.25}}, served["max_container_size"])
+    assert_nil served["offset"], "a loadable size alone places nothing"
+  end
+
+  test "ignores a loadable crate size the grid already stays under" do
+    build_holds(@model, [hold("hold_a")])
+    @model.cargo_holds_db.find_by(name: "hold_a").update!(max_loadable_container_size_scu: 8)
+
+    assert_equal 2, @model.reload.cargo_holds_with_offsets.first.dig("max_container_size", "size")
   end
 
   # ModelModule carries the same column and used to carry its own copy of this.

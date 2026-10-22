@@ -18,7 +18,7 @@ module DerivedCargoHolds
     # 50 ships. There are a handful of holds per parent, so the filtering itself
     # costs nothing either way.
     db_records = cargo_holds_db
-      .select { |hold| hold.offset_x || hold.offset_y || hold.offset_z || hold.rotation }
+      .select { |hold| hold.offset_x || hold.offset_y || hold.offset_z || hold.rotation || hold.max_loadable_container_size_scu }
       .index_by(&:position)
 
     return holds if db_records.empty?
@@ -28,14 +28,19 @@ module DerivedCargoHolds
 
       next hold_data if db_record.blank?
 
-      extra = {
-        "offset" => {
+      extra = {}
+
+      if db_record.offset_x || db_record.offset_y || db_record.offset_z || db_record.rotation
+        extra["offset"] = {
           "x" => db_record.offset_x&.to_f || 0.0,
           "y" => db_record.offset_y&.to_f || 0.0,
           "z" => db_record.offset_z&.to_f || 0.0
         }
-      }
+      end
       extra["rotation"] = db_record.rotation if db_record.rotation.present?
+
+      loadable = loadable_container_size(db_record)
+      extra["max_container_size"] = loadable if loadable
 
       hold_data.merge(extra)
     end
@@ -96,6 +101,17 @@ module DerivedCargoHolds
 
       key
     end
+  end
+
+  # Only a limit below what the grid itself takes changes anything.
+  private def loadable_container_size(db_record)
+    size = db_record.max_loadable_container_size_scu
+    return if size.blank? || size >= db_record.max_container_size_scu
+
+    container = ScData::CargoFinder::CARGO_CONTAINER_DIMENSIONS.find { |entry| entry[:size] == size }
+    return if container.blank?
+
+    {"size" => size, "dimensions" => container[:dimensions].stringify_keys}
   end
 
   private def derived_cargo_hold_attributes(hold_data)
