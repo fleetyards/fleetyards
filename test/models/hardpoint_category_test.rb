@@ -84,6 +84,27 @@ class HardpointCategoryTest < ActiveSupport::TestCase
     assert_equal "weapon", turret(part("TractorBeam", "weapons"), part("WeaponGun", "weapons")).group
   end
 
+  test "a module port that carries a tractor beam stays a module" do
+    port = Hardpoint.new(parent: @model, sc_name: "hardpoint_module", source: :game_files, component: part("Module", "module"))
+    port.carried_components = [part("TractorBeam", "weapons")]
+    port.save!
+
+    assert_equal "module", port.group
+  end
+
+  test "a turret reads what it carries in the build it is asked about" do
+    turret = hardpoint("hardpoint_turret_builds", component: part("Turret", "turret"))
+    child = create(:hardpoint, :without_build, parent: turret, sc_name: "head", source: :game_files)
+    loading = ScData::Source.new(version: "9.9.9-live.1", environment: ScData::Source.environment)
+    head = part("SalvageHead", "utility", sc_key: "salvage_head_standard")
+    gun = part("WeaponGun", "weapons")
+    create(:hardpoint_build, hardpoint: child, component: gun)
+    create(:hardpoint_build, hardpoint: child, component: head, environment: loading.environment, version: loading.version)
+
+    assert_equal [head], turret.carried_components_in(loading)
+    assert_equal [gun], turret.carried_components_in
+  end
+
   test "a tractor beam the game files type as a salvage head is a tractor beam" do
     beam = part("SalvageHead", "utility", sc_key: "grin_tractorbeam_s3")
 

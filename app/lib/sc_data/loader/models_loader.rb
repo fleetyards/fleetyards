@@ -122,6 +122,7 @@ module ScData
       private def resave_hardpoints(scope)
         ::ScData::Source.with(source) do
           scope.find_each do |hardpoint|
+            hardpoint.carried_components = hardpoint.carried_components_in(source) if ::Hardpoint::CARRIER_TYPES.include?(hardpoint.component&.component_type)
             hardpoint.save
             next unless hardpoint.saved_changes?
 

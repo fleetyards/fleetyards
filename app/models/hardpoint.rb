@@ -322,8 +322,14 @@ class Hardpoint < ApplicationRecord
   # save outside a load reads the children this build has instead.
   attr_writer :carried_components
 
+  # What carries a part rather than being one. A module port that carries a
+  # tractor beam is still a module, so only these take their payload's group.
+  CARRIER_TYPES = %w[Turret TurretBase UtilityTurret ToolArm].freeze
+
   private def payload_group
-    types = (@carried_components || carried_components).map { |part| self.class.filed_type(part) }
+    return unless CARRIER_TYPES.include?(component&.component_type)
+
+    types = (@carried_components || carried_components_in).map { |part| self.class.filed_type(part) }
 
     return if types.empty? || types.intersect?(%w[WeaponGun Missile Bomb])
 
@@ -343,12 +349,22 @@ class Hardpoint < ApplicationRecord
     self.class.filed_type(component)
   end
 
-  # The children this build has, through their build facts: a port a later
-  # build dropped keeps its row, and the columns hold whichever environment
-  # loaded last.
-  protected def carried_components
-    hardpoints.in_build.includes(build: :component).flat_map do |child|
-      [child.facts.component, *child.carried_components]
+  # The children a build has, through that build's rows: a port a later build
+  # dropped keeps its row, and the columns hold whichever environment loaded
+  # last. A load names its own build, which is not yet the one served while it
+  # runs.
+  def carried_components_in(source = nil)
+    children = (source ? hardpoints.in_build(source) : hardpoints.in_build)
+      .includes(:component, builds: :component)
+
+    children.flat_map do |child|
+      facts = if source
+        child.builds.find { |build| build.environment == source.environment && build.version == source.version }
+      else
+        child.facts
+      end
+
+      [facts&.component, *child.carried_components_in(source)]
     end.compact
   end
 
