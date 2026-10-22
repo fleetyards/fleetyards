@@ -25,12 +25,15 @@ import {
   InputAlignmentsEnum,
   InputTypesEnum,
 } from "@/shared/components/base/FormInput/types";
-import { humanizeHoldName } from "@/shared/utils/CargoHolds";
+import {
+  formatMaxContainer,
+  hasLoadableLimit,
+  humanizeHoldName,
+  loadableContainerSizes,
+} from "@/shared/utils/CargoHolds";
 // Registered globally as `Select`, so `<BaseSelect>` resolves to nothing
 // without this.
 import BaseSelect from "@/shared/components/base/Select/index.vue";
-
-const CONTAINER_SIZES = [32, 24, 16, 8, 4, 2, 1];
 
 type Props = {
   modelModule: ModelModule;
@@ -72,9 +75,10 @@ const editForm = ref<CargoHoldInput>({});
 const editingHold = ref<AdminCargoHold>();
 
 const loadableSizeOptions = computed<FilterOption[]>(() =>
-  CONTAINER_SIZES.filter(
-    (size) => size < (editingHold.value?.maxContainerSizeScu ?? 0),
-  ).map((size) => ({ label: `${size} SCU`, value: size })),
+  loadableContainerSizes(editingHold.value).map((size) => ({
+    label: `${size} SCU`,
+    value: size,
+  })),
 );
 
 const onStartEdit = (hold: AdminCargoHold) => {
@@ -141,11 +145,6 @@ const hasOffset = (hold: AdminCargoHold) =>
 const formatDimensions = (hold: AdminCargoHold) =>
   `${hold.dimensionX} x ${hold.dimensionY} x ${hold.dimensionZ}m`;
 
-const formatMaxContainer = (hold: AdminCargoHold) =>
-  hold.maxLoadableContainerSizeScu != null
-    ? `${hold.maxLoadableContainerSizeScu} SCU (grid ${hold.maxContainerSizeScu} SCU)`
-    : `${hold.maxContainerSizeScu} SCU`;
-
 const formatOffset = (hold: AdminCargoHold) => {
   if (!hasOffset(hold)) return "Auto";
   const parts = `${hold.offsetX ?? 0}, ${hold.offsetY ?? 0}, ${hold.offsetZ ?? 0}`;
@@ -188,7 +187,7 @@ const formatOffset = (hold: AdminCargoHold) => {
       <span :class="{ 'text-muted': !hasOffset(item) }">
         Offset: {{ formatOffset(item) }}
       </span>
-      <span :class="{ 'text-muted': item.maxLoadableContainerSizeScu == null }">
+      <span :class="{ 'text-muted': !hasLoadableLimit(item) }">
         Max crate: {{ formatMaxContainer(item) }}
       </span>
     </template>
