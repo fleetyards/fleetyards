@@ -52,7 +52,8 @@ const modelSlug = computed({
   get: () =>
     typeof route.query.model === "string" ? route.query.model : undefined,
   set: (slug) => {
-    void router.replace({ query: { ...route.query, model: slug } });
+    const { model: _model, ...query } = route.query;
+    void router.replace({ query: slug ? { ...query, model: slug } : query });
   },
 });
 
