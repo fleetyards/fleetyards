@@ -101,6 +101,22 @@ module Notifications
           assert_empty Notification.where(user: @member, notification_type: "fleet_event_signup_kicked")
         end
       end
+
+      class LifecycleTest < FleetEventSubscriberTest
+        test "tells everyone signed up that the event has started" do
+          assert_difference -> { Notification.where(user: @member, notification_type: "fleet_event_started").count }, 1 do
+            deliver("fleet_event.started", event: @event)
+          end
+        end
+
+        test "leaves out a member who withdrew" do
+          @signup.withdraw!
+
+          assert_no_difference -> { Notification.where(user: @member, notification_type: "fleet_event_completed").count } do
+            deliver("fleet_event.completed", event: @event)
+          end
+        end
+      end
     end
   end
 end

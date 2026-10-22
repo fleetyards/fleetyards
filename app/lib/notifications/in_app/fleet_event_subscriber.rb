@@ -236,7 +236,7 @@ module Notifications
       def signup_users(target_event)
         target_event.fleet_event_signups
           .where.not(status: "withdrawn")
-          .includes(:user)
+          .includes(fleet_membership: :user)
           .map(&:user)
           .compact
           .uniq
