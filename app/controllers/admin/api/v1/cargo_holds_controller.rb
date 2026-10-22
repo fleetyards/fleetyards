@@ -36,7 +36,7 @@ module Admin
 
         private def cargo_hold_params
           @cargo_hold_params ||= params.permit(
-            :offset_x, :offset_y, :offset_z, :rotation
+            :offset_x, :offset_y, :offset_z, :rotation, :max_loadable_container_size_scu
           )
         end
 

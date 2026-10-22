@@ -24,12 +24,14 @@ module Admin
                 offsetY: {type: :number},
                 offsetZ: {type: :number},
                 rotation: {type: :integer},
+                maxContainerSizeScu: {type: :integer},
+                maxLoadableContainerSizeScu: {type: [:integer, :null]},
                 parent: AdminCargoHoldParent,
                 createdAt: {type: :string, format: "date-time"},
                 updatedAt: {type: :string, format: "date-time"}
               },
               additionalProperties: false,
-              required: %w[id parentType parentId capacityScu dimensionX dimensionY dimensionZ createdAt updatedAt]
+              required: %w[id parentType parentId capacityScu maxContainerSizeScu dimensionX dimensionY dimensionZ createdAt updatedAt]
             })
           end
         end

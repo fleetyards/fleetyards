@@ -12,6 +12,7 @@ import {
   type ModelModule,
   type AdminCargoHold,
   type CargoHoldInput,
+  type FilterOption,
   useListCargoHolds as useListCargoHoldsQuery,
   useUpdateCargoHold as useUpdateCargoHoldMutation,
   getListCargoHoldsQueryKey,
@@ -24,7 +25,15 @@ import {
   InputAlignmentsEnum,
   InputTypesEnum,
 } from "@/shared/components/base/FormInput/types";
-import { humanizeHoldName } from "@/shared/utils/CargoHolds";
+import {
+  formatMaxContainer,
+  hasLoadableLimit,
+  humanizeHoldName,
+  loadableContainerSizes,
+} from "@/shared/utils/CargoHolds";
+// Registered globally as `Select`, so `<BaseSelect>` resolves to nothing
+// without this.
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 
 type Props = {
   modelModule: ModelModule;
@@ -63,13 +72,23 @@ const invalidateCargoHolds = () =>
 
 // Edit
 const editForm = ref<CargoHoldInput>({});
+const editingHold = ref<AdminCargoHold>();
+
+const loadableSizeOptions = computed<FilterOption[]>(() =>
+  loadableContainerSizes(editingHold.value).map((size) => ({
+    label: `${size} SCU`,
+    value: size,
+  })),
+);
 
 const onStartEdit = (hold: AdminCargoHold) => {
+  editingHold.value = hold;
   editForm.value = {
     offsetX: hold.offsetX ?? undefined,
     offsetY: hold.offsetY ?? undefined,
     offsetZ: hold.offsetZ ?? undefined,
     rotation: hold.rotation ?? undefined,
+    maxLoadableContainerSizeScu: hold.maxLoadableContainerSizeScu ?? undefined,
   };
 };
 
@@ -96,6 +115,9 @@ const onSaveEdit = async () => {
       offsetY: toNumberOrNull(editForm.value.offsetY),
       offsetZ: toNumberOrNull(editForm.value.offsetZ),
       rotation: toNumberOrNull(editForm.value.rotation),
+      maxLoadableContainerSizeScu: toNumberOrNull(
+        editForm.value.maxLoadableContainerSizeScu,
+      ),
     },
   });
 
@@ -165,6 +187,9 @@ const formatOffset = (hold: AdminCargoHold) => {
       <span :class="{ 'text-muted': !hasOffset(item) }">
         Offset: {{ formatOffset(item) }}
       </span>
+      <span :class="{ 'text-muted': !hasLoadableLimit(item) }">
+        Max crate: {{ formatMaxContainer(item) }}
+      </span>
     </template>
 
     <template #actions="{ item }">
@@ -214,6 +239,13 @@ const formatOffset = (hold: AdminCargoHold) => {
         name="rotation"
         translation-key="cargoHold.rotation"
         :step="90"
+      />
+      <BaseSelect
+        v-model="editForm.maxLoadableContainerSizeScu"
+        name="maxLoadableContainerSizeScu"
+        :options="loadableSizeOptions"
+        translation-key="cargoHold.maxLoadableContainerSizeScu"
+        unsorted
       />
     </template>
   </InlineEditableList>

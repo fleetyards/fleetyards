@@ -103,7 +103,8 @@
         "offsetX": "Desfase X",
         "offsetY": "Desfase Y",
         "offsetZ": "Desfase Z",
-        "rotation": "0 or 90"
+        "rotation": "0 or 90",
+        "maxLoadableContainerSizeScu": "Máximo de la rejilla"
       },
       "manufacturer": {
         "longName": "Nombre completo",

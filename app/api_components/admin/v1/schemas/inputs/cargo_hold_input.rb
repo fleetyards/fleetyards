@@ -13,7 +13,8 @@ module Admin
               offsetX: {type: [:number, :null]},
               offsetY: {type: [:number, :null]},
               offsetZ: {type: [:number, :null]},
-              rotation: {type: [:integer, :null]}
+              rotation: {type: [:integer, :null]},
+              maxLoadableContainerSizeScu: {type: [:integer, :null]}
             },
             additionalProperties: false
           })

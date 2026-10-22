@@ -103,7 +103,8 @@
         "offsetX": "Décalage X",
         "offsetY": "Décalage Y",
         "offsetZ": "Décalage Z",
-        "rotation": "0 or 90"
+        "rotation": "0 or 90",
+        "maxLoadableContainerSizeScu": "Maximum de la grille"
       },
       "manufacturer": {
         "longName": "Nom complet",

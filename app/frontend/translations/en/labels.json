@@ -1859,7 +1859,8 @@
         "offsetX": "Offset X (SCU)",
         "offsetY": "Offset Y (SCU)",
         "offsetZ": "Offset Z (SCU)",
-        "rotation": "Rotation (°)"
+        "rotation": "Rotation (°)",
+        "maxLoadableContainerSizeScu": "Largest loadable crate"
       },
       "modelLoaner": {
         "hidden": "Hidden?",

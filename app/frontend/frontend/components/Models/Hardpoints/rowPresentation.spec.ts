@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { HardpointCategoryEnum, type Hardpoint } from "@/services/fyApi";
+import {
+  HardpointCategoryEnum,
+  type CargoHold,
+  type Hardpoint,
+} from "@/services/fyApi";
 import { rowPresentation } from "./rowPresentation";
 
 const t = (key: string) => key;
@@ -29,6 +33,26 @@ describe("rowPresentation", () => {
       { label: "labels.hardpoint.maxContainerSize", value: "32 cargo" },
     ]);
     expect(grid.sizeless).toBe(true);
+  });
+
+  it("reads a cargo grid's largest container from the ship's hold where it has one", () => {
+    const grid = rowPresentation(HardpointCategoryEnum.CARGOGRID);
+    const hold = hardpoint({
+      name: "hardpoint_cargogrid",
+      category: HardpointCategoryEnum.CARGOGRID,
+      component: { typeData: { capacity: 12, maxContainerSize: { size: 8 } } },
+    });
+    const cargoHolds = [
+      { name: "hardpoint_cargogrid_rear", maxContainerSize: { size: 1 } },
+      { name: "hardpoint_cargogrid", maxContainerSize: { size: 2 } },
+    ] as unknown as CargoHold[];
+
+    expect(grid.stats?.(hold, t, toNumber, { cargoHolds })).toEqual([
+      { label: "labels.hardpoint.maxContainerSize", value: "2 cargo" },
+    ]);
+    expect(grid.stats?.(hold, t, toNumber, { cargoHolds: [] })).toEqual([
+      { label: "labels.hardpoint.maxContainerSize", value: "8 cargo" },
+    ]);
   });
 
   it("names a tank by what it holds, and an ore pod by its volume", () => {

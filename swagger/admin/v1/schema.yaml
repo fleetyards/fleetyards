@@ -810,6 +810,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/AdminCargoHold"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
         '404':
           description: not found
           content:
@@ -828,8 +834,6 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/commodities":
     get:
       summary: Commodities list
@@ -10188,6 +10192,12 @@ components:
           type: number
         rotation:
           type: integer
+        maxContainerSizeScu:
+          type: integer
+        maxLoadableContainerSizeScu:
+          type:
+          - integer
+          - 'null'
         parent:
           "$ref": "#/components/schemas/AdminCargoHoldParent"
         createdAt:
@@ -10202,6 +10212,7 @@ components:
       - parentType
       - parentId
       - capacityScu
+      - maxContainerSizeScu
       - dimensionX
       - dimensionY
       - dimensionZ
@@ -11992,6 +12003,10 @@ components:
           - number
           - 'null'
         rotation:
+          type:
+          - integer
+          - 'null'
+        maxLoadableContainerSizeScu:
           type:
           - integer
           - 'null'

@@ -12,11 +12,28 @@ class CargoHold < ApplicationRecord
     numericality: {greater_than: 0}
   validates :max_container_size_scu,
     numericality: {greater_than: 0, only_integer: true}
+  validates :max_loadable_container_size_scu,
+    inclusion: {in: CargoHoldContainerCapacity::CONTAINER_SIZES}, allow_nil: true
+  # Only when it is set: a load that shrinks the grid under a curated limit has
+  # to go through, and the limit then simply stops applying.
+  validates :max_loadable_container_size_scu,
+    numericality: {less_than: :max_container_size_scu}, allow_nil: true,
+    if: :will_save_change_to_max_loadable_container_size_scu?
+
+  after_update :calculate_container_capacities!, if: :saved_change_to_max_loadable_container_size_scu?
 
   scope :ordered, -> { order(:position, :id) }
 
   def self.ransackable_attributes(_auth_object = nil)
     %w[parent_type parent_id name position]
+  end
+
+  # The grid takes the crates that fit its floor, but some can only be reached
+  # through a door or a lift too small for the largest of them -- the Clipper's
+  # grid fits an 8 SCU crate its door does not. The game files describe no door,
+  # so that limit is set by hand and survives every load.
+  def effective_max_container_size_scu
+    [max_container_size_scu, max_loadable_container_size_scu].compact.min
   end
 
   # Calculate and populate container capacities for all container sizes
@@ -31,6 +48,8 @@ class CargoHold < ApplicationRecord
       {name: "normal", x: container_dims[:x], y: container_dims[:y], z: container_dims[:z]},
       {name: "rotated", x: container_dims[:y], y: container_dims[:x], z: container_dims[:z]}
     ]
+
+    orientations = [] if size > effective_max_container_size_scu
 
     max_count = 0
     best_orientation = nil
