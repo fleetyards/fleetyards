@@ -73,7 +73,7 @@ const maker = computed(() =>
   model.value ? plaqueMakerFor({ model: model.value }) : undefined,
 );
 
-const { defineField, validate, values, setValues } = useForm({
+const { defineField, handleSubmit, values, setValues } = useForm({
   initialValues: {
     name: "",
     serial: "",
@@ -204,13 +204,10 @@ onMounted(() => {
   }
 });
 
-const attach = async () => {
+// Submitted rather than only validated: a field shows its error once touched,
+// and a submit touches them all, so a missing dedication says so.
+const attach = handleSubmit(() => {
   if (!model.value) {
-    return;
-  }
-
-  const { valid } = await validate();
-  if (!valid) {
     return;
   }
 
@@ -219,7 +216,7 @@ const attach = async () => {
       import("@/frontend/components/Vehicles/PlaqueAttachModal/index.vue"),
     props: { model: model.value, lines: lines.value, captain: captain.value },
   });
-};
+});
 </script>
 
 <template>

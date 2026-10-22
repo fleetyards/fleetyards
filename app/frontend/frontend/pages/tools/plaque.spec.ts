@@ -189,13 +189,19 @@ describe("ToolsPlaquePage", () => {
     );
   });
 
-  it("keeps a plaque without a dedication out of the hangar", async () => {
+  it("says a dedication is missing instead of saving to the hangar", async () => {
     const wrapper = await mount({ model: "corsair", signedIn: true });
 
     await wrapper.find('[data-test="plaque-tool-attach"]').trigger("click");
     await flushPromises();
 
     expect(openModal).not.toHaveBeenCalled();
+    expect(
+      wrapper
+        .find('[data-test="vehicle-plaque-dedication-input"]')
+        .find(".base-textarea__error--shown")
+        .exists(),
+    ).toBe(true);
   });
 
   it("brings back what was written after signing in", async () => {
