@@ -269,6 +269,36 @@ module ScData
         )
       end
 
+      test "#load_model holds a filler station's grid to the crates the station packs" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "Crate Test")
+        fits_four = {"size" => 4, "dimensions" => {"x" => 2.5, "y" => 2.5, "z" => 1.25}}
+        lift = create(:component, component_type: "CargoGrid", type_data: {"capacity" => 4, "max_container_size" => fits_four})
+        side = create(:component, component_type: "CargoGrid", type_data: {"capacity" => 6, "max_container_size" => fits_four})
+        station = create(:component, component_type: "SalvageFillerStation",
+          type_data: {"salvage" => {"crates" => {"min_size" => 1, "max_size" => 1}}})
+        create(:hardpoint, parent: station, source: :game_files, sc_name: "hardpoint_cargo_grid", component: side)
+        {
+          "hardpoint_cargo_grid_lift" => lift,
+          "hardpoint_salvage_filler_station_left" => station
+        }.each do |sc_name, component|
+          create(:hardpoint, parent: model, source: :game_files, sc_name:, component:)
+        end
+
+        loader.stubs(:update_loadout)
+        loader.stubs(:load_model_data).returns({"mass" => 1000.0, "loadout" => []})
+
+        build = loader.load_model(model)
+
+        assert_equal(
+          [
+            ["hardpoint_cargo_grid_lift", 4],
+            ["hardpoint_salvage_filler_station_left-hardpoint_cargo_grid", 1]
+          ],
+          build.cargo_holds.map { |hold| [hold["name"], hold.dig("max_container_size", "size")] }
+        )
+      end
+
       test "#load_model clears ore pods a build no longer carries, and writes none for a ship without" do
         loader = ::ScData::Loader::ModelsLoader.new
         emptied = create(:model, name: "Emptied", storage_containers: [{"name" => "hardpoint_mining_pod_1", "capacity" => 8.0, "kind" => "ore"}])

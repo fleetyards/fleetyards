@@ -66,6 +66,27 @@ class VehicleLoadoutComponentFittingTest < ActiveSupport::TestCase
     assert_refused fleetyards_loadout(fit(["hardpoint_life_support", @cooler])), :component_not_in_slot
   end
 
+  test "matches a slot filed under a category its parts do not carry on the parts' type" do
+    laser = create(:component, component_type: "WeaponMining", category: "weapons", size: "1")
+    other_laser = create(:component, component_type: "WeaponMining", category: "weapons", size: "1")
+    port(@model, "hardpoint_mining_laser", types: [], min_size: 1, max_size: 1, component: laser)
+
+    assert_equal "mining_lasers", Hardpoint.find_by!(parent: @model, sc_name: "hardpoint_mining_laser").facts.category
+    assert fleetyards_loadout(fit(["hardpoint_mining_laser", other_laser])).save
+    assert_refused fleetyards_loadout(fit(["hardpoint_mining_laser", @small_gun])), :component_not_in_slot
+  end
+
+  test "fits a tractor beam the game files type as a salvage head into a tractor slot, and no salvage head" do
+    beam = create(:component, component_type: "SalvageHead", category: "utility", sc_key: "grin_tractorbeam_s3", size: "3")
+    other_beam = create(:component, component_type: "TractorBeam", category: "weapons", size: "3")
+    head = create(:component, component_type: "SalvageHead", category: "utility", sc_key: "salvage_head_standard", size: "3")
+    port(@model, "hardpoint_tractor", types: [], min_size: 3, max_size: 3, component: beam)
+
+    assert_equal "tractor_beams", Hardpoint.find_by!(parent: @model, sc_name: "hardpoint_tractor").facts.category
+    assert fleetyards_loadout(fit(["hardpoint_tractor", other_beam])).save
+    assert_refused fleetyards_loadout(fit(["hardpoint_tractor", head])), :component_not_in_slot
+  end
+
   test "fits a gun into the stock mount without fitting the mount" do
     loadout = fleetyards_loadout(fit(["hardpoint_gun_nose/hardpoint_class_2", @gun]))
 

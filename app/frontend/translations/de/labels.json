@@ -560,17 +560,9 @@
         "baseline": "Referenz",
         "differencesOnly": "Nur Unterschiede",
         "compareToBaseline": "Mit Referenz vergleichen",
-        "loadoutBySlot": "Loadout nach Slot",
+        "fastestScraper": "Schnellstes Schabemodul",
         "slots": {
-          "guns": "Hauptwaffen",
-          "turrets": "Geschütztürme",
-          "missiles": "Raketen",
-          "shields": "Schildgeneratoren",
-          "powerPlants": "Kraftwerke",
-          "coolers": "Kühler",
-          "quantumDrives": "Quantum-Antriebe",
-          "thrusters": "Haupttriebwerke",
-          "countermeasures": "Gegenmaßnahmen"
+          "guns": "Hauptwaffen"
         },
         "legend": {
           "best": "bester Wert der Zeile",
@@ -1434,8 +1426,12 @@
       "cargo": {
         "title": "Fracht",
         "holdsSub": "in %{count} Frachträumen",
-        "maxContainerSub": "größte passende Box",
-        "containers": "Containerkapazität"
+        "maxContainerSub": "größte Box, die sie aufnimmt",
+        "containers": "Containerkapazität",
+        "boxCount": {
+          "one": "%{count} × %{size}-SCU-Box",
+          "other": "%{count} × %{size}-SCU-Boxen"
+        }
       },
       "weaponRacks": {
         "slots": "Plätze",
@@ -1468,6 +1464,20 @@
         "podsSub": "externe Aufhängungen",
         "components": "Pod-Typen",
         "perPod": "pro Pod"
+      },
+      "salvageMetrics": {
+        "heads": "Bergungsköpfe",
+        "largestCrate": "Größte Kiste",
+        "fillTime": "%{time} s pro SCU zum Befüllen",
+        "fillTimeLabel": "Füllzeit",
+        "fieldSupporters": "Feldstützen",
+        "fracture": "Zerbrechen",
+        "disintegration": "Zersetzung",
+        "reach": "bis %{radius} m · %{time} s/m",
+        "yield": "Ertrag",
+        "yieldValue": "%{amount} SCU/m³ %{resource}",
+        "alignment": "Ausrichtungsbonus",
+        "alignmentValue": "bis %{speed}× Tempo · %{yield}× Ertrag"
       },
       "refuelBoom": {
         "fuelFlowSub": "Hydrogen-Transfer",
@@ -2203,8 +2213,10 @@
           "seat": "Sitze",
           "external_fuel_tank": "Externe Treibstofftanks",
           "ore_pod": "Erzbehälter",
+          "mining": "Bergbau",
           "module": "Module",
           "salvage": "Bergung",
+          "salvage_storage": "Bergungsspeicher",
           "refuel_boom": "Betankungsausleger"
         },
         "types": {
@@ -2270,6 +2282,12 @@
           "emp": "EMP",
           "quantumenforcementdevice": "QED",
           "salvagefillerstation": "Bergungsfüllstation",
+          "bombs": "Bomben",
+          "mining_lasers": "Bergbaulaser",
+          "mining_modules": "Bergbaumodule",
+          "salvage_heads": "Bergungsköpfe",
+          "salvage_modules": "Bergungsmodule",
+          "tractor_beams": "Traktorstrahlen",
           "cargogrid": "Frachtraster",
           "controller": "Flight Blades",
           "seat": "Sitze",

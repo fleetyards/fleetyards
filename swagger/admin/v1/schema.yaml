@@ -12410,6 +12410,8 @@ components:
           - "$ref": "#/components/schemas/ComponentPowerPlant"
           - "$ref": "#/components/schemas/ComponentMiningModule"
           - "$ref": "#/components/schemas/ComponentSalvageModifier"
+          - "$ref": "#/components/schemas/ComponentSalvageController"
+          - "$ref": "#/components/schemas/ComponentSalvageCarrier"
           - "$ref": "#/components/schemas/ComponentEmp"
           - "$ref": "#/components/schemas/ComponentQuantumEnforcement"
           - "$ref": "#/components/schemas/ComponentLifeSupport"
@@ -13359,6 +13361,80 @@ components:
       - sensitivityAddition
       - contactGroups
       title: ComponentRadarContactSensitivity
+    ComponentSalvageCarrier:
+      type: object
+      properties:
+        salvage:
+          "$ref": "#/components/schemas/ComponentSalvagePart"
+      required:
+      - salvage
+      additionalProperties: false
+      title: ComponentSalvageCarrier
+    ComponentSalvageController:
+      type: object
+      properties:
+        salvageController:
+          type: boolean
+        heads:
+          type: integer
+        fieldSupportersRequired:
+          type: integer
+        fracture:
+          type: object
+          properties:
+            minRadius:
+              type: number
+            maxRadius:
+              type: number
+            timePerMetre:
+              type: number
+          additionalProperties: false
+        disintegration:
+          type: object
+          properties:
+            maxRadius:
+              type: number
+            timePerMetre:
+              type: number
+            scuPerCubicMetre:
+              type: number
+            resource:
+              type: string
+          additionalProperties: false
+        fieldAlignment:
+          type: object
+          properties:
+            maxSpeedMultiplier:
+              type: number
+            maxYieldMultiplier:
+              type: number
+          additionalProperties: false
+        crates:
+          type: object
+          properties:
+            minSize:
+              type: integer
+            maxSize:
+              type: integer
+            fillTimePerScu:
+              type: number
+          additionalProperties: false
+        scrapingResource:
+          type: string
+        powerConsumption:
+          type: number
+        powerMinimumFraction:
+          type: number
+        powerRanges:
+          "$ref": "#/components/schemas/ComponentPowerRanges"
+        signatureEm:
+          type: number
+        signatureIr:
+          type: number
+      required:
+      - salvageController
+      additionalProperties: false
+      title: ComponentSalvageController
     ComponentSalvageModifier:
       type: object
       properties:
@@ -13374,6 +13450,53 @@ components:
       - salvageModifier
       additionalProperties: false
       title: ComponentSalvageModifier
+    ComponentSalvagePart:
+      type: object
+      properties:
+        fieldSupportersRequired:
+          type: integer
+        fracture:
+          type: object
+          properties:
+            minRadius:
+              type: number
+            maxRadius:
+              type: number
+            timePerMetre:
+              type: number
+          additionalProperties: false
+        disintegration:
+          type: object
+          properties:
+            maxRadius:
+              type: number
+            timePerMetre:
+              type: number
+            scuPerCubicMetre:
+              type: number
+            resource:
+              type: string
+          additionalProperties: false
+        fieldAlignment:
+          type: object
+          properties:
+            maxSpeedMultiplier:
+              type: number
+            maxYieldMultiplier:
+              type: number
+          additionalProperties: false
+        crates:
+          type: object
+          properties:
+            minSize:
+              type: integer
+            maxSize:
+              type: integer
+            fillTimePerScu:
+              type: number
+          additionalProperties: false
+      additionalProperties: false
+      title: ComponentSalvagePart
     ComponentSelfRepair:
       type: object
       properties:
@@ -13754,6 +13877,8 @@ components:
           type: boolean
         control:
           "$ref": "#/components/schemas/ComponentTurretControlEnum"
+        salvage:
+          "$ref": "#/components/schemas/ComponentSalvagePart"
         powerConsumption:
           type: number
         powerMinimumFraction:
@@ -16874,6 +16999,7 @@ components:
       - retro_thrusters
       - vtol_thrusters
       - maneuvering_thrusters
+      - bombs
       - weapons
       - weapon_mounts
       - turret
@@ -16883,6 +17009,7 @@ components:
       - emp
       - salvagemunching
       - salvage_storage
+      - missiles
       - armor
       - countermeasures
       - selfdestruct
@@ -16890,6 +17017,11 @@ components:
       - batteries
       - utility
       - ore_pods
+      - mining_lasers
+      - mining_modules
+      - salvage_heads
+      - salvage_modules
+      - tractor_beams
       - seat
       - relay
       - paints
@@ -16917,6 +17049,7 @@ components:
       - RETRO_THRUSTERS
       - VTOL_THRUSTERS
       - MANEUVERING_THRUSTERS
+      - BOMBS
       - WEAPONS
       - WEAPON_MOUNTS
       - TURRET
@@ -16926,6 +17059,7 @@ components:
       - EMP
       - SALVAGEMUNCHING
       - SALVAGE_STORAGE
+      - MISSILES
       - ARMOR
       - COUNTERMEASURES
       - SELFDESTRUCT
@@ -16933,6 +17067,11 @@ components:
       - BATTERIES
       - UTILITY
       - ORE_PODS
+      - MINING_LASERS
+      - MINING_MODULES
+      - SALVAGE_HEADS
+      - SALVAGE_MODULES
+      - TRACTOR_BEAMS
       - SEAT
       - RELAY
       - PAINTS
@@ -16960,6 +17099,8 @@ components:
       - ore_pod
       - module
       - salvage
+      - mining
+      - salvage_storage
       - unknown
       x-enumNames:
       - AVIONIC
@@ -16977,6 +17118,8 @@ components:
       - ORE_POD
       - MODULE
       - SALVAGE
+      - MINING
+      - SALVAGE_STORAGE
       - UNKNOWN
       title: HardpointGroupEnum
     HardpointSourceEnum:

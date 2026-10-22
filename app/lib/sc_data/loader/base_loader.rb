@@ -327,11 +327,27 @@ module ScData
       private def part_cargo_holds(hardpoint)
         return [] if hardpoint.component.hidden?
 
+        crate_size = hardpoint.component.type_data&.dig("salvage", "crates", "max_size")
+
         hardpoint.component.hardpoints.sort_by { |h| h.sc_name.to_s }.filter_map do |sub_hardpoint|
           next if sub_hardpoint.component&.component_type != "CargoGrid"
 
-          sub_hardpoint.component.type_data&.merge("name" => "#{hardpoint.sc_name}-#{sub_hardpoint.sc_name}")
+          hold = sub_hardpoint.component.type_data&.merge("name" => "#{hardpoint.sc_name}-#{sub_hardpoint.sc_name}")
+          crate_size ? cap_container_size(hold, crate_size) : hold
         end
+      end
+
+      # A filler station's grid holds the crates the station packs, 1 SCU on
+      # most salvage ships where the grid's floor alone would take a 4 SCU box.
+      # The game's own `maxPermittedItemSize` reads 1 SCU on nearly every grid,
+      # cargo bays included, and is no help here.
+      private def cap_container_size(hold, size)
+        return hold if hold.blank? || hold.dig("max_container_size", "size").to_i <= size
+
+        container = ::ScData::CargoFinder::CARGO_CONTAINER_DIMENSIONS.find { |entry| entry[:size] == size }
+        return hold if container.blank?
+
+        hold.merge("max_container_size" => {"size" => size, "dimensions" => container[:dimensions].stringify_keys})
       end
 
       # One hardpoint the loadout says should exist: resolved, but unwritten.
@@ -526,6 +542,7 @@ module ScData
         return hardpoint.persisted? ? hardpoint.id : nil if slot.retain_only
 
         update_params = {source: :game_files, component: slot.component}
+        hardpoint.carried_components = carried_components(slot)
         update_params[:types] = slot.types if slot.types.present?
         update_params[:port_tags] = slot.port_tags if slot.port_tags.present?
         update_params[:required_tags] = slot.required_tags if slot.required_tags.present?
@@ -550,6 +567,12 @@ module ScData
         persist_loadout(hardpoint, slot.children) if slot.children.present?
 
         hardpoint.id
+      end
+
+      # What sits below a slot, for `Hardpoint#group`: the children are written
+      # after their parent, so a first load could not read them back.
+      private def carried_components(slot)
+        slot.children.flat_map { |child| [child.component, *carried_components(child)] }.compact
       end
 
       # What is installed still sets the size the port is shown as, because the

@@ -10,6 +10,10 @@
       "beam": "Beam",
       "cargo": "Cargo",
       "cargoWithModules": "with modules",
+      "additionalStorage": {
+        "salvage": "+%{capacity} SCU salvage",
+        "ore": "+%{capacity} SCU ore"
+      },
       "personalInventory": "Ship Inventory",
       "beds": {
         "one": "%{count} bed",

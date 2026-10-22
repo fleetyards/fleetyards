@@ -50,10 +50,8 @@ const { views, base, crew, flight, cargo, fuel } = useModelSections(
   hardpointsFor,
 );
 
-const { combat, defense, hull, loadout } = useLoadoutSections(
-  () => models.value,
-  hardpointsFor,
-);
+const { combat, defense, hull, salvage, mining, systems, utility } =
+  useLoadoutSections(() => models.value, hardpointsFor);
 
 // Combat-forward, then what keeps you alive, then what you carry — the ship page's
 // emphasis. Sections that no compared ship has data for drop out on their own.
@@ -66,9 +64,12 @@ const sections = computed<CompareSection[]>(() =>
     combat.value,
     defense.value,
     hull.value,
+    salvage.value,
+    mining.value,
     cargo.value,
     fuel.value,
-    loadout.value,
+    systems.value,
+    utility.value,
   ].filter((section): section is CompareSection => !!section),
 );
 

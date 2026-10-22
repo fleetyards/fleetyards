@@ -16,6 +16,11 @@ module ScData
         exported = load_items("items")
         items = exported.reject { |item| item["category"] == "inventory" }
         items_by_ref = index_by_ref(exported)
+        salvage_parts = ::ScData::SalvageParts.new(
+          load_items("models"),
+          items_by_key: exported.index_by { |item| item["key"].to_s.downcase },
+          items_by_ref:
+        ).facts
         loaded = []
         carrying_icon = component_ids_carrying_icon
 
@@ -62,6 +67,13 @@ module ScData
           if item[:inventory_ref].present?
             cargo_grid = items_by_ref[item[:inventory_ref]]&.dig(:type_data)
             update_params[:type_data] = cargo_grid if cargo_grid.present?
+          end
+
+          # Written with the rest of the part rather than by the ship's load
+          # afterwards, or every load would take the figures off the part and
+          # put them back, and its history would show both.
+          if (salvage = salvage_parts[normalized_key])
+            update_params[:type_data] = (update_params[:type_data] || {}).merge(salvage)
           end
 
           # Unconditional, unlike the blocks around it: a build that stops

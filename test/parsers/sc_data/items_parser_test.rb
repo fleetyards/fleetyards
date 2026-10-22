@@ -736,6 +736,51 @@ module ScData
         assert_in_delta 18.0, type_data["lock_angle"]
       end
 
+      test "reads how a salvage controller fractures and grinds a hull, and the crates it packs" do
+        File.write("#{@raw_path}/Data/Localization/english/global.ini", <<~INI)
+          items_commodities_ConstructionMaterialsPowder=Construction Rubble
+          items_commodities_type_RMC=Recycled Material Composite
+        INI
+        resources = "#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/resourcetypedatabase"
+        FileUtils.mkdir_p(resources)
+        File.write("#{resources}/resourcetypedatabase.records.xml", <<~XML)
+          <ResourceTypeDatabase>
+            <ResourceType.ConstructionMaterialPowder displayName="@items_commodities_ConstructionMaterialsPowder" __type="ResourceType" __ref="powder-ref" />
+            <ResourceType.RMC displayName="@items_commodities_type_RMC" __type="ResourceType" __ref="rmc-ref" />
+          </ResourceTypeDatabase>
+        XML
+        write_item("controller_salvage_probe", name: "@item_Namecontroller_salvage_probe", category: "controller", type: "SalvageController", components: <<~XML)
+          <SCItemSalvageControllerParams numSupportedSalvageHeads="2" usesCargoGrid="0">
+            <scrapingParams>
+              <SSalvageScrapingParams scrapingResourceType="rmc-ref" />
+            </scrapingParams>
+            <structuralParams>
+              <SSalvageStructuralParams numFieldSupportersRequired="2" fractureTimePerRadiusMetre="2.496" minFracturableRadius="1" maxFracturableRadius="40.5" minDisintegratableRadius="0" maxDisintegratableRadius="44.55" disintegrationTimePerRadiusMetre="4.368" disintegrationSCUPerCubicMetre="0.0027" disintegrationResourceType="powder-ref" fieldAlignmentMaxSpeedMultiplier="3" fieldAlignmentMaxYieldMultiplier="1.4">
+                <fieldEmitterArea />
+              </SSalvageStructuralParams>
+            </structuralParams>
+            <cargoParams>
+              <SSalvageCargoParams minCargoBoxSize="1" maxCargoBoxSize="1" boxFillingTimePerSCU="3" />
+            </cargoParams>
+          </SCItemSalvageControllerParams>
+        XML
+        @parser = ::ScData::Parser::ItemsParser.new(base_folder: @base_folder, sc_version: "1.0.0", sc_environment: "test")
+
+        assert_equal(
+          {
+            "heads" => 2,
+            "field_supporters_required" => 2,
+            "fracture" => {"min_radius" => 1.0, "max_radius" => 40.5, "time_per_metre" => 2.496},
+            "disintegration" => {"max_radius" => 44.55, "time_per_metre" => 4.368, "scu_per_cubic_metre" => 0.0027, "resource" => "Construction Rubble"},
+            "field_alignment" => {"max_speed_multiplier" => 3.0, "max_yield_multiplier" => 1.4},
+            "crates" => {"min_size" => 1, "max_size" => 1, "fill_time_per_scu" => 3.0},
+            "scraping_resource" => "Recycled Material Composite",
+            "salvage_controller" => true
+          },
+          parsed_item("controller_salvage_probe")["type_data"]
+        )
+      end
+
       test "reads what a decoy presents to a seeker and how long it burns" do
         write_countermeasure("cml_flare_probe", <<~XML, lifetime: 12)
           <CounterMeasureFlareParams StartInfrared="50000" EndInfrared="20000" StartElectromagnetic="60000" EndElectromagnetic="60000" StartCrossSection="1000" EndCrossSection="1000" />

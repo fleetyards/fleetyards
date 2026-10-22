@@ -26,4 +26,89 @@ class HardpointCategoryTest < ActiveSupport::TestCase
   test "a slot without a component and without a telling name stays unknown" do
     assert_equal "unknown", hardpoint("hardpoint_whatever").category
   end
+
+  test "a part is filed by what it does where its component's category is broader" do
+    {
+      ["WeaponMining", "weapons"] => "mining_lasers",
+      ["MiningModifier", "utility"] => "mining_modules",
+      ["SalvageHead", "utility"] => "salvage_heads",
+      ["SalvageModifier", "utility"] => "salvage_modules",
+      ["TractorBeam", "weapons"] => "tractor_beams",
+      ["TowingBeam", "weapons"] => "tractor_beams",
+      ["Missile", "weapons"] => "missiles",
+      ["Bomb", "weapons"] => "bombs",
+      ["WeaponGun", "weapons"] => "weapons"
+    }.each do |(component_type, category), expected|
+      component = part(component_type, category, sc_key: ("salvage_head_standard" if component_type == "SalvageHead"))
+
+      assert_equal expected, hardpoint("hardpoint_#{component_type.underscore}", component:).category, component_type
+    end
+  end
+
+  test "mining, salvage and tractor parts leave the weapon group" do
+    {"WeaponMining" => "mining", "SalvageHead" => "salvage", "TractorBeam" => "auxiliary"}.each do |component_type, group|
+      component = part(component_type, "weapons", sc_key: ("salvage_head_standard" if component_type == "SalvageHead"))
+
+      assert_equal group, hardpoint("hardpoint_#{component_type.underscore}", component:).group, component_type
+    end
+  end
+
+  private def part(component_type, category, sc_key: nil)
+    create(:component, component_type:, category:, sc_key: sc_key || "#{component_type.underscore}_#{SecureRandom.hex(3)}")
+  end
+
+  private def turret(*carried)
+    turret = Hardpoint.new(parent: @model, sc_name: "hardpoint_turret_#{SecureRandom.hex(3)}", source: :game_files, component: part("Turret", "turret"))
+    turret.carried_components = carried
+    turret.save!
+    turret
+  end
+
+  test "a turret is filed by what it carries" do
+    assert_equal "salvage", turret(part("SalvageHead", "utility", sc_key: "salvage_head_standard")).group
+    assert_equal "mining", turret(part("WeaponMining", "weapons")).group
+    assert_equal "auxiliary", turret(part("TractorBeam", "weapons")).group
+  end
+
+  test "a tool arm that holds only the disintegration intake is salvage" do
+    assert_equal "salvage", turret(part("SalvageFieldEmitter", "salvagemunching")).group
+  end
+
+  test "a disintegration intake on the hull stays out of the salvage group" do
+    intake = part("SalvageFieldEmitter", "salvagemunching")
+
+    assert_equal "unknown", hardpoint("hardpoint_disintegration_intake", component: intake).group
+  end
+
+  test "a turret that also carries a gun stays a weapon" do
+    assert_equal "weapon", turret(part("TractorBeam", "weapons"), part("WeaponGun", "weapons")).group
+  end
+
+  test "a module port that carries a tractor beam stays a module" do
+    port = Hardpoint.new(parent: @model, sc_name: "hardpoint_module", source: :game_files, component: part("Module", "module"))
+    port.carried_components = [part("TractorBeam", "weapons")]
+    port.save!
+
+    assert_equal "module", port.group
+  end
+
+  test "a turret reads what it carries in the build it is asked about" do
+    turret = hardpoint("hardpoint_turret_builds", component: part("Turret", "turret"))
+    child = create(:hardpoint, :without_build, parent: turret, sc_name: "head", source: :game_files)
+    loading = ScData::Source.new(version: "9.9.9-live.1", environment: ScData::Source.environment)
+    head = part("SalvageHead", "utility", sc_key: "salvage_head_standard")
+    gun = part("WeaponGun", "weapons")
+    create(:hardpoint_build, hardpoint: child, component: gun)
+    create(:hardpoint_build, hardpoint: child, component: head, environment: loading.environment, version: loading.version)
+
+    assert_equal [head], turret.carried_components_in(loading)
+    assert_equal [gun], turret.carried_components_in
+  end
+
+  test "a tractor beam the game files type as a salvage head is a tractor beam" do
+    beam = part("SalvageHead", "utility", sc_key: "grin_tractorbeam_s3")
+
+    assert_equal "tractor_beams", hardpoint("hardpoint_beam", component: beam).category
+    assert_equal "auxiliary", turret(beam).group
+  end
 end

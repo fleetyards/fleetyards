@@ -2801,3 +2801,193 @@ POST /fleets/{fleetSlug}/missions/{missionSlug}/teams/{missionTeamId}/ships remo
 PUT /fleets/{fleetSlug}/missions/{missionSlug}/teams/{missionTeamId}/ships/{id} removed the enum value `recon` of the request property `foci/items/`
 PATCH /fleet-event-signups/{id}/assign removed the required property `details` from the response with the `400` status
 PATCH /fleet-event-signups/{id}/assign removed the required property `error` from the response with the `400` status
+DELETE /vehicles/{id} added the new `bombs` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+DELETE /vehicles/{id} added the new `mining_lasers` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+DELETE /vehicles/{id} added the new `mining_modules` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+DELETE /vehicles/{id} added the new `mining` enum value to the `modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+DELETE /vehicles/{id} added the new `missiles` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+DELETE /vehicles/{id} added the new `salvage_heads` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+DELETE /vehicles/{id} added the new `salvage_modules` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+DELETE /vehicles/{id} added the new `tractor_beams` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /components added the new `bombs` enum value to the `items/items/hardpoints/items/category` response property for the response status `200`
+GET /components added the new `mining_lasers` enum value to the `items/items/hardpoints/items/category` response property for the response status `200`
+GET /components added the new `mining_modules` enum value to the `items/items/hardpoints/items/category` response property for the response status `200`
+GET /components added the new `mining` enum value to the `items/items/hardpoints/items/group` response property for the response status `200`
+GET /components added the new `missiles` enum value to the `items/items/hardpoints/items/category` response property for the response status `200`
+GET /components added the new `salvage_heads` enum value to the `items/items/hardpoints/items/category` response property for the response status `200`
+GET /components added the new `salvage_modules` enum value to the `items/items/hardpoints/items/category` response property for the response status `200`
+GET /components added the new `tractor_beams` enum value to the `items/items/hardpoints/items/category` response property for the response status `200`
+GET /components/{slug} added the new `bombs` enum value to the `hardpoints/items/category` response property for the response status `200`
+GET /components/{slug} added the new `mining_lasers` enum value to the `hardpoints/items/category` response property for the response status `200`
+GET /components/{slug} added the new `mining_modules` enum value to the `hardpoints/items/category` response property for the response status `200`
+GET /components/{slug} added the new `mining` enum value to the `hardpoints/items/group` response property for the response status `200`
+GET /components/{slug} added the new `missiles` enum value to the `hardpoints/items/category` response property for the response status `200`
+GET /components/{slug} added the new `salvage_heads` enum value to the `hardpoints/items/category` response property for the response status `200`
+GET /components/{slug} added the new `salvage_modules` enum value to the `hardpoints/items/category` response property for the response status `200`
+GET /components/{slug} added the new `tractor_beams` enum value to the `hardpoints/items/category` response property for the response status `200`
+GET /fleets/{fleetSlug}/vehicles added the new `bombs` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /fleets/{fleetSlug}/vehicles added the new `mining_lasers` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /fleets/{fleetSlug}/vehicles added the new `mining_modules` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /fleets/{fleetSlug}/vehicles added the new `mining` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /fleets/{fleetSlug}/vehicles added the new `missiles` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /fleets/{fleetSlug}/vehicles added the new `salvage_heads` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /fleets/{fleetSlug}/vehicles added the new `salvage_modules` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /fleets/{fleetSlug}/vehicles added the new `tractor_beams` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /hangar added the new `bombs` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /hangar added the new `mining_lasers` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /hangar added the new `mining_modules` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /hangar added the new `mining` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /hangar added the new `missiles` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /hangar added the new `salvage_heads` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /hangar added the new `salvage_modules` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /hangar added the new `tractor_beams` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /hardpoints/{id}/loadout-options added the new `bombs` enum value to the `items/slots/items/category` response property for the response status `200`
+GET /hardpoints/{id}/loadout-options added the new `mining_lasers` enum value to the `items/slots/items/category` response property for the response status `200`
+GET /hardpoints/{id}/loadout-options added the new `mining_modules` enum value to the `items/slots/items/category` response property for the response status `200`
+GET /hardpoints/{id}/loadout-options added the new `missiles` enum value to the `items/slots/items/category` response property for the response status `200`
+GET /hardpoints/{id}/loadout-options added the new `salvage_heads` enum value to the `items/slots/items/category` response property for the response status `200`
+GET /hardpoints/{id}/loadout-options added the new `salvage_modules` enum value to the `items/slots/items/category` response property for the response status `200`
+GET /hardpoints/{id}/loadout-options added the new `tractor_beams` enum value to the `items/slots/items/category` response property for the response status `200`
+GET /models/{slug}/hardpoints added the new `bombs` enum value to the `items/category` response property for the response status `200`
+GET /models/{slug}/hardpoints added the new `mining_lasers` enum value to the `items/category` response property for the response status `200`
+GET /models/{slug}/hardpoints added the new `mining_modules` enum value to the `items/category` response property for the response status `200`
+GET /models/{slug}/hardpoints added the new `mining` enum value to the `items/group` response property for the response status `200`
+GET /models/{slug}/hardpoints added the new `missiles` enum value to the `items/category` response property for the response status `200`
+GET /models/{slug}/hardpoints added the new `salvage_heads` enum value to the `items/category` response property for the response status `200`
+GET /models/{slug}/hardpoints added the new `salvage_modules` enum value to the `items/category` response property for the response status `200`
+GET /models/{slug}/hardpoints added the new `tractor_beams` enum value to the `items/category` response property for the response status `200`
+GET /models/{slug}/loadout-slots added the new `bombs` enum value to the `items/category` response property for the response status `200`
+GET /models/{slug}/loadout-slots added the new `mining_lasers` enum value to the `items/category` response property for the response status `200`
+GET /models/{slug}/loadout-slots added the new `mining_modules` enum value to the `items/category` response property for the response status `200`
+GET /models/{slug}/loadout-slots added the new `missiles` enum value to the `items/category` response property for the response status `200`
+GET /models/{slug}/loadout-slots added the new `salvage_heads` enum value to the `items/category` response property for the response status `200`
+GET /models/{slug}/loadout-slots added the new `salvage_modules` enum value to the `items/category` response property for the response status `200`
+GET /models/{slug}/loadout-slots added the new `tractor_beams` enum value to the `items/category` response property for the response status `200`
+GET /models/{slug}/module-packages added the new `bombs` enum value to the `items/items/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /models/{slug}/module-packages added the new `mining_lasers` enum value to the `items/items/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /models/{slug}/module-packages added the new `mining_modules` enum value to the `items/items/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /models/{slug}/module-packages added the new `mining` enum value to the `items/items/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /models/{slug}/module-packages added the new `missiles` enum value to the `items/items/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /models/{slug}/module-packages added the new `salvage_heads` enum value to the `items/items/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /models/{slug}/module-packages added the new `salvage_modules` enum value to the `items/items/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /models/{slug}/module-packages added the new `tractor_beams` enum value to the `items/items/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /models/{slug}/modules added the new `bombs` enum value to the `items/items/hardpoints/items/category` response property for the response status `200`
+GET /models/{slug}/modules added the new `mining_lasers` enum value to the `items/items/hardpoints/items/category` response property for the response status `200`
+GET /models/{slug}/modules added the new `mining_modules` enum value to the `items/items/hardpoints/items/category` response property for the response status `200`
+GET /models/{slug}/modules added the new `mining` enum value to the `items/items/hardpoints/items/group` response property for the response status `200`
+GET /models/{slug}/modules added the new `missiles` enum value to the `items/items/hardpoints/items/category` response property for the response status `200`
+GET /models/{slug}/modules added the new `salvage_heads` enum value to the `items/items/hardpoints/items/category` response property for the response status `200`
+GET /models/{slug}/modules added the new `salvage_modules` enum value to the `items/items/hardpoints/items/category` response property for the response status `200`
+GET /models/{slug}/modules added the new `tractor_beams` enum value to the `items/items/hardpoints/items/category` response property for the response status `200`
+GET /public/fleets/{fleetSlug}/vehicles added the new `bombs` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/fleets/{fleetSlug}/vehicles added the new `mining_lasers` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/fleets/{fleetSlug}/vehicles added the new `mining_modules` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/fleets/{fleetSlug}/vehicles added the new `mining` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /public/fleets/{fleetSlug}/vehicles added the new `missiles` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/fleets/{fleetSlug}/vehicles added the new `salvage_heads` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/fleets/{fleetSlug}/vehicles added the new `salvage_modules` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/fleets/{fleetSlug}/vehicles added the new `tractor_beams` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/fleets/{fleetSlug}/vehicles/embed added the new `bombs` enum value to the `items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/fleets/{fleetSlug}/vehicles/embed added the new `mining_lasers` enum value to the `items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/fleets/{fleetSlug}/vehicles/embed added the new `mining_modules` enum value to the `items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/fleets/{fleetSlug}/vehicles/embed added the new `mining` enum value to the `items/modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /public/fleets/{fleetSlug}/vehicles/embed added the new `missiles` enum value to the `items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/fleets/{fleetSlug}/vehicles/embed added the new `salvage_heads` enum value to the `items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/fleets/{fleetSlug}/vehicles/embed added the new `salvage_modules` enum value to the `items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/fleets/{fleetSlug}/vehicles/embed added the new `tractor_beams` enum value to the `items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/hangars/embed added the new `bombs` enum value to the `items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/hangars/embed added the new `mining_lasers` enum value to the `items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/hangars/embed added the new `mining_modules` enum value to the `items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/hangars/embed added the new `mining` enum value to the `items/modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /public/hangars/embed added the new `missiles` enum value to the `items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/hangars/embed added the new `salvage_heads` enum value to the `items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/hangars/embed added the new `salvage_modules` enum value to the `items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/hangars/embed added the new `tractor_beams` enum value to the `items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/hangars/{username} added the new `bombs` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/hangars/{username} added the new `mining_lasers` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/hangars/{username} added the new `mining_modules` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/hangars/{username} added the new `mining` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /public/hangars/{username} added the new `missiles` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/hangars/{username} added the new `salvage_heads` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/hangars/{username} added the new `salvage_modules` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/hangars/{username} added the new `tractor_beams` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/hangars/{username}/vehicles/{id} added the new `bombs` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/hangars/{username}/vehicles/{id} added the new `mining_lasers` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/hangars/{username}/vehicles/{id} added the new `mining_modules` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/hangars/{username}/vehicles/{id} added the new `mining` enum value to the `modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /public/hangars/{username}/vehicles/{id} added the new `missiles` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/hangars/{username}/vehicles/{id} added the new `salvage_heads` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/hangars/{username}/vehicles/{id} added the new `salvage_modules` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/hangars/{username}/vehicles/{id} added the new `tractor_beams` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/hangars/{username}/vehicles/{vehicle_id}/loadouts/{id}/slots added the new `bombs` enum value to the `items/category` response property for the response status `200`
+GET /public/hangars/{username}/vehicles/{vehicle_id}/loadouts/{id}/slots added the new `mining_lasers` enum value to the `items/category` response property for the response status `200`
+GET /public/hangars/{username}/vehicles/{vehicle_id}/loadouts/{id}/slots added the new `mining_modules` enum value to the `items/category` response property for the response status `200`
+GET /public/hangars/{username}/vehicles/{vehicle_id}/loadouts/{id}/slots added the new `missiles` enum value to the `items/category` response property for the response status `200`
+GET /public/hangars/{username}/vehicles/{vehicle_id}/loadouts/{id}/slots added the new `salvage_heads` enum value to the `items/category` response property for the response status `200`
+GET /public/hangars/{username}/vehicles/{vehicle_id}/loadouts/{id}/slots added the new `salvage_modules` enum value to the `items/category` response property for the response status `200`
+GET /public/hangars/{username}/vehicles/{vehicle_id}/loadouts/{id}/slots added the new `tractor_beams` enum value to the `items/category` response property for the response status `200`
+GET /public/wishlists/{username} added the new `bombs` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/wishlists/{username} added the new `mining_lasers` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/wishlists/{username} added the new `mining_modules` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/wishlists/{username} added the new `mining` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /public/wishlists/{username} added the new `missiles` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/wishlists/{username} added the new `salvage_heads` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/wishlists/{username} added the new `salvage_modules` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /public/wishlists/{username} added the new `tractor_beams` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /vehicles/{id} added the new `bombs` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /vehicles/{id} added the new `mining_lasers` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /vehicles/{id} added the new `mining_modules` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /vehicles/{id} added the new `mining` enum value to the `modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /vehicles/{id} added the new `missiles` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /vehicles/{id} added the new `salvage_heads` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /vehicles/{id} added the new `salvage_modules` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /vehicles/{id} added the new `tractor_beams` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /vehicles/{vehicle_id}/loadouts/{id}/slots added the new `bombs` enum value to the `items/category` response property for the response status `200`
+GET /vehicles/{vehicle_id}/loadouts/{id}/slots added the new `mining_lasers` enum value to the `items/category` response property for the response status `200`
+GET /vehicles/{vehicle_id}/loadouts/{id}/slots added the new `mining_modules` enum value to the `items/category` response property for the response status `200`
+GET /vehicles/{vehicle_id}/loadouts/{id}/slots added the new `missiles` enum value to the `items/category` response property for the response status `200`
+GET /vehicles/{vehicle_id}/loadouts/{id}/slots added the new `salvage_heads` enum value to the `items/category` response property for the response status `200`
+GET /vehicles/{vehicle_id}/loadouts/{id}/slots added the new `salvage_modules` enum value to the `items/category` response property for the response status `200`
+GET /vehicles/{vehicle_id}/loadouts/{id}/slots added the new `tractor_beams` enum value to the `items/category` response property for the response status `200`
+GET /wishlist added the new `bombs` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /wishlist added the new `mining_lasers` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /wishlist added the new `mining_modules` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /wishlist added the new `mining` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /wishlist added the new `missiles` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /wishlist added the new `salvage_heads` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /wishlist added the new `salvage_modules` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+GET /wishlist added the new `tractor_beams` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+POST /vehicles added the new `bombs` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `201`
+POST /vehicles added the new `mining_lasers` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `201`
+POST /vehicles added the new `mining_modules` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `201`
+POST /vehicles added the new `mining` enum value to the `modulePackage/modules/items/hardpoints/items/group` response property for the response status `201`
+POST /vehicles added the new `missiles` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `201`
+POST /vehicles added the new `salvage_heads` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `201`
+POST /vehicles added the new `salvage_modules` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `201`
+POST /vehicles added the new `tractor_beams` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `201`
+PUT /vehicles/{id} added the new `bombs` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+PUT /vehicles/{id} added the new `mining_lasers` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+PUT /vehicles/{id} added the new `mining_modules` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+PUT /vehicles/{id} added the new `mining` enum value to the `modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+PUT /vehicles/{id} added the new `missiles` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+PUT /vehicles/{id} added the new `salvage_heads` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+PUT /vehicles/{id} added the new `salvage_modules` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+PUT /vehicles/{id} added the new `tractor_beams` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+DELETE /vehicles/{id} added the new `salvage_storage` enum value to the `modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /components added the new `salvage_storage` enum value to the `items/items/hardpoints/items/group` response property for the response status `200`
+GET /components/{slug} added the new `salvage_storage` enum value to the `hardpoints/items/group` response property for the response status `200`
+GET /fleets/{fleetSlug}/vehicles added the new `salvage_storage` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /hangar added the new `salvage_storage` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /models/{slug}/hardpoints added the new `salvage_storage` enum value to the `items/group` response property for the response status `200`
+GET /models/{slug}/module-packages added the new `salvage_storage` enum value to the `items/items/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /models/{slug}/modules added the new `salvage_storage` enum value to the `items/items/hardpoints/items/group` response property for the response status `200`
+GET /public/fleets/{fleetSlug}/vehicles added the new `salvage_storage` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /public/fleets/{fleetSlug}/vehicles/embed added the new `salvage_storage` enum value to the `items/modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /public/hangars/embed added the new `salvage_storage` enum value to the `items/modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /public/hangars/{username} added the new `salvage_storage` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /public/hangars/{username}/vehicles/{id} added the new `salvage_storage` enum value to the `modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /public/wishlists/{username} added the new `salvage_storage` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /vehicles/{id} added the new `salvage_storage` enum value to the `modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /wishlist added the new `salvage_storage` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+POST /vehicles added the new `salvage_storage` enum value to the `modulePackage/modules/items/hardpoints/items/group` response property for the response status `201`
+PUT /vehicles/{id} added the new `salvage_storage` enum value to the `modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`

@@ -560,17 +560,9 @@
         "baseline": "Baseline",
         "differencesOnly": "Differences only",
         "compareToBaseline": "Compare to baseline",
-        "loadoutBySlot": "Loadout by slot",
+        "fastestScraper": "Fastest Scraper",
         "slots": {
-          "guns": "Main guns",
-          "turrets": "Turrets",
-          "missiles": "Missiles",
-          "shields": "Shield generators",
-          "powerPlants": "Power plants",
-          "coolers": "Coolers",
-          "quantumDrives": "Quantum drives",
-          "thrusters": "Main thrusters",
-          "countermeasures": "Countermeasures"
+          "guns": "Main guns"
         },
         "legend": {
           "best": "best in row",
@@ -1434,8 +1426,12 @@
       "cargo": {
         "title": "Cargo",
         "holdsSub": "across %{count} holds",
-        "maxContainerSub": "largest box that fits",
-        "containers": "Container Capacity"
+        "maxContainerSub": "largest box it takes",
+        "containers": "Container Capacity",
+        "boxCount": {
+          "one": "%{count} × %{size} SCU box",
+          "other": "%{count} × %{size} SCU boxes"
+        }
       },
       "weaponRacks": {
         "slots": "Slots",
@@ -1468,6 +1464,20 @@
         "podsSub": "external mounts",
         "components": "Pod Types",
         "perPod": "per pod"
+      },
+      "salvageMetrics": {
+        "heads": "Salvage Heads",
+        "largestCrate": "Largest Crate",
+        "fillTime": "%{time} s per SCU to fill",
+        "fillTimeLabel": "Fill Time",
+        "fieldSupporters": "Field Supporters",
+        "fracture": "Fracture",
+        "disintegration": "Disintegration",
+        "reach": "up to %{radius} m · %{time} s/m",
+        "yield": "Yield",
+        "yieldValue": "%{amount} SCU/m³ %{resource}",
+        "alignment": "Alignment Bonus",
+        "alignmentValue": "up to %{speed}× speed · %{yield}× yield"
       },
       "refuelBoom": {
         "fuelFlowSub": "hydrogen transfer",
@@ -2203,8 +2213,10 @@
           "seat": "Seats",
           "external_fuel_tank": "External Fuel Tanks",
           "ore_pod": "Ore Pods",
+          "mining": "Mining",
           "module": "Modules",
           "salvage": "Salvage",
+          "salvage_storage": "Salvage Storage",
           "refuel_boom": "Refuel Boom"
         },
         "types": {
@@ -2270,6 +2282,12 @@
           "emp": "EMP",
           "quantumenforcementdevice": "QED",
           "salvagefillerstation": "Salvage Filler Station",
+          "bombs": "Bombs",
+          "mining_lasers": "Mining Lasers",
+          "mining_modules": "Mining Modules",
+          "salvage_heads": "Salvage Heads",
+          "salvage_modules": "Salvage Modules",
+          "tractor_beams": "Tractor Beams",
           "cargogrid": "Cargo Grid",
           "controller": "Flight Blades",
           "seat": "Seats",

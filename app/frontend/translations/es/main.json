@@ -10,6 +10,10 @@
       "beam": "Manga",
       "cargo": "Carga",
       "cargoWithModules": "con módulos",
+      "additionalStorage": {
+        "salvage": "+%{capacity} SCU de chatarra",
+        "ore": "+%{capacity} SCU de mineral"
+      },
       "personalInventory": "Inventario de la nave",
       "beds": {
         "one": "%{count} cama",

@@ -29,10 +29,14 @@ import {
   computeHullPartGroups,
   HULL_CATEGORY_COLORS,
 } from "@/frontend/composables/useHullParts";
+import { useLoadoutLines } from "@/frontend/components/Compare/sections/lines";
+import { salvageSummary } from "@/frontend/components/Compare/sections/salvageSummary";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   ComponentShieldFaceTypeEnum,
   HardpointCategoryEnum,
+  StorageContainerKindEnum,
+  type ComponentSalvageModifier,
   type Hardpoint,
   type Model,
 } from "@/services/fyApi";
@@ -52,110 +56,16 @@ const DAMAGE_TYPES: {
   { key: "thermal", label: "labels.combat.damageThermal", color: "#fa6800" },
 ];
 
-// Slot classes, not hardpoint groups. Eight parallel component lists were never a
-// comparison — and each list wanted ~450px, which is what dragged the whole table wide.
-// A row per slot class answers "what does each ship put here" and fits a narrow column.
-const SLOTS: {
-  key: string;
-  label: string;
-  category: HardpointCategoryEnum;
-  // Guns and internals hide inside mounts, so most slots have to recurse.
-  deep?: boolean;
-  // Categories to stop at rather than descend into. Missiles are WEAPONS-category
-  // components nested under a rack, so without this the main-gun row swallows them —
-  // as do the guns mounted inside a turret, which belong to the turret's own row.
-  stopAt?: HardpointCategoryEnum[];
-}[] = [
-  {
-    key: "guns",
-    label: "labels.compare.slots.guns",
-    category: HardpointCategoryEnum.WEAPONS,
-    deep: true,
-    stopAt: [
-      HardpointCategoryEnum.MISSILE_RACKS,
-      HardpointCategoryEnum.TURRET,
-      HardpointCategoryEnum.BOMBCOMPARTMENTS,
-    ],
-  },
-  {
-    key: "turrets",
-    label: "labels.compare.slots.turrets",
-    category: HardpointCategoryEnum.TURRET,
-    deep: true,
-  },
-  {
-    key: "missiles",
-    label: "labels.compare.slots.missiles",
-    category: HardpointCategoryEnum.MISSILE_RACKS,
-    deep: true,
-  },
-  {
-    key: "shields",
-    label: "labels.compare.slots.shields",
-    category: HardpointCategoryEnum.SHIELDGENERATOR,
-    deep: true,
-  },
-  {
-    key: "power-plants",
-    label: "labels.compare.slots.powerPlants",
-    category: HardpointCategoryEnum.POWERPLANT,
-    deep: true,
-  },
-  {
-    key: "coolers",
-    label: "labels.compare.slots.coolers",
-    category: HardpointCategoryEnum.COOLER,
-    deep: true,
-  },
-  {
-    key: "quantum-drives",
-    label: "labels.compare.slots.quantumDrives",
-    category: HardpointCategoryEnum.QUANTUMDRIVE,
-    deep: true,
-  },
-  {
-    key: "thrusters",
-    label: "labels.compare.slots.thrusters",
-    category: HardpointCategoryEnum.MAIN_THRUSTERS,
-  },
-  {
-    key: "countermeasures",
-    label: "labels.compare.slots.countermeasures",
-    category: HardpointCategoryEnum.COUNTERMEASURES,
-    deep: true,
-  },
-];
-
-function collect(
-  hardpoints: Hardpoint[] | undefined,
-  slot: (typeof SLOTS)[number],
-  found: Hardpoint[] = [],
-): Hardpoint[] {
-  for (const hardpoint of hardpoints || []) {
-    if (hardpoint.category === slot.category && hardpoint.component) {
-      found.push(hardpoint);
-      // A fitted component's own children are its internals, not more of this slot.
-      continue;
-    }
-
-    if (hardpoint.category && slot.stopAt?.includes(hardpoint.category)) {
-      continue;
-    }
-
-    if (slot.deep && hardpoint.hardpoints?.length) {
-      collect(hardpoint.hardpoints, slot, found);
-    }
-  }
-
-  return found;
-}
-
 export const useLoadoutSections = (
   models: MaybeRefOrGetter<Model[]>,
   hardpointsFor: (model: Model) => Hardpoint[],
 ) => {
   const { t } = useI18n();
   const { number, rounded, percent } = useCompareFormat();
+  const { lineRows } = useLoadoutLines(models, hardpointsFor);
+
+  const category = (key: HardpointCategoryEnum) =>
+    t(`labels.hardpoint.categories.${key}`);
 
   // Only a quadrant shield has faces to shift strength between.
   const quadrantCooldown = (controllers: ControllerStats) =>
@@ -311,6 +221,19 @@ export const useLoadoutSections = (
     return section("combat", t("labels.combat.title"), [
       ...valueRows(metrics, subjects),
       compositionRow,
+      ...lineRows([
+        {
+          key: "guns",
+          label: t("labels.compare.slots.guns"),
+          categories: [HardpointCategoryEnum.WEAPONS],
+        },
+        ...[
+          HardpointCategoryEnum.MISSILES,
+          HardpointCategoryEnum.BOMBS,
+          HardpointCategoryEnum.EMP,
+          HardpointCategoryEnum.QUANTUMENFORCEMENTDEVICE,
+        ].map((key) => ({ key, label: category(key), categories: [key] })),
+      ]),
     ]);
   });
 
@@ -461,6 +384,12 @@ export const useLoadoutSections = (
     return section("defense", t("labels.defense.title"), [
       ...valueRows(metrics, subjects),
       ...chipRows,
+      ...lineRows(
+        [
+          HardpointCategoryEnum.SHIELDGENERATOR,
+          HardpointCategoryEnum.COUNTERMEASURES,
+        ].map((key) => ({ key, label: category(key), categories: [key] })),
+      ),
     ]);
   });
 
@@ -549,25 +478,211 @@ export const useLoadoutSections = (
     ]);
   });
 
-  // ── Loadout by slot ─────────────────────────────────────────────────────────
-  // Cells carry the hardpoints themselves; the table renders the ship page's own
-  // `HardpointItems`, which stacks them and picks the per-category item variant.
-  const loadout = computed<CompareSection | undefined>(() => {
+  // Every part of a kind across the whole loadout, nested ones included: a
+  // Moth's heads sit in its turrets, a Fortune's on a tool arm.
+  const partsIn = (
+    hardpoints: Hardpoint[] | undefined,
+    kind: HardpointCategoryEnum,
+  ): Hardpoint[] =>
+    (hardpoints || []).flatMap((hardpoint) => [
+      ...(hardpoint.component && hardpoint.category === kind
+        ? [hardpoint]
+        : []),
+      ...partsIn(
+        hardpoint.hardpoints?.length
+          ? hardpoint.hardpoints
+          : hardpoint.component?.hardpoints,
+        kind,
+      ),
+    ]);
+
+  const storageOf = (model: Model, kind: StorageContainerKindEnum) =>
+    (model.storageContainers || [])
+      .filter((container) => container.kind === kind)
+      .reduce((sum, container) => sum + (container.capacity || 0), 0);
+
+  // ── Salvage ─────────────────────────────────────────────────────────────────
+  const salvage = computed<CompareSection | undefined>(() => {
     const list = toValue(models);
 
-    const rows = SLOTS.map<CompareTableRow>((slot) => ({
-      kind: "fit",
-      key: slot.key,
-      label: t(slot.label),
-      category: slot.category,
-      cells: list.map((model) => ({
-        key: model.slug,
-        hardpoints: collect(hardpointsFor(model), slot),
-      })),
-    })).filter((row) => hasRowData([row]));
+    type Salvage = {
+      heads: number;
+      fastestScraper?: number;
+      storage: number;
+      fillerStations: number;
+      crate?: number;
+      reach?: number;
+    };
 
-    return section("loadout", t("labels.compare.loadoutBySlot"), rows);
+    const subjects = list.map((model) => {
+      const hardpoints = hardpointsFor(model);
+      const summary = salvageSummary(hardpoints);
+      const speeds = partsIn(hardpoints, HardpointCategoryEnum.SALVAGE_MODULES)
+        .map(
+          (part) =>
+            (part.component?.typeData as ComponentSalvageModifier | undefined)
+              ?.salvageSpeed,
+        )
+        .filter((speed): speed is number => typeof speed === "number");
+
+      return {
+        key: model.slug,
+        subject: {
+          heads: partsIn(hardpoints, HardpointCategoryEnum.SALVAGE_HEADS)
+            .length,
+          fastestScraper: speeds.length ? Math.max(...speeds) : undefined,
+          storage: storageOf(model, StorageContainerKindEnum.SALVAGE),
+          fillerStations: partsIn(
+            hardpoints,
+            HardpointCategoryEnum.SALVAGEFILLERSTATION,
+          ).length,
+          crate: summary?.crate?.size,
+          reach: summary?.structural?.disintegration?.maxRadius,
+        } satisfies Salvage,
+      };
+    });
+
+    const metrics: CompareMetric<Salvage>[] = [
+      {
+        key: "salvage-heads",
+        label: t("labels.salvageMetrics.heads"),
+        direction: "higher",
+        counts: {},
+        raw: (s) => s.heads || undefined,
+        value: (s) => (s.heads ? String(s.heads) : undefined),
+      },
+      {
+        key: "salvage-fastest-scraper",
+        label: t("labels.compare.fastestScraper"),
+        unit: "×",
+        direction: "higher",
+        raw: (s) => s.fastestScraper,
+        value: (s) => number(s.fastestScraper),
+      },
+      {
+        key: "salvage-storage",
+        label: t("labels.model.salvageStorage"),
+        unit: "SCU",
+        direction: "higher",
+        counts: { unit: "SCU" },
+        raw: (s) => s.storage || undefined,
+        value: (s) => (s.storage ? number(s.storage) : undefined),
+      },
+      {
+        key: "salvage-filler-stations",
+        label: category(HardpointCategoryEnum.SALVAGEFILLERSTATION),
+        counts: {},
+        raw: (s) => s.fillerStations || undefined,
+        value: (s) => (s.fillerStations ? String(s.fillerStations) : undefined),
+      },
+      {
+        key: "salvage-largest-crate",
+        label: t("labels.salvageMetrics.largestCrate"),
+        unit: "SCU",
+        direction: "higher",
+        raw: (s) => s.crate,
+        value: (s) => number(s.crate),
+      },
+      {
+        key: "salvage-disintegration",
+        label: t("labels.salvageMetrics.disintegration"),
+        unit: "m",
+        direction: "higher",
+        raw: (s) => s.reach,
+        value: (s) => number(s.reach),
+      },
+    ];
+
+    return section("salvage", t("labels.hardpoint.groups.salvage"), [
+      ...valueRows(metrics, subjects),
+      ...lineRows([
+        {
+          key: "salvage-heads-fitted",
+          label: category(HardpointCategoryEnum.SALVAGE_HEADS),
+          categories: [HardpointCategoryEnum.SALVAGE_HEADS],
+        },
+      ]),
+    ]);
   });
 
-  return { combat, defense, hull, loadout };
+  // ── Mining ──────────────────────────────────────────────────────────────────
+  const mining = computed<CompareSection | undefined>(() => {
+    const list = toValue(models);
+
+    type Mining = { lasers: number; ore: number };
+
+    const subjects = list.map((model) => ({
+      key: model.slug,
+      subject: {
+        lasers: partsIn(
+          hardpointsFor(model),
+          HardpointCategoryEnum.MINING_LASERS,
+        ).length,
+        ore: storageOf(model, StorageContainerKindEnum.ORE),
+      } satisfies Mining,
+    }));
+
+    const metrics: CompareMetric<Mining>[] = [
+      {
+        key: "mining-lasers",
+        label: category(HardpointCategoryEnum.MINING_LASERS),
+        direction: "higher",
+        counts: {},
+        raw: (s) => s.lasers || undefined,
+        value: (s) => (s.lasers ? String(s.lasers) : undefined),
+      },
+      {
+        key: "mining-ore",
+        label: t("labels.model.orePods"),
+        unit: "SCU",
+        direction: "higher",
+        counts: { unit: "SCU" },
+        raw: (s) => s.ore || undefined,
+        value: (s) => (s.ore ? number(s.ore) : undefined),
+      },
+    ];
+
+    return section("mining", t("labels.hardpoint.groups.mining"), [
+      ...valueRows(metrics, subjects),
+      ...lineRows([
+        {
+          key: "mining-lasers-fitted",
+          label: category(HardpointCategoryEnum.MINING_LASERS),
+          categories: [HardpointCategoryEnum.MINING_LASERS],
+        },
+      ]),
+    ]);
+  });
+
+  // ── Systems and utility ─────────────────────────────────────────────────────
+  const partsOnly = (
+    id: string,
+    title: string,
+    kinds: HardpointCategoryEnum[],
+  ) =>
+    section(
+      id,
+      title,
+      lineRows(
+        kinds.map((key) => ({ key, label: category(key), categories: [key] })),
+      ),
+    );
+
+  const systems = computed(() =>
+    partsOnly("systems", t("labels.hardpoint.groups.system"), [
+      HardpointCategoryEnum.POWERPLANT,
+      HardpointCategoryEnum.COOLER,
+      HardpointCategoryEnum.RADAR,
+      HardpointCategoryEnum.LIFESUPPORT,
+    ]),
+  );
+
+  const utility = computed(() =>
+    partsOnly("utility", t("labels.hardpoint.groups.auxiliary"), [
+      HardpointCategoryEnum.TRACTOR_BEAMS,
+      HardpointCategoryEnum.MODULE,
+    ]),
+  );
+
+  return { combat, defense, hull, salvage, mining, systems, utility };
 };

@@ -603,9 +603,109 @@
   vertical-align: top;
 }
 
-// ── loadout ─────────────────────────────────────────────────────────────────────
-// The cell renders the ship page's own `HardpointItems`, so there is nothing to style
-// here beyond letting it use the full cell width.
-.compare-table td :deep(.hardpoint-items) {
-  min-width: 0;
+// ── parts ───────────────────────────────────────────────────────────────────────
+// One line per kind of part, so a cell stays a few lines tall whatever the ship
+// nests; the ship page's full card opens over a line instead of filling the cell.
+
+.compare-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.compare-line {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 8px;
+  background: var(--color-control);
+  border: 1px solid var(--color-edge-soft);
+  border-radius: var(--radius-control, 8px);
+  font-size: 13px;
+
+  // A frame colour rather than a rail: what the baseline column does not fit.
+  &--differs {
+    border-color: rgba($primary, 0.55);
+  }
+
+  &__head,
+  &__part {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  // A module fitted in the part, set in under its name rather than given a
+  // rail of its own.
+  &__part {
+    padding-left: 22px;
+    font-size: 12px;
+  }
+
+  &__qty {
+    font-size: 12px;
+    color: var(--color-text-dim);
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__size {
+    font-family: "Orbitron", tahoma, sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--color-lifted);
+    background: $gray-black;
+    border: 1px solid var(--color-edge-soft);
+    border-radius: 6px;
+    padding: 2px 5px;
+  }
+
+  &__name {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--color-lifted);
+  }
+
+  &__figure {
+    font-size: 12.5px;
+    font-weight: 600;
+    white-space: nowrap;
+    color: var(--color-text);
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__figure--best {
+    color: $gold;
+
+    &::after {
+      content: " ▲";
+      font-size: 8px;
+    }
+  }
+
+  &__figure--worst {
+    font-weight: 400;
+    color: $gray-light;
+
+    &::after {
+      content: " ▼";
+      font-size: 8px;
+    }
+  }
+
+  &__unit {
+    font-weight: 400;
+    font-size: 11px;
+    color: var(--color-text-dim);
+  }
+
+  &__note {
+    padding-left: 22px;
+    font-size: 12px;
+    line-height: 1.4;
+    color: var(--color-text-dim);
+  }
 }

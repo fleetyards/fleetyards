@@ -144,7 +144,7 @@ const WEAPONS = knockout({
   primary: `<g transform="rotate(45 256 256)">${ROUNDS.map((r) => r.tip).join("")}</g>`,
 });
 
-export const HARDPOINT_GLYPHS: Record<HardpointCategoryEnum, Glyph> = {
+const OWN_GLYPHS = {
   // A scope: its crosshair and range ring, and the sweep that finds a contact.
   [HardpointCategoryEnum.RADAR]: knockout({
     defs: mask(
@@ -263,8 +263,6 @@ export const HARDPOINT_GLYPHS: Record<HardpointCategoryEnum, Glyph> = {
     primary: smallThruster(128, 352, true) + smallThruster(384, 352),
   }),
   [HardpointCategoryEnum.WEAPONS]: WEAPONS,
-  // A mount is read as the weapon it carries.
-  [HardpointCategoryEnum.WEAPON_MOUNTS]: WEAPONS,
   // Twin barrels on their tripod.
   [HardpointCategoryEnum.TURRET]: knockout({
     secondary: `<g ${SECONDARY_LINE}><path d="M184 352 L96 472"/><path d="M184 352 L272 472"/></g><circle cx="184" cy="344" r="48"/>`,
@@ -438,4 +436,27 @@ export const HARDPOINT_GLYPHS: Record<HardpointCategoryEnum, Glyph> = {
     secondary: '<circle cx="256" cy="256" r="240"/>',
     primary: `<path d="M184 200 Q184 128 256 128 Q328 128 328 192 Q328 240 280 264 Q256 276 256 312 L256 320" ${line(PRIMARY_STROKE, 52)}/><circle cx="256" cy="396" r="34"/>`,
   }),
+} satisfies Partial<Record<HardpointCategoryEnum, Glyph>>;
+
+// Parts drawn as what they belong to: a mount as the weapon it carries, a
+// missile as its rack, a head or module as the kit it works with.
+export const SHARED_GLYPHS = {
+  [HardpointCategoryEnum.WEAPON_MOUNTS]: HardpointCategoryEnum.WEAPONS,
+  [HardpointCategoryEnum.MISSILES]: HardpointCategoryEnum.MISSILE_RACKS,
+  [HardpointCategoryEnum.BOMBS]: HardpointCategoryEnum.BOMBCOMPARTMENTS,
+  [HardpointCategoryEnum.SALVAGE_HEADS]: HardpointCategoryEnum.SALVAGEMUNCHING,
+  [HardpointCategoryEnum.MINING_LASERS]: HardpointCategoryEnum.SALVAGEMUNCHING,
+  [HardpointCategoryEnum.TRACTOR_BEAMS]: HardpointCategoryEnum.UTILITY,
+  [HardpointCategoryEnum.SALVAGE_MODULES]: HardpointCategoryEnum.UTILITY,
+  [HardpointCategoryEnum.MINING_MODULES]: HardpointCategoryEnum.UTILITY,
+} as const;
+
+export const HARDPOINT_GLYPHS: Record<HardpointCategoryEnum, Glyph> = {
+  ...OWN_GLYPHS,
+  ...(Object.fromEntries(
+    Object.entries(SHARED_GLYPHS).map(([category, drawnAs]) => [
+      category,
+      OWN_GLYPHS[drawnAs],
+    ]),
+  ) as Record<keyof typeof SHARED_GLYPHS, Glyph>),
 };

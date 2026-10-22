@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { HardpointCategoryEnum } from "@/services/fyApi";
-import { HARDPOINT_GLYPHS } from "./glyphs";
+import { HARDPOINT_GLYPHS, SHARED_GLYPHS } from "./glyphs";
 import { categoryIcon } from "../categoryIcon";
 import Component from "./index.vue";
 
@@ -13,9 +13,9 @@ describe("HardpointCategoryIcon", () => {
     },
   );
 
-  it("draws every category differently, a mount aside", () => {
+  it("draws every category differently, the shared ones aside", () => {
     const drawings = Object.entries(HARDPOINT_GLYPHS)
-      .filter(([category]) => category !== HardpointCategoryEnum.WEAPON_MOUNTS)
+      .filter(([category]) => !(category in SHARED_GLYPHS))
       .map(([, glyph]) => `${glyph.secondary}|${glyph.primary}`);
 
     expect(new Set(drawings).size).toBe(drawings.length);

@@ -128,6 +128,21 @@ describe("computeLoadoutStats", () => {
     expect(stats.missileDamage).toBe(9999);
   });
 
+  it("counts a missile filed under its own category", () => {
+    const stats = computeLoadoutStats([
+      {
+        ...weaponHardpoint({
+          trackingSignal: "cross_section",
+          damagePerShot: { physical: 1700 },
+        } as ComponentWeapon),
+        category: HardpointCategoryEnum.MISSILES,
+      },
+    ]);
+
+    expect(stats.weaponCount).toBe(0);
+    expect(stats.missileDamage).toBe(1700);
+  });
+
   it("counts a missile-only ship as a loadout, with its armed-missile capacity", () => {
     const controller = {
       id: "controller",

@@ -560,17 +560,9 @@
         "baseline": "Referencia",
         "differencesOnly": "Solo diferencias",
         "compareToBaseline": "Comparar con la referencia",
-        "loadoutBySlot": "Configuración por slot",
+        "fastestScraper": "Raspador más rápido",
         "slots": {
-          "guns": "Cañones principales",
-          "turrets": "Torretas",
-          "missiles": "Misiles",
-          "shields": "Generadores de escudo",
-          "powerPlants": "Plantas de energía",
-          "coolers": "Enfriadores",
-          "quantumDrives": "Motores Quantum",
-          "thrusters": "Propulsores principales",
-          "countermeasures": "Contramedidas"
+          "guns": "Cañones principales"
         },
         "legend": {
           "best": "mejor de la fila",
@@ -1434,8 +1426,12 @@
       "cargo": {
         "title": "Carga",
         "holdsSub": "en %{count} bodegas",
-        "maxContainerSub": "la caja más grande que cabe",
-        "containers": "Capacidad de contenedores"
+        "maxContainerSub": "la caja más grande que admite",
+        "containers": "Capacidad de contenedores",
+        "boxCount": {
+          "one": "%{count} × caja de %{size} SCU",
+          "other": "%{count} × cajas de %{size} SCU"
+        }
       },
       "weaponRacks": {
         "slots": "Ranuras",
@@ -1468,6 +1464,20 @@
         "podsSub": "montajes externos",
         "components": "Tipos de pod",
         "perPod": "por pod"
+      },
+      "salvageMetrics": {
+        "heads": "Cabezales de salvamento",
+        "largestCrate": "Caja más grande",
+        "fillTime": "%{time} s por SCU para llenar",
+        "fillTimeLabel": "Tiempo de llenado",
+        "fieldSupporters": "Soportes de campo",
+        "fracture": "Fractura",
+        "disintegration": "Desintegración",
+        "reach": "hasta %{radius} m · %{time} s/m",
+        "yield": "Rendimiento",
+        "yieldValue": "%{amount} SCU/m³ %{resource}",
+        "alignment": "Bonificación de alineación",
+        "alignmentValue": "hasta %{speed}× velocidad · %{yield}× rendimiento"
       },
       "refuelBoom": {
         "fuelFlowSub": "transferencia de hidrógeno",
@@ -2203,8 +2213,10 @@
           "seat": "Asientos",
           "external_fuel_tank": "Tanques de combustible externos",
           "ore_pod": "Contenedores de mineral",
+          "mining": "Minería",
           "module": "Módulos",
           "salvage": "Salvamento",
+          "salvage_storage": "Almacén de chatarra",
           "refuel_boom": "Brazo de repostaje"
         },
         "types": {
@@ -2270,6 +2282,12 @@
           "emp": "EMP",
           "quantumenforcementdevice": "QED",
           "salvagefillerstation": "Estación de llenado de salvamento",
+          "bombs": "Bombas",
+          "mining_lasers": "Láseres de minería",
+          "mining_modules": "Módulos de minería",
+          "salvage_heads": "Cabezales de salvamento",
+          "salvage_modules": "Módulos de salvamento",
+          "tractor_beams": "Rayos tractores",
           "cargogrid": "Grilla de carga",
           "controller": "Cuchillas de vuelo",
           "seat": "Asientos",

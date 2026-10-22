@@ -21,6 +21,7 @@ import {
   type ComponentMiningModifiers,
   type ComponentMiningModule,
   type ComponentSalvageModifier,
+  type ComponentSalvagePart,
   type ComponentController,
   type ComponentEmp,
   type ComponentLifeSupport,
@@ -78,6 +79,18 @@ export type HardpointStat = {
   // the catalogue says.
   stock?: string;
 };
+
+// A salvage part's figures in the order its row shows them: a filler station
+// leads with its crate, an arm with how far it grinds a hull down.
+const SALVAGE_ROW_STATS = [
+  "salvage.crate",
+  "salvage.fillTime",
+  "salvage.disintegration",
+  "salvage.fracture",
+  "salvage.yield",
+  "salvage.alignment",
+  "salvage.fieldSupporters",
+] as const;
 
 const ROW_STATS = {
   // A gun holds a magazine or a capacitor, never both, so one of the two
@@ -152,6 +165,32 @@ export const formatBoostFigure = (
 
   return decimal ? `${grouped}${separator || ","}${decimal}` : grouped;
 };
+
+// Mining lasers, missiles and bombs are filed apart from guns, but their figures
+// live in the weapon's type data.
+const WEAPON_CATEGORIES: HardpointCategoryEnum[] = [
+  HardpointCategoryEnum.WEAPONS,
+  HardpointCategoryEnum.MINING_LASERS,
+  HardpointCategoryEnum.MISSILES,
+  HardpointCategoryEnum.BOMBS,
+];
+
+const UTILITY_CATEGORIES: HardpointCategoryEnum[] = [
+  HardpointCategoryEnum.UTILITY,
+  HardpointCategoryEnum.MINING_MODULES,
+  HardpointCategoryEnum.SALVAGE_HEADS,
+  HardpointCategoryEnum.SALVAGE_MODULES,
+];
+
+// What plugs into a mount's own ports: a gun, a gimbal, or the head a tool
+// arm or utility turret carries.
+const GUN_PORT_CATEGORIES: (HardpointCategoryEnum | undefined)[] = [
+  HardpointCategoryEnum.WEAPONS,
+  HardpointCategoryEnum.WEAPON_MOUNTS,
+  HardpointCategoryEnum.MINING_LASERS,
+  HardpointCategoryEnum.TRACTOR_BEAMS,
+  HardpointCategoryEnum.SALVAGE_HEADS,
+];
 
 export const THRUSTER_CATEGORIES: HardpointCategoryEnum[] = [
   HardpointCategoryEnum.MAIN_THRUSTERS,
@@ -452,10 +491,7 @@ const hardpointStatsBuilder = (count?: MaybeRefOrGetter<number>) => {
   const gunPorts = (ports?: Hardpoint[]): string | null => {
     const bySize = new Map<number, number>();
     (ports ?? []).forEach((port) => {
-      if (
-        port.category !== HardpointCategoryEnum.WEAPONS &&
-        port.category !== HardpointCategoryEnum.WEAPON_MOUNTS
-      ) {
+      if (!GUN_PORT_CATEGORIES.includes(port.category)) {
         return;
       }
       const size = port.maxSize ?? port.minSize;
@@ -583,6 +619,87 @@ const hardpointStatsBuilder = (count?: MaybeRefOrGetter<number>) => {
 
   // `stat` rounds to a whole number, which turns a 1.5 s arm time into 2;
   // this keeps the one decimal `toNumber` itself allows.
+  const salvageFigures = (part: ComponentSalvagePart): HardpointStat[] => {
+    const figures: HardpointStat[] = [];
+    const reach = (radius: number, time?: number) =>
+      t("labels.salvageMetrics.reach", {
+        radius: toNumber(radius),
+        time: toNumber(time ?? 0),
+      });
+
+    if (part.crates?.maxSize) {
+      figures.push({
+        key: "salvage.crate",
+        label: t("labels.salvageMetrics.largestCrate"),
+        value: `${toNumber(part.crates.maxSize, "integer")} SCU`,
+        raw: part.crates.maxSize,
+        primary: true,
+      });
+    }
+    if (part.crates?.fillTimePerScu) {
+      figures.push({
+        key: "salvage.fillTime",
+        label: t("labels.salvageMetrics.fillTimeLabel"),
+        value: t("labels.salvageMetrics.fillTime", {
+          time: toNumber(part.crates.fillTimePerScu),
+        }),
+        raw: part.crates.fillTimePerScu,
+      });
+    }
+    if (part.disintegration?.maxRadius) {
+      figures.push({
+        key: "salvage.disintegration",
+        label: t("labels.salvageMetrics.disintegration"),
+        value: reach(
+          part.disintegration.maxRadius,
+          part.disintegration.timePerMetre,
+        ),
+        raw: part.disintegration.maxRadius,
+        primary: !part.crates?.maxSize,
+      });
+    }
+    if (part.fracture?.maxRadius) {
+      figures.push({
+        key: "salvage.fracture",
+        label: t("labels.salvageMetrics.fracture"),
+        value: reach(part.fracture.maxRadius, part.fracture.timePerMetre),
+        raw: part.fracture.maxRadius,
+      });
+    }
+    if (part.disintegration?.scuPerCubicMetre) {
+      figures.push({
+        key: "salvage.yield",
+        label: t("labels.salvageMetrics.yield"),
+        value: t("labels.salvageMetrics.yieldValue", {
+          amount: part.disintegration.scuPerCubicMetre,
+          resource: part.disintegration.resource ?? "",
+        }).trim(),
+        raw: part.disintegration.scuPerCubicMetre,
+      });
+    }
+    const alignment = part.fieldAlignment;
+    if (alignment?.maxSpeedMultiplier || alignment?.maxYieldMultiplier) {
+      figures.push({
+        key: "salvage.alignment",
+        label: t("labels.salvageMetrics.alignment"),
+        value: t("labels.salvageMetrics.alignmentValue", {
+          speed: toNumber(alignment.maxSpeedMultiplier ?? 1),
+          yield: toNumber(alignment.maxYieldMultiplier ?? 1),
+        }),
+      });
+    }
+    if (part.fieldSupportersRequired) {
+      figures.push({
+        key: "salvage.fieldSupporters",
+        label: t("labels.salvageMetrics.fieldSupporters"),
+        value: String(part.fieldSupportersRequired),
+        raw: part.fieldSupportersRequired,
+      });
+    }
+
+    return figures;
+  };
+
   const decimalStat = (
     labelKey: string,
     value: number,
@@ -814,7 +931,7 @@ const hardpointStatsBuilder = (count?: MaybeRefOrGetter<number>) => {
       if (emp.cooldownTime) {
         result.push(secondsStat("emp.cooldownTime", emp.cooldownTime));
       }
-    } else if (category === HardpointCategoryEnum.WEAPONS) {
+    } else if (category && WEAPON_CATEGORIES.includes(category)) {
       const weapon = typeData as ComponentWeapon;
       rowKeys = ROW_STATS.gun;
       // A missile or bomb is told apart by its type first; a field of its
@@ -1951,7 +2068,7 @@ const hardpointStatsBuilder = (count?: MaybeRefOrGetter<number>) => {
       if (typeof fi.minimumRate === "number" && fi.minimumRate > 0) {
         result.push(fuelRate("fuelIntakes.minRate", fi.minimumRate));
       }
-    } else if (category === HardpointCategoryEnum.UTILITY) {
+    } else if (category && UTILITY_CATEGORIES.includes(category)) {
       // 39 of the 71 utility components with data carry nothing but a
       // capacity. The three that are tractor beams fall to the shape check
       // above, which runs before any category branch.
@@ -2068,6 +2185,21 @@ const hardpointStatsBuilder = (count?: MaybeRefOrGetter<number>) => {
           value: `${String(toNumber(refuel.quantumFuelFlowRate as number, "cargo"))}/s`,
           wide: true,
         });
+      }
+    }
+
+    // The game keeps these on the ship's salvage controller; the loader hands
+    // them to the part they are about, which is where a player looks for them.
+    const salvagePart = (typeData as { salvage?: ComponentSalvagePart })
+      .salvage;
+    if (salvagePart) {
+      const figures = salvageFigures(salvagePart);
+      if (figures.length) {
+        result.forEach((entry) => {
+          entry.primary = false;
+        });
+        result.push(...figures);
+        rowKeys = SALVAGE_ROW_STATS;
       }
     }
 

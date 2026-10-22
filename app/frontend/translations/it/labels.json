@@ -560,17 +560,9 @@
         "baseline": "Riferimento",
         "differencesOnly": "Solo le differenze",
         "compareToBaseline": "Confronta con il riferimento",
-        "loadoutBySlot": "Configurazione per slot",
+        "fastestScraper": "Raschiatore più veloce",
         "slots": {
-          "guns": "Armi principali",
-          "turrets": "Torrette",
-          "missiles": "Missili",
-          "shields": "Generatori di scudi",
-          "powerPlants": "Generatori",
-          "coolers": "Refrigeranti",
-          "quantumDrives": "Motori Quantum",
-          "thrusters": "Propulsori principali",
-          "countermeasures": "Contromisure"
+          "guns": "Armi principali"
         },
         "legend": {
           "best": "migliore della riga",
@@ -1434,8 +1426,12 @@
       "cargo": {
         "title": "Carico",
         "holdsSub": "su %{count} stive",
-        "maxContainerSub": "il container più grande che ci sta",
-        "containers": "Capacità in container"
+        "maxContainerSub": "il container più grande che accetta",
+        "containers": "Capacità in container",
+        "boxCount": {
+          "one": "%{count} × container da %{size} SCU",
+          "other": "%{count} × container da %{size} SCU"
+        }
       },
       "weaponRacks": {
         "slots": "Slot",
@@ -1468,6 +1464,20 @@
         "podsSub": "attacchi esterni",
         "components": "Tipi di pod",
         "perPod": "per pod"
+      },
+      "salvageMetrics": {
+        "heads": "Testine di recupero",
+        "largestCrate": "Cassa più grande",
+        "fillTime": "%{time} s per SCU per riempire",
+        "fillTimeLabel": "Tempo di riempimento",
+        "fieldSupporters": "Supporti di campo",
+        "fracture": "Frattura",
+        "disintegration": "Disintegrazione",
+        "reach": "fino a %{radius} m · %{time} s/m",
+        "yield": "Resa",
+        "yieldValue": "%{amount} SCU/m³ %{resource}",
+        "alignment": "Bonus di allineamento",
+        "alignmentValue": "fino a %{speed}× velocità · %{yield}× resa"
       },
       "refuelBoom": {
         "fuelFlowSub": "trasferimento idrogeno",
@@ -2203,8 +2213,10 @@
           "seat": "Sedili",
           "external_fuel_tank": "Serbatoi di carburante esterni",
           "ore_pod": "Contenitori di minerale",
+          "mining": "Estrazione mineraria",
           "module": "Moduli",
           "salvage": "Recupero",
+          "salvage_storage": "Deposito di recupero",
           "refuel_boom": "Braccio di rifornimento"
         },
         "types": {
@@ -2270,6 +2282,12 @@
           "emp": "EMP",
           "quantumenforcementdevice": "QED",
           "salvagefillerstation": "Stazione di riempimento salvataggio",
+          "bombs": "Bombe",
+          "mining_lasers": "Laser da estrazione",
+          "mining_modules": "Moduli da estrazione",
+          "salvage_heads": "Testine di recupero",
+          "salvage_modules": "Moduli di recupero",
+          "tractor_beams": "Raggi traenti",
           "cargogrid": "Griglia di carico",
           "controller": "Lame di volo",
           "seat": "Sedili",

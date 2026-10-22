@@ -560,17 +560,9 @@
         "baseline": "基準",
         "differencesOnly": "僅顯示差異",
         "compareToBaseline": "與基準比較",
-        "loadoutBySlot": "依掛載槽顯示配置",
+        "fastestScraper": "最快刮除模組",
         "slots": {
-          "guns": "主武器",
-          "turrets": "砲塔",
-          "missiles": "飛彈",
-          "shields": "護盾產生器",
-          "powerPlants": "發電機",
-          "coolers": "冷卻器",
-          "quantumDrives": "量子引擎",
-          "thrusters": "主推進器",
-          "countermeasures": "反制措施"
+          "guns": "主武器"
         },
         "legend": {
           "best": "本列最佳",
@@ -1434,8 +1426,12 @@
       "cargo": {
         "title": "貨物",
         "holdsSub": "分佈於 %{count} 個貨艙",
-        "maxContainerSub": "可容納的最大貨櫃",
-        "containers": "貨櫃容量"
+        "maxContainerSub": "可裝載的最大貨櫃",
+        "containers": "貨櫃容量",
+        "boxCount": {
+          "one": "%{count} × %{size} SCU 貨櫃",
+          "other": "%{count} × %{size} SCU 貨櫃"
+        }
       },
       "weaponRacks": {
         "slots": "槽位",
@@ -1468,6 +1464,20 @@
         "podsSub": "外部掛點",
         "components": "燃料艙類型",
         "perPod": "每個燃料艙"
+      },
+      "salvageMetrics": {
+        "heads": "打撈頭",
+        "largestCrate": "最大貨箱",
+        "fillTime": "每 SCU 裝填 %{time} 秒",
+        "fillTimeLabel": "裝填時間",
+        "fieldSupporters": "場支撐器",
+        "fracture": "破碎",
+        "disintegration": "分解",
+        "reach": "最遠 %{radius} 公尺 · 每公尺 %{time} 秒",
+        "yield": "產量",
+        "yieldValue": "%{amount} SCU/立方公尺 %{resource}",
+        "alignment": "對準加成",
+        "alignmentValue": "最高 %{speed}× 速度 · %{yield}× 產量"
       },
       "refuelBoom": {
         "fuelFlowSub": "氫燃料輸送",
@@ -2203,8 +2213,10 @@
           "seat": "座位",
           "external_fuel_tank": "外掛燃料箱",
           "ore_pod": "礦石艙",
+          "mining": "採礦",
           "module": "模組",
           "salvage": "打撈",
+          "salvage_storage": "回收儲存",
           "refuel_boom": "加油臂"
         },
         "types": {
@@ -2270,6 +2282,12 @@
           "emp": "EMP",
           "quantumenforcementdevice": "QED",
           "salvagefillerstation": "打撈填充站",
+          "bombs": "炸彈",
+          "mining_lasers": "採礦雷射",
+          "mining_modules": "採礦模組",
+          "salvage_heads": "打撈頭",
+          "salvage_modules": "打撈模組",
+          "tractor_beams": "牽引光束",
           "cargogrid": "貨物網格",
           "controller": "飛行刀片",
           "seat": "座位",

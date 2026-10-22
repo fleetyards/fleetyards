@@ -20,7 +20,7 @@ vi.mock("@/shared/composables/useI18n", () => ({
 
 function ordnanceHardpoint(
   typeData: ComponentMissile | ComponentBomb | ComponentMissileRack,
-  category: HardpointCategoryEnum = HardpointCategoryEnum.WEAPONS,
+  category: HardpointCategoryEnum = HardpointCategoryEnum.MISSILES,
   type?: ComponentTypeEnum,
 ): Hardpoint {
   return {
@@ -101,7 +101,7 @@ describe("useHardpointStats for ordnance", () => {
     const stats = statsFor(
       ordnanceHardpoint(
         { damagePerShot: { physical: 100 }, armTime: 3 },
-        HardpointCategoryEnum.WEAPONS,
+        HardpointCategoryEnum.BOMBS,
         ComponentTypeEnum.BOMB,
       ),
     );

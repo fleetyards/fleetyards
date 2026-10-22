@@ -10,6 +10,10 @@
       "beam": "Breite",
       "cargo": "Fracht",
       "cargoWithModules": "mit Modulen",
+      "additionalStorage": {
+        "salvage": "+%{capacity} SCU Bergungsgut",
+        "ore": "+%{capacity} SCU Erz"
+      },
       "personalInventory": "Schiffsinventar",
       "beds": {
         "one": "%{count} Bett",

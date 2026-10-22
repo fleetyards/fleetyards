@@ -560,17 +560,9 @@
         "baseline": "基准",
         "differencesOnly": "仅显示差异",
         "compareToBaseline": "与基准比较",
-        "loadoutBySlot": "按挂点分组的配置",
+        "fastestScraper": "最快刮除模块",
         "slots": {
-          "guns": "主炮",
-          "turrets": "炮塔",
-          "missiles": "导弹",
-          "shields": "护盾发生器",
-          "powerPlants": "发电机",
-          "coolers": "散热器",
-          "quantumDrives": "量子引擎",
-          "thrusters": "主推进器",
-          "countermeasures": "干扰弹"
+          "guns": "主炮"
         },
         "legend": {
           "best": "本行最佳",
@@ -1434,8 +1426,12 @@
       "cargo": {
         "title": "货物",
         "holdsSub": "分布于 %{count} 个货舱",
-        "maxContainerSub": "可容纳的最大箱体",
-        "containers": "集装箱容量"
+        "maxContainerSub": "可装载的最大箱体",
+        "containers": "集装箱容量",
+        "boxCount": {
+          "one": "%{count} × %{size} SCU 箱",
+          "other": "%{count} × %{size} SCU 箱"
+        }
       },
       "weaponRacks": {
         "slots": "槽位",
@@ -1468,6 +1464,20 @@
         "podsSub": "外部挂点",
         "components": "挂舱类型",
         "perPod": "每个挂舱"
+      },
+      "salvageMetrics": {
+        "heads": "回收头",
+        "largestCrate": "最大货箱",
+        "fillTime": "每 SCU 装填 %{time} 秒",
+        "fillTimeLabel": "装填时间",
+        "fieldSupporters": "场支撑器",
+        "fracture": "破碎",
+        "disintegration": "分解",
+        "reach": "最远 %{radius} 米 · 每米 %{time} 秒",
+        "yield": "产量",
+        "yieldValue": "%{amount} SCU/立方米 %{resource}",
+        "alignment": "对准加成",
+        "alignmentValue": "最高 %{speed}× 速度 · %{yield}× 产量"
       },
       "refuelBoom": {
         "fuelFlowSub": "氢燃料传输",
@@ -2203,8 +2213,10 @@
           "seat": "座位",
           "external_fuel_tank": "外挂燃料箱",
           "ore_pod": "矿石舱",
+          "mining": "采矿",
           "module": "模块",
           "salvage": "回收",
+          "salvage_storage": "回收储存",
           "refuel_boom": "加油臂"
         },
         "types": {
@@ -2270,6 +2282,12 @@
           "emp": "EMP",
           "quantumenforcementdevice": "QED",
           "salvagefillerstation": "打捞填充站",
+          "bombs": "炸弹",
+          "mining_lasers": "采矿激光",
+          "mining_modules": "采矿模块",
+          "salvage_heads": "回收头",
+          "salvage_modules": "回收模块",
+          "tractor_beams": "牵引光束",
           "cargogrid": "货物网格",
           "controller": "飞行刀片",
           "seat": "座位",

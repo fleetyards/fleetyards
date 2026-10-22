@@ -28,6 +28,7 @@ describe("rowPresentation", () => {
     expect(grid.headline?.(hold, t, toNumber)).toEqual({
       value: "96 cargo",
       unit: "labels.cargoGridViewer.capacity",
+      raw: 96,
     });
     expect(grid.stats?.(hold, t, toNumber)).toEqual([
       { label: "labels.hardpoint.maxContainerSize", value: "32 cargo" },
@@ -55,6 +56,30 @@ describe("rowPresentation", () => {
     ]);
   });
 
+  it("reads a filler station grid's largest container from the hold named after both", () => {
+    const grid = rowPresentation(HardpointCategoryEnum.CARGOGRID);
+    const hold = hardpoint({
+      name: "hardpoint_cargo_grid",
+      category: HardpointCategoryEnum.CARGOGRID,
+      component: { typeData: { capacity: 96, maxContainerSize: { size: 24 } } },
+    });
+    const cargoHolds = [
+      {
+        name: "hardpoint_salvage_filler_left-hardpoint_cargo_grid",
+        maxContainerSize: { size: 1 },
+      },
+    ] as unknown as CargoHold[];
+
+    expect(
+      grid.stats?.(hold, t, toNumber, {
+        cargoHolds,
+        parentName: "hardpoint_salvage_filler_left",
+      }),
+    ).toEqual([
+      { label: "labels.hardpoint.maxContainerSize", value: "1 cargo" },
+    ]);
+  });
+
   it("names a tank by what it holds, and an ore pod by its volume", () => {
     const tank = rowPresentation(HardpointCategoryEnum.FUELTANKS);
 
@@ -67,7 +92,11 @@ describe("rowPresentation", () => {
         t,
         toNumber,
       ),
-    ).toEqual({ value: "12 cargo", unit: "labels.cargoGridViewer.capacity" });
+    ).toEqual({
+      value: "12 cargo",
+      unit: "labels.cargoGridViewer.capacity",
+      raw: 12,
+    });
   });
 
   it("names a seat after its hardpoint and gives it nothing to lead with", () => {
@@ -77,6 +106,14 @@ describe("rowPresentation", () => {
     expect(seat.label?.(pilot, t)?.trim()).toBe("Seat Pilot");
     expect(seat.headline?.(pilot, t, toNumber)).toBeUndefined();
     expect(seat.sizeless).toBe(true);
+  });
+
+  it("names a salvage field part after its hardpoint", () => {
+    const field = rowPresentation(HardpointCategoryEnum.SALVAGEMUNCHING);
+    const intake = hardpoint({ name: "hardpoint_disintegration_intake" });
+
+    expect(field.label?.(intake, t)?.trim()).toBe("Disintegration Intake");
+    expect(field.headline?.(intake, t, toNumber)).toBeUndefined();
   });
 
   it("names a loadout's module slot after its module, or as empty", () => {

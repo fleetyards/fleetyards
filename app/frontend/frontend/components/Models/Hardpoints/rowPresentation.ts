@@ -11,13 +11,17 @@ type Translate = (key: string, options?: Record<string, unknown>) => string;
 
 type Format = (value: number, units: string) => string | number;
 
-type Headline = { value: string; unit: string };
+// `raw` is the number behind the figure, for whatever ranks rows by it.
+type Headline = { value: string; unit: string; raw?: number };
 
 // What the ship knows beyond the hardpoint itself.
 export type RowContext = {
   // The holds as the ship serves them, which can carry a hand-set limit the
   // grid component knows nothing of.
   cargoHolds?: CargoHold[];
+  // The row this one sits under. A grid a part carries on its own port -- a
+  // salvage filler station's -- has its hold named after both.
+  parentName?: string;
 };
 
 /**
@@ -74,6 +78,7 @@ const capacity = (
     ? {
         value: String(toNumber(value, "cargo")),
         unit: t("labels.cargoGridViewer.capacity"),
+        raw: value,
       }
     : undefined;
 
@@ -92,8 +97,12 @@ const cargoGrid: RowPresentation = {
   // The ship's hold is named after its hardpoint and wins over the component,
   // which is shared and so cannot carry a limit set on one ship's door.
   stats: (hardpoint, t, toNumber, context) => {
+    const names = [hardpoint.name];
+    if (context?.parentName) {
+      names.push(`${context.parentName}-${hardpoint.name}`);
+    }
     const hold = context?.cargoHolds?.find(
-      (cargoHold) => cargoHold.name === hardpoint.name,
+      (cargoHold) => !!cargoHold.name && names.includes(cargoHold.name),
     );
     const size =
       hold?.maxContainerSize?.size ??
@@ -160,6 +169,14 @@ const moduleSlot: RowPresentation = {
   stats: () => [],
 };
 
+// The salvage field's emitter and supporters carry no name and no figures
+// worth a row; the port they sit in says what they are.
+const salvageField: RowPresentation = {
+  label: (hardpoint) => humanize(hardpoint.name),
+  headline: () => undefined,
+  stats: () => [],
+};
+
 const PRESENTATIONS: Partial<Record<HardpointCategoryEnum, RowPresentation>> = {
   [HardpointCategoryEnum.MAIN_THRUSTERS]: thruster,
   [HardpointCategoryEnum.MANEUVERING_THRUSTERS]: thruster,
@@ -172,6 +189,7 @@ const PRESENTATIONS: Partial<Record<HardpointCategoryEnum, RowPresentation>> = {
   [HardpointCategoryEnum.SALVAGE_STORAGE]: tank,
   [HardpointCategoryEnum.SEAT]: seat,
   [HardpointCategoryEnum.MODULE]: moduleSlot,
+  [HardpointCategoryEnum.SALVAGEMUNCHING]: salvageField,
 };
 
 export const rowPresentation = (
