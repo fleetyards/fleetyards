@@ -87,14 +87,19 @@
         "upgradeTo": "Upgrade vers",
         "meltShip": "Vaisseau à melt",
         "meltValue": "Crédit",
-        "meltValueInfo": "Ce que vous l'avez payé. Laissez vide pour estimer d'après le prix actuel de la boutique.",
+        "meltValueInfo": "Ce que la fonte rapporte. Laissez vide pour utiliser la valeur que RSI donne au pledge, ou le prix boutique du jour si la synchronisation du hangar ne l'a pas lue.",
         "slotDescription": "Description",
         "filters": "Vaisseaux adaptés",
         "filtersInfo": "Le sélecteur de vaisseaux s'ouvre avec ces filtres. Les vaisseaux hors filtres peuvent quand même être ajoutés et sont signalés.",
         "priceFrom": "Prix à partir de",
         "priceTo": "Prix jusqu'à",
         "minCargo": "Cargo minimum",
-        "onSaleOnly": "Uniquement les vaisseaux en vente"
+        "onSaleOnly": "Uniquement les vaisseaux en vente",
+        "buybackTokens": "Jetons de rachat",
+        "buybackTokensInfo": "Chaque jeton permet de payer un rachat avec du crédit boutique. Sans jeton, un rachat coûte de l'argent frais.",
+        "buybackTokensSynced": "Chaque jeton permet de payer un rachat avec du crédit boutique. Votre dernière synchronisation des rachats en a lu %{count} chez RSI ; laissez vide pour utiliser cette valeur.",
+        "vatRate": "TVA",
+        "vatRateInfo": "La TVA que RSI ajoute au paiement selon ton pays, p. ex. 20 en France. Elle ne s'applique qu'à l'argent neuf ; le crédit boutique l'inclut déjà."
       },
       "sources": {
         "empty": "Un plan vide",
@@ -160,7 +165,16 @@
           "other": "%{count} vaisseaux sans voie"
         },
         "incomplete": "Le total est incomplet",
-        "complete": "Chaque vaisseau a une voie et un prix."
+        "complete": "Chaque vaisseau a une voie et un prix.",
+        "buybackCash": "Rachats en argent frais",
+        "buybacksWithoutToken": {
+          "one": "%{count} rachat sans jeton",
+          "other": "%{count} rachats sans jeton"
+        },
+        "tokensShort": {
+          "one": "%{count} rachat utilise un jeton, mais vous en avez %{available}. Le reste compte comme argent frais.",
+          "other": "%{count} rachats utilisent un jeton, mais vous en avez %{available}. Le reste compte comme argent frais."
+        }
       },
       "comparison": {
         "title": "Comparé à votre hangar",
@@ -170,7 +184,60 @@
         "noChanges": "Aucun changement.",
         "toAcquire": "Reste à obtenir",
         "hangar": "Hangar",
-        "plan": "Plan"
+        "plan": "Plan",
+        "happens": "Ce qui se passe",
+        "meltCredit": "%{value} de crédit",
+        "leaves": "Quitte votre hangar",
+        "notInPlan": "Pas dans le plan",
+        "notOwned": "Pas dans votre hangar",
+        "lead": "À gauche chaque vaisseau que vous possédez, à droite chaque vaisseau dont le plan a besoin, et entre les deux ce qui se passe.",
+        "anotherPlan": "Comparer avec un autre plan",
+        "tallies": {
+          "kept": {
+            "one": "%{count} conservé",
+            "other": "%{count} conservés"
+          },
+          "upgraded": {
+            "one": "%{count} amélioré",
+            "other": "%{count} améliorés"
+          },
+          "melted": {
+            "one": "%{count} fondu",
+            "other": "%{count} fondus"
+          },
+          "toAcquire": {
+            "one": "%{count} reste à obtenir",
+            "other": "%{count} restent à obtenir"
+          },
+          "open": {
+            "one": "%{count} emplacement ouvert",
+            "other": "%{count} emplacements ouverts"
+          }
+        },
+        "costsTitle": "Ce que ça coûte",
+        "flow": {
+          "steps": {
+            "one": "%{count} amélioration · %{price}",
+            "other": "%{count} améliorations · %{price}"
+          },
+          "shipOf": "vaisseau %{number} sur %{count}",
+          "noRoute": "Pas encore de voie",
+          "notCounted": "hors du total",
+          "noShip": "pas encore de vaisseau",
+          "notInPlan": {
+            "one": "%{count} vaisseau hors du plan",
+            "other": "%{count} vaisseaux hors du plan"
+          }
+        },
+        "changeSides": {
+          "in": "Arrive",
+          "out": "Part"
+        },
+        "unchangedCount": {
+          "one": "%{count} modèle reste tel quel.",
+          "other": "%{count} modèles restent tels quels."
+        },
+        "after": "Après le plan"
       },
       "metrics": {
         "title": "Statistiques",
@@ -221,7 +288,129 @@
         "onSale": "en vente"
       },
       "outsideFilters": "hors des filtres de cet emplacement",
-      "shareLink": "Lien de partage"
+      "shareLink": "Lien de partage",
+      "specs": {
+        "price": "Prix",
+        "cargo": "Cargo",
+        "crew": "Équipage",
+        "size": "Taille",
+        "best": "meilleur"
+      },
+      "readiness": {
+        "routed": {
+          "one": "%{routed} vaisseau sur %{count} a une voie",
+          "other": "%{routed} vaisseaux sur %{count} ont une voie"
+        },
+        "undecided": "%{slot} est indécis",
+        "open": "%{slot} n'a pas de vaisseau",
+        "unresolved": {
+          "one": "%{slot} : %{count} vaisseau sans voie",
+          "other": "%{slot} : %{count} vaisseaux sans voie"
+        }
+      },
+      "meta": {
+        "undecided": "%{count} indécis",
+        "open": "%{count} ouverts"
+      },
+      "route": {
+        "stillToReach": "Reste à atteindre",
+        "yourRoute": "Votre voie",
+        "startFirst": "Choisissez d'où vient le vaisseau pour voir la voie.",
+        "done": "La voie se termine sur le %{ship}.",
+        "startHints": {
+          "owned": "Un vaisseau que vous possédez déjà. Si ce n'est pas le %{ship}, ajoutez les améliorations qui le transforment.",
+          "buyback": "Un pledge fondu que vous pouvez racheter auprès de RSI. Sans jeton de rachat, il coûte de l'argent frais, pas du crédit boutique.",
+          "store": "Un nouveau pledge de la boutique RSI. Partez d'un vaisseau moins cher pour l'améliorer.",
+          "ingame": "Acheté en aUEC dans le jeu, il ne coûte donc rien. Un vaisseau acheté en jeu ne peut pas être amélioré, il doit donc s'agir du %{ship} lui-même."
+        },
+        "noVehicles": "Aucun vaisseau de votre hangar n'est libre pour cette voie.",
+        "noBuybacks": "Vous n'avez aucun pledge à racheter. Synchronisez-les depuis votre compte RSI.",
+        "pledgeShip": "Vaisseau du pledge",
+        "isTarget": "Même vaisseau",
+        "holdsTarget": "Le contient",
+        "search": "Rechercher",
+        "noMatch": "Aucun résultat.",
+        "reaches": "Mène au %{ship}",
+        "left": {
+          "one": "%{count} restante",
+          "other": "%{count} restantes"
+        },
+        "showAll": {
+          "one": "Afficher votre %{count} amélioration",
+          "other": "Afficher les %{count} améliorations"
+        },
+        "showFitting": "N'afficher que les améliorations adaptées",
+        "unknownTarget": "Vers quel vaisseau elle mène",
+        "startCost": "Départ",
+        "includesShip": "Contient le %{ship}",
+        "cheaperOnly": "Seuls les vaisseaux moins chers que le %{ship} (%{price}) sont proposés, puisque vous les améliorez ensuite.",
+        "sort": {
+          "price": "Prix",
+          "name": "Nom"
+        },
+        "change": "Changer",
+        "from": "Depuis",
+        "to": "Vers",
+        "todaysPrice": "Prix du jour : %{price}",
+        "noStoreShip": "Aucun vaisseau de la boutique ne convient ici.",
+        "paidWithCredit": "Crédit boutique",
+        "paidWithCash": "Argent neuf",
+        "vat": "TVA (%{rate} %)",
+        "cashWithVat": "Argent neuf avec TVA",
+        "paymentHint": "Le crédit boutique couvre la boutique et les rachats avec jeton. Un rachat sans jeton coûte de l'argent neuf, comme tout ce que ton crédit ne couvre pas.",
+        "ownedPaid": "Déjà payée",
+        "noHeld": {
+          "owned_ccu": "Aucune des améliorations de votre hangar RSI ne part du %{ship}.",
+          "buyback": "Aucune de vos améliorations à racheter ne part du %{ship}."
+        },
+        "direction": {
+          "label": "Construire la voie",
+          "forward": "Depuis le départ",
+          "reverse": "Depuis la cible, à rebours"
+        },
+        "directionHints": {
+          "forward": "Choisissez d'où vient le vaisseau, puis les améliorations qui le mènent au %{ship}.",
+          "reverse": "Remontez depuis le %{ship} : choisissez l'amélioration qui y aboutit, puis celle qui aboutit là où elle part. Arrêtez-vous à un vaisseau que vous possédez, pouvez racheter ou acheter."
+        },
+        "startPending": "Départ encore à choisir",
+        "reverseStart": "La voie part du %{ship}.",
+        "unknownSource": "Depuis quel vaisseau elle part",
+        "noHeldInto": {
+          "owned_ccu": "Aucune des améliorations de votre hangar RSI n'aboutit au %{ship}.",
+          "buyback": "Aucune de vos améliorations à racheter n'aboutit au %{ship}."
+        },
+        "upgradeInto": "Amélioration vers le %{ship}",
+        "upgradesTo": "vers le %{ship}",
+        "inHangar": "Dans votre hangar",
+        "buybackAvailable": "Rachat possible",
+        "nextStep": "La voie part maintenant du %{ship}. Ajoutez l'amélioration qui y mène, ou choisissez le %{ship} comme départ.",
+        "addUpgradeInto": "Ajouter une amélioration vers le %{ship}",
+        "startHere": "Partir du %{ship}",
+        "shipCard": "Vaisseau",
+        "useToken": "Utiliser un jeton de rachat",
+        "withToken": "payé avec un jeton",
+        "buyTarget": "Acheter le %{ship} lui-même",
+        "startShort": {
+          "owned": "Hangar",
+          "buyback": "Rachat",
+          "store": "Boutique",
+          "ingame": "En jeu"
+        },
+        "ingameNoUpgrades": "Un vaisseau acheté en jeu ne prend aucune amélioration. Retirez d'abord les améliorations."
+      },
+      "meltList": {
+        "none": "D'après RSI, aucun de vos vaisseaux ne peut être fondu. Désactivez le filtre pour choisir n'importe quel vaisseau.",
+        "credit": "%{value} de crédit",
+        "estimate": "%{value} estimé",
+        "wholePledge": {
+          "one": "fond %{count} objet",
+          "other": "fond tout le pledge : %{count} objets"
+        },
+        "meltableOnly": "Fondables uniquement",
+        "notMeltable": "non fondable",
+        "notSynced": "non synchronisé",
+        "noShips": "Aucun de vos vaisseaux n'est libre pour être fondu."
+      }
     }
   }
 }

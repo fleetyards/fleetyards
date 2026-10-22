@@ -87,14 +87,19 @@
         "upgradeTo": "Upgrade auf",
         "meltShip": "Zu meltendes Schiff",
         "meltValue": "Guthaben",
-        "meltValueInfo": "Was du dafür bezahlt hast. Leer lassen, um anhand des heutigen Store-Preises zu schätzen.",
+        "meltValueInfo": "Was das Melten bringt. Leer lassen für den Wert, den RSI für das Pledge angibt, oder den heutigen Store-Preis, wo der Hangar-Sync ihn nicht gelesen hat.",
         "slotDescription": "Beschreibung",
         "filters": "Passende Schiffe",
         "filtersInfo": "Die Schiffsauswahl öffnet sich mit diesen Filtern. Schiffe außerhalb lassen sich trotzdem hinzufügen und werden markiert.",
         "priceFrom": "Preis ab",
         "priceTo": "Preis bis",
         "minCargo": "Fracht mindestens",
-        "onSaleOnly": "Nur Schiffe im Verkauf"
+        "onSaleOnly": "Nur Schiffe im Verkauf",
+        "buybackTokens": "Buy-Back-Tokens",
+        "buybackTokensInfo": "Mit jedem Token kannst du ein Buy-Back mit Store-Guthaben bezahlen. Ohne Token kostet ein Buy-Back neues Geld.",
+        "buybackTokensSynced": "Mit jedem Token kannst du ein Buy-Back mit Store-Guthaben bezahlen. Dein letzter Buy-Back-Sync hat %{count} von RSI gelesen; lass das Feld leer, um diesen Wert zu nutzen.",
+        "vatRate": "MwSt.",
+        "vatRateInfo": "Die Mehrwertsteuer, die RSI an deinem Wohnort beim Bezahlen aufschlägt, z. B. 19 in Deutschland. Sie fällt nur auf neues Geld an; Store-Guthaben enthält sie bereits."
       },
       "sources": {
         "empty": "Ein leerer Plan",
@@ -160,7 +165,16 @@
           "other": "%{count} Schiffe ohne Weg"
         },
         "incomplete": "Die Summe ist unvollständig",
-        "complete": "Jedes Schiff hat einen Weg und einen Preis."
+        "complete": "Jedes Schiff hat einen Weg und einen Preis.",
+        "buybackCash": "Buy-Backs mit neuem Geld",
+        "buybacksWithoutToken": {
+          "one": "%{count} Buy-Back ohne Token",
+          "other": "%{count} Buy-Backs ohne Token"
+        },
+        "tokensShort": {
+          "one": "%{count} Buy-Back nutzt ein Token, du hast aber %{available}. Der Rest zählt als neues Geld.",
+          "other": "%{count} Buy-Backs nutzen ein Token, du hast aber %{available}. Der Rest zählt als neues Geld."
+        }
       },
       "comparison": {
         "title": "Im Vergleich zu deinem Hangar",
@@ -170,7 +184,60 @@
         "noChanges": "Keine Änderungen.",
         "toAcquire": "Noch zu beschaffen",
         "hangar": "Hangar",
-        "plan": "Plan"
+        "plan": "Plan",
+        "happens": "Was passiert",
+        "meltCredit": "%{value} Guthaben",
+        "leaves": "Verlässt deinen Hangar",
+        "notInPlan": "Nicht im Plan",
+        "notOwned": "Nicht in deinem Hangar",
+        "lead": "Links jedes Schiff, das du hast, rechts jedes Schiff, das der Plan braucht, und dazwischen, was passiert.",
+        "anotherPlan": "Mit einem anderen Plan vergleichen",
+        "tallies": {
+          "kept": {
+            "one": "%{count} behalten",
+            "other": "%{count} behalten"
+          },
+          "upgraded": {
+            "one": "%{count} upgegradet",
+            "other": "%{count} upgegradet"
+          },
+          "melted": {
+            "one": "%{count} gemeltet",
+            "other": "%{count} gemeltet"
+          },
+          "toAcquire": {
+            "one": "%{count} noch zu beschaffen",
+            "other": "%{count} noch zu beschaffen"
+          },
+          "open": {
+            "one": "%{count} offener Slot",
+            "other": "%{count} offene Slots"
+          }
+        },
+        "costsTitle": "Was es kostet",
+        "flow": {
+          "steps": {
+            "one": "%{count} Upgrade · %{price}",
+            "other": "%{count} Upgrades · %{price}"
+          },
+          "shipOf": "Schiff %{number} von %{count}",
+          "noRoute": "Noch kein Weg",
+          "notCounted": "nicht in der Summe",
+          "noShip": "noch kein Schiff",
+          "notInPlan": {
+            "one": "%{count} Schiff nicht im Plan",
+            "other": "%{count} Schiffe nicht im Plan"
+          }
+        },
+        "changeSides": {
+          "in": "Kommt dazu",
+          "out": "Geht weg"
+        },
+        "unchangedCount": {
+          "one": "%{count} Modell bleibt, wie es ist.",
+          "other": "%{count} Modelle bleiben, wie sie sind."
+        },
+        "after": "Nach dem Plan"
       },
       "metrics": {
         "title": "Statistiken",
@@ -221,7 +288,129 @@
         "onSale": "im Verkauf"
       },
       "outsideFilters": "passt nicht zu den Filtern dieses Slots",
-      "shareLink": "Link zum Teilen"
+      "shareLink": "Link zum Teilen",
+      "specs": {
+        "price": "Preis",
+        "cargo": "Fracht",
+        "crew": "Crew",
+        "size": "Größe",
+        "best": "am besten"
+      },
+      "readiness": {
+        "routed": {
+          "one": "%{routed} von %{count} Schiff hat einen Weg",
+          "other": "%{routed} von %{count} Schiffen haben einen Weg"
+        },
+        "undecided": "%{slot} ist unentschieden",
+        "open": "%{slot} hat kein Schiff",
+        "unresolved": {
+          "one": "%{slot}: %{count} Schiff ohne Weg",
+          "other": "%{slot}: %{count} Schiffe ohne Weg"
+        }
+      },
+      "meta": {
+        "undecided": "%{count} unentschieden",
+        "open": "%{count} offen"
+      },
+      "route": {
+        "stillToReach": "Noch zu erreichen",
+        "yourRoute": "Dein Weg",
+        "startFirst": "Wähle, woher das Schiff kommt, um den Weg zu sehen.",
+        "done": "Der Weg endet bei der %{ship}.",
+        "startHints": {
+          "owned": "Ein Schiff, das du schon hast. Ist es nicht die %{ship}, füge die Upgrades hinzu, die es dazu machen.",
+          "buyback": "Ein gemeltetes Pledge, das du bei RSI zurückkaufen kannst. Ohne Buy-Back-Token kostet es neues Geld, kein Store-Guthaben.",
+          "store": "Ein neues Pledge aus dem RSI-Store. Starte mit einem günstigeren Schiff, um es upzugraden.",
+          "ingame": "Im Spiel mit aUEC gekauft, es kostet also kein Geld. Ein im Spiel gekauftes Schiff lässt sich nicht upgraden, es muss also die %{ship} selbst sein."
+        },
+        "noVehicles": "Kein Schiff in deinem Hangar ist für diesen Weg frei.",
+        "noBuybacks": "Du hast keine Buy-Back-Pledges. Synchronisiere sie aus deinem RSI-Konto.",
+        "pledgeShip": "Schiff aus dem Pledge",
+        "isTarget": "Gleiches Schiff",
+        "holdsTarget": "Enthält es",
+        "search": "Suchen",
+        "noMatch": "Keine Treffer.",
+        "reaches": "Führt zur %{ship}",
+        "left": {
+          "one": "noch %{count}",
+          "other": "noch %{count}"
+        },
+        "showAll": {
+          "one": "Dein %{count} Upgrade zeigen",
+          "other": "Alle %{count} Upgrades zeigen"
+        },
+        "showFitting": "Nur passende Upgrades zeigen",
+        "unknownTarget": "Zu welchem Schiff es upgradet",
+        "startCost": "Start",
+        "includesShip": "Enthält die %{ship}",
+        "cheaperOnly": "Angeboten werden nur Schiffe, die günstiger als die %{ship} (%{price}) sind, denn von dort upgradest du.",
+        "sort": {
+          "price": "Preis",
+          "name": "Name"
+        },
+        "change": "Ändern",
+        "from": "Von",
+        "to": "Nach",
+        "todaysPrice": "Heutiger Preis: %{price}",
+        "noStoreShip": "Hier passt kein Schiff aus dem Store.",
+        "paidWithCredit": "Store-Guthaben",
+        "paidWithCash": "Neues Geld",
+        "vat": "MwSt. (%{rate} %)",
+        "cashWithVat": "Neues Geld mit MwSt.",
+        "paymentHint": "Store-Guthaben deckt den Store und Buy-backs mit Token. Ein Buy-back ohne Token kostet neues Geld, ebenso alles, was dein Guthaben nicht deckt.",
+        "ownedPaid": "Schon bezahlt",
+        "noHeld": {
+          "owned_ccu": "Keines der Upgrades in deinem RSI-Hangar startet bei der %{ship}.",
+          "buyback": "Keines deiner Buy-Back-Upgrades startet bei der %{ship}."
+        },
+        "direction": {
+          "label": "Weg aufbauen",
+          "forward": "Vom Start aus",
+          "reverse": "Vom Ziel zurück"
+        },
+        "directionHints": {
+          "forward": "Wähle, woher das Schiff kommt, dann die Upgrades, die es zur %{ship} machen.",
+          "reverse": "Arbeite dich von der %{ship} zurück: Wähle das Upgrade, das bei ihr endet, dann das, das dort endet, wo dieses startet. Hör bei einem Schiff auf, das du hast, zurückkaufen oder kaufen kannst."
+        },
+        "startPending": "Start noch offen",
+        "reverseStart": "Der Weg startet mit der %{ship}.",
+        "unknownSource": "Von welchem Schiff es upgradet",
+        "noHeldInto": {
+          "owned_ccu": "Keines der Upgrades in deinem RSI-Hangar endet bei der %{ship}.",
+          "buyback": "Keines deiner Buy-Back-Upgrades endet bei der %{ship}."
+        },
+        "upgradeInto": "Upgrade zur %{ship}",
+        "upgradesTo": "zur %{ship}",
+        "inHangar": "In deinem Hangar",
+        "buybackAvailable": "Buy-Back möglich",
+        "nextStep": "Der Weg startet jetzt mit der %{ship}. Füge das Upgrade zu ihr hinzu oder wähle die %{ship} als Start.",
+        "addUpgradeInto": "Upgrade zur %{ship} hinzufügen",
+        "startHere": "Mit der %{ship} starten",
+        "shipCard": "Schiff",
+        "useToken": "Buy-Back-Token nutzen",
+        "withToken": "mit Token bezahlt",
+        "buyTarget": "Die %{ship} selbst kaufen",
+        "startShort": {
+          "owned": "Hangar",
+          "buyback": "Buy-Back",
+          "store": "Store",
+          "ingame": "Im Spiel"
+        },
+        "ingameNoUpgrades": "Ein im Spiel gekauftes Schiff nimmt keine Upgrades. Entferne zuerst die Upgrades."
+      },
+      "meltList": {
+        "none": "Laut RSI lässt sich keines deiner Schiffe melten. Schalte den Filter aus, um ein beliebiges Schiff zu wählen.",
+        "credit": "%{value} Guthaben",
+        "estimate": "%{value} geschätzt",
+        "wholePledge": {
+          "one": "meltet %{count} Item",
+          "other": "meltet das ganze Pledge: %{count} Items"
+        },
+        "meltableOnly": "Nur meltbare",
+        "notMeltable": "nicht meltbar",
+        "notSynced": "nicht synchronisiert",
+        "noShips": "Keines deiner Schiffe ist zum Melten frei."
+      }
     }
   }
 }

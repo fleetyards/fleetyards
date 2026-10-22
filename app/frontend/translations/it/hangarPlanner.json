@@ -87,14 +87,19 @@
         "upgradeTo": "Upgrade a",
         "meltShip": "Nave da sciogliere",
         "meltValue": "Credito",
-        "meltValueInfo": "Quanto l'hai pagata. Lascia vuoto per stimarlo dal prezzo attuale dello store.",
+        "meltValueInfo": "Quanto rende fonderla. Lascia vuoto per usare il valore che RSI dà al pledge, o il prezzo di oggi nello store dove la sincronizzazione dell'hangar non l'ha letto.",
         "slotDescription": "Descrizione",
         "filters": "Navi adatte",
         "filtersInfo": "Il selettore di navi si apre con questi filtri. Le navi fuori dai filtri si possono comunque aggiungere e vengono segnalate.",
         "priceFrom": "Prezzo da",
         "priceTo": "Prezzo fino a",
         "minCargo": "Carico minimo",
-        "onSaleOnly": "Solo navi in vendita"
+        "onSaleOnly": "Solo navi in vendita",
+        "buybackTokens": "Token di riacquisto",
+        "buybackTokensInfo": "Ogni token ti permette di pagare un riacquisto con credito dello store. Senza, un riacquisto costa denaro nuovo.",
+        "buybackTokensSynced": "Ogni token ti permette di pagare un riacquisto con credito dello store. L'ultima sincronizzazione dei riacquisti ne ha letti %{count} da RSI; lascia vuoto per usare quel valore.",
+        "vatRate": "IVA",
+        "vatRateInfo": "L'IVA che RSI aggiunge al pagamento dove vivi, ad es. 22 in Italia. Si applica solo al denaro nuovo; il credito del negozio la include già."
       },
       "sources": {
         "empty": "Un piano vuoto",
@@ -160,7 +165,16 @@
           "other": "%{count} navi senza percorso"
         },
         "incomplete": "Il totale è incompleto",
-        "complete": "Ogni nave ha un percorso e un prezzo."
+        "complete": "Ogni nave ha un percorso e un prezzo.",
+        "buybackCash": "Riacquisti con denaro nuovo",
+        "buybacksWithoutToken": {
+          "one": "%{count} riacquisto senza token",
+          "other": "%{count} riacquisti senza token"
+        },
+        "tokensShort": {
+          "one": "%{count} riacquisto usa un token, ma ne hai %{available}. Il resto conta come denaro nuovo.",
+          "other": "%{count} riacquisti usano un token, ma ne hai %{available}. Il resto conta come denaro nuovo."
+        }
       },
       "comparison": {
         "title": "Confronto con il tuo hangar",
@@ -170,7 +184,60 @@
         "noChanges": "Nessuna modifica.",
         "toAcquire": "Ancora da ottenere",
         "hangar": "Hangar",
-        "plan": "Piano"
+        "plan": "Piano",
+        "happens": "Cosa succede",
+        "meltCredit": "%{value} di credito",
+        "leaves": "Lascia il tuo hangar",
+        "notInPlan": "Non nel piano",
+        "notOwned": "Non nel tuo hangar",
+        "lead": "A sinistra ogni nave che possiedi, a destra ogni nave che serve al piano, e in mezzo cosa succede.",
+        "anotherPlan": "Confronta con un altro piano",
+        "tallies": {
+          "kept": {
+            "one": "%{count} tenuta",
+            "other": "%{count} tenute"
+          },
+          "upgraded": {
+            "one": "%{count} con upgrade",
+            "other": "%{count} con upgrade"
+          },
+          "melted": {
+            "one": "%{count} fusa",
+            "other": "%{count} fuse"
+          },
+          "toAcquire": {
+            "one": "%{count} ancora da ottenere",
+            "other": "%{count} ancora da ottenere"
+          },
+          "open": {
+            "one": "%{count} slot aperto",
+            "other": "%{count} slot aperti"
+          }
+        },
+        "costsTitle": "Quanto costa",
+        "flow": {
+          "steps": {
+            "one": "%{count} upgrade · %{price}",
+            "other": "%{count} upgrade · %{price}"
+          },
+          "shipOf": "nave %{number} di %{count}",
+          "noRoute": "Ancora nessun percorso",
+          "notCounted": "non nel totale",
+          "noShip": "ancora nessuna nave",
+          "notInPlan": {
+            "one": "%{count} nave non nel piano",
+            "other": "%{count} navi non nel piano"
+          }
+        },
+        "changeSides": {
+          "in": "Entra",
+          "out": "Esce"
+        },
+        "unchangedCount": {
+          "one": "%{count} modello resta com'è.",
+          "other": "%{count} modelli restano come sono."
+        },
+        "after": "Dopo il piano"
       },
       "metrics": {
         "title": "Statistiche",
@@ -221,7 +288,129 @@
         "onSale": "in vendita"
       },
       "outsideFilters": "fuori dai filtri di questo slot",
-      "shareLink": "Link di condivisione"
+      "shareLink": "Link di condivisione",
+      "specs": {
+        "price": "Prezzo",
+        "cargo": "Carico",
+        "crew": "Equipaggio",
+        "size": "Dimensione",
+        "best": "migliore"
+      },
+      "readiness": {
+        "routed": {
+          "one": "%{routed} nave su %{count} ha un percorso",
+          "other": "%{routed} navi su %{count} hanno un percorso"
+        },
+        "undecided": "%{slot} è indeciso",
+        "open": "%{slot} non ha una nave",
+        "unresolved": {
+          "one": "%{slot}: %{count} nave senza percorso",
+          "other": "%{slot}: %{count} navi senza percorso"
+        }
+      },
+      "meta": {
+        "undecided": "%{count} indecisi",
+        "open": "%{count} aperti"
+      },
+      "route": {
+        "stillToReach": "Ancora da raggiungere",
+        "yourRoute": "Il tuo percorso",
+        "startFirst": "Scegli da dove arriva la nave per vedere il percorso.",
+        "done": "Il percorso termina sulla %{ship}.",
+        "startHints": {
+          "owned": "Una nave che possiedi già. Se non è la %{ship}, aggiungi gli upgrade che la trasformano.",
+          "buyback": "Un pledge fuso che puoi riacquistare da RSI. Senza token di riacquisto costa denaro nuovo, non credito dello store.",
+          "store": "Un nuovo pledge dallo store RSI. Parti da una nave più economica per farne l'upgrade.",
+          "ingame": "Acquistata con aUEC nel gioco, quindi non costa denaro. Una nave acquistata nel gioco non accetta upgrade, quindi deve essere la %{ship} stessa."
+        },
+        "noVehicles": "Nessuna nave del tuo hangar è libera per questo percorso.",
+        "noBuybacks": "Non hai pledge da riacquistare. Sincronizzali dal tuo account RSI.",
+        "pledgeShip": "Nave del pledge",
+        "isTarget": "Stessa nave",
+        "holdsTarget": "La contiene",
+        "search": "Cerca",
+        "noMatch": "Nessun risultato.",
+        "reaches": "Porta alla %{ship}",
+        "left": {
+          "one": "ne resta %{count}",
+          "other": "ne restano %{count}"
+        },
+        "showAll": {
+          "one": "Mostra il tuo %{count} upgrade",
+          "other": "Mostra tutti i %{count} upgrade"
+        },
+        "showFitting": "Mostra solo gli upgrade adatti",
+        "unknownTarget": "A quale nave porta",
+        "startCost": "Partenza",
+        "includesShip": "Contiene la %{ship}",
+        "cheaperOnly": "Sono proposte solo navi più economiche della %{ship} (%{price}), dato che poi ne fai l'upgrade.",
+        "sort": {
+          "price": "Prezzo",
+          "name": "Nome"
+        },
+        "change": "Cambia",
+        "from": "Da",
+        "to": "A",
+        "todaysPrice": "Prezzo di oggi: %{price}",
+        "noStoreShip": "Nessuna nave del negozio va bene qui.",
+        "paidWithCredit": "Credito del negozio",
+        "paidWithCash": "Denaro nuovo",
+        "vat": "IVA (%{rate}%)",
+        "cashWithVat": "Denaro nuovo con IVA",
+        "paymentHint": "Il credito del negozio copre il negozio e i riacquisti con gettone. Un riacquisto senza gettone costa denaro nuovo, come tutto ciò che il credito non copre.",
+        "ownedPaid": "Già pagato",
+        "noHeld": {
+          "owned_ccu": "Nessuno degli upgrade nel tuo hangar RSI parte dalla %{ship}.",
+          "buyback": "Nessuno dei tuoi upgrade da riacquistare parte dalla %{ship}."
+        },
+        "direction": {
+          "label": "Costruisci il percorso",
+          "forward": "Dalla partenza",
+          "reverse": "Dall'obiettivo a ritroso"
+        },
+        "directionHints": {
+          "forward": "Scegli da dove arriva la nave, poi gli upgrade che la portano alla %{ship}.",
+          "reverse": "Risali dalla %{ship}: scegli l'upgrade che termina su di essa, poi quello che termina dove parte. Fermati a una nave che possiedi, puoi riacquistare o comprare."
+        },
+        "startPending": "Partenza ancora da scegliere",
+        "reverseStart": "Il percorso parte dalla %{ship}.",
+        "unknownSource": "Da quale nave parte",
+        "noHeldInto": {
+          "owned_ccu": "Nessuno degli upgrade nel tuo hangar RSI termina sulla %{ship}.",
+          "buyback": "Nessuno dei tuoi upgrade da riacquistare termina sulla %{ship}."
+        },
+        "upgradeInto": "Upgrade verso la %{ship}",
+        "upgradesTo": "verso la %{ship}",
+        "inHangar": "Nel tuo hangar",
+        "buybackAvailable": "Riacquisto disponibile",
+        "nextStep": "Il percorso ora parte dalla %{ship}. Aggiungi l'upgrade verso di essa oppure scegli la %{ship} come partenza.",
+        "addUpgradeInto": "Aggiungi un upgrade verso la %{ship}",
+        "startHere": "Parti dalla %{ship}",
+        "shipCard": "Nave",
+        "useToken": "Usa token di riacquisto",
+        "withToken": "pagato con un token",
+        "buyTarget": "Compra la %{ship} stessa",
+        "startShort": {
+          "owned": "Hangar",
+          "buyback": "Riacquisto",
+          "store": "Store",
+          "ingame": "Nel gioco"
+        },
+        "ingameNoUpgrades": "Una nave acquistata nel gioco non accetta upgrade. Rimuovi prima gli upgrade."
+      },
+      "meltList": {
+        "none": "Secondo RSI nessuna delle tue navi può essere fusa. Disattiva il filtro per scegliere una nave qualsiasi.",
+        "credit": "%{value} di credito",
+        "estimate": "%{value} stimato",
+        "wholePledge": {
+          "one": "fonde %{count} oggetto",
+          "other": "fonde tutto il pledge: %{count} oggetti"
+        },
+        "meltableOnly": "Solo fondibili",
+        "notMeltable": "non fondibile",
+        "notSynced": "non sincronizzata",
+        "noShips": "Nessuna delle tue navi è libera da fondere."
+      }
     }
   }
 }

@@ -87,14 +87,19 @@
         "upgradeTo": "Upgrade to",
         "meltShip": "Ship to melt",
         "meltValue": "Credit",
-        "meltValueInfo": "What you paid for it. Leave empty to estimate from today's store price.",
+        "meltValueInfo": "What melting gives. Leave empty to use what RSI lists the pledge at, or today's store price where the hangar sync has not read it.",
         "slotDescription": "Description",
         "filters": "Ships that fit",
         "filtersInfo": "The ship picker opens on these filters. Ships outside them can still be added, and are marked.",
         "priceFrom": "Price from",
         "priceTo": "Price up to",
         "minCargo": "Cargo at least",
-        "onSaleOnly": "Only ships on sale"
+        "onSaleOnly": "Only ships on sale",
+        "buybackTokens": "Buy-back tokens",
+        "buybackTokensInfo": "Each token lets you pay for one buy-back with store credit. Without one, a buy-back costs new money.",
+        "buybackTokensSynced": "Each token lets you pay for one buy-back with store credit. Your last buy-back sync read %{count} from RSI; leave this empty to use that.",
+        "vatRate": "VAT",
+        "vatRateInfo": "The VAT RSI adds at checkout where you live, e.g. 19 in Germany. It applies to new money only; store credit already includes it."
       },
       "sources": {
         "empty": "An empty plan",
@@ -160,7 +165,16 @@
           "other": "%{count} ships without a route"
         },
         "incomplete": "The total is incomplete",
-        "complete": "Every ship has a route and a price."
+        "complete": "Every ship has a route and a price.",
+        "buybackCash": "Buy-backs in new money",
+        "buybacksWithoutToken": {
+          "one": "%{count} buy-back without a token",
+          "other": "%{count} buy-backs without a token"
+        },
+        "tokensShort": {
+          "one": "%{count} buy-back uses a token, but you have %{available}. The rest is counted as new money.",
+          "other": "%{count} buy-backs use a token, but you have %{available}. The rest is counted as new money."
+        }
       },
       "comparison": {
         "title": "Compared with your hangar",
@@ -170,7 +184,60 @@
         "noChanges": "No changes.",
         "toAcquire": "Still to obtain",
         "hangar": "Hangar",
-        "plan": "Plan"
+        "plan": "Plan",
+        "happens": "What happens",
+        "meltCredit": "%{value} credit",
+        "leaves": "Leaves your hangar",
+        "notInPlan": "Not in the plan",
+        "notOwned": "Not in your hangar",
+        "lead": "Every ship you own on the left, every ship the plan needs on the right, and what happens in between.",
+        "anotherPlan": "Compare with another plan",
+        "tallies": {
+          "kept": {
+            "one": "%{count} kept",
+            "other": "%{count} kept"
+          },
+          "upgraded": {
+            "one": "%{count} upgraded",
+            "other": "%{count} upgraded"
+          },
+          "melted": {
+            "one": "%{count} melted",
+            "other": "%{count} melted"
+          },
+          "toAcquire": {
+            "one": "%{count} still to obtain",
+            "other": "%{count} still to obtain"
+          },
+          "open": {
+            "one": "%{count} open slot",
+            "other": "%{count} open slots"
+          }
+        },
+        "costsTitle": "What it costs",
+        "flow": {
+          "steps": {
+            "one": "%{count} upgrade · %{price}",
+            "other": "%{count} upgrades · %{price}"
+          },
+          "shipOf": "ship %{number} of %{count}",
+          "noRoute": "No route yet",
+          "notCounted": "not in the total",
+          "noShip": "no ship yet",
+          "notInPlan": {
+            "one": "%{count} ship not in the plan",
+            "other": "%{count} ships not in the plan"
+          }
+        },
+        "changeSides": {
+          "in": "Comes in",
+          "out": "Goes out"
+        },
+        "unchangedCount": {
+          "one": "%{count} model stays as it is.",
+          "other": "%{count} models stay as they are."
+        },
+        "after": "After the plan"
       },
       "metrics": {
         "title": "Stats",
@@ -221,7 +288,129 @@
         "onSale": "on sale"
       },
       "outsideFilters": "outside this slot's filters",
-      "shareLink": "Share link"
+      "shareLink": "Share link",
+      "specs": {
+        "price": "Price",
+        "cargo": "Cargo",
+        "crew": "Crew",
+        "size": "Size",
+        "best": "best"
+      },
+      "readiness": {
+        "routed": {
+          "one": "%{routed} of %{count} ship has a route",
+          "other": "%{routed} of %{count} ships have a route"
+        },
+        "undecided": "%{slot} is undecided",
+        "open": "%{slot} has no ship",
+        "unresolved": {
+          "one": "%{slot}: %{count} ship without a route",
+          "other": "%{slot}: %{count} ships without a route"
+        }
+      },
+      "meta": {
+        "undecided": "%{count} undecided",
+        "open": "%{count} open"
+      },
+      "route": {
+        "stillToReach": "Still to reach",
+        "yourRoute": "Your route",
+        "startFirst": "Pick where the ship comes from to see the route.",
+        "done": "The route ends on the %{ship}.",
+        "startHints": {
+          "owned": "A ship you already own. If it is not the %{ship}, add the upgrades that turn it into one.",
+          "buyback": "A pledge you melted and can buy back from RSI. Without a buy-back token it costs new money, not store credit.",
+          "store": "A new pledge from the RSI store. Start from a cheaper ship to upgrade it.",
+          "ingame": "Bought with aUEC in the game, so it costs no money. A ship bought in game takes no upgrades, so it has to be the %{ship} itself."
+        },
+        "noVehicles": "No ship in your hangar is free for this route.",
+        "noBuybacks": "You have no buy-back pledges. Sync them from your RSI account.",
+        "pledgeShip": "Ship from the pledge",
+        "isTarget": "Same ship",
+        "holdsTarget": "Includes it",
+        "search": "Search",
+        "noMatch": "Nothing matches.",
+        "reaches": "Reaches the %{ship}",
+        "left": {
+          "one": "%{count} left",
+          "other": "%{count} left"
+        },
+        "showAll": {
+          "one": "Show your %{count} upgrade",
+          "other": "Show all %{count} upgrades"
+        },
+        "showFitting": "Show only the upgrades that fit",
+        "unknownTarget": "Which ship it upgrades to",
+        "startCost": "Start",
+        "includesShip": "Includes the %{ship}",
+        "cheaperOnly": "Only ships cheaper than the %{ship} (%{price}) are offered, since you upgrade from there.",
+        "sort": {
+          "price": "Price",
+          "name": "Name"
+        },
+        "change": "Change",
+        "from": "From",
+        "to": "To",
+        "todaysPrice": "Today's price: %{price}",
+        "noStoreShip": "No store ship fits here.",
+        "paidWithCredit": "Store credit",
+        "paidWithCash": "New money",
+        "vat": "VAT (%{rate}%)",
+        "cashWithVat": "New money with VAT",
+        "paymentHint": "Store credit covers the store and buy-backs with a token. A buy-back without a token takes new money, as does anything your credit does not cover.",
+        "ownedPaid": "Already paid",
+        "noHeld": {
+          "owned_ccu": "None of the upgrades in your RSI hangar start from the %{ship}.",
+          "buyback": "None of your buy-back upgrades start from the %{ship}."
+        },
+        "direction": {
+          "label": "Build the route",
+          "forward": "From the start",
+          "reverse": "From the target back"
+        },
+        "directionHints": {
+          "forward": "Pick where the ship comes from, then the upgrades that take it to the %{ship}.",
+          "reverse": "Work back from the %{ship}: pick the upgrade that ends on it, then the one that ends where that starts. Stop at a ship you own, can buy back or buy."
+        },
+        "startPending": "Start still to pick",
+        "reverseStart": "The route starts as the %{ship}.",
+        "unknownSource": "Which ship it upgrades from",
+        "noHeldInto": {
+          "owned_ccu": "None of the upgrades in your RSI hangar end on the %{ship}.",
+          "buyback": "None of your buy-back upgrades end on the %{ship}."
+        },
+        "upgradeInto": "Upgrade into the %{ship}",
+        "upgradesTo": "to the %{ship}",
+        "inHangar": "In your hangar",
+        "buybackAvailable": "Buy-back available",
+        "nextStep": "The route now starts as the %{ship}. Add the upgrade into it, or pick the %{ship} as your start.",
+        "addUpgradeInto": "Add an upgrade into the %{ship}",
+        "startHere": "Start from the %{ship}",
+        "shipCard": "Ship",
+        "useToken": "Use buy-back token",
+        "withToken": "paid with a token",
+        "buyTarget": "Buy the %{ship} itself",
+        "startShort": {
+          "owned": "Hangar",
+          "buyback": "Buy-back",
+          "store": "Store",
+          "ingame": "In game"
+        },
+        "ingameNoUpgrades": "A ship bought in game takes no upgrades. Remove the upgrades first."
+      },
+      "meltList": {
+        "none": "None of your ships can be melted, as far as RSI says. Turn off the filter to pick any ship.",
+        "credit": "%{value} credit",
+        "estimate": "%{value} estimate",
+        "wholePledge": {
+          "one": "melts %{count} item",
+          "other": "melts the whole pledge: %{count} items"
+        },
+        "meltableOnly": "Meltable only",
+        "notMeltable": "not meltable",
+        "notSynced": "not synced",
+        "noShips": "None of your ships is free to melt."
+      }
     }
   }
 }
