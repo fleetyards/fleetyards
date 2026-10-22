@@ -265,7 +265,7 @@ module Rsi
 
       model = Model.find_by(rsi_id: 7)
       assert_equal %w[light_fighter fighter starter], model.foci
-      assert_equal "Starter / Light Fighter", model.focus
+      assert_equal "Light Fighter / Starter", model.focus
     end
 
     test "#leaves a classification it does not recognise off the model" do
@@ -277,7 +277,7 @@ module Rsi
 
       assert_nil model.classification
       assert_equal "Spaceship", model.rsi_classification
-      assert_equal "Luxury Touring", model.focus
+      assert_equal "Luxury Touring", model.rsi_focus
     end
 
     # The matrix carries no size for the ten largest ground vehicles -- the Ursa
