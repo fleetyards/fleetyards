@@ -23,23 +23,20 @@ import { type Vehicle } from "@/services/fyApi";
 
 type Props = {
   vehicle: Vehicle;
-  // A wishlist ship keeps a plaque written before it moved there, but gets no
-  // new one.
-  readonly?: boolean;
 };
 
-const props = withDefaults(defineProps<Props>(), {
-  readonly: false,
-});
+const props = defineProps<Props>();
 
 const { t } = useI18n();
 const comlink = useComlink();
 const { currentUser } = storeToRefs(useSessionStore());
 
 // Shared only where anyone could see it anyway: a public ship in a public
-// hangar.
+// hangar. A shared link opens the hangar, which has no wishlist ships.
 const shareUrl = computed(() =>
-  props.vehicle.public && currentUser?.value?.publicHangar
+  props.vehicle.public &&
+  !props.vehicle.wanted &&
+  currentUser?.value?.publicHangar
     ? plaqueShareUrl(currentUser.value.username, {
         id: props.vehicle.id,
         name: props.vehicle.nameVisible ? props.vehicle.name : undefined,
@@ -67,7 +64,6 @@ const openEditModal = () => {
     <VehiclePlaque :vehicle="vehicle" :captain="ownerCaptain(currentUser)" />
     <div class="overview-plaque__actions">
       <Btn
-        v-if="!readonly"
         v-tooltip="t('actions.vehiclePlaque.edit')"
         :size="BtnSizesEnum.SM"
         :variant="BtnVariantsEnum.BARE"
@@ -97,7 +93,7 @@ const openEditModal = () => {
     </div>
   </div>
   <div
-    v-else-if="!readonly"
+    v-else
     class="overview-plaque-invite"
     data-test="vehicle-overview-plaque"
   >

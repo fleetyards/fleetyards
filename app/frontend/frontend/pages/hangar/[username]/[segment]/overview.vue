@@ -53,11 +53,7 @@ const cargoVisible = computed(
 
       <aside class="vehicle-overview__side">
         <AcquireCard v-if="vehicle.wanted" :vehicle="vehicle" />
-        <PlaqueCard
-          v-if="plaqueVisible"
-          :vehicle="vehicle"
-          :readonly="vehicle.wanted"
-        />
+        <PlaqueCard v-if="plaqueVisible" :vehicle="vehicle" />
         <ConfigurationCard v-if="!vehicle.wanted" :vehicle="vehicle" />
         <PaintsCard :vehicle="vehicle" />
         <!-- A wishlist ship's only switch, sale notifications, is shown in

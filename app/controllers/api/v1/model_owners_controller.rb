@@ -21,7 +21,7 @@ module Api
         @model = Model.visible.active.find_by!(slug: params[:slug].to_s.downcase)
 
         @vehicles = current_resource_owner.vehicles.visible.purchased
-          .where(model: @model)
+          .where(model: @model, loaner: false)
           .includes({image_attachment: :blob})
           .preload(Vehicle::PICTURE_PRELOADS)
           .order(:rank)
