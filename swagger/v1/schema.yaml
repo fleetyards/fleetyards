@@ -1057,14 +1057,18 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FleetEventSignup"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
         '401':
           description: unauthorized
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
   "/fleet-event-slots":
     post:
       summary: Create event slot

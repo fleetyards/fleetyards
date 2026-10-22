@@ -28,6 +28,10 @@ class Api::V1::FleetEventSignupsAssignTest < ActionDispatch::IntegrationTest
         schema ::V1::Schemas::Fleets::Events::FleetEventSignup
       end
 
+      response(400, "bad request") do
+        schema ::Shared::V1::Schemas::ValidationError
+      end
+
       response(401, "unauthorized") do
         schema ::Shared::V1::Schemas::StandardError
       end
@@ -88,10 +92,13 @@ class Api::V1::FleetEventSignupsAssignTest < ActionDispatch::IntegrationTest
     deleted_slot_id = @other_slot.id
     @other_slot.destroy!
 
-    patch "/api/v1/fleet-event-signups/#{@signup.id}/assign",
-      params: {fleetEventSlotId: deleted_slot_id, status: "confirmed"}, as: :json
+    assert_api_response :patch, 400,
+      path_params: {id: @signup.id},
+      body: {fleetEventSlotId: deleted_slot_id, status: "confirmed"} do
+      error = parsed_body["errors"].find { |field| field["attribute"] == "fleetEventSlot" }
+      assert_equal ["required"], error["messages"].pluck("code")
+    end
 
-    assert_response :bad_request
     assert_nil @signup.reload.fleet_event_slot_id
   end
 end

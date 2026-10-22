@@ -560,3 +560,7 @@ zh-TW:
               wrong_event: 不屬於此活動
             status:
               invalid_for_slot: 在位置上必須為已確認或待審核
+            fleet_event_slot:
+              required: 已不存在
+            vehicle:
+              required: 已不存在

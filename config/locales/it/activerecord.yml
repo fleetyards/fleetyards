@@ -561,3 +561,7 @@ it:
               wrong_event: non appartiene a questo evento
             status:
               invalid_for_slot: deve essere confermata o in attesa per un posto
+            fleet_event_slot:
+              required: non esiste più
+            vehicle:
+              required: non esiste più

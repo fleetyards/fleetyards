@@ -13,6 +13,8 @@ class FleetEventSignup < ApplicationRecord
   belongs_to :vehicle, optional: true
 
   validates :status, inclusion: {in: STATUSES}
+  validate :slot_exists, if: :fleet_event_slot_changing?
+  validate :vehicle_exists, if: :vehicle_changing?
   validate :unique_active_signup_per_member, on: :create
   validate :slot_not_already_taken, on: :create
   validate :membership_still_kept, if: :claims_seat?
@@ -75,9 +77,27 @@ class FleetEventSignup < ApplicationRecord
     self.fleet_event = fleet_event_slot.fleet_event
   end
 
+  # An optional belongs_to never checks that its record exists, so an id left
+  # over from a deleted slot or vehicle would only fail at the foreign key.
+  private def slot_exists
+    errors.add(:fleet_event_slot, :required) unless FleetEventSlot.exists?(fleet_event_slot_id)
+  end
+
+  private def vehicle_exists
+    errors.add(:vehicle, :required) unless Vehicle.exists?(vehicle_id)
+  end
+
+  private def fleet_event_slot_changing?
+    fleet_event_slot_id.present? && (new_record? || will_save_change_to_fleet_event_slot_id?)
+  end
+
+  private def vehicle_changing?
+    vehicle_id.present? && (new_record? || will_save_change_to_vehicle_id?)
+  end
+
   private def slot_belongs_to_event
-    return if fleet_event_slot_id.blank? || fleet_event.blank?
-    return if fleet_event_slot&.fleet_event&.id == fleet_event_id
+    return if fleet_event_slot.blank? || fleet_event.blank?
+    return if fleet_event_slot.fleet_event&.id == fleet_event_id
 
     errors.add(:fleet_event_slot_id, :wrong_event)
   end

@@ -592,3 +592,7 @@ en:
               wrong_event: does not belong to this event
             status:
               invalid_for_slot: must be confirmed or pending for a slot
+            fleet_event_slot:
+              required: no longer exists
+            vehicle:
+              required: no longer exists
