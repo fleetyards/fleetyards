@@ -4535,6 +4535,9 @@
         "dedication": "Dédicace",
         "dedicationVerse": "Vers de dédicace",
         "dedicationVerseInfo": "Facultatif. Quelques vers ou une bénédiction, affichés au survol ou au toucher de la dédicace.",
+        "translated": "Traduire la plaque",
+        "translatedInfo": "Imprime la plaque dans la langue choisie pour Fleetyards, pour tous ceux qui la voient. Désactivée, elle est en anglais, comme les plaques du jeu.",
+        "translatedInto": "Imprimée en %{language} pour tous ceux qui la voient. Désactivée, elle est en anglais.",
         "launchedOn": "Date de lancement",
         "launchPort": "Port de lancement",
         "affiliation": "Affiliation"

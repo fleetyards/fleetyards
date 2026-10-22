@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormDatePicker from "@/shared/components/base/FormDatePicker/index.vue";
 import LocationInput from "@/shared/components/LocationInput/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
@@ -14,12 +15,18 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { OPERATIONS_GROUPS } from "@/frontend/components/Vehicles/Plaque/operationsGroups";
 import { IN_UNIVERSE_YEAR_OFFSET } from "@/frontend/components/Vehicles/Plaque/launchDate";
+import { PLAQUE_DEFAULT_LOCALE } from "@/frontend/components/Vehicles/Plaque/types";
 import {
   PLAQUE_FIELD_RULES,
   PLAQUE_LIMITS,
 } from "@/frontend/components/Vehicles/PlaqueFields/rules";
+import { storeToRefs } from "pinia";
 import { useI18n } from "@/shared/composables/useI18n";
-import { type LocationLink } from "@/services/fyApi";
+import { useI18nStore } from "@/shared/stores/i18n";
+import {
+  type LocationLink,
+  type NullableVehiclePlaqueLocaleEnum,
+} from "@/services/fyApi";
 
 type Props = {
   // The starmap location the launch port was saved linked to.
@@ -46,8 +53,50 @@ const launchPortLocationId = defineModel<string | null>("launchPortLocationId");
 const affiliation = defineModel<string>("affiliation");
 const plaqueCaptain = defineModel<string>("plaqueCaptain");
 const operationsGroup = defineModel<string | null>("operationsGroup");
+// Unset for English; translating prints the plaque in the language the app
+// is set to now, and keeps it in that language for everyone who sees it.
+const plaqueLocale =
+  defineModel<NullableVehiclePlaqueLocaleEnum>("plaqueLocale");
 
-const { t } = useI18n();
+const { t, availableLocales } = useI18n();
+
+const { locale: appLocale } = storeToRefs(useI18nStore());
+
+const translatable = computed(
+  () =>
+    appLocale.value !== PLAQUE_DEFAULT_LOCALE &&
+    availableLocales().includes(appLocale.value),
+);
+
+// Switched back on where the app has nothing to translate into, the plaque
+// returns to the language it was saved in rather than to English.
+const savedLocale = plaqueLocale.value;
+
+const translated = computed({
+  get: () => !!plaqueLocale.value,
+  set: (on) => {
+    if (!on) {
+      plaqueLocale.value = null;
+    } else if (translatable.value) {
+      plaqueLocale.value = appLocale.value as NullableVehiclePlaqueLocaleEnum;
+    } else {
+      plaqueLocale.value = savedLocale ?? null;
+    }
+  },
+});
+
+// A plaque printed in another language than the app's says which one, as the
+// switch would otherwise read as a translation into the app's.
+const translatedInfo = computed(() =>
+  plaqueLocale.value && plaqueLocale.value !== appLocale.value
+    ? t("labels.vehiclePlaque.translatedInto", {
+        language:
+          new Intl.DisplayNames([appLocale.value], { type: "language" }).of(
+            plaqueLocale.value,
+          ) ?? plaqueLocale.value,
+      })
+    : t("labels.vehiclePlaque.translatedInfo"),
+);
 
 // Grouped by side of the law, lawful first, as the select keeps this order.
 const operationsGroupOptions = computed(() =>
@@ -136,6 +185,14 @@ const operationsGroupOptions = computed(() =>
         />
       </div>
     </div>
+    <FormToggle
+      v-if="translatable || plaqueLocale || savedLocale"
+      v-model="translated"
+      name="plaqueTranslated"
+      :label="t('labels.vehiclePlaque.translated')"
+      :description="translatedInfo"
+      data-test="vehicle-plaque-translated-input"
+    />
   </div>
 </template>
 

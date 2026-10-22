@@ -4535,6 +4535,9 @@
         "dedication": "Widmung",
         "dedicationVerse": "Widmungsvers",
         "dedicationVerseInfo": "Optional. Ein paar Verszeilen oder ein Segen, angezeigt, wenn jemand über die Widmung fährt oder sie antippt.",
+        "translated": "Plakette übersetzen",
+        "translatedInfo": "Druckt die Plakette in der Sprache, auf die Fleetyards eingestellt ist – für alle, die sie sehen. Ausgeschaltet ist sie auf Englisch, wie die Plaketten im Spiel.",
+        "translatedInto": "Für alle, die sie sehen, auf %{language} gedruckt. Ausgeschaltet ist sie auf Englisch.",
         "launchedOn": "Stapellauf",
         "launchPort": "Starthafen",
         "affiliation": "Zugehörigkeit"

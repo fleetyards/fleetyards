@@ -78,6 +78,7 @@ const initialValues = {
   affiliation: props.vehicle.affiliation ?? "",
   plaqueCaptain: props.vehicle.plaqueCaptain ?? "",
   operationsGroup: props.vehicle.operationsGroup ?? null,
+  plaqueLocale: props.vehicle.plaqueLocale ?? null,
   plaqueStyle: keptStyle
     ? FREE_PLAQUE_STYLE
     : props.vehicle.dedication
@@ -103,6 +104,7 @@ const [affiliation] = defineField("affiliation");
 const [plaqueCaptain] = defineField("plaqueCaptain");
 const [operationsGroup] = defineField("operationsGroup");
 const [plaqueStyle] = defineField("plaqueStyle");
+const [plaqueLocale] = defineField("plaqueLocale");
 
 // The styles are a page of their own, like the sync modal's settings: picking
 // one there sets the form, and the back button returns to it.
@@ -119,6 +121,7 @@ const preview = computed<Vehicle>(() => ({
   plaqueCaptain: plaqueCaptain.value || null,
   operationsGroup: operationsGroup.value || null,
   plaqueStyle: plaqueStyle.value,
+  plaqueLocale: plaqueLocale.value,
 }));
 
 // The fleets the ship is listed in, offered as the organization it serves.
@@ -165,6 +168,7 @@ const removePlaque = async () => {
         affiliation: null,
         plaqueCaptain: null,
         operationsGroup: null,
+        plaqueLocale: null,
       },
     })
     .then(() => comlink.emit("close-modal", true))
@@ -187,6 +191,7 @@ const onSubmit = handleSubmit(async (values) => {
         affiliation: values.affiliation || null,
         plaqueCaptain: values.plaqueCaptain || null,
         operationsGroup: values.operationsGroup || null,
+        plaqueLocale: values.plaqueLocale,
         ...(values.plaqueStyle !== initialPlaqueStyle
           ? { plaqueStyle: values.plaqueStyle || null }
           : {}),
@@ -245,6 +250,7 @@ const onSubmit = handleSubmit(async (values) => {
             v-model:affiliation="affiliation"
             v-model:plaque-captain="plaqueCaptain"
             v-model:operations-group="operationsGroup"
+            v-model:plaque-locale="plaqueLocale"
             :linked-launch-port="vehicle.launchPortLocation"
             :captain-placeholder="captain"
             :fleet-names="fleetNames"
