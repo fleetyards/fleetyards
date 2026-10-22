@@ -85,12 +85,13 @@ const displayConfirm = vi.fn((options: { onConfirm: () => void }) =>
   options.onConfirm(),
 );
 const displaySuccess = vi.fn();
+const displayAlert = vi.fn();
 
 vi.mock("@/shared/composables/useAppNotifications", () => ({
   useAppNotifications: () => ({
     displayConfirm,
     displaySuccess,
-    displayAlert: vi.fn(),
+    displayAlert,
   }),
 }));
 
@@ -108,6 +109,7 @@ describe("VehiclePlaqueAttachModal", () => {
     upload.mockClear();
     displayConfirm.mockClear();
     displaySuccess.mockClear();
+    displayAlert.mockClear();
   });
 
   it("asks the hangar for every ship of the plaque's model, hidden ones too", async () => {
@@ -220,5 +222,27 @@ describe("VehiclePlaqueAttachModal", () => {
     expect(create).toHaveBeenCalledWith({
       data: { modelId: "model-1", name: null, serial: null },
     });
+  });
+
+  it("retries a failed plaque on the ship it added, without adding another", async () => {
+    mutateAsync.mockRejectedValueOnce(new Error("422"));
+    const wrapper = await mount();
+
+    await wrapper.find('[data-test="plaque-attach-create"]').trigger("click");
+    await flushPromises();
+
+    expect(displayAlert).toHaveBeenCalledWith({
+      text: expect.stringContaining("in your hangar"),
+    });
+
+    await wrapper.find('[data-test="plaque-attach-create"]').trigger("click");
+    await flushPromises();
+
+    expect(create).toHaveBeenCalledTimes(1);
+    expect(mutateAsync).toHaveBeenLastCalledWith({
+      id: "vehicle-new",
+      data: lines,
+    });
+    expect(displaySuccess).toHaveBeenCalled();
   });
 });

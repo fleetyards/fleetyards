@@ -5,6 +5,7 @@
         "attached": "%{vehicle} trägt jetzt die Plakette.",
         "hangarFailure": "Dein Hangar konnte nicht geladen werden.",
         "createFailure": "Das Schiff konnte deinem Hangar nicht hinzugefügt werden.",
+        "addedWithoutPlaque": "Das Schiff ist in deinem Hangar, aber seine Plakette konnte nicht gespeichert werden. Versuche es erneut, um sie anzubringen.",
         "replaceConfirm": "Dieses Schiff hat bereits eine Plakette. Ersetzen?"
       },
       "blueprint": {

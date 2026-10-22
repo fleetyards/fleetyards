@@ -116,6 +116,17 @@ const { capturing, upload } = usePlaqueImageUpload((signedId) =>
   }),
 );
 
+// Held once a ship is added, so the button does not swap for the list's own
+// while the hangar refetches mid-save.
+const addsShip = computed(
+  () =>
+    !!created.value ||
+    (!isLoading.value &&
+      !isError.value &&
+      !vehicles.value.length &&
+      props.model.playerOwnable),
+);
+
 const saving = computed(
   () =>
     mutation.isPending.value ||
@@ -123,7 +134,10 @@ const saving = computed(
     capturing.value,
 );
 
-const attach = async (target: Vehicle) => {
+const attach = async (
+  target: Vehicle,
+  failure = t("messages.vehiclePlaque.failure"),
+) => {
   try {
     const vehicle = await mutation.mutateAsync({
       id: target.id,
@@ -145,7 +159,7 @@ const attach = async (target: Vehicle) => {
     });
     comlink.emit("close-modal");
   } catch {
-    displayAlert({ text: t("messages.vehiclePlaque.failure") });
+    displayAlert({ text: failure });
   }
 };
 
@@ -164,6 +178,13 @@ const createAndAttach = async () => {
     return;
   }
 
+  // A ship added on an earlier try, whose plaque did not save, is not added a
+  // second time.
+  if (created.value) {
+    await attach(created.value, t("messages.plaqueTool.addedWithoutPlaque"));
+    return;
+  }
+
   try {
     created.value = await createMutation.mutateAsync({
       data: {
@@ -179,7 +200,7 @@ const createAndAttach = async () => {
 
   hangarStore.add(props.model.slug);
 
-  await attach(created.value);
+  await attach(created.value, t("messages.plaqueTool.addedWithoutPlaque"));
 };
 </script>
 
@@ -214,13 +235,16 @@ const createAndAttach = async () => {
 
     <template #footer>
       <Btn
-        v-if="!isLoading && !isError && !vehicles.length && model.playerOwnable"
+        v-if="addsShip"
         :loading="saving"
         data-test="plaque-attach-create"
         @click="createAndAttach"
       >
-        <i class="fa-duotone fa-plus" />
-        {{ t("actions.plaqueTool.addShip", { model: model.name }) }}
+        <template v-if="created">{{ t("actions.plaqueTool.attach") }}</template>
+        <template v-else>
+          <i class="fa-duotone fa-plus" />
+          {{ t("actions.plaqueTool.addShip", { model: model.name }) }}
+        </template>
       </Btn>
       <Btn
         v-else

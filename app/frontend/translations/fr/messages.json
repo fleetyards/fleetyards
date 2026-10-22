@@ -5,6 +5,7 @@
         "attached": "%{vehicle} porte maintenant la plaque.",
         "hangarFailure": "Ton hangar n'a pas pu être chargé.",
         "createFailure": "Le vaisseau n'a pas pu être ajouté à ton hangar.",
+        "addedWithoutPlaque": "Le vaisseau est dans ton hangar, mais sa plaque n'a pas pu être enregistrée. Réessaie pour la poser.",
         "replaceConfirm": "Ce vaisseau a déjà une plaque. La remplacer ?"
       },
       "blueprint": {

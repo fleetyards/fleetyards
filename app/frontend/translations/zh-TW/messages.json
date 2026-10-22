@@ -5,6 +5,7 @@
         "attached": "%{vehicle} 現已帶有此銘牌。",
         "hangarFailure": "無法載入你的機庫。",
         "createFailure": "無法將這艘艦船加入你的機庫。",
+        "addedWithoutPlaque": "艦船已加入你的機庫，但無法儲存其銘牌。請重試以放上銘牌。",
         "replaceConfirm": "這艘艦船已有銘牌。要替換嗎？"
       },
       "blueprint": {
