@@ -543,6 +543,7 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
 
     put "/api/v1/hangar/sync-rsi-buybacks", params: {items: [{id: "44725819", kind: "ship", name: "Standalone Ship - Cutter"}]}, as: :json
 
+    assert_response :ok
     assert_equal 1, user.reload.rsi_buyback_tokens, "a sync that read no count keeps the last one"
   end
 
