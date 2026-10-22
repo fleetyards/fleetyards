@@ -64,8 +64,8 @@ test.describe("Admin Cargo Holds", () => {
     await expect(page.getByText("Cargo Rear")).toBeVisible();
 
     // Should show dimensions
-    await expect(page.getByText("8 SCU")).toBeVisible();
-    await expect(page.getByText("16 SCU")).toBeVisible();
+    await expect(page.getByText("· 8 SCU")).toBeVisible();
+    await expect(page.getByText("· 16 SCU")).toBeVisible();
   });
 
   test("Shows auto offset by default", async ({ page }) => {

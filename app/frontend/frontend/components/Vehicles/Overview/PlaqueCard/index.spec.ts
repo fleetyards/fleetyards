@@ -103,6 +103,26 @@ describe("VehicleOverviewPlaqueCard", () => {
     );
   });
 
+  it("keeps a wishlist ship's plaque unshared", async () => {
+    const wrapper = await mountWithDefaults<typeof Component>(Component, {
+      props: {
+        vehicle: vehicle({ dedication: "x", public: true, wanted: true }),
+      },
+      initialState: {
+        session: {
+          currentUser: { username: "TorlekMaru", publicHangar: true },
+        },
+      },
+    });
+
+    expect(wrapper.find('[data-test="vehicle-plaque-share"]').exists()).toBe(
+      false,
+    );
+    expect(wrapper.find('[data-test="vehicle-plaque-edit"]').exists()).toBe(
+      true,
+    );
+  });
+
   it("keeps a hidden ship's plaque unshared", async () => {
     const wrapper = await mountWithDefaults<typeof Component>(Component, {
       props: { vehicle: vehicle({ dedication: "x", public: false }) },

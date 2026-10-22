@@ -435,7 +435,7 @@
         "intro": "Give any ship a dedication plaque. Pick a ship, write its dedication and share the plaque as a picture.",
         "pickShip": "Pick a ship to draw its plaque.",
         "signIn": "Sign in to put this plaque on a ship in your hangar.",
-        "noShips": "There is no %{model} in your hangar to put the plaque on.",
+        "noShips": "There is no %{model} in your hangar or on your wishlist to put the plaque on.",
         "attachIntro": "The plaque goes on the ship you pick, under that ship's own name and registry.",
         "addShip": "Add one and it gets the plaque, under the name and registry you gave it.",
         "example": "An example: the plaque Cloud Imperium hung for The Only Constant, its Constellation Phoenix prototype. Change any line to make it yours."

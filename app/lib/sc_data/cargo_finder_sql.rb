@@ -135,7 +135,7 @@ module ScData
           id: hold.id,
           dimensions: "#{hold.dimension_x} × #{hold.dimension_y} × #{hold.dimension_z}",
           capacity_scu: hold.capacity_scu,
-          max_container_size: hold.max_container_size_scu,
+          max_container_size: hold.effective_max_container_size_scu,
           capacities: {}
         }
 

@@ -345,6 +345,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_22_190000) do
     t.decimal "offset_x", precision: 15, scale: 2
     t.decimal "offset_y", precision: 15, scale: 2
     t.decimal "offset_z", precision: 15, scale: 2
+    t.integer "max_loadable_container_size_scu"
     t.integer "rotation"
     t.string "parent_type", null: false
     t.uuid "parent_id", null: false

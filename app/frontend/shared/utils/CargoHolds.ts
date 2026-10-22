@@ -1,3 +1,23 @@
+const CONTAINER_SIZES = [32, 24, 16, 8, 4, 2, 1];
+
+type CuratedHold = {
+  maxContainerSizeScu: number;
+  maxLoadableContainerSizeScu?: number | null;
+};
+
+// A hand-set limit applies only below the largest crate the grid itself takes.
+export const hasLoadableLimit = (hold: CuratedHold): boolean =>
+  hold.maxLoadableContainerSizeScu != null &&
+  hold.maxLoadableContainerSizeScu < hold.maxContainerSizeScu;
+
+export const loadableContainerSizes = (hold?: CuratedHold): number[] =>
+  hold ? CONTAINER_SIZES.filter((size) => size < hold.maxContainerSizeScu) : [];
+
+export const formatMaxContainer = (hold: CuratedHold): string =>
+  hasLoadableLimit(hold)
+    ? `${hold.maxLoadableContainerSizeScu} SCU (grid ${hold.maxContainerSizeScu} SCU)`
+    : `${hold.maxContainerSizeScu} SCU`;
+
 export function humanizeHoldName(name: string): string {
   return (
     name

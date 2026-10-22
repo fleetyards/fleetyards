@@ -1859,7 +1859,8 @@
         "offsetX": "Offset X (SCU)",
         "offsetY": "Offset Y (SCU)",
         "offsetZ": "Offset Z (SCU)",
-        "rotation": "旋转 (°)"
+        "rotation": "旋转 (°)",
+        "maxLoadableContainerSizeScu": "可装载的最大货箱"
       },
       "modelLoaner": {
         "hidden": "隐藏?",

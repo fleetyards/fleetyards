@@ -434,7 +434,7 @@
         "intro": "Dale a cualquier nave una placa de dedicatoria. Elige una nave, escribe su dedicatoria y comparte la placa como imagen.",
         "pickShip": "Elige una nave para dibujar su placa.",
         "signIn": "Inicia sesión para poner esta placa en una nave de tu hangar.",
-        "noShips": "No hay ninguna nave %{model} en tu hangar en la que poner la placa.",
+        "noShips": "No hay ninguna nave %{model} en tu hangar ni en tu lista de deseos en la que poner la placa.",
         "attachIntro": "La placa va en la nave que elijas, con el nombre y la matrícula propios de esa nave.",
         "addShip": "Añade una y recibirá la placa, con el nombre y la matrícula que le diste.",
         "example": "Un ejemplo: la placa que Cloud Imperium colgó para The Only Constant, su prototipo de Constellation Phoenix. Cambia cualquier línea para hacerla tuya."
