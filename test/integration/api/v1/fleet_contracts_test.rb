@@ -344,21 +344,28 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
       api_path: COLLECTION_PATH,
       path_params: {fleetSlug: @fleet.slug},
       body: {title: "Get Iron!", kind: "procurement", destinationFleetInventoryId: @depot.id} do
-      assert_includes parsed_body["errors"].pluck("attribute"), "title"
+      title_error = parsed_body["errors"].find { |error| error["attribute"] == "title" }
+      assert_equal ["taken"], title_error["messages"].pluck("code")
     end
+
+    assert_equal 1, @fleet.fleet_contracts.count
   end
 
   test "PATCH refuses a rename onto another contract's slug" do
     create(:fleet_contract, fleet: @fleet, destination_fleet_inventory: @depot, title: "Get Iron")
     contract = create(:fleet_contract, fleet: @fleet, created_by: @officer, destination_fleet_inventory: @depot)
+    original_slug = contract.slug
     sign_in @officer
 
     assert_api_response :patch, 400,
       api_path: MEMBER_PATH,
       path_params: {fleetSlug: @fleet.slug, slug: contract.slug},
       body: {title: "Get Iron!"} do
-      assert_includes parsed_body["errors"].pluck("attribute"), "title"
+      title_error = parsed_body["errors"].find { |error| error["attribute"] == "title" }
+      assert_equal ["taken"], title_error["messages"].pluck("code")
     end
+
+    assert_equal original_slug, contract.reload.slug
   end
 
   test "POST lets an author without inventory rights deliver into their own inventory" do
