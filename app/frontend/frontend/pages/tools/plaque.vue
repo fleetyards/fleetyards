@@ -38,6 +38,7 @@ import { useComlink } from "@/shared/composables/useComlink";
 import {
   useModel,
   type NullableVehicleOperationsGroupEnum,
+  type NullableVehiclePlaqueLocaleEnum,
   type VehiclePlaqueStyleEnum,
 } from "@/services/fyApi";
 
@@ -133,7 +134,7 @@ const [operationsGroup] = defineField("operationsGroup");
 // maker is no style at all for the next.
 const pickedStyle = ref<VehiclePlaqueStyleEnum>();
 
-const plaqueLocale = ref<string | null>(null);
+const plaqueLocale = ref<NullableVehiclePlaqueLocaleEnum>(null);
 
 const plaqueStyle = computed<VehiclePlaqueStyleEnum>({
   get: () => {

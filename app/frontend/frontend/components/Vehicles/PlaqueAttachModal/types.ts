@@ -1,5 +1,6 @@
 import {
   type NullableVehicleOperationsGroupEnum,
+  type NullableVehiclePlaqueLocaleEnum,
   type VehiclePlaqueStyleEnum,
 } from "@/services/fyApi";
 
@@ -15,5 +16,5 @@ export interface PlaqueLines {
   plaqueCaptain: string | null;
   operationsGroup: NullableVehicleOperationsGroupEnum | null;
   plaqueStyle: VehiclePlaqueStyleEnum;
-  plaqueLocale: string | null;
+  plaqueLocale: NullableVehiclePlaqueLocaleEnum;
 }

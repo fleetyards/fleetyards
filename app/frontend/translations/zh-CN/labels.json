@@ -4528,6 +4528,7 @@
         "dedicationVerseInfo": "可选。几行诗句或祝福，鼠标悬停或点按献词时显示。",
         "translated": "翻译铭牌",
         "translatedInfo": "以 Fleetyards 当前设置的语言印制铭牌，所有人看到的都是这一语言。关闭时使用英文，与游戏中的铭牌一致。",
+        "translatedInto": "以%{language}印制，所有人看到的都是这一语言。关闭时使用英文。",
         "launchedOn": "下水日期",
         "launchPort": "下水港口",
         "affiliation": "所属"

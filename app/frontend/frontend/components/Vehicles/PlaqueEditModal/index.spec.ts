@@ -186,6 +186,52 @@ describe("VehiclePlaqueEditModal", () => {
     );
   });
 
+  it("names the language a plaque is printed in when the app is in another", async () => {
+    const wrapper = await mountWithDefaults<typeof Component>(Component, {
+      props: {
+        vehicle: vehicle({ dedication: "To boldly go", plaqueLocale: "de" }),
+      },
+      initialState: {
+        session: { currentUser: { supporter: false } },
+        i18n: { locale: "en" },
+      },
+      plugins: [router],
+    });
+
+    expect(
+      wrapper.find('[data-test="vehicle-plaque-translated-input"]').text(),
+    ).toContain("Printed in German");
+  });
+
+  it("returns a plaque to its own language when switched back on in English", async () => {
+    mutateAsync.mockClear();
+    const wrapper = await mountWithDefaults<typeof Component>(Component, {
+      props: {
+        vehicle: vehicle({ dedication: "To boldly go", plaqueLocale: "de" }),
+      },
+      initialState: {
+        session: { currentUser: { supporter: false } },
+        i18n: { locale: "en" },
+      },
+      plugins: [router],
+    });
+    const toggle = wrapper.find<HTMLInputElement>(
+      '[data-test="vehicle-plaque-translated-input"] input',
+    );
+    toggle.element.checked = false;
+    await toggle.trigger("change");
+    toggle.element.checked = true;
+    await toggle.trigger("change");
+    await wrapper.find("#vehicle-plaque-form").trigger("submit");
+    await flushPromises();
+
+    expect(mutateAsync).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ plaqueLocale: "de" }),
+      }),
+    );
+  });
+
   it("saves the verse with the plaque", async () => {
     mutateAsync.mockClear();
     const wrapper = await mount(true);
