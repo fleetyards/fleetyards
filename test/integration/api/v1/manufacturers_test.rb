@@ -47,6 +47,17 @@ class Api::V1::ManufacturersTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /manufacturers names each maker's short name and shipyard" do
+    @manufacturers.first.update!(short_name: "Drake", shipyard: "Gemini Yards")
+
+    assert_api_response :get, 200 do
+      item = parsed_body["items"].find { |manufacturer| manufacturer["slug"] == @manufacturers.first.slug }
+
+      assert_equal "Drake", item["shortName"]
+      assert_equal "Gemini Yards", item["shipyard"]
+    end
+  end
+
   test "GET /manufacturers paginates with perPage" do
     assert_api_response :get, 200, params: {perPage: 2} do
       items = parsed_body["items"]

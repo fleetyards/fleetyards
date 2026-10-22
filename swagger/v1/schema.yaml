@@ -34961,6 +34961,14 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         longName:
           type: string
+        shortName:
+          type:
+          - string
+          - 'null'
+        shipyard:
+          type:
+          - string
+          - 'null'
         scRef:
           type: string
         createdAt:

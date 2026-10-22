@@ -18049,6 +18049,14 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         longName:
           type: string
+        shortName:
+          type:
+          - string
+          - 'null'
+        shipyard:
+          type:
+          - string
+          - 'null'
         scRef:
           type: string
         createdAt:
@@ -18064,14 +18072,6 @@ components:
           type: boolean
         logoOverridden:
           type: boolean
-        shortName:
-          type:
-          - string
-          - 'null'
-        shipyard:
-          type:
-          - string
-          - 'null'
         shipyardLocation:
           anyOf:
           - "$ref": "#/components/schemas/LocationLink"
