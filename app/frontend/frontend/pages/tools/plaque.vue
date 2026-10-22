@@ -52,12 +52,18 @@ const { currentUser } = storeToRefs(sessionStore);
 const isSupporter = computed(() => !!currentUser?.value?.supporter);
 
 // Opened without a ship, the tool shows a finished plaque, so it says what one
-// reads like before asking for a single line.
+// reads like before asking for a single line. It stays the example only until
+// it is touched: from then on it is the user's own plaque.
 const showingExample = ref(false);
 
+const writeModel = (slug?: string) => {
+  const { model: _model, ...query } = route.query;
+  void router.replace({ query: slug ? { ...query, model: slug } : query });
+};
+
 // The ship is in the address, so a link to the tool can bring one along. The
-// example's ship stays out of it, so a reload opens on the example again
-// rather than on its ship with every line gone.
+// untouched example's ship stays out of it, so a reload opens on the example
+// again rather than on its ship with every line gone.
 const modelSlug = computed({
   get: () => {
     if (typeof route.query.model === "string") {
@@ -67,8 +73,16 @@ const modelSlug = computed({
     return showingExample.value ? EXAMPLE_PLAQUE.model : undefined;
   },
   set: (slug) => {
-    const { model: _model, ...query } = route.query;
-    void router.replace({ query: slug ? { ...query, model: slug } : query });
+    // Another ship, or none, starts a plaque of its own; the example's lines
+    // belong to the example's ship.
+    if (showingExample.value) {
+      showingExample.value = false;
+      if (slug !== EXAMPLE_PLAQUE.model) {
+        setValues({ ...BLANK });
+      }
+    }
+
+    writeModel(slug);
   },
 });
 
@@ -197,7 +211,12 @@ const signIn = () => {
   try {
     sessionStorage.setItem(
       DRAFT_KEY,
-      JSON.stringify({ values, style: pickedStyle.value }),
+      JSON.stringify({
+        values,
+        style: pickedStyle.value,
+        model: modelSlug.value,
+        example: showingExample.value,
+      }),
     );
   } catch {
     // Without storage the plaque is written again.
@@ -212,9 +231,19 @@ const restoreDraft = () => {
       return false;
     }
 
-    const { values: saved, style } = JSON.parse(draft);
+    const {
+      values: saved,
+      style,
+      model: savedModel,
+      example,
+    } = JSON.parse(draft);
     setValues(saved);
     pickedStyle.value = style;
+    if (example) {
+      showingExample.value = true;
+    } else if (savedModel && !route.query.model) {
+      writeModel(savedModel);
+    }
 
     return true;
   } catch {
@@ -229,10 +258,10 @@ const showExample = () => {
 };
 
 const startFresh = () => {
+  showingExample.value = false;
   setValues({ ...BLANK });
   pickedStyle.value = undefined;
-  modelSlug.value = undefined;
-  showingExample.value = false;
+  writeModel(undefined);
 };
 
 onMounted(() => {
@@ -243,12 +272,24 @@ onMounted(() => {
   showExample();
 });
 
-// Another ship makes it the user's own plaque.
-watch(modelSlug, (slug) => {
-  if (slug !== EXAMPLE_PLAQUE.model) {
-    showingExample.value = false;
-  }
-});
+const isExample = (current: typeof values) =>
+  (Object.keys(EXAMPLE_PLAQUE.values) as (keyof typeof values)[]).every(
+    // A cleared field may hold "" or null.
+    (key) => (current[key] || null) === (EXAMPLE_PLAQUE.values[key] || null),
+  );
+
+// An edited line makes it the user's plaque, on the example's ship, which goes
+// into the address so a reload keeps what they wrote.
+watch(
+  values,
+  (current) => {
+    if (showingExample.value && !isExample(current)) {
+      showingExample.value = false;
+      writeModel(EXAMPLE_PLAQUE.model);
+    }
+  },
+  { deep: true },
+);
 
 // Submitted rather than only validated: a field shows its error once touched,
 // and a submit touches them all, so a missing dedication says so.

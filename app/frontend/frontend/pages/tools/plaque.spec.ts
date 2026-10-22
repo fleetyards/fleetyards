@@ -278,4 +278,98 @@ describe("ToolsPlaquePage", () => {
       ).value,
     ).toBe("");
   });
+
+  const dedicationOf = (wrapper: Awaited<ReturnType<typeof mount>>) =>
+    (
+      wrapper.find('[data-test="vehicle-plaque-dedication-input"] textarea')
+        .element as HTMLTextAreaElement
+    ).value;
+
+  const pickShip = async (
+    wrapper: Awaited<ReturnType<typeof mount>>,
+    slug?: string,
+  ) => {
+    wrapper
+      .findComponent({ name: "ModelPickerSelect" })
+      .vm.$emit("update:modelValue", slug);
+    await flushPromises();
+  };
+
+  it("makes the example the user's own plaque once a line is edited", async () => {
+    const wrapper = await mount();
+    await flushPromises();
+
+    await wrapper
+      .find('[data-test="vehicle-plaque-dedication-input"] textarea')
+      .setValue("Ours now");
+    await flushPromises();
+
+    expect(wrapper.find('[data-test="plaque-tool-example"]').exists()).toBe(
+      false,
+    );
+    expect(wrapper.vm.$router.currentRoute.value.query.model).toBe(
+      "rsi-constellation-mk-iv-phoenix",
+    );
+    expect(dedicationOf(wrapper)).toBe("Ours now");
+  });
+
+  it("starts another ship's plaque without the example's lines", async () => {
+    const wrapper = await mount();
+    await flushPromises();
+
+    await pickShip(wrapper, "corsair");
+
+    expect(wrapper.find('[data-test="plaque-tool-example"]').exists()).toBe(
+      false,
+    );
+    expect(wrapper.vm.$router.currentRoute.value.query.model).toBe("corsair");
+    expect(dedicationOf(wrapper)).toBe("");
+  });
+
+  it("clears the example's ship from the picker", async () => {
+    const wrapper = await mount();
+    await flushPromises();
+
+    await pickShip(wrapper, undefined);
+
+    expect(wrapper.find('[data-test="plaque-tool-empty"]').exists()).toBe(true);
+  });
+
+  it("comes back to the example after signing in from it", async () => {
+    const signedOut = await mount();
+    await flushPromises();
+    await signedOut
+      .find('[data-test="plaque-tool-sign-in"] a')
+      .trigger("click");
+    signedOut.unmount();
+
+    const signedIn = await mount({ signedIn: true });
+    await flushPromises();
+
+    expect(signedIn.find('[data-test="plaque-tool-example"]').exists()).toBe(
+      true,
+    );
+    expect(dedicationOf(signedIn)).toContain("the only constant");
+  });
+
+  it("brings the ship back with a draft written on the example's ship", async () => {
+    const signedOut = await mount();
+    await flushPromises();
+    await signedOut
+      .find('[data-test="vehicle-plaque-dedication-input"] textarea')
+      .setValue("Ours now");
+    await flushPromises();
+    await signedOut
+      .find('[data-test="plaque-tool-sign-in"] a')
+      .trigger("click");
+    signedOut.unmount();
+
+    const signedIn = await mount({ signedIn: true });
+    await flushPromises();
+
+    expect(signedIn.vm.$router.currentRoute.value.query.model).toBe(
+      "rsi-constellation-mk-iv-phoenix",
+    );
+    expect(dedicationOf(signedIn)).toBe("Ours now");
+  });
 });
