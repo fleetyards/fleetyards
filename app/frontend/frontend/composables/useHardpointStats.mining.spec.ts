@@ -72,7 +72,7 @@ describe("useHardpointStats for mining and salvage", () => {
             },
           },
         },
-        HardpointCategoryEnum.WEAPONS,
+        HardpointCategoryEnum.MINING_LASERS,
       ),
     );
 
@@ -92,7 +92,7 @@ describe("useHardpointStats for mining and salvage", () => {
     const stats = statsFor(
       hardpointWith(
         { beam: true, mining: { fracturePowerMax: 100, chargeUpTime: 0.5 } },
-        HardpointCategoryEnum.WEAPONS,
+        HardpointCategoryEnum.MINING_LASERS,
       ),
     );
 
@@ -113,7 +113,7 @@ describe("useHardpointStats for mining and salvage", () => {
           fracturePower: 50,
           modifiers: { instability: 10, resistance: -15.5 },
         },
-        HardpointCategoryEnum.UTILITY,
+        HardpointCategoryEnum.MINING_MODULES,
       ),
     );
 
@@ -136,7 +136,7 @@ describe("useHardpointStats for mining and salvage", () => {
           radius: 1.5,
           extractionEfficiency: 0.9,
         },
-        HardpointCategoryEnum.UTILITY,
+        HardpointCategoryEnum.MINING_MODULES,
       ),
     );
 

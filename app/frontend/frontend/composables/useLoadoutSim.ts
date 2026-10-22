@@ -254,9 +254,9 @@ function collectPorts(
           });
         }
       } else {
-        // Tractor/towing beams and mining lasers sit in the weapons category
-        // but draw whole segments of their own rather than from the guns'
-        // shared pool, so their component type is the reliable signal.
+        // Tractor/towing beams and mining lasers draw whole segments of their
+        // own rather than from the guns' shared pool; their component type
+        // says which.
         const componentType = hardpoint.component?.type;
         let family = POWER_FAMILY_BY_CATEGORY[category];
         if (componentType === "TractorBeam") family = "tractorBeam";

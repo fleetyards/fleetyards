@@ -76,8 +76,8 @@ const FAMILY_CATEGORY: Partial<Record<PowerFamily, HardpointCategoryEnum>> = {
   salvage: HardpointCategoryEnum.SALVAGEMUNCHING,
 };
 
-// The beams are no hardpoint category of their own, so they keep Font Awesome's
-// arrows pulling to a center, and mining its gem.
+// The beams' and mining lasers' categories borrow other categories' drawings,
+// so they keep Font Awesome's arrows pulling to a center, and mining its gem.
 const FAMILY_FA_ICON: Partial<Record<PowerFamily, string>> = {
   miningLaser: "fa-gem",
   tractorBeam: "fa-arrows-to-circle",

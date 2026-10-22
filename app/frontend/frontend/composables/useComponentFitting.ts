@@ -46,13 +46,22 @@ export const COMPONENT_TABS: ComponentTab[] = [
   { id: "shields", categories: [HardpointCategoryEnum.SHIELDGENERATOR] },
   { id: "quantumDrives", categories: [HardpointCategoryEnum.QUANTUMDRIVE] },
   { id: "flightBlades", categories: [HardpointCategoryEnum.CONTROLLER] },
-  { id: "missiles", categories: [HardpointCategoryEnum.MISSILE_RACKS] },
+  {
+    id: "missiles",
+    categories: [
+      HardpointCategoryEnum.MISSILE_RACKS,
+      HardpointCategoryEnum.MISSILES,
+      HardpointCategoryEnum.BOMBS,
+    ],
+  },
   {
     id: "weapons",
     categories: [
       HardpointCategoryEnum.WEAPONS,
       HardpointCategoryEnum.WEAPON_MOUNTS,
       HardpointCategoryEnum.TURRET,
+      HardpointCategoryEnum.MINING_LASERS,
+      HardpointCategoryEnum.TRACTOR_BEAMS,
     ],
   },
 ];
@@ -190,6 +199,10 @@ const FITTED_CATEGORIES = new Set<string>([
   HardpointCategoryEnum.TURRET,
   HardpointCategoryEnum.MISSILE_RACKS,
   HardpointCategoryEnum.MODULE,
+  HardpointCategoryEnum.MINING_LASERS,
+  HardpointCategoryEnum.TRACTOR_BEAMS,
+  HardpointCategoryEnum.MISSILES,
+  HardpointCategoryEnum.BOMBS,
 ]);
 
 // A port whose types name none of those, or, naming no types at all, whose

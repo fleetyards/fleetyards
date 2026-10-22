@@ -106,6 +106,12 @@ type WeaponHardpoint = {
   control: ControlGroup;
 };
 
+const ORDNANCE_CATEGORIES: HardpointCategoryEnum[] = [
+  HardpointCategoryEnum.WEAPONS,
+  HardpointCategoryEnum.MISSILES,
+  HardpointCategoryEnum.BOMBS,
+];
+
 // The outermost mount that names its operator decides for everything inside
 // it: a gimbal on a manned turret is aimed by the gunner, not by the pilot.
 function collectWeaponHardpoints(
@@ -121,7 +127,8 @@ function collectWeaponHardpoints(
     // A mining laser's beam damage is what it does to a rock; counted here it
     // would read as a ship's firepower.
     if (
-      hardpoint.category === HardpointCategoryEnum.WEAPONS &&
+      hardpoint.category &&
+      ORDNANCE_CATEGORIES.includes(hardpoint.category) &&
       hardpoint.component?.typeData &&
       !(hardpoint.component.typeData as ComponentWeapon).mining
     ) {

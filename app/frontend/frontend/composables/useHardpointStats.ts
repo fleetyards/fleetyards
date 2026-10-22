@@ -153,6 +153,32 @@ export const formatBoostFigure = (
   return decimal ? `${grouped}${separator || ","}${decimal}` : grouped;
 };
 
+// Mining lasers, missiles and bombs are filed apart from guns, but their figures
+// live in the weapon's type data.
+const WEAPON_CATEGORIES: HardpointCategoryEnum[] = [
+  HardpointCategoryEnum.WEAPONS,
+  HardpointCategoryEnum.MINING_LASERS,
+  HardpointCategoryEnum.MISSILES,
+  HardpointCategoryEnum.BOMBS,
+];
+
+const UTILITY_CATEGORIES: HardpointCategoryEnum[] = [
+  HardpointCategoryEnum.UTILITY,
+  HardpointCategoryEnum.MINING_MODULES,
+  HardpointCategoryEnum.SALVAGE_HEADS,
+  HardpointCategoryEnum.SALVAGE_MODULES,
+];
+
+// What plugs into a mount's own ports: a gun, a gimbal, or the head a tool
+// arm or utility turret carries.
+const GUN_PORT_CATEGORIES: (HardpointCategoryEnum | undefined)[] = [
+  HardpointCategoryEnum.WEAPONS,
+  HardpointCategoryEnum.WEAPON_MOUNTS,
+  HardpointCategoryEnum.MINING_LASERS,
+  HardpointCategoryEnum.TRACTOR_BEAMS,
+  HardpointCategoryEnum.SALVAGE_HEADS,
+];
+
 export const THRUSTER_CATEGORIES: HardpointCategoryEnum[] = [
   HardpointCategoryEnum.MAIN_THRUSTERS,
   HardpointCategoryEnum.MANEUVERING_THRUSTERS,
@@ -452,10 +478,7 @@ const hardpointStatsBuilder = (count?: MaybeRefOrGetter<number>) => {
   const gunPorts = (ports?: Hardpoint[]): string | null => {
     const bySize = new Map<number, number>();
     (ports ?? []).forEach((port) => {
-      if (
-        port.category !== HardpointCategoryEnum.WEAPONS &&
-        port.category !== HardpointCategoryEnum.WEAPON_MOUNTS
-      ) {
+      if (!GUN_PORT_CATEGORIES.includes(port.category)) {
         return;
       }
       const size = port.maxSize ?? port.minSize;
@@ -814,7 +837,7 @@ const hardpointStatsBuilder = (count?: MaybeRefOrGetter<number>) => {
       if (emp.cooldownTime) {
         result.push(secondsStat("emp.cooldownTime", emp.cooldownTime));
       }
-    } else if (category === HardpointCategoryEnum.WEAPONS) {
+    } else if (category && WEAPON_CATEGORIES.includes(category)) {
       const weapon = typeData as ComponentWeapon;
       rowKeys = ROW_STATS.gun;
       // A missile or bomb is told apart by its type first; a field of its
@@ -1951,7 +1974,7 @@ const hardpointStatsBuilder = (count?: MaybeRefOrGetter<number>) => {
       if (typeof fi.minimumRate === "number" && fi.minimumRate > 0) {
         result.push(fuelRate("fuelIntakes.minRate", fi.minimumRate));
       }
-    } else if (category === HardpointCategoryEnum.UTILITY) {
+    } else if (category && UTILITY_CATEGORIES.includes(category)) {
       // 39 of the 71 utility components with data carry nothing but a
       // capacity. The three that are tractor beams fall to the shape check
       // above, which runs before any category branch.
