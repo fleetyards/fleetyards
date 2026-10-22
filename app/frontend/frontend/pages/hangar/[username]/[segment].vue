@@ -169,15 +169,15 @@ const crumbs = computed<Crumb[]>(() => [
 
 <template>
   <AsyncData :async-status="asyncStatus">
-    <template #resolved>
+    <!-- Nothing of a loaner's while it is sent on to its model. -->
+    <template v-if="vehicle && !vehicle.loaner" #resolved>
       <BreadCrumbs :crumbs="crumbs" />
       <VehicleHero
-        v-if="vehicle && !vehicle.loaner && heroVisible"
+        v-if="heroVisible"
         :vehicle="vehicle"
         :compact="!onOverview"
       />
       <TabNavView
-        v-if="vehicle && !vehicle.loaner"
         :routes="tabs"
         :authenticated="sessionStore.isAuthenticated"
         :horizontal="heroVisible"
