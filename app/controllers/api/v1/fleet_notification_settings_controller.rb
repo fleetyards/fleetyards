@@ -38,7 +38,7 @@ module Api
 
         begin
           guild = ::Discord::ApiClient.new.get_guild(@setting.discord_guild_id)
-          {ok: true, guildId: guild["id"], guildName: guild["name"]}.merge(roles_payload, posting_payload, join_role_payload)
+          {ok: true, guildId: guild["id"], guildName: guild["name"]}.merge(events_payload, roles_payload, posting_payload, join_role_payload)
         rescue ::Discord::ApiClient::Error => e
           code = case e.status
           when 401 then "invalid_token"
@@ -48,6 +48,16 @@ module Api
           end
           {ok: false, code: code, status: e.status, message: e.message}
         end
+      end
+
+      # Always reported for a linked server: pushing events there as scheduled
+      # events is what linking one is for. An install from before Create Events
+      # was requested keeps its old grant, and every sync then fails with a 403
+      # that nothing else would explain.
+      private def events_payload
+        result = ::Discord::EventCapability.new(@setting.discord_guild_id).check(@setting.discord_channel_id)
+
+        {eventsOk: result.ok?, eventsCode: result.code.to_s}
       end
 
       # Only reported once the fleet has asked for role management, so a fleet

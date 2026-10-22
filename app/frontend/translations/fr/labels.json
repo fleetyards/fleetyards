@@ -686,6 +686,11 @@
             "unknown_role": "Un rôle choisi ici n'existe plus sur Discord : %{names}.",
             "role_above_bot": "Le bot ne peut pas attribuer %{names} : Discord ne lui permet de donner que des rôles en dessous du sien. Place le rôle du bot au-dessus dans les paramètres du serveur."
           },
+          "eventsCodes": {
+            "missing_create_events": "Le bot n'a pas le droit de créer des événements sur ce serveur, les événements ne peuvent donc pas être envoyés sur Discord. Donnez au rôle du bot la permission « Créer des événements » dans les paramètres du serveur, ou réautorisez-le avec le lien d'installation.",
+            "voice_channel_locked": "Le bot ne peut pas créer d'événements dans le salon vocal indiqué ici. Accordez-lui « Voir le salon », « Se connecter » et « Créer des événements » dans les permissions de ce salon.",
+            "unknown_voice_channel": "Le salon vocal indiqué ici n'existe plus sur Discord ou n'est pas un salon vocal."
+          },
           "postingCodes": {
             "missing_send_messages": "Le bot ne peut pas envoyer de messages sur ce serveur. Utilisez le lien d'installation pour l'autoriser à nouveau.",
             "channel_locked": "Le bot ne peut pas publier dans le salon choisi pour %{names}. Autorisez-le dans les permissions de ce salon.",

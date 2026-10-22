@@ -686,6 +686,11 @@
             "unknown_role": "A role picked here no longer exists on Discord: %{names}.",
             "role_above_bot": "The bot cannot hand out %{names}: Discord only lets it give roles below its own. Move the bot's role above them in the server settings."
           },
+          "eventsCodes": {
+            "missing_create_events": "The bot may not create events in this server, so events cannot be pushed to Discord. Give the bot's role Create Events in the server settings, or use the install link to re-authorise it.",
+            "voice_channel_locked": "The bot cannot create events in the voice channel set here. Allow it View Channel, Connect and Create Events in that channel's permissions.",
+            "unknown_voice_channel": "The voice channel set here no longer exists on Discord or is not a voice channel."
+          },
           "postingCodes": {
             "missing_send_messages": "The bot may not send messages in this server. Use the install link to re-authorise it.",
             "channel_locked": "The bot cannot post in the channel picked for %{names}. Allow it in that channel's permissions.",

@@ -61,8 +61,9 @@ module Discord
     # in the Discord dev portal.
     #
     # Raising this does NOT upgrade servers that installed under the old mask --
-    # Discord keeps their original grant. Discord::RoleCapability and
-    # Discord::ChannelCapability are what tell a fleet it has to re-authorise.
+    # Discord keeps their original grant. Discord::RoleCapability,
+    # Discord::ChannelCapability and Discord::EventCapability are what tell a
+    # fleet it has to re-authorise.
     INSTALL_PERMISSIONS = 17_601_045_482_496
 
     # Discord ids are 64-bit integers written as decimal strings.

@@ -686,6 +686,11 @@
             "unknown_role": "這裡選擇的身分組在 Discord 上已不存在：%{names}。",
             "role_above_bot": "機器人無法分配 %{names}：Discord 只允許它分配低於自身的身分組。請在伺服器設定中將機器人的身分組移到它們之上。"
           },
+          "eventsCodes": {
+            "missing_create_events": "機器人無權在此伺服器中建立活動，因此無法將活動推送到 Discord。請在伺服器設定中為機器人的身分組授予「建立活動」權限，或使用安裝連結重新授權。",
+            "voice_channel_locked": "機器人無法在此處設定的語音頻道中建立活動。請在該頻道的權限中允許它「檢視頻道」、「連線」和「建立活動」。",
+            "unknown_voice_channel": "此處設定的語音頻道在 Discord 上已不存在，或不是語音頻道。"
+          },
           "postingCodes": {
             "missing_send_messages": "機器人無權在此伺服器傳送訊息。請透過安裝連結重新授權。",
             "channel_locked": "機器人無法在為 %{names} 選擇的頻道中發文。請在該頻道的權限中允許。",

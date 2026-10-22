@@ -273,6 +273,8 @@ type DiscordStatus = {
   guildId?: string;
   guildName?: string;
   installUrl?: string | null;
+  eventsOk?: boolean;
+  eventsCode?: string;
   postingOk?: boolean;
   postingCode?: string;
   postingDetail?: string;
@@ -312,6 +314,16 @@ const probeDiscord = async () => {
 };
 
 const installUrl = computed(() => discordStatus.value?.installUrl ?? null);
+
+const eventsProblem = computed(() => {
+  const status = discordStatus.value;
+  if (!status?.eventsCode || status.eventsOk) return null;
+
+  const key = `labels.fleet.discord.eventsCodes.${status.eventsCode}`;
+  return tExists(key)
+    ? t(key)
+    : t(`labels.fleet.discord.statusCodes.${status.eventsCode}`);
+});
 
 const postingProblem = computed(() => {
   const status = discordStatus.value;
@@ -404,6 +416,14 @@ const joinRoleProblem = computed(() => {
               : discordStatus.message
           }}
         </span>
+      </span>
+      <span
+        v-if="eventsProblem"
+        class="discord-status discord-status--err"
+        data-test="events-problem"
+      >
+        <i class="fa-light fa-triangle-exclamation" />
+        <span>{{ eventsProblem }}</span>
       </span>
       <span
         v-if="postingProblem"

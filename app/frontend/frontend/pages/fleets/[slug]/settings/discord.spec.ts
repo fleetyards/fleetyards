@@ -481,3 +481,28 @@ describe("FleetDiscordSettingsPage role mapping", () => {
     expect(problem.text()).toContain(": 300000000000000009.");
   });
 });
+
+describe("FleetDiscordSettingsPage scheduled events", () => {
+  it("tells a server whose bot may not create events how to fix it", async () => {
+    discordStatus.mockResolvedValue({
+      ok: true,
+      eventsOk: false,
+      eventsCode: "missing_create_events",
+    });
+    const subject = await mount();
+
+    const problem = subject.find('[data-test="events-problem"]');
+    expect(problem.text()).toContain("Create Events");
+  });
+
+  it("says nothing while the bot may create events", async () => {
+    discordStatus.mockResolvedValue({
+      ok: true,
+      eventsOk: true,
+      eventsCode: "ok",
+    });
+    const subject = await mount();
+
+    expect(subject.find('[data-test="events-problem"]').exists()).toBe(false);
+  });
+});

@@ -29377,6 +29377,10 @@ components:
           type: integer
         installUrl:
           type: string
+        eventsOk:
+          type: boolean
+        eventsCode:
+          type: string
         rolesOk:
           type: boolean
         rolesCode:
