@@ -55,6 +55,22 @@ class HangarPlanTest < ActiveSupport::TestCase
     assert_not slot.matches?(@cutlass)
   end
 
+  test "a pledge is melted whole, so no ship of it is kept beside a melt" do
+    melted = create(:vehicle, user: @user, model: @cutlass, rsi_pledge_id: "pledge-1")
+    sibling = create(:vehicle, user: @user, model: @carrack, rsi_pledge_id: "pledge-1")
+    @plan.melts.create!(vehicle: melted)
+
+    route = @plan.acquisitions.build(candidate: @candidate, start_kind: "owned", source_vehicle: sibling)
+    assert_not route.valid?
+    assert_includes route.errors.details[:source_vehicle_id], {error: :pledge_melted}
+
+    @plan.melts.destroy_all
+    route.save!
+    melt = @plan.melts.build(vehicle: melted)
+    assert_not melt.valid?
+    assert_includes melt.errors.details[:vehicle_id], {error: :pledge_kept}
+  end
+
   test "a slot's focus filter matches a ship by its foci, old focus names included" do
     @carrack.update!(foci: %w[expedition])
     @cutlass.update!(foci: %w[medium_fighter])

@@ -96,6 +96,10 @@ class HangarPlanAcquisition < ApplicationRecord
         errors.add(:source_vehicle_id, :invalid)
       elsif hangar_plan.melts.where(vehicle_id: source_vehicle_id).exists?
         errors.add(:source_vehicle_id, :melted)
+      # Melting one ship of a pledge melts all of it.
+      elsif source_vehicle.rsi_pledge_id.present? &&
+          hangar_plan.melts.joins(:vehicle).where(vehicles: {rsi_pledge_id: source_vehicle.rsi_pledge_id}).exists?
+        errors.add(:source_vehicle_id, :pledge_melted)
       elsif hangar_plan.acquisitions.where(source_vehicle_id:).where.not(id:).exists?
         errors.add(:source_vehicle_id, :taken)
       end

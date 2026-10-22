@@ -334,6 +334,7 @@ fr:
               upgrade_taken: "une amélioration est utilisée plus souvent que vous ne la possédez"
             source_vehicle_id:
               melted: "est fondu dans ce plan"
+              pledge_melted: "fait partie d'un pledge que ce plan fond"
               taken: "est déjà utilisé dans ce plan"
             buyback_pledge_id:
               taken: "est déjà utilisé dans ce plan"
@@ -349,6 +350,7 @@ fr:
           attributes:
             vehicle_id:
               taken: "est déjà utilisé dans ce plan"
+              pledge_kept: "fait partie d'un pledge dont ce plan garde les autres vaisseaux"
         vehicle_loadout:
           attributes:
             base:

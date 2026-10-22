@@ -334,6 +334,7 @@ zh-TW:
               upgrade_taken: "某個升級的使用次數超過了你擁有的數量"
             source_vehicle_id:
               melted: "已在此計畫中熔煉"
+              pledge_melted: "屬於此計畫熔煉的禮包"
               taken: "已在此計畫中使用"
             buyback_pledge_id:
               taken: "已在此計畫中使用"
@@ -349,6 +350,7 @@ zh-TW:
           attributes:
             vehicle_id:
               taken: "已在此計畫中使用"
+              pledge_kept: "屬於此計畫保留其他艦船的禮包"
         vehicle_loadout:
           attributes:
             base:
