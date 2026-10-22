@@ -27,6 +27,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { usePositionTypeLabel } from "@/frontend/composables/usePositionTypeLabel";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
+import { firstErrorMessageFrom } from "@/shared/utils/ApiErrors";
 
 type Props = {
   fleet: Fleet;
@@ -68,8 +69,18 @@ const submit = async (slot: FleetEventSlot) => {
     displaySuccess({ text: t("messages.fleets.eventSignup.update.success") });
     comlink.emit("fleet-event-signup-changed");
     comlink.emit("close-modal");
-  } catch {
-    displayAlert({ text: t("messages.fleets.eventSignup.update.failure") });
+  } catch (error) {
+    const reason = firstErrorMessageFrom(error);
+
+    displayAlert({
+      text: reason || t("messages.fleets.eventSignup.update.failure"),
+    });
+    if (!reason) return;
+
+    // The slots shown were captured when the modal opened, so a slot taken or
+    // deleted since would fail the same way on every retry.
+    comlink.emit("fleet-event-signup-changed");
+    comlink.emit("close-modal");
   }
 };
 

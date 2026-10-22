@@ -120,6 +120,22 @@ fr:
       create: L'entrée d'inventaire n'a pas pu être créée.
       update: L'entrée d'inventaire n'a pas pu être mise à jour.
       destroy: L'entrée d'inventaire n'a pas pu être détruite.
+    hangar_plans:
+      create: "Le plan n'a pas pu être créé."
+      update: "Le plan n'a pas pu être mis à jour."
+      rebase: "Le plan n'a pas pu être réaligné sur le hangar."
+    hangar_plan_slots:
+      create: "L'emplacement n'a pas pu être ajouté."
+      update: "L'emplacement n'a pas pu être mis à jour."
+    hangar_plan_candidates:
+      create: "Le vaisseau n'a pas pu être ajouté à l'emplacement."
+      update: "Le vaisseau n'a pas pu être mis à jour."
+    hangar_plan_acquisitions:
+      create: "Le parcours n'a pas pu être ajouté."
+      update: "Le parcours n'a pas pu être mis à jour."
+    hangar_plan_melts:
+      create: "La fonte n'a pas pu être ajoutée."
+      update: "La fonte n'a pas pu être mise à jour."
     hangar_inventories:
       create: L'inventaire n'a pas pu être créé.
       update: L'inventaire n'a pas pu être mis à jour.

@@ -123,6 +123,22 @@ es:
       create: No se pudo crear la entrada de inventario.
       update: No se pudo actualizar la entrada de inventario.
       destroy: No se pudo eliminar la entrada de inventario.
+    hangar_plans:
+      create: "No se pudo crear el plan."
+      update: "No se pudo actualizar el plan."
+      rebase: "No se pudo actualizar el plan con el hangar."
+    hangar_plan_slots:
+      create: "No se pudo añadir el hueco."
+      update: "No se pudo actualizar el hueco."
+    hangar_plan_candidates:
+      create: "No se pudo añadir la nave al hueco."
+      update: "No se pudo actualizar la nave."
+    hangar_plan_acquisitions:
+      create: "No se pudo añadir la ruta."
+      update: "No se pudo actualizar la ruta."
+    hangar_plan_melts:
+      create: "No se pudo añadir la fundición."
+      update: "No se pudo actualizar la fundición."
     hangar_inventories:
       create: No se pudo crear el inventario.
       update: No se pudo actualizar el inventario.

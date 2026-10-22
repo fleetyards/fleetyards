@@ -1,9 +1,10 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import {
   HangarPledgeItemKindEnum,
   type HangarPledgeItem,
 } from "@/services/fyApi";
+import { createMemoryHistory, createRouter } from "vue-router";
 import Component from "./index.vue";
 
 vi.mock("@/frontend/components/CatalogueItemPopover/index.vue", () => ({
@@ -13,7 +14,22 @@ vi.mock("@/frontend/components/CatalogueItemPopover/index.vue", () => ({
     template: '<span data-test="catalogue-popover"><slot /></span>',
   },
 }));
-import { createMemoryHistory, createRouter } from "vue-router";
+
+const photoSwipe = vi.hoisted(() => {
+  const init = vi.fn();
+  const on = vi.fn();
+  const PhotoSwipe = vi.fn(function PhotoSwipe(this: {
+    init: () => void;
+    on: () => void;
+  }) {
+    this.init = init;
+    this.on = on;
+  });
+
+  return { init, on, PhotoSwipe };
+});
+
+vi.mock("photoswipe", () => ({ default: photoSwipe.PhotoSwipe }));
 
 const pledgeItem = (
   attrs: Partial<HangarPledgeItem> = {},
@@ -36,6 +52,10 @@ const mount = async (items: HangarPledgeItem[]) =>
   });
 
 describe("Hangar/PledgeItemsList", () => {
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("names the item and the pledge it came in", async () => {
     const wrapper = await mount([pledgeItem()]);
 
@@ -252,16 +272,7 @@ describe("Hangar/PledgeItemsList", () => {
   });
 
   it("opens the image full size on click", async () => {
-    const init = vi.fn();
-    const on = vi.fn();
-    const PhotoSwipe = vi.fn(function PhotoSwipe(this: {
-      init: () => void;
-      on: () => void;
-    }) {
-      this.init = init;
-      this.on = on;
-    });
-    vi.doMock("photoswipe", () => ({ default: PhotoSwipe }));
+    const { init, on, PhotoSwipe } = photoSwipe;
 
     const wrapper = await mount([
       pledgeItem({ image: "https://media.test/akuma.jpg" }),

@@ -33,7 +33,9 @@
         "transfers": "Trasferimenti",
         "vehicleOverview": "Panoramica",
         "vehicleLog": "Diario di bordo",
-        "shipComponents": "Componenti di nave"
+        "shipComponents": "Componenti di nave",
+        "plans": "Pianificatore",
+        "sharedPlan": "Piano condiviso"
       },
       "login": "Accedi",
       "installApp": "Installa app",

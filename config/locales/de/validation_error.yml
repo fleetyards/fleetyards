@@ -127,6 +127,22 @@ de:
       create: Inventareintrag konnte nicht erstellt werden.
       update: Inventareintrag konnte nicht aktualisiert werden.
       destroy: Inventareintrag konnte nicht gelöscht werden.
+    hangar_plans:
+      create: "Plan konnte nicht erstellt werden."
+      update: "Plan konnte nicht aktualisiert werden."
+      rebase: "Plan konnte nicht auf den Hangar aktualisiert werden."
+    hangar_plan_slots:
+      create: "Platz konnte nicht hinzugefügt werden."
+      update: "Platz konnte nicht aktualisiert werden."
+    hangar_plan_candidates:
+      create: "Schiff konnte dem Platz nicht hinzugefügt werden."
+      update: "Schiff konnte nicht aktualisiert werden."
+    hangar_plan_acquisitions:
+      create: "Weg konnte nicht hinzugefügt werden."
+      update: "Weg konnte nicht aktualisiert werden."
+    hangar_plan_melts:
+      create: "Melt konnte nicht hinzugefügt werden."
+      update: "Melt konnte nicht aktualisiert werden."
     hangar_inventories:
       create: Inventar konnte nicht erstellt werden.
       update: Inventar konnte nicht aktualisiert werden.

@@ -2,6 +2,7 @@
 
 require "discord/api_client"
 require "discord/guild_channels"
+require "discord/permission_resolution"
 
 module Discord
   # Answers "can the bot post in these channels?" before an announcement finds
@@ -14,12 +15,11 @@ module Discord
   # has to re-authorise; a channel locked to a role the bot lacks is fixed in
   # the channel's own settings.
   class ChannelCapability
-    ADMINISTRATOR = 1 << 3
+    include PermissionResolution
+
     VIEW_CHANNEL = 1 << 10
     SEND_MESSAGES = 1 << 11
     POST = VIEW_CHANNEL | SEND_MESSAGES
-
-    OVERWRITE_MEMBER = 1
 
     Result = Struct.new(:code, :channel_ids) do
       def ok?
@@ -61,48 +61,6 @@ module Discord
       Result.new(:missing_send_messages, blocked)
     rescue ApiClient::Error => e
       Result.new(error_code(e.status), [])
-    end
-
-    # @everyone shares the guild's id, and every member holds it implicitly.
-    # Permissions are a decimal string bitfield per role; a member holds the
-    # union of theirs.
-    private def base_permissions(roles, member_role_ids)
-      Array(roles)
-        .select { |role| role["id"] == @guild_id || member_role_ids.include?(role["id"]) }
-        .reduce(0) { |permissions, role| permissions | role["permissions"].to_i }
-    end
-
-    private def permissions_in(channel, base, member_role_ids)
-      overwrites = Array(channel["permission_overwrites"])
-      permissions = base
-
-      everyone = overwrites.find { |overwrite| overwrite["id"] == @guild_id }
-      permissions = apply(permissions, everyone["allow"].to_i, everyone["deny"].to_i) if everyone
-
-      roles = overwrites.select { |overwrite| overwrite["type"] != OVERWRITE_MEMBER && member_role_ids.include?(overwrite["id"]) }
-      permissions = apply(
-        permissions,
-        roles.reduce(0) { |allow, overwrite| allow | overwrite["allow"].to_i },
-        roles.reduce(0) { |deny, overwrite| deny | overwrite["deny"].to_i }
-      )
-
-      own = overwrites.find { |overwrite| overwrite["type"] == OVERWRITE_MEMBER && overwrite["id"] == ApiClient.application_id }
-      permissions = apply(permissions, own["allow"].to_i, own["deny"].to_i) if own
-
-      permissions
-    end
-
-    private def apply(permissions, allow, deny)
-      (permissions & ~deny) | allow
-    end
-
-    private def error_code(status)
-      case status
-      when 401 then :invalid_token
-      when 403 then :bot_not_in_guild
-      when 404 then :guild_not_found
-      else :discord_error
-      end
     end
 
     private def api

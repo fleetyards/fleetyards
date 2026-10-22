@@ -1,0 +1,416 @@
+{
+  "zh-TW": {
+    "hangarPlanner": {
+      "title": "機庫規劃器",
+      "lead": "用槽位（你想涵蓋的角色）規劃理想中的機庫，並算出如何從現有機庫走到那裡：保留什麼、熔毀（melt）什麼，以及使用哪些升級（CCU）和回購（buy-back）。",
+      "createPlan": "新增方案",
+      "editPlan": "編輯方案",
+      "destroyPlan": "刪除方案",
+      "confirmDestroy": "刪除此方案？你的機庫不會受到影響。",
+      "more": "更多",
+      "share": "透過連結分享",
+      "copyShareLink": "複製分享連結",
+      "unshare": "停止分享",
+      "shared": "已分享",
+      "sharedMissing": "此方案未分享，或連結已變更。",
+      "addToWishlist": "將待購飛船加入願望清單",
+      "confirmAddToWishlist": "將此方案仍需取得的每艘飛船加入你的願望清單？",
+      "compareWith": "與 %{plan} 比較",
+      "compareTitle": "%{left} 對比 %{right}",
+      "slotsCount": {
+        "one": "%{count} 個槽位",
+        "other": "%{count} 個槽位"
+      },
+      "updatedAt": "更新於 %{date}",
+      "empty": {
+        "title": "尚無方案",
+        "text": "可以從零開始、從你的機庫、從你的願望清單，或複製另一個方案來建立方案。"
+      },
+      "noSlots": "此方案還沒有槽位。請為機庫要涵蓋的每個角色新增一個槽位。",
+      "addSlot": "新增槽位",
+      "editSlot": "編輯槽位",
+      "removeSlot": "移除槽位",
+      "confirmRemoveSlot": "移除此槽位及其中的飛船和取得途徑？",
+      "openSlotHint": "尚未選擇飛船。可新增一艘，如果還沒想好也可新增多艘。",
+      "addShips": "新增飛船",
+      "addCandidates": "%{slot} 的飛船",
+      "addToSlot": "加入槽位",
+      "inSlot": "在此槽位中",
+      "choose": "選定",
+      "removeCandidate": "移除飛船",
+      "ownedCount": {
+        "one": "你的機庫中有 %{count} 艘",
+        "other": "你的機庫中有 %{count} 艘"
+      },
+      "notOnSale": "未在售",
+      "routes": "取得方式",
+      "addRoute": "新增取得 %{ship} 的途徑",
+      "addRouteShort": "新增途徑",
+      "editRoute": "取得 %{ship} 的途徑",
+      "removeRoute": "移除途徑",
+      "unresolvedUnits": {
+        "one": "%{count} 艘飛船尚無取得途徑",
+        "other": "%{count} 艘飛船尚無取得途徑"
+      },
+      "routeMustEnd": "途徑必須以 %{ship} 結束。",
+      "upgradeSteps": "升級",
+      "stepNumber": "升級 %{number}",
+      "addStep": "新增升級",
+      "removeStep": "移除升級",
+      "sourceMissing": "已不在你的機庫中",
+      "melts": "熔毀",
+      "noMelts": "沒有要熔毀的飛船。",
+      "addMelt": "熔毀一艘飛船",
+      "editMelt": "編輯熔毀",
+      "removeMelt": "保留飛船",
+      "estimated": "估算",
+      "free": "免費",
+      "unknownPrice": "未知",
+      "fields": {
+        "name": "名稱",
+        "description": "描述",
+        "startingCredit": "商店點數",
+        "startingCreditInfo": "你已擁有的商店點數，單位為美元。",
+        "source": "起點",
+        "sourcePlan": "要複製的方案",
+        "slotLabel": "角色",
+        "slotLabelPlaceholder": "例如：主力貨運船",
+        "quantity": "飛船數量",
+        "startKind": "起始狀態",
+        "ownedShip": "你機庫中的飛船",
+        "buyback": "回購 pledge",
+        "startModel": "飛船",
+        "priceOverride": "實付價格",
+        "priceOverrideInfo": "留空則使用目前商店價格，也可填寫促銷價或 warbond 價格。",
+        "upgradeSource": "升級自",
+        "ownedUpgrade": "你 RSI 機庫中的升級",
+        "upgradeTo": "升級為",
+        "meltShip": "要熔毀的飛船",
+        "meltValue": "點數",
+        "meltValueInfo": "熔掉可獲得的信用點。留空則使用 RSI 為該禮包列出的價值；機庫同步未讀取時使用今日商店價格。",
+        "slotDescription": "描述",
+        "filters": "適合的艦船",
+        "filtersInfo": "艦船選擇器會依這些篩選條件開啟。不符合條件的艦船仍可加入，並會被標記。",
+        "priceFrom": "最低價格",
+        "priceTo": "最高價格",
+        "minCargo": "最少貨艙",
+        "onSaleOnly": "僅限販售中的艦船",
+        "buybackTokens": "回購代幣",
+        "buybackTokensInfo": "每個代幣可讓你用商店信用點支付一次回購。沒有代幣時，回購需要花新錢。",
+        "buybackTokensSynced": "每個代幣可讓你用商店信用點支付一次回購。你上次的回購同步從 RSI 讀取到 %{count} 個；留空即使用該數值。",
+        "vatRate": "增值稅",
+        "vatRateInfo": "RSI 在結帳時依你所在地加收的增值稅，例如德國為 19。僅適用於新付款；商店點數已包含增值稅。"
+      },
+      "sources": {
+        "empty": "空方案",
+        "hangar": "我的機庫",
+        "wishlist": "我的願望清單",
+        "plan": "另一個方案"
+      },
+      "states": {
+        "open": "待定",
+        "decided": "已確定",
+        "undecided": "未決定"
+      },
+      "startKinds": {
+        "owned": "保留機庫中的",
+        "store": "商店購買",
+        "ingame": "遊戲內購買",
+        "buyback": "回購"
+      },
+      "upgradeSources": {
+        "store": "商店",
+        "owned_ccu": "我的 RSI 機庫",
+        "buyback": "回購"
+      },
+      "vehicleStatuses": {
+        "kept": "保留",
+        "upgraded": "已升級",
+        "melted": "已熔毀",
+        "unassigned": "不在方案中"
+      },
+      "changes": {
+        "added": "新增",
+        "removed": "移除",
+        "more": "增多",
+        "fewer": "減少",
+        "unchanged": "不變"
+      },
+      "issues": {
+        "missing_price": "%{name} 沒有已知價格，因此總價未計入它。",
+        "not_on_sale": "%{name} 目前未在售。"
+      },
+      "summary": {
+        "title": "費用",
+        "spend": "新增支出",
+        "meltCredit": "熔毀所得點數",
+        "startingCredit": "商店點數",
+        "net": "淨成本",
+        "cashNeeded": "仍需支付",
+        "remainingCredit": "剩餘點數",
+        "estimatedMelts": {
+          "one": "%{count} 項為估算",
+          "other": "%{count} 項為估算"
+        },
+        "openSlots": {
+          "one": "%{count} 個槽位沒有飛船",
+          "other": "%{count} 個槽位沒有飛船"
+        },
+        "undecidedSlots": {
+          "one": "%{count} 個槽位未決定",
+          "other": "%{count} 個槽位未決定"
+        },
+        "unresolved": {
+          "one": "%{count} 艘飛船沒有途徑",
+          "other": "%{count} 艘飛船沒有途徑"
+        },
+        "incomplete": "總價不完整",
+        "complete": "每艘飛船都有途徑和價格。",
+        "buybackCash": "用新錢支付的回購",
+        "buybacksWithoutToken": {
+          "one": "%{count} 次回購沒有代幣",
+          "other": "%{count} 次回購沒有代幣"
+        },
+        "tokensShort": {
+          "one": "%{count} 次回購使用代幣，但你只有 %{available} 個。其餘按新錢計算。",
+          "other": "%{count} 次回購使用代幣，但你只有 %{available} 個。其餘按新錢計算。"
+        }
+      },
+      "comparison": {
+        "title": "與你的機庫比較",
+        "yourShips": "你的飛船",
+        "noShips": "你的機庫中沒有飛船。",
+        "changes": "變化",
+        "noChanges": "沒有變化。",
+        "toAcquire": "仍需取得",
+        "hangar": "機庫",
+        "plan": "方案",
+        "happens": "會發生什麼",
+        "meltCredit": "%{value} 信用點",
+        "leaves": "離開你的機庫",
+        "notInPlan": "不在方案中",
+        "notOwned": "不在你的機庫中",
+        "lead": "左邊是你擁有的每艘飛船，右邊是方案需要的每艘飛船，中間是會發生的事。",
+        "anotherPlan": "與其他方案比較",
+        "tallies": {
+          "kept": {
+            "one": "保留 %{count}",
+            "other": "保留 %{count}"
+          },
+          "upgraded": {
+            "one": "已升級 %{count}",
+            "other": "已升級 %{count}"
+          },
+          "melted": {
+            "one": "已熔 %{count}",
+            "other": "已熔 %{count}"
+          },
+          "toAcquire": {
+            "one": "仍需取得 %{count}",
+            "other": "仍需取得 %{count}"
+          },
+          "open": {
+            "one": "待定欄位 %{count}",
+            "other": "待定欄位 %{count}"
+          }
+        },
+        "costsTitle": "費用",
+        "flow": {
+          "steps": {
+            "one": "%{count} 次升級 · %{price}",
+            "other": "%{count} 次升級 · %{price}"
+          },
+          "shipOf": "第 %{number} 艘，共 %{count} 艘",
+          "noRoute": "尚無途徑",
+          "notCounted": "未計入總額",
+          "noShip": "尚無飛船",
+          "notInPlan": {
+            "one": "%{count} 艘飛船不在方案中",
+            "other": "%{count} 艘飛船不在方案中"
+          }
+        },
+        "changeSides": {
+          "in": "新增",
+          "out": "移出"
+        },
+        "unchangedCount": {
+          "one": "%{count} 個型號保持不變。",
+          "other": "%{count} 個型號保持不變。"
+        },
+        "after": "方案完成後"
+      },
+      "metrics": {
+        "title": "統計",
+        "total": "飛船",
+        "uniqueModelsCount": "不同型號",
+        "manufacturerCount": "製造商",
+        "flightReadyCount": "可飛行",
+        "totalCrew": "船員",
+        "totalCargo": "貨艙（SCU）",
+        "totalPledgeValue": "商店價值",
+        "largestShip": "最大的飛船",
+        "smallestShip": "最小的飛船",
+        "classifications": "分類",
+        "sizes": "尺寸",
+        "productionStatuses": "生產狀態"
+      },
+      "drift": {
+        "title": "自建立此方案以來，你的機庫發生了變化",
+        "missing": {
+          "one": "方案使用的 %{count} 艘飛船或 pledge 已不存在。",
+          "other": "方案使用的 %{count} 艘飛船或 pledge 已不存在。"
+        },
+        "changed": {
+          "one": "%{count} 艘飛船現在是另一個型號。",
+          "other": "%{count} 艘飛船現在是其他型號。"
+        },
+        "added": "你的機庫新增：%{ships}",
+        "prices": "價格已變動：規劃時為 %{before}，今天為 %{now}。",
+        "rebase": "從機庫更新"
+      },
+      "messages": {
+        "saved": "方案已儲存。",
+        "saveFailed": "操作失敗，請檢查你的輸入。",
+        "shareCopied": "分享連結已複製。",
+        "unshared": "分享連結已失效。",
+        "addedToWishlist": {
+          "one": "已將 %{count} 艘飛船加入你的願望清單。",
+          "other": "已將 %{count} 艘飛船加入你的願望清單。"
+        },
+        "rebased": "方案已依你的機庫更新。",
+        "sharingOn": "已開啟分享。任何擁有連結的人都可以檢視此計畫。",
+        "copyFailed": "無法複製連結，請從欄位中複製。"
+      },
+      "filterChips": {
+        "priceFrom": "%{price} 起",
+        "priceTo": "不超過 %{price}",
+        "cargo": "%{cargo} SCU 以上",
+        "onSale": "販售中"
+      },
+      "outsideFilters": "不符合此槽位的篩選條件",
+      "shareLink": "分享連結",
+      "specs": {
+        "price": "價格",
+        "cargo": "貨艙",
+        "crew": "船員",
+        "size": "尺寸",
+        "best": "最佳"
+      },
+      "readiness": {
+        "routed": {
+          "one": "%{count} 艘飛船中 %{routed} 艘已有途徑",
+          "other": "%{count} 艘飛船中 %{routed} 艘已有途徑"
+        },
+        "undecided": "%{slot} 尚未決定",
+        "open": "%{slot} 還沒有飛船",
+        "unresolved": {
+          "one": "%{slot}：%{count} 艘飛船沒有途徑",
+          "other": "%{slot}：%{count} 艘飛船沒有途徑"
+        }
+      },
+      "meta": {
+        "undecided": "%{count} 個未決定",
+        "open": "%{count} 個待定"
+      },
+      "route": {
+        "stillToReach": "仍需到達",
+        "yourRoute": "你的途徑",
+        "startFirst": "選擇飛船的來源以查看途徑。",
+        "done": "途徑以 %{ship} 結束。",
+        "startHints": {
+          "owned": "你已擁有的飛船。如果不是 %{ship}，請加入將其變為 %{ship} 的升級。",
+          "buyback": "你已熔掉、可以向 RSI 回購的禮包。沒有回購代幣時需要花新錢，不能用商店信用點。",
+          "store": "RSI 商店中的新禮包。可以先買更便宜的飛船再升級。",
+          "ingame": "在遊戲中用 aUEC 購買，因此不花錢。遊戲內購買的飛船無法升級，所以必須直接是 %{ship}。"
+        },
+        "noVehicles": "你的機庫中沒有可用於此途徑的飛船。",
+        "noBuybacks": "你沒有可回購的禮包。請從你的 RSI 帳戶同步。",
+        "pledgeShip": "禮包中的飛船",
+        "isTarget": "同一艘飛船",
+        "holdsTarget": "包含該飛船",
+        "search": "搜尋",
+        "noMatch": "沒有符合項目。",
+        "reaches": "可到達 %{ship}",
+        "left": {
+          "one": "剩餘 %{count}",
+          "other": "剩餘 %{count}"
+        },
+        "showAll": {
+          "one": "顯示全部 %{count} 個升級",
+          "other": "顯示全部 %{count} 個升級"
+        },
+        "showFitting": "只顯示合適的升級",
+        "unknownTarget": "升級到哪艘飛船",
+        "startCost": "起點",
+        "includesShip": "包含 %{ship}",
+        "cheaperOnly": "只列出比 %{ship}（%{price}）便宜的飛船，因為你會從它們升級。",
+        "sort": {
+          "price": "價格",
+          "name": "名稱"
+        },
+        "change": "變更",
+        "from": "從",
+        "to": "到",
+        "todaysPrice": "今日價格：%{price}",
+        "noStoreShip": "商店中沒有適合這裡的艦船。",
+        "paidWithCredit": "商店點數",
+        "paidWithCash": "新付款",
+        "vat": "增值稅（%{rate}%）",
+        "cashWithVat": "含增值稅的新付款",
+        "paymentHint": "商店點數可用於商店購買和使用回購代幣的回購。沒有代幣的回購需要新付款，點數不足的部分也是如此。",
+        "ownedPaid": "已支付",
+        "noHeld": {
+          "owned_ccu": "你 RSI 機庫中的升級沒有從 %{ship} 出發的。",
+          "buyback": "你的回購升級中沒有從 %{ship} 出發的。"
+        },
+        "direction": {
+          "label": "建立途徑",
+          "forward": "從起點開始",
+          "reverse": "從目標倒推"
+        },
+        "directionHints": {
+          "forward": "先選擇飛船的來源，再選擇把它變為 %{ship} 的升級。",
+          "reverse": "從 %{ship} 倒推：選擇以它結束的升級，再選擇在其起點結束的升級。停在你擁有、可回購或可購買的飛船上。"
+        },
+        "startPending": "起點待選",
+        "reverseStart": "途徑從 %{ship} 開始。",
+        "unknownSource": "從哪艘飛船升級",
+        "noHeldInto": {
+          "owned_ccu": "你 RSI 機庫中的升級沒有以 %{ship} 結束的。",
+          "buyback": "你的回購升級中沒有以 %{ship} 結束的。"
+        },
+        "upgradeInto": "升級至 %{ship}",
+        "upgradesTo": "至 %{ship}",
+        "inHangar": "在你的機庫中",
+        "buybackAvailable": "可回購",
+        "nextStep": "途徑現在從 %{ship} 開始。加入升級至它，或選擇 %{ship} 作為起點。",
+        "addUpgradeInto": "加入升級至 %{ship}",
+        "startHere": "從 %{ship} 開始",
+        "shipCard": "飛船",
+        "useToken": "使用回購代幣",
+        "withToken": "已用代幣支付",
+        "buyTarget": "直接購買 %{ship}",
+        "startShort": {
+          "owned": "機庫",
+          "buyback": "回購",
+          "store": "商店",
+          "ingame": "遊戲內"
+        },
+        "ingameNoUpgrades": "遊戲內購買的飛船無法升級。請先移除升級。"
+      },
+      "meltList": {
+        "none": "根據 RSI，你的飛船都不可熔。關閉篩選即可任選飛船。",
+        "credit": "%{value} 信用點",
+        "estimate": "約 %{value}",
+        "wholePledge": {
+          "one": "熔掉 %{count} 件物品",
+          "other": "熔掉整個禮包：%{count} 件物品"
+        },
+        "meltableOnly": "僅可熔",
+        "notMeltable": "不可熔",
+        "notSynced": "未同步",
+        "noShips": "你沒有可用於熔掉的飛船。"
+      }
+    }
+  }
+}

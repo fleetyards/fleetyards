@@ -23,6 +23,7 @@ import {
   useDestroyFleetEvent,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import { standardErrorFrom } from "@/shared/utils/ApiErrors";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import { checkAccess } from "@/shared/utils/Access";
@@ -37,7 +38,7 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { t } = useI18n();
+const { t, tExists } = useI18n();
 const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 const comlink = useComlink();
 const router = useRouter();
@@ -117,8 +118,19 @@ const transition = async (
     });
     displaySuccess({ text: t(`messages.fleets.event.${action}.success`) });
     comlink.emit("fleet-event-updated");
-  } catch {
-    displayAlert({ text: t(`messages.fleets.event.${action}.failure`) });
+  } catch (error) {
+    // A refusal the fleet can fix itself, like a Discord permission, gets its
+    // own message where there is one.
+    const { code } = standardErrorFrom(error);
+    const specific = `messages.fleets.event.${action}.${code}`;
+
+    displayAlert({
+      text: t(
+        code && tExists(specific)
+          ? specific
+          : `messages.fleets.event.${action}.failure`,
+      ),
+    });
   }
 };
 

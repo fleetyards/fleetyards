@@ -2799,3 +2799,5 @@ POST /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships 
 PUT /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships/{id} removed the enum value `recon` of the request property `foci/items/`
 POST /fleets/{fleetSlug}/missions/{missionSlug}/teams/{missionTeamId}/ships removed the enum value `recon` of the request property `foci/items/`
 PUT /fleets/{fleetSlug}/missions/{missionSlug}/teams/{missionTeamId}/ships/{id} removed the enum value `recon` of the request property `foci/items/`
+PATCH /fleet-event-signups/{id}/assign removed the required property `details` from the response with the `400` status
+PATCH /fleet-event-signups/{id}/assign removed the required property `error` from the response with the `400` status

@@ -5,6 +5,11 @@ zh-CN:
       fleet_squadron_request:
         fleet_membership: "成员"
         fleet_squadron: "中队"
+      fleet_event_signup:
+        fleet_event_slot_id: "位置"
+        fleet_membership_id: "成员"
+        status: "状态"
+        vehicle_id: "舰船"
       vehicle:
         bought_via:
           pledge_store: 质押商店
@@ -315,6 +320,42 @@ zh-CN:
         blank: 不能为空字符
         record_invalid: 错误的数据信息
       models:
+        hangar_plan:
+          attributes:
+            base:
+              plan_limit_reached: "最多只能有 %{count} 个计划"
+        hangar_plan_slot:
+          attributes:
+            quantity:
+              below_routes: "已有 %{count} 艘舰船的获取途径，请先删除途径"
+            base:
+              slot_limit_reached: "最多只能有 %{count} 个槽位"
+        hangar_plan_acquisition:
+          attributes:
+            base:
+              slot_filled: "此槽位的每艘舰船都已有获取路线"
+              chain_mismatch: "获取路线必须以该槽位的舰船结束"
+              chain_broken: "每次升级都必须从上一步结束的舰船开始"
+              upgrade_taken: "某个升级的使用次数超过了你拥有的数量"
+            source_vehicle_id:
+              melted: "已在此计划中熔炼"
+              pledge_melted: "属于此计划熔炼的礼包"
+              taken: "已在此计划中使用"
+            buyback_pledge_id:
+              taken: "已在此计划中使用"
+        hangar_plan_upgrade_step:
+          attributes:
+            to_model_id:
+              same_as_from: "必须与升级前的舰船不同"
+            hangar_pledge_item_id:
+              taken: "已在此计划中使用"
+            buyback_pledge_id:
+              taken: "已在此计划中使用"
+        hangar_plan_melt:
+          attributes:
+            vehicle_id:
+              taken: "已在此计划中使用"
+              pledge_kept: "属于此计划保留其他舰船的礼包"
         vehicle_loadout:
           attributes:
             base:
@@ -522,5 +563,9 @@ zh-CN:
             fleet_event_slot_id:
               already_taken: 已被其他成员占用
               wrong_event: 不属于此活动
+              required: 已不存在
             status:
               invalid_for_slot: 在位置上必须为已确认或待审核
+            vehicle_id:
+              required: 已不存在
+              not_owned: 不在该成员的机库中

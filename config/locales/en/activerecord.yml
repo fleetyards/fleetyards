@@ -5,6 +5,11 @@ en:
       fleet_squadron_request:
         fleet_membership: "Member"
         fleet_squadron: "Squadron"
+      fleet_event_signup:
+        fleet_event_slot_id: "Slot"
+        fleet_membership_id: "Member"
+        status: "Status"
+        vehicle_id: "Ship"
       vehicle:
         bought_via:
           pledge_store: Pledge Store
@@ -316,6 +321,42 @@ en:
         announcement_limit_reached: "Your fleet already has %{count} announcements up. Remove one before posting another."
         already_passed: "has already passed"
       models:
+        hangar_plan:
+          attributes:
+            base:
+              plan_limit_reached: "can hold at most %{count} plans"
+        hangar_plan_slot:
+          attributes:
+            quantity:
+              below_routes: "has routes for %{count} ships; remove routes first"
+            base:
+              slot_limit_reached: "can hold at most %{count} slots"
+        hangar_plan_acquisition:
+          attributes:
+            base:
+              slot_filled: "this slot already has a route for each of its ships"
+              chain_mismatch: "the route has to end on the slot's ship"
+              chain_broken: "each upgrade has to start on the ship the step before ended on"
+              upgrade_taken: "an upgrade is used more often than you hold it"
+            source_vehicle_id:
+              melted: "is melted in this plan"
+              pledge_melted: "comes in a pledge this plan melts"
+              taken: "is already used in this plan"
+            buyback_pledge_id:
+              taken: "is already used in this plan"
+        hangar_plan_upgrade_step:
+          attributes:
+            to_model_id:
+              same_as_from: "has to be another ship than the one it upgrades from"
+            hangar_pledge_item_id:
+              taken: "is already used in this plan"
+            buyback_pledge_id:
+              taken: "is already used in this plan"
+        hangar_plan_melt:
+          attributes:
+            vehicle_id:
+              taken: "is already used in this plan"
+              pledge_kept: "comes in a pledge whose other ships this plan keeps"
         vehicle_loadout:
           attributes:
             base:
@@ -554,5 +595,9 @@ en:
             fleet_event_slot_id:
               already_taken: is already taken by another member
               wrong_event: does not belong to this event
+              required: no longer exists
             status:
               invalid_for_slot: must be confirmed or pending for a slot
+            vehicle_id:
+              required: no longer exists
+              not_owned: is not in this member's hangar

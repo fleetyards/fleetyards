@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { useI18n } from "@/shared/composables/useI18n";
-import { type PlaqueContent } from "./types";
+import { type PlaqueContent, PLAQUE_DEFAULT_LOCALE } from "./types";
 import { inUniverseLaunchDate } from "./launchDate";
 import { PLAQUE_CREDITS } from "./credits";
 import {
@@ -28,7 +28,16 @@ const props = withDefaults(defineProps<Props>(), {
   captain: undefined,
 });
 
-const { t, currentLocale } = useI18n();
+const { t: translate } = useI18n();
+
+// The plaque's own language, never the viewer's: the month on it as much as
+// its words, so everyone sees the plaque its owner wrote.
+const plaqueLocale = computed(
+  () => props.vehicle.plaqueLocale || PLAQUE_DEFAULT_LOCALE,
+);
+
+const t = (scope: string, options: Record<string, unknown> = {}) =>
+  translate(scope, { ...options, locale: plaqueLocale.value });
 
 const verseTooltip = computed(() =>
   props.vehicle.dedicationVerse
@@ -138,7 +147,7 @@ const launchDate = computed(() => {
 
   return t(
     "texts.vehiclePlaque.year",
-    inUniverseLaunchDate(props.vehicle.launchedOn, currentLocale()),
+    inUniverseLaunchDate(props.vehicle.launchedOn, plaqueLocale.value),
   );
 });
 

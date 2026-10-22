@@ -56,6 +56,7 @@ const buyback = (overrides: Partial<BuybackPledge> = {}): BuybackPledge => ({
   upgraded: false,
   available: true,
   lifetimeInsurance: false,
+  insuranceKnown: true,
   price: 110,
   createdAt: NOW,
   updatedAt: NOW,

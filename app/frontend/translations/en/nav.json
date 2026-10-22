@@ -33,7 +33,9 @@
         "transfers": "Transfers",
         "vehicleOverview": "Overview",
         "vehicleLog": "Captain's Log",
-        "shipComponents": "Ship Components"
+        "shipComponents": "Ship Components",
+        "plans": "Planner",
+        "sharedPlan": "Shared Plan"
       },
       "login": "Login",
       "installApp": "Install app",

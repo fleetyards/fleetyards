@@ -1,0 +1,31 @@
+# frozen_string_literal: true
+
+module V1
+  module Schemas
+    module Hangar
+      module Plans
+        class HangarPlanUpgradeStep
+          include OpenapiRuby::Components::Base
+
+          schema({
+            type: :object,
+            properties: {
+              id: {type: :string, format: :uuid},
+              sourceKind: ::V1::Schemas::Enums::HangarPlanUpgradeSourceEnum,
+              fromModel: ::V1::Schemas::Hangar::Plans::HangarPlanModel,
+              toModel: ::V1::Schemas::Hangar::Plans::HangarPlanModel,
+              hangarPledgeItemId: {type: [:string, :null], format: :uuid},
+              buybackPledgeId: {type: [:string, :null], format: :uuid},
+              priceOverride: {type: [:number, :null]},
+              usesBuybackToken: {type: :boolean, description: "Pays for this buy-back with store credit, which spends one of the user's buy-back tokens"},
+              price: {type: [:number, :null], description: "In USD; null when a store price is unknown"},
+              sourceMissing: {type: :boolean}
+            },
+            additionalProperties: false,
+            required: %w[id sourceKind fromModel toModel sourceMissing usesBuybackToken]
+          })
+        end
+      end
+    end
+  end
+end

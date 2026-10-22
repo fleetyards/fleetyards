@@ -813,12 +813,14 @@ class Model < ApplicationRecord
   # and a focus as a link from before the keys words it ("Heavy Fighter") is
   # read as the keys it maps to.
   scope :focus_in, ->(*values) {
-    keys = values.flatten.map(&:to_s).flat_map do |value|
+    where("models.foci && ARRAY[?]::varchar[]", focus_keys(values).presence || [""])
+  }
+
+  def self.focus_keys(values)
+    Array(values).flatten.map(&:to_s).flat_map do |value|
       FOCI.include?(value) ? [value] : ::Models::FocusMapping.call(value).foci
     end
-
-    where("models.foci && ARRAY[?]::varchar[]", keys.presence || [""])
-  }
+  end
 
   def self.ransackable_scopes(auth_object = nil)
     ["dimensions_drifted", "sold_at_shop", "focus_in"]

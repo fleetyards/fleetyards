@@ -663,9 +663,9 @@
           "webhookUrl": "URL del webhook de anuncios (opcional)",
           "installBotHint": "Abre la página de instalación de Discord en una pestaña nueva — elige el servidor al que quieres reflejar los eventos.",
           "announcementChannel": "Canal de anuncios",
-          "announcementChannelHint": "Aquí se publican los eventos nuevos y los recordatorios de inicio. Sin canal, se envían por el webhook. Los eventos restringidos a escuadrones se publican en los canales de esos escuadrones.",
+          "announcementChannelHint": "Aquí se publican los eventos nuevos y los recordatorios de inicio. Sin canal, se envían por el webhook. Los eventos restringidos a escuadrones se publican en los canales de esos escuadrones. El bot necesita «Ver canal» y «Enviar mensajes» ahí.",
           "officersChannel": "Canal de oficiales",
-          "officersChannelHint": "Los eventos visibles solo para oficiales se anuncian aquí y en ningún otro sitio de Discord. Sin canal, no se anuncian en Discord. Las solicitudes de ingreso también se publican aquí, con botones para aceptarlas o rechazarlas.",
+          "officersChannelHint": "Los eventos visibles solo para oficiales se anuncian aquí y en ningún otro sitio de Discord. Sin canal, no se anuncian en Discord. Las solicitudes de ingreso también se publican aquí, con botones para aceptarlas o rechazarlas. El bot necesita «Ver canal» y «Enviar mensajes» ahí.",
           "digestWeekday": "Resumen semanal",
           "digestWeekdayHint": "Una vez por semana, cada canal recibe una lista de los eventos de los próximos siete días que puede ver. Déjalo vacío para desactivarlo.",
           "digestTime": "Hora del resumen",
@@ -686,9 +686,14 @@
             "unknown_role": "Un rol elegido aquí ya no existe en Discord: %{names}.",
             "role_above_bot": "El bot no puede asignar %{names}: Discord solo le deja dar roles por debajo del suyo. Sube el rol del bot por encima de ellos en los ajustes del servidor."
           },
+          "eventsCodes": {
+            "missing_create_events": "El bot no puede crear eventos en este servidor, así que no se pueden enviar eventos a Discord. Dale al rol del bot el permiso «Crear eventos» en los ajustes del servidor o vuelve a autorizarlo con el enlace de instalación.",
+            "voice_channel_locked": "El bot no puede crear eventos en el canal de voz indicado aquí. Dale «Ver canal», «Conectar» y «Crear eventos» en los permisos de ese canal.",
+            "unknown_voice_channel": "El canal de voz indicado aquí ya no existe en Discord o no es un canal de voz."
+          },
           "postingCodes": {
             "missing_send_messages": "El bot no puede enviar mensajes en este servidor. Usa el enlace de instalación para volver a autorizarlo.",
-            "channel_locked": "El bot no puede publicar en el canal elegido para %{names}. Permítelo en los permisos de ese canal.",
+            "channel_locked": "El bot no puede publicar en el canal elegido para %{names}. Dale «Ver canal» y «Enviar mensajes» en los permisos de ese canal.",
             "unknown_channel": "El canal elegido para %{names} ya no existe en Discord o ya no admite publicaciones.",
             "channel_shared": "%{names} comparte un canal con lectores a los que no se muestran sus eventos. No se publica nada allí hasta que cada uno tenga un canal propio."
           },
@@ -910,7 +915,7 @@
           "teamHint": "Un equipo está abierto a todos; de lo contrario, un miembro pertenece a un solo escuadrón",
           "restrictedToHint": "Solo estos escuadrones pueden verlo",
           "discordChannel": "Canal de Discord",
-          "discordChannelHint": "Los eventos restringidos a este escuadrón se anuncian aquí y en ningún otro sitio de Discord. Sin canal, no se anuncian en Discord.",
+          "discordChannelHint": "Los eventos restringidos a este escuadrón se anuncian aquí y en ningún otro sitio de Discord. Sin canal, no se anuncian en Discord. El bot necesita «Ver canal» y «Enviar mensajes» ahí.",
           "notAnnounced": "No se anuncia en Discord para %{names}: no hay un canal de Discord configurado.",
           "blockedBy": "Ya está en el escuadrón %{squadron}",
           "color": "Color",
@@ -2929,6 +2934,7 @@
         "insurance": "Seguro",
         "lifetimeInsurance": "LTI",
         "noInsurance": "Sin seguro",
+        "insuranceUnknown": "Seguro desconocido",
         "insuranceMonths": {
           "one": "%{count} mes",
           "other": "%{count} meses"
@@ -4529,6 +4535,9 @@
         "dedication": "Dedicatoria",
         "dedicationVerse": "Verso de dedicatoria",
         "dedicationVerseInfo": "Opcional. Unos versos o una bendición que se muestran al pasar el cursor sobre la dedicatoria o tocarla.",
+        "translated": "Traducir la placa",
+        "translatedInfo": "Imprime la placa en el idioma en que está configurado Fleetyards, para todos los que la vean. Desactivado, se lee en inglés, como las placas del juego.",
+        "translatedInto": "Impresa en %{language} para todos los que la vean. Desactivado, se lee en inglés.",
         "launchedOn": "Fecha de botadura",
         "launchPort": "Puerto de botadura",
         "affiliation": "Afiliación"

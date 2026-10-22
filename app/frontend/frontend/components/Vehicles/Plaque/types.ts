@@ -17,5 +17,8 @@ export type PlaqueContent = Pick<
   | "manufacturerShortName"
   | "manufacturerCode"
   | "plaqueStyle"
+  | "plaqueLocale"
   | "shipyard"
 > & { model: Pick<Model, "name" | "manufacturer"> };
+
+export const PLAQUE_DEFAULT_LOCALE = "en";

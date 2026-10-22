@@ -70,6 +70,7 @@ const buyback = (attrs: Partial<BuybackPledge> = {}) =>
     upgraded: false,
     available: true,
     lifetimeInsurance: false,
+    insuranceKnown: false,
     reclaimedOn: "2023-11-26",
     contained: "Cutter Scout and 3 items",
     createdAt: "2026-10-07T12:00:00Z",
@@ -278,6 +279,16 @@ describe("Hangar/BuybacksList", () => {
 
     expect(wrapper.text()).toContain("120 months");
     expect(wrapper.text()).toContain("LTI");
+  });
+
+  it("tells a pledge without insurance from one whose details are unsynced", async () => {
+    const wrapper = await mount([
+      buyback({ insuranceKnown: true }),
+      buyback({ id: "unsynced" }),
+    ]);
+
+    expect(wrapper.text()).toContain("No insurance");
+    expect(wrapper.text()).toContain("Insurance unknown");
   });
 
   it("marks a pledge RSI no longer offers for buy-back", async () => {

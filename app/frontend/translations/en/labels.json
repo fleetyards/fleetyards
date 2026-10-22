@@ -663,9 +663,9 @@
           "webhookUrl": "Announcement Webhook URL (optional)",
           "installBotHint": "Opens the Discord install page in a new tab — pick the server you want events mirrored to.",
           "announcementChannel": "Announcement Channel",
-          "announcementChannelHint": "New events and starting-soon reminders are posted here. Without one, they go through the webhook. Events held to squadrons are posted in the squadrons' own channels instead.",
+          "announcementChannelHint": "New events and starting-soon reminders are posted here. Without one, they go through the webhook. Events held to squadrons are posted in the squadrons' own channels instead. The bot needs View Channel and Send Messages there.",
           "officersChannel": "Officers Channel",
-          "officersChannelHint": "Events visible only to officers are announced here and nowhere else on Discord. Without one, they are not announced on Discord at all. Join requests are posted here too, with buttons to accept or decline them.",
+          "officersChannelHint": "Events visible only to officers are announced here and nowhere else on Discord. Without one, they are not announced on Discord at all. Join requests are posted here too, with buttons to accept or decline them. The bot needs View Channel and Send Messages there.",
           "digestWeekday": "Weekly Digest",
           "digestWeekdayHint": "Once a week, every channel gets a list of the coming seven days' events it may see. Leave empty to turn it off.",
           "digestTime": "Digest Time",
@@ -686,9 +686,14 @@
             "unknown_role": "A role picked here no longer exists on Discord: %{names}.",
             "role_above_bot": "The bot cannot hand out %{names}: Discord only lets it give roles below its own. Move the bot's role above them in the server settings."
           },
+          "eventsCodes": {
+            "missing_create_events": "The bot may not create events in this server, so events cannot be pushed to Discord. Give the bot's role Create Events in the server settings, or use the install link to re-authorise it.",
+            "voice_channel_locked": "The bot cannot create events in the voice channel set here. Allow it View Channel, Connect and Create Events in that channel's permissions.",
+            "unknown_voice_channel": "The voice channel set here no longer exists on Discord or is not a voice channel."
+          },
           "postingCodes": {
             "missing_send_messages": "The bot may not send messages in this server. Use the install link to re-authorise it.",
-            "channel_locked": "The bot cannot post in the channel picked for %{names}. Allow it in that channel's permissions.",
+            "channel_locked": "The bot cannot post in the channel picked for %{names}. Allow it View Channel and Send Messages in that channel's permissions.",
             "unknown_channel": "The channel picked for %{names} no longer exists on Discord or can no longer take posts.",
             "channel_shared": "%{names} shares a channel with readers its events are kept from. Nothing is posted there until each has a channel of its own."
           },
@@ -910,7 +915,7 @@
           "teamHint": "A team is open to everyone — otherwise a member belongs to one squadron",
           "restrictedToHint": "Only these squadrons can see it",
           "discordChannel": "Discord Channel",
-          "discordChannelHint": "Events held to this squadron are announced here and nowhere else on Discord. Without a channel, they are not announced on Discord at all.",
+          "discordChannelHint": "Events held to this squadron are announced here and nowhere else on Discord. Without a channel, they are not announced on Discord at all. The bot needs View Channel and Send Messages there.",
           "notAnnounced": "Not announced on Discord for %{names}: no Discord channel is set up.",
           "blockedBy": "Already in the %{squadron} squadron",
           "color": "Color",
@@ -2929,6 +2934,7 @@
         "insurance": "Insurance",
         "lifetimeInsurance": "LTI",
         "noInsurance": "No insurance",
+        "insuranceUnknown": "Insurance unknown",
         "insuranceMonths": {
           "one": "%{count} month",
           "other": "%{count} months"
@@ -4543,6 +4549,9 @@
         "dedication": "Dedication",
         "dedicationVerse": "Dedication verse",
         "dedicationVerseInfo": "Optional. A few lines of verse or a blessing, shown when someone hovers over or taps the dedication.",
+        "translated": "Translate the plaque",
+        "translatedInfo": "Prints the plaque in the language Fleetyards is set to, for everyone who sees it. Off, it reads in English, as the plaques in the game do.",
+        "translatedInto": "Printed in %{language} for everyone who sees it. Turned off, it reads in English.",
         "launchedOn": "Launch date",
         "launchPort": "Launch port",
         "affiliation": "Affiliation"

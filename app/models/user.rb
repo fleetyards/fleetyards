@@ -147,6 +147,7 @@ class User < ApplicationRecord
   has_many :push_subscriptions, dependent: :delete_all
   has_many :buyback_pledges, dependent: :delete_all
   has_many :hangar_pledge_items, dependent: :delete_all
+  has_many :hangar_plans, dependent: :destroy
 
   has_many :oauth_applications, class_name: "Oauth::Application", as: :owner
   has_many :omniauth_connections, dependent: :destroy
@@ -209,7 +210,7 @@ class User < ApplicationRecord
   # The pages under /hangar/ that are not a user's hangar: a user given one of
   # these names would have their public hangar shadowed by the page.
   RESERVED_USERNAMES = %w[
-    blueprints buybacks equipment fleetchart flair imports inventories paints preview ship-components
+    blueprints buybacks equipment fleetchart flair imports inventories paints plans preview ship-components
     stats transactions transfers upgrades wishlist
   ].freeze
 

@@ -663,9 +663,9 @@
           "webhookUrl": "URL du webhook d'annonce (facultatif)",
           "installBotHint": "Ouvre la page d'installation Discord dans un nouvel onglet — choisissez le serveur vers lequel refléter les événements.",
           "announcementChannel": "Salon d'annonces",
-          "announcementChannelHint": "Les nouveaux événements et les rappels avant le début sont publiés ici. Sans salon, ils passent par le webhook. Les événements réservés à des escadrons sont publiés dans les salons de ces escadrons.",
+          "announcementChannelHint": "Les nouveaux événements et les rappels avant le début sont publiés ici. Sans salon, ils passent par le webhook. Les événements réservés à des escadrons sont publiés dans les salons de ces escadrons. Le bot y a besoin de « Voir le salon » et « Envoyer des messages ».",
           "officersChannel": "Salon des officiers",
-          "officersChannelHint": "Les événements réservés aux officiers sont annoncés ici et nulle part ailleurs sur Discord. Sans salon, ils ne sont pas annoncés sur Discord. Les demandes d'adhésion y sont aussi publiées, avec des boutons pour les accepter ou les refuser.",
+          "officersChannelHint": "Les événements réservés aux officiers sont annoncés ici et nulle part ailleurs sur Discord. Sans salon, ils ne sont pas annoncés sur Discord. Les demandes d'adhésion y sont aussi publiées, avec des boutons pour les accepter ou les refuser. Le bot y a besoin de « Voir le salon » et « Envoyer des messages ».",
           "digestWeekday": "Récapitulatif hebdomadaire",
           "digestWeekdayHint": "Une fois par semaine, chaque salon reçoit la liste des événements des sept prochains jours qu'il peut voir. Laissez vide pour le désactiver.",
           "digestTime": "Heure du récapitulatif",
@@ -686,9 +686,14 @@
             "unknown_role": "Un rôle choisi ici n'existe plus sur Discord : %{names}.",
             "role_above_bot": "Le bot ne peut pas attribuer %{names} : Discord ne lui permet de donner que des rôles en dessous du sien. Place le rôle du bot au-dessus dans les paramètres du serveur."
           },
+          "eventsCodes": {
+            "missing_create_events": "Le bot n'a pas le droit de créer des événements sur ce serveur, les événements ne peuvent donc pas être envoyés sur Discord. Donnez au rôle du bot la permission « Créer des événements » dans les paramètres du serveur, ou réautorisez-le avec le lien d'installation.",
+            "voice_channel_locked": "Le bot ne peut pas créer d'événements dans le salon vocal indiqué ici. Accordez-lui « Voir le salon », « Se connecter » et « Créer des événements » dans les permissions de ce salon.",
+            "unknown_voice_channel": "Le salon vocal indiqué ici n'existe plus sur Discord ou n'est pas un salon vocal."
+          },
           "postingCodes": {
             "missing_send_messages": "Le bot ne peut pas envoyer de messages sur ce serveur. Utilisez le lien d'installation pour l'autoriser à nouveau.",
-            "channel_locked": "Le bot ne peut pas publier dans le salon choisi pour %{names}. Autorisez-le dans les permissions de ce salon.",
+            "channel_locked": "Le bot ne peut pas publier dans le salon choisi pour %{names}. Accordez-lui « Voir le salon » et « Envoyer des messages » dans les permissions de ce salon.",
             "unknown_channel": "Le salon choisi pour %{names} n'existe plus sur Discord ou n'accepte plus de publications.",
             "channel_shared": "%{names} partage un salon avec des lecteurs à qui ses événements sont cachés. Rien n'y est publié tant que chacun n'a pas son propre salon."
           },
@@ -910,7 +915,7 @@
           "teamHint": "Une équipe est ouverte à tous — sinon un membre n'appartient qu'à un seul escadron",
           "restrictedToHint": "Seuls ces escadrons peuvent le voir",
           "discordChannel": "Salon Discord",
-          "discordChannelHint": "Les événements réservés à cet escadron sont annoncés ici et nulle part ailleurs sur Discord. Sans salon, ils ne sont pas annoncés sur Discord.",
+          "discordChannelHint": "Les événements réservés à cet escadron sont annoncés ici et nulle part ailleurs sur Discord. Sans salon, ils ne sont pas annoncés sur Discord. Le bot y a besoin de « Voir le salon » et « Envoyer des messages ».",
           "notAnnounced": "Pas d'annonce sur Discord pour %{names} : aucun salon Discord n'est configuré.",
           "blockedBy": "Déjà dans l'escadron %{squadron}",
           "color": "Couleur",
@@ -2929,6 +2934,7 @@
         "insurance": "Assurance",
         "lifetimeInsurance": "LTI",
         "noInsurance": "Sans assurance",
+        "insuranceUnknown": "Assurance inconnue",
         "insuranceMonths": {
           "one": "%{count} mois",
           "other": "%{count} mois"
@@ -4529,6 +4535,9 @@
         "dedication": "Dédicace",
         "dedicationVerse": "Vers de dédicace",
         "dedicationVerseInfo": "Facultatif. Quelques vers ou une bénédiction, affichés au survol ou au toucher de la dédicace.",
+        "translated": "Traduire la plaque",
+        "translatedInfo": "Imprime la plaque dans la langue choisie pour Fleetyards, pour tous ceux qui la voient. Désactivée, elle est en anglais, comme les plaques du jeu.",
+        "translatedInto": "Imprimée en %{language} pour tous ceux qui la voient. Désactivée, elle est en anglais.",
         "launchedOn": "Date de lancement",
         "launchPort": "Port de lancement",
         "affiliation": "Affiliation"

@@ -43,6 +43,28 @@ resource :hangar, only: %i[show destroy] do
     end
   end
 
+  resources :hangar_plans, path: "plans", only: %i[index show create update destroy] do
+    member do
+      get :summary
+      get :comparison
+      get "compare/:other_id", action: :compare, as: :compare
+      get :drift
+      put :rebase
+      put "add-to-wishlist", action: :add_to_wishlist
+      put :share
+      delete :share, action: :unshare
+      get :resources
+    end
+
+    resources :hangar_plan_slots, path: "slots", only: %i[create update destroy] do
+      put :sort, on: :collection
+      put :choose, on: :member
+    end
+    resources :hangar_plan_candidates, path: "candidates", only: %i[create update destroy]
+    resources :hangar_plan_acquisitions, path: "acquisitions", only: %i[create update destroy]
+    resources :hangar_plan_melts, path: "melts", only: %i[create update destroy]
+  end
+
   get "contract-destinations", to: "hangar_contract_destinations#index"
 
   get "inventory-items", to: "hangar_all_inventory_items#index"
@@ -85,4 +107,8 @@ namespace :public do
   end
 
   resources :wishlists, param: :username, only: %i[show]
+
+  resources :hangar_plans, path: "hangar-plans", param: :token, only: %i[show] do
+    get :summary, on: :member
+  end
 end
