@@ -154,7 +154,6 @@ module Rsi
       # stealthy, and an admin may have said it is.
       updates["rsi_focus"] = data["focus"]
       if (data["focus"].present? && data["focus"] != model.rsi_focus) || model.rsi_focus.blank?
-
         mapped = ::Models::FocusMapping.call(data["focus"])
         updates[:foci] = mapped.foci if mapped.foci.any? && matrix_foci?(model)
         updates[:stealth] = true if mapped.stealth

@@ -5,8 +5,8 @@ module FociList
   extend ActiveSupport::Concern
 
   included do
-    # Ignored before it is dropped, so this release keeps working while the
-    # next one's pre-deploy migration removes the column.
+    # The string `focus` the keys replaced. Ignored rather than dropped while a
+    # release that still selects it can be serving.
     self.ignored_columns += ["focus"]
 
     validate :foci_must_be_known
