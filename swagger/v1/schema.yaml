@@ -36242,7 +36242,6 @@ components:
       - recovery
       - expedition
       - pathfinder
-      - recon
       - racing
       - starter
       - generalist
@@ -36283,7 +36282,6 @@ components:
       - RECOVERY
       - EXPEDITION
       - PATHFINDER
-      - RECON
       - RACING
       - STARTER
       - GENERALIST

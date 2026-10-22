@@ -254,6 +254,20 @@ module Rsi
       assert_equal %w[carrier merchant], Model.find_by(rsi_id: 7).foci
     end
 
+    # RSI rewords a ship without moving `time_modified`. The shadow takes the
+    # new wording either way, so a live focus waiting for the timestamp would
+    # never see a difference again.
+    test "#follows a rewording that leaves time_modified alone" do
+      data = JSON.parse(File.read("test/fixtures/rsi/matrix.json"))["data"].find { |ship| ship["id"] == 7 }
+      @loader.send(:create_or_update_model, data.merge("focus" => "Light Fighter"))
+
+      @loader.send(:create_or_update_model, data.merge("focus" => "Starter / Light Fighter"))
+
+      model = Model.find_by(rsi_id: 7)
+      assert_equal %w[light_fighter fighter starter], model.foci
+      assert_equal "Light Fighter / Starter", model.focus
+    end
+
     test "#leaves a classification it does not recognise off the model" do
       data = JSON.parse(File.read("test/fixtures/rsi/matrix.json"))["data"].find { |ship| ship["id"] == 7 }
 
@@ -263,7 +277,7 @@ module Rsi
 
       assert_nil model.classification
       assert_equal "Spaceship", model.rsi_classification
-      assert_equal "Luxury Touring", model.focus
+      assert_equal "Luxury Touring", model.rsi_focus
     end
 
     # The matrix carries no size for the ten largest ground vehicles -- the Ursa

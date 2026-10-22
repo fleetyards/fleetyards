@@ -2795,3 +2795,7 @@ GET /hangar/paints added the new `ship_component` enum value to the `items/items
 GET /hangar/upgrades added the new `ship_component` enum value to the `items/items/kind` response property for the response status `200`
 GET /missions added the new `offered` enum value to the `items/items/locations/items/source` response property for the response status `200`
 GET /missions/{slug} added the new `offered` enum value to the `locations/items/source` response property for the response status `200`
+POST /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships removed the enum value `recon` of the request property `foci/items/`
+PUT /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships/{id} removed the enum value `recon` of the request property `foci/items/`
+POST /fleets/{fleetSlug}/missions/{missionSlug}/teams/{missionTeamId}/ships removed the enum value `recon` of the request property `foci/items/`
+PUT /fleets/{fleetSlug}/missions/{missionSlug}/teams/{missionTeamId}/ships/{id} removed the enum value `recon` of the request property `foci/items/`
