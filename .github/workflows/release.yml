@@ -4,6 +4,12 @@ on:
   release:
     types: [published]
 
+# Upload skips assets already in storage, so a concurrent release's cleanup
+# could delete one this release relies on before it is recorded.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
 jobs:
   build:
     uses: ./.github/workflows/build.job.yml
@@ -20,7 +26,6 @@ jobs:
     with:
       tag: ${{ github.event.release.tag_name }}
       destination: live
-      cleanup: true
     secrets: inherit
 
   deploy-to-live:
@@ -30,6 +35,15 @@ jobs:
       destination: live
       name: Live
       url: https://fleetyards.net
+    secrets: inherit
+
+  cdn-release:
+    needs: [deploy-to-live]
+    uses: ./.github/workflows/cdn-release.job.yml
+    with:
+      tag: ${{ github.event.release.tag_name }}
+      destination: live
+      cleanup: true
     secrets: inherit
 
   notify-appsignal:

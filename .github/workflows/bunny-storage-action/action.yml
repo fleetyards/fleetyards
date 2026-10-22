@@ -1,0 +1,35 @@
+name: Bunny Storage Setup
+description: Sets up Ruby for bin/cdn-assets and exports the destination's Bunny Storage credentials
+inputs:
+  destination:
+    description: "Deployment destination (live, stage)"
+    required: true
+  op-service-account-token:
+    description: "1Password service account token"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - uses: ruby/setup-ruby@v1
+
+    - name: Install 1Password CLI
+      shell: bash
+      run: |
+        curl -sSfo /tmp/op.zip "https://cache.agilebits.com/dist/1P/op2/pkg/v2.33.0/op_linux_amd64_v2.33.0.zip"
+        unzip -o /tmp/op.zip -d /usr/local/bin op
+        chmod +x /usr/local/bin/op
+
+    - name: Fetch Bunny Storage credentials
+      shell: bash
+      env:
+        OP_SERVICE_ACCOUNT_TOKEN: ${{ inputs.op-service-account-token }}
+        DESTINATION: ${{ inputs.destination }}
+      run: |
+        DEST_UPPER=$(echo "$DESTINATION" | tr '[:lower:]' '[:upper:]')
+
+        PASSWORD=$(op read "op://Fleetyards/BUNNY_STORAGE_${DEST_UPPER}/password")
+        echo "::add-mask::$PASSWORD"
+        echo "BUNNY_STORAGE_PASSWORD=$PASSWORD" >> "$GITHUB_ENV"
+
+        echo "BUNNY_STORAGE_ZONE=$(op read "op://Fleetyards/BUNNY_STORAGE_${DEST_UPPER}/config/zone_name")" >> "$GITHUB_ENV"
+        echo "BUNNY_STORAGE_ENDPOINT=$(op read "op://Fleetyards/BUNNY_STORAGE_${DEST_UPPER}/config/endpoint")" >> "$GITHUB_ENV"
