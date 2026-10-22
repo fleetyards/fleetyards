@@ -31,6 +31,9 @@ export type RSIBuybackPage =
       pledgeIds: string[];
       // The list's last page, from RSI's pager, where the page shows one.
       lastPage?: number;
+      // How many buy-backs RSI lets the user pay with store credit, from the
+      // notice above the list; unknown where the page shows none.
+      buybackTokens?: number;
     }
   | { status: RsiPageStatus.END }
   | { status: RsiPageStatus.UNRECOGNISED; check: RsiPageCheckEnum };
@@ -86,7 +89,19 @@ export const extractBuybackPage = (html: string): RSIBuybackPage => {
     pledges,
     pledgeIds: pledges.map((pledge) => pledge.id),
     lastPage: rsiLastPage(htmlDoc),
+    buybackTokens: buybackTokens(htmlDoc),
   };
+};
+
+// RSI words it "You have <strong>1</strong> opportunity to buy back a pledge
+// with store credits", so the figure is the notice's only bold text.
+const BUYBACK_TOKENS = "p.buy-back-warning strong";
+
+const buybackTokens = (htmlDoc: Document) => {
+  const text = htmlDoc.querySelector(BUYBACK_TOKENS)?.textContent?.trim();
+  if (!text || !/^\d+$/.test(text)) return undefined;
+
+  return Number(text);
 };
 
 export const parseBuybackEntry = (

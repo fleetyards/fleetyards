@@ -12,6 +12,11 @@ module V1
             items: {
               type: :array,
               items: ::V1::Schemas::Inputs::RsiBuybackItemInput
+            },
+            buybackTokens: {
+              type: :integer,
+              minimum: 0,
+              description: "How many buy-backs RSI lets the user pay with store credit, as its buy-back page says"
             }
           },
           additionalProperties: false,

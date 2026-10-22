@@ -103,6 +103,24 @@ describe("extractBuybackPage", () => {
     expect(readPage(buybackPage(packageArticle)).lastPage).toBeUndefined();
   });
 
+  // RSI's notice above the list, as the buy-back page renders it.
+  it("reads how many buy-backs store credit may pay for", () => {
+    const notice = `
+<section class="buy-back-pledges">
+  <header>
+    <p class="buy-back-warning"><span class="warn-icon"></span>You have <strong>2</strong> opportunity to buy back a pledge with store credits.<br>NOTE: Valid for ONE pledge buy back with any amount of store credits applied.</p>
+  </header>
+</section>`;
+
+    expect(readPage(notice + buybackPage(packageArticle)).buybackTokens).toBe(
+      2,
+    );
+  });
+
+  it("leaves the buy-back tokens unknown without RSI's notice", () => {
+    expect(readPage(buybackPage(packageArticle)).buybackTokens).toBeUndefined();
+  });
+
   it("reads a package entry", () => {
     const page = readPage(buybackPage(packageArticle));
 

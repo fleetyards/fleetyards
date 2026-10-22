@@ -54,6 +54,7 @@ module Api
         end
 
         import, result = ::Imports::BuybackSync.record!(current_resource_owner, sync_params.fetch(:items, []))
+        current_resource_owner.update!(rsi_buyback_tokens: params[:buyback_tokens]) if params.key?(:buyback_tokens)
 
         render json: result.merge(importId: import.id)
       rescue ::BuybackPledges::Sync::InvalidSnapshot
