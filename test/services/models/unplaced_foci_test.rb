@@ -39,6 +39,14 @@ module Models
       assert_includes notification.body, "- **Vulture** (ship matrix: \"Escort\")"
     end
 
+    test "a report that cannot be delivered does not raise into the load" do
+      create(:model, rsi_focus: "Escort")
+      AdminReport.stubs(:deliver).raises(Octokit::TooManyRequests)
+      Appsignal.expects(:report_error).once
+
+      assert_nothing_raised { UnplacedFoci.report }
+    end
+
     test "reports nothing when every part has a key" do
       create(:model, rsi_focus: "Gunship")
       AdminReport.expects(:deliver).never

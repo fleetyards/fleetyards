@@ -30,6 +30,10 @@ module Models
         link: "/models",
         record:
       )
+    # Called at the end of a load that has already written the catalogue. A
+    # GitHub that cannot be reached must not fail that load and have it re-run.
+    rescue => e
+      Appsignal.report_error(e)
     end
 
     def self.report_body(entries)
