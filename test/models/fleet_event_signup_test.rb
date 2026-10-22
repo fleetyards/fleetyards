@@ -10,6 +10,14 @@ class FleetEventSignupTest < ActiveSupport::TestCase
     @fleet_membership = create(:fleet_membership, fleet: @event.fleet)
   end
 
+  class SlotBelongsToEventTest < FleetEventSignupTest
+    test "rejects a slot that no longer exists" do
+      signup = build(:fleet_event_signup, fleet_event: @event, fleet_event_slot_id: SecureRandom.uuid, fleet_membership: @fleet_membership, status: "confirmed")
+      refute signup.valid?
+      assert_includes signup.errors.details[:fleet_event_slot_id], {error: :wrong_event}
+    end
+  end
+
   class SlotBoundStatusAllowedTest < FleetEventSignupTest
     test "accepts confirmed signups bound to a slot" do
       signup = build(:fleet_event_signup, fleet_event: @event, fleet_event_slot: @slot, fleet_membership: @fleet_membership, status: "confirmed")

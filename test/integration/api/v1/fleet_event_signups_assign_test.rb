@@ -82,4 +82,16 @@ class Api::V1::FleetEventSignupsAssignTest < ActionDispatch::IntegrationTest
       path_params: {id: @signup.id},
       body: {fleetEventSlotId: @other_slot.id, status: "confirmed"}
   end
+
+  test "PATCH /fleet-event-signups/:id/assign rejects a slot that was deleted" do
+    sign_in @admin
+    deleted_slot_id = @other_slot.id
+    @other_slot.destroy!
+
+    patch "/api/v1/fleet-event-signups/#{@signup.id}/assign",
+      params: {fleetEventSlotId: deleted_slot_id, status: "confirmed"}, as: :json
+
+    assert_response :bad_request
+    assert_nil @signup.reload.fleet_event_slot_id
+  end
 end

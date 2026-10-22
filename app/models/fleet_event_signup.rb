@@ -76,8 +76,8 @@ class FleetEventSignup < ApplicationRecord
   end
 
   private def slot_belongs_to_event
-    return if fleet_event_slot.blank? || fleet_event.blank?
-    return if fleet_event_slot.fleet_event&.id == fleet_event_id
+    return if fleet_event_slot_id.blank? || fleet_event.blank?
+    return if fleet_event_slot&.fleet_event&.id == fleet_event_id
 
     errors.add(:fleet_event_slot_id, :wrong_event)
   end
