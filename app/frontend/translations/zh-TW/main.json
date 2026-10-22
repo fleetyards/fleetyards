@@ -10,6 +10,10 @@
       "beam": "寬度",
       "cargo": "貨物",
       "cargoWithModules": "含模組",
+      "additionalStorage": {
+        "salvage": "+%{capacity} SCU 打撈物",
+        "ore": "+%{capacity} SCU 礦石"
+      },
       "personalInventory": "飛船庫存",
       "beds": {
         "one": "%{count} 個床位",

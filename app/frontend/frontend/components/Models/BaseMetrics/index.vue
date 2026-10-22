@@ -6,7 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
-import type { Model } from "@/services/fyApi";
+import { type Model, StorageContainerKindEnum } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import {
@@ -49,6 +49,20 @@ const maxCargo = computed(
 
 const cargoNeedsModules = computed(
   () => (maxCargo.value ?? 0) > (props.model.metrics.cargo ?? 0),
+);
+
+// What a mining or salvage ship holds beside its cargo grids: ore pods and the
+// scraped material's tank are not cargo space, so they sit in brackets after
+// it rather than in the figure.
+const additionalStorage = computed(() =>
+  Object.values(StorageContainerKindEnum)
+    .map((kind) => ({
+      kind,
+      capacity: (props.model.storageContainers || [])
+        .filter((container) => container.kind === kind)
+        .reduce((sum, container) => sum + (container.capacity || 0), 0),
+    }))
+    .filter((storage) => storage.capacity > 0),
 );
 
 const hasPrice = computed(
@@ -144,6 +158,21 @@ const openAvailability = () => {
         <div class="metrics-card__tile__value">
           {{ toNumber(maxCargo || "", "integer") }}
           <span class="metrics-card__tile__unit">SCU</span>
+          <span
+            v-if="additionalStorage.length"
+            class="metrics-card__tile__unit"
+            data-test="model-additional-storage"
+          >
+            ({{
+              additionalStorage
+                .map((storage) =>
+                  t(`model.additionalStorage.${storage.kind}`, {
+                    capacity: toNumber(storage.capacity),
+                  }),
+                )
+                .join(", ")
+            }})
+          </span>
           <span
             v-if="cargoNeedsModules"
             class="metrics-card__tile__unit"

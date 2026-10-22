@@ -5,8 +5,12 @@ import { ModelStateEnum } from "@/frontend/composables/useModelStates";
 
 vi.mock("@/shared/composables/useI18n", () => ({
   useI18n: () => ({
-    t: (key: string, params?: { count?: number }) =>
-      params?.count === undefined ? key : `${key}:${params.count}`,
+    t: (key: string, params?: { count?: number; capacity?: string }) =>
+      params?.capacity !== undefined
+        ? `${key}:${params.capacity}`
+        : params?.count === undefined
+          ? key
+          : `${key}:${params.count}`,
     toNumber: (value: number | string) => String(value),
     toDollar: (value: number) => String(value),
     toUEC: (value: number) => String(value),
@@ -146,5 +150,30 @@ describe("the beds the card shows", () => {
     const wrapper = mountCard(ModelStateEnum.FLIGHT);
 
     expect(wrapper.find('[data-test="model-beds"]').exists()).toBe(false);
+  });
+});
+
+describe("the cargo tile", () => {
+  const storageTile = (overrides: Partial<Model>) =>
+    mountCard(ModelStateEnum.FLIGHT, { cargo: 224 }, overrides).find(
+      '[data-test="model-additional-storage"]',
+    );
+
+  it("adds salvage and ore storage in brackets after the cargo", () => {
+    const tile = storageTile({
+      storageContainers: [
+        { name: "storage", capacity: 64, kind: "salvage" },
+        { name: "pod_1", capacity: 8, kind: "ore" },
+        { name: "pod_2", capacity: 8, kind: "ore" },
+      ],
+    } as Partial<Model>);
+
+    expect(tile.text()).toBe(
+      "(model.additionalStorage.ore:16, model.additionalStorage.salvage:64)",
+    );
+  });
+
+  it("adds nothing for a ship that holds only cargo", () => {
+    expect(storageTile({ storageContainers: [] }).exists()).toBe(false);
   });
 });

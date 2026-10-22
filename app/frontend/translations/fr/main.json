@@ -10,6 +10,10 @@
       "beam": "Rayon",
       "cargo": "Soute",
       "cargoWithModules": "avec modules",
+      "additionalStorage": {
+        "salvage": "+%{capacity} SCU de récupération",
+        "ore": "+%{capacity} SCU de minerai"
+      },
       "personalInventory": "Inventaire du vaisseau",
       "beds": {
         "one": "%{count} lit",

@@ -10,6 +10,10 @@
       "beam": "Raggio",
       "cargo": "Carico",
       "cargoWithModules": "con moduli",
+      "additionalStorage": {
+        "salvage": "+%{capacity} SCU di recupero",
+        "ore": "+%{capacity} SCU di minerale"
+      },
       "personalInventory": "Inventario della nave",
       "beds": {
         "one": "%{count} letto",
