@@ -15,6 +15,7 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
   plaqueFile,
   savePlaque,
+  sharePlaque,
 } from "@/frontend/components/Vehicles/Plaque/download";
 
 type Props = {
@@ -22,12 +23,18 @@ type Props = {
   element: string;
   filename: string;
   withLabel?: boolean;
+  // Hands the picture to the share sheet rather than saving it; only offer it
+  // where `canSharePlaques` holds.
+  share?: boolean;
+  shareTitle?: string;
   variant?: `${BtnVariantsEnum}`;
   size?: `${BtnSizesEnum}`;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   withLabel: true,
+  share: false,
+  shareTitle: undefined,
   variant: undefined,
   size: undefined,
 });
@@ -77,7 +84,9 @@ const save = async (file: File) => {
   const retry = ready.value === file;
 
   try {
-    await savePlaque(file);
+    await (props.share
+      ? sharePlaque(file, props.shareTitle)
+      : savePlaque(file));
     keep();
   } catch (error) {
     if (isDomError(error, "NotAllowedError") && !retry) {
@@ -122,7 +131,7 @@ const download = async () => {
 };
 
 const label = computed(() =>
-  ready.value ? t("actions.share") : t("actions.saveScreenshot"),
+  ready.value || props.share ? t("actions.share") : t("actions.saveScreenshot"),
 );
 </script>
 
@@ -135,7 +144,7 @@ const label = computed(() =>
     :size="size"
     @click="download"
   >
-    <i v-if="ready" class="fa-duotone fa-share-square" />
+    <i v-if="ready || share" class="fa-duotone fa-share-square" />
     <i v-else class="fa-duotone fa-image" />
     <span v-if="withLabel">{{ label }}</span>
   </Btn>

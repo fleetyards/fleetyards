@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import downloadJs from "downloadjs";
-import { savePlaque } from "./download";
+import { canSharePlaques, savePlaque } from "./download";
 
 vi.mock("downloadjs", () => ({ default: vi.fn() }));
 
@@ -60,5 +60,27 @@ describe("savePlaque", () => {
 
     expect(downloadJs).toHaveBeenCalled();
     expect(share).not.toHaveBeenCalled();
+  });
+});
+
+describe("canSharePlaques", () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it("asks the browser whether a PNG can be shared", () => {
+    const canShare = vi.fn(() => true);
+    vi.stubGlobal("navigator", { canShare });
+
+    expect(canSharePlaques()).toBe(true);
+    expect(canShare).toHaveBeenCalledWith({
+      files: [expect.objectContaining({ type: "image/png" })],
+    });
+  });
+
+  it("is false where the browser cannot share at all", () => {
+    vi.stubGlobal("navigator", {});
+
+    expect(canSharePlaques()).toBe(false);
   });
 });

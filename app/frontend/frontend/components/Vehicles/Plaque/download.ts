@@ -113,6 +113,16 @@ export const savePlaque = async (file: File) => {
   downloadJs(file, file.name, "image/png");
 };
 
+// Asked with a stand-in, since the plaque is only drawn once the button is
+// pressed and the share sheet has to be offered before that.
+export const canSharePlaques = () =>
+  !!navigator.canShare?.({
+    files: [new File([""], "plaque.png", { type: "image/png" })],
+  });
+
+export const sharePlaque = (file: File, title?: string) =>
+  navigator.share({ files: [file], ...(title ? { title } : {}) });
+
 // The plaque on a dark card of the size link previews use, for a shared link.
 export const plaqueSocialImage = async (element: HTMLElement) => {
   if (!element.offsetWidth) {
