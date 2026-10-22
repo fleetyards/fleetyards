@@ -76,7 +76,13 @@ module Api
       end
 
       private def build_steps(acquisition, steps)
-        previous_model_id = acquisition.start_model_id || acquisition.source_vehicle&.model_id
+        # A hangar ship's model is the start, whatever start_model_id still says
+        # from before the source changed.
+        previous_model_id = if acquisition.start_kind == "owned" && acquisition.source_vehicle
+          acquisition.source_vehicle.model_id
+        else
+          acquisition.start_model_id
+        end
 
         Array(steps).each_with_index do |step, index|
           step = step.permit(:source_kind, :from_model_id, :to_model_id, :hangar_pledge_item_id, :buyback_pledge_id, :price_override,

@@ -188,6 +188,17 @@ class Api::V1::HangarPlanAcquisitionsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT chains the steps from a new hangar ship without being told its model" do
+    acquisition = @plan.acquisitions.create!(candidate: @candidate, start_kind: "owned", source_vehicle: create(:vehicle, user: @user, model: @carrack))
+    vehicle = create(:vehicle, user: @user, model: @cutlass)
+
+    assert_api_response :put, 200, api_path: "/hangar/plans/{hangarPlanId}/acquisitions/{id}",
+      path_params: {hangarPlanId: @plan.id, id: acquisition.id},
+      body: {sourceVehicleId: vehicle.id, steps: [{sourceKind: "store", toModelId: @carrack.id}]}
+
+    assert_equal @cutlass, acquisition.reload.upgrade_steps.first.origin_model
+  end
+
   test "PUT refuses a start another route already uses" do
     owned = create(:vehicle, user: @user, model: @carrack)
     @slot.update!(quantity: 2)
