@@ -5,7 +5,8 @@
 # only copied the wording on a run where it did. So "Exploration" became
 # `expedition` where the matrix now says "Pathfinder", and the Aurora Mk II
 # lost the "Starter" the matrix has since added. Where the matrix's current
-# wording gives a key a ship is missing, its keys take over.
+# wording gives a key a ship is missing, its keys take over, except on a ship
+# an admin has picked keys for.
 #
 # `recon` leaves the vocabulary: the matrix never words a ship that way, and
 # the slots that asked for it ask for a pathfinder instead.
@@ -26,12 +27,17 @@ class FollowRsiFocusWording < ActiveRecord::Migration[8.1]
   }.freeze
 
   def up
+    edited = select_values(<<~SQL.squish)
+      SELECT DISTINCT item_id FROM versions
+      WHERE item_type = 'Model' AND whodunnit IS NOT NULL AND (object_changes::jsonb ? 'foci')
+    SQL
+
     select_rows("SELECT id, slug, rsi_focus, array_to_json(foci), stealth FROM models").each do |id, slug, rsi_focus, foci, stealthy|
-      next if KEEP.include?(slug)
+      next if KEEP.include?(slug) || edited.include?(id)
 
       foci = JSON.parse(foci)
       rsi = ::Models::FocusMapping.call(rsi_focus)
-      keys = OWN.fetch(slug) { (rsi.foci.any? && (rsi.foci - foci).any?) ? rsi.foci : foci - ["recon"] }
+      keys = OWN.fetch(slug) { (rsi.foci.any? && (rsi.foci - foci).any?) ? rsi.foci : without_recon(foci) }
       keys = ::Model.normalize_value_for(:foci, keys)
       stealth = rsi.stealth && !stealthy && !OWN.key?(slug)
 
@@ -39,23 +45,32 @@ class FollowRsiFocusWording < ActiveRecord::Migration[8.1]
 
       execute <<~SQL.squish
         UPDATE models
-        SET foci = #{array(keys)}#{", stealth = TRUE" if stealth}, updated_at = NOW()
+        SET foci = #{array(keys)}, focus = #{quote(focus(keys))}#{", stealth = TRUE" if stealth}, updated_at = NOW()
         WHERE id = #{quote(id)}
       SQL
     end
 
     %w[fleet_event_ships mission_ships].each do |table|
-      execute <<~SQL.squish
-        UPDATE #{table}
-        SET foci = CASE WHEN 'pathfinder' = ANY(foci) THEN array_remove(foci, 'recon')
-                   ELSE array_replace(foci, 'recon', 'pathfinder') END
-        WHERE 'recon' = ANY(foci)
-      SQL
+      select_rows("SELECT id, array_to_json(foci) FROM #{table} WHERE 'recon' = ANY(foci)").each do |id, foci|
+        keys = ::Model.ordered_foci(without_recon(JSON.parse(foci)))
+
+        execute "UPDATE #{table} SET foci = #{array(keys)}, focus = #{quote(focus(keys))} WHERE id = #{quote(id)}"
+      end
     end
   end
 
   def down
     raise ActiveRecord::IrreversibleMigration
+  end
+
+  private def without_recon(foci)
+    foci.map { |key| (key == "recon") ? "pathfinder" : key }
+  end
+
+  # The string the keys replaced, still served beside them, in the words
+  # `FociList` keeps it in.
+  private def focus(keys)
+    I18n.with_locale(:en) { ::Model.focus_labels(keys).join(" / ") }.presence
   end
 
   private def array(keys)
