@@ -54,6 +54,7 @@ module Api
         end
 
         import, result = ::Imports::BuybackSync.record!(current_resource_owner, sync_params.fetch(:items, []))
+        record_buyback_tokens(sync_params[:buyback_tokens]) if sync_params.key?(:buyback_tokens)
 
         render json: result.merge(importId: import.id)
       rescue ::BuybackPledges::Sync::InvalidSnapshot
@@ -108,8 +109,17 @@ module Api
         ]).fetch(:q, {})
       end
 
+      # A count of the user's own, not a profile edit: written straight to the
+      # column, so neither the profile's validations nor its save callbacks
+      # can fail a sync whose list is already stored.
+      private def record_buyback_tokens(count)
+        return if current_resource_owner.rsi_buyback_tokens == count
+
+        current_resource_owner.update_column(:rsi_buyback_tokens, count)
+      end
+
       private def sync_params
-        params.permit(items: [
+        params.permit(:buyback_tokens, items: [
           :id, :kind, :name, :upgraded, :available, :reclaimed_on, :contained, :image,
           :upgrade_from_ship_id, :upgrade_to_ship_id, :upgrade_to_sku_id, :page
         ])

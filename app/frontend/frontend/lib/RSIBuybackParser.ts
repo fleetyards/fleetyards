@@ -31,8 +31,11 @@ export type RSIBuybackPage =
       pledgeIds: string[];
       // The list's last page, from RSI's pager, where the page shows one.
       lastPage?: number;
+      // How many buy-backs RSI lets the user pay with store credit, from the
+      // notice above the list; unknown where the page shows none.
+      buybackTokens?: number;
     }
-  | { status: RsiPageStatus.END }
+  | { status: RsiPageStatus.END; buybackTokens?: number }
   | { status: RsiPageStatus.UNRECOGNISED; check: RsiPageCheckEnum };
 
 const END_OF_LIST = "li.no-buy-backs";
@@ -56,7 +59,7 @@ export const extractBuybackPage = (html: string): RSIBuybackPage => {
   // without entries and without it is markup this no longer reads.
   if (entries.length === 0) {
     return list.querySelector(END_OF_LIST)
-      ? { status: RsiPageStatus.END }
+      ? { status: RsiPageStatus.END, buybackTokens: buybackTokens(htmlDoc) }
       : {
           status: RsiPageStatus.UNRECOGNISED,
           check: RsiPageCheckEnum.MISSING_ENTRIES,
@@ -86,7 +89,23 @@ export const extractBuybackPage = (html: string): RSIBuybackPage => {
     pledges,
     pledgeIds: pledges.map((pledge) => pledge.id),
     lastPage: rsiLastPage(htmlDoc),
+    buybackTokens: buybackTokens(htmlDoc),
   };
+};
+
+// RSI words it "You have <strong>1</strong> opportunity to buy back a pledge
+// with store credits", so the figure is the notice's only bold text.
+const BUYBACK_TOKENS = "p.buy-back-warning strong";
+const BUYBACK_HEADER = "section.buy-back-pledges header";
+
+// The notice only shows while there is a token to spend, so RSI's header
+// without it reads as none left. A page without the header says nothing.
+const buybackTokens = (htmlDoc: Document) => {
+  const notice = htmlDoc.querySelector(BUYBACK_TOKENS);
+  if (!notice) return htmlDoc.querySelector(BUYBACK_HEADER) ? 0 : undefined;
+
+  const text = notice.textContent?.trim() ?? "";
+  return /^\d+$/.test(text) ? Number(text) : undefined;
 };
 
 export const parseBuybackEntry = (
