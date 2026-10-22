@@ -15,21 +15,11 @@ vi.mock("@/frontend/components/CatalogueItemPopover/index.vue", () => ({
   },
 }));
 
-const photoSwipe = vi.hoisted(() => {
-  const init = vi.fn();
-  const on = vi.fn();
-  const PhotoSwipe = vi.fn(function PhotoSwipe(this: {
-    init: () => void;
-    on: () => void;
-  }) {
-    this.init = init;
-    this.on = on;
-  });
+const openImage = vi.hoisted(() => vi.fn());
 
-  return { init, on, PhotoSwipe };
-});
-
-vi.mock("photoswipe", () => ({ default: photoSwipe.PhotoSwipe }));
+vi.mock("@/shared/composables/useImageViewer", () => ({
+  useImageViewer: () => ({ openImage }),
+}));
 
 const pledgeItem = (
   attrs: Partial<HangarPledgeItem> = {},
@@ -272,31 +262,15 @@ describe("Hangar/PledgeItemsList", () => {
   });
 
   it("opens the image full size on click", async () => {
-    const { init, on, PhotoSwipe } = photoSwipe;
-
     const wrapper = await mount([
       pledgeItem({ image: "https://media.test/akuma.jpg" }),
     ]);
 
-    const image = wrapper.find("img").element as HTMLImageElement;
-    Object.defineProperty(image, "naturalWidth", { value: 1920 });
-    Object.defineProperty(image, "naturalHeight", { value: 1080 });
-
     await wrapper.find("[data-test='pledge-item-image']").trigger("click");
-    await vi.waitFor(() => expect(init).toHaveBeenCalled());
 
-    expect(PhotoSwipe).toHaveBeenCalledWith(
-      expect.objectContaining({
-        dataSource: [
-          expect.objectContaining({
-            src: "https://media.test/akuma.jpg",
-            width: 1920,
-            height: 1080,
-            alt: "Cutlass - Akuma Paint",
-          }),
-        ],
-      }),
+    expect(openImage).toHaveBeenCalledWith(
+      wrapper.find("img").element,
+      "Cutlass - Akuma Paint",
     );
-    expect(on).toHaveBeenCalledWith("uiRegister", expect.any(Function));
   });
 });
