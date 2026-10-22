@@ -333,7 +333,7 @@ class HangarSync < HangarImporter
 
       # Transfer the new pledge data to the original vehicle
       original_vehicle.update!(
-        **imported_vehicle.slice(:rsi_pledge_melt_value, :rsi_pledge_meltable, :rsi_pledge_item_count).symbolize_keys,
+        **imported_vehicle.slice(:rsi_pledge_melt_value, :rsi_pledge_meltable, :rsi_pledge_item_count).compact.symbolize_keys,
         rsi_pledge_id: imported_vehicle.rsi_pledge_id,
         rsi_pledge_synced_at: imported_vehicle.rsi_pledge_synced_at,
         wanted: false
