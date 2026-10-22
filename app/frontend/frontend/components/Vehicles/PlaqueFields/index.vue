@@ -26,6 +26,7 @@ type Props = {
   linkedLaunchPort?: LocationLink | null;
   // The plaque's captain when none is written in.
   captainPlaceholder?: string;
+  captainInfo?: string;
   // Offered as the organization the ship serves.
   fleetNames?: string[];
 };
@@ -33,6 +34,7 @@ type Props = {
 withDefaults(defineProps<Props>(), {
   linkedLaunchPort: undefined,
   captainPlaceholder: undefined,
+  captainInfo: undefined,
   fleetNames: () => [],
 });
 
@@ -58,89 +60,98 @@ const operationsGroupOptions = computed(() =>
 
 <template>
   <div class="plaque-fields">
-    <div>
-      <FormTextarea
-        v-model="dedication"
-        name="dedication"
-        :label="t('labels.vehiclePlaque.dedication')"
-        :rules="PLAQUE_FIELD_RULES.dedication"
-        :maxlength="PLAQUE_LIMITS.dedication"
-        data-test="vehicle-plaque-dedication-input"
-      />
-      <FormTextarea
-        v-model="dedicationVerse"
-        name="dedicationVerse"
-        :label="t('labels.vehiclePlaque.dedicationVerse')"
-        :info="t('labels.vehiclePlaque.dedicationVerseInfo')"
-        :rules="PLAQUE_FIELD_RULES.dedicationVerse"
-        :maxlength="PLAQUE_LIMITS.dedicationVerse"
-        data-test="vehicle-plaque-dedication-verse-input"
-      />
-      <FormDatePicker
-        v-model="launchedOn"
-        name="launchedOn"
-        :label="t('labels.vehiclePlaque.launchedOn')"
-        :year-offset="IN_UNIVERSE_YEAR_OFFSET"
-        clearable
-      />
-    </div>
-    <div>
-      <LocationInput
-        v-model="launchPort"
-        v-model:location-id="launchPortLocationId"
-        :linked="linkedLaunchPort"
-        name="launchPort"
-        :label="t('labels.vehiclePlaque.launchPort')"
-        :rules="PLAQUE_FIELD_RULES.launchPort"
-      />
-      <FormInput
-        v-model="plaqueCaptain"
-        name="plaqueCaptain"
-        :label="t('labels.vehiclePlaque.captain')"
-        :info="t('labels.vehiclePlaque.captainInfo')"
-        :placeholder="captainPlaceholder"
-        :rules="PLAQUE_FIELD_RULES.plaqueCaptain"
-        data-test="vehicle-plaque-captain-input"
-      />
-      <FormInput
-        v-model="affiliation"
-        name="affiliation"
-        :label="t('labels.vehiclePlaque.affiliation')"
-        :rules="PLAQUE_FIELD_RULES.affiliation"
-      />
-      <div v-if="fleetNames.length" class="plaque-fields__fleets">
-        <span class="text-muted">{{ t("texts.vehiclePlaque.fromFleet") }}</span>
-        <Btn
-          v-for="fleetName in fleetNames"
-          :key="fleetName"
-          :size="BtnSizesEnum.XS"
-          data-test="vehicle-plaque-fleet"
-          @click="affiliation = fleetName"
-        >
-          {{ fleetName }}
-        </Btn>
+    <div class="plaque-fields__grid">
+      <div>
+        <FormTextarea
+          v-model="dedication"
+          name="dedication"
+          :label="t('labels.vehiclePlaque.dedication')"
+          :rules="PLAQUE_FIELD_RULES.dedication"
+          :maxlength="PLAQUE_LIMITS.dedication"
+          data-test="vehicle-plaque-dedication-input"
+        />
+        <FormTextarea
+          v-model="dedicationVerse"
+          name="dedicationVerse"
+          :label="t('labels.vehiclePlaque.dedicationVerse')"
+          :info="t('labels.vehiclePlaque.dedicationVerseInfo')"
+          :rules="PLAQUE_FIELD_RULES.dedicationVerse"
+          :maxlength="PLAQUE_LIMITS.dedicationVerse"
+          data-test="vehicle-plaque-dedication-verse-input"
+        />
+        <FormDatePicker
+          v-model="launchedOn"
+          name="launchedOn"
+          :label="t('labels.vehiclePlaque.launchedOn')"
+          :year-offset="IN_UNIVERSE_YEAR_OFFSET"
+          clearable
+        />
       </div>
-      <BaseSelect
-        v-model="operationsGroup"
-        :options="operationsGroupOptions"
-        :label="t('labels.vehiclePlaque.operationsGroup')"
-        name="operationsGroup"
-        :searchable="false"
-        unsorted
-        nullable
-      />
+      <div>
+        <LocationInput
+          v-model="launchPort"
+          v-model:location-id="launchPortLocationId"
+          :linked="linkedLaunchPort"
+          name="launchPort"
+          :label="t('labels.vehiclePlaque.launchPort')"
+          :rules="PLAQUE_FIELD_RULES.launchPort"
+        />
+        <FormInput
+          v-model="plaqueCaptain"
+          name="plaqueCaptain"
+          :label="t('labels.vehiclePlaque.captain')"
+          :info="captainInfo ?? t('labels.vehiclePlaque.captainInfo')"
+          :placeholder="captainPlaceholder"
+          :rules="PLAQUE_FIELD_RULES.plaqueCaptain"
+          data-test="vehicle-plaque-captain-input"
+        />
+        <FormInput
+          v-model="affiliation"
+          name="affiliation"
+          :label="t('labels.vehiclePlaque.affiliation')"
+          :rules="PLAQUE_FIELD_RULES.affiliation"
+        />
+        <div v-if="fleetNames.length" class="plaque-fields__fleets">
+          <span class="text-muted">{{
+            t("texts.vehiclePlaque.fromFleet")
+          }}</span>
+          <Btn
+            v-for="fleetName in fleetNames"
+            :key="fleetName"
+            :size="BtnSizesEnum.XS"
+            data-test="vehicle-plaque-fleet"
+            @click="affiliation = fleetName"
+          >
+            {{ fleetName }}
+          </Btn>
+        </div>
+        <BaseSelect
+          v-model="operationsGroup"
+          :options="operationsGroupOptions"
+          :label="t('labels.vehiclePlaque.operationsGroup')"
+          name="operationsGroup"
+          :searchable="false"
+          unsorted
+          nullable
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-// Two columns of fields; one on a narrow screen.
+// Two columns of fields where they have the room, in a dialog or a column of
+// a page alike.
 .plaque-fields {
+  container-type: inline-size;
+}
+
+.plaque-fields__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0 24px;
 
-  @media (max-width: $tablet-breakpoint) {
+  @container (max-width: 640px) {
     grid-template-columns: minmax(0, 1fr);
   }
 }
