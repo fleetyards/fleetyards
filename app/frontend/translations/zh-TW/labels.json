@@ -560,17 +560,9 @@
         "baseline": "基準",
         "differencesOnly": "僅顯示差異",
         "compareToBaseline": "與基準比較",
-        "loadoutBySlot": "依掛載槽顯示配置",
+        "fastestScraper": "最快刮除模組",
         "slots": {
-          "guns": "主武器",
-          "turrets": "砲塔",
-          "missiles": "飛彈",
-          "shields": "護盾產生器",
-          "powerPlants": "發電機",
-          "coolers": "冷卻器",
-          "quantumDrives": "量子引擎",
-          "thrusters": "主推進器",
-          "countermeasures": "反制措施"
+          "guns": "主武器"
         },
         "legend": {
           "best": "本列最佳",

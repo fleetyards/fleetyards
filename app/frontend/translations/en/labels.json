@@ -560,17 +560,9 @@
         "baseline": "Baseline",
         "differencesOnly": "Differences only",
         "compareToBaseline": "Compare to baseline",
-        "loadoutBySlot": "Loadout by slot",
+        "fastestScraper": "Fastest Scraper",
         "slots": {
-          "guns": "Main guns",
-          "turrets": "Turrets",
-          "missiles": "Missiles",
-          "shields": "Shield generators",
-          "powerPlants": "Power plants",
-          "coolers": "Coolers",
-          "quantumDrives": "Quantum drives",
-          "thrusters": "Main thrusters",
-          "countermeasures": "Countermeasures"
+          "guns": "Main guns"
         },
         "legend": {
           "best": "best in row",

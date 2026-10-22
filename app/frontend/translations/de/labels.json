@@ -560,17 +560,9 @@
         "baseline": "Referenz",
         "differencesOnly": "Nur Unterschiede",
         "compareToBaseline": "Mit Referenz vergleichen",
-        "loadoutBySlot": "Loadout nach Slot",
+        "fastestScraper": "Schnellstes Schabemodul",
         "slots": {
-          "guns": "Hauptwaffen",
-          "turrets": "Geschütztürme",
-          "missiles": "Raketen",
-          "shields": "Schildgeneratoren",
-          "powerPlants": "Kraftwerke",
-          "coolers": "Kühler",
-          "quantumDrives": "Quantum-Antriebe",
-          "thrusters": "Haupttriebwerke",
-          "countermeasures": "Gegenmaßnahmen"
+          "guns": "Hauptwaffen"
         },
         "legend": {
           "best": "bester Wert der Zeile",

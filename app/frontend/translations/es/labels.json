@@ -560,17 +560,9 @@
         "baseline": "Referencia",
         "differencesOnly": "Solo diferencias",
         "compareToBaseline": "Comparar con la referencia",
-        "loadoutBySlot": "Configuración por slot",
+        "fastestScraper": "Raspador más rápido",
         "slots": {
-          "guns": "Cañones principales",
-          "turrets": "Torretas",
-          "missiles": "Misiles",
-          "shields": "Generadores de escudo",
-          "powerPlants": "Plantas de energía",
-          "coolers": "Enfriadores",
-          "quantumDrives": "Motores Quantum",
-          "thrusters": "Propulsores principales",
-          "countermeasures": "Contramedidas"
+          "guns": "Cañones principales"
         },
         "legend": {
           "best": "mejor de la fila",

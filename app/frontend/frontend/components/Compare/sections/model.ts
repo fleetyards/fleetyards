@@ -12,6 +12,7 @@ import {
   maxContainerSize,
 } from "@/frontend/components/CargoGridViewer/capacity";
 import { CONTAINER_DEFS } from "@/frontend/components/CargoGridViewer/constants";
+import { useLoadoutLines } from "@/frontend/components/Compare/sections/lines";
 import { useI18n } from "@/shared/composables/useI18n";
 import { fociText } from "@/shared/utils/Foci";
 import {
@@ -29,6 +30,16 @@ export const useModelSections = (
 ) => {
   const { t } = useI18n();
   const { number, rounded, uec, dollar, text } = useCompareFormat();
+  const { lineRows } = useLoadoutLines(models, hardpointsFor);
+
+  const partRows = (kinds: HardpointCategoryEnum[]) =>
+    lineRows(
+      kinds.map((key) => ({
+        key: `parts-${key}`,
+        label: t(`labels.hardpoint.categories.${key}`),
+        categories: [key],
+      })),
+    );
 
   const subjects = () =>
     toValue(models).map((model) => ({ key: model.slug, subject: model }));
@@ -264,11 +275,15 @@ export const useModelSections = (
   ];
 
   const flight = computed(() =>
-    section(
-      "flight",
-      t("labels.metrics.speed"),
-      valueRows(flightMetrics, subjects()),
-    ),
+    section("flight", t("labels.metrics.speed"), [
+      ...valueRows(flightMetrics, subjects()),
+      ...partRows([
+        HardpointCategoryEnum.MAIN_THRUSTERS,
+        HardpointCategoryEnum.RETRO_THRUSTERS,
+        HardpointCategoryEnum.VTOL_THRUSTERS,
+        HardpointCategoryEnum.MANEUVERING_THRUSTERS,
+      ]),
+    ]),
   );
 
   // ── Cargo ───────────────────────────────────────────────────────────────────
@@ -332,11 +347,10 @@ export const useModelSections = (
   ];
 
   const cargo = computed(() =>
-    section(
-      "cargo",
-      t("labels.metrics.cargo"),
-      valueRows(cargoMetrics, subjects()),
-    ),
+    section("cargo", t("labels.metrics.cargo"), [
+      ...valueRows(cargoMetrics, subjects()),
+      ...partRows([HardpointCategoryEnum.CARGOGRID]),
+    ]),
   );
 
   // ── Fuel & quantum ──────────────────────────────────────────────────────────
@@ -425,11 +439,15 @@ export const useModelSections = (
   ];
 
   const fuel = computed(() =>
-    section(
-      "fuel",
-      t("labels.compare.fuelAndQuantum"),
-      valueRows(fuelMetrics, subjects()),
-    ),
+    section("fuel", t("labels.compare.fuelAndQuantum"), [
+      ...valueRows(fuelMetrics, subjects()),
+      ...partRows([
+        HardpointCategoryEnum.QUANTUMDRIVE,
+        HardpointCategoryEnum.JUMPDRIVE,
+        HardpointCategoryEnum.FUEL_INTAKES,
+        HardpointCategoryEnum.EXTERNAL_FUEL_TANKS,
+      ]),
+    ]),
   );
 
   return { views, base, crew, flight, cargo, fuel };

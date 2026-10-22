@@ -560,17 +560,9 @@
         "baseline": "Riferimento",
         "differencesOnly": "Solo le differenze",
         "compareToBaseline": "Confronta con il riferimento",
-        "loadoutBySlot": "Configurazione per slot",
+        "fastestScraper": "Raschiatore più veloce",
         "slots": {
-          "guns": "Armi principali",
-          "turrets": "Torrette",
-          "missiles": "Missili",
-          "shields": "Generatori di scudi",
-          "powerPlants": "Generatori",
-          "coolers": "Refrigeranti",
-          "quantumDrives": "Motori Quantum",
-          "thrusters": "Propulsori principali",
-          "countermeasures": "Contromisure"
+          "guns": "Armi principali"
         },
         "legend": {
           "best": "migliore della riga",

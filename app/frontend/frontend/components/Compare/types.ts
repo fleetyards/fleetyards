@@ -1,5 +1,5 @@
 import type { CompareDirection } from "@/frontend/components/Compare/highlights";
-import type { Hardpoint, HardpointCategoryEnum } from "@/services/fyApi";
+import type { Hardpoint } from "@/services/fyApi";
 
 // Every section resolves to rows of already-computed cells, one per compared ship, so a
 // single table component can render all of them. The alternative — a component per
@@ -12,6 +12,26 @@ export type CompareChip = {
   value: string;
   // A type the shield fails to fully soak, or armor amplifies instead of reducing.
   negative?: boolean;
+};
+
+// A fitted part as a line shows it: how large, what it is and the figure it
+// leads with. The hardpoint is kept for the catalogue card its name opens.
+export type CompareLinePart = {
+  key: string;
+  size?: string;
+  name: string;
+  figure?: { value: string; unit: string };
+  // The number behind the figure, which the row ranks the parts by.
+  raw?: number;
+  hardpoint: Hardpoint;
+};
+
+// One kind of fitted part in a cell: how many, where it sits, and the modules
+// fitted in it -- a salvage head's scrapers, a mining laser's modules.
+export type CompareLine = CompareLinePart & {
+  quantity: number;
+  context?: string;
+  parts: CompareLinePart[];
 };
 
 export type CompareSegment = {
@@ -68,15 +88,11 @@ export type CompareTableRow =
       label: string;
       cells: { key: string; src?: string; alt: string; widthPercent: number }[];
     }
-  // Carries the hardpoints themselves so the cell can render the ship page's own
-  // `HardpointItems`, which groups by stack and dispatches the per-category item
-  // variants. Re-describing components here would drift from that within a release.
   | {
-      kind: "fit";
+      kind: "lines";
       key: string;
       label: string;
-      category: HardpointCategoryEnum;
-      cells: { key: string; hardpoints: Hardpoint[] }[];
+      cells: { key: string; lines: CompareLine[] }[];
     };
 
 export type CompareSection = {
@@ -143,8 +159,8 @@ export function hasRowData(rows: CompareTableRow[]): boolean {
         return row.cells.some((cell) => cell.segments.length > 0);
       case "view":
         return row.cells.some((cell) => !!cell.src);
-      case "fit":
-        return row.cells.some((cell) => cell.hardpoints.length > 0);
+      case "lines":
+        return row.cells.some((cell) => cell.lines.length > 0);
     }
   });
 }
@@ -167,11 +183,8 @@ export function rowIsUniform(row: CompareTableRow): boolean {
             cell.chips.map((chip) => `${chip.key}:${chip.value}`).join("|"),
           )
         : row.cells.map((cell) =>
-            cell.hardpoints
-              .map(
-                (hardpoint) =>
-                  `${hardpoint.component?.size ?? ""}:${hardpoint.component?.name ?? ""}`,
-              )
+            cell.lines
+              .map((line) => `${line.quantity}:${line.key}`)
               .sort()
               .join("|"),
           );

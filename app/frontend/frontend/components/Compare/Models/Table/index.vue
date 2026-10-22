@@ -8,7 +8,7 @@ export default {
 import ViewImage from "@/shared/components/ViewImage/index.vue";
 import { ViewImageSizeEnum } from "@/shared/components/ViewImage/types";
 import FleetchartItemImage from "@/frontend/components/Fleetchart/List/Item/Image/index.vue";
-import HardpointItems from "@/frontend/components/Models/Hardpoints/Items/index.vue";
+import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import { markExtremes } from "@/frontend/components/Compare/highlights";
 import {
   deltasAgainst,
@@ -16,6 +16,8 @@ import {
 } from "@/frontend/components/Compare/delta";
 import {
   rowIsUniform,
+  type CompareLine,
+  type CompareLinePart,
   type CompareSection,
   type CompareTableRow,
 } from "@/frontend/components/Compare/types";
@@ -154,6 +156,64 @@ const deltasFor = (row: ValueRow) =>
 // baseline can anchor. A textual row — manufacturer, classification, production status — has nothing
 // to diff, and keeps showing its values rather than collapsing to a column of dashes.
 const anchored = (row: ValueRow) => deltasFor(row).some((entry) => entry);
+
+type LinesRow = Extract<CompareTableRow, { kind: "lines" }>;
+
+// Against a baseline, a part the baseline column does not fit is what differs.
+const differsFromBaseline = (
+  row: LinesRow,
+  index: number,
+  line: CompareLine,
+) => {
+  if (baselineIndex.value < 0 || index === baselineIndex.value) {
+    return false;
+  }
+
+  return !row.cells[baselineIndex.value]?.lines.some(
+    (entry) => entry.key === line.key,
+  );
+};
+
+// The row's best and worst part by the figure each leads with, as the value rows
+// mark theirs. Parts of a kind lead with the same figure -- a gun its DPS, a
+// shield its HP -- so they rank against each other; a row with a single figure
+// marks nothing.
+const lineMark = (row: LinesRow, line: CompareLine) => {
+  if (typeof line.raw !== "number") {
+    return undefined;
+  }
+
+  const values = row.cells.flatMap((cell) =>
+    cell.lines
+      .map((entry) => entry.raw)
+      .filter((raw): raw is number => typeof raw === "number"),
+  );
+
+  if (new Set(values).size < 2) {
+    return undefined;
+  }
+
+  if (line.raw === Math.max(...values)) {
+    return "best";
+  }
+
+  return line.raw === Math.min(...values) ? "worst" : undefined;
+};
+
+// The catalogue card a part's name opens, as on the ship page: only for a part
+// with a name, and so a slug, of its own.
+const catalogueItem = (part: CompareLinePart) => {
+  const component = part.hardpoint.component;
+
+  return component?.slug && component.name
+    ? {
+        type: "Component",
+        slug: component.slug,
+        name: part.name,
+        listed: component.catalogued,
+      }
+    : undefined;
+};
 
 const signed = (value: number) =>
   `${value > 0 ? "+" : ""}${toNumber(value, "")}`;
@@ -392,14 +452,80 @@ const deltaLabel = (row: ValueRow, delta?: CompareDelta) => {
                 </td>
               </tr>
 
-              <tr v-else class="compare-table__row compare-table__row--top">
+              <tr
+                v-else-if="row.kind === 'lines'"
+                class="compare-table__row compare-table__row--top"
+              >
                 <th scope="row" class="compare-table__rail">{{ row.label }}</th>
-                <td v-for="cell in row.cells" :key="cell.key">
-                  <HardpointItems
-                    v-if="cell.hardpoints.length"
-                    :hardpoints="cell.hardpoints"
-                    :category="row.category"
-                  />
+                <td v-for="(cell, index) in row.cells" :key="cell.key">
+                  <div v-if="cell.lines.length" class="compare-lines">
+                    <div
+                      v-for="line in cell.lines"
+                      :key="line.key"
+                      class="compare-line"
+                      :class="{
+                        'compare-line--differs': differsFromBaseline(
+                          row,
+                          index,
+                          line,
+                        ),
+                      }"
+                      data-test="compare-line"
+                    >
+                      <div class="compare-line__head">
+                        <span class="compare-line__qty">
+                          {{ line.quantity }}×
+                        </span>
+                        <span v-if="line.size" class="compare-line__size">
+                          {{ line.size }}
+                        </span>
+                        <span class="compare-line__name">
+                          <CatalogueItemPopover
+                            v-if="catalogueItem(line)"
+                            :item="catalogueItem(line)!"
+                            :record="line.hardpoint.component!"
+                          />
+                          <template v-else>{{ line.name }}</template>
+                        </span>
+                        <span
+                          v-if="line.figure"
+                          class="compare-line__figure"
+                          :class="
+                            lineMark(row, line) &&
+                            `compare-line__figure--${lineMark(row, line)}`
+                          "
+                        >
+                          {{ line.figure.value }}
+                          <span class="compare-line__unit">
+                            {{ line.figure.unit }}
+                          </span>
+                        </span>
+                      </div>
+                      <div v-if="line.context" class="compare-line__note">
+                        {{ line.context }}
+                      </div>
+                      <div
+                        v-for="part in line.parts"
+                        :key="part.key"
+                        class="compare-line__part"
+                      >
+                        <span v-if="part.size" class="compare-line__size">
+                          {{ part.size }}
+                        </span>
+                        <span class="compare-line__name">
+                          <CatalogueItemPopover
+                            v-if="catalogueItem(part)"
+                            :item="catalogueItem(part)!"
+                            :record="part.hardpoint.component!"
+                          />
+                          <template v-else>{{ part.name }}</template>
+                        </span>
+                        <span v-if="part.figure" class="compare-line__figure">
+                          {{ part.figure.value }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                   <div v-else class="compare-table__empty">—</div>
                 </td>
               </tr>

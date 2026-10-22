@@ -560,17 +560,9 @@
         "baseline": "基准",
         "differencesOnly": "仅显示差异",
         "compareToBaseline": "与基准比较",
-        "loadoutBySlot": "按挂点分组的配置",
+        "fastestScraper": "最快刮除模块",
         "slots": {
-          "guns": "主炮",
-          "turrets": "炮塔",
-          "missiles": "导弹",
-          "shields": "护盾发生器",
-          "powerPlants": "发电机",
-          "coolers": "散热器",
-          "quantumDrives": "量子引擎",
-          "thrusters": "主推进器",
-          "countermeasures": "干扰弹"
+          "guns": "主炮"
         },
         "legend": {
           "best": "本行最佳",
