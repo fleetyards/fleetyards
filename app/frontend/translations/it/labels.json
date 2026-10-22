@@ -3691,6 +3691,7 @@
           "ship_matrix_import": "Importazione Ship Matrix",
           "sc_data_import": "Importazione sc_data",
           "sc_data_unlisted_models": "Navi non elencate",
+          "unplaced_foci": "Specializzazione non riconosciuta",
           "import_run": "Importazione",
           "oauth_application_review": "Revisione applicazione OAuth",
           "inventory_transfer_reports": "Trasferimenti di inventario segnalati"

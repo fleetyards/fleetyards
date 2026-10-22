@@ -3705,6 +3705,7 @@
           "ship_matrix_import": "Ship Matrix Import",
           "sc_data_import": "sc_data Import",
           "sc_data_unlisted_models": "Unlisted Ships",
+          "unplaced_foci": "Unplaced Focus Wording",
           "import_run": "Import",
           "oauth_application_review": "OAuth Application Review",
           "inventory_transfer_reports": "Reported Inventory Transfers"

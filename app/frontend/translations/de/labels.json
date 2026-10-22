@@ -3691,6 +3691,7 @@
           "ship_matrix_import": "Ship-Matrix-Import",
           "sc_data_import": "sc_data-Import",
           "sc_data_unlisted_models": "Nicht gelistete Schiffe",
+          "unplaced_foci": "Nicht zuordenbarer Fokus",
           "import_run": "Importieren",
           "oauth_application_review": "OAuth-App-Prüfung",
           "inventory_transfer_reports": "Gemeldete Inventar-Transfers"

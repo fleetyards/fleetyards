@@ -10913,6 +10913,7 @@ components:
       - ship_matrix_import
       - sc_data_import
       - sc_data_unlisted_models
+      - unplaced_foci
       - import_run
       - oauth_application_review
       - inventory_transfer_reports
@@ -10933,6 +10934,7 @@ components:
       - SHIP_MATRIX_IMPORT
       - SC_DATA_IMPORT
       - SC_DATA_UNLISTED_MODELS
+      - UNPLACED_FOCI
       - IMPORT_RUN
       - OAUTH_APPLICATION_REVIEW
       - INVENTORY_TRANSFER_REPORTS
