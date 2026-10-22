@@ -4526,6 +4526,8 @@
         "dedication": "獻詞",
         "dedicationVerse": "獻詞詩句",
         "dedicationVerseInfo": "選填。幾行詩句或祝福，滑鼠懸停或點按獻詞時顯示。",
+        "translated": "翻譯銘牌",
+        "translatedInfo": "以 Fleetyards 目前設定的語言印製銘牌，所有人看到的都是這個語言。關閉時使用英文，與遊戲中的銘牌一致。",
         "launchedOn": "下水日期",
         "launchPort": "下水港口",
         "affiliation": "所屬"

@@ -4543,6 +4543,8 @@
         "dedication": "Dedication",
         "dedicationVerse": "Dedication verse",
         "dedicationVerseInfo": "Optional. A few lines of verse or a blessing, shown when someone hovers over or taps the dedication.",
+        "translated": "Translate the plaque",
+        "translatedInfo": "Prints the plaque in the language Fleetyards is set to, for everyone who sees it. Off, it reads in English, as the plaques in the game do.",
         "launchedOn": "Launch date",
         "launchPort": "Launch port",
         "affiliation": "Affiliation"

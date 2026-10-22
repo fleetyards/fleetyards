@@ -133,6 +133,8 @@ const [operationsGroup] = defineField("operationsGroup");
 // maker is no style at all for the next.
 const pickedStyle = ref<VehiclePlaqueStyleEnum>();
 
+const plaqueLocale = ref<string | null>(null);
+
 const plaqueStyle = computed<VehiclePlaqueStyleEnum>({
   get: () => {
     if (pickedStyle.value === "manufacturer" && !maker.value) {
@@ -161,6 +163,7 @@ const lines = computed<PlaqueLines>(() => ({
   plaqueCaptain: plaqueCaptain.value || null,
   operationsGroup: operationsGroup.value || null,
   plaqueStyle: plaqueStyle.value,
+  plaqueLocale: plaqueLocale.value,
 }));
 
 const plaque = computed<PlaqueContent | undefined>(() => {
@@ -214,6 +217,7 @@ const signIn = () => {
       JSON.stringify({
         values,
         style: pickedStyle.value,
+        locale: plaqueLocale.value,
         model: modelSlug.value,
         example: showingExample.value,
       }),
@@ -234,11 +238,13 @@ const restoreDraft = () => {
     const {
       values: saved,
       style,
+      locale: savedLocale,
       model: savedModel,
       example,
     } = JSON.parse(draft);
     setValues(saved);
     pickedStyle.value = style;
+    plaqueLocale.value = savedLocale ?? null;
     if (example) {
       showingExample.value = true;
     } else if (savedModel && !route.query.model) {
@@ -261,6 +267,7 @@ const startFresh = () => {
   showingExample.value = false;
   setValues({ ...BLANK });
   pickedStyle.value = undefined;
+  plaqueLocale.value = null;
   writeModel(undefined);
 };
 
@@ -413,6 +420,7 @@ const attach = handleSubmit(() => {
         v-model:affiliation="affiliation"
         v-model:plaque-captain="plaqueCaptain"
         v-model:operations-group="operationsGroup"
+        v-model:plaque-locale="plaqueLocale"
         :captain-placeholder="captain"
         :captain-info="captain ? undefined : t('labels.plaqueTool.captainInfo')"
       />

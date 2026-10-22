@@ -15,4 +15,5 @@ export interface PlaqueLines {
   plaqueCaptain: string | null;
   operationsGroup: NullableVehicleOperationsGroupEnum | null;
   plaqueStyle: VehiclePlaqueStyleEnum;
+  plaqueLocale: string | null;
 }

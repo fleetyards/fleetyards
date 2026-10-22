@@ -4529,6 +4529,8 @@
         "dedication": "Dedicatoria",
         "dedicationVerse": "Verso de dedicatoria",
         "dedicationVerseInfo": "Opcional. Unos versos o una bendición que se muestran al pasar el cursor sobre la dedicatoria o tocarla.",
+        "translated": "Traducir la placa",
+        "translatedInfo": "Imprime la placa en el idioma en que está configurado Fleetyards, para todos los que la vean. Desactivado, se lee en inglés, como las placas del juego.",
         "launchedOn": "Fecha de botadura",
         "launchPort": "Puerto de botadura",
         "affiliation": "Afiliación"

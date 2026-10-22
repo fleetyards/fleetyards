@@ -167,6 +167,28 @@ describe("VehiclePlaque", () => {
   });
 });
 
+describe("VehiclePlaque language", () => {
+  const mountIn = (locale: string, overrides: Partial<Vehicle> = {}) =>
+    mountWithDefaults<typeof Component>(Component, {
+      props: {
+        vehicle: vehicle({ launchedOn: "2022-10-08", ...overrides }),
+      },
+      initialState: { i18n: { locale } },
+    });
+
+  it("prints in English, month and all, whatever language the app is in", async () => {
+    const wrapper = await mountIn("de");
+
+    expect(line(wrapper, "launch")).toBe("Launched October 2952");
+  });
+
+  it("prints in the language saved with the plaque", async () => {
+    const wrapper = await mountIn("en", { plaqueLocale: "de" });
+
+    expect(line(wrapper, "launch")).toBe("Vom Stapel gelaufen im Oktober 2952");
+  });
+});
+
 describe("VehiclePlaque operations crew", () => {
   it("credits the lore group the captain picked", async () => {
     const wrapper = await mount({

@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormDatePicker from "@/shared/components/base/FormDatePicker/index.vue";
 import LocationInput from "@/shared/components/LocationInput/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
@@ -14,6 +15,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { OPERATIONS_GROUPS } from "@/frontend/components/Vehicles/Plaque/operationsGroups";
 import { IN_UNIVERSE_YEAR_OFFSET } from "@/frontend/components/Vehicles/Plaque/launchDate";
+import { PLAQUE_DEFAULT_LOCALE } from "@/frontend/components/Vehicles/Plaque/types";
 import {
   PLAQUE_FIELD_RULES,
   PLAQUE_LIMITS,
@@ -46,8 +48,26 @@ const launchPortLocationId = defineModel<string | null>("launchPortLocationId");
 const affiliation = defineModel<string>("affiliation");
 const plaqueCaptain = defineModel<string>("plaqueCaptain");
 const operationsGroup = defineModel<string | null>("operationsGroup");
+// Unset for English; translating prints the plaque in the language the app
+// is set to now, and keeps it in that language for everyone who sees it.
+const plaqueLocale = defineModel<string | null>("plaqueLocale");
 
-const { t } = useI18n();
+const { t, currentLocale, availableLocales } = useI18n();
+
+const appLocale = computed(() => currentLocale());
+
+const translatable = computed(
+  () =>
+    appLocale.value !== PLAQUE_DEFAULT_LOCALE &&
+    availableLocales().includes(appLocale.value),
+);
+
+const translated = computed({
+  get: () => !!plaqueLocale.value,
+  set: (on) => {
+    plaqueLocale.value = on ? appLocale.value : null;
+  },
+});
 
 // Grouped by side of the law, lawful first, as the select keeps this order.
 const operationsGroupOptions = computed(() =>
@@ -136,6 +156,14 @@ const operationsGroupOptions = computed(() =>
         />
       </div>
     </div>
+    <FormToggle
+      v-if="translatable || plaqueLocale"
+      v-model="translated"
+      name="plaqueTranslated"
+      :label="t('labels.vehiclePlaque.translated')"
+      :description="t('labels.vehiclePlaque.translatedInfo')"
+      data-test="vehicle-plaque-translated-input"
+    />
   </div>
 </template>
 
