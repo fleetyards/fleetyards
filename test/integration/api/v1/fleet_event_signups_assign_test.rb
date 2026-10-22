@@ -87,6 +87,19 @@ class Api::V1::FleetEventSignupsAssignTest < ActionDispatch::IntegrationTest
       body: {fleetEventSlotId: @other_slot.id, status: "confirmed"}
   end
 
+  test "PATCH /fleet-event-signups/:id/assign rejects a slot another member holds" do
+    sign_in @admin
+    create(:fleet_event_signup, fleet_event: @fleet_event, fleet_event_slot: @other_slot, status: "confirmed",
+      fleet_membership: create(:fleet_membership, fleet: @fleet))
+
+    assert_api_response :patch, 400,
+      path_params: {id: @signup.id},
+      body: {fleetEventSlotId: @other_slot.id, status: "confirmed"} do
+      error = parsed_body["errors"].find { |field| field["attribute"] == "fleetEventSlotId" }
+      assert_equal ["already_taken"], error["messages"].pluck("code")
+    end
+  end
+
   test "PATCH /fleet-event-signups/:id/assign rejects a slot that was deleted" do
     sign_in @admin
     deleted_slot_id = @other_slot.id

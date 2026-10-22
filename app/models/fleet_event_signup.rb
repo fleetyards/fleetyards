@@ -13,10 +13,10 @@ class FleetEventSignup < ApplicationRecord
   belongs_to :vehicle, optional: true
 
   validates :status, inclusion: {in: STATUSES}
-  validate :slot_exists, if: :fleet_event_slot_changing?
+  validate :slot_exists, if: :slot_claim_changing?
   validate :vehicle_owned_by_member, if: :vehicle_changing?
   validate :unique_active_signup_per_member, on: :create
-  validate :slot_not_already_taken, on: :create
+  validate :slot_not_already_taken, if: :slot_claim_changing?
   validate :membership_still_kept, if: :claims_seat?
   validate :slot_belongs_to_event
   validate :slot_bound_status_allowed
@@ -93,8 +93,12 @@ class FleetEventSignup < ApplicationRecord
     end
   end
 
-  private def fleet_event_slot_changing?
-    fleet_event_slot_id.present? && (new_record? || will_save_change_to_fleet_event_slot_id?)
+  # A save that puts this signup in a slot or changes its standing there, as
+  # an admin assign, a promotion out of the event pool or a revived withdrawal.
+  private def slot_claim_changing?
+    return false if fleet_event_slot_id.blank?
+
+    new_record? || will_save_change_to_fleet_event_slot_id? || will_save_change_to_status?
   end
 
   private def vehicle_changing?

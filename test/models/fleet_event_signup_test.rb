@@ -105,6 +105,23 @@ class FleetEventSignupTest < ActiveSupport::TestCase
       other = build(:fleet_event_signup, fleet_event: @event, fleet_event_slot: @slot, fleet_membership: @fleet_membership, status: "confirmed")
       refute other.valid?
     end
+
+    test "rejects moving a signup onto a taken slot" do
+      create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: @slot, fleet_membership: create(:fleet_membership, fleet: @event.fleet), status: "confirmed")
+      signup = create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: nil, fleet_membership: @fleet_membership, status: "interested")
+
+      refute signup.update(fleet_event_slot: @slot, status: "confirmed")
+      assert_includes signup.errors.details[:fleet_event_slot_id], {error: :already_taken}
+    end
+
+    test "rejects reviving a withdrawn signup on a slot taken since" do
+      signup = create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: @slot, fleet_membership: @fleet_membership, status: "confirmed")
+      signup.withdraw!
+      create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: @slot, fleet_membership: create(:fleet_membership, fleet: @event.fleet), status: "confirmed")
+
+      refute signup.update(status: "confirmed")
+      assert_includes signup.errors.details[:fleet_event_slot_id], {error: :already_taken}
+    end
   end
 
   class EffectiveSignupApprovalTest < FleetEventSignupTest
