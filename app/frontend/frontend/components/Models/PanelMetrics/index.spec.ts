@@ -18,7 +18,8 @@ import PanelMetrics from "./index.vue";
  */
 const model = (overrides: Record<string, unknown> = {}) =>
   ({
-    focus: "Modular",
+    fociLabels: ["Modular"],
+    stealth: false,
     crew: { value: 6, label: "6" },
     inGame: true,
     speeds: { scmSpeed: 210, maxSpeed: 1125, groundMaxSpeed: 90 },
@@ -117,13 +118,25 @@ describe("PanelMetrics", () => {
     expect(valueFor(wrapper, "model.cargo")).toBe("74");
   });
 
+  it("lists the foci, with stealth last", () => {
+    const wrapper = mount(PanelMetrics, {
+      props: {
+        model: model({ fociLabels: ["Medium Fighter"], stealth: true }),
+      },
+    });
+
+    expect(valueFor(wrapper, "model.focus")).toBe(
+      "Medium Fighter, labels.model.stealth",
+    );
+  });
+
   it("renders no empty group for a model carrying no figures", () => {
     // The e2e fixtures are exactly this: a name and a manufacturer. With speed
     // gated on inGame the summary has nothing left to show, and an empty rows
     // box with a divider under it is not a section.
     const wrapper = mount(PanelMetrics, {
       props: {
-        model: model({ focus: null, crew: {}, inGame: false }),
+        model: model({ fociLabels: [], crew: {}, inGame: false }),
       },
     });
 
