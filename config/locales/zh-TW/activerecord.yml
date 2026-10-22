@@ -5,6 +5,12 @@ zh-TW:
       fleet_squadron_request:
         fleet_membership: "成員"
         fleet_squadron: "中隊"
+      fleet_event_signup:
+        fleet_event_slot: "位置"
+        fleet_event_slot_id: "位置"
+        fleet_membership_id: "成員"
+        status: "狀態"
+        vehicle: "艦船"
       vehicle:
         bought_via:
           pledge_store: 質押商店

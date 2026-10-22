@@ -5,6 +5,12 @@ it:
       fleet_squadron_request:
         fleet_membership: "Membro"
         fleet_squadron: "Squadrone"
+      fleet_event_signup:
+        fleet_event_slot: "Posto"
+        fleet_event_slot_id: "Posto"
+        fleet_membership_id: "Membro"
+        status: "Stato"
+        vehicle: "Nave"
       vehicle:
         bought_via:
           pledge_store: Negozio Pledge
