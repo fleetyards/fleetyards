@@ -117,7 +117,18 @@ describe("extractBuybackPage", () => {
     );
   });
 
-  it("leaves the buy-back tokens unknown without RSI's notice", () => {
+  it("reads RSI's header without the notice as no tokens left", () => {
+    const header = `
+<section class="buy-back-pledges">
+  <header><h1>Buyback Pledges</h1></header>
+</section>`;
+
+    expect(readPage(header + buybackPage(packageArticle)).buybackTokens).toBe(
+      0,
+    );
+  });
+
+  it("leaves the buy-back tokens unknown without RSI's header", () => {
     expect(readPage(buybackPage(packageArticle)).buybackTokens).toBeUndefined();
   });
 

@@ -78,7 +78,7 @@ let options: BuybackSyncOptions = { readDetails: false };
 
 let seenIds = new Set<string>();
 
-// Read from the first page, the only one RSI puts the notice on.
+// The first count a page shows; RSI puts the notice above the list.
 let buybackTokens: number | undefined;
 
 // The first page's size, for the estimate: RSI shows the same number per page.
@@ -214,6 +214,8 @@ export const useBuybackSync = () => {
       return;
     }
 
+    if (buybackTokens === undefined) buybackTokens = page.buybackTokens;
+
     if (page.status === RsiPageStatus.END) {
       await submit(id);
       return;
@@ -237,10 +239,6 @@ export const useBuybackSync = () => {
     } else if (currentPage.value === 1) {
       firstPageSize = page.pledges.length;
       estimatePages();
-    }
-
-    if (currentPage.value === 1 && page.buybackTokens !== undefined) {
-      buybackTokens = page.buybackTokens;
     }
 
     newBuybacks.forEach((pledge) => seenIds.add(pledge.id));
