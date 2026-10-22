@@ -239,6 +239,7 @@ class HangarSync < HangarImporter
 
         if vehicle_with_ref.present?
           vehicle_with_ref.update!(
+            **pledge_details(item),
             rsi_pledge_synced_at: Time.current,
             name: item[:custom_name]&.strip.presence || vehicle_with_ref.name,
             wanted: false
@@ -258,6 +259,7 @@ class HangarSync < HangarImporter
 
         if vehicle.present?
           vehicle.update!(
+            **pledge_details(item),
             rsi_pledge_id: item[:id],
             rsi_pledge_synced_at: Time.current,
             name: item[:custom_name]&.strip.presence || vehicle.name,
@@ -288,6 +290,7 @@ class HangarSync < HangarImporter
 
         if vehicle.present?
           vehicle.update!(
+            **pledge_details(item),
             rsi_pledge_id: item[:id],
             rsi_pledge_synced_at: Time.current,
             name: item[:custom_name]&.strip.presence || vehicle.name,
@@ -330,6 +333,7 @@ class HangarSync < HangarImporter
 
       # Transfer the new pledge data to the original vehicle
       original_vehicle.update!(
+        **imported_vehicle.slice(:rsi_pledge_melt_value, :rsi_pledge_meltable, :rsi_pledge_item_count).compact.symbolize_keys,
         rsi_pledge_id: imported_vehicle.rsi_pledge_id,
         rsi_pledge_synced_at: imported_vehicle.rsi_pledge_synced_at,
         wanted: false
@@ -747,8 +751,21 @@ class HangarSync < HangarImporter
       name_visible: false,
       sale_notify: false,
       rsi_pledge_id: item[:id],
-      rsi_pledge_synced_at: Time.current
+      rsi_pledge_synced_at: Time.current,
+      **pledge_details(item)
     }
+  end
+
+  # What RSI says about the pledge a ship came in: what melting it credits,
+  # whether RSI lets it be melted, and how many items go with it when it is.
+  # Only what the item says is written, so a sync that leaves one out keeps
+  # the value an earlier one read.
+  private def pledge_details(item)
+    details = {}
+    details[:rsi_pledge_melt_value] = item[:pledge_value].presence if item.key?(:pledge_value)
+    details[:rsi_pledge_meltable] = ActiveModel::Type::Boolean.new.cast(item[:meltable]) || false if item.key?(:meltable)
+    details[:rsi_pledge_item_count] = item[:pledge_item_count].presence if item.key?(:pledge_item_count)
+    details
   end
 
   private def rsi_hangar_mapping(name)
