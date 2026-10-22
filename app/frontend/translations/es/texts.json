@@ -429,6 +429,13 @@
           "other": "%{count} elementos ya están en un inventario y se quedan donde están."
         },
         "noInventories": "Aún no tienes ningún inventario. Crea uno y añade después tus elementos."
+      },
+      "plaqueTool": {
+        "intro": "Dale a cualquier nave una placa de dedicatoria. Elige una nave, escribe su dedicatoria y comparte la placa como imagen.",
+        "pickShip": "Elige una nave para dibujar su placa.",
+        "signIn": "Inicia sesión para poner esta placa en una nave de tu hangar.",
+        "noShips": "No hay ninguna nave %{model} en tu hangar en la que poner la placa.",
+        "attachIntro": "La placa va en la nave que elijas, con el nombre y la matrícula propios de esa nave."
       }
     }
   }

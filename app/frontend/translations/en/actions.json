@@ -627,6 +627,9 @@
           "other": "Add %{count} items"
         },
         "createInventory": "Create an inventory"
+      },
+      "plaqueTool": {
+        "attach": "Save to hangar"
       }
     }
   }

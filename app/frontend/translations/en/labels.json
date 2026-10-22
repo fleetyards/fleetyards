@@ -4686,6 +4686,13 @@
         "changed": "Changed",
         "noMatches": "Nothing matches",
         "close": "Close"
+      },
+      "plaqueTool": {
+        "ship": "Ship",
+        "name": "Ship name",
+        "vehicle": "Your ship",
+        "hasPlaque": "has a plaque",
+        "captainInfo": "The name the plaque gives as the ship's captain."
       }
     }
   }

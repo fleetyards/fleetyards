@@ -1,6 +1,10 @@
 {
   "de": {
     "messages": {
+      "plaqueTool": {
+        "attached": "%{vehicle} trägt jetzt die Plakette.",
+        "replaceConfirm": "Dieses Schiff hat bereits eine Plakette. Ersetzen?"
+      },
       "blueprint": {
         "own": { "success": "%{blueprint} ist als vorhanden markiert" },
         "unown": {

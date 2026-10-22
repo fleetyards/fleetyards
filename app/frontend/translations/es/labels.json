@@ -4672,6 +4672,13 @@
         "changed": "Cambiado",
         "noMatches": "Sin resultados",
         "close": "Cerrar"
+      },
+      "plaqueTool": {
+        "ship": "Nave",
+        "name": "Nombre de la nave",
+        "vehicle": "Tu nave",
+        "hasPlaque": "tiene una placa",
+        "captainInfo": "El nombre que la placa da como capitán de la nave."
       }
     }
   }

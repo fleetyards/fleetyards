@@ -1,6 +1,9 @@
 {
   "fr": {
     "headlines": {
+      "plaqueTool": {
+        "attach": "Enregistrer sur un vaisseau de ton hangar"
+      },
       "vehiclePlaque": {
         "title": "Plaque de dédicace"
       },
@@ -437,6 +440,7 @@
         "index": "Outils",
         "travelTimes": "Temps de trajet",
         "cargoGrids": "Grilles de cargaison",
+        "plaque": "Plaques de dédicace",
         "tradeRoutes": "Routes commerciales"
       },
       "rsiVerification": "Vérifier votre compte RSI",

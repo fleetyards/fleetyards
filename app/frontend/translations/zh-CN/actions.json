@@ -626,6 +626,9 @@
           "other": "添加 %{count} 项"
         },
         "createInventory": "创建库存"
+      },
+      "plaqueTool": {
+        "attach": "保存到机库"
       }
     }
   }

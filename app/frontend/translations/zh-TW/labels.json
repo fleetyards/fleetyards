@@ -4669,6 +4669,13 @@
         "changed": "已變更",
         "noMatches": "沒有符合項目",
         "close": "關閉"
+      },
+      "plaqueTool": {
+        "ship": "艦船",
+        "name": "艦船名稱",
+        "vehicle": "你的艦船",
+        "hasPlaque": "已有銘牌",
+        "captainInfo": "銘牌上作為艦長顯示的名字。"
       }
     }
   }

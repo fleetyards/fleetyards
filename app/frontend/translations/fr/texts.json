@@ -429,6 +429,13 @@
           "other": "%{count} éléments sont déjà dans un inventaire et y restent."
         },
         "noInventories": "Vous n'avez pas encore d'inventaire. Créez-en un, puis ajoutez-y vos éléments."
+      },
+      "plaqueTool": {
+        "intro": "Donne une plaque de dédicace à n'importe quel vaisseau. Choisis un vaisseau, écris sa dédicace et partage la plaque en image.",
+        "pickShip": "Choisis un vaisseau pour dessiner sa plaque.",
+        "signIn": "Connecte-toi pour poser cette plaque sur un vaisseau de ton hangar.",
+        "noShips": "Il n'y a aucun vaisseau %{model} dans ton hangar où poser la plaque.",
+        "attachIntro": "La plaque va sur le vaisseau que tu choisis, sous le nom et l'immatriculation de ce vaisseau."
       }
     }
   }

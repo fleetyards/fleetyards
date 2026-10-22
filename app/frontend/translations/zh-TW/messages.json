@@ -1,6 +1,10 @@
 {
   "zh-TW": {
     "messages": {
+      "plaqueTool": {
+        "attached": "%{vehicle} 現已帶有此銘牌。",
+        "replaceConfirm": "這艘艦船已有銘牌。要替換嗎？"
+      },
       "blueprint": {
         "own": { "success": "%{blueprint} 已標記為已擁有" },
         "unown": { "success": "%{blueprint} 不再標記為已擁有" },

@@ -1,6 +1,10 @@
 {
   "it": {
     "messages": {
+      "plaqueTool": {
+        "attached": "%{vehicle} ora porta la targa.",
+        "replaceConfirm": "Questa nave ha già una targa. Sostituirla?"
+      },
       "blueprint": {
         "own": { "success": "%{blueprint} è contrassegnato come posseduto" },
         "unown": {

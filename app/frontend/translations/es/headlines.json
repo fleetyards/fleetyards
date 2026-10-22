@@ -1,6 +1,9 @@
 {
   "es": {
     "headlines": {
+      "plaqueTool": {
+        "attach": "Guardar en una nave de tu hangar"
+      },
       "vehiclePlaque": {
         "title": "Placa de dedicatoria"
       },
@@ -437,6 +440,7 @@
         "index": "Herramientas",
         "travelTimes": "Tiempos de viaje",
         "cargoGrids": "Grillas de carga",
+        "plaque": "Placas de dedicatoria",
         "tradeRoutes": "Rutas comerciales"
       },
       "rsiVerification": "Verify your RSI-Account",

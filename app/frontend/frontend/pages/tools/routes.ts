@@ -31,6 +31,15 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "plaque/",
+    name: "plaque-tool",
+    component: () => import("@/frontend/pages/tools/plaque.vue"),
+    meta: {
+      title: "tools.plaque",
+      backgroundImage: "bg-7",
+    },
+  },
+  {
     path: "trade-routes/",
     name: "trade-routes",
     component: () => import("@/frontend/pages/tools/trade-routes.vue"),

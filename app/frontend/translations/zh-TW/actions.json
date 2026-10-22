@@ -626,6 +626,9 @@
           "other": "加入 %{count} 項"
         },
         "createInventory": "建立庫存"
+      },
+      "plaqueTool": {
+        "attach": "儲存到機庫"
       }
     }
   }

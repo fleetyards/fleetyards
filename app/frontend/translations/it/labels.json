@@ -4672,6 +4672,13 @@
         "changed": "Modificato",
         "noMatches": "Nessun risultato",
         "close": "Chiudi"
+      },
+      "plaqueTool": {
+        "ship": "Nave",
+        "name": "Nome della nave",
+        "vehicle": "La tua nave",
+        "hasPlaque": "ha una targa",
+        "captainInfo": "Il nome che la targa indica come capitano della nave."
       }
     }
   }

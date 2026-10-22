@@ -1,6 +1,10 @@
 {
   "fr": {
     "messages": {
+      "plaqueTool": {
+        "attached": "%{vehicle} porte maintenant la plaque.",
+        "replaceConfirm": "Ce vaisseau a déjà une plaque. La remplacer ?"
+      },
       "blueprint": {
         "own": { "success": "%{blueprint} est marqué comme possédé" },
         "unown": { "success": "%{blueprint} n'est plus marqué comme possédé" },
