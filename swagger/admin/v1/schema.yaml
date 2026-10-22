@@ -16975,6 +16975,7 @@ components:
       - module
       - salvage
       - mining
+      - salvage_storage
       - unknown
       x-enumNames:
       - AVIONIC
@@ -16993,6 +16994,7 @@ components:
       - MODULE
       - SALVAGE
       - MINING
+      - SALVAGE_STORAGE
       - UNKNOWN
       title: HardpointGroupEnum
     HardpointSourceEnum:

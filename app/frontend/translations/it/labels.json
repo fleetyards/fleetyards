@@ -2206,6 +2206,7 @@
           "mining": "Estrazione mineraria",
           "module": "Moduli",
           "salvage": "Recupero",
+          "salvage_storage": "Deposito di recupero",
           "refuel_boom": "Braccio di rifornimento"
         },
         "types": {

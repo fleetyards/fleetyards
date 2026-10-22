@@ -421,6 +421,7 @@ useMetricsMasonry(metricsGrid);
                 HardpointGroupEnum.ORE_POD,
                 HardpointGroupEnum.MINING,
                 HardpointGroupEnum.SALVAGE,
+                HardpointGroupEnum.SALVAGE_STORAGE,
                 HardpointGroupEnum.MODULE,
                 HardpointGroupEnum.EXTERNAL_FUEL_TANK,
               ]"

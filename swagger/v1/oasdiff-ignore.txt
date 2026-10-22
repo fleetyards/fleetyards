@@ -2973,3 +2973,21 @@ PUT /vehicles/{id} added the new `missiles` enum value to the `modulePackage/mod
 PUT /vehicles/{id} added the new `salvage_heads` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
 PUT /vehicles/{id} added the new `salvage_modules` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
 PUT /vehicles/{id} added the new `tractor_beams` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+DELETE /vehicles/{id} added the new `salvage_storage` enum value to the `modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /components added the new `salvage_storage` enum value to the `items/items/hardpoints/items/group` response property for the response status `200`
+GET /components/{slug} added the new `salvage_storage` enum value to the `hardpoints/items/group` response property for the response status `200`
+GET /fleets/{fleetSlug}/vehicles added the new `salvage_storage` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /hangar added the new `salvage_storage` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /models/{slug}/hardpoints added the new `salvage_storage` enum value to the `items/group` response property for the response status `200`
+GET /models/{slug}/module-packages added the new `salvage_storage` enum value to the `items/items/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /models/{slug}/modules added the new `salvage_storage` enum value to the `items/items/hardpoints/items/group` response property for the response status `200`
+GET /public/fleets/{fleetSlug}/vehicles added the new `salvage_storage` enum value to the `items/items/anyOf[subschema #2: VehiclePublic]/modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /public/fleets/{fleetSlug}/vehicles/embed added the new `salvage_storage` enum value to the `items/modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /public/hangars/embed added the new `salvage_storage` enum value to the `items/modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /public/hangars/{username} added the new `salvage_storage` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /public/hangars/{username}/vehicles/{id} added the new `salvage_storage` enum value to the `modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /public/wishlists/{username} added the new `salvage_storage` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /vehicles/{id} added the new `salvage_storage` enum value to the `modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /wishlist added the new `salvage_storage` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+POST /vehicles added the new `salvage_storage` enum value to the `modulePackage/modules/items/hardpoints/items/group` response property for the response status `201`
+PUT /vehicles/{id} added the new `salvage_storage` enum value to the `modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`

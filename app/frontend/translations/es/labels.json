@@ -2206,6 +2206,7 @@
           "mining": "Minería",
           "module": "Módulos",
           "salvage": "Salvamento",
+          "salvage_storage": "Almacén de chatarra",
           "refuel_boom": "Brazo de repostaje"
         },
         "types": {

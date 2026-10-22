@@ -2206,6 +2206,7 @@
           "mining": "Mining",
           "module": "Modules",
           "salvage": "Salvage",
+          "salvage_storage": "Salvage Storage",
           "refuel_boom": "Refuel Boom"
         },
         "types": {

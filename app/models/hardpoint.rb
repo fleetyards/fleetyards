@@ -108,6 +108,7 @@ class Hardpoint < ApplicationRecord
     module: 13,
     salvage: 14,
     mining: 15,
+    salvage_storage: 16,
     unknown: 99
   }.freeze
 
@@ -227,7 +228,7 @@ class Hardpoint < ApplicationRecord
     when "module"
       :module
     when "salvagefillerstation"
-      :salvage
+      :salvage_storage
     when "relay", "batteries"
       :relay
     else
@@ -256,8 +257,11 @@ class Hardpoint < ApplicationRecord
       self.group = :ore_pod
     end
 
+    # What a salvage ship holds apart from what it salvages with, as ore pods
+    # are apart from the mining lasers: the scraped material's tank, and the
+    # stations that pack it into crates.
     if component&.component_type == "SalvageInternalStorage"
-      self.group = :salvage
+      self.group = :salvage_storage
     end
 
     if sc_name&.start_with?("hardpoint_relay_")

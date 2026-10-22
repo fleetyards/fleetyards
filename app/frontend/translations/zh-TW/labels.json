@@ -2206,6 +2206,7 @@
           "mining": "採礦",
           "module": "模組",
           "salvage": "打撈",
+          "salvage_storage": "回收儲存",
           "refuel_boom": "加油臂"
         },
         "types": {

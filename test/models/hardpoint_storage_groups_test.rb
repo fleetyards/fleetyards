@@ -16,14 +16,14 @@ class HardpointStorageGroupsTest < ActiveSupport::TestCase
     assert hardpoint("Module", "module").module_group?
   end
 
-  test "files a salvage filler station under salvage" do
-    assert hardpoint("SalvageFillerStation", "salvagefillerstation").salvage_group?
+  test "files a salvage filler station under salvage storage" do
+    assert hardpoint("SalvageFillerStation", "salvagefillerstation").salvage_storage_group?
   end
 
-  test "files salvage storage under salvage" do
+  test "files salvage storage under salvage storage" do
     storage = hardpoint("SalvageInternalStorage", "salvagemunching")
 
-    assert storage.salvage_group?
+    assert storage.salvage_storage_group?
     assert storage.salvage_storage_category?
   end
 end

@@ -2206,6 +2206,7 @@
           "mining": "Bergbau",
           "module": "Module",
           "salvage": "Bergung",
+          "salvage_storage": "Bergungsspeicher",
           "refuel_boom": "Betankungsausleger"
         },
         "types": {

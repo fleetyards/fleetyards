@@ -2206,6 +2206,7 @@
           "mining": "Minage",
           "module": "Modules",
           "salvage": "Récupération",
+          "salvage_storage": "Stockage de récupération",
           "refuel_boom": "Perche de ravitaillement"
         },
         "types": {

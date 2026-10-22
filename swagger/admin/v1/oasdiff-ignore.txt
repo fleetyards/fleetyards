@@ -543,3 +543,26 @@ PUT /vehicles/{id} added the new `missiles` enum value to the `modulePackage/mod
 PUT /vehicles/{id} added the new `salvage_heads` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
 PUT /vehicles/{id} added the new `salvage_modules` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
 PUT /vehicles/{id} added the new `tractor_beams` enum value to the `modulePackage/modules/items/hardpoints/items/category` response property for the response status `200`
+DELETE /components/{id} added the new `salvage_storage` enum value to the `hardpoints/items/group` response property for the response status `200`
+DELETE /vehicles/{id} added the new `salvage_storage` enum value to the `modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /components added the new `salvage_storage` enum value to the `items/items/hardpoints/items/group` response property for the response status `200`
+GET /components/{id} added the new `salvage_storage` enum value to the `hardpoints/items/group` response property for the response status `200`
+GET /hardpoints added the new `salvage_storage` enum value to the `items/items/component/hardpoints/items/group` response property for the response status `200` (shared schema: `HardpointGroupEnum`, also at `items/items/group`)
+GET /hardpoints/{id} added the new `salvage_storage` enum value to the `component/hardpoints/items/group` response property for the response status `200` (shared schema: `HardpointGroupEnum`, also at `group`)
+GET /model-module-packages added the new `salvage_storage` enum value to the `items/items/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /model-module-packages/{id} added the new `salvage_storage` enum value to the `modules/items/hardpoints/items/group` response property for the response status `200`
+GET /model-modules added the new `salvage_storage` enum value to the `items/items/hardpoints/items/group` response property for the response status `200`
+GET /model-modules/{id} added the new `salvage_storage` enum value to the `hardpoints/items/group` response property for the response status `200`
+GET /vehicles added the new `salvage_storage` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /vehicles/{id} added the new `salvage_storage` enum value to the `modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+POST /components added the new `salvage_storage` enum value to the `hardpoints/items/group` response property for the response status `200`
+POST /hardpoints added the new `salvage_storage` enum value to the `component/hardpoints/items/group` response property for the response status `201` (shared schema: `HardpointGroupEnum`, also at `group`)
+POST /model-module-packages added the new `salvage_storage` enum value to the `modules/items/hardpoints/items/group` response property for the response status `200`
+POST /model-modules added the new `salvage_storage` enum value to the `hardpoints/items/group` response property for the response status `201`
+PUT /components/{id} added the new `salvage_storage` enum value to the `hardpoints/items/group` response property for the response status `200`
+PUT /hardpoints/{id} added the new `salvage_storage` enum value to the `component/hardpoints/items/group` response property for the response status `200` (shared schema: `HardpointGroupEnum`, also at `group`)
+PUT /model-module-packages/{id} added the new `salvage_storage` enum value to the `modules/items/hardpoints/items/group` response property for the response status `200`
+PUT /model-modules/{id} added the new `salvage_storage` enum value to the `hardpoints/items/group` response property for the response status `200`
+PUT /model-modules/{id}/link added the new `salvage_storage` enum value to the `hardpoints/items/group` response property for the response status `200`
+PUT /model-modules/{id}/unlink added the new `salvage_storage` enum value to the `hardpoints/items/group` response property for the response status `200`
+PUT /vehicles/{id} added the new `salvage_storage` enum value to the `modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
