@@ -244,6 +244,16 @@ module Rsi
       assert_equal "Stealth Fighter", model.rsi_focus
     end
 
+    test "#keeps hand-picked foci when the matrix rewords the focus" do
+      data = JSON.parse(File.read("test/fixtures/rsi/matrix.json"))["data"].find { |ship| ship["id"] == 7 }
+      @loader.send(:create_or_update_model, data.merge("focus" => "Light Carrier"))
+      Model.find_by(rsi_id: 7).update!(foci: %w[carrier merchant])
+
+      @loader.send(:create_or_update_model, data.merge("focus" => "Snub Carrier", "time_modified" => "2030-01-01"))
+
+      assert_equal %w[carrier merchant], Model.find_by(rsi_id: 7).foci
+    end
+
     test "#leaves a classification it does not recognise off the model" do
       data = JSON.parse(File.read("test/fixtures/rsi/matrix.json"))["data"].find { |ship| ship["id"] == 7 }
 

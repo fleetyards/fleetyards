@@ -61,6 +61,11 @@ module Rsi
       model.save!
     end
 
+    private def matrix_foci?(model)
+      model.foci.empty? ||
+        model.foci == ::Model.normalize_value_for(:foci, ::Models::FocusMapping.call(model.rsi_focus).foci)
+    end
+
     private def create_or_update_model(data)
       model = Model.find_by(rsi_id: data["id"])
       model = Model.find_by(rsi_id: nil, name: strip_name(data["name"])) if model.blank?
@@ -140,15 +145,17 @@ module Rsi
       type = ::Model.normalize_value_for(:classification, data["type"])
       updates[:ground] = true if type == "ground" && model_updated(model, data) && type != model.classification
 
-      # The keys follow the matrix where the string always did. Stealth is only
-      # ever turned on: the matrix never says a ship is not stealthy, and an
-      # admin may have said it is.
+      # The keys follow the matrix where the string always did, but only keys
+      # the matrix put there: ones that differ from what its last wording maps
+      # to were picked by hand, and a reworded matrix must not undo that.
+      # Stealth is only ever turned on: the matrix never says a ship is not
+      # stealthy, and an admin may have said it is.
       updates["rsi_focus"] = data["focus"]
       if (model_updated(model, data) && data["focus"] != model.rsi_focus) || model.rsi_focus.blank?
         updates["focus"] = data["focus"]
 
         mapped = ::Models::FocusMapping.call(data["focus"])
-        updates[:foci] = mapped.foci if mapped.foci.any?
+        updates[:foci] = mapped.foci if mapped.foci.any? && matrix_foci?(model)
         updates[:stealth] = true if mapped.stealth
 
         if mapped.unknown.any?
