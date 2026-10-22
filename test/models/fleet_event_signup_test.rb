@@ -122,6 +122,14 @@ class FleetEventSignupTest < ActiveSupport::TestCase
       refute signup.update(status: "confirmed")
       assert_includes signup.errors.details[:fleet_event_slot_id], {error: :already_taken}
     end
+
+    test "approves a signup in place on a slot that is already double-booked" do
+      create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: @slot, fleet_membership: create(:fleet_membership, fleet: @event.fleet), status: "confirmed")
+      pending = build(:fleet_event_signup, fleet_event: @event, fleet_event_slot: @slot, fleet_membership: @fleet_membership, status: "pending")
+      pending.save!(validate: false)
+
+      assert pending.update(status: "confirmed")
+    end
   end
 
   class EffectiveSignupApprovalTest < FleetEventSignupTest
