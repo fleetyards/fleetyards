@@ -128,6 +128,13 @@ class Admin::Api::V1::CargoHoldsTest < ActionDispatch::IntegrationTest
     assert_api_response :put, 400, path_params: {id: cargo_hold.id}, body: {maxLoadableContainerSizeScu: 3}
   end
 
+  test "PUT /cargo-holds/{id} rejects a limit the grid already stays under" do
+    cargo_hold = create(:cargo_hold, max_container_size_scu: 2)
+    sign_in @user
+
+    assert_api_response :put, 400, path_params: {id: cargo_hold.id}, body: {maxLoadableContainerSizeScu: 4}
+  end
+
   test "PUT /cargo-holds/{id} returns 404 for missing id" do
     sign_in @user
 

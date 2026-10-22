@@ -14,6 +14,11 @@ class CargoHold < ApplicationRecord
     numericality: {greater_than: 0, only_integer: true}
   validates :max_loadable_container_size_scu,
     inclusion: {in: CargoHoldContainerCapacity::CONTAINER_SIZES}, allow_nil: true
+  # Only when it is set: a load that shrinks the grid under a curated limit has
+  # to go through, and the limit then simply stops applying.
+  validates :max_loadable_container_size_scu,
+    numericality: {less_than: :max_container_size_scu}, allow_nil: true,
+    if: :will_save_change_to_max_loadable_container_size_scu?
 
   after_update :calculate_container_capacities!, if: :saved_change_to_max_loadable_container_size_scu?
 

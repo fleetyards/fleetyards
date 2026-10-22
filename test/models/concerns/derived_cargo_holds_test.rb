@@ -136,10 +136,13 @@ class DerivedCargoHoldsTest < ActiveSupport::TestCase
     assert_nil served["offset"], "a loadable size alone places nothing"
   end
 
-  test "ignores a loadable crate size the grid already stays under" do
-    build_holds(@model, [hold("hold_a")])
-    @model.cargo_holds_db.find_by(name: "hold_a").update!(max_loadable_container_size_scu: 8)
+  test "lets a load shrink the grid under a curated limit, which then stops applying" do
+    build_holds(@model, [hold("hold_a", max_container_size: {"size" => 8, "dimensions" => {"x" => 2.5, "y" => 2.5, "z" => 2.5}})])
+    @model.cargo_holds_db.find_by(name: "hold_a").update!(max_loadable_container_size_scu: 4)
 
+    rows = build_holds(@model, [hold("hold_a")])
+
+    assert_equal 4, rows.first.max_loadable_container_size_scu
     assert_equal 2, @model.reload.cargo_holds_with_offsets.first.dig("max_container_size", "size")
   end
 
