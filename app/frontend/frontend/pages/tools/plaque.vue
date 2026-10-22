@@ -73,7 +73,7 @@ const maker = computed(() =>
   model.value ? plaqueMakerFor({ model: model.value }) : undefined,
 );
 
-const { defineField, validate } = useForm({
+const { defineField, validate, values, setValues } = useForm({
   initialValues: {
     name: "",
     serial: "",
@@ -169,8 +169,40 @@ const shareTitle = computed(() =>
 const canShare = canSharePlaques();
 const canDownload = !savesPlaquesByShare();
 
-// Signing in leaves the tool; the ship in the address brings it back to it.
+// Signing in leaves the tool: the ship in the address brings it back to it,
+// and what was written comes back from the tab's storage, once.
 const redirectBackStore = useRedirectBackStore();
+
+const DRAFT_KEY = "plaque-tool-draft";
+
+const signIn = () => {
+  redirectBackStore.setBackRoute(route.fullPath);
+
+  try {
+    sessionStorage.setItem(
+      DRAFT_KEY,
+      JSON.stringify({ values, style: pickedStyle.value }),
+    );
+  } catch {
+    // Without storage the plaque is written again.
+  }
+};
+
+onMounted(() => {
+  try {
+    const draft = sessionStorage.getItem(DRAFT_KEY);
+    sessionStorage.removeItem(DRAFT_KEY);
+    if (!draft) {
+      return;
+    }
+
+    const { values: saved, style } = JSON.parse(draft);
+    setValues(saved);
+    pickedStyle.value = style;
+  } catch {
+    // A draft that cannot be read is dropped.
+  }
+});
 
 const attach = async () => {
   if (!model.value) {
@@ -239,10 +271,7 @@ const attach = async () => {
         class="plaque-tool__hint"
         data-test="plaque-tool-sign-in"
       >
-        <router-link
-          :to="{ name: 'login' }"
-          @click="redirectBackStore.setBackRoute(route.fullPath)"
-        >
+        <router-link :to="{ name: 'login' }" @click="signIn">
           {{ t("texts.plaqueTool.signIn") }}
         </router-link>
       </p>

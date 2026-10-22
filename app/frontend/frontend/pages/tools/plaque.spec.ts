@@ -197,4 +197,27 @@ describe("ToolsPlaquePage", () => {
 
     expect(openModal).not.toHaveBeenCalled();
   });
+
+  it("brings back what was written after signing in", async () => {
+    const signedOut = await mount({ model: "corsair" });
+    await signedOut
+      .find('[data-test="vehicle-plaque-dedication-input"] textarea')
+      .setValue("Built rough");
+    await flushPromises();
+    await signedOut
+      .find('[data-test="plaque-tool-sign-in"] a')
+      .trigger("click");
+    signedOut.unmount();
+
+    const signedIn = await mount({ model: "corsair", signedIn: true });
+    await flushPromises();
+
+    expect(
+      (
+        signedIn.find('[data-test="vehicle-plaque-dedication-input"] textarea')
+          .element as HTMLTextAreaElement
+      ).value,
+    ).toBe("Built rough");
+    expect(sessionStorage.getItem("plaque-tool-draft")).toBeNull();
+  });
 });
