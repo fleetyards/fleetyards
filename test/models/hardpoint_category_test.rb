@@ -70,6 +70,16 @@ class HardpointCategoryTest < ActiveSupport::TestCase
     assert_equal "auxiliary", turret(part("TractorBeam", "weapons")).group
   end
 
+  test "a tool arm that holds only the disintegration intake is salvage" do
+    assert_equal "salvage", turret(part("SalvageFieldEmitter", "salvagemunching")).group
+  end
+
+  test "a disintegration intake on the hull stays out of the salvage group" do
+    intake = part("SalvageFieldEmitter", "salvagemunching")
+
+    assert_equal "unknown", hardpoint("hardpoint_disintegration_intake", component: intake).group
+  end
+
   test "a turret that also carries a gun stays a weapon" do
     assert_equal "weapon", turret(part("TractorBeam", "weapons"), part("WeaponGun", "weapons")).group
   end

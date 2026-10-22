@@ -152,6 +152,14 @@ class Hardpoint < ApplicationRecord
     "TowingBeam" => :auxiliary
   }.freeze
 
+  # What a mount is filed by when it carries it. The salvage field parts only
+  # count there: the Moth's tool arm holds the disintegration intake and no
+  # head, while an intake on the hull is internal and stays out of the list.
+  CARRIED_GROUPS = TYPE_GROUPS.merge(
+    "SalvageFieldEmitter" => :salvage,
+    "SalvageFieldSupporter" => :salvage
+  ).freeze
+
   enum :group, GROUPS, suffix: true
 
   enum :category, CATEGORIES, suffix: true
@@ -315,7 +323,7 @@ class Hardpoint < ApplicationRecord
 
     return if types.empty? || types.intersect?(%w[WeaponGun Missile Bomb])
 
-    types.filter_map { |type| TYPE_GROUPS[type] }.first
+    types.filter_map { |type| CARRIED_GROUPS[type] }.first
   end
 
   # The game files type several SureGrip and ViseLock tractor beams as

@@ -160,6 +160,14 @@ const moduleSlot: RowPresentation = {
   stats: () => [],
 };
 
+// The salvage field's emitter and supporters carry no name and no figures
+// worth a row; the port they sit in says what they are.
+const salvageField: RowPresentation = {
+  label: (hardpoint) => humanize(hardpoint.name),
+  headline: () => undefined,
+  stats: () => [],
+};
+
 const PRESENTATIONS: Partial<Record<HardpointCategoryEnum, RowPresentation>> = {
   [HardpointCategoryEnum.MAIN_THRUSTERS]: thruster,
   [HardpointCategoryEnum.MANEUVERING_THRUSTERS]: thruster,
@@ -172,6 +180,7 @@ const PRESENTATIONS: Partial<Record<HardpointCategoryEnum, RowPresentation>> = {
   [HardpointCategoryEnum.SALVAGE_STORAGE]: tank,
   [HardpointCategoryEnum.SEAT]: seat,
   [HardpointCategoryEnum.MODULE]: moduleSlot,
+  [HardpointCategoryEnum.SALVAGEMUNCHING]: salvageField,
 };
 
 export const rowPresentation = (

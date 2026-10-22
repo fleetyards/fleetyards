@@ -79,6 +79,14 @@ describe("rowPresentation", () => {
     expect(seat.sizeless).toBe(true);
   });
 
+  it("names a salvage field part after its hardpoint", () => {
+    const field = rowPresentation(HardpointCategoryEnum.SALVAGEMUNCHING);
+    const intake = hardpoint({ name: "hardpoint_disintegration_intake" });
+
+    expect(field.label?.(intake, t)?.trim()).toBe("Disintegration Intake");
+    expect(field.headline?.(intake, t, toNumber)).toBeUndefined();
+  });
+
   it("names a loadout's module slot after its module, or as empty", () => {
     const slot = rowPresentation(HardpointCategoryEnum.MODULE);
 
