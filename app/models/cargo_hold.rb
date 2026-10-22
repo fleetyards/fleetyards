@@ -49,11 +49,12 @@ class CargoHold < ApplicationRecord
       {name: "rotated", x: container_dims[:y], y: container_dims[:x], z: container_dims[:z]}
     ]
 
+    orientations = [] if size > effective_max_container_size_scu
+
     max_count = 0
     best_orientation = nil
 
     orientations.each do |orientation|
-      next if size > effective_max_container_size_scu
       next unless orientation[:x] <= dimension_x &&
         orientation[:y] <= dimension_y &&
         orientation[:z] <= dimension_z
