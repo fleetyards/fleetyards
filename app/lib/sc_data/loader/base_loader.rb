@@ -314,11 +314,24 @@ module ScData
             extract_cargo_holds(hardpoint.hardpoints)
           else
             next if hardpoint.component.blank?
-            next if hardpoint.component.component_type != "CargoGrid"
+            next part_cargo_holds(hardpoint) if hardpoint.component.component_type != "CargoGrid"
 
             hardpoint.component.type_data&.merge("name" => hardpoint.sc_name)
           end
         end.flatten
+      end
+
+      # Grids a fitted part carries on its own ports, which the ship's loadout
+      # never names: a salvage filler station's crate grid. A hidden part is
+      # skipped, its grids are already promoted onto the ship.
+      private def part_cargo_holds(hardpoint)
+        return [] if hardpoint.component.hidden?
+
+        hardpoint.component.hardpoints.sort_by { |h| h.sc_name.to_s }.filter_map do |sub_hardpoint|
+          next if sub_hardpoint.component&.component_type != "CargoGrid"
+
+          sub_hardpoint.component.type_data&.merge("name" => "#{hardpoint.sc_name}-#{sub_hardpoint.sc_name}")
+        end
       end
 
       # One hardpoint the loadout says should exist: resolved, but unwritten.

@@ -237,6 +237,38 @@ module ScData
         assert_equal build.storage_containers, model.reload.storage_containers
       end
 
+      test "#load_model counts the cargo grid a fitted part carries on its own port" do
+        loader = ::ScData::Loader::ModelsLoader.new
+        model = create(:model, name: "Station Test")
+        lift = create(:component, component_type: "CargoGrid", type_data: {"capacity" => 4})
+        side = create(:component, component_type: "CargoGrid", type_data: {"capacity" => 6})
+        station = create(:component, component_type: "SalvageFillerStation")
+        door = create(:component, :hidden, component_type: "Door")
+        create(:hardpoint, parent: station, source: :game_files, sc_name: "hardpoint_salvage_crate")
+        create(:hardpoint, parent: station, source: :game_files, sc_name: "hardpoint_cargo_grid", component: side)
+        create(:hardpoint, parent: door, source: :game_files, sc_name: "hardpoint_cargo_grid_lift", component: lift)
+        {
+          "hardpoint_door_rear" => door,
+          "hardpoint_door_rear-hardpoint_cargo_grid_lift" => lift,
+          "hardpoint_salvage_filler_station_left" => station
+        }.each do |sc_name, component|
+          create(:hardpoint, parent: model, source: :game_files, sc_name:, component:)
+        end
+
+        loader.stubs(:update_loadout)
+        loader.stubs(:load_model_data).returns({"mass" => 1000.0, "loadout" => []})
+
+        build = loader.load_model(model)
+
+        assert_equal(
+          [
+            ["hardpoint_door_rear-hardpoint_cargo_grid_lift", 4],
+            ["hardpoint_salvage_filler_station_left-hardpoint_cargo_grid", 6]
+          ],
+          build.cargo_holds.map { |hold| hold.values_at("name", "capacity") }
+        )
+      end
+
       test "#load_model clears ore pods a build no longer carries, and writes none for a ship without" do
         loader = ::ScData::Loader::ModelsLoader.new
         emptied = create(:model, name: "Emptied", storage_containers: [{"name" => "hardpoint_mining_pod_1", "capacity" => 8.0, "kind" => "ore"}])
