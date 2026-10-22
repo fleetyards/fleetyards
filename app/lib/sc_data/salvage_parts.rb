@@ -22,7 +22,9 @@ module ScData
 
     # { item key => {"salvage" => the figures} }, merged into the part's type data.
     def facts
-      @facts ||= @models.each_with_object({}) do |model, facts|
+      # In key order, so a part two ships share takes the same ship's figures
+      # whichever order the files are read in.
+      @facts ||= @models.sort_by { |model| model["key"].to_s }.each_with_object({}) do |model, facts|
         entries = flatten(model["loadout"] || [])
         controllers = entries.select { |entry| salvage_controller?(entry[:item]) }
         next if controllers.empty?
@@ -48,7 +50,7 @@ module ScData
     # Every entry of a loadout, nested ones included, each holding its own.
     private def flatten(loadout)
       loadout.flat_map do |entry|
-        children = flatten(entry["loadout"] || [])
+        children = flatten(entry["loadout"].presence || entry["default_loadout"] || [])
         node = {name: entry["name"].to_s.downcase, item: item_for(entry), children:}
         [node, *children]
       end

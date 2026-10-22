@@ -48,5 +48,22 @@ module ScData
       assert_nil facts["salvagedisintegrationarea"], "the intake is shared by every salvage ship"
       assert_nil facts["misc_mining_arm"]
     end
+
+    test "follows a default loadout where the ship names none" do
+      controller = item("controller_salvage_probe", "SalvageController",
+        {"salvage_controller" => true, "disintegration" => {"max_radius" => 40.0}})
+      arm = item("probe_salvage_arm", "ToolArm")
+      head = item("salvage_head_standard", "SalvageHead")
+      items = [controller, arm, head]
+      ship = {"key" => "probe", "loadout" => [
+        slot("hardpoint_controller_salvage", controller),
+        {"name" => "hardpoint_salvage_arm", "ref" => arm["ref"], "loadout" => [],
+         "default_loadout" => [slot("hardpoint_salvage_arm_head", head)]}
+      ]}
+
+      facts = SalvageParts.new([ship], items_by_key: items.index_by { |entry| entry["key"] }, items_by_ref: items.index_by { |entry| entry["ref"] }).facts
+
+      assert_in_delta 40.0, facts.dig("probe_salvage_arm", "salvage", "disintegration", "max_radius")
+    end
   end
 end
