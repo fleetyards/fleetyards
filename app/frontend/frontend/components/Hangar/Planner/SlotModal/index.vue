@@ -170,7 +170,7 @@ const onSubmit = handleSubmit(async (values) => {
         name="quantity"
         :type="InputTypesEnum.NUMBER"
         :min="1"
-        :max="99"
+        :max="999"
         :step="1"
         :label="t('hangarPlanner.fields.quantity')"
         no-placeholder

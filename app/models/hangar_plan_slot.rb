@@ -4,8 +4,11 @@
 # "3 escort fighters". With no candidate it is a gap, with one it is decided,
 # and with several the user has not picked yet.
 class HangarPlanSlot < ApplicationRecord
-  MAX_PER_PLAN = 200
-  MAX_QUANTITY = 99
+  # A plan built from the hangar takes a slot per model and fitting, so these
+  # fit the largest real hangars: some hold over 200 models, a few a model more
+  # than 99 times.
+  MAX_PER_PLAN = 500
+  MAX_QUANTITY = 999
   STATES = %w[open decided undecided].freeze
 
   # What the ships for this slot have to be, in the catalogue's own filter
