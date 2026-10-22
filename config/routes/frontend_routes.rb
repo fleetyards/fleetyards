@@ -123,6 +123,7 @@ namespace :frontend, **frontend_options do
   get "fleets/:fleet_slug/events/:event_slug", to: "fleets#event", as: :fleet_event
   get "fleets/:fleet_slug/contracts/:contract_slug", to: "fleets#contract", as: :fleet_contract
   get "fleets/:fleet_slug/tours/:tour_slug", to: "fleets#tour", as: :fleet_tour
+  get "tools/plaque", to: "base#plaque_tool", as: :plaque_tool
   get "tools/tours/join/:token", to: "tours#join", as: :tour_join
   get "tools/tours/:slug", to: "tours#show", as: :tour
 

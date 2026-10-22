@@ -4677,6 +4677,13 @@
         "changed": "Modifié",
         "noMatches": "Aucun résultat",
         "close": "Fermer"
+      },
+      "plaqueTool": {
+        "ship": "Vaisseau",
+        "name": "Nom du vaisseau",
+        "vehicle": "Ton vaisseau",
+        "hasPlaque": "a une plaque",
+        "captainInfo": "Le nom que la plaque donne comme capitaine du vaisseau."
       }
     }
   }

@@ -1,6 +1,13 @@
 {
   "it": {
     "messages": {
+      "plaqueTool": {
+        "attached": "%{vehicle} ora porta la targa.",
+        "hangarFailure": "Non è stato possibile caricare il tuo hangar.",
+        "createFailure": "Non è stato possibile aggiungere la nave al tuo hangar.",
+        "addedWithoutPlaque": "La nave è nel tuo hangar, ma non è stato possibile salvarne la targa. Riprova per applicarla.",
+        "replaceConfirm": "Questa nave ha già una targa. Sostituirla?"
+      },
       "blueprint": {
         "own": { "success": "%{blueprint} è contrassegnato come posseduto" },
         "unown": {

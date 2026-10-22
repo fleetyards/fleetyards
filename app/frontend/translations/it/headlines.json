@@ -1,6 +1,9 @@
 {
   "it": {
     "headlines": {
+      "plaqueTool": {
+        "attach": "Salva su una nave del tuo hangar"
+      },
       "vehiclePlaque": {
         "title": "Targa di dedica"
       },
@@ -437,6 +440,7 @@
         "index": "Strumenti",
         "travelTimes": "Tempi di viaggio",
         "cargoGrids": "Griglie di carico",
+        "plaque": "Targhe di dedica",
         "tradeRoutes": "Rotte commerciali"
       },
       "rsiVerification": "Verifica il tuo account RSI",

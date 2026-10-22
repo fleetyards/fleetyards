@@ -1,6 +1,8 @@
 ---
 de:
   meta:
+    plaque_tool:
+      description: "Gib jedem Star-Citizen-Schiff eine Widmungsplakette, wie die, die CIG für The Only Constant aufgehängt hat, und teile sie als Bild."
     admin_description: FleetYards.net Command App.
     compare_ships:
       description:

@@ -1,6 +1,9 @@
 {
   "de": {
     "headlines": {
+      "plaqueTool": {
+        "attach": "An einem Schiff in deinem Hangar speichern"
+      },
       "vehiclePlaque": {
         "title": "Widmungstafel"
       },
@@ -437,6 +440,7 @@
         "index": "Werkzeuge",
         "travelTimes": "Reisezeiten",
         "cargoGrids": "Frachtraster",
+        "plaque": "Widmungsplaketten",
         "tradeRoutes": "Handelsrouten"
       },
       "rsiVerification": "Verify your RSI-Account",

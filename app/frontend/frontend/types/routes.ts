@@ -72,6 +72,7 @@ type FrontendSimpleRoutes =
   | "tour-join"
   | "fleet-event-payouts"
   | "cargo-grids"
+  | "plaque-tool"
   | "trade-routes"
   // Visual Tests (dev only)
   | "visual-tests"

@@ -5,11 +5,13 @@ import Component from "./index.vue";
 import {
   plaqueFile,
   savePlaque,
+  sharePlaque,
 } from "@/frontend/components/Vehicles/Plaque/download";
 
 vi.mock("@/frontend/components/Vehicles/Plaque/download", () => ({
   plaqueFile: vi.fn(),
   savePlaque: vi.fn(),
+  sharePlaque: vi.fn(),
 }));
 
 const file = new File(["png"], "fleetyards-plaque.png", { type: "image/png" });
@@ -26,6 +28,7 @@ describe("VehiclePlaqueDownloadBtn", () => {
   afterEach(() => {
     vi.mocked(plaqueFile).mockReset();
     vi.mocked(savePlaque).mockReset();
+    vi.mocked(sharePlaque).mockReset();
   });
 
   it("draws the plaque and saves it", async () => {
@@ -108,5 +111,26 @@ describe("VehiclePlaqueDownloadBtn", () => {
     await flushPromises();
 
     expect(wrapper.text()).toContain("Save as PNG");
+  });
+
+  it("hands the picture to the share sheet in share mode", async () => {
+    vi.mocked(plaqueFile).mockResolvedValue(file);
+    document.body.innerHTML = '<div id="plaque"></div>';
+    const wrapper = await mountWithDefaults<typeof Component>(Component, {
+      props: {
+        element: "plaque",
+        filename: "plaque",
+        share: true,
+        shareTitle: "Corsair",
+      },
+    });
+
+    expect(wrapper.text()).toContain("Share");
+
+    await wrapper.find("button").trigger("click");
+    await flushPromises();
+
+    expect(sharePlaque).toHaveBeenCalledWith(file, "Corsair");
+    expect(savePlaque).not.toHaveBeenCalled();
   });
 });

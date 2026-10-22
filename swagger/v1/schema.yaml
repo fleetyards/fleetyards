@@ -32325,6 +32325,10 @@ components:
           type: array
           items:
             type: string
+        modelSlugIn:
+          type: array
+          items:
+            type: string
         nameCont:
           type: string
         nameIn:
@@ -34983,6 +34987,14 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         longName:
           type: string
+        shortName:
+          type:
+          - string
+          - 'null'
+        shipyard:
+          type:
+          - string
+          - 'null'
         scRef:
           type: string
         createdAt:

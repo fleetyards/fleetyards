@@ -68,6 +68,8 @@ de:
       stats: Statistiken
       tools: Werkzeuge
       tools_travel-times: Reisezeiten
+      tools_plaque: "Widmungsplaketten"
+      tools_plaque_image: "Die Widmungsplakette der The Only Constant, ein mit dem Werkzeug erstelltes Beispiel"
       visual-tests: Visuelle Tests
       visual-tests_panels: Panels - Visual Tests
     api:

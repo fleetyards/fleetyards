@@ -69,6 +69,8 @@ es:
       stats: Estadísticas
       tools: Herramientas
       tools_travel-times: Tiempos de viaje
+      tools_plaque: "Placas de dedicatoria"
+      tools_plaque_image: "La placa de dedicatoria de The Only Constant, un ejemplo hecho con la herramienta"
       visual-tests: Pruebas visuales
       visual-tests_panels: Panels - Visual Tests
     api:

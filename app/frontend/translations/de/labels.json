@@ -4677,6 +4677,13 @@
         "changed": "Geändert",
         "noMatches": "Keine Treffer",
         "close": "Schließen"
+      },
+      "plaqueTool": {
+        "ship": "Schiff",
+        "name": "Schiffsname",
+        "vehicle": "Dein Schiff",
+        "hasPlaque": "hat eine Plakette",
+        "captainInfo": "Der Name, den die Plakette als Kapitän des Schiffs nennt."
       }
     }
   }

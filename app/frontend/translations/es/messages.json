@@ -1,6 +1,13 @@
 {
   "es": {
     "messages": {
+      "plaqueTool": {
+        "attached": "%{vehicle} lleva ahora la placa.",
+        "hangarFailure": "No se pudo cargar tu hangar.",
+        "createFailure": "No se pudo añadir la nave a tu hangar.",
+        "addedWithoutPlaque": "La nave ya está en tu hangar, pero no se pudo guardar su placa. Inténtalo de nuevo para ponérsela.",
+        "replaceConfirm": "Esta nave ya tiene una placa. ¿Reemplazarla?"
+      },
       "blueprint": {
         "own": { "success": "%{blueprint} está marcado como tuyo" },
         "unown": { "success": "%{blueprint} ya no está marcado como tuyo" },

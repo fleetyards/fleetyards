@@ -11,8 +11,6 @@ module Admin
             id: {type: :string, format: "uuid"},
             iconOverridden: {type: :boolean},
             logoOverridden: {type: :boolean},
-            shortName: {type: [:string, :null]},
-            shipyard: {type: [:string, :null]},
             shipyardLocation: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]}
           },
           required: %w[id iconOverridden logoOverridden]

@@ -626,6 +626,11 @@
           "other": "添加 %{count} 项"
         },
         "createInventory": "创建库存"
+      },
+      "plaqueTool": {
+        "attach": "保存到机库",
+        "addShip": "将 %{model} 加入我的机库",
+        "startFresh": "从头开始"
       }
     }
   }

@@ -1,6 +1,9 @@
 {
   "en": {
     "headlines": {
+      "plaqueTool": {
+        "attach": "Save to a ship in your hangar"
+      },
       "vehiclePlaque": {
         "title": "Dedication plaque"
       },
@@ -439,6 +442,7 @@
         "index": "Tools",
         "travelTimes": "Travel Times",
         "cargoGrids": "Cargo Grids",
+        "plaque": "Dedication Plaques",
         "tradeRoutes": "Trade Routes"
       },
       "rsiVerification": "Verify your RSI-Account",

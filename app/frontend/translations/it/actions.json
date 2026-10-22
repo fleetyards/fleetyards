@@ -627,6 +627,11 @@
           "other": "Aggiungi %{count} elementi"
         },
         "createInventory": "Crea un inventario"
+      },
+      "plaqueTool": {
+        "attach": "Salva nell'hangar",
+        "addShip": "Aggiungi %{model} al mio hangar",
+        "startFresh": "Ricomincia da capo"
       }
     }
   }

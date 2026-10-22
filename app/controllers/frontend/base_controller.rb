@@ -30,6 +30,17 @@ module Frontend
       render_frontend
     end
 
+    # The tool opens on an example plaque, so a shared link previews as that
+    # example; a plaque made in the tool exists only in the maker's browser.
+    def plaque_tool
+      @title = I18n.t("title.frontend.tools_plaque")
+      @description = I18n.t("meta.plaque_tool.description")
+      use_og_image("images/og/plaque-tool.jpg", alt: I18n.t("title.frontend.tools_plaque_image"))
+      @twitter_card = "summary_large_image"
+
+      render_frontend
+    end
+
     def model
       @model = model_record.first
       return if redirect_to_canonical_slug(@model)

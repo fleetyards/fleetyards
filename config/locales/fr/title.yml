@@ -69,6 +69,8 @@ fr:
       stats: Statistiques
       tools: Outils
       tools_travel-times: Temps de trajet
+      tools_plaque: "Plaques de dédicace"
+      tools_plaque_image: "La plaque de dédicace de The Only Constant, un exemple réalisé avec l'outil"
       visual-tests: Tests visuels
       visual-tests_panels: Panels - Visual Tests
     api:

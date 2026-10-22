@@ -100,9 +100,11 @@ export const plaqueFile = async (element: HTMLElement, filename: string) =>
 // A Home Screen app on iOS ignores a download link, so there the picture goes
 // to the share sheet, whose "Save Image" puts it in Photos. Only iOS sets
 // `navigator.standalone`; installed apps elsewhere download as a tab does.
+const isIosHomeScreenApp = () =>
+  (navigator as Navigator & { standalone?: boolean }).standalone === true;
+
 export const sharesPlaque = (file: File) =>
-  (navigator as Navigator & { standalone?: boolean }).standalone === true &&
-  !!navigator.canShare?.({ files: [file] });
+  isIosHomeScreenApp() && !!navigator.canShare?.({ files: [file] });
 
 export const savePlaque = async (file: File) => {
   if (sharesPlaque(file)) {
@@ -112,6 +114,21 @@ export const savePlaque = async (file: File) => {
 
   downloadJs(file, file.name, "image/png");
 };
+
+// Asked with a stand-in, since the plaque is only drawn once the button is
+// pressed and the share sheet has to be offered before that.
+export const canSharePlaques = () =>
+  !!navigator.canShare?.({
+    files: [new File([""], "plaque.png", { type: "image/png" })],
+  });
+
+// Where saving a plaque opens the share sheet anyway, a separate share button
+// would be the same button twice.
+export const savesPlaquesByShare = () =>
+  isIosHomeScreenApp() && canSharePlaques();
+
+export const sharePlaque = (file: File, title?: string) =>
+  navigator.share({ files: [file], ...(title ? { title } : {}) });
 
 // The plaque on a dark card of the size link previews use, for a shared link.
 export const plaqueSocialImage = async (element: HTMLElement) => {

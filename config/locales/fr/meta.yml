@@ -1,6 +1,8 @@
 ---
 fr:
   meta:
+    plaque_tool:
+      description: "Donne à n'importe quel vaisseau de Star Citizen une plaque de dédicace, comme celle que CIG a accrochée pour The Only Constant, et partage-la en image."
     admin_description: FleetYards.net Command App.
     compare_ships:
       description:

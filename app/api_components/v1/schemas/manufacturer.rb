@@ -14,6 +14,8 @@ module V1
           logo: ::Shared::V1::Schemas::MediaFile,
           icon: ::Shared::V1::Schemas::MediaFile,
           longName: {type: :string},
+          shortName: {type: [:string, :null]},
+          shipyard: {type: [:string, :null]},
           scRef: {type: :string},
           createdAt: {type: :string, format: "date-time"},
           updatedAt: {type: :string, format: "date-time"}

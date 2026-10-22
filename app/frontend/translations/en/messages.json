@@ -1,6 +1,13 @@
 {
   "en": {
     "messages": {
+      "plaqueTool": {
+        "attached": "%{vehicle} carries the plaque now.",
+        "hangarFailure": "Your hangar could not be loaded.",
+        "createFailure": "The ship could not be added to your hangar.",
+        "addedWithoutPlaque": "The ship is in your hangar, but its plaque could not be saved. Try again to put it on.",
+        "replaceConfirm": "This ship already has a plaque. Replace it?"
+      },
       "blueprint": {
         "own": { "success": "%{blueprint} is marked as owned" },
         "unown": { "success": "%{blueprint} is no longer marked as owned" },
