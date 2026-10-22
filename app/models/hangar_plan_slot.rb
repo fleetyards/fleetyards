@@ -48,7 +48,7 @@ class HangarPlanSlot < ApplicationRecord
     filters.all? do |key, value|
       case key
       when "classification_in" then value.include?(model.classification)
-      when "focus_in" then value.include?(model.focus)
+      when "focus_in" then Model.focus_keys(value).intersect?(model.foci)
       when "size_in" then value.include?(model.size)
       when "manufacturer_in" then value.include?(model.manufacturer&.slug)
       when "production_status_in" then value.include?(model.production_status)

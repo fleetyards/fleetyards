@@ -55,6 +55,20 @@ class HangarPlanTest < ActiveSupport::TestCase
     assert_not slot.matches?(@cutlass)
   end
 
+  test "a slot's focus filter matches a ship by its foci, old focus names included" do
+    @carrack.update!(foci: %w[expedition])
+    @cutlass.update!(foci: %w[medium_fighter])
+
+    by_key = build(:hangar_plan_slot, hangar_plan: @plan, filters: {focus_in: ["expedition"]})
+    assert by_key.matches?(@carrack)
+    assert_not by_key.matches?(@cutlass)
+
+    # An umbrella key takes in every focus under it.
+    fighters = build(:hangar_plan_slot, hangar_plan: @plan, filters: {focus_in: ["fighter"]})
+    assert fighters.matches?(@cutlass)
+    assert_not fighters.matches?(@carrack)
+  end
+
   test "a slot drops empty filters and rejects unknown ones" do
     slot = build(:hangar_plan_slot, hangar_plan: @plan, filters: {size_in: [], pledge_price_gteq: ""})
 
