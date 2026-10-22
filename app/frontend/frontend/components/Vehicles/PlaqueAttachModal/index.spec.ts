@@ -42,6 +42,7 @@ const lines: PlaqueLines = {
   plaqueCaptain: null,
   operationsGroup: null,
   plaqueStyle: "brass",
+  plaqueLocale: null,
 };
 
 const hangarItems = ref<Vehicle[]>([]);

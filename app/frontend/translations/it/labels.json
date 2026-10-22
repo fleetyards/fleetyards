@@ -4530,6 +4530,9 @@
         "dedication": "Dedica",
         "dedicationVerse": "Versi di dedica",
         "dedicationVerseInfo": "Facoltativo. Alcuni versi o una benedizione, mostrati passando sopra la dedica o toccandola.",
+        "translated": "Traduci la targa",
+        "translatedInfo": "Stampa la targa nella lingua impostata su Fleetyards, per chiunque la veda. Disattivato, è in inglese, come le targhe del gioco.",
+        "translatedInto": "Stampata in %{language} per chiunque la veda. Disattivato, è in inglese.",
         "launchedOn": "Data del varo",
         "launchPort": "Porto del varo",
         "affiliation": "Affiliazione"

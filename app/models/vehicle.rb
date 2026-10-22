@@ -136,6 +136,9 @@ class Vehicle < ApplicationRecord
   PLAQUE_STYLES = %w[brass hud gunmetal blueprint salvage glass carbon walnut neon manufacturer].freeze
   DEFAULT_PLAQUE_STYLE = "brass"
   validates :plaque_style, inclusion: {in: PLAQUE_STYLES}, allow_blank: true
+  # The language a plaque is printed in; unset, it reads in English.
+  PLAQUE_LOCALES = I18n.available_locales.map(&:to_s).freeze
+  validates :plaque_locale, inclusion: {in: PLAQUE_LOCALES}, allow_blank: true
   PLAQUE_ATTRS = %w[dedication launched_on launch_port launch_port_location_id affiliation operations_group].freeze
 
   # The plaque as a picture, for the link preview of a shared plaque. The server
@@ -199,7 +202,7 @@ class Vehicle < ApplicationRecord
   validate :serial_in_game_format, if: -> { serial.present? && serial_changed? }
   validate :model_must_be_player_ownable
 
-  NULL_ATTRS = %w[name serial dedication launch_port affiliation operations_group plaque_style].freeze
+  NULL_ATTRS = %w[name serial dedication launch_port affiliation operations_group plaque_style plaque_locale].freeze
 
   enum :bought_via,
     {pledge_store: 0, ingame: 1},

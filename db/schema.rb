@@ -3018,6 +3018,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_22_150000) do
     t.decimal "rsi_pledge_melt_value", precision: 15, scale: 2
     t.boolean "rsi_pledge_meltable"
     t.integer "rsi_pledge_item_count"
+    t.string "plaque_locale"
     t.index ["hidden", "loaner", "wanted"], name: "index_vehicles_on_hidden_and_loaner_and_wanted"
     t.index ["launch_port_location_id"], name: "index_vehicles_on_launch_port_location_id"
     t.index ["location_id"], name: "index_vehicles_on_location_id"

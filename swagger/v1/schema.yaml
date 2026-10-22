@@ -41442,6 +41442,29 @@ components:
       - MODEL_PAINT
       - 'NULL'
       title: NullableVehiclePictureTypeEnum
+    NullableVehiclePlaqueLocaleEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - en
+      - de
+      - es
+      - fr
+      - it
+      - zh-CN
+      - zh-TW
+      -
+      x-enumNames:
+      - EN
+      - DE
+      - ES
+      - FR
+      - IT
+      - ZH_CN
+      - ZH_TW
+      - 'NULL'
+      title: NullableVehiclePlaqueLocaleEnum
     NullableVehiclePlaqueStyleEnum:
       type:
       - string
@@ -44966,6 +44989,8 @@ components:
           - 'null'
         plaqueStyle:
           "$ref": "#/components/schemas/VehiclePlaqueStyleEnum"
+        plaqueLocale:
+          "$ref": "#/components/schemas/NullableVehiclePlaqueLocaleEnum"
         shipyard:
           type:
           - string
@@ -45677,6 +45702,8 @@ components:
           - 'null'
         plaqueStyle:
           "$ref": "#/components/schemas/VehiclePlaqueStyleEnum"
+        plaqueLocale:
+          "$ref": "#/components/schemas/NullableVehiclePlaqueLocaleEnum"
         shipyard:
           type:
           - string
@@ -45927,6 +45954,8 @@ components:
           maxLength: 50
         plaqueStyle:
           "$ref": "#/components/schemas/NullableVehiclePlaqueStyleEnum"
+        plaqueLocale:
+          "$ref": "#/components/schemas/NullableVehiclePlaqueLocaleEnum"
         plaqueImage:
           type:
           - string
