@@ -66,6 +66,16 @@ class VehicleLoadoutComponentFittingTest < ActiveSupport::TestCase
     assert_refused fleetyards_loadout(fit(["hardpoint_life_support", @cooler])), :component_not_in_slot
   end
 
+  test "matches a slot filed under a category its parts do not carry on the parts' type" do
+    laser = create(:component, component_type: "WeaponMining", category: "weapons", size: "1")
+    other_laser = create(:component, component_type: "WeaponMining", category: "weapons", size: "1")
+    port(@model, "hardpoint_mining_laser", types: [], min_size: 1, max_size: 1, component: laser)
+
+    assert_equal "mining_lasers", Hardpoint.find_by!(parent: @model, sc_name: "hardpoint_mining_laser").facts.category
+    assert fleetyards_loadout(fit(["hardpoint_mining_laser", other_laser])).save
+    assert_refused fleetyards_loadout(fit(["hardpoint_mining_laser", @small_gun])), :component_not_in_slot
+  end
+
   test "fits a gun into the stock mount without fitting the mount" do
     loadout = fleetyards_loadout(fit(["hardpoint_gun_nose/hardpoint_class_2", @gun]))
 

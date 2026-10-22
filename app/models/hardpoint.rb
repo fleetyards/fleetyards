@@ -107,6 +107,7 @@ class Hardpoint < ApplicationRecord
     ore_pod: 12,
     module: 13,
     salvage: 14,
+    mining: 15,
     unknown: 99
   }.freeze
 
@@ -116,14 +117,39 @@ class Hardpoint < ApplicationRecord
     fueltanks: 20, fuel_intakes: 21, quantumdrive: 22, jumpdrive: 23, external_fuel_tanks: 24,
     refuel_boom: 25,
     main_thrusters: 30, retro_thrusters: 31, vtol_thrusters: 32, maneuvering_thrusters: 33,
+    bombs: 39,
     weapons: 40, weapon_mounts: 41, turret: 42, missile_racks: 43, bombcompartments: 44,
-    quantumenforcementdevice: 45, emp: 46, salvagemunching: 47, salvage_storage: 48,
+    quantumenforcementdevice: 45, emp: 46, salvagemunching: 47, salvage_storage: 48, missiles: 49,
     armor: 50, countermeasures: 51,
     selfdestruct: 60, lifesupport: 61, batteries: 62, utility: 63, ore_pods: 64,
+    mining_lasers: 65, mining_modules: 66, salvage_heads: 67, salvage_modules: 68, tractor_beams: 69,
     seat: 70,
     relay: 80,
     paints: 90, doors: 91, cargogrid: 92, inventory: 93, controller: 94,
     unknown: 999
+  }.freeze
+
+  # What a part does, where the game files file it under something broader: a
+  # component's own category calls a mining laser, a tractor beam and a missile
+  # "weapons", and a salvage head "utility".
+  TYPE_CATEGORIES = {
+    "Missile" => :missiles,
+    "Bomb" => :bombs,
+    "WeaponMining" => :mining_lasers,
+    "MiningModifier" => :mining_modules,
+    "SalvageHead" => :salvage_heads,
+    "SalvageModifier" => :salvage_modules,
+    "TractorBeam" => :tractor_beams,
+    "TowingBeam" => :tractor_beams
+  }.freeze
+
+  TYPE_GROUPS = {
+    "WeaponMining" => :mining,
+    "MiningModifier" => :mining,
+    "SalvageHead" => :salvage,
+    "SalvageModifier" => :salvage,
+    "TractorBeam" => :auxiliary,
+    "TowingBeam" => :auxiliary
   }.freeze
 
   enum :group, GROUPS, suffix: true
@@ -200,6 +226,12 @@ class Hardpoint < ApplicationRecord
       :unknown
     end
 
+    if TYPE_GROUPS.key?(filed_type)
+      self.group = TYPE_GROUPS[filed_type]
+    elsif (carried = payload_group)
+      self.group = carried
+    end
+
     if component&.component_type == "ExternalFuelTank"
       self.group = :external_fuel_tank
     end
@@ -250,6 +282,8 @@ class Hardpoint < ApplicationRecord
       :paints
     else
       case component&.component_type
+      when *TYPE_CATEGORIES.keys
+        TYPE_CATEGORIES[filed_type]
       when "EMP"
         :emp
       when "ExternalFuelTank"
@@ -267,6 +301,43 @@ class Hardpoint < ApplicationRecord
         end
       end
     end
+  end
+
+  # A turret or tool arm is filed by what it carries: the Moth's manned turrets
+  # hold salvage heads, a Prospector's arm a mining laser. One that also carries
+  # a gun stays a weapon.
+  # Set by the loader, which knows the subtree before it writes the children; a
+  # save outside a load reads the children this build has instead.
+  attr_writer :carried_components
+
+  private def payload_group
+    types = (@carried_components || carried_components).map { |part| self.class.filed_type(part) }
+
+    return if types.empty? || types.intersect?(%w[WeaponGun Missile Bomb])
+
+    types.filter_map { |type| TYPE_GROUPS[type] }.first
+  end
+
+  # The game files type several SureGrip and ViseLock tractor beams as
+  # SalvageHead; only the `salvage_head_*` items are heads.
+  def self.filed_type(component)
+    type = component&.component_type
+    return "TractorBeam" if type == "SalvageHead" && !component.sc_key.to_s.start_with?("salvage_head")
+
+    type
+  end
+
+  private def filed_type
+    self.class.filed_type(component)
+  end
+
+  # The children this build has, through their build facts: a port a later
+  # build dropped keeps its row, and the columns hold whichever environment
+  # loaded last.
+  protected def carried_components
+    hardpoints.in_build.includes(build: :component).flat_map do |child|
+      [child.facts.component, *child.carried_components]
+    end.compact
   end
 
   # A collapsed pod is a spare stowed in a rack: it holds nothing, and counting

@@ -104,7 +104,7 @@ module ScData
         # retained builds that is harmless.
         prune_builds(HardpointBuild)
 
-        Hardpoint.find_each(&:save) # hack to generate correct group_keys
+        resave_hardpoints(Hardpoint.all)
       end
 
       def one(model)
@@ -113,7 +113,22 @@ module ScData
         # repointed at a missing file keeps showing the ports of the one it left.
         retire_model(model) unless load_model(model.reload)
 
-        model.hardpoints.find_each(&:save) # hack to generate correct group_keys
+        resave_hardpoints(model.hardpoints)
+      end
+
+      # A slot's stack key and a turret's group read its children, which are
+      # written after it, so a pass once the whole loadout is written settles
+      # both -- under this load's build, on the row and on that build's copy.
+      private def resave_hardpoints(scope)
+        ::ScData::Source.with(source) do
+          scope.find_each do |hardpoint|
+            hardpoint.save
+            next unless hardpoint.saved_changes?
+
+            hardpoint.builds.find_by(environment: sc_environment, version: sc_version)
+              &.update!(HardpointBuild.facts_from(hardpoint))
+          end
+        end
       end
 
       def load_model(model)

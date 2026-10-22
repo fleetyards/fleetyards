@@ -2987,6 +2987,7 @@ components:
       - retro_thrusters
       - vtol_thrusters
       - maneuvering_thrusters
+      - bombs
       - weapons
       - weapon_mounts
       - turret
@@ -2996,6 +2997,7 @@ components:
       - emp
       - salvagemunching
       - salvage_storage
+      - missiles
       - armor
       - countermeasures
       - selfdestruct
@@ -3003,6 +3005,11 @@ components:
       - batteries
       - utility
       - ore_pods
+      - mining_lasers
+      - mining_modules
+      - salvage_heads
+      - salvage_modules
+      - tractor_beams
       - seat
       - relay
       - paints
@@ -3030,6 +3037,7 @@ components:
       - RETRO_THRUSTERS
       - VTOL_THRUSTERS
       - MANEUVERING_THRUSTERS
+      - BOMBS
       - WEAPONS
       - WEAPON_MOUNTS
       - TURRET
@@ -3039,6 +3047,7 @@ components:
       - EMP
       - SALVAGEMUNCHING
       - SALVAGE_STORAGE
+      - MISSILES
       - ARMOR
       - COUNTERMEASURES
       - SELFDESTRUCT
@@ -3046,6 +3055,11 @@ components:
       - BATTERIES
       - UTILITY
       - ORE_PODS
+      - MINING_LASERS
+      - MINING_MODULES
+      - SALVAGE_HEADS
+      - SALVAGE_MODULES
+      - TRACTOR_BEAMS
       - SEAT
       - RELAY
       - PAINTS
@@ -3072,6 +3086,7 @@ components:
       - ore_pod
       - module
       - salvage
+      - mining
       - unknown
       x-enumNames:
       - AVIONIC
@@ -3089,6 +3104,7 @@ components:
       - ORE_POD
       - MODULE
       - SALVAGE
+      - MINING
       - UNKNOWN
     HardpointSourceEnum:
       type: string

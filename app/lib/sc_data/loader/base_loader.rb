@@ -526,6 +526,7 @@ module ScData
         return hardpoint.persisted? ? hardpoint.id : nil if slot.retain_only
 
         update_params = {source: :game_files, component: slot.component}
+        hardpoint.carried_components = carried_components(slot)
         update_params[:types] = slot.types if slot.types.present?
         update_params[:port_tags] = slot.port_tags if slot.port_tags.present?
         update_params[:required_tags] = slot.required_tags if slot.required_tags.present?
@@ -550,6 +551,12 @@ module ScData
         persist_loadout(hardpoint, slot.children) if slot.children.present?
 
         hardpoint.id
+      end
+
+      # What sits below a slot, for `Hardpoint#group`: the children are written
+      # after their parent, so a first load could not read them back.
+      private def carried_components(slot)
+        slot.children.flat_map { |child| [child.component, *carried_components(child)] }.compact
       end
 
       # What is installed still sets the size the port is shown as, because the
