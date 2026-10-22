@@ -33,6 +33,8 @@ module Loaders
         record: import
       )
 
+      ::Models::UnplacedFoci.report(record: import)
+
       import.finish!
     rescue => e
       import.fail!

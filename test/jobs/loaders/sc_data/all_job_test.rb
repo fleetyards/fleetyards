@@ -185,6 +185,17 @@ module Loaders
         ::Loaders::ScData::AllJob.new.perform
       end
 
+      test "#perform reports focus wording no key fits" do
+        ::ScData::Loader::BaseLoader.stubs(:all).returns({})
+        create(:model, name: "Arrow", sc_role: "Escort")
+
+        ::Loaders::ScData::AllJob.new.perform
+
+        unplaced = AdminNotification.find_by(admin_user: @admin_user, notification_type: "unplaced_foci")
+
+        assert_includes unplaced.body, %(- **Arrow** (game files: "Escort"))
+      end
+
       # Only a genuinely new entry is worth a notification. The pile that has
       # been sitting undecided is on the ships list either way, and a row per
       # patch saying it is still there is noise.
