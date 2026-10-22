@@ -21,7 +21,9 @@ export const settleTarget = (
   return nearest;
 };
 
-const easeOutCubic = (progress: number) => 1 - (1 - progress) ** 3;
+// Starts from rest, as the scroll it follows has just come to one.
+const easeInOutSine = (progress: number) =>
+  -(Math.cos(Math.PI * progress) - 1) / 2;
 
 // Of the viewport's height: a stop further away than this is not one the
 // reader was aiming for.
@@ -75,8 +77,8 @@ export const useScrollSettle = (sections: () => Iterable<HTMLElement>) => {
     const from = window.scrollY;
     const distance = to - from;
     const duration = Math.min(
-      700,
-      Math.max(350, (Math.abs(distance) / window.innerHeight) * 1400),
+      1100,
+      Math.max(600, (Math.abs(distance) / window.innerHeight) * 2400),
     );
     let start: number | undefined;
 
@@ -85,7 +87,7 @@ export const useScrollSettle = (sections: () => Iterable<HTMLElement>) => {
       const progress = Math.min(1, (now - start) / duration);
 
       window.scrollTo({
-        top: from + distance * easeOutCubic(progress),
+        top: from + distance * easeInOutSine(progress),
         behavior: "instant",
       });
 
