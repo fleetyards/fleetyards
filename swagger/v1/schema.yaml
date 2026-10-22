@@ -42483,6 +42483,10 @@ components:
           - 'null'
         plaqueStyle:
           "$ref": "#/components/schemas/VehiclePlaqueStyleEnum"
+        plaqueLocale:
+          type:
+          - string
+          - 'null'
         shipyard:
           type:
           - string
@@ -43194,6 +43198,10 @@ components:
           - 'null'
         plaqueStyle:
           "$ref": "#/components/schemas/VehiclePlaqueStyleEnum"
+        plaqueLocale:
+          type:
+          - string
+          - 'null'
         shipyard:
           type:
           - string
@@ -43444,6 +43452,10 @@ components:
           maxLength: 50
         plaqueStyle:
           "$ref": "#/components/schemas/NullableVehiclePlaqueStyleEnum"
+        plaqueLocale:
+          type:
+          - string
+          - 'null'
         plaqueImage:
           type:
           - string

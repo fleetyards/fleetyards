@@ -98,6 +98,15 @@ class Api::V1::PublicHangarsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /public/hangars/:username tells the language a plaque is printed in" do
+    user = create(:user, :public_hangar)
+    create(:vehicle, :public, user:, dedication: "To boldly go", plaque_locale: "fr")
+
+    assert_api_response :get, 200, path_params: {username: user.username} do
+      assert_equal "fr", parsed_body.dig("items", 0, "plaqueLocale")
+    end
+  end
+
   test "GET /public/hangars/:username filters by query" do
     user = create(:user, :public_hangar)
     vehicles = [create(:vehicle, :public, user: user), create(:vehicle, :public, user: user)]

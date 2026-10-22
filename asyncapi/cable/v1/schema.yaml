@@ -5305,6 +5305,10 @@ components:
           - 'null'
         plaqueStyle:
           "$ref": "#/components/schemas/VehiclePlaqueStyleEnum"
+        plaqueLocale:
+          type:
+          - string
+          - 'null'
         shipyard:
           type:
           - string

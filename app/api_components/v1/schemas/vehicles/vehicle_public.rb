@@ -31,6 +31,8 @@ module V1
             # The style the plaque is drawn in. A supporter style outlasts the
             # support until the plaque is next edited.
             plaqueStyle: ::V1::Schemas::Enums::VehiclePlaqueStyleEnum,
+            # The language the plaque is printed in; English when unset.
+            plaqueLocale: {type: [:string, :null]},
             shipyard: {type: [:string, :null]},
             bundled: {type: :boolean},
             bundledParent: VehicleBundledParent,

@@ -522,6 +522,31 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT /vehicles/:id prints a plaque in English unless given a language" do
+    Flipper.enable("vehicle_overview")
+    vehicle = create(:vehicle, user: @user)
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {dedication: "To boldly go"} do
+      assert_nil parsed_body["plaqueLocale"]
+    end
+
+    assert_api_response :put, 200, path_params: {id: vehicle.id}, body: {plaqueLocale: "de"} do
+      assert_equal "de", parsed_body["plaqueLocale"]
+    end
+  end
+
+  test "PUT /vehicles/:id rejects a plaque language the app does not speak" do
+    Flipper.enable("vehicle_overview")
+    vehicle = create(:vehicle, user: @user, dedication: "To boldly go")
+    sign_in @user
+
+    assert_api_response :put, 400, path_params: {id: vehicle.id}, body: {plaqueLocale: "klingon"} do
+    end
+
+    assert_nil vehicle.reload.plaque_locale
+  end
+
   test "PUT /vehicles/:id keeps the other plaque styles for supporters" do
     Flipper.enable("vehicle_overview")
     vehicle = create(:vehicle, user: @user)
