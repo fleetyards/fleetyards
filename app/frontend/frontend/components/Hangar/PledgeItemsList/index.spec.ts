@@ -268,9 +268,9 @@ describe("Hangar/PledgeItemsList", () => {
 
     await wrapper.find("[data-test='pledge-item-image']").trigger("click");
 
-    expect(openImage).toHaveBeenCalledWith(
-      wrapper.find("img").element,
-      "Cutlass - Akuma Paint",
-    );
+    expect(openImage).toHaveBeenCalledOnce();
+    const [image, alt] = openImage.mock.calls[0];
+    expect(image).toBe(wrapper.find("img").element);
+    expect(alt).toBe("Cutlass - Akuma Paint");
   });
 });
