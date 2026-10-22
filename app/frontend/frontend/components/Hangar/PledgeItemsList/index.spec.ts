@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import {
   HangarPledgeItemKindEnum,
@@ -52,6 +52,10 @@ const mount = async (items: HangarPledgeItem[]) =>
   });
 
 describe("Hangar/PledgeItemsList", () => {
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("names the item and the pledge it came in", async () => {
     const wrapper = await mount([pledgeItem()]);
 
