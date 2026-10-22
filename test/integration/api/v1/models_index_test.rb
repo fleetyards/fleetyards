@@ -111,6 +111,15 @@ class Api::V1::ModelsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models reads a focus worded as before the keys" do
+    heavy = create(:model, foci: %w[heavy_fighter])
+    create(:model, foci: %w[light_fighter])
+
+    assert_api_response :get, 200, params: {q: {"focusIn" => ["Heavy Fighter"]}} do
+      assert_equal [heavy.name], parsed_body["items"].map { |item| item["name"] }
+    end
+  end
+
   test "GET /models filters by stealthEq and focusIn together" do
     sabre = create(:model, foci: %w[medium_fighter], stealth: true)
     create(:model, foci: %w[bomber], stealth: true)

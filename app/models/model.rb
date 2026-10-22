@@ -809,9 +809,15 @@ class Model < ApplicationRecord
   }
 
   # Any of the keys, as `classification_in` matches any of its values. Named
-  # after the column it replaces, so `focusIn` keeps meaning what it always did.
-  scope :focus_in, ->(*keys) {
-    where("models.foci && ARRAY[?]::varchar[]", keys.flatten.map(&:to_s))
+  # after the column it replaces, so `focusIn` keeps meaning what it always did,
+  # and a focus as a link from before the keys words it ("Heavy Fighter") is
+  # read as the keys it maps to.
+  scope :focus_in, ->(*values) {
+    keys = values.flatten.map(&:to_s).flat_map do |value|
+      FOCI.include?(value) ? [value] : ::Models::FocusMapping.call(value).foci
+    end
+
+    where("models.foci && ARRAY[?]::varchar[]", keys.presence || [""])
   }
 
   def self.ransackable_scopes(auth_object = nil)
