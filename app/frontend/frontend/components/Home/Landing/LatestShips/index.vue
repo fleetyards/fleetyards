@@ -58,7 +58,7 @@ const fittingRows = ref(props.rows);
 const fit = async () => {
   await nextTick();
 
-  // A phone scrolls through the sections rather than snapping to them.
+  // A single column never fits a phone's screen, so it shows every row.
   if (columns.value === 1) {
     fittingRows.value = props.rows;
     return;

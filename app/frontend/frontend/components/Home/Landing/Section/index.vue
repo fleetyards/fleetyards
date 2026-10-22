@@ -45,23 +45,9 @@ const scrollToNext = () => {
   });
 };
 
-// The hero starts below the page header, so snapping to its own top would
-// scroll the header -- the build pills and the support button -- out of view.
-// Its snap point is moved up to the top of the page instead.
-const alignHeroSnap = () => {
-  if (!props.hero || !section.value) return;
-
-  const top = section.value.getBoundingClientRect().top + window.scrollY;
-
-  section.value.style.scrollMarginTop = `${top}px`;
-};
-
 let observer: IntersectionObserver | undefined;
 
 onMounted(() => {
-  alignHeroSnap();
-  window.addEventListener("resize", alignHeroSnap, { passive: true });
-
   const sibling = section.value?.nextElementSibling;
   next.value = sibling?.classList.contains("landing-section") ? sibling : null;
 
@@ -86,7 +72,6 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   observer?.disconnect();
-  window.removeEventListener("resize", alignHeroSnap);
 });
 </script>
 
@@ -138,7 +123,6 @@ $bleed: $grid-gutter-width * 0.5;
   margin-right: -$bleed;
   margin-left: -$bleed;
   padding: 96px $bleed;
-  scroll-snap-align: start;
 
   // Shows the app background, so it fades to the black the next section
   // starts from.

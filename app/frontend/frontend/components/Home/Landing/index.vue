@@ -26,6 +26,7 @@ import { useMobile } from "@/shared/composables/useMobile";
 import { storeToRefs } from "pinia";
 import { useSessionStore } from "@/frontend/stores/session";
 import { usePatchLoadingScreens } from "@/frontend/composables/usePatchLoadingScreens";
+import { useScrollSettle } from "@/frontend/composables/useScrollSettle";
 import logo from "@/images/pride/logo-planet.png";
 import featuresArt from "@/images/bg-5.webp";
 import patchArt from "@/images/bg-3.webp";
@@ -93,10 +94,8 @@ const { pick: pickLoadingScreen, screens: loadingScreens } =
 // one.
 const patchBackground = computed(() => pickLoadingScreen(0, patchArt));
 
-// Snapping belongs to this page alone, and `html` is the element that scrolls.
-onMounted(() => document.documentElement.classList.add("home-landing-snap"));
-onBeforeUnmount(() =>
-  document.documentElement.classList.remove("home-landing-snap"),
+useScrollSettle(() =>
+  document.querySelectorAll<HTMLElement>(".landing-section"),
 );
 </script>
 
@@ -417,15 +416,5 @@ onBeforeUnmount(() =>
 // would leave a strip of the app background between them.
 .main.home:has(.landing-section) {
   margin-bottom: 0;
-}
-
-html.home-landing-snap {
-  scroll-snap-type: y proximity;
-
-  // A stop of its own past the last section, or snapping pulls the footer
-  // back out of view.
-  .app-footer {
-    scroll-snap-align: end;
-  }
 }
 </style>
