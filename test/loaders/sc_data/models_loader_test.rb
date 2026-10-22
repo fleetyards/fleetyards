@@ -138,13 +138,15 @@ module ScData
         model.reload
 
         assert_equal "Medium Freight / Gunship", model.focus
+        assert_equal %w[gunship freight], model.foci
+        assert_equal "Medium Freight / Gun Ship", model.sc_role
         assert_equal "multi", model.classification
         assert_equal "A classic.\nReimagined.", model.description
       end
 
       test "#load_model keeps what the matrix or an admin already said" do
         loader = ::ScData::Loader::ModelsLoader.new
-        model = create(:model, name: "Listed Test", focus: "Gunship", classification: "combat", description: "Ours.")
+        model = create(:model, name: "Listed Test", focus: "Gunship", foci: %w[gunship], classification: "combat", description: "Ours.")
 
         loader.stubs(:load_model_data).returns(
           {
@@ -160,6 +162,7 @@ module ScData
         model.reload
 
         assert_equal "Gunship", model.focus
+        assert_equal %w[gunship], model.foci
         assert_equal "combat", model.classification
         assert_equal "Ours.", model.description
       end

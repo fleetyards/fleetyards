@@ -17,6 +17,7 @@ module V1
             classificationNotIn: {type: :array, items: {type: :string}},
             descriptionCont: {type: :string},
             focusIn: {type: :array, items: {type: :string}},
+            stealthEq: {type: :boolean},
             heightGteq: {type: :number},
             heightLteq: {type: :number},
             idIn: {type: :array, items: {type: :string}},

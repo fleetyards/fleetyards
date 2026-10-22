@@ -302,7 +302,7 @@ GET https://api.fleetyards.net/v1/models/rsi-perseus
 {
   <span class="home-landing-features__code-key">"name"</span>: <span class="home-landing-features__code-string">"Perseus"</span>,
   <span class="home-landing-features__code-key">"manufacturer"</span>: { <span class="home-landing-features__code-key">"name"</span>: <span class="home-landing-features__code-string">"Roberts Space Industries"</span> },
-  <span class="home-landing-features__code-key">"focus"</span>: <span class="home-landing-features__code-string">"Heavy Gunship"</span>,
+  <span class="home-landing-features__code-key">"foci"</span>: [<span class="home-landing-features__code-string">"gunship"</span>],
   …
 }</pre>
             <div class="home-landing-features__developers-side">

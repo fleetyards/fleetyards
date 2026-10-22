@@ -21,6 +21,10 @@ module Admin
               # Read from the game files but not shown publicly: lockers cannot be
               # used in game yet.
               lockers: {type: :integer},
+              # What the sources called the focus, for an admin choosing the
+              # keys. Not shown publicly, where only the keys are.
+              rsiFocus: {type: [:string, :null]},
+              scRole: {type: [:string, :null]},
               media: AdminModelMedia
             },
             required: %w[hidden keepCargo active media]

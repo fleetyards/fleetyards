@@ -224,6 +224,7 @@ module MissionBuilderExamples
       team.mission_ships.create!(
         classification: spec[:classification],
         focus: spec[:focus],
+        foci: ::Models::FocusMapping.call(spec[:focus]).foci,
         min_size: spec[:min_size],
         max_size: spec[:max_size],
         min_crew: spec[:min_crew],

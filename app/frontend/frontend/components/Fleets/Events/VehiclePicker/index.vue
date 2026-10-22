@@ -54,7 +54,7 @@ const hangarParams = computed(() => {
     productionStatusIn: ["flight-ready", "ready"],
   };
   if (f?.classification) q.classificationIn = [f.classification];
-  if (f?.focus) q.focusIn = [f.focus];
+  if (f?.foci?.length) q.focusIn = f.foci;
   if (f?.minSize || f?.maxSize) {
     const sizes = SIZE_ORDER.filter(
       (s) =>

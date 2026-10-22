@@ -11,6 +11,7 @@ import ModelContextMenu from "@/frontend/components/Models/ContextMenu/index.vue
 import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { fociText } from "@/shared/utils/Foci";
 import { useMobile } from "@/shared/composables/useMobile";
 import { type Model } from "@/services/fyApi";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
@@ -208,6 +209,9 @@ const angledImage = (record: Model) => {
         <span class="no-break">{{
           toNumber(record.speeds.maxSpeed || "", "speed")
         }}</span>
+      </template>
+      <template #col-focus="{ record }">
+        {{ fociText(record, t("labels.model.stealth")) }}
       </template>
       <template #col-productionStatus="{ record }">
         {{ t(`labels.model.productionStatus.${record.productionStatus}`) }}

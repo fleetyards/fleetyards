@@ -29,6 +29,7 @@ if fleet_event_signup.vehicle.present?
         json.slug fleet_event_signup.vehicle.model.slug
         json.classification fleet_event_signup.vehicle.model.classification
         json.focus fleet_event_signup.vehicle.model.focus
+        json.foci fleet_event_signup.vehicle.model.foci
         json.size fleet_event_signup.vehicle.model.size
         json.crew fleet_event_signup.vehicle.model.crew
         json.cargo fleet_event_signup.vehicle.model.cargo

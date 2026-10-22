@@ -245,7 +245,7 @@ class Vehicle < ApplicationRecord
   ransack_alias :pledge_price, :model_pledge_price
   ransack_alias :manufacturer, :model_manufacturer_slug
   ransack_alias :classification, :model_classification
-  ransack_alias :focus, :model_focus
+  ransack_alias :stealth, :model_stealth
   ransack_alias :size, :model_size
   ransack_alias :production_status, :model_production_status
   ransack_alias :hangar_groups, :hangar_groups_slug
@@ -387,10 +387,10 @@ class Vehicle < ApplicationRecord
   def self.ransackable_attributes(auth_object = nil)
     [
       "alternative_names", "beam", "bought_via", "cargo", "public_cargo", "bundled", "classification", "created_at", "flagship",
-      "focus", "hangar_groups", "has_dedication", "height", "hidden", "id", "id_value", "length", "loaner",
+      "hangar_groups", "has_dedication", "height", "hidden", "id", "id_value", "length", "loaner",
       "manufacturer", "model_id", "module_package_id", "name", "name_visible",
       "notify", "on_sale", "pledge_price", "price", "production_status", "public", "rank", "rsi_pledge_id",
-      "rsi_pledge_synced_at", "sale_notify", "search", "serial", "size", "slug", "updated_at",
+      "rsi_pledge_synced_at", "sale_notify", "search", "serial", "size", "slug", "stealth", "updated_at",
       "user_id", "vehicle_id", "wanted"
     ]
   end
@@ -403,8 +403,14 @@ class Vehicle < ApplicationRecord
     ]
   end
 
+  # A subquery, since a vehicle has no foci of its own and ransack joins the
+  # model only for the attributes it resolves itself.
+  scope :focus_in, ->(*keys) {
+    where(model_id: Model.focus_in(*keys).select(:id))
+  }
+
   def self.ransackable_scopes(_auth_object = nil)
-    %i[image_source_eq]
+    %i[image_source_eq focus_in]
   end
 
   serialize :alternative_names, type: Array, coder: YAML

@@ -3364,6 +3364,18 @@ components:
           type: string
         focus:
           type: string
+          deprecated: true
+          description: Use foci instead
+        foci:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelFocusEnum"
+        fociLabels:
+          type: array
+          items:
+            type: string
+        stealth:
+          type: boolean
         hasImages:
           type: boolean
         hasModules:
@@ -3484,6 +3496,9 @@ components:
       - adiMap
       - createdAt
       - updatedAt
+      - foci
+      - fociLabels
+      - stealth
     ModelAvailability:
       type: object
       properties:
@@ -3514,6 +3529,90 @@ components:
         label:
           type: string
       additionalProperties: false
+    ModelFocusEnum:
+      type: string
+      enum:
+      - light_fighter
+      - medium_fighter
+      - heavy_fighter
+      - snub_fighter
+      - fighter
+      - bomber
+      - gunship
+      - interdiction
+      - dropship
+      - minelayer
+      - corvette
+      - frigate
+      - destroyer
+      - battlecruiser
+      - warship
+      - tank
+      - anti_air
+      - assault
+      - freight
+      - passenger
+      - touring
+      - carrier
+      - merchant
+      - mining
+      - refining
+      - salvage
+      - construction
+      - science
+      - data
+      - medical
+      - refuel
+      - repair
+      - recovery
+      - expedition
+      - pathfinder
+      - recon
+      - racing
+      - starter
+      - generalist
+      - modular
+      x-enumNames:
+      - LIGHT_FIGHTER
+      - MEDIUM_FIGHTER
+      - HEAVY_FIGHTER
+      - SNUB_FIGHTER
+      - FIGHTER
+      - BOMBER
+      - GUNSHIP
+      - INTERDICTION
+      - DROPSHIP
+      - MINELAYER
+      - CORVETTE
+      - FRIGATE
+      - DESTROYER
+      - BATTLECRUISER
+      - WARSHIP
+      - TANK
+      - ANTI_AIR
+      - ASSAULT
+      - FREIGHT
+      - PASSENGER
+      - TOURING
+      - CARRIER
+      - MERCHANT
+      - MINING
+      - REFINING
+      - SALVAGE
+      - CONSTRUCTION
+      - SCIENCE
+      - DATA
+      - MEDICAL
+      - REFUEL
+      - REPAIR
+      - RECOVERY
+      - EXPEDITION
+      - PATHFINDER
+      - RECON
+      - RACING
+      - STARTER
+      - GENERALIST
+      - MODULAR
     ModelHullDoor:
       type: object
       properties:

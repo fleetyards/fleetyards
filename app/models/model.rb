@@ -25,7 +25,7 @@ class Model < ApplicationRecord
     rsi_id rsi_chassis_id rsi_name rsi_description rsi_classification rsi_focus rsi_size rsi_store_url
     rsi_length rsi_beam rsi_height rsi_mass rsi_cargo rsi_crew
     rsi_scm_speed rsi_max_speed rsi_pitch rsi_yaw rsi_roll
-    classification production_status production_note focus pledge_price length beam height mass
+    classification production_status production_note focus foci stealth sc_role pledge_price length beam height mass
     cargo personal_inventory size crew scm_speed max_speed ground_max_speed ground_reverse_speed
     ground_acceleration ground_deceleration pitch yaw roll price
     store_url hydrogen_fuel_tank_size quantum_fuel_tank_size cargo_holds hydrogen_fuel_tanks
@@ -540,6 +540,46 @@ class Model < ApplicationRecord
     FOCUS_SPELLINGS.reduce(focus.to_s.squish) { |text, (from, to)| text.gsub(/\b#{Regexp.escape(from)}\b/i, to) }.presence
   }
 
+  # The catalogue's own words for what a ship is for, in the order a list of
+  # them is shown. A ship carries any number; the sources' wording stays in
+  # `rsi_focus` and `sc_role`.
+  FOCI = %w[
+    light_fighter medium_fighter heavy_fighter snub_fighter fighter
+    bomber gunship interdiction dropship minelayer
+    corvette frigate destroyer battlecruiser warship
+    tank anti_air assault
+    freight passenger touring carrier merchant
+    mining refining salvage construction science data
+    medical refuel repair recovery
+    expedition pathfinder recon racing starter generalist modular
+  ].freeze
+
+  # Each of these brings the broader key along, so "every fighter" is one pick
+  # in a filter that matches any of the keys it is given.
+  FOCUS_UMBRELLAS = {
+    "light_fighter" => "fighter",
+    "medium_fighter" => "fighter",
+    "heavy_fighter" => "fighter",
+    "snub_fighter" => "fighter",
+    "corvette" => "warship",
+    "frigate" => "warship",
+    "destroyer" => "warship",
+    "battlecruiser" => "warship"
+  }.freeze
+
+  # Without the umbrellas: a crew slot asking for a light fighter must not
+  # accept every fighter.
+  def self.ordered_foci(foci)
+    Array(foci).map { |key| key.to_s.strip }.compact_blank.uniq.sort_by { |key| FOCI.index(key) || FOCI.size }
+  end
+
+  normalizes :foci, with: ->(foci) {
+    keys = ordered_foci(foci)
+    ordered_foci(keys + keys.filter_map { |key| FOCUS_UMBRELLAS[key] })
+  }
+
+  include FociList
+
   # NOT NULL columns whose default of 0 already reads as "unknown", so an admin
   # clearing one sends it back there rather than into a constraint violation.
   normalizes :length, :beam, :height, :mass, with: ->(value) { value || 0 }, apply_to_nil: true
@@ -552,6 +592,9 @@ class Model < ApplicationRecord
   validate :vehicle_size_belongs_to_a_vehicle
 
   DEFAULT_SORTING_PARAMS = "name asc"
+  # The focus sorts order by the old `focus` string, which a list of foci has
+  # no counterpart for. Nothing offers them any more; they are still accepted
+  # until that column goes, so a client sending one is not refused.
   ALLOWED_SORTING_PARAMS = [
     "name asc", "name desc", "createdAt asc", "createdAt desc", "length asc", "length desc",
     "beam asc", "beam desc", "height asc", "height desc", "mass asc", "mass desc", "cargo asc",
@@ -585,7 +628,7 @@ class Model < ApplicationRecord
       "rsi_crew", "rsi_name", "rsi_pitch", "rsi_roll", "rsi_scm_speed", "rsi_size", "rsi_slug",
       "rsi_store_url", "rsi_yaw", "sales_page_url", "sc_beam", "sc_height", "sc_key",
       "sc_length", "scm_speed", "search",
-      "size", "slug", "store_images_updated_at", "store_url", "top_view_colored",
+      "size", "slug", "stealth", "store_images_updated_at", "store_url", "top_view_colored",
       "updated_at", "upgrade_kits_count", "videos_count", "yaw"
     ]
   end
@@ -648,19 +691,38 @@ class Model < ApplicationRecord
     Model.visible.active.order(:classification).distinct.pluck(:classification).compact_blank
   end
 
-  # As `classifications`, and with an order it did not have: the list was
-  # whatever order the rows came back in, which is no order at all once ninety
-  # of them are in a filter.
+  # Every key, in the vocabulary's order. Narrowed to one classification, only
+  # the keys its ships carry, so picking "industrial" offers no fighters.
   def self.focus_filters(classification: nil)
-    scope = Model.visible.active
-    scope = scope.where(classification: classification) if classification.present?
-    scope.order(:focus).distinct.pluck(:focus).compact_blank.map do |item|
+    keys = FOCI
+    if classification.present?
+      present = Model.visible.active.where(classification:).pluck(Arel.sql("DISTINCT unnest(foci)"))
+      keys &= present
+    end
+
+    keys.map do |key|
       Filter.new(
         category: "focus",
-        label: item.humanize,
-        value: item
+        label: focus_label(key),
+        value: key
       )
     end
+  end
+
+  def self.focus_label(key)
+    I18n.t("filter.model.focus.items.#{key}")
+  end
+
+  # For reading rather than filtering: "Medium Fighter" says what "Medium
+  # Fighter, Fighter" does, so an umbrella is left out where one of its own keys
+  # is there.
+  def self.focus_labels(foci)
+    implied = foci.filter_map { |key| FOCUS_UMBRELLAS[key] }
+    (foci - implied).map { |key| focus_label(key) }
+  end
+
+  def foci_labels
+    Model.focus_labels(foci)
   end
 
   # The ladder a berth is measured against, smallest first. Only meaningful
@@ -746,8 +808,20 @@ class Model < ApplicationRecord
     end
   }
 
+  # Any of the keys, as `classification_in` matches any of its values. Named
+  # after the column it replaces, so `focusIn` keeps meaning what it always did,
+  # and a focus as a link from before the keys words it ("Heavy Fighter") is
+  # read as the keys it maps to.
+  scope :focus_in, ->(*values) {
+    keys = values.flatten.map(&:to_s).flat_map do |value|
+      FOCI.include?(value) ? [value] : ::Models::FocusMapping.call(value).foci
+    end
+
+    where("models.foci && ARRAY[?]::varchar[]", keys.presence || [""])
+  }
+
   def self.ransackable_scopes(auth_object = nil)
-    ["dimensions_drifted", "sold_at_shop"]
+    ["dimensions_drifted", "sold_at_shop", "focus_in"]
   end
 
   # A ship offers a berth either because one is built into it or because a

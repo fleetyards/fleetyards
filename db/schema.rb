@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_21_220000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_22_090000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -840,6 +840,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_21_220000) do
     t.integer "position", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "foci", default: [], null: false, array: true
     t.index ["fleet_event_team_id", "position"], name: "index_fleet_event_ships_on_fleet_event_team_id_and_position"
     t.index ["model_id"], name: "index_fleet_event_ships_on_model_id"
   end
@@ -1947,6 +1948,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_21_220000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.uuid "mission_team_id", null: false
+    t.string "foci", default: [], null: false, array: true
     t.index ["mission_team_id", "position"], name: "index_mission_ships_on_mission_team_id_and_position"
     t.index ["model_id"], name: "index_mission_ships_on_model_id"
   end
@@ -2308,8 +2310,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_21_220000) do
     t.jsonb "ship_view_md5s", default: {}, null: false
     t.jsonb "weapon_regen_modifier"
     t.string "first_seen_version"
+    t.string "foci", default: [], null: false, array: true
+    t.boolean "stealth", default: false, null: false
+    t.string "sc_role"
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
     t.index ["classification"], name: "index_models_on_classification"
+    t.index ["foci"], name: "index_models_on_foci", using: :gin
     t.index ["legacy_slug"], name: "index_models_on_legacy_slug"
     t.index ["manufacturer_id", "name"], name: "index_models_on_manufacturer_id_and_name", unique: true
     t.index ["production_status"], name: "index_models_on_production_status"

@@ -26,7 +26,10 @@ module V1
 
             description: {type: :string},
             erkulIdentifier: {type: :string},
-            focus: {type: :string},
+            focus: {type: :string, deprecated: true, description: "Use foci instead"},
+            foci: {type: :array, items: ::Shared::V1::Schemas::Enums::ModelFocusEnum},
+            fociLabels: {type: :array, items: {type: :string}},
+            stealth: {type: :boolean},
             hasImages: {type: :boolean},
             hasModules: {type: :boolean},
             hasPaints: {type: :boolean},
@@ -88,7 +91,7 @@ module V1
           required: %w[
             id name slug availability crew hasImages hasModules hasPaints hasUpgrades hasVideos
             inGame ingameOnly canLandOnPlanets loaners manufacturer media metrics onSale playerOwnable speeds adiMap createdAt
-            updatedAt
+            updatedAt foci fociLabels stealth
           ]
         })
       end

@@ -6,7 +6,7 @@ import type { FleetEventShip } from "@/services/fyApi";
 type VehicleModel = {
   id?: string;
   classification?: string | null;
-  focus?: string | null;
+  foci?: string[] | null;
   size?: string | null;
   cargo?: number | null;
   metrics?: { size?: string | null; cargo?: number | null } | null;
@@ -61,7 +61,10 @@ export const vehicleMatchesShip = (
   if (!f) return true;
 
   if (f.classification && m.classification !== f.classification) return false;
-  if (f.focus && m.focus !== f.focus) return false;
+  // Any of the slot's foci will do, as the focus filter matches any of its keys.
+  if (f.foci?.length && !f.foci.some((key) => m.foci?.includes(key))) {
+    return false;
+  }
 
   const size = sizeOf(m);
   if (f.minSize && !sizeAtLeast(size, f.minSize)) return false;

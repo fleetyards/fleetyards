@@ -101,6 +101,35 @@ class Api::V1::ModelsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models filters by focusIn, matching any of a ship's foci" do
+    heavy = create(:model, foci: %w[heavy_fighter])
+    hauler = create(:model, foci: %w[freight])
+    create(:model, foci: %w[mining])
+
+    assert_api_response :get, 200, params: {q: {"focusIn" => %w[fighter freight]}} do
+      assert_equal [heavy.name, hauler.name].sort, parsed_body["items"].map { |item| item["name"] }.sort
+    end
+  end
+
+  test "GET /models reads a focus worded as before the keys" do
+    heavy = create(:model, foci: %w[heavy_fighter])
+    create(:model, foci: %w[light_fighter])
+
+    assert_api_response :get, 200, params: {q: {"focusIn" => ["Heavy Fighter"]}} do
+      assert_equal [heavy.name], parsed_body["items"].map { |item| item["name"] }
+    end
+  end
+
+  test "GET /models filters by stealthEq and focusIn together" do
+    sabre = create(:model, foci: %w[medium_fighter], stealth: true)
+    create(:model, foci: %w[bomber], stealth: true)
+    create(:model, foci: %w[medium_fighter])
+
+    assert_api_response :get, 200, params: {q: {"stealthEq" => true, "focusIn" => %w[fighter]}} do
+      assert_equal [sabre.name], parsed_body["items"].map { |item| item["name"] }
+    end
+  end
+
   test "GET /models filters by ingameOnlyEq" do
     ingame_only = create(:model, ingame_only: true)
     pledge = create(:model)

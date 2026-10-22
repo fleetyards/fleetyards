@@ -19,6 +19,7 @@ import { useModelFilters } from "@/admin/composables/useModelFilters";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { fociText } from "@/shared/utils/Foci";
 import { useComlink } from "@/shared/composables/useComlink";
 
 import {
@@ -93,7 +94,8 @@ const extraColumns = computed<BaseTableCol<Model>[]>(() => {
       return {
         name: col,
         label: t(`labels.models.table.columns.${col}`),
-        sortable: true,
+        // A ship's foci are a list, which has no order to sort by.
+        sortable: col !== AdminModelTableViewColsEnum.FOCUS,
       };
     })
     .filter((col) => {
@@ -346,6 +348,9 @@ const unlistedCount = computed(
           >
             {{ record.manufacturer?.code }} {{ record.name }}
           </router-link>
+        </template>
+        <template #col-focus="{ record }">
+          {{ fociText(record, t("labels.model.stealth")) }}
         </template>
         <template #col-manufacturerName="{ record }">
           {{ record.manufacturer?.name }}

@@ -12,14 +12,16 @@ class FleetEventShip < ApplicationRecord
 
   default_scope -> { order(position: :asc) }
 
-  FILTER_ATTRIBUTES = %i[classification focus min_size max_size min_crew min_cargo].freeze
+  FILTER_ATTRIBUTES = %i[classification focus foci min_size max_size min_crew min_cargo].freeze
 
   # Matched against a ship's own by equality, so a slot has to be spelled the
   # way the catalogue spells it.
   normalizes :classification, with: ->(value) { ::Model.normalize_value_for(:classification, value) }
   normalizes :focus, with: ->(value) { ::Model.normalize_value_for(:focus, value) }
+  normalizes :foci, with: ->(value) { ::Model.ordered_foci(value) }
 
   validates :classification, inclusion: {in: ::Model::CLASSIFICATIONS}, allow_nil: true
+  include FociList
 
   validate :model_or_filter_required
   validate :model_must_be_in_game

@@ -85,7 +85,7 @@ const initialValues = {
   title: props.ship?.title ?? "",
   description: props.ship?.description ?? "",
   classification: props.ship?.filters?.classification ?? "",
-  focus: props.ship?.filters?.focus ?? "",
+  foci: (props.ship?.filters?.foci ?? []) as string[],
   minSize: props.ship?.filters?.minSize ?? "",
   maxSize: props.ship?.filters?.maxSize ?? "",
   minCrew: props.ship?.filters?.minCrew ?? null,
@@ -99,7 +99,7 @@ const { defineField, handleSubmit, values } = useForm({
 const [title, titleProps] = defineField("title");
 const [description, descriptionProps] = defineField("description");
 const [classification] = defineField("classification");
-const [focus] = defineField("focus");
+const [foci] = defineField("foci");
 
 const { data: classificationFilters } = useModelClassificationsFilters();
 
@@ -116,8 +116,8 @@ const focusOptions = computed<FilterOption[]>(
 );
 
 watch(classification, (newValue, oldValue) => {
-  if (newValue !== oldValue && focus.value) {
-    focus.value = "";
+  if (newValue !== oldValue && foci.value?.length) {
+    foci.value = [];
   }
 });
 const [minSize] = defineField("minSize");
@@ -247,7 +247,7 @@ const onSubmit = handleSubmit(async (values) => {
     data.modelId = null;
     data.allowedModelIds = selectedModelIds.value;
     data.classification = null;
-    data.focus = null;
+    data.foci = [];
     data.minSize = null;
     data.maxSize = null;
     data.minCrew = null;
@@ -256,7 +256,7 @@ const onSubmit = handleSubmit(async (values) => {
     data.allowedModelIds = [];
     data.modelId = null;
     data.classification = values.classification || null;
-    data.focus = values.focus || null;
+    data.foci = values.foci ?? [];
     data.minSize = values.minSize || null;
     data.maxSize = values.maxSize || null;
     data.minCrew = values.minCrew || null;
@@ -405,12 +405,12 @@ const onSubmit = handleSubmit(async (values) => {
           :nullable="true"
         />
         <BaseSelect
-          v-model="focus"
+          v-model="foci"
           :options="focusOptions"
           :label="t('labels.fleets.missions.focus')"
-          name="focus"
+          name="foci"
           :searchable="true"
-          :nullable="true"
+          :multiple="true"
         />
         <div class="form-row">
           <BaseSelect

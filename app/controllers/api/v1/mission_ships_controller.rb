@@ -86,7 +86,7 @@ module Api
           @copy = @team.mission_ships.new(
             @ship.slice(
               :title, :description, :model_id,
-              :classification, :focus, :min_size, :max_size, :min_crew, :min_cargo
+              :classification, :focus, :foci, :min_size, :max_size, :min_crew, :min_cargo
             ).merge(position: next_position)
           )
 

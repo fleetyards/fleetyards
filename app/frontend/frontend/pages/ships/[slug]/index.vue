@@ -28,6 +28,7 @@ import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { fociText } from "@/shared/utils/Foci";
 import { useHangarItems } from "@/frontend/composables/useHangarItems";
 import { useWishlistItems } from "@/frontend/composables/useWishlistItems";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
@@ -173,6 +174,10 @@ const setModelState = (state: ModelStateEnum) => {
 };
 
 const { supported: webpSupported } = useWebpCheck();
+
+const focus = computed(() =>
+  props.model ? fociText(props.model, t("labels.model.stealth")) : undefined,
+);
 
 const storeImage = computed(() => {
   if (mobile.value && props.model?.media.storeImage?.mediumUrl) {
@@ -489,10 +494,10 @@ const adiMap = computed(() => {
               </template>
             </div>
             <div class="col-6">
-              <template v-if="model.focus">
+              <template v-if="focus">
                 <h3 class="text-uppercase text-right">
                   <small class="text-muted">{{ t("model.focus") }}:</small>
-                  {{ model.focus }}
+                  {{ focus }}
                 </h3>
               </template>
             </div>

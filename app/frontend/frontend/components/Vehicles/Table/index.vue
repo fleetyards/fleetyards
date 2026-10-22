@@ -16,6 +16,7 @@ import HangarEmpty from "@/frontend/components/Hangar/Empty/index.vue";
 import ListActions from "@/frontend/components/Vehicles/Table/ListActions.vue";
 import VehicleStates from "@/frontend/components/Vehicles/Table/States.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { fociText } from "@/shared/utils/Foci";
 import { useVehicleCargo } from "@/frontend/composables/useVehicleCargo";
 import { FeatureFlagName, type Vehicle } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -434,7 +435,7 @@ const resetSelected = () => {
         }}
       </template>
       <template #col-modelFocus="{ record }">
-        {{ record.model.focus }}
+        {{ fociText(record.model, t("labels.model.stealth")) }}
       </template>
       <template #col-modelPrice="{ record }">
         <!-- eslint-disable vue/no-v-html -->

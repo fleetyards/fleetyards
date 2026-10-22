@@ -287,6 +287,22 @@ module ScData
           update_params[attribute] = value if value.present? && current.blank?
         end
 
+        fill_foci_gap(model, filled(model_data["role"]), update_params)
+      end
+
+      # The role as the export words it, kept whatever happens to the keys, so
+      # an admin can see what they were picked from.
+      private def fill_foci_gap(model, role, update_params)
+        update_params[:sc_role] = role
+
+        mapped = ::Models::FocusMapping.call(role)
+        if mapped.unknown.any?
+          Rails.logger.warn("ScData::Loader::ModelsLoader: #{model.name} has a role we cannot place: #{mapped.unknown.join(", ")}")
+        end
+
+        update_params[:foci] = mapped.foci if model.foci.empty? && mapped.foci.any?
+        update_params[:stealth] = true if mapped.stealth && model.foci.empty?
+
         update_params
       end
 
