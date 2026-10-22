@@ -3,6 +3,7 @@
     "messages": {
       "plaqueTool": {
         "attached": "%{vehicle} 現已帶有此銘牌。",
+        "hangarFailure": "無法載入你的機庫。",
         "replaceConfirm": "這艘艦船已有銘牌。要替換嗎？"
       },
       "blueprint": {

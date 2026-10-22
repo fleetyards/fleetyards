@@ -40,7 +40,12 @@ const { displaySuccess, displayAlert } = useAppNotifications();
 // Only ships of the model the plaque was made for: its class line and emblem
 // come from the model, so on another one it would be a different plaque. A
 // ship hidden from the hangar list is still the user's to dedicate.
-const { data: hangar, isLoading } = useHangar({
+const {
+  data: hangar,
+  isLoading,
+  isError,
+  refetch,
+} = useHangar({
   q: { modelSlugIn: [props.model.slug], hiddenByUserEq: "true" },
   perPage: "100",
 });
@@ -130,6 +135,10 @@ const save = async () => {
 <template>
   <Modal :title="t('headlines.plaqueTool.attach')">
     <Loader v-if="isLoading" :loading="isLoading" />
+    <div v-else-if="isError" data-test="plaque-attach-error">
+      <p class="text-muted">{{ t("messages.plaqueTool.hangarFailure") }}</p>
+      <Btn @click="refetch()">{{ t("actions.retry") }}</Btn>
+    </div>
     <p
       v-else-if="!vehicles.length"
       class="text-muted"

@@ -3,6 +3,7 @@
     "messages": {
       "plaqueTool": {
         "attached": "%{vehicle} trägt jetzt die Plakette.",
+        "hangarFailure": "Dein Hangar konnte nicht geladen werden.",
         "replaceConfirm": "Dieses Schiff hat bereits eine Plakette. Ersetzen?"
       },
       "blueprint": {

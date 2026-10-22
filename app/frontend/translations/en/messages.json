@@ -3,6 +3,7 @@
     "messages": {
       "plaqueTool": {
         "attached": "%{vehicle} carries the plaque now.",
+        "hangarFailure": "Your hangar could not be loaded.",
         "replaceConfirm": "This ship already has a plaque. Replace it?"
       },
       "blueprint": {

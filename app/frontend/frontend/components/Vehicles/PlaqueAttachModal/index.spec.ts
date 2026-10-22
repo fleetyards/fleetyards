@@ -44,6 +44,7 @@ const lines: PlaqueLines = {
 };
 
 const hangarItems = ref<Vehicle[]>([]);
+const hangarFailed = ref(false);
 const hangarParams = vi.fn();
 const mutateAsync = vi.fn((args: { id: string }) =>
   Promise.resolve(vehicle({ id: args.id })),
@@ -56,6 +57,8 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
     return {
       data: computed(() => ({ items: hangarItems.value })),
       isLoading: ref(false),
+      isError: hangarFailed,
+      refetch: vi.fn(),
     };
   },
   useUpdateVehicle: () => ({ mutateAsync, isPending: ref(false) }),
@@ -95,6 +98,7 @@ const mount = () =>
 describe("VehiclePlaqueAttachModal", () => {
   afterEach(() => {
     hangarItems.value = [];
+    hangarFailed.value = false;
     mutateAsync.mockClear();
     upload.mockClear();
     displayConfirm.mockClear();
@@ -120,6 +124,18 @@ describe("VehiclePlaqueAttachModal", () => {
     expect(
       wrapper.find('[data-test="plaque-attach-save"]').attributes("disabled"),
     ).toBeDefined();
+  });
+
+  it("tells a failed hangar request from an empty one", async () => {
+    hangarFailed.value = true;
+    const wrapper = await mount();
+
+    expect(wrapper.find('[data-test="plaque-attach-error"]').exists()).toBe(
+      true,
+    );
+    expect(wrapper.find('[data-test="plaque-attach-empty"]').exists()).toBe(
+      false,
+    );
   });
 
   it("puts the plaque's lines on the only ship there is, and its picture with them", async () => {

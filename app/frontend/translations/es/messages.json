@@ -3,6 +3,7 @@
     "messages": {
       "plaqueTool": {
         "attached": "%{vehicle} lleva ahora la placa.",
+        "hangarFailure": "No se pudo cargar tu hangar.",
         "replaceConfirm": "Esta nave ya tiene una placa. ¿Reemplazarla?"
       },
       "blueprint": {
