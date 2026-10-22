@@ -190,6 +190,18 @@ const page = ref(1);
 const records = ref<ModelOption[]>([]);
 const selection = ref<ModelPickerSelection[]>([]);
 
+// A list the caller pinned stays the bound: picking inside it narrows to the
+// overlap. An overlap of nothing still has to find nothing, and ransack reads
+// an empty list as no filter at all, so it asks for a value no ship carries.
+const NO_MATCH = ["-"];
+
+const narrow = (pinned: string[] | undefined, picked: string[]) => {
+  if (!pinned?.length) return picked;
+
+  const overlap = picked.filter((value) => pinned.includes(value));
+  return overlap.length ? overlap : NO_MATCH;
+};
+
 const queryParams = computed(() => {
   const q: ModelQuery = { ...props.query };
 
@@ -200,11 +212,17 @@ const queryParams = computed(() => {
   }
 
   if (manufacturerIn.value.length) {
-    q.manufacturerIn = manufacturerIn.value;
+    q.manufacturerIn = narrow(
+      props.query?.manufacturerIn,
+      manufacturerIn.value,
+    );
   }
 
   if (classificationIn.value.length) {
-    q.classificationIn = classificationIn.value;
+    q.classificationIn = narrow(
+      props.query?.classificationIn,
+      classificationIn.value,
+    );
   }
 
   if (hangarOnly.value) {
@@ -212,11 +230,11 @@ const queryParams = computed(() => {
   }
 
   if (focusIn.value.length) {
-    q.focusIn = focusIn.value;
+    q.focusIn = narrow(props.query?.focusIn, focusIn.value);
   }
 
   if (sizeIn.value.length) {
-    q.sizeIn = sizeIn.value;
+    q.sizeIn = narrow(props.query?.sizeIn, sizeIn.value);
   }
 
   if (productionStatusOffered.value && productionStatusIn.value.length) {

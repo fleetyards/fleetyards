@@ -33,7 +33,9 @@
         "transfers": "轉移",
         "vehicleOverview": "概覽",
         "vehicleLog": "艦長日誌",
-        "shipComponents": "飛船部件"
+        "shipComponents": "飛船部件",
+        "plans": "規劃器",
+        "sharedPlan": "共享計畫"
       },
       "login": "登入",
       "installApp": "安裝應用程式",

@@ -58,7 +58,9 @@
         "transfers": "转移",
         "vehicleOverview": "舰船概览",
         "vehicleLog": "舰长日志",
-        "shipComponents": "飞船部件"
+        "shipComponents": "飞船部件",
+        "plans": "机库规划器",
+        "sharedPlan": "共享机库计划"
       },
       "requestPassword": "请求密码",
       "changePassword": "更改密码",

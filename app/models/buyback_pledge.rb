@@ -127,6 +127,10 @@ class BuybackPledge < ApplicationRecord
   # page and carry no insurance.
   INSURANCE_KNOWN_SQL = "(buyback_pledges.details_synced_at IS NOT NULL OR buyback_pledges.kind = 'upgrade')"
 
+  def insurance_known?
+    details_synced_at.present? || kind == "upgrade"
+  end
+
   # "lifetime", "none" or a number of months, any of which matches. A lifetime
   # pledge never matches a number. Values that are none of these match nothing,
   # so a typo empties the list instead of quietly ignoring the filter.

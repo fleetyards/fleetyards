@@ -316,6 +316,42 @@ en:
         announcement_limit_reached: "Your fleet already has %{count} announcements up. Remove one before posting another."
         already_passed: "has already passed"
       models:
+        hangar_plan:
+          attributes:
+            base:
+              plan_limit_reached: "can hold at most %{count} plans"
+        hangar_plan_slot:
+          attributes:
+            quantity:
+              below_routes: "has routes for %{count} ships; remove routes first"
+            base:
+              slot_limit_reached: "can hold at most %{count} slots"
+        hangar_plan_acquisition:
+          attributes:
+            base:
+              slot_filled: "this slot already has a route for each of its ships"
+              chain_mismatch: "the route has to end on the slot's ship"
+              chain_broken: "each upgrade has to start on the ship the step before ended on"
+              upgrade_taken: "an upgrade is used more often than you hold it"
+            source_vehicle_id:
+              melted: "is melted in this plan"
+              pledge_melted: "comes in a pledge this plan melts"
+              taken: "is already used in this plan"
+            buyback_pledge_id:
+              taken: "is already used in this plan"
+        hangar_plan_upgrade_step:
+          attributes:
+            to_model_id:
+              same_as_from: "has to be another ship than the one it upgrades from"
+            hangar_pledge_item_id:
+              taken: "is already used in this plan"
+            buyback_pledge_id:
+              taken: "is already used in this plan"
+        hangar_plan_melt:
+          attributes:
+            vehicle_id:
+              taken: "is already used in this plan"
+              pledge_kept: "comes in a pledge whose other ships this plan keeps"
         vehicle_loadout:
           attributes:
             base:

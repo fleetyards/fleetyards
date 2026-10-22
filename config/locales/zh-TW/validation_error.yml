@@ -119,6 +119,22 @@ zh-TW:
       create: 無法建立庫存記錄。
       update: 無法更新庫存記錄。
       destroy: 無法刪除庫存記錄。
+    hangar_plans:
+      create: "無法建立計畫。"
+      update: "無法更新計畫。"
+      rebase: "無法依機庫更新計畫。"
+    hangar_plan_slots:
+      create: "無法新增欄位。"
+      update: "無法更新欄位。"
+    hangar_plan_candidates:
+      create: "無法將艦船加入欄位。"
+      update: "無法更新艦船。"
+    hangar_plan_acquisitions:
+      create: "無法新增取得路線。"
+      update: "無法更新取得路線。"
+    hangar_plan_melts:
+      create: "無法新增熔煉。"
+      update: "無法更新熔煉。"
     hangar_inventories:
       create: 無法建立庫存。
       update: 無法更新庫存。

@@ -12305,6 +12305,1035 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/plans":
+    get:
+      summary: Hangar Plans
+      tags:
+      - HangarPlans
+      operationId: hangarPlans
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlansList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: feature disabled
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    post:
+      summary: Create Hangar Plan
+      tags:
+      - HangarPlans
+      operationId: createHangarPlan
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/HangarPlanCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlan"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: source plan not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/hangar/plans/{hangarPlanId}/acquisitions":
+    parameters:
+    - name: hangarPlanId
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    post:
+      summary: Create Hangar Plan Acquisition
+      tags:
+      - HangarPlans
+      operationId: createHangarPlanAcquisition
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/HangarPlanAcquisitionCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlan"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/hangar/plans/{hangarPlanId}/acquisitions/{id}":
+    parameters:
+    - name: hangarPlanId
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Update Hangar Plan Acquisition
+      tags:
+      - HangarPlans
+      operationId: updateHangarPlanAcquisition
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/HangarPlanAcquisitionUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlan"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+    delete:
+      summary: Destroy Hangar Plan Acquisition
+      tags:
+      - HangarPlans
+      operationId: destroyHangarPlanAcquisition
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlan"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/plans/{hangarPlanId}/candidates":
+    parameters:
+    - name: hangarPlanId
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    post:
+      summary: Create Hangar Plan Candidate
+      tags:
+      - HangarPlans
+      operationId: createHangarPlanCandidate
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/HangarPlanCandidateCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlan"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/hangar/plans/{hangarPlanId}/candidates/{id}":
+    parameters:
+    - name: hangarPlanId
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Update Hangar Plan Candidate
+      tags:
+      - HangarPlans
+      operationId: updateHangarPlanCandidate
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/HangarPlanCandidateUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlan"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+    delete:
+      summary: Destroy Hangar Plan Candidate
+      tags:
+      - HangarPlans
+      operationId: destroyHangarPlanCandidate
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlan"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/plans/{hangarPlanId}/melts":
+    parameters:
+    - name: hangarPlanId
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    post:
+      summary: Create Hangar Plan Melt
+      tags:
+      - HangarPlans
+      operationId: createHangarPlanMelt
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/HangarPlanMeltCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlan"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+  "/hangar/plans/{hangarPlanId}/melts/{id}":
+    parameters:
+    - name: hangarPlanId
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Update Hangar Plan Melt
+      tags:
+      - HangarPlans
+      operationId: updateHangarPlanMelt
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/HangarPlanMeltUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlan"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+    delete:
+      summary: Destroy Hangar Plan Melt
+      tags:
+      - HangarPlans
+      operationId: destroyHangarPlanMelt
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlan"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/plans/{hangarPlanId}/slots":
+    parameters:
+    - name: hangarPlanId
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    post:
+      summary: Create Hangar Plan Slot
+      tags:
+      - HangarPlans
+      operationId: createHangarPlanSlot
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/HangarPlanSlotCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlan"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/hangar/plans/{hangarPlanId}/slots/sort":
+    parameters:
+    - name: hangarPlanId
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Sort Hangar Plan Slots
+      tags:
+      - HangarPlans
+      operationId: sortHangarPlanSlots
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/HangarPlanSlotSortInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlan"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/plans/{hangarPlanId}/slots/{id}":
+    parameters:
+    - name: hangarPlanId
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Update Hangar Plan Slot
+      tags:
+      - HangarPlans
+      operationId: updateHangarPlanSlot
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/HangarPlanSlotUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlan"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+    delete:
+      summary: Destroy Hangar Plan Slot
+      tags:
+      - HangarPlans
+      operationId: destroyHangarPlanSlot
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlan"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/plans/{hangarPlanId}/slots/{id}/choose":
+    parameters:
+    - name: hangarPlanId
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Choose Hangar Plan Slot Candidate
+      tags:
+      - HangarPlans
+      operationId: chooseHangarPlanSlotCandidate
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/HangarPlanSlotChooseInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlan"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/plans/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: Hangar Plan
+      tags:
+      - HangarPlans
+      operationId: hangarPlan
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlan"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Hangar Plan
+      tags:
+      - HangarPlans
+      operationId: updateHangarPlan
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/HangarPlanUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlan"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    delete:
+      summary: Destroy Hangar Plan
+      tags:
+      - HangarPlans
+      operationId: destroyHangarPlan
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SuccessResponse"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/plans/{id}/add-to-wishlist":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Add Hangar Plan Purchases to the Wishlist
+      tags:
+      - HangarPlans
+      operationId: addHangarPlanToWishlist
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlanWishlistResult"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/plans/{id}/compare/{otherId}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    - name: otherId
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: Compare two Hangar Plans
+      tags:
+      - HangarPlans
+      operationId: compareHangarPlans
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlanCompare"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/plans/{id}/comparison":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: Hangar Plan Comparison with the Hangar
+      tags:
+      - HangarPlans
+      operationId: hangarPlanComparison
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlanComparison"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/plans/{id}/drift":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: Hangar Plan Drift
+      tags:
+      - HangarPlans
+      operationId: hangarPlanDrift
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlanDrift"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/plans/{id}/rebase":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Rebase Hangar Plan on the Hangar
+      tags:
+      - HangarPlans
+      operationId: rebaseHangarPlan
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlan"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/plans/{id}/resources":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: Hangar Plan Resources
+      tags:
+      - HangarPlans
+      operationId: hangarPlanResources
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlanResources"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/plans/{id}/share":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Share Hangar Plan
+      tags:
+      - HangarPlans
+      operationId: shareHangarPlan
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlan"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    delete:
+      summary: Unshare Hangar Plan
+      tags:
+      - HangarPlans
+      operationId: unshareHangarPlan
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlan"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/plans/{id}/summary":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: Hangar Plan Summary
+      tags:
+      - HangarPlans
+      operationId: hangarPlanSummary
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlanSummary"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/hangar/rsi-page-reports":
     post:
       summary: Report an RSI Page the Sync Does Not Recognise
@@ -17231,6 +18260,60 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/public/hangar-plans/{token}":
+    parameters:
+    - name: token
+      in: path
+      schema:
+        type: string
+      required: true
+    get:
+      summary: Shared Hangar Plan
+      tags:
+      - HangarPlansPublic
+      operationId: publicHangarPlan
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlan"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/public/hangar-plans/{token}/summary":
+    parameters:
+    - name: token
+      in: path
+      schema:
+        type: string
+      required: true
+    get:
+      summary: Shared Hangar Plan Summary
+      tags:
+      - HangarPlansPublic
+      operationId: publicHangarPlanSummary
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlanSummary"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/public/hangars/embed":
     get:
       summary: Public Hangar embed
@@ -21670,6 +22753,10 @@ components:
           type: integer
         lifetimeInsurance:
           type: boolean
+        insuranceKnown:
+          type: boolean
+          description: False until the pledge's details are synced, so no insurance
+            listed is not yet none
         createdAt:
           type: string
           format: date-time
@@ -21685,6 +22772,7 @@ components:
       - upgraded
       - available
       - lifetimeInsurance
+      - insuranceKnown
       - createdAt
       - updatedAt
       title: BuybackPledge
@@ -24728,6 +25816,7 @@ components:
       - fleet_subscriptions
       - fleet_tours
       - hangar_inventories
+      - hangar_planner
       - holo_ar
       - holo_textured
       - homepage_redesign
@@ -24752,6 +25841,7 @@ components:
       - FLEET_SUBSCRIPTIONS
       - FLEET_TOURS
       - HANGAR_INVENTORIES
+      - HANGAR_PLANNER
       - HOLO_AR
       - HOLO_TEXTURED
       - HOMEPAGE_REDESIGN
@@ -32109,6 +33199,1386 @@ components:
       - manufacturerCount
       - missingClassifications
       title: HangarMetricsPublic
+    HangarPlan:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        basedOnAt:
+          type: string
+          format: date-time
+        startingCredit:
+          type: number
+        buybackTokens:
+          type:
+          - integer
+          - 'null'
+          description: Buy-back tokens the user holds; each lets one buy-back be paid
+            with store credit. Null uses what the last buy-back sync read
+        vatRate:
+          type:
+          - number
+          - 'null'
+          description: VAT in percent that RSI adds to new money; store credit carries
+            none
+        syncedBuybackTokens:
+          type:
+          - integer
+          - 'null'
+          description: The buy-back tokens the user's last buy-back sync read from
+            RSI
+        shared:
+          type: boolean
+        shareToken:
+          type:
+          - string
+          - 'null'
+        slotsCount:
+          type: integer
+        slots:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanSlot"
+        melts:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanMelt"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - basedOnAt
+      - startingCredit
+      - buybackTokens
+      - vatRate
+      - syncedBuybackTokens
+      - shared
+      - slotsCount
+      - slots
+      - melts
+      - createdAt
+      - updatedAt
+      title: HangarPlan
+    HangarPlanAcquisition:
+      type: object
+      description: 'How one ship of a slot is obtained: a start, then upgrades until
+        it is the planned ship'
+      properties:
+        id:
+          type: string
+          format: uuid
+        startKind:
+          "$ref": "#/components/schemas/HangarPlanStartKindEnum"
+        sourceVehicleId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        buybackPledgeId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        startModel:
+          "$ref": "#/components/schemas/HangarPlanModel"
+        priceOverride:
+          type:
+          - number
+          - 'null'
+        price:
+          type:
+          - number
+          - 'null'
+          description: What starting this way costs in USD; null when unknown
+        sourceMissing:
+          type: boolean
+        usesBuybackToken:
+          type: boolean
+          description: Pays for this buy-back with store credit, which spends one
+            of the user's buy-back tokens
+        steps:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanUpgradeStep"
+      additionalProperties: false
+      required:
+      - id
+      - startKind
+      - startModel
+      - sourceMissing
+      - usesBuybackToken
+      - steps
+      title: HangarPlanAcquisition
+    HangarPlanAcquisitionCreateInput:
+      type: object
+      properties:
+        candidateId:
+          type: string
+          format: uuid
+        startKind:
+          "$ref": "#/components/schemas/HangarPlanStartKindEnum"
+        sourceVehicleId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        buybackPledgeId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        startModelId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        priceOverride:
+          type:
+          - number
+          - 'null'
+          minimum: 0
+        usesBuybackToken:
+          type: boolean
+        steps:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanUpgradeStepInput"
+      required:
+      - candidateId
+      - startKind
+      additionalProperties: false
+      title: HangarPlanAcquisitionCreateInput
+    HangarPlanAcquisitionUpdateInput:
+      type: object
+      properties:
+        startKind:
+          "$ref": "#/components/schemas/HangarPlanStartKindEnum"
+        sourceVehicleId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        buybackPledgeId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        startModelId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        priceOverride:
+          type:
+          - number
+          - 'null'
+          minimum: 0
+        usesBuybackToken:
+          type: boolean
+        steps:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanUpgradeStepInput"
+      additionalProperties: false
+      title: HangarPlanAcquisitionUpdateInput
+    HangarPlanBuybackResource:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        kind:
+          "$ref": "#/components/schemas/BuybackPledgeKindEnum"
+        price:
+          type:
+          - number
+          - 'null'
+        used:
+          type: boolean
+        lifetimeInsurance:
+          type: boolean
+        insuranceMonths:
+          type:
+          - integer
+          - 'null'
+          description: Unknown until the pledge's details are synced
+        insuranceKnown:
+          type: boolean
+          description: False until the pledge's details are synced, so no insurance
+            listed is not yet none
+        models:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanModel"
+          description: The ships buying the pledge back returns, where their names
+            are known
+        upgradeFromModel:
+          "$ref": "#/components/schemas/HangarPlanModel"
+        upgradeToModel:
+          "$ref": "#/components/schemas/HangarPlanModel"
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - kind
+      - used
+      - lifetimeInsurance
+      - insuranceKnown
+      - models
+      title: HangarPlanBuybackResource
+    HangarPlanCandidate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        position:
+          type: integer
+        model:
+          "$ref": "#/components/schemas/HangarPlanModel"
+        modelPaintId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        paintName:
+          type:
+          - string
+          - 'null'
+        modelModuleIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        modelUpgradeIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        matchesFilters:
+          type: boolean
+          description: Whether the ship meets every filter its slot sets
+        ownedCount:
+          type: integer
+          description: Ships of this model in the hangar the plan does not use yet;
+            left out of a shared plan
+        acquisitions:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanAcquisition"
+      additionalProperties: false
+      required:
+      - id
+      - position
+      - model
+      - modelModuleIds
+      - modelUpgradeIds
+      - matchesFilters
+      - acquisitions
+      title: HangarPlanCandidate
+    HangarPlanCandidateCreateInput:
+      type: object
+      properties:
+        slotId:
+          type: string
+          format: uuid
+        modelId:
+          type: string
+          format: uuid
+        modelPaintId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        modelModuleIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        modelUpgradeIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+      required:
+      - slotId
+      - modelId
+      additionalProperties: false
+      title: HangarPlanCandidateCreateInput
+    HangarPlanCandidateUpdateInput:
+      type: object
+      properties:
+        modelPaintId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        modelModuleIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        modelUpgradeIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+      additionalProperties: false
+      title: HangarPlanCandidateUpdateInput
+    HangarPlanCompare:
+      type: object
+      properties:
+        otherPlanId:
+          type: string
+          format: uuid
+        otherPlanName:
+          type: string
+        models:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanModelDiff"
+        totals:
+          "$ref": "#/components/schemas/HangarPlanCompareTotals"
+        metrics:
+          "$ref": "#/components/schemas/HangarPlanCompareMetrics"
+      additionalProperties: false
+      required:
+      - otherPlanId
+      - otherPlanName
+      - models
+      - totals
+      - metrics
+      title: HangarPlanCompare
+    HangarPlanCompareMetrics:
+      type: object
+      properties:
+        left:
+          "$ref": "#/components/schemas/HangarPlanMetrics"
+        right:
+          "$ref": "#/components/schemas/HangarPlanMetrics"
+      additionalProperties: false
+      required:
+      - left
+      - right
+      title: HangarPlanCompareMetrics
+    HangarPlanCompareTotals:
+      type: object
+      properties:
+        left:
+          "$ref": "#/components/schemas/HangarPlanTotals"
+        right:
+          "$ref": "#/components/schemas/HangarPlanTotals"
+      additionalProperties: false
+      required:
+      - left
+      - right
+      title: HangarPlanCompareTotals
+    HangarPlanComparison:
+      type: object
+      properties:
+        vehicles:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanVehicleStatus"
+        models:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanModelDiff"
+        gaps:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanGap"
+        metrics:
+          "$ref": "#/components/schemas/HangarPlanComparisonMetrics"
+      additionalProperties: false
+      required:
+      - vehicles
+      - models
+      - gaps
+      - metrics
+      title: HangarPlanComparison
+    HangarPlanComparisonMetrics:
+      type: object
+      properties:
+        live:
+          "$ref": "#/components/schemas/HangarPlanMetrics"
+        plan:
+          "$ref": "#/components/schemas/HangarPlanMetrics"
+      additionalProperties: false
+      required:
+      - live
+      - plan
+      title: HangarPlanComparisonMetrics
+    HangarPlanCount:
+      type: object
+      properties:
+        name:
+          type: string
+        count:
+          type: integer
+      additionalProperties: false
+      required:
+      - name
+      - count
+      title: HangarPlanCount
+    HangarPlanCreateInput:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        startingCredit:
+          type: number
+          minimum: 0
+        vatRate:
+          type:
+          - number
+          - 'null'
+          minimum: 0
+          maximum: 100
+        buybackTokens:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+        source:
+          "$ref": "#/components/schemas/HangarPlanSourceEnum"
+        sourcePlanId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+      required:
+      - name
+      additionalProperties: false
+      title: HangarPlanCreateInput
+    HangarPlanDrift:
+      type: object
+      properties:
+        basedOnAt:
+          type: string
+          format: date-time
+        missingSources:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanSourceIssue"
+        changedSources:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanSourceIssue"
+        newVehicles:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanNewVehicle"
+        previousTotal:
+          type: number
+          description: Net cost of the decided routes as priced when planned
+        currentTotal:
+          type: number
+          description: Net cost of the decided routes at today's prices
+        drifted:
+          type: boolean
+      additionalProperties: false
+      required:
+      - basedOnAt
+      - missingSources
+      - changedSources
+      - newVehicles
+      - previousTotal
+      - currentTotal
+      - drifted
+      title: HangarPlanDrift
+    HangarPlanGap:
+      type: object
+      properties:
+        slotId:
+          type: string
+          format: uuid
+        label:
+          type: string
+        model:
+          "$ref": "#/components/schemas/HangarPlanModel"
+        count:
+          type: integer
+      additionalProperties: false
+      required:
+      - slotId
+      - label
+      - model
+      - count
+      title: HangarPlanGap
+    HangarPlanIssue:
+      type: object
+      properties:
+        kind:
+          "$ref": "#/components/schemas/HangarPlanIssueKindEnum"
+        name:
+          type: string
+        slotId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+      additionalProperties: false
+      required:
+      - kind
+      - name
+      title: HangarPlanIssue
+    HangarPlanIssueKindEnum:
+      type: string
+      enum:
+      - missing_price
+      - not_on_sale
+      x-enumNames:
+      - MISSING_PRICE
+      - NOT_ON_SALE
+      title: HangarPlanIssueKindEnum
+    HangarPlanListItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        basedOnAt:
+          type: string
+          format: date-time
+        shared:
+          type: boolean
+        slotsCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - basedOnAt
+      - shared
+      - slotsCount
+      - createdAt
+      - updatedAt
+      title: HangarPlanListItem
+    HangarPlanMelt:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        vehicleId:
+          type: string
+          format: uuid
+        vehicleName:
+          type:
+          - string
+          - 'null'
+        model:
+          "$ref": "#/components/schemas/HangarPlanModel"
+        valueOverride:
+          type:
+          - number
+          - 'null'
+        value:
+          type:
+          - number
+          - 'null'
+        estimated:
+          type: boolean
+          description: True when the credit is today's store price rather than what
+            the user entered
+        vehicleMissing:
+          type: boolean
+      additionalProperties: false
+      required:
+      - id
+      - model
+      - estimated
+      - vehicleMissing
+      title: HangarPlanMelt
+    HangarPlanMeltCreateInput:
+      type: object
+      properties:
+        vehicleId:
+          type: string
+          format: uuid
+        valueOverride:
+          type:
+          - number
+          - 'null'
+          minimum: 0
+      required:
+      - vehicleId
+      additionalProperties: false
+      title: HangarPlanMeltCreateInput
+    HangarPlanMeltUpdateInput:
+      type: object
+      properties:
+        valueOverride:
+          type:
+          - number
+          - 'null'
+          minimum: 0
+      additionalProperties: false
+      title: HangarPlanMeltUpdateInput
+    HangarPlanMetrics:
+      type: object
+      properties:
+        total:
+          type: integer
+        uniqueModelsCount:
+          type: integer
+        manufacturerCount:
+          type: integer
+        totalCrew:
+          type: integer
+        totalCargo:
+          type: number
+        totalPledgeValue:
+          type: number
+        flightReadyCount:
+          type: integer
+        largestShip:
+          type:
+          - number
+          - 'null'
+        smallestShip:
+          type:
+          - number
+          - 'null'
+        classifications:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanCount"
+        sizes:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanCount"
+        productionStatuses:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanCount"
+        manufacturers:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanCount"
+      additionalProperties: false
+      required:
+      - total
+      - uniqueModelsCount
+      - manufacturerCount
+      - totalCrew
+      - totalCargo
+      - totalPledgeValue
+      - flightReadyCount
+      - classifications
+      - sizes
+      - productionStatuses
+      - manufacturers
+      title: HangarPlanMetrics
+    HangarPlanModel:
+      type: object
+      description: A ship as a plan shows it
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        slug:
+          type: string
+        manufacturerName:
+          type:
+          - string
+          - 'null'
+        classification:
+          type:
+          - string
+          - 'null'
+        size:
+          type:
+          - string
+          - 'null'
+        productionStatus:
+          type:
+          - string
+          - 'null'
+        pledgePrice:
+          type:
+          - number
+          - 'null'
+          description: Store price in USD; null when unknown
+        onSale:
+          type: boolean
+        crew:
+          type:
+          - integer
+          - 'null'
+        cargo:
+          type:
+          - number
+          - 'null'
+        image:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - slug
+      - onSale
+      title: HangarPlanModel
+    HangarPlanModelChangeEnum:
+      type: string
+      enum:
+      - added
+      - removed
+      - more
+      - fewer
+      - unchanged
+      x-enumNames:
+      - ADDED
+      - REMOVED
+      - MORE
+      - FEWER
+      - UNCHANGED
+      title: HangarPlanModelChangeEnum
+    HangarPlanModelDiff:
+      type: object
+      description: How many of a model each side has; for the live comparison the
+        left side is the hangar
+      properties:
+        model:
+          "$ref": "#/components/schemas/HangarPlanModel"
+        leftCount:
+          type: integer
+        rightCount:
+          type: integer
+        change:
+          "$ref": "#/components/schemas/HangarPlanModelChangeEnum"
+      additionalProperties: false
+      required:
+      - model
+      - leftCount
+      - rightCount
+      - change
+      title: HangarPlanModelDiff
+    HangarPlanNewVehicle:
+      type: object
+      properties:
+        vehicleId:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        model:
+          "$ref": "#/components/schemas/HangarPlanModel"
+      additionalProperties: false
+      required:
+      - vehicleId
+      - model
+      title: HangarPlanNewVehicle
+    HangarPlanResources:
+      type: object
+      properties:
+        vehicles:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanVehicleResource"
+        upgrades:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanUpgradeResource"
+        buybacks:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanBuybackResource"
+        storeModels:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanModel"
+          description: Every ship the pledge store prices, cheapest first
+      additionalProperties: false
+      required:
+      - vehicles
+      - upgrades
+      - buybacks
+      - storeModels
+      title: HangarPlanResources
+    HangarPlanSlot:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        label:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        filters:
+          "$ref": "#/components/schemas/HangarPlanSlotFilters"
+        quantity:
+          type: integer
+        position:
+          type: integer
+        state:
+          "$ref": "#/components/schemas/HangarPlanSlotStateEnum"
+        candidates:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanCandidate"
+      additionalProperties: false
+      required:
+      - id
+      - label
+      - quantity
+      - position
+      - state
+      - filters
+      - candidates
+      title: HangarPlanSlot
+    HangarPlanSlotChooseInput:
+      type: object
+      properties:
+        candidateId:
+          type: string
+          format: uuid
+      required:
+      - candidateId
+      additionalProperties: false
+      title: HangarPlanSlotChooseInput
+    HangarPlanSlotCost:
+      type: object
+      properties:
+        slotId:
+          type: string
+          format: uuid
+        state:
+          "$ref": "#/components/schemas/HangarPlanSlotStateEnum"
+        minCost:
+          type: number
+        maxCost:
+          type: number
+        unresolvedCount:
+          type: integer
+        complete:
+          type: boolean
+      additionalProperties: false
+      required:
+      - slotId
+      - state
+      - minCost
+      - maxCost
+      - unresolvedCount
+      - complete
+      title: HangarPlanSlotCost
+    HangarPlanSlotCreateInput:
+      type: object
+      properties:
+        label:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        filters:
+          "$ref": "#/components/schemas/HangarPlanSlotFilters"
+        quantity:
+          type: integer
+          minimum: 1
+      required:
+      - label
+      additionalProperties: false
+      title: HangarPlanSlotCreateInput
+    HangarPlanSlotFilters:
+      type: object
+      description: What the ships for a slot have to be, in the catalogue's filter
+        terms
+      properties:
+        classificationIn:
+          type: array
+          items:
+            type: string
+        focusIn:
+          type: array
+          items:
+            type: string
+        sizeIn:
+          type: array
+          items:
+            type: string
+        manufacturerIn:
+          type: array
+          items:
+            type: string
+          description: Manufacturer slugs
+        productionStatusIn:
+          type: array
+          items:
+            type: string
+        pledgePriceGteq:
+          type: number
+          minimum: 0
+        pledgePriceLteq:
+          type: number
+          minimum: 0
+        cargoGteq:
+          type: number
+          minimum: 0
+        onSaleEq:
+          type: boolean
+      additionalProperties: false
+      title: HangarPlanSlotFilters
+    HangarPlanSlotSortInput:
+      type: object
+      properties:
+        sorting:
+          type: array
+          items:
+            type: string
+            format: uuid
+      required:
+      - sorting
+      additionalProperties: false
+      title: HangarPlanSlotSortInput
+    HangarPlanSlotStateEnum:
+      type: string
+      enum:
+      - open
+      - decided
+      - undecided
+      x-enumNames:
+      - OPEN
+      - DECIDED
+      - UNDECIDED
+      title: HangarPlanSlotStateEnum
+    HangarPlanSlotUpdateInput:
+      type: object
+      properties:
+        label:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        filters:
+          "$ref": "#/components/schemas/HangarPlanSlotFilters"
+        quantity:
+          type: integer
+          minimum: 1
+      additionalProperties: false
+      title: HangarPlanSlotUpdateInput
+    HangarPlanSourceEnum:
+      type: string
+      enum:
+      - empty
+      - hangar
+      - wishlist
+      - plan
+      x-enumNames:
+      - EMPTY
+      - HANGAR
+      - WISHLIST
+      - PLAN
+      title: HangarPlanSourceEnum
+    HangarPlanSourceIssue:
+      type: object
+      properties:
+        kind:
+          "$ref": "#/components/schemas/HangarPlanSourceIssueKindEnum"
+        recordId:
+          type: string
+          format: uuid
+        plannedModel:
+          "$ref": "#/components/schemas/HangarPlanModel"
+        currentModel:
+          "$ref": "#/components/schemas/HangarPlanModel"
+      additionalProperties: false
+      required:
+      - kind
+      - recordId
+      - plannedModel
+      title: HangarPlanSourceIssue
+    HangarPlanSourceIssueKindEnum:
+      type: string
+      enum:
+      - acquisition
+      - upgrade_step
+      - melt
+      x-enumNames:
+      - ACQUISITION
+      - UPGRADE_STEP
+      - MELT
+      title: HangarPlanSourceIssueKindEnum
+    HangarPlanStartKindEnum:
+      type: string
+      enum:
+      - owned
+      - store
+      - ingame
+      - buyback
+      x-enumNames:
+      - OWNED
+      - STORE
+      - INGAME
+      - BUYBACK
+      title: HangarPlanStartKindEnum
+    HangarPlanSummary:
+      type: object
+      properties:
+        totals:
+          "$ref": "#/components/schemas/HangarPlanTotals"
+        slots:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanSlotCost"
+        issues:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanIssue"
+      additionalProperties: false
+      required:
+      - totals
+      - slots
+      - issues
+      title: HangarPlanSummary
+    HangarPlanTotals:
+      type: object
+      description: Plan costs in USD. Min and max differ while slots are undecided
+      properties:
+        spendMin:
+          type: number
+        spendMax:
+          type: number
+        meltCredit:
+          type: number
+        startingCredit:
+          type: number
+        creditTotal:
+          type: number
+        buybackCash:
+          type: number
+          description: 'Buy-backs paid in new money: RSI takes store credit for one
+            only against a buy-back token'
+        buybacksWithoutTokenCount:
+          type: integer
+        buybackTokensUsed:
+          type: integer
+          description: Buy-backs the user marked to pay with store credit
+        buybackTokensAvailable:
+          type: integer
+          description: 'Buy-back tokens the plan counts with: its own figure, else
+            what the last buy-back sync read'
+        netMin:
+          type: number
+        netMax:
+          type: number
+        cashNeededMin:
+          type: number
+        cashNeededMax:
+          type: number
+        remainingCreditMin:
+          type: number
+        remainingCreditMax:
+          type: number
+        estimatedMeltsCount:
+          type: integer
+        openSlotsCount:
+          type: integer
+        decidedSlotsCount:
+          type: integer
+        undecidedSlotsCount:
+          type: integer
+        unresolvedCount:
+          type: integer
+        complete:
+          type: boolean
+      additionalProperties: false
+      required:
+      - spendMin
+      - spendMax
+      - meltCredit
+      - startingCredit
+      - creditTotal
+      - buybackCash
+      - buybacksWithoutTokenCount
+      - buybackTokensUsed
+      - buybackTokensAvailable
+      - netMin
+      - netMax
+      - cashNeededMin
+      - cashNeededMax
+      - remainingCreditMin
+      - remainingCreditMax
+      - estimatedMeltsCount
+      - openSlotsCount
+      - decidedSlotsCount
+      - undecidedSlotsCount
+      - unresolvedCount
+      - complete
+      title: HangarPlanTotals
+    HangarPlanUpdateInput:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        startingCredit:
+          type: number
+          minimum: 0
+        vatRate:
+          type:
+          - number
+          - 'null'
+          minimum: 0
+          maximum: 100
+        buybackTokens:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+      additionalProperties: false
+      title: HangarPlanUpdateInput
+    HangarPlanUpgradeResource:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        quantity:
+          type: integer
+        usedCount:
+          type: integer
+        pledgeValue:
+          type:
+          - number
+          - 'null'
+        fromModel:
+          "$ref": "#/components/schemas/HangarPlanModel"
+        toModel:
+          "$ref": "#/components/schemas/HangarPlanModel"
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - quantity
+      - usedCount
+      title: HangarPlanUpgradeResource
+    HangarPlanUpgradeSourceEnum:
+      type: string
+      enum:
+      - store
+      - owned_ccu
+      - buyback
+      x-enumNames:
+      - STORE
+      - OWNED_CCU
+      - BUYBACK
+      title: HangarPlanUpgradeSourceEnum
+    HangarPlanUpgradeStep:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        sourceKind:
+          "$ref": "#/components/schemas/HangarPlanUpgradeSourceEnum"
+        fromModel:
+          "$ref": "#/components/schemas/HangarPlanModel"
+        toModel:
+          "$ref": "#/components/schemas/HangarPlanModel"
+        hangarPledgeItemId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        buybackPledgeId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        priceOverride:
+          type:
+          - number
+          - 'null'
+        usesBuybackToken:
+          type: boolean
+          description: Pays for this buy-back with store credit, which spends one
+            of the user's buy-back tokens
+        price:
+          type:
+          - number
+          - 'null'
+          description: In USD; null when a store price is unknown
+        sourceMissing:
+          type: boolean
+      additionalProperties: false
+      required:
+      - id
+      - sourceKind
+      - fromModel
+      - toModel
+      - sourceMissing
+      - usesBuybackToken
+      title: HangarPlanUpgradeStep
+    HangarPlanUpgradeStepInput:
+      type: object
+      properties:
+        sourceKind:
+          "$ref": "#/components/schemas/HangarPlanUpgradeSourceEnum"
+        fromModelId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        toModelId:
+          type: string
+          format: uuid
+        hangarPledgeItemId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        buybackPledgeId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        priceOverride:
+          type:
+          - number
+          - 'null'
+          minimum: 0
+        usesBuybackToken:
+          type: boolean
+      required:
+      - sourceKind
+      - toModelId
+      additionalProperties: false
+      title: HangarPlanUpgradeStepInput
+    HangarPlanVehicleResource:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        model:
+          "$ref": "#/components/schemas/HangarPlanModel"
+        usedBy:
+          "$ref": "#/components/schemas/NullableHangarPlanVehicleUseEnum"
+        meltable:
+          type:
+          - boolean
+          - 'null'
+          description: Whether RSI lets the ship's pledge be melted; null until the
+            hangar sync has read it
+        meltValue:
+          type:
+          - number
+          - 'null'
+          description: The store credit melting the ship's pledge gives, as RSI lists
+            it
+        pledgeItemCount:
+          type:
+          - integer
+          - 'null'
+          description: How many items the pledge holds; melting the ship melts them
+            all
+      additionalProperties: false
+      required:
+      - id
+      - model
+      title: HangarPlanVehicleResource
+    HangarPlanVehicleStatus:
+      type: object
+      properties:
+        vehicleId:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        model:
+          "$ref": "#/components/schemas/HangarPlanModel"
+        status:
+          "$ref": "#/components/schemas/HangarPlanVehicleStatusEnum"
+        targetModel:
+          "$ref": "#/components/schemas/HangarPlanModel"
+      additionalProperties: false
+      required:
+      - vehicleId
+      - model
+      - status
+      title: HangarPlanVehicleStatus
+    HangarPlanVehicleStatusEnum:
+      type: string
+      enum:
+      - kept
+      - upgraded
+      - melted
+      - unassigned
+      x-enumNames:
+      - KEPT
+      - UPGRADED
+      - MELTED
+      - UNASSIGNED
+      title: HangarPlanVehicleStatusEnum
+    HangarPlanWishlistResult:
+      type: object
+      properties:
+        added:
+          type: integer
+        skipped:
+          type: integer
+      additionalProperties: false
+      required:
+      - added
+      - skipped
+      title: HangarPlanWishlistResult
+    HangarPlansList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/HangarPlanListItem"
+      title: HangarPlansList
     HangarPledgeItem:
       type: object
       properties:
@@ -38804,6 +41274,19 @@ components:
       - UNKNOWN
       - 'NULL'
       title: NullableGameMissionLocationKindEnum
+    NullableHangarPlanVehicleUseEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - acquisition
+      - melt
+      -
+      x-enumNames:
+      - ACQUISITION
+      - MELT
+      - 'NULL'
+      title: NullableHangarPlanVehicleUseEnum
     NullableInventoryItemTypeEnum:
       type:
       - string

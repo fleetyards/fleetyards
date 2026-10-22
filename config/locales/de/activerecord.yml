@@ -315,6 +315,42 @@ de:
         blank: darf nicht leer sein
         record_invalid: Ungültige Daten
       models:
+        hangar_plan:
+          attributes:
+            base:
+              plan_limit_reached: "kann höchstens %{count} Pläne enthalten"
+        hangar_plan_slot:
+          attributes:
+            quantity:
+              below_routes: "hat Wege für %{count} Schiffe; entferne zuerst Wege"
+            base:
+              slot_limit_reached: "kann höchstens %{count} Plätze enthalten"
+        hangar_plan_acquisition:
+          attributes:
+            base:
+              slot_filled: "dieser Platz hat bereits für jedes seiner Schiffe einen Weg"
+              chain_mismatch: "der Weg muss beim Schiff des Platzes enden"
+              chain_broken: "jedes Upgrade muss bei dem Schiff beginnen, bei dem der Schritt davor endet"
+              upgrade_taken: "ein Upgrade wird öfter verwendet, als du es besitzt"
+            source_vehicle_id:
+              melted: "wird in diesem Plan gemeltet"
+              pledge_melted: "gehört zu einem Pledge, das dieser Plan meltet"
+              taken: "wird in diesem Plan bereits verwendet"
+            buyback_pledge_id:
+              taken: "wird in diesem Plan bereits verwendet"
+        hangar_plan_upgrade_step:
+          attributes:
+            to_model_id:
+              same_as_from: "muss ein anderes Schiff sein als das, von dem aus upgegradet wird"
+            hangar_pledge_item_id:
+              taken: "wird in diesem Plan bereits verwendet"
+            buyback_pledge_id:
+              taken: "wird in diesem Plan bereits verwendet"
+        hangar_plan_melt:
+          attributes:
+            vehicle_id:
+              taken: "wird in diesem Plan bereits verwendet"
+              pledge_kept: "gehört zu einem Pledge, dessen andere Schiffe dieser Plan behält"
         vehicle_loadout:
           attributes:
             base:

@@ -24,10 +24,12 @@ import { useQueryClient } from "@tanstack/vue-query";
 import { errorTypeFrom } from "@/shared/utils/ErrorTypes";
 import { ErrorTypesEnum } from "@/shared/components/AsyncData.types";
 import {
+  BuybackPledgeKindEnum,
   getHangarBuybacksQueryKey,
   useDestroyHangarBuyback,
   type BuybackPledge,
 } from "@/services/fyApi";
+import { useBuybackInsurance } from "@/frontend/composables/useBuybackInsurance";
 import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
 type Props = {
@@ -52,15 +54,13 @@ const filterLink = (key: string, value: string) => ({
   query: { ...route.query, page: undefined, [key]: value },
 });
 
-const insurance = (buyback: BuybackPledge) => {
-  if (buyback.lifetimeInsurance) {
-    return t("labels.buybacks.lifetimeInsurance");
-  }
+const insuranceLabel = useBuybackInsurance();
 
-  return buyback.insuranceMonths
-    ? t("labels.buybacks.insuranceMonths", { count: buyback.insuranceMonths })
-    : undefined;
-};
+// An upgrade carries no insurance of its own, so it has nothing to show.
+const insurance = (buyback: BuybackPledge) =>
+  buyback.kind === BuybackPledgeKindEnum.UPGRADE
+    ? undefined
+    : insuranceLabel(buyback);
 
 const tags = (buyback: BuybackPledge): RowListItemTag[] => [
   {

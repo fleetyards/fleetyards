@@ -58,7 +58,9 @@
         "transfers": "Transferts",
         "vehicleOverview": "Aperçu du vaisseau",
         "vehicleLog": "Journal de bord",
-        "shipComponents": "Composants de vaisseau"
+        "shipComponents": "Composants de vaisseau",
+        "plans": "Planificateur de hangar",
+        "sharedPlan": "Plan de hangar partagé"
       },
       "requestPassword": "Demander un mot de passe",
       "changePassword": "Modifier le mot de passe",

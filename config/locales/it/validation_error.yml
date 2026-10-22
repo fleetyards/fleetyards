@@ -120,6 +120,22 @@ it:
       create: Impossibile creare la voce di inventario.
       update: Impossibile aggiornare la voce di inventario.
       destroy: Impossibile eliminare la voce di inventario.
+    hangar_plans:
+      create: "Impossibile creare il piano."
+      update: "Impossibile aggiornare il piano."
+      rebase: "Impossibile riallineare il piano all'hangar."
+    hangar_plan_slots:
+      create: "Impossibile aggiungere lo slot."
+      update: "Impossibile aggiornare lo slot."
+    hangar_plan_candidates:
+      create: "Impossibile aggiungere la nave allo slot."
+      update: "Impossibile aggiornare la nave."
+    hangar_plan_acquisitions:
+      create: "Impossibile aggiungere il percorso."
+      update: "Impossibile aggiornare il percorso."
+    hangar_plan_melts:
+      create: "Impossibile aggiungere la fusione."
+      update: "Impossibile aggiornare la fusione."
     hangar_inventories:
       create: Impossibile creare l'inventario.
       update: Impossibile aggiornare l'inventario.

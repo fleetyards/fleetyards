@@ -25,11 +25,12 @@ module V1
             price: {type: :number, description: "What buying the pledge back costs, in USD before tax"},
             insuranceMonths: {type: :integer},
             lifetimeInsurance: {type: :boolean},
+            insuranceKnown: {type: :boolean, description: "False until the pledge's details are synced, so no insurance listed is not yet none"},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id rsiPledgeId kind name upgraded available lifetimeInsurance createdAt updatedAt]
+          required: %w[id rsiPledgeId kind name upgraded available lifetimeInsurance insuranceKnown createdAt updatedAt]
         })
       end
     end

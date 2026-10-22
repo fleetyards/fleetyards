@@ -315,6 +315,42 @@ fr:
         blank: ne peut pas être vide
         record_invalid: Données incorrectes
       models:
+        hangar_plan:
+          attributes:
+            base:
+              plan_limit_reached: "peut contenir au plus %{count} plans"
+        hangar_plan_slot:
+          attributes:
+            quantity:
+              below_routes: "a des voies pour %{count} vaisseaux ; supprimez d'abord des voies"
+            base:
+              slot_limit_reached: "peut contenir au plus %{count} emplacements"
+        hangar_plan_acquisition:
+          attributes:
+            base:
+              slot_filled: "cet emplacement a déjà un parcours pour chacun de ses vaisseaux"
+              chain_mismatch: "le parcours doit se terminer sur le vaisseau de l'emplacement"
+              chain_broken: "chaque amélioration doit partir du vaisseau où s'est terminée l'étape précédente"
+              upgrade_taken: "une amélioration est utilisée plus souvent que vous ne la possédez"
+            source_vehicle_id:
+              melted: "est fondu dans ce plan"
+              pledge_melted: "fait partie d'un pledge que ce plan fond"
+              taken: "est déjà utilisé dans ce plan"
+            buyback_pledge_id:
+              taken: "est déjà utilisé dans ce plan"
+        hangar_plan_upgrade_step:
+          attributes:
+            to_model_id:
+              same_as_from: "doit être un autre vaisseau que celui de départ"
+            hangar_pledge_item_id:
+              taken: "est déjà utilisé dans ce plan"
+            buyback_pledge_id:
+              taken: "est déjà utilisé dans ce plan"
+        hangar_plan_melt:
+          attributes:
+            vehicle_id:
+              taken: "est déjà utilisé dans ce plan"
+              pledge_kept: "fait partie d'un pledge dont ce plan garde les autres vaisseaux"
         vehicle_loadout:
           attributes:
             base:

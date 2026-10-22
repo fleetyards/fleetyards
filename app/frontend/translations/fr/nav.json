@@ -33,7 +33,9 @@
         "transfers": "Transferts",
         "vehicleOverview": "Aperçu",
         "vehicleLog": "Journal de bord",
-        "shipComponents": "Composants de vaisseau"
+        "shipComponents": "Composants de vaisseau",
+        "plans": "Planificateur",
+        "sharedPlan": "Plan partagé"
       },
       "login": "Connexion",
       "installApp": "Installer l'app",

@@ -2929,6 +2929,7 @@
         "insurance": "Seguro",
         "lifetimeInsurance": "LTI",
         "noInsurance": "Sin seguro",
+        "insuranceUnknown": "Seguro desconocido",
         "insuranceMonths": {
           "one": "%{count} mes",
           "other": "%{count} meses"

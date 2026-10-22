@@ -81,6 +81,19 @@ class Api::V1::FiltersModelsOptionsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The filters a hangar plan slot opens the picker on.
+  test "GET /filters/models/options filters by cargo, price and sale" do
+    fits = create(:model, :with_store_image, cargo: 96, pledge_price: 200, on_sale: true)
+    create(:model, :with_store_image, cargo: 6, pledge_price: 200, on_sale: true)
+    create(:model, :with_store_image, cargo: 96, pledge_price: 900, on_sale: true)
+    create(:model, :with_store_image, cargo: 96, pledge_price: 200, on_sale: false)
+
+    query = {"cargoGteq" => 60, "pledgePriceLteq" => 500, "onSaleEq" => true}
+    assert_api_response :get, 200, params: {q: query} do
+      assert_equal [fits.id], parsed_body["items"].map { |item| item["id"] }
+    end
+  end
+
   test "GET /filters/models/options filters by withCargoGrids" do
     with_grid = create(:model, :with_store_image)
     with_grid.update!(cargo_holds: [cargo_hold_attributes])

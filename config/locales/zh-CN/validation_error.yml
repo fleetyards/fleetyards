@@ -119,6 +119,22 @@ zh-CN:
       create: 无法创建库存记录。
       update: 无法更新库存记录。
       destroy: 无法删除库存记录。
+    hangar_plans:
+      create: "无法创建计划。"
+      update: "无法更新计划。"
+      rebase: "无法按机库更新计划。"
+    hangar_plan_slots:
+      create: "无法添加槽位。"
+      update: "无法更新槽位。"
+    hangar_plan_candidates:
+      create: "无法将舰船添加到槽位。"
+      update: "无法更新舰船。"
+    hangar_plan_acquisitions:
+      create: "无法添加获取路线。"
+      update: "无法更新获取路线。"
+    hangar_plan_melts:
+      create: "无法添加熔炼。"
+      update: "无法更新熔炼。"
     hangar_inventories:
       create: 无法创建库存。
       update: 无法更新库存。

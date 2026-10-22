@@ -13,7 +13,7 @@ import NumberFlow from "@number-flow/vue";
 type Props = {
   label: string;
   icon: string;
-  value: number;
+  value?: number;
   prefix?: string;
   suffix?: string;
   outerSpacing?: boolean;
@@ -66,7 +66,9 @@ const suffix = computed(() => {
       <div class="metrics-card__tile metrics-card__tile--primary">
         <div class="metrics-card__tile__label">{{ label }}</div>
         <div class="metrics-card__tile__value">
-          <NumberFlow :value="innerValue" :prefix="prefix" />
+          <slot name="value">
+            <NumberFlow :value="innerValue ?? 0" :prefix="prefix" />
+          </slot>
           <span v-if="suffix" class="metrics-card__tile__unit">
             {{ suffix }}
           </span>

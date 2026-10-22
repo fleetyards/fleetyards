@@ -552,6 +552,16 @@ const { activeFilters } = useShipFilterSummary(() =>
       {{ t("nav.hangar.blueprints") }}
     </Btn>
 
+    <Btn
+      v-if="isFeatureEnabled(FeatureFlagName.HANGAR_PLANNER)"
+      :size="BtnSizesEnum.MD"
+      :to="{ name: 'hangar-plans' }"
+      data-test="hangar-plans-link"
+    >
+      <i class="fa-duotone fa-compass-drafting" />
+      {{ t("nav.hangar.plans") }}
+    </Btn>
+
     <BtnDropdown :size="BtnSizesEnum.MD" data-tour="hangar-pledge-items">
       <template #label>
         <i class="fa-duotone fa-box-open" />
@@ -651,6 +661,14 @@ const { activeFilters } = useShipFilterSummary(() =>
             <Btn :to="{ name: 'hangar-blueprints' }">
               <i class="fa-duotone fa-notes" />
               <span>{{ t("nav.hangar.blueprints") }}</span>
+            </Btn>
+
+            <Btn
+              v-if="isFeatureEnabled(FeatureFlagName.HANGAR_PLANNER)"
+              :to="{ name: 'hangar-plans' }"
+            >
+              <i class="fa-duotone fa-compass-drafting" />
+              <span>{{ t("nav.hangar.plans") }}</span>
             </Btn>
 
             <Btn data-test="fleetchart-link" @click="toggleFleetchart">

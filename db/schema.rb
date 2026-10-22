@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_22_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_22_150000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1477,6 +1477,93 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_22_120000) do
     t.integer "sort"
     t.boolean "public", default: false
     t.index ["user_id", "name"], name: "index_hangar_groups_on_user_id_and_name", unique: true
+  end
+
+  create_table "hangar_plan_acquisitions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "hangar_plan_id", null: false
+    t.uuid "hangar_plan_candidate_id", null: false
+    t.string "start_kind", null: false
+    t.uuid "source_vehicle_id"
+    t.uuid "buyback_pledge_id"
+    t.uuid "start_model_id", null: false
+    t.decimal "price_override", precision: 15, scale: 2
+    t.decimal "price_snapshot", precision: 15, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "uses_buyback_token", default: false, null: false
+    t.index ["hangar_plan_candidate_id"], name: "index_hangar_plan_acquisitions_on_hangar_plan_candidate_id"
+    t.index ["hangar_plan_id", "buyback_pledge_id"], name: "index_hangar_plan_acquisitions_on_plan_and_buyback", unique: true, where: "(buyback_pledge_id IS NOT NULL)"
+    t.index ["hangar_plan_id", "source_vehicle_id"], name: "index_hangar_plan_acquisitions_on_plan_and_vehicle", unique: true, where: "(source_vehicle_id IS NOT NULL)"
+  end
+
+  create_table "hangar_plan_candidates", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "hangar_plan_slot_id", null: false
+    t.uuid "model_id", null: false
+    t.uuid "model_paint_id"
+    t.uuid "model_module_ids", default: [], null: false, array: true
+    t.uuid "model_upgrade_ids", default: [], null: false, array: true
+    t.integer "position", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["hangar_plan_slot_id"], name: "index_hangar_plan_candidates_on_hangar_plan_slot_id"
+    t.index ["model_id"], name: "index_hangar_plan_candidates_on_model_id"
+  end
+
+  create_table "hangar_plan_melts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "hangar_plan_id", null: false
+    t.uuid "vehicle_id", null: false
+    t.uuid "model_id", null: false
+    t.decimal "value_override", precision: 15, scale: 2
+    t.decimal "value_snapshot", precision: 15, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["hangar_plan_id", "vehicle_id"], name: "index_hangar_plan_melts_on_hangar_plan_id_and_vehicle_id", unique: true
+  end
+
+  create_table "hangar_plan_slots", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "hangar_plan_id", null: false
+    t.string "label", null: false
+    t.integer "quantity", default: 1, null: false
+    t.integer "position", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "description"
+    t.jsonb "filters", default: {}, null: false
+    t.index ["hangar_plan_id"], name: "index_hangar_plan_slots_on_hangar_plan_id"
+  end
+
+  create_table "hangar_plan_upgrade_steps", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "hangar_plan_id", null: false
+    t.uuid "hangar_plan_acquisition_id", null: false
+    t.string "source_kind", null: false
+    t.uuid "from_model_id", null: false
+    t.uuid "to_model_id", null: false
+    t.uuid "hangar_pledge_item_id"
+    t.uuid "buyback_pledge_id"
+    t.integer "position", default: 0, null: false
+    t.decimal "price_override", precision: 15, scale: 2
+    t.decimal "price_snapshot", precision: 15, scale: 2
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "uses_buyback_token", default: false, null: false
+    t.index ["hangar_plan_acquisition_id"], name: "index_hangar_plan_upgrade_steps_on_hangar_plan_acquisition_id"
+    t.index ["hangar_plan_id", "buyback_pledge_id"], name: "index_hangar_plan_upgrade_steps_on_plan_and_buyback", unique: true, where: "(buyback_pledge_id IS NOT NULL)"
+  end
+
+  create_table "hangar_plans", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.string "name", null: false
+    t.text "description"
+    t.datetime "based_on_at", null: false
+    t.decimal "starting_credit", precision: 15, scale: 2, default: "0.0", null: false
+    t.string "share_token"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "buyback_tokens"
+    t.decimal "vat_rate", precision: 5, scale: 2
+    t.uuid "based_on_vehicle_ids", array: true
+    t.index ["share_token"], name: "index_hangar_plans_on_share_token", unique: true
+    t.index ["user_id", "name"], name: "index_hangar_plans_on_user_id_and_name", unique: true
   end
 
   create_table "hangar_pledge_item_model_paints", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -3073,6 +3160,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_22_120000) do
   add_foreign_key "game_mission_locations", "locations", on_delete: :cascade
   add_foreign_key "game_mission_prerequisites", "game_mission_builds", on_delete: :cascade
   add_foreign_key "game_mission_rewards", "game_mission_builds", on_delete: :cascade
+  add_foreign_key "hangar_plan_acquisitions", "hangar_plan_candidates", on_delete: :cascade
+  add_foreign_key "hangar_plan_acquisitions", "hangar_plans", on_delete: :cascade
+  add_foreign_key "hangar_plan_candidates", "hangar_plan_slots", on_delete: :cascade
+  add_foreign_key "hangar_plan_candidates", "model_paints", on_delete: :nullify
+  add_foreign_key "hangar_plan_candidates", "models"
+  add_foreign_key "hangar_plan_melts", "hangar_plans", on_delete: :cascade
+  add_foreign_key "hangar_plan_slots", "hangar_plans", on_delete: :cascade
+  add_foreign_key "hangar_plan_upgrade_steps", "hangar_plan_acquisitions", on_delete: :cascade
+  add_foreign_key "hangar_plan_upgrade_steps", "hangar_plans", on_delete: :cascade
+  add_foreign_key "hangar_plans", "users"
   add_foreign_key "hangar_pledge_item_model_paints", "hangar_pledge_items", on_delete: :cascade
   add_foreign_key "hangar_pledge_item_model_paints", "model_paints", on_delete: :cascade
   add_foreign_key "hangar_pledge_items", "components", on_delete: :nullify

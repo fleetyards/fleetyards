@@ -33,7 +33,9 @@
         "transfers": "Transfers",
         "vehicleOverview": "Übersicht",
         "vehicleLog": "Logbuch",
-        "shipComponents": "Schiffskomponenten"
+        "shipComponents": "Schiffskomponenten",
+        "plans": "Planer",
+        "sharedPlan": "Geteilter Plan"
       },
       "login": "Anmelden",
       "installApp": "App installieren",
