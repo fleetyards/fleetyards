@@ -1,14 +1,6 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { flushPromises } from "@vue/test-utils";
-import {
-  afterEach,
-  beforeAll,
-  beforeEach,
-  describe,
-  expect,
-  it,
-  vi,
-} from "vitest";
+import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import { defineRule } from "vee-validate";
 import { max, required } from "@vee-validate/rules";
 import { createRouter, createWebHashHistory } from "vue-router";
@@ -120,25 +112,10 @@ describe("ToolsPlaquePage", () => {
     defineRule("required", required);
   });
 
-  // A returning visitor, unless a test clears it to be a first one.
-  beforeEach(() => {
-    localStorage.setItem("plaque-tool-example-seen", "1");
-  });
-
   afterEach(() => {
-    localStorage.clear();
     openModal.mockReset();
     canShare.mockReset();
     canShare.mockReturnValue(false);
-  });
-
-  it("asks for a ship before it draws a plaque", async () => {
-    const wrapper = await mount();
-
-    expect(wrapper.find('[data-test="plaque-tool-empty"]').exists()).toBe(true);
-    expect(wrapper.find('[data-test="plaque-tool-preview"]').exists()).toBe(
-      false,
-    );
   });
 
   it("draws the plaque of the ship in the address, with its maker's lines", async () => {
@@ -262,8 +239,7 @@ describe("ToolsPlaquePage", () => {
     expect(sessionStorage.getItem("plaque-tool-draft")).toBeNull();
   });
 
-  it("opens a first visit on the example plaque", async () => {
-    localStorage.clear();
+  it("opens on the example plaque without a ship", async () => {
     const wrapper = await mount();
     await flushPromises();
 
@@ -277,11 +253,12 @@ describe("ToolsPlaquePage", () => {
     expect(
       plaque.find('[data-test="vehicle-plaque-captain"]').text(),
     ).toContain("Jared Huckaby");
-    expect(localStorage.getItem("plaque-tool-example-seen")).toBe("1");
+    // A reload opens on the example again, not on its ship with every line
+    // gone.
+    expect(wrapper.vm.$router.currentRoute.value.query.model).toBeUndefined();
   });
 
   it("clears the example to start from scratch", async () => {
-    localStorage.clear();
     const wrapper = await mount();
     await flushPromises();
 
@@ -300,14 +277,5 @@ describe("ToolsPlaquePage", () => {
           .element as HTMLTextAreaElement
       ).value,
     ).toBe("");
-  });
-
-  it("shows the example only once", async () => {
-    const wrapper = await mount();
-    await flushPromises();
-
-    expect(wrapper.find('[data-test="plaque-tool-example"]').exists()).toBe(
-      false,
-    );
   });
 });

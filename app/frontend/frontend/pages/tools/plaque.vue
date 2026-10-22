@@ -51,10 +51,21 @@ const { currentUser } = storeToRefs(sessionStore);
 
 const isSupporter = computed(() => !!currentUser?.value?.supporter);
 
-// The ship is in the address, so a link to the tool can bring one along.
+// Opened without a ship, the tool shows a finished plaque, so it says what one
+// reads like before asking for a single line.
+const showingExample = ref(false);
+
+// The ship is in the address, so a link to the tool can bring one along. The
+// example's ship stays out of it, so a reload opens on the example again
+// rather than on its ship with every line gone.
 const modelSlug = computed({
-  get: () =>
-    typeof route.query.model === "string" ? route.query.model : undefined,
+  get: () => {
+    if (typeof route.query.model === "string") {
+      return route.query.model;
+    }
+
+    return showingExample.value ? EXAMPLE_PLAQUE.model : undefined;
+  },
   set: (slug) => {
     const { model: _model, ...query } = route.query;
     void router.replace({ query: slug ? { ...query, model: slug } : query });
@@ -212,29 +223,8 @@ const restoreDraft = () => {
   }
 };
 
-// A first visit opens on a finished plaque, so the tool shows what one reads
-// like before asking for a single line. Remembered per browser; where storage
-// is refused, every visit is a first one.
-const EXAMPLE_SEEN_KEY = "plaque-tool-example-seen";
-
-const showingExample = ref(false);
-
-const exampleSeen = () => {
-  try {
-    if (localStorage.getItem(EXAMPLE_SEEN_KEY)) {
-      return true;
-    }
-    localStorage.setItem(EXAMPLE_SEEN_KEY, "1");
-  } catch {
-    // Shown again next time.
-  }
-
-  return false;
-};
-
 const showExample = () => {
   setValues(EXAMPLE_PLAQUE.values);
-  modelSlug.value = EXAMPLE_PLAQUE.model;
   showingExample.value = true;
 };
 
@@ -246,7 +236,7 @@ const startFresh = () => {
 };
 
 onMounted(() => {
-  if (restoreDraft() || modelSlug.value || exampleSeen()) {
+  if (restoreDraft() || modelSlug.value) {
     return;
   }
 
