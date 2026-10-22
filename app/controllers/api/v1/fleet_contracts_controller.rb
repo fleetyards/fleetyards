@@ -67,7 +67,7 @@ module Api
 
         authorize! @fleet_contract
 
-        if @fleet_contract.save
+        if save_fleet_contract
           render :show, status: :created
         else
           render json: ValidationError.new("fleet_contracts.create", errors: @fleet_contract.errors),
@@ -80,7 +80,9 @@ module Api
 
         @fleet_contract.destination_chosen_by = current_resource_owner
 
-        if @fleet_contract.update(fleet_contract_params)
+        @fleet_contract.assign_attributes(fleet_contract_params)
+
+        if save_fleet_contract
           render :show
         else
           render json: ValidationError.new("fleet_contracts.update", errors: @fleet_contract.errors),
@@ -175,6 +177,19 @@ module Api
         return scope if allowed_to?(:manage?, @fleet, with: FleetContractPolicy)
 
         narrow_to_squadron_access(scope.where.not(aasm_state: "draft"))
+      end
+
+      # Titles are unique case-insensitively, yet two different ones can still
+      # share a slug -- "Get Iron " and "Get Iron" both read `get-iron` -- and
+      # only the unique index on (fleet_id, slug) notices. To the author that
+      # is a taken title.
+      private def save_fleet_contract
+        @fleet_contract.save
+      rescue ActiveRecord::RecordNotUnique => e
+        raise unless e.message.include?("index_fleet_contracts_on_fleet_id_and_slug")
+
+        @fleet_contract.errors.add(:title, :taken)
+        false
       end
 
       private def fleet_contract_params

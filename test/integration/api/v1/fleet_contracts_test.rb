@@ -336,6 +336,31 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "POST refuses a title whose slug another contract already has" do
+    create(:fleet_contract, fleet: @fleet, destination_fleet_inventory: @depot, title: "Get Iron")
+    sign_in @officer
+
+    assert_api_response :post, 400,
+      api_path: COLLECTION_PATH,
+      path_params: {fleetSlug: @fleet.slug},
+      body: {title: "Get Iron!", kind: "procurement", destinationFleetInventoryId: @depot.id} do
+      assert_includes parsed_body["errors"].pluck("attribute"), "title"
+    end
+  end
+
+  test "PATCH refuses a rename onto another contract's slug" do
+    create(:fleet_contract, fleet: @fleet, destination_fleet_inventory: @depot, title: "Get Iron")
+    contract = create(:fleet_contract, fleet: @fleet, created_by: @officer, destination_fleet_inventory: @depot)
+    sign_in @officer
+
+    assert_api_response :patch, 400,
+      api_path: MEMBER_PATH,
+      path_params: {fleetSlug: @fleet.slug, slug: contract.slug},
+      body: {title: "Get Iron!"} do
+      assert_includes parsed_body["errors"].pluck("attribute"), "title"
+    end
+  end
+
   test "POST lets an author without inventory rights deliver into their own inventory" do
     author = contract_author
     locker = create(:inventory, holder: author)
