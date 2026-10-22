@@ -80,16 +80,16 @@ class FleetEventSignup < ApplicationRecord
   # An optional belongs_to never checks that its record exists, so an id left
   # over from a deleted slot or vehicle would only fail at the foreign key.
   private def slot_exists
-    errors.add(:fleet_event_slot, :required) unless FleetEventSlot.exists?(fleet_event_slot_id)
+    errors.add(:fleet_event_slot_id, :required) unless FleetEventSlot.exists?(fleet_event_slot_id)
   end
 
   private def vehicle_owned_by_member
     owner_id = Vehicle.where(id: vehicle_id).pick(:user_id)
 
     if owner_id.nil?
-      errors.add(:vehicle, :required)
+      errors.add(:vehicle_id, :required)
     elsif fleet_membership.present? && owner_id != fleet_membership.user_id
-      errors.add(:vehicle, :not_owned)
+      errors.add(:vehicle_id, :not_owned)
     end
   end
 

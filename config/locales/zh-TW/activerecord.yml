@@ -6,11 +6,10 @@ zh-TW:
         fleet_membership: "成員"
         fleet_squadron: "中隊"
       fleet_event_signup:
-        fleet_event_slot: "位置"
         fleet_event_slot_id: "位置"
         fleet_membership_id: "成員"
         status: "狀態"
-        vehicle: "艦船"
+        vehicle_id: "艦船"
       vehicle:
         bought_via:
           pledge_store: 質押商店
@@ -564,10 +563,9 @@ zh-TW:
             fleet_event_slot_id:
               already_taken: 已被其他成員佔用
               wrong_event: 不屬於此活動
+              required: 已不存在
             status:
               invalid_for_slot: 在位置上必須為已確認或待審核
-            fleet_event_slot:
-              required: 已不存在
-            vehicle:
+            vehicle_id:
               required: 已不存在
               not_owned: 不在該成員的機庫中

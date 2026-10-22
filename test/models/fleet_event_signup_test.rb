@@ -14,19 +14,19 @@ class FleetEventSignupTest < ActiveSupport::TestCase
     test "rejects a slot that no longer exists" do
       signup = build(:fleet_event_signup, fleet_event: @event, fleet_event_slot_id: SecureRandom.uuid, fleet_membership: @fleet_membership, status: "confirmed")
       refute signup.valid?
-      assert_includes signup.errors.details[:fleet_event_slot], {error: :required}
+      assert_includes signup.errors.details[:fleet_event_slot_id], {error: :required}
     end
 
     test "rejects a slot that no longer exists when the event is unknown too" do
       signup = build(:fleet_event_signup, fleet_event: nil, fleet_event_slot_id: SecureRandom.uuid, fleet_membership: @fleet_membership, status: "confirmed")
       refute signup.valid?
-      assert_includes signup.errors.details[:fleet_event_slot], {error: :required}
+      assert_includes signup.errors.details[:fleet_event_slot_id], {error: :required}
     end
 
     test "rejects a vehicle that no longer exists" do
       signup = build(:fleet_event_signup, fleet_event: @event, fleet_event_slot: @slot, fleet_membership: @fleet_membership, vehicle_id: SecureRandom.uuid)
       refute signup.valid?
-      assert_includes signup.errors.details[:vehicle], {error: :required}
+      assert_includes signup.errors.details[:vehicle_id], {error: :required}
     end
   end
 
@@ -40,7 +40,7 @@ class FleetEventSignupTest < ActiveSupport::TestCase
     test "rejects another user's vehicle" do
       signup = build(:fleet_event_signup, fleet_event: @event, fleet_event_slot: @slot, fleet_membership: @fleet_membership, vehicle: create(:vehicle))
       refute signup.valid?
-      assert_includes signup.errors.details[:vehicle], {error: :not_owned}
+      assert_includes signup.errors.details[:vehicle_id], {error: :not_owned}
     end
 
     test "keeps a signup editable after its vehicle changed hands" do

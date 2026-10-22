@@ -108,7 +108,7 @@ class Api::V1::FleetEventSignupsAssignTest < ActionDispatch::IntegrationTest
     assert_api_response :patch, 400,
       path_params: {id: @signup.id},
       body: {fleetEventSlotId: deleted_slot_id, status: "confirmed"} do
-      error = parsed_body["errors"].find { |field| field["attribute"] == "fleetEventSlot" }
+      error = parsed_body["errors"].find { |field| field["attribute"] == "fleetEventSlotId" }
       assert_equal ["required"], error["messages"].pluck("code")
     end
 
