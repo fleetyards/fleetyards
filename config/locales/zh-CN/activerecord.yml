@@ -564,3 +564,4 @@ zh-CN:
               required: 已不存在
             vehicle:
               required: 已不存在
+              not_owned: 不在该成员的机库中

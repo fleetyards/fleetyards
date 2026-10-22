@@ -565,3 +565,4 @@ de:
               required: existiert nicht mehr
             vehicle:
               required: existiert nicht mehr
+              not_owned: ist nicht im Hangar dieses Mitglieds

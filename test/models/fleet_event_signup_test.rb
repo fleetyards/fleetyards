@@ -30,6 +30,28 @@ class FleetEventSignupTest < ActiveSupport::TestCase
     end
   end
 
+  class VehicleOwnedByMemberTest < FleetEventSignupTest
+    test "accepts a vehicle from the member's hangar" do
+      vehicle = create(:vehicle, user: @fleet_membership.user)
+      signup = build(:fleet_event_signup, fleet_event: @event, fleet_event_slot: @slot, fleet_membership: @fleet_membership, vehicle: vehicle)
+      assert signup.valid?
+    end
+
+    test "rejects another user's vehicle" do
+      signup = build(:fleet_event_signup, fleet_event: @event, fleet_event_slot: @slot, fleet_membership: @fleet_membership, vehicle: create(:vehicle))
+      refute signup.valid?
+      assert_includes signup.errors.details[:vehicle], {error: :not_owned}
+    end
+
+    test "keeps a signup editable after its vehicle changed hands" do
+      vehicle = create(:vehicle, user: @fleet_membership.user)
+      signup = create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: @slot, fleet_membership: @fleet_membership, vehicle: vehicle)
+      vehicle.update_columns(user_id: create(:user).id)
+
+      assert signup.update(notes: "bringing snacks")
+    end
+  end
+
   class SlotBoundStatusAllowedTest < FleetEventSignupTest
     test "accepts confirmed signups bound to a slot" do
       signup = build(:fleet_event_signup, fleet_event: @event, fleet_event_slot: @slot, fleet_membership: @fleet_membership, status: "confirmed")

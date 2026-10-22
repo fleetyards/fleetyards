@@ -596,3 +596,4 @@ en:
               required: no longer exists
             vehicle:
               required: no longer exists
+              not_owned: is not in this member's hangar

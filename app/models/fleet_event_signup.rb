@@ -14,7 +14,7 @@ class FleetEventSignup < ApplicationRecord
 
   validates :status, inclusion: {in: STATUSES}
   validate :slot_exists, if: :fleet_event_slot_changing?
-  validate :vehicle_exists, if: :vehicle_changing?
+  validate :vehicle_owned_by_member, if: :vehicle_changing?
   validate :unique_active_signup_per_member, on: :create
   validate :slot_not_already_taken, on: :create
   validate :membership_still_kept, if: :claims_seat?
@@ -83,8 +83,14 @@ class FleetEventSignup < ApplicationRecord
     errors.add(:fleet_event_slot, :required) unless FleetEventSlot.exists?(fleet_event_slot_id)
   end
 
-  private def vehicle_exists
-    errors.add(:vehicle, :required) unless Vehicle.exists?(vehicle_id)
+  private def vehicle_owned_by_member
+    owner_id = Vehicle.where(id: vehicle_id).pick(:user_id)
+
+    if owner_id.nil?
+      errors.add(:vehicle, :required)
+    elsif fleet_membership.present? && owner_id != fleet_membership.user_id
+      errors.add(:vehicle, :not_owned)
+    end
   end
 
   private def fleet_event_slot_changing?
