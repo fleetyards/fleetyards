@@ -145,13 +145,15 @@ module Rsi
       type = ::Model.normalize_value_for(:classification, data["type"])
       updates[:ground] = true if type == "ground" && model_updated(model, data) && type != model.classification
 
-      # The keys follow the matrix where the string always did, but only keys
-      # the matrix put there: ones that differ from what its last wording maps
-      # to were picked by hand, and a reworded matrix must not undo that.
-      # Stealth is only ever turned on: the matrix never says a ship is not
-      # stealthy, and an admin may have said it is.
+      # The focus follows any rewording, whether or not RSI moved
+      # `time_modified`: RSI rewords ships without it, and once the shadow has
+      # taken the new wording nothing would ever differ again. The keys follow
+      # too, but only keys the matrix put there: ones that differ from what its
+      # last wording maps to were picked by hand, and a reworded matrix must not
+      # undo that. Stealth is only ever turned on: the matrix never says a ship
+      # is not stealthy, and an admin may have said it is.
       updates["rsi_focus"] = data["focus"]
-      if (model_updated(model, data) && data["focus"] != model.rsi_focus) || model.rsi_focus.blank?
+      if (data["focus"].present? && data["focus"] != model.rsi_focus) || model.rsi_focus.blank?
         updates["focus"] = data["focus"]
 
         mapped = ::Models::FocusMapping.call(data["focus"])
