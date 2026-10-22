@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_22_180000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_22_190000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -858,7 +858,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_22_180000) do
     t.uuid "fleet_event_id", null: false
     t.date "occurrence_date"
     t.index ["fleet_event_id", "occurrence_date", "fleet_membership_id"], name: "idx_fleet_event_signups_on_event_and_occurrence_and_member"
-    t.index ["fleet_event_id", "occurrence_date", "fleet_membership_id"], name: "index_fleet_event_signups_unique_active_per_event", unique: true, where: "((status)::text <> 'withdrawn'::text)"
+    t.index ["fleet_event_id", "occurrence_date", "fleet_membership_id"], name: "index_fleet_event_signups_unique_active_per_event", unique: true, where: "((status)::text <> 'withdrawn'::text)", nulls_not_distinct: true
     t.index ["fleet_event_slot_id", "occurrence_date"], name: "index_fleet_event_signups_unique_active_per_slot", unique: true, where: "((fleet_event_slot_id IS NOT NULL) AND ((status)::text <> 'withdrawn'::text))", nulls_not_distinct: true
     t.index ["fleet_event_slot_id"], name: "index_fleet_event_signups_on_fleet_event_slot_id"
     t.index ["fleet_membership_id"], name: "index_fleet_event_signups_on_fleet_membership_id"
