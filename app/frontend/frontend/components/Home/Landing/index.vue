@@ -26,6 +26,7 @@ import { useMobile } from "@/shared/composables/useMobile";
 import { storeToRefs } from "pinia";
 import { useSessionStore } from "@/frontend/stores/session";
 import { usePatchLoadingScreens } from "@/frontend/composables/usePatchLoadingScreens";
+import { useScrollSettle } from "@/frontend/composables/useScrollSettle";
 import logo from "@/images/pride/logo-planet.png";
 import featuresArt from "@/images/bg-5.webp";
 import patchArt from "@/images/bg-3.webp";
@@ -92,6 +93,10 @@ const { pick: pickLoadingScreen, screens: loadingScreens } =
 // The patch section stands on the patch's own loading screen when it shipped
 // one.
 const patchBackground = computed(() => pickLoadingScreen(0, patchArt));
+
+useScrollSettle(() =>
+  document.querySelectorAll<HTMLElement>(".landing-section"),
+);
 </script>
 
 <template>
