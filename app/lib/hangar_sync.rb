@@ -239,6 +239,7 @@ class HangarSync < HangarImporter
 
         if vehicle_with_ref.present?
           vehicle_with_ref.update!(
+            **pledge_details(item),
             rsi_pledge_synced_at: Time.current,
             name: item[:custom_name]&.strip.presence || vehicle_with_ref.name,
             wanted: false
@@ -258,6 +259,7 @@ class HangarSync < HangarImporter
 
         if vehicle.present?
           vehicle.update!(
+            **pledge_details(item),
             rsi_pledge_id: item[:id],
             rsi_pledge_synced_at: Time.current,
             name: item[:custom_name]&.strip.presence || vehicle.name,
@@ -288,6 +290,7 @@ class HangarSync < HangarImporter
 
         if vehicle.present?
           vehicle.update!(
+            **pledge_details(item),
             rsi_pledge_id: item[:id],
             rsi_pledge_synced_at: Time.current,
             name: item[:custom_name]&.strip.presence || vehicle.name,
@@ -421,7 +424,7 @@ class HangarSync < HangarImporter
 
     scope.find_each do |vehicle|
       initial_updated_at = vehicle.updated_at
-      vehicle.update!(rsi_pledge_id: nil, rsi_pledge_synced_at: nil, wanted: true)
+      vehicle.update!(rsi_pledge_id: nil, rsi_pledge_synced_at: nil, **pledge_details({}), wanted: true)
 
       moved << vehicle.id if initial_updated_at != vehicle.updated_at
     end
@@ -747,7 +750,18 @@ class HangarSync < HangarImporter
       name_visible: false,
       sale_notify: false,
       rsi_pledge_id: item[:id],
-      rsi_pledge_synced_at: Time.current
+      rsi_pledge_synced_at: Time.current,
+      **pledge_details(item)
+    }
+  end
+
+  # What RSI says about the pledge a ship came in: what melting it credits,
+  # whether RSI lets it be melted, and how many items go with it when it is.
+  private def pledge_details(item)
+    {
+      rsi_pledge_value: item[:pledge_value].presence,
+      rsi_pledge_meltable: item.key?(:meltable) ? ActiveModel::Type::Boolean.new.cast(item[:meltable]) || false : nil,
+      rsi_pledge_item_count: item[:pledge_item_count].presence
     }
   end
 

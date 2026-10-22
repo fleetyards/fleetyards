@@ -623,6 +623,9 @@ class Vehicle < ApplicationRecord
 
     self.rsi_pledge_id = nil
     self.rsi_pledge_synced_at = nil
+    self.rsi_pledge_value = nil
+    self.rsi_pledge_meltable = nil
+    self.rsi_pledge_item_count = nil
   end
 
   # Hidden ships are only listed through the hangar's filter, so one moved to
