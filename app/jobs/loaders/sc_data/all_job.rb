@@ -54,6 +54,7 @@ module Loaders
         )
 
         report_unlisted_models(source, import)
+        ::Models::UnplacedFoci.report(record: import)
 
         import.finish!
       rescue => e

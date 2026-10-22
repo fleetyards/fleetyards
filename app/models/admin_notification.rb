@@ -21,6 +21,7 @@ class AdminNotification < ApplicationRecord
     ship_matrix_import: "ship_matrix_import",
     sc_data_import: "sc_data_import",
     sc_data_unlisted_models: "sc_data_unlisted_models",
+    unplaced_foci: "unplaced_foci",
     import_run: "import_run",
     oauth_application_review: "oauth_application_review",
     inventory_transfer_reports: "inventory_transfer_reports"
@@ -117,6 +118,12 @@ class AdminNotification < ApplicationRecord
       retention: 90.days,
       access: [:models],
       icon: "fa-duotone fa-rocket"
+    },
+    # A to-do like the unlisted ships: it stays true until a mapping lands.
+    unplaced_foci: {
+      retention: 90.days,
+      access: [:models],
+      icon: "fa-duotone fa-crosshairs"
     },
     # The status line every other import leaves behind, at info when it
     # finished and at error when it did not.

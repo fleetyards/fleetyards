@@ -26,6 +26,19 @@ module Loaders
       assert_includes notification.body, "Models added"
     end
 
+    test "#perform reports focus wording no key fits" do
+      Rsi::ModelsLoader.any_instance.stubs(:all).with do
+        create(:model, name: "Vulture", rsi_focus: "Escort")
+        true
+      end
+
+      ::Loaders::ModelsJob.new.perform
+
+      notification = AdminNotification.find_by(admin_user: @admin_user, notification_type: "unplaced_foci")
+
+      assert_includes notification.body, "Vulture"
+    end
+
     test "#perform starts the follow-ups only once the matrix is in" do
       Sidekiq::Worker.clear_all
       Rsi::ModelsLoader.any_instance.stubs(:all).returns(nil)
