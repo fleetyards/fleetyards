@@ -4408,6 +4408,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+        '502':
+          description: discord refused the event
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '401':
           description: unauthorized
           content:
@@ -30470,6 +30476,10 @@ components:
         status:
           type: integer
         installUrl:
+          type: string
+        eventsOk:
+          type: boolean
+        eventsCode:
           type: string
         rolesOk:
           type: boolean
