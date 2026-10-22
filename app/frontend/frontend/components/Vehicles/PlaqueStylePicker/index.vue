@@ -115,6 +115,9 @@ const pick = (option: { value: VehiclePlaqueStyleEnum; locked: boolean }) => {
           :key="option.value"
           type="button"
           class="plaque-style-picker__style plaque-style-picker__style--locked"
+          :class="{
+            'plaque-style-picker__style--active': style === option.value,
+          }"
           :aria-pressed="style === option.value"
           :aria-disabled="option.locked"
           :data-test="`vehicle-plaque-style-${option.value}`"
