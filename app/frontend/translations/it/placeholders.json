@@ -103,7 +103,8 @@
         "offsetX": "Offset X",
         "offsetY": "Offset Y",
         "offsetZ": "Offset Z",
-        "rotation": "0 or 90"
+        "rotation": "0 or 90",
+        "maxLoadableContainerSizeScu": "Massimo della griglia"
       },
       "manufacturer": {
         "longName": "Nome completo",

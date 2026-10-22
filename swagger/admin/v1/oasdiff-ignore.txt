@@ -357,3 +357,5 @@ GET /missions added the new `offered` enum value to the `items/items/locations/i
 GET /missions/{id} added the new `offered` enum value to the `locations/items/source` response property for the response status `200`
 POST /models removed the enum value `recon` of the request property `foci/items/`
 PUT /models/{id} removed the enum value `recon` of the request property `foci/items/`
+PUT /cargo-holds/{id} removed the required property `details` from the response with the `400` status
+PUT /cargo-holds/{id} removed the required property `error` from the response with the `400` status

@@ -50,6 +50,10 @@ class Admin::Api::V1::CargoHoldsTest < ActionDispatch::IntegrationTest
         schema ::Admin::V1::Schemas::Models::CargoHolds::AdminCargoHold
       end
 
+      response(400, "bad request") do
+        schema ::Shared::V1::Schemas::ValidationError
+      end
+
       response(404, "not found") do
         schema ::Shared::V1::Schemas::StandardError
       end
@@ -99,6 +103,29 @@ class Admin::Api::V1::CargoHoldsTest < ActionDispatch::IntegrationTest
       assert_equal 1.0, parsed_body["offsetY"]
       assert_equal 0.0, parsed_body["offsetZ"]
     end
+  end
+
+  test "PUT /cargo-holds/{id} limits the crates the hold can be loaded with" do
+    cargo_hold = create(:cargo_hold, dimension_x: 2.5, dimension_y: 3.75, dimension_z: 2.5, capacity_scu: 12, max_container_size_scu: 8)
+    cargo_hold.calculate_container_capacities!
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: cargo_hold.id}, body: {maxLoadableContainerSizeScu: 2} do
+      assert_equal 2, parsed_body["maxLoadableContainerSizeScu"]
+      assert_equal 8, parsed_body["maxContainerSizeScu"]
+    end
+
+    capacities = cargo_hold.cargo_hold_container_capacities.reload.to_h { |capacity| [capacity.container_size_scu, capacity.max_quantity] }
+    assert_equal 0, capacities[8]
+    assert_equal 0, capacities[4]
+    assert_equal 6, capacities[2]
+  end
+
+  test "PUT /cargo-holds/{id} rejects a crate size that does not exist" do
+    cargo_hold = create(:cargo_hold)
+    sign_in @user
+
+    assert_api_response :put, 400, path_params: {id: cargo_hold.id}, body: {maxLoadableContainerSizeScu: 3}
   end
 
   test "PUT /cargo-holds/{id} returns 404 for missing id" do
