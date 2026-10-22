@@ -28,6 +28,10 @@ class Api::V1::FleetEventSignupsAssignTest < ActionDispatch::IntegrationTest
         schema ::V1::Schemas::Fleets::Events::FleetEventSignup
       end
 
+      response(400, "bad request") do
+        schema ::Shared::V1::Schemas::ValidationError
+      end
+
       response(401, "unauthorized") do
         schema ::Shared::V1::Schemas::StandardError
       end
@@ -81,5 +85,47 @@ class Api::V1::FleetEventSignupsAssignTest < ActionDispatch::IntegrationTest
     assert_api_response :patch, 401,
       path_params: {id: @signup.id},
       body: {fleetEventSlotId: @other_slot.id, status: "confirmed"}
+  end
+
+  test "PATCH /fleet-event-signups/:id/assign rejects a slot another member holds" do
+    sign_in @admin
+    create(:fleet_event_signup, fleet_event: @fleet_event, fleet_event_slot: @other_slot, status: "confirmed",
+      fleet_membership: create(:fleet_membership, fleet: @fleet))
+
+    assert_api_response :patch, 400,
+      path_params: {id: @signup.id},
+      body: {fleetEventSlotId: @other_slot.id, status: "confirmed"} do
+      error = parsed_body["errors"].find { |field| field["attribute"] == "fleetEventSlotId" }
+      assert_equal ["already_taken"], error["messages"].pluck("code")
+    end
+  end
+
+  test "PATCH /fleet-event-signups/:id/assign answers a claim lost to a concurrent one with a 400" do
+    sign_in @admin
+    FleetEventSignup.any_instance.stubs(:valid?).returns(true)
+    create(:fleet_event_signup, fleet_event: @fleet_event, fleet_event_slot: @other_slot, status: "confirmed",
+      fleet_membership: create(:fleet_membership, fleet: @fleet))
+
+    assert_api_response :patch, 400,
+      path_params: {id: @signup.id},
+      body: {fleetEventSlotId: @other_slot.id, status: "confirmed"} do
+      error = parsed_body["errors"].find { |field| field["attribute"] == "fleetEventSlotId" }
+      assert_equal ["already_taken"], error["messages"].pluck("code")
+    end
+  end
+
+  test "PATCH /fleet-event-signups/:id/assign rejects a slot that was deleted" do
+    sign_in @admin
+    deleted_slot_id = @other_slot.id
+    @other_slot.destroy!
+
+    assert_api_response :patch, 400,
+      path_params: {id: @signup.id},
+      body: {fleetEventSlotId: deleted_slot_id, status: "confirmed"} do
+      error = parsed_body["errors"].find { |field| field["attribute"] == "fleetEventSlotId" }
+      assert_equal ["required"], error["messages"].pluck("code")
+    end
+
+    assert_nil @signup.reload.fleet_event_slot_id
   end
 end

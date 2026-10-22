@@ -59,7 +59,7 @@ module Api
           authorize! @signup, with: FleetEventSignupPolicy, context: {fleet_event: @slot.fleet_event}, to: :update?
 
           previous_status = @signup.status
-          if @signup.update(attrs)
+          if @signup.update_without_conflict(attrs)
             event_name = (previous_status != @signup.status) ? "fleet_event_signup.status_changed" : "fleet_event_signup.created"
             ActiveSupport::Notifications.instrument(event_name, signup: @signup, previous_status: previous_status)
             render :show
@@ -80,7 +80,7 @@ module Api
 
         authorize! @signup, with: FleetEventSignupPolicy, context: {fleet_event: @slot.fleet_event}
 
-        if @signup.save
+        if @signup.save_without_conflict
           ActiveSupport::Notifications.instrument("fleet_event_signup.created", signup: @signup)
           render :show, status: :created
         else
@@ -129,7 +129,7 @@ module Api
           attrs[:vehicle_id] = params[:vehicle_id] if params.key?(:vehicle_id)
 
           previous_status = @signup.status
-          if @signup.update(attrs)
+          if @signup.update_without_conflict(attrs)
             if previous_status != @signup.status
               ActiveSupport::Notifications.instrument(
                 "fleet_event_signup.status_changed",
@@ -155,7 +155,7 @@ module Api
 
         authorize! @signup, with: FleetEventSignupPolicy, context: {fleet_event: @event}, to: :create?
 
-        if @signup.save
+        if @signup.save_without_conflict
           ActiveSupport::Notifications.instrument("fleet_event_signup.created", signup: @signup)
           render :show, status: :created
         else
@@ -167,7 +167,7 @@ module Api
         authorize! @signup, with: FleetEventSignupPolicy, context: {fleet_event: @slot.fleet_event}
 
         previous_status = @signup.status
-        if @signup.update(self_signup_attrs)
+        if @signup.update_without_conflict(self_signup_attrs)
           if previous_status != @signup.status
             ActiveSupport::Notifications.instrument("fleet_event_signup.status_changed", signup: @signup, previous_status: previous_status)
           end
@@ -185,7 +185,7 @@ module Api
 
         previous_status = @signup.status
         previous_slot_id = @signup.fleet_event_slot_id
-        if @signup.update(admin_signup_attrs)
+        if @signup.update_without_conflict(admin_signup_attrs)
           if previous_slot_id != @signup.fleet_event_slot_id
             ActiveSupport::Notifications.instrument(
               "fleet_event_signup.assigned",

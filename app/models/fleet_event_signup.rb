@@ -13,8 +13,10 @@ class FleetEventSignup < ApplicationRecord
   belongs_to :vehicle, optional: true
 
   validates :status, inclusion: {in: STATUSES}
+  validate :slot_exists, if: :fleet_event_slot_changing?
+  validate :vehicle_owned_by_member, if: :vehicle_changing?
   validate :unique_active_signup_per_member, on: :create
-  validate :slot_not_already_taken, on: :create
+  validate :slot_not_already_taken, if: :entering_slot?
   validate :membership_still_kept, if: :claims_seat?
   validate :slot_belongs_to_event
   validate :slot_bound_status_allowed
@@ -42,6 +44,41 @@ class FleetEventSignup < ApplicationRecord
 
   def pending?
     status == "pending"
+  end
+
+  CONFLICT_INDEX_ERRORS = {
+    "index_fleet_event_signups_unique_active_per_slot" => [:fleet_event_slot_id, :already_taken],
+    "index_fleet_event_signups_unique_active_per_event" => [:fleet_membership_id, :already_signed_up]
+  }.freeze
+  CONFLICT_FOREIGN_KEYS = %w[fleet_event_slot_id vehicle_id].freeze
+
+  # Validation reads before the write, so a slot claimed, or a slot or vehicle
+  # deleted, by a request running alongside still reaches the database, and an
+  # index or foreign key rejects the loser. Give it the validation error the
+  # sequential case already gets, rather than a 500.
+  #
+  # The savepoint is what lets a caller wrap this in a transaction of its own:
+  # the violation aborts whichever transaction it happens in, so without one
+  # the rescue would hand back a connection whose next statement fails.
+  def save_without_conflict
+    self.class.transaction(requires_new: true) { save }
+  rescue ActiveRecord::RecordNotUnique => e
+    attribute, type = CONFLICT_INDEX_ERRORS.find { |index, _| e.message.include?(index) }&.last
+    raise if attribute.nil?
+
+    errors.add(attribute, type)
+    false
+  rescue ActiveRecord::InvalidForeignKey => e
+    attribute = CONFLICT_FOREIGN_KEYS.find { |column| e.message.include?("Key (#{column})=") }
+    raise if attribute.nil?
+
+    errors.add(attribute, :required)
+    false
+  end
+
+  def update_without_conflict(attributes)
+    assign_attributes(attributes)
+    save_without_conflict
   end
 
   def withdraw!(validate: true)
@@ -73,6 +110,40 @@ class FleetEventSignup < ApplicationRecord
     return if fleet_event_slot.blank?
 
     self.fleet_event = fleet_event_slot.fleet_event
+  end
+
+  # An optional belongs_to never checks that its record exists, so an id left
+  # over from a deleted slot or vehicle would only fail at the foreign key.
+  private def slot_exists
+    errors.add(:fleet_event_slot_id, :required) unless FleetEventSlot.exists?(fleet_event_slot_id)
+  end
+
+  private def vehicle_owned_by_member
+    owner_id = Vehicle.where(id: vehicle_id).pick(:user_id)
+
+    if owner_id.nil?
+      errors.add(:vehicle_id, :required)
+    elsif fleet_membership.present? && owner_id != fleet_membership.user_id
+      errors.add(:vehicle_id, :not_owned)
+    end
+  end
+
+  private def fleet_event_slot_changing?
+    fleet_event_slot_id.present? && (new_record? || will_save_change_to_fleet_event_slot_id?)
+  end
+
+  # A save that puts this signup in a slot: a new signup, an admin assign, a
+  # promotion out of the event pool or a revived withdrawal. A status change in
+  # place, like an approval, does not, so a slot that is already double-booked
+  # can still be sorted out.
+  private def entering_slot?
+    return false if fleet_event_slot_id.blank? || withdrawn?
+
+    new_record? || will_save_change_to_fleet_event_slot_id? || status_in_database == "withdrawn"
+  end
+
+  private def vehicle_changing?
+    vehicle_id.present? && (new_record? || will_save_change_to_vehicle_id?)
   end
 
   private def slot_belongs_to_event

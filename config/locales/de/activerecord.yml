@@ -5,6 +5,11 @@ de:
       fleet_squadron_request:
         fleet_membership: "Mitglied"
         fleet_squadron: "Staffel"
+      fleet_event_signup:
+        fleet_event_slot_id: "Platz"
+        fleet_membership_id: "Mitglied"
+        status: "Status"
+        vehicle_id: "Schiff"
       vehicle:
         bought_via:
           pledge_store: Pledge-Store
@@ -559,5 +564,9 @@ de:
             fleet_event_slot_id:
               already_taken: ist bereits von einem anderen Mitglied belegt
               wrong_event: gehört nicht zu diesem Event
+              required: existiert nicht mehr
             status:
               invalid_for_slot: muss für einen Platz bestätigt oder ausstehend sein
+            vehicle_id:
+              required: existiert nicht mehr
+              not_owned: ist nicht im Hangar dieses Mitglieds

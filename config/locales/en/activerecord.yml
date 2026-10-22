@@ -5,6 +5,11 @@ en:
       fleet_squadron_request:
         fleet_membership: "Member"
         fleet_squadron: "Squadron"
+      fleet_event_signup:
+        fleet_event_slot_id: "Slot"
+        fleet_membership_id: "Member"
+        status: "Status"
+        vehicle_id: "Ship"
       vehicle:
         bought_via:
           pledge_store: Pledge Store
@@ -590,5 +595,9 @@ en:
             fleet_event_slot_id:
               already_taken: is already taken by another member
               wrong_event: does not belong to this event
+              required: no longer exists
             status:
               invalid_for_slot: must be confirmed or pending for a slot
+            vehicle_id:
+              required: no longer exists
+              not_owned: is not in this member's hangar
