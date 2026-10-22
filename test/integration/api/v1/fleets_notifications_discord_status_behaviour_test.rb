@@ -8,6 +8,7 @@ class Api::V1::FleetsNotificationsDiscordStatusBehaviourTest < ActionDispatch::I
     @fleet = create(:fleet, admins: [@admin])
     @url = "/api/v1/fleets/#{@fleet.slug}/notifications/discord-status"
     sign_in @admin
+    Discord::EventCapability.stubs(:new).returns(stub(check: Discord::EventCapability::Result.new(:ok)))
   end
 
   test "reports missing_token when the bot token isn't configured" do
@@ -302,5 +303,33 @@ class Api::V1::FleetsNotificationsDiscordStatusBehaviourTest < ActionDispatch::I
     get @url, as: :json
 
     refute JSON.parse(response.body).key?("joinRoleCode")
+  end
+
+  test "reports a server whose bot may not create scheduled events" do
+    @fleet.create_fleet_notification_setting!(discord_guild_id: "100000000000000001", discord_channel_id: "400000000000000001")
+    Discord::ApiClient.stubs(:configured?).returns(true)
+    api = mock("Discord::ApiClient")
+    api.stubs(:get_guild).returns({"id" => "100000000000000001", "name" => "Test Server"})
+    Discord::ApiClient.stubs(:new).returns(api)
+    capability = mock("Discord::EventCapability")
+    capability.expects(:check).with("400000000000000001")
+      .returns(Discord::EventCapability::Result.new(:missing_create_events))
+    Discord::EventCapability.expects(:new).with("100000000000000001").returns(capability)
+
+    get @url, as: :json
+
+    body = JSON.parse(response.body)
+    assert_equal true, body["ok"]
+    assert_equal false, body["eventsOk"]
+    assert_equal "missing_create_events", body["eventsCode"]
+  end
+
+  test "says nothing about events while no server is linked" do
+    Discord::ApiClient.stubs(:configured?).returns(true)
+    Discord::EventCapability.expects(:new).never
+
+    get @url, as: :json
+
+    assert_not JSON.parse(response.body).key?("eventsOk")
   end
 end

@@ -977,7 +977,8 @@
           },
           "syncToDiscord": {
             "success": "活动已推送到 Discord。",
-            "failure": "无法将活动推送到 Discord。"
+            "failure": "无法将活动推送到 Discord。",
+            "discord_missing_permissions": "Discord 拒绝了请求：机器人缺少在你的服务器中所需的权限。舰队的 Discord 设置中会说明缺少哪项。"
           },
           "destroy": {
             "success": "活动已删除。",

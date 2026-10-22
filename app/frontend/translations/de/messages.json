@@ -983,7 +983,8 @@
           },
           "syncToDiscord": {
             "success": "Event an Discord übertragen.",
-            "failure": "Event konnte nicht an Discord übertragen werden."
+            "failure": "Event konnte nicht an Discord übertragen werden.",
+            "discord_missing_permissions": "Discord hat abgelehnt: Dem Bot fehlt eine Berechtigung in eurem Server. Welche, steht in den Discord-Einstellungen der Flotte."
           },
           "destroy": {
             "success": "Event gelöscht.",

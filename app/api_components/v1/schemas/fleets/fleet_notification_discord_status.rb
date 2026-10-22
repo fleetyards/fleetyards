@@ -16,6 +16,8 @@ module V1
             guildName: {type: :string},
             status: {type: :integer},
             installUrl: {type: :string},
+            eventsOk: {type: :boolean},
+            eventsCode: {type: :string},
             rolesOk: {type: :boolean},
             rolesCode: {type: :string},
             rolesDetail: {type: :string},

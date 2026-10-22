@@ -327,7 +327,10 @@ module Api
 
         render :show
       rescue ::Discord::ApiClient::Error => e
-        render json: {code: "discord_error", message: e.message, status: e.status}, status: :bad_gateway
+        # A 403 is the server's permissions refusing the bot, which only the
+        # fleet can fix -- trying again changes nothing.
+        code = (e.status == 403) ? "discord_missing_permissions" : "discord_error"
+        render json: {code:, message: e.message}, status: :bad_gateway
       end
 
       %i[publish lock_signups unlock_signups start complete].each do |action|

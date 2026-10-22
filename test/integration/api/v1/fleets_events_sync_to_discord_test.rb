@@ -30,6 +30,10 @@ class Api::V1::FleetsEventsSyncToDiscordTest < ActionDispatch::IntegrationTest
         schema ::Shared::V1::Schemas::StandardError
       end
 
+      response(502, "discord refused the event") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
       response(401, "unauthorized") do
         schema ::Shared::V1::Schemas::StandardError
       end
@@ -57,6 +61,34 @@ class Api::V1::FleetsEventsSyncToDiscordTest < ActionDispatch::IntegrationTest
     sign_in @admin
 
     assert_api_response :post, 200, path_params: {fleetSlug: @fleet.slug, slug: fleet_event.slug}
+  end
+
+  test "POST /fleets/:slug/events/:slug/sync-to-discord names a permission Discord refused" do
+    fleet_event = create(:fleet_event, :open, fleet: @fleet, created_by: @admin)
+    stub_discord_runnable
+    sync = mock("Discord::ScheduledEventSync")
+    sync.stubs(:runnable?).returns(true)
+    sync.stubs(:upsert!).raises(::Discord::ApiClient::Error.new(403, {message: "Missing Permissions", code: 50013}.to_json))
+    ::Discord::ScheduledEventSync.stubs(:new).returns(sync)
+    sign_in @admin
+
+    assert_api_response :post, 502, path_params: {fleetSlug: @fleet.slug, slug: fleet_event.slug} do
+      assert_equal "discord_missing_permissions", parsed_body["code"]
+    end
+  end
+
+  test "POST /fleets/:slug/events/:slug/sync-to-discord reports any other Discord failure as such" do
+    fleet_event = create(:fleet_event, :open, fleet: @fleet, created_by: @admin)
+    stub_discord_runnable
+    sync = mock("Discord::ScheduledEventSync")
+    sync.stubs(:runnable?).returns(true)
+    sync.stubs(:upsert!).raises(::Discord::ApiClient::Error.new(400, {message: "Invalid Form Body", code: 50035}.to_json))
+    ::Discord::ScheduledEventSync.stubs(:new).returns(sync)
+    sign_in @admin
+
+    assert_api_response :post, 502, path_params: {fleetSlug: @fleet.slug, slug: fleet_event.slug} do
+      assert_equal "discord_error", parsed_body["code"]
+    end
   end
 
   test "POST /fleets/:slug/events/:slug/sync-to-discord returns 422 when Discord is not configured" do

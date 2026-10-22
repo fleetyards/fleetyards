@@ -977,7 +977,8 @@
           },
           "syncToDiscord": {
             "success": "活動已推送到 Discord。",
-            "failure": "無法將活動推送到 Discord。"
+            "failure": "無法將活動推送到 Discord。",
+            "discord_missing_permissions": "Discord 拒絕了請求：機器人缺少在你的伺服器中所需的權限。艦隊的 Discord 設定中會說明缺少哪一項。"
           },
           "destroy": {
             "success": "活動已刪除。",
