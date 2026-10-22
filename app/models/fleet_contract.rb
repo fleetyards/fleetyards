@@ -73,6 +73,7 @@ class FleetContract < ApplicationRecord
   # Optional: an untitled contract describes itself from its goods. Still unique
   # when given, so two jobs in one fleet cannot share a name.
   validates :title, uniqueness: {case_sensitive: false, scope: :fleet_id}, allow_blank: true
+  validate :slug_not_taken, if: -> { title.present? && will_save_change_to_title? }
   validates :reward, numericality: {greater_than_or_equal_to: 0}
   validates :crew_limit, numericality: {greater_than: 0}, allow_nil: true
   validate :exactly_one_destination, if: :destination_being_set?
@@ -434,6 +435,16 @@ class FleetContract < ApplicationRecord
 
     errors.add(:fleet_contract_items, :taken,
       message: I18n.t("activerecord.errors.messages.contract_item_already_asked_for"))
+  end
+
+  # Two titles the check above tells apart can still read the same slug --
+  # "Get Iron " and "Get Iron!" are both `get-iron` -- and the unique index on
+  # (fleet_id, slug) would refuse the second.
+  private def slug_not_taken
+    return if errors.added?(:title, :taken)
+    return unless self.class.where(fleet_id:, slug: self.class.slug_for(title)).where.not(id:).exists?
+
+    errors.add(:title, :taken)
   end
 
   private def destination_is_not_the_source
