@@ -30,6 +30,63 @@ class FleetEventSignupTest < ActiveSupport::TestCase
     end
   end
 
+  # Validation is a read, so a request whose checks ran before a concurrent
+  # claim or delete landed reaches the write regardless -- which is what
+  # stubbing `valid?` reproduces.
+  class SaveWithoutConflictTest < FleetEventSignupTest
+    test "answers a lost slot claim with the taken error" do
+      create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: @slot, fleet_membership: create(:fleet_membership, fleet: @event.fleet), status: "confirmed")
+      loser = racing(build(:fleet_event_signup, fleet_event: @event, fleet_event_slot: @slot, fleet_membership: @fleet_membership, status: "confirmed"))
+
+      assert_not loser.save_without_conflict
+      assert_equal [:already_taken], loser.errors.where(:fleet_event_slot_id).map(&:type)
+      assert_equal 1, @slot.active_signups.count
+    end
+
+    test "answers a second active signup for the member on an occurrence with the signed-up error" do
+      create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: nil, fleet_membership: @fleet_membership, status: "interested", occurrence_date: Date.current)
+      loser = racing(build(:fleet_event_signup, fleet_event: @event, fleet_event_slot: nil, fleet_membership: @fleet_membership, status: "interested", occurrence_date: Date.current))
+
+      assert_not loser.save_without_conflict
+      assert_equal [:already_signed_up], loser.errors.where(:fleet_membership_id).map(&:type)
+    end
+
+    test "answers a slot deleted mid-save with the required error" do
+      signup = create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: nil, fleet_membership: @fleet_membership, status: "interested")
+      other_slot = create(:fleet_event_slot, slottable: @team)
+      other_slot_id = other_slot.id
+      other_slot.destroy!
+
+      assert_not racing(signup).update_without_conflict(fleet_event_slot_id: other_slot_id, status: "confirmed")
+      assert_equal [:required], signup.errors.where(:fleet_event_slot_id).map(&:type)
+      assert_nil signup.reload.fleet_event_slot_id
+    end
+
+    test "answers a vehicle deleted mid-save with the required error" do
+      vehicle = create(:vehicle, user: @fleet_membership.user)
+      signup = racing(build(:fleet_event_signup, fleet_event: @event, fleet_event_slot: @slot, fleet_membership: @fleet_membership, vehicle_id: vehicle.id))
+      Vehicle.where(id: vehicle.id).delete_all
+
+      assert_not signup.save_without_conflict
+      assert_equal [:required], signup.errors.where(:vehicle_id).map(&:type)
+    end
+
+    test "leaves a caller's transaction usable" do
+      create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: @slot, fleet_membership: create(:fleet_membership, fleet: @event.fleet), status: "confirmed")
+      loser = racing(build(:fleet_event_signup, fleet_event: @event, fleet_event_slot: @slot, fleet_membership: @fleet_membership, status: "confirmed"))
+
+      FleetEventSignup.transaction do
+        assert_not loser.save_without_conflict
+        assert_equal 1, @slot.active_signups.count
+      end
+    end
+
+    private def racing(signup)
+      signup.define_singleton_method(:valid?) { |*| true }
+      signup
+    end
+  end
+
   class VehicleOwnedByMemberTest < FleetEventSignupTest
     test "accepts a vehicle from the member's hangar" do
       vehicle = create(:vehicle, user: @fleet_membership.user)
@@ -121,14 +178,6 @@ class FleetEventSignupTest < ActiveSupport::TestCase
 
       refute signup.update(status: "confirmed")
       assert_includes signup.errors.details[:fleet_event_slot_id], {error: :already_taken}
-    end
-
-    test "approves a signup in place on a slot that is already double-booked" do
-      create(:fleet_event_signup, fleet_event: @event, fleet_event_slot: @slot, fleet_membership: create(:fleet_membership, fleet: @event.fleet), status: "confirmed")
-      pending = build(:fleet_event_signup, fleet_event: @event, fleet_event_slot: @slot, fleet_membership: @fleet_membership, status: "pending")
-      pending.save!(validate: false)
-
-      assert pending.update(status: "confirmed")
     end
   end
 

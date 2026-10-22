@@ -46,6 +46,41 @@ class FleetEventSignup < ApplicationRecord
     status == "pending"
   end
 
+  CONFLICT_INDEX_ERRORS = {
+    "index_fleet_event_signups_unique_active_per_slot" => [:fleet_event_slot_id, :already_taken],
+    "index_fleet_event_signups_unique_active_per_event" => [:fleet_membership_id, :already_signed_up]
+  }.freeze
+  CONFLICT_FOREIGN_KEYS = %w[fleet_event_slot_id vehicle_id].freeze
+
+  # Validation reads before the write, so a slot claimed, or a slot or vehicle
+  # deleted, by a request running alongside still reaches the database, and an
+  # index or foreign key rejects the loser. Give it the validation error the
+  # sequential case already gets, rather than a 500.
+  #
+  # The savepoint is what lets a caller wrap this in a transaction of its own:
+  # the violation aborts whichever transaction it happens in, so without one
+  # the rescue would hand back a connection whose next statement fails.
+  def save_without_conflict
+    self.class.transaction(requires_new: true) { save }
+  rescue ActiveRecord::RecordNotUnique => e
+    attribute, type = CONFLICT_INDEX_ERRORS.find { |index, _| e.message.include?(index) }&.last
+    raise if attribute.nil?
+
+    errors.add(attribute, type)
+    false
+  rescue ActiveRecord::InvalidForeignKey => e
+    attribute = CONFLICT_FOREIGN_KEYS.find { |column| e.message.include?("Key (#{column})=") }
+    raise if attribute.nil?
+
+    errors.add(attribute, :required)
+    false
+  end
+
+  def update_without_conflict(attributes)
+    assign_attributes(attributes)
+    save_without_conflict
+  end
+
   def withdraw!(validate: true)
     assign_attributes(status: "withdrawn", withdrawn_at: Time.current)
     save!(validate:)
