@@ -15,4 +15,4 @@ end
 json.price_override step.price_override&.to_f
 json.price step.price&.to_f
 json.uses_buyback_token step.uses_buyback_token
-json.source_missing step.source_missing?
+json.source_missing local_assigns[:public_view] ? false : step.source_missing?

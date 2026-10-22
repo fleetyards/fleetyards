@@ -27,7 +27,7 @@ json.based_on_at hangar_plan.based_on_at.utc.iso8601
 json.starting_credit hangar_plan.starting_credit.to_f
 json.buyback_tokens hangar_plan.buyback_tokens
 json.vat_rate hangar_plan.vat_rate&.to_f
-json.synced_buyback_tokens hangar_plan.user.rsi_buyback_tokens
+json.synced_buyback_tokens local_assigns[:public_view] ? nil : hangar_plan.user.rsi_buyback_tokens
 json.shared hangar_plan.shared?
 json.share_token hangar_plan.share_token unless local_assigns[:public_view]
 json.slots_count slots.size
@@ -71,7 +71,7 @@ json.melts melts do |melt|
   json.value_override melt.value_override&.to_f
   json.value melt.value&.to_f
   json.estimated melt.estimated?
-  json.vehicle_missing melt.vehicle_missing?
+  json.vehicle_missing local_assigns[:public_view] ? false : melt.vehicle_missing?
 end
 
 json.partial! "api/shared/dates", record: hangar_plan

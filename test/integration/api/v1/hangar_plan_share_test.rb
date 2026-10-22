@@ -106,7 +106,9 @@ class Api::V1::HangarPlanShareTest < ActionDispatch::IntegrationTest
     candidate = create(:hangar_plan_candidate, slot: create(:hangar_plan_slot, hangar_plan: @plan), model:)
     @plan.acquisitions.create!(candidate:, start_kind: "owned", source_vehicle: create(:vehicle, user: @user, model:))
     create(:hangar_plan_melt, hangar_plan: @plan, vehicle: create(:vehicle, user: @user))
+    @user.update_column(:rsi_buyback_tokens, 3)
     @plan.share!
+    @user.vehicles.destroy_all
 
     assert_api_response :get, 200, api_path: "/public/hangar-plans/{token}", path_params: {token: @plan.share_token} do
       assert_equal "Showcase", parsed_body["name"]
@@ -115,6 +117,9 @@ class Api::V1::HangarPlanShareTest < ActionDispatch::IntegrationTest
       assert_not candidate.key?("ownedCount")
       assert_not candidate.dig("acquisitions", 0).key?("sourceVehicleId")
       assert_not parsed_body.dig("melts", 0).key?("vehicleId")
+      assert_nil parsed_body["syncedBuybackTokens"]
+      assert_not candidate.dig("acquisitions", 0, "sourceMissing")
+      assert_not parsed_body.dig("melts", 0, "vehicleMissing")
     end
   end
 
