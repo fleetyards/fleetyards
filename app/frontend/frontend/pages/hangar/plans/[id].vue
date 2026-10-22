@@ -19,13 +19,17 @@ import {
 } from "@/shared/components/base/Btn/types";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
+import { PanelHeadingTonesEnum } from "@/shared/components/base/Panel/Heading/types";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
 import Loader from "@/shared/components/Loader/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import SlotCard from "@/frontend/components/Hangar/Planner/SlotCard/index.vue";
 import SummaryPanel from "@/frontend/components/Hangar/Planner/SummaryPanel/index.vue";
-import ComparisonPanel from "@/frontend/components/Hangar/Planner/ComparisonPanel/index.vue";
+import CostTiles from "@/frontend/components/Hangar/Planner/CostTiles/index.vue";
+import Readiness from "@/frontend/components/Hangar/Planner/Readiness/index.vue";
+import Pill from "@/shared/components/base/Pill/index.vue";
+import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import DriftAlert from "@/frontend/components/Hangar/Planner/DriftAlert/index.vue";
 import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -35,11 +39,11 @@ import { useHangarPlanCache } from "@/frontend/composables/useHangarPlanCache";
 import copyText from "@/shared/utils/CopyText";
 import {
   type HangarPlanMelt,
+  HangarPlanSlotStateEnum,
   useAddHangarPlanToWishlist,
   useDestroyHangarPlan,
   useDestroyHangarPlanMelt,
   useHangarPlan,
-  useHangarPlanComparison,
   useHangarPlanDrift,
   useHangarPlans,
   useHangarPlanSummary,
@@ -60,14 +64,15 @@ const planId = computed(() => String(route.params.id));
 const { data: plan, isLoading } = useHangarPlan(planId);
 const { data: summary, isFetching: summaryFetching } =
   useHangarPlanSummary(planId);
-const { data: comparison, isFetching: comparisonFetching } =
-  useHangarPlanComparison(planId);
 const { data: drift } = useHangarPlanDrift(planId);
 const { data: plans } = useHangarPlans();
 
 const otherPlans = computed(() =>
   (plans.value ?? []).filter((entry) => entry.id !== planId.value),
 );
+
+const slotsIn = (state: HangarPlanSlotStateEnum) =>
+  (plan.value?.slots ?? []).filter((slot) => slot.state === state).length;
 
 const slotCost = (slotId: string) =>
   summary.value?.slots.find((cost) => cost.slotId === slotId);
@@ -191,6 +196,35 @@ const onDestroy = async () => {
     <p v-if="plan.description" class="plan-description">
       {{ plan.description }}
     </p>
+    <div class="plan-meta">
+      <Pill :variant="PillVariantsEnum.NEUTRAL">
+        {{ t("hangarPlanner.slotsCount", { count: plan.slots.length }) }}
+      </Pill>
+      <Pill
+        v-if="slotsIn(HangarPlanSlotStateEnum.UNDECIDED)"
+        :variant="PillVariantsEnum.WARNING"
+      >
+        {{
+          t("hangarPlanner.meta.undecided", {
+            count: slotsIn(HangarPlanSlotStateEnum.UNDECIDED),
+          })
+        }}
+      </Pill>
+      <Pill
+        v-if="slotsIn(HangarPlanSlotStateEnum.OPEN)"
+        :variant="PillVariantsEnum.NEUTRAL"
+      >
+        {{
+          t("hangarPlanner.meta.open", {
+            count: slotsIn(HangarPlanSlotStateEnum.OPEN),
+          })
+        }}
+      </Pill>
+      <span v-if="plan.shared" class="plan-meta__shared">
+        <i class="fa-light fa-share-nodes" />
+        {{ t("hangarPlanner.shared") }}
+      </span>
+    </div>
 
     <PageActions>
       <Btn data-test="hangar-plan-add-slot" @click="addSlot">
@@ -200,6 +234,13 @@ const onDestroy = async () => {
       <Btn data-test="hangar-plan-add-melt" @click="openMelt()">
         <i class="fa-light fa-fire" />
         {{ t("hangarPlanner.addMelt") }}
+      </Btn>
+      <Btn
+        :to="{ name: 'hangar-plan-hangar', params: { id: plan.id } }"
+        data-test="hangar-plan-compare-hangar"
+      >
+        <i class="fa-light fa-code-compare" />
+        {{ t("hangarPlanner.comparison.title") }}
       </Btn>
       <BtnDropdown data-test="hangar-plan-more">
         <template #label>
@@ -281,6 +322,9 @@ const onDestroy = async () => {
 
     <DriftAlert v-if="drift?.drifted" :plan-id="plan.id" :drift="drift" />
 
+    <CostTiles v-if="summary" :totals="summary.totals" />
+    <Readiness :slots="plan.slots" :costs="summary?.slots" />
+
     <div class="plan-layout">
       <section class="plan-slots">
         <p v-if="!plan.slots.length" class="plan-muted">
@@ -299,7 +343,7 @@ const onDestroy = async () => {
         <SummaryPanel :summary="summary" :loading="summaryFetching" />
 
         <Panel :variant="PanelVariantsEnum.SLIM" data-test="hangar-plan-melts">
-          <PanelHeading compact divider>
+          <PanelHeading :tone="PanelHeadingTonesEnum.METRIC" compact divider>
             {{ t("hangarPlanner.melts") }}
           </PanelHeading>
           <PanelBody>
@@ -308,8 +352,11 @@ const onDestroy = async () => {
             </p>
             <ul class="plan-melts">
               <li v-for="melt in plan.melts" :key="melt.id">
-                <span>
+                <span class="plan-melts__name">
                   {{ melt.vehicleName || melt.model.name }}
+                  <small v-if="melt.vehicleName" class="plan-muted">
+                    {{ melt.model.name }}
+                  </small>
                   <small v-if="melt.vehicleMissing" class="plan-warning">
                     {{ t("hangarPlanner.sourceMissing") }}
                   </small>
@@ -343,14 +390,25 @@ const onDestroy = async () => {
         </Panel>
       </aside>
     </div>
-
-    <ComparisonPanel :comparison="comparison" :loading="comparisonFetching" />
   </template>
 </template>
 
 <style lang="scss" scoped>
 .plan-description,
 .plan-muted {
+  color: var(--color-text-dim);
+}
+
+.plan-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.plan-meta__shared {
+  font-size: 0.85rem;
   color: var(--color-text-dim);
 }
 
@@ -384,6 +442,12 @@ const onDestroy = async () => {
     justify-content: space-between;
     padding: 4px 0;
   }
+}
+
+.plan-melts__name {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 
 .plan-melts__value {

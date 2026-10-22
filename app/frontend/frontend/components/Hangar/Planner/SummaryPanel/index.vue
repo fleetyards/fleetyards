@@ -9,7 +9,9 @@ import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
+import { PanelHeadingTonesEnum } from "@/shared/components/base/Panel/Heading/types";
 import Alert from "@/shared/components/base/Alert/index.vue";
+import { AlertSizesEnum } from "@/shared/components/base/Alert/types";
 import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
 import { useI18n } from "@/shared/composables/useI18n";
 import type { HangarPlanSummary } from "@/services/fyApi";
@@ -46,6 +48,17 @@ const rows = computed(() => {
         : undefined,
     },
     { key: "startingCredit", value: amount(value.startingCredit) },
+    ...(value.buybackCash
+      ? [
+          {
+            key: "buybackCash",
+            value: amount(value.buybackCash),
+            note: t("hangarPlanner.summary.buybacksWithoutToken", {
+              count: value.buybacksWithoutTokenCount,
+            }),
+          },
+        ]
+      : []),
     { key: "net", value: range(value.netMin, value.netMax) },
     {
       key: "cashNeeded",
@@ -61,11 +74,10 @@ const rows = computed(() => {
 const gaps = computed(() => {
   if (!totals.value) return [];
 
-  return [
-    { key: "openSlots", count: totals.value.openSlotsCount },
-    { key: "undecidedSlots", count: totals.value.undecidedSlotsCount },
-    { key: "unresolved", count: totals.value.unresolvedCount },
-  ].filter((gap) => gap.count > 0);
+  // Open and undecided slots are counted in the plan's header already.
+  return [{ key: "unresolved", count: totals.value.unresolvedCount }].filter(
+    (gap) => gap.count > 0,
+  );
 });
 </script>
 
@@ -75,7 +87,7 @@ const gaps = computed(() => {
     :loading="loading"
     data-test="hangar-plan-summary"
   >
-    <PanelHeading compact divider>
+    <PanelHeading :tone="PanelHeadingTonesEnum.METRIC" compact divider>
       {{ t("hangarPlanner.summary.title") }}
     </PanelHeading>
     <PanelBody>
@@ -94,6 +106,22 @@ const gaps = computed(() => {
           {{ t(`hangarPlanner.summary.${gap.key}`, { count: gap.count }) }}
         </li>
       </ul>
+
+      <Alert
+        v-if="
+          totals && totals.buybackTokensUsed > totals.buybackTokensAvailable
+        "
+        variant="warning"
+        :size="AlertSizesEnum.COMPACT"
+        data-test="hangar-plan-summary-tokens"
+      >
+        {{
+          t("hangarPlanner.summary.tokensShort", {
+            count: totals.buybackTokensUsed,
+            available: totals.buybackTokensAvailable,
+          })
+        }}
+      </Alert>
 
       <Alert
         v-if="summary?.issues.length"

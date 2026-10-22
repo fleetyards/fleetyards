@@ -10,7 +10,12 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
-import BaseSelect from "@/shared/components/base/Select/index.vue";
+import PickList, {
+  type PickListItem,
+} from "@/frontend/components/Hangar/Planner/PickList/index.vue";
+import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
+import Chip from "@/shared/components/base/Chip/index.vue";
+import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -35,7 +40,11 @@ const { displayAlert } = useAppNotifications();
 const comlink = useComlink();
 const { updatePlan } = useHangarPlanCache();
 
-const { data: resources } = useHangarPlanResources(() => props.planId);
+const { money } = usePlanMoney();
+
+const { data: resources, isLoading } = useHangarPlanResources(
+  () => props.planId,
+);
 
 const submitting = ref(false);
 const vehicleId = ref<string | null>(props.melt?.vehicleId ?? null);
@@ -47,16 +56,81 @@ watch([vehicleId, valueOverride], () => {
 });
 useModalDirty(touched);
 
-const vehicleOptions = computed(() =>
-  (resources.value?.vehicles ?? [])
-    .filter((vehicle) => !vehicle.usedBy)
-    .map((vehicle) => ({
-      value: vehicle.id,
-      label: vehicle.name
-        ? `${vehicle.name} (${vehicle.model.name})`
-        : vehicle.model.name,
-    })),
+const freeVehicles = computed(() =>
+  (resources.value?.vehicles ?? []).filter((vehicle) => !vehicle.usedBy),
 );
+
+// RSI says per pledge whether it melts, but only for ships the hangar sync
+// read; anyone who keeps their hangar by hand can still melt any ship.
+const meltableCount = computed(
+  () => freeVehicles.value.filter((vehicle) => vehicle.meltable).length,
+);
+
+const meltableOnly = ref(false);
+
+// Filtered by default once the sync has said which ships melt.
+watch(
+  meltableCount,
+  (count, before) => {
+    if (count && !before) meltableOnly.value = true;
+  },
+  { immediate: true },
+);
+
+const meltable = computed(() =>
+  meltableOnly.value
+    ? freeVehicles.value.filter((vehicle) => vehicle.meltable)
+    : freeVehicles.value,
+);
+
+const meltBadge = (vehicle: (typeof freeVehicles.value)[number]) => {
+  if (vehicle.meltable === false)
+    return t("hangarPlanner.meltList.notMeltable");
+  if (vehicle.meltable === null || vehicle.meltable === undefined) {
+    return t("hangarPlanner.meltList.notSynced");
+  }
+  return undefined;
+};
+
+const creditOf = (vehicle: (typeof freeVehicles.value)[number]) =>
+  vehicle.meltValue ?? vehicle.model.pledgePrice ?? null;
+
+const vehicleItems = computed<PickListItem[]>(() =>
+  meltable.value.map((vehicle) => ({
+    id: vehicle.id,
+    title: vehicle.name || vehicle.model.name,
+    meta:
+      [
+        vehicle.name ? vehicle.model.name : undefined,
+        vehicle.pledgeItemCount && vehicle.pledgeItemCount > 1
+          ? t("hangarPlanner.meltList.wholePledge", {
+              count: vehicle.pledgeItemCount,
+            })
+          : undefined,
+      ]
+        .filter(Boolean)
+        .join(" · ") || undefined,
+    price:
+      typeof vehicle.meltValue === "number"
+        ? t("hangarPlanner.meltList.credit", {
+            value: money(vehicle.meltValue),
+          })
+        : t("hangarPlanner.meltList.estimate", {
+            value: money(creditOf(vehicle)),
+          }),
+    sortPrice: creditOf(vehicle),
+    badge: meltBadge(vehicle),
+  })),
+);
+
+const picked = computed(() =>
+  freeVehicles.value.find((vehicle) => vehicle.id === vehicleId.value),
+);
+
+const placeholder = computed(() => {
+  const credit = picked.value ? creditOf(picked.value) : props.melt?.value;
+  return typeof credit === "number" ? String(credit) : undefined;
+});
 
 const createMutation = useCreateHangarPlanMelt();
 const updateMutation = useUpdateHangarPlanMelt();
@@ -93,13 +167,37 @@ const onSubmit = async () => {
     :title="melt ? t('hangarPlanner.editMelt') : t('hangarPlanner.addMelt')"
   >
     <form id="hangar-plan-melt-form" @submit.prevent="onSubmit">
-      <BaseSelect
-        v-if="!melt"
-        v-model="vehicleId"
-        name="vehicleId"
-        :options="vehicleOptions"
-        :label="t('hangarPlanner.fields.meltShip')"
-      />
+      <template v-if="!melt">
+        <span class="melt-label">{{ t("hangarPlanner.fields.meltShip") }}</span>
+        <PickList
+          v-model="vehicleId"
+          name="vehicleId"
+          :items="vehicleItems"
+          :loading="isLoading"
+          :empty="
+            meltableOnly
+              ? t('hangarPlanner.meltList.none')
+              : t('hangarPlanner.meltList.noShips')
+          "
+        >
+          <template #filters>
+            <div class="melt-filters">
+              <Chip
+                :state="
+                  meltableOnly
+                    ? ChipStatesEnum.INCLUDED
+                    : ChipStatesEnum.NEUTRAL
+                "
+                :count="meltableCount"
+                data-test="hangar-plan-melt-filter-meltable"
+                @toggle="meltableOnly = !meltableOnly"
+              >
+                {{ t("hangarPlanner.meltList.meltableOnly") }}
+              </Chip>
+            </div>
+          </template>
+        </PickList>
+      </template>
       <FormInput
         v-model="valueOverride"
         name="valueOverride"
@@ -109,7 +207,7 @@ const onSubmit = async () => {
         prefix="$"
         :label="t('hangarPlanner.fields.meltValue')"
         :info="t('hangarPlanner.fields.meltValueInfo')"
-        no-placeholder
+        :placeholder="placeholder"
         standalone
       />
     </form>
@@ -127,3 +225,22 @@ const onSubmit = async () => {
     </template>
   </Modal>
 </template>
+
+<style lang="scss" scoped>
+.melt-label {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.melt-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.melt-muted {
+  margin: 8px 0 16px;
+  font-size: 0.85rem;
+  color: var(--color-text-dim);
+}
+</style>

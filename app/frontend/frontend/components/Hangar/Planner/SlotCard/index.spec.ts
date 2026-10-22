@@ -125,6 +125,7 @@ describe("Hangar/Planner/SlotCard", () => {
                   startModel: model("Carrack", 600),
                   price: 600,
                   sourceMissing: false,
+                  usesBuybackToken: false,
                   steps: [],
                 },
               ],
@@ -162,6 +163,35 @@ describe("Hangar/Planner/SlotCard", () => {
     expect(
       wrapper.findAll('[data-test="hangar-plan-candidate-mismatch"]'),
     ).toHaveLength(1);
+  });
+
+  it("marks the cheapest and the roomiest undecided ship", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        planId: "plan",
+        slot: slot({
+          state: HangarPlanSlotStateEnum.UNDECIDED,
+          candidates: [
+            candidate("Hull A", {
+              model: { ...model("Hull A", 90), cargo: 64 },
+            }),
+            candidate("Caterpillar", {
+              model: { ...model("Caterpillar", 330), cargo: 576 },
+            }),
+          ],
+        }),
+      },
+    });
+
+    const cards = wrapper.findAll(".plan-slot__candidate");
+    expect(
+      cards[0].findAll('[data-test="hangar-plan-candidate-best"]'),
+    ).toHaveLength(1);
+    expect(cards[0].text()).toContain("$90");
+    expect(
+      cards[1].findAll('[data-test="hangar-plan-candidate-best"]'),
+    ).toHaveLength(1);
+    expect(cards[1].text()).toContain("576 SCU");
   });
 
   it("offers no edits on a shared plan", async () => {

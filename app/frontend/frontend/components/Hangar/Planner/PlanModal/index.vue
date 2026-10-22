@@ -47,6 +47,8 @@ const initialValues = {
   name: props.plan?.name ?? "",
   description: props.plan?.description ?? "",
   startingCredit: props.plan?.startingCredit ?? 0,
+  buybackTokens: props.plan?.buybackTokens ?? ("" as number | ""),
+  vatRate: props.plan?.vatRate ?? ("" as number | ""),
   source: HangarPlanSourceEnum.EMPTY as HangarPlanSourceEnum,
   sourcePlanId: null as string | null,
 };
@@ -58,6 +60,8 @@ useModalDirty(useFormDirty(values, initialValues));
 const [name, nameProps] = defineField("name");
 const [description, descriptionProps] = defineField("description");
 const [startingCredit, startingCreditProps] = defineField("startingCredit");
+const [buybackTokens, buybackTokensProps] = defineField("buybackTokens");
+const [vatRate, vatRateProps] = defineField("vatRate");
 const [source, sourceProps] = defineField("source");
 const [sourcePlanId, sourcePlanIdProps] = defineField("sourcePlanId");
 
@@ -86,6 +90,14 @@ const onSubmit = handleSubmit(async (values) => {
     name: values.name,
     description: values.description || null,
     startingCredit: Number(values.startingCredit) || 0,
+    buybackTokens:
+      values.buybackTokens === "" || values.buybackTokens === null
+        ? null
+        : Math.max(0, Math.floor(Number(values.buybackTokens) || 0)),
+    vatRate:
+      values.vatRate === "" || values.vatRate === null
+        ? null
+        : Math.min(100, Math.max(0, Number(values.vatRate) || 0)),
   };
 
   try {
@@ -147,6 +159,40 @@ const onSubmit = handleSubmit(async (values) => {
         prefix="$"
         :label="t('hangarPlanner.fields.startingCredit')"
         :info="t('hangarPlanner.fields.startingCreditInfo')"
+        no-placeholder
+      />
+      <FormInput
+        v-model="buybackTokens"
+        v-bind="buybackTokensProps"
+        name="buybackTokens"
+        :type="InputTypesEnum.NUMBER"
+        :min="0"
+        :step="1"
+        :label="t('hangarPlanner.fields.buybackTokens')"
+        :info="
+          typeof plan?.syncedBuybackTokens === 'number'
+            ? t('hangarPlanner.fields.buybackTokensSynced', {
+                count: plan.syncedBuybackTokens,
+              })
+            : t('hangarPlanner.fields.buybackTokensInfo')
+        "
+        :placeholder="
+          typeof plan?.syncedBuybackTokens === 'number'
+            ? String(plan.syncedBuybackTokens)
+            : '0'
+        "
+      />
+      <FormInput
+        v-model="vatRate"
+        v-bind="vatRateProps"
+        name="vatRate"
+        :type="InputTypesEnum.NUMBER"
+        :min="0"
+        :max="100"
+        :step="0.01"
+        suffix="%"
+        :label="t('hangarPlanner.fields.vatRate')"
+        :info="t('hangarPlanner.fields.vatRateInfo')"
         no-placeholder
       />
       <template v-if="!isEdit">
