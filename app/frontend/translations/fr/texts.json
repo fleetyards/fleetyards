@@ -436,7 +436,8 @@
         "signIn": "Connecte-toi pour poser cette plaque sur un vaisseau de ton hangar.",
         "noShips": "Il n'y a aucun vaisseau %{model} dans ton hangar où poser la plaque.",
         "attachIntro": "La plaque va sur le vaisseau que tu choisis, sous le nom et l'immatriculation de ce vaisseau.",
-        "addShip": "Ajoutes-en un et il recevra la plaque, sous le nom et l'immatriculation que tu lui as donnés."
+        "addShip": "Ajoutes-en un et il recevra la plaque, sous le nom et l'immatriculation que tu lui as donnés.",
+        "example": "Un exemple : la plaque que Cloud Imperium a accrochée pour The Only Constant, son prototype de Constellation Phoenix. Modifie n'importe quelle ligne pour la faire tienne."
       }
     }
   }

@@ -629,7 +629,8 @@
       },
       "plaqueTool": {
         "attach": "儲存到機庫",
-        "addShip": "將 %{model} 加入我的機庫"
+        "addShip": "將 %{model} 加入我的機庫",
+        "startFresh": "從頭開始"
       }
     }
   }

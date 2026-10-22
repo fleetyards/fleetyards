@@ -18,6 +18,9 @@ import VehiclePlaque from "@/frontend/components/Vehicles/Plaque/index.vue";
 import PlaqueFields from "@/frontend/components/Vehicles/PlaqueFields/index.vue";
 import PlaqueStylePicker from "@/frontend/components/Vehicles/PlaqueStylePicker/index.vue";
 import PlaqueDownloadBtn from "@/frontend/components/Vehicles/PlaqueDownloadBtn/index.vue";
+import Alert from "@/shared/components/base/Alert/index.vue";
+import { AlertVariantsEnum } from "@/shared/components/base/Alert/types";
+import { EXAMPLE_PLAQUE } from "@/frontend/components/Vehicles/Plaque/example";
 import { PLAQUE_LIMITS } from "@/frontend/components/Vehicles/PlaqueFields/rules";
 import { plaqueMakerFor } from "@/frontend/components/Vehicles/Plaque/makers";
 import { defaultPlaqueStyle } from "@/frontend/components/Vehicles/Plaque/styles";
@@ -73,19 +76,21 @@ const maker = computed(() =>
   model.value ? plaqueMakerFor({ model: model.value }) : undefined,
 );
 
+const BLANK = {
+  name: "",
+  serial: "",
+  dedication: "",
+  dedicationVerse: "",
+  launchedOn: null as string | null,
+  launchPort: "",
+  launchPortLocationId: null as string | null,
+  affiliation: "",
+  plaqueCaptain: "",
+  operationsGroup: null as NullableVehicleOperationsGroupEnum | null,
+};
+
 const { defineField, handleSubmit, values, setValues } = useForm({
-  initialValues: {
-    name: "",
-    serial: "",
-    dedication: "",
-    dedicationVerse: "",
-    launchedOn: null as string | null,
-    launchPort: "",
-    launchPortLocationId: null as string | null,
-    affiliation: "",
-    plaqueCaptain: "",
-    operationsGroup: null as NullableVehicleOperationsGroupEnum | null,
-  },
+  initialValues: { ...BLANK },
 });
 
 const [name] = defineField("name");
@@ -188,19 +193,70 @@ const signIn = () => {
   }
 };
 
-onMounted(() => {
+const restoreDraft = () => {
   try {
     const draft = sessionStorage.getItem(DRAFT_KEY);
     sessionStorage.removeItem(DRAFT_KEY);
     if (!draft) {
-      return;
+      return false;
     }
 
     const { values: saved, style } = JSON.parse(draft);
     setValues(saved);
     pickedStyle.value = style;
+
+    return true;
   } catch {
     // A draft that cannot be read is dropped.
+    return false;
+  }
+};
+
+// A first visit opens on a finished plaque, so the tool shows what one reads
+// like before asking for a single line. Remembered per browser; where storage
+// is refused, every visit is a first one.
+const EXAMPLE_SEEN_KEY = "plaque-tool-example-seen";
+
+const showingExample = ref(false);
+
+const exampleSeen = () => {
+  try {
+    if (localStorage.getItem(EXAMPLE_SEEN_KEY)) {
+      return true;
+    }
+    localStorage.setItem(EXAMPLE_SEEN_KEY, "1");
+  } catch {
+    // Shown again next time.
+  }
+
+  return false;
+};
+
+const showExample = () => {
+  setValues(EXAMPLE_PLAQUE.values);
+  modelSlug.value = EXAMPLE_PLAQUE.model;
+  showingExample.value = true;
+};
+
+const startFresh = () => {
+  setValues({ ...BLANK });
+  pickedStyle.value = undefined;
+  modelSlug.value = undefined;
+  showingExample.value = false;
+};
+
+onMounted(() => {
+  if (restoreDraft() || modelSlug.value || exampleSeen()) {
+    return;
+  }
+
+  showExample();
+});
+
+// Another ship makes it the user's own plaque.
+watch(modelSlug, (slug) => {
+  if (slug !== EXAMPLE_PLAQUE.model) {
+    showingExample.value = false;
   }
 });
 
@@ -229,6 +285,20 @@ const attach = handleSubmit(() => {
   <Heading hero>{{ t(`headlines.${route.meta.title}`) }}</Heading>
 
   <p class="plaque-tool__intro">{{ t("texts.plaqueTool.intro") }}</p>
+
+  <Alert
+    v-if="showingExample"
+    :variant="AlertVariantsEnum.INFO"
+    class="plaque-tool__example"
+    data-test="plaque-tool-example"
+  >
+    {{ t("texts.plaqueTool.example") }}
+    <template #actions>
+      <Btn data-test="plaque-tool-start-fresh" @click="startFresh">
+        {{ t("actions.plaqueTool.startFresh") }}
+      </Btn>
+    </template>
+  </Alert>
 
   <div class="plaque-tool">
     <div class="plaque-tool__preview">
@@ -334,6 +404,10 @@ const attach = handleSubmit(() => {
 <style lang="scss" scoped>
 .plaque-tool__intro {
   max-width: 720px;
+}
+
+.plaque-tool__example {
+  margin-bottom: 24px;
 }
 
 // The plaque beside the form, and above it where there is no room.

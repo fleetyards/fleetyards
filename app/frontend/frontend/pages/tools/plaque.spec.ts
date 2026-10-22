@@ -1,6 +1,14 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { flushPromises } from "@vue/test-utils";
-import { afterEach, beforeAll, describe, expect, it, vi } from "vitest";
+import {
+  afterEach,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest";
 import { defineRule } from "vee-validate";
 import { max, required } from "@vee-validate/rules";
 import { createRouter, createWebHashHistory } from "vue-router";
@@ -25,6 +33,27 @@ const corsair = {
   },
 } as unknown as Model;
 
+const phoenix = {
+  ...corsair,
+  id: "model-2",
+  name: "Constellation Mk IV Phoenix",
+  slug: "rsi-constellation-mk-iv-phoenix",
+  manufacturer: {
+    name: "Roberts Space Industries",
+    shortName: "RSI",
+    shipyard: "London Ship Yards, Earth (Sol III)",
+    slug: "rsi",
+    code: "RSI",
+    createdAt: NOW,
+    updatedAt: NOW,
+  },
+} as unknown as Model;
+
+const MODELS: Record<string, Model> = {
+  corsair,
+  "rsi-constellation-mk-iv-phoenix": phoenix,
+};
+
 const openModal = vi.fn();
 
 vi.mock("@/shared/composables/useComlink", () => ({
@@ -39,7 +68,7 @@ vi.mock("@/shared/composables/useComlink", () => ({
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   useModel: (slug: { value: string }) => ({
-    data: computed(() => (slug.value === "corsair" ? corsair : undefined)),
+    data: computed(() => MODELS[slug.value]),
   }),
 }));
 
@@ -91,7 +120,13 @@ describe("ToolsPlaquePage", () => {
     defineRule("required", required);
   });
 
+  // A returning visitor, unless a test clears it to be a first one.
+  beforeEach(() => {
+    localStorage.setItem("plaque-tool-example-seen", "1");
+  });
+
   afterEach(() => {
+    localStorage.clear();
     openModal.mockReset();
     canShare.mockReset();
     canShare.mockReturnValue(false);
@@ -225,5 +260,54 @@ describe("ToolsPlaquePage", () => {
       ).value,
     ).toBe("Built rough");
     expect(sessionStorage.getItem("plaque-tool-draft")).toBeNull();
+  });
+
+  it("opens a first visit on the example plaque", async () => {
+    localStorage.clear();
+    const wrapper = await mount();
+    await flushPromises();
+
+    expect(wrapper.find('[data-test="plaque-tool-example"]').exists()).toBe(
+      true,
+    );
+    const plaque = wrapper.find('[data-test="plaque-tool-preview"]');
+    expect(plaque.find('[data-test="vehicle-plaque-name"]').text()).toBe(
+      "The Only Constant",
+    );
+    expect(
+      plaque.find('[data-test="vehicle-plaque-captain"]').text(),
+    ).toContain("Jared Huckaby");
+    expect(localStorage.getItem("plaque-tool-example-seen")).toBe("1");
+  });
+
+  it("clears the example to start from scratch", async () => {
+    localStorage.clear();
+    const wrapper = await mount();
+    await flushPromises();
+
+    await wrapper
+      .find('[data-test="plaque-tool-start-fresh"]')
+      .trigger("click");
+    await flushPromises();
+
+    expect(wrapper.find('[data-test="plaque-tool-example"]').exists()).toBe(
+      false,
+    );
+    expect(wrapper.find('[data-test="plaque-tool-empty"]').exists()).toBe(true);
+    expect(
+      (
+        wrapper.find('[data-test="vehicle-plaque-dedication-input"] textarea')
+          .element as HTMLTextAreaElement
+      ).value,
+    ).toBe("");
+  });
+
+  it("shows the example only once", async () => {
+    const wrapper = await mount();
+    await flushPromises();
+
+    expect(wrapper.find('[data-test="plaque-tool-example"]').exists()).toBe(
+      false,
+    );
   });
 });

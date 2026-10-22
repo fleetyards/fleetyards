@@ -630,7 +630,8 @@
       },
       "plaqueTool": {
         "attach": "Guardar en el hangar",
-        "addShip": "Añadir %{model} a mi hangar"
+        "addShip": "Añadir %{model} a mi hangar",
+        "startFresh": "Empezar desde cero"
       }
     }
   }

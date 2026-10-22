@@ -435,7 +435,8 @@
         "signIn": "登录后即可将此铭牌放到你机库中的舰船上。",
         "noShips": "你的机库中没有可放置铭牌的 %{model}。",
         "attachIntro": "铭牌将放到你选择的舰船上，使用该舰船自己的名称和注册号。",
-        "addShip": "加入一艘，它就会获得这块铭牌，使用你为铭牌填写的名称和注册号。"
+        "addShip": "加入一艘，它就会获得这块铭牌，使用你为铭牌填写的名称和注册号。",
+        "example": "示例：Cloud Imperium 为其 Constellation Phoenix 原型舰 The Only Constant 挂上的铭牌。修改任意一行即可变成你自己的。"
       }
     }
   }
