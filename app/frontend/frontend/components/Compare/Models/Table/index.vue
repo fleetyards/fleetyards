@@ -177,27 +177,35 @@ const differsFromBaseline = (
 // The row's best and worst part by the figure each leads with, as the value rows
 // mark theirs. Parts of a kind lead with the same figure -- a gun its DPS, a
 // shield its HP -- so they rank against each other; a row with a single figure
-// marks nothing.
-const lineMark = (row: LinesRow, line: CompareLine) => {
-  if (typeof line.raw !== "number") {
-    return undefined;
-  }
+// marks nothing. Worked out once per row rather than once per line.
+const lineExtremes = new WeakMap<LinesRow, { max: number; min: number }>();
+
+const extremesOf = (row: LinesRow) => {
+  const known = lineExtremes.get(row);
+  if (known) return known;
 
   const values = row.cells.flatMap((cell) =>
     cell.lines
       .map((entry) => entry.raw)
       .filter((raw): raw is number => typeof raw === "number"),
   );
+  const extremes =
+    new Set(values).size < 2
+      ? { max: Number.NaN, min: Number.NaN }
+      : { max: Math.max(...values), min: Math.min(...values) };
 
-  if (new Set(values).size < 2) {
-    return undefined;
-  }
+  lineExtremes.set(row, extremes);
 
-  if (line.raw === Math.max(...values)) {
-    return "best";
-  }
+  return extremes;
+};
 
-  return line.raw === Math.min(...values) ? "worst" : undefined;
+const lineMark = (row: LinesRow, line: CompareLine) => {
+  const { max, min } = extremesOf(row);
+
+  if (line.raw === max) return "best";
+  if (line.raw === min) return "worst";
+
+  return undefined;
 };
 
 // The catalogue card a part's name opens, as on the ship page: only for a part

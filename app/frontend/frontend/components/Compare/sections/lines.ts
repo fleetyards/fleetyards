@@ -65,7 +65,9 @@ export const useLoadoutLines = (
 
     const primary = statsFor(hardpoint).find((stat) => stat.primary);
 
-    return primary ? { value: primary.value, unit: primary.label } : undefined;
+    return primary
+      ? { value: primary.value, unit: primary.label, raw: primary.raw }
+      : undefined;
   };
 
   const nameOf = (hardpoint: Hardpoint) =>
@@ -73,16 +75,20 @@ export const useLoadoutLines = (
     hardpoint.component?.name ||
     humanize(hardpoint.component?.scKey || hardpoint.name);
 
+  // Keyed on the part, not on its label: thrusters are labelled by their kind
+  // alone, so two of one kind but different thrust would read as one line.
   const partOf = (hardpoint: Hardpoint): CompareLinePart => {
-    const name = nameOf(hardpoint);
     const size = hardpoint.component?.size;
+    const figure = figureOf(hardpoint);
 
     return {
-      key: [name, size].join("|"),
+      key: [hardpoint.component?.name || hardpoint.component?.id, size].join(
+        "|",
+      ),
       size: size ? `S${size}` : undefined,
-      name,
-      figure: figureOf(hardpoint),
-      raw: statsFor(hardpoint).find((stat) => stat.primary)?.raw,
+      name: nameOf(hardpoint),
+      figure: figure && { value: figure.value, unit: figure.unit },
+      raw: figure?.raw,
       hardpoint,
     };
   };

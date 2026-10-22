@@ -11,7 +11,8 @@ type Translate = (key: string, options?: Record<string, unknown>) => string;
 
 type Format = (value: number, units: string) => string | number;
 
-type Headline = { value: string; unit: string };
+// `raw` is the number behind the figure, for whatever ranks rows by it.
+type Headline = { value: string; unit: string; raw?: number };
 
 // What the ship knows beyond the hardpoint itself.
 export type RowContext = {
@@ -77,6 +78,7 @@ const capacity = (
     ? {
         value: String(toNumber(value, "cargo")),
         unit: t("labels.cargoGridViewer.capacity"),
+        raw: value,
       }
     : undefined;
 

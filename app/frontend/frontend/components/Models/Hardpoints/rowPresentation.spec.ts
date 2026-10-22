@@ -28,6 +28,7 @@ describe("rowPresentation", () => {
     expect(grid.headline?.(hold, t, toNumber)).toEqual({
       value: "96 cargo",
       unit: "labels.cargoGridViewer.capacity",
+      raw: 96,
     });
     expect(grid.stats?.(hold, t, toNumber)).toEqual([
       { label: "labels.hardpoint.maxContainerSize", value: "32 cargo" },
@@ -91,7 +92,11 @@ describe("rowPresentation", () => {
         t,
         toNumber,
       ),
-    ).toEqual({ value: "12 cargo", unit: "labels.cargoGridViewer.capacity" });
+    ).toEqual({
+      value: "12 cargo",
+      unit: "labels.cargoGridViewer.capacity",
+      raw: 12,
+    });
   });
 
   it("names a seat after its hardpoint and gives it nothing to lead with", () => {

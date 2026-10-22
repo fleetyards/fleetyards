@@ -20,7 +20,11 @@ const controllersIn = (
 
     return [
       ...(data?.salvageController ? [data] : []),
-      ...controllersIn(hardpoint.hardpoints),
+      ...controllersIn(
+        hardpoint.hardpoints?.length
+          ? hardpoint.hardpoints
+          : hardpoint.component?.hardpoints,
+      ),
     ];
   });
 

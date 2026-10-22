@@ -127,6 +127,34 @@ describe("useLoadoutLines", () => {
     ]);
   });
 
+  it("keeps apart nameless parts that share a label", () => {
+    const thruster = (id: string) =>
+      ({
+        id,
+        name: `hardpoint_thruster_${id}`,
+        category: HardpointCategoryEnum.MAIN_THRUSTERS,
+        component: { id, size: "3", typeData: {} },
+        hardpoints: [],
+      }) as unknown as Hardpoint;
+    const { lineRows } = useLoadoutLines([{ slug: "a" } as Model], () => [
+      thruster("one"),
+      thruster("two"),
+      thruster("one"),
+    ]);
+
+    const lines = linesOf(
+      lineRows([
+        {
+          key: "main",
+          label: "Main",
+          categories: [HardpointCategoryEnum.MAIN_THRUSTERS],
+        },
+      ]),
+    );
+
+    expect(lines.map((line) => line.quantity)).toEqual([2, 1]);
+  });
+
   it("drops a row no compared ship fits anything in", () => {
     const { lineRows } = useLoadoutLines([{ slug: "a" } as Model], () => []);
 
