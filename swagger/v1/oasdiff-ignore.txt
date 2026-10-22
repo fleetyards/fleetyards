@@ -2991,3 +2991,365 @@ GET /vehicles/{id} added the new `salvage_storage` enum value to the `modulePack
 GET /wishlist added the new `salvage_storage` enum value to the `items/items/modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
 POST /vehicles added the new `salvage_storage` enum value to the `modulePackage/modules/items/hardpoints/items/group` response property for the response status `201`
 PUT /vehicles/{id} added the new `salvage_storage` enum value to the `modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /filters/models/options removed the enum value `focus asc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /filters/models/options removed the enum value `focus asc` from the property `s/anyOf[subschema #2: ModelSortEnum]/` of the `query` request parameter `q`
+GET /filters/models/options removed the enum value `focus asc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /filters/models/options removed the enum value `focus asc` from the property `sorts/anyOf[subschema #2: ModelSortEnum]/` of the `query` request parameter `q`
+GET /filters/models/options removed the enum value `focus desc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /filters/models/options removed the enum value `focus desc` from the property `s/anyOf[subschema #2: ModelSortEnum]/` of the `query` request parameter `q`
+GET /filters/models/options removed the enum value `focus desc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /filters/models/options removed the enum value `focus desc` from the property `sorts/anyOf[subschema #2: ModelSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/model-counts removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/model-counts removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/model-counts removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/model-counts removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/model-counts removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/model-counts removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/model-counts removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/model-counts removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/models-by-classification removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/models-by-classification removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/models-by-classification removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/models-by-classification removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/models-by-classification removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/models-by-classification removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/models-by-classification removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/models-by-classification removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/models-by-manufacturer removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/models-by-manufacturer removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/models-by-manufacturer removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/models-by-manufacturer removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/models-by-manufacturer removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/models-by-manufacturer removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/models-by-manufacturer removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/models-by-manufacturer removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/models-by-production-status removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/models-by-production-status removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/models-by-production-status removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/models-by-production-status removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/models-by-production-status removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/models-by-production-status removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/models-by-production-status removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/models-by-production-status removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/models-by-size removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/models-by-size removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/models-by-size removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/models-by-size removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/models-by-size removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/models-by-size removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/models-by-size removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/models-by-size removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/vehicles removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/vehicles removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/vehicles removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/vehicles removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/vehicles removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/vehicles removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/vehicles removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/vehicles removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/vehicles-by-model removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/vehicles-by-model removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/vehicles-by-model removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/vehicles-by-model removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/vehicles-by-model removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/vehicles-by-model removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/vehicles-by-model removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/stats/vehicles-by-model removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/vehicles removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/vehicles removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/vehicles removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/vehicles removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/vehicles removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/vehicles removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/vehicles removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/vehicles removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/vehicles/export removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/vehicles/export removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/vehicles/export removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/vehicles/export removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/vehicles/export removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/vehicles/export removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/vehicles/export removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/vehicles/export removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/vehicles/export/hangar-link removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/vehicles/export/hangar-link removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/vehicles/export/hangar-link removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/vehicles/export/hangar-link removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/vehicles/export/hangar-link removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/vehicles/export/hangar-link removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/vehicles/export/hangar-link removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /fleets/{fleetSlug}/vehicles/export/hangar-link removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /hangar removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /hangar removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+GET /hangar removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /hangar removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+GET /hangar removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /hangar removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+GET /hangar removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /hangar removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+GET /hangar/export removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /hangar/export removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+GET /hangar/export removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /hangar/export removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+GET /hangar/export removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /hangar/export removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+GET /hangar/export removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /hangar/export removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+GET /hangar/export/hangar-link removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /hangar/export/hangar-link removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+GET /hangar/export/hangar-link removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /hangar/export/hangar-link removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+GET /hangar/export/hangar-link removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /hangar/export/hangar-link removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+GET /hangar/export/hangar-link removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /hangar/export/hangar-link removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+GET /hangar/stats removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /hangar/stats removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+GET /hangar/stats removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /hangar/stats removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+GET /hangar/stats removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /hangar/stats removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+GET /hangar/stats removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /hangar/stats removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+GET /models removed the enum value `focus asc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /models removed the enum value `focus asc` from the property `s/anyOf[subschema #2: ModelSortEnum]/` of the `query` request parameter `q`
+GET /models removed the enum value `focus asc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /models removed the enum value `focus asc` from the property `sorts/anyOf[subschema #2: ModelSortEnum]/` of the `query` request parameter `q`
+GET /models removed the enum value `focus desc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /models removed the enum value `focus desc` from the property `s/anyOf[subschema #2: ModelSortEnum]/` of the `query` request parameter `q`
+GET /models removed the enum value `focus desc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /models removed the enum value `focus desc` from the property `sorts/anyOf[subschema #2: ModelSortEnum]/` of the `query` request parameter `q`
+GET /models/with-docks removed the enum value `focus asc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /models/with-docks removed the enum value `focus asc` from the property `s/anyOf[subschema #2: ModelSortEnum]/` of the `query` request parameter `q`
+GET /models/with-docks removed the enum value `focus asc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /models/with-docks removed the enum value `focus asc` from the property `sorts/anyOf[subschema #2: ModelSortEnum]/` of the `query` request parameter `q`
+GET /models/with-docks removed the enum value `focus desc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /models/with-docks removed the enum value `focus desc` from the property `s/anyOf[subschema #2: ModelSortEnum]/` of the `query` request parameter `q`
+GET /models/with-docks removed the enum value `focus desc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /models/with-docks removed the enum value `focus desc` from the property `sorts/anyOf[subschema #2: ModelSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/model-counts removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/model-counts removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/model-counts removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/model-counts removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/model-counts removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/model-counts removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/model-counts removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/model-counts removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/models-by-classification removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/models-by-classification removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/models-by-classification removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/models-by-classification removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/models-by-classification removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/models-by-classification removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/models-by-classification removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/models-by-classification removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/models-by-manufacturer removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/models-by-manufacturer removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/models-by-manufacturer removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/models-by-manufacturer removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/models-by-manufacturer removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/models-by-manufacturer removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/models-by-manufacturer removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/models-by-manufacturer removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/models-by-production-status removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/models-by-production-status removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/models-by-production-status removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/models-by-production-status removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/models-by-production-status removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/models-by-production-status removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/models-by-production-status removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/models-by-production-status removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/models-by-size removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/models-by-size removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/models-by-size removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/models-by-size removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/models-by-size removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/models-by-size removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/models-by-size removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/models-by-size removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/vehicles removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/vehicles removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/vehicles removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/vehicles removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/vehicles removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/vehicles removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/vehicles removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/vehicles removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/vehicles-by-model removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/vehicles-by-model removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/vehicles-by-model removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/vehicles-by-model removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/vehicles-by-model removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/vehicles-by-model removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/vehicles-by-model removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/stats/vehicles-by-model removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/vehicles removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/vehicles removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/vehicles removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/vehicles removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/vehicles removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/vehicles removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/vehicles removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/vehicles removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/vehicles/embed removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/vehicles/embed removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/vehicles/embed removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/vehicles/embed removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/vehicles/embed removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/vehicles/embed removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/vehicles/embed removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/fleets/{fleetSlug}/vehicles/embed removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #2: FleetVehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/hangars/{username} removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/hangars/{username} removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/hangars/{username} removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/hangars/{username} removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/hangars/{username} removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/hangars/{username} removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/hangars/{username} removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/hangars/{username} removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/hangars/{username}/stats removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/hangars/{username}/stats removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/hangars/{username}/stats removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/hangars/{username}/stats removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/hangars/{username}/stats removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/hangars/{username}/stats removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/hangars/{username}/stats removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/hangars/{username}/stats removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/wishlists/{username} removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/wishlists/{username} removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/wishlists/{username} removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/wishlists/{username} removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/wishlists/{username} removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/wishlists/{username} removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+GET /public/wishlists/{username} removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /public/wishlists/{username} removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+PUT /users/me removed the enum value `modelFocus asc` of the request property `hangarDefaultSort`
+PUT /users/me removed the enum value `modelFocus desc` of the request property `hangarDefaultSort`
+GET /wishlist removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /wishlist removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+GET /wishlist removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /wishlist removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+GET /wishlist removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /wishlist removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+GET /wishlist removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /wishlist removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+PATCH /fleet-event-signups/{id}/assign removed the optional property `vehicle/model/focus` from the response with the `200` status
+POST /fleet-event-slots removed the optional property `signups/items/vehicle/model/focus` from the response with the `201` status
+PUT /fleet-event-slots/{id} removed the optional property `signups/items/vehicle/model/focus` from the response with the `200` status
+PATCH /fleet-event-slots/{id}/signup removed the optional property `vehicle/model/focus` from the response with the `200` status
+POST /fleet-event-slots/{id}/signup removed the optional property `vehicle/model/focus` from the response with the `201` status
+POST /fleets/{fleetSlug}/events removed the optional property `allOf[subschema #2]/teams/items/ships/items/filters/focus` from the response with the `201` status
+POST /fleets/{fleetSlug}/events removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/focus` from the response with the `201` status
+POST /fleets/{fleetSlug}/events removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/focus` from the response with the `201` status
+POST /fleets/{fleetSlug}/events removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/focus` from the response with the `201` status
+POST /fleets/{fleetSlug}/events/{fleetEventSlug}/teams removed the optional property `ships/items/filters/focus` from the response with the `201` status
+POST /fleets/{fleetSlug}/events/{fleetEventSlug}/teams removed the optional property `ships/items/slots/items/signups/items/vehicle/model/focus` from the response with the `201` status
+POST /fleets/{fleetSlug}/events/{fleetEventSlug}/teams removed the optional property `slots/items/signups/items/vehicle/model/focus` from the response with the `201` status
+POST /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships removed the request property `focus`
+POST /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships removed the optional property `filters/focus` from the response with the `201` status
+POST /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships removed the optional property `slots/items/signups/items/vehicle/model/focus` from the response with the `201` status
+PUT /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships/{id} removed the request property `focus`
+PUT /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships/{id} removed the optional property `filters/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships/{id} removed the optional property `slots/items/signups/items/vehicle/model/focus` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships/{id}/expand-from-model removed the optional property `filters/focus` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{fleetEventTeamId}/ships/{id}/expand-from-model removed the optional property `slots/items/signups/items/vehicle/model/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{id} removed the optional property `ships/items/filters/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{id} removed the optional property `ships/items/slots/items/signups/items/vehicle/model/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{fleetEventSlug}/teams/{id} removed the optional property `slots/items/signups/items/vehicle/model/focus` from the response with the `200` status
+DELETE /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/filters/focus` from the response with the `200` status
+DELETE /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/focus` from the response with the `200` status
+DELETE /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/focus` from the response with the `200` status
+DELETE /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/focus` from the response with the `200` status
+GET /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/filters/focus` from the response with the `200` status
+GET /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/focus` from the response with the `200` status
+GET /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/focus` from the response with the `200` status
+GET /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/filters/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug} removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/cancel removed the optional property `allOf[subschema #2]/teams/items/ships/items/filters/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/cancel removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/cancel removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/cancel removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/complete removed the optional property `allOf[subschema #2]/teams/items/ships/items/filters/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/complete removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/complete removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/complete removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/focus` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/end-series removed the optional property `allOf[subschema #2]/teams/items/ships/items/filters/focus` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/end-series removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/focus` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/end-series removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/focus` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/end-series removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/lock-signups removed the optional property `allOf[subschema #2]/teams/items/ships/items/filters/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/lock-signups removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/lock-signups removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/lock-signups removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/publish removed the optional property `allOf[subschema #2]/teams/items/ships/items/filters/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/publish removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/publish removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/publish removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/focus` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/signup removed the optional property `vehicle/model/focus` from the response with the `201` status
+POST /fleets/{fleetSlug}/events/{slug}/skip-occurrence removed the optional property `allOf[subschema #2]/teams/items/ships/items/filters/focus` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/skip-occurrence removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/focus` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/skip-occurrence removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/focus` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/skip-occurrence removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/focus` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/split-series removed the optional property `allOf[subschema #2]/teams/items/ships/items/filters/focus` from the response with the `201` status
+POST /fleets/{fleetSlug}/events/{slug}/split-series removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/focus` from the response with the `201` status
+POST /fleets/{fleetSlug}/events/{slug}/split-series removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/focus` from the response with the `201` status
+POST /fleets/{fleetSlug}/events/{slug}/split-series removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/focus` from the response with the `201` status
+PUT /fleets/{fleetSlug}/events/{slug}/start removed the optional property `allOf[subschema #2]/teams/items/ships/items/filters/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/start removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/start removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/start removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/focus` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/sync-to-discord removed the optional property `allOf[subschema #2]/teams/items/ships/items/filters/focus` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/sync-to-discord removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/focus` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/sync-to-discord removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/focus` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/sync-to-discord removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/unarchive removed the optional property `allOf[subschema #2]/teams/items/ships/items/filters/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/unarchive removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/unarchive removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/unarchive removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/unlock-signups removed the optional property `allOf[subschema #2]/teams/items/ships/items/filters/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/unlock-signups removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/unlock-signups removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/events/{slug}/unlock-signups removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/focus` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/unskip-occurrence removed the optional property `allOf[subschema #2]/teams/items/ships/items/filters/focus` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/unskip-occurrence removed the optional property `allOf[subschema #2]/teams/items/ships/items/slots/items/signups/items/vehicle/model/focus` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/unskip-occurrence removed the optional property `allOf[subschema #2]/teams/items/slots/items/signups/items/vehicle/model/focus` from the response with the `200` status
+POST /fleets/{fleetSlug}/events/{slug}/unskip-occurrence removed the optional property `allOf[subschema #2]/unassignedSignups/items/vehicle/model/focus` from the response with the `200` status
+POST /fleets/{fleetSlug}/missions removed the optional property `allOf[subschema #2]/teams/items/ships/items/filters/focus` from the response with the `201` status
+POST /fleets/{fleetSlug}/missions/{missionSlug}/teams removed the optional property `ships/items/filters/focus` from the response with the `201` status
+PUT /fleets/{fleetSlug}/missions/{missionSlug}/teams/{id} removed the optional property `ships/items/filters/focus` from the response with the `200` status
+POST /fleets/{fleetSlug}/missions/{missionSlug}/teams/{missionTeamId}/ships removed the request property `focus`
+POST /fleets/{fleetSlug}/missions/{missionSlug}/teams/{missionTeamId}/ships removed the optional property `filters/focus` from the response with the `201` status
+PUT /fleets/{fleetSlug}/missions/{missionSlug}/teams/{missionTeamId}/ships/{id} removed the request property `focus`
+PUT /fleets/{fleetSlug}/missions/{missionSlug}/teams/{missionTeamId}/ships/{id} removed the optional property `filters/focus` from the response with the `200` status
+POST /fleets/{fleetSlug}/missions/{missionSlug}/teams/{missionTeamId}/ships/{id}/duplicate removed the optional property `filters/focus` from the response with the `201` status
+DELETE /fleets/{fleetSlug}/missions/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/filters/focus` from the response with the `200` status
+GET /fleets/{fleetSlug}/missions/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/filters/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/missions/{slug} removed the optional property `allOf[subschema #2]/teams/items/ships/items/filters/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/missions/{slug}/publish removed the optional property `allOf[subschema #2]/teams/items/ships/items/filters/focus` from the response with the `200` status
+PUT /fleets/{fleetSlug}/missions/{slug}/unarchive removed the optional property `allOf[subschema #2]/teams/items/ships/items/filters/focus` from the response with the `200` status
+GET /fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #1: Model]/focus` from the response with the `200` status
+GET /fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #2: VehiclePublic]/model/focus` from the response with the `200` status
+GET /hangar removed the optional property `items/items/model/focus` from the response with the `200` status
+GET /models removed the optional property `items/items/focus` from the response with the `200` status
+GET /models/embed removed the optional property `items/focus` from the response with the `200` status
+GET /models/latest removed the optional property `items/focus` from the response with the `200` status
+GET /models/with-docks removed the optional property `items/items/focus` from the response with the `200` status
+GET /models/{slug} removed the optional property `focus` from the response with the `200` status
+GET /models/{slug}/loaners removed the optional property `items/items/focus` from the response with the `200` status
+GET /models/{slug}/snub-crafts removed the optional property `items/focus` from the response with the `200` status
+GET /models/{slug}/variants removed the optional property `items/items/focus` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #1: Model]/focus` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles removed the optional property `items/items/anyOf[subschema #2: VehiclePublic]/model/focus` from the response with the `200` status
+GET /public/fleets/{fleetSlug}/vehicles/embed removed the optional property `items/model/focus` from the response with the `200` status
+GET /public/hangars/embed removed the optional property `items/model/focus` from the response with the `200` status
+GET /public/hangars/{username} removed the optional property `items/items/model/focus` from the response with the `200` status
+GET /public/hangars/{username}/vehicles/{id} removed the optional property `model/focus` from the response with the `200` status
+GET /public/wishlists/{username} removed the optional property `items/items/model/focus` from the response with the `200` status
+POST /vehicles removed the optional property `model/focus` from the response with the `201` status
+DELETE /vehicles/{id} removed the optional property `model/focus` from the response with the `200` status
+GET /vehicles/{id} removed the optional property `model/focus` from the response with the `200` status
+PUT /vehicles/{id} removed the optional property `model/focus` from the response with the `200` status
+GET /wishlist removed the optional property `items/items/model/focus` from the response with the `200` status

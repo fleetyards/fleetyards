@@ -3510,10 +3510,6 @@ components:
           type: string
         erkulIdentifier:
           type: string
-        focus:
-          type: string
-          deprecated: true
-          description: Use foci instead
         foci:
           type: array
           items:

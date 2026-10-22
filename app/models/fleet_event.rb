@@ -257,7 +257,6 @@ class FleetEvent < ApplicationRecord
             title: ship.title,
             description: ship.description,
             classification: ship.classification,
-            focus: ship.focus,
             foci: ship.foci,
             min_size: ship.min_size,
             max_size: ship.max_size,

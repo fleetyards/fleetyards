@@ -122,7 +122,7 @@ module ScData
 
       test "#load_model fills in what the matrix never said about a ship" do
         loader = ::ScData::Loader::ModelsLoader.new
-        model = create(:model, name: "Unlisted Test", focus: nil, classification: nil)
+        model = create(:model, name: "Unlisted Test", classification: nil)
 
         loader.stubs(:load_model_data).returns(
           {
@@ -137,7 +137,6 @@ module ScData
         loader.load_model(model)
         model.reload
 
-        assert_equal "Medium Freight / Gunship", model.focus
         assert_equal %w[gunship freight], model.foci
         assert_equal "Medium Freight / Gun Ship", model.sc_role
         assert_equal "multi", model.classification
@@ -146,7 +145,7 @@ module ScData
 
       test "#load_model keeps what the matrix or an admin already said" do
         loader = ::ScData::Loader::ModelsLoader.new
-        model = create(:model, name: "Listed Test", focus: "Gunship", foci: %w[gunship], classification: "combat", description: "Ours.")
+        model = create(:model, name: "Listed Test", foci: %w[gunship], classification: "combat", description: "Ours.")
 
         loader.stubs(:load_model_data).returns(
           {
@@ -161,7 +160,6 @@ module ScData
         loader.load_model(model)
         model.reload
 
-        assert_equal "Gunship", model.focus
         assert_equal %w[gunship], model.foci
         assert_equal "combat", model.classification
         assert_equal "Ours.", model.description
@@ -169,7 +167,7 @@ module ScData
 
       test "#load_model fills in nothing the export left as a placeholder" do
         loader = ::ScData::Loader::ModelsLoader.new
-        model = create(:model, name: "Placeholder Test", focus: nil, classification: nil)
+        model = create(:model, name: "Placeholder Test", classification: nil)
 
         loader.stubs(:load_model_data).returns(
           {
@@ -184,7 +182,7 @@ module ScData
         loader.load_model(model)
         model.reload
 
-        assert_nil model.focus
+        assert_empty model.foci
         assert_nil model.classification
         assert_nil model.description
       end
@@ -434,7 +432,7 @@ module ScData
 
       test "#load_model leaves the ship's own columns to the default environment" do
         loader = ::ScData::Loader::ModelsLoader.new
-        model = create(:model, name: "Ptu Fill Test", focus: nil)
+        model = create(:model, name: "Ptu Fill Test")
         loader.stubs(:default_environment?).returns(false)
 
         loader.stubs(:load_model_data).returns(
@@ -443,7 +441,7 @@ module ScData
 
         loader.load_model(model)
 
-        assert_nil model.reload.focus
+        assert_empty model.reload.foci
       end
 
       test "#load_model sizes a ship by the item sizes ours agrees with" do

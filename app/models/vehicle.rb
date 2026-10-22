@@ -236,7 +236,7 @@ class Vehicle < ApplicationRecord
     "modelPledgePrice asc", "modelPledgePrice desc", "modelPrice asc", "modelPrice desc",
     "modelScmSpeed asc", "modelScmSpeed desc", "modelMaxSpeed asc", "modelMaxSpeed desc",
     "modelGroundMaxSpeed asc", "modelGroundMaxSpeed desc", "modelProductionStatus asc",
-    "modelProductionStatus desc", "modelFocus asc", "modelFocus desc", "rank asc", "rank desc"
+    "modelProductionStatus desc", "rank asc", "rank desc"
   ]
 
   ransack_alias :search, :name_or_model_name_or_model_slug

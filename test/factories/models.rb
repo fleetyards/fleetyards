@@ -4,7 +4,6 @@ FactoryBot.define do
     beam { 27.75 }
     cargo { 96 }
     classification { "multi" }
-    focus { :combat }
     size { :large }
     height { 15.25 }
     active { true }

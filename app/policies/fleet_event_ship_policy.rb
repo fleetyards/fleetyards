@@ -12,7 +12,7 @@ class FleetEventShipPolicy < FleetBasePolicy
   params_filter do |params|
     params.permit(
       :title, :description, :model_id, :strict,
-      :classification, :focus, :min_size, :max_size, :min_crew, :min_cargo,
+      :classification, :min_size, :max_size, :min_crew, :min_cargo,
       foci: [], allowed_model_ids: []
     )
   end

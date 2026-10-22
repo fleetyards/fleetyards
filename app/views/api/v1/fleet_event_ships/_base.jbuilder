@@ -26,7 +26,6 @@ end
 
 json.filters do
   json.classification fleet_event_ship.classification
-  json.focus fleet_event_ship.focus
   json.foci fleet_event_ship.foci
   json.foci_labels Model.focus_labels(fleet_event_ship.foci)
   json.min_size fleet_event_ship.min_size
