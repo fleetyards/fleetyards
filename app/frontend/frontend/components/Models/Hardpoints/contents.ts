@@ -13,10 +13,9 @@ export const partContents = (hardpoint: Hardpoint): Hardpoint[] => {
     return hardpoint.hardpoints.filter((hp) => !isCosmetic(hp));
   }
 
-  if (
-    hardpoint.component?.hardpoints?.length &&
-    hardpoint.component.hardpoints[0].component
-  ) {
+  // Any fitted port counts, not only the first: a salvage filler station lists
+  // its empty refill and crate ports ahead of its cargo grid.
+  if (hardpoint.component?.hardpoints?.some((hp) => hp.component)) {
     return hardpoint.component.hardpoints.filter((hp) => !isCosmetic(hp));
   }
 
