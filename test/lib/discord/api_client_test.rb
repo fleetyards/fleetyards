@@ -7,6 +7,11 @@ module Discord
   class ApiClientTest < ActiveSupport::TestCase
     MEMBER_URL = "https://discord.com/api/v10/guilds/100000000000000001/members/200000000000000001"
 
+    # Manage Events lets the bot edit a scheduled event but not create one.
+    test "an install grants Create Events" do
+      assert ApiClient::INSTALL_PERMISSIONS.anybits?(1 << 44)
+    end
+
     test "a client without a timeout retries a rate limit" do
       stub_request(:get, MEMBER_URL)
         .to_return({status: 429, headers: {"Retry-After" => "0"}}, {status: 200, body: {roles: []}.to_json})

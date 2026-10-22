@@ -981,7 +981,8 @@
           },
           "syncToDiscord": {
             "success": "Événement envoyé vers Discord.",
-            "failure": "Impossible d'envoyer l'événement vers Discord."
+            "failure": "Impossible d'envoyer l'événement vers Discord.",
+            "discord_missing_permissions": "Discord a refusé : il manque au bot une permission dont il a besoin sur votre serveur. Les paramètres Discord de la flotte indiquent laquelle."
           },
           "destroy": {
             "success": "Événement supprimé.",
