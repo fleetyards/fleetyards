@@ -67,7 +67,6 @@ const model = computed(
       productionStatus: "flight-ready",
       onSale: false,
       inGame: true,
-      focus: "Multi-Role",
       manufacturer: { name: "Roberts Space Industries" },
       media: { storeImage: { url: storeImage, mediumUrl: storeImage } },
       crew: { value: 6, label: "6" },
