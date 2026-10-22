@@ -235,9 +235,13 @@ const vehicleOverviewVisible = computed(
   () => props.editable && isFeatureEnabled(FeatureFlagName.VEHICLE_OVERVIEW),
 );
 
-// The vehicle page carries these as tabs and header buttons already.
+// The vehicle page carries these as tabs and header buttons already. A loaner
+// has no page of its own.
 const pageShortcutsVisible = computed(
-  () => vehicleOverviewVisible.value && !props.onVehiclePage,
+  () =>
+    vehicleOverviewVisible.value &&
+    !props.onVehiclePage &&
+    !props.vehicle.loaner,
 );
 
 // A wishlist ship takes no new log entries.
@@ -258,7 +262,11 @@ const cargoRoute = computed(() =>
 );
 
 const loadoutsVisible = computed(
-  () => props.editable && !props.onVehiclePage && props.vehicle.model?.inGame,
+  () =>
+    props.editable &&
+    !props.onVehiclePage &&
+    !props.vehicle.loaner &&
+    props.vehicle.model?.inGame,
 );
 
 const cargoVisible = computed(
@@ -266,6 +274,7 @@ const cargoVisible = computed(
     props.editable &&
     !props.onVehiclePage &&
     !props.wishlist &&
+    !props.vehicle.loaner &&
     props.vehicle.model?.inGame &&
     isFeatureEnabled(FeatureFlagName.SHIP_INVENTORIES),
 );

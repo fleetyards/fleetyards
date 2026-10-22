@@ -102,6 +102,15 @@ watch(
   (current) => {
     if (!current || !route.params.segment) return;
 
+    // A loaner comes with its parent ship and has no page of its own.
+    if (current.loaner) {
+      void router.replace({
+        name: "ship",
+        params: { slug: current.model.slug },
+      });
+      return;
+    }
+
     const username =
       sessionStore.currentUser?.username ?? String(route.params.username);
     const canonical = vehicleSegment(current);
@@ -163,12 +172,12 @@ const crumbs = computed<Crumb[]>(() => [
     <template #resolved>
       <BreadCrumbs :crumbs="crumbs" />
       <VehicleHero
-        v-if="vehicle && heroVisible"
+        v-if="vehicle && !vehicle.loaner && heroVisible"
         :vehicle="vehicle"
         :compact="!onOverview"
       />
       <TabNavView
-        v-if="vehicle"
+        v-if="vehicle && !vehicle.loaner"
         :routes="tabs"
         :authenticated="sessionStore.isAuthenticated"
         :horizontal="heroVisible"
