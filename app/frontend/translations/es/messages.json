@@ -4,6 +4,7 @@
       "plaqueTool": {
         "attached": "%{vehicle} lleva ahora la placa.",
         "hangarFailure": "No se pudo cargar tu hangar.",
+        "createFailure": "No se pudo añadir la nave a tu hangar.",
         "replaceConfirm": "Esta nave ya tiene una placa. ¿Reemplazarla?"
       },
       "blueprint": {

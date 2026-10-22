@@ -13,6 +13,8 @@ import PlaqueCapture from "@/frontend/components/Vehicles/PlaqueCapture/index.vu
 import { type PlaqueLines } from "@/frontend/components/Vehicles/PlaqueAttachModal/types";
 import { usePlaqueImageUpload } from "@/frontend/composables/usePlaqueImageUpload";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
+import { useHangarStore } from "@/frontend/stores/hangar";
+import { gameSerial } from "@/frontend/utils/vehicleSegment";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -27,10 +29,15 @@ type Props = {
   model: Model;
   lines: PlaqueLines;
   captain?: string;
+  // The name and registry written in the tool, for a ship added from here.
+  name?: string;
+  serial?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   captain: undefined,
+  name: undefined,
+  serial: undefined,
 });
 
 const { t } = useI18n();
@@ -83,38 +90,49 @@ const selected = computed(() =>
   vehicles.value.find((vehicle) => vehicle.id === selectedId.value),
 );
 
-// The plaque as the picked ship will carry it: its own name and registry, the
-// tool's lines.
-const attached = computed<Vehicle | undefined>(() =>
-  selected.value ? { ...selected.value, ...props.lines } : undefined,
-);
+// A ship added from here, before the hangar list knows it.
+const created = ref<Vehicle>();
+
+// The plaque as the ship will carry it: its own name and registry, the tool's
+// lines.
+const attached = computed<Vehicle | undefined>(() => {
+  const target = created.value ?? selected.value;
+
+  return target ? { ...target, ...props.lines } : undefined;
+});
 
 const capture = ref<InstanceType<typeof PlaqueCapture>>();
 
 const mutation = useUpdateVehicle();
-const { invalidateHangarQueries, invalidateVehiclePage } =
+const { invalidateHangarQueries, invalidateVehiclePage, useCreateMutation } =
   useVehicleMutations();
+const createMutation = useCreateMutation();
+const hangarStore = useHangarStore();
 
 const { capturing, upload } = usePlaqueImageUpload((signedId) =>
   mutation.mutateAsync({
-    id: selectedId.value!,
+    id: attached.value!.id,
     data: { plaqueImage: signedId },
   }),
 );
 
-const saving = computed(() => mutation.isPending.value || capturing.value);
+const saving = computed(
+  () =>
+    mutation.isPending.value ||
+    createMutation.isPending.value ||
+    capturing.value,
+);
 
-const save = async () => {
-  if (!selected.value || saving.value) {
-    return;
-  }
-
+const attach = async (target: Vehicle) => {
   try {
     const vehicle = await mutation.mutateAsync({
-      id: selected.value.id,
+      id: target.id,
       data: { ...props.lines },
     });
 
+    // The picture is drawn from the off-screen plaque, which needs a tick to
+    // show a ship added a moment ago.
+    await nextTick();
     await upload(capture.value?.plaque());
 
     void invalidateHangarQueries();
@@ -130,6 +148,39 @@ const save = async () => {
     displayAlert({ text: t("messages.vehiclePlaque.failure") });
   }
 };
+
+const save = async () => {
+  if (!selected.value || saving.value) {
+    return;
+  }
+
+  await attach(selected.value);
+};
+
+// The plaque's name goes with the new ship; its registry only where it is one
+// the game would print, as the hangar takes no other.
+const createAndAttach = async () => {
+  if (saving.value) {
+    return;
+  }
+
+  try {
+    created.value = await createMutation.mutateAsync({
+      data: {
+        modelId: props.model.id,
+        name: props.name || null,
+        serial: gameSerial(props.serial) ?? null,
+      },
+    });
+  } catch {
+    displayAlert({ text: t("messages.plaqueTool.createFailure") });
+    return;
+  }
+
+  hangarStore.add(props.model.slug);
+
+  await attach(created.value);
+};
 </script>
 
 <template>
@@ -139,13 +190,14 @@ const save = async () => {
       <p class="text-muted">{{ t("messages.plaqueTool.hangarFailure") }}</p>
       <Btn @click="refetch()">{{ t("actions.retry") }}</Btn>
     </div>
-    <p
-      v-else-if="!vehicles.length"
-      class="text-muted"
-      data-test="plaque-attach-empty"
-    >
-      {{ t("texts.plaqueTool.noShips", { model: model.name }) }}
-    </p>
+    <div v-else-if="!vehicles.length" data-test="plaque-attach-empty">
+      <p class="text-muted">
+        {{ t("texts.plaqueTool.noShips", { model: model.name }) }}
+      </p>
+      <p v-if="model.playerOwnable">
+        {{ t("texts.plaqueTool.addShip", { model: model.name }) }}
+      </p>
+    </div>
     <template v-else>
       <p>{{ t("texts.plaqueTool.attachIntro") }}</p>
       <RadioList
@@ -162,6 +214,16 @@ const save = async () => {
 
     <template #footer>
       <Btn
+        v-if="!isLoading && !isError && !vehicles.length && model.playerOwnable"
+        :loading="saving"
+        data-test="plaque-attach-create"
+        @click="createAndAttach"
+      >
+        <i class="fa-duotone fa-plus" />
+        {{ t("actions.plaqueTool.addShip", { model: model.name }) }}
+      </Btn>
+      <Btn
+        v-else
         :disabled="!selected"
         :loading="saving"
         :confirm="

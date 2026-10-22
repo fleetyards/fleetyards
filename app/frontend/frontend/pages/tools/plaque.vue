@@ -214,7 +214,13 @@ const attach = handleSubmit(() => {
   comlink.emit("open-modal", {
     component: () =>
       import("@/frontend/components/Vehicles/PlaqueAttachModal/index.vue"),
-    props: { model: model.value, lines: lines.value, captain: captain.value },
+    props: {
+      model: model.value,
+      lines: lines.value,
+      captain: captain.value,
+      name: name.value,
+      serial: serial.value,
+    },
   });
 });
 </script>

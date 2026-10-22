@@ -436,7 +436,8 @@
         "pickShip": "Wähle ein Schiff, um seine Plakette zu zeichnen.",
         "signIn": "Melde dich an, um diese Plakette an einem Schiff in deinem Hangar anzubringen.",
         "noShips": "In deinem Hangar ist kein Schiff vom Typ %{model}, an dem die Plakette angebracht werden kann.",
-        "attachIntro": "Die Plakette kommt an das Schiff, das du wählst, unter dessen eigenem Namen und Kennung."
+        "attachIntro": "Die Plakette kommt an das Schiff, das du wählst, unter dessen eigenem Namen und Kennung.",
+        "addShip": "Füge eines hinzu, und es bekommt die Plakette, unter dem Namen und der Kennung, die du ihr gegeben hast."
       }
     }
   }

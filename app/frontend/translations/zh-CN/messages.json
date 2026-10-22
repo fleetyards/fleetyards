@@ -4,6 +4,7 @@
       "plaqueTool": {
         "attached": "%{vehicle} 现已带有此铭牌。",
         "hangarFailure": "无法加载你的机库。",
+        "createFailure": "无法将这艘舰船加入你的机库。",
         "replaceConfirm": "这艘舰船已有铭牌。要替换吗？"
       },
       "blueprint": {

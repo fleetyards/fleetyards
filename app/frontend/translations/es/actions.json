@@ -629,7 +629,8 @@
         "createInventory": "Crear un inventario"
       },
       "plaqueTool": {
-        "attach": "Guardar en el hangar"
+        "attach": "Guardar en el hangar",
+        "addShip": "Añadir %{model} a mi hangar"
       }
     }
   }

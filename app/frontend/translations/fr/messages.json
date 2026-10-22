@@ -4,6 +4,7 @@
       "plaqueTool": {
         "attached": "%{vehicle} porte maintenant la plaque.",
         "hangarFailure": "Ton hangar n'a pas pu être chargé.",
+        "createFailure": "Le vaisseau n'a pas pu être ajouté à ton hangar.",
         "replaceConfirm": "Ce vaisseau a déjà une plaque. La remplacer ?"
       },
       "blueprint": {

@@ -4,6 +4,7 @@
       "plaqueTool": {
         "attached": "%{vehicle} trägt jetzt die Plakette.",
         "hangarFailure": "Dein Hangar konnte nicht geladen werden.",
+        "createFailure": "Das Schiff konnte deinem Hangar nicht hinzugefügt werden.",
         "replaceConfirm": "Dieses Schiff hat bereits eine Plakette. Ersetzen?"
       },
       "blueprint": {

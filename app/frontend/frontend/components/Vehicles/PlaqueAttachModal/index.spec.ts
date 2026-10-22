@@ -12,6 +12,7 @@ const model = {
   name: "Corsair",
   slug: "corsair",
   media: {},
+  playerOwnable: true,
   manufacturer: {
     name: "Drake",
     slug: "drake",
@@ -64,10 +65,13 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   useUpdateVehicle: () => ({ mutateAsync, isPending: ref(false) }),
 }));
 
+const create = vi.fn(() => Promise.resolve(vehicle({ id: "vehicle-new" })));
+
 vi.mock("@/frontend/composables/useVehicleMutations", () => ({
   useVehicleMutations: () => ({
     invalidateHangarQueries: vi.fn(),
     invalidateVehiclePage: vi.fn(),
+    useCreateMutation: () => ({ mutateAsync: create, isPending: ref(false) }),
   }),
 }));
 
@@ -90,9 +94,9 @@ vi.mock("@/shared/composables/useAppNotifications", () => ({
   }),
 }));
 
-const mount = () =>
+const mount = (props: { name?: string; serial?: string } = {}) =>
   mountWithDefaults<typeof Component>(Component, {
-    props: { model, lines, captain: "torlek" },
+    props: { model, lines, captain: "torlek", ...props },
   });
 
 describe("VehiclePlaqueAttachModal", () => {
@@ -100,6 +104,7 @@ describe("VehiclePlaqueAttachModal", () => {
     hangarItems.value = [];
     hangarFailed.value = false;
     mutateAsync.mockClear();
+    create.mockClear();
     upload.mockClear();
     displayConfirm.mockClear();
     displaySuccess.mockClear();
@@ -115,15 +120,18 @@ describe("VehiclePlaqueAttachModal", () => {
     );
   });
 
-  it("says so when there is no ship to put the plaque on", async () => {
+  it("offers to add the ship when there is none to put the plaque on", async () => {
     const wrapper = await mount();
 
     expect(wrapper.find('[data-test="plaque-attach-empty"]').text()).toContain(
       "Corsair",
     );
-    expect(
-      wrapper.find('[data-test="plaque-attach-save"]').attributes("disabled"),
-    ).toBeDefined();
+    expect(wrapper.find('[data-test="plaque-attach-save"]').exists()).toBe(
+      false,
+    );
+    expect(wrapper.find('[data-test="plaque-attach-create"]').exists()).toBe(
+      true,
+    );
   });
 
   it("tells a failed hangar request from an empty one", async () => {
@@ -185,5 +193,32 @@ describe("VehiclePlaqueAttachModal", () => {
     expect(mutateAsync).toHaveBeenCalledWith(
       expect.objectContaining({ id: "vehicle-2" }),
     );
+  });
+
+  it("adds the ship when there is none, and puts the plaque on it", async () => {
+    const wrapper = await mount({ name: "Jolly Roger", serial: "jr0001aa" });
+
+    await wrapper.find('[data-test="plaque-attach-create"]').trigger("click");
+    await flushPromises();
+
+    expect(create).toHaveBeenCalledWith({
+      data: { modelId: "model-1", name: "Jolly Roger", serial: "JR-0001-AA" },
+    });
+    expect(mutateAsync).toHaveBeenCalledWith({
+      id: "vehicle-new",
+      data: lines,
+    });
+    expect(upload).toHaveBeenCalled();
+  });
+
+  it("leaves a registry the game would not print off the new ship", async () => {
+    const wrapper = await mount({ serial: "NCC-1701" });
+
+    await wrapper.find('[data-test="plaque-attach-create"]').trigger("click");
+    await flushPromises();
+
+    expect(create).toHaveBeenCalledWith({
+      data: { modelId: "model-1", name: null, serial: null },
+    });
   });
 });
