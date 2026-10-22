@@ -20,6 +20,13 @@ class HangarPlan < ApplicationRecord
   validates :name, presence: true, length: {maximum: 100}, uniqueness: {scope: :user_id}
   validates :description, length: {maximum: 2000}
   validates :starting_credit, numericality: {greater_than_or_equal_to: 0}
+  validates :buyback_tokens, numericality: {only_integer: true, greater_than_or_equal_to: 0}, allow_nil: true
+  validates :vat_rate, numericality: {greater_than_or_equal_to: 0, less_than_or_equal_to: 100}, allow_nil: true
+
+  # What the user said, else what their last buy-back sync read from RSI.
+  def available_buyback_tokens
+    buyback_tokens || user&.rsi_buyback_tokens || 0
+  end
   validate :plan_limit, on: :create
 
   before_validation -> { self.based_on_at ||= Time.current }

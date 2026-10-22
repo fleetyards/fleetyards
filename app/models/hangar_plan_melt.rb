@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
-# A ship of the live hangar the plan melts for store credit. What the user paid
-# is unknown, so the credit is estimated from today's store price unless they
-# enter it.
+# A ship of the live hangar the plan melts for store credit. Melting credits
+# what the pledge is worth, which the hangar sync reads from RSI; a ship synced
+# before that, or added by hand, falls back to today's store price as an
+# estimate, unless the user enters what they paid.
 class HangarPlanMelt < ApplicationRecord
   belongs_to :hangar_plan, touch: true
   belongs_to :vehicle, optional: true
@@ -16,7 +17,7 @@ class HangarPlanMelt < ApplicationRecord
   before_create -> { self.value_snapshot ||= list_value }
 
   def list_value
-    model&.pledge_price
+    vehicle&.rsi_pledge_melt_value || model&.pledge_price
   end
 
   def value
@@ -28,7 +29,7 @@ class HangarPlanMelt < ApplicationRecord
   end
 
   def estimated?
-    value_override.nil?
+    value_override.nil? && vehicle&.rsi_pledge_melt_value.nil?
   end
 
   def vehicle_missing?

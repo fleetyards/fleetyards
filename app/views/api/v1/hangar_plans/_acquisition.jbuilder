@@ -11,6 +11,7 @@ json.start_model do
 end
 json.price_override acquisition.price_override&.to_f
 json.price acquisition.price&.to_f
+json.uses_buyback_token acquisition.uses_buyback_token
 json.source_missing acquisition.source_missing?
 json.steps do
   json.array! acquisition.upgrade_steps do |step|

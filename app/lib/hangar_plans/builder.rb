@@ -49,7 +49,7 @@ module HangarPlans
     # Routes and melts reference the user's own ships and pledges, so a copy
     # keeps them; they stay one-per-plan, which a copy is.
     private def copy_plan
-      plan.update!(starting_credit: source_plan.starting_credit, based_on_at: source_plan.based_on_at)
+      plan.update!(source_plan.slice(:starting_credit, :buyback_tokens, :vat_rate, :based_on_at))
 
       source_plan.slots.includes(candidates: {acquisitions: :upgrade_steps}).each do |source_slot|
         slot = plan.slots.create!(source_slot.slice(:label, :description, :filters, :quantity, :position))
@@ -71,7 +71,8 @@ module HangarPlans
     # longer has would otherwise fail a copy the user only asked to duplicate.
     private def copy_acquisition(source, candidate)
       acquisition = plan.acquisitions.new(
-        source.slice(:start_kind, :source_vehicle_id, :buyback_pledge_id, :start_model_id, :price_override, :price_snapshot)
+        source.slice(:start_kind, :source_vehicle_id, :buyback_pledge_id, :start_model_id, :price_override, :price_snapshot,
+          :uses_buyback_token)
           .merge(candidate:)
       )
       acquisition.save!(validate: false)
@@ -79,7 +80,7 @@ module HangarPlans
       source.upgrade_steps.each do |step|
         acquisition.upgrade_steps.new(
           step.slice(:source_kind, :from_model_id, :to_model_id, :hangar_pledge_item_id, :buyback_pledge_id,
-            :position, :price_override, :price_snapshot).merge(hangar_plan: plan)
+            :position, :price_override, :price_snapshot, :uses_buyback_token).merge(hangar_plan: plan)
         ).save!(validate: false)
       end
     end

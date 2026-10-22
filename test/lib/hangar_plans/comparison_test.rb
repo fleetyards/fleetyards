@@ -39,7 +39,7 @@ class HangarPlans::ComparisonTest < ActiveSupport::TestCase
     assert_equal ["unassigned"], HangarPlans::Comparison.new(@plan).vehicles.map(&:status)
   end
 
-  test "model counts change between the hangar and the plan's decided slots" do
+  test "model counts change between the hangar and the hangar after the plan" do
     create(:vehicle, user: @user, model: @cutlass)
     create(:vehicle, user: @user, model: @constellation)
     slot_for(@carrack)
@@ -50,7 +50,19 @@ class HangarPlans::ComparisonTest < ActiveSupport::TestCase
 
     changes = HangarPlans::Comparison.new(@plan).models.to_h { |diff| [diff.model.name, diff.change] }
 
-    assert_equal({"Carrack" => "added", "Constellation Andromeda" => "removed", "Cutlass Black" => "more"}, changes)
+    # The Constellation is in no slot and not melted, so it stays; the Cutlass
+    # left out fills one of the two Cutlass units, which still have no route.
+    assert_equal({"Carrack" => "added", "Constellation Andromeda" => "unchanged", "Cutlass Black" => "more"}, changes)
+  end
+
+  test "a melted ship goes, and one the plan leaves alone stays" do
+    melted = create(:vehicle, user: @user, model: @constellation)
+    create(:vehicle, user: @user, model: @cutlass)
+    @plan.melts.create!(vehicle: melted)
+
+    diffs = HangarPlans::Comparison.new(@plan).models.to_h { |diff| [diff.model.name, [diff.left_count, diff.right_count]] }
+
+    assert_equal({"Constellation Andromeda" => [1, 0], "Cutlass Black" => [1, 1]}, diffs)
   end
 
   test "units of a decided slot without a route are gaps" do

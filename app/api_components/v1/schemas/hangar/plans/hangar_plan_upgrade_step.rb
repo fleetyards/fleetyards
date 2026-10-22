@@ -17,11 +17,12 @@ module V1
               hangarPledgeItemId: {type: [:string, :null], format: :uuid},
               buybackPledgeId: {type: [:string, :null], format: :uuid},
               priceOverride: {type: [:number, :null]},
+              usesBuybackToken: {type: :boolean, description: "Pays for this buy-back with store credit, which spends one of the user's buy-back tokens"},
               price: {type: [:number, :null], description: "In USD; null when a store price is unknown"},
               sourceMissing: {type: :boolean}
             },
             additionalProperties: false,
-            required: %w[id sourceKind fromModel toModel sourceMissing]
+            required: %w[id sourceKind fromModel toModel sourceMissing usesBuybackToken]
           })
         end
       end

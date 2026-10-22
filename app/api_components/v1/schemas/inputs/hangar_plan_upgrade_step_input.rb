@@ -14,7 +14,8 @@ module V1
             toModelId: {type: :string, format: :uuid},
             hangarPledgeItemId: {type: [:string, :null], format: :uuid},
             buybackPledgeId: {type: [:string, :null], format: :uuid},
-            priceOverride: {type: [:number, :null], minimum: 0}
+            priceOverride: {type: [:number, :null], minimum: 0},
+            usesBuybackToken: {type: :boolean}
           },
           required: %w[sourceKind toModelId],
           additionalProperties: false

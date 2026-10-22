@@ -114,7 +114,7 @@ module Api
       end
 
       private def hangar_plan_params
-        params.permit(:name, :description, :starting_credit)
+        params.permit(:name, :description, :starting_credit, :buyback_tokens, :vat_rate)
       end
     end
   end

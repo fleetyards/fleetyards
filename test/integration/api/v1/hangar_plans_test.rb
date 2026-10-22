@@ -116,9 +116,11 @@ class Api::V1::HangarPlansTest < ActionDispatch::IntegrationTest
   test "POST /hangar/plans creates an empty plan" do
     sign_in @user
 
-    assert_api_response :post, 201, api_path: "/hangar/plans", body: {name: "Mining", startingCredit: 120} do
+    assert_api_response :post, 201, api_path: "/hangar/plans", body: {name: "Mining", startingCredit: 120, buybackTokens: 2, vatRate: 19} do
       assert_equal "Mining", parsed_body["name"]
       assert_in_delta 120.0, parsed_body["startingCredit"]
+      assert_equal 2, parsed_body["buybackTokens"]
+      assert_in_delta 19.0, parsed_body["vatRate"]
       assert_empty parsed_body["slots"]
     end
   end

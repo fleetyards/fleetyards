@@ -212,8 +212,36 @@ class Api::V1::HangarPlanReportsTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, api_path: "/hangar/plans/{id}/resources", path_params: {id: @plan.id} do
       assert_equal [[@owned.id, "acquisition"]], parsed_body["vehicles"].map { |entry| [entry["id"], entry["usedBy"]] }
+      assert_nil parsed_body.dig("vehicles", 0, "meltable")
       assert_equal "Carrack", parsed_body.dig("upgrades", 0, "toModel", "name")
       assert_equal [false], parsed_body["buybacks"].pluck("used")
+      assert_equal ["Carrack"], parsed_body.dig("buybacks", 0, "models").pluck("name")
+    end
+  end
+
+  test "GET resources lists the store's priced ships, cheapest first" do
+    create(:model, name: "Unpriced", pledge_price: nil)
+    create(:model, name: "Hidden", pledge_price: 50, hidden: true)
+
+    assert_api_response :get, 200, api_path: "/hangar/plans/{id}/resources", path_params: {id: @plan.id} do
+      assert_equal [["Cutlass Black", 100.0], ["Carrack", 600.0]],
+        parsed_body["storeModels"].map { |model| [model["name"], model["pledgePrice"]] }
+    end
+  end
+
+  test "GET resources names the ships a buy-back returns, and lists only ships, packages and upgrades" do
+    create(:buyback_pledge, user: @user, kind: "package", name: "Explorer Pack", ship_names: ["Carrack", "Cutlass Black"], lifetime_insurance: true)
+    create(:buyback_pledge, user: @user, name: "Standalone Ship - Cutlass Black", upgraded: true, contained: "Carrack")
+    create(:buyback_pledge, user: @user, kind: "other", name: "Origin 325a Fighter")
+    create(:buyback_pledge, user: @user, kind: "paint", name: "Cutlass Black - Groundswell Paint")
+
+    assert_api_response :get, 200, api_path: "/hangar/plans/{id}/resources", path_params: {id: @plan.id} do
+      models = parsed_body["buybacks"].to_h { |entry| [entry["name"], entry["models"].pluck("name")] }
+      assert_equal ["Explorer Pack", "Standalone Ship - Cutlass Black"], models.keys.sort
+      assert_equal ["Carrack", "Cutlass Black"], models["Explorer Pack"].sort
+      assert_equal ["Cutlass Black"], models["Standalone Ship - Cutlass Black"]
+      assert_equal({"Explorer Pack" => true, "Standalone Ship - Cutlass Black" => false},
+        parsed_body["buybacks"].to_h { |entry| [entry["name"], entry["lifetimeInsurance"]] })
     end
   end
 end

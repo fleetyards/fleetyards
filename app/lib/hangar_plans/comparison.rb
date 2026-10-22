@@ -59,7 +59,7 @@ module HangarPlans
     end
 
     def models
-      self.class.diff(live_vehicles.map(&:model), Metrics.plan_models(plan))
+      self.class.diff(live_vehicles.map(&:model), after_models)
     end
 
     def gaps
@@ -73,7 +73,27 @@ module HangarPlans
     end
 
     def metrics
-      {live: Metrics.for(live_vehicles.map(&:model)), plan: Metrics.for(Metrics.plan_models(plan))}
+      {live: Metrics.for(live_vehicles.map(&:model)), plan: Metrics.for(after_models)}
+    end
+
+    # The hangar once the plan is carried out: the ships its decided slots hold,
+    # and every ship the plan neither uses nor melts, which stays. A ship left
+    # out fills a unit of its own model that has no route yet, rather than being
+    # counted twice.
+    private def after_models
+      @after_models ||= begin
+        open_units = gaps.each_with_object(Hash.new(0)) { |gap, units| units[gap.model.id] += gap.count }
+        left_out = vehicles.select { |entry| entry.status == "unassigned" }.map { |entry| entry.vehicle.model }
+
+        staying = left_out.reject do |model|
+          next false unless open_units[model.id].positive?
+
+          open_units[model.id] -= 1
+          true
+        end
+
+        Metrics.plan_models(plan) + staying
+      end
     end
 
     # Routes on a slot that has not picked its ship yet say nothing about what

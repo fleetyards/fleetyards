@@ -14,4 +14,5 @@ unless local_assigns[:public_view]
 end
 json.price_override step.price_override&.to_f
 json.price step.price&.to_f
+json.uses_buyback_token step.uses_buyback_token
 json.source_missing step.source_missing?

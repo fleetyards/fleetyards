@@ -16,6 +16,10 @@ module V1
               meltCredit: {type: :number},
               startingCredit: {type: :number},
               creditTotal: {type: :number},
+              buybackCash: {type: :number, description: "Buy-backs paid in new money: RSI takes store credit for one only against a buy-back token"},
+              buybacksWithoutTokenCount: {type: :integer},
+              buybackTokensUsed: {type: :integer, description: "Buy-backs the user marked to pay with store credit"},
+              buybackTokensAvailable: {type: :integer, description: "Buy-back tokens the plan counts with: its own figure, else what the last buy-back sync read"},
               netMin: {type: :number},
               netMax: {type: :number},
               cashNeededMin: {type: :number},
@@ -30,7 +34,7 @@ module V1
               complete: {type: :boolean}
             },
             additionalProperties: false,
-            required: %w[spendMin spendMax meltCredit startingCredit creditTotal netMin netMax cashNeededMin cashNeededMax remainingCreditMin remainingCreditMax estimatedMeltsCount openSlotsCount decidedSlotsCount undecidedSlotsCount unresolvedCount complete]
+            required: %w[spendMin spendMax meltCredit startingCredit creditTotal buybackCash buybacksWithoutTokenCount buybackTokensUsed buybackTokensAvailable netMin netMax cashNeededMin cashNeededMax remainingCreditMin remainingCreditMax estimatedMeltsCount openSlotsCount decidedSlotsCount undecidedSlotsCount unresolvedCount complete]
           })
         end
       end

@@ -24,7 +24,9 @@ module Api
       end
 
       def update
-        @acquisition.assign_attributes(params.permit(:price_override))
+        @acquisition.assign_attributes(
+          params.permit(:start_kind, :source_vehicle_id, :buyback_pledge_id, :start_model_id, :price_override, :uses_buyback_token)
+        )
 
         steps = params.key?(:steps) ? params.fetch(:steps, []) : nil
         if save_with_steps(@acquisition, steps)
@@ -45,7 +47,7 @@ module Api
       end
 
       private def acquisition_params
-        params.permit(:start_kind, :source_vehicle_id, :buyback_pledge_id, :start_model_id, :price_override)
+        params.permit(:start_kind, :source_vehicle_id, :buyback_pledge_id, :start_model_id, :price_override, :uses_buyback_token)
       end
 
       # The old chain goes before the new one is checked: a step that spends an
@@ -70,7 +72,8 @@ module Api
         previous_model_id = acquisition.start_model_id || acquisition.source_vehicle&.model_id
 
         Array(steps).each_with_index do |step, index|
-          step = step.permit(:source_kind, :from_model_id, :to_model_id, :hangar_pledge_item_id, :buyback_pledge_id, :price_override)
+          step = step.permit(:source_kind, :from_model_id, :to_model_id, :hangar_pledge_item_id, :buyback_pledge_id, :price_override,
+            :uses_buyback_token)
           built = acquisition.upgrade_steps.build(step.merge(position: index, hangar_plan: @hangar_plan))
           built.from_model_id ||= previous_model_id
           previous_model_id = built.to_model_id

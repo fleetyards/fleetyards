@@ -22753,6 +22753,10 @@ components:
           type: integer
         lifetimeInsurance:
           type: boolean
+        insuranceKnown:
+          type: boolean
+          description: False until the pledge's details are synced, so no insurance
+            listed is not yet none
         createdAt:
           type: string
           format: date-time
@@ -22768,6 +22772,7 @@ components:
       - upgraded
       - available
       - lifetimeInsurance
+      - insuranceKnown
       - createdAt
       - updatedAt
       title: BuybackPledge
@@ -33211,6 +33216,24 @@ components:
           format: date-time
         startingCredit:
           type: number
+        buybackTokens:
+          type:
+          - integer
+          - 'null'
+          description: Buy-back tokens the user holds; each lets one buy-back be paid
+            with store credit. Null uses what the last buy-back sync read
+        vatRate:
+          type:
+          - number
+          - 'null'
+          description: VAT in percent that RSI adds to new money; store credit carries
+            none
+        syncedBuybackTokens:
+          type:
+          - integer
+          - 'null'
+          description: The buy-back tokens the user's last buy-back sync read from
+            RSI
         shared:
           type: boolean
         shareToken:
@@ -33239,6 +33262,9 @@ components:
       - name
       - basedOnAt
       - startingCredit
+      - buybackTokens
+      - vatRate
+      - syncedBuybackTokens
       - shared
       - slotsCount
       - slots
@@ -33279,6 +33305,10 @@ components:
           description: What starting this way costs in USD; null when unknown
         sourceMissing:
           type: boolean
+        usesBuybackToken:
+          type: boolean
+          description: Pays for this buy-back with store credit, which spends one
+            of the user's buy-back tokens
         steps:
           type: array
           items:
@@ -33289,6 +33319,7 @@ components:
       - startKind
       - startModel
       - sourceMissing
+      - usesBuybackToken
       - steps
       title: HangarPlanAcquisition
     HangarPlanAcquisitionCreateInput:
@@ -33319,6 +33350,8 @@ components:
           - number
           - 'null'
           minimum: 0
+        usesBuybackToken:
+          type: boolean
         steps:
           type: array
           items:
@@ -33331,11 +33364,30 @@ components:
     HangarPlanAcquisitionUpdateInput:
       type: object
       properties:
+        startKind:
+          "$ref": "#/components/schemas/HangarPlanStartKindEnum"
+        sourceVehicleId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        buybackPledgeId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        startModelId:
+          type:
+          - string
+          - 'null'
+          format: uuid
         priceOverride:
           type:
           - number
           - 'null'
           minimum: 0
+        usesBuybackToken:
+          type: boolean
         steps:
           type: array
           items:
@@ -33358,6 +33410,23 @@ components:
           - 'null'
         used:
           type: boolean
+        lifetimeInsurance:
+          type: boolean
+        insuranceMonths:
+          type:
+          - integer
+          - 'null'
+          description: Unknown until the pledge's details are synced
+        insuranceKnown:
+          type: boolean
+          description: False until the pledge's details are synced, so no insurance
+            listed is not yet none
+        models:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanModel"
+          description: The ships buying the pledge back returns, where their names
+            are known
         upgradeFromModel:
           "$ref": "#/components/schemas/HangarPlanModel"
         upgradeToModel:
@@ -33368,6 +33437,9 @@ components:
       - name
       - kind
       - used
+      - lifetimeInsurance
+      - insuranceKnown
+      - models
       title: HangarPlanBuybackResource
     HangarPlanCandidate:
       type: object
@@ -33575,6 +33647,17 @@ components:
           - 'null'
         startingCredit:
           type: number
+          minimum: 0
+        vatRate:
+          type:
+          - number
+          - 'null'
+          minimum: 0
+          maximum: 100
+        buybackTokens:
+          type:
+          - integer
+          - 'null'
           minimum: 0
         source:
           "$ref": "#/components/schemas/HangarPlanSourceEnum"
@@ -33937,11 +34020,17 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/HangarPlanBuybackResource"
+        storeModels:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanModel"
+          description: Every ship the pledge store prices, cheapest first
       additionalProperties: false
       required:
       - vehicles
       - upgrades
       - buybacks
+      - storeModels
       title: HangarPlanResources
     HangarPlanSlot:
       type: object
@@ -34196,6 +34285,19 @@ components:
           type: number
         creditTotal:
           type: number
+        buybackCash:
+          type: number
+          description: 'Buy-backs paid in new money: RSI takes store credit for one
+            only against a buy-back token'
+        buybacksWithoutTokenCount:
+          type: integer
+        buybackTokensUsed:
+          type: integer
+          description: Buy-backs the user marked to pay with store credit
+        buybackTokensAvailable:
+          type: integer
+          description: 'Buy-back tokens the plan counts with: its own figure, else
+            what the last buy-back sync read'
         netMin:
           type: number
         netMax:
@@ -34227,6 +34329,10 @@ components:
       - meltCredit
       - startingCredit
       - creditTotal
+      - buybackCash
+      - buybacksWithoutTokenCount
+      - buybackTokensUsed
+      - buybackTokensAvailable
       - netMin
       - netMax
       - cashNeededMin
@@ -34251,6 +34357,17 @@ components:
           - 'null'
         startingCredit:
           type: number
+          minimum: 0
+        vatRate:
+          type:
+          - number
+          - 'null'
+          minimum: 0
+          maximum: 100
+        buybackTokens:
+          type:
+          - integer
+          - 'null'
           minimum: 0
       additionalProperties: false
       title: HangarPlanUpdateInput
@@ -34318,6 +34435,10 @@ components:
           type:
           - number
           - 'null'
+        usesBuybackToken:
+          type: boolean
+          description: Pays for this buy-back with store credit, which spends one
+            of the user's buy-back tokens
         price:
           type:
           - number
@@ -34332,6 +34453,7 @@ components:
       - fromModel
       - toModel
       - sourceMissing
+      - usesBuybackToken
       title: HangarPlanUpgradeStep
     HangarPlanUpgradeStepInput:
       type: object
@@ -34361,6 +34483,8 @@ components:
           - number
           - 'null'
           minimum: 0
+        usesBuybackToken:
+          type: boolean
       required:
       - sourceKind
       - toModelId
@@ -34380,6 +34504,24 @@ components:
           "$ref": "#/components/schemas/HangarPlanModel"
         usedBy:
           "$ref": "#/components/schemas/NullableHangarPlanVehicleUseEnum"
+        meltable:
+          type:
+          - boolean
+          - 'null'
+          description: Whether RSI lets the ship's pledge be melted; null until the
+            hangar sync has read it
+        meltValue:
+          type:
+          - number
+          - 'null'
+          description: The store credit melting the ship's pledge gives, as RSI lists
+            it
+        pledgeItemCount:
+          type:
+          - integer
+          - 'null'
+          description: How many items the pledge holds; melting the ship melts them
+            all
       additionalProperties: false
       required:
       - id

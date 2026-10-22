@@ -20,13 +20,18 @@ class HangarPlanAcquisition < ApplicationRecord
 
   validates :start_kind, inclusion: {in: START_KINDS}
   validates :price_override, numericality: {greater_than_or_equal_to: 0}, allow_nil: true
-  validate :start_source, on: :create
+  validate :start_source, if: :start_changed?
   validate :quantity_available, on: :create
   validate :chain_ends_on_candidate
   validate :chain_resources_available
 
   before_validation :assign_start_model
+  # Only a buy-back can spend a buy-back token.
+  before_validation -> { self.uses_buyback_token = false unless start_kind == "buyback" }
   before_create -> { self.price_snapshot ||= list_price }
+  # A route that starts somewhere else was planned anew, so its price as planned
+  # is what the new start costs today.
+  before_update -> { self.price_snapshot = list_price }, if: :start_changed?
 
   def final_model
     ordered_steps.last&.target_model || start_model
@@ -71,6 +76,11 @@ class HangarPlanAcquisition < ApplicationRecord
     return if source_vehicle.blank?
 
     source_vehicle if hangar_plan.live_vehicle_ids.include?(source_vehicle.id)
+  end
+
+  private def start_changed?
+    new_record? || will_save_change_to_start_kind? || will_save_change_to_source_vehicle_id? ||
+      will_save_change_to_buyback_pledge_id? || will_save_change_to_start_model_id?
   end
 
   private def assign_start_model

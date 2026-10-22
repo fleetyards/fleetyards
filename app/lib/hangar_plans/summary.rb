@@ -17,7 +17,7 @@ module HangarPlans
       @plan = plan
       @issues = []
       @slot_costs = slots.map { |slot| cost_for(slot) }
-      @melt_credit = melts.sum { |melt| melt_value(melt) }
+      @melt_credit = melt_credits.sum
       @estimated_melts_count = melts.count(&:estimated?)
     end
 
@@ -33,20 +33,33 @@ module HangarPlans
 
     def net_max = spend_max - melt_credit
 
-    def cash_needed_min = [spend_min - credit_total, 0].max
+    # RSI takes store credit for a buy-back only against a buy-back token. The
+    # user marks which buy-backs spend one; the rest, and any marked beyond the
+    # tokens held, are paid in new money.
+    def buyback_cash = buybacks_without_token.sum
 
-    def cash_needed_max = [spend_max - credit_total, 0].max
+    def buybacks_without_token_count = buybacks_without_token.size
 
-    def remaining_credit_min = [credit_total - spend_max, 0].max
+    def buyback_tokens_used = buybacks.count { |buyback| buyback[:token] }
 
-    def remaining_credit_max = [credit_total - spend_min, 0].max
+    def buyback_tokens_available = plan.available_buyback_tokens
 
-    def unresolved_count = slot_costs.sum(&:unresolved_count)
+    def cash_needed_min = buyback_cash + [spend_min - buyback_cash - credit_total, 0].max
+
+    def cash_needed_max = buyback_cash + [spend_max - buyback_cash - credit_total, 0].max
+
+    def remaining_credit_min = [credit_total - (spend_max - buyback_cash), 0].max
+
+    def remaining_credit_max = [credit_total - (spend_min - buyback_cash), 0].max
+
+    # Units of a decided slot still without a route. An open slot's units are
+    # counted as the open slot, not again here.
+    def unresolved_count = slot_costs.select { |cost| cost.state == "decided" }.sum(&:unresolved_count)
 
     def count_of(state) = slot_costs.count { |cost| cost.state == state }
 
     def complete?
-      issues.empty? && unresolved_count.zero? && count_of("undecided").zero?
+      issues.empty? && unresolved_count.zero? && count_of("undecided").zero? && count_of("open").zero?
     end
 
     # The decided spend as priced when each route was planned, next to today's,
@@ -64,6 +77,30 @@ module HangarPlans
       melts.sum { |melt| (snapshot ? melt.snapshot_value : melt.value) || 0 }
     end
 
+    # Marked beyond the tokens held, the dearest marked buy-backs keep theirs,
+    # since that is where a token saves the most new money.
+    private def buybacks_without_token
+      @buybacks_without_token ||= begin
+        marked, unmarked = buybacks.partition { |buyback| buyback[:token] }
+        overflow = marked.sort_by { |buyback| -buyback[:price] }.drop(buyback_tokens_available)
+        (unmarked + overflow).map { |buyback| buyback[:price] }
+      end
+    end
+
+    # Each buy-back in the decided routes, one entry per pledge, with its price
+    # and whether the user spends a token on it.
+    private def buybacks
+      @buybacks ||= slots.select { |slot| slot.state == "decided" }.flat_map do |slot|
+        slot.candidates.first.acquisitions.first(slot.quantity).flat_map do |acquisition|
+          start = (acquisition.start_kind == "buyback") ? [acquisition] : []
+          steps = acquisition.upgrade_steps.select { |step| step.source_kind == "buyback" }
+          (start + steps).filter_map do |record|
+            {price: record.price, token: record.uses_buyback_token} unless record.price.nil?
+          end
+        end
+      end
+    end
+
     private def slots
       @slots ||= plan.slots.includes(candidates: [
         :model_paint,
@@ -73,7 +110,20 @@ module HangarPlans
     end
 
     private def melts
-      @melts ||= plan.melts.includes(:model).to_a
+      @melts ||= plan.melts.includes(:model, :vehicle).to_a
+    end
+
+    # Melting any ship of a pledge melts the whole pledge, and every ship of it
+    # carries the pledge's value, so that value is credited once per pledge.
+    private def melt_credits
+      credited = Set.new
+
+      melts.map do |melt|
+        pledge = melt.vehicle&.rsi_pledge_id if melt.value_override.nil? && melt.vehicle&.rsi_pledge_melt_value
+        next 0 if pledge && !credited.add?(pledge)
+
+        melt_value(melt)
+      end
     end
 
     private def cost_for(slot)

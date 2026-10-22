@@ -7,6 +7,9 @@ json.vehicles @resources.vehicles do |entry|
     json.partial! "api/v1/hangar_plans/model", model: entry.vehicle.model
   end
   json.used_by entry.used_by
+  json.meltable entry.vehicle.rsi_pledge_meltable
+  json.melt_value entry.vehicle.rsi_pledge_melt_value&.to_f
+  json.pledge_item_count entry.vehicle.rsi_pledge_item_count
 end
 
 json.upgrades @resources.upgrades do |entry|
@@ -27,6 +30,16 @@ json.upgrades @resources.upgrades do |entry|
   end
 end
 
+# Without pictures: the store lists every priced ship, and a pick list shows none.
+json.store_models @resources.store_models do |model|
+  json.id model.id
+  json.name model.name
+  json.slug model.slug
+  json.manufacturer_name model.manufacturer&.name
+  json.pledge_price model.pledge_price.to_f
+  json.on_sale model.on_sale || false
+end
+
 json.buybacks @resources.buybacks do |entry|
   pledge = entry.pledge
   json.id pledge.id
@@ -35,6 +48,12 @@ json.buybacks @resources.buybacks do |entry|
   price = (pledge.kind == "upgrade") ? pledge.upgrade_price : pledge.price
   json.price price&.to_f
   json.used entry.used
+  json.lifetime_insurance pledge.lifetime_insurance
+  json.insurance_months pledge.insurance_months
+  json.insurance_known pledge.insurance_known?
+  json.models entry.models do |model|
+    json.partial! "api/v1/hangar_plans/model", model:
+  end
   if pledge.upgrade_from_model
     json.upgrade_from_model do
       json.partial! "api/v1/hangar_plans/model", model: pledge.upgrade_from_model

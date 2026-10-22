@@ -15,6 +15,7 @@ module V1
             buybackPledgeId: {type: [:string, :null], format: :uuid},
             startModelId: {type: [:string, :null], format: :uuid},
             priceOverride: {type: [:number, :null], minimum: 0},
+            usesBuybackToken: {type: :boolean},
             steps: {type: :array, items: ::V1::Schemas::Inputs::HangarPlanUpgradeStepInput}
           },
           required: %w[candidateId startKind],

@@ -3,16 +3,24 @@
 module HangarPlans
   # What the user owns that a plan can spend: hangar ships, unapplied upgrades
   # from the RSI hangar and buy-back pledges, each with how much of it the plan
-  # already uses.
+  # already uses; and the store's ships, which anyone can buy.
   class Resources
     USES = %w[acquisition melt].freeze
 
     VehicleResource = Data.define(:vehicle, :used_by)
     UpgradeResource = Data.define(:item, :from_model, :to_model, :used_count)
-    BuybackResource = Data.define(:pledge, :used)
+    BuybackResource = Data.define(:pledge, :models, :used)
+
+    # What a route can buy back: a standalone ship or a package to start from,
+    # or an upgrade to take a step with. Paints, add-ons and the rest hold no
+    # ship to plan with.
+    BUYBACK_KINDS = %w[ship package upgrade].freeze
 
     UPGRADE_NAME = /\A(?:Upgrade\s*-\s*)?(.+?)\s+to\s+(.+)\z/i
     SALE_SUFFIX = /\s+(-\s*)?(warbond(\s+edition)?|standard\s+edition|best\s+in\s+show(\s+edition)?(\s+\d{4})?)\z/i
+    STANDALONE_PREFIX = /\AStandalone\s+Ships?\s+-\s+/i
+    TITLE_SUFFIX = /\s+(-|–|plus)\s+.*\z/i
+    CONTAINED_SUFFIX = /\s+and\s+(\d+\s|lifetime\s+insurance).*\z/i
 
     attr_reader :plan
 
@@ -45,13 +53,42 @@ module HangarPlans
       end
     end
 
+    # Every ship the pledge store prices, for a route that buys its start or an
+    # upgrade there. Unpriced ships are left out: the store has no figure to
+    # plan with.
+    def store_models
+      Model.visible.active.where.not(pledge_price: nil).includes(:manufacturer).order(:pledge_price, :name)
+    end
+
     def buybacks
       used = (plan.acquisitions.where.not(buyback_pledge_id: nil).pluck(:buyback_pledge_id) +
         plan.upgrade_steps.where.not(buyback_pledge_id: nil).pluck(:buyback_pledge_id)).to_set
 
-      plan.user.buyback_pledges.where(kind: HangarPlanAcquisition::BUYBACK_SHIP_KINDS + ["upgrade"])
-        .includes(upgrade_from_model: MODEL_PRELOAD, upgrade_to_model: MODEL_PRELOAD).order(reclaimed_on: :desc, name: :asc)
-        .map { |pledge| BuybackResource.new(pledge:, used: used.include?(pledge.id)) }
+      pledges = plan.user.buyback_pledges.where(kind: BUYBACK_KINDS)
+        .includes(upgrade_from_model: MODEL_PRELOAD, upgrade_to_model: MODEL_PRELOAD).order(reclaimed_on: :desc, name: :asc).to_a
+      names = pledges.to_h { |pledge| [pledge.id, ship_names(pledge)] }
+      models = models_by_name(names.values.flatten)
+
+      pledges.map do |pledge|
+        ships = names[pledge.id].filter_map { |name| models[name] }.uniq
+        BuybackResource.new(pledge:, models: ships, used: used.include?(pledge.id))
+      end
+    end
+
+    # The ships a buy-back returns, by the names its detail page lists, else its
+    # contents line, else a standalone ship's title. An upgraded pledge comes
+    # back as first bought, so its contents line, which names the upgrade's
+    # target, is skipped. Mirrors `BuybackPledge.obtaining_model`.
+    private def ship_names(pledge)
+      return [] if pledge.kind == "upgrade"
+
+      names = Array(pledge.ship_names).compact_blank
+      names = [pledge.contained.sub(CONTAINED_SUFFIX, "")] if names.empty? && pledge.contained.present? && !pledge.upgraded
+      if names.empty? && pledge.kind == "ship"
+        names = [pledge.name.sub(STANDALONE_PREFIX, "").sub(TITLE_SUFFIX, "")]
+      end
+
+      names.map { |name| name.squish.downcase }.compact_blank
     end
 
     # The two ship names an RSI upgrade title carries, downcased, with how the

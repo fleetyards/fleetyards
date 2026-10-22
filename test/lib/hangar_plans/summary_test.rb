@@ -81,8 +81,9 @@ class HangarPlans::SummaryTest < ActiveSupport::TestCase
     summary = HangarPlans::Summary.new(@plan)
 
     assert_equal 0, summary.spend_max
-    assert_equal 5, summary.unresolved_count
+    assert_equal 3, summary.unresolved_count
     assert_equal 1, summary.count_of("open")
+    assert_not summary.complete?
   end
 
   test "an undecided slot costs between its cheapest and dearest candidate, less ships already held" do
@@ -132,6 +133,101 @@ class HangarPlans::SummaryTest < ActiveSupport::TestCase
     @plan.acquisitions.create!(candidate:, start_kind: "owned", source_vehicle: create(:vehicle, user: @user, model: @carrack))
 
     assert_equal 620, HangarPlans::Summary.new(@plan).spend_min
+  end
+
+  test "a buy-back is paid in new money unless it spends a token the user holds" do
+    @plan.update!(starting_credit: 1000)
+    candidate = decided_slot(@carrack, quantity: 2)
+    pledge = create(:buyback_pledge, user: @user, price: 550)
+    @plan.acquisitions.create!(candidate:, start_kind: "buyback", buyback_pledge: pledge, start_model: @carrack,
+      uses_buyback_token: true)
+    @plan.acquisitions.create!(candidate:, start_kind: "store", start_model: @carrack)
+
+    summary = HangarPlans::Summary.new(@plan)
+
+    # Marked, but no token held: the store Carrack takes 600 of the credit and
+    # the buy-back cannot take any.
+    assert_equal 1, summary.buyback_tokens_used
+    assert_equal 0, summary.buyback_tokens_available
+    assert_equal 550, summary.buyback_cash
+    assert_equal 550, summary.cash_needed_min
+    assert_equal 400, summary.remaining_credit_min
+
+    @plan.update!(buyback_tokens: 1)
+    summary = HangarPlans::Summary.new(@plan)
+
+    assert_equal 0, summary.buyback_cash
+    assert_equal 150, summary.cash_needed_min
+  end
+
+  test "a buy-back the user does not mark stays new money with tokens to spare" do
+    @plan.update!(starting_credit: 1000, buyback_tokens: 2)
+    candidate = decided_slot(@carrack)
+    pledge = create(:buyback_pledge, user: @user, price: 550)
+    @plan.acquisitions.create!(candidate:, start_kind: "buyback", buyback_pledge: pledge, start_model: @carrack)
+
+    summary = HangarPlans::Summary.new(@plan)
+
+    assert_equal 0, summary.buyback_tokens_used
+    assert_equal 550, summary.buyback_cash
+  end
+
+  test "a plan without its own token count uses what the buy-back sync read" do
+    @user.update!(rsi_buyback_tokens: 1)
+    candidate = decided_slot(@carrack)
+    pledge = create(:buyback_pledge, user: @user, price: 550)
+    @plan.acquisitions.create!(candidate:, start_kind: "buyback", buyback_pledge: pledge, start_model: @carrack,
+      uses_buyback_token: true)
+
+    assert_equal 0, HangarPlans::Summary.new(@plan).buyback_cash
+
+    @plan.update!(buyback_tokens: 0)
+    assert_equal 550, HangarPlans::Summary.new(@plan.reload).buyback_cash
+  end
+
+  test "marked beyond the tokens held, the dearest buy-back keeps its token" do
+    @plan.update!(starting_credit: 0, buyback_tokens: 1)
+    candidate = decided_slot(@carrack, quantity: 2)
+    dear = create(:buyback_pledge, user: @user, price: 550)
+    cheap = create(:buyback_pledge, user: @user, price: 120)
+    @plan.acquisitions.create!(candidate:, start_kind: "buyback", buyback_pledge: dear, start_model: @carrack,
+      uses_buyback_token: true)
+    @plan.acquisitions.create!(candidate:, start_kind: "buyback", buyback_pledge: cheap, start_model: @carrack,
+      uses_buyback_token: true)
+
+    summary = HangarPlans::Summary.new(@plan)
+
+    assert_equal 2, summary.buyback_tokens_used
+    assert_equal 120, summary.buyback_cash
+    assert_equal 1, summary.buybacks_without_token_count
+  end
+
+  test "only a buy-back can spend a token" do
+    candidate = decided_slot(@carrack)
+    route = @plan.acquisitions.create!(candidate:, start_kind: "store", start_model: @carrack, uses_buyback_token: true)
+
+    assert_not route.uses_buyback_token
+  end
+
+  test "a melt credits what its pledge is worth, and falls back to the store price as an estimate" do
+    synced = create(:vehicle, user: @user, model: @cutlass, rsi_pledge_id: "9", rsi_pledge_melt_value: 90, rsi_pledge_meltable: true)
+    by_hand = create(:vehicle, user: @user, model: @cutlass)
+    @plan.melts.create!(vehicle: synced)
+    @plan.melts.create!(vehicle: by_hand)
+
+    summary = HangarPlans::Summary.new(@plan)
+
+    assert_equal 190, summary.melt_credit
+    assert_equal 1, summary.estimated_melts_count
+  end
+
+  test "two ships of one pledge credit the pledge once" do
+    first = create(:vehicle, user: @user, model: @cutlass, rsi_pledge_id: "pack", rsi_pledge_melt_value: 300)
+    second = create(:vehicle, user: @user, model: @constellation, rsi_pledge_id: "pack", rsi_pledge_melt_value: 300)
+    @plan.melts.create!(vehicle: first)
+    @plan.melts.create!(vehicle: second)
+
+    assert_equal 300, HangarPlans::Summary.new(@plan).melt_credit
   end
 
   private def decided_slot(model, quantity: 1)

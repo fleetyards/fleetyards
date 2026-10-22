@@ -15,6 +15,9 @@ module V1
               description: {type: [:string, :null]},
               basedOnAt: {type: :string, format: "date-time"},
               startingCredit: {type: :number},
+              buybackTokens: {type: [:integer, :null], description: "Buy-back tokens the user holds; each lets one buy-back be paid with store credit. Null uses what the last buy-back sync read"},
+              vatRate: {type: [:number, :null], description: "VAT in percent that RSI adds to new money; store credit carries none"},
+              syncedBuybackTokens: {type: [:integer, :null], description: "The buy-back tokens the user's last buy-back sync read from RSI"},
               shared: {type: :boolean},
               shareToken: {type: [:string, :null]},
               slotsCount: {type: :integer},
@@ -24,7 +27,7 @@ module V1
               updatedAt: {type: :string, format: "date-time"}
             },
             additionalProperties: false,
-            required: %w[id name basedOnAt startingCredit shared slotsCount slots melts createdAt updatedAt]
+            required: %w[id name basedOnAt startingCredit buybackTokens vatRate syncedBuybackTokens shared slotsCount slots melts createdAt updatedAt]
           })
         end
       end

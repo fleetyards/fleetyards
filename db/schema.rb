@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_22_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_22_140000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1490,6 +1490,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_22_120000) do
     t.decimal "price_snapshot", precision: 15, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "uses_buyback_token", default: false, null: false
     t.index ["hangar_plan_candidate_id"], name: "index_hangar_plan_acquisitions_on_hangar_plan_candidate_id"
     t.index ["hangar_plan_id", "buyback_pledge_id"], name: "index_hangar_plan_acquisitions_on_plan_and_buyback", unique: true, where: "(buyback_pledge_id IS NOT NULL)"
     t.index ["hangar_plan_id", "source_vehicle_id"], name: "index_hangar_plan_acquisitions_on_plan_and_vehicle", unique: true, where: "(source_vehicle_id IS NOT NULL)"
@@ -1544,6 +1545,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_22_120000) do
     t.decimal "price_snapshot", precision: 15, scale: 2
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "uses_buyback_token", default: false, null: false
     t.index ["hangar_plan_acquisition_id"], name: "index_hangar_plan_upgrade_steps_on_hangar_plan_acquisition_id"
     t.index ["hangar_plan_id", "buyback_pledge_id"], name: "index_hangar_plan_upgrade_steps_on_plan_and_buyback", unique: true, where: "(buyback_pledge_id IS NOT NULL)"
   end
@@ -1557,6 +1559,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_22_120000) do
     t.string "share_token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "buyback_tokens"
+    t.decimal "vat_rate", precision: 5, scale: 2
     t.index ["share_token"], name: "index_hangar_plans_on_share_token", unique: true
     t.index ["user_id", "name"], name: "index_hangar_plans_on_user_id_and_name", unique: true
   end
@@ -3010,6 +3014,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_22_120000) do
     t.string "picture_type"
     t.uuid "picture_id"
     t.text "dedication_verse"
+    t.decimal "rsi_pledge_melt_value", precision: 15, scale: 2
+    t.boolean "rsi_pledge_meltable"
+    t.integer "rsi_pledge_item_count"
     t.index ["hidden", "loaner", "wanted"], name: "index_vehicles_on_hidden_and_loaner_and_wanted"
     t.index ["launch_port_location_id"], name: "index_vehicles_on_launch_port_location_id"
     t.index ["location_id"], name: "index_vehicles_on_location_id"

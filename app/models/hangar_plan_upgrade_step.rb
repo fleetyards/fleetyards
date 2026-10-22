@@ -17,6 +17,9 @@ class HangarPlanUpgradeStep < ApplicationRecord
   validates :source_kind, inclusion: {in: SOURCE_KINDS}
   validates :price_override, numericality: {greater_than_or_equal_to: 0}, allow_nil: true
   validate :distinct_models
+
+  # Only a bought-back upgrade can spend a buy-back token.
+  before_validation -> { self.uses_buyback_token = false unless source_kind == "buyback" }
   validate :upgrade_source
 
   before_validation -> { self.hangar_plan ||= acquisition&.hangar_plan }

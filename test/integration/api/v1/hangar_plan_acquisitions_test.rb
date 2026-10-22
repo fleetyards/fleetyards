@@ -157,6 +157,30 @@ class Api::V1::HangarPlanAcquisitionsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT moves a route's start to a ship of the hangar" do
+    acquisition = @plan.acquisitions.create!(candidate: @candidate, start_kind: "store", start_model: @carrack)
+    owned = create(:vehicle, user: @user, model: @carrack)
+
+    assert_api_response :put, 200, api_path: "/hangar/plans/{hangarPlanId}/acquisitions/{id}",
+      path_params: {hangarPlanId: @plan.id, id: acquisition.id},
+      body: {startKind: "owned", sourceVehicleId: owned.id, startModelId: nil} do
+      route = parsed_body.dig("slots", 0, "candidates", 0, "acquisitions", 0)
+      assert_equal "owned", route["startKind"]
+      assert_equal owned.id, route["sourceVehicleId"]
+    end
+  end
+
+  test "PUT refuses a start another route already uses" do
+    owned = create(:vehicle, user: @user, model: @carrack)
+    @slot.update!(quantity: 2)
+    @plan.acquisitions.create!(candidate: @candidate, start_kind: "owned", source_vehicle: owned)
+    acquisition = @plan.acquisitions.create!(candidate: @candidate, start_kind: "store", start_model: @carrack)
+
+    assert_api_response :put, 400, api_path: "/hangar/plans/{hangarPlanId}/acquisitions/{id}",
+      path_params: {hangarPlanId: @plan.id, id: acquisition.id},
+      body: {startKind: "owned", sourceVehicleId: owned.id, startModelId: nil}
+  end
+
   test "PUT keeps the chain when the update leaves it alone" do
     acquisition = @plan.acquisitions.new(candidate: @candidate, start_kind: "store", start_model: @cutlass)
     acquisition.upgrade_steps.build(source_kind: "store", origin_model: @cutlass, target_model: @carrack, position: 0)

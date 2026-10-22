@@ -5,6 +5,10 @@ json.spend_max summary.spend_max.to_f
 json.melt_credit summary.melt_credit.to_f
 json.starting_credit summary.starting_credit.to_f
 json.credit_total summary.credit_total.to_f
+json.buyback_cash summary.buyback_cash.to_f
+json.buybacks_without_token_count summary.buybacks_without_token_count
+json.buyback_tokens_used summary.buyback_tokens_used
+json.buyback_tokens_available summary.buyback_tokens_available
 json.net_min summary.net_min.to_f
 json.net_max summary.net_max.to_f
 json.cash_needed_min summary.cash_needed_min.to_f
