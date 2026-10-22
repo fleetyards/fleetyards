@@ -207,6 +207,18 @@ class Api::V1::HangarTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar filters by model" do
+    user = create(:user)
+    model = create(:model)
+    matching = create(:vehicle, user:, wanted: false, model:)
+    create(:vehicle, user:, wanted: false)
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {modelSlugIn: [model.slug]}} do
+      assert_equal [matching.id], parsed_body["items"].pluck("id")
+    end
+  end
+
   test "GET /hangar honours sort orders" do
     user = create(:user, :with_rsi_handle)
     model_alpha = create(:model, name: "Alpha")

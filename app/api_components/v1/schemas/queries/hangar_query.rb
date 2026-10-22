@@ -24,6 +24,7 @@ module V1
             lengthGteq: {type: :number},
             lengthLteq: {type: :number},
             manufacturerIn: {type: :array, items: {type: :string}},
+            modelSlugIn: {type: :array, items: {type: :string}},
             nameCont: {type: :string},
             nameIn: {type: :array, items: {type: :string}},
             nameOrDescriptionCont: {type: :string},

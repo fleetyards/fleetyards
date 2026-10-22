@@ -32303,6 +32303,10 @@ components:
           type: array
           items:
             type: string
+        modelSlugIn:
+          type: array
+          items:
+            type: string
         nameCont:
           type: string
         nameIn:
