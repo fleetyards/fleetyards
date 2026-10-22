@@ -38,9 +38,10 @@ const comlink = useComlink();
 const { displaySuccess, displayAlert } = useAppNotifications();
 
 // Only ships of the model the plaque was made for: its class line and emblem
-// come from the model, so on another one it would be a different plaque.
+// come from the model, so on another one it would be a different plaque. A
+// ship hidden from the hangar list is still the user's to dedicate.
 const { data: hangar, isLoading } = useHangar({
-  q: { modelSlugIn: [props.model.slug] },
+  q: { modelSlugIn: [props.model.slug], hiddenByUserEq: "true" },
   perPage: "100",
 });
 

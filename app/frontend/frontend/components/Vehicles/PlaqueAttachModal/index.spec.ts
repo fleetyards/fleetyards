@@ -101,11 +101,13 @@ describe("VehiclePlaqueAttachModal", () => {
     displaySuccess.mockClear();
   });
 
-  it("asks the hangar only for ships of the plaque's model", async () => {
+  it("asks the hangar for every ship of the plaque's model, hidden ones too", async () => {
     await mount();
 
     expect(hangarParams).toHaveBeenCalledWith(
-      expect.objectContaining({ q: { modelSlugIn: ["corsair"] } }),
+      expect.objectContaining({
+        q: { modelSlugIn: ["corsair"], hiddenByUserEq: "true" },
+      }),
     );
   });
 
