@@ -37,7 +37,7 @@ describe("useImageViewer", () => {
     registered.length = 0;
     vi.unstubAllGlobals();
     vi.restoreAllMocks();
-    vi.mocked(PhotoSwipe).mockClear();
+    vi.clearAllMocks();
   });
 
   it("opens the loaded image at its natural size, under the item's name", async () => {
