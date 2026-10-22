@@ -17,4 +17,5 @@ price = (buyback_pledge.kind == "upgrade") ? buyback_pledge.upgrade_price : buyb
 json.price price.to_f if price.present?
 json.insurance_months buyback_pledge.insurance_months if buyback_pledge.insurance_months.present?
 json.lifetime_insurance buyback_pledge.lifetime_insurance
+json.insurance_known buyback_pledge.insurance_known?
 json.partial! "api/shared/dates", record: buyback_pledge

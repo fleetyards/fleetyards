@@ -277,6 +277,19 @@ class Api::V1::HangarBuybacksTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/buybacks says whether a pledge's insurance is known yet" do
+    user = create(:user)
+    buyback(user, name: "Synced", details_synced_at: Time.current)
+    buyback(user, name: "Unsynced")
+    sign_in user
+
+    assert_api_response :get, 200 do
+      known = parsed_body["items"].to_h { |item| [item["name"], item["insuranceKnown"]] }
+
+      assert_equal({"Synced" => true, "Unsynced" => false}, known)
+    end
+  end
+
   test "GET /hangar/buybacks does not list somebody else's" do
     user = create(:user)
     buyback(create(:user))
