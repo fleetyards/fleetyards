@@ -156,7 +156,9 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     return if origin.blank?
 
     uri = URI.parse(origin)
-    uri if uri.host.present? && uri.host == URI.parse(frontend_root_url).host
+    return unless %w[http https].include?(uri.scheme)
+
+    uri if uri.host&.downcase == URI.parse(frontend_root_url).host.downcase
   rescue URI::InvalidURIError
     nil
   end

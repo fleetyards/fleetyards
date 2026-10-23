@@ -152,6 +152,24 @@ class OmniauthCallbacksTest < ActionDispatch::IntegrationTest
     assert_redirected_to frontend_hangar_url
   end
 
+  test "a sign in with a non-web origin on the frontend host lands on the hangar" do
+    mock_omniauth(:google, uid: UID, email: EMAIL, nickname: NICKNAME)
+    host = URI.parse(frontend_root_url).host
+
+    get "/users/auth/google/callback", env: {"omniauth.origin" => "javascript://#{host}/%0aalert(1)"}
+
+    assert_redirected_to frontend_hangar_url
+  end
+
+  test "a sign in started on the frontend host in other casing goes back to it" do
+    mock_omniauth(:google, uid: UID, email: EMAIL, nickname: NICKNAME)
+    origin = "http://#{URI.parse(frontend_root_url).host.upcase}/settings/"
+
+    get "/users/auth/google/callback", env: {"omniauth.origin" => origin}
+
+    assert_redirected_to origin
+  end
+
   test "a sign in with a taken username goes back to the page it started on" do
     mock_omniauth(:google, uid: UID, email: EMAIL, nickname: NICKNAME)
     create(:user, username: NICKNAME)
