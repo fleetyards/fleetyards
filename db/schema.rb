@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_23_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_23_170000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -478,6 +478,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_23_120000) do
     t.string "tags"
     t.string "required_tags"
     t.jsonb "type_data"
+    t.string "item_views_digest"
+    t.jsonb "item_view_md5s", default: {}, null: false
     t.index ["manufacturer_id"], name: "index_components_on_manufacturer_id"
     t.index ["name"], name: "index_components_on_name"
     t.index ["sc_key"], name: "index_components_on_sc_key", unique: true
@@ -582,6 +584,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_23_120000) do
     t.decimal "radiation_scrub_rate", precision: 15, scale: 2
     t.decimal "g_force_tolerance", precision: 15, scale: 2
     t.jsonb "volume_dimensions"
+    t.string "item_views_digest"
+    t.jsonb "item_view_md5s", default: {}, null: false
     t.index ["equipment_type"], name: "index_equipment_on_equipment_type"
     t.index ["item_type"], name: "index_equipment_on_item_type"
     t.index ["manufacturer_id"], name: "index_equipment_on_manufacturer_id"
