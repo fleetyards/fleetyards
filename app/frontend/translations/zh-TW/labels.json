@@ -473,7 +473,6 @@
       "discord": "Discord 伺服器",
       "youtube": "YouTube 頻道",
       "twitch": "Twitch 頻道",
-      "guilded": "Guilded 伺服器",
       "3dView": "3D",
       "3dMap": "Map",
       "texturedHolo": "材質",
@@ -705,7 +704,6 @@
             "request_failed": "無法連線到 Fleetyards。請再試一次。"
           }
         },
-        "guilded": "Guilded 伺服器",
         "homepage": "首頁",
         "twitch": "Twitch 頻道",
         "youtube": "Youtube 頻道",

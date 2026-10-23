@@ -51,7 +51,6 @@ const initialValues = ref<FleetInput>({
   publicFleet: props.fleet.publicFleet,
   publicFleetStats: props.fleet.publicFleetStats,
   discord: props.fleet.discord,
-  guilded: props.fleet.guilded,
   homepage: props.fleet.homepage,
   twitch: props.fleet.twitch,
   youtube: props.fleet.youtube,
@@ -76,7 +75,6 @@ const [publicFleet, publicFleetProps] = defineField("publicFleet");
 const [publicFleetStats, publicFleetStatsProps] =
   defineField("publicFleetStats");
 const [discord, discordProps] = defineField("discord");
-const [guilded, guildedProps] = defineField("guilded");
 const [homepage, homepageProps] = defineField("homepage");
 const [twitch, twitchProps] = defineField("twitch");
 const [youtube, youtubeProps] = defineField("youtube");
@@ -273,12 +271,6 @@ const handleCancel = async () => {
           v-bind="discordProps"
           translation-key="fleet.discord.url"
           name="discord"
-        />
-        <FormInput
-          v-model="guilded"
-          v-bind="guildedProps"
-          translation-key="fleet.guilded"
-          name="guilded"
         />
         <FormInput
           v-model="homepage"

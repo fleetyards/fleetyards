@@ -57,7 +57,6 @@ const initialValues = ref<UserUpdateInput>({
   discord: sessionStore.currentUser?.discord,
   youtube: sessionStore.currentUser?.youtube,
   twitch: sessionStore.currentUser?.twitch,
-  guilded: sessionStore.currentUser?.guilded,
   dateFormat:
     (sessionStore.currentUser?.dateFormat as UserDateFormatEnum) ??
     UserDateFormatEnum.DMY_DOTS,
@@ -77,7 +76,6 @@ const [homepage, homepageProps] = defineField("homepage");
 const [discord, discordProps] = defineField("discord");
 const [youtube, youtubeProps] = defineField("youtube");
 const [twitch, twitchProps] = defineField("twitch");
-const [guilded, guildedProps] = defineField("guilded");
 const [dateFormat, dateFormatProps] = defineField("dateFormat");
 
 const dateFormatOptions = computed<FilterOption[]>(() =>
@@ -148,7 +146,6 @@ const setupForm = () => {
   discord.value = sessionStore.currentUser?.discord;
   youtube.value = sessionStore.currentUser?.youtube;
   twitch.value = sessionStore.currentUser?.twitch;
-  guilded.value = sessionStore.currentUser?.guilded;
   dateFormat.value =
     (sessionStore.currentUser?.dateFormat as UserDateFormatEnum) ??
     UserDateFormatEnum.DMY_DOTS;
@@ -378,16 +375,6 @@ const onSubmit = handleSubmit(async (values) => {
           name="twitch"
           translation-key="twitch"
           icon="fa-brands fa-twitch"
-        />
-      </div>
-      <div class="col-12 col-md-6">
-        <FormInput
-          v-model="guilded"
-          v-bind="guildedProps"
-          name="guilded"
-          icon="fa-brands fa-guilded"
-          :clearable="true"
-          translation-key="guilded"
         />
       </div>
     </div>

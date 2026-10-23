@@ -16,7 +16,6 @@
       "youtube": "Youtube 頻道",
       "twitch": "Twitch 頻道",
       "distance": "距離",
-      "guilded": "Guilded 伺服器",
       "color": "顏色",
       "title": "標題",
       "classification": "戰鬥、工業、多用途...",
@@ -167,7 +166,6 @@
           "webhookUrl": "https://discord.com/api/webhooks/…",
           "webhookConfigured": "已儲存 — 留空即保留現有設定"
         },
-        "guilded": "Guilded 伺服器",
         "homepage": "首頁",
         "twitch": "Twitch 頻道",
         "youtube": "Youtube 頻道"

@@ -262,16 +262,6 @@ useSubscription({
         icon-only
       />
       <a
-        v-if="user.guilded"
-        v-tooltip="t('labels.guilded')"
-        :aria-label="t('labels.guilded')"
-        :href="`//${user.guilded}`"
-        target="_blank"
-        rel="noopener"
-      >
-        <i class="fa-brands fa-guilded" />
-      </a>
-      <a
         v-if="user.discord"
         v-tooltip="t('labels.discord')"
         :aria-label="t('labels.discord')"

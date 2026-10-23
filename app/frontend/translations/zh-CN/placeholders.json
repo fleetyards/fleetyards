@@ -16,7 +16,6 @@
       "youtube": "Youtube 频道",
       "twitch": "Twitch 频道",
       "distance": "距离",
-      "guilded": "Guilded 服务器",
       "color": "颜色",
       "title": "标题",
       "classification": "战斗、工业、多用途...",
@@ -167,7 +166,6 @@
           "webhookUrl": "https://discord.com/api/webhooks/…",
           "webhookConfigured": "已保存 — 留空则保留现有值"
         },
-        "guilded": "Guilded 服务器",
         "homepage": "主页",
         "twitch": "Twitch 频道",
         "youtube": "Youtube 频道"

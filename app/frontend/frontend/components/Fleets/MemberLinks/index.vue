@@ -68,16 +68,6 @@ const { t } = useI18n();
       <i class="fa-brands fa-twitch" />
     </a>
     <a
-      v-if="props.member.guilded"
-      v-tooltip="t('labels.guilded')"
-      :aria-label="t('labels.guilded')"
-      :href="`//${props.member.guilded}`"
-      target="_blank"
-      rel="noopener"
-    >
-      <i class="fa-brands fa-guilded" />
-    </a>
-    <a
       v-if="props.member.discord"
       v-tooltip="t('labels.discord')"
       :aria-label="t('labels.discord')"

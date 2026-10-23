@@ -41,12 +41,6 @@ const links = computed<(Link | { key: "rsi" })[]>(() => [
   ),
   ...(props.fleet.rsiSid ? [{ key: "rsi" as const }] : []),
   ...external(
-    "guilded",
-    "fa-brands fa-guilded",
-    t("labels.guilded"),
-    props.fleet.guilded,
-  ),
-  ...external(
     "discord",
     "fa-brands fa-discord",
     t("labels.discord"),
