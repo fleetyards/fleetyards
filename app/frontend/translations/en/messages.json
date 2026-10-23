@@ -264,6 +264,7 @@
         "granted": "Welcome to FleetYards.net Notifications!"
       },
       "twoFactor": {
+        "invalidCode": "This code is not valid.",
         "enable": {
           "success": "Two-factor Authentication enabled!",
           "failure": "Could not enable Two-factor Authentication."

@@ -37,7 +37,7 @@ const validationSchema = {
   otpCode: "required",
 };
 
-const { defineField, handleSubmit } = useForm<SetupOtpInput>();
+const { defineField, handleSubmit, setFieldError } = useForm<SetupOtpInput>();
 
 const [otpCode, otpCodeProps] = defineField("otpCode");
 
@@ -69,6 +69,8 @@ const onSubmit = handleSubmit(async (values) => {
 
       if (code === "requires_access_confirmation") {
         comlink.emit("access-confirmation-required");
+      } else if (code === "otp.disable.failure") {
+        setFieldError("otpCode", t("messages.twoFactor.invalidCode"));
       } else {
         displayAlert({
           text: t("messages.twoFactor.disable.failure"),
