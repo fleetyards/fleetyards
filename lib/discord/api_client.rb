@@ -44,8 +44,10 @@ module Discord
 
     # The Discord application's ID — same value as the OAuth login client_id,
     # used here to build the bot install URL on the fleet settings page.
+    # YAML reads the unquoted snowflake as an Integer, while every id in a
+    # Discord payload is a String.
     def self.application_id
-      Rails.application.config.app.discord[:client_id].presence
+      Rails.application.config.app.discord[:client_id].to_s.presence
     end
 
     # Create Events (1 << 44), Manage Events (1 << 33), View Channel (1 << 10),

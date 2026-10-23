@@ -12,6 +12,12 @@ module Discord
       assert ApiClient::INSTALL_PERMISSIONS.anybits?(1 << 44)
     end
 
+    test "the application id compares equal to the ids in a payload" do
+      Rails.application.config.app.discord.stubs(:[]).with(:client_id).returns(200000000000000001)
+
+      assert_equal "200000000000000001", ApiClient.application_id
+    end
+
     test "a client without a timeout retries a rate limit" do
       stub_request(:get, MEMBER_URL)
         .to_return({status: 429, headers: {"Retry-After" => "0"}}, {status: 200, body: {roles: []}.to_json})
