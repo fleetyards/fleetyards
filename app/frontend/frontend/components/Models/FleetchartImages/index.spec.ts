@@ -356,11 +356,11 @@ describe("the collapsible views", () => {
   const sources = (wrapper: Awaited<ReturnType<typeof mountCollapsible>>) =>
     wrapper.findAll("img").map((img) => img.attributes("src"));
 
-  it("starts as the angled view alone, without the state switch", async () => {
+  it("starts as the angled view alone, with the state switch", async () => {
     const wrapper = await mountCollapsible(ALL_VIEWS);
 
     expect(sources(wrapper)).toEqual(["https://cdn.test/angled?large"]);
-    expect(wrapper.find('[data-test="model-states"]').exists()).toBe(false);
+    expect(wrapper.find('[data-test="model-states"]').exists()).toBe(true);
     expect(
       wrapper
         .find('[data-test="model-views-fold"]')
@@ -368,13 +368,12 @@ describe("the collapsible views", () => {
     ).toBe("false");
   });
 
-  it("opens every view and the state switch when the angled view is tapped", async () => {
+  it("opens every view when the angled view is tapped", async () => {
     const wrapper = await mountCollapsible(ALL_VIEWS);
 
     await wrapper.find('[data-test="model-views-fold"]').trigger("click");
 
     expect(sources(wrapper)).toHaveLength(8);
-    expect(wrapper.find('[data-test="model-states"]').exists()).toBe(true);
     expect(
       wrapper
         .find('[data-test="model-views-fold"]')
@@ -404,6 +403,13 @@ describe("the collapsible views", () => {
     await fold.trigger("click");
 
     expect(sources(wrapper)).toEqual(["https://cdn.test/angled?large"]);
+  });
+
+  it("still offers the state switch for a ship without views", async () => {
+    const wrapper = await mountCollapsible({ landedHolo: file("landed-holo") });
+
+    expect(wrapper.find("img").exists()).toBe(false);
+    expect(wrapper.find('[data-test="model-states"]').exists()).toBe(true);
   });
 
   it("shows every view of a ship without an angled view", async () => {

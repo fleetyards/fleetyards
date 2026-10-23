@@ -114,6 +114,12 @@ const viewSets = computed(() =>
 
 const hasImages = computed(() => viewSets.value.length > 0);
 
+// A phone has no other state switch, so a ship without views still gets this one.
+const visible = computed(
+  () =>
+    hasImages.value || (props.collapsible && availableStates.value.length > 1),
+);
+
 const expanded = ref(false);
 
 const frontAngled = computed(
@@ -266,9 +272,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-if="hasImages" class="fleetchart-views-wrapper">
+  <div v-if="visible" class="fleetchart-views-wrapper">
     <BtnGroup
-      v-if="availableStates.length > 1 && !collapsed"
+      v-if="availableStates.length > 1"
       segmented
       class="fleetchart-views-toggle"
       data-test="model-states"
@@ -284,6 +290,7 @@ onMounted(() => {
       </Btn>
     </BtnGroup>
     <div
+      v-if="hasImages"
       class="fleetchart-views"
       :class="{ 'fleetchart-views--loading': switching }"
     >
