@@ -77,7 +77,8 @@ const onSubmit = handleSubmit(async (values) => {
 
   await enableMutation
     .mutateAsync({
-      data: values,
+      // Authenticator apps show the code in groups, and a pasted code keeps the space.
+      data: { otpCode: values.otpCode?.replace(/\s/g, "") },
     })
     .then((data) => {
       comlink.emit("user-update");
