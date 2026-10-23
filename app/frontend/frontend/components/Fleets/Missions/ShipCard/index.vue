@@ -191,8 +191,8 @@ const subtitle = computed(() => {
 <template>
   <Panel
     class="mission-ship-panel"
-    :class="{ 'mission-ship-panel--placeholder': !hasShipImage }"
-    :bg-image="hasShipImage ? shipImage : undefined"
+    :bg-image="shipImage"
+    cover
     :bg-rounded="PanelRoundedEnum.TOP"
   >
     <template #default>
@@ -319,19 +319,6 @@ const subtitle = computed(() => {
   width: 380px;
   min-width: 350px;
   flex-shrink: 0;
-}
-
-/*
- * With a cover, Panel wraps the default slot in .panel__inner and gives it the
- * image's height, so the title sits on the photograph and the rows start below
- * it. Without one there is no inner at all — Panel only adds it for a background
- * image, an alignment or an inset — so the head kept its natural height and the
- * rows ran straight through the placeholder art. Reserving the strip on the head
- * puts the stand-in exactly where a cover would be.
- */
-.mission-ship-panel--placeholder :deep(.panel-heading) {
-  min-height: var(--panel-image-height, 160px);
-  align-items: flex-start;
 }
 
 .ship-placeholder {
