@@ -99,34 +99,6 @@ class Api::V1::ComponentsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET /components/{slug} shows a paint's store image from its matched paint" do
-    paint = create(:component, name: "Vanguard Clawed Steel Livery", category: "paints")
-    create(:model_paint, :with_store_image, component: paint)
-
-    assert_api_response :get, 200, params: {slug: paint.slug} do
-      assert_equal "ship.jpg", parsed_body.dig("media", "storeImage", "name")
-    end
-  end
-
-  test "GET /components/{slug} prefers a paint's own upload over its matched paint" do
-    paint = create(:component, name: "Vanguard Clawed Steel Livery", category: "paints")
-    paint.store_image.attach(io: file_fixture("test.png").open, filename: "curated.png", content_type: "image/png")
-    create(:model_paint, :with_store_image, component: paint)
-
-    assert_api_response :get, 200, params: {slug: paint.slug} do
-      assert_equal "curated.png", parsed_body.dig("media", "storeImage", "name")
-    end
-  end
-
-  test "GET /components/{slug} leaves a paint without a pictured match imageless" do
-    paint = create(:component, name: "Vanguard Clawed Steel Livery", category: "paints")
-    create(:model_paint, component: paint)
-
-    assert_api_response :get, 200, params: {slug: paint.slug} do
-      assert_nil parsed_body.dig("media", "storeImage")
-    end
-  end
-
   test "GET /components/{slug} 404s for a slug nobody has" do
     assert_api_response :get, 404, params: {slug: "no-such-component"}
   end

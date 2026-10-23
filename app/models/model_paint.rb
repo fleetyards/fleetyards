@@ -72,17 +72,6 @@ class ModelPaint < ApplicationRecord
 
   before_save :update_slugs
 
-  # For a fragment that shows a paint's store image without rendering the paint.
-  # Attaching an image leaves the paint's own timestamp alone, so the
-  # attachments are counted separately from the rows that carry the link.
-  def self.store_image_cache_key
-    paints = where.not(component_id: nil).pick(Arel.sql("COUNT(*)"), Arel.sql("MAX(updated_at)"))
-    images = ActiveStorage::Attachment.where(record_type: polymorphic_name, name: "store_image")
-      .pick(Arel.sql("COUNT(*)"), Arel.sql("MAX(created_at)"))
-
-    [*paints, *images].map { |value| value.respond_to?(:utc) ? value.utc.to_fs(:usec) : value }
-  end
-
   def self.visible
     where(hidden: false)
   end

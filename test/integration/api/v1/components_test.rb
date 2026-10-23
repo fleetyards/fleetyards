@@ -61,15 +61,6 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET /components shows a paint's store image from its matched paint" do
-    paint = create(:component, name: "Vanguard Clawed Steel Livery", category: "paints")
-    create(:model_paint, :with_store_image, component: paint)
-
-    assert_api_response :get, 200, params: {q: {"categoryIn" => ["paints"]}} do
-      assert_equal "ship.jpg", parsed_body["items"].sole.dig("media", "storeImage", "name")
-    end
-  end
-
   test "GET /components searchNameCont still matches the name" do
     assert_api_response :get, 200, params: {q: {"searchNameCont" => @components.first.name}} do
       assert_equal [@components.first.id], parsed_body["items"].pluck("id")

@@ -18,13 +18,6 @@ module Api
         "_idris", "_javelin", "_bengal", "_vng_"
       ].join("|").freeze
 
-      # What `Component#store_image_record` reads. Only paints have model paints,
-      # so the second query comes back empty for every other category.
-      STORE_IMAGE_PRELOAD = [
-        {store_image_attachment: :blob},
-        {model_paints: {store_image_attachment: :blob}}
-      ].freeze
-
       # Slim, unpaginated list of every ship gun in the current game version,
       # carrying only what the deflection check needs. The full component
       # serializer (prices, media, hardpoints) is far too heavy for ~200 rows.
@@ -46,7 +39,7 @@ module Api
       # Turret" matched 112 rows and there was no detail page to serve.
       def show
         slug = params[:slug].to_s.downcase
-        @component = Component.includes(:manufacturer).preload(*STORE_IMAGE_PRELOAD).find_by!(slug:)
+        @component = Component.includes(:manufacturer).find_by!(slug:)
       end
 
       # What each patch changed about this component, newest first. The builds
@@ -92,7 +85,6 @@ module Api
         @q = Component.with_facts(current_version)
           .catalogued
           .includes(:manufacturer)
-          .preload(*STORE_IMAGE_PRELOAD)
           .ransack(components_query_params)
 
         @components = @q.result

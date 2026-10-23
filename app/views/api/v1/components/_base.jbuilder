@@ -79,7 +79,7 @@ end
 json.media({})
 json.media do
   json.store_image do
-    json.partial! "api/v1/shared/file", record: component.store_image_record, attr: :store_image
+    json.partial! "api/v1/shared/file", record: component, attr: :store_image
   end
 end
 
