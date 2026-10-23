@@ -333,7 +333,7 @@ class HangarSync < HangarImporter
 
       # Transfer the new pledge data to the original vehicle
       original_vehicle.update!(
-        **imported_vehicle.slice(:rsi_pledge_melt_value, :rsi_pledge_meltable, :rsi_pledge_item_count).compact.symbolize_keys,
+        **imported_vehicle.slice(:rsi_pledge_name, :rsi_pledge_melt_value, :rsi_pledge_meltable, :rsi_pledge_item_count).compact.symbolize_keys,
         rsi_pledge_id: imported_vehicle.rsi_pledge_id,
         rsi_pledge_synced_at: imported_vehicle.rsi_pledge_synced_at,
         wanted: false
@@ -756,12 +756,14 @@ class HangarSync < HangarImporter
     }
   end
 
-  # What RSI says about the pledge a ship came in: what melting it credits,
-  # whether RSI lets it be melted, and how many items go with it when it is.
+  # What RSI says about the pledge a ship came in: its name, what melting it
+  # credits, whether RSI lets it be melted, and how many items go with it when
+  # it is.
   # Only what the item says is written, so a sync that leaves one out keeps
   # the value an earlier one read.
   private def pledge_details(item)
     details = {}
+    details[:rsi_pledge_name] = item[:pledge_name].presence if item.key?(:pledge_name)
     details[:rsi_pledge_melt_value] = item[:pledge_value].presence if item.key?(:pledge_value)
     details[:rsi_pledge_meltable] = ActiveModel::Type::Boolean.new.cast(item[:meltable]) || false if item.key?(:meltable)
     details[:rsi_pledge_item_count] = item[:pledge_item_count].presence if item.key?(:pledge_item_count)

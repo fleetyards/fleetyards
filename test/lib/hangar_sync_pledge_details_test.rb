@@ -21,6 +21,12 @@ class HangarSyncPledgeDetailsTest < ActiveSupport::TestCase
     assert_not vehicle.reload.rsi_pledge_meltable
   end
 
+  test "a synced ship keeps the name of the pledge it came in" do
+    sync([{id: "5", name: "Cutlass Black", type: "ship", pledge_name: "Package - Mercenary Pack"}])
+
+    assert_equal "Package - Mercenary Pack", @user.vehicles.find_by!(rsi_pledge_id: "5").rsi_pledge_name
+  end
+
   test "a sync that sends no meltable flag leaves it unknown" do
     sync([{id: "2", name: "Cutlass Black", type: "ship"}])
 
@@ -38,11 +44,12 @@ class HangarSyncPledgeDetailsTest < ActiveSupport::TestCase
   end
 
   test "a ship moved to the wishlist drops its pledge's details" do
-    vehicle = create(:vehicle, user: @user, model: @model, rsi_pledge_id: "4", rsi_pledge_melt_value: 110,
+    vehicle = create(:vehicle, user: @user, model: @model, rsi_pledge_id: "4", rsi_pledge_name: "Package", rsi_pledge_melt_value: 110,
       rsi_pledge_meltable: true, rsi_pledge_item_count: 2)
 
     vehicle.update!(wanted: true)
 
+    assert_nil vehicle.rsi_pledge_name
     assert_nil vehicle.rsi_pledge_melt_value
     assert_nil vehicle.rsi_pledge_meltable
     assert_nil vehicle.rsi_pledge_item_count
