@@ -65,12 +65,6 @@ describe("TwoFactorDisable", () => {
     displayAlert.mockClear();
   });
 
-  it("sends a code pasted with spaces without them", async () => {
-    await submitCode(await mount(), " 123 456 ");
-
-    expect(mutateAsync).toHaveBeenCalledWith({ data: { otpCode: "123456" } });
-  });
-
   it("marks a rejected code on the field instead of raising an alert", async () => {
     mutateAsync.mockRejectedValue(rejection("otp.disable.failure"));
 
