@@ -26,14 +26,14 @@ module ScData
       store = ::ScData::ItemViewsStore.new
       items = store.items
 
-      records = records_for(items)
-
       if record_id
         target = record_type.constantize.find_by(id: record_id) if ITEM_CLASSES.include?(record_type)
-        items = items.select { |path, _entry| target && records[path] == target }
+        items = target&.sc_key ? items.select { |_path, entry| entry["scKey"] == target.sc_key } : {}
         log(:info, "no renders listed for #{record_type} #{record_id}") if items.empty?
       end
 
+      records = records_for(items)
+      paths_by_key = items.keys.group_by { |path| items[path]["scKey"] }
       attached = {}
       unknown = []
 
@@ -42,6 +42,15 @@ module ScData
 
         if record.nil?
           unknown << (entry["scKey"] || path)
+          next
+        end
+
+        next if target && record != target
+
+        # Two folders claiming one item would replace each other's renders on
+        # every run.
+        if paths_by_key[entry["scKey"]].size > 1
+          log(:warn, "#{entry["scKey"]} is listed under #{paths_by_key[entry["scKey"]].join(", ")}, skipped")
           next
         end
 
@@ -60,14 +69,22 @@ module ScData
       log(:info, "attached #{attached.values.sum(&:size)} renders to #{attached.size} items")
     end
 
-    # The record of every listed item. A game-file key names one item, which
-    # the loaders file as either a component or equipment, never both.
+    # The record of every listed item. The loaders file a game-file key as
+    # either a component or equipment, but each table is only unique on its
+    # own, and a key both carry names neither.
     private def records_for(items)
       keys = items.values.pluck("scKey").compact
 
       by_sc_key = [Component, Equipment]
         .flat_map { |klass| klass.where(sc_key: keys).to_a }
-        .index_by(&:sc_key)
+        .group_by(&:sc_key)
+        .filter_map do |sc_key, records|
+          next [sc_key, records.first] if records.one?
+
+          log(:warn, "#{sc_key} is both a component and equipment, skipped")
+          nil
+        end
+        .to_h
 
       items.to_h { |path, entry| [path, by_sc_key[entry["scKey"]]] }
     end

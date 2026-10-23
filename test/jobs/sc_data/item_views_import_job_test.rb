@@ -138,6 +138,36 @@ module ScData
       assert_not @component.top_view.attached?
     end
 
+    test "skips an item two folders claim" do
+      publish(@component.sc_key, {"top.png" => PNG})
+      @index["other-folder"] = @index[@component.sc_key]
+      @objects["index.json"] = {items: @index}.to_json
+
+      perform
+
+      assert_not @component.top_view.attached?
+    end
+
+    test "skips a game-file key both a component and equipment carry" do
+      shared = create(:equipment, sc_key: "shared_key")
+      component = create(:component, sc_key: "shared_key")
+      publish("shared_key", {"top.png" => PNG})
+
+      perform
+
+      assert_not shared.reload.top_view.attached?
+      assert_not component.reload.top_view.attached?
+    end
+
+    test "fetches only the given item's listing for a single sync" do
+      publish(@component.sc_key, {"top.png" => PNG})
+      publish(@equipment.sc_key, {"top.png" => PNG})
+
+      perform("Equipment", @equipment.id)
+
+      assert_equal ["index.json", "files.json", "top.png"], fetched
+    end
+
     test "does nothing without a bucket" do
       ::ScData::ItemViewsStore.stubs(:configured?).returns(false)
       ::ScData::ItemViewsStore.expects(:new).never

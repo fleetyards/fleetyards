@@ -15,8 +15,8 @@ module ScData
       complete = true
 
       renders(store.listing(path), path).each do |field, name, md5|
-        # A render already on the record: imported before, or put there by the
-        # folder upload or an import that predates the stored digests.
+        # A render already on the record: imported before, or the same file
+        # uploaded by hand, or by an import that predates the stored digests.
         if (md5s[field] == md5 || current_checksum(record, field) == md5) && stored?(record, field)
           md5s[field] = md5
           next
