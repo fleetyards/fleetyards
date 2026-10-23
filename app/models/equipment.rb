@@ -32,6 +32,7 @@ class Equipment < ApplicationRecord
   include SoldAtShop
   include KeyedSlug
   include ScDataVersioned
+  include ItemViews
 
   paginates_per 48
   per_page_steps PageSizes.up_to(max_per_page)

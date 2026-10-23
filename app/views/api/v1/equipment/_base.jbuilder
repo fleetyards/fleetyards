@@ -56,4 +56,10 @@ json.store_image do
   json.partial! "api/v1/shared/file", record: equipment, attr: :store_image
 end
 
+if local_assigns.fetch(:extended, false)
+  json.media do
+    json.partial! "api/v1/shared/item_views", record: equipment
+  end
+end
+
 json.partial! "api/shared/dates", record: equipment

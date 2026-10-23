@@ -33,6 +33,14 @@ class Api::V1::EquipmentTest < ActionDispatch::IntegrationTest
     @magazine = create(:equipment, :magazine, name: "P4-AR Magazine")
   end
 
+  test "GET /equipment leaves the views out of the list" do
+    create(:equipment)
+
+    assert_api_response :get, 200 do
+      assert parsed_body["items"].none? { |item| item.key?("media") }
+    end
+  end
+
   test "GET /equipment lists visible equipment sorted by name" do
     assert_api_response :get, 200 do
       assert_equal ["Omarof Scope", "P4-AR Magazine", "P4-AR Rifle"], parsed_body["items"].map { |i| i["name"] }

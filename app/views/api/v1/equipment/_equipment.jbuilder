@@ -6,9 +6,12 @@
 # served to everyone. The builds are in it because a load writes them without
 # touching the row: without them a fragment filled before the load keeps its
 # facts and `retired`.
+# `extended` is the detail payload, which adds the views a list leaves out.
+extended = local_assigns.fetch(:extended, false)
+
 json.cache! [
   "v4", I18n.locale, equipment, ::ScData::Source.current, equipment.retired?, equipment.facts,
-  equipment.item_prices_cache_key, Manufacturer.artwork_version
+  equipment.item_prices_cache_key, Manufacturer.artwork_version, extended
 ] do
-  json.partial!("api/v1/equipment/base", equipment:)
+  json.partial!("api/v1/equipment/base", equipment:, extended:)
 end

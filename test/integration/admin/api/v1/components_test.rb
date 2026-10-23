@@ -369,6 +369,43 @@ class Admin::Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
     assert_not_predicate component.reload.store_image, :attached?
   end
 
+  test "PUT /components/:id attaches a view" do
+    component = create(:component)
+    sign_in @user
+
+    blob = ActiveStorage::Blob.create_and_upload!(
+      io: Rails.root.join("test/fixtures/files/test.png").open,
+      filename: "test.png",
+      content_type: "image/png"
+    )
+
+    assert_api_response :put, 200, path_params: {id: component.id}, body: {angledView: blob.signed_id} do
+      assert parsed_body["media"]["angledView"]["url"].present?
+    end
+
+    assert_predicate component.reload.angled_view, :attached?
+  end
+
+  test "PUT /components/:id attaches a holo" do
+    component = create(:component)
+    sign_in @user
+
+    blob = ActiveStorage::Blob.create_and_upload!(io: StringIO.new("glTF"), filename: "holo.glb", content_type: "model/gltf-binary")
+
+    assert_api_response :put, 200, path_params: {id: component.id}, body: {holo: blob.signed_id}
+
+    assert_predicate component.reload.holo, :attached?
+  end
+
+  test "GET /components leaves the views out of the list" do
+    create(:component)
+    sign_in @user
+
+    assert_api_response :get, 200, api_path: "/components" do
+      assert_not parsed_body["items"].first["media"].key?("angledView")
+    end
+  end
+
   test "PUT /components/:id returns 404 for missing id" do
     sign_in @user
 

@@ -32,6 +32,12 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
     @components = create_list(:component, 2)
   end
 
+  test "GET /components leaves the views out of the list" do
+    assert_api_response :get, 200 do
+      assert parsed_body["items"].none? { |item| item["media"].key?("angledView") }
+    end
+  end
+
   test "GET /components lists all components" do
     assert_api_response :get, 200 do
       assert_equal 2, parsed_body.count

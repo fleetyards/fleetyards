@@ -62,6 +62,7 @@ module Shared
             availability: Shared::V1::Schemas::ItemAvailability,
 
             storeImage: ::Shared::V1::Schemas::MediaFile,
+            media: ::Shared::V1::Schemas::ItemMedia,
 
             retired: {type: :boolean},
 

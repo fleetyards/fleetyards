@@ -418,6 +418,33 @@ class Admin::Api::V1::EquipmentTest < ActionDispatch::IntegrationTest
     assert_predicate equipment.reload.store_image, :attached?
   end
 
+  test "PUT /equipment/:id attaches a view" do
+    equipment = create(:equipment)
+    sign_in @user
+
+    blob = ActiveStorage::Blob.create_and_upload!(
+      io: Rails.root.join("test/fixtures/files/test.png").open,
+      filename: "test.png",
+      content_type: "image/png"
+    )
+
+    assert_api_response :put, 200, path_params: {id: equipment.id}, body: {topView: blob.signed_id} do
+      assert parsed_body["media"]["topView"]["url"].present?
+    end
+
+    assert_predicate equipment.reload.top_view, :attached?
+  end
+
+  test "PUT /equipment/:id clears a holo" do
+    equipment = create(:equipment)
+    equipment.holo.attach(io: StringIO.new("glTF"), filename: "holo.glb", content_type: "model/gltf-binary")
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: equipment.id}, body: {holo: nil}
+
+    assert_not_predicate equipment.reload.holo, :attached?
+  end
+
   test "PUT /equipment/:id returns 404 for missing id" do
     sign_in @user
 

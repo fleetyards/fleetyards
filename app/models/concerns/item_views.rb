@@ -1,0 +1,19 @@
+# frozen_string_literal: true
+
+# The renders a catalogue item can be shown by: the eight angles a ship has and
+# a holo. An item has no uncoloured silhouette the way a ship's fleetchart
+# does, so there is one set rather than a plain and a coloured one.
+module ItemViews
+  extend ActiveSupport::Concern
+
+  VIEW_ATTACHMENT_NAMES = %i[
+    top_view port_view front_view angled_view
+    angled_rear_view bottom_view rear_view starboard_view
+  ].freeze
+
+  ATTACHMENT_NAMES = (VIEW_ATTACHMENT_NAMES + %i[holo]).freeze
+
+  included do
+    ATTACHMENT_NAMES.each { |name| has_one_attached name }
+  end
+end

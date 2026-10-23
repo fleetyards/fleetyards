@@ -99,6 +99,16 @@ class Api::V1::ComponentsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /components/{slug} carries the views and the holo" do
+    @component.starboard_view.attach(io: file_fixture("test.png").open, filename: "starboard.png", content_type: "image/png")
+    @component.holo.attach(io: StringIO.new("glTF"), filename: "holo.glb", content_type: "model/gltf-binary")
+
+    assert_api_response :get, 200, params: {slug: @component.slug} do
+      assert_equal "starboard.png", parsed_body.dig("media", "starboardView", "name")
+      assert_equal "holo.glb", parsed_body.dig("media", "holo", "name")
+    end
+  end
+
   test "GET /components/{slug} 404s for a slug nobody has" do
     assert_api_response :get, 404, params: {slug: "no-such-component"}
   end
