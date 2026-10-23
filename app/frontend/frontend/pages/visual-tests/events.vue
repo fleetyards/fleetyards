@@ -171,7 +171,7 @@ const ship = (overrides: Partial<FleetEventShip> = {}): FleetEventShip => ({
  * it: a hand-made image URL goes stale, and the point of this card is how a real
  * cover and a real crew count render.
  */
-const SHIP_SLUG = "rsi-constellation-andromeda";
+const SHIP_SLUG = "rsi-constellation-mk-iv-andromeda";
 
 const { data: shipModel } = useModelQuery(SHIP_SLUG);
 
