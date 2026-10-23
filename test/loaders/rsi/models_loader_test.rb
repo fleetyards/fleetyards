@@ -265,7 +265,6 @@ module Rsi
 
       model = Model.find_by(rsi_id: 7)
       assert_equal %w[light_fighter fighter starter], model.foci
-      assert_equal "Light Fighter / Starter", model.focus
     end
 
     test "#leaves a classification it does not recognise off the model" do

@@ -25,7 +25,7 @@ class Model < ApplicationRecord
     rsi_id rsi_chassis_id rsi_name rsi_description rsi_classification rsi_focus rsi_size rsi_store_url
     rsi_length rsi_beam rsi_height rsi_mass rsi_cargo rsi_crew
     rsi_scm_speed rsi_max_speed rsi_pitch rsi_yaw rsi_roll
-    classification production_status production_note focus foci stealth sc_role pledge_price length beam height mass
+    classification production_status production_note foci stealth sc_role pledge_price length beam height mass
     cargo personal_inventory size crew scm_speed max_speed ground_max_speed ground_reverse_speed
     ground_acceleration ground_deceleration pitch yaw roll price
     store_url hydrogen_fuel_tank_size quantum_fuel_tank_size cargo_holds hydrogen_fuel_tanks
@@ -526,20 +526,6 @@ class Model < ApplicationRecord
 
   validates :classification, inclusion: {in: CLASSIFICATIONS}, allow_nil: true
 
-  # Free text from the ship matrix and from admins, so the same focus arrived
-  # with a trailing space or in a spelling of its own and was listed twice.
-  FOCUS_SPELLINGS = {
-    "Gun Ship" => "Gunship",
-    "Interdictor" => "Interdiction",
-    "Anti-aircraft" => "Anti-Air",
-    "Medium Freighter" => "Medium Freight",
-    "Transporter" => "Transport"
-  }.freeze
-
-  normalizes :focus, with: ->(focus) {
-    FOCUS_SPELLINGS.reduce(focus.to_s.squish) { |text, (from, to)| text.gsub(/\b#{Regexp.escape(from)}\b/i, to) }.presence
-  }
-
   # The catalogue's own words for what a ship is for, in the order a list of
   # them is shown. A ship carries any number; the sources' wording stays in
   # `rsi_focus` and `sc_role`.
@@ -592,16 +578,13 @@ class Model < ApplicationRecord
   validate :vehicle_size_belongs_to_a_vehicle
 
   DEFAULT_SORTING_PARAMS = "name asc"
-  # The focus sorts order by the old `focus` string, which a list of foci has
-  # no counterpart for. Nothing offers them any more; they are still accepted
-  # until that column goes, so a client sending one is not refused.
   ALLOWED_SORTING_PARAMS = [
     "name asc", "name desc", "createdAt asc", "createdAt desc", "length asc", "length desc",
     "beam asc", "beam desc", "height asc", "height desc", "mass asc", "mass desc", "cargo asc",
     "cargo desc", "manufacturerName asc", "manufacturerName desc", "pledgePrice asc",
     "pledgePrice desc", "price asc", "price desc", "scmSpeed asc", "scmSpeed desc", "maxSpeed asc",
     "maxSpeed desc", "groundMaxSpeed asc", "groundMaxSpeed desc", "productionStatus asc",
-    "productionStatus desc", "focus asc", "focus desc", "rsiId asc", "rsiId desc"
+    "productionStatus desc", "rsiId asc", "rsiId desc"
   ]
 
   ransack_alias :manufacturer, :manufacturer_slug
@@ -614,7 +597,7 @@ class Model < ApplicationRecord
       "active", "base_model_id",
       "beam", "cargo", "cargo_holds", "classification", "created_at", "crew", "description",
       "dimensions_measured_at", "dock_size", "erkul_identifier", "fleetchart_image",
-      "fleetchart_offset_length", "focus", "front_view",
+      "fleetchart_offset_length", "front_view",
       "ground", "ground_acceleration",
       "ground_deceleration", "ground_max_speed", "ground_reverse_speed", "height", "hidden",
       "holo", "holo_colored", "hydrogen_fuel_tank_size", "hydrogen_fuel_tanks", "id", "id_value", "in_game", "ingame_only", "can_land_on_planets",
@@ -809,7 +792,7 @@ class Model < ApplicationRecord
   }
 
   # Any of the keys, as `classification_in` matches any of its values. Named
-  # after the column it replaces, so `focusIn` keeps meaning what it always did,
+  # after the field it replaces, so `focusIn` keeps meaning what it always did,
   # and a focus as a link from before the keys words it ("Heavy Fighter") is
   # read as the keys it maps to.
   scope :focus_in, ->(*values) {

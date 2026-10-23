@@ -13,13 +13,4 @@ class MissionShipTest < ActiveSupport::TestCase
     assert_not ship.valid?
     assert_includes ship.errors.attribute_names, :foci
   end
-
-  test "a slot cleared of its foci is not left asking for its old focus" do
-    ship = create(:mission_ship, classification: nil, focus: "Light Fighter", foci: %w[light_fighter])
-
-    ship.update!(foci: [])
-
-    assert_nil ship.reload.focus
-    assert_not ship.filtered?
-  end
 end

@@ -26,7 +26,6 @@ module V1
 
             description: {type: :string},
             erkulIdentifier: {type: :string},
-            focus: {type: :string, deprecated: true, description: "Use foci instead"},
             foci: {type: :array, items: ::Shared::V1::Schemas::Enums::ModelFocusEnum},
             fociLabels: {type: :array, items: {type: :string}},
             stealth: {type: :boolean},

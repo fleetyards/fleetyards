@@ -26,7 +26,6 @@ end
 
 json.filters do
   json.classification mission_ship.classification
-  json.focus mission_ship.focus
   json.foci mission_ship.foci
   json.foci_labels Model.focus_labels(mission_ship.foci)
   json.min_size mission_ship.min_size

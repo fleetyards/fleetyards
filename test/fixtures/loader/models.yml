@@ -6,7 +6,6 @@ model_aegs_avenger_stalker:
   cargo: '0.0'
   classification: combat
   description: Initially designed as a frontline carrier for the military, the Avenger Stalker took a different path, ultimately having a long and storied career as the standard patrol craft of the UEE Advocacy. Utilizing its cargo hold for prisoner transport, the Avenger features a sturdy, reliable hull and the capacity for larger-than-expected engine mounts. *This is the standard Avenger chassis with the Stalker Prisoner Transport module pre-installed.*
-  focus: Interdiction
   ground: false
   height: '5.5'
   hidden: false
@@ -62,7 +61,6 @@ model_aegs_avenger_titan:
   cargo: '8.0'
   classification: transport
   description: With extra room in the back, the Titan’s hold is free to carry cargo. Couple that with the Avenger’s tried and true combat abilities and you’ve got a light cargo hauler that’s more than capable of handling itself in a fight.
-  focus: Light Freight
   ground: false
   height: '5.5'
   hidden: false
@@ -120,7 +118,6 @@ model_aegs_avenger_titan_renegade:
   description: 'Created as part of the ‘Masters of Flight’ series in conjunction with the flight-sim Arena Commander, the Renegade pays tribute to famed pilot Danny Solomon for his notable work with the Advocacy to bring justice to Bremen. This Avenger Titan comes equipped with a specialized dogfighting-focused loadout and a special-edition livery honoring this iconic ship.
 
     '
-  focus: Light Freight
   ground: false
   height: '5.5'
   hidden: false
@@ -181,7 +178,6 @@ model_aegs_avenger_warlock:
     Outfitted with a Behring REP-8 EMP Generator, the Warlock makes non-lethal suppression possible via a powerful electromagnetic wave capable of disabling any electronics within the blast radius.
 
     *This is the standard Avenger chassis with the Warlock EMP module pre-installed.*
-  focus: Interdiction
   ground: false
   height: '5.5'
   hidden: false
@@ -240,7 +236,6 @@ model_aegs_eclipse:
   cargo: '0.0'
   classification: combat
   description: The Aegis Eclipse is a bomber designed to get in and strike before it's even spotted. After extensive service with the UEE, this high-tech military stalwart is making its debut on the civilian market for 2947.
-  focus: Stealth Bomber
   ground: false
   height: '4.4'
   hidden: false
@@ -296,7 +291,6 @@ model_aegs_gladius:
   cargo: '0.0'
   classification: combat
   description: The Gladius is an older design which has been updated over the years to keep up with modern technology. In military circles, the Gladius is beloved for its performance and its simplicity. A fast, light fighter with a laser-focus on dogfighting, the Gladius is an ideal interceptor or escort ship.
-  focus: Light Fighter
   ground: false
   height: '5.5'
   hidden: false
@@ -354,7 +348,6 @@ model_aegs_gladius_valiant:
   description: 'Created as part of the ‘Masters of Flight’ series in conjunction with the flight-sim Arena Commander, the Valiant pays tribute to famed defense pilot Condi Hillard for being the first Human on record to defeat a Vanduul in combat. This Gladius comes equipped with a specialized dogfighting focused loadout and a custom special edition livery honoring her iconic ship.
 
     '
-  focus: Light Fighter
   ground: false
   height: '5.0'
   hidden: false
@@ -412,7 +405,6 @@ model_aegs_hammerhead:
   cargo: '40.0'
   classification: combat
   description: A fast patrol ship with multiple turrets designed to combat fighters, the Hammerhead is equally suited to support larger capital ships in a fleet or act as a flagship for fighter groups.
-  focus: Heavy Gun Ship
   ground: false
   height: '16.0'
   hidden: false
@@ -468,7 +460,6 @@ model_aegs_idris_m:
   cargo: '0.0'
   classification: combat
   description: Larger than a bomber but smaller than a ship of the line, frigates occupy an interesting space in the pantheon of warships. While they lack the heavy armor and the capital weaponry of a cruiser, frigates are more maneuverable and are highly configurable.
-  focus: Frigate
   ground: false
   height: '45.0'
   hidden: false
@@ -525,7 +516,6 @@ model_aegs_idris_p:
   cargo: '300.0'
   classification: combat
   description: A mark two "peacekeeper" variant developed for the UEE patrol services, the Idris-P strips the standard ship's ship-to-ship gun and spinal mount in favor of additional cargo capacity and superior speed.
-  focus: Frigate
   ground: false
   height: '45.0'
   hidden: false
@@ -582,7 +572,6 @@ model_aegs_javelin:
   cargo: '5400.0'
   classification: combat
   description: Designed for use by the UEE military, the Javelin is a massive, modular capital ship that can be appropriated for entrepreneurial use. With a detailed interior, plenty of modular room options and a high crew capacity, the Javelin is a ship that has made a name for itself in a variety of roles.
-  focus: Destroyer
   ground: false
   height: '85.0'
   hidden: false
@@ -639,7 +628,6 @@ model_aegs_nautilus:
   cargo: '64.0'
   classification: combat
   description: 'With four centuries of distinguished service under its belt, The Aegis Dynamics Nautilus tactical minelayer represents the ultimate in strategic combat engineering, with fully-integrated mine-deployment, sweeping and disarming capabilities. '
-  focus: Minelayer
   ground: false
   height: '21.6'
   hidden: false
@@ -690,7 +678,6 @@ model_aegs_pirate_gladius:
   beam: '17.0'
   cargo: '0.0'
   classification: combat
-  focus: Light Fighter
   ground: false
   height: '5.5'
   hidden: false
@@ -748,7 +735,6 @@ model_aegs_reclaimer:
     The Aegis Reclaimer is an industrial salvage ship. Equipped with a reinforced cargo bay, a long-range jump drive and launch pods for unmanned drones, the Reclaimer is an ideal ship for taking advantage of deep space wrecks. Tractor beams, floodlights, scanner options and docking ports round out the tools on this capable, utilitarian spacecraft.
 
     The listed Cargo Capacity is only for the dedicated Cargo Room and does not account for the salvaged material capacity which will be detailed later.
-  focus: Heavy Salvage
   ground: false
   height: '50.0'
   hidden: false
@@ -808,7 +794,6 @@ model_aegs_redeemer:
   cargo: '2.0'
   classification: combat
   description: Designed by Star Citizen's backers, the Aegis Redeemer is a powerful fighting ship capable of holding its own in combat with a powerful weapons payload. Dotted with turrets and missiles, the Redeemer also doubles as an armored landing craft capable of delivering armored soldiers for first person combat!
-  focus: Gunship
   ground: false
   height: '14.0'
   hidden: false
@@ -864,7 +849,6 @@ model_aegs_retaliator:
   cargo: '0.0'
   classification: combat
   description: One of the UEE Navy’s most powerful warbirds, the Retaliator was designed from the ground up to take down enemy capital ships. A key component of the UEEN fleet, Retaliator squadrons have served with distinction across Humanity’s most pivotal campaigns. The base version of the Retaliator is customizable with additional modules to suit combat or utility.
-  focus: Modular Gunship
   ground: false
   height: '9.5'
   hidden: false
@@ -920,7 +904,6 @@ model_aegs_sabre:
   cargo: '0.0'
   classification: combat
   description: Part of Aegis Dynamics’ Phase Two of new ship models, the Sabre was designed as a space superiority fighter for those situations where you need to leave a lighter footprint. Designed to be a rapid responder, the Sabre is more than capable of establishing battlefield dominance for any number of combat scenarios.
-  focus: Stealth Fighter
   ground: false
   height: '5.0'
   hidden: false
@@ -979,7 +962,6 @@ model_aegs_sabre_comet:
   description: 'Created as part of the ‘Masters of Flight’ series in conjunction with the flight-sim Arena Commander, the Comet pays tribute to famed pilot Captain Kamur Dalion for his work with Aegis to usher in a new era of combat ship design. This Sabre comes equipped with a specialized dogfighting focused loadout and a custom special edition livery honoring this iconic ship.
 
     '
-  focus: Medium Fighter
   ground: false
   height: '5.0'
   hidden: false
@@ -1037,7 +1019,6 @@ model_aegs_sabre_firebird:
   cargo: '0.0'
   classification: combat
   description: 'A high-speed fighter specializing in rapid barrages from its bespoke missile array. Built to destroy threats before they can react, it’s equally at home heading out on long-range missions or scrambling to protect your base of operations. '
-  focus: Medium Fighter
   ground: false
   height: '3.8'
   hidden: false
@@ -1093,7 +1074,6 @@ model_aegs_sabre_peregrine:
   cargo: '0.0'
   classification: competition
   description: The fastest Sabre model yet conceived, the Peregrine takes the infamous military-born chassis and tunes it for pure unadulterated speed.
-  focus: Racing
   ground: false
   height: '5.0'
   hidden: false
@@ -1149,7 +1129,6 @@ model_aegs_sabre_raven:
   cargo: '0.0'
   classification: combat
   description: Part of Aegis Dynamics’ Phase Two of new ship models, the Sabre was designed as a space superiority fighter for those situations where you need to leave a lighter footprint. They have raised the bar yet again with their Raven variant, maintaining all the speed and maneuverability of its Sabre forebear, but with a lower ship signature, making it a fast, stealthy infiltrator.
-  focus: Interdiction
   ground: false
   height: '5.0'
   hidden: false
@@ -1208,7 +1187,6 @@ model_aegs_vanguard_harbinger:
   description: 'The Vanguard Harbinger is Earth’s standard fighter-bomber, converting the standard Warden model’s escape pod into a potent bomb bay. The extended range of the Vanguard and the relatively small profile mean that it can go where carrier-based planes or larger strategic bombers don’t… and then strike hard and make it back to frontier bases. The Vanguard Harbinger is a powerful bomber that can operate out of the roughest forward operating bases.
 
     '
-  focus: Bomber
   ground: false
   height: '8.0'
   hidden: false
@@ -1266,7 +1244,6 @@ model_aegs_vanguard_hoplite:
   cargo: '0.0'
   classification: combat
   description: The Vanguard Hoplite is a cross between the winning Vanguard deep space fighter and a dedicated boarding ship. Adapted from proven assault ship designs, the Hoplite is the perfect tool for inserting an armored strike team with enough firepower to get them out again.
-  focus: Dropship
   ground: false
   height: '8.5'
   hidden: false
@@ -1323,7 +1300,6 @@ model_aegs_vanguard_sentinel:
   cargo: '0.0'
   classification: combat
   description: The Vanguard Sentinel is a ship that’s designed to fight smart instead of taking enemies head on. The conversion features an AR cockpit, an external e-War pod, decoy missiles and a set of EMP charges. Vanguard Sentinels often provide necessary combat support for combined operations. A lone Sentinel assigned wild weasel tasks is frequently paired with Harbinger bombers and Warden escorts for large attack missions.
-  focus: Interdiction
   ground: false
   height: '8.5'
   hidden: false
@@ -1380,7 +1356,6 @@ model_aegs_vanguard_warden:
   cargo: '0.0'
   classification: combat
   description: The A3G Vanguard Warden is one of Aegis Dynamics' most versatile and deadly long-range fighters. With an extra heavy frame, and an extra nasty loadout, the Warden is an absolute beast on the frontlines of any assault operation.
-  focus: Heavy Fighter
   ground: false
   height: '8.5'
   hidden: false
@@ -1436,7 +1411,6 @@ model_aegs_vulcan:
   cargo: '12.0'
   classification: multi
   description: "Refuel. Repair. Rearm. Become a one-person support crew with Aegis Dynamics’ versatile Vulcan, supplying aid to pilots on the fly. Whether pinned down under heavy fire and in need of ammunition, low on quantum fuel after an ill-planned jump, or stranded in unknown space with a busted thruster, a pilot in distress can always count on a Vulcan and its cadre of drones to lend speedy, efficient assistance. \n\nOutfit your Vulcan with eye-catching livery and become a beacon of hope, even in the darkest, most treacherous corners of the ‘verse."
-  focus: Medium Repair / Medium Refuel
   ground: false
   height: '10.0'
   hidden: false
@@ -1490,7 +1464,6 @@ model_anvl_arrow:
   cargo: '0.0'
   classification: combat
   description: Meet Anvil's ‘light fighter of the future’. Featuring an ultra-aerodynamic frame, slight profile, and the most advanced manoeuvring thruster tech available, it’s the most agile ship in its class. It can also hold its own in a knock-down-drag-out thanks to a generous standard weapons package that includes quad missile racks and a full complement of countermeasures. The Arrow is designed specifically to leave would-be interlopers thoroughly bewildered. After all, how can they kill what they can't catch?
-  focus: Light Fighter
   ground: false
   height: '4.0'
   hidden: false
@@ -1545,7 +1518,6 @@ model_anvl_ballista:
   beam: '7.0'
   cargo: '0.0'
   classification: combat
-  focus: Military
   ground: false
   height: '5.5'
   hidden: false
@@ -1598,7 +1570,6 @@ model_anvl_c8_pisces:
   cargo: '4.0'
   classification: exploration
   description: Additional firepower turns the base Pisces into a highly capable mini-explorer. Ideal for inter-system travel or investigating tight spots inaccessible to larger ships, it’s a small ship ready for big adventures.
-  focus: Exploration
   ground: false
   height: '3.2'
   hidden: false
@@ -1654,7 +1625,6 @@ model_anvl_c8r_pisces:
   cargo: '0.0'
   classification: support
   description: With the addition of an onboard Tier 3 Medical Bed, the C8R Pisces can treat minor injuries and keep a patient stable while transporting them to the safety of a larger ship, station, or nearby medical facility, making it an invaluable asset for short-range search and rescue.
-  focus: Medical
   ground: false
   height: '3.2'
   hidden: false
@@ -1710,7 +1680,6 @@ model_anvl_c8x_pisces_expedition:
   cargo: '4.0'
   classification: exploration
   description: 'Additional firepower turns the base Pisces into a highly capable mini-explorer. Ideal for inter-system travel or investigating tight spots inaccessible to larger ships, it’s a small ship ready for big adventures.  '
-  focus: Expedition
   ground: false
   height: '3.2'
   hidden: false
@@ -1766,7 +1735,6 @@ model_anvl_carrack:
   cargo: '456.0'
   classification: exploration
   description: The Anvil Carrack features reinforced fuel tanks for long-duration flight, an advanced jump drive, and a dedicated computer core for jump charting operations. Originally a military exclusive, the Carrack is now available for civilian use. On-board accommodations include crew medical and repair facilities, and a mapping-oriented sensor suite.
-  focus: Expedition
   ground: false
   height: '30.0'
   hidden: false
@@ -1822,7 +1790,6 @@ model_anvl_centurion:
   cargo: '0.0'
   classification: ground
   description: Built on Anvil’s popular Atlas Platform, the Centurion presents a tactical solution for short-range anti-aircraft operations. Dominate any combat zone by assuring immediate threats from above are dealt with quickly and efficiently, thanks to the Centurion’s custom energy-based AA turret.
-  focus: Combat
   ground: false
   height: '5.5'
   hidden: false
@@ -1876,7 +1843,6 @@ model_anvl_crucible:
   cargo: '240.0'
   classification: support
   description: A so-called “flying toolbox,” the Crucible is Anvil Aerospace’s first dedicated repair ship. Featuring a rotating control bridge and a detachable pressurized workspace,  the Crucible is a versatile mobile garage equipped with repair arms, a drone operation center and all the equipment needed to overhaul a damaged craft back into fighting shape.
-  focus: Heavy Repair
   ground: false
   height: '20.0'
   hidden: false
@@ -1933,7 +1899,6 @@ model_anvl_f7a_hornet_mk_i:
   cargo: '0.0'
   classification: combat
   description: A space combat legend of centuries past.
-  focus: Medium Fighter
   ground: false
   height: '6.0'
   hidden: false
@@ -1993,7 +1958,6 @@ model_anvl_f7a_hornet_mk_ii:
   cargo: '0.0'
   classification: combat
   description: The UEE Navy's premier carrier-based fighter craft, the F7A is the front-line attack ship for military combat missions. While not outfitted for long range runs, the Hornet can take her share of hits... and dish out a consistent, powerful response.
-  focus: Medium Fighter
   ground: false
   height: '5.0'
   hidden: false
@@ -2047,7 +2011,6 @@ model_anvl_f7c_hornet_mk_i:
   cargo: '2.0'
   classification: combat
   description: To the enemy, it is a weapon never to be underestimated. To allies, it's a savior. The F7C Hornet is the same dependable and resilient multi-purpose fighter that has become the face of the UEE Navy. The F7C is the foundation to build on and meet whatever requirements you have in mind.
-  focus: Medium Fighter
   ground: false
   height: '6.5'
   hidden: false
@@ -2103,7 +2066,6 @@ model_anvl_f7c_hornet_mk_ii:
   cargo: '2.0'
   classification: combat
   description: Tame the power, speed, and offensive punch of the UEE Navy’s premier carrier-based fighter, made famous by its dominating role in the Vanduul war. Sporting a pair of daunting Size 4 Gatlings and a custom missile rack capable of delivering a devastating payload, its easy to see why this heavy-hitting fighter is a legend and mainstay of Naval operations.
-  focus: Medium Fighter
   ground: false
   height: '5.0'
   hidden: false
@@ -2161,7 +2123,6 @@ model_anvl_f7c_hornet_wildfire_mk_i:
   description: 'Created as part of the ‘Masters of Flight’ series in conjunction with the flight-sim Arena Commander, the Wildfire pays tribute to famed pilot Aria Reilly for her distinguished service with the legendary Squadron 42. This Hornet comes equipped with her own personally selected loadout preferences and a custom special edition livery honoring her iconic ship.
 
     '
-  focus: Medium Fighter
   ground: false
   height: '6.5'
   hidden: false
@@ -2219,7 +2180,6 @@ model_anvl_f7c_m_super_hornet_heartseeker_mk_i:
   cargo: '0.0'
   classification: combat
   description: Designed for pilots whose true love is the pulse-pounding thrill of a harrowing dogfight, Anvil's limited-edition Heartseeker is 'the one' for true combat die-hards. Loaded with top-of-the-line near military-spec components and four imposing Behring laser cannons, this fierce eradicator hones the legendary combat proficiency of the Super Hornet to give you the ultimate edge in space combat.
-  focus: Medium Fighter
   ground: false
   height: '6.5'
   hidden: false
@@ -2275,7 +2235,6 @@ model_anvl_f7c_m_super_hornet_mk_i:
   cargo: '0.0'
   classification: combat
   description: The closest to the Military load-out as is legally possible for a Civilian model, the F7C-M Super Hornet reattaches the ball turret and offers near milspec parts under the hood. Proving that two heads are better than one, a second seat has been added to split the logistic and combat duty, making the Super Hornet a truly terrifying mark to engage.
-  focus: Medium Fighter
   ground: false
   height: '6.5'
   hidden: false
@@ -2331,7 +2290,6 @@ model_anvl_f7c_r_hornet_tracker_mk_i:
   cargo: '0.0'
   classification: combat
   description: If the Ghost is made to hide, the Tracker is made to seek. The F7C-R Tracker boasts an advanced radar suite making it ideal for deep-space explorers who require depth and accuracy in their scan packages. Local militia and larger merc units will also repurpose Trackers to act as mobile C&amp;C ships for their squadrons.
-  focus: Pathfinder
   ground: false
   height: '6.5'
   hidden: false
@@ -2387,7 +2345,6 @@ model_anvl_f7c_r_hornet_tracker_mk_ii:
   cargo: '0.0'
   classification: combat
   description: Formidable fighter with enhanced scanning capabilities.
-  focus: Pathfinder
   ground: false
   height: '5.0'
   hidden: false
@@ -2441,7 +2398,6 @@ model_anvl_f7c_s_hornet_ghost_mk_i:
   cargo: '0.0'
   classification: combat
   description: Through a combination of low-emission drives, low-draw weapons, and Void Armor technology capable of diffusing scans, the F7C-S Ghost is built for the pilot who wants to keep a low profile. The Ghost is capable of slipping past the most ardent of observers to accomplish whatever goal you need to accomplish. Don't worry, we won't ask.
-  focus: Stealth Fighter
   ground: false
   height: '6.5'
   hidden: false
@@ -2497,7 +2453,6 @@ model_anvl_f7c_s_hornet_ghost_mk_ii:
   cargo: '0.0'
   classification: combat
   description: Low-signature fighter built for scouting and ambushing unaware foes.
-  focus: Stealth Fighter
   ground: false
   height: '5.0'
   hidden: false
@@ -2550,7 +2505,6 @@ model_anvl_f8c_lightning:
   beam: '24.0'
   classification: combat
   description: 'Few vehicles inspire the same awe as the legendary F8 Lightning. A force to be reckoned with, it has protected Humanity countless times from countless threats at home and far from civilization. '
-  focus: Heavy Fighter
   ground: false
   height: '6.5'
   hidden: false
@@ -2604,7 +2558,6 @@ model_anvl_f8c_lightning_executive_edition:
   beam: '24.0'
   classification: combat
   description: 'Few vehicles inspire the same awe as the legendary F8 Lightning. A force to be reckoned with, it has protected Humanity countless times from countless threats at home and far from civilization. '
-  focus: Heavy Fighter
   ground: false
   height: '6.5'
   hidden: false
@@ -2659,7 +2612,6 @@ model_anvl_gladiator:
   cargo: '0.0'
   classification: combat
   description: The civilian model of the Gladiator appeals to those that want explore the ‘Verse with a bit of added security. Supporting a maximum of two, the Gladiator is perfectly equipped to explore and fight with or without a wingman. The Civilian model allows pilots to choose between an extra cargo hold or a bomb bay.
-  focus: Bomber
   ground: false
   height: '6.6'
   hidden: false
@@ -2715,7 +2667,6 @@ model_anvl_hawk:
   cargo: '0.0'
   classification: combat
   description: A small, light fighter with an emphasis on weaponry, the Hawk boasts an impressive arsenal of lethal and non-lethal weapons, making it a perfect ship for independent bounty hunters or local security looking for a little more punch.
-  focus: Light Fighter
   ground: false
   height: '6.5'
   hidden: false
@@ -2771,7 +2722,6 @@ model_anvl_hurricane:
   cargo: '0.0'
   classification: combat
   description: 'Big things do come in small packages: the Hurricane is a fighting spacecraft that packs a deadly punch into a slight fuselage. The spacecraft compensates for its lack of creature comforts with its powerful armament - six guns capable of blasting their way through nearly anything. Hurricane pilots have yet to find an enemy shield they can''t knock down.'
-  focus: Heavy Fighter
   ground: false
   height: '6.0'
   hidden: false
@@ -2827,7 +2777,6 @@ model_anvl_legionnaire:
   cargo: '0.0'
   classification: combat
   description: The Anvil Legionnaire presents the civilian market with a military style boarding vessel capable of occupying ships of varying sizes, crews, and capacities. High-performance jump seats safely transport a boarding party of up to ten into the action, while integrated systems let your copilot bypass security protocols on the target vessel, mitigating risk like never before.
-  focus: Boarding
   ground: false
   height: '13.0'
   hidden: false
@@ -2879,7 +2828,6 @@ model_anvl_liberator:
   cargo: '400.0'
   classification: transport
   description: Anvil continues its tradition of excellence with the Liberator, an open-air vehicle carrier that applies the tradition of long-range transport to a smaller scale. Designed with the same quantum drive and long-distance capabilities of military-spec carriers and pathfinders but tailored to the civilian market, the Liberator puts your fleet on the front lines of any operation.
-  focus: Light Carrier
   ground: false
   height: '25.0'
   hidden: false
@@ -2933,7 +2881,6 @@ model_anvl_paladin:
   cargo: '0.0'
   classification: combat
   description: Heavy gunship equipped to take down huge targets.
-  focus: Gunship
   ground: false
   height: '14.5'
   hidden: false
@@ -2985,7 +2932,6 @@ model_anvl_spartan:
   cargo: '0.0'
   classification: ground
   description: Built on Anvil’s robust Atlas Platform, the same chassis used for their devastating Ballista air defense system, the Spartan takes armored personal transport to the next level. A fully armored hold outfitted with eight comfortable jump seats is the perfect way to get your squad onto any battlefield. The Spartan’s low profile keeps it safe from anti-aircraft weaponry, and a remote gatling turret helps clear the area for easier deployment.
-  focus: Transport
   ground: false
   height: '5.5'
   hidden: false
@@ -3039,7 +2985,6 @@ model_anvl_terrapin:
   cargo: '0.0'
   classification: exploration
   description: Outfitted with long-range scanners and encased in heavy armor and oversized shields, the U4A-3 Terrapin can face potentially hazardous circumstances with confidence, making it the ultimate combat scout and reconnaissance vehicle, at least according to Anvil.
-  focus: Pathfinder
   ground: false
   height: '6.0'
   hidden: false
@@ -3095,7 +3040,6 @@ model_anvl_terrapin_medic:
   cargo: '0.0'
   classification: support
   description: Durable, heavily armored rescue ship that can take on any battlefield or environ.
-  focus: Medical
   ground: false
   height: '6.0'
   hidden: false
@@ -3152,7 +3096,6 @@ model_anvl_valkyrie:
     In the days of antiquity, the Valkyrie were believed to choose who would live and who would die on the field of war. Now, Anvil is putting that choice in your hands. Seize fate and turn the tide of battle.
 
     Rugged, high-performance jump seats safely transport up to twenty personnel into and out of the fray. A vehicle bay and speed ramp efficiently launch ground-based transport or reconnaissance vehicles for unmatched support. Four powerful VTOL thrusters facilitate surgically precise take-offs and landings, while a devastating array of weaponry blurs the line between dropship and gunship.
-  focus: Dropship
   ground: false
   height: '10.5'
   hidden: false
@@ -3210,7 +3153,6 @@ model_argo_atls:
   beam: '2.0'
   classification: ground
   description: Single-handedly load and unload the biggest haulers with the power of Argo. The ATLS power suit’s unique exo-frame helps you work quickly, easily, and safely – whatever the task.
-  focus: Industrial
   ground: false
   height: '2.8'
   hidden: false
@@ -3261,7 +3203,6 @@ model_argo_csv_sm:
   cargo: '4.0'
   classification: ground
   description: The CSV-SM is the logistical lifeblood of any hangar or outpost operation. Move essential materials freely and easily.
-  focus: Freight
   ground: false
   height: '2.8'
   hidden: false
@@ -3313,7 +3254,6 @@ model_argo_mole:
   cargo: '96.0'
   classification: industrial
   description: ARGO’s pragmatic no-nonsense approach to ship design is celebrated in the unmistakable silhouette of the MOLE. Just one look at this machine and you know it means business. Tap into your full potential with the combined force of ARGO’s patented trilateral mining system. The MOLE has a total of 24 mineral pods, each holding 12 SCU. Eight pods are usable at one time – when they’re full, either head home or jettison them for collection by another vessel and carry on mining. Three independently controlled articulated extraction stations allow for maximum power and near-limitless versatility. The MOLE lives by the adage ’many hands make for light work’.
-  focus: Prospecting / Mining
   ground: false
   height: '15.0'
   hidden: false
@@ -3369,7 +3309,6 @@ model_argo_mpuv_cargo:
   cargo: '2.0'
   classification: transport
   description: The ARGO Astronautics MPUV-1C (commonly ‘Argo Cargo’) is a dedicated merchant transfer ship, a ubiquitous intergalactic stevedore. Vast numbers of Argo Cargos are responsible for loading and unloading goods onto massive long-haul transports and miners that cannot otherwise land on planets or drydocks, such as the Hull D and the Orion. Some captains choose to own and operate their own Argo, while others pay privately owned ships operating as port services a rental fee for performing the unloading process.
-  focus: Light Freight
   ground: false
   height: '4.0'
   hidden: false
@@ -3425,7 +3364,6 @@ model_argo_mpuv_personnel:
   cargo: '0.0'
   classification: transport
   description: 'The ARGO Astronautics MPUV-1P (commonly ‘Argo Personnel.’) is geared towards a simple but incredibly important responsibility: moving groups of people from place to place. The UEE Navy uses MPUV-1Ps extensively, and any new recruit can likely recall those terrifying moments in which such a ship carried them to their first space assignment. In civilian hands, Argo Personnel ships are adapted for everything from standard taxi services to use as makeshift combat dropships. The ARGO is capable of carrying up to eight Humans and their equipment.'
-  focus: Passenger
   ground: false
   height: '4.0'
   hidden: false
@@ -3481,7 +3419,6 @@ model_argo_mpuv_tractor:
   cargo: '16.0'
   classification: transport
   description: The MPUV Tractor features dual tractor beams for effortless cargo handling alongside the sturdy, reliable design you expect from Argo. Load and unload any size freighter with ease.
-  focus: Cargo Loader
   ground: false
   height: '4.0'
   hidden: false
@@ -3535,7 +3472,6 @@ model_argo_raft:
   cargo: '96.0'
   classification: transport
   description: As it does with all its industrial concerns, Argo takes cargo transport very seriously, on every scale. The RAFT is no exception, able to carry three standardized 32-SCU cargo containers for a total hauling capacity of 96 SCU. Perfect for entry-level haulers and old pros alike, the RAFT is an ideal solution for reliable local freight transport. Once again, Argo gets the job done.
-  focus: Medium Freight
   ground: false
   height: '12.0'
   hidden: false
@@ -3593,7 +3529,6 @@ model_argo_srv:
   description: 'Leave no one behind. The SRV is a specialized recovery ship built for the extremes. From search-and-rescue to moving cargo containers, its innovative tractor-beam system makes towing effortless, while enhanced shields and heavy armor ensure pilot safety in tough situations.ILW 2024 Day 1-2
 
     '
-  focus: Recovery
   ground: false
   height: '9.0'
   hidden: false
@@ -3651,7 +3586,6 @@ model_banu_defender:
   cargo: '0.0'
   classification: combat
   description: 'Meet the Banu Defender, a multi-crew fighter whose patchwork design highlights technology from a variety of species. Featuring modest accommodations for its crew and easy access to components, the Defender gets its name from the role it serves: the first line of defense against enemy attacks. That''s why the Defender makes the ideal companion to the Merchantman: one to do the heavy hauling and the other to perform the deadly dogfighting.'
-  focus: Light Fighter
   ground: false
   height: '8.0'
   hidden: false
@@ -3707,7 +3641,6 @@ model_banu_merchantman:
   cargo: '2880.0'
   classification: transport
   description: Banu traders are renowned for their merchant prowess, traveling the spacelanes and trading with everyone from humans to the Vanduul! Their sturdy, dedicated trading ships are prized beyond all other transports, sometimes passing from generation to generation of Banu.
-  focus: Heavy Freight
   ground: false
   height: '65.0'
   hidden: false
@@ -3764,7 +3697,6 @@ model_cnou_hoverquad:
   cargo: '0.0'
   classification: ground
   description: You know that place where the roads end, and sky runs out? That little place at the very edge of adventure, where there’s nowhere to go but forward? Where over every dune, and around every patch of weird flora, you might tumble headlong into glorious unfamiliarity?  That’s HoverQuad country, and it’s begging to be explored.
-  focus: Racing
   ground: false
   height: '1.1'
   hidden: false
@@ -3820,7 +3752,6 @@ model_cnou_mustang_alpha:
   cargo: '4.0'
   classification: multi
   description: Inspired by Consolidated Outland CEO Silas Koerner’s cutting edge vision, the Mustang Alpha is a sleek, stylish spacecraft that uses ultralight alloys to push power ratios to the limits, albeit sometimes unsafely. And now, with the optional Cargo Carrier, you can have the Alpha’s advantages without sacrificing carrying capacity.
-  focus: Cargo
   ground: false
   height: '9.0'
   hidden: false
@@ -3876,7 +3807,6 @@ model_cnou_mustang_beta:
   cargo: '0.0'
   classification: exploration
   description: The Mustang Beta, with its unprecedented range, is made for long duration flights. The factory standard Tarsus Leaper Jump Engine enables the Beta to travel to the galaxy’s farthest systems with ease, while the ship’s unique Com4T living quarters will make the journey feel like you never left home.
-  focus: Pathfinder
   ground: false
   height: '9.0'
   hidden: false
@@ -3932,7 +3862,6 @@ model_cnou_mustang_delta:
   cargo: '0.0'
   classification: combat
   description: While it may not be able to go toe to toe with some of the military specific ships, by reinforcing the Mustang’s already strong hull construction with Consolidated Outland’s own line of Cavalry Class Mass Reduction Armor, the Delta has a reduced cross-sectional signature that evens the playing field.
-  focus: Light Fighter
   ground: false
   height: '9.0'
   hidden: false
@@ -3988,7 +3917,6 @@ model_cnou_mustang_gamma:
   cargo: '0.0'
   classification: competition
   description: Consolidated Outland’s design and engineering teams have managed to tweak and refine the Mustang into an admirable racer. The end result, the Mustang Gamma, has smooth acceleration, and power on demand thanks to an innovative package featuring three powerful Magma Jet engines for maximum thrust.
-  focus: Racing
   ground: false
   height: '9.0'
   hidden: false
@@ -4044,7 +3972,6 @@ model_cnou_mustang_omega:
   cargo: '0.0'
   classification: competition
   description: Consolidated Outland teamed up with custom tuning company Accelerated Mass Design to create a limited edition racer that features a ramped up fuel intake for faster recycling of the ship’s already impressive boost system. To cap off the collaboration, AMD enlisted resident underground artist Sektor8 to design the dynamic paint job.
-  focus: Racing
   ground: false
   height: '5.5'
   hidden: false
@@ -4103,7 +4030,6 @@ model_cnou_nomad:
     Imagine the versatility of a medium-sized, multi-purpose freighter packed into a compact frame. Imagine a ship designed for lone pilots finding their way across a galaxy teeming with possibilities.
 
     The Nomad is ready to go anywhere and do anything - the perfect solution for anyone yearning to start a brand-new adventure.
-  focus: Starter
   ground: false
   height: '9.2'
   hidden: false
@@ -4160,7 +4086,6 @@ model_cnou_pioneer:
   cargo: '1000.0'
   classification: multi
   description: After their auspicious debut with the Mustang, Consolidated Outland has gone and changed the game again with the reveal of the Pioneer. This self-contained mobile construction yard is capable of creating planetary modular structures, ushering a new wave of aspiring colonists to customize their new homes on the frontier.
-  focus: Heavy Construction
   ground: false
   height: '53.0'
   hidden: false
@@ -4212,7 +4137,6 @@ model_crus_a1_spirit:
   cargo: '0.0'
   classification: combat
   description: Crusader Industries brings its usual commitment to excellence directly to the civilian market with the A1 Spirit, a mid-size multi-purpose starship equipped as a light bomber but packing enough versatility to tackle multiple roles and unpredictable jobs.
-  focus: Bomber
   ground: false
   height: '10.0'
   hidden: false
@@ -4268,7 +4192,6 @@ model_crus_a2_hercules:
   cargo: '234.0'
   classification: combat
   description: The A2 gunship has been used to devastating effect in airborne assaults, search and rescue operations, and landing initiatives. With more than double the firepower of the M2, and a custom bomb bay capable of delivering a staggering payload, the A2 caters to anyone hauling massive amounts of cargo through potentially unfriendly skies.
-  focus: Heavy Bomber
   ground: false
   height: '23.0'
   hidden: false
@@ -4324,7 +4247,6 @@ model_crus_ares_inferno:
   cargo: '0.0'
   classification: combat
   description: Whether heading up a crew or hunting big ships solo, the Ares Inferno is a force to be reckoned with. This ballistic Gatling-equipped variant tears through gunship armor and turns smaller fighters to dust in seconds.
-  focus: Heavy Fighter
   ground: false
   height: '5.5'
   hidden: false
@@ -4380,7 +4302,6 @@ model_crus_ares_ion:
   cargo: '0.0'
   classification: combat
   description: Spark fear in the corridors of the most formidable gunships and frigates with the Ares Ion. This laser-equipped variant delivers extremely powerful shots to quickly disable the shields of even the biggest enemy vessels.
-  focus: Heavy Fighter
   ground: false
   height: '5.5'
   hidden: false
@@ -4436,7 +4357,6 @@ model_crus_c1_spirit:
   cargo: '64.0'
   classification: transport
   description: Crusader Industries brings its usual commitment to excellence directly to the civilian market with the C1 Spirit, a multi-purpose starship tuned for mid-range cargo delivery and courier work with enough versatility to tackle multiple roles and unpredictable jobs.
-  focus: Medium Freight
   ground: false
   height: '10.0'
   hidden: false
@@ -4492,7 +4412,6 @@ model_crus_c2_hercules:
   cargo: '696.0'
   classification: transport
   description: 'Utilizing the patented Hercules military-grade spaceframe and expanding cargo capacity, while sacrificing barely any firepower, the C2 has taken the private sector by storm. It has become the industry standard for racing teams, ship dealers and manufacturers, construction orgs, mining corporations, and even large-scale touring entertainment outfits. '
-  focus: 'Heavy Freight '
   ground: false
   height: '23.0'
   hidden: false
@@ -4548,7 +4467,6 @@ model_crus_e1_spirit:
   cargo: '0.0'
   classification: transport
   description: Crusader Industries brings its usual commitment to excellence directly to the civilian market with the E1 Spirit, a mid-size multi-purpose starship aiming to redefine executive travel with VIP accommodations while packing enough versatility to tackle multiple roles and unpredictable jobs.
-  focus: Passenger
   ground: false
   height: '10.0'
   hidden: false
@@ -4598,7 +4516,6 @@ model_crus_genesis:
   cargo: '0.0'
   classification: transport
   description: The Genesis is yet another landmark in Crusader Industries’ proud history of transport designs. This ship utilizes award-winning manufacturing techniques and the highest quality parts to create one thing; a next-generation passenger ship at a price that won’t break your budget. Crusader Industries’ proprietary NeoG engine technology offers some of the most efficient flight for a ship of its size.
-  focus: Passenger
   ground: false
   height: '25.0'
   hidden: false
@@ -4655,7 +4572,6 @@ model_crus_intrepid:
   cargo: '8.0'
   classification: transport
   description: "Versatile starter ship and light hauler built with true Crusader quality.\n\n"
-  focus: Light Freight
   ground: false
   height: '6.2'
   hidden: false
@@ -4711,7 +4627,6 @@ model_crus_m2_hercules:
   cargo: '468.0'
   classification: combat
   description: The M2 Hercules is the UEE's premier tactical starlifter. The ship's potent combination of capacity, maneuverability, and durability make it the obvious choice in large-scale transport, and a robust weapons package assures your cargo, and crew, gets to where they’re going in one piece.
-  focus: Military Transport
   ground: false
   height: '23.0'
   hidden: false
@@ -4767,7 +4682,6 @@ model_crus_mercury:
   cargo: '114.0'
   classification: transport
   description: The Mercury checks all the boxes expected of a dependable courier vessel, and then some. If you need it there fast and unscathed, you can’t do better than the Mercury. Built with the same engineering and design principals that has made Crusader the go-to manufacturer for galactic transport on any scale, the Star Runner chassis sets new standards for data and cargo conveyance.
-  focus: Medium Cargo / Medium Data
   ground: false
   height: '16.0'
   hidden: false
@@ -4823,7 +4737,6 @@ model_drak_buccaneer:
   cargo: '0.0'
   classification: combat
   description: 'The Buccaneer has been designed from the ground up to fly and fight the way you live. No leather interiors or hyperpillows here: the ‘Bucc is a scrapper designed to maneuver and fight above its weight class. This rough-and-tumble frontier fighter can be maintained in the worst of conditions in order to keep real, working space crews alive.'
-  focus: Interdiction
   ground: false
   height: '4.5'
   hidden: false
@@ -4879,7 +4792,6 @@ model_drak_caterpillar:
   cargo: '576.0'
   classification: transport
   description: First introduced in 2871, Drake Interplanetary’s Caterpillar has long proven to be a reliable, cost-effective multi-role vessel, capable of being outfitted for everything from mercantile operations to combat support. Long hailed as a hard-fought alternative to the ubiquitous Hull series, the Caterpillar is a freighter that doesn’t skimp on weaponry or customization.
-  focus: Heavy Freight
   ground: false
   height: '13.5'
   hidden: false
@@ -4936,7 +4848,6 @@ model_drak_corsair:
   cargo: '72.0'
   classification: exploration
   description: 'Heed the call of uncharted space and harness the spirit of exploration with the Drake Corsair, a worthy companion, supporting you in battle, discovery, and delivery, wherever the winds of adventure may steer you. '
-  focus: Expedition
   ground: false
   height: '31.0'
   hidden: false
@@ -4992,7 +4903,6 @@ model_drak_cutlass_black:
   cargo: '46.0'
   classification: multi
   description: Drake Interplanetary claims that the Cutlass Black is a low-cost, easy-to-maintain solution for local in-system militia units. The larger-than-average cargo hold, RIO seat and dedicated tractor mount are, the company literature insists, for facilitating search and rescue operations.
-  focus: Medium Freight
   ground: false
   height: '10.0'
   hidden: false
@@ -5049,7 +4959,6 @@ model_drak_cutlass_blue:
   cargo: '12.0'
   classification: combat
   description: Sleek, mean, and royal. The Cutlass Blue adds missiles, a more aggressive engine, and Durasteel holding cells in the cargo bay to the standard model. The Cutlass Blue is the outworld militia standard ship of choice for patrols.
-  focus: Interdiction
   ground: false
   height: '14.0'
   hidden: false
@@ -5105,7 +5014,6 @@ model_drak_cutlass_red:
   cargo: '12.0'
   classification: support
   description: 'Is there a doctor in the house? The Cutlass Red converts the standard cargo hold to a well-equipped medical facility including two Medical Beds. This star bound ambulance features the Nav-E7 Long Range Scanner, and Secure Plus Docking Collar making it ideal for search and rescue.  This model contains emergency light-bars and a red emergency themed paint job for easy identification. '
-  focus: Medical
   ground: false
   height: '14.0'
   hidden: false
@@ -5161,7 +5069,6 @@ model_drak_cutlass_steel:
   cargo: '0.0'
   classification: combat
   description: Drake knows that it’s a dog-eat-dog ‘verse out there. Away from the so-called protection of the UEE the law of the jungle prevails – whoever has the guns, and the personnel makes the rules. Drake has your back in both of those departments with the Cutlass Steel.
-  focus: Dropship
   ground: false
   height: '14.0'
   hidden: false
@@ -5223,7 +5130,6 @@ model_drak_cutter:
   cargo: '4.0'
   classification: transport
   description: 'Designed for hard-working folks of all stripes, the Cutter packs 4 SCU of cargo room and plenty of wallop into a rough and tumble, compact frame. It’s a ship that truly embodies the spirit of Drake: that no matter who you are or what you do, you can reach the stars.'
-  focus: Starter / Light Freight
   ground: false
   height: '6.0'
   hidden: false
@@ -5279,7 +5185,6 @@ model_drak_cutter_rambler:
   cargo: '2.0'
   classification: exploration
   description: The pilot-favorite Cutter chassis outfitted for long hauls and extended engagements. Go ahead, take the scenic route.
-  focus: Starter / Expedition
   ground: false
   height: '6.0'
   hidden: false
@@ -5335,7 +5240,6 @@ model_drak_cutter_scout:
   cargo: '2.0'
   classification: exploration
   description: Building on the do-it-all attitude of the original Cutter, the Scout takes its combat and utility abilities further with improved weapons and scanning components. Support a small fleet or go it alone – the Cutter Scout is a versatile starter ship that doesn’t compromise where it counts.
-  focus: Reconnaissance / Intelligence
   ground: false
   height: '6.0'
   hidden: false
@@ -5393,7 +5297,6 @@ model_drak_dragonfly_black:
   description: 'The Drake Dragonfly is the perfect snub ship for anyone looking to live on the edge. With nothing separating the pilot from the dangers of space, the Dragonfly is as much an adventure as a ship! Dual-mode conversion allows the Dragonfly to operate on the ground or in space, and a rear-facing second seat means you can even take a passenger! This black model is Drake''s standard production version.
 
     '
-  focus: Racing
   ground: false
   height: '3.0'
   hidden: false
@@ -5489,7 +5392,6 @@ model_drak_dragonfly_yellowjacket:
   description: 'The Drake Dragonfly is the perfect snub ship for anyone looking to live on the edge. With nothing separating the pilot from the dangers of space, the Dragonfly is as much an adventure as a ship! Dual-mode conversion allows the Dragonfly to operate on the ground or in space, and a rear-facing second seat means you can even take a passenger! This exclusive Yellowjacket version is available only for the concept sale.
 
     '
-  focus: Racing
   ground: false
   height: '3.0'
   hidden: false
@@ -5548,7 +5450,6 @@ model_drak_herald:
   cargo: '0.0'
   classification: transport
   description: The Drake Herald is a small, armored ship designed to safely get information from Point A to Point B. Featuring a powerful central engine (for high speed transit and generating the power needed for effective data encryption/containment), advanced encryption software and an armored computer core, the Herald is unique among personal spacecraft in that it is designed to be easily ‘cleaned’ when in danger of capture.
-  focus: Medium Data
   ground: false
   height: '9.0'
   hidden: false
@@ -5605,7 +5506,6 @@ model_drak_ironclad:
   cargo: '1536.0'
   classification: transport
   description: Run the skies with Drake’s mighty Ironclad, an armored freighter that takes the risks involved in deep-space traversal and transport seriously.
-  focus: Armored Freight
   ground: false
   height: '20.0'
   hidden: false
@@ -5657,7 +5557,6 @@ model_drak_ironclad_assault:
   cargo: '1152.0'
   classification: combat
   description: The ultimate combined arms platform, the Ironclad Assault safely carries heavy vehicles and squads of infantry, with daunting auxiliary turrets providing direct support.
-  focus: Combined Arms Platform
   ground: false
   height: '20.0'
   hidden: false
@@ -5709,7 +5608,6 @@ model_drak_kraken:
   cargo: '3792.0'
   classification: industrial
   description: The Kraken is a protector and a beacon of freedom in a too-often cruel universe. For those tasked with safekeeping Citizens unable to protect themselves, the Kraken is both a sanctuary and a self-contained war machine ready to take on the most daunting adversaries. Drake has thrown out the rule book to redefine private-use capital-class ships, attack carriers, and the very nature of personal freedom. It's nothing if not a testament to the empowerment of the people.
-  focus: Multi-Role / Light Carrier
   ground: false
   height: '64.0'
   hidden: false
@@ -5761,7 +5659,6 @@ model_drak_kraken_privateer:
   cargo: '768.0'
   classification: industrial
   description: The Kraken is a protector and a beacon of freedom in a too-often cruel universe. For those tasked with safekeeping Citizens unable to protect themselves, the Kraken is both a sanctuary and a self-contained war machine ready to take on the most daunting adversaries. Drake has thrown out the rule book to redefine private-use capital-class ships, attack carriers, and the very nature of personal freedom. It's nothing if not a testament to the empowerment of the people.
-  focus: Multi-Role / Light Carrier
   ground: false
   height: '64.0'
   hidden: false
@@ -5813,7 +5710,6 @@ model_drak_mule:
   cargo: '2.0'
   classification: ground
   description: The Drake Mule is your go-to workhorse for all sort of loading and hauling jobs, a six-wheeled beast of burden that’s always determined to execute the mission at hand. Whether you need to transport cargo over the roughest terrain possible or load it onto larger vessels and cargo decks, the Mule works. Plain and simple.
-  focus: Transport
   ground: false
   height: '2.7'
   hidden: false
@@ -5863,7 +5759,6 @@ model_drak_vulture:
   cargo: '12.0'
   classification: industrial
   description: 'Answer to no one, cut out the middle man, and throw caution to the wind. Rip wrecks like a pro and carve out your own place in the great big empty behind the stick of this rough, rugged salvage machine from Drake Interplanetary. '
-  focus: Light Salvage
   ground: false
   height: '9.0'
   hidden: false
@@ -5919,7 +5814,6 @@ model_espr_blade:
   cargo: '0.0'
   classification: combat
   description: Vanduul light fighters, designated 'Blade', are often used as scouts and first wave assault crafts. Over the decades of conflict, they have been increasingly used to take out comm arrays and early warning systems. They have also served well as skirmisher units as their speed allows them to chase down ships attempting to flee. If engaged, expect the Blade to utilize its speed and agility to wear down your defenses.
-  focus: Light Fighter
   ground: false
   height: '5.5'
   hidden: false
@@ -5979,7 +5873,6 @@ model_espr_glaive:
 
 
     This model is a human reproduction created by the manufacturer Esperia.
-  focus: Medium Fighter
   ground: false
   height: '8.0'
   hidden: false
@@ -6039,7 +5932,6 @@ model_espr_prowler:
   cargo: '0.0'
   classification: combat
   description: "Named after the UPE military designation, the Prowler is a modernized version of the infamous Tevarin armored personnel carrier. Esperia’s astroengineers were given unmitigated access to study original versions of the ship recently discovered in the Kabal system to help meticulously reconstruct the vehicle. Now, the Prowler is the perfect fusion of two cultures: the elegance and effectiveness of the Tevarin war machine combined with the reliability of modern Human technology.   \n"
-  focus: Dropship
   ground: false
   height: '15.0'
   hidden: false
@@ -6098,7 +5990,6 @@ model_espr_talon:
     This ship is a recreation of the Tevarin Talon by Esperia. The Talon is the Tevarin equivalent to the Aegis Gladius or Vanduul Blade; a single-seat combat ship. The Talon is the perfect example of the Tevarin way of building a spaceship: maneuverable with powerful, directional 'Phalanx' shields but weak physical armour, as the Tevarin way of war was to strike first and strike hard, before using their Phalanx shields to cover their escape.
     <br /><br />
     Learn more at <a href="https://robertsspaceindustries.com/talon" style="color:#00deff;"> https://robertsspaceindustries.com/talon </a>
-  focus: Light Fighter
   ground: false
   height: '8.6'
   hidden: false
@@ -6160,7 +6051,6 @@ model_espr_talon_shrike:
     This ship is a recreation of the Tevarin Talon by Esperia. The Talon is the Tevarin equivalent to the Aegis Gladius or Vanduul Blade; a single-seat combat ship. The Talon is the perfect example of the Tevarin way of building a spaceship: maneuverable with powerful, directional 'Phalanx' shields but weak physical armour, as the Tevarin way of war was to strike first and strike hard, before using their Phalanx shields to cover their escape.
     <br /><br />
     Learn more at <a href="https://robertsspaceindustries.com/talon" style="color:#00deff;"> https://robertsspaceindustries.com/talon </a>
-  focus: Light Fighter
   ground: false
   height: '8.6'
   hidden: false
@@ -6219,7 +6109,6 @@ model_gama_railen:
   cargo: '320.0'
   classification: transport
   description: Gatac’s first foray into the human market, the Railen is an elegant interspecies vessel perfect for any Human or Xi’an pilot looking for a safe, reliable solution for commercial-grade medium cargo hauling. Utilizing patented grav-lev technology, and time-tested designs updated for 2951 and beyond, the Railen is a prime example of why the Xi’an Empire has trusted House Gatac with production of its industrial vessels for centuries.
-  focus: Medium Freight
   ground: false
   height: '67.0'
   hidden: false
@@ -6269,7 +6158,6 @@ model_gama_syulen:
   cargo: '6.0'
   classification: multi
   description: The Syulen cargo vessel has been artfully crafted by the renowned House Gatac to perfectly suit both Human and Xi’an pilots. With an agile frame, the Syulen lends itself to quickly ferrying important deliveries across the universe or as the ideal ship for those making their transport career debut.
-  focus: Starter
   ground: false
   height: '16.0'
   hidden: false
@@ -6325,7 +6213,6 @@ model_grin_ptv:
   cargo: '0.0'
   classification: ground
   description: Got a massive hangar? The Greycat PTV allows you to get from one end to the other without needing to stop for lunch on the way.
-  focus: Touring
   ground: false
   height: '1.8'
   hidden: false
@@ -6377,7 +6264,6 @@ model_grin_roc:
   cargo: '1.0'
   classification: industrial
   description: 'At Greycat, we understand that mining isn''t a one-size-fits-all operation, so we designed the ROC to be as hard-working and versatile as the miners who use it. Small enough to access hard-to-reach ore deposits, but with enough power to get through the tough jobs, the ROC perfectly complements any mining enterprise. It''s perfectly at home supporting full-scale operations, and a first-rate starter vehicle for fledgling diggers. Whatever the task, with Greycat, you have the right tool for the job. '
-  focus: Mining
   ground: false
   height: '3.1'
   hidden: false
@@ -6429,7 +6315,6 @@ model_grin_roc_ds:
   cargo: '4.0'
   classification: industrial
   description: At Greycat, we understand that mining isn't a one-size-fits-all operation, so we designed the ROC-DS to be as hard-working and versatile as the miners who use it. With more than double the ore capacity of the standard ROC, and a dedicated boom seat for manual laser operation, the ROC-DS makes big jobs manageable. Its the perfect compliment to any mining enterprise, from full-scale digs to fledgling operations. Whatever the task, with Greycat, mining duos now have the right tool to comfortably collect more ore.
-  focus: Mining
   ground: false
   height: '3.3'
   hidden: false
@@ -6481,7 +6366,6 @@ model_grin_stv:
   cargo: '1.0'
   classification: ground
   description: Get ready to have some serious fun on the job with the STV from Greycat. This Sport Terrain Vehicle was built by pros for pros and features blazing speed and convenient built-in storage.
-  focus: Transport
   ground: false
   height: '2.0'
   hidden: false
@@ -6533,7 +6417,6 @@ model_krig_p_52_merlin:
   cargo: '0.0'
   classification: combat
   description: Originally designed to pair with the RSI Constellation, the P-52 Merlin is now available to all pilots! A dedicated parasite fighter, the Merlin is designed to be transported from place to place aboard a larger ship. Boasting a centerline Gatling cannon and a Lightning Power engine, the Merlin is a fast, maneuverable ship that packs a surprising punch! Ideal for racing, local reconnaissance and fast combat.
-  focus: Snub Fighter
   ground: false
   height: '2.0'
   hidden: false
@@ -6589,7 +6472,6 @@ model_krig_p_72_archimedes:
   cargo: '0.0'
   classification: competition
   description: If you’re looking for something a little more agile, blaze among the stars with Kruger Intergalactic’s P-72 Archimedes. Whether for added security, exploring a system or simply the joy of flying, the Archimedes is the perfect companion snub craft. Featuring an extra intake and a lighter hull than its sister ship, the Archimedes delivers exceptional handling and boost capabilities in a sleek package you’ll want along for the ride.
-  focus: Racing
   ground: false
   height: '2.0'
   hidden: false
@@ -6645,7 +6527,6 @@ model_misc_endeavor:
   cargo: '500.0'
   classification: industrial
   description: Musashi Industrial &amp; Starflight Concern is proud to present the Endeavor-class research vessel, a fully modular space platform designed to be adapted for a variety of scientific and medical tasks. Initially developed as a floating laboratory, the MISC Endeavor can be outfitted for everything from spatial telescopy to use as mobile hospital.
-  focus: Heavy Science
   ground: false
   height: '20.0'
   hidden: false
@@ -6700,7 +6581,6 @@ model_misc_expanse:
   beam: '21.2'
   cargo: '128.0'
   classification: industrial
-  focus: Refinery
   ground: false
   height: '10.7'
   hidden: false
@@ -6751,7 +6631,6 @@ model_misc_freelancer:
   cargo: '66.0'
   classification: transport
   description: Freelancers are used as long haul merchant ships by major corporations, but they are just as frequently repurposed as dedicated exploration vessels by independent captains who want to operate on the fringes of the galaxy.
-  focus: Medium Freight
   ground: false
   height: '9.5'
   hidden: false
@@ -6808,7 +6687,6 @@ model_misc_freelancer_dur:
   cargo: '28.0'
   classification: exploration
   description: The Freelancer DUR variant specializes in exploration. Sacrificing some of the cargo capacity of the standard Freelancer for an enhanced jump drive, a more advanced scanner, and an expanded fuel tank may seem like a bad call to some, but those who value discovery over profit will find it to be their ship of choice.
-  focus: Expedition
   ground: false
   height: '9.5'
   hidden: false
@@ -6864,7 +6742,6 @@ model_misc_freelancer_max:
   cargo: '122.0'
   classification: transport
   description: The Freelancer MAX variant is for those who prize increased cargo capacity over everything else. Combine that additional storage with MISC’s unrivaled dependability and reputation, and you can see why the MAX is the preferred transport for many independent haulers in Empire today.
-  focus: Medium Freight
   ground: false
   height: '9.5'
   hidden: false
@@ -6920,7 +6797,6 @@ model_misc_freelancer_mis:
   cargo: '28.0'
   classification: combat
   description: 'The Freelancer MIS is a limited edition militarized variant of the classic mercantile ship developed by the UEE. These were produced in very small quantity due to some early payload incidents. This version sacrifices the majority of the cargo capacity to make way for missiles. '
-  focus: Gun Ship
   ground: false
   height: '9.5'
   hidden: false
@@ -6976,7 +6852,6 @@ model_misc_hull_a:
   cargo: '64.0'
   classification: industrial
   description: The smallest, most affordable Hull. The Hull A is great for those just striking out in the galaxy on their own. The Hull A is most similar to the Aurora and Mustang, but lacks the ‘jack of all trades’ nature. Where the others trade cargo capacity for firepower or speed, the Hull A is 100% on-mission transport! Additionally, Hull A (and B) are often used as station-to-orbit ferries.
-  focus: Medium Freight
   ground: false
   height: '8.0'
   hidden: false
@@ -7032,7 +6907,6 @@ model_misc_hull_b:
   cargo: '384.0'
   classification: transport
   description: The Hull B is a more rugged option most often compared to MISC’s own Freelancer. But where the Freelancer is equipped for long range exploration and other roles, the Hull B is a pure cargo transport. Hull B are often used as corporate support ships, and it is not uncommon to spot several in different liveries during a single flight.
-  focus: Heavy Freight
   ground: false
   height: '17.0'
   hidden: false
@@ -7089,7 +6963,6 @@ model_misc_hull_c:
   cargo: '4608.0'
   classification: transport
   description: Often called the most common ship in the galaxy, the Hull C is the most-produced of the range and is considered by many to be the most versatile. Intended to hit the ‘sweet spot’ between the smaller single-person transports and the massive superfreighters that make up the rest of the range, the Hull C offers the expansive modularity of the larger ships while still retaining a modicum of the maneuverability allowed the low end of the range.
-  focus: Heavy Freight
   ground: false
   height: '60.0'
   hidden: false
@@ -7145,7 +7018,6 @@ model_misc_hull_d:
   cargo: '20736.0'
   classification: transport
   description: The Hull D kicks off the larger end of the spectrum with a massive ship built around a rugged frame. The Hull D is affordable enough to be operated by mid-sized organizations and companies. Hull D are often used as flagships for mercantile operations, but their bulk means that they should be operated with escort fighters while not in safe space. The UEE military uses modified Hull D as part of their supply chain, arming and refueling the soldiers on the front line.
-  focus: Heavy Freight
   ground: false
   height: '70.0'
   hidden: false
@@ -7202,7 +7074,6 @@ model_misc_hull_e:
   cargo: '98304.0'
   classification: transport
   description: 'The largest specialized freighter available on the market today, the Hull E is generally owned by major corporations and operated with a high degree of planning. The lack of maneuverability inherent in such a large ship means that anyone planning to operate them should be careful about equipping turrets and providing escort. Their potential load (and modularity) is unparalleled, however: no other ship allows as much room to store goods or to modify towards another role!'
-  focus: Heavy Freight
   ground: false
   height: '104.0'
   hidden: false
@@ -7259,7 +7130,6 @@ model_misc_odyssey:
   cargo: '252.0'
   classification: exploration
   description: Survey distant frontiers and explore the furthest reaches of space with the MISC Odyssey, the most advanced and complete exploration ship available to civilians. Designed to be supremely self-sufficient, the Odyssey comes with an on-board refinery with built-in mining tech, expansive capacity for supplies, and a hangar capable of housing a small ship, along with comprehensive, comfortable accommodations for a crew of six. Discover a new life among the stars. Only from MISC.
-  focus: Expedition
   ground: false
   height: '35.0'
   hidden: false
@@ -7311,7 +7181,6 @@ model_misc_prospector:
   cargo: '0.0'
   classification: industrial
   description: For years, the Prospector has been the universe’s preferred mining vessel for solo operators. Featuring MISC’s sleek design sensibility and a bevy of upgraded high-tech mining tools, the 2947 Prospector perfectly balances form and functionality.
-  focus: Prospecting / Mining
   ground: false
   height: '7.0'
   hidden: false
@@ -7397,7 +7266,6 @@ model_misc_reliant_kore:
   cargo: '6.0'
   classification: multi
   description: "Small supply runs from a planet's surface to a nearby orbital station have become commonplace. With bigger ships focusing more on the long-haul, the Reliant's standard 'Kore' loadout gives it enough carrying capacity for starting out with smaller runs while complementing MISC's Hull-series as a long-haul support ship.\t"
-  focus: Starter / Light Freight
   ground: false
   height: '4.0'
   hidden: false
@@ -7454,7 +7322,6 @@ model_misc_reliant_mako:
   cargo: '0.0'
   classification: support
   description: 'The Empire depends on up-to-the-second information, which is why reporters need to be able to go where the news is happening: wherever, whenever. Enter the Mako, all the flexibility and dependability of a MISC Reliant combined with a state of the art Image Enhancement suite and turret-mounted optics to capture every moment as it happens with the clarity and accuracy that makes headlines. '
-  focus: Reporting
   ground: false
   height: '4.0'
   hidden: false
@@ -7510,7 +7377,6 @@ model_misc_reliant_sen:
   cargo: '0.0'
   classification: industrial
   description: Magellan, Pierce, Croshaw, names that echo through history thanks to their adventurous spirit, a curious nature and a reliable ship. The Reliant Sen is a versatile mobile science platform; outfitted with long range capabilities to take you further, longer, and an advanced sensor suite. Perfect for the aspiring explorer who wants to whisper their name into the halls of history.
-  focus: Light Science
   ground: false
   height: '4.0'
   hidden: false
@@ -7566,7 +7432,6 @@ model_misc_reliant_tana:
   cargo: '0.0'
   classification: combat
   description: With Humanity ever-expanding through the universe, the need for a versatile lightweight fighter has expanded with it. Easy to maintain with a rugged construction, the Reliant Tana makes for an ideal choice for frontier and outpost defense thanks to its custom high-yield power plant, stronger shields and additional weapon mounts.
-  focus: Light Fighter
   ground: false
   height: '4.0'
   hidden: false
@@ -7622,7 +7487,6 @@ model_misc_starfarer:
   cargo: '295.0'
   classification: support
   description: 'The Starfarer differs from traditional bulk freighters in one key way: it is a dedicated fuel platform. The Starfarer is designed not only to load, store and protect fuel stasis units, it is designed to take in spaceborne gases and refine them for use without landing. And while it excels at this, the Starfarer can also be used to ferry traditional bulk cargo pods. The listed Cargo Capacity is only for the dedicated Cargo Room and does not account for the extra space available from the bulk cargo pods.'
-  focus: Heavy Refuelling
   ground: false
   height: '23.5'
   hidden: false
@@ -7678,7 +7542,6 @@ model_misc_starfarer_gemini:
   cargo: '295.0'
   classification: support
   description: The UEE military uses an adapted ‘rough and tumble’ Gemini variant of the Starfarer for their front-line operations, trading some cargo capacity and maneuverability for reinforced armor, increased shielding, more powerful engines and stronger manned turrets. The Gemini also includes an optional missile pod, which can be swapped for the fuel intake unit on either Starfarer variant’s nose. The listed Cargo Capacity is only for the dedicated Cargo Room and does not account for the extra space available from the bulk cargo pods.
-  focus: Heavy Refuelling
   ground: false
   height: '23.5'
   hidden: false
@@ -7734,7 +7597,6 @@ model_misc_starlancer_max:
   cargo: '224.0'
   classification: transport
   description: Forge better, safer, and more prosperous worlds with the MISC Starlancer. Taking freelance operators and commercial enterprises deeper into the stars, the Starlancer ventures beyond the limits to supply the frontiers of Humanity.
-  focus: Medium Freight
   ground: false
   height: '16.0'
   hidden: false
@@ -7788,7 +7650,6 @@ model_misc_starlancer_tac:
   cargo: '96.0'
   classification: combat
   description: 'Built for deep-space patrol, the TAC takes the robust Starlancer chassis and outfits it for serious offense and defense. Heavy weaponry, a dedicated snub hangar, medbeds, and eight military-spec jump seats mean you’re ready for anything. '
-  focus: Patrol
   ground: false
   height: '16.0'
   hidden: false
@@ -7838,7 +7699,6 @@ model_mrai_fury:
   cargo: '0.0'
   classification: combat
   description: Shatter the limits of performance with this next-generation snub fighter from Mirai featuring four halo-mounted size 2 laser repeaters, best-in-class maneuverability, and unprecedented integration of Xi’an tech. Unleashed all together, the Fury is a revelation in short-range space combat.
-  focus: Snub Fighter
   ground: false
   height: '2.6'
   hidden: false
@@ -7894,7 +7754,6 @@ model_mrai_fury_lx:
   cargo: '0.0'
   classification: competition
   description: Featuring best-in-class maneuverability and fully integrated, cutting-edge Xi’an tech, the next-generation Fury LX racing ship from Mirai switches out the lithe ship’s offensive capabilities to make room for additional maneuvering thrusters perfect for getting across the finish line.
-  focus: Racing
   ground: false
   height: '2.6'
   hidden: false
@@ -7950,7 +7809,6 @@ model_mrai_fury_mx:
   cargo: '0.0'
   classification: combat
   description: Shatter the limits of performance with this next-generation snub bomber from Mirai featuring twenty halo-mounted missiles, best-in-class maneuverability, and unprecedented integration of Xi’an tech. Unleashed all together, the Fury MX is poised to devastate targets and redefine short-range space combat.
-  focus: Snub Fighter
   ground: false
   height: '2.6'
   hidden: false
@@ -8006,7 +7864,6 @@ model_mrai_guardian:
   cargo: '0.0'
   classification: combat
   description: Single-operator, long-range heavy fighter with a focus on raw firepower and precision.
-  focus: Heavy Fighter
   ground: false
   height: '9.0'
   hidden: false
@@ -8062,7 +7919,6 @@ model_mrai_guardian_qi:
   cargo: '0.0'
   classification: combat
   description: Single-operator fighter-interceptor with a focus on raw firepower and precision.
-  focus: Heavy Fighter
   ground: false
   height: '9.0'
   hidden: false
@@ -8118,7 +7974,6 @@ model_mrai_pulse:
   cargo: '0.0'
   classification: ground
   description: 'The Mirai Pulse redefines the hoverbike experience with its fusion of sleek design, integrated weaponry, and advanced thrusters for unmatched maneuverability. It''s the ultimate choice for those seeking a blend of precision, speed, and combat readiness in challenging environments. '
-  focus: Combat
   ground: false
   height: '1.0'
   hidden: false
@@ -8170,7 +8025,6 @@ model_mrai_pulse_lx:
   cargo: '0.0'
   classification: ground
   description: Take your racing experience to the next level with the Pulse LX, the leader of high-speed thrills. Engineered to dominate, the LX strips away weight and cuts drag, thrusting you to the forefront of every race. Experience every curve with crystal-clear responsiveness, making the Pulse LX a racing revelation.
-  focus: 'Racing '
   ground: false
   height: '1.0'
   hidden: false
@@ -8222,7 +8076,6 @@ model_mrai_razor:
   cargo: '0.0'
   classification: competition
   description: MRAI makes a bid for the next Murray Cup with the all-new Razor. This advanced racer features an advanced composite spaceframe that puts pure speed ahead of everything else... it's the ship for pilots who want to leave the competition in the dust.
-  focus: Racing
   ground: false
   height: '2.7'
   hidden: false
@@ -8278,7 +8131,6 @@ model_mrai_razor_ex:
   cargo: '0.0'
   classification: competition
   description: Outfitted with signature-reducing materials, the RAZOR-EX was a specialty build for the UEE Advocacy for use in surveillance and extraction operations. Although the EX was ultimately rejected for widespread use, MRAI released a variation of the model for the public who were looking to keep a lower profile.
-  focus: Stealth
   ground: false
   height: '2.7'
   hidden: false
@@ -8334,7 +8186,6 @@ model_mrai_razor_lx:
   cargo: '0.0'
   classification: competition
   description: The Razor gets supercharged. The LX features an overclocked engine to unleash blazing top speeds perfect. This power comes at a cost with reduced maneuverability and armaments making it ideal for straight-shot racing. But who needs weapons when you’re leaving your competition in the dust.
-  focus: Luxury
   ground: false
   height: '2.7'
   hidden: false
@@ -8390,7 +8241,6 @@ model_orig_100i:
   cargo: '2.0'
   classification: multi
   description: Tour the universe with the perfect coupling of luxury and performance. The 100i features Origin Jumpworks' patented AIR fuel system, making it the most efficient and eco-friendly ship on the market. Capable of long distance flights that most ships of its size aren't equipped for, the 100i is perfect for solo pilots looking to turn heads without sacrificing functionality or reliability.
-  focus: Starter / Touring
   ground: false
   height: '4.0'
   hidden: false
@@ -8446,7 +8296,6 @@ model_orig_125a:
   cargo: '2.0'
   classification: multi
   description: Risks were meant to be taken, but why risk running out of fuel in the heat of battle? With the AIR fuel system, a souped-up weapons package, and all the luxury and refinement you've come to expect from Origin Jumpworks, the 125a has been designed for the discerning maverick.
-  focus: Starter / Light Fighter
   ground: false
   height: '4.0'
   hidden: false
@@ -8502,7 +8351,6 @@ model_orig_135c:
   cargo: '6.0'
   classification: multi
   description: With a deceptive amount of storage space in its sleek, stylish frame, and Origin's patented AIR fuel system, the 135c model is the obvious choice for musicians, couriers, and anyone trying to get the party started. Get it there fast, and look good while you're doing it.
-  focus: Starter / Light Freight
   ground: false
   height: '4.0'
   hidden: false
@@ -8558,7 +8406,6 @@ model_orig_300i:
   cargo: '8.0'
   classification: multi
   description: If you're going to travel the stars... why not do it in style? The 300i is Origin Jumpworks' premiere luxury spacecraft. It is a sleek, silver killer that sends as much of a message with its silhouette as it does with its weaponry.
-  focus: Luxury / Touring
   ground: false
   height: '8.0'
   hidden: false
@@ -8615,7 +8462,6 @@ model_orig_315p:
   cargo: '12.0'
   classification: exploration
   description: Exploration is man's highest calling. Prepare to chart distant horizons with man's most sophisticated piece of technology, the ORIGIN 315p. Featuring a more robust power plant and a custom scanning package, exclusively designed by Chimera Communications.
-  focus: Pathfinder
   ground: false
   height: '8.0'
   hidden: false
@@ -8671,7 +8517,6 @@ model_orig_325a:
   cargo: '4.0'
   classification: combat
   description: 'Just because it''s a rough galaxy doesn''t mean you need to sacrifice your comfort: the 325a can come out on top in any dogfight. The 325a features an advanced weapon payload as well as a custom targeting system designed especially for the 325a by WillsOp.'
-  focus: Interdiction / Light Fighter
   ground: false
   height: '8.0'
   hidden: false
@@ -8729,7 +8574,6 @@ model_orig_350r:
   description: 'Origin Jumpwork’s 300 Series is the ultimate fusion of elegance and power. Every component, every part is individually calibrated, so no matter which model and options you choose, your ship will stay in perfect harmony as the ultimate in astroengineering.  By far the fastest member of the family, the 350r refocus all of the 300’s power and translates it into pure speed.
 
     '
-  focus: Racing
   ground: false
   height: '8.0'
   hidden: false
@@ -8787,7 +8631,6 @@ model_orig_400i:
   cargo: '42.0'
   classification: exploration
   description: To explore the stars is a most noble endeavor, and Origin Jumpworks has risen to the occasion in crafting the 400i, the ultimate high-performance pathfinder. Representing a harmonious concourse of style, quality, and sophistication, the 400i exhibits class-leading range, substantial defensive capabilities, and a factory-equipped scanning array, while maintaining the comfort and elegance Origin is known for. Take on the harshest corners of the galaxy without compromise.
-  focus: Touring
   ground: false
   height: '12.5'
   hidden: false
@@ -8878,7 +8721,6 @@ model_orig_600i_explorer:
   cargo: '40.0'
   classification: exploration
   description: This multi-role luxury vessel from Origin Jumpworks features an exquisitely detailed hull design that balances performance and versatility in a sleek and timeless form. The 600i is designed with a cutting-edge modular technology, allowing you to customize your ship for your needs. Looking to stamp your name in history with the discovery of a new star system? The 600i's Explorer module swaps the lounge for a robust scanning station as well as additional utility hardpoints to increase the ship's effectiveness even more.
-  focus: Expedition
   ground: false
   height: '17.0'
   hidden: false
@@ -8934,7 +8776,6 @@ model_orig_600i_touring:
   cargo: '16.0'
   classification: exploration
   description: Let the voyage begin with the 2947 600i from Origin Jumpworks. This multi-role luxury vessel from Origin Jumpworks features an exquisitely detailed hull design that balances performance and versatility in a sleek and timeless form. The 600i is designed with a cutting-edge modular technology, allowing you to customize your ship for your needs. Taking the family on a long-distance trip across the stars? The Touring module lets your guests relax in ease with stunning furniture from some of the Empire's top designers.
-  focus: Touring
   ground: false
   height: '17.0'
   hidden: false
@@ -8992,7 +8833,6 @@ model_orig_85x:
   description: 'Elegantly styled and meticulously constructed, the 85X is a versatile and comprehensive away-vessel that features precision control in and out of atmosphere. Utilizing much of the same thruster technology as the 300 series, it has the power of a racer with the reliability of a touring ship. Whether descending down to the planet surface or taking in the sights of your system, this runabout continues Origin’s proud tradition of turning heads.
 
     '
-  focus: Touring
   ground: false
   height: '2.0'
   hidden: false
@@ -9050,7 +8890,6 @@ model_orig_890_jump:
   cargo: '460.0'
   classification: exploration
   description: With an elegant, sleek exterior that belies its spacious interior, the 890 Jump is a true engineering marvel; crafted to impress from every angle by combining a unique, innovative design with the finest materials and the most advanced technology. The result is a vessel that is in a class all of its own, a masterpiece worthy of the name ORIGIN.
-  focus: Luxury Touring
   ground: false
   height: '40.0'
   hidden: false
@@ -9106,7 +8945,6 @@ model_orig_g12:
   cargo: '2.0'
   classification: ground
   description: Trek to the edge of the galaxy with confidence thanks to Origin’s trademark build quality and design. Built with the most extreme environments in mind, the G12 suits all types of planetary travel, from traversing tundras to sightseeing.
-  focus: Touring
   ground: false
   height: '2.7'
   hidden: false
@@ -9155,7 +8993,6 @@ model_orig_g12a:
   beam: '5.8'
   classification: ground
   description: The G12a combines military might with Origin’s unique approach to high-end engineering. Designed for all offensive ground-based operations, it’s the ideal partner for long-range perimeter patrols, intercepting assailants, and exploring dangerous new locales.
-  focus: Military
   ground: false
   height: '2.7'
   hidden: false
@@ -9205,7 +9042,6 @@ model_orig_g12r:
   beam: '5.8'
   classification: competition
   description: Stripped back and meticulously engineering for performance, Origin has taken everything learned from preparing the 350r and M50 ships for competition and added it to the ubiquitous ground racer. Lighter, faster, and with a built-in EMP for protection, it’s ready for anything the outlands can throw at it.
-  focus: Racing
   ground: false
   height: '2.7'
   hidden: false
@@ -9256,7 +9092,6 @@ model_orig_m50:
   cargo: '0.0'
   classification: competition
   description: If you want to get from point A to point B as quickly as possible and with as much style as possible then ORIGIN's M50 is for you. Featuring supercharged engines that counter a tiny weapons loadout, the M50 goes extremely fast and looks incredibly good doing it. As Origin’s premier racing chassis, you shouldn’t expect anything less.
-  focus: Racing
   ground: false
   height: '3.0'
   hidden: false
@@ -9312,7 +9147,6 @@ model_orig_x1:
   cargo: '0.0'
   classification: exploration
   description: Designed to further hone the cutting-edge of high-performance luxury vehicles, the X1 is class-defying transportation built for anyone who’s ever asked, “Can I go faster?”
-  focus: Touring
   ground: false
   height: '1.5'
   hidden: false
@@ -9368,7 +9202,6 @@ model_orig_x1_force:
   cargo: '0.0'
   classification: exploration
   description: Travel in confidence with the X1 Force. Featuring additional defensive capabilities, this open-canopy vehicle from Origin Jumpworks is equally suited to ground-based exploration, reconnaissance expeditions, and security operations.
-  focus: Combat
   ground: false
   height: '1.5'
   hidden: false
@@ -9424,7 +9257,6 @@ model_orig_x1_velocity:
   cargo: '0.0'
   classification: competition
   description: Subtract weight, add speed. The X1 Velocity offers a lighter chassis to improve overall performance, making it a dangerous new addition to the open-canopy racer lineup.
-  focus: Racing
   ground: false
   height: '1.5'
   hidden: false
@@ -9480,7 +9312,6 @@ model_rsi_apollo_medivac:
   cargo: '28.0'
   classification: support
   description: 'Along with superior armor and dual missile racks, the 2948 Apollo Medivac model pays homage to the classic 2910 film, Astromedics: Back from the Brink, with livery that accurately recreates the headlining Kithara. '
-  focus: Medical
   ground: false
   height: '10.0'
   hidden: false
@@ -9534,7 +9365,6 @@ model_rsi_apollo_triage:
   cargo: '28.0'
   classification: support
   description: The legendary Apollo chassis from Roberts Space Industries is the gold standard in medevac and rapid emergency response, having provided critical aid to the known universe for well over two centuries.
-  focus: Medical
   ground: false
   height: '10.0'
   hidden: false
@@ -9588,7 +9418,6 @@ model_rsi_arrastra:
   cargo: '576.0'
   classification: industrial
   description: RSI is disrupting the industrial sector with an all-new approach to deep-space mining. Extract, refine, and haul huge volumes of ore in one powerhouse vessel – all with a maximum crew of five!
-  focus: Mining / Refining
   ground: false
   height: '21.0'
   hidden: false
@@ -9640,7 +9469,6 @@ model_rsi_aurora_cl:
   cargo: '6.0'
   classification: transport
   description: Customized for mercantile and trading excursions, the Aurora Clipper is the perfect vessel for aspiring entrepreneurs and seasoned traders alike. Thanks to its expanded cargo capacity, the Clipper ups the ante for personal merchant craft.
-  focus: Light Freight
   ground: false
   height: '4.0'
   hidden: false
@@ -9695,7 +9523,6 @@ model_rsi_aurora_es:
   beam: '8.0'
   classification: multi
   description: 'The Aurora is the modern-day descendant of the Roberts Space Industries X-7 spacecraft which tested the very first jump engines. Utilitarian to a T, the Aurora Essential is the perfect choice for new ship owners: versatile enough to tackle a myriad of challenges, yet with a straightforward and intuitive design.'
-  focus: Starter / Pathfinder
   ground: false
   height: '4.0'
   hidden: false
@@ -9749,7 +9576,6 @@ model_rsi_aurora_ln:
   beam: '8.0'
   classification: transport
   description: With a more robust shield generator and a pair of additional weapon hard points, the Legionnaire is a dedicated combat fighter, built to handle any obstacle the universe can throw at you.
-  focus: Light Fighter
   ground: false
   height: '4.0'
   hidden: false
@@ -9803,7 +9629,6 @@ model_rsi_aurora_lx:
   beam: '8.0'
   classification: exploration
   description: Be proud of your roots with the brand-new Aurora Deluxe, built for the discerning pilot who never forgets where he or she came from. The LX features patent leather interior to guarantee comfort for those long stretches in the deep black.
-  focus: Pathfinder
   ground: false
   height: '4.0'
   hidden: false
@@ -9857,7 +9682,6 @@ model_rsi_aurora_mr:
   beam: '8.0'
   classification: transport
   description: Perhaps you're looking for something that offers carrying capacity but has combat capabilities too? The Aurora Marque comes with a pair of Behring-quality lasers and a high quality gun cooler system.
-  focus: Light Fighter
   ground: false
   height: '4.0'
   hidden: false
@@ -9912,7 +9736,6 @@ model_rsi_constellation_andromeda:
   cargo: '96.0'
   classification: multi
   description: The Constellation Andromeda, a multi-person freighter, is the most popular ship in RSI's current production array. Constellations are beloved by smugglers and merchants alike because they are modular, high powered... and just downright iconic-looking.
-  focus: Medium Freight / Gun Ship
   ground: false
   height: '14.0'
   hidden: false
@@ -9969,7 +9792,6 @@ model_rsi_constellation_aquila:
   cargo: '96.0'
   classification: exploration
   description: Explore any distant horizons! The Constellation Aquila features a redesigned cockpit for maximum visibility, advanced sensors and an onboard Ursa rover for planetary exploration. Let’s see what’s out there!
-  focus: Expedition
   ground: false
   height: '14.0'
   hidden: false
@@ -10025,7 +9847,6 @@ model_rsi_constellation_phoenix:
   cargo: '80.0'
   classification: exploration
   description: "A dedicated luxury spacecraft for the discerning star captain. The Constellation Phoenix can be operated as an organization command ship and features a luxurious redesigned interior. \n\nThe Phoenix comes with a Lynx rover and a Kruger P-72 Archimedes Fighter"
-  focus: Luxury Touring
   ground: false
   height: '14.0'
   hidden: false
@@ -10081,7 +9902,6 @@ model_rsi_constellation_taurus:
   cargo: '168.0'
   classification: transport
   description: Enjoy the adventure of a multi-crew Constellation on a budget! The Constellation Taurus is a dedicated freighter. Fully configurable but without all the bells-and-whistles, the Taurus is a great way to get started with crewed ships.
-  focus: Medium Freight
   ground: false
   height: '14.0'
   hidden: false
@@ -10137,7 +9957,6 @@ model_rsi_galaxy:
   cargo: '64.0'
   classification: multi
   description: 'Featuring a fully modular design and an onboard hangar capable of deploying small ships, the cutting-edge Galaxy has versatility built into its DNA with a highly configurable main deck that can be outfitted with comprehensive facilities to support cargo, medical, or refining operations. '
-  focus: Modular
   ground: false
   height: '22.0'
   hidden: false
@@ -10188,7 +10007,6 @@ model_rsi_lynx:
   beam: '5.7'
   classification: ground
   description: Tour the wildest corners of the ‘verse in safety, comfort, and style in the Lynx Rover from RSI. It’s a jungle out there, but with the Lynx you’ll have the comforts of home anywhere you roam.
-  focus: Luxury Transport / Explorer
   ground: false
   height: '3.1'
   hidden: false
@@ -10241,7 +10059,6 @@ model_rsi_mantis:
   cargo: '0.0'
   classification: combat
   description: Stop ships dead in their tracks with RSI’s premier Quantum Enforcement ship. The Mantis features a tailor-made Quantum Enforcement Device from Wei-Tek, capable of ripping ships out of QT with its Quantum Snare and preventing hasty escapes with its Quantum Dampener.
-  focus: 'Interdictor '
   ground: false
   height: '8.0'
   hidden: false
@@ -10301,7 +10118,6 @@ model_rsi_orion:
 
 
     The listed Cargo Capacity is only for the dedicated Cargo Room and does not account for the mined material capacity in the storage pods which will be detailed later.
-  focus: Heavy Mining
   ground: false
   height: '50.0'
   hidden: false
@@ -10362,7 +10178,6 @@ model_rsi_perseus:
   cargo: '50.0'
   classification: combat
   description: When RSI set out to make the definitive modern statement in persuasive prevention, they looked into their own past, to the historic gunships designated Perseus. Capable of shredding sub-capital class goliaths, the mere presence of a Perseus gunship in a blockade or patrol squad is enough to make your most aggressive enemies think twice before engaging, just like its vintage namesake.
-  focus: Gunboat
   ground: false
   height: '21.0'
   hidden: false
@@ -10414,7 +10229,6 @@ model_rsi_polaris:
   cargo: '576.0'
   classification: combat
   description: Nimble corvette-class capital ship packing a powerful punch with a full armament of turrets and torpedoes, small craft hangar, and habitation for a crew of 12.
-  focus: Corvette
   ground: false
   height: '35.0'
   hidden: false
@@ -10470,7 +10284,6 @@ model_rsi_scorpius:
   cargo: '0.0'
   classification: combat
   description: From RSI’s expert Research and Development teams in Killian and the same engineers that brought you some of the galaxy’s most vaunted war machines comes the next evolution in heavy combat, interception, and defense – the RSI Scorpius. With an adaptable bi-wing configuration and revolutionary rail-mounted remote turret, the Scorpius offers unprecedented fire coverage, allowing for both defensive and assault-minded applications.
-  focus: Heavy Fighter
   ground: false
   height: '13.0'
   hidden: false
@@ -10526,7 +10339,6 @@ model_rsi_scorpius_antares:
   cargo: '0.0'
   classification: combat
   description: From RSI’s expert Research and Development teams in Killian and the same engineers that brought you some of the galaxy’s most vaunted war machines comes the next evolution in heavy combat, interception, and defense – the RSI Scorpius. With an adaptable bi-wing configuration and revolutionary rail-mounted remote turret, the Scorpius offers unprecedented fire coverage, allowing for both defensive and assault-minded applications.
-  focus: Heavy Fighter
   ground: false
   height: '13.0'
   hidden: false
@@ -10582,7 +10394,6 @@ model_rsi_ursa:
   cargo: '4.0'
   classification: ground
   description: Built by RSI specifically for the planetside explorer, the Ursa Rover offers civilians military-grade all-terrain capabilities and stands as the rugged standard in ground-based scouting, mapping and discovery applications.
-  focus: Exploration
   ground: false
   height: '2.2'
   hidden: false
@@ -10639,7 +10450,6 @@ model_rsi_ursa_fortuna:
   cargo: '4.0'
   classification: ground
   description: Fortune favors the bold. The most trusted name in all-terrain exploration embodies the essence of good fortune and success with this commemorative limited-edition Ursa Rover.
-  focus: Exploration
   ground: false
   height: '2.2'
   hidden: false
@@ -10695,7 +10505,6 @@ model_rsi_ursa_medivac:
   cargo: '0.0'
   classification: ground
   description: A frontline medical support vehicle built to endure the harshest environments - a beacon of hope bringing you back into action with its state-of-the-art Tier 3 medical bed. An indispensable asset for any team facing unpredictable challenges.
-  focus: Ambulance
   ground: false
   height: '3.2'
   hidden: false
@@ -10749,7 +10558,6 @@ model_rsi_zeus_mk_ii_cl:
   cargo: '128.0'
   classification: transport
   description: Ready to ferry a whole new generation of travelers across the universe, the Zeus Mk II pays homage to the classic ship that launched Humanity to the stars in 2140. With a focus on commerce, the Zeus Mk II CL features additional cargo space and a tractor beam for handling large volumes of freight.
-  focus: Medium Freight
   ground: false
   height: '7.0'
   hidden: false
@@ -10805,7 +10613,6 @@ model_rsi_zeus_mk_ii_es:
   cargo: '32.0'
   classification: exploration
   description: Ready to ferry a whole new generation of travelers across the universe, the Zeus Mk II pays homage to the classic ship that launched Humanity to the stars in 2140. With a focus on exploration, the Zeus Mk II ES features a robust radar package for making new discoveries along with enhanced weaponry and shielding.
-  focus: Expedition
   ground: false
   height: '7.0'
   hidden: false
@@ -10861,7 +10668,6 @@ model_rsi_zeus_mk_ii_mr:
   cargo: '16.0'
   classification: combat
   description: Ready to ferry a whole new generation of travelers across the universe, the Zeus Mk II pays homage to the classic ship that launched Humanity to the stars in 2140. With a focus on security, the Zeus Mk II MR features an EMP device and quantum dampener to neutralize hostile forces.
-  focus: Interdiction
   ground: false
   height: '8.0'
   hidden: false
@@ -10913,7 +10719,6 @@ model_tmbl_cyclone:
   cargo: '1.0'
   classification: ground
   description: With a potent combination of speed, maneuverability, and rugged durability, the Cyclone is a perfect choice for local deliveries and transport between planetside homesteads and outposts.
-  focus: Exploration / Recon
   ground: false
   height: '2.5'
   hidden: false
@@ -10969,7 +10774,6 @@ model_tmbl_cyclone_aa:
   cargo: '0.0'
   classification: ground
   description: A battlefield equalizer, the Cyclone AA comes equipped with a surface-to-air missile and countermeasure package to provide cover for ground troops against airborne targets.
-  focus: Anti-aircraft
   ground: false
   height: '2.5'
   hidden: false
@@ -11024,7 +10828,6 @@ model_tmbl_cyclone_mt:
   beam: '4.0'
   cargo: '0.0'
   classification: ground
-  focus: Assault
   ground: false
   height: '2.5'
   hidden: false
@@ -11075,7 +10878,6 @@ model_tmbl_cyclone_rc:
   cargo: '0.0'
   classification: ground
   description: For those who like to push the limits of speed, the Cyclone RC features a modified intake system to allow for controlled bursts of speed as well as tools to customize handling.
-  focus: Racing
   ground: false
   height: '2.5'
   hidden: false
@@ -11131,7 +10933,6 @@ model_tmbl_cyclone_rn:
   cargo: '0.0'
   classification: ground
   description: Stay mobile and aware with the Cyclone RN. This light reconnaissance vehicle is the perfect solution for scouting runs, providing fast and detailed scans of terrain as well as beacon placement.
-  focus: Recon
   ground: false
   height: '3.0'
   hidden: false
@@ -11187,7 +10988,6 @@ model_tmbl_cyclone_tr:
   cargo: '0.0'
   classification: ground
   description: Designed for militia and security use, the Cyclone TR module features upgraded armor and a single Human-operated turret capable of mounting a Size 1 weapon and a responsive 360° field of fire.
-  focus: Combat
   ground: false
   height: '2.5'
   hidden: false
@@ -11243,7 +11043,6 @@ model_tmbl_nova:
   cargo: '0.0'
   classification: ground
   description: Tumbril's new Nova is a classic battlefield warrior, reimagined for the modern age. This heavy tank offers a devastating combination of weaponry to eliminate threats on the ground and in the air.
-  focus: Combat
   ground: false
   height: '5.0'
   hidden: false
@@ -11295,7 +11094,6 @@ model_tmbl_ranger_cv:
   cargo: '0.0'
   classification: ground
   description: 'With a powerful frame, proprietary X-TEC adaptive tread tires, and Reactive Response precision steering and braking, the Tumbril Ranger lets you embrace the renegade spirit of the open road while staying thoroughly grounded. Born to tame the wild frontier, the Ranger CV takes adventure touring to the next level and delivers the goods with an auxiliary fuel tank and custom 0.375 SCU pannier. '
-  focus: Touring
   ground: false
   height: '2.0'
   hidden: false
@@ -11347,7 +11145,6 @@ model_tmbl_ranger_rc:
   cargo: '0.0'
   classification: ground
   description: 'With a streamlined frame, proprietary X-TEC adaptive tread tires, and Reactive Response precision steering and braking, the Tumbril Ranger lets you embrace the renegade spirit of the open road while staying thoroughly grounded. Put the hammer down and pump up the adrenaline with the Ranger RC, tuned for maximum speed and response with advanced propulsion and chassis technology. '
-  focus: Racing
   ground: false
   height: '2.0'
   hidden: false
@@ -11399,7 +11196,6 @@ model_tmbl_ranger_tr:
   cargo: '0.0'
   classification: ground
   description: With a powerful frame, proprietary X-TEC adaptive tread tires, and Reactive Response precision steering and braking, the Tumbril Ranger lets you embrace the renegade spirit of the open road while staying thoroughly grounded. But adventure doesn't always go to plan, so the Ranger TR comes equipped with dual weapon mounts to make sure you're more than covered.
-  focus: Combat
   ground: false
   height: '2.0'
   hidden: false
@@ -11451,7 +11247,6 @@ model_tmbl_storm:
   cargo: '0.0'
   classification: ground
   description: Precision-engineered for unparalleled efficiency, the Tumbril Storm's advanced armament ensures swift target acquisition and devastating firepower. Its unmatched speed outclasses traditional tanks, making the Storm an emblem of battlefield dominance in the evolving theatre of modern warfare.
-  focus: Combat Support
   ground: false
   height: '3.6'
   hidden: false
@@ -11503,7 +11298,6 @@ model_tmbl_storm_aa:
   cargo: '0.0'
   classification: ground
   description: Blitz overcrowded battlefields, take out threats from the air, and turn the tide of any conflict.
-  focus: Combat Support
   ground: false
   height: '3.6'
   hidden: false
@@ -11555,7 +11349,6 @@ model_vncl_scythe:
   cargo: '0.0'
   classification: combat
   description: Fast becoming the symbol of the Vanduul Race, the Scythe is the foot soldier in every raid and the target of every human fighter pilot. Featuring a hefty weapons payload, the Scythe's real asset is its maneuverability, found in the twin main and twelve manuevering thrusters.
-  focus: Medium Fighter
   ground: false
   height: '8.5'
   hidden: false
@@ -11611,7 +11404,6 @@ model_xnaa_khartu_al:
   cargo: '0.0'
   classification: combat
   description: The Xi'an Aopoa corporation manufactures an export model of the Qhire Khartu, the Khartu-al, for sale to Human civilians. The export model features the same Xi'an maneuvering rig, but control surfaces modified for Human use and a more limited armament.
-  focus: Light Fighter
   ground: false
   height: '8.0'
   hidden: false
@@ -11669,7 +11461,6 @@ model_xnaa_nox:
   description: 'Hit the skids with the 2947 Nox. This speedy and maneuverable open-canopy racer from Aopoa is capable of zipping along planet surfaces or deep space. Available for the first time in Human space, the Nox has been specifically redesigned for Human pilots, so grab your ship and head to the racetrack today.
 
     '
-  focus: Racing
   ground: false
   height: '1.5'
   hidden: false
@@ -11730,7 +11521,6 @@ model_xnaa_nox_kue:
   description: 'Deriving its name from the Xi’an word for ‘thrust,’ the Nox Kue delivers that and more. This limited version of the open-canopy racer features a stunning brushed-silver finish and was specifically created to celebrate the inaugural sale of the first Nox for Human riders.
 
     '
-  focus: Racing
   ground: false
   height: '1.5'
   hidden: false
@@ -11788,7 +11578,6 @@ model_xnaa_san_tok_yai:
   cargo: '0.0'
   classification: combat
   description: Meet the next evolution of Xi'an tech and design innovation. The San’tok.yāi is a fighter that literally flies circles around the competition.
-  focus: Medium Fighter
   ground: false
   height: '9.0'
   hidden: false

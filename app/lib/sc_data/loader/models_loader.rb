@@ -292,7 +292,6 @@ module ScData
         return update_params unless default_environment?
 
         gaps = {
-          focus: filled(model_data["role"]),
           classification: model_data["ground"] ? "ground" : CLASSIFICATIONS[model_data["career"]],
           size: model_data["ground"] ? ::Model::VEHICLE_SIZE : SIZES[model_data["size"].to_s],
           description: filled(model_data["description"].to_s.gsub('\\n', "\n").sub(DESCRIPTION_HEADER, "").strip)

@@ -35,7 +35,6 @@ module Admin
               productionStatus: {type: :string},
               productionNote: {type: :string},
               classification: {type: :string},
-              focus: {type: :string, deprecated: true, description: "Use foci instead"},
               foci: {type: :array, items: ::Shared::V1::Schemas::Enums::ModelFocusEnum},
               stealth: {type: :boolean},
               size: {type: :string},

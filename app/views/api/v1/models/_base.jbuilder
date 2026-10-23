@@ -31,7 +31,6 @@ end
 
 json.description model.description
 json.erkul_identifier(model.erkul_identifier.presence || model.sc_data_identifier)
-json.focus model.focus
 json.foci model.foci
 json.foci_labels model.foci_labels
 json.stealth model.stealth

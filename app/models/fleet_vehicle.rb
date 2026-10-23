@@ -27,7 +27,7 @@ class FleetVehicle < ApplicationRecord
   DEFAULT_SORTING_PARAMS = ["model_name asc"]
   MODEL_SORT_FIELDS = %w[
     modelName modelManufacturerName modelLength modelBeam modelHeight modelMass modelCargo
-    modelScmSpeed modelMaxSpeed modelGroundMaxSpeed modelFocus modelProductionStatus modelPrice
+    modelScmSpeed modelMaxSpeed modelGroundMaxSpeed modelProductionStatus modelPrice
     modelPledgePrice
   ].freeze
   ALLOWED_SORTING_PARAMS = (MODEL_SORT_FIELDS + %w[createdAt updatedAt vehiclesCount])

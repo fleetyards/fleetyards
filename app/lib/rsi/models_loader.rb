@@ -150,12 +150,10 @@ module Rsi
       # taken the new wording nothing would ever differ again. Only keys the
       # matrix put there follow: ones that differ from what its last wording
       # maps to were picked by hand, and a reworded matrix must not undo that.
-      # The focus string is left to the keys, so it never contradicts them.
       # Stealth is only ever turned on: the matrix never says a ship is not
       # stealthy, and an admin may have said it is.
       updates["rsi_focus"] = data["focus"]
       if (data["focus"].present? && data["focus"] != model.rsi_focus) || model.rsi_focus.blank?
-
         mapped = ::Models::FocusMapping.call(data["focus"])
         updates[:foci] = mapped.foci if mapped.foci.any? && matrix_foci?(model)
         updates[:stealth] = true if mapped.stealth

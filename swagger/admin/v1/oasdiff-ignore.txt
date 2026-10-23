@@ -566,3 +566,58 @@ PUT /model-modules/{id} added the new `salvage_storage` enum value to the `hardp
 PUT /model-modules/{id}/link added the new `salvage_storage` enum value to the `hardpoints/items/group` response property for the response status `200`
 PUT /model-modules/{id}/unlink added the new `salvage_storage` enum value to the `hardpoints/items/group` response property for the response status `200`
 PUT /vehicles/{id} added the new `salvage_storage` enum value to the `modulePackage/modules/items/hardpoints/items/group` response property for the response status `200`
+GET /models removed the enum value `focus asc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /models removed the enum value `focus asc` from the property `s/anyOf[subschema #2: ModelSortEnum]/` of the `query` request parameter `q`
+GET /models removed the enum value `focus asc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /models removed the enum value `focus asc` from the property `sorts/anyOf[subschema #2: ModelSortEnum]/` of the `query` request parameter `q`
+GET /models removed the enum value `focus desc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /models removed the enum value `focus desc` from the property `s/anyOf[subschema #2: ModelSortEnum]/` of the `query` request parameter `q`
+GET /models removed the enum value `focus desc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /models removed the enum value `focus desc` from the property `sorts/anyOf[subschema #2: ModelSortEnum]/` of the `query` request parameter `q`
+GET /vehicles removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /vehicles removed the enum value `modelFocus asc` from the property `s/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+GET /vehicles removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /vehicles removed the enum value `modelFocus asc` from the property `sorts/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+GET /vehicles removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /vehicles removed the enum value `modelFocus desc` from the property `s/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+GET /vehicles removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #1]/items/` of the `query` request parameter `q`
+GET /vehicles removed the enum value `modelFocus desc` from the property `sorts/anyOf[subschema #2: VehicleSortEnum]/` of the `query` request parameter `q`
+GET /model-module-packages removed the optional property `items/items/model/focus` from the response with the `200` status
+GET /model-module-packages removed the optional property `items/items/modules/items/models/items/focus` from the response with the `200` status
+POST /model-module-packages removed the optional property `model/focus` from the response with the `200` status
+POST /model-module-packages removed the optional property `modules/items/models/items/focus` from the response with the `200` status
+GET /model-module-packages/{id} removed the optional property `model/focus` from the response with the `200` status
+GET /model-module-packages/{id} removed the optional property `modules/items/models/items/focus` from the response with the `200` status
+PUT /model-module-packages/{id} removed the optional property `model/focus` from the response with the `200` status
+PUT /model-module-packages/{id} removed the optional property `modules/items/models/items/focus` from the response with the `200` status
+GET /model-modules removed the optional property `items/items/models/items/focus` from the response with the `200` status
+POST /model-modules removed the optional property `models/items/focus` from the response with the `201` status
+GET /model-modules/{id} removed the optional property `models/items/focus` from the response with the `200` status
+PUT /model-modules/{id} removed the optional property `models/items/focus` from the response with the `200` status
+PUT /model-modules/{id}/link removed the optional property `models/items/focus` from the response with the `200` status
+PUT /model-modules/{id}/unlink removed the optional property `models/items/focus` from the response with the `200` status
+GET /model-paints removed the optional property `items/items/model/focus` from the response with the `200` status
+POST /model-paints removed the optional property `model/focus` from the response with the `200` status
+DELETE /model-paints/{id} removed the optional property `model/focus` from the response with the `200` status
+GET /model-paints/{id} removed the optional property `model/focus` from the response with the `200` status
+PUT /model-paints/{id} removed the optional property `model/focus` from the response with the `200` status
+GET /models removed the optional property `items/items/focus` from the response with the `200` status
+POST /models removed the request property `focus`
+POST /models removed the optional property `focus` from the response with the `200` status
+DELETE /models/{id} removed the optional property `focus` from the response with the `200` status
+GET /models/{id} removed the optional property `focus` from the response with the `200` status
+PUT /models/{id} removed the request property `focus`
+PUT /models/{id} removed the optional property `focus` from the response with the `200` status
+PUT /models/{id}/use-rsi-image removed the optional property `focus` from the response with the `200` status
+GET /vehicles removed the optional property `items/items/model/focus` from the response with the `200` status
+GET /vehicles removed the optional property `items/items/modulePackage/model/focus` from the response with the `200` status
+GET /vehicles removed the optional property `items/items/modulePackage/modules/items/models/items/focus` from the response with the `200` status
+DELETE /vehicles/{id} removed the optional property `model/focus` from the response with the `200` status
+DELETE /vehicles/{id} removed the optional property `modulePackage/model/focus` from the response with the `200` status
+DELETE /vehicles/{id} removed the optional property `modulePackage/modules/items/models/items/focus` from the response with the `200` status
+GET /vehicles/{id} removed the optional property `model/focus` from the response with the `200` status
+GET /vehicles/{id} removed the optional property `modulePackage/model/focus` from the response with the `200` status
+GET /vehicles/{id} removed the optional property `modulePackage/modules/items/models/items/focus` from the response with the `200` status
+PUT /vehicles/{id} removed the optional property `model/focus` from the response with the `200` status
+PUT /vehicles/{id} removed the optional property `modulePackage/model/focus` from the response with the `200` status
+PUT /vehicles/{id} removed the optional property `modulePackage/modules/items/models/items/focus` from the response with the `200` status

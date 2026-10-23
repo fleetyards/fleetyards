@@ -18513,10 +18513,6 @@ components:
           type: string
         erkulIdentifier:
           type: string
-        focus:
-          type: string
-          deprecated: true
-          description: Use foci instead
         foci:
           type: array
           items:
@@ -18762,10 +18758,6 @@ components:
           type: string
         classification:
           type: string
-        focus:
-          type: string
-          deprecated: true
-          description: Use foci instead
         foci:
           type: array
           items:
@@ -18861,10 +18853,6 @@ components:
           type: string
         erkulIdentifier:
           type: string
-        focus:
-          type: string
-          deprecated: true
-          description: Use foci instead
         foci:
           type: array
           items:
@@ -20464,8 +20452,6 @@ components:
       - groundMaxSpeed desc
       - productionStatus asc
       - productionStatus desc
-      - focus asc
-      - focus desc
       - rsiId asc
       - rsiId desc
       x-enumNames:
@@ -20497,8 +20483,6 @@ components:
       - GROUND_MAX_SPEED_DESC
       - PRODUCTION_STATUS_ASC
       - PRODUCTION_STATUS_DESC
-      - FOCUS_ASC
-      - FOCUS_DESC
       - RSI_ID_ASC
       - RSI_ID_DESC
       title: ModelSortEnum
@@ -20644,10 +20628,6 @@ components:
           - 'null'
         classification:
           type: string
-        focus:
-          type: string
-          deprecated: true
-          description: Use foci instead
         foci:
           type: array
           items:
@@ -22765,8 +22745,6 @@ components:
       - modelGroundMaxSpeed desc
       - modelProductionStatus asc
       - modelProductionStatus desc
-      - modelFocus asc
-      - modelFocus desc
       - rank asc
       - rank desc
       x-enumNames:
@@ -22804,8 +22782,6 @@ components:
       - MODEL_GROUND_MAX_SPEED_DESC
       - MODEL_PRODUCTION_STATUS_ASC
       - MODEL_PRODUCTION_STATUS_DESC
-      - MODEL_FOCUS_ASC
-      - MODEL_FOCUS_DESC
       - RANK_ASC
       - RANK_DESC
       title: VehicleSortEnum
