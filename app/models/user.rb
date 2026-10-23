@@ -16,6 +16,10 @@ class User < ApplicationRecord
   # stopped selecting them.
   self.ignored_columns += %w[purchased_vehicles_count wanted_vehicles_count]
 
+  # Guilded links, removed with the integration; dropped by a later migration
+  # for the same reason.
+  self.ignored_columns += %w[guilded]
+
   attr_accessor :update_reason, :update_reason_description, :author_id
 
   # The signup opt-in. It only seeds the `model_on_sale` preference; the

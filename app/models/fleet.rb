@@ -8,6 +8,10 @@ class Fleet < ApplicationRecord
   include LinkedLocations
   include FeatureFlagActor
 
+  # Ignored a release ahead of the migration that drops it, so the release
+  # still serving traffic during the pre-deploy migrate has stopped selecting it.
+  self.ignored_columns += %w[guilded]
+
   paginates_per 24
   per_page_steps PageSizes.up_to(max_per_page)
 
