@@ -89,6 +89,25 @@ class Api::V1::EquipmentShowTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 404, params: {slug: hidden.slug}
   end
 
+  test "GET /equipment/{slug} carries the views and the holo" do
+    @rifle.angled_view.attach(io: file_fixture("test.png").open, filename: "angled.png", content_type: "image/png")
+    @rifle.holo.attach(io: StringIO.new("glTF"), filename: "holo.glb", content_type: "model/gltf-binary")
+
+    assert_api_response :get, 200, params: {slug: @rifle.slug} do
+      assert_equal "angled.png", parsed_body.dig("media", "angledView", "name")
+      assert_equal "holo.glb", parsed_body.dig("media", "holo", "name")
+    end
+  end
+
+  test "GET /equipment/{slug} carries the store image in media too" do
+    @rifle.store_image.attach(io: file_fixture("test.png").open, filename: "store.png", content_type: "image/png")
+
+    assert_api_response :get, 200, params: {slug: @rifle.slug} do
+      assert_equal "store.png", parsed_body.dig("storeImage", "name")
+      assert_equal "store.png", parsed_body.dig("media", "storeImage", "name")
+    end
+  end
+
   test "GET /equipment/{slug} 404s for a slug nobody has" do
     assert_api_response :get, 404, params: {slug: "no-such-equipment-slug"}
   end

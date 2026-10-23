@@ -8,6 +8,7 @@ class Component < ApplicationRecord
   include KeyedSlug
   include ScDataVersioned
   include LoadoutFittable
+  include ItemViews
 
   paginates_per 48
   max_paginates_per 240

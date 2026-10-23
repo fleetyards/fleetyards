@@ -87,7 +87,7 @@ module Shared
 
             manufacturer: {"$ref": "#/components/schemas/Manufacturer"},
 
-            media: Shared::V1::Schemas::StoreImageMedia,
+            media: Shared::V1::Schemas::ItemMedia,
 
             typeData: TYPE_DATA,
 

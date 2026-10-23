@@ -92,7 +92,7 @@ module Admin
             :damage_reduction, :temperature_rating, :radiation_protection,
             :radiation_scrub_rate, :g_force_tolerance, :core_compatibility,
             :backpack_compatibility, :manufacturer_id, :hidden, :store_image,
-            :sc_key, :sc_ref
+            :sc_key, :sc_ref, *ItemViews::ATTACHMENT_NAMES
           )
         end
 

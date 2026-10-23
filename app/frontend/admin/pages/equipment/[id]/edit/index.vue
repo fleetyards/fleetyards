@@ -22,6 +22,7 @@ import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
+import ItemViewsFields from "@/admin/components/ItemViewsFields/index.vue";
 import ManufacturerSelect from "@/admin/components/base/ManufacturerSelect/index.vue";
 import EquipmentSlotSelect from "@/admin/components/base/EquipmentSlotSelect/index.vue";
 import { useBreadCrumbs } from "@/shared/composables/useBreadCrumbs";
@@ -245,6 +246,8 @@ const handleCancel = async () => {
         />
       </div>
     </div>
+    <hr />
+    <ItemViewsFields :media="equipment.media" />
     <FormActions
       :submitting="submitting"
       formId="admin-equipment-edit-form"
