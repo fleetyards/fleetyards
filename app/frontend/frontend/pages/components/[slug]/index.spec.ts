@@ -159,4 +159,22 @@ describe("ComponentPage", () => {
 
     craftedRecipe.value = undefined;
   });
+
+  it("shows the store image when there is one", async () => {
+    const wrapper = await mountPage(
+      record({
+        media: { storeImage: { largeUrl: "https://example.test/large.jpg" } },
+      } as Partial<Component>),
+    );
+
+    expect(
+      wrapper.find("[data-test='component-image'] img").attributes("src"),
+    ).toBe("https://example.test/large.jpg");
+  });
+
+  it("leaves the image out without a store image", async () => {
+    const wrapper = await mountPage(record());
+
+    expect(wrapper.find("[data-test='component-image']").exists()).toBe(false);
+  });
 });

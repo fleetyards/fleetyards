@@ -8,6 +8,14 @@
     color: var(--color-primary, #428bca);
   }
 
+  &__image {
+    flex: 0 0 auto;
+    width: 112px;
+    height: 63px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+
   :deep(.component-lead-metric) {
     display: none;
     flex: none;

@@ -136,6 +136,28 @@
     min-width: 0;
   }
 
+  &__zoom {
+    display: block;
+    padding: 0;
+    border: none;
+    border-radius: 4px;
+    background: none;
+    cursor: zoom-in;
+
+    &:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+  }
+
+  &__image {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+
   // A row that is also a link, so it answers to the pointer the way the
   // material chips on a blueprint row do.
   &__recipe {

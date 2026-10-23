@@ -35,6 +35,7 @@ const record = {
   consumable: false,
   counted: false,
   retired: false,
+  media: {},
 };
 
 const wrappers: VueWrapper[] = [];

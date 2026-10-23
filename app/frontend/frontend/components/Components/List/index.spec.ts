@@ -101,4 +101,27 @@ describe("ComponentsList", () => {
       ]);
     });
   });
+
+  it("leads a row with its store image in place of the category icon", async () => {
+    const wrapper = await mount([
+      component({
+        category: "paints",
+        media: { storeImage: { smallUrl: "https://example.test/small.jpg" } },
+      } as Partial<FyComponent>),
+    ]);
+
+    expect(
+      wrapper.find("[data-test='component-row-image']").attributes("src"),
+    ).toBe("https://example.test/small.jpg");
+    expect(wrapper.find(".hardpoint-category-icon").exists()).toBe(false);
+  });
+
+  it("keeps the category icon for a row without a store image", async () => {
+    const wrapper = await mount([component({ category: "paints" })]);
+
+    expect(wrapper.find("[data-test='component-row-image']").exists()).toBe(
+      false,
+    );
+    expect(wrapper.find(".hardpoint-category-icon").exists()).toBe(true);
+  });
 });
