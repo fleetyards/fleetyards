@@ -27,6 +27,12 @@
         "text": "可以从零开始、从你的机库、从你的愿望清单，或复制另一个方案来创建方案。"
       },
       "noSlots": "此方案还没有槽位。请为机库要覆盖的每个角色添加一个槽位。",
+      "placeholderRoles": {
+        "starter": "日常座驾",
+        "cargo": "货运船",
+        "exploration": "探索船"
+      },
+      "useAsFirstSlot": "设为我的第一个槽位",
       "addSlot": "添加槽位",
       "editSlot": "编辑槽位",
       "removeSlot": "移除槽位",

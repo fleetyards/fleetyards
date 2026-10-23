@@ -34,6 +34,7 @@ import {
 type Props = {
   planId: string;
   slot?: HangarPlanSlot;
+  label?: string;
 };
 
 const props = defineProps<Props>();
@@ -48,7 +49,7 @@ const submitting = ref(false);
 const filters = props.slot?.filters ?? {};
 
 const initialValues = {
-  label: props.slot?.label ?? "",
+  label: props.slot?.label ?? props.label ?? "",
   description: props.slot?.description ?? "",
   quantity: props.slot?.quantity ?? 1,
   pledgePriceGteq: filters.pledgePriceGteq?.toString() ?? "",

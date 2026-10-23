@@ -27,6 +27,12 @@
         "text": "Commencez un plan de zéro, depuis votre hangar, depuis votre liste de souhaits ou en copiant un autre plan."
       },
       "noSlots": "Ce plan n'a pas encore d'emplacement. Ajoutez un emplacement pour chaque rôle que votre hangar doit couvrir.",
+      "placeholderRoles": {
+        "starter": "Vaisseau du quotidien",
+        "cargo": "Cargo",
+        "exploration": "Explorateur"
+      },
+      "useAsFirstSlot": "En faire mon premier emplacement",
       "addSlot": "Ajouter un emplacement",
       "editSlot": "Modifier l'emplacement",
       "removeSlot": "Retirer l'emplacement",

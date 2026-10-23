@@ -27,6 +27,12 @@
         "text": "Starte einen Plan von Grund auf, aus deinem Hangar, aus deiner Wunschliste oder indem du einen anderen Plan kopierst."
       },
       "noSlots": "Dieser Plan hat noch keine Slots. Füge für jede Rolle, die dein Hangar abdecken soll, einen Slot hinzu.",
+      "placeholderRoles": {
+        "starter": "Alltagsschiff",
+        "cargo": "Frachter",
+        "exploration": "Erkunder"
+      },
+      "useAsFirstSlot": "Als ersten Slot anlegen",
       "addSlot": "Slot hinzufügen",
       "editSlot": "Slot bearbeiten",
       "removeSlot": "Slot entfernen",

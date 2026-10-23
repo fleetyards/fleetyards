@@ -27,6 +27,12 @@
         "text": "Empieza un plan desde cero, desde tu hangar, desde tu lista de deseos o copiando otro plan."
       },
       "noSlots": "Este plan aún no tiene slots. Añade un slot por cada rol que quieras que cubra tu hangar.",
+      "placeholderRoles": {
+        "starter": "Nave para el día a día",
+        "cargo": "Carguero",
+        "exploration": "Explorador"
+      },
+      "useAsFirstSlot": "Convertir en mi primer slot",
       "addSlot": "Añadir slot",
       "editSlot": "Editar slot",
       "removeSlot": "Quitar slot",

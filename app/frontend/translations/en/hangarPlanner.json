@@ -27,6 +27,12 @@
         "text": "Start a plan from scratch, from your hangar, from your wishlist or by copying another plan."
       },
       "noSlots": "This plan has no slots yet. Add a slot for each role you want your hangar to cover.",
+      "placeholderRoles": {
+        "starter": "Daily driver",
+        "cargo": "Cargo hauler",
+        "exploration": "Explorer"
+      },
+      "useAsFirstSlot": "Make this my first slot",
       "addSlot": "Add slot",
       "editSlot": "Edit slot",
       "removeSlot": "Remove slot",

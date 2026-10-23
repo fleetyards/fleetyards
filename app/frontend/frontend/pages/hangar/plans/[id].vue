@@ -25,6 +25,7 @@ import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
 import Loader from "@/shared/components/Loader/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import SlotCard from "@/frontend/components/Hangar/Planner/SlotCard/index.vue";
+import SlotPlaceholders from "@/frontend/components/Hangar/Planner/SlotPlaceholders/index.vue";
 import SummaryPanel from "@/frontend/components/Hangar/Planner/SummaryPanel/index.vue";
 import CostTiles from "@/frontend/components/Hangar/Planner/CostTiles/index.vue";
 import Readiness from "@/frontend/components/Hangar/Planner/Readiness/index.vue";
@@ -88,10 +89,10 @@ const editPlan = () =>
     { plan: plan.value },
   );
 
-const addSlot = () =>
+const addSlot = (label?: string) =>
   openModal(
     () => import("@/frontend/components/Hangar/Planner/SlotModal/index.vue"),
-    { planId: planId.value },
+    { planId: planId.value, label },
   );
 
 const openMelt = (melt?: HangarPlanMelt) =>
@@ -227,7 +228,7 @@ const onDestroy = async () => {
     </div>
 
     <PageActions>
-      <Btn data-test="hangar-plan-add-slot" @click="addSlot">
+      <Btn data-test="hangar-plan-add-slot" @click="addSlot()">
         <i class="fa-light fa-plus" />
         {{ t("hangarPlanner.addSlot") }}
       </Btn>
@@ -327,9 +328,7 @@ const onDestroy = async () => {
 
     <div class="plan-layout">
       <section class="plan-slots">
-        <p v-if="!plan.slots.length" class="plan-muted">
-          {{ t("hangarPlanner.noSlots") }}
-        </p>
+        <SlotPlaceholders v-if="!plan.slots.length" @add="addSlot" />
         <SlotCard
           v-for="slot in plan.slots"
           :key="slot.id"

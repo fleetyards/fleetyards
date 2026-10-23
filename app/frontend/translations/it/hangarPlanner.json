@@ -27,6 +27,12 @@
         "text": "Inizia un piano da zero, dal tuo hangar, dalla tua wishlist o copiando un altro piano."
       },
       "noSlots": "Questo piano non ha ancora slot. Aggiungi uno slot per ogni ruolo che vuoi far coprire al tuo hangar.",
+      "placeholderRoles": {
+        "starter": "Nave di tutti i giorni",
+        "cargo": "Cargo",
+        "exploration": "Esploratore"
+      },
+      "useAsFirstSlot": "Rendilo il mio primo slot",
       "addSlot": "Aggiungi slot",
       "editSlot": "Modifica slot",
       "removeSlot": "Rimuovi slot",
