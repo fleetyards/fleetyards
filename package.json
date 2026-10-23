@@ -120,7 +120,7 @@
     "@types/swagger-ui-dist": "^3.30.6",
     "@types/three": "^0.186.0",
     "@typescript-eslint/eslint-plugin": "8.71.2",
-    "@typescript-eslint/parser": "8.71.2",
+    "@typescript-eslint/parser": "8.72.0",
     "@vitejs/plugin-vue": "^6.0.10",
     "@vue/compiler-sfc": "^3.5.44",
     "@vue/eslint-config-prettier": "^10.2.0",
