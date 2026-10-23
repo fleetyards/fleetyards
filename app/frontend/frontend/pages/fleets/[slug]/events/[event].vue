@@ -528,11 +528,26 @@ const crumbs = computed<Crumb[]>(() => [
       :bg-rounded="PanelRoundedEnum.TOP"
       :tone="statusTone"
       class="event-detail__hero"
-      :class="{ 'event-detail__hero--calendar': icsDownloadUrl }"
     >
       <PanelHeading :shadow="PanelHeadingShadowEnum.TOP">
         <template #default>
           {{ event.title }}
+        </template>
+        <!-- Beside the title rather than below the eight rows of metadata,
+             where it was past the fold: handing the event to your own calendar
+             is the one thing a reader does from the hero. -->
+        <template v-if="icsDownloadUrl" #actions>
+          <Btn
+            :href="icsDownloadUrl"
+            :size="BtnSizesEnum.SM"
+            :aria-label="t('actions.fleets.events.addToCalendar')"
+            class="event-detail__calendar"
+            data-test="event-add-to-calendar"
+            mobile-icon-only
+          >
+            <i class="fa-light fa-calendar-arrow-down" />
+            <span>{{ t("actions.fleets.events.addToCalendar") }}</span>
+          </Btn>
         </template>
       </PanelHeading>
 
@@ -541,23 +556,9 @@ const crumbs = computed<Crumb[]>(() => [
            what a reader scans for. A status is not a control either, so a Pill
            and not a framed chip, which renders a button with aria-pressed. -->
       <div class="event-detail__status">
-        <Pill :variant="statusVariant">{{ statusLabel }}</Pill>
-      </div>
-
-      <!-- On the cover's top corner, opposite the status: handing the event to
-           your own calendar is the one thing a reader does from the hero, and
-           below the eight rows of metadata it was past the fold. -->
-      <div v-if="icsDownloadUrl" class="event-detail__calendar">
-        <Btn
-          :href="icsDownloadUrl"
-          :size="BtnSizesEnum.SM"
-          :aria-label="t('actions.fleets.events.addToCalendar')"
-          data-test="event-add-to-calendar"
-          mobile-icon-only
-        >
-          <i class="fa-light fa-calendar-arrow-down" />
-          <span>{{ t("actions.fleets.events.addToCalendar") }}</span>
-        </Btn>
+        <Pill :variant="statusVariant" class="event-detail__status-pill">
+          {{ statusLabel }}
+        </Pill>
       </div>
 
       <!--
@@ -817,34 +818,14 @@ const crumbs = computed<Crumb[]>(() => [
  * out, and the bottom of the image has no scrim the way the heading has its top
  * shadow.
  */
-.event-detail__status :deep(.base-pill) {
+.event-detail__status-pill {
   backdrop-filter: blur(6px) brightness(0.45);
 }
 
-/*
- * The cover's other top corner. Above the heading's own stacking so the button
- * stays clickable where a long title reaches it, and darkened behind the way
- * the status pill is - the top shadow is drawn for text, not for a control.
- */
+/* Darkened behind the way the status pill is: the top shadow is drawn for
+   text, not for a control. */
 .event-detail__calendar {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  z-index: 3;
-}
-
-.event-detail__calendar :deep(.btn) {
   backdrop-filter: blur(6px) brightness(0.45);
-}
-
-/* Keeps a long title clear of the calendar button above it: icon-only on a
-   phone, labelled on a desktop. */
-.event-detail__hero--calendar :deep(.panel-heading) {
-  padding-right: 200px;
-
-  @media (max-width: 992px) {
-    padding-right: 66px;
-  }
 }
 
 /* One fact per line on a phone, earlier than the shared split list does it:
