@@ -69,6 +69,7 @@ const tiles = computed(() => [
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
+  margin-bottom: 16px;
 
   @media (max-width: 991px) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
