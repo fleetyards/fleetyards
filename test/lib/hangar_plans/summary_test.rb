@@ -24,6 +24,10 @@ class HangarPlans::SummaryTest < ActiveSupport::TestCase
     assert_predicate summary, :complete?
   end
 
+  test "a plan without slots is not complete" do
+    assert_not HangarPlans::Summary.new(@plan).complete?
+  end
+
   test "an upgrade costs the difference between both store prices, and one already held nothing" do
     store = decided_slot(@carrack)
     route = @plan.acquisitions.new(candidate: store, start_kind: "store", start_model: @cutlass)

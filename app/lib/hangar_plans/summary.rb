@@ -59,7 +59,7 @@ module HangarPlans
     def count_of(state) = slot_costs.count { |cost| cost.state == state }
 
     def complete?
-      issues.empty? && unresolved_count.zero? && count_of("undecided").zero? && count_of("open").zero?
+      slot_costs.any? && issues.empty? && unresolved_count.zero? && count_of("undecided").zero? && count_of("open").zero?
     end
 
     # The decided spend as priced when each route was planned, next to today's,
