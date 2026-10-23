@@ -415,7 +415,14 @@
         "meltableOnly": "僅可熔",
         "notMeltable": "不可熔",
         "notSynced": "未同步",
-        "noShips": "你沒有可用於熔掉的飛船。"
+        "noShips": "你沒有可用於熔掉的飛船。",
+        "inPackage": "屬於 %{name}",
+        "contents": "一併熔掉",
+        "contentsOf": "作為 %{name} 的一部分一併熔掉",
+        "unlisted": {
+          "one": "另有 %{count} 件機庫同步未列出的物品",
+          "other": "另有 %{count} 件機庫同步未列出的物品"
+        }
       }
     }
   }

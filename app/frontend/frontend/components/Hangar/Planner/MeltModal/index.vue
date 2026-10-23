@@ -83,7 +83,9 @@ const meltable = computed(() =>
     : freeVehicles.value,
 );
 
-const meltBadge = (vehicle: (typeof freeVehicles.value)[number]) => {
+type Vehicle = (typeof freeVehicles.value)[number];
+
+const meltBadge = (vehicle: Vehicle) => {
   if (vehicle.meltable === false)
     return t("hangarPlanner.meltList.notMeltable");
   if (vehicle.meltable === null || vehicle.meltable === undefined) {
@@ -92,7 +94,22 @@ const meltBadge = (vehicle: (typeof freeVehicles.value)[number]) => {
   return undefined;
 };
 
-const creditOf = (vehicle: (typeof freeVehicles.value)[number]) =>
+const inPackage = (vehicle: Vehicle) =>
+  (vehicle.pledgeItemCount ?? 0) > 1 ||
+  vehicle.pledgeShips.length > 0 ||
+  vehicle.pledgeItems.length > 0;
+
+const packageLabel = (vehicle: Vehicle) => {
+  if (!inPackage(vehicle)) return undefined;
+  if (vehicle.pledgeName) {
+    return t("hangarPlanner.meltList.inPackage", { name: vehicle.pledgeName });
+  }
+  return t("hangarPlanner.meltList.wholePledge", {
+    count: vehicle.pledgeItemCount ?? 0,
+  });
+};
+
+const creditOf = (vehicle: Vehicle) =>
   vehicle.meltValue ?? vehicle.model.pledgePrice ?? null;
 
 const vehicleItems = computed<PickListItem[]>(() =>
@@ -100,16 +117,13 @@ const vehicleItems = computed<PickListItem[]>(() =>
     id: vehicle.id,
     title: vehicle.name || vehicle.model.name,
     meta:
-      [
-        vehicle.name ? vehicle.model.name : undefined,
-        vehicle.pledgeItemCount && vehicle.pledgeItemCount > 1
-          ? t("hangarPlanner.meltList.wholePledge", {
-              count: vehicle.pledgeItemCount,
-            })
-          : undefined,
-      ]
+      [vehicle.name ? vehicle.model.name : undefined, packageLabel(vehicle)]
         .filter(Boolean)
         .join(" · ") || undefined,
+    keywords: [
+      ...vehicle.pledgeShips.map((ship) => ship.model.name),
+      ...vehicle.pledgeItems.map((item) => item.name),
+    ].join(" "),
     price:
       typeof vehicle.meltValue === "number"
         ? t("hangarPlanner.meltList.credit", {
@@ -126,6 +140,39 @@ const vehicleItems = computed<PickListItem[]>(() =>
 const picked = computed(() =>
   freeVehicles.value.find((vehicle) => vehicle.id === vehicleId.value),
 );
+
+// Editing a melt, its ship is taken by the melt itself and not in the free list.
+const meltedVehicle = computed(() =>
+  (resources.value?.vehicles ?? []).find(
+    (vehicle) => vehicle.id === vehicleId.value,
+  ),
+);
+
+const contents = computed(() => {
+  const vehicle = meltedVehicle.value;
+  if (!vehicle || !inPackage(vehicle)) return undefined;
+
+  const entries = [
+    ...vehicle.pledgeShips.map((ship) => ({
+      id: ship.id,
+      name: ship.name ? `${ship.name} (${ship.model.name})` : ship.model.name,
+      quantity: 1,
+      icon: "fa-light fa-rocket",
+    })),
+    ...vehicle.pledgeItems.map((item) => ({
+      id: item.id,
+      name: item.name,
+      quantity: item.quantity,
+      icon: "fa-light fa-box",
+    })),
+  ];
+  const listed = 1 + entries.reduce((sum, entry) => sum + entry.quantity, 0);
+  // RSI counts what the sync keeps no record of, such as the game package or
+  // insurance-only items.
+  const unlisted = Math.max((vehicle.pledgeItemCount ?? 0) - listed, 0);
+
+  return { name: vehicle.pledgeName, entries, unlisted };
+});
 
 const placeholder = computed(() => {
   const credit = picked.value ? creditOf(picked.value) : props.melt?.value;
@@ -198,6 +245,40 @@ const onSubmit = async () => {
           </template>
         </PickList>
       </template>
+      <section
+        v-if="contents"
+        class="melt-contents"
+        data-test="hangar-plan-melt-contents"
+      >
+        <span class="melt-label">{{
+          contents.name
+            ? t("hangarPlanner.meltList.contentsOf", { name: contents.name })
+            : t("hangarPlanner.meltList.contents")
+        }}</span>
+        <ul class="melt-contents__list">
+          <li
+            v-for="entry in contents.entries"
+            :key="entry.id"
+            class="melt-contents__item"
+          >
+            <i :class="entry.icon" aria-hidden="true" />
+            <span>{{ entry.name }}</span>
+            <span v-if="entry.quantity > 1" class="melt-contents__quantity">
+              ×{{ entry.quantity }}
+            </span>
+          </li>
+          <li
+            v-if="contents.unlisted"
+            class="melt-contents__item melt-contents__item--dim"
+          >
+            {{
+              t("hangarPlanner.meltList.unlisted", {
+                count: contents.unlisted,
+              })
+            }}
+          </li>
+        </ul>
+      </section>
       <FormInput
         v-model="valueOverride"
         name="valueOverride"
@@ -236,6 +317,37 @@ const onSubmit = async () => {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
+}
+
+.melt-contents {
+  margin: 12px 0 16px;
+}
+
+.melt-contents__list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.melt-contents__item {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  font-size: 0.9rem;
+
+  i {
+    width: 1rem;
+    color: var(--color-text-dim);
+    text-align: center;
+  }
+}
+
+.melt-contents__item--dim,
+.melt-contents__quantity {
+  color: var(--color-text-dim);
 }
 
 .melt-muted {

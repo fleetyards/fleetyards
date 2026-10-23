@@ -415,7 +415,14 @@
         "meltableOnly": "Nur meltbare",
         "notMeltable": "nicht meltbar",
         "notSynced": "nicht synchronisiert",
-        "noShips": "Keines deiner Schiffe ist zum Melten frei."
+        "noShips": "Keines deiner Schiffe ist zum Melten frei.",
+        "inPackage": "in %{name}",
+        "contents": "Wird mitgemeltet",
+        "contentsOf": "Wird mitgemeltet, als Teil von %{name}",
+        "unlisted": {
+          "one": "%{count} weiteres Item, das der Hangar-Sync nicht erfasst",
+          "other": "%{count} weitere Items, die der Hangar-Sync nicht erfasst"
+        }
       }
     }
   }

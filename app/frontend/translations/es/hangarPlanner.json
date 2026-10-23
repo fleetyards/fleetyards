@@ -415,7 +415,14 @@
         "meltableOnly": "Solo fundibles",
         "notMeltable": "no fundible",
         "notSynced": "sin sincronizar",
-        "noShips": "Ninguna de tus naves está libre para fundir."
+        "noShips": "Ninguna de tus naves está libre para fundir.",
+        "inPackage": "en %{name}",
+        "contents": "Se funde con ella",
+        "contentsOf": "Se funde con ella, como parte de %{name}",
+        "unlisted": {
+          "one": "%{count} objeto más que la sincronización del hangar no recoge",
+          "other": "%{count} objetos más que la sincronización del hangar no recoge"
+        }
       }
     }
   }

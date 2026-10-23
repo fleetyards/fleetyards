@@ -415,7 +415,14 @@
         "meltableOnly": "Fondables uniquement",
         "notMeltable": "non fondable",
         "notSynced": "non synchronisé",
-        "noShips": "Aucun de vos vaisseaux n'est libre pour être fondu."
+        "noShips": "Aucun de vos vaisseaux n'est libre pour être fondu.",
+        "inPackage": "dans %{name}",
+        "contents": "Fondu avec lui",
+        "contentsOf": "Fondu avec lui, dans %{name}",
+        "unlisted": {
+          "one": "%{count} objet de plus que la synchronisation du hangar ne liste pas",
+          "other": "%{count} objets de plus que la synchronisation du hangar ne liste pas"
+        }
       }
     }
   }
