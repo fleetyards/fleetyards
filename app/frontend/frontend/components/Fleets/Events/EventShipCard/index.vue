@@ -451,24 +451,20 @@ const subtitle = computed(() => {
   justify-content: center;
 }
 
+/* A band along the cover's bottom edge rather than the whole cover: the marker
+   centres itself on its container, and a ship's name can run to two lines here,
+   so the cover's middle is where the second one lands. */
 .ship-cover-overlay {
   position: absolute;
-  inset: 0 0 auto;
-  height: var(--panel-image-height, 160px);
+  top: calc(var(--panel-image-height, 160px) - 72px);
+  left: 0;
+  right: 0;
+  height: 72px;
   pointer-events: none;
   z-index: 1;
 
   > * {
     pointer-events: auto;
-  }
-
-  /* Low in the cover rather than centred on it, as on a fleet vehicle panel:
-     a ship's name can run to two lines here and the middle is where the second
-     one lands. */
-  :deep(.loadout-marker) {
-    top: auto;
-    bottom: 16px;
-    transform: none;
   }
 }
 
