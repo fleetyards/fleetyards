@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_23_170000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_23_190000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1206,7 +1206,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_23_170000) do
     t.string "youtube"
     t.string "ts"
     t.string "homepage"
-    t.string "guilded"
     t.boolean "public_fleet", default: false
     t.text "description"
     t.boolean "public_fleet_stats", default: false
@@ -2842,7 +2841,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_23_170000) do
     t.string "rsi_handle"
     t.string "youtube"
     t.string "homepage"
-    t.string "guilded"
     t.string "encrypted_otp_secret"
     t.string "encrypted_otp_secret_iv"
     t.string "encrypted_otp_secret_salt"

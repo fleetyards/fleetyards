@@ -16,11 +16,6 @@ class User < ApplicationRecord
   # stopped selecting them.
   self.ignored_columns += %w[purchased_vehicles_count wanted_vehicles_count]
 
-  # Guilded links are no longer offered. The column stays ignored until it is
-  # dropped, so the release serving traffic while the pre-deploy hook migrates
-  # has already stopped selecting it.
-  self.ignored_columns += %w[guilded]
-
   attr_accessor :update_reason, :update_reason_description, :author_id
 
   # The signup opt-in. It only seeds the `model_on_sale` preference; the

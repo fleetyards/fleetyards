@@ -8,11 +8,6 @@ class Fleet < ApplicationRecord
   include LinkedLocations
   include FeatureFlagActor
 
-  # Guilded links are no longer offered. The column stays ignored until it is
-  # dropped: the pre-deploy hook migrates before any new container boots, so the
-  # release still serving traffic must already have stopped selecting it.
-  self.ignored_columns += %w[guilded]
-
   paginates_per 24
   per_page_steps PageSizes.up_to(max_per_page)
 
