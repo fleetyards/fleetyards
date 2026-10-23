@@ -125,19 +125,6 @@ const foldable = computed(() => props.collapsible && !!frontAngled.value);
 
 const collapsed = computed(() => foldable.value && !expanded.value);
 
-const visibleSets = computed(() =>
-  collapsed.value
-    ? viewSets.value
-        .filter((set) => set.key === "front")
-        .map((set) => ({
-          ...set,
-          plan: undefined,
-          end: undefined,
-          profile: undefined,
-        }))
-    : viewSets.value,
-);
-
 const toggleExpanded = () => {
   expanded.value = !expanded.value;
 };
@@ -149,9 +136,15 @@ const toggleExpanded = () => {
 const settledUrls = ref(new Set<string>());
 
 const currentUrls = computed(() =>
-  visibleSets.value
-    .flatMap((set) => [set.angled, set.plan, set.end, set.profile])
-    .filter((url): url is string => Boolean(url)),
+  (collapsed.value
+    ? [frontAngled.value]
+    : viewSets.value.flatMap((set) => [
+        set.angled,
+        set.plan,
+        set.end,
+        set.profile,
+      ])
+  ).filter((url): url is string => Boolean(url)),
 );
 
 const loading = computed(() =>
@@ -303,7 +296,10 @@ onMounted(() => {
         role="status"
         :aria-label="t('labels.loading')"
       />
-      <template v-for="set in visibleSets" :key="set.key">
+      <template
+        v-for="set in collapsed ? viewSets.slice(0, 1) : viewSets"
+        :key="set.key"
+      >
         <div class="fleetchart-views__cell">
           <button
             v-if="foldable && set.key === 'front'"
