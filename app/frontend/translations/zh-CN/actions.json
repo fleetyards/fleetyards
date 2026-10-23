@@ -353,6 +353,9 @@
         "onSale": "On Sale: %{price}",
         "store": "RSI Page"
       },
+      "itemViews": {
+        "sync": "同步视图"
+      },
       "models": {
         "sync": "从 RSI 同步",
         "syncMatrix": "同步矩阵",

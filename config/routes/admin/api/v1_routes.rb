@@ -117,6 +117,7 @@ v1_admin_api_routes = lambda do
 
   resources :components, only: %i[index show create update destroy] do
     get :category_filters, on: :collection
+    put "sync-views", to: "components#sync_views", on: :member
   end
 
   resources :equipment, only: %i[index show update destroy] do
@@ -124,6 +125,7 @@ v1_admin_api_routes = lambda do
     get :item_type_filters, on: :collection
     get :weapon_class_filters, on: :collection
     get "slots", to: "equipment#slot_filters", on: :collection
+    put "sync-views", to: "equipment#sync_views", on: :member
   end
 
   resources :commodities, only: %i[index show update destroy] do

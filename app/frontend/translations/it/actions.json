@@ -353,6 +353,9 @@
         "onSale": "In vendita %{price}",
         "store": "Pagina su RSI"
       },
+      "itemViews": {
+        "sync": "Sincronizza viste"
+      },
       "models": {
         "sync": "Sincronizza da RSI",
         "syncMatrix": "Sincronizza matrice",

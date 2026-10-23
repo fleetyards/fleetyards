@@ -4,7 +4,7 @@ module Admin
   module Api
     module V1
       class ComponentsController < ::Admin::Api::BaseController
-        before_action :set_component, only: %i[show update destroy]
+        before_action :set_component, only: %i[show update destroy sync_views]
 
         def index
           authorize! with: ::Admin::ComponentPolicy
@@ -66,6 +66,12 @@ module Admin
           )
 
           render "api/shared/filters"
+        end
+
+        def sync_views
+          ::ScData::ItemViewsImportJob.perform_async("Component", @component.id)
+
+          render json: {message: "Jobs enqueued"}, status: :ok
         end
 
         private def set_component

@@ -4,7 +4,7 @@ module Admin
   module Api
     module V1
       class EquipmentController < ::Admin::Api::BaseController
-        before_action :set_equipment, only: %i[show update destroy]
+        before_action :set_equipment, only: %i[show update destroy sync_views]
 
         def index
           authorize! with: ::Admin::EquipmentPolicy
@@ -75,6 +75,12 @@ module Admin
           @filters = Equipment.weapon_class_filters
 
           render "api/shared/filters"
+        end
+
+        def sync_views
+          ::ScData::ItemViewsImportJob.perform_async("Equipment", @equipment.id)
+
+          render json: {message: "Jobs enqueued"}, status: :ok
         end
 
         private def set_equipment
