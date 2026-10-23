@@ -197,7 +197,7 @@
         }
       },
       "itemViews": {
-        "syncStarted": "Synchronisierung der Ansichten gestartet. Neue Renderings erscheinen hier, sobald sie verarbeitet sind."
+        "syncStarted": "Synchronisierung der Ansichten gestartet. Lade die Seite neu, sobald die Renderings angehängt sind, um sie zu sehen."
       },
       "model": {
         "syncMatrixStarted": "Matrix-Synchronisation gestartet. Du wirst benachrichtigt, wenn sie abgeschlossen ist.",

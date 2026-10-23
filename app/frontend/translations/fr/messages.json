@@ -195,7 +195,7 @@
         }
       },
       "itemViews": {
-        "syncStarted": "Synchronisation des vues démarrée. Les nouveaux rendus apparaîtront ici une fois traités."
+        "syncStarted": "Synchronisation des vues démarrée. Rechargez la page une fois les rendus attachés pour les voir."
       },
       "model": {
         "syncMatrixStarted": "Model matrix sync started. You will be notified when it completes.",

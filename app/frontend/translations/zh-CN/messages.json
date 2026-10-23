@@ -191,7 +191,7 @@
         }
       },
       "itemViews": {
-        "syncStarted": "视图同步已开始。新的渲染图处理完成后会显示在这里。"
+        "syncStarted": "视图同步已开始。渲染图附加完成后，请刷新页面查看。"
       },
       "model": {
         "syncMatrixStarted": "Model matrix sync started. You will be notified when it completes.",
