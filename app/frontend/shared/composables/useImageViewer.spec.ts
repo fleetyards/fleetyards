@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+import PhotoSwipe from "photoswipe";
 import { useImageViewer } from "./useImageViewer";
 
 vi.mock("@/shared/composables/useI18n", () => ({
@@ -36,6 +37,32 @@ describe("useImageViewer", () => {
     registered.length = 0;
     vi.unstubAllGlobals();
     vi.restoreAllMocks();
+    vi.clearAllMocks();
+  });
+
+  it("opens the loaded image at its natural size, under the item's name", async () => {
+    const { openImage } = useImageViewer();
+    await openImage(image(), "Cutlass - Akuma Paint");
+
+    expect(PhotoSwipe).toHaveBeenCalledWith(
+      expect.objectContaining({
+        dataSource: [
+          {
+            src: "https://media.test/paint/source.jpg",
+            width: 1920,
+            height: 1080,
+            alt: "Cutlass - Akuma Paint",
+          },
+        ],
+      }),
+    );
+  });
+
+  it("does nothing for an image that has not loaded", async () => {
+    const { openImage } = useImageViewer();
+    await openImage(document.createElement("img"), "Cutlass - Akuma Paint");
+
+    expect(PhotoSwipe).not.toHaveBeenCalled();
   });
 
   it("saves the image under the item's name, and frees it only after the click", async () => {
