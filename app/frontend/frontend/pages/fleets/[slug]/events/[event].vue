@@ -823,8 +823,10 @@ const crumbs = computed<Crumb[]>(() => [
 }
 
 /* Darkened behind the way the status pill is: the top shadow is drawn for
-   text, not for a control. */
+   text, not for a control. The margin holds it 14px from the cover's corner,
+   level with the status pill, where the heading's actions would sit 10px in. */
 .event-detail__calendar {
+  margin: 4px 4px 0 0;
   backdrop-filter: blur(6px) brightness(0.45);
 }
 

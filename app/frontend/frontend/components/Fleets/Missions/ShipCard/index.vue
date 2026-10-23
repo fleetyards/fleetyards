@@ -192,7 +192,6 @@ const subtitle = computed(() => {
   <Panel
     class="mission-ship-panel"
     :bg-image="shipImage"
-    cover
     :bg-rounded="PanelRoundedEnum.TOP"
   >
     <template #default>
@@ -207,6 +206,7 @@ const subtitle = computed(() => {
       <PanelHeading
         :level="HeadingLevelEnum.H4"
         :shadow="PanelHeadingShadowEnum.TOP"
+        :class="{ 'ship-heading--placeholder': !hasShipImage }"
       >
         <template #default>
           <span class="ship-title-row">
@@ -319,6 +319,16 @@ const subtitle = computed(() => {
   width: 380px;
   min-width: 350px;
   flex-shrink: 0;
+}
+
+/*
+ * With a cover, Panel gives the image's strip its height and the rows start
+ * below it. Without one the head would keep its natural height and the rows
+ * would run through the placeholder art, so the head takes the strip itself.
+ */
+.ship-heading--placeholder {
+  min-height: var(--panel-image-height, 160px);
+  align-items: flex-start;
 }
 
 .ship-placeholder {

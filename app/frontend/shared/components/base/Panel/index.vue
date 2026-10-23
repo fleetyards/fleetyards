@@ -18,9 +18,6 @@ type Props = {
   animated?: boolean;
   bgImage?: string;
   bgRounded?: `${PanelRoundedEnum}`;
-  // Keeps the cover's strip without a picture, for a card that draws its own
-  // stand-in there.
-  cover?: boolean;
   fillHeight?: boolean;
   inset?: boolean;
   // The bottom cap carries it, as it does on a button and a select.
@@ -36,7 +33,6 @@ const props = withDefaults(defineProps<Props>(), {
   animated: false,
   bgImage: undefined,
   bgRounded: PanelRoundedEnum.ALL,
-  cover: false,
   fillHeight: false,
   inset: false,
   loading: false,
@@ -46,8 +42,6 @@ const props = withDefaults(defineProps<Props>(), {
   variant: PanelVariantsEnum.DEFAULT,
 });
 
-const hasCover = computed(() => props.cover || !!props.bgImage);
-
 const cssClasses = computed(() => ({
   [`panel--${props.variant}`]: true,
   [`panel--${props.tone}`]: props.tone !== PanelTonesEnum.NEUTRAL,
@@ -56,16 +50,16 @@ const cssClasses = computed(() => ({
   "panel--loading": props.loading,
   "panel--outer-spacing": props.outerSpacing,
   "panel--translucent": props.translucent,
-  "panel--has-cover": hasCover.value,
+  "panel--has-bg": !!props.bgImage,
 }));
 
 // The inner box only earns its place when it has a job: a row context for
 // `alignment`, a padding context for `inset`, or - the important one - a
-// containing block for the cover and its image, which must cover the default slot and
+// containing block for a background image, which must cover the default slot and
 // stop there. With the image parented to `.panel` it bled behind the footer, so a
 // card's collapsed detail panel wore the ship photo too.
 const hasInner = computed(
-  () => !!props.alignment || props.inset || hasCover.value,
+  () => !!props.alignment || props.inset || !!props.bgImage,
 );
 </script>
 
@@ -318,12 +312,12 @@ const hasInner = computed(
  * Overridable per card through --panel-image-height, which inherits, so a
  * consumer never has to reach into this component to change it.
  */
-.panel--has-cover {
+.panel--has-bg {
   display: flex;
   flex-direction: column;
 }
 
-.panel--has-cover > .panel__inner {
+.panel--has-bg > .panel__inner {
   min-height: var(--panel-image-height, 286px);
 }
 
@@ -337,7 +331,7 @@ const hasInner = computed(
  * Growing from the content's own height fills a stretched card without ever
  * shrinking below what is in it.
  */
-.panel--has-cover > .panel__inner {
+.panel--has-bg > .panel__inner {
   flex: 1 0 auto;
 }
 
