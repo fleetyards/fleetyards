@@ -337,3 +337,70 @@ describe("while the next set of images is loading", () => {
     expect(wrapper.find('[data-test="loader"]').exists()).toBe(false);
   });
 });
+
+describe("the collapsible views", () => {
+  const ALL_VIEWS: Partial<ModelMedia> = {
+    ...FLIGHT_VIEWS,
+    landedTopView: file("landed-top"),
+    angledRearView: file("angled-rear"),
+    bottomView: file("bottom"),
+    rearView: file("rear"),
+    starboardView: file("starboard"),
+  };
+
+  const mountCollapsible = (media: Partial<ModelMedia>) =>
+    mountWithDefaults<typeof FleetchartImages>(FleetchartImages, {
+      props: { model: model(media), collapsible: true },
+    });
+
+  const sources = (wrapper: Awaited<ReturnType<typeof mountCollapsible>>) =>
+    wrapper.findAll("img").map((img) => img.attributes("src"));
+
+  it("starts as the angled view alone, without the state switch", async () => {
+    const wrapper = await mountCollapsible(ALL_VIEWS);
+
+    expect(sources(wrapper)).toEqual(["https://cdn.test/angled?large"]);
+    expect(wrapper.find('[data-test="model-states"]').exists()).toBe(false);
+    expect(
+      wrapper
+        .find('[data-test="model-views-fold"]')
+        .attributes("aria-expanded"),
+    ).toBe("false");
+  });
+
+  it("opens every view and the state switch when the angled view is tapped", async () => {
+    const wrapper = await mountCollapsible(ALL_VIEWS);
+
+    await wrapper.find('[data-test="model-views-fold"]').trigger("click");
+
+    expect(sources(wrapper)).toHaveLength(8);
+    expect(wrapper.find('[data-test="model-states"]').exists()).toBe(true);
+    expect(
+      wrapper
+        .find('[data-test="model-views-fold"]')
+        .attributes("aria-expanded"),
+    ).toBe("true");
+  });
+
+  it("folds back on a second tap", async () => {
+    const wrapper = await mountCollapsible(ALL_VIEWS);
+    const fold = wrapper.find('[data-test="model-views-fold"]');
+
+    await fold.trigger("click");
+    await fold.trigger("click");
+
+    expect(sources(wrapper)).toEqual(["https://cdn.test/angled?large"]);
+  });
+
+  it("shows every view of a ship without an angled view", async () => {
+    const { angledView: _angled, ...withoutAngled } = FLIGHT_VIEWS;
+    const wrapper = await mountCollapsible(withoutAngled);
+
+    expect(wrapper.find('[data-test="model-views-fold"]').exists()).toBe(false);
+    expect(sources(wrapper)).toEqual([
+      "https://cdn.test/top?large",
+      "https://cdn.test/front?large",
+      "https://cdn.test/side?large",
+    ]);
+  });
+});

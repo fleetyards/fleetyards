@@ -65,7 +65,7 @@ import { LOW_POWER_HOLO_SIZE_LIMIT } from "@/shared/components/HoloViewer/limits
 
 // three.js and the viewer are most of a ship page's script. A desktop draws the
 // inline preview on every visit, so it starts fetching them straight away; a
-// phone only does once the 3D view is opened.
+// phone never draws one.
 const loadHoloViewer = () => import("@/shared/components/HoloViewer/index.vue");
 
 const HoloViewer = defineAsyncComponent(loadHoloViewer);
@@ -295,6 +295,10 @@ watch(
   },
 );
 
+// three.js still crashes phones, so they get the views instead of a 3D view --
+// even when a larger window or a `holoviewer` link left it open.
+const holoOpen = computed(() => holoviewerVisible.value && !mobile.value);
+
 const toggleHoloviewer = () => {
   modelsStore.toggleHoloviewer();
 };
@@ -388,14 +392,17 @@ const adiMap = computed(() => {
         <div class="col-12 col-lg-8 ship-detail-left-col">
           <div
             :class="{
-              'image-wrapper-holoviewer': holoviewerVisible,
+              'image-wrapper-holoviewer': holoOpen,
             }"
             class="image-wrapper"
           >
-            <div v-if="holoStates.length" class="image-toolbar">
+            <div
+              v-if="holoStates.length && (!mobile || adiMap)"
+              class="image-toolbar"
+            >
               <BtnGroup>
                 <Btn
-                  v-if="holoviewerVisible"
+                  v-if="holoOpen"
                   :to="{
                     name: 'ship-viewer',
                     params: {
@@ -406,12 +413,16 @@ const adiMap = computed(() => {
                 >
                   <i class="fa-light fa-external-link-alt" />
                 </Btn>
-                <Btn :active="holoviewerVisible" @click="toggleHoloviewer">
+                <Btn
+                  v-if="!mobile"
+                  :active="holoOpen"
+                  @click="toggleHoloviewer"
+                >
                   {{ t("labels.3dView") }}
                 </Btn>
 
                 <Btn
-                  v-if="holoviewerVisible && texturedHoloAvailable"
+                  v-if="holoOpen && texturedHoloAvailable"
                   :active="texturedHolo"
                   data-test="model-holo-textured"
                   @click="toggleTexturedHolo"
@@ -425,8 +436,9 @@ const adiMap = computed(() => {
                 </Btn>
 
                 <ViewInArBtn
+                  v-if="!mobile"
                   :model="model"
-                  :active="holoviewerVisible"
+                  :active="holoOpen"
                   :displayed-holo-url="holoModel?.path"
                   @quick-look="openingQuickLook"
                   @quick-look-end="closedQuickLook"
@@ -438,29 +450,9 @@ const adiMap = computed(() => {
                    here it offers every state the model has, so both switches
                    read the same -- one of them showing no selection at all
                    because the chosen state has no holo of its own is worse than
-                   a segment that only moves the dimensions.
-                   A phone has no inline preview, so there the switch waits for
-                   the holo to open and folds into a menu beside the 3D group. -->
-              <BtnDropdown
-                v-if="holoStates.length > 1 && mobile && holoviewerVisible"
-                data-test="model-holo-states-menu"
-              >
-                <template #label>
-                  <span>{{ t(`labels.model.state.${activeState}`) }}</span>
-                  <i class="fa-light fa-chevron-down" />
-                </template>
-                <Btn
-                  v-for="holoState in availableStates"
-                  :key="holoState"
-                  :active="activeState === holoState"
-                  :data-test="`model-holo-state-${holoState}`"
-                  @click="setModelState(holoState)"
-                >
-                  {{ t(`labels.model.state.${holoState}`) }}
-                </Btn>
-              </BtnDropdown>
+                   a segment that only moves the dimensions. -->
               <BtnGroup
-                v-else-if="holoStates.length > 1 && !mobile"
+                v-if="holoStates.length > 1 && !mobile"
                 segmented
                 data-test="model-holo-states"
               >
@@ -476,10 +468,7 @@ const adiMap = computed(() => {
               </BtnGroup>
             </div>
 
-            <HoloViewer
-              v-if="holoviewerVisible && holoModel"
-              :models="[holoModel]"
-            />
+            <HoloViewer v-if="holoOpen && holoModel" :models="[holoModel]" />
             <LazyImage v-else :src="storeImage" class="image" />
           </div>
           <div class="row production-status">
@@ -530,7 +519,7 @@ const adiMap = computed(() => {
         <div class="col-12 col-lg-4 ship-hero__side">
           <template v-if="inlinePreview && holoModel">
             <LazyImage
-              v-if="holoviewerVisible || quickLookOpen"
+              v-if="holoOpen || quickLookOpen"
               :src="storeImage"
               class="side-image"
             />
@@ -541,6 +530,13 @@ const adiMap = computed(() => {
               inline
             />
           </template>
+          <FleetchartImages
+            v-else-if="mobile"
+            :model="model"
+            :state="activeState"
+            collapsible
+            @update:state="setModelState"
+          />
           <ModelBaseMetrics :model="model" :state="activeState" />
           <OwnersList v-if="ownersVisible" :model="model" />
           <div class="page-actions page-actions-block">
@@ -641,8 +637,8 @@ const adiMap = computed(() => {
           </div>
         </div>
         <!-- Beside the hero once there is room for a third column, under it
-             before. -->
-        <div class="col-12 ship-hero__views">
+             before. A phone folds them into the side column instead. -->
+        <div v-if="!mobile" class="col-12 ship-hero__views">
           <FleetchartImages
             :model="model"
             :state="activeState"

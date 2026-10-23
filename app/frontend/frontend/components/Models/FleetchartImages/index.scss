@@ -57,3 +57,24 @@
     grid-template-columns: 1fr;
   }
 }
+
+.fleetchart-views__fold {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.fleetchart-views__fold-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9em;
+  color: darken($text-color, 20%);
+}

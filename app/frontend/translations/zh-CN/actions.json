@@ -351,7 +351,9 @@
       "model": {
         "gallery": "Gallery",
         "onSale": "On Sale: %{price}",
-        "store": "RSI Page"
+        "store": "RSI Page",
+        "showViews": "全部视图",
+        "hideViews": "收起视图"
       },
       "itemViews": {
         "sync": "同步视图"

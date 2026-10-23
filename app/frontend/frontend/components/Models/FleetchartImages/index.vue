@@ -24,10 +24,13 @@ import type { Model, MediaFile } from "@/services/fyApi";
 type Props = {
   model: Model;
   state?: ModelStateEnum;
+  // Starts as the angled view alone, which opens the rest when tapped.
+  collapsible?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   state: ModelStateEnum.FLIGHT,
+  collapsible: false,
 });
 
 const emit = defineEmits<{
@@ -111,6 +114,34 @@ const viewSets = computed(() =>
 
 const hasImages = computed(() => viewSets.value.length > 0);
 
+const expanded = ref(false);
+
+const frontAngled = computed(
+  () => viewSets.value.find((set) => set.key === "front")?.angled,
+);
+
+// A ship without an angled view has nothing to fold behind, so it shows them all.
+const foldable = computed(() => props.collapsible && !!frontAngled.value);
+
+const collapsed = computed(() => foldable.value && !expanded.value);
+
+const visibleSets = computed(() =>
+  collapsed.value
+    ? viewSets.value
+        .filter((set) => set.key === "front")
+        .map((set) => ({
+          ...set,
+          plan: undefined,
+          end: undefined,
+          profile: undefined,
+        }))
+    : viewSets.value,
+);
+
+const toggleExpanded = () => {
+  expanded.value = !expanded.value;
+};
+
 // The coloured views run to several megabytes each, so switching state leaves the
 // previous set on screen for a beat. Settled by URL rather than by a counter: the
 // <img> elements stay put across a switch, so each one reports the file it just
@@ -118,7 +149,7 @@ const hasImages = computed(() => viewSets.value.length > 0);
 const settledUrls = ref(new Set<string>());
 
 const currentUrls = computed(() =>
-  viewSets.value
+  visibleSets.value
     .flatMap((set) => [set.angled, set.plan, set.end, set.profile])
     .filter((url): url is string => Boolean(url)),
 );
@@ -143,6 +174,7 @@ watch(loading, (value) => {
 watch(
   () => props.model.id,
   () => {
+    expanded.value = false;
     firstSetShown.value = !loading.value;
   },
 );
@@ -241,7 +273,7 @@ onMounted(() => {
 <template>
   <div v-if="hasImages" class="fleetchart-views-wrapper">
     <BtnGroup
-      v-if="availableStates.length > 1"
+      v-if="availableStates.length > 1 && !collapsed"
       segmented
       class="fleetchart-views-toggle"
       data-test="model-states"
@@ -271,47 +303,75 @@ onMounted(() => {
         role="status"
         :aria-label="t('labels.loading')"
       />
-      <template v-for="set in viewSets" :key="set.key">
+      <template v-for="set in visibleSets" :key="set.key">
         <div class="fleetchart-views__cell">
+          <button
+            v-if="foldable && set.key === 'front'"
+            type="button"
+            class="fleetchart-views__fold"
+            :aria-expanded="expanded"
+            data-test="model-views-fold"
+            @click="toggleExpanded"
+          >
+            <img
+              :src="set.angled"
+              :width="(length > beam ? length : beam) * 1.2"
+              @load="settleImage"
+              @error="settleImage"
+            />
+            <span class="fleetchart-views__fold-label">
+              {{
+                expanded
+                  ? t("actions.model.hideViews")
+                  : t("actions.model.showViews")
+              }}
+              <i
+                class="fa-light"
+                :class="expanded ? 'fa-chevron-up' : 'fa-chevron-down'"
+              />
+            </span>
+          </button>
           <img
-            v-if="set.angled"
+            v-else-if="set.angled"
             :src="set.angled"
             :width="(length > beam ? length : beam) * 1.2"
             @load="settleImage"
             @error="settleImage"
           />
         </div>
-        <div class="fleetchart-views__cell">
-          <img
-            v-if="set.plan"
-            :src="set.plan"
-            :width="length"
-            @load="settleImage"
-            @error="settleImage"
-          />
-        </div>
-        <div class="fleetchart-views__cell" :class="{ small: mobile }">
-          <img
-            v-if="set.end"
-            :src="set.end"
-            :style="endStyle(set.key)"
-            @load="settleImage"
-            @error="settleImage"
-          />
-        </div>
-        <div class="fleetchart-views__cell">
-          <img
-            v-if="set.profile"
-            :ref="(el) => setProfileImg(set.key, el)"
-            :src="set.profile"
-            :width="length"
-            @load="
-              updateProfileHeights();
-              settleImage($event);
-            "
-            @error="settleImage"
-          />
-        </div>
+        <template v-if="!collapsed">
+          <div class="fleetchart-views__cell">
+            <img
+              v-if="set.plan"
+              :src="set.plan"
+              :width="length"
+              @load="settleImage"
+              @error="settleImage"
+            />
+          </div>
+          <div class="fleetchart-views__cell" :class="{ small: mobile }">
+            <img
+              v-if="set.end"
+              :src="set.end"
+              :style="endStyle(set.key)"
+              @load="settleImage"
+              @error="settleImage"
+            />
+          </div>
+          <div class="fleetchart-views__cell">
+            <img
+              v-if="set.profile"
+              :ref="(el) => setProfileImg(set.key, el)"
+              :src="set.profile"
+              :width="length"
+              @load="
+                updateProfileHeights();
+                settleImage($event);
+              "
+              @error="settleImage"
+            />
+          </div>
+        </template>
       </template>
     </div>
   </div>
