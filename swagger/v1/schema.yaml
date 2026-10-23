@@ -28461,6 +28461,8 @@ components:
           type: string
         model:
           "$ref": "#/components/schemas/FleetEventSignupVehicleModel"
+        activeLoadout:
+          "$ref": "#/components/schemas/VehicleLoadoutMinimal"
       title: FleetEventSignupVehicle
     FleetEventSignupVehicleModel:
       type: object
@@ -28486,6 +28488,8 @@ components:
           - 'null'
         cargo:
           type: integer
+        image:
+          "$ref": "#/components/schemas/MediaFile"
         positionCount:
           type: integer
       title: FleetEventSignupVehicleModel

@@ -21,7 +21,10 @@ import { VehicleLoadoutTabsEnum } from "@/frontend/components/Vehicles/LoadoutMo
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useLoadoutSlotLabel } from "@/frontend/composables/useLoadoutSlotLabel";
-import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
+import {
+  type LoadoutViewVehicle,
+  useVehicleModals,
+} from "@/frontend/composables/useVehicleModals";
 import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
 import { useLoadoutEditor } from "@/frontend/composables/useLoadoutEditor";
 import { useLoadoutModules } from "@/frontend/composables/useLoadoutModules";
@@ -37,12 +40,11 @@ import {
   type Vehicle,
   type VehicleLoadout,
   type VehicleLoadoutMinimal,
-  type VehiclePublic,
   useVehicleLoadoutSlots,
 } from "@/services/fyApi";
 
 type Props = {
-  vehicle: Vehicle | VehiclePublic;
+  vehicle: Vehicle | LoadoutViewVehicle;
   loadout?: VehicleLoadout | VehicleLoadoutMinimal;
   // The owner, who gets a way into the editor from here.
   editable?: boolean;
@@ -331,7 +333,7 @@ const { loadoutEditorAvailable } = useLoadoutEditor();
 
 // The owner's way into the editor, where the editor is available.
 const editVisible = computed(
-  () => props.editable && loadoutEditorAvailable(props.vehicle),
+  () => props.editable && loadoutEditorAvailable(props.vehicle as Vehicle),
 );
 
 const comlink = useComlink();
@@ -351,7 +353,7 @@ const loadoutPage = computed(() =>
 
 const edit = () => {
   comlink.emit("close-modal");
-  openLoadoutModal(props.vehicle, {
+  openLoadoutModal(props.vehicle as Vehicle, {
     editable: true,
     loadoutId: props.loadout?.id,
     tab: VehicleLoadoutTabsEnum.MODULES,

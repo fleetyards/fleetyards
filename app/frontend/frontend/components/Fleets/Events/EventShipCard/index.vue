@@ -8,6 +8,8 @@ export default {
 import DuotoneGlyph from "@/shared/components/DuotoneGlyph/index.vue";
 import { SHIP_GLYPH } from "@/shared/glyphs/ships";
 import Markdown from "@/shared/components/Markdown/index.vue";
+import LoadoutMarker from "@/shared/components/LoadoutMarker/index.vue";
+import { useQueryClient } from "@tanstack/vue-query";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import { PanelHeadingShadowEnum } from "@/shared/components/base/Panel/Heading/types";
@@ -28,8 +30,15 @@ import {
   type FleetEventShip,
   type FleetEventTeam,
   type FleetEventSlot,
+  type FleetEventSignupVehicle,
+  getModelQueryKey,
+  model as fetchModel,
   useDestroyFleetEventShip,
 } from "@/services/fyApi";
+import {
+  type LoadoutViewVehicle,
+  useVehicleModals,
+} from "@/frontend/composables/useVehicleModals";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -100,8 +109,51 @@ const removeShip = () => {
   });
 };
 
+// A spot that names no model takes whatever its crew brings, so once someone
+// signs up with a ship the card shows that ship instead of the placeholder.
+const broughtVehicle = computed<FleetEventSignupVehicle | null>(() => {
+  if (props.ship.model) return null;
+
+  for (const slot of props.ship.slots ?? []) {
+    const vehicle = slot.signups?.find(
+      (signup) => signup.vehicle?.model,
+    )?.vehicle;
+    if (vehicle) return vehicle;
+  }
+
+  return null;
+});
+
+const broughtModel = computed(() => broughtVehicle.value?.model ?? null);
+
+const queryClient = useQueryClient();
+const { openLoadoutView } = useVehicleModals();
+
+const openBroughtLoadout = async () => {
+  const vehicle = broughtVehicle.value;
+  if (!vehicle?.id || !vehicle.model?.slug || !vehicle.activeLoadout) return;
+
+  const slug = vehicle.model.slug;
+  const model = await queryClient.fetchQuery({
+    queryKey: getModelQueryKey(slug),
+    queryFn: () => fetchModel(slug),
+  });
+
+  const loadoutVehicle: LoadoutViewVehicle = {
+    id: vehicle.id,
+    name: vehicle.name,
+    image: vehicle.model.image,
+    model,
+    activeLoadout: vehicle.activeLoadout,
+  };
+
+  openLoadoutView(loadoutVehicle);
+};
+
+const coverModel = computed(() => props.ship.model ?? broughtModel.value);
+
 const shipImage = computed<string | undefined>(() => {
-  const img = props.ship.model?.image as
+  const img = coverModel.value?.image as
     { mediumUrl?: string; smallUrl?: string } | undefined;
   return img?.mediumUrl || img?.smallUrl;
 });
@@ -162,15 +214,19 @@ const filterStrip = computed<StatItem[]>(() => {
   return items;
 });
 
-const headerTitle = computed(
-  () => props.ship.displayTitle ?? props.ship.title ?? "—",
-);
+const headerTitle = computed(() => {
+  if (broughtModel.value?.name)
+    return props.ship.title || broughtModel.value.name;
+
+  return props.ship.displayTitle ?? props.ship.title ?? "—";
+});
 
 const allowedModels = computed(() => props.ship.allowedModels ?? []);
 
 const subtitle = computed(() => {
-  if (props.ship.model?.name && headerTitle.value !== props.ship.model.name) {
-    return props.ship.model.name;
+  const modelName = coverModel.value?.name;
+  if (modelName && headerTitle.value !== modelName) {
+    return modelName;
   }
 
   // A listed spot has no single model to name, so the subtitle names the ships it
@@ -196,6 +252,12 @@ const subtitle = computed(() => {
       <div v-if="!hasShipImage" class="ship-placeholder" aria-hidden="true">
         <DuotoneGlyph :glyph="SHIP_GLYPH" class="ship-placeholder-ship" />
         <i class="fa-solid fa-question ship-placeholder-question" />
+      </div>
+      <div v-if="broughtVehicle?.activeLoadout" class="ship-cover-overlay">
+        <LoadoutMarker
+          :loadout="broughtVehicle.activeLoadout"
+          @open="openBroughtLoadout"
+        />
       </div>
       <!-- Same gradient the event card's title gets. Unconditional: without a
            cover the heading still sits over the placeholder's art, and a listed
@@ -387,6 +449,23 @@ const subtitle = computed(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* A band along the cover's bottom edge rather than the whole cover: the marker
+   centres itself on its container, and a ship's name can run to two lines here,
+   so the cover's middle is where the second one lands. */
+.ship-cover-overlay {
+  position: absolute;
+  top: calc(var(--panel-image-height, 160px) - 72px);
+  left: 0;
+  right: 0;
+  height: 72px;
+  pointer-events: none;
+  z-index: 1;
+
+  > * {
+    pointer-events: auto;
+  }
 }
 
 .ship-title-row {

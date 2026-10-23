@@ -32,6 +32,7 @@ if fleet_event_signup.vehicle.present?
         json.size fleet_event_signup.vehicle.model.size
         json.crew fleet_event_signup.vehicle.model.crew
         json.cargo fleet_event_signup.vehicle.model.cargo
+        json.partial! "api/v1/shared/ship_model_image", model: fleet_event_signup.vehicle.model
         # Resolved once per render: answering which build is served takes
         # several queries, and this partial renders once per signup.
         @positions_build ||= ScData::Source.current.served_for(HardpointBuild)
@@ -39,6 +40,11 @@ if fleet_event_signup.vehicle.present?
       end
     else
       json.model nil
+    end
+    # Everyone on the event reads this, so only a loadout its owner shares.
+    active_loadout = fleet_event_signup.vehicle.vehicle_loadouts.find { |loadout| loadout.active? && loadout.public? }
+    json.active_loadout do
+      json.partial! "api/v1/vehicle_loadouts/base", vehicle_loadout: active_loadout if active_loadout.present?
     end
   end
 else

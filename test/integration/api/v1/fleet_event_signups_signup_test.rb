@@ -129,6 +129,36 @@ class Api::V1::FleetEventSignupsSignupTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PATCH /fleet-event-slots/:id/signup names the ship's picture and its shared loadout" do
+    membership = @fleet.fleet_memberships.find_by(user: @member)
+    create(:fleet_event_signup, fleet_event_slot: @fleet_event_slot, fleet_membership: membership, status: "pending")
+    model = create(:model, :with_store_image, production_status: "flight-ready")
+    loadout = create(:vehicle_loadout, :active, public: true, vehicle: create(:vehicle, user: @member, model:))
+    sign_in @member
+
+    assert_api_response :patch, 200,
+      path_params: {id: @fleet_event_slot.id},
+      body: {status: "confirmed", vehicleId: loadout.vehicle_id} do
+      vehicle = parsed_body["vehicle"]
+
+      assert_predicate vehicle.dig("model", "image", "url"), :present?
+      assert_equal loadout.id, vehicle.dig("activeLoadout", "id")
+    end
+  end
+
+  test "PATCH /fleet-event-slots/:id/signup keeps a private loadout to its owner" do
+    membership = @fleet.fleet_memberships.find_by(user: @member)
+    create(:fleet_event_signup, fleet_event_slot: @fleet_event_slot, fleet_membership: membership, status: "pending")
+    loadout = create(:vehicle_loadout, :active, public: false, vehicle: create(:vehicle, user: @member, model: create(:model, production_status: "flight-ready")))
+    sign_in @member
+
+    assert_api_response :patch, 200,
+      path_params: {id: @fleet_event_slot.id},
+      body: {status: "confirmed", vehicleId: loadout.vehicle_id} do
+      assert_nil parsed_body["vehicle"]["activeLoadout"]
+    end
+  end
+
   test "PATCH /fleet-event-slots/:id/signup with OAuth bearer token" do
     membership = @fleet.fleet_memberships.find_by(user: @member)
     create(:fleet_event_signup, fleet_event_slot: @fleet_event_slot, fleet_membership: membership, status: "pending")
