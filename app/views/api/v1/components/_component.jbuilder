@@ -8,9 +8,12 @@
 # Every component price is in it because the component's own ports render the
 # prices of the components they hold. This one's own key stays alongside: it
 # loads `item_prices`, which `_base` then reads for both directions at once.
+# A paint without an upload shows its matched paint's store image, which
+# changes without touching the component.
 json.cache! [
   "v8", I18n.locale, component, ::ScData::Source.current, component.item_prices_cache_key,
-  ItemPrice.cache_key_for("Component"), Manufacturer.artwork_version
+  ItemPrice.cache_key_for("Component"), Manufacturer.artwork_version,
+  (ModelPaint.store_image_cache_key if component.category == "paints")
 ] do
   json.partial!("api/v1/components/base", component:)
 end

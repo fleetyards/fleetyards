@@ -323,6 +323,15 @@ class Component < ApplicationRecord
   has_one_attached :store_image
   ransack_attachment :store_image
 
+  # The game files carry no artwork for a paint, but the store's picture of the
+  # paint it was matched to shows the same livery. A curated upload still wins.
+  def store_image_record
+    return self if store_image.attached?
+    return unless category == "paints"
+
+    model_paints.find { |paint| paint.store_image.attached? }
+  end
+
   # jsonb, not a YAML string: every metric a component has lives in here,
   # and as text none of it could be filtered, sorted or indexed on. The
   # type keeps indifferent access, which the readers already assume.
