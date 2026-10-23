@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # Stage 1: Base image with system dependencies
-ARG RUBY_VERSION=4.0.2
+ARG RUBY_VERSION=4.0.9
 ARG BASE_IMAGE_REGISTRY=public.ecr.aws/docker/library
 FROM ${BASE_IMAGE_REGISTRY}/ruby:${RUBY_VERSION}-slim AS base
 
