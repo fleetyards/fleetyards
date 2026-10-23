@@ -219,6 +219,21 @@ class Api::V1::HangarPlanReportsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET resources lists what else melts with a ship's pledge" do
+    @owned.update_columns(rsi_pledge_id: "500", rsi_pledge_item_count: 4)
+    carrack = create(:vehicle, user: @user, model: @carrack, rsi_pledge_id: "500")
+    create(:vehicle, user: @user, model: @carrack, rsi_pledge_id: "501")
+    create(:hangar_pledge_item, user: @user, rsi_pledge_id: "500", name: "Carrack - Ghoul Paint", pledge_name: "Explorer Pack")
+    create(:hangar_pledge_item, user: @user, rsi_pledge_id: "501", name: "Cutlass - Akuma Paint")
+
+    assert_api_response :get, 200, api_path: "/hangar/plans/{id}/resources", path_params: {id: @plan.id} do
+      owned = parsed_body["vehicles"].find { |entry| entry["id"] == @owned.id }
+      assert_equal "Explorer Pack", owned["pledgeName"]
+      assert_equal [carrack.id], owned["pledgeShips"].pluck("id")
+      assert_equal [["Carrack - Ghoul Paint", "paint", 1]], owned["pledgeItems"].map { |item| item.values_at("name", "kind", "quantity") }
+    end
+  end
+
   test "GET resources lists the store's priced ships, cheapest first" do
     create(:model, name: "Unpriced", pledge_price: nil)
     create(:model, name: "Hidden", pledge_price: 50, hidden: true)

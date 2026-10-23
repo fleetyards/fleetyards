@@ -28,10 +28,20 @@ const loading = ref(false);
 
 const resources = ref<HangarPlanResources>({
   vehicles: [
-    { id: "vehicle-cutlass", model: cutlass },
-    { id: "vehicle-aurora", model: aurora },
-    { id: "vehicle-hammerhead", model: hammerhead },
-    { id: "vehicle-freelancer", model: freelancer },
+    { id: "vehicle-cutlass", model: cutlass, pledgeShips: [], pledgeItems: [] },
+    { id: "vehicle-aurora", model: aurora, pledgeShips: [], pledgeItems: [] },
+    {
+      id: "vehicle-hammerhead",
+      model: hammerhead,
+      pledgeShips: [],
+      pledgeItems: [],
+    },
+    {
+      id: "vehicle-freelancer",
+      model: freelancer,
+      pledgeShips: [],
+      pledgeItems: [],
+    },
   ],
   upgrades: [
     {
@@ -241,7 +251,12 @@ describe("Hangar/Planner/RouteModal", () => {
   });
 
   it("puts a hangar ship that is the target itself on top", async () => {
-    resources.value.vehicles.push({ id: "vehicle-carrack", model: carrack });
+    resources.value.vehicles.push({
+      id: "vehicle-carrack",
+      model: carrack,
+      pledgeShips: [],
+      pledgeItems: [],
+    });
     const wrapper = await mount();
 
     const titles = rows(wrapper, "sourceVehicleId").map((row) =>

@@ -10,6 +10,20 @@ json.vehicles @resources.vehicles do |entry|
   json.meltable entry.vehicle.rsi_pledge_meltable
   json.melt_value entry.vehicle.rsi_pledge_melt_value&.to_f
   json.pledge_item_count entry.vehicle.rsi_pledge_item_count
+  json.pledge_name entry.pledge_name
+  json.pledge_ships entry.pledge_ships do |ship|
+    json.id ship.id
+    json.name ship.name
+    json.model do
+      json.partial! "api/v1/hangar_plans/model", model: ship.model
+    end
+  end
+  json.pledge_items entry.pledge_items do |item|
+    json.id item.id
+    json.name item.name
+    json.kind item.kind
+    json.quantity item.quantity
+  end
 end
 
 json.upgrades @resources.upgrades do |entry|

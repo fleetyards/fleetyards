@@ -34124,6 +34124,42 @@ components:
       - vehicleId
       - model
       title: HangarPlanNewVehicle
+    HangarPlanPledgeItem:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        kind:
+          "$ref": "#/components/schemas/HangarPledgeItemKindEnum"
+        quantity:
+          type: integer
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - kind
+      - quantity
+      title: HangarPlanPledgeItem
+    HangarPlanPledgeShip:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        model:
+          "$ref": "#/components/schemas/HangarPlanModel"
+      additionalProperties: false
+      required:
+      - id
+      - model
+      title: HangarPlanPledgeShip
     HangarPlanResources:
       type: object
       properties:
@@ -34641,10 +34677,28 @@ components:
           - 'null'
           description: How many items the pledge holds; melting the ship melts them
             all
+        pledgeName:
+          type:
+          - string
+          - 'null'
+          description: The name of the pledge the ship came in, as RSI lists it
+        pledgeShips:
+          type: array
+          description: The other ships of the same pledge, which melt with it
+          items:
+            "$ref": "#/components/schemas/HangarPlanPledgeShip"
+        pledgeItems:
+          type: array
+          description: The paints, flair, gear and upgrades of the same pledge the
+            hangar sync read, which melt with it
+          items:
+            "$ref": "#/components/schemas/HangarPlanPledgeItem"
       additionalProperties: false
       required:
       - id
       - model
+      - pledgeShips
+      - pledgeItems
       title: HangarPlanVehicleResource
     HangarPlanVehicleStatus:
       type: object
