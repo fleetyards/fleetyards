@@ -9,6 +9,13 @@ import {
 import type { VehicleEditTabsEnum } from "@/frontend/components/Vehicles/EditModal/types";
 import type { VehicleLoadoutTabsEnum } from "@/frontend/components/Vehicles/LoadoutModal/types";
 
+// What a visitor's loadout view reads off the ship, so a ship known only by
+// reference, as a fleet event signup knows it, can open one too.
+export type LoadoutViewVehicle = Pick<
+  VehiclePublic,
+  "id" | "name" | "image" | "model" | "activeLoadout"
+>;
+
 export const useVehicleModals = () => {
   const comlink = useComlink();
 
@@ -61,7 +68,7 @@ export const useVehicleModals = () => {
   // A loadout to look at rather than edit: the active fleetyards loadout unless
   // another is named. A linked build is read on its own site.
   const openLoadoutView = (
-    vehicle: Vehicle | VehiclePublic,
+    vehicle: Vehicle | LoadoutViewVehicle,
     options: {
       editable?: boolean;
       loadout?: VehicleLoadout | VehicleLoadoutMinimal;
