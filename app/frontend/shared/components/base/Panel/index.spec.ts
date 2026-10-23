@@ -19,4 +19,18 @@ describe("BasePanel", () => {
 
     expect(wrapper.classes()).not.toContain("panel--loading");
   });
+
+  it("keeps the cover's strip without a picture", () => {
+    const wrapper = mount(Component, { props: { cover: true } });
+
+    expect(wrapper.classes()).toContain("panel--has-cover");
+    expect(wrapper.find(".panel__inner").exists()).toBe(true);
+  });
+
+  it("has no cover without a picture or the prop", () => {
+    const wrapper = mount(Component);
+
+    expect(wrapper.classes()).not.toContain("panel--has-cover");
+    expect(wrapper.find(".panel__inner").exists()).toBe(false);
+  });
 });
