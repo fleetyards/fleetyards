@@ -90,5 +90,5 @@ $views-max-height: 240px;
   align-items: center;
   gap: 6px;
   font-size: 0.9em;
-  color: darken($text-color, 20%);
+  color: var(--color-text-dim);
 }
