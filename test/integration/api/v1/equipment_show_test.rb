@@ -99,6 +99,15 @@ class Api::V1::EquipmentShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /equipment/{slug} carries the store image in media too" do
+    @rifle.store_image.attach(io: file_fixture("test.png").open, filename: "store.png", content_type: "image/png")
+
+    assert_api_response :get, 200, params: {slug: @rifle.slug} do
+      assert_equal "store.png", parsed_body.dig("storeImage", "name")
+      assert_equal "store.png", parsed_body.dig("media", "storeImage", "name")
+    end
+  end
+
   test "GET /equipment/{slug} 404s for a slug nobody has" do
     assert_api_response :get, 404, params: {slug: "no-such-equipment-slug"}
   end

@@ -32,11 +32,7 @@ end
 
 json.media({})
 json.media do
-  json.store_image do
-    json.partial! "api/v1/shared/file", record: component, attr: :store_image
-  end
-
-  json.partial! "api/v1/shared/item_views", record: component if local_assigns.fetch(:extended, false)
+  json.partial! "api/v1/shared/item_media", record: component, extended: local_assigns.fetch(:extended, false)
 end
 
 json.size component.size

@@ -56,9 +56,10 @@ json.store_image do
   json.partial! "api/v1/shared/file", record: equipment, attr: :store_image
 end
 
+# The top-level `store_image` above predates `media`, which a list leaves out.
 if local_assigns.fetch(:extended, false)
   json.media do
-    json.partial! "api/v1/shared/item_views", record: equipment
+    json.partial! "api/v1/shared/item_media", record: equipment, extended: true
   end
 end
 
