@@ -31,6 +31,7 @@ import {
   FleetEventStatusEnum,
   FleetEventVisibilityEnum,
   MissionCategoryEnum,
+  VehicleLoadoutKindEnum,
   useModel as useModelQuery,
 } from "@/services/fyApi";
 
@@ -265,6 +266,51 @@ const listedShip = ship({
   ],
 });
 
+/*
+ * A spot that names no model, flown in the ship its pilot brought: the card
+ * takes that ship's cover and name, and its shared loadout opens from the marker.
+ */
+const broughtShip = computed<FleetEventShip>(() =>
+  ship({
+    id: "ship-5",
+    title: undefined,
+    description: undefined,
+    slots: [
+      slot("Pilot", {
+        positionType: "Command",
+        signups: [
+          signup("ThalosVex", FleetEventSignupStatusEnum.CONFIRMED, {
+            vehicle: shipModel.value && {
+              id: "vehicle-1",
+              name: "Wandering Star",
+              model: {
+                id: shipModel.value.id,
+                name: shipModel.value.name,
+                slug: shipModel.value.slug,
+                image:
+                  shipModel.value.media?.storeImage ??
+                  shipModel.value.media?.angledView,
+              },
+              activeLoadout: {
+                id: "loadout-1",
+                name: "Bounty run",
+                active: true,
+                public: true,
+                kind: VehicleLoadoutKindEnum.FLEETYARDS,
+                items: [],
+                powerPresets: [],
+                createdAt: NOW,
+                updatedAt: NOW,
+              },
+            },
+          }),
+        ],
+      }),
+      slot("Turret — dorsal", { positionType: "Gunner" }),
+    ],
+  }),
+);
+
 const populatedTeam = computed<FleetEventTeam>(() => ({
   ...team,
   description: "Two Connies on the Hull-C's flanks, one scanning ahead.",
@@ -453,6 +499,14 @@ const unassigned = [
       :event="openEvent"
       :team="team"
       :ship="listedShip"
+      :current-user-id="CURRENT_USER"
+      signups-open
+    />
+    <EventShipCard
+      :fleet="fleet"
+      :event="openEvent"
+      :team="team"
+      :ship="broughtShip"
       :current-user-id="CURRENT_USER"
       signups-open
     />
