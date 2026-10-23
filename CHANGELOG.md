@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.22.0](https://github.com/fleetyards/fleetyards/compare/v9.21.0...v9.22.0) (2026-10-23)
+
+
+### Features
+
+* **buybacks:** read how many buy-backs store credit may pay for ([#5910](https://github.com/fleetyards/fleetyards/issues/5910)) ([81f6722](https://github.com/fleetyards/fleetyards/commit/81f6722006c50f5c96f3056eb04a9a1f77b0996d))
+* **cargo:** hand-set the largest crate a cargo hold's door takes ([#5922](https://github.com/fleetyards/fleetyards/issues/5922)) ([43e130b](https://github.com/fleetyards/fleetyards/commit/43e130b51ab00b1a82e0f5ee3c90fb5ddfe440d7))
+* **hangar:** hangar planner with slots, routes, melts and costs ([#5866](https://github.com/fleetyards/fleetyards/issues/5866)) ([8f0182e](https://github.com/fleetyards/fleetyards/commit/8f0182e10800ed0d356005d2d13f4b4be8585ce2))
+* **hangar:** keep each synced ship's pledge value and meltable flag ([#5907](https://github.com/fleetyards/fleetyards/issues/5907)) ([18e8c69](https://github.com/fleetyards/fleetyards/commit/18e8c69885373db3edb9ad70f9de9bbb626fd88f))
+* **hardpoints:** file parts by role, put salvage figures on their parts, and compare loadouts by role ([#5924](https://github.com/fleetyards/fleetyards/issues/5924)) ([ca5df02](https://github.com/fleetyards/fleetyards/commit/ca5df02be8f4d862688906546384d6ddc9bcab53))
+* **models:** our own vocabulary of ship foci ([#5897](https://github.com/fleetyards/fleetyards/issues/5897)) ([df55d7e](https://github.com/fleetyards/fleetyards/commit/df55d7e05d9f3dc8aa21f8045f4b0e1f4f2e4b61))
+* **models:** report focus wording the loaders cannot place ([#5906](https://github.com/fleetyards/fleetyards/issues/5906)) ([c7665b5](https://github.com/fleetyards/fleetyards/commit/c7665b54c88f44c4492c7d772fb1c9ca1098b487))
+* **plaque:** plaques for wishlist ships; no vehicle page for loaners ([#5917](https://github.com/fleetyards/fleetyards/issues/5917)) ([5a7e457](https://github.com/fleetyards/fleetyards/commit/5a7e4576f88dc26a04ce6401756357531b6e4f2e))
+* **plaque:** print a plaque in English unless it is translated ([#5912](https://github.com/fleetyards/fleetyards/issues/5912)) ([a5445da](https://github.com/fleetyards/fleetyards/commit/a5445daa8fe1c332d562d3a358551e677c8a8ba5))
+* **tools:** dedication plaque tool for every ship ([#5903](https://github.com/fleetyards/fleetyards/issues/5903)) ([e07a089](https://github.com/fleetyards/fleetyards/commit/e07a0899ddcaf5d6be5a1e32fd7a209dc4afa55f))
+
+
+### Bug Fixes
+
+* **contracts:** report a title whose slug is taken instead of a 500 ([#5916](https://github.com/fleetyards/fleetyards/issues/5916)) ([910be16](https://github.com/fleetyards/fleetyards/commit/910be162e27ffafff3eb538a62772b0eeae5255b))
+* **db:** give the plaque locale migration a version of its own ([55e2c2f](https://github.com/fleetyards/fleetyards/commit/55e2c2fb60140b375c21f83c954db0d889f43ded))
+* **discord:** ask for Create Events and say when the bot lacks a permission ([#5919](https://github.com/fleetyards/fleetyards/issues/5919)) ([1c6b3a5](https://github.com/fleetyards/fleetyards/commit/1c6b3a5c3c62be793b67e531723e72e28d60b859))
+* **fleet-events:** one active signup per member on one-off events, and Discord RSVP races ([#5918](https://github.com/fleetyards/fleetyards/issues/5918)) ([17f02d0](https://github.com/fleetyards/fleetyards/commit/17f02d07cfeb4d2dda4de84fccb72f890373aba0))
+* **fleet-events:** validate the slot and vehicle a signup points at, and settle races in the database ([#5913](https://github.com/fleetyards/fleetyards/issues/5913)) ([92bc89c](https://github.com/fleetyards/fleetyards/commit/92bc89c11e9f5b24a38527ed0fac568d920597cf))
+* **fleets:** notify signed-up members when their event moves on ([#5920](https://github.com/fleetyards/fleetyards/issues/5920)) ([4fc4b3e](https://github.com/fleetyards/fleetyards/commit/4fc4b3eef469ad63ed439c85d9d59547fc86e1c5))
+* **home:** replace landing page scroll snapping with a smooth settle on desktop ([#5902](https://github.com/fleetyards/fleetyards/issues/5902)) ([165e198](https://github.com/fleetyards/fleetyards/commit/165e198fc2fa1d233ccbfa13d715c452fea7fd35))
+* **models:** follow the ship matrix's current focus wording ([#5909](https://github.com/fleetyards/fleetyards/issues/5909)) ([045fbe4](https://github.com/fleetyards/fleetyards/commit/045fbe4282bf4add4c122dafd2b453e6a2436f06))
+* **sc-data:** show and count the cargo grids in salvage filler stations ([#5923](https://github.com/fleetyards/fleetyards/issues/5923)) ([1bf1ed5](https://github.com/fleetyards/fleetyards/commit/1bf1ed5fac8930934caba8504822497ee1a570d4))
+
+
+### Chores
+
+* **deps-dev:** bump @tanstack/vue-query-devtools from 6.3.3 to 6.3.4 ([#5899](https://github.com/fleetyards/fleetyards/issues/5899)) ([2cf1dbf](https://github.com/fleetyards/fleetyards/commit/2cf1dbfa74d5355883f0b239f062ce11793ba0b5))
+* **deps-dev:** bump knip from 6.41.0 to 6.42.0 ([#5898](https://github.com/fleetyards/fleetyards/issues/5898)) ([d14d069](https://github.com/fleetyards/fleetyards/commit/d14d0693973d0349aa1b0da5b21449562cd80769))
+
 ## [9.21.0](https://github.com/fleetyards/fleetyards/compare/v9.20.0...v9.21.0) (2026-10-21)
 
 
