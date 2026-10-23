@@ -48,7 +48,8 @@
 
 @media (max-width: $desktop-breakpoint) {
   .fleetchart-views-toggle {
-    position: static;
+    position: relative;
+    top: auto;
     margin: 20px 0 10px;
   }
 
