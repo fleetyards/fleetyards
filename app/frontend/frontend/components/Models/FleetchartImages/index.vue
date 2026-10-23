@@ -125,10 +125,6 @@ const foldable = computed(() => props.collapsible && !!frontAngled.value);
 
 const collapsed = computed(() => foldable.value && !expanded.value);
 
-const toggleExpanded = () => {
-  expanded.value = !expanded.value;
-};
-
 // The coloured views run to several megabytes each, so switching state leaves the
 // previous set on screen for a beat. Settled by URL rather than by a counter: the
 // <img> elements stay put across a switch, so each one reports the file it just
@@ -173,6 +169,12 @@ watch(
 );
 
 const switching = computed(() => firstSetShown.value && loading.value);
+
+// Unfolding brings in views that were never shown, a first load like any other.
+const toggleExpanded = () => {
+  expanded.value = !expanded.value;
+  firstSetShown.value = !loading.value;
+};
 
 // An image that fails settles too, or the loader would sit over a view that is
 // never going to arrive.

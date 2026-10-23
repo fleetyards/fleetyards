@@ -382,6 +382,20 @@ describe("the collapsible views", () => {
     ).toBe("true");
   });
 
+  it("unfolds without dimming the angled view under a loader", async () => {
+    const wrapper = await mountCollapsible(ALL_VIEWS);
+    const angled = wrapper.find("img");
+
+    Object.defineProperty(angled.element, "complete", {
+      value: true,
+      configurable: true,
+    });
+    await angled.trigger("load");
+    await wrapper.find('[data-test="model-views-fold"]').trigger("click");
+
+    expect(wrapper.find(".fleetchart-views--loading").exists()).toBe(false);
+  });
+
   it("folds back on a second tap", async () => {
     const wrapper = await mountCollapsible(ALL_VIEWS);
     const fold = wrapper.find('[data-test="model-views-fold"]');
