@@ -582,7 +582,7 @@ class UserTest < ActiveSupport::TestCase
       @user = create(:user)
     end
 
-    %w[guilded homepage discord twitch youtube].each do |field|
+    %w[homepage discord twitch youtube].each do |field|
       test "strips protocol from #{field} url" do
         @user.update(field => "https://foo.bar")
         @user.reload

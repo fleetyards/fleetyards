@@ -8,7 +8,6 @@ json.ts fleet.ts
 json.discord fleet.discord
 json.youtube fleet.youtube
 json.twitch fleet.twitch
-json.guilded fleet.guilded
 json.homepage fleet.homepage
 json.headquarters fleet.headquarters
 json.partial! "api/v1/locations/linked", key: :headquarters_location, location: fleet.headquarters_location

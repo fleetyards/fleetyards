@@ -35,8 +35,7 @@ module V1
             discord: {type: [:string, :null]},
             ts: {type: [:string, :null]},
             youtube: {type: [:string, :null]},
-            twitch: {type: [:string, :null]},
-            guilded: {type: [:string, :null]}
+            twitch: {type: [:string, :null]}
           },
           additionalProperties: false
         })

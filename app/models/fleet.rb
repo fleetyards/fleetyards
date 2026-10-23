@@ -420,7 +420,7 @@ class Fleet < ApplicationRecord
   end
 
   def update_urls(force: false)
-    %i[discord twitch youtube homepage guilded].each do |field|
+    %i[discord twitch youtube homepage].each do |field|
       send(:"#{field}=", ensure_valid_url(self, field, force:))
     end
 

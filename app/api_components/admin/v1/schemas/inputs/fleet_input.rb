@@ -16,7 +16,6 @@ module Admin
               publicFleet: {type: :boolean},
               publicFleetStats: {type: :boolean},
               discord: {type: :string},
-              guilded: {type: :string},
               homepage: {type: :string},
               headquarters: {type: [:string, :null]},
               headquartersLocationId: {type: [:string, :null], format: :uuid},

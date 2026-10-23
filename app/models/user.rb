@@ -277,7 +277,7 @@ class User < ApplicationRecord
   def self.ransackable_attributes(auth_object = nil)
     [
       "confirmed_at", "created_at", "current_sign_in_at", "discord", "display_name", "email",
-      "guilded", "hangar_updated_at", "homepage", "last_active_at", "last_sign_in_at", "locale",
+      "hangar_updated_at", "homepage", "last_active_at", "last_sign_in_at", "locale",
       "id", "rsi_handle", "twitch", "updated_at", "username", "youtube",
       "search"
     ]
@@ -405,7 +405,7 @@ class User < ApplicationRecord
   end
 
   def update_urls(force: false)
-    %i[discord twitch youtube homepage guilded].each do |field|
+    %i[discord twitch youtube homepage].each do |field|
       send(:"#{field}=", ensure_valid_url(self, field, force:))
     end
   end

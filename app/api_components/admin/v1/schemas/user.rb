@@ -23,7 +23,6 @@ module Admin
             discord: {type: :string},
             youtube: {type: :string},
             twitch: {type: :string},
-            guilded: {type: :string},
             homepage: {type: :string},
             publicHangar: {type: :boolean},
             publicHangarUrl: {type: :string},

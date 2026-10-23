@@ -21,7 +21,6 @@ module V1
           discord: {type: :string},
           youtube: {type: :string},
           twitch: {type: :string},
-          guilded: {type: :string},
           homepage: {type: :string},
           location: {type: :string},
           currentLocation: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},

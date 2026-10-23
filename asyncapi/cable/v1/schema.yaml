@@ -2152,8 +2152,6 @@ components:
           type: string
         twitch:
           type: string
-        guilded:
-          type: string
         homepage:
           type: string
         headquarters:
@@ -2314,8 +2312,6 @@ components:
         youtube:
           type: string
         twitch:
-          type: string
-        guilded:
           type: string
         squadrons:
           type: array

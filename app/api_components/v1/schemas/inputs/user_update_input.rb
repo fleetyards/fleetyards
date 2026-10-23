@@ -16,7 +16,6 @@ module V1
             homepage: {type: [:string, :null]},
             discord: {type: [:string, :null]},
             youtube: {type: [:string, :null]},
-            guilded: {type: [:string, :null]},
             twitch: {type: [:string, :null]},
             dateFormat: ::V1::Schemas::Enums::UserDateFormatEnum,
             publicHangar: {type: :boolean},

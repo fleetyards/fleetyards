@@ -22,7 +22,6 @@ module V1
             discord: {type: :string},
             youtube: {type: :string},
             twitch: {type: :string},
-            guilded: {type: :string},
             squadrons: {type: :array, items: ::V1::Schemas::Fleets::Squadrons::FleetSquadronRef},
             shipsFilter: ::V1::Schemas::Enums::FleetMembershipShipsFilterEnum,
             hangarGroupId: {type: :string, format: :uuid},

@@ -18,7 +18,6 @@ module V1
           discord: {type: :string},
           youtube: {type: :string},
           twitch: {type: :string},
-          guilded: {type: :string},
           homepage: {type: :string},
           publicHangarLoaners: {type: :boolean},
           publicHangarStats: {type: :boolean},

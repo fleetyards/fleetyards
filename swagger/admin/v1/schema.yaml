@@ -15508,8 +15508,6 @@ components:
           type: string
         twitch:
           type: string
-        guilded:
-          type: string
         homepage:
           type: string
         headquarters:
@@ -15588,8 +15586,6 @@ components:
         publicFleetStats:
           type: boolean
         discord:
-          type: string
-        guilded:
           type: string
         homepage:
           type: string
@@ -22344,8 +22340,6 @@ components:
         youtube:
           type: string
         twitch:
-          type: string
-        guilded:
           type: string
         homepage:
           type: string

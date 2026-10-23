@@ -114,7 +114,7 @@ class Api::V1::PublicFleetMembersIndexTest < ActionDispatch::IntegrationTest
     assert_equal %w[hidden id role username].sort, (member.keys & %w[hidden id role username]).sort
 
     %w[
-      discord youtube twitch guilded rsiHandle homepage latitude longitude
+      discord youtube twitch rsiHandle homepage latitude longitude
       currentSystemCode lastActiveAt hangarUpdatedAt discordProfileUrl
       citizenidProfileUrl nickname fleetSlug userId
     ].each do |leaked|
