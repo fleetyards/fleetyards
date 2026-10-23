@@ -498,7 +498,7 @@ components:
         manufacturer:
           "$ref": "#/components/schemas/Manufacturer"
         media:
-          "$ref": "#/components/schemas/StoreImageMedia"
+          "$ref": "#/components/schemas/ItemMedia"
         typeData:
           anyOf:
           - "$ref": "#/components/schemas/ComponentQuantumDrive"
@@ -3253,6 +3253,30 @@ components:
       required:
       - boughtAt
       - soldAt
+    ItemMedia:
+      type: object
+      properties:
+        storeImage:
+          "$ref": "#/components/schemas/MediaFile"
+        topView:
+          "$ref": "#/components/schemas/MediaFile"
+        portView:
+          "$ref": "#/components/schemas/MediaFile"
+        frontView:
+          "$ref": "#/components/schemas/MediaFile"
+        angledView:
+          "$ref": "#/components/schemas/MediaFile"
+        angledRearView:
+          "$ref": "#/components/schemas/MediaFile"
+        bottomView:
+          "$ref": "#/components/schemas/MediaFile"
+        rearView:
+          "$ref": "#/components/schemas/MediaFile"
+        starboardView:
+          "$ref": "#/components/schemas/MediaFile"
+        holo:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
     ItemPrice:
       type: object
       properties:
