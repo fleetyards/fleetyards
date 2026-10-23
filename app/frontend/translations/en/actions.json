@@ -353,6 +353,9 @@
         "onSale": "On Sale: %{price}",
         "store": "RSI Page"
       },
+      "itemViews": {
+        "sync": "Sync Views"
+      },
       "models": {
         "sync": "Sync from RSI",
         "syncMatrix": "Sync Matrix",

@@ -16,6 +16,8 @@ module ScData
   # the admin comes back. A view uploaded by hand over an imported render is
   # kept: the stored md5s still name the render it replaced.
   class ShipViewsImportJob < ApplicationJob
+    include RenderImport
+
     sidekiq_options queue: "loaders"
 
     def perform(model_id = nil)
@@ -90,89 +92,17 @@ module ScData
         .to_h
     end
 
-    private def import(store, model, path, digest)
-      md5s = model.ship_view_md5s.dup
-      files = []
-      complete = true
-
-      renders(store.listing(path), path).each do |field, name, md5|
-        # A render already on the model: imported before, or put there by the
-        # folder upload or an import that predates the stored digests.
-        if (md5s[field] == md5 || current_checksum(model, field) == md5) && stored?(model, field)
-          md5s[field] = md5
-          next
-        end
-
-        begin
-          file = store.fetch(path, name)
-        rescue => e
-          log(:warn, "#{path}/#{name} could not be fetched: #{e.class}: #{e.message}")
-          complete = false
-          next
-        end
-
-        files << file
-
-        if Digest::MD5.file(file.path).hexdigest != md5
-          log(:warn, "#{path}/#{name} does not match its listed md5, skipped")
-          complete = false
-          next
-        end
-
-        # Uploaded before it is attached. Handed an io, ActiveStorage writes the
-        # blob row in the save and the bytes only in an `after_commit`, so a
-        # worker killed in between leaves an attachment naming a file storage
-        # never received. This way a kill leaves at most an unattached blob.
-        metadata = model.trimmed_attachment_names.include?(field.to_s) ? {trimmed: true} : {}
-        model.public_send(:"#{field}=", ActiveStorage::Blob.create_and_upload!(io: file, filename: name, metadata:))
-        md5s[field] = md5
-      end
-
-      fields = model.attachment_changes.keys
-
-      # A render that did not come down is fetched again next run.
-      model.save!
-      model.update_columns(ship_view_md5s: md5s, ship_views_digest: (complete ? digest : model.ship_views_digest))
-
-      fields
-    ensure
-      files&.each(&:close!)
+    private def field_for(name)
+      ShipViewFields.field_for(name)
     end
 
-    # [field, filename, md5] for every render with a field. Two names for one
-    # field -- `side` from an older export beside `port` -- keep the first in
-    # name order.
-    private def renders(listing, path)
-      claimed = listing.fetch("files", {})
-        .sort_by(&:first)
-        .map { |name, file| [ShipViewFields.field_for(name), name, file["md5"]] }
-        .select(&:first)
-        .group_by(&:first)
-
-      claimed.map do |field, candidates|
-        if candidates.size > 1
-          log(:warn, "#{path}: #{candidates.map(&:second).join(", ")} all map to #{field}, took #{candidates.first.second}")
-        end
-
-        candidates.first
-      end
+    private def render_metadata(model, field)
+      model.trimmed_attachment_names.include?(field.to_s) ? {trimmed: true} : {}
     end
 
-    # The blob row, checksum included, is written before its bytes go up, so a
-    # worker killed in between leaves an attachment naming a file storage never
-    # received -- and a checksum that would otherwise say it is already here.
-    private def stored?(model, field)
-      blob = model.public_send(field).blob
+    private def render_md5s_column = :ship_view_md5s
 
-      blob.present? && blob.service.exist?(blob.key)
-    end
-
-    # ActiveStorage keeps the same MD5, base64-encoded.
-    private def current_checksum(model, field)
-      checksum = model.public_send(field).blob&.checksum
-
-      checksum&.unpack1("m0")&.unpack1("H*")
-    end
+    private def render_digest_column = :ship_views_digest
 
     private def log(level, message)
       Rails.logger.public_send(level, "[sc_data] ShipViewsImportJob #{message}")

@@ -13,6 +13,7 @@ import {
   useUpdateComponent,
   getComponentsQueryKey,
   getComponentQueryKey,
+  useSyncComponentViews,
 } from "@/services/fyAdminApi";
 import { useForm } from "vee-validate";
 import { useFormFeedback } from "@/admin/composables/useFormFeedback";
@@ -23,6 +24,7 @@ import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import ItemViewsFields from "@/admin/components/ItemViewsFields/index.vue";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import ManufacturerSelect from "@/admin/components/base/ManufacturerSelect/index.vue";
 import ComponentTypeSelect from "@/admin/components/base/ComponentTypeSelect/index.vue";
 import ComponentCategorySelect from "@/admin/components/base/ComponentCategorySelect/index.vue";
@@ -97,6 +99,25 @@ const updateMutation = useUpdateComponent({
 });
 
 const { updated, failed } = useFormFeedback();
+
+const { displayConfirm, displaySuccess } = useAppNotifications();
+
+const syncViewsMutation = useSyncComponentViews({
+  mutation: {
+    onSuccess: () => {
+      displaySuccess({ text: t("messages.itemViews.syncStarted") });
+    },
+  },
+});
+
+const syncViews = () => {
+  displayConfirm({
+    text: t("messages.confirm.itemViews.sync"),
+    onConfirm: async () => {
+      await syncViewsMutation.mutateAsync({ id: props.component.id });
+    },
+  });
+};
 
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
@@ -229,7 +250,11 @@ const handleCancel = async () => {
       </div>
     </div>
     <hr />
-    <ItemViewsFields :media="component.media" />
+    <ItemViewsFields
+      :media="component.media"
+      :syncing="syncViewsMutation.isPending.value"
+      @sync="syncViews"
+    />
     <FormActions
       :submitting="submitting"
       formId="admin-component-edit-form"

@@ -190,6 +190,9 @@
           }
         }
       },
+      "itemViews": {
+        "syncStarted": "視圖同步已開始。渲染圖附加完成後，請重新整理頁面查看。"
+      },
       "model": {
         "syncMatrixStarted": "Model matrix sync started. You will be notified when it completes.",
         "syncScDataStarted": "Model SC data sync started. You will be notified when it completes.",
@@ -567,6 +570,9 @@
           "sendPasswordReset": "Are you sure you want to send a password reset email for this user?",
           "destroy": "Are you sure you want to delete this user? This action can't be reverted.",
           "destroyWithFleets": "此使用者是以下艦隊的管理員：%{fleets}。刪除該使用者也會一併解散這些艦隊並移除其所有成員。此操作無法復原。要繼續嗎？"
+        },
+        "itemViews": {
+          "sync": "確定要從渲染儲存桶同步此物品的視圖嗎？新的和已變更的渲染圖會被附加，已移除的會恢復。手動上傳以取代已匯入渲染圖的視圖將保留。"
         },
         "model": {
           "destroy": "Are you sure you want to delete this model? This action can't be reverted.",

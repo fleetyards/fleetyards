@@ -14,6 +14,19 @@ vi.mock("@/shared/components/base/FormFileInput/index.vue", () => ({
   },
 }));
 
+vi.mock("@/shared/components/base/Btn/index.vue", () => ({
+  default: {
+    name: "Btn",
+    emits: ["click"],
+    template:
+      "<button type='button' @click=\"$emit('click')\"><slot /></button>",
+  },
+}));
+
+vi.mock("@/shared/composables/useI18n", () => ({
+  useI18n: () => ({ t: (key: string) => key }),
+}));
+
 const mountFields = (media?: ItemMedia) =>
   mount(ItemViewsFields, { props: { media } });
 
@@ -56,5 +69,13 @@ describe("ItemViewsFields", () => {
     expect(wrapper.find("[data-name='rearView']").attributes("data-url")).toBe(
       "https://example.test/rear.png",
     );
+  });
+
+  it("asks the page to sync the views from the render bucket", async () => {
+    const wrapper = mountFields();
+
+    await wrapper.find("[data-test='item-views-sync']").trigger("click");
+
+    expect(wrapper.emitted("sync")).toHaveLength(1);
   });
 });

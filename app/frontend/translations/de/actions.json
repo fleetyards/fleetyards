@@ -353,6 +353,9 @@
         "onSale": "Im Verkauf: %{price}",
         "store": "RSI-Seite"
       },
+      "itemViews": {
+        "sync": "Ansichten synchronisieren"
+      },
       "models": {
         "sync": "Von RSI synchronisieren",
         "syncMatrix": "Matrix synchronisieren",

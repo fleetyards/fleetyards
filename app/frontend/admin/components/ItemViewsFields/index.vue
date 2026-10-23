@@ -5,7 +5,9 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import Btn from "@/shared/components/base/Btn/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
+import { useI18n } from "@/shared/composables/useI18n";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import { type ItemMedia } from "@/services/fyAdminApi";
 
@@ -13,9 +15,16 @@ import { type ItemMedia } from "@/services/fyAdminApi";
 // so the page's own `useForm` submits these alongside its other fields.
 interface Props {
   media?: ItemMedia;
+  syncing?: boolean;
 }
 
 defineProps<Props>();
+
+const emit = defineEmits<{
+  sync: [];
+}>();
+
+const { t } = useI18n();
 
 const VIEW_FIELDS = [
   "topView",
@@ -30,6 +39,12 @@ const VIEW_FIELDS = [
 </script>
 
 <template>
+  <div class="flex justify-end mb-4">
+    <Btn :loading="syncing" data-test="item-views-sync" @click="emit('sync')">
+      <i class="fa-duotone fa-cloud-arrow-down" />
+      {{ t("actions.itemViews.sync") }}
+    </Btn>
+  </div>
   <div class="row">
     <div class="col-12 col-sm-6 col-md-3">
       <FormFileInput

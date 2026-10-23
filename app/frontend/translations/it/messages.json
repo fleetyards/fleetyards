@@ -196,6 +196,9 @@
           }
         }
       },
+      "itemViews": {
+        "syncStarted": "Sincronizzazione delle viste avviata. Ricarica la pagina quando i render sono allegati per vederli."
+      },
       "model": {
         "syncMatrixStarted": "Model matrix sync started. You will be notified when it completes.",
         "syncScDataStarted": "Model SC data sync started. You will be notified when it completes.",
@@ -573,6 +576,9 @@
           "sendPasswordReset": "Are you sure you want to send a password reset email for this user?",
           "destroy": "Are you sure you want to delete this user? This action can't be reverted.",
           "destroyWithFleets": "Questo utente è l'amministratore della/e seguente/i Flotta/e: %{fleets}. Eliminando l'utente verranno eliminate anche queste Flotte e rimossi tutti i loro membri. Questa azione non può essere annullata. Vuoi continuare?"
+        },
+        "itemViews": {
+          "sync": "Sei sicuro di voler sincronizzare le viste di questo oggetto dal bucket dei render? I render nuovi e modificati vengono allegati e quelli rimossi tornano. Una vista caricata a mano al posto di un render importato viene mantenuta."
         },
         "model": {
           "destroy": "Are you sure you want to delete this model? This action can't be reverted.",
