@@ -10,6 +10,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
+import { useEventListener } from "@vueuse/core";
 import {
   ModelStateEnum,
   ModelViewEnum,
@@ -263,11 +264,9 @@ const endStyle = (key: string) => {
   return height ? { maxHeight: `${height}px` } : {};
 };
 
-onMounted(() => {
-  window.addEventListener("resize", () => {
-    windowWidth.value = window.innerWidth / 2;
-    updateProfileHeights();
-  });
+useEventListener(window, "resize", () => {
+  windowWidth.value = window.innerWidth / 2;
+  updateProfileHeights();
 });
 </script>
 
