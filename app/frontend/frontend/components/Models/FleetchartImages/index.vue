@@ -291,7 +291,10 @@ useEventListener(window, "resize", () => {
     <div
       v-if="hasImages"
       class="fleetchart-views"
-      :class="{ 'fleetchart-views--loading': switching }"
+      :class="{
+        'fleetchart-views--loading': switching,
+        'fleetchart-views--collapsible': collapsible,
+      }"
     >
       <!-- Announced here rather than inside Loader: it is a leaf component
            mounted without a store in several specs, and useI18n needs pinia. -->
@@ -317,12 +320,7 @@ useEventListener(window, "resize", () => {
             data-test="model-views-fold"
             @click="toggleExpanded"
           >
-            <img
-              :src="set.angled"
-              :width="(length > beam ? length : beam) * 1.2"
-              @load="settleImage"
-              @error="settleImage"
-            />
+            <img :src="set.angled" @load="settleImage" @error="settleImage" />
             <span class="fleetchart-views__fold-label">
               {{
                 expanded
