@@ -138,9 +138,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
         sign_in(:user, user)
 
-        origin = request.env["omniauth.origin"]
-        origin = nil if origin.blank? || [frontend_login_url, frontend_sign_up_url].include?(origin)
-        redirect_to origin || frontend_hangar_url, notice: t("devise.omniauth.success", kind: kind), allow_other_host: true
+        redirect_to sign_in_redirect_url, notice: t("devise.omniauth.success", kind: kind), allow_other_host: true
       else
         url = request.env["omniauth.origin"].presence || frontend_login_url
         redirect_to url, alert: t("devise.omniauth.failure_username_taken", kind: kind, username: user.username), allow_other_host: true
@@ -150,6 +148,21 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   private def auth
     request.env["omniauth.auth"]
+  end
+
+  # The origin is the browser's address (or its Referer), which differs from the
+  # generated URLs in scheme, host and trailing slash, so only the path tells
+  # whether the sign-in started on a page that would just show the form again.
+  private def sign_in_redirect_url
+    origin = request.env["omniauth.origin"]
+    return frontend_hangar_url if origin.blank?
+
+    path = URI.parse(origin).path.to_s.chomp("/")
+    return frontend_hangar_url if [frontend_login_path, frontend_sign_up_path].map { |p| p.chomp("/") }.include?(path)
+
+    origin
+  rescue URI::InvalidURIError
+    frontend_hangar_url
   end
 
   private def citizenid_provider?

@@ -117,6 +117,33 @@ class OmniauthCallbacksTest < ActionDispatch::IntegrationTest
     assert_not_predicate User.last.avatar, :attached?
   end
 
+  ["/login/", "/login", "/login/?foo=bar", "/sign-up/"].each do |path|
+    test "a sign in started from #{path} lands on the hangar" do
+      mock_omniauth(:google, uid: UID, email: EMAIL, nickname: NICKNAME)
+
+      get "/users/auth/google/callback", env: {"omniauth.origin" => "http://#{Rails.configuration.app.domain}#{path}"}
+
+      assert_redirected_to frontend_hangar_url
+    end
+  end
+
+  test "a sign in started from another page goes back to it" do
+    mock_omniauth(:google, uid: UID, email: EMAIL, nickname: NICKNAME)
+    origin = "http://#{Rails.configuration.app.domain}/settings/"
+
+    get "/users/auth/google/callback", env: {"omniauth.origin" => origin}
+
+    assert_redirected_to origin
+  end
+
+  test "a sign in with an origin that is not a URL lands on the hangar" do
+    mock_omniauth(:google, uid: UID, email: EMAIL, nickname: NICKNAME)
+
+    get "/users/auth/google/callback", env: {"omniauth.origin" => "http://exa mple.com/login"}
+
+    assert_redirected_to frontend_hangar_url
+  end
+
   test "#failure redirects with an alert on authentication failure" do
     OmniAuth.config.mock_auth[:discord] = :invalid_credentials
 
