@@ -90,11 +90,6 @@ const generateBackupCodes = () => {
 </template>
 
 <style lang="scss" scoped>
-.two-factor-status {
-  margin-bottom: 20px;
-  font-size: 200%;
-}
-
 .two-factor-actions {
   display: flex;
   flex-wrap: wrap;
