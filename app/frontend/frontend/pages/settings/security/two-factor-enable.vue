@@ -21,6 +21,7 @@ import { useForm } from "vee-validate";
 import {
   useStartOtpSetup as useStartOtpSetupMutation,
   useEnableOtpSetup as useEnableOtpSetupMutation,
+  type SetupOtpInput,
 } from "@/services/fyApi";
 import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 
@@ -41,12 +42,12 @@ const started = ref(false);
 const backupCodes = ref<string[]>();
 
 const validationSchema = {
-  twoFactorCode: "required",
+  otpCode: "required",
 };
 
-const { defineField, handleSubmit } = useForm();
+const { defineField, handleSubmit } = useForm<SetupOtpInput>();
 
-const [twoFactorCode, twoFactorCodeProps] = defineField("twoFactorCode");
+const [otpCode, otpCodeProps] = defineField("otpCode");
 
 onMounted(async () => {
   await startProcess();
@@ -160,10 +161,10 @@ const copyProvisioningUrl = () => {
               </code>
             </div>
             <FormInput
-              v-model="twoFactorCode"
-              name="twoFactorCode"
-              v-bind="twoFactorCodeProps"
-              :rules="validationSchema.twoFactorCode"
+              v-model="otpCode"
+              name="otpCode"
+              v-bind="otpCodeProps"
+              :rules="validationSchema.otpCode"
               class="two-factor-input"
               :autofocus="true"
               :no-label="true"

@@ -16,7 +16,10 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { useSessionStore } from "@/frontend/stores/session";
 import { storeToRefs } from "pinia";
 import { useForm } from "vee-validate";
-import { useDisableOtpSetup as useDisableOtpSetupMutation } from "@/services/fyApi";
+import {
+  useDisableOtpSetup as useDisableOtpSetupMutation,
+  type SetupOtpInput,
+} from "@/services/fyApi";
 import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 
 const { displaySuccess, displayAlert } = useAppNotifications();
@@ -31,12 +34,12 @@ const { currentUser } = storeToRefs(sessionStore);
 const submitting = ref(false);
 
 const validationSchema = {
-  twoFactorCode: "required",
+  otpCode: "required",
 };
 
-const { defineField, handleSubmit } = useForm();
+const { defineField, handleSubmit } = useForm<SetupOtpInput>();
 
-const [twoFactorCode, twoFactorCodeProps] = defineField("twoFactorCode");
+const [otpCode, otpCodeProps] = defineField("otpCode");
 
 const router = useRouter();
 
@@ -95,10 +98,10 @@ const onSubmit = handleSubmit(async (values) => {
             <div class="row">
               <div class="col-12 two-factor-form-inner">
                 <FormInput
-                  v-model="twoFactorCode"
-                  name="twoFactorCode"
-                  v-bind="twoFactorCodeProps"
-                  :rules="validationSchema.twoFactorCode"
+                  v-model="otpCode"
+                  name="otpCode"
+                  v-bind="otpCodeProps"
+                  :rules="validationSchema.otpCode"
                   class="two-factor-input"
                   :autofocus="true"
                   :no-label="true"
