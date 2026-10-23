@@ -136,6 +136,14 @@ class OmniauthCallbacksTest < ActionDispatch::IntegrationTest
     assert_redirected_to origin
   end
 
+  test "a sign in with an origin that is not a URL lands on the hangar" do
+    mock_omniauth(:google, uid: UID, email: EMAIL, nickname: NICKNAME)
+
+    get "/users/auth/google/callback", env: {"omniauth.origin" => "http://exa mple.com/login"}
+
+    assert_redirected_to frontend_hangar_url
+  end
+
   test "#failure redirects with an alert on authentication failure" do
     OmniAuth.config.mock_auth[:discord] = :invalid_credentials
 
