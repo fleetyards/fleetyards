@@ -473,7 +473,6 @@
       "discord": "Serveur Discord",
       "youtube": "Chaîne Youtube",
       "twitch": "Chaîne Twitch",
-      "guilded": "Serveur Guilded",
       "3dView": "3D",
       "3dMap": "Map",
       "texturedHolo": "Texturé",
@@ -705,7 +704,6 @@
             "request_failed": "Impossible de joindre Fleetyards. Réessayez."
           }
         },
-        "guilded": "Serveur Guilded",
         "homepage": "Page d'accueil",
         "twitch": "Chaîne Twitch",
         "youtube": "Chaîne Youtube",

@@ -473,7 +473,6 @@
       "discord": "Discord-Server",
       "youtube": "Youtube-Kanal",
       "twitch": "Twitch-Kanal",
-      "guilded": "Guilded-Server",
       "3dView": "3D",
       "3dMap": "Map",
       "texturedHolo": "Texturiert",
@@ -705,7 +704,6 @@
             "request_failed": "Fleetyards konnte nicht erreicht werden. Versuche es erneut."
           }
         },
-        "guilded": "Guilded-Server",
         "homepage": "Homepage",
         "twitch": "Twitch-Kanal",
         "youtube": "Youtube-Kanal",

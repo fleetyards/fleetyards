@@ -100,7 +100,7 @@ module Admin
         private def fleet_params
           @fleet_params ||= params.permit(
             :name, :fid, :description, :public_fleet, :public_fleet_stats,
-            :discord, :guilded, :homepage, :twitch, :youtube, :ts,
+            :discord, :homepage, :twitch, :youtube, :ts,
             :rsi_sid, :logo, :background_image, :headquarters, :headquarters_location_id
           )
         end

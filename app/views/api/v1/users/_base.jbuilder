@@ -20,7 +20,6 @@ json.citizenid_profile_url user.citizenid_profile_url if user.rsi_handle_verifie
 json.discord user.discord if user.discord.present?
 json.youtube user.youtube if user.youtube.present?
 json.twitch user.twitch if user.twitch.present?
-json.guilded user.guilded if user.guilded.present?
 json.homepage user.homepage if user.homepage.present?
 json.location user.location if user.location.present?
 json.current_system user.current_system if user.current_system.present?

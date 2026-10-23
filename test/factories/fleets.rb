@@ -47,7 +47,6 @@ FactoryBot.define do
       twitch { "https://twitch.tv/test" }
       youtube { "https://youtube.com/@test" }
       homepage { "https://example.com" }
-      guilded { "https://guilded.gg/test" }
     end
 
     after(:create) do |fleet, evaluator|

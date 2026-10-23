@@ -8,6 +8,11 @@ class Fleet < ApplicationRecord
   include LinkedLocations
   include FeatureFlagActor
 
+  # Guilded links are no longer offered. The column stays ignored until it is
+  # dropped: the pre-deploy hook migrates before any new container boots, so the
+  # release still serving traffic must already have stopped selecting it.
+  self.ignored_columns += %w[guilded]
+
   paginates_per 24
   per_page_steps PageSizes.up_to(max_per_page)
 
@@ -420,7 +425,7 @@ class Fleet < ApplicationRecord
   end
 
   def update_urls(force: false)
-    %i[discord twitch youtube homepage guilded].each do |field|
+    %i[discord twitch youtube homepage].each do |field|
       send(:"#{field}=", ensure_valid_url(self, field, force:))
     end
 

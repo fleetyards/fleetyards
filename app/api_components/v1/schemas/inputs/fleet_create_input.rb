@@ -19,8 +19,7 @@ module V1
             discord: {type: :string},
             ts: {type: :string},
             youtube: {type: :string},
-            twitch: {type: :string},
-            guilded: {type: :string}
+            twitch: {type: :string}
           },
           additionalProperties: false,
           required: %w[fid name]

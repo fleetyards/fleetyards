@@ -24,7 +24,6 @@ FactoryBot.define do
       twitch { "https://twitch.tv/test" }
       youtube { "https://youtube.com/@test" }
       homepage { "https://example.com" }
-      guilded { "https://guilded.gg/test" }
     end
 
     trait :tester do

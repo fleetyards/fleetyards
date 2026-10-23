@@ -16,7 +16,6 @@
       "youtube": "Chaîne Youtube",
       "twitch": "Chaîne Twitch",
       "distance": "Distance",
-      "guilded": "Serveur Guilded",
       "color": "Couleur",
       "title": "Titre",
       "classification": "Combat, Industriel, Polyvalent...",
@@ -167,7 +166,6 @@
           "webhookUrl": "https://discord.com/api/webhooks/…",
           "webhookConfigured": "Enregistré — laisser vide pour conserver l'existant"
         },
-        "guilded": "Serveur Guilded",
         "homepage": "Page d'accueil",
         "twitch": "Chaîne Twitch",
         "youtube": "Chaîne Youtube"

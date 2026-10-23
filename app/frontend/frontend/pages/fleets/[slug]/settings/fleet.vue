@@ -73,7 +73,6 @@ const initialValues = ref<FleetUpdateInput>({
   headquartersLocationId: props.fleet.headquartersLocation?.id ?? null,
   twitch: props.fleet.twitch,
   youtube: props.fleet.youtube,
-  guilded: props.fleet.guilded,
   publicFleet: props.fleet.publicFleet,
   publicFleetStats: props.fleet.publicFleetStats,
   alliesFleet: props.fleet.alliesFleet,
@@ -102,7 +101,6 @@ const [headquarters] = defineField("headquarters");
 const [headquartersLocationId] = defineField("headquartersLocationId");
 const [twitch, twitchProps] = defineField("twitch");
 const [youtube, youtubeProps] = defineField("youtube");
-const [guilded, guildedProps] = defineField("guilded");
 const [publicFleet, publicFleetProps] = defineField("publicFleet");
 const [publicFleetStats, publicFleetStatsProps] =
   defineField("publicFleetStats");
@@ -417,14 +415,6 @@ const onDestroy = async () => {
           name="discord"
           icon="fa-brands fa-discord"
           v-bind="discordProps"
-        />
-      </div>
-      <div class="col-12 col-md-6">
-        <FormInput
-          v-model="guilded"
-          name="guilded"
-          icon="fa-brands fa-guilded"
-          v-bind="guildedProps"
         />
       </div>
     </div>

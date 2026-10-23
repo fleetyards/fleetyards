@@ -26065,8 +26065,6 @@ components:
           type: string
         twitch:
           type: string
-        guilded:
-          type: string
         homepage:
           type: string
         headquarters:
@@ -27422,8 +27420,6 @@ components:
         youtube:
           type: string
         twitch:
-          type: string
-        guilded:
           type: string
       additionalProperties: false
       required:
@@ -29836,8 +29832,6 @@ components:
           type: string
         twitch:
           type: string
-        guilded:
-          type: string
         squadrons:
           type: array
           items:
@@ -31595,10 +31589,6 @@ components:
           - string
           - 'null'
         twitch:
-          type:
-          - string
-          - 'null'
-        guilded:
           type:
           - string
           - 'null'
@@ -44625,8 +44615,6 @@ components:
           type: string
         twitch:
           type: string
-        guilded:
-          type: string
         homepage:
           type: string
         location:
@@ -44851,8 +44839,6 @@ components:
           type: string
         twitch:
           type: string
-        guilded:
-          type: string
         homepage:
           type: string
         publicHangarLoaners:
@@ -44990,10 +44976,6 @@ components:
           - string
           - 'null'
         youtube:
-          type:
-          - string
-          - 'null'
-        guilded:
           type:
           - string
           - 'null'

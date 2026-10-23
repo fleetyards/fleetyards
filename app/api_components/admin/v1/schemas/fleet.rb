@@ -22,7 +22,6 @@ module Admin
             discord: {type: :string},
             youtube: {type: :string},
             twitch: {type: :string},
-            guilded: {type: :string},
             homepage: {type: :string},
             # Where the fleet is based: free text, linked to one of our places where
             # it is one.

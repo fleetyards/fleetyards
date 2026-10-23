@@ -60,7 +60,7 @@ class FleetTest < ActiveSupport::TestCase
       @fleet = create(:fleet, created_by: user.id)
     end
 
-    %w[guilded homepage discord twitch youtube].each do |field|
+    %w[homepage discord twitch youtube].each do |field|
       test "strips protocol from #{field} url" do
         @fleet.update!(field => "https://foo.bar")
         @fleet.reload

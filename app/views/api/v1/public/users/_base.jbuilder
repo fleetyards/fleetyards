@@ -12,7 +12,6 @@ json.citizenid_profile_url user.citizenid_profile_url if user.rsi_handle_verifie
 json.discord user.discord
 json.youtube user.youtube
 json.twitch user.twitch
-json.guilded user.guilded
 json.homepage user.homepage
 json.public_hangar_loaners user.public_hangar_loaners
 json.public_hangar_stats user.public_hangar_stats
