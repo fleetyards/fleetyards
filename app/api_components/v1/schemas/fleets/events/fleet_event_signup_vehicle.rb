@@ -12,7 +12,8 @@ module V1
             properties: {
               id: {type: :string, format: :uuid},
               name: {type: :string},
-              model: FleetEventSignupVehicleModel
+              model: FleetEventSignupVehicleModel,
+              activeLoadout: ::V1::Schemas::Vehicles::VehicleLoadoutMinimal
             }
           })
         end
