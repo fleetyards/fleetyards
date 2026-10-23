@@ -81,7 +81,16 @@ const badges = computed<RowListItemBadge[]>(() => {
     :badges="badges"
   >
     <template #leading>
+      <img
+        v-if="component.media.storeImage?.smallUrl"
+        class="component-row__image"
+        :src="component.media.storeImage.smallUrl"
+        alt=""
+        loading="lazy"
+        data-test="component-row-image"
+      />
       <HardpointCategoryIcon
+        v-else
         :category="component.category"
         class="component-row__icon"
       />
