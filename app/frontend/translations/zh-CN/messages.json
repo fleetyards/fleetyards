@@ -254,6 +254,7 @@
         "granted": "欢迎使用 FleetYards.net 通知！"
       },
       "twoFactor": {
+        "invalidCode": "此验证码无效。",
         "enable": {
           "success": "双因素认证已启用！",
           "failure": "无法启用双因素认证。"

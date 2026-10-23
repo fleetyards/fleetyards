@@ -260,6 +260,7 @@
         "granted": "Willkommen bei FleetYards.net Benachrichtigungen!"
       },
       "twoFactor": {
+        "invalidCode": "Dieser Code ist ungültig.",
         "enable": {
           "success": "Zwei-Faktor-Authentifizierung aktiviert!",
           "failure": "Zwei-Faktor-Authentifizierung konnte nicht aktiviert werden."
