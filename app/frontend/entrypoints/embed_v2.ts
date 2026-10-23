@@ -1,3 +1,4 @@
+import "@/shared/polyfills";
 import App from "@/embed/App.vue";
 import router from "@/embed/plugins/Router";
 import { createPinia } from "pinia";

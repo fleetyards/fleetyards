@@ -1,3 +1,4 @@
+import "@/shared/polyfills";
 import { createApp, defineAsyncComponent } from "vue";
 import App from "@/frontend/App.vue";
 import router from "@/frontend/plugins/Router";

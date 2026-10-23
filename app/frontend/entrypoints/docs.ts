@@ -1,3 +1,4 @@
+import "@/shared/polyfills";
 import { createApp } from "vue";
 import App from "@/docs/App.vue";
 import router from "@/docs/plugins/Router";
