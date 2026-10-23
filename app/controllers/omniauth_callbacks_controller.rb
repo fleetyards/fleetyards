@@ -140,8 +140,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
         redirect_to sign_in_redirect_url, notice: t("devise.omniauth.success", kind: kind), allow_other_host: true
       else
-        url = request.env["omniauth.origin"].presence || frontend_login_url
-        redirect_to url, alert: t("devise.omniauth.failure_username_taken", kind: kind, username: user.username), allow_other_host: true
+        redirect_to frontend_origin&.to_s || frontend_login_url, alert: t("devise.omniauth.failure_username_taken", kind: kind, username: user.username), allow_other_host: true
       end
     end
   end
@@ -150,19 +149,31 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     request.env["omniauth.auth"]
   end
 
-  # The origin is the browser's address (or its Referer), which differs from the
-  # generated URLs in scheme, host and trailing slash, so only the path tells
-  # whether the sign-in started on a page that would just show the form again.
-  private def sign_in_redirect_url
+  # The origin comes from a request parameter or the Referer, so only a page of
+  # the frontend itself is a place to send someone back to.
+  private def frontend_origin
     origin = request.env["omniauth.origin"]
-    return frontend_hangar_url if origin.blank?
+    return if origin.blank?
 
-    path = URI.parse(origin).path.to_s.chomp("/")
+    uri = URI.parse(origin)
+    return unless %w[http https].include?(uri.scheme)
+
+    uri if uri.host&.downcase == URI.parse(frontend_root_url).host.downcase
+  rescue URI::InvalidURIError
+    nil
+  end
+
+  # The origin is the browser's address, which differs from the generated URLs
+  # in scheme, port and trailing slash, so only the path tells whether the
+  # sign-in started on a page that would just show the form again.
+  private def sign_in_redirect_url
+    uri = frontend_origin
+    return frontend_hangar_url if uri.nil?
+
+    path = uri.path.to_s.chomp("/")
     return frontend_hangar_url if [frontend_login_path, frontend_sign_up_path].map { |p| p.chomp("/") }.include?(path)
 
-    origin
-  rescue URI::InvalidURIError
-    frontend_hangar_url
+    uri.to_s
   end
 
   private def citizenid_provider?

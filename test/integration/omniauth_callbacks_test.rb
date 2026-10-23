@@ -144,6 +144,51 @@ class OmniauthCallbacksTest < ActionDispatch::IntegrationTest
     assert_redirected_to frontend_hangar_url
   end
 
+  test "a sign in with an origin on another host lands on the hangar" do
+    mock_omniauth(:google, uid: UID, email: EMAIL, nickname: NICKNAME)
+
+    get "/users/auth/google/callback", env: {"omniauth.origin" => "https://evil.example/settings/"}
+
+    assert_redirected_to frontend_hangar_url
+  end
+
+  test "a sign in with a non-web origin on the frontend host lands on the hangar" do
+    mock_omniauth(:google, uid: UID, email: EMAIL, nickname: NICKNAME)
+    host = URI.parse(frontend_root_url).host
+
+    get "/users/auth/google/callback", env: {"omniauth.origin" => "javascript://#{host}/%0aalert(1)"}
+
+    assert_redirected_to frontend_hangar_url
+  end
+
+  test "a sign in started on the frontend host in other casing goes back to it" do
+    mock_omniauth(:google, uid: UID, email: EMAIL, nickname: NICKNAME)
+    origin = "http://#{URI.parse(frontend_root_url).host.upcase}/settings/"
+
+    get "/users/auth/google/callback", env: {"omniauth.origin" => origin}
+
+    assert_redirected_to origin
+  end
+
+  test "a sign in with a taken username goes back to the page it started on" do
+    mock_omniauth(:google, uid: UID, email: EMAIL, nickname: NICKNAME)
+    create(:user, username: NICKNAME)
+    origin = "http://#{Rails.configuration.app.domain}/sign-up/"
+
+    get "/users/auth/google/callback", env: {"omniauth.origin" => origin}
+
+    assert_redirected_to origin
+  end
+
+  test "a sign in with a taken username and an origin on another host goes to the login page" do
+    mock_omniauth(:google, uid: UID, email: EMAIL, nickname: NICKNAME)
+    create(:user, username: NICKNAME)
+
+    get "/users/auth/google/callback", env: {"omniauth.origin" => "https://evil.example/login"}
+
+    assert_redirected_to frontend_login_url
+  end
+
   test "#failure redirects with an alert on authentication failure" do
     OmniAuth.config.mock_auth[:discord] = :invalid_credentials
 
