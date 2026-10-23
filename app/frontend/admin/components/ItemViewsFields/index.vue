@@ -11,13 +11,11 @@ import { type ItemMedia } from "@/services/fyAdminApi";
 
 // No v-model: each input registers itself with the surrounding form by name,
 // so the page's own `useForm` submits these alongside its other fields.
-type Props = {
+interface Props {
   media?: ItemMedia;
-};
+}
 
-withDefaults(defineProps<Props>(), {
-  media: undefined,
-});
+defineProps<Props>();
 
 const VIEW_FIELDS = [
   "topView",
