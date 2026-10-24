@@ -70,12 +70,12 @@ const handleClick = () => {
   csrfInput.value = csrfToken();
   form.appendChild(csrfInput);
 
-  const backRoute = redirectBackStore.backRoute;
+  const backRoute = redirectBackStore.resolveBackRoute(router);
   if (backRoute) {
     const originInput = document.createElement("input");
     originInput.type = "hidden";
     originInput.name = "origin";
-    originInput.value = window.location.origin + router.resolve(backRoute).href;
+    originInput.value = window.location.origin + backRoute.href;
     form.appendChild(originInput);
   }
 
