@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   inventoryDefaultImage,
   inventoryPresets,
+  personalInventoryImage,
   useInventoryImage,
 } from "./useInventoryImage";
 import type { InventoryPanelRecord } from "@/frontend/types/logistics";
@@ -189,6 +190,17 @@ describe("useInventoryImage", () => {
   it("picks the same placeholder for the same name every time", () => {
     expect(inventoryDefaultImage(inventory({ name: "Locker" }))).toBe(
       inventoryDefaultImage(inventory({ name: "Locker" })),
+    );
+  });
+
+  // Its own art when there is some, and otherwise whatever its name lands on,
+  // like any other inventory.
+  it("shows the personal inventory as its own art", () => {
+    const personal = inventory({ name: "Personal Inventory", personal: true });
+
+    expect(inventoryDefaultImage(personal)).toBe(
+      personalInventoryImage ??
+        inventoryDefaultImage({ ...personal, personal: false }),
     );
   });
 });
