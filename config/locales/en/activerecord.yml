@@ -435,6 +435,7 @@ en:
           attributes:
             destination_inventory:
               not_the_authors: "must be one of your own inventories"
+              personal_contracts_disabled: "cannot be your own inventory; this fleet does not allow personal contracts"
               not_selectable: "is not an inventory you can choose"
               only_one_destination: "can only be one inventory"
             destination_fleet_inventory:

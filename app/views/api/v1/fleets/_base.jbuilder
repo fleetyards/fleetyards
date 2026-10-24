@@ -20,6 +20,7 @@ json.allies_fleet fleet.allies_fleet
 json.allies_fleet_stats fleet.allies_fleet_stats
 json.allies_fleet_members fleet.allies_fleet_members
 json.squadrons_enabled fleet.squadrons_enabled
+json.personal_contracts_enabled fleet.personal_contracts_enabled
 json.default_timezone fleet.default_timezone
 json.listed fleet.listed
 json.listed_in_directory fleet.listed_in_directory?

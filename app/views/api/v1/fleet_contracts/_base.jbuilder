@@ -13,6 +13,7 @@ json.reward fleet_contract.reward
 json.reimburse_expenses fleet_contract.reimburse_expenses
 json.crew_limit fleet_contract.crew_limit
 json.requires_pickup fleet_contract.requires_pickup?
+json.personal fleet_contract.personal?
 json.deadline fleet_contract.deadline&.utc&.iso8601
 json.cover_image_preset fleet_contract.cover_image_preset
 

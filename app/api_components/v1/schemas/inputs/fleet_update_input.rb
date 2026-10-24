@@ -26,6 +26,7 @@ module V1
             alliesFleetStats: {type: :boolean},
             alliesFleetMembers: {type: :boolean},
             squadronsEnabled: {type: :boolean},
+            personalContractsEnabled: {type: :boolean},
             listed: {type: :boolean},
             alignment: ::V1::Schemas::Enums::NullableFleetAlignmentEnum,
             homepage: {type: [:string, :null]},

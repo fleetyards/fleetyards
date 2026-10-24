@@ -2116,6 +2116,11 @@ paths:
         schema:
           type: boolean
         required: false
+      - name: personal
+        in: query
+        schema:
+          type: boolean
+        required: false
       - name: page
         in: query
         schema:
@@ -26093,6 +26098,8 @@ components:
           type: boolean
         squadronsEnabled:
           type: boolean
+        personalContractsEnabled:
+          type: boolean
         defaultTimezone:
           type: string
         listed:
@@ -26163,6 +26170,7 @@ components:
       - alliesFleetStats
       - alliesFleetMembers
       - squadronsEnabled
+      - personalContractsEnabled
       - listedInDirectory
       - features
       - subscribed
@@ -26577,6 +26585,8 @@ components:
           - 'null'
         requiresPickup:
           type: boolean
+        personal:
+          type: boolean
         deadline:
           type:
           - string
@@ -26653,6 +26663,7 @@ components:
       - state
       - reward
       - requiresPickup
+      - personal
       - destination
       - crewPreview
       - progress
@@ -26879,6 +26890,8 @@ components:
           - 'null'
         requiresPickup:
           type: boolean
+        personal:
+          type: boolean
         deadline:
           type:
           - string
@@ -26963,6 +26976,7 @@ components:
       - state
       - reward
       - requiresPickup
+      - personal
       - destination
       - crewPreview
       - progress
@@ -31558,6 +31572,8 @@ components:
         alliesFleetMembers:
           type: boolean
         squadronsEnabled:
+          type: boolean
+        personalContractsEnabled:
           type: boolean
         listed:
           type: boolean

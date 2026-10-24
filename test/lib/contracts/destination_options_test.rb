@@ -42,9 +42,26 @@ module Contracts
       updater = create(:user)
       create(:fleet_membership, fleet: @fleet, user: updater, aasm_state: :accepted,
         fleet_role: create(:fleet_role, fleet: @fleet, name: "Clerk",
-          resource_access: FleetRole.preset_privileges[:member] + ["fleet:inventories:update"]))
+          resource_access: FleetRole.preset_privileges[:member] + ["fleet:inventories:update", "fleet:contracts:update"]))
 
       assert_equal [@depot], DestinationOptions.new(fleet: @fleet, editor: updater).fleet_inventories
+    end
+
+    test "a member who cannot write fleet contracts is offered no fleet inventory" do
+      reader = create(:user)
+      create(:fleet_membership, fleet: @fleet, user: reader, aasm_state: :accepted,
+        fleet_role: create(:fleet_role, fleet: @fleet, name: "Hauler",
+          resource_access: FleetRole.preset_privileges[:member] + ["fleet:inventories:update"]))
+      options = DestinationOptions.new(fleet: @fleet, editor: reader)
+
+      assert_empty options.fleet_inventories
+      assert_equal [Inventory.personal_for(reader)], options.hangar_inventories
+    end
+
+    test "no inventory of the author's is offered once the fleet switches personal contracts off" do
+      @fleet.update_columns(personal_contracts_enabled: false)
+
+      assert_empty DestinationOptions.new(fleet: @fleet, editor: @author).hangar_inventories
     end
 
     test "somebody else's inventory is never allowed" do

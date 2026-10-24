@@ -109,7 +109,16 @@ class Api::V1::FleetContractDestinationsTest < ActionDispatch::IntegrationTest
       params: {contractSlug: create(:fleet_contract).slug}
   end
 
-  test "a member who cannot write contracts is refused" do
+  test "a member who cannot write fleet contracts is offered only their own inventories" do
+    sign_in @member
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
+      assert_equal [Inventory.personal_for(@member).id], parsed_body.pluck("id")
+    end
+  end
+
+  test "a member who cannot write fleet contracts is refused once personal contracts are off" do
+    @fleet.update_columns(personal_contracts_enabled: false)
     sign_in @member
 
     assert_api_response :get, 403, path_params: {fleetSlug: @fleet.slug}

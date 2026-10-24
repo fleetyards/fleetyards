@@ -31,6 +31,8 @@ module V1
             # Only a transport contract has a collection leg to track, and the
             # client shows the pickup column on this rather than on the kind.
             requiresPickup: {type: :boolean},
+            # Delivers into the author's own inventory, and the author pays.
+            personal: {type: :boolean},
             deadline: {type: [:string, :null], format: "date-time"},
             coverImage: ::Shared::V1::Schemas::MediaFile,
             coverImagePreset: {type: [:string, :null]},
@@ -53,7 +55,7 @@ module V1
             updatedAt: {type: [:string, :null], format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id title slug kind state reward requiresPickup destination crewPreview progress itemsCount crewCount]
+          required: %w[id title slug kind state reward requiresPickup personal destination crewPreview progress itemsCount crewCount]
         })
       end
     end

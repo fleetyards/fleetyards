@@ -452,6 +452,7 @@ it:
           attributes:
             destination_inventory:
               not_the_authors: "deve essere uno dei tuoi inventari"
+              personal_contracts_disabled: "non può essere il tuo inventario; questa flotta non consente contratti personali"
               not_selectable: "non è un inventario che puoi scegliere"
               only_one_destination: "può essere un solo inventario"
             destination_fleet_inventory:

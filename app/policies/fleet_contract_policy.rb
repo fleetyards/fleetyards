@@ -3,6 +3,7 @@
 class FleetContractPolicy < FleetBasePolicy
   READ = ["fleet:manage", "fleet:contracts:manage", "fleet:contracts:read"].freeze
   MANAGE = ["fleet:manage", "fleet:contracts:manage"].freeze
+  WRITE = ["fleet:manage", "fleet:contracts:manage", "fleet:contracts:create", "fleet:contracts:update"].freeze
 
   def index?
     accepted_fleet_membership&.has_access?(READ)
@@ -16,7 +17,7 @@ class FleetContractPolicy < FleetBasePolicy
     return false unless reachable_by_squadron?
     return true unless record.try(:draft?)
 
-    manage?
+    manage? || own_personal_contract?
   end
 
   # A contract raised for a squadron is on the board for that squadron. Whoever
@@ -28,8 +29,22 @@ class FleetContractPolicy < FleetBasePolicy
     record.visible_to_squadrons_of?(accepted_fleet_membership)
   end
 
+  # A personal contract delivers into the author's own inventory and is paid by
+  # them, so posting one takes no more than reading the board -- as long as the
+  # fleet has not switched them off.
   def create?
-    accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:contracts:manage", "fleet:contracts:create"])
+    return true if accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:contracts:manage",
+      "fleet:contracts:create"])
+    return false unless index? && contract_fleet&.personal_contracts_enabled?
+    return true unless record.is_a?(::FleetContract)
+
+    record.personal?
+  end
+
+  # Posting work the fleet pays for and that lands in its inventories, as
+  # opposed to a member's personal contract.
+  def write_fleet_contracts?
+    accepted_fleet_membership&.has_access?(WRITE)
   end
 
   # Only a draft. Published, it is an offer members have read and may already be
@@ -37,29 +52,50 @@ class FleetContractPolicy < FleetBasePolicy
   # are what somebody claimed it on. Cancelling is the way out, and that is its
   # own rule.
   def update?
-    return false unless may_update?
+    return false unless may_update? || own_personal_contract?
 
     record.blank? || record.draft?
   end
 
+  # The author of a personal contract may throw away a draft nobody has seen.
   def destroy?
-    accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:contracts:manage", "fleet:contracts:delete"])
+    return true if accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:contracts:manage",
+      "fleet:contracts:delete"])
+
+    own_personal_contract? && record.draft?
   end
 
   # Publishing is what ends the editable phase, so it is the one thing a draft
   # is for. Cancelling has to reach a contract that is already out there, which
   # `update?` deliberately no longer does.
   def publish?
-    may_update? && record.draft?
+    (may_update? || own_personal_contract?) && record.draft?
   end
 
   def cancel?
-    may_update?
+    may_update? || own_personal_contract?
   end
 
   private def may_update?
     accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:contracts:manage",
       "fleet:contracts:update"])
+  end
+
+  # Still the author's to run when the fleet later switches personal contracts
+  # off: that stops new ones, it does not take the existing ones away.
+  private def own_personal_contract?
+    return false unless record.is_a?(::FleetContract) && record.personal?
+    return false if user.blank? || record.created_by_id != user.id
+
+    index?
+  end
+
+  private def contract_fleet
+    case record
+    when ::FleetContract then record.fleet
+    when ::Fleet then record
+    else fleet
+    end
   end
 
   def manage?

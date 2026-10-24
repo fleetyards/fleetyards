@@ -84,10 +84,13 @@ class FleetContract < ApplicationRecord
   validate :goods_asked_for_once
   validate :hangar_destination_is_the_authors
   validate :destination_selectable_by_editor, if: :destination_changing?
+  validate :personal_contracts_allowed, on: :create, if: :personal?
 
   before_save :update_slug
 
   scope :active, -> { where(aasm_state: %w[open in_progress]) }
+  scope :personal, -> { where.not(destination_inventory_id: nil) }
+  scope :fleet_owned, -> { where(destination_inventory_id: nil) }
   scope :closed, -> { where(aasm_state: %w[fulfilled settled cancelled expired]) }
 
   # The contracts somebody is actually working, which is the accepted seats --
@@ -247,6 +250,12 @@ class FleetContract < ApplicationRecord
 
   def hangar_destination?
     destination_inventory.present?
+  end
+
+  # Delivering into the author's own inventory rather than the fleet's: the
+  # author is the one paying for it.
+  def personal?
+    destination_inventory_id.present? || destination_inventory.present?
   end
 
   # Only a transport contract has somewhere to collect from, so only it has a
@@ -484,6 +493,12 @@ class FleetContract < ApplicationRecord
   private def destination_changing?
     destination_chosen_by.present? &&
       (will_save_change_to_destination_fleet_inventory_id? || will_save_change_to_destination_inventory_id?)
+  end
+
+  private def personal_contracts_allowed
+    return if fleet.blank? || fleet.personal_contracts_enabled?
+
+    errors.add(:destination_inventory, :personal_contracts_disabled)
   end
 
   private def destination_selectable_by_editor
