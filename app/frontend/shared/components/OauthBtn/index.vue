@@ -53,6 +53,22 @@ const { t } = useI18n();
 const redirectBackStore = useRedirectBackStore();
 const router = useRouter();
 
+// The back route is persisted, so it can name a route a later release
+// renamed. Resolving that throws, which would block signing in entirely.
+const backRouteHref = () => {
+  const backRoute = redirectBackStore.backRoute;
+  if (!backRoute) {
+    return undefined;
+  }
+
+  try {
+    return router.resolve(backRoute).href;
+  } catch {
+    redirectBackStore.$reset();
+    return undefined;
+  }
+};
+
 const handleClick = () => {
   if (props.connected && props.disconnectable) {
     emit("disconnect", props.provider);
@@ -70,12 +86,12 @@ const handleClick = () => {
   csrfInput.value = csrfToken();
   form.appendChild(csrfInput);
 
-  const backRoute = redirectBackStore.backRoute;
-  if (backRoute) {
+  const backHref = backRouteHref();
+  if (backHref) {
     const originInput = document.createElement("input");
     originInput.type = "hidden";
     originInput.name = "origin";
-    originInput.value = window.location.origin + router.resolve(backRoute).href;
+    originInput.value = window.location.origin + backHref;
     form.appendChild(originInput);
   }
 

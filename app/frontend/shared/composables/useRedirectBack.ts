@@ -7,15 +7,22 @@ export const useRedirectBack = (fallbackRoute?: RouterLinkProps["to"]) => {
   const router = useRouter();
 
   const handleRedirect = async () => {
-    if (redirectBackStore.backRoute) {
-      await router.replace(redirectBackStore.backRoute);
-    } else if (fallbackRoute) {
-      await router.push(fallbackRoute).catch(() => {});
-    } else {
-      await router.push({ name: "home" }).catch(() => {});
+    const backRoute = redirectBackStore.backRoute;
+
+    // Reset first: a persisted back route can name a route that no longer
+    // exists, and the throw would otherwise keep it around for every login.
+    redirectBackStore.$reset();
+
+    if (backRoute) {
+      try {
+        await router.replace(backRoute);
+        return;
+      } catch {
+        // fall through to the fallback
+      }
     }
 
-    redirectBackStore.$reset();
+    await router.push(fallbackRoute ?? { name: "home" }).catch(() => {});
   };
 
   return {
