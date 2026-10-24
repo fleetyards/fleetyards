@@ -5,7 +5,7 @@
 # render their components' prices too. The locale, because components carry
 # translated labels.
 json.cache! [
-  "v5", I18n.locale, hardpoint, ::ScData::Source.current, hardpoint.facts, hardpoint.facts.component,
+  "v6", I18n.locale, hardpoint, ::ScData::Source.current, hardpoint.facts, hardpoint.facts.component,
   ItemPrice.cache_key_for("Component"), Manufacturer.artwork_version
 ] do
   json.partial!("api/v1/hardpoints/base", hardpoint:)
