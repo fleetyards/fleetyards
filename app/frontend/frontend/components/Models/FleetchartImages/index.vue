@@ -10,6 +10,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
+import Collapsed from "@/shared/components/Collapsed.vue";
 import { useEventListener } from "@vueuse/core";
 import {
   ModelStateEnum,
@@ -21,6 +22,7 @@ import {
 } from "@/frontend/composables/useModelStates";
 
 import type { Model, MediaFile } from "@/services/fyApi";
+import type { FunctionalComponent } from "vue";
 
 type Props = {
   model: Model;
@@ -132,6 +134,18 @@ const foldable = computed(() => props.collapsible && !!frontAngled.value);
 
 const collapsed = computed(() => foldable.value && !expanded.value);
 
+// The folded views mount on the first tap rather than with the page, so a phone
+// downloads them only when asked, and stay mounted so folding can animate too.
+const mounted = ref(false);
+
+// Waiting for the views before unfolding: an image that has not arrived has no
+// height, so the animation would open to a sliver and then jump.
+const opening = ref(false);
+
+// Stands in for Collapsed where the views do not fold, keeping the cells in the
+// grid itself.
+const Passthrough: FunctionalComponent = (_, { slots }) => slots.default?.();
+
 // The coloured views run to several megabytes each, so switching state leaves the
 // previous set on screen for a beat. Settled by URL rather than by a counter: the
 // <img> elements stay put across a switch, so each one reports the file it just
@@ -139,7 +153,7 @@ const collapsed = computed(() => foldable.value && !expanded.value);
 const settledUrls = ref(new Set<string>());
 
 const currentUrls = computed(() =>
-  (collapsed.value
+  (collapsed.value && !mounted.value
     ? [frontAngled.value]
     : viewSets.value.flatMap((set) => [
         set.angled,
@@ -171,17 +185,37 @@ watch(
   () => props.model.id,
   () => {
     expanded.value = false;
+    mounted.value = false;
+    opening.value = false;
     firstSetShown.value = !loading.value;
   },
 );
 
 const switching = computed(() => firstSetShown.value && loading.value);
 
-// Unfolding brings in views that were never shown, a first load like any other.
 const toggleExpanded = () => {
-  expanded.value = !expanded.value;
-  firstSetShown.value = !loading.value;
+  if (expanded.value || opening.value) {
+    expanded.value = false;
+    opening.value = false;
+
+    return;
+  }
+
+  // Views that were never shown arrive as a first load, not a state switch.
+  if (!mounted.value) {
+    mounted.value = true;
+    firstSetShown.value = !loading.value;
+  }
+
+  opening.value = true;
 };
+
+watch([opening, loading], () => {
+  if (opening.value && !loading.value) {
+    opening.value = false;
+    expanded.value = true;
+  }
+});
 
 // An image that fails settles too, or the loader would sit over a view that is
 // never going to arrive.
@@ -307,74 +341,93 @@ useEventListener(window, "resize", () => {
         role="status"
         :aria-label="t('labels.loading')"
       />
-      <template
-        v-for="set in collapsed ? viewSets.slice(0, 1) : viewSets"
-        :key="set.key"
-      >
-        <div class="fleetchart-views__cell">
-          <button
-            v-if="foldable && set.key === 'front'"
-            type="button"
-            class="fleetchart-views__fold"
-            :aria-expanded="expanded"
-            data-test="model-views-fold"
-            @click="toggleExpanded"
-          >
-            <img :src="set.angled" @load="settleImage" @error="settleImage" />
-            <span class="fleetchart-views__fold-label">
-              {{
-                expanded
-                  ? t("actions.model.hideViews")
-                  : t("actions.model.showViews")
-              }}
-              <i
-                class="fa-light"
-                :class="expanded ? 'fa-chevron-up' : 'fa-chevron-down'"
-              />
-            </span>
-          </button>
-          <img
-            v-else-if="set.angled"
-            :src="set.angled"
-            :width="(length > beam ? length : beam) * 1.2"
-            @load="settleImage"
-            @error="settleImage"
-          />
-        </div>
-        <template v-if="!collapsed">
-          <div class="fleetchart-views__cell">
-            <img
-              v-if="set.plan"
-              :src="set.plan"
-              :width="length"
-              @load="settleImage"
-              @error="settleImage"
-            />
-          </div>
-          <div class="fleetchart-views__cell" :class="{ small: mobile }">
-            <img
-              v-if="set.end"
-              :src="set.end"
-              :style="endStyle(set.key)"
-              @load="settleImage"
-              @error="settleImage"
-            />
-          </div>
-          <div class="fleetchart-views__cell">
-            <img
-              v-if="set.profile"
-              :ref="(el) => setProfileImg(set.key, el)"
-              :src="set.profile"
-              :width="length"
-              @load="
-                updateProfileHeights();
-                settleImage($event);
+      <div v-if="foldable" class="fleetchart-views__cell">
+        <button
+          type="button"
+          class="fleetchart-views__fold"
+          :aria-expanded="expanded"
+          :aria-busy="opening"
+          data-test="model-views-fold"
+          @click="toggleExpanded"
+        >
+          <img :src="frontAngled" @load="settleImage" @error="settleImage" />
+          <span class="fleetchart-views__fold-label">
+            {{
+              expanded
+                ? t("actions.model.hideViews")
+                : t("actions.model.showViews")
+            }}
+            <i
+              class="fa-light"
+              :class="
+                opening
+                  ? 'fa-spinner-third fa-spin'
+                  : expanded
+                    ? 'fa-chevron-up'
+                    : 'fa-chevron-down'
               "
-              @error="settleImage"
             />
-          </div>
+          </span>
+        </button>
+      </div>
+      <component
+        :is="foldable ? Collapsed : Passthrough"
+        v-bind="
+          foldable
+            ? { visible: expanded, class: 'fleetchart-views__folded' }
+            : {}
+        "
+      >
+        <template v-if="!foldable || mounted">
+          <template v-for="set in viewSets" :key="set.key">
+            <div
+              v-if="!foldable || set.key !== 'front'"
+              class="fleetchart-views__cell"
+            >
+              <img
+                v-if="set.angled"
+                :src="set.angled"
+                :width="(length > beam ? length : beam) * 1.2"
+                @load="settleImage"
+                @error="settleImage"
+              />
+            </div>
+            <div class="fleetchart-views__cell">
+              <img
+                v-if="set.plan"
+                :src="set.plan"
+                :width="length"
+                @load="settleImage"
+                @error="settleImage"
+              />
+            </div>
+            <!-- Folding views take the full width under a height cap instead,
+                 and a hidden profile has no height to match. -->
+            <div class="fleetchart-views__cell" :class="{ small: mobile }">
+              <img
+                v-if="set.end"
+                :src="set.end"
+                :style="collapsible ? undefined : endStyle(set.key)"
+                @load="settleImage"
+                @error="settleImage"
+              />
+            </div>
+            <div class="fleetchart-views__cell">
+              <img
+                v-if="set.profile"
+                :ref="(el) => setProfileImg(set.key, el)"
+                :src="set.profile"
+                :width="length"
+                @load="
+                  updateProfileHeights();
+                  settleImage($event);
+                "
+                @error="settleImage"
+              />
+            </div>
+          </template>
         </template>
-      </template>
+      </component>
     </div>
   </div>
 </template>

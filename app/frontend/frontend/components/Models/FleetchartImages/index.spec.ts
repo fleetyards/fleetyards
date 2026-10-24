@@ -11,6 +11,7 @@ vi.mock("@/shared/composables/useI18n", () => ({
 }));
 
 import FleetchartImages from "./index.vue";
+import Collapsed from "@/shared/components/Collapsed.vue";
 
 // jsdom reports a width of 0, which reads as a phone and picks the medium
 // variant of every image. The views are a desktop grid, so the specs state the
@@ -353,8 +354,26 @@ describe("the collapsible views", () => {
       props: { model: model(media), collapsible: true },
     });
 
-  const sources = (wrapper: Awaited<ReturnType<typeof mountCollapsible>>) =>
+  type Wrapper = Awaited<ReturnType<typeof mountCollapsible>>;
+
+  const sources = (wrapper: Wrapper) =>
     wrapper.findAll("img").map((img) => img.attributes("src"));
+
+  const fold = (wrapper: Wrapper) =>
+    wrapper.find('[data-test="model-views-fold"]');
+
+  const settleAll = async (wrapper: Wrapper) => {
+    for (const img of wrapper.findAll("img")) {
+      Object.defineProperty(img.element, "complete", {
+        value: true,
+        configurable: true,
+      });
+      await img.trigger("load");
+    }
+  };
+
+  const unfolded = (wrapper: Wrapper) =>
+    wrapper.findComponent(Collapsed).props("visible");
 
   it("starts as the angled view alone, with the state switch", async () => {
     const wrapper = await mountCollapsible(ALL_VIEWS);
@@ -368,17 +387,30 @@ describe("the collapsible views", () => {
     ).toBe("false");
   });
 
-  it("opens every view when the angled view is tapped", async () => {
+  it("fetches the other views on the first tap and unfolds once they arrive", async () => {
     const wrapper = await mountCollapsible(ALL_VIEWS);
 
-    await wrapper.find('[data-test="model-views-fold"]').trigger("click");
+    await fold(wrapper).trigger("click");
 
     expect(sources(wrapper)).toHaveLength(8);
-    expect(
-      wrapper
-        .find('[data-test="model-views-fold"]')
-        .attributes("aria-expanded"),
-    ).toBe("true");
+    expect(unfolded(wrapper)).toBe(false);
+    expect(fold(wrapper).attributes("aria-busy")).toBe("true");
+
+    await settleAll(wrapper);
+
+    expect(unfolded(wrapper)).toBe(true);
+    expect(fold(wrapper).attributes("aria-expanded")).toBe("true");
+    expect(fold(wrapper).attributes("aria-busy")).toBe("false");
+  });
+
+  it("gives up on unfolding when tapped again while the views arrive", async () => {
+    const wrapper = await mountCollapsible(ALL_VIEWS);
+
+    await fold(wrapper).trigger("click");
+    await fold(wrapper).trigger("click");
+    await settleAll(wrapper);
+
+    expect(unfolded(wrapper)).toBe(false);
   });
 
   it("unfolds without dimming the angled view under a loader", async () => {
@@ -395,14 +427,19 @@ describe("the collapsible views", () => {
     expect(wrapper.find(".fleetchart-views--loading").exists()).toBe(false);
   });
 
-  it("folds back on a second tap", async () => {
+  it("folds back on a second tap, keeping the views for the next unfold", async () => {
     const wrapper = await mountCollapsible(ALL_VIEWS);
-    const fold = wrapper.find('[data-test="model-views-fold"]');
 
-    await fold.trigger("click");
-    await fold.trigger("click");
+    await fold(wrapper).trigger("click");
+    await settleAll(wrapper);
+    await fold(wrapper).trigger("click");
 
-    expect(sources(wrapper)).toEqual(["https://cdn.test/angled?large"]);
+    expect(unfolded(wrapper)).toBe(false);
+    expect(sources(wrapper)).toHaveLength(8);
+
+    await fold(wrapper).trigger("click");
+
+    expect(unfolded(wrapper)).toBe(true);
   });
 
   it("still offers the state switch for a ship without views", async () => {

@@ -60,6 +60,14 @@ $views-max-height: 240px;
   }
 }
 
+// No margin or padding of its own: Collapsed holds those at zero while it
+// animates and they would snap in at the end.
+.fleetchart-views__folded {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
 .fleetchart-views__fold {
   display: flex;
   flex-direction: column;
