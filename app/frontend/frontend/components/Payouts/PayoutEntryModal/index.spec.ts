@@ -37,6 +37,7 @@ const participant = {
   payoutLedgerId: "ledger-1",
   displayName: "Mal",
   guest: false,
+  payer: false,
   weight: "1.0",
 } as PayoutParticipant;
 

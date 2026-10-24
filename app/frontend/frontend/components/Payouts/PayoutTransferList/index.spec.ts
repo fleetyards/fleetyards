@@ -8,6 +8,7 @@ const participant = (id: string, displayName: string) => ({
   payoutLedgerId: "ledger-1",
   displayName,
   guest: false,
+  payer: false,
 });
 
 const transfer = (overrides: Partial<PayoutTransfer> = {}): PayoutTransfer =>

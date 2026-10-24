@@ -3,8 +3,9 @@
 class PayoutParticipant < ApplicationRecord
   belongs_to :payout_ledger, touch: true
   belongs_to :user, optional: true
-  # A contract's payer is the fleet, and a free-text guest standing in for it
-  # could not be authorised, notified or linked.
+  # A fleet contract's payer is the fleet, and a free-text guest standing in for
+  # it could not be authorised, notified or linked. A personal contract's payer
+  # is its author, so `payer` rather than the fleet says who is paying.
   belongs_to :fleet, optional: true
   belongs_to :added_by, class_name: "User", optional: true
 
@@ -33,6 +34,8 @@ class PayoutParticipant < ApplicationRecord
   # change here has to reach all of them, not only the tab that made it.
   after_commit :broadcast_ledger_change
 
+  scope :payees, -> { where(payer: false) }
+
   def guest? = user_id.blank? && fleet_id.blank?
 
   def display_name
@@ -40,7 +43,7 @@ class PayoutParticipant < ApplicationRecord
   end
 
   def self.ransackable_attributes(_auth_object = nil)
-    %w[payout_ledger_id user_id fleet_id name weight created_at updated_at]
+    %w[payout_ledger_id user_id fleet_id payer name weight created_at updated_at]
   end
 
   def self.ransackable_associations(_auth_object = nil)

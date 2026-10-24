@@ -42324,6 +42324,8 @@ components:
           type: string
         guest:
           type: boolean
+        payer:
+          type: boolean
         weight:
           type: string
         user:
@@ -42341,6 +42343,7 @@ components:
       - payoutLedgerId
       - displayName
       - guest
+      - payer
       - weight
       additionalProperties: false
       title: PayoutParticipant

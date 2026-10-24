@@ -21,6 +21,7 @@ const entry = (overrides: Partial<PayoutEntry> = {}): PayoutEntry =>
       payoutLedgerId: "ledger-1",
       displayName: "Mal",
       guest: false,
+      payer: false,
       weight: "1.0",
     },
     ...overrides,

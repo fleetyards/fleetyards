@@ -13,6 +13,7 @@ const participant = (
   payoutLedgerId: "ledger-1",
   displayName,
   guest,
+  payer: false,
   weight,
 });
 

@@ -3,7 +3,8 @@
 module Payouts
   class Settlement
     # A contract has a client and contractors rather than a crew splitting a
-    # take. The fleet is the payer: the reward it holds is divided across the
+    # take. The client -- the fleet, or the author of a personal contract -- is
+    # the payer: the reward it holds is divided across the
     # contractors by the weight Contracts::Progress gave them, and the expenses
     # they fronted are reimbursed on top of it rather than out of it -- a
     # contractor who bought the goods is made whole before any reward is divided,
@@ -18,7 +19,7 @@ module Payouts
     # balances still sum to zero.
     module ContractPayout
       def self.shares(participants:, profit_minor:, expenses_minor:)
-        payers, payees = participants.partition { |participant| participant.fleet_id.present? }
+        payers, payees = participants.partition(&:payer?)
 
         # Nobody to pay yet: the money stays with whoever holds it rather than
         # dividing by nothing.

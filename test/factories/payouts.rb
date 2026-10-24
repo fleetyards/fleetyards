@@ -26,6 +26,7 @@ FactoryBot.define do
     trait :fleet do
       user { nil }
       fleet
+      payer { true }
     end
   end
 
