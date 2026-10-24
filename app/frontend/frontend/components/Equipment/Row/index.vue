@@ -71,7 +71,15 @@ const badges = computed<RowListItemBadge[]>(() => {
     :badges="badges"
   >
     <template #leading>
-      <EquipmentIcon :equipment="equipment" />
+      <img
+        v-if="equipment.storeImage?.smallUrl"
+        class="equipment-row__image"
+        :src="equipment.storeImage.smallUrl"
+        alt=""
+        loading="lazy"
+        data-test="equipment-row-image"
+      />
+      <EquipmentIcon v-else :equipment="equipment" />
     </template>
 
     <!-- The name is already the row's link, so it opens the card without
@@ -122,6 +130,14 @@ const badges = computed<RowListItemBadge[]>(() => {
 <style lang="scss" scoped>
 // The figures drop out on a narrow screen rather than squeezing the name.
 .equipment-row {
+  &__image {
+    flex: 0 0 auto;
+    width: 112px;
+    height: 63px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+
   :deep(.component-lead-metric) {
     display: none;
     flex: none;

@@ -74,6 +74,24 @@ describe("Equipment/Row", () => {
     expect(links[1].attributes("href")).toContain("itemTypeIn=assault_rifle");
   });
 
+  it("leads with its store image in place of the type icon", async () => {
+    const wrapper = await mount({
+      storeImage: { smallUrl: "https://example.test/small.jpg" },
+    } as Partial<Equipment>);
+
+    expect(
+      wrapper.find("[data-test='equipment-row-image']").attributes("src"),
+    ).toBe("https://example.test/small.jpg");
+  });
+
+  it("keeps the type icon without a store image", async () => {
+    const wrapper = await mount();
+
+    expect(wrapper.find("[data-test='equipment-row-image']").exists()).toBe(
+      false,
+    );
+  });
+
   it("marks an item the current build has dropped", async () => {
     const wrapper = await mount({ retired: true });
 
