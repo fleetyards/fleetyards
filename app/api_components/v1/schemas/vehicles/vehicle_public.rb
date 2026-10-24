@@ -51,6 +51,10 @@ module V1
             cargo: {type: :number},
             # Sent without a loadout, when the ship's cargo modules would add more.
             cargoWithModules: {type: :number},
+            # The guns fitted, by size: the active loadout's, or the ones the
+            # ship comes with.
+            maxWeaponSize: {type: [:integer, :null]},
+            weaponSizes: {type: :array, items: ::V1::Schemas::Vehicles::WeaponSizeCount},
             modelUpgradeIds: {type: :array, items: {type: :string, format: :uuid}},
             modulePackage: {"$ref": "#/components/schemas/ModelModulePackage"},
             upgrade: {"$ref": "#/components/schemas/ModelUpgrade"},
@@ -61,7 +65,7 @@ module V1
           },
           additionalProperties: false,
           required: %w[
-            id model loaner bundled publicLogEntriesCount modelUpgradeIds hangarGroupIds hangarGroups modelModuleIds
+            id model loaner bundled publicLogEntriesCount modelUpgradeIds hangarGroupIds hangarGroups modelModuleIds weaponSizes
             createdAt updatedAt
           ]
         })

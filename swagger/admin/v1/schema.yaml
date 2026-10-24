@@ -22922,6 +22922,8 @@ components:
       - modelProductionStatus desc
       - rank asc
       - rank desc
+      - maxWeaponSize asc
+      - maxWeaponSize desc
       x-enumNames:
       - FLAGSHIP_DESC
       - FLAGSHIP_ASC
@@ -22959,6 +22961,8 @@ components:
       - MODEL_PRODUCTION_STATUS_DESC
       - RANK_ASC
       - RANK_DESC
+      - MAX_WEAPON_SIZE_ASC
+      - MAX_WEAPON_SIZE_DESC
       title: VehicleSortEnum
     Vehicles:
       type: object

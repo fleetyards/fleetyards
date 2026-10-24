@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_23_190000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_24_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1884,6 +1884,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_23_190000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["version", "name"], name: "index_loading_screens_on_version_and_name", unique: true
+  end
+
+  create_table "loadout_stats", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "environment", null: false
+    t.uuid "fitting_id", null: false
+    t.string "fitting_type", null: false
+    t.integer "max_weapon_size"
+    t.datetime "updated_at", null: false
+    t.string "version", null: false
+    t.jsonb "weapon_sizes", default: {}, null: false
+    t.index ["fitting_type", "fitting_id", "environment"], name: "index_loadout_stats_on_fitting_and_environment", unique: true
   end
 
   create_table "location_builds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

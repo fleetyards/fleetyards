@@ -16,7 +16,7 @@ module Api
         def show
           normalize_sort_params(vehicle_query_params)
           vehicle_query_params["sorts"] = Vehicle.with_rank_tiebreak(
-            Vehicle.fitted_cargo_sorts(
+            Vehicle.fitted_sorts(
               sorting_params(Vehicle, vehicle_query_params[:sorts], @user.hangar_sorting_params),
               public_only: true
             )
@@ -33,7 +33,7 @@ module Api
             Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
           )
             .order(@q.result.order_values)
-            .includes({model: :manufacturer}, {vehicle_loadouts: {items: :blueprint}}, :launch_port_location)
+            .includes({model: :manufacturer}, *Vehicle::LOADOUT_PRELOADS, :launch_port_location)
             # What the vehicle partial reads per vehicle, which ran a handful of
             # queries each on every vehicle whose fragment was not cached yet.
             .preload(:model_modules, :model_upgrades, :public_hangar_groups, {image_attachment: :blob}, Vehicle::PICTURE_PRELOADS, user: {avatar_attachment: :blob})
@@ -53,7 +53,7 @@ module Api
             .pluck(:id)
 
           normalize_sort_params(vehicle_query_params)
-          vehicle_query_params["sorts"] = Vehicle.fitted_cargo_sorts(
+          vehicle_query_params["sorts"] = Vehicle.fitted_sorts(
             sorting_params(Vehicle, vehicle_query_params[:sorts], ["model_name asc"]),
             public_only: true
           )
@@ -66,7 +66,7 @@ module Api
             Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
           )
             .order(@q.result.order_values)
-            .includes({model: :manufacturer}, {vehicle_loadouts: {items: :blueprint}}, :launch_port_location)
+            .includes({model: :manufacturer}, *Vehicle::LOADOUT_PRELOADS, :launch_port_location)
             .preload(:model_modules, :model_upgrades, :public_hangar_groups, {image_attachment: :blob}, Vehicle::PICTURE_PRELOADS, user: {avatar_attachment: :blob})
             .joins(model: :manufacturer)
         end

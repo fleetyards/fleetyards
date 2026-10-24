@@ -11,7 +11,7 @@ module Api
 
         VEHICLE_RENDER_INCLUDES = [
           :module_package,
-          {vehicle_loadouts: {items: :blueprint}},
+          *Vehicle::LOADOUT_PRELOADS,
           :public_hangar_groups,
           {model: [:manufacturer]},
           {vehicle_modules: :model_module},

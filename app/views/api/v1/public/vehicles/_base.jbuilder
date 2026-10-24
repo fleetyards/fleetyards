@@ -24,6 +24,7 @@ end
 json.model_module_ids vehicle.model_module_ids
 json.cargo vehicle.fitted_cargo(public_only: true).to_f
 json.cargo_with_modules vehicle.cargo_with_modules(public_only: true)&.to_f
+json.partial!("api/v1/vehicles/weapons", stat: vehicle.fitted_weapons(public_only: true))
 json.model_upgrade_ids vehicle.model_upgrade_ids
 
 unless vehicle.user.hide_owner?

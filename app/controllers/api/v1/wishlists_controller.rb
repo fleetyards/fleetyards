@@ -35,7 +35,7 @@ module Api
         scope = will_it_fit?(scope) if vehicle_query_params["will_it_fit"].present?
 
         normalize_sort_params(vehicle_query_params)
-        vehicle_query_params["sorts"] = Vehicle.fitted_cargo_sorts(
+        vehicle_query_params["sorts"] = Vehicle.fitted_sorts(
           sorting_params(Vehicle, vehicle_query_params["sorts"], ["name asc", "model_name asc"])
         )
 
@@ -45,7 +45,7 @@ module Api
         )
           .order(@q.result.order_values)
           .preload(Vehicle::PICTURE_PRELOADS)
-          .includes(:vehicle_upgrades, :model_upgrades, :launch_port_location, :user, model: [:manufacturer])
+          .includes(:vehicle_upgrades, :model_upgrades, :launch_port_location, :user, *Vehicle::LOADOUT_PRELOADS, model: [:manufacturer])
           .joins(model: [:manufacturer])
 
         @vehicles = result_with_pagination(result, per_page(Vehicle))

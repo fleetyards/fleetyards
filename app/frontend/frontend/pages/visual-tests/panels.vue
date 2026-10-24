@@ -183,6 +183,7 @@ const vehicle = computed<Vehicle | undefined>(() => {
     loaner: vehiclePanelLoaner.value,
     bundled: false,
     modelModuleIds: [],
+    weaponSizes: [],
     modelUpgradeIds: [],
     modelPaintIds: [],
     nameVisible: false,

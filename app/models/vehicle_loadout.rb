@@ -28,6 +28,8 @@ class VehicleLoadout < ApplicationRecord
     inverse_of: :vehicle_loadout,
     dependent: :delete_all
 
+  has_many :loadout_stats, as: :fitting, dependent: :delete_all
+
   before_validation :set_default_name, if: -> { name.blank? }
 
   validates :url, presence: true, if: :kind_link?
@@ -39,6 +41,7 @@ class VehicleLoadout < ApplicationRecord
   validate :power_presets_fit
 
   after_save :write_item_list, unless: -> { item_list.nil? }
+  after_commit :refresh_stats, on: %i[create update], if: :kind_fleetyards?
 
   attr_reader :item_list
 
@@ -335,6 +338,10 @@ class VehicleLoadout < ApplicationRecord
     @loadout_slots = nil
     @saved_craftings = nil
     touch
+  end
+
+  private def refresh_stats
+    LoadoutStatsJob.perform_async(id)
   end
 
   private def set_default_name

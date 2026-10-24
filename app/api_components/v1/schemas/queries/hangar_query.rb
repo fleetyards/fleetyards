@@ -11,6 +11,8 @@ module V1
           properties: {
             cargoGteq: {type: :number},
             cargoLteq: {type: :number},
+            maxWeaponSizeGteq: {type: :integer},
+            maxWeaponSizeLteq: {type: :integer},
             beamGteq: {type: :number},
             beamLteq: {type: :number},
             classificationIn: {type: :array, items: {type: :string}},

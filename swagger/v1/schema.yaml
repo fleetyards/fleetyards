@@ -34924,6 +34924,10 @@ components:
           type: number
         cargoLteq:
           type: number
+        maxWeaponSizeGteq:
+          type: integer
+        maxWeaponSizeLteq:
+          type: integer
         beamGteq:
           type: number
         beamLteq:
@@ -41725,6 +41729,8 @@ components:
       - modelProductionStatus desc
       - rank asc
       - rank desc
+      - maxWeaponSize asc
+      - maxWeaponSize desc
       -
       x-enumNames:
       - FLAGSHIP_DESC
@@ -41763,6 +41769,8 @@ components:
       - MODEL_PRODUCTION_STATUS_DESC
       - RANK_ASC
       - RANK_DESC
+      - MAX_WEAPON_SIZE_ASC
+      - MAX_WEAPON_SIZE_DESC
       - 'NULL'
       title: NullableVehicleSortEnum
     OauthApplication:
@@ -45094,6 +45102,14 @@ components:
           type: number
         cargoWithModules:
           type: number
+        maxWeaponSize:
+          type:
+          - integer
+          - 'null'
+        weaponSizes:
+          type: array
+          items:
+            "$ref": "#/components/schemas/WeaponSizeCount"
         modelUpgradeIds:
           type: array
           items:
@@ -45217,6 +45233,7 @@ components:
       - hangarGroups
       - modelModuleIds
       - modelPaintIds
+      - weaponSizes
       - createdAt
       - updatedAt
       title: Vehicle
@@ -45912,6 +45929,14 @@ components:
           type: number
         cargoWithModules:
           type: number
+        maxWeaponSize:
+          type:
+          - integer
+          - 'null'
+        weaponSizes:
+          type: array
+          items:
+            "$ref": "#/components/schemas/WeaponSizeCount"
         modelUpgradeIds:
           type: array
           items:
@@ -45942,6 +45967,7 @@ components:
       - hangarGroupIds
       - hangarGroups
       - modelModuleIds
+      - weaponSizes
       - createdAt
       - updatedAt
       title: VehiclePublic
@@ -45984,6 +46010,8 @@ components:
       - modelProductionStatus desc
       - rank asc
       - rank desc
+      - maxWeaponSize asc
+      - maxWeaponSize desc
       x-enumNames:
       - FLAGSHIP_DESC
       - FLAGSHIP_ASC
@@ -46021,6 +46049,8 @@ components:
       - MODEL_PRODUCTION_STATUS_DESC
       - RANK_ASC
       - RANK_DESC
+      - MAX_WEAPON_SIZE_ASC
+      - MAX_WEAPON_SIZE_DESC
       title: VehicleSortEnum
     VehicleUpdateBulkInput:
       type: object
@@ -46348,6 +46378,18 @@ components:
       - type
       - subTypes
       title: WeaponRackSlotType
+    WeaponSizeCount:
+      type: object
+      properties:
+        size:
+          type: integer
+        count:
+          type: integer
+      additionalProperties: false
+      required:
+      - size
+      - count
+      title: WeaponSizeCount
     WishlistItemsList:
       type: array
       items:

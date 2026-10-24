@@ -5414,6 +5414,14 @@ components:
           type: number
         cargoWithModules:
           type: number
+        maxWeaponSize:
+          type:
+          - integer
+          - 'null'
+        weaponSizes:
+          type: array
+          items:
+            "$ref": "#/components/schemas/WeaponSizeCount"
         modelUpgradeIds:
           type: array
           items:
@@ -5537,6 +5545,7 @@ components:
       - hangarGroups
       - modelModuleIds
       - modelPaintIds
+      - weaponSizes
       - createdAt
       - updatedAt
     VehicleBundledParent:
@@ -5756,6 +5765,17 @@ components:
       required:
       - type
       - subTypes
+    WeaponSizeCount:
+      type: object
+      properties:
+        size:
+          type: integer
+        count:
+          type: integer
+      additionalProperties: false
+      required:
+      - size
+      - count
   messages:
     AnnouncementMessage:
       payload:

@@ -11,7 +11,7 @@ module Api
 
         def show
           normalize_sort_params(vehicle_query_params)
-          vehicle_query_params["sorts"] = Vehicle.fitted_cargo_sorts(
+          vehicle_query_params["sorts"] = Vehicle.fitted_sorts(
             sorting_params(Vehicle, vehicle_query_params[:sorts], ["name asc", "model_name asc"]),
             public_only: true
           )
@@ -25,7 +25,7 @@ module Api
             Vehicle.arel_table[:id].in(@q.result(distinct: true).reorder(nil).select(:id).arel)
           )
             .order(@q.result.order_values)
-            .includes({model: :manufacturer}, {vehicle_loadouts: {items: :blueprint}}, :launch_port_location, :user)
+            .includes({model: :manufacturer}, *Vehicle::LOADOUT_PRELOADS, :launch_port_location, :user)
             .joins(model: :manufacturer)
 
           @vehicles = result_with_pagination(result, per_page(Vehicle))
