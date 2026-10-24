@@ -1,8 +1,11 @@
 import { computed, toValue, type MaybeRefOrGetter } from "vue";
-import type { LocationQuery, LocationQueryRaw } from "vue-router";
+import type { LocationQuery } from "vue-router";
 import type { ActiveFilter } from "@/shared/components/ActiveFilters/types";
 import { useI18n } from "@/shared/composables/useI18n";
-import { summarizeShipFilters } from "@/frontend/composables/useShipFilterSummary";
+import {
+  summarizeShipFilters,
+  withoutFilters,
+} from "@/frontend/composables/useShipFilterSummary";
 import { useFleetRoles } from "@/services/fyApi";
 
 // Each has a control of its own on the page -- the search in the header, the
@@ -19,6 +22,7 @@ const LABELS: Record<string, string> = {
   invitedAt: "labels.fleet.members.invited",
   requestedAt: "labels.fleet.members.requested",
   declinedAt: "labels.fleet.members.declined",
+  squadronMembershipCreatedAt: "labels.fleet.squadrons.joinedAt",
   inactiveSince: "labels.filters.fleets.members.inactiveSince",
   verifiedEq: "labels.filters.fleets.members.verified",
   withoutRsiHandle: "labels.filters.fleets.members.withoutRsiHandle",
@@ -28,10 +32,8 @@ const LABELS: Record<string, string> = {
 
 /*
  * The roster's filters as chips. Most of them live in the sidebar, which is
- * collapsed by default, so a filter that arrived with a link -- the health
- * page's "unverified" list, say -- otherwise narrowed the roster with nothing
- * on screen to say so, and picking a squadron afterwards read as members
- * missing from it.
+ * collapsed by default, and a link can set any of them -- the health page's
+ * lists do -- so without the chips a narrowed roster looks like a whole one.
  *
  * `applied` is the query the list is actually asked: the open view leaves the
  * other view's filters out, and so do its chips.
@@ -63,10 +65,21 @@ export const useMemberFilterSummary = (
     },
   }));
 
-  const label = (key: string) => (LABELS[key] ? t(LABELS[key]) : key);
+  // A key the form has no field for can still arrive with a link.
+  const label = (key: string) =>
+    LABELS[key]
+      ? t(LABELS[key])
+      : key
+          .replace(/(?:In|Eq|Cont)$/, "")
+          .replace(/([A-Z])/g, " $1")
+          .replace(/^./, (char) => char.toUpperCase());
 
-  const formatValue = (value: string, key: string) =>
-    valueLabels.value[key]?.[value] ?? value;
+  const formatValue = (value: string, key: string) => {
+    const known = valueLabels.value[key]?.[value];
+    if (known) return known;
+    if (value === "true" || value === "false") return t(`labels.${value}`);
+    return value;
+  };
 
   const activeFilters = computed<ActiveFilter[]>(() => {
     const query = { ...toValue(applied) };
@@ -75,14 +88,16 @@ export const useMemberFilterSummary = (
 
     return summarizeShipFilters(query, label, formatValue).map((item) => ({
       id: item.id,
-      label: TOGGLES.includes(item.id) ? label(item.id) : item.label,
+      label:
+        TOGGLES.includes(item.id) && String(query[item.id]) === "true"
+          ? label(item.id)
+          : item.label,
       remove: async () => {
-        const next: LocationQueryRaw = { ...route.query };
-
-        item.keys.forEach((key) => delete next[key]);
-        delete next.page;
-
-        await router.push({ path: route.path, query: next, hash: route.hash });
+        await router.push({
+          path: route.path,
+          query: withoutFilters(route.query, item.keys),
+          hash: route.hash,
+        });
       },
     }));
   });

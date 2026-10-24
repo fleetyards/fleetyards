@@ -45,8 +45,6 @@ const summarize = async (
 };
 
 describe("useMemberFilterSummary", () => {
-  // The health page's "unverified" link sets it, and nothing else on the
-  // roster said it was still narrowing the list.
   it("shows a verification filter that arrived with a link", async () => {
     const { activeFilters, wrapper } = await summarize({
       verifiedEq: "false",
@@ -73,6 +71,30 @@ describe("useMemberFilterSummary", () => {
       "labels.filters.fleets.members.withoutDiscord",
       "labels.fleet.members.joined: ≥ 2026-01-01",
     ]);
+    wrapper.unmount();
+  });
+
+  it("names a key the form has no field for, and a box left unticked by its value", async () => {
+    const { activeFilters, wrapper } = await summarize({
+      nicknameCont: "kudl",
+      withoutDiscord: "false",
+    });
+
+    expect(activeFilters.value.map((item) => item.label)).toEqual([
+      "Nickname: kudl",
+      "labels.filters.fleets.members.withoutDiscord: labels.false",
+    ]);
+    wrapper.unmount();
+  });
+
+  it("removes a filter nested under q", async () => {
+    const { activeFilters, router, wrapper } = await summarize({
+      q: { verifiedEq: "false" },
+    } as unknown as LocationQuery);
+
+    await activeFilters.value[0].remove();
+
+    expect(router.currentRoute.value.query).toEqual({});
     wrapper.unmount();
   });
 
