@@ -12,10 +12,20 @@ class LoadoutStat < ApplicationRecord
 
   def self.refresh(source = ::ScData::Source.current.served)
     ::ScData::Source.with(source) do
-      Model.find_each { |model| write(model, LoadoutSlots.new(model), source) }
+      Model.find_each { |model| write(model, stock_slots(model), source) }
 
-      VehicleLoadout.kind_fleetyards.includes(:items, vehicle: :model).find_each do |loadout|
-        write(loadout, loadout.slots, source)
+      fleetyards_loadouts.find_each { |loadout| write(loadout, loadout.slots, source) }
+    end
+  end
+
+  def self.refresh_model(model)
+    ::ScData::Source.available.each do |source|
+      ::ScData::Source.with(source) do
+        write(model, stock_slots(model), source)
+
+        fleetyards_loadouts.where(vehicles: {model_id: model.id}).find_each do |loadout|
+          write(loadout, loadout.slots, source)
+        end
       end
     end
   end
@@ -24,6 +34,20 @@ class LoadoutStat < ApplicationRecord
     ::ScData::Source.available.each do |source|
       ::ScData::Source.with(source) { write(loadout, loadout.slots, source) }
     end
+  end
+
+  def self.fleetyards_loadouts
+    VehicleLoadout.kind_fleetyards.joins(:vehicle).includes(:items, vehicle: :model)
+  end
+
+  # A ship as it comes has its stock modules fitted, which a loadout fits by
+  # choice or not at all.
+  def self.stock_slots(model)
+    modules = ModuleHardpoint.stock_modules(model).map do |slot, model_module_id|
+      {slot_path: slot, item_type: "ModelModule", item_id: model_module_id}
+    end
+
+    LoadoutSlots.new(model, modules)
   end
 
   def self.write(fitting, slots, source)
@@ -42,7 +66,9 @@ class LoadoutStat < ApplicationRecord
     )
   end
 
-  def self.for_environment(stats, environment = ::ScData::Source.current.served.environment)
+  # A source is served from its own environment, so the environment needs no
+  # build resolved.
+  def self.for_environment(stats, environment = ::ScData::Source.current.environment)
     stats.find { |stat| stat.environment == environment }
   end
 end

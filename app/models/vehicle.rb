@@ -165,6 +165,10 @@ class Vehicle < ApplicationRecord
   has_many :model_paints, through: :vehicle_paints
   # A paint of the old model is not a paint this ship can own.
   after_save :drop_paints_of_another_model, if: :saved_change_to_model_id?
+  # A loadout's guns are read off the ship it fits. Noted on the update itself:
+  # a touch from a loadout commits too, and still reports the create's changes.
+  after_update -> { @model_changed = true }, if: :saved_change_to_model_id?
+  after_commit :refresh_loadout_stats, on: :update, if: -> { @model_changed }
 
   # Everything `api/v1/vehicles/_base.jbuilder` reaches for. It renders the whole
   # model partial per vehicle, so `Model.rendered_associations` comes along
@@ -403,7 +407,7 @@ class Vehicle < ApplicationRecord
   # is not answered with the stock ones. Read for the source the reader is on.
   # Mirrors `#fitted_weapons`.
   def self.fitted_max_weapon_size_sql(public_only: false)
-    loadout_stat = sanitize_sql_array([<<~SQL.squish, ::ScData::Source.current.served.environment])
+    loadout_stat = sanitize_sql_array([<<~SQL.squish, ::ScData::Source.current.environment])
       FROM loadout_stats fitted_stats
       JOIN vehicle_loadouts fitted_loadouts
         ON fitted_stats.fitting_type = 'VehicleLoadout'
@@ -414,7 +418,7 @@ class Vehicle < ApplicationRecord
         #{"AND fitted_loadouts.public = TRUE" if public_only}
         AND fitted_stats.environment = ?
     SQL
-    stock_stat = sanitize_sql_array([<<~SQL.squish, ::ScData::Source.current.served.environment])
+    stock_stat = sanitize_sql_array([<<~SQL.squish, ::ScData::Source.current.environment])
       SELECT stock_stats.max_weapon_size FROM loadout_stats stock_stats
       WHERE stock_stats.fitting_type = 'Model'
         AND stock_stats.fitting_id = vehicles.model_id
@@ -425,7 +429,7 @@ class Vehicle < ApplicationRecord
     # descending sort puts first.
     <<~SQL.squish
       COALESCE(CASE WHEN EXISTS (SELECT 1 #{loadout_stat})
-        THEN (SELECT fitted_stats.max_weapon_size #{loadout_stat})
+        THEN (SELECT MAX(fitted_stats.max_weapon_size) #{loadout_stat})
         ELSE (#{stock_stat})
       END, 0)
     SQL
@@ -952,6 +956,13 @@ class Vehicle < ApplicationRecord
     stat = fitted_loadout(public_only:)&.then { |loadout| LoadoutStat.for_environment(loadout.loadout_stats) }
 
     stat || LoadoutStat.for_environment(model.loadout_stats)
+  end
+
+  private def refresh_loadout_stats
+    @model_changed = false
+    vehicle_loadouts.kind_fleetyards.pluck(:id).each do |id|
+      LoadoutStatsJob.perform_async("vehicle_loadout_id" => id)
+    end
   end
 
   def fitted_cargo(public_only: false)

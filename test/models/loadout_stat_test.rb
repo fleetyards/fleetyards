@@ -88,10 +88,64 @@ class LoadoutStatTest < ActiveSupport::TestCase
     end
   end
 
+  test "switching, renaming or showing a loadout queues nothing, as its guns stay the same" do
+    loadout = fit(["hardpoint_gun_left/hardpoint_class_2", @small_gun])
+    other = fit(["hardpoint_gun_right/hardpoint_class_2", @small_gun])
+
+    assert_no_difference -> { LoadoutStatsJob.jobs.size } do
+      loadout.activate!
+      loadout.update!(name: "Renamed", public: true)
+    end
+
+    assert_difference -> { LoadoutStatsJob.jobs.size }, 1 do
+      other.update!(item_list: [])
+    end
+  end
+
+  test "a vehicle moved to another ship queues its loadouts' refresh" do
+    loadout = fit(["hardpoint_gun_left/hardpoint_class_2", @small_gun])
+    LoadoutStatsJob.jobs.clear
+
+    @vehicle.update!(model: create(:model, production_status: "flight-ready"))
+
+    assert_equal [{"vehicle_loadout_id" => loadout.id}], LoadoutStatsJob.jobs.map { |job| job["args"].first }
+  end
+
+  test "a reloaded ship refreshes its stock guns and its loadouts" do
+    loadout = fit(["hardpoint_gun_left/hardpoint_class_2", @small_gun])
+
+    LoadoutStatsJob.new.perform("model_id" => @model.id)
+
+    assert_equal 3, stat_of(@model).max_weapon_size
+    assert_equal({"3" => 1, "2" => 1}, stat_of(loadout).weapon_sizes)
+  end
+
+  test "counts the guns of the modules a ship comes with" do
+    turret = create(:model_module, sc_key: "TEST_Turret_Module")
+    create(:module_hardpoint, model: @model, model_module: turret, slot: "hardpoint_module")
+    port(@model, "hardpoint_module", category: :module,
+      component: create(:component, category: :module, component_type: "Module", sc_key: "test_turret_module"))
+    port(turret, "hardpoint_module_gun", types: ["WeaponGun"], min_size: 5, max_size: 5,
+      component: create(:component, component_type: "WeaponGun", category: "weapons", size: "5"))
+
+    LoadoutStat.refresh(@source)
+
+    assert_equal({"5" => 1, "3" => 2}, stat_of(@model).weapon_sizes)
+  end
+
+  test "a vehicle left with two active loadouts still reads its guns" do
+    first = fit(["hardpoint_gun_left/hardpoint_class_2", nil], ["hardpoint_gun_right/hardpoint_class_2", nil])
+    fit(["hardpoint_gun_left/hardpoint_class_2", @small_gun])
+    VehicleLoadout.where(id: first.id).update_all(active: true)
+    LoadoutStat.refresh(@source)
+
+    assert_equal 3, Vehicle.where(id: @vehicle.id).pick(Arel.sql(Vehicle.fitted_max_weapon_size_sql))
+  end
+
   test "the queued refresh writes the loadout's stats" do
     loadout = fit(["hardpoint_gun_left/hardpoint_class_2", @small_gun])
 
-    LoadoutStatsJob.new.perform(loadout.id)
+    LoadoutStatsJob.new.perform("vehicle_loadout_id" => loadout.id)
 
     assert_equal 3, stat_of(loadout).max_weapon_size
   end

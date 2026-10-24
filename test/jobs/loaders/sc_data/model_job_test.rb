@@ -11,12 +11,14 @@ module Loaders
         loader.stubs(:stats).returns({})
         loader.expects(:one).with(model)
         ::ScData::Loader::ModelsLoader.stubs(:new).returns(loader)
+        ::LoadoutStatsJob.jobs.clear
 
         ::Loaders::ScData::ModelJob.new.perform(model.id)
 
         import = Imports::ScData::ModelImport.last
         assert import.present?
         assert_equal "finished", import.aasm_state
+        assert_equal [{"model_id" => model.id}], ::LoadoutStatsJob.jobs.map { |job| job["args"].first }
       end
 
       test "#perform marks import as failed on error" do

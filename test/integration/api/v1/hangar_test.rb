@@ -147,6 +147,22 @@ class Api::V1::HangarTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "lists a vehicle's guns largest first" do
+    user = create(:user)
+    sign_in user
+    model = create(:model, production_status: "flight-ready")
+    [["hardpoint_spinal", "10"], ["hardpoint_nose", "3"], ["hardpoint_wing", "3"]].each do |name, size|
+      create(:hardpoint, parent: model, sc_name: name, source: :game_files, types: %w[WeaponGun], min_size: size.to_i,
+        max_size: size.to_i, component: create(:component, component_type: "WeaponGun", category: "weapons", size:))
+    end
+    create(:vehicle, user:, model:)
+    LoadoutStat.refresh
+
+    assert_api_response :get, 200 do
+      assert_equal [{"size" => 10, "count" => 1}, {"size" => 3, "count" => 2}], parsed_body["items"].first["weaponSizes"]
+    end
+  end
+
   # A carrier holding a dock of each kind takes the branch that used to hand a
   # Hash to `or`, which Rails refuses outright -- so this filter answered with a
   # 500 for exactly the three ships anybody would pick: Polaris, Carrack, 890

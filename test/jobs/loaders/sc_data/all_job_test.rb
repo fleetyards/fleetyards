@@ -256,6 +256,7 @@ module Loaders
         assert_difference -> { ::LoadoutStatsJob.jobs.size }, 1 do
           ::Loaders::ScData::AllJob.new.perform
         end
+        assert_equal({"environment" => ::ScData::Source.current.environment}, ::LoadoutStatsJob.jobs.last["args"].first)
 
         ::ScData::Loader::BaseLoader.stubs(:all).raises(StandardError, "sc data error")
         assert_no_difference -> { ::LoadoutStatsJob.jobs.size } do
