@@ -21,6 +21,7 @@ import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useFilters } from "@/shared/composables/useFilters";
+import { useMemberFilterSummary } from "@/frontend/composables/useMemberFilterSummary";
 import {
   useMembersView,
   type MembersView,
@@ -88,6 +89,11 @@ const { isFilterSelected, getQuery } = useFilters<FleetMemberQuery>({
     await refetch();
   },
 });
+
+const { activeFilters } = useMemberFilterSummary(
+  () => props.fleet.slug,
+  () => scopedFilters(route.query),
+);
 
 const { perPage, page, updatePerPage } = usePagination();
 
@@ -255,6 +261,7 @@ const crumbs = computed<Crumb[]>(() => {
     :name="route.name?.toString() || ''"
     :async-status="asyncStatus"
     :is-filter-selected="isFilterSelected"
+    :active-filters="activeFilters"
     hide-empty
     placeholders
   >
