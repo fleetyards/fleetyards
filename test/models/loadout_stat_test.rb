@@ -28,7 +28,7 @@ class LoadoutStatTest < ActiveSupport::TestCase
     items = pairs.map do |slot, component|
       component ? {slot_path: slot, item_type: "Component", item_id: component.id} : {slot_path: slot, item_type: "Empty"}
     end
-    create(:vehicle_loadout, :fleetyards, :active, vehicle: @vehicle, public:, item_list: items)
+    create(:vehicle_loadout, :fleetyards, :active, vehicle: @vehicle, name: nil, public:, item_list: items)
   end
 
   def stat_of(fitting)
@@ -84,7 +84,7 @@ class LoadoutStatTest < ActiveSupport::TestCase
     end
 
     assert_no_difference -> { LoadoutStatsJob.jobs.size } do
-      create(:vehicle_loadout, vehicle: @vehicle)
+      create(:vehicle_loadout, vehicle: @vehicle, name: nil)
     end
   end
 
