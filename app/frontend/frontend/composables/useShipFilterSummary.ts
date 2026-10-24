@@ -77,6 +77,35 @@ export const summarizeShipFilters = (
   return summarize(query, "");
 };
 
+// The route query without the filters at `paths`, as `summarizeShipFilters`
+// names them, and without the page: a narrower list starts at its first.
+export const withoutFilters = (
+  current: LocationQuery,
+  paths: string[],
+): LocationQueryRaw => {
+  const query: LocationQueryRaw = { ...current };
+  paths.forEach((path) => {
+    const [parent, child] = path.split(".");
+    if (child === undefined) {
+      delete query[parent];
+      return;
+    }
+    const nested = {
+      ...(query[parent] as unknown as Record<string, unknown>),
+    };
+    delete nested[child];
+    // The URL drops an empty `q` but `route.query` keeps it, and an
+    // empty object still counts as a selected filter.
+    if (Object.keys(nested).length) {
+      query[parent] = nested as unknown as LocationQueryRaw[string];
+    } else {
+      delete query[parent];
+    }
+  });
+  delete query.page;
+  return query;
+};
+
 // Group filters hold ids; a page that has the groups passes their names.
 export const hangarGroupLabels = (
   groups: { id: string; name: string }[] | undefined,
@@ -156,27 +185,11 @@ export const useShipFilterSummary = (
       id: item.id,
       label: item.label,
       remove: async () => {
-        const query: LocationQueryRaw = { ...route.query };
-        item.keys.forEach((path) => {
-          const [parent, child] = path.split(".");
-          if (child === undefined) {
-            delete query[parent];
-            return;
-          }
-          const nested = {
-            ...(query[parent] as unknown as Record<string, unknown>),
-          };
-          delete nested[child];
-          // The URL drops an empty `q` but `route.query` keeps it, and an
-          // empty object still counts as a selected filter.
-          if (Object.keys(nested).length) {
-            query[parent] = nested as unknown as LocationQueryRaw[string];
-          } else {
-            delete query[parent];
-          }
+        await router.push({
+          path: route.path,
+          query: withoutFilters(route.query, item.keys),
+          hash: route.hash,
         });
-        delete query.page;
-        await router.push({ path: route.path, query, hash: route.hash });
       },
     })),
   );
