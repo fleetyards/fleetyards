@@ -28,7 +28,7 @@ The hangar table can show, sort and filter every ship by largest weapon size, al
 3. Add shared fixtures in `test/fixtures/loadout_stats/*.json` (hardpoint tree in, stats out).
    - Run them from a vitest spec next to `useLoadoutStats.spec.ts` (passing the ratio through the same functions) and from a minitest test.
    - Cover ballistic (heat), energy (capacitor), beam, pellet, charge, missile-only, unpowered (no pool) and power-starved ships.
-4. Store `alpha`, `burst_dps`, `sustained_dps_min`, `sustained_dps_max` and `stats_version` on `model_builds` and `vehicle_loadouts`. Saved `power_presets` are ignored.
+4. Add `alpha`, `burst_dps`, `sustained_dps_min`, `sustained_dps_max` and `stats_version` columns to `loadout_stats`, written by `LoadoutStat.write` next to the weapon sizes. Saved `power_presets` are ignored.
 5. Add a maintenance task to recalculate rows whose `stats_version` is stale, following `app/tasks/maintenance/backfill_hardpoint_builds_task.rb`.
 6. Add ransackers, filters (alpha, DPS ranges) and table columns. Show sustained DPS as a min–max range and sort by max.
 
