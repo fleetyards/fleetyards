@@ -279,17 +279,79 @@
   border-top: 1px solid var(--color-edge-soft);
 }
 
+// Over everything else in its containing block, its rows taking whatever
+// height the controls leave.
+.loadout-picker--sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  max-height: none;
+  background: $gray-darker;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
 @media (max-width: $tablet-breakpoint) {
   .loadout-picker {
     max-height: none;
   }
 
-  .loadout-picker__options {
+  .loadout-picker:not(.loadout-picker--sheet) .loadout-picker__options {
     max-height: 60dvh;
   }
 
+  // Too narrow for the figure beside the name: it gets a line of its own
+  // under the description, which may take two, and the name keeps its badge.
+  .loadout-picker__option {
+    display: grid;
+    grid-template-areas:
+      "image body badges"
+      "image figure check";
+    grid-template-columns: 56px minmax(0, 1fr) auto;
+    column-gap: 10px;
+    row-gap: 2px;
+    align-items: start;
+  }
+
+  .loadout-picker__image {
+    grid-area: image;
+    width: 56px;
+    height: 32px;
+  }
+
+  .loadout-picker__body {
+    grid-area: body;
+  }
+
+  .loadout-picker__meta {
+    display: -webkit-box;
+    white-space: normal;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
   .loadout-picker__badges {
-    display: none;
+    grid-area: badges;
+  }
+
+  .loadout-picker__figure {
+    grid-area: figure;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 6px;
+    min-width: 0;
+    font-size: 12px;
+  }
+
+  .loadout-picker__check {
+    grid-area: check;
+    align-self: center;
+  }
+
+  // The empty choice has no figure: its name sits level with the glyph.
+  .loadout-picker__option--empty {
+    align-items: center;
   }
 }
 

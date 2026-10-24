@@ -29,6 +29,7 @@ type Props = {
   sorts?: LoadoutPickerSort[];
   clearable?: boolean;
   facets?: LoadoutPickerFacet[];
+  sheet?: boolean;
 };
 
 const mount = (props: Props = {}, attachTo?: Element) =>
@@ -353,6 +354,14 @@ describe("LoadoutPicker", () => {
 
     wrapper.unmount();
     host.remove();
+  });
+
+  it("fills its containing block as a sheet only when asked to", async () => {
+    const panel = await mount();
+    const sheet = await mount({ sheet: true });
+
+    expect(panel.find(".loadout-picker--sheet").exists()).toBe(false);
+    expect(sheet.find(".loadout-picker--sheet").exists()).toBe(true);
   });
 
   it("renders the caller's comparison under the list", async () => {

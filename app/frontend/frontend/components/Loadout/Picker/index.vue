@@ -38,6 +38,9 @@ type Props = {
   // that belongs to another socket never stands in for them.
   loading?: boolean;
   facets?: LoadoutPickerFacet[];
+  // Fills its containing block instead of sitting in the page as a panel, for
+  // a phone, where there is no room beside the sockets.
+  sheet?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -46,6 +49,7 @@ const props = withDefaults(defineProps<Props>(), {
   clearable: true,
   loading: false,
   facets: () => [],
+  sheet: false,
 });
 
 const emit = defineEmits<{
@@ -302,6 +306,7 @@ const accessibleName = (option: LoadoutPickerOption) =>
   <section
     ref="root"
     class="loadout-picker"
+    :class="{ 'loadout-picker--sheet': sheet }"
     data-test="loadout-picker"
     :aria-label="title"
     tabindex="-1"
