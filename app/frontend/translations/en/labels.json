@@ -3597,6 +3597,8 @@
         "qualityMax": "Quality <=",
         "existingItem": "Select existing item",
         "inventoryName": "Inventory Name",
+        "personalInventory": "Personal",
+        "personalInventoryNameLocked": "Your personal inventory keeps its name.",
         "visibility": "Visibility",
         "visibilities": {
           "members_only": "All Members",
