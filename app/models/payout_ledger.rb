@@ -296,29 +296,31 @@ class PayoutLedger < ApplicationRecord
     end
   end
 
-  # The fleet is the payer and holds the reward; the contractors are weighted
-  # by what they delivered. Only run on create, so it has nothing to preserve.
+  # The fleet -- or a personal contract's author -- is the payer and holds the
+  # reward; the contractors are weighted by what they delivered. Only run on
+  # create, so it has nothing to preserve.
   private def seed_contract!
-    weights = contract_weights
+    paying_author = subject.created_by if subject.personal?
+
+    # One row per person on a ledger, and an author working their own personal
+    # contract would only be paying themselves.
+    weights = contract_weights.except(paying_author&.id)
 
     # Nobody delivered and nobody was on the crew -- an expired contract an
-    # officer forced to fulfilled. There is nobody to pay the reward to.
+    # officer forced to fulfilled, or an author who did the work themselves.
+    # There is nobody to pay the reward to.
     if weights.empty?
       errors.add(:base, :no_contractors)
       return false
     end
 
-    payer = if subject.personal? && subject.created_by.present?
-      payout_participants.create!(user: subject.created_by, payer: true)
+    payer = if paying_author
+      payout_participants.create!(user: paying_author, payer: true)
     else
       payout_participants.create!(fleet: subject.fleet, payer: true)
     end
 
     weights.each do |user_id, weight|
-      # One row per person on a ledger, and an author working their own
-      # personal contract would only be paying themselves.
-      next if user_id == payer.user_id
-
       payout_participants.create!(user_id: user_id, weight: weight)
     end
 

@@ -127,6 +127,17 @@ class Api::V1::FleetContractPayoutsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "POST is refused when the author of a personal contract did all the work" do
+    personal = create(:fleet_contract, :fulfilled, :hangar_destination, fleet: @fleet, created_by: @member,
+      reward: 10_000)
+    create(:fleet_contract_assignment, :lead, fleet_contract: personal, user: @member)
+    sign_in @member
+
+    assert_api_response :post, 400, path_params: {fleetSlug: @fleet.slug, fleetContractSlug: personal.slug} do
+      assert_not PayoutLedger.exists?(subject: personal)
+    end
+  end
+
   test "POST is refused while the contract is still being worked" do
     @contract.update_columns(aasm_state: "in_progress", fulfilled_at: nil)
     sign_in @admin
