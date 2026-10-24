@@ -136,7 +136,8 @@ describe("ModelOwnersList", () => {
     const href = decodeURIComponent(block.find("a").attributes("href") ?? "");
 
     expect(href).toContain("/fleets/aegis-wing/ships/");
-    expect(href).toContain("q[modelSlugIn][]=andromeda");
+    expect(href).toContain("?modelSlugIn[]=andromeda");
+    expect(href).not.toContain("q[");
     expect(block.text()).toContain("torlek, wren");
     expect(block.text()).toContain("+1 more");
   });

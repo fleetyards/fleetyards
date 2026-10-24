@@ -8,7 +8,6 @@ export default {
 import Avatar from "@/shared/components/Avatar/index.vue";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import type { LocationQueryRaw } from "vue-router";
 import {
   type Model,
   type ModelOwnerVehicle,
@@ -61,14 +60,12 @@ const toVehicle = useVehicleRoute();
 const vehicleRoute = (vehicle: ModelOwnerVehicle) =>
   toVehicle("hangar-vehicle-overview", vehicle);
 
-// The router writes queries with qs, so a nested `q` filter survives the trip;
-// Vue Router's own query type only knows flat values.
+// List pages keep their filters flat in the URL and wrap them in `q` when they
+// ask the API; a `q` here would reach it as `q[q]` and be refused.
 const fleetShipsRoute = (slug: string) => ({
   name: "fleet-ships",
   params: { slug },
-  query: {
-    q: { modelSlugIn: [props.model.slug] },
-  } as unknown as LocationQueryRaw,
+  query: { modelSlugIn: [props.model.slug] },
 });
 </script>
 
