@@ -39,6 +39,16 @@ withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
+// The largest size a hangar holds is a capital ship's S12.
+const weaponSizeOptions = Array.from({ length: 12 }, (_, index) => ({
+  value: index + 1,
+  label: `S${index + 1}`,
+}));
+
+// A filter read back from the URL is a string, and the select matches its
+// options strictly.
+const weaponSize = (value: unknown) => Number(value) || undefined;
+
 const prefillFormValues = () => {
   return {
     searchCont: filters.value.searchCont,
@@ -55,6 +65,8 @@ const prefillFormValues = () => {
     pledgePriceGteq: filters.value.pledgePriceGteq,
     cargoGteq: filters.value.cargoGteq,
     cargoLteq: filters.value.cargoLteq,
+    maxWeaponSizeGteq: weaponSize(filters.value.maxWeaponSizeGteq),
+    maxWeaponSizeLteq: weaponSize(filters.value.maxWeaponSizeLteq),
     lengthLteq: filters.value.lengthLteq,
     lengthGteq: filters.value.lengthGteq,
     beamLteq: filters.value.beamLteq,
@@ -227,6 +239,32 @@ const hasGroupFilters = (keys: string[]) =>
         :label="t('labels.filters.models.withCargo')"
         name="withCargo"
       />
+    </FilterGroup>
+
+    <FilterGroup
+      :label="t('filteredList.groups.weapons')"
+      :active="hasGroupFilters(['maxWeaponSizeGteq', 'maxWeaponSizeLteq'])"
+    >
+      <div class="row">
+        <div class="col-6">
+          <BaseSelect
+            v-model="form.maxWeaponSizeGteq"
+            :options="weaponSizeOptions"
+            :label="t('labels.filters.vehicles.maxWeaponSizeGt')"
+            name="vehicle-max-weapon-size-gteq"
+            unsorted
+          />
+        </div>
+        <div class="col-6">
+          <BaseSelect
+            v-model="form.maxWeaponSizeLteq"
+            :options="weaponSizeOptions"
+            :label="t('labels.filters.vehicles.maxWeaponSizeLt')"
+            name="vehicle-max-weapon-size-lteq"
+            unsorted
+          />
+        </div>
+      </div>
     </FilterGroup>
 
     <FilterGroup

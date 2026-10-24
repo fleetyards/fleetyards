@@ -39,6 +39,7 @@ import {
   WishlistTableViewImageColsEnum,
 } from "@/frontend/stores/wishlist";
 import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
+import { formatWeaponSizes } from "@/frontend/utils/weaponSizes";
 
 type Props = {
   vehicles: Vehicle[];
@@ -408,6 +409,11 @@ const resetSelected = () => {
       </template>
       <template #col-modelCargo="{ record }">
         <span class="no-break">{{ cargoLabel(record) }}</span>
+      </template>
+      <template #col-maxWeaponSize="{ record }">
+        <span class="no-break">{{
+          formatWeaponSizes(record.weaponSizes)
+        }}</span>
       </template>
       <template #col-modelCrew="{ record }">
         <span class="no-break">{{

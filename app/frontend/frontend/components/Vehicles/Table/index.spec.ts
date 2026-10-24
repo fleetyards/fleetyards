@@ -112,6 +112,33 @@ describe("VehiclesTable", () => {
     );
   });
 
+  it("lists the guns a ship carries in the weapons column", async () => {
+    await router.push({ name: "hangar" });
+    await router.isReady();
+    const wrapper = await mountWithDefaults<typeof Component>(Component, {
+      initialState: {
+        session: { currentUser: { username: "me" } },
+        hangar: { tableViewCols: ["maxWeaponSize"] },
+      },
+      props: {
+        vehicles: [
+          vehicle({
+            maxWeaponSize: 3,
+            weaponSizes: [
+              { size: 2, count: 4 },
+              { size: 3, count: 2 },
+            ],
+          }),
+        ],
+        editable: true,
+      },
+      plugins: [router],
+    });
+
+    expect(wrapper.get("thead").text()).toContain("Weapons");
+    expect(wrapper.get("tr#vehicle-1").text()).toContain("2×S3 · 4×S2");
+  });
+
   it("opens the owner's ship on its overview", async () => {
     const wrapper = await mount(vehicle());
 

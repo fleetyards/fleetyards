@@ -11,6 +11,7 @@
       "groups": {
         "ship": "舰船",
         "capacity": "容量与尺寸",
+        "weapons": "武器",
         "price": "价格",
         "ownership": "拥有情况"
       }
