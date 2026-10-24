@@ -124,6 +124,17 @@ class Api::V1::FleetContractDestinationsTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 403, path_params: {fleetSlug: @fleet.slug}
   end
 
+  test "the author of a personal draft still reaches its destinations once personal contracts are off" do
+    contract = create(:fleet_contract, :hangar_destination, fleet: @fleet, created_by: @member)
+    @fleet.update_columns(personal_contracts_enabled: false)
+    sign_in @member
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug},
+      params: {contractSlug: contract.slug} do
+      assert_empty parsed_body
+    end
+  end
+
   test "an outsider cannot find the fleet" do
     sign_in create(:user)
 

@@ -105,7 +105,7 @@ class FleetContractPolicy < FleetBasePolicy
   # Asking where a contract can deliver is part of writing one, so it is open to
   # whoever may create or edit contracts.
   def choose_destination?
-    create? || may_update?
+    create? || may_update? || own_personal_contract?
   end
 
   # Claiming rides on read -- of this contract, so a squadron's work is taken

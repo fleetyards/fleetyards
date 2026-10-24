@@ -17,10 +17,12 @@ module Api
       before_action -> { require_fleet_subscription(:contracts) }
 
       def index
-        authorize! with: FleetContractPolicy, to: :choose_destination?, context: {fleet: @fleet}
+        # Against the contract being edited where there is one: its author
+        # still edits a personal contract the fleet no longer lets them post.
+        authorize! contract, with: FleetContractPolicy, to: :choose_destination?, context: {fleet: @fleet}
 
         options = ::Contracts::DestinationOptions.new(fleet: @fleet, editor: current_resource_owner,
-          author: contract_author)
+          author: contract&.created_by || current_resource_owner)
 
         @destinations = options.fleet_inventories + options.hangar_inventories
       end
@@ -29,11 +31,11 @@ module Api
       # theirs to pick: anybody else is offered none of their own, which the
       # model would refuse. Unscoped, the caller is writing a new contract and
       # is its author.
-      private def contract_author
+      private def contract
         slug = params[:contract_slug] || params[:contractSlug]
-        return current_resource_owner if slug.blank?
+        return if slug.blank?
 
-        @fleet.fleet_contracts.find_by!(slug:).created_by
+        @contract ||= @fleet.fleet_contracts.find_by!(slug:)
       end
 
       private def set_fleet
