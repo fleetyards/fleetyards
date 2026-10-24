@@ -9,7 +9,7 @@ class FleetMembershipCapabilitiesTest < ActiveSupport::TestCase
 
   def membership_with(resource_access)
     role = create(:fleet_role, fleet: @fleet,
-      name: "Capability Test #{resource_access.join("-").presence || "none"}",
+      name: "Capability Test #{resource_access.join("-").presence || "none"} #{SecureRandom.hex(3)}",
       resource_access: resource_access)
     create(:fleet_membership, fleet: @fleet, fleet_role: role)
   end
@@ -95,14 +95,19 @@ class FleetMembershipCapabilitiesTest < ActiveSupport::TestCase
   end
 
   test "creating events and contracts follows their policies' create?" do
-    [["fleet:events:create"], ["fleet:contracts:create"], ["fleet:events:read", "fleet:contracts:read"], []].each do |access|
-      membership = membership_with(access)
-      membership.update!(aasm_state: :accepted)
+    [true, false].each do |personal_contracts|
+      @fleet.update_columns(personal_contracts_enabled: personal_contracts)
 
-      assert_equal FleetEventPolicy.new(user: membership.user, fleet: @fleet).apply(:create?),
-        membership.capabilities[:create_events], "events for #{access.inspect}"
-      assert_equal FleetContractPolicy.new(user: membership.user, fleet: @fleet).apply(:create?),
-        membership.capabilities[:create_contracts], "contracts for #{access.inspect}"
+      [["fleet:events:create"], ["fleet:contracts:create"], ["fleet:events:read", "fleet:contracts:read"], []].each do |access|
+        membership = membership_with(access)
+        membership.update!(aasm_state: :accepted)
+        label = "#{access.inspect}, personal contracts #{personal_contracts ? "on" : "off"}"
+
+        assert_equal FleetEventPolicy.new(user: membership.user, fleet: @fleet).apply(:create?),
+          membership.capabilities[:create_events], "events for #{label}"
+        assert_equal FleetContractPolicy.new(user: membership.user, fleet: @fleet).apply(:create?),
+          membership.capabilities[:create_contracts], "contracts for #{label}"
+      end
     end
   end
 
