@@ -225,6 +225,32 @@
     }
   }
 
+  /*
+   * A value to read, not a field to fill: no fill and no cap at rest, so it is
+   * not mistaken for an input waiting for something. Unlike a disabled field
+   * the text stays at full strength -- it is still the answer -- and focus
+   * keeps its cap, because a readonly field is reached by keyboard to copy.
+   */
+  &--readonly:not(:focus-within) {
+    --field-cap: transparent;
+  }
+
+  &--readonly {
+    .base-input__wrapper {
+      background-color: transparent;
+      border-style: dashed;
+      border-color: var(--color-edge-soft, rgb(122 130 136 / 0.28));
+
+      &:hover {
+        border-color: var(--color-edge-soft, rgb(122 130 136 / 0.28));
+      }
+    }
+
+    input {
+      cursor: default;
+    }
+  }
+
   // 48px, to match Btn's md where a page header puts the two side by side. The
   // type stays at the default 16px: 19px is the large input's, and at 48px it
   // crowds the field.

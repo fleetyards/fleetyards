@@ -39,6 +39,18 @@ describe("FormInput", () => {
 
     expect(input.attributes("readonly")).toBeDefined();
     expect(input.attributes("disabled")).toBeUndefined();
+    expect(wrapper.classes()).toContain("base-input--readonly");
+  });
+
+  it("offers no clear button on a readonly value", async () => {
+    const wrapper = await mountInput({
+      name: "shareUrl",
+      modelValue: "https://example.test",
+      readonly: true,
+      clearable: true,
+    });
+
+    expect(wrapper.find(".base-input__clear").exists()).toBe(false);
   });
 
   it("prefers an explicitly passed placeholder", async () => {
