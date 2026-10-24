@@ -37,8 +37,12 @@ module Contracts
     def hangar_inventories
       return [] unless author_can_receive?
 
-      @hangar_inventories ||= @author.inventories.order(:name).to_a
-        .select { |inventory| !inventory.vehicle? || Flipper.enabled?(:ship_inventories, @author) }
+      @hangar_inventories ||= begin
+        ::Inventory.personal_for(@author)
+
+        @author.inventories.order(personal: :desc, name: :asc).to_a
+          .select { |inventory| !inventory.vehicle? || Flipper.enabled?(:ship_inventories, @author) }
+      end
     end
 
     def allows?(destination)

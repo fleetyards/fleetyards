@@ -65,8 +65,8 @@ class Api::V1::FleetContractDestinationsTest < ActionDispatch::IntegrationTest
     sign_in @author
 
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
-      assert_equal [locker.id], parsed_body.pluck("id")
-      assert_equal ["user"], parsed_body.pluck("holder")
+      assert_equal [Inventory.personal_for(@author).id, locker.id], parsed_body.pluck("id")
+      assert_equal %w[user user], parsed_body.pluck("holder")
     end
   end
 
@@ -75,8 +75,8 @@ class Api::V1::FleetContractDestinationsTest < ActionDispatch::IntegrationTest
     sign_in @officer
 
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
-      assert_equal [@depot.id, @vault.id, own.id], parsed_body.pluck("id")
-      assert_equal %w[fleet fleet user], parsed_body.pluck("holder")
+      assert_equal [@depot.id, @vault.id, Inventory.personal_for(@officer).id, own.id], parsed_body.pluck("id")
+      assert_equal %w[fleet fleet user user], parsed_body.pluck("holder")
     end
   end
 
@@ -98,7 +98,7 @@ class Api::V1::FleetContractDestinationsTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug},
       params: {contractSlug: contract.slug} do
-      assert_equal [locker.id], parsed_body.pluck("id")
+      assert_equal [Inventory.personal_for(@author).id, locker.id], parsed_body.pluck("id")
     end
   end
 

@@ -24,7 +24,7 @@ module Contracts
       options = DestinationOptions.new(fleet: @fleet, editor: @author)
 
       assert_empty options.fleet_inventories
-      assert_equal [@locker], options.hangar_inventories
+      assert_equal [Inventory.personal_for(@author), @locker], options.hangar_inventories
       assert options.allows?(@locker)
       assert_not options.allows?(@depot)
     end
@@ -34,7 +34,7 @@ module Contracts
       options = DestinationOptions.new(fleet: @fleet, editor: @officer)
 
       assert_equal [@depot, @vault], options.fleet_inventories
-      assert_equal [own], options.hangar_inventories
+      assert_equal [Inventory.personal_for(@officer), own], options.hangar_inventories
       assert options.allows?(own)
     end
 
