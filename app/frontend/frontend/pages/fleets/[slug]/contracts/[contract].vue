@@ -82,14 +82,18 @@ const canManage = computed(() =>
   checkAccess(props.resourceAccess, ["fleet:manage", "fleet:contracts:manage"]),
 );
 
-// The privilege on its own. Cancelling and publishing ride on it and reach a
-// contract that editing no longer does.
-const mayEdit = computed(() =>
-  checkAccess(props.resourceAccess, [
-    "fleet:manage",
-    "fleet:contracts:manage",
-    "fleet:contracts:update",
-  ]),
+// The privilege, or authorship of a personal contract. Cancelling and
+// publishing ride on it and reach a contract that editing no longer does.
+const mayEdit = computed(
+  () =>
+    checkAccess(props.resourceAccess, [
+      "fleet:manage",
+      "fleet:contracts:manage",
+      "fleet:contracts:update",
+    ]) ||
+    (!!contract.value?.personal &&
+      !!currentUserId.value &&
+      contract.value.createdBy?.id === currentUserId.value),
 );
 
 // Only a draft. Published, it is an offer members have read and may already be

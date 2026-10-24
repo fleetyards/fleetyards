@@ -4053,6 +4053,19 @@
           "toAuthorHint": "交付會傳送給 %{username}，由其接收。",
           "myHangarInventory": "%{name}（我的機庫）",
           "authorHangarInventory": "%{name}（%{username} 的機庫）",
+          "destinationGroups": {
+            "personal": "個人",
+            "fleet": "艦隊"
+          },
+          "scopeFilter": "合約",
+          "scopes": {
+            "all": "全部合約",
+            "personal": "個人",
+            "fleet": "艦隊"
+          },
+          "personalBadge": "個人",
+          "personalContractsEnabled": "個人合約",
+          "personalContractsEnabledHint": "成員可以發布交付到自己庫存、由自己支付報酬的合約。",
           "destinationRemoved": "已不可用",
           "lead": "負責人",
           "pendingCrew": "等待加入",

@@ -23,7 +23,10 @@ import {
 } from "@/services/fyApi";
 import {
   type ContractBoardView,
+  type ContractScope,
   CONTRACT_BOARD_VIEWS,
+  CONTRACT_SCOPES,
+  contractScopeFrom,
 } from "@/frontend/components/Fleets/Contracts/ContractBoard/views";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -92,11 +95,22 @@ const boardLink = (board: ContractBoardView) => {
   return { name: "fleet-contracts", params: { slug: props.fleet.slug }, query };
 };
 
+const scope = computed(() => contractScopeFrom(route.query.scope));
+
+const scopeLink = (next: ContractScope) => {
+  const query: LocationQuery = { ...route.query, scope: next.key };
+  if (next.key === "all") delete query.scope;
+  delete query.page;
+
+  return { name: "fleet-contracts", params: { slug: props.fleet.slug }, query };
+};
+
 const sortParam = useSortParam<FleetContractSortEnum>();
 
 const queryParams = computed(() => ({
   mine: props.view.mine ? true : undefined,
   inHand: props.view.inHand ? true : undefined,
+  personal: scope.value.personal,
   // The states are spelled out rather than sent as "archived", because a
   // contract has five of them and each board means a different few.
   q: { stateIn: props.view.states, ...sortParam.value },
@@ -155,6 +169,22 @@ onUnmounted(() => {
         >
           <i :class="board.icon" />
           {{ t(`labels.fleets.contracts.views.${board.key}`) }}
+        </Btn>
+      </BtnGroup>
+      <BtnGroup
+        segmented
+        :aria-label="t('labels.fleets.contracts.scopeFilter')"
+      >
+        <Btn
+          v-for="option in CONTRACT_SCOPES"
+          :key="option.key"
+          :to="scopeLink(option)"
+          :active="option.key === scope.key"
+          :data-test="`contracts-scope-${option.key}`"
+          mobile-icon-only
+        >
+          <i :class="option.icon" />
+          {{ t(`labels.fleets.contracts.scopes.${option.key}`) }}
         </Btn>
       </BtnGroup>
     </template>

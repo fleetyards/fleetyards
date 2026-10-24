@@ -46,6 +46,10 @@ const route = computed(() => routeLabel(props.contract));
 
     <div class="contract-panel__kind">
       {{ t(`labels.fleets.contracts.kind.${contract.kind}`) }}
+      <span v-if="contract.personal" data-test="contract-personal">
+        · <i class="fa-light fa-user" />
+        {{ t("labels.fleets.contracts.personalBadge") }}
+      </span>
     </div>
 
     <div class="contract-panel__status">

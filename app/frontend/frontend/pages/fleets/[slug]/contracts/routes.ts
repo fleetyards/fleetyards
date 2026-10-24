@@ -3,15 +3,10 @@ import { FeatureFlagName } from "@/services/fyApi";
 
 // Reading the board is what claiming rides on, so every route here asks for
 // `fleet:contracts:read` and the writes are refused by the policy rather than
-// by the router.
+// by the router. Writing one needs no more than reading either: a member may
+// post and edit their own personal contracts.
 const READ_ACCESS = [
   "fleet:contracts:read",
-  "fleet:contracts:manage",
-  "fleet:manage",
-];
-
-const WRITE_ACCESS = [
-  "fleet:contracts:create",
   "fleet:contracts:manage",
   "fleet:manage",
 ];
@@ -40,7 +35,7 @@ export const routes: RouteRecordRaw[] = [
       backgroundImage: "bg-8",
       title: "fleets.contracts.create",
       needsAuthentication: true,
-      access: WRITE_ACCESS,
+      access: READ_ACCESS,
       feature: FeatureFlagName.FLEET_CONTRACTS,
       featureScope: "fleet",
       customTitle: true,
@@ -55,11 +50,7 @@ export const routes: RouteRecordRaw[] = [
       backgroundImage: "bg-8",
       title: "fleets.contracts.edit",
       needsAuthentication: true,
-      access: [
-        "fleet:contracts:update",
-        "fleet:contracts:manage",
-        "fleet:manage",
-      ],
+      access: READ_ACCESS,
       feature: FeatureFlagName.FLEET_CONTRACTS,
       featureScope: "fleet",
       customTitle: true,

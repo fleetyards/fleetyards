@@ -4056,6 +4056,19 @@
           "toAuthorHint": "Las entregas van a %{username}, que las acepta.",
           "myHangarInventory": "%{name} (mi hangar)",
           "authorHangarInventory": "%{name} (hangar de %{username})",
+          "destinationGroups": {
+            "personal": "Personal",
+            "fleet": "Flota"
+          },
+          "scopeFilter": "Contratos",
+          "scopes": {
+            "all": "Todos los contratos",
+            "personal": "Personales",
+            "fleet": "De la flota"
+          },
+          "personalBadge": "Personal",
+          "personalContractsEnabled": "Contratos personales",
+          "personalContractsEnabledHint": "Los miembros pueden publicar contratos que entregan en su propio inventario y que pagan ellos mismos.",
           "destinationRemoved": "Ya no está disponible",
           "lead": "Responsable",
           "pendingCrew": "Esperando unirse",

@@ -4070,6 +4070,19 @@
           "toAuthorHint": "Deliveries go to %{username}, who accepts them.",
           "myHangarInventory": "%{name} (my hangar)",
           "authorHangarInventory": "%{name} (hangar of %{username})",
+          "destinationGroups": {
+            "personal": "Personal",
+            "fleet": "Fleet"
+          },
+          "scopeFilter": "Contracts",
+          "scopes": {
+            "all": "All contracts",
+            "personal": "Personal",
+            "fleet": "Fleet"
+          },
+          "personalBadge": "Personal",
+          "personalContractsEnabled": "Personal contracts",
+          "personalContractsEnabledHint": "Members can post contracts that deliver into their own inventory and that they pay for themselves.",
           "destinationRemoved": "No longer available",
           "lead": "Lead",
           "pendingCrew": "Waiting to join",
