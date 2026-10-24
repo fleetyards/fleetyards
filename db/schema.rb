@@ -1715,8 +1715,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_120000) do
     t.uuid "vehicle_id"
     t.string "image_preset"
     t.uuid "location_id"
+    t.boolean "personal", default: false, null: false
     t.index "holder_type, holder_id, lower((name)::text)", name: "index_inventories_on_holder_and_lower_name", unique: true, where: "(vehicle_id IS NULL)"
     t.index ["holder_type", "holder_id", "slug"], name: "index_inventories_on_holder_type_and_holder_id_and_slug", unique: true, where: "(vehicle_id IS NULL)"
+    t.index ["holder_type", "holder_id"], name: "index_inventories_on_holder_personal", unique: true, where: "personal"
     t.index ["holder_type", "holder_id"], name: "index_inventories_on_holder_type_and_holder_id"
     t.index ["location_id"], name: "index_inventories_on_location_id"
     t.index ["vehicle_id"], name: "index_inventories_on_vehicle_id", unique: true, where: "(vehicle_id IS NOT NULL)"

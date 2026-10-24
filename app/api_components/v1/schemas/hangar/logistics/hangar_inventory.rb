@@ -13,6 +13,7 @@ module V1
               id: {type: :string, format: :uuid},
               name: {type: :string},
               slug: {type: :string},
+              personal: {type: :boolean},
               description: {type: :string},
               location: {type: :string},
               linkedLocation: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},
@@ -30,7 +31,7 @@ module V1
               updatedAt: {type: :string, format: "date-time"}
             },
             additionalProperties: false,
-            required: %w[id name slug entriesCount totalScu totalUnits createdAt updatedAt]
+            required: %w[id name slug personal entriesCount totalScu totalUnits createdAt updatedAt]
           })
         end
       end

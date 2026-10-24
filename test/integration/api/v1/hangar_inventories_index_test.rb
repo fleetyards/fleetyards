@@ -48,7 +48,20 @@ class Api::V1::HangarInventoriesIndexTest < ActionDispatch::IntegrationTest
     sign_in @user
 
     assert_api_response :get, 200 do
-      assert_equal 3, parsed_body["items"].count
+      assert_equal 3, hand_made_items.count
+    end
+  end
+
+  test "GET /hangar/inventories provides the personal inventory and lists it first" do
+    create(:inventory, holder: @user, name: "Alpha")
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      first = parsed_body["items"].first
+
+      assert_equal Inventory::PERSONAL_NAME, first["name"]
+      assert first["personal"]
+      assert_equal 1, parsed_body["items"].count { |item| item["personal"] }
     end
   end
 
@@ -70,7 +83,7 @@ class Api::V1::HangarInventoriesIndexTest < ActionDispatch::IntegrationTest
 
     %i[s sorts].each do |key|
       assert_api_response :get, 200, params: {q: {key => "name desc"}} do
-        assert_equal ["Zebra", "Alpha"], parsed_body["items"].map { |item| item["name"] }, key
+        assert_equal [Inventory::PERSONAL_NAME, "Zebra", "Alpha"], parsed_body["items"].map { |item| item["name"] }, key
       end
     end
   end
@@ -80,7 +93,7 @@ class Api::V1::HangarInventoriesIndexTest < ActionDispatch::IntegrationTest
     sign_in @user
 
     assert_api_response :get, 200 do
-      assert_equal 0, parsed_body["items"].count
+      assert_equal 0, hand_made_items.count
     end
   end
 
@@ -91,7 +104,7 @@ class Api::V1::HangarInventoriesIndexTest < ActionDispatch::IntegrationTest
     sign_in @user
 
     assert_api_response :get, 200 do
-      assert_equal 3, parsed_body["items"].count
+      assert_equal 3, hand_made_items.count
     end
   end
 
@@ -102,7 +115,7 @@ class Api::V1::HangarInventoriesIndexTest < ActionDispatch::IntegrationTest
     sign_in @user
 
     assert_api_response :get, 200 do
-      assert_equal 2, parsed_body["items"].count
+      assert_equal 2, hand_made_items.count
     end
   end
 
@@ -113,8 +126,8 @@ class Api::V1::HangarInventoriesIndexTest < ActionDispatch::IntegrationTest
     sign_in @user
 
     assert_api_response :get, 200 do
-      assert_equal 1, parsed_body["items"].count
-      assert_nil parsed_body["items"].first["vehicle"]
+      assert_equal 1, hand_made_items.count
+      assert_nil hand_made_items.first["vehicle"]
     end
   end
 
@@ -134,5 +147,9 @@ class Api::V1::HangarInventoriesIndexTest < ActionDispatch::IntegrationTest
   test "GET /hangar/inventories with OAuth bearer token" do
     assert_api_response :get, 200,
       headers: oauth_headers_for(@user, scopes: ["hangar", "hangar:read"])
+  end
+
+  private def hand_made_items
+    parsed_body["items"].reject { |item| item["personal"] }
   end
 end

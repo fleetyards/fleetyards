@@ -16,6 +16,7 @@ module V1
               id: {type: [:string, :null], format: :uuid},
               name: {type: :string},
               slug: {type: [:string, :null]},
+              personal: {type: :boolean},
               description: {type: [:string, :null]},
               location: {type: [:string, :null]},
               linkedLocation: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},

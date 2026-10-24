@@ -22,6 +22,8 @@ module Api
       def index
         authorize! with: HangarInventoryPolicy
 
+        ::Inventory.personal_for(current_resource_owner)
+
         scope = current_resource_owner.inventories
         scope = scope.hand_made unless ship_inventories_enabled?
 
@@ -30,10 +32,14 @@ module Api
         query_params["sorts"] = sorting_params(Inventory, query_params["sorts"])
 
         @q = scope.ransack(query_params)
+        sorted = @q.result(distinct: true)
+        # The personal inventory leads whatever the sort; ransack replaces any
+        # order the scope carried, so it is put in front afterwards.
+        sorted = sorted.reorder(personal: :desc).order(sorted.order_values)
         # A ship's hold is drawn as its ship, so the serializer reaches for the
         # model's artwork on every vehicle-backed row -- three attachment
         # lookups and a blob read each without this.
-        result = @q.result(distinct: true).includes(
+        result = sorted.includes(
           image_attachment: :blob,
           vehicle: {model: [
             {store_image_attachment: :blob},

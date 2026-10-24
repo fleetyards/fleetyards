@@ -3,6 +3,7 @@
 json.id inventory.id
 json.name inventory.name
 json.slug inventory.slug
+json.personal inventory.personal
 json.description inventory.description
 json.location inventory.location
 json.partial! "api/v1/locations/linked", key: :linked_location, location: inventory.linked_location

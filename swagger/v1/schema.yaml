@@ -32908,6 +32908,8 @@ components:
           type: string
         slug:
           type: string
+        personal:
+          type: boolean
         description:
           type: string
         location:
@@ -32949,6 +32951,7 @@ components:
       - id
       - name
       - slug
+      - personal
       - entriesCount
       - totalScu
       - totalUnits
@@ -35893,6 +35896,8 @@ components:
           type:
           - string
           - 'null'
+        personal:
+          type: boolean
         description:
           type:
           - string

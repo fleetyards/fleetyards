@@ -310,6 +310,8 @@ fr:
         entry_goods_in_transit: "ne peut pas être supprimé tant que le transfert auquel il appartient est en attente de réponse"
         inventory_goods_in_transit: "ne peut pas être supprimé tant qu'un transfert envoyé est encore en attente de réponse"
         inventory_contract_destination: "ne peut pas être supprimé tant qu'un contrat de flotte ouvert y livre"
+        personal_inventory_not_deletable: "ne peut pas être supprimé ; c'est votre inventaire personnel"
+        personal_inventory_name: "ne peut pas être modifié sur votre inventaire personnel"
         position_goods_in_transit: "ne peut pas être supprimé tant qu'un transfert le contenant est encore en attente de réponse"
         image_type_not_supported: "doit être une image PNG, JPEG, WebP ou GIF"
         file_in_use: "est déjà utilisée ailleurs ; envoyez à nouveau l'image"
