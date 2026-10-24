@@ -16,4 +16,14 @@ module ItemViews
   included do
     ATTACHMENT_NAMES.each { |name| has_one_attached name }
   end
+
+  # What the catalogue shows an item by: its store image, or the angled render
+  # when it has none -- the order a ship falls back in.
+  def display_image_attr
+    if store_image.attached?
+      :store_image
+    elsif angled_view.attached?
+      :angled_view
+    end
+  end
 end

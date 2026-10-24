@@ -38,6 +38,27 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /components shows a component without a store image by its angled view" do
+    @components.first.angled_view.attach(io: file_fixture("test.png").open, filename: "angled.png", content_type: "image/png")
+
+    assert_api_response :get, 200 do
+      item = parsed_body["items"].find { |entry| entry["slug"] == @components.first.slug }
+
+      assert_equal "angled.png", item.dig("media", "storeImage", "name")
+    end
+  end
+
+  test "GET /components prefers the store image over the angled view" do
+    @components.first.store_image.attach(io: file_fixture("test.png").open, filename: "store.png", content_type: "image/png")
+    @components.first.angled_view.attach(io: file_fixture("test.png").open, filename: "angled.png", content_type: "image/png")
+
+    assert_api_response :get, 200 do
+      item = parsed_body["items"].find { |entry| entry["slug"] == @components.first.slug }
+
+      assert_equal "store.png", item.dig("media", "storeImage", "name")
+    end
+  end
+
   test "GET /components lists all components" do
     assert_api_response :get, 200 do
       assert_equal 2, parsed_body.count
