@@ -2,6 +2,55 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.23.0](https://github.com/fleetyards/fleetyards/compare/v9.22.0...v9.23.0) (2026-10-24)
+
+
+### Features
+
+* **catalogue:** prepare components and equipment for eight views and a holo ([#5934](https://github.com/fleetyards/fleetyards/issues/5934)) ([ff0607b](https://github.com/fleetyards/fleetyards/commit/ff0607b7063bf634981d62a16f9b0745b19874ae))
+* **catalogue:** show component store images on the list and detail page ([#5933](https://github.com/fleetyards/fleetyards/issues/5933)) ([af8bf7c](https://github.com/fleetyards/fleetyards/commit/af8bf7ce444710fd4b39cf2e2b3795978470406d))
+* **fleet-events:** show the pilot's own ship on an open ship card ([#5943](https://github.com/fleetyards/fleetyards/issues/5943)) ([69bed01](https://github.com/fleetyards/fleetyards/commit/69bed019eac82b103cfee02a8dc7efed10f90b3d))
+* **hangar-planner:** placeholder slots that become a plan's first slot ([09d5925](https://github.com/fleetyards/fleetyards/commit/09d5925e26c6503c63c2623b2b60070ac05ed551))
+* **hangar:** keep the name of the pledge each synced ship came in ([7056064](https://github.com/fleetyards/fleetyards/commit/70560647976387c60c2009bd2f112076de1a02e0))
+* **hangar:** list a ship's pledge contents in the plan resources ([cac1300](https://github.com/fleetyards/fleetyards/commit/cac13006fb317beefc384545e309009e05efbd5b))
+* **hangar:** show a melted ship's package and what melts with it ([90ee4ae](https://github.com/fleetyards/fleetyards/commit/90ee4ae01443a00ef83f3bf6c80350fbe605b11e))
+* **sc-data:** import component and equipment views from the item-views bucket ([#5935](https://github.com/fleetyards/fleetyards/issues/5935)) ([0b94986](https://github.com/fleetyards/fleetyards/commit/0b94986e3458c2de1be0827b2965cf782120646f))
+* **ships:** show the views instead of the 3D view on phones ([#5948](https://github.com/fleetyards/fleetyards/issues/5948)) ([9abf3c7](https://github.com/fleetyards/fleetyards/commit/9abf3c7977c3a13bf5876d1c6e2bf3fb71b77886))
+
+
+### Bug Fixes
+
+* **discord:** compare the bot's own channel overwrite as a string id ([195f741](https://github.com/fleetyards/fleetyards/commit/195f74144d91ff1aef47ec6c427f7f9eeac6646a))
+* **frontend:** polyfill the ES2022+ built-ins older engines lack ([#5942](https://github.com/fleetyards/fleetyards/issues/5942)) ([000fa2c](https://github.com/fleetyards/fleetyards/commit/000fa2c55a7c472e3363b5bbc8adc65ab9e7b488))
+* **hangar-planner:** a plan without slots is not complete ([3b8f0cb](https://github.com/fleetyards/fleetyards/commit/3b8f0cbca44b0e38c6019f653a077b7f536228b3))
+* **hangar-planner:** keep the gap under the cost tiles when a plan has no slots ([296f076](https://github.com/fleetyards/fleetyards/commit/296f076b421c6f25391a3773cc678ed11ad6190c))
+* **oauth:** land on the hangar after a sign-in started on the login page ([#5936](https://github.com/fleetyards/fleetyards/issues/5936)) ([c098c16](https://github.com/fleetyards/fleetyards/commit/c098c16145cdfb01344df10d680fc7d7c465adce))
+* **oauth:** only send a sign-in back to a page of the frontend ([#5939](https://github.com/fleetyards/fleetyards/issues/5939)) ([af5b68d](https://github.com/fleetyards/fleetyards/commit/af5b68dbf8b85dd6868a1e660d3bff47251af393))
+* **settings:** mark a rejected two-factor code on the field ([#5941](https://github.com/fleetyards/fleetyards/issues/5941)) ([61fd484](https://github.com/fleetyards/fleetyards/commit/61fd484ed2b146a1c6920c6e854147c5e928baff))
+* **settings:** send the two-factor code as otpCode when enabling or disabling ([#5938](https://github.com/fleetyards/fleetyards/issues/5938)) ([2c8adc0](https://github.com/fleetyards/fleetyards/commit/2c8adc06b1fbb3e09160a35e6094c6cd4a324275))
+* **settings:** space the two-factor action buttons apart ([342f531](https://github.com/fleetyards/fleetyards/commit/342f531b2481ae0d60128e40d9f8ebf93f0033a2))
+
+
+### Refactorings
+
+* **fleets:** drop the :deep overrides on the ship cards and the event hero ([#5945](https://github.com/fleetyards/fleetyards/issues/5945)) ([57575fb](https://github.com/fleetyards/fleetyards/commit/57575fb3f9e4b5fa5944d38994ba71703b56364f))
+* **models:** drop the string focus, its sorts and its deprecated API fields ([#5901](https://github.com/fleetyards/fleetyards/issues/5901)) ([121c5b0](https://github.com/fleetyards/fleetyards/commit/121c5b005880b5e99e78c0c9bce8dabcca096a4e))
+* remove Guilded ([#5937](https://github.com/fleetyards/fleetyards/issues/5937)) ([80df871](https://github.com/fleetyards/fleetyards/commit/80df8719ec68978b6b01ef7eb67c124d2469464e))
+
+
+### Chores
+
+* **deps-dev:** bump @tanstack/eslint-plugin-query ([#5929](https://github.com/fleetyards/fleetyards/issues/5929)) ([26381b7](https://github.com/fleetyards/fleetyards/commit/26381b777c28a51a4e6ac4c9dc82c29c9634f1a2))
+* **deps-dev:** bump @typescript-eslint/parser from 8.71.2 to 8.72.0 ([#5931](https://github.com/fleetyards/fleetyards/issues/5931)) ([a11bb8e](https://github.com/fleetyards/fleetyards/commit/a11bb8e5883acad43706da1350f97a86032df07f))
+* **deps-dev:** bump knip from 6.42.0 to 6.42.1 ([#5928](https://github.com/fleetyards/fleetyards/issues/5928)) ([a1892cc](https://github.com/fleetyards/fleetyards/commit/a1892ccc05a7454e4a727a621aaae0c9946251e5))
+* **deps:** bump @tanstack/vue-query from 5.104.4 to 5.104.5 ([#5930](https://github.com/fleetyards/fleetyards/issues/5930)) ([1c5e2ac](https://github.com/fleetyards/fleetyards/commit/1c5e2ac8e518e861b417324412766add06c69297))
+* **deps:** bump aws-sdk-s3 from 1.233.2 to 1.234.0 ([#5926](https://github.com/fleetyards/fleetyards/issues/5926)) ([a8ef26b](https://github.com/fleetyards/fleetyards/commit/a8ef26b63aa40cc8fa2e82f9c4f3726aebf0f53e))
+* **deps:** bump core-js from 3.50.0 to 3.51.0 ([#5932](https://github.com/fleetyards/fleetyards/issues/5932)) ([dcec5db](https://github.com/fleetyards/fleetyards/commit/dcec5db8a2c06112ce3fd3332d7ae96bef5960c8))
+* **deps:** bump swagger-ui-dist from 5.33.3 to 5.34.0 ([#5927](https://github.com/fleetyards/fleetyards/issues/5927)) ([197147c](https://github.com/fleetyards/fleetyards/commit/197147cf1a8a7fdfe38887c946849180e16bff52))
+* **deps:** update Ruby from 4.0.5 to 4.0.9 ([#5944](https://github.com/fleetyards/fleetyards/issues/5944)) ([9f3ab28](https://github.com/fleetyards/fleetyards/commit/9f3ab280202a4e038929a8285a0ab1293c958490))
+* **sc_data:** bump ptu to 4.10.3-ptu.12999338 ([#5949](https://github.com/fleetyards/fleetyards/issues/5949)) ([0421fa6](https://github.com/fleetyards/fleetyards/commit/0421fa6ed82f6989e7e431038445a3c81a40703f))
+* **settings:** drop the unused two-factor-status style ([88cc68e](https://github.com/fleetyards/fleetyards/commit/88cc68e24b2dcd1d8b0fb51556397b57728eaea3))
+
 ## [9.22.0](https://github.com/fleetyards/fleetyards/compare/v9.21.0...v9.22.0) (2026-10-23)
 
 

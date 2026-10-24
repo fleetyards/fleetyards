@@ -2,7 +2,7 @@
   "name": "fleetyards",
   "private": true,
   "type": "module",
-  "version": "9.22.0",
+  "version": "9.23.0",
   "packageManager": "pnpm@12.3.4",
   "scripts": {
     "test": "vitest run",
