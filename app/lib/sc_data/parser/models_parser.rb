@@ -350,9 +350,13 @@ module ScData
 
         return if definition_file_path.blank?
 
+        definition_file = "#{definition_path}/#{definition_file_path}"
+
+        return unless File.exist?(definition_file)
+
         modification_key = component_params.dig("modification")
 
-        definition_data = Hash.from_xml(File.read("#{definition_path}/#{definition_file_path}"))
+        definition_data = Hash.from_xml(File.read(definition_file))
 
         definition_data = extract_modification_definition(definition_data, modification_key)
 
@@ -368,9 +372,13 @@ module ScData
 
         return {} if definition_file_path.blank?
 
+        definition_file = "#{definition_path}/#{definition_file_path}"
+
+        return {} unless File.exist?(definition_file)
+
         modification_key = component_params.dig("modification")
 
-        definition_data = Hash.from_xml(File.read("#{definition_path}/#{definition_file_path}"))
+        definition_data = Hash.from_xml(File.read(definition_file))
 
         definition_data = extract_modification_definition(definition_data, modification_key)
 
@@ -395,7 +403,11 @@ module ScData
 
         return {} if definition_file_path.blank?
 
-        definition_data = Hash.from_xml(File.read("#{definition_path}/#{definition_file_path}"))
+        definition_file = "#{definition_path}/#{definition_file_path}"
+
+        return {} unless File.exist?(definition_file)
+
+        definition_data = Hash.from_xml(File.read(definition_file))
 
         movement = extract_movement_params(definition_data, definition_file_path, component_params.dig("modification"))
 

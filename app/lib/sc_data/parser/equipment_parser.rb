@@ -366,7 +366,7 @@ module ScData
 
         prose = blocks.drop(header.size).join("\n\n")
 
-        fields = header.join("\n").split("\n").filter_map { |line|
+        fields = header.join("\n").split("\n").reject(&:blank?).filter_map { |line|
           key, value = line.split(":", 2)
           [key.strip.downcase, value.to_s.strip]
         }.to_h

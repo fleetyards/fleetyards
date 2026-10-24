@@ -168,6 +168,21 @@ module ScData
           parsed.values_at("carryable_1h_cy_toy_plushy_orison_whale_1_a", "plushy_orison_whale_1_a").pluck("hidden")
       end
 
+      # The Venture Starwalker helmet in 4.10.3 opens its description with a
+      # line break.
+      test "reads the spec block of a description that opens with a blank line" do
+        @parser.translations = {
+          "item_Name_hdh_boots_01_01_13" => "Venture Helmet",
+          "item_Desc_venture" => '\nItem Type: Light Armor \nDamage Reduction: 20% \n\nA helmet.'
+        }
+        write_equipment("hdh_boots_01_01_13", name: "@item_Name_hdh_boots_01_01_13", description: "@item_Desc_venture")
+
+        record = parsed.fetch("hdh_boots_01_01_13")
+
+        assert_equal "A helmet.", record["description"]
+        assert_equal "20.0", record["damage_reduction"]
+      end
+
       # Memoized: a second `all` on the same parser writes over a folder
       # `clear_once` has already swept, which the parser reports as a duplicate.
       private def parsed
