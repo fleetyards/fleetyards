@@ -276,7 +276,7 @@ class FleetMembership < ApplicationRecord
   # the board may post a personal one, the way FleetContractPolicy#create? has it.
   def capabilities
     granted = CAPABILITY_PRIVILEGES.transform_values { |privileges| has_access?(privileges) }
-    granted[:create_contracts] ||= granted[:read_contracts] && fleet.personal_contracts_enabled?
+    granted[:create_contracts] ||= granted[:read_contracts] && ::FleetContract.personal_open_to?(fleet, user)
     granted
   end
 

@@ -35,7 +35,7 @@ class FleetContractPolicy < FleetBasePolicy
   def create?
     return true if accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:contracts:manage",
       "fleet:contracts:create"])
-    return false unless index? && contract_fleet&.personal_contracts_enabled?
+    return false unless index? && ::FleetContract.personal_open_to?(contract_fleet, user)
     return true unless record.is_a?(::FleetContract)
 
     record.personal?

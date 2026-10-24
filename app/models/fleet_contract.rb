@@ -253,6 +253,16 @@ class FleetContract < ApplicationRecord
     destination_inventory.present?
   end
 
+  # Whether this member could post one at all: the fleet allows them, and the
+  # member's own inventories can take a delivery -- the transfer gate refuses
+  # every one otherwise, so the contract could never be worked.
+  def self.personal_open_to?(fleet, user)
+    return false if fleet.blank? || user.blank?
+    return false unless fleet.personal_contracts_enabled?
+
+    ::Inventories::TransferGate.new(sender: user, recipient: user).recipient_feature_enabled?
+  end
+
   # Delivering into the author's own inventory rather than the fleet's: the
   # author is the one paying for it.
   def personal?
