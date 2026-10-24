@@ -54,7 +54,11 @@ const mountPage = async (equipment: Equipment) => {
         name: "equipment-item",
         component: { template: "<div />" },
       },
-      { path: "/equipment/", name: "equipment", component: { template: "<div />" } },
+      {
+        path: "/equipment/",
+        name: "equipment",
+        component: { template: "<div />" },
+      },
     ],
   });
   await router.push(`/equipment/${equipment.slug}/`);
