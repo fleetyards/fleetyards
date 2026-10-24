@@ -139,6 +139,17 @@ module ScData
         assert_nil parsed_ship["interior"]
       end
 
+      # An AI-only Vanduul hull in 4.10.3 names an implementation file the
+      # export does not ship.
+      test "still parses a ship whose implementation file is missing" do
+        FileUtils.rm("#{@raw_path}/Data/#{DEFINITION_PATH}")
+
+        ship = parsed_ship
+
+        assert_nil ship["mass"]
+        assert_nil ship["hull_health"]
+      end
+
       private def parsed_ship
         @parser.all
 
