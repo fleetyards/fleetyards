@@ -351,7 +351,9 @@
       "model": {
         "gallery": "Gallery",
         "onSale": "On Sale: %{price}",
-        "store": "RSI Page"
+        "store": "RSI Page",
+        "showViews": "All views",
+        "hideViews": "Fewer views"
       },
       "itemViews": {
         "sync": "Sync Views"

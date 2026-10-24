@@ -11,6 +11,7 @@ vi.mock("@/shared/composables/useI18n", () => ({
 }));
 
 import FleetchartImages from "./index.vue";
+import Collapsed from "@/shared/components/Collapsed.vue";
 
 // jsdom reports a width of 0, which reads as a phone and picks the medium
 // variant of every image. The views are a desktop grid, so the specs state the
@@ -335,5 +336,128 @@ describe("while the next set of images is loading", () => {
     await landedTop!.trigger("error");
 
     expect(wrapper.find('[data-test="loader"]').exists()).toBe(false);
+  });
+});
+
+describe("the collapsible views", () => {
+  const ALL_VIEWS: Partial<ModelMedia> = {
+    ...FLIGHT_VIEWS,
+    landedTopView: file("landed-top"),
+    angledRearView: file("angled-rear"),
+    bottomView: file("bottom"),
+    rearView: file("rear"),
+    starboardView: file("starboard"),
+  };
+
+  const mountCollapsible = (media: Partial<ModelMedia>) =>
+    mountWithDefaults<typeof FleetchartImages>(FleetchartImages, {
+      props: { model: model(media), collapsible: true },
+    });
+
+  type Wrapper = Awaited<ReturnType<typeof mountCollapsible>>;
+
+  const sources = (wrapper: Wrapper) =>
+    wrapper.findAll("img").map((img) => img.attributes("src"));
+
+  const fold = (wrapper: Wrapper) =>
+    wrapper.find('[data-test="model-views-fold"]');
+
+  const settleAll = async (wrapper: Wrapper) => {
+    for (const img of wrapper.findAll("img")) {
+      Object.defineProperty(img.element, "complete", {
+        value: true,
+        configurable: true,
+      });
+      await img.trigger("load");
+    }
+  };
+
+  const unfolded = (wrapper: Wrapper) =>
+    wrapper.findComponent(Collapsed).props("visible");
+
+  it("starts as the angled view alone, with the state switch", async () => {
+    const wrapper = await mountCollapsible(ALL_VIEWS);
+
+    expect(sources(wrapper)).toEqual(["https://cdn.test/angled?large"]);
+    expect(wrapper.find('[data-test="model-states"]').exists()).toBe(true);
+    expect(
+      wrapper
+        .find('[data-test="model-views-fold"]')
+        .attributes("aria-expanded"),
+    ).toBe("false");
+  });
+
+  it("fetches the other views on the first tap and unfolds once they arrive", async () => {
+    const wrapper = await mountCollapsible(ALL_VIEWS);
+
+    await fold(wrapper).trigger("click");
+
+    expect(sources(wrapper)).toHaveLength(8);
+    expect(unfolded(wrapper)).toBe(false);
+    expect(fold(wrapper).attributes("aria-busy")).toBe("true");
+
+    await settleAll(wrapper);
+
+    expect(unfolded(wrapper)).toBe(true);
+    expect(fold(wrapper).attributes("aria-expanded")).toBe("true");
+    expect(fold(wrapper).attributes("aria-busy")).toBe("false");
+  });
+
+  it("gives up on unfolding when tapped again while the views arrive", async () => {
+    const wrapper = await mountCollapsible(ALL_VIEWS);
+
+    await fold(wrapper).trigger("click");
+    await fold(wrapper).trigger("click");
+    await settleAll(wrapper);
+
+    expect(unfolded(wrapper)).toBe(false);
+  });
+
+  it("unfolds without dimming the angled view under a loader", async () => {
+    const wrapper = await mountCollapsible(ALL_VIEWS);
+    const angled = wrapper.find("img");
+
+    Object.defineProperty(angled.element, "complete", {
+      value: true,
+      configurable: true,
+    });
+    await angled.trigger("load");
+    await wrapper.find('[data-test="model-views-fold"]').trigger("click");
+
+    expect(wrapper.find(".fleetchart-views--loading").exists()).toBe(false);
+  });
+
+  it("folds back on a second tap, keeping the views for the next unfold", async () => {
+    const wrapper = await mountCollapsible(ALL_VIEWS);
+
+    await fold(wrapper).trigger("click");
+    await settleAll(wrapper);
+    await fold(wrapper).trigger("click");
+
+    expect(unfolded(wrapper)).toBe(false);
+    expect(sources(wrapper)).toHaveLength(8);
+
+    await fold(wrapper).trigger("click");
+
+    expect(unfolded(wrapper)).toBe(true);
+  });
+
+  it("still offers the state switch for a ship without views", async () => {
+    const wrapper = await mountCollapsible({ landedHolo: file("landed-holo") });
+
+    expect(wrapper.find("img").exists()).toBe(false);
+    expect(wrapper.find('[data-test="model-states"]').exists()).toBe(true);
+  });
+
+  it("shows every view of a ship without an angled view", async () => {
+    const { angledView: _angled, ...withoutAngled } = FLIGHT_VIEWS;
+    const wrapper = await mountCollapsible(withoutAngled);
+
+    expect(wrapper.find('[data-test="model-views-fold"]').exists()).toBe(false);
+    expect(sources(wrapper)).toEqual([
+      "https://cdn.test/top?large",
+      "https://cdn.test/front?large",
+      "https://cdn.test/side?large",
+    ]);
   });
 });

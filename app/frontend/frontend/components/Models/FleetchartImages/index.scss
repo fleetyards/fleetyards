@@ -1,3 +1,5 @@
+$views-max-height: 240px;
+
 .fleetchart-views-wrapper {
   position: relative;
 }
@@ -48,11 +50,53 @@
 
 @media (max-width: $desktop-breakpoint) {
   .fleetchart-views-toggle {
-    position: static;
+    position: relative;
+    top: auto;
     margin: 20px 0 10px;
   }
 
   .fleetchart-views {
     grid-template-columns: 1fr;
   }
+}
+
+// No margin or padding of its own: Collapsed holds those at zero while it
+// animates and they would snap in at the end.
+.fleetchart-views__folded {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.fleetchart-views__fold {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+// On a phone the views stand in for the 3D preview, so each takes the column's
+// width rather than the fleetchart scale, held to a height a screen can show.
+.fleetchart-views--collapsible .fleetchart-views__cell {
+  img,
+  &.small img {
+    width: 100%;
+    max-width: 100%;
+    max-height: $views-max-height;
+    object-fit: contain;
+  }
+}
+
+.fleetchart-views__fold-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9em;
+  color: var(--color-text-dim);
 }
