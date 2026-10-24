@@ -139,6 +139,28 @@ class Api::V1::ModelsModulesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # A render lands on the component alone, which nothing in the module's key names.
+  test "GET /models/:slug/modules serves a component's angled view attached after the payload was cached" do
+    model = create(:model)
+    model_module = create(:model_module)
+    create(:module_hardpoint, model:, model_module:)
+    gun = create(:component, name: "Module Gun")
+    create(:hardpoint, parent: model_module, sc_name: "hardpoint_gun", source: :game_files, component: gun)
+
+    with_fragment_caching do
+      get "/api/v1/models/#{model.slug}/modules"
+      assert_nil response.parsed_body["items"].sole["hardpoints"].sole.dig("component", "media", "storeImage")
+
+      travel 1.minute do
+        gun.angled_view.attach(io: file_fixture("test.png").open, filename: "angled.png", content_type: "image/png")
+      end
+      get "/api/v1/models/#{model.slug}/modules"
+
+      assert_equal "angled.png",
+        response.parsed_body["items"].sole["hardpoints"].sole.dig("component", "media", "storeImage", "name")
+    end
+  end
+
   test "GET /models/:slug/modules labels a component in the caller's locale after another locale cached it" do
     model = create(:model)
     model_module = create(:model_module)

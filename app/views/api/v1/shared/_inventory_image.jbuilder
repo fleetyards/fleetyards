@@ -5,5 +5,5 @@ if entry.blank? || entry.display_image.blank?
 elsif entry.image.attached?
   json.partial! "api/v1/shared/file", record: entry, attr: :image
 else
-  json.partial! "api/v1/shared/file", record: entry.item, attr: :store_image
+  json.partial! "api/v1/shared/file", record: entry.item, attr: entry.item_image_attr
 end

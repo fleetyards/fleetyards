@@ -1,12 +1,15 @@
 # frozen_string_literal: true
 
+component_key = Component.touched_cache_key
+
 json.items do
   json.array! @model_modules do |model_module|
     # Prices too, the module's and its hardpoints' components': a price sync
-    # touches neither the module nor its slots. The locale, because the
+    # touches neither the module nor its slots. The components themselves, whose
+    # pictures change without touching either. The locale, because the
     # hardpoints' components carry translated labels.
     json.cache! [
-      "v6", I18n.locale, model_module, ::ScData::Source.current, ItemPrice.cache_key_for("Component", "ModelModule"), Manufacturer.artwork_version
+      "v7", I18n.locale, model_module, ::ScData::Source.current, ItemPrice.cache_key_for("Component", "ModelModule"), component_key, Manufacturer.artwork_version
     ] do
       json.partial!("api/v1/model_modules/base", model_module:)
     end

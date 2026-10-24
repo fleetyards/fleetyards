@@ -17,6 +17,7 @@ import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
+import { useImageViewer } from "@/shared/composables/useImageViewer";
 import EquipmentStatsCard from "@/frontend/components/StatsCard/Equipment/index.vue";
 import Alert from "@/shared/components/base/Alert/index.vue";
 import { useCraftedFromRoute } from "@/frontend/composables/useCraftedFromRoute";
@@ -47,6 +48,16 @@ const {
 } = useCraftedFromRoute(stock, craftedEquipment);
 
 const equipment = computed(() => crafted.value ?? stock.value);
+
+const { openImage } = useImageViewer();
+
+const viewImage = (event: MouseEvent) => {
+  const image = (event.currentTarget as HTMLElement).querySelector("img");
+
+  if (image && equipment.value) {
+    void openImage(image, equipment.value.name);
+  }
+};
 
 // Which recipes make this. Looked up by id, so only once the item has arrived.
 const { data: blueprints, isPending: recipesPending } = useBlueprintsQuery(
@@ -182,6 +193,21 @@ watch(
           />
 
           <div class="equipment-page__rail">
+            <button
+              v-if="equipment.storeImage?.largeUrl"
+              type="button"
+              class="equipment-page__zoom"
+              :aria-label="t('actions.viewImage', { name: equipment.name })"
+              data-test="equipment-image"
+              @click="viewImage"
+            >
+              <img
+                class="equipment-page__image"
+                :src="equipment.storeImage.largeUrl"
+                alt=""
+              />
+            </button>
+
             <MetricsCard
               v-if="details.length"
               :title="t('headlines.equipment.identity')"

@@ -64,12 +64,8 @@ json.lines do
     json.position_id entry.position_id
     json.item_available entry.item_available?
 
-    if entry.display_image.present?
-      json.image do
-        json.partial! "api/v1/shared/file", record: entry, attr: :image
-      end
-    else
-      json.image nil
+    json.image do
+      json.partial! "api/v1/shared/inventory_image", entry:
     end
   end
 end

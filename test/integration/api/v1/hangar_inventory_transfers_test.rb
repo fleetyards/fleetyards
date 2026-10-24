@@ -168,6 +168,20 @@ class Api::V1::HangarInventoryTransfersTest < ActionDispatch::IntegrationTest
     }
   end
 
+  test "POST shows a line by the image of the component it carries" do
+    component = create(:component, :with_store_image)
+    entry = create(:inventory_item, :component, inventory: @source, name: component.name, quantity: 4, item: component)
+    sign_in @user
+
+    assert_api_response :post, 201, body: {
+      sourceInventoryId: @source.id,
+      inventoryId: @destination.id,
+      lines: [{positionId: entry.position.id, quantity: 1}]
+    } do
+      assert parsed_body["lines"].first["image"]["url"].present?
+    end
+  end
+
   test "GET lists both directions, and filters to one" do
     create(:inventory_transfer, source_inventory: @source, recipient: @recipient, initiated_by: @user)
     create(:inventory_transfer, source_inventory: create(:inventory, holder: @recipient),

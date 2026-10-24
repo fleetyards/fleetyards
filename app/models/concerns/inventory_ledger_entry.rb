@@ -244,9 +244,17 @@ module InventoryLedgerEntry
   def display_image
     return image if image.attached?
     return unless referenced_item?
-    return unless item.respond_to?(:store_image) && item.store_image.attached?
 
-    item.store_image
+    attr = item_image_attr
+    item.public_send(attr) if attr
+  end
+
+  # A component or a piece of equipment without a store image is shown by its
+  # angled render; a commodity has only the store image.
+  def item_image_attr
+    return item.display_image_attr if item.respond_to?(:display_image_attr)
+
+    :store_image if item.respond_to?(:store_image) && item.store_image.attached?
   end
 
   # Reading `item` constantizes item_type, so both the name default and the

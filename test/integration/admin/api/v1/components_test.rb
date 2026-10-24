@@ -381,6 +381,8 @@ class Admin::Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
 
     assert_api_response :put, 200, path_params: {id: component.id}, body: {angledView: blob.signed_id} do
       assert parsed_body["media"]["angledView"]["url"].present?
+      # The admin edits the store image itself, so the view never stands in for it.
+      assert_nil parsed_body["media"]["storeImage"]
     end
 
     assert_predicate component.reload.angled_view, :attached?
