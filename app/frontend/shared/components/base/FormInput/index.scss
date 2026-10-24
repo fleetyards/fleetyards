@@ -226,13 +226,15 @@
   }
 
   /*
-   * A value to read, not a field to fill: no fill and no cap at rest, so it is
-   * not mistaken for an input waiting for something. Unlike a disabled field
-   * the text stays at full strength -- it is still the answer -- and focus
-   * keeps its cap, because a readonly field is reached by keyboard to copy.
+   * A value to read, not a field to fill: no fill, and caps dimmed rather than
+   * lit, focused or not, so it never answers a click as if it were waiting for
+   * input. The text stays at full strength, unlike a disabled field's -- it is
+   * still the answer -- and focus shows as a firmer edge, since a readonly
+   * field is reached by keyboard to copy from.
    */
-  &--readonly:not(:focus-within) {
-    --field-cap: transparent;
+  &--readonly,
+  &--readonly:focus-within {
+    --field-cap: var(--color-edge-soft, rgb(122 130 136 / 0.28));
   }
 
   &--readonly {
@@ -244,6 +246,10 @@
       &:hover {
         border-color: var(--color-edge-soft, rgb(122 130 136 / 0.28));
       }
+    }
+
+    &:focus-within .base-input__wrapper {
+      border-color: var(--color-edge-strong, rgb(122 130 136 / 0.7));
     }
 
     input {
