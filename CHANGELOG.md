@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.23.1](https://github.com/fleetyards/fleetyards/compare/v9.23.0...v9.23.1) (2026-10-24)
+
+
+### Chores
+
+* **db:** drop the guilded columns from users and fleets ([#5940](https://github.com/fleetyards/fleetyards/issues/5940)) ([03d4945](https://github.com/fleetyards/fleetyards/commit/03d4945a74f6d0c430997320408c0338189f1ea8))
+
 ## [9.23.0](https://github.com/fleetyards/fleetyards/compare/v9.22.0...v9.23.0) (2026-10-24)
 
 
