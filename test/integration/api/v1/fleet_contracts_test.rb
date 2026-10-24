@@ -1150,6 +1150,31 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
     assert_predicate contract.reload, :personal?
   end
 
+  test "POST refuses a plain member's personal transport out of a fleet inventory" do
+    source = create(:fleet_inventory, fleet: @fleet)
+    sign_in @member
+
+    assert_no_difference -> { FleetContract.count } do
+      post "/api/v1/fleets/#{@fleet.slug}/contracts",
+        params: {kind: "transport", sourceFleetInventoryId: source.id,
+                 destinationInventoryId: Inventory.personal_for(@member).id}, as: :json
+    end
+
+    assert_response :bad_request
+    assert_includes response.parsed_body["errors"].pluck("attribute"), "sourceFleetInventory"
+  end
+
+  test "POST still lets an officer collect from a fleet inventory into their own" do
+    source = create(:fleet_inventory, fleet: @fleet)
+    sign_in @officer
+
+    post "/api/v1/fleets/#{@fleet.slug}/contracts",
+      params: {kind: "transport", sourceFleetInventoryId: source.id,
+               destinationInventoryId: Inventory.personal_for(@officer).id}, as: :json
+
+    assert_response :created
+  end
+
   private def contract_author
     author = create(:user)
     create(:fleet_membership, fleet: @fleet, user: author, aasm_state: :accepted,

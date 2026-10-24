@@ -85,6 +85,7 @@ class FleetContract < ApplicationRecord
   validate :hangar_destination_is_the_authors
   validate :destination_selectable_by_editor, if: :destination_changing?
   validate :personal_contracts_allowed, on: :create, if: :personal?
+  validate :source_selectable_by_editor, if: :personal_source_changing?
 
   before_save :update_slug
 
@@ -493,6 +494,22 @@ class FleetContract < ApplicationRecord
   private def destination_changing?
     destination_chosen_by.present? &&
       (will_save_change_to_destination_fleet_inventory_id? || will_save_change_to_destination_inventory_id?)
+  end
+
+  # Collecting from a fleet inventory into somebody's own is moving the
+  # fleet's stock out of it, which only whoever writes the fleet's contracts
+  # may ask for -- reading the board is enough for a personal contract, not
+  # for that.
+  private def personal_source_changing?
+    destination_chosen_by.present? && personal? && source_fleet_inventory_id.present? &&
+      (new_record? || will_save_change_to_source_fleet_inventory_id? ||
+        will_save_change_to_destination_inventory_id?)
+  end
+
+  private def source_selectable_by_editor
+    return if ::FleetContractPolicy.new(fleet, user: destination_chosen_by).write_fleet_contracts?
+
+    errors.add(:source_fleet_inventory, :not_selectable)
   end
 
   private def personal_contracts_allowed
