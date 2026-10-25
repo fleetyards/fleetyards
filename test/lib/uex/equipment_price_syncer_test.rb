@@ -79,6 +79,17 @@ module Uex
       assert_equal 5400, prices_for(reward).sole.price
     end
 
+    test "#run keeps the hidden item the uuid names when UEX calls it something else" do
+      reward = create(:equipment, :hidden, name: "C54 SMG", sc_key: "gmni_smg_ballistic_01_contestedzonereward",
+        sc_ref: "aaaaaaaa-1111-0000-0000-000000000014")
+      create(:equipment, name: "C54 SMG", sc_key: "gmni_smg_ballistic_01", sc_ref: nil)
+
+      sync(item_prices: uex_fixture("equipment_items_prices_all") +
+        [c54_row(reward.sc_ref).merge("item_name" => "C54 SMG Special Edition")])
+
+      assert_equal 5400, prices_for(reward).sole.price
+    end
+
     test "#run leaves a name several items answer to unpriced and reports it" do
       result = sync
 

@@ -54,7 +54,7 @@ module Uex
 
       # `sc_ref` is the game file's own id on both sides, so it names one record,
       # and almost always the right one. Tried first for that reason.
-      return resolve_ref(by_ref).first if by_ref.present?
+      return resolve_ref(by_ref, item).first if by_ref.present?
 
       candidates = @by_name[normalize(item["item_name"])]
 
@@ -74,7 +74,7 @@ module Uex
     end
 
     # The record an `sc_ref` match lands on, for a subclass to redirect.
-    private def resolve_ref(record)
+    private def resolve_ref(record, _item)
       record
     end
 

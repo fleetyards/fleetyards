@@ -46,10 +46,12 @@ module Uex
     # and Custodian carry their contested-zone reward's, and armour its Carrack
     # or microTech edition's. Hidden equipment has no page, so a price on it is
     # one nobody sees while the record they do see shows none. Only where a
-    # single visible record shares the name: two would be a guess.
-    private def resolve_ref(record)
+    # single visible record shares the name: two would be a guess. And only
+    # where UEX uses that name too -- one of its own says it means the edition.
+    private def resolve_ref(record, item)
       _, name, _, _, hidden = record
       return record if !hidden || name.blank?
+      return record unless normalize(item["item_name"]) == normalize(name)
 
       visible = @visible_by_name[normalize(name)]
       visible&.one? ? visible.first : record
