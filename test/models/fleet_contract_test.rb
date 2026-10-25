@@ -34,13 +34,44 @@ class FleetContractTest < ActiveSupport::TestCase
     assert_includes contract.errors.details[:reward_type], {error: :blank}
   end
 
-  test "a paid reward needs an amount" do
-    %i[fixed per_unit].each do |reward_type|
-      contract = build(:fleet_contract, reward_type:, reward: 0)
+  test "a fixed reward needs an amount" do
+    contract = build(:fleet_contract, reward_type: :fixed, reward: 0)
 
-      assert_not contract.valid?, "#{reward_type} accepted a zero reward"
-      assert_includes contract.errors.attribute_names, :reward
-    end
+    assert_not contract.valid?
+    assert_includes contract.errors.attribute_names, :reward
+  end
+
+  test "a per-unit contract keeps no amount of its own" do
+    contract = create(:fleet_contract, reward_type: :per_unit, reward: 5_000)
+
+    assert_equal 0, contract.reload.reward
+  end
+
+  test "a per-unit contract needs a rate on every line it arrives with" do
+    contract = build(:fleet_contract, reward_type: :per_unit)
+    contract.fleet_contract_items.build(name: "Titanium", category: :commodity, unit: :scu, quantity: 100)
+
+    assert_not contract.valid?
+    assert_equal [:"fleet_contract_items.reward_rate"], contract.errors.attribute_names
+  end
+
+  test "a contract cannot start paying per unit while a line has no rate" do
+    contract = create(:fleet_contract, :with_item)
+
+    assert_not contract.update(reward_type: :per_unit)
+    assert_includes contract.errors.attribute_names, :fleet_contract_items
+
+    contract.fleet_contract_items.sole.update!(reward_rate: 15)
+
+    assert contract.update(reward_type: :per_unit)
+  end
+
+  test "a line of a per-unit contract needs a rate" do
+    contract = create(:fleet_contract, reward_type: :per_unit)
+    item = build(:fleet_contract_item, fleet_contract: contract, reward_rate: nil)
+
+    assert_not item.valid?
+    assert_includes item.errors.attribute_names, :reward_rate
   end
 
   test "a fixed 0 saved by the previous release reads as no reward" do
@@ -61,12 +92,24 @@ class FleetContractTest < ActiveSupport::TestCase
     assert_equal 0, contract.max_reward
   end
 
-  test "a per-unit reward is worth at most the rate on everything asked for" do
-    contract = create(:fleet_contract, reward_type: :per_unit, reward: 12.5)
-    create(:fleet_contract_item, fleet_contract: contract, name: "Titanium", quantity: 800)
-    create(:fleet_contract_item, fleet_contract: contract, name: "Gold", quantity: 200)
+  test "a per-unit reward is worth at most each line's rate on what it asks for" do
+    contract = create(:fleet_contract, reward_type: :per_unit)
+    create(:fleet_contract_item, fleet_contract: contract, name: "Titanium", quantity: 800, reward_rate: 12.5)
+    create(:fleet_contract_item, fleet_contract: contract, name: "Gold", quantity: 200, reward_rate: 40)
 
-    assert_equal 12_500, contract.reload.max_reward
+    assert_equal 18_000, contract.reload.max_reward
+  end
+
+  test "a shared rate is named only when every line pays it" do
+    contract = create(:fleet_contract, reward_type: :per_unit)
+    create(:fleet_contract_item, fleet_contract: contract, name: "Titanium", reward_rate: 12.5)
+    gold = create(:fleet_contract_item, fleet_contract: contract, name: "Gold", reward_rate: 12.5)
+
+    assert_equal 12.5, contract.reload.shared_reward_rate
+
+    gold.update!(reward_rate: 40)
+
+    assert_nil contract.reload.shared_reward_rate
   end
 
   test "a transport contract needs a source inventory and the others must not have one" do

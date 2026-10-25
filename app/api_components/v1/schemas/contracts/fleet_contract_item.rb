@@ -17,6 +17,9 @@ module V1
             quality: {type: [:integer, :null]},
             qualityMatch: ::V1::Schemas::Enums::FleetContractQualityMatchEnum,
             position: {type: :integer},
+            # Paid per SCU or unit delivered against this line, on a per-unit
+            # contract.
+            rewardRate: {type: [:string, :null]},
             item: ::V1::Schemas::Contracts::FleetContractItemRef,
             # Present on a line asking for a crafted part only.
             crafted: ::V1::Schemas::InventoryCraftedRef,
@@ -24,7 +27,7 @@ module V1
             updatedAt: {type: [:string, :null], format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id name category unit quantity position qualityMatch]
+          required: %w[id name category unit quantity position qualityMatch rewardRate]
         })
       end
     end

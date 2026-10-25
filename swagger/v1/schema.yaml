@@ -26611,6 +26611,10 @@ components:
           "$ref": "#/components/schemas/FleetContractRewardTypeEnum"
         maxReward:
           type: string
+        rewardRate:
+          type:
+          - string
+          - 'null'
         reimburseExpenses:
           type: boolean
         crewLimit:
@@ -26698,6 +26702,7 @@ components:
       - reward
       - rewardType
       - maxReward
+      - rewardRate
       - requiresPickup
       - personal
       - destination
@@ -26922,6 +26927,10 @@ components:
           "$ref": "#/components/schemas/FleetContractRewardTypeEnum"
         maxReward:
           type: string
+        rewardRate:
+          type:
+          - string
+          - 'null'
         reimburseExpenses:
           type: boolean
         crewLimit:
@@ -27017,6 +27026,7 @@ components:
       - reward
       - rewardType
       - maxReward
+      - rewardRate
       - requiresPickup
       - personal
       - destination
@@ -27143,6 +27153,10 @@ components:
           "$ref": "#/components/schemas/FleetContractQualityMatchEnum"
         position:
           type: integer
+        rewardRate:
+          type:
+          - string
+          - 'null'
         item:
           "$ref": "#/components/schemas/FleetContractItemRef"
         crafted:
@@ -27166,6 +27180,7 @@ components:
       - quantity
       - position
       - qualityMatch
+      - rewardRate
       title: FleetContractItem
     FleetContractItemInput:
       type: object
@@ -27186,6 +27201,10 @@ components:
           "$ref": "#/components/schemas/FleetContractQualityMatchEnum"
         position:
           type: integer
+        rewardRate:
+          type:
+          - string
+          - 'null'
         itemType:
           "$ref": "#/components/schemas/NullableInventoryItemTypeEnum"
         itemId:
@@ -27292,6 +27311,10 @@ components:
           - 'null'
         qualityMatch:
           "$ref": "#/components/schemas/FleetContractQualityMatchEnum"
+        rewardRate:
+          type:
+          - string
+          - 'null'
         crafted:
           "$ref": "#/components/schemas/InventoryCraftedRef"
         requested:
@@ -27316,6 +27339,7 @@ components:
       - name
       - category
       - unit
+      - rewardRate
       - requested
       - delivered
       - pickedUp

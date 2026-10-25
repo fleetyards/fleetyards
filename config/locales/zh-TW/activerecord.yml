@@ -275,6 +275,7 @@ zh-TW:
     errors:
       messages:
         contract_item_already_asked_for: "該合約中已有相同類別和單位的這項貨物"
+        contract_item_needs_reward_rate: "每一行都需要設定每 SCU 或每件的報酬"
         entry_goods_in_transit: "在其所屬的轉移得到回覆之前無法刪除"
         inventory_goods_in_transit: "在已傳送的轉移得到回覆之前無法刪除"
         inventory_contract_destination: "在有未完成的艦隊合約向其交付期間無法刪除"

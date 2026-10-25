@@ -56,8 +56,9 @@ const props = defineProps<Props>();
 const emit = defineEmits<{
   cancel: [];
   // The goods form outside this one needs to know: only a crafting contract
-  // rules commodities out.
+  // rules commodities out, and only a per-unit one asks each line for a rate.
   "kind-change": [FleetContractKindEnum];
+  "reward-type-change": [FleetContractRewardTypeEnum | null];
 }>();
 
 const { t } = useI18n();
@@ -177,8 +178,7 @@ const { defineField, handleSubmit, meta, setErrors } = useForm({
     kind: props.contract?.kind ?? FleetContractKindEnum.PROCUREMENT,
     rewardType: props.contract?.rewardType ?? null,
     reward:
-      props.contract &&
-      props.contract.rewardType !== FleetContractRewardTypeEnum.NONE
+      props.contract?.rewardType === FleetContractRewardTypeEnum.FIXED
         ? props.contract.reward
         : "",
     reimburseExpenses: props.contract?.reimburseExpenses ?? true,
@@ -207,23 +207,21 @@ watch(kind, (value) => emit("kind-change", value as FleetContractKindEnum), {
 const [rewardType, rewardTypeProps] = defineField("rewardType");
 const [reward, rewardProps] = defineField("reward");
 
-const paysReward = computed(
-  () =>
-    !!rewardType.value && rewardType.value !== FleetContractRewardTypeEnum.NONE,
+watch(
+  rewardType,
+  (value) =>
+    emit("reward-type-change", value as FleetContractRewardTypeEnum | null),
+  { immediate: true },
 );
 
+const fixedReward = computed(
+  () => rewardType.value === FleetContractRewardTypeEnum.FIXED,
+);
+
+// A rate is set on each line instead, since goods are not all worth the same.
 const perUnit = computed(
   () => rewardType.value === FleetContractRewardTypeEnum.PER_UNIT,
 );
-
-// A total and a rate are not the same number: 120000 kept as a rate would pay
-// 120000 for every SCU. Switching between them asks for the amount again.
-watch(rewardType, (next, previous) => {
-  const paid = (value: unknown) =>
-    !!value && value !== FleetContractRewardTypeEnum.NONE;
-
-  if (paid(previous) && paid(next) && next !== previous) reward.value = "";
-});
 const [reimburseExpenses] = defineField("reimburseExpenses");
 const [crewLimit, crewLimitProps] = defineField("crewLimit");
 const [visibility, visibilityProps] = defineField("visibility");
@@ -313,7 +311,7 @@ const onSubmit = handleSubmit(async (values) => {
     kind: values.kind as never,
     rewardType: (values.rewardType ?? undefined) as
       FleetContractRewardTypeEnum | undefined,
-    reward: paysReward.value ? String(values.reward ?? "") : "0",
+    reward: fixedReward.value ? String(values.reward ?? "") : "0",
     reimburseExpenses: values.reimburseExpenses,
     crewLimit: values.crewLimit ? Number(values.crewLimit) : null,
     visibility: values.visibility as "members_only" | "squadron_only",
@@ -496,14 +494,14 @@ const onSubmit = handleSubmit(async (values) => {
             />
             <p
               v-if="hangarDestinationOwner === 'self'"
-              class="contract-destination-hint"
+              class="contract-form-hint"
               data-test="contract-destination-hint"
             >
               {{ t("labels.fleets.contracts.toHint") }}
             </p>
             <p
               v-else-if="hangarDestinationOwner === 'author'"
-              class="contract-destination-hint"
+              class="contract-form-hint"
               data-test="contract-destination-author-hint"
             >
               {{
@@ -544,23 +542,22 @@ const onSubmit = handleSubmit(async (values) => {
               unsorted
               data-test="contract-reward-type"
             />
+            <p
+              v-if="perUnit"
+              class="contract-form-hint"
+              data-test="contract-reward-per-unit-hint"
+            >
+              {{ t("labels.fleets.contracts.rewardPerUnitHint") }}
+            </p>
           </div>
-          <div v-if="paysReward" class="col-12 col-md-6">
+          <div v-if="fixedReward" class="col-12 col-md-6">
             <FormInput
               v-model="reward"
               v-bind="rewardProps"
               name="reward"
-              :label="
-                perUnit
-                  ? t('labels.fleets.contracts.rewardPerUnit')
-                  : t('labels.fleets.contracts.reward')
-              "
+              :label="t('labels.fleets.contracts.reward')"
               data-test="contract-reward"
-            >
-              <template v-if="perUnit" #subline>
-                {{ t("labels.fleets.contracts.rewardPerUnitHint") }}
-              </template>
-            </FormInput>
+            />
           </div>
         </div>
 
@@ -631,7 +628,7 @@ const onSubmit = handleSubmit(async (values) => {
 </template>
 
 <style lang="scss" scoped>
-.contract-destination-hint {
+.contract-form-hint {
   margin-top: -0.5rem;
   color: var(--color-text-dim);
   font-size: 0.875rem;

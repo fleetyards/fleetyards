@@ -4054,7 +4054,9 @@
             "none": "Keine Belohnung"
           },
           "rewardPerUnit": "Belohnung pro SCU oder Stück",
-          "rewardPerUnitHint": "Jeder Auftragnehmer erhält diesen Betrag für jedes gelieferte SCU oder Stück, bis zur angefragten Menge.",
+          "rewardPerUnitHint": "Jede Warenzeile legt ihren eigenen Betrag fest. Auftragnehmer erhalten ihn für jedes gelieferte SCU oder Stück, bis zur angefragten Menge der Zeile.",
+          "rewardUpTo": "Belohnung, bis zu",
+          "rateMissing": "Noch kein Betrag",
           "rewardRate": {
             "scu": "%{currency} / SCU",
             "units": "%{currency} / Stück",

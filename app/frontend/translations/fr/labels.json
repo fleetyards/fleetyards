@@ -4054,7 +4054,9 @@
             "none": "Aucune récompense"
           },
           "rewardPerUnit": "Récompense par SCU ou unité",
-          "rewardPerUnitHint": "Chaque contractant touche ce montant pour chaque SCU ou unité livrée, dans la limite de ce que demande le contrat.",
+          "rewardPerUnitHint": "Chaque ligne de marchandises fixe son propre tarif. Les contractants le touchent pour chaque SCU ou unité livrée, dans la limite de ce que demande la ligne.",
+          "rewardUpTo": "Récompense, jusqu'à",
+          "rateMissing": "Pas encore de tarif",
           "rewardRate": {
             "scu": "%{currency} / SCU",
             "units": "%{currency} / unité",

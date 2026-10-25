@@ -52,6 +52,27 @@ const modalCalls = () =>
   emit.mock.calls.filter(([event]) => event === "open-modal");
 
 describe("FleetContractsItemsForm", () => {
+  // A line added before the contract paid per unit has to be found and given
+  // its rate, or the contract is refused.
+  it("marks a line with no rate on a contract paying per unit", async () => {
+    wrapper = await mountWithDefaults(Component, {
+      props: {
+        fleet,
+        contract: contract([
+          { ...items[0], id: "line-1", rewardRate: "40.0" },
+          { ...items[0], id: "line-2", name: "Gold", rewardRate: null },
+        ]),
+        kind: "transport" as never,
+        perUnit: true,
+      },
+    });
+
+    expect(wrapper.findAll("[data-test='contract-item-rate']")).toHaveLength(1);
+    expect(
+      wrapper.findAll("[data-test='contract-item-rate-missing']"),
+    ).toHaveLength(1);
+  });
+
   it("lists the goods through the app's editable list", async () => {
     const subject = await mount();
 

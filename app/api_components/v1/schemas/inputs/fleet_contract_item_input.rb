@@ -17,6 +17,8 @@ module V1
             quality: {type: [:integer, :null]},
             qualityMatch: ::V1::Schemas::Enums::FleetContractQualityMatchEnum,
             position: {type: :integer},
+            # Required while the contract pays per SCU or unit.
+            rewardRate: {type: [:string, :null]},
             itemType: ::V1::Schemas::Enums::NullableInventoryItemTypeEnum,
             itemId: {type: [:string, :null], format: :uuid},
             # A crafted part: the recipe, and the grades asked for per slot,

@@ -24,6 +24,7 @@
     color: $gray-lighter;
   }
 
+  &__rate,
   &__reference,
   &__quality {
     margin-left: 10px;
@@ -33,5 +34,9 @@
 
   &__quality {
     color: $gold;
+  }
+
+  &__rate--missing {
+    color: $danger;
   }
 }

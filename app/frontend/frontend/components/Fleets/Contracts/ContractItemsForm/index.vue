@@ -36,6 +36,8 @@ type Props = {
   // round.
   contract?: FleetContractDetail;
   kind: FleetContractKindEnum;
+  // Whether each line is asked for its own rate per SCU or unit.
+  perUnit?: boolean;
   drafts?: ContractItemDraft[];
 };
 
@@ -46,7 +48,7 @@ const emit = defineEmits<{
   "update:drafts": [ContractItemDraft[]];
 }>();
 
-const { t } = useI18n();
+const { t, toUEC } = useI18n();
 const comlink = useComlink();
 const { displayAlert } = useAppNotifications();
 
@@ -100,6 +102,7 @@ const openItemModal = (item?: Row) => {
       fleet: props.fleet,
       contract: props.contract,
       kind: props.kind,
+      perUnit: props.perUnit,
       item,
       // Present only while the contract is unsaved, and what tells the modal
       // to hand its values back instead of posting them.
@@ -159,6 +162,14 @@ onUnmounted(() => {
   itemSavedComlink.value?.();
 });
 
+const rateLabel = (item: Row) =>
+  toUEC(
+    Number(item.rewardRate),
+    t(`labels.fleets.contracts.rewardRate.${item.unit}`, {
+      currency: t("number.units.uec"),
+    }),
+  );
+
 const qualityLabel = (item: Row) =>
   t(
     item.qualityMatch === FleetContractQualityMatchEnum.EXACT
@@ -197,6 +208,20 @@ const qualityLabel = (item: Row) =>
         <span v-if="item.item" class="contract-items__reference">
           <i class="fa-duotone fa-link" />
           {{ t(`labels.fleets.contracts.itemTypes.${item.item.type}`) }}
+        </span>
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <span
+          v-if="perUnit && item.rewardRate"
+          class="contract-items__rate"
+          data-test="contract-item-rate"
+          v-html="rateLabel(item as Row)"
+        />
+        <span
+          v-else-if="perUnit"
+          class="contract-items__rate contract-items__rate--missing"
+          data-test="contract-item-rate-missing"
+        >
+          {{ t("labels.fleets.contracts.rateMissing") }}
         </span>
         <span v-if="item.quality != null" class="contract-items__quality">
           {{ qualityLabel(item as Row) }}

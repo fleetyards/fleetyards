@@ -23,9 +23,10 @@ class FleetContract < ApplicationRecord
 
   KINDS = {transport: 0, procurement: 1, crafting: 2}.freeze
 
-  # How `reward` reads: the whole payment, a rate per SCU or unit delivered, or
-  # nothing at all. No default -- a contract that pays nothing has to say so,
-  # rather than arrive at it by leaving the field empty.
+  # How the contract pays: `reward` as the whole payment, each line's own rate
+  # per SCU or unit delivered, or nothing at all. No default -- a contract that
+  # pays nothing has to say so, rather than arrive at it by leaving the field
+  # empty.
   REWARD_TYPES = {fixed: 0, per_unit: 1, none: 2}.freeze
 
   AVAILABLE_PRIVILEGES = [
@@ -86,7 +87,8 @@ class FleetContract < ApplicationRecord
   # Checked when the reward is being set rather than on every save: a contract
   # the previous release saved as a fixed 0 would otherwise fail every later
   # save, and a failed `cancel!` or `expire!` is silent.
-  validates :reward, numericality: {greater_than: 0}, unless: :reward_none?, if: :reward_being_set?
+  validates :reward, numericality: {greater_than: 0}, if: -> { reward_fixed? && reward_being_set? }
+  validate :lines_have_rates, if: -> { persisted? && reward_per_unit? && will_save_change_to_reward_type? }
   validates :crew_limit, numericality: {greater_than: 0}, allow_nil: true
   validate :exactly_one_destination, if: :destination_being_set?
   validates :source_fleet_inventory, presence: true, if: :transport?
@@ -104,7 +106,8 @@ class FleetContract < ApplicationRecord
   # reward used to look like. Read as what it meant; the next save keeps it.
   after_find { self.reward_type = :none if reward_fixed? && reward.zero? }
 
-  before_validation :clear_reward, if: :reward_none?
+  # Only a fixed reward is an amount on the contract; a rate lives on each line.
+  before_validation :clear_reward, unless: :reward_fixed?
   before_save :update_slug
 
   scope :active, -> { where(aasm_state: %w[open in_progress]) }
@@ -243,14 +246,13 @@ class FleetContract < ApplicationRecord
   # lands on, so both have to be listed.
   ransack_alias :state, :aasm_state
 
-  # Sorted by what a contract pays, not by the number typed in: a rate per SCU
-  # sits beside fixed totals only once it is multiplied out over the goods. The
-  # same figure `max_reward` derives, named over the column so `reward asc`
-  # keeps its meaning.
+  # Sorted by what a contract pays: per-line rates sit beside fixed totals only
+  # once they are multiplied out over the goods. The same figure `max_reward`
+  # derives, named over the column so `reward asc` keeps its meaning.
   ransacker :reward, type: :decimal do
     Arel.sql(<<~SQL.squish)
       (CASE WHEN fleet_contracts.reward_type = #{REWARD_TYPES[:per_unit]}
-        THEN fleet_contracts.reward * COALESCE((SELECT SUM(fleet_contract_items.quantity)
+        THEN COALESCE((SELECT SUM(fleet_contract_items.quantity * COALESCE(fleet_contract_items.reward_rate, 0))
           FROM fleet_contract_items WHERE fleet_contract_items.fleet_contract_id = fleet_contracts.id), 0)
         ELSE fleet_contracts.reward END)
     SQL
@@ -378,23 +380,32 @@ class FleetContract < ApplicationRecord
     @progress ||= ::Contracts::Progress.new(self)
   end
 
-  # The most this contract can pay: a per-unit rate earns at most what the
-  # lines ask for, because over-delivering a line does not count.
+  # The most this contract can pay: a line's rate earns at most what the line
+  # asks for, because over-delivering it does not count.
   def max_reward
     case reward_type
     when "fixed" then reward
-    when "per_unit" then reward * fleet_contract_items.sum(0.to_d, &:quantity)
+    when "per_unit" then fleet_contract_items.sum(0.to_d) { |item| item.reward_for(item.quantity) }
     else 0.to_d
     end
   end
 
+  # The rate every line pays, when they all pay the same -- what a board can
+  # show as one figure per SCU or unit.
+  def shared_reward_rate
+    return unless reward_per_unit?
+
+    rates = fleet_contract_items.map(&:reward_rate).uniq
+    rates.first if rates.one?
+  end
+
   # What the delivered goods earned, for the contractors who delivered them --
   # `user_ids` leaves out an author paying themselves. A fixed reward is owed
-  # whole; a rate is owed on what was counted, never beyond what was asked.
+  # whole; rates are owed on what was counted, never beyond what was asked.
   def earned_reward(user_ids)
     case reward_type
     when "fixed" then reward
-    when "per_unit" then (reward * progress.counted_quantities.slice(*user_ids).values.sum(0.to_d)).round(2)
+    when "per_unit" then progress.earned_amounts.slice(*user_ids).values.sum(0.to_d).round(2)
     else 0.to_d
     end
   end
@@ -515,6 +526,15 @@ class FleetContract < ApplicationRecord
 
     errors.add(:fleet_contract_items, :taken,
       message: I18n.t("activerecord.errors.messages.contract_item_already_asked_for"))
+  end
+
+  # A line saved before the contract paid per unit has no rate, and would pay
+  # nothing. Lines arriving with a new contract check their own rate.
+  private def lines_have_rates
+    return unless fleet_contract_items.where(reward_rate: nil).exists?
+
+    errors.add(:fleet_contract_items, :invalid,
+      message: I18n.t("activerecord.errors.messages.contract_item_needs_reward_rate"))
   end
 
   # Two titles the check above tells apart can still read the same slug --

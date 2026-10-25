@@ -33,6 +33,10 @@ class FleetContractItem < ApplicationRecord
   validates :quality,
     numericality: {greater_than_or_equal_to: 0, less_than_or_equal_to: 1000},
     allow_nil: true
+  # Kept on a line of any contract, so switching how a contract pays and back
+  # does not lose the rates; only a per-unit contract has to have them.
+  validates :reward_rate, numericality: {greater_than: 0}, allow_nil: true
+  validates :reward_rate, presence: true, if: -> { fleet_contract&.reward_per_unit? }
   validates :item_type, inclusion: {in: ::InventoryLedgerEntry::ITEM_TYPES}, allow_blank: true
   validates :item_type, presence: true, if: :item_id?
   validate :referenced_item_exists, if: :item_id?
@@ -77,6 +81,12 @@ class FleetContractItem < ApplicationRecord
     return false if grade.blank?
 
     quality_exact? ? grade == required : grade >= required
+  end
+
+  # What `counted` SCU or units delivered against this line earn on a per-unit
+  # contract.
+  def reward_for(counted)
+    (reward_rate || 0).to_d * counted
   end
 
   # What `Contracts::Progress` groups deposits by. Downcased because a position

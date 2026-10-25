@@ -14,7 +14,7 @@ class FleetContractItemPolicy < FleetBasePolicy
 
   params_filter do |params|
     params.permit(:name, :category, :unit, :quantity, :quality, :quality_match, :item_type, :item_id, :position,
-      :crafted_blueprint_id, crafted_qualities: {})
+      :crafted_blueprint_id, :reward_rate, crafted_qualities: {})
   end
 
   private def contract

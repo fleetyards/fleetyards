@@ -308,23 +308,24 @@ module Contracts
       assert_equal [@contractor.id], batched.lines.first.contributions.map(&:user_id)
     end
 
-    test "counted quantities stop at what each line asked for" do
+    test "earned amounts pay each line's rate, up to what the line asked for" do
       crew = create(:user)
       create(:fleet_contract_assignment, :accepted, fleet_contract: @contract, user: crew)
+      @item.update!(reward_rate: 10)
       create(:fleet_contract_item, fleet_contract: @contract,
-        name: "Quantanium", category: :commodity, unit: :scu, quantity: 100)
+        name: "Quantanium", category: :commodity, unit: :scu, quantity: 100, reward_rate: 80)
 
       deliver(quantity: 600)
       deliver(quantity: 600, user: crew)
       deliver(quantity: 50, name: "Quantanium", user: crew)
 
-      counted = progress.counted_quantities
+      earned = progress.earned_amounts
 
-      assert_equal 400.to_d, counted[@contractor.id]
-      assert_equal 450.to_d, counted[crew.id]
+      assert_equal 4_000.to_d, earned[@contractor.id]
+      assert_equal 8_000.to_d, earned[crew.id]
     end
 
-    test "a rate divides by what was delivered, a fixed reward by the lines' fractions" do
+    test "rates divide by what was earned, a fixed reward by the lines' fractions" do
       crew = create(:user)
       create(:fleet_contract_assignment, :accepted, fleet_contract: @contract, user: crew)
       create(:fleet_contract_item, fleet_contract: @contract,
@@ -335,9 +336,11 @@ module Contracts
 
       assert_equal progress.weights, progress.payout_weights
 
-      @contract.update!(reward_type: :per_unit, reward: 10)
+      @contract.fleet_contract_items.find_by!(name: "Titanium").update!(reward_rate: 10)
+      @contract.fleet_contract_items.find_by!(name: "Quantanium").update!(reward_rate: 80)
+      @contract.update!(reward_type: :per_unit)
 
-      assert_equal({@contractor.id => 800.to_d, crew.id => 100.to_d}, progress.payout_weights)
+      assert_equal({@contractor.id => 8_000.to_d, crew.id => 8_000.to_d}, progress.payout_weights)
     end
 
     test "the author of a personal contract earns no share of what they pay" do

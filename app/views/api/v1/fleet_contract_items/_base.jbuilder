@@ -7,6 +7,7 @@ json.unit fleet_contract_item.unit
 json.quantity fleet_contract_item.quantity
 json.quality fleet_contract_item.quality
 json.quality_match fleet_contract_item.quality_match
+json.reward_rate fleet_contract_item.reward_rate
 json.position fleet_contract_item.position
 
 json.partial! "api/v1/fleet_contract_items/item_ref", fleet_contract_item: fleet_contract_item

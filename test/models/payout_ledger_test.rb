@@ -206,12 +206,12 @@ class PayoutLedgerTest < ActiveSupport::TestCase
     assert_equal 1_000, reward.amount
   end
 
-  test "a per-unit reward pays the rate on what each contractor delivered" do
+  test "a per-unit reward pays each contractor what their goods earned" do
     lead = create(:user)
     crew = create(:user)
-    contract = create(:fleet_contract, :fulfilled, reward_type: :per_unit, reward: 25)
-    Contracts::Progress.any_instance.stubs(:counted_quantities)
-      .returns({lead.id => 300.to_d, crew.id => 100.to_d})
+    contract = create(:fleet_contract, :fulfilled, reward_type: :per_unit)
+    Contracts::Progress.any_instance.stubs(:earned_amounts)
+      .returns({lead.id => 7_500.to_d, crew.id => 2_500.to_d})
     Contracts::Progress.any_instance.stubs(:weights)
       .returns({lead.id => BigDecimal("0.5"), crew.id => BigDecimal("0.5")})
 
@@ -227,9 +227,9 @@ class PayoutLedgerTest < ActiveSupport::TestCase
     author = create(:user)
     crew = create(:user)
     contract = create(:fleet_contract, :fulfilled, :hangar_destination,
-      created_by: author, reward_type: :per_unit, reward: 10)
-    Contracts::Progress.any_instance.stubs(:counted_quantities)
-      .returns({author.id => 500.to_d, crew.id => 200.to_d})
+      created_by: author, reward_type: :per_unit)
+    Contracts::Progress.any_instance.stubs(:earned_amounts)
+      .returns({author.id => 5_000.to_d, crew.id => 2_000.to_d})
 
     ledger = contract.create_payout_ledger!
     ledger.seed_participants_from_subject!
