@@ -373,8 +373,13 @@ class Vehicle < ApplicationRecord
   ransacker(:cargo) { Arel.sql(Vehicle.fitted_cargo_sql) }
   ransacker(:public_cargo) { Arel.sql(Vehicle.fitted_cargo_sql(public_only: true)) }
 
+  # What a vehicle carries as fitted, as `loadout_stats` records it.
+  FITTED_STATS = {
+    "max_weapon_size" => :integer, "alpha" => :float, "burst_dps" => :float, "sustained_dps_max" => :float
+  }.freeze
+
   # What a vehicle carries as fitted, which reads its loadouts.
-  FITTED_COLUMNS = %w[cargo max_weapon_size alpha burst_dps].freeze
+  FITTED_COLUMNS = ["cargo", *FITTED_STATS.keys].freeze
 
   # The fitted filters and sorts as the reader may see them: their own hangar
   # counts every loadout, anybody else's only the public ones.
@@ -402,11 +407,6 @@ class Vehicle < ApplicationRecord
   def self.fitted_column(column, public_only:)
     public_only ? "public_#{column}" : column
   end
-
-  # What a vehicle carries as fitted, as `loadout_stats` records it.
-  FITTED_STATS = {
-    "max_weapon_size" => :integer, "alpha" => :float, "burst_dps" => :float, "sustained_dps_max" => :float
-  }.freeze
 
   # One of the figures a vehicle carries as fitted: its active loadout's, or,
   # without one, the ship's as it comes. A loadout carrying no guns at all says
