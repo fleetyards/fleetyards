@@ -134,7 +134,9 @@ const badges = computed<RowListItemBadge[]>(() => {
     flex: 0 0 auto;
     width: 112px;
     height: 63px;
-    object-fit: cover;
+    // Mostly a game-file render: transparent and cut tight to the item, so it
+    // is fitted rather than cropped.
+    object-fit: contain;
     border-radius: 4px;
   }
 
