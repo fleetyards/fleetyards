@@ -603,7 +603,8 @@
           "destroy": "¿Seguro que quieres eliminar este evento del juego? Esta acción no se puede deshacer."
         },
         "supporterContribution": {
-          "destroy": "¿Seguro que quieres eliminar esta aportación de patrocinador? Esta acción no se puede revertir."
+          "destroy": "¿Seguro que quieres eliminar esta aportación de patrocinador? Esta acción no se puede revertir.",
+          "destroySelected": "¿Eliminar las contribuciones seleccionadas? Esta acción no se puede deshacer."
         },
         "modelPosition": {
           "destroy": "¿Seguro que quieres eliminar esta posición? Esta acción no se puede revertir."
@@ -761,7 +762,17 @@
           "failed": "No se pudo iniciar %{name}."
         },
         "supporterContributions": {
-          "patreonSyncStarted": "Sincronización con Patreon iniciada. Actualiza en un minuto para ver los patrocinadores importados."
+          "patreonSyncStarted": "Sincronización con Patreon iniciada. Actualiza en un minuto para ver los patrocinadores importados.",
+          "updatedBulk": {
+            "one": "%{count} contribución actualizada",
+            "other": "%{count} contribuciones actualizadas"
+          },
+          "destroyedBulk": {
+            "one": "%{count} contribución eliminada",
+            "other": "%{count} contribuciones eliminadas"
+          },
+          "bulkUnchanged": "No había nada que cambiar en la selección",
+          "bulkError": "No se pudieron cambiar las contribuciones seleccionadas"
         },
         "imports": {
           "cleaned": "Importación marcada como fallida",

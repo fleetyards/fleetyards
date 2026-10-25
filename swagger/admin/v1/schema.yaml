@@ -8603,6 +8603,39 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/supporter-contributions/destroy-bulk":
+    put:
+      summary: Destroy Supporter Contributions in bulk
+      tags:
+      - SupporterContributions
+      operationId: destroySupporterContributionsBulk
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SupporterContributionDestroyBulkInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SupporterContributionBulkResult"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/supporter-contributions/per-month":
     get:
       summary: Supporter Contributions Per Month
@@ -8686,6 +8719,43 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/MessageResponse"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/supporter-contributions/update-bulk":
+    put:
+      summary: Update Supporter Contributions in bulk
+      tags:
+      - SupporterContributions
+      operationId: updateSupporterContributionsBulk
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SupporterContributionUpdateBulkInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SupporterContributionBulkResult"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
         '403':
           description: forbidden
           content:
@@ -22135,6 +22205,27 @@ components:
       - createdAt
       - updatedAt
       title: SupporterContribution
+    SupporterContributionBulkResult:
+      type: object
+      properties:
+        count:
+          type: integer
+      additionalProperties: false
+      required:
+      - count
+      title: SupporterContributionBulkResult
+    SupporterContributionDestroyBulkInput:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+      additionalProperties: false
+      required:
+      - ids
+      title: SupporterContributionDestroyBulkInput
     SupporterContributionInput:
       type: object
       properties:
@@ -22350,6 +22441,24 @@ components:
       - currentMonthCount
       - patreonSyncEnabled
       title: SupporterContributionStats
+    SupporterContributionUpdateBulkInput:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+        anonymous:
+          type: boolean
+        source:
+          "$ref": "#/components/schemas/NullableSupporterContributionSourceEnum"
+      additionalProperties: false
+      required:
+      - ids
+      description: Only the attributes present are changed; a null `source` clears
+        it.
+      title: SupporterContributionUpdateBulkInput
     SupporterContributions:
       type: object
       properties:

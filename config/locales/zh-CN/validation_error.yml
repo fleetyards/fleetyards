@@ -276,6 +276,7 @@ zh-CN:
       create: 无法创建支持者贡献。
       destroy: 无法删除支持者贡献。
       update: 无法更新支持者贡献。
+      update_bulk: 无法更新支持者贡献。
     update: 无法更新个人资料。
     video:
       create: 无法创建视频。

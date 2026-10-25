@@ -24,8 +24,14 @@ import {
   useSupporterContributions,
   useSupporterContributionsStats,
   useSyncSupporterContributionsFromPatreon,
+  useUpdateSupporterContributionsBulk,
+  useDestroySupporterContributionsBulk,
+  getSupporterContributionsQueryKey,
+  SupporterContributionSourceEnum,
+  type NullableSupporterContributionSourceEnum,
   type SupporterContribution,
   type SupporterContributionSortEnum,
+  type SupporterContributionUpdateBulkInput,
 } from "@/services/fyAdminApi";
 import { usePagination } from "@/shared/composables/usePagination";
 import Paginator from "@/shared/components/Paginator/index.vue";
@@ -33,6 +39,9 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useCurrencyFormat } from "@/shared/composables/useCurrencyFormat";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useSupporterContributionFilters } from "@/admin/composables/useSupporterContributionFilters";
+import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
+import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
+import { useQueryClient } from "@tanstack/vue-query";
 
 const route = useRoute();
 
@@ -84,7 +93,80 @@ const {
 
 const { t, l } = useI18n();
 const { formatCents } = useCurrencyFormat();
-const { displayInfo } = useAppNotifications();
+const { displayInfo, displaySuccess, displayAlert } = useAppNotifications();
+const queryClient = useQueryClient();
+
+const selected = ref<string[]>([]);
+
+const onSelectedChange = (ids: string[]) => {
+  selected.value = ids;
+};
+
+const updateBulkMutation = useUpdateSupporterContributionsBulk();
+const destroyBulkMutation = useDestroySupporterContributionsBulk();
+
+const bulkPending = computed(
+  () =>
+    updateBulkMutation.isPending.value || destroyBulkMutation.isPending.value,
+);
+
+const afterBulk = (count: number, successKey: string) => {
+  selected.value = [];
+  void queryClient.invalidateQueries({
+    queryKey: getSupporterContributionsQueryKey(),
+  });
+
+  if (count === 0) {
+    displayInfo({
+      text: t("messages.admin.supporterContributions.bulkUnchanged"),
+    });
+
+    return;
+  }
+
+  displaySuccess({ text: t(successKey, { count }) });
+};
+
+const sourceOptions = [
+  ...Object.values(SupporterContributionSourceEnum).map((source) => ({
+    label: t(`labels.admin.supporterContributions.source.${source}`),
+    value: source as NullableSupporterContributionSourceEnum,
+  })),
+  {
+    label: t("labels.supporterContribution.sourceUnspecified"),
+    value: null as NullableSupporterContributionSourceEnum,
+  },
+];
+
+const updateSelected = async (
+  attributes: Omit<SupporterContributionUpdateBulkInput, "ids">,
+) => {
+  try {
+    const { count } = await updateBulkMutation.mutateAsync({
+      data: { ids: selected.value, ...attributes },
+    });
+
+    afterBulk(count, "messages.admin.supporterContributions.updatedBulk");
+  } catch {
+    displayAlert({
+      text: t("messages.admin.supporterContributions.bulkError"),
+    });
+  }
+};
+
+const destroySelected = async () => {
+  try {
+    const { count } = await destroyBulkMutation.mutateAsync({
+      data: { ids: selected.value },
+    });
+
+    afterBulk(count, "messages.admin.supporterContributions.destroyedBulk");
+  } catch {
+    displayAlert({
+      text: t("messages.admin.supporterContributions.bulkError"),
+    });
+  }
+};
 
 const columns: BaseTableCol<SupporterContribution>[] = [
   {
@@ -220,7 +302,80 @@ const syncFromPatreon = () => {
         :empty-visible="emptyVisible"
         default-sort="startedAt desc"
         selectable
+        :selected="selected"
+        @selected-change="onSelectedChange"
       >
+        <template #selected-actions>
+          <BtnGroup>
+            <Btn
+              v-tooltip="
+                t('actions.admin.supporterContributions.markAnonymousSelected')
+              "
+              :aria-label="
+                t('actions.admin.supporterContributions.markAnonymousSelected')
+              "
+              :disabled="bulkPending"
+              @click="updateSelected({ anonymous: true })"
+            >
+              <i class="fa-duotone fa-user-secret" />
+            </Btn>
+            <Btn
+              v-tooltip="
+                t('actions.admin.supporterContributions.markPublicSelected')
+              "
+              :aria-label="
+                t('actions.admin.supporterContributions.markPublicSelected')
+              "
+              :disabled="bulkPending"
+              @click="updateSelected({ anonymous: false })"
+            >
+              <i class="fa-duotone fa-user" />
+            </Btn>
+            <BtnDropdown>
+              <template #trigger="{ toggle, visible }">
+                <Btn
+                  v-tooltip="
+                    t('actions.admin.supporterContributions.setSourceSelected')
+                  "
+                  :aria-label="
+                    t('actions.admin.supporterContributions.setSourceSelected')
+                  "
+                  :disabled="bulkPending"
+                  :active="visible"
+                  aria-haspopup="menu"
+                  :aria-expanded="visible"
+                  @click="toggle"
+                >
+                  <i class="fa-duotone fa-hand-holding-heart" />
+                </Btn>
+              </template>
+              <Btn
+                v-for="option in sourceOptions"
+                :key="option.value ?? 'unspecified'"
+                :disabled="bulkPending"
+                @click="updateSelected({ source: option.value })"
+              >
+                <span>{{ option.label }}</span>
+              </Btn>
+            </BtnDropdown>
+            <Btn
+              v-tooltip="
+                t('actions.admin.supporterContributions.destroySelected')
+              "
+              :aria-label="
+                t('actions.admin.supporterContributions.destroySelected')
+              "
+              :tone="BtnTonesEnum.DANGER"
+              :disabled="bulkPending"
+              :confirm="
+                t('messages.confirm.supporterContribution.destroySelected')
+              "
+              @click="destroySelected"
+            >
+              <i class="fa-duotone fa-trash" />
+            </Btn>
+          </BtnGroup>
+        </template>
         <template #col-name="{ record }">
           <router-link
             :to="{
@@ -248,19 +403,37 @@ const syncFromPatreon = () => {
           <LinkedViaPill :linked-via="record.linkedVia" />
         </template>
         <template #col-startedAt="{ record }">
-          {{ l(record.startedAt, "datetime.formats.short") }}
+          {{ l(record.startedAt, "datetime.formats.date") }}
         </template>
         <template #col-endedAt="{ record }">
           <span v-if="record.endedAt">
-            {{ l(record.endedAt, "datetime.formats.short") }}
+            {{ l(record.endedAt, "datetime.formats.date") }}
           </span>
           <span v-else>—</span>
         </template>
         <template #col-recurring="{ record }">
-          <i v-if="record.recurring" class="fa-duotone fa-arrows-rotate" />
+          <i
+            v-if="record.recurring"
+            v-tooltip="t('labels.supporterContribution.recurring')"
+            class="fa-duotone fa-arrows-rotate"
+          />
+          <i
+            v-else
+            v-tooltip="t('labels.supporterContribution.oneTime')"
+            class="fa-duotone fa-calendar-day"
+          />
         </template>
         <template #col-anonymous="{ record }">
-          <i v-if="record.anonymous" class="fa-duotone fa-user-secret" />
+          <i
+            v-if="record.anonymous"
+            v-tooltip="t('labels.supporterContribution.anonymous')"
+            class="fa-duotone fa-user-secret"
+          />
+          <i
+            v-else
+            v-tooltip="t('labels.supporterContribution.public')"
+            class="fa-duotone fa-user"
+          />
         </template>
         <template #col-source="{ record }">
           <SourcePill :source="record.source" />

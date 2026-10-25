@@ -26,7 +26,11 @@
           "reloadLoaners": "Reload Loaners"
         },
         "supporterContributions": {
-          "syncFromPatreon": "Sync from Patreon"
+          "syncFromPatreon": "Sync from Patreon",
+          "markAnonymousSelected": "Mark selected as anonymous",
+          "markPublicSelected": "Mark selected as public",
+          "setSourceSelected": "Set source for selected",
+          "destroySelected": "Delete selected"
         },
         "imports": {
           "loadAll": "Load all",

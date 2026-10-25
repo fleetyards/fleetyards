@@ -285,6 +285,7 @@ de:
       create: Unterstützerbeitrag konnte nicht erstellt werden.
       destroy: Unterstützerbeitrag konnte nicht gelöscht werden.
       update: Unterstützerbeitrag konnte nicht aktualisiert werden.
+      update_bulk: Unterstützerbeiträge konnten nicht aktualisiert werden.
     update: Profil konnte nicht aktualisiert werden.
     video:
       create: Video konnte nicht erstellt werden.

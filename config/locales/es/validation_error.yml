@@ -280,6 +280,7 @@ es:
       create: No se pudo crear la contribución del patrocinador.
       destroy: No se pudo eliminar la contribución del patrocinador.
       update: No se pudo actualizar la contribución del patrocinador.
+      update_bulk: No se pudieron actualizar las contribuciones de los patrocinadores.
     update: No se pudo actualizar el perfil.
     video:
       create: No se pudo crear el vídeo.

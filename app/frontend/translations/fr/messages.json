@@ -607,7 +607,8 @@
           "destroy": "Voulez-vous vraiment supprimer cet événement du jeu ? Cette action est irréversible."
         },
         "supporterContribution": {
-          "destroy": "Êtes-vous sûr de vouloir supprimer cette contribution de soutien ? Cette action est irréversible."
+          "destroy": "Êtes-vous sûr de vouloir supprimer cette contribution de soutien ? Cette action est irréversible.",
+          "destroySelected": "Supprimer les contributions sélectionnées ? Cette action est irréversible."
         },
         "modelPosition": {
           "destroy": "Êtes-vous sûr de vouloir supprimer ce poste ? Cette action est irréversible."
@@ -765,7 +766,17 @@
           "failed": "Impossible de démarrer %{name}."
         },
         "supporterContributions": {
-          "patreonSyncStarted": "Synchronisation Patreon démarrée. Actualisez dans une minute pour voir les soutiens importés."
+          "patreonSyncStarted": "Synchronisation Patreon démarrée. Actualisez dans une minute pour voir les soutiens importés.",
+          "updatedBulk": {
+            "one": "%{count} contribution mise à jour",
+            "other": "%{count} contributions mises à jour"
+          },
+          "destroyedBulk": {
+            "one": "%{count} contribution supprimée",
+            "other": "%{count} contributions supprimées"
+          },
+          "bulkUnchanged": "Rien à modifier dans la sélection",
+          "bulkError": "Impossible de modifier les contributions sélectionnées"
         },
         "imports": {
           "cleaned": "Import marqué comme échoué",

@@ -26,7 +26,11 @@
           "reloadLoaners": "Recargar naves prestadas"
         },
         "supporterContributions": {
-          "syncFromPatreon": "Sincronizar desde Patreon"
+          "syncFromPatreon": "Sincronizar desde Patreon",
+          "markAnonymousSelected": "Marcar selección como anónima",
+          "markPublicSelected": "Marcar selección como pública",
+          "setSourceSelected": "Establecer origen de la selección",
+          "destroySelected": "Eliminar selección"
         },
         "imports": {
           "loadAll": "Cargar todo",

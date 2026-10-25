@@ -241,6 +241,8 @@ v1_admin_api_routes = lambda do
       get :stats
       get "per-month" => "supporter_contributions#per_month"
       post "sync-patreon" => "supporter_contributions#sync_patreon"
+      put "update-bulk", to: "supporter_contributions#update_bulk"
+      put "destroy-bulk", to: "supporter_contributions#destroy_bulk"
     end
   end
 

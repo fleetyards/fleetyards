@@ -277,6 +277,7 @@ it:
       create: Impossibile creare il contributo del sostenitore.
       destroy: Impossibile eliminare il contributo del sostenitore.
       update: Impossibile aggiornare il contributo del sostenitore.
+      update_bulk: Impossibile aggiornare i contributi dei sostenitori.
     update: Impossibile aggiornare il profilo.
     video:
       create: Impossibile creare il video.

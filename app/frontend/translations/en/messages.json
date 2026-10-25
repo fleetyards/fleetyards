@@ -613,7 +613,8 @@
           "destroy": "Are you sure you want to delete this game event? This action can't be reverted."
         },
         "supporterContribution": {
-          "destroy": "Are you sure you want to delete this supporter contribution? This action can't be reverted."
+          "destroy": "Are you sure you want to delete this supporter contribution? This action can't be reverted.",
+          "destroySelected": "Delete the selected supporter contributions? This action can't be reverted."
         },
         "modelPosition": {
           "destroy": "Are you sure you want to delete this position? This action can't be reverted."
@@ -771,7 +772,17 @@
           "failed": "%{name} could not be started."
         },
         "supporterContributions": {
-          "patreonSyncStarted": "Patreon sync started. Refresh in a minute to see imported supporters."
+          "patreonSyncStarted": "Patreon sync started. Refresh in a minute to see imported supporters.",
+          "updatedBulk": {
+            "one": "%{count} contribution updated",
+            "other": "%{count} contributions updated"
+          },
+          "destroyedBulk": {
+            "one": "%{count} contribution deleted",
+            "other": "%{count} contributions deleted"
+          },
+          "bulkUnchanged": "Nothing in the selection needed changing",
+          "bulkError": "The selected contributions could not be changed"
         },
         "imports": {
           "cleaned": "Import marked as failed",

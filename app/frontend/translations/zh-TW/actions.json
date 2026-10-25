@@ -26,7 +26,11 @@
           "reloadLoaners": "重新載入借用船"
         },
         "supporterContributions": {
-          "syncFromPatreon": "從 Patreon 同步"
+          "syncFromPatreon": "從 Patreon 同步",
+          "markAnonymousSelected": "將所選標記為匿名",
+          "markPublicSelected": "將所選標記為公開",
+          "setSourceSelected": "設定所選來源",
+          "destroySelected": "刪除所選"
         },
         "imports": {
           "loadAll": "全部載入",

@@ -164,7 +164,7 @@ const { formatCents } = useCurrencyFormat();
         </template>
         <template #col-endedAt="{ record }">
           <span v-if="record.endedAt">
-            {{ l(record.endedAt, "datetime.formats.short") }}
+            {{ l(record.endedAt, "datetime.formats.date") }}
           </span>
           <span v-else>—</span>
         </template>

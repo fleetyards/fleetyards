@@ -26,7 +26,11 @@
           "reloadLoaners": "Recharger les prêts"
         },
         "supporterContributions": {
-          "syncFromPatreon": "Synchroniser depuis Patreon"
+          "syncFromPatreon": "Synchroniser depuis Patreon",
+          "markAnonymousSelected": "Marquer la sélection comme anonyme",
+          "markPublicSelected": "Marquer la sélection comme publique",
+          "setSourceSelected": "Définir la source de la sélection",
+          "destroySelected": "Supprimer la sélection"
         },
         "imports": {
           "loadAll": "Tout charger",
