@@ -48,6 +48,9 @@ type Props = {
   // grade, and a set one can be cleared back to that. Without it, applying
   // states a grade for every slot that moves a stat.
   openSlots?: boolean;
+  // Fills its containing block instead of sitting in the page as a panel, for
+  // a phone, where there is no room beside the sockets.
+  sheet?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -55,6 +58,7 @@ const props = withDefaults(defineProps<Props>(), {
   crafted: undefined,
   embedded: false,
   openSlots: false,
+  sheet: false,
 });
 
 const emit = defineEmits<{
@@ -203,7 +207,10 @@ defineExpose({ focus, apply, remove, canApply });
   <section
     ref="root"
     class="blueprint-crafter"
-    :class="{ 'blueprint-crafter--embedded': embedded }"
+    :class="{
+      'blueprint-crafter--embedded': embedded,
+      'blueprint-crafter--sheet': sheet,
+    }"
     data-test="blueprint-crafter"
     :aria-label="t('labels.blueprint.crafter.title', { name: title })"
     tabindex="-1"

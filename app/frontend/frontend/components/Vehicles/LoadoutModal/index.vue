@@ -1538,6 +1538,7 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
                             :key="activeSlot"
                             :ref="setPicker"
                             v-bind="pickerBindings"
+                            sheet
                             v-on="pickerListeners"
                           >
                             <template v-if="comparison" #comparison>
@@ -1647,6 +1648,7 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
                             :key="`craft-${activeSlot}`"
                             :ref="setPicker"
                             v-bind="activeCrafting"
+                            sheet
                             v-on="crafterListeners"
                           />
                           <Picker
@@ -1654,6 +1656,7 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
                             :key="activeSlot"
                             :ref="setPicker"
                             v-bind="pickerBindings"
+                            sheet
                             v-on="pickerListeners"
                           >
                             <template v-if="componentComparison" #comparison>

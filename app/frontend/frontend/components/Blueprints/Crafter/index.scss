@@ -163,12 +163,17 @@
   }
 }
 
+// Its slots take whatever height the header and the figures leave.
+.blueprint-crafter--sheet {
+  @include modal-sheet;
+}
+
 @media (max-width: $tablet-breakpoint) {
   .blueprint-crafter {
     max-height: none;
   }
 
-  .blueprint-crafter__slots {
+  .blueprint-crafter:not(.blueprint-crafter--sheet) .blueprint-crafter__slots {
     max-height: 60dvh;
   }
 }

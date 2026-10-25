@@ -141,7 +141,7 @@
         $navigation-mobile-bottom-offset;
       // A sheet: it rests on the mobile nav and stops short of the top, so the
       // page behind still shows that this is a layer over it.
-      padding: 24px 0 0;
+      padding: $modal-sheet-gap 0 0;
 
       > :first-child {
         margin-top: env(safe-area-inset-top);

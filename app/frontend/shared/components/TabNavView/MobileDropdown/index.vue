@@ -77,6 +77,8 @@ const router = useRouter();
 const visible = ref(false);
 const wrapper = ref<HTMLElement | null>(null);
 
+const panel = ref<HTMLElement | null>(null);
+
 const filteredRoutes = computed(() => {
   return (props.routes ?? [])
     .filter(isTabRoute)
@@ -107,6 +109,13 @@ const activeLabel = computed(() => {
 
 const toggle = () => {
   visible.value = !visible.value;
+};
+
+// The panel hangs below the trigger, and inside a scrolling box -- a modal's
+// body on a phone -- the rows past its edge are cut off rather than reached.
+// Once it has settled: during the transition it still sits a few pixels up.
+const bringIntoView = () => {
+  panel.value?.scrollIntoView?.({ block: "nearest" });
 };
 
 const select = (r: RouteRecordRaw) => {
@@ -186,8 +195,13 @@ onUnmounted(() => {
         aria-hidden="true"
       />
     </button>
-    <Transition name="tab-nav-dropdown-panel">
-      <ul v-if="visible" class="tab-nav-dropdown__panel" role="listbox">
+    <Transition name="tab-nav-dropdown-panel" @after-enter="bringIntoView">
+      <ul
+        v-if="visible"
+        ref="panel"
+        class="tab-nav-dropdown__panel"
+        role="listbox"
+      >
         <li
           v-for="item in props.anchors"
           :key="item.id"

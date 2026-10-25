@@ -36,6 +36,10 @@ $large-desktop-breakpoint: 1800px;
 
 $tap-target-min: 32px;
 
+// What a modal's phone sheet leaves above itself, so the page behind still
+// shows that the sheet is a layer over it.
+$modal-sheet-gap: 24px;
+
 // The space between the rows of a list: records, catalogue rows,
 // notifications. Every row is a framed card, so on a phone the gap read as a
 // column of separate boxes rather than one list, and it halves there.
@@ -132,3 +136,23 @@ $body-bg: $background;
 $body-color: $text-color;
 
 $progress-bg: #1c1e22;
+
+// A panel that opens inside a modal's body but has no room there, covering the
+// modal's phone sheet instead. The open dialog keeps a `transform`, which makes
+// it the containing block of a fixed box, so this fills the dialog rather than
+// the screen. It starts below the gap and the safe area the sheet keeps clear.
+@mixin modal-sheet {
+  @media (max-width: $tablet-breakpoint) {
+    position: fixed;
+    top: calc(#{$modal-sheet-gap} + env(safe-area-inset-top));
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 2;
+    max-height: none;
+    background: $gray-darker;
+    border: 0;
+    border-radius: $panel-border-radius $panel-border-radius 0 0;
+    box-shadow: none;
+  }
+}
