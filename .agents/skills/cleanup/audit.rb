@@ -186,23 +186,34 @@ def pull_requests
   @pull_requests = fetch_pull_requests
 end
 
+# A pull request checked out under a local name of its own (`pr-5934`, `pr5935`)
+# shares no head ref with it, so the number in the name is the only link.
+def prs_for(branch)
+  by_name = pull_requests.fetch(:by_name).fetch(branch, [])
+  return by_name if by_name.any?
+
+  number = branch[/\Apr-?(\d+)\z/, 1]
+  number ? pull_requests.fetch(:by_number).fetch(number.to_i, []) : []
+end
+
 def fetch_pull_requests
-  return {} unless OPTIONS[:github]
+  empty = {by_name: {}, by_number: {}}
+  return empty unless OPTIONS[:github]
 
   slug = repo_slug
-  return {} unless slug
+  return empty unless slug
 
   out, _err, ok = sh("gh", "pr", "list", "--repo", slug, "--state", "all",
     "--limit", "600", "--json", "headRefName,state,number,title")
-  return {} unless ok
+  return empty unless ok
 
-  JSON.parse(out).group_by { |pr| pr["headRefName"] }
+  list = JSON.parse(out)
+  {by_name: list.group_by { |pr| pr["headRefName"] }, by_number: list.group_by { |pr| pr["number"] }}
 rescue JSON::ParserError
-  {}
+  empty
 end
 
 def branches(worktree_list)
-  prs = pull_requests
   checked_out = worktree_list.to_h { |entry| [entry[:branch], entry[:path]] }
   format = "%(refname:short)\t%(upstream)\t%(upstream:track)\t%(committerdate:short)\t%(objectname:short)"
 
@@ -211,7 +222,7 @@ def branches(worktree_list)
     entry = {
       name: name, upstream: upstream.to_s, gone: track.to_s.include?("gone"),
       date: date, sha: sha, worktree: checked_out[name],
-      prs: (prs[name] || []).map { |pr| {number: pr["number"], state: pr["state"]} }
+      prs: prs_for(name).map { |pr| {number: pr["number"], state: pr["state"]} }
     }
     entry[:merged] = entry[:prs].any? { |pr| pr[:state] == "MERGED" }
     entry[:open] = entry[:prs].any? { |pr| pr[:state] == "OPEN" }
@@ -462,7 +473,7 @@ worktree_list.each do |entry|
       [:keep, "#{entry[:dirty]} uncommitted file(s) — commit or discard them first"]
     else
       branch = entry[:branch]
-      prs = branch ? pull_requests[branch] : nil
+      prs = branch ? prs_for(branch) : nil
       merged = prs&.find { |pr| pr["state"] == "MERGED" }
       open_pr = prs&.find { |pr| pr["state"] == "OPEN" }
       ahead = branch ? capture("git", "-C", MAIN_ROOT, "rev-list", "--count", "origin/main..#{branch}").strip.to_i : 0
