@@ -22,7 +22,7 @@ module Contracts
   class Progress
     # What a contractor delivered against one line, and what it is worth when
     # the reward is divided.
-    Contribution = Struct.new(:user_id, :delivered, :weight)
+    Contribution = Struct.new(:user_id, :delivered, :counted, :weight)
 
     LineProgress = Struct.new(
       :item, :requested, :delivered, :picked_up, :contributions
@@ -167,6 +167,14 @@ module Contracts
       end
     end
 
+    # What each contractor delivered that counts toward a line, in the line's
+    # own SCU or units -- what a per-unit reward is paid on.
+    def counted_quantities
+      @counted_quantities ||= lines.each_with_object(Hash.new(0.to_d)) do |line, result|
+        line.contributions.each { |contribution| result[contribution.user_id] += contribution.counted }
+      end
+    end
+
     def total_weight
       weights.values.sum(0.to_d)
     end
@@ -226,6 +234,7 @@ module Contracts
         Contribution.new(
           user_id: user_id,
           delivered: quantity,
+          counted: (scale < 1) ? quantity * item.quantity / total : quantity,
           weight: item.quantity.zero? ? 0.to_d : (quantity * scale) / item.quantity
         )
       end

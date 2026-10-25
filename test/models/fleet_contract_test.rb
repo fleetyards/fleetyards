@@ -27,6 +27,37 @@ class FleetContractTest < ActiveSupport::TestCase
     assert_includes fleet.errors.attribute_names, :transport_contract_cover
   end
 
+  test "a contract has to say how it rewards, even when it pays nothing" do
+    contract = build(:fleet_contract, reward_type: nil)
+
+    assert_not contract.valid?
+    assert_includes contract.errors.details[:reward_type], {error: :blank}
+  end
+
+  test "a paid reward needs an amount" do
+    %i[fixed per_unit].each do |reward_type|
+      contract = build(:fleet_contract, reward_type:, reward: 0)
+
+      assert_not contract.valid?, "#{reward_type} accepted a zero reward"
+      assert_includes contract.errors.attribute_names, :reward
+    end
+  end
+
+  test "a contract with no reward drops any amount it was sent" do
+    contract = create(:fleet_contract, reward_type: :none, reward: 5_000)
+
+    assert_equal 0, contract.reload.reward
+    assert_equal 0, contract.max_reward
+  end
+
+  test "a per-unit reward is worth at most the rate on everything asked for" do
+    contract = create(:fleet_contract, reward_type: :per_unit, reward: 12.5)
+    create(:fleet_contract_item, fleet_contract: contract, name: "Titanium", quantity: 800)
+    create(:fleet_contract_item, fleet_contract: contract, name: "Gold", quantity: 200)
+
+    assert_equal 12_500, contract.reload.max_reward
+  end
+
   test "a transport contract needs a source inventory and the others must not have one" do
     fleet = create(:fleet)
 

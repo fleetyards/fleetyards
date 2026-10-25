@@ -331,11 +331,40 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 201,
       api_path: COLLECTION_PATH,
       path_params: {fleetSlug: @fleet.slug},
-      body: {title: "Haul titanium", kind: "procurement", reward: "120000.00",
+      body: {title: "Haul titanium", kind: "procurement", rewardType: "fixed", reward: "120000.00",
              destinationFleetInventoryId: @depot.id} do
       assert_equal "draft", parsed_body["state"]
       assert_equal @depot.id, parsed_body["destination"]["id"]
       assert_equal false, parsed_body["requiresPickup"]
+    end
+  end
+
+  test "POST refuses a contract that does not say how it rewards" do
+    sign_in @officer
+
+    assert_api_response :post, 400,
+      api_path: COLLECTION_PATH,
+      path_params: {fleetSlug: @fleet.slug},
+      body: {kind: "procurement", destinationFleetInventoryId: @depot.id} do
+      reward_error = parsed_body["errors"].find { |error| error["attribute"] == "rewardType" }
+      assert_equal ["blank"], reward_error["messages"].pluck("code")
+    end
+
+    assert_equal 0, @fleet.fleet_contracts.count
+  end
+
+  test "POST creates a contract paying per unit delivered" do
+    sign_in @officer
+
+    assert_api_response :post, 201,
+      api_path: COLLECTION_PATH,
+      path_params: {fleetSlug: @fleet.slug},
+      body: {kind: "procurement", rewardType: "per_unit", reward: "25.00",
+             destinationFleetInventoryId: @depot.id,
+             items: [{name: "Titanium", category: "commodity", unit: "scu", quantity: "800.0"}]} do
+      assert_equal "per_unit", parsed_body["rewardType"]
+      assert_equal "25.0", parsed_body["reward"]
+      assert_equal "20000.0", parsed_body["maxReward"]
     end
   end
 
@@ -346,7 +375,7 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 400,
       api_path: COLLECTION_PATH,
       path_params: {fleetSlug: @fleet.slug},
-      body: {title: "Get Iron!", kind: "procurement", destinationFleetInventoryId: @depot.id} do
+      body: {title: "Get Iron!", kind: "procurement", rewardType: "none", destinationFleetInventoryId: @depot.id} do
       title_error = parsed_body["errors"].find { |error| error["attribute"] == "title" }
       assert_equal ["taken"], title_error["messages"].pluck("code")
     end
@@ -379,7 +408,7 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 201,
       api_path: COLLECTION_PATH,
       path_params: {fleetSlug: @fleet.slug},
-      body: {kind: "procurement", destinationInventoryId: locker.id,
+      body: {kind: "procurement", rewardType: "none", destinationInventoryId: locker.id,
              destinationFleetInventoryId: nil} do
       assert_equal locker.id, parsed_body["destination"]["id"]
       assert_equal "user", parsed_body["destination"]["holder"]
@@ -395,7 +424,7 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
       assert_api_response :post, 400,
         api_path: COLLECTION_PATH,
         path_params: {fleetSlug: @fleet.slug},
-        body: {kind: "procurement", destinationFleetInventoryId: @depot.id} do
+        body: {kind: "procurement", rewardType: "none", destinationFleetInventoryId: @depot.id} do
         assert_includes parsed_body["errors"].pluck("attribute"), "destinationFleetInventory"
       end
     end
@@ -408,7 +437,7 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
       assert_api_response :post, 400,
         api_path: COLLECTION_PATH,
         path_params: {fleetSlug: @fleet.slug},
-        body: {kind: "procurement", destinationInventoryId: create(:inventory, holder: @member).id}
+        body: {kind: "procurement", rewardType: "none", destinationInventoryId: create(:inventory, holder: @member).id}
     end
   end
 
@@ -418,7 +447,7 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 201,
       api_path: COLLECTION_PATH,
       path_params: {fleetSlug: @fleet.slug},
-      body: {kind: "procurement", destinationInventoryId: create(:inventory, holder: @officer).id} do
+      body: {kind: "procurement", rewardType: "none", destinationInventoryId: create(:inventory, holder: @officer).id} do
       assert_equal "user", parsed_body["destination"]["holder"]
     end
   end
@@ -447,7 +476,7 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 201,
       api_path: COLLECTION_PATH,
       path_params: {fleetSlug: @fleet.slug},
-      body: {kind: "procurement", reward: "120000.00",
+      body: {kind: "procurement", rewardType: "fixed", reward: "120000.00",
              destinationFleetInventoryId: @depot.id,
              items: [
                {name: "Titanium", category: "commodity", unit: "scu", quantity: "800.0",
@@ -469,7 +498,7 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
     sign_in @officer
 
     post "/api/v1/fleets/#{@fleet.slug}/contracts",
-      params: {kind: "procurement", reward: "1.00",
+      params: {kind: "procurement", rewardType: "fixed", reward: "1.00",
                destinationFleetInventoryId: @depot.id,
                items: [
                  {name: "Agricium", category: "commodity", unit: "scu", quantity: "1.0",
@@ -493,7 +522,7 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
 
     assert_difference -> { FleetContract.count }, 0 do
       post "/api/v1/fleets/#{@fleet.slug}/contracts",
-        params: {kind: "procurement", reward: "1.00",
+        params: {kind: "procurement", rewardType: "fixed", reward: "1.00",
                  destinationFleetInventoryId: @depot.id,
                  items: [{name: "", category: "commodity", unit: "scu", quantity: "800.0"}]},
         as: :json
@@ -513,7 +542,7 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 201,
       api_path: COLLECTION_PATH,
       path_params: {fleetSlug: @fleet.slug},
-      body: {title: "Haul titanium", kind: "procurement",
+      body: {title: "Haul titanium", kind: "procurement", rewardType: "none",
              destinationFleetInventoryId: @depot.id,
              deadline: deadline.iso8601} do
       assert_equal deadline, Time.zone.parse(parsed_body["deadline"])
@@ -526,7 +555,7 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 400,
       api_path: COLLECTION_PATH,
       path_params: {fleetSlug: @fleet.slug},
-      body: {title: "Haul titanium", kind: "procurement",
+      body: {title: "Haul titanium", kind: "procurement", rewardType: "none",
              destinationFleetInventoryId: @depot.id,
              deadline: "2026-09-16T18:30"}
   end
@@ -539,7 +568,7 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 201,
       api_path: COLLECTION_PATH,
       path_params: {fleetSlug: @fleet.slug},
-      body: {kind: "procurement", destinationFleetInventoryId: @depot.id} do
+      body: {kind: "procurement", rewardType: "none", destinationFleetInventoryId: @depot.id} do
       assert_equal "Untitled purchase", parsed_body["title"]
       assert_nil parsed_body["customTitle"]
       assert_match(/\Aprocurement-[0-9a-f]{8}\z/, parsed_body["slug"])
@@ -569,7 +598,7 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 400,
       api_path: COLLECTION_PATH,
       path_params: {fleetSlug: @fleet.slug},
-      body: {title: "Haul titanium", kind: "transport",
+      body: {title: "Haul titanium", kind: "transport", rewardType: "none",
              destinationFleetInventoryId: @depot.id}
   end
 
@@ -579,7 +608,7 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 400,
       api_path: COLLECTION_PATH,
       path_params: {fleetSlug: @fleet.slug},
-      body: {title: "Haul titanium", kind: "procurement",
+      body: {title: "Haul titanium", kind: "procurement", rewardType: "none",
              destinationFleetInventoryId: create(:fleet_inventory).id}
   end
 
@@ -589,7 +618,7 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 403,
       api_path: COLLECTION_PATH,
       path_params: {fleetSlug: @fleet.slug},
-      body: {title: "Haul titanium", kind: "procurement",
+      body: {title: "Haul titanium", kind: "procurement", rewardType: "none",
              destinationFleetInventoryId: @depot.id}
   end
 
@@ -1024,7 +1053,7 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 201,
       api_path: COLLECTION_PATH,
       path_params: {fleetSlug: @fleet.slug},
-      body: {kind: "procurement", destinationInventoryId: personal.id} do
+      body: {kind: "procurement", rewardType: "none", destinationInventoryId: personal.id} do
       assert parsed_body["personal"]
       assert_equal personal.id, parsed_body["destination"]["id"]
     end
@@ -1035,7 +1064,7 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
 
     assert_no_difference -> { FleetContract.count } do
       post "/api/v1/fleets/#{@fleet.slug}/contracts",
-        params: {kind: "procurement", destinationFleetInventoryId: @depot.id}, as: :json
+        params: {kind: "procurement", rewardType: "none", destinationFleetInventoryId: @depot.id}, as: :json
     end
 
     assert_response :forbidden
@@ -1047,7 +1076,7 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
 
     assert_no_difference -> { FleetContract.count } do
       post "/api/v1/fleets/#{@fleet.slug}/contracts",
-        params: {kind: "procurement", destinationInventoryId: Inventory.personal_for(@member).id}, as: :json
+        params: {kind: "procurement", rewardType: "none", destinationInventoryId: Inventory.personal_for(@member).id}, as: :json
     end
 
     assert_response :forbidden
@@ -1059,7 +1088,7 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
 
     assert_no_difference -> { FleetContract.count } do
       post "/api/v1/fleets/#{@fleet.slug}/contracts",
-        params: {kind: "procurement", destinationInventoryId: Inventory.personal_for(@officer).id}, as: :json
+        params: {kind: "procurement", rewardType: "none", destinationInventoryId: Inventory.personal_for(@officer).id}, as: :json
     end
 
     assert_response :bad_request
@@ -1156,7 +1185,7 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
 
     assert_no_difference -> { FleetContract.count } do
       post "/api/v1/fleets/#{@fleet.slug}/contracts",
-        params: {kind: "transport", sourceFleetInventoryId: source.id,
+        params: {kind: "transport", rewardType: "none", sourceFleetInventoryId: source.id,
                  destinationInventoryId: Inventory.personal_for(@member).id}, as: :json
     end
 
@@ -1169,7 +1198,7 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
     sign_in @officer
 
     post "/api/v1/fleets/#{@fleet.slug}/contracts",
-      params: {kind: "transport", sourceFleetInventoryId: source.id,
+      params: {kind: "transport", rewardType: "none", sourceFleetInventoryId: source.id,
                destinationInventoryId: Inventory.personal_for(@officer).id}, as: :json
 
     assert_response :created

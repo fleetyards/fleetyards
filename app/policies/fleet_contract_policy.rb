@@ -140,7 +140,7 @@ class FleetContractPolicy < FleetBasePolicy
   # published and making the author save one to get a second form is the long
   # way round.
   params_filter do |params|
-    params.permit(:title, :description, :kind, :reward, :reimburse_expenses,
+    params.permit(:title, :description, :kind, :reward, :reward_type, :reimburse_expenses,
       :crew_limit, :deadline, :cover_image, :cover_image_preset,
       :source_fleet_inventory_id, :destination_fleet_inventory_id, :destination_inventory_id,
       :visibility, fleet_squadron_ids: [],

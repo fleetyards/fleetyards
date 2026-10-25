@@ -7,6 +7,7 @@ FactoryBot.define do
     sequence(:title) { |n| "Contract #{n}" }
     description { Faker::Lorem.sentence }
     kind { :procurement }
+    reward_type { :fixed }
     reward { 120_000 }
 
     destination_fleet_inventory do

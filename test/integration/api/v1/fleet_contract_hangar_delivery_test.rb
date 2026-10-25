@@ -25,7 +25,7 @@ class Api::V1::FleetContractHangarDeliveryTest < ActionDispatch::IntegrationTest
     sign_in @author
 
     post "/api/v1/fleets/#{@fleet.slug}/contracts", as: :json, params: {
-      kind: "procurement", destinationInventoryId: @locker.id,
+      kind: "procurement", rewardType: "none", destinationInventoryId: @locker.id,
       items: [{name: "Titanium", category: "commodity", unit: "scu", quantity: "800.0"}]
     }
 

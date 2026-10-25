@@ -26607,6 +26607,10 @@ components:
             "$ref": "#/components/schemas/FleetSquadronRef"
         reward:
           type: string
+        rewardType:
+          "$ref": "#/components/schemas/FleetContractRewardTypeEnum"
+        maxReward:
+          type: string
         reimburseExpenses:
           type: boolean
         crewLimit:
@@ -26692,6 +26696,8 @@ components:
       - kind
       - state
       - reward
+      - rewardType
+      - maxReward
       - requiresPickup
       - personal
       - destination
@@ -26912,6 +26918,10 @@ components:
             "$ref": "#/components/schemas/FleetSquadronRef"
         reward:
           type: string
+        rewardType:
+          "$ref": "#/components/schemas/FleetContractRewardTypeEnum"
+        maxReward:
+          type: string
         reimburseExpenses:
           type: boolean
         crewLimit:
@@ -27005,6 +27015,8 @@ components:
       - kind
       - state
       - reward
+      - rewardType
+      - maxReward
       - requiresPickup
       - personal
       - destination
@@ -27059,6 +27071,8 @@ components:
           "$ref": "#/components/schemas/FleetContractKindEnum"
         reward:
           type: string
+        rewardType:
+          "$ref": "#/components/schemas/FleetContractRewardTypeEnum"
         reimburseExpenses:
           type: boolean
         crewLimit:
@@ -27358,6 +27372,17 @@ components:
           "$ref": "#/components/schemas/FleetContractSortEnum"
       additionalProperties: false
       title: FleetContractQuery
+    FleetContractRewardTypeEnum:
+      type: string
+      enum:
+      - fixed
+      - per_unit
+      - none
+      x-enumNames:
+      - FIXED
+      - PER_UNIT
+      - NONE
+      title: FleetContractRewardTypeEnum
     FleetContractShare:
       type: object
       properties:
