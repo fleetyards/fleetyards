@@ -101,6 +101,62 @@ module ScData
         assert_nil parsed.fetch("hdh_hat_01_01_01")["family_key"]
       end
 
+      test "reads a weapon's attachment ports and what it ships with" do
+        write_weapon("klwe_rifle_energy_01", "Gallant Rifle", components_extra: <<~XML)
+          <SEntityComponentDefaultLoadoutParams>
+            <loadout>
+              <SItemPortLoadoutManualParams>
+                <entries>
+                  <SItemPortLoadoutEntryParams itemPortName="magazine_attach" entityClassName="klwe_rifle_energy_01_mag" />
+                  <SItemPortLoadoutEntryParams itemPortName="optics_attach" />
+                </entries>
+              </SItemPortLoadoutManualParams>
+            </loadout>
+          </SEntityComponentDefaultLoadoutParams>
+          <SItemPortContainerComponentParams>
+            <Ports>
+              #{port("magazine_attach", "Magazine", min: 1, max: 1, required: "klwe_rifle_energy_01", provided: "klwe_rifle_energy_01")}
+              #{port("optics_attach", "IronSight", min: 1, max: 2)}
+              <SItemPortDef Name="item_grab" MinSize="0" MaxSize="0">
+                <Types><SItemPortDefTypes Type="Misc" /></Types>
+              </SItemPortDef>
+            </Ports>
+          </SItemPortContainerComponentParams>
+        XML
+
+        assert_equal [
+          {
+            "name" => "magazine_attach", "sub_types" => ["Magazine"], "min_size" => 1, "max_size" => 1,
+            "required_tags" => ["klwe_rifle_energy_01"], "port_tags" => ["klwe_rifle_energy_01"],
+            "default" => "klwe_rifle_energy_01_mag"
+          },
+          {"name" => "optics_attach", "sub_types" => ["IronSight"], "min_size" => 1, "max_size" => 2}
+        ], parsed.fetch("klwe_rifle_energy_01")["ports"]
+      end
+
+      # Armour carries WeaponAttachment ports for its magazine pouches.
+      test "reads no attachment ports off armour" do
+        write_equipment("ccc_medium_armor_core_01_01_01", name: "@item_Name_ccc_medium_armor_core_01_01_01",
+          path: "entities/scitem/characters/human/armor", type: "Char_Armor_Torso", components_extra: <<~XML)
+            <SItemPortContainerComponentParams>
+              <Ports>#{port("magazine_attach_1", "Magazine", min: 1, max: 1)}</Ports>
+            </SItemPortContainerComponentParams>
+          XML
+        @parser.translations = {
+          "item_Name_hdh_boots_01_01_13" => "Novian Boots",
+          "item_Name_ccc_medium_armor_core_01_01_01" => "Citadel Core"
+        }
+
+        assert_nil parsed.fetch("ccc_medium_armor_core_01_01_01")["ports"]
+      end
+
+      test "reads the tags an attachment requires of its port" do
+        write_attachment("apar_hmg_ballistic_01_mag", "Animus Missile Launcher Magazine", sub_type: "Magazine",
+          required_tags: "hmg_mag_port")
+
+        assert_equal ["hmg_mag_port"], parsed.fetch("apar_hmg_ballistic_01_mag")["required_tags"]
+      end
+
       test "reads glasses as eyewear" do
         write_equipment("r6p_glasses_01_01_01", name: "@item_Name_r6p_glasses_01_01_01",
           path: "entities/scitem/characters/human/head/npc/eyes/accessories", type: "Char_Accessory_Eyes")
@@ -335,9 +391,9 @@ module ScData
         name_record(key, display_name)
       end
 
-      private def write_attachment(key, display_name, sub_type:)
+      private def write_attachment(key, display_name, sub_type:, required_tags: nil)
         write_equipment(key, name: "@item_Name_#{key}", path: "entities/scitem/weapons/magazines",
-          type: "WeaponAttachment", sub_type:)
+          type: "WeaponAttachment", sub_type:, required_tags:)
         name_record(key, display_name)
       end
 
@@ -348,8 +404,22 @@ module ScData
         )
       end
 
+      private def port(name, sub_type, min:, max:, required: nil, provided: nil)
+        tags = {"RequiredPortTags" => required, "PortTags" => provided}.compact.map { |attribute, value| %(#{attribute}="#{value}") }.join(" ")
+
+        <<~XML
+          <SItemPortDef Name="#{name}" MinSize="#{min}" MaxSize="#{max}" #{tags}>
+            <Types>
+              <SItemPortDefTypes Type="WeaponAttachment">
+                <SubTypes><Enum value="#{sub_type}" /></SubTypes>
+              </SItemPortDefTypes>
+            </Types>
+          </SItemPortDef>
+        XML
+      end
+
       private def write_equipment(key, name:, path: SOURCE_PATH, type: "Char_Clothing_Feet", sub_type: "UNDEFINED",
-        description: "@LOC_EMPTY", attach_extra: "", components_extra: "")
+        description: "@LOC_EMPTY", attach_extra: "", components_extra: "", required_tags: nil)
         folder = "#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/#{path}"
 
         FileUtils.mkdir_p(folder)
@@ -358,7 +428,7 @@ module ScData
           <EntityClassDefinition.#{key} __ref="00000000-0000-0000-0000-00000000beef">
             <Components>
               <SAttachableComponentParams>
-                <AttachDef Type="#{type}" SubType="#{sub_type}" Size="1" Grade="1" Tags="#{key}">
+                <AttachDef Type="#{type}" SubType="#{sub_type}" Size="1" Grade="1" Tags="#{key}"#{%( RequiredTags="#{required_tags}") if required_tags}>
                   <Localization Name="#{name}" ShortName="@LOC_EMPTY" Description="#{description}" />
                   #{attach_extra}
                 </AttachDef>

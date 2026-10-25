@@ -384,9 +384,43 @@ module ScData
           grade: value_or_nil(attach_def["Grade"]),
           manufacturer_ref: value_or_nil(attach_def["Manufacturer"]),
           tags: attach_def["Tags"].to_s.split,
+          required_tags: (attach_def["RequiredTags"].to_s.split.presence if attach_def["Type"] == "WeaponAttachment"),
+          ports: (attachment_ports(values).presence if attach_def["Type"] == "WeaponPersonal"),
           hidden: variant?(key),
           **occupancy(attach_def)
         }
+      end
+
+      # The ports a weapon takes attachments in -- magazine, optics, barrel,
+      # underbarrel -- with the size range and tags an attachment has to meet,
+      # and the attachment it ships with. Armour and gun cases carry
+      # WeaponAttachment ports too, but those hold spare magazines rather than
+      # fit them, which is why only a hand-held weapon or tool is asked.
+      private def attachment_ports(values)
+        defaults = Array.wrap(
+          values.dig("Components", "SEntityComponentDefaultLoadoutParams", "loadout", "SItemPortLoadoutManualParams",
+            "entries", "SItemPortLoadoutEntryParams")
+        ).to_h { |entry| [entry["itemPortName"], value_or_nil(entry["entityClassName"])] }
+
+        ports = Array.wrap(values.dig("Components", "SItemPortContainerComponentParams", "Ports", "SItemPortDef"))
+
+        ports.filter_map do |port|
+          sub_types = Array.wrap(port.dig("Types", "SItemPortDefTypes"))
+            .select { |type| type["Type"] == "WeaponAttachment" }
+            .flat_map { |type| Array.wrap(type.dig("SubTypes", "Enum")).filter_map { |sub_type| sub_type["value"].presence } }
+
+          next if sub_types.empty?
+
+          {
+            name: port["Name"],
+            sub_types:,
+            min_size: port["MinSize"].to_i,
+            max_size: port["MaxSize"].to_i,
+            required_tags: port["RequiredPortTags"].to_s.split.presence,
+            port_tags: port["PortTags"].to_s.split.presence,
+            default: defaults[port["Name"]]
+          }.compact
+        end
       end
 
       private def equipment_type(attach_def, item_type)
