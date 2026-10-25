@@ -1,4 +1,4 @@
-import type { InventoryCraftedRef } from "@/services/fyApi";
+import type { InventoryCraftedRef, MediaFile } from "@/services/fyApi";
 export type InventoryReference = {
   name?: string;
   slug?: string;
@@ -17,10 +17,6 @@ export type InventoryItemReference = {
   listed?: boolean;
   available?: boolean;
 };
-
-// What a row is pictured by: a component or a piece of equipment by its angled
-// render. A file that cannot be resized arrives with `url` alone.
-export type InventoryRowImage = { url?: string; smallUrl?: string } | null;
 
 /**
  * Structural shape shared by the generated Fleet* and Hangar* inventory
@@ -45,7 +41,7 @@ export type InventoryStockRecord = {
     slug?: string | null;
     listed?: boolean;
   } | null;
-  image?: InventoryRowImage;
+  image?: MediaFile | null;
   // A crafted lot: the recipe and the grades it was made from.
   crafted?: InventoryCraftedRef;
 };
@@ -127,7 +123,7 @@ export type InventoryLedgerRecord = {
   createdAt?: string | null;
   inventory?: InventoryReference;
   item?: InventoryItemReference | null;
-  image?: InventoryRowImage;
+  image?: MediaFile | null;
   // Present on a crafted part only.
   crafted?: InventoryCraftedRef;
 };

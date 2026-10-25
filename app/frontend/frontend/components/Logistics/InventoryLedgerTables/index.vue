@@ -15,12 +15,11 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
 import { catalogueItemRoute } from "@/frontend/utils/catalogueItemRoute";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
-import { type InventoryCraftedRef } from "@/services/fyApi";
+import { type InventoryCraftedRef, type MediaFile } from "@/services/fyApi";
 import { craftedGrades } from "@/frontend/components/Logistics/crafted";
 import { lotKey } from "@/frontend/composables/useStockLots";
 import type {
   InventoryLedgerRecord,
-  InventoryRowImage,
   InventoryStockRecord,
 } from "@/frontend/types/logistics";
 
@@ -78,7 +77,8 @@ const imageColumns = computed(() =>
     : [],
 );
 
-const rowImage = (image?: InventoryRowImage) => image?.smallUrl || image?.url;
+// A file that cannot be resized arrives with `url` alone.
+const rowImage = (image?: MediaFile | null) => image?.smallUrl || image?.url;
 
 const stockColumns = computed<BaseTableCol<InventoryStockRecord>[]>(() => [
   ...imageColumns.value,
