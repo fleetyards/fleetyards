@@ -16,7 +16,6 @@ import Row from "@/frontend/components/Logistics/ItemPicker/Row/index.vue";
 import {
   INVENTORY_EQUIPMENT_TYPES,
   INVENTORY_WORN_CATEGORIES,
-  inventoryCategoryForEquipment,
   useInventoryOptions,
 } from "@/frontend/composables/useInventoryOptions";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -25,6 +24,7 @@ import {
   type ItemPickerSelection,
   type PickedItem,
 } from "@/frontend/components/Logistics/types";
+import { catalogueSelection } from "@/frontend/components/Logistics/selection";
 import {
   type EquipmentSlotEnum,
   type FilterOption,
@@ -371,22 +371,9 @@ const emitSelection = (
 };
 
 const pick = (entry: ItemPickerEntry) => {
-  const item: PickedItem = {
-    type: entry.type,
-    id: entry.record.id,
-    name: entry.record.name,
-    counted: entry.type === "Commodity" ? entry.record.counted : undefined,
-  };
+  const selection = catalogueSelection(entry);
 
-  // A piece of equipment has one category whichever slice it was browsed in.
-  const filedUnder =
-    entry.type === "Equipment"
-      ? (inventoryCategoryForEquipment(
-          entry.record.equipmentType,
-        ) as InventoryCategoryEnum)
-      : undefined;
-
-  emitSelection(entry.record.name, item, filedUnder);
+  emitSelection(selection.name, selection.item, selection.category);
 };
 
 // Goods the catalogue does not carry are still goods: the search names them
