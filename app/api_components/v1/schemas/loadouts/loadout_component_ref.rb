@@ -26,7 +26,8 @@ module V1
             # What the ship page reads a part's figures from, so a loadout ranks
             # parts on the same ones.
             typeData: ::Shared::V1::Schemas::Component::TYPE_DATA,
-            craftable: {type: :boolean, description: "A recipe in the build being served makes it"}
+            craftable: {type: :boolean, description: "A recipe in the build being served makes it"},
+            imageUrl: {type: :string, description: "The store image, or the angled render where there is none, small"}
           },
           additionalProperties: false,
           required: %w[id name]

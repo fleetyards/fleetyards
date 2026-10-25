@@ -52,6 +52,21 @@ class Api::V1::HardpointsLoadoutOptionsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hardpoints/:id/loadout-options pictures a part by its angled render without a store image" do
+    slot = create(:hardpoint, parent: create(:model), sc_name: "hardpoint_gun_nose", source: :game_files,
+      types: %w[Turret], min_size: 3, max_size: 3)
+    pictured = create(:component, name: "Pictured", component_type: "Turret", category: "weapon_mounts", size: "3")
+    pictured.angled_view.attach(io: file_fixture("test.png").open, filename: "angled.png", content_type: "image/png")
+    create(:component, name: "Plain", component_type: "Turret", category: "weapon_mounts", size: "3")
+
+    assert_api_response :get, 200, path_params: {id: slot.id} do
+      urls = parsed_body.to_h { |option| [option.dig("component", "name"), option.dig("component", "imageUrl")] }
+
+      assert_predicate urls["Pictured"], :present?
+      assert_nil urls["Plain"]
+    end
+  end
+
   test "GET /hardpoints/:id/loadout-options offers a part the game files repeat once" do
     slot = create(:hardpoint, parent: create(:model), sc_name: "hardpoint_shield", source: :game_files,
       types: %w[Shield], min_size: 1, max_size: 1)
