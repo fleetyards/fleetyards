@@ -47,6 +47,7 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 const route = useRoute();
+const router = useRouter();
 const comlink = useComlink();
 
 const fleetSlug = computed(() => props.fleet.slug);
@@ -219,6 +220,7 @@ const openEditModal = () => {
     props: {
       fleet: props.fleet,
       inventory: inventory.value,
+      deletable: props.membership?.capabilities?.destroyInventories ?? false,
     },
   });
 };
@@ -227,6 +229,19 @@ onMounted(() => {
   comlink.on("fleet-inventory-item-created", () => void refetch());
   comlink.on("fleet-inventory-updated", () => void refetchInventory());
 });
+
+// Unbound with the page: the emitter is global, and a stale listener would
+// send the reader to this fleet from another fleet's logistics.
+const unbindDeleted = comlink.on(
+  "fleet-inventory-deleted",
+  () =>
+    void router.push({
+      name: "fleet-logistics",
+      params: { slug: props.fleet.slug },
+    }),
+);
+
+onUnmounted(() => unbindDeleted());
 
 const crumbs = computed<Crumb[]>(() => [
   {
