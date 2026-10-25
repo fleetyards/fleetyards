@@ -161,6 +161,7 @@ describe("EquipmentPage", () => {
         fit("IronSight", "Delta"),
         fit("IronSight", "Gamma"),
         fit("SomethingNew", "Odd"),
+        fit("Personal", "Odder"),
       ],
     });
 
@@ -176,6 +177,7 @@ describe("EquipmentPage", () => {
     expect(cards[0].text()).toContain("labels.equipment.standard");
     expect(cards[1].findAll("a")).toHaveLength(2);
     expect(cards[1].text()).not.toContain("labels.equipment.standard");
+    expect(cards[2].findAll("a")).toHaveLength(2);
   });
 
   it("lists the weapons an attachment fits rather than ports", async () => {

@@ -108,20 +108,23 @@ const LABELLED_PORT_TYPES = [
 ];
 
 // Already ordered by the API, magazine first, so the groups keep that order.
+// Grouped by label, so two kinds of port without one share a single card.
 const ports = computed(() => {
   if (!takesAttachments.value) return [];
 
   const groups = new Map<string, EquipmentAttachment[]>();
 
   (attachmentsData.value || []).forEach((fit) => {
-    groups.set(fit.portType, [...(groups.get(fit.portType) || []), fit]);
+    const key = LABELLED_PORT_TYPES.includes(fit.portType)
+      ? fit.portType
+      : "other";
+
+    groups.set(key, [...(groups.get(key) || []), fit]);
   });
 
-  return [...groups].map(([portType, fits]) => ({
-    portType,
-    label: t(
-      `labels.equipment.ports.${LABELLED_PORT_TYPES.includes(portType) ? portType : "other"}`,
-    ),
+  return [...groups].map(([key, fits]) => ({
+    key,
+    label: t(`labels.equipment.ports.${key}`),
     fits,
   }));
 });
@@ -404,7 +407,7 @@ watch(
           <div class="equipment-page__ports">
             <MetricsCard
               v-for="port in ports"
-              :key="port.portType"
+              :key="port.key"
               :title="port.label"
               variant="slim"
             >
