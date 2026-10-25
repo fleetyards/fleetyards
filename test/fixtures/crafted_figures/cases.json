@@ -82,6 +82,55 @@
     }
   },
   {
+    "case": "two slots both crafted at the best grade compound",
+    "slots": [
+      {
+        "position": 0,
+        "modifiers": [
+          {
+            "propertyKey": "gpp_weapon_damage",
+            "name": "Impact Force",
+            "ramp": "linear",
+            "startQuality": 0,
+            "endQuality": 1000,
+            "modifierAtStart": 0.8,
+            "modifierAtEnd": 1.2,
+            "unitFormat": "%+.2f %%"
+          }
+        ]
+      },
+      {
+        "position": 1,
+        "modifiers": [
+          {
+            "propertyKey": "gpp_weapon_damage",
+            "name": "Impact Force",
+            "ramp": "linear",
+            "startQuality": 0,
+            "endQuality": 1000,
+            "modifierAtStart": 0.8,
+            "modifierAtEnd": 1.2,
+            "unitFormat": "%+.2f %%"
+          }
+        ]
+      }
+    ],
+    "qualities": {
+      "0": 1000,
+      "1": 1000
+    },
+    "typeData": {
+      "damagePerShot": {
+        "energy": 100
+      }
+    },
+    "expected": {
+      "damagePerShot": {
+        "energy": 144
+      }
+    }
+  },
+  {
     "case": "a power plant losing pips, halves rounded up",
     "slots": [
       {

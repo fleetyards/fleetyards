@@ -20,7 +20,7 @@ class CraftedFiguresTest < ActiveSupport::TestCase
   CASES.each do |fixture|
     test "agrees with the browser on #{fixture["case"]}" do
       slots = fixture["slots"].map do |slot|
-        Slot.new(slot["position"], slot["modifiers"].map { |modifier| Modifier.new(**modifier.symbolize_keys) })
+        Slot.new(slot["position"], slot["modifiers"].map { |modifier| Modifier.new(**modifier.symbolize_keys.slice(*Modifier.members)) })
       end
 
       crafted = CraftedFigures.new(slots, fixture["qualities"]).type_data(fixture["type_data"])
