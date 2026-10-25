@@ -807,6 +807,7 @@
             "failure": "Could not update inventory."
           },
           "destroy": {
+            "confirm": "Inventar löschen? Alle Einträge darin werden mit gelöscht.",
             "success": "Inventar gelöscht.",
             "failure": "Inventar konnte nicht gelöscht werden."
           }

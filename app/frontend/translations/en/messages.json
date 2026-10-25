@@ -811,6 +811,7 @@
             "failure": "Could not update inventory."
           },
           "destroy": {
+            "confirm": "Delete this inventory? Every entry in it is deleted with it.",
             "success": "Inventory deleted.",
             "failure": "Could not delete inventory."
           }

@@ -121,3 +121,26 @@ describe("FleetLogisticsInventoryModal preview", () => {
     expect(previewSrc(subject)).toBeUndefined();
   });
 });
+
+describe("FleetLogisticsInventoryModal delete", () => {
+  const destroyBtn = (subject: VueWrapper) =>
+    subject.find('[data-test="inventory-destroy"]');
+
+  it("offers to delete an inventory to a member who may", async () => {
+    const subject = await mount({ inventory: inventory(), deletable: true });
+
+    expect(destroyBtn(subject).exists()).toBe(true);
+  });
+
+  it("offers nothing to a member who may not", async () => {
+    const subject = await mount({ inventory: inventory() });
+
+    expect(destroyBtn(subject).exists()).toBe(false);
+  });
+
+  it("has nothing to delete while creating", async () => {
+    const subject = await mount({ deletable: true });
+
+    expect(destroyBtn(subject).exists()).toBe(false);
+  });
+});

@@ -40,6 +40,7 @@ import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
 const { t } = useI18n();
 const route = useRoute();
+const router = useRouter();
 const comlink = useComlink();
 const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 
@@ -186,10 +187,22 @@ const openEditModal = () => {
   });
 };
 
+// The emitter is global, so each listener goes with the page.
+const unbinds: (() => void)[] = [];
+
 onMounted(() => {
-  comlink.on("inventory-item-created", () => void refetch());
-  comlink.on("hangar-inventory-updated", () => void refetchInventory());
+  unbinds.push(
+    comlink.on("inventory-item-created", () => void refetch()),
+    comlink.on("hangar-inventory-updated", () => void refetchInventory()),
+    comlink.on("hangar-inventory-deleted", (slug) => {
+      if (slug !== inventorySlug.value) return;
+
+      void router.push({ name: "hangar-inventories" });
+    }),
+  );
 });
+
+onUnmounted(() => unbinds.forEach((unbind) => unbind()));
 
 const crumbs = computed<Crumb[]>(() => [
   {

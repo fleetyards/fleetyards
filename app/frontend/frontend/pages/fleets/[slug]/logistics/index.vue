@@ -145,6 +145,7 @@ const openInventoryModal = (inventory?: FleetInventory) => {
     props: {
       fleet: props.fleet,
       inventory,
+      deletable: props.membership?.capabilities?.destroyInventories ?? false,
     },
   });
 };
@@ -157,6 +158,7 @@ const refetchEverything = async () => {
 
 const inventoryCreatedComlink = ref();
 const inventoryUpdatedComlink = ref();
+const inventoryDeletedComlink = ref();
 const inventoryItemCreatedComlink = ref();
 
 onMounted(() => {
@@ -168,6 +170,10 @@ onMounted(() => {
     "fleet-inventory-updated",
     () => void refetchEverything(),
   );
+  inventoryDeletedComlink.value = comlink.on(
+    "fleet-inventory-deleted",
+    () => void refetchEverything(),
+  );
   inventoryItemCreatedComlink.value = comlink.on(
     "fleet-inventory-item-created",
     () => void refetchEverything(),
@@ -177,6 +183,7 @@ onMounted(() => {
 onUnmounted(() => {
   inventoryCreatedComlink.value();
   inventoryUpdatedComlink.value();
+  inventoryDeletedComlink.value();
   inventoryItemCreatedComlink.value();
 });
 

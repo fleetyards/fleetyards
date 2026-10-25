@@ -9,7 +9,11 @@ import LocationInput from "@/shared/components/LocationInput/index.vue";
 import { useForm } from "vee-validate";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
+import {
+  BtnTonesEnum,
+  BtnTypesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
@@ -30,17 +34,24 @@ import {
   type FleetMember,
   type FilterOption,
   fleetMembers as fetchFleetMembers,
+  getFleetInventoriesQueryKey,
   useCreateFleetInventory,
+  useDestroyFleetInventory,
   useUpdateFleetInventory,
 } from "@/services/fyApi";
+import { useInventoryDestroy } from "@/frontend/composables/useInventoryDestroy";
 import { type BaseSelectParams } from "@/shared/components/base/Select/index.vue";
 
 type Props = {
   fleet: Fleet;
   inventory?: FleetInventory;
+  deletable?: boolean;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  inventory: undefined,
+  deletable: false,
+});
 
 const { t } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
@@ -210,6 +221,22 @@ const onSubmit = handleSubmit(async (values) => {
       submitting.value = false;
     });
 });
+
+const destroyMutation = useDestroyFleetInventory();
+
+const { deleting, destroyInventory } = useInventoryDestroy({
+  inventory: () => props.inventory,
+  destroy: () =>
+    destroyMutation.mutateAsync({
+      fleetSlug: props.fleet.slug,
+      slug: props.inventory!.slug,
+    }),
+  listKey: () => getFleetInventoriesQueryKey(props.fleet.slug),
+  onDeleted: () => {
+    comlink.emit("fleet-inventory-deleted", props.inventory!.slug);
+    comlink.emit("close-modal", true);
+  },
+});
 </script>
 
 <template>
@@ -288,11 +315,26 @@ const onSubmit = handleSubmit(async (values) => {
       />
     </form>
 
+    <template v-if="isEdit && deletable" #footer-start>
+      <Btn
+        :variant="BtnVariantsEnum.BARE"
+        :tone="BtnTonesEnum.DANGER"
+        :confirm="t('messages.logistics.inventory.destroy.confirm')"
+        :loading="deleting"
+        :disabled="submitting"
+        data-test="inventory-destroy"
+        @click="destroyInventory"
+      >
+        <i class="fa-light fa-trash" />
+        {{ t("actions.delete") }}
+      </Btn>
+    </template>
     <template #footer>
       <Btn
         :type="BtnTypesEnum.SUBMIT"
         form="inventory-form"
         :loading="submitting"
+        :disabled="deleting"
       >
         {{ t("actions.save") }}
       </Btn>

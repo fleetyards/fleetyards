@@ -801,8 +801,9 @@
             "failure": "Could not update inventory."
           },
           "destroy": {
-            "success": "Inventory deleted.",
-            "failure": "Could not delete inventory."
+            "confirm": "¿Eliminar este inventario? Todas sus entradas se eliminarán con él.",
+            "success": "Inventario eliminado.",
+            "failure": "No se pudo eliminar el inventario."
           }
         },
         "inventoryItem": {

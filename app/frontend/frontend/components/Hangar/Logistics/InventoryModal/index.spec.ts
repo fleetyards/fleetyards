@@ -110,3 +110,28 @@ describe("HangarLogisticsInventoryModal preview", () => {
     expect(previewSrc(subject)).toBeUndefined();
   });
 });
+
+describe("HangarLogisticsInventoryModal delete", () => {
+  const destroyBtn = (subject: VueWrapper) =>
+    subject.find('[data-test="inventory-destroy"]');
+
+  it("offers to delete an inventory", async () => {
+    const subject = await mount({ inventory: inventory() });
+
+    expect(destroyBtn(subject).exists()).toBe(true);
+  });
+
+  it("keeps the personal inventory", async () => {
+    const subject = await mount({
+      inventory: { ...(inventory() as object), personal: true },
+    });
+
+    expect(destroyBtn(subject).exists()).toBe(false);
+  });
+
+  it("has nothing to delete while creating", async () => {
+    const subject = await mount();
+
+    expect(destroyBtn(subject).exists()).toBe(false);
+  });
+});
