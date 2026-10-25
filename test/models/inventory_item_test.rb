@@ -302,4 +302,24 @@ class HangarInventoryItemTest < ActiveSupport::TestCase
 
     assert deposit.update(notes: "moved to hold 2")
   end
+
+  # A log page points at components, equipment and commodities at once, and
+  # each row reads its picture from its own catalogue's attachments.
+  test "preload_images loads every picture a page of entries reads" do
+    component = create(:component)
+    component.angled_view.attach(io: file_fixture("test.png").open, filename: "angled.png", content_type: "image/png")
+    rifle = create(:equipment)
+    rifle.store_image.attach(io: file_fixture("test.png").open, filename: "store.png", content_type: "image/png")
+    create(:inventory_item, :component, inventory: @inventory, item: component)
+    create(:inventory_item, inventory: @inventory, category: :weapon, unit: :units, item: rifle)
+    create(:inventory_item, inventory: @inventory, name: "Quantanium")
+
+    entries = @inventory.inventory_items.preload(:item).to_a
+    InventoryLedgerEntry.preload_images(entries)
+
+    assert_no_queries do
+      assert_equal ["angled.png", "store.png", nil].sort_by(&:to_s),
+        entries.map { |entry| entry.display_image&.filename&.to_s }.sort_by(&:to_s)
+    end
+  end
 end

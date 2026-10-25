@@ -29,7 +29,7 @@ module Api
         # already leaves out what that build does not describe.
         current_only = current_version
         @q = Equipment.visible(current_only)
-          .includes(:manufacturer, *fact_builds(current_only), item_prices: ItemPrice::SHOP_LINK)
+          .includes(:manufacturer, *fact_builds(current_only), ItemViews::DISPLAY_IMAGE_PRELOAD, item_prices: ItemPrice::SHOP_LINK)
           .ransack(equipment_query_params)
 
         @equipment = @q.result

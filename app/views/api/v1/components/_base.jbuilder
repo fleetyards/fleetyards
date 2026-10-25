@@ -78,7 +78,7 @@ end
 
 json.media({})
 json.media do
-  json.partial! "api/v1/shared/item_media", record: component, extended: local_assigns.fetch(:extended, false), fallback: true
+  json.partial! "api/v1/shared/item_media", record: component, extended: local_assigns.fetch(:extended, false), fallback: true, views: local_assigns.fetch(:views, [])
 end
 
 # Stays in both shapes. It is a required property, so dropping it from the list

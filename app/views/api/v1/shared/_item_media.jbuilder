@@ -4,8 +4,10 @@
 # render in its place.
 store_image_attr = (local_assigns.fetch(:fallback, false) && record.display_image_attr) || :store_image
 
-json.store_image do
-  json.partial! "api/v1/shared/file", record:, attr: store_image_attr
+if local_assigns.fetch(:store_image, true)
+  json.store_image do
+    json.partial! "api/v1/shared/file", record:, attr: store_image_attr
+  end
 end
 
 views = local_assigns.fetch(:extended, false) ? ItemViews::ATTACHMENT_NAMES : local_assigns.fetch(:views, [])

@@ -56,11 +56,11 @@ json.store_image do
   json.partial! "api/v1/shared/file", record: equipment, attr: equipment.display_image_attr || :store_image
 end
 
-# The top-level `store_image` above predates `media`, which a list leaves out.
-if local_assigns.fetch(:extended, false)
-  json.media do
-    json.partial! "api/v1/shared/item_media", record: equipment, extended: true, fallback: true
-  end
+# The top-level `store_image` above predates `media`, so a list leaves it out
+# of `media` rather than render the same file twice.
+extended = local_assigns.fetch(:extended, false)
+json.media do
+  json.partial! "api/v1/shared/item_media", record: equipment, extended:, fallback: true, views: %i[angled_view], store_image: extended
 end
 
 json.partial! "api/shared/dates", record: equipment

@@ -17,16 +17,25 @@ json.net_quantity position.net_quantity.to_f
 # one. The name is left to the detail endpoint: the position carries its own,
 # and this is here so a caller can match a position to a record by id rather
 # than by guessing at a user-typed name. The slug is what a row links with.
+linked = local_assigns.fetch(:linked_items, {})[[position.try(:item_type), position.try(:item_id)]]
+
 if position.respond_to?(:item_id) && position.item_id.present?
   json.item do
     json.id position.item_id
     json.type position.item_type
-    linked = local_assigns.fetch(:linked_items, {})[[position.item_type, position.item_id]]
     json.slug linked&.slug
     json.listed linked.try(:listed?) != false
   end
 else
   json.item nil
+end
+
+# The record's picture, where the position names one. A position has no upload
+# of its own: an entry's picture belongs to that entry.
+if linked && (image_attr = InventoryLedgerEntry.item_image_attr(linked))
+  json.image do
+    json.partial! "api/v1/shared/file", record: linked, attr: image_attr
+  end
 end
 
 # A crafted lot, where the row is one: `current_stock` holds crafted parts

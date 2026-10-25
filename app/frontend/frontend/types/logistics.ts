@@ -1,4 +1,4 @@
-import type { InventoryCraftedRef } from "@/services/fyApi";
+import type { InventoryCraftedRef, MediaFile } from "@/services/fyApi";
 export type InventoryReference = {
   name?: string;
   slug?: string;
@@ -41,6 +41,7 @@ export type InventoryStockRecord = {
     slug?: string | null;
     listed?: boolean;
   } | null;
+  image?: MediaFile | null;
   // A crafted lot: the recipe and the grades it was made from.
   crafted?: InventoryCraftedRef;
 };
@@ -122,6 +123,7 @@ export type InventoryLedgerRecord = {
   createdAt?: string | null;
   inventory?: InventoryReference;
   item?: InventoryItemReference | null;
+  image?: MediaFile | null;
   // Present on a crafted part only.
   crafted?: InventoryCraftedRef;
 };

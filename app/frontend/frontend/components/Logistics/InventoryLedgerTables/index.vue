@@ -15,7 +15,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
 import { catalogueItemRoute } from "@/frontend/utils/catalogueItemRoute";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
-import { type InventoryCraftedRef } from "@/services/fyApi";
+import { type InventoryCraftedRef, type MediaFile } from "@/services/fyApi";
 import { craftedGrades } from "@/frontend/components/Logistics/crafted";
 import { lotKey } from "@/frontend/composables/useStockLots";
 import type {
@@ -33,6 +33,8 @@ type Props = {
   showMember?: boolean;
   showAddedBy?: boolean;
   showNotes?: boolean;
+  // Off where every row is the one item the page already pictures.
+  showImage?: boolean;
   // Ticking stock rows, for an action that works on several positions at once.
   stockSelectable?: boolean;
 };
@@ -44,6 +46,7 @@ const props = withDefaults(defineProps<Props>(), {
   showMember: false,
   showAddedBy: false,
   showNotes: false,
+  showImage: true,
   stockSelectable: false,
 });
 
@@ -60,7 +63,25 @@ const craftedSummary = (crafted: InventoryCraftedRef) =>
     ),
   ].join(" · ");
 
+const imageColumns = computed(() =>
+  props.showImage
+    ? [
+        {
+          name: "image",
+          label: "",
+          width: "80px",
+          alignment: BaseTableColAlignmentEnum.CENTER,
+          mobile: false,
+        },
+      ]
+    : [],
+);
+
+// A file that cannot be resized arrives with `url` alone.
+const rowImage = (image?: MediaFile | null) => image?.smallUrl || image?.url;
+
 const stockColumns = computed<BaseTableCol<InventoryStockRecord>[]>(() => [
+  ...imageColumns.value,
   {
     name: "name",
     label: t("labels.logistics.itemName"),
@@ -113,6 +134,7 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
     attributeKey: "entryType",
     width: "100px",
   },
+  ...imageColumns.value,
   {
     name: "name",
     label: t("labels.logistics.itemName"),
@@ -231,6 +253,15 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
       <slot name="stock-selected-actions" :selected="selected" />
     </template>
 
+    <template #col-image="{ record }">
+      <img
+        v-if="rowImage(record.image)"
+        :src="rowImage(record.image)"
+        alt=""
+        class="ledger-image"
+        loading="lazy"
+      />
+    </template>
     <!-- The name opens the stock position, and hovering it shows the catalogue
          record the position holds -- with what it was crafted to, for a
          crafted lot. -->
@@ -335,6 +366,15 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
         {{ l(record.createdAt, "datetime.formats.short") }}
       </span>
     </template>
+    <template #col-image="{ record }">
+      <img
+        v-if="rowImage(record.image)"
+        :src="rowImage(record.image)"
+        alt=""
+        class="ledger-image"
+        loading="lazy"
+      />
+    </template>
     <template #col-name="{ record }">
       <CatalogueItemPopover
         v-if="!mobile && catalogueItemRoute(record.item)"
@@ -408,6 +448,13 @@ const logColumns = computed<BaseTableCol<InventoryLedgerRecord>[]>(() => [
 </template>
 
 <style lang="scss" scoped>
+.ledger-image {
+  display: block;
+  width: 64px;
+  height: 36px;
+  object-fit: contain;
+}
+
 .ledger-origin {
   display: inline-flex;
   gap: 0.4rem;

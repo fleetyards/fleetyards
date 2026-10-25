@@ -108,13 +108,21 @@ const badges = computed<RowListItemBadge[]>(() => {
   return list;
 });
 
-// The item's own picture where it has one, the store image or its render.
+// The angled render, which draws every item from the same angle, and the
+// store image where an item has none.
 const image = computed(() => {
   const { entry } = props;
 
   if (entry.type === "Component")
-    return entry.record.media?.storeImage?.smallUrl;
-  if (entry.type === "Equipment") return entry.record.storeImage?.smallUrl;
+    return (
+      entry.record.media?.angledView?.smallUrl ||
+      entry.record.media?.storeImage?.smallUrl
+    );
+  if (entry.type === "Equipment")
+    return (
+      entry.record.media?.angledView?.smallUrl ||
+      entry.record.storeImage?.smallUrl
+    );
 
   return undefined;
 });

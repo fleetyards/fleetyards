@@ -84,7 +84,7 @@ module Api
         # subsystem controllers are ship internals nobody fits.
         @q = Component.with_facts(current_version)
           .catalogued
-          .includes(:manufacturer)
+          .includes(:manufacturer, ItemViews::DISPLAY_IMAGE_PRELOAD)
           .ransack(components_query_params)
 
         @components = @q.result

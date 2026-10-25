@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+InventoryLedgerEntry.preload_images(@inventory_items)
+
 json.items do
   json.array! @inventory_items, partial: "api/v1/hangar_inventory_items/hangar_inventory_item", as: :hangar_inventory_item
 end

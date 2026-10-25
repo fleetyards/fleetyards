@@ -87,6 +87,15 @@ class Api::V1::HangarInventoryStockShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/inventories/:slug/stock/:slug prefers the component's angled view to its store image" do
+    @component.angled_view.attach(io: file_fixture("test.png").open, filename: "angled.png", content_type: "image/png")
+    sign_in @user
+
+    assert_api_response :get, 200, path_params: {hangarInventorySlug: @inventory.slug, slug: @slug} do
+      assert_equal "angled.png", parsed_body["image"]["name"]
+    end
+  end
+
   test "GET /hangar/inventories/:slug/stock/:slug resolves an emptied position" do
     sign_in @user
 
