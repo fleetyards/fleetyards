@@ -244,6 +244,26 @@ module ScData
         assert_nil Equipment.find_by(sc_key: "behr_rifle_ballistic_01_mag").family_key
       end
 
+      test "#all links what fits each port of a weapon and marks what it ships with" do
+        curated.all
+
+        attachments = Equipment.find_by(sc_key: "behr_rifle_ballistic_01").builds.sole.attachments.includes(:attachment)
+        by_port = attachments.group_by(&:port_type).transform_values { |fits| fits.map { |fit| fit.attachment.sc_key } }
+
+        assert_equal ["behr_rifle_ballistic_01_mag"], by_port["Magazine"]
+        assert attachments.find { |fit| fit.port_type == "Magazine" }.default
+        # The x16 is a size 3 scope; the rifle's optics port takes 1 to 2.
+        assert_equal ["behr_optics_tsco_x4_s2"], by_port["IronSight"]
+      end
+
+      test "#all rewrites a build's attachments rather than adding to them" do
+        curated.all
+
+        assert_no_difference -> { EquipmentAttachment.count } do
+          curated.all
+        end
+      end
+
       test "#all is idempotent" do
         curated.all
         count = Equipment.count

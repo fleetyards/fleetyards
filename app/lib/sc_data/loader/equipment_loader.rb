@@ -2,7 +2,10 @@ module ScData
   module Loader
     class EquipmentLoader < ::ScData::Loader::BaseLoader
       def all
-        loaded = load_items("equipment").filter_map { |equipment_data| one(equipment_data)&.id }
+        items = load_items("equipment")
+        loaded = items.filter_map { |equipment_data| one(equipment_data)&.id }
+
+        link_attachments(items)
 
         retire_absent_builds(EquipmentBuild, :equipment_id, loaded)
 
@@ -21,9 +24,76 @@ module ScData
 
         # `sc_key`, `sc_ref` and `family_key` identify the item rather than
         # describing a build, so they stay on the row and are not repeated here.
-        apply_build(equipment, update_params.except(:sc_key, :sc_ref, :family_key))
+        builds[equipment_data["key"]] = apply_build(equipment, update_params.except(:sc_key, :sc_ref, :family_key))
 
         equipment
+      end
+
+      # A second pass, once every attachment has a row to point at. Rewritten
+      # wholesale for the builds this load wrote rather than reconciled row by
+      # row, the way a blueprint's recipe is: nothing points at a fit, and a
+      # port CIG narrows has to lose the attachments it no longer takes.
+      private def link_attachments(items)
+        candidates = items.select { |item| item["equipment_type"] == "weapon_attachment" }.group_by { |item| item["sub_type"] }
+        ids = Equipment.where(sc_key: candidates.values.flatten.pluck("key")).pluck(:sc_key, :id).to_h
+
+        rows = items.flat_map do |item|
+          build = builds[item["key"]]
+
+          next [] if build.nil?
+
+          Array.wrap(item["ports"]).flat_map { |port| attachment_rows(build, port, candidates, ids) }
+        end
+
+        EquipmentAttachment.transaction do
+          EquipmentAttachment.where(equipment_build_id: builds.values.map(&:id)).delete_all
+
+          rows.each_slice(5_000) { |slice| EquipmentAttachment.insert_all!(slice) }
+        end
+
+        stats[EquipmentAttachment.name][:created] += rows.size
+      end
+
+      # The game's rule: one of the port's subtypes, a size in its range, every
+      # tag the port requires on the attachment and every tag the attachment
+      # requires on the port. What the weapon ships with is taken as fitting
+      # whether or not the tags say so.
+      private def attachment_rows(build, port, candidates, ids)
+        now = Time.zone.now
+
+        fitting = port["sub_types"].flat_map { |sub_type| candidates.fetch(sub_type, []) }.select do |attachment|
+          attachment["key"] == port["default"] || fits?(port, attachment)
+        end
+
+        fitting.uniq { |attachment| attachment["key"] }.filter_map do |attachment|
+          attachment_id = ids[attachment["key"]]
+
+          next if attachment_id.nil?
+
+          {
+            id: SecureRandom.uuid,
+            equipment_build_id: build.id,
+            attachment_id:,
+            port_name: port["name"],
+            port_type: port["sub_types"].first,
+            default: attachment["key"] == port["default"],
+            created_at: now,
+            updated_at: now
+          }
+        end
+      end
+
+      private def fits?(port, attachment)
+        size = Integer(attachment["size"], exception: false)
+
+        return false if size.nil? || !size.between?(port["min_size"], port["max_size"])
+        return false if (Array(port["required_tags"]) - Array(attachment["tags"])).any?
+
+        (Array(attachment["required_tags"]) - Array(port["port_tags"])).empty?
+      end
+
+      private def builds
+        @builds ||= {}
       end
 
       private def update_params(equipment_data)

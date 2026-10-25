@@ -596,6 +596,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_190000) do
     t.index ["slug"], name: "index_equipment_on_slug", unique: true
   end
 
+  create_table "equipment_attachments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "equipment_build_id", null: false
+    t.uuid "attachment_id", null: false
+    t.string "port_name", null: false
+    t.string "port_type", null: false
+    t.boolean "default", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["attachment_id"], name: "index_equipment_attachments_on_attachment_id"
+    t.index ["equipment_build_id", "port_name", "attachment_id"], name: "index_equipment_attachments_uniqueness", unique: true
+  end
+
   create_table "equipment_builds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "equipment_id", null: false
     t.string "environment", null: false
@@ -3115,6 +3127,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_190000) do
   add_foreign_key "dock_additions", "docks", on_delete: :cascade
   add_foreign_key "dock_additions", "models", on_delete: :cascade
   add_foreign_key "dock_capacities", "docks"
+  add_foreign_key "equipment_attachments", "equipment", column: "attachment_id", on_delete: :cascade
+  add_foreign_key "equipment_attachments", "equipment_builds", on_delete: :cascade
   add_foreign_key "equipment_builds", "equipment", on_delete: :cascade
   add_foreign_key "feature_flag_changes", "admin_users", on_delete: :nullify
   add_foreign_key "feature_flag_changes", "users", on_delete: :nullify

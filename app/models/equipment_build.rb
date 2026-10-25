@@ -10,6 +10,11 @@ class EquipmentBuild < ApplicationRecord
   belongs_to :equipment
   belongs_to :manufacturer, optional: true
 
+  # What fits each of a weapon's ports in this build. Destroyed with the build,
+  # which is what makes `prune_builds` and `retire_absent_builds` carry them away
+  # too.
+  has_many :attachments, class_name: "EquipmentAttachment", inverse_of: :build, dependent: :destroy
+
   # Everything a build says, as opposed to what identifies the item. The data
   # migration carries its own copy on purpose: a migration has to keep running
   # against the schema of its own moment, not this list as it later becomes.
