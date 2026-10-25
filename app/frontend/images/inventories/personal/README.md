@@ -7,3 +7,8 @@ picker as one more preset.
 Drop one picture in here, ~1600×500 like the other inventory art; a `.webp`
 wins over a `.jpg` of the same picture. With the folder empty, the personal
 inventory falls back to a preset off its name like any other inventory.
+
+`personal-hab.webp` is a Lorville hab interior from RSI's Monthly Studio Report
+of August 2018
+(https://robertsspaceindustries.com/en/comm-link/transmission/16743-Monthly-Studio-Report-August-2018),
+resized to 1600px wide.
