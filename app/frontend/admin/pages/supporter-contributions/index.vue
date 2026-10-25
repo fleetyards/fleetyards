@@ -332,13 +332,22 @@ const syncFromPatreon = () => {
               <i class="fa-duotone fa-user" />
             </Btn>
             <BtnDropdown>
-              <template #label>
-                <i
+              <template #trigger="{ toggle, visible }">
+                <Btn
                   v-tooltip="
                     t('actions.admin.supporterContributions.setSourceSelected')
                   "
-                  class="fa-duotone fa-hand-holding-heart"
-                />
+                  :aria-label="
+                    t('actions.admin.supporterContributions.setSourceSelected')
+                  "
+                  :disabled="bulkPending"
+                  :active="visible"
+                  aria-haspopup="menu"
+                  :aria-expanded="visible"
+                  @click="toggle"
+                >
+                  <i class="fa-duotone fa-hand-holding-heart" />
+                </Btn>
               </template>
               <Btn
                 v-for="option in sourceOptions"
