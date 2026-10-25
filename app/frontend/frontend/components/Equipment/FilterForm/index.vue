@@ -78,7 +78,8 @@ const { data: types } = useEquipmentTypesFilters();
 
 // Narrowed by the chosen types: unnarrowed the list is over a hundred item
 // types, most of them clothing, which buries the dozen a weapon search wants.
-// Sizes and grades follow, because each type runs its own scale.
+// The rest follow, because each type runs its own scale and vocabulary -- a
+// weapon has no slot, armour no weapon class.
 const equipmentTypeParams = computed(() => {
   const chosen = form.value.equipmentTypeIn || [];
 
@@ -88,15 +89,25 @@ const equipmentTypeParams = computed(() => {
 const { data: itemTypes } = useEquipmentItemTypesFilters(equipmentTypeParams);
 const { data: sizes } = useEquipmentSizesFilters(equipmentTypeParams);
 const { data: grades } = useEquipmentGradesFilters(equipmentTypeParams);
+const { data: subTypes } = useEquipmentSubTypesFilters(equipmentTypeParams);
+const { data: weaponClasses } =
+  useEquipmentWeaponClassesFilters(equipmentTypeParams);
+const { data: slots } = useEquipmentSlotsFilters(equipmentTypeParams);
 
 // A value the control cannot show is one the reader cannot remove, so a type
-// dropped from the selection takes its item types, sizes and grades with it.
+// dropped from the selection takes the values only it offered with it.
 // Only once options have arrived: pruning before the answer would clear a
 // selection restored from the URL. An answer that is empty still prunes -- a
 // type with no item types leaves nothing selectable. Immediate, because an
 // answer already in the cache is never a change.
 const pruneToOptions = (
-  key: "itemTypeIn" | "sizeIn" | "gradeIn",
+  key:
+    | "itemTypeIn"
+    | "sizeIn"
+    | "gradeIn"
+    | "subTypeIn"
+    | "weaponClassIn"
+    | "slotIn",
   options?: FilterOption[],
 ) => {
   if (!options) return;
@@ -119,10 +130,15 @@ watch(sizes, (options) => pruneToOptions("sizeIn", options), {
 watch(grades, (options) => pruneToOptions("gradeIn", options), {
   immediate: true,
 });
-
-const { data: subTypes } = useEquipmentSubTypesFilters();
-const { data: weaponClasses } = useEquipmentWeaponClassesFilters();
-const { data: slots } = useEquipmentSlotsFilters();
+watch(subTypes, (options) => pruneToOptions("subTypeIn", options), {
+  immediate: true,
+});
+watch(weaponClasses, (options) => pruneToOptions("weaponClassIn", options), {
+  immediate: true,
+});
+watch(slots, (options) => pruneToOptions("slotIn", options), {
+  immediate: true,
+});
 </script>
 
 <template>

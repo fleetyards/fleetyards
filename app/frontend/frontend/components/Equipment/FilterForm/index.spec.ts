@@ -6,7 +6,7 @@ import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import type { FilterOption } from "@/services/fyApi";
 import Component from "./index.vue";
 
-const { sizes, grades } = vi.hoisted(() => ({
+const { sizes, grades, slots } = vi.hoisted(() => ({
   sizes: [
     { category: "size", label: "Size 1", value: "1" },
     { category: "size", label: "Size 3", value: "3" },
@@ -15,9 +15,14 @@ const { sizes, grades } = vi.hoisted(() => ({
     { category: "grade", label: "Grade 1", value: "1" },
     { category: "grade", label: "Grade 2", value: "2" },
   ],
+  slots: [
+    { category: "slot", label: "Helmet", value: "helmet" },
+    { category: "slot", label: "Shirt", value: "shirt" },
+  ],
 }));
 
-// Armour only comes in size 1 and grade 1 here, so picking it narrows both.
+// Armour only comes in size 1 and grade 1 here, and fills no shirt slot, so
+// picking it narrows all three.
 vi.mock("@/services/fyApi", async (importOriginal) => {
   const { computed, ref, toValue } = await import("vue");
   const empty = () => ({ data: ref<FilterOption[]>([]) });
@@ -29,7 +34,13 @@ vi.mock("@/services/fyApi", async (importOriginal) => {
     useEquipmentItemTypesFilters: empty,
     useEquipmentSubTypesFilters: empty,
     useEquipmentWeaponClassesFilters: empty,
-    useEquipmentSlotsFilters: empty,
+    useEquipmentSlotsFilters: (params: MaybeRef<Params>) => ({
+      data: computed<FilterOption[]>(() =>
+        toValue(params).q?.equipmentTypeIn?.includes("armor")
+          ? slots.slice(0, 1)
+          : slots,
+      ),
+    }),
     useEquipmentSizesFilters: (params: MaybeRef<Params>) => ({
       data: computed<FilterOption[]>(() =>
         toValue(params).q?.equipmentTypeIn?.includes("armor")
@@ -132,5 +143,22 @@ describe("EquipmentFilterForm", () => {
     });
 
     expect(select(wrapper, "size").props("modelValue")).toEqual([]);
+  });
+
+  it("narrows the slots to the chosen type and drops one it no longer has", async () => {
+    vi.useFakeTimers();
+    const { router, wrapper } = await mountAt({ slotIn: ["helmet", "shirt"] });
+
+    expect(select(wrapper, "slot").props("modelValue")).toEqual([
+      "helmet",
+      "shirt",
+    ]);
+
+    select(wrapper, "equipmentType").vm.$emit("update:modelValue", ["armor"]);
+
+    await vi.advanceTimersByTimeAsync(400);
+
+    expect(select(wrapper, "slot").props("options")).toEqual([slots[0]]);
+    expect(router.currentRoute.value.query.slotIn).toEqual(["helmet"]);
   });
 });
