@@ -182,7 +182,7 @@ class Vehicle < ApplicationRecord
   # condition on an `includes` scope turns it into a join.
   PICTURE_PRELOADS = {picture: [{file_attachment: :blob}, {store_image_attachment: :blob}]}.freeze
 
-  # What `#fitted_cargo` and `#fitted_weapons` read: the loadouts with what they
+  # What `#fitted_cargo` and `#fitted_loadout_stat` read: the loadouts with what they
   # fit and carry, and what the ship carries as it comes.
   LOADOUT_PRELOADS = [{vehicle_loadouts: [{items: :blueprint}, :loadout_stats]}, {model: :loadout_stats}].freeze
 
@@ -244,7 +244,8 @@ class Vehicle < ApplicationRecord
     "modelPledgePrice asc", "modelPledgePrice desc", "modelPrice asc", "modelPrice desc",
     "modelScmSpeed asc", "modelScmSpeed desc", "modelMaxSpeed asc", "modelMaxSpeed desc",
     "modelGroundMaxSpeed asc", "modelGroundMaxSpeed desc", "modelProductionStatus asc",
-    "modelProductionStatus desc", "rank asc", "rank desc", "maxWeaponSize asc", "maxWeaponSize desc"
+    "modelProductionStatus desc", "rank asc", "rank desc", "maxWeaponSize asc", "maxWeaponSize desc",
+    "alpha asc", "alpha desc", "burstDps asc", "burstDps desc", "sustainedDpsMax asc", "sustainedDpsMax desc"
   ]
 
   ransack_alias :search, :name_or_model_name_or_model_slug
@@ -373,7 +374,7 @@ class Vehicle < ApplicationRecord
   ransacker(:public_cargo) { Arel.sql(Vehicle.fitted_cargo_sql(public_only: true)) }
 
   # What a vehicle carries as fitted, which reads its loadouts.
-  FITTED_COLUMNS = %w[cargo max_weapon_size].freeze
+  FITTED_COLUMNS = %w[cargo max_weapon_size alpha burst_dps].freeze
 
   # The fitted filters and sorts as the reader may see them: their own hangar
   # counts every loadout, anybody else's only the public ones.
@@ -392,9 +393,9 @@ class Vehicle < ApplicationRecord
 
   def self.fitted_sorts(sorts, public_only: false)
     Array(sorts).map do |sort|
-      sort
-        .sub(/\Amodel_cargo /, "#{fitted_column("cargo", public_only:)} ")
-        .sub(/\Amax_weapon_size /, "#{fitted_column("max_weapon_size", public_only:)} ")
+      FITTED_STATS.keys.reduce(sort.sub(/\Amodel_cargo /, "#{fitted_column("cargo", public_only:)} ")) do |result, stat|
+        result.sub(/\A#{stat} /, "#{fitted_column(stat, public_only:)} ")
+      end
     end
   end
 
@@ -402,11 +403,18 @@ class Vehicle < ApplicationRecord
     public_only ? "public_#{column}" : column
   end
 
-  # The largest gun a vehicle carries as fitted: its active loadout's, or, without
-  # one, the ship's as it comes. A loadout carrying no guns at all says so, and
-  # is not answered with the stock ones. Read for the source the reader is on.
-  # Mirrors `#fitted_weapons`.
-  def self.fitted_max_weapon_size_sql(public_only: false)
+  # What a vehicle carries as fitted, as `loadout_stats` records it.
+  FITTED_STATS = {
+    "max_weapon_size" => :integer, "alpha" => :float, "burst_dps" => :float, "sustained_dps_max" => :float
+  }.freeze
+
+  # One of the figures a vehicle carries as fitted: its active loadout's, or,
+  # without one, the ship's as it comes. A loadout carrying no guns at all says
+  # so, and is not answered with the stock ones. Read for the source the reader
+  # is on. Mirrors `#fitted_loadout_stat`.
+  def self.fitted_stat_sql(column, public_only: false)
+    raise ArgumentError, "not a fitted stat: #{column}" unless FITTED_STATS.key?(column.to_s)
+
     loadout_stat = sanitize_sql_array([<<~SQL.squish, ::ScData::Source.current.environment])
       FROM loadout_stats fitted_stats
       JOIN vehicle_loadouts fitted_loadouts
@@ -419,28 +427,30 @@ class Vehicle < ApplicationRecord
         AND fitted_stats.environment = ?
     SQL
     stock_stat = sanitize_sql_array([<<~SQL.squish, ::ScData::Source.current.environment])
-      SELECT stock_stats.max_weapon_size FROM loadout_stats stock_stats
+      SELECT stock_stats.#{column} FROM loadout_stats stock_stats
       WHERE stock_stats.fitting_type = 'Model'
         AND stock_stats.fitting_id = vehicles.model_id
         AND stock_stats.environment = ?
     SQL
 
-    # No guns sorts and compares as size 0, rather than as a NULL that a
-    # descending sort puts first.
+    # No guns sorts and compares as 0, rather than as a NULL that a descending
+    # sort puts first.
     <<~SQL.squish
       COALESCE(CASE WHEN EXISTS (SELECT 1 #{loadout_stat})
-        THEN (SELECT MAX(fitted_stats.max_weapon_size) #{loadout_stat})
+        THEN (SELECT MAX(fitted_stats.#{column}) #{loadout_stat})
         ELSE (#{stock_stat})
       END, 0)
     SQL
   end
 
-  ransacker(:max_weapon_size, type: :integer) { Arel.sql(Vehicle.fitted_max_weapon_size_sql) }
-  ransacker(:public_max_weapon_size, type: :integer) { Arel.sql(Vehicle.fitted_max_weapon_size_sql(public_only: true)) }
+  FITTED_STATS.each do |column, type|
+    ransacker(column.to_sym, type:) { Arel.sql(Vehicle.fitted_stat_sql(column)) }
+    ransacker(:"public_#{column}", type:) { Arel.sql(Vehicle.fitted_stat_sql(column, public_only: true)) }
+  end
 
   def self.ransackable_attributes(auth_object = nil)
     [
-      "alternative_names", "beam", "bought_via", "cargo", "public_cargo", "max_weapon_size", "public_max_weapon_size", "bundled", "classification", "created_at", "flagship",
+      "alternative_names", "beam", "bought_via", "cargo", "public_cargo", *FITTED_STATS.keys.flat_map { |stat| [stat, "public_#{stat}"] }, "bundled", "classification", "created_at", "flagship",
       "hangar_groups", "has_dedication", "height", "hidden", "id", "id_value", "length", "loaner",
       "manufacturer", "model_id", "module_package_id", "name", "name_visible",
       "notify", "on_sale", "pledge_price", "price", "production_status", "public", "rank", "rsi_pledge_id",
@@ -950,9 +960,9 @@ class Vehicle < ApplicationRecord
     end
   end
 
-  # The guns as `fitted_max_weapon_size_sql` counts them, from the preloaded
+  # The figures as `fitted_stat_sql` reads them, from the preloaded
   # stats.
-  def fitted_weapons(public_only: false)
+  def fitted_loadout_stat(public_only: false)
     stat = fitted_loadout(public_only:)&.then { |loadout| LoadoutStat.for_environment(loadout.loadout_stats) }
 
     stat || LoadoutStat.for_environment(model.loadout_stats)

@@ -147,6 +147,43 @@ class Api::V1::HangarTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "filters, sorts and lists the firepower a vehicle carries as fitted" do
+    user = create(:user)
+    sign_in user
+    gun = ->(damage) {
+      create(:component, component_type: "WeaponGun", category: "weapons", size: "3",
+        type_data: {damage_per_shot: {energy: damage}, fire_rate: 600})
+    }
+    heavy = create(:model, production_status: "flight-ready")
+    create(:hardpoint, parent: heavy, sc_name: "hardpoint_gun_nose", source: :game_files, types: %w[WeaponGun],
+      min_size: 3, max_size: 3, component: gun.call(100))
+    light = create(:model, production_status: "flight-ready")
+    create(:hardpoint, parent: light, sc_name: "hardpoint_gun_nose", source: :game_files, types: %w[WeaponGun],
+      min_size: 3, max_size: 3, component: gun.call(10))
+    big = create(:vehicle, user:, model: heavy)
+    small = create(:vehicle, user:, model: light)
+    LoadoutStat.refresh
+
+    [
+      [{alphaGteq: 50}, [big]],
+      [{alphaLteq: 50}, [small]],
+      [{burstDpsGteq: 500, burstDpsLteq: 1500}, [big]]
+    ].each do |query, expected|
+      assert_api_response :get, 200, params: {q: query} do
+        assert_equal expected.map(&:id), parsed_body["items"].map { |item| item["id"] }
+      end
+    end
+
+    assert_api_response :get, 200, params: {q: {sorts: ["sustainedDpsMax asc"]}} do
+      items = parsed_body["items"]
+
+      assert_equal [small.id, big.id], items.map { |item| item["id"] }
+      assert_equal [10.0, 100.0], items.map { |item| item["alpha"] }
+      assert_equal [100.0, 1000.0], items.map { |item| item["burstDps"] }
+      assert_equal [100.0, 1000.0], items.map { |item| item["sustainedDpsMax"] }
+    end
+  end
+
   test "lists a vehicle's guns largest first" do
     user = create(:user)
     sign_in user

@@ -33,6 +33,12 @@ module V1
             # ship comes with.
             maxWeaponSize: {type: [:integer, :null]},
             weaponSizes: {type: :array, items: ::V1::Schemas::Vehicles::WeaponSizeCount},
+            # Firepower without anyone's pips: alpha and burst with the guns
+            # powered, sustained at one weapon pip and at the most the plant gives.
+            alpha: {type: [:number, :null]},
+            burstDps: {type: [:number, :null]},
+            sustainedDpsMin: {type: [:number, :null]},
+            sustainedDpsMax: {type: [:number, :null]},
             modelUpgradeIds: {type: :array, items: {type: :string, format: :uuid}},
             modelPaintIds: {type: :array, items: {type: :string, format: :uuid}},
             modulePackage: {"$ref": "#/components/schemas/ModelModulePackage"},

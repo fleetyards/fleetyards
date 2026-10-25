@@ -5422,6 +5422,22 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/WeaponSizeCount"
+        alpha:
+          type:
+          - number
+          - 'null'
+        burstDps:
+          type:
+          - number
+          - 'null'
+        sustainedDpsMin:
+          type:
+          - number
+          - 'null'
+        sustainedDpsMax:
+          type:
+          - number
+          - 'null'
         modelUpgradeIds:
           type: array
           items:

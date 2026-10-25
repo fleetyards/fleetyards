@@ -1,0 +1,2186 @@
+{
+  "ship": "Hammerhead",
+  "weaponPoolSize": 10,
+  "regenModifier": {
+    "powerRatio": 2.9,
+    "maxAmmoLoad": 4,
+    "maxRegenPerSecond": 1
+  },
+  "hardpoints": [
+    {
+      "name": "hardpoint_missile_top_right_01",
+      "category": "missile_racks",
+      "component": {
+        "name": "MSD-543 Missile Rack",
+        "type": "MissileLauncher",
+        "size": "5",
+        "typeData": {}
+      },
+      "hardpoints": [
+        {
+          "name": "missile_02_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Arrester III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 3200,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_03_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Arrester III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 3200,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_04_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Arrester III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 3200,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_01_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Arrester III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 3200,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "category": "controller",
+      "component": {
+        "name": "MISSILES",
+        "type": "MissileController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_life_support",
+      "category": "lifesupport",
+      "component": {
+        "name": "ComfortAir Max",
+        "type": "LifeSupportGenerator",
+        "size": "3",
+        "typeData": {
+          "powerConsumption": 3,
+          "powerMinimumFraction": 0.3333333
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "category": "controller",
+      "component": {
+        "name": "COMMS",
+        "type": "CommsController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_radar",
+      "category": "radar",
+      "component": {
+        "name": "Resolu",
+        "type": "Radar",
+        "size": "3",
+        "typeData": {
+          "powerConsumption": 10,
+          "powerMinimumFraction": 0.3
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "category": "controller",
+      "component": {
+        "name": "Hammerhead Standard Flight Blade",
+        "type": "FlightController",
+        "size": "1",
+        "typeData": {
+          "powerConsumption": 8,
+          "powerMinimumFraction": 0.125
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "category": "controller",
+      "component": {
+        "name": "HEAT",
+        "type": "CoolerController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_cooler_l",
+      "category": "cooler",
+      "component": {
+        "name": "Mercury",
+        "type": "Cooler",
+        "size": "3",
+        "typeData": {
+          "powerConsumption": 5,
+          "powerMinimumFraction": 0.4
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "category": "controller",
+      "component": {
+        "name": "SHIELDS",
+        "type": "ShieldController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_shield_generator_r",
+      "category": "shieldgenerator",
+      "component": {
+        "name": "SureStop",
+        "type": "Shield",
+        "size": "3",
+        "typeData": {
+          "powerConsumption": 5,
+          "powerMinimumFraction": 0.4
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "category": "controller",
+      "component": {
+        "name": "WEAPONS",
+        "type": "WeaponController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "category": "controller",
+      "component": {
+        "name": null,
+        "type": "CapacitorAssignmentController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "category": "controller",
+      "component": {
+        "name": null,
+        "type": "FuelController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_missile_bottom_left_01",
+      "category": "missile_racks",
+      "component": {
+        "name": "MSD-543 Missile Rack",
+        "type": "MissileLauncher",
+        "size": "5",
+        "typeData": {}
+      },
+      "hardpoints": [
+        {
+          "name": "missile_01_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Viper III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 2650,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "Infrared"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_02_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Viper III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 2650,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "Infrared"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_04_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Viper III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 2650,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "Infrared"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_03_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Viper III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 2650,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "Infrared"
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_shield_generator_l",
+      "category": "shieldgenerator",
+      "component": {
+        "name": "SureStop",
+        "type": "Shield",
+        "size": "3",
+        "typeData": {
+          "powerConsumption": 5,
+          "powerMinimumFraction": 0.4
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_missile_top_left_02",
+      "category": "missile_racks",
+      "component": {
+        "name": "MSD-543 Missile Rack",
+        "type": "MissileLauncher",
+        "size": "5",
+        "typeData": {}
+      },
+      "hardpoints": [
+        {
+          "name": "missile_01_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Arrester III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 3200,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_04_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Arrester III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 3200,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_03_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Arrester III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 3200,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_02_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Arrester III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 3200,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missile_bottom_right_01",
+      "category": "missile_racks",
+      "component": {
+        "name": "MSD-543 Missile Rack",
+        "type": "MissileLauncher",
+        "size": "5",
+        "typeData": {}
+      },
+      "hardpoints": [
+        {
+          "name": "missile_02_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Viper III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 2650,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "Infrared"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_03_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Viper III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 2650,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "Infrared"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_01_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Viper III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 2650,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "Infrared"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_04_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Viper III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 2650,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "Infrared"
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missile_bottom_left_02",
+      "category": "missile_racks",
+      "component": {
+        "name": "MSD-543 Missile Rack",
+        "type": "MissileLauncher",
+        "size": "5",
+        "typeData": {}
+      },
+      "hardpoints": [
+        {
+          "name": "missile_01_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Viper III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 2650,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "Infrared"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_03_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Viper III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 2650,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "Infrared"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_04_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Viper III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 2650,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "Infrared"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_02_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Viper III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 2650,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "Infrared"
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "turret_side_back_left",
+      "category": "turret",
+      "component": {
+        "name": "Manned Turret",
+        "type": "TurretBase",
+        "size": "5",
+        "typeData": {
+          "control": "manned"
+        }
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_weapon_left_upper",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S4 Gimbal Mount",
+            "type": "Turret",
+            "size": "4",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-447 Rhino Repeater",
+                "type": "WeaponGun",
+                "size": "4",
+                "typeData": {
+                  "powerConsumption": 0.9,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 65.43,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 72.7,
+                    "requestedAmmoLoad": 27262.5,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.84,
+                    "requestedRegenPerSecond": 4544
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_left_lower",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S4 Gimbal Mount",
+            "type": "Turret",
+            "size": "4",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-447 Rhino Repeater",
+                "type": "WeaponGun",
+                "size": "4",
+                "typeData": {
+                  "powerConsumption": 0.9,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 65.43,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 72.7,
+                    "requestedAmmoLoad": 27262.5,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.84,
+                    "requestedRegenPerSecond": 4544
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_right_lower",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S4 Gimbal Mount",
+            "type": "Turret",
+            "size": "4",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-447 Rhino Repeater",
+                "type": "WeaponGun",
+                "size": "4",
+                "typeData": {
+                  "powerConsumption": 0.9,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 65.43,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 72.7,
+                    "requestedAmmoLoad": 27262.5,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.84,
+                    "requestedRegenPerSecond": 4544
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_right_upper",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S4 Gimbal Mount",
+            "type": "Turret",
+            "size": "4",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-447 Rhino Repeater",
+                "type": "WeaponGun",
+                "size": "4",
+                "typeData": {
+                  "powerConsumption": 0.9,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 65.43,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 72.7,
+                    "requestedAmmoLoad": 27262.5,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.84,
+                    "requestedRegenPerSecond": 4544
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "turret_side_front_right",
+      "category": "turret",
+      "component": {
+        "name": "Manned Turret",
+        "type": "TurretBase",
+        "size": "5",
+        "typeData": {
+          "control": "manned"
+        }
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_weapon_right_upper",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S4 Gimbal Mount",
+            "type": "Turret",
+            "size": "4",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-447 Rhino Repeater",
+                "type": "WeaponGun",
+                "size": "4",
+                "typeData": {
+                  "powerConsumption": 0.9,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 65.43,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 72.7,
+                    "requestedAmmoLoad": 27262.5,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.84,
+                    "requestedRegenPerSecond": 4544
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_left_upper",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S4 Gimbal Mount",
+            "type": "Turret",
+            "size": "4",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-447 Rhino Repeater",
+                "type": "WeaponGun",
+                "size": "4",
+                "typeData": {
+                  "powerConsumption": 0.9,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 65.43,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 72.7,
+                    "requestedAmmoLoad": 27262.5,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.84,
+                    "requestedRegenPerSecond": 4544
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_right_lower",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S4 Gimbal Mount",
+            "type": "Turret",
+            "size": "4",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-447 Rhino Repeater",
+                "type": "WeaponGun",
+                "size": "4",
+                "typeData": {
+                  "powerConsumption": 0.9,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 65.43,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 72.7,
+                    "requestedAmmoLoad": 27262.5,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.84,
+                    "requestedRegenPerSecond": 4544
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_left_lower",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S4 Gimbal Mount",
+            "type": "Turret",
+            "size": "4",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-447 Rhino Repeater",
+                "type": "WeaponGun",
+                "size": "4",
+                "typeData": {
+                  "powerConsumption": 0.9,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 65.43,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 72.7,
+                    "requestedAmmoLoad": 27262.5,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.84,
+                    "requestedRegenPerSecond": 4544
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_power_plant_l",
+      "category": "powerplant",
+      "component": {
+        "name": "SuperDrive",
+        "type": "PowerPlant",
+        "size": "3",
+        "typeData": {
+          "powerBase": 24
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_cooler_r",
+      "category": "cooler",
+      "component": {
+        "name": "Mercury",
+        "type": "Cooler",
+        "size": "3",
+        "typeData": {
+          "powerConsumption": 5,
+          "powerMinimumFraction": 0.4
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "category": "controller",
+      "component": {
+        "name": "SECURITY",
+        "type": "DoorController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "turret_side_back_right",
+      "category": "turret",
+      "component": {
+        "name": "Manned Turret",
+        "type": "TurretBase",
+        "size": "5",
+        "typeData": {
+          "control": "manned"
+        }
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_weapon_left_lower",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S4 Gimbal Mount",
+            "type": "Turret",
+            "size": "4",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-447 Rhino Repeater",
+                "type": "WeaponGun",
+                "size": "4",
+                "typeData": {
+                  "powerConsumption": 0.9,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 65.43,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 72.7,
+                    "requestedAmmoLoad": 27262.5,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.84,
+                    "requestedRegenPerSecond": 4544
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_right_upper",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S4 Gimbal Mount",
+            "type": "Turret",
+            "size": "4",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-447 Rhino Repeater",
+                "type": "WeaponGun",
+                "size": "4",
+                "typeData": {
+                  "powerConsumption": 0.9,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 65.43,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 72.7,
+                    "requestedAmmoLoad": 27262.5,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.84,
+                    "requestedRegenPerSecond": 4544
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_right_lower",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S4 Gimbal Mount",
+            "type": "Turret",
+            "size": "4",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-447 Rhino Repeater",
+                "type": "WeaponGun",
+                "size": "4",
+                "typeData": {
+                  "powerConsumption": 0.9,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 65.43,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 72.7,
+                    "requestedAmmoLoad": 27262.5,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.84,
+                    "requestedRegenPerSecond": 4544
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_left_upper",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S4 Gimbal Mount",
+            "type": "Turret",
+            "size": "4",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-447 Rhino Repeater",
+                "type": "WeaponGun",
+                "size": "4",
+                "typeData": {
+                  "powerConsumption": 0.9,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 65.43,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 72.7,
+                    "requestedAmmoLoad": 27262.5,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.84,
+                    "requestedRegenPerSecond": 4544
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missile_top_right_02",
+      "category": "missile_racks",
+      "component": {
+        "name": "MSD-543 Missile Rack",
+        "type": "MissileLauncher",
+        "size": "5",
+        "typeData": {}
+      },
+      "hardpoints": [
+        {
+          "name": "missile_01_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Arrester III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 3200,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_02_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Arrester III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 3200,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_03_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Arrester III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 3200,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_04_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Arrester III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 3200,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missile_bottom_right_02",
+      "category": "missile_racks",
+      "component": {
+        "name": "MSD-543 Missile Rack",
+        "type": "MissileLauncher",
+        "size": "5",
+        "typeData": {}
+      },
+      "hardpoints": [
+        {
+          "name": "missile_01_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Viper III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 2650,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "Infrared"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_02_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Viper III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 2650,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "Infrared"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_03_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Viper III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 2650,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "Infrared"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_04_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Viper III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 2650,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "Infrared"
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missile_top_left_01",
+      "category": "missile_racks",
+      "component": {
+        "name": "MSD-543 Missile Rack",
+        "type": "MissileLauncher",
+        "size": "5",
+        "typeData": {}
+      },
+      "hardpoints": [
+        {
+          "name": "missile_01_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Arrester III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 3200,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_02_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Arrester III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 3200,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_03_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Arrester III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 3200,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_04_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Arrester III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 3200,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "turret_rear",
+      "category": "turret",
+      "component": {
+        "name": "Manned Turret",
+        "type": "TurretBase",
+        "size": "5",
+        "typeData": {
+          "control": "manned"
+        }
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_weapon_right_lower",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S4 Gimbal Mount",
+            "type": "Turret",
+            "size": "4",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-447 Rhino Repeater",
+                "type": "WeaponGun",
+                "size": "4",
+                "typeData": {
+                  "powerConsumption": 0.9,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 65.43,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 72.7,
+                    "requestedAmmoLoad": 27262.5,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.84,
+                    "requestedRegenPerSecond": 4544
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_right_upper",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S4 Gimbal Mount",
+            "type": "Turret",
+            "size": "4",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-447 Rhino Repeater",
+                "type": "WeaponGun",
+                "size": "4",
+                "typeData": {
+                  "powerConsumption": 0.9,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 65.43,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 72.7,
+                    "requestedAmmoLoad": 27262.5,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.84,
+                    "requestedRegenPerSecond": 4544
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_left_upper",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S4 Gimbal Mount",
+            "type": "Turret",
+            "size": "4",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-447 Rhino Repeater",
+                "type": "WeaponGun",
+                "size": "4",
+                "typeData": {
+                  "powerConsumption": 0.9,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 65.43,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 72.7,
+                    "requestedAmmoLoad": 27262.5,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.84,
+                    "requestedRegenPerSecond": 4544
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_left_lower",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S4 Gimbal Mount",
+            "type": "Turret",
+            "size": "4",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-447 Rhino Repeater",
+                "type": "WeaponGun",
+                "size": "4",
+                "typeData": {
+                  "powerConsumption": 0.9,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 65.43,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 72.7,
+                    "requestedAmmoLoad": 27262.5,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.84,
+                    "requestedRegenPerSecond": 4544
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "category": "quantumdrive",
+      "component": {
+        "name": "Pontes",
+        "type": "QuantumDrive",
+        "size": "3",
+        "typeData": {
+          "powerConsumption": 5,
+          "powerMinimumFraction": 1
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "turret_top",
+      "category": "turret",
+      "component": {
+        "name": "Manned Turret",
+        "type": "TurretBase",
+        "size": "5",
+        "typeData": {
+          "control": "manned"
+        }
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_weapon_right_upper",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S4 Gimbal Mount",
+            "type": "Turret",
+            "size": "4",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-447 Rhino Repeater",
+                "type": "WeaponGun",
+                "size": "4",
+                "typeData": {
+                  "powerConsumption": 0.9,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 65.43,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 72.7,
+                    "requestedAmmoLoad": 27262.5,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.84,
+                    "requestedRegenPerSecond": 4544
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_left_upper",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S4 Gimbal Mount",
+            "type": "Turret",
+            "size": "4",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-447 Rhino Repeater",
+                "type": "WeaponGun",
+                "size": "4",
+                "typeData": {
+                  "powerConsumption": 0.9,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 65.43,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 72.7,
+                    "requestedAmmoLoad": 27262.5,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.84,
+                    "requestedRegenPerSecond": 4544
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_left_lower",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S4 Gimbal Mount",
+            "type": "Turret",
+            "size": "4",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-447 Rhino Repeater",
+                "type": "WeaponGun",
+                "size": "4",
+                "typeData": {
+                  "powerConsumption": 0.9,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 65.43,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 72.7,
+                    "requestedAmmoLoad": 27262.5,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.84,
+                    "requestedRegenPerSecond": 4544
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_right_lower",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S4 Gimbal Mount",
+            "type": "Turret",
+            "size": "4",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-447 Rhino Repeater",
+                "type": "WeaponGun",
+                "size": "4",
+                "typeData": {
+                  "powerConsumption": 0.9,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 65.43,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 72.7,
+                    "requestedAmmoLoad": 27262.5,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.84,
+                    "requestedRegenPerSecond": 4544
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "category": "controller",
+      "component": {
+        "name": "POWER",
+        "type": "EnergyController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_power_plant_r",
+      "category": "powerplant",
+      "component": {
+        "name": "SuperDrive",
+        "type": "PowerPlant",
+        "size": "3",
+        "typeData": {
+          "powerBase": 24
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "turret_side_front_left",
+      "category": "turret",
+      "component": {
+        "name": "Manned Turret",
+        "type": "TurretBase",
+        "size": "5",
+        "typeData": {
+          "control": "manned"
+        }
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_weapon_left_upper",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S4 Gimbal Mount",
+            "type": "Turret",
+            "size": "4",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-447 Rhino Repeater",
+                "type": "WeaponGun",
+                "size": "4",
+                "typeData": {
+                  "powerConsumption": 0.9,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 65.43,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 72.7,
+                    "requestedAmmoLoad": 27262.5,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.84,
+                    "requestedRegenPerSecond": 4544
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_right_upper",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S4 Gimbal Mount",
+            "type": "Turret",
+            "size": "4",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-447 Rhino Repeater",
+                "type": "WeaponGun",
+                "size": "4",
+                "typeData": {
+                  "powerConsumption": 0.9,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 65.43,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 72.7,
+                    "requestedAmmoLoad": 27262.5,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.84,
+                    "requestedRegenPerSecond": 4544
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_right_lower",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S4 Gimbal Mount",
+            "type": "Turret",
+            "size": "4",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-447 Rhino Repeater",
+                "type": "WeaponGun",
+                "size": "4",
+                "typeData": {
+                  "powerConsumption": 0.9,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 65.43,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 72.7,
+                    "requestedAmmoLoad": 27262.5,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.84,
+                    "requestedRegenPerSecond": 4544
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_left_lower",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S4 Gimbal Mount",
+            "type": "Turret",
+            "size": "4",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-447 Rhino Repeater",
+                "type": "WeaponGun",
+                "size": "4",
+                "typeData": {
+                  "powerConsumption": 0.9,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 65.43,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 72.7,
+                    "requestedAmmoLoad": 27262.5,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.84,
+                    "requestedRegenPerSecond": 4544
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "expected": {
+    "alpha": 1570.320000000001,
+    "burstDps": 19629.000000000004,
+    "sustainedDpsMin": 2627.9231346298116,
+    "sustainedDpsMax": 10506.155218554855
+  }
+}

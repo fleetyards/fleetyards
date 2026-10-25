@@ -1,0 +1,2449 @@
+{
+  "ship": "Idris-M",
+  "weaponPoolSize": 10,
+  "regenModifier": {
+    "powerRatio": 1,
+    "maxAmmoLoad": 6,
+    "maxRegenPerSecond": 1.9
+  },
+  "hardpoints": [
+    {
+      "name": "hardpoint_controller_flight",
+      "category": "controller",
+      "component": {
+        "name": "Flight Blade",
+        "type": "FlightController",
+        "size": "1",
+        "typeData": {
+          "powerConsumption": 10,
+          "powerMinimumFraction": 0.1
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "category": "controller",
+      "component": {
+        "name": "COMMS",
+        "type": "CommsController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_front_turret",
+      "category": "turret",
+      "component": {
+        "name": "IFR-A77 Turret",
+        "type": "TurretBase",
+        "size": "7",
+        "typeData": {
+          "control": "manned"
+        }
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_weapon_right",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S6 Gimbal Mount",
+            "type": "Turret",
+            "size": "7",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "M9A Cannon",
+                "type": "WeaponGun",
+                "size": "7",
+                "typeData": {
+                  "powerConsumption": 2.5,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 100,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 2075.706,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 25,
+                    "costPerBullet": 1281,
+                    "requestedAmmoLoad": 128130,
+                    "maxRegenPerSecond": 3,
+                    "regenerationCooldown": 1.62,
+                    "requestedRegenPerSecond": 21355
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_left",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S6 Gimbal Mount",
+            "type": "Turret",
+            "size": "7",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "M9A Cannon",
+                "type": "WeaponGun",
+                "size": "7",
+                "typeData": {
+                  "powerConsumption": 2.5,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 100,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 2075.706,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 25,
+                    "costPerBullet": 1281,
+                    "requestedAmmoLoad": 128130,
+                    "maxRegenPerSecond": 3,
+                    "regenerationCooldown": 1.62,
+                    "requestedRegenPerSecond": 21355
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "category": "controller",
+      "component": {
+        "name": "MISSILES",
+        "type": "MissileController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_pdc_01_wc",
+      "category": "controller",
+      "component": {
+        "name": "WEAPONS",
+        "type": "WeaponController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_pdc_01_mc",
+      "category": "controller",
+      "component": {
+        "name": "MISSILES",
+        "type": "MissileController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_cooler_right",
+      "category": "cooler",
+      "component": {
+        "name": "Exotherm",
+        "type": "Cooler",
+        "size": "4",
+        "typeData": {
+          "powerConsumption": 6,
+          "powerMinimumFraction": 0.5
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_pdc_10_mc",
+      "category": "controller",
+      "component": {
+        "name": "MISSILES",
+        "type": "MissileController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_right_lower_turret",
+      "category": "turret",
+      "component": {
+        "name": "Manned Turret",
+        "type": "TurretBase",
+        "size": "5",
+        "typeData": {
+          "control": "manned"
+        }
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_weapon_right",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S5 Gimbal Mount",
+            "type": "Turret",
+            "size": "5",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-557 Galdereen Repeater",
+                "type": "WeaponGun",
+                "size": "5",
+                "typeData": {
+                  "powerConsumption": 1.05,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 98.19,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 109.1,
+                    "requestedAmmoLoad": 40912,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.882,
+                    "requestedRegenPerSecond": 6819
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_left",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S5 Gimbal Mount",
+            "type": "Turret",
+            "size": "5",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-557 Galdereen Repeater",
+                "type": "WeaponGun",
+                "size": "5",
+                "typeData": {
+                  "powerConsumption": 1.05,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 98.19,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 109.1,
+                    "requestedAmmoLoad": 40912,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.882,
+                    "requestedRegenPerSecond": 6819
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "category": "lifesupport",
+      "component": {
+        "name": "Safehab",
+        "type": "LifeSupportGenerator",
+        "size": "4",
+        "typeData": {
+          "powerConsumption": 5,
+          "powerMinimumFraction": 0.4
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_pdc_02",
+      "category": "turret",
+      "component": {
+        "name": "M2C \"Swarm\"",
+        "type": "Turret",
+        "size": "2",
+        "typeData": {
+          "control": "pds"
+        }
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_turret_weapon",
+          "category": "weapons",
+          "component": {
+            "name": "M2C \"Swarm\"",
+            "type": "WeaponGun",
+            "size": "1",
+            "typeData": {
+              "powerConsumption": 0.352,
+              "powerMinimumFraction": 0,
+              "fireRate": 1000,
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 10,
+                "thermal": 0,
+                "physical": 0,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "pelletsPerShot": 1,
+              "regen": {
+                "maxAmmoLoad": 75,
+                "costPerBullet": 32.4,
+                "requestedAmmoLoad": 12150,
+                "maxRegenPerSecond": 15,
+                "regenerationCooldown": 0.605,
+                "requestedRegenPerSecond": 2025
+              },
+              "heatPerShot": 0
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_pdc_03",
+      "category": "turret",
+      "component": {
+        "name": "M2C \"Swarm\"",
+        "type": "Turret",
+        "size": "2",
+        "typeData": {
+          "control": "pds"
+        }
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_turret_weapon",
+          "category": "weapons",
+          "component": {
+            "name": "M2C \"Swarm\"",
+            "type": "WeaponGun",
+            "size": "1",
+            "typeData": {
+              "powerConsumption": 0.352,
+              "powerMinimumFraction": 0,
+              "fireRate": 1000,
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 10,
+                "thermal": 0,
+                "physical": 0,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "pelletsPerShot": 1,
+              "regen": {
+                "maxAmmoLoad": 75,
+                "costPerBullet": 32.4,
+                "requestedAmmoLoad": 12150,
+                "maxRegenPerSecond": 15,
+                "regenerationCooldown": 0.605,
+                "requestedRegenPerSecond": 2025
+              },
+              "heatPerShot": 0
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_pdc_04",
+      "category": "turret",
+      "component": {
+        "name": "M2C \"Swarm\"",
+        "type": "Turret",
+        "size": "2",
+        "typeData": {
+          "control": "pds"
+        }
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_turret_weapon",
+          "category": "weapons",
+          "component": {
+            "name": "M2C \"Swarm\"",
+            "type": "WeaponGun",
+            "size": "1",
+            "typeData": {
+              "powerConsumption": 0.352,
+              "powerMinimumFraction": 0,
+              "fireRate": 1000,
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 10,
+                "thermal": 0,
+                "physical": 0,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "pelletsPerShot": 1,
+              "regen": {
+                "maxAmmoLoad": 75,
+                "costPerBullet": 32.4,
+                "requestedAmmoLoad": 12150,
+                "maxRegenPerSecond": 15,
+                "regenerationCooldown": 0.605,
+                "requestedRegenPerSecond": 2025
+              },
+              "heatPerShot": 0
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_pdc_06",
+      "category": "turret",
+      "component": {
+        "name": "M2C \"Swarm\"",
+        "type": "Turret",
+        "size": "2",
+        "typeData": {
+          "control": "pds"
+        }
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_turret_weapon",
+          "category": "weapons",
+          "component": {
+            "name": "M2C \"Swarm\"",
+            "type": "WeaponGun",
+            "size": "1",
+            "typeData": {
+              "powerConsumption": 0.352,
+              "powerMinimumFraction": 0,
+              "fireRate": 1000,
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 10,
+                "thermal": 0,
+                "physical": 0,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "pelletsPerShot": 1,
+              "regen": {
+                "maxAmmoLoad": 75,
+                "costPerBullet": 32.4,
+                "requestedAmmoLoad": 12150,
+                "maxRegenPerSecond": 15,
+                "regenerationCooldown": 0.605,
+                "requestedRegenPerSecond": 2025
+              },
+              "heatPerShot": 0
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missile_launcher",
+      "category": "missile_racks",
+      "component": {
+        "name": "IFR-810 Missile Rack",
+        "type": "MissileLauncher",
+        "size": "8",
+        "typeData": {}
+      },
+      "hardpoints": [
+        {
+          "name": "missile_attach_09",
+          "category": "weapons",
+          "component": {
+            "name": "Stalker V Missile",
+            "type": "Missile",
+            "size": "5",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 18000,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_attach_01",
+          "category": "weapons",
+          "component": {
+            "name": "Stalker V Missile",
+            "type": "Missile",
+            "size": "5",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 18000,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_attach_02",
+          "category": "weapons",
+          "component": {
+            "name": "Stalker V Missile",
+            "type": "Missile",
+            "size": "5",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 18000,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_attach_03",
+          "category": "weapons",
+          "component": {
+            "name": "Stalker V Missile",
+            "type": "Missile",
+            "size": "5",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 18000,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_attach_04",
+          "category": "weapons",
+          "component": {
+            "name": "Stalker V Missile",
+            "type": "Missile",
+            "size": "5",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 18000,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_attach_05",
+          "category": "weapons",
+          "component": {
+            "name": "Stalker V Missile",
+            "type": "Missile",
+            "size": "5",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 18000,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_attach_06",
+          "category": "weapons",
+          "component": {
+            "name": "Stalker V Missile",
+            "type": "Missile",
+            "size": "5",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 18000,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_attach_07",
+          "category": "weapons",
+          "component": {
+            "name": "Stalker V Missile",
+            "type": "Missile",
+            "size": "5",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 18000,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_attach_08",
+          "category": "weapons",
+          "component": {
+            "name": "Stalker V Missile",
+            "type": "Missile",
+            "size": "5",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 18000,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_attach_10",
+          "category": "weapons",
+          "component": {
+            "name": "Stalker V Missile",
+            "type": "Missile",
+            "size": "5",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 18000,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_left_turret",
+      "category": "turret",
+      "component": {
+        "name": "Manned Turret",
+        "type": "TurretBase",
+        "size": "5",
+        "typeData": {
+          "control": "manned"
+        }
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_weapon_left",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S5 Gimbal Mount",
+            "type": "Turret",
+            "size": "5",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-557 Galdereen Repeater",
+                "type": "WeaponGun",
+                "size": "5",
+                "typeData": {
+                  "powerConsumption": 1.05,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 98.19,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 109.1,
+                    "requestedAmmoLoad": 40912,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.882,
+                    "requestedRegenPerSecond": 6819
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_right",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S5 Gimbal Mount",
+            "type": "Turret",
+            "size": "5",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-557 Galdereen Repeater",
+                "type": "WeaponGun",
+                "size": "5",
+                "typeData": {
+                  "powerConsumption": 1.05,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 98.19,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 109.1,
+                    "requestedAmmoLoad": 40912,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.882,
+                    "requestedRegenPerSecond": 6819
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_pdc_08",
+      "category": "turret",
+      "component": {
+        "name": "M2C \"Swarm\"",
+        "type": "Turret",
+        "size": "2",
+        "typeData": {
+          "control": "pds"
+        }
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_turret_weapon",
+          "category": "weapons",
+          "component": {
+            "name": "M2C \"Swarm\"",
+            "type": "WeaponGun",
+            "size": "1",
+            "typeData": {
+              "powerConsumption": 0.352,
+              "powerMinimumFraction": 0,
+              "fireRate": 1000,
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 10,
+                "thermal": 0,
+                "physical": 0,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "pelletsPerShot": 1,
+              "regen": {
+                "maxAmmoLoad": 75,
+                "costPerBullet": 32.4,
+                "requestedAmmoLoad": 12150,
+                "maxRegenPerSecond": 15,
+                "regenerationCooldown": 0.605,
+                "requestedRegenPerSecond": 2025
+              },
+              "heatPerShot": 0
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_pdc_09",
+      "category": "turret",
+      "component": {
+        "name": "M2C \"Swarm\"",
+        "type": "Turret",
+        "size": "2",
+        "typeData": {
+          "control": "pds"
+        }
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_turret_weapon",
+          "category": "weapons",
+          "component": {
+            "name": "M2C \"Swarm\"",
+            "type": "WeaponGun",
+            "size": "1",
+            "typeData": {
+              "powerConsumption": 0.352,
+              "powerMinimumFraction": 0,
+              "fireRate": 1000,
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 10,
+                "thermal": 0,
+                "physical": 0,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "pelletsPerShot": 1,
+              "regen": {
+                "maxAmmoLoad": 75,
+                "costPerBullet": 32.4,
+                "requestedAmmoLoad": 12150,
+                "maxRegenPerSecond": 15,
+                "regenerationCooldown": 0.605,
+                "requestedRegenPerSecond": 2025
+              },
+              "heatPerShot": 0
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_pdc_10",
+      "category": "turret",
+      "component": {
+        "name": "M2C \"Swarm\"",
+        "type": "Turret",
+        "size": "2",
+        "typeData": {
+          "control": "pds"
+        }
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_turret_weapon",
+          "category": "weapons",
+          "component": {
+            "name": "M2C \"Swarm\"",
+            "type": "WeaponGun",
+            "size": "1",
+            "typeData": {
+              "powerConsumption": 0.352,
+              "powerMinimumFraction": 0,
+              "fireRate": 1000,
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 10,
+                "thermal": 0,
+                "physical": 0,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "pelletsPerShot": 1,
+              "regen": {
+                "maxAmmoLoad": 75,
+                "costPerBullet": 32.4,
+                "requestedAmmoLoad": 12150,
+                "maxRegenPerSecond": 15,
+                "regenerationCooldown": 0.605,
+                "requestedRegenPerSecond": 2025
+              },
+              "heatPerShot": 0
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_pdc_02_wc",
+      "category": "controller",
+      "component": {
+        "name": "WEAPONS",
+        "type": "WeaponController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_pdc_03_wc",
+      "category": "controller",
+      "component": {
+        "name": "WEAPONS",
+        "type": "WeaponController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_pdc_04_wc",
+      "category": "controller",
+      "component": {
+        "name": "WEAPONS",
+        "type": "WeaponController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_pdc_05_wc",
+      "category": "controller",
+      "component": {
+        "name": "WEAPONS",
+        "type": "WeaponController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_pdc_06_wc",
+      "category": "controller",
+      "component": {
+        "name": "WEAPONS",
+        "type": "WeaponController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_pdc_02_mc",
+      "category": "controller",
+      "component": {
+        "name": "MISSILES",
+        "type": "MissileController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_pdc_03_mc",
+      "category": "controller",
+      "component": {
+        "name": "MISSILES",
+        "type": "MissileController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_pdc_05_mc",
+      "category": "controller",
+      "component": {
+        "name": "MISSILES",
+        "type": "MissileController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_pdc_06_mc",
+      "category": "controller",
+      "component": {
+        "name": "MISSILES",
+        "type": "MissileController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_pdc_07_mc",
+      "category": "controller",
+      "component": {
+        "name": "MISSILES",
+        "type": "MissileController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_left_lower_turret",
+      "category": "turret",
+      "component": {
+        "name": "Manned Turret",
+        "type": "TurretBase",
+        "size": "5",
+        "typeData": {
+          "control": "manned"
+        }
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_weapon_right",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S5 Gimbal Mount",
+            "type": "Turret",
+            "size": "5",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-557 Galdereen Repeater",
+                "type": "WeaponGun",
+                "size": "5",
+                "typeData": {
+                  "powerConsumption": 1.05,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 98.19,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 109.1,
+                    "requestedAmmoLoad": 40912,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.882,
+                    "requestedRegenPerSecond": 6819
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_left",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S5 Gimbal Mount",
+            "type": "Turret",
+            "size": "5",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-557 Galdereen Repeater",
+                "type": "WeaponGun",
+                "size": "5",
+                "typeData": {
+                  "powerConsumption": 1.05,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 98.19,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 109.1,
+                    "requestedAmmoLoad": 40912,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.882,
+                    "requestedRegenPerSecond": 6819
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_pdc_11_mc",
+      "category": "controller",
+      "component": {
+        "name": "MISSILES",
+        "type": "MissileController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "category": "controller",
+      "component": {
+        "name": "SECURITY",
+        "type": "DoorController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_rear_upper_turret_right",
+      "category": "turret",
+      "component": {
+        "name": "Manned Turret",
+        "type": "TurretBase",
+        "size": "5",
+        "typeData": {
+          "control": "manned"
+        }
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_weapon_left",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S5 Gimbal Mount",
+            "type": "Turret",
+            "size": "5",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-557 Galdereen Repeater",
+                "type": "WeaponGun",
+                "size": "5",
+                "typeData": {
+                  "powerConsumption": 1.05,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 98.19,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 109.1,
+                    "requestedAmmoLoad": 40912,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.882,
+                    "requestedRegenPerSecond": 6819
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_right",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S5 Gimbal Mount",
+            "type": "Turret",
+            "size": "5",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-557 Galdereen Repeater",
+                "type": "WeaponGun",
+                "size": "5",
+                "typeData": {
+                  "powerConsumption": 1.05,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 98.19,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 109.1,
+                    "requestedAmmoLoad": 40912,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.882,
+                    "requestedRegenPerSecond": 6819
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_nose_railgun",
+      "category": "weapons",
+      "component": {
+        "name": "Destroyer Mass Driver Cannon",
+        "type": "WeaponGun",
+        "size": "10",
+        "typeData": {
+          "powerConsumption": 4.8,
+          "powerMinimumFraction": 0,
+          "fireRate": 6,
+          "damagePerShot": {
+            "stun": 0,
+            "energy": 0,
+            "thermal": 0,
+            "physical": 144160,
+            "distortion": 0,
+            "biochemical": 0
+          },
+          "pelletsPerShot": 1,
+          "heat": {
+            "overheatFixTime": 5,
+            "coolingPerSecond": 2,
+            "overheatTemperature": 100,
+            "timeTillCoolingStarts": 1
+          },
+          "heatPerShot": 50
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_rear_tail_turret_left",
+      "category": "turret",
+      "component": {
+        "name": "Remote Turret",
+        "type": "Turret",
+        "size": "5",
+        "typeData": {
+          "control": "remote"
+        }
+      },
+      "hardpoints": [
+        {
+          "name": "turret_left",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S4 Gimbal Mount",
+            "type": "Turret",
+            "size": "4",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "Revenant Gatling",
+                "type": "WeaponGun",
+                "size": "4",
+                "typeData": {
+                  "powerConsumption": 0.1,
+                  "powerMinimumFraction": 1,
+                  "fireRate": 1200,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 0,
+                    "thermal": 0,
+                    "physical": 63.3,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "heat": {
+                    "overheatFixTime": 4.21,
+                    "coolingPerSecond": 31.7,
+                    "overheatTemperature": 100,
+                    "timeTillCoolingStarts": 0.756
+                  },
+                  "heatPerShot": 0.5309735
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        },
+        {
+          "name": "turret_right",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S4 Gimbal Mount",
+            "type": "Turret",
+            "size": "4",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "Revenant Gatling",
+                "type": "WeaponGun",
+                "size": "4",
+                "typeData": {
+                  "powerConsumption": 0.1,
+                  "powerMinimumFraction": 1,
+                  "fireRate": 1200,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 0,
+                    "thermal": 0,
+                    "physical": 63.3,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "heat": {
+                    "overheatFixTime": 4.21,
+                    "coolingPerSecond": 31.7,
+                    "overheatTemperature": 100,
+                    "timeTillCoolingStarts": 0.756
+                  },
+                  "heatPerShot": 0.5309735
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_right_turret",
+      "category": "turret",
+      "component": {
+        "name": "Manned Turret",
+        "type": "TurretBase",
+        "size": "5",
+        "typeData": {
+          "control": "manned"
+        }
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_weapon_left",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S5 Gimbal Mount",
+            "type": "Turret",
+            "size": "5",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-557 Galdereen Repeater",
+                "type": "WeaponGun",
+                "size": "5",
+                "typeData": {
+                  "powerConsumption": 1.05,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 98.19,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 109.1,
+                    "requestedAmmoLoad": 40912,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.882,
+                    "requestedRegenPerSecond": 6819
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_right",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S5 Gimbal Mount",
+            "type": "Turret",
+            "size": "5",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-557 Galdereen Repeater",
+                "type": "WeaponGun",
+                "size": "5",
+                "typeData": {
+                  "powerConsumption": 1.05,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 98.19,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 109.1,
+                    "requestedAmmoLoad": 40912,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.882,
+                    "requestedRegenPerSecond": 6819
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_rear_upper_turret_left",
+      "category": "turret",
+      "component": {
+        "name": "Manned Turret",
+        "type": "TurretBase",
+        "size": "5",
+        "typeData": {
+          "control": "manned"
+        }
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_weapon_left",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S5 Gimbal Mount",
+            "type": "Turret",
+            "size": "5",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-557 Galdereen Repeater",
+                "type": "WeaponGun",
+                "size": "5",
+                "typeData": {
+                  "powerConsumption": 1.05,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 98.19,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 109.1,
+                    "requestedAmmoLoad": 40912,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.882,
+                    "requestedRegenPerSecond": 6819
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_right",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S5 Gimbal Mount",
+            "type": "Turret",
+            "size": "5",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-557 Galdereen Repeater",
+                "type": "WeaponGun",
+                "size": "5",
+                "typeData": {
+                  "powerConsumption": 1.05,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 98.19,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 109.1,
+                    "requestedAmmoLoad": 40912,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.882,
+                    "requestedRegenPerSecond": 6819
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_radar",
+      "category": "radar",
+      "component": {
+        "name": null,
+        "type": "Radar",
+        "size": "3",
+        "typeData": {
+          "powerConsumption": 10,
+          "powerMinimumFraction": 0.3
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "category": "controller",
+      "component": {
+        "name": "POWER",
+        "type": "EnergyController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "category": "controller",
+      "component": {
+        "name": "HEAT",
+        "type": "CoolerController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "category": "controller",
+      "component": {
+        "name": "SHIELDS",
+        "type": "ShieldController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "category": "controller",
+      "component": {
+        "name": "WEAPONS",
+        "type": "WeaponController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_weapon_remote_rlb",
+      "category": "controller",
+      "component": {
+        "name": "WEAPONS",
+        "type": "WeaponController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_weapon_remote_rlf",
+      "category": "controller",
+      "component": {
+        "name": "WEAPONS",
+        "type": "WeaponController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_weapon_remote_rrb",
+      "category": "controller",
+      "component": {
+        "name": "WEAPONS",
+        "type": "WeaponController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_weapon_remote_rrf",
+      "category": "controller",
+      "component": {
+        "name": "WEAPONS",
+        "type": "WeaponController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_powerplant_01",
+      "category": "powerplant",
+      "component": {
+        "name": "Main Powerplant",
+        "type": "PowerPlant",
+        "size": "4",
+        "typeData": {
+          "powerBase": 29
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_powerplant_02",
+      "category": "powerplant",
+      "component": {
+        "name": "Main Powerplant",
+        "type": "PowerPlant",
+        "size": "4",
+        "typeData": {
+          "powerBase": 29
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_cooler_left",
+      "category": "cooler",
+      "component": {
+        "name": "Exotherm",
+        "type": "Cooler",
+        "size": "4",
+        "typeData": {
+          "powerConsumption": 6,
+          "powerMinimumFraction": 0.5
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_shield_generator_left",
+      "category": "shieldgenerator",
+      "component": {
+        "name": "Holdstrong",
+        "type": "Shield",
+        "size": "4",
+        "typeData": {
+          "powerConsumption": 6,
+          "powerMinimumFraction": 0.5
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_shield_generator_right",
+      "category": "shieldgenerator",
+      "component": {
+        "name": "Holdstrong",
+        "type": "Shield",
+        "size": "4",
+        "typeData": {
+          "powerConsumption": 6,
+          "powerMinimumFraction": 0.5
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "category": "quantumdrive",
+      "component": {
+        "name": "Frontline",
+        "type": "QuantumDrive",
+        "size": "4",
+        "typeData": {
+          "powerConsumption": 6,
+          "powerMinimumFraction": 1
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_front_left_turret",
+      "category": "turret",
+      "component": {
+        "name": "Remote Turret",
+        "type": "Turret",
+        "size": "5",
+        "typeData": {
+          "control": "remote"
+        }
+      },
+      "hardpoints": [
+        {
+          "name": "turret_left",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S4 Gimbal Mount",
+            "type": "Turret",
+            "size": "4",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "Revenant Gatling",
+                "type": "WeaponGun",
+                "size": "4",
+                "typeData": {
+                  "powerConsumption": 0.1,
+                  "powerMinimumFraction": 1,
+                  "fireRate": 1200,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 0,
+                    "thermal": 0,
+                    "physical": 63.3,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "heat": {
+                    "overheatFixTime": 4.21,
+                    "coolingPerSecond": 31.7,
+                    "overheatTemperature": 100,
+                    "timeTillCoolingStarts": 0.756
+                  },
+                  "heatPerShot": 0.5309735
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        },
+        {
+          "name": "turret_right",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S4 Gimbal Mount",
+            "type": "Turret",
+            "size": "4",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "Revenant Gatling",
+                "type": "WeaponGun",
+                "size": "4",
+                "typeData": {
+                  "powerConsumption": 0.1,
+                  "powerMinimumFraction": 1,
+                  "fireRate": 1200,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 0,
+                    "thermal": 0,
+                    "physical": 63.3,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "heat": {
+                    "overheatFixTime": 4.21,
+                    "coolingPerSecond": 31.7,
+                    "overheatTemperature": 100,
+                    "timeTillCoolingStarts": 0.756
+                  },
+                  "heatPerShot": 0.5309735
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "category": "controller",
+      "component": {
+        "name": null,
+        "type": "CapacitorAssignmentController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "category": "controller",
+      "component": {
+        "name": null,
+        "type": "FuelController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_weapon_missiles",
+      "category": "controller",
+      "component": {
+        "name": "WEAPONS",
+        "type": "WeaponController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_pdc_11",
+      "category": "turret",
+      "component": {
+        "name": "M2C \"Swarm\"",
+        "type": "Turret",
+        "size": "2",
+        "typeData": {
+          "control": "pds"
+        }
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_turret_weapon",
+          "category": "weapons",
+          "component": {
+            "name": "M2C \"Swarm\"",
+            "type": "WeaponGun",
+            "size": "1",
+            "typeData": {
+              "powerConsumption": 0.352,
+              "powerMinimumFraction": 0,
+              "fireRate": 1000,
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 10,
+                "thermal": 0,
+                "physical": 0,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "pelletsPerShot": 1,
+              "regen": {
+                "maxAmmoLoad": 75,
+                "costPerBullet": 32.4,
+                "requestedAmmoLoad": 12150,
+                "maxRegenPerSecond": 15,
+                "regenerationCooldown": 0.605,
+                "requestedRegenPerSecond": 2025
+              },
+              "heatPerShot": 0
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_pdc_07",
+      "category": "turret",
+      "component": {
+        "name": "M2C \"Swarm\"",
+        "type": "Turret",
+        "size": "2",
+        "typeData": {
+          "control": "pds"
+        }
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_turret_weapon",
+          "category": "weapons",
+          "component": {
+            "name": "M2C \"Swarm\"",
+            "type": "WeaponGun",
+            "size": "1",
+            "typeData": {
+              "powerConsumption": 0.352,
+              "powerMinimumFraction": 0,
+              "fireRate": 1000,
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 10,
+                "thermal": 0,
+                "physical": 0,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "pelletsPerShot": 1,
+              "regen": {
+                "maxAmmoLoad": 75,
+                "costPerBullet": 32.4,
+                "requestedAmmoLoad": 12150,
+                "maxRegenPerSecond": 15,
+                "regenerationCooldown": 0.605,
+                "requestedRegenPerSecond": 2025
+              },
+              "heatPerShot": 0
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_pdc_01",
+      "category": "turret",
+      "component": {
+        "name": "M2C \"Swarm\"",
+        "type": "Turret",
+        "size": "2",
+        "typeData": {
+          "control": "pds"
+        }
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_turret_weapon",
+          "category": "weapons",
+          "component": {
+            "name": "M2C \"Swarm\"",
+            "type": "WeaponGun",
+            "size": "1",
+            "typeData": {
+              "powerConsumption": 0.352,
+              "powerMinimumFraction": 0,
+              "fireRate": 1000,
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 10,
+                "thermal": 0,
+                "physical": 0,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "pelletsPerShot": 1,
+              "regen": {
+                "maxAmmoLoad": 75,
+                "costPerBullet": 32.4,
+                "requestedAmmoLoad": 12150,
+                "maxRegenPerSecond": 15,
+                "regenerationCooldown": 0.605,
+                "requestedRegenPerSecond": 2025
+              },
+              "heatPerShot": 0
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_pdc_07_wc",
+      "category": "controller",
+      "component": {
+        "name": "WEAPONS",
+        "type": "WeaponController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_pdc_08_wc",
+      "category": "controller",
+      "component": {
+        "name": "WEAPONS",
+        "type": "WeaponController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_pdc_09_wc",
+      "category": "controller",
+      "component": {
+        "name": "WEAPONS",
+        "type": "WeaponController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_pdc_10_wc",
+      "category": "controller",
+      "component": {
+        "name": "WEAPONS",
+        "type": "WeaponController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_pdc_11_wc",
+      "category": "controller",
+      "component": {
+        "name": "WEAPONS",
+        "type": "WeaponController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_pdc_04_mc",
+      "category": "controller",
+      "component": {
+        "name": "MISSILES",
+        "type": "MissileController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_pdc_08_mc",
+      "category": "controller",
+      "component": {
+        "name": "MISSILES",
+        "type": "MissileController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_pdc_09_mc",
+      "category": "controller",
+      "component": {
+        "name": "MISSILES",
+        "type": "MissileController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_pdc_05",
+      "category": "turret",
+      "component": {
+        "name": "M2C \"Swarm\"",
+        "type": "Turret",
+        "size": "2",
+        "typeData": {
+          "control": "pds"
+        }
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_turret_weapon",
+          "category": "weapons",
+          "component": {
+            "name": "M2C \"Swarm\"",
+            "type": "WeaponGun",
+            "size": "1",
+            "typeData": {
+              "powerConsumption": 0.352,
+              "powerMinimumFraction": 0,
+              "fireRate": 1000,
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 10,
+                "thermal": 0,
+                "physical": 0,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "pelletsPerShot": 1,
+              "regen": {
+                "maxAmmoLoad": 75,
+                "costPerBullet": 32.4,
+                "requestedAmmoLoad": 12150,
+                "maxRegenPerSecond": 15,
+                "regenerationCooldown": 0.605,
+                "requestedRegenPerSecond": 2025
+              },
+              "heatPerShot": 0
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_front_right_turret",
+      "category": "turret",
+      "component": {
+        "name": "Remote Turret",
+        "type": "Turret",
+        "size": "5",
+        "typeData": {
+          "control": "remote"
+        }
+      },
+      "hardpoints": [
+        {
+          "name": "turret_left",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S4 Gimbal Mount",
+            "type": "Turret",
+            "size": "4",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "Revenant Gatling",
+                "type": "WeaponGun",
+                "size": "4",
+                "typeData": {
+                  "powerConsumption": 0.1,
+                  "powerMinimumFraction": 1,
+                  "fireRate": 1200,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 0,
+                    "thermal": 0,
+                    "physical": 63.3,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "heat": {
+                    "overheatFixTime": 4.21,
+                    "coolingPerSecond": 31.7,
+                    "overheatTemperature": 100,
+                    "timeTillCoolingStarts": 0.756
+                  },
+                  "heatPerShot": 0.5309735
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        },
+        {
+          "name": "turret_right",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S4 Gimbal Mount",
+            "type": "Turret",
+            "size": "4",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "Revenant Gatling",
+                "type": "WeaponGun",
+                "size": "4",
+                "typeData": {
+                  "powerConsumption": 0.1,
+                  "powerMinimumFraction": 1,
+                  "fireRate": 1200,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 0,
+                    "thermal": 0,
+                    "physical": 63.3,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "heat": {
+                    "overheatFixTime": 4.21,
+                    "coolingPerSecond": 31.7,
+                    "overheatTemperature": 100,
+                    "timeTillCoolingStarts": 0.756
+                  },
+                  "heatPerShot": 0.5309735
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_rear_tail_turret_right",
+      "category": "turret",
+      "component": {
+        "name": "Remote Turret",
+        "type": "Turret",
+        "size": "5",
+        "typeData": {
+          "control": "remote"
+        }
+      },
+      "hardpoints": [
+        {
+          "name": "turret_left",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S4 Gimbal Mount",
+            "type": "Turret",
+            "size": "4",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "Revenant Gatling",
+                "type": "WeaponGun",
+                "size": "4",
+                "typeData": {
+                  "powerConsumption": 0.1,
+                  "powerMinimumFraction": 1,
+                  "fireRate": 1200,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 0,
+                    "thermal": 0,
+                    "physical": 63.3,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "heat": {
+                    "overheatFixTime": 4.21,
+                    "coolingPerSecond": 31.7,
+                    "overheatTemperature": 100,
+                    "timeTillCoolingStarts": 0.756
+                  },
+                  "heatPerShot": 0.5309735
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        },
+        {
+          "name": "turret_right",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S4 Gimbal Mount",
+            "type": "Turret",
+            "size": "4",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "Revenant Gatling",
+                "type": "WeaponGun",
+                "size": "4",
+                "typeData": {
+                  "powerConsumption": 0.1,
+                  "powerMinimumFraction": 1,
+                  "fireRate": 1200,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 0,
+                    "thermal": 0,
+                    "physical": 63.3,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "heat": {
+                    "overheatFixTime": 4.21,
+                    "coolingPerSecond": 31.7,
+                    "overheatTemperature": 100,
+                    "timeTillCoolingStarts": 0.756
+                  },
+                  "heatPerShot": 0.5309735
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "expected": {
+    "alpha": 150106.09199999992,
+    "burstDps": 48024.85333333332,
+    "sustainedDpsMin": 20464.900364553832,
+    "sustainedDpsMax": 29519.121145797744
+  }
+}

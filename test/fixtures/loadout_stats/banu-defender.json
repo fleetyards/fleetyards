@@ -1,0 +1,588 @@
+{
+  "ship": "Defender",
+  "weaponPoolSize": 6,
+  "hardpoints": [
+    {
+      "name": "hardpoint_weapon_nose_left",
+      "category": "weapon_mounts",
+      "component": {
+        "name": "VariPuck S3 Gimbal Mount",
+        "type": "Turret",
+        "size": "3",
+        "typeData": {}
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_class_2",
+          "category": "weapons",
+          "component": {
+            "name": "Singe Cannon (S3)",
+            "type": "WeaponGun",
+            "size": "3",
+            "typeData": {
+              "powerConsumption": 2,
+              "powerMinimumFraction": 0,
+              "fireRate": 90,
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 1012.5,
+                "thermal": 0,
+                "physical": 0,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "pelletsPerShot": 1,
+              "regen": {
+                "maxAmmoLoad": 25,
+                "costPerBullet": 500,
+                "requestedAmmoLoad": 1600,
+                "maxRegenPerSecond": 3,
+                "regenerationCooldown": 1.82,
+                "requestedRegenPerSecond": 3300
+              },
+              "heatPerShot": 0
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_wing_right",
+      "category": "weapon_mounts",
+      "component": {
+        "name": "VariPuck S3 Gimbal Mount",
+        "type": "Turret",
+        "size": "3",
+        "typeData": {}
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_class_2",
+          "category": "weapons",
+          "component": {
+            "name": "Singe Cannon (S3)",
+            "type": "WeaponGun",
+            "size": "3",
+            "typeData": {
+              "powerConsumption": 2,
+              "powerMinimumFraction": 0,
+              "fireRate": 90,
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 1012.5,
+                "thermal": 0,
+                "physical": 0,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "pelletsPerShot": 1,
+              "regen": {
+                "maxAmmoLoad": 25,
+                "costPerBullet": 500,
+                "requestedAmmoLoad": 1600,
+                "maxRegenPerSecond": 3,
+                "regenerationCooldown": 1.82,
+                "requestedRegenPerSecond": 3300
+              },
+              "heatPerShot": 0
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missilerack_right",
+      "category": "missile_racks",
+      "component": {
+        "name": "MSD-322 Missile Rack",
+        "type": "MissileLauncher",
+        "size": "3",
+        "typeData": {}
+      },
+      "hardpoints": [
+        {
+          "name": "missile_01_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Ignite II Missile",
+            "type": "Missile",
+            "size": "2",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 1440,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "Infrared"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_02_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Ignite II Missile",
+            "type": "Missile",
+            "size": "2",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 1440,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "Infrared"
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_target_selector",
+      "category": "controller",
+      "component": {
+        "name": "TARGET SELECTOR",
+        "type": "TargetSelector",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "category": "controller",
+      "component": {
+        "name": "POWER",
+        "type": "EnergyController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_powerplant_01",
+      "category": "powerplant",
+      "component": {
+        "name": "IonBurst",
+        "type": "PowerPlant",
+        "size": "1",
+        "typeData": {
+          "powerBase": 14
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_powerplant_02",
+      "category": "powerplant",
+      "component": {
+        "name": "IonBurst",
+        "type": "PowerPlant",
+        "size": "1",
+        "typeData": {
+          "powerBase": 14
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_cooler_left",
+      "category": "cooler",
+      "component": {
+        "name": "Polar",
+        "type": "Cooler",
+        "size": "1",
+        "typeData": {
+          "powerConsumption": 3,
+          "powerMinimumFraction": 0.3333333
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_cooler_right",
+      "category": "cooler",
+      "component": {
+        "name": "Polar",
+        "type": "Cooler",
+        "size": "1",
+        "typeData": {
+          "powerConsumption": 3,
+          "powerMinimumFraction": 0.3333333
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_radar_right",
+      "category": "radar",
+      "component": {
+        "name": "Ecouter",
+        "type": "Radar",
+        "size": "1",
+        "typeData": {
+          "powerConsumption": 5,
+          "powerMinimumFraction": 0.4
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "category": "controller",
+      "component": {
+        "name": "MISSILES",
+        "type": "MissileController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "category": "controller",
+      "component": {
+        "name": null,
+        "type": "CapacitorAssignmentController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "category": "controller",
+      "component": {
+        "name": null,
+        "type": "FuelController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "category": "lifesupport",
+      "component": {
+        "name": "ComfortAir",
+        "type": "LifeSupportGenerator",
+        "size": "1",
+        "typeData": {
+          "powerConsumption": 1,
+          "powerMinimumFraction": 1
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "category": "controller",
+      "component": {
+        "name": "COMMS",
+        "type": "CommsController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_shield_generator",
+      "category": "shieldgenerator",
+      "component": {
+        "name": "Sukoran",
+        "type": "Shield",
+        "size": "2",
+        "typeData": {
+          "powerConsumption": 4,
+          "powerMinimumFraction": 0.25
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "category": "controller",
+      "component": {
+        "name": "Flight Blade",
+        "type": "FlightController",
+        "size": "1",
+        "typeData": {
+          "powerConsumption": 4,
+          "powerMinimumFraction": 0.25
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "category": "controller",
+      "component": {
+        "name": "SECURITY",
+        "type": "DoorController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "category": "controller",
+      "component": {
+        "name": "HEAT",
+        "type": "CoolerController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "category": "controller",
+      "component": {
+        "name": "SHIELDS",
+        "type": "ShieldController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "category": "quantumdrive",
+      "component": {
+        "name": "Beacon",
+        "type": "QuantumDrive",
+        "size": "1",
+        "typeData": {
+          "powerConsumption": 3,
+          "powerMinimumFraction": 1
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "category": "controller",
+      "component": {
+        "name": "WEAPONS",
+        "type": "WeaponController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_weapon_nose_right",
+      "category": "weapon_mounts",
+      "component": {
+        "name": "VariPuck S3 Gimbal Mount",
+        "type": "Turret",
+        "size": "3",
+        "typeData": {}
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_class_2",
+          "category": "weapons",
+          "component": {
+            "name": "Singe Cannon (S3)",
+            "type": "WeaponGun",
+            "size": "3",
+            "typeData": {
+              "powerConsumption": 2,
+              "powerMinimumFraction": 0,
+              "fireRate": 90,
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 1012.5,
+                "thermal": 0,
+                "physical": 0,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "pelletsPerShot": 1,
+              "regen": {
+                "maxAmmoLoad": 25,
+                "costPerBullet": 500,
+                "requestedAmmoLoad": 1600,
+                "maxRegenPerSecond": 3,
+                "regenerationCooldown": 1.82,
+                "requestedRegenPerSecond": 3300
+              },
+              "heatPerShot": 0
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_wing_left",
+      "category": "weapon_mounts",
+      "component": {
+        "name": "VariPuck S3 Gimbal Mount",
+        "type": "Turret",
+        "size": "3",
+        "typeData": {}
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_class_2",
+          "category": "weapons",
+          "component": {
+            "name": "Singe Cannon (S3)",
+            "type": "WeaponGun",
+            "size": "3",
+            "typeData": {
+              "powerConsumption": 2,
+              "powerMinimumFraction": 0,
+              "fireRate": 90,
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 1012.5,
+                "thermal": 0,
+                "physical": 0,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "pelletsPerShot": 1,
+              "regen": {
+                "maxAmmoLoad": 25,
+                "costPerBullet": 500,
+                "requestedAmmoLoad": 1600,
+                "maxRegenPerSecond": 3,
+                "regenerationCooldown": 1.82,
+                "requestedRegenPerSecond": 3300
+              },
+              "heatPerShot": 0
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missilerack_left",
+      "category": "missile_racks",
+      "component": {
+        "name": "MSD-322 Missile Rack",
+        "type": "MissileLauncher",
+        "size": "3",
+        "typeData": {}
+      },
+      "hardpoints": [
+        {
+          "name": "missile_01_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Ignite II Missile",
+            "type": "Missile",
+            "size": "2",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 1440,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "Infrared"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_02_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Ignite II Missile",
+            "type": "Missile",
+            "size": "2",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 1440,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "Infrared"
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_missile_rack_outer",
+      "category": "missile_racks",
+      "component": {
+        "name": "MSD-322 Missile Rack",
+        "type": "MissileLauncher",
+        "size": "3",
+        "typeData": {}
+      },
+      "hardpoints": [
+        {
+          "name": "missile_01_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Ignite II Missile",
+            "type": "Missile",
+            "size": "2",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 1440,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "Infrared"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_02_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Ignite II Missile",
+            "type": "Missile",
+            "size": "2",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 1440,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "Infrared"
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    }
+  ],
+  "expected": {
+    "alpha": 4050,
+    "burstDps": 6075,
+    "sustainedDpsMin": 1027.9187817258883,
+    "sustainedDpsMax": 3355.7030720031007
+  }
+}

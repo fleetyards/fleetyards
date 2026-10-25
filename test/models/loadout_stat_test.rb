@@ -38,8 +38,8 @@ class LoadoutStatTest < ActiveSupport::TestCase
   def assert_fitted(expected, public_only: false)
     vehicle = Vehicle.includes(Vehicle.rendered_associations).find(@vehicle.id)
 
-    assert_equal expected, vehicle.fitted_weapons(public_only:)&.max_weapon_size.to_i
-    assert_equal expected, Vehicle.where(id: @vehicle.id).pick(Arel.sql(Vehicle.fitted_max_weapon_size_sql(public_only:)))
+    assert_equal expected, vehicle.fitted_loadout_stat(public_only:)&.max_weapon_size.to_i
+    assert_equal expected, Vehicle.where(id: @vehicle.id).pick(Arel.sql(Vehicle.fitted_stat_sql("max_weapon_size", public_only:)))
   end
 
   test "counts the guns a ship comes with by size, through their mounts" do
@@ -120,7 +120,7 @@ class LoadoutStatTest < ActiveSupport::TestCase
     assert_equal({"3" => 1, "2" => 1}, stat_of(loadout).weapon_sizes)
   end
 
-  test "counts the guns of the modules a ship comes with" do
+  test "a ship as it comes reads as its page does, without the modules it takes" do
     turret = create(:model_module, sc_key: "TEST_Turret_Module")
     create(:module_hardpoint, model: @model, model_module: turret, slot: "hardpoint_module")
     port(@model, "hardpoint_module", category: :module,
@@ -130,7 +130,23 @@ class LoadoutStatTest < ActiveSupport::TestCase
 
     LoadoutStat.refresh(@source)
 
-    assert_equal({"5" => 1, "3" => 2}, stat_of(@model).weapon_sizes)
+    assert_equal({"3" => 2}, stat_of(@model).weapon_sizes)
+  end
+
+  test "stores the firepower of the guns fitted" do
+    energy = {"damage_per_shot" => {"energy" => 10}, "fire_rate" => 600}
+    @gun.update!(type_data: energy)
+    @gun.build&.update!(type_data: energy)
+    loadout = fit(["hardpoint_gun_left/hardpoint_class_2", nil])
+
+    LoadoutStat.refresh(@source)
+
+    stock = stat_of(@model)
+    assert_in_delta 20, stock.alpha
+    assert_in_delta 200, stock.burst_dps
+    assert_in_delta 200, stock.sustained_dps_max
+    assert_equal LoadoutFirepower::VERSION, stock.formula_version
+    assert_in_delta 10, stat_of(loadout).alpha
   end
 
   test "a vehicle left with two active loadouts still reads its guns" do
@@ -139,7 +155,7 @@ class LoadoutStatTest < ActiveSupport::TestCase
     VehicleLoadout.where(id: first.id).update_all(active: true)
     LoadoutStat.refresh(@source)
 
-    assert_equal 3, Vehicle.where(id: @vehicle.id).pick(Arel.sql(Vehicle.fitted_max_weapon_size_sql))
+    assert_equal 3, Vehicle.where(id: @vehicle.id).pick(Arel.sql(Vehicle.fitted_stat_sql("max_weapon_size")))
   end
 
   test "the queued refresh writes the loadout's stats" do

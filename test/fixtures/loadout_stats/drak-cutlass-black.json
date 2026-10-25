@@ -1,0 +1,965 @@
+{
+  "ship": "Cutlass Black",
+  "weaponPoolSize": 6,
+  "regenModifier": {
+    "powerRatio": 1,
+    "maxAmmoLoad": 2,
+    "maxRegenPerSecond": 1
+  },
+  "hardpoints": [
+    {
+      "name": "hardpoint_life_support",
+      "category": "lifesupport",
+      "component": {
+        "name": "ComfortAir Plus",
+        "type": "LifeSupportGenerator",
+        "size": "2",
+        "typeData": {
+          "powerConsumption": 2,
+          "powerMinimumFraction": 0.5
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_turret",
+      "category": "turret",
+      "component": {
+        "name": "Manned Turret",
+        "type": "TurretBase",
+        "size": "5",
+        "typeData": {
+          "control": "manned"
+        }
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_weapon_right",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S3 Gimbal Mount",
+            "type": "Turret",
+            "size": "3",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-337 Panther Repeater",
+                "type": "WeaponGun",
+                "size": "3",
+                "typeData": {
+                  "powerConsumption": 1,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 43.65,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 48.5,
+                    "requestedAmmoLoad": 18187,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.74,
+                    "requestedRegenPerSecond": 3031
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        },
+        {
+          "name": "hardpoint_weapon_left",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S3 Gimbal Mount",
+            "type": "Turret",
+            "size": "3",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-337 Panther Repeater",
+                "type": "WeaponGun",
+                "size": "3",
+                "typeData": {
+                  "powerConsumption": 1,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 43.65,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 48.5,
+                    "requestedAmmoLoad": 18187,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.74,
+                    "requestedRegenPerSecond": 3031
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "category": "controller",
+      "component": {
+        "name": "COMMS",
+        "type": "CommsController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "category": "controller",
+      "component": {
+        "name": "HEAT",
+        "type": "CoolerController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "category": "controller",
+      "component": {
+        "name": "POWER",
+        "type": "EnergyController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "category": "controller",
+      "component": {
+        "name": "Flight Blade",
+        "type": "FlightController",
+        "size": "1",
+        "typeData": {
+          "powerConsumption": 6,
+          "powerMinimumFraction": 0.1666667
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_weapon_copilot",
+      "category": "controller",
+      "component": {
+        "name": "WEAPONS",
+        "type": "WeaponController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "category": "controller",
+      "component": {
+        "name": null,
+        "type": "CapacitorAssignmentController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "category": "controller",
+      "component": {
+        "name": null,
+        "type": "FuelController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_salvage",
+      "category": "controller",
+      "component": {
+        "name": null,
+        "type": "SalvageController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_power_plant",
+      "category": "powerplant",
+      "component": {
+        "name": "DayBreak",
+        "type": "PowerPlant",
+        "size": "2",
+        "typeData": {
+          "powerBase": 18
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_cooler_right",
+      "category": "cooler",
+      "component": {
+        "name": "ColdSnap",
+        "type": "Cooler",
+        "size": "2",
+        "typeData": {
+          "powerConsumption": 3,
+          "powerMinimumFraction": 0.6666667
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_shield_generator_right",
+      "category": "shieldgenerator",
+      "component": {
+        "name": "STOP",
+        "type": "Shield",
+        "size": "2",
+        "typeData": {
+          "powerConsumption": 3,
+          "powerMinimumFraction": 0.6666667
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_radar",
+      "category": "radar",
+      "component": {
+        "name": "Chernykh",
+        "type": "Radar",
+        "size": "2",
+        "typeData": {
+          "powerConsumption": 6,
+          "powerMinimumFraction": 0.1666667
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_tractor_turret",
+      "category": "turret",
+      "component": {
+        "name": "Remote Turret",
+        "type": "Turret",
+        "size": "4",
+        "typeData": {
+          "control": "remote"
+        }
+      },
+      "hardpoints": [
+        {
+          "name": "turret_weapon",
+          "category": "weapons",
+          "component": {
+            "name": "SureGrip S1 Tractor Beam",
+            "type": "TractorBeam",
+            "size": "1",
+            "typeData": {
+              "powerConsumption": 1,
+              "powerMinimumFraction": 1
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "category": "quantumdrive",
+      "component": {
+        "name": "Odyssey",
+        "type": "QuantumDrive",
+        "size": "2",
+        "typeData": {
+          "powerConsumption": 3,
+          "powerMinimumFraction": 1
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_left_pylon_03",
+      "category": "missile_racks",
+      "component": {
+        "name": "MSD-442 Missile Rack",
+        "type": "MissileLauncher",
+        "size": "4",
+        "typeData": {}
+      },
+      "hardpoints": [
+        {
+          "name": "missile_01_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Tempest II Missile",
+            "type": "Missile",
+            "size": "2",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 1700,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_02_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Tempest II Missile",
+            "type": "Missile",
+            "size": "2",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 1700,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_03_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Tempest II Missile",
+            "type": "Missile",
+            "size": "2",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 1700,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_04_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Tempest II Missile",
+            "type": "Missile",
+            "size": "2",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 1700,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_right_pylon_01",
+      "category": "missile_racks",
+      "component": {
+        "name": "MSD-423 Missile Rack",
+        "type": "MissileLauncher",
+        "size": "4",
+        "typeData": {}
+      },
+      "hardpoints": [
+        {
+          "name": "missile_02_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Arrester III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 3200,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_01_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Arrester III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 3200,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_right_pylon_02",
+      "category": "missile_racks",
+      "component": {
+        "name": "MSD-423 Missile Rack",
+        "type": "MissileLauncher",
+        "size": "4",
+        "typeData": {}
+      },
+      "hardpoints": [
+        {
+          "name": "missile_01_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Arrester III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 3200,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_02_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Arrester III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 3200,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_left_pylon_02",
+      "category": "missile_racks",
+      "component": {
+        "name": "MSD-423 Missile Rack",
+        "type": "MissileLauncher",
+        "size": "4",
+        "typeData": {}
+      },
+      "hardpoints": [
+        {
+          "name": "missile_01_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Arrester III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 3200,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_02_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Arrester III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 3200,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_left_pylon_01",
+      "category": "missile_racks",
+      "component": {
+        "name": "MSD-423 Missile Rack",
+        "type": "MissileLauncher",
+        "size": "4",
+        "typeData": {}
+      },
+      "hardpoints": [
+        {
+          "name": "missile_01_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Arrester III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 3200,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_02_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Arrester III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 3200,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "category": "controller",
+      "component": {
+        "name": "SECURITY",
+        "type": "DoorController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "category": "controller",
+      "component": {
+        "name": "SHIELDS",
+        "type": "ShieldController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "category": "controller",
+      "component": {
+        "name": "WEAPONS",
+        "type": "WeaponController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "category": "controller",
+      "component": {
+        "name": "MISSILES",
+        "type": "MissileController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_cooler_left",
+      "category": "cooler",
+      "component": {
+        "name": "ColdSnap",
+        "type": "Cooler",
+        "size": "2",
+        "typeData": {
+          "powerConsumption": 3,
+          "powerMinimumFraction": 0.6666667
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_left_body_weapon",
+      "category": "weapon_mounts",
+      "component": {
+        "name": "VariPuck S3 Gimbal Mount",
+        "type": "Turret",
+        "size": "3",
+        "typeData": {}
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_class_2",
+          "category": "weapons",
+          "component": {
+            "name": "Mantis GT-220 Gatling",
+            "type": "WeaponGun",
+            "size": "3",
+            "typeData": {
+              "powerConsumption": 0.1,
+              "powerMinimumFraction": 1,
+              "fireRate": 1600,
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 32,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "pelletsPerShot": 1,
+              "heat": {
+                "overheatFixTime": 2.61,
+                "coolingPerSecond": 40,
+                "overheatTemperature": 100,
+                "timeTillCoolingStarts": 0.545
+              },
+              "heatPerShot": 0.512
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_right_wing_weapon",
+      "category": "weapon_mounts",
+      "component": {
+        "name": "VariPuck S3 Gimbal Mount",
+        "type": "Turret",
+        "size": "3",
+        "typeData": {}
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_class_2",
+          "category": "weapons",
+          "component": {
+            "name": "CF-337 Panther Repeater",
+            "type": "WeaponGun",
+            "size": "3",
+            "typeData": {
+              "powerConsumption": 1,
+              "powerMinimumFraction": 0,
+              "fireRate": 750,
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 43.65,
+                "thermal": 0,
+                "physical": 0,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "pelletsPerShot": 1,
+              "regen": {
+                "maxAmmoLoad": 75,
+                "costPerBullet": 48.5,
+                "requestedAmmoLoad": 18187,
+                "maxRegenPerSecond": 15,
+                "regenerationCooldown": 0.74,
+                "requestedRegenPerSecond": 3031
+              },
+              "heatPerShot": 0
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_right_pylon_03",
+      "category": "missile_racks",
+      "component": {
+        "name": "MSD-442 Missile Rack",
+        "type": "MissileLauncher",
+        "size": "4",
+        "typeData": {}
+      },
+      "hardpoints": [
+        {
+          "name": "missile_01_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Tempest II Missile",
+            "type": "Missile",
+            "size": "2",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 1700,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_02_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Tempest II Missile",
+            "type": "Missile",
+            "size": "2",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 1700,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_03_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Tempest II Missile",
+            "type": "Missile",
+            "size": "2",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 1700,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_04_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Tempest II Missile",
+            "type": "Missile",
+            "size": "2",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 1700,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_left_wing_weapon",
+      "category": "weapon_mounts",
+      "component": {
+        "name": "VariPuck S3 Gimbal Mount",
+        "type": "Turret",
+        "size": "3",
+        "typeData": {}
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_class_2",
+          "category": "weapons",
+          "component": {
+            "name": "CF-337 Panther Repeater",
+            "type": "WeaponGun",
+            "size": "3",
+            "typeData": {
+              "powerConsumption": 1,
+              "powerMinimumFraction": 0,
+              "fireRate": 750,
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 43.65,
+                "thermal": 0,
+                "physical": 0,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "pelletsPerShot": 1,
+              "regen": {
+                "maxAmmoLoad": 75,
+                "costPerBullet": 48.5,
+                "requestedAmmoLoad": 18187,
+                "maxRegenPerSecond": 15,
+                "regenerationCooldown": 0.74,
+                "requestedRegenPerSecond": 3031
+              },
+              "heatPerShot": 0
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_right_body_weapon",
+      "category": "weapon_mounts",
+      "component": {
+        "name": "VariPuck S3 Gimbal Mount",
+        "type": "Turret",
+        "size": "3",
+        "typeData": {}
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_class_2",
+          "category": "weapons",
+          "component": {
+            "name": "Mantis GT-220 Gatling",
+            "type": "WeaponGun",
+            "size": "3",
+            "typeData": {
+              "powerConsumption": 0.1,
+              "powerMinimumFraction": 1,
+              "fireRate": 1600,
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 32,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "pelletsPerShot": 1,
+              "heat": {
+                "overheatFixTime": 2.61,
+                "coolingPerSecond": 40,
+                "overheatTemperature": 100,
+                "timeTillCoolingStarts": 0.545
+              },
+              "heatPerShot": 0.512
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    }
+  ],
+  "expected": {
+    "alpha": 238.6,
+    "burstDps": 3889.166666666667,
+    "sustainedDpsMin": 1717.080023783274,
+    "sustainedDpsMax": 2409.9921436530813
+  }
+}

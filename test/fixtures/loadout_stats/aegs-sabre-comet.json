@@ -1,0 +1,537 @@
+{
+  "ship": "Sabre Comet",
+  "weaponPoolSize": 4,
+  "hardpoints": [
+    {
+      "name": "hardpoint_weapon_left_nose",
+      "category": "weapon_mounts",
+      "component": {
+        "name": "VariPuck S3 Gimbal Mount",
+        "type": "Turret",
+        "size": "3",
+        "typeData": {}
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_class_2",
+          "category": "weapons",
+          "component": {
+            "name": "Omnisky IX Cannon",
+            "type": "WeaponGun",
+            "size": "3",
+            "typeData": {
+              "powerConsumption": 1.5,
+              "powerMinimumFraction": 0,
+              "fireRate": 150,
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 218.7,
+                "thermal": 0,
+                "physical": 0,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "pelletsPerShot": 1,
+              "regen": {
+                "maxAmmoLoad": 25,
+                "costPerBullet": 202,
+                "requestedAmmoLoad": 20200,
+                "maxRegenPerSecond": 3,
+                "regenerationCooldown": 0.5,
+                "requestedRegenPerSecond": 3375
+              },
+              "heatPerShot": 0
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "category": "controller",
+      "component": {
+        "name": "POWER",
+        "type": "EnergyController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "category": "controller",
+      "component": {
+        "name": "HEAT",
+        "type": "CoolerController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "category": "controller",
+      "component": {
+        "name": "COMMS",
+        "type": "CommsController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_quantum_drive",
+      "category": "quantumdrive",
+      "component": {
+        "name": "Drift",
+        "type": "QuantumDrive",
+        "size": "1",
+        "typeData": {
+          "powerConsumption": 2,
+          "powerMinimumFraction": 1
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_weapon_right_wing",
+      "category": "weapon_mounts",
+      "component": {
+        "name": "VariPuck S3 Gimbal Mount",
+        "type": "Turret",
+        "size": "3",
+        "typeData": {}
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_class_2",
+          "category": "weapons",
+          "component": {
+            "name": "PyroBurst Scattergun",
+            "type": "WeaponGun",
+            "size": "3",
+            "typeData": {
+              "powerConsumption": 1,
+              "powerMinimumFraction": 0,
+              "fireRate": 70,
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 49.5,
+                "thermal": 0,
+                "physical": 0,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "pelletsPerShot": 8,
+              "regen": {
+                "maxAmmoLoad": 75,
+                "costPerBullet": 440,
+                "requestedAmmoLoad": 15400,
+                "maxRegenPerSecond": 15,
+                "regenerationCooldown": 0.364,
+                "requestedRegenPerSecond": 2566.67
+              },
+              "heatPerShot": 0
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "category": "controller",
+      "component": {
+        "name": "SHIELDS",
+        "type": "ShieldController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_cooler_left",
+      "category": "cooler",
+      "component": {
+        "name": "Bracer",
+        "type": "Cooler",
+        "size": "1",
+        "typeData": {
+          "powerConsumption": 3,
+          "powerMinimumFraction": 0.3333333
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_cooler_right",
+      "category": "cooler",
+      "component": {
+        "name": "Bracer",
+        "type": "Cooler",
+        "size": "1",
+        "typeData": {
+          "powerConsumption": 3,
+          "powerMinimumFraction": 0.3333333
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_shield_generator_b",
+      "category": "shieldgenerator",
+      "component": {
+        "name": "Shimmer",
+        "type": "Shield",
+        "size": "1",
+        "typeData": {
+          "powerConsumption": 1,
+          "powerMinimumFraction": 1
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_missile",
+      "category": "controller",
+      "component": {
+        "name": "MISSILES",
+        "type": "MissileController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "category": "lifesupport",
+      "component": {
+        "name": "ComfortAir",
+        "type": "LifeSupportGenerator",
+        "size": "1",
+        "typeData": {
+          "powerConsumption": 1,
+          "powerMinimumFraction": 1
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_fuel",
+      "category": "controller",
+      "component": {
+        "name": null,
+        "type": "FuelController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_weapon_missilerack_left",
+      "category": "missile_racks",
+      "component": {
+        "name": "MSD-423 Missile Rack",
+        "type": "MissileLauncher",
+        "size": "4",
+        "typeData": {}
+      },
+      "hardpoints": [
+        {
+          "name": "missile_01_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Thunderbolt III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 2900,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "Electromagnetic"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_02_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Thunderbolt III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 2900,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "Electromagnetic"
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_flight",
+      "category": "controller",
+      "component": {
+        "name": "Flight Blade",
+        "type": "FlightController",
+        "size": "1",
+        "typeData": {
+          "powerConsumption": 4,
+          "powerMinimumFraction": 0.25
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "category": "controller",
+      "component": {
+        "name": "WEAPONS",
+        "type": "WeaponController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "category": "controller",
+      "component": {
+        "name": "SECURITY",
+        "type": "DoorController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_radar",
+      "category": "radar",
+      "component": {
+        "name": "Ecouter",
+        "type": "Radar",
+        "size": "1",
+        "typeData": {
+          "powerConsumption": 5,
+          "powerMinimumFraction": 0.4
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_powerplant_01",
+      "category": "powerplant",
+      "component": {
+        "name": "SonicLite",
+        "type": "PowerPlant",
+        "size": "1",
+        "typeData": {
+          "powerBase": 13
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_powerplant_02",
+      "category": "powerplant",
+      "component": {
+        "name": "SonicLite",
+        "type": "PowerPlant",
+        "size": "1",
+        "typeData": {
+          "powerBase": 13
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_shield_generator_a",
+      "category": "shieldgenerator",
+      "component": {
+        "name": "Shimmer",
+        "type": "Shield",
+        "size": "1",
+        "typeData": {
+          "powerConsumption": 1,
+          "powerMinimumFraction": 1
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_weapon_right_nose",
+      "category": "weapon_mounts",
+      "component": {
+        "name": "VariPuck S3 Gimbal Mount",
+        "type": "Turret",
+        "size": "3",
+        "typeData": {}
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_class_2",
+          "category": "weapons",
+          "component": {
+            "name": "Omnisky IX Cannon",
+            "type": "WeaponGun",
+            "size": "3",
+            "typeData": {
+              "powerConsumption": 1.5,
+              "powerMinimumFraction": 0,
+              "fireRate": 150,
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 218.7,
+                "thermal": 0,
+                "physical": 0,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "pelletsPerShot": 1,
+              "regen": {
+                "maxAmmoLoad": 25,
+                "costPerBullet": 202,
+                "requestedAmmoLoad": 20200,
+                "maxRegenPerSecond": 3,
+                "regenerationCooldown": 0.5,
+                "requestedRegenPerSecond": 3375
+              },
+              "heatPerShot": 0
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_left_wing",
+      "category": "weapon_mounts",
+      "component": {
+        "name": "VariPuck S3 Gimbal Mount",
+        "type": "Turret",
+        "size": "3",
+        "typeData": {}
+      },
+      "hardpoints": [
+        {
+          "name": "hardpoint_class_2",
+          "category": "weapons",
+          "component": {
+            "name": "PyroBurst Scattergun",
+            "type": "WeaponGun",
+            "size": "3",
+            "typeData": {
+              "powerConsumption": 1,
+              "powerMinimumFraction": 0,
+              "fireRate": 70,
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 49.5,
+                "thermal": 0,
+                "physical": 0,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "pelletsPerShot": 8,
+              "regen": {
+                "maxAmmoLoad": 75,
+                "costPerBullet": 440,
+                "requestedAmmoLoad": 15400,
+                "maxRegenPerSecond": 15,
+                "regenerationCooldown": 0.364,
+                "requestedRegenPerSecond": 2566.67
+              },
+              "heatPerShot": 0
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_weapon_missilerack_right",
+      "category": "missile_racks",
+      "component": {
+        "name": "MSD-423 Missile Rack",
+        "type": "MissileLauncher",
+        "size": "4",
+        "typeData": {}
+      },
+      "hardpoints": [
+        {
+          "name": "missile_01_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Arrester III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 3200,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        },
+        {
+          "name": "missile_02_attach",
+          "category": "weapons",
+          "component": {
+            "name": "Arrester III Missile",
+            "type": "Missile",
+            "size": "3",
+            "typeData": {
+              "damagePerShot": {
+                "stun": 0,
+                "energy": 0,
+                "thermal": 0,
+                "physical": 3200,
+                "distortion": 0,
+                "biochemical": 0
+              },
+              "trackingSignal": "CrossSection"
+            }
+          },
+          "hardpoints": []
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "category": "controller",
+      "component": {
+        "name": null,
+        "type": "CapacitorAssignmentController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    }
+  ],
+  "expected": {
+    "alpha": 1229.4,
+    "burstDps": 2017.5,
+    "sustainedDpsMin": 853.8667621963136,
+    "sustainedDpsMax": 1356.4123180044166
+  }
+}
