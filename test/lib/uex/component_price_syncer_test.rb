@@ -30,6 +30,20 @@ module Uex
       assert_equal 15_000, prices_for(@components[:ref_match]).find_by(price_type: "sell", location: "Dumper's Depot - Area 18").price
     end
 
+    # A hidden component still has a page, unlike hidden equipment, so its own
+    # uuid match is the right one even with a visible namesake.
+    test "#run keeps a hidden component the uuid names over a visible namesake" do
+      hidden = create(:component, :hidden, name: "Omnisky III Cannon", sc_key: "behr_lasercannon_s3_hidden",
+        sc_ref: "aaaaaaaa-0000-0000-0000-000000000099")
+      create(:component, name: "Omnisky III Cannon", sc_key: "behr_lasercannon_s3_visible", sc_ref: nil)
+      row = uex_fixture("items_prices_all").first.merge("id_item" => 990, "item_name" => "Omnisky III Cannon",
+        "item_uuid" => hidden.sc_ref, "price_buy" => 7700)
+
+      sync(item_prices: uex_fixture("items_prices_all") + [row])
+
+      assert_equal 7700, prices_for(hidden).sole.price
+    end
+
     test "#run resolves a component by a name nothing else answers to" do
       sync
 

@@ -52,9 +52,9 @@ module Uex
       uuid = item["item_uuid"].to_s.downcase
       by_ref = @by_sc_ref[uuid] if uuid.present?
 
-      # `sc_ref` is the game file's own id on both sides, so it names one record
-      # and names the right one. Tried first for that reason.
-      return by_ref.first if by_ref.present?
+      # `sc_ref` is the game file's own id on both sides, so it names one record,
+      # and almost always the right one. Tried first for that reason.
+      return resolve_ref(by_ref, item).first if by_ref.present?
 
       candidates = @by_name[normalize(item["item_name"])]
 
@@ -71,6 +71,11 @@ module Uex
       end
 
       candidates.first.first
+    end
+
+    # The record an `sc_ref` match lands on, for a subclass to redirect.
+    private def resolve_ref(record, _item)
+      record
     end
 
     private def pluck_records(scope)
