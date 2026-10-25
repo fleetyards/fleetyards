@@ -35985,6 +35985,10 @@ components:
         blueprint:
           "$ref": "#/components/schemas/InventoryCraftedBlueprintRef"
         qualities:
+      - armor
+      - clothing
+      - tool
+      - container
           type: object
           additionalProperties:
             type: integer
@@ -35993,6 +35997,10 @@ components:
       required:
       - blueprint
       - qualities
+      - ARMOR
+      - CLOTHING
+      - TOOL
+      - CONTAINER
       title: InventoryCraftedRef
     InventoryEntryTransfer:
       type:
