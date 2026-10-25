@@ -344,8 +344,8 @@ class PayoutLedger < ApplicationRecord
   # forced to fulfilled with nothing measured divides evenly across whoever
   # was on it.
   #
-  # A per-unit reward is weighted by the SCU and units each contractor
-  # delivered instead, so everyone is paid the rate on their own goods -- a
+  # A per-unit reward is weighted by what each contractor's goods earned at
+  # their lines' rates instead, so everyone is paid on their own goods -- a
   # line's fraction would pay a crate of a small line like a hold of a big one.
   #
   # "Nothing measured" is read off every delivery, the author's included: goods
