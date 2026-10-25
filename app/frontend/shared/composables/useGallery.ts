@@ -121,6 +121,10 @@ export const useGallery = (
     initGallery();
   });
 
+  onBeforeUnmount(() => {
+    lightbox.value?.destroy();
+  });
+
   return {
     lightbox,
   };
