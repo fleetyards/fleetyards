@@ -27,11 +27,12 @@ import { inventoryDefaultImage } from "@/frontend/composables/useInventoryImage"
 import type { InventoryPanelRecord } from "@/frontend/types/logistics";
 import {
   type HangarInventory,
+  getHangarInventoriesQueryKey,
   useCreateHangarInventory,
   useDestroyHangarInventory,
   useUpdateHangarInventory,
 } from "@/services/fyApi";
-import { firstErrorMessageFrom } from "@/shared/utils/ApiErrors";
+import { useInventoryDestroy } from "@/frontend/composables/useInventoryDestroy";
 
 type Props = {
   inventory?: HangarInventory;
@@ -45,7 +46,6 @@ const comlink = useComlink();
 
 const isEdit = computed(() => !!props.inventory);
 const submitting = ref(false);
-const deleting = ref(false);
 
 // Every user keeps their personal inventory; the API refuses to delete it.
 const deletable = computed(() => isEdit.value && !props.inventory?.personal);
@@ -102,31 +102,15 @@ const updateMutation = useUpdateHangarInventory();
 
 const destroyMutation = useDestroyHangarInventory();
 
-const onDestroy = async () => {
-  if (!props.inventory) return;
-
-  deleting.value = true;
-
-  await destroyMutation
-    .mutateAsync({ slug: props.inventory.slug })
-    .then(() => {
-      displaySuccess({
-        text: t("messages.logistics.inventory.destroy.success"),
-      });
-      comlink.emit("hangar-inventory-deleted");
-      comlink.emit("close-modal", true);
-    })
-    .catch((error: unknown) => {
-      displayAlert({
-        text:
-          firstErrorMessageFrom(error) ??
-          t("messages.logistics.inventory.destroy.failure"),
-      });
-    })
-    .finally(() => {
-      deleting.value = false;
-    });
-};
+const { deleting, destroyInventory } = useInventoryDestroy({
+  inventory: () => props.inventory,
+  destroy: () => destroyMutation.mutateAsync({ slug: props.inventory!.slug }),
+  listKey: () => getHangarInventoriesQueryKey(),
+  onDeleted: () => {
+    comlink.emit("hangar-inventory-deleted", props.inventory!.slug);
+    comlink.emit("close-modal", true);
+  },
+});
 
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
@@ -238,8 +222,9 @@ const onSubmit = handleSubmit(async (values) => {
         :tone="BtnTonesEnum.DANGER"
         :confirm="t('messages.logistics.inventory.destroy.confirm')"
         :loading="deleting"
+        :disabled="submitting"
         data-test="inventory-destroy"
-        @click="onDestroy"
+        @click="destroyInventory"
       >
         <i class="fa-light fa-trash" />
         {{ t("actions.delete") }}
@@ -250,6 +235,7 @@ const onSubmit = handleSubmit(async (values) => {
         :type="BtnTypesEnum.SUBMIT"
         form="hangar-inventory-form"
         :loading="submitting"
+        :disabled="deleting"
         data-test="inventory-save"
       >
         {{ t("actions.save") }}

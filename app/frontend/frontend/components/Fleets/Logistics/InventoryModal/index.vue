@@ -34,11 +34,12 @@ import {
   type FleetMember,
   type FilterOption,
   fleetMembers as fetchFleetMembers,
+  getFleetInventoriesQueryKey,
   useCreateFleetInventory,
   useDestroyFleetInventory,
   useUpdateFleetInventory,
 } from "@/services/fyApi";
-import { firstErrorMessageFrom } from "@/shared/utils/ApiErrors";
+import { useInventoryDestroy } from "@/frontend/composables/useInventoryDestroy";
 import { type BaseSelectParams } from "@/shared/components/base/Select/index.vue";
 
 type Props = {
@@ -58,7 +59,6 @@ const comlink = useComlink();
 
 const isEdit = computed(() => !!props.inventory);
 const submitting = ref(false);
-const deleting = ref(false);
 
 const validationSchema = {
   name: "required|min:2",
@@ -224,31 +224,19 @@ const onSubmit = handleSubmit(async (values) => {
 
 const destroyMutation = useDestroyFleetInventory();
 
-const onDestroy = async () => {
-  if (!props.inventory) return;
-
-  deleting.value = true;
-
-  await destroyMutation
-    .mutateAsync({ fleetSlug: props.fleet.slug, slug: props.inventory.slug })
-    .then(() => {
-      displaySuccess({
-        text: t("messages.logistics.inventory.destroy.success"),
-      });
-      comlink.emit("fleet-inventory-deleted");
-      comlink.emit("close-modal", true);
-    })
-    .catch((error: unknown) => {
-      displayAlert({
-        text:
-          firstErrorMessageFrom(error) ??
-          t("messages.logistics.inventory.destroy.failure"),
-      });
-    })
-    .finally(() => {
-      deleting.value = false;
-    });
-};
+const { deleting, destroyInventory } = useInventoryDestroy({
+  inventory: () => props.inventory,
+  destroy: () =>
+    destroyMutation.mutateAsync({
+      fleetSlug: props.fleet.slug,
+      slug: props.inventory!.slug,
+    }),
+  listKey: () => getFleetInventoriesQueryKey(props.fleet.slug),
+  onDeleted: () => {
+    comlink.emit("fleet-inventory-deleted", props.inventory!.slug);
+    comlink.emit("close-modal", true);
+  },
+});
 </script>
 
 <template>
@@ -333,8 +321,9 @@ const onDestroy = async () => {
         :tone="BtnTonesEnum.DANGER"
         :confirm="t('messages.logistics.inventory.destroy.confirm')"
         :loading="deleting"
+        :disabled="submitting"
         data-test="inventory-destroy"
-        @click="onDestroy"
+        @click="destroyInventory"
       >
         <i class="fa-light fa-trash" />
         {{ t("actions.delete") }}
@@ -345,6 +334,7 @@ const onDestroy = async () => {
         :type="BtnTypesEnum.SUBMIT"
         form="inventory-form"
         :loading="submitting"
+        :disabled="deleting"
       >
         {{ t("actions.save") }}
       </Btn>
