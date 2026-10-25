@@ -187,19 +187,22 @@ const openEditModal = () => {
   });
 };
 
+// The emitter is global, so each listener goes with the page.
+const unbinds: (() => void)[] = [];
+
 onMounted(() => {
-  comlink.on("inventory-item-created", () => void refetch());
-  comlink.on("hangar-inventory-updated", () => void refetchInventory());
+  unbinds.push(
+    comlink.on("inventory-item-created", () => void refetch()),
+    comlink.on("hangar-inventory-updated", () => void refetchInventory()),
+    comlink.on("hangar-inventory-deleted", (slug) => {
+      if (slug !== inventorySlug.value) return;
+
+      void router.push({ name: "hangar-inventories" });
+    }),
+  );
 });
 
-// Unbound with the page: the emitter is global, and a stale listener would
-// pull the reader off whatever page they delete an inventory from next.
-const unbindDeleted = comlink.on(
-  "hangar-inventory-deleted",
-  () => void router.push({ name: "hangar-inventories" }),
-);
-
-onUnmounted(() => unbindDeleted());
+onUnmounted(() => unbinds.forEach((unbind) => unbind()));
 
 const crumbs = computed<Crumb[]>(() => [
   {

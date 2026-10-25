@@ -136,12 +136,18 @@ const refetchEverything = async () => {
   await refetchItems();
 };
 
+const unbinds: (() => void)[] = [];
+
 onMounted(() => {
-  comlink.on("hangar-inventory-created", () => void refetchEverything());
-  comlink.on("hangar-inventory-updated", () => void refetchEverything());
-  comlink.on("hangar-inventory-deleted", () => void refetchEverything());
-  comlink.on("inventory-item-created", () => void refetchEverything());
+  unbinds.push(
+    comlink.on("hangar-inventory-created", () => void refetchEverything()),
+    comlink.on("hangar-inventory-updated", () => void refetchEverything()),
+    comlink.on("hangar-inventory-deleted", () => void refetchEverything()),
+    comlink.on("inventory-item-created", () => void refetchEverything()),
+  );
 });
+
+onUnmounted(() => unbinds.forEach((unbind) => unbind()));
 </script>
 
 <template>
