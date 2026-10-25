@@ -19,9 +19,9 @@ module ScData
 
         apply(equipment, update_params)
 
-        # `sc_key` and `sc_ref` identify the item rather than describing a build,
-        # so they stay on the row and are not repeated here.
-        apply_build(equipment, update_params.except(:sc_key, :sc_ref))
+        # `sc_key`, `sc_ref` and `family_key` identify the item rather than
+        # describing a build, so they stay on the row and are not repeated here.
+        apply_build(equipment, update_params.except(:sc_key, :sc_ref, :family_key))
 
         equipment
       end
@@ -52,6 +52,7 @@ module ScData
           volume: equipment_data["volume"],
           volume_dimensions: equipment_data["volume_dimensions"],
           hidden: equipment_data["hidden"],
+          family_key: equipment_data["family_key"],
           manufacturer: lookup_manufacturer(equipment_data["manufacturer_ref"])
         }
       end

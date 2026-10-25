@@ -586,7 +586,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_190000) do
     t.jsonb "volume_dimensions"
     t.string "item_views_digest"
     t.jsonb "item_view_md5s", default: {}, null: false
+    t.string "family_key"
     t.index ["equipment_type"], name: "index_equipment_on_equipment_type"
+    t.index ["family_key"], name: "index_equipment_on_family_key"
     t.index ["item_type"], name: "index_equipment_on_item_type"
     t.index ["manufacturer_id"], name: "index_equipment_on_manufacturer_id"
     t.index ["sc_key"], name: "index_equipment_on_sc_key", unique: true

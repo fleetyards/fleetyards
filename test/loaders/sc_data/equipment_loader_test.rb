@@ -236,6 +236,14 @@ module ScData
         assert_equal %w[x y z], helmet.volume_dimensions.keys.sort
       end
 
+      test "#all files a skin under its base item's family" do
+        curated.all
+
+        assert_equal %w[behr_rifle_ballistic_01 behr_rifle_ballistic_01],
+          Equipment.where(sc_key: %w[behr_rifle_ballistic_01 behr_rifle_ballistic_01_white02]).pluck(:family_key)
+        assert_nil Equipment.find_by(sc_key: "behr_rifle_ballistic_01_mag").family_key
+      end
+
       test "#all is idempotent" do
         curated.all
         count = Equipment.count
