@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.24.0](https://github.com/fleetyards/fleetyards/compare/v9.23.0...v9.24.0) (2026-10-25)
+
+
+### Features
+
+* **catalogue:** show an item without a store image by its angled view ([#5959](https://github.com/fleetyards/fleetyards/issues/5959)) ([0b86193](https://github.com/fleetyards/fleetyards/commit/0b86193870aeca9cdfe8babfafa9402390a7a02b))
+* **contracts:** personal contracts that deliver into a member's Personal Inventory ([#5964](https://github.com/fleetyards/fleetyards/issues/5964)) ([56edb3a](https://github.com/fleetyards/fleetyards/commit/56edb3ab6c78a45bedea02b222a7c775688c64cf))
+* **equipment:** usable equipment filters — worn item types, new inventory categories and a slot filter ([#5968](https://github.com/fleetyards/fleetyards/issues/5968)) ([8bc20d6](https://github.com/fleetyards/fleetyards/commit/8bc20d6e9729d42a67c9dc84d265e83c7cd8bad4))
+* **fleets:** show the roster's active filters as chips ([#5961](https://github.com/fleetyards/fleetyards/issues/5961)) ([2ec3729](https://github.com/fleetyards/fleetyards/commit/2ec3729e570a44a929b7051d382d302f716e7508))
+* **hangar:** show, sort and filter the hangar by weapon size, alpha and DPS ([#5962](https://github.com/fleetyards/fleetyards/issues/5962)) ([14bdf56](https://github.com/fleetyards/fleetyards/commit/14bdf56a0ba4a3b8dc9d3f61b79c2b3c572a6c2f))
+* **loadouts:** a full-sheet component picker on phones ([#5965](https://github.com/fleetyards/fleetyards/issues/5965)) ([c4f4ae3](https://github.com/fleetyards/fleetyards/commit/c4f4ae33bc29eaf82359d5cf564f765273931fd2))
+* **models:** show a ship without a store image by its angled view ([#5969](https://github.com/fleetyards/fleetyards/issues/5969)) ([9d6fca2](https://github.com/fleetyards/fleetyards/commit/9d6fca2277e747dfe664e50ad92bd14d46479341))
+
+
+### Bug Fixes
+
+* **announcements:** refresh settled engagement every 24 hours across clock changes ([8f41d31](https://github.com/fleetyards/fleetyards/commit/8f41d314e83ccdaec5d566be54f06bd163b73f1c))
+* **auth:** survive a persisted back route that no longer exists ([#5958](https://github.com/fleetyards/fleetyards/issues/5958)) ([53705da](https://github.com/fleetyards/fleetyards/commit/53705daf5e9d4185a3ba706f66c5187296e9dc49))
+* **ships:** link a ship's fleets with a filter the fleet list can read ([#5957](https://github.com/fleetyards/fleetyards/issues/5957)) ([fff71b9](https://github.com/fleetyards/fleetyards/commit/fff71b997f20e35f7c8128200d4c0b49aff3d669))
+
+
+### Chores
+
+* **db:** drop the guilded columns from users and fleets ([#5940](https://github.com/fleetyards/fleetyards/issues/5940)) ([03d4945](https://github.com/fleetyards/fleetyards/commit/03d4945a74f6d0c430997320408c0338189f1ea8))
+
 ## [9.23.0](https://github.com/fleetyards/fleetyards/compare/v9.22.0...v9.23.0) (2026-10-24)
 
 
