@@ -186,23 +186,55 @@ def pull_requests
   @pull_requests = fetch_pull_requests
 end
 
+# A pull request checked out under a local name of its own (`pr-<N>`, `pr<N>`)
+# shares no head ref with it, so the number in the name is the only link. The
+# name proves nothing about commits added after the checkout, so such a merge
+# only counts once every commit on the branch is found in the pull request.
+def prs_for(branch)
+  by_name = pull_requests.fetch(:by_name).fetch(branch, [])
+  return by_name if by_name.any?
+
+  number = branch[/\Apr-?(\d+)\z/, 1]
+  return [] unless number
+
+  pull_requests.fetch(:by_number).fetch(number.to_i, []).map do |pr|
+    next pr unless pr["state"] == "MERGED" && !contained_in_pull_request?(branch, pr)
+
+    pr.merge("state" => "UNVERIFIED")
+  end
+end
+
+# `git cherry` matches by patch-id, so commits rebased before the merge still
+# count as contained.
+def contained_in_pull_request?(branch, pr)
+  head = pr["headRefOid"]
+  return false unless head
+
+  unless sh("git", "-C", MAIN_ROOT, "cat-file", "-e", "#{head}^{commit}")[2]
+    sh("git", "-C", MAIN_ROOT, "fetch", "--quiet", "origin", "refs/pull/#{pr["number"]}/head")
+  end
+  out, _err, ok = sh("git", "-C", MAIN_ROOT, "cherry", head, branch, "origin/main")
+  ok && out.lines.none? { |line| line.start_with?("+") }
+end
+
 def fetch_pull_requests
-  return {} unless OPTIONS[:github]
+  empty = {by_name: {}, by_number: {}}
+  return empty unless OPTIONS[:github]
 
   slug = repo_slug
-  return {} unless slug
+  return empty unless slug
 
   out, _err, ok = sh("gh", "pr", "list", "--repo", slug, "--state", "all",
-    "--limit", "600", "--json", "headRefName,state,number,title")
-  return {} unless ok
+    "--limit", "600", "--json", "headRefName,headRefOid,state,number,title")
+  return empty unless ok
 
-  JSON.parse(out).group_by { |pr| pr["headRefName"] }
+  list = JSON.parse(out)
+  {by_name: list.group_by { |pr| pr["headRefName"] }, by_number: list.group_by { |pr| pr["number"] }}
 rescue JSON::ParserError
-  {}
+  empty
 end
 
 def branches(worktree_list)
-  prs = pull_requests
   checked_out = worktree_list.to_h { |entry| [entry[:branch], entry[:path]] }
   format = "%(refname:short)\t%(upstream)\t%(upstream:track)\t%(committerdate:short)\t%(objectname:short)"
 
@@ -211,7 +243,7 @@ def branches(worktree_list)
     entry = {
       name: name, upstream: upstream.to_s, gone: track.to_s.include?("gone"),
       date: date, sha: sha, worktree: checked_out[name],
-      prs: (prs[name] || []).map { |pr| {number: pr["number"], state: pr["state"]} }
+      prs: prs_for(name).map { |pr| {number: pr["number"], state: pr["state"]} }
     }
     entry[:merged] = entry[:prs].any? { |pr| pr[:state] == "MERGED" }
     entry[:open] = entry[:prs].any? { |pr| pr[:state] == "OPEN" }
@@ -237,6 +269,8 @@ def classify_branch(entry)
       [:remove, "no commits of its own beyond origin/main"]
     elsif !entry[:upstream].empty? && !entry[:gone]
       [:keep, "upstream branch still exists"]
+    elsif (unverified = entry[:prs].find { |pr| pr[:state] == "UNVERIFIED" })
+      [:ask, "pull request ##{unverified[:number]} merged, but the branch has commits it never had"]
     elsif entry[:prs].any?
       [:ask, "pull request ##{entry[:prs].first[:number]} closed unmerged — #{entry[:ahead]} commit(s) would be lost"]
     else
@@ -462,14 +496,17 @@ worktree_list.each do |entry|
       [:keep, "#{entry[:dirty]} uncommitted file(s) — commit or discard them first"]
     else
       branch = entry[:branch]
-      prs = branch ? pull_requests[branch] : nil
+      prs = branch ? prs_for(branch) : nil
       merged = prs&.find { |pr| pr["state"] == "MERGED" }
       open_pr = prs&.find { |pr| pr["state"] == "OPEN" }
+      unverified = prs&.find { |pr| pr["state"] == "UNVERIFIED" }
       ahead = branch ? capture("git", "-C", MAIN_ROOT, "rev-list", "--count", "origin/main..#{branch}").strip.to_i : 0
       if open_pr
         [:keep, "pull request ##{open_pr["number"]} still open"]
       elsif merged
         [:remove, "clean, pull request ##{merged["number"]} merged"]
+      elsif unverified
+        [:ask, "clean, pull request ##{unverified["number"]} merged, but the branch has commits it never had"]
       elsif ahead.zero?
         # A worktree prepared for work that has not started yet is
         # indistinguishable from one whose work is finished, so this never

@@ -137,7 +137,13 @@ that resolves outside `.worktrees/`.
 and `git branch --merged` cannot see it. The pull request's state is the only reliable
 evidence that the work landed, which is why the audit joins against one `gh pr list`.
 
-- merged pull request → `DROP`
+- merged pull request → `DROP`. A branch named `pr-<N>` or `pr<N>` with no pull request
+  under its own name is matched to pull request `#<N>`, since a pull request checked out
+  under a local name shares no head ref with it. The name alone proves nothing about
+  commits added after the checkout, so the merge only counts when `git cherry` finds every
+  commit of the branch in the pull request's head (fetched as `refs/pull/<N>/head` if
+  missing); otherwise it is an `ASK`. A branch stacked on another pull request stays an
+  `ASK` too: its base commits reached `main` through the other squash.
 - no commits beyond `origin/main` → `DROP` (nothing to lose)
 - open pull request, or checked out in a worktree → `keep`
 - `main` and `parked/*` → `keep`, never offered. `parked/visual-baselines` is the only
