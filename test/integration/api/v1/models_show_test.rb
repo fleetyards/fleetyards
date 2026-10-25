@@ -25,6 +25,24 @@ class Api::V1::ModelsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models/:slug shows a ship without a store image by its angled view" do
+    model = create(:model)
+    model.angled_view.attach(io: file_fixture("test.png").open, filename: "angled.png", content_type: "image/png")
+
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      assert_equal model.reload.angled_view.blob.signed_id, parsed_body.dig("media", "storeImage", "signedId")
+    end
+  end
+
+  test "GET /models/:slug prefers the store image over the angled view" do
+    model = create(:model, :with_store_image)
+    model.angled_view.attach(io: file_fixture("test.png").open, filename: "angled.png", content_type: "image/png")
+
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      assert_equal model.reload.store_image.blob.signed_id, parsed_body.dig("media", "storeImage", "signedId")
+    end
+  end
+
   test "GET /models/:slug serves the beds and weapon racks its rooms hold, and no lockers" do
     racks = [{"key" => "Weapon_Rack_Test", "count" => 2, "slots" => [
       {"min_size" => 0, "max_size" => 1, "types" => [{"type" => "WeaponPersonal", "sub_types" => ["Gadget"]}], "required_tags" => ["multitool"]},

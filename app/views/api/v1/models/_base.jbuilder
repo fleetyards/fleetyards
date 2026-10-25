@@ -145,7 +145,7 @@ json.media do
     json.partial! "api/v1/shared/file", record: model, attr: :port_view_colored
   end
   json.store_image do
-    json.partial! "api/v1/shared/file", record: model, attr: :store_image
+    json.partial! "api/v1/shared/file", record: model, attr: model.display_image_attr || :store_image
   end
   json.top_view do
     json.partial! "api/v1/shared/file", record: model, attr: :top_view

@@ -5,9 +5,9 @@ json.name model.name
 json.slug model.slug
 json.manufacturer_name model.manufacturer&.name
 
-if model.store_image.attached?
+if model.display_image_attr
   json.store_image do
-    json.partial! "api/v1/shared/file", record: model, attr: :store_image
+    json.partial! "api/v1/shared/file", record: model, attr: model.display_image_attr
   end
 end
 

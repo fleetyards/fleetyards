@@ -24,9 +24,9 @@ json.carried_by @model.carried_by_with_docks do |entry|
 
   # Absent rather than empty when the carrier has no picture: MediaFile requires
   # four fields, and the panel falls back on its own.
-  if carrier.store_image.attached?
+  if carrier.display_image_attr
     json.store_image do
-      json.partial! "api/v1/shared/file", record: carrier, attr: :store_image
+      json.partial! "api/v1/shared/file", record: carrier, attr: carrier.display_image_attr
     end
   end
 end
