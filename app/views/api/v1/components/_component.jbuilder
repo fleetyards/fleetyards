@@ -15,5 +15,7 @@ json.cache! [
   "v10", I18n.locale, component, ::ScData::Source.current, component.item_prices_cache_key,
   ItemPrice.cache_key_for("Component"), Manufacturer.artwork_version, extended
 ] do
-  json.partial!("api/v1/components/base", component:, extended:)
+  # Only the list asks for the angled view: a hardpoint tree renders the same
+  # partial for every slot without preloading the render.
+  json.partial!("api/v1/components/base", component:, extended:, views: %i[angled_view])
 end

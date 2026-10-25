@@ -61,6 +61,19 @@ class Api::V1::ModelsHardpointsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # A ship has dozens of slots and the tree does not preload any render, so the
+  # angled view stays on the component list.
+  test "GET /models/:slug/hardpoints leaves the angled view off a slot's component" do
+    model = create(:model)
+    gun = create(:component, name: "Turret Gun")
+    gun.angled_view.attach(io: file_fixture("test.png").open, filename: "angled.png", content_type: "image/png")
+    create(:hardpoint, parent: model, sc_name: "hardpoint_gun", source: :game_files, component: gun)
+
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      assert_not parsed_body.sole.dig("component", "media").key?("angledView")
+    end
+  end
+
   # A slot the build does not describe stops being offered. It keeps its row --
   # once the cleanup stops destroying, that is what makes a retired port
   # survivable -- but it is not part of this ship's loadout any more.
