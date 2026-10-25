@@ -101,6 +101,17 @@ module ScData
         assert_nil parsed.fetch("mannequin_displaycore")["item_type"]
       end
 
+      test "reads a garment whose header rates it as armour as the garment" do
+        write_equipment("thp_jacket_01_01_01", name: "@item_Name_thp_jacket_01_01_01",
+          type: "Char_Clothing_Torso_1", description: "@item_Desc_thp_jacket_01_01_01")
+        @parser.translations = {
+          "item_Name_thp_jacket_01_01_01" => "Field Jacket",
+          "item_Desc_thp_jacket_01_01_01" => "Item Type: Heavy Armor\\n\\nWarm."
+        }
+
+        assert_equal %w[clothing jacket], parsed.fetch("thp_jacket_01_01_01").values_at("equipment_type", "item_type")
+      end
+
       test "reads undescribed armour by the weight its key names, as the described armour reads" do
         {
           "kap_combat_heavy_arms_02_03_01" => "Char_Armor_Arms",

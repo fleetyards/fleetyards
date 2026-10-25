@@ -293,8 +293,11 @@ module ScData
 
         # The description header is written by hand and says "Assault Rifle"
         # where the record key only says "rifle", so it wins where it exists --
-        # bar a picked record, whose header would call a flare a grenade.
-        item_type = picked_item_type || described[:item_type] || carried_item_type || (item_type(segments, worn_type, slot) unless item.key?(:carried))
+        # bar a picked record, whose header would call a flare a grenade, and a
+        # garment whose header rates it as armour: a jacket listed under
+        # clothing reads as a jacket, not as the one "Heavy Armor" among them.
+        described_type = described[:item_type] unless worn_type == "clothing" && described[:item_type].to_s.end_with?("_armor")
+        item_type = picked_item_type || described_type || carried_item_type || (item_type(segments, worn_type, slot) unless item.key?(:carried))
 
         {
           key:,
