@@ -177,9 +177,11 @@ module Contracts
 
     # What the reward is divided by when the contract settles. A rate pays each
     # contractor on their own goods, so it divides by what they delivered; a
-    # fixed reward divides by the lines' fractions.
+    # fixed reward divides by the lines' fractions. The author of a personal
+    # contract pays it, so their own deliveries earn them no share.
     def payout_weights
-      @contract.reward_per_unit? ? counted_quantities : weights
+      payout = @contract.reward_per_unit? ? counted_quantities : weights
+      @contract.personal? ? payout.except(@contract.created_by_id) : payout
     end
 
     private def build_line(item, counted, picked_up)

@@ -340,6 +340,16 @@ module Contracts
       assert_equal({@contractor.id => 800.to_d, crew.id => 100.to_d}, progress.payout_weights)
     end
 
+    test "the author of a personal contract earns no share of what they pay" do
+      author = @contract.created_by
+      @contract.update!(destination_fleet_inventory: nil,
+        destination_inventory: create(:inventory, holder: author))
+      Contracts::Progress.any_instance.stubs(:weights)
+        .returns({author.id => 1.to_d, @contractor.id => 1.to_d})
+
+      assert_equal({@contractor.id => 1.to_d}, progress.payout_weights)
+    end
+
     private def progress
       Contracts::Progress.new(@contract.reload)
     end
