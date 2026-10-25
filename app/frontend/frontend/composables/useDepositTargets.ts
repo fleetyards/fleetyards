@@ -2,12 +2,14 @@ import type { MaybeRefOrGetter } from "vue";
 import { useQueries } from "@tanstack/vue-query";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFeatures } from "@/frontend/composables/useFeatures";
+import { fleetSubscriptionRequired } from "@/frontend/composables/useFleetSubscription";
 import type {
   FleetInventoryTarget,
   InventoryTarget,
 } from "@/frontend/types/logistics";
 import {
   FeatureFlagName,
+  FleetMembershipStatusEnum,
   type FilterOption,
   getFleetInventoriesQueryOptions,
   getFleetMembershipQueryOptions,
@@ -24,14 +26,14 @@ type Entry = { option: FilterOption; target: DepositTarget };
  * of them: their own and their ships' holds first, then each fleet's, grouped
  * by owner.
  *
- * A fleet is asked for its inventories only where the reader's membership may
- * update them. The API answers the rest -- a fleet without logistics, or
- * without the subscription, refuses, and an inventory hidden from the reader is
- * never listed -- so a fleet that refuses simply offers nothing.
+ * A fleet is asked for its inventories only where it runs logistics, needs no
+ * subscription it lacks, and the reader's accepted membership may update them.
+ * The API hides the inventories the reader may not see, and a fleet that still
+ * refuses simply offers nothing.
  */
 export const useDepositTargets = (enabled: MaybeRefOrGetter<boolean>) => {
   const { t } = useI18n();
-  const { isFeatureEnabled } = useFeatures();
+  const { isFeatureEnabled, isFleetFeatureEnabled } = useFeatures();
 
   const hangarEnabled = computed(
     () =>
@@ -50,7 +52,13 @@ export const useDepositTargets = (enabled: MaybeRefOrGetter<boolean>) => {
     query: { enabled: fleetEnabled, retry: false },
   });
 
-  const fleetList = computed(() => fleets.data.value ?? []);
+  const fleetList = computed(() =>
+    (fleets.data.value ?? []).filter(
+      (fleet) =>
+        isFleetFeatureEnabled(fleet, FeatureFlagName.FLEET_LOGISTICS) &&
+        !fleetSubscriptionRequired(fleet, isFleetFeatureEnabled),
+    ),
+  );
 
   const memberships = useQueries({
     queries: computed(() =>
@@ -63,10 +71,14 @@ export const useDepositTargets = (enabled: MaybeRefOrGetter<boolean>) => {
   });
 
   const depositFleets = computed(() =>
-    fleetList.value.filter(
-      (_, at) =>
-        memberships.value[at]?.data?.capabilities?.updateInventories ?? false,
-    ),
+    fleetList.value.filter((_, at) => {
+      const membership = memberships.value[at]?.data;
+
+      return (
+        membership?.status === FleetMembershipStatusEnum.ACCEPTED &&
+        (membership.capabilities?.updateInventories ?? false)
+      );
+    }),
   );
 
   const fleetInventories = useQueries({
@@ -80,6 +92,15 @@ export const useDepositTargets = (enabled: MaybeRefOrGetter<boolean>) => {
       ),
     ),
   });
+
+  // The select sorts each group by label, so the entries are sorted the same
+  // way here: the first of them is then the one it shows on top.
+  const byLabel = (a: Entry, b: Entry) => {
+    if (a.option.label < b.option.label) return -1;
+    if (a.option.label > b.option.label) return 1;
+
+    return 0;
+  };
 
   // A ship's hold shares its slug with every other ship of its model, so each
   // option is keyed by the inventory's id and filed through the ship.
@@ -98,21 +119,23 @@ export const useDepositTargets = (enabled: MaybeRefOrGetter<boolean>) => {
     }));
 
     const shared = depositFleets.value.flatMap((fleet, at) =>
-      (fleetInventories.value[at]?.data?.items ?? []).map((inventory) => ({
-        option: {
-          value: inventory.id,
-          label: inventory.name,
-          category: fleet.name,
-        },
-        target: {
-          kind: "fleet",
-          fleetSlug: fleet.slug,
-          slug: inventory.slug,
-        } as const,
-      })),
+      (fleetInventories.value[at]?.data?.items ?? [])
+        .map((inventory) => ({
+          option: {
+            value: inventory.id,
+            label: inventory.name,
+            category: fleet.name,
+          },
+          target: {
+            kind: "fleet",
+            fleetSlug: fleet.slug,
+            slug: inventory.slug,
+          } as const,
+        }))
+        .sort(byLabel),
     );
 
-    return [...own, ...shared];
+    return [...own.sort(byLabel), ...shared];
   });
 
   const options = computed(() => entries.value.map((entry) => entry.option));
@@ -123,21 +146,32 @@ export const useDepositTargets = (enabled: MaybeRefOrGetter<boolean>) => {
   // Settled once every list asked for has answered, either way: a failed
   // request says nothing about whether there are inventories, so only a
   // complete set of answers with nothing in them is "none".
+  //
+  // The per-fleet lists are registered a tick after the list they hang off
+  // answers, so until then they count as unanswered, not as empty.
   const settled = computed(
     () =>
       (!hangarEnabled.value || !hangar.isPending.value) &&
       (!fleetEnabled.value ||
         (!fleets.isPending.value &&
+          memberships.value.length === fleetList.value.length &&
           memberships.value.every((result) => !result.isPending) &&
+          fleetInventories.value.length === depositFleets.value.length &&
           fleetInventories.value.every((result) => !result.isPending))),
   );
 
-  // A fleet refusing its inventories is expected, and is not a failure.
-  const failed = computed(() => hangar.isError.value || fleets.isError.value);
+  // A fleet refusing its inventories is not a failure; not knowing whether the
+  // reader may deposit there is.
+  const failed = computed(
+    () =>
+      hangar.isError.value ||
+      fleets.isError.value ||
+      memberships.value.some((result) => result.isError),
+  );
 
   const empty = computed(
     () => settled.value && !failed.value && !options.value.length,
   );
 
-  return { options, targetFor, empty };
+  return { options, targetFor, empty, hangarEnabled };
 };

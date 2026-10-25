@@ -8,7 +8,10 @@ const api = vi.hoisted(() => ({
   features: ["hangar_inventories", "fleet_logistics"],
   hangar: { items: [] as unknown[] } as { items: unknown[] } | Error,
   fleets: [] as { slug: string; name: string }[],
-  memberships: {} as Record<string, { capabilities: object } | Error>,
+  memberships: {} as Record<
+    string,
+    { status: string; capabilities: object } | Error
+  >,
   inventories: {} as Record<string, { items: unknown[] } | Error>,
   inventoryRequests: [] as string[],
 }));
@@ -19,6 +22,8 @@ const answer = <T>(value: T | Error) =>
 vi.mock("@/frontend/composables/useFeatures", () => ({
   useFeatures: () => ({
     isFeatureEnabled: (feature: string) => api.features.includes(feature),
+    isFleetFeatureEnabled: (_fleet: unknown, feature: string) =>
+      api.features.includes(feature),
   }),
 }));
 
@@ -100,13 +105,23 @@ beforeEach(() => {
   api.fleets = [
     { slug: "crew", name: "Crew" },
     { slug: "guests", name: "Guests" },
+    { slug: "applied", name: "Applied" },
   ];
   api.memberships = {
-    crew: { capabilities: { updateInventories: true } },
-    guests: { capabilities: { updateInventories: false } },
+    crew: { status: "accepted", capabilities: { updateInventories: true } },
+    guests: { status: "accepted", capabilities: { updateInventories: false } },
+    applied: {
+      status: "requested",
+      capabilities: { updateInventories: true },
+    },
   };
   api.inventories = {
-    crew: { items: [{ id: "inv-3", slug: "depot", name: "Depot" }] },
+    crew: {
+      items: [
+        { id: "inv-4", slug: "vault", name: "Vault" },
+        { id: "inv-3", slug: "depot", name: "Depot" },
+      ],
+    },
   };
   api.inventoryRequests = [];
 });
@@ -132,6 +147,7 @@ describe("useDepositTargets", () => {
         category: "labels.logistics.personalInventory",
       },
       { value: "inv-3", label: "Depot", category: "Crew" },
+      { value: "inv-4", label: "Vault", category: "Crew" },
     ]);
   });
 
@@ -148,6 +164,26 @@ describe("useDepositTargets", () => {
       fleetSlug: "crew",
       slug: "depot",
     });
+  });
+
+  // The select sorts each group by label; the first option has to be the one
+  // it shows on top, since that is the one preselected.
+  it("sorts each group by label", async () => {
+    api.hangar = {
+      items: [
+        { id: "inv-1", slug: "zeta", name: "Zeta Hold" },
+        { id: "inv-2", slug: "alpha", name: "Alpha Store" },
+      ],
+    };
+
+    const { options } = await mount();
+
+    expect(options.value.map((option) => option.label)).toEqual([
+      "Alpha Store",
+      "Zeta Hold",
+      "Depot",
+      "Vault",
+    ]);
   });
 
   it("asks only the fleets the reader may deposit into", async () => {
@@ -186,6 +222,15 @@ describe("useDepositTargets", () => {
     const { options, empty } = await mount();
 
     expect(options.value).toEqual([]);
+    expect(empty.value).toBe(false);
+  });
+
+  it("does not claim there are none when a membership lookup failed", async () => {
+    api.hangar = { items: [] };
+    api.memberships = { ...api.memberships, crew: new Error("500") };
+
+    const { empty } = await mount();
+
     expect(empty.value).toBe(false);
   });
 
