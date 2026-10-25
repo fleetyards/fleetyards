@@ -24,6 +24,9 @@ module V1
               # they agree on one. A position's own name is whatever the
               # owner typed, so this is the only thing a caller can match on.
               item: ::V1::Schemas::InventoryStockItemRef,
+              # That record's picture: a component or a piece of equipment by
+              # its angled render, falling back to the store image.
+              image: ::Shared::V1::Schemas::MediaFile,
               # Present on a crafted part only.
               crafted: ::V1::Schemas::InventoryCraftedRef,
               inventory: ::V1::Schemas::InventoryRef

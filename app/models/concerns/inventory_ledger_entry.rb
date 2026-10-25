@@ -96,8 +96,21 @@ module InventoryLedgerEntry
       .filter_map { |position| [position.item_type, position.item_id] if position.try(:item_id).present? }
       .select { |item_type, _| item_type.in?(ITEM_TYPES) }
       .group_by(&:first)
-      .flat_map { |item_type, pairs| item_type.constantize.where(id: pairs.map(&:last)).to_a }
+      .flat_map { |item_type, pairs| linked_items_scope(item_type.constantize).where(id: pairs.map(&:last)).to_a }
       .index_by { |record| [record.class.name, record.id] }
+  end
+
+  # Each record comes with the attachments its picture is read from.
+  def self.linked_items_scope(klass)
+    (klass < ItemViews) ? klass.includes(ItemViews::DISPLAY_IMAGE_PRELOAD) : klass.with_attached_store_image
+  end
+
+  # A component or a piece of equipment is shown by its angled render where it
+  # has one; a commodity has only the store image.
+  def self.item_image_attr(item)
+    return item.angled_image_attr if item.respond_to?(:angled_image_attr)
+
+    :store_image if item.respond_to?(:store_image) && item.store_image.attached?
   end
 
   # The recipes the crafted lots among these rows were made from, in one
@@ -282,12 +295,8 @@ module InventoryLedgerEntry
     item.public_send(attr) if attr
   end
 
-  # A component or a piece of equipment without a store image is shown by its
-  # angled render; a commodity has only the store image.
   def item_image_attr
-    return item.display_image_attr if item.respond_to?(:display_image_attr)
-
-    :store_image if item.respond_to?(:store_image) && item.store_image.attached?
+    InventoryLedgerEntry.item_image_attr(item)
   end
 
   # Reading `item` constantizes item_type, so both the name default and the

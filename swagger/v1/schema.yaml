@@ -29394,6 +29394,8 @@ components:
           type: number
         item:
           "$ref": "#/components/schemas/InventoryStockItemRef"
+        image:
+          "$ref": "#/components/schemas/MediaFile"
         crafted:
           "$ref": "#/components/schemas/InventoryCraftedRef"
         inventory:
@@ -33285,6 +33287,8 @@ components:
           type: number
         item:
           "$ref": "#/components/schemas/InventoryStockItemRef"
+        image:
+          "$ref": "#/components/schemas/MediaFile"
         crafted:
           "$ref": "#/components/schemas/InventoryCraftedRef"
         inventory:

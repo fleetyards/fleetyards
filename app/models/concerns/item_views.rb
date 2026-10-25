@@ -38,4 +38,14 @@ module ItemViews
       :angled_view
     end
   end
+
+  # What a list that sets items side by side shows each by: the angled render,
+  # which draws every item from the same angle, or the store image without one.
+  def angled_image_attr
+    if angled_view.attached?
+      :angled_view
+    elsif store_image.attached?
+      :store_image
+    end
+  end
 end

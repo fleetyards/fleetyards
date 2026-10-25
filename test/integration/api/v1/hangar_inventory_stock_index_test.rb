@@ -72,6 +72,20 @@ class Api::V1::HangarInventoryStockIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hangar/inventories/:slug/stock pictures an item by its angled view" do
+    rifle = create(:equipment, name: "P4-AR Rifle")
+    rifle.store_image.attach(io: file_fixture("test.png").open, filename: "store.png", content_type: "image/png")
+    rifle.angled_view.attach(io: file_fixture("test.png").open, filename: "angled.png", content_type: "image/png")
+    create(:inventory_item, inventory: @inventory, name: "P4-AR Rifle", category: :weapon, quantity: 1,
+      unit: :units, entry_type: :deposit, item: rifle)
+    sign_in @user
+
+    assert_api_response :get, 200, path_params: {hangarInventorySlug: @inventory.slug} do
+      assert_equal "angled.png", parsed_body.find { |d| d["name"] == "P4-AR Rifle" }.dig("image", "name")
+      assert_not parsed_body.find { |d| d["name"] == "Quantanium" }.key?("image")
+    end
+  end
+
   # A hidden variant has no public page, so the row must not offer a link to one.
   test "GET /hangar/inventories/:slug/stock marks an item the catalogue leaves out" do
     skin = create(:equipment, :hidden, name: "P4-AR Boneyard")
