@@ -32,5 +32,8 @@
     "x": 0.0325,
     "y": 0.16,
     "z": 0.0325
-  }
+  },
+  "family_key": null,
+  "required_tags": null,
+  "ports": null
 }

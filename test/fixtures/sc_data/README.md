@@ -31,6 +31,9 @@ real shape. Each one is present for a reason:
 | `items/rsi_apollo_module_left_tier_2.json` | a module item with no `loadout` at all, which the module load must not resolve |
 | `equipment/behr_rifle_ballistic_01.json` | names a manufacturer_ref the manufacturers tree carries |
 | `equipment/gys_helmet_03_01_01.json` | carries a volume and the box it fills |
+| `equipment/behr_rifle_ballistic_01_white02.json` | a skin filed under the rifle's family |
+| `equipment/behr_optics_tsco_x4_s2.json` | a sight the rifle's optics port takes |
+| `equipment/lbco_optics_tsco_x16_s3.json` | a sight too big for it |
 | `manufacturers/beh.json` | Behring, the maker the rifle points at, and it names a logo |
 | `icons/**/paint_100i_flame_black_orange_icon.png` | the artwork the paint names, under the `.tif` path the export writes |
 | `icons/**/behring_256.png` | Behring's logo, same |
@@ -44,7 +47,7 @@ The later catalogues are curated the same way, by branch rather than by volume:
 | `manufacturers/` | `sasu` and `roo` are both Sakura Sun, which is the de-duplication; `roo` names no logo where `sasu` does, which is the load-order trap; `mxox`, `prar` and `aeg` the corrected names; `taln` the icon every artwork test attaches |
 | `blueprints/` + `blueprint_pools/` | two recipes and the Foxwell pool that hands one of them out, so a load walks the source side as well as the recipe side |
 | `locations/` | Stanton down to Lorville, where the map parent is the parent; Nyx down to Levski, drawn under the Nyx star while it sits in Delamar; the two Outpost 54 facilities on Aberdeen, which share a name and a parent; Pyro down to PYR2 L4, the place the Firesale contracts' templates stand for |
-| `equipment/` | a rifle and its magazine, two medical consumables, a keycard, the template that borrows a name, a helmet, an armour suit, three skins and a dev copy, and `behr_ltp_kinetic_01`, the unmeasured placeholder that has to stay blank |
+| `equipment/` | a rifle, a skin of it and its magazine, two sights, two medical consumables, a keycard, the template that borrows a name, a helmet, an armour suit, three skins and a dev copy, and `behr_ltp_kinetic_01`, the unmeasured placeholder that has to stay blank |
 
 `parsed/empty/` is a second environment holding nothing at all — what a build
 whose files failed to sync looks like from a loader's side.
