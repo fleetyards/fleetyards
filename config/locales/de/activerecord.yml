@@ -62,6 +62,7 @@ de:
           flair: Flair
           hacking_tool: Hacking-Werkzeug
           medical: Medizinisch
+          mine: Mine
           mining_gadget: Bergbau-Gadget
           sustenance: Essen & Trinken
           tool: Werkzeug
@@ -116,7 +117,6 @@ de:
           medium_armor: Mittlere Panzerung
           medium_backpack: Medium Backpack
           mining_gadget: Bergbau-Gadget
-          mining_tool: Bergbauwerkzeug
           missile_launcher: Raketenwerfer
           mobiglas_casing: mobiGlas-Gehäuse
           multitool: Multitool

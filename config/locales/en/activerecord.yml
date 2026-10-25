@@ -62,6 +62,7 @@ en:
           flair: Flair
           hacking_tool: Hacking Tool
           medical: Medical
+          mine: Mine
           mining_gadget: Mining Gadget
           sustenance: Food & Drink
           tool: Tool
@@ -116,7 +117,6 @@ en:
           medium_armor: Medium Armor
           medium_backpack: Medium Backpack
           mining_gadget: Mining Gadget
-          mining_tool: Mining Tool
           missile_launcher: Missile Launcher
           mobiglas_casing: mobiGlas Casing
           multitool: Multitool
