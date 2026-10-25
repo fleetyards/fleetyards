@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import AppIcon from "@/shared/components/AppIcon/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import ListToolbar from "@/shared/components/base/ListToolbar/index.vue";
 import { useSortParam } from "@/shared/composables/useSortParam";
@@ -183,7 +184,7 @@ onUnmounted(() => {
           :data-test="`contracts-scope-${option.key}`"
           mobile-icon-only
         >
-          <i :class="option.icon" />
+          <AppIcon :icon="option.icon" />
           {{ t(`labels.fleets.contracts.scopes.${option.key}`) }}
         </Btn>
       </BtnGroup>

@@ -1,4 +1,6 @@
 import { FleetContractStateEnum } from "@/services/fyApi";
+import { type Icon } from "@/shared/components/DuotoneGlyph/glyph";
+import { FLEET_GLYPH } from "@/shared/glyphs/fleets";
 
 /*
  * The four boards, as one page's filter rather than four pages: they differ in
@@ -83,13 +85,13 @@ export const contractBoardViewFrom = (value: unknown): ContractBoardView =>
 export type ContractScope = {
   key: "all" | "personal" | "fleet";
   personal?: boolean;
-  icon: string;
+  icon: Icon;
 };
 
 export const CONTRACT_SCOPES: ContractScope[] = [
   { key: "all", icon: "fa-light fa-layer-group" },
   { key: "personal", personal: true, icon: "fa-light fa-user" },
-  { key: "fleet", personal: false, icon: "fa-light fa-people-group" },
+  { key: "fleet", personal: false, icon: FLEET_GLYPH },
 ];
 
 export const contractScopeFrom = (value: unknown): ContractScope =>
