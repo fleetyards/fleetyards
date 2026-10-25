@@ -47,10 +47,12 @@ class AnnouncementDelivery < ApplicationRecord
   # to someone else's API.
   ENGAGEMENT_WINDOW = 30.days
 
-  # Hourly while a post is fresh and still moving, daily after that.
+  # Hourly while a post is fresh and still moving, daily after that. Daily is
+  # 24 elapsed hours: a calendar day in Berlin is 25 on the day clocks go back,
+  # and the sweep would skip a post refreshed exactly a day earlier.
   ENGAGEMENT_FRESH_AGE = 2.days
   ENGAGEMENT_FRESH_INTERVAL = 1.hour
-  ENGAGEMENT_SETTLED_INTERVAL = 1.day
+  ENGAGEMENT_SETTLED_INTERVAL = 24.hours
 
   # The sweep runs on the hour, and a refresh lands a few seconds past it. Held
   # to the exact interval, the next sweep would find it a few seconds short and
