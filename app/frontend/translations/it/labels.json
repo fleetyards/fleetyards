@@ -4210,6 +4210,16 @@
         "name": "Nome",
         "manufacturer": "Produttore",
         "retired": "Non più presente nella build attuale",
+        "standard": "Di serie",
+        "ports": {
+          "Magazine": "Caricatore",
+          "IronSight": "Ottica",
+          "Barrel": "Canna",
+          "BottomAttachment": "Sottocanna",
+          "Utility": "Moduli",
+          "Missile": "Missili",
+          "other": "Altro"
+        },
         "noMetrics": "Nessun dato registrato per questo oggetto.",
         "availability": {
           "retired": "I prezzi sono rilevati per la build su cui si trova il catalogo, e questo oggetto non ne fa parte.",

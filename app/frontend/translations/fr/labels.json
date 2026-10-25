@@ -4210,6 +4210,16 @@
         "name": "Nom",
         "manufacturer": "Fabricant",
         "retired": "Absent de la version actuelle",
+        "standard": "De série",
+        "ports": {
+          "Magazine": "Chargeur",
+          "IronSight": "Optique",
+          "Barrel": "Canon",
+          "BottomAttachment": "Sous le canon",
+          "Utility": "Modules",
+          "Missile": "Missiles",
+          "other": "Autres"
+        },
         "noMetrics": "Aucune donnée n'est enregistrée pour cet objet.",
         "availability": {
           "retired": "Les prix sont suivis pour la version sur laquelle est le catalogue, et cet objet n'en fait pas partie.",

@@ -101,6 +101,13 @@
     min-width: 0;
   }
 
+  &__ports {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 22px;
+    align-items: start;
+  }
+
   &__link-row {
     transition: color 150ms ease;
 

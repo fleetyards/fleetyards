@@ -1,13 +1,25 @@
 import { describe, it, expect, vi } from "vitest";
 import { mount } from "@vue/test-utils";
 import { createRouter, createMemoryHistory } from "vue-router";
-import { EquipmentTypeEnum, type Equipment } from "@/services/fyApi";
+import {
+  EquipmentTypeEnum,
+  type Equipment,
+  type EquipmentAttachment,
+} from "@/services/fyApi";
 
 const item = vi.hoisted(() => ({ value: undefined as unknown }));
+const related = vi.hoisted(() => ({
+  versions: [] as unknown[],
+  attachments: [] as unknown[],
+  weapons: [] as unknown[],
+}));
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@/services/fyApi")>()),
   useEquipmentItem: () => ({ data: ref(item.value) }),
+  useEquipmentItemVersions: () => ({ data: ref(related.versions) }),
+  useEquipmentItemAttachments: () => ({ data: ref(related.attachments) }),
+  useEquipmentItemWeapons: () => ({ data: ref(related.weapons) }),
   useBlueprints: () => ({ data: ref({ items: [] }), isPending: ref(false) }),
   useBlueprint: () => ({
     data: ref(undefined),
@@ -51,8 +63,20 @@ const record = (overrides: Partial<Equipment> = {}): Equipment =>
     ...overrides,
   }) as Equipment;
 
-const mountPage = async (equipment: Equipment) => {
+const mountPage = async (
+  equipment: Equipment,
+  {
+    versions = [],
+    attachments = [],
+    weapons = [],
+  }: {
+    versions?: Equipment[];
+    attachments?: EquipmentAttachment[];
+    weapons?: Equipment[];
+  } = {},
+) => {
   item.value = equipment;
+  Object.assign(related, { versions, attachments, weapons });
 
   const router = createRouter({
     history: createMemoryHistory(),
@@ -84,7 +108,10 @@ const mountPage = async (equipment: Equipment) => {
         EquipmentStatsCard: true,
         ItemViews: true,
         CatalogueItemPopover: true,
-        MetricsCard: { template: "<section><slot /></section>" },
+        MetricsCard: {
+          props: ["title"],
+          template: "<section><h3>{{ title }}</h3><slot /></section>",
+        },
       },
     },
   });
@@ -101,6 +128,77 @@ describe("EquipmentPage", () => {
     expect(
       wrapper.find("[data-test='equipment-image']").attributes("src"),
     ).toBe("https://example.test/large.jpg");
+  });
+
+  it("lists the item's other versions", async () => {
+    const wrapper = await mountPage(record(), {
+      versions: [
+        record({ id: "e2", name: 'P4-AR "Boneyard" Rifle', slug: "boneyard" }),
+      ],
+    });
+
+    expect(
+      wrapper.find("[data-test='equipment-versions'] a").attributes("href"),
+    ).toBe("/equipment/boneyard/");
+  });
+
+  it("groups a weapon's attachments by port and marks what it ships with", async () => {
+    const fit = (portType: string, name: string, isDefault = false) =>
+      ({
+        portType,
+        default: isDefault,
+        attachment: record({
+          id: name,
+          name,
+          slug: name.toLowerCase(),
+          equipmentType: EquipmentTypeEnum.WEAPON_ATTACHMENT,
+        }),
+      }) as EquipmentAttachment;
+
+    const wrapper = await mountPage(record(), {
+      attachments: [
+        fit("Magazine", "Mag", true),
+        fit("IronSight", "Delta"),
+        fit("IronSight", "Gamma"),
+        fit("SomethingNew", "Odd"),
+      ],
+    });
+
+    const cards = wrapper.findAll(
+      "[data-test='equipment-attachments'] section",
+    );
+
+    expect(cards.map((card) => card.find("h3").text())).toEqual([
+      "labels.equipment.ports.Magazine",
+      "labels.equipment.ports.IronSight",
+      "labels.equipment.ports.other",
+    ]);
+    expect(cards[0].text()).toContain("labels.equipment.standard");
+    expect(cards[1].findAll("a")).toHaveLength(2);
+    expect(cards[1].text()).not.toContain("labels.equipment.standard");
+  });
+
+  it("lists the weapons an attachment fits rather than ports", async () => {
+    const wrapper = await mountPage(
+      record({ equipmentType: EquipmentTypeEnum.WEAPON_ATTACHMENT }),
+      {
+        attachments: [
+          {
+            portType: "Magazine",
+            default: false,
+            attachment: record(),
+          } as EquipmentAttachment,
+        ],
+        weapons: [record({ id: "w1", name: "Gallant Rifle", slug: "gallant" })],
+      },
+    );
+
+    expect(wrapper.find("[data-test='equipment-attachments']").exists()).toBe(
+      false,
+    );
+    expect(
+      wrapper.find("[data-test='equipment-weapons'] a").attributes("href"),
+    ).toBe("/equipment/gallant/");
   });
 
   it("leaves the image out without a store image", async () => {
