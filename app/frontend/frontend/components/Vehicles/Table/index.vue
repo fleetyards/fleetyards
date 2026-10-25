@@ -81,7 +81,7 @@ const sustainedRange = (record: Vehicle) => {
   const min = firepower(record.sustainedDpsMin);
   const max = firepower(record.sustainedDpsMax);
 
-  return min === max ? max : `${min}–${max}`;
+  return !min || min === max ? max : `${min}–${max}`;
 };
 
 // Held here unless the page binds it: a table on its own keeps its selection
