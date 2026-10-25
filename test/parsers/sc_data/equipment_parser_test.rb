@@ -140,6 +140,26 @@ module ScData
         assert_equal "grenade", parsed.fetch("ksar_gren_frag_01")["item_type"]
       end
 
+      test "files the hand-held gadgets the game calls weapons as tools" do
+        write_equipment("grin_multitool_01", name: "@item_Name_grin_multitool_01",
+          path: "entities/scitem/weapons/fps_weapons", type: "WeaponPersonal", sub_type: "Gadget")
+        write_equipment("crlf_medgun_01", name: "@item_Name_crlf_medgun_01",
+          path: "entities/scitem/weapons/fps_weapons", type: "WeaponPersonal", sub_type: "Small",
+          description: "@item_Desc_crlf_medgun_01")
+        write_equipment("behr_ltp_kinetic_01", name: "@item_Name_behr_ltp_kinetic_01",
+          path: "entities/scitem/weapons/fps_weapons", type: "WeaponPersonal", sub_type: "Small")
+        @parser.translations = {
+          "item_Name_grin_multitool_01" => "Pyro RYT Multi-Tool",
+          "item_Name_crlf_medgun_01" => "ParaMed Medical Device",
+          "item_Desc_crlf_medgun_01" => "Item Type: Medical Device\\n\\nHeals.",
+          "item_Name_behr_ltp_kinetic_01" => "ADO-5 Laser Mine"
+        }
+
+        assert_equal %w[tool multitool], parsed.fetch("grin_multitool_01").values_at("equipment_type", "item_type")
+        assert_equal %w[tool medical_device], parsed.fetch("crlf_medgun_01").values_at("equipment_type", "item_type")
+        assert_equal %w[weapon mine], parsed.fetch("behr_ltp_kinetic_01").values_at("equipment_type", "item_type")
+      end
+
       test "reads the flares and tool cases among the props by their key" do
         write_equipment("carryable_1h_cu_glowstick_blue", name: "@item_Nameun_portable_light_1_a_cyan",
           path: "entities/scitem/flair/carryables", type: "WeaponPersonal", description: "@item_Desc_flare")

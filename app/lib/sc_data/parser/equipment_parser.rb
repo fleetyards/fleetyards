@@ -79,6 +79,13 @@ module ScData
         "Light" => "tool"
       }.freeze
 
+      # Hand-held gadgets the game files as personal weapons: the multitool,
+      # tractor beam, fire extinguisher, rangefinder and Cambio SRT carry the
+      # Gadget subtype, and the ParaMed only says what it is in its header. A
+      # player browsing weapons has no use for them; one browsing tools does.
+      TOOL_SUB_TYPES = %w[Gadget].freeze
+      TOOL_ITEM_TYPES = %w[medical_device].freeze
+
       # The record key reads manufacturer_class_damage_index, so the second
       # segment names the class. Anything not listed keeps the raw segment
       # rather than being forced into a neighbour.
@@ -87,7 +94,7 @@ module ScData
         "glauncher" => "grenade_launcher",
         "optics" => "weapon_scope",
         "ubarrel" => "underbarrel",
-        "ltp" => "mining_tool",
+        "ltp" => "mine",
         "medgun" => "medical_tool",
         "gren" => "grenade"
       }.freeze
@@ -284,17 +291,19 @@ module ScData
           return if picked_type.blank?
         end
 
+        # The description header is written by hand and says "Assault Rifle"
+        # where the record key only says "rifle", so it wins where it exists --
+        # bar a picked record, whose header would call a flare a grenade.
+        item_type = picked_item_type || described[:item_type] || carried_item_type || (item_type(segments, worn_type, slot) unless item.key?(:carried))
+
         {
           key:,
           ref: value_or_nil(values.dig("__ref")),
           name: value_or_nil(name),
           description: described[:description],
-          equipment_type: picked_type || worn_type || carried_type || EQUIPMENT_TYPES[attach_def["Type"]],
+          equipment_type: picked_type || worn_type || carried_type || equipment_type(attach_def, item_type),
           slot:,
-          # The description header is written by hand and says "Assault Rifle"
-          # where the record key only says "rifle", so it wins where it exists --
-          # bar a picked record, whose header would call a flare a grenade.
-          item_type: picked_item_type || described[:item_type] || carried_item_type || (item_type(segments, worn_type, slot) unless item.key?(:carried)),
+          item_type:,
           weapon_class: described[:weapon_class] || WEAPON_CLASSES.find { |klass| segments.include?(klass) },
           rate_of_fire: described[:rate_of_fire],
           range: described[:range],
@@ -315,6 +324,15 @@ module ScData
           hidden: variant?(key),
           **occupancy(attach_def)
         }
+      end
+
+      private def equipment_type(attach_def, item_type)
+        type = EQUIPMENT_TYPES[attach_def["Type"]]
+
+        return type unless type == "weapon"
+        return "tool" if TOOL_SUB_TYPES.include?(attach_def["SubType"]) || TOOL_ITEM_TYPES.include?(item_type)
+
+        type
       end
 
       private def carried_types(item, attach_def, values)
