@@ -247,9 +247,15 @@ const list = ref<HTMLElement>();
  * would snap it from a spinner's height to a list's. Measured either side of
  * the render and animated between, leaving no inline height behind.
  */
+let heightAnimation: Animation | undefined;
+
 watch(
   () => props.loading,
   async (loading, wasLoading) => {
+    // A slot switched mid-animation starts over from where the panel stands.
+    heightAnimation?.cancel();
+    heightAnimation = undefined;
+
     const element = root.value;
     if (loading || !wasLoading || !element) return;
     if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
@@ -261,7 +267,7 @@ watch(
     const to = element.offsetHeight;
     if (from === to || typeof element.animate !== "function") return;
 
-    element.animate(
+    heightAnimation = element.animate(
       [
         { height: `${from}px`, overflow: "hidden" },
         { height: `${to}px`, overflow: "hidden" },
