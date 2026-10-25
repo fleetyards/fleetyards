@@ -95,7 +95,7 @@ module Admin
           authorize! with: ::Admin::SupporterContributionPolicy
 
           SupporterContribution.transaction do
-            @count = SupporterContribution.where(id: bulk_ids).destroy_all.size
+            @count = SupporterContribution.where(id: bulk_ids).destroy_all.count(&:destroyed?)
           end
 
           render :bulk
