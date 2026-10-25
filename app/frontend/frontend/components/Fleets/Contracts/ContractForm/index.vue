@@ -215,6 +215,15 @@ const paysReward = computed(
 const perUnit = computed(
   () => rewardType.value === FleetContractRewardTypeEnum.PER_UNIT,
 );
+
+// A total and a rate are not the same number: 120000 kept as a rate would pay
+// 120000 for every SCU. Switching between them asks for the amount again.
+watch(rewardType, (next, previous) => {
+  const paid = (value: unknown) =>
+    !!value && value !== FleetContractRewardTypeEnum.NONE;
+
+  if (paid(previous) && paid(next) && next !== previous) reward.value = "";
+});
 const [reimburseExpenses] = defineField("reimburseExpenses");
 const [crewLimit, crewLimitProps] = defineField("crewLimit");
 const [visibility, visibilityProps] = defineField("visibility");

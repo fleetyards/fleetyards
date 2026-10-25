@@ -466,6 +466,25 @@ describe("ContractForm reward", () => {
     );
   });
 
+  it("asks for the amount again when a total becomes a rate", async () => {
+    updateMutation.mockClear();
+    const wrapper = mountForm({
+      slug: "job-1",
+      kind: "procurement",
+      rewardType: "fixed",
+      reward: "120000.0",
+    });
+
+    await select(wrapper, "rewardType").vm.$emit(
+      "update:modelValue",
+      "per_unit",
+    );
+
+    const { data } = await submitted(wrapper);
+
+    expect(data.reward).toBe("");
+  });
+
   it("sends no amount for a contract that pays nothing", async () => {
     updateMutation.mockClear();
     const wrapper = mountForm({
