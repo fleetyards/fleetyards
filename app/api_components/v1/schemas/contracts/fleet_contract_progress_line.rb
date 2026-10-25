@@ -18,6 +18,8 @@ module V1
             unit: ::V1::Schemas::Enums::InventoryUnitEnum,
             quality: {type: [:integer, :null]},
             qualityMatch: ::V1::Schemas::Enums::FleetContractQualityMatchEnum,
+            # What the line pays per SCU or unit, on a per-unit contract.
+            rewardRate: {type: [:string, :null]},
             # Present on a line asking for a crafted part only.
             crafted: ::V1::Schemas::InventoryCraftedRef,
             requested: {type: :string},
@@ -34,7 +36,7 @@ module V1
             }
           },
           additionalProperties: false,
-          required: %w[itemId name category unit requested delivered pickedUp remaining complete fraction contributions]
+          required: %w[itemId name category unit rewardRate requested delivered pickedUp remaining complete fraction contributions]
         })
       end
     end

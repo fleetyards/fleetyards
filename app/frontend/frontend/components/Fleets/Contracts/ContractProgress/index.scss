@@ -70,6 +70,13 @@
     border-radius: 4px;
   }
 
+  &__rate {
+    flex: none;
+    font-size: 0.85em;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
   &__counts {
     margin-left: auto;
     font-size: 0.85em;

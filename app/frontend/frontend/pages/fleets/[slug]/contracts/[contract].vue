@@ -28,6 +28,7 @@ import {
   FleetContractStateEnum,
   FleetContractCrewRoleEnum,
   FleetContractCrewStateEnum,
+  FleetContractRewardTypeEnum,
   useFleetContract,
   usePublishFleetContract,
   useClaimFleetContract,
@@ -532,6 +533,9 @@ const crumbs = computed<Crumb[]>(() => [
           <ContractProgress
             :progress="contract.progress"
             :show-pickup="contract.requiresPickup"
+            :per-unit="
+              contract.rewardType === FleetContractRewardTypeEnum.PER_UNIT
+            "
           />
 
           <p

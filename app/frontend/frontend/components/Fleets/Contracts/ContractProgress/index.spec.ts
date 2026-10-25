@@ -19,6 +19,7 @@ const line = (
   unit: InventoryUnitEnum.SCU,
   quality: null,
   qualityMatch: FleetContractQualityMatchEnum.AT_LEAST,
+  rewardRate: null,
   requested: "800.0",
   delivered: "240.0",
   pickedUp: "0.0",
@@ -68,6 +69,33 @@ describe("FleetContractsProgress", () => {
     expect(
       subject.findAll("[data-test='contract-progress-line']"),
     ).toHaveLength(2);
+  });
+
+  // Lines may pay different rates, and a contractor picks what to haul by them.
+  it("names each line's rate on a contract paying per unit", async () => {
+    const lines = [
+      line({ rewardRate: "25.0" }),
+      line({
+        itemId: "22222222-2222-4222-8222-222222222222",
+        rewardRate: "90.0",
+      }),
+    ];
+
+    const fixed = await mount({ progress: progress({ lines }) });
+    expect(fixed.findAll("[data-test='contract-progress-rate']")).toHaveLength(
+      0,
+    );
+    fixed.unmount();
+
+    const subject = await mount({
+      progress: progress({ lines }),
+      perUnit: true,
+    });
+    const rates = subject.findAll("[data-test='contract-progress-rate']");
+
+    expect(rates).toHaveLength(2);
+    expect(rates[1].text()).toMatch(/90/);
+    expect(rates[1].text()).toContain("/ SCU");
   });
 
   it("states the quantities, not just a percentage", async () => {

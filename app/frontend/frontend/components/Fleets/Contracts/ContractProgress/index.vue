@@ -19,13 +19,24 @@ type Props = {
   // Only a transport contract has a collection leg, so only it shows what is
   // still sitting in somebody's hold.
   showPickup?: boolean;
+  // Each line names its own rate, since lines may pay different ones.
+  perUnit?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   showPickup: false,
+  perUnit: false,
 });
 
-const { t } = useI18n();
+const { t, toUEC } = useI18n();
+
+const rateLabel = (line: FleetContractProgressLine) =>
+  toUEC(
+    Number(line.rewardRate),
+    t(`labels.fleets.contracts.rewardRate.${line.unit}`, {
+      currency: t("number.units.uec"),
+    }),
+  );
 
 const percent = (fraction: number) => `${Math.round(fraction * 100)}%`;
 
@@ -101,6 +112,13 @@ const pickedWidth = (line: FleetContractProgressLine) => {
         >
           {{ craftedLineLabel(t, line.crafted, line.qualityMatch) }}
         </span>
+        <!-- eslint-disable-next-line vue/no-v-html -->
+        <span
+          v-if="props.perUnit && line.rewardRate"
+          class="contract-progress__rate"
+          data-test="contract-progress-rate"
+          v-html="rateLabel(line)"
+        />
         <span class="contract-progress__counts">
           {{ quantity(line.delivered) }} / {{ quantity(line.requested) }}
           {{ unitLabel(line) }}
