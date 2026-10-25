@@ -3608,7 +3608,11 @@
           "equipment": "Equipment",
           "ammunition": "Attachments & Ammunition",
           "consumable": "Consumable",
-          "other": "Other"
+          "other": "Other",
+          "armor": "護甲",
+          "clothing": "服裝",
+          "tool": "工具",
+          "container": "容器"
         },
         "units": {
           "scu": "SCU",
@@ -4238,7 +4242,11 @@
           "equipment": "裝備",
           "ammunition": "彈藥",
           "consumable": "消耗品",
-          "other": "其他"
+          "other": "其他",
+          "armor": "護甲",
+          "clothing": "服裝",
+          "tool": "工具",
+          "container": "容器"
         },
         "entryTypes": {
           "deposit": "存入",

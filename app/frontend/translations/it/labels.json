@@ -3611,7 +3611,11 @@
           "equipment": "Equipment",
           "ammunition": "Attachments & Ammunition",
           "consumable": "Consumable",
-          "other": "Other"
+          "other": "Other",
+          "armor": "Armatura",
+          "clothing": "Abbigliamento",
+          "tool": "Strumento",
+          "container": "Contenitore"
         },
         "units": {
           "scu": "SCU",
@@ -4241,7 +4245,11 @@
           "equipment": "Equipaggiamento",
           "ammunition": "Munizioni",
           "consumable": "Consumabile",
-          "other": "Altro"
+          "other": "Altro",
+          "armor": "Armatura",
+          "clothing": "Abbigliamento",
+          "tool": "Strumento",
+          "container": "Contenitore"
         },
         "entryTypes": {
           "deposit": "Deposito",
