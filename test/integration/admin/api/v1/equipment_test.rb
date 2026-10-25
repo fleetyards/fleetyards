@@ -125,6 +125,21 @@ class Admin::Api::V1::EquipmentTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The list shows the angled render beside the store image, and the store
+  # image stays the uploaded one rather than falling back to the render.
+  test "GET /equipment carries the angled view without the store image fallback" do
+    equipment = create(:equipment)
+    equipment.angled_view.attach(io: file_fixture("test.png").open, filename: "angled.png", content_type: "image/png")
+    sign_in @user
+
+    assert_api_response :get, 200, api_path: "/equipment" do
+      media = parsed_body["items"].first["media"]
+      assert_match(/angled\.png/, media.dig("angledView", "name"))
+      assert_nil media.dig("storeImage", "name")
+      assert_not media.key?("topView")
+    end
+  end
+
   test "GET /equipment includes hidden equipment" do
     create(:equipment, :hidden, name: "Hidden Rifle")
     sign_in @user

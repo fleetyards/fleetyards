@@ -17,6 +17,7 @@ module Admin
           # described yet.
           @q = authorized_scope(Component.with_facts(false))
             .includes(:manufacturer, :item_prices)
+            .with_attached_store_image.with_attached_angled_view
             .ransack(component_query_params)
 
           @components = @q.result

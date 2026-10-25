@@ -32,7 +32,7 @@ end
 
 json.media({})
 json.media do
-  json.partial! "api/v1/shared/item_media", record: component, extended: local_assigns.fetch(:extended, false)
+  json.partial! "api/v1/shared/item_media", record: component, extended: local_assigns.fetch(:extended, false), views: %i[angled_view]
 end
 
 json.size component.size

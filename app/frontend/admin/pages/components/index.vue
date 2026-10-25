@@ -69,6 +69,13 @@ const columns: BaseTableCol<Component>[] = [
     alignment: "center",
   },
   {
+    name: "angledView",
+    label: "",
+    width: "120px",
+    alignment: "center",
+    mobile: false,
+  },
+  {
     name: "name",
     label: "Name",
     sortable: true,
@@ -187,6 +194,16 @@ const { t, l, toUEC } = useI18n();
             alt="image"
             :variant="LazyImageVariantsEnum.WIDE_SMALL"
             shadow
+          />
+        </template>
+        <template #col-angledView="{ record }">
+          <ViewImage
+            :image="record.media.angledView"
+            size="small"
+            alt="image"
+            :variant="LazyImageVariantsEnum.WIDE_SMALL"
+            transparent
+            without-fallback
           />
         </template>
         <template #col-name="{ record }">

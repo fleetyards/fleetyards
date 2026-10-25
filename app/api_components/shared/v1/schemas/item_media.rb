@@ -4,7 +4,8 @@ module Shared
   module V1
     module Schemas
       # A catalogue item's pictures. The views and the holo are rendered on the
-      # detail payload only, the way a ship's are; a list leaves them out.
+      # detail payload, the way a ship's are; a public list leaves them out, and
+      # an admin list carries only the angled view.
       class ItemMedia
         include OpenapiRuby::Components::Base
 

@@ -20,6 +20,7 @@ module Admin
           # retired record.
           @q = authorized_scope(Equipment.with_facts(false))
             .includes(:manufacturer, :item_prices, :build, :last_build)
+            .with_attached_store_image.with_attached_angled_view
             .ransack(equipment_query_params)
 
           @equipment = @q.result
