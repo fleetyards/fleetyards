@@ -1,0 +1,275 @@
+{
+  "ship": "Ursa",
+  "hardpoints": [
+    {
+      "name": "hardpoint_controller_wheel",
+      "category": "controller",
+      "component": {
+        "name": "Drivetrain",
+        "type": "WheeledController",
+        "size": "1",
+        "typeData": {
+          "powerConsumption": 2,
+          "powerMinimumFraction": 1
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_door",
+      "category": "controller",
+      "component": {
+        "name": "SECURITY",
+        "type": "DoorController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_radar",
+      "category": "radar",
+      "component": {
+        "name": "Prevenir",
+        "type": "Radar",
+        "size": "0",
+        "typeData": {
+          "powerConsumption": 3,
+          "powerMinimumFraction": 0.6666667
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_energy",
+      "category": "controller",
+      "component": {
+        "name": "POWER",
+        "type": "EnergyController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_powerplant",
+      "category": "powerplant",
+      "component": {
+        "name": "Radix",
+        "type": "PowerPlant",
+        "size": "0",
+        "typeData": {
+          "powerBase": 10
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_cooler",
+      "category": "cooler",
+      "component": {
+        "name": "Frost-Star SL",
+        "type": "Cooler",
+        "size": "0",
+        "typeData": {
+          "powerConsumption": 1,
+          "powerMinimumFraction": 1
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_shield",
+      "category": "controller",
+      "component": {
+        "name": "SHIELDS",
+        "type": "ShieldController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_weapon",
+      "category": "controller",
+      "component": {
+        "name": "WEAPONS",
+        "type": "WeaponController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_capacitor_assignment",
+      "category": "controller",
+      "component": {
+        "name": null,
+        "type": "CapacitorAssignmentController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_lifesupport",
+      "category": "lifesupport",
+      "component": {
+        "name": "ComfortAir Lite",
+        "type": "LifeSupportGenerator",
+        "size": "0",
+        "typeData": {
+          "powerConsumption": 1,
+          "powerMinimumFraction": 1
+        }
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_turret_mount",
+      "category": "turret",
+      "component": {
+        "name": "Turret",
+        "type": "Turret",
+        "size": "2",
+        "typeData": {
+          "control": "remote"
+        }
+      },
+      "hardpoints": [
+        {
+          "name": "turret_right",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S1 Gimbal Mount",
+            "type": "Turret",
+            "size": "1",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-117 Bulldog Repeater",
+                "type": "WeaponGun",
+                "size": "1",
+                "typeData": {
+                  "powerConsumption": 0.45,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 17.496,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 21.6,
+                    "requestedAmmoLoad": 8100,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.726,
+                    "requestedRegenPerSecond": 1355
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        },
+        {
+          "name": "turret_left",
+          "category": "weapon_mounts",
+          "component": {
+            "name": "VariPuck S1 Gimbal Mount",
+            "type": "Turret",
+            "size": "1",
+            "typeData": {}
+          },
+          "hardpoints": [
+            {
+              "name": "hardpoint_class_2",
+              "category": "weapons",
+              "component": {
+                "name": "CF-117 Bulldog Repeater",
+                "type": "WeaponGun",
+                "size": "1",
+                "typeData": {
+                  "powerConsumption": 0.45,
+                  "powerMinimumFraction": 0,
+                  "fireRate": 750,
+                  "damagePerShot": {
+                    "stun": 0,
+                    "energy": 17.496,
+                    "thermal": 0,
+                    "physical": 0,
+                    "distortion": 0,
+                    "biochemical": 0
+                  },
+                  "pelletsPerShot": 1,
+                  "regen": {
+                    "maxAmmoLoad": 75,
+                    "costPerBullet": 21.6,
+                    "requestedAmmoLoad": 8100,
+                    "maxRegenPerSecond": 15,
+                    "regenerationCooldown": 0.726,
+                    "requestedRegenPerSecond": 1355
+                  },
+                  "heatPerShot": 0
+                }
+              },
+              "hardpoints": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "hardpoint_controller_comms",
+      "category": "controller",
+      "component": {
+        "name": "COMMS",
+        "type": "CommsController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_controller_cooler",
+      "category": "controller",
+      "component": {
+        "name": "HEAT",
+        "type": "CoolerController",
+        "size": "1",
+        "typeData": {}
+      },
+      "hardpoints": []
+    },
+    {
+      "name": "hardpoint_shield_generator",
+      "category": "shieldgenerator",
+      "component": {
+        "name": "PIN",
+        "type": "Shield",
+        "size": "0",
+        "typeData": {
+          "powerConsumption": 1,
+          "powerMinimumFraction": 1
+        }
+      },
+      "hardpoints": []
+    }
+  ],
+  "expected": {
+    "alpha": 34.992,
+    "burstDps": 437.4,
+    "sustainedDpsMin": 223.81033600545797,
+    "sustainedDpsMax": 223.81033600545797
+  }
+}

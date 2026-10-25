@@ -22922,6 +22922,14 @@ components:
       - modelProductionStatus desc
       - rank asc
       - rank desc
+      - maxWeaponSize asc
+      - maxWeaponSize desc
+      - alpha asc
+      - alpha desc
+      - burstDps asc
+      - burstDps desc
+      - sustainedDpsMax asc
+      - sustainedDpsMax desc
       x-enumNames:
       - FLAGSHIP_DESC
       - FLAGSHIP_ASC
@@ -22959,6 +22967,14 @@ components:
       - MODEL_PRODUCTION_STATUS_DESC
       - RANK_ASC
       - RANK_DESC
+      - MAX_WEAPON_SIZE_ASC
+      - MAX_WEAPON_SIZE_DESC
+      - ALPHA_ASC
+      - ALPHA_DESC
+      - BURST_DPS_ASC
+      - BURST_DPS_DESC
+      - SUSTAINED_DPS_MAX_ASC
+      - SUSTAINED_DPS_MAX_DESC
       title: VehicleSortEnum
     Vehicles:
       type: object

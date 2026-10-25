@@ -28,6 +28,8 @@ class VehicleLoadout < ApplicationRecord
     inverse_of: :vehicle_loadout,
     dependent: :delete_all
 
+  has_many :loadout_stats, as: :fitting, dependent: :delete_all
+
   before_validation :set_default_name, if: -> { name.blank? }
 
   validates :url, presence: true, if: :kind_link?
@@ -39,6 +41,8 @@ class VehicleLoadout < ApplicationRecord
   validate :power_presets_fit
 
   after_save :write_item_list, unless: -> { item_list.nil? }
+  after_save :note_fitting_change, if: -> { previously_new_record? || saved_change_to_kind? }
+  after_commit :refresh_stats, on: %i[create update], if: -> { kind_fleetyards? && @fitting_changed }
 
   attr_reader :item_list
 
@@ -329,12 +333,23 @@ class VehicleLoadout < ApplicationRecord
   # vehicle. The explicit touch is what busts the caches keyed on both when only
   # the fitting changed, including when it was emptied.
   private def write_item_list
+    note_fitting_change
     items.delete_all
     items.insert_all!(item_list) if item_list.any?
     @item_list = nil
     @loadout_slots = nil
     @saved_craftings = nil
     touch
+  end
+
+  # Switching, renaming or showing a loadout leaves its guns as they are.
+  private def note_fitting_change
+    @fitting_changed = true
+  end
+
+  private def refresh_stats
+    @fitting_changed = false
+    LoadoutStatsJob.perform_async("vehicle_loadout_id" => id)
   end
 
   private def set_default_name

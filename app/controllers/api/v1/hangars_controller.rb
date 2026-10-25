@@ -38,7 +38,7 @@ module Api
 
         normalize_sort_params(vehicle_query_params)
         vehicle_query_params["sorts"] = Vehicle.with_rank_tiebreak(
-          Vehicle.fitted_cargo_sorts(
+          Vehicle.fitted_sorts(
             sorting_params(Vehicle, vehicle_query_params["sorts"], current_resource_owner.hangar_sorting_params)
           )
         )

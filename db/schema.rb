@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_23_190000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_25_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -345,10 +345,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_23_190000) do
     t.decimal "offset_x", precision: 15, scale: 2
     t.decimal "offset_y", precision: 15, scale: 2
     t.decimal "offset_z", precision: 15, scale: 2
-    t.integer "max_loadable_container_size_scu"
     t.integer "rotation"
     t.string "parent_type", null: false
     t.uuid "parent_id", null: false
+    t.integer "max_loadable_container_size_scu"
     t.index ["capacity_scu"], name: "index_cargo_holds_on_capacity_scu"
     t.index ["parent_type", "parent_id", "max_container_size_scu"], name: "index_cargo_holds_on_parent_and_max_container_size"
   end
@@ -1884,6 +1884,23 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_23_190000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["version", "name"], name: "index_loading_screens_on_version_and_name", unique: true
+  end
+
+  create_table "loadout_stats", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "fitting_type", null: false
+    t.uuid "fitting_id", null: false
+    t.string "environment", null: false
+    t.string "version", null: false
+    t.integer "max_weapon_size"
+    t.jsonb "weapon_sizes", default: {}, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.float "alpha"
+    t.float "burst_dps"
+    t.float "sustained_dps_min"
+    t.float "sustained_dps_max"
+    t.integer "formula_version"
+    t.index ["fitting_type", "fitting_id", "environment"], name: "index_loadout_stats_on_fitting_and_environment", unique: true
   end
 
   create_table "location_builds", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

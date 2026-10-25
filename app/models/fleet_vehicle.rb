@@ -52,7 +52,7 @@ class FleetVehicle < ApplicationRecord
   # The sorts a list of vehicles can follow. Each row is one vehicle, so the
   # count sort falls back to the default like any other it cannot answer.
   def self.vehicle_sorts(sorts)
-    Vehicle.fitted_cargo_sorts(Array(sorts).reject { |sort| count_sort?(sort) }, public_only: true)
+    Vehicle.fitted_sorts(Array(sorts).reject { |sort| count_sort?(sort) }, public_only: true)
       .presence || DEFAULT_SORTING_PARAMS
   end
 end

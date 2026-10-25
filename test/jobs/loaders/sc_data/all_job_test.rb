@@ -250,6 +250,20 @@ module Loaders
         assert ::Loaders::ScData::AllJob.jobs.first["at"] > Time.current.to_f
       end
 
+      test "#perform works out what the fittings carry once the build is served, and not after a failed load" do
+        ::ScData::Loader::BaseLoader.expects(:all)
+
+        assert_difference -> { ::LoadoutStatsJob.jobs.size }, 1 do
+          ::Loaders::ScData::AllJob.new.perform
+        end
+        assert_equal({"environment" => ::ScData::Source.current.environment}, ::LoadoutStatsJob.jobs.last["args"].first)
+
+        ::ScData::Loader::BaseLoader.stubs(:all).raises(StandardError, "sc data error")
+        assert_no_difference -> { ::LoadoutStatsJob.jobs.size } do
+          assert_raises(StandardError) { ::Loaders::ScData::AllJob.new.perform }
+        end
+      end
+
       test "#perform marks import as failed on error" do
         ::ScData::Loader::BaseLoader.stubs(:all).raises(StandardError, "sc data error")
 

@@ -11,6 +11,7 @@
       "groups": {
         "ship": "Nave",
         "capacity": "Capacità e dimensioni",
+        "weapons": "Armi",
         "price": "Prezzo",
         "ownership": "Proprietà"
       }

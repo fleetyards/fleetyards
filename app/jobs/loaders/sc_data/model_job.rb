@@ -24,6 +24,8 @@ module Loaders
         import.update!(output: {"ModelsLoader" => loader.stats})
 
         import.finish!
+
+        ::LoadoutStatsJob.perform_async("model_id" => model_id)
       rescue => e
         import.fail!
         import.update!(info: e.message)

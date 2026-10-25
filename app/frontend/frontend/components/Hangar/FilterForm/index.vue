@@ -39,6 +39,16 @@ withDefaults(defineProps<Props>(), {
 
 const { t } = useI18n();
 
+// The largest size a hangar holds is a capital ship's S12.
+const weaponSizeOptions = Array.from({ length: 12 }, (_, index) => ({
+  value: index + 1,
+  label: `S${index + 1}`,
+}));
+
+// A filter read back from the URL is a string, and the select matches its
+// options strictly.
+const weaponSize = (value: unknown) => Number(value) || undefined;
+
 const prefillFormValues = () => {
   return {
     searchCont: filters.value.searchCont,
@@ -55,6 +65,12 @@ const prefillFormValues = () => {
     pledgePriceGteq: filters.value.pledgePriceGteq,
     cargoGteq: filters.value.cargoGteq,
     cargoLteq: filters.value.cargoLteq,
+    maxWeaponSizeGteq: weaponSize(filters.value.maxWeaponSizeGteq),
+    maxWeaponSizeLteq: weaponSize(filters.value.maxWeaponSizeLteq),
+    alphaGteq: filters.value.alphaGteq,
+    alphaLteq: filters.value.alphaLteq,
+    burstDpsGteq: filters.value.burstDpsGteq,
+    burstDpsLteq: filters.value.burstDpsLteq,
     lengthLteq: filters.value.lengthLteq,
     lengthGteq: filters.value.lengthGteq,
     beamLteq: filters.value.beamLteq,
@@ -227,6 +243,87 @@ const hasGroupFilters = (keys: string[]) =>
         :label="t('labels.filters.models.withCargo')"
         name="withCargo"
       />
+    </FilterGroup>
+
+    <FilterGroup
+      :label="t('filteredList.groups.weapons')"
+      :active="
+        hasGroupFilters([
+          'maxWeaponSizeGteq',
+          'maxWeaponSizeLteq',
+          'alphaGteq',
+          'alphaLteq',
+          'burstDpsGteq',
+          'burstDpsLteq',
+        ])
+      "
+    >
+      <div class="row">
+        <div class="col-6">
+          <BaseSelect
+            v-model="form.maxWeaponSizeGteq"
+            :options="weaponSizeOptions"
+            :label="t('labels.filters.vehicles.maxWeaponSizeGt')"
+            name="vehicle-max-weapon-size-gteq"
+            unsorted
+          />
+        </div>
+        <div class="col-6">
+          <BaseSelect
+            v-model="form.maxWeaponSizeLteq"
+            :options="weaponSizeOptions"
+            :label="t('labels.filters.vehicles.maxWeaponSizeLt')"
+            name="vehicle-max-weapon-size-lteq"
+            unsorted
+          />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <FormInput
+            v-model="form.alphaGteq"
+            name="vehicle-alpha-gteq"
+            :type="InputTypesEnum.NUMBER"
+            :min="0"
+            translation-key="filters.vehicles.alphaGt"
+            :no-placeholder="true"
+          />
+        </div>
+        <div class="col-6">
+          <FormInput
+            v-model="form.alphaLteq"
+            name="vehicle-alpha-lteq"
+            :type="InputTypesEnum.NUMBER"
+            :min="0"
+            translation-key="filters.vehicles.alphaLt"
+            :no-placeholder="true"
+          />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <FormInput
+            v-model="form.burstDpsGteq"
+            name="vehicle-burst-dps-gteq"
+            :type="InputTypesEnum.NUMBER"
+            :min="0"
+            translation-key="filters.vehicles.burstDpsGt"
+            :no-placeholder="true"
+          />
+        </div>
+        <div class="col-6">
+          <FormInput
+            v-model="form.burstDpsLteq"
+            name="vehicle-burst-dps-lteq"
+            :type="InputTypesEnum.NUMBER"
+            :min="0"
+            translation-key="filters.vehicles.burstDpsLt"
+            :no-placeholder="true"
+          />
+        </div>
+      </div>
     </FilterGroup>
 
     <FilterGroup

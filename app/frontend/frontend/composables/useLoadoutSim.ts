@@ -156,6 +156,8 @@ export type LoadoutSimResult = {
   // uses as its baseline. Equals min(1, poolSize/consumption) unless the plant
   // literally can't deliver enough segments to fill the pool.
   weaponMaxRatio: number;
+  // Every gun's Power draw added up, which one pip feeds a share of.
+  weaponDraw: number;
   // Shield power ratio (allocated shield segments / capacity) — scales shield
   // HP/regen; 0 when shields are unpowered.
   shieldPoolRatio: number;
@@ -774,6 +776,7 @@ export function simulateLoadoutPower(
         acc.weaponUnits,
       ) * boost,
     ),
+    weaponDraw: acc.weaponUnits,
     shieldPoolRatio,
     enginePowerRatio,
     engineActive,

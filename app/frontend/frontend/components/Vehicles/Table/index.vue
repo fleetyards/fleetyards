@@ -39,6 +39,7 @@ import {
   WishlistTableViewImageColsEnum,
 } from "@/frontend/stores/wishlist";
 import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
+import { formatWeaponSizes } from "@/frontend/utils/weaponSizes";
 
 type Props = {
   vehicles: Vehicle[];
@@ -69,6 +70,19 @@ const emit = defineEmits<{
 const { t, toNumber, toUEC, toDollar } = useI18n();
 
 const { cargoLabel } = useVehicleCargo();
+
+// No figure is blank, where a gun that does not fire at one pip reads 0.
+const firepower = (value?: number | null) =>
+  value == null ? "" : String(toNumber(Math.round(value), "integer"));
+
+// Sustained fire from one weapon pip to the most the plant gives; a ship whose
+// guns do not care about power shows the one figure.
+const sustainedRange = (record: Vehicle) => {
+  const min = firepower(record.sustainedDpsMin);
+  const max = firepower(record.sustainedDpsMax);
+
+  return !min || min === max ? max : `${min}–${max}`;
+};
 
 // Held here unless the page binds it: a table on its own keeps its selection
 // to itself, a table under a toolbar shares it.
@@ -408,6 +422,20 @@ const resetSelected = () => {
       </template>
       <template #col-modelCargo="{ record }">
         <span class="no-break">{{ cargoLabel(record) }}</span>
+      </template>
+      <template #col-maxWeaponSize="{ record }">
+        <span class="no-break">{{
+          formatWeaponSizes(record.weaponSizes)
+        }}</span>
+      </template>
+      <template #col-alpha="{ record }">
+        <span class="no-break">{{ firepower(record.alpha) }}</span>
+      </template>
+      <template #col-burstDps="{ record }">
+        <span class="no-break">{{ firepower(record.burstDps) }}</span>
+      </template>
+      <template #col-sustainedDpsMax="{ record }">
+        <span class="no-break">{{ sustainedRange(record) }}</span>
       </template>
       <template #col-modelCrew="{ record }">
         <span class="no-break">{{

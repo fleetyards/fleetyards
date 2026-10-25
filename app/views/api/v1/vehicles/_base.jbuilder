@@ -49,6 +49,7 @@ end
 json.model_module_ids vehicle.model_module_ids
 json.cargo vehicle.fitted_cargo.to_f
 json.cargo_with_modules vehicle.cargo_with_modules&.to_f
+json.partial!("api/v1/vehicles/weapons", stat: vehicle.fitted_loadout_stat)
 json.model_upgrade_ids vehicle.model_upgrade_ids
 json.model_paint_ids vehicle.model_paint_ids
 

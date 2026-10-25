@@ -165,6 +165,10 @@ class Vehicle < ApplicationRecord
   has_many :model_paints, through: :vehicle_paints
   # A paint of the old model is not a paint this ship can own.
   after_save :drop_paints_of_another_model, if: :saved_change_to_model_id?
+  # A loadout's guns are read off the ship it fits. Noted on the update itself:
+  # a touch from a loadout commits too, and still reports the create's changes.
+  after_update -> { @model_changed = true }, if: :saved_change_to_model_id?
+  after_commit :refresh_loadout_stats, on: :update, if: -> { @model_changed }
 
   # Everything `api/v1/vehicles/_base.jbuilder` reaches for. It renders the whole
   # model partial per vehicle, so `Model.rendered_associations` comes along
@@ -178,10 +182,14 @@ class Vehicle < ApplicationRecord
   # condition on an `includes` scope turns it into a join.
   PICTURE_PRELOADS = {picture: [{file_attachment: :blob}, {store_image_attachment: :blob}]}.freeze
 
+  # What `#fitted_cargo` and `#fitted_loadout_stat` read: the loadouts with what they
+  # fit and carry, and what the ship carries as it comes.
+  LOADOUT_PRELOADS = [{vehicle_loadouts: [{items: :blueprint}, :loadout_stats]}, {model: :loadout_stats}].freeze
+
   def self.rendered_associations
     [
       :vehicle_upgrades, :model_upgrades, :vehicle_modules, :model_modules,
-      :task_forces, :hangar_groups, :module_package, {vehicle_loadouts: {items: :blueprint}},
+      :task_forces, :hangar_groups, :module_package, *LOADOUT_PRELOADS,
       {model: Model.rendered_associations},
       :model_paints,
       {parent_vehicle: :model},
@@ -236,7 +244,8 @@ class Vehicle < ApplicationRecord
     "modelPledgePrice asc", "modelPledgePrice desc", "modelPrice asc", "modelPrice desc",
     "modelScmSpeed asc", "modelScmSpeed desc", "modelMaxSpeed asc", "modelMaxSpeed desc",
     "modelGroundMaxSpeed asc", "modelGroundMaxSpeed desc", "modelProductionStatus asc",
-    "modelProductionStatus desc", "rank asc", "rank desc"
+    "modelProductionStatus desc", "rank asc", "rank desc", "maxWeaponSize asc", "maxWeaponSize desc",
+    "alpha asc", "alpha desc", "burstDps asc", "burstDps desc", "sustainedDpsMax asc", "sustainedDpsMax desc"
   ]
 
   ransack_alias :search, :name_or_model_name_or_model_slug
@@ -364,14 +373,20 @@ class Vehicle < ApplicationRecord
   ransacker(:cargo) { Arel.sql(Vehicle.fitted_cargo_sql) }
   ransacker(:public_cargo) { Arel.sql(Vehicle.fitted_cargo_sql(public_only: true)) }
 
-  # The cargo filter and sort as the reader may see them: their own hangar
-  # counts every loadout, anybody else's only the public ones.
-  def self.fitted_cargo_filters(query_params, public_only: false)
-    column = public_only ? "public_cargo" : "cargo"
+  # What a vehicle carries as fitted, as `loadout_stats` records it.
+  FITTED_STATS = {
+    "max_weapon_size" => :integer, "alpha" => :float, "burst_dps" => :float, "sustained_dps_max" => :float
+  }.freeze
 
-    %w[gteq lteq].each do |predicate|
-      value = query_params.delete("cargo_#{predicate}")
-      query_params["#{column}_#{predicate}"] = value unless value.nil?
+  # What a vehicle carries as fitted, which reads its loadouts.
+  FITTED_COLUMNS = ["cargo", *FITTED_STATS.keys].freeze
+
+  # The fitted filters and sorts as the reader may see them: their own hangar
+  # counts every loadout, anybody else's only the public ones.
+  def self.fitted_filters(query_params, public_only: false)
+    FITTED_COLUMNS.product(%w[gteq lteq]).each do |column, predicate|
+      value = query_params.delete("#{column}_#{predicate}")
+      query_params["#{fitted_column(column, public_only:)}_#{predicate}"] = value unless value.nil?
     end
 
     query_params
@@ -381,15 +396,61 @@ class Vehicle < ApplicationRecord
     where(id: vehicles.map(&:id)).sum(Arel.sql(fitted_cargo_sql(public_only:))).to_i
   end
 
-  def self.fitted_cargo_sorts(sorts, public_only: false)
-    column = public_only ? "public_cargo" : "cargo"
+  def self.fitted_sorts(sorts, public_only: false)
+    Array(sorts).map do |sort|
+      FITTED_STATS.keys.reduce(sort.sub(/\Amodel_cargo /, "#{fitted_column("cargo", public_only:)} ")) do |result, stat|
+        result.sub(/\A#{stat} /, "#{fitted_column(stat, public_only:)} ")
+      end
+    end
+  end
 
-    Array(sorts).map { |sort| sort.sub(/\Amodel_cargo /, "#{column} ") }
+  def self.fitted_column(column, public_only:)
+    public_only ? "public_#{column}" : column
+  end
+
+  # One of the figures a vehicle carries as fitted: its active loadout's, or,
+  # without one, the ship's as it comes. A loadout carrying no guns at all says
+  # so, and is not answered with the stock ones. Read for the source the reader
+  # is on. Mirrors `#fitted_loadout_stat`.
+  def self.fitted_stat_sql(column, public_only: false)
+    raise ArgumentError, "not a fitted stat: #{column}" unless FITTED_STATS.key?(column.to_s)
+
+    loadout_stat = sanitize_sql_array([<<~SQL.squish, ::ScData::Source.current.environment])
+      FROM loadout_stats fitted_stats
+      JOIN vehicle_loadouts fitted_loadouts
+        ON fitted_stats.fitting_type = 'VehicleLoadout'
+       AND fitted_stats.fitting_id = fitted_loadouts.id
+      WHERE fitted_loadouts.vehicle_id = vehicles.id
+        AND fitted_loadouts.active = TRUE
+        AND fitted_loadouts.kind = 'fleetyards'
+        #{"AND fitted_loadouts.public = TRUE" if public_only}
+        AND fitted_stats.environment = ?
+    SQL
+    stock_stat = sanitize_sql_array([<<~SQL.squish, ::ScData::Source.current.environment])
+      SELECT stock_stats.#{column} FROM loadout_stats stock_stats
+      WHERE stock_stats.fitting_type = 'Model'
+        AND stock_stats.fitting_id = vehicles.model_id
+        AND stock_stats.environment = ?
+    SQL
+
+    # No guns sorts and compares as 0, rather than as a NULL that a descending
+    # sort puts first.
+    <<~SQL.squish
+      COALESCE(CASE WHEN EXISTS (SELECT 1 #{loadout_stat})
+        THEN (SELECT MAX(fitted_stats.#{column}) #{loadout_stat})
+        ELSE (#{stock_stat})
+      END, 0)
+    SQL
+  end
+
+  FITTED_STATS.each do |column, type|
+    ransacker(column.to_sym, type:) { Arel.sql(Vehicle.fitted_stat_sql(column)) }
+    ransacker(:"public_#{column}", type:) { Arel.sql(Vehicle.fitted_stat_sql(column, public_only: true)) }
   end
 
   def self.ransackable_attributes(auth_object = nil)
     [
-      "alternative_names", "beam", "bought_via", "cargo", "public_cargo", "bundled", "classification", "created_at", "flagship",
+      "alternative_names", "beam", "bought_via", "cargo", "public_cargo", *FITTED_STATS.keys.flat_map { |stat| [stat, "public_#{stat}"] }, "bundled", "classification", "created_at", "flagship",
       "hangar_groups", "has_dedication", "height", "hidden", "id", "id_value", "length", "loaner",
       "manufacturer", "model_id", "module_package_id", "name", "name_visible",
       "notify", "on_sale", "pledge_price", "price", "production_status", "public", "rank", "rsi_pledge_id",
@@ -896,6 +957,21 @@ class Vehicle < ApplicationRecord
   def fitted_loadout(public_only: false)
     vehicle_loadouts.find do |loadout|
       loadout.active? && loadout.kind_fleetyards? && (!public_only || loadout.public?)
+    end
+  end
+
+  # The figures as `fitted_stat_sql` reads them, from the preloaded
+  # stats.
+  def fitted_loadout_stat(public_only: false)
+    stat = fitted_loadout(public_only:)&.then { |loadout| LoadoutStat.for_environment(loadout.loadout_stats) }
+
+    stat || LoadoutStat.for_environment(model.loadout_stats)
+  end
+
+  private def refresh_loadout_stats
+    @model_changed = false
+    vehicle_loadouts.kind_fleetyards.pluck(:id).each do |id|
+      LoadoutStatsJob.perform_async("vehicle_loadout_id" => id)
     end
   end
 

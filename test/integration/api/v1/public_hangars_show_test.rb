@@ -119,6 +119,29 @@ class Api::V1::PublicHangarsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /public/hangars/:username filters and sorts on guns with the owner's public loadouts only" do
+    user = create(:user, :public_hangar)
+    model = create(:model, production_status: "flight-ready")
+    mount = create(:hardpoint, parent: model, sc_name: "hardpoint_gun_nose", source: :game_files, types: %w[WeaponGun],
+      min_size: 3, max_size: 3, component: create(:component, component_type: "WeaponGun", category: "weapons", size: "3"))
+    privately_emptied = create(:vehicle, :public, user:, model:)
+    create(:vehicle_loadout, :fleetyards, :active, vehicle: privately_emptied, public: false,
+      item_list: [{slot_path: mount.sc_name, item_type: "Empty"}])
+    publicly_emptied = create(:vehicle, :public, user:, model:)
+    create(:vehicle_loadout, :fleetyards, :active, vehicle: publicly_emptied, public: true,
+      item_list: [{slot_path: mount.sc_name, item_type: "Empty"}])
+    LoadoutStat.refresh
+
+    assert_api_response :get, 200, path_params: {username: user.username}, params: {q: {maxWeaponSizeGteq: 3}} do
+      assert_equal [privately_emptied.id], parsed_body["items"].pluck("id")
+      assert_equal [3], parsed_body["items"].pluck("maxWeaponSize")
+    end
+
+    assert_api_response :get, 200, path_params: {username: user.username}, params: {q: {sorts: ["maxWeaponSize asc"]}} do
+      assert_equal [publicly_emptied.id, privately_emptied.id], parsed_body["items"].pluck("id")
+    end
+  end
+
   test "GET /public/hangars/:username honours perPage" do
     user = create(:user, :public_hangar)
     create_list(:vehicle, 2, :public, user: user)

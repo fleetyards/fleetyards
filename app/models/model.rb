@@ -242,6 +242,7 @@ class Model < ApplicationRecord
   end
 
   has_many :hardpoints, as: :parent, dependent: :destroy, autosave: true
+  has_many :loadout_stats, as: :fitting, dependent: :delete_all
   has_many :components, through: :hardpoints
 
   has_many :vehicles, dependent: :destroy

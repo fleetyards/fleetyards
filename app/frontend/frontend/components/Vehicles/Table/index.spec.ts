@@ -112,6 +112,64 @@ describe("VehiclesTable", () => {
     );
   });
 
+  it("lists the guns a ship carries in the weapons column", async () => {
+    await router.push({ name: "hangar" });
+    await router.isReady();
+    const wrapper = await mountWithDefaults<typeof Component>(Component, {
+      initialState: {
+        session: { currentUser: { username: "me" } },
+        hangar: { tableViewCols: ["maxWeaponSize"] },
+      },
+      props: {
+        vehicles: [
+          vehicle({
+            maxWeaponSize: 3,
+            weaponSizes: [
+              { size: 2, count: 4 },
+              { size: 3, count: 2 },
+            ],
+          }),
+        ],
+        editable: true,
+      },
+      plugins: [router],
+    });
+
+    expect(wrapper.get("thead").text()).toContain("Weapons");
+    expect(wrapper.get("tr#vehicle-1").text()).toContain("2×S3 · 4×S2");
+  });
+
+  it("lists the firepower, sustained fire as the span power gives it", async () => {
+    await router.push({ name: "hangar" });
+    await router.isReady();
+    const wrapper = await mountWithDefaults<typeof Component>(Component, {
+      initialState: {
+        session: { currentUser: { username: "me" } },
+        hangar: { tableViewCols: ["alpha", "burstDps", "sustainedDpsMax"] },
+      },
+      props: {
+        vehicles: [
+          vehicle({
+            alpha: 119.3,
+            burstDps: 1944.58,
+            sustainedDpsMin: 992.04,
+            sustainedDpsMax: 1186.84,
+          }),
+        ],
+        editable: true,
+      },
+      plugins: [router],
+    });
+
+    // Digit grouping follows the locale; the figures are what is checked.
+    const cells = wrapper
+      .findAll("tr#vehicle-1 td")
+      .map((cell) => cell.text().replace(/[^\d–]/g, ""));
+    expect(cells).toContain("119");
+    expect(cells).toContain("1945");
+    expect(cells).toContain("992–1187");
+  });
+
   it("opens the owner's ship on its overview", async () => {
     const wrapper = await mount(vehicle());
 

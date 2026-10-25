@@ -111,6 +111,95 @@ class Api::V1::HangarTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "filters, sorts and lists the guns a vehicle carries as fitted" do
+    user = create(:user)
+    sign_in user
+    model = create(:model, production_status: "flight-ready")
+    gun = create(:component, component_type: "WeaponGun", category: "weapons", size: "3")
+    mount = create(:hardpoint, parent: model, sc_name: "hardpoint_gun_nose", source: :game_files,
+      types: %w[WeaponGun], min_size: 3, max_size: 3, component: gun)
+    small = create(:model, production_status: "flight-ready")
+    create(:hardpoint, parent: small, sc_name: "hardpoint_gun_nose", source: :game_files, types: %w[WeaponGun],
+      min_size: 1, max_size: 1, component: create(:component, component_type: "WeaponGun", category: "weapons", size: "1"))
+    stock = create(:vehicle, user:, model:)
+    emptied = create(:vehicle, user:, model:)
+    create(:vehicle_loadout, :fleetyards, :active, vehicle: emptied,
+      item_list: [{slot_path: mount.sc_name, item_type: "Empty"}])
+    light = create(:vehicle, user:, model: small)
+    LoadoutStat.refresh
+
+    [
+      [{maxWeaponSizeGteq: 3}, [stock]],
+      [{maxWeaponSizeGteq: 1, maxWeaponSizeLteq: 2}, [light]],
+      [{maxWeaponSizeLteq: 0}, [emptied]]
+    ].each do |query, expected|
+      assert_api_response :get, 200, params: {q: query} do
+        assert_equal expected.map(&:id), parsed_body["items"].map { |item| item["id"] }
+      end
+    end
+
+    assert_api_response :get, 200, params: {q: {sorts: ["maxWeaponSize desc"]}} do
+      items = parsed_body["items"]
+
+      assert_equal [stock.id, light.id, emptied.id], items.map { |item| item["id"] }
+      assert_equal [3, 1, nil], items.map { |item| item["maxWeaponSize"] }
+      assert_equal [[{"size" => 3, "count" => 1}], [{"size" => 1, "count" => 1}], []], items.map { |item| item["weaponSizes"] }
+    end
+  end
+
+  test "filters, sorts and lists the firepower a vehicle carries as fitted" do
+    user = create(:user)
+    sign_in user
+    gun = ->(damage) {
+      create(:component, component_type: "WeaponGun", category: "weapons", size: "3",
+        type_data: {damage_per_shot: {energy: damage}, fire_rate: 600})
+    }
+    heavy = create(:model, production_status: "flight-ready")
+    create(:hardpoint, parent: heavy, sc_name: "hardpoint_gun_nose", source: :game_files, types: %w[WeaponGun],
+      min_size: 3, max_size: 3, component: gun.call(100))
+    light = create(:model, production_status: "flight-ready")
+    create(:hardpoint, parent: light, sc_name: "hardpoint_gun_nose", source: :game_files, types: %w[WeaponGun],
+      min_size: 3, max_size: 3, component: gun.call(10))
+    big = create(:vehicle, user:, model: heavy)
+    small = create(:vehicle, user:, model: light)
+    LoadoutStat.refresh
+
+    [
+      [{alphaGteq: 50}, [big]],
+      [{alphaLteq: 50}, [small]],
+      [{burstDpsGteq: 500, burstDpsLteq: 1500}, [big]]
+    ].each do |query, expected|
+      assert_api_response :get, 200, params: {q: query} do
+        assert_equal expected.map(&:id), parsed_body["items"].map { |item| item["id"] }
+      end
+    end
+
+    assert_api_response :get, 200, params: {q: {sorts: ["sustainedDpsMax asc"]}} do
+      items = parsed_body["items"]
+
+      assert_equal [small.id, big.id], items.map { |item| item["id"] }
+      assert_equal [10.0, 100.0], items.map { |item| item["alpha"] }
+      assert_equal [100.0, 1000.0], items.map { |item| item["burstDps"] }
+      assert_equal [100.0, 1000.0], items.map { |item| item["sustainedDpsMax"] }
+    end
+  end
+
+  test "lists a vehicle's guns largest first" do
+    user = create(:user)
+    sign_in user
+    model = create(:model, production_status: "flight-ready")
+    [["hardpoint_spinal", "10"], ["hardpoint_nose", "3"], ["hardpoint_wing", "3"]].each do |name, size|
+      create(:hardpoint, parent: model, sc_name: name, source: :game_files, types: %w[WeaponGun], min_size: size.to_i,
+        max_size: size.to_i, component: create(:component, component_type: "WeaponGun", category: "weapons", size:))
+    end
+    create(:vehicle, user:, model:)
+    LoadoutStat.refresh
+
+    assert_api_response :get, 200 do
+      assert_equal [{"size" => 10, "count" => 1}, {"size" => 3, "count" => 2}], parsed_body["items"].first["weaponSizes"]
+    end
+  end
+
   # A carrier holding a dock of each kind takes the branch that used to hand a
   # Hash to `or`, which Rails refuses outright -- so this filter answered with a
   # 500 for exactly the three ships anybody would pick: Polaris, Carrack, 890

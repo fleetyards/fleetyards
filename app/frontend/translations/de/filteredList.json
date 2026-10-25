@@ -11,6 +11,7 @@
       "groups": {
         "ship": "Schiff",
         "capacity": "Kapazität & Abmessungen",
+        "weapons": "Waffen",
         "price": "Preis",
         "ownership": "Besitz"
       }

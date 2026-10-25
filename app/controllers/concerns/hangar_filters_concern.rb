@@ -4,7 +4,7 @@ module HangarFiltersConcern
   include WillItFitConcern
 
   private def vehicle_query_params
-    @vehicle_query_params ||= Vehicle.fitted_cargo_filters(
+    @vehicle_query_params ||= Vehicle.fitted_filters(
       params.permit(q: ParamsHelper.new("v1/schema.yaml").to_params("HangarQuery")).fetch(:q, {}),
       public_only: public_vehicle_list?
     )
