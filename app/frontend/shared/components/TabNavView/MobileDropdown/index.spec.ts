@@ -17,11 +17,15 @@ describe("TabNavViewMobileDropdown", () => {
   let lent = false;
 
   // The real transition, whose `after-enter` is when the panel is brought into
-  // view; the default stub never fires it.
+  // view; the default stub never fires it. Its CSS duration runs on faked
+  // timers, as a loaded CI runner stretches it past any waitFor.
   const stubs = config.global.stubs;
 
   beforeEach(() => {
     config.global.stubs = { ...stubs, transition: false };
+    vi.useFakeTimers({
+      toFake: ["setTimeout", "clearTimeout", "requestAnimationFrame"],
+    });
     if (!("scrollIntoView" in Element.prototype)) {
       Object.defineProperty(Element.prototype, "scrollIntoView", {
         value: () => {},
@@ -34,6 +38,7 @@ describe("TabNavViewMobileDropdown", () => {
 
   afterEach(() => {
     config.global.stubs = stubs;
+    vi.useRealTimers();
     vi.restoreAllMocks();
     if (lent) {
       Reflect.deleteProperty(Element.prototype, "scrollIntoView");
@@ -50,9 +55,9 @@ describe("TabNavViewMobileDropdown", () => {
     await wrapper.find(".tab-nav-dropdown__trigger").trigger("click");
 
     expect(wrapper.find(".tab-nav-dropdown__panel").exists()).toBe(true);
-    await vi.waitFor(() =>
-      expect(scrollIntoView).toHaveBeenCalledWith({ block: "nearest" }),
-    );
+    await vi.runAllTimersAsync();
+
+    expect(scrollIntoView).toHaveBeenCalledWith({ block: "nearest" });
 
     wrapper.unmount();
   });
@@ -65,14 +70,14 @@ describe("TabNavViewMobileDropdown", () => {
     const trigger = wrapper.find(".tab-nav-dropdown__trigger");
 
     await trigger.trigger("click");
-    await vi.waitFor(() => expect(scrollIntoView).toHaveBeenCalled());
+    await vi.runAllTimersAsync();
+    expect(scrollIntoView).toHaveBeenCalled();
     scrollIntoView.mockClear();
     await trigger.trigger("click");
     // Once the leave transition has run its course, which is where an enter
     // hook would have fired had it been wired to the wrong one.
-    await vi.waitFor(() =>
-      expect(wrapper.find(".tab-nav-dropdown__panel").exists()).toBe(false),
-    );
+    await vi.runAllTimersAsync();
+    expect(wrapper.find(".tab-nav-dropdown__panel").exists()).toBe(false);
 
     expect(scrollIntoView).not.toHaveBeenCalled();
 
