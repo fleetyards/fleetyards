@@ -286,24 +286,57 @@ module ScData
       # last segment instead. An item with no other version has no family.
       private def assign_families(parsed)
         by_key = parsed.index_by { |item| item[:key] }
+        bases = parsed.to_h { |item| [item[:key], base_key(item, by_key)] }
+
+        # A version whose name matches only an intermediate record -- a skin of
+        # a skin -- still belongs to the root's family.
+        root = ->(key) { bases[key] ? root.call(bases[key]) : key }
+        roots = bases.filter_map { |key, base| root.call(key) if base }.to_set
 
         parsed.each do |item|
-          item[:family_key] = base_key(item, by_key) || worn_family_key(item)
+          item[:family_key] = root.call(item[:key]) if bases[item[:key]] || roots.include?(item[:key])
         end
 
-        parsed.group_by { |item| item[:family_key] }.each do |family_key, members|
-          next if family_key.nil?
+        assign_worn_families(parsed, by_key)
 
-          base = by_key[family_key]
+        parsed
+      end
 
-          if base && members.any? { |member| same_kind?(base, member) }
-            base[:family_key] = family_key
-          elsif members.one?
-            members.first[:family_key] = nil
+      # One prefix can cover different pieces -- arms and legs, or a test record
+      # beside an undersuit -- so the colourways are grouped by kind as well,
+      # and a prefix shared by several kinds names each after its slot or type.
+      #
+      # A colourway group can hold the root of a keyed family (Citadel Legs Base
+      # has skins of its own) or sit under a record its prefix names (the
+      # mobiGlas casings), and then joins that family rather than starting one.
+      private def assign_worn_families(parsed, by_key)
+        open = parsed.select do |item|
+          WORN_EQUIPMENT_TYPES.include?(item[:equipment_type]) && [nil, item[:key]].include?(item[:family_key])
+        end
+        merged = {}
+
+        open.group_by { |item| worn_family_key(item) }.each do |prefix, same_prefix|
+          kinds = same_prefix.group_by { |item| kind(item) }
+          base = by_key[prefix]
+          if base && open.include?(base) && !same_prefix.include?(base) && kinds.key?(kind(base))
+            kinds[kind(base)] += [base]
+          end
+          kinds = kinds.select { |_, members| members.size > 1 }
+
+          kinds.each do |(_, item_type, slot), members|
+            roots = members.select { |item| item[:family_key] }
+            family_key = roots.first&.dig(:family_key) || (kinds.one? ? prefix : [prefix, slot || item_type].compact.join("_"))
+
+            roots.drop(1).each { |other| merged[other[:key]] = family_key }
+            members.each { |item| item[:family_key] = family_key }
           end
         end
 
-        parsed
+        parsed.each { |item| item[:family_key] = merged.fetch(item[:family_key], item[:family_key]) }
+      end
+
+      private def kind(item)
+        item.values_at(:equipment_type, :item_type, :slot)
       end
 
       private def base_key(item, by_key)
@@ -337,8 +370,6 @@ module ScData
       end
 
       private def worn_family_key(item)
-        return unless WORN_EQUIPMENT_TYPES.include?(item[:equipment_type])
-
         item[:key].split("_")[0..-2].join("_")
       end
 

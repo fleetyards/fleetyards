@@ -100,6 +100,32 @@ module ScData
         assert_equal "lglt_flashlight_01_orange", parsed.fetch("lglt_flashlight_01_orange_green")["family_key"]
       end
 
+      # The matte blue names only the blue it extends, not the red the family is
+      # named after, and must not pull the blue out of that family.
+      test "files a version of a version under the root" do
+        write_weapon("wowb_pistol_toy_01", "WowBlast Pistol Red")
+        write_weapon("wowb_pistol_toy_01_blue", "WowBlast Pistol Blue")
+        write_weapon("wowb_pistol_toy_01_blue_matte", "WowBlast Pistol Blue Matte")
+
+        assert_equal ["wowb_pistol_toy_01"] * 3,
+          parsed.values_at("wowb_pistol_toy_01", "wowb_pistol_toy_01_blue", "wowb_pistol_toy_01_blue_matte")
+            .pluck("family_key")
+      end
+
+      test "keeps worn pieces of different kinds under one prefix apart" do
+        write_equipment("invisible_medium_arms", name: "@item_Name_invisible_medium_arms",
+          path: "entities/scitem/characters/human/armor", type: "Char_Armor_Arms")
+        write_equipment("invisible_medium_legs", name: "@item_Name_invisible_medium_legs",
+          path: "entities/scitem/characters/human/armor", type: "Char_Armor_Legs")
+        @parser.translations = {
+          "item_Name_hdh_boots_01_01_13" => "Novian Boots",
+          "item_Name_invisible_medium_arms" => "GCD-Army Arms",
+          "item_Name_invisible_medium_legs" => "GCD-Army Legs"
+        }
+
+        assert_equal [nil, nil], parsed.values_at("invisible_medium_arms", "invisible_medium_legs").pluck("family_key")
+      end
+
       # Worn colourways have no base record to extend, so they share the key
       # without its colour instead.
       test "files worn colourways under their shared key" do
