@@ -18,6 +18,7 @@ import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import DetailSkeleton from "@/shared/components/DetailSkeleton/index.vue";
 import ContractStatePill from "@/frontend/components/Fleets/Contracts/ContractStatePill/index.vue";
+import ContractScopeLabel from "@/frontend/components/Fleets/Contracts/ContractScopeLabel/index.vue";
 import ContractProgress from "@/frontend/components/Fleets/Contracts/ContractProgress/index.vue";
 import ContractCrewList from "@/frontend/components/Fleets/Contracts/ContractCrewList/index.vue";
 import {
@@ -312,6 +313,12 @@ const crumbs = computed<Crumb[]>(() => [
           <span class="contract-hero__kind">
             {{ t(`labels.fleets.contracts.kind.${contract.kind}`) }}
           </span>
+          <span class="contract-hero__dot" />
+          <ContractScopeLabel
+            :fleet="fleet"
+            :personal="contract.personal"
+            class="contract-hero__kind"
+          />
           <span class="contract-hero__dot" />
           <ContractStatePill :state="contract.state" />
         </div>
