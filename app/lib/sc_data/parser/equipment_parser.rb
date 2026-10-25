@@ -236,6 +236,9 @@ module ScData
 
       WORN_EQUIPMENT_TYPES = %w[armor clothing undersuit].freeze
 
+      # A skin's own name, in straight or curly, double or single quotes.
+      QUOTED_NAME = /\s*["“”'‘’][^"“”'‘’]+["“”'‘’]\s*/
+
       def all
         save_items(equipment, folder: "equipment")
       end
@@ -273,7 +276,10 @@ module ScData
       # its base item's -- klwe_rifle_energy_01_white02 is the Gallant Rifle in
       # "Boneyard" colours -- and the family is named after the shortest such
       # base. The base has to be the same type of item, or a rifle's magazine
-      # would read as a version of the rifle.
+      # would read as a version of the rifle, and the name has to say it is a
+      # version: attachment keys extend other products' -- the Quell Suppressor
+      # is arma_barrel_supp_s1_02, under the Tacit -- and so do posters,
+      # keycards and the LL sights.
       #
       # Worn colourways have no base record: the Defiance Arms in each colour
       # are slaver_armor_heavy_arms_01_01_NN, so they share the key without its
@@ -306,10 +312,28 @@ module ScData
         (MIN_BASE_SEGMENTS...segments.size).each do |count|
           base = by_key[segments.first(count).join("_")]
 
-          return base[:key] if base && same_kind?(base, item)
+          return base[:key] if base && same_kind?(base, item) && version_name?(item[:name], base[:name])
         end
 
         nil
+      end
+
+      # A skin keeps its base's name around a quoted one -- Gallant "Boneyard"
+      # Rifle -- or adds a colour to it, and a colour sibling swaps the base's:
+      # Tracer Laser Pointer Green under Tracer Laser Pointer Orange.
+      private def version_name?(name, base_name)
+        words = comparable_name(name).split
+        base_words = comparable_name(base_name).split
+
+        return true if words.first(base_words.size) == base_words
+        return true if name.match?(QUOTED_NAME) && words.first == base_words.first
+
+        words.size == base_words.size && words.size > 1 && words[0..-2] == base_words[0..-2]
+      end
+
+      # Some names carry a non-breaking space where others have a plain one.
+      private def comparable_name(name)
+        name.gsub(QUOTED_NAME, " ").gsub(/[[:space:]]+/, " ").strip.downcase
       end
 
       private def worn_family_key(item)

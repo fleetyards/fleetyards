@@ -84,6 +84,22 @@ module ScData
         assert_nil parsed.fetch("klwe_rifle_energy_01_mag")["family_key"]
       end
 
+      # Attachment keys extend other products': the Quell Suppressor is filed
+      # under the Tacit's key, and a non-breaking space must not split a skin
+      # from its base.
+      test "files a version by its name as well as its key" do
+        write_attachment("arma_barrel_supp_s1", "Tacit Suppressor1", sub_type: "Barrel")
+        write_attachment("arma_barrel_supp_s1_02", "Quell Suppressor1", sub_type: "Barrel")
+        write_weapon("behr_smg_ballistic_01", "P8-SC SMG")
+        write_weapon("behr_smg_ballistic_01_black01", "P8-SC\u00A0\"Midnight\" SMG")
+        write_attachment("lglt_flashlight_01_orange", "Tracer Laser Pointer Orange", sub_type: "BottomAttachment")
+        write_attachment("lglt_flashlight_01_orange_green", "Tracer Laser Pointer Green", sub_type: "BottomAttachment")
+
+        assert_nil parsed.fetch("arma_barrel_supp_s1_02")["family_key"]
+        assert_equal "behr_smg_ballistic_01", parsed.fetch("behr_smg_ballistic_01_black01")["family_key"]
+        assert_equal "lglt_flashlight_01_orange", parsed.fetch("lglt_flashlight_01_orange_green")["family_key"]
+      end
+
       # Worn colourways have no base record to extend, so they share the key
       # without its colour instead.
       test "files worn colourways under their shared key" do
