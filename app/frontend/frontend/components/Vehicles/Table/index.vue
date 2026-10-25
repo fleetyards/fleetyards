@@ -71,8 +71,9 @@ const { t, toNumber, toUEC, toDollar } = useI18n();
 
 const { cargoLabel } = useVehicleCargo();
 
+// No figure is blank, where a gun that does not fire at one pip reads 0.
 const firepower = (value?: number | null) =>
-  value ? String(toNumber(Math.round(value), "integer")) : "";
+  value == null ? "" : String(toNumber(Math.round(value), "integer"));
 
 // Sustained fire from one weapon pip to the most the plant gives; a ship whose
 // guns do not care about power shows the one figure.
