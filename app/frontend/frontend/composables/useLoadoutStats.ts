@@ -236,29 +236,22 @@ function cycleOf(timeFiring: number, offTime: number): DutyCycle {
   return { ratio: timeFiring / cycle, offTime, cycle };
 }
 
-export function computeLoadoutStats(
-  hardpoints: Hardpoint[] | undefined,
-  weaponPoolSize?: number,
-  overrides?: PortOverrides,
-  regenModifier: WeaponRegenModifier = NO_REGEN_MODIFIER,
-  mode: FlightMode = "SCM",
-): LoadoutStats {
-  const weaponHardpoints = collectWeaponHardpoints(hardpoints);
-  const controllers = computeControllerStats(hardpoints);
-  const sim = simulateLoadoutPower(
-    hardpoints,
-    weaponPoolSize,
-    mode,
-    overrides,
-    undefined,
-    regenModifier,
-  );
-  // Weapon power follows the actual pip allocation shown in the power UI — the
-  // default distribution until the user assigns pips, their choices afterwards.
-  // Only when the ship has no parsed plant segments do we fall back to the
-  // segment-independent max-power ratio, so those ships never regress to 0 DPS.
-  const powerRatio =
-    sim.totalSegments > 0 ? sim.weaponPoolRatio : sim.weaponMaxRatio;
+type WeaponTally = Pick<
+  LoadoutStats,
+  | "dps"
+  | "sustainedDps"
+  | "alpha"
+  | "dpsByControl"
+  | "weapons"
+  | "missileDamage"
+  | "missileCount"
+>;
+
+function tallyWeapons(
+  weaponHardpoints: WeaponHardpoint[],
+  powerRatio: number,
+  regenModifier: WeaponRegenModifier,
+): WeaponTally {
   // Every weapon needs the weapon system powered (≥1 pip) to fire at all — zero
   // burst/alpha too when unpowered, not just sustained. The sustained *throttle*
   // from partial power is energy-only and handled by sustainedRatio's branch
@@ -327,6 +320,50 @@ export function computeLoadoutStats(
     alpha,
     dpsByControl,
     weapons,
+    missileDamage,
+    missileCount,
+  };
+}
+
+export function computeLoadoutStats(
+  hardpoints: Hardpoint[] | undefined,
+  weaponPoolSize?: number,
+  overrides?: PortOverrides,
+  regenModifier: WeaponRegenModifier = NO_REGEN_MODIFIER,
+  mode: FlightMode = "SCM",
+): LoadoutStats {
+  const weaponHardpoints = collectWeaponHardpoints(hardpoints);
+  const controllers = computeControllerStats(hardpoints);
+  const sim = simulateLoadoutPower(
+    hardpoints,
+    weaponPoolSize,
+    mode,
+    overrides,
+    undefined,
+    regenModifier,
+  );
+  // Weapon power follows the actual pip allocation shown in the power UI — the
+  // default distribution until the user assigns pips, their choices afterwards.
+  // Only when the ship has no parsed plant segments do we fall back to the
+  // segment-independent max-power ratio, so those ships never regress to 0 DPS.
+  const powerRatio =
+    sim.totalSegments > 0 ? sim.weaponPoolRatio : sim.weaponMaxRatio;
+  const {
+    dps,
+    sustainedDps,
+    alpha,
+    dpsByControl,
+    weapons,
+    missileDamage,
+    missileCount,
+  } = tallyWeapons(weaponHardpoints, powerRatio, regenModifier);
+
+  return {
+    dps,
+    sustainedDps,
+    alpha,
+    dpsByControl,
+    weapons,
     weaponCount: weapons.length,
     missileDamage,
     missileCount,
@@ -341,6 +378,52 @@ export function computeLoadoutStats(
       weapons.length > 0 ||
       missileDamage > 0 ||
       (missileCount > 0 && (controllers.maxArmedMissiles || 0) > 0),
+  };
+}
+
+export type Firepower = {
+  alpha: number;
+  burstDps: number;
+  sustainedDpsMin: number;
+  sustainedDpsMax: number;
+};
+
+// A fitting's firepower without anyone's pips: alpha and burst need only the
+// guns powered, and sustained fire is read at the least weapon power that
+// fires them -- one pip -- and at the most the plant can give them. Between
+// the two lies every split a pilot can choose. The server stores the same
+// figures for the hangar, worked out by `LoadoutFirepower`; the fixtures under
+// `test/fixtures/loadout_stats` hold both to one answer.
+export function computeFirepower(
+  hardpoints: Hardpoint[] | undefined,
+  weaponPoolSize?: number,
+  regenModifier: WeaponRegenModifier = NO_REGEN_MODIFIER,
+): Firepower {
+  const weaponHardpoints = collectWeaponHardpoints(hardpoints);
+  const sim = simulateLoadoutPower(
+    hardpoints,
+    weaponPoolSize,
+    "SCM",
+    undefined,
+    undefined,
+    regenModifier,
+  );
+  const maxRatio = sim.weaponMaxRatio;
+  const unlimited =
+    !weaponPoolSize || weaponPoolSize <= 0 || sim.weaponDraw <= 0;
+  const onePip = unlimited
+    ? 1
+    : Math.min(1, (1 / sim.weaponDraw) * (regenModifier.powerRatio || 1));
+  const minRatio = Math.min(maxRatio, onePip);
+
+  const atMax = tallyWeapons(weaponHardpoints, maxRatio, regenModifier);
+  const atMin = tallyWeapons(weaponHardpoints, minRatio, regenModifier);
+
+  return {
+    alpha: atMax.alpha.total,
+    burstDps: atMax.dps.total,
+    sustainedDpsMin: atMin.sustainedDps.total,
+    sustainedDpsMax: atMax.sustainedDps.total,
   };
 }
 
