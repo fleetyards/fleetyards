@@ -409,9 +409,10 @@ const adiMap = computed(() => {
                       slug: model.slug,
                     },
                   }"
-                  v-tooltip="t('labels.openInNewWindow')"
+                  v-tooltip="t('actions.vehicleOverview.fullscreenHolo')"
+                  :aria-label="t('actions.vehicleOverview.fullscreenHolo')"
                 >
-                  <i class="fa-light fa-external-link-alt" />
+                  <i class="fa-light fa-expand" />
                 </Btn>
                 <Btn
                   v-if="!mobile"

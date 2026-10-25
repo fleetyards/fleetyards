@@ -242,6 +242,42 @@ const root = ref<HTMLElement>();
 
 const list = ref<HTMLElement>();
 
+/*
+ * The panel takes its height from the list, so the options arriving at once
+ * would snap it from a spinner's height to a list's. Measured either side of
+ * the render and animated between, leaving no inline height behind.
+ */
+let heightAnimation: Animation | undefined;
+
+watch(
+  () => props.loading,
+  async (loading, wasLoading) => {
+    // A slot switched mid-animation starts over from where the panel stands.
+    heightAnimation?.cancel();
+    heightAnimation = undefined;
+
+    const element = root.value;
+    if (loading || !wasLoading || !element) return;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+
+    const from = element.offsetHeight;
+    await nextTick();
+    const to = element.offsetHeight;
+    if (from === to || typeof element.animate !== "function") return;
+
+    heightAnimation = element.animate(
+      [
+        { height: `${from}px`, overflow: "hidden" },
+        { height: `${to}px`, overflow: "hidden" },
+      ],
+      { duration: 220, easing: "ease-out" },
+    );
+  },
+  { flush: "pre" },
+);
+
 // Focus moving between options keeps the preview; only leaving the list ends it.
 const onFocusOut = (event: FocusEvent) => {
   if (!list.value?.contains(event.relatedTarget as Node | null)) {

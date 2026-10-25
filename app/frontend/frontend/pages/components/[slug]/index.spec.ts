@@ -15,6 +15,14 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   }),
 }));
 
+vi.mock("@/shared/composables/useMobile", () => ({
+  useMobile: () => ref(false),
+}));
+
+vi.mock("@/shared/composables/useLowPowerDevice", () => ({
+  useLowPowerDevice: () => ref(false),
+}));
+
 vi.mock("@/shared/composables/useI18n", () => ({
   useI18n: () => ({
     t: (key: string) => key,
@@ -69,6 +77,7 @@ const mountPage = async (component: Component, path = "/") => {
         ExternalLinks: true,
         Availability: true,
         Chip: true,
+        ItemViews: true,
         MetricsCard: {
           props: ["title"],
           template: "<section :data-title='title'><slot /></section>",
@@ -168,7 +177,7 @@ describe("ComponentPage", () => {
     );
 
     expect(
-      wrapper.find("[data-test='component-image'] img").attributes("src"),
+      wrapper.find("[data-test='component-image']").attributes("src"),
     ).toBe("https://example.test/large.jpg");
   });
 

@@ -13,6 +13,10 @@ module ItemViews
 
   ATTACHMENT_NAMES = (VIEW_ATTACHMENT_NAMES + %i[holo]).freeze
 
+  # Everything `display_image_attr` reads, for a list that shows each item by
+  # its picture.
+  DISPLAY_IMAGE_PRELOAD = {store_image_attachment: :blob, angled_view_attachment: :blob}.freeze
+
   included do
     ATTACHMENT_NAMES.each { |name| has_one_attached name }
   end

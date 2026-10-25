@@ -143,6 +143,8 @@ const ownRoute = computed(() =>
     kind="Component"
     :category="categoryLabel"
     :subtitle="component?.manufacturer?.name || undefined"
+    :image="component?.media?.storeImage?.smallUrl"
+    image-fit="contain"
     :badges="badges"
     :stats="stats"
     :to="to === false ? undefined : (to ?? ownRoute)"

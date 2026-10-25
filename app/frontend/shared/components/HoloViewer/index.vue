@@ -39,6 +39,9 @@ type Props = {
   grid?: boolean;
   zoomable?: boolean;
   panable?: boolean;
+  // Where the camera starts around the model, in degrees from +Z. A ship holo
+  // is exported facing the default; an item's keeps the game's entity frame.
+  azimuth?: number;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -50,7 +53,12 @@ const props = withDefaults(defineProps<Props>(), {
   grid: false,
   panable: false,
   zoomable: false,
+  azimuth: 0,
 });
+
+// Nothing will be drawn: no WebGL, or a holo that would not load. A caller with
+// a picture to show instead can switch to it.
+const emit = defineEmits<{ unavailable: [] }>();
 
 const { displayAlert } = useAppNotifications();
 
@@ -77,6 +85,10 @@ const totalSizeMb = computed(() => Math.round(totalSize.value / 1_000_000));
 
 onMounted(() => {
   webglSupported.value = webglAvailable();
+});
+
+watch(webglSupported, (supported) => {
+  if (!supported) emit("unavailable");
 });
 
 // THREE throws while constructing the renderer, which TresCanvas's `on-error`
@@ -291,8 +303,15 @@ const handleModelLoaded = (size: Vector3, _scene: Mesh) => {
     Math.tan((maxCameraElevation.value * Math.PI) / 180) * distance,
   );
 
-  cameraPosition.value = [0, height, distance];
-  lightPosition.value = [0, height, distance];
+  const azimuth = (props.azimuth * Math.PI) / 180;
+  const position: [number, number, number] = [
+    Math.sin(azimuth) * distance,
+    height,
+    Math.cos(azimuth) * distance,
+  ];
+
+  cameraPosition.value = position;
+  lightPosition.value = position;
 };
 
 const handleRenderError = (error: Error) => {
@@ -302,6 +321,7 @@ const handleRenderError = (error: Error) => {
 
 const handleModelError = (error: unknown) => {
   loading.value = false;
+  emit("unavailable");
 
   console.error(error);
 

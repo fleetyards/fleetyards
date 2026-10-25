@@ -108,6 +108,17 @@ const badges = computed<RowListItemBadge[]>(() => {
   return list;
 });
 
+// The item's own picture where it has one, the store image or its render.
+const image = computed(() => {
+  const { entry } = props;
+
+  if (entry.type === "Component")
+    return entry.record.media?.storeImage?.smallUrl;
+  if (entry.type === "Equipment") return entry.record.storeImage?.smallUrl;
+
+  return undefined;
+});
+
 // The pick button is an empty overlay, so its name has to carry what the row
 // shows: two guns from different makers can share a display name.
 const accessibleName = computed(() =>
@@ -126,8 +137,15 @@ const accessibleName = computed(() =>
     :data-test="`item-picker-row-${entry.record.id}`"
   >
     <template #leading>
+      <img
+        v-if="image"
+        :src="image"
+        alt=""
+        class="item-picker-row__image"
+        loading="lazy"
+      />
       <HardpointCategoryIcon
-        v-if="entry.type === 'Component'"
+        v-else-if="entry.type === 'Component'"
         :category="entry.record.category"
       />
       <CommodityIcon
@@ -158,6 +176,13 @@ const accessibleName = computed(() =>
 .item-picker-row {
   position: relative;
   cursor: pointer;
+}
+
+.item-picker-row__image {
+  display: block;
+  width: 64px;
+  height: 36px;
+  object-fit: contain;
 }
 
 .item-picker-row__pick {

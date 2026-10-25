@@ -37012,6 +37012,10 @@ components:
         craftable:
           type: boolean
           description: A recipe in the build being served makes it
+        imageUrl:
+          type: string
+          description: The store image, or the angled render where there is none,
+            small
       additionalProperties: false
       required:
       - id

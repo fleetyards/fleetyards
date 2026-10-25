@@ -40,6 +40,8 @@ type Props = {
   subtitle?: string;
   status?: StatsCardStatus;
   image?: string;
+  // A transparent render cut tight to the item is fitted rather than cropped.
+  imageFit?: "cover" | "contain";
   description?: string;
   badges?: StatsCardBadge[];
   // For an icon slot holding a picture of its own, such as a person's avatar,
@@ -64,6 +66,7 @@ const props = withDefaults(defineProps<Props>(), {
   subtitle: undefined,
   status: undefined,
   image: undefined,
+  imageFit: "cover",
   description: undefined,
   badges: () => [],
   largeIcon: false,
@@ -139,8 +142,8 @@ const loadingLabel = computed(() =>
     : undefined,
 );
 
-// Only a ship's card carries an image, and a fetched one would otherwise grow
-// by its height the moment the record lands.
+// A fetched ship's card would otherwise grow by its image's height the moment
+// the record lands; an item may have no picture, so its card does not hold one.
 const showsImage = computed(() => !!props.image && !props.loading);
 
 const holdsImage = computed(() => props.loading && props.kind === "Model");
@@ -167,7 +170,13 @@ const hasBody = computed(
     />
 
     <div v-if="showsImage" class="stats-card__media">
-      <img :src="image" :alt="title" class="stats-card__image" loading="lazy" />
+      <img
+        :src="image"
+        :alt="title"
+        class="stats-card__image"
+        :class="`stats-card__image--${imageFit}`"
+        loading="lazy"
+      />
       <span
         v-if="status"
         class="stats-card__status stats-card__status--over-image"

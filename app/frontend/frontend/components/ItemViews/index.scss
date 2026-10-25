@@ -1,0 +1,20 @@
+.item-views {
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    --gallery-image-height: 140px;
+
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    // LazyImage's root, which carries this component's scope.
+    .gallery-image {
+      margin-bottom: 0;
+      padding: 8px;
+      border-radius: 4px;
+      background-color: var(--color-control, rgb(39 43 48 / 0.9));
+    }
+  }
+}

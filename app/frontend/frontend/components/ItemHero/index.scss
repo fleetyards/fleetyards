@@ -1,0 +1,35 @@
+.item-hero {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 4px;
+
+  &--holo {
+    position: relative;
+  }
+
+  &__image {
+    // Mostly a game-file render: transparent and cut tight to the item, so it
+    // is fitted rather than cropped.
+    object-fit: contain;
+  }
+
+  &__fullscreen {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+  }
+
+  // Revealed on hover only where there is one: a touch screen keeps it shown.
+  @media (hover: hover) {
+    &__fullscreen {
+      opacity: 0;
+      transition: opacity 150ms ease;
+    }
+
+    &--holo:hover &__fullscreen,
+    &--holo:focus-within &__fullscreen {
+      opacity: 1;
+    }
+  }
+}

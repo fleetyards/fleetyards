@@ -94,6 +94,8 @@ const ownRoute = computed(() =>
     kind="Equipment"
     :category="equipment?.equipmentTypeLabel || undefined"
     :subtitle="subtitle || undefined"
+    :image="equipment?.storeImage?.smallUrl"
+    image-fit="contain"
     :description="equipment?.description || undefined"
     :badges="badges"
     :stats="stats"

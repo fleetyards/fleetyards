@@ -17,8 +17,9 @@ import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
-import { useImageViewer } from "@/shared/composables/useImageViewer";
 import EquipmentStatsCard from "@/frontend/components/StatsCard/Equipment/index.vue";
+import ItemHero from "@/frontend/components/ItemHero/index.vue";
+import ItemViews from "@/frontend/components/ItemViews/index.vue";
 import Alert from "@/shared/components/base/Alert/index.vue";
 import { useCraftedFromRoute } from "@/frontend/composables/useCraftedFromRoute";
 import { craftedEquipment } from "@/frontend/composables/craftedComponent";
@@ -48,16 +49,6 @@ const {
 } = useCraftedFromRoute(stock, craftedEquipment);
 
 const equipment = computed(() => crafted.value ?? stock.value);
-
-const { openImage } = useImageViewer();
-
-const viewImage = (event: MouseEvent) => {
-  const image = (event.currentTarget as HTMLElement).querySelector("img");
-
-  if (image && equipment.value) {
-    void openImage(image, equipment.value.name);
-  }
-};
 
 // Which recipes make this. Looked up by id, so only once the item has arrived.
 const { data: blueprints, isPending: recipesPending } = useBlueprintsQuery(
@@ -187,26 +178,27 @@ watch(
         </Alert>
 
         <div class="equipment-page__columns">
-          <EquipmentStatsCard
-            :equipment="equipment"
-            :stock="crafted ? stock : undefined"
-          />
+          <div class="equipment-page__main">
+            <EquipmentStatsCard
+              :equipment="equipment"
+              :stock="crafted ? stock : undefined"
+            />
+
+            <!-- Keyed: its gallery binds once, to the grid it mounts with. -->
+            <ItemViews
+              :key="equipment.id"
+              :media="equipment.media"
+              :name="equipment.name"
+            />
+          </div>
 
           <div class="equipment-page__rail">
-            <button
-              v-if="equipment.storeImage?.largeUrl"
-              type="button"
-              class="equipment-page__zoom"
-              :aria-label="t('actions.viewImage', { name: equipment.name })"
-              data-test="equipment-image"
-              @click="viewImage"
-            >
-              <img
-                class="equipment-page__image"
-                :src="equipment.storeImage.largeUrl"
-                alt=""
-              />
-            </button>
+            <ItemHero
+              :image="equipment.storeImage"
+              :holo="equipment.media?.holo"
+              :name="equipment.name"
+              test-id="equipment-image"
+            />
 
             <MetricsCard
               v-if="details.length"

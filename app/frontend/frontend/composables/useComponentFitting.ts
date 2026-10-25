@@ -899,6 +899,7 @@ export const useComponentFitting = () => {
       return {
         id: component.id,
         name: component.name,
+        image: component.imageUrl,
         description: [typeName(component), componentFigure(component)]
           .filter(Boolean)
           .join(" · "),
