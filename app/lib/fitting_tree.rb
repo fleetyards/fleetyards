@@ -48,6 +48,7 @@ class FittingTree
   # `crafted` are the loadout's crafted items by slot path.
   def fitted(slots, crafted = {})
     @crafted = crafted
+    @recipes = nil
     fitting = slots.fittable_hull.index_by(&:name)
 
     stock.map do |node|
@@ -104,14 +105,16 @@ class FittingTree
     item = @crafted&.dig(path)
     return if item.nil? || component.nil? || item.item_id != component.id
 
-    recipe = recipes[[item.blueprint_id, component.id]]
-    recipe && CraftedFigures.new(recipe.cost_slots, item.crafted_qualities)
+    cost_slots = recipes[item.blueprint_id]
+    cost_slots.present? ? CraftedFigures.new(cost_slots, item.crafted_qualities) : nil
   end
 
+  # Read as the loadout page reads a recipe: the build in force, else the last
+  # one that described it, so a recipe a build retired still crafts the part it
+  # made.
   private def recipes
-    @recipes ||= ::Blueprint.readable_builds(::Blueprint.served_source)
-      .where(blueprint_id: @crafted.values.map(&:blueprint_id), craftable_type: "Component")
-      .includes(cost_slots: :modifiers)
-      .index_by { |build| [build.blueprint_id, build.craftable_id] }
+    @recipes ||= ::Blueprint.where(id: @crafted.values.map(&:blueprint_id))
+      .includes(:build, :last_build)
+      .to_h { |blueprint| [blueprint.id, blueprint.cost_slots.includes(:modifiers).order(:position).to_a] }
   end
 end

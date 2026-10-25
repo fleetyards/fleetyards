@@ -13,19 +13,10 @@ class CraftedFigures
   QUALITY_MIN = 0
   QUALITY_MAX = 1000
 
-  # The part figure each crafted stat scales, by property key; a key with no
-  # figure in the catalogue moves nothing.
-  FIELDS = {
-    "gpp_itemresource_coolantgeneration" => "cooling_rate",
-    "gpp_itemresource_powergeneration" => "power_base",
-    "gpp_shield_maxhealth" => "max_health",
-    "gpp_radar_minaimassistdistance" => "aim_assist_min",
-    "gpp_radar_maxaimassistdistance" => "aim_assist_range",
-    "gpp_quantum_speed" => "drive_speed",
-    "gpp_weapon_tractor_force" => "max_force",
-    "gpp_weapon_tractor_maxdist" => "max_distance",
-    "gpp_weapon_tractor_maxvolume" => "max_volume"
-  }.freeze
+  # The part figure each crafted stat scales, by property key, as the
+  # blueprint page reads its base values; a key with no figure in the catalogue
+  # moves nothing.
+  FIELDS = BlueprintStatBases::COMPONENT
 
   # A weapon's damage is split across the types it deals; the factor applies to
   # each of them alike.

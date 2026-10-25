@@ -168,6 +168,45 @@ class LoadoutStatTest < ActiveSupport::TestCase
     assert_in_delta 25, stat_of(loadout).alpha
   end
 
+  test "each loadout of a ship counts its own crafted recipe" do
+    energy = {"damage_per_shot" => {"energy" => 10}, "fire_rate" => 600}
+    @small_gun.update!(type_data: energy)
+    @small_gun.build&.update!(type_data: energy)
+    crafted = ->(factor) {
+      blueprint = create(:blueprint, craftable: @small_gun)
+      create(:blueprint_cost_modifier, slot: create(:blueprint_cost_slot, build: blueprint.build, position: 0),
+        property_key: "gpp_weapon_damage", modifier_at_start: factor, modifier_at_end: factor)
+      create(:vehicle_loadout, :fleetyards, vehicle: create(:vehicle, model: @model), name: nil, item_list: [{
+        slot_path: "hardpoint_gun_left/hardpoint_class_2", item_type: "Component", item_id: @small_gun.id,
+        crafted: {blueprint_id: blueprint.id, qualities: [{position: 0, quality: 1000}]}
+      }])
+    }
+    doubled = crafted.call(2.0)
+    tripled = crafted.call(3.0)
+
+    LoadoutStat.refresh(@source)
+
+    assert_in_delta 20, stat_of(doubled).alpha
+    assert_in_delta 30, stat_of(tripled).alpha
+  end
+
+  test "a ship no build describes has no firepower rather than none" do
+    concept = create(:model, production_status: "in-concept")
+
+    LoadoutStat.refresh(@source)
+
+    assert_nil stat_of(concept).alpha
+    assert_nil stat_of(concept).sustained_dps_max
+  end
+
+  test "a refresh of a loadout deleted meanwhile writes nothing and does not fail" do
+    loadout = fit(["hardpoint_gun_left/hardpoint_class_2", @small_gun])
+    VehicleLoadout.where(id: loadout.id).delete_all
+
+    assert_nothing_raised { LoadoutStat.refresh_loadout(loadout) }
+    assert_empty LoadoutStat.where(fitting_type: "VehicleLoadout", fitting_id: loadout.id)
+  end
+
   test "a vehicle left with two active loadouts still reads its guns" do
     first = fit(["hardpoint_gun_left/hardpoint_class_2", nil], ["hardpoint_gun_right/hardpoint_class_2", nil])
     fit(["hardpoint_gun_left/hardpoint_class_2", @small_gun])

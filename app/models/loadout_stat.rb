@@ -12,10 +12,13 @@ class LoadoutStat < ApplicationRecord
 
   def self.refresh(source = ::ScData::Source.current.served)
     ::ScData::Source.with(source) do
+      # Kept for the ships loadouts are fitted to, which reuse their stock tree.
+      fitted = VehicleLoadout.kind_fleetyards.joins(:vehicle).distinct.pluck("vehicles.model_id").to_set
       trees = {}
       Model.includes(:build, :last_build).find_each do |model|
-        trees[model.id] = FittingTree.new(model)
-        write(model, trees[model.id].stock, model, source)
+        tree = FittingTree.new(model)
+        trees[model.id] = tree if fitted.include?(model.id)
+        write(model, tree.stock, model, source)
       end
 
       fleetyards_loadouts.find_each do |loadout|
@@ -29,7 +32,9 @@ class LoadoutStat < ApplicationRecord
   def self.refresh_model(model)
     ::ScData::Source.available.each do |source|
       ::ScData::Source.with(source) do
-        reloaded = Model.includes(:build, :last_build).find(model.id)
+        reloaded = Model.includes(:build, :last_build).find_by(id: model.id)
+        next if reloaded.nil?
+
         tree = FittingTree.new(reloaded)
         write(reloaded, tree.stock, reloaded, source)
 
@@ -42,7 +47,10 @@ class LoadoutStat < ApplicationRecord
 
   def self.refresh_loadout(loadout)
     ::ScData::Source.available.each do |source|
-      ::ScData::Source.with(source) { write_loadout(fleetyards_loadouts.find(loadout.id), source) }
+      ::ScData::Source.with(source) do
+        reloaded = fleetyards_loadouts.find_by(id: loadout.id)
+        write_loadout(reloaded, source) if reloaded
+      end
     end
   end
 
@@ -60,7 +68,9 @@ class LoadoutStat < ApplicationRecord
 
   def self.write(fitting, tree, model, source)
     weapons = LoadoutWeapons.new(tree)
-    firepower = LoadoutFirepower.for_tree(tree, model)
+    # A ship no build describes -- a concept -- has no figures, which is not
+    # the same as carrying no guns.
+    firepower = tree.empty? ? LoadoutFirepower::Result.new : LoadoutFirepower.for_tree(tree, model)
 
     upsert(
       {
