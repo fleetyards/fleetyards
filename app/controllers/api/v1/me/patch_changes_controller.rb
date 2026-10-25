@@ -31,7 +31,7 @@ module Api
 
           models = Model.visible.active
             .where(id: changes.keys)
-            .includes(:manufacturer, store_image_attachment: :blob)
+            .includes(:manufacturer, store_image_attachment: :blob, angled_view_attachment: :blob)
             .index_by(&:id)
 
           items = changes.filter_map do |model_id, rows|

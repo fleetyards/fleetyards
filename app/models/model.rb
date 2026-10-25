@@ -1069,7 +1069,7 @@ class Model < ApplicationRecord
   def carried_by_with_docks
     # The entries and the named ships decide the answer now, so they are
     # preloaded with the berths rather than fetched per dock per carrier.
-    Model.visible.active.with_dock.with_attached_store_image.where.not(id:)
+    Model.visible.active.with_dock.with_attached_store_image.with_attached_angled_view.where.not(id:)
       .preload({docks: %i[capacities additions]}, {module_docks: [:parent, :capacities, :additions]})
       .filter_map do |carrier|
         dock = carrier.berths.find { |candidate| candidate.fits?(self) }
