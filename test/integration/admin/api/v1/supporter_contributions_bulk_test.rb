@@ -103,6 +103,43 @@ class Admin::Api::V1::SupporterContributionsBulkTest < ActionDispatch::Integrati
     assert_predicate nameless.reload, :anonymous?
   end
 
+  test "PUT /supporter-contributions/update-bulk sets the source of the selected contributions" do
+    selected = create_list(:supporter_contribution, 2)
+    untouched = create(:supporter_contribution)
+    sign_in @user
+
+    body = {ids: selected.map(&:id), source: "paypal"}
+    assert_api_response :put, 200, api_path: "/supporter-contributions/update-bulk", body: body do
+      assert_equal 2, parsed_body["count"]
+    end
+
+    assert_equal %w[paypal paypal], selected.map { |contribution| contribution.reload.source }
+    assert_nil untouched.reload.source
+  end
+
+  test "PUT /supporter-contributions/update-bulk clears the source when given null" do
+    contribution = create(:supporter_contribution, source: "other", anonymous: false)
+    sign_in @user
+
+    assert_api_response :put, 200, api_path: "/supporter-contributions/update-bulk",
+      body: {ids: [contribution.id], source: nil} do
+      assert_equal 1, parsed_body["count"]
+    end
+
+    assert_nil contribution.reload.source
+    assert_not contribution.anonymous?
+  end
+
+  test "PUT /supporter-contributions/update-bulk leaves attributes it was not given alone" do
+    contribution = create(:supporter_contribution, name: "Named", source: "kofi", anonymous: false)
+    sign_in @user
+
+    assert_api_response :put, 200, api_path: "/supporter-contributions/update-bulk",
+      body: {ids: [contribution.id], anonymous: true}
+
+    assert_equal "kofi", contribution.reload.source
+  end
+
   test "PUT /supporter-contributions/update-bulk returns 401 when not signed in" do
     assert_api_response :put, 401, api_path: "/supporter-contributions/update-bulk",
       body: {ids: [], anonymous: true}

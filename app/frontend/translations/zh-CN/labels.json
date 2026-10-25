@@ -643,6 +643,7 @@
         },
         "description": "描述",
         "public": "公开舰队视图",
+        "sourceUnspecified": "未指定",
         "publicFleet": "公开舰队",
         "publicStats": "公开统计",
         "publicFleetStats": "公开舰队统计",

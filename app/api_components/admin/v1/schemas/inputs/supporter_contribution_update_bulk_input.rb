@@ -11,10 +11,12 @@ module Admin
             type: :object,
             properties: {
               ids: {type: :array, items: {type: :string, format: :uuid}},
-              anonymous: {type: :boolean}
+              anonymous: {type: :boolean},
+              source: ::Admin::V1::Schemas::Enums::NullableSupporterContributionSourceEnum
             },
             additionalProperties: false,
-            required: %w[ids anonymous]
+            required: %w[ids],
+            description: "Only the attributes present are changed; a null `source` clears it."
           })
         end
       end

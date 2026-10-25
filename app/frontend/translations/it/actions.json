@@ -29,6 +29,7 @@
           "syncFromPatreon": "Sincronizza da Patreon",
           "markAnonymousSelected": "Segna selezionati come anonimi",
           "markPublicSelected": "Segna selezionati come pubblici",
+          "setSourceSelected": "Imposta origine dei selezionati",
           "destroySelected": "Elimina selezionati"
         },
         "imports": {

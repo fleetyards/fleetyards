@@ -22451,10 +22451,13 @@ components:
             format: uuid
         anonymous:
           type: boolean
+        source:
+          "$ref": "#/components/schemas/NullableSupporterContributionSourceEnum"
       additionalProperties: false
       required:
       - ids
-      - anonymous
+      description: Only the attributes present are changed; a null `source` clears
+        it.
       title: SupporterContributionUpdateBulkInput
     SupporterContributions:
       type: object

@@ -29,6 +29,7 @@
           "syncFromPatreon": "从 Patreon 同步",
           "markAnonymousSelected": "将所选标记为匿名",
           "markPublicSelected": "将所选标记为公开",
+          "setSourceSelected": "设置所选来源",
           "destroySelected": "删除所选"
         },
         "imports": {

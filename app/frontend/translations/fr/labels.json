@@ -643,6 +643,7 @@
         },
         "description": "Description",
         "public": "Aperçu publique de la Flotte",
+        "sourceUnspecified": "Non précisée",
         "publicFleet": "Flotte publique",
         "publicStats": "Statistiques publiques",
         "publicFleetStats": "Statistiques de flotte publiques",

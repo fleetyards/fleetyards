@@ -76,8 +76,8 @@ module Admin
 
           SupporterContribution.transaction do
             SupporterContribution.where(id: bulk_ids).find_each do |contribution|
-              if contribution.update(anonymous: params.require(:anonymous), author_id: current_user.id)
-                @count += 1 if contribution.saved_change_to_anonymous?
+              if contribution.update(bulk_update_params.merge(author_id: current_user.id))
+                @count += 1 if contribution.saved_changes.except("updated_at").present?
               else
                 errors << contribution.errors
               end
@@ -173,6 +173,10 @@ module Admin
 
         private def bulk_ids
           params.permit(ids: []).fetch(:ids, [])
+        end
+
+        private def bulk_update_params
+          @bulk_update_params ||= params.permit(:anonymous, :source)
         end
 
         private def set_supporter_contribution
