@@ -257,10 +257,28 @@ const syncFromPatreon = () => {
           <span v-else>—</span>
         </template>
         <template #col-recurring="{ record }">
-          <i v-if="record.recurring" class="fa-duotone fa-arrows-rotate" />
+          <i
+            v-if="record.recurring"
+            v-tooltip="t('labels.supporterContribution.recurring')"
+            class="fa-duotone fa-arrows-rotate"
+          />
+          <i
+            v-else
+            v-tooltip="t('labels.supporterContribution.oneTime')"
+            class="fa-duotone fa-calendar-day"
+          />
         </template>
         <template #col-anonymous="{ record }">
-          <i v-if="record.anonymous" class="fa-duotone fa-user-secret" />
+          <i
+            v-if="record.anonymous"
+            v-tooltip="t('labels.supporterContribution.anonymous')"
+            class="fa-duotone fa-user-secret"
+          />
+          <i
+            v-else
+            v-tooltip="t('labels.supporterContribution.public')"
+            class="fa-duotone fa-user"
+          />
         </template>
         <template #col-source="{ record }">
           <SourcePill :source="record.source" />

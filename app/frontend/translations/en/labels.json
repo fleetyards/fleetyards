@@ -1750,6 +1750,8 @@
         "currency": "Currency",
         "anonymous": "Anonymous",
         "recurring": "Recurring",
+        "oneTime": "One-time",
+        "public": "Public",
         "startedAt": "Started at",
         "endedAt": "Ended at",
         "payerEmail": "Payer email",

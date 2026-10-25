@@ -1750,6 +1750,8 @@
         "currency": "Valuta",
         "anonymous": "Anonimo",
         "recurring": "Ricorrente",
+        "oneTime": "Una tantum",
+        "public": "Pubblica",
         "startedAt": "Iniziato il",
         "endedAt": "Terminato il",
         "payerEmail": "Email del pagante",

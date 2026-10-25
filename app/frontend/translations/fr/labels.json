@@ -1750,6 +1750,8 @@
         "currency": "Devise",
         "anonymous": "Anonyme",
         "recurring": "Récurrent",
+        "oneTime": "Ponctuelle",
+        "public": "Publique",
         "startedAt": "Démarré le",
         "endedAt": "Terminé le",
         "payerEmail": "E-mail du payeur",

@@ -1750,6 +1750,8 @@
         "currency": "幣別",
         "anonymous": "匿名",
         "recurring": "定期",
+        "oneTime": "一次性",
+        "public": "公開",
         "startedAt": "開始於",
         "endedAt": "結束於",
         "payerEmail": "付款人電子郵件",

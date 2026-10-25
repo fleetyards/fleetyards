@@ -1750,6 +1750,8 @@
         "currency": "Moneda",
         "anonymous": "Anónima",
         "recurring": "Recurrente",
+        "oneTime": "Única",
+        "public": "Pública",
         "startedAt": "Iniciada el",
         "endedAt": "Finalizada el",
         "payerEmail": "Correo del pagador",
