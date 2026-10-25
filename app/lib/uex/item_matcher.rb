@@ -54,7 +54,7 @@ module Uex
 
       # `sc_ref` is the game file's own id on both sides, so it names one record
       # and names the right one. Tried first for that reason.
-      return by_ref.first if by_ref.present?
+      return (visible_namesake(by_ref) || by_ref).first if by_ref.present?
 
       candidates = @by_name[normalize(item["item_name"])]
 
@@ -73,8 +73,21 @@ module Uex
       candidates.first.first
     end
 
+    # UEX hands out the uuid of a hidden twin for some items -- the P4-AR, C54
+    # and Custodian carry their contested-zone reward's, and armour its Carrack
+    # or microTech edition's. A hidden record has no page, so a price on it is
+    # one nobody sees while the record they do see shows none. Only where a
+    # single visible record shares the name: two would be a guess.
+    private def visible_namesake(record)
+      _, name, _, _, hidden = record
+      return unless hidden
+
+      visible = @by_name[normalize(name)].reject { |_, _, _, _, namesake_hidden| namesake_hidden }
+      visible.first if visible.one?
+    end
+
     private def pluck_records(scope)
-      scope.pluck(:id, :name, :sc_ref, :sc_key)
+      scope.pluck(:id, :name, :sc_ref, :sc_key, scope.model.fact_sql(:hidden))
     end
 
     # Punctuation and case are the only things that differ for the names that do

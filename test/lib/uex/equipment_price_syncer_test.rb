@@ -23,6 +23,11 @@ module Uex
       ItemPrice.where(item_type: "Equipment", item_id: equipment.id)
     end
 
+    def c54_row(item_uuid)
+      uex_fixture("equipment_items_prices_all").first
+        .merge("id_item" => 214, "item_name" => "C54 SMG", "item_uuid" => item_uuid, "price_buy" => 5400)
+    end
+
     test "#run resolves an item by sc_ref rather than by name" do
       sync
 
@@ -50,6 +55,28 @@ module Uex
       sync
 
       assert_equal 3100, prices_for(@equipment[:hidden_skin]).sole.price
+    end
+
+    test "#run prices the visible namesake of a hidden item the uuid names" do
+      reward = create(:equipment, :hidden, name: "C54 SMG", sc_key: "gmni_smg_ballistic_01_contestedzonereward",
+        sc_ref: "aaaaaaaa-1111-0000-0000-000000000014")
+      listed = create(:equipment, name: "C54 SMG", sc_key: "gmni_smg_ballistic_01", sc_ref: "aaaaaaaa-1111-0000-0000-000000000015")
+
+      sync(item_prices: uex_fixture("equipment_items_prices_all") + [c54_row(reward.sc_ref)])
+
+      assert_equal 5400, prices_for(listed).sole.price
+      assert_empty prices_for(reward)
+    end
+
+    test "#run keeps the hidden item the uuid names when its name is not one visible item's" do
+      reward = create(:equipment, :hidden, name: "C54 SMG", sc_key: "gmni_smg_ballistic_01_contestedzonereward",
+        sc_ref: "aaaaaaaa-1111-0000-0000-000000000014")
+      create(:equipment, name: "C54 SMG", sc_key: "gmni_smg_ballistic_01", sc_ref: nil)
+      create(:equipment, name: "C54 SMG", sc_key: "gmni_smg_ballistic_01_01", sc_ref: nil)
+
+      sync(item_prices: uex_fixture("equipment_items_prices_all") + [c54_row(reward.sc_ref)])
+
+      assert_equal 5400, prices_for(reward).sole.price
     end
 
     test "#run leaves a name several items answer to unpriced and reports it" do

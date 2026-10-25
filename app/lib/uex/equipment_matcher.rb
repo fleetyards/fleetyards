@@ -43,7 +43,7 @@ module Uex
     private def pluck_records(scope)
       scope.pluck(
         Arel.sql("equipment.id"), Equipment.fact_sql(:name),
-        Arel.sql("equipment.sc_ref"), Arel.sql("equipment.sc_key")
+        Arel.sql("equipment.sc_ref"), Arel.sql("equipment.sc_key"), Equipment.fact_sql(:hidden)
       )
     end
   end
