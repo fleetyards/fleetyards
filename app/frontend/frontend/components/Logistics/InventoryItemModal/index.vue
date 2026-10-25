@@ -85,31 +85,40 @@ const { data: inventories, isSuccess: inventoriesLoaded } =
     { query: { enabled: choosesInventory } },
   );
 
+// A ship's hold shares its slug with every other ship of its model, so it is
+// told apart by id and filed through the ship.
 const inventoryOptions = computed<FilterOption[]>(() =>
   (inventories.value?.items ?? []).map((inventory) => ({
-    value: inventory.slug,
+    value: inventory.id,
     label: inventory.name,
   })),
 );
 
-const inventorySlug = ref<string>();
+const inventoryId = ref<string>();
 
 watch(
   inventoryOptions,
   (options) => {
-    if (options.some((option) => option.value === inventorySlug.value)) return;
+    if (options.some((option) => option.value === inventoryId.value)) return;
 
-    inventorySlug.value = options[0]?.value as string | undefined;
+    inventoryId.value = options[0]?.value as string | undefined;
   },
   { immediate: true },
 );
 
+const chosenTarget = computed<InventoryTarget | undefined>(() => {
+  const inventory = inventories.value?.items.find(
+    (candidate) => candidate.id === inventoryId.value,
+  );
+  if (!inventory) return undefined;
+
+  return inventory.vehicle
+    ? { kind: "vehicle", vehicleId: inventory.vehicle.id }
+    : { kind: "hangar", slug: inventory.slug };
+});
+
 const activeTarget = computed<InventoryTarget | undefined>(
-  () =>
-    props.target ??
-    (inventorySlug.value
-      ? { kind: "hangar", slug: inventorySlug.value }
-      : undefined),
+  () => props.target ?? chosenTarget.value,
 );
 
 const noInventories = computed(
@@ -458,7 +467,7 @@ const onSubmit = handleSubmit(async (values) => {
     >
       <BaseSelect
         v-if="choosesInventory"
-        v-model="inventorySlug"
+        v-model="inventoryId"
         :options="inventoryOptions"
         :nullable="false"
         :label="t('labels.logistics.inventory')"

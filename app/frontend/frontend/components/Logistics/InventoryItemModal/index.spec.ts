@@ -27,7 +27,15 @@ beforeAll(() => {
 const api = vi.hoisted(() => ({
   stock: vi.fn(),
   create: vi.fn(),
-  inventories: { value: [] as { slug: string; name: string }[] },
+  createVehicle: vi.fn(),
+  inventories: {
+    value: [] as {
+      id: string;
+      slug: string;
+      name: string;
+      vehicle?: { id: string };
+    }[],
+  },
   inventoriesFailed: false,
 }));
 
@@ -40,6 +48,7 @@ vi.mock("@/services/fyApi", async (importOriginal) => {
     ...(await importOriginal<typeof import("@/services/fyApi")>()),
     hangarInventoryStock: api.stock,
     useCreateHangarInventoryItem: () => ({ mutateAsync: api.create }),
+    useCreateVehicleInventoryItem: () => ({ mutateAsync: api.createVehicle }),
     useHangarInventories: () => ({
       data: computed(() => ({ items: api.inventories.value })),
       isSuccess: computed(() => !api.inventoriesFailed),
@@ -121,9 +130,16 @@ afterEach(() => {
 beforeEach(() => {
   api.stock.mockResolvedValue([]);
   api.create.mockResolvedValue({});
+  api.createVehicle.mockResolvedValue({});
   api.inventories.value = [
-    { slug: "cargo-hold", name: "Cargo Hold" },
-    { slug: "armory", name: "Armory" },
+    { id: "inv-1", slug: "cargo-hold", name: "Cargo Hold" },
+    { id: "inv-2", slug: "armory", name: "Armory" },
+    {
+      id: "inv-3",
+      slug: "cargo",
+      name: "Ironclad Cargo",
+      vehicle: { id: "ironclad" },
+    },
   ];
   api.inventoriesFailed = false;
 });
@@ -611,9 +627,7 @@ describe("LogisticsInventoryItemModal", () => {
       const subject = await mountForItem(bulwark);
 
       expect(field(subject).text()).toContain("Bulwark");
-      expect(select(subject, "inventory").props("modelValue")).toBe(
-        "cargo-hold",
-      );
+      expect(select(subject, "inventory").props("modelValue")).toBe("inv-1");
       expect(select(subject, "unit")).toBeUndefined();
       expect(api.stock).not.toHaveBeenCalled();
     });
@@ -628,10 +642,7 @@ describe("LogisticsInventoryItemModal", () => {
     it("deposits into the inventory picked", async () => {
       const subject = await mountForItem(bulwark);
 
-      await select(subject, "inventory").vm.$emit(
-        "update:modelValue",
-        "armory",
-      );
+      await select(subject, "inventory").vm.$emit("update:modelValue", "inv-2");
       await subject.find("[data-test='input-quantity']").setValue("2");
       await subject.find("form").trigger("submit");
       await flushPromises();
@@ -659,6 +670,22 @@ describe("LogisticsInventoryItemModal", () => {
       expect(
         subject.find("[data-test='inventory-item-no-inventories']").exists(),
       ).toBe(false);
+    });
+
+    // A ship's hold shares its slug with the other ships of its model.
+    it("files a deposit into a ship's hold through the ship", async () => {
+      const subject = await mountForItem(bulwark);
+
+      await select(subject, "inventory").vm.$emit("update:modelValue", "inv-3");
+      await subject.find("[data-test='input-quantity']").setValue("1");
+      await subject.find("form").trigger("submit");
+      await flushPromises();
+
+      expect(api.createVehicle).toHaveBeenCalledWith({
+        vehicleId: "ironclad",
+        data: expect.objectContaining({ itemId: "bulwark" }),
+      });
+      expect(api.create).not.toHaveBeenCalled();
     });
 
     it("points at creating an inventory when there is none", async () => {
