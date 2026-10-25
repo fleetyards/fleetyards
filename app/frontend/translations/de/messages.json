@@ -609,7 +609,8 @@
           "destroy": "Willst du dieses Spiel-Event wirklich löschen? Das kann nicht rückgängig gemacht werden."
         },
         "supporterContribution": {
-          "destroy": "Bist du sicher, dass du diesen Unterstützer-Beitrag löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
+          "destroy": "Bist du sicher, dass du diesen Unterstützer-Beitrag löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
+          "destroySelected": "Die ausgewählten Unterstützer-Beiträge löschen? Diese Aktion kann nicht rückgängig gemacht werden."
         },
         "modelPosition": {
           "destroy": "Bist du sicher, dass du diese Position löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
@@ -767,7 +768,17 @@
           "failed": "%{name} konnte nicht gestartet werden."
         },
         "supporterContributions": {
-          "patreonSyncStarted": "Patreon-Synchronisierung gestartet. Aktualisiere in einer Minute, um importierte Unterstützer zu sehen."
+          "patreonSyncStarted": "Patreon-Synchronisierung gestartet. Aktualisiere in einer Minute, um importierte Unterstützer zu sehen.",
+          "updatedBulk": {
+            "one": "%{count} Beitrag aktualisiert",
+            "other": "%{count} Beiträge aktualisiert"
+          },
+          "destroyedBulk": {
+            "one": "%{count} Beitrag gelöscht",
+            "other": "%{count} Beiträge gelöscht"
+          },
+          "bulkUnchanged": "In der Auswahl musste nichts geändert werden",
+          "bulkError": "Die ausgewählten Beiträge konnten nicht geändert werden"
         },
         "imports": {
           "cleaned": "Import als fehlgeschlagen markiert",

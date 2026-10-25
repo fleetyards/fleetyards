@@ -26,7 +26,10 @@
           "reloadLoaners": "Ricarica navi in comodato"
         },
         "supporterContributions": {
-          "syncFromPatreon": "Sincronizza da Patreon"
+          "syncFromPatreon": "Sincronizza da Patreon",
+          "markAnonymousSelected": "Segna selezionati come anonimi",
+          "markPublicSelected": "Segna selezionati come pubblici",
+          "destroySelected": "Elimina selezionati"
         },
         "imports": {
           "loadAll": "Carica tutto",

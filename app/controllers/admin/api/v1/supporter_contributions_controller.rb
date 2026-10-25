@@ -65,6 +65,42 @@ module Admin
           render json: {message: I18n.t("messages.supporter_contributions.patreon_sync_enqueued")}, status: :accepted
         end
 
+        # Record by record rather than `update_all`, so the model still keeps a
+        # nameless row anonymous, the change is versioned under the admin, and
+        # a linked account's cached profile is touched.
+        def update_bulk
+          authorize! with: ::Admin::SupporterContributionPolicy
+
+          errors = []
+          @count = 0
+
+          SupporterContribution.transaction do
+            SupporterContribution.where(id: bulk_ids).find_each do |contribution|
+              if contribution.update(anonymous: params.require(:anonymous), author_id: current_user.id)
+                @count += 1 if contribution.saved_change_to_anonymous?
+              else
+                errors << contribution.errors
+              end
+            end
+
+            raise ActiveRecord::Rollback if errors.present?
+          end
+
+          return render :bulk if errors.blank?
+
+          render json: ValidationError.new("supporter_contribution.update_bulk", errors:), status: :bad_request
+        end
+
+        def destroy_bulk
+          authorize! with: ::Admin::SupporterContributionPolicy
+
+          SupporterContribution.transaction do
+            @count = SupporterContribution.where(id: bulk_ids).destroy_all.size
+          end
+
+          render :bulk
+        end
+
         def show
         end
 
@@ -133,6 +169,10 @@ module Admin
         private def resolved_inputs_changed?
           @supporter_contribution.saved_change_to_payer_email? ||
             @supporter_contribution.saved_change_to_claim_key?
+        end
+
+        private def bulk_ids
+          params.permit(ids: []).fetch(:ids, [])
         end
 
         private def set_supporter_contribution

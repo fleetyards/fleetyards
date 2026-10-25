@@ -24,6 +24,9 @@ import {
   useSupporterContributions,
   useSupporterContributionsStats,
   useSyncSupporterContributionsFromPatreon,
+  useUpdateSupporterContributionsBulk,
+  useDestroySupporterContributionsBulk,
+  getSupporterContributionsQueryKey,
   type SupporterContribution,
   type SupporterContributionSortEnum,
 } from "@/services/fyAdminApi";
@@ -33,6 +36,8 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useCurrencyFormat } from "@/shared/composables/useCurrencyFormat";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useSupporterContributionFilters } from "@/admin/composables/useSupporterContributionFilters";
+import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
+import { useQueryClient } from "@tanstack/vue-query";
 
 const route = useRoute();
 
@@ -84,7 +89,67 @@ const {
 
 const { t, l } = useI18n();
 const { formatCents } = useCurrencyFormat();
-const { displayInfo } = useAppNotifications();
+const { displayInfo, displaySuccess, displayAlert } = useAppNotifications();
+const queryClient = useQueryClient();
+
+const selected = ref<string[]>([]);
+
+const onSelectedChange = (ids: string[]) => {
+  selected.value = ids;
+};
+
+const updateBulkMutation = useUpdateSupporterContributionsBulk();
+const destroyBulkMutation = useDestroySupporterContributionsBulk();
+
+const bulkPending = computed(
+  () =>
+    updateBulkMutation.isPending.value || destroyBulkMutation.isPending.value,
+);
+
+const afterBulk = (count: number, successKey: string) => {
+  selected.value = [];
+  void queryClient.invalidateQueries({
+    queryKey: getSupporterContributionsQueryKey(),
+  });
+
+  if (count === 0) {
+    displayInfo({
+      text: t("messages.admin.supporterContributions.bulkUnchanged"),
+    });
+
+    return;
+  }
+
+  displaySuccess({ text: t(successKey, { count }) });
+};
+
+const setAnonymousSelected = async (anonymous: boolean) => {
+  try {
+    const { count } = await updateBulkMutation.mutateAsync({
+      data: { ids: selected.value, anonymous },
+    });
+
+    afterBulk(count, "messages.admin.supporterContributions.updatedBulk");
+  } catch {
+    displayAlert({
+      text: t("messages.admin.supporterContributions.bulkError"),
+    });
+  }
+};
+
+const destroySelected = async () => {
+  try {
+    const { count } = await destroyBulkMutation.mutateAsync({
+      data: { ids: selected.value },
+    });
+
+    afterBulk(count, "messages.admin.supporterContributions.destroyedBulk");
+  } catch {
+    displayAlert({
+      text: t("messages.admin.supporterContributions.bulkError"),
+    });
+  }
+};
 
 const columns: BaseTableCol<SupporterContribution>[] = [
   {
@@ -220,7 +285,53 @@ const syncFromPatreon = () => {
         :empty-visible="emptyVisible"
         default-sort="startedAt desc"
         selectable
+        :selected="selected"
+        @selected-change="onSelectedChange"
       >
+        <template #selected-actions>
+          <BtnGroup>
+            <Btn
+              v-tooltip="
+                t('actions.admin.supporterContributions.markAnonymousSelected')
+              "
+              :aria-label="
+                t('actions.admin.supporterContributions.markAnonymousSelected')
+              "
+              :disabled="bulkPending"
+              @click="setAnonymousSelected(true)"
+            >
+              <i class="fa-duotone fa-user-secret" />
+            </Btn>
+            <Btn
+              v-tooltip="
+                t('actions.admin.supporterContributions.markPublicSelected')
+              "
+              :aria-label="
+                t('actions.admin.supporterContributions.markPublicSelected')
+              "
+              :disabled="bulkPending"
+              @click="setAnonymousSelected(false)"
+            >
+              <i class="fa-duotone fa-user" />
+            </Btn>
+            <Btn
+              v-tooltip="
+                t('actions.admin.supporterContributions.destroySelected')
+              "
+              :aria-label="
+                t('actions.admin.supporterContributions.destroySelected')
+              "
+              :tone="BtnTonesEnum.DANGER"
+              :disabled="bulkPending"
+              :confirm="
+                t('messages.confirm.supporterContribution.destroySelected')
+              "
+              @click="destroySelected"
+            >
+              <i class="fa-duotone fa-trash" />
+            </Btn>
+          </BtnGroup>
+        </template>
         <template #col-name="{ record }">
           <router-link
             :to="{

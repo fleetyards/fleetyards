@@ -609,7 +609,8 @@
           "destroy": "Vuoi davvero eliminare questo evento di gioco? L'azione non può essere annullata."
         },
         "supporterContribution": {
-          "destroy": "Sei sicuro di voler eliminare questo contributo del sostenitore? Questa azione non può essere annullata."
+          "destroy": "Sei sicuro di voler eliminare questo contributo del sostenitore? Questa azione non può essere annullata.",
+          "destroySelected": "Eliminare i contributi selezionati? Questa azione non può essere annullata."
         },
         "modelPosition": {
           "destroy": "Sei sicuro di voler eliminare questa posizione? Questa azione non può essere annullata."
@@ -767,7 +768,17 @@
           "failed": "Impossibile avviare %{name}."
         },
         "supporterContributions": {
-          "patreonSyncStarted": "Sincronizzazione con Patreon avviata. Aggiorna la pagina tra un minuto per vedere i sostenitori importati."
+          "patreonSyncStarted": "Sincronizzazione con Patreon avviata. Aggiorna la pagina tra un minuto per vedere i sostenitori importati.",
+          "updatedBulk": {
+            "one": "%{count} contributo aggiornato",
+            "other": "%{count} contributi aggiornati"
+          },
+          "destroyedBulk": {
+            "one": "%{count} contributo eliminato",
+            "other": "%{count} contributi eliminati"
+          },
+          "bulkUnchanged": "Nessuna modifica necessaria nella selezione",
+          "bulkError": "Impossibile modificare i contributi selezionati"
         },
         "imports": {
           "cleaned": "Importazione segnata come fallita",

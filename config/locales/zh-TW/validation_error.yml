@@ -276,6 +276,7 @@ zh-TW:
       create: 無法建立支持者貢獻。
       destroy: 無法刪除支持者貢獻。
       update: 無法更新支持者貢獻。
+      update_bulk: 無法更新支持者貢獻。
     update: 無法更新個人資料。
     video:
       create: 無法建立影片。

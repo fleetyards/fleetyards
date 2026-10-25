@@ -277,6 +277,7 @@ fr:
       create: Impossible de créer la contribution du soutien.
       destroy: Impossible de supprimer la contribution du soutien.
       update: Impossible de mettre à jour la contribution du soutien.
+      update_bulk: Impossible de mettre à jour les contributions des soutiens.
     update: Impossible de mettre à jour le profil.
     video:
       create: Impossible de créer la vidéo.

@@ -603,7 +603,8 @@
           "destroy": "確定要刪除此遊戲活動嗎？此動作無法復原。"
         },
         "supporterContribution": {
-          "destroy": "確定要刪除此支持者捐助嗎？此操作無法復原。"
+          "destroy": "確定要刪除此支持者捐助嗎？此操作無法復原。",
+          "destroySelected": "刪除所選支持者貢獻？此操作無法復原。"
         },
         "modelPosition": {
           "destroy": "確定要刪除此職位嗎？此操作無法復原。"
@@ -761,7 +762,17 @@
           "failed": "無法開始 %{name}。"
         },
         "supporterContributions": {
-          "patreonSyncStarted": "Patreon 同步已開始。請在一分鐘後重新整理以查看匯入的支持者。"
+          "patreonSyncStarted": "Patreon 同步已開始。請在一分鐘後重新整理以查看匯入的支持者。",
+          "updatedBulk": {
+            "one": "已更新 %{count} 筆貢獻",
+            "other": "已更新 %{count} 筆貢獻"
+          },
+          "destroyedBulk": {
+            "one": "已刪除 %{count} 筆貢獻",
+            "other": "已刪除 %{count} 筆貢獻"
+          },
+          "bulkUnchanged": "所選內容無需變更",
+          "bulkError": "無法變更所選貢獻"
         },
         "imports": {
           "cleaned": "匯入已標記為失敗",

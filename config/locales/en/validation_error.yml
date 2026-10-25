@@ -324,6 +324,7 @@ en:
       create: Supporter contribution could not be created.
       destroy: Supporter contribution could not be destroyed.
       update: Supporter contribution could not be updated.
+      update_bulk: Supporter contributions could not be updated.
     update: Profile could not be updated.
     video:
       create: Video could not be created.
