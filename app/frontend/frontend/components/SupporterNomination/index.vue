@@ -256,7 +256,7 @@ const applyNomination = async (
           {{ formatAmount(contribution) }}
         </span>
         <span class="supporter-nomination__date">
-          {{ l(contribution.startedAt, "datetime.formats.short") }}
+          {{ l(contribution.startedAt, "datetime.formats.date") }}
         </span>
       </div>
 

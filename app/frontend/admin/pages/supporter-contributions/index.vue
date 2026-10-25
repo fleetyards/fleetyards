@@ -248,11 +248,11 @@ const syncFromPatreon = () => {
           <LinkedViaPill :linked-via="record.linkedVia" />
         </template>
         <template #col-startedAt="{ record }">
-          {{ l(record.startedAt, "datetime.formats.short") }}
+          {{ l(record.startedAt, "datetime.formats.date") }}
         </template>
         <template #col-endedAt="{ record }">
           <span v-if="record.endedAt">
-            {{ l(record.endedAt, "datetime.formats.short") }}
+            {{ l(record.endedAt, "datetime.formats.date") }}
           </span>
           <span v-else>—</span>
         </template>
