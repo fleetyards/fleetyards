@@ -348,9 +348,7 @@ class PayoutLedger < ApplicationRecord
   # delivered instead, so everyone is paid the rate on their own goods -- a
   # line's fraction would pay a crate of a small line like a hold of a big one.
   private def contract_weights
-    progress = subject.progress
-    weights = (subject.reward_per_unit? ? progress.counted_quantities : progress.weights)
-      .select { |_user_id, weight| weight.positive? }
+    weights = subject.progress.payout_weights.select { |_user_id, weight| weight.positive? }
     total = weights.values.sum(0.to_d)
 
     if total.zero?

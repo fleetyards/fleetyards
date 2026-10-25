@@ -324,6 +324,22 @@ module Contracts
       assert_equal 450.to_d, counted[crew.id]
     end
 
+    test "a rate divides by what was delivered, a fixed reward by the lines' fractions" do
+      crew = create(:user)
+      create(:fleet_contract_assignment, :accepted, fleet_contract: @contract, user: crew)
+      create(:fleet_contract_item, fleet_contract: @contract,
+        name: "Quantanium", category: :commodity, unit: :scu, quantity: 100)
+
+      deliver(quantity: 800)
+      deliver(quantity: 100, name: "Quantanium", user: crew)
+
+      assert_equal progress.weights, progress.payout_weights
+
+      @contract.update!(reward_type: :per_unit, reward: 10)
+
+      assert_equal({@contractor.id => 800.to_d, crew.id => 100.to_d}, progress.payout_weights)
+    end
+
     private def progress
       Contracts::Progress.new(@contract.reload)
     end

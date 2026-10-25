@@ -175,8 +175,11 @@ module Contracts
       end
     end
 
-    def total_weight
-      weights.values.sum(0.to_d)
+    # What the reward is divided by when the contract settles. A rate pays each
+    # contractor on their own goods, so it divides by what they delivered; a
+    # fixed reward divides by the lines' fractions.
+    def payout_weights
+      @contract.reward_per_unit? ? counted_quantities : weights
     end
 
     private def build_line(item, counted, picked_up)

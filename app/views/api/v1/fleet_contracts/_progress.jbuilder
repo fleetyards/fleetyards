@@ -36,9 +36,12 @@ end
 # What the reward divides by when the contract settles. Derived here so a
 # client never has to re-implement the rule.
 json.shares do
-  json.array!(progress.weights.to_a) do |user_id, weight|
+  weights = progress.payout_weights
+  total = weights.values.sum(0.to_d)
+
+  json.array!(weights.to_a) do |user_id, weight|
     json.user_id user_id
     json.weight weight.to_f
-    json.share progress.total_weight.zero? ? 0.0 : (weight / progress.total_weight).to_f
+    json.share total.zero? ? 0.0 : (weight / total).to_f
   end
 end
