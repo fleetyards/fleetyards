@@ -216,6 +216,13 @@ const qualityLabel = (item: Row) =>
           data-test="contract-item-rate"
           v-html="rateLabel(item as Row)"
         />
+        <span
+          v-else-if="perUnit"
+          class="contract-items__rate contract-items__rate--missing"
+          data-test="contract-item-rate-missing"
+        >
+          {{ t("labels.fleets.contracts.rateMissing") }}
+        </span>
         <span v-if="item.quality != null" class="contract-items__quality">
           {{ qualityLabel(item as Row) }}
         </span>

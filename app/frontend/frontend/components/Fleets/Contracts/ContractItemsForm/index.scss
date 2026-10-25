@@ -35,4 +35,8 @@
   &__quality {
     color: $gold;
   }
+
+  &__rate--missing {
+    color: $danger;
+  }
 }

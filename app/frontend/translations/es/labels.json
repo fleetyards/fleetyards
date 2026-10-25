@@ -4056,6 +4056,7 @@
           "rewardPerUnit": "Recompensa por SCU o unidad",
           "rewardPerUnitHint": "Cada línea de mercancía fija su propia tarifa. Los contratistas la ganan por cada SCU o unidad que entreguen, hasta lo que pide la línea.",
           "rewardUpTo": "Recompensa, hasta",
+          "rateMissing": "Sin tarifa todavía",
           "rewardRate": {
             "scu": "%{currency} / SCU",
             "units": "%{currency} / unidad",

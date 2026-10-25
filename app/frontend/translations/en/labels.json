@@ -4070,6 +4070,7 @@
           "rewardPerUnit": "Reward per SCU or unit",
           "rewardPerUnitHint": "Each line of goods sets its own rate. Contractors earn it for every SCU or unit they deliver, up to what the line asks for.",
           "rewardUpTo": "Reward, up to",
+          "rateMissing": "No rate yet",
           "rewardRate": {
             "scu": "%{currency} / SCU",
             "units": "%{currency} / unit",

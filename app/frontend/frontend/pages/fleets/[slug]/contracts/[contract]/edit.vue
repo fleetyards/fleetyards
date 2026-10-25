@@ -41,8 +41,15 @@ const contractSlug = computed(() => route.params.contract as string);
 const { data: contract, refetch } = useFleetContract(fleetSlug, contractSlug);
 
 // What the form has chosen, saved or not: a line given its rate before the
-// switch to paying per unit is saved is what lets that switch through.
+// switch to paying per unit is saved is what lets that switch through. The
+// saved choice counts too, since a line is checked against it until then.
 const rewardType = ref<FleetContractRewardTypeEnum | null>(null);
+
+const perUnit = computed(() =>
+  [rewardType.value, contract.value?.rewardType].includes(
+    FleetContractRewardTypeEnum.PER_UNIT,
+  ),
+);
 
 const mayEdit = useContractEditAccess(
   () => contract.value,
@@ -110,7 +117,7 @@ const crumbs = computed<Crumb[]>(() => [
           :fleet="fleet"
           :contract="contract"
           :kind="contract.kind"
-          :per-unit="rewardType === FleetContractRewardTypeEnum.PER_UNIT"
+          :per-unit="perUnit"
           @changed="refetch()"
         />
       </template>
