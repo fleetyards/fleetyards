@@ -279,17 +279,9 @@
   border-top: 1px solid var(--color-edge-soft);
 }
 
-// Over everything else in its containing block, its rows taking whatever
-// height the controls leave.
+// Its rows take whatever height the controls leave.
 .loadout-picker--sheet {
-  position: fixed;
-  inset: 0;
-  z-index: 2;
-  max-height: none;
-  background: $gray-darker;
-  border: 0;
-  border-radius: 0;
-  box-shadow: none;
+  @include modal-sheet;
 }
 
 @media (max-width: $tablet-breakpoint) {
@@ -337,11 +329,12 @@
 
   .loadout-picker__figure {
     grid-area: figure;
-    flex-direction: row;
+    flex-flow: row wrap;
     align-items: baseline;
-    gap: 6px;
+    column-gap: 6px;
     min-width: 0;
     font-size: 12px;
+    white-space: normal;
   }
 
   .loadout-picker__check {
@@ -349,8 +342,10 @@
     align-self: center;
   }
 
-  // The empty choice has no figure: its name sits level with the glyph.
+  // The empty choice has no figure: its name and check sit level with the
+  // glyph, on the one row it has.
   .loadout-picker__option--empty {
+    grid-template-areas: "image body check";
     align-items: center;
   }
 }
