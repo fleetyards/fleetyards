@@ -184,7 +184,12 @@ watch(
               :stock="crafted ? stock : undefined"
             />
 
-            <ItemViews :media="equipment.media" :name="equipment.name" />
+            <!-- Keyed: its gallery binds once, to the grid it mounts with. -->
+            <ItemViews
+              :key="equipment.id"
+              :media="equipment.media"
+              :name="equipment.name"
+            />
           </div>
 
           <div class="equipment-page__rail">

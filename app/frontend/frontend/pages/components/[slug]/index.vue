@@ -271,7 +271,12 @@ watch(
           <ComponentThermalMetrics :component="component" />
         </div>
 
-        <ItemViews :media="component.media" :name="component.name" />
+        <!-- Keyed: its gallery binds once, to the grid it mounts with. -->
+        <ItemViews
+          :key="component.id"
+          :media="component.media"
+          :name="component.name"
+        />
       </div>
 
       <div class="component-page__rail">
