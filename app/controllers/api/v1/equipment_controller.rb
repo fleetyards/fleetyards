@@ -3,7 +3,7 @@
 module Api
   module V1
     class EquipmentController < ::Api::PublicBaseController
-      skip_verify_authorized only: %i[index show]
+      skip_verify_authorized only: %i[index show versions attachments weapons]
 
       after_action -> { pagination_header(:equipment) }, only: [:index]
 
@@ -46,6 +46,64 @@ module Api
         @equipment = Equipment.visible(false)
           .includes(:manufacturer, item_prices: ItemPrice::SHOP_LINK)
           .find_by!(slug: params[:slug].to_s.downcase)
+      end
+
+      # The other versions of the item -- a weapon's skins, a garment in its
+      # other colours -- that the catalogue lists.
+      def versions
+        equipment = find_visible_equipment
+
+        @versions = if equipment.family_key.present?
+          Equipment.visible.where(family_key: equipment.family_key).where.not(id: equipment.id)
+            .includes(:manufacturer, :build, item_prices: ItemPrice::SHOP_LINK)
+            .order(Equipment.fact_sql(:name).asc)
+        else
+          Equipment.none
+        end
+      end
+
+      # What fits each port of a weapon, one per family: the colourways of an
+      # attachment are listed on its own page rather than once per port here.
+      def attachments
+        build = find_visible_equipment.facts
+
+        fits = build ? build.attachments.where(attachment_id: Equipment.visible.select(:id)) : EquipmentAttachment.none
+        fits = fits.includes(attachment: [:manufacturer, :build, {item_prices: ItemPrice::SHOP_LINK}]).to_a
+
+        @attachments = fits.group_by(&:port_type).sort_by { |port_type, _| port_order(port_type) }.flat_map do |_, same_port|
+          same_port.group_by { |fit| fit.attachment.family_key || fit.attachment.id }.map { |family_key, family|
+            listed = family.find { |fit| fit.attachment.sc_key == family_key } || family.min_by { |fit| fit.attachment.name }
+            [listed, family.any?(&:default)]
+          }.sort_by { |fit, default| [default ? 0 : 1, fit.attachment.name] }
+        end
+      end
+
+      # The weapons an attachment fits, one per family, in the build we are on.
+      def weapons
+        equipment = find_visible_equipment
+
+        weapon_ids = EquipmentBuild.current(Equipment.served_source)
+          .where(id: EquipmentAttachment.where(attachment_id: equipment.id).select(:equipment_build_id))
+          .select(:equipment_id)
+
+        weapons = Equipment.visible.where(id: weapon_ids)
+          .includes(:manufacturer, :build, item_prices: ItemPrice::SHOP_LINK)
+          .order(Equipment.fact_sql(:name).asc)
+
+        @weapons = weapons.group_by { |weapon| weapon.family_key || weapon.id }.map do |family_key, family|
+          family.find { |weapon| weapon.sc_key == family_key } || family.first
+        end
+      end
+
+      # The ports a reader expects in this order; anything else follows.
+      PORT_ORDER = %w[Magazine IronSight Barrel BottomAttachment].freeze
+
+      private def port_order(port_type)
+        PORT_ORDER.index(port_type) || PORT_ORDER.size
+      end
+
+      private def find_visible_equipment
+        Equipment.visible(false).find_by!(slug: params[:slug].to_s.downcase)
       end
 
       # Taken out of the ransack params rather than left in them: it is a scope,

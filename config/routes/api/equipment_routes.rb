@@ -1,4 +1,13 @@
-resources :equipment, only: %i[index show], param: :slug
+resources :equipment, only: %i[index show], param: :slug do
+  # Member routes rather than part of the detail payload: a family's list
+  # changes when another item in it does, which the item's own cache key
+  # cannot see.
+  member do
+    get :versions
+    get :attachments
+    get :weapons
+  end
+end
 
 namespace :filters do
   resources :equipment, only: [] do
