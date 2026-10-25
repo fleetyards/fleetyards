@@ -62,6 +62,7 @@ de:
           flair: Flair
           hacking_tool: Hacking-Werkzeug
           medical: Medizinisch
+          mine: Mine
           mining_gadget: Bergbau-Gadget
           sustenance: Essen & Trinken
           tool: Werkzeug
@@ -73,44 +74,27 @@ de:
           ammo: Munition
           ammo_carrier: Munitionsträger
           apron: Schürze
-          armor: Panzerung
           armored_flight_suit: Gepanzerter Fluganzug
           assault_rifle: Sturmgewehr
           backpack: Rucksack
           bandana: Bandana
-          bar: Barpersonal
           barrel: Laufaufsatz
           battery: Batterie
           binoculars: Fernglas
-          bioticorp: Bioticorp
           boots: Stiefel
-          bouncer: Türsteher
-          business: Business
-          chef: Koch
-          combat: Kampf
           crossbow: Armbrust
           cryptokey: Kryptoschlüssel
           data_drive: Datenlaufwerk
-          displaycore: Ausstellungskern
-          displayhelmet: Ausstellungshelm
-          doctor: Arzt
           dress: Kleid
-          executive: Führungskraft
           extinguisher_refill: Löschmittel-Nachfüllung
-          fashion: Mode
-          fio: Fio
           fire_extinguisher: Feuerlöscher
           flight_helmet: Flughelm
           flight_suit: Fluganzug
-          flightsuit: Fluganzug
           frag_pistol: Splitterpistole
-          frontier: Grenzland
           gloves: Handschuhe
-          gren: Granate
           grenade: Granate
           grenade_launcher: Granatwerfer
           hat: Hut
-          hathor: Hathor
           heavy_armor: Schwere Panzerung
           heavy_backpack: Schwerer Rucksack
           heavy_utility: Schwere Mehrzweckausrüstung
@@ -125,55 +109,39 @@ de:
           light_backpack: Leichter Rucksack
           light_helmet: Leichter Helm
           lmg: LMG
-          lum: Lum
           magazine: Magazin
           mask: Maske
           medgel_refill: MedGel-Nachfüllung
-          medical: Medizin
           medical_consumable: Medizinisches Verbrauchsgut
           medical_device: Medizinisches Gerät
-          medium: Mittel
           medium_armor: Mittlere Panzerung
           medium_backpack: Medium Backpack
           mining_gadget: Bergbau-Gadget
-          mining_tool: Bergbauwerkzeug
           missile_launcher: Raketenwerfer
           mobiglas_casing: mobiGlas-Gehäuse
           multitool: Multitool
-          nurse: Pflegekraft
-          nvtc: NVTC
-          nvy: Navy
           pants: Hose
-          pilot: Pilot
           pistol: Pistole
           racing_flight_suit: Renn-Fluganzug
           racing_helmet: Rennhelm
           railgun: Railgun
-          refinery: Raffinerie
           rifle: Gewehr
           rmc_canister_large: RMC-Kanister (groß)
           rmc_canister_small: RMC-Kanister (klein)
           rocket: Rakete
           rocket_launcher: Raketenwerfer
-          security: Sicherheitsdienst
-          service: Service
           shirt: Hemd
           shoes: Schuhe
           shotgun: Schrotflinte
           smg: SMG
           sniper_rifle: Scharfschützengewehr
           special_railgun: Special - Railgun
-          specialist: Spezialist
           suit: Anzug
           super_heavy_armor: Superschwere Panzerung
-          surgeon: Chirurg
           thruster_pack: Schubdüsen-Pack
-          tiesim: Tiesim
           tophat: Zylinder
-          toxic: Schutzanzug
           toy_pistol: Spielzeugpistole
           tractor_beam: Traktorstrahl
-          training: Training
           trenchcoat: Trenchcoat
           underbarrel: Unterlauf
           undersuit: Unteranzug

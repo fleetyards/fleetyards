@@ -5,7 +5,7 @@
   "description": null,
   "equipment_type": "weapon",
   "slot": null,
-  "item_type": "mining_tool",
+  "item_type": "mine",
   "weapon_class": "kinetic",
   "rate_of_fire": null,
   "range": null,

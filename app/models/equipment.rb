@@ -330,12 +330,12 @@ class Equipment < ApplicationRecord
   # Read off the table rather than from WEAPON_CLASSES for the same reason the
   # column is a free string: a class a patch introduces has to reach the picker
   # without waiting on the constant being updated.
-  def self.weapon_classes
-    build_facet(:weapon_class)
+  def self.weapon_classes(equipment_types = nil)
+    build_facet(:weapon_class) { |scope| of_equipment_types(scope, equipment_types) }
   end
 
-  def self.weapon_class_filters
-    weapon_classes.map do |item|
+  def self.weapon_class_filters(equipment_types = nil)
+    weapon_classes(equipment_types).map do |item|
       Filter.new(
         category: "weapon_class",
         label: fact_label(:weapon_class, item),
@@ -355,8 +355,8 @@ class Equipment < ApplicationRecord
     I18n.t("activerecord.attributes.equipment.#{fact.to_s.pluralize}.#{value.underscore}", default: value.underscore.titleize)
   end
 
-  def self.sub_type_filters
-    build_facet(:sub_type).map do |item|
+  def self.sub_type_filters(equipment_types = nil)
+    build_facet(:sub_type) { |scope| of_equipment_types(scope, equipment_types) }.map do |item|
       Filter.new(
         category: "sub_type",
         label: fact_label(:sub_type, item),
@@ -365,8 +365,17 @@ class Equipment < ApplicationRecord
     end
   end
 
-  def self.slot_filters
-    slots.map do |(item, _index)|
+  # Every slot the enum knows when no type is asked for, which is what the admin
+  # form edits against; only the slots those types fill when one is, so a picker
+  # browsing armour offers no shirt and one browsing clothing no torso plate.
+  def self.slot_filters(equipment_types = nil)
+    values = if equipment_types.present?
+      build_facet(:slot) { |scope| of_equipment_types(scope, equipment_types) }
+    else
+      slots.keys
+    end
+
+    values.map do |item|
       Filter.new(
         category: "slot",
         label: human_enum_name(:slot, item),

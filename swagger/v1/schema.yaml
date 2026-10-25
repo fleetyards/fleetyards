@@ -671,6 +671,14 @@ paths:
       tags:
       - EquipmentFilters
       operationId: equipmentSlotsFilters
+      parameters:
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/EquipmentFacetFilterQuery"
+        style: deepObject
+        explode: true
+        required: false
       responses:
         '200':
           description: successful
@@ -678,12 +686,22 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FilterOptionsList"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/filters/equipment/sub-types":
     get:
       summary: Equipment Sub Type Filters
       tags:
       - EquipmentFilters
       operationId: equipmentSubTypesFilters
+      parameters:
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/EquipmentFacetFilterQuery"
+        style: deepObject
+        explode: true
+        required: false
       responses:
         '200':
           description: successful
@@ -691,6 +709,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FilterOptionsList"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/filters/equipment/types":
     get:
       summary: Equipment Type Filters
@@ -710,6 +730,14 @@ paths:
       tags:
       - EquipmentFilters
       operationId: equipmentWeaponClassesFilters
+      parameters:
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/EquipmentFacetFilterQuery"
+        style: deepObject
+        explode: true
+        required: false
       responses:
         '200':
           description: successful
@@ -717,6 +745,8 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FilterOptionsList"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/filters/manufacturers/options":
     get:
       summary: Manufacturer Options
@@ -35976,6 +36006,10 @@ components:
       - ammunition
       - consumable
       - other
+      - armor
+      - clothing
+      - tool
+      - container
       x-enumNames:
       - COMMODITY
       - COMPONENT
@@ -35984,6 +36018,10 @@ components:
       - AMMUNITION
       - CONSUMABLE
       - OTHER
+      - ARMOR
+      - CLOTHING
+      - TOOL
+      - CONTAINER
       title: InventoryCategoryEnum
     InventoryCraftedBlueprintRef:
       type: object

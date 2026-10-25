@@ -19,19 +19,19 @@ module Api
         end
 
         def sub_types
-          @filters = Equipment.sub_type_filters
+          @filters = Equipment.sub_type_filters(equipment_types)
 
           render "api/v1/shared/filters"
         end
 
         def weapon_classes
-          @filters = Equipment.weapon_class_filters
+          @filters = Equipment.weapon_class_filters(equipment_types)
 
           render "api/v1/shared/filters"
         end
 
         def slots
-          @filters = Equipment.slot_filters
+          @filters = Equipment.slot_filters(equipment_types)
 
           render "api/v1/shared/filters"
         end

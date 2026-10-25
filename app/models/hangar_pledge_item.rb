@@ -160,7 +160,7 @@ class HangarPledgeItem < ApplicationRecord
   end
 
   private def inventory_category
-    return "equipment" if kind == "equipment"
+    return ::InventoryLedgerEntry.category_for_equipment(catalogue_equipment&.equipment_type) if kind == "equipment"
 
     WEAPON_CATEGORIES.include?(catalogue_component&.category) ? "weapon" : "component"
   end

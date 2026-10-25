@@ -79,6 +79,14 @@ module ScData
         "Light" => "tool"
       }.freeze
 
+      # Hand-held gadgets the game files as personal weapons: the multitool,
+      # tractor beam, fire extinguisher, rangefinder and Cambio SRT carry the
+      # Gadget subtype, and the ParaMed says what it is only in its header or,
+      # without one, in its medgun key. A player browsing weapons has no use for
+      # them; one browsing tools does.
+      TOOL_SUB_TYPES = %w[Gadget].freeze
+      TOOL_ITEM_TYPES = %w[medical_device medical_tool].freeze
+
       # The record key reads manufacturer_class_damage_index, so the second
       # segment names the class. Anything not listed keeps the raw segment
       # rather than being forced into a neighbour.
@@ -87,8 +95,53 @@ module ScData
         "glauncher" => "grenade_launcher",
         "optics" => "weapon_scope",
         "ubarrel" => "underbarrel",
-        "ltp" => "mining_tool",
-        "medgun" => "medical_tool"
+        "ltp" => "mine",
+        "medgun" => "medical_tool",
+        "gren" => "grenade"
+      }.freeze
+
+      # Worn gear's key often puts an outfit line or a faction second --
+      # cba_chef_jacket, spv_bioticorp_rep_heels, sc_nvy_bdu_trouser -- so the
+      # garment is whichever segment names one, and a key naming none has no
+      # item type rather than a theme posing as one.
+      GARMENTS = {
+        "apron" => "apron",
+        "backpack" => "backpack",
+        "bandana" => "bandana",
+        "boots" => "boots",
+        "dress" => "dress",
+        "glasses" => "glasses",
+        "gloves" => "gloves",
+        "goggles" => "goggles",
+        "gown" => "dress",
+        "hat" => "hat",
+        "heels" => "shoes",
+        "helmet" => "helmet",
+        "jacket" => "jacket",
+        "jumpsuit" => "jumpsuit",
+        "mask" => "mask",
+        "monocle" => "monocle",
+        "pants" => "pants",
+        "scrubs" => "shirt",
+        "shirt" => "shirt",
+        "shoes" => "shoes",
+        "shorts" => "pants",
+        "slippers" => "shoes",
+        "suit" => "suit",
+        "tanktop" => "shirt",
+        "tophat" => "tophat",
+        "trenchcoat" => "trenchcoat",
+        "trouser" => "pants",
+        "vest" => "vest"
+      }.freeze
+
+      # Armour without a description header still names its weight in the key,
+      # and the headers that do exist read "Heavy Armor" or "Medium Backpack".
+      ARMOR_WEIGHTS = {
+        "superheavy" => "super_heavy",
+        "heavy" => "heavy",
+        "medium" => "medium",
+        "light" => "light"
       }.freeze
 
       WEAPON_CLASSES = %w[ballistic energy kinetic].freeze
@@ -239,17 +292,22 @@ module ScData
           return if picked_type.blank?
         end
 
+        # The description header is written by hand and says "Assault Rifle"
+        # where the record key only says "rifle", so it wins where it exists --
+        # bar a picked record, whose header would call a flare a grenade, and a
+        # garment whose header rates it as armour: a jacket listed under
+        # clothing reads as a jacket, not as the one "Heavy Armor" among them.
+        described_type = described[:item_type] unless worn_type == "clothing" && described[:item_type].to_s.end_with?("_armor")
+        item_type = picked_item_type || described_type || carried_item_type || (item_type(segments, worn_type, slot) unless item.key?(:carried))
+
         {
           key:,
           ref: value_or_nil(values.dig("__ref")),
           name: value_or_nil(name),
           description: described[:description],
-          equipment_type: picked_type || worn_type || carried_type || EQUIPMENT_TYPES[attach_def["Type"]],
+          equipment_type: picked_type || worn_type || carried_type || equipment_type(attach_def, item_type),
           slot:,
-          # The description header is written by hand and says "Assault Rifle"
-          # where the record key only says "rifle", so it wins where it exists --
-          # bar a picked record, whose header would call a flare a grenade.
-          item_type: picked_item_type || described[:item_type] || carried_item_type || (item_type(segments) unless item.key?(:carried)),
+          item_type:,
           weapon_class: described[:weapon_class] || WEAPON_CLASSES.find { |klass| segments.include?(klass) },
           rate_of_fire: described[:rate_of_fire],
           range: described[:range],
@@ -270,6 +328,15 @@ module ScData
           hidden: variant?(key),
           **occupancy(attach_def)
         }
+      end
+
+      private def equipment_type(attach_def, item_type)
+        type = EQUIPMENT_TYPES[attach_def["Type"]]
+
+        return type unless type == "weapon"
+        return "tool" if TOOL_SUB_TYPES.include?(attach_def["SubType"]) || TOOL_ITEM_TYPES.include?(item_type)
+
+        type
       end
 
       private def carried_types(item, attach_def, values)
@@ -435,12 +502,25 @@ module ScData
         VARIANT_SUFFIX.match?(key) || VARIANT_MARKERS.any? { |marker| marker.match?(key) }
       end
 
-      private def item_type(segments)
-        segment = segments[1]
+      private def item_type(segments, worn_type, slot)
+        case worn_type
+        when "clothing" then GARMENTS[segments.drop(1).find { |segment| GARMENTS.key?(segment) }]
+        when "undersuit" then (segments.include?("flightsuit") ? "flight_suit" : "undersuit")
+        when "armor" then armor_item_type(segments, slot)
+        else
+          # A weapon mount's key names the mount before the maker.
+          segment = (segments.first == "weaponmount") ? segments[2] : segments[1]
 
-        return if segment.blank?
+          ITEM_TYPES.fetch(segment, segment) if segment.present?
+        end
+      end
 
-        ITEM_TYPES.fetch(segment, segment)
+      private def armor_item_type(segments, slot)
+        return "flight_helmet" if slot == "helmet" && segments.include?("flightsuit")
+
+        weight = ARMOR_WEIGHTS[segments.find { |segment| ARMOR_WEIGHTS.key?(segment) }]
+
+        "#{weight}_#{(slot == "backpack") ? "backpack" : "armor"}" if weight
       end
 
       private def load_equipment_data

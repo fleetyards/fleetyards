@@ -17783,6 +17783,10 @@ components:
       - ammunition
       - consumable
       - other
+      - armor
+      - clothing
+      - tool
+      - container
       x-enumNames:
       - COMMODITY
       - COMPONENT
@@ -17791,6 +17795,10 @@ components:
       - AMMUNITION
       - CONSUMABLE
       - OTHER
+      - ARMOR
+      - CLOTHING
+      - TOOL
+      - CONTAINER
       title: InventoryCategoryEnum
     InventoryEntryTypeEnum:
       type: string

@@ -3527,7 +3527,6 @@
         "category": "Category",
         "componentCategory": "組件類型",
         "commodityType": "商品類型",
-        "equipmentItemType": "裝備類型",
         "crafted": {
           "request": "要求製作的部件",
           "page": "由 %{recipe} 以品質 %{grades} 製作。醒目標示的數值與目錄不同。",
@@ -3610,7 +3609,11 @@
           "equipment": "Equipment",
           "ammunition": "Attachments & Ammunition",
           "consumable": "Consumable",
-          "other": "Other"
+          "other": "Other",
+          "armor": "護甲",
+          "clothing": "服裝",
+          "tool": "工具",
+          "container": "容器"
         },
         "units": {
           "scu": "SCU",
@@ -4253,7 +4256,11 @@
           "equipment": "裝備",
           "ammunition": "彈藥",
           "consumable": "消耗品",
-          "other": "其他"
+          "other": "其他",
+          "armor": "護甲",
+          "clothing": "服裝",
+          "tool": "工具",
+          "container": "容器"
         },
         "entryTypes": {
           "deposit": "存入",

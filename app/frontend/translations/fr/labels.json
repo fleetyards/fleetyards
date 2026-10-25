@@ -3530,7 +3530,6 @@
         "category": "Category",
         "componentCategory": "Type de composant",
         "commodityType": "Type de marchandise",
-        "equipmentItemType": "Type d'équipement",
         "crafted": {
           "request": "Demander une pièce fabriquée",
           "page": "Fabriqué à partir de %{recipe} avec les qualités %{grades}. Les valeurs mises en évidence diffèrent du catalogue.",
@@ -3613,7 +3612,11 @@
           "equipment": "Equipment",
           "ammunition": "Attachments & Ammunition",
           "consumable": "Consumable",
-          "other": "Other"
+          "other": "Other",
+          "armor": "Armure",
+          "clothing": "Vêtements",
+          "tool": "Outil",
+          "container": "Conteneur"
         },
         "units": {
           "scu": "SCU",
@@ -4256,7 +4259,11 @@
           "equipment": "Équipement",
           "ammunition": "Munitions",
           "consumable": "Consommable",
-          "other": "Autre"
+          "other": "Autre",
+          "armor": "Armure",
+          "clothing": "Vêtements",
+          "tool": "Outil",
+          "container": "Conteneur"
         },
         "entryTypes": {
           "deposit": "Dépôt",

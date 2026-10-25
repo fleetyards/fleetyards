@@ -11,7 +11,32 @@ module InventoryLedgerEntry
     equipment: 3,
     ammunition: 4,
     consumable: 5,
-    other: 6
+    other: 6,
+    armor: 7,
+    clothing: 8,
+    tool: 9,
+    container: 10
+  }.freeze
+
+  # The category a piece of catalogue equipment is filed under, by its type.
+  # Mirrored by INVENTORY_EQUIPMENT_TYPES in the frontend, which browses each
+  # category's slice, so a deposit lands where the picker would have filed it.
+  # Medical gear stays under equipment, where it was filed before consumables
+  # could pick it: contract progress matches deposits on the category.
+  CATEGORIES_BY_EQUIPMENT_TYPE = {
+    "weapon" => "weapon",
+    "armor" => "armor",
+    "undersuit" => "armor",
+    "clothing" => "clothing",
+    "tool" => "tool",
+    "mining_gadget" => "tool",
+    "hacking_tool" => "tool",
+    "container" => "container",
+    "weapon_attachment" => "ammunition",
+    "medical" => "equipment",
+    "sustenance" => "consumable",
+    "carryable" => "other",
+    "flair" => "other"
   }.freeze
 
   # item_type reaches us from the client, and a polymorphic belongs_to would
@@ -30,7 +55,11 @@ module InventoryLedgerEntry
     "equipment" => ["units"],
     "ammunition" => ["units"],
     "consumable" => ["units"],
-    "other" => UNITS.keys.map(&:to_s)
+    "other" => UNITS.keys.map(&:to_s),
+    "armor" => ["units"],
+    "clothing" => ["units"],
+    "tool" => ["units"],
+    "container" => ["units"]
   }.freeze
 
   # The units an entry may be recorded in. The category answers for almost
@@ -53,6 +82,10 @@ module InventoryLedgerEntry
     allowed = UNITS_BY_CATEGORY.fetch(category.to_s, UNITS.keys.map(&:to_s))
 
     item.try(:counted?) ? allowed | [UNITS.keys.last.to_s] : allowed
+  end
+
+  def self.category_for_equipment(equipment_type)
+    CATEGORIES_BY_EQUIPMENT_TYPE.fetch(equipment_type.to_s, "equipment")
   end
 
   # Each catalogue record a list of stock positions points at, keyed by

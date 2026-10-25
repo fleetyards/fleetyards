@@ -3,7 +3,7 @@
   "ref": "3a2dacbb-45ce-419e-b587-b9237b41e373",
   "name": "Pyro RYT Multi-Tool",
   "description": "ATTACHMENTS SOLD SEPARATELY!\n\nManufacturer: Greycat Industrial\nItem Type: Utility\nClass: Gadget\n\nMagazine Size: Integrated Battery\nRate of Fire: N / A (Beam)\nEffective Range: 0.5 m\n\nThe Pyro from Greycat Industrial is a pistol-sized power tool for the modern space engineer that is capable of charging, cutting and patching; achieving a multitude of uses thanks to its wide assortment of attachments. Perfect for making a tough job a little bit easier.",
-  "equipment_type": "weapon",
+  "equipment_type": "tool",
   "slot": null,
   "item_type": "multitool",
   "weapon_class": null,

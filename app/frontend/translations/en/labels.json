@@ -3544,7 +3544,6 @@
         "category": "Category",
         "componentCategory": "Component Type",
         "commodityType": "Commodity Type",
-        "equipmentItemType": "Equipment Type",
         "crafted": {
           "request": "Ask for a crafted part",
           "page": "Crafted from %{recipe} at grades %{grades}. Highlighted figures differ from the catalogue's.",
@@ -3627,7 +3626,11 @@
           "equipment": "Equipment",
           "ammunition": "Attachments & Ammunition",
           "consumable": "Consumable",
-          "other": "Other"
+          "other": "Other",
+          "armor": "Armor",
+          "clothing": "Clothing",
+          "tool": "Tool",
+          "container": "Container"
         },
         "units": {
           "scu": "SCU",
@@ -4270,7 +4273,11 @@
           "equipment": "Equipment",
           "ammunition": "Ammunition",
           "consumable": "Consumable",
-          "other": "Other"
+          "other": "Other",
+          "armor": "Armor",
+          "clothing": "Clothing",
+          "tool": "Tool",
+          "container": "Container"
         },
         "entryTypes": {
           "deposit": "Deposit",

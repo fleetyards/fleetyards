@@ -5,6 +5,10 @@ export const INVENTORY_CATEGORIES = [
   "commodity",
   "component",
   "weapon",
+  "armor",
+  "clothing",
+  "tool",
+  "container",
   "equipment",
   "ammunition",
   "consumable",
@@ -28,6 +32,10 @@ export const INVENTORY_UNITS_BY_CATEGORY: Record<
   ammunition: ["units"],
   consumable: ["units"],
   other: ["scu", "units"],
+  armor: ["units"],
+  clothing: ["units"],
+  tool: ["units"],
+  container: ["units"],
 };
 
 /**
@@ -59,23 +67,26 @@ export const unitsForCategory = (category?: string, counted?: boolean) => {
  * them all -- the game files magazines as weapon attachments, so ammunition is
  * not a catalogue of its own. Without it a picker offers every type in the
  * table, mostly armour and clothing, whatever category is selected.
+ *
+ * Mirrors InventoryLedgerEntry::CATEGORIES_BY_EQUIPMENT_TYPE, which files a
+ * hangar deposit, so keep the two in step.
  */
 export const INVENTORY_EQUIPMENT_TYPES: Record<string, string[]> = {
   weapon: ["weapon"],
+  armor: ["armor", "undersuit"],
+  clothing: ["clothing"],
+  tool: ["tool", "mining_gadget", "hacking_tool"],
+  container: ["container"],
   ammunition: ["weapon_attachment"],
-  equipment: [
-    "armor",
-    "clothing",
-    "undersuit",
-    "tool",
-    "medical",
-    "hacking_tool",
-    "mining_gadget",
-    "container",
-  ],
+  equipment: ["medical"],
   consumable: ["sustenance", "medical"],
   other: ["carryable", "flair"],
 };
+
+/**
+ * The categories whose slice is worn, which the picker narrows by slot as well.
+ */
+export const INVENTORY_WORN_CATEGORIES = ["armor", "clothing"];
 
 /**
  * The one category a piece of equipment is filed under: the first whose slice

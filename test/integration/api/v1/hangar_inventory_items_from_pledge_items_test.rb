@@ -52,11 +52,14 @@ class Api::V1::HangarInventoryItemsFromPledgeItemsTest < ActionDispatch::Integra
     cooler = create(:component, name: "BriskAir IC-20", category: "cooler")
     cannon = create(:component, name: "M3A Cannon", category: "weapons")
     rifle = create(:equipment, name: "P4-AR Rifle")
+    helmet = create(:equipment, name: "Morningstar Helmet", equipment_type: "armor", item_type: "heavy_armor", slot: "helmet")
     parts = [
       create(:hangar_pledge_item, user: @user, kind: "ship_component", name: "BriskAir IC-20", quantity: 2,
         catalogue_component: cooler),
       create(:hangar_pledge_item, user: @user, kind: "ship_component", name: "M3A Cannon", catalogue_component: cannon),
       create(:hangar_pledge_item, user: @user, kind: "equipment", name: "P4-AR Rifle", catalogue_equipment: rifle),
+      create(:hangar_pledge_item, user: @user, kind: "equipment", name: "Morningstar Helmet", catalogue_equipment: helmet),
+      create(:hangar_pledge_item, user: @user, kind: "equipment", name: "Unmatched Jacket"),
       create(:hangar_pledge_item, user: @user, kind: "ship_component", name: "J-Span Cryo-Star Cooler")
     ]
     sign_in @user
@@ -70,7 +73,9 @@ class Api::V1::HangarInventoryItemsFromPledgeItemsTest < ActionDispatch::Integra
     entries = @inventory.inventory_items.index_by(&:name)
     assert_equal ["component", 2, cooler], entries["BriskAir IC-20"].then { [it.category, it.quantity.to_i, it.item] }
     assert_equal "weapon", entries["M3A Cannon"].category
-    assert_equal ["equipment", rifle], entries["P4-AR Rifle"].then { [it.category, it.item] }
+    assert_equal ["weapon", rifle], entries["P4-AR Rifle"].then { [it.category, it.item] }
+    assert_equal ["armor", helmet], entries["Morningstar Helmet"].then { [it.category, it.item] }
+    assert_equal "equipment", entries["Unmatched Jacket"].category
     assert_nil entries["J-Span Cryo-Star Cooler"].item
     assert_equal parts.map(&:source_key).sort, @inventory.inventory_items.pluck(:source_pledge_item_key).sort
   end

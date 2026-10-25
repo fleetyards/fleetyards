@@ -3530,7 +3530,6 @@
         "category": "Category",
         "componentCategory": "Komponententyp",
         "commodityType": "Warentyp",
-        "equipmentItemType": "Ausrüstungstyp",
         "crafted": {
           "request": "Hergestelltes Teil anfordern",
           "page": "Hergestellt aus %{recipe} mit den Qualitäten %{grades}. Hervorgehobene Werte weichen vom Katalog ab.",
@@ -3613,7 +3612,11 @@
           "equipment": "Equipment",
           "ammunition": "Attachments & Ammunition",
           "consumable": "Consumable",
-          "other": "Other"
+          "other": "Other",
+          "armor": "Rüstung",
+          "clothing": "Kleidung",
+          "tool": "Werkzeug",
+          "container": "Behälter"
         },
         "units": {
           "scu": "SCU",
@@ -4256,7 +4259,11 @@
           "equipment": "Ausrüstung",
           "ammunition": "Munition",
           "consumable": "Verbrauchsgut",
-          "other": "Sonstiges"
+          "other": "Sonstiges",
+          "armor": "Rüstung",
+          "clothing": "Kleidung",
+          "tool": "Werkzeug",
+          "container": "Behälter"
         },
         "entryTypes": {
           "deposit": "Einlagerung",

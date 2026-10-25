@@ -65,7 +65,16 @@ describe("inventoryCategoryForEquipment", () => {
     );
     expect(inventoryCategoryForEquipment("sustenance")).toBe("consumable");
     expect(inventoryCategoryForEquipment("flair")).toBe("other");
-    expect(inventoryCategoryForEquipment("armor")).toBe("equipment");
+  });
+
+  it("files worn gear, tools and containers under categories of their own", () => {
+    expect(inventoryCategoryForEquipment("armor")).toBe("armor");
+    expect(inventoryCategoryForEquipment("undersuit")).toBe("armor");
+    expect(inventoryCategoryForEquipment("clothing")).toBe("clothing");
+    expect(inventoryCategoryForEquipment("tool")).toBe("tool");
+    expect(inventoryCategoryForEquipment("hacking_tool")).toBe("tool");
+    expect(inventoryCategoryForEquipment("mining_gadget")).toBe("tool");
+    expect(inventoryCategoryForEquipment("container")).toBe("container");
   });
 
   it("keeps medical gear under equipment", () => {
