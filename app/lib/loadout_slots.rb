@@ -216,8 +216,14 @@ class LoadoutSlots
     mining_lasers tractor_beams missiles bombs
   ].freeze
 
-  # What a slot reads: the port's build and the stock part, with the facts of
-  # that part.
+  # What a slot's facts read: the port's build and the stock part, with the
+  # facts of that part.
+  FACTS_PRELOAD = {
+    component: %i[build last_build],
+    build: {component: %i[build last_build]}
+  }.freeze
+
+  # What a rendered slot reads besides: the stock part's picture.
   PRELOAD = {
     component: [:build, :last_build, ItemViews::DISPLAY_IMAGE_PRELOAD],
     build: {component: [:build, :last_build, ItemViews::DISPLAY_IMAGE_PRELOAD]}

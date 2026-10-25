@@ -27,13 +27,13 @@ class FittingTree
   # than one per mount.
   def stock
     @stock ||= begin
-      level = @model.hardpoints.game_files.in_build.includes(LoadoutSlots::PRELOAD).to_a
+      level = @model.hardpoints.game_files.in_build.includes(LoadoutSlots::FACTS_PRELOAD).to_a
       top = level.map { |hardpoint| hardpoint_node(hardpoint) }
       nodes = level.zip(top).to_h { |hardpoint, node| [hardpoint.id, node] }
 
       while level.any?
         level = ::Hardpoint.in_build.where(parent_type: "Hardpoint", parent_id: level.map(&:id))
-          .includes(LoadoutSlots::PRELOAD).to_a
+          .includes(LoadoutSlots::FACTS_PRELOAD).to_a
         level.each do |hardpoint|
           node = hardpoint_node(hardpoint)
           nodes[hardpoint.parent_id]["hardpoints"] << node

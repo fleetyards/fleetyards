@@ -19,14 +19,14 @@ module Api
         # The ship it is for and the ports above the slot, whose tags a part may
         # demand.
         if params[:model_slug].present?
-          above = Hardpoint.where(id: Array(params[:ancestor_ids])).includes(LoadoutSlots::PRELOAD)
+          above = Hardpoint.where(id: Array(params[:ancestor_ids])).includes(LoadoutSlots::FACTS_PRELOAD)
           provided = LoadoutSlots.ship_tags_for(Model.find_by!(slug: params[:model_slug])) |
             above.flat_map { |port| LoadoutSlots.port_tags(port) }
         end
 
         @options = LoadoutSlots.options(hardpoint, stock:, provided:)
         @ports = Hardpoint.in_build.where(parent_type: "Component", parent_id: @options.map(&:id))
-          .includes(Hardpoint::RENDERED)
+          .includes(Hardpoint::RENDERED, LoadoutSlots::PRELOAD)
           .group_by(&:parent_id)
       end
     end
