@@ -20,11 +20,14 @@ import {
   type Fleet,
   type FleetMember,
   type FleetInventoryItem,
+  getFleetInventoriesQueryKey,
   useFleetInventory,
   useFleetInventoryItems,
   useFleetInventoryStock,
+  useDestroyFleetInventory,
   useDestroyFleetInventoryItem,
 } from "@/services/fyApi";
+import { useInventoryDestroy } from "@/frontend/composables/useInventoryDestroy";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import MemberName from "@/frontend/components/Fleets/MemberName/index.vue";
 import InventoryItemFilterForm from "@/frontend/components/Logistics/InventoryItemFilterForm/index.vue";
@@ -225,23 +228,49 @@ const openEditModal = () => {
   });
 };
 
-onMounted(() => {
-  comlink.on("fleet-inventory-item-created", () => void refetch());
-  comlink.on("fleet-inventory-updated", () => void refetchInventory());
-});
+const leaveDeleted = () =>
+  void router.push({
+    name: "fleet-logistics",
+    params: { slug: props.fleet.slug },
+  });
 
-// Unbound with the page: the emitter is global, and a stale listener would
-// send the reader to this fleet from another fleet's logistics.
-const unbindDeleted = comlink.on(
-  "fleet-inventory-deleted",
+// A role may grant deleting inventories without editing them, and the edit
+// modal is where a member who may do both finds the delete.
+const canOnlyDestroyInventory = computed(
   () =>
-    void router.push({
-      name: "fleet-logistics",
-      params: { slug: props.fleet.slug },
-    }),
+    !canManageInventory.value &&
+    (props.membership?.capabilities?.destroyInventories ?? false),
 );
 
-onUnmounted(() => unbindDeleted());
+const destroyInventoryMutation = useDestroyFleetInventory();
+
+const { deleting, destroyInventory } = useInventoryDestroy({
+  inventory: () => inventory.value,
+  destroy: () =>
+    destroyInventoryMutation.mutateAsync({
+      fleetSlug: fleetSlug.value,
+      slug: inventorySlug.value,
+    }),
+  listKey: () => getFleetInventoriesQueryKey(fleetSlug.value),
+  onDeleted: leaveDeleted,
+});
+
+// The emitter is global, so each listener goes with the page.
+const unbinds: (() => void)[] = [];
+
+onMounted(() => {
+  unbinds.push(
+    comlink.on("fleet-inventory-item-created", () => void refetch()),
+    comlink.on("fleet-inventory-updated", () => void refetchInventory()),
+    comlink.on("fleet-inventory-deleted", (slug) => {
+      if (slug !== inventorySlug.value) return;
+
+      leaveDeleted();
+    }),
+  );
+});
+
+onUnmounted(() => unbinds.forEach((unbind) => unbind()));
 
 const crumbs = computed<Crumb[]>(() => [
   {
@@ -279,7 +308,22 @@ const crumbs = computed<Crumb[]>(() => [
         <p v-if="inventory.description" class="text-muted">
           {{ inventory.description }}
         </p>
-        <PageActions v-if="canManageInventory" v-slot="{ menu }">
+        <PageActions v-if="canOnlyDestroyInventory" v-slot="{ menu }">
+          <Btn
+            :tone="BtnTonesEnum.DANGER"
+            :confirm="t('messages.logistics.inventory.destroy.confirm')"
+            :loading="deleting"
+            :aria-label="t('actions.delete')"
+            data-test="inventory-destroy"
+            @click="destroyInventory"
+          >
+            <i class="fa-duotone fa-trash" />
+            <template v-if="menu">
+              {{ t("actions.delete") }}
+            </template>
+          </Btn>
+        </PageActions>
+        <PageActions v-else-if="canManageInventory" v-slot="{ menu }">
           <Btn @click="openDepositModal">
             <i class="fa-duotone fa-arrow-down-to-square" />
             {{ t("actions.logistics.deposit") }}
