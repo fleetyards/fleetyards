@@ -663,10 +663,21 @@ const crumbs = computed<Crumb[]>(() => [
     text-wrap: pretty;
   }
 
+  // The band has faded out by the byline's height, and the default covers
+  // are bright there; it carries its own backdrop, as the card's kind chip
+  // does.
   &__byline {
-    margin: 10px 0 0;
+    display: inline-block;
+    margin: 10px 0 0 -9px;
+    padding: 3px 9px;
+    border-radius: 4px;
     font-size: 0.85em;
     color: $gray-lighter;
+    backdrop-filter: blur(6px) brightness(0.45);
+
+    strong {
+      color: #fff;
+    }
   }
 }
 
