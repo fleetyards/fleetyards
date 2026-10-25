@@ -55,16 +55,50 @@ module ScData
         assert_empty parsed
       end
 
-      # A tint is a colourway a player can own, with a name of its own.
-      test "keeps a tint visible" do
+      # A tint is a colourway a player can own, with a name of its own, so it is
+      # listed as a version of its base rather than hidden.
+      test "keeps a tint visible as a version of its base" do
+        write_equipment("mrai_flightsuit_01_07", name: "@item_Name_mrai_flightsuit_01_07")
         write_equipment("mrai_flightsuit_01_07_tint02", name: "@item_Name_mrai_flightsuit_01_07_tint02")
 
         @parser.translations = {
           "item_Name_hdh_boots_01_01_13,P" => "Novian \"Nighthunter\" Boots",
+          "item_Name_mrai_flightsuit_01_07" => "Neutrino Racing Flight Suit",
           "item_Name_mrai_flightsuit_01_07_tint02,P" => "Neutrino Racing Flight Suit WhiteHot"
         }
 
         assert_not parsed.fetch("mrai_flightsuit_01_07_tint02")["hidden"]
+        assert_equal %w[mrai_flightsuit_01_07 mrai_flightsuit_01_07],
+          parsed.values_at("mrai_flightsuit_01_07", "mrai_flightsuit_01_07_tint02").pluck("family_key")
+      end
+
+      test "files a weapon skin under its base weapon but not the weapon's magazine" do
+        write_weapon("klwe_rifle_energy_01", "Gallant Rifle")
+        write_weapon("klwe_rifle_energy_01_white02", "Gallant \"Boneyard\" Rifle")
+        write_weapon("klwe_rifle_energy_01_white02_tow", "Gallant \"Boneyard\" Rifle")
+        write_attachment("klwe_rifle_energy_01_mag", "Gallant Rifle Battery", sub_type: "Magazine")
+
+        assert_equal ["klwe_rifle_energy_01"] * 3,
+          parsed.values_at("klwe_rifle_energy_01", "klwe_rifle_energy_01_white02", "klwe_rifle_energy_01_white02_tow")
+            .pluck("family_key")
+        assert_nil parsed.fetch("klwe_rifle_energy_01_mag")["family_key"]
+      end
+
+      # Worn colourways have no base record to extend, so they share the key
+      # without its colour instead.
+      test "files worn colourways under their shared key" do
+        write_equipment("hdh_boots_01_01_14", name: "@item_Name_hdh_boots_01_01_14")
+        write_equipment("hdh_hat_01_01_01", name: "@item_Name_hdh_hat_01_01_01", type: "Char_Clothing_Hat")
+
+        @parser.translations = {
+          "item_Name_hdh_boots_01_01_13" => "Novian Boots Black",
+          "item_Name_hdh_boots_01_01_14" => "Novian Boots Red",
+          "item_Name_hdh_hat_01_01_01" => "Novian Hat"
+        }
+
+        assert_equal %w[hdh_boots_01_01 hdh_boots_01_01],
+          parsed.values_at("hdh_boots_01_01_13", "hdh_boots_01_01_14").pluck("family_key")
+        assert_nil parsed.fetch("hdh_hat_01_01_01")["family_key"]
       end
 
       test "reads glasses as eyewear" do
@@ -292,7 +326,22 @@ module ScData
 
       private def write_carryable(key, display_name, type: "Misc", sub_type: "UNDEFINED", folder: "1h", **)
         write_equipment(key, name: "@item_Name_#{key}", path: "entities/scitem/carryables/#{folder}", type:, sub_type:, **)
+        name_record(key, display_name)
+      end
 
+      private def write_weapon(key, display_name, **)
+        write_equipment(key, name: "@item_Name_#{key}", path: "entities/scitem/weapons/fps_weapons",
+          type: "WeaponPersonal", sub_type: "Medium", **)
+        name_record(key, display_name)
+      end
+
+      private def write_attachment(key, display_name, sub_type:)
+        write_equipment(key, name: "@item_Name_#{key}", path: "entities/scitem/weapons/magazines",
+          type: "WeaponAttachment", sub_type:)
+        name_record(key, display_name)
+      end
+
+      private def name_record(key, display_name)
         @parser.translations = (@parser.translations || {}).merge(
           "item_Name_hdh_boots_01_01_13" => "Novian \"Nighthunter\" Boots",
           "item_Name_#{key}" => display_name

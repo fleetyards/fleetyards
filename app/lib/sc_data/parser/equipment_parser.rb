@@ -230,12 +230,18 @@ module ScData
         /test/
       ].freeze
 
+      # A base key names at least maker, class and kind -- behr_rifle_ballistic --
+      # so a two-segment record cannot claim every key that starts like it.
+      MIN_BASE_SEGMENTS = 3
+
+      WORN_EQUIPMENT_TYPES = %w[armor clothing undersuit].freeze
+
       def all
         save_items(equipment, folder: "equipment")
       end
 
       def equipment
-        mark_skins(load_equipment_data.filter_map { |item| parse_equipment(item) })
+        assign_families(mark_skins(load_equipment_data.filter_map { |item| parse_equipment(item) }))
       end
 
       # Records that share a display name and a maker-and-type key prefix are
@@ -261,6 +267,59 @@ module ScData
         end
 
         parsed
+      end
+
+      # Versions of one item share a `family_key`. A weapon skin's key extends
+      # its base item's -- klwe_rifle_energy_01_white02 is the Gallant Rifle in
+      # "Boneyard" colours -- and the family is named after the shortest such
+      # base. The base has to be the same type of item, or a rifle's magazine
+      # would read as a version of the rifle.
+      #
+      # Worn colourways have no base record: the Defiance Arms in each colour
+      # are slaver_armor_heavy_arms_01_01_NN, so they share the key without its
+      # last segment instead. An item with no other version has no family.
+      private def assign_families(parsed)
+        by_key = parsed.index_by { |item| item[:key] }
+
+        parsed.each do |item|
+          item[:family_key] = base_key(item, by_key) || worn_family_key(item)
+        end
+
+        parsed.group_by { |item| item[:family_key] }.each do |family_key, members|
+          next if family_key.nil?
+
+          base = by_key[family_key]
+
+          if base && members.any? { |member| same_kind?(base, member) }
+            base[:family_key] = family_key
+          elsif members.one?
+            members.first[:family_key] = nil
+          end
+        end
+
+        parsed
+      end
+
+      private def base_key(item, by_key)
+        segments = item[:key].split("_")
+
+        (MIN_BASE_SEGMENTS...segments.size).each do |count|
+          base = by_key[segments.first(count).join("_")]
+
+          return base[:key] if base && same_kind?(base, item)
+        end
+
+        nil
+      end
+
+      private def worn_family_key(item)
+        return unless WORN_EQUIPMENT_TYPES.include?(item[:equipment_type])
+
+        item[:key].split("_")[0..-2].join("_")
+      end
+
+      private def same_kind?(base, item)
+        base[:equipment_type] == item[:equipment_type] && base[:item_type] == item[:item_type]
       end
 
       private def skin_family(item)
