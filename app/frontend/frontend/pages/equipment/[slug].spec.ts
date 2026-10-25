@@ -76,6 +76,7 @@ const mountPage = async (equipment: Equipment) => {
     global: {
       plugins: [router],
       stubs: {
+        AddToInventoryBtn: true,
         AsyncData: { template: "<div><slot name='resolved' /></div>" },
         BreadCrumbs: true,
         ExternalLinks: true,

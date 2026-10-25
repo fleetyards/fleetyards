@@ -399,6 +399,7 @@
         }
       },
       "logistics": {
+        "addToInventory": "加入庫存",
         "createInventory": "New Inventory",
         "submit": "Submit",
         "reject": "Reject",

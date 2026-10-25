@@ -399,6 +399,7 @@
         }
       },
       "logistics": {
+        "addToInventory": "Aggiungi all'inventario",
         "createInventory": "New Inventory",
         "submit": "Submit",
         "reject": "Reject",

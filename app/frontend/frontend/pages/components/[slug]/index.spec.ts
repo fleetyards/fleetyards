@@ -73,6 +73,7 @@ const mountPage = async (component: Component, path = "/") => {
     global: {
       plugins: [router],
       stubs: {
+        AddToInventoryBtn: true,
         BreadCrumbs: true,
         ExternalLinks: true,
         Availability: true,
