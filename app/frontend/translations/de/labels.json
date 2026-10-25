@@ -3584,6 +3584,7 @@
         "qualityMax": "Quality <=",
         "existingItem": "Select existing item",
         "inventoryName": "Inventory Name",
+        "noDepositTargets": "Es gibt kein Inventar, in das du etwas einlagern kannst.",
         "personalInventory": "Persönlich",
         "personalInventoryNameLocked": "Dein persönliches Inventar behält seinen Namen.",
         "visibility": "Visibility",

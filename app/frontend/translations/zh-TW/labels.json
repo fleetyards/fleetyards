@@ -3581,6 +3581,7 @@
         "qualityMax": "Quality <=",
         "existingItem": "Select existing item",
         "inventoryName": "Inventory Name",
+        "noDepositTargets": "沒有你可以存入的庫存。",
         "personalInventory": "個人",
         "personalInventoryNameLocked": "個人庫存的名稱不可更改。",
         "visibility": "Visibility",

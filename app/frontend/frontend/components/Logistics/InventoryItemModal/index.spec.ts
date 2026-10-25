@@ -34,6 +34,7 @@ const api = vi.hoisted(() => ({
     target: unknown;
   }[],
   noTargets: false,
+  hangarEnabled: true,
 }));
 
 // The hooks, not the fetchers: a generated hook calls its own fetcher from
@@ -72,6 +73,7 @@ vi.mock("@/frontend/composables/useDepositTargets", async () => {
       targetFor: (value?: string) =>
         api.targets.find((entry) => entry.option.value === value)?.target,
       empty: computed(() => api.noTargets),
+      hangarEnabled: computed(() => api.hangarEnabled),
     }),
   };
 });
@@ -158,6 +160,7 @@ beforeEach(() => {
     },
   ];
   api.noTargets = false;
+  api.hangarEnabled = true;
 });
 
 const mount = async () => {
@@ -720,6 +723,20 @@ describe("LogisticsInventoryItemModal", () => {
       expect(subject.find("[data-test='inventory-item-save']").exists()).toBe(
         false,
       );
+    });
+
+    // Without hangar inventories there is nothing of their own to create.
+    it("does not send a fleet-only reader to create one", async () => {
+      api.targets = [];
+      api.noTargets = true;
+      api.hangarEnabled = false;
+
+      const subject = await mountForItem(bulwark);
+
+      const empty = subject.find("[data-test='inventory-item-no-inventories']");
+
+      expect(empty.text()).toContain("no inventory you can deposit into");
+      expect(empty.find("a").exists()).toBe(false);
     });
   });
 });

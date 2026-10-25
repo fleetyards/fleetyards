@@ -86,6 +86,7 @@ const {
   options: inventoryOptions,
   targetFor,
   empty: noInventories,
+  hangarEnabled,
 } = useDepositTargets(choosesInventory);
 
 const inventoryId = ref<string>();
@@ -443,10 +444,13 @@ const onSubmit = handleSubmit(async (values) => {
       class="inventory-item-modal__empty"
       data-test="inventory-item-no-inventories"
     >
-      <p>{{ t("texts.hangarPledgeItems.noInventories") }}</p>
-      <Btn :to="{ name: 'hangar-inventories' }">
-        {{ t("actions.hangarPledgeItems.createInventory") }}
-      </Btn>
+      <template v-if="hangarEnabled">
+        <p>{{ t("texts.hangarPledgeItems.noInventories") }}</p>
+        <Btn :to="{ name: 'hangar-inventories' }">
+          {{ t("actions.hangarPledgeItems.createInventory") }}
+        </Btn>
+      </template>
+      <p v-else>{{ t("labels.logistics.noDepositTargets") }}</p>
     </div>
 
     <!-- Hidden rather than unmounted while another step is open, so nothing
