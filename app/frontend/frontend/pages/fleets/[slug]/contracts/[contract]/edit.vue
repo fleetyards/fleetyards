@@ -55,17 +55,14 @@ const editable = computed(
 // a form the API would refuse. Decided only once both the contract and the
 // signed-in user are known, so an author is not sent away before the session
 // has said who they are.
-watch(
-  [contract, () => sessionStore.currentUser],
-  ([value, user]) => {
-    if (!value || !user || editable.value) return;
+watch([contract, () => sessionStore.currentUser], ([value, user]) => {
+  if (!value || !user || editable.value) return;
 
-    void router.replace({
-      name: "fleet-contract",
-      params: { slug: props.fleet.slug, contract: contractSlug.value },
-    });
-  },
-);
+  void router.replace({
+    name: "fleet-contract",
+    params: { slug: props.fleet.slug, contract: contractSlug.value },
+  });
+});
 
 const cancel = () => {
   void router.push({

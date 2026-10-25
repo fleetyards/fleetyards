@@ -40,7 +40,10 @@ describe("useContractEditAccess", () => {
   it("keeps a reader out of somebody else's personal contract", () => {
     expect(
       useContractEditAccess(
-        contract({ personal: true, createdBy: { id: "other", username: "Bo" } }),
+        contract({
+          personal: true,
+          createdBy: { id: "other", username: "Bo" },
+        }),
         ["fleet:contracts:read"],
       ).value,
     ).toBe(false);

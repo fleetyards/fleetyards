@@ -122,8 +122,8 @@ describe("PayoutParticipantList", () => {
 
     const row = wrapper.find('[data-test="payout-participant"]');
     expect(row.text()).toContain("Payer");
-    expect(row.findComponent({ name: "PayoutsPayoutWeightControl" }).exists()).toBe(
-      false,
-    );
+    expect(
+      row.findComponent({ name: "PayoutsPayoutWeightControl" }).exists(),
+    ).toBe(false);
   });
 });
