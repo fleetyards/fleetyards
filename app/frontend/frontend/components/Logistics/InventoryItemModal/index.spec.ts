@@ -254,6 +254,27 @@ describe("LogisticsInventoryItemModal", () => {
     ).toContain("base-input--with-error");
   });
 
+  // A resource's grade field, once shown, must not keep asking after the
+  // goods change to something a grade does not apply to.
+  it("deposits a part without a grade after a resource was picked", async () => {
+    const subject = await mount();
+
+    await pick(subject, gold);
+    await pick(subject, bulwark);
+    await subject.find("[data-test='input-quantity']").setValue("1");
+    await subject.find("form").trigger("submit");
+    await flushPromises();
+
+    expect(api.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          itemId: "bulwark",
+          quality: undefined,
+        }),
+      }),
+    );
+  });
+
   it("clears the item", async () => {
     const subject = await mount();
 
