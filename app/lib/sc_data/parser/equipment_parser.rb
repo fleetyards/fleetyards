@@ -212,11 +212,11 @@ module ScData
         "medium&light" => "light_medium"
       }.freeze
 
-      # Tints, store and collector editions, and the marketing and template
-      # records that never reach a player. They carry their own key, so they
-      # load as rows, but a picker listing twelve Pyro RYT Multi-Tools is not
-      # useful -- Component solves the same problem the same way.
-      VARIANT_SUFFIX = /_(tint|collector|store|mr|sf|prop|template|black|mat|tan)\d*\z/
+      # Props and the templates the game clones a record from, which never reach
+      # a player. Tints, store and collector editions do: each has a name of its
+      # own and several are sold in game shops. A copy under the same name is
+      # still hidden, by `mark_skins`.
+      VARIANT_SUFFIX = /_(prop|template)\d*\z/
 
       # Copies that exist for a game mode, an NPC, or a developer rather than a
       # player: the AI loadout, the tug-of-war and gun-game event weapons, the

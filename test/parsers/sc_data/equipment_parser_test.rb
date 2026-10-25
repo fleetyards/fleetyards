@@ -55,11 +55,8 @@ module ScData
         assert_empty parsed
       end
 
-      # The tints and colourways among the newly named records still have to
-      # hide, and `VARIANT_SUFFIX` decides that from the key rather than from
-      # the name -- so a record arriving with a name for the first time does not
-      # arrive visible for the first time.
-      test "hides a colourway the export declares with a plural marker" do
+      # A tint is a colourway a player can own, with a name of its own.
+      test "keeps a tint visible" do
         write_equipment("mrai_flightsuit_01_07_tint02", name: "@item_Name_mrai_flightsuit_01_07_tint02")
 
         @parser.translations = {
@@ -67,8 +64,7 @@ module ScData
           "item_Name_mrai_flightsuit_01_07_tint02,P" => "Neutrino Racing Flight Suit WhiteHot"
         }
 
-        assert parsed.fetch("mrai_flightsuit_01_07_tint02")["hidden"]
-        assert_not parsed.fetch("hdh_boots_01_01_13")["hidden"]
+        assert_not parsed.fetch("mrai_flightsuit_01_07_tint02")["hidden"]
       end
 
       test "reads glasses as eyewear" do
