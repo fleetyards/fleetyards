@@ -16,6 +16,11 @@ vi.mock("@/shared/composables/useLowPowerDevice", () => ({
   useLowPowerDevice: () => ref(device.lowPower),
 }));
 
+// The real viewer pulls in three.js, which does not load outside a browser.
+vi.mock("@/shared/components/HoloViewer/index.vue", () => ({
+  default: { name: "HoloViewer", template: "<div />" },
+}));
+
 import ItemHero from "./index.vue";
 
 const file = (name: string, size = 1000): MediaFile => ({
