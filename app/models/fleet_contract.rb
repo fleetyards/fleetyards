@@ -83,7 +83,10 @@ class FleetContract < ApplicationRecord
   validates :title, uniqueness: {case_sensitive: false, scope: :fleet_id}, allow_blank: true
   validate :slug_not_taken, if: -> { title.present? && will_save_change_to_title? }
   validates :reward_type, presence: true
-  validates :reward, numericality: {greater_than: 0}, unless: :reward_none?
+  # Checked when the reward is being set rather than on every save: a contract
+  # the previous release saved as a fixed 0 would otherwise fail every later
+  # save, and a failed `cancel!` or `expire!` is silent.
+  validates :reward, numericality: {greater_than: 0}, unless: :reward_none?, if: :reward_being_set?
   validates :crew_limit, numericality: {greater_than: 0}, allow_nil: true
   validate :exactly_one_destination, if: :destination_being_set?
   validates :source_fleet_inventory, presence: true, if: :transport?
@@ -389,6 +392,10 @@ class FleetContract < ApplicationRecord
     when "per_unit" then (reward * progress.counted_quantities.slice(*user_ids).values.sum(0.to_d)).round(2)
     else 0.to_d
     end
+  end
+
+  private def reward_being_set?
+    new_record? || will_save_change_to_reward? || will_save_change_to_reward_type?
   end
 
   private def clear_reward
