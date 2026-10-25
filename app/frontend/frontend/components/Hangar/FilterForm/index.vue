@@ -67,6 +67,10 @@ const prefillFormValues = () => {
     cargoLteq: filters.value.cargoLteq,
     maxWeaponSizeGteq: weaponSize(filters.value.maxWeaponSizeGteq),
     maxWeaponSizeLteq: weaponSize(filters.value.maxWeaponSizeLteq),
+    alphaGteq: filters.value.alphaGteq,
+    alphaLteq: filters.value.alphaLteq,
+    burstDpsGteq: filters.value.burstDpsGteq,
+    burstDpsLteq: filters.value.burstDpsLteq,
     lengthLteq: filters.value.lengthLteq,
     lengthGteq: filters.value.lengthGteq,
     beamLteq: filters.value.beamLteq,
@@ -243,7 +247,16 @@ const hasGroupFilters = (keys: string[]) =>
 
     <FilterGroup
       :label="t('filteredList.groups.weapons')"
-      :active="hasGroupFilters(['maxWeaponSizeGteq', 'maxWeaponSizeLteq'])"
+      :active="
+        hasGroupFilters([
+          'maxWeaponSizeGteq',
+          'maxWeaponSizeLteq',
+          'alphaGteq',
+          'alphaLteq',
+          'burstDpsGteq',
+          'burstDpsLteq',
+        ])
+      "
     >
       <div class="row">
         <div class="col-6">
@@ -262,6 +275,52 @@ const hasGroupFilters = (keys: string[]) =>
             :label="t('labels.filters.vehicles.maxWeaponSizeLt')"
             name="vehicle-max-weapon-size-lteq"
             unsorted
+          />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <FormInput
+            v-model="form.alphaGteq"
+            name="vehicle-alpha-gteq"
+            :type="InputTypesEnum.NUMBER"
+            :min="0"
+            translation-key="filters.vehicles.alphaGt"
+            :no-placeholder="true"
+          />
+        </div>
+        <div class="col-6">
+          <FormInput
+            v-model="form.alphaLteq"
+            name="vehicle-alpha-lteq"
+            :type="InputTypesEnum.NUMBER"
+            :min="0"
+            translation-key="filters.vehicles.alphaLt"
+            :no-placeholder="true"
+          />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6">
+          <FormInput
+            v-model="form.burstDpsGteq"
+            name="vehicle-burst-dps-gteq"
+            :type="InputTypesEnum.NUMBER"
+            :min="0"
+            translation-key="filters.vehicles.burstDpsGt"
+            :no-placeholder="true"
+          />
+        </div>
+        <div class="col-6">
+          <FormInput
+            v-model="form.burstDpsLteq"
+            name="vehicle-burst-dps-lteq"
+            :type="InputTypesEnum.NUMBER"
+            :min="0"
+            translation-key="filters.vehicles.burstDpsLt"
+            :no-placeholder="true"
           />
         </div>
       </div>
