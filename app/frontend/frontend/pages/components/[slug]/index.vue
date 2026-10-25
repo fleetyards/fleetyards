@@ -18,8 +18,9 @@ import Chip from "@/shared/components/base/Chip/index.vue";
 import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
-import { useImageViewer } from "@/shared/composables/useImageViewer";
 import ComponentStatsCard from "@/frontend/components/StatsCard/Component/index.vue";
+import ItemHero from "@/frontend/components/ItemHero/index.vue";
+import ItemViews from "@/frontend/components/ItemViews/index.vue";
 import {
   useComponentStats,
   useModeGroups,
@@ -59,16 +60,6 @@ const {
 } = useCraftedFromRoute(stock, craftedCatalogueComponent);
 
 const component = computed(() => crafted.value ?? stock.value);
-
-const { openImage } = useImageViewer();
-
-const viewImage = (event: MouseEvent) => {
-  const image = (event.currentTarget as HTMLElement).querySelector("img");
-
-  if (image) {
-    void openImage(image, component.value.name);
-  }
-};
 
 const stats = useComponentStats(component);
 
@@ -279,23 +270,17 @@ watch(
 
           <ComponentThermalMetrics :component="component" />
         </div>
+
+        <ItemViews :media="component.media" :name="component.name" />
       </div>
 
       <div class="component-page__rail">
-        <button
-          v-if="component.media.storeImage?.largeUrl"
-          type="button"
-          class="component-page__zoom"
-          :aria-label="t('actions.viewImage', { name: component.name })"
-          data-test="component-image"
-          @click="viewImage"
-        >
-          <img
-            class="component-page__image"
-            :src="component.media.storeImage.largeUrl"
-            alt=""
-          />
-        </button>
+        <ItemHero
+          :image="component.media.storeImage"
+          :holo="component.media.holo"
+          :name="component.name"
+          test-id="component-image"
+        />
 
         <MetricsCard
           v-if="details.length"

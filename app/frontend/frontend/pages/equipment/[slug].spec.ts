@@ -15,6 +15,14 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   }),
 }));
 
+vi.mock("@/shared/composables/useMobile", () => ({
+  useMobile: () => ref(false),
+}));
+
+vi.mock("@/shared/composables/useLowPowerDevice", () => ({
+  useLowPowerDevice: () => ref(false),
+}));
+
 vi.mock("@/shared/composables/useI18n", () => ({
   useI18n: () => ({
     t: (key: string) => key,
@@ -74,6 +82,7 @@ const mountPage = async (equipment: Equipment) => {
         Availability: true,
         Chip: true,
         EquipmentStatsCard: true,
+        ItemViews: true,
         CatalogueItemPopover: true,
         MetricsCard: { template: "<section><slot /></section>" },
       },
@@ -90,7 +99,7 @@ describe("EquipmentPage", () => {
     );
 
     expect(
-      wrapper.find("[data-test='equipment-image'] img").attributes("src"),
+      wrapper.find("[data-test='equipment-image']").attributes("src"),
     ).toBe("https://example.test/large.jpg");
   });
 

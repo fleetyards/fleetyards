@@ -1,0 +1,31 @@
+.item-hero {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 4px;
+
+  &--holo {
+    position: relative;
+
+    &:hover,
+    &:focus-within {
+      .item-hero__fullscreen {
+        opacity: 1;
+      }
+    }
+  }
+
+  &__image {
+    // Mostly a game-file render: transparent and cut tight to the item, so it
+    // is fitted rather than cropped.
+    object-fit: contain;
+  }
+
+  &__fullscreen {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    opacity: 0;
+    transition: opacity 150ms ease;
+  }
+}
