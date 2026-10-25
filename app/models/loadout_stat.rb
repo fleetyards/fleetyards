@@ -68,9 +68,9 @@ class LoadoutStat < ApplicationRecord
 
   def self.write(fitting, tree, model, source)
     weapons = LoadoutWeapons.new(tree)
-    # A ship no build describes -- a concept -- has no figures, which is not
-    # the same as carrying no guns.
-    firepower = tree.empty? ? LoadoutFirepower::Result.new : LoadoutFirepower.for_tree(tree, model)
+    # A concept ship -- no build and no hardpoints from one -- has no figures,
+    # which is not the same as carrying no guns.
+    firepower = (model.facts.nil? && tree.empty?) ? LoadoutFirepower::Result.new : LoadoutFirepower.for_tree(tree, model)
 
     upsert(
       {

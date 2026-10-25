@@ -48,7 +48,6 @@ class FittingTree
   # `crafted` are the loadout's crafted items by slot path.
   def fitted(slots, crafted = {})
     @crafted = crafted
-    @recipes = nil
     fitting = slots.fittable_hull.index_by(&:name)
 
     stock.map do |node|
@@ -105,16 +104,27 @@ class FittingTree
     item = @crafted&.dig(path)
     return if item.nil? || component.nil? || item.item_id != component.id
 
-    cost_slots = recipes[item.blueprint_id]
-    cost_slots.present? ? CraftedFigures.new(cost_slots, item.crafted_qualities) : nil
+    recipe = recipe_for(item.blueprint_id)
+    return if recipe.nil? || recipe.craftable_type != "Component" || recipe.craftable_id != component.id
+
+    CraftedFigures.new(recipe.cost_slots, item.crafted_qualities)
   end
 
   # Read as the loadout page reads a recipe: the build in force, else the last
   # one that described it, so a recipe a build retired still crafts the part it
-  # made.
-  private def recipes
-    @recipes ||= ::Blueprint.where(id: @crafted.values.map(&:blueprint_id))
-      .includes(:build, :last_build)
-      .to_h { |blueprint| [blueprint.id, blueprint.cost_slots.includes(:modifiers).order(:position).to_a] }
+  # made. Kept across the loadouts of the ship, which often share recipes.
+  private def recipe_for(blueprint_id)
+    @recipes ||= {}
+    load_recipes(@crafted.values.map(&:blueprint_id) - @recipes.keys)
+    @recipes[blueprint_id]
+  end
+
+  private def load_recipes(blueprint_ids)
+    return if blueprint_ids.empty?
+
+    ::Blueprint.where(id: blueprint_ids).includes(build: {cost_slots: :modifiers}).each do |blueprint|
+      @recipes[blueprint.id] = blueprint.build || blueprint.last_build
+    end
+    blueprint_ids.each { |id| @recipes[id] ||= nil }
   end
 end
