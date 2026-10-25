@@ -23,8 +23,9 @@ Decisions and acceptance criteria: https://github.com/fleetyards/fleetyards/issu
 ## Discovery log
 
 - Raw 4.10.2 parse after phase 1: every clothing record gets a garment; only the two mannequin display props stay untyped.
-- Inventory positions carry `name--category--unit` as a published slug, which is why existing entries are not re-filed.
+- Inventory positions carry `name--category--unit` as a published slug; the re-filing migration changes it for every position it moves.
 - The hangar "add to inventory" action is keyed by the pledge item, so a changed category never re-deposits.
 - The parser change needs a re-parse before production sees it.
 - Ten clothing records (`thp_jacket`, `thp_pants`, `qrt_mask_*`) carry an armour header; clothing now prefers its garment over it.
+- Review: leaving existing stock under `equipment` refuses catalogue withdrawals and stalls contracts, so a data migration re-files positions whose entries all name one piece of equipment (dry run against the dev dump: nothing to move).
 - The ADO-5 laser mine was mapped to `mining_tool` by its `ltp` key segment; it reads `mine` now.
