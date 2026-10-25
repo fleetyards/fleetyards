@@ -98,6 +98,14 @@ class AnnouncementDeliveryTest < ActiveSupport::TestCase
     end
   end
 
+  test "#engagement_due? refreshes a settled post a day later across a clock change" do
+    travel_to Time.utc(2026, 10, 25, 12) do
+      settled = build(:announcement_delivery, channel: "bluesky", status: "succeeded", delivered_at: 5.days.ago, engagement_fetched_at: 24.hours.ago)
+
+      assert settled.engagement_due?
+    end
+  end
+
   test "#engagement_due? stops after thirty days" do
     refute build(:announcement_delivery, channel: "bluesky", status: "succeeded", delivered_at: 31.days.ago).engagement_due?
     refute build(:announcement_delivery, channel: "discord", status: "failed", delivered_at: 1.hour.ago).engagement_due?
