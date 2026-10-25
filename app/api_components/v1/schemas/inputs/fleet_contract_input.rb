@@ -7,6 +7,9 @@ module V1
       # on both, because a contract is written over several saves before it is
       # published -- and `FleetContract#ready_to_publish?` is what refuses an
       # incomplete one, at the point where it would become an offer of work.
+      #
+      # The exception is `rewardType`, which a create must send: a contract
+      # that pays nothing says so with `none` rather than by omission.
       class FleetContractInput
         include OpenapiRuby::Components::Base
 
@@ -17,6 +20,7 @@ module V1
             description: {type: [:string, :null]},
             kind: ::V1::Schemas::Enums::FleetContractKindEnum,
             reward: {type: :string},
+            rewardType: ::V1::Schemas::Enums::FleetContractRewardTypeEnum,
             reimburseExpenses: {type: :boolean},
             crewLimit: {type: [:integer, :null]},
             deadline: {type: [:string, :null], format: "date-time"},

@@ -324,13 +324,14 @@ class PayoutLedger < ApplicationRecord
       payout_participants.create!(user_id: user_id, weight: weight)
     end
 
-    return true unless subject.reward.positive?
+    amount = subject.earned_reward(weights.keys)
+    return true unless amount.positive?
 
     payout_entries.create!(
       payout_participant: payer,
       entry_type: :income,
       review_status: :approved,
-      amount: subject.reward,
+      amount: amount,
       description: I18n.t("fleet_contracts.payout_reward", title: subject.display_title)
     )
 
@@ -342,11 +343,21 @@ class PayoutLedger < ApplicationRecord
   # the proportions of even a single crate out of a large order. A contract
   # forced to fulfilled with nothing measured divides evenly across whoever
   # was on it.
+  #
+  # A per-unit reward is weighted by the SCU and units each contractor
+  # delivered instead, so everyone is paid the rate on their own goods -- a
+  # line's fraction would pay a crate of a small line like a hold of a big one.
+  #
+  # "Nothing measured" is read off every delivery, the author's included: goods
+  # an author delivered to themselves were measured, and earn the crew nothing.
   private def contract_weights
-    weights = subject.progress.weights.select { |_user_id, weight| weight.positive? }
+    progress = subject.progress
+    weights = progress.payout_weights.select { |_user_id, weight| weight.positive? }
     total = weights.values.sum(0.to_d)
 
     if total.zero?
+      return {} if progress.weights.values.any?(&:positive?)
+
       return subject.contractor_assignments.pluck(:user_id).uniq.index_with { 1 }
     end
 

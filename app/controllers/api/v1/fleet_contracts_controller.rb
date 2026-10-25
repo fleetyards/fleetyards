@@ -42,10 +42,13 @@ module Api
         normalize_sort_params(query_params)
         query_params["sorts"] = sorting_params(FleetContract, query_params["sorts"])
 
-        @q = scope.ransack(query_params)
+        # Narrowed to ids first, so the sort runs on a query with no DISTINCT:
+        # sorting by what a contract pays is an expression, and Postgres
+        # refuses to order a DISTINCT select by anything it does not select.
+        @q = FleetContract.where(id: scope.select(:id)).ransack(query_params)
 
         @fleet_contracts = result_with_pagination(
-          @q.result(distinct: true).includes(:destination_fleet_inventory, :destination_inventory,
+          @q.result.includes(:destination_fleet_inventory, :destination_inventory,
             :source_fleet_inventory,
             :created_by, {fleet_contract_items: :crafted_blueprint}, {fleet_contract_assignments: :user},
             # The serializer asks every row whether it carries a cover, which is

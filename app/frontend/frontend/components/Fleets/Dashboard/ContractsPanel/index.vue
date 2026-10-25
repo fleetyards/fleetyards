@@ -12,6 +12,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import ContractStatePill from "@/frontend/components/Fleets/Contracts/ContractStatePill/index.vue";
 import { useContractCover } from "@/frontend/composables/useContractCover";
+import { useContractReward } from "@/frontend/composables/useContractReward";
 import { coverStyle } from "@/frontend/components/Fleets/Dashboard/coverStyle";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
@@ -30,7 +31,8 @@ const props = withDefaults(defineProps<Props>(), {
   canCreate: false,
 });
 
-const { t, toUEC } = useI18n();
+const { t } = useI18n();
+const { paysReward, rewardLabel } = useContractReward();
 
 const { resolve: resolveCover } = useContractCover();
 
@@ -150,8 +152,8 @@ const groups = computed(() =>
               <span class="contracts-panel__title">{{ contract.title }}</span>
               <span class="contracts-panel__meta">
                 {{ t(`labels.fleets.contracts.kind.${contract.kind}`) }}
-                <template v-if="Number(contract.reward) > 0">
-                  · <span v-html="toUEC(Number(contract.reward))" />
+                <template v-if="paysReward(contract)">
+                  · <span v-html="rewardLabel(contract)" />
                 </template>
               </span>
             </span>

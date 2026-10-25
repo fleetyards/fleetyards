@@ -36,6 +36,11 @@ vi.mock("@/services/fyApi", () => ({
     CRAFTING: "crafting",
   },
   FleetContractDestinationHolderEnum: { FLEET: "fleet", USER: "user" },
+  FleetContractRewardTypeEnum: {
+    FIXED: "fixed",
+    PER_UNIT: "per_unit",
+    NONE: "none",
+  },
   useFleetInventories: () => ({ data: { value: { items: [] } } }),
   useFleetContractDestinations: (
     _fleetSlug: unknown,
@@ -411,5 +416,91 @@ describe("ContractForm destination", () => {
     const { data } = await submitted(wrapper);
 
     expect(data.destinationInventoryId).toBe("locker");
+  });
+});
+
+describe("ContractForm reward", () => {
+  const select = (wrapper: ReturnType<typeof mountForm>, name: string) =>
+    wrapper
+      .findAllComponents({ name: "BaseSelect" })
+      .find((component) => component.attributes("name") === name)!;
+
+  const rewardInput = (wrapper: ReturnType<typeof mountForm>) =>
+    wrapper.find("[data-test='contract-reward']");
+
+  const submitted = async (wrapper: ReturnType<typeof mountForm>) => {
+    await wrapper.find("form").trigger("submit");
+    await flushPromises();
+
+    return ((createMutation.mock.calls.at(-1) as unknown[] | undefined) ??
+      (updateMutation.mock.calls.at(-1) as unknown[]))[0] as {
+      data: Record<string, unknown>;
+    };
+  };
+
+  // Leaving it open is what makes the API ask: nothing may read as "no reward"
+  // unless somebody picked it.
+  it("chooses no reward type for a new contract", () => {
+    const wrapper = mountForm();
+
+    expect(select(wrapper, "rewardType").props("modelValue")).toBeNull();
+    expect(rewardInput(wrapper).exists()).toBe(false);
+  });
+
+  it("asks for an amount once a paid reward type is chosen", async () => {
+    const wrapper = mountForm();
+
+    await select(wrapper, "rewardType").vm.$emit("update:modelValue", "fixed");
+
+    expect(rewardInput(wrapper).attributes("label")).toBe(
+      "labels.fleets.contracts.reward",
+    );
+
+    await select(wrapper, "rewardType").vm.$emit(
+      "update:modelValue",
+      "per_unit",
+    );
+
+    expect(rewardInput(wrapper).attributes("label")).toBe(
+      "labels.fleets.contracts.rewardPerUnit",
+    );
+  });
+
+  it("asks for the amount again when a total becomes a rate", async () => {
+    updateMutation.mockClear();
+    const wrapper = mountForm({
+      slug: "job-1",
+      kind: "procurement",
+      rewardType: "fixed",
+      reward: "120000.0",
+    });
+
+    await select(wrapper, "rewardType").vm.$emit(
+      "update:modelValue",
+      "per_unit",
+    );
+
+    const { data } = await submitted(wrapper);
+
+    expect(data.reward).toBe("");
+  });
+
+  it("sends no amount for a contract that pays nothing", async () => {
+    updateMutation.mockClear();
+    const wrapper = mountForm({
+      slug: "job-1",
+      kind: "procurement",
+      rewardType: "fixed",
+      reward: "5000.0",
+    });
+
+    await select(wrapper, "rewardType").vm.$emit("update:modelValue", "none");
+
+    expect(rewardInput(wrapper).exists()).toBe(false);
+
+    const { data } = await submitted(wrapper);
+
+    expect(data.rewardType).toBe("none");
+    expect(data.reward).toBe("0");
   });
 });

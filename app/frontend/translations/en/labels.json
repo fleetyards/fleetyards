@@ -4062,6 +4062,21 @@
           "title": "Title",
           "description": "Description",
           "reward": "Reward",
+          "rewardType": {
+            "label": "How it pays",
+            "fixed": "A fixed amount",
+            "per_unit": "Per SCU or unit delivered",
+            "none": "No reward"
+          },
+          "rewardPerUnit": "Reward per SCU or unit",
+          "rewardPerUnitHint": "Each contractor earns this for every SCU or unit they deliver, up to what the contract asks for.",
+          "rewardRate": {
+            "scu": "%{currency} / SCU",
+            "units": "%{currency} / unit",
+            "mixed": "%{currency} / SCU or unit"
+          },
+          "noReward": "No reward",
+          "maxReward": "Up to %{amount}",
           "deadline": "Deadline",
           "crewLimit": "Crew limit",
           "visibility": "Visibility",

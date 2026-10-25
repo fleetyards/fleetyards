@@ -10,6 +10,8 @@ json.description fleet_contract.description
 json.kind fleet_contract.kind
 json.state fleet_contract.aasm_state
 json.reward fleet_contract.reward
+json.reward_type fleet_contract.reward_type
+json.max_reward fleet_contract.max_reward
 json.reimburse_expenses fleet_contract.reimburse_expenses
 json.crew_limit fleet_contract.crew_limit
 json.requires_pickup fleet_contract.requires_pickup?

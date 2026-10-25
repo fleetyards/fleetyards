@@ -22,7 +22,7 @@ module Contracts
   class Progress
     # What a contractor delivered against one line, and what it is worth when
     # the reward is divided.
-    Contribution = Struct.new(:user_id, :delivered, :weight)
+    Contribution = Struct.new(:user_id, :delivered, :counted, :weight)
 
     LineProgress = Struct.new(
       :item, :requested, :delivered, :picked_up, :contributions
@@ -167,8 +167,21 @@ module Contracts
       end
     end
 
-    def total_weight
-      weights.values.sum(0.to_d)
+    # What each contractor delivered that counts toward a line, in the line's
+    # own SCU or units -- what a per-unit reward is paid on.
+    def counted_quantities
+      @counted_quantities ||= lines.each_with_object(Hash.new(0.to_d)) do |line, result|
+        line.contributions.each { |contribution| result[contribution.user_id] += contribution.counted }
+      end
+    end
+
+    # What the reward is divided by when the contract settles. A rate pays each
+    # contractor on their own goods, so it divides by what they delivered; a
+    # fixed reward divides by the lines' fractions. The author of a personal
+    # contract pays it, so their own deliveries earn them no share.
+    def payout_weights
+      payout = @contract.reward_per_unit? ? counted_quantities : weights
+      @contract.personal? ? payout.except(@contract.created_by_id) : payout
     end
 
     private def build_line(item, counted, picked_up)
@@ -226,6 +239,7 @@ module Contracts
         Contribution.new(
           user_id: user_id,
           delivered: quantity,
+          counted: (scale < 1) ? quantity * item.quantity / total : quantity,
           weight: item.quantity.zero? ? 0.to_d : (quantity * scale) / item.quantity
         )
       end

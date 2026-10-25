@@ -4048,6 +4048,21 @@
           "title": "Título",
           "description": "Descripción",
           "reward": "Recompensa",
+          "rewardType": {
+            "label": "Forma de pago",
+            "fixed": "Una cantidad fija",
+            "per_unit": "Por SCU o unidad entregada",
+            "none": "Sin recompensa"
+          },
+          "rewardPerUnit": "Recompensa por SCU o unidad",
+          "rewardPerUnitHint": "Cada contratista gana esta cantidad por cada SCU o unidad que entregue, hasta lo que pide el contrato.",
+          "rewardRate": {
+            "scu": "%{currency} / SCU",
+            "units": "%{currency} / unidad",
+            "mixed": "%{currency} / SCU o unidad"
+          },
+          "noReward": "Sin recompensa",
+          "maxReward": "Hasta %{amount}",
           "deadline": "Fecha límite",
           "crewLimit": "Límite de tripulación",
           "visibility": "Visibilidad",

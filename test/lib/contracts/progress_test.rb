@@ -308,6 +308,48 @@ module Contracts
       assert_equal [@contractor.id], batched.lines.first.contributions.map(&:user_id)
     end
 
+    test "counted quantities stop at what each line asked for" do
+      crew = create(:user)
+      create(:fleet_contract_assignment, :accepted, fleet_contract: @contract, user: crew)
+      create(:fleet_contract_item, fleet_contract: @contract,
+        name: "Quantanium", category: :commodity, unit: :scu, quantity: 100)
+
+      deliver(quantity: 600)
+      deliver(quantity: 600, user: crew)
+      deliver(quantity: 50, name: "Quantanium", user: crew)
+
+      counted = progress.counted_quantities
+
+      assert_equal 400.to_d, counted[@contractor.id]
+      assert_equal 450.to_d, counted[crew.id]
+    end
+
+    test "a rate divides by what was delivered, a fixed reward by the lines' fractions" do
+      crew = create(:user)
+      create(:fleet_contract_assignment, :accepted, fleet_contract: @contract, user: crew)
+      create(:fleet_contract_item, fleet_contract: @contract,
+        name: "Quantanium", category: :commodity, unit: :scu, quantity: 100)
+
+      deliver(quantity: 800)
+      deliver(quantity: 100, name: "Quantanium", user: crew)
+
+      assert_equal progress.weights, progress.payout_weights
+
+      @contract.update!(reward_type: :per_unit, reward: 10)
+
+      assert_equal({@contractor.id => 800.to_d, crew.id => 100.to_d}, progress.payout_weights)
+    end
+
+    test "the author of a personal contract earns no share of what they pay" do
+      author = @contract.created_by
+      @contract.update!(destination_fleet_inventory: nil,
+        destination_inventory: create(:inventory, holder: author))
+      Contracts::Progress.any_instance.stubs(:weights)
+        .returns({author.id => 1.to_d, @contractor.id => 1.to_d})
+
+      assert_equal({@contractor.id => 1.to_d}, progress.payout_weights)
+    end
+
     private def progress
       Contracts::Progress.new(@contract.reload)
     end

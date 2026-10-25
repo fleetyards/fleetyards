@@ -24,7 +24,7 @@ class FleetContractsCreateRaceTest < ActionDispatch::IntegrationTest
 
     assert_no_difference -> { @fleet.fleet_contracts.count } do
       post "/api/v1/fleets/#{@fleet.slug}/contracts",
-        params: {title: "Get Iron!", kind: "procurement", destinationFleetInventoryId: @depot.id},
+        params: {title: "Get Iron!", kind: "procurement", rewardType: "none", destinationFleetInventoryId: @depot.id},
         as: :json
     end
 

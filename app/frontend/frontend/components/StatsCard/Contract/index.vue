@@ -13,6 +13,7 @@ import {
   type StatsCardStatusTone,
 } from "@/frontend/components/StatsCard/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useContractReward } from "@/frontend/composables/useContractReward";
 import {
   type FleetContractDetail,
   FleetContractStateEnum,
@@ -34,7 +35,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{ navigate: [] }>();
 
-const { t, l, toNumber } = useI18n();
+const { t, l } = useI18n();
+const { rewardFigure } = useContractReward();
 
 // The tones the contract board's state pill uses.
 const TONES: Partial<Record<FleetContractStateEnum, StatsCardStatusTone>> = {
@@ -63,15 +65,11 @@ const badges = computed<StatsCardBadge[]>(() => {
   const contract = props.contract;
   if (!contract) return [];
 
-  // `toNumber` reads zero as a missing figure, and a contract may pay nothing.
-  const reward = Number(contract.reward);
-
   return [
     {
       key: "reward",
       label: t("labels.fleets.contracts.reward"),
-      value: reward ? String(toNumber(reward, "integer")) : "0",
-      unit: t("number.units.uec"),
+      ...rewardFigure(contract),
     },
     ...(contract.deadline
       ? [
