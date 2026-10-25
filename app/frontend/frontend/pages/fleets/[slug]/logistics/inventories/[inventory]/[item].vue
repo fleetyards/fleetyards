@@ -260,6 +260,7 @@ const crumbs = computed<Crumb[]>(() => [
           </Heading>
 
           <InventoryLedgerTables
+            :show-image="false"
             active-tab="stock"
             :stock-records="lots"
             :log-records="[]"
@@ -271,6 +272,7 @@ const crumbs = computed<Crumb[]>(() => [
         </Heading>
 
         <InventoryLedgerTables
+          :show-image="false"
           active-tab="log"
           :stock-records="[]"
           :log-records="historyRecords"
