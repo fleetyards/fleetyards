@@ -37,7 +37,8 @@ export const useContractReward = () => {
     contract.rewardType !== FleetContractRewardTypeEnum.NONE;
 
   // Lines paying different rates have no one rate to name, so the contract
-  // reads as the most it can pay.
+  // reads as the most it can pay -- or, before any line has a rate, as how it
+  // pays.
   const sharedRate = (contract: ContractLike) =>
     contract.rewardType === FleetContractRewardTypeEnum.PER_UNIT &&
     contract.rewardRate != null
@@ -57,7 +58,11 @@ export const useContractReward = () => {
       case FleetContractRewardTypeEnum.PER_UNIT: {
         const rate = sharedRate(contract);
 
-        return rate == null ? upTo(contract) : toUEC(rate, rateUnit(contract));
+        if (rate != null) return toUEC(rate, rateUnit(contract));
+
+        return Number(contract.maxReward)
+          ? upTo(contract)
+          : t("labels.fleets.contracts.rewardType.per_unit");
       }
       default:
         return toUEC(Number(contract.reward));
@@ -80,6 +85,10 @@ export const useContractReward = () => {
         return { value: t("labels.fleets.contracts.noReward") };
       case FleetContractRewardTypeEnum.PER_UNIT: {
         const rate = sharedRate(contract);
+        if (rate == null && !Number(contract.maxReward)) {
+          return { value: t("labels.fleets.contracts.rewardType.per_unit") };
+        }
+
         if (rate == null) {
           return {
             ...total(Number(contract.maxReward)),

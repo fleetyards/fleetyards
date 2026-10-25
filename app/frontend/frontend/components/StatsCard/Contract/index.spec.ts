@@ -72,4 +72,17 @@ describe("ContractStatsCard", () => {
     expect(wrapper.find("[title]").attributes("title")).toMatch(/29.?000/);
     expect(wrapper.text()).toContain("Reward, up to");
   });
+
+  it("says how a per-unit contract pays before any line has a rate", async () => {
+    expect(
+      await reward(
+        contract({
+          reward: "0.0",
+          rewardRate: null,
+          maxReward: "0.0",
+          rewardType: "per_unit" as never,
+        }),
+      ),
+    ).toBe("Per SCU or unit delivered");
+  });
 });
