@@ -73,44 +73,27 @@ it:
           ammo: Munizioni
           ammo_carrier: Porta munizioni
           apron: Grembiule
-          armor: Armatura
           armored_flight_suit: Tuta di volo corazzata
           assault_rifle: Fucile d'assalto
           backpack: Zaino
           bandana: Bandana
-          bar: Personale del bar
           barrel: Accessorio per canna
           battery: Batteria
           binoculars: Binocolo
-          bioticorp: Bioticorp
           boots: Stivali
-          bouncer: Buttafuori
-          business: Business
-          chef: Chef
-          combat: Combattimento
           crossbow: Balestra
           cryptokey: Criptochiave
           data_drive: Unità dati
-          displaycore: Nucleo da esposizione
-          displayhelmet: Casco da esposizione
-          doctor: Medico
           dress: Abito
-          executive: Dirigente
           extinguisher_refill: Ricarica per estintore
-          fashion: Moda
-          fio: Fio
           fire_extinguisher: Estintore
           flight_helmet: Casco di volo
           flight_suit: Tuta di volo
-          flightsuit: Tuta di volo
           frag_pistol: Pistola a frammentazione
-          frontier: Frontiera
           gloves: Guanti
-          gren: Granata
           grenade: Granata
           grenade_launcher: Lanciagranate
           hat: Cappello
-          hathor: Hathor
           heavy_armor: Corazza pesante
           heavy_backpack: Zaino pesante
           heavy_utility: Utilità pesante
@@ -125,14 +108,11 @@ it:
           light_backpack: Zaino leggero
           light_helmet: Casco leggero
           lmg: LMG
-          lum: Lum
           magazine: Caricatore
           mask: Maschera
           medgel_refill: Ricarica di MedGel
-          medical: Medico
           medical_consumable: Consumabile medico
           medical_device: Dispositivo medico
-          medium: Medio
           medium_armor: Corazza media
           medium_backpack: Medium Backpack
           mining_gadget: Gadget minerario
@@ -140,40 +120,28 @@ it:
           missile_launcher: Lanciamissili
           mobiglas_casing: Guscio per mobiGlas
           multitool: Multiutensile
-          nurse: Infermiere
-          nvtc: NVTC
-          nvy: Marina
           pants: Pantaloni
-          pilot: Pilota
           pistol: Pistola
           racing_flight_suit: Tuta di volo da corsa
           racing_helmet: Casco da corsa
           railgun: Cannone a rotaia
-          refinery: Raffineria
           rifle: Fucile
           rmc_canister_large: Contenitore RMC (grande)
           rmc_canister_small: Contenitore RMC (piccolo)
           rocket: Razzo
           rocket_launcher: Lanciarazzi
-          security: Sicurezza
-          service: Servizio
           shirt: Camicia
           shoes: Scarpe
           shotgun: Fucile a Pompa
           smg: SMG
           sniper_rifle: Fucile da Cecchino
           special_railgun: Speciale - Railgun
-          specialist: Specialista
           suit: Completo
           super_heavy_armor: Armatura superpesante
-          surgeon: Chirurgo
           thruster_pack: Zaino propulsore
-          tiesim: Tiesim
           tophat: Cilindro
-          toxic: Tuta anticontaminazione
           toy_pistol: Pistola giocattolo
           tractor_beam: Raggio traente
-          training: Addestramento
           trenchcoat: Trench
           underbarrel: Sottocanna
           undersuit: Sottotuta
