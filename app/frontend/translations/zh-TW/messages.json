@@ -801,8 +801,9 @@
             "failure": "Could not update inventory."
           },
           "destroy": {
-            "success": "Inventory deleted.",
-            "failure": "Could not delete inventory."
+            "confirm": "刪除此庫存？其中的所有條目都將一併刪除。",
+            "success": "庫存已刪除。",
+            "failure": "無法刪除庫存。"
           }
         },
         "inventoryItem": {

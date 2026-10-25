@@ -9,7 +9,11 @@ import LocationInput from "@/shared/components/LocationInput/index.vue";
 import { useForm } from "vee-validate";
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnTypesEnum } from "@/shared/components/base/Btn/types";
+import {
+  BtnTonesEnum,
+  BtnTypesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
@@ -24,8 +28,10 @@ import type { InventoryPanelRecord } from "@/frontend/types/logistics";
 import {
   type HangarInventory,
   useCreateHangarInventory,
+  useDestroyHangarInventory,
   useUpdateHangarInventory,
 } from "@/services/fyApi";
+import { firstErrorMessageFrom } from "@/shared/utils/ApiErrors";
 
 type Props = {
   inventory?: HangarInventory;
@@ -39,6 +45,10 @@ const comlink = useComlink();
 
 const isEdit = computed(() => !!props.inventory);
 const submitting = ref(false);
+const deleting = ref(false);
+
+// Every user keeps their personal inventory; the API refuses to delete it.
+const deletable = computed(() => isEdit.value && !props.inventory?.personal);
 
 const validationSchema = {
   name: "required|min:2",
@@ -89,6 +99,34 @@ const defaultImage = computed(() => {
 
 const createMutation = useCreateHangarInventory();
 const updateMutation = useUpdateHangarInventory();
+
+const destroyMutation = useDestroyHangarInventory();
+
+const onDestroy = async () => {
+  if (!props.inventory) return;
+
+  deleting.value = true;
+
+  await destroyMutation
+    .mutateAsync({ slug: props.inventory.slug })
+    .then(() => {
+      displaySuccess({
+        text: t("messages.logistics.inventory.destroy.success"),
+      });
+      comlink.emit("hangar-inventory-deleted");
+      comlink.emit("close-modal", true);
+    })
+    .catch((error: unknown) => {
+      displayAlert({
+        text:
+          firstErrorMessageFrom(error) ??
+          t("messages.logistics.inventory.destroy.failure"),
+      });
+    })
+    .finally(() => {
+      deleting.value = false;
+    });
+};
 
 const onSubmit = handleSubmit(async (values) => {
   submitting.value = true;
@@ -194,6 +232,19 @@ const onSubmit = handleSubmit(async (values) => {
       />
     </form>
 
+    <template v-if="deletable" #footer-start>
+      <Btn
+        :variant="BtnVariantsEnum.BARE"
+        :tone="BtnTonesEnum.DANGER"
+        :confirm="t('messages.logistics.inventory.destroy.confirm')"
+        :loading="deleting"
+        data-test="inventory-destroy"
+        @click="onDestroy"
+      >
+        <i class="fa-light fa-trash" />
+        {{ t("actions.delete") }}
+      </Btn>
+    </template>
     <template #footer>
       <Btn
         :type="BtnTypesEnum.SUBMIT"

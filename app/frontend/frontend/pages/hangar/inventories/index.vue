@@ -139,6 +139,7 @@ const refetchEverything = async () => {
 onMounted(() => {
   comlink.on("hangar-inventory-created", () => void refetchEverything());
   comlink.on("hangar-inventory-updated", () => void refetchEverything());
+  comlink.on("hangar-inventory-deleted", () => void refetchEverything());
   comlink.on("inventory-item-created", () => void refetchEverything());
 });
 </script>

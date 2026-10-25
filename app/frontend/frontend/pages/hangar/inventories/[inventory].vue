@@ -40,6 +40,7 @@ import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
 const { t } = useI18n();
 const route = useRoute();
+const router = useRouter();
 const comlink = useComlink();
 const { displaySuccess, displayAlert, displayConfirm } = useAppNotifications();
 
@@ -190,6 +191,15 @@ onMounted(() => {
   comlink.on("inventory-item-created", () => void refetch());
   comlink.on("hangar-inventory-updated", () => void refetchInventory());
 });
+
+// Unbound with the page: the emitter is global, and a stale listener would
+// pull the reader off whatever page they delete an inventory from next.
+const unbindDeleted = comlink.on(
+  "hangar-inventory-deleted",
+  () => void router.push({ name: "hangar-inventories" }),
+);
+
+onUnmounted(() => unbindDeleted());
 
 const crumbs = computed<Crumb[]>(() => [
   {
