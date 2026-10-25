@@ -522,6 +522,7 @@
         "transfer": "转移库存",
         "transfers": "转移",
         "acceptTransfer": "接受转移",
+        "addToInventory": "添加到库存",
         "pickItem": "选择物品",
         "crafting": "制作",
         "reportTransfer": "举报转移"

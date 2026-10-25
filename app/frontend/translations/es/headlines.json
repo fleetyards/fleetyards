@@ -522,6 +522,7 @@
         "transfer": "Transferir existencias",
         "transfers": "Transferencias",
         "acceptTransfer": "Aceptar transferencia",
+        "addToInventory": "Añadir al inventario",
         "pickItem": "Elegir un objeto",
         "crafting": "Fabricación",
         "reportTransfer": "Denunciar transferencia"

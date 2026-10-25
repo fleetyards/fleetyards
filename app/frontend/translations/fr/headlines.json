@@ -522,6 +522,7 @@
         "transfer": "Transférer du stock",
         "transfers": "Transferts",
         "acceptTransfer": "Accepter le transfert",
+        "addToInventory": "Ajouter à l'inventaire",
         "pickItem": "Choisir un objet",
         "crafting": "Fabrication",
         "reportTransfer": "Signaler le transfert"

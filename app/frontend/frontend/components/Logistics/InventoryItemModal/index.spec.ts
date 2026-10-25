@@ -9,6 +9,7 @@ import {
   vi,
 } from "vitest";
 import { flushPromises, type VueWrapper } from "@vue/test-utils";
+import { createMemoryHistory, createRouter } from "vue-router";
 import { defineRule } from "vee-validate";
 import { between, required, min, min_value } from "@vee-validate/rules";
 import Component from "./index.vue";
@@ -26,6 +27,7 @@ beforeAll(() => {
 const api = vi.hoisted(() => ({
   stock: vi.fn(),
   create: vi.fn(),
+  inventories: { value: [] as { slug: string; name: string }[] },
 }));
 
 // The hooks, not the fetchers: a generated hook calls its own fetcher from
@@ -37,6 +39,10 @@ vi.mock("@/services/fyApi", async (importOriginal) => {
     ...(await importOriginal<typeof import("@/services/fyApi")>()),
     hangarInventoryStock: api.stock,
     useCreateHangarInventoryItem: () => ({ mutateAsync: api.create }),
+    useHangarInventories: () => ({
+      data: computed(() => ({ items: api.inventories.value })),
+      isLoading: computed(() => false),
+    }),
     // A recipe makes the Bulwark and nothing else.
     useBlueprints: vi.fn(
       (params: { value: { q: { craftableIdEq?: string } } }) => ({
@@ -114,6 +120,10 @@ afterEach(() => {
 beforeEach(() => {
   api.stock.mockResolvedValue([]);
   api.create.mockResolvedValue({});
+  api.inventories.value = [
+    { slug: "cargo-hold", name: "Cargo Hold" },
+    { slug: "armory", name: "Armory" },
+  ];
 });
 
 const mount = async () => {
@@ -565,6 +575,88 @@ describe("LogisticsInventoryItemModal", () => {
             quality: 0,
           }),
         }),
+      );
+    });
+  });
+
+  // A catalogue page belongs to no inventory, so the modal asks which one.
+  describe("opened from a catalogue page", () => {
+    // The empty state links the inventories page, which the shared test
+    // router lacks.
+    const router = createRouter({
+      history: createMemoryHistory(),
+      routes: [
+        { path: "/", component: { template: "<div />" } },
+        {
+          path: "/hangar/inventories/",
+          name: "hangar-inventories",
+          component: { template: "<div />" },
+        },
+      ],
+    });
+
+    const mountForItem = async (item: Record<string, unknown>) => {
+      wrapper = await mountWithDefaults<typeof Component>(Component, {
+        plugins: [router],
+        props: { item: item as never },
+      });
+      await flushPromises();
+
+      return wrapper;
+    };
+
+    it("starts on the item, in the first inventory", async () => {
+      const subject = await mountForItem(bulwark);
+
+      expect(field(subject).text()).toContain("Bulwark");
+      expect(select(subject, "inventory").props("modelValue")).toBe(
+        "cargo-hold",
+      );
+      expect(select(subject, "unit")).toBeUndefined();
+      expect(api.stock).not.toHaveBeenCalled();
+    });
+
+    // A withdrawal picks from stock the reader is not looking at here.
+    it("only deposits", async () => {
+      const subject = await mountForItem(gold);
+
+      expect(select(subject, "entryType")).toBeUndefined();
+    });
+
+    it("deposits into the inventory picked", async () => {
+      const subject = await mountForItem(bulwark);
+
+      await select(subject, "inventory").vm.$emit(
+        "update:modelValue",
+        "armory",
+      );
+      await subject.find("[data-test='input-quantity']").setValue("2");
+      await subject.find("form").trigger("submit");
+      await flushPromises();
+
+      expect(api.create).toHaveBeenCalledWith({
+        hangarInventorySlug: "armory",
+        data: expect.objectContaining({
+          entryType: "deposit",
+          itemType: "Component",
+          itemId: "bulwark",
+          category: "component",
+          unit: "units",
+          quantity: 2,
+        }),
+      });
+    });
+
+    it("points at creating an inventory when there is none", async () => {
+      api.inventories.value = [];
+
+      const subject = await mountForItem(bulwark);
+
+      expect(
+        subject.find("[data-test='inventory-item-no-inventories']").exists(),
+      ).toBe(true);
+      expect(subject.find("[data-test='inventory-item-save']").exists()).toBe(
+        false,
       );
     });
   });

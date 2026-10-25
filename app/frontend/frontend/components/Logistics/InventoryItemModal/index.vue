@@ -34,14 +34,20 @@ import {
   lotEntry,
   useStockLots,
 } from "@/frontend/composables/useStockLots";
-import { type PickedItem } from "@/frontend/components/Logistics/types";
+import {
+  type ItemPickerSelection,
+  type PickedItem,
+} from "@/frontend/components/Logistics/types";
 import { useCraftingStep } from "@/frontend/composables/useCraftingStep";
+import { unitsForCategory } from "@/frontend/composables/useInventoryOptions";
 import {
   type InventoryItemCreateInput,
   hangarInventoryStock,
   vehicleInventoryStock,
   useCreateHangarInventoryItem,
   useCreateVehicleInventoryItem,
+  useHangarInventories,
+  type FilterOption,
   InventoryCategoryEnum,
   InventoryUnitEnum,
 } from "@/services/fyApi";
@@ -50,11 +56,19 @@ import type { InventoryTarget } from "@/frontend/types/logistics";
 type StockItem = StockLot;
 
 type Props = {
-  target: InventoryTarget;
+  // Without one, the deposit is filed into a hangar inventory picked here, as
+  // from a catalogue page that belongs to no inventory.
+  target?: InventoryTarget;
   initialEntryType?: "deposit" | "withdrawal";
+  // The goods, already named.
+  item?: ItemPickerSelection;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  target: undefined,
+  initialEntryType: undefined,
+  item: undefined,
+});
 
 const { t } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
@@ -62,15 +76,58 @@ const comlink = useComlink();
 const { unitOptionsFor, entryTypeOptions } = useInventoryOptions();
 
 const submitting = ref(false);
+
+const choosesInventory = computed(() => !props.target);
+
+const { data: inventories, isLoading: inventoriesLoading } =
+  useHangarInventories(
+    { perPage: "240" },
+    { query: { enabled: choosesInventory.value } },
+  );
+
+const inventoryOptions = computed<FilterOption[]>(() =>
+  (inventories.value?.items ?? []).map((inventory) => ({
+    value: inventory.slug,
+    label: inventory.name,
+  })),
+);
+
+const inventorySlug = ref<string>();
+
+watch(
+  inventoryOptions,
+  (options) => {
+    inventorySlug.value ??= options[0]?.value as string | undefined;
+  },
+  { immediate: true },
+);
+
+const activeTarget = computed<InventoryTarget | undefined>(
+  () =>
+    props.target ??
+    (inventorySlug.value
+      ? { kind: "hangar", slug: inventorySlug.value }
+      : undefined),
+);
+
+const noInventories = computed(
+  () =>
+    choosesInventory.value &&
+    !inventoriesLoading.value &&
+    !inventoryOptions.value.length,
+);
+
+// Opened outside any inventory, it only deposits: a withdrawal picks from the
+// stock of an inventory the reader is already looking at.
 const entryType = ref<"deposit" | "withdrawal">(
-  props.initialEntryType ?? "deposit",
+  choosesInventory.value ? "deposit" : (props.initialEntryType ?? "deposit"),
 );
 const selectedStockItem = ref<string | undefined>(undefined);
 const selectedExistingItem = ref<string | undefined>(undefined);
 const stockItems = ref<StockItem[]>([]);
 // One slot for whichever catalogue the item came from, so the submit and the
 // name-edit rule stay single rather than growing a branch per item type.
-const pickedItem = ref<PickedItem | undefined>(undefined);
+const pickedItem = ref<PickedItem | undefined>(props.item?.item);
 
 // Picking an existing position copies its unit but drops the catalogue
 // reference on purpose -- a new entry is not a reference to what the old ones
@@ -95,6 +152,7 @@ const isDeposit = computed(() => entryType.value === "deposit");
 const modalTitle = computed(() => {
   if (picking.value) return pickTitle.value;
   if (step.value === "crafting") return t("headlines.logistics.crafting");
+  if (choosesInventory.value) return t("headlines.logistics.addToInventory");
 
   return isDeposit.value
     ? t("headlines.logistics.deposit")
@@ -111,11 +169,16 @@ const validationSchema = {
 // entered for the goods at hand instead of slipping through as a 1 and a 0
 // nobody chose.
 
+const initialCategory = props.item?.category ?? InventoryCategoryEnum.COMMODITY;
+
 const initialValues = {
-  name: "",
-  category: InventoryCategoryEnum.COMMODITY as InventoryCategoryEnum,
+  name: props.item?.name ?? "",
+  category: initialCategory as InventoryCategoryEnum,
   quantity: undefined as number | undefined,
-  unit: InventoryUnitEnum.SCU as InventoryUnitEnum,
+  unit: unitsForCategory(
+    initialCategory,
+    props.item?.item?.counted,
+  )[0] as InventoryUnitEnum,
   quality: undefined as number | undefined,
   image: undefined as string | undefined,
   notes: "",
@@ -194,14 +257,17 @@ watch(unitOptions, (options) => {
   setFieldValue("unit", options[0].value as InventoryUnitEnum);
 });
 
-const fetchStock = () =>
-  props.target.kind === "hangar"
-    ? hangarInventoryStock(props.target.slug)
-    : vehicleInventoryStock(props.target.vehicleId);
+const fetchStock = (target: InventoryTarget) =>
+  target.kind === "hangar"
+    ? hangarInventoryStock(target.slug)
+    : vehicleInventoryStock(target.vehicleId);
 
 const loadStockItems = async () => {
+  const target = activeTarget.value;
+  if (!target) return;
+
   try {
-    const data = await fetchStock();
+    const data = await fetchStock(target);
     stockItems.value = data as unknown as StockItem[];
   } catch {
     stockItems.value = [];
@@ -215,6 +281,8 @@ const {
 } = useStockLots(stockItems);
 
 onMounted(() => {
+  if (choosesInventory.value) return;
+
   void loadStockItems();
 });
 
@@ -272,14 +340,14 @@ const selectedStockMax = computed(
 const createHangarItem = useCreateHangarInventoryItem();
 const createVehicleItem = useCreateVehicleInventoryItem();
 
-const createItem = (data: InventoryItemCreateInput) =>
-  props.target.kind === "hangar"
+const createItem = (target: InventoryTarget, data: InventoryItemCreateInput) =>
+  target.kind === "hangar"
     ? createHangarItem.mutateAsync({
-        hangarInventorySlug: props.target.slug,
+        hangarInventorySlug: target.slug,
         data,
       })
     : createVehicleItem.mutateAsync({
-        vehicleId: props.target.vehicleId,
+        vehicleId: target.vehicleId,
         data,
       });
 
@@ -298,9 +366,12 @@ const choiceDirty = useFormDirty(entryChoice, { ...entryChoice.value });
 useModalDirty(() => formDirty.value || choiceDirty.value);
 
 const onSubmit = handleSubmit(async (values) => {
+  const target = activeTarget.value;
+  if (!target) return;
+
   submitting.value = true;
 
-  await createItem({
+  await createItem(target, {
     name: values.name,
     category: values.category,
     quantity:
@@ -366,13 +437,35 @@ const onSubmit = handleSubmit(async (values) => {
 
     <!-- Hidden rather than unmounted while another step is open, so nothing
          typed into it is lost. -->
+    <div
+      v-if="noInventories"
+      class="inventory-item-modal__empty"
+      data-test="inventory-item-no-inventories"
+    >
+      <p>{{ t("texts.hangarPledgeItems.noInventories") }}</p>
+      <Btn :to="{ name: 'hangar-inventories' }">
+        {{ t("actions.hangarPledgeItems.createInventory") }}
+      </Btn>
+    </div>
+
     <form
-      v-show="step === 'form'"
+      v-show="step === 'form' && !noInventories"
       id="create-hangar-inventory-item-form"
       ref="itemPickerForm"
       @submit.prevent="onSubmit"
     >
       <BaseSelect
+        v-if="choosesInventory"
+        v-model="inventorySlug"
+        :options="inventoryOptions"
+        :nullable="false"
+        :label="t('labels.logistics.inventory')"
+        name="inventory"
+        data-test="inventory-item-inventory"
+      />
+
+      <BaseSelect
+        v-else
         v-model="entryType"
         :options="entryTypeOptions"
         :label="t('labels.logistics.entryType')"
@@ -517,9 +610,10 @@ const onSubmit = handleSubmit(async (values) => {
         </Btn>
       </template>
       <Btn
-        v-else
+        v-else-if="!noInventories"
         :type="BtnTypesEnum.SUBMIT"
         form="create-hangar-inventory-item-form"
+        :disabled="!activeTarget"
         :loading="submitting"
         data-test="inventory-item-save"
       >
@@ -532,3 +626,16 @@ const onSubmit = handleSubmit(async (values) => {
     </template>
   </Modal>
 </template>
+
+<style lang="scss" scoped>
+.inventory-item-modal__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+
+  p {
+    margin: 0;
+  }
+}
+</style>

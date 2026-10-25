@@ -522,6 +522,7 @@
         "transfer": "Trasferisci scorte",
         "transfers": "Trasferimenti",
         "acceptTransfer": "Accetta trasferimento",
+        "addToInventory": "Aggiungi all'inventario",
         "pickItem": "Scegli un oggetto",
         "crafting": "Fabbricazione",
         "reportTransfer": "Segnala trasferimento"
