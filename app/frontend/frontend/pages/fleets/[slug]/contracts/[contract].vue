@@ -41,6 +41,7 @@ import {
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useContractCover } from "@/frontend/composables/useContractCover";
+import { useContractReward } from "@/frontend/composables/useContractReward";
 import { useContractRoute } from "@/frontend/composables/useContractRoute";
 import { useSessionStore } from "@/frontend/stores/session";
 import { checkAccess } from "@/shared/utils/Access";
@@ -56,7 +57,8 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { t, toUEC, l } = useI18n();
+const { t, l } = useI18n();
+const { rewardLabel, maxRewardLabel } = useContractReward();
 const { destinationName } = useContractRoute();
 const { resolve: resolveCover } = useContractCover();
 
@@ -347,9 +349,12 @@ const crumbs = computed<Crumb[]>(() => [
           {{ t("labels.fleets.contracts.reward") }}
         </div>
         <!-- eslint-disable-next-line vue/no-v-html -->
+        <div class="metrics-card__tile__value" v-html="rewardLabel(contract)" />
+        <!-- eslint-disable-next-line vue/no-v-html -->
         <div
-          class="metrics-card__tile__value"
-          v-html="toUEC(Number(contract.reward))"
+          v-if="maxRewardLabel(contract)"
+          class="metrics-card__tile__sub"
+          v-html="maxRewardLabel(contract)"
         />
       </div>
       <div class="metrics-card__tile">

@@ -4045,6 +4045,21 @@
           "title": "Titel",
           "description": "Beschreibung",
           "reward": "Belohnung",
+          "rewardType": {
+            "label": "Bezahlung",
+            "fixed": "Fester Betrag",
+            "per_unit": "Pro geliefertem SCU oder Stück",
+            "none": "Keine Belohnung"
+          },
+          "rewardPerUnit": "Belohnung pro SCU oder Stück",
+          "rewardPerUnitHint": "Jeder Auftragnehmer erhält diesen Betrag für jedes gelieferte SCU oder Stück, bis zur angefragten Menge.",
+          "rewardRate": {
+            "scu": "%{currency} / SCU",
+            "units": "%{currency} / Stück",
+            "mixed": "%{currency} / SCU oder Stück"
+          },
+          "noReward": "Keine Belohnung",
+          "maxReward": "Bis zu %{amount}",
           "deadline": "Frist",
           "crewLimit": "Crew-Limit",
           "visibility": "Sichtbarkeit",

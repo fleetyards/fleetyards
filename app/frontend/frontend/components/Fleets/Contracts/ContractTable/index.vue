@@ -14,6 +14,7 @@ import Avatar from "@/shared/components/Avatar/index.vue";
 import { type AsyncStatus } from "@/shared/components/AsyncData.types";
 import { type Fleet, type FleetContract } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useContractReward } from "@/frontend/composables/useContractReward";
 import { useContractCover } from "@/frontend/composables/useContractCover";
 import { useContractRoute } from "@/frontend/composables/useContractRoute";
 import { useRouter } from "vue-router";
@@ -29,7 +30,8 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { t, toUEC, l } = useI18n();
+const { t, l } = useI18n();
+const { rewardLabel } = useContractReward();
 const { resolve } = useContractCover();
 const router = useRouter();
 
@@ -146,7 +148,7 @@ const openContract = (contract: FleetContract) => {
       <!-- eslint-disable-next-line vue/no-v-html -->
       <span
         class="contract-table__reward"
-        v-html="toUEC(Number((record as FleetContract).reward))"
+        v-html="rewardLabel(record as FleetContract)"
       />
     </template>
 

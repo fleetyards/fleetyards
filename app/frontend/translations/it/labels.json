@@ -4045,6 +4045,21 @@
           "title": "Titolo",
           "description": "Descrizione",
           "reward": "Ricompensa",
+          "rewardType": {
+            "label": "Modalità di pagamento",
+            "fixed": "Un importo fisso",
+            "per_unit": "Per SCU o unità consegnata",
+            "none": "Nessuna ricompensa"
+          },
+          "rewardPerUnit": "Ricompensa per SCU o unità",
+          "rewardPerUnitHint": "Ogni appaltatore riceve questo importo per ogni SCU o unità consegnata, fino a quanto richiesto dal contratto.",
+          "rewardRate": {
+            "scu": "%{currency} / SCU",
+            "units": "%{currency} / unità",
+            "mixed": "%{currency} / SCU o unità"
+          },
+          "noReward": "Nessuna ricompensa",
+          "maxReward": "Fino a %{amount}",
           "deadline": "Scadenza",
           "crewLimit": "Limite equipaggio",
           "visibility": "Visibilità",

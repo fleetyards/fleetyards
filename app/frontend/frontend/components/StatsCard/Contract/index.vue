@@ -13,8 +13,10 @@ import {
   type StatsCardStatusTone,
 } from "@/frontend/components/StatsCard/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useContractReward } from "@/frontend/composables/useContractReward";
 import {
   type FleetContractDetail,
+  FleetContractRewardTypeEnum,
   FleetContractStateEnum,
 } from "@/services/fyApi";
 
@@ -35,6 +37,7 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{ navigate: [] }>();
 
 const { t, l, toNumber } = useI18n();
+const { paysReward, rateUnit } = useContractReward();
 
 // The tones the contract board's state pill uses.
 const TONES: Partial<Record<FleetContractStateEnum, StatsCardStatusTone>> = {
@@ -63,16 +66,24 @@ const badges = computed<StatsCardBadge[]>(() => {
   const contract = props.contract;
   if (!contract) return [];
 
-  // `toNumber` reads zero as a missing figure, and a contract may pay nothing.
-  const reward = Number(contract.reward);
+  const reward = paysReward(contract)
+    ? {
+        key: "reward",
+        label: t("labels.fleets.contracts.reward"),
+        value: String(toNumber(Number(contract.reward), "integer")),
+        unit:
+          contract.rewardType === FleetContractRewardTypeEnum.PER_UNIT
+            ? rateUnit(contract)
+            : t("number.units.uec"),
+      }
+    : {
+        key: "reward",
+        label: t("labels.fleets.contracts.reward"),
+        value: t("labels.fleets.contracts.noReward"),
+      };
 
   return [
-    {
-      key: "reward",
-      label: t("labels.fleets.contracts.reward"),
-      value: reward ? String(toNumber(reward, "integer")) : "0",
-      unit: t("number.units.uec"),
-    },
+    reward,
     ...(contract.deadline
       ? [
           {

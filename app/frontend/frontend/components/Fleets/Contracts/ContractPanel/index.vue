@@ -14,6 +14,7 @@ import ContractDeliveredBar from "@/frontend/components/Fleets/Contracts/Contrac
 import { type Fleet, type FleetContract } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useContractCover } from "@/frontend/composables/useContractCover";
+import { useContractReward } from "@/frontend/composables/useContractReward";
 import { useContractRoute } from "@/frontend/composables/useContractRoute";
 
 type Props = {
@@ -23,7 +24,8 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { t, toUEC, l } = useI18n();
+const { t, l } = useI18n();
+const { rewardLabel } = useContractReward();
 const { resolve } = useContractCover();
 
 const cover = computed(() => resolve(props.contract, props.fleet));
@@ -83,7 +85,7 @@ const route = computed(() => routeLabel(props.contract));
             <!-- eslint-disable-next-line vue/no-v-html -->
             <div
               class="metrics-card__tile__value"
-              v-html="toUEC(Number(contract.reward))"
+              v-html="rewardLabel(contract)"
             />
           </div>
           <div class="metrics-card__tile">

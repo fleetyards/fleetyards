@@ -4042,6 +4042,21 @@
           "title": "標題",
           "description": "描述",
           "reward": "報酬",
+          "rewardType": {
+            "label": "支付方式",
+            "fixed": "固定金額",
+            "per_unit": "按交付的 SCU 或件數",
+            "none": "無報酬"
+          },
+          "rewardPerUnit": "每 SCU 或每件報酬",
+          "rewardPerUnitHint": "每位承包人每交付 1 SCU 或 1 件即獲得此金額，以合約要求的數量為上限。",
+          "rewardRate": {
+            "scu": "%{currency} / SCU",
+            "units": "%{currency} / 件",
+            "mixed": "%{currency} / SCU 或件"
+          },
+          "noReward": "無報酬",
+          "maxReward": "最多 %{amount}",
           "deadline": "截止時間",
           "crewLimit": "隊伍上限",
           "visibility": "可見性",
