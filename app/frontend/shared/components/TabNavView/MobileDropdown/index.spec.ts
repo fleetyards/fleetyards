@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { config, flushPromises } from "@vue/test-utils";
+import { config } from "@vue/test-utils";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import Component from "./index.vue";
 
@@ -10,12 +10,6 @@ const anchors = [
 
 const mount = () =>
   mountWithDefaults(Component, { props: { anchors, activeId: "radar" } });
-
-// jsdom lays nothing out, so a frame is enough for the enter to finish.
-const settle = async () => {
-  await new Promise((resolve) => setTimeout(resolve, 50));
-  await flushPromises();
-};
 
 describe("TabNavViewMobileDropdown", () => {
   // jsdom has no scrollIntoView of its own; one is lent for the spy and taken
@@ -54,10 +48,11 @@ describe("TabNavViewMobileDropdown", () => {
     const wrapper = await mount();
 
     await wrapper.find(".tab-nav-dropdown__trigger").trigger("click");
-    await settle();
 
     expect(wrapper.find(".tab-nav-dropdown__panel").exists()).toBe(true);
-    expect(scrollIntoView).toHaveBeenCalledWith({ block: "nearest" });
+    await vi.waitFor(() =>
+      expect(scrollIntoView).toHaveBeenCalledWith({ block: "nearest" }),
+    );
 
     wrapper.unmount();
   });
@@ -70,10 +65,14 @@ describe("TabNavViewMobileDropdown", () => {
     const trigger = wrapper.find(".tab-nav-dropdown__trigger");
 
     await trigger.trigger("click");
-    await settle();
+    await vi.waitFor(() => expect(scrollIntoView).toHaveBeenCalled());
     scrollIntoView.mockClear();
     await trigger.trigger("click");
-    await settle();
+    // Once the leave transition has run its course, which is where an enter
+    // hook would have fired had it been wired to the wrong one.
+    await vi.waitFor(() =>
+      expect(wrapper.find(".tab-nav-dropdown__panel").exists()).toBe(false),
+    );
 
     expect(scrollIntoView).not.toHaveBeenCalled();
 
