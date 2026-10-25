@@ -3530,7 +3530,6 @@
         "category": "Category",
         "componentCategory": "Komponententyp",
         "commodityType": "Warentyp",
-        "equipmentItemType": "Ausrüstungstyp",
         "crafted": {
           "request": "Hergestelltes Teil anfordern",
           "page": "Hergestellt aus %{recipe} mit den Qualitäten %{grades}. Hervorgehobene Werte weichen vom Katalog ab.",

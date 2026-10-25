@@ -3527,7 +3527,6 @@
         "category": "Category",
         "componentCategory": "组件类型",
         "commodityType": "商品类型",
-        "equipmentItemType": "装备类型",
         "crafted": {
           "request": "要求制作的部件",
           "page": "由 %{recipe} 以品质 %{grades} 制作。高亮的数值与目录不同。",

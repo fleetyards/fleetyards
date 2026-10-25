@@ -3527,7 +3527,6 @@
         "category": "Category",
         "componentCategory": "組件類型",
         "commodityType": "商品類型",
-        "equipmentItemType": "裝備類型",
         "crafted": {
           "request": "要求製作的部件",
           "page": "由 %{recipe} 以品質 %{grades} 製作。醒目標示的數值與目錄不同。",

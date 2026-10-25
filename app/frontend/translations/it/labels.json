@@ -3530,7 +3530,6 @@
         "category": "Category",
         "componentCategory": "Tipo di componente",
         "commodityType": "Tipo di merce",
-        "equipmentItemType": "Tipo di equipaggiamento",
         "crafted": {
           "request": "Richiedi un pezzo fabbricato",
           "page": "Fabbricato da %{recipe} con le qualità %{grades}. I valori evidenziati differiscono dal catalogo.",

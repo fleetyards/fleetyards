@@ -3544,7 +3544,6 @@
         "category": "Category",
         "componentCategory": "Component Type",
         "commodityType": "Commodity Type",
-        "equipmentItemType": "Equipment Type",
         "crafted": {
           "request": "Ask for a crafted part",
           "page": "Crafted from %{recipe} at grades %{grades}. Highlighted figures differ from the catalogue's.",

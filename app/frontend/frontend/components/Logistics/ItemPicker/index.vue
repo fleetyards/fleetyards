@@ -15,6 +15,7 @@ import Loader from "@/shared/components/Loader/index.vue";
 import Row from "@/frontend/components/Logistics/ItemPicker/Row/index.vue";
 import {
   INVENTORY_EQUIPMENT_TYPES,
+  INVENTORY_WORN_CATEGORIES,
   inventoryCategoryForEquipment,
   useInventoryOptions,
 } from "@/frontend/composables/useInventoryOptions";
@@ -25,6 +26,7 @@ import {
   type PickedItem,
 } from "@/frontend/components/Logistics/types";
 import {
+  type EquipmentSlotEnum,
   type FilterOption,
   type InventoryCategoryEnum,
   commodities as fetchCommodities,
@@ -33,6 +35,7 @@ import {
   components as fetchComponents,
   equipment as fetchEquipment,
   equipmentItemTypesFilters,
+  equipmentSlotsFilters,
 } from "@/services/fyApi";
 
 type Props = {
@@ -73,6 +76,7 @@ const category = ref<string | undefined>(
   offered(props.category) ? props.category : undefined,
 );
 const itemType = ref<string | undefined>(undefined);
+const slot = ref<string | undefined>(undefined);
 const search = ref("");
 const searchTerm = ref("");
 const page = ref(1);
@@ -102,7 +106,24 @@ const typeFilterLabel = computed(() => {
     return t("labels.logistics.commodityType");
   }
 
-  return t("labels.logistics.equipmentItemType");
+  return t("labels.filters.equipment.itemType");
+});
+
+// Armour is typed by its weight, so a helmet is a heavy, medium or light
+// armour like the plates beside it -- only the slot lists the helmets together.
+const isWorn = computed(() =>
+  INVENTORY_WORN_CATEGORIES.includes(category.value ?? ""),
+);
+
+const { data: slotOptions } = useQuery({
+  queryKey: computed(() => [
+    "inventory-item-picker-slots",
+    equipmentTypes.value,
+  ]),
+  queryFn: () =>
+    equipmentSlotsFilters({ q: { equipmentTypeIn: equipmentTypes.value } }),
+  enabled: isWorn,
+  refetchOnWindowFocus: false,
 });
 
 const { data: typeOptions } = useQuery({
@@ -187,6 +208,10 @@ const fetchPage = async (): Promise<PickerPage> => {
       q: {
         equipmentTypeIn: equipmentTypes.value,
         itemTypeIn: typeIn,
+        slotIn:
+          isWorn.value && slot.value
+            ? [slot.value as EquipmentSlotEnum]
+            : undefined,
         nameOrSlugCont: term,
       },
     }),
@@ -199,6 +224,7 @@ const { data, isFetching, isPlaceholderData } = useQuery({
     "inventory-item-picker",
     category.value,
     itemType.value,
+    slot.value,
     searchTerm.value,
     page.value,
   ]),
@@ -265,13 +291,14 @@ watch(search, (value) => {
 
 watch(category, () => {
   itemType.value = undefined;
+  slot.value = undefined;
   records.value = [];
   totalCount.value = undefined;
   totalPages.value = 1;
   page.value = 1;
 });
 
-watch(itemType, () => {
+watch([itemType, slot], () => {
   page.value = 1;
 });
 
@@ -394,6 +421,18 @@ const pickCustom = () => {
           :label="typeFilterLabel"
           :disabled="!catalogue"
           :searchable="true"
+          :nullable="true"
+        />
+
+        <BaseSelect
+          v-if="isWorn"
+          :key="`slot-${category}`"
+          v-model="slot"
+          class="item-picker__filter"
+          name="item-picker-slot"
+          :options="slotOptions || []"
+          :label="t('labels.filters.equipment.slot')"
+          :searchable="false"
           :nullable="true"
         />
       </div>

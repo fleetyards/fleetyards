@@ -6,6 +6,7 @@ import {
   components as fetchComponents,
   equipment as fetchEquipment,
   equipmentItemTypesFilters,
+  equipmentSlotsFilters,
 } from "@/services/fyApi";
 import Component from "./index.vue";
 
@@ -21,6 +22,9 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   componentCategoriesFilters: vi.fn().mockResolvedValue([]),
   commodityTypesFilters: vi.fn().mockResolvedValue([]),
   equipmentItemTypesFilters: vi.fn().mockResolvedValue([]),
+  equipmentSlotsFilters: vi.fn().mockResolvedValue([
+    { category: "slot", label: "Helmet", value: "helmet" },
+  ]),
   components: vi.fn(),
   commodities: vi.fn(),
   equipment: vi.fn(),
@@ -64,6 +68,11 @@ const categorySelect = (subject: VueWrapper) =>
   subject
     .findAllComponents({ name: "BaseSelect" })
     .find((select) => select.props("name") === "item-picker-category")!;
+
+const slotSelect = (subject: VueWrapper) =>
+  subject
+    .findAllComponents({ name: "BaseSelect" })
+    .find((select) => select.props("name") === "item-picker-slot");
 
 const chooseCategory = async (subject: VueWrapper, category: string) => {
   categorySelect(subject).vm.$emit("update:modelValue", category);
@@ -116,6 +125,61 @@ describe("LogisticsItemPicker", () => {
     expect(equipmentItemTypesFilters).toHaveBeenCalledWith({
       q: { equipmentTypeIn: ["sustenance", "medical"] },
     });
+  });
+
+  // Armour is typed by weight, so the slot is the only way to list every
+  // helmet together.
+  it("narrows worn gear by slot", async () => {
+    const subject = await mount();
+
+    await chooseCategory(subject, "armor");
+
+    expect(equipmentItemTypesFilters).toHaveBeenCalledWith({
+      q: { equipmentTypeIn: ["armor", "undersuit"] },
+    });
+    expect(equipmentSlotsFilters).toHaveBeenCalledWith({
+      q: { equipmentTypeIn: ["armor", "undersuit"] },
+    });
+
+    slotSelect(subject)!.vm.$emit("update:modelValue", "helmet");
+    await flushPromises();
+
+    expect(fetchEquipment).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        q: expect.objectContaining({
+          equipmentTypeIn: ["armor", "undersuit"],
+          slotIn: ["helmet"],
+        }),
+      }),
+    );
+  });
+
+  it("offers no slot for gear that is not worn", async () => {
+    const subject = await mount();
+
+    await chooseCategory(subject, "tool");
+
+    expect(slotSelect(subject)).toBeUndefined();
+    expect(equipmentSlotsFilters).not.toHaveBeenCalled();
+  });
+
+  // A slot left over from armour would match nothing under clothing's own.
+  it("drops the slot when the category changes", async () => {
+    const subject = await mount();
+
+    await chooseCategory(subject, "armor");
+    slotSelect(subject)!.vm.$emit("update:modelValue", "helmet");
+    await flushPromises();
+    await chooseCategory(subject, "clothing");
+
+    expect(fetchEquipment).toHaveBeenLastCalledWith(
+      expect.objectContaining({
+        q: expect.objectContaining({
+          equipmentTypeIn: ["clothing"],
+          slotIn: undefined,
+        }),
+      }),
+    );
   });
 
   it("hands back the pick with the category it was found under", async () => {
