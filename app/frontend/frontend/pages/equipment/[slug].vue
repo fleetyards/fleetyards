@@ -342,7 +342,9 @@ watch(
                   }"
                   class="metrics-card__row equipment-page__link-row"
                 >
-                  <span class="metrics-card__row__label">
+                  <span
+                    class="metrics-card__row__label equipment-page__item-name"
+                  >
                     <CatalogueItemPopover
                       :item="{
                         type: 'Equipment',
@@ -374,7 +376,9 @@ watch(
                   }"
                   class="metrics-card__row equipment-page__link-row"
                 >
-                  <span class="metrics-card__row__label">
+                  <span
+                    class="metrics-card__row__label equipment-page__item-name"
+                  >
                     <CatalogueItemPopover
                       :item="{
                         type: 'Equipment',
@@ -386,7 +390,9 @@ watch(
                       :focusable="false"
                     />
                   </span>
-                  <span class="metrics-card__row__value">
+                  <span
+                    class="metrics-card__row__value equipment-page__item-note"
+                  >
                     {{ weapon.itemTypeLabel }}
                   </span>
                 </router-link>
@@ -421,7 +427,9 @@ watch(
                   }"
                   class="metrics-card__row equipment-page__link-row"
                 >
-                  <span class="metrics-card__row__label">
+                  <span
+                    class="metrics-card__row__label equipment-page__item-name"
+                  >
                     <CatalogueItemPopover
                       :item="{
                         type: 'Equipment',
@@ -433,7 +441,10 @@ watch(
                       :focusable="false"
                     />
                   </span>
-                  <span v-if="fit.default" class="metrics-card__row__value">
+                  <span
+                    v-if="fit.default"
+                    class="metrics-card__row__value equipment-page__item-note"
+                  >
                     {{ t("labels.equipment.standard") }}
                   </span>
                 </router-link>

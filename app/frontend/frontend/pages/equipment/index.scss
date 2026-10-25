@@ -108,6 +108,18 @@
     align-items: start;
   }
 
+  // A card row keeps its label whole and truncates the value; in these lists the
+  // label is the item's name and the value a short note, so the name gives way.
+  &__item-name {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  &__item-note {
+    flex: none;
+  }
+
   &__link-row {
     transition: color 150ms ease;
 
