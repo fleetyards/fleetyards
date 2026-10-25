@@ -44,6 +44,7 @@ class Api::V1::EquipmentTest < ActionDispatch::IntegrationTest
 
       assert_equal "angled.png", item.dig("media", "angledView", "name")
       assert_not item["media"].key?("topView")
+      assert_not item["media"].key?("storeImage")
     end
   end
 
