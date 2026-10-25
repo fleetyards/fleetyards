@@ -107,13 +107,14 @@ const activeLabel = computed(() => {
   return t(`nav.${activeRoute.value.meta?.title}`);
 });
 
+const toggle = () => {
+  visible.value = !visible.value;
+};
+
 // The panel hangs below the trigger, and inside a scrolling box -- a modal's
 // body on a phone -- the rows past its edge are cut off rather than reached.
-const toggle = async () => {
-  visible.value = !visible.value;
-  if (!visible.value) return;
-
-  await nextTick();
+// Once it has settled: during the transition it still sits a few pixels up.
+const bringIntoView = () => {
   panel.value?.scrollIntoView?.({ block: "nearest" });
 };
 
@@ -194,7 +195,7 @@ onUnmounted(() => {
         aria-hidden="true"
       />
     </button>
-    <Transition name="tab-nav-dropdown-panel">
+    <Transition name="tab-nav-dropdown-panel" @after-enter="bringIntoView">
       <ul
         v-if="visible"
         ref="panel"
