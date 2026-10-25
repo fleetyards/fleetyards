@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { mount } from "@vue/test-utils";
+import { flushPromises, mount } from "@vue/test-utils";
 import { type MediaFile } from "@/services/fyApi";
 
 const device = vi.hoisted(() => ({ mobile: false, lowPower: false }));
@@ -62,6 +62,20 @@ describe("ItemHero", () => {
       true,
     );
     expect(wrapper.find("[data-test='item-image']").exists()).toBe(false);
+  });
+
+  it("falls back to the picture when the holo cannot be shown", async () => {
+    const wrapper = mountHero({
+      image: file("angled.webp"),
+      holo: file("holo.glb"),
+    });
+    await flushPromises();
+
+    wrapper.findComponent({ name: "HoloViewer" }).vm.$emit("unavailable");
+    await nextTick();
+
+    expect(wrapper.find("[data-test='item-image-holo']").exists()).toBe(false);
+    expect(wrapper.find("[data-test='item-image']").exists()).toBe(true);
   });
 
   it("keeps a phone on the picture", () => {

@@ -53,11 +53,21 @@ const holoVisible = computed(
 );
 
 const viewer = ref<{ enableFullscreen: () => void }>();
+
+// Without WebGL or a holo that loads, the picture beats the viewer's notice.
+const holoFailed = ref(false);
+
+watch(
+  () => props.holo?.url,
+  () => {
+    holoFailed.value = false;
+  },
+);
 </script>
 
 <template>
   <div
-    v-if="holoVisible && holoModel"
+    v-if="holoVisible && holoModel && !(holoFailed && image?.largeUrl)"
     class="item-hero item-hero--holo"
     :data-test="`${testId}-holo`"
   >
@@ -67,6 +77,7 @@ const viewer = ref<{ enableFullscreen: () => void }>();
       :controllable="false"
       :azimuth="HOLO_AZIMUTH"
       inline
+      @unavailable="holoFailed = true"
     />
     <Btn
       class="item-hero__fullscreen"

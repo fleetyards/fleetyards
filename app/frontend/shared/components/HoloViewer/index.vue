@@ -56,6 +56,10 @@ const props = withDefaults(defineProps<Props>(), {
   azimuth: 0,
 });
 
+// Nothing will be drawn: no WebGL, or a holo that would not load. A caller with
+// a picture to show instead can switch to it.
+const emit = defineEmits<{ unavailable: [] }>();
+
 const { displayAlert } = useAppNotifications();
 
 const lowPower = useLowPowerDevice();
@@ -81,6 +85,10 @@ const totalSizeMb = computed(() => Math.round(totalSize.value / 1_000_000));
 
 onMounted(() => {
   webglSupported.value = webglAvailable();
+});
+
+watch(webglSupported, (supported) => {
+  if (!supported) emit("unavailable");
 });
 
 // THREE throws while constructing the renderer, which TresCanvas's `on-error`
@@ -313,6 +321,7 @@ const handleRenderError = (error: Error) => {
 
 const handleModelError = (error: unknown) => {
   loading.value = false;
+  emit("unavailable");
 
   console.error(error);
 
