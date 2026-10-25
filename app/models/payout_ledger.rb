@@ -68,7 +68,7 @@ class PayoutLedger < ApplicationRecord
   # A contract pays its contractors. With none left on the list, settling would
   # hand the reward back to the fleet and still report the contract paid out.
   def unpayable?
-    subject.is_a?(FleetContract) && !payout_participants.where(fleet_id: nil).exists?
+    subject.is_a?(FleetContract) && !payout_participants.payees.exists?
   end
 
   # Both subjects can carry one: an event always does, a tour only when it was
@@ -296,19 +296,29 @@ class PayoutLedger < ApplicationRecord
     end
   end
 
-  # The fleet is the payer and holds the reward; the contractors are weighted
-  # by what they delivered. Only run on create, so it has nothing to preserve.
+  # The fleet -- or a personal contract's author -- is the payer and holds the
+  # reward; the contractors are weighted by what they delivered. Only run on
+  # create, so it has nothing to preserve.
   private def seed_contract!
-    weights = contract_weights
+    paying_author = subject.created_by if subject.personal?
+
+    # One row per person on a ledger, and an author working their own personal
+    # contract would only be paying themselves.
+    weights = contract_weights.except(paying_author&.id)
 
     # Nobody delivered and nobody was on the crew -- an expired contract an
-    # officer forced to fulfilled. There is nobody to pay the reward to.
+    # officer forced to fulfilled, or an author who did the work themselves.
+    # There is nobody to pay the reward to.
     if weights.empty?
       errors.add(:base, :no_contractors)
       return false
     end
 
-    payer = payout_participants.create!(fleet: subject.fleet)
+    payer = if paying_author
+      payout_participants.create!(user: paying_author, payer: true)
+    else
+      payout_participants.create!(fleet: subject.fleet, payer: true)
+    end
 
     weights.each do |user_id, weight|
       payout_participants.create!(user_id: user_id, weight: weight)

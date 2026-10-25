@@ -27,6 +27,7 @@ const participant = (
     payoutLedgerId: "ledger-1",
     displayName: "Mal",
     guest: false,
+    payer: false,
     weight: "1.0",
     ...overrides,
   }) as PayoutParticipant;
@@ -103,5 +104,26 @@ describe("PayoutParticipantList", () => {
     expect(
       wrapper.findAll('[data-test="payout-participant-request"]'),
     ).toHaveLength(0);
+  });
+
+  // A personal contract is paid by its author, who has an account rather than
+  // a fleet behind them: the tag and the missing weight follow `payer`.
+  it("marks a person who pays as the payer and offers no weight", async () => {
+    const wrapper = await mount({
+      payoutLedgerId: "ledger-1",
+      participants: [
+        participant({
+          payer: true,
+          user: { id: "user-1", username: "author" },
+        } as Partial<PayoutParticipant>),
+      ],
+      manageable: true,
+    });
+
+    const row = wrapper.find('[data-test="payout-participant"]');
+    expect(row.text()).toContain("Payer");
+    expect(
+      row.findComponent({ name: "PayoutsPayoutWeightControl" }).exists(),
+    ).toBe(false);
   });
 });

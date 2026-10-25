@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_25_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_25_140000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1238,6 +1238,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_120000) do
     t.string "headquarters"
     t.uuid "headquarters_location_id"
     t.integer "rsi_member_count"
+    t.boolean "personal_contracts_enabled", default: true, null: false
     t.index ["calendar_feed_token"], name: "index_fleets_on_calendar_feed_token", unique: true
     t.index ["discarded_at"], name: "index_fleets_on_discarded_at"
     t.index ["fid"], name: "index_fleets_on_fid", unique: true, where: "(discarded_at IS NULL)"
@@ -1715,8 +1716,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_120000) do
     t.uuid "vehicle_id"
     t.string "image_preset"
     t.uuid "location_id"
+    t.boolean "personal", default: false, null: false
     t.index "holder_type, holder_id, lower((name)::text)", name: "index_inventories_on_holder_and_lower_name", unique: true, where: "(vehicle_id IS NULL)"
     t.index ["holder_type", "holder_id", "slug"], name: "index_inventories_on_holder_type_and_holder_id_and_slug", unique: true, where: "(vehicle_id IS NULL)"
+    t.index ["holder_type", "holder_id"], name: "index_inventories_on_holder_personal", unique: true, where: "personal"
     t.index ["holder_type", "holder_id"], name: "index_inventories_on_holder_type_and_holder_id"
     t.index ["location_id"], name: "index_inventories_on_location_id"
     t.index ["vehicle_id"], name: "index_inventories_on_vehicle_id", unique: true, where: "(vehicle_id IS NOT NULL)"
@@ -2589,6 +2592,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_120000) do
     t.datetime "updated_at", null: false
     t.decimal "weight", precision: 9, scale: 6, default: "1.0", null: false
     t.uuid "fleet_id"
+    t.boolean "payer", default: false, null: false
     t.index ["fleet_id"], name: "index_payout_participants_on_fleet_id"
     t.index ["payout_ledger_id", "fleet_id"], name: "index_payout_participants_unique_fleet_per_ledger", unique: true, where: "(fleet_id IS NOT NULL)"
     t.index ["payout_ledger_id", "user_id"], name: "index_payout_participants_unique_user_per_ledger", unique: true, where: "(user_id IS NOT NULL)"

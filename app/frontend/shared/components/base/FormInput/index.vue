@@ -213,6 +213,7 @@ const cssClasses = computed(() => {
     "base-input--clean": props.variant === InputVariantsEnum.CLEAN,
     "base-input--clearable": props.clearable,
     "base-input--disabled": props.disabled,
+    "base-input--readonly": props.readonly && !props.disabled,
     "base-input--inline": props.inline,
     "base-input--align-left": props.alignment === InputAlignmentsEnum.LEFT,
     "base-input--align-right": props.alignment === InputAlignmentsEnum.RIGHT,
@@ -375,7 +376,7 @@ defineExpose({
         </slot>
       </div>
       <div
-        v-if="hasValue && clearable"
+        v-if="hasValue && clearable && !readonly"
         class="base-input__clear"
         @click="clear"
       >

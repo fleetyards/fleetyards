@@ -31,6 +31,7 @@ module V1
             alliesFleetStats: {type: :boolean},
             alliesFleetMembers: {type: :boolean},
             squadronsEnabled: {type: :boolean},
+            personalContractsEnabled: {type: :boolean},
             defaultTimezone: {type: :string},
             # Absent until a manager picks, and then it follows publicFleet.
             listed: {type: [:boolean, :null]},
@@ -59,7 +60,7 @@ module V1
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id fid name slug publicFleet publicFleetStats alliesFleet alliesFleetStats alliesFleetMembers squadronsEnabled listedInDirectory features subscribed createdAt updatedAt]
+          required: %w[id fid name slug publicFleet publicFleetStats alliesFleet alliesFleetStats alliesFleetMembers squadronsEnabled personalContractsEnabled listedInDirectory features subscribed createdAt updatedAt]
         })
       end
     end

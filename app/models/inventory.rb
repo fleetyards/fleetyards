@@ -33,9 +33,44 @@ class Inventory < ApplicationRecord
   # ship inventory is addressed through its ship instead.
   scope :addressable_by_slug, -> { hand_made }
 
+  PERSONAL_NAME = "Personal Inventory"
+
   validates :name, presence: true
   validates :name, uniqueness: {case_sensitive: false, scope: [:holder_type, :holder_id]},
     unless: :vehicle_id?
+  validate :personal_keeps_its_name, if: -> { persisted? && personal? }
+
+  # Every user has one, and personal contracts deliver into it, so it is not
+  # theirs to remove. The account going away takes it along.
+  before_destroy :refuse_to_destroy_personal, prepend: true
+
+  # Created the first time anything asks for it rather than for every account
+  # up front. A hand-made inventory the user already named that way becomes
+  # the personal one, so they do not end up with two.
+  def self.personal_for(holder)
+    find_by(holder:, personal: true) || provision_personal(holder)
+  end
+
+  # Two first reads racing are settled by the partial unique index on the
+  # holder; the savepoint keeps the loser's transaction usable for the re-read.
+  def self.provision_personal(holder)
+    transaction(requires_new: true) do
+      adopted = hand_made.where(holder:)
+        .where("lower(name) = :name OR slug = :slug", name: PERSONAL_NAME.downcase, slug: slug_for(PERSONAL_NAME))
+        .order(Arel.sql("lower(name) = #{connection.quote(PERSONAL_NAME.downcase)} DESC"), :created_at)
+        .lock
+        .first
+
+      if adopted
+        adopted.update_columns(personal: true, updated_at: Time.zone.now)
+        adopted
+      else
+        create!(holder:, name: PERSONAL_NAME, personal: true)
+      end
+    end
+  rescue ActiveRecord::RecordNotUnique
+    find_by!(holder:, personal: true)
+  end
 
   # A ship inventory comes into existence with its first deposit, named after the
   # ship it rides in.
@@ -74,6 +109,21 @@ class Inventory < ApplicationRecord
 
   def vehicle?
     vehicle_id.present?
+  end
+
+  private def personal_keeps_its_name
+    return unless will_save_change_to_name?
+
+    errors.add(:name, :personal_inventory_name)
+  end
+
+  private def refuse_to_destroy_personal
+    return unless personal?
+    return if destroyed_by_association
+
+    errors.add(:base, :personal_inventory,
+      message: I18n.t("activerecord.errors.messages.personal_inventory_not_deletable"))
+    throw(:abort)
   end
 
   # Losing the ship puts this row into the two unique indexes that only cover

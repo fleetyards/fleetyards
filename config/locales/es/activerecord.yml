@@ -310,6 +310,8 @@ es:
         entry_goods_in_transit: "no se puede eliminar mientras la transferencia a la que pertenece siga sin respuesta"
         inventory_goods_in_transit: "no se puede eliminar mientras una transferencia enviada siga sin respuesta"
         inventory_contract_destination: "no se puede eliminar mientras un contrato de flota abierto entregue en él"
+        personal_inventory_not_deletable: "no se puede eliminar; es tu inventario personal"
+        personal_inventory_name: "no se puede cambiar en tu inventario personal"
         position_goods_in_transit: "no se puede eliminar mientras una transferencia que lo contiene siga sin respuesta"
         image_type_not_supported: "debe ser una imagen PNG, JPEG, WebP o GIF"
         file_in_use: "ya se usa en otro lugar; vuelve a subir la imagen"
@@ -450,10 +452,13 @@ es:
           attributes:
             destination_inventory:
               not_the_authors: "debe ser uno de tus propios inventarios"
+              personal_contracts_disabled: "no puede ser tu propio inventario; esta flota no permite contratos personales"
               not_selectable: "no es un inventario que puedas elegir"
               only_one_destination: "solo puede ser un inventario"
             destination_fleet_inventory:
               not_selectable: "no es un inventario que puedas elegir"
+            source_fleet_inventory:
+              not_selectable: "no es un inventario del que puedas recoger"
         inventory_transfer_rule:
           attributes:
             base:

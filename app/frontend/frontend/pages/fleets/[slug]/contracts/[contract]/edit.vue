@@ -18,6 +18,8 @@ import {
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useRouter } from "vue-router";
+import { useContractEditAccess } from "@/frontend/composables/useContractEditAccess";
+import { useSessionStore } from "@/frontend/stores/session";
 
 type Props = {
   fleet: Fleet;
@@ -30,17 +32,31 @@ const props = defineProps<Props>();
 const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
+const sessionStore = useSessionStore();
 
 const fleetSlug = computed(() => props.fleet.slug);
 const contractSlug = computed(() => route.params.contract as string);
 
 const { data: contract, refetch } = useFleetContract(fleetSlug, contractSlug);
 
+const mayEdit = useContractEditAccess(
+  () => contract.value,
+  () => props.resourceAccess,
+);
+
+const editable = computed(
+  () => contract.value?.state === FleetContractStateEnum.DRAFT && mayEdit.value,
+);
+
 // Only a draft is editable -- published, the terms are what somebody claimed
-// the contract on. Reached by its URL anyway, the page hands back to the
-// contract rather than offering a form the API would refuse.
-watch(contract, (value) => {
-  if (!value || value.state === FleetContractStateEnum.DRAFT) return;
+// the contract on -- and only by whoever may change it. The route lets every
+// reader through, since a member edits their own personal contract; reached
+// by its URL anyway, the page hands back to the contract rather than offering
+// a form the API would refuse. Decided only once both the contract and the
+// signed-in user are known, so an author is not sent away before the session
+// has said who they are.
+watch([contract, () => sessionStore.currentUser], ([value, user]) => {
+  if (!value || !user || editable.value) return;
 
   void router.replace({
     name: "fleet-contract",
@@ -74,7 +90,7 @@ const crumbs = computed<Crumb[]>(() => [
     {{ t("headlines.fleets.contracts.edit") }}
   </Heading>
 
-  <template v-if="contract && contract.state === FleetContractStateEnum.DRAFT">
+  <template v-if="contract && editable">
     <!-- The lines live on a saved contract, so they are edited here rather than
          in the create form: publishing refuses a contract with nothing to
          deliver, which is what sends an author here. -->

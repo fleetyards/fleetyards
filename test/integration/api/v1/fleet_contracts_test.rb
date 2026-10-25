@@ -31,6 +31,9 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
       # not about a column.
       parameter name: "mine", in: :query, schema: {type: :boolean}, required: false
       parameter name: "inHand", in: :query, schema: {type: :boolean}, required: false
+      # Not a ransack filter either: whether a contract is personal is read off
+      # which of its two destination columns is set.
+      parameter name: "personal", in: :query, schema: {type: :boolean}, required: false
       parameter name: "page", in: :query, schema: {type: :integer}, required: false
       parameter name: "perPage", in: :query, schema: {type: :integer}, required: false
 
@@ -1012,6 +1015,164 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
 
       assert_equal "renamedauthor", response.parsed_body["items"].first["createdBy"]["username"]
     end
+  end
+
+  test "POST lets a plain member post a personal contract into their personal inventory" do
+    personal = Inventory.personal_for(@member)
+    sign_in @member
+
+    assert_api_response :post, 201,
+      api_path: COLLECTION_PATH,
+      path_params: {fleetSlug: @fleet.slug},
+      body: {kind: "procurement", destinationInventoryId: personal.id} do
+      assert parsed_body["personal"]
+      assert_equal personal.id, parsed_body["destination"]["id"]
+    end
+  end
+
+  test "POST refuses a fleet destination from a plain member" do
+    sign_in @member
+
+    assert_no_difference -> { FleetContract.count } do
+      post "/api/v1/fleets/#{@fleet.slug}/contracts",
+        params: {kind: "procurement", destinationFleetInventoryId: @depot.id}, as: :json
+    end
+
+    assert_response :forbidden
+  end
+
+  test "POST refuses a personal contract once the fleet has switched them off" do
+    @fleet.update_columns(personal_contracts_enabled: false)
+    sign_in @member
+
+    assert_no_difference -> { FleetContract.count } do
+      post "/api/v1/fleets/#{@fleet.slug}/contracts",
+        params: {kind: "procurement", destinationInventoryId: Inventory.personal_for(@member).id}, as: :json
+    end
+
+    assert_response :forbidden
+  end
+
+  test "POST refuses an officer's personal contract once the fleet has switched them off" do
+    @fleet.update_columns(personal_contracts_enabled: false)
+    sign_in @officer
+
+    assert_no_difference -> { FleetContract.count } do
+      post "/api/v1/fleets/#{@fleet.slug}/contracts",
+        params: {kind: "procurement", destinationInventoryId: Inventory.personal_for(@officer).id}, as: :json
+    end
+
+    assert_response :bad_request
+  end
+
+  test "GET shows a member their own personal drafts but nobody else's" do
+    own = create(:fleet_contract, :hangar_destination, fleet: @fleet, created_by: @member)
+    create(:fleet_contract, :hangar_destination, fleet: @fleet, created_by: @crewmate)
+    sign_in @member
+
+    assert_api_response :get, 200,
+      api_path: COLLECTION_PATH,
+      path_params: {fleetSlug: @fleet.slug} do
+      assert_equal [own.id], parsed_body["items"].pluck("id")
+    end
+  end
+
+  test "GET personal narrows the board to personal or fleet contracts" do
+    fleet_contract = create(:fleet_contract, :published, fleet: @fleet, destination_fleet_inventory: @depot)
+    personal = create(:fleet_contract, :published, :hangar_destination, fleet: @fleet, created_by: @member)
+    sign_in @member
+
+    assert_api_response :get, 200,
+      api_path: COLLECTION_PATH,
+      path_params: {fleetSlug: @fleet.slug},
+      params: {personal: true} do
+      assert_equal [personal.id], parsed_body["items"].pluck("id")
+    end
+
+    assert_api_response :get, 200,
+      api_path: COLLECTION_PATH,
+      path_params: {fleetSlug: @fleet.slug},
+      params: {personal: false} do
+      assert_equal [fleet_contract.id], parsed_body["items"].pluck("id")
+    end
+  end
+
+  test "a member edits, publishes and cancels their own personal contract" do
+    contract = create(:fleet_contract, :with_item, :hangar_destination, fleet: @fleet, created_by: @member)
+    sign_in @member
+
+    assert_api_response :patch, 200,
+      api_path: MEMBER_PATH,
+      path_params: {fleetSlug: @fleet.slug, slug: contract.slug},
+      body: {reward: "5000"}
+
+    assert_api_response :put, 200,
+      api_path: PUBLISH_PATH,
+      path_params: {fleetSlug: @fleet.slug, slug: contract.slug}
+
+    assert_api_response :put, 200,
+      api_path: CANCEL_PATH,
+      path_params: {fleetSlug: @fleet.slug, slug: contract.slug} do
+      assert_equal "cancelled", parsed_body["state"]
+    end
+  end
+
+  test "a member cannot touch somebody else's personal contract" do
+    contract = create(:fleet_contract, :with_item, :hangar_destination, fleet: @fleet, created_by: @crewmate)
+    sign_in @member
+
+    put "/api/v1/fleets/#{@fleet.slug}/contracts/#{contract.slug}/publish", as: :json
+
+    assert_includes [403, 404], response.status
+    assert_predicate contract.reload, :draft?
+  end
+
+  test "switching personal contracts off leaves the existing ones to their author" do
+    contract = create(:fleet_contract, :with_item, :hangar_destination, fleet: @fleet, created_by: @member)
+    @fleet.update_columns(personal_contracts_enabled: false)
+    sign_in @member
+
+    assert_api_response :put, 200,
+      api_path: PUBLISH_PATH,
+      path_params: {fleetSlug: @fleet.slug, slug: contract.slug} do
+      assert_equal "open", parsed_body["state"]
+    end
+  end
+
+  test "a member switching to a fleet destination on their personal draft is refused" do
+    contract = create(:fleet_contract, :hangar_destination, fleet: @fleet, created_by: @member)
+    sign_in @member
+
+    patch "/api/v1/fleets/#{@fleet.slug}/contracts/#{contract.slug}",
+      params: {destinationFleetInventoryId: @depot.id}, as: :json
+
+    assert_response :bad_request
+    assert_predicate contract.reload, :personal?
+  end
+
+  test "POST refuses a plain member's personal transport out of a fleet inventory" do
+    source = create(:fleet_inventory, fleet: @fleet)
+    sign_in @member
+
+    assert_no_difference -> { FleetContract.count } do
+      post "/api/v1/fleets/#{@fleet.slug}/contracts",
+        params: {kind: "transport", sourceFleetInventoryId: source.id,
+                 destinationInventoryId: Inventory.personal_for(@member).id}, as: :json
+    end
+
+    assert_response :bad_request
+    assert_includes response.parsed_body["errors"].pluck("attribute"), "sourceFleetInventory"
+  end
+
+  test "POST still lets an officer collect from a fleet inventory into their own" do
+    source = create(:fleet_inventory, fleet: @fleet)
+    sign_in @officer
+
+    post "/api/v1/fleets/#{@fleet.slug}/contracts",
+      params: {kind: "transport", sourceFleetInventoryId: source.id,
+               destinationInventoryId: Inventory.personal_for(@officer).id}, as: :json
+
+    assert_response :created
   end
 
   private def contract_author

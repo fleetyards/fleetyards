@@ -310,6 +310,8 @@ fr:
         entry_goods_in_transit: "ne peut pas être supprimé tant que le transfert auquel il appartient est en attente de réponse"
         inventory_goods_in_transit: "ne peut pas être supprimé tant qu'un transfert envoyé est encore en attente de réponse"
         inventory_contract_destination: "ne peut pas être supprimé tant qu'un contrat de flotte ouvert y livre"
+        personal_inventory_not_deletable: "ne peut pas être supprimé ; c'est votre inventaire personnel"
+        personal_inventory_name: "ne peut pas être modifié sur votre inventaire personnel"
         position_goods_in_transit: "ne peut pas être supprimé tant qu'un transfert le contenant est encore en attente de réponse"
         image_type_not_supported: "doit être une image PNG, JPEG, WebP ou GIF"
         file_in_use: "est déjà utilisée ailleurs ; envoyez à nouveau l'image"
@@ -450,10 +452,13 @@ fr:
           attributes:
             destination_inventory:
               not_the_authors: "doit être l'un de vos propres inventaires"
+              personal_contracts_disabled: "ne peut pas être votre propre inventaire ; cette flotte n'autorise pas les contrats personnels"
               not_selectable: "n'est pas un inventaire que vous pouvez choisir"
               only_one_destination: "ne peut être qu'un seul inventaire"
             destination_fleet_inventory:
               not_selectable: "n'est pas un inventaire que vous pouvez choisir"
+            source_fleet_inventory:
+              not_selectable: "n'est pas un inventaire où vous pouvez récupérer des marchandises"
         inventory_transfer_rule:
           attributes:
             base:

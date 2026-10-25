@@ -9,6 +9,7 @@ import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import { PanelRoundedEnum } from "@/shared/components/base/Panel/types";
 import ContractStatePill from "@/frontend/components/Fleets/Contracts/ContractStatePill/index.vue";
+import ContractScopeLabel from "@/frontend/components/Fleets/Contracts/ContractScopeLabel/index.vue";
 import ContractDeliveredBar from "@/frontend/components/Fleets/Contracts/ContractDeliveredBar/index.vue";
 import { type Fleet, type FleetContract } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -46,6 +47,8 @@ const route = computed(() => routeLabel(props.contract));
 
     <div class="contract-panel__kind">
       {{ t(`labels.fleets.contracts.kind.${contract.kind}`) }}
+      ·
+      <ContractScopeLabel :fleet="fleet" :personal="contract.personal" />
     </div>
 
     <div class="contract-panel__status">
@@ -111,10 +114,23 @@ const route = computed(() => routeLabel(props.contract));
           label-above
         />
 
-        <p v-if="contract.deadline" class="contract-panel__deadline">
-          <i class="fa-duotone fa-clock" />
-          {{ l(contract.deadline, "datetime.formats.short") }}
-        </p>
+        <div
+          v-if="contract.deadline || contract.createdBy"
+          class="contract-panel__footer"
+        >
+          <span v-if="contract.deadline" class="contract-panel__deadline">
+            <i class="fa-duotone fa-clock" />
+            {{ l(contract.deadline, "datetime.formats.short") }}
+          </span>
+          <span
+            v-if="contract.createdBy"
+            class="contract-panel__byline"
+            data-test="contract-author"
+          >
+            {{ t("labels.fleets.contracts.postedBy") }}
+            <strong>{{ contract.createdBy.username }}</strong>
+          </span>
+        </div>
       </PanelBody>
     </template>
   </Panel>

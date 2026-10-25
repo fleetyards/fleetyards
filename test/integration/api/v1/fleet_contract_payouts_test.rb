@@ -108,6 +108,36 @@ class Api::V1::FleetContractPayoutsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "POST seeds the author as payer of a personal contract" do
+    personal = create(:fleet_contract, :fulfilled, :hangar_destination, fleet: @fleet, created_by: @member,
+      reward: 10_000)
+    create(:fleet_contract_assignment, :lead, fleet_contract: personal, user: @lead)
+    sign_in @member
+
+    assert_api_response :post, 201, path_params: {fleetSlug: @fleet.slug, fleetContractSlug: personal.slug} do
+      assert_equal 1, parsed_body["participantsCount"]
+
+      ledger = PayoutLedger.find(parsed_body["id"])
+      payer = ledger.payout_participants.find_by!(payer: true)
+      assert_equal @member.id, payer.user_id
+      assert_not ledger.payout_participants.exists?(fleet_id: @fleet.id)
+
+      shares = ledger.settlement.balances.reject { |balance| balance.participant.payer? }.map(&:share)
+      assert_equal [10_000], shares
+    end
+  end
+
+  test "POST is refused when the author of a personal contract did all the work" do
+    personal = create(:fleet_contract, :fulfilled, :hangar_destination, fleet: @fleet, created_by: @member,
+      reward: 10_000)
+    create(:fleet_contract_assignment, :lead, fleet_contract: personal, user: @member)
+    sign_in @member
+
+    assert_api_response :post, 400, path_params: {fleetSlug: @fleet.slug, fleetContractSlug: personal.slug} do
+      assert_not PayoutLedger.exists?(subject: personal)
+    end
+  end
+
   test "POST is refused while the contract is still being worked" do
     @contract.update_columns(aasm_state: "in_progress", fulfilled_at: nil)
     sign_in @admin

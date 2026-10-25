@@ -3583,6 +3583,8 @@
         "qualityMax": "Quality <=",
         "existingItem": "Select existing item",
         "inventoryName": "Inventory Name",
+        "personalInventory": "Persönlich",
+        "personalInventoryNameLocked": "Dein persönliches Inventar behält seinen Namen.",
         "visibility": "Visibility",
         "visibilities": {
           "members_only": "All Members",
@@ -4054,6 +4056,19 @@
           "toAuthorHint": "Lieferungen gehen an %{username}, der sie annimmt.",
           "myHangarInventory": "%{name} (mein Hangar)",
           "authorHangarInventory": "%{name} (Hangar von %{username})",
+          "destinationGroups": {
+            "personal": "Persönlich",
+            "fleet": "Flotte"
+          },
+          "scopeFilter": "Aufträge",
+          "scopes": {
+            "all": "Alle Aufträge",
+            "personal": "Persönlich",
+            "fleet": "Flotte"
+          },
+          "personalBadge": "Persönlich",
+          "personalContractsEnabled": "Persönliche Aufträge",
+          "personalContractsEnabledHint": "Mitglieder können Aufträge einstellen, die in ihr eigenes Inventar liefern und die sie selbst bezahlen.",
           "destinationRemoved": "Nicht mehr verfügbar",
           "lead": "Leitung",
           "pendingCrew": "Wartet auf Aufnahme",

@@ -18,6 +18,7 @@ import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import DetailSkeleton from "@/shared/components/DetailSkeleton/index.vue";
 import ContractStatePill from "@/frontend/components/Fleets/Contracts/ContractStatePill/index.vue";
+import ContractScopeLabel from "@/frontend/components/Fleets/Contracts/ContractScopeLabel/index.vue";
 import ContractProgress from "@/frontend/components/Fleets/Contracts/ContractProgress/index.vue";
 import ContractCrewList from "@/frontend/components/Fleets/Contracts/ContractCrewList/index.vue";
 import {
@@ -43,6 +44,7 @@ import { useContractCover } from "@/frontend/composables/useContractCover";
 import { useContractRoute } from "@/frontend/composables/useContractRoute";
 import { useSessionStore } from "@/frontend/stores/session";
 import { checkAccess } from "@/shared/utils/Access";
+import { useContractEditAccess } from "@/frontend/composables/useContractEditAccess";
 import { useRouter } from "vue-router";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 
@@ -82,14 +84,11 @@ const canManage = computed(() =>
   checkAccess(props.resourceAccess, ["fleet:manage", "fleet:contracts:manage"]),
 );
 
-// The privilege on its own. Cancelling and publishing ride on it and reach a
-// contract that editing no longer does.
-const mayEdit = computed(() =>
-  checkAccess(props.resourceAccess, [
-    "fleet:manage",
-    "fleet:contracts:manage",
-    "fleet:contracts:update",
-  ]),
+// Cancelling and publishing ride on it and reach a contract that editing no
+// longer does.
+const mayEdit = useContractEditAccess(
+  () => contract.value,
+  () => props.resourceAccess,
 );
 
 // Only a draft. Published, it is an offer members have read and may already be
@@ -314,6 +313,12 @@ const crumbs = computed<Crumb[]>(() => [
           <span class="contract-hero__kind">
             {{ t(`labels.fleets.contracts.kind.${contract.kind}`) }}
           </span>
+          <span class="contract-hero__dot" />
+          <ContractScopeLabel
+            :fleet="fleet"
+            :personal="contract.personal"
+            class="contract-hero__kind"
+          />
           <span class="contract-hero__dot" />
           <ContractStatePill :state="contract.state" />
         </div>
@@ -665,10 +670,21 @@ const crumbs = computed<Crumb[]>(() => [
     text-wrap: pretty;
   }
 
+  // The band has faded out by the byline's height, and the default covers
+  // are bright there; it carries its own backdrop, as the card's kind chip
+  // does.
   &__byline {
-    margin: 10px 0 0;
+    display: inline-block;
+    margin: 10px 0 0 -9px;
+    padding: 3px 9px;
+    border-radius: 4px;
     font-size: 0.85em;
     color: $gray-lighter;
+    backdrop-filter: blur(6px) brightness(0.45);
+
+    strong {
+      color: #fff;
+    }
   }
 }
 

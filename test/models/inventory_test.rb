@@ -486,4 +486,54 @@ class InventoryTest < ActiveSupport::TestCase
   private def entry_versions
     PaperTrail::Version.where(item_type: "InventoryItem", item_id: @inventory.inventory_items.select(:id))
   end
+  test "personal_for creates the personal inventory once" do
+    personal = Inventory.personal_for(@user)
+
+    assert_predicate personal, :personal?
+    assert_equal Inventory::PERSONAL_NAME, personal.name
+    assert_equal personal, Inventory.personal_for(@user)
+    assert_equal 1, @user.inventories.where(personal: true).count
+  end
+
+  test "personal_for adopts an inventory the user already named that way" do
+    existing = create(:inventory, holder: @user, name: "personal inventory")
+
+    assert_no_difference -> { Inventory.count } do
+      assert_equal existing, Inventory.personal_for(@user)
+    end
+
+    assert_predicate existing.reload, :personal?
+  end
+
+  test "personal_for leaves other users' inventories alone" do
+    other = create(:inventory, holder: create(:user), name: Inventory::PERSONAL_NAME)
+
+    personal = Inventory.personal_for(@user)
+
+    assert_not_equal other, personal
+    assert_not_predicate other.reload, :personal?
+  end
+
+  test "the personal inventory cannot be renamed" do
+    personal = Inventory.personal_for(@user)
+
+    assert_not personal.update(name: "Something else")
+    assert_includes personal.errors.details[:name].pluck(:error), :personal_inventory_name
+    assert personal.reload.update(description: "Still editable")
+  end
+
+  test "the personal inventory cannot be destroyed" do
+    personal = Inventory.personal_for(@user)
+
+    assert_not personal.destroy
+    assert Inventory.exists?(personal.id)
+  end
+
+  test "the personal inventory goes with the account" do
+    personal = Inventory.personal_for(@user)
+
+    @user.destroy!
+
+    assert_not Inventory.exists?(personal.id)
+  end
 end

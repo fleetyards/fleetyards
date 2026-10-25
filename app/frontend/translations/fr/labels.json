@@ -3583,6 +3583,8 @@
         "qualityMax": "Quality <=",
         "existingItem": "Select existing item",
         "inventoryName": "Inventory Name",
+        "personalInventory": "Personnel",
+        "personalInventoryNameLocked": "Votre inventaire personnel garde son nom.",
         "visibility": "Visibility",
         "visibilities": {
           "members_only": "All Members",
@@ -4054,6 +4056,19 @@
           "toAuthorHint": "Les livraisons sont adressées à %{username}, qui les accepte.",
           "myHangarInventory": "%{name} (mon hangar)",
           "authorHangarInventory": "%{name} (hangar de %{username})",
+          "destinationGroups": {
+            "personal": "Personnel",
+            "fleet": "Flotte"
+          },
+          "scopeFilter": "Contrats",
+          "scopes": {
+            "all": "Tous les contrats",
+            "personal": "Personnels",
+            "fleet": "De la flotte"
+          },
+          "personalBadge": "Personnel",
+          "personalContractsEnabled": "Contrats personnels",
+          "personalContractsEnabledHint": "Les membres peuvent publier des contrats livrés dans leur propre inventaire et qu'ils paient eux-mêmes.",
           "destinationRemoved": "N'est plus disponible",
           "lead": "Responsable",
           "pendingCrew": "En attente",

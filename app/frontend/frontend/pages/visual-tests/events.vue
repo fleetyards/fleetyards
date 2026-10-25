@@ -56,6 +56,7 @@ const fleet: Fleet = {
   alliesFleetStats: false,
   alliesFleetMembers: false,
   squadronsEnabled: false,
+  personalContractsEnabled: true,
   listedInDirectory: false,
   createdAt: NOW,
   updatedAt: NOW,

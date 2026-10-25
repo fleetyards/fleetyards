@@ -171,4 +171,16 @@ class Api::V1::HangarInventoriesDestroyTest < ActionDispatch::IntegrationTest
 
     assert_response :no_content
   end
+  test "DELETE /hangar/inventories/:slug refuses the personal inventory" do
+    personal = Inventory.personal_for(@user)
+    sign_in @user
+
+    assert_no_difference "Inventory.count" do
+      delete "/api/v1/hangar/inventories/#{personal.slug}", as: :json
+    end
+
+    assert_response :bad_request
+    assert_includes response.parsed_body["errors"].flat_map { |error| error["messages"].pluck("message") },
+      I18n.t("activerecord.errors.messages.personal_inventory_not_deletable")
+  end
 end

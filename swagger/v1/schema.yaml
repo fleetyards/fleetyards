@@ -2116,6 +2116,11 @@ paths:
         schema:
           type: boolean
         required: false
+      - name: personal
+        in: query
+        schema:
+          type: boolean
+        required: false
       - name: page
         in: query
         schema:
@@ -26093,6 +26098,8 @@ components:
           type: boolean
         squadronsEnabled:
           type: boolean
+        personalContractsEnabled:
+          type: boolean
         defaultTimezone:
           type: string
         listed:
@@ -26163,6 +26170,7 @@ components:
       - alliesFleetStats
       - alliesFleetMembers
       - squadronsEnabled
+      - personalContractsEnabled
       - listedInDirectory
       - features
       - subscribed
@@ -26577,6 +26585,8 @@ components:
           - 'null'
         requiresPickup:
           type: boolean
+        personal:
+          type: boolean
         deadline:
           type:
           - string
@@ -26653,6 +26663,7 @@ components:
       - state
       - reward
       - requiresPickup
+      - personal
       - destination
       - crewPreview
       - progress
@@ -26879,6 +26890,8 @@ components:
           - 'null'
         requiresPickup:
           type: boolean
+        personal:
+          type: boolean
         deadline:
           type:
           - string
@@ -26963,6 +26976,7 @@ components:
       - state
       - reward
       - requiresPickup
+      - personal
       - destination
       - crewPreview
       - progress
@@ -31559,6 +31573,8 @@ components:
           type: boolean
         squadronsEnabled:
           type: boolean
+        personalContractsEnabled:
+          type: boolean
         listed:
           type: boolean
         alignment:
@@ -32908,6 +32924,8 @@ components:
           type: string
         slug:
           type: string
+        personal:
+          type: boolean
         description:
           type: string
         location:
@@ -32949,6 +32967,7 @@ components:
       - id
       - name
       - slug
+      - personal
       - entriesCount
       - totalScu
       - totalUnits
@@ -35893,6 +35912,8 @@ components:
           type:
           - string
           - 'null'
+        personal:
+          type: boolean
         description:
           type:
           - string
@@ -42303,6 +42324,8 @@ components:
           type: string
         guest:
           type: boolean
+        payer:
+          type: boolean
         weight:
           type: string
         user:
@@ -42320,6 +42343,7 @@ components:
       - payoutLedgerId
       - displayName
       - guest
+      - payer
       - weight
       additionalProperties: false
       title: PayoutParticipant

@@ -1,4 +1,6 @@
 import { FleetContractStateEnum } from "@/services/fyApi";
+import { type Icon } from "@/shared/components/DuotoneGlyph/glyph";
+import { FLEET_GLYPH } from "@/shared/glyphs/fleets";
 
 /*
  * The four boards, as one page's filter rather than four pages: they differ in
@@ -74,3 +76,23 @@ export const DEFAULT_CONTRACT_BOARD_VIEW = CONTRACT_BOARD_VIEWS[0];
 export const contractBoardViewFrom = (value: unknown): ContractBoardView =>
   CONTRACT_BOARD_VIEWS.find((view) => view.key === value) ??
   DEFAULT_CONTRACT_BOARD_VIEW;
+
+/*
+ * Whose contracts the board lists, beside which board it is: a personal one
+ * delivers into its author's own inventory, a fleet one into the fleet's. Rides
+ * in the query for the reason the boards do.
+ */
+export type ContractScope = {
+  key: "all" | "personal" | "fleet";
+  personal?: boolean;
+  icon: Icon;
+};
+
+export const CONTRACT_SCOPES: ContractScope[] = [
+  { key: "all", icon: "fa-light fa-layer-group" },
+  { key: "personal", personal: true, icon: "fa-light fa-user" },
+  { key: "fleet", personal: false, icon: FLEET_GLYPH },
+];
+
+export const contractScopeFrom = (value: unknown): ContractScope =>
+  CONTRACT_SCOPES.find((scope) => scope.key === value) ?? CONTRACT_SCOPES[0];

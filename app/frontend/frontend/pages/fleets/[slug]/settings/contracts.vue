@@ -8,6 +8,7 @@ export default {
 import { useForm } from "vee-validate";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
+import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
@@ -47,12 +48,16 @@ const submitting = ref(false);
 const { defineField, handleSubmit, meta, setErrors } =
   useForm<FleetUpdateInput>({
     initialValues: {
+      personalContractsEnabled: props.fleet.personalContractsEnabled,
       transportContractCover: undefined,
       procurementContractCover: undefined,
       craftingContractCover: undefined,
     },
   });
 
+const [personalContractsEnabled, personalContractsEnabledProps] = defineField(
+  "personalContractsEnabled",
+);
 const [transportContractCover, transportContractCoverProps] = defineField(
   "transportContractCover",
 );
@@ -123,6 +128,25 @@ const cancel = () => {
 
 <template>
   <form id="fleet-contract-settings-form" @submit.prevent="onSubmit">
+    <Panel>
+      <PanelHeading :level="HeadingLevelEnum.H3">
+        {{ t("labels.fleets.contracts.personalContractsEnabled") }}
+      </PanelHeading>
+      <PanelBody>
+        <FormToggle
+          v-model="personalContractsEnabled"
+          v-bind="personalContractsEnabledProps"
+          name="personalContractsEnabled"
+          :label="t('labels.fleets.contracts.personalContractsEnabled')"
+          :description="
+            t('labels.fleets.contracts.personalContractsEnabledHint')
+          "
+          :disabled="submitting"
+          data-test="fleet-personal-contracts-enabled"
+        />
+      </PanelBody>
+    </Panel>
+
     <Panel>
       <!-- A PanelHeading rather than a Heading inside the body, which is what
            the roles page beside it uses: the panel's own heading is Orbitron,

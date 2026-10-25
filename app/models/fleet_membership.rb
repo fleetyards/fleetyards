@@ -272,8 +272,12 @@ class FleetMembership < ApplicationRecord
     destroy_fleet: ["fleet:manage", "fleet:delete"]
   }.freeze
 
+  # Posting a contract also follows the fleet's setting: a member who may read
+  # the board may post a personal one, the way FleetContractPolicy#create? has it.
   def capabilities
-    CAPABILITY_PRIVILEGES.transform_values { |privileges| has_access?(privileges) }
+    granted = CAPABILITY_PRIVILEGES.transform_values { |privileges| has_access?(privileges) }
+    granted[:create_contracts] ||= granted[:read_contracts] && ::FleetContract.personal_open_to?(fleet, user)
+    granted
   end
 
   def check_if_can_be_destroyed

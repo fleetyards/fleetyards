@@ -24,6 +24,7 @@ module Contracts
     def fleet_inventories
       return [] if @editor.blank?
       return [] unless Flipper.enabled?(:fleet_logistics, @editor, @fleet)
+      return [] unless ::FleetContractPolicy.new(@fleet, user: @editor).write_fleet_contracts?
 
       @fleet_inventories ||= @fleet.fleet_inventories.order(:name).to_a
         .select { |inventory| @authorizer.may_deposit_into?(inventory) }
@@ -35,10 +36,15 @@ module Contracts
     # gate lets a person receive only with the hangar flag on; a ship's hold
     # also takes the ship flag, the one the transfer endpoints check for it.
     def hangar_inventories
+      return [] unless @fleet.personal_contracts_enabled?
       return [] unless author_can_receive?
 
-      @hangar_inventories ||= @author.inventories.order(:name).to_a
-        .select { |inventory| !inventory.vehicle? || Flipper.enabled?(:ship_inventories, @author) }
+      @hangar_inventories ||= begin
+        ::Inventory.personal_for(@author)
+
+        @author.inventories.order(personal: :desc, name: :asc).to_a
+          .select { |inventory| !inventory.vehicle? || Flipper.enabled?(:ship_inventories, @author) }
+      end
     end
 
     def allows?(destination)

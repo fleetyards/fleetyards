@@ -310,6 +310,8 @@ zh-CN:
         entry_goods_in_transit: "在其所属的转移得到答复之前无法删除"
         inventory_goods_in_transit: "在已发送的转移得到答复之前无法删除"
         inventory_contract_destination: "在有未完成的舰队合同向其交付期间无法删除"
+        personal_inventory_not_deletable: "无法删除，这是你的个人库存"
+        personal_inventory_name: "个人库存的名称无法更改"
         position_goods_in_transit: "在包含它的转移得到答复之前无法删除"
         image_type_not_supported: "必须是 PNG、JPEG、WebP 或 GIF 图片"
         file_in_use: "已在其他地方使用，请重新上传图片"
@@ -450,10 +452,13 @@ zh-CN:
           attributes:
             destination_inventory:
               not_the_authors: "必须是你自己的库存之一"
+              personal_contracts_disabled: "不能是你自己的库存；此舰队不允许个人合同"
               not_selectable: "不是你可以选择的库存"
               only_one_destination: "只能是一个库存"
             destination_fleet_inventory:
               not_selectable: "不是你可以选择的库存"
+            source_fleet_inventory:
+              not_selectable: "不是你可以提取的库存"
         inventory_transfer_rule:
           attributes:
             base:

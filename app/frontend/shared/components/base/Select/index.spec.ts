@@ -90,6 +90,32 @@ describe("BaseSelect", () => {
       ]);
     });
 
+    // Options naming a category stay under it, the categories in the order
+    // they first appear and the labels sorted within each.
+    it("groups options by category under a label of its own", async () => {
+      const wrapper = await mount({
+        options: [
+          { value: "z", label: "Zeta", category: "Fleet" },
+          { value: "b", label: "Beta", category: "Personal" },
+          { value: "a", label: "Alpha", category: "Fleet" },
+        ],
+      });
+
+      const groups = wrapper.findAll('[id^="ships-options-"] [role="group"]');
+
+      expect(
+        groups.map((group) => group.find(".base-select-group-label").text()),
+      ).toEqual(["Fleet", "Personal"]);
+      expect(labelsIn(wrapper, '[id^="ships-options-"]')).toEqual([
+        "Alpha",
+        "Zeta",
+        "Beta",
+      ]);
+      expect(groups[0].attributes("aria-labelledby")).toBe(
+        groups[0].find(".base-select-group-label").attributes("id"),
+      );
+    });
+
     it("shows the selected label on the trigger rather than the raw value", async () => {
       const wrapper = await mount({ modelValue: "b" });
 

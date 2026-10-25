@@ -117,25 +117,40 @@ const destinationLabel = (
       });
 };
 
+// Grouped by whose inventory it is, so a personal destination can never be
+// mistaken for one of the fleet's. Personal first, in the order the API
+// offers them -- the personal inventory leads.
+const destinationCategory = (holder: string) =>
+  holder === FleetContractDestinationHolderEnum.FLEET
+    ? t("labels.fleets.contracts.destinationGroups.fleet")
+    : t("labels.fleets.contracts.destinationGroups.personal");
+
 const destinationOptions = computed<FilterOption[]>(() => {
   const offered = destinations.value ?? [];
   const current = props.contract?.destination;
-  const options = offered.map((destination) => ({
-    value: destinationKey(destination),
-    label: destinationLabel(destination, true),
+  const entries = offered.map((destination) => ({
+    destination,
+    offered: true,
   }));
 
   if (
     current &&
     !offered.some((destination) => destination.id === current.id)
   ) {
-    options.push({
-      value: destinationKey(current),
-      label: destinationLabel(current, false),
-    });
+    entries.push({ destination: current, offered: false });
   }
 
-  return options;
+  const isFleet = (holder: string) =>
+    holder === FleetContractDestinationHolderEnum.FLEET;
+
+  return [
+    ...entries.filter(({ destination }) => !isFleet(destination.holder)),
+    ...entries.filter(({ destination }) => isFleet(destination.holder)),
+  ].map(({ destination, offered }) => ({
+    value: destinationKey(destination),
+    label: destinationLabel(destination, offered),
+    category: destinationCategory(destination.holder),
+  }));
 });
 
 const kindOptions = computed<FilterOption[]>(() =>
@@ -438,6 +453,7 @@ const onSubmit = handleSubmit(async (values) => {
               v-model="destination"
               v-bind="destinationProps"
               :options="destinationOptions"
+              unsorted
               :label="t('labels.fleets.contracts.to')"
               name="destination"
               data-test="contract-destination"

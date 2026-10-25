@@ -33,6 +33,11 @@ module Api
         # only while a delivery against it still waits for an answer.
         scope = scope.without_settled_expiry if params[:in_hand].to_s == "true"
 
+        case params[:personal].to_s
+        when "true" then scope = scope.personal
+        when "false" then scope = scope.fleet_owned
+        end
+
         query_params = params.fetch(:q, {}).permit(:title_cont, :state_eq, :kind_eq, :s, {state_in: []})
         normalize_sort_params(query_params)
         query_params["sorts"] = sorting_params(FleetContract, query_params["sorts"])
@@ -167,14 +172,17 @@ module Api
       end
 
       # Everything the member may see. A draft is not an offer of work yet, so
-      # it only lists for the people who could publish it -- the same rule
-      # `FleetContractPolicy#show?` applies to a single one.
+      # it only lists for the people who could publish it -- the managers, and
+      # the author of a personal one -- the same rule `FleetContractPolicy#show?`
+      # applies to a single one.
       private def visible_scope
         scope = @fleet.fleet_contracts
 
         return scope if allowed_to?(:manage?, @fleet, with: FleetContractPolicy)
 
-        narrow_to_squadron_access(scope.where.not(aasm_state: "draft"))
+        own_personal_drafts = scope.draft.personal.where(created_by: current_resource_owner)
+
+        narrow_to_squadron_access(scope.where.not(aasm_state: "draft").or(own_personal_drafts))
       end
 
       # The model refuses a title whose slug is taken, but two saves racing onto

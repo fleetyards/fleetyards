@@ -338,7 +338,7 @@ const searchLabelFallback = computed(() => {
  * evaluates that chain during setup. Defined below, this threw
  * "Cannot access 'sort' before initialization" and nothing mounted.
  */
-const sort = (options: FilterOption[]) => {
+const sortByLabel = (options: FilterOption[]) => {
   if (props.unsorted) {
     return options;
   }
@@ -353,6 +353,20 @@ const sort = (options: FilterOption[]) => {
     }
     return 0;
   });
+};
+
+// Options that name a category stay together under it, in the order the
+// categories first appear; the labels sort within each.
+const sort = (options: FilterOption[]) => {
+  if (!options.some((option) => option.category)) {
+    return sortByLabel(options);
+  }
+
+  const categories = [...new Set(options.map((option) => option.category))];
+
+  return categories.flatMap((category) =>
+    sortByLabel(options.filter((option) => option.category === category)),
+  );
 };
 
 const availableOptions = computed<FilterOption[]>(() =>
@@ -431,6 +445,30 @@ const cssClasses = computed(() => ({
 const activeIndex = ref(-1);
 
 const activeOption = computed(() => filteredOptions.value[activeIndex.value]);
+
+type OptionGroup = {
+  category?: string;
+  entries: { option: FilterOption; index: number }[];
+};
+
+// Consecutive options under one category, each keeping its index in the flat
+// list the keyboard walks.
+const optionGroups = computed<OptionGroup[]>(() =>
+  filteredOptions.value.reduce<OptionGroup[]>((groups, option, index) => {
+    const last = groups[groups.length - 1];
+
+    if (last && last.category === option.category) {
+      last.entries.push({ option, index });
+    } else {
+      groups.push({ category: option.category, entries: [{ option, index }] });
+    }
+
+    return groups;
+  }, []),
+);
+
+const groupLabelId = (groupIndex: number) =>
+  `${listboxId.value}-group-${groupIndex}`;
 
 const activeDescendant = computed(() =>
   visible.value && activeIndex.value >= 0
@@ -1182,19 +1220,53 @@ defineExpose({
             :aria-multiselectable="multiple"
             :aria-labelledby="triggerId"
           >
-            <Option
-              v-for="(option, index) in filteredOptions"
-              :key="`${name}-options-${id}-${option.value}-${index}`"
-              :option="option"
-              :option-id="optionId(index)"
-              :in-listbox="true"
-              :active="index === activeIndex"
-              :selected="selected(option.value)"
-              :big-icon="bigIcon"
-              :multiple="multiple"
-              :nullable="nullable"
-              @select="select(option.value)"
-            />
+            <template
+              v-for="(group, groupIndex) in optionGroups"
+              :key="`${name}-group-${id}-${groupIndex}`"
+            >
+              <div
+                v-if="group.category"
+                role="group"
+                :aria-labelledby="groupLabelId(groupIndex)"
+                class="base-select-group"
+              >
+                <div
+                  :id="groupLabelId(groupIndex)"
+                  role="presentation"
+                  class="base-select-group-label"
+                >
+                  {{ group.category }}
+                </div>
+                <Option
+                  v-for="{ option, index } in group.entries"
+                  :key="`${name}-options-${id}-${option.value}-${index}`"
+                  :option="option"
+                  :option-id="optionId(index)"
+                  :in-listbox="true"
+                  :active="index === activeIndex"
+                  :selected="selected(option.value)"
+                  :big-icon="bigIcon"
+                  :multiple="multiple"
+                  :nullable="nullable"
+                  @select="select(option.value)"
+                />
+              </div>
+              <template v-else>
+                <Option
+                  v-for="{ option, index } in group.entries"
+                  :key="`${name}-options-${id}-${option.value}-${index}`"
+                  :option="option"
+                  :option-id="optionId(index)"
+                  :in-listbox="true"
+                  :active="index === activeIndex"
+                  :selected="selected(option.value)"
+                  :big-icon="bigIcon"
+                  :multiple="multiple"
+                  :nullable="nullable"
+                  @select="select(option.value)"
+                />
+              </template>
+            </template>
           </div>
 
           <Btn

@@ -266,21 +266,31 @@ describe("ContractForm destination", () => {
     };
   };
 
-  it("offers what the API says the reader may choose, own inventories marked", () => {
+  // Grouped by whose inventory it is, personal first, so one of the member's
+  // own can never be mistaken for the fleet's.
+  it("offers what the API says the reader may choose, grouped by whose it is", () => {
     destinations.value = [DEPOT, LOCKER];
 
-    const options = destinationSelect(mountForm()).props("options") as {
+    const select = destinationSelect(mountForm());
+    const options = select.props("options") as {
       value: string;
       label: string;
+      category: string;
     }[];
 
     expect(options).toEqual([
-      { value: "fleet:depot", label: "Depot — Area 18" },
       {
         value: "user:locker",
         label: "labels.fleets.contracts.myHangarInventory(Locker)",
+        category: "labels.fleets.contracts.destinationGroups.personal",
+      },
+      {
+        value: "fleet:depot",
+        label: "Depot — Area 18",
+        category: "labels.fleets.contracts.destinationGroups.fleet",
       },
     ]);
+    expect(select.props("unsorted")).toBe(true);
   });
 
   it("sends an own inventory as destinationInventoryId and clears the fleet one", async () => {
@@ -392,9 +402,10 @@ describe("ContractForm destination", () => {
       label: string;
     }[];
 
-    expect(options.at(-1)).toEqual({
+    expect(options[0]).toEqual({
       value: "user:locker",
       label: "labels.fleets.contracts.authorHangarInventory(Locker,Ada)",
+      category: "labels.fleets.contracts.destinationGroups.personal",
     });
 
     const { data } = await submitted(wrapper);

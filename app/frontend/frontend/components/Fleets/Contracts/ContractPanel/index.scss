@@ -31,6 +31,11 @@
     font-size: 11px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    max-width: calc(100% - 28px);
+    white-space: nowrap;
     backdrop-filter: blur(6px) brightness(0.45);
   }
 
@@ -63,8 +68,27 @@
     }
   }
 
-  &__route,
-  &__deadline {
+  &__footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 16px;
+    font-size: 0.85em;
+    color: $gray-light;
+  }
+
+  &__byline {
+    margin-left: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    strong {
+      color: $gray-lighter;
+    }
+  }
+
+  &__route {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -74,7 +98,9 @@
   }
 
   &__deadline {
-    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 
   &__progress {

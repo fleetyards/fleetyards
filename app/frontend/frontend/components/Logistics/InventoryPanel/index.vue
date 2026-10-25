@@ -69,7 +69,12 @@ const inTransitLabel = computed(() =>
 
 // A ship says where its inventory is far better than a free-text location does.
 const subtitle = computed(
-  () => props.inventory.vehicle?.name || props.inventory.location,
+  () =>
+    props.inventory.vehicle?.name ||
+    props.inventory.location ||
+    (props.inventory.personal
+      ? t("labels.logistics.personalInventory")
+      : undefined),
 );
 
 // The place, as a link where it is one of ours. A ship's inventory has none.

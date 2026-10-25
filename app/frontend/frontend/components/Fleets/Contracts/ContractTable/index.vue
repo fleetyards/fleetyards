@@ -117,6 +117,13 @@ const openContract = (contract: FleetContract) => {
           <span class="contract-table__title">
             {{ (record as FleetContract).title }}
           </span>
+          <i
+            v-if="(record as FleetContract).personal"
+            v-tooltip="t('labels.fleets.contracts.personalBadge')"
+            class="fa-light fa-user"
+            :aria-label="t('labels.fleets.contracts.personalBadge')"
+            data-test="contract-personal"
+          />
           <ContractStatePill :state="(record as FleetContract).state" />
         </span>
         <span

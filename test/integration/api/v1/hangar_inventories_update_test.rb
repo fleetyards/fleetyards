@@ -119,4 +119,25 @@ class Api::V1::HangarInventoriesUpdateTest < ActionDispatch::IntegrationTest
       headers: oauth_headers_for(@user, scopes: ["hangar", "hangar:write"]),
       body: {name: "OAuth Rename"}
   end
+  # A plain request rather than the DSL: declaring this 400 would replace the
+  # schema-validation 400 the document already carries for the endpoint.
+  test "PUT /hangar/inventories/:slug refuses to rename the personal inventory" do
+    personal = Inventory.personal_for(@user)
+    sign_in @user
+
+    put "/api/v1/hangar/inventories/#{personal.slug}", params: {name: "Renamed"}, as: :json
+
+    assert_response :bad_request
+    assert_equal Inventory::PERSONAL_NAME, personal.reload.name
+  end
+
+  test "PUT /hangar/inventories/:slug still edits the rest of the personal inventory" do
+    personal = Inventory.personal_for(@user)
+    sign_in @user
+
+    put "/api/v1/hangar/inventories/#{personal.slug}", params: {description: "Odds and ends"}, as: :json
+
+    assert_response :ok
+    assert_equal "Odds and ends", personal.reload.description
+  end
 end

@@ -310,6 +310,8 @@ de:
         entry_goods_in_transit: "kann nicht gelöscht werden, solange der zugehörige Transfer noch unbeantwortet ist"
         inventory_goods_in_transit: "kann nicht gelöscht werden, solange ein gesendeter Transfer noch unbeantwortet ist"
         inventory_contract_destination: "kann nicht gelöscht werden, solange ein offener Flottenauftrag hierher liefert"
+        personal_inventory_not_deletable: "kann nicht gelöscht werden, es ist dein persönliches Inventar"
+        personal_inventory_name: "kann beim persönlichen Inventar nicht geändert werden"
         position_goods_in_transit: "kann nicht gelöscht werden, solange ein Transfer damit noch unbeantwortet ist"
         image_type_not_supported: "muss ein PNG-, JPEG-, WebP- oder GIF-Bild sein"
         file_in_use: "wird bereits anderweitig verwendet; lade das Bild erneut hoch"
@@ -450,10 +452,13 @@ de:
           attributes:
             destination_inventory:
               not_the_authors: "muss eines deiner eigenen Inventare sein"
+              personal_contracts_disabled: "kann nicht dein eigenes Inventar sein; diese Flotte erlaubt keine persönlichen Aufträge"
               not_selectable: "ist kein Inventar, das du auswählen kannst"
               only_one_destination: "kann nur ein Inventar sein"
             destination_fleet_inventory:
               not_selectable: "ist kein Inventar, das du auswählen kannst"
+            source_fleet_inventory:
+              not_selectable: "ist kein Inventar, aus dem du abholen kannst"
         inventory_transfer_rule:
           attributes:
             base:

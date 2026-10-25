@@ -170,6 +170,12 @@ const onSubmit = handleSubmit(async (values) => {
         translation-key="logistics.inventoryName"
         :rules="validationSchema.name"
         :label="t('labels.logistics.inventoryName')"
+        :readonly="inventory?.personal"
+        :info="
+          inventory?.personal
+            ? t('labels.logistics.personalInventoryNameLocked')
+            : undefined
+        "
       />
       <FormTextarea
         v-model="description"

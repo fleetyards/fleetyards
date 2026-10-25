@@ -313,6 +313,8 @@ en:
         entry_goods_in_transit: "cannot be deleted while the transfer it belongs to is still waiting to be answered"
         inventory_goods_in_transit: "cannot be deleted while a transfer it sent is still waiting to be answered"
         inventory_contract_destination: "cannot be deleted while an open fleet contract delivers into it"
+        personal_inventory_not_deletable: "cannot be deleted; it is your personal inventory"
+        personal_inventory_name: "cannot be changed on your personal inventory"
         position_goods_in_transit: "cannot be deleted while a transfer it was sent in is still waiting to be answered"
         image_type_not_supported: "must be a PNG, JPEG, WebP or GIF image"
         file_in_use: "is already used elsewhere; upload the image again"
@@ -433,10 +435,13 @@ en:
           attributes:
             destination_inventory:
               not_the_authors: "must be one of your own inventories"
+              personal_contracts_disabled: "cannot be your own inventory; this fleet does not allow personal contracts"
               not_selectable: "is not an inventory you can choose"
               only_one_destination: "can only be one inventory"
             destination_fleet_inventory:
               not_selectable: "is not an inventory you can choose"
+            source_fleet_inventory:
+              not_selectable: "is not an inventory you can collect from"
         inventory_transfer_rule:
           attributes:
             base:

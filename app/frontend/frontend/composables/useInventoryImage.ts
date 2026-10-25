@@ -7,6 +7,19 @@ import {
 
 export const inventoryPresets = presetCatalogue("inventories").presets;
 
+// A folder of its own, so the picture is not offered in the picker as one more
+// preset. WebP first where both formats of it are there.
+const personalArt = Object.entries(
+  import.meta.glob<{ default: string }>(
+    "@/images/inventories/personal/*.{webp,jpg,jpeg,png}",
+    { eager: true },
+  ),
+)
+  .sort(([a], [b]) => Number(b.endsWith(".webp")) - Number(a.endsWith(".webp")))
+  .map(([, module]) => module.default);
+
+export const personalInventoryImage: string | undefined = personalArt[0];
+
 /*
  * Spread across the presets by name rather than drawn fresh each time: two
  * inventories side by side should differ, and one inventory should keep its
@@ -28,7 +41,8 @@ const presetForName = (name: string) => {
  * What an inventory is shown as when nobody has given it a picture. A ship's
  * hold is shown as its ship -- it is the one thing about that hold a reader
  * already recognises, and it is why a ship's hold offers no picture of its own
- * to pick -- and everything else takes a preset off its name.
+ * to pick. The personal inventory has art of its own, and everything else takes
+ * a preset off its name.
  *
  * Kept apart from the attached image so a form can offer this as the picture in
  * place while still knowing the inventory carries none of its own.
@@ -39,9 +53,15 @@ export function inventoryDefaultImage(inventory: InventoryPanelRecord) {
   // `url` after `mediumUrl`: only the original is guaranteed, and a ship whose
   // artwork has no sized variants is still that ship. Falling straight to a
   // preset would draw a crate over a picture we were given.
-  return (
-    shipImage?.mediumUrl || shipImage?.url || presetForName(inventory.name)
-  );
+  if (shipImage?.mediumUrl || shipImage?.url) {
+    return shipImage.mediumUrl || shipImage.url;
+  }
+
+  if (inventory.personal && personalInventoryImage) {
+    return personalInventoryImage;
+  }
+
+  return presetForName(inventory.name);
 }
 
 export const useInventoryImage = (
