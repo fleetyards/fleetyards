@@ -101,7 +101,13 @@ describe("LogisticsAddToInventoryBtn", () => {
     expect(button(mountBtn()).exists()).toBe(false);
   });
 
-  it("is not offered without hangar inventories", () => {
+  it("is offered for fleet inventories alone", () => {
+    state.features = ["fleet_logistics"];
+
+    expect(button(mountBtn()).exists()).toBe(true);
+  });
+
+  it("is not offered without any inventories", () => {
     state.features = [];
 
     expect(button(mountBtn()).exists()).toBe(false);

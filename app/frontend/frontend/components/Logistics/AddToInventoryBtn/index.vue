@@ -32,7 +32,8 @@ const { isFeatureEnabled } = useFeatures();
 const visible = computed(
   () =>
     isAuthenticated.value &&
-    isFeatureEnabled(FeatureFlagName.HANGAR_INVENTORIES) &&
+    (isFeatureEnabled(FeatureFlagName.HANGAR_INVENTORIES) ||
+      isFeatureEnabled(FeatureFlagName.FLEET_LOGISTICS)) &&
     !props.entry.record.retired,
 );
 
