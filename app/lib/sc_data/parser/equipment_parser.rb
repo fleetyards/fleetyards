@@ -81,10 +81,11 @@ module ScData
 
       # Hand-held gadgets the game files as personal weapons: the multitool,
       # tractor beam, fire extinguisher, rangefinder and Cambio SRT carry the
-      # Gadget subtype, and the ParaMed only says what it is in its header. A
-      # player browsing weapons has no use for them; one browsing tools does.
+      # Gadget subtype, and the ParaMed says what it is only in its header or,
+      # without one, in its medgun key. A player browsing weapons has no use for
+      # them; one browsing tools does.
       TOOL_SUB_TYPES = %w[Gadget].freeze
-      TOOL_ITEM_TYPES = %w[medical_device].freeze
+      TOOL_ITEM_TYPES = %w[medical_device medical_tool].freeze
 
       # The record key reads manufacturer_class_damage_index, so the second
       # segment names the class. Anything not listed keeps the raw segment
@@ -515,7 +516,7 @@ module ScData
       end
 
       private def armor_item_type(segments, slot)
-        return "flight_helmet" if segments.include?("flightsuit")
+        return "flight_helmet" if slot == "helmet" && segments.include?("flightsuit")
 
         weight = ARMOR_WEIGHTS[segments.find { |segment| ARMOR_WEIGHTS.key?(segment) }]
 

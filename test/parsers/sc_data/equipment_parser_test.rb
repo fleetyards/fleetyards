@@ -117,6 +117,7 @@ module ScData
           "kap_combat_heavy_arms_02_03_01" => "Char_Armor_Arms",
           "kap_combat_heavy_backpack_01_01_10" => "Char_Armor_Backpack",
           "mrai_flightsuit_helmet_01_01_01" => "Char_Armor_Helmet",
+          "mrai_flightsuit_light_arms_01_01_01" => "Char_Armor_Arms",
           "mrai_flightsuit_01_01_01" => "Char_Armor_Undersuit",
           "nvy_pilot_undersuit_01_01_01" => "Char_Armor_Undersuit"
         }.each do |key, type|
@@ -126,6 +127,7 @@ module ScData
           "item_Name_kap_combat_heavy_arms_02_03_01" => "Monde Arms",
           "item_Name_kap_combat_heavy_backpack_01_01_10" => "Monde Backpack",
           "item_Name_mrai_flightsuit_helmet_01_01_01" => "Neutrino Racing Helmet",
+          "item_Name_mrai_flightsuit_light_arms_01_01_01" => "Neutrino Racing Arms",
           "item_Name_mrai_flightsuit_01_01_01" => "Neutrino Racing Flight Suit",
           "item_Name_nvy_pilot_undersuit_01_01_01" => "OMNI-CFS-Diamond Flight Suit"
         }
@@ -133,6 +135,7 @@ module ScData
         assert_equal "heavy_armor", parsed.fetch("kap_combat_heavy_arms_02_03_01")["item_type"]
         assert_equal "heavy_backpack", parsed.fetch("kap_combat_heavy_backpack_01_01_10")["item_type"]
         assert_equal "flight_helmet", parsed.fetch("mrai_flightsuit_helmet_01_01_01")["item_type"]
+        assert_equal "light_armor", parsed.fetch("mrai_flightsuit_light_arms_01_01_01")["item_type"]
         assert_equal "flight_suit", parsed.fetch("mrai_flightsuit_01_01_01")["item_type"]
         assert_equal "undersuit", parsed.fetch("nvy_pilot_undersuit_01_01_01")["item_type"]
       end
@@ -157,17 +160,21 @@ module ScData
         write_equipment("crlf_medgun_01", name: "@item_Name_crlf_medgun_01",
           path: "entities/scitem/weapons/fps_weapons", type: "WeaponPersonal", sub_type: "Small",
           description: "@item_Desc_crlf_medgun_01")
+        write_equipment("crlf_medgun_02", name: "@item_Name_crlf_medgun_02",
+          path: "entities/scitem/weapons/fps_weapons", type: "WeaponPersonal", sub_type: "Small")
         write_equipment("behr_ltp_kinetic_01", name: "@item_Name_behr_ltp_kinetic_01",
           path: "entities/scitem/weapons/fps_weapons", type: "WeaponPersonal", sub_type: "Small")
         @parser.translations = {
           "item_Name_grin_multitool_01" => "Pyro RYT Multi-Tool",
           "item_Name_crlf_medgun_01" => "ParaMed Medical Device",
           "item_Desc_crlf_medgun_01" => "Item Type: Medical Device\\n\\nHeals.",
+          "item_Name_crlf_medgun_02" => "LifeGuard Medical Device",
           "item_Name_behr_ltp_kinetic_01" => "ADO-5 Laser Mine"
         }
 
         assert_equal %w[tool multitool], parsed.fetch("grin_multitool_01").values_at("equipment_type", "item_type")
         assert_equal %w[tool medical_device], parsed.fetch("crlf_medgun_01").values_at("equipment_type", "item_type")
+        assert_equal %w[tool medical_tool], parsed.fetch("crlf_medgun_02").values_at("equipment_type", "item_type")
         assert_equal %w[weapon mine], parsed.fetch("behr_ltp_kinetic_01").values_at("equipment_type", "item_type")
       end
 
