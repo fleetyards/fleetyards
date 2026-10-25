@@ -13,6 +13,12 @@ class Api::V1::FiltersEquipmentSubTypesTest < ActionDispatch::IntegrationTest
       tags "EquipmentFilters"
       produces "application/json"
 
+      parameter name: "q", in: :query,
+        schema: ::V1::Schemas::Queries::EquipmentFacetFilterQuery,
+        style: :deepObject,
+        explode: true,
+        required: false
+
       response(200, "successful") do
         schema ::Shared::V1::Schemas::FilterOptionsList
       end
@@ -29,6 +35,12 @@ class Api::V1::FiltersEquipmentSubTypesTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200 do
       assert_equal %w[IronSight Medium], parsed_body.map { |filter| filter["value"] }
       assert_equal "sub_type", parsed_body.first["category"]
+    end
+  end
+
+  test "GET /filters/equipment/sub-types narrows to the equipment types asked for" do
+    assert_api_response :get, 200, params: {q: {equipmentTypeIn: ["weapon_attachment"]}} do
+      assert_equal %w[IronSight], parsed_body.map { |filter| filter["value"] }
     end
   end
 end

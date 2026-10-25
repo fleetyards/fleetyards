@@ -13,6 +13,12 @@ class Api::V1::FiltersEquipmentWeaponClassesTest < ActionDispatch::IntegrationTe
       tags "EquipmentFilters"
       produces "application/json"
 
+      parameter name: "q", in: :query,
+        schema: ::V1::Schemas::Queries::EquipmentFacetFilterQuery,
+        style: :deepObject,
+        explode: true,
+        required: false
+
       response(200, "successful") do
         schema ::Shared::V1::Schemas::FilterOptionsList
       end
@@ -28,6 +34,14 @@ class Api::V1::FiltersEquipmentWeaponClassesTest < ActionDispatch::IntegrationTe
     assert_api_response :get, 200 do
       assert_equal %w[ballistic energy], parsed_body.map { |filter| filter["value"] }
       assert_equal "weapon_class", parsed_body.first["category"]
+    end
+  end
+
+  test "GET /filters/equipment/weapon-classes narrows to the equipment types asked for" do
+    create(:equipment, :attachment, weapon_class: "kinetic")
+
+    assert_api_response :get, 200, params: {q: {equipmentTypeIn: ["weapon_attachment"]}} do
+      assert_equal %w[kinetic], parsed_body.map { |filter| filter["value"] }
     end
   end
 end
