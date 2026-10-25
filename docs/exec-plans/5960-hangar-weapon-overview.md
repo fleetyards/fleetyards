@@ -19,18 +19,13 @@ The hangar table can show, sort and filter every ship by largest weapon size, al
 6. Hangar table column and sort `maxWeaponSize` ("Weapons", `2×S3 · 4×S2`) and a "Weapons" filter group, in all 7 locales.
 
 ### Phase 2 — Firepower at minimum and maximum weapon power
-1. Port to Ruby (e.g. `app/lib/loadout_stats/`):
-   - `computeLoadoutStats`, `dutyCycle`, `capacitor` and `shotsPerSecond` from `useLoadoutStats.ts`.
-   - `computeWeaponMaxRatio` from `useLoadoutSim.ts:335`.
-   - The power-port construction it needs: the weapons' total draw (`weaponUnits`), plant segments and the critical blocks of other components.
-   - Not the allocator.
-2. Use two power ratios: max = `computeWeaponMaxRatio(...)`, min = `min(1, 1 / weaponUnits)`. Apply the regen modifier's `powerRatio` boost to both.
-3. Add shared fixtures in `test/fixtures/loadout_stats/*.json` (hardpoint tree in, stats out).
-   - Run them from a vitest spec next to `useLoadoutStats.spec.ts` (passing the ratio through the same functions) and from a minitest test.
-   - Cover ballistic (heat), energy (capacitor), beam, pellet, charge, missile-only, unpowered (no pool) and power-starved ships.
-4. Add `alpha`, `burst_dps`, `sustained_dps_min`, `sustained_dps_max` and `stats_version` columns to `loadout_stats`, written by `LoadoutStat.write` next to the weapon sizes. Saved `power_presets` are ignored.
-5. Add a maintenance task to recalculate rows whose `stats_version` is stale, following `app/tasks/maintenance/backfill_hardpoint_builds_task.rb`.
-6. Add ransackers, filters (alpha, DPS ranges) and table columns. Show sustained DPS as a min–max range and sort by max.
+1. `FittingTree` builds the tree the browser computes from. Stock is the hardpoints endpoint's tree (ship copies, `facts.category`). A loadout is that tree with every fittable hull slot rebuilt from `LoadoutSlots`, using `graft`'s category rule (`useComponentFitting.ts`). `LoadoutWeapons` reads the same tree.
+2. `LoadoutFirepower` ports `tallyWeapons`, `dutyCycle`/`capacitor`, the power-port collection and `computeWeaponMaxRatio`. Max ratio is `weaponMaxRatio`, min is one pip over the weapons' draw (with the buff's power ratio), capped by max.
+3. On the client, `computeLoadoutStats`' loop became `tallyWeapons`. `computeFirepower` runs it at both ratios, and the sim exposes `weaponDraw`.
+4. Shared fixtures in `test/fixtures/loadout_stats/*.json`: ten real ships' API trees, pruned to power and ordnance nodes, with the expected figures. `useLoadoutStats.fixtures.spec.ts` and `test/models/loadout_firepower_test.rb` both read them. `UPDATE_LOADOUT_STATS_FIXTURES=1` rewrites them from the TypeScript side.
+5. `loadout_stats` gains `alpha`, `burst_dps`, `sustained_dps_min`, `sustained_dps_max` and `formula_version` (`LoadoutFirepower::VERSION`). `RefreshLoadoutStatsTask` recalculates everything.
+6. `Vehicle.fitted_stat_sql(column)` with ransackers for `max_weapon_size`, `alpha`, `burst_dps`, `sustained_dps_max`, plus their `public_` twins. `alphaGteq/Lteq` and `burstDpsGteq/Lteq` filters, and sorts on alpha, burst and sustained (max).
+7. Payload fields `alpha`, `burstDps`, `sustainedDpsMin`, `sustainedDpsMax`. Table columns Alpha, Burst DPS, and Sustained DPS (shown as min–max). Alpha/DPS range inputs in the Weapons filter group. All 7 locales.
 
 ## Intent Verification
 
@@ -68,6 +63,9 @@ The hangar table can show, sort and filter every ship by largest weapon size, al
 - **2026-10-25** A source is per request (live/ptu), so stats are stored per environment, not per model build. A loadout keeps the stock parts it leaves in, so loadouts are recalculated after every load as well as on save. The refresh has to run after `import.finish!`: until then `Source#served` still answers with the previous build.
 - **2026-10-25** Fleet vehicle lists render the new fields too (shared public partial), but `FleetVehicleQuery` has no weapon filter yet.
 
+- **2026-10-25** The stock tree matches the rendered hardpoints endpoint on all 215 in-game dev-DB ships, firepower and sizes both. A loadout with no changes differs from stock only on the MDC, where `LoadoutSlots` holds a gun the ship copy does not (the loadout page shows the same).
+- **2026-10-25** Stock figures do not graft the modules a ship takes, because the ship page does not either. This reverses the review fix that counted them: one figure per ship.
+
 ## Progress
 - [x] Phase 1
-- [ ] Phase 2
+- [x] Phase 2
