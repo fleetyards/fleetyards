@@ -1,0 +1,216 @@
+[
+  {
+    "case": "a gun crafted at the best grade",
+    "slots": [
+      {
+        "position": 0,
+        "modifiers": [
+          {
+            "propertyKey": "gpp_weapon_damage",
+            "name": "Impact Force",
+            "ramp": "linear",
+            "startQuality": 0,
+            "endQuality": 1000,
+            "modifierAtStart": 0.8,
+            "modifierAtEnd": 1.2
+          }
+        ]
+      }
+    ],
+    "qualities": {
+      "0": 1000
+    },
+    "typeData": {
+      "damagePerShot": {
+        "energy": 10,
+        "physical": 2.5
+      },
+      "fireRate": 600
+    },
+    "expected": {
+      "damagePerShot": {
+        "energy": 12,
+        "physical": 3
+      },
+      "fireRate": 600
+    }
+  },
+  {
+    "case": "a gun crafted at the worst grade in one of two slots",
+    "slots": [
+      {
+        "position": 0,
+        "modifiers": [
+          {
+            "propertyKey": "gpp_weapon_damage",
+            "name": "Impact Force",
+            "ramp": "linear",
+            "startQuality": 0,
+            "endQuality": 1000,
+            "modifierAtStart": 0.95,
+            "modifierAtEnd": 1.05
+          }
+        ]
+      },
+      {
+        "position": 1,
+        "modifiers": [
+          {
+            "propertyKey": "gpp_weapon_damage",
+            "name": "Impact Force",
+            "ramp": "linear",
+            "startQuality": 0,
+            "endQuality": 1000,
+            "modifierAtStart": 0.9,
+            "modifierAtEnd": 1.1
+          }
+        ]
+      }
+    ],
+    "qualities": {
+      "1": 0
+    },
+    "typeData": {
+      "damagePerShot": {
+        "thermal": 37.5
+      }
+    },
+    "expected": {
+      "damagePerShot": {
+        "thermal": 33.75
+      }
+    }
+  },
+  {
+    "case": "a power plant losing pips, halves rounded up",
+    "slots": [
+      {
+        "position": 0,
+        "modifiers": [
+          {
+            "propertyKey": "gpp_itemresource_powergeneration",
+            "name": "Power",
+            "ramp": "linear_integer_additive",
+            "startQuality": 0,
+            "endQuality": 1000,
+            "modifierAtStart": -2.5,
+            "modifierAtEnd": 2.5
+          }
+        ]
+      }
+    ],
+    "qualities": {
+      "0": 0
+    },
+    "typeData": {
+      "powerBase": 10
+    },
+    "expected": {
+      "powerBase": 8
+    }
+  },
+  {
+    "case": "a piecewise ramp past its last segment",
+    "slots": [
+      {
+        "position": 2,
+        "modifiers": [
+          {
+            "propertyKey": "gpp_shield_maxhealth",
+            "name": "Health",
+            "ramp": "linear",
+            "startQuality": 500,
+            "endQuality": 800,
+            "modifierAtStart": 1,
+            "modifierAtEnd": 1.3
+          },
+          {
+            "propertyKey": "gpp_shield_maxhealth",
+            "name": "Health",
+            "ramp": "linear",
+            "startQuality": 0,
+            "endQuality": 500,
+            "modifierAtStart": 0.9,
+            "modifierAtEnd": 1
+          }
+        ]
+      }
+    ],
+    "qualities": {
+      "2": 950
+    },
+    "typeData": {
+      "maxHealth": 4000,
+      "maxRegen": 120
+    },
+    "expected": {
+      "maxHealth": 5200,
+      "maxRegen": 120
+    }
+  },
+  {
+    "case": "a cooler at the neutral grade, and a stat with no figures",
+    "slots": [
+      {
+        "position": 0,
+        "modifiers": [
+          {
+            "propertyKey": "gpp_itemresource_coolantgeneration",
+            "name": "Coolant",
+            "ramp": "linear",
+            "startQuality": 0,
+            "endQuality": 1000,
+            "modifierAtStart": 0.7,
+            "modifierAtEnd": 1.3
+          },
+          {
+            "propertyKey": "gpp_quantum_fuelburn",
+            "name": "Fuel",
+            "ramp": "linear",
+            "startQuality": null,
+            "endQuality": null,
+            "modifierAtStart": null,
+            "modifierAtEnd": null
+          }
+        ]
+      }
+    ],
+    "qualities": {},
+    "typeData": {
+      "coolingRate": 21.5
+    },
+    "expected": {
+      "coolingRate": 21.5
+    }
+  },
+  {
+    "case": "a stat the part does not carry",
+    "slots": [
+      {
+        "position": 0,
+        "modifiers": [
+          {
+            "propertyKey": "gpp_shield_maxhealth",
+            "name": "Health",
+            "ramp": "linear",
+            "startQuality": 0,
+            "endQuality": 1000,
+            "modifierAtStart": 0.8,
+            "modifierAtEnd": 1.2
+          }
+        ]
+      }
+    ],
+    "qualities": {
+      "0": 250
+    },
+    "typeData": {
+      "powerBase": 6,
+      "fireRate": 300
+    },
+    "expected": {
+      "powerBase": 6,
+      "fireRate": 300
+    }
+  }
+]

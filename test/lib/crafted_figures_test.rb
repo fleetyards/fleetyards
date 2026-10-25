@@ -2,55 +2,42 @@
 
 require "test_helper"
 
-# The cases `craftedComponent.spec.ts` checks the browser's crafting against.
+# The cases `craftedComponent.fixtures.spec.ts` reads: a recipe's slots, the
+# grades chosen and a part's figures, with what the browser crafts them into.
+# The server has to land on the same figures.
 class CraftedFiguresTest < ActiveSupport::TestCase
   Slot = Struct.new(:position, :modifiers)
   Modifier = Struct.new(:property_key, :name, :ramp, :start_quality, :end_quality, :modifier_at_start, :modifier_at_end)
 
-  def modifier(key, ramp: "linear", from: 0, to: 1000, low: 0.8, high: 1.2)
-    Modifier.new(key, key, ramp, from, to, low, high)
+  CASES = JSON.parse(Rails.root.join("test/fixtures/crafted_figures/cases.json").read).map do |fixture|
+    fixture.deep_transform_keys(&:underscore)
   end
 
-  test "multiplies two slots moving the same stat" do
-    figures = CraftedFigures.new(
-      [Slot.new(0, [modifier("gpp_shield_maxhealth")]), Slot.new(1, [modifier("gpp_shield_maxhealth")])],
-      {"0" => 1000, "1" => 1000}
-    )
-
-    assert_in_delta 1.44, figures.changes["gpp_shield_maxhealth"].value
+  test "there are cases to check" do
+    assert_not_empty CASES
   end
 
-  test "skips a modifier that carries no figures" do
-    figures = CraftedFigures.new([Slot.new(0, [modifier("gpp_itemresource_powergeneration", low: nil, high: nil)])], {"0" => 1000})
+  CASES.each do |fixture|
+    test "agrees with the browser on #{fixture["case"]}" do
+      slots = fixture["slots"].map do |slot|
+        Slot.new(slot["position"], slot["modifiers"].map { |modifier| Modifier.new(**modifier.symbolize_keys) })
+      end
 
-    assert_empty figures.changes
+      crafted = CraftedFigures.new(slots, fixture["qualities"]).type_data(fixture["type_data"])
+
+      assert_figures fixture.fetch("expected"), crafted
+    end
   end
 
-  test "reads as the catalogue's part at the neutral grade" do
-    figures = CraftedFigures.new([Slot.new(0, [modifier("gpp_shield_maxhealth")])], {})
+  private def assert_figures(expected, actual, path = [])
+    assert_equal expected.keys.sort, actual.keys.sort, "keys at #{path.join(".")}"
 
-    assert_equal({"max_health" => 1000.0, "max_regen" => 100}, figures.type_data({"max_health" => 1000, "max_regen" => 100}))
-  end
-
-  test "scales a gun's damage of every type alike" do
-    figures = CraftedFigures.new([Slot.new(0, [modifier("gpp_weapon_damage")])], {"0" => 1000})
-
-    assert_equal({"energy" => 12.0, "physical" => 6.0},
-      figures.type_data({"damage_per_shot" => {"energy" => 10, "physical" => 5}})["damage_per_shot"])
-  end
-
-  test "adds whole pips to a power plant, rounding halves up below zero too" do
-    lose = CraftedFigures.new([Slot.new(0, [modifier("gpp_itemresource_powergeneration", ramp: "linear_integer_additive", low: -2.5, high: -2.5)])], {"0" => 0})
-
-    assert_equal 8, lose.type_data({"power_base" => 10})["power_base"]
-  end
-
-  test "holds a piecewise ramp's end value past its domain" do
-    figures = CraftedFigures.new(
-      [Slot.new(0, [modifier("gpp_shield_maxhealth", from: 0, to: 500, low: 0.9, high: 1.0), modifier("gpp_shield_maxhealth", from: 500, to: 800, low: 1.0, high: 1.3)])],
-      {"0" => 950}
-    )
-
-    assert_in_delta 1.3, figures.changes["gpp_shield_maxhealth"].value
+    expected.each do |key, value|
+      if value.is_a?(Hash)
+        assert_figures(value, actual[key], path + [key])
+      else
+        assert_in_delta value, actual[key], 1e-9, "at #{(path + [key]).join(".")}"
+      end
+    end
   end
 end
