@@ -199,6 +199,10 @@ describe("FleetContractsItemModal", () => {
     expect(await pickerCategories("crafting")).toEqual([
       "component",
       "weapon",
+      "armor",
+      "clothing",
+      "tool",
+      "container",
       "equipment",
       "ammunition",
       "consumable",
