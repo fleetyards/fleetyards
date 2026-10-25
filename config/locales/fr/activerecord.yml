@@ -275,6 +275,7 @@ fr:
     errors:
       messages:
         contract_item_already_asked_for: "figure déjà sur ce contrat avec la même catégorie et la même unité"
+        contract_item_needs_reward_rate: "ont besoin d'une récompense par SCU ou unité sur chaque ligne"
         entry_goods_in_transit: "ne peut pas être supprimé tant que le transfert auquel il appartient est en attente de réponse"
         inventory_goods_in_transit: "ne peut pas être supprimé tant qu'un transfert envoyé est encore en attente de réponse"
         inventory_contract_destination: "ne peut pas être supprimé tant qu'un contrat de flotte ouvert y livre"

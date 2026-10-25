@@ -115,6 +115,30 @@ class Api::V1::FleetContractItemsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "POST adds a line to a per-unit contract with its own rate" do
+    @contract.update!(reward_type: :per_unit)
+    sign_in @officer
+
+    assert_api_response :post, 201,
+      api_path: COLLECTION_PATH,
+      path_params: {fleetSlug: @fleet.slug, fleetContractSlug: @contract.slug},
+      body: {name: "Gold", category: "commodity", unit: "scu", quantity: "100", rewardRate: "85.50"} do
+      assert_equal "85.5", parsed_body["rewardRate"]
+    end
+  end
+
+  test "POST refuses a line of a per-unit contract without a rate" do
+    @contract.update!(reward_type: :per_unit)
+    sign_in @officer
+
+    assert_api_response :post, 400,
+      api_path: COLLECTION_PATH,
+      path_params: {fleetSlug: @fleet.slug, fleetContractSlug: @contract.slug},
+      body: {name: "Gold", category: "commodity", unit: "scu", quantity: "100"} do
+      assert_includes parsed_body["errors"].pluck("attribute"), "rewardRate"
+    end
+  end
+
   # The contract records *which* commodity or item it wants, not just a name --
   # picked out of the same catalogues the inventory ledger references.
   test "POST stores the commodity the contract asks for" do

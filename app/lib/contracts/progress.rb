@@ -167,20 +167,22 @@ module Contracts
       end
     end
 
-    # What each contractor delivered that counts toward a line, in the line's
-    # own SCU or units -- what a per-unit reward is paid on.
-    def counted_quantities
-      @counted_quantities ||= lines.each_with_object(Hash.new(0.to_d)) do |line, result|
-        line.contributions.each { |contribution| result[contribution.user_id] += contribution.counted }
+    # What each contractor's counted deliveries earn at their lines' rates --
+    # what a per-unit reward is paid on.
+    def earned_amounts
+      @earned_amounts ||= lines.each_with_object(Hash.new(0.to_d)) do |line, result|
+        line.contributions.each do |contribution|
+          result[contribution.user_id] += line.item.reward_for(contribution.counted)
+        end
       end
     end
 
-    # What the reward is divided by when the contract settles. A rate pays each
-    # contractor on their own goods, so it divides by what they delivered; a
+    # What the reward is divided by when the contract settles. Rates pay each
+    # contractor on their own goods, so they divide by what each one earned; a
     # fixed reward divides by the lines' fractions. The author of a personal
     # contract pays it, so their own deliveries earn them no share.
     def payout_weights
-      payout = @contract.reward_per_unit? ? counted_quantities : weights
+      payout = @contract.reward_per_unit? ? earned_amounts : weights
       @contract.personal? ? payout.except(@contract.created_by_id) : payout
     end
 

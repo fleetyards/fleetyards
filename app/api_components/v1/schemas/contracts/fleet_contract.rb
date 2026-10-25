@@ -26,12 +26,15 @@ module V1
             # decimal(15, 2) with no currency column -- aUEC is the only one,
             # and its name lives in a translation.
             reward: {type: :string},
-            # What `reward` is: the whole payment, a rate per SCU or unit
-            # delivered, or nothing.
+            # How it pays: `reward` as the whole payment, each line's own rate
+            # per SCU or unit delivered, or nothing. `reward` is 0 unless fixed.
             rewardType: ::V1::Schemas::Enums::FleetContractRewardTypeEnum,
-            # The most it pays, with a per-unit rate applied to everything the
-            # lines ask for.
+            # The most it pays, with each line's rate applied to everything the
+            # line asks for.
             maxReward: {type: :string},
+            # The rate every line pays, when a per-unit contract's lines all
+            # pay the same; null otherwise.
+            rewardRate: {type: [:string, :null]},
             reimburseExpenses: {type: :boolean},
             crewLimit: {type: [:integer, :null]},
             # Only a transport contract has a collection leg to track, and the
@@ -61,7 +64,7 @@ module V1
             updatedAt: {type: [:string, :null], format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id title slug kind state reward rewardType maxReward requiresPickup personal destination crewPreview progress itemsCount crewCount]
+          required: %w[id title slug kind state reward rewardType maxReward rewardRate requiresPickup personal destination crewPreview progress itemsCount crewCount]
         })
       end
     end

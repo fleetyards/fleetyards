@@ -275,6 +275,7 @@ it:
     errors:
       messages:
         contract_item_already_asked_for: "è già in questo contratto con la stessa categoria e unità"
+        contract_item_needs_reward_rate: "richiedono una ricompensa per SCU o unità su ogni riga"
         entry_goods_in_transit: "non può essere eliminato finché il trasferimento a cui appartiene è ancora in attesa di risposta"
         inventory_goods_in_transit: "non può essere eliminato finché un trasferimento inviato è ancora in attesa di risposta"
         inventory_contract_destination: "non può essere eliminato finché un contratto di flotta aperto vi consegna"

@@ -7,6 +7,7 @@ FactoryBot.define do
     category { :commodity }
     unit { :scu }
     quantity { 100 }
+    reward_rate { fleet_contract&.reward_per_unit? ? 10 : nil }
 
     trait :component do
       category { :component }

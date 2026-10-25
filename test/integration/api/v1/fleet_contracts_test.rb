@@ -353,19 +353,40 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
     assert_equal 0, @fleet.fleet_contracts.count
   end
 
-  test "POST creates a contract paying per unit delivered" do
+  test "POST creates a contract paying its own rate per unit on each line" do
     sign_in @officer
 
     assert_api_response :post, 201,
       api_path: COLLECTION_PATH,
       path_params: {fleetSlug: @fleet.slug},
-      body: {kind: "procurement", rewardType: "per_unit", reward: "25.00",
+      body: {kind: "procurement", rewardType: "per_unit",
              destinationFleetInventoryId: @depot.id,
-             items: [{name: "Titanium", category: "commodity", unit: "scu", quantity: "800.0"}]} do
+             items: [
+               {name: "Titanium", category: "commodity", unit: "scu", quantity: "800.0", rewardRate: "25.00"},
+               {name: "Gold", category: "commodity", unit: "scu", quantity: "100.0", rewardRate: "90.00"}
+             ]} do
       assert_equal "per_unit", parsed_body["rewardType"]
-      assert_equal "25.0", parsed_body["reward"]
-      assert_equal "20000.0", parsed_body["maxReward"]
+      assert_equal "0.0", parsed_body["reward"]
+      assert_nil parsed_body["rewardRate"]
+      assert_equal "29000.0", parsed_body["maxReward"]
     end
+
+    contract = @fleet.fleet_contracts.sole
+    assert_equal({"Titanium" => 25, "Gold" => 90},
+      contract.fleet_contract_items.to_h { |item| [item.name, item.reward_rate] })
+  end
+
+  test "POST refuses a per-unit contract with a line that has no rate" do
+    sign_in @officer
+
+    assert_api_response :post, 400,
+      api_path: COLLECTION_PATH,
+      path_params: {fleetSlug: @fleet.slug},
+      body: {kind: "procurement", rewardType: "per_unit",
+             destinationFleetInventoryId: @depot.id,
+             items: [{name: "Titanium", category: "commodity", unit: "scu", quantity: "800.0"}]}
+
+    assert_equal 0, @fleet.fleet_contracts.count
   end
 
   test "POST refuses a title whose slug another contract already has" do
@@ -636,12 +657,12 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET sorts by what a contract pays, multiplying a rate out over its goods" do
+  test "GET sorts by what a contract pays, multiplying the rates out over its goods" do
     fixed = create(:fleet_contract, :published, fleet: @fleet, destination_fleet_inventory: @depot,
       reward_type: :fixed, reward: 120_000)
     rate = create(:fleet_contract, :published, fleet: @fleet, destination_fleet_inventory: @depot,
-      reward_type: :per_unit, reward: 500)
-    rate.fleet_contract_items.sole.update!(quantity: 2_000)
+      reward_type: :per_unit)
+    rate.fleet_contract_items.sole.update!(quantity: 2_000, reward_rate: 500)
     unpaid = create(:fleet_contract, :published, fleet: @fleet, destination_fleet_inventory: @depot,
       reward_type: :none)
 
