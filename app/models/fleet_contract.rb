@@ -64,6 +64,8 @@ class FleetContract < ApplicationRecord
   has_one :payout_ledger, as: :subject, dependent: :destroy
 
   enum :kind, KINDS
+  # The column defaults to fixed only for a release that predates it.
+  attribute :reward_type, default: nil
   enum :reward_type, REWARD_TYPES, prefix: :reward
 
   include SquadronRestrictable

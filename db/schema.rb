@@ -760,7 +760,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_150000) do
     t.integer "visibility", default: 0, null: false
     t.uuid "destination_inventory_id"
     t.datetime "settled_at"
-    t.integer "reward_type", null: false
+    t.integer "reward_type", default: 0, null: false
     t.index ["created_by_id"], name: "index_fleet_contracts_on_created_by_id"
     t.index ["destination_fleet_inventory_id"], name: "index_fleet_contracts_on_destination_fleet_inventory_id"
     t.index ["destination_inventory_id"], name: "index_fleet_contracts_on_destination_inventory_id"
@@ -772,7 +772,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_25_150000) do
     t.check_constraint "kind = 0 AND source_fleet_inventory_id IS NOT NULL OR kind <> 0 AND source_fleet_inventory_id IS NULL", name: "fleet_contracts_source_only_for_transport"
     t.check_constraint "num_nonnulls(destination_fleet_inventory_id, destination_inventory_id) <= 1", name: "fleet_contracts_single_destination"
     t.check_constraint "reward >= 0::numeric", name: "fleet_contracts_reward_not_negative"
-    t.check_constraint "reward_type = 2 AND reward = 0::numeric OR reward_type <> 2 AND reward > 0::numeric", name: "fleet_contracts_reward_matches_type"
+    t.check_constraint "reward_type <> 2 OR reward = 0::numeric", name: "fleet_contracts_reward_matches_type"
   end
 
   create_table "fleet_discord_role_holders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
