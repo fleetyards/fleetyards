@@ -32,9 +32,17 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
     @components = create_list(:component, 2)
   end
 
-  test "GET /components leaves the views out of the list" do
+  # A picker sets components side by side, so the list carries the angled
+  # render each is drawn at the same angle in, and no other view.
+  test "GET /components carries only the angled view on the list" do
+    @components.first.angled_view.attach(io: file_fixture("test.png").open, filename: "angled.png", content_type: "image/png")
+    @components.first.top_view.attach(io: file_fixture("test.png").open, filename: "top.png", content_type: "image/png")
+
     assert_api_response :get, 200 do
-      assert parsed_body["items"].none? { |item| item["media"].key?("angledView") }
+      item = parsed_body["items"].find { |entry| entry["slug"] == @components.first.slug }
+
+      assert_equal "angled.png", item.dig("media", "angledView", "name")
+      assert_not item["media"].key?("topView")
     end
   end
 
