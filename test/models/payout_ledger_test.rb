@@ -274,6 +274,19 @@ class PayoutLedgerTest < ActiveSupport::TestCase
     assert_predicate contract.reload, :fulfilled?
   end
 
+  test "pays the crew nothing for goods a personal contract's author delivered" do
+    author = create(:user)
+    contract = create(:fleet_contract, :fulfilled, :hangar_destination, created_by: author)
+    create(:fleet_contract_assignment, :accepted, fleet_contract: contract)
+    Contracts::Progress.any_instance.stubs(:weights).returns({author.id => 1.to_d})
+
+    ledger = contract.create_payout_ledger!
+
+    assert_not ledger.seed_participants_from_subject!
+    assert_includes ledger.errors.details[:base], {error: :no_contractors}
+    assert_empty ledger.payout_entries
+  end
+
   test "divides evenly across the contractors when nothing was measured" do
     contract = create(:fleet_contract, :fulfilled, reward_type: :none)
     create(:fleet_contract_assignment, :lead, fleet_contract: contract)
