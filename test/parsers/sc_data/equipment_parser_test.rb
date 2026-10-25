@@ -79,6 +79,67 @@ module ScData
         assert_equal %w[clothing eyewear], parsed.fetch("r6p_glasses_01_01_01").values_at("equipment_type", "slot")
       end
 
+      test "reads a garment past the outfit line or faction its key names first" do
+        {
+          "cba_chef_jacket_01_01_01" => "Char_Clothing_Torso_1",
+          "spv_bioticorp_rep_heels_01_01_01" => "Char_Clothing_Feet",
+          "sc_nvy_bdu_trouser_01_01_01" => "Char_Clothing_Legs",
+          "mannequin_displaycore" => "Char_Armor_Torso"
+        }.each do |key, type|
+          write_equipment(key, name: "@item_Name_#{key}", type:)
+        end
+        @parser.translations = {
+          "item_Name_cba_chef_jacket_01_01_01" => "Grammercy Food Service Jacket",
+          "item_Name_spv_bioticorp_rep_heels_01_01_01" => "Dovo Shoes",
+          "item_Name_sc_nvy_bdu_trouser_01_01_01" => "Combat Readiness Uniform Trousers",
+          "item_Name_mannequin_displaycore" => "Display Core"
+        }
+
+        assert_equal "jacket", parsed.fetch("cba_chef_jacket_01_01_01")["item_type"]
+        assert_equal "shoes", parsed.fetch("spv_bioticorp_rep_heels_01_01_01")["item_type"]
+        assert_equal "pants", parsed.fetch("sc_nvy_bdu_trouser_01_01_01")["item_type"]
+        assert_nil parsed.fetch("mannequin_displaycore")["item_type"]
+      end
+
+      test "reads undescribed armour by the weight its key names, as the described armour reads" do
+        {
+          "kap_combat_heavy_arms_02_03_01" => "Char_Armor_Arms",
+          "kap_combat_heavy_backpack_01_01_10" => "Char_Armor_Backpack",
+          "mrai_flightsuit_helmet_01_01_01" => "Char_Armor_Helmet",
+          "mrai_flightsuit_01_01_01" => "Char_Armor_Undersuit",
+          "nvy_pilot_undersuit_01_01_01" => "Char_Armor_Undersuit"
+        }.each do |key, type|
+          write_equipment(key, name: "@item_Name_#{key}", path: "entities/scitem/characters/human/armor", type:)
+        end
+        @parser.translations = {
+          "item_Name_kap_combat_heavy_arms_02_03_01" => "Monde Arms",
+          "item_Name_kap_combat_heavy_backpack_01_01_10" => "Monde Backpack",
+          "item_Name_mrai_flightsuit_helmet_01_01_01" => "Neutrino Racing Helmet",
+          "item_Name_mrai_flightsuit_01_01_01" => "Neutrino Racing Flight Suit",
+          "item_Name_nvy_pilot_undersuit_01_01_01" => "OMNI-CFS-Diamond Flight Suit"
+        }
+
+        assert_equal "heavy_armor", parsed.fetch("kap_combat_heavy_arms_02_03_01")["item_type"]
+        assert_equal "heavy_backpack", parsed.fetch("kap_combat_heavy_backpack_01_01_10")["item_type"]
+        assert_equal "flight_helmet", parsed.fetch("mrai_flightsuit_helmet_01_01_01")["item_type"]
+        assert_equal "flight_suit", parsed.fetch("mrai_flightsuit_01_01_01")["item_type"]
+        assert_equal "undersuit", parsed.fetch("nvy_pilot_undersuit_01_01_01")["item_type"]
+      end
+
+      test "reads a weapon mount's class past the mount and a short grenade key as a grenade" do
+        write_equipment("weaponmount_nvtc_optics_holo_x1_s1", name: "@item_Name_weaponmount_nvtc_optics_holo_x1_s1",
+          path: "entities/scitem/weapons/weapon_modifier", type: "WeaponAttachment")
+        write_equipment("ksar_gren_frag_01", name: "@item_Name_ksar_gren_frag_01",
+          path: "entities/scitem/weapons/throwable", type: "Grenade")
+        @parser.translations = {
+          "item_Name_weaponmount_nvtc_optics_holo_x1_s1" => "Gamma (1x Holographic)",
+          "item_Name_ksar_gren_frag_01" => "Scorch Plasma Grenade"
+        }
+
+        assert_equal "weapon_scope", parsed.fetch("weaponmount_nvtc_optics_holo_x1_s1")["item_type"]
+        assert_equal "grenade", parsed.fetch("ksar_gren_frag_01")["item_type"]
+      end
+
       test "reads the flares and tool cases among the props by their key" do
         write_equipment("carryable_1h_cu_glowstick_blue", name: "@item_Nameun_portable_light_1_a_cyan",
           path: "entities/scitem/flair/carryables", type: "WeaponPersonal", description: "@item_Desc_flare")
