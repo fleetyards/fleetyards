@@ -26,7 +26,7 @@ module ItemViews
   end
 
   # What the catalogue shows an item by: its store image, or the angled render
-  # when it has none -- the order a ship falls back in.
+  # when it has none -- the order Model#display_image_attr falls back in.
   def display_image_attr
     if store_image.attached?
       :store_image
