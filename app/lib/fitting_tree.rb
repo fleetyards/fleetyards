@@ -15,19 +15,39 @@ class FittingTree
     new(model).stock
   end
 
-  def self.fitted(model, slots)
-    new(model).fitted(slots)
+  def self.fitted(model, slots, crafted = {})
+    new(model).fitted(slots, crafted)
   end
 
   def initialize(model)
     @model = model
   end
 
+  # A level at a time, so a ship costs a query per level of nesting rather
+  # than one per mount.
   def stock
-    @stock ||= hardpoint_nodes(@model.hardpoints.game_files.in_build)
+    @stock ||= begin
+      level = @model.hardpoints.game_files.in_build.includes(LoadoutSlots::PRELOAD).to_a
+      top = level.map { |hardpoint| hardpoint_node(hardpoint) }
+      nodes = level.zip(top).to_h { |hardpoint, node| [hardpoint.id, node] }
+
+      while level.any?
+        level = ::Hardpoint.in_build.where(parent_type: "Hardpoint", parent_id: level.map(&:id))
+          .includes(LoadoutSlots::PRELOAD).to_a
+        level.each do |hardpoint|
+          node = hardpoint_node(hardpoint)
+          nodes[hardpoint.parent_id]["hardpoints"] << node
+          nodes[hardpoint.id] = node
+        end
+      end
+
+      top
+    end
   end
 
-  def fitted(slots)
+  # `crafted` are the loadout's crafted items by slot path.
+  def fitted(slots, crafted = {})
+    @crafted = crafted
     fitting = slots.fittable_hull.index_by(&:name)
 
     stock.map do |node|
@@ -36,17 +56,15 @@ class FittingTree
     end
   end
 
-  private def hardpoint_nodes(scope)
-    scope.includes(LoadoutSlots::PRELOAD).map do |hardpoint|
-      facts = hardpoint.facts
+  private def hardpoint_node(hardpoint)
+    facts = hardpoint.facts
 
-      {
-        "name" => hardpoint.sc_name,
-        "category" => facts.category,
-        "component" => component_node(facts.component),
-        "hardpoints" => hardpoint_nodes(hardpoint.hardpoints.in_build)
-      }
-    end
+    {
+      "name" => hardpoint.sc_name,
+      "category" => facts.category,
+      "component" => component_node(facts.component),
+      "hardpoints" => []
+    }
   end
 
   # A port inside a part names no category of its own; the ship's copy does,
@@ -60,21 +78,40 @@ class FittingTree
     {
       "name" => slot.name,
       "category" => category,
-      "component" => component_node(component),
+      "component" => component_node(component, crafted_at(slot.path, component)),
       "hardpoints" => slots.children(slot).map do |child|
         slot_node(slots, child, original&.dig("hardpoints")&.find { |node| node["name"] == child.name })
       end
     }
   end
 
-  private def component_node(component)
+  private def component_node(component, figures = nil)
     return if component.nil?
+
+    type_data = component.type_data.to_h.deep_stringify_keys
 
     {
       "name" => component.name,
       "type" => component.component_type,
       "size" => component.size,
-      "type_data" => component.type_data.to_h.deep_stringify_keys
+      "type_data" => figures ? figures.type_data(type_data) : type_data
     }
+  end
+
+  # The part as crafted, where the loadout crafted the one in this slot and the
+  # recipe is in the build; until then, as catalogued, as the page reads it.
+  private def crafted_at(path, component)
+    item = @crafted&.dig(path)
+    return if item.nil? || component.nil? || item.item_id != component.id
+
+    recipe = recipes[[item.blueprint_id, component.id]]
+    recipe && CraftedFigures.new(recipe.cost_slots, item.crafted_qualities)
+  end
+
+  private def recipes
+    @recipes ||= ::Blueprint.readable_builds(::Blueprint.served_source)
+      .where(blueprint_id: @crafted.values.map(&:blueprint_id), craftable_type: "Component")
+      .includes(cost_slots: :modifiers)
+      .index_by { |build| [build.blueprint_id, build.craftable_id] }
   end
 end

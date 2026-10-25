@@ -149,6 +149,25 @@ class LoadoutStatTest < ActiveSupport::TestCase
     assert_in_delta 10, stat_of(loadout).alpha
   end
 
+  test "a crafted gun counts with the damage its recipe gives it" do
+    energy = {"damage_per_shot" => {"energy" => 10}, "fire_rate" => 600}
+    [@gun, @small_gun].each do |gun|
+      gun.update!(type_data: energy)
+      gun.build&.update!(type_data: energy)
+    end
+    blueprint = create(:blueprint, craftable: @small_gun)
+    create(:blueprint_cost_modifier, slot: create(:blueprint_cost_slot, build: blueprint.build, position: 0),
+      property_key: "gpp_weapon_damage", modifier_at_start: 0.5, modifier_at_end: 1.5)
+    loadout = create(:vehicle_loadout, :fleetyards, :active, vehicle: @vehicle, name: nil, item_list: [{
+      slot_path: "hardpoint_gun_left/hardpoint_class_2", item_type: "Component", item_id: @small_gun.id,
+      crafted: {blueprint_id: blueprint.id, qualities: [{position: 0, quality: 1000}]}
+    }])
+
+    LoadoutStat.refresh(@source)
+
+    assert_in_delta 25, stat_of(loadout).alpha
+  end
+
   test "a vehicle left with two active loadouts still reads its guns" do
     first = fit(["hardpoint_gun_left/hardpoint_class_2", nil], ["hardpoint_gun_right/hardpoint_class_2", nil])
     fit(["hardpoint_gun_left/hardpoint_class_2", @small_gun])

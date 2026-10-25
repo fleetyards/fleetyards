@@ -12,35 +12,50 @@ class LoadoutStat < ApplicationRecord
 
   def self.refresh(source = ::ScData::Source.current.served)
     ::ScData::Source.with(source) do
-      Model.find_each { |model| write(model, FittingTree.stock(model), model, source) }
+      trees = {}
+      Model.includes(:build, :last_build).find_each do |model|
+        trees[model.id] = FittingTree.new(model)
+        write(model, trees[model.id].stock, model, source)
+      end
 
-      fleetyards_loadouts.find_each { |loadout| write_loadout(loadout, source) }
+      fleetyards_loadouts.find_each do |loadout|
+        write_loadout(loadout, source, trees[loadout.vehicle.model_id])
+      end
     end
   end
 
+  # Read again in each source: a model's build is cached on the record, and the
+  # pool and buff a source's figures need are that source's.
   def self.refresh_model(model)
     ::ScData::Source.available.each do |source|
       ::ScData::Source.with(source) do
-        write(model, FittingTree.stock(model), model, source)
+        reloaded = Model.includes(:build, :last_build).find(model.id)
+        tree = FittingTree.new(reloaded)
+        write(reloaded, tree.stock, reloaded, source)
 
-        fleetyards_loadouts.where(vehicles: {model_id: model.id}).find_each { |loadout| write_loadout(loadout, source) }
+        fleetyards_loadouts.where(vehicles: {model_id: model.id}).find_each do |loadout|
+          write_loadout(loadout, source, tree)
+        end
       end
     end
   end
 
   def self.refresh_loadout(loadout)
     ::ScData::Source.available.each do |source|
-      ::ScData::Source.with(source) { write_loadout(loadout, source) }
+      ::ScData::Source.with(source) { write_loadout(fleetyards_loadouts.find(loadout.id), source) }
     end
   end
 
   def self.fleetyards_loadouts
-    VehicleLoadout.kind_fleetyards.joins(:vehicle).includes(:items, vehicle: :model)
+    VehicleLoadout.kind_fleetyards.joins(:vehicle).includes(:items, vehicle: {model: %i[build last_build]})
   end
 
-  def self.write_loadout(loadout, source)
+  def self.write_loadout(loadout, source, tree = nil)
     model = loadout.vehicle.model
-    write(loadout, FittingTree.fitted(model, loadout.slots), model, source)
+    crafted = loadout.items.select(&:crafted?).index_by(&:slot_path)
+    fitted = (tree || FittingTree.new(model)).fitted(loadout.slots, crafted)
+
+    write(loadout, fitted, model, source)
   end
 
   def self.write(fitting, tree, model, source)
