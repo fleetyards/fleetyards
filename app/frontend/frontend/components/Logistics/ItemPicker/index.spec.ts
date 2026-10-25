@@ -22,9 +22,11 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   componentCategoriesFilters: vi.fn().mockResolvedValue([]),
   commodityTypesFilters: vi.fn().mockResolvedValue([]),
   equipmentItemTypesFilters: vi.fn().mockResolvedValue([]),
-  equipmentSlotsFilters: vi.fn().mockResolvedValue([
-    { category: "slot", label: "Helmet", value: "helmet" },
-  ]),
+  equipmentSlotsFilters: vi
+    .fn()
+    .mockResolvedValue([
+      { category: "slot", label: "Helmet", value: "helmet" },
+    ]),
   components: vi.fn(),
   commodities: vi.fn(),
   equipment: vi.fn(),
