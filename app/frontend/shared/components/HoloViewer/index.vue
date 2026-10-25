@@ -39,6 +39,9 @@ type Props = {
   grid?: boolean;
   zoomable?: boolean;
   panable?: boolean;
+  // Where the camera starts around the model, in degrees from +Z. A ship holo
+  // is exported facing the default; an item's keeps the game's entity frame.
+  azimuth?: number;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -50,6 +53,7 @@ const props = withDefaults(defineProps<Props>(), {
   grid: false,
   panable: false,
   zoomable: false,
+  azimuth: 0,
 });
 
 const { displayAlert } = useAppNotifications();
@@ -291,8 +295,15 @@ const handleModelLoaded = (size: Vector3, _scene: Mesh) => {
     Math.tan((maxCameraElevation.value * Math.PI) / 180) * distance,
   );
 
-  cameraPosition.value = [0, height, distance];
-  lightPosition.value = [0, height, distance];
+  const azimuth = (props.azimuth * Math.PI) / 180;
+  const position: [number, number, number] = [
+    Math.sin(azimuth) * distance,
+    height,
+    Math.cos(azimuth) * distance,
+  ];
+
+  cameraPosition.value = position;
+  lightPosition.value = position;
 };
 
 const handleRenderError = (error: Error) => {
