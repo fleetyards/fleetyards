@@ -22,7 +22,7 @@ const sharedUnit = (contract: ContractLike) => {
 };
 
 export const useContractReward = () => {
-  const { t, toUEC } = useI18n();
+  const { t, toUEC, toNumber, currentLocale } = useI18n();
 
   const rateUnit = (contract: ContractLike) => {
     const unit = sharedUnit(contract);
@@ -48,6 +48,31 @@ export const useContractReward = () => {
     }
   };
 
+  // The same figure as plain text, for a badge that cannot take markup. A rate
+  // keeps its cents: 12.50 per SCU rounded to 13 would misstate the pay.
+  const rewardFigure = (
+    contract: ContractLike,
+  ): { value: string; unit?: string } => {
+    const amount = Number(contract.reward);
+
+    switch (contract.rewardType) {
+      case FleetContractRewardTypeEnum.NONE:
+        return { value: t("labels.fleets.contracts.noReward") };
+      case FleetContractRewardTypeEnum.PER_UNIT:
+        return {
+          value: amount.toLocaleString(currentLocale(), {
+            maximumFractionDigits: 2,
+          }),
+          unit: rateUnit(contract),
+        };
+      default:
+        return {
+          value: String(toNumber(amount, "integer")),
+          unit: t("number.units.uec"),
+        };
+    }
+  };
+
   // What a rate comes to once every line is delivered. Only a rate needs it;
   // a fixed reward already is the total.
   const maxRewardLabel = (contract: ContractLike) => {
@@ -61,5 +86,5 @@ export const useContractReward = () => {
     return t("labels.fleets.contracts.maxReward", { amount: toUEC(max) });
   };
 
-  return { paysReward, rateUnit, rewardLabel, maxRewardLabel };
+  return { paysReward, rewardLabel, rewardFigure, maxRewardLabel };
 };

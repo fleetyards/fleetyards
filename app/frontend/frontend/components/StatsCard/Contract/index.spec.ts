@@ -47,13 +47,13 @@ describe("ContractStatsCard", () => {
   it("quotes a per-unit reward in the unit its lines are measured in", async () => {
     const wrapper = await mountCard(
       contract({
-        reward: "25.0",
+        reward: "12.5",
         rewardType: "per_unit" as never,
         progress: { lines: [{ unit: "scu" }] } as never,
       }),
     );
 
-    expect(wrapper.find("[title]").attributes("title")).toBe("25");
+    expect(wrapper.find("[title]").attributes("title")).toBe("12.5");
     expect(wrapper.text()).toContain("/ SCU");
   });
 });
