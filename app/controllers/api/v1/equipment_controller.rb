@@ -70,7 +70,9 @@ module Api
         fits = build ? build.attachments.where(attachment_id: Equipment.visible.select(:id)) : EquipmentAttachment.none
         fits = fits.includes(attachment: [:manufacturer, :build, {item_prices: ItemPrice::SHOP_LINK}]).to_a
 
-        @attachments = fits.group_by(&:port_type).sort_by { |port_type, _| port_order(port_type) }.flat_map do |_, same_port|
+        # The name breaks ties: every port outside PORT_ORDER shares a position,
+        # and neither the query nor `sort_by` keeps an order among them.
+        @attachments = fits.group_by(&:port_type).sort_by { |port_type, _| [port_order(port_type), port_type] }.flat_map do |_, same_port|
           same_port.group_by { |fit| fit.attachment.family_key || fit.attachment.id }.map { |family_key, family|
             listed = family.find { |fit| fit.attachment.sc_key == family_key } || family.min_by { |fit| fit.attachment.name }
             [listed, family.any?(&:default)]

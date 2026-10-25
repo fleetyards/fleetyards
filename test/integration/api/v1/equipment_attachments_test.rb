@@ -40,6 +40,20 @@ class Api::V1::EquipmentAttachmentsTest < ActionDispatch::IntegrationTest
     [sight, hidden].each { |optic| create(:equipment_attachment, build:, attachment: optic, port_name: "optics_attach", port_type: "IronSight") }
   end
 
+  test "GET /equipment/{slug}/attachments puts ports it has no place for after the rest, by name" do
+    build = @rifle.builds.sole
+    %w[Zeta Alpha Mid].each_with_index do |port_type, index|
+      create(:equipment_attachment, build:, attachment: attachment("#{port_type} Module", "grin_module_#{index}", port_type),
+        port_name: "#{port_type.downcase}_attach", port_type:)
+    end
+
+    assert_api_response :get, 200, path_params: {slug: @rifle.slug} do
+      unknown = parsed_body.pluck("portType") - %w[Magazine IronSight Barrel BottomAttachment]
+
+      assert_equal %w[Alpha Mid Zeta], unknown
+    end
+  end
+
   test "GET /equipment/{slug}/attachments lists one of each family per port, default first" do
     assert_api_response :get, 200, path_params: {slug: @rifle.slug} do
       assert_equal [
