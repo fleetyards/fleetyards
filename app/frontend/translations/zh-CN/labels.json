@@ -4051,7 +4051,8 @@
             "none": "无报酬"
           },
           "rewardPerUnit": "每 SCU 或每件报酬",
-          "rewardPerUnitHint": "每位承包人每交付 1 SCU 或 1 件即获得此金额，以合同要求的数量为上限。",
+          "rewardPerUnitHint": "每一行货物设定各自的单价。承包人每交付 1 SCU 或 1 件即获得该金额，以该行要求的数量为上限。",
+          "rewardUpTo": "报酬上限",
           "rewardRate": {
             "scu": "%{currency} / SCU",
             "units": "%{currency} / 件",

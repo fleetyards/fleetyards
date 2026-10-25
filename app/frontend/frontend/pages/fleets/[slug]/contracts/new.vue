@@ -15,6 +15,7 @@ import {
   type Fleet,
   type FleetMember,
   FleetContractKindEnum,
+  FleetContractRewardTypeEnum,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useRouter } from "vue-router";
@@ -34,6 +35,7 @@ const router = useRouter();
 // one request.
 const items = ref<ContractItemDraft[]>([]);
 const kind = ref<FleetContractKindEnum>(FleetContractKindEnum.PROCUREMENT);
+const rewardType = ref<FleetContractRewardTypeEnum | null>(null);
 
 const cancel = () => {
   void router.push({
@@ -66,11 +68,13 @@ const crumbs = computed<Crumb[]>(() => [
     :items="items"
     @cancel="cancel"
     @kind-change="kind = $event"
+    @reward-type-change="rewardType = $event"
   >
     <template #sections>
       <ContractItemsForm
         :fleet="fleet"
         :kind="kind"
+        :per-unit="rewardType === FleetContractRewardTypeEnum.PER_UNIT"
         :drafts="items"
         @update:drafts="items = $event"
       />

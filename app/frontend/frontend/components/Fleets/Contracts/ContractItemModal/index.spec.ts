@@ -506,4 +506,74 @@ describe("FleetContractsItemModal", () => {
       expect.anything(),
     );
   });
+
+  describe("on a contract paying per unit", () => {
+    const mountPerUnit = async (
+      onDraft: (values: unknown) => void,
+      item?: unknown,
+    ) => {
+      wrapper = await mountWithDefaults<typeof Component>(Component, {
+        props: {
+          fleet: { slug: "test-fleet" } as never,
+          kind: "procurement" as never,
+          perUnit: true,
+          item: item as never,
+          onDraft: onDraft as never,
+        },
+      });
+
+      return wrapper;
+    };
+
+    it("asks each line for its own rate", async () => {
+      const onDraft = vi.fn();
+      const subject = await mountPerUnit(onDraft);
+
+      await pickCommodity(subject);
+      await subject.find("[data-test='input-itemQuantity']").setValue("2");
+      await subject.find("form").trigger("submit");
+      await flushPromises();
+
+      expect(onDraft).not.toHaveBeenCalled();
+
+      await subject.find("[data-test='input-itemRewardRate']").setValue("85.5");
+      await subject.find("form").trigger("submit");
+      await flushPromises();
+
+      expect(onDraft).toHaveBeenCalledWith(
+        expect.objectContaining({ rewardRate: "85.5" }),
+        expect.anything(),
+      );
+    });
+
+    it("asks for no rate on a contract that pays otherwise", async () => {
+      const subject = await mount();
+
+      expect(subject.find("[data-test='input-itemRewardRate']").exists()).toBe(
+        false,
+      );
+    });
+
+    it("keeps a line's rate while the contract pays otherwise", async () => {
+      const onDraft = vi.fn();
+
+      wrapper = await mountWithDefaults<typeof Component>(Component, {
+        props: {
+          fleet: { slug: "test-fleet" } as never,
+          kind: "procurement" as never,
+          item: { ...(existingItem as object), rewardRate: "40.0" } as never,
+          onDraft: onDraft as never,
+        },
+      });
+
+      await wrapper.find("[data-test='input-itemQuantity']").setValue("5");
+      await wrapper.find("form").trigger("submit");
+      await flushPromises();
+
+      expect(onDraft).toHaveBeenCalledWith(
+        expect.objectContaining({ rewardRate: "40.0" }),
+        expect.anything(),
+      );
+    });
+  });
 });

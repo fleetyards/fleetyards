@@ -13,6 +13,7 @@ import ContractItemsForm from "@/frontend/components/Fleets/Contracts/ContractIt
 import {
   type Fleet,
   type FleetMember,
+  FleetContractRewardTypeEnum,
   FleetContractStateEnum,
   useFleetContract,
 } from "@/services/fyApi";
@@ -38,6 +39,10 @@ const fleetSlug = computed(() => props.fleet.slug);
 const contractSlug = computed(() => route.params.contract as string);
 
 const { data: contract, refetch } = useFleetContract(fleetSlug, contractSlug);
+
+// What the form has chosen, saved or not: a line given its rate before the
+// switch to paying per unit is saved is what lets that switch through.
+const rewardType = ref<FleetContractRewardTypeEnum | null>(null);
 
 const mayEdit = useContractEditAccess(
   () => contract.value,
@@ -94,12 +99,18 @@ const crumbs = computed<Crumb[]>(() => [
     <!-- The lines live on a saved contract, so they are edited here rather than
          in the create form: publishing refuses a contract with nothing to
          deliver, which is what sends an author here. -->
-    <ContractForm :fleet="fleet" :contract="contract" @cancel="cancel">
+    <ContractForm
+      :fleet="fleet"
+      :contract="contract"
+      @cancel="cancel"
+      @reward-type-change="rewardType = $event"
+    >
       <template #sections>
         <ContractItemsForm
           :fleet="fleet"
           :contract="contract"
           :kind="contract.kind"
+          :per-unit="rewardType === FleetContractRewardTypeEnum.PER_UNIT"
           @changed="refetch()"
         />
       </template>

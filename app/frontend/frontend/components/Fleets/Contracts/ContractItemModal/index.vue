@@ -50,6 +50,8 @@ type Props = {
   // takes over: there is nothing to post the line to yet.
   contract?: FleetContractDetail;
   kind: FleetContractKindEnum;
+  // Asks for the line's own rate per SCU or unit.
+  perUnit?: boolean;
   // Absent when the modal is asking for a new line.
   item?: FleetContractItem;
   // Hands the line back, with what the picked part is beyond its id.
@@ -114,6 +116,7 @@ const validationSchema = {
   quantity: "required|min_value:0",
   // Blank asks for any grade, which the rule lets through.
   quality: "between:0,1000",
+  rewardRate: "required|min_value:0.01",
 };
 
 const initialValues = {
@@ -127,6 +130,7 @@ const initialValues = {
   quality: (props.item?.quality ?? undefined) as number | undefined,
   qualityMatch:
     props.item?.qualityMatch ?? FleetContractQualityMatchEnum.AT_LEAST,
+  rewardRate: props.item?.rewardRate ?? "",
 };
 
 const { defineField, handleSubmit, setFieldValue, setErrors, values } = useForm(
@@ -214,6 +218,7 @@ const [quantity, quantityProps] = defineField("quantity");
 const [unit] = defineField("unit");
 const [quality, qualityProps] = defineField("quality");
 const [qualityMatch] = defineField("qualityMatch");
+const [rewardRate, rewardRateProps] = defineField("rewardRate");
 
 // A counted commodity is the only thing that puts `units` on offer under the
 // commodity category, and only the picked item knows -- so the options follow
@@ -260,6 +265,11 @@ const onSubmit = handleSubmit(async (values) => {
     // Null rather than left out, so an edit that drops the crafting clears it.
     craftedBlueprintId: crafted.value?.blueprintId ?? null,
     craftedQualities: crafted.value?.qualities ?? null,
+    // Kept as it was when the contract does not pay per unit, so switching
+    // how it pays and back finds the rates where they were left.
+    rewardRate: props.perUnit
+      ? String(values.rewardRate)
+      : (props.item?.rewardRate ?? null),
   };
 
   // Nothing to post to yet: the line goes back to the form, which saves it
@@ -299,6 +309,7 @@ const onSubmit = handleSubmit(async (values) => {
       const { message, formErrors } = validationErrorFrom(error, {
         quantity: "itemQuantity",
         quality: "itemQuality",
+        rewardRate: "itemRewardRate",
       });
 
       setErrors(formErrors);
@@ -433,6 +444,33 @@ const onSubmit = handleSubmit(async (values) => {
             name="itemQualityMatch"
             :searchable="false"
           />
+        </div>
+      </div>
+
+      <div v-if="perUnit" class="row">
+        <div class="col-6">
+          <FormInput
+            v-model="rewardRate"
+            v-bind="rewardRateProps"
+            name="itemRewardRate"
+            :type="InputTypesEnum.NUMBER"
+            :rules="validationSchema.rewardRate"
+            :label="t('labels.fleets.contracts.rewardPerUnit')"
+            :min="0"
+            :step="0.01"
+            no-placeholder
+            data-test="contract-item-reward-rate"
+          >
+            <template #suffix>
+              <span class="base-input__suffix-text">
+                {{
+                  t(`labels.fleets.contracts.rewardRate.${unit}`, {
+                    currency: t("number.units.uec"),
+                  })
+                }}
+              </span>
+            </template>
+          </FormInput>
         </div>
       </div>
     </form>

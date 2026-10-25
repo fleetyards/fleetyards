@@ -447,7 +447,7 @@ describe("ContractForm reward", () => {
     expect(rewardInput(wrapper).exists()).toBe(false);
   });
 
-  it("asks for an amount once a paid reward type is chosen", async () => {
+  it("asks for an amount once a fixed reward is chosen", async () => {
     const wrapper = mountForm();
 
     await select(wrapper, "rewardType").vm.$emit("update:modelValue", "fixed");
@@ -455,18 +455,25 @@ describe("ContractForm reward", () => {
     expect(rewardInput(wrapper).attributes("label")).toBe(
       "labels.fleets.contracts.reward",
     );
+  });
+
+  // Goods differ in worth, so the rate is asked for on each line instead.
+  it("asks for no amount on a contract paying per unit", async () => {
+    const wrapper = mountForm();
 
     await select(wrapper, "rewardType").vm.$emit(
       "update:modelValue",
       "per_unit",
     );
 
-    expect(rewardInput(wrapper).attributes("label")).toBe(
-      "labels.fleets.contracts.rewardPerUnit",
-    );
+    expect(rewardInput(wrapper).exists()).toBe(false);
+    expect(
+      wrapper.find("[data-test='contract-reward-per-unit-hint']").exists(),
+    ).toBe(true);
+    expect(wrapper.emitted("reward-type-change")?.at(-1)).toEqual(["per_unit"]);
   });
 
-  it("asks for the amount again when a total becomes a rate", async () => {
+  it("sends no amount once a total becomes per-line rates", async () => {
     updateMutation.mockClear();
     const wrapper = mountForm({
       slug: "job-1",
@@ -482,7 +489,8 @@ describe("ContractForm reward", () => {
 
     const { data } = await submitted(wrapper);
 
-    expect(data.reward).toBe("");
+    expect(data.rewardType).toBe("per_unit");
+    expect(data.reward).toBe("0");
   });
 
   it("sends no amount for a contract that pays nothing", async () => {
