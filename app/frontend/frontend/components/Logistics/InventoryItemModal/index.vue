@@ -41,13 +41,16 @@ import {
 import { useCraftingStep } from "@/frontend/composables/useCraftingStep";
 import { unitsForCategory } from "@/frontend/composables/useInventoryOptions";
 import {
+  type DepositTarget,
+  useDepositTargets,
+} from "@/frontend/composables/useDepositTargets";
+import {
   type InventoryItemCreateInput,
   hangarInventoryStock,
   vehicleInventoryStock,
   useCreateHangarInventoryItem,
   useCreateVehicleInventoryItem,
-  useHangarInventories,
-  type FilterOption,
+  useCreateFleetInventoryItem,
   InventoryCategoryEnum,
   InventoryUnitEnum,
 } from "@/services/fyApi";
@@ -56,8 +59,8 @@ import type { InventoryTarget } from "@/frontend/types/logistics";
 type StockItem = StockLot;
 
 type Props = {
-  // Without one, the deposit is filed into a hangar inventory picked here, as
-  // from a catalogue page that belongs to no inventory.
+  // Without one, the deposit is filed into any inventory the reader may
+  // deposit into, picked here, as from a catalogue page that belongs to none.
   target?: InventoryTarget;
   initialEntryType?: "deposit" | "withdrawal";
   // The goods, already named.
@@ -79,20 +82,11 @@ const submitting = ref(false);
 
 const choosesInventory = !props.target;
 
-const { data: inventories, isSuccess: inventoriesLoaded } =
-  useHangarInventories(
-    { perPage: "240" },
-    { query: { enabled: choosesInventory } },
-  );
-
-// A ship's hold shares its slug with every other ship of its model, so it is
-// told apart by id and filed through the ship.
-const inventoryOptions = computed<FilterOption[]>(() =>
-  (inventories.value?.items ?? []).map((inventory) => ({
-    value: inventory.id,
-    label: inventory.name,
-  })),
-);
+const {
+  options: inventoryOptions,
+  targetFor,
+  empty: noInventories,
+} = useDepositTargets(choosesInventory);
 
 const inventoryId = ref<string>();
 
@@ -106,26 +100,8 @@ watch(
   { immediate: true },
 );
 
-const chosenTarget = computed<InventoryTarget | undefined>(() => {
-  const inventory = inventories.value?.items.find(
-    (candidate) => candidate.id === inventoryId.value,
-  );
-  if (!inventory) return undefined;
-
-  return inventory.vehicle
-    ? { kind: "vehicle", vehicleId: inventory.vehicle.id }
-    : { kind: "hangar", slug: inventory.slug };
-});
-
-const activeTarget = computed<InventoryTarget | undefined>(
-  () => props.target ?? chosenTarget.value,
-);
-
-const noInventories = computed(
-  () =>
-    choosesInventory &&
-    inventoriesLoaded.value &&
-    !inventoryOptions.value.length,
+const activeTarget = computed<DepositTarget | undefined>(
+  () => props.target ?? targetFor(inventoryId.value),
 );
 
 // Opened outside any inventory, it only deposits: a withdrawal picks from the
@@ -273,8 +249,9 @@ const fetchStock = (target: InventoryTarget) =>
     ? hangarInventoryStock(target.slug)
     : vehicleInventoryStock(target.vehicleId);
 
+// Stock is shown only for the inventory the modal was opened from.
 const loadStockItems = async () => {
-  const target = activeTarget.value;
+  const target = props.target;
   if (!target) return;
 
   try {
@@ -351,8 +328,18 @@ const selectedStockMax = computed(
 const createHangarItem = useCreateHangarInventoryItem();
 const createVehicleItem = useCreateVehicleInventoryItem();
 
-const createItem = (target: InventoryTarget, data: InventoryItemCreateInput) =>
-  target.kind === "hangar"
+const createFleetItem = useCreateFleetInventoryItem();
+
+const createItem = (target: DepositTarget, data: InventoryItemCreateInput) => {
+  if (target.kind === "fleet") {
+    return createFleetItem.mutateAsync({
+      fleetSlug: target.fleetSlug,
+      fleetInventorySlug: target.slug,
+      data,
+    });
+  }
+
+  return target.kind === "hangar"
     ? createHangarItem.mutateAsync({
         hangarInventorySlug: target.slug,
         data,
@@ -361,6 +348,7 @@ const createItem = (target: InventoryTarget, data: InventoryItemCreateInput) =>
         vehicleId: target.vehicleId,
         data,
       });
+};
 
 // Deposit or withdrawal and the position or item picked live outside the form.
 const entryChoice = computed(() => ({
@@ -409,7 +397,11 @@ const onSubmit = handleSubmit(async (values) => {
           ? t("messages.logistics.inventoryItem.deposit.success")
           : t("messages.logistics.inventoryItem.withdrawal.success"),
       });
-      comlink.emit("inventory-item-created");
+      comlink.emit(
+        target.kind === "fleet"
+          ? "fleet-inventory-item-created"
+          : "inventory-item-created",
+      );
       comlink.emit("close-modal", true);
     })
     .catch(() => {

@@ -28,15 +28,12 @@ const api = vi.hoisted(() => ({
   stock: vi.fn(),
   create: vi.fn(),
   createVehicle: vi.fn(),
-  inventories: {
-    value: [] as {
-      id: string;
-      slug: string;
-      name: string;
-      vehicle?: { id: string };
-    }[],
-  },
-  inventoriesFailed: false,
+  createFleet: vi.fn(),
+  targets: [] as {
+    option: { value: string; label: string };
+    target: unknown;
+  }[],
+  noTargets: false,
 }));
 
 // The hooks, not the fetchers: a generated hook calls its own fetcher from
@@ -49,10 +46,7 @@ vi.mock("@/services/fyApi", async (importOriginal) => {
     hangarInventoryStock: api.stock,
     useCreateHangarInventoryItem: () => ({ mutateAsync: api.create }),
     useCreateVehicleInventoryItem: () => ({ mutateAsync: api.createVehicle }),
-    useHangarInventories: () => ({
-      data: computed(() => ({ items: api.inventories.value })),
-      isSuccess: computed(() => !api.inventoriesFailed),
-    }),
+    useCreateFleetInventoryItem: () => ({ mutateAsync: api.createFleet }),
     // A recipe makes the Bulwark and nothing else.
     useBlueprints: vi.fn(
       (params: { value: { q: { craftableIdEq?: string } } }) => ({
@@ -66,6 +60,19 @@ vi.mock("@/services/fyApi", async (importOriginal) => {
         })),
       }),
     ),
+  };
+});
+
+vi.mock("@/frontend/composables/useDepositTargets", async () => {
+  const { computed } = await import("vue");
+
+  return {
+    useDepositTargets: () => ({
+      options: computed(() => api.targets.map((entry) => entry.option)),
+      targetFor: (value?: string) =>
+        api.targets.find((entry) => entry.option.value === value)?.target,
+      empty: computed(() => api.noTargets),
+    }),
   };
 });
 
@@ -131,17 +138,26 @@ beforeEach(() => {
   api.stock.mockResolvedValue([]);
   api.create.mockResolvedValue({});
   api.createVehicle.mockResolvedValue({});
-  api.inventories.value = [
-    { id: "inv-1", slug: "cargo-hold", name: "Cargo Hold" },
-    { id: "inv-2", slug: "armory", name: "Armory" },
+  api.createFleet.mockResolvedValue({});
+  api.targets = [
     {
-      id: "inv-3",
-      slug: "cargo",
-      name: "Ironclad Cargo",
-      vehicle: { id: "ironclad" },
+      option: { value: "inv-1", label: "Cargo Hold" },
+      target: { kind: "hangar", slug: "cargo-hold" },
+    },
+    {
+      option: { value: "inv-2", label: "Armory" },
+      target: { kind: "hangar", slug: "armory" },
+    },
+    {
+      option: { value: "inv-3", label: "Ironclad Cargo" },
+      target: { kind: "vehicle", vehicleId: "ironclad" },
+    },
+    {
+      option: { value: "inv-4", label: "Fleet Depot" },
+      target: { kind: "fleet", fleetSlug: "crew", slug: "depot" },
     },
   ];
-  api.inventoriesFailed = false;
+  api.noTargets = false;
 });
 
 const mount = async () => {
@@ -660,16 +676,20 @@ describe("LogisticsInventoryItemModal", () => {
       });
     });
 
-    // A request that failed says nothing about whether there are any.
-    it("does not claim there is no inventory when the list failed", async () => {
-      api.inventories.value = [];
-      api.inventoriesFailed = true;
-
+    it("deposits into a fleet's inventory through the fleet", async () => {
       const subject = await mountForItem(bulwark);
 
-      expect(
-        subject.find("[data-test='inventory-item-no-inventories']").exists(),
-      ).toBe(false);
+      await select(subject, "inventory").vm.$emit("update:modelValue", "inv-4");
+      await subject.find("[data-test='input-quantity']").setValue("1");
+      await subject.find("form").trigger("submit");
+      await flushPromises();
+
+      expect(api.createFleet).toHaveBeenCalledWith({
+        fleetSlug: "crew",
+        fleetInventorySlug: "depot",
+        data: expect.objectContaining({ itemId: "bulwark" }),
+      });
+      expect(api.create).not.toHaveBeenCalled();
     });
 
     // A ship's hold shares its slug with the other ships of its model.
@@ -689,7 +709,8 @@ describe("LogisticsInventoryItemModal", () => {
     });
 
     it("points at creating an inventory when there is none", async () => {
-      api.inventories.value = [];
+      api.targets = [];
+      api.noTargets = true;
 
       const subject = await mountForItem(bulwark);
 
