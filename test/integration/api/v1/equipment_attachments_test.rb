@@ -64,6 +64,18 @@ class Api::V1::EquipmentAttachmentsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /equipment/{slug}/attachments answers a retired weapon from its last build" do
+    retired = create(:equipment, name: "Old Rifle", sc_key: "behr_rifle_ballistic_09", version: "0.0.1-live.1")
+    scope = create(:equipment, name: "Old Scope", sc_key: "behr_optics_old_s1", version: "0.0.1-live.1",
+      equipment_type: "weapon_attachment", sub_type: "IronSight", size: "1")
+    create(:equipment_attachment, build: retired.builds.sole, attachment: scope, port_name: "optics_attach",
+      port_type: "IronSight")
+
+    assert_api_response :get, 200, path_params: {slug: retired.slug} do
+      assert_equal ["Old Scope"], parsed_body.map { |fit| fit.dig("attachment", "name") }
+    end
+  end
+
   test "GET /equipment/{slug}/attachments returns 404 for an unknown item" do
     assert_api_response :get, 404, path_params: {slug: "nope-nope"}
   end

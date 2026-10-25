@@ -65,9 +65,13 @@ module Api
       # What fits each port of a weapon, one per family: the colourways of an
       # attachment are listed on its own page rather than once per port here.
       def attachments
-        build = find_visible_equipment.facts
+        equipment = find_visible_equipment
+        build = equipment.facts
 
-        fits = build ? build.attachments.where(attachment_id: Equipment.visible.select(:id)) : EquipmentAttachment.none
+        # A retired weapon answers from its last build, so its attachments are
+        # read against every build too rather than only the one we are on.
+        listed = Equipment.visible(!equipment.retired?).select(:id)
+        fits = build ? build.attachments.where(attachment_id: listed) : EquipmentAttachment.none
         fits = fits.includes(attachment: [:manufacturer, :build, {item_prices: ItemPrice::SHOP_LINK}]).to_a
 
         # The name breaks ties: every port outside PORT_ORDER shares a position,
