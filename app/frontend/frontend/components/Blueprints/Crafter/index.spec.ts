@@ -172,6 +172,14 @@ describe("BlueprintCrafter", () => {
     expect(wrapper.emitted("apply")).toHaveLength(1);
   });
 
+  it("fills its containing block as a sheet only when asked to", async () => {
+    const panel = await mount();
+    const sheet = await mount({ sheet: true });
+
+    expect(panel.find(".blueprint-crafter--sheet").exists()).toBe(false);
+    expect(sheet.find(".blueprint-crafter--sheet").exists()).toBe(true);
+  });
+
   it("opens on a crafting whose grades are reactive", async () => {
     const crafted = {
       blueprintId: "bp",

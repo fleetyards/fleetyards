@@ -1648,6 +1648,7 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
                             :key="`craft-${activeSlot}`"
                             :ref="setPicker"
                             v-bind="activeCrafting"
+                            sheet
                             v-on="crafterListeners"
                           />
                           <Picker
