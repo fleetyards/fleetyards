@@ -105,6 +105,23 @@ module InventoryLedgerEntry
     (klass < ItemViews) ? klass.includes(ItemViews::DISPLAY_IMAGE_PRELOAD) : klass.with_attached_store_image
   end
 
+  # Loads everything `display_image` reads for a page of entries, whose items
+  # come from several catalogues at once and so cannot be preloaded through the
+  # polymorphic association. Expects `item` to be loaded already.
+  def self.preload_images(entries)
+    entries = entries.to_a
+    preload = ->(records, associations) {
+      ActiveRecord::Associations::Preloader.new(records:, associations:).call if records.any?
+    }
+
+    preload.call(entries, image_attachment: :blob)
+
+    items = entries.filter_map { |entry| entry.item if entry.referenced_item? }.uniq
+    views, others = items.partition { |item| item.is_a?(ItemViews) }
+    preload.call(views, ItemViews::DISPLAY_IMAGE_PRELOAD)
+    preload.call(others, store_image_attachment: :blob)
+  end
+
   # A component or a piece of equipment is shown by its angled render where it
   # has one; a commodity has only the store image.
   def self.item_image_attr(item)
