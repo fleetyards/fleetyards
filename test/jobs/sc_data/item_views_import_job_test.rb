@@ -32,7 +32,7 @@ module ScData
     end
 
     private def publish(sc_key, files, digest: "listing-1")
-      @index[sc_key] = {scKey: sc_key, files: digest, updatedAt: "2026-10-23T00:00:00Z"}
+      @index[sc_key] = {files: digest, kind: "components", category: "weapons", updatedAt: "2026-10-23T00:00:00Z"}
       @objects["index.json"] = {items: @index}.to_json
       @objects["#{sc_key}/files.json"] = {
         files: files.to_h { |name, content| [name, {md5: Digest::MD5.hexdigest(content), size: content.bytesize}] }
@@ -140,7 +140,7 @@ module ScData
 
     test "skips an item two folders claim" do
       publish(@component.sc_key, {"top.png" => PNG})
-      @index["other-folder"] = @index[@component.sc_key]
+      @index["other-folder"] = @index[@component.sc_key].merge(scKey: @component.sc_key)
       @objects["index.json"] = {items: @index}.to_json
 
       perform
