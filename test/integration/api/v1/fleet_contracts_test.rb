@@ -636,6 +636,22 @@ class Api::V1::FleetContractsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET sorts by what a contract pays, multiplying a rate out over its goods" do
+    fixed = create(:fleet_contract, :published, fleet: @fleet, destination_fleet_inventory: @depot,
+      reward_type: :fixed, reward: 120_000)
+    rate = create(:fleet_contract, :published, fleet: @fleet, destination_fleet_inventory: @depot,
+      reward_type: :per_unit, reward: 500)
+    rate.fleet_contract_items.sole.update!(quantity: 2_000)
+    unpaid = create(:fleet_contract, :published, fleet: @fleet, destination_fleet_inventory: @depot,
+      reward_type: :none)
+
+    sign_in @member
+    get "/api/v1/fleets/#{@fleet.slug}/contracts", params: {q: {s: "reward desc"}}
+
+    assert_response :ok
+    assert_equal [rate.id, fixed.id, unpaid.id], response.parsed_body["items"].pluck("id")
+  end
+
   test "GET shows a manager their own drafts" do
     create(:fleet_contract, fleet: @fleet, destination_fleet_inventory: @depot)
 

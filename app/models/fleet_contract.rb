@@ -235,6 +235,19 @@ class FleetContract < ApplicationRecord
   # lands on, so both have to be listed.
   ransack_alias :state, :aasm_state
 
+  # Sorted by what a contract pays, not by the number typed in: a rate per SCU
+  # sits beside fixed totals only once it is multiplied out over the goods. The
+  # same figure `max_reward` derives, named over the column so `reward asc`
+  # keeps its meaning.
+  ransacker :reward, type: :decimal do
+    Arel.sql(<<~SQL.squish)
+      (CASE WHEN fleet_contracts.reward_type = #{REWARD_TYPES[:per_unit]}
+        THEN fleet_contracts.reward * COALESCE((SELECT SUM(fleet_contract_items.quantity)
+          FROM fleet_contract_items WHERE fleet_contract_items.fleet_contract_id = fleet_contracts.id), 0)
+        ELSE fleet_contracts.reward END)
+    SQL
+  end
+
   def self.ransackable_attributes(_auth_object = nil)
     %w[title slug state aasm_state kind reward reward_type deadline created_at updated_at]
   end
