@@ -236,8 +236,10 @@ module ScData
 
       WORN_EQUIPMENT_TYPES = %w[armor clothing undersuit].freeze
 
-      # A skin's own name, in straight or curly, double or single quotes.
-      QUOTED_NAME = /\s*["“”'‘’][^"“”'‘’]+["“”'‘’]\s*/
+      # A skin's own name, in straight or curly, double or single quotes. A
+      # single quote only opens and closes away from a letter, so a possessive
+      # apostrophe is not read as one.
+      QUOTED_NAME = /\s*(?:["“][^"“”]+["”]|(?<![[:alnum:]])['‘][^'‘’]+['’](?![[:alnum:]]))\s*/
 
       def all
         save_items(equipment, folder: "equipment")

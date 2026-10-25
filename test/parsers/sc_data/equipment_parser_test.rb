@@ -112,6 +112,13 @@ module ScData
             .pluck("family_key")
       end
 
+      test "reads a possessive apostrophe as part of the name" do
+        write_weapon("behr_rifle_ballistic_01", "Hunter's Rifle")
+        write_weapon("behr_rifle_ballistic_01_tan01", "Hunter's 'Dune' Rifle")
+
+        assert_equal "behr_rifle_ballistic_01", parsed.fetch("behr_rifle_ballistic_01_tan01")["family_key"]
+      end
+
       test "keeps worn pieces of different kinds under one prefix apart" do
         write_equipment("invisible_medium_arms", name: "@item_Name_invisible_medium_arms",
           path: "entities/scitem/characters/human/armor", type: "Char_Armor_Arms")
