@@ -168,6 +168,21 @@ class Admin::Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The list shows the angled render beside the store image, and the store
+  # image stays the uploaded one rather than falling back to the render.
+  test "GET /components carries the angled view without the store image fallback" do
+    component = create(:component)
+    component.angled_view.attach(io: file_fixture("test.png").open, filename: "angled.png", content_type: "image/png")
+    sign_in @user
+
+    assert_api_response :get, 200 do
+      media = parsed_body["items"].first["media"]
+      assert_match(/angled\.png/, media.dig("angledView", "name"))
+      assert_nil media.dig("storeImage", "name")
+      assert_not media.key?("topView")
+    end
+  end
+
   test "GET /components filters by nameCont query" do
     create_list(:component, 2)
     create(:component, name: "CF-227 Badger")

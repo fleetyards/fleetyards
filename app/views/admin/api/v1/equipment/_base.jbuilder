@@ -52,11 +52,9 @@ json.store_image do
   json.partial! "api/v1/shared/file", record: equipment, attr: :store_image
 end
 
-# The top-level `store_image` above predates `media`, which a list leaves out.
-if local_assigns.fetch(:extended, false)
-  json.media do
-    json.partial! "api/v1/shared/item_media", record: equipment, extended: true
-  end
+# The top-level `store_image` above predates `media`.
+json.media do
+  json.partial! "api/v1/shared/item_media", record: equipment, extended: local_assigns.fetch(:extended, false), views: %i[angled_view]
 end
 
 # Carried on the admin payload only. `version` is the build the facts come from,
