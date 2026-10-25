@@ -52,7 +52,7 @@ class FleetContractTest < ActiveSupport::TestCase
     contract.fleet_contract_items.build(name: "Titanium", category: :commodity, unit: :scu, quantity: 100)
 
     assert_not contract.valid?
-    assert_includes contract.errors.attribute_names, :fleet_contract_items
+    assert_equal [:"fleet_contract_items.reward_rate"], contract.errors.attribute_names
   end
 
   test "a contract cannot start paying per unit while a line has no rate" do

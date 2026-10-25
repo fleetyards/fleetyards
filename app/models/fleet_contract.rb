@@ -88,7 +88,7 @@ class FleetContract < ApplicationRecord
   # the previous release saved as a fixed 0 would otherwise fail every later
   # save, and a failed `cancel!` or `expire!` is silent.
   validates :reward, numericality: {greater_than: 0}, if: -> { reward_fixed? && reward_being_set? }
-  validate :lines_have_rates, if: -> { reward_per_unit? && (new_record? || will_save_change_to_reward_type?) }
+  validate :lines_have_rates, if: -> { persisted? && reward_per_unit? && will_save_change_to_reward_type? }
   validates :crew_limit, numericality: {greater_than: 0}, allow_nil: true
   validate :exactly_one_destination, if: :destination_being_set?
   validates :source_fleet_inventory, presence: true, if: :transport?
@@ -529,15 +529,9 @@ class FleetContract < ApplicationRecord
   end
 
   # A line saved before the contract paid per unit has no rate, and would pay
-  # nothing. Lines arriving with a new contract are read from memory, for the
-  # reason `goods_asked_for_once` gives.
+  # nothing. Lines arriving with a new contract check their own rate.
   private def lines_have_rates
-    missing = if new_record?
-      fleet_contract_items.target.reject(&:marked_for_destruction?).any? { |item| item.reward_rate.blank? }
-    else
-      fleet_contract_items.where(reward_rate: nil).exists?
-    end
-    return unless missing
+    return unless fleet_contract_items.where(reward_rate: nil).exists?
 
     errors.add(:fleet_contract_items, :invalid,
       message: I18n.t("activerecord.errors.messages.contract_item_needs_reward_rate"))
