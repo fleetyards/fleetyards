@@ -420,6 +420,18 @@ class Model < ApplicationRecord
     PREVIEW_VIEWS.map { |name| public_send(name) }.find(&:attached?)
   end
 
+  # The picture a ship is shown by where it gets a whole one. A ship that is
+  # never sold has no marketing art, only the renders from the game files.
+  DISPLAY_IMAGE_VIEWS = %i[store_image angled_view].freeze
+
+  def display_image_attr
+    DISPLAY_IMAGE_VIEWS.find { |name| public_send(name).attached? }
+  end
+
+  def display_image
+    public_send(display_image_attr) if display_image_attr
+  end
+
   # Only the ship page shows these, so a list neither preloads nor renders them:
   # the views are already about half the bytes of a model in one.
   DETAIL_VIEW_ATTACHMENT_NAMES = %i[

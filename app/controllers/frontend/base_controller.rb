@@ -49,7 +49,7 @@ module Frontend
         @title = "#{@model.name} - #{@model.manufacturer.name}"
         @description = @model.description
         @og_type = "article"
-        use_og_image(@model.store_image, alt: @model.name)
+        use_og_image(@model.display_image, alt: @model.name)
         add_to_prefetch(:model, @model.to_json)
       end
 

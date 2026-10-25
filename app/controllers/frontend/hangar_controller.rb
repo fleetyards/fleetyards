@@ -18,7 +18,7 @@ module Frontend
         vehicle = @user.vehicles.public.purchased.includes(:model).order(flagship: :desc, name: :asc).order("models.name asc").first
         @title = I18n.t("title.frontend.public_hangar", user: username(@user.shown_name))
         @og_type = "article"
-        use_og_image(vehicle.model.store_image, alt: vehicle.model.name) if vehicle.present?
+        use_og_image(vehicle.model.display_image, alt: vehicle.model.name) if vehicle.present?
         preview_plaque if params[:plaque].present?
       end
 
@@ -50,7 +50,7 @@ module Frontend
         vehicle = @user.vehicles.wanted.includes(:model).order(flagship: :desc, name: :asc).order("models.name asc").first
         @title = I18n.t("title.frontend.public_wishlist", user: username(@user.shown_name))
         @og_type = "article"
-        use_og_image(vehicle.model.store_image, alt: vehicle.model.name) if vehicle.present?
+        use_og_image(vehicle.model.display_image, alt: vehicle.model.name) if vehicle.present?
       end
 
       render_frontend
@@ -92,7 +92,7 @@ module Frontend
     private def vehicle_picture(vehicle)
       return vehicle.display_image if vehicle.display_image.present?
 
-      vehicle.model.store_image if vehicle.model.store_image.attached?
+      vehicle.model.display_image
     end
 
     # The name the public hangar shows: the owner's own, and its serial, only
