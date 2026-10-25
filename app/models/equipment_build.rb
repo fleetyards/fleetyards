@@ -10,9 +10,9 @@ class EquipmentBuild < ApplicationRecord
   belongs_to :equipment
   belongs_to :manufacturer, optional: true
 
-  # What fits each of a weapon's ports in this build. Destroyed with the build,
-  # which is what makes `prune_builds` and `retire_absent_builds` carry them away
-  # too.
+  # What fits each of a weapon's ports in this build. `prune_builds` and
+  # `retire_absent_builds` remove builds with `delete_all`, so it is the foreign
+  # key's cascade, not this association, that carries these away with them.
   has_many :attachments, class_name: "EquipmentAttachment", inverse_of: :build, dependent: :destroy
 
   # Everything a build says, as opposed to what identifies the item. The data
