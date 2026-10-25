@@ -28,6 +28,7 @@ const api = vi.hoisted(() => ({
   stock: vi.fn(),
   create: vi.fn(),
   inventories: { value: [] as { slug: string; name: string }[] },
+  inventoriesFailed: false,
 }));
 
 // The hooks, not the fetchers: a generated hook calls its own fetcher from
@@ -41,7 +42,7 @@ vi.mock("@/services/fyApi", async (importOriginal) => {
     useCreateHangarInventoryItem: () => ({ mutateAsync: api.create }),
     useHangarInventories: () => ({
       data: computed(() => ({ items: api.inventories.value })),
-      isLoading: computed(() => false),
+      isSuccess: computed(() => !api.inventoriesFailed),
     }),
     // A recipe makes the Bulwark and nothing else.
     useBlueprints: vi.fn(
@@ -124,6 +125,7 @@ beforeEach(() => {
     { slug: "cargo-hold", name: "Cargo Hold" },
     { slug: "armory", name: "Armory" },
   ];
+  api.inventoriesFailed = false;
 });
 
 const mount = async () => {
@@ -645,6 +647,18 @@ describe("LogisticsInventoryItemModal", () => {
           quantity: 2,
         }),
       });
+    });
+
+    // A request that failed says nothing about whether there are any.
+    it("does not claim there is no inventory when the list failed", async () => {
+      api.inventories.value = [];
+      api.inventoriesFailed = true;
+
+      const subject = await mountForItem(bulwark);
+
+      expect(
+        subject.find("[data-test='inventory-item-no-inventories']").exists(),
+      ).toBe(false);
     });
 
     it("points at creating an inventory when there is none", async () => {

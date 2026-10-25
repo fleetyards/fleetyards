@@ -77,12 +77,12 @@ const { unitOptionsFor, entryTypeOptions } = useInventoryOptions();
 
 const submitting = ref(false);
 
-const choosesInventory = computed(() => !props.target);
+const choosesInventory = !props.target;
 
-const { data: inventories, isLoading: inventoriesLoading } =
+const { data: inventories, isSuccess: inventoriesLoaded } =
   useHangarInventories(
     { perPage: "240" },
-    { query: { enabled: choosesInventory.value } },
+    { query: { enabled: choosesInventory } },
   );
 
 const inventoryOptions = computed<FilterOption[]>(() =>
@@ -97,7 +97,9 @@ const inventorySlug = ref<string>();
 watch(
   inventoryOptions,
   (options) => {
-    inventorySlug.value ??= options[0]?.value as string | undefined;
+    if (options.some((option) => option.value === inventorySlug.value)) return;
+
+    inventorySlug.value = options[0]?.value as string | undefined;
   },
   { immediate: true },
 );
@@ -112,15 +114,15 @@ const activeTarget = computed<InventoryTarget | undefined>(
 
 const noInventories = computed(
   () =>
-    choosesInventory.value &&
-    !inventoriesLoading.value &&
+    choosesInventory &&
+    inventoriesLoaded.value &&
     !inventoryOptions.value.length,
 );
 
 // Opened outside any inventory, it only deposits: a withdrawal picks from the
 // stock of an inventory the reader is already looking at.
 const entryType = ref<"deposit" | "withdrawal">(
-  choosesInventory.value ? "deposit" : (props.initialEntryType ?? "deposit"),
+  choosesInventory ? "deposit" : (props.initialEntryType ?? "deposit"),
 );
 const selectedStockItem = ref<string | undefined>(undefined);
 const selectedExistingItem = ref<string | undefined>(undefined);
@@ -152,7 +154,7 @@ const isDeposit = computed(() => entryType.value === "deposit");
 const modalTitle = computed(() => {
   if (picking.value) return pickTitle.value;
   if (step.value === "crafting") return t("headlines.logistics.crafting");
-  if (choosesInventory.value) return t("headlines.logistics.addToInventory");
+  if (choosesInventory) return t("headlines.logistics.addToInventory");
 
   return isDeposit.value
     ? t("headlines.logistics.deposit")
@@ -281,7 +283,7 @@ const {
 } = useStockLots(stockItems);
 
 onMounted(() => {
-  if (choosesInventory.value) return;
+  if (choosesInventory) return;
 
   void loadStockItems();
 });
@@ -435,8 +437,6 @@ const onSubmit = handleSubmit(async (values) => {
       @remove="clearCrafted"
     />
 
-    <!-- Hidden rather than unmounted while another step is open, so nothing
-         typed into it is lost. -->
     <div
       v-if="noInventories"
       class="inventory-item-modal__empty"
@@ -448,6 +448,8 @@ const onSubmit = handleSubmit(async (values) => {
       </Btn>
     </div>
 
+    <!-- Hidden rather than unmounted while another step is open, so nothing
+         typed into it is lost. -->
     <form
       v-show="step === 'form' && !noInventories"
       id="create-hangar-inventory-item-form"
