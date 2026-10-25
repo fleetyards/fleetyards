@@ -2180,6 +2180,8 @@ components:
           type: boolean
         squadronsEnabled:
           type: boolean
+        personalContractsEnabled:
+          type: boolean
         defaultTimezone:
           type: string
         listed:
@@ -2250,6 +2252,7 @@ components:
       - alliesFleetStats
       - alliesFleetMembers
       - squadronsEnabled
+      - personalContractsEnabled
       - listedInDirectory
       - features
       - subscribed
@@ -5190,6 +5193,8 @@ components:
           type: string
         guest:
           type: boolean
+        payer:
+          type: boolean
         weight:
           type: string
         user:
@@ -5207,6 +5212,7 @@ components:
       - payoutLedgerId
       - displayName
       - guest
+      - payer
       - weight
       additionalProperties: false
     PowerPreset:
