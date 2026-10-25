@@ -43,12 +43,15 @@ class FleetContractTest < ActiveSupport::TestCase
     end
   end
 
-  test "a fixed 0 saved before the reward type existed still saves and expires" do
+  test "a fixed 0 saved by the previous release reads as no reward" do
     contract = create(:fleet_contract, :published)
     contract.update_columns(reward_type: FleetContract::REWARD_TYPES[:fixed], reward: 0)
 
-    assert contract.reload.expire!
-    assert_not contract.update(reward: 0, reward_type: :per_unit)
+    contract = FleetContract.find(contract.id)
+
+    assert_predicate contract, :reward_none?
+    assert contract.expire!
+    assert_predicate contract.reload, :reward_none?
   end
 
   test "a contract with no reward drops any amount it was sent" do

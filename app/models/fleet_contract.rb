@@ -99,6 +99,11 @@ class FleetContract < ApplicationRecord
   validate :personal_contracts_allowed, on: :create, if: :personal?
   validate :source_selectable_by_editor, if: :personal_source_changing?
 
+  # The previous release, still serving while the column migrates, saves an
+  # unpaid contract as the column's default -- a fixed 0, which is what no
+  # reward used to look like. Read as what it meant; the next save keeps it.
+  after_find { self.reward_type = :none if reward_fixed? && reward.zero? }
+
   before_validation :clear_reward, if: :reward_none?
   before_save :update_slug
 
