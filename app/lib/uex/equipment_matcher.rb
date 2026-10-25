@@ -36,6 +36,23 @@ module Uex
     # dozen of them into permanent "cannot place" lines nobody can act on.
     def initialize(scope: Equipment.with_facts(true))
       super
+
+      @visible_by_name = @by_name.transform_values do |records|
+        records.reject { |_, _, _, _, hidden| hidden }
+      end
+    end
+
+    # UEX hands out the uuid of a hidden twin for some items -- the P4-AR, C54
+    # and Custodian carry their contested-zone reward's, and armour its Carrack
+    # or microTech edition's. Hidden equipment has no page, so a price on it is
+    # one nobody sees while the record they do see shows none. Only where a
+    # single visible record shares the name: two would be a guess.
+    private def resolve_ref(record)
+      _, name, _, _, hidden = record
+      return record if !hidden || name.blank?
+
+      visible = @visible_by_name[normalize(name)]
+      visible&.one? ? visible.first : record
     end
 
     # The name the build we are on serves, which is the one a reader sees --
