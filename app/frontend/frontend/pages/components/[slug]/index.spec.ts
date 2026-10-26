@@ -77,6 +77,7 @@ const mountPage = async (component: Component, path = "/") => {
         BreadCrumbs: true,
         ExternalLinks: true,
         Availability: true,
+        CartAddToCart: true,
         Chip: true,
         ItemViews: true,
         MetricsCard: {

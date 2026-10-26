@@ -105,6 +105,7 @@ const mountPage = async (
         BreadCrumbs: true,
         ExternalLinks: true,
         Availability: true,
+        CartAddToCart: true,
         Chip: true,
         EquipmentStatsCard: true,
         ItemViews: true,

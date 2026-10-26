@@ -24,11 +24,15 @@ import {
 } from "@/shared/components/base/Table/types";
 import TravelTime from "@/frontend/components/TravelTime/index.vue";
 import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
+import CartAddToCart from "@/frontend/components/Cart/AddToCart/index.vue";
 import {
   useComponents as useComponentsQuery,
   type ComponentQuantumDrive,
   type Component,
+  FeatureFlagName,
+  InventoryItemTypeEnum,
 } from "@/services/fyApi";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 import { quantumDriveTravelTime } from "@/frontend/utils/travelTimes";
 import {
   InputTypesEnum,
@@ -283,6 +287,12 @@ const visibleDrives = computed(() => {
 // podium colour is held back otherwise -- the number stays as the row's place.
 const byTime = computed(
   () => sort.value.field === "travel_time" && sort.value.direction === "asc",
+);
+
+const { isFeatureEnabled } = useFeatures();
+
+const cartEnabled = computed(() =>
+  isFeatureEnabled(FeatureFlagName.SHOPPING_CART),
 );
 
 const rankOf = (component: Component) =>
@@ -561,6 +571,17 @@ const columns = computed<BaseTableCol<Component>[]>(() => {
                 class="travel-times__time"
                 :quantum-drive="record"
                 :distance="distance"
+              />
+            </template>
+
+            <template v-if="cartEnabled" #actions="{ record }">
+              <CartAddToCart
+                :item="{
+                  id: record.id,
+                  type: InventoryItemTypeEnum.COMPONENT,
+                  name: record.name,
+                }"
+                variant="row"
               />
             </template>
 

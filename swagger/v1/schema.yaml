@@ -201,6 +201,438 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/cart":
+    get:
+      summary: Cart
+      tags:
+      - Cart
+      operationId: cart
+      parameters:
+      - name: strategy
+        in: query
+        schema:
+          "$ref": "#/components/schemas/CartStrategyEnum"
+        required: false
+        description: cheapest sends each line to its cheapest place; stops and distance
+          shorten the trip
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Cart"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    delete:
+      summary: Clear Cart
+      tags:
+      - Cart
+      operationId: clearCart
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Cart"
+  "/cart/items":
+    post:
+      summary: Add Cart Item
+      tags:
+      - Cart
+      operationId: addCartItem
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CartItemCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Cart"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/cart/items/bulk":
+    post:
+      summary: Add Cart Items
+      tags:
+      - Cart
+      operationId: addCartItems
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CartItemsBulkCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Cart"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/cart/items/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Update Cart Item
+      tags:
+      - Cart
+      operationId: updateCartItem
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CartItemUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Cart"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    delete:
+      summary: Remove Cart Item
+      tags:
+      - Cart
+      operationId: removeCartItem
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Cart"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/carts":
+    get:
+      summary: Cart Lists
+      tags:
+      - Cart
+      operationId: cartLists
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CartListsList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    post:
+      summary: Create Cart List
+      tags:
+      - Cart
+      operationId: createCartList
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CartListCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CartList"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+  "/carts/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: Cart List
+      tags:
+      - Cart
+      operationId: cartList
+      parameters:
+      - name: strategy
+        in: query
+        schema:
+          "$ref": "#/components/schemas/CartStrategyEnum"
+        required: false
+        description: cheapest sends each line to its cheapest place; stops and distance
+          shorten the trip
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Cart"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Cart List
+      tags:
+      - Cart
+      operationId: updateCartList
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CartListUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CartList"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    delete:
+      summary: Destroy Cart List
+      tags:
+      - Cart
+      operationId: destroyCartList
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SuccessResponse"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/carts/{id}/items":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    delete:
+      summary: Clear Cart List
+      tags:
+      - Cart
+      operationId: clearCartList
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Cart"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/catalogue/lookup":
     get:
       summary: Resolve the catalogue items a text names inline
@@ -23185,6 +23617,272 @@ components:
       - "y"
       - z
       title: CargoHoldOffset
+    Cart:
+      type: object
+      properties:
+        id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        active:
+          type: boolean
+        strategy:
+          "$ref": "#/components/schemas/CartStrategyEnum"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CartLine"
+        groups:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CartGroup"
+        totals:
+          "$ref": "#/components/schemas/CartTotals"
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - active
+      - strategy
+      - items
+      - groups
+      - totals
+      title: Cart
+    CartGroup:
+      type: object
+      properties:
+        key:
+          type: string
+        name:
+          type: string
+        location:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
+        systemName:
+          type:
+          - string
+          - 'null'
+        itemIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        subtotal:
+          type: number
+      additionalProperties: false
+      required:
+      - key
+      - name
+      - itemIds
+      - subtotal
+      title: CartGroup
+    CartItemCreateInput:
+      type: object
+      properties:
+        itemType:
+          "$ref": "#/components/schemas/InventoryItemTypeEnum"
+        itemId:
+          type: string
+          format: uuid
+        quantity:
+          type: integer
+          minimum: 1
+        cartId:
+          type: string
+          format: uuid
+      additionalProperties: false
+      required:
+      - itemType
+      - itemId
+      title: CartItemCreateInput
+    CartItemUpdateInput:
+      type: object
+      properties:
+        quantity:
+          type: integer
+          minimum: 1
+        itemPriceId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+      additionalProperties: false
+      title: CartItemUpdateInput
+    CartItemsBulkCreateInput:
+      type: object
+      properties:
+        items:
+          type: array
+          minItems: 1
+          maxItems: 500
+          items:
+            "$ref": "#/components/schemas/CartItemsBulkCreateItemInput"
+        cartId:
+          type: string
+          format: uuid
+      additionalProperties: false
+      required:
+      - items
+      title: CartItemsBulkCreateInput
+    CartItemsBulkCreateItemInput:
+      type: object
+      properties:
+        itemType:
+          "$ref": "#/components/schemas/InventoryItemTypeEnum"
+        itemId:
+          type: string
+          format: uuid
+        quantity:
+          type: integer
+          minimum: 1
+      additionalProperties: false
+      required:
+      - itemType
+      - itemId
+      title: CartItemsBulkCreateItemInput
+    CartLine:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        quantity:
+          type: integer
+        item:
+          "$ref": "#/components/schemas/InventoryItemRef"
+        available:
+          type: boolean
+        pinned:
+          type: boolean
+        cheapest:
+          type: boolean
+        unitPrice:
+          type:
+          - number
+          - 'null'
+        total:
+          type:
+          - number
+          - 'null'
+        price:
+          anyOf:
+          - "$ref": "#/components/schemas/ItemPrice"
+          - type: 'null'
+        offers:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ItemPrice"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - quantity
+      - item
+      - available
+      - pinned
+      - cheapest
+      - offers
+      - createdAt
+      - updatedAt
+      title: CartLine
+    CartList:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        active:
+          type: boolean
+        itemsCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - active
+      - itemsCount
+      - createdAt
+      - updatedAt
+      title: CartList
+    CartListCreateInput:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 64
+      additionalProperties: false
+      required:
+      - name
+      title: CartListCreateInput
+    CartListUpdateInput:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 64
+        active:
+          type: boolean
+      additionalProperties: false
+      title: CartListUpdateInput
+    CartListsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/CartList"
+      title: CartListsList
+    CartStrategyEnum:
+      type: string
+      enum:
+      - cheapest
+      - stops
+      - distance
+      x-enumNames:
+      - CHEAPEST
+      - STOPS
+      - DISTANCE
+      title: CartStrategyEnum
+    CartTotals:
+      type: object
+      description: Cart costs in aUEC, over the lines someone sells
+      properties:
+        total:
+          type: number
+        itemsCount:
+          type: integer
+        quantity:
+          type: integer
+        unavailableCount:
+          type: integer
+        stopsCount:
+          type: integer
+      additionalProperties: false
+      required:
+      - total
+      - itemsCount
+      - quantity
+      - unavailableCount
+      - stopsCount
+      title: CartTotals
     CatalogueTokenMatch:
       type: object
       required:
@@ -26175,6 +26873,7 @@ components:
       - oauth-twitch
       - push_notifications
       - ship_inventories
+      - shopping_cart
       - trade_routes
       - vehicle_overview
       x-enumNames:
@@ -26200,6 +26899,7 @@ components:
       - OAUTH_TWITCH
       - PUSH_NOTIFICATIONS
       - SHIP_INVENTORIES
+      - SHOPPING_CART
       - TRADE_ROUTES
       - VEHICLE_OVERVIEW
       title: FeatureFlagName

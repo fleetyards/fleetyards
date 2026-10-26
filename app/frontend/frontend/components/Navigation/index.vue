@@ -16,6 +16,7 @@ import ScDataSourceSwitch from "@/frontend/components/ScDataSource/index.vue";
 
 import FleetNav from "./FleetNav/index.vue";
 import NotificationsNav from "./NotificationsNav/index.vue";
+import CartNav from "./CartNav/index.vue";
 import CatalogueNav from "@/frontend/components/Navigation/CatalogueNav/index.vue";
 import FleetsNav from "./FleetsNav/index.vue";
 import ToolsNav from "./ToolsNav/index.vue";
@@ -218,6 +219,7 @@ const settingsActive = computed(() => {
         data-test="install-app"
       />
       <template v-if="isAuthenticated && currentUser">
+        <CartNav />
         <NotificationsNav />
         <NavItem
           :to="{ name: 'settings' }"

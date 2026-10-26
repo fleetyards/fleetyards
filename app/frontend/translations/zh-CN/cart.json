@@ -1,0 +1,95 @@
+{
+  "zh-CN": {
+    "cart": {
+      "title": "购物车",
+      "lead": "收集你想在游戏中购买的物品，并查看在哪里能买到。每件物品默认分配到售价最低的地点，你也可以另选。",
+      "addToCart": "加入购物车",
+      "addLoadout": "将非原厂部件加入购物车",
+      "clear": "清空购物车",
+      "confirmClear": "要清空购物车中的所有物品吗？",
+      "remove": "移除",
+      "quantity": "数量",
+      "unitPrice": "每件 %{price}",
+      "buyElsewhere": "在别处购买",
+      "cheapest": "最便宜",
+      "planPick": "由计划选择",
+      "pinned": "你的选择",
+      "tripPick": "路线优先",
+      "unplaced": "未知地点",
+      "totals": {
+        "total": "总计",
+        "items": "物品",
+        "stops": "停靠点",
+        "unavailable": "无处出售"
+      },
+      "unavailable": {
+        "title": "无处出售",
+        "text": "据我们所知，目前没有人出售这些物品，因此未计入总计。"
+      },
+      "empty": {
+        "title": "购物车是空的",
+        "text": "从目录中添加商品、组件或装备，规划在哪里购买。"
+      },
+      "messages": {
+        "added": "已将 %{name} 加入 %{list}。",
+        "addFailed": "无法将物品加入购物车。",
+        "updateFailed": "无法更新购物车。",
+        "accountRequired": "登录后即可使用购物车。",
+        "loadoutAdded": {
+          "one": "已将 %{count} 个部件加入 %{list}。",
+          "other": "已将 %{count} 个部件加入 %{list}。"
+        }
+      },
+      "lists": {
+        "shown": "清单",
+        "create": "新建清单",
+        "rename": "重命名清单",
+        "delete": "删除清单",
+        "name": "名称",
+        "activate": "设为当前清单",
+        "isActive": "当前清单",
+        "confirmDelete": "删除清单 %{name} 及其中的所有物品？",
+        "messages": {
+          "saveFailed": "无法保存清单。"
+        }
+      },
+      "widget": {
+        "expand": "显示购物车",
+        "collapse": "隐藏购物车",
+        "open": "打开购物车",
+        "unavailable": "无处出售",
+        "more": {
+          "one": "还有 %{count} 件",
+          "other": "还有 %{count} 件"
+        }
+      },
+      "strategies": {
+        "cheapest": {
+          "label": "最便宜",
+          "hint": "每件物品都在售价最低的地点购买"
+        },
+        "stops": {
+          "label": "最少停靠",
+          "hint": "在尽可能少的地点买齐所有物品，必要时多付一点以省去一次停靠"
+        },
+        "distance": {
+          "label": "最短路线",
+          "hint": "尽量让停靠点位于相同的行星和星系，必要时多付一点以减少航行"
+        }
+      },
+      "pick": {
+        "title": "将 %{name} 加入清单",
+        "hint": {
+          "one": "%{count} 件",
+          "other": "%{count} 件"
+        },
+        "activeHint": {
+          "one": "当前清单 · %{count} 件",
+          "other": "当前清单 · %{count} 件"
+        },
+        "loadoutParts": "非原厂部件",
+        "question": "加入："
+      }
+    }
+  }
+}

@@ -295,6 +295,16 @@ zh-TW:
           attributes:
             base:
               plan_limit_reached: "最多只能有 %{count} 個計畫"
+        cart:
+          attributes:
+            base:
+              cart_list_limit_reached: "最多只能包含 %{count} 個清單"
+        cart_item:
+          attributes:
+            base:
+              cart_limit_reached: "最多可容納 %{count} 件物品"
+            item_price_id:
+              not_offered: "不是該物品的售價"
         hangar_plan_slot:
           attributes:
             quantity:

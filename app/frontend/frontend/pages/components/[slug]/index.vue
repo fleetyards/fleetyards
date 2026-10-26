@@ -13,6 +13,7 @@ import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import ComponentThermalMetrics from "@/frontend/components/Components/ThermalMetrics/index.vue";
 import Availability from "@/frontend/components/Availability/index.vue";
+import CartAddToCart from "@/frontend/components/Cart/AddToCart/index.vue";
 import DurabilityMetrics from "@/frontend/components/Components/DurabilityMetrics/index.vue";
 import StatGroups from "@/frontend/components/Components/StatGroups/index.vue";
 import Chip from "@/shared/components/base/Chip/index.vue";
@@ -35,6 +36,7 @@ import {
   type Component,
   useBlueprints as useBlueprintsQuery,
   BlueprintCraftableTypeEnum,
+  InventoryItemTypeEnum,
 } from "@/services/fyApi";
 
 type Props = {
@@ -176,7 +178,16 @@ watch(
       />
 
       <div class="component-page__title">
-        <h1 class="component-page__name">{{ component.name }}</h1>
+        <div class="component-page__headline">
+          <h1 class="component-page__name">{{ component.name }}</h1>
+          <CartAddToCart
+            :item="{
+              id: component.id,
+              type: InventoryItemTypeEnum.COMPONENT,
+              name: component.name,
+            }"
+          />
+        </div>
         <div v-if="component.manufacturer" class="component-page__sub">
           {{ component.manufacturer.name }}
         </div>

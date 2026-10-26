@@ -11,9 +11,10 @@ import EquipmentLeadMetric from "@/frontend/components/Equipment/LeadMetric/inde
 import Chip from "@/shared/components/base/Chip/index.vue";
 import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
 import RowListItem from "@/shared/components/RowListItem/index.vue";
+import CartAddToCart from "@/frontend/components/Cart/AddToCart/index.vue";
 import { type RowListItemBadge } from "@/shared/components/RowListItem/types";
 import { useI18n } from "@/shared/composables/useI18n";
-import { type Equipment } from "@/services/fyApi";
+import { type Equipment, InventoryItemTypeEnum } from "@/services/fyApi";
 
 type Props = {
   equipment: Equipment;
@@ -124,6 +125,17 @@ const badges = computed<RowListItemBadge[]>(() => {
     </template>
 
     <EquipmentLeadMetric :equipment="equipment" />
+
+    <template #actions>
+      <CartAddToCart
+        :item="{
+          id: equipment.id,
+          type: InventoryItemTypeEnum.EQUIPMENT,
+          name: equipment.name,
+        }"
+        variant="row"
+      />
+    </template>
   </RowListItem>
 </template>
 

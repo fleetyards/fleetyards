@@ -3,8 +3,11 @@
 @import "@/shared/components/metricsCard";
 
 .equipment-page {
+  // Wraps so the badges take a row of their own on a phone rather than
+  // narrowing the name until it runs underneath them.
   &__masthead {
     display: flex;
+    flex-wrap: wrap;
     align-items: flex-start;
     gap: 18px;
     margin-bottom: 24px;
@@ -21,7 +24,7 @@
   }
 
   &__title {
-    flex: 1 1 auto;
+    flex: 1 1 260px;
     min-width: 0;
   }
 
@@ -32,7 +35,18 @@
     font-size: 28px;
     font-weight: 700;
     color: #fff;
-    margin: 0 0 6px;
+    margin: 0;
+  }
+
+  // The name and the cart icon that belongs to it, as a blueprint's bookmark
+  // sits beside its name.
+  &__headline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    margin-bottom: 6px;
   }
 
   &__sub {

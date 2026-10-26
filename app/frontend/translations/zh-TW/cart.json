@@ -1,0 +1,95 @@
+{
+  "zh-TW": {
+    "cart": {
+      "title": "購物車",
+      "lead": "收集你想在遊戲中購買的物品，並查看在哪裡能買到。每件物品預設分配到售價最低的地點，你也可以另選。",
+      "addToCart": "加入購物車",
+      "addLoadout": "將非原廠零件加入購物車",
+      "clear": "清空購物車",
+      "confirmClear": "要清空購物車中的所有物品嗎？",
+      "remove": "移除",
+      "quantity": "數量",
+      "unitPrice": "每件 %{price}",
+      "buyElsewhere": "在別處購買",
+      "cheapest": "最便宜",
+      "planPick": "由計畫選擇",
+      "pinned": "你的選擇",
+      "tripPick": "路線優先",
+      "unplaced": "未知地點",
+      "totals": {
+        "total": "總計",
+        "items": "物品",
+        "stops": "停靠點",
+        "unavailable": "無處出售"
+      },
+      "unavailable": {
+        "title": "無處出售",
+        "text": "據我們所知，目前沒有人出售這些物品，因此未計入總計。"
+      },
+      "empty": {
+        "title": "購物車是空的",
+        "text": "從目錄中加入商品、組件或裝備，規劃在哪裡購買。"
+      },
+      "messages": {
+        "added": "已將 %{name} 加入 %{list}。",
+        "addFailed": "無法將物品加入購物車。",
+        "updateFailed": "無法更新購物車。",
+        "accountRequired": "登入後即可使用購物車。",
+        "loadoutAdded": {
+          "one": "已將 %{count} 個零件加入 %{list}。",
+          "other": "已將 %{count} 個零件加入 %{list}。"
+        }
+      },
+      "lists": {
+        "shown": "清單",
+        "create": "新增清單",
+        "rename": "重新命名清單",
+        "delete": "刪除清單",
+        "name": "名稱",
+        "activate": "設為目前清單",
+        "isActive": "目前清單",
+        "confirmDelete": "刪除清單 %{name} 及其中的所有物品？",
+        "messages": {
+          "saveFailed": "無法儲存清單。"
+        }
+      },
+      "widget": {
+        "expand": "顯示購物車",
+        "collapse": "隱藏購物車",
+        "open": "開啟購物車",
+        "unavailable": "無處販售",
+        "more": {
+          "one": "還有 %{count} 件",
+          "other": "還有 %{count} 件"
+        }
+      },
+      "strategies": {
+        "cheapest": {
+          "label": "最便宜",
+          "hint": "每件物品都在售價最低的地點購買"
+        },
+        "stops": {
+          "label": "最少停靠",
+          "hint": "在盡可能少的地點買齊所有物品，必要時多付一點以省去一次停靠"
+        },
+        "distance": {
+          "label": "最短路線",
+          "hint": "盡量讓停靠點位於相同的行星與星系，必要時多付一點以減少航行"
+        }
+      },
+      "pick": {
+        "title": "將 %{name} 加入清單",
+        "hint": {
+          "one": "%{count} 件",
+          "other": "%{count} 件"
+        },
+        "activeHint": {
+          "one": "目前清單 · %{count} 件",
+          "other": "目前清單 · %{count} 件"
+        },
+        "loadoutParts": "非原廠零件",
+        "question": "加入："
+      }
+    }
+  }
+}

@@ -1,6 +1,7 @@
 {
   "it": {
     "nav": {
+      "cart": "Carrello",
       "locations": "Luoghi",
       "home": "Home",
       "back": "Indietro",

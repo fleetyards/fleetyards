@@ -1,0 +1,95 @@
+{
+  "de": {
+    "cart": {
+      "title": "Warenkorb",
+      "lead": "Sammle, was du im Spiel kaufen willst, und sieh, wo du es bekommst. Jeder Artikel kommt zum günstigsten Ort, der ihn verkauft, außer du wählst einen anderen.",
+      "addToCart": "In den Warenkorb",
+      "addLoadout": "Nicht serienmäßige Teile in den Warenkorb",
+      "clear": "Warenkorb leeren",
+      "confirmClear": "Alles aus dem Warenkorb entfernen?",
+      "remove": "Entfernen",
+      "quantity": "Menge",
+      "unitPrice": "je %{price}",
+      "buyElsewhere": "Woanders kaufen",
+      "cheapest": "Günstigster",
+      "planPick": "Dem Plan überlassen",
+      "pinned": "Deine Wahl",
+      "tripPick": "Für die Route",
+      "unplaced": "Unbekannter Ort",
+      "totals": {
+        "total": "Gesamt",
+        "items": "Artikel",
+        "stops": "Stopps",
+        "unavailable": "Nirgends verkauft"
+      },
+      "unavailable": {
+        "title": "Nirgends verkauft",
+        "text": "Soweit wir wissen, verkauft diese Artikel gerade niemand, daher fehlen sie in der Summe."
+      },
+      "empty": {
+        "title": "Dein Warenkorb ist leer",
+        "text": "Lege Rohstoffe, Komponenten oder Ausrüstung aus dem Katalog in den Warenkorb, um zu planen, wo du sie kaufst."
+      },
+      "messages": {
+        "added": "%{name} zu %{list} hinzugefügt.",
+        "addFailed": "Der Artikel konnte nicht in den Warenkorb gelegt werden.",
+        "updateFailed": "Der Warenkorb konnte nicht aktualisiert werden.",
+        "accountRequired": "Melde dich an, um den Warenkorb zu nutzen.",
+        "loadoutAdded": {
+          "one": "%{count} Teil zu %{list} hinzugefügt.",
+          "other": "%{count} Teile zu %{list} hinzugefügt."
+        }
+      },
+      "lists": {
+        "shown": "Liste",
+        "create": "Neue Liste",
+        "rename": "Liste umbenennen",
+        "delete": "Liste löschen",
+        "name": "Name",
+        "activate": "Als aktiv festlegen",
+        "isActive": "Aktive Liste",
+        "confirmDelete": "Die Liste %{name} mit allem darauf löschen?",
+        "messages": {
+          "saveFailed": "Die Liste konnte nicht gespeichert werden."
+        }
+      },
+      "widget": {
+        "expand": "Warenkorb anzeigen",
+        "collapse": "Warenkorb ausblenden",
+        "open": "Warenkorb öffnen",
+        "unavailable": "Nicht erhältlich",
+        "more": {
+          "one": "+%{count} weiterer Artikel",
+          "other": "+%{count} weitere Artikel"
+        }
+      },
+      "strategies": {
+        "cheapest": {
+          "label": "Günstigste",
+          "hint": "Jeder Artikel beim günstigsten Händler"
+        },
+        "stops": {
+          "label": "Wenigste Stopps",
+          "hint": "Alles an möglichst wenigen Orten kaufen, auch wenn ein Artikel dort mehr kostet"
+        },
+        "distance": {
+          "label": "Kürzeste Route",
+          "hint": "Stopps möglichst auf denselben Planeten und im selben System halten, auch wenn ein Artikel dort mehr kostet"
+        }
+      },
+      "pick": {
+        "title": "%{name} zu einer Liste hinzufügen",
+        "hint": {
+          "one": "%{count} Artikel",
+          "other": "%{count} Artikel"
+        },
+        "activeHint": {
+          "one": "Aktive Liste · %{count} Artikel",
+          "other": "Aktive Liste · %{count} Artikel"
+        },
+        "loadoutParts": "nicht serienmäßige Teile",
+        "question": "Hinzufügen zu:"
+      }
+    }
+  }
+}

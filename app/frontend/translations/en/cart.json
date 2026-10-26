@@ -1,0 +1,95 @@
+{
+  "en": {
+    "cart": {
+      "title": "Shopping Cart",
+      "lead": "Collect what you want to buy in game and see where to get it. Each item goes to the cheapest place selling it, unless you pick another.",
+      "addToCart": "Add to cart",
+      "addLoadout": "Add non-stock parts to cart",
+      "clear": "Clear cart",
+      "confirmClear": "Remove everything from your cart?",
+      "remove": "Remove",
+      "quantity": "Quantity",
+      "unitPrice": "%{price} each",
+      "buyElsewhere": "Buy elsewhere",
+      "cheapest": "Cheapest",
+      "planPick": "Leave it to the plan",
+      "pinned": "Your pick",
+      "tripPick": "Trip pick",
+      "unplaced": "Unknown place",
+      "totals": {
+        "total": "Total",
+        "items": "Items",
+        "stops": "Stops",
+        "unavailable": "Not sold anywhere"
+      },
+      "unavailable": {
+        "title": "Not sold anywhere",
+        "text": "Nobody we know of sells these right now, so they are left out of the total."
+      },
+      "empty": {
+        "title": "Your cart is empty",
+        "text": "Add commodities, components or equipment from the catalogue to plan where to buy them."
+      },
+      "messages": {
+        "added": "%{name} added to %{list}.",
+        "addFailed": "Could not add the item to your cart.",
+        "updateFailed": "Could not update your cart.",
+        "accountRequired": "Sign in to use the shopping cart.",
+        "loadoutAdded": {
+          "one": "%{count} part added to %{list}.",
+          "other": "%{count} parts added to %{list}."
+        }
+      },
+      "lists": {
+        "shown": "List",
+        "create": "New list",
+        "rename": "Rename list",
+        "delete": "Delete list",
+        "name": "Name",
+        "activate": "Make active",
+        "isActive": "Active list",
+        "confirmDelete": "Delete the list %{name} and everything on it?",
+        "messages": {
+          "saveFailed": "Could not save the list."
+        }
+      },
+      "widget": {
+        "expand": "Show cart",
+        "collapse": "Hide cart",
+        "open": "Open cart",
+        "unavailable": "Not sold",
+        "more": {
+          "one": "+%{count} more item",
+          "other": "+%{count} more items"
+        }
+      },
+      "strategies": {
+        "cheapest": {
+          "label": "Cheapest",
+          "hint": "Each item at the cheapest place selling it"
+        },
+        "stops": {
+          "label": "Fewest stops",
+          "hint": "Buy everything at as few places as possible, paying more where that saves a stop"
+        },
+        "distance": {
+          "label": "Shortest trip",
+          "hint": "Keep stops on the same planets and in the same system where possible, paying more where that saves travel"
+        }
+      },
+      "pick": {
+        "title": "Add %{name} to a list",
+        "hint": {
+          "one": "%{count} item",
+          "other": "%{count} items"
+        },
+        "activeHint": {
+          "one": "Active list · %{count} item",
+          "other": "Active list · %{count} items"
+        },
+        "loadoutParts": "non-stock parts",
+        "question": "Add to:"
+      }
+    }
+  }
+}
