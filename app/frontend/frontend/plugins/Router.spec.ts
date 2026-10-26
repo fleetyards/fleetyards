@@ -1,7 +1,11 @@
-import { describe, expect, it, beforeEach } from "vitest";
+import { afterEach, describe, expect, it, beforeEach, vi } from "vitest";
 import { setActivePinia, createPinia } from "pinia";
 import type { RouteLocation } from "vue-router";
-import { beforeResolve } from "@/frontend/plugins/Router";
+import {
+  beforeEach as guardEach,
+  beforeResolve,
+} from "@/frontend/plugins/Router";
+import { useAppStore } from "@/frontend/stores/app";
 import { queryClient } from "@/frontend/plugins/QueryClient";
 import {
   FeatureFlagName,
@@ -143,5 +147,66 @@ describe("frontend router feature guard", () => {
     );
 
     expect(redirect).toEqual({ routeName: "login" });
+  });
+});
+
+describe("frontend router release reload", () => {
+  const at = (path: string, search = "") =>
+    ({
+      name: "hangar-vehicle",
+      path,
+      fullPath: `${path}${search}`,
+      params: { username: "ripley" },
+      query: Object.fromEntries(new URLSearchParams(search)),
+      meta: {},
+    }) as unknown as RouteLocation;
+
+  const assign = vi.fn();
+
+  beforeEach(() => {
+    setActivePinia(createPinia());
+    vi.stubGlobal("location", { ...window.location, assign });
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+    assign.mockReset();
+  });
+
+  const releaseOut = () => {
+    useAppStore().version = "999.0.0";
+  };
+
+  it("loads the new release on the way to a page with params", () => {
+    releaseOut();
+
+    const result = guardEach(
+      at("/hangar/ripley/ships/narcissus", "?tab=log"),
+      at("/hangar/ripley"),
+    );
+
+    expect(assign).toHaveBeenCalledWith(
+      "/hangar/ripley/ships/narcissus?tab=log",
+    );
+    expect(result).toBe(false);
+  });
+
+  it("keeps a query-only change in the app", () => {
+    releaseOut();
+
+    const result = guardEach(
+      at("/hangar/ripley", "?page=2"),
+      at("/hangar/ripley"),
+    );
+
+    expect(assign).not.toHaveBeenCalled();
+    expect(result).toBeUndefined();
+  });
+
+  it("navigates in the app while the release is current", () => {
+    const result = guardEach(at("/hangar/ripley/ships"), at("/hangar/ripley"));
+
+    expect(assign).not.toHaveBeenCalled();
+    expect(result).toBeUndefined();
   });
 });

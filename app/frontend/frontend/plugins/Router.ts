@@ -9,23 +9,22 @@ import { ensureQueryData } from "@/frontend/utils/RouteGuards/queryData";
 import { featuresQueryOptions } from "@/frontend/composables/useFeatures";
 import { getFleetQueryOptions, type FeatureFlagName } from "@/services/fyApi";
 
-const beforeEach = (to: RouteLocation) => {
+// A tab left open across a release keeps sending requests shaped by its old
+// bundle, which the API may since refuse. Moving to another page
+// is when the new release is loaded: the URL carries the page, params and
+// query alike, so nothing on screen is lost. A query-only change -- a filter, a
+// tab, a page of results -- stays in the app, or typing into a filter would
+// reload under the cursor.
+export const beforeEach = (to: RouteLocation, from: RouteLocation) => {
   const fleetStore = useFleetStore();
   if (to.name === "fleet-invite" && to.params.token) {
     fleetStore.inviteToken = String(to.params.token);
   }
 
   const appStore = useAppStore();
-  // check if update is available
-  if (
-    appStore.isUpdateAvailable &&
-    Object.keys(to.query).length === 0 &&
-    to.query.constructor === Object &&
-    Object.keys(to.params).length === 0 &&
-    to.params.constructor === Object
-  ) {
-    window.location.href = to.path;
-    return;
+  if (appStore.isUpdateAvailable && to.path !== from.path) {
+    window.location.assign(to.fullPath);
+    return false;
   }
 };
 

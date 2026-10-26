@@ -42,7 +42,10 @@ export type FyRouterOptions = {
   beforeResolve?: (
     to: RouteLocationNormalized,
   ) => FyRedirectRoute | undefined | Promise<FyRedirectRoute | undefined>;
-  beforeEach?: (to: RouteLocationNormalized) => void;
+  beforeEach?: (
+    to: RouteLocationNormalized,
+    from: RouteLocationNormalized,
+  ) => boolean | void;
 };
 
 export const setupRouter = (options: FyRouterOptions) => {
@@ -102,12 +105,12 @@ export const setupRouter = (options: FyRouterOptions) => {
 
   router.beforeEach(restoreSavedFilter);
 
-  router.beforeEach((to) => {
+  router.beforeEach((to, from) => {
     if (!options?.beforeEach) {
       return;
     }
 
-    options.beforeEach(to);
+    return options.beforeEach(to, from);
   });
 
   router.onError((error) => {
