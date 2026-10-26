@@ -105,6 +105,24 @@ describe("HangarTour", () => {
     expect(inventories?.requiresTarget).not.toBe(true);
   });
 
+  it("points inventories at the assets menu on a desktop", () => {
+    setViewport(false);
+    enabledFeatures.add(FeatureFlagName.HANGAR_INVENTORIES);
+
+    expect(steps().find((step) => step.id === "inventories")?.target).toBe(
+      '[data-tour="hangar-assets"]',
+    );
+  });
+
+  it("points inventories at the page menu on a phone", () => {
+    setViewport(true);
+    enabledFeatures.add(FeatureFlagName.HANGAR_INVENTORIES);
+
+    expect(steps().find((step) => step.id === "inventories")?.target).toBe(
+      '[data-tour="hangar-menu"]',
+    );
+  });
+
   it("points pledge items at the header on a desktop", () => {
     setViewport(false);
 
