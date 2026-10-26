@@ -317,14 +317,24 @@ const edit = () => {
       <AsyncData :async-status="loadoutStatus">
         <template #resolved>
           <template v-if="vehicle && loadout">
-            <Heading size="hero" hero inline-sub-heading>
-              <template #default>
-                {{ loadout.name }}
-              </template>
-              <template #subHeading>
-                {{ vehicleName }}
-              </template>
-            </Heading>
+            <div class="loadout-page__head">
+              <Heading size="hero" hero inline-sub-heading>
+                <template #default>
+                  {{ loadout.name }}
+                </template>
+                <template #subHeading>
+                  {{ vehicleName }}
+                </template>
+              </Heading>
+
+              <LoadoutPreview
+                v-if="!fittingPending && previewSlots"
+                :model-slug="vehicle.model.slug"
+                :slots="previewSlots"
+                test-id="vehicle-loadout-page-preview"
+                class="loadout-page__preview"
+              />
+            </div>
 
             <Teleport v-if="editable" to="#header-right">
               <Btn
@@ -344,23 +354,13 @@ const edit = () => {
 
             <Loader v-if="fittingPending" :loading="true" relative />
 
-            <div v-else class="loadout-page__summary">
-              <LoadoutChanges
-                v-if="changesFromStock.length"
-                :title="t('labels.vehicleLoadout.againstStock')"
-                :figures="changesFromStock"
-                test-id="vehicle-loadout-page-changes"
-              />
-
-              <LoadoutPreview
-                v-if="previewSlots"
-                :model-slug="vehicle.model.slug"
-                :slots="previewSlots"
-                :interactive="false"
-                test-id="vehicle-loadout-page-preview"
-                class="loadout-page__preview"
-              />
-            </div>
+            <LoadoutChanges
+              v-else-if="changesFromStock.length"
+              :title="t('labels.vehicleLoadout.againstStock')"
+              :figures="changesFromStock"
+              test-id="vehicle-loadout-page-changes"
+              class="loadout-page__changes"
+            />
 
             <Hardpoints
               v-if="!fittingPending && model && hardpoints"
@@ -389,25 +389,21 @@ const edit = () => {
 </template>
 
 <style lang="scss" scoped>
-// The changes beside a small holo of the fitting, which opens full screen.
-.loadout-page__summary {
-  display: grid;
+// The fitting's holo at the title's height, on the right, as the ship page
+// has its own beside the description.
+.loadout-page__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 24px;
-  margin-bottom: 24px;
 }
 
 .loadout-page__preview {
-  margin-bottom: 0;
+  flex: none;
+  width: 360px;
 }
 
-@media (min-width: $tablet-breakpoint) {
-  .loadout-page__summary {
-    grid-template-columns: minmax(0, 1fr) minmax(240px, 360px);
-  }
-
-  .loadout-page__preview {
-    grid-column: 2;
-    grid-row: 1;
-  }
+.loadout-page__changes {
+  margin-bottom: 24px;
 }
 </style>

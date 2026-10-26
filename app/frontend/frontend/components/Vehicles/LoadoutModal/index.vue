@@ -1458,7 +1458,7 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
           :model-slug="modelSlug"
           :slots="previewSlots"
           :interactive="inspecting"
-          backdrop
+          variant="backdrop"
           test-id="vehicle-loadout-preview"
           @available="previewShown = $event"
         />
