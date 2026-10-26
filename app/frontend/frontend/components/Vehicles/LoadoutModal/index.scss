@@ -134,19 +134,42 @@
     margin: 0;
   }
 
-  // The ship's holo in the angled render's place, under the panel like it, but
-  // still turned by a drag beside the controls.
+  // The ship's holo in the angled render's place, still and under the panel
+  // like it.
   &__preview {
     display: none;
     position: absolute;
     top: 0;
     right: 0;
     left: 30%;
-    width: auto;
     height: calc(100dvh - 260px);
-    aspect-ratio: auto;
-    margin: 0;
     mask-image: linear-gradient(90deg, transparent 0%, black 45%);
+    pointer-events: none;
+
+    // Beside the controls, where the panel does not cover it.
+    &--inspecting {
+      pointer-events: auto;
+    }
+  }
+
+  &__ship-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+
+  &__figures-collapse {
+    align-self: stretch;
+  }
+
+  // The figures' own column: Collapsed animates its height, so the spacing
+  // lives inside it rather than on it.
+  &__figures-list {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
   }
 
   // The open tab's leading figures, across the column's whole width: the
@@ -174,6 +197,14 @@
 
     &__preview {
       display: block;
+    }
+
+    // Over the holo the figures need a ground of their own to be read on.
+    &__ship--over-holo {
+      padding: 12px;
+      border-radius: 6px;
+      background: var(--color-surface);
+      backdrop-filter: blur(6px);
     }
 
     // The ship's figures in the corner, over the backdrop, where the terminal

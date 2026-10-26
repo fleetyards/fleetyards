@@ -628,7 +628,9 @@
         "makePrivate": "Privat machen",
         "linkInstead": "Stattdessen einen Build verlinken",
         "createOnFleetyards": "Loadout auf Fleetyards erstellen",
-        "viewLoadout": "Loadout ansehen"
+        "viewLoadout": "Loadout ansehen",
+        "inspectHolo": "Werte ausblenden, Schiff drehen",
+        "showFigures": "Werte einblenden"
       },
       "hangarPledgeItems": {
         "addToInventory": "Zum Inventar hinzufügen",

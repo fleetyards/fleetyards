@@ -17,11 +17,17 @@ type Props = {
   modelSlug: string;
   // The fitting's slot tree; without one the stock ship is shown.
   slots?: PreviewSlot[];
+  // Filling the box it is put in rather than a frame of its own, and closer.
+  backdrop?: boolean;
+  // Turned and zoomed by the viewer, with the holo's controls.
+  interactive?: boolean;
   testId?: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   slots: undefined,
+  backdrop: false,
+  interactive: true,
   testId: "loadout-preview",
 });
 
@@ -75,6 +81,7 @@ watch(available, (value) => emit("available", value), { immediate: true });
   <div
     v-if="available && holoModel"
     class="loadout-preview"
+    :class="{ 'loadout-preview--backdrop': backdrop }"
     :data-test="testId"
   >
     <!-- Not inline: that caps the canvas at an item hero's height, where this
@@ -84,7 +91,9 @@ watch(available, (value) => emit("available", value), { immediate: true });
       :auto-rotate="false"
       :azimuth="ANGLED_AZIMUTH"
       :elevation="ANGLED_ELEVATION"
-      zoomable
+      :controllable="interactive"
+      :zoomable="interactive"
+      :fit-scale="backdrop ? 1.4 : 1"
       @unavailable="unavailable = true"
     />
   </div>
@@ -96,5 +105,11 @@ watch(available, (value) => emit("available", value), { immediate: true });
   width: 100%;
   aspect-ratio: 16 / 9;
   margin-bottom: 24px;
+
+  &--backdrop {
+    height: 100%;
+    aspect-ratio: auto;
+    margin: 0;
+  }
 }
 </style>

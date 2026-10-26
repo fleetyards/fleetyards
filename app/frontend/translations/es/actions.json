@@ -628,7 +628,9 @@
         "makePrivate": "Hacer privado",
         "linkInstead": "Enlazar una configuración",
         "createOnFleetyards": "Crear un loadout en Fleetyards",
-        "viewLoadout": "Ver equipamiento"
+        "viewLoadout": "Ver equipamiento",
+        "inspectHolo": "Ocultar cifras, girar la nave",
+        "showFigures": "Mostrar cifras"
       },
       "hangarPledgeItems": {
         "addToInventory": "Añadir al inventario",

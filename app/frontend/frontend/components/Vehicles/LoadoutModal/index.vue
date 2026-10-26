@@ -43,6 +43,7 @@ import { useCraftedRecipes } from "@/frontend/composables/useCraftedRecipes";
 import LoadoutMetrics from "./Metrics/index.vue";
 import LoadoutChanges from "@/frontend/components/Loadout/Changes/index.vue";
 import LoadoutPreview from "@/frontend/components/Loadout/Preview/index.vue";
+import Collapsed from "@/shared/components/Collapsed.vue";
 import { previewSlotsFromFitting } from "@/frontend/utils/loadoutPreview";
 import { VehicleLoadoutTabsEnum } from "./types";
 import { moduleSlots } from "./moduleSlots";
@@ -355,6 +356,15 @@ const previewSlots = computed(() =>
 
 // The ship's holo takes the angled render's place behind the controls.
 const previewShown = ref(false);
+
+// The figures put away, so the holo can be turned and zoomed.
+const inspecting = ref(false);
+
+const figuresToggleLabel = computed(() =>
+  inspecting.value
+    ? t("actions.vehicleLoadout.showFigures")
+    : t("actions.vehicleLoadout.inspectHolo"),
+);
 
 // The saved fitting's recipes as well as the edited one's, so the changes
 // against the save read both as crafted.
@@ -1419,45 +1429,77 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
         data-test="vehicle-loadout-loading"
       />
 
-      <LoadoutPreview
+      <div
         v-if="flightReady && !initialising"
         v-show="!linking"
-        :model-slug="modelSlug"
-        :slots="previewSlots"
         class="vehicle-loadout__preview"
-        test-id="vehicle-loadout-preview"
-        @available="previewShown = $event"
-      />
+        :class="{ 'vehicle-loadout__preview--inspecting': inspecting }"
+      >
+        <LoadoutPreview
+          :model-slug="modelSlug"
+          :slots="previewSlots"
+          :interactive="inspecting"
+          backdrop
+          test-id="vehicle-loadout-preview"
+          @available="previewShown = $event"
+        />
+      </div>
 
       <aside
         v-show="!linking"
         class="vehicle-loadout__ship"
+        :class="{ 'vehicle-loadout__ship--over-holo': previewShown }"
         data-test="vehicle-loadout-ship"
       >
-        <p class="vehicle-loadout__model">
-          <!-- eslint-disable-next-line vue/no-v-html -->
-          <span v-html="vehicle.model.manufacturer?.name" />
-          <strong>{{ vehicle.model.name }}</strong>
-        </p>
-        <LoadoutMetrics
-          v-if="tabMetrics"
-          v-bind="tabMetrics"
-          class="vehicle-loadout__card"
-        />
+        <div class="vehicle-loadout__ship-header">
+          <p class="vehicle-loadout__model">
+            <!-- eslint-disable-next-line vue/no-v-html -->
+            <span v-html="vehicle.model.manufacturer?.name" />
+            <strong>{{ vehicle.model.name }}</strong>
+          </p>
+          <Btn
+            v-if="previewShown"
+            variant="bare"
+            :aria-label="figuresToggleLabel"
+            v-tooltip="figuresToggleLabel"
+            :aria-expanded="!inspecting"
+            data-test="vehicle-loadout-inspect"
+            @click="inspecting = !inspecting"
+          >
+            <i
+              :class="
+                inspecting ? 'fa-solid fa-caret-down' : 'fa-solid fa-caret-up'
+              "
+            />
+          </Btn>
+        </div>
 
-        <LoadoutChanges
-          v-if="changedFigures.length"
-          :title="t('labels.loadoutPicker.changed')"
-          :figures="changedFigures"
-          test-id="vehicle-loadout-changes"
-        />
+        <Collapsed
+          :visible="!inspecting"
+          class="vehicle-loadout__figures-collapse"
+        >
+          <div class="vehicle-loadout__figures-list">
+            <LoadoutMetrics
+              v-if="tabMetrics"
+              v-bind="tabMetrics"
+              class="vehicle-loadout__card"
+            />
 
-        <LoadoutChanges
-          v-if="changesFromStock.length"
-          :title="t('labels.vehicleLoadout.againstStock')"
-          :figures="changesFromStock"
-          test-id="vehicle-loadout-changes-from-stock"
-        />
+            <LoadoutChanges
+              v-if="changedFigures.length"
+              :title="t('labels.loadoutPicker.changed')"
+              :figures="changedFigures"
+              test-id="vehicle-loadout-changes"
+            />
+
+            <LoadoutChanges
+              v-if="changesFromStock.length"
+              :title="t('labels.vehicleLoadout.againstStock')"
+              :figures="changesFromStock"
+              test-id="vehicle-loadout-changes-from-stock"
+            />
+          </div>
+        </Collapsed>
       </aside>
 
       <div class="vehicle-loadout__panel">
