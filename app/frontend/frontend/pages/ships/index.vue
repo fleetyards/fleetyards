@@ -51,10 +51,11 @@ const { detailsVisible, gridView } = storeToRefs(modelsStore);
 const route = useRoute();
 
 // The chips picked in the display options, plus whichever sort the list is in
-// right now so the bar never hides the one that is chosen.
+// right now -- the default included -- so the bar never hides the one that is
+// chosen.
 const sortFields = useModelSortFields({
   include: () =>
-    typeof route.query.s === "string" ? route.query.s : undefined,
+    typeof route.query.s === "string" ? route.query.s : "name asc",
 });
 
 const fleetchartVisible = computed(() => {
