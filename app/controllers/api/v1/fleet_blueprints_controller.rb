@@ -31,6 +31,7 @@ module Api
         # is asked about.
         @owned_blueprint_ids, @wanted_blueprint_ids = marked_ids_for(@blueprints)
         @owners = members_for(@blueprints, UserBlueprint.owned)
+        preload_angled_views(@blueprints)
       end
 
       # Under the same privilege and the same sharing setting as what they
@@ -44,6 +45,7 @@ module Api
 
         @owned_blueprint_ids, @wanted_blueprint_ids = marked_ids_for(@blueprints)
         @wanters = members_for(@blueprints, UserBlueprint.wanted)
+        preload_angled_views(@blueprints)
       end
 
       # The members who let this fleet see what they hold.

@@ -124,6 +124,14 @@ module BlueprintFiltersConcern
     [Set.new(owned.map(&:first)), Set.new(wanted.map(&:first))]
   end
 
+  # What each row draws its item by. Not in `filtered_blueprints`' includes:
+  # a commodity can be the output too, and has no render to preload.
+  private def preload_angled_views(blueprints)
+    items = blueprints.filter_map(&:craftable).select { |craftable| craftable.is_a?(ItemViews) }
+
+    ActiveRecord::Associations::Preloader.new(records: items, associations: {angled_view_attachment: :blob}).call
+  end
+
   private def org_filter
     blueprints_query_params[:from_org]
   end

@@ -79,6 +79,18 @@ class Api::V1::BlueprintsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The list draws each recipe by the item it makes, as a plan.
+  test "GET /blueprints carries the angled view of what a recipe makes" do
+    @component.angled_view.attach(io: file_fixture("test.png").open, filename: "angled.png", content_type: "image/png")
+
+    assert_api_response :get, 200 do
+      items = parsed_body["items"].index_by { |item| item["id"] }
+
+      assert_equal "angled.png", items[@blueprint.id].dig("craftable", "angledView", "name")
+      assert_not items[@other.id].fetch("craftable", {}).key?("angledView")
+    end
+  end
+
   test "GET /blueprints sorts by craft time" do
     assert_api_response :get, 200, params: {q: {"sorts" => ["craftTime desc"]}} do
       assert_equal "Omnisky VI Cannon", parsed_body["items"].first["name"]
