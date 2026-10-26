@@ -341,22 +341,26 @@ const edit = () => {
             <Teleport v-if="!fittingPending" to="#header-right">
               <CartAddLoadout :items="nonStockCartItems(loadoutSlots)" />
             </Teleport>
-            <LoadoutPreview
-              v-if="!fittingPending && previewSlots"
-              :model-slug="vehicle.model.slug"
-              :slots="previewSlots"
-              test-id="vehicle-loadout-page-preview"
-            />
 
             <Loader v-if="fittingPending" :loading="true" relative />
 
-            <LoadoutChanges
-              v-else-if="changesFromStock.length"
-              :title="t('labels.vehicleLoadout.againstStock')"
-              :figures="changesFromStock"
-              test-id="vehicle-loadout-page-changes"
-              class="loadout-page__changes"
-            />
+            <div v-else class="loadout-page__summary">
+              <LoadoutChanges
+                v-if="changesFromStock.length"
+                :title="t('labels.vehicleLoadout.againstStock')"
+                :figures="changesFromStock"
+                test-id="vehicle-loadout-page-changes"
+              />
+
+              <LoadoutPreview
+                v-if="previewSlots"
+                :model-slug="vehicle.model.slug"
+                :slots="previewSlots"
+                :interactive="false"
+                test-id="vehicle-loadout-page-preview"
+                class="loadout-page__preview"
+              />
+            </div>
 
             <Hardpoints
               v-if="!fittingPending && model && hardpoints"
@@ -385,7 +389,25 @@ const edit = () => {
 </template>
 
 <style lang="scss" scoped>
-.loadout-page__changes {
+// The changes beside a small holo of the fitting, which opens full screen.
+.loadout-page__summary {
+  display: grid;
+  gap: 24px;
   margin-bottom: 24px;
+}
+
+.loadout-page__preview {
+  margin-bottom: 0;
+}
+
+@media (min-width: $tablet-breakpoint) {
+  .loadout-page__summary {
+    grid-template-columns: minmax(0, 1fr) minmax(240px, 360px);
+  }
+
+  .loadout-page__preview {
+    grid-column: 2;
+    grid-row: 1;
+  }
 }
 </style>
