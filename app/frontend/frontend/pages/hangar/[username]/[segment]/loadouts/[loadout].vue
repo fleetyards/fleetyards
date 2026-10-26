@@ -17,6 +17,7 @@ import Hardpoints from "@/frontend/components/Models/Hardpoints/index.vue";
 import LoadoutChanges from "@/frontend/components/Loadout/Changes/index.vue";
 import CartAddLoadout from "@/frontend/components/Cart/AddLoadout/index.vue";
 import { nonStockCartItems } from "@/frontend/utils/loadoutCartItems";
+import LoadoutPreview from "@/frontend/components/Loadout/Preview/index.vue";
 import { VehicleLoadoutTabsEnum } from "@/frontend/components/Vehicles/LoadoutModal/types";
 import { useLoadoutFitting } from "@/frontend/composables/useLoadoutFitting";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
@@ -335,6 +336,12 @@ const edit = () => {
             <Teleport v-if="!fittingPending" to="#header-right">
               <CartAddLoadout :items="nonStockCartItems(loadoutSlots)" />
             </Teleport>
+            <LoadoutPreview
+              v-if="!fittingPending && loadoutSlots"
+              :model-slug="vehicle.model.slug"
+              :slots="loadoutSlots"
+              test-id="vehicle-loadout-page-preview"
+            />
 
             <Loader v-if="fittingPending" :loading="true" relative />
 
