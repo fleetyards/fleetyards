@@ -74,6 +74,16 @@ const listCart = useCartList(() => listId.value ?? "", params, {
   query: { enabled: () => !!listId.value },
 });
 
+// A list deleted in another tab, or a stale link: the active list instead.
+watch(
+  () => listCart.isError.value,
+  (failed) => {
+    if (failed) {
+      void router.replace({ query: { ...route.query, list: undefined } });
+    }
+  },
+);
+
 const cart = computed(() =>
   listId.value ? listCart.data.value : activeCart.data.value,
 );
