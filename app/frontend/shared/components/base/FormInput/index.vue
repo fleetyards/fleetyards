@@ -234,7 +234,8 @@ const emit = defineEmits(["update:modelValue", "clear"]);
  * An emptied number field is null rather than "": the API types these
  * `number | null`, and an empty string is a 400. Resetting to the initial value
  * would put back the very number being cleared, so a number field is set
- * instead.
+ * instead. A text field clears to "", as it does when backspaced empty, so a
+ * `ref("")` bound to it stays a string.
  */
 const clear = () => {
   if (props.type === "number") {
@@ -242,7 +243,7 @@ const clear = () => {
     emit("update:modelValue", null);
   } else {
     handleReset();
-    emit("update:modelValue", undefined);
+    emit("update:modelValue", "");
   }
   emit("clear");
 };

@@ -274,10 +274,7 @@ describe("LogisticsItemPicker", () => {
     await subject
       .find("[data-test='input-item-picker-search']")
       .setValue("Grandma's teapot");
-    subject
-      .findAllComponents({ name: "FormInput" })
-      .find((input) => input.props("name") === "item-picker-search")!
-      .vm.$emit("update:modelValue", undefined);
+    await subject.find(".base-input__clear").trigger("click");
     await flushPromises();
 
     expect(subject.find("[data-test='item-picker-custom']").exists()).toBe(
