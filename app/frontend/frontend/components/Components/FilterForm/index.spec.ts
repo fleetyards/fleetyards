@@ -78,10 +78,16 @@ const select = (wrapper: VueWrapper, name: string) =>
     .findAllComponents({ name: "BaseSelect" })
     .find((component) => component.props("name") === name)!;
 
+// The latest navigation, whichever of push and replace made it.
 const lastQuery = () => {
-  const calls = [...push.mock.calls, ...replace.mock.calls];
+  const calls = [push, replace].flatMap((mock) =>
+    mock.mock.calls.map((call, index) => ({
+      order: mock.mock.invocationCallOrder[index],
+      query: call[0].query,
+    })),
+  );
 
-  return calls[calls.length - 1][0].query;
+  return calls.sort((a, b) => a.order - b.order)[calls.length - 1].query;
 };
 
 describe("ComponentsFilterForm", () => {
@@ -134,6 +140,8 @@ describe("ComponentsFilterForm", () => {
     route.query = {};
     const wrapper = mountForm();
     await flushPromises();
+    push.mockClear();
+    replace.mockClear();
 
     select(wrapper, "size").vm.$emit("update:modelValue", ["10"]);
     select(wrapper, "grade").vm.$emit("update:modelValue", ["1", "3"]);
