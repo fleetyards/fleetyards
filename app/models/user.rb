@@ -401,7 +401,7 @@ class User < ApplicationRecord
     this_week = now.beginning_of_week
 
     streak =
-      if !tracking?
+      if tracking == false
         0
       elsif last_active_at.blank? || last_active_at < this_week - 1.week
         1

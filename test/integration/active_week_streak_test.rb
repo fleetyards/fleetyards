@@ -14,11 +14,12 @@ class ActiveWeekStreakTest < ActionDispatch::IntegrationTest
   end
 
   test "requests within a few minutes of each other write nothing" do
-    user = create(:user, last_active_at: 5.minutes.ago, active_week_streak: 2)
+    wednesday = Time.zone.local(2026, 10, 21, 12, 0)
+    user = create(:user, last_active_at: wednesday - 5.minutes, active_week_streak: 2)
     sign_in user
 
     assert_no_changes -> { user.reload.last_active_at } do
-      get "/api/v1/users/me", as: :json
+      travel_to(wednesday) { get "/api/v1/users/me", as: :json }
     end
   end
 end
