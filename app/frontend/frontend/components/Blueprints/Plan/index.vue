@@ -35,7 +35,7 @@ const src = computed(() =>
       class="blueprint-plan__image"
       :src="src"
       alt=""
-      loading="lazy"
+      :loading="variant === 'row' ? 'lazy' : undefined"
       data-test="blueprint-plan-image"
     />
   </span>
