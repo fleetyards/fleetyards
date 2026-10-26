@@ -103,20 +103,23 @@ export const useDepositTargets = (enabled: MaybeRefOrGetter<boolean>) => {
   };
 
   // A ship's hold shares its slug with every other ship of its model, so each
-  // option is keyed by the inventory's id and filed through the ship.
+  // option is keyed by the inventory's id and filed through the ship. A
+  // wishlist ship keeps its hold for emptying, but nothing new goes aboard.
   const entries = computed<Entry[]>(() => {
     const personal = t("labels.logistics.personalInventory");
 
-    const own = (hangar.data.value?.items ?? []).map((inventory) => ({
-      option: {
-        value: inventory.id,
-        label: inventory.name,
-        category: personal,
-      },
-      target: inventory.vehicle
-        ? ({ kind: "vehicle", vehicleId: inventory.vehicle.id } as const)
-        : ({ kind: "hangar", slug: inventory.slug } as const),
-    }));
+    const own = (hangar.data.value?.items ?? [])
+      .filter((inventory) => !inventory.vehicle?.wanted)
+      .map((inventory) => ({
+        option: {
+          value: inventory.id,
+          label: inventory.name,
+          category: personal,
+        },
+        target: inventory.vehicle
+          ? ({ kind: "vehicle", vehicleId: inventory.vehicle.id } as const)
+          : ({ kind: "hangar", slug: inventory.slug } as const),
+      }));
 
     const shared = depositFleets.value.flatMap((fleet, at) =>
       (fleetInventories.value[at]?.data?.items ?? [])

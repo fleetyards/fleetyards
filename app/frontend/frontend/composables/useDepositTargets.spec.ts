@@ -98,7 +98,7 @@ beforeEach(() => {
         id: "inv-2",
         slug: "cargo",
         name: "Ironclad Cargo",
-        vehicle: { id: "ironclad" },
+        vehicle: { id: "ironclad", wanted: false },
       },
     ],
   };
@@ -183,6 +183,28 @@ describe("useDepositTargets", () => {
       "Zeta Hold",
       "Depot",
       "Vault",
+    ]);
+  });
+
+  it("leaves out the hold of a ship on the wishlist", async () => {
+    api.hangar = {
+      items: [
+        { id: "inv-1", slug: "cargo-hold", name: "Cargo Hold" },
+        {
+          id: "inv-2",
+          slug: "cargo",
+          name: "Ironclad Cargo",
+          vehicle: { id: "ironclad", wanted: true },
+        },
+      ],
+    };
+
+    const { options } = await mount();
+
+    expect(options.value.map((option) => option.value)).toEqual([
+      "inv-1",
+      "inv-3",
+      "inv-4",
     ]);
   });
 
