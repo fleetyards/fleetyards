@@ -59,6 +59,16 @@ class Api::V1::FleetsInventoriesIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The deposit picker reads the list whole.
+  test "GET /fleets/:slug/inventories answers perPage=all with every inventory" do
+    create_list(:fleet_inventory, FleetInventory.default_per_page + 1, fleet: @fleet)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug}, params: {perPage: "all"} do
+      assert_equal FleetInventory.default_per_page + 1, parsed_body["items"].count
+    end
+  end
+
   test "GET /fleets/:slug/inventories lists inventories for member" do
     create_list(:fleet_inventory, 3, fleet: @fleet)
     sign_in @member

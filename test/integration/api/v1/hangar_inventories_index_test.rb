@@ -65,14 +65,13 @@ class Api::V1::HangarInventoriesIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
-  # Inventories offer no "all", so a request for it gets an ordinary page
-  # rather than every row.
-  test "GET /hangar/inventories answers perPage=all with its default page" do
+  # The deposit pickers read the list whole.
+  test "GET /hangar/inventories answers perPage=all with every inventory" do
     create_list(:inventory, Inventory.default_per_page + 1, holder: @user)
     sign_in @user
 
     assert_api_response :get, 200, params: {perPage: "all"} do
-      assert_equal Inventory.default_per_page, parsed_body["items"].count
+      assert_equal Inventory.default_per_page + 1, hand_made_items.count
     end
   end
 
