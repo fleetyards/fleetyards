@@ -1,6 +1,7 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { VueWrapper } from "@vue/test-utils";
+import { flushPromises, type VueWrapper } from "@vue/test-utils";
+import { AxiosError } from "axios";
 import { defineComponent, h } from "vue";
 import { createRouter, createWebHashHistory } from "vue-router";
 import {
@@ -12,6 +13,13 @@ import {
   FleetContractStateEnum,
 } from "@/services/fyApi";
 import Component from "./[contract].vue";
+
+const publish = vi.hoisted(() => vi.fn());
+const acceptCrew = vi.hoisted(() => vi.fn());
+const declineCrew = vi.hoisted(() => vi.fn());
+const refetch = vi.hoisted(() => vi.fn());
+const displayAlert = vi.hoisted(() => vi.fn());
+const reportError = vi.hoisted(() => vi.fn());
 
 const Stub = defineComponent({ name: "PageStub", render: () => h("div") });
 
@@ -73,19 +81,29 @@ vi.mock("@/services/fyApi", async () => {
     useFleetContract: () => ({
       data: current,
       isLoading: ref(false),
-      refetch: vi.fn(),
+      refetch,
     }),
-    usePublishFleetContract: mutation,
+    usePublishFleetContract: () => ({ mutateAsync: publish }),
     useClaimFleetContract: mutation,
     useReleaseFleetContract: mutation,
     useFulfilFleetContract: mutation,
     useCancelFleetContract: mutation,
     useJoinFleetContractCrew: mutation,
-    useAcceptFleetContractCrew: mutation,
-    useDeclineFleetContractCrew: mutation,
+    useAcceptFleetContractCrew: () => ({ mutateAsync: acceptCrew }),
+    useDeclineFleetContractCrew: () => ({ mutateAsync: declineCrew }),
     useLeaveFleetContractCrew: mutation,
   };
 });
+
+vi.mock("@/shared/composables/useAppNotifications", () => ({
+  useAppNotifications: () => ({
+    displayAlert,
+    displaySuccess: vi.fn(),
+    displayConfirm: vi.fn(),
+  }),
+}));
+
+vi.mock("@/shared/plugins/Appsignal", () => ({ reportError }));
 
 vi.mock("@/frontend/stores/session", () => ({
   useSessionStore: () => ({ currentUser: { id: CONTRACTOR_ID } }),
@@ -106,16 +124,20 @@ afterEach(() => {
   teleportTarget?.remove();
   teleportTarget = undefined;
   current.value = undefined;
+  vi.resetAllMocks();
 });
 
-const mount = async (state: FleetContractStateEnum) => {
+const mount = async (
+  state: FleetContractStateEnum,
+  resourceAccess = ["fleet:contracts:read"],
+) => {
   current.value = contract(state);
 
   wrapper = await mountWithDefaults<typeof Component>(Component, {
     props: {
       fleet: { slug: "maru", name: "Maru" } as Fleet,
       membership: {} as FleetMember,
-      resourceAccess: ["fleet:contracts:read"],
+      resourceAccess,
     },
     plugins: [await routerWithRoutes()],
   });
@@ -157,5 +179,163 @@ describe("FleetContractPage", () => {
     expect(subject.find("[data-test='contract-expired-hint']").exists()).toBe(
       false,
     );
+  });
+
+  it("says why a publish was refused", async () => {
+    publish.mockRejectedValue(
+      new AxiosError(
+        "Request failed with status code 400",
+        "ERR_BAD_REQUEST",
+        undefined,
+        undefined,
+        {
+          status: 400,
+          data: {
+            code: "fleet_contracts.publish",
+            message: "Could not publish the contract",
+            errors: [
+              {
+                attribute: "deadline",
+                messages: [
+                  { code: "in_past", message: "Deadline lies in the past" },
+                ],
+              },
+            ],
+          },
+        } as never,
+      ),
+    );
+
+    const subject = await mount(FleetContractStateEnum.DRAFT, [
+      "fleet:contracts:manage",
+    ]);
+    await subject.vm.$nextTick();
+
+    document
+      .querySelector<HTMLElement>("[data-test='publish-contract']")!
+      .click();
+    await flushPromises();
+
+    expect(displayAlert).toHaveBeenCalledWith({
+      text: "Deadline lies in the past",
+    });
+  });
+
+  it("sends one publish however often it is clicked", async () => {
+    let settle: () => void = () => undefined;
+    publish.mockReturnValue(
+      new Promise<void>((resolve) => {
+        settle = resolve;
+      }),
+    );
+
+    await mount(FleetContractStateEnum.DRAFT, ["fleet:contracts:manage"]);
+
+    const button = document.querySelector<HTMLElement>(
+      "[data-test='publish-contract']",
+    )!;
+    button.click();
+    button.click();
+    settle();
+    await flushPromises();
+
+    expect(publish).toHaveBeenCalledTimes(1);
+    expect(displayAlert).not.toHaveBeenCalled();
+  });
+
+  it("leaves a dropped connection unreported", async () => {
+    publish.mockRejectedValue(new AxiosError("Network Error", "ERR_NETWORK"));
+
+    await mount(FleetContractStateEnum.DRAFT, ["fleet:contracts:manage"]);
+
+    document
+      .querySelector<HTMLElement>("[data-test='publish-contract']")!
+      .click();
+    await flushPromises();
+
+    expect(reportError).not.toHaveBeenCalled();
+    expect(displayAlert).toHaveBeenCalledWith({
+      text: "That did not work - the contract may have changed in the meantime",
+    });
+  });
+
+  it("reports a failure of our own", async () => {
+    const error = new TypeError("Cannot read properties of undefined");
+    publish.mockRejectedValue(error);
+
+    await mount(FleetContractStateEnum.DRAFT, ["fleet:contracts:manage"]);
+
+    document
+      .querySelector<HTMLElement>("[data-test='publish-contract']")!
+      .click();
+    await flushPromises();
+
+    expect(reportError).toHaveBeenCalledWith(error, "FleetContractPage#act");
+  });
+
+  it("answers two crew requests at once", async () => {
+    acceptCrew.mockReturnValue(new Promise(() => undefined));
+
+    const subject = await mount(FleetContractStateEnum.IN_PROGRESS, [
+      "fleet:contracts:manage",
+    ]);
+    const crewList = subject.findComponent({ name: "FleetContractsCrewList" });
+
+    crewList.vm.$emit("accept", "first");
+    crewList.vm.$emit("accept", "second");
+    crewList.vm.$emit("accept", "first");
+    await flushPromises();
+
+    expect(acceptCrew.mock.calls.map(([params]) => params.id)).toEqual([
+      "first",
+      "second",
+    ]);
+  });
+
+  it("holds a step until the contract is read again", async () => {
+    publish.mockResolvedValue(undefined);
+    refetch.mockReturnValue(new Promise(() => undefined));
+
+    await mount(FleetContractStateEnum.DRAFT, ["fleet:contracts:manage"]);
+
+    const button = document.querySelector<HTMLElement>(
+      "[data-test='publish-contract']",
+    )!;
+    button.click();
+    await flushPromises();
+    button.click();
+    await flushPromises();
+
+    expect(publish).toHaveBeenCalledTimes(1);
+  });
+
+  it("lets one answer stand for a crew member", async () => {
+    acceptCrew.mockReturnValue(new Promise(() => undefined));
+
+    const subject = await mount(FleetContractStateEnum.IN_PROGRESS, [
+      "fleet:contracts:manage",
+    ]);
+    const crewList = subject.findComponent({ name: "FleetContractsCrewList" });
+
+    crewList.vm.$emit("accept", "first");
+    crewList.vm.$emit("decline", "first");
+    await flushPromises();
+
+    expect(acceptCrew).toHaveBeenCalledTimes(1);
+    expect(declineCrew).not.toHaveBeenCalled();
+  });
+
+  it("reports a request our own code broke", async () => {
+    const error = new AxiosError("Invalid URL", AxiosError.ERR_INVALID_URL);
+    publish.mockRejectedValue(error);
+
+    await mount(FleetContractStateEnum.DRAFT, ["fleet:contracts:manage"]);
+
+    document
+      .querySelector<HTMLElement>("[data-test='publish-contract']")!
+      .click();
+    await flushPromises();
+
+    expect(reportError).toHaveBeenCalledWith(error, "FleetContractPage#act");
   });
 });

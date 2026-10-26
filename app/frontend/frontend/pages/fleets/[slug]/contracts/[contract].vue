@@ -41,6 +41,13 @@ import {
   useLeaveFleetContractCrew,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import {
+  firstErrorMessageFrom,
+  validationErrorFrom,
+} from "@/shared/utils/ApiErrors";
+import { reportError } from "@/shared/plugins/Appsignal";
+import { AxiosError, isAxiosError } from "axios";
 import { useContractCover } from "@/frontend/composables/useContractCover";
 import { useContractReward } from "@/frontend/composables/useContractReward";
 import { useContractRoute } from "@/frontend/composables/useContractRoute";
@@ -211,8 +218,6 @@ const canCancel = computed(
     CANCELLABLE_STATES.includes(contract.value.state),
 );
 
-const reload = () => void refetch();
-
 const { mutateAsync: publish } = usePublishFleetContract();
 const { mutateAsync: claim } = useClaimFleetContract();
 const { mutateAsync: release } = useReleaseFleetContract();
@@ -234,53 +239,79 @@ const crewParams = (id: string) => ({
   id,
 });
 
-const onPublish = async () => {
-  await publish(contractParams.value);
-  reload();
+const { displayAlert } = useAppNotifications();
+
+const inFlight = reactive(new Set<string>());
+
+const acting = computed(() => inFlight.size > 0);
+
+// A refused step says why -- a deadline already past, a seat already taken --
+// and the contract may have moved on under the page, so it is read again
+// either way. One step at a time per contract and per crew member: a second
+// click on a step that went through, or a decline racing an accept, would only
+// be refused and report a failure that never happened. After a success the
+// step holds until the read is back, since until then the page still offers
+// it. A dropped connection is the member's and is not reported; any other
+// failure without an answer from the API is ours.
+const act = async (key: string, request: () => Promise<unknown>) => {
+  if (inFlight.has(key)) return;
+
+  inFlight.add(key);
+
+  try {
+    await request();
+    await refetch();
+  } catch (error) {
+    if (
+      !isAxiosError(error) ||
+      (!error.response && error.code !== AxiosError.ERR_NETWORK)
+    ) {
+      reportError(error, "FleetContractPage#act");
+    }
+
+    displayAlert({
+      text:
+        firstErrorMessageFrom(error) ??
+        validationErrorFrom(error).message ??
+        t("messages.fleets.contracts.actionFailed"),
+    });
+
+    void refetch();
+  } finally {
+    inFlight.delete(key);
+  }
 };
 
-const onClaim = async () => {
-  await claim(contractParams.value);
-  reload();
-};
+const CONTRACT_STEP = "contract";
 
-const onRelease = async () => {
-  await release(contractParams.value);
-  reload();
-};
+const onPublish = () => act(CONTRACT_STEP, () => publish(contractParams.value));
 
-const onFulfil = async () => {
-  await fulfil(contractParams.value);
-  reload();
-};
+const onClaim = () => act(CONTRACT_STEP, () => claim(contractParams.value));
 
-const onCancel = async () => {
-  await cancel(contractParams.value);
-  reload();
-};
+const onRelease = () => act(CONTRACT_STEP, () => release(contractParams.value));
 
-const onJoin = async () => {
-  await join({
-    fleetSlug: props.fleet.slug,
-    fleetContractSlug: contractSlug.value,
-  });
-  reload();
-};
+const onFulfil = () => act(CONTRACT_STEP, () => fulfil(contractParams.value));
 
-const onAcceptCrew = async (id: string) => {
-  await acceptCrew(crewParams(id));
-  reload();
-};
+const onCancel = () => act(CONTRACT_STEP, () => cancel(contractParams.value));
 
-const onDeclineCrew = async (id: string) => {
-  await declineCrew(crewParams(id));
-  reload();
-};
+const onJoin = () =>
+  act(CONTRACT_STEP, () =>
+    join({
+      fleetSlug: props.fleet.slug,
+      fleetContractSlug: contractSlug.value,
+    }),
+  );
 
-const onRemoveCrew = async (id: string) => {
-  await leaveCrew(crewParams(id));
-  reload();
-};
+const crewStep = (id: string) => `crew:${id}`;
+
+const onAcceptCrew = (id: string) =>
+  act(crewStep(id), () => acceptCrew(crewParams(id)));
+
+const onDeclineCrew = (id: string) =>
+  act(crewStep(id), () => declineCrew(crewParams(id)));
+
+const onRemoveCrew = (id: string) =>
+  act(crewStep(id), () => leaveCrew(crewParams(id)));
 
 const goToEdit = () => {
   void router.push({
@@ -387,6 +418,7 @@ const crumbs = computed<Crumb[]>(() => [
         :aria-label="t('actions.fleets.contracts.publish')"
         data-test="publish-contract"
         mobile-icon-only
+        :disabled="acting"
         @click="onPublish"
       >
         <i class="fa-duotone fa-paper-plane" />
@@ -398,6 +430,7 @@ const crumbs = computed<Crumb[]>(() => [
         :aria-label="t('actions.fleets.contracts.claim')"
         data-test="claim-contract"
         mobile-icon-only
+        :disabled="acting"
         @click="onClaim"
       >
         <i class="fa-duotone fa-hand" />
@@ -409,6 +442,7 @@ const crumbs = computed<Crumb[]>(() => [
         :aria-label="t('actions.fleets.contracts.join')"
         data-test="join-contract"
         mobile-icon-only
+        :disabled="acting"
         @click="onJoin"
       >
         <i class="fa-duotone fa-user-plus" />
@@ -419,6 +453,7 @@ const crumbs = computed<Crumb[]>(() => [
         :size="BtnSizesEnum.MD"
         :aria-label="t('actions.fleets.contracts.release')"
         mobile-icon-only
+        :disabled="acting"
         @click="onRelease"
       >
         <i class="fa-duotone fa-hand-wave" />
@@ -430,6 +465,7 @@ const crumbs = computed<Crumb[]>(() => [
         :aria-label="t('actions.fleets.contracts.fulfil')"
         data-test="fulfil-contract"
         mobile-icon-only
+        :disabled="acting"
         @click="onFulfil"
       >
         <i class="fa-duotone fa-circle-check" />
@@ -468,6 +504,7 @@ const crumbs = computed<Crumb[]>(() => [
         v-if="canCancel"
         :size="BtnSizesEnum.MD"
         :tone="BtnTonesEnum.DANGER"
+        :disabled="acting"
         @confirm="onCancel"
       >
         <i class="fa-duotone fa-ban" />
