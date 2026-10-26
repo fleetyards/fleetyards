@@ -69,11 +69,13 @@ const material = new MaterialClass({
 
 const HIGHLIGHT_COLOR = "#fbb03b";
 
-// A part the viewer has picked out, in the gold the grid's sections use.
+// A part the viewer has picked out, in the gold the grid's sections use, and
+// drawn over the hull: coolers and drives sit inside it.
 const highlightMaterial = new MaterialClass({
   color: HIGHLIGHT_COLOR,
   side,
   ...hologramLook,
+  depthTest: false,
 });
 
 // The hologram's mesh lines, sharing each body's geometry.
@@ -87,6 +89,7 @@ const highlightWireMaterial = new MeshBasicMaterial({
   color: HIGHLIGHT_COLOR,
   opacity: 0.4,
   ...wireLook,
+  depthTest: false,
 });
 
 const windowMaterial = new MaterialClass({
@@ -142,6 +145,8 @@ const setMaterials = (scene: Group) => {
       mesh.material = windowMaterial;
     } else {
       mesh.material = highlighted(node) ? highlightMaterial : material;
+      // Last, so nothing drawn after it covers it again.
+      mesh.renderOrder = highlighted(node) ? 1 : 0;
       bodies.push(mesh);
     }
   });
@@ -157,6 +162,7 @@ const setMaterials = (scene: Group) => {
       highlighted(body) ? highlightWireMaterial : wireMaterial,
     );
     wire.userData.wire = true;
+    wire.renderOrder = body.renderOrder;
     body.add(wire);
   }
 };
