@@ -240,6 +240,13 @@ $nav-transition-speed: 0.35s;
  * outranks the column's `div:first-child > .tabs` rules, which would otherwise
  * right-align the labels and pin the rail to one edge.
  */
+// The tabs stay pressable where the view is laid over something a pointer
+// should reach through its empty space, the loadout editor's holo.
+.tab-nav-horizontal > .tabs.tabs--horizontal,
+.tab-nav-horizontal__dropdown {
+  pointer-events: auto;
+}
+
 .tab-nav-horizontal > .tabs.tabs--horizontal {
   display: flex;
   gap: 4px;
