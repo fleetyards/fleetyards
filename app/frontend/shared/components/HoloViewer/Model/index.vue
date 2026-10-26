@@ -6,7 +6,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { useLoader, useLoop } from "@tresjs/core";
+import { useLoader, useLoop, useTres } from "@tresjs/core";
 import {
   AnimationMixer,
   type Material,
@@ -21,6 +21,10 @@ import {
   Mesh,
   MeshBasicMaterial,
   Color,
+  type BufferGeometry,
+  EdgesGeometry,
+  LineBasicMaterial,
+  LineSegments,
   MeshPhongMaterial,
   MeshLambertMaterial,
   DefaultLoadingManager,
@@ -78,11 +82,30 @@ const material = new MaterialClass({
 // A part the viewer has picked out, in the gold the grid's sections use.
 const HIGHLIGHT_COLOR = new Color("#fbb03b");
 
-// The hologram's mesh lines, sharing each body's geometry.
-const wireLook = { wireframe: true, transparent: true, depthWrite: false };
-const wireMaterial = new MeshBasicMaterial({
+// The hologram's mesh lines: only the edges where the surface turns, not every
+// triangle -- a hull's few hundred thousand made every frame crawl -- worked
+// out once per geometry and shared by every copy of a part.
+const EDGE_ANGLE = 20;
+const edgesOf = new WeakMap<BufferGeometry, EdgesGeometry>();
+
+const edgesFor = (geometry: BufferGeometry) => {
+  let edges = edgesOf.get(geometry);
+
+  if (!edges) {
+    edges = new EdgesGeometry(geometry, EDGE_ANGLE);
+    edgesOf.set(geometry, edges);
+  }
+
+  return edges;
+};
+
+const WIRE_OPACITY = 0.35;
+const HIGHLIGHT_WIRE_OPACITY = 0.7;
+
+const wireLook = { transparent: true, depthWrite: false };
+const wireMaterial = new LineBasicMaterial({
   color: props.color,
-  opacity: 0.18,
+  opacity: WIRE_OPACITY,
   ...wireLook,
 });
 const windowMaterial = new MaterialClass({
@@ -127,7 +150,7 @@ const highlighted = (node: Object3D) => {
 type Fading = {
   mesh: Mesh;
   body: Material & { color: Color };
-  wire?: MeshBasicMaterial;
+  wire?: LineBasicMaterial;
   // The glow seen through the hull: coolers and drives sit inside it. Its own
   // layer, faded with the glow, so the part never jumps behind the hull.
   overlay: Mesh<Mesh["geometry"], MeshBasicMaterial>;
@@ -140,8 +163,6 @@ const fading = new Map<Mesh, Fading>();
 // A quarter of a second from one to the other.
 const FADE_PER_SECOND = 4;
 
-const WIRE_OPACITY = 0.18;
-const HIGHLIGHT_WIRE_OPACITY = 0.4;
 const OVERLAY_OPACITY = 0.45;
 
 const applyGlow = (entry: Fading) => {
@@ -181,7 +202,9 @@ const withinMounts = (node: Object3D) => {
 };
 
 const wireOf = (body: Mesh) =>
-  body.children.find((child) => child.userData.wire) as Mesh | undefined;
+  body.children.find((child) => child.userData.wire) as
+    | LineSegments<EdgesGeometry, LineBasicMaterial>
+    | undefined;
 
 const overlayFor = (body: Mesh) => {
   const overlay = new Mesh(
@@ -227,7 +250,7 @@ const setMaterials = (scene: Group) => {
     const own = withinMounts(body);
 
     if (props.hologram && !wireOf(body)) {
-      const wire = new Mesh(body.geometry, wireMaterial);
+      const wire = new LineSegments(edgesFor(body.geometry), wireMaterial);
       wire.userData.wire = true;
       body.add(wire);
     }
@@ -260,25 +283,38 @@ const setMaterials = (scene: Group) => {
     const wire = wireOf(body);
     if (wire && entry.wire) wire.material = entry.wire;
   }
+
+  invalidate();
 };
 
 const mixer = shallowRef<AnimationMixer>();
 
 const { onBeforeRender } = useLoop();
 
+// A viewer drawing on demand draws a frame only when asked: for every change
+// made here, and each step of a fade until it is done.
+const { invalidate } = useTres();
+
 onBeforeRender(({ delta }) => {
   mixer.value?.update(delta);
+
+  let moving = false;
 
   for (const entry of fading.values()) {
     if (entry.glow === entry.target) continue;
 
-    const step = delta * FADE_PER_SECOND;
+    // Capped: drawing on demand, the first frame after a pause reports the
+    // whole pause as its delta, and the fade would end in one step.
+    const step = Math.min(delta, 1 / 30) * FADE_PER_SECOND;
     entry.glow =
       entry.target > entry.glow
         ? Math.min(entry.target, entry.glow + step)
         : Math.max(entry.target, entry.glow - step);
     applyGlow(entry);
+    moving = true;
   }
+
+  if (moving) invalidate();
 });
 
 const playAnimations = (scene: Group, animations: AnimationClip[]) => {
@@ -356,6 +392,8 @@ const attachMounts = async (scene: Group) => {
     scene.add(next);
     setMaterials(next);
   }
+
+  invalidate();
 };
 
 const setup = (scene: Group, animations: AnimationClip[]) => {
