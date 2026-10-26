@@ -2564,7 +2564,9 @@
           "description": "描述",
           "manufacturer": "制造商",
           "category": "分类",
-          "subType": "子类型"
+          "subType": "子类型",
+          "size": "尺寸",
+          "grade": "等级"
         },
         "shops": {
           "name": "名称",
