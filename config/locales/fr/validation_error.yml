@@ -124,6 +124,11 @@ fr:
       create: "Le plan n'a pas pu être créé."
       update: "Le plan n'a pas pu être mis à jour."
       rebase: "Le plan n'a pas pu être réaligné sur le hangar."
+    fleet_shopping_lists:
+      create: "Impossible de publier la liste d'achats."
+      update: "Impossible de mettre à jour la liste d'achats."
+      destroy: "Impossible de supprimer la liste d'achats."
+      copy: "Impossible de copier la liste d'achats dans ton panier."
     carts:
       create: "La liste n'a pas pu être créée."
       update: "La liste n'a pas pu être mise à jour."

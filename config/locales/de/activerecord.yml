@@ -295,6 +295,10 @@ de:
           attributes:
             base:
               plan_limit_reached: "kann höchstens %{count} Pläne enthalten"
+        fleet_shopping_list:
+          attributes:
+            base:
+              fleet_shopping_list_limit_reached: "kann höchstens %{count} Einkaufslisten enthalten"
         cart:
           attributes:
             base:

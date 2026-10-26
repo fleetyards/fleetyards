@@ -124,6 +124,11 @@ it:
       create: "Impossibile creare il piano."
       update: "Impossibile aggiornare il piano."
       rebase: "Impossibile riallineare il piano all'hangar."
+    fleet_shopping_lists:
+      create: "Impossibile pubblicare la lista della spesa."
+      update: "Impossibile aggiornare la lista della spesa."
+      destroy: "Impossibile eliminare la lista della spesa."
+      copy: "Impossibile copiare la lista della spesa nel tuo carrello."
     carts:
       create: "Impossibile creare la lista."
       update: "Impossibile aggiornare la lista."

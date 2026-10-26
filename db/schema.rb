@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_26_150000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_26_200000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1148,6 +1148,27 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_26_150000) do
     t.boolean "new_member_default", default: false, null: false
     t.index ["fleet_id", "rank"], name: "index_fleet_roles_on_fleet_id_and_rank", unique: true
     t.index ["fleet_id"], name: "index_fleet_roles_on_one_default_per_fleet", unique: true, where: "new_member_default"
+  end
+
+  create_table "fleet_shopping_list_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "fleet_shopping_list_id", null: false
+    t.string "item_type", null: false
+    t.uuid "item_id", null: false
+    t.integer "quantity", default: 1, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fleet_shopping_list_id", "item_type", "item_id"], name: "index_fleet_shopping_list_items_uniqueness", unique: true
+    t.index ["item_type", "item_id"], name: "index_fleet_shopping_list_items_on_item_type_and_item_id"
+  end
+
+  create_table "fleet_shopping_lists", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "fleet_id", null: false
+    t.string "name", null: false
+    t.text "description"
+    t.integer "visibility", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index "fleet_id, lower((name)::text)", name: "index_fleet_shopping_lists_on_fleet_id_and_lower_name", unique: true
   end
 
   create_table "fleet_squadron_assignments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -3223,6 +3244,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_26_150000) do
   add_foreign_key "fleet_memberships", "fleet_roles"
   add_foreign_key "fleet_notification_settings", "fleets"
   add_foreign_key "fleet_roles", "fleets"
+  add_foreign_key "fleet_shopping_list_items", "fleet_shopping_lists", on_delete: :cascade
+  add_foreign_key "fleet_shopping_lists", "fleets", on_delete: :cascade
   add_foreign_key "fleet_squadron_assignments", "fleet_squadrons"
   add_foreign_key "fleet_squadron_memberships", "fleet_memberships"
   add_foreign_key "fleet_squadron_memberships", "fleet_squadron_roles"

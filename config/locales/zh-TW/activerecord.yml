@@ -295,6 +295,10 @@ zh-TW:
           attributes:
             base:
               plan_limit_reached: "最多只能有 %{count} 個計畫"
+        fleet_shopping_list:
+          attributes:
+            base:
+              fleet_shopping_list_limit_reached: "最多只能有 %{count} 個購物清單"
         cart:
           attributes:
             base:
