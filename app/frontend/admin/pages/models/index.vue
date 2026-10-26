@@ -58,9 +58,11 @@ const sorts = computed((): AdminModelSortEnum[] => {
   return route.query.s ? [route.query.s as AdminModelSortEnum] : [];
 });
 
+// The default counts as chosen too, so unticking Name never leaves the bar
+// without the sort the list is actually in.
 const sortFields = useAdminModelSortFields({
   include: () =>
-    typeof route.query.s === "string" ? route.query.s : undefined,
+    typeof route.query.s === "string" ? route.query.s : "name asc",
 });
 
 watch(
