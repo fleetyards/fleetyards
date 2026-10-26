@@ -48,6 +48,8 @@ type Props = {
   // How far above the model the camera starts, in degrees. Without it the
   // camera stays low, under a cap that keeps every holo framed alike.
   elevation?: number;
+  // How much of the frame the model fills: above 1 the camera starts closer.
+  fitScale?: number;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -61,6 +63,7 @@ const props = withDefaults(defineProps<Props>(), {
   zoomable: false,
   azimuth: 0,
   elevation: undefined,
+  fitScale: 1,
 });
 
 // Nothing will be drawn: no WebGL, or a holo that would not load. A caller with
@@ -300,7 +303,9 @@ const handleModelLoaded = (size: Vector3, _scene: Mesh) => {
   const fovRadians = (cameraArgs.value[0] * Math.PI) / 180;
 
   const distance =
-    dominantSize / Math.tan(fovRadians / (aspect > 2 ? aspect * 0.75 : aspect));
+    dominantSize /
+    Math.tan(fovRadians / (aspect > 2 ? aspect * 0.75 : aspect)) /
+    props.fitScale;
 
   fitDistance.value = distance;
   modelMaxDimension.value = Math.max(size.x, size.y, size.z);
