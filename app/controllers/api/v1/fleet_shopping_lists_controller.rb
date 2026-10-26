@@ -65,8 +65,6 @@ module Api
       end
 
       # Naming one of the user's own lists replaces every line with that
-      # list's, which is how a published list is kept up to date.
-      # Naming one of the user's own lists replaces every line with that
       # list's, which is how a published list is kept up to date. Authorized
       # again on the new attributes, inside the transaction, since assigning
       # squadrons to a saved record writes them at once.
