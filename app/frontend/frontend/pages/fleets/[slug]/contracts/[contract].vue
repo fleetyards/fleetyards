@@ -47,7 +47,7 @@ import {
   validationErrorFrom,
 } from "@/shared/utils/ApiErrors";
 import { reportError } from "@/shared/plugins/Appsignal";
-import { isAxiosError } from "axios";
+import { AxiosError, isAxiosError } from "axios";
 import { useContractCover } from "@/frontend/composables/useContractCover";
 import { useContractReward } from "@/frontend/composables/useContractReward";
 import { useContractRoute } from "@/frontend/composables/useContractRoute";
@@ -247,10 +247,12 @@ const acting = computed(() => inFlight.size > 0);
 
 // A refused step says why -- a deadline already past, a seat already taken --
 // and the contract may have moved on under the page, so it is read again
-// either way. A step stays in flight until that read is back: a second click
-// on a step that went through would only be refused and report a failure that
-// never happened. Only a failure without an HTTP response is reported -- a
-// dropped connection is the member's, anything else is ours.
+// either way. One step at a time per contract and per crew member: a second
+// click on a step that went through, or a decline racing an accept, would only
+// be refused and report a failure that never happened. After a success the
+// step holds until the read is back, since until then the page still offers
+// it. A dropped connection is the member's and is not reported; any other
+// failure without an answer from the API is ours.
 const act = async (key: string, request: () => Promise<unknown>) => {
   if (inFlight.has(key)) return;
 
@@ -258,8 +260,12 @@ const act = async (key: string, request: () => Promise<unknown>) => {
 
   try {
     await request();
+    await refetch();
   } catch (error) {
-    if (!isAxiosError(error)) {
+    if (
+      !isAxiosError(error) ||
+      (!error.response && error.code !== AxiosError.ERR_NETWORK)
+    ) {
       reportError(error, "FleetContractPage#act");
     }
 
@@ -269,41 +275,43 @@ const act = async (key: string, request: () => Promise<unknown>) => {
         validationErrorFrom(error).message ??
         t("messages.fleets.contracts.actionFailed"),
     });
-  }
 
-  try {
-    await refetch();
+    void refetch();
   } finally {
     inFlight.delete(key);
   }
 };
 
-const onPublish = () => act("publish", () => publish(contractParams.value));
+const CONTRACT_STEP = "contract";
 
-const onClaim = () => act("claim", () => claim(contractParams.value));
+const onPublish = () => act(CONTRACT_STEP, () => publish(contractParams.value));
 
-const onRelease = () => act("release", () => release(contractParams.value));
+const onClaim = () => act(CONTRACT_STEP, () => claim(contractParams.value));
 
-const onFulfil = () => act("fulfil", () => fulfil(contractParams.value));
+const onRelease = () => act(CONTRACT_STEP, () => release(contractParams.value));
 
-const onCancel = () => act("cancel", () => cancel(contractParams.value));
+const onFulfil = () => act(CONTRACT_STEP, () => fulfil(contractParams.value));
+
+const onCancel = () => act(CONTRACT_STEP, () => cancel(contractParams.value));
 
 const onJoin = () =>
-  act("join", () =>
+  act(CONTRACT_STEP, () =>
     join({
       fleetSlug: props.fleet.slug,
       fleetContractSlug: contractSlug.value,
     }),
   );
 
+const crewStep = (id: string) => `crew:${id}`;
+
 const onAcceptCrew = (id: string) =>
-  act(`accept:${id}`, () => acceptCrew(crewParams(id)));
+  act(crewStep(id), () => acceptCrew(crewParams(id)));
 
 const onDeclineCrew = (id: string) =>
-  act(`decline:${id}`, () => declineCrew(crewParams(id)));
+  act(crewStep(id), () => declineCrew(crewParams(id)));
 
 const onRemoveCrew = (id: string) =>
-  act(`remove:${id}`, () => leaveCrew(crewParams(id)));
+  act(crewStep(id), () => leaveCrew(crewParams(id)));
 
 const goToEdit = () => {
   void router.push({

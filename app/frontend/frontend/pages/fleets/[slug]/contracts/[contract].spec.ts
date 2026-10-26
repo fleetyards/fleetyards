@@ -16,6 +16,7 @@ import Component from "./[contract].vue";
 
 const publish = vi.hoisted(() => vi.fn());
 const acceptCrew = vi.hoisted(() => vi.fn());
+const declineCrew = vi.hoisted(() => vi.fn());
 const refetch = vi.hoisted(() => vi.fn());
 const displayAlert = vi.hoisted(() => vi.fn());
 const reportError = vi.hoisted(() => vi.fn());
@@ -89,7 +90,7 @@ vi.mock("@/services/fyApi", async () => {
     useCancelFleetContract: mutation,
     useJoinFleetContractCrew: mutation,
     useAcceptFleetContractCrew: () => ({ mutateAsync: acceptCrew }),
-    useDeclineFleetContractCrew: mutation,
+    useDeclineFleetContractCrew: () => ({ mutateAsync: declineCrew }),
     useLeaveFleetContractCrew: mutation,
   };
 });
@@ -123,10 +124,7 @@ afterEach(() => {
   teleportTarget?.remove();
   teleportTarget = undefined;
   current.value = undefined;
-  vi.clearAllMocks();
-  publish.mockReset();
-  acceptCrew.mockReset();
-  refetch.mockReset();
+  vi.resetAllMocks();
 });
 
 const mount = async (
@@ -309,5 +307,35 @@ describe("FleetContractPage", () => {
     await flushPromises();
 
     expect(publish).toHaveBeenCalledTimes(1);
+  });
+
+  it("lets one answer stand for a crew member", async () => {
+    acceptCrew.mockReturnValue(new Promise(() => undefined));
+
+    const subject = await mount(FleetContractStateEnum.IN_PROGRESS, [
+      "fleet:contracts:manage",
+    ]);
+    const crewList = subject.findComponent({ name: "FleetContractsCrewList" });
+
+    crewList.vm.$emit("accept", "first");
+    crewList.vm.$emit("decline", "first");
+    await flushPromises();
+
+    expect(acceptCrew).toHaveBeenCalledTimes(1);
+    expect(declineCrew).not.toHaveBeenCalled();
+  });
+
+  it("reports a request our own code broke", async () => {
+    const error = new AxiosError("Invalid URL", AxiosError.ERR_INVALID_URL);
+    publish.mockRejectedValue(error);
+
+    await mount(FleetContractStateEnum.DRAFT, ["fleet:contracts:manage"]);
+
+    document
+      .querySelector<HTMLElement>("[data-test='publish-contract']")!
+      .click();
+    await flushPromises();
+
+    expect(reportError).toHaveBeenCalledWith(error, "FleetContractPage#act");
   });
 });
