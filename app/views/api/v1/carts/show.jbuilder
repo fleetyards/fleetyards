@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+json.id @cart&.id
+json.name @cart&.name
+json.active @cart.present? && @cart.active?
+json.strategy @trip_plan.strategy
 json.items @trip_plan.lines, partial: "api/v1/carts/line", as: :line
 json.groups @trip_plan.groups, partial: "api/v1/carts/group", as: :group
 json.totals do

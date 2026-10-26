@@ -9,13 +9,18 @@ module V1
         schema({
           type: :object,
           properties: {
+            # The list these lines are on; null before the user has any.
+            id: {type: [:string, :null], format: :uuid},
+            name: {type: [:string, :null]},
+            active: {type: :boolean},
+            strategy: ::V1::Schemas::Enums::CartStrategyEnum,
             items: {type: :array, items: ::V1::Schemas::Carts::CartLine},
             # Only lines someone sells; the rest are counted in the totals.
             groups: {type: :array, items: ::V1::Schemas::Carts::CartGroup},
             totals: ::V1::Schemas::Carts::CartTotals
           },
           additionalProperties: false,
-          required: %w[items groups totals]
+          required: %w[id name active strategy items groups totals]
         })
       end
     end

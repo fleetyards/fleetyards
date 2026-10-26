@@ -14,6 +14,7 @@ json.item do
 end
 json.available line.available?
 json.pinned line.pinned?
+json.cheapest line.cheapest?
 json.unit_price line.unit_price&.to_f
 json.total line.total&.to_f
 if line.price

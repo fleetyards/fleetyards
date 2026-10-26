@@ -16,6 +16,8 @@ module V1
             available: {type: :boolean},
             # Whether the user chose the place, rather than the cheapest one.
             pinned: {type: :boolean},
+            # Whether the line sits at its cheapest place; a shorter trip may move it.
+            cheapest: {type: :boolean},
             unitPrice: {type: [:number, :null]},
             total: {type: [:number, :null]},
             price: {anyOf: [::V1::Schemas::ItemPrice, {type: :null}]},
@@ -25,7 +27,7 @@ module V1
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id quantity item available pinned offers createdAt updatedAt]
+          required: %w[id quantity item available pinned cheapest offers createdAt updatedAt]
         })
       end
     end
