@@ -25,6 +25,10 @@ module Api
         else
           render json: ValidationError.new("cart_items.create", errors: @cart_item.errors), status: :bad_request
         end
+      rescue ActiveRecord::RecordNotUnique
+        # Two adds of the same item raced to insert it; the loser adds to the
+        # row the winner created.
+        retry
       end
 
       def update
