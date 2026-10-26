@@ -21,7 +21,10 @@ module Shared
             slug: {type: :string},
             # Whether the record has a public page to link to. False for a
             # hidden equipment variant, which the catalogue leaves out.
-            listed: {type: :boolean}
+            listed: {type: :boolean},
+            # The render a list draws the item by. Absent for a commodity and
+            # for an item nobody has rendered.
+            angledView: ::Shared::V1::Schemas::MediaFile
           },
           additionalProperties: false,
           required: %w[type id slug]

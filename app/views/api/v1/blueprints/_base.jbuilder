@@ -42,6 +42,13 @@ if blueprint.craftable.present?
     json.name blueprint.craftable.name
     json.slug blueprint.craftable.slug
     json.listed blueprint.craftable.try(:listed?) != false
+
+    # A commodity has no renders, and an item without one leaves the field out.
+    if blueprint.craftable.try(:angled_view)&.attached?
+      json.angled_view do
+        json.partial! "api/v1/shared/file", record: blueprint.craftable, attr: :angled_view
+      end
+    end
   end
 end
 
