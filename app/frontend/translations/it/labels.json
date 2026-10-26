@@ -4726,6 +4726,7 @@
           }
         },
         "againstStock": "Modifiche rispetto alla nave di serie",
+        "holo": "Holo",
         "crafted": "Fabbricato",
         "craftedPart": "%{name} (fabbricato)",
         "fitted": "Montato",

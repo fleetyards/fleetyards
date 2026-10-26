@@ -18,6 +18,7 @@ import LoadoutChanges from "@/frontend/components/Loadout/Changes/index.vue";
 import CartAddLoadout from "@/frontend/components/Cart/AddLoadout/index.vue";
 import { nonStockCartItems } from "@/frontend/utils/loadoutCartItems";
 import LoadoutPreview from "@/frontend/components/Loadout/Preview/index.vue";
+import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import { previewSlotsFromLoadout } from "@/frontend/utils/loadoutPreview";
 import { VehicleLoadoutTabsEnum } from "@/frontend/components/Vehicles/LoadoutModal/types";
 import { useLoadoutFitting } from "@/frontend/composables/useLoadoutFitting";
@@ -209,6 +210,9 @@ const previewSlots = computed(() =>
   loadoutSlots.value ? previewSlotsFromLoadout(loadoutSlots.value) : undefined,
 );
 
+// The card waits for a holo to show, rather than standing empty.
+const previewShown = ref(false);
+
 const {
   hardpoints,
   changed,
@@ -344,23 +348,13 @@ const edit = () => {
 
             <Loader v-if="fittingPending" :loading="true" relative />
 
-            <div v-else class="loadout-page__summary">
-              <LoadoutChanges
-                v-if="changesFromStock.length"
-                :title="t('labels.vehicleLoadout.againstStock')"
-                :figures="changesFromStock"
-                test-id="vehicle-loadout-page-changes"
-              />
-
-              <LoadoutPreview
-                v-if="previewSlots"
-                :model-slug="vehicle.model.slug"
-                :slots="previewSlots"
-                :interactive="false"
-                test-id="vehicle-loadout-page-preview"
-                class="loadout-page__preview"
-              />
-            </div>
+            <LoadoutChanges
+              v-else-if="changesFromStock.length"
+              :title="t('labels.vehicleLoadout.againstStock')"
+              :figures="changesFromStock"
+              test-id="vehicle-loadout-page-changes"
+              class="loadout-page__changes"
+            />
 
             <Hardpoints
               v-if="!fittingPending && model && hardpoints"
@@ -369,7 +363,25 @@ const edit = () => {
               :changed="changed"
               :crafted="crafted"
               :cargo-holds="cargoHolds"
-            />
+            >
+              <template #metrics>
+                <MetricsCard
+                  v-if="previewSlots"
+                  v-show="previewShown"
+                  :title="t('labels.vehicleLoadout.holo')"
+                  class="loadout-page__holo"
+                >
+                  <LoadoutPreview
+                    :model-slug="vehicle.model.slug"
+                    :slots="previewSlots"
+                    :interactive="false"
+                    test-id="vehicle-loadout-page-preview"
+                    class="loadout-page__preview"
+                    @available="previewShown = $event"
+                  />
+                </MetricsCard>
+              </template>
+            </Hardpoints>
 
             <Empty
               v-else-if="!fittingPending && model"
@@ -389,10 +401,7 @@ const edit = () => {
 </template>
 
 <style lang="scss" scoped>
-// The changes beside a small holo of the fitting, which opens full screen.
-.loadout-page__summary {
-  display: grid;
-  gap: 24px;
+.loadout-page__changes {
   margin-bottom: 24px;
 }
 
@@ -400,14 +409,10 @@ const edit = () => {
   margin-bottom: 0;
 }
 
-@media (min-width: $tablet-breakpoint) {
-  .loadout-page__summary {
-    grid-template-columns: minmax(0, 1fr) minmax(240px, 360px);
-  }
-
-  .loadout-page__preview {
-    grid-column: 2;
-    grid-row: 1;
+// The right column's top, beside the combat and power cards.
+@media (min-width: 992px) {
+  .loadout-page__holo {
+    grid-column: 3;
   }
 }
 </style>

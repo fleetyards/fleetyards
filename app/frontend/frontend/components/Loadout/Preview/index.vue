@@ -101,7 +101,7 @@ watch(available, (value) => emit("available", value), { immediate: true });
       :elevation="ANGLED_ELEVATION"
       :controllable="interactive"
       :zoomable="interactive"
-      :fit-scale="backdrop ? 1.4 : 1"
+      :fit-scale="1.4"
       :hologram="backdrop"
       @unavailable="unavailable = true"
     />

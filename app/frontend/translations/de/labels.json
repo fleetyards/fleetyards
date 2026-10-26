@@ -4726,6 +4726,7 @@
           }
         },
         "againstStock": "Änderungen gegenüber dem Serienschiff",
+        "holo": "Holo",
         "crafted": "Hergestellt",
         "craftedPart": "%{name} (hergestellt)",
         "fitted": "Verbaut",

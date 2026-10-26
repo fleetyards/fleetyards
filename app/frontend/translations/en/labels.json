@@ -4740,6 +4740,7 @@
           }
         },
         "againstStock": "Changes from the stock ship",
+        "holo": "Holo",
         "crafted": "Crafted",
         "craftedPart": "%{name} (crafted)",
         "fitted": "Fitted",
