@@ -59,6 +59,8 @@ const {
   blueprintsNavActive,
   showLogisticsNav,
   logisticsNavActive,
+  showShoppingListsNav,
+  shoppingListsNavActive,
   showSquadronsNav,
   squadronsNavActive,
   showContractsNav,
@@ -162,6 +164,16 @@ onMounted(() => {
           :label="t('nav.fleets.logistics.index')"
           :active="logisticsNavActive"
           icon="fa-duotone fa-boxes-stacked"
+        />
+        <NavItem
+          v-if="showShoppingListsNav"
+          :to="{
+            name: 'fleet-shopping-lists',
+            params: { slug: currentFleet.slug },
+          }"
+          :label="t('nav.fleets.shoppingLists')"
+          :active="shoppingListsNavActive"
+          icon="fa-duotone fa-cart-shopping"
         />
       </template>
     </NavItem>

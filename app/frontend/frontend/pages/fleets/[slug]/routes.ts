@@ -40,6 +40,23 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "shopping-lists/",
+    name: "fleet-shopping-lists",
+    component: () => import("@/frontend/pages/fleets/[slug]/shopping-lists.vue"),
+    meta: {
+      mobileBack: true,
+      needsAuthentication: true,
+      backgroundImage: "bg-8",
+      customTitle: true,
+      feature: FeatureFlagName.SHOPPING_CART,
+      access: [
+        "fleet:shopping_lists:read",
+        "fleet:shopping_lists:manage",
+        "fleet:manage",
+      ],
+    },
+  },
+  {
     path: "fleetchart/",
     name: "fleet-fleetchart",
     redirect: {
