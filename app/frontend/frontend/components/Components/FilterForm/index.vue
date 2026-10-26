@@ -14,7 +14,10 @@ import ManufacturerSelect from "@/frontend/components/base/ManufacturerSelect/in
 import { useComponentFilters } from "@/frontend/composables/useComponentFilters";
 import {
   type ComponentQuery,
+  type FilterOption,
   useComponentCategoriesFilters,
+  useComponentGradesFilters,
+  useComponentSizesFilters,
   useComponentSubTypesFilters,
 } from "@/services/fyApi";
 
@@ -52,6 +55,8 @@ const prefillFormValues = (): ComponentQuery => ({
   manufacturerSlugIn: asList(filters.value.manufacturerSlugIn),
   categoryIn: asList(filters.value.categoryIn),
   componentSubTypeIn: asList(filters.value.componentSubTypeIn),
+  sizeIn: asList(filters.value.sizeIn),
+  gradeIn: asList(filters.value.gradeIn),
 });
 
 const setupForm = () => {
@@ -97,6 +102,17 @@ const subTypeParams = computed(() => {
 
 const { data: subTypes } = useComponentSubTypesFilters(subTypeParams);
 
+// Unlike sub types these endpoints take every chosen category, so a size or
+// grade is offered only when one of the chosen categories carries it.
+const categoryParams = computed(() => {
+  const chosen = asList(form.value.categoryIn);
+
+  return chosen.length ? { q: { categoryIn: chosen } } : {};
+});
+
+const { data: sizes } = useComponentSizesFilters(categoryParams);
+const { data: grades } = useComponentGradesFilters(categoryParams);
+
 // A sub type the control cannot show is one the reader cannot remove. Dropping
 // a category narrows this list, and a sub type belonging to the category just
 // removed stayed in the filter while disappearing from the select -- the
@@ -114,6 +130,31 @@ watch(subTypes, (options) => {
   if (kept.length !== chosen.length) {
     form.value = { ...form.value, componentSubTypeIn: kept };
   }
+});
+
+// The same rule for sizes and grades, except an empty answer prunes as well:
+// a category with no sizes leaves nothing selectable. Immediate, because an
+// answer already in the cache is never a change.
+const pruneToOptions = (
+  key: "sizeIn" | "gradeIn",
+  options?: FilterOption[],
+) => {
+  if (!options) return;
+
+  const available = new Set(options.map((option) => option.value));
+  const chosen = form.value[key] || [];
+  const kept = chosen.filter((value) => available.has(value));
+
+  if (kept.length !== chosen.length) {
+    form.value = { ...form.value, [key]: kept };
+  }
+};
+
+watch(sizes, (options) => pruneToOptions("sizeIn", options), {
+  immediate: true,
+});
+watch(grades, (options) => pruneToOptions("gradeIn", options), {
+  immediate: true,
 });
 </script>
 
@@ -162,6 +203,24 @@ watch(subTypes, (options) => {
       name="subType"
       :options="subTypes ?? []"
       :label="t('labels.filters.components.subType')"
+      :no-label="true"
+      multiple
+    />
+
+    <BaseSelect
+      v-model="form.sizeIn"
+      name="size"
+      :options="sizes ?? []"
+      :label="t('labels.filters.components.size')"
+      :no-label="true"
+      multiple
+    />
+
+    <BaseSelect
+      v-model="form.gradeIn"
+      name="grade"
+      :options="grades ?? []"
+      :label="t('labels.filters.components.grade')"
       :no-label="true"
       multiple
     />

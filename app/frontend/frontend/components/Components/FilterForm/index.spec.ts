@@ -2,9 +2,18 @@ import { mount, flushPromises } from "@vue/test-utils";
 import { createPinia, setActivePinia } from "pinia";
 import { VueQueryPlugin } from "@tanstack/vue-query";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { ref } from "vue";
+import { ref, type MaybeRef } from "vue";
+import type { VueWrapper } from "@vue/test-utils";
 
-const { route, replace, push } = vi.hoisted(() => ({
+const { route, replace, push, sizes, grades } = vi.hoisted(() => ({
+  sizes: [
+    { category: "size", label: "Size 1", value: "1" },
+    { category: "size", label: "Size 10", value: "10" },
+  ],
+  grades: [
+    { category: "grade", label: "Grade A", value: "1" },
+    { category: "grade", label: "Grade C", value: "3" },
+  ],
   route: {
     name: "components",
     params: {},
@@ -25,11 +34,29 @@ vi.mock("@/shared/composables/useI18n", () => ({
   useI18n: () => ({ t: (key: string) => key, tExists: () => false }),
 }));
 
-vi.mock("@/services/fyApi", async (importOriginal) => ({
-  ...(await importOriginal<typeof import("@/services/fyApi")>()),
-  useComponentCategoriesFilters: () => ({ data: ref([]) }),
-  useComponentSubTypesFilters: () => ({ data: ref([]) }),
-}));
+// Coolers here only come in size 1 and grade A, so picking the category
+// narrows both.
+vi.mock("@/services/fyApi", async (importOriginal) => {
+  const { computed, toValue } = await import("vue");
+  type Params = { q?: { categoryIn?: string[] } };
+  const narrowed =
+    <T>(options: T[]) =>
+    (params: MaybeRef<Params>) => ({
+      data: computed(() =>
+        toValue(params).q?.categoryIn?.includes("cooler")
+          ? options.slice(0, 1)
+          : options,
+      ),
+    });
+
+  return {
+    ...(await importOriginal<typeof import("@/services/fyApi")>()),
+    useComponentCategoriesFilters: () => ({ data: ref([]) }),
+    useComponentSubTypesFilters: () => ({ data: ref([]) }),
+    useComponentSizesFilters: narrowed(sizes),
+    useComponentGradesFilters: narrowed(grades),
+  };
+});
 
 vi.mock("@/frontend/components/base/ManufacturerSelect/index.vue", () => ({
   default: { name: "ManufacturerSelect", render: () => null },
@@ -45,6 +72,17 @@ const mountForm = () =>
       directives: { Tooltip: {} },
     },
   });
+
+const select = (wrapper: VueWrapper, name: string) =>
+  wrapper
+    .findAllComponents({ name: "BaseSelect" })
+    .find((component) => component.props("name") === name)!;
+
+const lastQuery = () => {
+  const calls = [...push.mock.calls, ...replace.mock.calls];
+
+  return calls[calls.length - 1][0].query;
+};
 
 describe("ComponentsFilterForm", () => {
   beforeEach(() => {
@@ -81,5 +119,51 @@ describe("ComponentsFilterForm", () => {
     const { query } = calls[calls.length - 1][0];
     expect(query.searchNameCont).toBe("mining bag");
     expect(query).not.toHaveProperty("nameCont");
+  });
+
+  it("offers the sizes and grades the catalogue has", async () => {
+    route.query = {};
+    const wrapper = mountForm();
+    await flushPromises();
+
+    expect(select(wrapper, "size").props("options")).toEqual(sizes);
+    expect(select(wrapper, "grade").props("options")).toEqual(grades);
+  });
+
+  it("writes a picked size and grade to sizeIn and gradeIn", async () => {
+    route.query = {};
+    const wrapper = mountForm();
+    await flushPromises();
+
+    select(wrapper, "size").vm.$emit("update:modelValue", ["10"]);
+    select(wrapper, "grade").vm.$emit("update:modelValue", ["1", "3"]);
+    await flushPromises();
+    vi.advanceTimersByTime(400);
+
+    expect(lastQuery().sizeIn).toEqual(["10"]);
+    expect(lastQuery().gradeIn).toEqual(["1", "3"]);
+  });
+
+  it("prefills from a single value in the URL as a list", async () => {
+    route.query = { sizeIn: "10", gradeIn: "3" };
+    const wrapper = mountForm();
+    await flushPromises();
+
+    expect(select(wrapper, "size").props("modelValue")).toEqual(["10"]);
+    expect(select(wrapper, "grade").props("modelValue")).toEqual(["3"]);
+  });
+
+  it("narrows to the chosen category and drops a size or grade it no longer has", async () => {
+    route.query = { sizeIn: ["1", "10"], gradeIn: ["1", "3"] };
+    const wrapper = mountForm();
+    await flushPromises();
+
+    select(wrapper, "category").vm.$emit("update:modelValue", ["cooler"]);
+    await flushPromises();
+
+    expect(select(wrapper, "size").props("options")).toEqual([sizes[0]]);
+    expect(select(wrapper, "size").props("modelValue")).toEqual(["1"]);
+    expect(select(wrapper, "grade").props("options")).toEqual([grades[0]]);
+    expect(select(wrapper, "grade").props("modelValue")).toEqual(["1"]);
   });
 });
