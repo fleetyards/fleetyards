@@ -629,7 +629,7 @@
         "linkInstead": "改为链接配置",
         "createOnFleetyards": "在 Fleetyards 上创建配置",
         "viewLoadout": "查看配置",
-        "inspectHolo": "隐藏数值，旋转舰船",
+        "hideFigures": "隐藏数值",
         "showFigures": "显示数值"
       },
       "hangarPledgeItems": {

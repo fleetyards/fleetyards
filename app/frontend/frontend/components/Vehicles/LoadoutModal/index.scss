@@ -230,8 +230,9 @@
       display: block;
     }
 
-    // Over the holo the figures need a ground of their own to be read on.
-    &__ship--over-holo {
+    // Over the ship, render or holo, the figures need a ground of their own to
+    // be read on.
+    &__ship {
       padding: 12px;
       border-radius: 6px;
       background: var(--color-surface);

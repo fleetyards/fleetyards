@@ -354,18 +354,14 @@ const previewSlots = computed(() =>
 // The ship's holo takes the angled render's place behind the controls.
 const previewShown = ref(false);
 
-// The figures put away, so the holo can be turned and zoomed. Back as soon as
-// the holo goes, which takes the toggle with it.
+// The figures put away: room to see the ship, and with a holo, to turn and
+// zoom it.
 const inspecting = ref(false);
-
-watch(previewShown, (shown) => {
-  if (!shown) inspecting.value = false;
-});
 
 const figuresToggleLabel = computed(() =>
   inspecting.value
     ? t("actions.vehicleLoadout.showFigures")
-    : t("actions.vehicleLoadout.inspectHolo"),
+    : t("actions.vehicleLoadout.hideFigures"),
 );
 
 // The saved fitting's recipes as well as the edited one's, so the changes
@@ -1485,7 +1481,6 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
       <aside
         v-show="!linking"
         class="vehicle-loadout__ship"
-        :class="{ 'vehicle-loadout__ship--over-holo': previewShown }"
         data-test="vehicle-loadout-ship"
       >
         <div class="vehicle-loadout__ship-header">
@@ -1495,7 +1490,6 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
             <strong>{{ vehicle.model.name }}</strong>
           </p>
           <Btn
-            v-if="previewShown"
             variant="bare"
             :aria-label="figuresToggleLabel"
             v-tooltip="figuresToggleLabel"

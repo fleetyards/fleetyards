@@ -629,7 +629,7 @@
         "linkInstead": "Stattdessen einen Build verlinken",
         "createOnFleetyards": "Loadout auf Fleetyards erstellen",
         "viewLoadout": "Loadout ansehen",
-        "inspectHolo": "Werte ausblenden, Schiff drehen",
+        "hideFigures": "Werte ausblenden",
         "showFigures": "Werte einblenden"
       },
       "hangarPledgeItems": {

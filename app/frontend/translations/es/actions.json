@@ -629,7 +629,7 @@
         "linkInstead": "Enlazar una configuración",
         "createOnFleetyards": "Crear un loadout en Fleetyards",
         "viewLoadout": "Ver equipamiento",
-        "inspectHolo": "Ocultar cifras, girar la nave",
+        "hideFigures": "Ocultar cifras",
         "showFigures": "Mostrar cifras"
       },
       "hangarPledgeItems": {

@@ -629,7 +629,7 @@
         "linkInstead": "Lier un build à la place",
         "createOnFleetyards": "Créer un loadout sur Fleetyards",
         "viewLoadout": "Voir l’équipement",
-        "inspectHolo": "Masquer les valeurs, tourner le vaisseau",
+        "hideFigures": "Masquer les valeurs",
         "showFigures": "Afficher les valeurs"
       },
       "hangarPledgeItems": {
