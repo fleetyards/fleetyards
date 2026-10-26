@@ -89,6 +89,12 @@ class Api::V1::CartItemsTest < ActionDispatch::IntegrationTest
       body: {itemType: "Component", itemId: SecureRandom.uuid}
   end
 
+  test "POST rejects a quantity below one" do
+    assert_api_response :post, 400, api_path: "/cart/items",
+      body: {itemType: "Commodity", itemId: @commodity.id, quantity: -3}
+    assert_equal 4, @cart_item.reload.quantity
+  end
+
   test "POST is forbidden while the feature is off" do
     Flipper.disable(:shopping_cart)
 
