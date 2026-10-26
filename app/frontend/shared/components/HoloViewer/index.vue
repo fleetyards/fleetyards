@@ -55,8 +55,8 @@ type Props = {
   // See-through, with the mesh's wireframe drawn over it.
   hologram?: boolean;
   // Drawn only when something changes rather than every frame, for a holo
-  // that stands still. The orbit controls ask for no frames of their own, so a
-  // holo the viewer turns, or that turns on its own, draws every frame.
+  // that mostly stands still. Set once: the renderer cannot switch modes once
+  // it runs.
   onDemand?: boolean;
 };
 
@@ -239,9 +239,22 @@ const innerHeight = computed(() => {
 const cameraPosition = ref<[x: number, y: number, z: number]>([100, 100, 100]);
 const lightPosition = ref<[x: number, y: number, z: number]>([100, 100, 100]);
 
+// The renderer's mode, fixed as it mounts: switched while running from on
+// demand to always, it never draws again.
+const renderMode = props.onDemand ? "on-demand" : "always";
+
+const canvas = ref<{
+  context?: { renderer?: { invalidate: () => void } };
+}>();
+
+// The orbit controls move the camera without asking for a frame. Each change
+// asks for the next one, so a drag, its easing out and an auto-rotation all
+// keep drawing, and a camera at rest draws nothing.
 const handleControlsChange = (controls: { object: Camera }) => {
   const { x, y, z } = controls.object.position;
   lightPosition.value = [x, y, z];
+
+  canvas.value?.context?.renderer?.invalidate();
 };
 
 const fitDistance = ref(100);
@@ -523,7 +536,8 @@ defineExpose({
       :dpr="dpr"
       :power-preference="powerPreference"
       :antialias="!lowPower"
-      :render-mode="onDemand && !internalAutoRotate ? 'on-demand' : 'always'"
+      ref="canvas"
+      :render-mode="renderMode"
       alpha
       :on-error="handleRenderError"
     >
