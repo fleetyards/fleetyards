@@ -43,4 +43,4 @@ On a sample seven-line list, the three plans came out as follows:
 
 ## What a real distance would need
 
-Positions per location, or at least per planet, moon and station, in the same frame per system. The game files do carry object containers with positions. Nothing in the current parse exports them, so that is a parser change before it is a planner one. With positions, the greedy set cover in `TripPlan#shorten_trip` can keep its shape and swap `trip_cost` for a route length.
+Positions per location, or at least per planet, moon and station, in the same frame per system. The `locations` table has none, so nothing the current parse imports carries them. Whether the game files hold usable positions has not been checked; finding out is a parser question before it is a planner one. With positions, the greedy set cover in `TripPlan#shorten_trip` can keep its shape and swap `trip_cost` for a route length.
