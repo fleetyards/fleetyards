@@ -209,6 +209,16 @@ const previewSlots = computed(() =>
   loadoutSlots.value ? previewSlotsFromLoadout(loadoutSlots.value) : undefined,
 );
 
+// Without a holo of the fitting, the ship's angled render stands in for it.
+const previewShown = ref(false);
+
+const angledImage = computed(() => {
+  const media = model.value?.media;
+  const file = media?.angledViewColored || media?.angledView;
+
+  return file ? file.mediumUrl || file.url : undefined;
+});
+
 const {
   hardpoints,
   changed,
@@ -329,10 +339,19 @@ const edit = () => {
 
               <LoadoutPreview
                 v-if="!fittingPending && previewSlots"
+                v-show="previewShown"
                 :model-slug="vehicle.model.slug"
                 :slots="previewSlots"
                 test-id="vehicle-loadout-page-preview"
                 class="loadout-page__preview"
+                @available="previewShown = $event"
+              />
+              <img
+                v-if="!previewShown && angledImage"
+                :src="angledImage"
+                :alt="vehicleName"
+                class="loadout-page__preview loadout-page__picture"
+                data-test="vehicle-loadout-page-picture"
               />
             </div>
 
@@ -394,13 +413,19 @@ const edit = () => {
 .loadout-page__head {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   justify-content: space-between;
   gap: 24px;
 }
 
 .loadout-page__preview {
   flex: none;
-  width: 360px;
+  width: min(360px, 100%);
+}
+
+.loadout-page__picture {
+  height: 200px;
+  object-fit: contain;
 }
 
 .loadout-page__changes {
