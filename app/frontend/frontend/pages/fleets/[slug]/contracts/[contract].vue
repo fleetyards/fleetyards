@@ -41,6 +41,11 @@ import {
   useLeaveFleetContractCrew,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import {
+  firstErrorMessageFrom,
+  validationErrorFrom,
+} from "@/shared/utils/ApiErrors";
 import { useContractCover } from "@/frontend/composables/useContractCover";
 import { useContractReward } from "@/frontend/composables/useContractReward";
 import { useContractRoute } from "@/frontend/composables/useContractRoute";
@@ -234,53 +239,49 @@ const crewParams = (id: string) => ({
   id,
 });
 
-const onPublish = async () => {
-  await publish(contractParams.value);
+const { displayAlert } = useAppNotifications();
+
+// A refused step says why -- a deadline already past, a seat already taken --
+// and the contract may have moved on under the page, so it is read again
+// either way.
+const act = async (request: () => Promise<unknown>) => {
+  try {
+    await request();
+  } catch (error) {
+    displayAlert({
+      text:
+        firstErrorMessageFrom(error) ??
+        validationErrorFrom(error).message ??
+        t("messages.fleets.contracts.actionFailed"),
+    });
+  }
+
   reload();
 };
 
-const onClaim = async () => {
-  await claim(contractParams.value);
-  reload();
-};
+const onPublish = () => act(() => publish(contractParams.value));
 
-const onRelease = async () => {
-  await release(contractParams.value);
-  reload();
-};
+const onClaim = () => act(() => claim(contractParams.value));
 
-const onFulfil = async () => {
-  await fulfil(contractParams.value);
-  reload();
-};
+const onRelease = () => act(() => release(contractParams.value));
 
-const onCancel = async () => {
-  await cancel(contractParams.value);
-  reload();
-};
+const onFulfil = () => act(() => fulfil(contractParams.value));
 
-const onJoin = async () => {
-  await join({
-    fleetSlug: props.fleet.slug,
-    fleetContractSlug: contractSlug.value,
-  });
-  reload();
-};
+const onCancel = () => act(() => cancel(contractParams.value));
 
-const onAcceptCrew = async (id: string) => {
-  await acceptCrew(crewParams(id));
-  reload();
-};
+const onJoin = () =>
+  act(() =>
+    join({
+      fleetSlug: props.fleet.slug,
+      fleetContractSlug: contractSlug.value,
+    }),
+  );
 
-const onDeclineCrew = async (id: string) => {
-  await declineCrew(crewParams(id));
-  reload();
-};
+const onAcceptCrew = (id: string) => act(() => acceptCrew(crewParams(id)));
 
-const onRemoveCrew = async (id: string) => {
-  await leaveCrew(crewParams(id));
-  reload();
-};
+const onDeclineCrew = (id: string) => act(() => declineCrew(crewParams(id)));
+
+const onRemoveCrew = (id: string) => act(() => leaveCrew(crewParams(id)));
 
 const goToEdit = () => {
   void router.push({

@@ -1,6 +1,7 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { VueWrapper } from "@vue/test-utils";
+import { flushPromises, type VueWrapper } from "@vue/test-utils";
+import { AxiosError } from "axios";
 import { defineComponent, h } from "vue";
 import { createRouter, createWebHashHistory } from "vue-router";
 import {
@@ -12,6 +13,9 @@ import {
   FleetContractStateEnum,
 } from "@/services/fyApi";
 import Component from "./[contract].vue";
+
+const publish = vi.hoisted(() => vi.fn());
+const displayAlert = vi.hoisted(() => vi.fn());
 
 const Stub = defineComponent({ name: "PageStub", render: () => h("div") });
 
@@ -75,7 +79,7 @@ vi.mock("@/services/fyApi", async () => {
       isLoading: ref(false),
       refetch: vi.fn(),
     }),
-    usePublishFleetContract: mutation,
+    usePublishFleetContract: () => ({ mutateAsync: publish }),
     useClaimFleetContract: mutation,
     useReleaseFleetContract: mutation,
     useFulfilFleetContract: mutation,
@@ -86,6 +90,14 @@ vi.mock("@/services/fyApi", async () => {
     useLeaveFleetContractCrew: mutation,
   };
 });
+
+vi.mock("@/shared/composables/useAppNotifications", () => ({
+  useAppNotifications: () => ({
+    displayAlert,
+    displaySuccess: vi.fn(),
+    displayConfirm: vi.fn(),
+  }),
+}));
 
 vi.mock("@/frontend/stores/session", () => ({
   useSessionStore: () => ({ currentUser: { id: CONTRACTOR_ID } }),
@@ -106,16 +118,20 @@ afterEach(() => {
   teleportTarget?.remove();
   teleportTarget = undefined;
   current.value = undefined;
+  vi.clearAllMocks();
 });
 
-const mount = async (state: FleetContractStateEnum) => {
+const mount = async (
+  state: FleetContractStateEnum,
+  resourceAccess = ["fleet:contracts:read"],
+) => {
   current.value = contract(state);
 
   wrapper = await mountWithDefaults<typeof Component>(Component, {
     props: {
       fleet: { slug: "maru", name: "Maru" } as Fleet,
       membership: {} as FleetMember,
-      resourceAccess: ["fleet:contracts:read"],
+      resourceAccess,
     },
     plugins: [await routerWithRoutes()],
   });
@@ -157,5 +173,45 @@ describe("FleetContractPage", () => {
     expect(subject.find("[data-test='contract-expired-hint']").exists()).toBe(
       false,
     );
+  });
+
+  it("says why a publish was refused", async () => {
+    publish.mockRejectedValue(
+      new AxiosError(
+        "Request failed with status code 400",
+        "ERR_BAD_REQUEST",
+        undefined,
+        undefined,
+        {
+          status: 400,
+          data: {
+            code: "fleet_contracts.publish",
+            message: "Could not publish the contract",
+            errors: [
+              {
+                attribute: "deadline",
+                messages: [
+                  { code: "in_past", message: "Deadline lies in the past" },
+                ],
+              },
+            ],
+          },
+        } as never,
+      ),
+    );
+
+    const subject = await mount(FleetContractStateEnum.DRAFT, [
+      "fleet:contracts:manage",
+    ]);
+    await subject.vm.$nextTick();
+
+    document
+      .querySelector<HTMLElement>("[data-test='publish-contract']")!
+      .click();
+    await flushPromises();
+
+    expect(displayAlert).toHaveBeenCalledWith({
+      text: "Deadline lies in the past",
+    });
   });
 });
