@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import AsyncData from "@/shared/components/AsyncData.vue";
 import Availability from "@/frontend/components/Availability/index.vue";
+import AddToInventoryBtn from "@/frontend/components/Logistics/AddToInventoryBtn/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Chart from "@/shared/components/Chart/index.vue";
 import Chip from "@/shared/components/base/Chip/index.vue";
@@ -131,6 +132,7 @@ watch(
     <template #resolved>
       <div v-if="commodity" class="commodity-page">
         <BreadCrumbs :crumbs="crumbs" />
+        <AddToInventoryBtn :entry="{ type: 'Commodity', record: commodity }" />
 
         <div class="commodity-page__masthead">
           <CommodityIcon :commodity="commodity" class="commodity-page__icon" />

@@ -34,14 +34,23 @@ import {
   lotEntry,
   useStockLots,
 } from "@/frontend/composables/useStockLots";
-import { type PickedItem } from "@/frontend/components/Logistics/types";
+import {
+  type ItemPickerSelection,
+  type PickedItem,
+} from "@/frontend/components/Logistics/types";
 import { useCraftingStep } from "@/frontend/composables/useCraftingStep";
+import { unitsForCategory } from "@/frontend/composables/useInventoryOptions";
+import {
+  type DepositTarget,
+  useDepositTargets,
+} from "@/frontend/composables/useDepositTargets";
 import {
   type InventoryItemCreateInput,
   hangarInventoryStock,
   vehicleInventoryStock,
   useCreateHangarInventoryItem,
   useCreateVehicleInventoryItem,
+  useCreateFleetInventoryItem,
   InventoryCategoryEnum,
   InventoryUnitEnum,
 } from "@/services/fyApi";
@@ -50,11 +59,19 @@ import type { InventoryTarget } from "@/frontend/types/logistics";
 type StockItem = StockLot;
 
 type Props = {
-  target: InventoryTarget;
+  // Without one, the deposit is filed into any inventory the reader may
+  // deposit into, picked here, as from a catalogue page that belongs to none.
+  target?: InventoryTarget;
   initialEntryType?: "deposit" | "withdrawal";
+  // The goods, already named.
+  item?: ItemPickerSelection;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  target: undefined,
+  initialEntryType: undefined,
+  item: undefined,
+});
 
 const { t } = useI18n();
 const { displaySuccess, displayAlert } = useAppNotifications();
@@ -62,15 +79,43 @@ const comlink = useComlink();
 const { unitOptionsFor, entryTypeOptions } = useInventoryOptions();
 
 const submitting = ref(false);
+
+const choosesInventory = !props.target;
+
+const {
+  options: inventoryOptions,
+  targetFor,
+  empty: noInventories,
+  hangarEnabled,
+} = useDepositTargets(choosesInventory);
+
+const inventoryId = ref<string>();
+
+watch(
+  inventoryOptions,
+  (options) => {
+    if (options.some((option) => option.value === inventoryId.value)) return;
+
+    inventoryId.value = options[0]?.value as string | undefined;
+  },
+  { immediate: true },
+);
+
+const activeTarget = computed<DepositTarget | undefined>(
+  () => props.target ?? targetFor(inventoryId.value),
+);
+
+// Opened outside any inventory, it only deposits: a withdrawal picks from the
+// stock of an inventory the reader is already looking at.
 const entryType = ref<"deposit" | "withdrawal">(
-  props.initialEntryType ?? "deposit",
+  choosesInventory ? "deposit" : (props.initialEntryType ?? "deposit"),
 );
 const selectedStockItem = ref<string | undefined>(undefined);
 const selectedExistingItem = ref<string | undefined>(undefined);
 const stockItems = ref<StockItem[]>([]);
 // One slot for whichever catalogue the item came from, so the submit and the
 // name-edit rule stay single rather than growing a branch per item type.
-const pickedItem = ref<PickedItem | undefined>(undefined);
+const pickedItem = ref<PickedItem | undefined>(props.item?.item);
 
 // Picking an existing position copies its unit but drops the catalogue
 // reference on purpose -- a new entry is not a reference to what the old ones
@@ -95,6 +140,7 @@ const isDeposit = computed(() => entryType.value === "deposit");
 const modalTitle = computed(() => {
   if (picking.value) return pickTitle.value;
   if (step.value === "crafting") return t("headlines.logistics.crafting");
+  if (choosesInventory) return t("headlines.logistics.addToInventory");
 
   return isDeposit.value
     ? t("headlines.logistics.deposit")
@@ -111,11 +157,16 @@ const validationSchema = {
 // entered for the goods at hand instead of slipping through as a 1 and a 0
 // nobody chose.
 
+const initialCategory = props.item?.category ?? InventoryCategoryEnum.COMMODITY;
+
 const initialValues = {
-  name: "",
-  category: InventoryCategoryEnum.COMMODITY as InventoryCategoryEnum,
+  name: props.item?.name ?? "",
+  category: initialCategory as InventoryCategoryEnum,
   quantity: undefined as number | undefined,
-  unit: InventoryUnitEnum.SCU as InventoryUnitEnum,
+  unit: unitsForCategory(
+    initialCategory,
+    props.item?.item?.counted,
+  )[0] as InventoryUnitEnum,
   quality: undefined as number | undefined,
   image: undefined as string | undefined,
   notes: "",
@@ -194,14 +245,18 @@ watch(unitOptions, (options) => {
   setFieldValue("unit", options[0].value as InventoryUnitEnum);
 });
 
-const fetchStock = () =>
-  props.target.kind === "hangar"
-    ? hangarInventoryStock(props.target.slug)
-    : vehicleInventoryStock(props.target.vehicleId);
+const fetchStock = (target: InventoryTarget) =>
+  target.kind === "hangar"
+    ? hangarInventoryStock(target.slug)
+    : vehicleInventoryStock(target.vehicleId);
 
+// Stock is shown only for the inventory the modal was opened from.
 const loadStockItems = async () => {
+  const target = props.target;
+  if (!target) return;
+
   try {
-    const data = await fetchStock();
+    const data = await fetchStock(target);
     stockItems.value = data as unknown as StockItem[];
   } catch {
     stockItems.value = [];
@@ -215,6 +270,8 @@ const {
 } = useStockLots(stockItems);
 
 onMounted(() => {
+  if (choosesInventory) return;
+
   void loadStockItems();
 });
 
@@ -272,16 +329,27 @@ const selectedStockMax = computed(
 const createHangarItem = useCreateHangarInventoryItem();
 const createVehicleItem = useCreateVehicleInventoryItem();
 
-const createItem = (data: InventoryItemCreateInput) =>
-  props.target.kind === "hangar"
+const createFleetItem = useCreateFleetInventoryItem();
+
+const createItem = (target: DepositTarget, data: InventoryItemCreateInput) => {
+  if (target.kind === "fleet") {
+    return createFleetItem.mutateAsync({
+      fleetSlug: target.fleetSlug,
+      fleetInventorySlug: target.slug,
+      data,
+    });
+  }
+
+  return target.kind === "hangar"
     ? createHangarItem.mutateAsync({
-        hangarInventorySlug: props.target.slug,
+        hangarInventorySlug: target.slug,
         data,
       })
     : createVehicleItem.mutateAsync({
-        vehicleId: props.target.vehicleId,
+        vehicleId: target.vehicleId,
         data,
       });
+};
 
 // Deposit or withdrawal and the position or item picked live outside the form.
 const entryChoice = computed(() => ({
@@ -298,9 +366,12 @@ const choiceDirty = useFormDirty(entryChoice, { ...entryChoice.value });
 useModalDirty(() => formDirty.value || choiceDirty.value);
 
 const onSubmit = handleSubmit(async (values) => {
+  const target = activeTarget.value;
+  if (!target) return;
+
   submitting.value = true;
 
-  await createItem({
+  await createItem(target, {
     name: values.name,
     category: values.category,
     quantity:
@@ -327,7 +398,11 @@ const onSubmit = handleSubmit(async (values) => {
           ? t("messages.logistics.inventoryItem.deposit.success")
           : t("messages.logistics.inventoryItem.withdrawal.success"),
       });
-      comlink.emit("inventory-item-created");
+      comlink.emit(
+        target.kind === "fleet"
+          ? "fleet-inventory-item-created"
+          : "inventory-item-created",
+      );
       comlink.emit("close-modal", true);
     })
     .catch(() => {
@@ -364,15 +439,40 @@ const onSubmit = handleSubmit(async (values) => {
       @remove="clearCrafted"
     />
 
+    <div
+      v-if="noInventories"
+      class="inventory-item-modal__empty"
+      data-test="inventory-item-no-inventories"
+    >
+      <template v-if="hangarEnabled">
+        <p>{{ t("texts.hangarPledgeItems.noInventories") }}</p>
+        <Btn :to="{ name: 'hangar-inventories' }">
+          {{ t("actions.hangarPledgeItems.createInventory") }}
+        </Btn>
+      </template>
+      <p v-else>{{ t("labels.logistics.noDepositTargets") }}</p>
+    </div>
+
     <!-- Hidden rather than unmounted while another step is open, so nothing
          typed into it is lost. -->
     <form
-      v-show="step === 'form'"
+      v-show="step === 'form' && !noInventories"
       id="create-hangar-inventory-item-form"
       ref="itemPickerForm"
       @submit.prevent="onSubmit"
     >
       <BaseSelect
+        v-if="choosesInventory"
+        v-model="inventoryId"
+        :options="inventoryOptions"
+        :nullable="false"
+        :label="t('labels.logistics.inventory')"
+        name="inventory"
+        data-test="inventory-item-inventory"
+      />
+
+      <BaseSelect
+        v-else
         v-model="entryType"
         :options="entryTypeOptions"
         :label="t('labels.logistics.entryType')"
@@ -517,9 +617,10 @@ const onSubmit = handleSubmit(async (values) => {
         </Btn>
       </template>
       <Btn
-        v-else
+        v-else-if="!noInventories"
         :type="BtnTypesEnum.SUBMIT"
         form="create-hangar-inventory-item-form"
+        :disabled="!activeTarget"
         :loading="submitting"
         data-test="inventory-item-save"
       >
@@ -532,3 +633,16 @@ const onSubmit = handleSubmit(async (values) => {
     </template>
   </Modal>
 </template>
+
+<style lang="scss" scoped>
+.inventory-item-modal__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+
+  p {
+    margin: 0;
+  }
+}
+</style>

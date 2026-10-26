@@ -524,6 +524,7 @@
         "transfer": "Transfer Stock",
         "transfers": "Transfers",
         "acceptTransfer": "Accept Transfer",
+        "addToInventory": "Add to Inventory",
         "pickItem": "Choose an Item",
         "crafting": "Crafting",
         "reportTransfer": "Report Transfer"

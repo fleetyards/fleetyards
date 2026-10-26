@@ -522,6 +522,7 @@
         "transfer": "轉移庫存",
         "transfers": "轉移",
         "acceptTransfer": "接受轉移",
+        "addToInventory": "加入庫存",
         "pickItem": "選擇物品",
         "crafting": "製作",
         "reportTransfer": "檢舉轉移"

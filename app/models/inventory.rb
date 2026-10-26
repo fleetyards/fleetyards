@@ -7,6 +7,7 @@ class Inventory < ApplicationRecord
   has_paper_trail on: ::VersionedItem::RECORDED_EVENTS
 
   paginates_per 24
+  paginates_all
 
   include LinkedLocations
 

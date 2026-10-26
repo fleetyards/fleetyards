@@ -9,6 +9,7 @@ import {
   vi,
 } from "vitest";
 import { flushPromises, type VueWrapper } from "@vue/test-utils";
+import { createMemoryHistory, createRouter } from "vue-router";
 import { defineRule } from "vee-validate";
 import { between, required, min, min_value } from "@vee-validate/rules";
 import Component from "./index.vue";
@@ -26,6 +27,14 @@ beforeAll(() => {
 const api = vi.hoisted(() => ({
   stock: vi.fn(),
   create: vi.fn(),
+  createVehicle: vi.fn(),
+  createFleet: vi.fn(),
+  targets: [] as {
+    option: { value: string; label: string };
+    target: unknown;
+  }[],
+  noTargets: false,
+  hangarEnabled: true,
 }));
 
 // The hooks, not the fetchers: a generated hook calls its own fetcher from
@@ -37,6 +46,8 @@ vi.mock("@/services/fyApi", async (importOriginal) => {
     ...(await importOriginal<typeof import("@/services/fyApi")>()),
     hangarInventoryStock: api.stock,
     useCreateHangarInventoryItem: () => ({ mutateAsync: api.create }),
+    useCreateVehicleInventoryItem: () => ({ mutateAsync: api.createVehicle }),
+    useCreateFleetInventoryItem: () => ({ mutateAsync: api.createFleet }),
     // A recipe makes the Bulwark and nothing else.
     useBlueprints: vi.fn(
       (params: { value: { q: { craftableIdEq?: string } } }) => ({
@@ -50,6 +61,20 @@ vi.mock("@/services/fyApi", async (importOriginal) => {
         })),
       }),
     ),
+  };
+});
+
+vi.mock("@/frontend/composables/useDepositTargets", async () => {
+  const { computed } = await import("vue");
+
+  return {
+    useDepositTargets: () => ({
+      options: computed(() => api.targets.map((entry) => entry.option)),
+      targetFor: (value?: string) =>
+        api.targets.find((entry) => entry.option.value === value)?.target,
+      empty: computed(() => api.noTargets),
+      hangarEnabled: computed(() => api.hangarEnabled),
+    }),
   };
 });
 
@@ -114,6 +139,28 @@ afterEach(() => {
 beforeEach(() => {
   api.stock.mockResolvedValue([]);
   api.create.mockResolvedValue({});
+  api.createVehicle.mockResolvedValue({});
+  api.createFleet.mockResolvedValue({});
+  api.targets = [
+    {
+      option: { value: "inv-1", label: "Cargo Hold" },
+      target: { kind: "hangar", slug: "cargo-hold" },
+    },
+    {
+      option: { value: "inv-2", label: "Armory" },
+      target: { kind: "hangar", slug: "armory" },
+    },
+    {
+      option: { value: "inv-3", label: "Ironclad Cargo" },
+      target: { kind: "vehicle", vehicleId: "ironclad" },
+    },
+    {
+      option: { value: "inv-4", label: "Fleet Depot" },
+      target: { kind: "fleet", fleetSlug: "crew", slug: "depot" },
+    },
+  ];
+  api.noTargets = false;
+  api.hangarEnabled = true;
 });
 
 const mount = async () => {
@@ -566,6 +613,130 @@ describe("LogisticsInventoryItemModal", () => {
           }),
         }),
       );
+    });
+  });
+
+  // A catalogue page belongs to no inventory, so the modal asks which one.
+  describe("opened from a catalogue page", () => {
+    // The empty state links the inventories page, which the shared test
+    // router lacks.
+    const router = createRouter({
+      history: createMemoryHistory(),
+      routes: [
+        { path: "/", component: { template: "<div />" } },
+        {
+          path: "/hangar/inventories/",
+          name: "hangar-inventories",
+          component: { template: "<div />" },
+        },
+      ],
+    });
+
+    const mountForItem = async (item: Record<string, unknown>) => {
+      wrapper = await mountWithDefaults<typeof Component>(Component, {
+        plugins: [router],
+        props: { item: item as never },
+      });
+      await flushPromises();
+
+      return wrapper;
+    };
+
+    it("starts on the item, in the first inventory", async () => {
+      const subject = await mountForItem(bulwark);
+
+      expect(field(subject).text()).toContain("Bulwark");
+      expect(select(subject, "inventory").props("modelValue")).toBe("inv-1");
+      expect(select(subject, "unit")).toBeUndefined();
+      expect(api.stock).not.toHaveBeenCalled();
+    });
+
+    // A withdrawal picks from stock the reader is not looking at here.
+    it("only deposits", async () => {
+      const subject = await mountForItem(gold);
+
+      expect(select(subject, "entryType")).toBeUndefined();
+    });
+
+    it("deposits into the inventory picked", async () => {
+      const subject = await mountForItem(bulwark);
+
+      await select(subject, "inventory").vm.$emit("update:modelValue", "inv-2");
+      await subject.find("[data-test='input-quantity']").setValue("2");
+      await subject.find("form").trigger("submit");
+      await flushPromises();
+
+      expect(api.create).toHaveBeenCalledWith({
+        hangarInventorySlug: "armory",
+        data: expect.objectContaining({
+          entryType: "deposit",
+          itemType: "Component",
+          itemId: "bulwark",
+          category: "component",
+          unit: "units",
+          quantity: 2,
+        }),
+      });
+    });
+
+    it("deposits into a fleet's inventory through the fleet", async () => {
+      const subject = await mountForItem(bulwark);
+
+      await select(subject, "inventory").vm.$emit("update:modelValue", "inv-4");
+      await subject.find("[data-test='input-quantity']").setValue("1");
+      await subject.find("form").trigger("submit");
+      await flushPromises();
+
+      expect(api.createFleet).toHaveBeenCalledWith({
+        fleetSlug: "crew",
+        fleetInventorySlug: "depot",
+        data: expect.objectContaining({ itemId: "bulwark" }),
+      });
+      expect(api.create).not.toHaveBeenCalled();
+    });
+
+    // A ship's hold shares its slug with the other ships of its model.
+    it("files a deposit into a ship's hold through the ship", async () => {
+      const subject = await mountForItem(bulwark);
+
+      await select(subject, "inventory").vm.$emit("update:modelValue", "inv-3");
+      await subject.find("[data-test='input-quantity']").setValue("1");
+      await subject.find("form").trigger("submit");
+      await flushPromises();
+
+      expect(api.createVehicle).toHaveBeenCalledWith({
+        vehicleId: "ironclad",
+        data: expect.objectContaining({ itemId: "bulwark" }),
+      });
+      expect(api.create).not.toHaveBeenCalled();
+    });
+
+    it("points at creating an inventory when there is none", async () => {
+      api.targets = [];
+      api.noTargets = true;
+
+      const subject = await mountForItem(bulwark);
+
+      expect(
+        subject.find("[data-test='inventory-item-no-inventories']").exists(),
+      ).toBe(true);
+      expect(subject.find("[data-test='inventory-item-save']").exists()).toBe(
+        false,
+      );
+    });
+
+    // Without hangar inventories there is nothing of their own to create.
+    it("does not send a fleet-only reader to create one", async () => {
+      api.targets = [];
+      api.noTargets = true;
+      api.hangarEnabled = false;
+
+      const subject = await mountForItem(bulwark);
+
+      const empty = subject.find("[data-test='inventory-item-no-inventories']");
+
+      expect(empty.text()).toContain("no inventory you can deposit into");
+      expect(empty.find("a").exists()).toBe(false);
     });
   });
 });

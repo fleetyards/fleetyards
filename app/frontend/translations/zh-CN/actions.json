@@ -399,6 +399,7 @@
         }
       },
       "logistics": {
+        "addToInventory": "添加到库存",
         "createInventory": "New Inventory",
         "submit": "Submit",
         "reject": "Reject",

@@ -522,6 +522,7 @@
         "transfer": "Bestand transferieren",
         "transfers": "Transfers",
         "acceptTransfer": "Transfer annehmen",
+        "addToInventory": "Zum Inventar hinzufügen",
         "pickItem": "Gegenstand wählen",
         "crafting": "Herstellung",
         "reportTransfer": "Transfer melden"
