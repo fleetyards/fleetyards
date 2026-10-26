@@ -509,6 +509,21 @@ class Component < ApplicationRecord
     end
   end
 
+  # Sizes are strings holding "0" to "12", so a plain sort would put 10 and 12
+  # ahead of 2; anything that is not a number goes last.
+  def self.sizes(categories: nil, source: ::ScData::Source.current)
+    catalogue_facet(:size, source) { |scope| of_categories(scope, categories) }
+      .sort_by { |size| size.match?(/\A\d+\z/) ? [0, size.to_i, size] : [1, 0, size] }
+  end
+
+  def self.grades(categories: nil, source: ::ScData::Source.current)
+    catalogue_facet(:grade, source) { |scope| of_categories(scope, categories) }
+  end
+
+  def self.of_categories(scope, categories)
+    categories.present? ? scope.where(fact_sql(:category).in(categories)) : scope
+  end
+
   # Categories and sub types come straight out of the game files, so a patch can
   # introduce values we have no label for yet — fall back to the raw value
   # instead of rendering a translation-missing string into the API.
@@ -525,6 +540,35 @@ class Component < ApplicationRecord
         value: item
       )
     end
+  end
+
+  def self.size_filters(categories: nil)
+    Component.sizes(categories:).map do |item|
+      Filter.new(
+        category: "size",
+        label: I18n.t("filter.component.size.label", value: item),
+        value: item
+      )
+    end
+  end
+
+  # Labelled by the letter the game shows, the same one a component's own
+  # `gradeLabel` carries, while the value stays the stored digit.
+  def self.grade_filters(categories: nil)
+    Component.grades(categories:).map do |item|
+      Filter.new(
+        category: "grade",
+        label: I18n.t("filter.component.grade.label", value: grade_letter(item) || item),
+        value: item
+      )
+    end
+  end
+
+  def self.grade_letter(grade)
+    return if grade.blank?
+    return if grade.to_i > 4 || grade.to_i < 1
+
+    grade.to_s.tr("1234", "ABCD")
   end
 
   def self.sub_type_filters(category: nil)
@@ -602,10 +646,7 @@ class Component < ApplicationRecord
   end
 
   def grade_label
-    return if grade.blank?
-    return if grade.to_i > 4 || grade.to_i < 1
-
-    grade.to_s.tr("1234", "ABCD")
+    Component.grade_letter(grade)
   end
 
   def item_class_label

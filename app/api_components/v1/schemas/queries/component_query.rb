@@ -21,6 +21,8 @@ module V1
             manufacturerSlugIn: {type: :array, items: {type: :string}},
             categoryIn: {type: :array, items: {type: :string}},
             componentSubTypeIn: {type: :array, items: {type: :string}},
+            sizeIn: {type: :array, items: {type: :string}},
+            gradeIn: {type: :array, items: {type: :string}},
             currentVersion: {type: :boolean},
             hiddenEq: {type: :boolean},
             # A range per metric. Generated from the same map the sorts and the

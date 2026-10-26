@@ -139,6 +139,28 @@ class Api::V1::ComponentsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /components filters by sizeIn query" do
+    small = create(:component, category: "cooler", size: "1")
+    large = create(:component, category: "cooler", size: "10")
+    create(:component, category: "cooler", size: "2")
+
+    assert_api_response :get, 200, params: {q: {"categoryIn" => ["cooler"], "sizeIn" => ["1", "10"]}} do
+      assert_equal [small.name, large.name].sort, parsed_body["items"].map { |item| item["name"] }.sort
+    end
+  end
+
+  test "GET /components filters by gradeIn query" do
+    grade_a = create(:component, category: "cooler", grade: "1")
+    create(:component, category: "cooler", grade: "3")
+
+    assert_api_response :get, 200, params: {q: {"categoryIn" => ["cooler"], "gradeIn" => ["1"]}} do
+      items = parsed_body["items"]
+      assert_equal 1, items.count
+      assert_equal grade_a.name, items.first["name"]
+      assert_equal "A", items.first["gradeLabel"]
+    end
+  end
+
   test "GET /components filters by hiddenEq query" do
     visible = create(:component, category: "coolers")
     create(:component, :hidden, category: "coolers")
