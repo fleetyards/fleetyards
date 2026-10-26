@@ -74,14 +74,27 @@ const holoModel = computed(() => {
 // Without WebGL or a hull that loads there is nothing to show.
 const unavailable = ref(false);
 
-const available = computed(() => !!holoModel.value && !unavailable.value);
+// The hull on screen: until then a caller keeps its picture up.
+const loaded = ref(false);
+
+watch(
+  () => holoModel.value?.path,
+  () => {
+    loaded.value = false;
+    unavailable.value = false;
+  },
+);
+
+const shown = computed(() => !!holoModel.value && !unavailable.value);
+
+const available = computed(() => shown.value && loaded.value);
 
 watch(available, (value) => emit("available", value), { immediate: true });
 </script>
 
 <template>
   <div
-    v-if="available && holoModel"
+    v-if="shown && holoModel"
     class="loadout-preview"
     :class="`loadout-preview--${variant}`"
     :data-test="testId"
@@ -94,9 +107,10 @@ watch(available, (value) => emit("available", value), { immediate: true });
       :elevation="ANGLED_ELEVATION"
       :controllable="interactive"
       :zoomable="interactive"
-      :fit-scale="1.4"
+      contain
       hologram
       @unavailable="unavailable = true"
+      @loaded="loaded = true"
     />
     <HoloViewer
       v-else
@@ -104,6 +118,7 @@ watch(available, (value) => emit("available", value), { immediate: true });
       :controllable="false"
       inline
       @unavailable="unavailable = true"
+      @loaded="loaded = true"
     />
   </div>
 </template>

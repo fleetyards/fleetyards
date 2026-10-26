@@ -14,6 +14,9 @@ export type PreviewSlot = {
   part: Pick<LoadoutComponentRef, "holoUrl"> | null;
   // The slot the editor has open.
   active?: boolean;
+  // Holding another part than the stock one, whose ports the stock part's
+  // defaults do not describe.
+  refitted?: boolean;
   slots: PreviewSlot[];
 };
 
@@ -22,6 +25,7 @@ export const previewSlotsFromLoadout = (slots: LoadoutSlot[]): PreviewSlot[] =>
   slots.map((slot) => ({
     name: slot.name,
     part: slot.emptied ? null : (slot.fitted ?? slot.stock ?? null),
+    refitted: !!slot.fitted && slot.fitted.id !== slot.stock?.id,
     slots: previewSlotsFromLoadout(slot.slots),
   }));
 
@@ -35,6 +39,7 @@ export const previewSlotsFromFitting = (
     name: entry.slot.name,
     part: entry.content ?? null,
     active: activePaths.includes(entry.path),
+    refitted: !!entry.content && entry.content.id !== entry.slot.stock?.id,
     slots: previewSlotsFromFitting(entry.children, activePaths),
   }));
 
@@ -89,7 +94,11 @@ export const loadoutMounts = (
     preview.items.map((item) => [item.scKey, item.holoUrl]),
   );
 
-  const build = (nodes: PortNode[], levelSlots?: PreviewSlot[]) =>
+  const build = (
+    nodes: PortNode[],
+    levelSlots?: PreviewSlot[],
+    parentRefitted = false,
+  ) =>
     nodes.flatMap((node): HoloMount[] => {
       const { port } = node;
       const slot = levelSlots?.find((candidate) =>
@@ -108,13 +117,16 @@ export const loadoutMounts = (
       let path: string | undefined;
 
       if (drawn) {
-        path = slot
-          ? slot.part?.holoUrl
-          : (port.defaultItem && defaultHolos.get(port.defaultItem)) ||
-            undefined;
+        // Under a refitted part the ship file's ports are the stock part's;
+        // only the loadout's own slots say what the new one holds.
+        if (slot) {
+          path = slot.part?.holoUrl;
+        } else if (!parentRefitted && port.defaultItem) {
+          path = defaultHolos.get(port.defaultItem);
+        }
       }
 
-      const mounts = build(node.children, slot?.slots);
+      const mounts = build(node.children, slot?.slots, !!slot?.refitted);
 
       if (!path && !mounts.length) return [];
 

@@ -337,22 +337,31 @@ const edit = () => {
                 </template>
               </Heading>
 
-              <LoadoutPreview
-                v-if="!fittingPending && previewSlots"
-                v-show="previewShown"
-                :model-slug="vehicle.model.slug"
-                :slots="previewSlots"
-                test-id="vehicle-loadout-page-preview"
-                class="loadout-page__preview"
-                @available="previewShown = $event"
-              />
-              <img
-                v-if="!previewShown && angledImage"
-                :src="angledImage"
-                :alt="vehicleName"
-                class="loadout-page__preview loadout-page__picture"
-                data-test="vehicle-loadout-page-picture"
-              />
+              <!-- The render holds the place while the holo loads over it, and
+                   stays where there is none. -->
+              <div
+                v-if="angledImage || previewSlots"
+                class="loadout-page__visual"
+              >
+                <img
+                  v-if="!previewShown && angledImage"
+                  :src="angledImage"
+                  :alt="vehicleName"
+                  class="loadout-page__picture"
+                  data-test="vehicle-loadout-page-picture"
+                />
+                <div
+                  v-if="!fittingPending && previewSlots"
+                  class="loadout-page__holo"
+                >
+                  <LoadoutPreview
+                    :model-slug="vehicle.model.slug"
+                    :slots="previewSlots"
+                    test-id="vehicle-loadout-page-preview"
+                    @available="previewShown = $event"
+                  />
+                </div>
+              </div>
             </div>
 
             <Teleport v-if="editable" to="#header-right">
@@ -418,13 +427,22 @@ const edit = () => {
   gap: 24px;
 }
 
-.loadout-page__preview {
+.loadout-page__visual {
+  position: relative;
   flex: none;
   width: min(360px, 100%);
+  height: 200px;
+}
+
+.loadout-page__picture,
+.loadout-page__holo {
+  position: absolute;
+  inset: 0;
 }
 
 .loadout-page__picture {
-  height: 200px;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
 }
 

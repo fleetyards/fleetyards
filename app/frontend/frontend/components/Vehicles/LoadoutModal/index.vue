@@ -354,8 +354,13 @@ const previewSlots = computed(() =>
 // The ship's holo takes the angled render's place behind the controls.
 const previewShown = ref(false);
 
-// The figures put away, so the holo can be turned and zoomed.
+// The figures put away, so the holo can be turned and zoomed. Back as soon as
+// the holo goes, which takes the toggle with it.
 const inspecting = ref(false);
+
+watch(previewShown, (shown) => {
+  if (!shown) inspecting.value = false;
+});
 
 const figuresToggleLabel = computed(() =>
   inspecting.value

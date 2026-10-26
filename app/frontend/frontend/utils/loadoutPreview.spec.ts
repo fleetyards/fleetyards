@@ -156,6 +156,23 @@ describe("loadoutMounts", () => {
     expect(nose.mounts[0].path).toBe(holo("klwe_laserrepeater_s3"));
   });
 
+  it("leaves the stock part's defaults off a refitted part", () => {
+    const [nose] = loadoutMounts(
+      preview,
+      previewSlotsFromLoadout([
+        slot("hardpoint_gun_nose", {
+          stock: { id: "gimbal", name: "Gimbal", holoUrl: holo("gimbal") },
+          fitted: { id: "turret", name: "Turret", holoUrl: holo("turret") },
+          // The turret's own port is named apart from the gimbal's.
+          slots: [slot("turret_gun", {})],
+        }),
+      ]),
+    );
+
+    expect(nose.path).toBe(holo("turret"));
+    expect(nose.mounts).toEqual([]);
+  });
+
   it("matches slots to ports whatever their case", () => {
     const [nose] = loadoutMounts(
       preview,
