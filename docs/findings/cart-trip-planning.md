@@ -12,7 +12,7 @@ The shopping cart plans where to buy each line: the cheapest place, the fewest s
 | --------- | ----------: | ----------: | -------------: |
 | Component |       4,465 |       4,465 |              0 |
 | Equipment |      19,291 |      18,952 |            339 |
-| Commodity |         704 |           0 |  704 (terminal) |
+| Commodity |         704 |           0 | 704 (terminal) |
 
 Gear is priced per shop, commodities only per terminal, and a few hundred gear prices name a place UEX gave us that matched neither. So a price's place is the shop's location, else the terminal's location, else the raw UEX name. Two shops at one station are one stop: a stop is where you fly to, and each line still names its shop.
 
