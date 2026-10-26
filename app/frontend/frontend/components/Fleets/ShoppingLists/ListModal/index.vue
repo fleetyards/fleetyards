@@ -187,7 +187,6 @@ const onSubmit = handleSubmit(async (values) => {
         :nullable="isEdit"
         :searchable="false"
         unsorted
-        data-test="fleet-shopping-list-source"
       />
       <FormInput
         v-model="name"

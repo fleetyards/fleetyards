@@ -106,7 +106,7 @@ const openEdit = () => {
     <PanelHeading compact divider>
       {{ list.name }}
       <template #subtitle>
-        <span class="fleet-shopping-list__meta">
+        <span>
           <span data-test="fleet-shopping-list-visibility">
             {{ t(`labels.logistics.visibilities.${list.visibility}`) }}
           </span>
@@ -127,6 +127,8 @@ const openEdit = () => {
         <Btn
           :size="BtnSizesEnum.SM"
           :disabled="!list.linesCount"
+          :aria-label="t('cart.fleetLists.copy')"
+          mobile-icon-only
           data-test="fleet-shopping-list-copy"
           @click="openCopy"
         >
@@ -235,17 +237,11 @@ const openEdit = () => {
 </template>
 
 <style lang="scss" scoped>
-.fleet-shopping-list__meta {
-  display: inline-flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px;
-}
-
 .fleet-shopping-list__squadron {
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  margin-left: 6px;
 }
 
 .fleet-shopping-list__description {
