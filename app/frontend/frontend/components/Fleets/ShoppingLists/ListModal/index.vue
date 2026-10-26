@@ -78,12 +78,16 @@ const cartOptions = computed<FilterOption[]>(() =>
   })),
 );
 
-// A new list takes the name of the one it is published from until somebody
-// types another.
-watch(cartId, (id) => {
-  if (isEdit.value || name.value) return;
+// A new list takes the name of the one it is published from, and follows a
+// change of source, until somebody types a name of their own.
+const sourceName = (id: string | null) =>
+  carts.value?.find((cart) => cart.id === id)?.name ?? "";
 
-  name.value = carts.value?.find((cart) => cart.id === id)?.name ?? "";
+watch(cartId, (id, previous) => {
+  if (isEdit.value) return;
+  if (name.value && name.value !== sourceName(previous)) return;
+
+  name.value = sourceName(id);
 });
 
 const restrictedToSquadrons = computed(

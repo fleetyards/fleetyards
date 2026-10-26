@@ -85,6 +85,7 @@ describe("FleetShoppingListModal", () => {
   beforeEach(() => {
     lists.value = [
       { id: "a", name: "Uniform", active: true, itemsCount: 3 } as CartList,
+      { id: "b", name: "Armour", active: false, itemsCount: 1 } as CartList,
     ];
     create.mockReset().mockResolvedValue({ id: "new", name: "Uniform" });
     update.mockReset().mockResolvedValue({ id: "kit", name: "Kit" });
@@ -114,6 +115,28 @@ describe("FleetShoppingListModal", () => {
           .element as HTMLInputElement
       ).value,
     ).toBe("Uniform");
+  });
+
+  it("follows a change of source until a name is typed", async () => {
+    const subject = await mount();
+    const input = () =>
+      subject.find("[data-test='fleet-shopping-list-name'] input")
+        .element as HTMLInputElement;
+
+    source(subject).vm.$emit("update:modelValue", "a");
+    await flushPromises();
+    source(subject).vm.$emit("update:modelValue", "b");
+    await flushPromises();
+
+    expect(input().value).toBe("Armour");
+
+    await subject
+      .find("[data-test='fleet-shopping-list-name'] input")
+      .setValue("Merc kit");
+    source(subject).vm.$emit("update:modelValue", "a");
+    await flushPromises();
+
+    expect(input().value).toBe("Merc kit");
   });
 
   it("publishes the picked list to the fleet", async () => {
