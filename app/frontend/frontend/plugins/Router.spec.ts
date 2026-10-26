@@ -153,8 +153,8 @@ describe("frontend router feature guard", () => {
 });
 
 describe("frontend router release reload", () => {
-  const at = (name: string, query: RouteLocation["query"] = {}) =>
-    ({ name, params: {}, query, meta: {} }) as unknown as RouteLocation;
+  const at = (path: string, query: RouteLocation["query"] = {}) =>
+    ({ path, params: {}, query, meta: {} }) as unknown as RouteLocation;
 
   const reload = vi.fn();
 
@@ -176,31 +176,67 @@ describe("frontend router release reload", () => {
   it("loads the new release on arriving at another page", () => {
     releaseOut();
 
-    afterNavigation(at("hangar-vehicle"), at("hangar"));
+    afterNavigation(
+      at("/hangar/ripley/ships/nostromo/"),
+      at("/hangar/ripley/"),
+    );
 
     expect(reload).toHaveBeenCalledTimes(1);
   });
 
   it("stays in the app while the release is current", () => {
-    afterNavigation(at("hangar-vehicle"), at("hangar"));
+    afterNavigation(
+      at("/hangar/ripley/ships/nostromo/"),
+      at("/hangar/ripley/"),
+    );
 
     expect(reload).not.toHaveBeenCalled();
   });
 
-  it("stays on the same page when only its params change", () => {
-    releaseOut();
-
-    afterNavigation(at("friends"), at("friends"));
-
-    expect(reload).not.toHaveBeenCalled();
-  });
-
-  it("leaves a page with a query alone", () => {
+  it("loads the new release on moving from one record to the next", () => {
     releaseOut();
 
     afterNavigation(
-      at("settings-oauth-application", { secret: "s3cret" }),
-      at("settings-oauth-applications"),
+      at("/hangar/ripley/ships/narcissus/"),
+      at("/hangar/ripley/ships/nostromo/"),
+    );
+
+    expect(reload).toHaveBeenCalledTimes(1);
+  });
+
+  it("stays in the app when only the query changes", () => {
+    releaseOut();
+
+    afterNavigation(
+      at("/hangar/ripley/", { page: "2" }),
+      at("/hangar/ripley/"),
+    );
+
+    expect(reload).not.toHaveBeenCalled();
+  });
+
+  it("takes a missing trailing slash for the same page", () => {
+    releaseOut();
+
+    afterNavigation(at("/hangar/ripley"), at("/hangar/ripley/"));
+
+    expect(reload).not.toHaveBeenCalled();
+  });
+
+  it("loads a filtered list in the new release", () => {
+    releaseOut();
+
+    afterNavigation(at("/hangar/ripley/", { name: "nost" }), at("/fleets/"));
+
+    expect(reload).toHaveBeenCalledTimes(1);
+  });
+
+  it("keeps a one-time secret off the server", () => {
+    releaseOut();
+
+    afterNavigation(
+      at("/settings/oauth-applications/app/", { secret: "s3cret" }),
+      at("/settings/oauth-applications/"),
     );
 
     expect(reload).not.toHaveBeenCalled();
@@ -210,8 +246,8 @@ describe("frontend router release reload", () => {
     releaseOut();
 
     afterNavigation(
-      at("hangar-vehicle"),
-      at("hangar"),
+      at("/hangar/ripley/ships/nostromo/"),
+      at("/hangar/ripley/"),
       new Error("aborted") as never,
     );
 
@@ -222,13 +258,16 @@ describe("frontend router release reload", () => {
     vi.useFakeTimers();
     releaseOut();
 
-    afterNavigation(at("hangar-vehicle"), at("hangar"));
-    afterNavigation(at("fleet"), at("hangar-vehicle"));
+    afterNavigation(
+      at("/hangar/ripley/ships/nostromo/"),
+      at("/hangar/ripley/"),
+    );
+    afterNavigation(at("/fleets/maru/"), at("/hangar/ripley/ships/nostromo/"));
 
     expect(reload).toHaveBeenCalledTimes(1);
 
     vi.advanceTimersByTime(11 * 60 * 1000);
-    afterNavigation(at("hangar"), at("fleet"));
+    afterNavigation(at("/hangar/ripley/"), at("/fleets/maru/"));
 
     expect(reload).toHaveBeenCalledTimes(2);
     vi.useRealTimers();
@@ -236,10 +275,16 @@ describe("frontend router release reload", () => {
 
   it("reloads for a newer release straight away", () => {
     releaseOut();
-    afterNavigation(at("hangar-vehicle"), at("hangar"));
+    afterNavigation(
+      at("/hangar/ripley/ships/nostromo/"),
+      at("/hangar/ripley/"),
+    );
 
     releaseOut("1000.0.0");
-    afterNavigation(at("hangar"), at("hangar-vehicle"));
+    afterNavigation(
+      at("/hangar/ripley/"),
+      at("/hangar/ripley/ships/nostromo/"),
+    );
 
     expect(reload).toHaveBeenCalledTimes(2);
   });
@@ -252,7 +297,7 @@ describe("frontend router release reload", () => {
       text: "Tour created",
     } as never);
 
-    afterNavigation(at("fleet-tour"), at("fleet-tours"));
+    afterNavigation(at("/fleets/maru/tours/one/"), at("/fleets/maru/tours/"));
 
     expect(reload).not.toHaveBeenCalled();
   });
@@ -265,7 +310,10 @@ describe("frontend router release reload", () => {
       tag: APP_UPDATE_NOTICE_TAG,
     } as never);
 
-    afterNavigation(at("hangar-vehicle"), at("hangar"));
+    afterNavigation(
+      at("/hangar/ripley/ships/nostromo/"),
+      at("/hangar/ripley/"),
+    );
 
     expect(reload).toHaveBeenCalledTimes(1);
   });
@@ -276,7 +324,10 @@ describe("frontend router release reload", () => {
       throw new DOMException("blocked", "SecurityError");
     });
 
-    afterNavigation(at("hangar-vehicle"), at("hangar"));
+    afterNavigation(
+      at("/hangar/ripley/ships/nostromo/"),
+      at("/hangar/ripley/"),
+    );
 
     expect(reload).toHaveBeenCalledTimes(1);
     vi.restoreAllMocks();

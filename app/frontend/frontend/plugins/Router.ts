@@ -49,6 +49,8 @@ const rememberReload = (version: string) => {
   }
 };
 
+const withoutTrailingSlash = (path: string) => path.replace(/\/+$/, "");
+
 const noticeOnScreen = () =>
   useNotificationsStore().messages.some(
     (message) => message.visible && message.tag !== APP_UPDATE_NOTICE_TAG,
@@ -61,9 +63,9 @@ const noticeOnScreen = () =>
  * push, a replace and a Back have already left history as they should, and
  * reloading the address bar changes none of it.
  *
- * Not on the same route with other params -- in-page tabs are params -- and
- * not with a query: filters reload under the cursor, and a one-time secret
- * handed over in the query would reach every access log. Not while a notice
+ * Not while the path stays put -- typing into a filter only changes the
+ * query -- and not with a one-time secret in the query, which a page load would
+ * hand to every access log. Not while a notice
  * is up either, since the reload would take a "saved" with it before anyone
  * read it. And not twice in a row for one release, in case the reload is still
  * served the old one.
@@ -78,8 +80,8 @@ export const afterEach = (
   if (
     failure ||
     !appStore.isUpdateAvailable ||
-    to.name === from.name ||
-    Object.keys(to.query).length > 0 ||
+    withoutTrailingSlash(to.path) === withoutTrailingSlash(from.path) ||
+    "secret" in to.query ||
     noticeOnScreen() ||
     reloadedRecently(appStore.version)
   ) {
