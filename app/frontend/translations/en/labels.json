@@ -2564,7 +2564,9 @@
           "description": "Description",
           "manufacturer": "Manufacturer",
           "category": "Category",
-          "subType": "Sub Type"
+          "subType": "Sub Type",
+          "size": "Size",
+          "grade": "Grade"
         },
         "shops": {
           "name": "Name",

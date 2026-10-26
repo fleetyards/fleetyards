@@ -195,6 +195,10 @@ class Blueprint < ApplicationRecord
   # schema so the API enum and the association cannot drift apart.
   CRAFTABLE_TYPES = %w[Component Equipment Commodity].freeze
 
+  # The render a listed row draws its output by. The preloader skips it for a
+  # commodity, which has no renders, so it can sit on the polymorphic includes.
+  CRAFTABLE_VIEW_PRELOAD = {angled_view_attachment: :blob}.freeze
+
   DEFAULT_SORTING_PARAMS = ["name asc"]
 
   # `craftTime` is the one figure a crafter sorts by that is not a name -- "what

@@ -17,6 +17,22 @@ module Api
 
           render "api/v1/shared/filters"
         end
+
+        def sizes
+          @filters = Component.size_filters(categories: requested_categories)
+
+          render "api/v1/shared/filters"
+        end
+
+        def grades
+          @filters = Component.grade_filters(categories: requested_categories)
+
+          render "api/v1/shared/filters"
+        end
+
+        private def requested_categories
+          Array(params.dig(:q, :category_in)).map(&:to_s)
+        end
       end
     end
   end

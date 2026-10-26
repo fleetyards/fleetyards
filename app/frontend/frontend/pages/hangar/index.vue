@@ -533,24 +533,31 @@ const { activeFilters } = useShipFilterSummary(() =>
       {{ t("labels.fleetchart") }}
     </Btn>
 
-    <Btn
-      v-if="isFeatureEnabled(FeatureFlagName.HANGAR_INVENTORIES)"
+    <BtnDropdown
       :size="BtnSizesEnum.MD"
-      :to="{ name: 'hangar-inventories' }"
-      data-tour="hangar-inventories"
+      data-tour="hangar-assets"
+      data-test="hangar-assets-menu"
     >
-      <i class="fa-duotone fa-boxes-stacked" />
-      {{ t("labels.hangarInventories") }}
-    </Btn>
-
-    <Btn
-      :size="BtnSizesEnum.MD"
-      :to="{ name: 'hangar-blueprints' }"
-      data-test="hangar-blueprints-link"
-    >
-      <i class="fa-duotone fa-notes" />
-      {{ t("nav.hangar.blueprints") }}
-    </Btn>
+      <template #label>
+        <i class="fa-duotone fa-layer-group" />
+        {{ t("nav.hangar.assets") }}
+        <i class="fa-light fa-chevron-down" />
+      </template>
+      <Btn
+        :to="{ name: 'hangar-blueprints' }"
+        data-test="hangar-blueprints-link"
+      >
+        <i class="fa-duotone fa-notes" />
+        <span>{{ t("nav.hangar.blueprints") }}</span>
+      </Btn>
+      <Btn
+        v-if="isFeatureEnabled(FeatureFlagName.HANGAR_INVENTORIES)"
+        :to="{ name: 'hangar-inventories' }"
+      >
+        <i class="fa-duotone fa-boxes-stacked" />
+        <span>{{ t("nav.hangar.inventories") }}</span>
+      </Btn>
+    </BtnDropdown>
 
     <Btn
       v-if="isFeatureEnabled(FeatureFlagName.HANGAR_PLANNER)"
