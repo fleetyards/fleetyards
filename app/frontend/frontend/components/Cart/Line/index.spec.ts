@@ -179,6 +179,18 @@ describe("CartLine", () => {
     });
   });
 
+  it("lets a pinned line go back to the cheapest place when only one place is left", async () => {
+    const wrapper = await mount({ pinned: true, price: dear, offers: [cheap] });
+
+    const option = await placeOption(wrapper, (text) => text === "Cheapest");
+    option?.click();
+
+    expect(update).toHaveBeenCalledWith({
+      id: "line-id",
+      data: { itemPriceId: null },
+    });
+  });
+
   it("removes the line", async () => {
     const wrapper = await mount();
 

@@ -150,7 +150,7 @@ const formatPrice = (value?: number | null) =>
 
     <div class="cart-line__actions">
       <BtnDropdown
-        v-if="line.offers.length > 1"
+        v-if="line.offers.length > 1 || line.pinned"
         :size="BtnSizesEnum.SM"
         :variant="BtnVariantsEnum.BARE"
         expand-left
