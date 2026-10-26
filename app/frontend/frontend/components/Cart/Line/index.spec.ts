@@ -162,6 +162,23 @@ describe("CartLine", () => {
     });
   });
 
+  it("keeps a quantity being typed when an earlier save answers", async () => {
+    vi.useFakeTimers();
+    const wrapper = await mount();
+    const input = wrapper.find("[data-test='cart-line-quantity'] input");
+
+    await input.setValue("12");
+    vi.advanceTimersByTime(600);
+    await input.setValue("120");
+    await wrapper.setProps({ line: line({ quantity: 12 }) });
+    vi.advanceTimersByTime(600);
+
+    expect(update).toHaveBeenLastCalledWith({
+      id: "line-id",
+      data: { quantity: 120 },
+    });
+  });
+
   it("removes the line", async () => {
     const wrapper = await mount();
 

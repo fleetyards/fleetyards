@@ -65,10 +65,14 @@ const { mutate: remove, isPending: removing } =
 
 const quantity = ref<number | string | null | undefined>(props.line.quantity);
 
+// Follows the saved quantity only while the input still shows the previous
+// one: an answer arriving mid-typing must not overwrite what is being typed.
 watch(
   () => props.line.quantity,
-  (value) => {
-    quantity.value = value;
+  (value, previous) => {
+    if (Number(quantity.value) === previous) {
+      quantity.value = value;
+    }
   },
 );
 
@@ -83,7 +87,9 @@ const saveQuantity = debounce(() => {
 
 watch(quantity, saveQuantity);
 
-onBeforeUnmount(() => saveQuantity.cancel());
+// A pin moves the line to another stop, which remounts it; a quantity typed
+// just before is still sent.
+onBeforeUnmount(() => saveQuantity.flush());
 
 const pin = (price: ItemPrice | null) => {
   update({ id: props.line.id, data: { itemPriceId: price?.id ?? null } });
