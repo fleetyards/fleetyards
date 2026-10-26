@@ -207,6 +207,7 @@ watch(grades, (options) => pruneToOptions("gradeIn", options), {
     <BaseSelect
       v-model="form.sizeIn"
       name="size"
+      unsorted
       :options="sizes ?? []"
       :label="t('labels.filters.components.size')"
       :no-label="true"
@@ -216,6 +217,7 @@ watch(grades, (options) => pruneToOptions("gradeIn", options), {
     <BaseSelect
       v-model="form.gradeIn"
       name="grade"
+      unsorted
       :options="grades ?? []"
       :label="t('labels.filters.components.grade')"
       :no-label="true"

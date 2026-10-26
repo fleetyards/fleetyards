@@ -134,6 +134,9 @@ describe("ComponentsFilterForm", () => {
 
     expect(select(wrapper, "size").props("options")).toEqual(sizes);
     expect(select(wrapper, "grade").props("options")).toEqual(grades);
+    // In the API's numeric order: a label sort would put Size 10 before Size 2.
+    expect(select(wrapper, "size").props("unsorted")).toBe(true);
+    expect(select(wrapper, "grade").props("unsorted")).toBe(true);
   });
 
   it("writes a picked size and grade to sizeIn and gradeIn", async () => {
