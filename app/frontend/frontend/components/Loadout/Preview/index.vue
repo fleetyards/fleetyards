@@ -90,6 +90,10 @@ const shown = computed(() => !!holoModel.value && !unavailable.value);
 const available = computed(() => shown.value && loaded.value);
 
 watch(available, (value) => emit("available", value), { immediate: true });
+
+// Taken away by its caller, it shows nothing either, and the caller's picture
+// has to come back.
+onBeforeUnmount(() => emit("available", false));
 </script>
 
 <template>
