@@ -1,3 +1,5 @@
+import { type FilterOption } from "@/services/fyApi";
+
 export function getFilters(formData: Record<string, unknown>) {
   const filters = JSON.parse(JSON.stringify(formData));
 
@@ -22,7 +24,7 @@ export function isFilterSelected(routeFilters: Record<string, unknown>) {
 // of it does. Without an answer yet there is nothing to narrow to.
 export function keptOptions(
   chosen: string[] | undefined,
-  options: { value: string }[] | undefined,
+  options: Pick<FilterOption, "value">[] | undefined,
 ) {
   if (!options) return undefined;
 
