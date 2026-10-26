@@ -20,6 +20,10 @@ module ScData
 
     sidekiq_options queue: "loaders"
 
+    # Where on the flight holo hull each item port sits. Only the flying pose
+    # is exported without its components, so there is no landed set.
+    HARDPOINT_TRANSFORMS_NAME = /\A(?:flight[-_ ]?)?hardpoints\.json\z/i
+
     def perform(model_id = nil)
       return unless ::ScData::ShipViewsStore.configured?
 
@@ -93,7 +97,17 @@ module ScData
     end
 
     private def field_for(name)
+      return "hardpoint_transforms" if HARDPOINT_TRANSFORMS_NAME.match?(name.split("/").last.to_s)
+
       ShipViewFields.field_for(name)
+    end
+
+    private def render_data(_field, file)
+      transforms = JSON.parse(file.read)
+
+      raise ArgumentError, "no ports listed" unless transforms.is_a?(Hash) && transforms["ports"].is_a?(Array)
+
+      transforms
     end
 
     private def render_metadata(model, field)

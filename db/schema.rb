@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_26_130000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_26_140000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2466,6 +2466,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_26_130000) do
     t.string "foci", default: [], null: false, array: true
     t.boolean "stealth", default: false, null: false
     t.string "sc_role"
+    t.jsonb "hardpoint_transforms"
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
     t.index ["classification"], name: "index_models_on_classification"
     t.index ["foci"], name: "index_models_on_foci", using: :gin
