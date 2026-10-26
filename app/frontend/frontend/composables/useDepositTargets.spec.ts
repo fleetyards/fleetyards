@@ -7,7 +7,7 @@ import { useDepositTargets } from "./useDepositTargets";
 const api = vi.hoisted(() => ({
   features: ["hangar_inventories", "fleet_logistics"],
   hangar: { items: [] as unknown[] } as { items: unknown[] } | Error,
-  fleets: [] as { slug: string; name: string }[],
+  fleets: [] as { slug: string; name: string; features?: string[] }[],
   memberships: {} as Record<
     string,
     { status: string; capabilities: object } | Error
@@ -22,8 +22,12 @@ const answer = <T>(value: T | Error) =>
 vi.mock("@/frontend/composables/useFeatures", () => ({
   useFeatures: () => ({
     isFeatureEnabled: (feature: string) => api.features.includes(feature),
-    isFleetFeatureEnabled: (_fleet: unknown, feature: string) =>
-      api.features.includes(feature),
+    isFleetFeatureEnabled: (
+      fleet: { features?: string[] } | undefined,
+      feature: string,
+    ) =>
+      api.features.includes(feature) ||
+      (fleet?.features?.includes(feature) ?? false),
   }),
 }));
 
@@ -108,11 +112,17 @@ beforeEach(() => {
     { slug: "applied", name: "Applied" },
   ];
   api.memberships = {
-    crew: { status: "accepted", capabilities: { updateInventories: true } },
-    guests: { status: "accepted", capabilities: { updateInventories: false } },
+    crew: {
+      status: "accepted",
+      capabilities: { readInventories: true, updateInventories: true },
+    },
+    guests: {
+      status: "accepted",
+      capabilities: { readInventories: true, updateInventories: false },
+    },
     applied: {
       status: "requested",
-      capabilities: { updateInventories: true },
+      capabilities: { readInventories: true, updateInventories: true },
     },
   };
   api.inventories = {
@@ -212,6 +222,34 @@ describe("useDepositTargets", () => {
     await mount();
 
     expect(api.inventoryRequests).toEqual(["crew"]);
+  });
+
+  // The fleet's inventory list is behind the read privilege alone, so a member
+  // who may only deposit has nothing to pick from.
+  it("asks no fleet whose inventories the reader may not list", async () => {
+    api.memberships = {
+      ...api.memberships,
+      crew: {
+        status: "accepted",
+        capabilities: { readInventories: false, updateInventories: true },
+      },
+    };
+
+    await mount();
+
+    expect(api.inventoryRequests).toEqual([]);
+  });
+
+  it("asks a fleet that runs logistics for itself alone", async () => {
+    api.features = ["hangar_inventories"];
+    api.fleets = [
+      { slug: "crew", name: "Crew", features: ["fleet_logistics"] },
+    ];
+
+    const { options } = await mount();
+
+    expect(api.inventoryRequests).toEqual(["crew"]);
+    expect(options.value).toHaveLength(4);
   });
 
   // A fleet without logistics or the subscription refuses; the rest stand.

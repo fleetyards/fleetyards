@@ -26,10 +26,11 @@ type Entry = { option: FilterOption; target: DepositTarget };
  * of them: their own and their ships' holds first, then each fleet's, grouped
  * by owner.
  *
- * A fleet is asked for its inventories only where it runs logistics, needs no
- * subscription it lacks, and the reader's accepted membership may update them.
- * The API hides the inventories the reader may not see, and a fleet that still
- * refuses simply offers nothing.
+ * A fleet is asked for its inventories only where it runs logistics, for the
+ * reader or for itself, needs no subscription it lacks, and the reader's
+ * accepted membership may both list and update them. The API hides the
+ * inventories the reader may not see, and a fleet that still refuses simply
+ * offers nothing.
  */
 export const useDepositTargets = (enabled: MaybeRefOrGetter<boolean>) => {
   const { t } = useI18n();
@@ -39,12 +40,10 @@ export const useDepositTargets = (enabled: MaybeRefOrGetter<boolean>) => {
     () =>
       toValue(enabled) && isFeatureEnabled(FeatureFlagName.HANGAR_INVENTORIES),
   );
-  const fleetEnabled = computed(
-    () => toValue(enabled) && isFeatureEnabled(FeatureFlagName.FLEET_LOGISTICS),
-  );
+  const fleetEnabled = computed(() => toValue(enabled));
 
   const hangar = useHangarInventories(
-    { perPage: "240" },
+    { perPage: "all" },
     { query: { enabled: hangarEnabled, retry: false } },
   );
 
@@ -76,6 +75,7 @@ export const useDepositTargets = (enabled: MaybeRefOrGetter<boolean>) => {
 
       return (
         membership?.status === FleetMembershipStatusEnum.ACCEPTED &&
+        (membership.capabilities?.readInventories ?? false) &&
         (membership.capabilities?.updateInventories ?? false)
       );
     }),
@@ -86,7 +86,7 @@ export const useDepositTargets = (enabled: MaybeRefOrGetter<boolean>) => {
       depositFleets.value.map((fleet) =>
         getFleetInventoriesQueryOptions(
           fleet.slug,
-          { perPage: "240" },
+          { perPage: "all" },
           { query: { enabled: fleetEnabled, retry: false } },
         ),
       ),
