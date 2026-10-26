@@ -6,6 +6,8 @@ import {
   beforeResolve,
 } from "@/frontend/plugins/Router";
 import { useAppStore } from "@/frontend/stores/app";
+import { useNotificationsStore } from "@/shared/stores/notifications";
+import { APP_UPDATE_NOTICE_TAG } from "@/shared/composables/useAppUpdateNotice";
 import { queryClient } from "@/frontend/plugins/QueryClient";
 import {
   FeatureFlagName,
@@ -216,7 +218,8 @@ describe("frontend router release reload", () => {
     expect(reload).not.toHaveBeenCalled();
   });
 
-  it("reloads once per release when the reload brings the old one back", () => {
+  it("tries again only once a rollout has had time to finish", () => {
+    vi.useFakeTimers();
     releaseOut();
 
     afterNavigation(at("hangar-vehicle"), at("hangar"));
@@ -224,9 +227,58 @@ describe("frontend router release reload", () => {
 
     expect(reload).toHaveBeenCalledTimes(1);
 
-    releaseOut("1000.0.0");
+    vi.advanceTimersByTime(11 * 60 * 1000);
     afterNavigation(at("hangar"), at("fleet"));
 
     expect(reload).toHaveBeenCalledTimes(2);
+    vi.useRealTimers();
+  });
+
+  it("reloads for a newer release straight away", () => {
+    releaseOut();
+    afterNavigation(at("hangar-vehicle"), at("hangar"));
+
+    releaseOut("1000.0.0");
+    afterNavigation(at("hangar"), at("hangar-vehicle"));
+
+    expect(reload).toHaveBeenCalledTimes(2);
+  });
+
+  it("waits while a notice is on screen", () => {
+    releaseOut();
+    useNotificationsStore().addMessage({
+      id: "saved",
+      visible: true,
+      text: "Tour created",
+    } as never);
+
+    afterNavigation(at("fleet-tour"), at("fleet-tours"));
+
+    expect(reload).not.toHaveBeenCalled();
+  });
+
+  it("does not wait for the update notice itself", () => {
+    releaseOut();
+    useNotificationsStore().addMessage({
+      id: "update",
+      visible: true,
+      tag: APP_UPDATE_NOTICE_TAG,
+    } as never);
+
+    afterNavigation(at("hangar-vehicle"), at("hangar"));
+
+    expect(reload).toHaveBeenCalledTimes(1);
+  });
+
+  it("still reloads where session storage is blocked", () => {
+    releaseOut();
+    vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+      throw new DOMException("blocked", "SecurityError");
+    });
+
+    afterNavigation(at("hangar-vehicle"), at("hangar"));
+
+    expect(reload).toHaveBeenCalledTimes(1);
+    vi.restoreAllMocks();
   });
 });

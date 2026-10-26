@@ -3,7 +3,7 @@ import { MessageTypesEnum } from "@/shared/components/AppNotifications/types";
 import { useNotificationsStore } from "@/shared/stores/notifications";
 import type { AppVersionAnnouncement } from "@/shared/stores/types";
 
-const NOTICE_TAG = "app-update";
+export const APP_UPDATE_NOTICE_TAG = "app-update";
 
 const RELEASES_URL = "https://github.com/fleetyards/fleetyards/releases/tag";
 
@@ -53,7 +53,7 @@ export const useAppUpdateNotice = (store: AppUpdateSource) => {
         return;
       }
 
-      notificationsStore.hideTagged((tag) => tag === NOTICE_TAG);
+      notificationsStore.hideTagged((tag) => tag === APP_UPDATE_NOTICE_TAG);
 
       if (!notice) {
         return;
@@ -67,7 +67,7 @@ export const useAppUpdateNotice = (store: AppUpdateSource) => {
         visible: true,
         persist: true,
         timeout: false,
-        tag: NOTICE_TAG,
+        tag: APP_UPDATE_NOTICE_TAG,
         component: () => import("@/shared/components/AppUpdateHint/index.vue"),
         componentProps: {
           version: notice.version,

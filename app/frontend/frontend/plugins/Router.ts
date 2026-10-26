@@ -2,6 +2,8 @@ import { useAppStore } from "@/frontend/stores/app";
 import { useFleetStore } from "@/frontend/stores/fleet";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useRedirectBackStore } from "@/shared/stores/redirectBack";
+import { useNotificationsStore } from "@/shared/stores/notifications";
+import { APP_UPDATE_NOTICE_TAG } from "@/shared/composables/useAppUpdateNotice";
 import { type NavigationFailure, type RouteLocation } from "vue-router";
 import { routes } from "@/frontend/pages/routes";
 import { setupRouter, type FyRedirectRoute } from "@/shared/plugins/Router";
@@ -16,15 +18,41 @@ const beforeEach = (to: RouteLocation) => {
   }
 };
 
-const RELOADED_FOR_KEY = "fy-release-reload";
+const RELEASE_RELOAD_KEY = "fy-release-reload";
 
-const reloadedFor = () => {
+// Long enough for a rollout to finish behind the proxy, short enough that a
+// reload which was served the old release is tried again.
+const RELEASE_RELOAD_RETRY = 10 * 60 * 1000;
+
+const reloadedRecently = (version: string) => {
   try {
-    return sessionStorage.getItem(RELOADED_FOR_KEY);
+    const last = JSON.parse(
+      sessionStorage.getItem(RELEASE_RELOAD_KEY) ?? "null",
+    ) as { version: string; at: number } | null;
+
+    return (
+      last?.version === version && Date.now() - last.at < RELEASE_RELOAD_RETRY
+    );
   } catch {
-    return null;
+    return false;
   }
 };
+
+const rememberReload = (version: string) => {
+  try {
+    sessionStorage.setItem(
+      RELEASE_RELOAD_KEY,
+      JSON.stringify({ version, at: Date.now() }),
+    );
+  } catch {
+    // Without storage the reload still happens, only unguarded.
+  }
+};
+
+const noticeOnScreen = () =>
+  useNotificationsStore().messages.some(
+    (message) => message.visible && message.tag !== APP_UPDATE_NOTICE_TAG,
+  );
 
 /*
  * A tab left open across a release keeps sending requests shaped by its old
@@ -35,8 +63,10 @@ const reloadedFor = () => {
  *
  * Not on the same route with other params -- in-page tabs are params -- and
  * not with a query: filters reload under the cursor, and a one-time secret
- * handed over in the query would reach every access log. Once per release, in
- * case the reload is still served the old one.
+ * handed over in the query would reach every access log. Not while a notice
+ * is up either, since the reload would take a "saved" with it before anyone
+ * read it. And not twice in a row for one release, in case the reload is still
+ * served the old one.
  */
 export const afterEach = (
   to: RouteLocation,
@@ -50,16 +80,13 @@ export const afterEach = (
     !appStore.isUpdateAvailable ||
     to.name === from.name ||
     Object.keys(to.query).length > 0 ||
-    reloadedFor() === appStore.version
+    noticeOnScreen() ||
+    reloadedRecently(appStore.version)
   ) {
     return;
   }
 
-  try {
-    sessionStorage.setItem(RELOADED_FOR_KEY, appStore.version);
-  } catch {
-    return;
-  }
+  rememberReload(appStore.version);
 
   window.location.reload();
 };
