@@ -10,6 +10,7 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import BaseTable from "@/shared/components/base/Table/index.vue";
+import ListToolbar from "@/shared/components/base/ListToolbar/index.vue";
 import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import ViewImage from "@/shared/components/ViewImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
@@ -26,13 +27,15 @@ import {
   useModels as useModelsQuery,
   useScDataUnlistedModels,
   type Model,
-  type ModelSortEnum,
+  type AdminModelSortEnum,
 } from "@/services/fyAdminApi";
 import {
   useModelsStore,
   AdminModelTableViewColsEnum,
   AdminModelTableViewImageColsEnum,
+  AdminModelSortFieldsEnum,
 } from "@/admin/stores/models";
+import { useAdminModelSortFields } from "@/admin/composables/useAdminModelSortFields";
 import { useBreadCrumbsStore } from "@/shared/stores/breadCrumbs";
 import {
   useReloadModelsMatrix,
@@ -52,9 +55,16 @@ const { isImporting: isImportingScData } = useImportLoading([
 
 const route = useRoute();
 
-const sorts = computed((): ModelSortEnum[] => {
-  return route.query.s ? [route.query.s as ModelSortEnum] : [];
+const sorts = computed((): AdminModelSortEnum[] => {
+  return route.query.s ? [route.query.s as AdminModelSortEnum] : [];
 });
+
+const sortFields = useAdminModelSortFields({
+  include: () =>
+    typeof route.query.s === "string" ? route.query.s : undefined,
+});
+
+const sortableFields = Object.values(AdminModelSortFieldsEnum) as string[];
 
 watch(
   () => sorts.value,
@@ -94,8 +104,7 @@ const extraColumns = computed<BaseTableCol<Model>[]>(() => {
       return {
         name: col,
         label: t(`labels.models.table.columns.${col}`),
-        // A ship's foci are a list, which has no order to sort by.
-        sortable: col !== AdminModelTableViewColsEnum.FOCUS,
+        sortable: sortableFields.includes(col),
       };
     })
     .filter((col) => {
@@ -296,6 +305,9 @@ const unlistedCount = computed(
     </template>
     <template #filter>
       <FilterForm />
+    </template>
+    <template #sort>
+      <ListToolbar :columns="sortFields" default-sort="name asc" />
     </template>
     <template #default="{ loading, refetching, emptyVisible }">
       <BaseTable

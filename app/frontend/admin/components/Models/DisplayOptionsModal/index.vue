@@ -7,16 +7,27 @@ export default {
 <script lang="ts" setup>
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
+import SortFieldsFieldset from "@/frontend/components/SortFieldsFieldset/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   useModelsStore,
   AdminModelTableViewColsEnum,
   AdminModelTableViewImageColsEnum,
+  AdminModelSortFieldsEnum,
 } from "@/admin/stores/models";
+import { useAdminModelSortFields } from "@/admin/composables/useAdminModelSortFields";
 
 const { t } = useI18n();
 
 const modelsStore = useModelsStore();
+
+const allSortFields = useAdminModelSortFields({ all: true });
+
+const sortFields = computed({
+  get: () => modelsStore.sortFields,
+  set: (fields) =>
+    modelsStore.setSortFields(fields as AdminModelSortFieldsEnum[]),
+});
 
 onMounted(() => {
   tableViewCols.value = modelsStore.tableViewCols;
@@ -65,6 +76,12 @@ watch(
 
 <template>
   <Modal :title="t('headlines.modals.models.displayOptions')">
+    <div class="row">
+      <div class="col-12">
+        <SortFieldsFieldset v-model="sortFields" :fields="allSortFields" />
+      </div>
+    </div>
+    <hr />
     <div class="row">
       <div class="col-12">
         <fieldset>
