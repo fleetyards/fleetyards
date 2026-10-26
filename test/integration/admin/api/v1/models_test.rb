@@ -286,6 +286,17 @@ class Admin::Api::V1::ModelsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models breaks a sort tie by name" do
+    create(:model, name: "Charlie", hidden: true)
+    create(:model, name: "Alpha", hidden: true)
+    create(:model, name: "Bravo", hidden: false)
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {"s" => "hidden desc"}} do
+      assert_equal %w[Alpha Charlie Bravo], parsed_body["items"].map { |item| item["name"] }
+    end
+  end
+
   test "GET /models filters by scKeyBlank" do
     keyed = create(:model, sc_key: "AEGS_Idris_M")
     unkeyed = create(:model, sc_key: nil)

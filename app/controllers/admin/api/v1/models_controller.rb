@@ -163,7 +163,12 @@ module Admin
 
         private def index_scope
           normalize_sort_params(model_query_params)
-          model_query_params["sorts"] = sorting_params(Model, model_query_params[:sorts], allowed: Model::ADMIN_SORTING_PARAMS)
+          # Hidden and active split the list into two large groups, and a page
+          # offset over tied rows has no stable order without a tie-breaker.
+          model_query_params["sorts"] = [
+            *sorting_params(Model, model_query_params[:sorts], allowed: Model::ADMIN_SORTING_PARAMS),
+            "name asc", "id asc"
+          ]
 
           Model.includes([:manufacturer]).ransack(model_query_params)
         end
