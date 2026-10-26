@@ -44,7 +44,7 @@ module Carts
     def groups
       @groups ||= lines.select(&:available?)
         .group_by { |line| place_of(line.price)[:key] }
-        .map { |key, place_lines| Group.new(**place_of(place_lines.first.price), key:, lines: place_lines) }
+        .map { |_key, place_lines| Group.new(**place_of(place_lines.first.price), lines: place_lines) }
         .sort_by { |group| [group.system_name.to_s, group.name.to_s] }
     end
 
