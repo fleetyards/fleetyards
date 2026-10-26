@@ -77,7 +77,8 @@ const category = ref<string | undefined>(
 );
 const itemType = ref<string | undefined>(undefined);
 const slot = ref<string | undefined>(undefined);
-const search = ref("");
+// The clear button empties the field to undefined, not "".
+const search = ref<string | undefined>("");
 const searchTerm = ref("");
 const page = ref(1);
 const records = ref<ItemPickerEntry[]>([]);
@@ -286,7 +287,7 @@ const applySearch = debounce((value: string) => {
 }, 300);
 
 watch(search, (value) => {
-  applySearch(value);
+  applySearch(value ?? "");
 });
 
 watch(category, () => {
@@ -354,7 +355,7 @@ onUnmounted(() => {
 
 // The live input, not the debounced term: a click straight after typing must
 // not name the goods by half the word.
-const customName = computed(() => search.value.trim());
+const customName = computed(() => (search.value ?? "").trim());
 
 const emitSelection = (
   name: string,

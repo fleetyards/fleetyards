@@ -267,6 +267,24 @@ describe("LogisticsItemPicker", () => {
     ]);
   });
 
+  it("survives the search being cleared", async () => {
+    const subject = await mount();
+
+    await chooseCategory(subject, "other");
+    await subject
+      .find("[data-test='input-item-picker-search']")
+      .setValue("Grandma's teapot");
+    subject
+      .findAllComponents({ name: "FormInput" })
+      .find((input) => input.props("name") === "item-picker-search")!
+      .vm.$emit("update:modelValue", undefined);
+    await flushPromises();
+
+    expect(subject.find("[data-test='item-picker-custom']").exists()).toBe(
+      false,
+    );
+  });
+
   it("reopens on the category of the last pick", async () => {
     await mount({ category: "component" });
 
