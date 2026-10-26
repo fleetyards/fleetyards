@@ -22,6 +22,8 @@ import CartListSelect from "@/frontend/components/Cart/ListSelect/index.vue";
 import CartListActions from "@/frontend/components/Cart/ListActions/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
+import { errorTypeFrom } from "@/shared/utils/ErrorTypes";
+import { ErrorTypesEnum } from "@/shared/components/AsyncData.types";
 import {
   type CartLine as CartLineType,
   CartStrategyEnum,
@@ -75,10 +77,11 @@ const listCart = useCartList(() => listId.value ?? "", params, {
 });
 
 // A list deleted in another tab, or a stale link: the active list instead.
+// Only when it is gone; offline or a failing server keeps the address to retry.
 watch(
-  () => listCart.isError.value,
-  (failed) => {
-    if (failed) {
+  () => listCart.error.value,
+  (error) => {
+    if (errorTypeFrom(error) === ErrorTypesEnum.NOT_FOUND) {
       void router.replace({ query: { ...route.query, list: undefined } });
     }
   },
