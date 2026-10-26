@@ -21,6 +21,11 @@ const routerOnList = async () => {
         name: "blueprint",
         component: { template: "<div />" },
       },
+      {
+        path: "/components/:slug",
+        name: "component",
+        component: { template: "<div />" },
+      },
     ],
   });
 
@@ -87,5 +92,26 @@ describe("Blueprints/Row", () => {
     const wrapper = await mount({ sourceAlignments: [] });
 
     expect(wrapper.find(ALIGNMENT).exists()).toBe(false);
+  });
+
+  it("draws what the recipe makes by its angled view", async () => {
+    const wrapper = await mount({
+      craftable: {
+        type: "Component",
+        id: "1a2b1a2b-1a2b-1a2b-1a2b-1a2b1a2b1a2b",
+        slug: "behr-repeater-s3",
+        angledView: { smallUrl: "https://example.test/angled.webp" },
+      } as Blueprint["craftable"],
+    });
+
+    expect(
+      wrapper.find('[data-test="blueprint-plan-image"]').attributes("src"),
+    ).toBe("https://example.test/angled.webp");
+  });
+
+  it("leaves the plan out without a render", async () => {
+    const wrapper = await mount();
+
+    expect(wrapper.find('[data-test="blueprint-plan"]').exists()).toBe(false);
   });
 });
