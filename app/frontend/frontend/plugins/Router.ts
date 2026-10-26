@@ -2,30 +2,66 @@ import { useAppStore } from "@/frontend/stores/app";
 import { useFleetStore } from "@/frontend/stores/fleet";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useRedirectBackStore } from "@/shared/stores/redirectBack";
-import { type RouteLocation } from "vue-router";
+import { type NavigationFailure, type RouteLocation } from "vue-router";
 import { routes } from "@/frontend/pages/routes";
 import { setupRouter, type FyRedirectRoute } from "@/shared/plugins/Router";
 import { ensureQueryData } from "@/frontend/utils/RouteGuards/queryData";
 import { featuresQueryOptions } from "@/frontend/composables/useFeatures";
 import { getFleetQueryOptions, type FeatureFlagName } from "@/services/fyApi";
 
-// A tab left open across a release keeps sending requests shaped by its old
-// bundle, which the API may since refuse. Moving to another page
-// is when the new release is loaded: the URL carries the page, params and
-// query alike, so nothing on screen is lost. A query-only change -- a filter, a
-// tab, a page of results -- stays in the app, or typing into a filter would
-// reload under the cursor.
-export const beforeEach = (to: RouteLocation, from: RouteLocation) => {
+const beforeEach = (to: RouteLocation) => {
   const fleetStore = useFleetStore();
   if (to.name === "fleet-invite" && to.params.token) {
     fleetStore.inviteToken = String(to.params.token);
   }
+};
 
-  const appStore = useAppStore();
-  if (appStore.isUpdateAvailable && to.path !== from.path) {
-    window.location.assign(to.fullPath);
-    return false;
+const RELOADED_FOR_KEY = "fy-release-reload";
+
+const reloadedFor = () => {
+  try {
+    return sessionStorage.getItem(RELOADED_FOR_KEY);
+  } catch {
+    return null;
   }
+};
+
+/*
+ * A tab left open across a release keeps sending requests shaped by its old
+ * bundle, which the API may since refuse. Arriving on another page is when the
+ * new release is loaded. After the navigation rather than before it, so a
+ * push, a replace and a Back have already left history as they should, and
+ * reloading the address bar changes none of it.
+ *
+ * Not on the same route with other params -- in-page tabs are params -- and
+ * not with a query: filters reload under the cursor, and a one-time secret
+ * handed over in the query would reach every access log. Once per release, in
+ * case the reload is still served the old one.
+ */
+export const afterEach = (
+  to: RouteLocation,
+  from: RouteLocation,
+  failure?: NavigationFailure | void,
+) => {
+  const appStore = useAppStore();
+
+  if (
+    failure ||
+    !appStore.isUpdateAvailable ||
+    to.name === from.name ||
+    Object.keys(to.query).length > 0 ||
+    reloadedFor() === appStore.version
+  ) {
+    return;
+  }
+
+  try {
+    sessionStorage.setItem(RELOADED_FOR_KEY, appStore.version);
+  } catch {
+    return;
+  }
+
+  window.location.reload();
 };
 
 // A route behind a flag that is off does not exist for this user: hiding it
@@ -125,6 +161,7 @@ export const beforeResolve = async (
 const router = setupRouter({
   beforeResolve,
   beforeEach,
+  afterEach,
   routes,
 });
 

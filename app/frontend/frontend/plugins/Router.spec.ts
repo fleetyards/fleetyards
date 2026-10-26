@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, beforeEach, vi } from "vitest";
 import { setActivePinia, createPinia } from "pinia";
 import type { RouteLocation } from "vue-router";
 import {
-  beforeEach as guardEach,
+  afterEach as afterNavigation,
   beforeResolve,
 } from "@/frontend/plugins/Router";
 import { useAppStore } from "@/frontend/stores/app";
@@ -151,62 +151,82 @@ describe("frontend router feature guard", () => {
 });
 
 describe("frontend router release reload", () => {
-  const at = (path: string, search = "") =>
-    ({
-      name: "hangar-vehicle",
-      path,
-      fullPath: `${path}${search}`,
-      params: { username: "ripley" },
-      query: Object.fromEntries(new URLSearchParams(search)),
-      meta: {},
-    }) as unknown as RouteLocation;
+  const at = (name: string, query: RouteLocation["query"] = {}) =>
+    ({ name, params: {}, query, meta: {} }) as unknown as RouteLocation;
 
-  const assign = vi.fn();
+  const reload = vi.fn();
 
   beforeEach(() => {
     setActivePinia(createPinia());
-    vi.stubGlobal("location", { ...window.location, assign });
+    sessionStorage.clear();
+    vi.stubGlobal("location", { ...window.location, reload });
   });
 
   afterEach(() => {
     vi.unstubAllGlobals();
-    assign.mockReset();
+    reload.mockReset();
   });
 
-  const releaseOut = () => {
-    useAppStore().version = "999.0.0";
+  const releaseOut = (version = "999.0.0") => {
+    useAppStore().version = version;
   };
 
-  it("loads the new release on the way to a page with params", () => {
+  it("loads the new release on arriving at another page", () => {
     releaseOut();
 
-    const result = guardEach(
-      at("/hangar/ripley/ships/narcissus", "?tab=log"),
-      at("/hangar/ripley"),
-    );
+    afterNavigation(at("hangar-vehicle"), at("hangar"));
 
-    expect(assign).toHaveBeenCalledWith(
-      "/hangar/ripley/ships/narcissus?tab=log",
-    );
-    expect(result).toBe(false);
+    expect(reload).toHaveBeenCalledTimes(1);
   });
 
-  it("keeps a query-only change in the app", () => {
+  it("stays in the app while the release is current", () => {
+    afterNavigation(at("hangar-vehicle"), at("hangar"));
+
+    expect(reload).not.toHaveBeenCalled();
+  });
+
+  it("stays on the same page when only its params change", () => {
     releaseOut();
 
-    const result = guardEach(
-      at("/hangar/ripley", "?page=2"),
-      at("/hangar/ripley"),
-    );
+    afterNavigation(at("friends"), at("friends"));
 
-    expect(assign).not.toHaveBeenCalled();
-    expect(result).toBeUndefined();
+    expect(reload).not.toHaveBeenCalled();
   });
 
-  it("navigates in the app while the release is current", () => {
-    const result = guardEach(at("/hangar/ripley/ships"), at("/hangar/ripley"));
+  it("leaves a page with a query alone", () => {
+    releaseOut();
 
-    expect(assign).not.toHaveBeenCalled();
-    expect(result).toBeUndefined();
+    afterNavigation(
+      at("settings-oauth-application", { secret: "s3cret" }),
+      at("settings-oauth-applications"),
+    );
+
+    expect(reload).not.toHaveBeenCalled();
+  });
+
+  it("does not reload after a navigation that failed", () => {
+    releaseOut();
+
+    afterNavigation(
+      at("hangar-vehicle"),
+      at("hangar"),
+      new Error("aborted") as never,
+    );
+
+    expect(reload).not.toHaveBeenCalled();
+  });
+
+  it("reloads once per release when the reload brings the old one back", () => {
+    releaseOut();
+
+    afterNavigation(at("hangar-vehicle"), at("hangar"));
+    afterNavigation(at("fleet"), at("hangar-vehicle"));
+
+    expect(reload).toHaveBeenCalledTimes(1);
+
+    releaseOut("1000.0.0");
+    afterNavigation(at("hangar"), at("fleet"));
+
+    expect(reload).toHaveBeenCalledTimes(2);
   });
 });
