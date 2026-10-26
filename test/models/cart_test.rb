@@ -10,7 +10,13 @@ class CartTest < ActiveSupport::TestCase
   test "starts a list for the first add" do
     cart = Cart.active_for!(@user)
 
-    assert_equal [Cart::DEFAULT_NAME, true], [cart.name, cart.active?]
+    assert_equal ["Shopping list", true], [cart.name, cart.active?]
+  end
+
+  test "names the first list in the user's language" do
+    @user.update!(locale: "de")
+
+    assert_equal "Einkaufsliste", Cart.active_for!(@user).name
   end
 
   test "picks the most recent list back up when none is active" do

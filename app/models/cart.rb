@@ -4,7 +4,6 @@
 # one items are added to from the catalogues.
 class Cart < ApplicationRecord
   MAX_PER_USER = 25
-  DEFAULT_NAME = "Shopping list"
 
   belongs_to :user
   has_many :cart_items, dependent: :delete_all
@@ -22,9 +21,13 @@ class Cart < ApplicationRecord
   # list behind its lines while a quantity edit locks them the other way round.
   def self.active_for!(user)
     active_for(user) || user.carts.order(updated_at: :desc).first&.tap(&:activate!) ||
-      user.carts.create!(name: DEFAULT_NAME, active: true)
+      user.carts.create!(name: default_name(user), active: true)
   rescue ActiveRecord::RecordNotUnique
     active_for(user)
+  end
+
+  def self.default_name(user)
+    I18n.with_locale(user.notification_locale) { I18n.t("defaults.cart.name") }
   end
 
   def activate!

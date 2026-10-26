@@ -136,7 +136,7 @@ class Api::V1::CartItemsTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 201, api_path: "/cart/items",
       body: {itemType: "Commodity", itemId: @commodity.id}
 
-    assert_equal [Cart::DEFAULT_NAME], user.carts.pluck(:name)
+    assert_equal ["Shopping list"], user.carts.pluck(:name)
   end
 
   test "POST rejects an item that does not exist" do

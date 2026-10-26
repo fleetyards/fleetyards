@@ -1,5 +1,9 @@
 es:
   defaults:
+    cart:
+      # The list a first add from a catalogue starts, in the language the
+      # user reads; renamed like any other once it exists.
+      name: "Lista de compras"
     mission:
       # What the create button's mission is called until its author
       # renames it in the editor. Server-side because the client sends
