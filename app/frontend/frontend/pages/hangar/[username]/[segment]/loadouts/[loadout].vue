@@ -15,6 +15,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Hardpoints from "@/frontend/components/Models/Hardpoints/index.vue";
 import LoadoutChanges from "@/frontend/components/Loadout/Changes/index.vue";
+import CartAddLoadout from "@/frontend/components/Cart/AddLoadout/index.vue";
 import { VehicleLoadoutTabsEnum } from "@/frontend/components/Vehicles/LoadoutModal/types";
 import { useLoadoutFitting } from "@/frontend/composables/useLoadoutFitting";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
@@ -197,6 +198,10 @@ const { data: model, isLoading: modelLoading } = useModel(
   },
 );
 
+const loadoutSlots = computed(() =>
+  isOwner.value ? ownSlots.value : publicSlots.value,
+);
+
 const {
   hardpoints,
   changed,
@@ -206,7 +211,7 @@ const {
   loading: fittingLoading,
 } = useLoadoutFitting({
   model,
-  loadoutSlots: () => (isOwner.value ? ownSlots.value : publicSlots.value),
+  loadoutSlots: () => loadoutSlots.value,
   items: () => loadout.value?.items,
 });
 
@@ -324,6 +329,10 @@ const edit = () => {
                 <i class="fa-duotone fa-screwdriver-wrench" />
                 {{ t("actions.vehicleLoadout.editLoadout") }}
               </Btn>
+            </Teleport>
+
+            <Teleport v-if="!fittingPending" to="#header-right">
+              <CartAddLoadout :slots="loadoutSlots" />
             </Teleport>
 
             <Loader v-if="fittingPending" :loading="true" relative />
