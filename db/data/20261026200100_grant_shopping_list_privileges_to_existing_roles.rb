@@ -11,7 +11,8 @@ class GrantShoppingListPrivilegesToExistingRoles < ActiveRecord::Migration[8.1]
       added << "fleet:shopping_lists:read" unless access.include?("fleet:shopping_lists:read")
 
       # Whoever already looks after the fleet's stores keeps its kit lists too.
-      if access.include?("fleet:manage") || access.include?("fleet:inventories:manage")
+      # `fleet:manage` already covers it.
+      if access.include?("fleet:inventories:manage") && !access.include?("fleet:manage")
         added << "fleet:shopping_lists:manage" unless access.include?("fleet:shopping_lists:manage")
       end
 

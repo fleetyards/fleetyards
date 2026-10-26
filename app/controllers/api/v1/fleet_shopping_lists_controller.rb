@@ -15,6 +15,7 @@ module Api
       # Publishing reads the user's own list, and copying writes one.
       before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
         unless: :user_signed_in?,
+        if: -> { params[:cart_id].present? },
         only: %i[create update]
       before_action -> { doorkeeper_authorize! "hangar", "hangar:write" },
         unless: :user_signed_in?,
@@ -65,13 +66,19 @@ module Api
 
       # Naming one of the user's own lists replaces every line with that
       # list's, which is how a published list is kept up to date.
+      # Naming one of the user's own lists replaces every line with that
+      # list's, which is how a published list is kept up to date. Authorized
+      # again on the new attributes, inside the transaction, since assigning
+      # squadrons to a saved record writes them at once.
       def update
         authorize! @fleet_shopping_list
 
         cart = own_cart! if params[:cart_id].present?
 
         FleetShoppingList.transaction do
-          @fleet_shopping_list.update!(fleet_shopping_list_params)
+          @fleet_shopping_list.assign_attributes(fleet_shopping_list_params)
+          authorize! @fleet_shopping_list
+          @fleet_shopping_list.save!
           @fleet_shopping_list.replace_items_from!(cart) if cart
         end
 
@@ -98,11 +105,18 @@ module Api
       def copy
         authorize! @fleet_shopping_list
 
+        lines = @fleet_shopping_list.copyable_items
+
+        if lines.empty?
+          @fleet_shopping_list.errors.add(:base, :nothing_to_copy)
+          return render json: ValidationError.new("fleet_shopping_lists.copy", errors: @fleet_shopping_list.errors), status: :bad_request
+        end
+
         @cart = params[:cart_id].present? ? own_cart! : nil
 
         Cart.transaction do
           @cart ||= new_cart_for_copy
-          @fleet_shopping_list.copy_items_to!(@cart)
+          @fleet_shopping_list.copy_items_to!(@cart, lines)
         end
 
         @trip_plan = Carts::TripPlan.new(authorized_scope(@cart.cart_items, with: CartItemPolicy))
@@ -110,6 +124,10 @@ module Api
         render "api/v1/carts/show"
       rescue ActiveRecord::RecordInvalid => e
         render json: ValidationError.new("fleet_shopping_lists.copy", errors: e.record.errors), status: :bad_request
+      rescue ActiveRecord::RecordNotUnique
+        # The same name taken by a second copy since `unused_name` looked.
+        @fleet_shopping_list.errors.add(:base, :copy_conflict)
+        render json: ValidationError.new("fleet_shopping_lists.copy", errors: @fleet_shopping_list.errors), status: :bad_request
       end
 
       private def new_cart_for_copy

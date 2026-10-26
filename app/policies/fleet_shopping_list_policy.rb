@@ -13,8 +13,12 @@ class FleetShoppingListPolicy < FleetBasePolicy
     record.visible_to?(accepted_fleet_membership)
   end
 
+  # The record as it would be saved, so a writer cannot pick a visibility
+  # that hides the list from them.
   def create?
-    accepted_fleet_membership&.has_access?([*FleetShoppingList::OFFICER_PRIVILEGES, "fleet:shopping_lists:create"])
+    return false unless accepted_fleet_membership&.has_access?([*FleetShoppingList::OFFICER_PRIVILEGES, "fleet:shopping_lists:create"])
+
+    record.visible_to?(accepted_fleet_membership)
   end
 
   def update?

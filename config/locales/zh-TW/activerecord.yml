@@ -299,6 +299,8 @@ zh-TW:
           attributes:
             base:
               fleet_shopping_list_limit_reached: "最多只能有 %{count} 個購物清單"
+              nothing_to_copy: "沒有仍在目錄中的物品"
+              copy_conflict: "同時被複製了兩次；請重試"
         cart:
           attributes:
             base:

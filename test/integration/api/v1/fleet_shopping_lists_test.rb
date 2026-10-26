@@ -206,6 +206,30 @@ class Api::V1::FleetShoppingListsTest < ActionDispatch::IntegrationTest
     assert_equal [[@armor.id, 4]], FleetShoppingList.find_by!(name: "Mining kit").fleet_shopping_list_items.pluck(:item_id, :quantity)
   end
 
+  test "POST keeps the cart's order" do
+    cart = create(:cart, user: @admin)
+    items = create_list(:equipment, 4)
+    items.each { |item| create(:cart_item, cart:, item:) }
+    sign_in @admin
+
+    assert_api_response :post, 201, path_params: {fleetSlug: @fleet.slug}, body: {name: "Ordered", cartId: cart.id}
+
+    list = FleetShoppingList.find_by!(name: "Ordered")
+
+    assert_equal items.map(&:id), list.fleet_shopping_list_items.order(:created_at).pluck(:item_id)
+  end
+
+  test "POST is forbidden to a writer choosing a visibility that hides the list from them" do
+    role = create(:fleet_role, fleet: @fleet, name: "Clerk",
+      resource_access: ["fleet:shopping_lists:read", "fleet:shopping_lists:create"])
+    clerk = create(:user)
+    create(:fleet_membership, :accepted, fleet: @fleet, user: clerk, fleet_role: role)
+    sign_in clerk
+
+    assert_api_response :post, 403, path_params: {fleetSlug: @fleet.slug},
+      body: {name: "Hidden", visibility: "officers_only", cartId: create(:cart, user: clerk).id}
+  end
+
   test "POST is forbidden to a member without the create privilege" do
     sign_in @member
 
@@ -315,6 +339,17 @@ class Api::V1::FleetShoppingListsTest < ActionDispatch::IntegrationTest
 
     assert_equal 1, cart.cart_items.find_by!(item: @armor).quantity
     refute cart.cart_items.exists?(item_id: @helmet.id)
+  end
+
+  test "POST copy of a list whose items are all gone starts no list" do
+    @armor.delete
+    @helmet.delete
+    sign_in @member
+
+    assert_no_difference -> { @member.carts.count } do
+      assert_api_response :post, 400, api_path: "/fleets/{fleetSlug}/shopping-lists/{id}/copy",
+        path_params: {fleetSlug: @fleet.slug, id: @kit.id}, body: {}
+    end
   end
 
   test "POST copy of a list hidden from the member answers 404" do
