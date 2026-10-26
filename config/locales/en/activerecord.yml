@@ -296,6 +296,10 @@ en:
           attributes:
             base:
               plan_limit_reached: "can hold at most %{count} plans"
+        cart:
+          attributes:
+            base:
+              cart_list_limit_reached: "can hold at most %{count} lists"
         cart_item:
           attributes:
             base:

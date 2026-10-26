@@ -124,6 +124,9 @@ fr:
       create: "Le plan n'a pas pu être créé."
       update: "Le plan n'a pas pu être mis à jour."
       rebase: "Le plan n'a pas pu être réaligné sur le hangar."
+    carts:
+      create: "La liste n'a pas pu être créée."
+      update: "La liste n'a pas pu être mise à jour."
     cart_items:
       create: "L'article n'a pas pu être ajouté au panier."
       update: "L'article du panier n'a pas pu être mis à jour."

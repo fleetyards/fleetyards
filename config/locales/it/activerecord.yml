@@ -295,6 +295,10 @@ it:
           attributes:
             base:
               plan_limit_reached: "può contenere al massimo %{count} piani"
+        cart:
+          attributes:
+            base:
+              cart_list_limit_reached: "può contenere al massimo %{count} liste"
         cart_item:
           attributes:
             base:

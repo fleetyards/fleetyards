@@ -127,6 +127,9 @@ es:
       create: "No se pudo crear el plan."
       update: "No se pudo actualizar el plan."
       rebase: "No se pudo actualizar el plan con el hangar."
+    carts:
+      create: "No se pudo crear la lista."
+      update: "No se pudo actualizar la lista."
     cart_items:
       create: "No se pudo añadir el artículo al carrito."
       update: "No se pudo actualizar el artículo del carrito."

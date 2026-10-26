@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_26_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_26_130000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -354,15 +354,25 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_26_120000) do
   end
 
   create_table "cart_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "user_id", null: false
     t.string "item_type", null: false
     t.uuid "item_id", null: false
     t.uuid "item_price_id"
     t.integer "quantity", default: 1, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "cart_id", null: false
+    t.index ["cart_id", "item_type", "item_id"], name: "index_cart_items_on_cart_id_and_item_type_and_item_id", unique: true
     t.index ["item_price_id"], name: "index_cart_items_on_item_price_id"
-    t.index ["user_id", "item_type", "item_id"], name: "index_cart_items_on_user_id_and_item_type_and_item_id", unique: true
+  end
+
+  create_table "carts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.string "name", null: false
+    t.boolean "active", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "name"], name: "index_carts_on_user_id_and_name", unique: true
+    t.index ["user_id"], name: "index_carts_on_user_id_active", unique: true, where: "active"
   end
 
   create_table "commodities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -3131,8 +3141,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_26_120000) do
   add_foreign_key "blueprint_sources", "blueprint_builds", on_delete: :cascade
   add_foreign_key "buyback_pledges", "users", on_delete: :cascade
   add_foreign_key "cargo_hold_container_capacities", "cargo_holds"
+  add_foreign_key "cart_items", "carts", on_delete: :cascade
   add_foreign_key "cart_items", "item_prices", on_delete: :nullify
-  add_foreign_key "cart_items", "users", on_delete: :cascade
+  add_foreign_key "carts", "users", on_delete: :cascade
   add_foreign_key "commodities", "commodities", column: "refines_into_id", on_delete: :nullify
   add_foreign_key "commodity_builds", "commodities", on_delete: :cascade
   add_foreign_key "component_build_changes", "components", on_delete: :cascade

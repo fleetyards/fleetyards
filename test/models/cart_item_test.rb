@@ -17,11 +17,12 @@ class CartItemTest < ActiveSupport::TestCase
     assert cart_item.errors.added?(:item_id, :blank)
   end
 
-  test "holds an item once per user" do
+  test "holds an item once per list" do
     existing = create(:cart_item)
+    other_list = create(:cart, user: existing.cart.user, active: false)
 
-    assert_not build(:cart_item, user: existing.user, item: existing.item).valid?
-    assert build(:cart_item, item: existing.item).valid?
+    assert_not build(:cart_item, cart: existing.cart, item: existing.item).valid?
+    assert build(:cart_item, cart: other_list, item: existing.item).valid?
   end
 
   test "accepts only a sell price of its own item as the pin" do
@@ -36,16 +37,16 @@ class CartItemTest < ActiveSupport::TestCase
     assert cart_item.errors.added?(:item_price_id, :not_offered)
   end
 
-  test "stops at the per-user limit" do
-    user = create(:user)
+  test "stops at the per-list limit" do
+    cart = create(:cart)
     now = Time.current
-    CartItem.insert_all(Array.new(CartItem::MAX_PER_USER) do
-      {user_id: user.id, item_type: "Commodity", item_id: SecureRandom.uuid, quantity: 1, created_at: now, updated_at: now}
+    CartItem.insert_all(Array.new(CartItem::MAX_PER_CART) do
+      {cart_id: cart.id, item_type: "Commodity", item_id: SecureRandom.uuid, quantity: 1, created_at: now, updated_at: now}
     end)
-    cart_item = build(:cart_item, user:)
+    cart_item = build(:cart_item, cart:)
 
     assert_not cart_item.valid?
-    assert cart_item.errors.added?(:base, :cart_limit_reached, count: CartItem::MAX_PER_USER)
+    assert cart_item.errors.added?(:base, :cart_limit_reached, count: CartItem::MAX_PER_CART)
   end
 
   test "pin is cleared when its price row goes away" do

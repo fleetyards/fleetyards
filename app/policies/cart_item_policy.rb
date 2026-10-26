@@ -9,14 +9,14 @@ class CartItemPolicy < ApplicationPolicy
   end
 
   def create?
-    user.present?
+    user.present? && record.cart&.user_id == user.id
   end
 
   def show?
-    user.present? && record.user_id == user.id
+    user.present? && record.cart&.user_id == user.id
   end
 
   relation_scope do |relation|
-    relation.where(user_id: user.id)
+    relation.joins(:cart).where(carts: {user_id: user.id})
   end
 end

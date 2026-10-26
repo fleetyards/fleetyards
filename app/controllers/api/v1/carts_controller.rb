@@ -13,17 +13,24 @@ module Api
       def show
         authorize! with: CartItemPolicy, to: :index?
 
-        @trip_plan = Carts::TripPlan.new(authorized_scope(CartItem.all, with: CartItemPolicy))
+        @trip_plan = Carts::TripPlan.new(active_cart_items, strategy: params[:strategy])
       end
 
       def destroy
         authorize! with: CartItemPolicy, to: :clear?
 
-        scope = authorized_scope(CartItem.all, with: CartItemPolicy)
+        scope = active_cart_items
         scope.delete_all
         @trip_plan = Carts::TripPlan.new(scope)
 
         render :show
+      end
+
+      private def active_cart_items
+        @cart = Cart.active_for(current_resource_owner)
+        return CartItem.none unless @cart
+
+        authorized_scope(@cart.cart_items, with: CartItemPolicy)
       end
     end
   end

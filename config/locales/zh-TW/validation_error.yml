@@ -123,6 +123,9 @@ zh-TW:
       create: "無法建立計畫。"
       update: "無法更新計畫。"
       rebase: "無法依機庫更新計畫。"
+    carts:
+      create: "無法建立清單。"
+      update: "無法更新清單。"
     cart_items:
       create: "無法將物品加入購物車。"
       update: "無法更新購物車物品。"
