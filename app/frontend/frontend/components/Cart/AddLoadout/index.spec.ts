@@ -55,8 +55,10 @@ const line = (itemId: string, quantity = 1): CartItemCreateInput => ({
 const list = (id: string, active = false) =>
   ({ id, name: `List ${id}`, active, itemsCount: 0 }) as CartList;
 
-const mount = (items: CartItemCreateInput[]) =>
-  mountWithDefaults<typeof Component>(Component, { props: { items } });
+const mount = (items: CartItemCreateInput[], inModal = false) =>
+  mountWithDefaults<typeof Component>(Component, {
+    props: { items, inModal },
+  });
 
 describe("CartAddLoadout", () => {
   beforeEach(() => {
@@ -91,6 +93,35 @@ describe("CartAddLoadout", () => {
         props: expect.objectContaining({ items: [line("panther", 2)] }),
       }),
     );
+  });
+
+  it("asks in place inside a modal, which a picker would replace", async () => {
+    lists.value = [list("a", true), list("b")];
+    const wrapper = await mount([line("panther", 2)], true);
+
+    await wrapper.find("[data-test='cart-add-loadout']").trigger("click");
+
+    expect(emit).not.toHaveBeenCalled();
+
+    await wrapper.find("[data-test='cart-add-loadout-to-b']").trigger("click");
+
+    expect(mutate).toHaveBeenCalledWith({
+      data: { items: [line("panther", 2)], cartId: "b" },
+    });
+    expect(wrapper.find("[data-test='cart-add-loadout']").exists()).toBe(true);
+  });
+
+  it("puts the button back when the choice is cancelled", async () => {
+    lists.value = [list("a", true), list("b")];
+    const wrapper = await mount([line("panther")], true);
+
+    await wrapper.find("[data-test='cart-add-loadout']").trigger("click");
+    await wrapper
+      .find("[data-test='cart-add-loadout-cancel']")
+      .trigger("click");
+
+    expect(mutate).not.toHaveBeenCalled();
+    expect(wrapper.find("[data-test='cart-add-loadout']").exists()).toBe(true);
   });
 
   it("is not shown without parts to add", async () => {

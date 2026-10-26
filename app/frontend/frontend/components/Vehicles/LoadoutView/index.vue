@@ -563,7 +563,7 @@ const edit = () => {
       v-if="editVisible || (editable && loadoutPage) || cartItems.length"
       #footer
     >
-      <CartAddLoadout :items="cartItems" />
+      <CartAddLoadout :items="cartItems" in-modal />
       <Btn
         v-if="editVisible"
         :variant="BtnVariantsEnum.GHOST"

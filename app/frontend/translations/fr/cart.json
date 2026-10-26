@@ -87,7 +87,8 @@
           "one": "Liste active · %{count} article",
           "other": "Liste active · %{count} articles"
         },
-        "loadoutParts": "pièces non d'origine"
+        "loadoutParts": "pièces non d'origine",
+        "question": "Ajouter à :"
       }
     }
   }

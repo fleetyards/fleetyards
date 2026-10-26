@@ -1751,7 +1751,7 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
     </template>
 
     <template v-if="editable" #footer>
-      <CartAddLoadout v-if="!linking" :items="cartItems" />
+      <CartAddLoadout v-if="!linking" :items="cartItems" in-modal />
       <Btn
         v-if="flightReady && !editedLoadout && !createdLoadout"
         :variant="BtnVariantsEnum.GHOST"

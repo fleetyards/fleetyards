@@ -87,7 +87,8 @@
           "one": "Lista attiva · %{count} articolo",
           "other": "Lista attiva · %{count} articoli"
         },
-        "loadoutParts": "componenti non di serie"
+        "loadoutParts": "componenti non di serie",
+        "question": "Aggiungi a:"
       }
     }
   }

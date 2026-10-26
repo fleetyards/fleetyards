@@ -87,7 +87,8 @@
           "one": "Aktive Liste · %{count} Artikel",
           "other": "Aktive Liste · %{count} Artikel"
         },
-        "loadoutParts": "nicht serienmäßige Teile"
+        "loadoutParts": "nicht serienmäßige Teile",
+        "question": "Hinzufügen zu:"
       }
     }
   }

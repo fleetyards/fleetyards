@@ -87,7 +87,8 @@
           "one": "目前清單 · %{count} 件",
           "other": "目前清單 · %{count} 件"
         },
-        "loadoutParts": "非原廠零件"
+        "loadoutParts": "非原廠零件",
+        "question": "加入："
       }
     }
   }

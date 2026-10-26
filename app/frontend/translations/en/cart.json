@@ -87,7 +87,8 @@
           "one": "Active list · %{count} item",
           "other": "Active list · %{count} items"
         },
-        "loadoutParts": "non-stock parts"
+        "loadoutParts": "non-stock parts",
+        "question": "Add to:"
       }
     }
   }
