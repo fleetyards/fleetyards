@@ -98,6 +98,7 @@
           "inventories": "%{fleet} Inventories",
           "transfers": "%{fleet} 转移"
         },
+        "shoppingLists": "%{fleet} 购物清单",
         "missions": {
           "index": "%{fleet} 任务",
           "create": "创建任务 - %{fleet}",

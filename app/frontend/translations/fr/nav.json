@@ -85,6 +85,7 @@
         "logistics": {
           "index": "Logistics"
         },
+        "shoppingLists": "Listes d'achats",
         "missions": {
           "index": "Missions",
           "edit": {

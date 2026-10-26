@@ -89,6 +89,48 @@
         },
         "loadoutParts": "piezas no de serie",
         "question": "Añadir a:"
+      },
+      "fleetLists": {
+        "title": "Listas de compras",
+        "lead": "El equipo que la flota quiere que tengan sus miembros: uniformes, armadura, un equipamiento estándar. Copia una lista a tu carrito para ver cuánto cuesta y dónde comprarlo.",
+        "count": {
+          "one": "%{count} artículo",
+          "other": "%{count} artículos"
+        },
+        "copy": "Copiar a mi carrito",
+        "copyTitle": "Copiar %{name} a",
+        "copyNew": "Una lista nueva",
+        "copyNewHint": "Con el nombre %{name}, y marcada como tu lista activa",
+        "copyIntoHint": {
+          "one": "Contiene %{count} artículo; las cantidades se suman",
+          "other": "Contiene %{count} artículos; las cantidades se suman"
+        },
+        "showItems": "Mostrar artículos",
+        "hideItems": "Ocultar artículos",
+        "edit": "Editar",
+        "delete": "Eliminar",
+        "publish": "Publicar una lista",
+        "publishTitle": "Publicar una de tus listas",
+        "editTitle": "Editar lista de compras",
+        "source": "Tu lista",
+        "sourceHint": "Se copian a la flota sus artículos y cantidades, pero no las tiendas elegidas.",
+        "replaceFrom": "Reemplazar artículos con",
+        "replaceHint": "Déjalo vacío para mantener los artículos como están.",
+        "description": "Descripción",
+        "confirmDelete": "¿Eliminar la lista de compras %{name}?",
+        "empty": {
+          "title": "Aún no hay listas de compras",
+          "text": "Los oficiales publican aquí listas desde su propio carrito para que los miembros las copien en el suyo."
+        },
+        "messages": {
+          "copied": "%{name} copiada a %{list}.",
+          "copyFailed": "No se pudo copiar la lista a tu carrito.",
+          "published": "%{name} publicada.",
+          "updated": "%{name} actualizada.",
+          "saveFailed": "No se pudo guardar la lista de compras.",
+          "deleted": "Lista de compras eliminada.",
+          "deleteFailed": "No se pudo eliminar la lista de compras."
+        }
       }
     }
   }

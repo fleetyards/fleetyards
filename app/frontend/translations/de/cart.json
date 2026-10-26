@@ -89,6 +89,48 @@
         },
         "loadoutParts": "nicht serienmäßige Teile",
         "question": "Hinzufügen zu:"
+      },
+      "fleetLists": {
+        "title": "Einkaufslisten",
+        "lead": "Ausrüstung, die die Flotte bei ihren Mitgliedern sehen will: Uniformen, Rüstung, ein Standard-Loadout. Kopiere eine Liste in deinen Warenkorb, um zu sehen, was sie kostet und wo du alles bekommst.",
+        "count": {
+          "one": "%{count} Artikel",
+          "other": "%{count} Artikel"
+        },
+        "copy": "In meinen Warenkorb",
+        "copyTitle": "%{name} kopieren nach",
+        "copyNew": "Eine neue Liste",
+        "copyNewHint": "Mit dem Namen %{name}, und als aktive Liste festgelegt",
+        "copyIntoHint": {
+          "one": "Enthält %{count} Artikel; Mengen werden addiert",
+          "other": "Enthält %{count} Artikel; Mengen werden addiert"
+        },
+        "showItems": "Artikel anzeigen",
+        "hideItems": "Artikel ausblenden",
+        "edit": "Bearbeiten",
+        "delete": "Löschen",
+        "publish": "Liste veröffentlichen",
+        "publishTitle": "Eine deiner Listen veröffentlichen",
+        "editTitle": "Einkaufsliste bearbeiten",
+        "source": "Deine Liste",
+        "sourceHint": "Ihre Artikel und Mengen werden in die Flotte kopiert, gewählte Shops nicht.",
+        "replaceFrom": "Artikel ersetzen durch",
+        "replaceHint": "Leer lassen, um die Artikel unverändert zu lassen.",
+        "description": "Beschreibung",
+        "confirmDelete": "Die Einkaufsliste %{name} löschen?",
+        "empty": {
+          "title": "Noch keine Einkaufslisten",
+          "text": "Offiziere veröffentlichen hier Listen aus ihrem eigenen Warenkorb, damit Mitglieder sie in ihren kopieren können."
+        },
+        "messages": {
+          "copied": "%{name} nach %{list} kopiert.",
+          "copyFailed": "Die Liste konnte nicht in deinen Warenkorb kopiert werden.",
+          "published": "%{name} veröffentlicht.",
+          "updated": "%{name} aktualisiert.",
+          "saveFailed": "Die Einkaufsliste konnte nicht gespeichert werden.",
+          "deleted": "Einkaufsliste gelöscht.",
+          "deleteFailed": "Die Einkaufsliste konnte nicht gelöscht werden."
+        }
       }
     }
   }

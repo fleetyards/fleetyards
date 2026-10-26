@@ -85,6 +85,7 @@
         "logistics": {
           "index": "Logistics"
         },
+        "shoppingLists": "購物清單",
         "missions": {
           "index": "任務",
           "edit": {

@@ -89,6 +89,48 @@
         },
         "loadoutParts": "非原廠零件",
         "question": "加入："
+      },
+      "fleetLists": {
+        "title": "購物清單",
+        "lead": "艦隊希望成員配備的裝備：制服、護甲、標準配裝。將清單複製到你的購物車，查看花費以及購買地點。",
+        "count": {
+          "one": "%{count} 件物品",
+          "other": "%{count} 件物品"
+        },
+        "copy": "複製到我的購物車",
+        "copyTitle": "將 %{name} 複製到",
+        "copyNew": "新清單",
+        "copyNewHint": "命名為 %{name}，並設為目前清單",
+        "copyIntoHint": {
+          "one": "包含 %{count} 件物品；數量將累加",
+          "other": "包含 %{count} 件物品；數量將累加"
+        },
+        "showItems": "顯示物品",
+        "hideItems": "隱藏物品",
+        "edit": "編輯",
+        "delete": "刪除",
+        "publish": "發布清單",
+        "publishTitle": "發布你的一個清單",
+        "editTitle": "編輯購物清單",
+        "source": "你的清單",
+        "sourceHint": "會將其物品和數量複製到艦隊，但不包括所選商店。",
+        "replaceFrom": "將物品替換為",
+        "replaceHint": "留空則保持物品不變。",
+        "description": "描述",
+        "confirmDelete": "刪除購物清單 %{name}？",
+        "empty": {
+          "title": "尚無購物清單",
+          "text": "軍官在此從自己的購物車發布清單，供成員複製到自己的購物車中。"
+        },
+        "messages": {
+          "copied": "已將 %{name} 複製到 %{list}。",
+          "copyFailed": "無法將清單複製到你的購物車。",
+          "published": "已發布 %{name}。",
+          "updated": "已更新 %{name}。",
+          "saveFailed": "無法儲存購物清單。",
+          "deleted": "已刪除購物清單。",
+          "deleteFailed": "無法刪除購物清單。"
+        }
       }
     }
   }
