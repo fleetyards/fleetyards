@@ -50,6 +50,8 @@ type Props = {
   elevation?: number;
   // How much of the frame the model fills: above 1 the camera starts closer.
   fitScale?: number;
+  // See-through, with the mesh's wireframe drawn over it.
+  hologram?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -64,6 +66,7 @@ const props = withDefaults(defineProps<Props>(), {
   azimuth: 0,
   elevation: undefined,
   fitScale: 1,
+  hologram: false,
 });
 
 // Nothing will be drawn: no WebGL, or a holo that would not load. A caller with
@@ -496,6 +499,7 @@ defineExpose({
           :color="modelColor"
           :on-grid="grid"
           :mobile="lowPower"
+          :hologram="hologram"
           :offsetModel="models[models.indexOf(model) - 1]"
           @loaded="handleModelLoaded"
           @error="handleModelError"

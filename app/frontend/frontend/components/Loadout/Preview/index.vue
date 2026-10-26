@@ -94,6 +94,7 @@ watch(available, (value) => emit("available", value), { immediate: true });
       :controllable="interactive"
       :zoomable="interactive"
       :fit-scale="backdrop ? 1.4 : 1"
+      hologram
       @unavailable="unavailable = true"
     />
   </div>

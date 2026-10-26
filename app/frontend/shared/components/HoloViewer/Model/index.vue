@@ -10,7 +10,6 @@ import { useLoader, useLoop } from "@tresjs/core";
 import {
   AnimationMixer,
   type Material,
-  type Mesh,
   type Object3D,
   type Texture,
   DoubleSide,
@@ -19,6 +18,8 @@ import {
   Vector3,
   type Group,
   type AnimationClip,
+  Mesh,
+  MeshBasicMaterial,
   MeshPhongMaterial,
   MeshLambertMaterial,
   DefaultLoadingManager,
@@ -35,6 +36,8 @@ type Props = {
   mobile?: boolean;
   offsetModel?: HoloModel;
   windowColor?: string;
+  // See-through, with the mesh's wireframe drawn over it.
+  hologram?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -43,6 +46,7 @@ const props = withDefaults(defineProps<Props>(), {
   mobile: false,
   offsetModel: undefined,
   windowColor: "#1d3d59",
+  hologram: false,
 });
 
 // One pair for the whole holo, made once: a colour change recolours them
@@ -51,15 +55,38 @@ const props = withDefaults(defineProps<Props>(), {
 const side = props.mobile ? FrontSide : DoubleSide;
 const MaterialClass = props.mobile ? MeshLambertMaterial : MeshPhongMaterial;
 
+// A hologram does not hide what is behind it, so it writes no depth: the far
+// side of the hull shows through the near one.
+const hologramLook = props.hologram
+  ? { transparent: true, opacity: 0.35, depthWrite: false }
+  : {};
+
 const material = new MaterialClass({
   color: props.color,
   side,
+  ...hologramLook,
 });
+
+const HIGHLIGHT_COLOR = "#fbb03b";
 
 // A part the viewer has picked out, in the gold the grid's sections use.
 const highlightMaterial = new MaterialClass({
-  color: "#fbb03b",
+  color: HIGHLIGHT_COLOR,
   side,
+  ...hologramLook,
+});
+
+// The hologram's mesh lines, sharing each body's geometry.
+const wireLook = { wireframe: true, transparent: true, depthWrite: false };
+const wireMaterial = new MeshBasicMaterial({
+  color: props.color,
+  opacity: 0.18,
+  ...wireLook,
+});
+const highlightWireMaterial = new MeshBasicMaterial({
+  color: HIGHLIGHT_COLOR,
+  opacity: 0.4,
+  ...wireLook,
 });
 
 const windowMaterial = new MaterialClass({
@@ -78,7 +105,9 @@ const disposeOriginal = (original: Material | Material[]) => {
     if (
       entry === material ||
       entry === windowMaterial ||
-      entry === highlightMaterial
+      entry === highlightMaterial ||
+      entry === wireMaterial ||
+      entry === highlightWireMaterial
     ) {
       continue;
     }
@@ -100,10 +129,12 @@ const highlighted = (node: Object3D) => {
 };
 
 const setMaterials = (scene: Group) => {
+  const bodies: Mesh[] = [];
+
   scene.traverse((node) => {
     const mesh = node as Mesh;
 
-    if (!mesh.isMesh) return;
+    if (!mesh.isMesh || mesh.userData.wire) return;
 
     disposeOriginal(mesh.material);
 
@@ -111,8 +142,23 @@ const setMaterials = (scene: Group) => {
       mesh.material = windowMaterial;
     } else {
       mesh.material = highlighted(node) ? highlightMaterial : material;
+      bodies.push(mesh);
     }
   });
+
+  if (!props.hologram) return;
+
+  // Added once the walk is done, so it never visits its own lines.
+  for (const body of bodies) {
+    if (body.children.some((child) => child.userData.wire)) continue;
+
+    const wire = new Mesh(
+      body.geometry,
+      highlighted(body) ? highlightWireMaterial : wireMaterial,
+    );
+    wire.userData.wire = true;
+    body.add(wire);
+  }
 };
 
 const mixer = shallowRef<AnimationMixer>();
@@ -145,6 +191,8 @@ onUnmounted(() => {
   material.dispose();
   windowMaterial.dispose();
   highlightMaterial.dispose();
+  wireMaterial.dispose();
+  highlightWireMaterial.dispose();
 });
 
 const emit = defineEmits(["loaded", "error", "progress"]);
@@ -241,6 +289,7 @@ watch(
   () => props.color,
   (color) => {
     material.color.set(color);
+    wireMaterial.color.set(color);
   },
 );
 </script>
