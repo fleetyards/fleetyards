@@ -197,6 +197,45 @@ class OmniauthCallbacksTest < ActionDispatch::IntegrationTest
     assert_response :redirect
   end
 
+  test "#failure reports the provider error" do
+    error = OpenIDConnect::Discovery::DiscoveryFailed.new("discovery failed")
+    Appsignal.expects(:report_error).with(error).once
+
+    with_omniauth_failure(error, type: "discovery failed") do
+      post "/users/auth/citizenid/callback"
+    end
+
+    assert_response :redirect
+  end
+
+  %w[access_denied csrf_detected].each do |type|
+    test "#failure does not report #{type}" do
+      Appsignal.expects(:report_error).never
+
+      with_omniauth_failure(OmniAuth::Strategies::OAuth2::CallbackError.new(type, "declined"), type:) do
+        get "/users/auth/discord/callback"
+      end
+
+      assert_response :redirect
+    end
+  end
+
+  # Test mode fails without an exception, so the one a real strategy would
+  # raise is put back before the failure endpoint sees the request.
+  private def with_omniauth_failure(error, type:)
+    original = OmniAuth.config.on_failure
+    OmniAuth.config.mock_auth[:discord] = type.to_sym
+    OmniAuth.config.mock_auth[:citizenid] = type.to_sym
+    OmniAuth.config.on_failure = ->(env) {
+      env["omniauth.error"] = error
+      env["omniauth.error.type"] = type.to_sym
+      original.call(env)
+    }
+    yield
+  ensure
+    OmniAuth.config.on_failure = original
+  end
+
   test "#citizenid verifies the handle it names and takes it from the account that held it" do
     holder = create(:user)
     holder.verify_rsi_handle("TestPilot", via: :rsi_profile)
