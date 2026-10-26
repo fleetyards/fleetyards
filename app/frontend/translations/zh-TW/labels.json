@@ -2664,7 +2664,9 @@
           "topViewColoredBlank": "沒有彩色俯視圖圖片?",
           "vehicleSize": "載具尺寸",
           "dimensionsDrifted": "尺寸與遊戲檔案不一致",
-          "dimensionsMeasuredAtNull": "沒有實測尺寸?"
+          "dimensionsMeasuredAtNull": "沒有實測尺寸?",
+          "hidden": "隱藏?",
+          "active": "活躍?"
         },
         "modelModules": {
           "name": "名稱"

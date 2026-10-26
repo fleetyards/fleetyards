@@ -39,6 +39,8 @@ const prefillFormValues = () => {
     canLandOnPlanetsEq: filters.value.canLandOnPlanetsEq,
     dimensionsDrifted: filters.value.dimensionsDrifted,
     dimensionsMeasuredAtNull: filters.value.dimensionsMeasuredAtNull,
+    hiddenEq: filters.value.hiddenEq,
+    activeEq: filters.value.activeEq,
   };
 };
 
@@ -87,6 +89,22 @@ watch(
     <ProductionStatusSelect
       v-model="form.productionStatusIn"
       name="production-status"
+    />
+
+    <RadioList
+      v-model="form.hiddenEq"
+      :label="t('labels.filters.models.hidden')"
+      :reset-label="t('labels.all')"
+      :options="booleanOptions"
+      name="hiddenEq"
+    />
+
+    <RadioList
+      v-model="form.activeEq"
+      :label="t('labels.filters.models.active')"
+      :reset-label="t('labels.all')"
+      :options="booleanOptions"
+      name="activeEq"
     />
 
     <RadioList
