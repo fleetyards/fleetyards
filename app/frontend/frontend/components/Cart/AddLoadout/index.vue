@@ -69,7 +69,6 @@ const { mutate, isPending } = useAddCartItems({
   },
 });
 
-// Without a list named, the parts go to the active one.
 const add = (cartId?: string) => {
   if (!sessionStore.isAuthenticated) {
     displayWarning({ text: t("cart.messages.accountRequired") });
