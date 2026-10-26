@@ -4,6 +4,7 @@ import { createMemoryHistory, createRouter } from "vue-router";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import {
   type CartLine,
+  CartStrategyEnum,
   type ItemPrice,
   InventoryItemTypeEnum,
 } from "@/services/fyApi";
@@ -158,6 +159,24 @@ describe("CartLine", () => {
       id: "line-id",
       data: { itemPriceId: null },
     });
+  });
+
+  it("hands an unpinned line to the plan when the plan is not the cheapest", async () => {
+    const wrapper = await mountWithDefaults<typeof Component>(Component, {
+      props: {
+        line: line({ pinned: true, price: dear }),
+        strategy: CartStrategyEnum.STOPS,
+      },
+      plugins: [router],
+      attachTo: document.body,
+    });
+
+    const option = await placeOption(
+      wrapper,
+      (text) => text === "Leave it to the plan",
+    );
+
+    expect(option).toBeTruthy();
   });
 
   it("saves a new quantity once typing stops", async () => {

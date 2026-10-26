@@ -209,7 +209,12 @@ const uec = computed(() => t("number.units.uec"));
         </template>
       </PanelHeading>
       <PanelBody>
-        <CartLine v-for="line in group.lines" :key="line.id" :line="line" />
+        <CartLine
+          v-for="line in group.lines"
+          :key="line.id"
+          :line="line"
+          :strategy="strategy"
+        />
       </PanelBody>
     </Panel>
 

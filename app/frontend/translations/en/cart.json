@@ -12,6 +12,7 @@
       "unitPrice": "%{price} each",
       "buyElsewhere": "Buy elsewhere",
       "cheapest": "Cheapest",
+      "planPick": "Leave it to the plan",
       "pinned": "Your pick",
       "tripPick": "Trip pick",
       "unplaced": "Unknown place",

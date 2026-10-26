@@ -12,6 +12,7 @@
       "unitPrice": "je %{price}",
       "buyElsewhere": "Woanders kaufen",
       "cheapest": "Günstigster",
+      "planPick": "Dem Plan überlassen",
       "pinned": "Deine Wahl",
       "tripPick": "Für die Route",
       "unplaced": "Unbekannter Ort",

@@ -12,6 +12,7 @@
       "unitPrice": "每件 %{price}",
       "buyElsewhere": "在别处购买",
       "cheapest": "最便宜",
+      "planPick": "由计划选择",
       "pinned": "你的选择",
       "tripPick": "路线优先",
       "unplaced": "未知地点",

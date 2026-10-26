@@ -21,6 +21,7 @@ import { errorTypeFrom } from "@/shared/utils/ErrorTypes";
 import { ErrorTypesEnum } from "@/shared/components/AsyncData.types";
 import {
   type CartLine,
+  CartStrategyEnum,
   type ItemPrice,
   InventoryItemTypeEnum,
   useRemoveCartItem,
@@ -29,9 +30,12 @@ import {
 
 type Props = {
   line: CartLine;
+  strategy?: CartStrategyEnum;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  strategy: CartStrategyEnum.CHEAPEST,
+});
 
 const { t, toNumber } = useI18n();
 
@@ -197,7 +201,13 @@ const formatPrice = (value?: number | null) =>
           :disabled="updating"
           @click="pin(null)"
         >
-          {{ t("cart.cheapest") }}
+          <!-- Unpinned, the plan places the line, which is the cheapest place
+               only when the plan is the cheapest one. -->
+          {{
+            strategy === CartStrategyEnum.CHEAPEST
+              ? t("cart.cheapest")
+              : t("cart.planPick")
+          }}
         </Btn>
         <Btn
           v-for="offer in line.offers"
