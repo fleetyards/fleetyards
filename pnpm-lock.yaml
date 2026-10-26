@@ -365,8 +365,8 @@ importers:
         specifier: ^1.15.9
         version: 1.15.9
       '@types/swagger-ui':
-        specifier: ^5.32.0
-        version: 5.32.0
+        specifier: ^5.32.1
+        version: 5.32.1
       '@types/swagger-ui-dist':
         specifier: ^3.30.6
         version: 3.30.6
@@ -3399,8 +3399,8 @@ packages:
   '@types/swagger-ui-dist@3.30.6':
     resolution: {integrity: sha512-FVxN7wjLYRtJsZBscOcOcf8oR++m38vbUFjT33Mr9HBuasX9bRDrJsp7iwixcOtKSHEEa2B7o2+4wEiXqC+Ebw==}
 
-  '@types/swagger-ui@5.32.0':
-    resolution: {integrity: sha512-diMOqNQf6gkc3ghDIgjs/AfwbwZidja2e02+fJRIfNbbQ25W0EMGLe+f9/tHh/UFRfwYR2UXR3QSPGGkBu7uNg==}
+  '@types/swagger-ui@5.32.1':
+    resolution: {integrity: sha512-OUXp62ZBhiLg6YZvumn/GM06dtnuw8sy/gc2SLQ+C7OzTqIjKx/mPwENuIVQUxvrITi/Ot1mulYw/ej74qmkHQ==}
 
   '@types/three@0.186.0':
     resolution: {integrity: sha512-mxYSBpDC+D0pLfSP6sW4WZTcT+nrtmZcimMqnVmy36Hte3XpeYSrvgg4TRdaM1GemGog1AWzI5qL2VoIfMXbJQ==}
@@ -10443,7 +10443,7 @@ snapshots:
 
   '@types/swagger-ui-dist@3.30.6': {}
 
-  '@types/swagger-ui@5.32.0': {}
+  '@types/swagger-ui@5.32.1': {}
 
   '@types/three@0.186.0':
     dependencies:
