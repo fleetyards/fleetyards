@@ -8,6 +8,7 @@ import {
   type User,
   me as fetchMe,
   destroySession,
+  getCartQueryKey,
   getMyRsiVerificationQueryKey,
   getMySupporterClaimKeyQueryKey,
   getHangarAllInventoryStockQueryKey,
@@ -137,6 +138,10 @@ export const useSessionStore = defineStore("session", {
 
       // The reader's own RSI verification, token included.
       queryClient.removeQueries({ queryKey: getMyRsiVerificationQueryKey() });
+
+      // The cart badge reads this, so the next reader would see the count of
+      // the previous one's cart.
+      queryClient.removeQueries({ queryKey: getCartQueryKey() });
 
       // A manager's view of the fleet's RSI verification, token included.
       queryClient.removeQueries({
