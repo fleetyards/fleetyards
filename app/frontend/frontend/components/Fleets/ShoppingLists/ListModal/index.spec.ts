@@ -43,7 +43,7 @@ vi.mock("@/shared/composables/useAppNotifications", () => ({
 vi.mock("@/shared/components/base/Select/index.vue", () => ({
   default: {
     name: "BaseSelect",
-    props: ["modelValue", "name"],
+    props: ["modelValue", "name", "options"],
     emits: ["update:modelValue"],
     render: () => null,
   },
@@ -86,10 +86,21 @@ describe("FleetShoppingListModal", () => {
     lists.value = [
       { id: "a", name: "Uniform", active: true, itemsCount: 3 } as CartList,
       { id: "b", name: "Armour", active: false, itemsCount: 1 } as CartList,
+      { id: "c", name: "Empty", active: false, itemsCount: 0 } as CartList,
     ];
     create.mockReset().mockResolvedValue({ id: "new", name: "Uniform" });
     update.mockReset().mockResolvedValue({ id: "kit", name: "Kit" });
     emit.mockClear();
+  });
+
+  it("offers only lists with something on them", async () => {
+    const subject = await mount();
+
+    expect(
+      (source(subject).props("options") as { value: string }[]).map(
+        (option) => option.value,
+      ),
+    ).toEqual(["a", "b"]);
   });
 
   it("cannot publish until one of the user's lists is picked", async () => {

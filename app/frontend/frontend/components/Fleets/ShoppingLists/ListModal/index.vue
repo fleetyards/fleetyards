@@ -72,10 +72,12 @@ const [fleetSquadronIds] = defineField("fleetSquadronIds");
 const { data: carts } = useCartLists();
 
 const cartOptions = computed<FilterOption[]>(() =>
-  (carts.value ?? []).map((cart) => ({
-    value: cart.id,
-    label: `${cart.name} (${cart.itemsCount})`,
-  })),
+  (carts.value ?? [])
+    .filter((cart) => cart.itemsCount > 0)
+    .map((cart) => ({
+      value: cart.id,
+      label: `${cart.name} (${cart.itemsCount})`,
+    })),
 );
 
 // A new list takes the name of the one it is published from, and follows a
