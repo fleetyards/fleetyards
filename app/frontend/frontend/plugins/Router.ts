@@ -3,7 +3,7 @@ import { useFleetStore } from "@/frontend/stores/fleet";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useRedirectBackStore } from "@/shared/stores/redirectBack";
 import { useNotificationsStore } from "@/shared/stores/notifications";
-import { APP_UPDATE_NOTICE_TAG } from "@/shared/composables/useAppUpdateNotice";
+import { MessageTypesEnum } from "@/shared/components/AppNotifications/types";
 import { type NavigationFailure, type RouteLocation } from "vue-router";
 import { routes } from "@/frontend/pages/routes";
 import { setupRouter, type FyRedirectRoute } from "@/shared/plugins/Router";
@@ -21,28 +21,42 @@ const beforeEach = (to: RouteLocation) => {
 const RELEASE_RELOAD_KEY = "fy-release-reload";
 
 // Long enough for a rollout to finish behind the proxy, short enough that a
-// reload which was served the old release is tried again.
+// reload which was served the old release is tried again -- a few times, not
+// forever, should one host never get the release.
 const RELEASE_RELOAD_RETRY = 10 * 60 * 1000;
+const RELEASE_RELOAD_ATTEMPTS = 3;
 
-const reloadedRecently = (version: string) => {
+type ReleaseReload = { version: string; at: number; attempts: number };
+
+const lastReload = (): ReleaseReload | null => {
   try {
-    const last = JSON.parse(
+    return JSON.parse(
       sessionStorage.getItem(RELEASE_RELOAD_KEY) ?? "null",
-    ) as { version: string; at: number } | null;
-
-    return (
-      last?.version === version && Date.now() - last.at < RELEASE_RELOAD_RETRY
-    );
+    ) as ReleaseReload | null;
   } catch {
-    return false;
+    return null;
   }
 };
 
+const mayReloadFor = (version: string) => {
+  const last = lastReload();
+
+  if (last?.version !== version) return true;
+
+  return (
+    last.attempts < RELEASE_RELOAD_ATTEMPTS &&
+    Date.now() - last.at >= RELEASE_RELOAD_RETRY
+  );
+};
+
 const rememberReload = (version: string) => {
+  const last = lastReload();
+  const attempts = last?.version === version ? last.attempts + 1 : 1;
+
   try {
     sessionStorage.setItem(
       RELEASE_RELOAD_KEY,
-      JSON.stringify({ version, at: Date.now() }),
+      JSON.stringify({ version, at: Date.now(), attempts }),
     );
   } catch {
     // Without storage the reload still happens, only unguarded.
@@ -51,9 +65,15 @@ const rememberReload = (version: string) => {
 
 const withoutTrailingSlash = (path: string) => path.replace(/\/+$/, "");
 
-const noticeOnScreen = () =>
+// A success that is about to time out on its own; a notice that waits for the
+// member would hold the release back for as long as it is left open.
+const successOnScreen = () =>
   useNotificationsStore().messages.some(
-    (message) => message.visible && message.tag !== APP_UPDATE_NOTICE_TAG,
+    (message) =>
+      message.visible &&
+      message.type === MessageTypesEnum.SUCCESS &&
+      !message.persist &&
+      message.timeout !== false,
   );
 
 /*
@@ -65,10 +85,9 @@ const noticeOnScreen = () =>
  *
  * Not while the path stays put -- typing into a filter only changes the
  * query -- and not with a one-time secret in the query, which a page load would
- * hand to every access log. Not while a notice
- * is up either, since the reload would take a "saved" with it before anyone
- * read it. And not twice in a row for one release, in case the reload is still
- * served the old one.
+ * hand to every access log. Not while a "saved" is on screen either, or the
+ * reload would take it away before anyone read it. And not twice in a row for
+ * one release, in case the reload is still served the old one.
  */
 export const afterEach = (
   to: RouteLocation,
@@ -82,8 +101,8 @@ export const afterEach = (
     !appStore.isUpdateAvailable ||
     withoutTrailingSlash(to.path) === withoutTrailingSlash(from.path) ||
     "secret" in to.query ||
-    noticeOnScreen() ||
-    reloadedRecently(appStore.version)
+    successOnScreen() ||
+    !mayReloadFor(appStore.version)
   ) {
     return;
   }

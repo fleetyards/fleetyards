@@ -7,7 +7,7 @@ import {
 } from "@/frontend/plugins/Router";
 import { useAppStore } from "@/frontend/stores/app";
 import { useNotificationsStore } from "@/shared/stores/notifications";
-import { APP_UPDATE_NOTICE_TAG } from "@/shared/composables/useAppUpdateNotice";
+import { MessageTypesEnum } from "@/shared/components/AppNotifications/types";
 import { queryClient } from "@/frontend/plugins/QueryClient";
 import {
   FeatureFlagName,
@@ -165,6 +165,8 @@ describe("frontend router release reload", () => {
   });
 
   afterEach(() => {
+    vi.useRealTimers();
+    vi.restoreAllMocks();
     vi.unstubAllGlobals();
     reload.mockReset();
   });
@@ -270,7 +272,6 @@ describe("frontend router release reload", () => {
     afterNavigation(at("/hangar/ripley/"), at("/fleets/maru/"));
 
     expect(reload).toHaveBeenCalledTimes(2);
-    vi.useRealTimers();
   });
 
   it("reloads for a newer release straight away", () => {
@@ -289,11 +290,13 @@ describe("frontend router release reload", () => {
     expect(reload).toHaveBeenCalledTimes(2);
   });
 
-  it("waits while a notice is on screen", () => {
+  it("waits while a success is on screen", () => {
     releaseOut();
     useNotificationsStore().addMessage({
       id: "saved",
+      type: MessageTypesEnum.SUCCESS,
       visible: true,
+      persist: false,
       text: "Tour created",
     } as never);
 
@@ -302,12 +305,14 @@ describe("frontend router release reload", () => {
     expect(reload).not.toHaveBeenCalled();
   });
 
-  it("does not wait for the update notice itself", () => {
+  it("does not wait for a notice left open", () => {
     releaseOut();
     useNotificationsStore().addMessage({
-      id: "update",
+      id: "install",
+      type: MessageTypesEnum.INFO,
       visible: true,
-      tag: APP_UPDATE_NOTICE_TAG,
+      persist: true,
+      timeout: false,
     } as never);
 
     afterNavigation(
@@ -316,6 +321,21 @@ describe("frontend router release reload", () => {
     );
 
     expect(reload).toHaveBeenCalledTimes(1);
+  });
+
+  it("gives up after a few reloads that brought the old release back", () => {
+    vi.useFakeTimers();
+    releaseOut();
+
+    for (let attempt = 0; attempt < 5; attempt += 1) {
+      afterNavigation(
+        at(`/hangar/ripley/ships/${attempt}/`),
+        at("/hangar/ripley/"),
+      );
+      vi.advanceTimersByTime(11 * 60 * 1000);
+    }
+
+    expect(reload).toHaveBeenCalledTimes(3);
   });
 
   it("still reloads where session storage is blocked", () => {
@@ -330,6 +350,5 @@ describe("frontend router release reload", () => {
     );
 
     expect(reload).toHaveBeenCalledTimes(1);
-    vi.restoreAllMocks();
   });
 });
