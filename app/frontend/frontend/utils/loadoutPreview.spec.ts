@@ -181,6 +181,25 @@ describe("loadoutMounts", () => {
     ]);
   });
 
+  it("highlights the parts in the slots the editor has open", () => {
+    const [nose, left] = loadoutMounts(preview, [
+      {
+        name: "hardpoint_gun_nose",
+        part: { holoUrl: holo("gimbal") },
+        active: true,
+        slots: [],
+      },
+      {
+        name: "hardpoint_missilerack_left",
+        part: { holoUrl: holo("rack") },
+        slots: [],
+      },
+    ]);
+
+    expect(nose.highlighted).toBe(true);
+    expect(left.highlighted).toBe(false);
+  });
+
   it("skips a port whose position is unknown", () => {
     const mounts = loadoutMounts({
       ports: [

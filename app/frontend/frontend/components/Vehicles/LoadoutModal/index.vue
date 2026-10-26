@@ -341,9 +341,20 @@ const componentTree = computed(() =>
 // What stands fitted now, saved or not, so the cart gets what is on screen.
 const cartItems = computed(() => nonStockFittedItems(componentTree.value));
 
+// Every slot of the open row: a stacked row stands for each of its members.
 const previewSlots = computed(() =>
-  previewSlotsFromFitting(componentTree.value),
+  previewSlotsFromFitting(
+    componentTree.value,
+    activeKind.value === "component" && activeSlot.value
+      ? activeMembers.value.length
+        ? activeMembers.value
+        : [activeSlot.value]
+      : [],
+  ),
 );
+
+// The ship's holo takes the angled render's place behind the controls.
+const previewShown = ref(false);
 
 // The saved fitting's recipes as well as the edited one's, so the changes
 // against the save read both as crafted.
@@ -425,6 +436,8 @@ const componentHint = (tab: { available: boolean }) => {
 // The ship as a backdrop rather than a picture beside the controls: the
 // angled view, coloured where there is one.
 const backdrop = computed(() => {
+  if (previewShown.value) return undefined;
+
   const media = model.value?.media;
   const file =
     media?.angledViewColored || media?.angledView || media?.storeImage;
@@ -1406,6 +1419,16 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
         data-test="vehicle-loadout-loading"
       />
 
+      <LoadoutPreview
+        v-if="flightReady && !initialising"
+        v-show="!linking"
+        :model-slug="modelSlug"
+        :slots="previewSlots"
+        class="vehicle-loadout__preview"
+        test-id="vehicle-loadout-preview"
+        @available="previewShown = $event"
+      />
+
       <aside
         v-show="!linking"
         class="vehicle-loadout__ship"
@@ -1416,13 +1439,6 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
           <span v-html="vehicle.model.manufacturer?.name" />
           <strong>{{ vehicle.model.name }}</strong>
         </p>
-        <LoadoutPreview
-          v-if="flightReady && !initialising"
-          :model-slug="modelSlug"
-          :slots="previewSlots"
-          class="vehicle-loadout__preview"
-          test-id="vehicle-loadout-preview"
-        />
         <LoadoutMetrics
           v-if="tabMetrics"
           v-bind="tabMetrics"

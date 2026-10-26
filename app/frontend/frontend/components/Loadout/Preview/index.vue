@@ -25,6 +25,13 @@ const props = withDefaults(defineProps<Props>(), {
   testId: "loadout-preview",
 });
 
+const emit = defineEmits<{ available: [available: boolean] }>();
+
+// The pose of a ship's angled render: from ahead on its port side and well
+// above, the nose towards the lower left. The export faces -Z.
+const ANGLED_AZIMUTH = -135;
+const ANGLED_ELEVATION = 35;
+
 const HoloViewer = defineAsyncComponent(
   () => import("@/shared/components/HoloViewer/index.vue"),
 );
@@ -58,11 +65,15 @@ const holoModel = computed(() => {
 
 // Without WebGL or a hull that loads there is nothing to show.
 const unavailable = ref(false);
+
+const available = computed(() => !!holoModel.value && !unavailable.value);
+
+watch(available, (value) => emit("available", value), { immediate: true });
 </script>
 
 <template>
   <div
-    v-if="holoModel && !unavailable"
+    v-if="available && holoModel"
     class="loadout-preview"
     :data-test="testId"
   >
@@ -70,6 +81,9 @@ const unavailable = ref(false);
     frame gives the ship its own. -->
     <HoloViewer
       :models="[holoModel]"
+      :auto-rotate="false"
+      :azimuth="ANGLED_AZIMUTH"
+      :elevation="ANGLED_ELEVATION"
       zoomable
       @unavailable="unavailable = true"
     />
