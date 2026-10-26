@@ -20,6 +20,7 @@ import {
   type AnimationClip,
   Mesh,
   MeshBasicMaterial,
+  Color,
   MeshPhongMaterial,
   MeshLambertMaterial,
   DefaultLoadingManager,
@@ -74,16 +75,8 @@ const material = new MaterialClass({
   ...hologramLook,
 });
 
-const HIGHLIGHT_COLOR = "#fbb03b";
-
-// A part the viewer has picked out, in the gold the grid's sections use, and
-// drawn over the hull: coolers and drives sit inside it.
-const highlightMaterial = new MaterialClass({
-  color: HIGHLIGHT_COLOR,
-  side,
-  ...hologramLook,
-  depthTest: false,
-});
+// A part the viewer has picked out, in the gold the grid's sections use.
+const HIGHLIGHT_COLOR = new Color("#fbb03b");
 
 // The hologram's mesh lines, sharing each body's geometry.
 const wireLook = { wireframe: true, transparent: true, depthWrite: false };
@@ -92,13 +85,6 @@ const wireMaterial = new MeshBasicMaterial({
   opacity: 0.18,
   ...wireLook,
 });
-const highlightWireMaterial = new MeshBasicMaterial({
-  color: HIGHLIGHT_COLOR,
-  opacity: 0.4,
-  ...wireLook,
-  depthTest: false,
-});
-
 const windowMaterial = new MaterialClass({
   color: props.windowColor,
   opacity: 0.8,
@@ -115,9 +101,7 @@ const disposeOriginal = (original: Material | Material[]) => {
     if (
       entry === material ||
       entry === windowMaterial ||
-      entry === highlightMaterial ||
-      entry === wireMaterial ||
-      entry === highlightWireMaterial
+      entry === wireMaterial
     ) {
       continue;
     }
@@ -138,6 +122,63 @@ const highlighted = (node: Object3D) => {
   return false;
 };
 
+// A mounted part's own pair of materials, eased between the holo's colour and
+// the highlight: `glow` runs from 0 to 1 and follows `target`.
+type Fading = {
+  mesh: Mesh;
+  body: Material & { color: Color; depthTest: boolean };
+  wire?: MeshBasicMaterial;
+  glow: number;
+  target: number;
+};
+
+const fading = new Map<Mesh, Fading>();
+
+// A quarter of a second from one to the other.
+const FADE_PER_SECOND = 4;
+
+const WIRE_OPACITY = 0.18;
+const HIGHLIGHT_WIRE_OPACITY = 0.4;
+
+const applyGlow = (entry: Fading) => {
+  const { glow } = entry;
+  // Drawn over the hull while it shows at all: coolers and drives sit inside.
+  const overHull = glow > 0;
+
+  entry.body.color.copy(material.color).lerp(HIGHLIGHT_COLOR, glow);
+  entry.body.depthTest = !overHull;
+  entry.mesh.renderOrder = overHull ? 1 : 0;
+
+  if (entry.wire) {
+    entry.wire.color.copy(wireMaterial.color).lerp(HIGHLIGHT_COLOR, glow);
+    entry.wire.opacity =
+      WIRE_OPACITY + (HIGHLIGHT_WIRE_OPACITY - WIRE_OPACITY) * glow;
+    entry.wire.depthTest = !overHull;
+  }
+};
+
+const disposeFading = (root: Object3D) => {
+  root.traverse((node) => {
+    const entry = fading.get(node as Mesh);
+    if (!entry) return;
+
+    entry.body.dispose();
+    entry.wire?.dispose();
+    fading.delete(entry.mesh);
+  });
+};
+
+const withinMounts = (node: Object3D) => {
+  for (let current: Object3D | null = node; current; current = current.parent) {
+    if (current === mountRoot) return true;
+  }
+
+  return false;
+};
+
+const wireOf = (body: Mesh) =>
+  body.children.find((child) => child.userData.wire) as Mesh | undefined;
+
 // Run again after the highlights change, so it only ever swaps in its own
 // materials: a mounted part's originals belong to the holo cache.
 const setMaterials = (scene: Group) => {
@@ -153,34 +194,45 @@ const setMaterials = (scene: Group) => {
     if (windowRefs.some((item) => node.name.toLowerCase().includes(item))) {
       mesh.material = windowMaterial;
     } else {
-      mesh.material = highlighted(node) ? highlightMaterial : material;
-      // Last, so nothing drawn after it covers it again.
-      mesh.renderOrder = highlighted(node) ? 1 : 0;
       bodies.push(mesh);
     }
   });
 
-  if (!props.hologram) return;
-
-  // Added once the walk is done, so it never visits its own lines.
   for (const body of bodies) {
-    const wireMaterialFor = highlighted(body)
-      ? highlightWireMaterial
-      : wireMaterial;
-    const existing = body.children.find(
-      (child) => child.userData.wire,
-    ) as Mesh | undefined;
+    const own = withinMounts(body);
 
-    if (existing) {
-      existing.material = wireMaterialFor;
-      existing.renderOrder = body.renderOrder;
+    if (props.hologram && !wireOf(body)) {
+      const wire = new Mesh(body.geometry, wireMaterial);
+      wire.userData.wire = true;
+      body.add(wire);
+    }
+
+    if (!own) {
+      body.material = material;
       continue;
     }
 
-    const wire = new Mesh(body.geometry, wireMaterialFor);
-    wire.userData.wire = true;
-    wire.renderOrder = body.renderOrder;
-    body.add(wire);
+    let entry = fading.get(body);
+    const target = highlighted(body) ? 1 : 0;
+
+    if (!entry) {
+      // A part built with its highlight already on shows it at once.
+      entry = {
+        mesh: body,
+        body: material.clone() as Fading["body"],
+        wire: props.hologram ? wireMaterial.clone() : undefined,
+        glow: target,
+        target,
+      };
+      fading.set(body, entry);
+      applyGlow(entry);
+    }
+
+    entry.target = target;
+    body.material = entry.body;
+
+    const wire = wireOf(body);
+    if (wire && entry.wire) wire.material = entry.wire;
   }
 };
 
@@ -190,6 +242,17 @@ const { onBeforeRender } = useLoop();
 
 onBeforeRender(({ delta }) => {
   mixer.value?.update(delta);
+
+  for (const entry of fading.values()) {
+    if (entry.glow === entry.target) continue;
+
+    const step = delta * FADE_PER_SECOND;
+    entry.glow =
+      entry.target > entry.glow
+        ? Math.min(entry.target, entry.glow + step)
+        : Math.max(entry.target, entry.glow - step);
+    applyGlow(entry);
+  }
 });
 
 const playAnimations = (scene: Group, animations: AnimationClip[]) => {
@@ -216,9 +279,8 @@ onUnmounted(() => {
   mixer.value?.stopAllAction();
   material.dispose();
   windowMaterial.dispose();
-  highlightMaterial.dispose();
   wireMaterial.dispose();
-  highlightWireMaterial.dispose();
+  if (mountRoot) disposeFading(mountRoot);
 });
 
 const emit = defineEmits(["loaded", "error", "progress"]);
@@ -255,7 +317,10 @@ const attachMounts = async (scene: Group) => {
 
   if (request !== mountsRequest) return;
 
-  if (mountRoot) scene.remove(mountRoot);
+  if (mountRoot) {
+    scene.remove(mountRoot);
+    disposeFading(mountRoot);
+  }
   mountRoot = next;
 
   if (next) {
@@ -330,6 +395,7 @@ watch(
   (color) => {
     material.color.set(color);
     wireMaterial.color.set(color);
+    fading.forEach(applyGlow);
   },
 );
 </script>
