@@ -143,22 +143,30 @@
 
   // The ship's holo in the angled render's place, still and under the panel
   // like it.
+  // A track down the whole form, so the frame inside can stick to the top of
+  // the modal while the sockets scroll past it.
   &__preview {
     display: none;
     position: absolute;
     top: 0;
     right: 0;
+    bottom: 0;
     left: 30%;
-    height: calc(100dvh - 260px);
-    mask-image: linear-gradient(90deg, transparent 0%, black 45%);
     pointer-events: none;
     opacity: 0;
     transition: opacity 600ms ease;
+  }
 
-    // Beside the controls, where the panel does not cover it.
-    &--inspecting {
-      pointer-events: auto;
-    }
+  &__preview-frame {
+    position: sticky;
+    top: 0;
+    height: calc(100dvh - 260px);
+    mask-image: linear-gradient(90deg, transparent 0%, black 45%);
+  }
+
+  // Beside the controls, where the panel does not cover it.
+  &__preview--inspecting &__preview-frame {
+    pointer-events: auto;
   }
 
   &--holo &__preview {
@@ -296,7 +304,7 @@
     min-height: min(calc(100dvh - 260px), 1400px);
 
     &::before,
-    &__preview {
+    &__preview-frame {
       height: min(calc(100dvh - 260px), 1400px);
     }
   }

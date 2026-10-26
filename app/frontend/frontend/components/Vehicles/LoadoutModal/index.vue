@@ -1467,14 +1467,16 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
         class="vehicle-loadout__preview"
         :class="{ 'vehicle-loadout__preview--inspecting': inspecting }"
       >
-        <LoadoutPreview
-          :model-slug="modelSlug"
-          :slots="previewSlots"
-          :interactive="inspecting"
-          variant="backdrop"
-          test-id="vehicle-loadout-preview"
-          @available="previewShown = $event"
-        />
+        <div class="vehicle-loadout__preview-frame">
+          <LoadoutPreview
+            :model-slug="modelSlug"
+            :slots="previewSlots"
+            :interactive="inspecting"
+            variant="backdrop"
+            test-id="vehicle-loadout-preview"
+            @available="previewShown = $event"
+          />
+        </div>
       </div>
 
       <aside
