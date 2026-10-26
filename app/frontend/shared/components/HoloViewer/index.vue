@@ -280,7 +280,7 @@ const gridFadeDistance = computed(() =>
   Math.max(100, modelMaxDimension.value * 2),
 );
 
-const handleModelLoaded = (size: Vector3, _scene: Mesh) => {
+const handleModelLoaded = (size: Vector3, scene: Mesh) => {
   // if (props.grid) {
   //   currentModel.value = scene;
   // }
@@ -329,23 +329,36 @@ const handleModelLoaded = (size: Vector3, _scene: Mesh) => {
     const right = new Vector3(0, 1, 0).cross(toCamera).normalize();
     const up = toCamera.clone().cross(right);
 
-    // The nearest distance at which every corner of the model's box is still
-    // in frame, a little margin around it.
+    // The nearest distance at which every point of the model is still in
+    // frame. Its box would do, but from an angle
+    // the box's far corners stand well clear of the ship itself. A sample of
+    // each mesh's points is enough to find the silhouette's edges.
     let reach = 0;
-    for (const x of [-0.5, 0.5]) {
-      for (const y of [-0.5, 0.5]) {
-        for (const z of [-0.5, 0.5]) {
-          const corner = new Vector3(x * size.x, y * size.y, z * size.z);
-          const depth = corner.dot(toCamera);
-          reach = Math.max(
-            reach,
-            depth + Math.abs(corner.dot(right)) / tanHorizontal,
-            depth + Math.abs(corner.dot(up)) / tanVertical,
-          );
-        }
+    const point = new Vector3();
+    scene.updateMatrixWorld(true);
+    scene.traverse((node) => {
+      const mesh = node as Mesh;
+      const positions = mesh.isMesh
+        ? mesh.geometry.getAttribute("position")
+        : undefined;
+      if (!positions) return;
+
+      const step = Math.max(1, Math.floor(positions.count / 2000));
+      for (let index = 0; index < positions.count; index += step) {
+        point.fromBufferAttribute(positions, index);
+        point.applyMatrix4(mesh.matrixWorld);
+
+        const depth = point.dot(toCamera);
+        reach = Math.max(
+          reach,
+          depth + Math.abs(point.dot(right)) / tanHorizontal,
+          depth + Math.abs(point.dot(up)) / tanVertical,
+        );
       }
-    }
-    reach *= 1.05;
+    });
+    // Room around it: a frame rarely shows its edges whole, the editor's fades
+    // in from the left under the controls.
+    reach *= 1.25;
 
     fitDistance.value = reach;
     modelMaxDimension.value = Math.max(size.x, size.y, size.z);
