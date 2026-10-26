@@ -12,8 +12,7 @@ const authenticated = { value: true };
 const enabled = { value: true };
 
 let mutationOptions:
-  | { mutation: { onSuccess: (cart: Cart) => void } }
-  | undefined;
+  { mutation: { onSuccess: (cart: Cart) => void } } | undefined;
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
@@ -21,6 +20,15 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
     mutationOptions = options;
 
     return { mutate, isPending: ref(false) };
+  },
+}));
+
+vi.mock("@/frontend/components/Cart/ListMenu/index.vue", () => ({
+  default: {
+    name: "CartListMenu",
+    emits: ["pick"],
+    template:
+      "<button data-test='cart-list-pick' @click=\"$emit('pick', 'list-b')\" />",
   },
 }));
 
@@ -71,7 +79,27 @@ describe("CartAddToCart", () => {
     await wrapper.find("[data-test='cart-add']").trigger("click");
 
     expect(mutate).toHaveBeenCalledWith({
-      data: { itemType: "Equipment", itemId: "item-id", quantity: 1 },
+      data: {
+        itemType: "Equipment",
+        itemId: "item-id",
+        quantity: 1,
+        cartId: undefined,
+      },
+    });
+  });
+
+  it("adds to another list when one is picked from the menu", async () => {
+    const wrapper = await mount();
+
+    await wrapper.find("[data-test='cart-list-pick']").trigger("click");
+
+    expect(mutate).toHaveBeenCalledWith({
+      data: {
+        itemType: "Equipment",
+        itemId: "item-id",
+        quantity: 1,
+        cartId: "list-b",
+      },
     });
   });
 

@@ -6,6 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
+import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
+import CartListMenu from "@/frontend/components/Cart/ListMenu/index.vue";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
@@ -40,8 +42,14 @@ const { updateCart } = useCartCache();
 
 const { displaySuccess, displayAlert, displayWarning } = useAppNotifications();
 
-const enabled = computed(() =>
-  isFeatureEnabled(FeatureFlagName.SHOPPING_CART),
+const enabled = computed(() => isFeatureEnabled(FeatureFlagName.SHOPPING_CART));
+
+const btnVariant = computed(() =>
+  props.variant === "row" ? BtnVariantsEnum.BARE : BtnVariantsEnum.GHOST,
+);
+
+const btnSize = computed(() =>
+  props.variant === "row" ? BtnSizesEnum.SM : BtnSizesEnum.MD,
 );
 
 const { mutate, isPending } = useAddCartItem({
@@ -49,7 +57,10 @@ const { mutate, isPending } = useAddCartItem({
     onSuccess: (cart) => {
       updateCart(cart);
       displaySuccess({
-        text: t("cart.messages.added", { name: props.item.name }),
+        text: t("cart.messages.added", {
+          name: props.item.name,
+          list: cart.name,
+        }),
       });
     },
     onError: () => {
@@ -58,7 +69,8 @@ const { mutate, isPending } = useAddCartItem({
   },
 });
 
-const add = () => {
+// Without a list named, the item goes to the active one.
+const add = (cartId?: string) => {
   if (!sessionStore.isAuthenticated) {
     displayWarning({ text: t("cart.messages.accountRequired") });
 
@@ -66,7 +78,12 @@ const add = () => {
   }
 
   mutate({
-    data: { itemType: props.item.type, itemId: props.item.id, quantity: 1 },
+    data: {
+      itemType: props.item.type,
+      itemId: props.item.id,
+      quantity: 1,
+      cartId,
+    },
   });
 };
 </script>
@@ -74,17 +91,19 @@ const add = () => {
 <!-- Adds one at a time; the quantity is set on the cart page, where the
      total it changes is in view. -->
 <template>
-  <Btn
-    v-if="enabled"
-    v-tooltip.bottom="variant === 'row' ? t('cart.addToCart') : undefined"
-    :variant="variant === 'row' ? BtnVariantsEnum.BARE : BtnVariantsEnum.GHOST"
-    :size="variant === 'row' ? BtnSizesEnum.SM : BtnSizesEnum.MD"
-    :loading="isPending"
-    :aria-label="t('cart.addToCart')"
-    data-test="cart-add"
-    @click.stop.prevent="add"
-  >
-    <i class="fa-light fa-cart-plus" />
-    <template v-if="variant !== 'row'">{{ t("cart.addToCart") }}</template>
-  </Btn>
+  <BtnGroup v-if="enabled" class="cart-add-to-cart">
+    <Btn
+      v-tooltip.bottom="variant === 'row' ? t('cart.addToCart') : undefined"
+      :variant="btnVariant"
+      :size="btnSize"
+      :loading="isPending"
+      :aria-label="t('cart.addToCart')"
+      data-test="cart-add"
+      @click.stop.prevent="add()"
+    >
+      <i class="fa-light fa-cart-plus" />
+      <template v-if="variant !== 'row'">{{ t("cart.addToCart") }}</template>
+    </Btn>
+    <CartListMenu :size="btnSize" :variant="btnVariant" @pick="add" />
+  </BtnGroup>
 </template>
