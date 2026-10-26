@@ -28,6 +28,9 @@ module Api
       # All or nothing, so a loadout never lands in the cart half added.
       def bulk_create
         failed = nil
+        # Before the transaction: a list started inside it would go with a
+        # rollback, and the retry would then add to a list that is gone.
+        target_cart
 
         ActiveRecord::Base.transaction do
           bulk_items.each do |(item_type, item_id), added|

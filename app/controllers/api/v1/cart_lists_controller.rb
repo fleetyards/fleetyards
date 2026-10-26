@@ -46,6 +46,10 @@ module Api
         render :show, status: :created
       rescue ActiveRecord::RecordInvalid
         render json: ValidationError.new("carts.create", errors: @cart.errors), status: :bad_request
+      rescue ActiveRecord::RecordNotUnique
+        # The same name saved by another request since the validation looked.
+        @cart.errors.add(:name, :taken)
+        render json: ValidationError.new("carts.create", errors: @cart.errors), status: :bad_request
       end
 
       def update
@@ -56,6 +60,9 @@ module Api
 
         render :show
       rescue ActiveRecord::RecordInvalid
+        render json: ValidationError.new("carts.update", errors: @cart.errors), status: :bad_request
+      rescue ActiveRecord::RecordNotUnique
+        @cart.errors.add(:name, :taken)
         render json: ValidationError.new("carts.update", errors: @cart.errors), status: :bad_request
       end
 

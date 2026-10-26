@@ -7,7 +7,7 @@ class CartItem < ApplicationRecord
   MAX_PER_CART = 500
   MAX_QUANTITY = 99_999
 
-  belongs_to :cart, touch: true
+  belongs_to :cart
   # Optional so the inclusion check runs before anything constantizes
   # `item_type`; `referenced_item_exists` requires the item itself.
   belongs_to :item, polymorphic: true, optional: true
