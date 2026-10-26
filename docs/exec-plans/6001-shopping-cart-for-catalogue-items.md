@@ -10,7 +10,7 @@ A signed-in user (flag `shopping_cart`) can put commodities, components and equi
 
 ## Design
 
-- **One table, no cart parent.** `cart_items`: uuid id, `user_id` (fk, `dependent: :destroy` on User), polymorphic `item` (`item_type` restricted to `InventoryLedgerEntry::ITEM_TYPES`), `quantity` (integer > 0), unique on `[user_id, item_type, item_id]`, cap per user like `HangarPlanSlot::MAX_PER_PLAN`. Adding an item that is already in the cart increments its quantity. Optional `item_price_id` (fk, `on_delete: :nullify`) pins the line to one of the item's `sell` prices; a pin whose price row disappeared falls back to the cheapest.
+- **Lists, one active.** `carts`: uuid id, `user_id` (fk cascade), `name` (unique per user), `active` (partial unique index: one per user), cap `Cart::MAX_PER_USER`. `cart_items` hang off `cart_id` (fk cascade), unique on `[cart_id, item_type, item_id]`, cap `CartItem::MAX_PER_CART`; polymorphic `item` (`item_type` restricted to `InventoryLedgerEntry::ITEM_TYPES`), `quantity` > 0. Adding an item already on the list increments its quantity. Optional `item_price_id` (fk, `on_delete: :nullify`) pins the line to one of the item's `sell` prices; a pin whose price row disappeared falls back to the cheapest. `Cart.active_for!` starts a list on the first add, or picks the most recent back up.
 - **Auth.** Doorkeeper `hangar:read` / `hangar:write`, like the Hangar Planner. Page at `/cart`, nav footer entry with a count.
 - **Price direction.** The user pays a shop's `sell` price: best price = `sold_at.first`, never `buy` and never `rental`.
 - **Place of a price.** `shop.location`, else `terminal.location`, else the raw `item_prices.location` string. Commodities are terminal-only (704 sell rows, 0 with a shop); equipment has 339 of 19,291 sell rows without a shop.
@@ -35,7 +35,24 @@ A signed-in user (flag `shopping_cart`) can put commodities, components and equi
 4. `translations/<locale>/cart.json` + nav/title keys in all 7 locales, by hand.
 5. Vitest for AddToCart and the cart page; Playwright scenario + spec for add → cart → total.
 
+### Phase 3 — Lists, loadouts, travel times
+1. Migration `create_carts`: one active "Shopping list" per user who has lines, `cart_items.user_id` → `cart_id`.
+2. `/cart` and `/cart/items` work on the active list; `POST /cart/items/bulk` adds many lines all or nothing; `/carts` (`CartListsController`) lists, creates (and activates), renames, activates and deletes lists.
+3. `Cart/ListSwitcher` + `Cart/ListModal` on the cart page; `useCartCache.refreshCarts` after a switch.
+4. `Cart/AddLoadout` in the loadout page header: `nonStockCartItems` walks the slot tree for `fitted.id !== stock.id`, nested ports included, counted per part; modules left out.
+5. Travel-times table: row `#actions` cart button, provided only with the flag on.
+6. Detail pages: the button moved from the Availability footer (shown only with prices) into the masthead.
+7. Add buttons are split: the caret (`Cart/ListMenu`) adds to another list via `cartId` without activating it. The cart response carries the list's `id`, `name` and `active`; `useCartCache.updateCart` stores it under `getCartListQueryKey(id)` and, when active, `getCartQueryKey()`.
+8. The cart page shows any list (`?list=`, `GET /carts/{id}`, cleared via `DELETE /carts/{id}/items`); the switcher only shows a list, "Make active" activates it.
+9. `Cart/Widget` in App.vue: fixed bottom centre (above the mobile nav), shows the active list while it has lines, collapsed state in `localStorage`, hidden on `/cart`.
+
 ## Intent Verification
+
+- [ ] **Lists** — a new list becomes active, catalogue adds land in it, switching shows the other list's lines, deleting the active one hands active to the most recent left
+- [ ] **Loadout** — a custom loadout with swapped guns adds them once each with their count; a stock loadout shows no button
+- [ ] **Travel times** — each quantum drive row adds that drive
+- [ ] **Other list** — the caret adds to a non-active list and the toast names it; the active list is unchanged
+- [ ] **Widget** — appears after the first add, collapses to a pill that survives a reload, sits above the mobile nav, gone on `/cart` and with an empty active list
 
 - [ ] **Add from list and detail** — a commodity, a component and an equipment item each land in the cart from their list row and detail page; adding again increases the quantity
 - [ ] **Server-side** — the cart survives a reload and a second browser session for the same user
@@ -65,7 +82,7 @@ A signed-in user (flag `shopping_cart`) can put commodities, components and equi
 ## Not in scope (deferred)
 - **Stop-minimising route** — set cover across shops; the per-line cheapest place answers the first question. Becomes its own issue before the PR merges.
 - **Guest cart merged on sign-in** — rejected for now in the issue.
-- **Sharing a cart / named lists** — rejected for now in the issue.
+- **Sharing a list** — out of scope in the issue.
 - **Live updates across tabs (cable)** — the Hangar Planner broadcasts nothing either.
 - **Ships (`Model` prices)** — not a catalogue item here; ships are pledged/bought in other flows.
 
@@ -77,4 +94,5 @@ A signed-in user (flag `shopping_cart`) can put commodities, components and equi
 ## Progress
 - [x] Phase 1 — Flag, model, API
 - [x] Phase 2 — Frontend
+- [x] Phase 3 — Lists, loadouts, travel times
 - [ ] Review
