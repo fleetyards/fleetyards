@@ -344,15 +344,17 @@ const edit = () => {
                 class="loadout-page__visual"
               >
                 <img
-                  v-if="!previewShown && angledImage"
+                  v-if="angledImage"
                   :src="angledImage"
                   :alt="vehicleName"
                   class="loadout-page__picture"
+                  :class="{ 'loadout-page__picture--hidden': previewShown }"
                   data-test="vehicle-loadout-page-picture"
                 />
                 <div
                   v-if="!fittingPending && previewSlots"
                   class="loadout-page__holo"
+                  :class="{ 'loadout-page__holo--shown': previewShown }"
                 >
                   <LoadoutPreview
                     :model-slug="vehicle.model.slug"
@@ -444,6 +446,21 @@ const edit = () => {
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+
+// The render fades into the holo once the holo is in.
+.loadout-page__picture,
+.loadout-page__holo {
+  transition: opacity 600ms ease;
+}
+
+.loadout-page__picture--hidden,
+.loadout-page__holo {
+  opacity: 0;
+}
+
+.loadout-page__holo--shown {
+  opacity: 1;
 }
 
 .loadout-page__changes {

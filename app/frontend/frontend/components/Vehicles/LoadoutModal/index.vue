@@ -448,8 +448,6 @@ const componentHint = (tab: { available: boolean }) => {
 // The ship as a backdrop rather than a picture beside the controls: the
 // angled view, coloured where there is one.
 const backdrop = computed(() => {
-  if (previewShown.value) return undefined;
-
   const media = model.value?.media;
   const file =
     media?.angledViewColored || media?.angledView || media?.storeImage;
@@ -1442,6 +1440,7 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
       :id="`vehicle-loadout-${vehicle.id}`"
       ref="formRoot"
       class="vehicle-loadout"
+      :class="{ 'vehicle-loadout--holo': previewShown }"
       :style="backdrop ? { '--loadout-backdrop': `url(${backdrop})` } : {}"
       data-test="vehicle-loadout-form"
       @submit.prevent="onSubmit"

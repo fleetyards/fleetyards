@@ -26,6 +26,13 @@
     opacity: 0.85;
     pointer-events: none;
     content: "";
+    transition: opacity 600ms ease;
+  }
+
+  // The render gives way to the ship's holo once it is in, the one fading into
+  // the other.
+  &--holo::before {
+    opacity: 0;
   }
 
   :deep(.tab-anchor__content > i) {
@@ -145,11 +152,17 @@
     height: calc(100dvh - 260px);
     mask-image: linear-gradient(90deg, transparent 0%, black 45%);
     pointer-events: none;
+    opacity: 0;
+    transition: opacity 600ms ease;
 
     // Beside the controls, where the panel does not cover it.
     &--inspecting {
       pointer-events: auto;
     }
+  }
+
+  &--holo &__preview {
+    opacity: 1;
   }
 
   &__ship-header {
