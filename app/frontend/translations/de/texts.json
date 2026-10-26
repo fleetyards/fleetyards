@@ -278,7 +278,7 @@
         "analytics": {
           "headline": "Nutzungsstatistik",
           "basis": "%{app} zählt Seitenaufrufe, um zu verstehen, welche Bereiche der Seite tatsächlich genutzt werden. Grundlage dafür ist unser berechtigtes Interesse am Betrieb und an der Verbesserung der Seite, nicht deine Einwilligung: Die Daten werden ausschließlich von uns selbst erhoben, IP-Adressen werden vor dem Speichern anonymisiert, es werden keine Cookies oder andere Kennungen auf deinem Gerät abgelegt und nichts wird an Werbenetzwerke weitergegeben.",
-          "retention": "Einzelne Besuche und Seitenaufrufe werden nach einem Monat gelöscht. Darüber hinaus bleiben nur aggregierte Zahlen erhalten, die sich keiner Person mehr zuordnen lassen. Die einzige Ausnahme ist eine einzelne Zahl an deinem Konto: wie viele Wochen in Folge du es genutzt hast, ohne festzuhalten, in welchen Wochen. Sie wird auf null gesetzt, sobald du widersprichst. Mit dem Löschen deines Kontos werden auch die dazu erfassten Besuche gelöscht.",
+          "retention": "Einzelne Besuche und Seitenaufrufe werden nach einem Monat gelöscht. Darüber hinaus bleiben nur aggregierte Zahlen erhalten, die sich keiner Person mehr zuordnen lassen. Die einzige Ausnahme ist eine einzelne Zahl an deinem Konto: wie viele Wochen in Folge du es genutzt hast, gezählt ab deinem letzten Besuch. Aktivität vor einer solchen Serie wird nicht aufbewahrt, und die Zahl wird auf null gesetzt, sobald du widersprichst. Mit dem Löschen deines Kontos werden auch die dazu erfassten Besuche gelöscht.",
           "objection": {
             "headline": "Wie du widersprichst",
             "text": "Du kannst der Nutzungsstatistik jederzeit widersprechen. Wir hören dann auf, sie zu erfassen, statt sie nur auszublenden.",
