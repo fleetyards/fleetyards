@@ -178,16 +178,7 @@ watch(
       />
 
       <div class="component-page__title">
-        <div class="component-page__headline">
-          <h1 class="component-page__name">{{ component.name }}</h1>
-          <CartAddToCart
-            :item="{
-              id: component.id,
-              type: InventoryItemTypeEnum.COMPONENT,
-              name: component.name,
-            }"
-          />
-        </div>
+        <h1 class="component-page__name">{{ component.name }}</h1>
         <div v-if="component.manufacturer" class="component-page__sub">
           {{ component.manufacturer.name }}
         </div>
@@ -231,6 +222,17 @@ watch(
 
     <ExternalLinks :title="component.name" />
     <AddToInventoryBtn :entry="{ type: 'Component', record: component }" />
+    <!-- Last in the row, whatever mounts first: the header is a flex row. -->
+    <Teleport to="#header-right">
+      <CartAddToCart
+        class="component-page__cart"
+        :item="{
+          id: component.id,
+          type: InventoryItemTypeEnum.COMPONENT,
+          name: component.name,
+        }"
+      />
+    </Teleport>
 
     <router-link
       class="component-page__history-link"

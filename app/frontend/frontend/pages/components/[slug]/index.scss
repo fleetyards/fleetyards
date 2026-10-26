@@ -32,17 +32,11 @@
     font-size: 28px;
     font-weight: 700;
     color: #fff;
-    margin: 0;
+    margin: 0 0 6px;
   }
 
-  // The name and the one control that belongs to it.
-  &__headline {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 10px;
-    min-width: 0;
-    margin-bottom: 6px;
+  &__cart {
+    order: 1;
   }
 
   &__sub {
