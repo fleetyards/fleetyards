@@ -169,6 +169,16 @@
     pointer-events: auto;
   }
 
+  // The room a socket list holds for the picker stays empty while it is shut,
+  // but would still take the drag meant for the holo behind it.
+  &--inspecting &__category {
+    pointer-events: none;
+
+    > * {
+      pointer-events: auto;
+    }
+  }
+
   &--holo &__preview {
     opacity: 1;
   }

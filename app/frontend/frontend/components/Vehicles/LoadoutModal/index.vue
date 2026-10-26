@@ -1449,7 +1449,10 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
       :id="`vehicle-loadout-${vehicle.id}`"
       ref="formRoot"
       class="vehicle-loadout"
-      :class="{ 'vehicle-loadout--holo': previewShown }"
+      :class="{
+        'vehicle-loadout--holo': previewShown,
+        'vehicle-loadout--inspecting': inspecting,
+      }"
       :style="backdrop ? { '--loadout-backdrop': `url(${backdrop})` } : {}"
       data-test="vehicle-loadout-form"
       @submit.prevent="onSubmit"
