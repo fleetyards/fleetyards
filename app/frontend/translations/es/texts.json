@@ -278,7 +278,7 @@
         "analytics": {
           "headline": "Analíticas de uso",
           "basis": "%{app} cuenta las visitas a las páginas para saber qué partes del sitio se usan realmente. Esto se basa en nuestro interés legítimo en operar y mejorar el sitio, no en el consentimiento: los datos se recogen únicamente de forma propia, las direcciones IP se anonimizan antes de almacenarse, no se colocan cookies ni otros identificadores en tu dispositivo y no se comparte nada con redes publicitarias.",
-          "retention": "Las visitas individuales y las páginas vistas se eliminan al cabo de un mes. Más allá de ese plazo solo se conservan recuentos agregados, que no pueden vincularse a una persona. Eliminar tu cuenta también elimina las visitas registradas para ella.",
+          "retention": "Las visitas individuales y las páginas vistas se eliminan al cabo de un mes. Más allá de ese plazo solo se conservan recuentos agregados, que no pueden vincularse a una persona. La única excepción es un único número en tu cuenta: cuántas semanas seguidas la has usado, sin ningún registro de qué semanas fueron. Vuelve a cero cuando te opones. Eliminar tu cuenta también elimina las visitas registradas para ella.",
           "objection": {
             "headline": "Cómo oponerse",
             "text": "Puedes oponerte a las analíticas de uso en cualquier momento, y dejaremos de registrarlas en lugar de limitarnos a ocultarlas.",
