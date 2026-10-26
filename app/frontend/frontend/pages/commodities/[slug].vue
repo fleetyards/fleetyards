@@ -140,7 +140,16 @@ watch(
           <CommodityIcon :commodity="commodity" class="commodity-page__icon" />
 
           <div class="commodity-page__title">
-            <h1 class="commodity-page__name">{{ commodity.name }}</h1>
+            <div class="commodity-page__headline">
+              <h1 class="commodity-page__name">{{ commodity.name }}</h1>
+              <CartAddToCart
+                :item="{
+                  id: commodity.id,
+                  type: InventoryItemTypeEnum.COMMODITY,
+                  name: commodity.name,
+                }"
+              />
+            </div>
             <div v-if="typeLabel" class="commodity-page__sub">
               {{ typeLabel }}
             </div>
@@ -230,17 +239,7 @@ watch(
               scope="commodity"
               :craftable="recipes.length > 0"
               :loading="recipesPending"
-            >
-              <template #actions>
-                <CartAddToCart
-                  :item="{
-                    id: commodity.id,
-                    type: InventoryItemTypeEnum.COMMODITY,
-                    name: commodity.name,
-                  }"
-                />
-              </template>
-            </Availability>
+            />
 
             <MetricsCard
               v-if="recipes.length"

@@ -7,7 +7,8 @@ const commodity = vi.hoisted(() => ({
   value: undefined as CommodityDetail | undefined,
 }));
 
-vi.mock("@/services/fyApi", () => ({
+vi.mock("@/services/fyApi", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/services/fyApi")>()),
   useCommodity: () => ({
     data: toRef(commodity, "value"),
     isLoading: ref(false),
@@ -95,6 +96,7 @@ const mountPage = async () => {
         BreadCrumbs: true,
         Chart: true,
         Availability: true,
+        CartAddToCart: true,
         CommodityIcon: true,
         MetricsCard: { template: "<section><slot /></section>" },
       },

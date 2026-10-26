@@ -178,7 +178,16 @@ watch(
       />
 
       <div class="component-page__title">
-        <h1 class="component-page__name">{{ component.name }}</h1>
+        <div class="component-page__headline">
+          <h1 class="component-page__name">{{ component.name }}</h1>
+          <CartAddToCart
+            :item="{
+              id: component.id,
+              type: InventoryItemTypeEnum.COMPONENT,
+              name: component.name,
+            }"
+          />
+        </div>
         <div v-if="component.manufacturer" class="component-page__sub">
           {{ component.manufacturer.name }}
         </div>
@@ -316,17 +325,7 @@ watch(
           :retired="component.retired"
           :craftable="recipes.length > 0"
           :loading="recipesPending"
-        >
-          <template #actions>
-            <CartAddToCart
-              :item="{
-                id: component.id,
-                type: InventoryItemTypeEnum.COMPONENT,
-                name: component.name,
-              }"
-            />
-          </template>
-        </Availability>
+        />
 
         <MetricsCard
           v-if="recipes.length"

@@ -32,7 +32,7 @@ test.describe("Shopping Cart", () => {
         response.url().includes("/api/v1/cart/items") &&
         response.request().method() === "POST",
     );
-    await page.getByTestId("availability").getByTestId("cart-add").click();
+    await page.getByTestId("cart-add").click();
     await added;
 
     await expect(page.getByTestId("cart-nav").first()).toContainText("1");

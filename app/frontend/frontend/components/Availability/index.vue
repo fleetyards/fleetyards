@@ -140,7 +140,6 @@ const openAvailability = () => {
         >
           {{ t("labels.availability.allLocations") }}
         </button>
-        <slot name="actions" />
       </div>
     </template>
 

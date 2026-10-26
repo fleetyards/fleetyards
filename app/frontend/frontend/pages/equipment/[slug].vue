@@ -179,7 +179,16 @@ watch(
           <EquipmentIcon :equipment="equipment" class="equipment-page__icon" />
 
           <div class="equipment-page__title">
-            <h1 class="equipment-page__name">{{ equipment.name }}</h1>
+            <div class="equipment-page__headline">
+              <h1 class="equipment-page__name">{{ equipment.name }}</h1>
+              <CartAddToCart
+                :item="{
+                  id: equipment.id,
+                  type: InventoryItemTypeEnum.EQUIPMENT,
+                  name: equipment.name,
+                }"
+              />
+            </div>
             <div v-if="equipment.manufacturer" class="equipment-page__sub">
               {{ equipment.manufacturer.name }}
             </div>
@@ -295,17 +304,7 @@ watch(
               scope="equipment"
               :craftable="recipes.length > 0"
               :loading="recipesPending"
-            >
-              <template #actions>
-                <CartAddToCart
-                  :item="{
-                    id: equipment.id,
-                    type: InventoryItemTypeEnum.EQUIPMENT,
-                    name: equipment.name,
-                  }"
-                />
-              </template>
-            </Availability>
+            />
 
             <MetricsCard
               v-if="recipes.length"
