@@ -126,8 +126,11 @@ const highlighted = (node: Object3D) => {
 // the highlight: `glow` runs from 0 to 1 and follows `target`.
 type Fading = {
   mesh: Mesh;
-  body: Material & { color: Color; depthTest: boolean };
+  body: Material & { color: Color };
   wire?: MeshBasicMaterial;
+  // The glow seen through the hull: coolers and drives sit inside it. Its own
+  // layer, faded with the glow, so the part never jumps behind the hull.
+  overlay: Mesh<Mesh["geometry"], MeshBasicMaterial>;
   glow: number;
   target: number;
 };
@@ -139,21 +142,21 @@ const FADE_PER_SECOND = 4;
 
 const WIRE_OPACITY = 0.18;
 const HIGHLIGHT_WIRE_OPACITY = 0.4;
+const OVERLAY_OPACITY = 0.45;
 
 const applyGlow = (entry: Fading) => {
-  const { glow } = entry;
-  // Drawn over the hull while it shows at all: coolers and drives sit inside.
-  const overHull = glow > 0;
+  // Eased at both ends rather than run at a constant rate.
+  const glow = entry.glow * entry.glow * (3 - 2 * entry.glow);
 
   entry.body.color.copy(material.color).lerp(HIGHLIGHT_COLOR, glow);
-  entry.body.depthTest = !overHull;
-  entry.mesh.renderOrder = overHull ? 1 : 0;
+
+  entry.overlay.material.opacity = OVERLAY_OPACITY * glow;
+  entry.overlay.visible = glow > 0;
 
   if (entry.wire) {
     entry.wire.color.copy(wireMaterial.color).lerp(HIGHLIGHT_COLOR, glow);
     entry.wire.opacity =
       WIRE_OPACITY + (HIGHLIGHT_WIRE_OPACITY - WIRE_OPACITY) * glow;
-    entry.wire.depthTest = !overHull;
   }
 };
 
@@ -164,6 +167,7 @@ const disposeFading = (root: Object3D) => {
 
     entry.body.dispose();
     entry.wire?.dispose();
+    entry.overlay.material.dispose();
     fading.delete(entry.mesh);
   });
 };
@@ -179,6 +183,27 @@ const withinMounts = (node: Object3D) => {
 const wireOf = (body: Mesh) =>
   body.children.find((child) => child.userData.wire) as Mesh | undefined;
 
+const overlayFor = (body: Mesh) => {
+  const overlay = new Mesh(
+    body.geometry,
+    new MeshBasicMaterial({
+      color: HIGHLIGHT_COLOR,
+      transparent: true,
+      opacity: 0,
+      depthTest: false,
+      depthWrite: false,
+      side,
+    }),
+  );
+  // Marked so a later walk leaves it alone.
+  overlay.userData.overlay = true;
+  overlay.renderOrder = 1;
+  overlay.visible = false;
+  body.add(overlay);
+
+  return overlay;
+};
+
 // Run again after the highlights change, so it only ever swaps in its own
 // materials: a mounted part's originals belong to the holo cache.
 const setMaterials = (scene: Group) => {
@@ -187,7 +212,7 @@ const setMaterials = (scene: Group) => {
   scene.traverse((node) => {
     const mesh = node as Mesh;
 
-    if (!mesh.isMesh || mesh.userData.wire) return;
+    if (!mesh.isMesh || mesh.userData.wire || mesh.userData.overlay) return;
 
     if (!mesh.userData.shared) disposeOriginal(mesh.material);
 
@@ -221,6 +246,7 @@ const setMaterials = (scene: Group) => {
         mesh: body,
         body: material.clone() as Fading["body"],
         wire: props.hologram ? wireMaterial.clone() : undefined,
+        overlay: overlayFor(body),
         glow: target,
         target,
       };
