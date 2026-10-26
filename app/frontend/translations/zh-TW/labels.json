@@ -4723,7 +4723,6 @@
           }
         },
         "againstStock": "相對原廠飛船的變化",
-        "holo": "全息影像",
         "crafted": "已製作",
         "craftedPart": "%{name}（已製作）",
         "fitted": "已裝配",
