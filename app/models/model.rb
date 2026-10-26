@@ -385,6 +385,8 @@ class Model < ApplicationRecord
   # row, which attaching an image does not touch.
   IMAGE_ATTACHMENT_NAMES = %i[store_image angled_view fleetchart_image].freeze
 
+  IMAGE_ATTACHMENT_PRELOAD = IMAGE_ATTACHMENT_NAMES.map { |name| {"#{name}_attachment": :blob} }.freeze
+
   def image_attachments
     IMAGE_ATTACHMENT_NAMES.filter_map { |name| public_send(:"#{name}_attachment") }
   end
@@ -1069,7 +1071,7 @@ class Model < ApplicationRecord
   def carried_by_with_docks
     # The entries and the named ships decide the answer now, so they are
     # preloaded with the berths rather than fetched per dock per carrier.
-    Model.visible.active.with_dock.with_attached_store_image.with_attached_angled_view.where.not(id:)
+    Model.visible.active.with_dock.includes(IMAGE_ATTACHMENT_PRELOAD).where.not(id:)
       .preload({docks: %i[capacities additions]}, {module_docks: [:parent, :capacities, :additions]})
       .filter_map do |carrier|
         dock = carrier.berths.find { |candidate| candidate.fits?(self) }
