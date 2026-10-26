@@ -13,16 +13,7 @@ module V1
               type: :array,
               minItems: 1,
               maxItems: 500,
-              items: {
-                type: :object,
-                properties: {
-                  itemType: ::V1::Schemas::Enums::InventoryItemTypeEnum,
-                  itemId: {type: :string, format: :uuid},
-                  quantity: {type: :integer, minimum: 1}
-                },
-                additionalProperties: false,
-                required: %w[itemType itemId]
-              }
+              items: ::V1::Schemas::Inputs::CartItemsBulkCreateItemInput
             },
             # Another of the user's lists; without it the items go to the active one.
             cartId: {type: :string, format: :uuid}

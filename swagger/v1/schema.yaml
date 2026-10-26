@@ -442,9 +442,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  "$ref": "#/components/schemas/CartList"
+                "$ref": "#/components/schemas/CartListsList"
         '401':
           description: unauthorized
           content:
@@ -23676,20 +23674,7 @@ components:
           minItems: 1
           maxItems: 500
           items:
-            type: object
-            properties:
-              itemType:
-                "$ref": "#/components/schemas/InventoryItemTypeEnum"
-              itemId:
-                type: string
-                format: uuid
-              quantity:
-                type: integer
-                minimum: 1
-            additionalProperties: false
-            required:
-            - itemType
-            - itemId
+            "$ref": "#/components/schemas/CartItemsBulkCreateItemInput"
         cartId:
           type: string
           format: uuid
@@ -23697,6 +23682,22 @@ components:
       required:
       - items
       title: CartItemsBulkCreateInput
+    CartItemsBulkCreateItemInput:
+      type: object
+      properties:
+        itemType:
+          "$ref": "#/components/schemas/InventoryItemTypeEnum"
+        itemId:
+          type: string
+          format: uuid
+        quantity:
+          type: integer
+          minimum: 1
+      additionalProperties: false
+      required:
+      - itemType
+      - itemId
+      title: CartItemsBulkCreateItemInput
     CartLine:
       type: object
       properties:
@@ -23796,6 +23797,11 @@ components:
           type: boolean
       additionalProperties: false
       title: CartListUpdateInput
+    CartListsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/CartList"
+      title: CartListsList
     CartStrategyEnum:
       type: string
       enum:

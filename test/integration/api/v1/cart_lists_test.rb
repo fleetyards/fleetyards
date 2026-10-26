@@ -26,9 +26,7 @@ class Api::V1::CartListsTest < ActionDispatch::IntegrationTest
       produces "application/json"
       security READ
 
-      response(200, "successful") do
-        schema type: :array, items: ::V1::Schemas::Carts::CartList
-      end
+      response(200, "successful") { schema ::V1::Schemas::Carts::CartListsList }
       response(401, "unauthorized") { schema ::Shared::V1::Schemas::StandardError }
       response(403, "forbidden") { schema ::Shared::V1::Schemas::StandardError }
     end
