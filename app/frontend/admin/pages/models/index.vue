@@ -33,7 +33,6 @@ import {
   useModelsStore,
   AdminModelTableViewColsEnum,
   AdminModelTableViewImageColsEnum,
-  AdminModelSortFieldsEnum,
 } from "@/admin/stores/models";
 import { useAdminModelSortFields } from "@/admin/composables/useAdminModelSortFields";
 import { useBreadCrumbsStore } from "@/shared/stores/breadCrumbs";
@@ -63,8 +62,6 @@ const sortFields = useAdminModelSortFields({
   include: () =>
     typeof route.query.s === "string" ? route.query.s : undefined,
 });
-
-const sortableFields = Object.values(AdminModelSortFieldsEnum) as string[];
 
 watch(
   () => sorts.value,
@@ -104,7 +101,6 @@ const extraColumns = computed<BaseTableCol<Model>[]>(() => {
       return {
         name: col,
         label: t(`labels.models.table.columns.${col}`),
-        sortable: sortableFields.includes(col),
       };
     })
     .filter((col) => {
@@ -134,7 +130,6 @@ const tableColumns = computed<BaseTableCol<Model>[]>(() => {
       name: "name",
       label: t("labels.vehicle.name"),
       width: "auto",
-      sortable: true,
     },
     ...extraColumns.value,
   ];
@@ -316,7 +311,6 @@ const unlistedCount = computed(
         :columns="tableColumns"
         :loading="loading || refetching"
         :empty-visible="emptyVisible"
-        default-sort="name asc"
         selectable
         row-clickable
         @row-click="onRowClick"
