@@ -32,7 +32,7 @@ class Cart < ApplicationRecord
     base = name.truncate(56, omission: "")
     taken = user.carts.where("name LIKE ?", "#{sanitize_sql_like(base)}%").pluck(:name).to_set
 
-    ([base] + (2..MAX_PER_USER).map { |n| "#{base} (#{n})" }).find { |candidate| !taken.include?(candidate) } || base
+    ([name] + (2..MAX_PER_USER).map { |n| "#{base} (#{n})" }).find { |candidate| !taken.include?(candidate) } || name
   end
 
   def self.default_name(user)

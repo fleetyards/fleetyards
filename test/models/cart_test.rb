@@ -73,4 +73,14 @@ class CartTest < ActiveSupport::TestCase
 
     assert_not CartItem.exists?(cart_item.id)
   end
+
+  test "an unused name keeps its full length, and only a numbered one is cut" do
+    name = "A" * 64
+
+    assert_equal name, Cart.unused_name(@user, name)
+
+    create(:cart, user: @user, name:)
+
+    assert_equal "#{"A" * 56} (2)", Cart.unused_name(@user, name)
+  end
 end
