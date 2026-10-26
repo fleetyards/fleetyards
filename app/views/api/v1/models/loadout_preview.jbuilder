@@ -23,4 +23,5 @@ json.ports(ports) do |port|
   json.default_item port["defaultItem"]
   json.geometry port["geometry"] != false
   json.stripped port["stripped"] == true
+  json.in_parent_holo port["inParentHolo"] == true
 end

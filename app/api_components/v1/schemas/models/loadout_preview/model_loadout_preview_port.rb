@@ -23,10 +23,11 @@ module V1
               types: {type: :array, items: ModelLoadoutPreviewPortType},
               defaultItem: {type: [:string, :null], description: "scKey of the item mounted in the default loadout"},
               geometry: {type: :boolean, description: "False when the default item is drawn in neither holo"},
-              stripped: {type: :boolean, description: "The default item is left out of the hull holo"}
+              stripped: {type: :boolean, description: "The default item is left out of the hull holo"},
+              inParentHolo: {type: :boolean, description: "The default item is part of its parent item and drawn by the parent's holo"}
             },
             additionalProperties: false,
-            required: %w[name parent helper position rotation flags editable types defaultItem geometry stripped]
+            required: %w[name parent helper position rotation flags editable types defaultItem geometry stripped inParentHolo]
           })
         end
       end

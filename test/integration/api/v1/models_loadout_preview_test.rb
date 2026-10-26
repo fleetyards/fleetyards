@@ -40,6 +40,10 @@ class Api::V1::ModelsLoadoutPreviewTest < ActionDispatch::IntegrationTest
          "position" => [0.0, -0.14, 0.0], "rotation" => [0, 0, 0, 1],
          "flags" => "$editable", "editable" => true, "types" => [],
          "defaultItem" => "gats_ballisticgatling_s3", "stripped" => true},
+        {"name" => "BAR1", "parent" => "hardpoint_class_2", "helper" => true,
+         "position" => [0.0, -0.423, -0.666], "rotation" => [0, 0, 0, 1],
+         "flags" => "", "editable" => false, "types" => [],
+         "defaultItem" => "gats_ballisticgatling_barrel_s3", "stripped" => false, "inParentHolo" => true},
         {"name" => "hardpoint_shield_generator_left", "parent" => nil, "helper" => true,
          "position" => [0.0, 0.49, -4.07], "rotation" => [0, 0, 0, 1],
          "flags" => "editable", "editable" => true, "types" => [{"type" => "Shield", "subTypes" => ""}],
@@ -53,12 +57,15 @@ class Api::V1::ModelsLoadoutPreviewTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, path_params: {slug: @model.slug} do
       assert_equal "flight_holo_hull.glb", parsed_body.dig("holoHull", "name")
 
-      nose, gun, shield = parsed_body["ports"]
+      nose, gun, barrel, shield = parsed_body["ports"]
 
       assert_equal [0.0, -1.17, -10.59], nose["position"]
       assert_equal "mount_gimbal_s3", nose["defaultItem"]
       assert nose["geometry"]
       assert_equal "hardpoint_gun_nose", gun["parent"]
+      assert_not gun["inParentHolo"]
+      assert barrel["inParentHolo"]
+      assert_not barrel["stripped"]
       assert_equal [{"type" => "Shield", "subTypes" => ""}], shield["types"]
       assert_not shield["geometry"]
       assert_not shield["stripped"]

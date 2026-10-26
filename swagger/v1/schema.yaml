@@ -40093,6 +40093,10 @@ components:
         stripped:
           type: boolean
           description: The default item is left out of the hull holo
+        inParentHolo:
+          type: boolean
+          description: The default item is part of its parent item and drawn by the
+            parent's holo
       additionalProperties: false
       required:
       - name
@@ -40106,6 +40110,7 @@ components:
       - defaultItem
       - geometry
       - stripped
+      - inParentHolo
       title: ModelLoadoutPreviewPort
     ModelLoadoutPreviewPortType:
       type: object
