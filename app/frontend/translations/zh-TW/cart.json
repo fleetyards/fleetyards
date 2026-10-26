@@ -48,8 +48,6 @@
         "name": "名稱",
         "activate": "設為目前清單",
         "isActive": "目前清單",
-        "addTo": "加入其他清單",
-        "addToList": "加入 %{name}",
         "confirmDelete": "刪除清單 %{name} 及其中的所有物品？",
         "messages": {
           "saveFailed": "無法儲存清單。"
@@ -78,6 +76,18 @@
           "label": "最短路線",
           "hint": "盡量讓停靠點位於相同的行星與星系，必要時多付一點以減少航行"
         }
+      },
+      "pick": {
+        "title": "將 %{name} 加入清單",
+        "hint": {
+          "one": "%{count} 件",
+          "other": "%{count} 件"
+        },
+        "activeHint": {
+          "one": "目前清單 · %{count} 件",
+          "other": "目前清單 · %{count} 件"
+        },
+        "loadoutParts": "非原廠零件"
       }
     }
   }

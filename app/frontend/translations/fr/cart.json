@@ -48,8 +48,6 @@
         "name": "Nom",
         "activate": "Définir comme active",
         "isActive": "Liste active",
-        "addTo": "Ajouter à une autre liste",
-        "addToList": "Ajouter à %{name}",
         "confirmDelete": "Supprimer la liste %{name} et tout son contenu ?",
         "messages": {
           "saveFailed": "Impossible d'enregistrer la liste."
@@ -78,6 +76,18 @@
           "label": "Trajet le plus court",
           "hint": "Garder les arrêts sur les mêmes planètes et dans le même système si possible, en payant plus là où cela évite du trajet"
         }
+      },
+      "pick": {
+        "title": "Ajouter %{name} à une liste",
+        "hint": {
+          "one": "%{count} article",
+          "other": "%{count} articles"
+        },
+        "activeHint": {
+          "one": "Liste active · %{count} article",
+          "other": "Liste active · %{count} articles"
+        },
+        "loadoutParts": "pièces non d'origine"
       }
     }
   }

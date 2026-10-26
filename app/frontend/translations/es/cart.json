@@ -48,8 +48,6 @@
         "name": "Nombre",
         "activate": "Marcar como activa",
         "isActive": "Lista activa",
-        "addTo": "Añadir a otra lista",
-        "addToList": "Añadir a %{name}",
         "confirmDelete": "¿Eliminar la lista %{name} y todo lo que contiene?",
         "messages": {
           "saveFailed": "No se pudo guardar la lista."
@@ -78,6 +76,18 @@
           "label": "Ruta más corta",
           "hint": "Mantener las paradas en los mismos planetas y en el mismo sistema cuando sea posible, pagando más donde eso ahorra viaje"
         }
+      },
+      "pick": {
+        "title": "Añadir %{name} a una lista",
+        "hint": {
+          "one": "%{count} artículo",
+          "other": "%{count} artículos"
+        },
+        "activeHint": {
+          "one": "Lista activa · %{count} artículo",
+          "other": "Lista activa · %{count} artículos"
+        },
+        "loadoutParts": "piezas no de serie"
       }
     }
   }

@@ -1,34 +1,31 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { type Cart, InventoryItemTypeEnum } from "@/services/fyApi";
+import {
+  type Cart,
+  type CartList,
+  InventoryItemTypeEnum,
+} from "@/services/fyApi";
 
 const mutate = vi.fn();
 const updateCart = vi.fn();
+const emit = vi.fn();
 const displaySuccess = vi.fn();
 const displayWarning = vi.fn();
-const displayAlert = vi.fn();
 
 const authenticated = { value: true };
 const enabled = { value: true };
+const lists = ref<CartList[]>([]);
 
 let mutationOptions:
   { mutation: { onSuccess: (cart: Cart) => void } } | undefined;
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
+  useCartLists: () => ({ data: lists }),
   useAddCartItem: (options: typeof mutationOptions) => {
     mutationOptions = options;
 
     return { mutate, isPending: ref(false) };
-  },
-}));
-
-vi.mock("@/frontend/components/Cart/ListMenu/index.vue", () => ({
-  default: {
-    name: "CartListMenu",
-    emits: ["pick"],
-    template:
-      "<button data-test='cart-list-pick' @click=\"$emit('pick', 'list-b')\" />",
   },
 }));
 
@@ -40,6 +37,10 @@ vi.mock("@/frontend/composables/useCartCache", () => ({
   useCartCache: () => ({ updateCart }),
 }));
 
+vi.mock("@/shared/composables/useComlink", () => ({
+  useComlink: () => ({ emit }),
+}));
+
 vi.mock("@/frontend/stores/session", () => ({
   useSessionStore: () => ({
     get isAuthenticated() {
@@ -49,7 +50,11 @@ vi.mock("@/frontend/stores/session", () => ({
 }));
 
 vi.mock("@/shared/composables/useAppNotifications", () => ({
-  useAppNotifications: () => ({ displaySuccess, displayWarning, displayAlert }),
+  useAppNotifications: () => ({
+    displaySuccess,
+    displayWarning,
+    displayAlert: vi.fn(),
+  }),
 }));
 
 const Component = (await import("./index.vue")).default;
@@ -60,6 +65,9 @@ const item = {
   name: "Adiva Jacket",
 };
 
+const list = (id: string, active = false) =>
+  ({ id, name: `List ${id}`, active, itemsCount: 0 }) as CartList;
+
 const mount = () =>
   mountWithDefaults<typeof Component>(Component, { props: { item } });
 
@@ -67,45 +75,52 @@ describe("CartAddToCart", () => {
   beforeEach(() => {
     authenticated.value = true;
     enabled.value = true;
+    lists.value = [list("a", true)];
     mutate.mockClear();
+    emit.mockClear();
     updateCart.mockClear();
     displaySuccess.mockClear();
     displayWarning.mockClear();
   });
 
-  it("adds one of the item", async () => {
+  it("is an icon alone", async () => {
+    const wrapper = await mount();
+
+    expect(wrapper.find("[data-test='cart-add']").text()).toBe("");
+  });
+
+  it("adds one of the item right away with a single list", async () => {
     const wrapper = await mount();
 
     await wrapper.find("[data-test='cart-add']").trigger("click");
 
     expect(mutate).toHaveBeenCalledWith({
-      data: {
-        itemType: "Equipment",
-        itemId: "item-id",
-        quantity: 1,
-        cartId: undefined,
-      },
+      data: { itemType: "Equipment", itemId: "item-id", quantity: 1 },
     });
+    expect(emit).not.toHaveBeenCalled();
   });
 
-  it("adds to another list when one is picked from the menu", async () => {
+  it("asks which list with more than one", async () => {
+    lists.value = [list("a", true), list("b")];
     const wrapper = await mount();
 
-    await wrapper.find("[data-test='cart-list-pick']").trigger("click");
+    await wrapper.find("[data-test='cart-add']").trigger("click");
 
-    expect(mutate).toHaveBeenCalledWith({
-      data: {
-        itemType: "Equipment",
-        itemId: "item-id",
-        quantity: 1,
-        cartId: "list-b",
-      },
-    });
+    expect(mutate).not.toHaveBeenCalled();
+    expect(emit).toHaveBeenCalledWith(
+      "open-modal",
+      expect.objectContaining({
+        props: {
+          name: "Adiva Jacket",
+          items: [{ itemType: "Equipment", itemId: "item-id" }],
+        },
+      }),
+    );
   });
 
   it("takes the answer as the new cart", async () => {
     await mount();
-    const cart = { items: [] } as unknown as Cart;
+    const cart = { items: [], name: "List a" } as unknown as Cart;
 
     mutationOptions?.mutation.onSuccess(cart);
 

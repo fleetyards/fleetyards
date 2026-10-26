@@ -48,8 +48,6 @@
         "name": "Name",
         "activate": "Als aktiv festlegen",
         "isActive": "Aktive Liste",
-        "addTo": "Zu einer anderen Liste hinzufügen",
-        "addToList": "Zu %{name} hinzufügen",
         "confirmDelete": "Die Liste %{name} mit allem darauf löschen?",
         "messages": {
           "saveFailed": "Die Liste konnte nicht gespeichert werden."
@@ -78,6 +76,18 @@
           "label": "Kürzeste Route",
           "hint": "Stopps möglichst auf denselben Planeten und im selben System halten, auch wenn ein Artikel dort mehr kostet"
         }
+      },
+      "pick": {
+        "title": "%{name} zu einer Liste hinzufügen",
+        "hint": {
+          "one": "%{count} Artikel",
+          "other": "%{count} Artikel"
+        },
+        "activeHint": {
+          "one": "Aktive Liste · %{count} Artikel",
+          "other": "Aktive Liste · %{count} Artikel"
+        },
+        "loadoutParts": "nicht serienmäßige Teile"
       }
     }
   }

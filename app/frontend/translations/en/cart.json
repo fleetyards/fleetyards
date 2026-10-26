@@ -48,8 +48,6 @@
         "name": "Name",
         "activate": "Make active",
         "isActive": "Active list",
-        "addTo": "Add to another list",
-        "addToList": "Add to %{name}",
         "confirmDelete": "Delete the list %{name} and everything on it?",
         "messages": {
           "saveFailed": "Could not save the list."
@@ -78,6 +76,18 @@
           "label": "Shortest trip",
           "hint": "Keep stops on the same planets and in the same system where possible, paying more where that saves travel"
         }
+      },
+      "pick": {
+        "title": "Add %{name} to a list",
+        "hint": {
+          "one": "%{count} item",
+          "other": "%{count} items"
+        },
+        "activeHint": {
+          "one": "Active list · %{count} item",
+          "other": "Active list · %{count} items"
+        },
+        "loadoutParts": "non-stock parts"
       }
     }
   }
