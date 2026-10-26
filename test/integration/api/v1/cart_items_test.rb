@@ -28,6 +28,23 @@ class Api::V1::CartItemsTest < ActionDispatch::IntegrationTest
       response(201, "successful") { schema CART }
       response(400, "validation error") { schema ::Shared::V1::Schemas::ValidationError }
       response(403, "forbidden") { schema ::Shared::V1::Schemas::StandardError }
+      response(404, "not found") { schema ::Shared::V1::Schemas::StandardError }
+    end
+  end
+
+  api_path "/cart/items/bulk" do
+    post("Add Cart Items") do
+      operationId "addCartItems"
+      tags "Cart"
+      consumes "application/json"
+      produces "application/json"
+      security SECURITY
+
+      request_body required: true, schema: ::V1::Schemas::Inputs::CartItemsBulkCreateInput
+
+      response(201, "successful") { schema CART }
+      response(400, "validation error") { schema ::Shared::V1::Schemas::ValidationError }
+      response(403, "forbidden") { schema ::Shared::V1::Schemas::StandardError }
     end
   end
 
@@ -84,6 +101,44 @@ class Api::V1::CartItemsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "POST adds to the active list only" do
+    other_list = create(:cart, user: @user, active: false)
+    create(:cart_item, cart: other_list, item: @commodity, quantity: 50)
+
+    assert_api_response :post, 201, api_path: "/cart/items",
+      body: {itemType: "Commodity", itemId: @commodity.id} do
+      assert_equal [5], parsed_body["items"].pluck("quantity")
+    end
+  end
+
+  test "POST adds to another list when named, and leaves it inactive" do
+    other_list = create(:cart, user: @user, name: "Bounty loadout", active: false)
+
+    assert_api_response :post, 201, api_path: "/cart/items",
+      body: {itemType: "Commodity", itemId: @commodity.id, quantity: 2, cartId: other_list.id} do
+      assert_equal [other_list.id, "Bounty loadout", false], parsed_body.values_at("id", "name", "active")
+      assert_equal [2], parsed_body["items"].pluck("quantity")
+    end
+
+    assert_equal 4, @cart_item.reload.quantity
+    assert_not other_list.reload.active?
+  end
+
+  test "POST returns 404 for another user's list" do
+    assert_api_response :post, 404, api_path: "/cart/items",
+      body: {itemType: "Commodity", itemId: @commodity.id, cartId: create(:cart).id}
+  end
+
+  test "POST starts a list for a user who has none" do
+    user = create(:user)
+    sign_in user
+
+    assert_api_response :post, 201, api_path: "/cart/items",
+      body: {itemType: "Commodity", itemId: @commodity.id}
+
+    assert_equal [Cart::DEFAULT_NAME], user.carts.pluck(:name)
+  end
+
   test "POST rejects an item that does not exist" do
     assert_api_response :post, 400, api_path: "/cart/items",
       body: {itemType: "Component", itemId: SecureRandom.uuid}
@@ -100,6 +155,47 @@ class Api::V1::CartItemsTest < ActionDispatch::IntegrationTest
 
     assert_api_response :post, 403, api_path: "/cart/items",
       body: {itemType: "Commodity", itemId: @commodity.id}
+  end
+
+  test "POST bulk adds every item, one line per item" do
+    gun = create(:component, name: "CF-337 Panther")
+    cooler = create(:component, name: "Bracer")
+
+    assert_api_response :post, 201, api_path: "/cart/items/bulk",
+      body: {items: [
+        {itemType: "Component", itemId: gun.id, quantity: 2},
+        {itemType: "Component", itemId: cooler.id},
+        {itemType: "Component", itemId: gun.id},
+        {itemType: "Commodity", itemId: @commodity.id}
+      ]} do
+      quantities = parsed_body["items"].to_h { |line| [line.dig("item", "id"), line["quantity"]] }
+      assert_equal({@commodity.id => 5, gun.id => 3, cooler.id => 1}, quantities)
+    end
+  end
+
+  test "POST bulk adds to another list when named" do
+    other_list = create(:cart, user: @user, active: false)
+    gun = create(:component, name: "CF-337 Panther")
+
+    assert_api_response :post, 201, api_path: "/cart/items/bulk",
+      body: {cartId: other_list.id, items: [{itemType: "Component", itemId: gun.id, quantity: 2}]} do
+      assert_equal other_list.id, parsed_body["id"]
+    end
+
+    assert_equal [[gun.id, 2]], other_list.cart_items.pluck(:item_id, :quantity)
+  end
+
+  test "POST bulk adds nothing when one item cannot be added" do
+    gun = create(:component, name: "CF-337 Panther")
+
+    assert_api_response :post, 400, api_path: "/cart/items/bulk",
+      body: {items: [
+        {itemType: "Component", itemId: gun.id},
+        {itemType: "Commodity", itemId: @commodity.id},
+        {itemType: "Component", itemId: SecureRandom.uuid}
+      ]}
+
+    assert_equal [[@commodity.id, 4]], @user.cart_items.pluck(:item_id, :quantity)
   end
 
   test "PUT changes the quantity" do
