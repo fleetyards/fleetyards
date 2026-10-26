@@ -18,9 +18,18 @@ module Api
         authorize! @cart_item, with: CartItemPolicy
 
         added = params.fetch(:quantity, 1).to_i
-        @cart_item.quantity = @cart_item.new_record? ? added : @cart_item.quantity + added
+        saved = if @cart_item.new_record?
+          @cart_item.quantity = added
+          @cart_item.save
+        else
+          # Locked, so two adds of an item already in the cart both count.
+          @cart_item.with_lock do
+            @cart_item.quantity += added
+            @cart_item.save
+          end
+        end
 
-        if @cart_item.save
+        if saved
           render_cart(status: :created)
         else
           render json: ValidationError.new("cart_items.create", errors: @cart_item.errors), status: :bad_request
