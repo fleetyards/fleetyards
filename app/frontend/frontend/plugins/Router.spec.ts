@@ -1,7 +1,13 @@
-import { describe, expect, it, beforeEach } from "vitest";
+import { afterEach, describe, expect, it, beforeEach, vi } from "vitest";
 import { setActivePinia, createPinia } from "pinia";
 import type { RouteLocation } from "vue-router";
-import { beforeResolve } from "@/frontend/plugins/Router";
+import {
+  afterEach as afterNavigation,
+  beforeResolve,
+} from "@/frontend/plugins/Router";
+import { useAppStore } from "@/frontend/stores/app";
+import { useNotificationsStore } from "@/shared/stores/notifications";
+import { MessageTypesEnum } from "@/shared/components/AppNotifications/types";
 import { queryClient } from "@/frontend/plugins/QueryClient";
 import {
   FeatureFlagName,
@@ -143,5 +149,206 @@ describe("frontend router feature guard", () => {
     );
 
     expect(redirect).toEqual({ routeName: "login" });
+  });
+});
+
+describe("frontend router release reload", () => {
+  const at = (path: string, query: RouteLocation["query"] = {}) =>
+    ({ path, params: {}, query, meta: {} }) as unknown as RouteLocation;
+
+  const reload = vi.fn();
+
+  beforeEach(() => {
+    setActivePinia(createPinia());
+    sessionStorage.clear();
+    vi.stubGlobal("location", { ...window.location, reload });
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.restoreAllMocks();
+    vi.unstubAllGlobals();
+    reload.mockReset();
+  });
+
+  const releaseOut = (version = "999.0.0") => {
+    useAppStore().version = version;
+  };
+
+  it("loads the new release on arriving at another page", () => {
+    releaseOut();
+
+    afterNavigation(
+      at("/hangar/ripley/ships/nostromo/"),
+      at("/hangar/ripley/"),
+    );
+
+    expect(reload).toHaveBeenCalledTimes(1);
+  });
+
+  it("stays in the app while the release is current", () => {
+    afterNavigation(
+      at("/hangar/ripley/ships/nostromo/"),
+      at("/hangar/ripley/"),
+    );
+
+    expect(reload).not.toHaveBeenCalled();
+  });
+
+  it("loads the new release on moving from one record to the next", () => {
+    releaseOut();
+
+    afterNavigation(
+      at("/hangar/ripley/ships/narcissus/"),
+      at("/hangar/ripley/ships/nostromo/"),
+    );
+
+    expect(reload).toHaveBeenCalledTimes(1);
+  });
+
+  it("stays in the app when only the query changes", () => {
+    releaseOut();
+
+    afterNavigation(
+      at("/hangar/ripley/", { page: "2" }),
+      at("/hangar/ripley/"),
+    );
+
+    expect(reload).not.toHaveBeenCalled();
+  });
+
+  it("takes a missing trailing slash for the same page", () => {
+    releaseOut();
+
+    afterNavigation(at("/hangar/ripley"), at("/hangar/ripley/"));
+
+    expect(reload).not.toHaveBeenCalled();
+  });
+
+  it("loads a filtered list in the new release", () => {
+    releaseOut();
+
+    afterNavigation(at("/hangar/ripley/", { name: "nost" }), at("/fleets/"));
+
+    expect(reload).toHaveBeenCalledTimes(1);
+  });
+
+  it("keeps a one-time secret off the server", () => {
+    releaseOut();
+
+    afterNavigation(
+      at("/settings/oauth-applications/app/", { secret: "s3cret" }),
+      at("/settings/oauth-applications/"),
+    );
+
+    expect(reload).not.toHaveBeenCalled();
+  });
+
+  it("does not reload after a navigation that failed", () => {
+    releaseOut();
+
+    afterNavigation(
+      at("/hangar/ripley/ships/nostromo/"),
+      at("/hangar/ripley/"),
+      new Error("aborted") as never,
+    );
+
+    expect(reload).not.toHaveBeenCalled();
+  });
+
+  it("tries again only once a rollout has had time to finish", () => {
+    vi.useFakeTimers();
+    releaseOut();
+
+    afterNavigation(
+      at("/hangar/ripley/ships/nostromo/"),
+      at("/hangar/ripley/"),
+    );
+    afterNavigation(at("/fleets/maru/"), at("/hangar/ripley/ships/nostromo/"));
+
+    expect(reload).toHaveBeenCalledTimes(1);
+
+    vi.advanceTimersByTime(11 * 60 * 1000);
+    afterNavigation(at("/hangar/ripley/"), at("/fleets/maru/"));
+
+    expect(reload).toHaveBeenCalledTimes(2);
+  });
+
+  it("reloads for a newer release straight away", () => {
+    releaseOut();
+    afterNavigation(
+      at("/hangar/ripley/ships/nostromo/"),
+      at("/hangar/ripley/"),
+    );
+
+    releaseOut("1000.0.0");
+    afterNavigation(
+      at("/hangar/ripley/"),
+      at("/hangar/ripley/ships/nostromo/"),
+    );
+
+    expect(reload).toHaveBeenCalledTimes(2);
+  });
+
+  it("waits while a success is on screen", () => {
+    releaseOut();
+    useNotificationsStore().addMessage({
+      id: "saved",
+      type: MessageTypesEnum.SUCCESS,
+      visible: true,
+      persist: false,
+      text: "Tour created",
+    } as never);
+
+    afterNavigation(at("/fleets/maru/tours/one/"), at("/fleets/maru/tours/"));
+
+    expect(reload).not.toHaveBeenCalled();
+  });
+
+  it("does not wait for a notice left open", () => {
+    releaseOut();
+    useNotificationsStore().addMessage({
+      id: "install",
+      type: MessageTypesEnum.INFO,
+      visible: true,
+      persist: true,
+      timeout: false,
+    } as never);
+
+    afterNavigation(
+      at("/hangar/ripley/ships/nostromo/"),
+      at("/hangar/ripley/"),
+    );
+
+    expect(reload).toHaveBeenCalledTimes(1);
+  });
+
+  it("gives up after a few reloads that brought the old release back", () => {
+    vi.useFakeTimers();
+    releaseOut();
+
+    for (let attempt = 0; attempt < 5; attempt += 1) {
+      afterNavigation(
+        at(`/hangar/ripley/ships/${attempt}/`),
+        at("/hangar/ripley/"),
+      );
+      vi.advanceTimersByTime(11 * 60 * 1000);
+    }
+
+    expect(reload).toHaveBeenCalledTimes(3);
+  });
+
+  it("still reloads where session storage is blocked", () => {
+    releaseOut();
+    vi.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+      throw new DOMException("blocked", "SecurityError");
+    });
+
+    afterNavigation(
+      at("/hangar/ripley/ships/nostromo/"),
+      at("/hangar/ripley/"),
+    );
+
+    expect(reload).toHaveBeenCalledTimes(1);
   });
 });

@@ -2,6 +2,7 @@ import {
   type LocationQueryValueRaw,
   createRouter,
   createWebHistory,
+  type NavigationFailure,
   type RouteRecordRaw,
   type RouterHistory,
   type RouteLocationNormalized,
@@ -43,6 +44,11 @@ export type FyRouterOptions = {
     to: RouteLocationNormalized,
   ) => FyRedirectRoute | undefined | Promise<FyRedirectRoute | undefined>;
   beforeEach?: (to: RouteLocationNormalized) => void;
+  afterEach?: (
+    to: RouteLocationNormalized,
+    from: RouteLocationNormalized,
+    failure?: NavigationFailure | void,
+  ) => void;
 };
 
 export const setupRouter = (options: FyRouterOptions) => {
@@ -108,6 +114,10 @@ export const setupRouter = (options: FyRouterOptions) => {
     }
 
     options.beforeEach(to);
+  });
+
+  router.afterEach((to, from, failure) => {
+    options.afterEach?.(to, from, failure);
   });
 
   router.onError((error) => {

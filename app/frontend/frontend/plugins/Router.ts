@@ -2,7 +2,9 @@ import { useAppStore } from "@/frontend/stores/app";
 import { useFleetStore } from "@/frontend/stores/fleet";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useRedirectBackStore } from "@/shared/stores/redirectBack";
-import { type RouteLocation } from "vue-router";
+import { useNotificationsStore } from "@/shared/stores/notifications";
+import { MessageTypesEnum } from "@/shared/components/AppNotifications/types";
+import { type NavigationFailure, type RouteLocation } from "vue-router";
 import { routes } from "@/frontend/pages/routes";
 import { setupRouter, type FyRedirectRoute } from "@/shared/plugins/Router";
 import { ensureQueryData } from "@/frontend/utils/RouteGuards/queryData";
@@ -14,19 +16,100 @@ const beforeEach = (to: RouteLocation) => {
   if (to.name === "fleet-invite" && to.params.token) {
     fleetStore.inviteToken = String(to.params.token);
   }
+};
 
+const RELEASE_RELOAD_KEY = "fy-release-reload";
+
+// Long enough for a rollout to finish behind the proxy, short enough that a
+// reload which was served the old release is tried again -- a few times, not
+// forever, should one host never get the release.
+const RELEASE_RELOAD_RETRY = 10 * 60 * 1000;
+const RELEASE_RELOAD_ATTEMPTS = 3;
+
+type ReleaseReload = { version: string; at: number; attempts: number };
+
+const lastReload = (): ReleaseReload | null => {
+  try {
+    return JSON.parse(
+      sessionStorage.getItem(RELEASE_RELOAD_KEY) ?? "null",
+    ) as ReleaseReload | null;
+  } catch {
+    return null;
+  }
+};
+
+const mayReloadFor = (version: string) => {
+  const last = lastReload();
+
+  if (last?.version !== version) return true;
+
+  return (
+    last.attempts < RELEASE_RELOAD_ATTEMPTS &&
+    Date.now() - last.at >= RELEASE_RELOAD_RETRY
+  );
+};
+
+const rememberReload = (version: string) => {
+  const last = lastReload();
+  const attempts = last?.version === version ? last.attempts + 1 : 1;
+
+  try {
+    sessionStorage.setItem(
+      RELEASE_RELOAD_KEY,
+      JSON.stringify({ version, at: Date.now(), attempts }),
+    );
+  } catch {
+    // Without storage the reload still happens, only unguarded.
+  }
+};
+
+const withoutTrailingSlash = (path: string) => path.replace(/\/+$/, "");
+
+// A success that is about to time out on its own; a notice that waits for the
+// member would hold the release back for as long as it is left open.
+const successOnScreen = () =>
+  useNotificationsStore().messages.some(
+    (message) =>
+      message.visible &&
+      message.type === MessageTypesEnum.SUCCESS &&
+      !message.persist &&
+      message.timeout !== false,
+  );
+
+/*
+ * A tab left open across a release keeps sending requests shaped by its old
+ * bundle, which the API may since refuse. Arriving on another page is when the
+ * new release is loaded. After the navigation rather than before it, so a
+ * push, a replace and a Back have already left history as they should, and
+ * reloading the address bar changes none of it.
+ *
+ * Not while the path stays put -- typing into a filter only changes the
+ * query -- and not with a one-time secret in the query, which a page load would
+ * hand to every access log. Not while a "saved" is on screen either, or the
+ * reload would take it away before anyone read it. And not twice in a row for
+ * one release, in case the reload is still served the old one.
+ */
+export const afterEach = (
+  to: RouteLocation,
+  from: RouteLocation,
+  failure?: NavigationFailure | void,
+) => {
   const appStore = useAppStore();
-  // check if update is available
+
   if (
-    appStore.isUpdateAvailable &&
-    Object.keys(to.query).length === 0 &&
-    to.query.constructor === Object &&
-    Object.keys(to.params).length === 0 &&
-    to.params.constructor === Object
+    failure ||
+    !appStore.isUpdateAvailable ||
+    withoutTrailingSlash(to.path) === withoutTrailingSlash(from.path) ||
+    "secret" in to.query ||
+    successOnScreen() ||
+    !mayReloadFor(appStore.version)
   ) {
-    window.location.href = to.path;
     return;
   }
+
+  rememberReload(appStore.version);
+
+  window.location.reload();
 };
 
 // A route behind a flag that is off does not exist for this user: hiding it
@@ -126,6 +209,7 @@ export const beforeResolve = async (
 const router = setupRouter({
   beforeResolve,
   beforeEach,
+  afterEach,
   routes,
 });
 
