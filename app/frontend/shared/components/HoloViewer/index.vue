@@ -19,6 +19,7 @@ import Model from "./Model/index.vue";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useLowPowerDevice } from "@/shared/composables/useLowPowerDevice";
 import { LOW_POWER_HOLO_SIZE_LIMIT } from "@/shared/components/HoloViewer/limits";
+import { type HoloMount } from "@/shared/components/HoloViewer/mounts";
 
 export type HoloModel = {
   path: string;
@@ -27,6 +28,8 @@ export type HoloModel = {
   size?: number;
   // Painted and animated: drawn with its own materials, not the holo's.
   textured?: boolean;
+  // Parts drawn on the holo's ports, in its own frame.
+  mounts?: HoloMount[];
 };
 
 type Props = {

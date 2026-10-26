@@ -24,6 +24,7 @@ import {
 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { sharedDracoLoader } from "../dracoLoader";
+import { buildMounts } from "../mounts";
 import { type HoloModel } from "../index.vue";
 
 type Props = {
@@ -143,7 +144,33 @@ const { state } = useLoader(GLTFLoader, props.model.path, {
   },
 });
 
-const setup = (scene: Group, animations: AnimationClip[]) => {
+// The parts on the holo's ports, in the export's frame: added to the scene
+// before it is centred, and replaced in place when the fitting changes, so the
+// camera stays where it is.
+let mountRoot: Group | undefined;
+
+// Two quick swaps load in parallel; only the latest may land.
+let mountsRequest = 0;
+
+const attachMounts = async (scene: Group) => {
+  const request = ++mountsRequest;
+  const mounts = props.model.mounts;
+  const next = mounts?.length ? await buildMounts(mounts) : undefined;
+
+  if (request !== mountsRequest) return;
+
+  if (mountRoot) scene.remove(mountRoot);
+  mountRoot = next;
+
+  if (next) {
+    scene.add(next);
+    setMaterials(next);
+  }
+};
+
+const setup = async (scene: Group, animations: AnimationClip[]) => {
+  await attachMounts(scene);
+
   if (props.model.textured) {
     playAnimations(scene, animations);
   } else {
@@ -175,8 +202,15 @@ watch(
   () => state.value,
   () => {
     if (state.value) {
-      setup(state.value.scene, state.value.animations);
+      void setup(state.value.scene, state.value.animations);
     }
+  },
+);
+
+watch(
+  () => props.model.mounts,
+  () => {
+    if (state.value) void attachMounts(state.value.scene);
   },
 );
 
