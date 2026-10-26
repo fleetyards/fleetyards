@@ -358,7 +358,7 @@ const handleModelLoaded = (size: Vector3, scene: Mesh) => {
     });
     // Room around it: a frame rarely shows its edges whole, the editor's fades
     // in from the left under the controls.
-    reach *= 1.25;
+    reach *= 1.35;
 
     fitDistance.value = reach;
     modelMaxDimension.value = Math.max(size.x, size.y, size.z);
