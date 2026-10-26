@@ -17,6 +17,8 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useCartCache } from "@/frontend/composables/useCartCache";
 import debounce from "lodash.debounce";
+import { errorTypeFrom } from "@/shared/utils/ErrorTypes";
+import { ErrorTypesEnum } from "@/shared/components/AsyncData.types";
 import {
   type CartLine,
   type ItemPrice,
@@ -56,7 +58,10 @@ const MAX_QUANTITY = 99_999;
 const { mutate: update, isPending: updating } = useUpdateCartItem({
   mutation: {
     onSuccess: updateCart,
-    onError: () => {
+    onError: (error) => {
+      // Gone already: its list was cleared before a pending save went out.
+      if (errorTypeFrom(error) === ErrorTypesEnum.NOT_FOUND) return;
+
       quantity.value = props.line.quantity;
       displayAlert({ text: t("cart.messages.updateFailed") });
     },
@@ -108,6 +113,11 @@ const resetInvalidQuantity = () => {
 // A pin moves the line to another stop, which remounts it; a quantity typed
 // just before is still sent.
 onBeforeUnmount(() => saveQuantity.flush());
+
+const removeLine = () => {
+  saveQuantity.cancel();
+  remove({ id: props.line.id });
+};
 
 const pin = (price: ItemPrice | null) => {
   update({ id: props.line.id, data: { itemPriceId: price?.id ?? null } });
@@ -208,7 +218,7 @@ const formatPrice = (value?: number | null) =>
         :loading="removing"
         :aria-label="t('cart.remove')"
         data-test="cart-line-remove"
-        @click="remove({ id: line.id })"
+        @click="removeLine"
       >
         <i class="fa-light fa-trash" />
       </Btn>

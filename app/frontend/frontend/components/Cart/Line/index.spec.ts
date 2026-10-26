@@ -223,6 +223,19 @@ describe("CartLine", () => {
     expect(remove).toHaveBeenCalledWith({ id: "line-id" });
   });
 
+  it("drops a quantity still being typed when the line is removed", async () => {
+    vi.useFakeTimers();
+    const wrapper = await mount();
+
+    await wrapper.find("[data-test='cart-line-quantity'] input").setValue("5");
+    await wrapper.find("[data-test='cart-line-remove']").trigger("click");
+    wrapper.unmount();
+    vi.advanceTimersByTime(600);
+
+    expect(update).not.toHaveBeenCalled();
+    expect(remove).toHaveBeenCalledWith({ id: "line-id" });
+  });
+
   it("shows no price for an item nobody sells", async () => {
     const wrapper = await mount({
       available: false,
