@@ -305,6 +305,16 @@ module ScData
       assert_nil @model.ship_views_digest
     end
 
+    test "keeps the stored hardpoint transforms when a port is malformed" do
+      @model.update!(hardpoint_transforms: JSON.parse(HARDPOINTS))
+      publish({"flight_hardpoints.json" => {ports: [{name: "hardpoint_gun_nose", position: [0, 0]}]}.to_json})
+
+      perform
+
+      assert_equal JSON.parse(HARDPOINTS), @model.hardpoint_transforms
+      assert_nil @model.ship_views_digest
+    end
+
     test "records nothing when the upload fails" do
       publish({"flight_top.png" => PNG})
       ActiveStorage::Blob.any_instance.stubs(:upload_without_unfurling).raises(Aws::S3::Errors::InternalError.new(nil, "down"))

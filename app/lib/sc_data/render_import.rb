@@ -49,14 +49,16 @@ module ScData
           record.public_send(:"#{field}=", ActiveStorage::Blob.create_and_upload!(io: file, filename: name, metadata: render_metadata(record, field)))
         else
           begin
-            record.public_send(:"#{field}=", render_data(field, file))
-          rescue => e
+            data = render_data(field, file)
+          rescue JSON::ParserError, ArgumentError => e
             log(:warn, "#{path}/#{name} could not be read: #{e.class}: #{e.message}")
             complete = false
             next
           end
 
-          columns << field
+          # A re-export can change the bytes and not what they say.
+          columns << field if record.public_send(field) != data
+          record.public_send(:"#{field}=", data)
         end
 
         md5s[field] = md5
