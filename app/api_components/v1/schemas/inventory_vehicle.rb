@@ -13,10 +13,11 @@ module V1
           id: {type: :string, format: :uuid},
           name: {type: :string},
           serial: {type: [:string, :null]},
+          wanted: {type: :boolean},
           model: InventoryVehicleModel
         },
         additionalProperties: false,
-        required: %w[id name]
+        required: %w[id name wanted]
       })
     end
   end

@@ -36824,12 +36824,15 @@ components:
           type:
           - string
           - 'null'
+        wanted:
+          type: boolean
         model:
           "$ref": "#/components/schemas/InventoryVehicleModel"
       additionalProperties: false
       required:
       - id
       - name
+      - wanted
       title: InventoryVehicle
     InventoryVehicleModel:
       type: object

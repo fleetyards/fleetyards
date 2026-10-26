@@ -40,6 +40,7 @@ if inventory.vehicle.present?
     json.id inventory.vehicle.id
     json.name inventory.vehicle.display_name
     json.serial inventory.vehicle.serial
+    json.wanted inventory.vehicle.wanted
     json.model do
       model = inventory.vehicle.model
 
