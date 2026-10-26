@@ -8,6 +8,8 @@ export type HoloMount = {
   position: [number, number, number];
   rotation: [number, number, number, number];
   path?: string;
+  // Drawn in the highlight colour, with everything mounted on it.
+  highlighted?: boolean;
   mounts: HoloMount[];
 };
 
@@ -42,6 +44,7 @@ export const buildMounts = async (mounts: HoloMount[]) => {
         const group = new Group();
         group.position.fromArray(mount.position);
         group.quaternion.fromArray(mount.rotation);
+        group.userData.highlighted = !!mount.highlighted;
         parent.add(group);
 
         if (mount.path) {

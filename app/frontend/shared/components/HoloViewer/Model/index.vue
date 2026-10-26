@@ -11,6 +11,7 @@ import {
   AnimationMixer,
   type Material,
   type Mesh,
+  type Object3D,
   type Texture,
   DoubleSide,
   FrontSide,
@@ -55,6 +56,12 @@ const material = new MaterialClass({
   side,
 });
 
+// A part the viewer has picked out, in the gold the grid's sections use.
+const highlightMaterial = new MaterialClass({
+  color: "#fbb03b",
+  side,
+});
+
 const windowMaterial = new MaterialClass({
   color: props.windowColor,
   opacity: 0.8,
@@ -68,7 +75,13 @@ const windowRefs = ["window", "glass"];
 // nothing else holds them.
 const disposeOriginal = (original: Material | Material[]) => {
   for (const entry of Array.isArray(original) ? original : [original]) {
-    if (entry === material || entry === windowMaterial) continue;
+    if (
+      entry === material ||
+      entry === windowMaterial ||
+      entry === highlightMaterial
+    ) {
+      continue;
+    }
 
     for (const value of Object.values(entry)) {
       if ((value as Texture | null)?.isTexture) (value as Texture).dispose();
@@ -76,6 +89,14 @@ const disposeOriginal = (original: Material | Material[]) => {
 
     entry.dispose();
   }
+};
+
+const highlighted = (node: Object3D) => {
+  for (let current: Object3D | null = node; current; current = current.parent) {
+    if (current.userData.highlighted) return true;
+  }
+
+  return false;
 };
 
 const setMaterials = (scene: Group) => {
@@ -86,11 +107,11 @@ const setMaterials = (scene: Group) => {
 
     disposeOriginal(mesh.material);
 
-    mesh.material = windowRefs.some((item) =>
-      node.name.toLowerCase().includes(item),
-    )
-      ? windowMaterial
-      : material;
+    if (windowRefs.some((item) => node.name.toLowerCase().includes(item))) {
+      mesh.material = windowMaterial;
+    } else {
+      mesh.material = highlighted(node) ? highlightMaterial : material;
+    }
   });
 };
 
@@ -123,6 +144,7 @@ onUnmounted(() => {
   mixer.value?.stopAllAction();
   material.dispose();
   windowMaterial.dispose();
+  highlightMaterial.dispose();
 });
 
 const emit = defineEmits(["loaded", "error", "progress"]);

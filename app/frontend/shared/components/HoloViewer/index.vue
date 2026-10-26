@@ -45,6 +45,9 @@ type Props = {
   // Where the camera starts around the model, in degrees from +Z. A ship holo
   // is exported facing the default; an item's keeps the game's entity frame.
   azimuth?: number;
+  // How far above the model the camera starts, in degrees. Without it the
+  // camera stays low, under a cap that keeps every holo framed alike.
+  elevation?: number;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -57,6 +60,7 @@ const props = withDefaults(defineProps<Props>(), {
   panable: false,
   zoomable: false,
   azimuth: 0,
+  elevation: undefined,
 });
 
 // Nothing will be drawn: no WebGL, or a holo that would not load. A caller with
@@ -301,10 +305,13 @@ const handleModelLoaded = (size: Vector3, _scene: Mesh) => {
   fitDistance.value = distance;
   modelMaxDimension.value = Math.max(size.x, size.y, size.z);
 
-  const height = Math.min(
-    cameraHeight.value,
-    Math.tan((maxCameraElevation.value * Math.PI) / 180) * distance,
-  );
+  const height =
+    props.elevation === undefined
+      ? Math.min(
+          cameraHeight.value,
+          Math.tan((maxCameraElevation.value * Math.PI) / 180) * distance,
+        )
+      : Math.tan((props.elevation * Math.PI) / 180) * distance;
 
   const azimuth = (props.azimuth * Math.PI) / 180;
   const position: [number, number, number] = [
