@@ -48,8 +48,10 @@ type Props = {
   // How far above the model the camera starts, in degrees. Without it the
   // camera stays low, under a cap that keeps every holo framed alike.
   elevation?: number;
-  // How much of the frame the model fills: above 1 the camera starts closer.
-  fitScale?: number;
+  // Framed so the whole model is in view whatever its shape and the frame's:
+  // its bounding sphere fitted to both fields of view, from the elevation's
+  // direction.
+  contain?: boolean;
   // See-through, with the mesh's wireframe drawn over it.
   hologram?: boolean;
 };
@@ -65,13 +67,14 @@ const props = withDefaults(defineProps<Props>(), {
   zoomable: false,
   azimuth: 0,
   elevation: undefined,
-  fitScale: 1,
+  contain: false,
   hologram: false,
 });
 
 // Nothing will be drawn: no WebGL, or a holo that would not load. A caller with
 // a picture to show instead can switch to it.
-const emit = defineEmits<{ unavailable: [] }>();
+// `loaded` once a model is on screen, for a caller holding a picture until then.
+const emit = defineEmits<{ unavailable: []; loaded: [] }>();
 
 const { displayAlert } = useAppNotifications();
 
@@ -283,6 +286,7 @@ const handleModelLoaded = (size: Vector3, _scene: Mesh) => {
   // }
 
   loading.value = false;
+  emit("loaded");
 
   // Get canvas aspect ratio
   const aspect = cameraArgs.value[1]; // width / height
@@ -305,10 +309,37 @@ const handleModelLoaded = (size: Vector3, _scene: Mesh) => {
   // Calculate distance using field of view
   const fovRadians = (cameraArgs.value[0] * Math.PI) / 180;
 
+  const azimuth = (props.azimuth * Math.PI) / 180;
+
+  if (props.contain) {
+    // The frame as it is now: the cached aspect is the one it mounted with.
+    const frame = holoViewer.value;
+    const frameAspect =
+      frame && frame.clientHeight ? frame.clientWidth / frame.clientHeight : 1;
+    const radius = size.length() / 2;
+    const halfVertical = fovRadians / 2;
+    const halfHorizontal = Math.atan(Math.tan(halfVertical) * frameAspect);
+    const reach =
+      radius / Math.sin(Math.min(halfVertical, halfHorizontal));
+    const elevation = ((props.elevation ?? 0) * Math.PI) / 180;
+
+    fitDistance.value = reach;
+    modelMaxDimension.value = Math.max(size.x, size.y, size.z);
+
+    const position: [number, number, number] = [
+      Math.sin(azimuth) * Math.cos(elevation) * reach,
+      Math.sin(elevation) * reach,
+      Math.cos(azimuth) * Math.cos(elevation) * reach,
+    ];
+
+    cameraPosition.value = position;
+    lightPosition.value = position;
+
+    return;
+  }
+
   const distance =
-    dominantSize /
-    Math.tan(fovRadians / (aspect > 2 ? aspect * 0.75 : aspect)) /
-    props.fitScale;
+    dominantSize / Math.tan(fovRadians / (aspect > 2 ? aspect * 0.75 : aspect));
 
   fitDistance.value = distance;
   modelMaxDimension.value = Math.max(size.x, size.y, size.z);
@@ -321,7 +352,6 @@ const handleModelLoaded = (size: Vector3, _scene: Mesh) => {
         )
       : Math.tan((props.elevation * Math.PI) / 180) * distance;
 
-  const azimuth = (props.azimuth * Math.PI) / 180;
   const position: [number, number, number] = [
     Math.sin(azimuth) * distance,
     height,
