@@ -1292,6 +1292,7 @@
         "extendedHoloLite": "展開輕量 Holo",
         "landedHoloLite": "著陸輕量 Holo",
         "holoTextured": "材質 Holo",
+        "holoHull": "船體 Holo",
         "state": {
           "flight": "飛行中",
           "extended": "展開",

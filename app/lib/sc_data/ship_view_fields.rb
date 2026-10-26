@@ -9,7 +9,7 @@ module ScData
   # rule added on one side fails the other until it is ported.
   module ShipViewFields
     VIEW_NAME = /\A((?:extended|landed|flight)[-_ ]?)?(top|side|port|front|angled[-_ ]?rear|angled|bottom|rear|starboard)([-_ ]?view)?([-_ ]?colored)?\z/i
-    HOLO_NAME = /\A((?:extended|landed|flight)[-_ ]?)?holo(?:[-_ ]?(lite|textured))?\z/i
+    HOLO_NAME = /\A((?:extended|landed|flight)[-_ ]?)?holo(?:[-_ ]?(lite|textured|hull))?\z/i
 
     VIEWPOINTS = {
       "top" => "top",
@@ -27,6 +27,8 @@ module ScData
     VIEW_EXTENSIONS = %w[png jpg jpeg webp gif].freeze
     HOLO_EXTENSIONS = %w[gltf glb].freeze
 
+    FLIGHT_ONLY_HOLOS = %w[textured hull].freeze
+
     module_function
 
     # The attachment name, or nil for a file that has no field.
@@ -41,8 +43,8 @@ module ScData
         prefix = prefix_for(holo[1])
         variant = holo[2]&.downcase
 
-        # Only the flying pose is exported painted.
-        return if variant == "textured" && prefix
+        # Only the flying pose is exported painted, or without its components.
+        return if FLIGHT_ONLY_HOLOS.include?(variant) && prefix
 
         return [prefix, "holo", variant].compact.join("_")
       end

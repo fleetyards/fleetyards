@@ -14,6 +14,7 @@ module Admin
             properties: {
               fleetchartImage: {type: :string},
               extendedHolo: ::Shared::V1::Schemas::MediaFile,
+              holoHull: ::Shared::V1::Schemas::MediaFile,
               rsiStoreImage: ::Shared::V1::Schemas::MediaFile
             }
           })
