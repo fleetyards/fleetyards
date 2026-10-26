@@ -14,7 +14,7 @@ import { useSessionStore } from "@/frontend/stores/session";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { catalogueSelection } from "@/frontend/components/Logistics/selection";
 import { type ItemPickerEntry } from "@/frontend/components/Logistics/types";
-import { FeatureFlagName } from "@/services/fyApi";
+import { FeatureFlagName, useMyFleets } from "@/services/fyApi";
 
 type Props = {
   entry: ItemPickerEntry;
@@ -25,7 +25,18 @@ const props = defineProps<Props>();
 const { t } = useI18n();
 const comlink = useComlink();
 const { isAuthenticated } = storeToRefs(useSessionStore());
-const { isFeatureEnabled } = useFeatures();
+const { isFeatureEnabled, isFleetFeatureEnabled } = useFeatures();
+
+const { data: fleets } = useMyFleets({
+  query: { enabled: isAuthenticated, retry: false },
+});
+
+// Fleet logistics may be on for a fleet without being on for its members.
+const fleetLogistics = computed(() =>
+  (fleets.value ?? []).some((fleet) =>
+    isFleetFeatureEnabled(fleet, FeatureFlagName.FLEET_LOGISTICS),
+  ),
+);
 
 // A retired record is kept for the entries that already point at it; the
 // pickers no longer offer it for new ones, and neither does its page.
@@ -33,7 +44,7 @@ const visible = computed(
   () =>
     isAuthenticated.value &&
     (isFeatureEnabled(FeatureFlagName.HANGAR_INVENTORIES) ||
-      isFeatureEnabled(FeatureFlagName.FLEET_LOGISTICS)) &&
+      fleetLogistics.value) &&
     !props.entry.record.retired,
 );
 
