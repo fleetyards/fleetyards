@@ -88,6 +88,11 @@ const HIGHLIGHT_COLOR = new Color("#fbb03b");
 const EDGE_ANGLE = 20;
 const edgesOf = new WeakMap<BufferGeometry, EdgesGeometry>();
 
+// Finding the edges walks every triangle on the main thread: an Ironclad's
+// hull, at nine million points, held the page for good. A mesh that large
+// keeps its see-through body without the lines.
+const EDGE_POINT_LIMIT = 500_000;
+
 const edgesFor = (geometry: BufferGeometry) => {
   let edges = edgesOf.get(geometry);
 
@@ -249,7 +254,11 @@ const setMaterials = (scene: Group) => {
   for (const body of bodies) {
     const own = withinMounts(body);
 
-    if (props.hologram && !wireOf(body)) {
+    const lined =
+      props.hologram &&
+      (body.geometry.getAttribute("position")?.count ?? 0) <= EDGE_POINT_LIMIT;
+
+    if (lined && !wireOf(body)) {
       const wire = new LineSegments(edgesFor(body.geometry), wireMaterial);
       wire.userData.wire = true;
       body.add(wire);
