@@ -15,6 +15,8 @@ import {
 import Component from "./[contract].vue";
 
 const publish = vi.hoisted(() => vi.fn());
+const acceptCrew = vi.hoisted(() => vi.fn());
+const refetch = vi.hoisted(() => vi.fn());
 const displayAlert = vi.hoisted(() => vi.fn());
 const reportError = vi.hoisted(() => vi.fn());
 
@@ -78,7 +80,7 @@ vi.mock("@/services/fyApi", async () => {
     useFleetContract: () => ({
       data: current,
       isLoading: ref(false),
-      refetch: vi.fn(),
+      refetch,
     }),
     usePublishFleetContract: () => ({ mutateAsync: publish }),
     useClaimFleetContract: mutation,
@@ -86,7 +88,7 @@ vi.mock("@/services/fyApi", async () => {
     useFulfilFleetContract: mutation,
     useCancelFleetContract: mutation,
     useJoinFleetContractCrew: mutation,
-    useAcceptFleetContractCrew: mutation,
+    useAcceptFleetContractCrew: () => ({ mutateAsync: acceptCrew }),
     useDeclineFleetContractCrew: mutation,
     useLeaveFleetContractCrew: mutation,
   };
@@ -122,6 +124,9 @@ afterEach(() => {
   teleportTarget = undefined;
   current.value = undefined;
   vi.clearAllMocks();
+  publish.mockReset();
+  acceptCrew.mockReset();
+  refetch.mockReset();
 });
 
 const mount = async (
@@ -240,8 +245,24 @@ describe("FleetContractPage", () => {
     expect(displayAlert).not.toHaveBeenCalled();
   });
 
-  it("reports a failure that never reached the server", async () => {
-    const error = new AxiosError("Network Error", "ERR_NETWORK");
+  it("leaves a dropped connection unreported", async () => {
+    publish.mockRejectedValue(new AxiosError("Network Error", "ERR_NETWORK"));
+
+    await mount(FleetContractStateEnum.DRAFT, ["fleet:contracts:manage"]);
+
+    document
+      .querySelector<HTMLElement>("[data-test='publish-contract']")!
+      .click();
+    await flushPromises();
+
+    expect(reportError).not.toHaveBeenCalled();
+    expect(displayAlert).toHaveBeenCalledWith({
+      text: "That did not work - the contract may have changed in the meantime",
+    });
+  });
+
+  it("reports a failure of our own", async () => {
+    const error = new TypeError("Cannot read properties of undefined");
     publish.mockRejectedValue(error);
 
     await mount(FleetContractStateEnum.DRAFT, ["fleet:contracts:manage"]);
@@ -252,8 +273,41 @@ describe("FleetContractPage", () => {
     await flushPromises();
 
     expect(reportError).toHaveBeenCalledWith(error, "FleetContractPage#act");
-    expect(displayAlert).toHaveBeenCalledWith({
-      text: "That did not work - the contract may have changed in the meantime",
-    });
+  });
+
+  it("answers two crew requests at once", async () => {
+    acceptCrew.mockReturnValue(new Promise(() => undefined));
+
+    const subject = await mount(FleetContractStateEnum.IN_PROGRESS, [
+      "fleet:contracts:manage",
+    ]);
+    const crewList = subject.findComponent({ name: "FleetContractsCrewList" });
+
+    crewList.vm.$emit("accept", "first");
+    crewList.vm.$emit("accept", "second");
+    crewList.vm.$emit("accept", "first");
+    await flushPromises();
+
+    expect(acceptCrew.mock.calls.map(([params]) => params.id)).toEqual([
+      "first",
+      "second",
+    ]);
+  });
+
+  it("holds a step until the contract is read again", async () => {
+    publish.mockResolvedValue(undefined);
+    refetch.mockReturnValue(new Promise(() => undefined));
+
+    await mount(FleetContractStateEnum.DRAFT, ["fleet:contracts:manage"]);
+
+    const button = document.querySelector<HTMLElement>(
+      "[data-test='publish-contract']",
+    )!;
+    button.click();
+    await flushPromises();
+    button.click();
+    await flushPromises();
+
+    expect(publish).toHaveBeenCalledTimes(1);
   });
 });
