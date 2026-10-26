@@ -248,6 +248,8 @@ class User < ApplicationRecord
   after_update :notify_user
   after_save :touch_fleet_memberships
 
+  before_save -> { self.active_week_streak = 0 }, if: -> { will_save_change_to_tracking?(to: false) }
+
   # A plaque's picture is drawn once, in the owner's browser, with the owner's
   # name on it. Once that name changes, or the owner hides it, the picture is
   # wrong, and a shared link previews the ship instead until the plaque is
@@ -389,6 +391,27 @@ class User < ApplicationRecord
 
   def friends
     ::User.where(id: ::Friendship.partner_ids_for(self))
+  end
+
+  # The streak counts the weeks in a row the account was used, ending with the
+  # week of `last_active_at`. It is a count rather than a list of weeks, so it
+  # says how regularly someone uses the site without keeping when they did.
+  # Objecting to usage analytics leaves it at zero.
+  def record_activity!(now = Time.current)
+    this_week = now.beginning_of_week
+
+    streak =
+      if !tracking?
+        0
+      elsif last_active_at.blank? || last_active_at < this_week - 1.week
+        1
+      elsif last_active_at < this_week
+        active_week_streak + 1
+      else
+        [active_week_streak, 1].max
+      end
+
+    update_columns(last_active_at: now, active_week_streak: streak)
   end
 
   def friend_of?(other)
