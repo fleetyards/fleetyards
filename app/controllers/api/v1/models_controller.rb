@@ -165,6 +165,10 @@ module Api
         @loadout_slots = LoadoutSlots.new(model)
       end
 
+      def loadout_preview
+        @model = find_model_by_slug!
+      end
+
       def positions
         model = find_model_by_slug!
         return if performed?

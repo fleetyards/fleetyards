@@ -16142,6 +16142,34 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/models/{slug}/loadout-preview":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Model slug
+      required: true
+    get:
+      summary: Model Loadout Preview
+      tags:
+      - Models
+      operationId: modelLoadoutPreview
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelLoadoutPreview"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/models/{slug}/loadout-slots":
     parameters:
     - name: slug
@@ -40005,6 +40033,90 @@ components:
           type: string
       additionalProperties: false
       title: ModelLinks
+    ModelLoadoutPreview:
+      type: object
+      properties:
+        holoHull:
+          "$ref": "#/components/schemas/MediaFile"
+        ports:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelLoadoutPreviewPort"
+      additionalProperties: false
+      required:
+      - ports
+      title: ModelLoadoutPreview
+    ModelLoadoutPreviewPort:
+      type: object
+      properties:
+        name:
+          type: string
+        parent:
+          type:
+          - string
+          - 'null'
+        helper:
+          type: boolean
+          description: False when the model has no node for the port, which then sits
+            at the entity origin
+        position:
+          type: array
+          items:
+            type: number
+          minItems: 3
+          maxItems: 3
+        rotation:
+          type: array
+          items:
+            type: number
+          minItems: 4
+          maxItems: 4
+          description: Quaternion x, y, z, w
+        flags:
+          type: string
+        editable:
+          type: boolean
+        types:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelLoadoutPreviewPortType"
+        defaultItem:
+          type:
+          - string
+          - 'null'
+          description: scKey of the item mounted in the default loadout
+        geometry:
+          type: boolean
+          description: False when the default item is drawn in neither holo
+        stripped:
+          type: boolean
+          description: The default item is left out of the hull holo
+      additionalProperties: false
+      required:
+      - name
+      - parent
+      - helper
+      - position
+      - rotation
+      - flags
+      - editable
+      - types
+      - defaultItem
+      - geometry
+      - stripped
+      title: ModelLoadoutPreviewPort
+    ModelLoadoutPreviewPortType:
+      type: object
+      properties:
+        type:
+          type: string
+        subTypes:
+          type: string
+      additionalProperties: false
+      required:
+      - type
+      - subTypes
+      title: ModelLoadoutPreviewPortType
     ModelLoaner:
       type: object
       properties:

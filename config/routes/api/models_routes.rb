@@ -12,6 +12,7 @@ resources :models, param: :slug, only: %i[index show] do
   member do
     get :hardpoints
     get :loadout_slots, path: "loadout-slots"
+    get :loadout_preview, path: "loadout-preview"
     get :positions
     get :images
     get :videos
