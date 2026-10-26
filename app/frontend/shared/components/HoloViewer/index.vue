@@ -9,7 +9,7 @@ export default {
 import Loader from "@/shared/components/Loader/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { type Camera, type Mesh, type Object3D, type Vector3 } from "three";
+import { type Camera, type Mesh, type Object3D, Vector3 } from "three";
 import { useI18n } from "@/shared/composables/useI18n";
 
 import { TresCanvas } from "@tresjs/core";
@@ -316,12 +316,36 @@ const handleModelLoaded = (size: Vector3, _scene: Mesh) => {
     const frame = holoViewer.value;
     const frameAspect =
       frame && frame.clientHeight ? frame.clientWidth / frame.clientHeight : 1;
-    const radius = size.length() / 2;
-    const halfVertical = fovRadians / 2;
-    const halfHorizontal = Math.atan(Math.tan(halfVertical) * frameAspect);
-    const reach =
-      radius / Math.sin(Math.min(halfVertical, halfHorizontal));
     const elevation = ((props.elevation ?? 0) * Math.PI) / 180;
+    const tanVertical = Math.tan(fovRadians / 2);
+    const tanHorizontal = tanVertical * frameAspect;
+
+    // The camera's axes, looking at the centred model from the pose.
+    const toCamera = new Vector3(
+      Math.sin(azimuth) * Math.cos(elevation),
+      Math.sin(elevation),
+      Math.cos(azimuth) * Math.cos(elevation),
+    );
+    const right = new Vector3(0, 1, 0).cross(toCamera).normalize();
+    const up = toCamera.clone().cross(right);
+
+    // The nearest distance at which every corner of the model's box is still
+    // in frame, a little margin around it.
+    let reach = 0;
+    for (const x of [-0.5, 0.5]) {
+      for (const y of [-0.5, 0.5]) {
+        for (const z of [-0.5, 0.5]) {
+          const corner = new Vector3(x * size.x, y * size.y, z * size.z);
+          const depth = corner.dot(toCamera);
+          reach = Math.max(
+            reach,
+            depth + Math.abs(corner.dot(right)) / tanHorizontal,
+            depth + Math.abs(corner.dot(up)) / tanVertical,
+          );
+        }
+      }
+    }
+    reach *= 1.05;
 
     fitDistance.value = reach;
     modelMaxDimension.value = Math.max(size.x, size.y, size.z);
