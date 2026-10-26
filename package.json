@@ -116,7 +116,7 @@
     "@types/qs": "^6.15.1",
     "@types/rails__activestorage": "^8.0.2",
     "@types/sortablejs": "^1.15.9",
-    "@types/swagger-ui": "^5.32.0",
+    "@types/swagger-ui": "^5.32.1",
     "@types/swagger-ui-dist": "^3.30.6",
     "@types/three": "^0.186.0",
     "@typescript-eslint/eslint-plugin": "8.71.2",
