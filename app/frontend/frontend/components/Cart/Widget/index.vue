@@ -75,7 +75,7 @@ const uec = computed(() => t("number.units.uec"));
         @click="collapsed = false"
       >
         <i class="fa-light fa-cart-shopping" />
-        <span class="cart-widget__count">{{ cart.totals.itemsCount }}</span>
+        <span class="cart-widget__count">{{ cart.totals.quantity }}</span>
         <span class="cart-widget__total">
           {{ toNumber(cart.totals.total, "integer") }} {{ uec }}
         </span>

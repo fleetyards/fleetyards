@@ -23821,6 +23821,8 @@ components:
           type: number
         itemsCount:
           type: integer
+        quantity:
+          type: integer
         unavailableCount:
           type: integer
         stopsCount:
@@ -23829,6 +23831,7 @@ components:
       required:
       - total
       - itemsCount
+      - quantity
       - unavailableCount
       - stopsCount
       title: CartTotals

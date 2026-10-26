@@ -109,11 +109,11 @@ class Api::V1::CartListsTest < ActionDispatch::IntegrationTest
     sign_in @user
   end
 
-  test "GET lists the user's lists with their line counts" do
+  test "GET lists the user's lists with how many items each holds" do
     create(:cart)
 
     assert_api_response :get, 200, api_path: "/carts" do
-      assert_equal [["Mining run", true, 2], ["Bounty loadout", false, 0]],
+      assert_equal [["Mining run", true, 4], ["Bounty loadout", false, 0]],
         parsed_body.map { |cart| cart.values_at("name", "active", "itemsCount") }
     end
   end

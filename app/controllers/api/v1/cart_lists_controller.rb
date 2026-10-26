@@ -16,7 +16,7 @@ module Api
 
         @carts = authorized_scope(Cart.all, with: CartPolicy)
           .left_joins(:cart_items)
-          .select("carts.*, COUNT(cart_items.id) AS items_count")
+          .select("carts.*, COALESCE(SUM(cart_items.quantity), 0) AS items_count")
           .group(:id)
           .order(:created_at)
       end

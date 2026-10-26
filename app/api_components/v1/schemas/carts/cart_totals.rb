@@ -11,12 +11,15 @@ module V1
           description: "Cart costs in aUEC, over the lines someone sells",
           properties: {
             total: {type: :number},
+            # Lines on the list.
             itemsCount: {type: :integer},
+            # What the lines add up to: four of one item count four.
+            quantity: {type: :integer},
             unavailableCount: {type: :integer},
             stopsCount: {type: :integer}
           },
           additionalProperties: false,
-          required: %w[total itemsCount unavailableCount stopsCount]
+          required: %w[total itemsCount quantity unavailableCount stopsCount]
         })
       end
     end

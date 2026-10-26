@@ -170,7 +170,7 @@ const uec = computed(() => t("number.units.uec"));
       <StatsPanel
         :label="t('cart.totals.items')"
         icon="fa-duotone fa-cart-shopping"
-        :value="cart.totals.itemsCount"
+        :value="cart.totals.quantity"
         :outer-spacing="false"
       />
       <StatsPanel

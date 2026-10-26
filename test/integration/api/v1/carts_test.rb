@@ -88,7 +88,7 @@ class Api::V1::CartsTest < ActionDispatch::IntegrationTest
 
       assert_equal [["Everus Harbor", "Stanton System", 695.0]],
         parsed_body["groups"].map { |group| group.values_at("name", "systemName", "subtotal") }
-      assert_equal({"total" => 695.0, "itemsCount" => 3, "unavailableCount" => 1, "stopsCount" => 1}, parsed_body["totals"])
+      assert_equal({"total" => 695.0, "itemsCount" => 3, "quantity" => 13, "unavailableCount" => 1, "stopsCount" => 1}, parsed_body["totals"])
     end
   end
 

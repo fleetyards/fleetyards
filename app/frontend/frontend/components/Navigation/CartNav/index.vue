@@ -29,7 +29,7 @@ const enabled = computed(
 // catalogue moves the badge without a request of its own.
 const { data: cart } = useCart(undefined, { query: { enabled } });
 
-const badge = computed(() => cart.value?.totals.itemsCount || 0);
+const badge = computed(() => cart.value?.totals.quantity || 0);
 </script>
 
 <template>

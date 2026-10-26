@@ -49,6 +49,7 @@ const cartWith = (count: number) =>
     totals: {
       total: count * 100,
       itemsCount: count,
+      quantity: count * 2,
       unavailableCount: 0,
       stopsCount: 1,
     },
@@ -88,6 +89,8 @@ describe("CartWidget", () => {
     expect(wrapper.find("[data-test='cart-widget-expand']").text()).toContain(
       "200",
     );
+    // Two of each of the two lines: items, not lines.
+    expect(wrapper.find(".cart-widget__count").text()).toBe("4");
     expect(wrapper.find("[data-test='cart-widget-total']").exists()).toBe(
       false,
     );

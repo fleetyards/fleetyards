@@ -13,6 +13,7 @@ module V1
             name: {type: :string},
             # The list items added from the catalogues go to.
             active: {type: :boolean},
+            # What its lines add up to: four of one item count four.
             itemsCount: {type: :integer},
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
