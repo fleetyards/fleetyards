@@ -1,7 +1,13 @@
 class OmniauthCallbacksController < Devise::OmniauthCallbacksController
   skip_forgery_protection
 
+  # Someone declining the provider's consent screen or finishing a sign-in in a
+  # stale tab is not a fault on either side.
+  EXPECTED_FAILURE_TYPES = %w[access_denied csrf_detected].freeze
+
   def failure
+    report_failure
+
     alert = t(
       "devise.omniauth.failure",
       kind: t("devise.omniauth.provider.#{failed_strategy.name}"),
@@ -45,6 +51,14 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def patreon
     handle_auth(t("devise.omniauth.provider.patreon"))
+  end
+
+  private def report_failure
+    error = request.env["omniauth.error"]
+    return if error.nil?
+    return if EXPECTED_FAILURE_TYPES.include?(request.env["omniauth.error.type"].to_s)
+
+    Appsignal.report_error(error)
   end
 
   private def handle_connect(kind)
