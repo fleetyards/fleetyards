@@ -67,6 +67,10 @@ test.describe("Shopping Cart", () => {
     await expect(stop).toContainText("Lorville");
     await expect(page.getByTestId("cart-total")).toContainText("500");
 
+    await page
+      .getByTestId("cart-list-menu-actions")
+      .getByRole("button")
+      .click();
     await page.getByTestId("cart-clear").click();
     await page.getByTestId("confirm-ok").click();
 
