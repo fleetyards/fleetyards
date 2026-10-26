@@ -16,7 +16,7 @@ import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
 import StatsPanel from "@/shared/components/StatsPanel/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
-import Loader from "@/shared/components/Loader/index.vue";
+import AsyncData from "@/shared/components/AsyncData.vue";
 import CartLine from "@/frontend/components/Cart/Line/index.vue";
 import CartListSelect from "@/frontend/components/Cart/ListSelect/index.vue";
 import CartListActions from "@/frontend/components/Cart/ListActions/index.vue";
@@ -91,9 +91,7 @@ const cart = computed(() =>
   listId.value ? listCart.data.value : activeCart.data.value,
 );
 
-const isLoading = computed(() =>
-  listId.value ? listCart.isLoading.value : activeCart.isLoading.value,
-);
+const cartStatus = computed(() => (listId.value ? listCart : activeCart));
 
 const createList = () => {
   comlink.emit("open-modal", {
@@ -155,94 +153,98 @@ const uec = computed(() => t("number.units.uec"));
     </BtnGroup>
   </CartListActions>
 
-  <Loader :loading="isLoading" />
+  <!-- A list that failed to load says so, with a retry, rather than reading as
+       an empty one. -->
+  <AsyncData :async-status="cartStatus">
+    <template #resolved>
+      <template v-if="cart?.items.length">
+        <div class="cart-totals">
+          <StatsPanel
+            :label="t('cart.totals.total')"
+            icon="fa-duotone fa-coins"
+            :outer-spacing="false"
+            data-test="cart-total"
+          >
+            <template #value>
+              {{ toNumber(cart.totals.total, "integer") }}
+              <small>{{ uec }}</small>
+            </template>
+          </StatsPanel>
+          <StatsPanel
+            :label="t('cart.totals.items')"
+            icon="fa-duotone fa-cart-shopping"
+            :value="cart.totals.quantity"
+            :outer-spacing="false"
+          />
+          <StatsPanel
+            :label="t('cart.totals.stops')"
+            icon="fa-duotone fa-location-dot"
+            :value="cart.totals.stopsCount"
+            :outer-spacing="false"
+          />
+          <StatsPanel
+            v-if="cart.totals.unavailableCount"
+            :label="t('cart.totals.unavailable')"
+            icon="fa-duotone fa-ban"
+            :value="cart.totals.unavailableCount"
+            :outer-spacing="false"
+          />
+        </div>
 
-  <template v-if="cart?.items.length">
-    <div class="cart-totals">
-      <StatsPanel
-        :label="t('cart.totals.total')"
-        icon="fa-duotone fa-coins"
-        :outer-spacing="false"
-        data-test="cart-total"
-      >
-        <template #value>
-          {{ toNumber(cart.totals.total, "integer") }}
-          <small>{{ uec }}</small>
-        </template>
-      </StatsPanel>
-      <StatsPanel
-        :label="t('cart.totals.items')"
-        icon="fa-duotone fa-cart-shopping"
-        :value="cart.totals.quantity"
-        :outer-spacing="false"
-      />
-      <StatsPanel
-        :label="t('cart.totals.stops')"
-        icon="fa-duotone fa-location-dot"
-        :value="cart.totals.stopsCount"
-        :outer-spacing="false"
-      />
-      <StatsPanel
-        v-if="cart.totals.unavailableCount"
-        :label="t('cart.totals.unavailable')"
-        icon="fa-duotone fa-ban"
-        :value="cart.totals.unavailableCount"
-        :outer-spacing="false"
-      />
-    </div>
-
-    <Panel
-      v-for="group in groups"
-      :key="group.key"
-      :variant="PanelVariantsEnum.SLIM"
-      class="cart-stop"
-      data-test="cart-stop"
-    >
-      <PanelHeading compact divider>
-        <router-link
-          v-if="group.location"
-          :to="{ name: 'location', params: { slug: group.location.slug } }"
+        <Panel
+          v-for="group in groups"
+          :key="group.key"
+          :variant="PanelVariantsEnum.SLIM"
+          class="cart-stop"
+          data-test="cart-stop"
         >
-          {{ group.name }}
-        </router-link>
-        <template v-else>{{ group.name || t("cart.unplaced") }}</template>
-        <template #subtitle>
-          <span v-if="group.systemName">{{ group.systemName }} · </span>
-          {{ toNumber(group.subtotal, "integer") }} {{ uec }}
+          <PanelHeading compact divider>
+            <router-link
+              v-if="group.location"
+              :to="{ name: 'location', params: { slug: group.location.slug } }"
+            >
+              {{ group.name }}
+            </router-link>
+            <template v-else>{{ group.name || t("cart.unplaced") }}</template>
+            <template #subtitle>
+              <span v-if="group.systemName">{{ group.systemName }} · </span>
+              {{ toNumber(group.subtotal, "integer") }} {{ uec }}
+            </template>
+          </PanelHeading>
+          <PanelBody>
+            <CartLine
+              v-for="line in group.lines"
+              :key="line.id"
+              :line="line"
+              :strategy="strategy"
+            />
+          </PanelBody>
+        </Panel>
+
+        <Panel
+          v-if="unavailable.length"
+          :variant="PanelVariantsEnum.SLIM"
+          class="cart-stop"
+          data-test="cart-unavailable"
+        >
+          <PanelHeading compact divider>
+            {{ t("cart.unavailable.title") }}
+            <template #subtitle>{{ t("cart.unavailable.text") }}</template>
+          </PanelHeading>
+          <PanelBody>
+            <CartLine v-for="line in unavailable" :key="line.id" :line="line" />
+          </PanelBody>
+        </Panel>
+      </template>
+
+      <Empty v-else variant="box" hide-actions>
+        <template #headline>{{ t("cart.empty.title") }}</template>
+        <template #info>
+          <p>{{ t("cart.empty.text") }}</p>
         </template>
-      </PanelHeading>
-      <PanelBody>
-        <CartLine
-          v-for="line in group.lines"
-          :key="line.id"
-          :line="line"
-          :strategy="strategy"
-        />
-      </PanelBody>
-    </Panel>
-
-    <Panel
-      v-if="unavailable.length"
-      :variant="PanelVariantsEnum.SLIM"
-      class="cart-stop"
-      data-test="cart-unavailable"
-    >
-      <PanelHeading compact divider>
-        {{ t("cart.unavailable.title") }}
-        <template #subtitle>{{ t("cart.unavailable.text") }}</template>
-      </PanelHeading>
-      <PanelBody>
-        <CartLine v-for="line in unavailable" :key="line.id" :line="line" />
-      </PanelBody>
-    </Panel>
-  </template>
-
-  <Empty v-else-if="!isLoading" variant="box" hide-actions>
-    <template #headline>{{ t("cart.empty.title") }}</template>
-    <template #info>
-      <p>{{ t("cart.empty.text") }}</p>
+      </Empty>
     </template>
-  </Empty>
+  </AsyncData>
 </template>
 
 <style lang="scss" scoped>
