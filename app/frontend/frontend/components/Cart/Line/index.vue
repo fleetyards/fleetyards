@@ -50,18 +50,26 @@ const itemRoute = computed(() => {
   return { name: DETAIL_ROUTES[item.type], params: { slug: item.slug } };
 });
 
-const mutationOptions = {
+
+// The server's cap; above it the save is refused.
+const MAX_QUANTITY = 99_999;
+
+const { mutate: update, isPending: updating } = useUpdateCartItem({
+  mutation: {
+    onSuccess: updateCart,
+    onError: () => {
+      quantity.value = props.line.quantity;
+      displayAlert({ text: t("cart.messages.updateFailed") });
+    },
+  },
+});
+
+const { mutate: remove, isPending: removing } = useRemoveCartItem({
   mutation: {
     onSuccess: updateCart,
     onError: () => displayAlert({ text: t("cart.messages.updateFailed") }),
   },
-};
-
-const { mutate: update, isPending: updating } =
-  useUpdateCartItem(mutationOptions);
-
-const { mutate: remove, isPending: removing } =
-  useRemoveCartItem(mutationOptions);
+});
 
 const quantity = ref<number | string | null | undefined>(props.line.quantity);
 
@@ -76,9 +84,12 @@ watch(
   },
 );
 
+const validQuantity = (value: number) =>
+  Number.isInteger(value) && value >= 1 && value <= MAX_QUANTITY;
+
 const saveQuantity = debounce(() => {
   const value = Number(quantity.value);
-  if (!Number.isInteger(value) || value < 1 || value === props.line.quantity) {
+  if (!validQuantity(value) || value === props.line.quantity) {
     return;
   }
 
@@ -86,6 +97,14 @@ const saveQuantity = debounce(() => {
 }, 500);
 
 watch(quantity, saveQuantity);
+
+// Left alone while typing, since an empty field is on its way to a number;
+// a value that cannot be saved goes back to the saved one on leaving.
+const resetInvalidQuantity = () => {
+  if (!validQuantity(Number(quantity.value))) {
+    quantity.value = props.line.quantity;
+  }
+};
 
 // A pin moves the line to another stop, which remounts it; a quantity typed
 // just before is still sent.
@@ -123,12 +142,13 @@ const formatPrice = (value?: number | null) =>
       </span>
     </div>
 
-    <div class="cart-line__quantity">
+    <div class="cart-line__quantity" @focusout="resetInvalidQuantity">
       <FormInput
         v-model="quantity"
         :name="`cart-quantity-${line.id}`"
         type="number"
         :min="1"
+        :max="MAX_QUANTITY"
         :step="1"
         :label="t('cart.quantity')"
         no-label

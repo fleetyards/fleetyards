@@ -191,6 +191,19 @@ describe("CartLine", () => {
     });
   });
 
+  it("puts back the saved quantity when the field is left on one it cannot save", async () => {
+    vi.useFakeTimers();
+    const wrapper = await mount();
+    const input = wrapper.find("[data-test='cart-line-quantity'] input");
+
+    await input.setValue("0");
+    vi.advanceTimersByTime(600);
+    await wrapper.find(".cart-line__quantity").trigger("focusout");
+
+    expect(update).not.toHaveBeenCalled();
+    expect((input.element as HTMLInputElement).value).toBe("2");
+  });
+
   it("removes the line", async () => {
     const wrapper = await mount();
 
