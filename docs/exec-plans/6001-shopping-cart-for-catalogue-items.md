@@ -30,7 +30,7 @@ A signed-in user (flag `shopping_cart`) can put commodities, components and equi
 
 ### Phase 2 — Frontend
 1. `pages/cart/index.vue` + route (`needsAuthentication`, `feature: FeatureFlagName.SHOPPING_CART`), nav entries desktop + mobile.
-2. `components/Cart/AddToCart` (copy `Blueprints/AddToHangar`: signed-out warning, quantity input) in the `#actions` slot of the Commodities/Components/Equipment rows and next to `<Availability>` on the three detail pages; shop stock rows (`Shops/ItemRow`) if it fits.
+2. `components/Cart/AddToCart` (copy `Blueprints/AddToHangar`: signed-out warning; adds one per click, quantity is set on the cart page) in the `#actions` slot of the Commodities/Components/Equipment rows and in the `<Availability>` card footer on the three detail pages.
 3. Cart page: `StatsPanel` totals, groups by place with shop/location links (borrow from `AvailabilityModal`), quantity edit, remove, clear; unavailable lines in their own flagged section. Cache updates via `setQueryData` like `useHangarPlanCache`.
 4. `translations/<locale>/cart.json` + nav/title keys in all 7 locales, by hand.
 5. Vitest for AddToCart and the cart page; Playwright scenario + spec for add → cart → total.
@@ -72,7 +72,9 @@ A signed-in user (flag `shopping_cart`) can put commodities, components and equi
 ## Discovery Log
 
 - **2026-10-26** Initial research and plan creation. Live dump: sell rows — Component 4465 (all with a shop), Equipment 19,291 (18,952 with a shop), Commodity 704 (all terminal, none with a shop).
+- **2026-10-26** UEX price sync updates `item_prices` rows in place and deletes only unlisted ones, so a pin by `item_price_id` survives syncs. Item and place names come off versioned builds: the cart preloads `build` and `last_build` for items and locations, else 11 queries per line pair. Mobile keeps the cart in the side menu's footer, not the bottom bar.
 
 ## Progress
-- [ ] Phase 1 — Flag, model, API
-- [ ] Phase 2 — Frontend
+- [x] Phase 1 — Flag, model, API
+- [x] Phase 2 — Frontend
+- [ ] Review
