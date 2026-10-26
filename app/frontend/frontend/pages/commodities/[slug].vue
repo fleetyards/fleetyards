@@ -135,23 +135,21 @@ watch(
       <div v-if="commodity" class="commodity-page">
         <BreadCrumbs :crumbs="crumbs" />
         <AddToInventoryBtn :entry="{ type: 'Commodity', record: commodity }" />
-        <!-- Last in the row, whatever mounts first: the header is a flex row. -->
-        <Teleport to="#header-right">
-          <CartAddToCart
-            class="commodity-page__cart"
-            :item="{
-              id: commodity.id,
-              type: InventoryItemTypeEnum.COMMODITY,
-              name: commodity.name,
-            }"
-          />
-        </Teleport>
 
         <div class="commodity-page__masthead">
           <CommodityIcon :commodity="commodity" class="commodity-page__icon" />
 
           <div class="commodity-page__title">
-            <h1 class="commodity-page__name">{{ commodity.name }}</h1>
+            <div class="commodity-page__headline">
+              <h1 class="commodity-page__name">{{ commodity.name }}</h1>
+              <CartAddToCart
+                :item="{
+                  id: commodity.id,
+                  type: InventoryItemTypeEnum.COMMODITY,
+                  name: commodity.name,
+                }"
+              />
+            </div>
             <div v-if="typeLabel" class="commodity-page__sub">
               {{ typeLabel }}
             </div>

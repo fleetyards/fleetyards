@@ -179,7 +179,16 @@ watch(
           <EquipmentIcon :equipment="equipment" class="equipment-page__icon" />
 
           <div class="equipment-page__title">
-            <h1 class="equipment-page__name">{{ equipment.name }}</h1>
+            <div class="equipment-page__headline">
+              <h1 class="equipment-page__name">{{ equipment.name }}</h1>
+              <CartAddToCart
+                :item="{
+                  id: equipment.id,
+                  type: InventoryItemTypeEnum.EQUIPMENT,
+                  name: equipment.name,
+                }"
+              />
+            </div>
             <div v-if="equipment.manufacturer" class="equipment-page__sub">
               {{ equipment.manufacturer.name }}
             </div>
@@ -221,17 +230,6 @@ watch(
 
         <ExternalLinks :title="equipment.name" />
         <AddToInventoryBtn :entry="{ type: 'Equipment', record: equipment }" />
-        <!-- Last in the row, whatever mounts first: the header is a flex row. -->
-        <Teleport to="#header-right">
-          <CartAddToCart
-            class="equipment-page__cart"
-            :item="{
-              id: equipment.id,
-              type: InventoryItemTypeEnum.EQUIPMENT,
-              name: equipment.name,
-            }"
-          />
-        </Teleport>
 
         <p v-if="equipment.description" class="equipment-page__description">
           {{ equipment.description }}
