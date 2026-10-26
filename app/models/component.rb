@@ -509,18 +509,22 @@ class Component < ApplicationRecord
     end
   end
 
-  # Sizes are strings holding "0" to "12", so a plain sort would put 10 and 12
-  # ahead of 2; anything that is not a number goes last.
   def self.sizes(categories: nil, source: ::ScData::Source.current)
-    catalogue_facet(:size, source) { |scope| of_categories(scope, categories) }
-      .sort_by { |size| size.match?(/\A\d+\z/) ? [0, size.to_i, size] : [1, 0, size] }
+    numeric_sort(catalogue_facet(:size, source) { |scope| of_categories(scope, categories) })
   end
 
   def self.grades(categories: nil, source: ::ScData::Source.current)
-    catalogue_facet(:grade, source) { |scope| of_categories(scope, categories) }
+    numeric_sort(catalogue_facet(:grade, source) { |scope| of_categories(scope, categories) })
   end
 
-  def self.of_categories(scope, categories)
+  # Sizes and grades are digit strings, so a plain sort would put 10 ahead of
+  # 2; anything that is not a number goes last.
+  private_class_method def self.numeric_sort(values)
+    values.sort_by { |value| value.match?(/\A\d+\z/) ? [0, value.to_i, value] : [1, 0, value] }
+  end
+
+  # Needs the facts join `catalogue_facet` sets up, so it stays in here.
+  private_class_method def self.of_categories(scope, categories)
     categories.present? ? scope.where(fact_sql(:category).in(categories)) : scope
   end
 

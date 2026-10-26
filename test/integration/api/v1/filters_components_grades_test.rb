@@ -47,6 +47,14 @@ class Api::V1::FiltersComponentsGradesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /filters/components/grades orders a two-digit grade after the single digits" do
+    create(:component, category: "weapons", grade: "10", version: @version)
+
+    assert_api_response :get, 200 do
+      assert_equal %w[1 2 3 10], parsed_body.pluck("value")
+    end
+  end
+
   test "GET /filters/components/grades keeps the raw value for a grade without a letter" do
     create(:component, category: "cooler", grade: "7", version: @version)
 
