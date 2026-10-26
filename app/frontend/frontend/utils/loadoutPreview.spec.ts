@@ -4,7 +4,11 @@ import type {
   ModelLoadoutPreview,
   ModelLoadoutPreviewPort,
 } from "@/services/fyApi";
-import { loadoutMounts, portTree } from "./loadoutPreview";
+import {
+  loadoutMounts,
+  portTree,
+  previewSlotsFromLoadout,
+} from "./loadoutPreview";
 
 const port = (
   name: string,
@@ -146,26 +150,30 @@ describe("loadoutMounts", () => {
       }),
     ];
 
-    const [nose] = loadoutMounts(preview, slots);
+    const [nose] = loadoutMounts(preview, previewSlotsFromLoadout(slots));
 
     expect(nose.path).toBe(holo("gimbal"));
     expect(nose.mounts[0].path).toBe(holo("klwe_laserrepeater_s3"));
   });
 
   it("matches slots to ports whatever their case", () => {
-    const [nose] = loadoutMounts(preview, [
-      slot("HARDPOINT_GUN_NOSE", {
-        fitted: { id: "turret", name: "Turret", holoUrl: holo("turret") },
-      }),
-    ]);
+    const [nose] = loadoutMounts(
+      preview,
+      previewSlotsFromLoadout([
+        slot("HARDPOINT_GUN_NOSE", {
+          fitted: { id: "turret", name: "Turret", holoUrl: holo("turret") },
+        }),
+      ]),
+    );
 
     expect(nose.path).toBe(holo("turret"));
   });
 
   it("draws nothing on an emptied slot or below it", () => {
-    const mounts = loadoutMounts(preview, [
-      slot("hardpoint_gun_nose", { emptied: true }),
-    ]);
+    const mounts = loadoutMounts(
+      preview,
+      previewSlotsFromLoadout([slot("hardpoint_gun_nose", { emptied: true })]),
+    );
 
     expect(mounts.map((mount) => mount.path)).toEqual([
       holo("mrck_s03_behr_dual_s02"),

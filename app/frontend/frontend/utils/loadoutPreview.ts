@@ -1,9 +1,35 @@
 import type {
+  LoadoutComponentRef,
   LoadoutSlot,
   ModelLoadoutPreview,
   ModelLoadoutPreviewPort,
 } from "@/services/fyApi";
+import type { FittedSlot } from "@/frontend/composables/useComponentFitting";
 import type { HoloMount } from "@/shared/components/HoloViewer/mounts";
+
+// A slot as the preview reads it: the part in it -- null for none -- and the
+// slots that part brings.
+export type PreviewSlot = {
+  name: string;
+  part: Pick<LoadoutComponentRef, "holoUrl"> | null;
+  slots: PreviewSlot[];
+};
+
+// A saved loadout's tree.
+export const previewSlotsFromLoadout = (slots: LoadoutSlot[]): PreviewSlot[] =>
+  slots.map((slot) => ({
+    name: slot.name,
+    part: slot.emptied ? null : (slot.fitted ?? slot.stock ?? null),
+    slots: previewSlotsFromLoadout(slot.slots),
+  }));
+
+// The editor's fitting, unsaved changes included.
+export const previewSlotsFromFitting = (tree: FittedSlot[]): PreviewSlot[] =>
+  tree.map((entry) => ({
+    name: entry.slot.name,
+    part: entry.content ?? null,
+    slots: previewSlotsFromFitting(entry.children),
+  }));
 
 type PortNode = {
   port: ModelLoadoutPreviewPort;
@@ -50,20 +76,21 @@ export const portTree = (ports: ModelLoadoutPreviewPort[]) => {
  */
 export const loadoutMounts = (
   preview: ModelLoadoutPreview,
-  slots?: LoadoutSlot[],
+  slots?: PreviewSlot[],
 ): HoloMount[] => {
   const defaultHolos = new Map(
     preview.items.map((item) => [item.scKey, item.holoUrl]),
   );
 
-  const build = (nodes: PortNode[], levelSlots?: LoadoutSlot[]) =>
+  const build = (nodes: PortNode[], levelSlots?: PreviewSlot[]) =>
     nodes.flatMap((node): HoloMount[] => {
       const { port } = node;
       const slot = levelSlots?.find((candidate) =>
         sameName(candidate.name, port.name),
       );
 
-      if (slot?.emptied) return [];
+      // An empty slot holds nothing, and nothing sits below it.
+      if (slot && !slot.part) return [];
 
       const drawn = port.stripped && !port.inParentHolo && port.helper;
 
@@ -71,7 +98,7 @@ export const loadoutMounts = (
 
       if (drawn) {
         path = slot
-          ? (slot.fitted ?? slot.stock)?.holoUrl
+          ? slot.part?.holoUrl
           : (port.defaultItem && defaultHolos.get(port.defaultItem)) ||
             undefined;
       }

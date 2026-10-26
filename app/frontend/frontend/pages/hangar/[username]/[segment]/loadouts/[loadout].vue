@@ -18,6 +18,7 @@ import LoadoutChanges from "@/frontend/components/Loadout/Changes/index.vue";
 import CartAddLoadout from "@/frontend/components/Cart/AddLoadout/index.vue";
 import { nonStockCartItems } from "@/frontend/utils/loadoutCartItems";
 import LoadoutPreview from "@/frontend/components/Loadout/Preview/index.vue";
+import { previewSlotsFromLoadout } from "@/frontend/utils/loadoutPreview";
 import { VehicleLoadoutTabsEnum } from "@/frontend/components/Vehicles/LoadoutModal/types";
 import { useLoadoutFitting } from "@/frontend/composables/useLoadoutFitting";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
@@ -204,6 +205,10 @@ const loadoutSlots = computed(() =>
   isOwner.value ? ownSlots.value : publicSlots.value,
 );
 
+const previewSlots = computed(() =>
+  loadoutSlots.value ? previewSlotsFromLoadout(loadoutSlots.value) : undefined,
+);
+
 const {
   hardpoints,
   changed,
@@ -337,9 +342,9 @@ const edit = () => {
               <CartAddLoadout :items="nonStockCartItems(loadoutSlots)" />
             </Teleport>
             <LoadoutPreview
-              v-if="!fittingPending && loadoutSlots"
+              v-if="!fittingPending && previewSlots"
               :model-slug="vehicle.model.slug"
-              :slots="loadoutSlots"
+              :slots="previewSlots"
               test-id="vehicle-loadout-page-preview"
             />
 

@@ -42,6 +42,8 @@ import type { CraftedPart } from "@/frontend/composables/craftedComponent";
 import { useCraftedRecipes } from "@/frontend/composables/useCraftedRecipes";
 import LoadoutMetrics from "./Metrics/index.vue";
 import LoadoutChanges from "@/frontend/components/Loadout/Changes/index.vue";
+import LoadoutPreview from "@/frontend/components/Loadout/Preview/index.vue";
+import { previewSlotsFromFitting } from "@/frontend/utils/loadoutPreview";
 import { VehicleLoadoutTabsEnum } from "./types";
 import { moduleSlots } from "./moduleSlots";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -338,6 +340,10 @@ const componentTree = computed(() =>
 
 // What stands fitted now, saved or not, so the cart gets what is on screen.
 const cartItems = computed(() => nonStockFittedItems(componentTree.value));
+
+const previewSlots = computed(() =>
+  previewSlotsFromFitting(componentTree.value),
+);
 
 // The saved fitting's recipes as well as the edited one's, so the changes
 // against the save read both as crafted.
@@ -1410,6 +1416,13 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
           <span v-html="vehicle.model.manufacturer?.name" />
           <strong>{{ vehicle.model.name }}</strong>
         </p>
+        <LoadoutPreview
+          v-if="flightReady && !initialising"
+          :model-slug="modelSlug"
+          :slots="previewSlots"
+          class="vehicle-loadout__preview"
+          test-id="vehicle-loadout-preview"
+        />
         <LoadoutMetrics
           v-if="tabMetrics"
           v-bind="tabMetrics"

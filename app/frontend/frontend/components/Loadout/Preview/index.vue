@@ -5,19 +5,18 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { FeatureFlagName, useModelLoadoutPreview } from "@/services/fyApi";
 import {
-  FeatureFlagName,
-  type LoadoutSlot,
-  useModelLoadoutPreview,
-} from "@/services/fyApi";
-import { loadoutMounts } from "@/frontend/utils/loadoutPreview";
+  loadoutMounts,
+  type PreviewSlot,
+} from "@/frontend/utils/loadoutPreview";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useMobile } from "@/shared/composables/useMobile";
 
 type Props = {
   modelSlug: string;
   // The fitting's slot tree; without one the stock ship is shown.
-  slots?: LoadoutSlot[];
+  slots?: PreviewSlot[];
   testId?: string;
 };
 
@@ -67,10 +66,11 @@ const unavailable = ref(false);
     class="loadout-preview"
     :data-test="testId"
   >
+    <!-- Not inline: that caps the canvas at an item hero's height, where this
+    frame gives the ship its own. -->
     <HoloViewer
       :models="[holoModel]"
       zoomable
-      inline
       @unavailable="unavailable = true"
     />
   </div>

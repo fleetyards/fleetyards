@@ -207,8 +207,9 @@ watch(
   },
 );
 
+// By content: a fitting recomputed into an equal tree is not a swap.
 watch(
-  () => props.model.mounts,
+  () => JSON.stringify(props.model.mounts ?? []),
   () => {
     if (state.value) void attachMounts(state.value.scene);
   },
