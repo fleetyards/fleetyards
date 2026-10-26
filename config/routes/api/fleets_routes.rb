@@ -113,6 +113,10 @@ resources :fleets, param: :slug, only: %i[show create update destroy] do
     delete "stock/:slug", to: "fleet_inventory_stock#destroy"
   end
 
+  resources :fleet_shopping_lists, path: "shopping-lists", only: %i[index show create update destroy] do
+    post :copy, on: :member
+  end
+
   get "contract-destinations", to: "fleet_contract_destinations#index"
 
   resources :fleet_contracts, path: "contracts", param: :slug, only: %i[index show create update destroy] do
