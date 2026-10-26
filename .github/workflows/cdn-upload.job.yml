@@ -29,7 +29,7 @@ jobs:
           op-service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v4.6.0
+        uses: docker/login-action@v4.7.0
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
