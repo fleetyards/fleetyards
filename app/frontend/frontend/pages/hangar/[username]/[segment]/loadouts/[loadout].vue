@@ -16,6 +16,7 @@ import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Hardpoints from "@/frontend/components/Models/Hardpoints/index.vue";
 import LoadoutChanges from "@/frontend/components/Loadout/Changes/index.vue";
 import CartAddLoadout from "@/frontend/components/Cart/AddLoadout/index.vue";
+import { nonStockCartItems } from "@/frontend/utils/loadoutCartItems";
 import { VehicleLoadoutTabsEnum } from "@/frontend/components/Vehicles/LoadoutModal/types";
 import { useLoadoutFitting } from "@/frontend/composables/useLoadoutFitting";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
@@ -332,7 +333,7 @@ const edit = () => {
             </Teleport>
 
             <Teleport v-if="!fittingPending" to="#header-right">
-              <CartAddLoadout :slots="loadoutSlots" />
+              <CartAddLoadout :items="nonStockCartItems(loadoutSlots)" />
             </Teleport>
 
             <Loader v-if="fittingPending" :loading="true" relative />

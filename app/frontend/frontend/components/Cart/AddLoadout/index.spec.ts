@@ -1,25 +1,19 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { type LoadoutComponentRef, type LoadoutSlot } from "@/services/fyApi";
+import { type CartItemCreateInput, type CartList } from "@/services/fyApi";
 
 const mutate = vi.fn();
+const emit = vi.fn();
 const displayWarning = vi.fn();
 
 const authenticated = { value: true };
 const enabled = { value: true };
+const lists = ref<CartList[]>([]);
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
+  useCartLists: () => ({ data: lists }),
   useAddCartItems: () => ({ mutate, isPending: ref(false) }),
-}));
-
-vi.mock("@/frontend/components/Cart/ListMenu/index.vue", () => ({
-  default: {
-    name: "CartListMenu",
-    emits: ["pick"],
-    template:
-      "<button data-test='cart-list-pick' @click=\"$emit('pick', 'list-b')\" />",
-  },
 }));
 
 vi.mock("@/frontend/composables/useFeatures", () => ({
@@ -28,6 +22,10 @@ vi.mock("@/frontend/composables/useFeatures", () => ({
 
 vi.mock("@/frontend/composables/useCartCache", () => ({
   useCartCache: () => ({ updateCart: vi.fn() }),
+}));
+
+vi.mock("@/shared/composables/useComlink", () => ({
+  useComlink: () => ({ emit }),
 }));
 
 vi.mock("@/frontend/stores/session", () => ({
@@ -48,68 +46,62 @@ vi.mock("@/shared/composables/useAppNotifications", () => ({
 
 const Component = (await import("./index.vue")).default;
 
-const part = (id: string) => ({ id, name: id }) as LoadoutComponentRef;
-
-const slot = (stock: string, fitted?: string): LoadoutSlot => ({
-  name: "hardpoint",
-  hardpointId: "hp",
-  types: [],
-  editable: true,
-  slots: [],
-  stock: part(stock),
-  fitted: fitted ? part(fitted) : undefined,
+const line = (itemId: string, quantity = 1): CartItemCreateInput => ({
+  itemType: "Component",
+  itemId,
+  quantity,
 });
 
-const mount = (slots: LoadoutSlot[]) =>
-  mountWithDefaults<typeof Component>(Component, { props: { slots } });
+const list = (id: string, active = false) =>
+  ({ id, name: `List ${id}`, active, itemsCount: 0 }) as CartList;
+
+const mount = (items: CartItemCreateInput[]) =>
+  mountWithDefaults<typeof Component>(Component, { props: { items } });
 
 describe("CartAddLoadout", () => {
   beforeEach(() => {
     authenticated.value = true;
     enabled.value = true;
+    lists.value = [list("a", true)];
     mutate.mockClear();
+    emit.mockClear();
     displayWarning.mockClear();
   });
 
-  it("adds every non-stock part in one request", async () => {
-    const wrapper = await mount([
-      slot("stock-gun", "panther"),
-      slot("stock-gun", "panther"),
-      slot("stock-cooler"),
-    ]);
+  it("adds every part it is given in one request with a single list", async () => {
+    const wrapper = await mount([line("panther", 2)]);
 
     await wrapper.find("[data-test='cart-add-loadout']").trigger("click");
 
     expect(mutate).toHaveBeenCalledWith({
-      data: {
-        items: [{ itemType: "Component", itemId: "panther", quantity: 2 }],
-        cartId: undefined,
-      },
+      data: { items: [line("panther", 2)] },
     });
   });
 
-  it("adds to another list when one is picked from the menu", async () => {
-    const wrapper = await mount([slot("stock-gun", "panther")]);
+  it("asks which list with more than one", async () => {
+    lists.value = [list("a", true), list("b")];
+    const wrapper = await mount([line("panther", 2)]);
 
-    await wrapper.find("[data-test='cart-list-pick']").trigger("click");
+    await wrapper.find("[data-test='cart-add-loadout']").trigger("click");
 
-    expect(mutate).toHaveBeenCalledWith({
-      data: {
-        items: [{ itemType: "Component", itemId: "panther", quantity: 1 }],
-        cartId: "list-b",
-      },
-    });
+    expect(mutate).not.toHaveBeenCalled();
+    expect(emit).toHaveBeenCalledWith(
+      "open-modal",
+      expect.objectContaining({
+        props: expect.objectContaining({ items: [line("panther", 2)] }),
+      }),
+    );
   });
 
-  it("is not shown for a stock loadout", async () => {
-    const wrapper = await mount([slot("stock-gun")]);
+  it("is not shown without parts to add", async () => {
+    const wrapper = await mount([]);
 
     expect(wrapper.find("[data-test='cart-add-loadout']").exists()).toBe(false);
   });
 
   it("asks an anonymous reader to sign in", async () => {
     authenticated.value = false;
-    const wrapper = await mount([slot("stock-gun", "panther")]);
+    const wrapper = await mount([line("panther")]);
 
     await wrapper.find("[data-test='cart-add-loadout']").trigger("click");
 
@@ -119,7 +111,7 @@ describe("CartAddLoadout", () => {
 
   it("is not shown while the feature is off", async () => {
     enabled.value = false;
-    const wrapper = await mount([slot("stock-gun", "panther")]);
+    const wrapper = await mount([line("panther")]);
 
     expect(wrapper.find("[data-test='cart-add-loadout']").exists()).toBe(false);
   });

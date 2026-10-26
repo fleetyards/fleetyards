@@ -10,6 +10,8 @@ import type { LoadoutSocketSlot } from "@/frontend/components/Loadout/Socket/typ
 import { useForm } from "vee-validate";
 import { useQueryClient } from "@tanstack/vue-query";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import CartAddLoadout from "@/frontend/components/Cart/AddLoadout/index.vue";
+import { nonStockFittedItems } from "@/frontend/utils/loadoutCartItems";
 import {
   BtnSizesEnum,
   BtnTypesEnum,
@@ -333,6 +335,9 @@ const componentTree = computed(() =>
     craftedComponents.value || {},
   ),
 );
+
+// What stands fitted now, saved or not, so the cart gets what is on screen.
+const cartItems = computed(() => nonStockFittedItems(componentTree.value));
 
 // The saved fitting's recipes as well as the edited one's, so the changes
 // against the save read both as crafted.
@@ -1746,6 +1751,7 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
     </template>
 
     <template v-if="editable" #footer>
+      <CartAddLoadout v-if="!linking" :items="cartItems" />
       <Btn
         v-if="flightReady && !editedLoadout && !createdLoadout"
         :variant="BtnVariantsEnum.GHOST"

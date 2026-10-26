@@ -1,5 +1,6 @@
 import { type LoadoutComponentRef, type LoadoutSlot } from "@/services/fyApi";
-import { nonStockCartItems } from "./loadoutCartItems";
+import { type FittedSlot } from "@/frontend/composables/useComponentFitting";
+import { nonStockCartItems, nonStockFittedItems } from "./loadoutCartItems";
 
 const part = (id: string) => ({ id, name: id }) as LoadoutComponentRef;
 
@@ -52,5 +53,44 @@ describe("nonStockCartItems", () => {
       { itemType: "Component", itemId: "gimbal", quantity: 1 },
       { itemType: "Component", itemId: "panther", quantity: 2 },
     ]);
+  });
+});
+
+const fitted = (
+  stock?: string,
+  content?: string,
+  children: FittedSlot[] = [],
+): FittedSlot => ({
+  path: "hardpoint",
+  slot: slot({ stock: stock ? part(stock) : undefined }),
+  content: content ? part(content) : undefined,
+  children,
+});
+
+describe("nonStockFittedItems", () => {
+  it("counts what the editor has fitted in place of stock, nested ports included", () => {
+    expect(
+      nonStockFittedItems([
+        fitted("stock-gun", "stock-gun"),
+        fitted("stock-mount", "gimbal", [
+          fitted(undefined, "panther"),
+          fitted(undefined, "panther"),
+        ]),
+      ]),
+    ).toEqual([
+      { itemType: "Component", itemId: "gimbal", quantity: 1 },
+      { itemType: "Component", itemId: "panther", quantity: 2 },
+    ]);
+  });
+
+  it("leaves modules out", () => {
+    expect(
+      nonStockFittedItems([
+        {
+          ...fitted(undefined, undefined),
+          content: { id: "cargo-module", name: "Cargo", category: "module" },
+        } as FittedSlot,
+      ]),
+    ).toEqual([]);
   });
 });

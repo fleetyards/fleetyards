@@ -8,6 +8,8 @@ export default {
 import Modal from "@/shared/components/AppModal/Inner/index.vue";
 import Pill from "@/shared/components/base/Pill/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import CartAddLoadout from "@/frontend/components/Cart/AddLoadout/index.vue";
+import { nonStockCartItems } from "@/frontend/utils/loadoutCartItems";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import Alert from "@/shared/components/base/Alert/index.vue";
 import {
@@ -73,6 +75,8 @@ const { data: loadoutSlots, isLoading: slotsLoading } = useVehicleLoadoutSlots(
   () => props.loadout?.id ?? "",
   { query: { enabled: () => props.editable && !!props.loadout?.id } },
 );
+
+const cartItems = computed(() => nonStockCartItems(loadoutSlots.value));
 
 // Only the owner can read what the build refuses, as with the slot tree.
 const {
@@ -555,7 +559,11 @@ const edit = () => {
       </div>
     </div>
 
-    <template v-if="editVisible || (editable && loadoutPage)" #footer>
+    <template
+      v-if="editVisible || (editable && loadoutPage) || cartItems.length"
+      #footer
+    >
+      <CartAddLoadout :items="cartItems" />
       <Btn
         v-if="editVisible"
         :variant="BtnVariantsEnum.GHOST"

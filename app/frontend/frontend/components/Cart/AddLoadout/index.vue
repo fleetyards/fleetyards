@@ -6,35 +6,34 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
-import CartListMenu from "@/frontend/components/Cart/ListMenu/index.vue";
-import {
-  BtnSizesEnum,
-  BtnVariantsEnum,
-} from "@/shared/components/base/Btn/types";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useCartCache } from "@/frontend/composables/useCartCache";
-import { nonStockCartItems } from "@/frontend/utils/loadoutCartItems";
 import {
+  type CartItemCreateInput,
   FeatureFlagName,
-  type LoadoutSlot,
   useAddCartItems,
+  useCartLists,
 } from "@/services/fyApi";
 
 type Props = {
-  slots?: LoadoutSlot[];
+  // The parts to add, from `nonStockCartItems` or `nonStockFittedItems`.
+  items?: CartItemCreateInput[];
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  slots: undefined,
+  items: () => [],
 });
 
 const { t } = useI18n();
 
 const sessionStore = useSessionStore();
+
+const comlink = useComlink();
 
 const { isFeatureEnabled } = useFeatures();
 
@@ -42,12 +41,17 @@ const { updateCart } = useCartCache();
 
 const { displaySuccess, displayAlert, displayWarning } = useAppNotifications();
 
-const items = computed(() => nonStockCartItems(props.slots));
-
-const enabled = computed(
-  () =>
-    isFeatureEnabled(FeatureFlagName.SHOPPING_CART) && items.value.length > 0,
+const featureEnabled = computed(() =>
+  isFeatureEnabled(FeatureFlagName.SHOPPING_CART),
 );
+
+const enabled = computed(() => featureEnabled.value && props.items.length > 0);
+
+const { data: lists } = useCartLists({
+  query: {
+    enabled: () => featureEnabled.value && sessionStore.isAuthenticated,
+  },
+});
 
 const { mutate, isPending } = useAddCartItems({
   mutation: {
@@ -55,7 +59,7 @@ const { mutate, isPending } = useAddCartItems({
       updateCart(cart);
       displaySuccess({
         text: t("cart.messages.loadoutAdded", {
-          count: items.value.reduce(
+          count: props.items.reduce(
             (sum, item) => sum + (item.quantity ?? 1),
             0,
           ),
@@ -69,28 +73,37 @@ const { mutate, isPending } = useAddCartItems({
   },
 });
 
-const add = (cartId?: string) => {
+const add = () => {
   if (!sessionStore.isAuthenticated) {
     displayWarning({ text: t("cart.messages.accountRequired") });
 
     return;
   }
 
-  mutate({ data: { items: items.value, cartId } });
+  if ((lists.value?.length ?? 0) > 1) {
+    comlink.emit("open-modal", {
+      component: () =>
+        import("@/frontend/components/Cart/PickListModal/index.vue"),
+      props: { name: t("cart.pick.loadoutParts"), items: props.items },
+    });
+
+    return;
+  }
+
+  mutate({ data: { items: props.items } });
 };
 </script>
 
 <template>
-  <BtnGroup v-if="enabled" :size="BtnSizesEnum.MD">
-    <Btn
-      :loading="isPending"
-      mobile-icon-only
-      data-test="cart-add-loadout"
-      @click="add()"
-    >
-      <i class="fa-light fa-cart-plus" />
-      {{ t("cart.addLoadout") }}
-    </Btn>
-    <CartListMenu :variant="BtnVariantsEnum.SOLID" @pick="add" />
-  </BtnGroup>
+  <Btn
+    v-if="enabled"
+    :size="BtnSizesEnum.MD"
+    :loading="isPending"
+    mobile-icon-only
+    data-test="cart-add-loadout"
+    @click="add"
+  >
+    <i class="fa-light fa-cart-plus" />
+    {{ t("cart.addLoadout") }}
+  </Btn>
 </template>
