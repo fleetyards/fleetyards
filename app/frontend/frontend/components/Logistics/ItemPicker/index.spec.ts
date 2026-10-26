@@ -277,6 +277,13 @@ describe("LogisticsItemPicker", () => {
     await subject.find(".base-input__clear").trigger("click");
     await flushPromises();
 
+    expect(
+      (
+        subject.find("[data-test='input-item-picker-search']")
+          .element as HTMLInputElement
+      ).value,
+    ).toBe("");
+    expect(categorySelect(subject).props("modelValue")).toBe("other");
     expect(subject.find("[data-test='item-picker-custom']").exists()).toBe(
       false,
     );

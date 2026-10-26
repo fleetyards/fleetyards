@@ -144,18 +144,6 @@ describe("FormInput number", () => {
     expect((wrapper.find("input").element as HTMLInputElement).value).toBe("");
   });
 
-  it("clears text to an empty string", async () => {
-    const wrapper = await mountInput({
-      name: "search",
-      modelValue: "teapot",
-      clearable: true,
-    });
-
-    await wrapper.find(".base-input__clear").trigger("click");
-
-    expect(wrapper.emitted("update:modelValue")?.at(-1)).toEqual([""]);
-  });
-
   it("offers to clear a zero", async () => {
     const wrapper = await mountInput({
       name: "length",
@@ -169,6 +157,18 @@ describe("FormInput number", () => {
 });
 
 describe("FormInput text", () => {
+  it("clears text to an empty string", async () => {
+    const wrapper = await mountInput({
+      name: "search",
+      modelValue: "teapot",
+      clearable: true,
+    });
+
+    await wrapper.find(".base-input__clear").trigger("click");
+
+    expect(wrapper.emitted("update:modelValue")?.at(-1)).toEqual([""]);
+  });
+
   it("still emits an empty string when emptied", async () => {
     const wrapper = await mountInput({ name: "username", modelValue: "Maru" });
 
