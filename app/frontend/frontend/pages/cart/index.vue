@@ -5,10 +5,11 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { useRoute, useRouter } from "vue-router";
 import Heading from "@/shared/components/base/Heading/index.vue";
-import PageActions from "@/shared/components/PageActions/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
+import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
@@ -17,38 +18,78 @@ import StatsPanel from "@/shared/components/StatsPanel/index.vue";
 import Empty from "@/shared/components/Empty/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import CartLine from "@/frontend/components/Cart/Line/index.vue";
+import CartListSelect from "@/frontend/components/Cart/ListSelect/index.vue";
+import CartListActions from "@/frontend/components/Cart/ListActions/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import { useCartCache } from "@/frontend/composables/useCartCache";
-import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
-import { type CartLine as CartLineType, useCart, useClearCart } from "@/services/fyApi";
+import { useComlink } from "@/shared/composables/useComlink";
+import {
+  type CartLine as CartLineType,
+  CartStrategyEnum,
+  useCart,
+  useCartList,
+} from "@/services/fyApi";
 
 const { t, toNumber } = useI18n();
 
-const { displayConfirm, displayAlert } = useAppNotifications();
+const route = useRoute();
 
-const { updateCart } = useCartCache();
+const router = useRouter();
 
-const { data: cart, isLoading } = useCart();
+const comlink = useComlink();
 
-const { mutate: clear, isPending: clearing } = useClearCart({
-  mutation: {
-    onSuccess: updateCart,
-    onError: () => displayAlert({ text: t("cart.messages.updateFailed") }),
-  },
+// Any of the user's lists can be shown; without one named, the active list.
+const listId = computed(() =>
+  typeof route.query.list === "string" ? route.query.list : undefined,
+);
+
+const STRATEGY_ICONS: Record<CartStrategyEnum, string> = {
+  [CartStrategyEnum.CHEAPEST]: "fa-light fa-coins",
+  [CartStrategyEnum.STOPS]: "fa-light fa-location-dot",
+  [CartStrategyEnum.DISTANCE]: "fa-light fa-route",
+};
+
+const strategy = computed(
+  () =>
+    Object.values(CartStrategyEnum).find(
+      (value) => value === route.query.strategy,
+    ) ?? CartStrategyEnum.CHEAPEST,
+);
+
+const params = computed(() => ({ strategy: strategy.value }));
+
+const selectStrategy = (value: CartStrategyEnum) => {
+  void router.replace({
+    query: {
+      ...route.query,
+      strategy: value === CartStrategyEnum.CHEAPEST ? undefined : value,
+    },
+  });
+};
+
+const activeCart = useCart(params, {
+  query: { enabled: () => !listId.value },
 });
 
-const confirmClear = () => {
-  displayConfirm({
-    text: t("cart.confirmClear"),
-    tone: AppConfirmTonesEnum.DANGER,
-    onConfirm: () => clear(),
+const listCart = useCartList(() => listId.value ?? "", params, {
+  query: { enabled: () => !!listId.value },
+});
+
+const cart = computed(() =>
+  listId.value ? listCart.data.value : activeCart.data.value,
+);
+
+const isLoading = computed(() =>
+  listId.value ? listCart.isLoading.value : activeCart.isLoading.value,
+);
+
+const createList = () => {
+  comlink.emit("open-modal", {
+    component: () => import("@/frontend/components/Cart/ListModal/index.vue"),
   });
 };
 
 const linesById = computed(
-  () =>
-    new Map((cart.value?.items ?? []).map((line) => [line.id, line])),
+  () => new Map((cart.value?.items ?? []).map((line) => [line.id, line])),
 );
 
 const groups = computed(() =>
@@ -71,17 +112,35 @@ const uec = computed(() => t("number.units.uec"));
   <Heading size="hero" hero>{{ t("cart.title") }}</Heading>
   <p class="cart-lead">{{ t("cart.lead") }}</p>
 
-  <PageActions v-if="cart?.items.length">
+  <Teleport to="#header-right">
+    <CartListSelect :list-id="cart?.id" />
     <Btn
-      :tone="BtnTonesEnum.DANGER"
-      :loading="clearing"
-      data-test="cart-clear"
-      @click="confirmClear"
+      :size="BtnSizesEnum.MD"
+      mobile-icon-only
+      data-test="cart-list-new"
+      @click="createList"
     >
-      <i class="fa-light fa-trash" />
-      {{ t("cart.clear") }}
+      <i class="fa-light fa-plus" />
+      {{ t("cart.lists.create") }}
     </Btn>
-  </PageActions>
+  </Teleport>
+
+  <CartListActions :list-id="cart?.id" :has-items="!!cart?.items.length">
+    <BtnGroup segmented :size="BtnSizesEnum.MD" data-test="cart-strategy">
+      <Btn
+        v-for="value in Object.values(CartStrategyEnum)"
+        :key="value"
+        v-tooltip.bottom="t(`cart.strategies.${value}.hint`)"
+        :active="strategy === value"
+        mobile-icon-only
+        :data-test="`cart-strategy-${value}`"
+        @click="selectStrategy(value)"
+      >
+        <i :class="STRATEGY_ICONS[value]" />
+        {{ t(`cart.strategies.${value}.label`) }}
+      </Btn>
+    </BtnGroup>
+  </CartListActions>
 
   <Loader :loading="isLoading" />
 

@@ -4,6 +4,7 @@
       "title": "Panier",
       "lead": "Rassemblez ce que vous voulez acheter en jeu et voyez où l'obtenir. Chaque article va à l'endroit le moins cher qui le vend, sauf si vous en choisissez un autre.",
       "addToCart": "Ajouter au panier",
+      "addLoadout": "Ajouter les pièces non d'origine au panier",
       "clear": "Vider le panier",
       "confirmClear": "Retirer tout le contenu du panier ?",
       "remove": "Retirer",
@@ -12,6 +13,7 @@
       "buyElsewhere": "Acheter ailleurs",
       "cheapest": "Le moins cher",
       "pinned": "Votre choix",
+      "tripPick": "Choisi pour le trajet",
       "unplaced": "Lieu inconnu",
       "totals": {
         "total": "Total",
@@ -28,10 +30,53 @@
         "text": "Ajoutez des marchandises, des composants ou de l'équipement depuis le catalogue pour planifier où les acheter."
       },
       "messages": {
-        "added": "%{name} ajouté au panier.",
+        "added": "%{name} ajouté à %{list}.",
         "addFailed": "Impossible d'ajouter l'article au panier.",
         "updateFailed": "Impossible de mettre à jour le panier.",
-        "accountRequired": "Connectez-vous pour utiliser le panier."
+        "accountRequired": "Connectez-vous pour utiliser le panier.",
+        "loadoutAdded": {
+          "one": "%{count} pièce ajoutée à %{list}.",
+          "other": "%{count} pièces ajoutées à %{list}."
+        }
+      },
+      "lists": {
+        "shown": "Liste",
+        "create": "Nouvelle liste",
+        "rename": "Renommer la liste",
+        "delete": "Supprimer la liste",
+        "name": "Nom",
+        "activate": "Définir comme active",
+        "isActive": "Liste active",
+        "addTo": "Ajouter à une autre liste",
+        "addToList": "Ajouter à %{name}",
+        "confirmDelete": "Supprimer la liste %{name} et tout son contenu ?",
+        "messages": {
+          "saveFailed": "Impossible d'enregistrer la liste."
+        }
+      },
+      "widget": {
+        "expand": "Afficher le panier",
+        "collapse": "Masquer le panier",
+        "open": "Ouvrir le panier",
+        "unavailable": "Non vendu",
+        "more": {
+          "one": "+%{count} autre article",
+          "other": "+%{count} autres articles"
+        }
+      },
+      "strategies": {
+        "cheapest": {
+          "label": "Le moins cher",
+          "hint": "Chaque article à l'endroit le moins cher qui le vend"
+        },
+        "stops": {
+          "label": "Moins d'arrêts",
+          "hint": "Tout acheter dans le moins d'endroits possible, en payant plus là où cela évite un arrêt"
+        },
+        "distance": {
+          "label": "Trajet le plus court",
+          "hint": "Garder les arrêts sur les mêmes planètes et dans le même système si possible, en payant plus là où cela évite du trajet"
+        }
       }
     }
   }

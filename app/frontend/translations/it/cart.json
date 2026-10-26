@@ -4,6 +4,7 @@
       "title": "Carrello",
       "lead": "Raccogli ciò che vuoi comprare nel gioco e scopri dove trovarlo. Ogni articolo va al posto più economico che lo vende, a meno che tu non ne scelga un altro.",
       "addToCart": "Aggiungi al carrello",
+      "addLoadout": "Aggiungi i componenti non di serie al carrello",
       "clear": "Svuota carrello",
       "confirmClear": "Rimuovere tutto dal carrello?",
       "remove": "Rimuovi",
@@ -12,6 +13,7 @@
       "buyElsewhere": "Compra altrove",
       "cheapest": "Più economico",
       "pinned": "La tua scelta",
+      "tripPick": "Scelto per il percorso",
       "unplaced": "Luogo sconosciuto",
       "totals": {
         "total": "Totale",
@@ -28,10 +30,53 @@
         "text": "Aggiungi merci, componenti o equipaggiamento dal catalogo per pianificare dove acquistarli."
       },
       "messages": {
-        "added": "%{name} aggiunto al carrello.",
+        "added": "%{name} aggiunto a %{list}.",
         "addFailed": "Impossibile aggiungere l'articolo al carrello.",
         "updateFailed": "Impossibile aggiornare il carrello.",
-        "accountRequired": "Accedi per usare il carrello."
+        "accountRequired": "Accedi per usare il carrello.",
+        "loadoutAdded": {
+          "one": "%{count} componente aggiunto a %{list}.",
+          "other": "%{count} componenti aggiunti a %{list}."
+        }
+      },
+      "lists": {
+        "shown": "Lista",
+        "create": "Nuova lista",
+        "rename": "Rinomina lista",
+        "delete": "Elimina lista",
+        "name": "Nome",
+        "activate": "Imposta come attiva",
+        "isActive": "Lista attiva",
+        "addTo": "Aggiungi a un'altra lista",
+        "addToList": "Aggiungi a %{name}",
+        "confirmDelete": "Eliminare la lista %{name} e tutto il suo contenuto?",
+        "messages": {
+          "saveFailed": "Impossibile salvare la lista."
+        }
+      },
+      "widget": {
+        "expand": "Mostra carrello",
+        "collapse": "Nascondi carrello",
+        "open": "Apri carrello",
+        "unavailable": "Non in vendita",
+        "more": {
+          "one": "+%{count} altro articolo",
+          "other": "+%{count} altri articoli"
+        }
+      },
+      "strategies": {
+        "cheapest": {
+          "label": "Più economico",
+          "hint": "Ogni articolo nel luogo più economico che lo vende"
+        },
+        "stops": {
+          "label": "Meno fermate",
+          "hint": "Comprare tutto nel minor numero di luoghi, pagando di più dove questo evita una fermata"
+        },
+        "distance": {
+          "label": "Percorso più breve",
+          "hint": "Tenere le fermate sugli stessi pianeti e nello stesso sistema quando possibile, pagando di più dove questo riduce il viaggio"
+        }
       }
     }
   }

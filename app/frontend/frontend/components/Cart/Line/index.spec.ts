@@ -56,6 +56,7 @@ const line = (attrs: Partial<CartLine> = {}) =>
     },
     available: true,
     pinned: false,
+    cheapest: true,
     unitPrice: 210,
     total: 420,
     price: cheap,
@@ -135,6 +136,18 @@ describe("CartLine", () => {
     });
   });
 
+  it("says when a shorter trip moved the line off its cheapest place", async () => {
+    const wrapper = await mount({ cheapest: false, price: dear });
+
+    expect(wrapper.text()).toContain("Trip pick");
+  });
+
+  it("does not call a pinned line a trip pick", async () => {
+    const wrapper = await mount({ pinned: true, cheapest: false, price: dear });
+
+    expect(wrapper.text()).not.toContain("Trip pick");
+  });
+
   it("goes back to the cheapest place", async () => {
     const wrapper = await mount({ pinned: true, price: dear });
 
@@ -151,9 +164,7 @@ describe("CartLine", () => {
     vi.useFakeTimers();
     const wrapper = await mount();
 
-    await wrapper
-      .find("[data-test='cart-line-quantity'] input")
-      .setValue("5");
+    await wrapper.find("[data-test='cart-line-quantity'] input").setValue("5");
     vi.advanceTimersByTime(600);
 
     expect(update).toHaveBeenCalledWith({

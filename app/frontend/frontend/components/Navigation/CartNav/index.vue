@@ -27,7 +27,7 @@ const enabled = computed(
 
 // Shares the cart page's query, so an edit there or an item added from a
 // catalogue moves the badge without a request of its own.
-const { data: cart } = useCart({ query: { enabled } });
+const { data: cart } = useCart(undefined, { query: { enabled } });
 
 const badge = computed(() => cart.value?.totals.itemsCount || 0);
 </script>

@@ -50,7 +50,6 @@ const itemRoute = computed(() => {
   return { name: DETAIL_ROUTES[item.type], params: { slug: item.slug } };
 });
 
-
 // The server's cap; above it the save is refused.
 const MAX_QUANTITY = 99_999;
 
@@ -120,8 +119,7 @@ const shopName = (price: ItemPrice) =>
   price.shop?.name ?? price.location.split(" - ")[0];
 
 const placeName = (price: ItemPrice) =>
-  price.shop?.location.name ??
-  price.location.split(" - ").slice(1).join(" · ");
+  price.shop?.location.name ?? price.location.split(" - ").slice(1).join(" · ");
 
 const uec = computed(() => t("number.units.uec"));
 
@@ -139,6 +137,9 @@ const formatPrice = (value?: number | null) =>
       <span v-if="line.price" class="cart-line__shop">
         {{ shopName(line.price) }}
         <Pill v-if="line.pinned" variant="neutral">{{ t("cart.pinned") }}</Pill>
+        <Pill v-else-if="!line.cheapest" variant="neutral">
+          {{ t("cart.tripPick") }}
+        </Pill>
       </span>
     </div>
 
