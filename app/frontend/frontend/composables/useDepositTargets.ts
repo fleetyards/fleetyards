@@ -170,7 +170,11 @@ export const useDepositTargets = (enabled: MaybeRefOrGetter<boolean>) => {
   );
 
   const empty = computed(
-    () => settled.value && !failed.value && !options.value.length,
+    () =>
+      toValue(enabled) &&
+      settled.value &&
+      !failed.value &&
+      !options.value.length,
   );
 
   return { options, targetFor, empty, hangarEnabled };

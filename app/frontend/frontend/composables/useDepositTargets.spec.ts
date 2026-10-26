@@ -73,11 +73,11 @@ vi.mock("@/services/fyApi", async (importOriginal) => {
 let wrapper: VueWrapper | undefined;
 let targets: ReturnType<typeof useDepositTargets>;
 
-const mount = async () => {
+const mount = async (enabled = true) => {
   wrapper = await mountWithDefaults(
     defineComponent({
       setup() {
-        targets = useDepositTargets(true);
+        targets = useDepositTargets(enabled);
 
         return () => null;
       },
@@ -230,6 +230,13 @@ describe("useDepositTargets", () => {
     api.memberships = { ...api.memberships, crew: new Error("500") };
 
     const { empty } = await mount();
+
+    expect(empty.value).toBe(false);
+  });
+
+  // The form is opened on an inventory of its own and asks for none.
+  it("is not empty when it was not asked", async () => {
+    const { empty } = await mount(false);
 
     expect(empty.value).toBe(false);
   });
