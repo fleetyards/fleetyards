@@ -61,10 +61,10 @@ class FleetShoppingList < ApplicationRecord
   def replace_items_from!(cart)
     # Stamped a microsecond apart so the list keeps the cart's order: both the
     # trip plan and a copy read lines back by `created_at`.
-    now = Time.current
+    now = Time.current.floor(6)
     rows = cart.cart_items.order(:created_at).pluck(:item_type, :item_id, :quantity)
       .each_with_index.map do |(item_type, item_id, quantity), index|
-        stamp = now + (index * 0.000001)
+        stamp = now + Rational(index, 1_000_000)
         {fleet_shopping_list_id: id, item_type:, item_id:, quantity:, created_at: stamp, updated_at: stamp}
       end
 

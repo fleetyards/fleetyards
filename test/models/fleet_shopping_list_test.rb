@@ -21,6 +21,15 @@ class FleetShoppingListTest < ActiveSupport::TestCase
     assert_equal [[@armor.id, 3]], @list.fleet_shopping_list_items.pluck(:item_id, :quantity)
   end
 
+  test "publishing gives every line its own timestamp" do
+    cart = create(:cart, user: @user)
+    create_list(:equipment, 21).each { |item| create(:cart_item, cart:, item:) }
+
+    @list.replace_items_from!(cart)
+
+    assert_equal 21, @list.fleet_shopping_list_items.distinct.count(:created_at)
+  end
+
   test "copying adds to what the cart holds, capped at the cart's limit" do
     create(:fleet_shopping_list_item, fleet_shopping_list: @list, item: @armor, quantity: 2)
     create(:fleet_shopping_list_item, fleet_shopping_list: @list, item: @helmet, quantity: CartItem::MAX_QUANTITY)
