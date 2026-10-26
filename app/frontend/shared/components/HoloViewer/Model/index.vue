@@ -26,7 +26,14 @@ import {
 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { sharedDracoLoader } from "../dracoLoader";
-import { buildMounts } from "../mounts";
+import {
+  applyHighlights,
+  buildMounts,
+  mountsHighlightKey,
+  mountsLayoutKey,
+  releaseMountCache,
+  retainMountCache,
+} from "../mounts";
 import { type HoloModel } from "../index.vue";
 
 type Props = {
@@ -131,6 +138,8 @@ const highlighted = (node: Object3D) => {
   return false;
 };
 
+// Run again after the highlights change, so it only ever swaps in its own
+// materials: a mounted part's originals belong to the holo cache.
 const setMaterials = (scene: Group) => {
   const bodies: Mesh[] = [];
 
@@ -139,7 +148,7 @@ const setMaterials = (scene: Group) => {
 
     if (!mesh.isMesh || mesh.userData.wire) return;
 
-    disposeOriginal(mesh.material);
+    if (!mesh.userData.shared) disposeOriginal(mesh.material);
 
     if (windowRefs.some((item) => node.name.toLowerCase().includes(item))) {
       mesh.material = windowMaterial;
@@ -155,12 +164,20 @@ const setMaterials = (scene: Group) => {
 
   // Added once the walk is done, so it never visits its own lines.
   for (const body of bodies) {
-    if (body.children.some((child) => child.userData.wire)) continue;
+    const wireMaterialFor = highlighted(body)
+      ? highlightWireMaterial
+      : wireMaterial;
+    const existing = body.children.find(
+      (child) => child.userData.wire,
+    ) as Mesh | undefined;
 
-    const wire = new Mesh(
-      body.geometry,
-      highlighted(body) ? highlightWireMaterial : wireMaterial,
-    );
+    if (existing) {
+      existing.material = wireMaterialFor;
+      existing.renderOrder = body.renderOrder;
+      continue;
+    }
+
+    const wire = new Mesh(body.geometry, wireMaterialFor);
     wire.userData.wire = true;
     wire.renderOrder = body.renderOrder;
     body.add(wire);
@@ -192,7 +209,10 @@ const playAnimations = (scene: Group, animations: AnimationClip[]) => {
   mixer.value.update(0);
 };
 
+retainMountCache();
+
 onUnmounted(() => {
+  releaseMountCache();
   mixer.value?.stopAllAction();
   material.dispose();
   windowMaterial.dispose();
@@ -220,9 +240,9 @@ const { state } = useLoader(GLTFLoader, props.model.path, {
   },
 });
 
-// The parts on the holo's ports, in the export's frame: added to the scene
-// before it is centred, and replaced in place when the fitting changes, so the
-// camera stays where it is.
+// The parts on the holo's ports, in the export's frame: added after the hull is
+// centred, so the camera frames the ship alike whatever it carries, and
+// replaced in place when the fitting changes.
 let mountRoot: Group | undefined;
 
 // Two quick swaps load in parallel; only the latest may land.
@@ -239,14 +259,15 @@ const attachMounts = async (scene: Group) => {
   mountRoot = next;
 
   if (next) {
+    // Built from the mounts as they were asked for; a highlight may have moved
+    // while the parts loaded.
+    applyHighlights(next, props.model.mounts ?? []);
     scene.add(next);
     setMaterials(next);
   }
 };
 
-const setup = async (scene: Group, animations: AnimationClip[]) => {
-  await attachMounts(scene);
-
+const setup = (scene: Group, animations: AnimationClip[]) => {
   if (props.model.textured) {
     playAnimations(scene, animations);
   } else {
@@ -272,22 +293,35 @@ const setup = async (scene: Group, animations: AnimationClip[]) => {
   }
 
   emit("loaded", size, scene);
+
+  void attachMounts(scene);
 };
 
 watch(
   () => state.value,
   () => {
     if (state.value) {
-      void setup(state.value.scene, state.value.animations);
+      setup(state.value.scene, state.value.animations);
     }
   },
 );
 
 // By content: a fitting recomputed into an equal tree is not a swap.
 watch(
-  () => JSON.stringify(props.model.mounts ?? []),
+  () => mountsLayoutKey(props.model.mounts),
   () => {
     if (state.value) void attachMounts(state.value.scene);
+  },
+);
+
+// A highlight only repaints the parts already there.
+watch(
+  () => mountsHighlightKey(props.model.mounts),
+  () => {
+    if (!mountRoot) return;
+
+    applyHighlights(mountRoot, props.model.mounts ?? []);
+    setMaterials(mountRoot);
   },
 );
 
