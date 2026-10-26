@@ -55,9 +55,11 @@ Fleets keep shared shopping lists, optionally restricted to squadrons. They are 
 ## Discovery Log
 
 - **2026-10-26** Initial research and plan creation. `TripPlan` duck-types its lines, so fleet lines reuse it.
+- **2026-10-26** New privileges also change the AsyncAPI enum; `bin/generate-asyncapi` or every fleet membership broadcast in tests raises.
+- **2026-10-26** Main has a migration at `20261026120000`, the same timestamp as `create_carts` on the cart branch.
 
 ## Progress
-- [ ] Phase 1
-- [ ] Phase 2
-- [ ] Phase 3
-- [ ] Phase 4
+- [x] Phase 1
+- [x] Phase 2
+- [x] Phase 3
+- [x] Phase 4
