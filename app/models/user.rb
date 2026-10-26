@@ -248,7 +248,7 @@ class User < ApplicationRecord
   after_update :notify_user
   after_save :touch_fleet_memberships
 
-  before_save -> { self.active_week_streak = 0 }, if: -> { will_save_change_to_tracking?(to: false) }
+  before_save -> { assign_attributes(active_week_streak: 0, last_active_week: nil) }, if: -> { will_save_change_to_tracking?(to: false) }
 
   # A plaque's picture is drawn once, in the owner's browser, with the owner's
   # name on it. Once that name changes, or the owner hides it, the picture is
@@ -393,25 +393,39 @@ class User < ApplicationRecord
     ::User.where(id: ::Friendship.partner_ids_for(self))
   end
 
-  # The streak counts the weeks in a row the account was used, ending with the
-  # week of `last_active_at`. It is a count rather than a list of weeks, so it
-  # says how regularly someone uses the site without keeping when they did.
+  # The streak counts the weeks in a row the account was used, ending with
+  # `last_active_week`. It is a count rather than a list of weeks, so it says
+  # how regularly someone uses the site without keeping when they did.
   # Objecting to usage analytics leaves it at zero.
+  #
+  # The week is kept apart from `last_active_at` because other writers move
+  # that timestamp without counting a week. The values are computed from the
+  # row as stored, in one statement, and a request finishing after a newer one
+  # writes nothing, so overlapping requests cannot roll the streak back.
+  RECORD_ACTIVITY_SQL = <<~SQL.squish
+    UPDATE users SET
+      last_active_at = :now,
+      active_week_streak = CASE
+        WHEN tracking = false THEN 0
+        WHEN last_active_week = CAST(:this_week AS date) THEN GREATEST(active_week_streak, 1)
+        WHEN last_active_week = CAST(:last_week AS date) THEN active_week_streak + 1
+        ELSE 1
+      END,
+      last_active_week = CASE WHEN tracking = false THEN NULL ELSE CAST(:this_week AS date) END
+    WHERE id = :id AND (last_active_at IS NULL OR last_active_at < :now)
+    RETURNING last_active_at, active_week_streak, last_active_week
+  SQL
+
   def record_activity!(now = Time.current)
-    this_week = now.beginning_of_week
+    this_week = now.to_date.beginning_of_week
 
-    streak =
-      if tracking == false
-        0
-      elsif last_active_at.blank? || last_active_at < this_week - 1.week
-        1
-      elsif last_active_at < this_week
-        active_week_streak + 1
-      else
-        [active_week_streak, 1].max
-      end
+    row = self.class.connection.select_one(
+      self.class.sanitize_sql([RECORD_ACTIVITY_SQL, {id:, now:, this_week:, last_week: this_week - 1.week}])
+    )
+    return if row.nil?
 
-    update_columns(last_active_at: now, active_week_streak: streak)
+    row.each { |name, value| self[name] = value }
+    clear_attribute_changes(row.keys)
   end
 
   def friend_of?(other)
