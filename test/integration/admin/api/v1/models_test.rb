@@ -297,6 +297,28 @@ class Admin::Api::V1::ModelsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models sorts by the numeric admin-only fields" do
+    create(:model, name: "Small", crew: 1, hydrogen_fuel_tank_size: 1, quantum_fuel_tank_size: 1)
+    create(:model, name: "Large", crew: 9, hydrogen_fuel_tank_size: 9, quantum_fuel_tank_size: 9)
+    sign_in @user
+
+    %w[crew hydrogenFuelTankSize quantumFuelTankSize].each do |field|
+      assert_api_response :get, 200, params: {q: {"s" => "#{field} desc"}} do
+        assert_equal "Large", parsed_body["items"].first["name"], field
+      end
+    end
+  end
+
+  test "GET /models sorts by updatedAt" do
+    create(:model, name: "Older", updated_at: 2.days.ago)
+    create(:model, name: "Newer", updated_at: 1.hour.ago)
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {"s" => "updatedAt desc"}} do
+      assert_equal "Newer", parsed_body["items"].first["name"]
+    end
+  end
+
   test "GET /models filters by scKeyBlank" do
     keyed = create(:model, sc_key: "AEGS_Idris_M")
     unkeyed = create(:model, sc_key: nil)
