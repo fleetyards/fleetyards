@@ -13,10 +13,11 @@ module V1
             type: :object,
             properties: {
               holoHull: ::Shared::V1::Schemas::MediaFile,
-              ports: {type: :array, items: ModelLoadoutPreviewPort}
+              ports: {type: :array, items: ModelLoadoutPreviewPort},
+              items: {type: :array, items: ModelLoadoutPreviewItem, description: "The holos of the parts the stripped ports mount by default"}
             },
             additionalProperties: false,
-            required: %w[ports]
+            required: %w[ports items]
           })
         end
       end

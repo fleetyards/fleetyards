@@ -50,6 +50,9 @@ class Api::V1::ModelsLoadoutPreviewTest < ActionDispatch::IntegrationTest
          "defaultItem" => "shld_godi_s01_securehyde_scitem", "geometry" => false, "stripped" => false}
       ]
     })
+    @gimbal = create(:component, sc_key: "mount_gimbal_s3")
+    @gimbal.holo.attach(io: File.open(Rails.root.join("test/fixtures/holo/plain.glb")), filename: "holo.glb")
+    create(:component, sc_key: "gats_ballisticgatling_s3")
     @model.holo_hull.attach(io: File.open(Rails.root.join("test/fixtures/holo/plain.glb")), filename: "flight_holo_hull.glb")
   end
 
@@ -69,6 +72,9 @@ class Api::V1::ModelsLoadoutPreviewTest < ActionDispatch::IntegrationTest
       assert_equal [{"type" => "Shield", "subTypes" => ""}], shield["types"]
       assert_not shield["geometry"]
       assert_not shield["stripped"]
+
+      assert_equal ["mount_gimbal_s3"], parsed_body["items"].pluck("scKey")
+      assert_match(/holo\.glb/, parsed_body["items"].sole["holoUrl"])
     end
   end
 
@@ -77,6 +83,7 @@ class Api::V1::ModelsLoadoutPreviewTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, path_params: {slug: model.slug} do
       assert_empty parsed_body["ports"]
+      assert_empty parsed_body["items"]
       assert_not parsed_body.key?("holoHull")
     end
   end
@@ -86,6 +93,7 @@ class Api::V1::ModelsLoadoutPreviewTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, path_params: {slug: @model.slug} do
       assert_empty parsed_body["ports"]
+      assert_empty parsed_body["items"]
       assert_not parsed_body.key?("holoHull")
     end
   end

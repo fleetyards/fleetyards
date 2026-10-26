@@ -6,9 +6,7 @@ if @loadout_preview_enabled && @model.holo_hull.attached?
   end
 end
 
-ports = (@model.hardpoint_transforms&.fetch("ports") if @loadout_preview_enabled) || []
-
-json.ports(ports) do |port|
+json.ports(@ports) do |port|
   json.name port["name"]
   json.parent port["parent"]
   json.helper port["helper"] != false
@@ -24,4 +22,9 @@ json.ports(ports) do |port|
   json.geometry port["geometry"] != false
   json.stripped port["stripped"] == true
   json.in_parent_holo port["inParentHolo"] == true
+end
+
+json.items(@item_holos) do |component|
+  json.sc_key component.sc_key
+  json.holo_url rails_blob_url(component.holo)
 end

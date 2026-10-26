@@ -37949,6 +37949,13 @@ components:
           type: string
           description: The store image, or the angled render where there is none,
             small
+        scKey:
+          type:
+          - string
+          - 'null'
+        holoUrl:
+          type: string
+          description: The part's holo, with its origin on the port it mounts on
       additionalProperties: false
       required:
       - id
@@ -40044,10 +40051,28 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/ModelLoadoutPreviewPort"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelLoadoutPreviewItem"
+          description: The holos of the parts the stripped ports mount by default
       additionalProperties: false
       required:
       - ports
+      - items
       title: ModelLoadoutPreview
+    ModelLoadoutPreviewItem:
+      type: object
+      properties:
+        scKey:
+          type: string
+        holoUrl:
+          type: string
+      additionalProperties: false
+      required:
+      - scKey
+      - holoUrl
+      title: ModelLoadoutPreviewItem
     ModelLoadoutPreviewPort:
       type: object
       properties:

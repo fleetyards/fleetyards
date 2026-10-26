@@ -168,7 +168,13 @@ module Api
       # With the feature off, every ship answers as if it had no export yet.
       def loadout_preview
         @model = find_model_by_slug!(:hardpoint_transforms_record, {holo_hull_attachment: :blob})
+        return if performed?
+
         @loadout_preview_enabled = feature_enabled?("loadout_preview")
+        @ports = (@model.hardpoint_transforms&.fetch("ports") if @loadout_preview_enabled) || []
+
+        default_items = @ports.select { |port| port["stripped"] }.filter_map { |port| port["defaultItem"] }.uniq
+        @item_holos = Component.where(sc_key: default_items).with_attached_holo.select { |component| component.holo.attached? }
       end
 
       def positions
