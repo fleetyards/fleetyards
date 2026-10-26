@@ -208,8 +208,7 @@ const withinMounts = (node: Object3D) => {
 
 const wireOf = (body: Mesh) =>
   body.children.find((child) => child.userData.wire) as
-    | LineSegments<EdgesGeometry, LineBasicMaterial>
-    | undefined;
+    LineSegments<EdgesGeometry, LineBasicMaterial> | undefined;
 
 const overlayFor = (body: Mesh) => {
   const overlay = new Mesh(
