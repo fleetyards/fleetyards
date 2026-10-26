@@ -24,4 +24,14 @@ class Api::V1::ModelsDeprecatedStoreImageTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 302, path_params: {slug: model.slug}
   end
+
+  test "GET /models/:slug/store-image redirects a ship without a store image to its coloured angled view" do
+    model = create(:model)
+    model.angled_view_colored.attach(io: file_fixture("test.png").open, filename: "angled-colored.png", content_type: "image/png")
+
+    get "/api/v1/models/#{model.slug}/store-image"
+
+    assert_response :redirect
+    assert_includes response.location, "angled-colored.png"
+  end
 end

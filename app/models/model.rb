@@ -380,10 +380,10 @@ class Model < ApplicationRecord
   has_one_attached :angled_view_colored
   has_one_attached :brochure
 
-  # The three a ship is drawn from, in the order every serializer prefers them.
+  # The four a ship is drawn from, in the order every serializer prefers them.
   # Named here so a cache key can depend on the artwork rather than on the model
   # row, which attaching an image does not touch.
-  IMAGE_ATTACHMENT_NAMES = %i[store_image angled_view fleetchart_image].freeze
+  IMAGE_ATTACHMENT_NAMES = %i[store_image angled_view_colored angled_view fleetchart_image].freeze
 
   IMAGE_ATTACHMENT_PRELOAD = IMAGE_ATTACHMENT_NAMES.map { |name| {"#{name}_attachment": :blob} }.freeze
 
@@ -423,8 +423,9 @@ class Model < ApplicationRecord
   end
 
   # The picture a ship is shown by where it gets a whole one. A ship that is
-  # never sold has no marketing art, only the renders from the game files.
-  DISPLAY_IMAGE_VIEWS = %i[store_image angled_view].freeze
+  # never sold has no marketing art, only the renders from the game files, of
+  # which the coloured flight render is the nearest to it.
+  DISPLAY_IMAGE_VIEWS = %i[store_image angled_view_colored angled_view].freeze
 
   def display_image_attr
     DISPLAY_IMAGE_VIEWS.find { |name| public_send(name).attached? }
