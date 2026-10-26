@@ -4207,6 +4207,16 @@
         "name": "名稱",
         "manufacturer": "製造商",
         "retired": "已不在目前版本中",
+        "standard": "標配",
+        "ports": {
+          "Magazine": "彈匣",
+          "IronSight": "瞄具",
+          "Barrel": "槍管",
+          "BottomAttachment": "下掛",
+          "Utility": "模組",
+          "Missile": "飛彈",
+          "other": "其他"
+        },
         "noMetrics": "該物品沒有記錄任何數據。",
         "availability": {
           "retired": "價格只針對目錄目前所在的版本記錄，而該物品不在其中。",

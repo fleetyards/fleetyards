@@ -36,5 +36,8 @@
     "x": 0.785,
     "y": 0.572,
     "z": 0.9
-  }
+  },
+  "family_key": "clda_env_armor_heavy_suit_01_01",
+  "required_tags": null,
+  "ports": null
 }

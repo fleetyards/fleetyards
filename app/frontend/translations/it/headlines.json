@@ -598,7 +598,10 @@
         "index": "Equipaggiamento",
         "metrics": "Valori",
         "identity": "Dettagli",
-        "craftedFrom": "Fabbricato con"
+        "craftedFrom": "Fabbricato con",
+        "versions": "Altre versioni",
+        "attachments": "Accessori",
+        "fits": "Compatibile con"
       }
     }
   }

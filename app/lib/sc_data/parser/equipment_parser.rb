@@ -212,11 +212,11 @@ module ScData
         "medium&light" => "light_medium"
       }.freeze
 
-      # Tints, store and collector editions, and the marketing and template
-      # records that never reach a player. They carry their own key, so they
-      # load as rows, but a picker listing twelve Pyro RYT Multi-Tools is not
-      # useful -- Component solves the same problem the same way.
-      VARIANT_SUFFIX = /_(tint|collector|store|mr|sf|prop|template|black|mat|tan)\d*\z/
+      # Props and the templates the game clones a record from, which never reach
+      # a player. Tints, store and collector editions do: each has a name of its
+      # own and several are sold in game shops. A copy under the same name is
+      # still hidden, by `mark_skins`.
+      VARIANT_SUFFIX = /_(prop|template)\d*\z/
 
       # Copies that exist for a game mode, an NPC, or a developer rather than a
       # player: the AI loadout, the tug-of-war and gun-game event weapons, the
@@ -230,12 +230,23 @@ module ScData
         /test/
       ].freeze
 
+      # A base key names at least maker, class and kind -- behr_rifle_ballistic --
+      # so a two-segment record cannot claim every key that starts like it.
+      MIN_BASE_SEGMENTS = 3
+
+      WORN_EQUIPMENT_TYPES = %w[armor clothing undersuit].freeze
+
+      # A skin's own name, in straight or curly, double or single quotes. A
+      # single quote only opens and closes away from a letter, so a possessive
+      # apostrophe is not read as one.
+      QUOTED_NAME = /\s*(?:["“][^"“”]+["”]|(?<![[:alnum:]])['‘][^'‘’]+['’](?![[:alnum:]]))\s*/
+
       def all
         save_items(equipment, folder: "equipment")
       end
 
       def equipment
-        mark_skins(load_equipment_data.filter_map { |item| parse_equipment(item) })
+        assign_families(mark_skins(load_equipment_data.filter_map { |item| parse_equipment(item) }))
       end
 
       # Records that share a display name and a maker-and-type key prefix are
@@ -261,6 +272,111 @@ module ScData
         end
 
         parsed
+      end
+
+      # Versions of one item share a `family_key`. A weapon skin's key extends
+      # its base item's -- klwe_rifle_energy_01_white02 is the Gallant Rifle in
+      # "Boneyard" colours -- and the family is named after the shortest such
+      # base. The base has to be the same type of item, or a rifle's magazine
+      # would read as a version of the rifle, and the name has to say it is a
+      # version: attachment keys extend other products' -- the Quell Suppressor
+      # is arma_barrel_supp_s1_02, under the Tacit -- and so do posters,
+      # keycards and the LL sights.
+      #
+      # Worn colourways have no base record: the Defiance Arms in each colour
+      # are slaver_armor_heavy_arms_01_01_NN, so they share the key without its
+      # last segment instead. An item with no other version has no family.
+      private def assign_families(parsed)
+        by_key = parsed.index_by { |item| item[:key] }
+        bases = parsed.to_h { |item| [item[:key], base_key(item, by_key)] }
+
+        # A version whose name matches only an intermediate record -- a skin of
+        # a skin -- still belongs to the root's family.
+        root = ->(key) { bases[key] ? root.call(bases[key]) : key }
+        roots = bases.filter_map { |key, base| root.call(key) if base }.to_set
+
+        parsed.each do |item|
+          item[:family_key] = root.call(item[:key]) if bases[item[:key]] || roots.include?(item[:key])
+        end
+
+        assign_worn_families(parsed, by_key)
+
+        parsed
+      end
+
+      # One prefix can cover different pieces -- arms and legs, or a test record
+      # beside an undersuit -- so the colourways are grouped by kind as well,
+      # and a prefix shared by several kinds names each after its slot or type.
+      #
+      # A colourway group can hold the root of a keyed family (Citadel Legs Base
+      # has skins of its own) or sit under a record its prefix names (the
+      # mobiGlas casings), and then joins that family rather than starting one.
+      private def assign_worn_families(parsed, by_key)
+        open = parsed.select do |item|
+          WORN_EQUIPMENT_TYPES.include?(item[:equipment_type]) && [nil, item[:key]].include?(item[:family_key])
+        end
+        merged = {}
+
+        open.group_by { |item| worn_family_key(item) }.each do |prefix, same_prefix|
+          kinds = same_prefix.group_by { |item| kind(item) }
+          base = by_key[prefix]
+          if base && open.include?(base) && !same_prefix.include?(base) && kinds.key?(kind(base))
+            kinds[kind(base)] += [base]
+          end
+          kinds = kinds.select { |_, members| members.size > 1 }
+
+          kinds.each do |(_, item_type, slot), members|
+            roots = members.select { |item| item[:family_key] }
+            family_key = roots.first&.dig(:family_key) || (kinds.one? ? prefix : [prefix, slot || item_type].compact.join("_"))
+
+            roots.drop(1).each { |other| merged[other[:key]] = family_key }
+            members.each { |item| item[:family_key] = family_key }
+          end
+        end
+
+        parsed.each { |item| item[:family_key] = merged.fetch(item[:family_key], item[:family_key]) }
+      end
+
+      private def kind(item)
+        item.values_at(:equipment_type, :item_type, :slot)
+      end
+
+      private def base_key(item, by_key)
+        segments = item[:key].split("_")
+
+        (MIN_BASE_SEGMENTS...segments.size).each do |count|
+          base = by_key[segments.first(count).join("_")]
+
+          return base[:key] if base && same_kind?(base, item) && version_name?(item[:name], base[:name])
+        end
+
+        nil
+      end
+
+      # A skin keeps its base's name around a quoted one -- Gallant "Boneyard"
+      # Rifle -- or adds a colour to it, and a colour sibling swaps the base's:
+      # Tracer Laser Pointer Green under Tracer Laser Pointer Orange.
+      private def version_name?(name, base_name)
+        words = comparable_name(name).split
+        base_words = comparable_name(base_name).split
+
+        return true if words.first(base_words.size) == base_words
+        return true if name.match?(QUOTED_NAME) && words.first == base_words.first
+
+        words.size == base_words.size && words.size > 1 && words[0..-2] == base_words[0..-2]
+      end
+
+      # Some names carry a non-breaking space where others have a plain one.
+      private def comparable_name(name)
+        name.gsub(QUOTED_NAME, " ").gsub(/[[:space:]]+/, " ").strip.downcase
+      end
+
+      private def worn_family_key(item)
+        item[:key].split("_")[0..-2].join("_")
+      end
+
+      private def same_kind?(base, item)
+        base[:equipment_type] == item[:equipment_type] && base[:item_type] == item[:item_type]
       end
 
       private def skin_family(item)
@@ -325,9 +441,43 @@ module ScData
           grade: value_or_nil(attach_def["Grade"]),
           manufacturer_ref: value_or_nil(attach_def["Manufacturer"]),
           tags: attach_def["Tags"].to_s.split,
+          required_tags: (attach_def["RequiredTags"].to_s.split.presence if attach_def["Type"] == "WeaponAttachment"),
+          ports: (attachment_ports(values).presence if attach_def["Type"] == "WeaponPersonal"),
           hidden: variant?(key),
           **occupancy(attach_def)
         }
+      end
+
+      # The ports a weapon takes attachments in -- magazine, optics, barrel,
+      # underbarrel -- with the size range and tags an attachment has to meet,
+      # and the attachment it ships with. Armour and gun cases carry
+      # WeaponAttachment ports too, but those hold spare magazines rather than
+      # fit them, which is why only a hand-held weapon or tool is asked.
+      private def attachment_ports(values)
+        defaults = Array.wrap(
+          values.dig("Components", "SEntityComponentDefaultLoadoutParams", "loadout", "SItemPortLoadoutManualParams",
+            "entries", "SItemPortLoadoutEntryParams")
+        ).to_h { |entry| [entry["itemPortName"], value_or_nil(entry["entityClassName"])] }
+
+        ports = Array.wrap(values.dig("Components", "SItemPortContainerComponentParams", "Ports", "SItemPortDef"))
+
+        ports.filter_map do |port|
+          sub_types = Array.wrap(port.dig("Types", "SItemPortDefTypes"))
+            .select { |type| type["Type"] == "WeaponAttachment" }
+            .flat_map { |type| Array.wrap(type.dig("SubTypes", "Enum")).filter_map { |sub_type| sub_type["value"].presence } }
+
+          next if sub_types.empty?
+
+          {
+            name: port["Name"],
+            sub_types:,
+            min_size: port["MinSize"].to_i,
+            max_size: port["MaxSize"].to_i,
+            required_tags: port["RequiredPortTags"].to_s.split.presence,
+            port_tags: port["PortTags"].to_s.split.presence,
+            default: defaults[port["Name"]]
+          }.compact
+        end
       end
 
       private def equipment_type(attach_def, item_type)

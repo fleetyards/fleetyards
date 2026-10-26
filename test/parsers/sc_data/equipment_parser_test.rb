@@ -55,20 +55,155 @@ module ScData
         assert_empty parsed
       end
 
-      # The tints and colourways among the newly named records still have to
-      # hide, and `VARIANT_SUFFIX` decides that from the key rather than from
-      # the name -- so a record arriving with a name for the first time does not
-      # arrive visible for the first time.
-      test "hides a colourway the export declares with a plural marker" do
+      # A tint is a colourway a player can own, with a name of its own, so it is
+      # listed as a version of its base rather than hidden.
+      test "keeps a tint visible as a version of its base" do
+        write_equipment("mrai_flightsuit_01_07", name: "@item_Name_mrai_flightsuit_01_07")
         write_equipment("mrai_flightsuit_01_07_tint02", name: "@item_Name_mrai_flightsuit_01_07_tint02")
 
         @parser.translations = {
           "item_Name_hdh_boots_01_01_13,P" => "Novian \"Nighthunter\" Boots",
+          "item_Name_mrai_flightsuit_01_07" => "Neutrino Racing Flight Suit",
           "item_Name_mrai_flightsuit_01_07_tint02,P" => "Neutrino Racing Flight Suit WhiteHot"
         }
 
-        assert parsed.fetch("mrai_flightsuit_01_07_tint02")["hidden"]
-        assert_not parsed.fetch("hdh_boots_01_01_13")["hidden"]
+        assert_not parsed.fetch("mrai_flightsuit_01_07_tint02")["hidden"]
+        assert_equal %w[mrai_flightsuit_01_07 mrai_flightsuit_01_07],
+          parsed.values_at("mrai_flightsuit_01_07", "mrai_flightsuit_01_07_tint02").pluck("family_key")
+      end
+
+      test "files a weapon skin under its base weapon but not the weapon's magazine" do
+        write_weapon("klwe_rifle_energy_01", "Gallant Rifle")
+        write_weapon("klwe_rifle_energy_01_white02", "Gallant \"Boneyard\" Rifle")
+        write_weapon("klwe_rifle_energy_01_white02_tow", "Gallant \"Boneyard\" Rifle")
+        write_attachment("klwe_rifle_energy_01_mag", "Gallant Rifle Battery", sub_type: "Magazine")
+
+        assert_equal ["klwe_rifle_energy_01"] * 3,
+          parsed.values_at("klwe_rifle_energy_01", "klwe_rifle_energy_01_white02", "klwe_rifle_energy_01_white02_tow")
+            .pluck("family_key")
+        assert_nil parsed.fetch("klwe_rifle_energy_01_mag")["family_key"]
+      end
+
+      # Attachment keys extend other products': the Quell Suppressor is filed
+      # under the Tacit's key, and a non-breaking space must not split a skin
+      # from its base.
+      test "files a version by its name as well as its key" do
+        write_attachment("arma_barrel_supp_s1", "Tacit Suppressor1", sub_type: "Barrel")
+        write_attachment("arma_barrel_supp_s1_02", "Quell Suppressor1", sub_type: "Barrel")
+        write_weapon("behr_smg_ballistic_01", "P8-SC SMG")
+        write_weapon("behr_smg_ballistic_01_black01", "P8-SC\u00A0\"Midnight\" SMG")
+        write_attachment("lglt_flashlight_01_orange", "Tracer Laser Pointer Orange", sub_type: "BottomAttachment")
+        write_attachment("lglt_flashlight_01_orange_green", "Tracer Laser Pointer Green", sub_type: "BottomAttachment")
+
+        assert_nil parsed.fetch("arma_barrel_supp_s1_02")["family_key"]
+        assert_equal "behr_smg_ballistic_01", parsed.fetch("behr_smg_ballistic_01_black01")["family_key"]
+        assert_equal "lglt_flashlight_01_orange", parsed.fetch("lglt_flashlight_01_orange_green")["family_key"]
+      end
+
+      # The matte blue names only the blue it extends, not the red the family is
+      # named after, and must not pull the blue out of that family.
+      test "files a version of a version under the root" do
+        write_weapon("wowb_pistol_toy_01", "WowBlast Pistol Red")
+        write_weapon("wowb_pistol_toy_01_blue", "WowBlast Pistol Blue")
+        write_weapon("wowb_pistol_toy_01_blue_matte", "WowBlast Pistol Blue Matte")
+
+        assert_equal ["wowb_pistol_toy_01"] * 3,
+          parsed.values_at("wowb_pistol_toy_01", "wowb_pistol_toy_01_blue", "wowb_pistol_toy_01_blue_matte")
+            .pluck("family_key")
+      end
+
+      test "reads a possessive apostrophe as part of the name" do
+        write_weapon("behr_rifle_ballistic_01", "Hunter's Rifle")
+        write_weapon("behr_rifle_ballistic_01_tan01", "Hunter's 'Dune' Rifle")
+
+        assert_equal "behr_rifle_ballistic_01", parsed.fetch("behr_rifle_ballistic_01_tan01")["family_key"]
+      end
+
+      test "keeps worn pieces of different kinds under one prefix apart" do
+        write_equipment("invisible_medium_arms", name: "@item_Name_invisible_medium_arms",
+          path: "entities/scitem/characters/human/armor", type: "Char_Armor_Arms")
+        write_equipment("invisible_medium_legs", name: "@item_Name_invisible_medium_legs",
+          path: "entities/scitem/characters/human/armor", type: "Char_Armor_Legs")
+        @parser.translations = {
+          "item_Name_hdh_boots_01_01_13" => "Novian Boots",
+          "item_Name_invisible_medium_arms" => "GCD-Army Arms",
+          "item_Name_invisible_medium_legs" => "GCD-Army Legs"
+        }
+
+        assert_equal [nil, nil], parsed.values_at("invisible_medium_arms", "invisible_medium_legs").pluck("family_key")
+      end
+
+      # Worn colourways have no base record to extend, so they share the key
+      # without its colour instead.
+      test "files worn colourways under their shared key" do
+        write_equipment("hdh_boots_01_01_14", name: "@item_Name_hdh_boots_01_01_14")
+        write_equipment("hdh_hat_01_01_01", name: "@item_Name_hdh_hat_01_01_01", type: "Char_Clothing_Hat")
+
+        @parser.translations = {
+          "item_Name_hdh_boots_01_01_13" => "Novian Boots Black",
+          "item_Name_hdh_boots_01_01_14" => "Novian Boots Red",
+          "item_Name_hdh_hat_01_01_01" => "Novian Hat"
+        }
+
+        assert_equal %w[hdh_boots_01_01 hdh_boots_01_01],
+          parsed.values_at("hdh_boots_01_01_13", "hdh_boots_01_01_14").pluck("family_key")
+        assert_nil parsed.fetch("hdh_hat_01_01_01")["family_key"]
+      end
+
+      test "reads a weapon's attachment ports and what it ships with" do
+        write_weapon("klwe_rifle_energy_01", "Gallant Rifle", components_extra: <<~XML)
+          <SEntityComponentDefaultLoadoutParams>
+            <loadout>
+              <SItemPortLoadoutManualParams>
+                <entries>
+                  <SItemPortLoadoutEntryParams itemPortName="magazine_attach" entityClassName="klwe_rifle_energy_01_mag" />
+                  <SItemPortLoadoutEntryParams itemPortName="optics_attach" />
+                </entries>
+              </SItemPortLoadoutManualParams>
+            </loadout>
+          </SEntityComponentDefaultLoadoutParams>
+          <SItemPortContainerComponentParams>
+            <Ports>
+              #{port("magazine_attach", "Magazine", min: 1, max: 1, required: "klwe_rifle_energy_01", provided: "klwe_rifle_energy_01")}
+              #{port("optics_attach", "IronSight", min: 1, max: 2)}
+              <SItemPortDef Name="item_grab" MinSize="0" MaxSize="0">
+                <Types><SItemPortDefTypes Type="Misc" /></Types>
+              </SItemPortDef>
+            </Ports>
+          </SItemPortContainerComponentParams>
+        XML
+
+        assert_equal [
+          {
+            "name" => "magazine_attach", "sub_types" => ["Magazine"], "min_size" => 1, "max_size" => 1,
+            "required_tags" => ["klwe_rifle_energy_01"], "port_tags" => ["klwe_rifle_energy_01"],
+            "default" => "klwe_rifle_energy_01_mag"
+          },
+          {"name" => "optics_attach", "sub_types" => ["IronSight"], "min_size" => 1, "max_size" => 2}
+        ], parsed.fetch("klwe_rifle_energy_01")["ports"]
+      end
+
+      # Armour carries WeaponAttachment ports for its magazine pouches.
+      test "reads no attachment ports off armour" do
+        write_equipment("ccc_medium_armor_core_01_01_01", name: "@item_Name_ccc_medium_armor_core_01_01_01",
+          path: "entities/scitem/characters/human/armor", type: "Char_Armor_Torso", components_extra: <<~XML)
+            <SItemPortContainerComponentParams>
+              <Ports>#{port("magazine_attach_1", "Magazine", min: 1, max: 1)}</Ports>
+            </SItemPortContainerComponentParams>
+          XML
+        @parser.translations = {
+          "item_Name_hdh_boots_01_01_13" => "Novian Boots",
+          "item_Name_ccc_medium_armor_core_01_01_01" => "Citadel Core"
+        }
+
+        assert_nil parsed.fetch("ccc_medium_armor_core_01_01_01")["ports"]
+      end
+
+      test "reads the tags an attachment requires of its port" do
+        write_attachment("apar_hmg_ballistic_01_mag", "Animus Missile Launcher Magazine", sub_type: "Magazine",
+          required_tags: "hmg_mag_port")
+
+        assert_equal ["hmg_mag_port"], parsed.fetch("apar_hmg_ballistic_01_mag")["required_tags"]
       end
 
       test "reads glasses as eyewear" do
@@ -296,15 +431,44 @@ module ScData
 
       private def write_carryable(key, display_name, type: "Misc", sub_type: "UNDEFINED", folder: "1h", **)
         write_equipment(key, name: "@item_Name_#{key}", path: "entities/scitem/carryables/#{folder}", type:, sub_type:, **)
+        name_record(key, display_name)
+      end
 
+      private def write_weapon(key, display_name, **)
+        write_equipment(key, name: "@item_Name_#{key}", path: "entities/scitem/weapons/fps_weapons",
+          type: "WeaponPersonal", sub_type: "Medium", **)
+        name_record(key, display_name)
+      end
+
+      private def write_attachment(key, display_name, sub_type:, required_tags: nil)
+        write_equipment(key, name: "@item_Name_#{key}", path: "entities/scitem/weapons/magazines",
+          type: "WeaponAttachment", sub_type:, required_tags:)
+        name_record(key, display_name)
+      end
+
+      private def name_record(key, display_name)
         @parser.translations = (@parser.translations || {}).merge(
           "item_Name_hdh_boots_01_01_13" => "Novian \"Nighthunter\" Boots",
           "item_Name_#{key}" => display_name
         )
       end
 
+      private def port(name, sub_type, min:, max:, required: nil, provided: nil)
+        tags = {"RequiredPortTags" => required, "PortTags" => provided}.compact.map { |attribute, value| %(#{attribute}="#{value}") }.join(" ")
+
+        <<~XML
+          <SItemPortDef Name="#{name}" MinSize="#{min}" MaxSize="#{max}" #{tags}>
+            <Types>
+              <SItemPortDefTypes Type="WeaponAttachment">
+                <SubTypes><Enum value="#{sub_type}" /></SubTypes>
+              </SItemPortDefTypes>
+            </Types>
+          </SItemPortDef>
+        XML
+      end
+
       private def write_equipment(key, name:, path: SOURCE_PATH, type: "Char_Clothing_Feet", sub_type: "UNDEFINED",
-        description: "@LOC_EMPTY", attach_extra: "", components_extra: "")
+        description: "@LOC_EMPTY", attach_extra: "", components_extra: "", required_tags: nil)
         folder = "#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/#{path}"
 
         FileUtils.mkdir_p(folder)
@@ -313,7 +477,7 @@ module ScData
           <EntityClassDefinition.#{key} __ref="00000000-0000-0000-0000-00000000beef">
             <Components>
               <SAttachableComponentParams>
-                <AttachDef Type="#{type}" SubType="#{sub_type}" Size="1" Grade="1" Tags="#{key}">
+                <AttachDef Type="#{type}" SubType="#{sub_type}" Size="1" Grade="1" Tags="#{key}"#{%( RequiredTags="#{required_tags}") if required_tags}>
                   <Localization Name="#{name}" ShortName="@LOC_EMPTY" Description="#{description}" />
                   #{attach_extra}
                 </AttachDef>

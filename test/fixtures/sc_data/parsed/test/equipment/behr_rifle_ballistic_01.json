@@ -33,5 +33,52 @@
     "x": 0.0811,
     "y": 0.8528,
     "z": 0.2487
-  }
+  },
+  "family_key": "behr_rifle_ballistic_01",
+  "required_tags": null,
+  "ports": [
+    {
+      "name": "magazine_attach",
+      "sub_types": [
+        "Magazine"
+      ],
+      "min_size": 1,
+      "max_size": 1,
+      "required_tags": [
+        "behr_rifle_ballistic_01"
+      ],
+      "port_tags": [
+        "behr_rifle_ballistic_01"
+      ],
+      "default": "behr_rifle_ballistic_01_mag"
+    },
+    {
+      "name": "optics_attach",
+      "sub_types": [
+        "IronSight"
+      ],
+      "min_size": 1,
+      "max_size": 2
+    },
+    {
+      "name": "barrel_attach",
+      "sub_types": [
+        "Barrel"
+      ],
+      "min_size": 2,
+      "max_size": 2,
+      "required_tags": [
+        "FPS_Barrel",
+        "ballistic_attach"
+      ]
+    },
+    {
+      "name": "underbarrel_attach",
+      "sub_types": [
+        "BottomAttachment"
+      ],
+      "min_size": 1,
+      "max_size": 2
+    }
+  ]
 }

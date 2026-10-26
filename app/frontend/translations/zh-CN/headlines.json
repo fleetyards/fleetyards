@@ -598,7 +598,10 @@
         "index": "装备",
         "metrics": "数据",
         "identity": "详情",
-        "craftedFrom": "制造配方"
+        "craftedFrom": "制造配方",
+        "versions": "其他版本",
+        "attachments": "配件",
+        "fits": "适用于"
       }
     }
   }

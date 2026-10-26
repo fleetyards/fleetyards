@@ -36,5 +36,8 @@
     "x": 0.244,
     "y": 0.298,
     "z": 0.335
-  }
+  },
+  "family_key": "gys_helmet_03_01",
+  "required_tags": null,
+  "ports": null
 }

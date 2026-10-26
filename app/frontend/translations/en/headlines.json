@@ -600,7 +600,10 @@
         "index": "Equipment",
         "metrics": "Metrics",
         "identity": "Details",
-        "craftedFrom": "Crafted from"
+        "craftedFrom": "Crafted from",
+        "versions": "Other versions",
+        "attachments": "Attachments",
+        "fits": "Fits"
       }
     }
   }

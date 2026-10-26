@@ -523,6 +523,87 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/equipment/{slug}/attachments":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      required: true
+    get:
+      summary: Attachments that fit an equipment item
+      tags:
+      - Equipment
+      operationId: equipmentItemAttachments
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/EquipmentAttachmentsList"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/equipment/{slug}/versions":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      required: true
+    get:
+      summary: Other versions of an equipment item
+      tags:
+      - Equipment
+      operationId: equipmentItemVersions
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/EquipmentList"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/equipment/{slug}/weapons":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      required: true
+    get:
+      summary: Weapons an attachment fits
+      tags:
+      - Equipment
+      operationId: equipmentItemWeapons
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/EquipmentList"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/features":
     get:
       summary: Feature Flags for User
@@ -25722,6 +25803,26 @@ components:
       - createdAt
       - updatedAt
       title: Equipment
+    EquipmentAttachment:
+      type: object
+      properties:
+        portType:
+          type: string
+        default:
+          type: boolean
+        attachment:
+          "$ref": "#/components/schemas/Equipment"
+      additionalProperties: false
+      required:
+      - portType
+      - default
+      - attachment
+      title: EquipmentAttachment
+    EquipmentAttachmentsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/EquipmentAttachment"
+      title: EquipmentAttachmentsList
     EquipmentFacetFilterQuery:
       type: object
       properties:
@@ -25732,6 +25833,11 @@ components:
       additionalProperties: false
       example: {}
       title: EquipmentFacetFilterQuery
+    EquipmentList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/Equipment"
+      title: EquipmentList
     EquipmentQuery:
       type: object
       properties:

@@ -4210,6 +4210,16 @@
         "name": "Name",
         "manufacturer": "Hersteller",
         "retired": "Nicht mehr im aktuellen Build",
+        "standard": "Standard",
+        "ports": {
+          "Magazine": "Magazin",
+          "IronSight": "Optik",
+          "Barrel": "Lauf",
+          "BottomAttachment": "Unterlauf",
+          "Utility": "Module",
+          "Missile": "Raketen",
+          "other": "Sonstiges"
+        },
         "noMetrics": "Für diesen Gegenstand sind keine Werte hinterlegt.",
         "availability": {
           "retired": "Preise werden für den Build erfasst, auf dem der Katalog steht, und dieser Gegenstand ist nicht darin.",

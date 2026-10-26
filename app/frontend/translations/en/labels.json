@@ -4224,6 +4224,16 @@
         "name": "Name",
         "manufacturer": "Manufacturer",
         "retired": "No longer in the current build",
+        "standard": "Standard",
+        "ports": {
+          "Magazine": "Magazine",
+          "IronSight": "Optics",
+          "Barrel": "Barrel",
+          "BottomAttachment": "Underbarrel",
+          "Utility": "Modules",
+          "Missile": "Missiles",
+          "other": "Other"
+        },
         "noMetrics": "No figures are recorded for this item.",
         "availability": {
           "retired": "Prices are tracked for the build the catalogue is on, and this item is not in it.",

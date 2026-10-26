@@ -33,5 +33,54 @@
     "x": 0.0612,
     "y": 0.2677,
     "z": 0.125
-  }
+  },
+  "family_key": "grin_multitool_01",
+  "required_tags": null,
+  "ports": [
+    {
+      "name": "magazine_attach",
+      "sub_types": [
+        "Magazine"
+      ],
+      "min_size": 1,
+      "max_size": 1,
+      "required_tags": [
+        "grin_multitool_energy_01"
+      ],
+      "default": "grin_multitool_energy_01_mag"
+    },
+    {
+      "name": "weapon_action_attachment",
+      "sub_types": [
+        "Personal"
+      ],
+      "min_size": 1,
+      "max_size": 1
+    },
+    {
+      "name": "module_attach",
+      "sub_types": [
+        "Utility"
+      ],
+      "min_size": 1,
+      "max_size": 1,
+      "required_tags": [
+        "grin_multitool_01"
+      ],
+      "port_tags": [
+        "grin_multitool_01"
+      ]
+    },
+    {
+      "name": "canister_attach",
+      "sub_types": [
+        "Magazine"
+      ],
+      "min_size": 0,
+      "max_size": 1,
+      "required_tags": [
+        "multitool_resource"
+      ]
+    }
+  ]
 }

@@ -4210,6 +4210,16 @@
         "name": "Nombre",
         "manufacturer": "Fabricante",
         "retired": "Ya no está en la compilación actual",
+        "standard": "De serie",
+        "ports": {
+          "Magazine": "Cargador",
+          "IronSight": "Mira",
+          "Barrel": "Cañón",
+          "BottomAttachment": "Bajo el cañón",
+          "Utility": "Módulos",
+          "Missile": "Misiles",
+          "other": "Otros"
+        },
         "noMetrics": "No hay métricas registradas para este objeto.",
         "availability": {
           "retired": "Los precios se registran para la versión en la que está el catálogo, y este objeto no está en ella.",

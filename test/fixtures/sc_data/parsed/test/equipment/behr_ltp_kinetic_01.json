@@ -23,5 +23,8 @@
   "grade": "1",
   "manufacturer_ref": "65a5d887-3b21-4046-a718-6912c0c7c3be",
   "tags": [],
-  "hidden": false
+  "hidden": false,
+  "family_key": null,
+  "required_tags": null,
+  "ports": null
 }

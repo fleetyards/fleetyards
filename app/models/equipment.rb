@@ -52,6 +52,10 @@ class Equipment < ApplicationRecord
   # the catalogue was no longer in the game.
   has_one :build, -> { current(::ScData::Source.current.served) }, class_name: "EquipmentBuild", inverse_of: :equipment
 
+  # The weapon ports this attachment fits, in every retained build.
+  has_many :attachment_fits, class_name: "EquipmentAttachment", foreign_key: :attachment_id,
+    inverse_of: :attachment, dependent: :destroy
+
   # Whether the build we are on describes this item, rather than whether the
   # version string on the row still matches it. An exists check rather than a
   # join, so nothing fans out and `current_version(false)` stays the plain table.
