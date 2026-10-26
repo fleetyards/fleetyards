@@ -1579,6 +1579,7 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
 
         <Alert
           v-if="refusedItems.length"
+          class="vehicle-loadout__refused-alert"
           :variant="AlertVariantsEnum.WARNING"
           :size="AlertSizesEnum.COMPACT"
           :title="t('labels.vehicleLoadout.refused.title')"

@@ -169,14 +169,19 @@
     pointer-events: auto;
   }
 
-  // The room a socket list holds for the picker stays empty while it is shut,
-  // but would still take the drag meant for the holo behind it.
+  // While the ship is being turned, a drag anywhere the controls leave empty
+  // reaches the holo behind them: the panel and the room a socket list holds
+  // for the picker let it through, the controls themselves keep it.
+  &--inspecting &__panel,
   &--inspecting &__category {
     pointer-events: none;
+  }
 
-    > * {
-      pointer-events: auto;
-    }
+  &--inspecting &__category > *,
+  &--inspecting &__link,
+  &--inspecting &__hint,
+  &--inspecting &__refused-alert {
+    pointer-events: auto;
   }
 
   &--holo &__preview {
