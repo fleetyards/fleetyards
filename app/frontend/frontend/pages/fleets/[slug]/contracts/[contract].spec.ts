@@ -16,6 +16,7 @@ import Component from "./[contract].vue";
 
 const publish = vi.hoisted(() => vi.fn());
 const displayAlert = vi.hoisted(() => vi.fn());
+const reportError = vi.hoisted(() => vi.fn());
 
 const Stub = defineComponent({ name: "PageStub", render: () => h("div") });
 
@@ -98,6 +99,8 @@ vi.mock("@/shared/composables/useAppNotifications", () => ({
     displayConfirm: vi.fn(),
   }),
 }));
+
+vi.mock("@/shared/plugins/Appsignal", () => ({ reportError }));
 
 vi.mock("@/frontend/stores/session", () => ({
   useSessionStore: () => ({ currentUser: { id: CONTRACTOR_ID } }),
@@ -212,6 +215,45 @@ describe("FleetContractPage", () => {
 
     expect(displayAlert).toHaveBeenCalledWith({
       text: "Deadline lies in the past",
+    });
+  });
+
+  it("sends one publish however often it is clicked", async () => {
+    let settle: () => void = () => undefined;
+    publish.mockReturnValue(
+      new Promise<void>((resolve) => {
+        settle = resolve;
+      }),
+    );
+
+    await mount(FleetContractStateEnum.DRAFT, ["fleet:contracts:manage"]);
+
+    const button = document.querySelector<HTMLElement>(
+      "[data-test='publish-contract']",
+    )!;
+    button.click();
+    button.click();
+    settle();
+    await flushPromises();
+
+    expect(publish).toHaveBeenCalledTimes(1);
+    expect(displayAlert).not.toHaveBeenCalled();
+  });
+
+  it("reports a failure that never reached the server", async () => {
+    const error = new AxiosError("Network Error", "ERR_NETWORK");
+    publish.mockRejectedValue(error);
+
+    await mount(FleetContractStateEnum.DRAFT, ["fleet:contracts:manage"]);
+
+    document
+      .querySelector<HTMLElement>("[data-test='publish-contract']")!
+      .click();
+    await flushPromises();
+
+    expect(reportError).toHaveBeenCalledWith(error, "FleetContractPage#act");
+    expect(displayAlert).toHaveBeenCalledWith({
+      text: "That did not work - the contract may have changed in the meantime",
     });
   });
 });

@@ -46,6 +46,8 @@ import {
   firstErrorMessageFrom,
   validationErrorFrom,
 } from "@/shared/utils/ApiErrors";
+import { reportError } from "@/shared/plugins/Appsignal";
+import { isAxiosError } from "axios";
 import { useContractCover } from "@/frontend/composables/useContractCover";
 import { useContractReward } from "@/frontend/composables/useContractReward";
 import { useContractRoute } from "@/frontend/composables/useContractRoute";
@@ -241,19 +243,32 @@ const crewParams = (id: string) => ({
 
 const { displayAlert } = useAppNotifications();
 
+const acting = ref(false);
+
 // A refused step says why -- a deadline already past, a seat already taken --
 // and the contract may have moved on under the page, so it is read again
-// either way.
+// either way. One step at a time: a second click on a step that went through
+// would only be refused and report a failure that never happened.
 const act = async (request: () => Promise<unknown>) => {
+  if (acting.value) return;
+
+  acting.value = true;
+
   try {
     await request();
   } catch (error) {
+    if (!isAxiosError(error) || !error.response) {
+      reportError(error, "FleetContractPage#act");
+    }
+
     displayAlert({
       text:
         firstErrorMessageFrom(error) ??
         validationErrorFrom(error).message ??
         t("messages.fleets.contracts.actionFailed"),
     });
+  } finally {
+    acting.value = false;
   }
 
   reload();
@@ -388,6 +403,7 @@ const crumbs = computed<Crumb[]>(() => [
         :aria-label="t('actions.fleets.contracts.publish')"
         data-test="publish-contract"
         mobile-icon-only
+        :disabled="acting"
         @click="onPublish"
       >
         <i class="fa-duotone fa-paper-plane" />
@@ -399,6 +415,7 @@ const crumbs = computed<Crumb[]>(() => [
         :aria-label="t('actions.fleets.contracts.claim')"
         data-test="claim-contract"
         mobile-icon-only
+        :disabled="acting"
         @click="onClaim"
       >
         <i class="fa-duotone fa-hand" />
@@ -410,6 +427,7 @@ const crumbs = computed<Crumb[]>(() => [
         :aria-label="t('actions.fleets.contracts.join')"
         data-test="join-contract"
         mobile-icon-only
+        :disabled="acting"
         @click="onJoin"
       >
         <i class="fa-duotone fa-user-plus" />
@@ -420,6 +438,7 @@ const crumbs = computed<Crumb[]>(() => [
         :size="BtnSizesEnum.MD"
         :aria-label="t('actions.fleets.contracts.release')"
         mobile-icon-only
+        :disabled="acting"
         @click="onRelease"
       >
         <i class="fa-duotone fa-hand-wave" />
@@ -431,6 +450,7 @@ const crumbs = computed<Crumb[]>(() => [
         :aria-label="t('actions.fleets.contracts.fulfil')"
         data-test="fulfil-contract"
         mobile-icon-only
+        :disabled="acting"
         @click="onFulfil"
       >
         <i class="fa-duotone fa-circle-check" />
@@ -469,6 +489,7 @@ const crumbs = computed<Crumb[]>(() => [
         v-if="canCancel"
         :size="BtnSizesEnum.MD"
         :tone="BtnTonesEnum.DANGER"
+        :disabled="acting"
         @confirm="onCancel"
       >
         <i class="fa-duotone fa-ban" />
