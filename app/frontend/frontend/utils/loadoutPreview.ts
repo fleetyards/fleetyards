@@ -99,7 +99,11 @@ export const loadoutMounts = (
       // An empty slot holds nothing, and nothing sits below it.
       if (slot && !slot.part) return [];
 
-      const drawn = port.stripped && !port.inParentHolo && port.helper;
+      // A part the export never draws -- a shield generator -- is in neither
+      // the hull nor any holo, so it is placed like a stripped one; where it
+      // has no holo of its own either, nothing comes of it.
+      const drawn =
+        (port.stripped || !port.geometry) && !port.inParentHolo && port.helper;
 
       let path: string | undefined;
 

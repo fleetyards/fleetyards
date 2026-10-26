@@ -40055,7 +40055,8 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/ModelLoadoutPreviewItem"
-          description: The holos of the parts the stripped ports mount by default
+          description: The holos of the parts the hull leaves out that its ports mount
+            by default
       additionalProperties: false
       required:
       - ports

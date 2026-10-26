@@ -53,6 +53,8 @@ class Api::V1::ModelsLoadoutPreviewTest < ActionDispatch::IntegrationTest
     @gimbal = create(:component, sc_key: "mount_gimbal_s3")
     @gimbal.holo.attach(io: File.open(Rails.root.join("test/fixtures/holo/plain.glb")), filename: "holo.glb")
     create(:component, sc_key: "gats_ballisticgatling_s3")
+    create(:component, sc_key: "shld_godi_s01_securehyde_scitem")
+      .holo.attach(io: File.open(Rails.root.join("test/fixtures/holo/plain.glb")), filename: "holo.glb")
     @model.holo_hull.attach(io: File.open(Rails.root.join("test/fixtures/holo/plain.glb")), filename: "flight_holo_hull.glb")
   end
 
@@ -73,8 +75,8 @@ class Api::V1::ModelsLoadoutPreviewTest < ActionDispatch::IntegrationTest
       assert_not shield["geometry"]
       assert_not shield["stripped"]
 
-      assert_equal ["mount_gimbal_s3"], parsed_body["items"].pluck("scKey")
-      assert_match(/holo\.glb/, parsed_body["items"].sole["holoUrl"])
+      assert_equal %w[mount_gimbal_s3 shld_godi_s01_securehyde_scitem], parsed_body["items"].pluck("scKey").sort
+      assert_match(/holo\.glb/, parsed_body["items"].first["holoUrl"])
     end
   end
 

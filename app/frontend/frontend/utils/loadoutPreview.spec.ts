@@ -200,6 +200,31 @@ describe("loadoutMounts", () => {
     expect(left.highlighted).toBe(false);
   });
 
+  it("places a part the export never draws from its own holo", () => {
+    const mounts = loadoutMounts({
+      ports: [
+        port("hardpoint_shield_generator_left", {
+          defaultItem: "shld_godi_s01_securehyde_scitem",
+          geometry: false,
+        }),
+        port("hardpoint_controller_shield", {
+          defaultItem: "controller_shield",
+          geometry: false,
+        }),
+      ],
+      items: [
+        {
+          scKey: "shld_godi_s01_securehyde_scitem",
+          holoUrl: holo("shld_godi_s01_securehyde_scitem"),
+        },
+      ],
+    });
+
+    expect(mounts.map((mount) => mount.path)).toEqual([
+      holo("shld_godi_s01_securehyde_scitem"),
+    ]);
+  });
+
   it("skips a port whose position is unknown", () => {
     const mounts = loadoutMounts({
       ports: [
