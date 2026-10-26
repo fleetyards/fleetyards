@@ -250,6 +250,42 @@ class Admin::Api::V1::ModelsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models filters by hiddenEq" do
+    hidden = create(:model, hidden: true)
+    listed = create(:model, hidden: false)
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {"hiddenEq" => true}} do
+      names = parsed_body["items"].map { |item| item["name"] }
+      assert_includes names, hidden.name
+      assert_not_includes names, listed.name
+    end
+  end
+
+  test "GET /models filters by activeEq" do
+    inactive = create(:model, active: false)
+    active = create(:model, active: true)
+    sign_in @user
+
+    assert_api_response :get, 200, params: {q: {"activeEq" => false}} do
+      names = parsed_body["items"].map { |item| item["name"] }
+      assert_includes names, inactive.name
+      assert_not_includes names, active.name
+    end
+  end
+
+  test "GET /models sorts by the admin-only fields" do
+    create(:model, name: "Alpha", hidden: false, active: false)
+    create(:model, name: "Bravo", hidden: true, active: true)
+    sign_in @user
+
+    {"hidden desc" => "Bravo", "hidden asc" => "Alpha", "active desc" => "Bravo"}.each do |sort, first|
+      assert_api_response :get, 200, params: {q: {"s" => sort}} do
+        assert_equal first, parsed_body["items"].first["name"], sort
+      end
+    end
+  end
+
   test "GET /models filters by scKeyBlank" do
     keyed = create(:model, sc_key: "AEGS_Idris_M")
     unkeyed = create(:model, sc_key: nil)

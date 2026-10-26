@@ -28,12 +28,14 @@ module Admin
               canLandOnPlanetsEq: {type: :boolean},
               dimensionsDrifted: {type: :boolean},
               dimensionsMeasuredAtNull: {type: :boolean},
+              hiddenEq: {type: :boolean},
+              activeEq: {type: :boolean},
               s: {anyOf: [{
-                type: :array, items: ::Shared::V1::Schemas::Sorts::ModelSortEnum
-              }, ::Shared::V1::Schemas::Sorts::ModelSortEnum]},
+                type: :array, items: ::Admin::V1::Schemas::Sorts::AdminModelSortEnum
+              }, ::Admin::V1::Schemas::Sorts::AdminModelSortEnum]},
               sorts: {anyOf: [{
-                type: :array, items: ::Shared::V1::Schemas::Sorts::ModelSortEnum
-              }, ::Shared::V1::Schemas::Sorts::ModelSortEnum]}
+                type: :array, items: ::Admin::V1::Schemas::Sorts::AdminModelSortEnum
+              }, ::Admin::V1::Schemas::Sorts::AdminModelSortEnum]}
             },
             additionalProperties: false,
             example: {}
