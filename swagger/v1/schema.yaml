@@ -16162,6 +16162,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ModelLoadoutPreview"
+        '403':
+          description: feature unavailable
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
         '404':
           description: not found
           content:
@@ -26891,6 +26897,7 @@ components:
       - holo_textured
       - homepage_redesign
       - loadout_editor
+      - loadout_preview
       - oauth-applications
       - oauth-bluesky
       - oauth-citizenid
@@ -26917,6 +26924,7 @@ components:
       - HOLO_TEXTURED
       - HOMEPAGE_REDESIGN
       - LOADOUT_EDITOR
+      - LOADOUT_PREVIEW
       - OAUTH_APPLICATIONS
       - OAUTH_BLUESKY
       - OAUTH_CITIZENID

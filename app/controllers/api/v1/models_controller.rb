@@ -166,6 +166,10 @@ module Api
       end
 
       def loadout_preview
+        unless feature_enabled?("loadout_preview")
+          return render json: {code: "forbidden", message: "This feature is not available"}, status: :forbidden
+        end
+
         @model = find_model_by_slug!(:hardpoint_transforms_record, {holo_hull_attachment: :blob})
       end
 
