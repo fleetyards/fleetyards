@@ -342,16 +342,13 @@ const componentTree = computed(() =>
 // What stands fitted now, saved or not, so the cart gets what is on screen.
 const cartItems = computed(() => nonStockFittedItems(componentTree.value));
 
-// Every slot of the open row: a stacked row stands for each of its members.
+// The open row's slots and the pointed one's: a stacked row stands for each of
+// its members.
 const previewSlots = computed(() =>
-  previewSlotsFromFitting(
-    componentTree.value,
-    activeKind.value === "component" && activeSlot.value
-      ? activeMembers.value.length
-        ? activeMembers.value
-        : [activeSlot.value]
-      : [],
-  ),
+  previewSlotsFromFitting(componentTree.value, [
+    ...(activeKind.value === "component" ? activeMembers.value : []),
+    ...pointedMembers.value,
+  ]),
 );
 
 // The ship's holo takes the angled render's place behind the controls.
@@ -673,19 +670,41 @@ const socketIn = (
   return undefined;
 };
 
-// The slots the open socket stands for: one, or every slot of a stacked row.
-const activeMembers = computed(() => {
-  const tab = activeTab.value && componentTabs.value[activeTab.value];
+// The slots a socket stands for: one, or every slot of a stacked row.
+const membersOf = (tabId: string | undefined, slotId: string | undefined) => {
+  const tab = tabId && componentTabs.value[tabId];
   const slot =
-    tab && activeSlot.value
+    tab && slotId
       ? socketIn(
           tab.groups.flatMap((group) => group.slots),
-          activeSlot.value,
+          slotId,
         )
       : undefined;
 
-  return slot?.members ?? (activeSlot.value ? [activeSlot.value] : []);
-});
+  return slot?.members ?? (slotId ? [slotId] : []);
+};
+
+const activeMembers = computed(() =>
+  membersOf(activeTab.value, activeSlot.value),
+);
+
+// The component socket under the pointer, lit on the holo like the open one.
+const pointedSocket = ref<{ tabId: string; slotId: string }>();
+
+const onSocketsPointerOver = (event: PointerEvent, tabId: string) => {
+  const socket = (event.target as Element | null)?.closest<HTMLElement>(
+    "[data-loadout-socket]",
+  );
+  const slotId = socket?.dataset.loadoutSocket;
+
+  pointedSocket.value = slotId ? { tabId, slotId } : undefined;
+};
+
+const pointedMembers = computed(() =>
+  pointedSocket.value
+    ? membersOf(pointedSocket.value.tabId, pointedSocket.value.slotId)
+    : [],
+);
 
 const onSocketSelect = async (
   slot: string,
@@ -1698,6 +1717,8 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
                       v-if="componentTabs[tab.id].groups.length"
                       class="vehicle-loadout__sockets"
                       :data-test="`vehicle-loadout-${tab.id}`"
+                      @pointerover="onSocketsPointerOver($event, tab.id)"
+                      @pointerleave="pointedSocket = undefined"
                     >
                       <SocketBoard
                         :active="

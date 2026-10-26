@@ -112,7 +112,7 @@ const select = (event: Event) => {
     :aria-pressed="editable ? active : undefined"
     :aria-label="editable || lockedLabel ? accessibleName : undefined"
     :data-test="`loadout-socket-${socket.id}`"
-    data-loadout-socket
+    :data-loadout-socket="socket.id"
     @click="select"
     @keydown.enter.self.prevent="select"
     @keydown.space.self.prevent="select"
