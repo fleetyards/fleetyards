@@ -12,6 +12,8 @@ import {
 } from "@/frontend/utils/loadoutPreview";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useMobile } from "@/shared/composables/useMobile";
+import { useI18n } from "@/shared/composables/useI18n";
+import Btn from "@/shared/components/base/Btn/index.vue";
 
 type Props = {
   modelSlug: string;
@@ -42,7 +44,12 @@ const HoloViewer = defineAsyncComponent(
   () => import("@/shared/components/HoloViewer/index.vue"),
 );
 
+const { t } = useI18n();
+
 const { isFeatureEnabled } = useFeatures();
+
+// Turned and zoomed in the full-screen viewer, which a framed preview opens.
+const viewer = ref<{ enableFullscreen: () => void }>();
 
 const mobile = useMobile();
 
@@ -87,6 +94,7 @@ watch(available, (value) => emit("available", value), { immediate: true });
     <!-- Not inline: that caps the canvas at an item hero's height, where this
     frame gives the ship its own. -->
     <HoloViewer
+      ref="viewer"
       :models="[holoModel]"
       :auto-rotate="false"
       :azimuth="ANGLED_AZIMUTH"
@@ -97,6 +105,16 @@ watch(available, (value) => emit("available", value), { immediate: true });
       hologram
       @unavailable="unavailable = true"
     />
+    <Btn
+      v-if="!backdrop"
+      class="loadout-preview__fullscreen"
+      :aria-label="t('actions.vehicleOverview.fullscreenHolo')"
+      v-tooltip="t('actions.vehicleOverview.fullscreenHolo')"
+      :data-test="`${testId}-fullscreen`"
+      @click="viewer?.enableFullscreen()"
+    >
+      <i class="fa-light fa-expand" />
+    </Btn>
   </div>
 </template>
 
@@ -111,6 +129,12 @@ watch(available, (value) => emit("available", value), { immediate: true });
     height: 100%;
     aspect-ratio: auto;
     margin: 0;
+  }
+
+  &__fullscreen {
+    position: absolute;
+    top: 8px;
+    right: 8px;
   }
 }
 </style>
