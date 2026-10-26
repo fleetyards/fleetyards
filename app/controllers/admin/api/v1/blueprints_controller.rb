@@ -29,9 +29,9 @@ module Admin
           # join -- so a retired row renders entirely off `last_build`.
           @q = authorized_scope(Blueprint.with_facts(current_version))
             .includes(
-              :craftable,
-              build: [:craftable, :sources, {cost_slots: {options: :commodity}}],
-              last_build: [:craftable, :sources, {cost_slots: {options: :commodity}}]
+              {craftable: Blueprint::CRAFTABLE_VIEW_PRELOAD},
+              build: [{craftable: Blueprint::CRAFTABLE_VIEW_PRELOAD}, :sources, {cost_slots: {options: :commodity}}],
+              last_build: [{craftable: Blueprint::CRAFTABLE_VIEW_PRELOAD}, :sources, {cost_slots: {options: :commodity}}]
             )
             .ransack(blueprint_query_params.except(*HAND_APPLIED))
 

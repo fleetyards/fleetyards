@@ -37,15 +37,11 @@ module Api
         # order the scope carried, so it is put in front afterwards.
         sorted = sorted.reorder(personal: :desc).order(sorted.order_values)
         # A ship's hold is drawn as its ship, so the serializer reaches for the
-        # model's artwork on every vehicle-backed row -- three attachment
+        # model's artwork on every vehicle-backed row -- four attachment
         # lookups and a blob read each without this.
         result = sorted.includes(
           image_attachment: :blob,
-          vehicle: {model: [
-            {store_image_attachment: :blob},
-            {angled_view_attachment: :blob},
-            {fleetchart_image_attachment: :blob}
-          ]}
+          vehicle: {model: Model::IMAGE_ATTACHMENT_PRELOAD}
         )
 
         @hangar_inventories = result_with_pagination(result, per_page(Inventory))

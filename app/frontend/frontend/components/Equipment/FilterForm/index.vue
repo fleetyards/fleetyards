@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import { keptOptions } from "@/frontend/utils/Filters";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
@@ -110,13 +111,9 @@ const pruneToOptions = (
     | "slotIn",
   options?: FilterOption[],
 ) => {
-  if (!options) return;
+  const kept = keptOptions(form.value[key], options);
 
-  const available = new Set(options.map((option) => option.value));
-  const chosen = form.value[key] || [];
-  const kept = chosen.filter((value) => available.has(value));
-
-  if (kept.length !== chosen.length) {
+  if (kept) {
     form.value = { ...form.value, [key]: kept };
   }
 };

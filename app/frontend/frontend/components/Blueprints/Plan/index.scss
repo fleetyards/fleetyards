@@ -1,0 +1,58 @@
+// What a recipe makes, drawn as a plan: its render in blue ink on a grid.
+.blueprint-plan {
+  --blueprint-plan-major: 28px;
+  --blueprint-plan-minor: 7px;
+  --blueprint-plan-inset: 4px;
+
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border: 1px solid rgb(120 180 240 / 0.35);
+  border-radius: 4px;
+  background-color: #0f3c6e;
+  background-image:
+    linear-gradient(rgb(200 225 255 / 0.14) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(200 225 255 / 0.14) 1px, transparent 1px),
+    linear-gradient(rgb(200 225 255 / 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(200 225 255 / 0.06) 1px, transparent 1px);
+  background-size:
+    var(--blueprint-plan-major) var(--blueprint-plan-major),
+    var(--blueprint-plan-major) var(--blueprint-plan-major),
+    var(--blueprint-plan-minor) var(--blueprint-plan-minor),
+    var(--blueprint-plan-minor) var(--blueprint-plan-minor);
+  background-position: -1px -1px;
+  // Keeps the render's blend to the plan alone rather than what is behind it.
+  isolation: isolate;
+
+  &--row {
+    --blueprint-plan-major: 16px;
+    --blueprint-plan-minor: 4px;
+
+    flex: 0 0 auto;
+    width: 64px;
+    height: 64px;
+  }
+
+  &--panel {
+    --blueprint-plan-major: 48px;
+    --blueprint-plan-minor: 12px;
+    --blueprint-plan-inset: 16px;
+
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius-control, 8px);
+  }
+
+  // The render keeps its own shading and takes the plan's hue: luminosity
+  // blending is what turns a full-colour render into blue ink.
+  &__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: var(--blueprint-plan-inset);
+    box-sizing: border-box;
+    object-fit: contain;
+    filter: grayscale(1) brightness(1.3) contrast(1.15);
+    mix-blend-mode: luminosity;
+  }
+}

@@ -15,5 +15,7 @@ namespace :filters do
   resources :components, only: [] do
     get :categories, on: :collection
     get "sub-types", to: "components#sub_types", on: :collection
+    get :sizes, on: :collection
+    get :grades, on: :collection
   end
 end

@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import BlueprintAddToHangar from "@/frontend/components/Blueprints/AddToHangar/index.vue";
+import BlueprintPlan from "@/frontend/components/Blueprints/Plan/index.vue";
 import RowListItem from "@/shared/components/RowListItem/index.vue";
 import {
   RowListItemTonesEnum,
@@ -140,6 +141,10 @@ const badges = computed<RowListItemBadge[]>(() => {
     :tags="tags"
     :badges="badges"
   >
+    <template v-if="blueprint.craftable?.angledView?.smallUrl" #leading>
+      <BlueprintPlan :image="blueprint.craftable.angledView" />
+    </template>
+
     <template #name>{{ blueprint.name }}</template>
 
     <template #sub>

@@ -9,9 +9,9 @@
 # previous values until something else happened to touch the row.
 #
 # What it makes is in the key for the same reason: the payload carries its
-# name, slug and whether it has a page, and hiding a variant touches the
-# variant, not the recipe.
-json.cache! ["v2", blueprint, blueprint.facts, blueprint.craftable, ::ScData::Source.current] do
+# name, slug, whether it has a page and its angled view, and hiding a variant
+# or attaching a render touches the item, not the recipe. v3 is `angledView`.
+json.cache! ["v3", blueprint, blueprint.facts, blueprint.craftable, ::ScData::Source.current] do
   json.partial! "api/v1/blueprints/base", blueprint:
 end
 

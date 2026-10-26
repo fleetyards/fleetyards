@@ -160,9 +160,12 @@ module Api
 
     private def set_last_active_at
       return if current_user.blank?
-      return if current_user.last_active_at.present? && current_user.last_active_at > 15.minutes.ago
+      # Never throttled across a week boundary, or the first request of a week
+      # would go uncounted in the activity streak.
+      return if current_user.last_active_at.present? &&
+        current_user.last_active_at > [15.minutes.ago, Time.current.beginning_of_week].max
 
-      current_user.update_column(:last_active_at, Time.current)
+      current_user.record_activity!
     end
 
     # Only OAuth clients carry a token — the web frontend authenticates through
