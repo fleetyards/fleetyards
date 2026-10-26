@@ -113,6 +113,7 @@ onBeforeUnmount(() => emit("available", false));
       :zoomable="interactive"
       contain
       hologram
+      on-demand
       @unavailable="unavailable = true"
       @loaded="loaded = true"
     />

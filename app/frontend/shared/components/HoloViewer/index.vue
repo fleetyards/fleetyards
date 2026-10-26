@@ -54,6 +54,9 @@ type Props = {
   contain?: boolean;
   // See-through, with the mesh's wireframe drawn over it.
   hologram?: boolean;
+  // Drawn only when something changes rather than every frame, for a holo
+  // that mostly stands still. Turning on its own draws every frame again.
+  onDemand?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -69,6 +72,7 @@ const props = withDefaults(defineProps<Props>(), {
   elevation: undefined,
   contain: false,
   hologram: false,
+  onDemand: false,
 });
 
 // Nothing will be drawn: no WebGL, or a holo that would not load. A caller with
@@ -518,6 +522,7 @@ defineExpose({
       :dpr="dpr"
       :power-preference="powerPreference"
       :antialias="!lowPower"
+      :render-mode="onDemand && !internalAutoRotate ? 'on-demand' : 'always'"
       alpha
       :on-error="handleRenderError"
     >
