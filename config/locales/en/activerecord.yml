@@ -301,6 +301,7 @@ en:
             base:
               fleet_shopping_list_limit_reached: "can hold at most %{count} shopping lists"
               nothing_to_copy: "has no item that is still in the catalogue"
+              empty_source: "has nothing on it to publish"
               copy_conflict: "was copied twice at once; try again"
         cart:
           attributes:

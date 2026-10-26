@@ -245,10 +245,32 @@ class Api::V1::FleetShoppingListsTest < ActionDispatch::IntegrationTest
   end
 
   test "POST answers 400 for a name the fleet already uses" do
+    cart = create(:cart, user: @admin)
+    create(:cart_item, cart:, item: @armor)
     sign_in @admin
 
     assert_api_response :post, 400, path_params: {fleetSlug: @fleet.slug},
-      body: {name: "standard KIT", cartId: create(:cart, user: @admin).id}
+      body: {name: "standard KIT", cartId: cart.id} do
+      assert_equal "name", parsed_body["errors"].first["attribute"]
+    end
+  end
+
+  test "POST from an empty list answers 400 and publishes nothing" do
+    sign_in @admin
+
+    assert_no_difference -> { FleetShoppingList.count } do
+      assert_api_response :post, 400, path_params: {fleetSlug: @fleet.slug},
+        body: {name: "Nothing", cartId: create(:cart, user: @admin).id}
+    end
+  end
+
+  test "PUT from an empty list keeps the lines" do
+    sign_in @admin
+
+    assert_api_response :put, 400, api_path: "/fleets/{fleetSlug}/shopping-lists/{id}",
+      path_params: {fleetSlug: @fleet.slug, id: @kit.id}, body: {cartId: create(:cart, user: @admin).id}
+
+    assert_equal 2, @kit.fleet_shopping_list_items.count
   end
 
   test "PUT with a list replaces every line" do

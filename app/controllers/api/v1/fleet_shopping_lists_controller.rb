@@ -50,6 +50,7 @@ module Api
         authorize! @fleet_shopping_list
 
         cart = own_cart!
+        return render_empty_source("fleet_shopping_lists.create") if cart.cart_items.none?
 
         FleetShoppingList.transaction do
           @fleet_shopping_list.save!
@@ -72,6 +73,7 @@ module Api
         authorize! @fleet_shopping_list
 
         cart = own_cart! if params[:cart_id].present?
+        return render_empty_source("fleet_shopping_lists.update") if cart&.cart_items&.none?
 
         FleetShoppingList.transaction do
           @fleet_shopping_list.assign_attributes(fleet_shopping_list_params)
@@ -126,6 +128,11 @@ module Api
         # The same name taken by a second copy since `unused_name` looked.
         @fleet_shopping_list.errors.add(:base, :copy_conflict)
         render json: ValidationError.new("fleet_shopping_lists.copy", errors: @fleet_shopping_list.errors), status: :bad_request
+      end
+
+      private def render_empty_source(code)
+        @fleet_shopping_list.errors.add(:base, :empty_source)
+        render json: ValidationError.new(code, errors: @fleet_shopping_list.errors), status: :bad_request
       end
 
       private def new_cart_for_copy

@@ -300,6 +300,7 @@ fr:
             base:
               fleet_shopping_list_limit_reached: "peut contenir au plus %{count} listes d'achats"
               nothing_to_copy: "ne contient plus aucun article encore au catalogue"
+              empty_source: "ne contient rien à publier"
               copy_conflict: "a été copiée deux fois en même temps ; réessaie"
         cart:
           attributes:

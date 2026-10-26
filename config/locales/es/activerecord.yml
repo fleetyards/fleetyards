@@ -300,6 +300,7 @@ es:
             base:
               fleet_shopping_list_limit_reached: "puede tener como máximo %{count} listas de compras"
               nothing_to_copy: "no tiene ningún artículo que siga en el catálogo"
+              empty_source: "no tiene nada que publicar"
               copy_conflict: "se copió dos veces a la vez; inténtalo de nuevo"
         cart:
           attributes:
