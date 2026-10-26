@@ -34,9 +34,9 @@ module BlueprintFiltersConcern
     # skip them or apply them against the wrong build.
     @q = scope.with_facts(current_version)
       .includes(
-        :craftable,
-        build: [:craftable, :sources, {cost_slots: {options: :commodity}}],
-        last_build: [:craftable, :sources, {cost_slots: {options: :commodity}}]
+        {craftable: Blueprint::CRAFTABLE_VIEW_PRELOAD},
+        build: [{craftable: Blueprint::CRAFTABLE_VIEW_PRELOAD}, :sources, {cost_slots: {options: :commodity}}],
+        last_build: [{craftable: Blueprint::CRAFTABLE_VIEW_PRELOAD}, :sources, {cost_slots: {options: :commodity}}]
       )
       .ransack(
         blueprints_query_params.except(
@@ -122,14 +122,6 @@ module BlueprintFiltersConcern
       .partition(&:last)
 
     [Set.new(owned.map(&:first)), Set.new(wanted.map(&:first))]
-  end
-
-  # What each row draws its item by. Not in `filtered_blueprints`' includes:
-  # a commodity can be the output too, and has no render to preload.
-  private def preload_angled_views(blueprints)
-    items = blueprints.filter_map(&:craftable).select { |craftable| craftable.is_a?(ItemViews) }
-
-    ActiveRecord::Associations::Preloader.new(records: items, associations: {angled_view_attachment: :blob}).call
   end
 
   private def org_filter

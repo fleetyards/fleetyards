@@ -37,7 +37,6 @@ module Api
         # After pagination, so it asks about the 60 rows being rendered rather
         # than the 1,607.
         @owned_blueprint_ids, @wanted_blueprint_ids = marked_ids_for(@blueprints)
-        preload_angled_views(@blueprints)
       end
 
       # Idempotent on purpose: holding a recipe is a state, not an event, so

@@ -82,12 +82,15 @@ class Api::V1::BlueprintsTest < ActionDispatch::IntegrationTest
   # The list draws each recipe by the item it makes, as a plan.
   test "GET /blueprints carries the angled view of what a recipe makes" do
     @component.angled_view.attach(io: file_fixture("test.png").open, filename: "angled.png", content_type: "image/png")
+    unrendered = create(:blueprint, craftable: create(:component))
+    commodity = create(:blueprint, craftable: create(:commodity))
 
     assert_api_response :get, 200 do
       items = parsed_body["items"].index_by { |item| item["id"] }
 
       assert_equal "angled.png", items[@blueprint.id].dig("craftable", "angledView", "name")
-      assert_not items[@other.id].fetch("craftable", {}).key?("angledView")
+      assert_not items[unrendered.id]["craftable"].key?("angledView")
+      assert_not items[commodity.id]["craftable"].key?("angledView")
     end
   end
 
