@@ -348,6 +348,9 @@ useMetricsMasonry(metricsGrid);
         </BtnGroup>
       </div>
       <div v-if="showMetrics" ref="metricsGrid" class="metrics-grid">
+        <!-- A caller's own cards, first in the flow so they can claim a
+             column's top. -->
+        <slot name="metrics" />
         <ModelCombatMetrics
           :hardpoints="loadoutHardpoints"
           :model-name="model.name"
