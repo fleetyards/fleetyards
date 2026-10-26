@@ -700,6 +700,15 @@ const onSocketsPointerOver = (event: PointerEvent, tabId: string) => {
   );
   const slotId = socket?.dataset.loadoutSocket;
 
+  // It fires for every element the pointer crosses inside a socket too; the
+  // holo only changes when the socket does.
+  if (
+    pointedSocket.value?.slotId === slotId &&
+    pointedSocket.value?.tabId === tabId
+  ) {
+    return;
+  }
+
   pointedSocket.value = slotId ? { tabId, slotId } : undefined;
 };
 
