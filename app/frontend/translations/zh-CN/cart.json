@@ -1,0 +1,38 @@
+{
+  "zh-CN": {
+    "cart": {
+      "title": "购物车",
+      "lead": "收集你想在游戏中购买的物品，并查看在哪里能买到。每件物品默认分配到售价最低的地点，你也可以另选。",
+      "addToCart": "加入购物车",
+      "clear": "清空购物车",
+      "confirmClear": "要清空购物车中的所有物品吗？",
+      "remove": "移除",
+      "quantity": "数量",
+      "unitPrice": "每件 %{price}",
+      "buyElsewhere": "在别处购买",
+      "cheapest": "最便宜",
+      "pinned": "你的选择",
+      "unplaced": "未知地点",
+      "totals": {
+        "total": "总计",
+        "items": "物品",
+        "stops": "停靠点",
+        "unavailable": "无处出售"
+      },
+      "unavailable": {
+        "title": "无处出售",
+        "text": "据我们所知，目前没有人出售这些物品，因此未计入总计。"
+      },
+      "empty": {
+        "title": "购物车是空的",
+        "text": "从目录中添加商品、组件或装备，规划在哪里购买。"
+      },
+      "messages": {
+        "added": "已将 %{name} 加入购物车。",
+        "addFailed": "无法将物品加入购物车。",
+        "updateFailed": "无法更新购物车。",
+        "accountRequired": "登录后即可使用购物车。"
+      }
+    }
+  }
+}

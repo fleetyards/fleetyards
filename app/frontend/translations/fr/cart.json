@@ -1,0 +1,38 @@
+{
+  "fr": {
+    "cart": {
+      "title": "Panier",
+      "lead": "Rassemblez ce que vous voulez acheter en jeu et voyez où l'obtenir. Chaque article va à l'endroit le moins cher qui le vend, sauf si vous en choisissez un autre.",
+      "addToCart": "Ajouter au panier",
+      "clear": "Vider le panier",
+      "confirmClear": "Retirer tout le contenu du panier ?",
+      "remove": "Retirer",
+      "quantity": "Quantité",
+      "unitPrice": "%{price} l'unité",
+      "buyElsewhere": "Acheter ailleurs",
+      "cheapest": "Le moins cher",
+      "pinned": "Votre choix",
+      "unplaced": "Lieu inconnu",
+      "totals": {
+        "total": "Total",
+        "items": "Articles",
+        "stops": "Arrêts",
+        "unavailable": "Vendu nulle part"
+      },
+      "unavailable": {
+        "title": "Vendu nulle part",
+        "text": "À notre connaissance, personne ne vend ces articles en ce moment ; ils ne sont donc pas comptés dans le total."
+      },
+      "empty": {
+        "title": "Votre panier est vide",
+        "text": "Ajoutez des marchandises, des composants ou de l'équipement depuis le catalogue pour planifier où les acheter."
+      },
+      "messages": {
+        "added": "%{name} ajouté au panier.",
+        "addFailed": "Impossible d'ajouter l'article au panier.",
+        "updateFailed": "Impossible de mettre à jour le panier.",
+        "accountRequired": "Connectez-vous pour utiliser le panier."
+      }
+    }
+  }
+}

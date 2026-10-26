@@ -1,0 +1,38 @@
+{
+  "de": {
+    "cart": {
+      "title": "Warenkorb",
+      "lead": "Sammle, was du im Spiel kaufen willst, und sieh, wo du es bekommst. Jeder Artikel kommt zum günstigsten Ort, der ihn verkauft, außer du wählst einen anderen.",
+      "addToCart": "In den Warenkorb",
+      "clear": "Warenkorb leeren",
+      "confirmClear": "Alles aus dem Warenkorb entfernen?",
+      "remove": "Entfernen",
+      "quantity": "Menge",
+      "unitPrice": "je %{price}",
+      "buyElsewhere": "Woanders kaufen",
+      "cheapest": "Günstigster",
+      "pinned": "Deine Wahl",
+      "unplaced": "Unbekannter Ort",
+      "totals": {
+        "total": "Gesamt",
+        "items": "Artikel",
+        "stops": "Stopps",
+        "unavailable": "Nirgends verkauft"
+      },
+      "unavailable": {
+        "title": "Nirgends verkauft",
+        "text": "Soweit wir wissen, verkauft diese Artikel gerade niemand, daher fehlen sie in der Summe."
+      },
+      "empty": {
+        "title": "Dein Warenkorb ist leer",
+        "text": "Lege Rohstoffe, Komponenten oder Ausrüstung aus dem Katalog in den Warenkorb, um zu planen, wo du sie kaufst."
+      },
+      "messages": {
+        "added": "%{name} wurde in den Warenkorb gelegt.",
+        "addFailed": "Der Artikel konnte nicht in den Warenkorb gelegt werden.",
+        "updateFailed": "Der Warenkorb konnte nicht aktualisiert werden.",
+        "accountRequired": "Melde dich an, um den Warenkorb zu nutzen."
+      }
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "it": {
+    "cart": {
+      "title": "Carrello",
+      "lead": "Raccogli ciò che vuoi comprare nel gioco e scopri dove trovarlo. Ogni articolo va al posto più economico che lo vende, a meno che tu non ne scelga un altro.",
+      "addToCart": "Aggiungi al carrello",
+      "clear": "Svuota carrello",
+      "confirmClear": "Rimuovere tutto dal carrello?",
+      "remove": "Rimuovi",
+      "quantity": "Quantità",
+      "unitPrice": "%{price} cad.",
+      "buyElsewhere": "Compra altrove",
+      "cheapest": "Più economico",
+      "pinned": "La tua scelta",
+      "unplaced": "Luogo sconosciuto",
+      "totals": {
+        "total": "Totale",
+        "items": "Articoli",
+        "stops": "Tappe",
+        "unavailable": "Non venduto da nessuna parte"
+      },
+      "unavailable": {
+        "title": "Non venduto da nessuna parte",
+        "text": "Per quanto ne sappiamo nessuno vende questi articoli al momento, quindi sono esclusi dal totale."
+      },
+      "empty": {
+        "title": "Il tuo carrello è vuoto",
+        "text": "Aggiungi merci, componenti o equipaggiamento dal catalogo per pianificare dove acquistarli."
+      },
+      "messages": {
+        "added": "%{name} aggiunto al carrello.",
+        "addFailed": "Impossibile aggiungere l'articolo al carrello.",
+        "updateFailed": "Impossibile aggiornare il carrello.",
+        "accountRequired": "Accedi per usare il carrello."
+      }
+    }
+  }
+}

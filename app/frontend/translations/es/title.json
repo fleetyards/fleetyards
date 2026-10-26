@@ -1,6 +1,7 @@
 {
   "es": {
     "title": {
+      "cart": "Carrito de compras",
       "locations": {
         "index": "Ubicaciones",
         "places": "Todos los lugares"

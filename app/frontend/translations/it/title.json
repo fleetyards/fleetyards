@@ -1,6 +1,7 @@
 {
   "it": {
     "title": {
+      "cart": "Carrello",
       "locations": {
         "index": "Luoghi",
         "places": "Tutti i luoghi"

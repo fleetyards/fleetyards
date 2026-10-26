@@ -1,0 +1,38 @@
+{
+  "es": {
+    "cart": {
+      "title": "Carrito de compras",
+      "lead": "Reúne lo que quieres comprar en el juego y mira dónde conseguirlo. Cada artículo va al lugar más barato que lo vende, salvo que elijas otro.",
+      "addToCart": "Añadir al carrito",
+      "clear": "Vaciar carrito",
+      "confirmClear": "¿Quitar todo del carrito?",
+      "remove": "Quitar",
+      "quantity": "Cantidad",
+      "unitPrice": "%{price} c/u",
+      "buyElsewhere": "Comprar en otro lugar",
+      "cheapest": "Más barato",
+      "pinned": "Tu elección",
+      "unplaced": "Lugar desconocido",
+      "totals": {
+        "total": "Total",
+        "items": "Artículos",
+        "stops": "Paradas",
+        "unavailable": "No se vende en ningún sitio"
+      },
+      "unavailable": {
+        "title": "No se vende en ningún sitio",
+        "text": "Que sepamos, nadie vende esto ahora mismo, así que no cuenta en el total."
+      },
+      "empty": {
+        "title": "Tu carrito está vacío",
+        "text": "Añade materias primas, componentes o equipo del catálogo para planificar dónde comprarlos."
+      },
+      "messages": {
+        "added": "%{name} añadido al carrito.",
+        "addFailed": "No se pudo añadir el artículo al carrito.",
+        "updateFailed": "No se pudo actualizar el carrito.",
+        "accountRequired": "Inicia sesión para usar el carrito de compras."
+      }
+    }
+  }
+}

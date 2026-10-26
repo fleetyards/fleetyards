@@ -1,0 +1,38 @@
+{
+  "en": {
+    "cart": {
+      "title": "Shopping Cart",
+      "lead": "Collect what you want to buy in game and see where to get it. Each item goes to the cheapest place selling it, unless you pick another.",
+      "addToCart": "Add to cart",
+      "clear": "Clear cart",
+      "confirmClear": "Remove everything from your cart?",
+      "remove": "Remove",
+      "quantity": "Quantity",
+      "unitPrice": "%{price} each",
+      "buyElsewhere": "Buy elsewhere",
+      "cheapest": "Cheapest",
+      "pinned": "Your pick",
+      "unplaced": "Unknown place",
+      "totals": {
+        "total": "Total",
+        "items": "Items",
+        "stops": "Stops",
+        "unavailable": "Not sold anywhere"
+      },
+      "unavailable": {
+        "title": "Not sold anywhere",
+        "text": "Nobody we know of sells these right now, so they are left out of the total."
+      },
+      "empty": {
+        "title": "Your cart is empty",
+        "text": "Add commodities, components or equipment from the catalogue to plan where to buy them."
+      },
+      "messages": {
+        "added": "%{name} added to your cart.",
+        "addFailed": "Could not add the item to your cart.",
+        "updateFailed": "Could not update your cart.",
+        "accountRequired": "Sign in to use the shopping cart."
+      }
+    }
+  }
+}
