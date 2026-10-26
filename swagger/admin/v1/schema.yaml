@@ -10915,6 +10915,95 @@ components:
           "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
       title: AdminModelPaintMedia
+    AdminModelSortEnum:
+      type: string
+      enum:
+      - name asc
+      - name desc
+      - createdAt asc
+      - createdAt desc
+      - length asc
+      - length desc
+      - beam asc
+      - beam desc
+      - height asc
+      - height desc
+      - mass asc
+      - mass desc
+      - cargo asc
+      - cargo desc
+      - manufacturerName asc
+      - manufacturerName desc
+      - pledgePrice asc
+      - pledgePrice desc
+      - price asc
+      - price desc
+      - scmSpeed asc
+      - scmSpeed desc
+      - maxSpeed asc
+      - maxSpeed desc
+      - groundMaxSpeed asc
+      - groundMaxSpeed desc
+      - productionStatus asc
+      - productionStatus desc
+      - rsiId asc
+      - rsiId desc
+      - updatedAt asc
+      - updatedAt desc
+      - crew asc
+      - crew desc
+      - hydrogenFuelTankSize asc
+      - hydrogenFuelTankSize desc
+      - quantumFuelTankSize asc
+      - quantumFuelTankSize desc
+      - hidden asc
+      - hidden desc
+      - active asc
+      - active desc
+      x-enumNames:
+      - NAME_ASC
+      - NAME_DESC
+      - CREATED_AT_ASC
+      - CREATED_AT_DESC
+      - LENGTH_ASC
+      - LENGTH_DESC
+      - BEAM_ASC
+      - BEAM_DESC
+      - HEIGHT_ASC
+      - HEIGHT_DESC
+      - MASS_ASC
+      - MASS_DESC
+      - CARGO_ASC
+      - CARGO_DESC
+      - MANUFACTURER_NAME_ASC
+      - MANUFACTURER_NAME_DESC
+      - PLEDGE_PRICE_ASC
+      - PLEDGE_PRICE_DESC
+      - PRICE_ASC
+      - PRICE_DESC
+      - SCM_SPEED_ASC
+      - SCM_SPEED_DESC
+      - MAX_SPEED_ASC
+      - MAX_SPEED_DESC
+      - GROUND_MAX_SPEED_ASC
+      - GROUND_MAX_SPEED_DESC
+      - PRODUCTION_STATUS_ASC
+      - PRODUCTION_STATUS_DESC
+      - RSI_ID_ASC
+      - RSI_ID_DESC
+      - UPDATED_AT_ASC
+      - UPDATED_AT_DESC
+      - CREW_ASC
+      - CREW_DESC
+      - HYDROGEN_FUEL_TANK_SIZE_ASC
+      - HYDROGEN_FUEL_TANK_SIZE_DESC
+      - QUANTUM_FUEL_TANK_SIZE_ASC
+      - QUANTUM_FUEL_TANK_SIZE_DESC
+      - HIDDEN_ASC
+      - HIDDEN_DESC
+      - ACTIVE_ASC
+      - ACTIVE_DESC
+      title: AdminModelSortEnum
     AdminModelUpgradeMedia:
       type: object
       properties:
@@ -20570,18 +20659,22 @@ components:
           type: boolean
         dimensionsMeasuredAtNull:
           type: boolean
+        hiddenEq:
+          type: boolean
+        activeEq:
+          type: boolean
         s:
           anyOf:
           - type: array
             items:
-              "$ref": "#/components/schemas/ModelSortEnum"
-          - "$ref": "#/components/schemas/ModelSortEnum"
+              "$ref": "#/components/schemas/AdminModelSortEnum"
+          - "$ref": "#/components/schemas/AdminModelSortEnum"
         sorts:
           anyOf:
           - type: array
             items:
-              "$ref": "#/components/schemas/ModelSortEnum"
-          - "$ref": "#/components/schemas/ModelSortEnum"
+              "$ref": "#/components/schemas/AdminModelSortEnum"
+          - "$ref": "#/components/schemas/AdminModelSortEnum"
       additionalProperties: false
       example: {}
       title: ModelQuery

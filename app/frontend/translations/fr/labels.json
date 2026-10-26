@@ -2666,7 +2666,9 @@
           "topViewColoredBlank": "Sans image de vue de dessus colorée ?",
           "vehicleSize": "Taille de véhicule",
           "dimensionsDrifted": "Dimensions différentes des fichiers de jeu",
-          "dimensionsMeasuredAtNull": "Sans dimensions mesurées ?"
+          "dimensionsMeasuredAtNull": "Sans dimensions mesurées ?",
+          "hidden": "Masqué ?",
+          "active": "Actif ?"
         },
         "modelModules": {
           "name": "Nom"

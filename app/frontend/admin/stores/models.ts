@@ -34,8 +34,34 @@ export enum AdminModelTableViewColsEnum {
   UPDATED_AT = "updatedAt",
 }
 
+// Every column but focus: a ship's foci are a list, which has no order to sort by.
+export enum AdminModelSortFieldsEnum {
+  NAME = "name",
+  MANUFACTURER_NAME = "manufacturerName",
+  LENGTH = "length",
+  BEAM = "beam",
+  HEIGHT = "height",
+  MASS = "mass",
+  CARGO = "cargo",
+  QUANTUM_FUEL = "quantumFuelTankSize",
+  HYDROGEN_FUEL = "hydrogenFuelTankSize",
+  CREW = "crew",
+  SCM_SPEED = "scmSpeed",
+  MAX_SPEED = "maxSpeed",
+  GROUND_MAX_SPEED = "groundMaxSpeed",
+  PRODUCTION_STATUS = "productionStatus",
+  PRICE = "price",
+  PLEDGE_PRICE = "pledgePrice",
+  RSI_ID = "rsiId",
+  HIDDEN = "hidden",
+  ACTIVE = "active",
+  CREATED_AT = "createdAt",
+  UPDATED_AT = "updatedAt",
+}
+
 interface AdminModelsState extends AdminShipListState {
   tableViewCols: AdminModelTableViewColsEnum[];
+  sortFields: AdminModelSortFieldsEnum[];
   tableViewImageCols: AdminModelTableViewImageColsEnum[];
   list?: string[];
   listMeta?: ListMeta;
@@ -54,6 +80,13 @@ export const useModelsStore = defineStore("adminModels", {
       AdminModelTableViewImageColsEnum.RSI_STORE_IMAGE,
       AdminModelTableViewImageColsEnum.ANGLED_VIEW,
     ],
+    sortFields: [
+      AdminModelSortFieldsEnum.NAME,
+      AdminModelSortFieldsEnum.HIDDEN,
+      AdminModelSortFieldsEnum.ACTIVE,
+      AdminModelSortFieldsEnum.CREATED_AT,
+      AdminModelSortFieldsEnum.UPDATED_AT,
+    ],
   }),
   actions: {
     toggleFilter() {
@@ -64,6 +97,9 @@ export const useModelsStore = defineStore("adminModels", {
     },
     setTableViewImageCols(cols: AdminModelTableViewImageColsEnum[]) {
       this.tableViewImageCols = cols;
+    },
+    setSortFields(fields: AdminModelSortFieldsEnum[]) {
+      this.sortFields = fields;
     },
     setList(models?: Models) {
       this.list = models?.items.map((model) => model.id);
@@ -76,7 +112,7 @@ export const useModelsStore = defineStore("adminModels", {
     },
   },
   persist: {
-    pick: ["tableViewCols", "tableViewImageCols"],
+    pick: ["tableViewCols", "tableViewImageCols", "sortFields"],
     afterHydrate: ({ store }) => {
       store.tableViewCols = renameTableCols<AdminModelTableViewColsEnum>(
         store.tableViewCols,

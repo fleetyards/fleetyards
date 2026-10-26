@@ -602,6 +602,9 @@ class Model < ApplicationRecord
     "maxSpeed desc", "groundMaxSpeed asc", "groundMaxSpeed desc", "productionStatus asc",
     "productionStatus desc", "rsiId asc", "rsiId desc"
   ]
+  ADMIN_SORTING_PARAMS = ALLOWED_SORTING_PARAMS + %w[
+    updatedAt crew hydrogenFuelTankSize quantumFuelTankSize hidden active
+  ].flat_map { |field| ["#{field} asc", "#{field} desc"] }
 
   ransack_alias :manufacturer, :manufacturer_slug
   ransack_alias :search, :name_or_slug_or_manufacturer_slug

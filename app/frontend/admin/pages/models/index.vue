@@ -10,6 +10,7 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import BaseTable from "@/shared/components/base/Table/index.vue";
+import ListToolbar from "@/shared/components/base/ListToolbar/index.vue";
 import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import ViewImage from "@/shared/components/ViewImage/index.vue";
 import { LazyImageVariantsEnum } from "@/shared/components/LazyImage/types";
@@ -26,13 +27,14 @@ import {
   useModels as useModelsQuery,
   useScDataUnlistedModels,
   type Model,
-  type ModelSortEnum,
+  type AdminModelSortEnum,
 } from "@/services/fyAdminApi";
 import {
   useModelsStore,
   AdminModelTableViewColsEnum,
   AdminModelTableViewImageColsEnum,
 } from "@/admin/stores/models";
+import { useAdminModelSortFields } from "@/admin/composables/useAdminModelSortFields";
 import { useBreadCrumbsStore } from "@/shared/stores/breadCrumbs";
 import {
   useReloadModelsMatrix,
@@ -52,8 +54,15 @@ const { isImporting: isImportingScData } = useImportLoading([
 
 const route = useRoute();
 
-const sorts = computed((): ModelSortEnum[] => {
-  return route.query.s ? [route.query.s as ModelSortEnum] : [];
+const sorts = computed((): AdminModelSortEnum[] => {
+  return route.query.s ? [route.query.s as AdminModelSortEnum] : [];
+});
+
+// The default counts as chosen too, so unticking Name never leaves the bar
+// without the sort the list is actually in.
+const sortFields = useAdminModelSortFields({
+  include: () =>
+    typeof route.query.s === "string" ? route.query.s : "name asc",
 });
 
 watch(
@@ -94,8 +103,6 @@ const extraColumns = computed<BaseTableCol<Model>[]>(() => {
       return {
         name: col,
         label: t(`labels.models.table.columns.${col}`),
-        // A ship's foci are a list, which has no order to sort by.
-        sortable: col !== AdminModelTableViewColsEnum.FOCUS,
       };
     })
     .filter((col) => {
@@ -125,7 +132,6 @@ const tableColumns = computed<BaseTableCol<Model>[]>(() => {
       name: "name",
       label: t("labels.vehicle.name"),
       width: "auto",
-      sortable: true,
     },
     ...extraColumns.value,
   ];
@@ -297,6 +303,9 @@ const unlistedCount = computed(
     <template #filter>
       <FilterForm />
     </template>
+    <template #sort>
+      <ListToolbar :columns="sortFields" default-sort="name asc" />
+    </template>
     <template #default="{ loading, refetching, emptyVisible }">
       <BaseTable
         :records="models?.items || []"
@@ -304,7 +313,6 @@ const unlistedCount = computed(
         :columns="tableColumns"
         :loading="loading || refetching"
         :empty-visible="emptyVisible"
-        default-sort="name asc"
         selectable
         row-clickable
         @row-click="onRowClick"
