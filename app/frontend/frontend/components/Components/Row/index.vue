@@ -9,9 +9,10 @@ import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/ind
 import HardpointCategoryIcon from "@/frontend/components/Models/Hardpoints/CategoryIcon/index.vue";
 import ComponentLeadMetric from "@/frontend/components/Components/LeadMetric/index.vue";
 import RowListItem from "@/shared/components/RowListItem/index.vue";
+import CartAddToCart from "@/frontend/components/Cart/AddToCart/index.vue";
 import { type RowListItemBadge } from "@/shared/components/RowListItem/types";
 import { useI18n } from "@/shared/composables/useI18n";
-import { type Component } from "@/services/fyApi";
+import { type Component, InventoryItemTypeEnum } from "@/services/fyApi";
 
 type Props = {
   component: Component;
@@ -135,6 +136,17 @@ const badges = computed<RowListItemBadge[]>(() => {
     </template>
 
     <ComponentLeadMetric :component="component" />
+
+    <template #actions>
+      <CartAddToCart
+        :item="{
+          id: component.id,
+          type: InventoryItemTypeEnum.COMPONENT,
+          name: component.name,
+        }"
+        variant="row"
+      />
+    </template>
   </RowListItem>
 </template>
 

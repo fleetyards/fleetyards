@@ -9,6 +9,7 @@ import ExternalLinks from "@/shared/components/ExternalLinks/index.vue";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import Availability from "@/frontend/components/Availability/index.vue";
 import AddToInventoryBtn from "@/frontend/components/Logistics/AddToInventoryBtn/index.vue";
+import CartAddToCart from "@/frontend/components/Cart/AddToCart/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Chip from "@/shared/components/base/Chip/index.vue";
 import EquipmentIcon from "@/frontend/components/Equipment/Icon/index.vue";
@@ -34,6 +35,7 @@ import {
   useEquipmentItemAttachments as useEquipmentItemAttachmentsQuery,
   useEquipmentItemVersions as useEquipmentItemVersionsQuery,
   useEquipmentItemWeapons as useEquipmentItemWeaponsQuery,
+  InventoryItemTypeEnum,
 } from "@/services/fyApi";
 
 const { t } = useI18n();
@@ -293,7 +295,17 @@ watch(
               scope="equipment"
               :craftable="recipes.length > 0"
               :loading="recipesPending"
-            />
+            >
+              <template #actions>
+                <CartAddToCart
+                  :item="{
+                    id: equipment.id,
+                    type: InventoryItemTypeEnum.EQUIPMENT,
+                    name: equipment.name,
+                  }"
+                />
+              </template>
+            </Availability>
 
             <MetricsCard
               v-if="recipes.length"

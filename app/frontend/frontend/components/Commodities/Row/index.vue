@@ -10,9 +10,10 @@ import CommodityIcon from "@/frontend/components/Commodities/Icon/index.vue";
 import Chip from "@/shared/components/base/Chip/index.vue";
 import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
 import RowListItem from "@/shared/components/RowListItem/index.vue";
+import CartAddToCart from "@/frontend/components/Cart/AddToCart/index.vue";
 import { type RowListItemBadge } from "@/shared/components/RowListItem/types";
 import { useI18n } from "@/shared/composables/useI18n";
-import { type Commodity } from "@/services/fyApi";
+import { type Commodity, InventoryItemTypeEnum } from "@/services/fyApi";
 
 type Props = {
   commodity: Commodity;
@@ -115,6 +116,17 @@ const badges = computed<RowListItemBadge[]>(() => {
       <Chip v-if="commodity.retired" :state="ChipStatesEnum.EXCLUDED">
         {{ t("labels.commodity.retired") }}
       </Chip>
+    </template>
+
+    <template #actions>
+      <CartAddToCart
+        :item="{
+          id: commodity.id,
+          type: InventoryItemTypeEnum.COMMODITY,
+          name: commodity.name,
+        }"
+        variant="row"
+      />
     </template>
   </RowListItem>
 </template>

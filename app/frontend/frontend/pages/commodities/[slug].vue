@@ -8,6 +8,7 @@ export default {
 import AsyncData from "@/shared/components/AsyncData.vue";
 import Availability from "@/frontend/components/Availability/index.vue";
 import AddToInventoryBtn from "@/frontend/components/Logistics/AddToInventoryBtn/index.vue";
+import CartAddToCart from "@/frontend/components/Cart/AddToCart/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Chart from "@/shared/components/Chart/index.vue";
 import Chip from "@/shared/components/base/Chip/index.vue";
@@ -25,6 +26,7 @@ import {
   useBlueprints as useBlueprintsQuery,
   useCommodity as useCommodityQuery,
   useCommodityPriceHistory as usePriceHistoryQuery,
+  InventoryItemTypeEnum,
 } from "@/services/fyApi";
 
 const { t, tExists, l } = useI18n();
@@ -228,7 +230,17 @@ watch(
               scope="commodity"
               :craftable="recipes.length > 0"
               :loading="recipesPending"
-            />
+            >
+              <template #actions>
+                <CartAddToCart
+                  :item="{
+                    id: commodity.id,
+                    type: InventoryItemTypeEnum.COMMODITY,
+                    name: commodity.name,
+                  }"
+                />
+              </template>
+            </Availability>
 
             <MetricsCard
               v-if="recipes.length"
