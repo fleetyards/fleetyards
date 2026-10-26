@@ -167,6 +167,9 @@ en:
       create: "Plan could not be created."
       update: "Plan could not be updated."
       rebase: "Plan could not be rebased on the hangar."
+    cart_items:
+      create: "Item could not be added to the cart."
+      update: "Cart item could not be updated."
     hangar_plan_slots:
       create: "Slot could not be added."
       update: "Slot could not be updated."

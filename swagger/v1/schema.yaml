@@ -201,6 +201,172 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/cart":
+    get:
+      summary: Cart
+      tags:
+      - Cart
+      operationId: cart
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Cart"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    delete:
+      summary: Clear Cart
+      tags:
+      - Cart
+      operationId: clearCart
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Cart"
+  "/cart/items":
+    post:
+      summary: Add Cart Item
+      tags:
+      - Cart
+      operationId: addCartItem
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CartItemCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Cart"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/cart/items/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Update Cart Item
+      tags:
+      - Cart
+      operationId: updateCartItem
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CartItemUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Cart"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    delete:
+      summary: Remove Cart Item
+      tags:
+      - Cart
+      operationId: removeCartItem
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Cart"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/catalogue/lookup":
     get:
       summary: Resolve the catalogue items a text names inline
@@ -23137,6 +23303,149 @@ components:
       - "y"
       - z
       title: CargoHoldOffset
+    Cart:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CartLine"
+        groups:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CartGroup"
+        totals:
+          "$ref": "#/components/schemas/CartTotals"
+      additionalProperties: false
+      required:
+      - items
+      - groups
+      - totals
+      title: Cart
+    CartGroup:
+      type: object
+      properties:
+        key:
+          type: string
+        name:
+          type: string
+        location:
+          anyOf:
+          - "$ref": "#/components/schemas/LocationLink"
+          - type: 'null'
+        systemName:
+          type:
+          - string
+          - 'null'
+        itemIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        subtotal:
+          type: number
+      additionalProperties: false
+      required:
+      - key
+      - name
+      - itemIds
+      - subtotal
+      title: CartGroup
+    CartItemCreateInput:
+      type: object
+      properties:
+        itemType:
+          "$ref": "#/components/schemas/InventoryItemTypeEnum"
+        itemId:
+          type: string
+          format: uuid
+        quantity:
+          type: integer
+          minimum: 1
+      additionalProperties: false
+      required:
+      - itemType
+      - itemId
+      title: CartItemCreateInput
+    CartItemUpdateInput:
+      type: object
+      properties:
+        quantity:
+          type: integer
+          minimum: 1
+        itemPriceId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+      additionalProperties: false
+      title: CartItemUpdateInput
+    CartLine:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        quantity:
+          type: integer
+        item:
+          "$ref": "#/components/schemas/InventoryItemRef"
+        available:
+          type: boolean
+        pinned:
+          type: boolean
+        unitPrice:
+          type:
+          - number
+          - 'null'
+        total:
+          type:
+          - number
+          - 'null'
+        price:
+          anyOf:
+          - "$ref": "#/components/schemas/ItemPrice"
+          - type: 'null'
+        offers:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ItemPrice"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - quantity
+      - item
+      - available
+      - pinned
+      - offers
+      - createdAt
+      - updatedAt
+      title: CartLine
+    CartTotals:
+      type: object
+      description: Cart costs in aUEC, over the lines someone sells
+      properties:
+        total:
+          type: number
+        itemsCount:
+          type: integer
+        unavailableCount:
+          type: integer
+        stopsCount:
+          type: integer
+      additionalProperties: false
+      required:
+      - total
+      - itemsCount
+      - unavailableCount
+      - stopsCount
+      title: CartTotals
     CatalogueTokenMatch:
       type: object
       required:
@@ -26109,6 +26418,7 @@ components:
       - oauth-twitch
       - push_notifications
       - ship_inventories
+      - shopping_cart
       - trade_routes
       - vehicle_overview
       x-enumNames:
@@ -26134,6 +26444,7 @@ components:
       - OAUTH_TWITCH
       - PUSH_NOTIFICATIONS
       - SHIP_INVENTORIES
+      - SHOPPING_CART
       - TRADE_ROUTES
       - VEHICLE_OVERVIEW
       title: FeatureFlagName

@@ -67,6 +67,37 @@ class Api::V1::ListEndpointQueryCountsTest < ActionDispatch::IntegrationTest
       "hangar plan queries grew from #{for_one} to #{for_many} between 1 and 5 slots"
   end
 
+  test "the cart issues the same number of queries for one line as for many" do
+    Flipper.enable(:shopping_cart)
+    user = create(:user)
+    sign_in user
+    station = create(:location, kind: "station", system: create(:location, kind: "system"))
+    shop = Shop.create!(name: "Casaba Outlet", location: station)
+    terminal = create(:terminal, location: station)
+
+    add_lines = lambda do
+      equipment = create(:equipment)
+      create(:item_price, item: equipment, price_type: "sell", time_range: nil, shop:)
+      commodity = create(:commodity)
+      create(:item_price, item: commodity, price_type: "sell", time_range: nil, terminal:)
+      create(:cart_item, user:, item: equipment)
+      create(:cart_item, user:, item: commodity)
+    end
+
+    add_lines.call
+    get "/api/v1/cart"
+    assert_response :success
+    for_one = count_queries { get "/api/v1/cart" }
+
+    4.times { add_lines.call }
+    for_many = count_queries { get "/api/v1/cart" }
+
+    assert_response :success
+    assert_equal 10, response.parsed_body["items"].size
+    assert_equal for_one, for_many,
+      "cart queries grew from #{for_one} to #{for_many} between 2 and 10 lines"
+  end
+
   # The blueprint row renders through `facts`, which is the build we are on or
   # the last one that described the recipe -- so the fallback build has to be
   # preloaded as well as the current one. Asked with `currentVersion=false`,

@@ -124,6 +124,9 @@ it:
       create: "Impossibile creare il piano."
       update: "Impossibile aggiornare il piano."
       rebase: "Impossibile riallineare il piano all'hangar."
+    cart_items:
+      create: "Impossibile aggiungere l'articolo al carrello."
+      update: "Impossibile aggiornare l'articolo del carrello."
     hangar_plan_slots:
       create: "Impossibile aggiungere lo slot."
       update: "Impossibile aggiornare lo slot."

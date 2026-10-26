@@ -114,3 +114,6 @@ loadout_editor:
 
 hangar_planner:
   description: "Hangar planner — plan the hangar you want in slots, compare it with your current hangar and work out melts, upgrades and buy-backs to get there"
+
+shopping_cart:
+  description: "Shopping cart — collect commodities, components and equipment and plan where to buy them in game"

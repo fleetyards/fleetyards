@@ -131,6 +131,9 @@ de:
       create: "Plan konnte nicht erstellt werden."
       update: "Plan konnte nicht aktualisiert werden."
       rebase: "Plan konnte nicht auf den Hangar aktualisiert werden."
+    cart_items:
+      create: "Artikel konnte nicht in den Warenkorb gelegt werden."
+      update: "Warenkorb-Artikel konnte nicht aktualisiert werden."
     hangar_plan_slots:
       create: "Platz konnte nicht hinzugefügt werden."
       update: "Platz konnte nicht aktualisiert werden."
