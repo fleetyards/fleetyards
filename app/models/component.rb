@@ -53,6 +53,7 @@ class Component < ApplicationRecord
   # What each build of the game says about this component. Written alongside the
   # columns for now, so reads can move over a catalogue at a time.
   has_many :builds, class_name: "ComponentBuild", dependent: :destroy
+  has_many :cart_items, as: :item, dependent: :delete_all
 
   has_many :build_changes,
     class_name: "ComponentBuildChange",

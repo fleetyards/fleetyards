@@ -57,4 +57,12 @@ class CartItemTest < ActiveSupport::TestCase
 
     assert_nil cart_item.reload.item_price_id
   end
+
+  test "goes with the catalogue item it is for" do
+    cart_item = create(:cart_item)
+
+    cart_item.item.destroy!
+
+    assert_not CartItem.exists?(cart_item.id)
+  end
 end

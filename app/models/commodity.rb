@@ -32,6 +32,7 @@ class Commodity < ApplicationRecord
 
   has_many :fleet_inventory_items, as: :item, dependent: :nullify
   has_many :inventory_items, as: :item, dependent: :nullify
+  has_many :cart_items, as: :item, dependent: :delete_all
   has_many :trade_routes, dependent: :delete_all
 
   # What each build of the game says about this commodity. Written alongside the
