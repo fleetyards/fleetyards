@@ -46,6 +46,9 @@ class Cart < ApplicationRecord
   # so adding from a catalogue keeps going somewhere the user can see.
   def destroy_and_reactivate!
     transaction do
+      # The user first, as `activate!` takes it: the other way round, a delete
+      # and an activation each hold the lock the other waits for.
+      user.lock!
       destroy!
       user.carts.order(updated_at: :desc).first&.activate! if active?
     end
