@@ -359,3 +359,48 @@ describe("loadoutValues", () => {
     });
   });
 });
+
+describe("groups of stacked mounts", () => {
+  const mount = (name: string): LoadoutSlot =>
+    ({
+      name,
+      hardpointId: `port-${name}`,
+      category: "weapon_mounts",
+      types: ["Turret"],
+      editable: true,
+      stock: { id: "gimbal", name: "Gimbal" },
+      slots: [
+        {
+          name: "hardpoint_class_2",
+          hardpointId: `port-${name}-gun`,
+          category: "weapons",
+          types: ["WeaponGun"],
+          editable: true,
+          stock: { id: "gun", name: "Gun" },
+          slots: [],
+        },
+      ],
+    }) as LoadoutSlot;
+
+  const weaponsTab = COMPONENT_TABS.find((tab) => tab.id === "weapons")!;
+
+  it("tells the gun under a stack apart from the gun under its first mount", () => {
+    const fitting = useComponentFitting();
+    const slots = [mount("hardpoint_gun_left"), mount("hardpoint_gun_right")];
+    fitting.learn(slots);
+
+    const [stack] = fitting
+      .groups(fitting.resolve(slots, {}), weaponsTab)
+      .flatMap((group) => group.slots);
+
+    const stackGun = stack.children?.[0];
+    const firstGun = stack.stack?.[0].children?.[0];
+
+    expect(stackGun?.id).not.toBe(firstGun?.id);
+    expect(stackGun?.members).toEqual([
+      "hardpoint_gun_left/hardpoint_class_2",
+      "hardpoint_gun_right/hardpoint_class_2",
+    ]);
+    expect(firstGun?.members).toEqual(["hardpoint_gun_left/hardpoint_class_2"]);
+  });
+});

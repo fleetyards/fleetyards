@@ -648,6 +648,19 @@ export const useComponentFitting = () => {
    * member of that stack: `parents` are the paths the row above stands for,
    * and `from` the path of the one this row was built under.
    */
+  // Rows built under a stack, their ids told apart from the rows of its first
+  // member, which carry the same paths. A row's slots are always read from its
+  // `members`, never from its id.
+  const asStackRows = (rows: LoadoutSocketSlot[]): LoadoutSocketSlot[] =>
+    rows.map((row) => ({
+      ...row,
+      // Again on a stack within: a stack of missiles under a stack of racks is
+      // its own row beside the one under the first rack.
+      id: `${row.id}${GROUP_SUFFIX}`,
+      children: row.children && asStackRows(row.children),
+      stack: row.stack && asStackRows(row.stack),
+    }));
+
   const stacked = (
     slots: LoadoutSocketSlot[],
     parents: string[] = [""],
@@ -687,7 +700,12 @@ export const useComponentFitting = () => {
           id: `${first.id}${GROUP_SUFFIX}`,
           members,
           changed: same.some((slot) => slot.changed),
-          children: stacked(first.children ?? [], members, first.id),
+          // The same for everything below it: the gun under a stack of mounts
+          // and the gun under that stack's first mount are different rows, one
+          // filling every member and the other its own slot alone.
+          children: asStackRows(
+            stacked(first.children ?? [], members, first.id),
+          ),
           stack: same.map(alone),
         },
       ];
