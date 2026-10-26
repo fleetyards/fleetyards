@@ -55,7 +55,8 @@ type Props = {
   // See-through, with the mesh's wireframe drawn over it.
   hologram?: boolean;
   // Drawn only when something changes rather than every frame, for a holo
-  // that mostly stands still. Turning on its own draws every frame again.
+  // that stands still. The orbit controls ask for no frames of their own, so a
+  // holo the viewer turns, or that turns on its own, draws every frame.
   onDemand?: boolean;
 };
 
