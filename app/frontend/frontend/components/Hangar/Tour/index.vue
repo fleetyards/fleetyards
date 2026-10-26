@@ -78,7 +78,14 @@ const steps = computed<TourStep[]>(() => [
     requiresTarget: true,
   }),
   ...(isFeatureEnabled(FeatureFlagName.HANGAR_INVENTORIES)
-    ? [step("inventories", { target: '[data-tour="hangar-inventories"]' })]
+    ? [
+        step("inventories", {
+          target: mobile.value
+            ? '[data-tour="hangar-menu"]'
+            : '[data-tour="hangar-assets"]',
+          placement: "left",
+        }),
+      ]
     : []),
   step("share", {
     target: '[data-tour="hangar-share"]',
