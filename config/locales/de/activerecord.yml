@@ -295,6 +295,12 @@ de:
           attributes:
             base:
               plan_limit_reached: "kann höchstens %{count} Pläne enthalten"
+        cart_item:
+          attributes:
+            base:
+              cart_limit_reached: "kann höchstens %{count} Artikel enthalten"
+            item_price_id:
+              not_offered: "ist kein Preis, zu dem dieser Artikel verkauft wird"
         hangar_plan_slot:
           attributes:
             quantity:

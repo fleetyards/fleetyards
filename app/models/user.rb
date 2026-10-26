@@ -148,6 +148,7 @@ class User < ApplicationRecord
   has_many :buyback_pledges, dependent: :delete_all
   has_many :hangar_pledge_items, dependent: :delete_all
   has_many :hangar_plans, dependent: :destroy
+  has_many :cart_items, dependent: :delete_all
 
   has_many :oauth_applications, class_name: "Oauth::Application", as: :owner
   has_many :omniauth_connections, dependent: :destroy
