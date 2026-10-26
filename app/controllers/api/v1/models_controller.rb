@@ -173,9 +173,14 @@ module Api
         @loadout_preview_enabled = feature_enabled?("loadout_preview")
         @ports = (@model.hardpoint_transforms&.fetch("ports") if @loadout_preview_enabled) || []
 
-        # A part the export never draws is mounted like a stripped one.
-        default_items = @ports.select { |port| port["stripped"] || port["geometry"] == false }.filter_map { |port| port["defaultItem"] }.uniq
-        @item_holos = Component.where(sc_key: default_items).with_attached_holo.select { |component| component.holo.attached? }
+        # The parts the preview draws itself: those the hull leaves out, a part
+        # the export never draws among them, unless the holo of the part they
+        # belong to has them or their place is unknown.
+        default_items = @ports
+          .select { |port| (port["stripped"] || port["geometry"] == false) && !port["inParentHolo"] && port["helper"] != false }
+          .filter_map { |port| port["defaultItem"] }
+          .uniq
+        @item_holos = Component.where(sc_key: default_items).joins(:holo_attachment).with_attached_holo
       end
 
       def positions
