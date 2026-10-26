@@ -31,13 +31,9 @@ module VehicleInventoryScoped
     vehicle_id = params[:vehicle_id]
 
     # The serializer draws this hold as its ship, so the model's artwork is
-    # read on the way out -- three attachment lookups and a blob read that this
+    # read on the way out -- four attachment lookups and a blob read that this
     # turns into one query alongside the vehicle.
-    scope = current_resource_owner.vehicles.includes(model: [
-      {store_image_attachment: :blob},
-      {angled_view_attachment: :blob},
-      {fleetchart_image_attachment: :blob}
-    ])
+    scope = current_resource_owner.vehicles.includes(model: Model::IMAGE_ATTACHMENT_PRELOAD)
 
     @vehicle = scope.find_by_id_or_serial!(vehicle_id)
   end

@@ -5,6 +5,6 @@ module HangarPlans
   # its facts come from and its picture.
   MODEL_PRELOAD = [
     :manufacturer, :build, :last_build,
-    *Model::IMAGE_ATTACHMENT_NAMES.map { |name| {"#{name}_attachment": :blob} }
+    *Model::IMAGE_ATTACHMENT_PRELOAD
   ].freeze
 end

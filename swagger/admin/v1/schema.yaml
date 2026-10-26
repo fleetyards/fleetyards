@@ -11901,6 +11901,8 @@ components:
           type: string
         listed:
           type: boolean
+        angledView:
+          "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
       required:
       - type

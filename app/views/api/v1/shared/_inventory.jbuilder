@@ -52,13 +52,7 @@ if inventory.vehicle.present?
       # What a ship's hold looks like when nobody has given it a picture: the
       # ship itself. Same order of preference the rest of the API shows a model
       # in, so the hold and the ship never disagree about which one that is.
-      image_attr = if model.store_image.attached?
-        :store_image
-      elsif model.angled_view.attached?
-        :angled_view
-      elsif model.fleetchart_image.attached?
-        :fleetchart_image
-      end
+      image_attr = Model::IMAGE_ATTACHMENT_NAMES.find { |name| model.public_send(name).attached? }
 
       # Omitted rather than null when there is none: the schema documents this
       # as an optional MediaFile, and a null would disagree with both it and the

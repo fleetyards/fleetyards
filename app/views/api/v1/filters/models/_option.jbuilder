@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-json.cache! ["v2/filters/models/option", model] do
+json.cache! ["v3/filters/models/option", model] do
   json.id model.id
   json.name model.name
   json.slug model.slug

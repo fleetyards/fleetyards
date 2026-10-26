@@ -1088,6 +1088,52 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FilterOptionsList"
+  "/filters/components/grades":
+    get:
+      summary: Components Grade Filters
+      tags:
+      - ComponentsFilters
+      operationId: componentGradesFilters
+      parameters:
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/ComponentFacetFilterQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FilterOptionsList"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/filters/components/sizes":
+    get:
+      summary: Components Size Filters
+      tags:
+      - ComponentsFilters
+      operationId: componentSizesFilters
+      parameters:
+      - name: q
+        in: query
+        schema:
+          "$ref": "#/components/schemas/ComponentFacetFilterQuery"
+        style: deepObject
+        explode: true
+        required: false
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FilterOptionsList"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/filters/components/sub-types":
     get:
       summary: Components Sub Type Filters
@@ -23060,6 +23106,8 @@ components:
           type: string
         listed:
           type: boolean
+        angledView:
+          "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
       required:
       - type
@@ -24704,6 +24752,16 @@ components:
           type: number
       additionalProperties: false
       title: ComponentEmp
+    ComponentFacetFilterQuery:
+      type: object
+      properties:
+        categoryIn:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      example: {}
+      title: ComponentFacetFilterQuery
     ComponentItemClassEnum:
       type: string
       enum:
@@ -25229,6 +25287,14 @@ components:
           items:
             type: string
         componentSubTypeIn:
+          type: array
+          items:
+            type: string
+        sizeIn:
+          type: array
+          items:
+            type: string
+        gradeIn:
           type: array
           items:
             type: string

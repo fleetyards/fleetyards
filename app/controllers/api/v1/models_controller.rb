@@ -361,8 +361,9 @@ module Api
         model = ModelUpgrade.visible.active.where(slug: params[:slug]).first if model.blank?
         model = Model.new if model.blank?
 
-        if model.store_image.attached?
-          redirect_to rails_blob_url(model.store_image), allow_other_host: true
+        image = model.is_a?(Model) ? model.display_image : model.store_image
+        if image&.attached?
+          redirect_to rails_blob_url(image), allow_other_host: true
         else
           redirect_to vite_asset_url("images/fallback/store_image.jpg"), allow_other_host: true
         end

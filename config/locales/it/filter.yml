@@ -77,6 +77,10 @@ it:
           ground_vehicle_missile: Missile per veicolo terrestre
           pdc_turret: Torretta PDC
           salvage_modifier_tractor_beam: Raggio traente da recupero
+      grade:
+        label: "Grado %{value}"
+      size:
+        label: "Dimensione %{value}"
     equipment:
       grade:
         label: "Grado %{value}"

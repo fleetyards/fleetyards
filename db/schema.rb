@@ -2954,6 +2954,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_26_130000) do
     t.string "display_name"
     t.boolean "supporter_listed"
     t.integer "rsi_buyback_tokens"
+    t.integer "active_week_streak", default: 0, null: false
+    t.date "last_active_week"
     t.index "lower((email)::text)", name: "index_users_on_lower_email"
     t.index "lower((rsi_handle)::text)", name: "index_users_on_verified_rsi_handle", unique: true, where: "rsi_handle_verified"
     t.index "lower((username)::text)", name: "index_users_on_lower_username"

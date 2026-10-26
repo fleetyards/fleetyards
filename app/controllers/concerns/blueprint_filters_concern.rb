@@ -34,9 +34,9 @@ module BlueprintFiltersConcern
     # skip them or apply them against the wrong build.
     @q = scope.with_facts(current_version)
       .includes(
-        :craftable,
-        build: [:craftable, :sources, {cost_slots: {options: :commodity}}],
-        last_build: [:craftable, :sources, {cost_slots: {options: :commodity}}]
+        {craftable: Blueprint::CRAFTABLE_VIEW_PRELOAD},
+        build: [{craftable: Blueprint::CRAFTABLE_VIEW_PRELOAD}, :sources, {cost_slots: {options: :commodity}}],
+        last_build: [{craftable: Blueprint::CRAFTABLE_VIEW_PRELOAD}, :sources, {cost_slots: {options: :commodity}}]
       )
       .ransack(
         blueprints_query_params.except(

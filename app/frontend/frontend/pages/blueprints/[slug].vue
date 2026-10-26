@@ -10,6 +10,7 @@ import AsyncData from "@/shared/components/AsyncData.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import BlueprintSlot from "@/frontend/components/Blueprints/Slot/index.vue";
+import BlueprintPlan from "@/frontend/components/Blueprints/Plan/index.vue";
 import BlueprintPreview from "@/frontend/components/Blueprints/Preview/index.vue";
 import BlueprintSources from "@/frontend/components/Blueprints/Sources/index.vue";
 import BlueprintFleetOwners from "@/frontend/components/Blueprints/FleetOwners/index.vue";
@@ -214,6 +215,11 @@ watch(
           </MetricsCard>
 
           <div class="blueprint-page__rail">
+            <BlueprintPlan
+              v-if="blueprint.craftable?.angledView?.smallUrl"
+              :image="blueprint.craftable.angledView"
+              variant="panel"
+            />
             <!-- What comes out, above where it comes from: the stats move as
                  the sliders move, so they belong beside the recipe. -->
             <BlueprintPreview
