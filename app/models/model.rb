@@ -348,7 +348,7 @@ class Model < ApplicationRecord
   end
 
   def self.list_attachment_preloads
-    detail_only = (DETAIL_ATTACHMENT_NAMES + %i[holo_hull]).map { |name| :"#{name}_attachment" }
+    detail_only = (DETAIL_ATTACHMENT_NAMES + LOADOUT_PREVIEW_ATTACHMENT_NAMES).map { |name| :"#{name}_attachment" }
 
     attachment_preloads.reject { |preload| detail_only.include?(preload.keys.first) }
   end
@@ -463,7 +463,19 @@ class Model < ApplicationRecord
   # The flight holo without the components a player can swap, which the loadout
   # preview mounts the picked ones on at `hardpoint_transforms`. Served with
   # those rather than in the media payload.
-  has_one_attached :holo_hull
+  LOADOUT_PREVIEW_ATTACHMENT_NAMES = %i[holo_hull].freeze
+
+  LOADOUT_PREVIEW_ATTACHMENT_NAMES.each { |name| has_one_attached name }
+
+  has_one :hardpoint_transforms_record, class_name: "ModelHardpointTransforms", dependent: :delete, autosave: true
+
+  def hardpoint_transforms
+    hardpoint_transforms_record&.data
+  end
+
+  def hardpoint_transforms=(data)
+    (hardpoint_transforms_record || build_hardpoint_transforms_record).data = data
+  end
 
   # The fleetchart sizes a ship from the pixel dimensions of the view it draws,
   # so transparent padding around the hull reads as part of the ship. The store

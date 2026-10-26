@@ -175,7 +175,7 @@ json.media do
   end
 
   if local_assigns.fetch(:extended, false)
-    (Model::DETAIL_ATTACHMENT_NAMES + %i[holo_hull]).each do |name|
+    (Model::DETAIL_ATTACHMENT_NAMES + Model::LOADOUT_PREVIEW_ATTACHMENT_NAMES).each do |name|
       json.set! name do
         json.partial! "api/v1/shared/file", record: model, attr: name
       end

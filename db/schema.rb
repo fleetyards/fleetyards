@@ -2211,6 +2211,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_26_140000) do
     t.index ["model_id", "environment", "version"], name: "index_model_builds_on_model_and_build", unique: true
   end
 
+  create_table "model_hardpoint_transforms", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "model_id", null: false
+    t.jsonb "data", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["model_id"], name: "index_model_hardpoint_transforms_on_model_id", unique: true
+  end
+
   create_table "model_loaners", id: :uuid, default: -> { "public.gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "model_id"
     t.uuid "loaner_model_id"
@@ -2466,7 +2474,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_26_140000) do
     t.string "foci", default: [], null: false, array: true
     t.boolean "stealth", default: false, null: false
     t.string "sc_role"
-    t.jsonb "hardpoint_transforms"
     t.index ["base_model_id"], name: "index_models_on_base_model_id"
     t.index ["classification"], name: "index_models_on_classification"
     t.index ["foci"], name: "index_models_on_foci", using: :gin
@@ -3300,6 +3307,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_26_140000) do
   add_foreign_key "missions", "users", column: "created_by_id"
   add_foreign_key "model_build_changes", "models", on_delete: :cascade
   add_foreign_key "model_builds", "models", on_delete: :cascade
+  add_foreign_key "model_hardpoint_transforms", "models", on_delete: :cascade
   add_foreign_key "model_module_builds", "model_modules", on_delete: :cascade
   add_foreign_key "model_paints", "components", on_delete: :nullify
   add_foreign_key "model_positions", "hardpoints", on_delete: :nullify

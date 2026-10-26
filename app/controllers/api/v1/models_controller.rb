@@ -166,7 +166,7 @@ module Api
       end
 
       def loadout_preview
-        @model = find_model_by_slug!
+        @model = find_model_by_slug!(:hardpoint_transforms_record, {holo_hull_attachment: :blob})
       end
 
       def positions
