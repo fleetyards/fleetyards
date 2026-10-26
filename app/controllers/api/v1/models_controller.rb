@@ -165,12 +165,10 @@ module Api
         @loadout_slots = LoadoutSlots.new(model)
       end
 
+      # With the feature off, every ship answers as if it had no export yet.
       def loadout_preview
-        unless feature_enabled?("loadout_preview")
-          return render json: {code: "forbidden", message: "This feature is not available"}, status: :forbidden
-        end
-
         @model = find_model_by_slug!(:hardpoint_transforms_record, {holo_hull_attachment: :blob})
+        @loadout_preview_enabled = feature_enabled?("loadout_preview")
       end
 
       def positions

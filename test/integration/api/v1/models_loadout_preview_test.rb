@@ -19,10 +19,6 @@ class Api::V1::ModelsLoadoutPreviewTest < ActionDispatch::IntegrationTest
         schema ::V1::Schemas::Models::LoadoutPreview::ModelLoadoutPreview
       end
 
-      response(403, "feature unavailable") do
-        schema ::Shared::V1::Schemas::StandardError
-      end
-
       response(404, "not found") do
         schema ::Shared::V1::Schemas::StandardError
       end
@@ -78,10 +74,13 @@ class Api::V1::ModelsLoadoutPreviewTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET /models/:slug/loadout-preview is unavailable while the feature is off" do
+  test "GET /models/:slug/loadout-preview answers as if there were no export while the feature is off" do
     Flipper.disable("loadout_preview")
 
-    assert_api_response :get, 403, path_params: {slug: @model.slug}
+    assert_api_response :get, 200, path_params: {slug: @model.slug} do
+      assert_empty parsed_body["ports"]
+      assert_not parsed_body.key?("holoHull")
+    end
   end
 
   test "GET /models/:slug/loadout-preview returns 404 for an unknown model" do
