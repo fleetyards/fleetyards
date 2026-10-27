@@ -101,6 +101,7 @@ class MarkdownImageTest < ActiveSupport::TestCase
   # would delete the images embedded in it.
   NOT_MARKDOWN = {
     "FleetInventory" => %w[description],
+    "FleetShoppingList" => %w[description],
     "FleetEventSlot" => %w[description],
     "MissionSlot" => %w[description]
   }.freeze
