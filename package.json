@@ -52,7 +52,7 @@
     "@tiptap/starter-kit": "^3.32.0",
     "@tiptap/suggestion": "^3.32.0",
     "@tiptap/vue-3": "^3.32.0",
-    "@tresjs/cientos": "^5.7.2",
+    "@tresjs/cientos": "^5.10.0",
     "@tresjs/core": "^5.10.0",
     "@vee-validate/rules": "^4.15.1",
     "@vuepic/vue-datepicker": "^14.0.0",
