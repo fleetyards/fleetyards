@@ -67,7 +67,7 @@ class LoadoutSlots
     source = (candidates[:source] ||= Component.served_source)
     candidates[kind] ||= Component.joins(Component.current_facts_join(source)).catalogued
       .where(Component.fact_sql(kind.first).in(Array(kind.last)))
-      .includes(:build, :last_build, ItemViews::DISPLAY_IMAGE_PRELOAD)
+      .includes(COMPONENT_PRELOAD)
       .order(Component.fact_sql(:name))
       .to_a
 
@@ -223,10 +223,14 @@ class LoadoutSlots
     build: {component: %i[build last_build]}
   }.freeze
 
-  # What a rendered slot reads besides: the stock part's picture.
+  # What a rendered part reads: its facts, its picture and the holo a loadout
+  # preview mounts.
+  COMPONENT_PRELOAD = [:build, :last_build, ItemViews::DISPLAY_IMAGE_PRELOAD, {holo_attachment: :blob}].freeze
+
+  # What a rendered slot reads besides: the stock part.
   PRELOAD = {
-    component: [:build, :last_build, ItemViews::DISPLAY_IMAGE_PRELOAD],
-    build: {component: [:build, :last_build, ItemViews::DISPLAY_IMAGE_PRELOAD]}
+    component: COMPONENT_PRELOAD,
+    build: {component: COMPONENT_PRELOAD}
   }.freeze
 
   # `items` are `{slot_path:, item_type:, item_id:}` hashes, as a loadout's
@@ -398,7 +402,7 @@ class LoadoutSlots
   private def records
     @records ||= @items.values.group_by { |item| item[:item_type] }.to_h do |type, items|
       klass = (VehicleLoadoutItem::ITEM_TYPES - [VehicleLoadoutItem::EMPTY]).include?(type) ? type.constantize : nil
-      scope = (klass == Component) ? klass.includes(:build, :last_build, ItemViews::DISPLAY_IMAGE_PRELOAD) : klass
+      scope = (klass == Component) ? klass.includes(COMPONENT_PRELOAD) : klass
       found = klass ? scope.where(id: items.pluck(:item_id)).index_by(&:id) : {}
       [type, found]
     end

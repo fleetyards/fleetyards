@@ -17,6 +17,8 @@ import Hardpoints from "@/frontend/components/Models/Hardpoints/index.vue";
 import LoadoutChanges from "@/frontend/components/Loadout/Changes/index.vue";
 import CartAddLoadout from "@/frontend/components/Cart/AddLoadout/index.vue";
 import { nonStockCartItems } from "@/frontend/utils/loadoutCartItems";
+import LoadoutPreview from "@/frontend/components/Loadout/Preview/index.vue";
+import { previewSlotsFromLoadout } from "@/frontend/utils/loadoutPreview";
 import { VehicleLoadoutTabsEnum } from "@/frontend/components/Vehicles/LoadoutModal/types";
 import { useLoadoutFitting } from "@/frontend/composables/useLoadoutFitting";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
@@ -203,6 +205,20 @@ const loadoutSlots = computed(() =>
   isOwner.value ? ownSlots.value : publicSlots.value,
 );
 
+const previewSlots = computed(() =>
+  loadoutSlots.value ? previewSlotsFromLoadout(loadoutSlots.value) : undefined,
+);
+
+// Without a holo of the fitting, the ship's angled render stands in for it.
+const previewShown = ref(false);
+
+const angledImage = computed(() => {
+  const media = model.value?.media;
+  const file = media?.angledViewColored || media?.angledView;
+
+  return file ? file.mediumUrl || file.url : undefined;
+});
+
 const {
   hardpoints,
   changed,
@@ -311,14 +327,44 @@ const edit = () => {
       <AsyncData :async-status="loadoutStatus">
         <template #resolved>
           <template v-if="vehicle && loadout">
-            <Heading size="hero" hero inline-sub-heading>
-              <template #default>
-                {{ loadout.name }}
-              </template>
-              <template #subHeading>
-                {{ vehicleName }}
-              </template>
-            </Heading>
+            <div class="loadout-page__head">
+              <Heading size="hero" hero inline-sub-heading>
+                <template #default>
+                  {{ loadout.name }}
+                </template>
+                <template #subHeading>
+                  {{ vehicleName }}
+                </template>
+              </Heading>
+
+              <!-- The render holds the place while the holo loads over it, and
+                   stays where there is none. -->
+              <div
+                v-if="angledImage || previewSlots"
+                class="loadout-page__visual"
+              >
+                <img
+                  v-if="angledImage"
+                  :src="angledImage"
+                  :alt="vehicleName"
+                  class="loadout-page__picture"
+                  :class="{ 'loadout-page__picture--hidden': previewShown }"
+                  data-test="vehicle-loadout-page-picture"
+                />
+                <div
+                  v-if="!fittingPending && previewSlots"
+                  class="loadout-page__holo"
+                  :class="{ 'loadout-page__holo--shown': previewShown }"
+                >
+                  <LoadoutPreview
+                    :model-slug="vehicle.model.slug"
+                    :slots="previewSlots"
+                    test-id="vehicle-loadout-page-preview"
+                    @available="previewShown = $event"
+                  />
+                </div>
+              </div>
+            </div>
 
             <Teleport v-if="editable" to="#header-right">
               <Btn
@@ -373,6 +419,50 @@ const edit = () => {
 </template>
 
 <style lang="scss" scoped>
+// The fitting's holo at the title's height, on the right, as the ship page
+// has its own beside the description.
+.loadout-page__head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.loadout-page__visual {
+  position: relative;
+  flex: none;
+  width: min(360px, 100%);
+  height: 200px;
+}
+
+.loadout-page__picture,
+.loadout-page__holo {
+  position: absolute;
+  inset: 0;
+}
+
+.loadout-page__picture {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+// The render fades into the holo once the holo is in.
+.loadout-page__picture,
+.loadout-page__holo {
+  transition: opacity 600ms ease;
+}
+
+.loadout-page__picture--hidden,
+.loadout-page__holo {
+  opacity: 0;
+}
+
+.loadout-page__holo--shown {
+  opacity: 1;
+}
+
 .loadout-page__changes {
   margin-bottom: 24px;
 }

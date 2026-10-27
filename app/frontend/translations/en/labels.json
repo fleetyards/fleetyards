@@ -1292,6 +1292,7 @@
         "extendedHoloLite": "Extended Lite Holo",
         "landedHoloLite": "Landed Lite Holo",
         "holoTextured": "Textured Holo",
+        "holoHull": "Hull Holo",
         "state": {
           "flight": "In Flight",
           "extended": "Extended",

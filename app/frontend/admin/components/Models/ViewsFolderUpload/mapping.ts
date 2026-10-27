@@ -59,6 +59,7 @@ export const HOLO_FIELDS = [
   "extendedHoloLite",
   "landedHoloLite",
   "holoTextured",
+  "holoHull",
 ] as const satisfies readonly (keyof ModelUpdateInput)[];
 
 export type ViewField = (typeof VIEW_FIELDS)[number];
@@ -102,7 +103,7 @@ export const FIELD_SECTIONS: readonly FieldSection[] = (
 ).map((state) => ({
   state,
   holos: (state === "flight"
-    ? (["holo", "holoLite", "holoTextured"] as const)
+    ? (["holo", "holoLite", "holoTextured", "holoHull"] as const)
     : (["holo", "holoLite"] as const)
   ).map((field) => inState(state, field)),
   views: VIEW_ROWS.map((row) => row.map((field) => inState(state, field))),
@@ -128,7 +129,7 @@ export type MappedFile = {
 const VIEW_NAME =
   /^((?:extended|landed|flight)[-_ ]?)?(top|side|port|front|angled[-_ ]?rear|angled|bottom|rear|starboard)([-_ ]?view)?([-_ ]?colored)?$/i;
 const HOLO_NAME =
-  /^((?:extended|landed|flight)[-_ ]?)?holo(?:[-_ ]?(lite|textured))?$/i;
+  /^((?:extended|landed|flight)[-_ ]?)?holo(?:[-_ ]?(lite|textured|hull))?$/i;
 
 const VIEWPOINTS: Record<string, string> = {
   top: "top",
@@ -180,8 +181,8 @@ export const fieldFor = (filename: string): FolderField | undefined => {
     const prefix = prefixFor(holo[1]);
     const variant = holo[2]?.toLowerCase();
 
-    // Only the flying pose is exported painted.
-    if (variant === "textured" && prefix) {
+    // Only the flying pose is exported painted, or without its components.
+    if ((variant === "textured" || variant === "hull") && prefix) {
       return undefined;
     }
 

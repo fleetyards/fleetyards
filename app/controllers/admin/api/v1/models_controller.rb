@@ -210,6 +210,7 @@ module Admin
             :landed_front_view_colored, :landed_angled_view_colored,
             :stealth,
             *Model::DETAIL_ATTACHMENT_NAMES, *Model::LITE_HOLO_ATTACHMENT_NAMES,
+            *Model::LOADOUT_PREVIEW_ATTACHMENT_NAMES,
             foci: []
           )
         end

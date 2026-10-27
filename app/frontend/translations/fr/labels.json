@@ -1292,6 +1292,7 @@
         "extendedHoloLite": "Holo allégé étendu",
         "landedHoloLite": "Holo allégé posé",
         "holoTextured": "Holo texturé",
+        "holoHull": "Holo de la coque",
         "state": {
           "flight": "En vol",
           "extended": "Déployé",

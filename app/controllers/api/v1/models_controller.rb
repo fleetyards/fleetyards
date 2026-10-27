@@ -165,6 +165,24 @@ module Api
         @loadout_slots = LoadoutSlots.new(model)
       end
 
+      # With the feature off, every ship answers as if it had no export yet.
+      def loadout_preview
+        @model = find_model_by_slug!(:hardpoint_transforms_record, {holo_hull_attachment: :blob})
+        return if performed?
+
+        @loadout_preview_enabled = feature_enabled?("loadout_preview")
+        @ports = (@model.hardpoint_transforms&.fetch("ports") if @loadout_preview_enabled) || []
+
+        # The parts the preview draws itself: those the hull leaves out, a part
+        # the export never draws among them, unless the holo of the part they
+        # belong to has them or their place is unknown.
+        default_items = @ports
+          .select { |port| (port["stripped"] || port["geometry"] == false) && !port["inParentHolo"] && port["helper"] != false }
+          .filter_map { |port| port["defaultItem"] }
+          .uniq
+        @item_holos = Component.where(sc_key: default_items).joins(:holo_attachment).with_attached_holo
+      end
+
       def positions
         model = find_model_by_slug!
         return if performed?

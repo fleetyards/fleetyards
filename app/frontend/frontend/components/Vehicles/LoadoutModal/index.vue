@@ -42,6 +42,9 @@ import type { CraftedPart } from "@/frontend/composables/craftedComponent";
 import { useCraftedRecipes } from "@/frontend/composables/useCraftedRecipes";
 import LoadoutMetrics from "./Metrics/index.vue";
 import LoadoutChanges from "@/frontend/components/Loadout/Changes/index.vue";
+import LoadoutPreview from "@/frontend/components/Loadout/Preview/index.vue";
+import Collapsed from "@/shared/components/Collapsed.vue";
+import { previewSlotsFromFitting } from "@/frontend/utils/loadoutPreview";
 import { VehicleLoadoutTabsEnum } from "./types";
 import { moduleSlots } from "./moduleSlots";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -338,6 +341,28 @@ const componentTree = computed(() =>
 
 // What stands fitted now, saved or not, so the cart gets what is on screen.
 const cartItems = computed(() => nonStockFittedItems(componentTree.value));
+
+// The open row's slots and the pointed one's: a stacked row stands for each of
+// its members.
+const previewSlots = computed(() =>
+  previewSlotsFromFitting(componentTree.value, [
+    ...(activeKind.value === "component" ? activeMembers.value : []),
+    ...pointedMembers.value,
+  ]),
+);
+
+// The ship's holo takes the angled render's place behind the controls.
+const previewShown = ref(false);
+
+// The figures put away: room to see the ship, and with a holo, to turn and
+// zoom it.
+const inspecting = ref(false);
+
+const figuresToggleLabel = computed(() =>
+  inspecting.value
+    ? t("actions.vehicleLoadout.showFigures")
+    : t("actions.vehicleLoadout.hideFigures"),
+);
 
 // The saved fitting's recipes as well as the edited one's, so the changes
 // against the save read both as crafted.
@@ -644,19 +669,50 @@ const socketIn = (
   return undefined;
 };
 
-// The slots the open socket stands for: one, or every slot of a stacked row.
-const activeMembers = computed(() => {
-  const tab = activeTab.value && componentTabs.value[activeTab.value];
+// The slots a socket stands for: one, or every slot of a stacked row.
+const membersOf = (tabId: string | undefined, slotId: string | undefined) => {
+  const tab = tabId && componentTabs.value[tabId];
   const slot =
-    tab && activeSlot.value
+    tab && slotId
       ? socketIn(
           tab.groups.flatMap((group) => group.slots),
-          activeSlot.value,
+          slotId,
         )
       : undefined;
 
-  return slot?.members ?? (activeSlot.value ? [activeSlot.value] : []);
-});
+  return slot?.members ?? (slotId ? [slotId] : []);
+};
+
+const activeMembers = computed(() =>
+  membersOf(activeTab.value, activeSlot.value),
+);
+
+// The component socket under the pointer, lit on the holo like the open one.
+const pointedSocket = ref<{ tabId: string; slotId: string }>();
+
+const onSocketsPointerOver = (event: PointerEvent, tabId: string) => {
+  const socket = (event.target as Element | null)?.closest<HTMLElement>(
+    "[data-loadout-socket]",
+  );
+  const slotId = socket?.dataset.loadoutSocket;
+
+  // It fires for every element the pointer crosses inside a socket too; the
+  // holo only changes when the socket does.
+  if (
+    pointedSocket.value?.slotId === slotId &&
+    pointedSocket.value?.tabId === tabId
+  ) {
+    return;
+  }
+
+  pointedSocket.value = slotId ? { tabId, slotId } : undefined;
+};
+
+const pointedMembers = computed(() =>
+  pointedSocket.value
+    ? membersOf(pointedSocket.value.tabId, pointedSocket.value.slotId)
+    : [],
+);
 
 const onSocketSelect = async (
   slot: string,
@@ -1389,6 +1445,10 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
       :id="`vehicle-loadout-${vehicle.id}`"
       ref="formRoot"
       class="vehicle-loadout"
+      :class="{
+        'vehicle-loadout--holo': previewShown,
+        'vehicle-loadout--inspecting': inspecting,
+      }"
       :style="backdrop ? { '--loadout-backdrop': `url(${backdrop})` } : {}"
       data-test="vehicle-loadout-form"
       @submit.prevent="onSubmit"
@@ -1400,35 +1460,77 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
         data-test="vehicle-loadout-loading"
       />
 
+      <div
+        v-if="flightReady && !initialising"
+        v-show="!linking"
+        class="vehicle-loadout__preview"
+        :class="{ 'vehicle-loadout__preview--inspecting': inspecting }"
+      >
+        <div class="vehicle-loadout__preview-frame">
+          <LoadoutPreview
+            :model-slug="modelSlug"
+            :slots="previewSlots"
+            :interactive="inspecting"
+            variant="backdrop"
+            test-id="vehicle-loadout-preview"
+            @available="previewShown = $event"
+          />
+        </div>
+      </div>
+
       <aside
         v-show="!linking"
         class="vehicle-loadout__ship"
         data-test="vehicle-loadout-ship"
       >
-        <p class="vehicle-loadout__model">
-          <!-- eslint-disable-next-line vue/no-v-html -->
-          <span v-html="vehicle.model.manufacturer?.name" />
-          <strong>{{ vehicle.model.name }}</strong>
-        </p>
-        <LoadoutMetrics
-          v-if="tabMetrics"
-          v-bind="tabMetrics"
-          class="vehicle-loadout__card"
-        />
+        <div class="vehicle-loadout__ship-header">
+          <p class="vehicle-loadout__model">
+            <!-- eslint-disable-next-line vue/no-v-html -->
+            <span v-html="vehicle.model.manufacturer?.name" />
+            <strong>{{ vehicle.model.name }}</strong>
+          </p>
+          <Btn
+            variant="bare"
+            :aria-label="figuresToggleLabel"
+            v-tooltip="figuresToggleLabel"
+            :aria-expanded="!inspecting"
+            data-test="vehicle-loadout-inspect"
+            @click="inspecting = !inspecting"
+          >
+            <i
+              :class="
+                inspecting ? 'fa-solid fa-caret-down' : 'fa-solid fa-caret-up'
+              "
+            />
+          </Btn>
+        </div>
 
-        <LoadoutChanges
-          v-if="changedFigures.length"
-          :title="t('labels.loadoutPicker.changed')"
-          :figures="changedFigures"
-          test-id="vehicle-loadout-changes"
-        />
+        <Collapsed
+          :visible="!inspecting"
+          class="vehicle-loadout__figures-collapse"
+        >
+          <div class="vehicle-loadout__figures-list">
+            <LoadoutMetrics
+              v-if="tabMetrics"
+              v-bind="tabMetrics"
+              class="vehicle-loadout__card"
+            />
 
-        <LoadoutChanges
-          v-if="changesFromStock.length"
-          :title="t('labels.vehicleLoadout.againstStock')"
-          :figures="changesFromStock"
-          test-id="vehicle-loadout-changes-from-stock"
-        />
+            <LoadoutChanges
+              v-if="changedFigures.length"
+              :title="t('labels.loadoutPicker.changed')"
+              :figures="changedFigures"
+              test-id="vehicle-loadout-changes"
+            />
+
+            <LoadoutChanges
+              v-if="changesFromStock.length"
+              :title="t('labels.vehicleLoadout.againstStock')"
+              :figures="changesFromStock"
+              test-id="vehicle-loadout-changes-from-stock"
+            />
+          </div>
+        </Collapsed>
       </aside>
 
       <div class="vehicle-loadout__panel">
@@ -1477,6 +1579,7 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
 
         <Alert
           v-if="refusedItems.length"
+          class="vehicle-loadout__refused-alert"
           :variant="AlertVariantsEnum.WARNING"
           :size="AlertSizesEnum.COMPACT"
           :title="t('labels.vehicleLoadout.refused.title')"
@@ -1627,6 +1730,8 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
                       v-if="componentTabs[tab.id].groups.length"
                       class="vehicle-loadout__sockets"
                       :data-test="`vehicle-loadout-${tab.id}`"
+                      @pointerover="onSocketsPointerOver($event, tab.id)"
+                      @pointerleave="pointedSocket = undefined"
                     >
                       <SocketBoard
                         :active="

@@ -16142,6 +16142,34 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/models/{slug}/loadout-preview":
+    parameters:
+    - name: slug
+      in: path
+      schema:
+        type: string
+      description: Model slug
+      required: true
+    get:
+      summary: Model Loadout Preview
+      tags:
+      - Models
+      operationId: modelLoadoutPreview
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ModelLoadoutPreview"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/models/{slug}/loadout-slots":
     parameters:
     - name: slug
@@ -26863,6 +26891,7 @@ components:
       - holo_textured
       - homepage_redesign
       - loadout_editor
+      - loadout_preview
       - oauth-applications
       - oauth-bluesky
       - oauth-citizenid
@@ -26889,6 +26918,7 @@ components:
       - HOLO_TEXTURED
       - HOMEPAGE_REDESIGN
       - LOADOUT_EDITOR
+      - LOADOUT_PREVIEW
       - OAUTH_APPLICATIONS
       - OAUTH_BLUESKY
       - OAUTH_CITIZENID
@@ -37919,6 +37949,13 @@ components:
           type: string
           description: The store image, or the angled render where there is none,
             small
+        scKey:
+          type:
+          - string
+          - 'null'
+        holoUrl:
+          type: string
+          description: The part's holo, with its origin on the port it mounts on
       additionalProperties: false
       required:
       - id
@@ -40005,6 +40042,114 @@ components:
           type: string
       additionalProperties: false
       title: ModelLinks
+    ModelLoadoutPreview:
+      type: object
+      properties:
+        holoHull:
+          "$ref": "#/components/schemas/MediaFile"
+        ports:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelLoadoutPreviewPort"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelLoadoutPreviewItem"
+          description: The holos of the parts the hull leaves out that its ports mount
+            by default
+      additionalProperties: false
+      required:
+      - ports
+      - items
+      title: ModelLoadoutPreview
+    ModelLoadoutPreviewItem:
+      type: object
+      properties:
+        scKey:
+          type: string
+        holoUrl:
+          type: string
+      additionalProperties: false
+      required:
+      - scKey
+      - holoUrl
+      title: ModelLoadoutPreviewItem
+    ModelLoadoutPreviewPort:
+      type: object
+      properties:
+        name:
+          type: string
+        parent:
+          type:
+          - string
+          - 'null'
+        helper:
+          type: boolean
+          description: False when the model has no node for the port, which then sits
+            at the entity origin
+        position:
+          type: array
+          items:
+            type: number
+          minItems: 3
+          maxItems: 3
+        rotation:
+          type: array
+          items:
+            type: number
+          minItems: 4
+          maxItems: 4
+          description: Quaternion x, y, z, w
+        flags:
+          type: string
+        editable:
+          type: boolean
+        types:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ModelLoadoutPreviewPortType"
+        defaultItem:
+          type:
+          - string
+          - 'null'
+          description: scKey of the item mounted in the default loadout
+        geometry:
+          type: boolean
+          description: False when the default item is drawn in neither holo
+        stripped:
+          type: boolean
+          description: The default item is left out of the hull holo
+        inParentHolo:
+          type: boolean
+          description: The default item is part of its parent item and drawn by the
+            parent's holo
+      additionalProperties: false
+      required:
+      - name
+      - parent
+      - helper
+      - position
+      - rotation
+      - flags
+      - editable
+      - types
+      - defaultItem
+      - geometry
+      - stripped
+      - inParentHolo
+      title: ModelLoadoutPreviewPort
+    ModelLoadoutPreviewPortType:
+      type: object
+      properties:
+        type:
+          type: string
+        subTypes:
+          type: string
+      additionalProperties: false
+      required:
+      - type
+      - subTypes
+      title: ModelLoadoutPreviewPortType
     ModelLoaner:
       type: object
       properties:

@@ -6,11 +6,11 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { useLoader, useLoop } from "@tresjs/core";
+import { useLoader, useLoop, useTres } from "@tresjs/core";
 import {
   AnimationMixer,
   type Material,
-  type Mesh,
+  type Object3D,
   type Texture,
   DoubleSide,
   FrontSide,
@@ -18,12 +18,27 @@ import {
   Vector3,
   type Group,
   type AnimationClip,
+  Mesh,
+  MeshBasicMaterial,
+  Color,
+  type BufferGeometry,
+  EdgesGeometry,
+  LineBasicMaterial,
+  LineSegments,
   MeshPhongMaterial,
   MeshLambertMaterial,
   DefaultLoadingManager,
 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { sharedDracoLoader } from "../dracoLoader";
+import {
+  applyHighlights,
+  buildMounts,
+  mountsHighlightKey,
+  mountsLayoutKey,
+  releaseMountCache,
+  retainMountCache,
+} from "../mounts";
 import { type HoloModel } from "../index.vue";
 
 type Props = {
@@ -33,6 +48,8 @@ type Props = {
   mobile?: boolean;
   offsetModel?: HoloModel;
   windowColor?: string;
+  // See-through, with the mesh's wireframe drawn over it.
+  hologram?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -41,6 +58,7 @@ const props = withDefaults(defineProps<Props>(), {
   mobile: false,
   offsetModel: undefined,
   windowColor: "#1d3d59",
+  hologram: false,
 });
 
 // One pair for the whole holo, made once: a colour change recolours them
@@ -49,11 +67,52 @@ const props = withDefaults(defineProps<Props>(), {
 const side = props.mobile ? FrontSide : DoubleSide;
 const MaterialClass = props.mobile ? MeshLambertMaterial : MeshPhongMaterial;
 
+// A hologram does not hide what is behind it, so it writes no depth: the far
+// side of the hull shows through the near one.
+const hologramLook = props.hologram
+  ? { transparent: true, opacity: 0.35, depthWrite: false }
+  : {};
+
 const material = new MaterialClass({
   color: props.color,
   side,
+  ...hologramLook,
 });
 
+// A part the viewer has picked out, in the gold the grid's sections use.
+const HIGHLIGHT_COLOR = new Color("#fbb03b");
+
+// The hologram's mesh lines: only the edges where the surface turns, not every
+// triangle -- a hull's few hundred thousand made every frame crawl -- worked
+// out once per geometry and shared by every copy of a part.
+const EDGE_ANGLE = 20;
+const edgesOf = new WeakMap<BufferGeometry, EdgesGeometry>();
+
+// Finding the edges walks every triangle on the main thread: an Ironclad's
+// hull, at nine million points, held the page for good. A mesh that large
+// keeps its see-through body without the lines.
+const EDGE_POINT_LIMIT = 500_000;
+
+const edgesFor = (geometry: BufferGeometry) => {
+  let edges = edgesOf.get(geometry);
+
+  if (!edges) {
+    edges = new EdgesGeometry(geometry, EDGE_ANGLE);
+    edgesOf.set(geometry, edges);
+  }
+
+  return edges;
+};
+
+const WIRE_OPACITY = 0.35;
+const HIGHLIGHT_WIRE_OPACITY = 0.7;
+
+const wireLook = { transparent: true, depthWrite: false };
+const wireMaterial = new LineBasicMaterial({
+  color: props.color,
+  opacity: WIRE_OPACITY,
+  ...wireLook,
+});
 const windowMaterial = new MaterialClass({
   color: props.windowColor,
   opacity: 0.8,
@@ -67,7 +126,13 @@ const windowRefs = ["window", "glass"];
 // nothing else holds them.
 const disposeOriginal = (original: Material | Material[]) => {
   for (const entry of Array.isArray(original) ? original : [original]) {
-    if (entry === material || entry === windowMaterial) continue;
+    if (
+      entry === material ||
+      entry === windowMaterial ||
+      entry === wireMaterial
+    ) {
+      continue;
+    }
 
     for (const value of Object.values(entry)) {
       if ((value as Texture | null)?.isTexture) (value as Texture).dispose();
@@ -77,28 +142,187 @@ const disposeOriginal = (original: Material | Material[]) => {
   }
 };
 
+const highlighted = (node: Object3D) => {
+  for (let current: Object3D | null = node; current; current = current.parent) {
+    if (current.userData.highlighted) return true;
+  }
+
+  return false;
+};
+
+// A mounted part's own pair of materials, eased between the holo's colour and
+// the highlight: `glow` runs from 0 to 1 and follows `target`.
+type Fading = {
+  mesh: Mesh;
+  body: Material & { color: Color };
+  wire?: LineBasicMaterial;
+  // The glow seen through the hull: coolers and drives sit inside it. Its own
+  // layer, faded with the glow, so the part never jumps behind the hull.
+  overlay: Mesh<Mesh["geometry"], MeshBasicMaterial>;
+  glow: number;
+  target: number;
+};
+
+const fading = new Map<Mesh, Fading>();
+
+// A quarter of a second from one to the other.
+const FADE_PER_SECOND = 4;
+
+const OVERLAY_OPACITY = 0.45;
+
+const applyGlow = (entry: Fading) => {
+  // Eased at both ends rather than run at a constant rate.
+  const glow = entry.glow * entry.glow * (3 - 2 * entry.glow);
+
+  entry.body.color.copy(material.color).lerp(HIGHLIGHT_COLOR, glow);
+
+  entry.overlay.material.opacity = OVERLAY_OPACITY * glow;
+  entry.overlay.visible = glow > 0;
+
+  if (entry.wire) {
+    entry.wire.color.copy(wireMaterial.color).lerp(HIGHLIGHT_COLOR, glow);
+    entry.wire.opacity =
+      WIRE_OPACITY + (HIGHLIGHT_WIRE_OPACITY - WIRE_OPACITY) * glow;
+  }
+};
+
+const disposeFading = (root: Object3D) => {
+  root.traverse((node) => {
+    const entry = fading.get(node as Mesh);
+    if (!entry) return;
+
+    entry.body.dispose();
+    entry.wire?.dispose();
+    entry.overlay.material.dispose();
+    fading.delete(entry.mesh);
+  });
+};
+
+const withinMounts = (node: Object3D) => {
+  for (let current: Object3D | null = node; current; current = current.parent) {
+    if (current === mountRoot) return true;
+  }
+
+  return false;
+};
+
+const wireOf = (body: Mesh) =>
+  body.children.find((child) => child.userData.wire) as
+    LineSegments<EdgesGeometry, LineBasicMaterial> | undefined;
+
+const overlayFor = (body: Mesh) => {
+  const overlay = new Mesh(
+    body.geometry,
+    new MeshBasicMaterial({
+      color: HIGHLIGHT_COLOR,
+      transparent: true,
+      opacity: 0,
+      depthTest: false,
+      depthWrite: false,
+      side,
+    }),
+  );
+  // Marked so a later walk leaves it alone.
+  overlay.userData.overlay = true;
+  overlay.renderOrder = 1;
+  overlay.visible = false;
+  body.add(overlay);
+
+  return overlay;
+};
+
+// Run again after the highlights change, so it only ever swaps in its own
+// materials: a mounted part's originals belong to the holo cache.
 const setMaterials = (scene: Group) => {
+  const bodies: Mesh[] = [];
+
   scene.traverse((node) => {
     const mesh = node as Mesh;
 
-    if (!mesh.isMesh) return;
+    if (!mesh.isMesh || mesh.userData.wire || mesh.userData.overlay) return;
 
-    disposeOriginal(mesh.material);
+    if (!mesh.userData.shared) disposeOriginal(mesh.material);
 
-    mesh.material = windowRefs.some((item) =>
-      node.name.toLowerCase().includes(item),
-    )
-      ? windowMaterial
-      : material;
+    if (windowRefs.some((item) => node.name.toLowerCase().includes(item))) {
+      mesh.material = windowMaterial;
+    } else {
+      bodies.push(mesh);
+    }
   });
+
+  for (const body of bodies) {
+    const own = withinMounts(body);
+
+    const lined =
+      props.hologram &&
+      (body.geometry.getAttribute("position")?.count ?? 0) <= EDGE_POINT_LIMIT;
+
+    if (lined && !wireOf(body)) {
+      const wire = new LineSegments(edgesFor(body.geometry), wireMaterial);
+      wire.userData.wire = true;
+      body.add(wire);
+    }
+
+    if (!own) {
+      body.material = material;
+      continue;
+    }
+
+    let entry = fading.get(body);
+    const target = highlighted(body) ? 1 : 0;
+
+    if (!entry) {
+      // A part built with its highlight already on shows it at once.
+      entry = {
+        mesh: body,
+        body: material.clone() as Fading["body"],
+        wire: props.hologram ? wireMaterial.clone() : undefined,
+        overlay: overlayFor(body),
+        glow: target,
+        target,
+      };
+      fading.set(body, entry);
+      applyGlow(entry);
+    }
+
+    entry.target = target;
+    body.material = entry.body;
+
+    const wire = wireOf(body);
+    if (wire && entry.wire) wire.material = entry.wire;
+  }
+
+  invalidate();
 };
 
 const mixer = shallowRef<AnimationMixer>();
 
 const { onBeforeRender } = useLoop();
 
+// A viewer drawing on demand draws a frame only when asked: for every change
+// made here, and each step of a fade until it is done.
+const { invalidate } = useTres();
+
 onBeforeRender(({ delta }) => {
   mixer.value?.update(delta);
+
+  let moving = false;
+
+  for (const entry of fading.values()) {
+    if (entry.glow === entry.target) continue;
+
+    // Capped: drawing on demand, the first frame after a pause reports the
+    // whole pause as its delta, and the fade would end in one step.
+    const step = Math.min(delta, 1 / 30) * FADE_PER_SECOND;
+    entry.glow =
+      entry.target > entry.glow
+        ? Math.min(entry.target, entry.glow + step)
+        : Math.max(entry.target, entry.glow - step);
+    applyGlow(entry);
+    moving = true;
+  }
+
+  if (moving) invalidate();
 });
 
 const playAnimations = (scene: Group, animations: AnimationClip[]) => {
@@ -118,10 +342,15 @@ const playAnimations = (scene: Group, animations: AnimationClip[]) => {
   mixer.value.update(0);
 };
 
+retainMountCache();
+
 onUnmounted(() => {
+  releaseMountCache();
   mixer.value?.stopAllAction();
   material.dispose();
   windowMaterial.dispose();
+  wireMaterial.dispose();
+  if (mountRoot) disposeFading(mountRoot);
 });
 
 const emit = defineEmits(["loaded", "error", "progress"]);
@@ -142,6 +371,38 @@ const { state } = useLoader(GLTFLoader, props.model.path, {
     }
   },
 });
+
+// The parts on the holo's ports, in the export's frame: added after the hull is
+// centred, so the camera frames the ship alike whatever it carries, and
+// replaced in place when the fitting changes.
+let mountRoot: Group | undefined;
+
+// Two quick swaps load in parallel; only the latest may land.
+let mountsRequest = 0;
+
+const attachMounts = async (scene: Group) => {
+  const request = ++mountsRequest;
+  const mounts = props.model.mounts;
+  const next = mounts?.length ? await buildMounts(mounts) : undefined;
+
+  if (request !== mountsRequest) return;
+
+  if (mountRoot) {
+    scene.remove(mountRoot);
+    disposeFading(mountRoot);
+  }
+  mountRoot = next;
+
+  if (next) {
+    // Built from the mounts as they were asked for; a highlight may have moved
+    // while the parts loaded.
+    applyHighlights(next, props.model.mounts ?? []);
+    scene.add(next);
+    setMaterials(next);
+  }
+
+  invalidate();
+};
 
 const setup = (scene: Group, animations: AnimationClip[]) => {
   if (props.model.textured) {
@@ -169,6 +430,8 @@ const setup = (scene: Group, animations: AnimationClip[]) => {
   }
 
   emit("loaded", size, scene);
+
+  void attachMounts(scene);
 };
 
 watch(
@@ -180,10 +443,31 @@ watch(
   },
 );
 
+// By content: a fitting recomputed into an equal tree is not a swap.
+watch(
+  () => mountsLayoutKey(props.model.mounts),
+  () => {
+    if (state.value) void attachMounts(state.value.scene);
+  },
+);
+
+// A highlight only repaints the parts already there.
+watch(
+  () => mountsHighlightKey(props.model.mounts),
+  () => {
+    if (!mountRoot) return;
+
+    applyHighlights(mountRoot, props.model.mounts ?? []);
+    setMaterials(mountRoot);
+  },
+);
+
 watch(
   () => props.color,
   (color) => {
     material.color.set(color);
+    wireMaterial.color.set(color);
+    fading.forEach(applyGlow);
   },
 );
 </script>

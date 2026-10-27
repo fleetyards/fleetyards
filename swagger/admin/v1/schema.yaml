@@ -10871,6 +10871,8 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         brochure:
           "$ref": "#/components/schemas/MediaFile"
+        holoHull:
+          "$ref": "#/components/schemas/MediaFile"
         rsiStoreImage:
           "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
@@ -21331,6 +21333,10 @@ components:
           - string
           - 'null'
         holoTextured:
+          type:
+          - string
+          - 'null'
+        holoHull:
           type:
           - string
           - 'null'

@@ -16,6 +16,12 @@ module ScData
     PATH = "crusader/ares-inferno"
     PNG = Rails.root.join("test/fixtures/files/test.png").binread
     HOLO = Rails.root.join("test/fixtures/holo/plain.gltf").binread
+    HARDPOINTS = {
+      entity: "AEGS_Gladius", state: "flight", frame: "gltf-y-up", units: "m",
+      ports: [{name: "hardpoint_gun_nose", parent: nil, helper: true, position: [0.0, -1.17, -10.59], rotation: [0, 0, 0, 1],
+               flags: "editable", editable: true, types: [{type: "WeaponGun", subTypes: "Gun"}],
+               defaultItem: "mount_gimbal_s3", stripped: true}]
+    }.to_json
 
     setup do
       Sidekiq::Worker.clear_all
@@ -255,6 +261,58 @@ module ScData
       assert @model.front_view.attached?
       assert_nil @model.ship_views_digest
       assert_nil @model.ship_view_md5s["top_view"]
+    end
+
+    test "attaches the flight hull holo and stores the hardpoint transforms" do
+      publish({"flight_holo_hull.glb" => HOLO, "landed_holo_hull.glb" => HOLO, "flight_hardpoints.json" => HARDPOINTS})
+
+      perform
+
+      assert @model.holo_hull.attached?
+      assert_not @model.landed_holo.attached?
+      assert_equal JSON.parse(HARDPOINTS), @model.hardpoint_transforms
+      assert_equal Digest::MD5.hexdigest(HARDPOINTS), @model.ship_view_md5s["hardpoint_transforms"]
+      assert_equal "listing-1", @model.ship_views_digest
+      assert_empty MeasureHoloJob.jobs
+    end
+
+    test "does not fetch hardpoint transforms it stored before" do
+      @model.update!(hardpoint_transforms: JSON.parse(HARDPOINTS), ship_view_md5s: {"hardpoint_transforms" => Digest::MD5.hexdigest(HARDPOINTS)})
+      publish({"flight_hardpoints.json" => HARDPOINTS})
+
+      perform(@model.id)
+
+      assert_equal ["index.json", "files.json"], fetched.map { |key| File.basename(key) }
+    end
+
+    test "replaces hardpoint transforms that changed" do
+      @model.update!(hardpoint_transforms: {"ports" => []}, ship_view_md5s: {"hardpoint_transforms" => "old"})
+      publish({"flight_hardpoints.json" => HARDPOINTS})
+
+      perform
+
+      assert_equal "hardpoint_gun_nose", @model.hardpoint_transforms["ports"].first["name"]
+    end
+
+    test "keeps the rest of a ship when the hardpoint transforms cannot be read" do
+      publish({"flight_front.png" => PNG, "flight_hardpoints.json" => "{\"entity\": \"AEGS_Gladius\"}"})
+
+      perform
+
+      assert @model.front_view.attached?
+      assert_nil @model.hardpoint_transforms
+      assert_nil @model.ship_view_md5s["hardpoint_transforms"]
+      assert_nil @model.ship_views_digest
+    end
+
+    test "keeps the stored hardpoint transforms when a port is malformed" do
+      @model.update!(hardpoint_transforms: JSON.parse(HARDPOINTS))
+      publish({"flight_hardpoints.json" => {ports: [{name: "hardpoint_gun_nose", position: [0, 0]}]}.to_json})
+
+      perform
+
+      assert_equal JSON.parse(HARDPOINTS), @model.hardpoint_transforms
+      assert_nil @model.ship_views_digest
     end
 
     test "records nothing when the upload fails" do

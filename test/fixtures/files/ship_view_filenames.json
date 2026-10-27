@@ -69,6 +69,16 @@
     }
   },
   {
+    "name": "maps the hull holo of the flight state alone",
+    "cases": {
+      "flight_holo_hull.glb": "holoHull",
+      "holo-hull.glb": "holoHull",
+      "landed_holo_hull.glb": null,
+      "extended_holo_hull.glb": null,
+      "flight_hardpoints.json": null
+    }
+  },
+  {
     "name": "leaves the rest of a 3D export alone",
     "cases": {
       "holo.blend": null,

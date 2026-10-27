@@ -1292,6 +1292,7 @@
         "extendedHoloLite": "展开轻量全息图",
         "landedHoloLite": "着陆轻量全息图",
         "holoTextured": "纹理全息图",
+        "holoHull": "船体全息图",
         "state": {
           "flight": "飞行中",
           "extended": "展开",

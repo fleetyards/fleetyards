@@ -628,7 +628,9 @@
         "makePrivate": "設為私密",
         "linkInstead": "改為連結配置",
         "createOnFleetyards": "在 Fleetyards 上建立配置",
-        "viewLoadout": "查看配置"
+        "viewLoadout": "查看配置",
+        "hideFigures": "隱藏數值",
+        "showFigures": "顯示數值"
       },
       "hangarPledgeItems": {
         "addToInventory": "加入庫存",

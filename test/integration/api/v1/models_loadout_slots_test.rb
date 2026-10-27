@@ -27,7 +27,8 @@ class Api::V1::ModelsLoadoutSlotsTest < ActionDispatch::IntegrationTest
 
   setup do
     @model = create(:model)
-    @gun = create(:component, name: "Stock Gun", component_type: "WeaponGun", category: "weapons", size: "3")
+    @gun = create(:component, name: "Stock Gun", component_type: "WeaponGun", category: "weapons", size: "3", sc_key: "stock_gun_s3")
+    @gun.holo.attach(io: File.open(Rails.root.join("test/fixtures/holo/plain.glb")), filename: "holo.glb")
     mount = create(:component, name: "Stock Mount", component_type: "Turret", category: "weapon_mounts", size: "3")
     create(:hardpoint, parent: mount, sc_name: "hardpoint_class_2", source: :game_files,
       types: ["WeaponGun"], min_size: 2, max_size: 3)
@@ -51,6 +52,9 @@ class Api::V1::ModelsLoadoutSlotsTest < ActionDispatch::IntegrationTest
       assert_equal ["WeaponGun"], gun_port["types"]
       assert_equal [2, 3], [gun_port["minSize"], gun_port["maxSize"]]
       assert_equal "Stock Gun", gun_port.dig("stock", "name")
+      assert_equal "stock_gun_s3", gun_port.dig("stock", "scKey")
+      assert_match(/holo\.glb/, gun_port.dig("stock", "holoUrl"))
+      assert_not nose["stock"].key?("holoUrl")
       assert gun_port["editable"]
     end
   end

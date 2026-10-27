@@ -9,7 +9,7 @@ export default {
 import Loader from "@/shared/components/Loader/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { type Camera, type Mesh, type Object3D, type Vector3 } from "three";
+import { type Camera, type Mesh, type Object3D, Vector3 } from "three";
 import { useI18n } from "@/shared/composables/useI18n";
 
 import { TresCanvas } from "@tresjs/core";
@@ -19,6 +19,7 @@ import Model from "./Model/index.vue";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useLowPowerDevice } from "@/shared/composables/useLowPowerDevice";
 import { LOW_POWER_HOLO_SIZE_LIMIT } from "@/shared/components/HoloViewer/limits";
+import { type HoloMount } from "@/shared/components/HoloViewer/mounts";
 
 export type HoloModel = {
   path: string;
@@ -27,6 +28,8 @@ export type HoloModel = {
   size?: number;
   // Painted and animated: drawn with its own materials, not the holo's.
   textured?: boolean;
+  // Parts drawn on the holo's ports, in its own frame.
+  mounts?: HoloMount[];
 };
 
 type Props = {
@@ -39,9 +42,23 @@ type Props = {
   grid?: boolean;
   zoomable?: boolean;
   panable?: boolean;
-  // Where the camera starts around the model, in degrees from +Z. A ship holo
-  // is exported facing the default; an item's keeps the game's entity frame.
+  // Where the camera starts around the model, in degrees from +Z. Holos keep
+  // the game's entity frame, a ship's nose towards -Z, so the default starts
+  // on its side.
   azimuth?: number;
+  // How far above the model the camera starts, in degrees. Without it the
+  // camera stays low, under a cap that keeps every holo framed alike.
+  elevation?: number;
+  // Framed so the whole model is in view whatever its shape and the frame's:
+  // its bounding sphere fitted to both fields of view, from the elevation's
+  // direction.
+  contain?: boolean;
+  // See-through, with the mesh's wireframe drawn over it.
+  hologram?: boolean;
+  // Drawn only when something changes rather than every frame, for a holo
+  // that mostly stands still. Set once: the renderer cannot switch modes once
+  // it runs.
+  onDemand?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -53,12 +70,17 @@ const props = withDefaults(defineProps<Props>(), {
   grid: false,
   panable: false,
   zoomable: false,
-  azimuth: 0,
+  azimuth: -90,
+  elevation: undefined,
+  contain: false,
+  hologram: false,
+  onDemand: false,
 });
 
 // Nothing will be drawn: no WebGL, or a holo that would not load. A caller with
 // a picture to show instead can switch to it.
-const emit = defineEmits<{ unavailable: [] }>();
+// `loaded` once a model is on screen, for a caller holding a picture until then.
+const emit = defineEmits<{ unavailable: []; loaded: [] }>();
 
 const { displayAlert } = useAppNotifications();
 
@@ -218,9 +240,22 @@ const innerHeight = computed(() => {
 const cameraPosition = ref<[x: number, y: number, z: number]>([100, 100, 100]);
 const lightPosition = ref<[x: number, y: number, z: number]>([100, 100, 100]);
 
+// The renderer's mode, fixed as it mounts: switched while running from on
+// demand to always, it never draws again.
+const renderMode = props.onDemand ? "on-demand" : "always";
+
+const canvas = ref<{
+  context?: { renderer?: { invalidate: () => void } };
+}>();
+
+// The orbit controls move the camera without asking for a frame. Each change
+// asks for the next one, so a drag, its easing out and an auto-rotation all
+// keep drawing, and a camera at rest draws nothing.
 const handleControlsChange = (controls: { object: Camera }) => {
   const { x, y, z } = controls.object.position;
   lightPosition.value = [x, y, z];
+
+  canvas.value?.context?.renderer?.invalidate();
 };
 
 const fitDistance = ref(100);
@@ -264,12 +299,13 @@ const gridFadeDistance = computed(() =>
   Math.max(100, modelMaxDimension.value * 2),
 );
 
-const handleModelLoaded = (size: Vector3, _scene: Mesh) => {
+const handleModelLoaded = (size: Vector3, scene: Mesh) => {
   // if (props.grid) {
   //   currentModel.value = scene;
   // }
 
   loading.value = false;
+  emit("loaded");
 
   // Get canvas aspect ratio
   const aspect = cameraArgs.value[1]; // width / height
@@ -292,18 +328,86 @@ const handleModelLoaded = (size: Vector3, _scene: Mesh) => {
   // Calculate distance using field of view
   const fovRadians = (cameraArgs.value[0] * Math.PI) / 180;
 
+  const azimuth = (props.azimuth * Math.PI) / 180;
+
+  if (props.contain) {
+    // The frame as it is now: the cached aspect is the one it mounted with.
+    const frame = holoViewer.value;
+    const frameAspect =
+      frame && frame.clientHeight ? frame.clientWidth / frame.clientHeight : 1;
+    const elevation = ((props.elevation ?? 0) * Math.PI) / 180;
+    const tanVertical = Math.tan(fovRadians / 2);
+    const tanHorizontal = tanVertical * frameAspect;
+
+    // The camera's axes, looking at the centred model from the pose.
+    const toCamera = new Vector3(
+      Math.sin(azimuth) * Math.cos(elevation),
+      Math.sin(elevation),
+      Math.cos(azimuth) * Math.cos(elevation),
+    );
+    const right = new Vector3(0, 1, 0).cross(toCamera).normalize();
+    const up = toCamera.clone().cross(right);
+
+    // The nearest distance at which every point of the model is still in
+    // frame. Its box would do, but from an angle
+    // the box's far corners stand well clear of the ship itself. A sample of
+    // each mesh's points is enough to find the silhouette's edges.
+    let reach = 0;
+    const point = new Vector3();
+    scene.updateMatrixWorld(true);
+    scene.traverse((node) => {
+      const mesh = node as Mesh;
+      const positions = mesh.isMesh
+        ? mesh.geometry.getAttribute("position")
+        : undefined;
+      if (!positions) return;
+
+      const step = Math.max(1, Math.floor(positions.count / 2000));
+      for (let index = 0; index < positions.count; index += step) {
+        point.fromBufferAttribute(positions, index);
+        point.applyMatrix4(mesh.matrixWorld);
+
+        const depth = point.dot(toCamera);
+        reach = Math.max(
+          reach,
+          depth + Math.abs(point.dot(right)) / tanHorizontal,
+          depth + Math.abs(point.dot(up)) / tanVertical,
+        );
+      }
+    });
+    // Room around it: a frame rarely shows its edges whole, the editor's fades
+    // in from the left under the controls.
+    reach *= 1.35;
+
+    fitDistance.value = reach;
+    modelMaxDimension.value = Math.max(size.x, size.y, size.z);
+
+    const position: [number, number, number] = [
+      Math.sin(azimuth) * Math.cos(elevation) * reach,
+      Math.sin(elevation) * reach,
+      Math.cos(azimuth) * Math.cos(elevation) * reach,
+    ];
+
+    cameraPosition.value = position;
+    lightPosition.value = position;
+
+    return;
+  }
+
   const distance =
     dominantSize / Math.tan(fovRadians / (aspect > 2 ? aspect * 0.75 : aspect));
 
   fitDistance.value = distance;
   modelMaxDimension.value = Math.max(size.x, size.y, size.z);
 
-  const height = Math.min(
-    cameraHeight.value,
-    Math.tan((maxCameraElevation.value * Math.PI) / 180) * distance,
-  );
+  const height =
+    props.elevation === undefined
+      ? Math.min(
+          cameraHeight.value,
+          Math.tan((maxCameraElevation.value * Math.PI) / 180) * distance,
+        )
+      : Math.tan((props.elevation * Math.PI) / 180) * distance;
 
-  const azimuth = (props.azimuth * Math.PI) / 180;
   const position: [number, number, number] = [
     Math.sin(azimuth) * distance,
     height,
@@ -433,6 +537,8 @@ defineExpose({
       :dpr="dpr"
       :power-preference="powerPreference"
       :antialias="!lowPower"
+      ref="canvas"
+      :render-mode="renderMode"
       alpha
       :on-error="handleRenderError"
     >
@@ -481,6 +587,7 @@ defineExpose({
           :color="modelColor"
           :on-grid="grid"
           :mobile="lowPower"
+          :hologram="hologram"
           :offsetModel="models[models.indexOf(model) - 1]"
           @loaded="handleModelLoaded"
           @error="handleModelError"

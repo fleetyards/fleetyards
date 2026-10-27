@@ -2250,9 +2250,10 @@ describe("VehicleLoadoutModal component tabs", () => {
       socket(wrapper, "hardpoint_remote_turret_left#stack").text(),
     ).toContain("2");
 
+    // The gun row of the stack within the stack, not the first turret's own.
     await choose(
       wrapper,
-      "hardpoint_remote_turret_left/turret_left/hardpoint_class_2",
+      "hardpoint_remote_turret_left/turret_left/hardpoint_class_2#stack#stack",
       "Other Gun",
     );
     await save(wrapper);

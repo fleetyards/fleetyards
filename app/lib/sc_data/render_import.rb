@@ -7,11 +7,13 @@ module ScData
   #
   # The including job names the field each file belongs on (`field_for`), the
   # two columns the MD5s and the listing digest are kept in, and the metadata a
-  # new blob starts with (`render_metadata`).
+  # new blob starts with (`render_metadata`). A field that is a column rather
+  # than an attachment takes what `render_data` reads out of the file.
   module RenderImport
     private def import(store, record, path, digest)
       md5s = record.public_send(render_md5s_column).dup
       files = []
+      columns = []
       complete = true
 
       renders(store.listing(path), path).each do |field, name, md5|
@@ -38,15 +40,31 @@ module ScData
           next
         end
 
-        # Uploaded before it is attached. Handed an io, ActiveStorage writes the
-        # blob row in the save and the bytes only in an `after_commit`, so a
-        # worker killed in between leaves an attachment naming a file storage
-        # never received. This way a kill leaves at most an unattached blob.
-        record.public_send(:"#{field}=", ActiveStorage::Blob.create_and_upload!(io: file, filename: name, metadata: render_metadata(record, field)))
+        if attachment?(record, field)
+          # Uploaded before it is attached. Handed an io, ActiveStorage writes
+          # the blob row in the save and the bytes only in an `after_commit`, so
+          # a worker killed in between leaves an attachment naming a file
+          # storage never received. This way a kill leaves at most an
+          # unattached blob.
+          record.public_send(:"#{field}=", ActiveStorage::Blob.create_and_upload!(io: file, filename: name, metadata: render_metadata(record, field)))
+        else
+          begin
+            data = render_data(field, file)
+          rescue JSON::ParserError, ArgumentError => e
+            log(:warn, "#{path}/#{name} could not be read: #{e.class}: #{e.message}")
+            complete = false
+            next
+          end
+
+          # A re-export can change the bytes and not what they say.
+          columns << field if record.public_send(field) != data
+          record.public_send(:"#{field}=", data)
+        end
+
         md5s[field] = md5
       end
 
-      fields = record.attachment_changes.keys
+      fields = record.attachment_changes.keys + columns
 
       # A render that did not come down is fetched again next run.
       record.save!
@@ -83,6 +101,8 @@ module ScData
     # worker killed in between leaves an attachment naming a file storage never
     # received -- and a checksum that would otherwise say it is already here.
     private def stored?(record, field)
+      return !record.public_send(field).nil? unless attachment?(record, field)
+
       blob = record.public_send(field).blob
 
       blob.present? && blob.service.exist?(blob.key)
@@ -90,9 +110,15 @@ module ScData
 
     # ActiveStorage keeps the same MD5, base64-encoded.
     private def current_checksum(record, field)
+      return unless attachment?(record, field)
+
       checksum = record.public_send(field).blob&.checksum
 
       checksum&.unpack1("m0")&.unpack1("H*")
+    end
+
+    private def attachment?(record, field)
+      record.class.reflect_on_attachment(field).present?
     end
   end
 end

@@ -13,6 +13,8 @@ json.item_class component.item_class
 json.item_class_label component.item_class_label
 json.type_data component.type_data
 json.craftable craftable_component_ids.include?(component.id)
+json.sc_key component.sc_key
+json.holo_url rails_blob_url(component.holo) if component.holo.attached?
 
 # Only the small picture: a picker lists dozens of these, each needing no more.
 if (image_attr = component.display_image_attr)

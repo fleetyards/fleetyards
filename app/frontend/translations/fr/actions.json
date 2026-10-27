@@ -628,7 +628,9 @@
         "makePrivate": "Rendre privé",
         "linkInstead": "Lier un build à la place",
         "createOnFleetyards": "Créer un loadout sur Fleetyards",
-        "viewLoadout": "Voir l’équipement"
+        "viewLoadout": "Voir l’équipement",
+        "hideFigures": "Masquer les valeurs",
+        "showFigures": "Afficher les valeurs"
       },
       "hangarPledgeItems": {
         "addToInventory": "Ajouter à l'inventaire",
