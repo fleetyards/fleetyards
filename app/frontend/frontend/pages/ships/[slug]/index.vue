@@ -364,6 +364,7 @@ const holoModel = computed(() => {
     size: holo?.size,
     textured,
     paint: (textured && holoPaint.value?.media.holoTexture) || undefined,
+    paintOrm: (textured && holoPaint.value?.media.holoTextureOrm) || undefined,
   };
 });
 

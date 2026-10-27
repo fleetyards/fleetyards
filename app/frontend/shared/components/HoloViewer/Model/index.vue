@@ -29,6 +29,8 @@ import {
   MeshLambertMaterial,
   type MeshStandardMaterial,
   DefaultLoadingManager,
+  type ColorSpace,
+  NoColorSpace,
   SRGBColorSpace,
   TextureLoader,
 } from "three";
@@ -353,7 +355,7 @@ onUnmounted(() => {
   material.dispose();
   windowMaterial.dispose();
   wireMaterial.dispose();
-  paintMap?.dispose();
+  paintMaps.forEach((map) => map.dispose());
   if (mountRoot) disposeFading(mountRoot);
 });
 
@@ -424,40 +426,77 @@ const bodyMaterials = (scene: Group) => {
   return [...materials];
 };
 
-let paintMap: Texture | undefined;
+// The export's own paint, kept to switch back to.
+type OwnPaint = {
+  map: Texture | null;
+  orm: Texture | null;
+  roughness: number;
+  metalness: number;
+};
+
+let paintMaps: Texture[] = [];
 let paintRequest = 0;
+
+const loadPaintMap = (url?: string) =>
+  url
+    ? new TextureLoader().loadAsync(url).catch(() => undefined)
+    : Promise.resolve(undefined);
+
+// Written like the export's own maps, which are in glTF's orientation.
+const preparePaintMap = (
+  map: Texture,
+  like: Texture | null,
+  colorSpace: ColorSpace,
+) => {
+  map.colorSpace = colorSpace;
+  map.flipY = false;
+  if (!like) return;
+
+  map.wrapS = like.wrapS;
+  map.wrapT = like.wrapT;
+  map.anisotropy = like.anisotropy;
+};
 
 const applyPaint = async (scene: Group) => {
   const request = ++paintRequest;
-  const url = props.model.paint;
-  const next = url
-    ? await new TextureLoader().loadAsync(url).catch(() => undefined)
-    : undefined;
+  const [map, loadedOrm] = await Promise.all([
+    loadPaintMap(props.model.paint),
+    loadPaintMap(props.model.paint && props.model.paintOrm),
+  ]);
+
+  // Only with its own base colour: a metal paint's ORM under another paint's
+  // colours would turn the wrong parts to metal.
+  const orm = map ? loadedOrm : undefined;
+  if (!orm) loadedOrm?.dispose();
 
   if (request !== paintRequest) {
-    next?.dispose();
+    map?.dispose();
+    orm?.dispose();
     return;
   }
 
   bodyMaterials(scene).forEach((bodyMaterial) => {
-    const own = (bodyMaterial.userData.ownMap ??=
-      bodyMaterial.map) as Texture | null;
+    const own = (bodyMaterial.userData.ownPaint ??= {
+      map: bodyMaterial.map,
+      orm: bodyMaterial.roughnessMap,
+      roughness: bodyMaterial.roughness,
+      metalness: bodyMaterial.metalness,
+    }) as OwnPaint;
 
-    if (next && own) {
-      // Written like the export's own map, which is in glTF's orientation.
-      next.colorSpace = SRGBColorSpace;
-      next.flipY = false;
-      next.wrapS = own.wrapS;
-      next.wrapT = own.wrapT;
-      next.anisotropy = own.anisotropy;
-    }
+    if (map) preparePaintMap(map, own.map, SRGBColorSpace);
+    if (orm) preparePaintMap(orm, own.map, NoColorSpace);
 
-    bodyMaterial.map = next ?? own;
+    bodyMaterial.map = map ?? own.map;
+    bodyMaterial.roughnessMap = orm ?? own.orm;
+    bodyMaterial.metalnessMap = orm ?? own.orm;
+    // Factors of 1, so the maps alone decide.
+    bodyMaterial.roughness = orm ? 1 : own.roughness;
+    bodyMaterial.metalness = orm ? 1 : own.metalness;
     bodyMaterial.needsUpdate = true;
   });
 
-  paintMap?.dispose();
-  paintMap = next;
+  paintMaps.forEach((paintMap) => paintMap.dispose());
+  paintMaps = [map, orm].filter((paintMap) => paintMap !== undefined);
 
   invalidate();
 };
@@ -522,7 +561,7 @@ watch(
 );
 
 watch(
-  () => props.model.paint,
+  () => [props.model.paint, props.model.paintOrm],
   () => {
     if (state.value && props.model.textured) void applyPaint(state.value.scene);
   },
