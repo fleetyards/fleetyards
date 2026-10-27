@@ -1,0 +1,360 @@
+# frozen_string_literal: true
+
+require "openapi_helper"
+
+class Admin::Api::V1::RafflesTest < ActionDispatch::IntegrationTest
+  include OpenapiRuby::Adapters::Minitest::DSL
+
+  openapi_schema :"admin/v1/schema"
+
+  api_path "/raffles" do
+    post("Create Raffle") do
+      operationId "createRaffle"
+      tags "Raffles"
+      consumes "application/json"
+      produces "application/json"
+
+      request_body required: true, schema: ::Admin::V1::Schemas::Inputs::RaffleInput
+
+      response(200, "successful") do
+        schema ::Admin::V1::Schemas::Raffle
+      end
+
+      response(400, "bad request") do
+        schema ::Shared::V1::Schemas::ValidationError
+      end
+
+      response(403, "forbidden") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
+      response(401, "unauthorized") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+    end
+
+    get("Raffles list") do
+      operationId "raffles"
+      tags "Raffles"
+      produces "application/json"
+
+      parameter "$ref": "#/components/parameters/PageParameter"
+      parameter name: "perPage", in: :query, schema: {type: :string, default: Raffle.default_per_page}, required: false
+      parameter "$ref": "#/components/parameters/SortingParameter"
+      parameter name: "q", in: :query,
+        schema: ::Admin::V1::Schemas::Queries::RaffleQuery,
+        style: :deepObject,
+        explode: true,
+        required: false
+
+      response(200, "successful") do
+        schema ::Admin::V1::Schemas::Raffles
+      end
+
+      response(403, "forbidden") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
+      response(401, "unauthorized") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+    end
+  end
+
+  api_path "/raffles/{id}" do
+    parameter name: "id", in: :path, description: "Raffle id", schema: {type: :string, format: :uuid}
+
+    get("Raffle Detail") do
+      operationId "raffle"
+      tags "Raffles"
+      produces "application/json"
+
+      response(200, "successful") do
+        schema ::Admin::V1::Schemas::Raffle
+      end
+
+      response(404, "not found") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
+      response(403, "forbidden") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
+      response(401, "unauthorized") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+    end
+
+    put("Update Raffle") do
+      operationId "updateRaffle"
+      tags "Raffles"
+      consumes "application/json"
+      produces "application/json"
+
+      request_body required: true, schema: ::Admin::V1::Schemas::Inputs::RaffleInput
+
+      response(200, "successful") do
+        schema ::Admin::V1::Schemas::Raffle
+      end
+
+      response(400, "bad request") do
+        schema ::Shared::V1::Schemas::ValidationError
+      end
+
+      response(404, "not found") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
+      response(403, "forbidden") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
+      response(401, "unauthorized") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+    end
+
+    delete("Destroy Raffle") do
+      operationId "destroyRaffle"
+      tags "Raffles"
+      produces "application/json"
+
+      response(200, "successful") do
+        schema ::Admin::V1::Schemas::Raffle
+      end
+
+      response(400, "bad request") do
+        schema ::Shared::V1::Schemas::ValidationError
+      end
+
+      response(404, "not found") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
+      response(403, "forbidden") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
+      response(401, "unauthorized") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+    end
+  end
+
+  api_path "/raffles/{id}/draw" do
+    parameter name: "id", in: :path, description: "Raffle id", schema: {type: :string, format: :uuid}
+
+    post("Draw Raffle") do
+      operationId "drawRaffle"
+      tags "Raffles"
+      produces "application/json"
+
+      response(200, "successful") do
+        schema ::Admin::V1::Schemas::Raffle
+      end
+
+      response(400, "bad request") do
+        schema ::Shared::V1::Schemas::ValidationError
+      end
+
+      response(404, "not found") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
+      response(403, "forbidden") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+
+      response(401, "unauthorized") do
+        schema ::Shared::V1::Schemas::StandardError
+      end
+    end
+  end
+
+  setup do
+    @admin = create(:admin_user, resource_access: [:raffles])
+  end
+
+  test "POST /raffles creates a raffle without exposing the code" do
+    sign_in @admin
+    model = create(:model)
+
+    body = {title: "Win a Polaris", modelId: model.id, code: "ABCD-EFGH-1234", startsAt: 1.day.from_now.utc.iso8601, endsAt: 8.days.from_now.utc.iso8601, published: true}
+
+    assert_api_response :post, 200, body: do
+      assert_equal "Win a Polaris", parsed_body["title"]
+      assert_equal model.slug, parsed_body.dig("prize", "slug")
+      assert parsed_body["codeSet"]
+      assert_equal 14, parsed_body["claimPeriodDays"]
+      assert_not_includes response.body, "ABCD-EFGH-1234"
+    end
+  end
+
+  test "POST /raffles rejects publishing without a code" do
+    sign_in @admin
+
+    assert_api_response :post, 400, body: {title: "No code", startsAt: 1.day.from_now.utc.iso8601, endsAt: 8.days.from_now.utc.iso8601, published: true}
+  end
+
+  test "POST /raffles returns 401 when not signed in" do
+    assert_api_response :post, 401, body: {title: "Test", startsAt: 1.day.from_now.utc.iso8601, endsAt: 2.days.from_now.utc.iso8601}
+  end
+
+  test "POST /raffles returns 403 for admin without access" do
+    sign_in create(:admin_user, resource_access: [])
+
+    assert_api_response :post, 403, body: {title: "Test", startsAt: 1.day.from_now.utc.iso8601, endsAt: 2.days.from_now.utc.iso8601}
+  end
+
+  test "GET /raffles lists raffles" do
+    create_list(:raffle, 2)
+    sign_in @admin
+
+    assert_api_response :get, 200 do
+      assert_equal 2, parsed_body["items"].count
+    end
+  end
+
+  test "GET /raffles returns 401 when not signed in" do
+    assert_api_response :get, 401
+  end
+
+  test "GET /raffles returns 403 for admin without access" do
+    sign_in create(:admin_user, resource_access: [])
+
+    assert_api_response :get, 403
+  end
+
+  test "GET /raffles/:id shows the current winner" do
+    raffle = create(:raffle, :closed, drawn_at: 1.hour.ago)
+    create(:raffle_entry, :after_close, raffle:, draw_position: 1, won_at: 1.hour.ago, claim_deadline_at: 5.days.from_now)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {id: raffle.id} do
+      assert_equal "drawn", parsed_body["status"]
+      assert_equal 1, parsed_body.dig("currentWinner", "drawPosition")
+    end
+  end
+
+  test "GET /raffles/:id returns 404 for missing id" do
+    sign_in @admin
+
+    assert_api_response :get, 404, path_params: {id: SecureRandom.uuid}
+  end
+
+  test "GET /raffles/:id returns 401 when not signed in" do
+    assert_api_response :get, 401, path_params: {id: create(:raffle).id}
+  end
+
+  test "GET /raffles/:id returns 403 for admin without access" do
+    sign_in create(:admin_user, resource_access: [])
+
+    assert_api_response :get, 403, path_params: {id: create(:raffle).id}
+  end
+
+  test "PUT /raffles/:id keeps the code when it is left out" do
+    raffle = create(:raffle, code: "KEEP-ME")
+    sign_in @admin
+
+    assert_api_response :put, 200, path_params: {id: raffle.id}, body: {title: "Renamed", startsAt: raffle.starts_at.utc.iso8601, endsAt: raffle.ends_at.utc.iso8601} do
+      assert_equal "Renamed", parsed_body["title"]
+    end
+
+    assert_equal "KEEP-ME", raffle.reload.code
+  end
+
+  test "PUT /raffles/:id refuses to change the code after the draw" do
+    raffle = create(:raffle, :closed, drawn_at: 1.hour.ago)
+    sign_in @admin
+
+    assert_api_response :put, 400, path_params: {id: raffle.id}, body: {title: raffle.title, code: "OTHER", startsAt: raffle.starts_at.utc.iso8601, endsAt: raffle.ends_at.utc.iso8601}
+  end
+
+  test "PUT /raffles/:id returns 404 for missing id" do
+    sign_in @admin
+
+    assert_api_response :put, 404, path_params: {id: SecureRandom.uuid}, body: {title: "Test", startsAt: 1.day.from_now.utc.iso8601, endsAt: 2.days.from_now.utc.iso8601}
+  end
+
+  test "PUT /raffles/:id returns 401 when not signed in" do
+    assert_api_response :put, 401, path_params: {id: create(:raffle).id}, body: {title: "Test", startsAt: 1.day.from_now.utc.iso8601, endsAt: 2.days.from_now.utc.iso8601}
+  end
+
+  test "PUT /raffles/:id returns 403 for admin without access" do
+    sign_in create(:admin_user, resource_access: [])
+
+    assert_api_response :put, 403, path_params: {id: create(:raffle).id}, body: {title: "Test", startsAt: 1.day.from_now.utc.iso8601, endsAt: 2.days.from_now.utc.iso8601}
+  end
+
+  test "DELETE /raffles/:id destroys a raffle not drawn yet" do
+    raffle = create(:raffle)
+    sign_in @admin
+
+    assert_api_response :delete, 200, path_params: {id: raffle.id}
+
+    assert_not Raffle.exists?(raffle.id)
+  end
+
+  test "DELETE /raffles/:id keeps a drawn raffle" do
+    raffle = create(:raffle, :closed, drawn_at: 1.hour.ago)
+    sign_in @admin
+
+    assert_api_response :delete, 400, path_params: {id: raffle.id}
+
+    assert Raffle.exists?(raffle.id)
+  end
+
+  test "DELETE /raffles/:id returns 404 for missing id" do
+    sign_in @admin
+
+    assert_api_response :delete, 404, path_params: {id: SecureRandom.uuid}
+  end
+
+  test "DELETE /raffles/:id returns 401 when not signed in" do
+    assert_api_response :delete, 401, path_params: {id: create(:raffle).id}
+  end
+
+  test "DELETE /raffles/:id returns 403 for admin without access" do
+    sign_in create(:admin_user, resource_access: [])
+
+    assert_api_response :delete, 403, path_params: {id: create(:raffle).id}
+  end
+
+  test "POST /raffles/:id/draw draws a winner" do
+    raffle = create(:raffle)
+    create_list(:raffle_entry, 2, raffle:)
+    raffle.update_columns(starts_at: 10.days.ago, ends_at: 1.day.ago)
+    sign_in @admin
+
+    assert_api_response :post, 200, path_params: {id: raffle.id} do
+      assert_equal "drawn", parsed_body["status"]
+      assert_equal @admin.username, parsed_body["drawnBy"]
+      assert_equal 1, parsed_body.dig("currentWinner", "drawPosition")
+    end
+  end
+
+  test "POST /raffles/:id/draw refuses an open raffle" do
+    raffle = create(:raffle)
+    create(:raffle_entry, raffle:)
+    sign_in @admin
+
+    assert_api_response :post, 400, path_params: {id: raffle.id}
+  end
+
+  test "POST /raffles/:id/draw returns 404 for missing id" do
+    sign_in @admin
+
+    assert_api_response :post, 404, path_params: {id: SecureRandom.uuid}
+  end
+
+  test "POST /raffles/:id/draw returns 401 when not signed in" do
+    assert_api_response :post, 401, path_params: {id: create(:raffle, :closed).id}
+  end
+
+  test "POST /raffles/:id/draw returns 403 for admin without access" do
+    sign_in create(:admin_user, resource_access: [])
+
+    assert_api_response :post, 403, path_params: {id: create(:raffle, :closed).id}
+  end
+end
