@@ -392,6 +392,81 @@ module ScData
       assert_equal ["ship-views/index.json"], @client.api_requests.map { |request| request[:params][:key] }
     end
 
+    private def publish_paints(paints, maps)
+      publish({"flight_textured.json" => {paints:}.to_json, **maps})
+    end
+
+    test "puts a palette's map on the paint its item is linked to" do
+      component = create(:component, category: "paints", sc_key: "paint_gladius_fleetweek_blue_gold", name: "")
+      paint = create(:model_paint, model: @model, name: "Invictus Blue and Gold", component:)
+      publish_paints(
+        {"gladius-fw-blue-gold" => {palette: "palette/gladius_fw_blue_gold", items: ["paint_gladius_fleetweek_blue_gold"], base: "flight_textured_gladius-fw-blue-gold.webp"}},
+        {"flight_textured_gladius-fw-blue-gold.webp" => PNG}
+      )
+
+      perform
+
+      assert_equal "flight_textured_gladius-fw-blue-gold.webp", paint.reload.holo_texture.filename.to_s
+      assert_equal "listing-1", @model.ship_views_digest
+    end
+
+    test "finds the variant's paint by the name of the one linked on the base ship" do
+      component = create(:component, category: "paints", sc_key: "paint_gladius_blue_turquoise", name: "Gladius Foundation Guide Livery")
+      create(:model_paint, name: "Foundation Guide", component:)
+      paint = create(:model_paint, model: @model, name: "Foundation Guide")
+      publish_paints(
+        {"gladius-blue-turquoise" => {name: "Gladius Foundation Guide Livery", base: "flight_textured_gladius-blue-turquoise.webp"}},
+        {"flight_textured_gladius-blue-turquoise.webp" => PNG}
+      )
+
+      perform
+
+      assert paint.reload.holo_texture.attached?
+    end
+
+    test "leaves a palette alone that matches no paint" do
+      paint = create(:model_paint, model: @model, name: "Timberline")
+      publish_paints(
+        {"gladius-fw-green-orange" => {name: "", base: "flight_textured_gladius-fw-green-orange.webp"}},
+        {"flight_textured_gladius-fw-green-orange.webp" => PNG}
+      )
+
+      perform
+
+      assert_not paint.reload.holo_texture.attached?
+      assert_not_includes fetched, "flight_textured_gladius-fw-green-orange.webp"
+      assert_equal "listing-1", @model.ship_views_digest
+    end
+
+    test "does not fetch a paint map it attached before" do
+      component = create(:component, category: "paints", sc_key: "paint_gladius_pirate")
+      paint = create(:model_paint, model: @model, component:)
+      paint.holo_texture.attach(io: StringIO.new(PNG), filename: "flight_textured_gladiuspirate.webp")
+      publish_paints(
+        {"gladiuspirate" => {items: ["paint_gladius_pirate"], base: "flight_textured_gladiuspirate.webp"}},
+        {"flight_textured_gladiuspirate.webp" => PNG}
+      )
+
+      perform
+
+      assert_equal ["index.json", "files.json", "flight_textured.json"], fetched.map { |key| File.basename(key) }
+    end
+
+    test "tries the ship again when a paint map does not match its md5" do
+      component = create(:component, category: "paints", sc_key: "paint_gladius_pirate")
+      paint = create(:model_paint, model: @model, component:)
+      publish_paints(
+        {"gladiuspirate" => {items: ["paint_gladius_pirate"], base: "flight_textured_gladiuspirate.webp"}},
+        {"flight_textured_gladiuspirate.webp" => PNG}
+      )
+      @objects["#{PATH}/flight_textured_gladiuspirate.webp"] = "truncated"
+
+      perform
+
+      assert_not paint.reload.holo_texture.attached?
+      assert_nil @model.ship_views_digest
+    end
+
     test "does nothing without a bucket" do
       ::ScData::ShipViewsStore.stubs(:configured?).returns(false)
       ::ScData::ShipViewsStore.expects(:new).never

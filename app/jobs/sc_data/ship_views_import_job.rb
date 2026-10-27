@@ -58,8 +58,14 @@ module ScData
 
         next if model_id.nil? && model.ship_views_digest == entry["files"]
 
-        fields = import(store, model, path, entry["files"])
+        listing = store.listing(path)
+        fields = import(store, model, path, entry["files"], listing:)
         attached[model.slug] = fields if fields.any?
+
+        # A paint map that did not come down is fetched again next run.
+        unless textured_paints(store).call(model, path, listing.fetch("files", {}))
+          model.update_columns(ship_views_digest: nil)
+        end
       rescue => e
         # Left on the old digest, so the next run tries the ship again.
         log(:error, "#{path} failed: #{e.class}: #{e.message}")
@@ -94,6 +100,10 @@ module ScData
         .group_by(&column)
         .filter_map { |value, models| [value, models.first] if models.one? }
         .to_h
+    end
+
+    private def textured_paints(store)
+      @textured_paints ||= TexturedPaintsImport.new(store, logger: method(:log))
     end
 
     private def field_for(name)
