@@ -65,7 +65,11 @@
     "cases": {
       "flight_holo_textured.glb": "holoTextured",
       "holo_textured.glb": "holoTextured",
-      "landed_holo_textured.glb": null
+      "flight_textured.glb": "holoTextured",
+      "textured.glb": "holoTextured",
+      "landed_holo_textured.glb": null,
+      "landed_textured.glb": null,
+      "flight_textured.png": null
     }
   },
   {

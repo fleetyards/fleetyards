@@ -130,6 +130,8 @@ const VIEW_NAME =
   /^((?:extended|landed|flight)[-_ ]?)?(top|side|port|front|angled[-_ ]?rear|angled|bottom|rear|starboard)([-_ ]?view)?([-_ ]?colored)?$/i;
 const HOLO_NAME =
   /^((?:extended|landed|flight)[-_ ]?)?holo(?:[-_ ]?(lite|textured|hull))?$/i;
+// The painted export is also named without "holo": flight_textured.glb.
+const TEXTURED_NAME = /^(?:flight[-_ ]?)?textured$/i;
 
 const VIEWPOINTS: Record<string, string> = {
   top: "top",
@@ -170,6 +172,10 @@ export const fieldFor = (filename: string): FolderField | undefined => {
   const basename = filename.split("/").pop() ?? "";
   const stem = basename.replace(/\.[^.]+$/, "").trim();
   const extension = basename.slice(stem.length + 1).toLowerCase();
+
+  if (TEXTURED_NAME.test(stem)) {
+    return HOLO_EXTENSIONS.includes(extension) ? "holoTextured" : undefined;
+  }
 
   const holo = HOLO_NAME.exec(stem);
 

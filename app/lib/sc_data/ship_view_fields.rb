@@ -10,6 +10,8 @@ module ScData
   module ShipViewFields
     VIEW_NAME = /\A((?:extended|landed|flight)[-_ ]?)?(top|side|port|front|angled[-_ ]?rear|angled|bottom|rear|starboard)([-_ ]?view)?([-_ ]?colored)?\z/i
     HOLO_NAME = /\A((?:extended|landed|flight)[-_ ]?)?holo(?:[-_ ]?(lite|textured|hull))?\z/i
+    # The painted export is also named without "holo": flight_textured.glb.
+    TEXTURED_NAME = /\A(?:flight[-_ ]?)?textured\z/i
 
     VIEWPOINTS = {
       "top" => "top",
@@ -36,6 +38,10 @@ module ScData
       basename = filename.split("/").last.to_s
       stem = basename.sub(/\.[^.]+\z/, "").strip
       extension = basename[(stem.length + 1)..].to_s.downcase
+
+      if TEXTURED_NAME.match?(stem)
+        return HOLO_EXTENSIONS.include?(extension) ? "holo_textured" : nil
+      end
 
       if (holo = HOLO_NAME.match(stem))
         return unless HOLO_EXTENSIONS.include?(extension)
