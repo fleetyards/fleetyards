@@ -19,6 +19,17 @@ class PaintComponentMatcher
   # A two-letter paint name would be the tail of almost any string.
   MIN_NAME_LENGTH = 3
 
+  # Paint names the game spells differently from the store, normalized, tried
+  # only once the game's own spelling has found nothing: "Gladius Frostbite Camo
+  # Livery" is sold as "Frostbite", and the store calls every Foundation paint
+  # "Foundation Festival" where the game says "Fest" on some ships and "Guide"
+  # on others.
+  STORE_NAMES = {
+    "camo" => "",
+    "foundationfest" => "foundationfestival",
+    "foundationguide" => "foundationfestival"
+  }.freeze
+
   def self.normalize(value)
     value.to_s.downcase.gsub(/[^a-z0-9]/, "")
   end
@@ -40,6 +51,23 @@ class PaintComponentMatcher
 
     return if subject.blank?
 
+    subjects(subject).each do |candidate|
+      match = match_for(candidate)
+      return match if match
+    end
+
+    nil
+  end
+
+  private def subjects(subject)
+    store_spellings = STORE_NAMES.filter_map do |game, store|
+      subject.delete_suffix(game) + store if subject.end_with?(game)
+    end
+
+    [subject, *store_spellings]
+  end
+
+  private def match_for(subject)
     @names.each do |name|
       next unless subject.end_with?(name)
 

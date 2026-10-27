@@ -53,6 +53,31 @@ class PaintComponentMatcherTest < ActiveSupport::TestCase
     assert_nil PaintComponentMatcher.new.call(component("Ursa Fortuna Livery"))
   end
 
+  test "matches a camo the store sells without the word" do
+    paint = paint_for("Gladius", "Frostbite")
+
+    assert_equal paint, PaintComponentMatcher.new.call(component("Gladius Frostbite Camo Livery"))
+  end
+
+  test "matches the game's Foundation spellings to the store's" do
+    gladius = paint_for("Gladius", "Foundation Festival")
+    nomad = paint_for("Nomad", "Foundation Festival")
+
+    matcher = PaintComponentMatcher.new
+
+    assert_equal gladius, matcher.call(component("Gladius Foundation Guide Livery"))
+    assert_equal nomad, matcher.call(component("Nomad Foundation Fest Livery"))
+  end
+
+  # The Aurora Mk II carries both, under the game's own names.
+  test "prefers the game's spelling where the ship carries it" do
+    model = create(:model, name: "Aurora Mk II")
+    guide = create(:model_paint, model:, name: "Foundation Guide")
+    create(:model_paint, model:, name: "Foundation Festival")
+
+    assert_equal guide, PaintComponentMatcher.new.call(component("Aurora Mk II Foundation Guide Livery"))
+  end
+
   test "returns nothing for a paint no model carries" do
     paint_for("Terrapin", "IceBreak")
 
