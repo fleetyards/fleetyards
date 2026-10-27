@@ -228,7 +228,9 @@ const entryState = (entry: RaffleEntry) => {
     </p>
     <p v-else>{{ t("labels.raffle.selfClaimInfo") }}</p>
 
-    <template v-if="winner.claimable && winner.maskedEmail">
+    <template
+      v-if="winner.claimable && winner.accountDeleted && winner.maskedEmail"
+    >
       <Btn
         :loading="sendVerificationMutation.isPending.value"
         @click="sendVerification(winner)"

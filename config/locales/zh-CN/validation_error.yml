@@ -20,7 +20,7 @@ zh-CN:
       claim: "无法交付奖品。"
       messages:
         already_entered: "你已参与此抽奖。"
-        verification_not_sent: "只能在期限前向当前中奖者发送验证码，且每两分钟最多一次。"
+        verification_not_sent: "只能在期限前向已删除账户的当前中奖者发送验证码，且每两分钟最多一次。"
         not_claimable: "此参与记录已无法领取奖品。"
         no_code: "请先发送验证码。"
         expired: "验证码已过期，请重新发送。"

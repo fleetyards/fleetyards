@@ -61,11 +61,27 @@ class RaffleEntry < ApplicationRecord
   end
 
   # A winner whose account is gone proves they are the entrant by reading back
-  # a code sent to the address they entered with. Only a digest is stored; the
-  # code itself exists in the mail and nowhere else.
+  # a code sent to the address they entered with. A winner who still has an
+  # account claims through it instead: the snapshot address may no longer be
+  # theirs. Only a digest is stored; the code itself exists in the mail and
+  # nowhere else.
   def issue_verification_code!(now = Time.current)
-    return nil unless claimable?(now) && email.present?
-    return nil if verification_sent_at.present? && now < verification_sent_at + VERIFICATION_RESEND_INTERVAL
+    with_lock { new_verification_code(now) }
+  end
+
+  def verifiable?(now = Time.current)
+    user_id.nil? && email.present? && claimable?(now)
+  end
+
+  def verify_and_claim!(code, admin_user:, now: Time.current)
+    result = with_lock { verification_result(code, admin_user:, now:) }
+    raffle.conclude!(now) if result == :claimed
+    result
+  end
+
+  private def new_verification_code(now)
+    return unless verifiable?(now)
+    return if verification_sent_at.present? && now < verification_sent_at + VERIFICATION_RESEND_INTERVAL
 
     code = format("%06d", SecureRandom.random_number(1_000_000))
     update!(
@@ -76,14 +92,8 @@ class RaffleEntry < ApplicationRecord
     code
   end
 
-  def verify_and_claim!(code, admin_user:, now: Time.current)
-    result = with_lock { verification_result(code, admin_user:, now:) }
-    raffle.conclude!(now) if result == :claimed
-    result
-  end
-
   private def verification_result(code, admin_user:, now:)
-    return :not_claimable unless claimable?(now)
+    return :not_claimable unless verifiable?(now)
     return :no_code if verification_code_digest.blank?
     return :expired if now >= verification_sent_at + VERIFICATION_CODE_TTL
     return :too_many_attempts if verification_attempts >= VERIFICATION_MAX_ATTEMPTS

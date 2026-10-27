@@ -26,9 +26,9 @@ module Admin
             return render json: ValidationError.new("raffle_entry.send_verification", message: I18n.t("validation_error.raffle_entry.messages.verification_not_sent")), status: :bad_request
           end
 
-          I18n.with_locale(@entry.user&.notification_locale || I18n.default_locale) do
-            RaffleMailer.verification_code(@entry, code).deliver_later
-          end
+          # Sent now rather than queued: a queued mail would carry the code in
+          # its job arguments, readable in Redis until it is delivered.
+          RaffleMailer.verification_code(@entry, code).deliver_now
 
           render json: {message: I18n.t("messages.raffle_entry.verification_sent", email: @entry.masked_email)}
         end

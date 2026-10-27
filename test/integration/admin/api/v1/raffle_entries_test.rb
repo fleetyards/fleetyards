@@ -105,6 +105,8 @@ class Admin::Api::V1::RaffleEntriesTest < ActionDispatch::IntegrationTest
     @admin = create(:admin_user, resource_access: [:raffles])
     @raffle = create(:raffle, :closed, drawn_at: 1.hour.ago, code: "THE-GIFT-CODE")
     @winner = create(:raffle_entry, :after_close, raffle: @raffle, draw_position: 1, won_at: 1.hour.ago, claim_deadline_at: 5.days.from_now)
+    # Verification is the path for a winner whose account is gone.
+    @winner.update_columns(user_id: nil, username: "gone")
     @runner_up = create(:raffle_entry, :after_close, raffle: @raffle, draw_position: 2)
   end
 
@@ -136,14 +138,20 @@ class Admin::Api::V1::RaffleEntriesTest < ActionDispatch::IntegrationTest
 
   test "POST send-verification mails a code to the snapshot email" do
     sign_in @admin
-    @winner.user.update_columns(email: "changed@example.com")
     RaffleMailer.expects(:verification_code)
-      .with { |entry, code| entry.id == @winner.id && entry.email != "changed@example.com" && code.match?(/\A\d{6}\z/) }
-      .returns(stub(deliver_later: true))
+      .with { |entry, code| entry.id == @winner.id && code.match?(/\A\d{6}\z/) }
+      .returns(stub(deliver_now: true))
 
     assert_api_response :post, 200, api_path: "/raffles/{raffleId}/entries/{id}/send-verification", path_params: {raffleId: @raffle.id, id: @winner.id}
 
     assert @winner.reload.verification_code_digest.present?
+  end
+
+  test "POST send-verification refuses a winner who still has an account" do
+    @winner.update_columns(user_id: create(:user).id)
+    sign_in @admin
+
+    assert_api_response :post, 400, api_path: "/raffles/{raffleId}/entries/{id}/send-verification", path_params: {raffleId: @raffle.id, id: @winner.id}
   end
 
   test "POST send-verification refuses an entry that is not the current winner" do

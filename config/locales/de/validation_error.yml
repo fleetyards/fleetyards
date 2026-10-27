@@ -20,7 +20,7 @@ de:
       claim: "Der Gewinn konnte nicht übergeben werden."
       messages:
         already_entered: "Du nimmst bereits an dieser Verlosung teil."
-        verification_not_sent: "Ein Code kann nur für den aktuellen Gewinner vor Ablauf der Frist gesendet werden, und höchstens alle zwei Minuten."
+        verification_not_sent: "Ein Code kann nur für einen aktuellen Gewinner mit gelöschtem Konto gesendet werden, vor Ablauf der Frist und höchstens alle zwei Minuten."
         not_claimable: "Dieser Teilnehmer kann den Gewinn nicht mehr einlösen."
         no_code: "Sende zuerst einen Bestätigungscode."
         expired: "Der Bestätigungscode ist abgelaufen. Sende einen neuen."

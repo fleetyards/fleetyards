@@ -20,7 +20,7 @@ en:
       claim: "The prize could not be handed over."
       messages:
         already_entered: "You have already entered this raffle."
-        verification_not_sent: "A code can only be sent for the current winner before the deadline, and not more than once every two minutes."
+        verification_not_sent: "A code can only be sent for a current winner whose account was deleted, before the deadline and not more than once every two minutes."
         not_claimable: "This entry cannot claim the prize any more."
         no_code: "Send a verification code first."
         expired: "The verification code has expired. Send a new one."

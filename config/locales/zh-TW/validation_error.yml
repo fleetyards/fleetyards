@@ -20,7 +20,7 @@ zh-TW:
       claim: "無法交付獎品。"
       messages:
         already_entered: "你已參加此抽獎。"
-        verification_not_sent: "只能在期限前向目前得獎者傳送驗證碼，且每兩分鐘最多一次。"
+        verification_not_sent: "只能在期限前向已刪除帳戶的目前得獎者傳送驗證碼，且每兩分鐘最多一次。"
         not_claimable: "此參加紀錄已無法領取獎品。"
         no_code: "請先傳送驗證碼。"
         expired: "驗證碼已過期，請重新傳送。"

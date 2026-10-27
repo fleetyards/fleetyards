@@ -20,7 +20,7 @@ fr:
       claim: "Le lot n'a pas pu être remis."
       messages:
         already_entered: "Vous participez déjà à ce tirage au sort."
-        verification_not_sent: "Un code ne peut être envoyé qu'au gagnant actuel avant la date limite, et pas plus d'une fois toutes les deux minutes."
+        verification_not_sent: "Un code ne peut être envoyé qu'au gagnant actuel dont le compte a été supprimé, avant la date limite et pas plus d'une fois toutes les deux minutes."
         not_claimable: "Cette participation ne peut plus réclamer le lot."
         no_code: "Envoyez d'abord un code de vérification."
         expired: "Le code de vérification a expiré. Envoyez-en un nouveau."

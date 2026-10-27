@@ -82,8 +82,12 @@ class RaffleEntryTest < ActiveSupport::TestCase
     assert_nil entry.reload.claimed_at
   end
 
+  test "no verification code for a winner who still has an account" do
+    assert_nil winning_entry.issue_verification_code!
+  end
+
   test "a verification code claims the win for an admin" do
-    entry = winning_entry
+    entry = deleted_account_winner
     admin = create(:admin_user)
 
     code = entry.issue_verification_code!
@@ -95,7 +99,7 @@ class RaffleEntryTest < ActiveSupport::TestCase
   end
 
   test "a wrong verification code counts an attempt and locks out after five" do
-    entry = winning_entry
+    entry = deleted_account_winner
     code = entry.issue_verification_code!
     wrong = (code == "000000") ? "111111" : "000000"
     admin = create(:admin_user)
@@ -109,7 +113,7 @@ class RaffleEntryTest < ActiveSupport::TestCase
   end
 
   test "a verification code expires" do
-    entry = winning_entry
+    entry = deleted_account_winner
     code = entry.issue_verification_code!
 
     travel RaffleEntry::VERIFICATION_CODE_TTL + 1.minute do
@@ -118,7 +122,7 @@ class RaffleEntryTest < ActiveSupport::TestCase
   end
 
   test "a new verification code waits for the resend interval" do
-    entry = winning_entry
+    entry = deleted_account_winner
 
     assert entry.issue_verification_code!
     assert_nil entry.issue_verification_code!
@@ -126,6 +130,10 @@ class RaffleEntryTest < ActiveSupport::TestCase
     travel RaffleEntry::VERIFICATION_RESEND_INTERVAL + 1.second do
       assert entry.issue_verification_code!
     end
+  end
+
+  private def deleted_account_winner
+    winning_entry.tap { |entry| entry.update_columns(user_id: nil, username: "gone") }
   end
 
   private def winning_entry(claim_deadline_at: 5.days.from_now)

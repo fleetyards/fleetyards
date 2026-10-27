@@ -20,7 +20,7 @@ it:
       claim: "Non è stato possibile consegnare il premio."
       messages:
         already_entered: "Partecipi già a questa estrazione."
-        verification_not_sent: "Un codice può essere inviato solo al vincitore attuale prima della scadenza, e non più di una volta ogni due minuti."
+        verification_not_sent: "Un codice può essere inviato solo al vincitore attuale il cui account è stato eliminato, prima della scadenza e non più di una volta ogni due minuti."
         not_claimable: "Questa partecipazione non può più riscattare il premio."
         no_code: "Invia prima un codice di verifica."
         expired: "Il codice di verifica è scaduto. Inviane uno nuovo."

@@ -20,7 +20,7 @@ es:
       claim: "No se pudo entregar el premio."
       messages:
         already_entered: "Ya participas en este sorteo."
-        verification_not_sent: "Solo se puede enviar un código al ganador actual antes del plazo, y no más de una vez cada dos minutos."
+        verification_not_sent: "Solo se puede enviar un código a un ganador actual cuya cuenta se haya eliminado, antes del plazo y no más de una vez cada dos minutos."
         not_claimable: "Esta participación ya no puede reclamar el premio."
         no_code: "Envía primero un código de verificación."
         expired: "El código de verificación ha caducado. Envía uno nuevo."
