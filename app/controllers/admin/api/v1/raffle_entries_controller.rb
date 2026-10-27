@@ -27,8 +27,11 @@ module Admin
           end
 
           # Sent now rather than queued: a queued mail would carry the code in
-          # its job arguments, readable in Redis until it is delivered.
-          RaffleMailer.verification_code(@entry, code).deliver_now
+          # its job arguments, readable in Redis until it is delivered. The
+          # account and its language are gone, so not the admin's locale either.
+          I18n.with_locale(I18n.default_locale) do
+            RaffleMailer.verification_code(@entry, code).deliver_now
+          end
 
           render json: {message: I18n.t("messages.raffle_entry.verification_sent", email: @entry.masked_email)}
         end
