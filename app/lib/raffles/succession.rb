@@ -25,6 +25,10 @@ module Raffles
 
       current = @raffle.current_winner
       if current
+        # The winner's own claim locks only the entry, so the entry is locked
+        # here too: a claim that lands at the deadline either commits first
+        # and is seen, or waits and then finds the win forfeited.
+        current.lock!
         return if current.claimed_at.present? || current.claim_deadline_at > @now
 
         current.update!(forfeited_at: @now)
@@ -32,6 +36,7 @@ module Raffles
 
       next_winner = promote_next
       @raffle.conclude!(@now) if next_winner.nil?
+      @raffle.won_entries.reset
       next_winner
     end
 
