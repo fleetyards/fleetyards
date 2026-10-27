@@ -30,7 +30,7 @@ import {
   DefaultLoadingManager,
 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { sharedDracoLoader } from "../dracoLoader";
+import { prepareGltfLoader } from "../gltfLoader";
 import {
   applyHighlights,
   buildMounts,
@@ -367,7 +367,7 @@ DefaultLoadingManager.onError = (error) => {
 const { state } = useLoader(GLTFLoader, props.model.path, {
   extensions: (loader) => {
     if (loader instanceof GLTFLoader) {
-      loader.setDRACOLoader(sharedDracoLoader());
+      prepareGltfLoader(loader);
     }
   },
 });
