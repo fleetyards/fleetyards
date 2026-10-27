@@ -318,6 +318,7 @@ module Api
           .visible
           .active
           .with_attached_holo_texture
+          .with_attached_holo_texture_orm
           .order(name: :asc)
       end
 

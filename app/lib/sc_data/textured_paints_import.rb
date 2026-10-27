@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 module ScData
-  # The base-colour maps a ship's textured holo can be repainted with: one WebP
-  # per paint beside `flight_textured.glb`, listed in `flight_textured.json`
-  # under the palette's slug. Each lands on the ship's paints that the palette
-  # stands for.
+  # The maps a ship's textured holo can be repainted with: per paint a base
+  # colour and an occlusion/roughness/metallic WebP beside `flight_textured.glb`,
+  # listed in `flight_textured.json` under the palette's slug. Each lands on the
+  # ship's paints that the palette stands for.
   #
   # A palette names no paint of ours. It reaches one through the game's paint
   # item -- listed with the palette, or else carrying the palette's name -- and
@@ -12,6 +12,10 @@ module ScData
   # the base ship, so the variants' paints are found by the same name.
   class TexturedPaintsImport
     LISTING = "flight_textured.json"
+
+    # Attachment => the manifest key naming its file. Only the base colour is
+    # required: without it a paint has nothing to show.
+    MAPS = {holo_texture: "base", holo_texture_orm: "orm"}.freeze
 
     def initialize(store, logger:)
       @store = store
@@ -28,10 +32,9 @@ module ScData
       complete = true
 
       listing.fetch("paints", {}).each do |slug, entry|
-        name = entry["base"]
-        md5 = files.dig(name, "md5")
+        maps = maps_for(entry, files)
 
-        if name.blank? || md5.nil?
+        unless maps.key?(:holo_texture)
           @logger.call(:warn, "#{path}: paint #{slug} names no listed map")
           next
         end
@@ -43,10 +46,12 @@ module ScData
           next
         end
 
-        stale = paints.reject { |paint| current?(paint, md5) }
-        next if stale.empty?
+        maps.each do |field, (name, md5)|
+          stale = paints.reject { |paint| current?(paint.public_send(field), md5) }
+          next if stale.empty?
 
-        complete &= attach(stale, path, name, md5)
+          complete &= attach(stale, field, path, name, md5)
+        end
       end
 
       complete
@@ -62,7 +67,16 @@ module ScData
       file&.close!
     end
 
-    private def attach(paints, path, name, md5)
+    # Attachment => [file name, md5], for the maps the listing has.
+    private def maps_for(entry, files)
+      MAPS.each_with_object({}) do |(field, key), maps|
+        name = entry[key]
+        md5 = files.dig(name, "md5") if name.present?
+        maps[field] = [name, md5] if md5
+      end
+    end
+
+    private def attach(paints, field, path, name, md5)
       file = @store.fetch(path, name)
 
       if Digest::MD5.file(file.path).hexdigest != md5
@@ -72,7 +86,7 @@ module ScData
 
       # One upload shared by every paint the palette stands for.
       blob = ActiveStorage::Blob.create_and_upload!(io: file, filename: name)
-      paints.each { |paint| paint.update!(holo_texture: blob) }
+      paints.each { |paint| paint.update!(field => blob) }
 
       true
     rescue => e
@@ -109,8 +123,8 @@ module ScData
     end
 
     # The blob row is written before its bytes go up; see RenderImport#stored?.
-    private def current?(paint, md5)
-      blob = paint.holo_texture.blob
+    private def current?(attachment, md5)
+      blob = attachment.blob
       return false if blob.nil?
 
       blob.checksum.unpack1("m0").unpack1("H*") == md5 && blob.service.exist?(blob.key)

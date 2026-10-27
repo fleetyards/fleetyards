@@ -410,6 +410,28 @@ module ScData
       assert_equal "listing-1", @model.ship_views_digest
     end
 
+    test "puts a paint's occlusion/roughness/metallic map beside its base colour" do
+      component = create(:component, category: "paints", sc_key: "paint_gladius_talklikeapirate_metal_red")
+      paint = create(:model_paint, model: @model, component:)
+      publish_paints(
+        {"gladius-talklikeapirate-metal-red" => {
+          items: ["paint_gladius_talklikeapirate_metal_red"],
+          base: "flight_textured_gladius-talklikeapirate-metal-red.webp",
+          orm: "flight_textured_gladius-talklikeapirate-metal-red_orm.webp"
+        }},
+        {
+          "flight_textured_gladius-talklikeapirate-metal-red.webp" => PNG,
+          "flight_textured_gladius-talklikeapirate-metal-red_orm.webp" => "orm"
+        }
+      )
+
+      perform
+
+      paint.reload
+      assert_equal "flight_textured_gladius-talklikeapirate-metal-red.webp", paint.holo_texture.filename.to_s
+      assert_equal "flight_textured_gladius-talklikeapirate-metal-red_orm.webp", paint.holo_texture_orm.filename.to_s
+    end
+
     test "finds the variant's paint by the name of the one linked on the base ship" do
       component = create(:component, category: "paints", sc_key: "paint_gladius_blue_turquoise", name: "Gladius Foundation Guide Livery")
       create(:model_paint, name: "Foundation Guide", component:)

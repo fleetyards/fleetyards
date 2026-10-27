@@ -27,6 +27,7 @@ json.media do
     json.partial! "api/v1/shared/file", record: model_paint, attr: :front_view
   end
   json.holo_texture(model_paint.holo_texture.attached? ? rails_blob_url(model_paint.holo_texture) : nil)
+  json.holo_texture_orm(model_paint.holo_texture_orm.attached? ? rails_blob_url(model_paint.holo_texture_orm) : nil)
   json.port_view do
     json.partial! "api/v1/shared/file", record: model_paint, attr: :port_view
   end

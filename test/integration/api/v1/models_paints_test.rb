@@ -34,17 +34,19 @@ class Api::V1::ModelsPaintsTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET /models/:slug/paints carries the map that repaints the textured holo" do
+  test "GET /models/:slug/paints carries the maps that repaint the textured holo" do
     model = create(:model)
     paint = create(:model_paint, model:)
     paint.holo_texture.attach(io: StringIO.new("webp"), filename: "flight_textured_gladiuspirate.webp")
+    paint.holo_texture_orm.attach(io: StringIO.new("webp"), filename: "flight_textured_gladiuspirate_orm.webp")
     create(:model_paint, model:)
 
     assert_api_response :get, 200, path_params: {slug: model.slug} do
-      textures = parsed_body.to_h { |entry| [entry["id"], entry.dig("media", "holoTexture")] }
+      media = parsed_body.to_h { |entry| [entry["id"], entry["media"]] }
 
-      assert_match(/flight_textured_gladiuspirate\.webp/, textures[paint.id])
-      assert_equal 1, textures.values.compact.size
+      assert_match(/flight_textured_gladiuspirate\.webp/, media[paint.id]["holoTexture"])
+      assert_match(/flight_textured_gladiuspirate_orm\.webp/, media[paint.id]["holoTextureOrm"])
+      assert_equal 1, media.values.count { |entry| entry["holoTexture"] }
     end
   end
 

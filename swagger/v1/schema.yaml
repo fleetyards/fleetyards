@@ -41751,6 +41751,9 @@ components:
         holoTexture:
           type: string
           nullable: true
+        holoTextureOrm:
+          type: string
+          nullable: true
         portView:
           "$ref": "#/components/schemas/MediaFile"
         storeImage:
