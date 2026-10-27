@@ -1,6 +1,8 @@
 ---
 de:
   messages:
+    raffle_entry:
+      verification_sent: "Bestätigungscode an %{email} gesendet."
     background_disabled:
       success: "%{resource} nicht als Hintergrund verwendet."
     background_enabled:
@@ -38,6 +40,7 @@ de:
     subscription_required: "Diese Flotte hat kein Abonnement für diese Funktion."
     supporter_required: "Die weiteren Stile für Widmungstafeln sind ein Vorteil für Unterstützer."
     record_not_found:
+      raffle: "Keine Verlosung gefunden"
       game_event: Kein Spiel-Event gefunden
       fleet_subscription: Kein Flotten-Abonnement gefunden
       announcement: Keine Ankündigung gefunden

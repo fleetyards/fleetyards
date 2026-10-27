@@ -1,6 +1,9 @@
 ---
 de:
   notifications:
+    raffle_won:
+      title: "Du hast die Verlosung gewonnen: %{raffle}"
+      body: "Herzlichen Glückwunsch! Löse deinen Geschenkcode vor dem %{deadline} auf der Seite der Verlosung ein. Wird er nicht rechtzeitig eingelöst, geht der Gewinn an den Nächsten in der Reihe."
     model_on_sale:
       title: "%{model} ist im Angebot"
       body: "%{model} ist derzeit im Pledge-Store erhältlich."

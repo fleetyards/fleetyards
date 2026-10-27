@@ -1,6 +1,31 @@
 ---
 en:
   validation_error:
+    raffle:
+      create: "Raffle could not be created."
+      update: "Raffle could not be updated."
+      destroy: "Raffle could not be deleted."
+      draw: "Raffle could not be drawn."
+      claim: "The prize could not be claimed."
+      code: "The gift code could not be shown."
+      messages:
+        already_drawn: "This raffle has already been drawn."
+        not_closed: "A raffle can only be drawn after it has closed."
+        no_entrants: "Nobody eligible entered this raffle."
+        claim_expired: "The claim deadline has passed."
+        not_claimed: "Claim the prize first to see the gift code."
+    raffle_entry:
+      create: "You could not enter the raffle."
+      send_verification: "The verification code could not be sent."
+      claim: "The prize could not be handed over."
+      messages:
+        already_entered: "You have already entered this raffle."
+        verification_not_sent: "A code can only be sent for the current winner before the deadline, and not more than once every two minutes."
+        not_claimable: "This entry cannot claim the prize any more."
+        no_code: "Send a verification code first."
+        expired: "The verification code has expired. Send a new one."
+        too_many_attempts: "Too many wrong codes. Send a new one."
+        invalid: "The verification code is wrong."
     fleet_subscription:
       create: "Subscription could not be opened."
       update: "Subscription could not be updated."

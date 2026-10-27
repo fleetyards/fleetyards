@@ -1,6 +1,12 @@
 ---
 en:
   mailer:
+    raffle:
+      verification_code:
+        subject: "Your verification code for %{raffle}"
+        body: "You told us on Discord that you won the raffle \"%{raffle}\". To prove that this email address is yours, send the code below to %{discord_handle} on Discord."
+        expires: "This code expires in 30 minutes."
+        not_you: "If you did not ask for this code, you can ignore this email."
     announcement:
       action: "Read more"
     account:

@@ -1,6 +1,12 @@
 ---
 it:
   mailer:
+    raffle:
+      verification_code:
+        subject: "Il tuo codice di verifica per %{raffle}"
+        body: "Ci hai detto su Discord di aver vinto l'estrazione \"%{raffle}\". Per dimostrare che questo indirizzo email è tuo, invia il codice qui sotto a %{discord_handle} su Discord."
+        expires: "Questo codice scade tra 30 minuti."
+        not_you: "Se non hai richiesto questo codice, puoi ignorare questa email."
     announcement:
       action: "Scopri di più"
     account:

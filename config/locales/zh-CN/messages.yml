@@ -1,6 +1,8 @@
 ---
 zh-CN:
   messages:
+    raffle_entry:
+      verification_sent: "验证码已发送至 %{email}。"
     background_disabled:
       success: "%{resource} 未用作背景。"
     background_enabled:
@@ -35,6 +37,7 @@ zh-CN:
     subscription_required: "该舰队没有此功能的订阅。"
     supporter_required: "其他铭牌样式是支持者专属福利。"
     record_not_found:
+      raffle: "未找到抽奖"
       game_event: 未找到游戏活动
       fleet_subscription: 未找到舰队订阅
       announcement: 未找到公告

@@ -1,6 +1,12 @@
 ---
 es:
   mailer:
+    raffle:
+      verification_code:
+        subject: "Tu código de verificación para %{raffle}"
+        body: "Nos dijiste en Discord que ganaste el sorteo \"%{raffle}\". Para demostrar que esta dirección de correo es tuya, envía el código de abajo a %{discord_handle} en Discord."
+        expires: "Este código caduca en 30 minutos."
+        not_you: "Si no has solicitado este código, puedes ignorar este correo."
     announcement:
       action: "Leer más"
     account:

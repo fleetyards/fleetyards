@@ -1,6 +1,9 @@
 ---
 zh-TW:
   notifications:
+    raffle_won:
+      title: "你贏得了抽獎：%{raffle}"
+      body: "恭喜！請在 %{deadline} 前於抽獎頁面領取你的禮品碼。若未按時領取，獎品將轉給下一位。"
     model_on_sale:
       title: "%{model} 正在出售"
       body: "%{model} 目前在質押商店中出售。"

@@ -1,6 +1,12 @@
 ---
 fr:
   mailer:
+    raffle:
+      verification_code:
+        subject: "Votre code de vérification pour %{raffle}"
+        body: "Vous nous avez indiqué sur Discord avoir gagné le tirage au sort « %{raffle} ». Pour prouver que cette adresse e-mail vous appartient, envoyez le code ci-dessous à %{discord_handle} sur Discord."
+        expires: "Ce code expire dans 30 minutes."
+        not_you: "Si vous n'avez pas demandé ce code, vous pouvez ignorer cet e-mail."
     announcement:
       action: "En savoir plus"
     account:

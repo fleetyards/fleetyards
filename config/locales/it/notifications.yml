@@ -1,6 +1,9 @@
 ---
 it:
   notifications:
+    raffle_won:
+      title: "Hai vinto l'estrazione: %{raffle}"
+      body: "Congratulazioni! Riscatta il tuo codice regalo sulla pagina dell'estrazione entro il %{deadline}. Se non viene riscattato in tempo, il premio passa al successivo in lista."
     model_on_sale:
       title: "%{model} è in vendita"
       body: "%{model} è attualmente in vendita nel negozio pledge."

@@ -2,6 +2,16 @@
 en:
   activerecord:
     attributes:
+      raffle:
+        title: "Title"
+        description: "Description"
+        code: "Gift code"
+        starts_at: "Start"
+        ends_at: "End"
+        claim_period_days: "Claim period (days)"
+      raffle_entry:
+        conditions_accepted: "Participation conditions"
+        raffle: "Raffle"
       fleet_squadron_request:
         fleet_membership: "Member"
         fleet_squadron: "Squadron"
@@ -274,6 +284,9 @@ en:
           class8: Class 8
     errors:
       messages:
+        frozen_after_draw: "cannot be changed after the draw"
+        not_open: "is not open for entries"
+        drawn: "A drawn raffle cannot be deleted"
         blank: can't be blank
         record_invalid: Bad Data
         svg_not_supported: must not be an SVG image

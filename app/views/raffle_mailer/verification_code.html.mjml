@@ -1,0 +1,24 @@
+<mj-text mj-class="h2" padding="0 0 14px">
+  <%= I18n.t("mailer.hello", username: @username) %>
+</mj-text>
+
+<mj-text>
+  <%= I18n.t("mailer.raffle.verification_code.body", raffle: @raffle.title, discord_handle: @discord_handle) %>
+</mj-text>
+
+<mj-text mj-class="label"
+         font-size="30px"
+         letter-spacing="8px"
+         color="<%= MailerTheme::TEXT %>"
+         align="center"
+         padding="12px 0 16px">
+  <%= @code %>
+</mj-text>
+
+<mj-text mj-class="footer" padding="0 0 4px">
+  <%= I18n.t("mailer.raffle.verification_code.expires") %>
+</mj-text>
+
+<mj-text mj-class="footer" padding="0 0 4px">
+  <%= I18n.t("mailer.raffle.verification_code.not_you") %>
+</mj-text>

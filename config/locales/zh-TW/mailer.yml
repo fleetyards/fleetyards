@@ -1,6 +1,12 @@
 ---
 zh-TW:
   mailer:
+    raffle:
+      verification_code:
+        subject: "你的 %{raffle} 驗證碼"
+        body: "你在 Discord 上告訴我們你贏得了抽獎「%{raffle}」。為證明此電子郵件地址屬於你，請在 Discord 上將下方的驗證碼傳送給 %{discord_handle}。"
+        expires: "此驗證碼將在 30 分鐘後失效。"
+        not_you: "如果你沒有申請此驗證碼，請忽略此郵件。"
     announcement:
       action: "了解更多"
     account:

@@ -1,6 +1,9 @@
 ---
 en:
   notifications:
+    raffle_won:
+      title: "You won the raffle: %{raffle}"
+      body: "Congratulations! Claim your gift code on the raffle page before %{deadline}. If it is not claimed in time, the win passes to the next in line."
     model_on_sale:
       title: "%{model} is on sale"
       body: "%{model} is currently on sale in the pledge store."

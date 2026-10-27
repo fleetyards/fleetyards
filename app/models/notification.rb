@@ -54,6 +54,7 @@ class Notification < ApplicationRecord
     fleet_fid_claim_cancelled: "fleet_fid_claim_cancelled",
     rsi_handle_verification_lost: "rsi_handle_verification_lost",
     fleet_verification_requested: "fleet_verification_requested",
+    raffle_won: "raffle_won",
     announcement: "announcement"
   }
 
@@ -374,6 +375,14 @@ class Notification < ApplicationRecord
       channels: %i[app mail push discord],
       mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later },
       preference_defaults: {app: true, mail: true, push: false, discord: false}
+    },
+    # The claim deadline runs from the moment of the win, so every channel the
+    # winner might read is on by default.
+    raffle_won: {
+      retention: 90.days,
+      channels: %i[app mail push discord],
+      mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later },
+      preference_defaults: {app: true, mail: true, push: true, discord: true}
     },
     # Written by an admin and sent to everybody, which is why mail is off by
     # default: at ~57k confirmed readers an opt-out default is ~57k messages

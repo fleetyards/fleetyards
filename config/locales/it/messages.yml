@@ -1,6 +1,8 @@
 ---
 it:
   messages:
+    raffle_entry:
+      verification_sent: "Codice di verifica inviato a %{email}."
     background_disabled:
       success: "%{resource} non usato come sfondo."
     background_enabled:
@@ -37,6 +39,7 @@ it:
     subscription_required: "Questa flotta non ha un abbonamento per questa funzione."
     supporter_required: "Gli altri stili della targa sono un vantaggio per chi sostiene il progetto."
     record_not_found:
+      raffle: "Nessuna estrazione trovata"
       game_event: Nessun evento di gioco trovato
       fleet_subscription: Nessun abbonamento della flotta trovato
       announcement: Nessun annuncio trovato

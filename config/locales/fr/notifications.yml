@@ -1,6 +1,9 @@
 ---
 fr:
   notifications:
+    raffle_won:
+      title: "Vous avez gagné le tirage au sort : %{raffle}"
+      body: "Félicitations ! Réclamez votre code cadeau sur la page du tirage au sort avant le %{deadline}. S'il n'est pas réclamé à temps, le lot passe au suivant dans l'ordre."
     model_on_sale:
       title: "%{model} est en vente"
       body: "%{model} est actuellement en vente dans le magasin de pledge."

@@ -1,6 +1,8 @@
 ---
 en:
   messages:
+    raffle_entry:
+      verification_sent: "Verification code sent to %{email}."
     background_disabled:
       success: "%{resource} not used for Background."
     background_enabled:
@@ -38,6 +40,7 @@ en:
     subscription_required: "This fleet does not have a subscription for this feature."
     supporter_required: "The other plaque styles are a supporter perk."
     record_not_found:
+      raffle: "No Raffle found"
       game_event: No Game Event found
       fleet_subscription: No Fleet Subscription found
       announcement: No Announcement found

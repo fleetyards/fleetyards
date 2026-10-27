@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_26_200000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_27_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2699,6 +2699,51 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_26_200000) do
     t.index ["user_id"], name: "index_push_subscriptions_on_user_id"
   end
 
+  create_table "raffle_entries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "raffle_id", null: false
+    t.uuid "user_id"
+    t.string "username"
+    t.text "email"
+    t.datetime "conditions_accepted_at", null: false
+    t.string "conditions_version", null: false
+    t.integer "draw_position"
+    t.datetime "won_at"
+    t.datetime "claim_deadline_at"
+    t.datetime "claimed_at"
+    t.uuid "claimed_by_id"
+    t.datetime "forfeited_at"
+    t.string "verification_code_digest"
+    t.datetime "verification_sent_at"
+    t.integer "verification_attempts", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["claim_deadline_at"], name: "index_raffle_entries_on_claim_deadline_at", where: "((claimed_at IS NULL) AND (forfeited_at IS NULL))"
+    t.index ["claimed_by_id"], name: "index_raffle_entries_on_claimed_by_id"
+    t.index ["raffle_id", "draw_position"], name: "index_raffle_entries_on_raffle_id_and_draw_position", unique: true
+    t.index ["raffle_id"], name: "index_raffle_entries_on_raffle_id"
+    t.index ["user_id", "raffle_id"], name: "index_raffle_entries_on_user_id_and_raffle_id", unique: true
+  end
+
+  create_table "raffles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "title", null: false
+    t.text "description"
+    t.uuid "model_id"
+    t.text "code"
+    t.datetime "starts_at", null: false
+    t.datetime "ends_at", null: false
+    t.integer "claim_period_days", default: 14, null: false
+    t.boolean "published", default: false, null: false
+    t.datetime "drawn_at"
+    t.uuid "drawn_by_id"
+    t.datetime "concluded_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["drawn_by_id"], name: "index_raffles_on_drawn_by_id"
+    t.index ["ends_at"], name: "index_raffles_on_ends_at"
+    t.index ["model_id"], name: "index_raffles_on_model_id"
+    t.index ["published"], name: "index_raffles_on_published"
+  end
+
   create_table "rollups", force: :cascade do |t|
     t.string "name", null: false
     t.string "interval", null: false
@@ -3358,6 +3403,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_26_200000) do
   add_foreign_key "payout_transfers", "payout_participants", column: "to_participant_id"
   add_foreign_key "payout_transfers", "users", column: "confirmed_by_id"
   add_foreign_key "push_subscriptions", "users"
+  add_foreign_key "raffle_entries", "admin_users", column: "claimed_by_id", on_delete: :nullify
+  add_foreign_key "raffle_entries", "raffles", on_delete: :cascade
+  add_foreign_key "raffle_entries", "users", on_delete: :nullify
+  add_foreign_key "raffles", "admin_users", column: "drawn_by_id", on_delete: :nullify
+  add_foreign_key "raffles", "models"
   add_foreign_key "sc_data_unlisted_models", "models", column: "base_model_id", on_delete: :nullify
   add_foreign_key "sc_data_unlisted_models", "models", on_delete: :nullify
   add_foreign_key "shops", "locations", on_delete: :cascade

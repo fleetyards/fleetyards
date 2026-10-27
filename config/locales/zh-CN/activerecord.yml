@@ -2,6 +2,16 @@
 zh-CN:
   activerecord:
     attributes:
+      raffle:
+        title: "标题"
+        description: "描述"
+        code: "礼品码"
+        starts_at: "开始"
+        ends_at: "结束"
+        claim_period_days: "领奖期限（天）"
+      raffle_entry:
+        conditions_accepted: "参与条件"
+        raffle: "抽奖"
       fleet_squadron_request:
         fleet_membership: "成员"
         fleet_squadron: "中队"
@@ -274,6 +284,9 @@ zh-CN:
           class8: Class 8
     errors:
       messages:
+        frozen_after_draw: "开奖后无法更改"
+        not_open: "不接受参与"
+        drawn: "已开奖的抽奖无法删除"
         contract_item_already_asked_for: "该合约中已有相同类别和单位的这项货物"
         contract_item_needs_reward_rate: "每一行都需要设置每 SCU 或每件的报酬"
         entry_goods_in_transit: "在其所属的转移得到答复之前无法删除"

@@ -1,6 +1,9 @@
 ---
 es:
   notifications:
+    raffle_won:
+      title: "Has ganado el sorteo: %{raffle}"
+      body: "¡Enhorabuena! Reclama tu código de regalo en la página del sorteo antes del %{deadline}. Si no se reclama a tiempo, el premio pasa al siguiente en la lista."
     model_on_sale:
       title: "%{model} está en venta"
       body: "%{model} está actualmente en venta en la tienda de pledge."

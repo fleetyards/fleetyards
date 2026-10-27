@@ -126,6 +126,10 @@ fleet_events_auto_lock_job:
   cron: '*/5 * * * *' # Every 5 minutes
   class: 'FleetEvents::AutoLockJob'
   queue: 'default'
+raffles_succession_job:
+  cron: '5 * * * *' # Hourly at :05
+  class: 'Raffles::SuccessionJob'
+  queue: 'default'
 discord_weekly_digest_dispatch_job:
   cron: '*/15 * * * *' # Every 15 minutes
   class: 'Discord::WeeklyDigestDispatchJob'
