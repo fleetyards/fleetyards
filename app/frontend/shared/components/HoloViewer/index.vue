@@ -42,8 +42,9 @@ type Props = {
   grid?: boolean;
   zoomable?: boolean;
   panable?: boolean;
-  // Where the camera starts around the model, in degrees from +Z. A ship holo
-  // is exported facing the default; an item's keeps the game's entity frame.
+  // Where the camera starts around the model, in degrees from +Z. Holos keep
+  // the game's entity frame, a ship's nose towards -Z, so the default starts
+  // on its side.
   azimuth?: number;
   // How far above the model the camera starts, in degrees. Without it the
   // camera stays low, under a cap that keeps every holo framed alike.
@@ -69,7 +70,7 @@ const props = withDefaults(defineProps<Props>(), {
   grid: false,
   panable: false,
   zoomable: false,
-  azimuth: 0,
+  azimuth: -90,
   elevation: undefined,
   contain: false,
   hologram: false,
