@@ -1,0 +1,208 @@
+{
+  "en": {
+    "nav": {
+      "raffles": "Raffles",
+      "raffle": "Raffle",
+      "admin": {
+        "raffles": {
+          "index": "Raffles",
+          "new": "New Raffle",
+          "edit": "Edit Raffle",
+          "entries": "Raffle Entries"
+        }
+      }
+    },
+    "title": {
+      "raffles": "Raffles",
+      "raffle": "Raffle",
+      "admin": {
+        "raffles": {
+          "index": "Raffles",
+          "new": "New Raffle",
+          "edit": "Edit Raffle",
+          "entries": "Raffle Entries"
+        }
+      }
+    },
+    "headlines": {
+      "admin": {
+        "raffles": {
+          "index": "Raffles",
+          "new": "New Raffle",
+          "edit": "Edit Raffle",
+          "entries": "Raffle Entries"
+        }
+      }
+    },
+    "labels": {
+      "raffle": {
+        "title": "Title",
+        "description": "Description",
+        "prize": "Prize ship",
+        "code": "Gift code",
+        "codeInfo": "The code the winner receives. It is stored encrypted and never shown in full again.",
+        "codeSet": "A code is set (%{code}). Leave the field empty to keep it.",
+        "codeFrozen": "The code cannot be changed after the draw.",
+        "startsAt": "Opens at",
+        "endsAt": "Closes at",
+        "claimPeriodDays": "Claim period (days)",
+        "claimPeriodDaysInfo": "How long a winner has to claim the code before the win passes to the next in line.",
+        "published": "Published",
+        "publishedInfo": "Only published raffles are listed and open for entries. Publishing needs a gift code.",
+        "status": "Status",
+        "entriesCount": "Entries",
+        "entriesCountValue": "Entries: %{count}",
+        "statuses": {
+          "draft": "Draft",
+          "upcoming": "Upcoming",
+          "open": "Open",
+          "closed": "Closed",
+          "drawn": "Drawn",
+          "concluded": "Concluded"
+        },
+        "drawnInfo": "Drawn",
+        "drawnBy": "Drawn on %{date} by %{admin}.",
+        "handOverCode": "Gift code to hand over",
+        "currentWinner": "Current winner: %{username}",
+        "claimDeadline": "Claim deadline: %{date}",
+        "accountDeletedInfo": "This winner deleted their account. If they contact you on Discord before the deadline, send a verification code to the email address they entered with (%{email}) and have them tell you the code.",
+        "selfClaimInfo": "The winner can claim the code themselves on the raffle page."
+      },
+      "raffleEntry": {
+        "username": "Entrant",
+        "drawPosition": "Position",
+        "conditionsAcceptedAt": "Conditions accepted",
+        "state": "State",
+        "accountDeleted": "Account deleted",
+        "verificationCode": "Verification code",
+        "states": {
+          "claimed": "Claimed",
+          "forfeited": "Forfeited",
+          "passedOver": "Passed over",
+          "winner": "Winner",
+          "waiting": "In line",
+          "notDrawn": "Not eligible"
+        }
+      },
+      "admin": {
+        "resourceAccess": {
+          "privileges": {
+            "raffles": "Raffles"
+          }
+        }
+      },
+      "notificationTypes": {
+        "raffle_won": "Raffle won"
+      }
+    },
+    "placeholders": {
+      "raffle": {
+        "title": "Win a Polaris",
+        "description": "What can be won and how",
+        "code": "XXXX-XXXX-XXXX",
+        "claimPeriodDays": "14"
+      },
+      "raffleEntry": {
+        "verificationCode": "123456"
+      }
+    },
+    "messages": {
+      "raffle": {
+        "created": "Raffle created.",
+        "updated": "Raffle updated.",
+        "destroyed": "Raffle deleted.",
+        "createFailed": "Could not create raffle.",
+        "updateFailed": "Could not update raffle.",
+        "drawn": "Raffle drawn.",
+        "drawFailed": "Could not draw the raffle."
+      },
+      "raffleEntry": {
+        "claimed": "Verified. Hand the gift code over to the winner."
+      },
+      "confirm": {
+        "raffle": {
+          "destroy": "Are you sure you want to delete this raffle? This action can't be reverted.",
+          "draw": "Draw the raffle now? The order of all entrants is fixed for good and cannot be drawn again."
+        }
+      }
+    },
+    "actions": {
+      "raffle": {
+        "entries": "Entries",
+        "draw": "Draw",
+        "sendVerification": "Send verification code",
+        "handOver": "Verify and show code"
+      }
+    },
+    "raffles": {
+      "title": "Raffles",
+      "lead": "Win gift codes for Star Citizen ships. Enter an open raffle; once it closes, the winner is drawn at random.",
+      "empty": "There are no raffles right now.",
+      "status": "Status",
+      "runs": "Runs",
+      "prize": "Prize: %{name}",
+      "endsAt": "Closes %{date}",
+      "entriesCount": "Entrants: %{count}",
+      "entered": "You have entered this raffle.",
+      "statuses": {
+        "draft": "Draft",
+        "upcoming": "Upcoming",
+        "open": "Open",
+        "closed": "Closed, waiting for the draw",
+        "drawn": "Drawn",
+        "concluded": "Finished"
+      },
+      "entrants": {
+        "title": "Entrants",
+        "empty": "Nobody has entered yet.",
+        "count": "Entrants"
+      },
+      "winner": {
+        "title": "Winner",
+        "pending": "%{username} won and has until %{date} to claim the gift code.",
+        "claimed": "%{username} won and claimed the gift code.",
+        "forfeited": "Did not claim in time"
+      },
+      "won": {
+        "title": "You won!",
+        "deadline": "Claim your gift code before %{date}, or the win passes to the next in line.",
+        "claimed": "You claimed your gift code."
+      },
+      "code": {
+        "title": "Your gift code",
+        "hint": "Redeem it on the RSI website and keep it to yourself."
+      },
+      "actions": {
+        "enter": "Enter raffle",
+        "withdraw": "Withdraw",
+        "claim": "Claim gift code",
+        "showCode": "Show gift code",
+        "signInToEnter": "Sign in to enter this raffle"
+      },
+      "messages": {
+        "entered": "You have entered the raffle. Good luck!",
+        "withdrawn": "You have withdrawn from the raffle.",
+        "confirmWithdraw": "Withdraw from this raffle?",
+        "forbidden": "Only accounts with a confirmed email address can take part. Confirm your email address and try again.",
+        "failed": "Something went wrong. Please try again."
+      },
+      "conditions": {
+        "title": "Participation conditions",
+        "accept": "I have read and accept the participation conditions.",
+        "confirmedAccount": "Only accounts with a confirmed email address can enter, once per account.",
+        "publicEntrants": "Your username is listed publicly on this page as an entrant.",
+        "publicWinner": "If you win, your username is shown publicly as the winner.",
+        "drawOrder": "After the raffle closes, all entrants are drawn into one random order. The first in that order wins.",
+        "claimDeadline": "The winner has %{days} days to claim the gift code. If it is not claimed in time, the win passes to the next in line.",
+        "deletedAccount": "If you delete your account after the draw, you can still claim a win before the deadline by contacting %{discordHandle} on Discord. You prove it is you with a code sent to the email address you entered with.",
+        "noCash": "The prize is a gift code only. There is no cash alternative and it cannot be exchanged.",
+        "noLiability": "Fleetyards is not liable for the gift code, its validity or its redemption, or for any issue with your RSI account.",
+        "noRecourse": "The result of the draw is final. Legal recourse is excluded.",
+        "notAffiliated": "Fleetyards is an unofficial fan site and not affiliated with Cloud Imperium Games.",
+        "contact": "Questions? Contact %{discordHandle} on the",
+        "discordServer": "Fleetyards Discord",
+        "version": "Conditions version %{version}"
+      }
+    }
+  }
+}

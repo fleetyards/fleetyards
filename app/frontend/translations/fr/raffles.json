@@ -1,0 +1,208 @@
+{
+  "fr": {
+    "nav": {
+      "raffles": "Tirages au sort",
+      "raffle": "Tirage au sort",
+      "admin": {
+        "raffles": {
+          "index": "Tirages au sort",
+          "new": "Nouveau tirage au sort",
+          "edit": "Modifier le tirage au sort",
+          "entries": "Participations au tirage au sort"
+        }
+      }
+    },
+    "title": {
+      "raffles": "Tirages au sort",
+      "raffle": "Tirage au sort",
+      "admin": {
+        "raffles": {
+          "index": "Tirages au sort",
+          "new": "Nouveau tirage au sort",
+          "edit": "Modifier le tirage au sort",
+          "entries": "Participations au tirage au sort"
+        }
+      }
+    },
+    "headlines": {
+      "admin": {
+        "raffles": {
+          "index": "Tirages au sort",
+          "new": "Nouveau tirage au sort",
+          "edit": "Modifier le tirage au sort",
+          "entries": "Participations au tirage au sort"
+        }
+      }
+    },
+    "labels": {
+      "raffle": {
+        "title": "Titre",
+        "description": "Description",
+        "prize": "Vaisseau à gagner",
+        "code": "Code cadeau",
+        "codeInfo": "Le code que reçoit le gagnant. Il est stocké chiffré et n'est plus jamais affiché en entier.",
+        "codeSet": "Un code est défini (%{code}). Laissez le champ vide pour le conserver.",
+        "codeFrozen": "Le code ne peut plus être modifié après le tirage.",
+        "startsAt": "Ouverture le",
+        "endsAt": "Clôture le",
+        "claimPeriodDays": "Délai de réclamation (jours)",
+        "claimPeriodDaysInfo": "Le temps dont dispose un gagnant pour réclamer le code avant que le gain ne passe au suivant dans l'ordre.",
+        "published": "Publié",
+        "publishedInfo": "Seuls les tirages au sort publiés sont listés et ouverts aux participations. La publication nécessite un code cadeau.",
+        "status": "Statut",
+        "entriesCount": "Participations",
+        "entriesCountValue": "Participations : %{count}",
+        "statuses": {
+          "draft": "Brouillon",
+          "upcoming": "À venir",
+          "open": "Ouvert",
+          "closed": "Clôturé",
+          "drawn": "Tiré",
+          "concluded": "Conclu"
+        },
+        "drawnInfo": "Tiré",
+        "drawnBy": "Tiré le %{date} par %{admin}.",
+        "handOverCode": "Code cadeau à remettre",
+        "currentWinner": "Gagnant actuel : %{username}",
+        "claimDeadline": "Date limite de réclamation : %{date}",
+        "accountDeletedInfo": "Ce gagnant a supprimé son compte. S'il vous contacte sur Discord avant la date limite, envoyez un code de vérification à l'adresse e-mail avec laquelle il a participé (%{email}) et demandez-lui de vous communiquer ce code.",
+        "selfClaimInfo": "Le gagnant peut réclamer le code lui-même sur la page du tirage au sort."
+      },
+      "raffleEntry": {
+        "username": "Participant",
+        "drawPosition": "Position",
+        "conditionsAcceptedAt": "Conditions acceptées",
+        "state": "État",
+        "accountDeleted": "Compte supprimé",
+        "verificationCode": "Code de vérification",
+        "states": {
+          "claimed": "Réclamé",
+          "forfeited": "Perdu",
+          "passedOver": "Passé",
+          "winner": "Gagnant",
+          "waiting": "En attente",
+          "notDrawn": "Non éligible"
+        }
+      },
+      "admin": {
+        "resourceAccess": {
+          "privileges": {
+            "raffles": "Tirages au sort"
+          }
+        }
+      },
+      "notificationTypes": {
+        "raffle_won": "Tirage au sort gagné"
+      }
+    },
+    "placeholders": {
+      "raffle": {
+        "title": "Gagnez un Polaris",
+        "description": "Ce qu'il y a à gagner et comment",
+        "code": "XXXX-XXXX-XXXX",
+        "claimPeriodDays": "14"
+      },
+      "raffleEntry": {
+        "verificationCode": "123456"
+      }
+    },
+    "messages": {
+      "raffle": {
+        "created": "Tirage au sort créé.",
+        "updated": "Tirage au sort mis à jour.",
+        "destroyed": "Tirage au sort supprimé.",
+        "createFailed": "Impossible de créer le tirage au sort.",
+        "updateFailed": "Impossible de mettre à jour le tirage au sort.",
+        "drawn": "Tirage au sort effectué.",
+        "drawFailed": "Impossible d'effectuer le tirage au sort."
+      },
+      "raffleEntry": {
+        "claimed": "Vérifié. Remettez le code cadeau au gagnant."
+      },
+      "confirm": {
+        "raffle": {
+          "destroy": "Êtes-vous sûr de vouloir supprimer ce tirage au sort ? Cette action est irréversible.",
+          "draw": "Effectuer le tirage au sort maintenant ? L'ordre de tous les participants est fixé définitivement et le tirage ne pourra pas être refait."
+        }
+      }
+    },
+    "actions": {
+      "raffle": {
+        "entries": "Participations",
+        "draw": "Tirer au sort",
+        "sendVerification": "Envoyer le code de vérification",
+        "handOver": "Vérifier et afficher le code"
+      }
+    },
+    "raffles": {
+      "title": "Tirages au sort",
+      "lead": "Gagnez des codes cadeaux pour des vaisseaux de Star Citizen. Participez à un tirage au sort ouvert ; à sa clôture, le gagnant est tiré au hasard.",
+      "empty": "Il n'y a aucun tirage au sort en ce moment.",
+      "status": "Statut",
+      "runs": "Période",
+      "prize": "Lot : %{name}",
+      "endsAt": "Clôture le %{date}",
+      "entriesCount": "Participants : %{count}",
+      "entered": "Vous participez à ce tirage au sort.",
+      "statuses": {
+        "draft": "Brouillon",
+        "upcoming": "À venir",
+        "open": "Ouvert",
+        "closed": "Clôturé, en attente du tirage",
+        "drawn": "Tiré",
+        "concluded": "Terminé"
+      },
+      "entrants": {
+        "title": "Participants",
+        "empty": "Personne n'a encore participé.",
+        "count": "Participants"
+      },
+      "winner": {
+        "title": "Gagnant",
+        "pending": "%{username} a gagné et a jusqu'au %{date} pour réclamer le code cadeau.",
+        "claimed": "%{username} a gagné et a réclamé le code cadeau.",
+        "forfeited": "Non réclamé à temps"
+      },
+      "won": {
+        "title": "Vous avez gagné !",
+        "deadline": "Réclamez votre code cadeau avant le %{date}, sinon le gain passe au suivant dans l'ordre.",
+        "claimed": "Vous avez réclamé votre code cadeau."
+      },
+      "code": {
+        "title": "Votre code cadeau",
+        "hint": "Utilisez-le sur le site de RSI et gardez-le pour vous."
+      },
+      "actions": {
+        "enter": "Participer au tirage au sort",
+        "withdraw": "Se retirer",
+        "claim": "Réclamer le code cadeau",
+        "showCode": "Afficher le code cadeau",
+        "signInToEnter": "Connectez-vous pour participer à ce tirage au sort"
+      },
+      "messages": {
+        "entered": "Vous participez au tirage au sort. Bonne chance !",
+        "withdrawn": "Vous vous êtes retiré du tirage au sort.",
+        "confirmWithdraw": "Se retirer de ce tirage au sort ?",
+        "forbidden": "Seuls les comptes avec une adresse e-mail confirmée peuvent participer. Confirmez votre adresse e-mail et réessayez.",
+        "failed": "Une erreur s'est produite. Veuillez réessayer."
+      },
+      "conditions": {
+        "title": "Conditions de participation",
+        "accept": "J'ai lu et j'accepte les conditions de participation.",
+        "confirmedAccount": "Seuls les comptes avec une adresse e-mail confirmée peuvent participer, une fois par compte.",
+        "publicEntrants": "Votre nom d'utilisateur est affiché publiquement sur cette page en tant que participant.",
+        "publicWinner": "Si vous gagnez, votre nom d'utilisateur est affiché publiquement en tant que gagnant.",
+        "drawOrder": "À la clôture du tirage au sort, tous les participants sont tirés dans un ordre aléatoire unique. Le premier dans cet ordre gagne.",
+        "claimDeadline": "Le gagnant dispose de %{days} jours pour réclamer le code cadeau. S'il n'est pas réclamé à temps, le gain passe au suivant dans l'ordre.",
+        "deletedAccount": "Si vous supprimez votre compte après le tirage, vous pouvez toujours réclamer un gain avant la date limite en contactant %{discordHandle} sur Discord. Vous prouvez votre identité avec un code envoyé à l'adresse e-mail avec laquelle vous avez participé.",
+        "noCash": "Le lot est uniquement un code cadeau. Il n'existe aucune contrepartie en espèces et il ne peut pas être échangé.",
+        "noLiability": "Fleetyards n'est pas responsable du code cadeau, de sa validité ou de son utilisation, ni d'aucun problème lié à votre compte RSI.",
+        "noRecourse": "Le résultat du tirage est définitif. Tout recours juridique est exclu.",
+        "notAffiliated": "Fleetyards est un site de fans non officiel et n'est pas affilié à Cloud Imperium Games.",
+        "contact": "Des questions ? Contactez %{discordHandle} sur le",
+        "discordServer": "Discord de Fleetyards",
+        "version": "Conditions, version %{version}"
+      }
+    }
+  }
+}

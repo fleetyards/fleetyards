@@ -1,0 +1,208 @@
+{
+  "it": {
+    "nav": {
+      "raffles": "Estrazioni",
+      "raffle": "Estrazione",
+      "admin": {
+        "raffles": {
+          "index": "Estrazioni",
+          "new": "Nuova estrazione",
+          "edit": "Modifica estrazione",
+          "entries": "Partecipazioni all'estrazione"
+        }
+      }
+    },
+    "title": {
+      "raffles": "Estrazioni",
+      "raffle": "Estrazione",
+      "admin": {
+        "raffles": {
+          "index": "Estrazioni",
+          "new": "Nuova estrazione",
+          "edit": "Modifica estrazione",
+          "entries": "Partecipazioni all'estrazione"
+        }
+      }
+    },
+    "headlines": {
+      "admin": {
+        "raffles": {
+          "index": "Estrazioni",
+          "new": "Nuova estrazione",
+          "edit": "Modifica estrazione",
+          "entries": "Partecipazioni all'estrazione"
+        }
+      }
+    },
+    "labels": {
+      "raffle": {
+        "title": "Titolo",
+        "description": "Descrizione",
+        "prize": "Nave in palio",
+        "code": "Codice regalo",
+        "codeInfo": "Il codice che riceve il vincitore. Viene salvato cifrato e non viene mai più mostrato per intero.",
+        "codeSet": "È impostato un codice (%{code}). Lascia il campo vuoto per mantenerlo.",
+        "codeFrozen": "Il codice non può essere modificato dopo l'estrazione.",
+        "startsAt": "Apre il",
+        "endsAt": "Chiude il",
+        "claimPeriodDays": "Periodo per il ritiro (giorni)",
+        "claimPeriodDaysInfo": "Quanto tempo ha un vincitore per ritirare il codice prima che la vincita passi al successivo in lista.",
+        "published": "Pubblicata",
+        "publishedInfo": "Solo le estrazioni pubblicate vengono elencate e sono aperte alle partecipazioni. Per pubblicare serve un codice regalo.",
+        "status": "Stato",
+        "entriesCount": "Partecipazioni",
+        "entriesCountValue": "Partecipazioni: %{count}",
+        "statuses": {
+          "draft": "Bozza",
+          "upcoming": "In arrivo",
+          "open": "Aperta",
+          "closed": "Chiusa",
+          "drawn": "Estratta",
+          "concluded": "Conclusa"
+        },
+        "drawnInfo": "Estratta",
+        "drawnBy": "Estratta il %{date} da %{admin}.",
+        "handOverCode": "Codice regalo da consegnare",
+        "currentWinner": "Vincitore attuale: %{username}",
+        "claimDeadline": "Scadenza per il ritiro: %{date}",
+        "accountDeletedInfo": "Questo vincitore ha eliminato il proprio account. Se ti contatta su Discord prima della scadenza, invia un codice di verifica all'indirizzo email con cui ha partecipato (%{email}) e fatti dire il codice.",
+        "selfClaimInfo": "Il vincitore può ritirare il codice da solo nella pagina dell'estrazione."
+      },
+      "raffleEntry": {
+        "username": "Partecipante",
+        "drawPosition": "Posizione",
+        "conditionsAcceptedAt": "Condizioni accettate",
+        "state": "Stato",
+        "accountDeleted": "Account eliminato",
+        "verificationCode": "Codice di verifica",
+        "states": {
+          "claimed": "Ritirato",
+          "forfeited": "Decaduto",
+          "passedOver": "Saltato",
+          "winner": "Vincitore",
+          "waiting": "In lista",
+          "notDrawn": "Non idoneo"
+        }
+      },
+      "admin": {
+        "resourceAccess": {
+          "privileges": {
+            "raffles": "Estrazioni"
+          }
+        }
+      },
+      "notificationTypes": {
+        "raffle_won": "Estrazione vinta"
+      }
+    },
+    "placeholders": {
+      "raffle": {
+        "title": "Vinci una Polaris",
+        "description": "Cosa si può vincere e come",
+        "code": "XXXX-XXXX-XXXX",
+        "claimPeriodDays": "14"
+      },
+      "raffleEntry": {
+        "verificationCode": "123456"
+      }
+    },
+    "messages": {
+      "raffle": {
+        "created": "Estrazione creata.",
+        "updated": "Estrazione aggiornata.",
+        "destroyed": "Estrazione eliminata.",
+        "createFailed": "Impossibile creare l'estrazione.",
+        "updateFailed": "Impossibile aggiornare l'estrazione.",
+        "drawn": "Estrazione effettuata.",
+        "drawFailed": "Impossibile effettuare l'estrazione."
+      },
+      "raffleEntry": {
+        "claimed": "Verificato. Consegna il codice regalo al vincitore."
+      },
+      "confirm": {
+        "raffle": {
+          "destroy": "Sei sicuro di voler eliminare questa estrazione? Questa azione non può essere annullata.",
+          "draw": "Effettuare l'estrazione ora? L'ordine di tutti i partecipanti viene fissato definitivamente e non può essere estratto di nuovo."
+        }
+      }
+    },
+    "actions": {
+      "raffle": {
+        "entries": "Partecipazioni",
+        "draw": "Estrai",
+        "sendVerification": "Invia codice di verifica",
+        "handOver": "Verifica e mostra il codice"
+      }
+    },
+    "raffles": {
+      "title": "Estrazioni",
+      "lead": "Vinci codici regalo per navi di Star Citizen. Partecipa a un'estrazione aperta; alla chiusura, il vincitore viene estratto a caso.",
+      "empty": "Al momento non ci sono estrazioni.",
+      "status": "Stato",
+      "runs": "Periodo",
+      "prize": "Premio: %{name}",
+      "endsAt": "Chiude il %{date}",
+      "entriesCount": "Partecipanti: %{count}",
+      "entered": "Stai partecipando a questa estrazione.",
+      "statuses": {
+        "draft": "Bozza",
+        "upcoming": "In arrivo",
+        "open": "Aperta",
+        "closed": "Chiusa, in attesa dell'estrazione",
+        "drawn": "Estratta",
+        "concluded": "Terminata"
+      },
+      "entrants": {
+        "title": "Partecipanti",
+        "empty": "Nessuno ha ancora partecipato.",
+        "count": "Partecipanti"
+      },
+      "winner": {
+        "title": "Vincitore",
+        "pending": "%{username} ha vinto e ha tempo fino al %{date} per ritirare il codice regalo.",
+        "claimed": "%{username} ha vinto e ha ritirato il codice regalo.",
+        "forfeited": "Non ritirato in tempo"
+      },
+      "won": {
+        "title": "Hai vinto!",
+        "deadline": "Ritira il tuo codice regalo entro il %{date}, altrimenti la vincita passa al successivo in lista.",
+        "claimed": "Hai ritirato il tuo codice regalo."
+      },
+      "code": {
+        "title": "Il tuo codice regalo",
+        "hint": "Riscattalo sul sito di RSI e non condividerlo con nessuno."
+      },
+      "actions": {
+        "enter": "Partecipa all'estrazione",
+        "withdraw": "Ritirati",
+        "claim": "Ritira il codice regalo",
+        "showCode": "Mostra il codice regalo",
+        "signInToEnter": "Accedi per partecipare a questa estrazione"
+      },
+      "messages": {
+        "entered": "Stai partecipando all'estrazione. Buona fortuna!",
+        "withdrawn": "Ti sei ritirato dall'estrazione.",
+        "confirmWithdraw": "Ritirarti da questa estrazione?",
+        "forbidden": "Possono partecipare solo gli account con un indirizzo email confermato. Conferma il tuo indirizzo email e riprova.",
+        "failed": "Qualcosa è andato storto. Riprova."
+      },
+      "conditions": {
+        "title": "Condizioni di partecipazione",
+        "accept": "Ho letto e accetto le condizioni di partecipazione.",
+        "confirmedAccount": "Possono partecipare solo gli account con un indirizzo email confermato, una volta per account.",
+        "publicEntrants": "Il tuo nome utente viene mostrato pubblicamente in questa pagina come partecipante.",
+        "publicWinner": "Se vinci, il tuo nome utente viene mostrato pubblicamente come vincitore.",
+        "drawOrder": "Alla chiusura dell'estrazione, tutti i partecipanti vengono estratti in un unico ordine casuale. Vince il primo in quell'ordine.",
+        "claimDeadline": "Il vincitore ha %{days} giorni per ritirare il codice regalo. Se non viene ritirato in tempo, la vincita passa al successivo in lista.",
+        "deletedAccount": "Se elimini il tuo account dopo l'estrazione, puoi comunque ritirare una vincita prima della scadenza contattando %{discordHandle} su Discord. Dimostri di essere tu con un codice inviato all'indirizzo email con cui hai partecipato.",
+        "noCash": "Il premio è esclusivamente un codice regalo. Non è prevista alcuna alternativa in denaro e non può essere scambiato.",
+        "noLiability": "Fleetyards non è responsabile del codice regalo, della sua validità o del suo riscatto, né di eventuali problemi con il tuo account RSI.",
+        "noRecourse": "Il risultato dell'estrazione è definitivo. È escluso il ricorso alle vie legali.",
+        "notAffiliated": "Fleetyards è un sito di fan non ufficiale e non è affiliato a Cloud Imperium Games.",
+        "contact": "Domande? Contatta %{discordHandle} sul",
+        "discordServer": "Discord di Fleetyards",
+        "version": "Condizioni, versione %{version}"
+      }
+    }
+  }
+}

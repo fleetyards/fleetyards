@@ -1,0 +1,208 @@
+{
+  "es": {
+    "nav": {
+      "raffles": "Sorteos",
+      "raffle": "Sorteo",
+      "admin": {
+        "raffles": {
+          "index": "Sorteos",
+          "new": "Nuevo sorteo",
+          "edit": "Editar sorteo",
+          "entries": "Participaciones del sorteo"
+        }
+      }
+    },
+    "title": {
+      "raffles": "Sorteos",
+      "raffle": "Sorteo",
+      "admin": {
+        "raffles": {
+          "index": "Sorteos",
+          "new": "Nuevo sorteo",
+          "edit": "Editar sorteo",
+          "entries": "Participaciones del sorteo"
+        }
+      }
+    },
+    "headlines": {
+      "admin": {
+        "raffles": {
+          "index": "Sorteos",
+          "new": "Nuevo sorteo",
+          "edit": "Editar sorteo",
+          "entries": "Participaciones del sorteo"
+        }
+      }
+    },
+    "labels": {
+      "raffle": {
+        "title": "Título",
+        "description": "Descripción",
+        "prize": "Nave de premio",
+        "code": "Código de regalo",
+        "codeInfo": "El código que recibe el ganador. Se guarda cifrado y nunca se vuelve a mostrar completo.",
+        "codeSet": "Hay un código guardado (%{code}). Deja el campo vacío para conservarlo.",
+        "codeFrozen": "El código no se puede cambiar después del sorteo.",
+        "startsAt": "Abre el",
+        "endsAt": "Cierra el",
+        "claimPeriodDays": "Plazo para reclamar (días)",
+        "claimPeriodDaysInfo": "Cuánto tiempo tiene un ganador para reclamar el código antes de que el premio pase al siguiente de la lista.",
+        "published": "Publicado",
+        "publishedInfo": "Solo los sorteos publicados se muestran y admiten participaciones. Para publicar hace falta un código de regalo.",
+        "status": "Estado",
+        "entriesCount": "Participaciones",
+        "entriesCountValue": "Participaciones: %{count}",
+        "statuses": {
+          "draft": "Borrador",
+          "upcoming": "Próximo",
+          "open": "Abierto",
+          "closed": "Cerrado",
+          "drawn": "Sorteado",
+          "concluded": "Concluido"
+        },
+        "drawnInfo": "Sorteado",
+        "drawnBy": "Sorteado el %{date} por %{admin}.",
+        "handOverCode": "Código de regalo para entregar",
+        "currentWinner": "Ganador actual: %{username}",
+        "claimDeadline": "Plazo para reclamar: %{date}",
+        "accountDeletedInfo": "Este ganador eliminó su cuenta. Si te contacta en Discord antes de que termine el plazo, envía un código de verificación a la dirección de correo con la que participó (%{email}) y pídele que te diga el código.",
+        "selfClaimInfo": "El ganador puede reclamar el código por sí mismo en la página del sorteo."
+      },
+      "raffleEntry": {
+        "username": "Participante",
+        "drawPosition": "Posición",
+        "conditionsAcceptedAt": "Condiciones aceptadas",
+        "state": "Estado",
+        "accountDeleted": "Cuenta eliminada",
+        "verificationCode": "Código de verificación",
+        "states": {
+          "claimed": "Reclamado",
+          "forfeited": "Perdido",
+          "passedOver": "Omitido",
+          "winner": "Ganador",
+          "waiting": "En la lista",
+          "notDrawn": "No elegible"
+        }
+      },
+      "admin": {
+        "resourceAccess": {
+          "privileges": {
+            "raffles": "Sorteos"
+          }
+        }
+      },
+      "notificationTypes": {
+        "raffle_won": "Sorteo ganado"
+      }
+    },
+    "placeholders": {
+      "raffle": {
+        "title": "Gana una Polaris",
+        "description": "Qué se puede ganar y cómo",
+        "code": "XXXX-XXXX-XXXX",
+        "claimPeriodDays": "14"
+      },
+      "raffleEntry": {
+        "verificationCode": "123456"
+      }
+    },
+    "messages": {
+      "raffle": {
+        "created": "Sorteo creado.",
+        "updated": "Sorteo actualizado.",
+        "destroyed": "Sorteo eliminado.",
+        "createFailed": "No se pudo crear el sorteo.",
+        "updateFailed": "No se pudo actualizar el sorteo.",
+        "drawn": "Sorteo realizado.",
+        "drawFailed": "No se pudo realizar el sorteo."
+      },
+      "raffleEntry": {
+        "claimed": "Verificado. Entrega el código de regalo al ganador."
+      },
+      "confirm": {
+        "raffle": {
+          "destroy": "¿Seguro que quieres eliminar este sorteo? Esta acción no se puede deshacer.",
+          "draw": "¿Realizar el sorteo ahora? El orden de todos los participantes queda fijado de forma definitiva y no se puede volver a sortear."
+        }
+      }
+    },
+    "actions": {
+      "raffle": {
+        "entries": "Participaciones",
+        "draw": "Sortear",
+        "sendVerification": "Enviar código de verificación",
+        "handOver": "Verificar y mostrar código"
+      }
+    },
+    "raffles": {
+      "title": "Sorteos",
+      "lead": "Gana códigos de regalo para naves de Star Citizen. Participa en un sorteo abierto; cuando cierre, el ganador se elige al azar.",
+      "empty": "No hay sorteos en este momento.",
+      "status": "Estado",
+      "runs": "Periodo",
+      "prize": "Premio: %{name}",
+      "endsAt": "Cierra el %{date}",
+      "entriesCount": "Participantes: %{count}",
+      "entered": "Estás participando en este sorteo.",
+      "statuses": {
+        "draft": "Borrador",
+        "upcoming": "Próximo",
+        "open": "Abierto",
+        "closed": "Cerrado, pendiente del sorteo",
+        "drawn": "Sorteado",
+        "concluded": "Finalizado"
+      },
+      "entrants": {
+        "title": "Participantes",
+        "empty": "Todavía no ha participado nadie.",
+        "count": "Participantes"
+      },
+      "winner": {
+        "title": "Ganador",
+        "pending": "%{username} ha ganado y tiene hasta el %{date} para reclamar el código de regalo.",
+        "claimed": "%{username} ha ganado y ha reclamado el código de regalo.",
+        "forfeited": "No lo reclamó a tiempo"
+      },
+      "won": {
+        "title": "¡Has ganado!",
+        "deadline": "Reclama tu código de regalo antes del %{date}, o el premio pasará al siguiente de la lista.",
+        "claimed": "Has reclamado tu código de regalo."
+      },
+      "code": {
+        "title": "Tu código de regalo",
+        "hint": "Canjéalo en el sitio web de RSI y no se lo des a nadie."
+      },
+      "actions": {
+        "enter": "Participar en el sorteo",
+        "withdraw": "Retirarse",
+        "claim": "Reclamar código de regalo",
+        "showCode": "Mostrar código de regalo",
+        "signInToEnter": "Inicia sesión para participar en este sorteo"
+      },
+      "messages": {
+        "entered": "Estás participando en el sorteo. ¡Buena suerte!",
+        "withdrawn": "Te has retirado del sorteo.",
+        "confirmWithdraw": "¿Retirarte de este sorteo?",
+        "forbidden": "Solo pueden participar las cuentas con una dirección de correo confirmada. Confirma tu dirección de correo e inténtalo de nuevo.",
+        "failed": "Algo ha salido mal. Por favor, inténtalo de nuevo."
+      },
+      "conditions": {
+        "title": "Condiciones de participación",
+        "accept": "He leído y acepto las condiciones de participación.",
+        "confirmedAccount": "Solo pueden participar las cuentas con una dirección de correo confirmada, una vez por cuenta.",
+        "publicEntrants": "Tu nombre de usuario aparece públicamente en esta página como participante.",
+        "publicWinner": "Si ganas, tu nombre de usuario se mostrará públicamente como ganador.",
+        "drawOrder": "Cuando el sorteo cierra, todos los participantes se sortean en un único orden aleatorio. Gana el primero de ese orden.",
+        "claimDeadline": "El ganador tiene %{days} días para reclamar el código de regalo. Si no lo reclama a tiempo, el premio pasa al siguiente de la lista.",
+        "deletedAccount": "Si eliminas tu cuenta después del sorteo, aún puedes reclamar un premio antes de que termine el plazo contactando con %{discordHandle} en Discord. Demuestras que eres tú con un código enviado a la dirección de correo con la que participaste.",
+        "noCash": "El premio es únicamente un código de regalo. No existe alternativa en efectivo y no se puede canjear por otra cosa.",
+        "noLiability": "Fleetyards no se hace responsable del código de regalo, de su validez ni de su canje, ni de ningún problema con tu cuenta de RSI.",
+        "noRecourse": "El resultado del sorteo es definitivo. Se excluye la vía judicial.",
+        "notAffiliated": "Fleetyards es un sitio de fans no oficial y no está afiliado a Cloud Imperium Games.",
+        "contact": "¿Preguntas? Contacta con %{discordHandle} en el",
+        "discordServer": "Discord de Fleetyards",
+        "version": "Condiciones, versión %{version}"
+      }
+    }
+  }
+}
