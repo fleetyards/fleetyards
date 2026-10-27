@@ -42,7 +42,8 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "shopping-lists/",
     name: "fleet-shopping-lists",
-    component: () => import("@/frontend/pages/fleets/[slug]/shopping-lists.vue"),
+    component: () =>
+      import("@/frontend/pages/fleets/[slug]/shopping-lists.vue"),
     meta: {
       mobileBack: true,
       needsAuthentication: true,
