@@ -102,7 +102,7 @@ GEM
     anonymous_loader (0.1.3)
       version_gem (~> 1.1, >= 1.1.14)
     ansi (1.5.0)
-    appsignal (5.0.6)
+    appsignal (5.0.7)
       logger
       rack (>= 2.0.0)
     ast (2.4.3)
@@ -1018,7 +1018,7 @@ CHECKSUMS
   ahoy_matey (5.5.0) sha256=84280579c1e690233bd0bffa2bdde601b3c4cb0e0cc31684238ef37f1e8cdbc6
   anonymous_loader (0.1.3) sha256=084a18e2439144d955447dc11dfc982f41fcd1583ad32d4d55151325dc44cb55
   ansi (1.5.0) sha256=5408253274e33d9d27d4a98c46d2998266fd51cba58a7eb9d08f50e57ed23592
-  appsignal (5.0.6) sha256=3dba1128c5c602dbaf97b564fd793a1b842a0fd2182109a5ee12af9b7650e1b8
+  appsignal (5.0.7) sha256=7316aa63071f2cba80be44e3571f7a8fe1e3e18781d4a6029016456df8b1a8e0
   ast (2.4.3) sha256=954615157c1d6a382bc27d690d973195e79db7f55e9765ac7c481c60bdb4d383
   asyncapi_cable (0.2.0) sha256=0358c75b8680c907685bf649173847fd86f50812afebeb66cf1fb9e49a1ee57a
   atproto_client (0.1.5) sha256=16a1f4b9576b19c75114732b8ba10b5bb3588401670c21b859e81db6e17fa605
