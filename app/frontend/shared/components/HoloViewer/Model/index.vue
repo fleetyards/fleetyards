@@ -27,7 +27,10 @@ import {
   LineSegments,
   MeshPhongMaterial,
   MeshLambertMaterial,
+  type MeshStandardMaterial,
   DefaultLoadingManager,
+  SRGBColorSpace,
+  TextureLoader,
 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { prepareGltfLoader } from "../gltfLoader";
@@ -350,6 +353,7 @@ onUnmounted(() => {
   material.dispose();
   windowMaterial.dispose();
   wireMaterial.dispose();
+  paintMap?.dispose();
   if (mountRoot) disposeFading(mountRoot);
 });
 
@@ -404,9 +408,64 @@ const attachMounts = async (scene: Group) => {
   invalidate();
 };
 
+// The body is the one mesh a paint recolours; decals and glass keep theirs.
+const bodyMaterials = (scene: Group) => {
+  const materials = new Set<MeshStandardMaterial>();
+
+  scene.traverse((node) => {
+    if (!node.name.endsWith("_body")) return;
+
+    node.traverse((child) => {
+      const mesh = child as Mesh;
+      if (mesh.isMesh) materials.add(mesh.material as MeshStandardMaterial);
+    });
+  });
+
+  return [...materials];
+};
+
+let paintMap: Texture | undefined;
+let paintRequest = 0;
+
+const applyPaint = async (scene: Group) => {
+  const request = ++paintRequest;
+  const url = props.model.paint;
+  const next = url
+    ? await new TextureLoader().loadAsync(url).catch(() => undefined)
+    : undefined;
+
+  if (request !== paintRequest) {
+    next?.dispose();
+    return;
+  }
+
+  bodyMaterials(scene).forEach((bodyMaterial) => {
+    const own = (bodyMaterial.userData.ownMap ??=
+      bodyMaterial.map) as Texture | null;
+
+    if (next && own) {
+      // Written like the export's own map, which is in glTF's orientation.
+      next.colorSpace = SRGBColorSpace;
+      next.flipY = false;
+      next.wrapS = own.wrapS;
+      next.wrapT = own.wrapT;
+      next.anisotropy = own.anisotropy;
+    }
+
+    bodyMaterial.map = next ?? own;
+    bodyMaterial.needsUpdate = true;
+  });
+
+  paintMap?.dispose();
+  paintMap = next;
+
+  invalidate();
+};
+
 const setup = (scene: Group, animations: AnimationClip[]) => {
   if (props.model.textured) {
     playAnimations(scene, animations);
+    if (props.model.paint) void applyPaint(scene);
   } else {
     setMaterials(scene);
   }
@@ -459,6 +518,13 @@ watch(
 
     applyHighlights(mountRoot, props.model.mounts ?? []);
     setMaterials(mountRoot);
+  },
+);
+
+watch(
+  () => props.model.paint,
+  () => {
+    if (state.value && props.model.textured) void applyPaint(state.value.scene);
   },
 );
 

@@ -47,7 +47,11 @@ import { storeToRefs } from "pinia";
 import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";
-import { FeatureFlagName, type ModelExtended } from "@/services/fyApi";
+import {
+  FeatureFlagName,
+  type ModelExtended,
+  useModelPaints,
+} from "@/services/fyApi";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import {
@@ -324,6 +328,21 @@ const toggleTexturedHolo = () => {
   texturedHolo.value = !texturedHolo.value;
 };
 
+// The paints the textured holo can be repainted in, beside the ship's own.
+const { data: paints } = useModelPaints(() => props.model.slug, {
+  query: { enabled: texturedHoloAvailable },
+});
+
+const holoPaints = computed(() =>
+  (paints.value ?? []).filter((paint) => !!paint.media.holoTexture),
+);
+
+const holoPaintId = ref<string>();
+
+const holoPaint = computed(() =>
+  holoPaints.value.find((paint) => paint.id === holoPaintId.value),
+);
+
 const holoModel = computed(() => {
   const textured = texturedHoloAvailable.value && texturedHolo.value;
   const holo = textured
@@ -344,6 +363,7 @@ const holoModel = computed(() => {
     length,
     size: holo?.size,
     textured,
+    paint: (textured && holoPaint.value?.media.holoTexture) || undefined,
   };
 });
 
@@ -430,6 +450,35 @@ const adiMap = computed(() => {
                 >
                   {{ t("labels.texturedHolo") }}
                 </Btn>
+
+                <BtnDropdown
+                  v-if="
+                    holoOpen &&
+                    texturedHoloAvailable &&
+                    texturedHolo &&
+                    holoPaints.length
+                  "
+                  expand-bottom
+                  data-test="model-holo-paint"
+                >
+                  <template #label>
+                    <span>{{
+                      holoPaint?.name ?? t("labels.texturedHoloOwnPaint")
+                    }}</span>
+                    <i class="fa-light fa-chevron-down" />
+                  </template>
+                  <Btn :active="!holoPaint" @click="holoPaintId = undefined">
+                    {{ t("labels.texturedHoloOwnPaint") }}
+                  </Btn>
+                  <Btn
+                    v-for="paint in holoPaints"
+                    :key="paint.id"
+                    :active="holoPaint?.id === paint.id"
+                    @click="holoPaintId = paint.id"
+                  >
+                    {{ paint.name }}
+                  </Btn>
+                </BtnDropdown>
 
                 <Btn v-if="adiMap" :href="adiMap">
                   <img :src="adiIcon" class="adi-icon" />

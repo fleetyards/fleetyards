@@ -475,6 +475,7 @@
       "3dView": "3D",
       "3dMap": "Map",
       "texturedHolo": "Texturizado",
+      "texturedHoloOwnPaint": "Pintura estándar",
       "viewInAr": "RA",
       "viewInArHint": "Colócala en tu habitación a tamaño real",
       "filter": "Filtro",
