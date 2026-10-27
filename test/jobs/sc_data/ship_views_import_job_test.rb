@@ -298,6 +298,14 @@ module ScData
       assert_equal "flight_port.png", @model.port_view.filename.to_s
     end
 
+    test "takes the WebP over a PNG of the same render" do
+      publish({"flight_angled_colored.png" => "png", "flight_angled_colored.webp" => PNG})
+
+      perform
+
+      assert_equal "flight_angled_colored.webp", @model.angled_view_colored.filename.to_s
+    end
+
     test "logs what it attached" do
       publish({"flight_top.png" => PNG})
       Rails.logger.expects(:info).with("[sc_data] ShipViewsImportJob attached #{@model.slug}: top_view")
