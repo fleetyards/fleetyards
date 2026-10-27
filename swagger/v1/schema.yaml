@@ -41748,6 +41748,9 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         fleetchartImage:
           type: string
+        holoTexture:
+          type: string
+          nullable: true
         portView:
           "$ref": "#/components/schemas/MediaFile"
         storeImage:

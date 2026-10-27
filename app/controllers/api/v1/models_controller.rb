@@ -317,6 +317,7 @@ module Api
         @paints = model.paints
           .visible
           .active
+          .with_attached_holo_texture
           .order(name: :asc)
       end
 
