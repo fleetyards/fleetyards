@@ -2,6 +2,64 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.25.0](https://github.com/fleetyards/fleetyards/compare/v9.24.0...v9.25.0) (2026-10-27)
+
+
+### Features
+
+* **admin:** bulk actions for supporter contributions ([#5972](https://github.com/fleetyards/fleetyards/issues/5972)) ([d2421a9](https://github.com/fleetyards/fleetyards/commit/d2421a9239399ccc6a15632632cebb5b7d19b94d))
+* **admin:** show the angled view on the component and equipment lists ([#5975](https://github.com/fleetyards/fleetyards/issues/5975)) ([0bc846a](https://github.com/fleetyards/fleetyards/commit/0bc846a98790bf051beac45090f8d8fa86eda7f4))
+* **blueprints:** show what a recipe makes as a blueprint-style plan ([#6002](https://github.com/fleetyards/fleetyards/issues/6002)) ([1f616e8](https://github.com/fleetyards/fleetyards/commit/1f616e89b2aeb408c8632928eea301e6c3c4e5b5))
+* **catalogue:** add an item to an inventory from its detail page ([#5985](https://github.com/fleetyards/fleetyards/issues/5985)) ([280de03](https://github.com/fleetyards/fleetyards/commit/280de030841e59915a74d3209dcb02921caa1cf6))
+* **catalogue:** show an item's holo, views and picture across the app ([#5979](https://github.com/fleetyards/fleetyards/issues/5979)) ([6a1869a](https://github.com/fleetyards/fleetyards/commit/6a1869a51109edc263d0441259d58d1583f902dc))
+* **contracts:** reward per delivered SCU or unit, and make the reward explicit ([#5974](https://github.com/fleetyards/fleetyards/issues/5974)) ([4a6a1e4](https://github.com/fleetyards/fleetyards/commit/4a6a1e45303ac0d24db72e2cd20e6ba31c095652))
+* **equipment:** link item versions and the attachments that fit a weapon ([#5980](https://github.com/fleetyards/fleetyards/issues/5980)) ([6d164d1](https://github.com/fleetyards/fleetyards/commit/6d164d1dab342ff43ee95f212177ec31463be168))
+* **hangar:** group blueprints and inventories under an Assets menu ([#6005](https://github.com/fleetyards/fleetyards/issues/6005)) ([040ed87](https://github.com/fleetyards/fleetyards/commit/040ed879c850e0b898c2daefdd5695ceb892f17a))
+* **logistics:** delete hangar and fleet inventories from their edit modals ([#5982](https://github.com/fleetyards/fleetyards/issues/5982)) ([05fa201](https://github.com/fleetyards/fleetyards/commit/05fa201cfe74dda26a302df5272c85a8f0a96702))
+* **logistics:** picture components and FPS items by their angled view in the item picker and inventory lists ([#5986](https://github.com/fleetyards/fleetyards/issues/5986)) ([a52d4fa](https://github.com/fleetyards/fleetyards/commit/a52d4fa0328b71c358df9e2fda453a009c2bb200))
+* shopping cart for catalogue items ([#6003](https://github.com/fleetyards/fleetyards/issues/6003)) ([649e8cf](https://github.com/fleetyards/fleetyards/commit/649e8cfddb59c62deef139d69b5fb61a601d38c4))
+* size and grade filters for the components catalogue ([#6007](https://github.com/fleetyards/fleetyards/issues/6007)) ([30acc1b](https://github.com/fleetyards/fleetyards/commit/30acc1bd9d9c6c48e25faa17b27663fa3eee4816))
+* **users:** track consecutive active weeks per user ([#6004](https://github.com/fleetyards/fleetyards/issues/6004)) ([b880b03](https://github.com/fleetyards/fleetyards/commit/b880b038c1c55d1f7409dcfbde8e460a070b8796))
+
+
+### Bug Fixes
+
+* **admin:** sort and filter models by hidden and active ([#6011](https://github.com/fleetyards/fleetyards/issues/6011)) ([ad91cca](https://github.com/fleetyards/fleetyards/commit/ad91cca4ab3b0b62228632feca97316e07e7c8bd))
+* **contracts:** pay each line of a per-unit contract its own rate ([#5983](https://github.com/fleetyards/fleetyards/issues/5983)) ([9ff04a5](https://github.com/fleetyards/fleetyards/commit/9ff04a5a35028249e4c58d088f82f3d5dc06cd8b))
+* **deps:** bump faraday to 2.14.4 for json 3 support ([#6006](https://github.com/fleetyards/fleetyards/issues/6006)) ([8c885bc](https://github.com/fleetyards/fleetyards/commit/8c885bc786279baa8acc36237eefc166b0ac0968))
+* **models:** fall back to the coloured angled view for a ship without a store image ([7fe433d](https://github.com/fleetyards/fleetyards/commit/7fe433d82d03733a268966fdfbb87f5e2313a9b6))
+* **oauth:** report provider failures to AppSignal ([#6008](https://github.com/fleetyards/fleetyards/issues/6008)) ([d7b77b4](https://github.com/fleetyards/fleetyards/commit/d7b77b442b76480ec6bfa60ac2fa4ee12e141092))
+* **router:** load a new release after any page change, not only on routes without params ([#6013](https://github.com/fleetyards/fleetyards/issues/6013)) ([823fd31](https://github.com/fleetyards/fleetyards/commit/823fd319c7cd8894378f3693c4efa32da83c4bd6))
+* **sc-data:** match item renders by the folder the index names them by ([#5976](https://github.com/fleetyards/fleetyards/issues/5976)) ([dddae5b](https://github.com/fleetyards/fleetyards/commit/dddae5b9969f3c30d5c574497d06a96477696748))
+* surface refused contract actions and keep the item picker alive on a cleared search ([#6012](https://github.com/fleetyards/fleetyards/issues/6012)) ([24daabb](https://github.com/fleetyards/fleetyards/commit/24daabb4fec06c2acd9941fd454e8dd0cef97487))
+* **tables:** point the sort arrow down for descending and up for ascending ([#5970](https://github.com/fleetyards/fleetyards/issues/5970)) ([6dcbcab](https://github.com/fleetyards/fleetyards/commit/6dcbcaba9eb8b40e0b12b16c72493ee962538031))
+* **uex:** price the visible record when UEX names a hidden twin ([#5984](https://github.com/fleetyards/fleetyards/issues/5984)) ([f3dc7a8](https://github.com/fleetyards/fleetyards/commit/f3dc7a8764b721d665debb17ebc80a8c8f4b2c10))
+
+
+### Refactorings
+
+* **models:** preload ship artwork from one list ([c1e6607](https://github.com/fleetyards/fleetyards/commit/c1e66079daf1e6c993815297371db75aab55979a))
+
+
+### Chores
+
+* **ci:** cancel superseded pull request runs ([#6017](https://github.com/fleetyards/fleetyards/issues/6017)) ([092aeac](https://github.com/fleetyards/fleetyards/commit/092aeac2141b2bb61bee71fad9cf68565c04b336))
+* **deps-dev:** bump @tanstack/vue-query-devtools from 6.3.4 to 6.3.5 ([#5990](https://github.com/fleetyards/fleetyards/issues/5990)) ([29b1a65](https://github.com/fleetyards/fleetyards/commit/29b1a658d71eba8544c7815d84d3cae79ed06877))
+* **deps-dev:** bump @types/swagger-ui from 5.32.0 to 5.32.1 ([#5999](https://github.com/fleetyards/fleetyards/issues/5999)) ([e448bca](https://github.com/fleetyards/fleetyards/commit/e448bca6b13922ecb07a1216c41890eadf3ed49a))
+* **deps-dev:** bump @typescript-eslint/eslint-plugin ([#5992](https://github.com/fleetyards/fleetyards/issues/5992)) ([c72e47c](https://github.com/fleetyards/fleetyards/commit/c72e47cd399b5446b2dbfad458362b30ec42807b))
+* **deps-dev:** bump eslint-plugin-vuejs-accessibility ([#5989](https://github.com/fleetyards/fleetyards/issues/5989)) ([b322f38](https://github.com/fleetyards/fleetyards/commit/b322f38b8bf08f9f25aa238f5ddfd5e1f4bfe3c4))
+* **deps-dev:** bump orval from 8.43.0 to 8.44.0 ([#5996](https://github.com/fleetyards/fleetyards/issues/5996)) ([92e8787](https://github.com/fleetyards/fleetyards/commit/92e87874212502a46ab9cc1d56d3fc4d228613bb))
+* **deps-dev:** bump sass from 1.105.2 to 1.106.1 ([#5995](https://github.com/fleetyards/fleetyards/issues/5995)) ([db3d3e4](https://github.com/fleetyards/fleetyards/commit/db3d3e40706fbc5b1602c104601e3fc507921a11))
+* **deps-dev:** bump vite from 8.3.4 to 8.3.5 ([#5993](https://github.com/fleetyards/fleetyards/issues/5993)) ([ec42c69](https://github.com/fleetyards/fleetyards/commit/ec42c69f5ce2606cd70fd53900b53ee486fe316b))
+* **deps:** bump @event-calendar/core from 5.17.2 to 5.18.0 ([#5998](https://github.com/fleetyards/fleetyards/issues/5998)) ([57ee899](https://github.com/fleetyards/fleetyards/commit/57ee8993727a1ca2fa76d259c78984f9d18750c4))
+* **deps:** bump appsignal from 5.0.5 to 5.0.6 ([#5997](https://github.com/fleetyards/fleetyards/issues/5997)) ([cb2eb8f](https://github.com/fleetyards/fleetyards/commit/cb2eb8f88f37ae5e4de4db66d45ecf07962c54fe))
+* **deps:** bump aws-sdk-s3 from 1.234.0 to 1.235.0 ([#5991](https://github.com/fleetyards/fleetyards/issues/5991)) ([b5e4468](https://github.com/fleetyards/fleetyards/commit/b5e44682c582ae28258e0b5d50a5c6972fdc8a5e))
+* **deps:** bump docker/login-action from 4.6.0 to 4.7.0 ([#6000](https://github.com/fleetyards/fleetyards/issues/6000)) ([6df4376](https://github.com/fleetyards/fleetyards/commit/6df4376e218c5ec24649257c20b989e904e982a5))
+* **deps:** bump doorkeeper-openid_connect from 2.0.0 to 2.1.0 ([#5988](https://github.com/fleetyards/fleetyards/issues/5988)) ([03a6908](https://github.com/fleetyards/fleetyards/commit/03a690861cd1c68ece5991a104237c1fcb76ddf0))
+* **deps:** bump kaminari from 1.2.2 to 1.3.0 ([#5987](https://github.com/fleetyards/fleetyards/issues/5987)) ([5d6abb2](https://github.com/fleetyards/fleetyards/commit/5d6abb2adb9b22a16d0bbbc9618dcf90ebae0fb6))
+* **deps:** bump pghero from 4.0.1 to 4.1.0 ([#5994](https://github.com/fleetyards/fleetyards/issues/5994)) ([8d6318f](https://github.com/fleetyards/fleetyards/commit/8d6318f448044684b149162c8b096f70408569bc))
+* **skills:** match pr-&lt;N&gt; branches to their pull request in the cleanup audit ([#5973](https://github.com/fleetyards/fleetyards/issues/5973)) ([cef99d2](https://github.com/fleetyards/fleetyards/commit/cef99d2bfc66b2ff3535565ae04a9a7dde1d478a))
+
 ## [9.24.0](https://github.com/fleetyards/fleetyards/compare/v9.23.0...v9.24.0) (2026-10-25)
 
 
