@@ -90,10 +90,13 @@ class Raffle < ApplicationRecord
     entries.won.where(forfeited_at: nil).order(:draw_position).first
   end
 
+  # Enough to tell two codes apart, never enough to redeem one: a code too
+  # short to give away four characters safely shows none.
   def masked_code
     return if code.blank?
+    return "*" * code.length if code.length < 12
 
-    "#{"*" * [code.length - 4, 4].max}#{code.last(4)}"
+    "#{"*" * (code.length - 4)}#{code.last(4)}"
   end
 
   # Ends the raffle for good: the code is in a winner's hands or nobody is left
@@ -124,7 +127,7 @@ class Raffle < ApplicationRecord
   private def frozen_after_draw
     return unless drawn_at_was.present?
 
-    %w[code starts_at ends_at published].each do |attribute|
+    %w[code starts_at ends_at claim_period_days published].each do |attribute|
       errors.add(attribute, :frozen_after_draw) if will_save_change_to_attribute?(attribute)
     end
   end

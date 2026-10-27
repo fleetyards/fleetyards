@@ -56,7 +56,7 @@ class RaffleTest < ActiveSupport::TestCase
 
   test "masked_code shows only the last four characters" do
     assert_equal "********CDEF", build(:raffle, code: "12345678CDEF").masked_code
-    assert_equal "****ABCD", build(:raffle, code: "ABCD").masked_code
+    assert_equal "******", build(:raffle, code: "ABCDEF").masked_code
   end
 
   test "conclude! drops the email snapshots" do

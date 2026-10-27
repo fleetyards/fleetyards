@@ -153,6 +153,7 @@ const onSubmit = handleSubmit((values) => {
           translation-key="raffle.claimPeriodDays"
           name="claimPeriodDays"
           type="number"
+          :disabled="drawn"
           :info="t('labels.raffle.claimPeriodDaysInfo')"
         />
       </div>
