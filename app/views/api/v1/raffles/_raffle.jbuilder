@@ -14,11 +14,11 @@ json.starts_at raffle.starts_at.utc.iso8601
 json.ends_at raffle.ends_at.utc.iso8601
 json.claim_period_days raffle.claim_period_days
 json.status raffle.status
-json.entries_count raffle.entries.size
+json.entries_count local_assigns.fetch(:entries_count) { raffle.entries.count }
 json.drawn_at raffle.drawn_at.utc.iso8601 if raffle.drawn_at.present?
 json.concluded_at raffle.concluded_at.utc.iso8601 if raffle.concluded_at.present?
 
-winners = raffle.drawn? ? raffle.entries.won.includes(:user).order(:draw_position).to_a : []
+winners = raffle.drawn? ? raffle.won_entries.to_a : []
 current_winner = winners.find(&:current_winner?)
 if current_winner.present?
   json.current_winner do

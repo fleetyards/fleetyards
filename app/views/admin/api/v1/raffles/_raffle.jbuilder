@@ -15,7 +15,7 @@ json.ends_at raffle.ends_at.utc.iso8601
 json.claim_period_days raffle.claim_period_days
 json.published raffle.published
 json.status raffle.status
-json.entries_count raffle.entries.size
+json.entries_count local_assigns.fetch(:entries_count) { raffle.entries.count }
 json.drawn_at raffle.drawn_at.utc.iso8601 if raffle.drawn_at.present?
 json.drawn_by raffle.drawn_by.username if raffle.drawn_by.present?
 json.concluded_at raffle.concluded_at.utc.iso8601 if raffle.concluded_at.present?

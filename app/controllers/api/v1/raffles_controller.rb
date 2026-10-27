@@ -20,11 +20,12 @@ module Api
         authorize! with: ::RafflePolicy
 
         @raffles = authorized_scope(Raffle.all, with: ::RafflePolicy)
-          .includes(model: {store_image_attachment: :blob})
+          .includes(won_entries: :user, model: {store_image_attachment: :blob})
           .order(ends_at: :desc)
           .page(page_params)
           .per(per_page(Raffle))
         @viewer_entries = viewer_entries_for(@raffles.map(&:id))
+        @entries_counts = RaffleEntry.where(raffle_id: @raffles.map(&:id)).group(:raffle_id).count
       end
 
       def show
@@ -66,7 +67,7 @@ module Api
         @raffle = Raffle.published.find(params[:id])
 
         authorize! @raffle, with: ::RafflePolicy
-        @winning_entry = @raffle.current_winner
+        @winning_entry = @raffle.current_winner if %w[claim code].include?(action_name)
       end
     end
   end

@@ -34,6 +34,7 @@ class Raffle < ApplicationRecord
   belongs_to :drawn_by, class_name: "AdminUser", optional: true
 
   has_many :entries, class_name: "RaffleEntry", dependent: :delete_all, inverse_of: :raffle
+  has_many :won_entries, -> { won.order(:draw_position) }, class_name: "RaffleEntry", inverse_of: false
 
   validates :title, presence: true
   validates :starts_at, presence: true
@@ -81,12 +82,12 @@ class Raffle < ApplicationRecord
     concluded_at.present?
   end
 
+  # From the preloaded winners on a list, a fresh query everywhere else: a
+  # cached association would still name the winner a promotion just replaced.
   def current_winner
-    entries.won.where(forfeited_at: nil).order(:draw_position).first
-  end
+    return won_entries.find(&:current_winner?) if won_entries.loaded?
 
-  def forfeited_winners
-    entries.won.where.not(forfeited_at: nil).order(:draw_position)
+    entries.won.where(forfeited_at: nil).order(:draw_position).first
   end
 
   def masked_code

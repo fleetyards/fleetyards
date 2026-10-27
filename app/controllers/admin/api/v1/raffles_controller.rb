@@ -19,9 +19,10 @@ module Admin
           q = Raffle.ransack(raffle_query_params)
 
           @raffles = q.result(distinct: true)
-            .includes(:drawn_by, model: {store_image_attachment: :blob})
+            .includes(:drawn_by, won_entries: %i[user claimed_by], model: {store_image_attachment: :blob})
             .page(page_params)
             .per(per_page(Raffle))
+          @entries_counts = RaffleEntry.where(raffle_id: @raffles.map(&:id)).group(:raffle_id).count
         end
 
         def show
