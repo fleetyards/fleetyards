@@ -116,7 +116,6 @@ overrides:
   js-yaml@4: '>=4.3.2 <5'
 
 patchedDependencies:
-  '@tresjs/core@5.8.1': 51b209e656692a4745230325ad9388969f6657b9a9f8dba55dc7d6bebbe0b8d2
   '@vue/language-core@3.3.13': d1e742ba9a190ce1968c1f866dc3dc5c484d170f94e0c5f443a6db6cb653af15
 
 importers:
@@ -179,10 +178,10 @@ importers:
         version: 3.32.0(@floating-ui/dom@1.8.0)(@tiptap/core@3.32.0(@tiptap/pm@3.32.0))(@tiptap/pm@3.32.0)(vue@3.5.44(typescript@6.0.3))
       '@tresjs/cientos':
         specifier: ^5.7.2
-        version: 5.7.2(@tresjs/core@5.8.1(patch_hash=51b209e656692a4745230325ad9388969f6657b9a9f8dba55dc7d6bebbe0b8d2)(three@0.186.1)(vue@3.5.44(typescript@6.0.3)))(@types/three@0.186.0)(react@19.1.0)(three@0.186.1)(vue@3.5.44(typescript@6.0.3))
+        version: 5.7.2(@tresjs/core@5.10.0(three@0.186.1)(vue@3.5.44(typescript@6.0.3)))(@types/three@0.186.0)(react@19.1.0)(three@0.186.1)(vue@3.5.44(typescript@6.0.3))
       '@tresjs/core':
-        specifier: ^5.8.1
-        version: 5.8.1(patch_hash=51b209e656692a4745230325ad9388969f6657b9a9f8dba55dc7d6bebbe0b8d2)(three@0.186.1)(vue@3.5.44(typescript@6.0.3))
+        specifier: ^5.10.0
+        version: 5.10.0(three@0.186.1)(vue@3.5.44(typescript@6.0.3))
       '@vee-validate/rules':
         specifier: ^4.15.1
         version: 4.15.1(vue@3.5.44(typescript@6.0.3))
@@ -2334,8 +2333,8 @@ packages:
     engines: {node: '>=20'}
     hasBin: true
 
-  '@pmndrs/pointer-events@6.6.29':
-    resolution: {integrity: sha512-o4YD6VfJgDYjFgde/YyAw2X5KY454tdmOXrHGOvKTWJBHzkL90B5vH4rqmexwRVvaDfT3YLvVh/Dm5cBbgZXMg==}
+  '@pmndrs/pointer-events@6.6.32':
+    resolution: {integrity: sha512-ziow8WQach6AF3fB8XGfmxmjLH6iUKPDJsw5RzxU7oxhfpn4uQZKzq50U1LFywroMZ45JhCqxE+p7IM8MHRsFg==}
 
   '@rails/activestorage@8.1.400':
     resolution: {integrity: sha512-ScpkkHXTQ7QByvzLbnrnubpsWRKhlu08kXyRhSV+Hh1s1X43lv5T0PFLhXAvmqrIcq8nQ2up8iyuCmIzacPDDw==}
@@ -3241,8 +3240,8 @@ packages:
       three: '>=0.133'
       vue: '>=3.5.17'
 
-  '@tresjs/core@5.8.1':
-    resolution: {integrity: sha512-Lg0S8ZY3PLMIDDh+VN21QQBSC6afITAAWJ41gOYz9L0Et5RPAqDNCR/OncQxH4CXrNe/c5GB2wqGgRT3tHPoCg==}
+  '@tresjs/core@5.10.0':
+    resolution: {integrity: sha512-ZS0aaXXyNuM5ZxjObGQK77ml6gJCNTZ7vitJ1aGAg/MzwwVYUl3J49iZKKTWc0Mn6Y8OB03cwDUSAxb/GyU12Q==}
     peerDependencies:
       three: '>=0.133'
       vue: '>=3.4'
@@ -6252,8 +6251,8 @@ packages:
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
 
-  radashi@12.7.2:
-    resolution: {integrity: sha512-BfoN4XJll34ok3rCHjVlRypymJvD3cE+M3UATC8519wUgHl1/AXt2dEEIFv5865gO6t0ENAU6qEOqjr/NcIRyQ==}
+  radashi@12.9.7:
+    resolution: {integrity: sha512-e+4Z+FaYhshG2N3k4S1P1uN+UgFNA1xvaVNkgR5tR1WS3fnds5aahoF7fGg0Zw0tOrastVqoQ9K0kC5clmCmGw==}
     engines: {node: '>=16.0.0'}
 
   ramldt2jsonschema@1.2.3:
@@ -9435,7 +9434,7 @@ snapshots:
     dependencies:
       playwright: 1.64.1
 
-  '@pmndrs/pointer-events@6.6.29': {}
+  '@pmndrs/pointer-events@6.6.32': {}
 
   '@rails/activestorage@8.1.400':
     dependencies:
@@ -10271,9 +10270,9 @@ snapshots:
       '@tiptap/extension-bubble-menu': 3.32.0(@tiptap/core@3.32.0(@tiptap/pm@3.32.0))(@tiptap/pm@3.32.0)
       '@tiptap/extension-floating-menu': 3.32.0(@floating-ui/dom@1.8.0)(@tiptap/core@3.32.0(@tiptap/pm@3.32.0))(@tiptap/pm@3.32.0)
 
-  '@tresjs/cientos@5.7.2(@tresjs/core@5.8.1(patch_hash=51b209e656692a4745230325ad9388969f6657b9a9f8dba55dc7d6bebbe0b8d2)(three@0.186.1)(vue@3.5.44(typescript@6.0.3)))(@types/three@0.186.0)(react@19.1.0)(three@0.186.1)(vue@3.5.44(typescript@6.0.3))':
+  '@tresjs/cientos@5.7.2(@tresjs/core@5.10.0(three@0.186.1)(vue@3.5.44(typescript@6.0.3)))(@types/three@0.186.0)(react@19.1.0)(three@0.186.1)(vue@3.5.44(typescript@6.0.3))':
     dependencies:
-      '@tresjs/core': 5.8.1(patch_hash=51b209e656692a4745230325ad9388969f6657b9a9f8dba55dc7d6bebbe0b8d2)(three@0.186.1)(vue@3.5.44(typescript@6.0.3))
+      '@tresjs/core': 5.10.0(three@0.186.1)(vue@3.5.44(typescript@6.0.3))
       '@vueuse/core': 13.9.0(vue@3.5.44(typescript@6.0.3))
       camera-controls: 2.10.1(three@0.186.1)
       stats-gl: 2.4.2(@types/three@0.186.0)(three@0.186.1)
@@ -10288,12 +10287,12 @@ snapshots:
       - '@types/three'
       - react
 
-  '@tresjs/core@5.8.1(patch_hash=51b209e656692a4745230325ad9388969f6657b9a9f8dba55dc7d6bebbe0b8d2)(three@0.186.1)(vue@3.5.44(typescript@6.0.3))':
+  '@tresjs/core@5.10.0(three@0.186.1)(vue@3.5.44(typescript@6.0.3))':
     dependencies:
-      '@pmndrs/pointer-events': 6.6.29
-      '@vue/devtools-api': 7.7.9
-      '@vueuse/core': 13.9.0(vue@3.5.44(typescript@6.0.3))
-      radashi: 12.7.2
+      '@pmndrs/pointer-events': 6.6.32
+      '@vue/devtools-api': 8.2.1
+      '@vueuse/core': 15.0.0(vue@3.5.44(typescript@6.0.3))
+      radashi: 12.9.7
       three: 0.186.1
       vue: 3.5.44(typescript@6.0.3)
 
@@ -13656,7 +13655,7 @@ snapshots:
 
   queue-microtask@1.2.3: {}
 
-  radashi@12.7.2: {}
+  radashi@12.9.7: {}
 
   ramldt2jsonschema@1.2.3:
     dependencies:
