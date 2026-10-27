@@ -131,6 +131,11 @@ de:
       create: "Plan konnte nicht erstellt werden."
       update: "Plan konnte nicht aktualisiert werden."
       rebase: "Plan konnte nicht auf den Hangar aktualisiert werden."
+    fleet_shopping_lists:
+      create: "Einkaufsliste konnte nicht veröffentlicht werden."
+      update: "Einkaufsliste konnte nicht aktualisiert werden."
+      destroy: "Einkaufsliste konnte nicht gelöscht werden."
+      copy: "Einkaufsliste konnte nicht in deinen Warenkorb kopiert werden."
     carts:
       create: "Liste konnte nicht erstellt werden."
       update: "Liste konnte nicht aktualisiert werden."

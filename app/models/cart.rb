@@ -26,6 +26,15 @@ class Cart < ApplicationRecord
     active_for(user)
   end
 
+  # `name`, or the first of "name (2)", "name (3)" and so on the user has not
+  # taken yet.
+  def self.unused_name(user, name)
+    base = name.truncate(56, omission: "")
+    taken = user.carts.where("name LIKE ?", "#{sanitize_sql_like(base)}%").pluck(:name).to_set
+
+    ([name] + (2..MAX_PER_USER).map { |n| "#{base} (#{n})" }).find { |candidate| !taken.include?(candidate) } || name
+  end
+
   def self.default_name(user)
     I18n.with_locale(user.notification_locale) { I18n.t("defaults.cart.name") }
   end

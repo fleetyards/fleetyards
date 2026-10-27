@@ -167,6 +167,11 @@ en:
       create: "Plan could not be created."
       update: "Plan could not be updated."
       rebase: "Plan could not be rebased on the hangar."
+    fleet_shopping_lists:
+      create: "Shopping list could not be published."
+      update: "Shopping list could not be updated."
+      destroy: "Shopping list could not be deleted."
+      copy: "Shopping list could not be copied to your cart."
     carts:
       create: "List could not be created."
       update: "List could not be updated."

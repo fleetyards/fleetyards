@@ -8629,6 +8629,276 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/shopping-lists":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    get:
+      summary: Fleet Shopping Lists
+      tags:
+      - FleetShoppingLists
+      operationId: fleetShoppingLists
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetShoppingListsList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    post:
+      summary: Create Fleet Shopping List
+      tags:
+      - FleetShoppingLists
+      operationId: createFleetShoppingList
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+        - hangar
+        - hangar:read
+      - OpenId:
+        - fleet
+        - fleet:write
+        - hangar
+        - hangar:read
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetShoppingListCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetShoppingList"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/fleets/{fleetSlug}/shopping-lists/{id}":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: Fleet Shopping List
+      tags:
+      - FleetShoppingLists
+      operationId: fleetShoppingList
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetShoppingListDetail"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Fleet Shopping List
+      tags:
+      - FleetShoppingLists
+      operationId: updateFleetShoppingList
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+        - hangar
+        - hangar:read
+      - OpenId:
+        - fleet
+        - fleet:write
+        - hangar
+        - hangar:read
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetShoppingListUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FleetShoppingList"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    delete:
+      summary: Destroy Fleet Shopping List
+      tags:
+      - FleetShoppingLists
+      operationId: destroyFleetShoppingList
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SuccessResponse"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/fleets/{fleetSlug}/shopping-lists/{id}/copy":
+    parameters:
+    - name: fleetSlug
+      in: path
+      schema:
+        type: string
+      description: Fleet slug
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    post:
+      summary: Copy Fleet Shopping List
+      tags:
+      - FleetShoppingLists
+      operationId: copyFleetShoppingList
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+        - hangar
+        - hangar:write
+      - OpenId:
+        - fleet
+        - fleet:read
+        - hangar
+        - hangar:write
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/FleetShoppingListCopyInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Cart"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/fleets/{fleetSlug}/squadron-roles":
     parameters:
     - name: fleetSlug
@@ -31410,6 +31680,14 @@ components:
           type: boolean
         destroyInventories:
           type: boolean
+        readShoppingLists:
+          type: boolean
+        createShoppingLists:
+          type: boolean
+        updateShoppingLists:
+          type: boolean
+        destroyShoppingLists:
+          type: boolean
         readAllies:
           type: boolean
         createAllies:
@@ -31464,6 +31742,10 @@ components:
       - createInventories
       - updateInventories
       - destroyInventories
+      - readShoppingLists
+      - createShoppingLists
+      - updateShoppingLists
+      - destroyShoppingLists
       - readAllies
       - createAllies
       - destroyAllies
@@ -31912,6 +32194,11 @@ components:
       - fleet:inventories:update
       - fleet:inventories:delete
       - fleet:inventories:manage
+      - fleet:shopping_lists:read
+      - fleet:shopping_lists:create
+      - fleet:shopping_lists:update
+      - fleet:shopping_lists:delete
+      - fleet:shopping_lists:manage
       - fleet:allies:read
       - fleet:allies:create
       - fleet:allies:delete
@@ -31976,6 +32263,11 @@ components:
       - FLEET_INVENTORIES_UPDATE
       - FLEET_INVENTORIES_DELETE
       - FLEET_INVENTORIES_MANAGE
+      - FLEET_SHOPPING_LISTS_READ
+      - FLEET_SHOPPING_LISTS_CREATE
+      - FLEET_SHOPPING_LISTS_UPDATE
+      - FLEET_SHOPPING_LISTS_DELETE
+      - FLEET_SHOPPING_LISTS_MANAGE
       - FLEET_ALLIES_READ
       - FLEET_ALLIES_CREATE
       - FLEET_ALLIES_DELETE
@@ -32049,6 +32341,173 @@ components:
       - verifiedAt
       - checkedAt
       title: FleetRsiVerification
+    FleetShoppingList:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        visibility:
+          "$ref": "#/components/schemas/FleetShoppingListVisibilityEnum"
+        fleetSquadrons:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetSquadronRef"
+        linesCount:
+          type: integer
+        itemsCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - description
+      - visibility
+      - fleetSquadrons
+      - linesCount
+      - itemsCount
+      - createdAt
+      - updatedAt
+      title: FleetShoppingList
+    FleetShoppingListCopyInput:
+      type: object
+      properties:
+        cartId:
+          type: string
+          format: uuid
+      additionalProperties: false
+      title: FleetShoppingListCopyInput
+    FleetShoppingListCreateInput:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 64
+        description:
+          type:
+          - string
+          - 'null'
+          maxLength: 1000
+        visibility:
+          "$ref": "#/components/schemas/FleetShoppingListVisibilityEnum"
+        fleetSquadronIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        cartId:
+          type: string
+          format: uuid
+      required:
+      - name
+      - cartId
+      additionalProperties: false
+      title: FleetShoppingListCreateInput
+    FleetShoppingListDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type:
+          - string
+          - 'null'
+        visibility:
+          "$ref": "#/components/schemas/FleetShoppingListVisibilityEnum"
+        fleetSquadrons:
+          type: array
+          items:
+            "$ref": "#/components/schemas/FleetSquadronRef"
+        linesCount:
+          type: integer
+        itemsCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CartLine"
+        totals:
+          "$ref": "#/components/schemas/CartTotals"
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - description
+      - visibility
+      - fleetSquadrons
+      - linesCount
+      - itemsCount
+      - createdAt
+      - updatedAt
+      - items
+      - totals
+      title: FleetShoppingListDetail
+    FleetShoppingListUpdateInput:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 64
+        description:
+          type:
+          - string
+          - 'null'
+          maxLength: 1000
+        visibility:
+          "$ref": "#/components/schemas/FleetShoppingListVisibilityEnum"
+        fleetSquadronIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+        cartId:
+          type: string
+          format: uuid
+      additionalProperties: false
+      title: FleetShoppingListUpdateInput
+    FleetShoppingListVisibilityEnum:
+      type: string
+      enum:
+      - members_only
+      - officers_only
+      - squadron_only
+      x-extensible-enum:
+      - members_only
+      - officers_only
+      - squadron_only
+      x-enumNames:
+      - MEMBERS_ONLY
+      - OFFICERS_ONLY
+      - SQUADRON_ONLY
+      title: FleetShoppingListVisibilityEnum
+    FleetShoppingListsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/FleetShoppingList"
+      title: FleetShoppingListsList
     FleetSquadron:
       type: object
       properties:

@@ -48,6 +48,7 @@ class Fleet < ApplicationRecord
   has_many :fleet_discord_role_holders, dependent: :delete_all
   has_many :discord_member_reads, dependent: :delete_all
   has_many :fleet_inventories, dependent: :destroy
+  has_many :fleet_shopping_lists, dependent: :destroy
   # Ordered here rather than at every call site: the strip on the front page,
   # the filter segments and the roster badges all read this association, and a
   # custom order that only the list page honoured would not be one.

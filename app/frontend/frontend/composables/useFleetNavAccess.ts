@@ -46,7 +46,8 @@ export const useFleetNavAccess = (
 
   const sessionStore = useSessionStore();
 
-  const { isFleetFeatureEnabled, isFleetSquadronsEnabled } = useFeatures();
+  const { isFeatureEnabled, isFleetFeatureEnabled, isFleetSquadronsEnabled } =
+    useFeatures();
 
   const fleetSlug = computed(() => route.params.slug as string);
 
@@ -71,6 +72,10 @@ export const useFleetNavAccess = (
 
   const hasLogisticsAccess = computed(
     () => membership.value?.capabilities?.readInventories ?? false,
+  );
+
+  const hasShoppingListsAccess = computed(
+    () => membership.value?.capabilities?.readShoppingLists ?? false,
   );
 
   const hasBlueprintsAccess = computed(
@@ -105,6 +110,15 @@ export const useFleetNavAccess = (
   // tab. The privilege is the only gate.
   const showBlueprintsNav = computed(
     () => !!membership.value && hasBlueprintsAccess.value,
+  );
+
+  // The shopping cart is a personal flag: a member without it has no cart to
+  // copy a list into.
+  const showShoppingListsNav = computed(
+    () =>
+      !!membership.value &&
+      hasShoppingListsAccess.value &&
+      isFeatureEnabled(FeatureFlagName.SHOPPING_CART),
   );
 
   // The one tab somebody outside the fleet can reach, and the reason it stays
@@ -155,6 +169,10 @@ export const useFleetNavAccess = (
     String(route.name ?? "").startsWith("fleet-logistics"),
   );
 
+  const shoppingListsNavActive = computed(
+    () => String(route.name ?? "") === "fleet-shopping-lists",
+  );
+
   const blueprintsNavActive = computed(
     () => String(route.name ?? "") === "fleet-blueprints",
   );
@@ -199,13 +217,19 @@ export const useFleetNavAccess = (
   // fleet can reach, and a public surface behind a parent is a click added for
   // the reader least able to guess what the parent holds.
   const showAssetsNav = computed(
-    () => showBlueprintsNav.value || showLogisticsNav.value,
+    () =>
+      showBlueprintsNav.value ||
+      showLogisticsNav.value ||
+      showShoppingListsNav.value,
   );
 
   // The parent lights up on either of its children's routes, which is what
   // keeps the group findable once it is closed.
   const assetsNavActive = computed(
-    () => blueprintsNavActive.value || logisticsNavActive.value,
+    () =>
+      blueprintsNavActive.value ||
+      logisticsNavActive.value ||
+      shoppingListsNavActive.value,
   );
 
   return {
@@ -218,6 +242,8 @@ export const useFleetNavAccess = (
     blueprintsNavActive,
     showLogisticsNav,
     logisticsNavActive,
+    showShoppingListsNav,
+    shoppingListsNavActive,
     showSquadronsNav,
     squadronsNavActive,
     showContractsNav,

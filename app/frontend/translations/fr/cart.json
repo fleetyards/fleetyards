@@ -89,6 +89,48 @@
         },
         "loadoutParts": "pièces non d'origine",
         "question": "Ajouter à :"
+      },
+      "fleetLists": {
+        "title": "Listes d'achats",
+        "lead": "L'équipement que la flotte veut voir chez ses membres : uniformes, armure, un équipement standard. Copie une liste dans ton panier pour voir ce qu'elle coûte et où tout acheter.",
+        "count": {
+          "one": "%{count} article",
+          "other": "%{count} articles"
+        },
+        "copy": "Copier dans mon panier",
+        "copyTitle": "Copier %{name} vers",
+        "copyNew": "Une nouvelle liste",
+        "copyNewHint": "Nommée %{name}, et définie comme ta liste active",
+        "copyIntoHint": {
+          "one": "Contient %{count} article ; les quantités s'additionnent",
+          "other": "Contient %{count} articles ; les quantités s'additionnent"
+        },
+        "showItems": "Afficher les articles",
+        "hideItems": "Masquer les articles",
+        "edit": "Modifier",
+        "delete": "Supprimer",
+        "publish": "Publier une liste",
+        "publishTitle": "Publier une de tes listes",
+        "editTitle": "Modifier la liste d'achats",
+        "source": "Ta liste",
+        "sourceHint": "Ses articles et quantités sont copiés dans la flotte, pas les boutiques choisies.",
+        "replaceFrom": "Remplacer les articles par",
+        "replaceHint": "Laisse vide pour garder les articles tels quels.",
+        "description": "Description",
+        "confirmDelete": "Supprimer la liste d'achats %{name} ?",
+        "empty": {
+          "title": "Aucune liste d'achats pour l'instant",
+          "text": "Les officiers publient ici des listes depuis leur propre panier, pour que les membres les copient dans le leur."
+        },
+        "messages": {
+          "copied": "%{name} copiée dans %{list}.",
+          "copyFailed": "Impossible de copier la liste dans ton panier.",
+          "published": "%{name} publiée.",
+          "updated": "%{name} mise à jour.",
+          "saveFailed": "Impossible d'enregistrer la liste d'achats.",
+          "deleted": "Liste d'achats supprimée.",
+          "deleteFailed": "Impossible de supprimer la liste d'achats."
+        }
       }
     }
   }

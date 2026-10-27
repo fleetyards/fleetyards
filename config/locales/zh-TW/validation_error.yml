@@ -123,6 +123,11 @@ zh-TW:
       create: "無法建立計畫。"
       update: "無法更新計畫。"
       rebase: "無法依機庫更新計畫。"
+    fleet_shopping_lists:
+      create: "無法發布購物清單。"
+      update: "無法更新購物清單。"
+      destroy: "無法刪除購物清單。"
+      copy: "無法將購物清單複製到你的購物車。"
     carts:
       create: "無法建立清單。"
       update: "無法更新清單。"

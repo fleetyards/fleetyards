@@ -89,6 +89,48 @@
         },
         "loadoutParts": "非原厂部件",
         "question": "加入："
+      },
+      "fleetLists": {
+        "title": "购物清单",
+        "lead": "舰队希望成员配备的装备：制服、护甲、标准配装。将清单复制到你的购物车，查看花费以及购买地点。",
+        "count": {
+          "one": "%{count} 件物品",
+          "other": "%{count} 件物品"
+        },
+        "copy": "复制到我的购物车",
+        "copyTitle": "将 %{name} 复制到",
+        "copyNew": "新清单",
+        "copyNewHint": "命名为 %{name}，并设为当前清单",
+        "copyIntoHint": {
+          "one": "包含 %{count} 件物品；数量将累加",
+          "other": "包含 %{count} 件物品；数量将累加"
+        },
+        "showItems": "显示物品",
+        "hideItems": "隐藏物品",
+        "edit": "编辑",
+        "delete": "删除",
+        "publish": "发布清单",
+        "publishTitle": "发布你的一个清单",
+        "editTitle": "编辑购物清单",
+        "source": "你的清单",
+        "sourceHint": "会将其物品和数量复制到舰队，但不包括所选商店。",
+        "replaceFrom": "将物品替换为",
+        "replaceHint": "留空则保持物品不变。",
+        "description": "描述",
+        "confirmDelete": "删除购物清单 %{name}？",
+        "empty": {
+          "title": "暂无购物清单",
+          "text": "军官在此从自己的购物车发布清单，供成员复制到自己的购物车中。"
+        },
+        "messages": {
+          "copied": "已将 %{name} 复制到 %{list}。",
+          "copyFailed": "无法将清单复制到你的购物车。",
+          "published": "已发布 %{name}。",
+          "updated": "已更新 %{name}。",
+          "saveFailed": "无法保存购物清单。",
+          "deleted": "已删除购物清单。",
+          "deleteFailed": "无法删除购物清单。"
+        }
       }
     }
   }

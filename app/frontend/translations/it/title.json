@@ -98,6 +98,7 @@
           "inventories": "%{fleet} Inventories",
           "transfers": "Trasferimenti di %{fleet}"
         },
+        "shoppingLists": "Liste della spesa di %{fleet}",
         "missions": {
           "index": "Missioni di %{fleet}",
           "create": "Crea Missione - %{fleet}",

@@ -89,6 +89,48 @@
         },
         "loadoutParts": "non-stock parts",
         "question": "Add to:"
+      },
+      "fleetLists": {
+        "title": "Shopping Lists",
+        "lead": "Kit the fleet wants its members to have: uniforms, armour, a standard loadout. Copy a list into your own cart to see what it costs and where to buy it.",
+        "count": {
+          "one": "%{count} item",
+          "other": "%{count} items"
+        },
+        "copy": "Copy to my cart",
+        "copyTitle": "Copy %{name} to",
+        "copyNew": "A new list",
+        "copyNewHint": "Named %{name}, and made your active list",
+        "copyIntoHint": {
+          "one": "Holds %{count} item; quantities are added together",
+          "other": "Holds %{count} items; quantities are added together"
+        },
+        "showItems": "Show items",
+        "hideItems": "Hide items",
+        "edit": "Edit",
+        "delete": "Delete",
+        "publish": "Publish a list",
+        "publishTitle": "Publish one of your lists",
+        "editTitle": "Edit shopping list",
+        "source": "Your list",
+        "sourceHint": "Its items and quantities are copied to the fleet. Picked shops are not.",
+        "replaceFrom": "Replace items with",
+        "replaceHint": "Leave empty to keep the items as they are.",
+        "description": "Description",
+        "confirmDelete": "Delete the shopping list %{name}?",
+        "empty": {
+          "title": "No shopping lists yet",
+          "text": "Officers publish lists here from their own cart, for members to copy into theirs."
+        },
+        "messages": {
+          "copied": "%{name} copied to %{list}.",
+          "copyFailed": "Could not copy the list to your cart.",
+          "published": "%{name} published.",
+          "updated": "%{name} updated.",
+          "saveFailed": "Could not save the shopping list.",
+          "deleted": "Shopping list deleted.",
+          "deleteFailed": "Could not delete the shopping list."
+        }
       }
     }
   }

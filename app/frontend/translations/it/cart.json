@@ -89,6 +89,48 @@
         },
         "loadoutParts": "componenti non di serie",
         "question": "Aggiungi a:"
+      },
+      "fleetLists": {
+        "title": "Liste della spesa",
+        "lead": "L'equipaggiamento che la flotta vuole per i suoi membri: uniformi, armature, un equipaggiamento standard. Copia una lista nel tuo carrello per vedere quanto costa e dove comprarlo.",
+        "count": {
+          "one": "%{count} articolo",
+          "other": "%{count} articoli"
+        },
+        "copy": "Copia nel mio carrello",
+        "copyTitle": "Copia %{name} in",
+        "copyNew": "Una nuova lista",
+        "copyNewHint": "Chiamata %{name} e impostata come lista attiva",
+        "copyIntoHint": {
+          "one": "Contiene %{count} articolo; le quantità si sommano",
+          "other": "Contiene %{count} articoli; le quantità si sommano"
+        },
+        "showItems": "Mostra articoli",
+        "hideItems": "Nascondi articoli",
+        "edit": "Modifica",
+        "delete": "Elimina",
+        "publish": "Pubblica una lista",
+        "publishTitle": "Pubblica una delle tue liste",
+        "editTitle": "Modifica lista della spesa",
+        "source": "La tua lista",
+        "sourceHint": "Vengono copiati nella flotta articoli e quantità, non i negozi scelti.",
+        "replaceFrom": "Sostituisci gli articoli con",
+        "replaceHint": "Lascia vuoto per mantenere gli articoli come sono.",
+        "description": "Descrizione",
+        "confirmDelete": "Eliminare la lista della spesa %{name}?",
+        "empty": {
+          "title": "Ancora nessuna lista della spesa",
+          "text": "Gli ufficiali pubblicano qui le liste dal proprio carrello, perché i membri le copino nel loro."
+        },
+        "messages": {
+          "copied": "%{name} copiata in %{list}.",
+          "copyFailed": "Impossibile copiare la lista nel tuo carrello.",
+          "published": "%{name} pubblicata.",
+          "updated": "%{name} aggiornata.",
+          "saveFailed": "Impossibile salvare la lista della spesa.",
+          "deleted": "Lista della spesa eliminata.",
+          "deleteFailed": "Impossibile eliminare la lista della spesa."
+        }
       }
     }
   }
