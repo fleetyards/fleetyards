@@ -62,10 +62,10 @@ module ScData
 
     # [field, filename, md5] for every render with a field. Two names for one
     # field -- `side` from an older export beside `port` -- keep the first in
-    # name order.
+    # name order, a WebP ahead of the PNG it replaced.
     private def renders(listing, path)
       claimed = listing.fetch("files", {})
-        .sort_by(&:first)
+        .sort_by { |name, _| [File.extname(name).casecmp?(".webp") ? 0 : 1, name] }
         .map { |name, file| [field_for(name), name, file["md5"]] }
         .select(&:first)
         .group_by(&:first)
