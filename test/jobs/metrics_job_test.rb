@@ -3,6 +3,14 @@
 require "test_helper"
 
 class MetricsJobTest < ActiveJob::TestCase
+  # Every API request test in this worker leaves a counter for today behind, and
+  # once the run crosses midnight UTC those become yesterday's pending counters.
+  setup do
+    ApiUsageTracker.pending_counters.each do |day, application_id, _requests|
+      ApiUsageTracker.reset(application_id, day)
+    end
+  end
+
   test "#perform generates rollup metrics without errors" do
     assert_nothing_raised do
       MetricsJob.new.perform
