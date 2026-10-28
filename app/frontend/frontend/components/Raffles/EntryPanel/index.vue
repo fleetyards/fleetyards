@@ -24,6 +24,7 @@ import {
   useEnterRaffle,
   useWithdrawFromRaffle,
 } from "@/services/fyApi";
+import { isRaffleOver } from "@/frontend/utils/raffleStatus";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useRedirectBackStore } from "@/shared/stores/redirectBack";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -65,13 +66,7 @@ const isOpen = computed(() => props.raffle.status === RaffleStatusEnum.OPEN);
 
 const isMaintainer = computed(() => !!currentUser?.value?.maintainer);
 
-const ENDED_STATUSES: RaffleStatusEnum[] = [
-  RaffleStatusEnum.CLOSED,
-  RaffleStatusEnum.DRAWN,
-  RaffleStatusEnum.CONCLUDED,
-];
-
-const isOver = computed(() => ENDED_STATUSES.includes(props.raffle.status));
+const isOver = computed(() => isRaffleOver(props.raffle));
 
 const errorText = (error: {
   response?: { status?: number; data?: { message?: string } };
