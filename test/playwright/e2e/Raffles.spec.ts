@@ -25,15 +25,18 @@ const signIn = async (page: Page, login: string) => {
 test.describe("Raffles", () => {
   test.beforeEach(async () => {
     await app("clean");
-    await appScenario("raffles");
   });
 
-  test("enters a raffle after accepting the conditions", async ({ page }) => {
+  test("enters the current raffle after accepting the conditions", async ({
+    page,
+  }) => {
+    await appScenario("raffles");
     await signIn(page, "entrant");
 
     await page.goto("/raffles/");
-    await page.getByRole("heading", { name: "Open Raffle" }).click();
-    await expect(page).toHaveURL(/\/raffles\/[0-9a-f-]+\//);
+    await expect(
+      page.getByRole("heading", { name: "Open Raffle" }),
+    ).toBeVisible();
 
     await expect(page.getByTestId("raffle-conditions")).toBeVisible();
     await expect(page.getByTestId("raffle-enter")).toBeDisabled();
@@ -52,19 +55,17 @@ test.describe("Raffles", () => {
     await expect(page.getByTestId("raffle-entrants")).toContainText("entrant");
   });
 
-  test("the winner claims the gift code", async ({ page }) => {
+  test("the winner is told to check their mail", async ({ page }) => {
+    await appScenario("raffles_won");
     await signIn(page, "winner");
 
     await page.goto("/raffles/");
-    await page.getByRole("heading", { name: "Won Raffle" }).click();
-    await expect(page).toHaveURL(/\/raffles\/[0-9a-f-]+\//);
+    await expect(
+      page.getByRole("heading", { name: "Won Raffle" }),
+    ).toBeVisible();
 
     await expect(page.getByTestId("raffle-winner")).toContainText("winner");
-
-    await page.getByTestId("raffle-claim").click();
-
-    await expect(page.getByTestId("raffle-gift-code")).toContainText(
-      "E2E-GIFT-CODE",
-    );
+    await expect(page.getByTestId("raffle-won")).toBeVisible();
+    await expect(page.locator("body")).not.toContainText("E2E-GIFT-CODE");
   });
 });
