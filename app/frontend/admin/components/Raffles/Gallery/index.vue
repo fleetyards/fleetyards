@@ -102,6 +102,7 @@ const remove = (signedId: string) => {
       v-if="!disabled"
       multiple
       inline
+      direct-upload
       :allowed-types="fileTypeMap.image"
       @upload:done="onUploadDone"
     />

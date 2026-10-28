@@ -53,6 +53,14 @@ module Raffles
       assert @raffle.reload.concluded?
     end
 
+    test "passes over a maintainer" do
+      @second.user.update_columns(maintainer: true)
+
+      assert_equal @third, Succession.new(@raffle).call
+      assert @second.reload.forfeited_at.present?
+      assert_nil @second.won_at
+    end
+
     test "promotes an entrant whose account is gone and mails the entry address" do
       @second.update_columns(user_id: nil, username: "gone")
 

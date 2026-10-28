@@ -37,7 +37,7 @@ module Raffles
     end
 
     private def eligible_entries
-      @raffle.entries.includes(:user).select { |entry| entry.user&.confirmed? }
+      @raffle.entries.includes(:user).select { |entry| entry.user&.raffle_eligible? }
     end
   end
 end

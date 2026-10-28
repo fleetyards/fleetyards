@@ -677,6 +677,11 @@ class User < ApplicationRecord
     super
   end
 
+  # Maintainers run the raffles, so they may not win one.
+  def raffle_eligible?
+    confirmed? && !maintainer?
+  end
+
   # A maintainer counts as an ongoing supporter at the highest tier, so every
   # perk and badge that asks these questions includes them without a branch of
   # its own -- the ones added later too.

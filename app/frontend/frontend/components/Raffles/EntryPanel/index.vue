@@ -42,7 +42,7 @@ const emit = defineEmits<{
 const { t, l } = useI18n();
 const route = useRoute();
 const { displayAlert, displaySuccess, displayConfirm } = useAppNotifications();
-const { isAuthenticated } = storeToRefs(useSessionStore());
+const { isAuthenticated, currentUser } = storeToRefs(useSessionStore());
 
 const enterMutation = useEnterRaffle({
   mutation: { onSettled: () => emit("changed") },
@@ -62,6 +62,8 @@ const signIn = async () => {
 };
 
 const isOpen = computed(() => props.raffle.status === RaffleStatusEnum.OPEN);
+
+const isMaintainer = computed(() => !!currentUser?.value?.maintainer);
 
 const errorText = (error: {
   response?: { status?: number; data?: { message?: string } };
@@ -196,6 +198,14 @@ const title = computed(() => {
               {{ t("raffles.actions.withdraw") }}
             </Btn>
           </template>
+          <Alert
+            v-else-if="isAuthenticated && isMaintainer"
+            :variant="AlertVariantsEnum.NEUTRAL"
+            :size="AlertSizesEnum.COMPACT"
+            data-test="raffle-maintainer"
+          >
+            {{ t("raffles.entry.maintainer") }}
+          </Alert>
           <form
             v-else-if="isAuthenticated"
             class="raffle-entry__form"

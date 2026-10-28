@@ -228,6 +228,7 @@
         "title": "参与条款",
         "accept": "我已阅读并接受参与条款。",
         "confirmedAccount": "只有已验证电子邮箱的账户才能参与，每个账户限参与一次。",
+        "noMaintainers": "Fleetyards 维护者不能参与。",
         "publicEntrants": "您的用户名将作为参与者公开显示在此页面上。",
         "publicWinner": "如果您中奖，您的用户名将作为中奖者公开显示。",
         "drawOrder": "抽奖截止后，所有符合资格的参与者将被随机排成一个顺序。排在第一位的参与者中奖。",
@@ -281,7 +282,8 @@
         "days": "%{days} 天",
         "entered": "您已参与。抽奖将在 %{date} 后进行。",
         "enteredHint": "如果您中奖，我们将向您发送领取链接。抽奖后 %{days} 天内请留意您的邮箱。",
-        "opensAt": "%{date} 开始。"
+        "opensAt": "%{date} 开始。",
+        "maintainer": "维护者负责管理抽奖，不能参与。"
       },
       "slider": {
         "label": "图片轮播",

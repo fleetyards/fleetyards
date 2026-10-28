@@ -4,7 +4,7 @@ class RaffleEntryPolicy < ApplicationPolicy
   # Production already refuses sign-in to an unconfirmed account; this holds
   # for OAuth tokens and environments that allow unconfirmed access.
   def create?
-    user.present? && user.confirmed?
+    user.present? && user.raffle_eligible?
   end
 
   def index?

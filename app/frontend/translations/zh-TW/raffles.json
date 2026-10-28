@@ -228,6 +228,7 @@
         "title": "參加條款",
         "accept": "我已閱讀並接受參加條款。",
         "confirmedAccount": "只有已驗證電子郵件地址的帳戶才能參加，每個帳戶限參加一次。",
+        "noMaintainers": "Fleetyards 維護者不能參加。",
         "publicEntrants": "您的使用者名稱將作為參加者公開顯示在此頁面上。",
         "publicWinner": "如果您得獎，您的使用者名稱將作為得獎者公開顯示。",
         "drawOrder": "抽獎截止後，所有符合資格的參加者將被隨機排成一個順序。排在第一位的參加者得獎。",
@@ -281,7 +282,8 @@
         "days": "%{days} 天",
         "entered": "您已參加。抽獎將在 %{date} 後進行。",
         "enteredHint": "如果您得獎，我們將寄給您領取連結。抽獎後 %{days} 天內請留意您的信箱。",
-        "opensAt": "%{date} 開始。"
+        "opensAt": "%{date} 開始。",
+        "maintainer": "維護者負責管理抽獎，不能參加。"
       },
       "slider": {
         "label": "圖片輪播",

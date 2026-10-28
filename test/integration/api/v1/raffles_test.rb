@@ -147,6 +147,15 @@ class Api::V1::RafflesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /raffles/:id/entrants lists the latest entrant first" do
+    older = create(:raffle_entry, raffle: @raffle, created_at: 2.hours.ago)
+    newer = create(:raffle_entry, raffle: @raffle, created_at: 1.hour.ago)
+
+    assert_api_response :get, 200, api_path: "/raffles/{id}/entrants", path_params: {id: @raffle.id} do
+      assert_equal [newer, older].map { |entry| entry.user.username }, parsed_body["items"].map { |entrant| entrant["username"] }
+    end
+  end
+
   test "GET /raffles/:id/entrants returns 404 for a draft" do
     assert_api_response :get, 404, api_path: "/raffles/{id}/entrants", path_params: {id: create(:raffle, :draft).id}
   end

@@ -228,6 +228,7 @@
         "title": "Teilnahmebedingungen",
         "accept": "Ich habe die Teilnahmebedingungen gelesen und akzeptiere sie.",
         "confirmedAccount": "Teilnehmen können nur Konten mit bestätigter E-Mail-Adresse, einmal pro Konto.",
+        "noMaintainers": "Fleetyards-Maintainer können nicht teilnehmen.",
         "publicEntrants": "Dein Benutzername wird auf dieser Seite öffentlich als Teilnehmer aufgeführt.",
         "publicWinner": "Wenn du gewinnst, wird dein Benutzername öffentlich als Gewinner angezeigt.",
         "drawOrder": "Nach Ende der Verlosung werden alle berechtigten Teilnehmer in eine einzige zufällige Reihenfolge gezogen. Wer in dieser Reihenfolge an erster Stelle steht, gewinnt.",
@@ -281,7 +282,8 @@
         "days": "%{days} Tage",
         "entered": "Du bist dabei. Die Ziehung ist nach dem %{date}.",
         "enteredHint": "Wenn du gewinnst, schicken wir dir einen Abhol-Link. Behalte dein Postfach nach der Ziehung %{days} Tage lang im Blick.",
-        "opensAt": "Beginnt am %{date}."
+        "opensAt": "Beginnt am %{date}.",
+        "maintainer": "Maintainer betreuen die Verlosungen und können nicht teilnehmen."
       },
       "slider": {
         "label": "Bilder-Slider",

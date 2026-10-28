@@ -228,6 +228,7 @@
         "title": "Condizioni di partecipazione",
         "accept": "Ho letto e accetto le condizioni di partecipazione.",
         "confirmedAccount": "Possono partecipare solo gli account con un indirizzo email confermato, una volta per account.",
+        "noMaintainers": "I maintainer di Fleetyards non possono partecipare.",
         "publicEntrants": "Il tuo nome utente viene mostrato pubblicamente in questa pagina come partecipante.",
         "publicWinner": "Se vinci, il tuo nome utente viene mostrato pubblicamente come vincitore.",
         "drawOrder": "Alla chiusura dell'estrazione, tutti i partecipanti idonei vengono estratti in un unico ordine casuale. Vince il primo in quell'ordine.",
@@ -281,7 +282,8 @@
         "days": "%{days} giorni",
         "entered": "Stai partecipando. L'estrazione avviene dopo il %{date}.",
         "enteredHint": "Se vinci, ti inviamo un link per il ritiro. Tieni d'occhio la tua casella di posta per %{days} giorni dopo l'estrazione.",
-        "opensAt": "Apre il %{date}."
+        "opensAt": "Apre il %{date}.",
+        "maintainer": "I maintainer gestiscono le estrazioni e non possono partecipare."
       },
       "slider": {
         "label": "Carosello di immagini",

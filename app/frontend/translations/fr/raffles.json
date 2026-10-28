@@ -228,6 +228,7 @@
         "title": "Conditions de participation",
         "accept": "J'ai lu et j'accepte les conditions de participation.",
         "confirmedAccount": "Seuls les comptes avec une adresse e-mail confirmée peuvent participer, une fois par compte.",
+        "noMaintainers": "Les mainteneurs de Fleetyards ne peuvent pas participer.",
         "publicEntrants": "Votre nom d'utilisateur est affiché publiquement sur cette page en tant que participant.",
         "publicWinner": "Si vous gagnez, votre nom d'utilisateur est affiché publiquement en tant que gagnant.",
         "drawOrder": "À la clôture du tirage au sort, tous les participants éligibles sont tirés dans un ordre aléatoire unique. Le premier dans cet ordre gagne.",
@@ -281,7 +282,8 @@
         "days": "%{days} jours",
         "entered": "Vous participez. Le tirage a lieu après le %{date}.",
         "enteredHint": "Si vous gagnez, nous vous envoyons un lien de réclamation par e-mail. Surveillez votre boîte de réception pendant %{days} jours après le tirage.",
-        "opensAt": "Ouverture le %{date}."
+        "opensAt": "Ouverture le %{date}.",
+        "maintainer": "Les mainteneurs gèrent les tirages au sort et ne peuvent pas y participer."
       },
       "slider": {
         "label": "Carrousel d'images",
