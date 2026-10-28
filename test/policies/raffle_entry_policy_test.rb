@@ -13,6 +13,13 @@ class RaffleEntryPolicyTest < ActiveSupport::TestCase
     assert_not policy(nil, raffle.entries.new).apply(:create?)
   end
 
+  test "a maintainer may not enter" do
+    raffle = create(:raffle)
+    maintainer = create(:user, maintainer: true)
+
+    assert_not policy(maintainer, raffle.entries.new(user: maintainer)).apply(:create?)
+  end
+
   test "only the entrant may withdraw, and only while the raffle is open" do
     entry = create(:raffle_entry)
 

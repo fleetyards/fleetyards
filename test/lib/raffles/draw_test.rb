@@ -43,6 +43,15 @@ module Raffles
       assert_equal 2, @raffle.entries.where.not(draw_position: nil).count
     end
 
+    test "leaves maintainers out of the order" do
+      @entries.first.user.update_columns(maintainer: true)
+
+      Draw.new(@raffle, admin_user: @admin).call
+
+      assert_nil @entries.first.reload.draw_position
+      assert_equal 2, @raffle.entries.where.not(draw_position: nil).count
+    end
+
     test "refuses a raffle that is still open" do
       @raffle.update_columns(ends_at: 1.day.from_now)
 
