@@ -4,6 +4,8 @@ module Api
   module V1
     module Filters
       class ModelsController < ::Api::PublicBaseController
+        self.resource_owner_scopes = HANGAR_READER_SCOPES
+
         include ModelCargoFiltersConcern
 
         skip_verify_authorized

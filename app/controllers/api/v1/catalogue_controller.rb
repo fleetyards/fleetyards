@@ -5,8 +5,6 @@ module Api
     # The items a markdown text names inline, `[*Name*]` or `[*type:Name*]`.
     # What a contract, event or user token resolves to depends on who asks.
     class CatalogueController < ::Api::PublicBaseController
-      FLEET_SCOPES = %w[fleet fleet:read].freeze
-
       skip_verify_authorized only: %i[lookup search]
 
       def lookup
@@ -30,7 +28,7 @@ module Api
       private def fleet_reader
         return current_resource_owner if doorkeeper_token.blank?
 
-        current_resource_owner if doorkeeper_token.acceptable?(FLEET_SCOPES)
+        current_resource_owner if doorkeeper_token.acceptable?(FLEET_READER_SCOPES)
       end
     end
   end

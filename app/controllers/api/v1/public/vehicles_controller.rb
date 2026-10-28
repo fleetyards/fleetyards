@@ -4,6 +4,8 @@ module Api
   module V1
     module Public
       class VehiclesController < ::Api::PublicBaseController
+        self.resource_owner_scopes = HANGAR_READER_SCOPES
+
         include HangarFiltersConcern
 
         # DEPRECATED

@@ -7,6 +7,8 @@ module Api
       # a plan that is not shared, or shared again under a new token, is not
       # found here.
       class HangarPlansController < ::Api::PublicBaseController
+        self.resource_owner_scopes = HANGAR_READER_SCOPES
+
         before_action :set_hangar_plan
 
         def show

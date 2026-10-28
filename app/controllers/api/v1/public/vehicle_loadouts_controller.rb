@@ -6,6 +6,8 @@ module Api
       # A fleetyards loadout of a ship its owner shows in a public hangar, for
       # its page: the loadout, and its fitting slot by slot.
       class VehicleLoadoutsController < ::Api::PublicBaseController
+        self.resource_owner_scopes = HANGAR_READER_SCOPES
+
         include PublicHangarOwnerConcern
         include CraftableComponentsConcern
 

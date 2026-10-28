@@ -14,6 +14,8 @@ module Api
       # hands is not "showing the member list", and a policy in front of it
       # would hand over every field anybody ever adds to it.
       class FleetMembersController < ::Api::PublicBaseController
+        self.resource_owner_scopes = FLEET_READER_SCOPES
+
         before_action :set_fleet
 
         after_action -> { pagination_header(:members) }, only: %i[index]

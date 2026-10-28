@@ -4,6 +4,8 @@ module Api
   module V1
     module Public
       class FleetsController < ::Api::PublicBaseController
+        self.resource_owner_scopes = FLEET_READER_SCOPES
+
         # The directory scope is the authorization: it holds only fleets that
         # are public, verified and have not opted out.
         skip_verify_authorized only: %i[index]

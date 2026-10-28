@@ -4,6 +4,8 @@ module Api
   module V1
     module Public
       class WishlistsController < ::Api::PublicBaseController
+        self.resource_owner_scopes = HANGAR_READER_SCOPES
+
         include HangarFiltersConcern
 
         before_action :set_user

@@ -4,6 +4,10 @@ module Api
   module V1
     module Public
       class UsersController < ::Api::PublicBaseController
+        # The card opens on the friends-only hangar switch, and presence on
+        # friendship, so a token reads as its owner only with hangar:read.
+        self.resource_owner_scopes = HANGAR_READER_SCOPES
+
         include HangarShareTokenConcern
 
         before_action :set_user

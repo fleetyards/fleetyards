@@ -7,6 +7,8 @@ module Api
       # colours and how many people are in each. Never who they are -- the
       # roster has its own switch, and a squadron list is the roster grouped.
       class FleetSquadronsController < ::Api::PublicBaseController
+        self.resource_owner_scopes = FLEET_READER_SCOPES
+
         after_action -> { pagination_header(:fleet_squadrons) }, only: %i[index]
 
         before_action :set_fleet

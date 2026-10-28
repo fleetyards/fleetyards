@@ -3,6 +3,9 @@
 module Api
   module V1
     class BlueprintsController < ::Api::PublicBaseController
+      # Its marker writes act as the owner too, behind their own hangar:write gate.
+      self.resource_owner_scopes = [*HANGAR_READER_SCOPES, "hangar:write"].freeze
+
       include BlueprintFiltersConcern
 
       skip_verify_authorized only: %i[index show]

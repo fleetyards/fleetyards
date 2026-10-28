@@ -4,6 +4,8 @@ module Api
   module V1
     module Public
       class FleetVehiclesController < ::Api::PublicBaseController
+        self.resource_owner_scopes = FLEET_READER_SCOPES
+
         include FleetVehicleFiltersConcern
 
         before_action :set_fleet

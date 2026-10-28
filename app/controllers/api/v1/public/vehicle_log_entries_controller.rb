@@ -4,6 +4,8 @@ module Api
   module V1
     module Public
       class VehicleLogEntriesController < ::Api::PublicBaseController
+        self.resource_owner_scopes = HANGAR_READER_SCOPES
+
         include PublicHangarOwnerConcern
 
         before_action :set_vehicle

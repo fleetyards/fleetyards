@@ -154,4 +154,17 @@ class Api::V1::PublicFleetMembersIndexTest < ActionDispatch::IntegrationTest
       assert_response :not_found
     end
   end
+
+  test "GET /public/fleets/:slug/members reads a token without fleet scope as nobody" do
+    member = create(:user)
+    fleet = create(:fleet, members: [member])
+    public_only = create(:oauth_access_token, resource_owner_id: member.id, scopes: "public profile:read")
+    fleet_reader = create(:oauth_access_token, resource_owner_id: member.id, scopes: "fleet:read")
+
+    get "/api/v1/public/fleets/#{fleet.slug}/members", headers: {"Authorization" => "Bearer #{public_only.token}"}
+    assert_response :not_found
+
+    get "/api/v1/public/fleets/#{fleet.slug}/members", headers: {"Authorization" => "Bearer #{fleet_reader.token}"}
+    assert_response :success
+  end
 end
