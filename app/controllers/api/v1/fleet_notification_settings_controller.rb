@@ -166,7 +166,19 @@ module Api
         authorize! @setting, with: FleetNotificationSettingPolicy
         authorize! @setting, with: FleetNotificationSettingPolicy, to: :update_join_role? if join_role_changing?
 
-        if @setting.update(setting_params)
+        @setting.assign_attributes(setting_params)
+
+        # Holding a fleet privilege says nothing about a Discord server, so a
+        # new link needs whoever makes it to run that server. Asked last, so a
+        # malformed id is told so without a call to Discord.
+        if @setting.discord_guild_id_changed? && @setting.discord_guild_id.present? && @setting.valid? &&
+            !::Discord::GuildManagerCheck.new(guild_id: @setting.discord_guild_id, discord_uid: current_resource_owner.discord_uid).manager?
+          @setting.errors.add(:discord_guild_id, :not_a_server_manager)
+          render json: ValidationError.new("fleet_notification_settings.update", errors: @setting.errors), status: :bad_request
+          return
+        end
+
+        if @setting.save
           render :show
         else
           render json: ValidationError.new("fleet_notification_settings.update", errors: @setting.errors), status: :bad_request

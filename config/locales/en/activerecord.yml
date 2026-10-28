@@ -515,6 +515,7 @@ en:
         fleet_notification_setting:
           not_a_discord_id: "must be the numeric ID Discord copies with \"Copy ID\", not a name"
           everyone_role: "is @everyone, which every member of the server holds"
+          not_a_server_manager: "is a server you do not run: link your Discord account, and own the server or hold Manage Server there with the Fleetyards bot added"
         fleet:
           not_an_rsi_sid: "must be the SID from your organisation's RSI page, such as TEST"
           locked_while_verified: "is verified and cannot be changed; ask support to revoke the verification first"

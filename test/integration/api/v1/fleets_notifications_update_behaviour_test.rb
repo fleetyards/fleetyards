@@ -4,6 +4,8 @@ require "test_helper"
 
 class Api::V1::FleetsNotificationsUpdateBehaviourTest < ActionDispatch::IntegrationTest
   setup do
+    # Linking a server is checked against Discord; GuildManagerCheckTest covers that.
+    ::Discord::GuildManagerCheck.any_instance.stubs(:manager?).returns(true)
     @admin = create(:user)
     @fleet = create(:fleet, admins: [@admin])
     sign_in @admin

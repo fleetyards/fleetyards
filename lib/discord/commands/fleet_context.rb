@@ -16,7 +16,7 @@ module Discord
       private def guild_fleet
         return nil if guild_id.blank?
 
-        ::FleetNotificationSetting.find_by(discord_guild_id: guild_id)&.fleet
+        ::FleetNotificationSetting.for_guild(guild_id).first&.fleet
       end
     end
   end

@@ -17,7 +17,7 @@ module Discord
     TIMEOUT = 3
 
     def self.for_guild(guild_id)
-      FleetNotificationSetting.with_join_role.where(discord_guild_id: guild_id).includes(:fleet)
+      FleetNotificationSetting.with_join_role.for_guild(guild_id).includes(:fleet)
         .map { |setting| new(setting.fleet, setting:) }
     end
 
@@ -28,7 +28,7 @@ module Discord
     def self.member_changed(guild_id, discord_uid, role_ids)
       return if guild_id.blank? || discord_uid.blank?
 
-      join_roles = FleetNotificationSetting.with_join_role.where(discord_guild_id: guild_id).pluck(:fleet_id, :discord_join_role_id)
+      join_roles = FleetNotificationSetting.with_join_role.for_guild(guild_id).pluck(:fleet_id, :discord_join_role_id)
       return if join_roles.empty?
 
       user_ids = OmniauthConnection.discord.where(uid: discord_uid).pluck(:user_id)

@@ -484,6 +484,7 @@ es:
         fleet_notification_setting:
           not_a_discord_id: "debe ser el ID numérico que Discord copia con «Copiar ID», no un nombre"
           everyone_role: "es @everyone, que tienen todos los miembros del servidor"
+          not_a_server_manager: "es un servidor que no administras: vincula tu cuenta de Discord y sé el propietario del servidor o ten «Gestionar servidor» en él, con el bot de Fleetyards añadido"
         fleet:
           not_an_rsi_sid: "debe ser el SID de la página de RSI de tu organización, por ejemplo TEST"
           locked_while_verified: "está verificado y no se puede cambiar; pide al soporte que revoque primero la verificación"

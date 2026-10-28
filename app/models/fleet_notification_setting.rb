@@ -31,6 +31,10 @@ class FleetNotificationSetting < ApplicationRecord
     end
   end
 
+  # A discarded fleet keeps its link, so a restored one answers there again,
+  # but until then it does not answer for the server.
+  scope :for_guild, ->(guild_id) { where(discord_guild_id: guild_id).where(fleet_id: Fleet.kept.select(:id)) }
+
   validate if: -> { discord_webhook_url.present? && discord_webhook_url_changed? } do
     errors.add(:discord_webhook_url, :invalid) unless ::Discord::WebhookPost.allowed_url?(discord_webhook_url)
   end

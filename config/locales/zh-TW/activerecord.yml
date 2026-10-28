@@ -484,6 +484,7 @@ zh-TW:
         fleet_notification_setting:
           not_a_discord_id: "必須是 Discord 透過「複製 ID」複製的數字 ID，而非名稱"
           everyone_role: "是 @everyone，伺服器的每位成員都擁有它"
+          not_a_server_manager: "不是你管理的伺服器：請連結你的 Discord 帳號，並且是該伺服器的擁有者或在其中擁有「管理伺服器」權限，同時已加入 Fleetyards 機器人"
         fleet:
           not_an_rsi_sid: "必須是你的組織在 RSI 頁面上的 SID，例如 TEST"
           locked_while_verified: "已驗證，無法變更；請先聯絡支援團隊撤銷驗證"
