@@ -254,4 +254,17 @@ class Admin::Api::V1::AdminUsersTest < ActionDispatch::IntegrationTest
 
     assert_api_response :put, 403, path_params: {id: target.id}, body: {username: "x"}
   end
+
+  test "PUT /admin_users/:id ignores privileges an admin sends for itself" do
+    admin = create(:admin_user, super_admin: false, resource_access: ["videos"])
+    sign_in admin
+
+    put "/admin/api/v1/admin_users/#{admin.id}", params: {username: "renamed", superAdmin: true, resourceAccess: ["pghero"]}, as: :json
+
+    assert_response :success
+    admin.reload
+    assert_equal "renamed", admin.username
+    assert_not admin.super_admin?
+    assert_equal ["videos"], admin.resource_access
+  end
 end

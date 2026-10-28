@@ -53,10 +53,15 @@ module Admin
         end
 
         private def admin_user_params
-          @admin_user_params ||= params.permit(
-            :username, :email, :password, :password_confirmation,
-            :super_admin, resource_access: []
-          )
+          @admin_user_params ||= params.permit(*permitted_admin_user_attributes)
+        end
+
+        # AdminUserPolicy lets an admin edit its own record, so privileges are
+        # only taken from a super admin; anyone else would grant themselves.
+        private def permitted_admin_user_attributes
+          attributes = %i[username email password password_confirmation]
+          attributes += [:super_admin, {resource_access: []}] if current_admin_user.super_admin?
+          attributes
         end
       end
     end
