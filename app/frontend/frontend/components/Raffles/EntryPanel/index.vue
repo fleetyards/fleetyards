@@ -25,6 +25,7 @@ import {
   useWithdrawFromRaffle,
 } from "@/services/fyApi";
 import { useSessionStore } from "@/frontend/stores/session";
+import { useRedirectBackStore } from "@/shared/stores/redirectBack";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
@@ -51,6 +52,14 @@ const withdrawMutation = useWithdrawFromRaffle({
 });
 
 const conditionsAccepted = ref(false);
+
+// Login returns to the stored back route; a public page sets none on its own.
+const redirectBackStore = useRedirectBackStore();
+const router = useRouter();
+const signIn = async () => {
+  redirectBackStore.setBackRoute(route.fullPath);
+  await router.push({ name: "login" });
+};
 
 const isOpen = computed(() => props.raffle.status === RaffleStatusEnum.OPEN);
 
@@ -224,10 +233,10 @@ const title = computed(() => {
     </PanelBody>
     <div v-if="isOpen && !isAuthenticated" class="raffle-entry__footer">
       <Btn
-        :to="{ name: 'login', query: { redirect: route.fullPath } }"
         :size="BtnSizesEnum.LG"
         block
         data-test="raffle-sign-in"
+        @click="signIn"
       >
         <i class="fa-light fa-right-to-bracket" />
         {{ t("raffles.actions.signInToEnter") }}
