@@ -130,7 +130,7 @@ const imageUrl = (image: MediaFile) =>
   display: block;
   flex: 0 0 100%;
   width: 100%;
-  aspect-ratio: 16 / 5.95;
+  aspect-ratio: 16 / 9;
   object-fit: cover;
 }
 

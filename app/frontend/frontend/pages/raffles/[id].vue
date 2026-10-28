@@ -86,14 +86,13 @@ const STATUS_PILLS: Record<RaffleStatusEnum, `${PillVariantsEnum}`> = {
           </span>
         </div>
 
-        <RaffleKeyImage
-          v-if="raffle.images.length"
-          :images="raffle.images"
-          :title="raffle.title"
-        />
-
         <div class="row">
           <div class="col-12 col-md-8">
+            <RaffleKeyImage
+              v-if="raffle.images.length"
+              :images="raffle.images"
+              :title="raffle.title"
+            />
             <Panel v-if="raffle.description" :variant="PanelVariantsEnum.SLIM">
               <PanelBody>
                 <p class="raffle-description">{{ raffle.description }}</p>
