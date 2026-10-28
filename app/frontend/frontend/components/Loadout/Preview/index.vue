@@ -33,7 +33,11 @@ const props = withDefaults(defineProps<Props>(), {
   testId: "loadout-preview",
 });
 
-const emit = defineEmits<{ available: [available: boolean] }>();
+const emit = defineEmits<{
+  available: [available: boolean];
+  // Settled that no holo is coming, so a caller can bring its picture in.
+  absent: [absent: boolean];
+}>();
 
 // The pose of a ship's angled render: from ahead on its port side and well
 // above, the nose towards the lower left. The export faces -Z.
@@ -55,7 +59,11 @@ const enabled = computed(
     !mobile.value,
 );
 
-const { data: preview } = useModelLoadoutPreview(() => props.modelSlug, {
+const {
+  data: preview,
+  isError,
+  isSuccess,
+} = useModelLoadoutPreview(() => props.modelSlug, {
   query: { enabled },
 });
 
@@ -89,11 +97,24 @@ const shown = computed(() => !!holoModel.value && !unavailable.value);
 
 const available = computed(() => shown.value && loaded.value);
 
+const absent = computed(
+  () =>
+    !enabled.value ||
+    isError.value ||
+    (isSuccess.value && !holoModel.value) ||
+    unavailable.value,
+);
+
 watch(available, (value) => emit("available", value), { immediate: true });
+
+watch(absent, (value) => emit("absent", value), { immediate: true });
 
 // Taken away by its caller, it shows nothing either, and the caller's picture
 // has to come back.
-onBeforeUnmount(() => emit("available", false));
+onBeforeUnmount(() => {
+  emit("available", false);
+  emit("absent", true);
+});
 </script>
 
 <template>

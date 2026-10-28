@@ -354,6 +354,14 @@ const previewSlots = computed(() =>
 // The ship's holo takes the angled render's place behind the controls.
 const previewShown = ref(false);
 
+const previewAbsent = ref(false);
+
+// The render only once it is clear no holo will take its place, so the one
+// never flashes up before the other.
+const renderShown = computed(
+  () => (!!model.value && !flightReady.value) || previewAbsent.value,
+);
+
 // The figures put away: room to see the ship, and with a holo, to turn and
 // zoom it.
 const inspecting = ref(false);
@@ -1447,6 +1455,7 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
       class="vehicle-loadout"
       :class="{
         'vehicle-loadout--holo': previewShown,
+        'vehicle-loadout--render': renderShown,
         'vehicle-loadout--inspecting': inspecting,
       }"
       :style="backdrop ? { '--loadout-backdrop': `url(${backdrop})` } : {}"
@@ -1474,6 +1483,7 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
             variant="backdrop"
             test-id="vehicle-loadout-preview"
             @available="previewShown = $event"
+            @absent="previewAbsent = $event"
           />
         </div>
       </div>
