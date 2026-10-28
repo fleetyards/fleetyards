@@ -10,7 +10,8 @@
           "edit": "編輯抽獎",
           "entries": "抽獎參加紀錄"
         }
-      }
+      },
+      "raffleClaim": "領取獎品"
     },
     "title": {
       "raffles": "抽獎",
@@ -22,7 +23,8 @@
           "edit": "編輯抽獎",
           "entries": "抽獎參加紀錄"
         }
-      }
+      },
+      "raffleClaim": "領取獎品"
     },
     "headlines": {
       "admin": {
@@ -46,7 +48,7 @@
         "startsAt": "開始時間",
         "endsAt": "截止時間",
         "claimPeriodDays": "領取期限（天）",
-        "claimPeriodDaysInfo": "得獎者領取禮品碼的時限，逾期後得獎資格將順延給下一位。",
+        "claimPeriodDaysInfo": "得獎者點擊領取郵件中連結的時限，逾期後得獎資格將順延給下一位。",
         "published": "已發布",
         "publishedInfo": "只有已發布的抽獎才會被列出並開放參加。發布前需要設定禮品碼。",
         "status": "狀態",
@@ -62,11 +64,16 @@
         },
         "drawnInfo": "已開獎",
         "drawnBy": "由 %{admin} 於 %{date} 開獎。",
-        "handOverCode": "待交付的禮品碼",
         "currentWinner": "目前得獎者：%{username}",
         "claimDeadline": "領取截止：%{date}",
-        "accountDeletedInfo": "此得獎者已刪除其帳戶。如果對方在截止前透過 Discord 聯絡您，請寄送驗證碼至對方參加時使用的電子郵件地址（%{email}），並請對方告訴您該驗證碼。",
-        "selfClaimInfo": "得獎者可以在抽獎頁面自行領取禮品碼。"
+        "runDays": "持續時間（天）",
+        "runDaysInfo": "抽獎從開始起開放參加的天數。",
+        "images": "圖片",
+        "imagesInfo": "第一張圖片將作為卡片和首頁上的封面。",
+        "cover": "封面",
+        "socialPosts": "X 貼文",
+        "claimedInfo": "於 %{date} 領取。禮品碼郵件：%{mail}。",
+        "claimPending": "領取連結已寄至 %{email}（%{mail}）。領取期限於 %{date} 結束。"
       },
       "raffleEntry": {
         "username": "參加者",
@@ -74,7 +81,6 @@
         "conditionsAcceptedAt": "已接受條款",
         "state": "狀態",
         "accountDeleted": "帳戶已刪除",
-        "verificationCode": "驗證碼",
         "states": {
           "claimed": "已領取",
           "forfeited": "已失效",
@@ -82,6 +88,14 @@
           "winner": "得獎者",
           "waiting": "候補中",
           "notDrawn": "不符合資格"
+        },
+        "mail": "郵件",
+        "claimMail": "領取郵件",
+        "prizeMail": "禮品碼郵件",
+        "mailStatuses": {
+          "sent": "已寄出",
+          "delivered": "已送達",
+          "bounced": "已退回"
         }
       },
       "admin": {
@@ -92,7 +106,9 @@
         }
       },
       "notificationTypes": {
-        "raffle_won": "抽獎得獎"
+        "raffle_won": "抽獎得獎",
+        "raffle_started": "抽獎已開始",
+        "raffle_last_day": "抽獎即將截止"
       }
     },
     "placeholders": {
@@ -100,10 +116,8 @@
         "title": "贏得一艘 Polaris",
         "description": "獎品內容及參加方式",
         "code": "XXXX-XXXX-XXXX",
-        "claimPeriodDays": "14"
-      },
-      "raffleEntry": {
-        "verificationCode": "123456"
+        "claimPeriodDays": "3",
+        "runDays": "14"
       }
     },
     "messages": {
@@ -114,10 +128,8 @@
         "createFailed": "無法建立抽獎。",
         "updateFailed": "無法更新抽獎。",
         "drawn": "已開獎。",
-        "drawFailed": "無法開獎。"
-      },
-      "raffleEntry": {
-        "claimed": "驗證成功。請將禮品碼交給得獎者。"
+        "drawFailed": "無法開獎。",
+        "invalid": "請檢查標示的欄位：抽獎需要標題、開始時間和持續時間。"
       },
       "confirm": {
         "raffle": {
@@ -129,9 +141,7 @@
     "actions": {
       "raffle": {
         "entries": "參加紀錄",
-        "draw": "開獎",
-        "sendVerification": "寄送驗證碼",
-        "handOver": "驗證並顯示禮品碼"
+        "draw": "開獎"
       }
     },
     "raffles": {
@@ -155,28 +165,28 @@
       "entrants": {
         "title": "參加者",
         "empty": "還沒有人參加。",
-        "count": "參加者"
+        "count": "參加者",
+        "titleCount": "參加者 · %{count}",
+        "showAll": "顯示全部 %{count} 位"
       },
       "winner": {
         "title": "得獎者",
         "pending": "%{username} 得獎了，需在 %{date} 前領取禮品碼。",
         "claimed": "%{username} 得獎了，並已領取禮品碼。",
-        "forfeited": "未按時領取"
+        "forfeited": "未按時領取",
+        "claimedPill": "已領取",
+        "until": "截至 %{date}",
+        "drawnOn": "已於 %{date} 從 %{count} 位參加者中抽出。"
       },
       "won": {
         "title": "您得獎了！",
-        "deadline": "請在 %{date} 前領取您的禮品碼，否則得獎資格將順延給下一位。",
-        "claimed": "您已領取禮品碼。"
-      },
-      "code": {
-        "title": "您的禮品碼",
-        "hint": "請在 RSI 網站上兌換，並妥善保管，切勿洩漏給他人。"
+        "checkMail": "我們已寄給您一封郵件，其中包含領取獎品的連結。請在 %{date} 前點擊該連結，否則得獎資格將順延給下一位。",
+        "claimed": "獎品已領取",
+        "codeSent": "您的禮品碼正在寄送到您的信箱。"
       },
       "actions": {
         "enter": "參加抽獎",
         "withdraw": "退出",
-        "claim": "領取禮品碼",
-        "showCode": "顯示禮品碼",
         "signInToEnter": "登入後參加此抽獎"
       },
       "messages": {
@@ -192,16 +202,72 @@
         "confirmedAccount": "只有已驗證電子郵件地址的帳戶才能參加，每個帳戶限參加一次。",
         "publicEntrants": "您的使用者名稱將作為參加者公開顯示在此頁面上。",
         "publicWinner": "如果您得獎，您的使用者名稱將作為得獎者公開顯示。",
-        "drawOrder": "抽獎截止後，所有參加者將被隨機排成一個順序。排在第一位的參加者得獎。",
-        "claimDeadline": "得獎者需在 %{days} 天內領取禮品碼。如未按時領取，得獎資格將順延給下一位。",
-        "deletedAccount": "如果您在開獎後刪除了帳戶，仍可在截止前透過 Discord 聯絡 %{discordHandle} 領取獎品。您需要透過寄送到您參加時所用電子郵件地址的驗證碼來證明身分。",
+        "drawOrder": "抽獎截止後，所有符合資格的參加者將被隨機排成一個順序。排在第一位的參加者得獎。",
+        "claimMail": "得獎者將收到一封包含領取獎品連結的郵件。獎品絕不會在本網站上顯示。",
+        "claimDeadline": "得獎者需在 %{days} 天內點擊該連結。如未按時點擊，得獎資格將順延給下一位，下一位將收到自己的郵件。",
+        "prizeMail": "點擊該連結後，禮品碼將透過郵件寄送到得獎帳戶的電子郵件地址。",
+        "deletedAccount": "輪到時帳戶已刪除或不再處於已驗證狀態的參加者將被跳過。",
         "noCash": "獎品僅為禮品碼，不提供現金替代，也不可兌換為其他獎品。",
         "noLiability": "Fleetyards 不對禮品碼、其有效性或兌換承擔責任，也不對您的 RSI 帳戶發生的任何問題承擔責任。",
         "noRecourse": "抽獎結果為最終結果，不得透過法律途徑追訴。",
         "notAffiliated": "Fleetyards 是非官方粉絲網站，與 Cloud Imperium Games 無任何關聯。",
-        "contact": "有疑問？可透過以下管道聯絡 %{discordHandle}：",
-        "discordServer": "Fleetyards Discord",
         "version": "條款版本 %{version}"
+      },
+      "claim": {
+        "title": "領取獎品",
+        "pending": "正在領取您的獎品…",
+        "successTitle": "獎品已領取",
+        "success": "您已領取「%{raffle}」中的獎品。禮品碼正在寄送到您的信箱。",
+        "toRaffle": "前往抽獎",
+        "failedTitle": "無法領取獎品",
+        "failed": "發生錯誤，請重新開啟該連結。"
+      },
+      "meta": "%{date} 截止 · %{count} 位參加者",
+      "showImage": "顯示圖片 %{index}",
+      "prizeShip": "獎品艦船：",
+      "howItWorks": {
+        "title": "參加方式",
+        "enter": {
+          "title": "%{date} 前參加",
+          "text": "接受參加條款即可參加。抽獎截止前，您可以隨時退出。"
+        },
+        "draw": {
+          "title": "抽獎",
+          "text": "截止後，所有參加者將被隨機排成一個順序。排在第一位的參加者得獎。"
+        },
+        "claim": {
+          "title": "%{days} 天內領取",
+          "text": "得獎者將收到一封包含領取連結的郵件。如 %{days} 天內未點擊，下一位將收到自己的郵件。"
+        },
+        "code": {
+          "title": "禮品碼透過郵件寄送",
+          "text": "點擊該連結後，禮品碼將透過郵件寄送。禮品碼絕不會在本網站上顯示。"
+        }
+      },
+      "entry": {
+        "title": "參加抽獎",
+        "yours": "您的參加",
+        "closes": "截止",
+        "closed": "已截止",
+        "claimPeriod": "領取期限",
+        "days": "%{days} 天",
+        "entered": "您已參加。抽獎將在 %{date} 後進行。",
+        "enteredHint": "如果您得獎，我們將寄給您領取連結。抽獎後 %{days} 天內請留意您的信箱。",
+        "opensAt": "%{date} 開始。"
+      },
+      "slider": {
+        "label": "圖片輪播",
+        "previous": "上一張圖片",
+        "next": "下一張圖片"
+      },
+      "home": {
+        "title": "抽獎：%{title}",
+        "lede": "贏得 Star Citizen 禮品碼。已確認的帳戶可免費參加。",
+        "view": "查看抽獎",
+        "panelTitle": "抽獎",
+        "entered": "已參加",
+        "notEntered": "您尚未參加。",
+        "enter": "參加"
       }
     }
   }

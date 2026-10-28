@@ -10,7 +10,8 @@
           "edit": "Verlosung bearbeiten",
           "entries": "Teilnahmen an der Verlosung"
         }
-      }
+      },
+      "raffleClaim": "Preis abholen"
     },
     "title": {
       "raffles": "Verlosungen",
@@ -22,7 +23,8 @@
           "edit": "Verlosung bearbeiten",
           "entries": "Teilnahmen an der Verlosung"
         }
-      }
+      },
+      "raffleClaim": "Preis abholen"
     },
     "headlines": {
       "admin": {
@@ -46,7 +48,7 @@
         "startsAt": "Beginnt am",
         "endsAt": "Endet am",
         "claimPeriodDays": "Abholfrist (Tage)",
-        "claimPeriodDaysInfo": "Wie lange ein Gewinner Zeit hat, den Code abzuholen, bevor der Gewinn an den Nächsten in der Reihe geht.",
+        "claimPeriodDaysInfo": "Wie lange ein Gewinner Zeit hat, den Link in der Abhol-Mail anzuklicken, bevor der Gewinn an den Nächsten in der Reihe geht.",
         "published": "Veröffentlicht",
         "publishedInfo": "Nur veröffentlichte Verlosungen werden angezeigt und sind für Teilnahmen offen. Zum Veröffentlichen wird ein Geschenkcode benötigt.",
         "status": "Status",
@@ -62,11 +64,16 @@
         },
         "drawnInfo": "Gezogen",
         "drawnBy": "Gezogen am %{date} von %{admin}.",
-        "handOverCode": "Zu übergebender Geschenkcode",
         "currentWinner": "Aktueller Gewinner: %{username}",
         "claimDeadline": "Abholfrist bis: %{date}",
-        "accountDeletedInfo": "Dieser Gewinner hat sein Konto gelöscht. Wenn er sich vor Ablauf der Frist auf Discord bei dir meldet, sende einen Bestätigungscode an die E-Mail-Adresse, mit der er teilgenommen hat (%{email}), und lass dir den Code von ihm nennen.",
-        "selfClaimInfo": "Der Gewinner kann den Code selbst auf der Seite der Verlosung abholen."
+        "runDays": "Laufzeit (Tage)",
+        "runDaysInfo": "Wie viele Tage die Verlosung ab ihrem Beginn für Teilnahmen offen ist.",
+        "images": "Bilder",
+        "imagesInfo": "Das erste Bild ist das Titelbild auf Karten und der Startseite.",
+        "cover": "Titelbild",
+        "socialPosts": "Beiträge für X",
+        "claimedInfo": "Abgeholt am %{date}. Mail mit dem Geschenkcode: %{mail}.",
+        "claimPending": "Abhol-Link an %{email} gesendet (%{mail}). Die Abholfrist endet am %{date}."
       },
       "raffleEntry": {
         "username": "Teilnehmer",
@@ -74,7 +81,6 @@
         "conditionsAcceptedAt": "Bedingungen akzeptiert",
         "state": "Status",
         "accountDeleted": "Konto gelöscht",
-        "verificationCode": "Bestätigungscode",
         "states": {
           "claimed": "Abgeholt",
           "forfeited": "Verfallen",
@@ -82,6 +88,14 @@
           "winner": "Gewinner",
           "waiting": "In der Reihe",
           "notDrawn": "Nicht berechtigt"
+        },
+        "mail": "Mails",
+        "claimMail": "Abhol-Mail",
+        "prizeMail": "Code-Mail",
+        "mailStatuses": {
+          "sent": "gesendet",
+          "delivered": "zugestellt",
+          "bounced": "unzustellbar"
         }
       },
       "admin": {
@@ -92,7 +106,9 @@
         }
       },
       "notificationTypes": {
-        "raffle_won": "Verlosung gewonnen"
+        "raffle_won": "Verlosung gewonnen",
+        "raffle_started": "Verlosung gestartet",
+        "raffle_last_day": "Verlosung endet bald"
       }
     },
     "placeholders": {
@@ -100,10 +116,8 @@
         "title": "Gewinne eine Polaris",
         "description": "Was es zu gewinnen gibt und wie",
         "code": "XXXX-XXXX-XXXX",
-        "claimPeriodDays": "14"
-      },
-      "raffleEntry": {
-        "verificationCode": "123456"
+        "claimPeriodDays": "3",
+        "runDays": "14"
       }
     },
     "messages": {
@@ -114,10 +128,8 @@
         "createFailed": "Verlosung konnte nicht erstellt werden.",
         "updateFailed": "Verlosung konnte nicht aktualisiert werden.",
         "drawn": "Verlosung gezogen.",
-        "drawFailed": "Die Verlosung konnte nicht gezogen werden."
-      },
-      "raffleEntry": {
-        "claimed": "Bestätigt. Übergib den Geschenkcode an den Gewinner."
+        "drawFailed": "Die Verlosung konnte nicht gezogen werden.",
+        "invalid": "Prüfe die markierten Felder: Die Verlosung braucht einen Titel, einen Beginn und eine Laufzeit."
       },
       "confirm": {
         "raffle": {
@@ -129,9 +141,7 @@
     "actions": {
       "raffle": {
         "entries": "Teilnahmen",
-        "draw": "Ziehen",
-        "sendVerification": "Bestätigungscode senden",
-        "handOver": "Bestätigen und Code anzeigen"
+        "draw": "Ziehen"
       }
     },
     "raffles": {
@@ -155,28 +165,28 @@
       "entrants": {
         "title": "Teilnehmer",
         "empty": "Bisher hat noch niemand teilgenommen.",
-        "count": "Teilnehmer"
+        "count": "Teilnehmer",
+        "titleCount": "Teilnehmer · %{count}",
+        "showAll": "Alle %{count} anzeigen"
       },
       "winner": {
         "title": "Gewinner",
         "pending": "%{username} hat gewonnen und hat bis %{date} Zeit, den Geschenkcode abzuholen.",
         "claimed": "%{username} hat gewonnen und den Geschenkcode abgeholt.",
-        "forfeited": "Nicht rechtzeitig abgeholt"
+        "forfeited": "Nicht rechtzeitig abgeholt",
+        "claimedPill": "Abgeholt",
+        "until": "bis %{date}",
+        "drawnOn": "Gezogen am %{date} aus %{count} Teilnehmern."
       },
       "won": {
         "title": "Du hast gewonnen!",
-        "deadline": "Hol deinen Geschenkcode bis %{date} ab, sonst geht der Gewinn an den Nächsten in der Reihe.",
-        "claimed": "Du hast deinen Geschenkcode abgeholt."
-      },
-      "code": {
-        "title": "Dein Geschenkcode",
-        "hint": "Löse ihn auf der RSI-Website ein und behalte ihn für dich."
+        "checkMail": "Wir haben dir eine Mail mit einem Link geschickt, über den du deinen Preis abholen kannst. Klicke ihn vor dem %{date} an, sonst geht der Gewinn an den Nächsten in der Reihe.",
+        "claimed": "Preis abgeholt",
+        "codeSent": "Dein Geschenkcode ist auf dem Weg in dein Mail-Postfach."
       },
       "actions": {
         "enter": "An Verlosung teilnehmen",
         "withdraw": "Teilnahme zurückziehen",
-        "claim": "Geschenkcode abholen",
-        "showCode": "Geschenkcode anzeigen",
         "signInToEnter": "Melde dich an, um an dieser Verlosung teilzunehmen"
       },
       "messages": {
@@ -192,16 +202,72 @@
         "confirmedAccount": "Teilnehmen können nur Konten mit bestätigter E-Mail-Adresse, einmal pro Konto.",
         "publicEntrants": "Dein Benutzername wird auf dieser Seite öffentlich als Teilnehmer aufgeführt.",
         "publicWinner": "Wenn du gewinnst, wird dein Benutzername öffentlich als Gewinner angezeigt.",
-        "drawOrder": "Nach Ende der Verlosung werden alle Teilnehmer in eine einzige zufällige Reihenfolge gezogen. Wer in dieser Reihenfolge an erster Stelle steht, gewinnt.",
-        "claimDeadline": "Der Gewinner hat %{days} Tage Zeit, den Geschenkcode abzuholen. Wird er nicht rechtzeitig abgeholt, geht der Gewinn an den Nächsten in der Reihe.",
-        "deletedAccount": "Wenn du dein Konto nach der Ziehung löschst, kannst du einen Gewinn trotzdem vor Ablauf der Frist abholen, indem du %{discordHandle} auf Discord kontaktierst. Du weist dich mit einem Code aus, der an die E-Mail-Adresse gesendet wird, mit der du teilgenommen hast.",
+        "drawOrder": "Nach Ende der Verlosung werden alle berechtigten Teilnehmer in eine einzige zufällige Reihenfolge gezogen. Wer in dieser Reihenfolge an erster Stelle steht, gewinnt.",
+        "claimMail": "Der Gewinner erhält eine Mail mit einem Link, über den er den Preis abholen kann. Der Preis wird auf dieser Website nie angezeigt.",
+        "claimDeadline": "Der Gewinner hat %{days} Tage Zeit, diesen Link anzuklicken. Wird er nicht rechtzeitig angeklickt, geht der Gewinn an den Nächsten in der Reihe, der eine eigene Mail erhält.",
+        "prizeMail": "Ein Klick auf den Link sendet den Geschenkcode per Mail an die Adresse des Gewinnerkontos.",
+        "deletedAccount": "Teilnehmer, deren Konto gelöscht oder nicht mehr bestätigt ist, wenn sie an der Reihe sind, werden übergangen.",
         "noCash": "Der Preis ist ausschließlich ein Geschenkcode. Eine Barauszahlung ist nicht möglich, und ein Umtausch ist ausgeschlossen.",
         "noLiability": "Fleetyards haftet nicht für den Geschenkcode, seine Gültigkeit oder seine Einlösung und nicht für Probleme mit deinem RSI-Konto.",
         "noRecourse": "Das Ergebnis der Ziehung ist endgültig. Der Rechtsweg ist ausgeschlossen.",
         "notAffiliated": "Fleetyards ist eine inoffizielle Fanseite und steht in keiner Verbindung zu Cloud Imperium Games.",
-        "contact": "Fragen? Kontaktiere %{discordHandle} auf dem",
-        "discordServer": "Fleetyards Discord",
         "version": "Bedingungen, Version %{version}"
+      },
+      "claim": {
+        "title": "Preis abholen",
+        "pending": "Dein Preis wird abgeholt…",
+        "successTitle": "Preis abgeholt",
+        "success": "Du hast deinen Preis aus „%{raffle}“ abgeholt. Der Geschenkcode ist auf dem Weg in dein Mail-Postfach.",
+        "toRaffle": "Zur Verlosung",
+        "failedTitle": "Der Preis konnte nicht abgeholt werden",
+        "failed": "Etwas ist schiefgelaufen. Bitte öffne den Link erneut."
+      },
+      "meta": "Endet am %{date} · %{count} Teilnehmer",
+      "showImage": "Bild %{index} anzeigen",
+      "prizeShip": "Preis-Schiff:",
+      "howItWorks": {
+        "title": "So funktioniert's",
+        "enter": {
+          "title": "Teilnehmen bis %{date}",
+          "text": "Akzeptiere die Teilnahmebedingungen und nimm teil. Du kannst deine Teilnahme zurückziehen, bis die Verlosung endet."
+        },
+        "draw": {
+          "title": "Die Ziehung",
+          "text": "Nach dem Ende werden alle Teilnehmer in eine zufällige Reihenfolge gezogen. Wer an erster Stelle steht, gewinnt."
+        },
+        "claim": {
+          "title": "Abholen innerhalb von %{days} Tagen",
+          "text": "Der Gewinner erhält eine Mail mit einem Abhol-Link. Ohne Klick innerhalb von %{days} Tagen erhält der Nächste in der Reihe eine eigene Mail."
+        },
+        "code": {
+          "title": "Der Code kommt per Mail",
+          "text": "Ein Klick auf den Link sendet den Geschenkcode per Mail. Er wird auf dieser Website nie angezeigt."
+        }
+      },
+      "entry": {
+        "title": "An der Verlosung teilnehmen",
+        "yours": "Deine Teilnahme",
+        "closes": "Endet",
+        "closed": "Beendet",
+        "claimPeriod": "Abholfrist",
+        "days": "%{days} Tage",
+        "entered": "Du bist dabei. Die Ziehung ist nach dem %{date}.",
+        "enteredHint": "Wenn du gewinnst, schicken wir dir einen Abhol-Link. Behalte dein Postfach nach der Ziehung %{days} Tage lang im Blick.",
+        "opensAt": "Beginnt am %{date}."
+      },
+      "slider": {
+        "label": "Bilder-Slider",
+        "previous": "Vorheriges Bild",
+        "next": "Nächstes Bild"
+      },
+      "home": {
+        "title": "Verlosung: %{title}",
+        "lede": "Gewinne einen Star Citizen Geschenkcode. Kostenlos teilnehmen mit bestätigtem Konto.",
+        "view": "Zur Verlosung",
+        "panelTitle": "Verlosung",
+        "entered": "Teilgenommen",
+        "notEntered": "Du nimmst noch nicht teil.",
+        "enter": "Teilnehmen"
       }
     }
   }

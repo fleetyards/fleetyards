@@ -6,290 +6,127 @@ export default {
 
 <script lang="ts" setup>
 import { useQueryClient } from "@tanstack/vue-query";
-import { storeToRefs } from "pinia";
 import Heading from "@/shared/components/base/Heading/index.vue";
-import Alert from "@/shared/components/base/Alert/index.vue";
-import { AlertVariantsEnum } from "@/shared/components/base/Alert/types";
-import FormCheckbox from "@/shared/components/base/FormCheckbox/index.vue";
+import Panel from "@/shared/components/base/Panel/index.vue";
+import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
+import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
+import Pill from "@/shared/components/base/Pill/index.vue";
+import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import AsyncData from "@/shared/components/AsyncData.vue";
-import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
+import RaffleKeyImage from "@/frontend/components/Raffles/KeyImage/index.vue";
+import RaffleEntryPanel from "@/frontend/components/Raffles/EntryPanel/index.vue";
+import RaffleHowItWorks from "@/frontend/components/Raffles/HowItWorks/index.vue";
 import RaffleConditions from "@/frontend/components/Raffles/Conditions/index.vue";
+import RaffleWinners from "@/frontend/components/Raffles/Winners/index.vue";
 import RaffleEntrants from "@/frontend/components/Raffles/Entrants/index.vue";
 import {
   RaffleStatusEnum,
-  raffleCode,
   useRaffle,
-  useEnterRaffle,
-  useWithdrawFromRaffle,
-  useClaimRaffle,
+  useCurrentRaffle,
   getRaffleQueryKey,
-  getRafflesQueryKey,
+  getCurrentRaffleQueryKey,
   getRaffleEntrantsQueryKey,
 } from "@/services/fyApi";
-import { useSessionStore } from "@/frontend/stores/session";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
 const { t, l } = useI18n();
 const route = useRoute();
 const queryClient = useQueryClient();
-const { displayAlert, displaySuccess, displayConfirm } = useAppNotifications();
 
-const { isAuthenticated } = storeToRefs(useSessionStore());
+// Without an id in the address this is the raffles page, which shows the one
+// raffle that is current: there is only ever one online.
+const routeId = computed(() => route.params.id as string | undefined);
 
-const raffleId = computed(() => route.params.id as string);
+const byId = useRaffle(() => routeId.value ?? "", {
+  query: { enabled: () => !!routeId.value },
+});
+const current = useCurrentRaffle({
+  query: { enabled: () => !routeId.value },
+});
 
-const { data: raffle, ...asyncStatus } = useRaffle(raffleId);
+const { data: raffle, ...asyncStatus } = routeId.value ? byId : current;
 
-const invalidate = () =>
+const refresh = () =>
   Promise.all([
     queryClient.invalidateQueries({
-      queryKey: getRaffleQueryKey(raffleId.value),
+      queryKey: getRaffleQueryKey(raffle.value?.id ?? ""),
     }),
-    queryClient.invalidateQueries({ queryKey: getRafflesQueryKey() }),
+    queryClient.invalidateQueries({ queryKey: getCurrentRaffleQueryKey() }),
     queryClient.invalidateQueries({
-      queryKey: getRaffleEntrantsQueryKey(raffleId.value),
+      queryKey: getRaffleEntrantsQueryKey(raffle.value?.id ?? ""),
     }),
   ]);
 
-const enterMutation = useEnterRaffle({ mutation: { onSettled: invalidate } });
-const withdrawMutation = useWithdrawFromRaffle({
-  mutation: { onSettled: invalidate },
-});
-const claimMutation = useClaimRaffle({ mutation: { onSettled: invalidate } });
-
-const conditionsAccepted = ref(false);
-const giftCode = ref<string>();
-
-const errorText = (error: {
-  response?: { status?: number; data?: { message?: string } };
-}) => {
-  if (error.response?.status === 403) return t("raffles.messages.forbidden");
-
-  return error.response?.data?.message || t("raffles.messages.failed");
+const STATUS_PILLS: Record<RaffleStatusEnum, `${PillVariantsEnum}`> = {
+  [RaffleStatusEnum.DRAFT]: PillVariantsEnum.NEUTRAL,
+  [RaffleStatusEnum.UPCOMING]: PillVariantsEnum.DEFAULT,
+  [RaffleStatusEnum.OPEN]: PillVariantsEnum.SUCCESS,
+  [RaffleStatusEnum.CLOSED]: PillVariantsEnum.NEUTRAL,
+  [RaffleStatusEnum.DRAWN]: PillVariantsEnum.NEUTRAL,
+  [RaffleStatusEnum.CONCLUDED]: PillVariantsEnum.NEUTRAL,
 };
-
-const enter = async () => {
-  await enterMutation
-    .mutateAsync({
-      raffleId: raffleId.value,
-      data: { conditionsAccepted: conditionsAccepted.value },
-    })
-    .then(() => {
-      displaySuccess({ text: t("raffles.messages.entered") });
-    })
-    .catch((error) => {
-      displayAlert({ text: errorText(error) });
-    });
-};
-
-const withdraw = () => {
-  displayConfirm({
-    text: t("raffles.messages.confirmWithdraw"),
-    onConfirm: async () => {
-      await withdrawMutation
-        .mutateAsync({ raffleId: raffleId.value })
-        .then(() => {
-          conditionsAccepted.value = false;
-          displaySuccess({ text: t("raffles.messages.withdrawn") });
-        })
-        .catch((error) => {
-          displayAlert({ text: errorText(error) });
-        });
-    },
-  });
-};
-
-const claim = async () => {
-  await claimMutation
-    .mutateAsync({ id: raffleId.value })
-    .then((response) => {
-      giftCode.value = response.code;
-    })
-    .catch((error) => {
-      displayAlert({ text: errorText(error) });
-    });
-};
-
-const showCode = async () => {
-  await raffleCode(raffleId.value)
-    .then((response) => {
-      giftCode.value = response.code;
-    })
-    .catch((error) => {
-      displayAlert({ text: errorText(error) });
-    });
-};
-
-const isOpen = computed(() => raffle.value?.status === RaffleStatusEnum.OPEN);
 </script>
 
 <template>
-  <BreadCrumbs
-    :crumbs="[{ to: { name: 'raffles' }, label: t('raffles.title') }]"
-  />
   <AsyncData :async-status="asyncStatus">
     <template #resolved>
       <template v-if="raffle">
         <Heading hero>{{ raffle.title }}</Heading>
+        <div class="raffle-meta">
+          <Pill :variant="STATUS_PILLS[raffle.status]">
+            {{ t(`raffles.statuses.${raffle.status}`) }}
+          </Pill>
+          <span class="raffle-meta__text">
+            {{
+              t("raffles.meta", {
+                date: l(raffle.endsAt, "datetime.formats.short"),
+                count: raffle.entriesCount,
+              })
+            }}
+          </span>
+        </div>
 
-        <div class="raffle">
-          <div class="raffle__main">
-            <img
-              v-if="raffle.prize?.storeImage?.largeUrl"
-              :src="raffle.prize.storeImage.largeUrl"
-              :alt="raffle.prize.name"
-              class="raffle__image"
-            />
-            <p v-if="raffle.prize" class="raffle__prize">
-              {{ t("raffles.prize", { name: raffle.prize.name }) }}
-            </p>
-            <p v-if="raffle.description" class="raffle__description">
-              {{ raffle.description }}
-            </p>
-            <dl class="raffle__facts">
-              <dt>{{ t("raffles.status") }}</dt>
-              <dd>{{ t(`raffles.statuses.${raffle.status}`) }}</dd>
-              <dt>{{ t("raffles.runs") }}</dt>
-              <dd>
-                {{ l(raffle.startsAt, "datetime.formats.short") }} –
-                {{ l(raffle.endsAt, "datetime.formats.short") }}
-              </dd>
-              <dt>{{ t("raffles.entrants.count") }}</dt>
-              <dd>{{ raffle.entriesCount }}</dd>
-            </dl>
+        <RaffleKeyImage
+          v-if="raffle.images.length"
+          :images="raffle.images"
+          :title="raffle.title"
+        />
 
-            <Alert
-              v-if="giftCode"
-              :title="t('raffles.code.title')"
-              :variant="AlertVariantsEnum.SUCCESS"
-              data-test="raffle-gift-code"
+        <div class="row">
+          <div class="col-12 col-md-8">
+            <Panel
+              v-if="raffle.description || raffle.prize"
+              :variant="PanelVariantsEnum.SLIM"
             >
-              <code class="raffle__code">{{ giftCode }}</code>
-              <p>{{ t("raffles.code.hint") }}</p>
-            </Alert>
-
-            <Alert
-              v-else-if="raffle.claimable"
-              :title="t('raffles.won.title')"
-              :variant="AlertVariantsEnum.SUCCESS"
-            >
-              <p>
-                {{
-                  t("raffles.won.deadline", {
-                    date: l(
-                      raffle.currentWinner?.claimDeadlineAt as string,
-                      "datetime.formats.short",
-                    ),
-                  })
-                }}
-              </p>
-              <Btn
-                :loading="claimMutation.isPending.value"
-                data-test="raffle-claim"
-                @click="claim"
-              >
-                <i class="fa-duotone fa-gift" />
-                {{ t("raffles.actions.claim") }}
-              </Btn>
-            </Alert>
-
-            <Alert
-              v-else-if="raffle.claimed"
-              :title="t('raffles.won.claimed')"
-              :variant="AlertVariantsEnum.SUCCESS"
-            >
-              <Btn data-test="raffle-show-code" @click="showCode">
-                <i class="fa-duotone fa-eye" />
-                {{ t("raffles.actions.showCode") }}
-              </Btn>
-            </Alert>
-
-            <template v-if="raffle.currentWinner">
-              <h2 class="raffle__section-title">
-                {{ t("raffles.winner.title") }}
-              </h2>
-              <p data-test="raffle-winner">
-                {{
-                  t(
-                    raffle.currentWinner.claimedAt
-                      ? "raffles.winner.claimed"
-                      : "raffles.winner.pending",
-                    {
-                      username: raffle.currentWinner.username,
-                      date: l(
-                        raffle.currentWinner.claimDeadlineAt,
-                        "datetime.formats.short",
-                      ),
-                    },
-                  )
-                }}
-              </p>
-            </template>
-            <template v-if="raffle.forfeitedWinners.length">
-              <h3 class="raffle__section-title">
-                {{ t("raffles.winner.forfeited") }}
-              </h3>
-              <ul>
-                <li
-                  v-for="winner in raffle.forfeitedWinners"
-                  :key="winner.drawPosition"
-                >
-                  {{ winner.username }}
-                </li>
-              </ul>
-            </template>
-
-            <RaffleEntrants :raffle-id="raffle.id" />
-          </div>
-
-          <aside class="raffle__aside">
+              <PanelBody>
+                <p v-if="raffle.description" class="raffle-description">
+                  {{ raffle.description }}
+                </p>
+                <p v-if="raffle.prize" class="raffle-prize">
+                  {{ t("raffles.prizeShip") }}
+                  <router-link
+                    :to="{ name: 'ship', params: { slug: raffle.prize.slug } }"
+                  >
+                    {{ raffle.prize.name }}
+                  </router-link>
+                </p>
+              </PanelBody>
+            </Panel>
+            <RaffleHowItWorks :raffle="raffle" />
             <RaffleConditions :raffle="raffle" />
-
-            <template v-if="isOpen">
-              <p v-if="!isAuthenticated">
-                <router-link
-                  :to="{ name: 'login', query: { redirect: route.fullPath } }"
-                >
-                  {{ t("raffles.actions.signInToEnter") }}
-                </router-link>
-              </p>
-              <template v-else-if="raffle.entered">
-                <Alert :variant="AlertVariantsEnum.SUCCESS">
-                  {{ t("raffles.entered") }}
-                </Alert>
-                <Btn
-                  :loading="withdrawMutation.isPending.value"
-                  data-test="raffle-withdraw"
-                  @click="withdraw"
-                >
-                  {{ t("raffles.actions.withdraw") }}
-                </Btn>
-              </template>
-              <form
-                v-else
-                class="raffle__enter"
-                data-test="raffle-enter-form"
-                @submit.prevent="enter"
-              >
-                <FormCheckbox
-                  v-model="conditionsAccepted"
-                  name="conditionsAccepted"
-                  :label="t('raffles.conditions.accept')"
-                  data-test="raffle-accept-conditions"
-                />
-                <Btn
-                  type="submit"
-                  :disabled="!conditionsAccepted"
-                  :loading="enterMutation.isPending.value"
-                  data-test="raffle-enter"
-                >
-                  <i class="fa-duotone fa-ticket" />
-                  {{ t("raffles.actions.enter") }}
-                </Btn>
-              </form>
-            </template>
-          </aside>
+          </div>
+          <div class="col-12 col-md-4">
+            <RaffleEntryPanel
+              v-if="raffle.status !== RaffleStatusEnum.DRAFT"
+              :raffle="raffle"
+              @changed="refresh"
+            />
+            <RaffleWinners :raffle="raffle" />
+            <RaffleEntrants
+              :raffle-id="raffle.id"
+              :count="raffle.entriesCount"
+            />
+          </div>
         </div>
       </template>
     </template>
@@ -297,55 +134,27 @@ const isOpen = computed(() => raffle.value?.status === RaffleStatusEnum.OPEN);
 </template>
 
 <style lang="scss" scoped>
-.raffle {
-  display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
-  gap: 24px;
-
-  @media (width <= 991px) {
-    grid-template-columns: minmax(0, 1fr);
-  }
+.raffle-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-.raffle__image {
-  width: 100%;
-  border-radius: 8px;
+.raffle-meta__text {
+  color: var(--color-text-dim, #959595);
+  font-size: 0.875rem;
 }
 
-.raffle__prize {
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-
-.raffle__description {
+.raffle-description {
+  margin-top: 0;
   white-space: pre-line;
 }
 
-.raffle__facts {
-  display: grid;
-  grid-template-columns: max-content 1fr;
-  gap: 4px 16px;
-
-  dd {
-    margin: 0;
-  }
-}
-
-.raffle__code {
-  display: block;
-  margin-bottom: 8px;
-  font-size: 1.25rem;
-  letter-spacing: 0.1em;
-  user-select: all;
-}
-
-.raffle__section-title {
-  font-size: 1.1rem;
-}
-
-.raffle__enter {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+.raffle-prize {
+  margin-bottom: 0;
+  color: var(--color-text-dim, #959595);
+  font-size: 0.875rem;
 }
 </style>

@@ -226,9 +226,19 @@ export const routes: RouteRecordRaw[] = [
   {
     path: "/raffles/",
     name: "raffles",
-    component: () => import("@/frontend/pages/raffles/index.vue"),
+    component: () => import("@/frontend/pages/raffles/[id].vue"),
     meta: {
       title: "raffles",
+      feature: FeatureFlagName.RAFFLES,
+      backgroundImage: "bg-5",
+    },
+  },
+  {
+    path: "/raffle-claims/:token/",
+    name: "raffle-claim",
+    component: () => import("@/frontend/pages/raffle-claims/[token].vue"),
+    meta: {
+      title: "raffleClaim",
       feature: FeatureFlagName.RAFFLES,
       backgroundImage: "bg-5",
     },

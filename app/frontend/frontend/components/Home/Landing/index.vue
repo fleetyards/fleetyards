@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import RaffleHomeBanner from "@/frontend/components/Raffles/HomeBanner/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import SupportBtn from "@/frontend/components/SupportBtn/index.vue";
@@ -108,6 +109,7 @@ useScrollSettle(() =>
   </Teleport>
 
   <LandingSection hero data-test="home-landing">
+    <RaffleHomeBanner class="home-landing__raffle" />
     <div
       class="home-landing__hero"
       :class="{
@@ -208,6 +210,10 @@ useScrollSettle(() =>
 
 // One centred column; with a featured ship, the copy on the left and the ship
 // beside it.
+.home-landing__raffle {
+  margin-bottom: 32px;
+}
+
 .home-landing__hero {
   opacity: 0;
   transform: translateY(12px);

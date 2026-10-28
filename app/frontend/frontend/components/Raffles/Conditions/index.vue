@@ -5,6 +5,11 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import Panel from "@/shared/components/base/Panel/index.vue";
+import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
+import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
+import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
+import { PanelHeadingTonesEnum } from "@/shared/components/base/Panel/Heading/types";
 import { type Raffle } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 
@@ -21,7 +26,9 @@ const CONDITIONS = [
   "publicEntrants",
   "publicWinner",
   "drawOrder",
+  "claimMail",
   "claimDeadline",
+  "prizeMail",
   "deletedAccount",
   "noCash",
   "noLiability",
@@ -31,51 +38,40 @@ const CONDITIONS = [
 </script>
 
 <template>
-  <section class="raffle-conditions" data-test="raffle-conditions">
-    <h2 class="raffle-conditions__title">
+  <Panel
+    :variant="PanelVariantsEnum.SLIM"
+    class="raffle-conditions"
+    data-test="raffle-conditions"
+  >
+    <PanelHeading :tone="PanelHeadingTonesEnum.METRIC" compact divider>
       {{ t("raffles.conditions.title") }}
-    </h2>
-    <ol class="raffle-conditions__list">
-      <li v-for="condition in CONDITIONS" :key="condition">
+    </PanelHeading>
+    <PanelBody>
+      <ol class="raffle-conditions__list">
+        <li v-for="condition in CONDITIONS" :key="condition">
+          {{
+            t(`raffles.conditions.${condition}`, {
+              days: props.raffle.claimPeriodDays,
+            })
+          }}
+        </li>
+      </ol>
+      <p class="raffle-conditions__version">
         {{
-          t(`raffles.conditions.${condition}`, {
-            days: props.raffle.claimPeriodDays,
-            discordHandle: props.raffle.contacts.discordHandle,
+          t("raffles.conditions.version", {
+            version: props.raffle.conditionsVersion,
           })
         }}
-      </li>
-    </ol>
-    <p class="raffle-conditions__contact">
-      {{
-        t("raffles.conditions.contact", {
-          discordHandle: props.raffle.contacts.discordHandle,
-        })
-      }}
-      <a
-        :href="props.raffle.contacts.discordInvite"
-        target="_blank"
-        rel="noopener"
-      >
-        {{ t("raffles.conditions.discordServer") }}
-      </a>
-    </p>
-    <p class="raffle-conditions__version">
-      {{
-        t("raffles.conditions.version", {
-          version: props.raffle.conditionsVersion,
-        })
-      }}
-    </p>
-  </section>
+      </p>
+    </PanelBody>
+  </Panel>
 </template>
 
 <style lang="scss" scoped>
-.raffle-conditions__title {
-  font-size: 1.1rem;
-}
-
 .raffle-conditions__list {
+  margin: 0;
   padding-left: 1.25rem;
+  font-size: 0.875rem;
 
   li + li {
     margin-top: 6px;
@@ -84,6 +80,6 @@ const CONDITIONS = [
 
 .raffle-conditions__version {
   font-size: 0.85rem;
-  opacity: 0.7;
+  color: var(--color-text-dim, #959595);
 }
 </style>
