@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import { useQueryClient } from "@tanstack/vue-query";
 import Heading from "@/shared/components/base/Heading/index.vue";
+import { HeadingSizeEnum } from "@/shared/components/base/Heading/types";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
@@ -71,7 +72,13 @@ const STATUS_PILLS: Record<RaffleStatusEnum, `${PillVariantsEnum}`> = {
   <AsyncData :async-status="asyncStatus">
     <template #resolved>
       <template v-if="raffle">
-        <Heading hero>{{ raffle.title }}</Heading>
+        <Heading hero :size="HeadingSizeEnum.HERO">
+          <span>
+            <span aria-hidden="true">🎁</span>
+            {{ raffle.title }}
+            <span aria-hidden="true">🎉</span>
+          </span>
+        </Heading>
         <div class="raffle-meta">
           <Pill :variant="STATUS_PILLS[raffle.status]">
             {{ t(`raffles.statuses.${raffle.status}`) }}
