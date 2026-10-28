@@ -154,14 +154,7 @@ const title = computed(() => {
         </Alert>
 
         <template v-else-if="isOpen">
-          <p v-if="!isAuthenticated">
-            <router-link
-              :to="{ name: 'login', query: { redirect: route.fullPath } }"
-            >
-              {{ t("raffles.actions.signInToEnter") }}
-            </router-link>
-          </p>
-          <template v-else-if="raffle.entered">
+          <template v-if="isAuthenticated && raffle.entered">
             <Alert
               :variant="AlertVariantsEnum.SUCCESS"
               :size="AlertSizesEnum.COMPACT"
@@ -187,7 +180,7 @@ const title = computed(() => {
             </Btn>
           </template>
           <form
-            v-else
+            v-else-if="isAuthenticated"
             class="raffle-entry__form"
             data-test="raffle-enter-form"
             @submit.prevent="enter"
@@ -221,6 +214,17 @@ const title = computed(() => {
         </p>
       </div>
     </PanelBody>
+    <div v-if="isOpen && !isAuthenticated" class="raffle-entry__footer">
+      <Btn
+        :to="{ name: 'login', query: { redirect: route.fullPath } }"
+        :size="BtnSizesEnum.LG"
+        block
+        data-test="raffle-sign-in"
+      >
+        <i class="fa-light fa-right-to-bracket" />
+        {{ t("raffles.actions.signInToEnter") }}
+      </Btn>
+    </div>
   </Panel>
 </template>
 
@@ -238,6 +242,11 @@ const title = computed(() => {
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+.raffle-entry__footer {
+  padding: 12px 18px 18px;
+  border-top: 1px solid var(--color-edge-faint, rgba(122, 130, 136, 0.16));
 }
 
 .raffle-entry__hint {

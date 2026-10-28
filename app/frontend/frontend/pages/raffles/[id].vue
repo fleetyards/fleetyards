@@ -57,6 +57,16 @@ const refresh = () =>
     }),
   ]);
 
+// The uploaded gallery, or the prize ship's store image when the raffle has
+// no pictures of its own.
+const keyImages = computed(() => {
+  if (!raffle.value) return [];
+  if (raffle.value.images.length) return raffle.value.images;
+
+  const storeImage = raffle.value.prize?.storeImage;
+  return storeImage?.url ? [storeImage] : [];
+});
+
 const STATUS_PILLS: Record<RaffleStatusEnum, `${PillVariantsEnum}`> = {
   [RaffleStatusEnum.DRAFT]: PillVariantsEnum.NEUTRAL,
   [RaffleStatusEnum.UPCOMING]: PillVariantsEnum.DEFAULT,
@@ -87,8 +97,8 @@ const STATUS_PILLS: Record<RaffleStatusEnum, `${PillVariantsEnum}`> = {
         </div>
 
         <RaffleKeyImage
-          v-if="raffle.images.length"
-          :images="raffle.images"
+          v-if="keyImages.length"
+          :images="keyImages"
           :title="raffle.title"
         />
 

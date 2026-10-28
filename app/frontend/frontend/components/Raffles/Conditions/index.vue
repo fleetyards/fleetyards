@@ -56,6 +56,8 @@ const CONDITIONS = [
           }}
         </li>
       </ol>
+    </PanelBody>
+    <footer class="raffle-conditions__footnote">
       <p class="raffle-conditions__version">
         {{
           t("raffles.conditions.version", {
@@ -63,7 +65,7 @@ const CONDITIONS = [
           })
         }}
       </p>
-    </PanelBody>
+    </footer>
   </Panel>
 </template>
 
@@ -78,7 +80,13 @@ const CONDITIONS = [
   }
 }
 
+.raffle-conditions__footnote {
+  padding: 10px 18px 14px;
+  border-top: 1px solid var(--color-edge-faint, rgba(122, 130, 136, 0.16));
+}
+
 .raffle-conditions__version {
+  margin: 0;
   font-size: 0.85rem;
   color: var(--color-text-dim, #959595);
 }
