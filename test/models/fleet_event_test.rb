@@ -482,6 +482,24 @@ class FleetEventTest < ActiveSupport::TestCase
     assert_equal first.id, last.reload.split_from_id
   end
 
+  test "preset_cover_file ignores a preset that is not a bare file stem" do
+    event = build(:fleet_event, category: "other", cover_image_preset: "../bg-4")
+
+    assert_equal FleetEvent::PRESET_COVER_ROOT, event.preset_cover_file.dirname
+  end
+
+  test "a preset that is not a bare file stem is refused, here and on a mission" do
+    assert build(:fleet_event, cover_image_preset: "cargo_hauling_alt2").valid?
+
+    event = build(:fleet_event, cover_image_preset: "../../config/master")
+    assert_not event.valid?
+    assert event.errors.added?(:cover_image_preset, :invalid, value: "../../config/master")
+
+    mission = build(:mission, cover_image_preset: "../bg-4")
+    assert_not mission.valid?
+    assert mission.errors.of_kind?(:cover_image_preset, :invalid)
+  end
+
   test "cover_image refuses SVG" do
     event = build(:fleet_event)
     event.cover_image.attach(io: StringIO.new(%(<svg xmlns="http://www.w3.org/2000/svg"/>)), filename: "x.svg", content_type: "image/svg+xml")

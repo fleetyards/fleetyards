@@ -12,6 +12,8 @@ class Mission < ApplicationRecord
 
   has_one_attached :cover_image
   validates :cover_image, no_vector_image: true
+  # Copied onto the events created from the mission.
+  validates :cover_image_preset, format: {with: FleetEvent::PRESET_COVER_FORMAT}, allow_blank: true
 
   enum :category, {
     other: 0,
