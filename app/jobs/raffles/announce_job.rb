@@ -2,8 +2,9 @@
 
 module Raffles
   # Tells every user when a raffle opens, and those who have not entered when
-  # it has a day left. Each kind goes out once per raffle: the timestamp is
-  # set before anything is sent, so an overlapping run finds nothing to do.
+  # it has a day left, and posts both to Bluesky. Each kind goes out once per
+  # raffle: the timestamp is set before anything is sent, so an overlapping run
+  # finds nothing to do.
   class AnnounceJob < ::ApplicationJob
     sidekiq_options retry: false, queue: "notifications"
 
@@ -16,7 +17,7 @@ module Raffles
         next unless claim(raffle, :start_announced_at, now)
 
         fan_out(raffle, :raffle_started, User.confirmed.pluck(:id))
-        Raffles::PostSocialJob.perform_async(raffle.id)
+        Raffles::PostSocialJob.perform_async(raffle.id, "start")
       end
 
       Raffle.last_day_unannounced(now).find_each do |raffle|
@@ -24,6 +25,7 @@ module Raffles
 
         entered = raffle.entries.where.not(user_id: nil).select(:user_id)
         fan_out(raffle, :raffle_last_day, User.confirmed.where.not(id: entered).pluck(:id))
+        Raffles::PostSocialJob.perform_async(raffle.id, "last_day")
       end
     end
 

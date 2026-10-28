@@ -15,7 +15,7 @@ module Raffles
       AnnounceBatchJob.drain
 
       assert_equal @users.size, Notification.where(notification_type: "raffle_started", record_id: @raffle.id).where(user: @users).count
-      assert_equal 1, PostSocialJob.jobs.size
+      assert_equal [[@raffle.id, "start"]], PostSocialJob.jobs.map { |job| job["args"] }
 
       AnnounceJob.new.perform
       assert_equal 1, PostSocialJob.jobs.size
@@ -32,6 +32,7 @@ module Raffles
       reminded = Notification.where(notification_type: "raffle_last_day", record_id: @raffle.id)
       assert_not reminded.exists?(user: @users.first)
       assert reminded.exists?(user: @users.last)
+      assert_includes PostSocialJob.jobs.map { |job| job["args"] }, [@raffle.id, "last_day"]
     end
 
     test "a retried batch writes nothing twice" do
