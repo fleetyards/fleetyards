@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class RaffleEntry < ApplicationRecord
-  paginates_per 50
+  paginates_per 48
 
   # What Postmark reports for a raffle mail, from its message events. `sent`
   # is ours: the mail left for Postmark and nothing has come back yet.
