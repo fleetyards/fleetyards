@@ -46,4 +46,24 @@ class FleetNotificationSettingDiscordIdsTest < ActiveSupport::TestCase
     refute_predicate @setting, :valid?
     assert_includes @setting.errors.details[:discord_join_role_id], {error: :everyone_role}
   end
+
+  test "discord_webhook_url only accepts a Discord webhook" do
+    setting = create(:fleet).fleet_notification_setting || FleetNotificationSetting.new(fleet: create(:fleet))
+
+    ["http://169.254.169.254/latest/meta-data", "https://example.com/api/webhooks/1/x", "https://discord.com:8443/api/webhooks/1/x"].each do |url|
+      setting.discord_webhook_url = url
+      assert_not setting.valid?, url
+      assert setting.errors.added?(:discord_webhook_url, :invalid), url
+    end
+
+    setting.discord_webhook_url = "https://discord.com/api/webhooks/1/token"
+    setting.valid?
+    assert_not setting.errors.key?(:discord_webhook_url)
+  end
+
+  test "WebhookPost refuses to call a URL that is not a Discord webhook" do
+    Discordrb::Webhooks::Client.expects(:new).never
+
+    assert_equal false, ::Discord::WebhookPost.new("http://127.0.0.1:6379/").deliver("hi")
+  end
 end

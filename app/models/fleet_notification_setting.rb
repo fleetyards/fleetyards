@@ -31,6 +31,10 @@ class FleetNotificationSetting < ApplicationRecord
     end
   end
 
+  validate if: -> { discord_webhook_url.present? && discord_webhook_url_changed? } do
+    errors.add(:discord_webhook_url, :invalid) unless ::Discord::WebhookPost.allowed_url?(discord_webhook_url)
+  end
+
   DIGEST_TIME_FORMAT = /\A(?:[01]\d|2[0-3]):[0-5]\d\z/
 
   # Ruby's own numbering, Sunday first, so a weekday compares with `wday`
