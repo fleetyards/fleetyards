@@ -10,7 +10,8 @@ zh-CN:
       prize:
         subject: "你的 %{raffle} 礼品码"
         body: "这是你在抽奖“%{raffle}”中获得的礼品码："
-        redeem: "请在 RSI 网站兑换。请勿外泄：任何拿到礼品码的人都能兑换。"
+        action: "在 RSI 网站兑换"
+        redeem: "请勿外泄：任何拿到礼品码的人都能兑换。"
     announcement:
       action: "了解更多"
     account:

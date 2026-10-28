@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class RaffleMailer < ApplicationMailer
+  REDEEM_URL = "https://robertsspaceindustries.com/en/pledge/redeem-code"
+
   # The winner's link to claim the prize. Made here rather than passed in, so
   # it never sits in a job's arguments.
   def claim(entry)
@@ -18,6 +20,7 @@ class RaffleMailer < ApplicationMailer
     @raffle = entry.raffle
     @username = entry.display_username
     @code = @raffle.code
+    @redeem_url = REDEEM_URL
 
     mail(to: entry.recipient_email, subject: I18n.t(:"mailer.raffle.prize.subject", raffle: @raffle.title))
   end

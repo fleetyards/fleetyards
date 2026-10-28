@@ -14,10 +14,6 @@ class NotificationMailerPreview < ActionMailer::Preview
     )
   end
 
-  def raffle_won
-    raffle_notification(:raffle_won, 3.days.from_now)
-  end
-
   def raffle_started
     raffle_notification(:raffle_started, 14.days.from_now)
   end

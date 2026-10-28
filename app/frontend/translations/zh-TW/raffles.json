@@ -206,6 +206,12 @@
         "until": "截至 %{date}",
         "drawnOn": "已於 %{date} 從 %{count} 位參加者中抽出。"
       },
+      "over": {
+        "title": "本次抽獎已結束",
+        "closed": "報名已截止，即將抽出得獎者。",
+        "drawn": "報名已截止，得獎者已抽出。",
+        "concluded": "本次抽獎已結束，感謝所有參加者。"
+      },
       "won": {
         "title": "您得獎了！",
         "checkMail": "我們已寄給您一封郵件，其中包含領取獎品的連結。請在 %{date} 前點擊該連結，否則得獎資格將順延給下一位。",
@@ -245,13 +251,12 @@
       "claim": {
         "title": "領取獎品",
         "pending": "正在領取您的獎品…",
-        "successTitle": "獎品已領取",
         "success": "您已領取「%{raffle}」中的獎品。禮品碼正在寄送到您的信箱。",
-        "toRaffle": "前往抽獎",
         "failedTitle": "無法領取獎品",
         "failed": "發生錯誤，請重新開啟該連結。"
       },
       "meta": "%{date} 截止 · %{count} 位參加者",
+      "metaClosed": "已於 %{date} 截止 · %{count} 位參加者",
       "showImage": "顯示圖片 %{index}",
       "howItWorks": {
         "title": "參加方式",
@@ -282,6 +287,7 @@
         "days": "%{days} 天",
         "entered": "您已參加。抽獎將在 %{date} 後進行。",
         "enteredHint": "如果您得獎，我們將寄給您領取連結。抽獎後 %{days} 天內請留意您的信箱。",
+        "over": "抽獎已結束",
         "opensAt": "%{date} 開始。",
         "maintainer": "維護者負責管理抽獎，不能參加。"
       },

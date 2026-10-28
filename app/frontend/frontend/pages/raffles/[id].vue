@@ -28,6 +28,7 @@ import {
   getCurrentRaffleQueryKey,
   getRaffleEntrantsQueryKey,
 } from "@/services/fyApi";
+import { isRaffleOver } from "@/frontend/utils/raffleStatus";
 import { useI18n } from "@/shared/composables/useI18n";
 
 const { t, l } = useI18n();
@@ -85,7 +86,7 @@ const STATUS_PILLS: Record<RaffleStatusEnum, `${PillVariantsEnum}`> = {
           </Pill>
           <span class="raffle-meta__text">
             {{
-              t("raffles.meta", {
+              t(isRaffleOver(raffle) ? "raffles.metaClosed" : "raffles.meta", {
                 date: l(raffle.endsAt, "datetime.formats.short"),
                 count: raffle.entriesCount,
               })

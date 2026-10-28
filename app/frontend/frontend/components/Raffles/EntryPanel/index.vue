@@ -24,6 +24,7 @@ import {
   useEnterRaffle,
   useWithdrawFromRaffle,
 } from "@/services/fyApi";
+import { isRaffleOver } from "@/frontend/utils/raffleStatus";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useRedirectBackStore } from "@/shared/stores/redirectBack";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -65,6 +66,8 @@ const isOpen = computed(() => props.raffle.status === RaffleStatusEnum.OPEN);
 
 const isMaintainer = computed(() => !!currentUser?.value?.maintainer);
 
+const isOver = computed(() => isRaffleOver(props.raffle));
+
 const errorText = (error: {
   response?: { status?: number; data?: { message?: string } };
 }) => {
@@ -100,6 +103,7 @@ const withdraw = () => {
 
 const title = computed(() => {
   if (props.raffle.won || props.raffle.entered) return t("raffles.entry.yours");
+  if (isOver.value) return t("raffles.entry.over");
 
   return t("raffles.entry.title");
 });
@@ -239,6 +243,14 @@ const title = computed(() => {
             })
           }}
         </p>
+        <Alert
+          v-else-if="isOver"
+          :title="t('raffles.over.title')"
+          :variant="AlertVariantsEnum.INFO"
+          data-test="raffle-over"
+        >
+          {{ t(`raffles.over.${raffle.status}`) }}
+        </Alert>
       </div>
     </PanelBody>
     <div v-if="isOpen && !isAuthenticated" class="raffle-entry__footer">
