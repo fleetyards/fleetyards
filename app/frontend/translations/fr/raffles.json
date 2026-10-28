@@ -245,9 +245,7 @@
       "claim": {
         "title": "Réclamer le prix",
         "pending": "Réclamation de votre prix…",
-        "successTitle": "Prix réclamé",
         "success": "Vous avez réclamé votre prix du tirage au sort « %{raffle} ». Le code cadeau est en route vers votre boîte de réception.",
-        "toRaffle": "Aller au tirage au sort",
         "failedTitle": "Le prix n'a pas pu être réclamé",
         "failed": "Une erreur s'est produite. Veuillez rouvrir le lien."
       },

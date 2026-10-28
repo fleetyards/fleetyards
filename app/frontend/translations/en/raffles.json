@@ -245,9 +245,7 @@
       "claim": {
         "title": "Claim prize",
         "pending": "Claiming your prize…",
-        "successTitle": "Prize claimed",
         "success": "You claimed your prize in \"%{raffle}\". The gift code is on its way to your mail inbox.",
-        "toRaffle": "Go to the raffle",
         "failedTitle": "The prize could not be claimed",
         "failed": "Something went wrong. Please try the link again."
       },

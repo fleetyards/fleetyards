@@ -245,9 +245,7 @@
       "claim": {
         "title": "Reclamar premio",
         "pending": "Reclamando tu premio…",
-        "successTitle": "Premio reclamado",
         "success": "Has reclamado tu premio en «%{raffle}». El código de regalo está de camino a tu bandeja de entrada.",
-        "toRaffle": "Ir al sorteo",
         "failedTitle": "No se ha podido reclamar el premio",
         "failed": "Algo ha salido mal. Por favor, vuelve a abrir el enlace."
       },

@@ -245,9 +245,7 @@
       "claim": {
         "title": "Ritira il premio",
         "pending": "Ritiro del premio in corso…",
-        "successTitle": "Premio ritirato",
         "success": "Hai ritirato il tuo premio in \"%{raffle}\". Il codice regalo sta arrivando nella tua casella di posta.",
-        "toRaffle": "Vai all'estrazione",
         "failedTitle": "Non è stato possibile ritirare il premio",
         "failed": "Qualcosa è andato storto. Riapri il link."
       },

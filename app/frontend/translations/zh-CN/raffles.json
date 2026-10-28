@@ -245,9 +245,7 @@
       "claim": {
         "title": "领取奖品",
         "pending": "正在领取您的奖品…",
-        "successTitle": "奖品已领取",
         "success": "您已领取“%{raffle}”中的奖品。礼品码正在发送到您的邮箱。",
-        "toRaffle": "前往抽奖",
         "failedTitle": "无法领取奖品",
         "failed": "出现问题，请重新打开该链接。"
       },

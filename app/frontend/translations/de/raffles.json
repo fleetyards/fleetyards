@@ -245,9 +245,7 @@
       "claim": {
         "title": "Preis abholen",
         "pending": "Dein Preis wird abgeholt…",
-        "successTitle": "Preis abgeholt",
         "success": "Du hast deinen Preis aus „%{raffle}“ abgeholt. Der Geschenkcode ist auf dem Weg in dein Mail-Postfach.",
-        "toRaffle": "Zur Verlosung",
         "failedTitle": "Der Preis konnte nicht abgeholt werden",
         "failed": "Etwas ist schiefgelaufen. Bitte öffne den Link erneut."
       },
