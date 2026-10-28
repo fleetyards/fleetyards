@@ -481,4 +481,12 @@ class FleetEventTest < ActiveSupport::TestCase
 
     assert_equal first.id, last.reload.split_from_id
   end
+
+  test "cover_image refuses SVG" do
+    event = build(:fleet_event)
+    event.cover_image.attach(io: StringIO.new(%(<svg xmlns="http://www.w3.org/2000/svg"/>)), filename: "x.svg", content_type: "image/svg+xml")
+
+    assert_not event.valid?
+    assert event.errors.added?(:cover_image, :svg_not_supported)
+  end
 end

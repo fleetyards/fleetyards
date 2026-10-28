@@ -33,6 +33,7 @@ class FleetEvent < ApplicationRecord
   has_one :payout_ledger, as: :subject, dependent: :destroy
 
   has_one_attached :cover_image
+  validates :cover_image, no_vector_image: true
 
   enum :category, {
     other: 0,

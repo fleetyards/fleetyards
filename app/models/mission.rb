@@ -11,6 +11,7 @@ class Mission < ApplicationRecord
   has_many :mission_ships, through: :mission_teams
 
   has_one_attached :cover_image
+  validates :cover_image, no_vector_image: true
 
   enum :category, {
     other: 0,
