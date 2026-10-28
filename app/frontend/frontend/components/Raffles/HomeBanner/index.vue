@@ -5,117 +5,106 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import Panel from "@/shared/components/base/Panel/index.vue";
-import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
-import {
-  PanelTonesEnum,
-  PanelVariantsEnum,
-} from "@/shared/components/base/Panel/types";
-import Pill from "@/shared/components/base/Pill/index.vue";
-import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { RaffleStatusEnum } from "@/services/fyApi";
 import { useHomeRaffle } from "@/frontend/components/Raffles/useHomeRaffle";
 import { useI18n } from "@/shared/composables/useI18n";
 
-const { t, l } = useI18n();
+const { t } = useI18n();
 
 const raffle = useHomeRaffle();
 
-const cover = computed(() => {
-  const image = raffle.value?.images[0];
-
-  return image?.smallUrl || image?.url;
-});
+const DAY = 24 * 60 * 60 * 1000;
 
 const isOpen = computed(() => raffle.value?.status === RaffleStatusEnum.OPEN);
+
+// Whole days left, so the last day reads as "ends today" rather than "in 1
+// day" an hour before the close.
+const meta = computed(() => {
+  if (!raffle.value) return "";
+
+  const target = new Date(
+    isOpen.value ? raffle.value.endsAt : raffle.value.startsAt,
+  ).getTime();
+  const days = Math.floor((target - Date.now()) / DAY);
+
+  if (isOpen.value) {
+    return days < 1
+      ? t("raffles.home.endsToday")
+      : t("raffles.home.endsIn", { count: days });
+  }
+
+  return days < 1
+    ? t("raffles.home.opensToday")
+    : t("raffles.home.opensIn", { count: days });
+});
 </script>
 
 <template>
-  <Panel
+  <router-link
     v-if="raffle"
-    :variant="PanelVariantsEnum.SLIM"
-    :tone="isOpen ? PanelTonesEnum.SUCCESS : undefined"
-    class="raffle-home-banner"
+    :to="{ name: 'raffles' }"
+    class="raffle-pill"
+    :class="{ 'raffle-pill--open': isOpen }"
     data-test="raffle-home-banner"
   >
-    <PanelBody>
-      <div class="raffle-home-banner__body">
-        <img
-          v-if="cover"
-          :src="cover"
-          :alt="raffle.title"
-          class="raffle-home-banner__cover"
-        />
-        <div class="raffle-home-banner__text">
-          <div class="raffle-home-banner__title">
-            <Pill
-              :variant="
-                isOpen ? PillVariantsEnum.SUCCESS : PillVariantsEnum.DEFAULT
-              "
-            >
-              {{ t(`raffles.statuses.${raffle.status}`) }}
-            </Pill>
-            <router-link :to="{ name: 'raffles' }">
-              {{ t("raffles.home.title", { title: raffle.title }) }}
-            </router-link>
-          </div>
-          <span class="raffle-home-banner__meta">
-            {{
-              isOpen
-                ? t("raffles.meta", {
-                    date: l(raffle.endsAt, "datetime.formats.short"),
-                    count: raffle.entriesCount,
-                  })
-                : t("raffles.entry.opensAt", {
-                    date: l(raffle.startsAt, "datetime.formats.short"),
-                  })
-            }}
-          </span>
-        </div>
-        <Btn :to="{ name: 'raffles' }" :size="BtnSizesEnum.MD">
-          {{ t("raffles.home.view") }}
-          <i class="fa-light fa-chevron-right" />
-        </Btn>
-      </div>
-    </PanelBody>
-  </Panel>
+    <span class="raffle-pill__tag">{{ t("raffles.home.pillTag") }}</span>
+    <span class="raffle-pill__title">{{ raffle.title }}</span>
+    <span class="raffle-pill__meta">{{ meta }}</span>
+    <i class="fa-light fa-chevron-right raffle-pill__chevron" />
+  </router-link>
 </template>
 
 <style lang="scss" scoped>
-.raffle-home-banner__body {
-  display: flex;
+.raffle-pill {
+  display: inline-flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 16px;
-}
-
-.raffle-home-banner__cover {
-  width: 120px;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-  border-radius: var(--radius-control, 8px);
-}
-
-.raffle-home-banner__text {
-  display: flex;
-  flex: 1 1 240px;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 0;
-}
-
-.raffle-home-banner__title {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
+  gap: 10px;
+  max-width: 100%;
+  padding: 6px 12px 6px 6px;
+  border: 1px solid var(--color-edge, rgba(122, 130, 136, 0.5));
+  border-radius: 999px;
+  background: var(--color-control, rgba(39, 43, 48, 0.9));
   color: var(--color-lifted, #eee);
-  font-weight: 600;
+  text-decoration: none;
+  transition: background 150ms ease;
+
+  &:hover {
+    background: var(--color-control-hover, rgba(52, 58, 64, 0.95));
+    color: var(--color-lifted, #eee);
+  }
 }
 
-.raffle-home-banner__meta {
-  color: var(--color-text-dim, #959595);
+.raffle-pill--open {
+  border-color: rgba(92, 184, 92, 0.6);
+}
+
+.raffle-pill__tag {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--color-primary, #428bca);
+  color: #000;
+  font-family: "Orbitron", tahoma, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.raffle-pill--open .raffle-pill__tag {
+  background: var(--color-success, #5cb85c);
+}
+
+.raffle-pill__title {
   font-size: 0.875rem;
+}
+
+.raffle-pill__meta {
+  color: var(--color-text-dim, #959595);
+  font-size: 0.8125rem;
+}
+
+.raffle-pill__chevron {
+  color: var(--color-text-dim, #959595);
+  font-size: 0.75rem;
 }
 </style>

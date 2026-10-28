@@ -258,13 +258,22 @@
         "next": "下一张图片"
       },
       "home": {
-        "title": "抽奖：%{title}",
-        "lede": "赢取 Star Citizen 礼品码。已确认的账户可免费参与。",
         "view": "查看抽奖",
         "panelTitle": "抽奖",
         "entered": "已参与",
         "notEntered": "您尚未参与。",
-        "enter": "参与"
+        "enter": "参与",
+        "pillTag": "抽奖",
+        "endsIn": {
+          "one": "%{count} 天后结束",
+          "other": "%{count} 天后结束"
+        },
+        "endsToday": "今天结束",
+        "opensIn": {
+          "one": "%{count} 天后开始",
+          "other": "%{count} 天后开始"
+        },
+        "opensToday": "今天开始"
       }
     }
   }

@@ -258,13 +258,22 @@
         "next": "Immagine successiva"
       },
       "home": {
-        "title": "Estrazione: %{title}",
-        "lede": "Vinci un codice regalo di Star Citizen. Partecipa gratis con un account confermato.",
         "view": "Vai all'estrazione",
         "panelTitle": "Estrazione",
         "entered": "Partecipi",
         "notEntered": "Non partecipi ancora.",
-        "enter": "Partecipa"
+        "enter": "Partecipa",
+        "pillTag": "Estrazione",
+        "endsIn": {
+          "one": "termina tra %{count} giorno",
+          "other": "termina tra %{count} giorni"
+        },
+        "endsToday": "termina oggi",
+        "opensIn": {
+          "one": "inizia tra %{count} giorno",
+          "other": "inizia tra %{count} giorni"
+        },
+        "opensToday": "inizia oggi"
       }
     }
   }

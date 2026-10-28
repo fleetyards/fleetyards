@@ -258,13 +258,22 @@
         "next": "Image suivante"
       },
       "home": {
-        "title": "Tirage au sort : %{title}",
-        "lede": "Gagnez un code cadeau Star Citizen. Participation gratuite avec un compte confirmé.",
         "view": "Voir le tirage",
         "panelTitle": "Tirage au sort",
         "entered": "Inscrit",
         "notEntered": "Vous ne participez pas encore.",
-        "enter": "Participer"
+        "enter": "Participer",
+        "pillTag": "Tirage",
+        "endsIn": {
+          "one": "se termine dans %{count} jour",
+          "other": "se termine dans %{count} jours"
+        },
+        "endsToday": "se termine aujourd'hui",
+        "opensIn": {
+          "one": "commence dans %{count} jour",
+          "other": "commence dans %{count} jours"
+        },
+        "opensToday": "commence aujourd'hui"
       }
     }
   }

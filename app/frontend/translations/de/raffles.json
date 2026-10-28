@@ -258,13 +258,22 @@
         "next": "Nächstes Bild"
       },
       "home": {
-        "title": "Verlosung: %{title}",
-        "lede": "Gewinne einen Star Citizen Geschenkcode. Kostenlos teilnehmen mit bestätigtem Konto.",
         "view": "Zur Verlosung",
         "panelTitle": "Verlosung",
         "entered": "Teilgenommen",
         "notEntered": "Du nimmst noch nicht teil.",
-        "enter": "Teilnehmen"
+        "enter": "Teilnehmen",
+        "pillTag": "Verlosung",
+        "endsIn": {
+          "one": "endet in %{count} Tag",
+          "other": "endet in %{count} Tagen"
+        },
+        "endsToday": "endet heute",
+        "opensIn": {
+          "one": "startet in %{count} Tag",
+          "other": "startet in %{count} Tagen"
+        },
+        "opensToday": "startet heute"
       }
     }
   }

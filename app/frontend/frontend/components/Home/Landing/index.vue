@@ -109,7 +109,6 @@ useScrollSettle(() =>
   </Teleport>
 
   <LandingSection hero data-test="home-landing">
-    <RaffleHomeBanner class="home-landing__raffle" />
     <div
       class="home-landing__hero"
       :class="{
@@ -118,6 +117,7 @@ useScrollSettle(() =>
       }"
     >
       <div class="home-landing__copy">
+        <RaffleHomeBanner class="home-landing__raffle" />
         <h1 class="home-landing__lockup">
           <img
             :src="logo"
@@ -211,7 +211,7 @@ useScrollSettle(() =>
 // One centred column; with a featured ship, the copy on the left and the ship
 // beside it.
 .home-landing__raffle {
-  margin-bottom: 32px;
+  margin-bottom: 20px;
 }
 
 .home-landing__hero {

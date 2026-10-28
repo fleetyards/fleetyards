@@ -258,13 +258,22 @@
         "next": "Imagen siguiente"
       },
       "home": {
-        "title": "Sorteo: %{title}",
-        "lede": "Gana un código de regalo de Star Citizen. Participa gratis con una cuenta confirmada.",
         "view": "Ver sorteo",
         "panelTitle": "Sorteo",
         "entered": "Participando",
         "notEntered": "Aún no participas.",
-        "enter": "Participar"
+        "enter": "Participar",
+        "pillTag": "Sorteo",
+        "endsIn": {
+          "one": "termina en %{count} día",
+          "other": "termina en %{count} días"
+        },
+        "endsToday": "termina hoy",
+        "opensIn": {
+          "one": "empieza en %{count} día",
+          "other": "empieza en %{count} días"
+        },
+        "opensToday": "empieza hoy"
       }
     }
   }
