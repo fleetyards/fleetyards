@@ -206,6 +206,12 @@
         "until": "bis %{date}",
         "drawnOn": "Gezogen am %{date} aus %{count} Teilnehmern."
       },
+      "over": {
+        "title": "Diese Verlosung ist vorbei",
+        "closed": "Die Teilnahme ist geschlossen. Der Gewinner wird bald gezogen.",
+        "drawn": "Die Teilnahme ist geschlossen und der Gewinner wurde gezogen.",
+        "concluded": "Die Verlosung ist beendet. Danke an alle, die mitgemacht haben."
+      },
       "won": {
         "title": "Du hast gewonnen!",
         "checkMail": "Wir haben dir eine Mail mit einem Link geschickt, über den du deinen Preis abholen kannst. Klicke ihn vor dem %{date} an, sonst geht der Gewinn an den Nächsten in der Reihe.",
@@ -250,6 +256,7 @@
         "failed": "Etwas ist schiefgelaufen. Bitte öffne den Link erneut."
       },
       "meta": "Endet am %{date} · %{count} Teilnehmer",
+      "metaClosed": "Beendet am %{date} · %{count} Teilnehmer",
       "showImage": "Bild %{index} anzeigen",
       "howItWorks": {
         "title": "So funktioniert's",
@@ -280,6 +287,7 @@
         "days": "%{days} Tage",
         "entered": "Du bist dabei. Die Ziehung ist nach dem %{date}.",
         "enteredHint": "Wenn du gewinnst, schicken wir dir einen Abhol-Link. Behalte dein Postfach nach der Ziehung %{days} Tage lang im Blick.",
+        "over": "Verlosung beendet",
         "opensAt": "Beginnt am %{date}.",
         "maintainer": "Maintainer betreuen die Verlosungen und können nicht teilnehmen."
       },

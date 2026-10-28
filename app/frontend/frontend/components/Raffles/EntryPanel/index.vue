@@ -65,6 +65,14 @@ const isOpen = computed(() => props.raffle.status === RaffleStatusEnum.OPEN);
 
 const isMaintainer = computed(() => !!currentUser?.value?.maintainer);
 
+const ENDED_STATUSES: RaffleStatusEnum[] = [
+  RaffleStatusEnum.CLOSED,
+  RaffleStatusEnum.DRAWN,
+  RaffleStatusEnum.CONCLUDED,
+];
+
+const isOver = computed(() => ENDED_STATUSES.includes(props.raffle.status));
+
 const errorText = (error: {
   response?: { status?: number; data?: { message?: string } };
 }) => {
@@ -100,6 +108,7 @@ const withdraw = () => {
 
 const title = computed(() => {
   if (props.raffle.won || props.raffle.entered) return t("raffles.entry.yours");
+  if (isOver.value) return t("raffles.entry.over");
 
   return t("raffles.entry.title");
 });
@@ -239,6 +248,14 @@ const title = computed(() => {
             })
           }}
         </p>
+        <Alert
+          v-else-if="isOver"
+          :title="t('raffles.over.title')"
+          :variant="AlertVariantsEnum.INFO"
+          data-test="raffle-over"
+        >
+          {{ t(`raffles.over.${raffle.status}`) }}
+        </Alert>
       </div>
     </PanelBody>
     <div v-if="isOpen && !isAuthenticated" class="raffle-entry__footer">

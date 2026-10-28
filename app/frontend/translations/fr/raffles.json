@@ -206,6 +206,12 @@
         "until": "jusqu'au %{date}",
         "drawnOn": "Tiré le %{date} parmi %{count} participants."
       },
+      "over": {
+        "title": "Ce tirage au sort est terminé",
+        "closed": "Les participations sont closes. Le gagnant sera bientôt tiré au sort.",
+        "drawn": "Les participations sont closes et le gagnant a été tiré au sort.",
+        "concluded": "Le tirage au sort est terminé. Merci à toutes celles et ceux qui ont participé."
+      },
       "won": {
         "title": "Vous avez gagné !",
         "checkMail": "Nous vous avons envoyé un e-mail avec un lien pour réclamer votre prix. Cliquez dessus avant le %{date}, sinon le gain passe au suivant dans l'ordre.",
@@ -250,6 +256,7 @@
         "failed": "Une erreur s'est produite. Veuillez rouvrir le lien."
       },
       "meta": "Clôture le %{date} · %{count} participants",
+      "metaClosed": "Clôturé le %{date} · %{count} participants",
       "showImage": "Afficher l'image %{index}",
       "howItWorks": {
         "title": "Comment ça marche",
@@ -280,6 +287,7 @@
         "days": "%{days} jours",
         "entered": "Vous participez. Le tirage a lieu après le %{date}.",
         "enteredHint": "Si vous gagnez, nous vous envoyons un lien de réclamation par e-mail. Surveillez votre boîte de réception pendant %{days} jours après le tirage.",
+        "over": "Tirage au sort terminé",
         "opensAt": "Ouverture le %{date}.",
         "maintainer": "Les mainteneurs gèrent les tirages au sort et ne peuvent pas y participer."
       },

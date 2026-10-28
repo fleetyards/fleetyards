@@ -206,6 +206,12 @@
         "until": "fino al %{date}",
         "drawnOn": "Estratto il %{date} tra %{count} partecipanti."
       },
+      "over": {
+        "title": "Questa estrazione è conclusa",
+        "closed": "Le iscrizioni sono chiuse. Il vincitore verrà estratto a breve.",
+        "drawn": "Le iscrizioni sono chiuse e il vincitore è stato estratto.",
+        "concluded": "L'estrazione è conclusa. Grazie a tutti quelli che hanno partecipato."
+      },
       "won": {
         "title": "Hai vinto!",
         "checkMail": "Ti abbiamo inviato un'email con un link per ritirare il premio. Cliccalo entro il %{date}, altrimenti la vincita passa al successivo in lista.",
@@ -250,6 +256,7 @@
         "failed": "Qualcosa è andato storto. Riapri il link."
       },
       "meta": "Chiude il %{date} · %{count} partecipanti",
+      "metaClosed": "Chiusa il %{date} · %{count} partecipanti",
       "showImage": "Mostra immagine %{index}",
       "howItWorks": {
         "title": "Come funziona",
@@ -280,6 +287,7 @@
         "days": "%{days} giorni",
         "entered": "Stai partecipando. L'estrazione avviene dopo il %{date}.",
         "enteredHint": "Se vinci, ti inviamo un link per il ritiro. Tieni d'occhio la tua casella di posta per %{days} giorni dopo l'estrazione.",
+        "over": "Estrazione conclusa",
         "opensAt": "Apre il %{date}.",
         "maintainer": "I maintainer gestiscono le estrazioni e non possono partecipare."
       },

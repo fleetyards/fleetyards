@@ -21,6 +21,7 @@ import RaffleConditions from "@/frontend/components/Raffles/Conditions/index.vue
 import RaffleWinners from "@/frontend/components/Raffles/Winners/index.vue";
 import RaffleEntrants from "@/frontend/components/Raffles/Entrants/index.vue";
 import {
+  type Raffle,
   RaffleStatusEnum,
   useRaffle,
   useCurrentRaffle,
@@ -58,6 +59,10 @@ const refresh = () =>
     }),
   ]);
 
+const isEntryOpen = (raffle: Raffle) =>
+  raffle.status === RaffleStatusEnum.UPCOMING ||
+  raffle.status === RaffleStatusEnum.OPEN;
+
 const STATUS_PILLS: Record<RaffleStatusEnum, `${PillVariantsEnum}`> = {
   [RaffleStatusEnum.DRAFT]: PillVariantsEnum.NEUTRAL,
   [RaffleStatusEnum.UPCOMING]: PillVariantsEnum.DEFAULT,
@@ -85,7 +90,7 @@ const STATUS_PILLS: Record<RaffleStatusEnum, `${PillVariantsEnum}`> = {
           </Pill>
           <span class="raffle-meta__text">
             {{
-              t("raffles.meta", {
+              t(isEntryOpen(raffle) ? "raffles.meta" : "raffles.metaClosed", {
                 date: l(raffle.endsAt, "datetime.formats.short"),
                 count: raffle.entriesCount,
               })

@@ -206,6 +206,12 @@
         "until": "until %{date}",
         "drawnOn": "Drawn on %{date} from %{count} entrants."
       },
+      "over": {
+        "title": "This raffle is over",
+        "closed": "Entries are closed. The winner is drawn soon.",
+        "drawn": "Entries are closed and the winner has been drawn.",
+        "concluded": "The raffle has ended. Thanks to everyone who took part."
+      },
       "won": {
         "title": "You won!",
         "checkMail": "We sent you a mail with a link to claim your prize. Click it before %{date}, or the win passes to the next in line.",
@@ -250,6 +256,7 @@
         "failed": "Something went wrong. Please try the link again."
       },
       "meta": "Closes %{date} · %{count} entrants",
+      "metaClosed": "Closed %{date} · %{count} entrants",
       "showImage": "Show image %{index}",
       "howItWorks": {
         "title": "How it works",
@@ -280,6 +287,7 @@
         "days": "%{days} days",
         "entered": "You are in. The draw is after %{date}.",
         "enteredHint": "If you win, we mail you a claim link. Keep an eye on your inbox for %{days} days after the draw.",
+        "over": "Raffle over",
         "opensAt": "Opens %{date}.",
         "maintainer": "Maintainers run the raffles and cannot take part."
       },

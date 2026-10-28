@@ -206,6 +206,12 @@
         "until": "hasta el %{date}",
         "drawnOn": "Sorteado el %{date} entre %{count} participantes."
       },
+      "over": {
+        "title": "Este sorteo ha terminado",
+        "closed": "Las participaciones están cerradas. El ganador se sorteará pronto.",
+        "drawn": "Las participaciones están cerradas y el ganador ya se ha sorteado.",
+        "concluded": "El sorteo ha terminado. Gracias a todos los que participaron."
+      },
       "won": {
         "title": "¡Has ganado!",
         "checkMail": "Te hemos enviado un correo con un enlace para reclamar tu premio. Haz clic en él antes del %{date}, o el premio pasará al siguiente de la lista.",
@@ -250,6 +256,7 @@
         "failed": "Algo ha salido mal. Por favor, vuelve a abrir el enlace."
       },
       "meta": "Cierra el %{date} · %{count} participantes",
+      "metaClosed": "Cerró el %{date} · %{count} participantes",
       "showImage": "Mostrar imagen %{index}",
       "howItWorks": {
         "title": "Cómo funciona",
@@ -280,6 +287,7 @@
         "days": "%{days} días",
         "entered": "Ya participas. El sorteo es después del %{date}.",
         "enteredHint": "Si ganas, te enviamos un enlace para reclamar. Revisa tu bandeja de entrada durante %{days} días tras el sorteo.",
+        "over": "Sorteo terminado",
         "opensAt": "Abre el %{date}.",
         "maintainer": "Los mantenedores gestionan los sorteos y no pueden participar."
       },
