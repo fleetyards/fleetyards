@@ -81,12 +81,9 @@ module Api
 
         def models_by_manufacturer
           models_by_manufacturer = transform_for_pie_chart(
-            @user.manufacturers.uniq
-                .map do |manufacturer|
-                  model_ids = manufacturer.model_ids
-                  {manufacturer.name => @user.vehicles.purchased.public.where(loaner: false, model_id: model_ids).count}
-                end
-                .reduce(:merge) || []
+            @user.vehicles.purchased.public.where(loaner: false)
+                 .joins(model: :manufacturer)
+                 .group("manufacturers.name").count
           )
 
           render json: models_by_manufacturer.to_json

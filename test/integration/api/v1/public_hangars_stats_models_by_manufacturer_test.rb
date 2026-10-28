@@ -38,4 +38,16 @@ class Api::V1::PublicHangarsStatsModelsByManufacturerTest < ActionDispatch::Inte
 
     assert_api_response :get, 404, path_params: {username: user.username}
   end
+
+  test "GET /public/hangars/:username/stats/models-by-manufacturer leaves out manufacturers only on the wishlist" do
+    owner = create(:user, public_hangar_stats: true)
+    owned = create(:vehicle, user: owner, public: true)
+    wanted = create(:vehicle, :wanted, user: owner)
+
+    get "/api/v1/public/hangars/#{owner.username}/stats/models-by-manufacturer"
+
+    names = response.parsed_body.map { |point| point["name"] }
+    assert_includes names, owned.model.manufacturer.name
+    assert_not_includes names, wanted.model.manufacturer.name
+  end
 end
