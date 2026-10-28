@@ -11,7 +11,6 @@ module V1
           id: {type: :string, format: :uuid},
           title: {type: :string},
           description: {type: :string},
-          prize: ::Shared::V1::Schemas::RafflePrize,
           images: {type: :array, items: ::Shared::V1::Schemas::MediaFile},
           startsAt: {type: :string, format: "date-time"},
           endsAt: {type: :string, format: "date-time"},

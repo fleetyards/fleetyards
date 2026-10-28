@@ -5,7 +5,6 @@ class CreateRaffles < ActiveRecord::Migration[8.1]
     create_table :raffles, id: :uuid do |t|
       t.string :title, null: false
       t.text :description
-      t.references :model, type: :uuid, foreign_key: true
       t.text :code
       t.datetime :starts_at, null: false
       t.integer :run_days, null: false, default: 14

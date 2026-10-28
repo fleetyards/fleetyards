@@ -20,16 +20,6 @@ vi.mock("@/shared/components/base/FormDateTime/index.vue", () => ({
   },
 }));
 
-// The real picker searches the public model options endpoint.
-vi.mock("@/admin/components/base/ModelSelect/index.vue", () => ({
-  default: {
-    name: "ModelSelect",
-    props: ["modelValue"],
-    emits: ["update:modelValue"],
-    render: () => null,
-  },
-}));
-
 const raffle: Raffle = {
   id: "8d0e3c7a-0000-4000-8000-000000000002",
   title: "Win a Polaris",

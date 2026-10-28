@@ -2728,7 +2728,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_27_120000) do
   create_table "raffles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title", null: false
     t.text "description"
-    t.uuid "model_id"
     t.text "code"
     t.datetime "starts_at", null: false
     t.integer "run_days", default: 14, null: false
@@ -2744,7 +2743,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_27_120000) do
     t.datetime "updated_at", null: false
     t.index ["drawn_by_id"], name: "index_raffles_on_drawn_by_id"
     t.index ["ends_at"], name: "index_raffles_on_ends_at"
-    t.index ["model_id"], name: "index_raffles_on_model_id"
     t.index ["published"], name: "index_raffles_on_published"
   end
 
@@ -3410,7 +3408,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_27_120000) do
   add_foreign_key "raffle_entries", "raffles", on_delete: :cascade
   add_foreign_key "raffle_entries", "users", on_delete: :nullify
   add_foreign_key "raffles", "admin_users", column: "drawn_by_id", on_delete: :nullify
-  add_foreign_key "raffles", "models"
   add_foreign_key "sc_data_unlisted_models", "models", column: "base_model_id", on_delete: :nullify
   add_foreign_key "sc_data_unlisted_models", "models", on_delete: :nullify
   add_foreign_key "shops", "locations", on_delete: :cascade

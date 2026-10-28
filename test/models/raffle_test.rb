@@ -39,6 +39,14 @@ class RaffleTest < ActiveSupport::TestCase
     assert build(:raffle, :draft, code: nil).valid?
   end
 
+  test "a published raffle needs an image" do
+    raffle = build(:raffle, images: [])
+
+    assert_not raffle.valid?
+    assert raffle.errors.added?(:images, :blank)
+    assert build(:raffle, :draft, images: []).valid?
+  end
+
   test "the code is encrypted at rest" do
     raffle = create(:raffle, code: "SECRET-CODE")
 
@@ -73,7 +81,7 @@ class RaffleTest < ActiveSupport::TestCase
   end
 
   test "orders the gallery by upload" do
-    raffle = create(:raffle)
+    raffle = create(:raffle, :draft, images: [])
     first = uploaded("first.png")
     second = travel(1.minute) { uploaded("second.png") }
     raffle.images.attach(second, first)

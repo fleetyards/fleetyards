@@ -12,7 +12,6 @@ module Admin
             id: {type: :string, format: :uuid},
             title: {type: :string},
             description: {type: :string},
-            prize: ::Shared::V1::Schemas::RafflePrize,
             # The code itself never leaves the server through this component.
             codeSet: {type: :boolean},
             maskedCode: {type: :string},

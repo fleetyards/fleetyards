@@ -40,7 +40,6 @@
       "raffle": {
         "title": "标题",
         "description": "描述",
-        "prize": "奖品舰船",
         "code": "礼品码",
         "codeInfo": "中奖者获得的礼品码。它会加密存储，且不会再完整显示。",
         "codeSet": "已设置礼品码（%{code}）。留空此字段即可保留它。",
@@ -150,7 +149,6 @@
       "empty": "目前没有抽奖活动。",
       "status": "状态",
       "runs": "活动时间",
-      "prize": "奖品：%{name}",
       "endsAt": "%{date} 截止",
       "entriesCount": "参与者：%{count}",
       "entered": "您已参与此抽奖。",
@@ -224,7 +222,6 @@
       },
       "meta": "%{date} 截止 · %{count} 位参与者",
       "showImage": "显示图片 %{index}",
-      "prizeShip": "奖品舰船：",
       "howItWorks": {
         "title": "参与方式",
         "enter": {

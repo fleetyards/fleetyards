@@ -57,16 +57,6 @@ const refresh = () =>
     }),
   ]);
 
-// The uploaded gallery, or the prize ship's store image when the raffle has
-// no pictures of its own.
-const keyImages = computed(() => {
-  if (!raffle.value) return [];
-  if (raffle.value.images.length) return raffle.value.images;
-
-  const storeImage = raffle.value.prize?.storeImage;
-  return storeImage?.url ? [storeImage] : [];
-});
-
 const STATUS_PILLS: Record<RaffleStatusEnum, `${PillVariantsEnum}`> = {
   [RaffleStatusEnum.DRAFT]: PillVariantsEnum.NEUTRAL,
   [RaffleStatusEnum.UPCOMING]: PillVariantsEnum.DEFAULT,
@@ -97,29 +87,16 @@ const STATUS_PILLS: Record<RaffleStatusEnum, `${PillVariantsEnum}`> = {
         </div>
 
         <RaffleKeyImage
-          v-if="keyImages.length"
-          :images="keyImages"
+          v-if="raffle.images.length"
+          :images="raffle.images"
           :title="raffle.title"
         />
 
         <div class="row">
           <div class="col-12 col-md-8">
-            <Panel
-              v-if="raffle.description || raffle.prize"
-              :variant="PanelVariantsEnum.SLIM"
-            >
+            <Panel v-if="raffle.description" :variant="PanelVariantsEnum.SLIM">
               <PanelBody>
-                <p v-if="raffle.description" class="raffle-description">
-                  {{ raffle.description }}
-                </p>
-                <p v-if="raffle.prize" class="raffle-prize">
-                  {{ t("raffles.prizeShip") }}
-                  <router-link
-                    :to="{ name: 'ship', params: { slug: raffle.prize.slug } }"
-                  >
-                    {{ raffle.prize.name }}
-                  </router-link>
-                </p>
+                <p class="raffle-description">{{ raffle.description }}</p>
               </PanelBody>
             </Panel>
             <RaffleHowItWorks :raffle="raffle" />
@@ -158,13 +135,7 @@ const STATUS_PILLS: Record<RaffleStatusEnum, `${PillVariantsEnum}`> = {
 }
 
 .raffle-description {
-  margin-top: 0;
+  margin: 0;
   white-space: pre-line;
-}
-
-.raffle-prize {
-  margin-bottom: 0;
-  color: var(--color-text-dim, #959595);
-  font-size: 0.875rem;
 }
 </style>

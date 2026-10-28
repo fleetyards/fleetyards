@@ -3,11 +3,6 @@
 json.id raffle.id
 json.title raffle.title
 json.description raffle.description if raffle.description.present?
-if raffle.model.present?
-  json.prize do
-    json.partial! "api/v1/raffles/prize", model: raffle.model
-  end
-end
 json.code_set raffle.code.present?
 json.masked_code raffle.masked_code if raffle.code.present?
 json.partial!("api/v1/raffles/images", raffle:)

@@ -40,8 +40,7 @@ module Raffles
     end
 
     private def start_lead
-      prize = @raffle.model.present? ? " Prize: #{@raffle.model.name}." : ""
-      "New raffle on FleetYards: #{@raffle.title}.#{prize} Enter until #{@raffle.ends_at.utc.strftime("%-d %b %Y")}."
+      "New raffle on FleetYards: #{@raffle.title}. Enter until #{@raffle.ends_at.utc.strftime("%-d %b %Y")}."
     end
 
     private def last_day_lead

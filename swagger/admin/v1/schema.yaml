@@ -22183,8 +22183,6 @@ components:
           type: string
         description:
           type: string
-        prize:
-          "$ref": "#/components/schemas/RafflePrize"
         codeSet:
           type: boolean
         maskedCode:
@@ -22324,11 +22322,6 @@ components:
           type: string
         description:
           type: string
-        modelId:
-          type:
-          - string
-          - 'null'
-          format: uuid
         code:
           type: string
         startsAt:
@@ -22363,24 +22356,6 @@ components:
       - DELIVERED
       - BOUNCED
       title: RaffleMailStatusEnum
-    RafflePrize:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-        slug:
-          type: string
-        storeImage:
-          "$ref": "#/components/schemas/MediaFile"
-      additionalProperties: false
-      required:
-      - id
-      - name
-      - slug
-      title: RafflePrize
     RaffleQuery:
       type: object
       properties:

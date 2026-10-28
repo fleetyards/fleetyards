@@ -40,7 +40,6 @@
       "raffle": {
         "title": "Titel",
         "description": "Beschreibung",
-        "prize": "Preis-Schiff",
         "code": "Geschenkcode",
         "codeInfo": "Der Code, den der Gewinner erhält. Er wird verschlüsselt gespeichert und nie wieder vollständig angezeigt.",
         "codeSet": "Ein Code ist hinterlegt (%{code}). Lass das Feld leer, um ihn zu behalten.",
@@ -150,7 +149,6 @@
       "empty": "Derzeit gibt es keine Verlosungen.",
       "status": "Status",
       "runs": "Zeitraum",
-      "prize": "Preis: %{name}",
       "endsAt": "Endet am %{date}",
       "entriesCount": "Teilnehmer: %{count}",
       "entered": "Du nimmst an dieser Verlosung teil.",
@@ -224,7 +222,6 @@
       },
       "meta": "Endet am %{date} · %{count} Teilnehmer",
       "showImage": "Bild %{index} anzeigen",
-      "prizeShip": "Preis-Schiff:",
       "howItWorks": {
         "title": "So funktioniert's",
         "enter": {

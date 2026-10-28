@@ -8,6 +8,15 @@ FactoryBot.define do
     run_days { 7 }
     published { true }
 
+    # Publishing needs a picture; one shared blob keeps the factory cheap.
+    images do
+      [ActiveStorage::Blob.find_by(filename: "raffle-factory.png") ||
+        ActiveStorage::Blob.create_and_upload!(
+          io: File.open(Rails.root.join("test/fixtures/files/test.png")),
+          filename: "raffle-factory.png", content_type: "image/png"
+        )]
+    end
+
     trait :draft do
       published { false }
     end

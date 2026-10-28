@@ -40,7 +40,6 @@
       "raffle": {
         "title": "Titre",
         "description": "Description",
-        "prize": "Vaisseau à gagner",
         "code": "Code cadeau",
         "codeInfo": "Le code que reçoit le gagnant. Il est stocké chiffré et n'est plus jamais affiché en entier.",
         "codeSet": "Un code est défini (%{code}). Laissez le champ vide pour le conserver.",
@@ -150,7 +149,6 @@
       "empty": "Il n'y a aucun tirage au sort en ce moment.",
       "status": "Statut",
       "runs": "Période",
-      "prize": "Lot : %{name}",
       "endsAt": "Clôture le %{date}",
       "entriesCount": "Participants : %{count}",
       "entered": "Vous participez à ce tirage au sort.",
@@ -224,7 +222,6 @@
       },
       "meta": "Clôture le %{date} · %{count} participants",
       "showImage": "Afficher l'image %{index}",
-      "prizeShip": "Vaisseau à gagner :",
       "howItWorks": {
         "title": "Comment ça marche",
         "enter": {

@@ -5,11 +5,6 @@ viewer_entry = local_assigns[:viewer_entry]
 json.id raffle.id
 json.title raffle.title
 json.description raffle.description if raffle.description.present?
-if raffle.model.present?
-  json.prize do
-    json.partial! "api/v1/raffles/prize", model: raffle.model
-  end
-end
 json.partial!("api/v1/raffles/images", raffle:)
 json.starts_at raffle.starts_at.utc.iso8601
 json.ends_at raffle.ends_at.utc.iso8601

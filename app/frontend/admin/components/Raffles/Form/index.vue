@@ -12,7 +12,6 @@ import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormDateTime from "@/shared/components/base/FormDateTime/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
-import ModelSelect from "@/admin/components/base/ModelSelect/index.vue";
 import RaffleGallery from "@/admin/components/Raffles/Gallery/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -42,7 +41,6 @@ const drawn = computed(() => !!props.raffle?.drawnAt);
 type FormValues = {
   title: string;
   description?: string;
-  modelId?: string;
   // Never filled from the server: the API only says whether a code is set.
   code?: string;
   startsAt: string | null;
@@ -55,7 +53,6 @@ const { defineField, handleSubmit, meta, errors } = useForm<FormValues>({
   initialValues: {
     title: props.raffle?.title ?? "",
     description: props.raffle?.description,
-    modelId: props.raffle?.prize?.id,
     code: undefined,
     startsAt: props.raffle?.startsAt ?? null,
     runDays: props.raffle?.runDays ?? 14,
@@ -72,7 +69,6 @@ const { defineField, handleSubmit, meta, errors } = useForm<FormValues>({
 
 const [title, titleProps] = defineField("title");
 const [description, descriptionProps] = defineField("description");
-const [modelId, modelIdProps] = defineField("modelId");
 const [code, codeProps] = defineField("code");
 const [startsAt, startsAtProps] = defineField("startsAt");
 const [runDays, runDaysProps] = defineField("runDays");
@@ -106,7 +102,6 @@ const onSubmit = handleSubmit((values) => {
   emit("submit", {
     title: values.title,
     description: values.description || undefined,
-    modelId: values.modelId || null,
     code: values.code || undefined,
     startsAt: toIso(values.startsAt),
     runDays: Number(values.runDays),
@@ -126,14 +121,6 @@ const onSubmit = handleSubmit((values) => {
           v-bind="titleProps"
           translation-key="raffle.title"
           name="title"
-        />
-        <ModelSelect
-          v-model="modelId"
-          v-bind="modelIdProps"
-          :no-label="false"
-          translation-key="raffle.prize"
-          value-attr="id"
-          name="modelId"
         />
         <FormInput
           v-model="code"

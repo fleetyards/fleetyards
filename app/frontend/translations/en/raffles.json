@@ -40,7 +40,6 @@
       "raffle": {
         "title": "Title",
         "description": "Description",
-        "prize": "Prize ship",
         "code": "Gift code",
         "codeInfo": "The code the winner receives. It is stored encrypted and never shown in full again.",
         "codeSet": "A code is set (%{code}). Leave the field empty to keep it.",
@@ -150,7 +149,6 @@
       "empty": "There are no raffles right now.",
       "status": "Status",
       "runs": "Runs",
-      "prize": "Prize: %{name}",
       "endsAt": "Closes %{date}",
       "entriesCount": "Entrants: %{count}",
       "entered": "You have entered this raffle.",
@@ -224,7 +222,6 @@
       },
       "meta": "Closes %{date} · %{count} entrants",
       "showImage": "Show image %{index}",
-      "prizeShip": "Prize ship:",
       "howItWorks": {
         "title": "How it works",
         "enter": {

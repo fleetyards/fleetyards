@@ -40,7 +40,6 @@
       "raffle": {
         "title": "Título",
         "description": "Descripción",
-        "prize": "Nave de premio",
         "code": "Código de regalo",
         "codeInfo": "El código que recibe el ganador. Se guarda cifrado y nunca se vuelve a mostrar completo.",
         "codeSet": "Hay un código guardado (%{code}). Deja el campo vacío para conservarlo.",
@@ -150,7 +149,6 @@
       "empty": "No hay sorteos en este momento.",
       "status": "Estado",
       "runs": "Periodo",
-      "prize": "Premio: %{name}",
       "endsAt": "Cierra el %{date}",
       "entriesCount": "Participantes: %{count}",
       "entered": "Estás participando en este sorteo.",
@@ -224,7 +222,6 @@
       },
       "meta": "Cierra el %{date} · %{count} participantes",
       "showImage": "Mostrar imagen %{index}",
-      "prizeShip": "Nave del premio:",
       "howItWorks": {
         "title": "Cómo funciona",
         "enter": {

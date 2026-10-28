@@ -40,7 +40,6 @@
       "raffle": {
         "title": "Titolo",
         "description": "Descrizione",
-        "prize": "Nave in palio",
         "code": "Codice regalo",
         "codeInfo": "Il codice che riceve il vincitore. Viene salvato cifrato e non viene mai più mostrato per intero.",
         "codeSet": "È impostato un codice (%{code}). Lascia il campo vuoto per mantenerlo.",
@@ -150,7 +149,6 @@
       "empty": "Al momento non ci sono estrazioni.",
       "status": "Stato",
       "runs": "Periodo",
-      "prize": "Premio: %{name}",
       "endsAt": "Chiude il %{date}",
       "entriesCount": "Partecipanti: %{count}",
       "entered": "Stai partecipando a questa estrazione.",
@@ -224,7 +222,6 @@
       },
       "meta": "Chiude il %{date} · %{count} partecipanti",
       "showImage": "Mostra immagine %{index}",
-      "prizeShip": "Nave in palio:",
       "howItWorks": {
         "title": "Come funziona",
         "enter": {

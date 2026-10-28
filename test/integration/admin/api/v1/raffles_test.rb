@@ -178,13 +178,13 @@ class Admin::Api::V1::RafflesTest < ActionDispatch::IntegrationTest
 
   test "POST /raffles creates a raffle without exposing the code" do
     sign_in @admin
-    model = create(:model)
+    image = ActiveStorage::Blob.create_and_upload!(io: File.open(Rails.root.join("test/fixtures/files/test.png")), filename: "cover.png", content_type: "image/png")
 
-    body = {title: "Win a Polaris", modelId: model.id, code: "ABCD-EFGH-1234", startsAt: 1.day.from_now.utc.iso8601, runDays: 7, published: true}
+    body = {title: "Win a Polaris", code: "ABCD-EFGH-1234", images: [image.signed_id], startsAt: 1.day.from_now.utc.iso8601, runDays: 7, published: true}
 
     assert_api_response :post, 200, body: do
       assert_equal "Win a Polaris", parsed_body["title"]
-      assert_equal model.slug, parsed_body.dig("prize", "slug")
+      assert_equal ["cover.png"], parsed_body["images"].map { |image| image["name"] }
       assert parsed_body["codeSet"]
       assert_equal 3, parsed_body["claimPeriodDays"]
       assert_equal 7, parsed_body["runDays"]
