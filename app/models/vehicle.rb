@@ -262,6 +262,12 @@ class Vehicle < ApplicationRecord
   ransack_alias :production_status, :model_production_status
   ransack_alias :hangar_groups, :hangar_groups_slug
 
+  # The name only where the owner shows it. A public list filtering or sorting
+  # on the hidden one would give it away through which ships come back.
+  ransacker :visible_name do
+    Arel.sql("CASE WHEN vehicles.name_visible THEN vehicles.name END")
+  end
+
   ransacker :bought_via, formatter: proc { |v| Vehicle.bought_via[v] } do |parent|
     parent.table[:bought_via]
   end
@@ -389,8 +395,26 @@ class Vehicle < ApplicationRecord
       query_params["#{fitted_column(column, public_only:)}_#{predicate}"] = value unless value.nil?
     end
 
+    if public_only
+      PUBLIC_FILTERS.each do |key, public_key|
+        value = query_params.delete(key)
+        query_params[public_key] = value unless value.nil?
+      end
+    end
+
     query_params
   end
+
+  # What a public list filters on instead: names the owner hid and groups
+  # they keep private are not there to match.
+  PUBLIC_FILTERS = {
+    "name_cont" => "visible_name_cont",
+    "name_in" => "visible_name_in",
+    "name_or_description_cont" => "visible_name_cont",
+    "search_cont" => "visible_name_or_model_name_or_model_slug_cont",
+    "hangar_groups_in" => "public_hangar_groups_slug_in",
+    "hangar_groups_not_in" => "public_hangar_groups_slug_not_in"
+  }.freeze
 
   def self.fitted_cargo_total(vehicles, public_only: false)
     where(id: vehicles.map(&:id)).sum(Arel.sql(fitted_cargo_sql(public_only:))).to_i
@@ -398,6 +422,8 @@ class Vehicle < ApplicationRecord
 
   def self.fitted_sorts(sorts, public_only: false)
     Array(sorts).map do |sort|
+      sort = sort.sub(/\Aname /, "visible_name ") if public_only
+
       FITTED_STATS.keys.reduce(sort.sub(/\Amodel_cargo /, "#{fitted_column("cargo", public_only:)} ")) do |result, stat|
         result.sub(/\A#{stat} /, "#{fitted_column(stat, public_only:)} ")
       end
@@ -454,7 +480,7 @@ class Vehicle < ApplicationRecord
       "hangar_groups", "has_dedication", "height", "hidden", "id", "id_value", "length", "loaner",
       "manufacturer", "model_id", "module_package_id", "name", "name_visible",
       "notify", "on_sale", "pledge_price", "price", "production_status", "public", "rank", "rsi_pledge_id",
-      "rsi_pledge_synced_at", "sale_notify", "search", "serial", "size", "slug", "stealth", "updated_at",
+      "rsi_pledge_synced_at", "sale_notify", "search", "serial", "size", "slug", "stealth", "updated_at", "visible_name",
       "user_id", "vehicle_id", "wanted"
     ]
   end

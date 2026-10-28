@@ -30,7 +30,7 @@ module Api
           models = vehicles.map(&:model)
           non_loaner_models = vehicles.reject(&:loaner?).map(&:model)
 
-          group_count_vehicle_ids = scope.ransack(vehicle_query_params.except("hangar_groups_in", "hangar_groups_not_in")).result.ids
+          group_count_vehicle_ids = scope.ransack(vehicle_query_params.except("public_hangar_groups_slug_in", "public_hangar_groups_slug_not_in")).result.ids
 
           # See the signed-in controller: the counts stay blind to their own filter.
           classification_count_models = scope.ransack(vehicle_query_params.except("classification_in", "classification_not_in")).result.map(&:model)
