@@ -41749,11 +41749,13 @@ components:
         fleetchartImage:
           type: string
         holoTexture:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         holoTextureOrm:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         portView:
           "$ref": "#/components/schemas/MediaFile"
         storeImage:
