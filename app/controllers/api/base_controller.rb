@@ -59,9 +59,11 @@ module Api
 
     rescue_from ActiveRecord::RecordNotFound, with: :not_found
 
+    # Doorkeeper finds a token by its value alone, revoked or expired, so a
+    # stale token is asked whether it is still usable before it names a user.
     def current_resource_owner
       @current_user ||= if doorkeeper_token
-        User.find(doorkeeper_token.resource_owner_id)
+        User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token.accessible?
       else
         warden.authenticate(scope: :user)
       end

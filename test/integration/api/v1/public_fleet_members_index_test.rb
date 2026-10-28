@@ -141,4 +141,17 @@ class Api::V1::PublicFleetMembersIndexTest < ActionDispatch::IntegrationTest
     assert_not_includes hidden_row.keys, "displayName"
     assert_not_includes rows.filter_map { |row| row["username"] }, hidden_member.username
   end
+
+  test "GET /public/fleets/:slug/members does not let a revoked or expired token stand in for a member" do
+    member = create(:user)
+    fleet = create(:fleet, members: [member])
+    revoked = create(:oauth_access_token, resource_owner_id: member.id, scopes: "fleet:read", revoked_at: 1.minute.ago)
+    expired = create(:oauth_access_token, resource_owner_id: member.id, scopes: "fleet:read", expires_in: 60, created_at: 1.hour.ago)
+
+    [revoked, expired].each do |token|
+      get "/api/v1/public/fleets/#{fleet.slug}/members", headers: {"Authorization" => "Bearer #{token.token}"}
+
+      assert_response :not_found
+    end
+  end
 end
