@@ -1,0 +1,325 @@
+{
+  "en": {
+    "nav": {
+      "raffles": "Raffles",
+      "raffle": "Raffle",
+      "admin": {
+        "raffles": {
+          "index": "Raffles",
+          "new": "New Raffle",
+          "edit": "Edit Raffle",
+          "entries": "Raffle Entries"
+        }
+      },
+      "raffleClaim": "Claim prize",
+      "settings": {
+        "raffles": "My raffles"
+      }
+    },
+    "title": {
+      "raffles": "Raffles",
+      "raffle": "Raffle",
+      "admin": {
+        "raffles": {
+          "index": "Raffles",
+          "new": "New Raffle",
+          "edit": "Edit Raffle",
+          "entries": "Raffle Entries"
+        }
+      },
+      "raffleClaim": "Claim prize",
+      "settings": {
+        "raffles": "My raffles"
+      }
+    },
+    "headlines": {
+      "admin": {
+        "raffles": {
+          "index": "Raffles",
+          "new": "New Raffle",
+          "edit": "Edit Raffle",
+          "entries": "Raffle Entries"
+        }
+      },
+      "settings": {
+        "raffles": "My raffles"
+      }
+    },
+    "labels": {
+      "raffle": {
+        "title": "Title",
+        "prize": "Prize",
+        "prizeInfo": "What the winner gets, as shown next to the raffle. Required to publish.",
+        "description": "Description",
+        "code": "Gift code",
+        "codeInfo": "The code the winner receives. It is stored encrypted and never shown in full again.",
+        "codeSet": "A code is set (%{code}). Leave the field empty to keep it.",
+        "codeFrozen": "The code cannot be changed after the draw.",
+        "startsAt": "Opens at",
+        "endsAt": "Closes at",
+        "claimPeriodDays": "Claim period (days)",
+        "claimPeriodDaysInfo": "How long a winner has to click the link in the claim mail before the win passes to the next in line.",
+        "published": "Published",
+        "publishedInfo": "Only published raffles are listed and open for entries. Publishing needs a gift code.",
+        "status": "Status",
+        "entriesCount": "Entries",
+        "entriesCountValue": "Entries: %{count}",
+        "statuses": {
+          "draft": "Draft",
+          "upcoming": "Upcoming",
+          "open": "Open",
+          "closed": "Closed",
+          "drawn": "Drawn",
+          "concluded": "Concluded"
+        },
+        "drawnInfo": "Drawn",
+        "drawnBy": "Drawn on %{date} by %{admin}.",
+        "currentWinner": "Current winner: %{username}",
+        "claimDeadline": "Claim deadline: %{date}",
+        "runDays": "Run length (days)",
+        "runDaysInfo": "How many days the raffle is open for entries, counted from its start.",
+        "images": "Images",
+        "imagesInfo": "The first image is the cover on cards and the homepage.",
+        "cover": "Cover",
+        "socialPosts": "Posts for X",
+        "claimedInfo": "Claimed on %{date}. Gift code mail: %{mail}.",
+        "claimPending": "Claim link mailed to %{email} (%{mail}). Claim period ends %{date}.",
+        "overview": {
+          "title": "Overview",
+          "prize": "Prize",
+          "code": "Gift code",
+          "noCode": "Not set",
+          "startsAt": "Opens",
+          "endsAt": "Closes",
+          "runDays": "Run length",
+          "claimPeriodDays": "Claim period",
+          "days": "%{days} days",
+          "startAnnouncedAt": "Start announced",
+          "lastDayAnnouncedAt": "Last-day reminder",
+          "drawnAt": "Drawn",
+          "drawnBy": "%{date} by %{admin}",
+          "concludedAt": "Concluded",
+          "publicPage": "Open the public page",
+          "noImages": "No images yet. A raffle needs one to be published."
+        }
+      },
+      "raffleEntry": {
+        "username": "Entrant",
+        "drawPosition": "Position",
+        "conditionsAcceptedAt": "Conditions accepted",
+        "state": "State",
+        "accountDeleted": "Account deleted",
+        "states": {
+          "claimed": "Claimed",
+          "forfeited": "Forfeited",
+          "passedOver": "Passed over",
+          "winner": "Winner",
+          "waiting": "In line",
+          "notDrawn": "Not eligible"
+        },
+        "mail": "Mails",
+        "claimMail": "Claim mail",
+        "prizeMail": "Code mail",
+        "mailStatuses": {
+          "sent": "sent",
+          "delivered": "delivered",
+          "bounced": "bounced"
+        }
+      },
+      "admin": {
+        "resourceAccess": {
+          "privileges": {
+            "raffles": "Raffles"
+          }
+        }
+      },
+      "notificationTypes": {
+        "raffle_won": "Raffle won",
+        "raffle_started": "Raffle opened",
+        "raffle_last_day": "Raffle closing soon"
+      }
+    },
+    "placeholders": {
+      "raffle": {
+        "title": "Win a Polaris",
+        "description": "What can be won and how",
+        "code": "XXXX-XXXX-XXXX",
+        "claimPeriodDays": "3",
+        "runDays": "14",
+        "prize": "Anvil Polaris game package"
+      }
+    },
+    "messages": {
+      "raffle": {
+        "created": "Raffle created.",
+        "updated": "Raffle updated.",
+        "destroyed": "Raffle deleted.",
+        "createFailed": "Could not create raffle.",
+        "updateFailed": "Could not update raffle.",
+        "drawn": "Raffle drawn.",
+        "drawFailed": "Could not draw the raffle.",
+        "invalid": "Check the highlighted fields: the raffle needs a title, a start date and a run length."
+      },
+      "confirm": {
+        "raffle": {
+          "destroy": "Are you sure you want to delete this raffle? This action can't be reverted.",
+          "draw": "Draw the raffle now? The order of all entrants is fixed for good and cannot be drawn again."
+        }
+      }
+    },
+    "actions": {
+      "raffle": {
+        "entries": "Entries",
+        "draw": "Draw"
+      }
+    },
+    "raffles": {
+      "title": "Raffles",
+      "lead": "Win gift codes for Star Citizen ships. Enter an open raffle; once it closes, the winner is drawn at random.",
+      "empty": "There are no raffles right now.",
+      "status": "Status",
+      "runs": "Runs",
+      "endsAt": "Closes %{date}",
+      "entriesCount": "Entrants: %{count}",
+      "entered": "You have entered this raffle.",
+      "statuses": {
+        "draft": "Draft",
+        "upcoming": "Upcoming",
+        "open": "Open",
+        "closed": "Closed, waiting for the draw",
+        "drawn": "Drawn",
+        "concluded": "Finished"
+      },
+      "entrants": {
+        "title": "Entrants",
+        "empty": "Nobody has entered yet.",
+        "count": "Entrants",
+        "titleCount": "Entrants · %{count}",
+        "showAll": "Show all %{count}"
+      },
+      "winner": {
+        "title": "Winner",
+        "pending": "%{username} won and has until %{date} to claim the gift code.",
+        "claimed": "%{username} won and claimed the gift code.",
+        "forfeited": "Did not claim in time",
+        "claimedPill": "Claimed",
+        "until": "until %{date}",
+        "drawnOn": "Drawn on %{date} from %{count} entrants."
+      },
+      "won": {
+        "title": "You won!",
+        "checkMail": "We sent you a mail with a link to claim your prize. Click it before %{date}, or the win passes to the next in line.",
+        "claimed": "Prize claimed",
+        "codeSent": "Your gift code is on its way to your mail inbox."
+      },
+      "actions": {
+        "enter": "Enter raffle",
+        "withdraw": "Withdraw",
+        "signInToEnter": "Sign in to enter this raffle"
+      },
+      "messages": {
+        "entered": "You have entered the raffle. Good luck!",
+        "withdrawn": "You have withdrawn from the raffle.",
+        "confirmWithdraw": "Withdraw from this raffle?",
+        "forbidden": "Only accounts with a confirmed email address can take part. Confirm your email address and try again.",
+        "failed": "Something went wrong. Please try again."
+      },
+      "conditions": {
+        "title": "Participation conditions",
+        "accept": "I have read and accept the participation conditions.",
+        "confirmedAccount": "Only accounts with a confirmed email address can enter, once per account.",
+        "publicEntrants": "Your username is listed publicly on this page as an entrant.",
+        "publicWinner": "If you win, your username is shown publicly as the winner.",
+        "drawOrder": "After the raffle closes, all eligible entrants are drawn into one random order. The first in that order wins.",
+        "claimMail": "The winner gets a mail with a link to claim the prize. The prize is never shown on this website.",
+        "claimDeadline": "The winner has %{days} days to click that link. Without a click in time, the win passes to the next in line, who gets their own mail.",
+        "prizeMail": "Clicking the link sends the gift code by mail to the address of the winning account.",
+        "deletedAccount": "Entrants whose account is no longer confirmed when their turn comes are passed over. If your account is deleted, your entry stays and a win is mailed to the address you entered with.",
+        "noCash": "The prize is a gift code only. There is no cash alternative and it cannot be exchanged.",
+        "noLiability": "Fleetyards is not liable for the gift code, its validity or its redemption, or for any issue with your RSI account.",
+        "noRecourse": "The result of the draw is final. Legal recourse is excluded.",
+        "notAffiliated": "Fleetyards is an unofficial fan site and not affiliated with Cloud Imperium Games.",
+        "version": "Conditions version %{version}"
+      },
+      "claim": {
+        "title": "Claim prize",
+        "pending": "Claiming your prize…",
+        "successTitle": "Prize claimed",
+        "success": "You claimed your prize in \"%{raffle}\". The gift code is on its way to your mail inbox.",
+        "toRaffle": "Go to the raffle",
+        "failedTitle": "The prize could not be claimed",
+        "failed": "Something went wrong. Please try the link again."
+      },
+      "meta": "Closes %{date} · %{count} entrants",
+      "showImage": "Show image %{index}",
+      "howItWorks": {
+        "title": "How it works",
+        "enter": {
+          "title": "Enter until %{date}",
+          "text": "Accept the participation conditions and enter. You can withdraw until the raffle closes."
+        },
+        "draw": {
+          "title": "The draw",
+          "text": "After the close, all entrants are drawn into one random order. The first in that order wins."
+        },
+        "claim": {
+          "title": "Claim within %{days} days",
+          "text": "The winner gets a mail with a claim link. Without a click in %{days} days, the next in line gets their own mail."
+        },
+        "code": {
+          "title": "The code arrives by mail",
+          "text": "Clicking the link sends the gift code by mail. It is never shown on this website."
+        }
+      },
+      "entry": {
+        "prize": "Prize",
+        "title": "Enter the raffle",
+        "yours": "Your entry",
+        "closes": "Closes",
+        "closed": "Closed",
+        "claimPeriod": "Claim period",
+        "days": "%{days} days",
+        "entered": "You are in. The draw is after %{date}.",
+        "enteredHint": "If you win, we mail you a claim link. Keep an eye on your inbox for %{days} days after the draw.",
+        "opensAt": "Opens %{date}."
+      },
+      "slider": {
+        "label": "Image slider",
+        "previous": "Previous image",
+        "next": "Next image"
+      },
+      "home": {
+        "view": "View raffle",
+        "panelTitle": "Raffle",
+        "entered": "Entered",
+        "notEntered": "You have not entered yet.",
+        "enter": "Enter",
+        "pillTag": "Raffle",
+        "endsIn": {
+          "one": "ends in %{count} day",
+          "other": "ends in %{count} days"
+        },
+        "endsToday": "ends today",
+        "opensIn": {
+          "one": "opens in %{count} day",
+          "other": "opens in %{count} days"
+        },
+        "opensToday": "opens today"
+      },
+      "mine": {
+        "raffle": "Raffle",
+        "enteredAt": "Entered",
+        "outcome": "Result",
+        "claimBy": "Check your mail and claim by %{date}",
+        "outcomes": {
+          "open": "Open",
+          "waiting": "Waiting for the draw",
+          "won": "Won",
+          "claimed": "Claimed",
+          "forfeited": "Not claimed in time",
+          "not_won": "Not won"
+        }
+      }
+    }
+  }
+}

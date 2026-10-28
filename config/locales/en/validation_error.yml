@@ -1,6 +1,23 @@
 ---
 en:
   validation_error:
+    raffle_claim:
+      create: "The prize could not be claimed."
+      invalid: "This claim link is not valid."
+      expired: "This claim link has expired: the claim period is over."
+    raffle_entry:
+      create: "You could not enter the raffle."
+      messages:
+        already_entered: "You have already entered this raffle."
+    raffle:
+      create: "Raffle could not be created."
+      update: "Raffle could not be updated."
+      destroy: "Raffle could not be deleted."
+      draw: "Raffle could not be drawn."
+      messages:
+        already_drawn: "This raffle has already been drawn."
+        not_closed: "A raffle can only be drawn after it has closed."
+        no_entrants: "Nobody eligible entered this raffle."
     fleet_subscription:
       create: "Subscription could not be opened."
       update: "Subscription could not be updated."

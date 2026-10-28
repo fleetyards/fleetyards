@@ -1,6 +1,16 @@
 ---
 zh-TW:
   mailer:
+    raffle:
+      claim:
+        subject: "你贏得了抽獎：%{raffle}"
+        body: "恭喜，你贏得了抽獎「%{raffle}」。點擊下方按鈕領取獎品，之後我們會以電子郵件寄給你禮品碼。"
+        action: "領取獎品"
+        deadline: "此連結在 %{deadline} 前有效。若屆時未領取，獎品將轉給下一位。"
+      prize:
+        subject: "你的 %{raffle} 禮品碼"
+        body: "這是你在抽獎「%{raffle}」中獲得的禮品碼："
+        redeem: "請在 RSI 網站兌換。請勿外流：任何拿到禮品碼的人都能兌換。"
     announcement:
       action: "了解更多"
     account:

@@ -1,6 +1,23 @@
 ---
 de:
   validation_error:
+    raffle_claim:
+      create: "Der Gewinn konnte nicht abgeholt werden."
+      invalid: "Dieser Link zum Abholen ist ungültig."
+      expired: "Dieser Link zum Abholen ist abgelaufen: Die Frist ist vorbei."
+    raffle_entry:
+      create: "Du konntest nicht an der Verlosung teilnehmen."
+      messages:
+        already_entered: "Du nimmst bereits an dieser Verlosung teil."
+    raffle:
+      create: "Verlosung konnte nicht erstellt werden."
+      update: "Verlosung konnte nicht aktualisiert werden."
+      destroy: "Verlosung konnte nicht gelöscht werden."
+      draw: "Verlosung konnte nicht ausgelost werden."
+      messages:
+        already_drawn: "Diese Verlosung wurde bereits ausgelost."
+        not_closed: "Eine Verlosung kann erst nach ihrem Ende ausgelost werden."
+        no_entrants: "Niemand Berechtigtes hat an dieser Verlosung teilgenommen."
     fleet_subscription:
       create: "Abonnement konnte nicht angelegt werden."
       update: "Abonnement konnte nicht aktualisiert werden."

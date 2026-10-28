@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import RaffleHomeBanner from "@/frontend/components/Raffles/HomeBanner/index.vue";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import SupportBtn from "@/frontend/components/SupportBtn/index.vue";
@@ -116,6 +117,7 @@ useScrollSettle(() =>
       }"
     >
       <div class="home-landing__copy">
+        <RaffleHomeBanner class="home-landing__raffle" />
         <h1 class="home-landing__lockup">
           <img
             :src="logo"
@@ -208,6 +210,10 @@ useScrollSettle(() =>
 
 // One centred column; with a featured ship, the copy on the left and the ship
 // beside it.
+.home-landing__raffle {
+  margin-bottom: 20px;
+}
+
 .home-landing__hero {
   opacity: 0;
   transform: translateY(12px);

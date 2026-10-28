@@ -621,3 +621,11 @@ GET /vehicles/{id} removed the optional property `modulePackage/modules/items/mo
 PUT /vehicles/{id} removed the optional property `model/focus` from the response with the `200` status
 PUT /vehicles/{id} removed the optional property `modulePackage/model/focus` from the response with the `200` status
 PUT /vehicles/{id} removed the optional property `modulePackage/modules/items/models/items/focus` from the response with the `200` status
+GET /admin_users added the new `raffles` enum value to the `items/items/resourceAccess/items/` response property for the response status `200`
+POST /admin_users added the new `raffles` enum value to the `resourceAccess/items/` response property for the response status `200`
+GET /admin_users/me added the new `raffles` enum value to the `resourceAccess/items/` response property for the response status `200`
+DELETE /admin_users/{id} added the new `raffles` enum value to the `resourceAccess/items/` response property for the response status `200`
+GET /admin_users/{id} added the new `raffles` enum value to the `resourceAccess/items/` response property for the response status `200`
+PUT /admin_users/{id} added the new `raffles` enum value to the `resourceAccess/items/` response property for the response status `200`
+GET /resource-access-catalog added the new `raffles` enum value to the `items/privileges/items/` response property for the response status `200`
+POST /sessions added the new `raffles` enum value to the `resourceAccess/items/` response property for the response status `200`

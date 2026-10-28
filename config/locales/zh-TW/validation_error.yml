@@ -1,6 +1,23 @@
 ---
 zh-TW:
   validation_error:
+    raffle_claim:
+      create: "無法領取獎品。"
+      invalid: "此領獎連結無效。"
+      expired: "此領獎連結已過期：領獎期限已過。"
+    raffle_entry:
+      create: "無法參加抽獎。"
+      messages:
+        already_entered: "你已參加此抽獎。"
+    raffle:
+      create: "無法建立抽獎。"
+      update: "無法更新抽獎。"
+      destroy: "無法刪除抽獎。"
+      draw: "無法進行抽獎。"
+      messages:
+        already_drawn: "此抽獎已開獎。"
+        not_closed: "抽獎結束後才能開獎。"
+        no_entrants: "沒有符合條件的參加者。"
     fleet_subscription:
       create: "無法開通訂閱。"
       update: "無法更新訂閱。"

@@ -1,6 +1,23 @@
 ---
 it:
   validation_error:
+    raffle_claim:
+      create: "Non è stato possibile ritirare il premio."
+      invalid: "Questo link per il ritiro non è valido."
+      expired: "Questo link per il ritiro è scaduto: il termine è passato."
+    raffle_entry:
+      create: "Non è stato possibile partecipare all'estrazione."
+      messages:
+        already_entered: "Partecipi già a questa estrazione."
+    raffle:
+      create: "Non è stato possibile creare l'estrazione."
+      update: "Non è stato possibile aggiornare l'estrazione."
+      destroy: "Non è stato possibile eliminare l'estrazione."
+      draw: "Non è stato possibile effettuare l'estrazione."
+      messages:
+        already_drawn: "Questa estrazione è già stata effettuata."
+        not_closed: "Un'estrazione può essere effettuata solo dopo la chiusura."
+        no_entrants: "Nessun partecipante idoneo a questa estrazione."
     fleet_subscription:
       create: "Impossibile aprire l'abbonamento."
       update: "Impossibile aggiornare l'abbonamento."

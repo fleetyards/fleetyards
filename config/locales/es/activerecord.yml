@@ -2,6 +2,16 @@
 es:
   activerecord:
     attributes:
+      raffle:
+        title: "Título"
+        description: "Descripción"
+        code: "Código de regalo"
+        starts_at: "Inicio"
+        run_days: "Duración (días)"
+        claim_period_days: "Plazo para reclamar (días)"
+      raffle_entry:
+        conditions_accepted: "Condiciones de participación"
+        raffle: "Sorteo"
       fleet_squadron_request:
         fleet_membership: "Miembro"
         fleet_squadron: "Escuadrón"
@@ -274,6 +284,9 @@ es:
           class8: Class 8
     errors:
       messages:
+        frozen_after_draw: "no se puede cambiar después del sorteo"
+        not_open: "no admite participaciones"
+        drawn: "Un sorteo ya realizado no se puede eliminar"
         contract_item_already_asked_for: "ya está en este contrato con la misma categoría y unidad"
         contract_item_needs_reward_rate: "necesitan una recompensa por SCU o unidad en cada línea"
         entry_goods_in_transit: "no se puede eliminar mientras la transferencia a la que pertenece siga sin respuesta"

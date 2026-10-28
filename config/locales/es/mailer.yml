@@ -1,6 +1,16 @@
 ---
 es:
   mailer:
+    raffle:
+      claim:
+        subject: "Has ganado el sorteo: %{raffle}"
+        body: "Enhorabuena, has ganado el sorteo \"%{raffle}\". Pulsa el botón para reclamar tu premio; después te enviamos el código de regalo por correo."
+        action: "Reclamar mi premio"
+        deadline: "Este enlace funciona hasta el %{deadline}. Si el premio no se reclama antes, pasa al siguiente en la lista."
+      prize:
+        subject: "Tu código de regalo para %{raffle}"
+        body: "Este es tu código de regalo del sorteo \"%{raffle}\":"
+        redeem: "Canjéalo en la web de RSI. No lo compartas: cualquiera con el código puede canjearlo."
     announcement:
       action: "Leer más"
     account:

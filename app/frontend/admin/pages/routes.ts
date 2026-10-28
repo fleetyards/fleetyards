@@ -18,6 +18,7 @@ import { routes as usersRoutes } from "@/admin/pages/users/routes";
 import { routes as supporterContributionsRoutes } from "@/admin/pages/supporter-contributions/routes";
 import { routes as announcementsRoutes } from "@/admin/pages/announcements/routes";
 import { routes as gameEventsRoutes } from "@/admin/pages/game-events/routes";
+import { routes as rafflesRoutes } from "@/admin/pages/raffles/routes";
 import { RouteRecordRaw } from "vue-router";
 
 /*
@@ -271,6 +272,18 @@ export const routes: RouteRecordRaw[] = [
       needsAuthentication: true,
       icon: "fa-duotone fa-calendar-star",
       access: ["game_events"],
+    },
+  },
+  {
+    path: "/raffles/",
+    component: () => import("@/admin/pages/raffles.vue"),
+    children: rafflesRoutes,
+    redirect: { name: rafflesRoutes[0].name },
+    meta: {
+      title: "admin.raffles.index",
+      needsAuthentication: true,
+      icon: "fa-duotone fa-ticket",
+      access: ["raffles"],
     },
   },
   {

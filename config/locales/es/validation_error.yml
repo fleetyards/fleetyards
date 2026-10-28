@@ -1,6 +1,23 @@
 ---
 es:
   validation_error:
+    raffle_claim:
+      create: "No se pudo reclamar el premio."
+      invalid: "Este enlace para reclamar no es válido."
+      expired: "Este enlace para reclamar ha caducado: el plazo ha terminado."
+    raffle_entry:
+      create: "No pudiste participar en el sorteo."
+      messages:
+        already_entered: "Ya participas en este sorteo."
+    raffle:
+      create: "No se pudo crear el sorteo."
+      update: "No se pudo actualizar el sorteo."
+      destroy: "No se pudo eliminar el sorteo."
+      draw: "No se pudo realizar el sorteo."
+      messages:
+        already_drawn: "Este sorteo ya se ha realizado."
+        not_closed: "Un sorteo solo puede realizarse después de cerrarse."
+        no_entrants: "Nadie que cumpla los requisitos participó en este sorteo."
     fleet_subscription:
       create: "No se ha podido abrir la suscripción."
       update: "No se ha podido actualizar la suscripción."

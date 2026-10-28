@@ -2,6 +2,16 @@
 zh-TW:
   activerecord:
     attributes:
+      raffle:
+        title: "標題"
+        description: "描述"
+        code: "禮品碼"
+        starts_at: "開始"
+        run_days: "持續時間（天）"
+        claim_period_days: "領獎期限（天）"
+      raffle_entry:
+        conditions_accepted: "參加條件"
+        raffle: "抽獎"
       fleet_squadron_request:
         fleet_membership: "成員"
         fleet_squadron: "中隊"
@@ -274,6 +284,9 @@ zh-TW:
           class8: Class 8
     errors:
       messages:
+        frozen_after_draw: "開獎後無法變更"
+        not_open: "不接受參加"
+        drawn: "已開獎的抽獎無法刪除"
         contract_item_already_asked_for: "該合約中已有相同類別和單位的這項貨物"
         contract_item_needs_reward_rate: "每一行都需要設定每 SCU 或每件的報酬"
         entry_goods_in_transit: "在其所屬的轉移得到回覆之前無法刪除"

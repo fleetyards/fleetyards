@@ -1,6 +1,15 @@
 ---
 de:
   notifications:
+    raffle_started:
+      title: "Neue Verlosung: %{raffle}"
+      body: "Eine neue Verlosung hat begonnen. Nimm bis %{deadline} teil."
+    raffle_last_day:
+      title: "Letzter Tag: %{raffle}"
+      body: "Die Verlosung endet am %{deadline}. Nimm jetzt teil, wenn du dabei sein willst."
+    raffle_won:
+      title: "Du hast die Verlosung gewonnen: %{raffle}"
+      body: "Herzlichen Glückwunsch! Wir haben dir eine Mail mit einem Link zum Abholen deines Gewinns geschickt. Klicke ihn vor %{deadline}, sonst geht der Gewinn an den Nächsten in der Reihe."
     model_on_sale:
       title: "%{model} ist im Angebot"
       body: "%{model} ist derzeit im Pledge-Store erhältlich."

@@ -64,6 +64,7 @@ class User < ApplicationRecord
 
   before_destroy :check_fleet_memberships
   before_destroy :preserve_payout_participant_names, prepend: true
+  before_destroy :preserve_raffle_entries, prepend: true
   before_destroy :capture_discord_member_roles_revoke, prepend: true
   after_destroy_commit :revoke_discord_member_roles
 
@@ -149,6 +150,7 @@ class User < ApplicationRecord
   has_many :hangar_pledge_items, dependent: :delete_all
   has_many :hangar_plans, dependent: :destroy
   has_many :carts, dependent: :delete_all
+  has_many :raffle_entries, dependent: :nullify
   has_many :cart_items, through: :carts
 
   has_many :oauth_applications, class_name: "Oauth::Application", as: :owner
@@ -961,6 +963,15 @@ class User < ApplicationRecord
   # under instead of becoming a nameless guest.
   private def preserve_payout_participant_names
     payout_participants.where(name: nil).update_all(name: username)
+  end
+
+  # A drawn raffle's order and its winners are public record, and a winner
+  # whose account is gone may still claim before the deadline, so those entries
+  # stay under the name they had. An entry in a raffle not drawn yet simply
+  # leaves the raffle.
+  private def preserve_raffle_entries
+    raffle_entries.where(raffle_id: Raffle.where(drawn_at: nil).select(:id)).delete_all
+    raffle_entries.update_all(username:)
   end
 
   # The fleet a donation supports when nothing else says otherwise: the explicit

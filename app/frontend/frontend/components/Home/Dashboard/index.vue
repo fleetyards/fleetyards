@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script lang="ts" setup>
+import RaffleDashboardPanel from "@/frontend/components/Raffles/DashboardPanel/index.vue";
 import { storeToRefs } from "pinia";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import { HeadingSizeEnum } from "@/shared/components/base/Heading/types";
@@ -55,6 +56,7 @@ const { currentUser } = storeToRefs(useSessionStore());
       <PatchChangesPanel class="home-dashboard__changes" />
     </div>
     <aside class="home-dashboard__side">
+      <RaffleDashboardPanel class="home-dashboard__raffle" />
       <HangarPanel class="home-dashboard__hangar" />
       <NotificationsPanel class="home-dashboard__notifications" />
       <FriendsPanel class="home-dashboard__friends" />

@@ -1,6 +1,15 @@
 ---
 fr:
   notifications:
+    raffle_started:
+      title: "Nouveau tirage au sort : %{raffle}"
+      body: "Un nouveau tirage au sort est ouvert. Participez avant le %{deadline}."
+    raffle_last_day:
+      title: "Dernier jour : %{raffle}"
+      body: "Le tirage au sort se termine le %{deadline}. Participez maintenant si vous le souhaitez."
+    raffle_won:
+      title: "Vous avez gagné le tirage au sort : %{raffle}"
+      body: "Félicitations ! Nous vous avons envoyé un e-mail avec un lien pour réclamer votre lot. Cliquez dessus avant le %{deadline}, sinon le lot passe au suivant dans l'ordre."
     model_on_sale:
       title: "%{model} est en vente"
       body: "%{model} est actuellement en vente dans le magasin de pledge."

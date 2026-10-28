@@ -54,6 +54,9 @@ class Notification < ApplicationRecord
     fleet_fid_claim_cancelled: "fleet_fid_claim_cancelled",
     rsi_handle_verification_lost: "rsi_handle_verification_lost",
     fleet_verification_requested: "fleet_verification_requested",
+    raffle_won: "raffle_won",
+    raffle_started: "raffle_started",
+    raffle_last_day: "raffle_last_day",
     announcement: "announcement"
   }
 
@@ -374,6 +377,29 @@ class Notification < ApplicationRecord
       channels: %i[app mail push discord],
       mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later },
       preference_defaults: {app: true, mail: true, push: false, discord: false}
+    },
+    # The claim deadline runs from the moment of the win, so every channel the
+    # winner might read is on by default, except push, which is opt-in for
+    # every type.
+    raffle_won: {
+      retention: 90.days,
+      channels: %i[app mail push discord],
+      mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later },
+      preference_defaults: {app: true, mail: true, push: false, discord: true}
+    },
+    # Sent to every user, so only the inbox is on by default: a mass mail or
+    # push each time a raffle opens is what the opt-in exists to avoid.
+    raffle_started: {
+      retention: 30.days,
+      channels: %i[app mail push discord],
+      mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later },
+      preference_defaults: {app: true, mail: false, push: false, discord: false}
+    },
+    raffle_last_day: {
+      retention: 7.days,
+      channels: %i[app mail push discord],
+      mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later },
+      preference_defaults: {app: true, mail: false, push: false, discord: false}
     },
     # Written by an admin and sent to everybody, which is why mail is off by
     # default: at ~57k confirmed readers an opt-out default is ~57k messages

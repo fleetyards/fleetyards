@@ -120,3 +120,6 @@ hangar_planner:
 
 shopping_cart:
   description: "Shopping cart — collect commodities, components and equipment and plan where to buy them in game"
+
+raffles:
+  description: "Raffles — users enter to win gift codes, an admin draws the winner"

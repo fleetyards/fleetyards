@@ -34,6 +34,16 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "raffles/",
+    name: "settings-raffles",
+    component: () => import("@/frontend/pages/settings/raffles.vue"),
+    meta: {
+      title: "settings.raffles",
+      needsAuthentication: true,
+      feature: FeatureFlagName.RAFFLES,
+    },
+  },
+  {
     path: "calendar/",
     name: "settings-calendar",
     component: () => import("@/frontend/pages/settings/calendar.vue"),

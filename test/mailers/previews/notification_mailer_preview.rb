@@ -4,7 +4,7 @@ class NotificationMailerPreview < ActionMailer::Preview
   def notification
     NotificationMailer.notification(
       Notification.new(
-        user: User.first || User.new(username: "commander", email: "commander@example.com"),
+        user: reader,
         notification_type: :fleet_fid_claim_opened,
         title: "Ghost Squadron claims the fleet ID GHOST",
         body: I18n.t("notifications.fleet_fid_claim_opened.body",
@@ -12,5 +12,36 @@ class NotificationMailerPreview < ActionMailer::Preview
         link: "/fleets/ghost/settings/rsi/"
       )
     )
+  end
+
+  def raffle_won
+    raffle_notification(:raffle_won, 3.days.from_now)
+  end
+
+  def raffle_started
+    raffle_notification(:raffle_started, 14.days.from_now)
+  end
+
+  def raffle_last_day
+    raffle_notification(:raffle_last_day, 1.day.from_now)
+  end
+
+  private def raffle_notification(type, deadline)
+    raffle = "Win an Anvil Polaris"
+
+    NotificationMailer.notification(
+      Notification.new(
+        user: reader,
+        notification_type: type,
+        title: I18n.t("notifications.#{type}.title", raffle:),
+        body: I18n.t("notifications.#{type}.body", raffle:, deadline: I18n.l(deadline, format: :long)),
+        link: "/raffles/",
+        icon: "fa-duotone fa-gift"
+      )
+    )
+  end
+
+  private def reader
+    User.first || User.new(username: "commander", email: "commander@example.com")
   end
 end

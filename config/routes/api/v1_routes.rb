@@ -71,6 +71,7 @@ v1_api_routes = lambda do
   draw "api/locations_routes"
   draw "api/shops_routes"
   draw "api/cart_routes"
+  draw "api/raffle_routes"
   draw "api/imports_routes"
   draw "api/notifications_routes"
   draw "api/notification_preferences_routes"

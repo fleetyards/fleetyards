@@ -78,6 +78,9 @@ const PRIMARY_ACTIONS: Record<`${NotificationTypeEnum}`, string> = {
   fleet_fid_claim_cancelled: "openFleet",
   rsi_handle_verification_lost: "open",
   fleet_verification_requested: "open",
+  raffle_won: "open",
+  raffle_started: "open",
+  raffle_last_day: "open",
   // The one type whose link an admin writes by hand, so there is nothing more
   // specific to promise than what the generic fallback already says.
   announcement: "open",

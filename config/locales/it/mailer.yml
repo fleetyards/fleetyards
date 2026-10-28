@@ -1,6 +1,16 @@
 ---
 it:
   mailer:
+    raffle:
+      claim:
+        subject: "Hai vinto l'estrazione: %{raffle}"
+        body: "Congratulazioni, hai vinto l'estrazione \"%{raffle}\". Clicca sul pulsante per ritirare il premio; poi ti inviamo il codice regalo via email."
+        action: "Ritira il premio"
+        deadline: "Questo link è valido fino al %{deadline}. Se il premio non viene ritirato entro allora, passa al successivo in lista."
+      prize:
+        subject: "Il tuo codice regalo per %{raffle}"
+        body: "Ecco il tuo codice regalo per l'estrazione \"%{raffle}\":"
+        redeem: "Riscattalo sul sito di RSI. Tienilo per te: chiunque abbia il codice può riscattarlo."
     announcement:
       action: "Scopri di più"
     account:

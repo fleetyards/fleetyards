@@ -1,0 +1,16 @@
+<mj-text mj-class="h2" padding="0 0 14px">
+  <%= I18n.t("mailer.hello", username: @username) %>
+</mj-text>
+
+<mj-text>
+  <%= I18n.t("mailer.raffle.claim.body", raffle: @raffle.title) %>
+</mj-text>
+
+<%= render "shared/mailer/btn",
+           href: @claim_url,
+           label: I18n.t("mailer.raffle.claim.action"),
+           tone: :primary %>
+
+<mj-text mj-class="footer" padding="0 0 4px">
+  <%= I18n.t("mailer.raffle.claim.deadline", deadline: I18n.l(@entry.claim_deadline_at, format: :long)) %>
+</mj-text>

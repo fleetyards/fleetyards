@@ -1,0 +1,24 @@
+# frozen_string_literal: true
+
+class RaffleMailer < ApplicationMailer
+  # The winner's link to claim the prize. Made here rather than passed in, so
+  # it never sits in a job's arguments.
+  def claim(entry)
+    @entry = entry
+    @raffle = entry.raffle
+    @username = entry.display_username
+    @claim_url = "#{FRONTEND_ENDPOINT}#{Rails.application.routes.url_helpers.frontend_raffle_claim_path(entry.generate_token_for(:raffle_claim))}"
+
+    mail(to: entry.recipient_email, subject: I18n.t(:"mailer.raffle.claim.subject", raffle: @raffle.title))
+  end
+
+  # The gift code, sent once the winner followed the claim link.
+  def prize(entry)
+    @entry = entry
+    @raffle = entry.raffle
+    @username = entry.display_username
+    @code = @raffle.code
+
+    mail(to: entry.recipient_email, subject: I18n.t(:"mailer.raffle.prize.subject", raffle: @raffle.title))
+  end
+end

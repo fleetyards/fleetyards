@@ -1,0 +1,325 @@
+{
+  "de": {
+    "nav": {
+      "raffles": "Verlosungen",
+      "raffle": "Verlosung",
+      "admin": {
+        "raffles": {
+          "index": "Verlosungen",
+          "new": "Neue Verlosung",
+          "edit": "Verlosung bearbeiten",
+          "entries": "Teilnahmen an der Verlosung"
+        }
+      },
+      "raffleClaim": "Preis abholen",
+      "settings": {
+        "raffles": "Meine Verlosungen"
+      }
+    },
+    "title": {
+      "raffles": "Verlosungen",
+      "raffle": "Verlosung",
+      "admin": {
+        "raffles": {
+          "index": "Verlosungen",
+          "new": "Neue Verlosung",
+          "edit": "Verlosung bearbeiten",
+          "entries": "Teilnahmen an der Verlosung"
+        }
+      },
+      "raffleClaim": "Preis abholen",
+      "settings": {
+        "raffles": "Meine Verlosungen"
+      }
+    },
+    "headlines": {
+      "admin": {
+        "raffles": {
+          "index": "Verlosungen",
+          "new": "Neue Verlosung",
+          "edit": "Verlosung bearbeiten",
+          "entries": "Teilnahmen an der Verlosung"
+        }
+      },
+      "settings": {
+        "raffles": "Meine Verlosungen"
+      }
+    },
+    "labels": {
+      "raffle": {
+        "title": "Titel",
+        "prize": "Gewinn",
+        "prizeInfo": "Was der Gewinner bekommt, wie es neben der Verlosung steht. Zum Veröffentlichen nötig.",
+        "description": "Beschreibung",
+        "code": "Geschenkcode",
+        "codeInfo": "Der Code, den der Gewinner erhält. Er wird verschlüsselt gespeichert und nie wieder vollständig angezeigt.",
+        "codeSet": "Ein Code ist hinterlegt (%{code}). Lass das Feld leer, um ihn zu behalten.",
+        "codeFrozen": "Der Code kann nach der Ziehung nicht mehr geändert werden.",
+        "startsAt": "Beginnt am",
+        "endsAt": "Endet am",
+        "claimPeriodDays": "Abholfrist (Tage)",
+        "claimPeriodDaysInfo": "Wie lange ein Gewinner Zeit hat, den Link in der Abhol-Mail anzuklicken, bevor der Gewinn an den Nächsten in der Reihe geht.",
+        "published": "Veröffentlicht",
+        "publishedInfo": "Nur veröffentlichte Verlosungen werden angezeigt und sind für Teilnahmen offen. Zum Veröffentlichen wird ein Geschenkcode benötigt.",
+        "status": "Status",
+        "entriesCount": "Teilnahmen",
+        "entriesCountValue": "Teilnahmen: %{count}",
+        "statuses": {
+          "draft": "Entwurf",
+          "upcoming": "Demnächst",
+          "open": "Offen",
+          "closed": "Geschlossen",
+          "drawn": "Gezogen",
+          "concluded": "Abgeschlossen"
+        },
+        "drawnInfo": "Gezogen",
+        "drawnBy": "Gezogen am %{date} von %{admin}.",
+        "currentWinner": "Aktueller Gewinner: %{username}",
+        "claimDeadline": "Abholfrist bis: %{date}",
+        "runDays": "Laufzeit (Tage)",
+        "runDaysInfo": "Wie viele Tage die Verlosung ab ihrem Beginn für Teilnahmen offen ist.",
+        "images": "Bilder",
+        "imagesInfo": "Das erste Bild ist das Titelbild auf Karten und der Startseite.",
+        "cover": "Titelbild",
+        "socialPosts": "Beiträge für X",
+        "claimedInfo": "Abgeholt am %{date}. Mail mit dem Geschenkcode: %{mail}.",
+        "claimPending": "Abhol-Link an %{email} gesendet (%{mail}). Die Abholfrist endet am %{date}.",
+        "overview": {
+          "title": "Übersicht",
+          "prize": "Gewinn",
+          "code": "Geschenkcode",
+          "noCode": "Nicht gesetzt",
+          "startsAt": "Beginn",
+          "endsAt": "Ende",
+          "runDays": "Laufzeit",
+          "claimPeriodDays": "Frist zum Abholen",
+          "days": "%{days} Tage",
+          "startAnnouncedAt": "Start angekündigt",
+          "lastDayAnnouncedAt": "Erinnerung letzter Tag",
+          "drawnAt": "Ausgelost",
+          "drawnBy": "%{date} von %{admin}",
+          "concludedAt": "Abgeschlossen",
+          "publicPage": "Öffentliche Seite öffnen",
+          "noImages": "Noch keine Bilder. Zum Veröffentlichen ist eins nötig."
+        }
+      },
+      "raffleEntry": {
+        "username": "Teilnehmer",
+        "drawPosition": "Position",
+        "conditionsAcceptedAt": "Bedingungen akzeptiert",
+        "state": "Status",
+        "accountDeleted": "Konto gelöscht",
+        "states": {
+          "claimed": "Abgeholt",
+          "forfeited": "Verfallen",
+          "passedOver": "Übergangen",
+          "winner": "Gewinner",
+          "waiting": "In der Reihe",
+          "notDrawn": "Nicht berechtigt"
+        },
+        "mail": "Mails",
+        "claimMail": "Abhol-Mail",
+        "prizeMail": "Code-Mail",
+        "mailStatuses": {
+          "sent": "gesendet",
+          "delivered": "zugestellt",
+          "bounced": "unzustellbar"
+        }
+      },
+      "admin": {
+        "resourceAccess": {
+          "privileges": {
+            "raffles": "Verlosungen"
+          }
+        }
+      },
+      "notificationTypes": {
+        "raffle_won": "Verlosung gewonnen",
+        "raffle_started": "Verlosung gestartet",
+        "raffle_last_day": "Verlosung endet bald"
+      }
+    },
+    "placeholders": {
+      "raffle": {
+        "title": "Gewinne eine Polaris",
+        "description": "Was es zu gewinnen gibt und wie",
+        "code": "XXXX-XXXX-XXXX",
+        "claimPeriodDays": "3",
+        "runDays": "14",
+        "prize": "Anvil Polaris Spielpaket"
+      }
+    },
+    "messages": {
+      "raffle": {
+        "created": "Verlosung erstellt.",
+        "updated": "Verlosung aktualisiert.",
+        "destroyed": "Verlosung gelöscht.",
+        "createFailed": "Verlosung konnte nicht erstellt werden.",
+        "updateFailed": "Verlosung konnte nicht aktualisiert werden.",
+        "drawn": "Verlosung gezogen.",
+        "drawFailed": "Die Verlosung konnte nicht gezogen werden.",
+        "invalid": "Prüfe die markierten Felder: Die Verlosung braucht einen Titel, einen Beginn und eine Laufzeit."
+      },
+      "confirm": {
+        "raffle": {
+          "destroy": "Bist du sicher, dass du diese Verlosung löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.",
+          "draw": "Die Verlosung jetzt ziehen? Die Reihenfolge aller Teilnehmer wird endgültig festgelegt und kann nicht erneut gezogen werden."
+        }
+      }
+    },
+    "actions": {
+      "raffle": {
+        "entries": "Teilnahmen",
+        "draw": "Ziehen"
+      }
+    },
+    "raffles": {
+      "title": "Verlosungen",
+      "lead": "Gewinne Geschenkcodes für Schiffe in Star Citizen. Nimm an einer offenen Verlosung teil; sobald sie endet, wird der Gewinner zufällig gezogen.",
+      "empty": "Derzeit gibt es keine Verlosungen.",
+      "status": "Status",
+      "runs": "Zeitraum",
+      "endsAt": "Endet am %{date}",
+      "entriesCount": "Teilnehmer: %{count}",
+      "entered": "Du nimmst an dieser Verlosung teil.",
+      "statuses": {
+        "draft": "Entwurf",
+        "upcoming": "Demnächst",
+        "open": "Offen",
+        "closed": "Geschlossen, wartet auf die Ziehung",
+        "drawn": "Gezogen",
+        "concluded": "Beendet"
+      },
+      "entrants": {
+        "title": "Teilnehmer",
+        "empty": "Bisher hat noch niemand teilgenommen.",
+        "count": "Teilnehmer",
+        "titleCount": "Teilnehmer · %{count}",
+        "showAll": "Alle %{count} anzeigen"
+      },
+      "winner": {
+        "title": "Gewinner",
+        "pending": "%{username} hat gewonnen und hat bis %{date} Zeit, den Geschenkcode abzuholen.",
+        "claimed": "%{username} hat gewonnen und den Geschenkcode abgeholt.",
+        "forfeited": "Nicht rechtzeitig abgeholt",
+        "claimedPill": "Abgeholt",
+        "until": "bis %{date}",
+        "drawnOn": "Gezogen am %{date} aus %{count} Teilnehmern."
+      },
+      "won": {
+        "title": "Du hast gewonnen!",
+        "checkMail": "Wir haben dir eine Mail mit einem Link geschickt, über den du deinen Preis abholen kannst. Klicke ihn vor dem %{date} an, sonst geht der Gewinn an den Nächsten in der Reihe.",
+        "claimed": "Preis abgeholt",
+        "codeSent": "Dein Geschenkcode ist auf dem Weg in dein Mail-Postfach."
+      },
+      "actions": {
+        "enter": "An Verlosung teilnehmen",
+        "withdraw": "Teilnahme zurückziehen",
+        "signInToEnter": "Melde dich an, um an dieser Verlosung teilzunehmen"
+      },
+      "messages": {
+        "entered": "Du nimmst jetzt an der Verlosung teil. Viel Glück!",
+        "withdrawn": "Du hast deine Teilnahme an der Verlosung zurückgezogen.",
+        "confirmWithdraw": "Teilnahme an dieser Verlosung zurückziehen?",
+        "forbidden": "Nur Konten mit bestätigter E-Mail-Adresse können teilnehmen. Bestätige deine E-Mail-Adresse und versuche es erneut.",
+        "failed": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
+      },
+      "conditions": {
+        "title": "Teilnahmebedingungen",
+        "accept": "Ich habe die Teilnahmebedingungen gelesen und akzeptiere sie.",
+        "confirmedAccount": "Teilnehmen können nur Konten mit bestätigter E-Mail-Adresse, einmal pro Konto.",
+        "publicEntrants": "Dein Benutzername wird auf dieser Seite öffentlich als Teilnehmer aufgeführt.",
+        "publicWinner": "Wenn du gewinnst, wird dein Benutzername öffentlich als Gewinner angezeigt.",
+        "drawOrder": "Nach Ende der Verlosung werden alle berechtigten Teilnehmer in eine einzige zufällige Reihenfolge gezogen. Wer in dieser Reihenfolge an erster Stelle steht, gewinnt.",
+        "claimMail": "Der Gewinner erhält eine Mail mit einem Link, über den er den Preis abholen kann. Der Preis wird auf dieser Website nie angezeigt.",
+        "claimDeadline": "Der Gewinner hat %{days} Tage Zeit, diesen Link anzuklicken. Wird er nicht rechtzeitig angeklickt, geht der Gewinn an den Nächsten in der Reihe, der eine eigene Mail erhält.",
+        "prizeMail": "Ein Klick auf den Link sendet den Geschenkcode per Mail an die Adresse des Gewinnerkontos.",
+        "deletedAccount": "Teilnehmer, deren Konto nicht mehr bestätigt ist, wenn sie an der Reihe sind, werden übergangen. Wird dein Konto gelöscht, bleibt deine Teilnahme bestehen und ein Gewinn wird an die Adresse geschickt, mit der du teilgenommen hast.",
+        "noCash": "Der Preis ist ausschließlich ein Geschenkcode. Eine Barauszahlung ist nicht möglich, und ein Umtausch ist ausgeschlossen.",
+        "noLiability": "Fleetyards haftet nicht für den Geschenkcode, seine Gültigkeit oder seine Einlösung und nicht für Probleme mit deinem RSI-Konto.",
+        "noRecourse": "Das Ergebnis der Ziehung ist endgültig. Der Rechtsweg ist ausgeschlossen.",
+        "notAffiliated": "Fleetyards ist eine inoffizielle Fanseite und steht in keiner Verbindung zu Cloud Imperium Games.",
+        "version": "Bedingungen, Version %{version}"
+      },
+      "claim": {
+        "title": "Preis abholen",
+        "pending": "Dein Preis wird abgeholt…",
+        "successTitle": "Preis abgeholt",
+        "success": "Du hast deinen Preis aus „%{raffle}“ abgeholt. Der Geschenkcode ist auf dem Weg in dein Mail-Postfach.",
+        "toRaffle": "Zur Verlosung",
+        "failedTitle": "Der Preis konnte nicht abgeholt werden",
+        "failed": "Etwas ist schiefgelaufen. Bitte öffne den Link erneut."
+      },
+      "meta": "Endet am %{date} · %{count} Teilnehmer",
+      "showImage": "Bild %{index} anzeigen",
+      "howItWorks": {
+        "title": "So funktioniert's",
+        "enter": {
+          "title": "Teilnehmen bis %{date}",
+          "text": "Akzeptiere die Teilnahmebedingungen und nimm teil. Du kannst deine Teilnahme zurückziehen, bis die Verlosung endet."
+        },
+        "draw": {
+          "title": "Die Ziehung",
+          "text": "Nach dem Ende werden alle Teilnehmer in eine zufällige Reihenfolge gezogen. Wer an erster Stelle steht, gewinnt."
+        },
+        "claim": {
+          "title": "Abholen innerhalb von %{days} Tagen",
+          "text": "Der Gewinner erhält eine Mail mit einem Abhol-Link. Ohne Klick innerhalb von %{days} Tagen erhält der Nächste in der Reihe eine eigene Mail."
+        },
+        "code": {
+          "title": "Der Code kommt per Mail",
+          "text": "Ein Klick auf den Link sendet den Geschenkcode per Mail. Er wird auf dieser Website nie angezeigt."
+        }
+      },
+      "entry": {
+        "prize": "Gewinn",
+        "title": "An der Verlosung teilnehmen",
+        "yours": "Deine Teilnahme",
+        "closes": "Endet",
+        "closed": "Beendet",
+        "claimPeriod": "Abholfrist",
+        "days": "%{days} Tage",
+        "entered": "Du bist dabei. Die Ziehung ist nach dem %{date}.",
+        "enteredHint": "Wenn du gewinnst, schicken wir dir einen Abhol-Link. Behalte dein Postfach nach der Ziehung %{days} Tage lang im Blick.",
+        "opensAt": "Beginnt am %{date}."
+      },
+      "slider": {
+        "label": "Bilder-Slider",
+        "previous": "Vorheriges Bild",
+        "next": "Nächstes Bild"
+      },
+      "home": {
+        "view": "Zur Verlosung",
+        "panelTitle": "Verlosung",
+        "entered": "Teilgenommen",
+        "notEntered": "Du nimmst noch nicht teil.",
+        "enter": "Teilnehmen",
+        "pillTag": "Verlosung",
+        "endsIn": {
+          "one": "endet in %{count} Tag",
+          "other": "endet in %{count} Tagen"
+        },
+        "endsToday": "endet heute",
+        "opensIn": {
+          "one": "startet in %{count} Tag",
+          "other": "startet in %{count} Tagen"
+        },
+        "opensToday": "startet heute"
+      },
+      "mine": {
+        "raffle": "Verlosung",
+        "enteredAt": "Teilgenommen",
+        "outcome": "Ergebnis",
+        "claimBy": "Prüfe deine Mails und hole bis %{date} ab",
+        "outcomes": {
+          "open": "Offen",
+          "waiting": "Wartet auf die Auslosung",
+          "won": "Gewonnen",
+          "claimed": "Abgeholt",
+          "forfeited": "Nicht rechtzeitig abgeholt",
+          "not_won": "Nicht gewonnen"
+        }
+      }
+    }
+  }
+}

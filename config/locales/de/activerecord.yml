@@ -2,6 +2,16 @@
 de:
   activerecord:
     attributes:
+      raffle:
+        title: "Titel"
+        description: "Beschreibung"
+        code: "Geschenkcode"
+        starts_at: "Beginn"
+        run_days: "Laufzeit (Tage)"
+        claim_period_days: "Frist zum Einlösen (Tage)"
+      raffle_entry:
+        conditions_accepted: "Teilnahmebedingungen"
+        raffle: "Verlosung"
       fleet_squadron_request:
         fleet_membership: "Mitglied"
         fleet_squadron: "Staffel"
@@ -274,6 +284,9 @@ de:
           class8: Class 8
     errors:
       messages:
+        frozen_after_draw: "kann nach der Auslosung nicht mehr geändert werden"
+        not_open: "nimmt keine Teilnahmen an"
+        drawn: "Eine ausgeloste Verlosung kann nicht gelöscht werden"
         contract_item_already_asked_for: "steht mit derselben Kategorie und Einheit bereits auf diesem Auftrag"
         contract_item_needs_reward_rate: "brauchen auf jeder Zeile eine Belohnung pro SCU oder Stück"
         entry_goods_in_transit: "kann nicht gelöscht werden, solange der zugehörige Transfer noch unbeantwortet ist"

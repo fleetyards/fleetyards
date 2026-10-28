@@ -22,7 +22,7 @@ class AdminUser < ApplicationRecord
       blueprints components equipment commodities item_prices missions locations
       manufacturers vehicles images
     ],
-    community: %w[fleets users supporters],
+    community: %w[fleets users supporters raffles],
     system: %w[admins announcements game_events homepage oauth_applications maintenance imports features workers pghero rsi-api-status stats]
   }.freeze
 

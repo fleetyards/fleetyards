@@ -20,6 +20,7 @@ import CartNav from "./CartNav/index.vue";
 import CatalogueNav from "@/frontend/components/Navigation/CatalogueNav/index.vue";
 import FleetsNav from "./FleetsNav/index.vue";
 import ToolsNav from "./ToolsNav/index.vue";
+import RafflesNav from "./RafflesNav/index.vue";
 import { usePendingFriendRequests } from "@/frontend/composables/usePendingFriendRequests";
 import { useInstallPrompt } from "@/frontend/composables/useInstallPrompt";
 import { useSessionStore } from "@/frontend/stores/session";
@@ -192,6 +193,7 @@ const settingsActive = computed(() => {
           :label="t('nav.images')"
           icon="fa-duotone fa-images"
         />
+        <RafflesNav />
         <ToolsNav />
         <NavItem
           :to="{ name: 'stats' }"

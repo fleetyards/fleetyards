@@ -2,6 +2,16 @@
 fr:
   activerecord:
     attributes:
+      raffle:
+        title: "Titre"
+        description: "Description"
+        code: "Code cadeau"
+        starts_at: "Début"
+        run_days: "Durée (jours)"
+        claim_period_days: "Délai pour réclamer (jours)"
+      raffle_entry:
+        conditions_accepted: "Conditions de participation"
+        raffle: "Tirage au sort"
       fleet_squadron_request:
         fleet_membership: "Membre"
         fleet_squadron: "Escadron"
@@ -274,6 +284,9 @@ fr:
           class8: Class 8
     errors:
       messages:
+        frozen_after_draw: "ne peut plus être modifié après le tirage"
+        not_open: "n'accepte pas de participations"
+        drawn: "Un tirage au sort effectué ne peut pas être supprimé"
         contract_item_already_asked_for: "figure déjà sur ce contrat avec la même catégorie et la même unité"
         contract_item_needs_reward_rate: "ont besoin d'une récompense par SCU ou unité sur chaque ligne"
         entry_goods_in_transit: "ne peut pas être supprimé tant que le transfert auquel il appartient est en attente de réponse"
