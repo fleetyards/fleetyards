@@ -18,12 +18,14 @@ import {
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
 import { afterNextPaint } from "@/shared/utils/Transitions";
+import { sanitizeHtml } from "@/shared/utils/SafeHtml";
 
 const title = ref<string>();
 
 const titleId = useId();
 const textId = useId();
 const text = ref<string>();
+const safeText = computed(() => (text.value ? sanitizeHtml(text.value) : ""));
 const confirmText = ref<string>();
 const cancelText = ref<string>();
 const onConfirm = ref<() => void | Promise<unknown>>();
@@ -155,7 +157,7 @@ const handleCancel = async () => {
             {{ title }}
           </h2>
           <!-- eslint-disable-next-line vue/no-v-html -->
-          <div :id="textId" class="app-confirm__text" v-html="text" />
+          <div :id="textId" class="app-confirm__text" v-html="safeText" />
         </PanelBody>
       </Panel>
       <!-- Joined to the panel rather than docked apart like a modal's footer: a

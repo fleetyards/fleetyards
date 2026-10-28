@@ -7,14 +7,17 @@ export default {
 <script lang="ts" setup>
 import { appNotificationDismissKey } from "@/shared/components/AppNotifications/types";
 import { useI18n } from "@/shared/composables/useI18n";
+import { sanitizeHtml } from "@/shared/utils/SafeHtml";
 
 type Props = {
   text?: string;
 };
 
-withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Props>(), {
   text: undefined,
 });
+
+const safeText = computed(() => (props.text ? sanitizeHtml(props.text) : ""));
 
 const { t } = useI18n();
 
@@ -29,7 +32,7 @@ const onClose = () => {
   <div class="app-notifications__message-body">
     <div class="app-notifications__message-body__inner">
       <!-- eslint-disable-next-line vue/no-v-html -->
-      <span v-if="text" v-html="text" />
+      <span v-if="text" v-html="safeText" />
       <slot v-else />
     </div>
 
