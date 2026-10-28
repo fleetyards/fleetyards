@@ -10,7 +10,8 @@ es:
       prize:
         subject: "Tu código de regalo para %{raffle}"
         body: "Este es tu código de regalo del sorteo \"%{raffle}\":"
-        redeem: "Canjéalo en la web de RSI. No lo compartas: cualquiera con el código puede canjearlo."
+        action: "Canjear en la web de RSI"
+        redeem: "No lo compartas: cualquiera con el código puede canjearlo."
     announcement:
       action: "Leer más"
     account:

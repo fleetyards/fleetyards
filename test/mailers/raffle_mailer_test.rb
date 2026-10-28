@@ -28,5 +28,6 @@ class RaffleMailerTest < ActionMailer::TestCase
 
     assert_equal I18n.t(:"mailer.raffle.prize.subject", raffle: "Win a Polaris"), mail.subject
     assert_includes mail.body.encoded, "THE-GIFT-CODE"
+    assert_includes mail.body.encoded, RaffleMailer::REDEEM_URL
   end
 end

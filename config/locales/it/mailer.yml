@@ -10,7 +10,8 @@ it:
       prize:
         subject: "Il tuo codice regalo per %{raffle}"
         body: "Ecco il tuo codice regalo per l'estrazione \"%{raffle}\":"
-        redeem: "Riscattalo sul sito di RSI. Tienilo per te: chiunque abbia il codice può riscattarlo."
+        action: "Riscatta sul sito di RSI"
+        redeem: "Tienilo per te: chiunque abbia il codice può riscattarlo."
     announcement:
       action: "Scopri di più"
     account:

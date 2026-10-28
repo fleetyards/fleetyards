@@ -10,7 +10,8 @@ de:
       prize:
         subject: "Dein Geschenkcode für %{raffle}"
         body: "Hier ist dein Geschenkcode für die Verlosung \"%{raffle}\":"
-        redeem: "Löse ihn auf der RSI-Website ein. Behalte ihn für dich: Jeder mit dem Code kann ihn einlösen."
+        action: "Auf der RSI-Website einlösen"
+        redeem: "Behalte ihn für dich: Jeder mit dem Code kann ihn einlösen."
     announcement:
       action: "Mehr erfahren"
     account:

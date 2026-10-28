@@ -10,7 +10,8 @@ en:
       prize:
         subject: "Your gift code for %{raffle}"
         body: "Here is your gift code for the raffle \"%{raffle}\":"
-        redeem: "Redeem it on the RSI website. Keep it to yourself: anyone with the code can redeem it."
+        action: "Redeem on the RSI website"
+        redeem: "Keep it to yourself: anyone with the code can redeem it."
     announcement:
       action: "Read more"
     account:
