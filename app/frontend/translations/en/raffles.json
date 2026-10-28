@@ -234,7 +234,7 @@
         "claimMail": "The winner gets a mail with a link to claim the prize. The prize is never shown on this website.",
         "claimDeadline": "The winner has %{days} days to click that link. Without a click in time, the win passes to the next in line, who gets their own mail.",
         "prizeMail": "Clicking the link sends the gift code by mail to the address of the winning account.",
-        "deletedAccount": "Entrants whose account is deleted or no longer confirmed when their turn comes are passed over.",
+        "deletedAccount": "Entrants whose account is no longer confirmed when their turn comes are passed over. If your account is deleted, your entry stays and a win is mailed to the address you entered with.",
         "noCash": "The prize is a gift code only. There is no cash alternative and it cannot be exchanged.",
         "noLiability": "Fleetyards is not liable for the gift code, its validity or its redemption, or for any issue with your RSI account.",
         "noRecourse": "The result of the draw is final. Legal recourse is excluded.",

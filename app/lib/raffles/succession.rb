@@ -4,8 +4,9 @@ module Raffles
   # Hands the win to the next entrant in draw order once the current winner's
   # claim deadline has passed, or to the first one right after the draw.
   #
-  # An entrant whose account is gone or no longer confirmed by the time their
-  # turn comes is passed over, as the participation conditions say.
+  # An entrant whose account is no longer confirmed by the time their turn
+  # comes is passed over. One whose account is gone still wins: the claim mail
+  # goes to the address captured at entry, as the participation conditions say.
   class Succession
     def initialize(raffle, now: Time.current)
       @raffle = raffle
@@ -47,7 +48,7 @@ module Raffles
         .order(:draw_position)
 
       candidates.each do |entry|
-        unless entry.user&.confirmed?
+        unless eligible?(entry)
           entry.update!(forfeited_at: @now)
           next
         end
@@ -57,6 +58,10 @@ module Raffles
       end
 
       nil
+    end
+
+    private def eligible?(entry)
+      entry.user ? entry.user.confirmed? : entry.email.present?
     end
 
     # The claim mail goes out whether or not the account still exists: the

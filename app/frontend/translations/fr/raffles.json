@@ -234,7 +234,7 @@
         "claimMail": "Le gagnant reçoit un e-mail avec un lien pour réclamer le prix. Le prix n'est jamais affiché sur ce site.",
         "claimDeadline": "Le gagnant dispose de %{days} jours pour cliquer sur ce lien. Sans clic dans les temps, le gain passe au suivant dans l'ordre, qui reçoit son propre e-mail.",
         "prizeMail": "Un clic sur le lien envoie le code cadeau par e-mail à l'adresse du compte gagnant.",
-        "deletedAccount": "Les participants dont le compte est supprimé ou n'est plus confirmé au moment de leur tour sont passés.",
+        "deletedAccount": "Les participants dont le compte n'est plus confirmé au moment de leur tour sont passés. Si votre compte est supprimé, votre participation est conservée et un gain est envoyé par e-mail à l'adresse avec laquelle vous avez participé.",
         "noCash": "Le lot est uniquement un code cadeau. Il n'existe aucune contrepartie en espèces et il ne peut pas être échangé.",
         "noLiability": "Fleetyards n'est pas responsable du code cadeau, de sa validité ou de son utilisation, ni d'aucun problème lié à votre compte RSI.",
         "noRecourse": "Le résultat du tirage est définitif. Tout recours juridique est exclu.",

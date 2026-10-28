@@ -41,8 +41,8 @@ module Raffles
       assert_equal [winner.id], Raffles::ClaimMailJob.jobs.last["args"]
     end
 
-    test "passes over entrants whose account is gone or unconfirmed" do
-      @second.update_columns(user_id: nil, username: "gone")
+    test "passes over entrants whose account is no longer confirmed" do
+      @second.user.update_columns(confirmed_at: nil)
       @third.user.update_columns(confirmed_at: nil)
 
       assert_nil Succession.new(@raffle).call
@@ -51,6 +51,16 @@ module Raffles
       assert_nil @second.won_at
       assert @third.reload.forfeited_at.present?
       assert @raffle.reload.concluded?
+    end
+
+    test "promotes an entrant whose account is gone and mails the entry address" do
+      @second.update_columns(user_id: nil, username: "gone")
+
+      winner = Succession.new(@raffle).call
+
+      assert_equal @second, winner
+      assert_equal @second.email, winner.recipient_email
+      assert_equal [winner.id], Raffles::ClaimMailJob.jobs.last["args"]
     end
 
     test "the job advances every raffle with an expired claim" do

@@ -234,7 +234,7 @@
         "claimMail": "El ganador recibe un correo con un enlace para reclamar el premio. El premio nunca se muestra en este sitio web.",
         "claimDeadline": "El ganador tiene %{days} días para hacer clic en ese enlace. Si no hace clic a tiempo, el premio pasa al siguiente de la lista, que recibe su propio correo.",
         "prizeMail": "Al hacer clic en el enlace, el código de regalo se envía por correo a la dirección de la cuenta ganadora.",
-        "deletedAccount": "Se omite a los participantes cuya cuenta esté eliminada o ya no esté confirmada cuando les llegue el turno.",
+        "deletedAccount": "Se omite a los participantes cuya cuenta ya no esté confirmada cuando les llegue el turno. Si eliminas tu cuenta, tu participación se mantiene y un premio se envía por correo a la dirección con la que participaste.",
         "noCash": "El premio es únicamente un código de regalo. No existe alternativa en efectivo y no se puede canjear por otra cosa.",
         "noLiability": "Fleetyards no se hace responsable del código de regalo, de su validez ni de su canje, ni de ningún problema con tu cuenta de RSI.",
         "noRecourse": "El resultado del sorteo es definitivo. Se excluye la vía judicial.",
