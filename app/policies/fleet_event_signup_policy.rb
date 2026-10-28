@@ -56,6 +56,6 @@ class FleetEventSignupPolicy < FleetBasePolicy
 
     return unless record_fleet_id
 
-    user&.fleet_memberships&.find_by(fleet_id: record_fleet_id)
+    user&.fleet_memberships&.kept&.find_by(fleet_id: record_fleet_id)
   end
 end

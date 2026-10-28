@@ -277,7 +277,7 @@ module Api
       private def set_membership_for_slot
         return if @slot.nil?
 
-        @membership = current_resource_owner&.fleet_memberships&.find_by(
+        @membership = current_resource_owner&.fleet_memberships&.kept&.find_by(
           fleet_id: @slot.fleet_event.fleet_id,
           aasm_state: "accepted"
         )
@@ -286,7 +286,7 @@ module Api
       private def set_membership_for_event
         return if @event.nil?
 
-        @membership = current_resource_owner&.fleet_memberships&.find_by(
+        @membership = current_resource_owner&.fleet_memberships&.kept&.find_by(
           fleet_id: @event.fleet_id,
           aasm_state: "accepted"
         )

@@ -149,18 +149,25 @@ class FleetEvent < ApplicationRecord
     archived_at.present?
   end
 
+  # Event roles and authorship only count while the user is still in the
+  # fleet: removal discards the membership but leaves both rows behind.
   def event_admin_role_for(user)
-    return nil unless user
-    fleet_event_admins.find_by(user_id: user.id)&.role
+    return nil unless current_member?(user)
+
+    admin_role_for(user)
   end
 
   def event_admin?(user)
-    event_admin_role_for(user) == "admin" || created_by_id == user&.id
+    return false unless current_member?(user)
+
+    admin_role_for(user) == "admin" || created_by_id == user.id
   end
 
   def event_moderator_or_admin?(user)
-    %w[admin moderator].include?(event_admin_role_for(user)) ||
-      created_by_id == user&.id
+    return false unless current_member?(user)
+
+    %w[admin moderator].include?(admin_role_for(user)) ||
+      created_by_id == user.id
   end
 
   def archive!
@@ -589,5 +596,13 @@ class FleetEvent < ApplicationRecord
   # event kept to squadrons or to officers goes to their own channels instead.
   def discord_guild_wide?
     !squadron_restricted? && !officers_only?
+  end
+
+  private def admin_role_for(user)
+    fleet_event_admins.find_by(user_id: user.id)&.role
+  end
+
+  private def current_member?(user)
+    user.present? && fleet.fleet_memberships.kept.accepted.exists?(user_id: user.id)
   end
 end

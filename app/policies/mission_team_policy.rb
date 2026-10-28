@@ -14,7 +14,7 @@ class MissionTeamPolicy < FleetBasePolicy
   end
 
   private def can_update_mission?
-    membership = user&.fleet_memberships&.find_by(fleet_id: mission_fleet_id)
+    membership = user&.fleet_memberships&.kept&.find_by(fleet_id: mission_fleet_id)
     return false unless membership&.accepted?
 
     membership.has_access?(["fleet:manage", "fleet:missions:manage", "fleet:missions:update"])

@@ -34,6 +34,6 @@ class FleetEventAdminPolicy < FleetBasePolicy
     target = target_event
     return unless target
 
-    user&.fleet_memberships&.find_by(fleet_id: target.fleet_id)
+    user&.fleet_memberships&.kept&.find_by(fleet_id: target.fleet_id)
   end
 end

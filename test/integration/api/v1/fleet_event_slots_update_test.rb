@@ -112,4 +112,17 @@ class Api::V1::FleetEventSlotsUpdateTest < ActionDispatch::IntegrationTest
   test "DELETE /fleet-event-slots/:id returns 401 when not signed in" do
     assert_api_response :delete, 401, path_params: {id: @slot.id}
   end
+
+  test "PATCH /fleet-event-slots/:id refuses an event admin removed from the fleet" do
+    former = create(:user)
+    membership = create(:fleet_membership, fleet: @fleet, user: former, fleet_role: @fleet.fleet_roles.ranked.last, aasm_state: :accepted)
+    @fleet_event.fleet_event_admins.create!(user: former, role: "admin")
+    membership.discard
+    sign_in former
+
+    patch "/api/v1/fleet-event-slots/#{@slot.id}", params: {title: "changed"}, as: :json
+
+    assert_response :forbidden
+    assert_not_equal "changed", @slot.reload.title
+  end
 end

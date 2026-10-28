@@ -70,4 +70,16 @@ class Api::V1::MissionSlotsUpdateTest < ActionDispatch::IntegrationTest
       path_params: {id: @slot.id},
       body: {title: "Co-Pilot"}
   end
+
+  test "PATCH /mission-slots/:id refuses an officer removed from the fleet" do
+    officer = create(:user)
+    membership = create(:fleet_membership, fleet: @fleet, user: officer, fleet_role: @fleet.fleet_roles.ranked.second, aasm_state: :accepted)
+    membership.discard
+    sign_in officer
+
+    patch "/api/v1/mission-slots/#{@slot.id}", params: {title: "changed"}, as: :json
+
+    assert_response :forbidden
+    assert_not_equal "changed", @slot.reload.title
+  end
 end

@@ -23,7 +23,7 @@ class FleetEventShipPolicy < FleetBasePolicy
 
     return true if target_event.event_admin?(user)
 
-    membership = user&.fleet_memberships&.find_by(fleet_id: target_event.fleet_id)
+    membership = user&.fleet_memberships&.kept&.find_by(fleet_id: target_event.fleet_id)
     return false unless membership&.accepted?
 
     membership.has_access?(["fleet:manage", "fleet:events:manage", "fleet:events:update"])
