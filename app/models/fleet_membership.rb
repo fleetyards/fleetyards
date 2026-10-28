@@ -631,8 +631,11 @@ class FleetMembership < ApplicationRecord
   # declined rows share the table, so only accepted members who could read the
   # page the payload refreshes are sent it.
   private def broadcast_to_fleet(payload, roster: true, vehicles: true)
-    roster_roles = roster ? fleet_role_ids_with(:read_members) : []
-    vehicle_roles = vehicles ? fleet_role_ids_with(:read_vehicles) : []
+    # Queried rather than read through `fleet.fleet_roles`, which would load
+    # the association on a fleet object other code goes on to pluck from.
+    roles = FleetRole.where(fleet_id:).to_a
+    roster_roles = roster ? role_ids_with(roles, :read_members) : []
+    vehicle_roles = vehicles ? role_ids_with(roles, :read_vehicles) : []
     return if roster_roles.empty? && vehicle_roles.empty?
 
     role_by_user = fleet.fleet_memberships.kept.accepted
@@ -645,8 +648,8 @@ class FleetMembership < ApplicationRecord
     end
   end
 
-  private def fleet_role_ids_with(capability)
-    fleet.fleet_roles.select { |role| role.has_access?(CAPABILITY_PRIVILEGES.fetch(capability)) }.map(&:id)
+  private def role_ids_with(roles, capability)
+    roles.select { |role| role.has_access?(CAPABILITY_PRIVILEGES.fetch(capability)) }.map(&:id)
   end
 
   # The ordinary squadron this member already holds, if any. A member holds at
