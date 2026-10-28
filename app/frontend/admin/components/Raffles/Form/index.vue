@@ -13,7 +13,9 @@ import FormDateTime from "@/shared/components/base/FormDateTime/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
 import ModelSelect from "@/admin/components/base/ModelSelect/index.vue";
+import RaffleGallery from "@/admin/components/Raffles/Gallery/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
 type Props = {
   formId: string;
@@ -33,6 +35,8 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 
+const { displayAlert } = useAppNotifications();
+
 const drawn = computed(() => !!props.raffle?.drawnAt);
 
 type FormValues = {
@@ -42,26 +46,26 @@ type FormValues = {
   // Never filled from the server: the API only says whether a code is set.
   code?: string;
   startsAt: string | null;
-  endsAt: string | null;
+  runDays: number;
   claimPeriodDays: number;
   published: boolean;
 };
 
-const { defineField, handleSubmit, meta } = useForm<FormValues>({
+const { defineField, handleSubmit, meta, errors } = useForm<FormValues>({
   initialValues: {
     title: props.raffle?.title ?? "",
     description: props.raffle?.description,
     modelId: props.raffle?.prize?.id,
     code: undefined,
     startsAt: props.raffle?.startsAt ?? null,
-    endsAt: props.raffle?.endsAt ?? null,
-    claimPeriodDays: props.raffle?.claimPeriodDays ?? 14,
+    runDays: props.raffle?.runDays ?? 14,
+    claimPeriodDays: props.raffle?.claimPeriodDays ?? 3,
     published: props.raffle?.published ?? false,
   },
   validationSchema: {
     title: "required",
     startsAt: "required",
-    endsAt: "required",
+    runDays: "required|min_value:1",
     claimPeriodDays: "required|min_value:1",
   },
 });
@@ -71,9 +75,12 @@ const [description, descriptionProps] = defineField("description");
 const [modelId, modelIdProps] = defineField("modelId");
 const [code, codeProps] = defineField("code");
 const [startsAt, startsAtProps] = defineField("startsAt");
-const [endsAt, endsAtProps] = defineField("endsAt");
+const [runDays, runDaysProps] = defineField("runDays");
 const [claimPeriodDays, claimPeriodDaysProps] = defineField("claimPeriodDays");
 const [published, publishedProps] = defineField("published");
+
+// Undefined until the gallery is touched, so an untouched gallery is not sent.
+const imageIds = ref<string[]>();
 
 const codeInfo = computed(() => {
   if (drawn.value) return t("labels.raffle.codeFrozen");
@@ -89,6 +96,12 @@ const codeInfo = computed(() => {
 const toIso = (value: string | null) =>
   value ? new Date(value).toISOString() : "";
 
+// FormDateTime shows only the error it is handed, so a missing date would
+// otherwise cancel the submit without a word on screen.
+const onInvalidSubmit = () => {
+  displayAlert({ text: t("messages.raffle.invalid") });
+};
+
 const onSubmit = handleSubmit((values) => {
   emit("submit", {
     title: values.title,
@@ -96,11 +109,12 @@ const onSubmit = handleSubmit((values) => {
     modelId: values.modelId || null,
     code: values.code || undefined,
     startsAt: toIso(values.startsAt),
-    endsAt: toIso(values.endsAt),
+    runDays: Number(values.runDays),
     claimPeriodDays: Number(values.claimPeriodDays),
+    images: imageIds.value,
     published: values.published,
   });
-});
+}, onInvalidSubmit);
 </script>
 
 <template>
@@ -136,16 +150,18 @@ const onSubmit = handleSubmit((values) => {
           v-bind="startsAtProps"
           translation-key="raffle.startsAt"
           name="startsAt"
+          :error-message="errors.startsAt"
           :clearable="false"
           :disabled="drawn"
         />
-        <FormDateTime
-          v-model="endsAt"
-          v-bind="endsAtProps"
-          translation-key="raffle.endsAt"
-          name="endsAt"
-          :clearable="false"
+        <FormInput
+          v-model="runDays"
+          v-bind="runDaysProps"
+          translation-key="raffle.runDays"
+          name="runDays"
+          type="number"
           :disabled="drawn"
+          :info="t('labels.raffle.runDaysInfo')"
         />
         <FormInput
           v-model="claimPeriodDays"
@@ -158,6 +174,10 @@ const onSubmit = handleSubmit((values) => {
         />
       </div>
       <div class="col-12 col-md-6">
+        <RaffleGallery
+          :images="raffle?.images"
+          @update:signed-ids="imageIds = $event"
+        />
         <FormTextarea
           v-model="description"
           v-bind="descriptionProps"

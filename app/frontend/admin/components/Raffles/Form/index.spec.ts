@@ -35,12 +35,15 @@ const raffle: Raffle = {
   title: "Win a Polaris",
   codeSet: true,
   maskedCode: "********CDEF",
+  images: [],
   startsAt: "2026-11-01T18:00:00.000Z",
+  runDays: 7,
   endsAt: "2026-11-08T18:00:00.000Z",
-  claimPeriodDays: 14,
+  claimPeriodDays: 3,
   published: true,
   status: "upcoming",
   entriesCount: 0,
+  socialPosts: { start: "", lastDay: "" },
   createdAt: "2026-10-01T00:00:00Z",
   updatedAt: "2026-10-01T00:00:00Z",
 };
@@ -66,7 +69,8 @@ describe("RaffleForm", () => {
     const payload = wrapper.emitted("submit")?.[0]?.[0];
     expect(payload).toMatchObject({
       title: "Win a Polaris",
-      claimPeriodDays: 14,
+      claimPeriodDays: 3,
+      runDays: 7,
       published: true,
     });
     expect(payload).toHaveProperty("code", undefined);

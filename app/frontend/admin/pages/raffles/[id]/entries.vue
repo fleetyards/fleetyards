@@ -11,7 +11,7 @@ import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Alert from "@/shared/components/base/Alert/index.vue";
 import { AlertVariantsEnum } from "@/shared/components/base/Alert/types";
-import FormInput from "@/shared/components/base/FormInput/index.vue";
+import AnnouncementManualPosts from "@/admin/components/Announcements/ManualPosts/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import BaseTable from "@/shared/components/base/Table/index.vue";
 import { type BaseTableCol } from "@/shared/components/base/Table/types";
@@ -23,8 +23,6 @@ import {
   RaffleStatusEnum,
   useRaffleEntries,
   useDrawRaffle,
-  useSendRaffleEntryVerification,
-  useClaimRaffleEntry,
   getRaffleQueryKey,
   getRafflesQueryKey,
   getRaffleEntriesQueryKey,
@@ -67,13 +65,6 @@ const invalidate = () =>
   ]);
 
 const drawMutation = useDrawRaffle({ mutation: { onSettled: invalidate } });
-const sendVerificationMutation = useSendRaffleEntryVerification({
-  mutation: { onSettled: invalidate },
-});
-const claimMutation = useClaimRaffleEntry({
-  mutation: { onSettled: invalidate },
-});
-
 const winner = computed(() => props.raffle.currentWinner);
 
 const draw = () => {
@@ -96,37 +87,6 @@ const draw = () => {
   });
 };
 
-const sendVerification = async (entry: RaffleEntry) => {
-  await sendVerificationMutation
-    .mutateAsync({ raffleId: props.raffle.id, id: entry.id })
-    .then((response) => {
-      displaySuccess({ text: response.message });
-    })
-    .catch((error) => {
-      displayAlert({ text: error.response?.data?.message });
-    });
-};
-
-const verificationCode = ref("");
-const handedOverCode = ref<string>();
-
-const claim = async (entry: RaffleEntry) => {
-  await claimMutation
-    .mutateAsync({
-      raffleId: props.raffle.id,
-      id: entry.id,
-      data: { verificationCode: verificationCode.value },
-    })
-    .then((response) => {
-      handedOverCode.value = response.code;
-      verificationCode.value = "";
-      displaySuccess({ text: t("messages.raffleEntry.claimed") });
-    })
-    .catch((error) => {
-      displayAlert({ text: error.response?.data?.message });
-    });
-};
-
 const columns: BaseTableCol<RaffleEntry>[] = [
   { name: "drawPosition", label: t("labels.raffleEntry.drawPosition") },
   { name: "username", label: t("labels.raffleEntry.username") },
@@ -136,7 +96,16 @@ const columns: BaseTableCol<RaffleEntry>[] = [
     mobile: false,
   },
   { name: "state", label: t("labels.raffleEntry.state") },
+  { name: "mail", label: t("labels.raffleEntry.mail"), mobile: false },
 ];
+
+const mailState = (status?: string) =>
+  status ? t(`labels.raffleEntry.mailStatuses.${status}`) : "—";
+
+const socialPosts = computed(() => [
+  props.raffle.socialPosts.start,
+  props.raffle.socialPosts.lastDay,
+]);
 
 const entryState = (entry: RaffleEntry) => {
   if (entry.claimedAt) return t("labels.raffleEntry.states.claimed");
@@ -196,70 +165,40 @@ const entryState = (entry: RaffleEntry) => {
   </Alert>
 
   <Alert
-    v-if="handedOverCode"
-    :title="t('labels.raffle.handOverCode')"
-    :variant="AlertVariantsEnum.SUCCESS"
-    dismissible
-    @dismiss="handedOverCode = undefined"
-  >
-    <code class="raffle-gift-code">{{ handedOverCode }}</code>
-  </Alert>
-
-  <Alert
-    v-if="winner && !winner.claimedAt"
+    v-if="winner"
     :title="t('labels.raffle.currentWinner', { username: winner.username })"
     :variant="
-      winner.accountDeleted ? AlertVariantsEnum.WARNING : AlertVariantsEnum.INFO
+      winner.prizeMailStatus === 'bounced' ||
+      winner.claimMailStatus === 'bounced'
+        ? AlertVariantsEnum.WARNING
+        : AlertVariantsEnum.INFO
     "
   >
-    <p>
+    <p v-if="winner.claimedAt">
       {{
-        t("labels.raffle.claimDeadline", {
-          date: l(winner.claimDeadlineAt as string, "datetime.formats.short"),
+        t("labels.raffle.claimedInfo", {
+          date: l(winner.claimedAt, "datetime.formats.short"),
+          mail: mailState(winner.prizeMailStatus),
         })
       }}
     </p>
-    <p v-if="winner.accountDeleted">
+    <p v-else>
       {{
-        t("labels.raffle.accountDeletedInfo", {
+        t("labels.raffle.claimPending", {
+          date: l(winner.claimDeadlineAt as string, "datetime.formats.short"),
+          mail: mailState(winner.claimMailStatus),
           email: winner.maskedEmail || "—",
         })
       }}
     </p>
-    <p v-else>{{ t("labels.raffle.selfClaimInfo") }}</p>
-
-    <template
-      v-if="winner.claimable && winner.accountDeleted && winner.maskedEmail"
-    >
-      <Btn
-        :loading="sendVerificationMutation.isPending.value"
-        @click="sendVerification(winner)"
-      >
-        <i class="fa-duotone fa-envelope" />
-        {{ t("actions.raffle.sendVerification") }}
-      </Btn>
-      <form
-        v-if="winner.verificationSentAt"
-        class="raffle-verification"
-        @submit.prevent="claim(winner)"
-      >
-        <FormInput
-          v-model="verificationCode"
-          name="verificationCode"
-          translation-key="raffleEntry.verificationCode"
-          autocomplete="one-time-code"
-        />
-        <Btn
-          type="submit"
-          :disabled="verificationCode.length < 6"
-          :loading="claimMutation.isPending.value"
-        >
-          <i class="fa-duotone fa-gift" />
-          {{ t("actions.raffle.handOver") }}
-        </Btn>
-      </form>
-    </template>
   </Alert>
+
+  <section class="raffle-social-posts">
+    <h2 class="raffle-social-posts__title">
+      {{ t("labels.raffle.socialPosts") }}
+    </h2>
+    <AnnouncementManualPosts :posts="socialPosts" />
+  </section>
 
   <FilteredList
     name="admin-raffle-entries"
@@ -293,6 +232,16 @@ const entryState = (entry: RaffleEntry) => {
         <template #col-state="{ record }">
           {{ entryState(record) }}
         </template>
+        <template #col-mail="{ record }">
+          <span v-if="record.claimMailStatus">
+            {{ t("labels.raffleEntry.claimMail") }}:
+            {{ mailState(record.claimMailStatus) }}
+          </span>
+          <span v-if="record.prizeMailStatus">
+            · {{ t("labels.raffleEntry.prizeMail") }}:
+            {{ mailState(record.prizeMailStatus) }}
+          </span>
+        </template>
       </BaseTable>
     </template>
     <template #pagination-bottom>
@@ -306,16 +255,11 @@ const entryState = (entry: RaffleEntry) => {
 </template>
 
 <style lang="scss" scoped>
-.raffle-gift-code {
-  font-size: 1.25rem;
-  letter-spacing: 0.1em;
-  user-select: all;
+.raffle-social-posts {
+  margin-bottom: 24px;
 }
 
-.raffle-verification {
-  display: flex;
-  gap: 8px;
-  align-items: flex-end;
-  margin-top: 12px;
+.raffle-social-posts__title {
+  font-size: 1.1rem;
 }
 </style>
