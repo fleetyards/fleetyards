@@ -105,6 +105,14 @@ const title = computed(() => {
     </PanelHeading>
     <PanelBody>
       <div class="metrics-card__rows">
+        <div v-if="raffle.prize" class="metrics-card__row">
+          <div class="metrics-card__row__label">
+            {{ t("raffles.entry.prize") }}
+          </div>
+          <div class="metrics-card__row__value" data-test="raffle-prize">
+            {{ raffle.prize }}
+          </div>
+        </div>
         <div class="metrics-card__row">
           <div class="metrics-card__row__label">
             {{ t(isOpen ? "raffles.entry.closes" : "raffles.entry.closed") }}

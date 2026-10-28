@@ -39,6 +39,8 @@
     "labels": {
       "raffle": {
         "title": "Title",
+        "prize": "Prize",
+        "prizeInfo": "What the winner gets, as shown next to the raffle. Required to publish.",
         "description": "Description",
         "code": "Gift code",
         "codeInfo": "The code the winner receives. It is stored encrypted and never shown in full again.",
@@ -116,7 +118,8 @@
         "description": "What can be won and how",
         "code": "XXXX-XXXX-XXXX",
         "claimPeriodDays": "3",
-        "runDays": "14"
+        "runDays": "14",
+        "prize": "Anvil Polaris game package"
       }
     },
     "messages": {
@@ -242,6 +245,7 @@
         }
       },
       "entry": {
+        "prize": "Prize",
         "title": "Enter the raffle",
         "yours": "Your entry",
         "closes": "Closes",

@@ -31,6 +31,13 @@ class RaffleTest < ActiveSupport::TestCase
     assert_equal running, Raffle.current
   end
 
+  test "a published raffle needs a prize" do
+    raffle = build(:raffle, prize: nil)
+
+    assert_not raffle.valid?
+    assert raffle.errors.added?(:prize, :blank)
+  end
+
   test "a published raffle needs a code" do
     raffle = build(:raffle, code: nil)
 

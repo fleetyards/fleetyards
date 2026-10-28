@@ -12,6 +12,7 @@ module Admin
             properties: {
               title: {type: :string},
               description: {type: :string},
+              prize: {type: :string},
               # Write-only: left out, the stored code stays as it is.
               code: {type: :string},
               startsAt: {type: :string, format: "date-time"},

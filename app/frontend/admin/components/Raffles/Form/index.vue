@@ -40,6 +40,7 @@ const drawn = computed(() => !!props.raffle?.drawnAt);
 
 type FormValues = {
   title: string;
+  prize?: string;
   description?: string;
   // Never filled from the server: the API only says whether a code is set.
   code?: string;
@@ -52,6 +53,7 @@ type FormValues = {
 const { defineField, handleSubmit, meta, errors } = useForm<FormValues>({
   initialValues: {
     title: props.raffle?.title ?? "",
+    prize: props.raffle?.prize,
     description: props.raffle?.description,
     code: undefined,
     startsAt: props.raffle?.startsAt ?? null,
@@ -68,6 +70,7 @@ const { defineField, handleSubmit, meta, errors } = useForm<FormValues>({
 });
 
 const [title, titleProps] = defineField("title");
+const [prize, prizeProps] = defineField("prize");
 const [description, descriptionProps] = defineField("description");
 const [code, codeProps] = defineField("code");
 const [startsAt, startsAtProps] = defineField("startsAt");
@@ -101,6 +104,7 @@ const onInvalidSubmit = () => {
 const onSubmit = handleSubmit((values) => {
   emit("submit", {
     title: values.title,
+    prize: values.prize || undefined,
     description: values.description || undefined,
     code: values.code || undefined,
     startsAt: toIso(values.startsAt),
@@ -121,6 +125,13 @@ const onSubmit = handleSubmit((values) => {
           v-bind="titleProps"
           translation-key="raffle.title"
           name="title"
+        />
+        <FormInput
+          v-model="prize"
+          v-bind="prizeProps"
+          translation-key="raffle.prize"
+          name="prize"
+          :info="t('labels.raffle.prizeInfo')"
         />
         <FormInput
           v-model="code"

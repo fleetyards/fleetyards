@@ -12,6 +12,7 @@ module Admin
             id: {type: :string, format: :uuid},
             title: {type: :string},
             description: {type: :string},
+            prize: {type: :string},
             # The code itself never leaves the server through this component.
             codeSet: {type: :boolean},
             maskedCode: {type: :string},

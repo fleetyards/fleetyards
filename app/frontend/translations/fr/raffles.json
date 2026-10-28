@@ -39,6 +39,8 @@
     "labels": {
       "raffle": {
         "title": "Titre",
+        "prize": "Lot",
+        "prizeInfo": "Ce que reçoit le gagnant, tel qu'affiché à côté du tirage. Obligatoire pour publier.",
         "description": "Description",
         "code": "Code cadeau",
         "codeInfo": "Le code que reçoit le gagnant. Il est stocké chiffré et n'est plus jamais affiché en entier.",
@@ -116,7 +118,8 @@
         "description": "Ce qu'il y a à gagner et comment",
         "code": "XXXX-XXXX-XXXX",
         "claimPeriodDays": "3",
-        "runDays": "14"
+        "runDays": "14",
+        "prize": "Pack de jeu Anvil Polaris"
       }
     },
     "messages": {
@@ -242,6 +245,7 @@
         }
       },
       "entry": {
+        "prize": "Lot",
         "title": "Participer au tirage au sort",
         "yours": "Votre participation",
         "closes": "Clôture",

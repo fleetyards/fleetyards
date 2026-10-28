@@ -39,6 +39,8 @@
     "labels": {
       "raffle": {
         "title": "标题",
+        "prize": "奖品",
+        "prizeInfo": "中奖者获得的奖品，显示在抽奖旁边。发布时必填。",
         "description": "描述",
         "code": "礼品码",
         "codeInfo": "中奖者获得的礼品码。它会加密存储，且不会再完整显示。",
@@ -116,7 +118,8 @@
         "description": "奖品内容及参与方式",
         "code": "XXXX-XXXX-XXXX",
         "claimPeriodDays": "3",
-        "runDays": "14"
+        "runDays": "14",
+        "prize": "Anvil Polaris 游戏包"
       }
     },
     "messages": {
@@ -242,6 +245,7 @@
         }
       },
       "entry": {
+        "prize": "奖品",
         "title": "参与抽奖",
         "yours": "您的参与",
         "closes": "截止",

@@ -3,6 +3,7 @@
 FactoryBot.define do
   factory :raffle do
     sequence(:title) { |n| "Raffle ##{n}" }
+    prize { "Anvil Polaris game package" }
     code { "GIFT-#{SecureRandom.hex(6).upcase}" }
     starts_at { 1.day.ago }
     run_days { 7 }

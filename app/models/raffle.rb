@@ -38,7 +38,7 @@ class Raffle < ApplicationRecord
   validates :starts_at, presence: true
   validates :run_days, numericality: {only_integer: true, greater_than: 0}
   validates :claim_period_days, numericality: {only_integer: true, greater_than: 0}
-  validates :code, presence: true, if: :published?
+  validates :prize, :code, presence: true, if: :published?
   validates :images, presence: true, if: :published?
   validates :images, no_vector_image: true
   validate :frozen_after_draw, on: :update

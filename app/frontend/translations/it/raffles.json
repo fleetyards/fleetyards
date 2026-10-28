@@ -39,6 +39,8 @@
     "labels": {
       "raffle": {
         "title": "Titolo",
+        "prize": "Premio",
+        "prizeInfo": "Ciò che riceve il vincitore, come mostrato accanto all'estrazione. Obbligatorio per pubblicare.",
         "description": "Descrizione",
         "code": "Codice regalo",
         "codeInfo": "Il codice che riceve il vincitore. Viene salvato cifrato e non viene mai più mostrato per intero.",
@@ -116,7 +118,8 @@
         "description": "Cosa si può vincere e come",
         "code": "XXXX-XXXX-XXXX",
         "claimPeriodDays": "3",
-        "runDays": "14"
+        "runDays": "14",
+        "prize": "Pacchetto di gioco Anvil Polaris"
       }
     },
     "messages": {
@@ -242,6 +245,7 @@
         }
       },
       "entry": {
+        "prize": "Premio",
         "title": "Partecipa all'estrazione",
         "yours": "La tua partecipazione",
         "closes": "Chiude",

@@ -44448,6 +44448,8 @@ components:
           type: string
         description:
           type: string
+        prize:
+          type: string
         images:
           type: array
           items:

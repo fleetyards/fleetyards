@@ -69,7 +69,7 @@ module Admin
 
         private def raffle_params
           @raffle_params ||= params.permit(
-            :title, :description, :code, :starts_at, :run_days, :claim_period_days, :published,
+            :title, :description, :prize, :code, :starts_at, :run_days, :claim_period_days, :published,
             images: []
           )
         end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_27_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_28_130000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2741,6 +2741,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_27_120000) do
     t.datetime "concluded_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "prize"
     t.index ["drawn_by_id"], name: "index_raffles_on_drawn_by_id"
     t.index ["ends_at"], name: "index_raffles_on_ends_at"
     t.index ["published"], name: "index_raffles_on_published"

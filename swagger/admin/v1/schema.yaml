@@ -22183,6 +22183,8 @@ components:
           type: string
         description:
           type: string
+        prize:
+          type: string
         codeSet:
           type: boolean
         maskedCode:
@@ -22321,6 +22323,8 @@ components:
         title:
           type: string
         description:
+          type: string
+        prize:
           type: string
         code:
           type: string
