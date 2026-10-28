@@ -1,31 +1,23 @@
 ---
 de:
   validation_error:
+    raffle_claim:
+      create: "Der Gewinn konnte nicht abgeholt werden."
+      invalid: "Dieser Link zum Abholen ist ungültig."
+      expired: "Dieser Link zum Abholen ist abgelaufen: Die Frist ist vorbei."
+    raffle_entry:
+      create: "Du konntest nicht an der Verlosung teilnehmen."
+      messages:
+        already_entered: "Du nimmst bereits an dieser Verlosung teil."
     raffle:
       create: "Verlosung konnte nicht erstellt werden."
       update: "Verlosung konnte nicht aktualisiert werden."
       destroy: "Verlosung konnte nicht gelöscht werden."
       draw: "Verlosung konnte nicht ausgelost werden."
-      claim: "Der Gewinn konnte nicht eingelöst werden."
-      code: "Der Geschenkcode konnte nicht angezeigt werden."
       messages:
         already_drawn: "Diese Verlosung wurde bereits ausgelost."
         not_closed: "Eine Verlosung kann erst nach ihrem Ende ausgelost werden."
         no_entrants: "Niemand Berechtigtes hat an dieser Verlosung teilgenommen."
-        claim_expired: "Die Frist zum Einlösen ist abgelaufen."
-        not_claimed: "Löse den Gewinn zuerst ein, um den Geschenkcode zu sehen."
-    raffle_entry:
-      create: "Du konntest nicht an der Verlosung teilnehmen."
-      send_verification: "Der Bestätigungscode konnte nicht gesendet werden."
-      claim: "Der Gewinn konnte nicht übergeben werden."
-      messages:
-        already_entered: "Du nimmst bereits an dieser Verlosung teil."
-        verification_not_sent: "Ein Code kann nur für einen aktuellen Gewinner mit gelöschtem Konto gesendet werden, vor Ablauf der Frist und höchstens alle zwei Minuten."
-        not_claimable: "Dieser Teilnehmer kann den Gewinn nicht mehr einlösen."
-        no_code: "Sende zuerst einen Bestätigungscode."
-        expired: "Der Bestätigungscode ist abgelaufen. Sende einen neuen."
-        too_many_attempts: "Zu viele falsche Codes. Sende einen neuen."
-        invalid: "Der Bestätigungscode ist falsch."
     fleet_subscription:
       create: "Abonnement konnte nicht angelegt werden."
       update: "Abonnement konnte nicht aktualisiert werden."

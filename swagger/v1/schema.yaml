@@ -19958,35 +19958,62 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/raffles":
-    get:
-      summary: Raffles
+  "/raffle-claims":
+    post:
+      summary: Claim a raffle prize with the link from the claim mail
       tags:
       - Raffles
-      operationId: raffles
-      parameters:
-      - "$ref": "#/components/parameters/PageParameter"
-      - name: perPage
-        in: query
-        schema:
-          type: string
-          default: 24
-        required: false
+      operationId: claimRafflePrize
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/RaffleClaimInput"
       responses:
-        '200':
-          description: successful
+        '201':
+          description: claimed
           content:
             application/json:
               schema:
-                "$ref": "#/components/schemas/Raffles"
+                "$ref": "#/components/schemas/RaffleClaim"
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
         '403':
           description: forbidden
           content:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
-        '400':
-          "$ref": "#/components/responses/SchemaValidationError"
+  "/raffles/current":
+    get:
+      summary: Current Raffle
+      tags:
+      - Raffles
+      operationId: currentRaffle
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Raffle"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/raffles/{id}":
     parameters:
     - name: id
@@ -20022,100 +20049,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/raffles/{id}/claim":
-    parameters:
-    - name: id
-      in: path
-      description: Raffle id
-      schema:
-        type: string
-        format: uuid
-      required: true
-    post:
-      summary: Claim the raffle's gift code
-      tags:
-      - Raffles
-      operationId: claimRaffle
-      security:
-      - SessionCookie: []
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/RaffleGiftCode"
-        '400':
-          description: bad request
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ValidationError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/raffles/{id}/code":
-    parameters:
-    - name: id
-      in: path
-      description: Raffle id
-      schema:
-        type: string
-        format: uuid
-      required: true
-    get:
-      summary: The claimed gift code
-      tags:
-      - Raffles
-      operationId: raffleCode
-      security:
-      - SessionCookie: []
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/RaffleGiftCode"
-        '400':
-          description: bad request
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ValidationError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
   "/raffles/{id}/entrants":
     parameters:
     - name: id
@@ -42707,6 +42640,8 @@ components:
       - rsi_handle_verification_lost
       - fleet_verification_requested
       - raffle_won
+      - raffle_started
+      - raffle_last_day
       - announcement
       x-enumNames:
       - MODEL_ON_SALE
@@ -42759,6 +42694,8 @@ components:
       - RSI_HANDLE_VERIFICATION_LOST
       - FLEET_VERIFICATION_REQUESTED
       - RAFFLE_WON
+      - RAFFLE_STARTED
+      - RAFFLE_LAST_DAY
       - ANNOUNCEMENT
       title: NotificationTypeEnum
     NotificationUnreadCount:
@@ -44513,12 +44450,18 @@ components:
           type: string
         prize:
           "$ref": "#/components/schemas/RafflePrize"
+        images:
+          type: array
+          items:
+            "$ref": "#/components/schemas/MediaFile"
         startsAt:
           type: string
           format: date-time
         endsAt:
           type: string
           format: date-time
+        runDays:
+          type: integer
         claimPeriodDays:
           type: integer
         status:
@@ -44539,8 +44482,6 @@ components:
             "$ref": "#/components/schemas/RaffleWinner"
         conditionsVersion:
           type: string
-        contacts:
-          "$ref": "#/components/schemas/RaffleContacts"
         entered:
           type: boolean
         won:
@@ -44553,31 +44494,46 @@ components:
       required:
       - id
       - title
+      - images
       - startsAt
       - endsAt
+      - runDays
       - claimPeriodDays
       - status
       - entriesCount
       - forfeitedWinners
       - conditionsVersion
-      - contacts
       - entered
       - won
       - claimable
       - claimed
       title: Raffle
-    RaffleContacts:
+    RaffleClaim:
       type: object
       properties:
-        discordHandle:
+        raffleId:
           type: string
-        discordInvite:
+          format: uuid
+        raffleTitle:
+          type: string
+        claimedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - raffleId
+      - raffleTitle
+      - claimedAt
+      title: RaffleClaim
+    RaffleClaimInput:
+      type: object
+      properties:
+        token:
           type: string
       additionalProperties: false
       required:
-      - discordHandle
-      - discordInvite
-      title: RaffleContacts
+      - token
+      title: RaffleClaimInput
     RaffleEntrant:
       type: object
       properties:
@@ -44614,15 +44570,6 @@ components:
       required:
       - conditionsAccepted
       title: RaffleEntryInput
-    RaffleGiftCode:
-      type: object
-      properties:
-        code:
-          type: string
-      additionalProperties: false
-      required:
-      - code
-      title: RaffleGiftCode
     RafflePrize:
       type: object
       properties:
@@ -44684,20 +44631,6 @@ components:
       - wonAt
       - claimDeadlineAt
       title: RaffleWinner
-    Raffles:
-      type: object
-      properties:
-        meta:
-          "$ref": "#/components/schemas/Meta"
-        items:
-          type: array
-          items:
-            "$ref": "#/components/schemas/Raffle"
-      additionalProperties: false
-      required:
-      - meta
-      - items
-      title: Raffles
     RefuelBoom:
       type: object
       properties:

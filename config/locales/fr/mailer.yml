@@ -2,11 +2,15 @@
 fr:
   mailer:
     raffle:
-      verification_code:
-        subject: "Votre code de vérification pour %{raffle}"
-        body: "Vous nous avez indiqué sur Discord avoir gagné le tirage au sort « %{raffle} ». Pour prouver que cette adresse e-mail vous appartient, envoyez le code ci-dessous à %{discord_handle} sur Discord."
-        expires: "Ce code expire dans 30 minutes."
-        not_you: "Si vous n'avez pas demandé ce code, vous pouvez ignorer cet e-mail."
+      claim:
+        subject: "Vous avez gagné le tirage au sort : %{raffle}"
+        body: "Félicitations, vous avez gagné le tirage au sort « %{raffle} ». Cliquez sur le bouton pour réclamer votre lot ; nous vous enverrons ensuite le code cadeau par e-mail."
+        action: "Réclamer mon lot"
+        deadline: "Ce lien est valable jusqu'au %{deadline}. Si le lot n'est pas réclamé d'ici là, il passe au suivant dans l'ordre."
+      prize:
+        subject: "Votre code cadeau pour %{raffle}"
+        body: "Voici votre code cadeau pour le tirage au sort « %{raffle} » :"
+        redeem: "Utilisez-le sur le site de RSI. Gardez-le pour vous : quiconque a le code peut l'utiliser."
     announcement:
       action: "En savoir plus"
     account:

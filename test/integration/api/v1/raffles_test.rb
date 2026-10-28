@@ -9,17 +9,15 @@ class Api::V1::RafflesTest < ActionDispatch::IntegrationTest
 
   SECURITY = [{SessionCookie: []}].freeze
 
-  api_path "/raffles" do
-    get("Raffles") do
-      operationId "raffles"
+  api_path "/raffles/current" do
+    get("Current Raffle") do
+      operationId "currentRaffle"
       tags "Raffles"
       produces "application/json"
 
-      parameter "$ref": "#/components/parameters/PageParameter"
-      parameter name: "perPage", in: :query, schema: {type: :string, default: Raffle.default_per_page}, required: false
-
-      response(200, "successful") { schema ::V1::Schemas::Raffles }
+      response(200, "successful") { schema ::V1::Schemas::Raffle }
       response(403, "forbidden") { schema ::Shared::V1::Schemas::StandardError }
+      response(404, "not found") { schema ::Shared::V1::Schemas::StandardError }
     end
   end
 
@@ -49,40 +47,6 @@ class Api::V1::RafflesTest < ActionDispatch::IntegrationTest
       parameter name: "perPage", in: :query, schema: {type: :string, default: RaffleEntry.default_per_page}, required: false
 
       response(200, "successful") { schema ::V1::Schemas::RaffleEntrants }
-      response(403, "forbidden") { schema ::Shared::V1::Schemas::StandardError }
-      response(404, "not found") { schema ::Shared::V1::Schemas::StandardError }
-    end
-  end
-
-  api_path "/raffles/{id}/claim" do
-    parameter name: "id", in: :path, description: "Raffle id", schema: {type: :string, format: :uuid}
-
-    post("Claim the raffle's gift code") do
-      operationId "claimRaffle"
-      tags "Raffles"
-      produces "application/json"
-      security SECURITY
-
-      response(200, "successful") { schema ::Shared::V1::Schemas::RaffleGiftCode }
-      response(400, "bad request") { schema ::Shared::V1::Schemas::ValidationError }
-      response(401, "unauthorized") { schema ::Shared::V1::Schemas::StandardError }
-      response(403, "forbidden") { schema ::Shared::V1::Schemas::StandardError }
-      response(404, "not found") { schema ::Shared::V1::Schemas::StandardError }
-    end
-  end
-
-  api_path "/raffles/{id}/code" do
-    parameter name: "id", in: :path, description: "Raffle id", schema: {type: :string, format: :uuid}
-
-    get("The claimed gift code") do
-      operationId "raffleCode"
-      tags "Raffles"
-      produces "application/json"
-      security SECURITY
-
-      response(200, "successful") { schema ::Shared::V1::Schemas::RaffleGiftCode }
-      response(400, "bad request") { schema ::Shared::V1::Schemas::ValidationError }
-      response(401, "unauthorized") { schema ::Shared::V1::Schemas::StandardError }
       response(403, "forbidden") { schema ::Shared::V1::Schemas::StandardError }
       response(404, "not found") { schema ::Shared::V1::Schemas::StandardError }
     end
@@ -126,21 +90,28 @@ class Api::V1::RafflesTest < ActionDispatch::IntegrationTest
     @raffle = create(:raffle, code: "THE-GIFT-CODE")
   end
 
-  test "GET /raffles lists published raffles to anyone" do
+  test "GET /raffles/current shows the running raffle to anyone" do
     create(:raffle, :draft)
+    create(:raffle, :upcoming)
 
-    assert_api_response :get, 200 do
-      assert_equal [@raffle.id], parsed_body["items"].map { |raffle| raffle["id"] }
-      assert_not parsed_body["items"].first["entered"]
-      assert_equal Raffle::CONTACTS[:discord_handle], parsed_body["items"].first.dig("contacts", "discordHandle")
+    assert_api_response :get, 200, api_path: "/raffles/current" do
+      assert_equal @raffle.id, parsed_body["id"]
+      assert_not parsed_body["entered"]
+      assert_equal Raffle::CONDITIONS_VERSION, parsed_body["conditionsVersion"]
       assert_not_includes response.body, "THE-GIFT-CODE"
     end
   end
 
-  test "GET /raffles is forbidden while the feature is off" do
+  test "GET /raffles/current returns 404 without a published raffle" do
+    @raffle.update_columns(published: false)
+
+    assert_api_response :get, 404, api_path: "/raffles/current"
+  end
+
+  test "GET /raffles/current is forbidden while the feature is off" do
     Flipper.disable(:raffles)
 
-    assert_api_response :get, 403
+    assert_api_response :get, 403, api_path: "/raffles/current"
   end
 
   test "GET /raffles/:id marks the reader's own entry" do
@@ -156,7 +127,7 @@ class Api::V1::RafflesTest < ActionDispatch::IntegrationTest
   test "GET /raffles/:id shows the current winner and forfeited winners" do
     raffle = create(:raffle, :closed, drawn_at: 3.weeks.ago)
     first = create(:raffle_entry, :after_close, raffle:, draw_position: 1, won_at: 3.weeks.ago, claim_deadline_at: 1.week.ago, forfeited_at: 1.week.ago)
-    second = create(:raffle_entry, :after_close, raffle:, draw_position: 2, won_at: 1.week.ago, claim_deadline_at: 1.week.from_now)
+    second = create(:raffle_entry, :after_close, raffle:, draw_position: 2, won_at: 1.week.ago, claim_deadline_at: 2.days.from_now)
 
     assert_api_response :get, 200, api_path: "/raffles/{id}", path_params: {id: raffle.id} do
       assert_equal second.user.username, parsed_body.dig("currentWinner", "username")
@@ -247,85 +218,5 @@ class Api::V1::RafflesTest < ActionDispatch::IntegrationTest
 
   test "DELETE /raffles/:raffle_id/entry returns 401 when not signed in" do
     assert_api_response :delete, 401, path_params: {raffleId: @raffle.id}
-  end
-
-  test "POST /raffles/:id/claim hands the winner the code" do
-    raffle, = drawn_raffle_won_by(@user)
-    sign_in @user
-
-    assert_api_response :post, 200, path_params: {id: raffle.id} do
-      assert_equal "THE-GIFT-CODE", parsed_body["code"]
-    end
-
-    assert raffle.reload.concluded?
-  end
-
-  test "POST /raffles/:id/claim refuses after the deadline" do
-    raffle, = drawn_raffle_won_by(@user, claim_deadline_at: 1.minute.ago)
-    sign_in @user
-
-    assert_api_response :post, 400, path_params: {id: raffle.id}
-  end
-
-  test "POST /raffles/:id/claim is forbidden to anybody but the winner" do
-    raffle, = drawn_raffle_won_by(create(:user))
-    sign_in @user
-
-    assert_api_response :post, 403, path_params: {id: raffle.id}
-  end
-
-  test "POST /raffles/:id/claim returns 401 when not signed in" do
-    raffle, = drawn_raffle_won_by(@user)
-
-    assert_api_response :post, 401, path_params: {id: raffle.id}
-  end
-
-  test "POST /raffles/:id/claim returns 404 for a missing raffle" do
-    sign_in @user
-
-    assert_api_response :post, 404, path_params: {id: SecureRandom.uuid}
-  end
-
-  test "GET /raffles/:id/code shows a claimed code again" do
-    raffle, entry = drawn_raffle_won_by(@user)
-    entry.claim!
-    sign_in @user
-
-    assert_api_response :get, 200, api_path: "/raffles/{id}/code", path_params: {id: raffle.id} do
-      assert_equal "THE-GIFT-CODE", parsed_body["code"]
-    end
-  end
-
-  test "GET /raffles/:id/code refuses before the claim" do
-    raffle, = drawn_raffle_won_by(@user)
-    sign_in @user
-
-    assert_api_response :get, 400, api_path: "/raffles/{id}/code", path_params: {id: raffle.id}
-  end
-
-  test "GET /raffles/:id/code is forbidden to anybody but the winner" do
-    raffle, entry = drawn_raffle_won_by(create(:user))
-    entry.claim!
-    sign_in @user
-
-    assert_api_response :get, 403, api_path: "/raffles/{id}/code", path_params: {id: raffle.id}
-  end
-
-  test "GET /raffles/:id/code returns 401 when not signed in" do
-    raffle, = drawn_raffle_won_by(@user)
-
-    assert_api_response :get, 401, api_path: "/raffles/{id}/code", path_params: {id: raffle.id}
-  end
-
-  test "GET /raffles/:id/code returns 404 for a missing raffle" do
-    sign_in @user
-
-    assert_api_response :get, 404, api_path: "/raffles/{id}/code", path_params: {id: SecureRandom.uuid}
-  end
-
-  private def drawn_raffle_won_by(user, claim_deadline_at: 5.days.from_now)
-    raffle = create(:raffle, :closed, drawn_at: 1.hour.ago, code: "THE-GIFT-CODE")
-    entry = create(:raffle_entry, :after_close, raffle:, user:, draw_position: 1, won_at: 1.hour.ago, claim_deadline_at:)
-    [raffle, entry]
   end
 end

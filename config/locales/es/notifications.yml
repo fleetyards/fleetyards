@@ -1,9 +1,15 @@
 ---
 es:
   notifications:
+    raffle_started:
+      title: "Nuevo sorteo: %{raffle}"
+      body: "Hay un nuevo sorteo abierto. Participa antes del %{deadline}."
+    raffle_last_day:
+      title: "Último día: %{raffle}"
+      body: "El sorteo cierra el %{deadline}. Participa ahora si quieres entrar."
     raffle_won:
       title: "Has ganado el sorteo: %{raffle}"
-      body: "¡Enhorabuena! Reclama tu código de regalo en la página del sorteo antes del %{deadline}. Si no se reclama a tiempo, el premio pasa al siguiente en la lista."
+      body: "¡Enhorabuena! Te hemos enviado un correo con un enlace para reclamar tu premio. Púlsalo antes del %{deadline} o el premio pasa al siguiente en la lista."
     model_on_sale:
       title: "%{model} está en venta"
       body: "%{model} está actualmente en venta en la tienda de pledge."

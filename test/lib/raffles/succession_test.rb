@@ -17,7 +17,7 @@ module Raffles
 
       assert_equal @second, winner
       assert @first.reload.forfeited_at.present?
-      assert @second.reload.claim_deadline_at > 13.days.from_now
+      assert @second.reload.claim_deadline_at > 2.days.from_now
       assert_equal @second, @raffle.current_winner
     end
 
@@ -33,6 +33,12 @@ module Raffles
 
       assert_nil Succession.new(@raffle).call
       assert_nil @first.reload.forfeited_at
+    end
+
+    test "mails the promoted winner a claim link" do
+      winner = Succession.new(@raffle).call
+
+      assert_equal [winner.id], Raffles::ClaimMailJob.jobs.last["args"]
     end
 
     test "passes over entrants whose account is gone or unconfirmed" do

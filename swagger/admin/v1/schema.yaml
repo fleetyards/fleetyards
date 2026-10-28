@@ -8504,116 +8504,6 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
-  "/raffles/{raffleId}/entries/{id}/claim":
-    parameters:
-    - name: raffleId
-      in: path
-      description: Raffle id
-      schema:
-        type: string
-        format: uuid
-      required: true
-    - name: id
-      in: path
-      description: Raffle entry id
-      schema:
-        type: string
-        format: uuid
-      required: true
-    post:
-      summary: Claim a win on behalf of a verified entrant
-      tags:
-      - Raffles
-      operationId: claimRaffleEntry
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              "$ref": "#/components/schemas/RaffleVerificationInput"
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/RaffleGiftCode"
-        '400':
-          description: bad request
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ValidationError"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-  "/raffles/{raffleId}/entries/{id}/send-verification":
-    parameters:
-    - name: raffleId
-      in: path
-      description: Raffle id
-      schema:
-        type: string
-        format: uuid
-      required: true
-    - name: id
-      in: path
-      description: Raffle entry id
-      schema:
-        type: string
-        format: uuid
-      required: true
-    post:
-      summary: Send a verification code to the email the entrant entered with
-      tags:
-      - Raffles
-      operationId: sendRaffleEntryVerification
-      responses:
-        '200':
-          description: successful
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/MessageResponse"
-        '400':
-          description: bad request
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/ValidationError"
-        '404':
-          description: not found
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '403':
-          description: forbidden
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
-        '401':
-          description: unauthorized
-          content:
-            application/json:
-              schema:
-                "$ref": "#/components/schemas/StandardError"
   "/resource-access-catalog":
     get:
       summary: Resource Access Catalog
@@ -22299,9 +22189,15 @@ components:
           type: boolean
         maskedCode:
           type: string
+        images:
+          type: array
+          items:
+            "$ref": "#/components/schemas/MediaFile"
         startsAt:
           type: string
           format: date-time
+        runDays:
+          type: integer
         endsAt:
           type: string
           format: date-time
@@ -22321,6 +22217,14 @@ components:
         concludedAt:
           type: string
           format: date-time
+        startAnnouncedAt:
+          type: string
+          format: date-time
+        lastDayAnnouncedAt:
+          type: string
+          format: date-time
+        socialPosts:
+          "$ref": "#/components/schemas/RaffleSocialPosts"
         currentWinner:
           "$ref": "#/components/schemas/RaffleEntry"
         createdAt:
@@ -22334,12 +22238,15 @@ components:
       - id
       - title
       - codeSet
+      - images
       - startsAt
+      - runDays
       - endsAt
       - claimPeriodDays
       - published
       - status
       - entriesCount
+      - socialPosts
       - createdAt
       - updatedAt
       title: Raffle
@@ -22385,12 +22292,14 @@ components:
         claimedAt:
           type: string
           format: date-time
-        claimedBy:
-          type: string
         forfeitedAt:
           type: string
           format: date-time
-        verificationSentAt:
+        claimMailStatus:
+          "$ref": "#/components/schemas/RaffleMailStatusEnum"
+        prizeMailStatus:
+          "$ref": "#/components/schemas/RaffleMailStatusEnum"
+        prizeMailSentAt:
           type: string
           format: date-time
         claimable:
@@ -22408,15 +22317,6 @@ components:
       - claimable
       - createdAt
       title: RaffleEntry
-    RaffleGiftCode:
-      type: object
-      properties:
-        code:
-          type: string
-      additionalProperties: false
-      required:
-      - code
-      title: RaffleGiftCode
     RaffleInput:
       type: object
       properties:
@@ -22434,20 +22334,35 @@ components:
         startsAt:
           type: string
           format: date-time
-        endsAt:
-          type: string
-          format: date-time
+        runDays:
+          type: integer
+          minimum: 1
         claimPeriodDays:
           type: integer
           minimum: 1
+        images:
+          type: array
+          items:
+            type: string
         published:
           type: boolean
       additionalProperties: false
       required:
       - title
       - startsAt
-      - endsAt
+      - runDays
       title: RaffleInput
+    RaffleMailStatusEnum:
+      type: string
+      enum:
+      - sent
+      - delivered
+      - bounced
+      x-enumNames:
+      - SENT
+      - DELIVERED
+      - BOUNCED
+      title: RaffleMailStatusEnum
     RafflePrize:
       type: object
       properties:
@@ -22488,6 +22403,18 @@ components:
       additionalProperties: false
       example: {}
       title: RaffleQuery
+    RaffleSocialPosts:
+      type: object
+      properties:
+        start:
+          type: string
+        lastDay:
+          type: string
+      additionalProperties: false
+      required:
+      - start
+      - lastDay
+      title: RaffleSocialPosts
     RaffleSortEnum:
       type: string
       enum:
@@ -22526,15 +22453,6 @@ components:
       - DRAWN
       - CONCLUDED
       title: RaffleStatusEnum
-    RaffleVerificationInput:
-      type: object
-      properties:
-        verificationCode:
-          type: string
-      additionalProperties: false
-      required:
-      - verificationCode
-      title: RaffleVerificationInput
     Raffles:
       type: object
       properties:

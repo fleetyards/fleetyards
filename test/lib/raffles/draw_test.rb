@@ -17,18 +17,21 @@ module Raffles
       assert_equal :drawn, result.status
       assert_equal [1, 2, 3], @raffle.entries.order(:draw_position).pluck(:draw_position)
       assert_equal 1, result.winner.draw_position
-      assert result.winner.claim_deadline_at.between?(13.days.from_now, 15.days.from_now)
+      assert result.winner.claim_deadline_at.between?(2.days.from_now, 4.days.from_now)
       assert_equal @admin, @raffle.reload.drawn_by
     end
 
-    test "notifies the winner" do
+    test "notifies the winner and queues the claim mail" do
       result = nil
 
       assert_difference -> { Notification.where(notification_type: "raffle_won").count }, 1 do
-        result = Draw.new(@raffle, admin_user: @admin).call
+        assert_difference -> { Raffles::ClaimMailJob.jobs.size }, 1 do
+          result = Draw.new(@raffle, admin_user: @admin).call
+        end
       end
 
       assert_equal result.winner.user, Notification.find_by(notification_type: "raffle_won").user
+      assert_equal [result.winner.id], Raffles::ClaimMailJob.jobs.last["args"]
     end
 
     test "leaves unconfirmed entrants out of the order" do

@@ -7,7 +7,7 @@ fr:
         description: "Description"
         code: "Code cadeau"
         starts_at: "Début"
-        ends_at: "Fin"
+        run_days: "Durée (jours)"
         claim_period_days: "Délai pour réclamer (jours)"
       raffle_entry:
         conditions_accepted: "Conditions de participation"

@@ -19,9 +19,10 @@ module Admin
             wonAt: {type: :string, format: "date-time"},
             claimDeadlineAt: {type: :string, format: "date-time"},
             claimedAt: {type: :string, format: "date-time"},
-            claimedBy: {type: :string},
             forfeitedAt: {type: :string, format: "date-time"},
-            verificationSentAt: {type: :string, format: "date-time"},
+            claimMailStatus: ::Admin::V1::Schemas::Enums::RaffleMailStatusEnum,
+            prizeMailStatus: ::Admin::V1::Schemas::Enums::RaffleMailStatusEnum,
+            prizeMailSentAt: {type: :string, format: "date-time"},
             claimable: {type: :boolean},
             createdAt: {type: :string, format: "date-time"}
           },

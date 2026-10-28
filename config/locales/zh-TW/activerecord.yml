@@ -7,7 +7,7 @@ zh-TW:
         description: "描述"
         code: "禮品碼"
         starts_at: "開始"
-        ends_at: "結束"
+        run_days: "持續時間（天）"
         claim_period_days: "領獎期限（天）"
       raffle_entry:
         conditions_accepted: "參加條件"

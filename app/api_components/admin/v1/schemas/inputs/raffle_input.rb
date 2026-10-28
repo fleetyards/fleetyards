@@ -16,12 +16,15 @@ module Admin
               # Write-only: left out, the stored code stays as it is.
               code: {type: :string},
               startsAt: {type: :string, format: "date-time"},
-              endsAt: {type: :string, format: "date-time"},
+              runDays: {type: :integer, minimum: 1},
               claimPeriodDays: {type: :integer, minimum: 1},
+              # Signed blob ids; the list replaces the gallery, which is shown
+              # in upload order.
+              images: {type: :array, items: {type: :string}},
               published: {type: :boolean}
             },
             additionalProperties: false,
-            required: %w[title startsAt endsAt]
+            required: %w[title startsAt runDays]
           })
         end
       end

@@ -1,31 +1,23 @@
 ---
 zh-CN:
   validation_error:
+    raffle_claim:
+      create: "无法领取奖品。"
+      invalid: "此领奖链接无效。"
+      expired: "此领奖链接已过期：领奖期限已过。"
+    raffle_entry:
+      create: "无法参与抽奖。"
+      messages:
+        already_entered: "你已参与此抽奖。"
     raffle:
       create: "无法创建抽奖。"
       update: "无法更新抽奖。"
       destroy: "无法删除抽奖。"
       draw: "无法进行抽奖。"
-      claim: "无法领取奖品。"
-      code: "无法显示礼品码。"
       messages:
         already_drawn: "此抽奖已开奖。"
         not_closed: "抽奖结束后才能开奖。"
         no_entrants: "没有符合条件的参与者。"
-        claim_expired: "领奖期限已过。"
-        not_claimed: "请先领取奖品以查看礼品码。"
-    raffle_entry:
-      create: "无法参与抽奖。"
-      send_verification: "无法发送验证码。"
-      claim: "无法交付奖品。"
-      messages:
-        already_entered: "你已参与此抽奖。"
-        verification_not_sent: "只能在期限前向已删除账户的当前中奖者发送验证码，且每两分钟最多一次。"
-        not_claimable: "此参与记录已无法领取奖品。"
-        no_code: "请先发送验证码。"
-        expired: "验证码已过期，请重新发送。"
-        too_many_attempts: "错误验证码过多，请重新发送。"
-        invalid: "验证码错误。"
     fleet_subscription:
       create: "无法开通订阅。"
       update: "无法更新订阅。"

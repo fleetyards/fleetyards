@@ -7,7 +7,7 @@ de:
         description: "Beschreibung"
         code: "Geschenkcode"
         starts_at: "Beginn"
-        ends_at: "Ende"
+        run_days: "Laufzeit (Tage)"
         claim_period_days: "Frist zum Einlösen (Tage)"
       raffle_entry:
         conditions_accepted: "Teilnahmebedingungen"

@@ -8,9 +8,12 @@ class CreateRaffles < ActiveRecord::Migration[8.1]
       t.references :model, type: :uuid, foreign_key: true
       t.text :code
       t.datetime :starts_at, null: false
+      t.integer :run_days, null: false, default: 14
       t.datetime :ends_at, null: false
-      t.integer :claim_period_days, null: false, default: 14
+      t.integer :claim_period_days, null: false, default: 3
       t.boolean :published, null: false, default: false
+      t.datetime :start_announced_at
+      t.datetime :last_day_announced_at
       t.datetime :drawn_at
       t.references :drawn_by, type: :uuid, foreign_key: {to_table: :admin_users, on_delete: :nullify}
       t.datetime :concluded_at
@@ -32,11 +35,12 @@ class CreateRaffles < ActiveRecord::Migration[8.1]
       t.datetime :won_at
       t.datetime :claim_deadline_at
       t.datetime :claimed_at
-      t.references :claimed_by, type: :uuid, foreign_key: {to_table: :admin_users, on_delete: :nullify}
       t.datetime :forfeited_at
-      t.string :verification_code_digest
-      t.datetime :verification_sent_at
-      t.integer :verification_attempts, null: false, default: 0
+      t.string :claim_mail_message_id
+      t.string :claim_mail_status
+      t.string :prize_mail_message_id
+      t.string :prize_mail_status
+      t.datetime :prize_mail_sent_at
 
       t.timestamps
     end
@@ -44,5 +48,12 @@ class CreateRaffles < ActiveRecord::Migration[8.1]
     add_index :raffle_entries, [:user_id, :raffle_id], unique: true
     add_index :raffle_entries, [:raffle_id, :draw_position], unique: true
     add_index :raffle_entries, :claim_deadline_at, where: "claimed_at IS NULL AND forfeited_at IS NULL"
+
+    # One announcement per user, raffle and kind, so a retried fan-out batch
+    # inserts nothing twice.
+    add_index :notifications, [:user_id, :record_id, :notification_type],
+      unique: true,
+      where: "notification_type IN ('raffle_started', 'raffle_last_day') AND record_id IS NOT NULL",
+      name: "index_notifications_on_raffle_announcement_recipient"
   end
 end

@@ -5,16 +5,12 @@ class Raffle < ApplicationRecord
 
   # Bumped whenever the participation conditions change in meaning, so every
   # entry records which wording its user accepted.
-  CONDITIONS_VERSION = "2026-10-27"
-
-  # Where a winner who can no longer sign in reaches us. Kept here rather than
-  # in the locale files so all seven languages name the same contact.
-  CONTACTS = {
-    discord_handle: "torlekmaru",
-    discord_invite: "https://discord.gg/6EQKAsb"
-  }.freeze
+  CONDITIONS_VERSION = "2026-10-28"
 
   STATUSES = %w[draft upcoming open closed drawn concluded].freeze
+
+  # How long before the close the last-day reminder goes out.
+  LAST_DAY = 1.day
 
   DEFAULT_SORTING_PARAMS = "ends_at desc"
   ALLOWED_SORTING_PARAMS = [
@@ -36,17 +32,34 @@ class Raffle < ApplicationRecord
   has_many :entries, class_name: "RaffleEntry", dependent: :delete_all, inverse_of: :raffle
   has_many :won_entries, -> { won.order(:draw_position) }, class_name: "RaffleEntry", inverse_of: false
 
+  # The first is the cover on cards and the homepage.
+  has_many_attached :images
+
   validates :title, presence: true
   validates :starts_at, presence: true
-  validates :ends_at, presence: true
+  validates :run_days, numericality: {only_integer: true, greater_than: 0}
   validates :claim_period_days, numericality: {only_integer: true, greater_than: 0}
   validates :code, presence: true, if: :published?
-  validate :ends_at_after_starts_at
+  validates :images, no_vector_image: true
   validate :frozen_after_draw, on: :update
 
+  before_validation :compute_ends_at
   before_destroy :keep_drawn_raffles, prepend: true
 
   scope :published, -> { where(published: true) }
+  scope :running, ->(now = Time.current) { published.where(starts_at: ..now).where("raffles.ends_at > ?", now) }
+  scope :start_unannounced, ->(now = Time.current) { running(now).where(start_announced_at: nil) }
+  scope :last_day_unannounced, ->(now = Time.current) {
+    running(now).where(last_day_announced_at: nil).where("raffles.ends_at <= ?", now + LAST_DAY)
+  }
+
+  # The one raffle the public page shows: the running one, else the next to
+  # open, else the last that ran.
+  def self.current(now = Time.current)
+    running(now).order(:ends_at).first ||
+      published.where("raffles.starts_at > ?", now).order(:starts_at).first ||
+      published.order(ends_at: :desc).first
+  end
 
   def self.ransackable_attributes(auth_object = nil)
     ["title", "published", "starts_at", "ends_at", "drawn_at", "created_at", "updated_at", "id"]
@@ -54,6 +67,11 @@ class Raffle < ApplicationRecord
 
   def self.ransackable_associations(auth_object = nil)
     []
+  end
+
+  # Stored for queries, but known before the first save too.
+  def ends_at
+    super || (starts_at + run_days.to_i.days if starts_at.present? && run_days.present?)
   end
 
   def status(now = Time.current)
@@ -82,6 +100,12 @@ class Raffle < ApplicationRecord
     concluded_at.present?
   end
 
+  # In upload order, the first being the cover. Attachments carry UUIDs, so
+  # neither their ids nor the association promise an order of their own.
+  def ordered_images
+    images.sort_by { |image| image.blob.created_at }
+  end
+
   # From the preloaded winners on a list, a fresh query everywhere else: a
   # cached association would still name the winner a promotion just replaced.
   def current_winner
@@ -99,12 +123,22 @@ class Raffle < ApplicationRecord
     "#{"*" * (code.length - 4)}#{code.last(4)}"
   end
 
-  # Ends the raffle for good: the code is in a winner's hands or nobody is left
-  # to take it. The email snapshots existed only to verify a claim, so they go
-  # with it.
+  def frontend_url
+    "#{FRONTEND_ENDPOINT}#{Rails.application.routes.url_helpers.frontend_raffle_path(self)}"
+  end
+
+  # Ends the raffle for good: the code is on its way to a winner or nobody is
+  # left to take it. The email snapshots existed only to reach a winner, so
+  # they go with it.
   def conclude!(now = Time.current)
     update!(concluded_at: now)
-    entries.update_all(email: nil, verification_code_digest: nil, verification_sent_at: nil, updated_at: now)
+    entries.update_all(email: nil, updated_at: now)
+  end
+
+  private def compute_ends_at
+    return if starts_at.blank? || run_days.blank?
+
+    self.ends_at = starts_at + run_days.to_i.days
   end
 
   # A drawn raffle is the public record of who entered and who won.
@@ -115,19 +149,12 @@ class Raffle < ApplicationRecord
     throw :abort
   end
 
-  private def ends_at_after_starts_at
-    return if ends_at.blank? || starts_at.blank?
-    return if ends_at > starts_at
-
-    errors.add(:ends_at, :invalid)
-  end
-
   # Entrants accepted the raffle as it stood when they entered; once the order
   # is drawn, nothing that decided it may change.
   private def frozen_after_draw
     return unless drawn_at_was.present?
 
-    %w[code starts_at ends_at claim_period_days published].each do |attribute|
+    %w[code starts_at run_days claim_period_days published].each do |attribute|
       errors.add(attribute, :frozen_after_draw) if will_save_change_to_attribute?(attribute)
     end
   end

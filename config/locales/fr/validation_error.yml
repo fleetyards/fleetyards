@@ -1,31 +1,23 @@
 ---
 fr:
   validation_error:
+    raffle_claim:
+      create: "Le lot n'a pas pu être réclamé."
+      invalid: "Ce lien de réclamation n'est pas valide."
+      expired: "Ce lien de réclamation a expiré : le délai est dépassé."
+    raffle_entry:
+      create: "Vous n'avez pas pu participer au tirage au sort."
+      messages:
+        already_entered: "Vous participez déjà à ce tirage au sort."
     raffle:
       create: "Le tirage au sort n'a pas pu être créé."
       update: "Le tirage au sort n'a pas pu être mis à jour."
       destroy: "Le tirage au sort n'a pas pu être supprimé."
       draw: "Le tirage au sort n'a pas pu être effectué."
-      claim: "Le lot n'a pas pu être réclamé."
-      code: "Le code cadeau n'a pas pu être affiché."
       messages:
         already_drawn: "Ce tirage au sort a déjà été effectué."
         not_closed: "Un tirage au sort ne peut être effectué qu'après sa clôture."
         no_entrants: "Aucun participant éligible à ce tirage au sort."
-        claim_expired: "Le délai pour réclamer est dépassé."
-        not_claimed: "Réclamez d'abord le lot pour voir le code cadeau."
-    raffle_entry:
-      create: "Vous n'avez pas pu participer au tirage au sort."
-      send_verification: "Le code de vérification n'a pas pu être envoyé."
-      claim: "Le lot n'a pas pu être remis."
-      messages:
-        already_entered: "Vous participez déjà à ce tirage au sort."
-        verification_not_sent: "Un code ne peut être envoyé qu'au gagnant actuel dont le compte a été supprimé, avant la date limite et pas plus d'une fois toutes les deux minutes."
-        not_claimable: "Cette participation ne peut plus réclamer le lot."
-        no_code: "Envoyez d'abord un code de vérification."
-        expired: "Le code de vérification a expiré. Envoyez-en un nouveau."
-        too_many_attempts: "Trop de codes erronés. Envoyez-en un nouveau."
-        invalid: "Le code de vérification est incorrect."
     fleet_subscription:
       create: "L'abonnement n'a pas pu être ouvert."
       update: "L'abonnement n'a pas pu être mis à jour."

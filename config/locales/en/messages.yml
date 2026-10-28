@@ -1,8 +1,6 @@
 ---
 en:
   messages:
-    raffle_entry:
-      verification_sent: "Verification code sent to %{email}."
     background_disabled:
       success: "%{resource} not used for Background."
     background_enabled:

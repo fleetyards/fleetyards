@@ -1,8 +1,6 @@
 ---
 zh-TW:
   messages:
-    raffle_entry:
-      verification_sent: "驗證碼已傳送至 %{email}。"
     background_disabled:
       success: "%{resource} 未用作背景。"
     background_enabled:

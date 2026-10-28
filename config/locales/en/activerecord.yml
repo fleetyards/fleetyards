@@ -7,7 +7,7 @@ en:
         description: "Description"
         code: "Gift code"
         starts_at: "Start"
-        ends_at: "End"
+        run_days: "Run length (days)"
         claim_period_days: "Claim period (days)"
       raffle_entry:
         conditions_accepted: "Participation conditions"

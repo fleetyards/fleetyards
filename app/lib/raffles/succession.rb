@@ -5,7 +5,7 @@ module Raffles
   # claim deadline has passed, or to the first one right after the draw.
   #
   # An entrant whose account is gone or no longer confirmed by the time their
-  # turn comes is passed over: they can only be told through the account.
+  # turn comes is passed over, as the participation conditions say.
   class Succession
     def initialize(raffle, now: Time.current)
       @raffle = raffle
@@ -59,8 +59,15 @@ module Raffles
       nil
     end
 
+    # The claim mail goes out whether or not the account still exists: the
+    # link in it is what the win is claimed with. The in-app notice only
+    # reaches someone who can still sign in.
     private def notify(entry)
+      Raffles::ClaimMailJob.perform_async(entry.id)
+
       user = entry.user
+      return if user.blank?
+
       I18n.with_locale(user.notification_locale) do
         Notification.notify!(
           user:,

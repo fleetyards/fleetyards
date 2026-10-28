@@ -1,18 +1,18 @@
 # frozen_string_literal: true
 
-module Shared
-  module V1
-    module Schemas
-      class RaffleGiftCode
+module V1
+  module Schemas
+    module Inputs
+      class RaffleClaimInput
         include OpenapiRuby::Components::Base
 
         schema({
           type: :object,
           properties: {
-            code: {type: :string}
+            token: {type: :string}
           },
           additionalProperties: false,
-          required: %w[code]
+          required: %w[token]
         })
       end
     end

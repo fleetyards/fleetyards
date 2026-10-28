@@ -2,11 +2,15 @@
 de:
   mailer:
     raffle:
-      verification_code:
-        subject: "Dein Bestätigungscode für %{raffle}"
-        body: "Du hast uns auf Discord mitgeteilt, dass du die Verlosung \"%{raffle}\" gewonnen hast. Um zu bestätigen, dass diese E-Mail-Adresse dir gehört, schicke den folgenden Code auf Discord an %{discord_handle}."
-        expires: "Dieser Code läuft in 30 Minuten ab."
-        not_you: "Wenn du diesen Code nicht angefordert hast, kannst du diese E-Mail ignorieren."
+      claim:
+        subject: "Du hast die Verlosung gewonnen: %{raffle}"
+        body: "Herzlichen Glückwunsch, du hast die Verlosung \"%{raffle}\" gewonnen. Klicke auf den Button, um deinen Gewinn abzuholen; danach schicken wir dir den Geschenkcode per Mail."
+        action: "Gewinn abholen"
+        deadline: "Dieser Link gilt bis %{deadline}. Wird der Gewinn bis dahin nicht abgeholt, geht er an den Nächsten in der Reihe."
+      prize:
+        subject: "Dein Geschenkcode für %{raffle}"
+        body: "Hier ist dein Geschenkcode für die Verlosung \"%{raffle}\":"
+        redeem: "Löse ihn auf der RSI-Website ein. Behalte ihn für dich: Jeder mit dem Code kann ihn einlösen."
     announcement:
       action: "Mehr erfahren"
     account:

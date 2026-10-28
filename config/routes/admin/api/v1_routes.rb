@@ -239,12 +239,7 @@ v1_admin_api_routes = lambda do
     member do
       post :draw
     end
-    resources :entries, controller: "raffle_entries", only: %i[index] do
-      member do
-        post "send-verification", to: "raffle_entries#send_verification", as: :send_verification
-        post :claim
-      end
-    end
+    resources :entries, controller: "raffle_entries", only: %i[index]
   end
   resource :homepage_settings, path: "homepage-settings", only: %i[show update]
   resources :supporter_contributions, path: "supporter-contributions", only: %i[index show create update destroy] do

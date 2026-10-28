@@ -10,8 +10,10 @@ if raffle.model.present?
     json.partial! "api/v1/raffles/prize", model: raffle.model
   end
 end
+json.partial!("api/v1/raffles/images", raffle:)
 json.starts_at raffle.starts_at.utc.iso8601
 json.ends_at raffle.ends_at.utc.iso8601
+json.run_days raffle.run_days
 json.claim_period_days raffle.claim_period_days
 json.status raffle.status
 json.entries_count local_assigns.fetch(:entries_count) { raffle.entries.count }
@@ -28,10 +30,6 @@ end
 json.forfeited_winners winners.reject(&:current_winner?), partial: "api/v1/raffles/winner", as: :entry
 
 json.conditions_version Raffle::CONDITIONS_VERSION
-json.contacts do
-  json.discord_handle Raffle::CONTACTS[:discord_handle]
-  json.discord_invite Raffle::CONTACTS[:discord_invite]
-end
 
 won = viewer_entry.present? && viewer_entry.id == current_winner&.id
 json.entered viewer_entry.present?

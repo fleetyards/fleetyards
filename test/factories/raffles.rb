@@ -5,7 +5,7 @@ FactoryBot.define do
     sequence(:title) { |n| "Raffle ##{n}" }
     code { "GIFT-#{SecureRandom.hex(6).upcase}" }
     starts_at { 1.day.ago }
-    ends_at { 6.days.from_now }
+    run_days { 7 }
     published { true }
 
     trait :draft do
@@ -14,12 +14,11 @@ FactoryBot.define do
 
     trait :upcoming do
       starts_at { 2.days.from_now }
-      ends_at { 9.days.from_now }
     end
 
     trait :closed do
       starts_at { 10.days.ago }
-      ends_at { 1.day.ago }
+      run_days { 9 }
     end
   end
 

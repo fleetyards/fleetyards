@@ -12,8 +12,10 @@ module V1
           title: {type: :string},
           description: {type: :string},
           prize: ::Shared::V1::Schemas::RafflePrize,
+          images: {type: :array, items: ::Shared::V1::Schemas::MediaFile},
           startsAt: {type: :string, format: "date-time"},
           endsAt: {type: :string, format: "date-time"},
+          runDays: {type: :integer},
           claimPeriodDays: {type: :integer},
           status: ::Shared::V1::Schemas::Enums::RaffleStatusEnum,
           entriesCount: {type: :integer},
@@ -22,7 +24,6 @@ module V1
           currentWinner: ::V1::Schemas::RaffleWinner,
           forfeitedWinners: {type: :array, items: ::V1::Schemas::RaffleWinner},
           conditionsVersion: {type: :string},
-          contacts: ::V1::Schemas::RaffleContacts,
           # Whether the signed-in reader entered, and whether the win is theirs.
           entered: {type: :boolean},
           won: {type: :boolean},
@@ -30,7 +31,7 @@ module V1
           claimed: {type: :boolean}
         },
         additionalProperties: false,
-        required: %w[id title startsAt endsAt claimPeriodDays status entriesCount forfeitedWinners conditionsVersion contacts entered won claimable claimed]
+        required: %w[id title images startsAt endsAt runDays claimPeriodDays status entriesCount forfeitedWinners conditionsVersion entered won claimable claimed]
       })
     end
   end

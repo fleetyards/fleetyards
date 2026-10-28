@@ -7,7 +7,7 @@ zh-CN:
         description: "描述"
         code: "礼品码"
         starts_at: "开始"
-        ends_at: "结束"
+        run_days: "持续时间（天）"
         claim_period_days: "领奖期限（天）"
       raffle_entry:
         conditions_accepted: "参与条件"

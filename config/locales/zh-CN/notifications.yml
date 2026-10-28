@@ -1,9 +1,15 @@
 ---
 zh-CN:
   notifications:
+    raffle_started:
+      title: "新抽奖：%{raffle}"
+      body: "新的抽奖已开始。请在 %{deadline} 前参与。"
+    raffle_last_day:
+      title: "最后一天：%{raffle}"
+      body: "抽奖将于 %{deadline} 结束。想参加请尽快。"
     raffle_won:
       title: "你赢得了抽奖：%{raffle}"
-      body: "恭喜！请在 %{deadline} 前在抽奖页面领取你的礼品码。如未按时领取，奖品将转给下一位。"
+      body: "恭喜！我们已给你发送了一封带领奖链接的邮件。请在 %{deadline} 前点击，否则奖品将转给下一位。"
     model_on_sale:
       title: "%{model} 正在出售"
       body: "%{model} 目前在质押商店中出售。"

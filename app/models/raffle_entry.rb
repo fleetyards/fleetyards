@@ -3,23 +3,28 @@
 class RaffleEntry < ApplicationRecord
   paginates_per 50
 
-  VERIFICATION_CODE_TTL = 30.minutes
-  VERIFICATION_RESEND_INTERVAL = 2.minutes
-  VERIFICATION_MAX_ATTEMPTS = 5
+  # What Postmark reports for a raffle mail, from its message events. `sent`
+  # is ours: the mail left for Postmark and nothing has come back yet.
+  MAIL_STATUSES = %w[sent delivered bounced].freeze
 
-  has_paper_trail on: ::VersionedItem::RECORDED_EVENTS,
-    skip: %i[email verification_code_digest verification_sent_at verification_attempts]
+  has_paper_trail on: ::VersionedItem::RECORDED_EVENTS, skip: %i[email]
 
   encrypts :email
 
   belongs_to :raffle, inverse_of: :entries
   belongs_to :user, optional: true
-  belongs_to :claimed_by, class_name: "AdminUser", optional: true
 
   attribute :conditions_accepted, :boolean, default: false
 
+  # The claim link in the winner's mail. Tied to `won_at`, so the link only
+  # ever answers for the win it was sent for.
+  generates_token_for :raffle_claim do
+    won_at&.to_i
+  end
+
   validates :user_id, uniqueness: {scope: :raffle_id}, on: :create
   validates :conditions_accepted, acceptance: {accept: true}, on: :create
+  validates :claim_mail_status, :prize_mail_status, inclusion: {in: MAIL_STATUSES}, allow_nil: true
   validate :raffle_open, on: :create
 
   before_validation :snapshot_entrant, on: :create
@@ -27,9 +32,19 @@ class RaffleEntry < ApplicationRecord
   scope :won, -> { where.not(won_at: nil) }
   scope :pending_claim, -> { won.where(claimed_at: nil, forfeited_at: nil) }
   scope :claim_expired, ->(now = Time.current) { pending_claim.where(claim_deadline_at: ..now) }
+  scope :mail_status_pending, -> {
+    where(claim_mail_status: "sent").where.not(claim_mail_message_id: nil)
+      .or(where(prize_mail_status: "sent").where.not(prize_mail_message_id: nil))
+  }
 
   def display_username
     user&.username || username
+  end
+
+  # The account's address while there is one -- it may have changed since the
+  # entry -- and the one captured at entry once the account is gone.
+  def recipient_email
+    user&.email || email
   end
 
   def current_winner?
@@ -41,74 +56,23 @@ class RaffleEntry < ApplicationRecord
   end
 
   def masked_email
-    return if email.blank?
+    address = recipient_email
+    return if address.blank?
 
-    local, domain = email.split("@", 2)
+    local, domain = address.split("@", 2)
     host, _, tld = domain.to_s.rpartition(".")
     "#{local.first}***@#{host.first}***.#{tld}"
   end
 
-  # The winner taking the code themselves, which is what claiming means: the
-  # code is shown once the entry is marked claimed.
+  # The winner following the link in their claim mail. Returns whether this
+  # click claimed the prize; a second click, or one after the deadline, does
+  # not.
   def claim!(now = Time.current)
-    claimed = with_lock do
+    with_lock do
       next false unless claimable?(now)
 
       update!(claimed_at: now)
     end
-    raffle.conclude!(now) if claimed
-    claimed
-  end
-
-  # A winner whose account is gone proves they are the entrant by reading back
-  # a code sent to the address they entered with. A winner who still has an
-  # account claims through it instead: the snapshot address may no longer be
-  # theirs. Only a digest is stored; the code itself exists in the mail and
-  # nowhere else.
-  def issue_verification_code!(now = Time.current)
-    with_lock { new_verification_code(now) }
-  end
-
-  def verifiable?(now = Time.current)
-    user_id.nil? && email.present? && claimable?(now)
-  end
-
-  def verify_and_claim!(code, admin_user:, now: Time.current)
-    result = with_lock { verification_result(code, admin_user:, now:) }
-    raffle.conclude!(now) if result == :claimed
-    result
-  end
-
-  private def new_verification_code(now)
-    return unless verifiable?(now)
-    return if verification_sent_at.present? && now < verification_sent_at + VERIFICATION_RESEND_INTERVAL
-
-    code = format("%06d", SecureRandom.random_number(1_000_000))
-    update!(
-      verification_code_digest: digest_verification_code(code),
-      verification_sent_at: now,
-      verification_attempts: 0
-    )
-    code
-  end
-
-  private def verification_result(code, admin_user:, now:)
-    return :not_claimable unless verifiable?(now)
-    return :no_code if verification_code_digest.blank?
-    return :expired if now >= verification_sent_at + VERIFICATION_CODE_TTL
-    return :too_many_attempts if verification_attempts >= VERIFICATION_MAX_ATTEMPTS
-
-    unless ActiveSupport::SecurityUtils.secure_compare(verification_code_digest, digest_verification_code(code.to_s.strip))
-      increment!(:verification_attempts)
-      return :invalid
-    end
-
-    update!(claimed_at: now, claimed_by: admin_user, verification_code_digest: nil)
-    :claimed
-  end
-
-  private def digest_verification_code(code)
-    OpenSSL::HMAC.hexdigest("SHA256", Rails.application.secret_key_base, "raffle-entry:#{id}:#{code}")
   end
 
   private def snapshot_entrant

@@ -1,0 +1,24 @@
+<mj-text mj-class="h2" padding="0 0 14px">
+  <%= I18n.t("mailer.hello", username: @username) %>
+</mj-text>
+
+<mj-text>
+  <%= I18n.t("mailer.raffle.prize.body", raffle: @raffle.title) %>
+</mj-text>
+
+<%#
+  The code is read off the screen and typed into the RSI website, so it gets
+  the same display treatment as the account confirmation code.
+%>
+<mj-text mj-class="label"
+         font-size="22px"
+         letter-spacing="4px"
+         color="<%= MailerTheme::TEXT %>"
+         align="center"
+         padding="12px 0 16px">
+  <%= @code %>
+</mj-text>
+
+<mj-text mj-class="footer" padding="0 0 4px">
+  <%= I18n.t("mailer.raffle.prize.redeem") %>
+</mj-text>

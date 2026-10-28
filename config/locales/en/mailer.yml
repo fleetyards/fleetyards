@@ -2,11 +2,15 @@
 en:
   mailer:
     raffle:
-      verification_code:
-        subject: "Your verification code for %{raffle}"
-        body: "You told us on Discord that you won the raffle \"%{raffle}\". To prove that this email address is yours, send the code below to %{discord_handle} on Discord."
-        expires: "This code expires in 30 minutes."
-        not_you: "If you did not ask for this code, you can ignore this email."
+      claim:
+        subject: "You won the raffle: %{raffle}"
+        body: "Congratulations, you won the raffle \"%{raffle}\". Click the button below to claim your prize; we then send you the gift code by mail."
+        action: "Claim my prize"
+        deadline: "This link works until %{deadline}. If the prize is not claimed by then, it passes to the next in line."
+      prize:
+        subject: "Your gift code for %{raffle}"
+        body: "Here is your gift code for the raffle \"%{raffle}\":"
+        redeem: "Redeem it on the RSI website. Keep it to yourself: anyone with the code can redeem it."
     announcement:
       action: "Read more"
     account:

@@ -180,13 +180,15 @@ class Admin::Api::V1::RafflesTest < ActionDispatch::IntegrationTest
     sign_in @admin
     model = create(:model)
 
-    body = {title: "Win a Polaris", modelId: model.id, code: "ABCD-EFGH-1234", startsAt: 1.day.from_now.utc.iso8601, endsAt: 8.days.from_now.utc.iso8601, published: true}
+    body = {title: "Win a Polaris", modelId: model.id, code: "ABCD-EFGH-1234", startsAt: 1.day.from_now.utc.iso8601, runDays: 7, published: true}
 
     assert_api_response :post, 200, body: do
       assert_equal "Win a Polaris", parsed_body["title"]
       assert_equal model.slug, parsed_body.dig("prize", "slug")
       assert parsed_body["codeSet"]
-      assert_equal 14, parsed_body["claimPeriodDays"]
+      assert_equal 3, parsed_body["claimPeriodDays"]
+      assert_equal 7, parsed_body["runDays"]
+      assert_includes parsed_body.dig("socialPosts", "start"), "Win a Polaris"
       assert_not_includes response.body, "ABCD-EFGH-1234"
     end
   end
@@ -194,17 +196,17 @@ class Admin::Api::V1::RafflesTest < ActionDispatch::IntegrationTest
   test "POST /raffles rejects publishing without a code" do
     sign_in @admin
 
-    assert_api_response :post, 400, body: {title: "No code", startsAt: 1.day.from_now.utc.iso8601, endsAt: 8.days.from_now.utc.iso8601, published: true}
+    assert_api_response :post, 400, body: {title: "No code", startsAt: 1.day.from_now.utc.iso8601, runDays: 7, published: true}
   end
 
   test "POST /raffles returns 401 when not signed in" do
-    assert_api_response :post, 401, body: {title: "Test", startsAt: 1.day.from_now.utc.iso8601, endsAt: 2.days.from_now.utc.iso8601}
+    assert_api_response :post, 401, body: {title: "Test", startsAt: 1.day.from_now.utc.iso8601, runDays: 7}
   end
 
   test "POST /raffles returns 403 for admin without access" do
     sign_in create(:admin_user, resource_access: [])
 
-    assert_api_response :post, 403, body: {title: "Test", startsAt: 1.day.from_now.utc.iso8601, endsAt: 2.days.from_now.utc.iso8601}
+    assert_api_response :post, 403, body: {title: "Test", startsAt: 1.day.from_now.utc.iso8601, runDays: 7}
   end
 
   test "GET /raffles lists raffles" do
@@ -257,34 +259,52 @@ class Admin::Api::V1::RafflesTest < ActionDispatch::IntegrationTest
     raffle = create(:raffle, code: "KEEP-ME")
     sign_in @admin
 
-    assert_api_response :put, 200, path_params: {id: raffle.id}, body: {title: "Renamed", startsAt: raffle.starts_at.utc.iso8601, endsAt: raffle.ends_at.utc.iso8601} do
+    assert_api_response :put, 200, path_params: {id: raffle.id}, body: {title: "Renamed", startsAt: raffle.starts_at.utc.iso8601, runDays: raffle.run_days} do
       assert_equal "Renamed", parsed_body["title"]
     end
 
     assert_equal "KEEP-ME", raffle.reload.code
   end
 
+  test "PUT /raffles/:id replaces the gallery, shown in upload order" do
+    raffle = create(:raffle)
+    first, second = %w[first.png second.png].each_with_index.map do |filename, index|
+      travel(index.minutes) do
+        ActiveStorage::Blob.create_and_upload!(io: File.open(Rails.root.join("test/fixtures/files/test.png")), filename:, content_type: "image/png")
+      end
+    end
+    sign_in @admin
+
+    assert_api_response :put, 200, path_params: {id: raffle.id}, body: {title: raffle.title, startsAt: raffle.starts_at.utc.iso8601, runDays: raffle.run_days, images: [first.signed_id, second.signed_id]} do
+      assert_equal %w[first.png second.png], parsed_body["images"].map { |image| image["name"] }
+    end
+
+    assert_api_response :put, 200, path_params: {id: raffle.id}, body: {title: raffle.title, startsAt: raffle.starts_at.utc.iso8601, runDays: raffle.run_days, images: [second.signed_id]} do
+      assert_equal %w[second.png], parsed_body["images"].map { |image| image["name"] }
+    end
+  end
+
   test "PUT /raffles/:id refuses to change the code after the draw" do
     raffle = create(:raffle, :closed, drawn_at: 1.hour.ago)
     sign_in @admin
 
-    assert_api_response :put, 400, path_params: {id: raffle.id}, body: {title: raffle.title, code: "OTHER", startsAt: raffle.starts_at.utc.iso8601, endsAt: raffle.ends_at.utc.iso8601}
+    assert_api_response :put, 400, path_params: {id: raffle.id}, body: {title: raffle.title, code: "OTHER", startsAt: raffle.starts_at.utc.iso8601, runDays: raffle.run_days}
   end
 
   test "PUT /raffles/:id returns 404 for missing id" do
     sign_in @admin
 
-    assert_api_response :put, 404, path_params: {id: SecureRandom.uuid}, body: {title: "Test", startsAt: 1.day.from_now.utc.iso8601, endsAt: 2.days.from_now.utc.iso8601}
+    assert_api_response :put, 404, path_params: {id: SecureRandom.uuid}, body: {title: "Test", startsAt: 1.day.from_now.utc.iso8601, runDays: 7}
   end
 
   test "PUT /raffles/:id returns 401 when not signed in" do
-    assert_api_response :put, 401, path_params: {id: create(:raffle).id}, body: {title: "Test", startsAt: 1.day.from_now.utc.iso8601, endsAt: 2.days.from_now.utc.iso8601}
+    assert_api_response :put, 401, path_params: {id: create(:raffle).id}, body: {title: "Test", startsAt: 1.day.from_now.utc.iso8601, runDays: 7}
   end
 
   test "PUT /raffles/:id returns 403 for admin without access" do
     sign_in create(:admin_user, resource_access: [])
 
-    assert_api_response :put, 403, path_params: {id: create(:raffle).id}, body: {title: "Test", startsAt: 1.day.from_now.utc.iso8601, endsAt: 2.days.from_now.utc.iso8601}
+    assert_api_response :put, 403, path_params: {id: create(:raffle).id}, body: {title: "Test", startsAt: 1.day.from_now.utc.iso8601, runDays: 7}
   end
 
   test "DELETE /raffles/:id destroys a raffle not drawn yet" do
