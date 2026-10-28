@@ -379,12 +379,13 @@ class Notification < ApplicationRecord
       preference_defaults: {app: true, mail: true, push: false, discord: false}
     },
     # The claim deadline runs from the moment of the win, so every channel the
-    # winner might read is on by default.
+    # winner might read is on by default, except push, which is opt-in for
+    # every type.
     raffle_won: {
       retention: 90.days,
       channels: %i[app mail push discord],
       mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later },
-      preference_defaults: {app: true, mail: true, push: true, discord: true}
+      preference_defaults: {app: true, mail: true, push: false, discord: true}
     },
     # Sent to every user, so only the inbox is on by default: a mass mail or
     # push each time a raffle opens is what the opt-in exists to avoid.
