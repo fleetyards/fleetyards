@@ -553,20 +553,13 @@ class FleetMembership < ApplicationRecord
   end
 
   def broadcast_to_members
-    payload = to_jbuilder_hash
-    fleet.fleet_memberships.kept.includes(:user).find_each do |member|
-      FleetVehiclesChannel.broadcast_to(member.user, payload)
-    end
+    broadcast_to_fleet(to_jbuilder_hash, roster: false)
   end
 
   # Everything a quiet sweep's admissions left out of the members' views,
   # once for all of them.
   def broadcast_sweep_refresh
-    payload = to_jbuilder_hash
-    each_fleet_recipient do |user|
-      FleetMembersChannel.broadcast_to(user, payload)
-      FleetVehiclesChannel.broadcast_to(user, payload)
-    end
+    broadcast_to_fleet(to_jbuilder_hash)
   end
 
   def notify_new_member
@@ -619,34 +612,41 @@ class FleetMembership < ApplicationRecord
   def broadcast_update
     return if saved_change_to_discarded_at?
 
-    payload = to_jbuilder_hash
-
-    each_fleet_recipient do |user|
-      FleetMembersChannel.broadcast_to(user, payload)
-      FleetVehiclesChannel.broadcast_to(user, payload) if ships_filter_changed?
-    end
+    broadcast_to_fleet(to_jbuilder_hash, vehicles: ships_filter_changed?)
   end
 
   def broadcast_create
     payload = to_jbuilder_hash
 
-    each_fleet_recipient { |user| FleetMembersChannel.broadcast_to(user, payload) }
+    broadcast_to_fleet(payload, vehicles: false)
   end
 
   def broadcast_destroy
-    payload = to_jbuilder_hash
-
-    each_fleet_recipient do |user|
-      FleetMembersChannel.broadcast_to(user, payload)
-      FleetVehiclesChannel.broadcast_to(user, payload)
-    end
+    broadcast_to_fleet(to_jbuilder_hash)
   end
 
   # The users in one query rather than one per member: every squadron join or
   # rank change touches the membership and lands here, so a lookup per member
-  # made those writes scale with the size of the fleet.
-  private def each_fleet_recipient(&)
-    User.where(id: fleet.fleet_memberships.kept.select(:user_id)).find_each(&)
+  # made those writes scale with the size of the fleet. Invited, pending and
+  # declined rows share the table, so only accepted members who could read the
+  # page the payload refreshes are sent it.
+  private def broadcast_to_fleet(payload, roster: true, vehicles: true)
+    roster_roles = roster ? fleet_role_ids_with(:read_members) : []
+    vehicle_roles = vehicles ? fleet_role_ids_with(:read_vehicles) : []
+    return if roster_roles.empty? && vehicle_roles.empty?
+
+    role_by_user = fleet.fleet_memberships.kept.accepted
+      .where(fleet_role_id: roster_roles | vehicle_roles)
+      .pluck(:user_id, :fleet_role_id).to_h
+
+    User.where(id: role_by_user.keys).find_each do |user|
+      FleetMembersChannel.broadcast_to(user, payload) if roster_roles.include?(role_by_user[user.id])
+      FleetVehiclesChannel.broadcast_to(user, payload) if vehicle_roles.include?(role_by_user[user.id])
+    end
+  end
+
+  private def fleet_role_ids_with(capability)
+    fleet.fleet_roles.select { |role| role.has_access?(CAPABILITY_PRIVILEGES.fetch(capability)) }.map(&:id)
   end
 
   # The ordinary squadron this member already holds, if any. A member holds at
