@@ -24,4 +24,16 @@ class JSONSchemerResolveRefTest < ActiveSupport::TestCase
     assert_same first, second
     refute_same @schema, second
   end
+
+  test "validates an OpenAPI document after another thread resolved the meta-schema's root ref" do
+    document = JSONSchemer.openapi31_document
+    then_keyword = document.parsed.fetch("allOf").parsed.first.parsed.fetch("then")
+    openapi_root = then_keyword.parsed_schema.parsed.fetch("$ref").ref_schema
+    extensions_ref = openapi_root.parsed.fetch("$ref")
+    extensions_ref.instance_variable_set(:@ref_schema, nil)
+
+    openapi_root.root.resolve_ref(extensions_ref.ref_uri)
+
+    assert_empty document.validate({"openapi" => "3.1.0", "info" => {"title" => "t", "version" => "1"}, "paths" => {}}).to_a
+  end
 end
