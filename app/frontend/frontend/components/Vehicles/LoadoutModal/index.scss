@@ -23,16 +23,15 @@
     background-position: right center;
     background-size: contain;
     mask-image: linear-gradient(90deg, transparent 0%, black 45%);
-    opacity: 0.85;
+    opacity: 0;
     pointer-events: none;
     content: "";
     transition: opacity 600ms ease;
   }
 
-  // The render gives way to the ship's holo once it is in, the one fading into
-  // the other.
-  &--holo::before {
-    opacity: 0;
+  // Held back until it is clear the ship has no holo to show instead.
+  &--render::before {
+    opacity: 0.85;
   }
 
   :deep(.tab-anchor__content > i) {
