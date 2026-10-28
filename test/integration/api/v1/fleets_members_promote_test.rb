@@ -75,4 +75,32 @@ class Api::V1::FleetsMembersPromoteTest < ActionDispatch::IntegrationTest
       headers: oauth_headers_for(@admin, scopes: ["fleet", "fleet:write"]),
       body: {}
   end
+
+  test "PUT /fleets/:slug/members/:username/promote lets an officer promote a member to officer" do
+    officer = create(:user)
+    @fleet.fleet_memberships.create!(user: officer, fleet_role: @fleet.fleet_roles.ranked.second, aasm_state: :accepted)
+    sign_in officer
+
+    assert_api_response :put, 200, path_params: {fleetSlug: @fleet.slug, username: @member.username}, body: {}
+  end
+
+  test "PUT /fleets/:slug/members/:username/promote refuses an officer promoting itself" do
+    officer = create(:user)
+    membership = @fleet.fleet_memberships.create!(user: officer, fleet_role: @fleet.fleet_roles.ranked.second, aasm_state: :accepted)
+    sign_in officer
+
+    assert_api_response :put, 403, path_params: {fleetSlug: @fleet.slug, username: officer.username}, body: {}
+    assert_not membership.reload.fleet_role.permanent?
+  end
+
+  test "PUT /fleets/:slug/members/:username/promote refuses an officer promoting another officer to admin" do
+    officer = create(:user)
+    other = create(:user)
+    @fleet.fleet_memberships.create!(user: officer, fleet_role: @fleet.fleet_roles.ranked.second, aasm_state: :accepted)
+    target = @fleet.fleet_memberships.create!(user: other, fleet_role: @fleet.fleet_roles.ranked.second, aasm_state: :accepted)
+    sign_in officer
+
+    assert_api_response :put, 403, path_params: {fleetSlug: @fleet.slug, username: other.username}, body: {}
+    assert_not target.reload.fleet_role.permanent?
+  end
 end

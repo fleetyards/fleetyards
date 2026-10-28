@@ -80,4 +80,17 @@ class Api::V1::FleetsMembersDemoteTest < ActionDispatch::IntegrationTest
       headers: oauth_headers_for(@admin, scopes: ["fleet", "fleet:write"]),
       body: {}
   end
+
+  test "PUT /fleets/:slug/members/:username/demote refuses an officer demoting an admin" do
+    sign_in @officer
+
+    assert_api_response :put, 403, path_params: {fleetSlug: @fleet.slug, username: @admin.username}, body: {}
+    assert @admin.fleet_memberships.kept.find_by(fleet: @fleet).fleet_role.permanent?
+  end
+
+  test "PUT /fleets/:slug/members/:username/demote refuses an officer demoting itself" do
+    sign_in @officer
+
+    assert_api_response :put, 403, path_params: {fleetSlug: @fleet.slug, username: @officer.username}, body: {}
+  end
 end
