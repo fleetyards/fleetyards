@@ -684,6 +684,24 @@ class FleetMembership < ApplicationRecord
     update(fleet_role: prev_fleet_role)
   end
 
+  # Whether this member may move `other` one rank up or down. fleet:manage
+  # moves anyone; otherwise never oneself and never above one's own rank, or
+  # an Officer could promote itself into the permanent Admin role and then
+  # demote the admins. `ranked` is passed in so a roster loads the roles once.
+  def may_change_rank_of?(other, direction, ranked: fleet.fleet_roles.ranked.to_a)
+    return false unless accepted? && kept? && other.fleet_id == fleet_id
+    return false unless has_access?(CAPABILITY_PRIVILEGES.fetch(:update_members))
+    return true if has_access?(["fleet:manage"])
+    return false if other.user_id == user_id
+
+    own_index = ranked.index(fleet_role)
+    other_index = ranked.index(other.fleet_role)
+    return false if own_index.nil? || other_index.nil?
+
+    target_index = (direction == :promote) ? other_index - 1 : other_index
+    target_index >= 0 && target_index >= own_index
+  end
+
   def next_fleet_role
     ranked_roles, index = ranked_roles_and_index
     return if index.nil? || index - 1 < 0

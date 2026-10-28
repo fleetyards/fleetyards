@@ -22,21 +22,12 @@ class FleetMembershipPolicy < FleetBasePolicy
     accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:memberships:manage", "fleet:memberships:update"])
   end
 
-  # Without fleet:manage a caller never changes its own rank and never moves
-  # anyone above its own rank. Otherwise an Officer could promote itself into
-  # the permanent Admin role and then demote the admins.
   def promote?
-    return false unless change_ranks?
-    return true if manages_fleet?
-
-    !own_membership? && not_above_caller?(record.next_fleet_role)
+    accepted_fleet_membership&.may_change_rank_of?(record, :promote) || false
   end
 
   def demote?
-    return false unless change_ranks?
-    return true if manages_fleet?
-
-    !own_membership? && not_above_caller?(record.fleet_role)
+    accepted_fleet_membership&.may_change_rank_of?(record, :demote) || false
   end
 
   alias_rule :remind_verification?, to: :health?
@@ -74,26 +65,5 @@ class FleetMembershipPolicy < FleetBasePolicy
     end
 
     params.permit(*allowed_params.flatten)
-  end
-
-  private def change_ranks?
-    accepted_fleet_membership&.has_access?(["fleet:manage", "fleet:memberships:manage", "fleet:memberships:update"]) || false
-  end
-
-  private def manages_fleet?
-    accepted_fleet_membership.has_access?(["fleet:manage"])
-  end
-
-  private def own_membership?
-    record.user_id == user.id
-  end
-
-  private def not_above_caller?(role)
-    return false if role.blank?
-
-    ranked = record.fleet.fleet_roles.ranked.to_a
-    caller_index = ranked.index(accepted_fleet_membership.fleet_role)
-    role_index = ranked.index(role)
-    caller_index.present? && role_index.present? && role_index >= caller_index
   end
 end
