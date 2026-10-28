@@ -74,7 +74,25 @@
         "cover": "封面",
         "socialPosts": "X 貼文",
         "claimedInfo": "於 %{date} 領取。禮品碼郵件：%{mail}。",
-        "claimPending": "領取連結已寄至 %{email}（%{mail}）。領取期限於 %{date} 結束。"
+        "claimPending": "領取連結已寄至 %{email}（%{mail}）。領取期限於 %{date} 結束。",
+        "overview": {
+          "title": "概覽",
+          "prize": "獎品",
+          "code": "禮品碼",
+          "noCode": "未設定",
+          "startsAt": "開始",
+          "endsAt": "結束",
+          "runDays": "持續時間",
+          "claimPeriodDays": "領獎期限",
+          "days": "%{days} 天",
+          "startAnnouncedAt": "開始通知",
+          "lastDayAnnouncedAt": "最後一天提醒",
+          "drawnAt": "已開獎",
+          "drawnBy": "%{date}，由 %{admin}",
+          "concludedAt": "已結束",
+          "publicPage": "開啟公開頁面",
+          "noImages": "尚無圖片。發布需要至少一張。"
+        }
       },
       "raffleEntry": {
         "username": "參加者",

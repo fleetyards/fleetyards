@@ -74,7 +74,25 @@
         "cover": "Couverture",
         "socialPosts": "Publications pour X",
         "claimedInfo": "Réclamé le %{date}. E-mail du code cadeau : %{mail}.",
-        "claimPending": "Lien de réclamation envoyé à %{email} (%{mail}). La période de réclamation se termine le %{date}."
+        "claimPending": "Lien de réclamation envoyé à %{email} (%{mail}). La période de réclamation se termine le %{date}.",
+        "overview": {
+          "title": "Aperçu",
+          "prize": "Lot",
+          "code": "Code cadeau",
+          "noCode": "Non défini",
+          "startsAt": "Ouverture",
+          "endsAt": "Clôture",
+          "runDays": "Durée",
+          "claimPeriodDays": "Délai pour réclamer",
+          "days": "%{days} jours",
+          "startAnnouncedAt": "Ouverture annoncée",
+          "lastDayAnnouncedAt": "Rappel du dernier jour",
+          "drawnAt": "Tiré au sort",
+          "drawnBy": "%{date} par %{admin}",
+          "concludedAt": "Terminé",
+          "publicPage": "Ouvrir la page publique",
+          "noImages": "Aucune image. Il en faut une pour publier."
+        }
       },
       "raffleEntry": {
         "username": "Participant",

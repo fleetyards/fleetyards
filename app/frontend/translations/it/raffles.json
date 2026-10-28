@@ -74,7 +74,25 @@
         "cover": "Copertina",
         "socialPosts": "Post per X",
         "claimedInfo": "Ritirato il %{date}. Email del codice regalo: %{mail}.",
-        "claimPending": "Link di ritiro inviato a %{email} (%{mail}). Il periodo di ritiro termina il %{date}."
+        "claimPending": "Link di ritiro inviato a %{email} (%{mail}). Il periodo di ritiro termina il %{date}.",
+        "overview": {
+          "title": "Panoramica",
+          "prize": "Premio",
+          "code": "Codice regalo",
+          "noCode": "Non impostato",
+          "startsAt": "Apertura",
+          "endsAt": "Chiusura",
+          "runDays": "Durata",
+          "claimPeriodDays": "Termine per il ritiro",
+          "days": "%{days} giorni",
+          "startAnnouncedAt": "Apertura annunciata",
+          "lastDayAnnouncedAt": "Promemoria ultimo giorno",
+          "drawnAt": "Estratto",
+          "drawnBy": "%{date} da %{admin}",
+          "concludedAt": "Concluso",
+          "publicPage": "Apri la pagina pubblica",
+          "noImages": "Nessuna immagine. Ne serve una per pubblicare."
+        }
       },
       "raffleEntry": {
         "username": "Partecipante",

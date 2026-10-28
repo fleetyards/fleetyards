@@ -11,6 +11,7 @@ import HeadingSmall from "@/shared/components/base/Heading/Small/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import Alert from "@/shared/components/base/Alert/index.vue";
 import { AlertVariantsEnum } from "@/shared/components/base/Alert/types";
+import RaffleOverview from "@/admin/components/Raffles/Overview/index.vue";
 import AnnouncementManualPosts from "@/admin/components/Announcements/ManualPosts/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import BaseTable from "@/shared/components/base/Table/index.vue";
@@ -166,6 +167,8 @@ const entryState = (entry: RaffleEntry) => {
       {{ t("labels.raffle.entriesCountValue", { count: raffle.entriesCount }) }}
     </HeadingSmall>
   </Heading>
+
+  <RaffleOverview :raffle="raffle" />
 
   <Teleport to="#header-right">
     <template v-if="isDraft">

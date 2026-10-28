@@ -74,7 +74,25 @@
         "cover": "Titelbild",
         "socialPosts": "Beiträge für X",
         "claimedInfo": "Abgeholt am %{date}. Mail mit dem Geschenkcode: %{mail}.",
-        "claimPending": "Abhol-Link an %{email} gesendet (%{mail}). Die Abholfrist endet am %{date}."
+        "claimPending": "Abhol-Link an %{email} gesendet (%{mail}). Die Abholfrist endet am %{date}.",
+        "overview": {
+          "title": "Übersicht",
+          "prize": "Gewinn",
+          "code": "Geschenkcode",
+          "noCode": "Nicht gesetzt",
+          "startsAt": "Beginn",
+          "endsAt": "Ende",
+          "runDays": "Laufzeit",
+          "claimPeriodDays": "Frist zum Abholen",
+          "days": "%{days} Tage",
+          "startAnnouncedAt": "Start angekündigt",
+          "lastDayAnnouncedAt": "Erinnerung letzter Tag",
+          "drawnAt": "Ausgelost",
+          "drawnBy": "%{date} von %{admin}",
+          "concludedAt": "Abgeschlossen",
+          "publicPage": "Öffentliche Seite öffnen",
+          "noImages": "Noch keine Bilder. Zum Veröffentlichen ist eins nötig."
+        }
       },
       "raffleEntry": {
         "username": "Teilnehmer",

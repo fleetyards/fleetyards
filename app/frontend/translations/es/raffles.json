@@ -74,7 +74,25 @@
         "cover": "Portada",
         "socialPosts": "Publicaciones para X",
         "claimedInfo": "Reclamado el %{date}. Correo con el código de regalo: %{mail}.",
-        "claimPending": "Enlace de reclamación enviado a %{email} (%{mail}). El plazo para reclamar termina el %{date}."
+        "claimPending": "Enlace de reclamación enviado a %{email} (%{mail}). El plazo para reclamar termina el %{date}.",
+        "overview": {
+          "title": "Resumen",
+          "prize": "Premio",
+          "code": "Código de regalo",
+          "noCode": "Sin definir",
+          "startsAt": "Inicio",
+          "endsAt": "Cierre",
+          "runDays": "Duración",
+          "claimPeriodDays": "Plazo para reclamar",
+          "days": "%{days} días",
+          "startAnnouncedAt": "Inicio anunciado",
+          "lastDayAnnouncedAt": "Recordatorio del último día",
+          "drawnAt": "Sorteado",
+          "drawnBy": "%{date} por %{admin}",
+          "concludedAt": "Finalizado",
+          "publicPage": "Abrir la página pública",
+          "noImages": "Aún no hay imágenes. Se necesita una para publicar."
+        }
       },
       "raffleEntry": {
         "username": "Participante",

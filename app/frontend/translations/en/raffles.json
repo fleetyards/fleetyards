@@ -74,7 +74,25 @@
         "cover": "Cover",
         "socialPosts": "Posts for X",
         "claimedInfo": "Claimed on %{date}. Gift code mail: %{mail}.",
-        "claimPending": "Claim link mailed to %{email} (%{mail}). Claim period ends %{date}."
+        "claimPending": "Claim link mailed to %{email} (%{mail}). Claim period ends %{date}.",
+        "overview": {
+          "title": "Overview",
+          "prize": "Prize",
+          "code": "Gift code",
+          "noCode": "Not set",
+          "startsAt": "Opens",
+          "endsAt": "Closes",
+          "runDays": "Run length",
+          "claimPeriodDays": "Claim period",
+          "days": "%{days} days",
+          "startAnnouncedAt": "Start announced",
+          "lastDayAnnouncedAt": "Last-day reminder",
+          "drawnAt": "Drawn",
+          "drawnBy": "%{date} by %{admin}",
+          "concludedAt": "Concluded",
+          "publicPage": "Open the public page",
+          "noImages": "No images yet. A raffle needs one to be published."
+        }
       },
       "raffleEntry": {
         "username": "Entrant",

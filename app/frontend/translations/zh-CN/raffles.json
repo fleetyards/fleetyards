@@ -74,7 +74,25 @@
         "cover": "封面",
         "socialPosts": "X 帖子",
         "claimedInfo": "于 %{date} 领取。礼品码邮件：%{mail}。",
-        "claimPending": "领取链接已发送至 %{email}（%{mail}）。领取期限于 %{date} 结束。"
+        "claimPending": "领取链接已发送至 %{email}（%{mail}）。领取期限于 %{date} 结束。",
+        "overview": {
+          "title": "概览",
+          "prize": "奖品",
+          "code": "礼品码",
+          "noCode": "未设置",
+          "startsAt": "开始",
+          "endsAt": "结束",
+          "runDays": "持续时间",
+          "claimPeriodDays": "领奖期限",
+          "days": "%{days} 天",
+          "startAnnouncedAt": "开始通知",
+          "lastDayAnnouncedAt": "最后一天提醒",
+          "drawnAt": "已开奖",
+          "drawnBy": "%{date}，由 %{admin}",
+          "concludedAt": "已结束",
+          "publicPage": "打开公开页面",
+          "noImages": "还没有图片。发布需要至少一张。"
+        }
       },
       "raffleEntry": {
         "username": "参与者",
