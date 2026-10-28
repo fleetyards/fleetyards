@@ -58,7 +58,7 @@ const { data: entrants } = useRaffleEntrants(() => props.raffleId, params);
         >
           {{ entrant.username }}
           <span class="raffle-entrants__dim">
-            {{ l(entrant.enteredAt, "date.formats.short") }}
+            {{ l(entrant.enteredAt, "datetime.formats.date") }}
           </span>
         </li>
       </ul>
