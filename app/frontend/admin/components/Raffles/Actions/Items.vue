@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import {
   type Raffle,
+  RaffleStatusEnum,
   useDestroyRaffle,
   getRafflesQueryKey,
 } from "@/services/fyAdminApi";
@@ -28,6 +29,9 @@ const props = withDefaults(defineProps<Props>(), {
 const { t } = useI18n();
 const { displayConfirm, displaySuccess } = useAppNotifications();
 const queryClient = useQueryClient();
+
+// Once published, entrants have accepted the raffle as it stands.
+const isDraft = computed(() => props.raffle.status === RaffleStatusEnum.DRAFT);
 
 const destroyMutation = useDestroyRaffle({
   mutation: {
@@ -57,6 +61,7 @@ const destroy = () => {
     <span v-if="withLabels">{{ t("actions.raffle.entries") }}</span>
   </Btn>
   <Btn
+    v-if="isDraft"
     v-tooltip="!withLabels && t('actions.edit')"
     :to="{ name: 'admin-raffle-edit', params: { id: props.raffle.id } }"
   >
@@ -64,7 +69,7 @@ const destroy = () => {
     <span v-if="withLabels">{{ t("actions.edit") }}</span>
   </Btn>
   <Btn
-    v-if="!props.raffle.drawnAt"
+    v-if="isDraft"
     v-tooltip="!withLabels && t('actions.delete')"
     :tone="BtnTonesEnum.DANGER"
     @click="destroy"

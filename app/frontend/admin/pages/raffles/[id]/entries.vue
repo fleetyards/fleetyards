@@ -17,12 +17,14 @@ import BaseTable from "@/shared/components/base/Table/index.vue";
 import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
+import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import {
   type Raffle,
   type RaffleEntry,
   RaffleStatusEnum,
   useRaffleEntries,
   useDrawRaffle,
+  useDestroyRaffle,
   getRaffleQueryKey,
   getRafflesQueryKey,
   getRaffleEntriesQueryKey,
@@ -65,6 +67,32 @@ const invalidate = () =>
   ]);
 
 const drawMutation = useDrawRaffle({ mutation: { onSettled: invalidate } });
+const destroyMutation = useDestroyRaffle();
+
+const router = useRouter();
+
+const isDraft = computed(() => props.raffle.status === RaffleStatusEnum.DRAFT);
+
+const destroy = () => {
+  displayConfirm({
+    tone: AppConfirmTonesEnum.DANGER,
+    text: t("messages.confirm.raffle.destroy"),
+    onConfirm: async () => {
+      await destroyMutation
+        .mutateAsync({ id: props.raffle.id })
+        .then(async () => {
+          await queryClient.invalidateQueries({
+            queryKey: getRafflesQueryKey(),
+          });
+          displaySuccess({ text: t("messages.raffle.destroyed") });
+          await router.push({ name: "admin-raffles" });
+        })
+        .catch((error) => {
+          displayAlert({ text: error.response?.data?.message });
+        });
+    },
+  });
+};
 const winner = computed(() => props.raffle.currentWinner);
 
 const draw = () => {
@@ -140,6 +168,26 @@ const entryState = (entry: RaffleEntry) => {
   </Heading>
 
   <Teleport to="#header-right">
+    <template v-if="isDraft">
+      <Btn
+        class="navigation-header-pinned"
+        :to="{ name: 'admin-raffle-edit', params: { id: raffle.id } }"
+        data-test="raffle-edit"
+      >
+        <i class="fa-duotone fa-pen-to-square" />
+        {{ t("actions.edit") }}
+      </Btn>
+      <Btn
+        class="navigation-header-pinned"
+        :tone="BtnTonesEnum.DANGER"
+        :loading="destroyMutation.isPending.value"
+        data-test="raffle-delete"
+        @click="destroy"
+      >
+        <i class="fa-duotone fa-trash" />
+        {{ t("actions.delete") }}
+      </Btn>
+    </template>
     <Btn
       v-if="raffle.status === RaffleStatusEnum.CLOSED"
       class="navigation-header-pinned"
