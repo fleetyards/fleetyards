@@ -215,9 +215,12 @@ const isMetric = computed(() => props.tone === PanelHeadingTonesEnum.METRIC);
 /*
  * Centred on the label rather than pinned to the top corner: a metric head is
  * one short line, so there is no taller block for the actions to top-align to.
+ * The chips wrap within the card once they no longer fit beside the title -
+ * the base card can carry five, which outrun a narrow column.
  */
 .panel-heading--metric .panel-heading__actions {
-  @apply self-auto;
+  @apply min-w-0 shrink flex-wrap self-auto;
+  row-gap: 8px;
   margin: 0;
 }
 
