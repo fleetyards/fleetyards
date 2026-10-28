@@ -24,6 +24,6 @@
            label: I18n.t("mailer.raffle.prize.action"),
            tone: :primary %>
 
-<mj-text mj-class="footer" padding="0 0 4px">
+<mj-text mj-class="footer" padding="16px 0 4px">
   <%= I18n.t("mailer.raffle.prize.redeem") %>
 </mj-text>

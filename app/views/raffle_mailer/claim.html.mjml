@@ -11,6 +11,6 @@
            label: I18n.t("mailer.raffle.claim.action"),
            tone: :primary %>
 
-<mj-text mj-class="footer" padding="0 0 4px">
+<mj-text mj-class="footer" padding="16px 0 4px">
   <%= I18n.t("mailer.raffle.claim.deadline", deadline: I18n.l(@entry.claim_deadline_at, format: :long)) %>
 </mj-text>
