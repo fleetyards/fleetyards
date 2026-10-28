@@ -8,6 +8,13 @@ require "json_schemer"
 # `$ref` one after the other: the second sees "#/$defs/..." already removed and
 # gets the document root back. The OpenAPI schema's root carries such a `$ref`,
 # so the root then refers to itself and validation ends in a SystemStackError.
+#
+# A newer release may change resolve_ref's signature or stop mutating its
+# argument, so it has to be checked against this before the patch is kept.
+unless JSONSchemer::VERSION == "2.5.0"
+  raise "json_schemer #{JSONSchemer::VERSION} is not the version #{__FILE__} guards resolve_ref for"
+end
+
 module CoreExtensions
   module JSONSchemer
     module ResolveRef
