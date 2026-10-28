@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.26.1](https://github.com/fleetyards/fleetyards/compare/v9.26.0...v9.26.1) (2026-10-28)
+
+
+### Bug Fixes
+
+* **api:** stop concurrent ref resolution looping the OpenAPI validation ([#6033](https://github.com/fleetyards/fleetyards/issues/6033)) ([8b0b69e](https://github.com/fleetyards/fleetyards/commit/8b0b69e06da750f4399f0945ee788b94bcaf8d3f))
+* **fleets:** link a Discord server only for someone who runs it ([365ea3e](https://github.com/fleetyards/fleetyards/commit/365ea3e103a3043dc47f53da92c8c80a3b5e5dba))
+* **hangar:** filter public hangars only on names and groups the owner shows ([d395f77](https://github.com/fleetyards/fleetyards/commit/d395f77f81bdcc50add8f1cb919339b5d510d9c0))
+* **loadouts:** fade the editor's angled render in only once no holo is coming ([#6031](https://github.com/fleetyards/fleetyards/issues/6031)) ([8e7fda7](https://github.com/fleetyards/fleetyards/commit/8e7fda7c46ad98875efd1de8037ed38c889fe46f))
+* **raffles:** keep maintainers out of raffles ([#6030](https://github.com/fleetyards/fleetyards/issues/6030)) ([977ed43](https://github.com/fleetyards/fleetyards/commit/977ed435572cfac2c2be37eae713e9e55c15ddce))
+* **raffles:** one mail per win, redeem link, claim redirect and an ended-raffle banner ([#6034](https://github.com/fleetyards/fleetyards/issues/6034)) ([d0b462f](https://github.com/fleetyards/fleetyards/commit/d0b462fc6ef68f59e626bfd9de92616009402e5e))
+
+
+### Chores
+
+* **skills:** add the security-audit agent skill ([52240fa](https://github.com/fleetyards/fleetyards/commit/52240fa303f9095061ad3e8cc0634430c6f9d34a))
+
 ## [9.26.0](https://github.com/fleetyards/fleetyards/compare/v9.25.0...v9.26.0) (2026-10-28)
 
 
