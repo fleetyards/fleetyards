@@ -32,7 +32,7 @@ module Api
       def entrants
         @entries = @raffle.entries
           .includes(:user)
-          .order(:created_at)
+          .order(created_at: :desc)
           .page(page_params)
           .per(per_page(RaffleEntry))
       end

@@ -13,7 +13,7 @@ module Admin
         def index
           @entries = @raffle.entries
             .includes(:user)
-            .order(Arel.sql("draw_position ASC NULLS LAST, created_at ASC"))
+            .order(Arel.sql("draw_position ASC NULLS LAST, created_at DESC"))
             .page(page_params)
             .per(per_page(RaffleEntry))
         end
