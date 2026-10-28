@@ -46,6 +46,23 @@ module Api
         @members = result_with_pagination(result, per_page(FleetMembership))
       end
 
+      # Whether the reader may move a row one rank up or down, asked by the
+      # roster partial outside its cached fragment, since the answer depends on
+      # the reader's own rank. Nil when there is nobody to answer for.
+      def rank_actions_for(member)
+        unless defined?(@rank_reader)
+          @rank_reader = current_resource_owner&.fleet_memberships&.kept&.accepted&.find_by(fleet_id: member.fleet_id)
+        end
+        return if @rank_reader.nil? || @rank_reader.fleet_id != member.fleet_id
+
+        @ranked_roles ||= @rank_reader.fleet.fleet_roles.ranked.to_a
+
+        {
+          promote: @rank_reader.may_change_rank_of?(member, :promote, ranked: @ranked_roles),
+          demote: @rank_reader.may_change_rank_of?(member, :demote, ranked: @ranked_roles)
+        }
+      end
+
       # `set_member` has already found and authorized it. Reading one member on
       # its own is what a notification about a membership needs: it links to a
       # request that may long since have been answered, and the answer is the

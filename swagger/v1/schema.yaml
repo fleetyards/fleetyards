@@ -31209,6 +31209,10 @@ components:
           type: boolean
         isDestroyAllowed:
           type: boolean
+        canPromote:
+          type: boolean
+        canDemote:
+          type: boolean
         capabilities:
           "$ref": "#/components/schemas/FleetMembershipCapabilities"
         hangarUpdatedAt:

@@ -49,6 +49,10 @@ module V1
             currentLocation: {anyOf: [::Shared::V1::Schemas::LocationLink, {type: :null}]},
             online: {type: :boolean},
             isDestroyAllowed: {type: :boolean},
+            # Whether the reader may promote or demote this member. Only on
+            # the roster, and only for a reader who is in the fleet.
+            canPromote: {type: :boolean},
+            canDemote: {type: :boolean},
             capabilities: ::V1::Schemas::Fleets::FleetMembershipCapabilities,
             hangarUpdatedAt: {type: :string, format: "date-time"},
             lastActiveAt: {type: :string, format: "date-time"},

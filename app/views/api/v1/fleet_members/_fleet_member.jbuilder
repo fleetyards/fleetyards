@@ -56,6 +56,14 @@ json.online online unless online.nil?
 
 json.is_destroy_allowed(local_assigns.fetch(:is_destroy_allowed, false))
 
+# Outside the fragment too: whether the reader may move this member depends on
+# the reader's own rank. Absent where nobody is reading, as on a broadcast.
+rank_actions = controller.rank_actions_for(member) if controller.respond_to?(:rank_actions_for)
+if rank_actions
+  json.can_promote rank_actions[:promote]
+  json.can_demote rank_actions[:demote]
+end
+
 if local_assigns.fetch(:with_capabilities, false)
   json.capabilities member.capabilities.transform_keys { |key| key.to_s.camelize(:lower) }
 end

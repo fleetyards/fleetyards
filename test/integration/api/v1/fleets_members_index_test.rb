@@ -514,4 +514,30 @@ class Api::V1::FleetsMembersIndexTest < ActionDispatch::IntegrationTest
     badge = response.parsed_body["items"].find { |entry| entry["username"] == @member.username }["squadrons"]
     assert_equal [squadron.slug], badge.pluck("slug")
   end
+
+  test "GET /fleets/:slug/members tells an officer which rows it may move" do
+    officer = create(:user)
+    other_officer = create(:user)
+    fleet = create(:fleet, admins: [@admin], officers: [officer, other_officer], members: [@member])
+    sign_in officer
+
+    get "/api/v1/fleets/#{fleet.slug}/members", as: :json
+
+    rows = response.parsed_body["items"].index_by { |row| row["username"] }
+    actions = ->(user) { rows.fetch(user.username).slice("canPromote", "canDemote") }
+
+    assert_equal({"canPromote" => false, "canDemote" => false}, actions.call(@admin))
+    assert_equal({"canPromote" => false, "canDemote" => true}, actions.call(other_officer))
+    assert_equal({"canPromote" => false, "canDemote" => false}, actions.call(officer))
+    assert_equal({"canPromote" => true, "canDemote" => true}, actions.call(@member))
+  end
+
+  test "GET /fleets/:slug/members lets an admin move every row" do
+    sign_in @admin
+
+    get "/api/v1/fleets/#{@fleet.slug}/members", as: :json
+
+    rows = response.parsed_body["items"]
+    assert(rows.all? { |row| row["canPromote"] && row["canDemote"] })
+  end
 end

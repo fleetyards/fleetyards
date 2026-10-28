@@ -62,6 +62,12 @@ const canUpdateMembers = computed(() => {
   return false;
 });
 
+// The server answers per row: it depends on the reader's rank as well as the
+// member's, which the client does not know.
+const canPromote = computed(() => props.member.canPromote ?? false);
+
+const canDemote = computed(() => props.member.canDemote ?? false);
+
 // Unlike promote/demote, this is not self-excluded: the server lets anyone with
 // membership-update access set a nickname, their own included.
 const canUpdateNickname = computed(
@@ -266,8 +272,8 @@ const declineRequest = async () => {
   </Btn>
   <Btn
     v-if="member.fleetRole?.slug !== 'admin' && member.status === 'accepted'"
-    v-tooltip="canDeleteMembers && t('actions.fleet.members.promote')"
-    :disabled="!canDeleteMembers || updating"
+    v-tooltip="canPromote && t('actions.fleet.members.promote')"
+    :disabled="!canPromote || updating"
     @click="promoteMember"
   >
     <i class="fa-light fa-chevron-up" />
@@ -275,8 +281,8 @@ const declineRequest = async () => {
   </Btn>
   <Btn
     v-if="member.fleetRole?.slug !== 'member' && member.status === 'accepted'"
-    v-tooltip="canDeleteMembers && t('actions.fleet.members.demote')"
-    :disabled="!canDeleteMembers || updating"
+    v-tooltip="canDemote && t('actions.fleet.members.demote')"
+    :disabled="!canDemote || updating"
     @click="demoteMember"
   >
     <i class="fa-light fa-chevron-down" />
