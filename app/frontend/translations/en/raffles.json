@@ -11,7 +11,10 @@
           "entries": "Raffle Entries"
         }
       },
-      "raffleClaim": "Claim prize"
+      "raffleClaim": "Claim prize",
+      "settings": {
+        "raffles": "My raffles"
+      }
     },
     "title": {
       "raffles": "Raffles",
@@ -24,7 +27,10 @@
           "entries": "Raffle Entries"
         }
       },
-      "raffleClaim": "Claim prize"
+      "raffleClaim": "Claim prize",
+      "settings": {
+        "raffles": "My raffles"
+      }
     },
     "headlines": {
       "admin": {
@@ -34,6 +40,9 @@
           "edit": "Edit Raffle",
           "entries": "Raffle Entries"
         }
+      },
+      "settings": {
+        "raffles": "My raffles"
       }
     },
     "labels": {
@@ -296,6 +305,20 @@
           "other": "opens in %{count} days"
         },
         "opensToday": "opens today"
+      },
+      "mine": {
+        "raffle": "Raffle",
+        "enteredAt": "Entered",
+        "outcome": "Result",
+        "claimBy": "Check your mail and claim by %{date}",
+        "outcomes": {
+          "open": "Open",
+          "waiting": "Waiting for the draw",
+          "won": "Won",
+          "claimed": "Claimed",
+          "forfeited": "Not claimed in time",
+          "not_won": "Not won"
+        }
       }
     }
   }

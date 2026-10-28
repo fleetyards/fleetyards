@@ -16910,6 +16910,43 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/my-raffle-entries":
+    get:
+      summary: My raffle entries
+      tags:
+      - Raffles
+      operationId: myRaffleEntries
+      parameters:
+      - "$ref": "#/components/parameters/PageParameter"
+      - name: perPage
+        in: query
+        schema:
+          type: string
+          default: 50
+        required: false
+      security:
+      - SessionCookie: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/MyRaffleEntries"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: forbidden
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/notification-preferences":
     get:
       summary: List notification preferences
@@ -42334,6 +42371,56 @@ components:
       - totalCount
       - items
       title: MyPatchChanges
+    MyRaffleEntries:
+      type: object
+      properties:
+        meta:
+          "$ref": "#/components/schemas/Meta"
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/MyRaffleEntry"
+      additionalProperties: false
+      required:
+      - meta
+      - items
+      title: MyRaffleEntries
+    MyRaffleEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        raffleId:
+          type: string
+          format: uuid
+        raffleTitle:
+          type: string
+        prize:
+          type: string
+        raffleStatus:
+          "$ref": "#/components/schemas/RaffleStatusEnum"
+        endsAt:
+          type: string
+          format: date-time
+        enteredAt:
+          type: string
+          format: date-time
+        outcome:
+          "$ref": "#/components/schemas/RaffleEntryOutcomeEnum"
+        claimDeadlineAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - raffleId
+      - raffleTitle
+      - raffleStatus
+      - endsAt
+      - enteredAt
+      - outcome
+      title: MyRaffleEntry
     MySupportedFleet:
       type: object
       properties:
@@ -44570,6 +44657,23 @@ components:
       required:
       - conditionsAccepted
       title: RaffleEntryInput
+    RaffleEntryOutcomeEnum:
+      type: string
+      enum:
+      - open
+      - waiting
+      - won
+      - claimed
+      - forfeited
+      - not_won
+      x-enumNames:
+      - OPEN
+      - WAITING
+      - WON
+      - CLAIMED
+      - FORFEITED
+      - NOT_WON
+      title: RaffleEntryOutcomeEnum
     RaffleStatusEnum:
       type: string
       enum:

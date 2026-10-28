@@ -11,7 +11,10 @@
           "entries": "Participations au tirage au sort"
         }
       },
-      "raffleClaim": "Réclamer le prix"
+      "raffleClaim": "Réclamer le prix",
+      "settings": {
+        "raffles": "Mes tirages au sort"
+      }
     },
     "title": {
       "raffles": "Tirages au sort",
@@ -24,7 +27,10 @@
           "entries": "Participations au tirage au sort"
         }
       },
-      "raffleClaim": "Réclamer le prix"
+      "raffleClaim": "Réclamer le prix",
+      "settings": {
+        "raffles": "Mes tirages au sort"
+      }
     },
     "headlines": {
       "admin": {
@@ -34,6 +40,9 @@
           "edit": "Modifier le tirage au sort",
           "entries": "Participations au tirage au sort"
         }
+      },
+      "settings": {
+        "raffles": "Mes tirages au sort"
       }
     },
     "labels": {
@@ -296,6 +305,20 @@
           "other": "commence dans %{count} jours"
         },
         "opensToday": "commence aujourd'hui"
+      },
+      "mine": {
+        "raffle": "Tirage au sort",
+        "enteredAt": "Inscription",
+        "outcome": "Résultat",
+        "claimBy": "Consultez vos e-mails et réclamez avant le %{date}",
+        "outcomes": {
+          "open": "Ouvert",
+          "waiting": "En attente du tirage",
+          "won": "Gagné",
+          "claimed": "Réclamé",
+          "forfeited": "Non réclamé à temps",
+          "not_won": "Non gagné"
+        }
       }
     }
   }

@@ -11,7 +11,10 @@
           "entries": "抽奖参与记录"
         }
       },
-      "raffleClaim": "领取奖品"
+      "raffleClaim": "领取奖品",
+      "settings": {
+        "raffles": "我的抽奖"
+      }
     },
     "title": {
       "raffles": "抽奖",
@@ -24,7 +27,10 @@
           "entries": "抽奖参与记录"
         }
       },
-      "raffleClaim": "领取奖品"
+      "raffleClaim": "领取奖品",
+      "settings": {
+        "raffles": "我的抽奖"
+      }
     },
     "headlines": {
       "admin": {
@@ -34,6 +40,9 @@
           "edit": "编辑抽奖",
           "entries": "抽奖参与记录"
         }
+      },
+      "settings": {
+        "raffles": "我的抽奖"
       }
     },
     "labels": {
@@ -296,6 +305,20 @@
           "other": "%{count} 天后开始"
         },
         "opensToday": "今天开始"
+      },
+      "mine": {
+        "raffle": "抽奖",
+        "enteredAt": "参与时间",
+        "outcome": "结果",
+        "claimBy": "请查收邮件并在 %{date} 前领取",
+        "outcomes": {
+          "open": "进行中",
+          "waiting": "等待开奖",
+          "won": "已中奖",
+          "claimed": "已领取",
+          "forfeited": "未按时领取",
+          "not_won": "未中奖"
+        }
       }
     }
   }

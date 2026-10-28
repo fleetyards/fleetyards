@@ -11,7 +11,10 @@
           "entries": "Teilnahmen an der Verlosung"
         }
       },
-      "raffleClaim": "Preis abholen"
+      "raffleClaim": "Preis abholen",
+      "settings": {
+        "raffles": "Meine Verlosungen"
+      }
     },
     "title": {
       "raffles": "Verlosungen",
@@ -24,7 +27,10 @@
           "entries": "Teilnahmen an der Verlosung"
         }
       },
-      "raffleClaim": "Preis abholen"
+      "raffleClaim": "Preis abholen",
+      "settings": {
+        "raffles": "Meine Verlosungen"
+      }
     },
     "headlines": {
       "admin": {
@@ -34,6 +40,9 @@
           "edit": "Verlosung bearbeiten",
           "entries": "Teilnahmen an der Verlosung"
         }
+      },
+      "settings": {
+        "raffles": "Meine Verlosungen"
       }
     },
     "labels": {
@@ -296,6 +305,20 @@
           "other": "startet in %{count} Tagen"
         },
         "opensToday": "startet heute"
+      },
+      "mine": {
+        "raffle": "Verlosung",
+        "enteredAt": "Teilgenommen",
+        "outcome": "Ergebnis",
+        "claimBy": "Prüfe deine Mails und hole bis %{date} ab",
+        "outcomes": {
+          "open": "Offen",
+          "waiting": "Wartet auf die Auslosung",
+          "won": "Gewonnen",
+          "claimed": "Abgeholt",
+          "forfeited": "Nicht rechtzeitig abgeholt",
+          "not_won": "Nicht gewonnen"
+        }
       }
     }
   }

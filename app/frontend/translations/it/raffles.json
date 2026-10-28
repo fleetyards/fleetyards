@@ -11,7 +11,10 @@
           "entries": "Partecipazioni all'estrazione"
         }
       },
-      "raffleClaim": "Ritira il premio"
+      "raffleClaim": "Ritira il premio",
+      "settings": {
+        "raffles": "Le mie estrazioni"
+      }
     },
     "title": {
       "raffles": "Estrazioni",
@@ -24,7 +27,10 @@
           "entries": "Partecipazioni all'estrazione"
         }
       },
-      "raffleClaim": "Ritira il premio"
+      "raffleClaim": "Ritira il premio",
+      "settings": {
+        "raffles": "Le mie estrazioni"
+      }
     },
     "headlines": {
       "admin": {
@@ -34,6 +40,9 @@
           "edit": "Modifica estrazione",
           "entries": "Partecipazioni all'estrazione"
         }
+      },
+      "settings": {
+        "raffles": "Le mie estrazioni"
       }
     },
     "labels": {
@@ -296,6 +305,20 @@
           "other": "inizia tra %{count} giorni"
         },
         "opensToday": "inizia oggi"
+      },
+      "mine": {
+        "raffle": "Estrazione",
+        "enteredAt": "Partecipazione",
+        "outcome": "Esito",
+        "claimBy": "Controlla la tua email e ritira entro il %{date}",
+        "outcomes": {
+          "open": "Aperta",
+          "waiting": "In attesa dell'estrazione",
+          "won": "Vinto",
+          "claimed": "Ritirato",
+          "forfeited": "Non ritirato in tempo",
+          "not_won": "Non vinto"
+        }
       }
     }
   }

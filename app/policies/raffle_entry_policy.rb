@@ -7,6 +7,14 @@ class RaffleEntryPolicy < ApplicationPolicy
     user.present? && user.confirmed?
   end
 
+  def index?
+    user.present?
+  end
+
+  relation_scope do |relation|
+    relation.where(user_id: user.id)
+  end
+
   def destroy?
     user.present? && record.user_id == user.id && record.raffle.open?
   end

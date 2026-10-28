@@ -7,6 +7,9 @@ class RaffleEntry < ApplicationRecord
   # is ours: the mail left for Postmark and nothing has come back yet.
   MAIL_STATUSES = %w[sent delivered bounced].freeze
 
+  # What an entry came to, from the entrant's side.
+  OUTCOMES = %w[open waiting won claimed forfeited not_won].freeze
+
   has_paper_trail on: ::VersionedItem::RECORDED_EVENTS, skip: %i[email]
 
   encrypts :email
@@ -45,6 +48,15 @@ class RaffleEntry < ApplicationRecord
   # entry -- and the one captured at entry once the account is gone.
   def recipient_email
     user&.email || email
+  end
+
+  def outcome(now = Time.current)
+    return "claimed" if claimed_at.present?
+    return "forfeited" if won_at.present? && forfeited_at.present?
+    return "won" if current_winner?
+    return "not_won" if raffle.drawn?
+
+    raffle.open?(now) ? "open" : "waiting"
   end
 
   def current_winner?

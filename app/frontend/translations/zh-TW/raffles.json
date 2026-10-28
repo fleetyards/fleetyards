@@ -11,7 +11,10 @@
           "entries": "抽獎參加紀錄"
         }
       },
-      "raffleClaim": "領取獎品"
+      "raffleClaim": "領取獎品",
+      "settings": {
+        "raffles": "我的抽獎"
+      }
     },
     "title": {
       "raffles": "抽獎",
@@ -24,7 +27,10 @@
           "entries": "抽獎參加紀錄"
         }
       },
-      "raffleClaim": "領取獎品"
+      "raffleClaim": "領取獎品",
+      "settings": {
+        "raffles": "我的抽獎"
+      }
     },
     "headlines": {
       "admin": {
@@ -34,6 +40,9 @@
           "edit": "編輯抽獎",
           "entries": "抽獎參加紀錄"
         }
+      },
+      "settings": {
+        "raffles": "我的抽獎"
       }
     },
     "labels": {
@@ -296,6 +305,20 @@
           "other": "%{count} 天後開始"
         },
         "opensToday": "今天開始"
+      },
+      "mine": {
+        "raffle": "抽獎",
+        "enteredAt": "參加時間",
+        "outcome": "結果",
+        "claimBy": "請查收郵件並在 %{date} 前領取",
+        "outcomes": {
+          "open": "進行中",
+          "waiting": "等待開獎",
+          "won": "已得獎",
+          "claimed": "已領取",
+          "forfeited": "未按時領取",
+          "not_won": "未得獎"
+        }
       }
     }
   }

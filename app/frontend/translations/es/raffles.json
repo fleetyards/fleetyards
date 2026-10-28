@@ -11,7 +11,10 @@
           "entries": "Participaciones del sorteo"
         }
       },
-      "raffleClaim": "Reclamar premio"
+      "raffleClaim": "Reclamar premio",
+      "settings": {
+        "raffles": "Mis sorteos"
+      }
     },
     "title": {
       "raffles": "Sorteos",
@@ -24,7 +27,10 @@
           "entries": "Participaciones del sorteo"
         }
       },
-      "raffleClaim": "Reclamar premio"
+      "raffleClaim": "Reclamar premio",
+      "settings": {
+        "raffles": "Mis sorteos"
+      }
     },
     "headlines": {
       "admin": {
@@ -34,6 +40,9 @@
           "edit": "Editar sorteo",
           "entries": "Participaciones del sorteo"
         }
+      },
+      "settings": {
+        "raffles": "Mis sorteos"
       }
     },
     "labels": {
@@ -296,6 +305,20 @@
           "other": "empieza en %{count} días"
         },
         "opensToday": "empieza hoy"
+      },
+      "mine": {
+        "raffle": "Sorteo",
+        "enteredAt": "Participaste",
+        "outcome": "Resultado",
+        "claimBy": "Revisa tu correo y reclama antes del %{date}",
+        "outcomes": {
+          "open": "Abierto",
+          "waiting": "Esperando el sorteo",
+          "won": "Ganado",
+          "claimed": "Reclamado",
+          "forfeited": "No reclamado a tiempo",
+          "not_won": "No ganado"
+        }
       }
     }
   }

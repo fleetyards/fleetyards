@@ -77,6 +77,26 @@ class RaffleEntryTest < ActiveSupport::TestCase
     assert_nil RaffleEntry.find_by_token_for(:raffle_claim, token)
   end
 
+  test "outcome follows the entry through the raffle" do
+    entry = create(:raffle_entry)
+    assert_equal "open", entry.outcome
+
+    entry.raffle.update_columns(starts_at: 10.days.ago, ends_at: 1.day.ago)
+    assert_equal "waiting", entry.reload.outcome
+
+    entry.raffle.update_columns(drawn_at: Time.current)
+    assert_equal "not_won", entry.reload.outcome
+
+    entry.update_columns(won_at: Time.current, claim_deadline_at: 1.day.from_now)
+    assert_equal "won", entry.reload.outcome
+
+    entry.update_columns(forfeited_at: Time.current)
+    assert_equal "forfeited", entry.reload.outcome
+
+    entry.update_columns(forfeited_at: nil, claimed_at: Time.current)
+    assert_equal "claimed", entry.reload.outcome
+  end
+
   test "claim! marks the win claimed once" do
     entry = winning_entry
 
