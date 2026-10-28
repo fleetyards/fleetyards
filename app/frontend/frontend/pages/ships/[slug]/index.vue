@@ -446,10 +446,12 @@ const adiMap = computed(() => {
                 <Btn
                   v-if="holoOpen && texturedHoloAvailable"
                   :active="texturedHolo"
+                  v-tooltip="t('labels.texturedHolo')"
+                  :aria-label="t('labels.texturedHolo')"
                   data-test="model-holo-textured"
                   @click="toggleTexturedHolo"
                 >
-                  {{ t("labels.texturedHolo") }}
+                  <i class="fa-duotone fa-palette" />
                 </Btn>
 
                 <BtnDropdown
