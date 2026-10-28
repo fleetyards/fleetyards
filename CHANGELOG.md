@@ -2,6 +2,49 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.26.0](https://github.com/fleetyards/fleetyards/compare/v9.25.0...v9.26.0) (2026-10-28)
+
+
+### Features
+
+* 3D loadout preview from the hull holo and hardpoint transforms ([#6010](https://github.com/fleetyards/fleetyards/issues/6010)) ([7394cbe](https://github.com/fleetyards/fleetyards/commit/7394cbe349e85ef051d9d38b716410b7cd7106fc))
+* fleet and squadron shopping lists ([#6015](https://github.com/fleetyards/fleetyards/issues/6015)) ([65d5d2c](https://github.com/fleetyards/fleetyards/commit/65d5d2cca4379011aca06bdf03a25d4c79b116e3))
+* **raffles:** raffle system for Star Citizen gift codes ([#6025](https://github.com/fleetyards/fleetyards/issues/6025)) ([3b0aa99](https://github.com/fleetyards/fleetyards/commit/3b0aa99370e555818e1bf07c63b144e45adb8a7e))
+
+
+### Bug Fixes
+
+* **admin:** take admin privileges only from a super admin ([255f971](https://github.com/fleetyards/fleetyards/commit/255f9719793ff731a999d97c505cc1981c78e632))
+* **api:** read a token as its owner on public endpoints only with matching scopes ([656d794](https://github.com/fleetyards/fleetyards/commit/656d7949fb4eda650aca82df084f56c3b6e2e722))
+* **api:** require write scopes for account, OTP, OAuth app and fleet changes ([33d58a9](https://github.com/fleetyards/fleetyards/commit/33d58a98e8ac0c251670400c5e3b508593505cac))
+* **api:** stop revoked or expired tokens naming their owner ([bd8ea59](https://github.com/fleetyards/fleetyards/commit/bd8ea59cd3ae08356d9d2d655c8dde2683c7f381))
+* **fleets:** accept only a bare file name as a cover preset ([7b92a3a](https://github.com/fleetyards/fleetyards/commit/7b92a3a17d7c044a5b92eb47393339d3843bc00a))
+* **fleets:** drop event and mission rights with the membership ([2d18260](https://github.com/fleetyards/fleetyards/commit/2d1826073095d523be765715989a7074daaa10cd))
+* **fleets:** offer promote and demote only where the reader may use them ([ee29966](https://github.com/fleetyards/fleetyards/commit/ee29966814eab5b061bcba7510b4fd00aaac540d))
+* **fleets:** post fleet notifications only to Discord webhook URLs ([5a708b4](https://github.com/fleetyards/fleetyards/commit/5a708b468ae0a8e09d434c8a0d9eb17b8836faa3))
+* **fleets:** refuse SVG event and mission covers ([5358b66](https://github.com/fleetyards/fleetyards/commit/5358b66fe5d1cc6900b6a0f017a4c3a1b03dfea2))
+* **fleets:** send roster updates only to members who may read the roster ([c11c15f](https://github.com/fleetyards/fleetyards/commit/c11c15f36b0ba6a7835a23d88519e8fd3c508072))
+* **fleets:** stop officers changing their own rank or promoting past it ([19dbad0](https://github.com/fleetyards/fleetyards/commit/19dbad05efe13342228953c311a9aeaddda35133))
+* **fleets:** stop the roster broadcast loading the fleet's roles ([c032936](https://github.com/fleetyards/fleetyards/commit/c032936460ea41b0f2ba1badd659d0391974ee21))
+* **frontend:** sanitize confirm and toast markup ([dd89e9f](https://github.com/fleetyards/fleetyards/commit/dd89e9fb53ce6f2e86507f928d5ab23378791c1c))
+* **hangar:** count only public owned ships in public manufacturer stats ([713cde8](https://github.com/fleetyards/fleetyards/commit/713cde84e7060732d040820dbeb6c4453e6a8bbc))
+* **sc_data:** take a render's WebP over its PNG when both are listed ([#6023](https://github.com/fleetyards/fleetyards/issues/6023)) ([67fed4e](https://github.com/fleetyards/fleetyards/commit/67fed4efb4f231afbfedfd4a96a2385e2aef7673))
+* **sessions:** keep the step-up code out of its token ([2a7d102](https://github.com/fleetyards/fleetyards/commit/2a7d102b4a27f5d0e72c47850ea4831eec2dbbe6))
+* **uploads:** limit direct uploads to the types each app sends ([c086001](https://github.com/fleetyards/fleetyards/commit/c086001aaa34b00ce0e324112df647b96f873e0d))
+
+
+### Refactorings
+
+* **fleets:** move the rank change rule onto the membership ([2ccf681](https://github.com/fleetyards/fleetyards/commit/2ccf6819c66eddcbfb49f06ce73e270f00c425dc))
+
+
+### Chores
+
+* **deps-dev:** bump bullet from 8.3.0 to 8.3.1 ([#6028](https://github.com/fleetyards/fleetyards/issues/6028)) ([3ab1f49](https://github.com/fleetyards/fleetyards/commit/3ab1f49261fb0d59f36be1e95e74de1bf0db3155))
+* **deps-dev:** bump knip from 6.42.1 to 6.43.0 ([#6027](https://github.com/fleetyards/fleetyards/issues/6027)) ([09e77ce](https://github.com/fleetyards/fleetyards/commit/09e77ce72e2fbda4b3b2846f32c5721ef91e1d5c))
+* **deps:** bump @tresjs/core and cientos to 5.10.0, drop the core type patch ([#6022](https://github.com/fleetyards/fleetyards/issues/6022)) ([ca0a2e6](https://github.com/fleetyards/fleetyards/commit/ca0a2e60038fcc26bc06266baca8fc2b27db715b))
+* **deps:** bump appsignal from 5.0.6 to 5.0.7 ([#6019](https://github.com/fleetyards/fleetyards/issues/6019)) ([662dd51](https://github.com/fleetyards/fleetyards/commit/662dd510c159e38ffc701c2abac6672be518e8d2))
+
 ## [9.25.0](https://github.com/fleetyards/fleetyards/compare/v9.24.0...v9.25.0) (2026-10-27)
 
 
