@@ -4569,6 +4569,9 @@ components:
       - fleet_fid_claim_cancelled
       - rsi_handle_verification_lost
       - fleet_verification_requested
+      - raffle_won
+      - raffle_started
+      - raffle_last_day
       - announcement
       x-enumNames:
       - MODEL_ON_SALE
@@ -4620,6 +4623,9 @@ components:
       - FLEET_FID_CLAIM_CANCELLED
       - RSI_HANDLE_VERIFICATION_LOST
       - FLEET_VERIFICATION_REQUESTED
+      - RAFFLE_WON
+      - RAFFLE_STARTED
+      - RAFFLE_LAST_DAY
       - ANNOUNCEMENT
     NotificationsWithdrawnMessage:
       type: object

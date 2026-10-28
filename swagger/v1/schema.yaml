@@ -16922,7 +16922,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 50
+          default: 48
         required: false
       security:
       - SessionCookie: []
@@ -20106,7 +20106,7 @@ paths:
         in: query
         schema:
           type: string
-          default: 50
+          default: 48
         required: false
       responses:
         '200':
