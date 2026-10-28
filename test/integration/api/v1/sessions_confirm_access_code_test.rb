@@ -34,16 +34,19 @@ class Api::V1::SessionsConfirmAccessCodeTest < ActionDispatch::IntegrationTest
     end
   end
 
-  def confirm_access_token_for(user, code)
-    verifier = ActiveSupport::MessageVerifier.new(Rails.application.credentials.confirm_access_secret!, purpose: :access_confirmation)
-    verifier.generate({user_id: user.id, code: code}, expires_in: 15.minutes)
+  # Issues a real token through the email endpoint with the emailed code pinned.
+  def confirm_access_token_for(code)
+    SecureRandom.stubs(:random_number).with(10**6).returns(code.to_i)
+    post "/api/v1/sessions/confirm-access-email", as: :json
+    SecureRandom.unstub(:random_number)
+    response.parsed_body["token"]
   end
 
   test "POST /sessions/confirm-access-code accepts the valid code" do
     user = create(:user, :oauth_only)
     sign_in user
 
-    token = confirm_access_token_for(user, "123456")
+    token = confirm_access_token_for("123456")
     assert_api_response :post, 200, body: {token: token, confirmationCode: "123456"}
   end
 
@@ -51,11 +54,30 @@ class Api::V1::SessionsConfirmAccessCodeTest < ActionDispatch::IntegrationTest
     user = create(:user, :oauth_only)
     sign_in user
 
-    token = confirm_access_token_for(user, "123456")
+    token = confirm_access_token_for("123456")
     assert_api_response :post, 400, body: {token: token, confirmationCode: "000000"}
   end
 
   test "POST /sessions/confirm-access-code returns 401 when not signed in" do
     assert_api_response :post, 401, body: {token: "invalid", confirmationCode: "000000"}
+  end
+
+  test "POST /sessions/confirm-access-email does not reveal the code in its token" do
+    user = create(:user, :oauth_only)
+    sign_in user
+
+    token = confirm_access_token_for("123456")
+
+    assert_not_includes Base64.decode64(token.split("--").first), "123456"
+  end
+
+  test "POST /sessions/confirm-access-code refuses an access-confirmation token in place of a code token" do
+    user = create(:user, :oauth_only)
+    sign_in user
+    verifier = ActiveSupport::MessageVerifier.new(Rails.application.credentials.confirm_access_secret!, purpose: :access_confirmation)
+
+    post "/api/v1/sessions/confirm-access-code", params: {token: verifier.generate(user.id), confirmationCode: "123456"}, as: :json
+
+    assert_response :bad_request
   end
 end

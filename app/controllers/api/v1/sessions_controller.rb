@@ -92,8 +92,10 @@ module Api
         end
 
         confirmation_code = SecureRandom.random_number(10**6).to_s.rjust(6, "0")
+        # The token travels to the client, and a verifier only signs it, so it
+        # carries a digest of the emailed code rather than the code itself.
         token = access_confirmation_verifier.generate(
-          {user_id: user.id, code: confirmation_code},
+          {user_id: user.id, code_digest: confirm_access_code_digest(user, confirmation_code)},
           expires_in: 10.minutes
         )
         ConfirmAccessMailer.confirm_access_email(user, confirmation_code).deliver_later
@@ -104,15 +106,23 @@ module Api
       def verify_confirm_access_code
         user = current_resource_owner
 
-        payload = access_confirmation_verifier.verified(params[:token])&.with_indifferent_access
+        # The same verifier signs the X-Access-Confirmation token, whose payload
+        # is a bare user id.
+        payload = access_confirmation_verifier.verified(params[:token])
+        payload = payload.is_a?(Hash) ? payload.with_indifferent_access : nil
 
-        if payload.blank? || payload[:user_id] != user.id || payload[:code] != params[:confirmation_code]
+        if payload.blank? || payload[:user_id] != user.id || payload[:code_digest].blank? ||
+            !ActiveSupport::SecurityUtils.secure_compare(payload[:code_digest], confirm_access_code_digest(user, params[:confirmation_code].to_s))
           render json: {code: "session.confirmAccessCode.failure", message: I18n.t("messages.confirmAccessCode.failure")}, status: :bad_request
           return
         end
 
         result = issue_access_confirmation(user)
         render json: {code: :success, message: I18n.t("labels.success"), **result}
+      end
+
+      private def confirm_access_code_digest(user, code)
+        OpenSSL::HMAC.hexdigest("SHA256", Rails.application.credentials.confirm_access_secret!, "#{user.id}:#{code}")
       end
 
       private def set_user
