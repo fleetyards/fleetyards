@@ -50,6 +50,21 @@ withDefaults(defineProps<Props>(), {
 }
 
 /*
+ * The 4px above only works under a plain heading, whose own 12px closes the
+ * gap. A divider ends the heading at its rule and an image ends at its edge,
+ * so a body after either opens its own space; a body with nothing above it
+ * pads like its sides.
+ */
+.panel-heading--divider + .panel-body,
+.panel-image + .panel-body {
+  padding-top: 14px;
+}
+
+.panel-body:first-child {
+  padding-top: 18px;
+}
+
+/*
  * Clipping belongs to the rounded variants, not to every body. A select's list
  * is positioned out of the flow and taller than the space under its field, so a
  * body that clipped unconditionally cut the options off at the panel's edge —
