@@ -228,6 +228,7 @@
         "title": "Participation conditions",
         "accept": "I have read and accept the participation conditions.",
         "confirmedAccount": "Only accounts with a confirmed email address can enter, once per account.",
+        "noMaintainers": "Fleetyards maintainers cannot take part.",
         "publicEntrants": "Your username is listed publicly on this page as an entrant.",
         "publicWinner": "If you win, your username is shown publicly as the winner.",
         "drawOrder": "After the raffle closes, all eligible entrants are drawn into one random order. The first in that order wins.",
@@ -281,7 +282,8 @@
         "days": "%{days} days",
         "entered": "You are in. The draw is after %{date}.",
         "enteredHint": "If you win, we mail you a claim link. Keep an eye on your inbox for %{days} days after the draw.",
-        "opensAt": "Opens %{date}."
+        "opensAt": "Opens %{date}.",
+        "maintainer": "Maintainers run the raffles and cannot take part."
       },
       "slider": {
         "label": "Image slider",

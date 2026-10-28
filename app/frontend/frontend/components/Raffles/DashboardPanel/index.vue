@@ -17,7 +17,9 @@ import {
   BtnSizesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
+import { storeToRefs } from "pinia";
 import { RaffleStatusEnum } from "@/services/fyApi";
+import { useSessionStore } from "@/frontend/stores/session";
 import { useHomeRaffle } from "@/frontend/components/Raffles/useHomeRaffle";
 import { useI18n } from "@/shared/composables/useI18n";
 
@@ -32,6 +34,13 @@ const cover = computed(() => {
 });
 
 const isOpen = computed(() => raffle.value?.status === RaffleStatusEnum.OPEN);
+
+const { currentUser } = storeToRefs(useSessionStore());
+
+const canEnter = computed(
+  () =>
+    isOpen.value && !raffle.value?.entered && !currentUser?.value?.maintainer,
+);
 </script>
 
 <template>
@@ -62,7 +71,7 @@ const isOpen = computed(() => raffle.value?.status === RaffleStatusEnum.OPEN);
         <Pill v-if="raffle.entered" :variant="PillVariantsEnum.SUCCESS">
           {{ t("raffles.home.entered") }}
         </Pill>
-        <span v-else-if="isOpen" class="raffle-dashboard__meta">
+        <span v-else-if="canEnter" class="raffle-dashboard__meta">
           {{ t("raffles.home.notEntered") }}
         </span>
         <Btn
@@ -70,11 +79,7 @@ const isOpen = computed(() => raffle.value?.status === RaffleStatusEnum.OPEN);
           :size="BtnSizesEnum.SM"
           :variant="raffle.entered ? BtnVariantsEnum.BARE : undefined"
         >
-          {{
-            raffle.entered || !isOpen
-              ? t("raffles.home.view")
-              : t("raffles.home.enter")
-          }}
+          {{ canEnter ? t("raffles.home.enter") : t("raffles.home.view") }}
         </Btn>
       </div>
     </PanelBody>

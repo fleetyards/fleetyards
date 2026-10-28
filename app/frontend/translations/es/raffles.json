@@ -228,6 +228,7 @@
         "title": "Condiciones de participación",
         "accept": "He leído y acepto las condiciones de participación.",
         "confirmedAccount": "Solo pueden participar las cuentas con una dirección de correo confirmada, una vez por cuenta.",
+        "noMaintainers": "Los mantenedores de Fleetyards no pueden participar.",
         "publicEntrants": "Tu nombre de usuario aparece públicamente en esta página como participante.",
         "publicWinner": "Si ganas, tu nombre de usuario se mostrará públicamente como ganador.",
         "drawOrder": "Cuando el sorteo cierra, todos los participantes que cumplen los requisitos se sortean en un único orden aleatorio. Gana el primero de ese orden.",
@@ -281,7 +282,8 @@
         "days": "%{days} días",
         "entered": "Ya participas. El sorteo es después del %{date}.",
         "enteredHint": "Si ganas, te enviamos un enlace para reclamar. Revisa tu bandeja de entrada durante %{days} días tras el sorteo.",
-        "opensAt": "Abre el %{date}."
+        "opensAt": "Abre el %{date}.",
+        "maintainer": "Los mantenedores gestionan los sorteos y no pueden participar."
       },
       "slider": {
         "label": "Carrusel de imágenes",
