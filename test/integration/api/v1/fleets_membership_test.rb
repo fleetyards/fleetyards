@@ -20,8 +20,8 @@ class Api::V1::FleetsMembershipTest < ActionDispatch::IntegrationTest
 
       security [
         {SessionCookie: []},
-        {Oauth2: []},
-        {OpenId: []}
+        {Oauth2: ["fleet", "fleet:write"]},
+        {OpenId: ["fleet", "fleet:write"]}
       ]
 
       response(204, "successful")
@@ -42,8 +42,8 @@ class Api::V1::FleetsMembershipTest < ActionDispatch::IntegrationTest
 
       security [
         {SessionCookie: []},
-        {Oauth2: []},
-        {OpenId: []}
+        {Oauth2: ["fleet", "fleet:read"]},
+        {OpenId: ["fleet", "fleet:read"]}
       ]
 
       response(200, "successful") do
@@ -69,8 +69,8 @@ class Api::V1::FleetsMembershipTest < ActionDispatch::IntegrationTest
 
       security [
         {SessionCookie: []},
-        {Oauth2: []},
-        {OpenId: []}
+        {Oauth2: ["fleet", "fleet:write"]},
+        {OpenId: ["fleet", "fleet:write"]}
       ]
 
       response(200, "successful") do
@@ -117,7 +117,7 @@ class Api::V1::FleetsMembershipTest < ActionDispatch::IntegrationTest
   test "DELETE /fleets/:slug/membership with OAuth bearer token" do
     assert_api_response :delete, 204,
       path_params: {fleetSlug: @fleet.slug},
-      headers: oauth_headers_for(@member, scopes: ["public"])
+      headers: oauth_headers_for(@member, scopes: ["fleet"])
   end
 
   # GET /fleets/:slug/membership
@@ -150,7 +150,7 @@ class Api::V1::FleetsMembershipTest < ActionDispatch::IntegrationTest
   test "GET /fleets/:slug/membership with OAuth bearer token" do
     assert_api_response :get, 200,
       path_params: {fleetSlug: @fleet.slug},
-      headers: oauth_headers_for(@member, scopes: ["public"])
+      headers: oauth_headers_for(@member, scopes: ["fleet"])
   end
 
   # PUT /fleets/:slug/membership
@@ -197,7 +197,7 @@ class Api::V1::FleetsMembershipTest < ActionDispatch::IntegrationTest
   test "PUT /fleets/:slug/membership with OAuth bearer token" do
     assert_api_response :put, 200,
       path_params: {fleetSlug: @fleet.slug},
-      headers: oauth_headers_for(@member, scopes: ["public"]),
+      headers: oauth_headers_for(@member, scopes: ["fleet"]),
       body: {primary: true}
   end
 end

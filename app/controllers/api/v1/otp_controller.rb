@@ -4,7 +4,7 @@ module Api
   module V1
     class OtpController < ::Api::BaseController
       before_action :authenticate_user!, only: []
-      before_action -> { doorkeeper_authorize! }, unless: -> { warden.authenticate?(scope: :user) }
+      before_action -> { doorkeeper_authorize! "profile:write" }, unless: -> { warden.authenticate?(scope: :user) }
 
       def start
         authorize! current_resource_owner, to: :update?

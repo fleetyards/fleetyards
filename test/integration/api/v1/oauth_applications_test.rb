@@ -18,8 +18,8 @@ class Api::V1::OauthApplicationsTest < ActionDispatch::IntegrationTest
 
       security [
         {SessionCookie: []},
-        {Oauth2: []},
-        {OpenId: []}
+        {Oauth2: ["profile:write"]},
+        {OpenId: ["profile:write"]}
       ]
 
       response(201, "successful") do
@@ -42,8 +42,8 @@ class Api::V1::OauthApplicationsTest < ActionDispatch::IntegrationTest
 
       security [
         {SessionCookie: []},
-        {Oauth2: []},
-        {OpenId: []}
+        {Oauth2: ["profile:write"]},
+        {OpenId: ["profile:write"]}
       ]
 
       response(200, "successful") do
@@ -66,8 +66,8 @@ class Api::V1::OauthApplicationsTest < ActionDispatch::IntegrationTest
 
       security [
         {SessionCookie: []},
-        {Oauth2: []},
-        {OpenId: []}
+        {Oauth2: ["profile:write"]},
+        {OpenId: ["profile:write"]}
       ]
 
       response(204, "successful")
@@ -88,8 +88,8 @@ class Api::V1::OauthApplicationsTest < ActionDispatch::IntegrationTest
 
       security [
         {SessionCookie: []},
-        {Oauth2: []},
-        {OpenId: []}
+        {Oauth2: ["profile:write"]},
+        {OpenId: ["profile:write"]}
       ]
 
       response(200, "successful") do
@@ -115,8 +115,8 @@ class Api::V1::OauthApplicationsTest < ActionDispatch::IntegrationTest
 
       security [
         {SessionCookie: []},
-        {Oauth2: []},
-        {OpenId: []}
+        {Oauth2: ["profile:write"]},
+        {OpenId: ["profile:write"]}
       ]
 
       response(200, "successful") do
@@ -233,25 +233,25 @@ class Api::V1::OauthApplicationsTest < ActionDispatch::IntegrationTest
   test "POST /oauth-applications with OAuth bearer token" do
     body = {name: "My App", redirectUri: "https://example.com/callback", confidential: true}
 
-    assert_api_response :post, 201, headers: oauth_headers_for(@user, scopes: ["public"]), body: body
+    assert_api_response :post, 201, headers: oauth_headers_for(@user, scopes: ["profile:write"]), body: body
   end
 
   test "GET /oauth-applications with OAuth bearer token" do
     create_list(:oauth_application, 3, owner: @user)
 
-    assert_api_response :get, 200, headers: oauth_headers_for(@user, scopes: ["public"])
+    assert_api_response :get, 200, headers: oauth_headers_for(@user, scopes: ["profile:write"])
   end
 
   test "DELETE /oauth-applications/:id with OAuth bearer token" do
     app = create(:oauth_application, owner: @user)
 
-    assert_api_response :delete, 204, path_params: {id: app.id}, headers: oauth_headers_for(@user, scopes: ["public"])
+    assert_api_response :delete, 204, path_params: {id: app.id}, headers: oauth_headers_for(@user, scopes: ["profile:write"])
   end
 
   test "GET /oauth-applications/:id with OAuth bearer token" do
     app = create(:oauth_application, owner: @user)
 
-    assert_api_response :get, 200, path_params: {id: app.id}, headers: oauth_headers_for(@user, scopes: ["public"])
+    assert_api_response :get, 200, path_params: {id: app.id}, headers: oauth_headers_for(@user, scopes: ["profile:write"])
   end
 
   test "PUT /oauth-applications/:id with OAuth bearer token" do
@@ -259,7 +259,7 @@ class Api::V1::OauthApplicationsTest < ActionDispatch::IntegrationTest
 
     assert_api_response :put, 200,
       path_params: {id: app.id},
-      headers: oauth_headers_for(@user, scopes: ["public"]),
+      headers: oauth_headers_for(@user, scopes: ["profile:write"]),
       body: {name: "Updated App"}
   end
 end

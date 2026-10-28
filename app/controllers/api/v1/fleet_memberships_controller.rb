@@ -10,9 +10,12 @@ module Api
       end
 
       before_action :authenticate_user!, only: []
-      before_action -> { doorkeeper_authorize! },
+      before_action -> { doorkeeper_authorize! "fleet", "fleet:read" },
         unless: :user_signed_in?,
-        only: %i[show create_by_invite accept_invitation decline_invitation update destroy]
+        only: %i[show]
+      before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
+        unless: :user_signed_in?,
+        only: %i[create_by_invite accept_invitation decline_invitation update destroy]
 
       before_action :set_fleet, only: %i[create show update accept_invitation decline_invitation destroy]
       before_action :set_membership, only: %i[show update accept_invitation decline_invitation destroy]

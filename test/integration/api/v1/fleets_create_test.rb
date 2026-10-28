@@ -18,8 +18,8 @@ class Api::V1::FleetsCreateTest < ActionDispatch::IntegrationTest
 
       security [
         {SessionCookie: []},
-        {Oauth2: []},
-        {OpenId: []}
+        {Oauth2: ["fleet", "fleet:write"]},
+        {OpenId: ["fleet", "fleet:write"]}
       ]
 
       response(201, "successful") do
@@ -68,7 +68,13 @@ class Api::V1::FleetsCreateTest < ActionDispatch::IntegrationTest
 
   test "POST /fleets with OAuth bearer token" do
     assert_api_response :post, 201,
-      headers: oauth_headers_for(@user, scopes: ["public"]),
+      headers: oauth_headers_for(@user, scopes: ["fleet"]),
       body: {fid: "STARFLEET", name: "Starfleet"}
+  end
+
+  test "POST /fleets refuses a token without fleet:write" do
+    post "/api/v1/fleets", params: {fid: "STARFLEET", name: "Starfleet"}, headers: oauth_headers_for(@user, scopes: %w[public profile:read]), as: :json
+
+    assert_response :unauthorized
   end
 end

@@ -15,8 +15,8 @@ class Api::V1::UsersMeTest < ActionDispatch::IntegrationTest
 
       security [
         {SessionCookie: []},
-        {Oauth2: []},
-        {OpenId: []}
+        {Oauth2: ["profile:write"]},
+        {OpenId: ["profile:write"]}
       ]
 
       parameter name: :destroy_fleets, in: :query, required: false, schema: {type: :boolean},
@@ -65,8 +65,8 @@ class Api::V1::UsersMeTest < ActionDispatch::IntegrationTest
 
       security [
         {SessionCookie: []},
-        {Oauth2: []},
-        {OpenId: []}
+        {Oauth2: ["profile:write"]},
+        {OpenId: ["profile:write"]}
       ]
 
       response(200, "successful") do
@@ -229,7 +229,7 @@ class Api::V1::UsersMeTest < ActionDispatch::IntegrationTest
   test "DELETE /users/me with OAuth bearer token" do
     user = create(:user)
 
-    assert_api_response :delete, 200, headers: oauth_headers_for(user, scopes: ["public"])
+    assert_api_response :delete, 200, headers: oauth_headers_for(user, scopes: ["profile:write"])
   end
 
   test "GET /users/me with OAuth bearer token" do
@@ -241,7 +241,25 @@ class Api::V1::UsersMeTest < ActionDispatch::IntegrationTest
   test "PUT /users/me with OAuth bearer token" do
     user = create(:user)
 
-    assert_api_response :put, 200, headers: oauth_headers_for(user, scopes: ["public"]), body: {discord: "DiscordServer"}
+    assert_api_response :put, 200, headers: oauth_headers_for(user, scopes: ["profile:write"]), body: {discord: "DiscordServer"}
+  end
+
+  test "DELETE /users/me refuses a token without profile:write" do
+    user = create(:user)
+
+    delete "/api/v1/users/me", headers: oauth_headers_for(user, scopes: %w[public profile:read])
+
+    assert_response :unauthorized
+    assert User.exists?(user.id)
+  end
+
+  test "PUT /users/me refuses a token without profile:write" do
+    user = create(:user, public_hangar: true)
+
+    put "/api/v1/users/me", params: {publicHangar: false}, headers: oauth_headers_for(user, scopes: %w[public profile:read]), as: :json
+
+    assert_response :unauthorized
+    assert user.reload.public_hangar
   end
 
   test "GET /users/me shows a handle verified within the second of the last write" do

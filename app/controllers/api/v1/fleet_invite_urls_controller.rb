@@ -6,15 +6,12 @@ module Api
       after_action -> { pagination_header(:fleet_invite_urls) }, only: %i[index]
 
       before_action :authenticate_user!, only: []
-      before_action -> { doorkeeper_authorize! },
-        unless: :user_signed_in?,
-        only: %i[use]
       before_action -> { doorkeeper_authorize! "fleet", "fleet:read" },
         unless: :user_signed_in?,
         only: %i[index]
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?,
-        only: %i[create destroy]
+        only: %i[use create destroy]
 
       before_action :set_fleet, only: %i[index create destroy]
       before_action :set_fleet_invite_url, only: %i[destroy]

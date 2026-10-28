@@ -6,15 +6,12 @@ module Api
       skip_verify_authorized only: %i[check find_by_invite]
 
       before_action :authenticate_user!, only: []
-      before_action -> { doorkeeper_authorize! },
-        unless: :user_signed_in?,
-        only: %i[create]
       before_action -> { doorkeeper_authorize! "fleet", "fleet:read" },
         unless: :user_signed_in?,
         only: %i[show check invites my find_by_invite]
       before_action -> { doorkeeper_authorize! "fleet", "fleet:write" },
         unless: :user_signed_in?,
-        only: %i[update destroy]
+        only: %i[create update destroy]
 
       before_action :set_fleet, only: %i[show update destroy]
 

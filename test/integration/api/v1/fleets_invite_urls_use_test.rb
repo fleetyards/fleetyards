@@ -18,8 +18,8 @@ class Api::V1::FleetsInviteUrlsUseTest < ActionDispatch::IntegrationTest
 
       security [
         {SessionCookie: []},
-        {Oauth2: []},
-        {OpenId: []}
+        {Oauth2: ["fleet", "fleet:write"]},
+        {OpenId: ["fleet", "fleet:write"]}
       ]
 
       response(201, "successful") do
@@ -110,7 +110,13 @@ class Api::V1::FleetsInviteUrlsUseTest < ActionDispatch::IntegrationTest
 
   test "POST /fleets/use-invite with OAuth bearer token" do
     assert_api_response :post, 201,
-      headers: oauth_headers_for(@author, scopes: ["public"]),
+      headers: oauth_headers_for(@author, scopes: ["fleet"]),
       body: {token: @invite_url.token}
+  end
+
+  test "POST /fleets/use-invite refuses a token without fleet:write" do
+    post "/api/v1/fleets/use-invite", params: {token: @invite_url.token}, headers: oauth_headers_for(@author, scopes: %w[public profile:read]), as: :json
+
+    assert_response :unauthorized
   end
 end

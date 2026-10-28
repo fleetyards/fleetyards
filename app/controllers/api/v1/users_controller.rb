@@ -5,8 +5,9 @@ module Api
     class UsersController < ::Api::BaseController
       skip_verify_authorized only: %i[signup confirm check_email check_username]
 
-      before_action :doorkeeper_authorize!, unless: :user_signed_in?, only: %i[
-        me update update_account destroy
+      before_action :doorkeeper_authorize!, unless: :user_signed_in?, only: %i[me]
+      before_action -> { doorkeeper_authorize! "profile:write" }, unless: :user_signed_in?, only: %i[
+        update update_account destroy
       ]
       before_action :authenticate_user!, except: %i[
         me update update_account destroy check_email check_username confirm signup

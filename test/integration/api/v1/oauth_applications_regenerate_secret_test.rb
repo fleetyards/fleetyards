@@ -17,8 +17,8 @@ class Api::V1::OauthApplicationsRegenerateSecretTest < ActionDispatch::Integrati
 
       security [
         {SessionCookie: []},
-        {Oauth2: []},
-        {OpenId: []}
+        {Oauth2: ["profile:write"]},
+        {OpenId: ["profile:write"]}
       ]
 
       response(200, "successful") do
@@ -64,7 +64,15 @@ class Api::V1::OauthApplicationsRegenerateSecretTest < ActionDispatch::Integrati
 
     assert_api_response :put, 200,
       path_params: {id: app.id},
-      headers: oauth_headers_for(@user, scopes: ["public"]),
+      headers: oauth_headers_for(@user, scopes: ["profile:write"]),
       body: {}
+  end
+
+  test "PUT /oauth-applications/:id/regenerate-secret refuses a token without profile:write" do
+    app = create(:oauth_application, owner: @user)
+
+    put "/api/v1/oauth-applications/#{app.id}/regenerate-secret", headers: oauth_headers_for(@user, scopes: %w[public profile:read]), as: :json
+
+    assert_response :unauthorized
   end
 end

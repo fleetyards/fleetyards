@@ -17,8 +17,8 @@ class Api::V1::FleetsMembershipAcceptInvitationTest < ActionDispatch::Integratio
 
       security [
         {SessionCookie: []},
-        {Oauth2: []},
-        {OpenId: []}
+        {Oauth2: ["fleet", "fleet:write"]},
+        {OpenId: ["fleet", "fleet:write"]}
       ]
 
       response(200, "successful") do
@@ -64,7 +64,7 @@ class Api::V1::FleetsMembershipAcceptInvitationTest < ActionDispatch::Integratio
   test "PUT /fleets/:slug/membership/accept with OAuth bearer token" do
     assert_api_response :put, 200,
       path_params: {fleetSlug: @fleet.slug},
-      headers: oauth_headers_for(@user, scopes: ["public"]),
+      headers: oauth_headers_for(@user, scopes: ["fleet"]),
       body: {}
   end
 end

@@ -21,8 +21,8 @@ class Api::V1::OtpDisableTest < ActionDispatch::IntegrationTest
 
       security [
         {SessionCookie: []},
-        {Oauth2: []},
-        {OpenId: []}
+        {Oauth2: ["profile:write"]},
+        {OpenId: ["profile:write"]}
       ]
 
       response(200, "successful") do
@@ -65,7 +65,7 @@ class Api::V1::OtpDisableTest < ActionDispatch::IntegrationTest
 
   test "POST /otp/disable with OAuth bearer + access confirmation" do
     user = create(:user, password: "testtest", otp_secret: User.generate_otp_secret, otp_required_for_login: true)
-    headers = oauth_headers_for(user, scopes: ["public"], with_access_confirmation: true)
+    headers = oauth_headers_for(user, scopes: ["profile:write"], with_access_confirmation: true)
 
     assert_api_response :post, 200, headers: headers, body: {otpCode: user.current_otp}
   end
@@ -73,6 +73,6 @@ class Api::V1::OtpDisableTest < ActionDispatch::IntegrationTest
   test "POST /otp/disable returns 400 for OAuth bearer without X-Access-Confirmation" do
     user = create(:user, password: "testtest", otp_secret: User.generate_otp_secret, otp_required_for_login: true)
 
-    assert_api_response :post, 400, headers: oauth_headers_for(user, scopes: ["public"]), body: {otpCode: user.current_otp}
+    assert_api_response :post, 400, headers: oauth_headers_for(user, scopes: ["profile:write"]), body: {otpCode: user.current_otp}
   end
 end

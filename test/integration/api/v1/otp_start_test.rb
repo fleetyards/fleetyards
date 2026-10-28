@@ -19,8 +19,8 @@ class Api::V1::OtpStartTest < ActionDispatch::IntegrationTest
 
       security [
         {SessionCookie: []},
-        {Oauth2: []},
-        {OpenId: []}
+        {Oauth2: ["profile:write"]},
+        {OpenId: ["profile:write"]}
       ]
 
       response(200, "successful") do
@@ -63,7 +63,7 @@ class Api::V1::OtpStartTest < ActionDispatch::IntegrationTest
 
   test "POST /otp/start with OAuth bearer + access confirmation" do
     user = create(:user, password: "testtest")
-    headers = oauth_headers_for(user, scopes: ["public"], with_access_confirmation: true)
+    headers = oauth_headers_for(user, scopes: ["profile:write"], with_access_confirmation: true)
 
     assert_api_response :post, 200, headers: headers, body: {}
   end
@@ -71,6 +71,14 @@ class Api::V1::OtpStartTest < ActionDispatch::IntegrationTest
   test "POST /otp/start returns 400 for OAuth bearer without X-Access-Confirmation" do
     user = create(:user, password: "testtest")
 
-    assert_api_response :post, 400, headers: oauth_headers_for(user, scopes: ["public"]), body: {}
+    assert_api_response :post, 400, headers: oauth_headers_for(user, scopes: ["profile:write"]), body: {}
+  end
+
+  test "GET /otp/qrcode refuses a token without profile:write" do
+    user = create(:user, password: "testtest")
+
+    get "/api/v1/otp/qrcode", headers: oauth_headers_for(user, scopes: %w[public profile:read])
+
+    assert_response :unauthorized
   end
 end

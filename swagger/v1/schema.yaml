@@ -1896,8 +1896,12 @@ paths:
       operationId: createFleet
       security:
       - SessionCookie: []
-      - Oauth2: []
-      - OpenId: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
       requestBody:
         required: true
         content:
@@ -2069,8 +2073,12 @@ paths:
       operationId: useFleetInvite
       security:
       - SessionCookie: []
-      - Oauth2: []
-      - OpenId: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
       requestBody:
         required: true
         content:
@@ -7341,8 +7349,12 @@ paths:
       operationId: leaveFleet
       security:
       - SessionCookie: []
-      - Oauth2: []
-      - OpenId: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
       responses:
         '204':
           description: successful
@@ -7367,8 +7379,12 @@ paths:
       operationId: fleetMembership
       security:
       - SessionCookie: []
-      - Oauth2: []
-      - OpenId: []
+      - Oauth2:
+        - fleet
+        - fleet:read
+      - OpenId:
+        - fleet
+        - fleet:read
       responses:
         '200':
           description: successful
@@ -7397,8 +7413,12 @@ paths:
       operationId: updateFleetMembership
       security:
       - SessionCookie: []
-      - Oauth2: []
-      - OpenId: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
       requestBody:
         required: true
         content:
@@ -7445,8 +7465,12 @@ paths:
       operationId: acceptFleetMembership
       security:
       - SessionCookie: []
-      - Oauth2: []
-      - OpenId: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
       responses:
         '200':
           description: successful
@@ -7487,8 +7511,12 @@ paths:
       operationId: declineFleetMembership
       security:
       - SessionCookie: []
-      - Oauth2: []
-      - OpenId: []
+      - Oauth2:
+        - fleet
+        - fleet:write
+      - OpenId:
+        - fleet
+        - fleet:write
       responses:
         '200':
           description: successful
@@ -17450,8 +17478,10 @@ paths:
       operationId: createOauthApplication
       security:
       - SessionCookie: []
-      - Oauth2: []
-      - OpenId: []
+      - Oauth2:
+        - profile:write
+      - OpenId:
+        - profile:write
       requestBody:
         required: true
         content:
@@ -17484,8 +17514,10 @@ paths:
       operationId: oauthApplications
       security:
       - SessionCookie: []
-      - Oauth2: []
-      - OpenId: []
+      - Oauth2:
+        - profile:write
+      - OpenId:
+        - profile:write
       responses:
         '200':
           description: successful
@@ -17515,8 +17547,10 @@ paths:
       operationId: destroyOauthApplication
       security:
       - SessionCookie: []
-      - Oauth2: []
-      - OpenId: []
+      - Oauth2:
+        - profile:write
+      - OpenId:
+        - profile:write
       responses:
         '204':
           description: successful
@@ -17541,8 +17575,10 @@ paths:
       operationId: oauthApplication
       security:
       - SessionCookie: []
-      - Oauth2: []
-      - OpenId: []
+      - Oauth2:
+        - profile:write
+      - OpenId:
+        - profile:write
       responses:
         '200':
           description: successful
@@ -17571,8 +17607,10 @@ paths:
       operationId: updateOauthApplication
       security:
       - SessionCookie: []
-      - Oauth2: []
-      - OpenId: []
+      - Oauth2:
+        - profile:write
+      - OpenId:
+        - profile:write
       requestBody:
         required: true
         content:
@@ -17616,8 +17654,10 @@ paths:
       operationId: regenerateOauthApplicationSecret
       security:
       - SessionCookie: []
-      - Oauth2: []
-      - OpenId: []
+      - Oauth2:
+        - profile:write
+      - OpenId:
+        - profile:write
       responses:
         '200':
           description: successful
@@ -17690,8 +17730,10 @@ paths:
         required: false
       security:
       - SessionCookie: []
-      - Oauth2: []
-      - OpenId: []
+      - Oauth2:
+        - profile:write
+      - OpenId:
+        - profile:write
       requestBody:
         required: true
         content:
@@ -17733,8 +17775,10 @@ paths:
         required: false
       security:
       - SessionCookie: []
-      - Oauth2: []
-      - OpenId: []
+      - Oauth2:
+        - profile:write
+      - OpenId:
+        - profile:write
       requestBody:
         required: true
         content:
@@ -17776,8 +17820,10 @@ paths:
         required: false
       security:
       - SessionCookie: []
-      - Oauth2: []
-      - OpenId: []
+      - Oauth2:
+        - profile:write
+      - OpenId:
+        - profile:write
       responses:
         '200':
           description: successful
@@ -17813,8 +17859,10 @@ paths:
         required: false
       security:
       - SessionCookie: []
-      - Oauth2: []
-      - OpenId: []
+      - Oauth2:
+        - profile:write
+      - OpenId:
+        - profile:write
       responses:
         '200':
           description: successful
@@ -21309,8 +21357,10 @@ paths:
         required: false
       security:
       - SessionCookie: []
-      - Oauth2: []
-      - OpenId: []
+      - Oauth2:
+        - profile:write
+      - OpenId:
+        - profile:write
       requestBody:
         required: true
         content:
@@ -21419,8 +21469,10 @@ paths:
           members exist
       security:
       - SessionCookie: []
-      - Oauth2: []
-      - OpenId: []
+      - Oauth2:
+        - profile:write
+      - OpenId:
+        - profile:write
       responses:
         '200':
           description: successful
@@ -21469,8 +21521,10 @@ paths:
       operationId: updateProfile
       security:
       - SessionCookie: []
-      - Oauth2: []
-      - OpenId: []
+      - Oauth2:
+        - profile:write
+      - OpenId:
+        - profile:write
       requestBody:
         required: true
         content:
