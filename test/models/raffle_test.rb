@@ -127,6 +127,33 @@ class RaffleTest < ActiveSupport::TestCase
     assert_not_includes Raffle.start_unannounced, raffle
   end
 
+  test "localized texts fall back to English field by field" do
+    raffle = build(:raffle, title: "Win a Polaris", prize: "Polaris", translations: {"de" => {"title" => "Gewinne eine Polaris"}})
+
+    assert_equal "Gewinne eine Polaris", raffle.localized_title(:de)
+    assert_equal "Polaris", raffle.localized_prize(:de)
+    assert_equal "Win a Polaris", raffle.localized_title(:fr)
+    I18n.with_locale(:de) { assert_equal "Gewinne eine Polaris", raffle.localized_title }
+  end
+
+  test "blank translations are dropped on save" do
+    raffle = create(:raffle, translations_list: [
+      {locale: "de", title: "Gewinne eine Polaris", description: " ", prize: ""},
+      {locale: "fr", title: ""}
+    ])
+
+    assert_equal({"de" => {"title" => "Gewinne eine Polaris"}}, raffle.translations)
+    assert_equal [{"locale" => "de", "title" => "Gewinne eine Polaris"}], raffle.translations_list
+  end
+
+  test "translations only take known languages and fields" do
+    assert_not build(:raffle, translations: {"en" => {"title" => "Twice"}}).valid?
+    assert_not build(:raffle, translations: {"xx" => {"title" => "Unknown"}}).valid?
+    assert_not build(:raffle, translations: {"de" => {"code" => "SECRET"}}).valid?
+    assert_not build(:raffle, translations: {"de" => {"title" => 42}}).valid?
+    assert build(:raffle, translations: {"de" => {"title" => "Gewinne"}}).valid?
+  end
+
   private def uploaded(filename)
     ActiveStorage::Blob.create_and_upload!(
       io: File.open(Rails.root.join("test/fixtures/files/test.png")), filename:, content_type: "image/png"

@@ -26,8 +26,8 @@ module Raffles
         locale = User.new(locale: locales[user_id]).notification_locale
         I18n.with_locale(locale) do
           {
-            title: I18n.t("notifications.#{type}.title", raffle: raffle.title),
-            body: I18n.t("notifications.#{type}.body", raffle: raffle.title, deadline: I18n.l(deadline, format: :long)),
+            title: I18n.t("notifications.#{type}.title", raffle: raffle.localized_title),
+            body: I18n.t("notifications.#{type}.body", raffle: raffle.localized_title, deadline: I18n.l(deadline, format: :long)),
             link:,
             icon: "fa-duotone fa-ticket",
             record_type: "Raffle",

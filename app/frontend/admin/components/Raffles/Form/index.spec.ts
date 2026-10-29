@@ -23,6 +23,7 @@ vi.mock("@/shared/components/base/FormDateTime/index.vue", () => ({
 const raffle: Raffle = {
   id: "8d0e3c7a-0000-4000-8000-000000000002",
   title: "Win a Polaris",
+  translations: [{ locale: "de", title: "Gewinne eine Polaris" }],
   codeSet: true,
   maskedCode: "********CDEF",
   images: [],
@@ -64,6 +65,23 @@ describe("RaffleForm", () => {
       published: true,
     });
     expect(payload).toHaveProperty("code", undefined);
+  });
+
+  it("sends back only the languages that hold text", async () => {
+    const wrapper = await mountForm({ raffle });
+
+    await submit(wrapper);
+
+    expect(wrapper.emitted("submit")?.[0]?.[0]).toMatchObject({
+      translations: [
+        {
+          locale: "de",
+          title: "Gewinne eine Polaris",
+          prize: undefined,
+          description: undefined,
+        },
+      ],
+    });
   });
 
   it("locks the code and dates once the raffle is drawn", async () => {

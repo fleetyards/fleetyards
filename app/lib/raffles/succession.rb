@@ -77,10 +77,10 @@ module Raffles
         Notification.notify!(
           user:,
           type: :raffle_won,
-          title: I18n.t("notifications.raffle_won.title", raffle: @raffle.title),
+          title: I18n.t("notifications.raffle_won.title", raffle: @raffle.localized_title),
           body: I18n.t(
             "notifications.raffle_won.body",
-            raffle: @raffle.title,
+            raffle: @raffle.localized_title,
             deadline: I18n.l(entry.claim_deadline_at, format: :long)
           ),
           link: Rails.application.routes.url_helpers.frontend_raffle_path(@raffle),

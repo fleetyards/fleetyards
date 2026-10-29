@@ -22185,6 +22185,10 @@ components:
           type: string
         prize:
           type: string
+        translations:
+          type: array
+          items:
+            "$ref": "#/components/schemas/RaffleTranslation"
         codeSet:
           type: boolean
         maskedCode:
@@ -22237,6 +22241,7 @@ components:
       required:
       - id
       - title
+      - translations
       - codeSet
       - images
       - startsAt
@@ -22326,6 +22331,10 @@ components:
           type: string
         prize:
           type: string
+        translations:
+          type: array
+          items:
+            "$ref": "#/components/schemas/RaffleTranslation"
         code:
           type: string
         startsAt:
@@ -22432,6 +22441,38 @@ components:
       - DRAWN
       - CONCLUDED
       title: RaffleStatusEnum
+    RaffleTranslation:
+      type: object
+      properties:
+        locale:
+          "$ref": "#/components/schemas/RaffleTranslationLocaleEnum"
+        title:
+          type: string
+        description:
+          type: string
+        prize:
+          type: string
+      additionalProperties: false
+      required:
+      - locale
+      title: RaffleTranslation
+    RaffleTranslationLocaleEnum:
+      type: string
+      enum:
+      - de
+      - es
+      - fr
+      - it
+      - zh-CN
+      - zh-TW
+      x-enumNames:
+      - DE
+      - ES
+      - FR
+      - IT
+      - ZH_CN
+      - ZH_TW
+      title: RaffleTranslationLocaleEnum
     Raffles:
       type: object
       properties:

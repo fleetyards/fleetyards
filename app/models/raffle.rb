@@ -12,6 +12,11 @@ class Raffle < ApplicationRecord
   # How long before the close the last-day reminder goes out.
   LAST_DAY = 1.day
 
+  # English lives in the columns; every other locale is optional and falls
+  # back to it field by field.
+  TRANSLATED_ATTRIBUTES = %w[title description prize].freeze
+  TRANSLATION_LOCALES = (I18n.available_locales.map(&:to_s) - ["en"]).freeze
+
   DEFAULT_SORTING_PARAMS = "ends_at desc"
   ALLOWED_SORTING_PARAMS = [
     "title asc", "title desc",
@@ -42,8 +47,10 @@ class Raffle < ApplicationRecord
   validates :images, presence: true, if: :published?
   validates :images, no_vector_image: true
   validate :frozen_after_draw, on: :update
+  validate :translations_shape
 
   before_validation :compute_ends_at
+  before_validation :compact_translations
   before_destroy :keep_drawn_raffles, prepend: true
 
   scope :published, -> { where(published: true) }
@@ -67,6 +74,28 @@ class Raffle < ApplicationRecord
 
   def self.ransackable_associations(auth_object = nil)
     []
+  end
+
+  TRANSLATED_ATTRIBUTES.each do |attribute|
+    define_method(:"localized_#{attribute}") do |locale = I18n.locale|
+      translations.dig(locale.to_s, attribute).presence || public_send(attribute)
+    end
+  end
+
+  def translations_list
+    TRANSLATION_LOCALES.filter_map do |locale|
+      next if translations[locale].blank?
+
+      {"locale" => locale, **translations[locale]}
+    end
+  end
+
+  # Replaces every translation: a locale left out of the list is dropped.
+  def translations_list=(list)
+    self.translations = Array(list).to_h do |entry|
+      entry = entry.to_h.stringify_keys
+      [entry["locale"].to_s, entry.slice(*TRANSLATED_ATTRIBUTES)]
+    end
   end
 
   # Stored for queries, but known before the first save too.
@@ -139,6 +168,31 @@ class Raffle < ApplicationRecord
     return if starts_at.blank? || run_days.blank?
 
     self.ends_at = starts_at + run_days.to_i.days
+  end
+
+  private def compact_translations
+    return unless translations.is_a?(Hash)
+
+    self.translations = translations.to_h do |locale, values|
+      [locale.to_s, values.is_a?(Hash) ? values.transform_keys(&:to_s).compact_blank : values]
+    end.compact_blank
+  end
+
+  private def translations_shape
+    unless translations.is_a?(Hash)
+      errors.add(:translations, :invalid)
+      return
+    end
+
+    translations.each do |locale, values|
+      next if TRANSLATION_LOCALES.include?(locale) &&
+        values.is_a?(Hash) &&
+        (values.keys - TRANSLATED_ATTRIBUTES).empty? &&
+        values.values.all?(String)
+
+      errors.add(:translations, :invalid)
+      break
+    end
   end
 
   # A drawn raffle is the public record of who entered and who won.

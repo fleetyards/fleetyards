@@ -3,7 +3,7 @@
 </mj-text>
 
 <mj-text>
-  <%= I18n.t("mailer.raffle.claim.body", raffle: @raffle.title) %>
+  <%= I18n.t("mailer.raffle.claim.body", raffle: @raffle.localized_title) %>
 </mj-text>
 
 <%= render "shared/mailer/btn",

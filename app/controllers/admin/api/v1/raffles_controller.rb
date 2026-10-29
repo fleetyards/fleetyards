@@ -70,8 +70,10 @@ module Admin
         private def raffle_params
           @raffle_params ||= params.permit(
             :title, :description, :prize, :code, :starts_at, :run_days, :claim_period_days, :published,
-            images: []
-          )
+            images: [], translations: [:locale, *::Raffle::TRANSLATED_ATTRIBUTES]
+          ).tap do |permitted|
+            permitted[:translations_list] = permitted.delete(:translations) if permitted.key?(:translations)
+          end
         end
 
         private def raffle_query_params

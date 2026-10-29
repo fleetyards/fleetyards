@@ -285,6 +285,36 @@ class Admin::Api::V1::RafflesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT /raffles/:id replaces the translations" do
+    raffle = create(:raffle, translations: {"fr" => {"title" => "Gagnez un Polaris"}})
+    sign_in @admin
+
+    body = {
+      title: raffle.title, startsAt: raffle.starts_at.utc.iso8601, runDays: raffle.run_days,
+      translations: [
+        {locale: "de", title: "Gewinne eine Polaris", description: "", prize: "Polaris-Spielpaket"},
+        {locale: "zh-CN", title: "赢取北极星"}
+      ]
+    }
+
+    assert_api_response :put, 200, path_params: {id: raffle.id}, body: do
+      assert_equal %w[de zh-CN], parsed_body["translations"].map { |entry| entry["locale"] }
+      assert_equal "Gewinne eine Polaris", parsed_body["translations"].first["title"]
+      assert_not parsed_body["translations"].first.key?("description")
+    end
+
+    assert_equal({"de" => {"title" => "Gewinne eine Polaris", "prize" => "Polaris-Spielpaket"}, "zh-CN" => {"title" => "赢取北极星"}}, raffle.reload.translations)
+  end
+
+  test "PUT /raffles/:id keeps the translations when they are left out" do
+    raffle = create(:raffle, translations: {"de" => {"title" => "Gewinne eine Polaris"}})
+    sign_in @admin
+
+    assert_api_response :put, 200, path_params: {id: raffle.id}, body: {title: "Renamed", startsAt: raffle.starts_at.utc.iso8601, runDays: raffle.run_days}
+
+    assert_equal "Gewinne eine Polaris", raffle.reload.translations.dig("de", "title")
+  end
+
   test "PUT /raffles/:id refuses to change the code after the draw" do
     raffle = create(:raffle, :closed, drawn_at: 1.hour.ago)
     sign_in @admin

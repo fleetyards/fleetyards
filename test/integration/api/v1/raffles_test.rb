@@ -139,6 +139,19 @@ class Api::V1::RafflesTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 404, api_path: "/raffles/{id}", path_params: {id: create(:raffle, :draft).id}
   end
 
+  test "GET /raffles/:id answers in the reader's language, falling back to English" do
+    @raffle.update!(title: "Win a Polaris", prize: "Polaris game package", translations: {"de" => {"title" => "Gewinne eine Polaris"}})
+
+    assert_api_response :get, 200, api_path: "/raffles/{id}", path_params: {id: @raffle.id}, headers: {"Accept-Language" => "de"} do
+      assert_equal "Gewinne eine Polaris", parsed_body["title"]
+      assert_equal "Polaris game package", parsed_body["prize"]
+    end
+
+    assert_api_response :get, 200, api_path: "/raffles/{id}", path_params: {id: @raffle.id}, headers: {"Accept-Language" => "fr"} do
+      assert_equal "Win a Polaris", parsed_body["title"]
+    end
+  end
+
   test "GET /raffles/:id/entrants lists every entrant by name" do
     entries = create_list(:raffle_entry, 2, raffle: @raffle)
 

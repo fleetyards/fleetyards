@@ -23,6 +23,15 @@ class RaffleMailerTest < ActionMailer::TestCase
     assert_equal ["entered-with@example.com"], RaffleMailer.claim(@entry.reload).to
   end
 
+  test "#claim is written in the winner's language" do
+    @entry.raffle.update!(translations: {"de" => {"title" => "Gewinne eine Polaris"}})
+    @entry.user.update_columns(locale: "de")
+
+    mail = RaffleMailer.claim(@entry)
+
+    assert_equal I18n.t(:"mailer.raffle.claim.subject", raffle: "Gewinne eine Polaris", locale: :de), mail.subject
+  end
+
   test "#prize carries the code" do
     mail = RaffleMailer.prize(@entry)
 

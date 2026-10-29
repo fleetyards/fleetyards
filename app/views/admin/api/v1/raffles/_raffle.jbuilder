@@ -4,6 +4,7 @@ json.id raffle.id
 json.title raffle.title
 json.description raffle.description if raffle.description.present?
 json.prize raffle.prize if raffle.prize.present?
+json.translations raffle.translations_list
 json.code_set raffle.code.present?
 json.masked_code raffle.masked_code if raffle.code.present?
 json.partial!("api/v1/raffles/images", raffle:)

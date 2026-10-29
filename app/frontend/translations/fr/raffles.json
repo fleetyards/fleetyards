@@ -51,6 +51,7 @@
         "prize": "Lot",
         "prizeInfo": "Ce que reçoit le gagnant, tel qu'affiché à côté du tirage. Obligatoire pour publier.",
         "description": "Description",
+        "translationInfo": "Facultatif. Un champ laissé vide affiche le texte anglais.",
         "code": "Code cadeau",
         "codeInfo": "Le code que reçoit le gagnant. Il est stocké chiffré et n'est plus jamais affiché en entier.",
         "codeSet": "Un code est défini (%{code}). Laissez le champ vide pour le conserver.",

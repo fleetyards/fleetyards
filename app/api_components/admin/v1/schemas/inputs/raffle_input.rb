@@ -13,6 +13,8 @@ module Admin
               title: {type: :string},
               description: {type: :string},
               prize: {type: :string},
+              # Replaces every translation: a language left out is removed.
+              translations: {type: :array, items: ::Admin::V1::Schemas::RaffleTranslation},
               # Write-only: left out, the stored code stays as it is.
               code: {type: :string},
               startsAt: {type: :string, format: "date-time"},

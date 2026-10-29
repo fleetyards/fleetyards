@@ -6,12 +6,19 @@ export default {
 
 <script lang="ts" setup>
 import { useForm } from "vee-validate";
-import { type Raffle, type RaffleInput } from "@/services/fyAdminApi";
+import {
+  type Raffle,
+  type RaffleInput,
+  type RaffleTranslation,
+  RaffleTranslationLocaleEnum,
+} from "@/services/fyAdminApi";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
 import FormDateTime from "@/shared/components/base/FormDateTime/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
+import FormTabs from "@/shared/components/base/FormTabs/index.vue";
+import FormTab from "@/shared/components/base/FormTabs/Tab/index.vue";
 import RaffleGallery from "@/admin/components/Raffles/Gallery/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -32,16 +39,21 @@ const emit = defineEmits<{
   cancel: [];
 }>();
 
-const { t } = useI18n();
+const { t, currentLocale } = useI18n();
 
 const { displayAlert } = useAppNotifications();
 
 const drawn = computed(() => !!props.raffle?.drawnAt);
 
+const LOCALES = Object.values(RaffleTranslationLocaleEnum);
+
+type TranslationValues = Omit<RaffleTranslation, "locale">;
+
 type FormValues = {
   title: string;
   prize?: string;
   description?: string;
+  translations: Record<RaffleTranslationLocaleEnum, TranslationValues>;
   // Never filled from the server: the API only says whether a code is set.
   code?: string;
   startsAt: string | null;
@@ -55,6 +67,22 @@ const { defineField, handleSubmit, meta, errors } = useForm<FormValues>({
     title: props.raffle?.title ?? "",
     prize: props.raffle?.prize,
     description: props.raffle?.description,
+    translations: Object.fromEntries(
+      LOCALES.map((locale) => {
+        const stored = props.raffle?.translations.find(
+          (translation) => translation.locale === locale,
+        );
+
+        return [
+          locale,
+          {
+            title: stored?.title,
+            prize: stored?.prize,
+            description: stored?.description,
+          },
+        ];
+      }),
+    ) as FormValues["translations"],
     code: undefined,
     startsAt: props.raffle?.startsAt ?? null,
     runDays: props.raffle?.runDays ?? 14,
@@ -72,6 +100,34 @@ const { defineField, handleSubmit, meta, errors } = useForm<FormValues>({
 const [title, titleProps] = defineField("title");
 const [prize, prizeProps] = defineField("prize");
 const [description, descriptionProps] = defineField("description");
+
+const translationField = (
+  locale: RaffleTranslationLocaleEnum,
+  field: keyof TranslationValues,
+) => defineField(`translations.${locale}.${field}` as `translations.de.title`);
+
+const translationFields = Object.fromEntries(
+  LOCALES.map((locale) => [
+    locale,
+    {
+      title: translationField(locale, "title"),
+      prize: translationField(locale, "prize"),
+      description: translationField(locale, "description"),
+    },
+  ]),
+) as Record<
+  RaffleTranslationLocaleEnum,
+  Record<keyof TranslationValues, ReturnType<typeof translationField>>
+>;
+
+// Named in the admin's own language, so no label per locale has to be kept.
+const languageName = (locale: string) =>
+  new Intl.DisplayNames([currentLocale()], { type: "language" }).of(locale) ??
+  locale;
+
+const hasTranslation = (locale: RaffleTranslationLocaleEnum) =>
+  Object.values(translationFields[locale]).some(([value]) => !!value.value);
+
 const [code, codeProps] = defineField("code");
 const [startsAt, startsAtProps] = defineField("startsAt");
 const [runDays, runDaysProps] = defineField("runDays");
@@ -106,6 +162,15 @@ const onSubmit = handleSubmit((values) => {
     title: values.title,
     prize: values.prize || undefined,
     description: values.description || undefined,
+    translations: LOCALES.map((locale) => ({
+      locale,
+      title: values.translations[locale]?.title || undefined,
+      prize: values.translations[locale]?.prize || undefined,
+      description: values.translations[locale]?.description || undefined,
+    })).filter(
+      (translation) =>
+        translation.title || translation.prize || translation.description,
+    ),
     code: values.code || undefined,
     startsAt: toIso(values.startsAt),
     runDays: Number(values.runDays),
@@ -118,21 +183,75 @@ const onSubmit = handleSubmit((values) => {
 
 <template>
   <form :id="formId" @submit.prevent="onSubmit">
+    <FormTabs :sync-url="false" horizontal>
+      <FormTab id="en" :label="languageName('en')" :fields="['title']">
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <FormInput
+              v-model="title"
+              v-bind="titleProps"
+              translation-key="raffle.title"
+              name="title"
+            />
+            <FormInput
+              v-model="prize"
+              v-bind="prizeProps"
+              translation-key="raffle.prize"
+              name="prize"
+              :info="t('labels.raffle.prizeInfo')"
+            />
+          </div>
+          <div class="col-12 col-md-6">
+            <FormTextarea
+              v-model="description"
+              v-bind="descriptionProps"
+              translation-key="raffle.description"
+              name="description"
+            />
+          </div>
+        </div>
+      </FormTab>
+      <FormTab
+        v-for="locale in LOCALES"
+        :id="locale"
+        :key="locale"
+        :label="languageName(locale)"
+        :icon="hasTranslation(locale) ? 'fa-duotone fa-check' : undefined"
+      >
+        <p class="raffle-form__info">
+          {{ t("labels.raffle.translationInfo") }}
+        </p>
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <FormInput
+              v-model="translationFields[locale].title[0].value"
+              v-bind="translationFields[locale].title[1].value"
+              translation-key="raffle.title"
+              :name="`translations.${locale}.title`"
+              :placeholder="title"
+            />
+            <FormInput
+              v-model="translationFields[locale].prize[0].value"
+              v-bind="translationFields[locale].prize[1].value"
+              translation-key="raffle.prize"
+              :name="`translations.${locale}.prize`"
+              :placeholder="prize"
+            />
+          </div>
+          <div class="col-12 col-md-6">
+            <FormTextarea
+              v-model="translationFields[locale].description[0].value"
+              v-bind="translationFields[locale].description[1].value"
+              translation-key="raffle.description"
+              :name="`translations.${locale}.description`"
+              :placeholder="description"
+            />
+          </div>
+        </div>
+      </FormTab>
+    </FormTabs>
     <div class="row">
       <div class="col-12 col-md-6">
-        <FormInput
-          v-model="title"
-          v-bind="titleProps"
-          translation-key="raffle.title"
-          name="title"
-        />
-        <FormInput
-          v-model="prize"
-          v-bind="prizeProps"
-          translation-key="raffle.prize"
-          name="prize"
-          :info="t('labels.raffle.prizeInfo')"
-        />
         <FormInput
           v-model="code"
           v-bind="codeProps"
@@ -176,12 +295,6 @@ const onSubmit = handleSubmit((values) => {
           :images="raffle?.images"
           @update:signed-ids="imageIds = $event"
         />
-        <FormTextarea
-          v-model="description"
-          v-bind="descriptionProps"
-          translation-key="raffle.description"
-          name="description"
-        />
         <FormToggle
           v-model="published"
           v-bind="publishedProps"
@@ -201,3 +314,11 @@ const onSubmit = handleSubmit((values) => {
     />
   </form>
 </template>
+
+<style lang="scss" scoped>
+.raffle-form__info {
+  margin: 0 0 12px;
+  color: var(--color-text-dim, #959595);
+  font-size: 0.875rem;
+}
+</style>

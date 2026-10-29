@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_29_000000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_29_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2547,7 +2547,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_29_000000) do
     t.index ["user_id", "archived_at"], name: "index_notifications_on_user_id_and_archived_at"
     t.index ["user_id", "created_at"], name: "index_notifications_on_user_id_and_created_at", order: { created_at: :desc }
     t.index ["user_id", "read_at"], name: "index_notifications_on_user_id_and_read_at"
-    t.index ["user_id", "record_id", "notification_type"], name: "index_notifications_on_raffle_announcement_recipient", unique: true, where: "(((notification_type)::text = ANY ((ARRAY['raffle_started'::character varying, 'raffle_last_day'::character varying])::text[])) AND (record_id IS NOT NULL))"
+    t.index ["user_id", "record_id", "notification_type"], name: "index_notifications_on_raffle_announcement_recipient", unique: true, where: "(((notification_type)::text = ANY (ARRAY[('raffle_started'::character varying)::text, ('raffle_last_day'::character varying)::text])) AND (record_id IS NOT NULL))"
     t.index ["user_id", "record_id"], name: "index_notifications_on_announcement_recipient", unique: true, where: "(((notification_type)::text = 'announcement'::text) AND (record_id IS NOT NULL))"
     t.index ["user_id", "record_id"], name: "index_notifications_on_fleet_announcement_recipient", unique: true, where: "(((notification_type)::text = 'fleet_announcement_posted'::text) AND (record_id IS NOT NULL))"
   end
@@ -2744,6 +2744,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_29_000000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "prize"
+    t.jsonb "translations", default: {}, null: false
     t.index ["drawn_by_id"], name: "index_raffles_on_drawn_by_id"
     t.index ["ends_at"], name: "index_raffles_on_ends_at"
     t.index ["published"], name: "index_raffles_on_published"
