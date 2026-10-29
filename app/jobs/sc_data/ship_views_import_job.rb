@@ -69,7 +69,9 @@ module ScData
           model.update_columns(ship_views_digest: nil)
         end
       rescue => e
-        # Left on the old digest, so the next run tries the ship again.
+        # The renders may already have stored the new digest, so it is cleared
+        # for the next run to try the ship again.
+        model&.update_columns(ship_views_digest: nil)
         log(:error, "#{path} failed: #{e.class}: #{e.message}")
         Appsignal.report_error(e)
       end

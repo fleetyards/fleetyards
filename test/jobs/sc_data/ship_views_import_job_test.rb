@@ -509,6 +509,16 @@ module ScData
       assert_equal "AEGS_Gladius_PIR", variant.hardpoint_transforms["entity"]
     end
 
+    test "tries a ship again when its paint maps raise" do
+      ::ScData::TexturedPaintsImport.any_instance.stubs(:call).raises(ActiveRecord::RecordInvalid)
+      publish({"flight_top.png" => PNG})
+
+      perform
+
+      assert @model.top_view.attached?
+      assert_nil @model.ship_views_digest
+    end
+
     test "repaints a liveried variant's paints from its base ship's listing" do
       @model.update_columns(rsi_chassis_id: 4242)
       variant = create(:model, rsi_chassis_id: 4242)
