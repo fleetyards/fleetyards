@@ -129,6 +129,9 @@ module Admin
               extendedHoloLite: {type: [:string, :null]},
               landedHoloLite: {type: [:string, :null]},
               holoTextured: {type: [:string, :null]},
+              holoTexturedLite: {type: [:string, :null]},
+              landedHoloTextured: {type: [:string, :null]},
+              landedHoloTexturedLite: {type: [:string, :null]},
               holoHull: {type: [:string, :null]},
               brochure: {type: [:string, :null]},
               holo: {type: [:string, :null]}

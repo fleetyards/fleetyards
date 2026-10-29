@@ -450,8 +450,13 @@ class Model < ApplicationRecord
     landed_starboard_view landed_starboard_view_colored
   ].freeze
 
-  # `holo_textured` is the painted, animated flight holo.
-  DETAIL_ATTACHMENT_NAMES = (DETAIL_VIEW_ATTACHMENT_NAMES + %i[holo_textured]).freeze
+  # The painted, animated holos, flying and landed, each also exported lite with
+  # a smaller paint atlas of its own.
+  TEXTURED_HOLO_ATTACHMENT_NAMES = %i[
+    holo_textured holo_textured_lite landed_holo_textured landed_holo_textured_lite
+  ].freeze
+
+  DETAIL_ATTACHMENT_NAMES = (DETAIL_VIEW_ATTACHMENT_NAMES + TEXTURED_HOLO_ATTACHMENT_NAMES).freeze
 
   # The same export without the interior, for devices that cannot load the full
   # one. Lists carry these beside `holo`: a vehicle in the hangar opens its holo

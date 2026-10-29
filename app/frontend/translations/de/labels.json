@@ -1299,6 +1299,9 @@
         "extendedHoloLite": "Ausgefahrenes Lite-Holo",
         "landedHoloLite": "Gelandetes Lite-Holo",
         "holoTextured": "Texturiertes Holo",
+        "holoTexturedLite": "Texturiertes Lite-Holo",
+        "landedHoloTextured": "Gelandetes texturiertes Holo",
+        "landedHoloTexturedLite": "Gelandetes texturiertes Lite-Holo",
         "holoHull": "Rumpf-Holo",
         "state": {
           "flight": "Im Flug",

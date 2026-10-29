@@ -1299,6 +1299,9 @@
         "extendedHoloLite": "Holo leggero esteso",
         "landedHoloLite": "Holo leggero atterrato",
         "holoTextured": "Holo con texture",
+        "holoTexturedLite": "Holo leggero con texture",
+        "landedHoloTextured": "Holo con texture atterrato",
+        "landedHoloTexturedLite": "Holo leggero con texture atterrato",
         "holoHull": "Holo dello scafo",
         "state": {
           "flight": "In volo",

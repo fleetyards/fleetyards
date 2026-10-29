@@ -11161,6 +11161,12 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         holoTextured:
           "$ref": "#/components/schemas/MediaFile"
+        holoTexturedLite:
+          "$ref": "#/components/schemas/MediaFile"
+        landedHoloTextured:
+          "$ref": "#/components/schemas/MediaFile"
+        landedHoloTexturedLite:
+          "$ref": "#/components/schemas/MediaFile"
         brochure:
           "$ref": "#/components/schemas/MediaFile"
         holoHull:
@@ -21627,6 +21633,18 @@ components:
           - string
           - 'null'
         holoTextured:
+          type:
+          - string
+          - 'null'
+        holoTexturedLite:
+          type:
+          - string
+          - 'null'
+        landedHoloTextured:
+          type:
+          - string
+          - 'null'
+        landedHoloTexturedLite:
           type:
           - string
           - 'null'

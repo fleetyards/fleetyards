@@ -41056,6 +41056,12 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         holoTextured:
           "$ref": "#/components/schemas/MediaFile"
+        holoTexturedLite:
+          "$ref": "#/components/schemas/MediaFile"
+        landedHoloTextured:
+          "$ref": "#/components/schemas/MediaFile"
+        landedHoloTexturedLite:
+          "$ref": "#/components/schemas/MediaFile"
         brochure:
           "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
