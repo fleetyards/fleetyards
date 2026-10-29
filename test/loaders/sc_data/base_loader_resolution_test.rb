@@ -149,6 +149,29 @@ module ScData
         assert_equal ["editable"], slot.flags
       end
 
+      test "keeps what sits below a port promoted from a hidden component" do
+        rack = create(:component, sc_key: "gmrck_s03_cyclone_mt_left", category: "missile_racks", size: "3")
+        missile = create(:component, sc_key: "gmisl_s02_em_taln_dominator", size: "2")
+        turret = create(:component, :hidden, sc_key: "tmbl_cyclone_module_mt")
+        create(:hardpoint, parent: turret, sc_name: "hardpoint_missilerack_left", component: rack, source: :game_files)
+
+        slots = resolve({"loadout" => [{
+          "name" => "hardpoint_module_attach", "key" => "tmbl_cyclone_module_mt",
+          "loadout" => [{
+            "name" => "hardpoint_missilerack_left", "key" => "gmrck_s03_cyclone_mt_left",
+            "loadout" => [
+              {"name" => "missile_01_attach", "key" => "gmisl_s02_em_taln_dominator"},
+              {"name" => "missile_02_attach", "key" => "gmisl_s02_em_taln_dominator"}
+            ]
+          }]
+        }]})
+
+        children = slots.first.children
+
+        assert_equal %w[missile_01_attach missile_02_attach], children.map(&:name)
+        assert_equal [missile, missile], children.map(&:component)
+      end
+
       # Derived only for a ship. A module's own loadout, and every nested level,
       # resolves without it -- which is why the model is passed rather than read
       # off whatever happens to be the parent.

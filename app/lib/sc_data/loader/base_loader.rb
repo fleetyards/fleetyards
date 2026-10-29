@@ -407,14 +407,15 @@ module ScData
       # A hidden component is a container the game files ship as an item -- a
       # door that holds a cargo grid. It gets no hardpoint of its own; its
       # sub-hardpoints are promoted onto this level under a compound name, and
-      # take what their port declares with them: the Cyclone's turret module is
-      # one, and its gun port, left without types, took any weapon.
+      # take what their port declares and what sits below them along: the
+      # Cyclone's turret module is one, its gun port left without types took any
+      # weapon, and the MT's racks came without their missiles.
       private def flatten_hidden(item, component)
         nested_loadout = item["loadout"] || item["default_loadout"]
 
         promoted = component.hardpoints.filter_map do |sub_hardpoint|
-          sub_component = sub_hardpoint.component ||
-            nested_component(nested_loadout, sub_hardpoint)
+          nested = nested_entry(nested_loadout, sub_hardpoint)
+          sub_component = sub_hardpoint.component || (resolve_component(nested) if nested)
 
           next if sub_component.blank?
           next if loadout_name_blacklisted?(sub_component.sc_key)
@@ -424,7 +425,7 @@ module ScData
           Slot.new(
             name: "#{item["name"]}-#{sub_hardpoint.sc_name}".downcase,
             component: sub_component,
-            children: [],
+            children: nested_slots(nested || {}, sub_component),
             min_size: facts.min_size,
             max_size: facts.max_size,
             types: facts.types,
@@ -445,14 +446,10 @@ module ScData
 
       # The items loader cannot always resolve a hidden component's own
       # sub-hardpoints, so the loadout being walked is consulted to fill the gap.
-      private def nested_component(nested_loadout, sub_hardpoint)
+      private def nested_entry(nested_loadout, sub_hardpoint)
         return if nested_loadout.blank?
 
-        nested = nested_loadout.find { |entry| entry["name"]&.downcase == sub_hardpoint.sc_name }
-
-        return if nested.blank?
-
-        resolve_component(nested)
+        nested_loadout.find { |entry| entry["name"]&.downcase == sub_hardpoint.sc_name }
       end
 
       # Resolved by key alone when a key is present: a component is one row now,
