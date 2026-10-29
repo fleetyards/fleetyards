@@ -34,7 +34,7 @@ useHoloQuery(() => ({ textured: texturedHolo.value }));
     :models="holoModel ? [holoModel] : []"
     :back-route="backRoute"
   >
-    <template #actions>
+    <template #controls>
       <Btn
         v-if="texturedHoloAvailable"
         :active="texturedHolo"

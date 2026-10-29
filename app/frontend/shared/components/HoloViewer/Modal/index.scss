@@ -13,15 +13,30 @@
     opacity: 1;
   }
 
-  // Faded with the viewer's own controls; a touch screen keeps it shown, as
-  // the only way out.
+  // What is shown, at the top as on the ship page, beside the close button;
+  // the scene's own controls are the viewer's, bottom right.
+  &__controls {
+    position: absolute;
+    top: 15px;
+    right: 60px;
+    z-index: 1000;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+
+  // Faded with the viewer's own controls; a touch screen keeps them shown,
+  // the close button being the only way out.
   @media (hover: hover) {
-    .close {
+    .close,
+    &__controls {
       opacity: 0;
       transition: opacity $transition-base-speed ease;
     }
 
-    &:hover .close {
+    &:hover .close,
+    &:hover &__controls {
       opacity: 1;
     }
   }

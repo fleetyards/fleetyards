@@ -52,7 +52,7 @@ useHoloQuery(() => ({
     :models="holoModel ? [holoModel] : []"
     :back-route="backRoute"
   >
-    <template #actions>
+    <template #controls>
       <Btn
         v-if="texturedHoloAvailable"
         :active="texturedHolo"
@@ -65,13 +65,13 @@ useHoloQuery(() => ({
       </Btn>
       <BtnDropdown
         v-if="texturedHoloAvailable && texturedHolo && holoPaints.length"
-        expand-top
+        expand-bottom
         expand-left
         data-test="model-holo-modal-paint"
       >
         <template #label>
           <span>{{ holoPaint?.name ?? t("labels.texturedHoloOwnPaint") }}</span>
-          <i class="fa-light fa-chevron-up" />
+          <i class="fa-light fa-chevron-down" />
         </template>
         <Btn :active="!holoPaint" @click="holoPaintId = undefined">
           {{ t("labels.texturedHoloOwnPaint") }}

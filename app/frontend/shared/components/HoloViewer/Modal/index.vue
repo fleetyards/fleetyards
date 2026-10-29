@@ -8,6 +8,7 @@ export default {
 import HoloViewer, {
   type HoloModel,
 } from "@/shared/components/HoloViewer/index.vue";
+import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
 import { RouterLinkProps } from "vue-router";
 
@@ -39,6 +40,12 @@ const close = () => {
     <a v-else class="close" aria-label="Close" @click="close">
       <i class="fa-light fa-times" />
     </a>
+    <!-- Top right is the item shown, bottom right the scene it is shown in. -->
+    <div v-if="$slots.controls" class="holo-viewer-modal__controls">
+      <BtnGroup>
+        <slot name="controls" />
+      </BtnGroup>
+    </div>
     <HoloViewer
       :models="models"
       :autoRotate="false"
@@ -46,11 +53,7 @@ const close = () => {
       panable
       grid
       backgrounds
-    >
-      <template #actions>
-        <slot name="actions" />
-      </template>
-    </HoloViewer>
+    />
   </div>
 </template>
 

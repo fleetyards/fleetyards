@@ -583,7 +583,6 @@ defineExpose({
           {{ backgroundName(option) }}
         </Btn>
       </BtnDropdown>
-      <slot name="actions" />
     </BtnGroup>
 
     <Loader
