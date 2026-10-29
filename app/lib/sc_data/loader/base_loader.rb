@@ -412,20 +412,26 @@ module ScData
       # weapon, and the MT's racks came without their missiles.
       private def flatten_hidden(item, component)
         nested_loadout = item["loadout"] || item["default_loadout"]
+        # Read under this load's build rather than the ambient one: a loader can
+        # be pointed at an environment without `ScData::Source.with` around it.
+        declared = HardpointBuild.current(source).where(hardpoint_id: component.hardpoints.select(:id)).index_by(&:hardpoint_id)
 
-        promoted = component.hardpoints.filter_map do |sub_hardpoint|
+        promoted = component.hardpoints.includes(:component).filter_map do |sub_hardpoint|
           nested = nested_entry(nested_loadout, sub_hardpoint)
           sub_component = sub_hardpoint.component || (resolve_component(nested) if nested)
 
           next if sub_component.blank?
           next if loadout_name_blacklisted?(sub_component.sc_key)
 
-          facts = sub_hardpoint.facts
+          facts = declared[sub_hardpoint.id] || sub_hardpoint
+          # The ship's entry says what sits below only where it names the same
+          # part; otherwise the part comes with its own.
+          below = (nested if nested && resolve_component(nested) == sub_component) || {}
 
           Slot.new(
             name: "#{item["name"]}-#{sub_hardpoint.sc_name}".downcase,
             component: sub_component,
-            children: nested_slots(nested || {}, sub_component),
+            children: nested_slots(below, sub_component),
             min_size: facts.min_size,
             max_size: facts.max_size,
             types: facts.types,
