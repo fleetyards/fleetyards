@@ -56,7 +56,8 @@ module ScData
 
       complete = true
       palettes = listing.fetch("paints", {})
-      liveried = liveried_variants(model, palettes.values.select { |entry| paints_for(model, entry).empty? })
+      own = palettes.transform_values { |entry| paints_for(model, entry) }
+      liveried = liveried_variants(model, palettes.filter_map { |slug, entry| entry if own[slug].empty? })
 
       palettes.each do |slug, entry|
         maps = maps_for(entry, files, fields)
@@ -66,7 +67,7 @@ module ScData
           next
         end
 
-        records = [model, *liveried].flat_map { |ship| paints_for(ship, entry) }
+        records = own[slug] + liveried.flat_map { |variant| paints_for(variant, entry) }
 
         if records.empty?
           records = liveried_variants(model, [entry])
