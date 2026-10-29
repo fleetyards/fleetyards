@@ -8,16 +8,20 @@ export default {
 import HoloViewer, {
   type HoloModel,
 } from "@/shared/components/HoloViewer/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import { useComlink } from "@/shared/composables/useComlink";
-import { RouterLinkProps } from "vue-router";
+import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
   models: HoloModel[];
-  backRoute?: RouterLinkProps["to"];
 };
 
 defineProps<Props>();
+
+const emit = defineEmits<{ unavailable: [] }>();
+
+const { t } = useI18n();
 
 const comlink = useComlink();
 
@@ -28,22 +32,18 @@ const close = () => {
 
 <template>
   <div class="holo-viewer-modal">
-    <router-link
-      v-if="backRoute"
-      :to="backRoute"
-      class="close"
-      aria-label="Close"
-      @click="close"
-    >
-      <i class="fa-light fa-times" />
-    </router-link>
-    <a v-else class="close" aria-label="Close" @click="close">
-      <i class="fa-light fa-times" />
-    </a>
     <!-- Top right is the item shown, bottom right the scene it is shown in. -->
-    <div v-if="$slots.controls" class="holo-viewer-modal__controls">
+    <div class="holo-viewer-modal__controls">
       <BtnGroup>
         <slot name="controls" />
+        <Btn
+          :aria-label="t('actions.close')"
+          v-tooltip="t('actions.close')"
+          data-test="holo-viewer-modal-close"
+          @click="close"
+        >
+          <i class="fa-light fa-times" />
+        </Btn>
       </BtnGroup>
     </div>
     <HoloViewer
@@ -53,6 +53,7 @@ const close = () => {
       panable
       grid
       backgrounds
+      @unavailable="emit('unavailable')"
     />
   </div>
 </template>

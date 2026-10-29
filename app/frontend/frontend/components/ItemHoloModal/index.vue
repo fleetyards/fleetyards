@@ -11,12 +11,10 @@ import { type ItemMedia } from "@/services/fyApi";
 import { useItemHolo } from "@/frontend/composables/useItemHolo";
 import { useHoloQuery } from "@/frontend/composables/useHoloQuery";
 import { useI18n } from "@/shared/composables/useI18n";
-import { type RouterLinkProps } from "vue-router";
 
 type Props = {
   media: ItemMedia;
   textured?: boolean;
-  backRoute: RouterLinkProps["to"];
 };
 
 const props = defineProps<Props>();
@@ -26,13 +24,21 @@ const { t } = useI18n();
 const { texturedHolo, texturedHoloAvailable, toggleTexturedHolo, holoModel } =
   useItemHolo(() => props.media, { textured: props.textured });
 
-useHoloQuery(() => ({ textured: texturedHolo.value }));
+useHoloQuery(() => ({
+  textured: texturedHoloAvailable.value && texturedHolo.value,
+}));
+
+// A textured holo that will not draw falls back to the plain one, and the
+// address with it, so a copied link does not carry the failure on.
+const holoUnavailable = () => {
+  if (holoModel.value?.textured) texturedHolo.value = false;
+};
 </script>
 
 <template>
   <HoloViewerModal
     :models="holoModel ? [holoModel] : []"
-    :back-route="backRoute"
+    @unavailable="holoUnavailable"
   >
     <template #controls>
       <Btn

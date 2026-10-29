@@ -6,6 +6,12 @@ const device = vi.hoisted(() => ({
   mobile: false,
   lowPower: false,
   texturedHolo: true,
+  query: {} as Record<string, string>,
+}));
+
+vi.mock("vue-router", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("vue-router")>()),
+  useRoute: () => ({ query: device.query }),
 }));
 
 vi.mock("@/shared/composables/useI18n", () => ({
@@ -198,6 +204,19 @@ describe("ItemHero", () => {
       expect.objectContaining({ path: "https://example.test/holo.glb" }),
     ]);
     expect(wrapper.find("[data-test='item-image']").exists()).toBe(false);
+  });
+
+  it("comes back from full screen on the textured holo", () => {
+    device.query = { textured: "1" };
+    const wrapper = mountHero({
+      holo: file("holo.glb"),
+      holoTextured: file("holo_textured.glb"),
+    });
+    device.query = {};
+
+    expect(
+      wrapper.findComponent({ name: "HoloViewer" }).props("models"),
+    ).toEqual([expect.objectContaining({ textured: true })]);
   });
 
   it("leaves the switch out without a textured holo", () => {

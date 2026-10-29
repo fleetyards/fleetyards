@@ -41,8 +41,12 @@ const lowPower = useLowPowerDevice();
 
 // The inline preview cannot ask before loading a holo too large for the
 // device, so such a device is not offered the textured one.
+const route = useRoute();
+
+// Back from full screen, it shows the holo that was left on there.
 const { texturedHolo, texturedHoloAvailable, toggleTexturedHolo, holoModel } =
   useItemHolo(() => ({ holo: props.holo, holoTextured: props.holoTextured }), {
+    textured: route.query.textured === "1",
     canLoad: (file) =>
       !(lowPower.value && (file.size ?? 0) > LOW_POWER_HOLO_SIZE_LIMIT),
   });

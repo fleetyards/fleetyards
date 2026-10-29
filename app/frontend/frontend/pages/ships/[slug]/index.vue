@@ -312,7 +312,12 @@ const {
   holoPaintId,
   holoPaint,
   holoModel,
-} = useModelHolo(() => props.model, activeState);
+} = useModelHolo(() => props.model, activeState, {
+  // Back from full screen, it shows the holo and paint left on there.
+  textured: route.query.textured === "1",
+  paintId:
+    typeof route.query.paint === "string" ? route.query.paint : undefined,
+});
 
 // The side preview cannot ask before loading a holo too large for the device,
 // so on such a device it stays the store image; the main 3D view still asks.
