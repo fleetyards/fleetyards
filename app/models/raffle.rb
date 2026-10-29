@@ -57,7 +57,7 @@ class Raffle < ApplicationRecord
   before_validation :compact_translations
   before_destroy :keep_drawn_raffles, prepend: true
 
-  after_commit :broadcast_change, on: %i[create update]
+  after_commit -> { self.class.broadcast_change(id) }, on: %i[create update]
 
   scope :published, -> { where(published: true) }
   scope :running, ->(now = Time.current) { published.where(starts_at: ..now).where("raffles.ends_at > ?", now) }
@@ -175,9 +175,13 @@ class Raffle < ApplicationRecord
   end
 
   # Readers on the raffle page refetch on this, so a status change, an entry
-  # or a new winner shows without a reload.
-  def broadcast_change
-    ActionCable.server.broadcast("raffles", {"raffleId" => id})
+  # or a new winner shows without a reload. It runs after the write has
+  # committed, so a cable that is down must not turn a saved entry into an
+  # error.
+  def self.broadcast_change(raffle_id)
+    ActionCable.server.broadcast("raffles", {"raffleId" => raffle_id})
+  rescue => e
+    Appsignal.report_error(e)
   end
 
   private def compute_ends_at

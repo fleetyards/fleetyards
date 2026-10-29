@@ -166,6 +166,14 @@ class RaffleTest < ActiveSupport::TestCase
     end
   end
 
+  test "a failed broadcast does not fail the write" do
+    raffle = create(:raffle)
+    ActionCable.server.stubs(:broadcast).raises(Redis::CannotConnectError)
+
+    assert_nothing_raised { raffle.update!(title: "Renamed") }
+    assert_nothing_raised { create(:raffle_entry, raffle:) }
+  end
+
   private def uploaded(filename)
     ActiveStorage::Blob.create_and_upload!(
       io: File.open(Rails.root.join("test/fixtures/files/test.png")), filename:, content_type: "image/png"

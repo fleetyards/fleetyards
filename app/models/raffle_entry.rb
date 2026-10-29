@@ -32,7 +32,7 @@ class RaffleEntry < ApplicationRecord
 
   before_validation :snapshot_entrant, on: :create
 
-  after_commit -> { raffle&.broadcast_change }
+  after_commit -> { Raffle.broadcast_change(raffle_id) }
 
   scope :won, -> { where.not(won_at: nil) }
   scope :pending_claim, -> { won.where(claimed_at: nil, forfeited_at: nil) }
