@@ -21,6 +21,7 @@ import {
 import RouteChain from "@/frontend/components/Hangar/Planner/RouteChain/index.vue";
 import { useAcquisitionNodes } from "@/frontend/components/Hangar/Planner/RouteChain/types";
 import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
+import { useCandidateSpecs } from "@/frontend/components/Hangar/Planner/candidateSpecs";
 import fallbackImage from "@/images/fallback/store_image.webp";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -120,43 +121,7 @@ const undecided = computed(
   () => props.slot.state === HangarPlanSlotStateEnum.UNDECIDED,
 );
 
-// Side by side, the figure that wins its row is marked so the trade-off reads
-// without comparing every number by eye. One candidate has nothing to beat.
-const best = computed(() => {
-  const models = props.slot.candidates.map((candidate) => candidate.model);
-  const prices = models
-    .map((model) => model.pledgePrice)
-    .filter((price): price is number => typeof price === "number");
-  const cargos = models
-    .map((model) => model.cargo)
-    .filter((cargo): cargo is number => typeof cargo === "number" && cargo > 0);
-
-  return {
-    price: prices.length > 1 ? Math.min(...prices) : undefined,
-    cargo: cargos.length > 1 ? Math.max(...cargos) : undefined,
-  };
-});
-
-const specs = (candidate: HangarPlanCandidate) => {
-  const model = candidate.model;
-
-  return [
-    {
-      key: "price",
-      value: money(model.pledgePrice),
-      best:
-        best.value.price !== undefined &&
-        model.pledgePrice === best.value.price,
-    },
-    {
-      key: "cargo",
-      value: model.cargo ? `${model.cargo} SCU` : "–",
-      best: best.value.cargo !== undefined && model.cargo === best.value.cargo,
-    },
-    { key: "crew", value: model.crew ?? "–", best: false },
-    { key: "size", value: model.size ?? "–", best: false },
-  ];
-};
+const { specs } = useCandidateSpecs(() => props.slot.candidates);
 
 const routeCost = (acquisition: HangarPlanAcquisition) => {
   const prices = [
