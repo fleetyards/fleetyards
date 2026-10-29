@@ -82,12 +82,12 @@ const suffix = computed(() => {
 <style lang="scss" scoped>
 @import "@/shared/components/metricsCard";
 
-/* The tile is the whole body, so the body adds no padding of its own. */
-.stats-panel__body {
-  padding: 0;
-}
-
 .stats-panel {
+  /* The tile is the whole body, so the body adds no padding of its own. */
+  .stats-panel__body {
+    padding: 0;
+  }
+
   .metrics-card__tile {
     // Its own fill and radius, rather than the hero's, since there is no shared
     // container here - one tile per panel until the host grids are collapsed.
