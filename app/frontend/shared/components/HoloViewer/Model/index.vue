@@ -70,7 +70,10 @@ const props = withDefaults(defineProps<Props>(), {
 // rather than handing every mesh a fresh pair and leaving the old ones on the
 // GPU.
 const side = props.mobile ? FrontSide : DoubleSide;
-const MaterialClass = props.mobile ? MeshLambertMaterial : MeshPhongMaterial;
+// A hologram has no shine: a highlight that follows the eye would brighten a
+// part from one angle and not another.
+const MaterialClass =
+  props.mobile || props.hologram ? MeshLambertMaterial : MeshPhongMaterial;
 
 // A hologram does not hide what is behind it, so it writes no depth: the far
 // side of the hull shows through the near one.
@@ -86,6 +89,29 @@ const material = new MaterialClass({
 
 // A part the viewer has picked out, in the gold the grid's sections use.
 const HIGHLIGHT_COLOR = new Color("#fbb03b");
+
+// Mounted parts a brighter, fuller blue than the hull in a hologram: inside
+// the see-through hull, in its own colour, a cooler or a drive is lost in it.
+const PART_SATURATION = props.hologram ? 0.2 : 0;
+const PART_LIGHTNESS = props.hologram ? 0.1 : 0;
+const PART_OPACITY = 0.5;
+const partColor = new Color();
+
+const updatePartColor = () =>
+  partColor
+    .copy(material.color)
+    .offsetHSL(0, PART_SATURATION, PART_LIGHTNESS);
+
+// The hologram's layers in a fixed order. Sorted by distance instead, a part
+// sat over the hull from one side and under it from the other, and a body and
+// its own lines -- at the same distance but for a rounding -- swapped from one
+// part to the next: lines over the body read as a bright part, lines under it
+// as a dim one. Lines go over their body everywhere.
+const RENDER_ORDER = props.hologram
+  ? { hullWire: 1, part: 2, partWire: 3, overlay: 4 }
+  : { hullWire: 0, part: 0, partWire: 0, overlay: 1 };
+
+updatePartColor();
 
 // The hologram's mesh lines: only the edges where the surface turns, not every
 // triangle -- a hull's few hundred thousand made every frame crawl -- worked
@@ -110,6 +136,9 @@ const edgesFor = (geometry: BufferGeometry) => {
 };
 
 const WIRE_OPACITY = 0.35;
+// Fainter on a part: drawn over its body, its dense lines at the hull's
+// strength washed it out to near white.
+const PART_WIRE_OPACITY = 0.15;
 const HIGHLIGHT_WIRE_OPACITY = 0.7;
 
 const wireLook = { transparent: true, depthWrite: false };
@@ -185,16 +214,23 @@ const applyGlow = (entry: Fading) => {
   // Eased at both ends rather than run at a constant rate.
   const glow = entry.glow * entry.glow * (3 - 2 * entry.glow);
 
-  entry.body.color.copy(material.color).lerp(HIGHLIGHT_COLOR, glow);
+  entry.body.color.copy(partColor).lerp(HIGHLIGHT_COLOR, glow);
 
   entry.overlay.material.opacity = OVERLAY_OPACITY * glow;
   entry.overlay.visible = glow > 0;
 
   if (entry.wire) {
-    entry.wire.color.copy(wireMaterial.color).lerp(HIGHLIGHT_COLOR, glow);
+    entry.wire.color.copy(partColor).lerp(HIGHLIGHT_COLOR, glow);
     entry.wire.opacity =
-      WIRE_OPACITY + (HIGHLIGHT_WIRE_OPACITY - WIRE_OPACITY) * glow;
+      PART_WIRE_OPACITY + (HIGHLIGHT_WIRE_OPACITY - PART_WIRE_OPACITY) * glow;
   }
+};
+
+const partMaterial = () => {
+  const own = material.clone() as Fading["body"];
+  if (props.hologram) own.opacity = PART_OPACITY;
+
+  return own;
 };
 
 const disposeFading = (root: Object3D) => {
@@ -235,7 +271,7 @@ const overlayFor = (body: Mesh) => {
   );
   // Marked so a later walk leaves it alone.
   overlay.userData.overlay = true;
-  overlay.renderOrder = 1;
+  overlay.renderOrder = RENDER_ORDER.overlay;
   overlay.visible = false;
   body.add(overlay);
 
@@ -272,6 +308,7 @@ const setMaterials = (scene: Group) => {
     if (lined && !wireOf(body)) {
       const wire = new LineSegments(edgesFor(body.geometry), wireMaterial);
       wire.userData.wire = true;
+      wire.renderOrder = RENDER_ORDER.hullWire;
       body.add(wire);
     }
 
@@ -287,7 +324,7 @@ const setMaterials = (scene: Group) => {
       // A part built with its highlight already on shows it at once.
       entry = {
         mesh: body,
-        body: material.clone() as Fading["body"],
+        body: partMaterial(),
         wire: props.hologram ? wireMaterial.clone() : undefined,
         overlay: overlayFor(body),
         glow: target,
@@ -300,8 +337,11 @@ const setMaterials = (scene: Group) => {
     entry.target = target;
     body.material = entry.body;
 
+    body.renderOrder = RENDER_ORDER.part;
+
     const wire = wireOf(body);
     if (wire && entry.wire) wire.material = entry.wire;
+    if (wire) wire.renderOrder = RENDER_ORDER.partWire;
   }
 
   invalidate();
@@ -581,6 +621,7 @@ watch(
   (color) => {
     material.color.set(color);
     wireMaterial.color.set(color);
+    updatePartColor();
     fading.forEach(applyGlow);
   },
 );
