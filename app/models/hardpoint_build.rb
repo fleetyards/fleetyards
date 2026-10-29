@@ -24,7 +24,7 @@ class HardpointBuild < ApplicationRecord
   # three from the installed component in a `before_validation`, so they move
   # wherever the component does.
   FACTS = %i[
-    component_id min_size max_size types port_tags required_tags flags
+    component_id min_size max_size types sub_types port_tags required_tags flags
     group category group_key
   ].freeze
 
@@ -33,6 +33,7 @@ class HardpointBuild < ApplicationRecord
   # encodes. Getting this wrong is how a reader ends up calling `dig` on a raw
   # serialized string, since the fallback fires only on nil.
   serialize :types, type: Array, coder: JSON
+  serialize :sub_types, type: Hash, coder: JSON
   serialize :port_tags, type: Array, coder: JSON
   serialize :required_tags, type: Array, coder: JSON
   serialize :flags, type: Array, coder: JSON

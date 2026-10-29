@@ -12,6 +12,9 @@ class Hardpoint < ApplicationRecord
   # an array of strings. Read back as one, so the two agree. Every value ever
   # written is already valid JSON, so nothing needs rewriting.
   serialize :types, type: Array, coder: JSON
+  # The sub types a port restricts a type to, `{"WeaponGun" => ["Gun"]}`; a
+  # type it does not name takes any of them.
+  serialize :sub_types, type: Hash, coder: JSON
 
   # What the port carries, what it demands of whatever is put in it, and whether
   # it may be changed at all. Same storage as `types` above.
