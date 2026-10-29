@@ -10,9 +10,15 @@ export const useHoloQuery = (choice: MaybeRefOrGetter<HoloChoice>) => {
 
   const router = useRouter();
 
+  // The modal outlives its page by its closing fade; a change then must not
+  // land on the page it went back to.
+  const viewerRoute = route.name;
+
   watch(
     () => toValue(choice),
     ({ textured, paint }) => {
+      if (route.name !== viewerRoute) return;
+
       const query = {
         ...route.query,
         textured: textured ? "1" : undefined,
