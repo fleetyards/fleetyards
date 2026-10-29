@@ -392,8 +392,8 @@ module ScData
       assert_equal ["ship-views/index.json"], @client.api_requests.map { |request| request[:params][:key] }
     end
 
-    private def publish_paints(paints, maps)
-      publish({"flight_textured.json" => {paints:}.to_json, **maps})
+    private def publish_paints(paints, maps, listing: "flight_textured.json")
+      publish({listing => {paints:}.to_json, **maps})
     end
 
     test "puts a palette's map on the paint its item is linked to" do
@@ -430,6 +430,31 @@ module ScData
       paint.reload
       assert_equal "flight_textured_gladius-talklikeapirate-metal-red.webp", paint.holo_texture.filename.to_s
       assert_equal "flight_textured_gladius-talklikeapirate-metal-red_orm.webp", paint.holo_texture_orm.filename.to_s
+    end
+
+    test "puts the lite listing's maps on the paint's lite pair" do
+      component = create(:component, category: "paints", sc_key: "paint_gladius_pirate")
+      paint = create(:model_paint, model: @model, component:)
+      publish_paints(
+        {"gladiuspirate" => {
+          items: ["paint_gladius_pirate"],
+          base: "flight_textured_lite_gladiuspirate.webp",
+          orm: "flight_textured_lite_gladiuspirate_orm.webp"
+        }},
+        {
+          "flight_textured_lite_gladiuspirate.webp" => PNG,
+          "flight_textured_lite_gladiuspirate_orm.webp" => "orm"
+        },
+        listing: "flight_textured_lite.json"
+      )
+
+      perform
+
+      paint.reload
+      assert_equal "flight_textured_lite_gladiuspirate.webp", paint.holo_texture_lite.filename.to_s
+      assert_equal "flight_textured_lite_gladiuspirate_orm.webp", paint.holo_texture_orm_lite.filename.to_s
+      assert_not paint.holo_texture.attached?
+      assert_equal "listing-1", @model.ship_views_digest
     end
 
     test "finds the variant's paint by the name of the one linked on the base ship" do

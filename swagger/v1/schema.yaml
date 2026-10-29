@@ -41762,6 +41762,14 @@ components:
           type:
           - string
           - 'null'
+        holoTextureLite:
+          type:
+          - string
+          - 'null'
+        holoTextureOrmLite:
+          type:
+          - string
+          - 'null'
         portView:
           "$ref": "#/components/schemas/MediaFile"
         storeImage:

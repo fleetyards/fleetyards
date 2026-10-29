@@ -44,9 +44,12 @@ class ModelPaint < ApplicationRecord
   has_one_attached :front_view
   has_one_attached :angled_view
   # The maps that repaint the model's textured holo: base colour, and the
-  # occlusion/roughness/metallic map that makes a metal paint a metal.
+  # occlusion/roughness/metallic map that makes a metal paint a metal. The lite
+  # holo has a smaller atlas, so it is repainted from maps of its own.
   has_one_attached :holo_texture
   has_one_attached :holo_texture_orm
+  has_one_attached :holo_texture_lite
+  has_one_attached :holo_texture_orm_lite
 
   # A painted ship is drawn on the fleetchart from its own views, on the same
   # terms as the model's. See Model.

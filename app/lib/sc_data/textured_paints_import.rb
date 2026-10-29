@@ -6,16 +6,21 @@ module ScData
   # listed in `flight_textured.json` under the palette's slug. Each lands on the
   # ship's paints that the palette stands for.
   #
+  # The lite export has a smaller atlas, so `flight_textured_lite.json` lists
+  # maps of its own. Either set paints its variant's landed holo too: both
+  # states share the one atlas.
+  #
   # A palette names no paint of ours. It reaches one through the game's paint
   # item -- listed with the palette, or else carrying the palette's name -- and
   # the paint that item is linked to. That link is made once per paint name, on
   # the base ship, so the variants' paints are found by the same name.
   class TexturedPaintsImport
-    LISTING = "flight_textured.json"
-
-    # Attachment => the manifest key naming its file. Only the base colour is
-    # required: without it a paint has nothing to show.
-    MAPS = {holo_texture: "base", holo_texture_orm: "orm"}.freeze
+    # Listing => {attachment => the manifest key naming its file}. Only the base
+    # colour, listed first, is required: without it a paint has nothing to show.
+    LISTINGS = {
+      "flight_textured.json" => {holo_texture: "base", holo_texture_orm: "orm"},
+      "flight_textured_lite.json" => {holo_texture_lite: "base", holo_texture_orm_lite: "orm"}
+    }.freeze
 
     def initialize(store, logger:)
       @store = store
@@ -24,52 +29,56 @@ module ScData
 
     # False when a map did not come down, so the caller retries the ship.
     def call(model, path, files)
-      return true unless files.key?(LISTING)
+      LISTINGS.map { |name, fields| import(model, path, files, name, fields) }.all?
+    end
 
-      listing = fetch_listing(path)
+    private def import(model, path, files, name, fields)
+      return true unless files.key?(name)
+
+      listing = fetch_listing(path, name)
       return false if listing.nil?
 
       complete = true
 
       listing.fetch("paints", {}).each do |slug, entry|
-        maps = maps_for(entry, files)
+        maps = maps_for(entry, files, fields)
 
-        unless maps.key?(:holo_texture)
-          @logger.call(:warn, "#{path}: paint #{slug} names no listed map")
+        unless maps.key?(fields.keys.first)
+          @logger.call(:warn, "#{path}/#{name}: paint #{slug} names no listed map")
           next
         end
 
         paints = paints_for(model, entry)
 
         if paints.empty?
-          @logger.call(:info, "#{path}: paint #{slug} matches no paint of #{model.slug}")
+          @logger.call(:info, "#{path}/#{name}: paint #{slug} matches no paint of #{model.slug}")
           next
         end
 
-        maps.each do |field, (name, md5)|
+        maps.each do |field, (file_name, md5)|
           stale = paints.reject { |paint| current?(paint.public_send(field), md5) }
           next if stale.empty?
 
-          complete &= attach(stale, field, path, name, md5)
+          complete &= attach(stale, field, path, file_name, md5)
         end
       end
 
       complete
     end
 
-    private def fetch_listing(path)
-      file = @store.fetch(path, LISTING)
+    private def fetch_listing(path, name)
+      file = @store.fetch(path, name)
       JSON.parse(file.read)
     rescue => e
-      @logger.call(:warn, "#{path}/#{LISTING} could not be read: #{e.class}: #{e.message}")
+      @logger.call(:warn, "#{path}/#{name} could not be read: #{e.class}: #{e.message}")
       nil
     ensure
       file&.close!
     end
 
     # Attachment => [file name, md5], for the maps the listing has.
-    private def maps_for(entry, files)
-      MAPS.each_with_object({}) do |(field, key), maps|
+    private def maps_for(entry, files, fields)
+      fields.each_with_object({}) do |(field, key), maps|
         name = entry[key]
         md5 = files.dig(name, "md5") if name.present?
         maps[field] = [name, md5] if md5

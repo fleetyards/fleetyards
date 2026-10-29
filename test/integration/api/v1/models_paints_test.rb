@@ -39,6 +39,8 @@ class Api::V1::ModelsPaintsTest < ActionDispatch::IntegrationTest
     paint = create(:model_paint, model:)
     paint.holo_texture.attach(io: StringIO.new("webp"), filename: "flight_textured_gladiuspirate.webp")
     paint.holo_texture_orm.attach(io: StringIO.new("webp"), filename: "flight_textured_gladiuspirate_orm.webp")
+    paint.holo_texture_lite.attach(io: StringIO.new("webp"), filename: "flight_textured_lite_gladiuspirate.webp")
+    paint.holo_texture_orm_lite.attach(io: StringIO.new("webp"), filename: "flight_textured_lite_gladiuspirate_orm.webp")
     create(:model_paint, model:)
 
     assert_api_response :get, 200, path_params: {slug: model.slug} do
@@ -46,6 +48,8 @@ class Api::V1::ModelsPaintsTest < ActionDispatch::IntegrationTest
 
       assert_match(/flight_textured_gladiuspirate\.webp/, media[paint.id]["holoTexture"])
       assert_match(/flight_textured_gladiuspirate_orm\.webp/, media[paint.id]["holoTextureOrm"])
+      assert_match(/flight_textured_lite_gladiuspirate\.webp/, media[paint.id]["holoTextureLite"])
+      assert_match(/flight_textured_lite_gladiuspirate_orm\.webp/, media[paint.id]["holoTextureOrmLite"])
       assert_equal 1, media.values.count { |entry| entry["holoTexture"] }
     end
   end
