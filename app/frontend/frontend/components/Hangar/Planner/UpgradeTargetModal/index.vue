@@ -44,11 +44,12 @@ const submit = async ([selection]: ModelPickerSelection[]) => {
   submitting.value = true;
 
   try {
-    const before = await createSlot.mutateAsync({
+    const withSlot = await createSlot.mutateAsync({
       hangarPlanId: props.planId,
       data: { label: selection.option.name },
     });
-    const slotId = slotIds(before).at(-1) as string;
+    updatePlan(withSlot);
+    const slotId = slotIds(withSlot).at(-1) as string;
     const plan = await createCandidate.mutateAsync({
       hangarPlanId: props.planId,
       data: { slotId, modelId: selection.option.id },
