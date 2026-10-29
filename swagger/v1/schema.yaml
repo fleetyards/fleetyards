@@ -35743,12 +35743,30 @@ components:
             the user entered
         vehicleMissing:
           type: boolean
+        pledgeName:
+          type:
+          - string
+          - 'null'
+          description: The name of the pledge the ship came in, as RSI lists it
+        pledgeShips:
+          type: array
+          description: The other ships of the same pledge, which melt with it
+          items:
+            "$ref": "#/components/schemas/HangarPlanPledgeShip"
+        pledgeItems:
+          type: array
+          description: The paints, flair, gear and upgrades of the same pledge the
+            hangar sync read, which melt with it
+          items:
+            "$ref": "#/components/schemas/HangarPlanPledgeItem"
       additionalProperties: false
       required:
       - id
       - model
       - estimated
       - vehicleMissing
+      - pledgeShips
+      - pledgeItems
       title: HangarPlanMelt
     HangarPlanMeltCreateInput:
       type: object

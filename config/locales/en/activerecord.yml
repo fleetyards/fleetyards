@@ -358,6 +358,7 @@ en:
             vehicle_id:
               taken: "is already used in this plan"
               pledge_kept: "comes in a pledge whose other ships this plan keeps"
+              pledge_melted: "comes in a pledge this plan melts"
         vehicle_loadout:
           attributes:
             base:

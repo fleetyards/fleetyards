@@ -13,6 +13,7 @@ import { InputTypesEnum } from "@/shared/components/base/FormInput/types";
 import PickList, {
   type PickListItem,
 } from "@/frontend/components/Hangar/Planner/PickList/index.vue";
+import MeltContents from "@/frontend/components/Hangar/Planner/MeltContents/index.vue";
 import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
 import Chip from "@/shared/components/base/Chip/index.vue";
 import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
@@ -152,26 +153,20 @@ const contents = computed(() => {
   const vehicle = meltedVehicle.value;
   if (!vehicle || !inPackage(vehicle)) return undefined;
 
-  const entries = [
-    ...vehicle.pledgeShips.map((ship) => ({
-      id: ship.id,
-      name: ship.name ? `${ship.name} (${ship.model.name})` : ship.model.name,
-      quantity: 1,
-      icon: "fa-light fa-rocket",
-    })),
-    ...vehicle.pledgeItems.map((item) => ({
-      id: item.id,
-      name: item.name,
-      quantity: item.quantity,
-      icon: "fa-light fa-box",
-    })),
-  ];
-  const listed = 1 + entries.reduce((sum, entry) => sum + entry.quantity, 0);
+  const listed =
+    1 +
+    vehicle.pledgeShips.length +
+    vehicle.pledgeItems.reduce((sum, item) => sum + item.quantity, 0);
   // RSI counts what the sync keeps no record of, such as the game package or
   // insurance-only items.
   const unlisted = Math.max((vehicle.pledgeItemCount ?? 0) - listed, 0);
 
-  return { name: vehicle.pledgeName, entries, unlisted };
+  return {
+    name: vehicle.pledgeName,
+    ships: vehicle.pledgeShips,
+    items: vehicle.pledgeItems,
+    unlisted,
+  };
 });
 
 const placeholder = computed(() => {
@@ -255,29 +250,11 @@ const onSubmit = async () => {
             ? t("hangarPlanner.meltList.contentsOf", { name: contents.name })
             : t("hangarPlanner.meltList.contents")
         }}</span>
-        <ul class="melt-contents__list">
-          <li
-            v-for="entry in contents.entries"
-            :key="entry.id"
-            class="melt-contents__item"
-          >
-            <i :class="entry.icon" aria-hidden="true" />
-            <span>{{ entry.name }}</span>
-            <span v-if="entry.quantity > 1" class="melt-contents__quantity">
-              ×{{ entry.quantity }}
-            </span>
-          </li>
-          <li
-            v-if="contents.unlisted"
-            class="melt-contents__item melt-contents__item--dim"
-          >
-            {{
-              t("hangarPlanner.meltList.unlisted", {
-                count: contents.unlisted,
-              })
-            }}
-          </li>
-        </ul>
+        <MeltContents
+          :ships="contents.ships"
+          :items="contents.items"
+          :unlisted="contents.unlisted"
+        />
       </section>
       <FormInput
         v-model="valueOverride"
@@ -321,33 +298,6 @@ const onSubmit = async () => {
 
 .melt-contents {
   margin: 12px 0 16px;
-}
-
-.melt-contents__list {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.melt-contents__item {
-  display: flex;
-  gap: 8px;
-  align-items: baseline;
-  font-size: 0.9rem;
-
-  i {
-    width: 1rem;
-    color: var(--color-text-dim);
-    text-align: center;
-  }
-}
-
-.melt-contents__item--dim,
-.melt-contents__quantity {
-  color: var(--color-text-dim);
 }
 
 .melt-muted {

@@ -229,7 +229,8 @@ class HangarPlans::SummaryTest < ActiveSupport::TestCase
     first = create(:vehicle, user: @user, model: @cutlass, rsi_pledge_id: "pack", rsi_pledge_melt_value: 300)
     second = create(:vehicle, user: @user, model: @constellation, rsi_pledge_id: "pack", rsi_pledge_melt_value: 300)
     @plan.melts.create!(vehicle: first)
-    @plan.melts.create!(vehicle: second)
+    # Plans saved before a second melt of a pledge was rejected can still hold one.
+    @plan.melts.build(vehicle: second, model: second.model).save!(validate: false)
 
     summary = HangarPlans::Summary.new(@plan)
     assert_equal 300, summary.melt_credit

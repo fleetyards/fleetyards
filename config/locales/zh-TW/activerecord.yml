@@ -357,6 +357,7 @@ zh-TW:
             vehicle_id:
               taken: "已在此計畫中使用"
               pledge_kept: "屬於此計畫保留其他艦船的禮包"
+              pledge_melted: "屬於此計畫熔煉的禮包"
         vehicle_loadout:
           attributes:
             base:

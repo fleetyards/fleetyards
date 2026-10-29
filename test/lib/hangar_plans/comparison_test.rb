@@ -65,6 +65,16 @@ class HangarPlans::ComparisonTest < ActiveSupport::TestCase
     assert_equal({"Constellation Andromeda" => [1, 0], "Cutlass Black" => [1, 1]}, diffs)
   end
 
+  test "the other ships of a melted pledge go with it" do
+    melted = create(:vehicle, user: @user, model: @constellation, rsi_pledge_id: "pack")
+    sibling = create(:vehicle, user: @user, model: @cutlass, rsi_pledge_id: "pack")
+    @plan.melts.create!(vehicle: melted)
+
+    statuses = HangarPlans::Comparison.new(@plan).vehicles.to_h { |entry| [entry.vehicle.id, entry.status] }
+
+    assert_equal({melted.id => "melted", sibling.id => "melted"}, statuses)
+  end
+
   test "units of a decided slot without a route are gaps" do
     slot_for(@carrack, quantity: 2)
 

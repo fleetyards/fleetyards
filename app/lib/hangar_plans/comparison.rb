@@ -39,7 +39,7 @@ module HangarPlans
     end
 
     def vehicles
-      melted = plan.melts.pluck(:vehicle_id).to_set
+      melted = plan.melted_vehicle_ids.to_set
       routes = plan.acquisitions.where(start_kind: "owned", hangar_plan_candidate_id: decided_candidate_ids)
         .includes(upgrade_steps: {target_model: MODEL_PRELOAD})
         .index_by(&:source_vehicle_id)

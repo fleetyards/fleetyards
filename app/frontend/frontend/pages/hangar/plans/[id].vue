@@ -27,6 +27,7 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import SlotCard from "@/frontend/components/Hangar/Planner/SlotCard/index.vue";
 import SlotPlaceholders from "@/frontend/components/Hangar/Planner/SlotPlaceholders/index.vue";
 import SummaryPanel from "@/frontend/components/Hangar/Planner/SummaryPanel/index.vue";
+import MeltContents from "@/frontend/components/Hangar/Planner/MeltContents/index.vue";
 import CostTiles from "@/frontend/components/Hangar/Planner/CostTiles/index.vue";
 import Readiness from "@/frontend/components/Hangar/Planner/Readiness/index.vue";
 import Pill from "@/shared/components/base/Pill/index.vue";
@@ -351,38 +352,47 @@ const onDestroy = async () => {
             </p>
             <ul class="plan-melts">
               <li v-for="melt in plan.melts" :key="melt.id">
-                <span class="plan-melts__name">
-                  {{ melt.vehicleName || melt.model.name }}
-                  <small v-if="melt.vehicleName" class="plan-muted">
-                    {{ melt.model.name }}
-                  </small>
-                  <small v-if="melt.vehicleMissing" class="plan-warning">
-                    {{ t("hangarPlanner.sourceMissing") }}
-                  </small>
-                </span>
-                <span class="plan-melts__value">
-                  {{ money(melt.value) }}
-                  <small v-if="melt.estimated" class="plan-muted">
-                    {{ t("hangarPlanner.estimated") }}
-                  </small>
-                  <Btn
-                    :size="BtnSizesEnum.XS"
-                    :variant="BtnVariantsEnum.BARE"
-                    :aria-label="t('hangarPlanner.editMelt')"
-                    @click="openMelt(melt)"
-                  >
-                    <i class="fa-light fa-pen" />
-                  </Btn>
-                  <Btn
-                    :size="BtnSizesEnum.XS"
-                    :variant="BtnVariantsEnum.BARE"
-                    :tone="BtnTonesEnum.DANGER"
-                    :aria-label="t('hangarPlanner.removeMelt')"
-                    @click="removeMelt(melt)"
-                  >
-                    <i class="fa-light fa-trash" />
-                  </Btn>
-                </span>
+                <div class="plan-melts__row">
+                  <span class="plan-melts__name">
+                    {{ melt.vehicleName || melt.model.name }}
+                    <small v-if="melt.vehicleName" class="plan-muted">
+                      {{ melt.model.name }}
+                    </small>
+                    <small v-if="melt.vehicleMissing" class="plan-warning">
+                      {{ t("hangarPlanner.sourceMissing") }}
+                    </small>
+                  </span>
+                  <span class="plan-melts__value">
+                    {{ money(melt.value) }}
+                    <small v-if="melt.estimated" class="plan-muted">
+                      {{ t("hangarPlanner.estimated") }}
+                    </small>
+                    <Btn
+                      :size="BtnSizesEnum.XS"
+                      :variant="BtnVariantsEnum.BARE"
+                      :aria-label="t('hangarPlanner.editMelt')"
+                      @click="openMelt(melt)"
+                    >
+                      <i class="fa-light fa-pen" />
+                    </Btn>
+                    <Btn
+                      :size="BtnSizesEnum.XS"
+                      :variant="BtnVariantsEnum.BARE"
+                      :tone="BtnTonesEnum.DANGER"
+                      :aria-label="t('hangarPlanner.removeMelt')"
+                      @click="removeMelt(melt)"
+                    >
+                      <i class="fa-light fa-trash" />
+                    </Btn>
+                  </span>
+                </div>
+                <MeltContents
+                  v-if="melt.pledgeShips.length || melt.pledgeItems.length"
+                  :ships="melt.pledgeShips"
+                  :items="melt.pledgeItems"
+                  class="plan-melts__contents"
+                  :data-test="`hangar-plan-melt-contents-${melt.id}`"
+                />
               </li>
             </ul>
           </PanelBody>
@@ -435,12 +445,19 @@ const onDestroy = async () => {
   list-style: none;
 
   li {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    justify-content: space-between;
     padding: 4px 0;
   }
+}
+
+.plan-melts__row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.plan-melts__contents {
+  margin-top: 4px;
 }
 
 .plan-melts__name {

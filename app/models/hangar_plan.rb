@@ -56,7 +56,16 @@ class HangarPlan < ApplicationRecord
   end
 
   def used_vehicle_ids
-    acquisitions.where.not(source_vehicle_id: nil).pluck(:source_vehicle_id) + melts.pluck(:vehicle_id)
+    acquisitions.where.not(source_vehicle_id: nil).pluck(:source_vehicle_id) + melted_vehicle_ids
+  end
+
+  # Melting one ship of a pledge melts all of it, so its other ships go too.
+  def melted_vehicle_ids
+    melted = melts.left_joins(:vehicle).pluck(:vehicle_id, "vehicles.rsi_pledge_id")
+    pledges = melted.filter_map(&:last).uniq
+    siblings = pledges.any? ? live_vehicles.where(rsi_pledge_id: pledges).pluck(:id) : []
+
+    (melted.map(&:first) + siblings).uniq
   end
 
   private def plan_limit

@@ -47,6 +47,8 @@ class HangarPlanMelt < ApplicationRecord
       errors.add(:vehicle_id, :invalid)
     elsif hangar_plan.acquisitions.where(source_vehicle_id: vehicle_id).exists?
       errors.add(:vehicle_id, :taken)
+    elsif hangar_plan.melted_vehicle_ids.include?(vehicle_id)
+      errors.add(:vehicle_id, :pledge_melted)
     # Melting the ship melts its whole pledge, so no ship of it can be kept.
     elsif vehicle.rsi_pledge_id.present? &&
         hangar_plan.acquisitions.joins(:source_vehicle).where(vehicles: {rsi_pledge_id: vehicle.rsi_pledge_id}).exists?
