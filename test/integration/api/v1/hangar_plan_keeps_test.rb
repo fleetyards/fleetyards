@@ -57,6 +57,17 @@ class Api::V1::HangarPlanKeepsTest < ActionDispatch::IntegrationTest
     assert_empty @plan.vehicle_marks.reload
   end
 
+  test "POST keeps a ship a route on an undecided slot starts from" do
+    vehicle = create(:vehicle, user: @user, model: @gladius)
+    slot = @plan.slots.create!(label: "Fighter")
+    candidate = slot.candidates.create!(model: @gladius)
+    slot.candidates.create!(model: create(:model))
+    @plan.acquisitions.create!(candidate:, start_kind: "owned", source_vehicle: vehicle)
+
+    assert_api_response :post, 201, api_path: "/hangar/plans/{hangarPlanId}/keeps",
+      path_params: {hangarPlanId: @plan.id}, body: {vehicleIds: [vehicle.id]}
+  end
+
   test "POST rejects a ship of another user" do
     assert_api_response :post, 400, api_path: "/hangar/plans/{hangarPlanId}/keeps",
       path_params: {hangarPlanId: @plan.id}, body: {vehicleIds: [create(:vehicle).id]}

@@ -53,6 +53,14 @@ class HangarPlanMelt < ApplicationRecord
     elsif vehicle.rsi_pledge_id.present? &&
         hangar_plan.acquisitions.joins(:source_vehicle).where(vehicles: {rsi_pledge_id: vehicle.rsi_pledge_id}).exists?
       errors.add(:vehicle_id, :pledge_kept)
+    elsif kept_in_pledge?
+      errors.add(:vehicle_id, :pledge_kept)
     end
+  end
+  private def kept_in_pledge?
+    return false if vehicle.rsi_pledge_id.blank?
+
+    hangar_plan.vehicle_marks.where(mark: "keep").where.not(vehicle_id:)
+      .joins(:vehicle).where(vehicles: {rsi_pledge_id: vehicle.rsi_pledge_id}).exists?
   end
 end

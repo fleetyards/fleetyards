@@ -1,10 +1,12 @@
 class CreateHangarPlanVehicleMarks < ActiveRecord::Migration[8.1]
   def change
     # No foreign key on the vehicle: a plan has to notice when the live hangar
-    # lost one, so the id outlives the row it pointed at.
+    # lost one, so the id outlives the row it pointed at, and the model says
+    # which ship it was.
     create_table :hangar_plan_vehicle_marks, id: :uuid do |t|
       t.references :hangar_plan, type: :uuid, null: false, foreign_key: {on_delete: :cascade}, index: false
       t.uuid :vehicle_id, null: false
+      t.uuid :model_id, null: false
       t.string :mark, null: false, default: "pending"
       t.timestamps
     end

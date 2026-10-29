@@ -38,7 +38,7 @@ class HangarPlans::BuilderTest < ActiveSupport::TestCase
     gladii = create_list(:vehicle, 2, user: @user, model: @gladius)
     create(:vehicle, user: @user, model: @carrack)
     source = build_plan("hangar")
-    HangarPlans::Keep.new(source).run(gladii)
+    HangarPlanVehicleMark.write(source, gladii, "keep", overwrite: true)
     create(:hangar_plan_melt, hangar_plan: source, vehicle: create(:vehicle, user: @user, model: @carrack))
     open_slot = source.slots.create!(label: "Hauler", quantity: 2)
     open_slot.candidates.create!(model: @carrack)

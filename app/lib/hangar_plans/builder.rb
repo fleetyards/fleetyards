@@ -19,21 +19,15 @@ module HangarPlans
       HangarPlan.transaction do
         plan.save!
         case source
-        when "hangar" then mark_vehicles(plan.live_vehicles.pluck(:id))
+        # Every hangar ship waits for the user to say whether it stays, is
+        # upgraded or melts.
+        when "hangar" then HangarPlanVehicleMark.write(plan, plan.live_vehicles.select(:id, :model_id), "pending")
         when "wishlist" then copy_vehicles(plan.user.vehicles.wanted.where(loaner: false, bundled: false))
         when "plan" then copy_plan
         end
         plan.update_columns(based_on_vehicle_ids: plan.live_vehicles.pluck(:id)) unless source == "plan"
         plan
       end
-    end
-
-    # Every hangar ship waits for the user to say whether it stays, is upgraded
-    # or melts; keeping them all up front decided nothing.
-    def mark_vehicles(vehicle_ids)
-      now = Time.current
-      rows = vehicle_ids.map { |vehicle_id| {vehicle_id:, mark: "pending", created_at: now, updated_at: now} }
-      plan.vehicle_marks.insert_all(rows, unique_by: :index_hangar_plan_vehicle_marks_on_plan_and_vehicle) if rows.any?
     end
 
     private def copy_vehicles(vehicles)
@@ -71,7 +65,7 @@ module HangarPlans
       end
 
       marks = source_plan.vehicle_marks.map do |mark|
-        mark.slice(:vehicle_id, :mark).merge(created_at: Time.current, updated_at: Time.current)
+        mark.slice(:vehicle_id, :model_id, :mark).merge(created_at: Time.current, updated_at: Time.current)
       end
       plan.vehicle_marks.insert_all!(marks) if marks.any?
     end

@@ -357,6 +357,7 @@ en:
           attributes:
             vehicle_id:
               taken: "is already used in this plan"
+              pledge_melted: "comes in a pledge this plan melts"
         hangar_plan_melt:
           attributes:
             vehicle_id:

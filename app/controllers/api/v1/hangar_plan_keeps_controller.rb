@@ -18,14 +18,14 @@ module Api
 
         if ids.empty? || vehicles.size != ids.size
           mark.errors.add(:vehicle_id, :invalid)
-        elsif @hangar_plan.used_vehicle_ids.intersect?(ids)
-          mark.errors.add(:vehicle_id, :taken)
+        elsif @hangar_plan.melted_vehicle_ids.intersect?(ids)
+          mark.errors.add(:vehicle_id, :pledge_melted)
         end
 
         if mark.errors.any?
           render json: ValidationError.new("hangar_plan_keeps.create", errors: mark.errors), status: :bad_request
         else
-          HangarPlans::Keep.new(@hangar_plan).run(vehicles)
+          HangarPlanVehicleMark.write(@hangar_plan, vehicles, "keep", overwrite: true)
           render_hangar_plan(status: :created)
         end
       end

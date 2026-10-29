@@ -356,6 +356,7 @@ zh-TW:
           attributes:
             vehicle_id:
               taken: "已在此計畫中使用"
+              pledge_melted: "屬於此計畫熔煉的禮包"
         hangar_plan_melt:
           attributes:
             vehicle_id:

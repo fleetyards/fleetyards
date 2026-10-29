@@ -356,6 +356,7 @@ it:
           attributes:
             vehicle_id:
               taken: "è già usato in questo piano"
+              pledge_melted: "fa parte di un pledge che questo piano fonde"
         hangar_plan_melt:
           attributes:
             vehicle_id:

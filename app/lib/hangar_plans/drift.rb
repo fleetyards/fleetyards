@@ -80,7 +80,7 @@ module HangarPlans
     # flagged, and prices are taken again as of now.
     def rebase!
       HangarPlan.transaction do
-        Builder.new(plan).mark_vehicles(new_vehicles.map(&:id))
+        HangarPlanVehicleMark.write(plan, new_vehicles, "pending")
 
         plan.acquisitions.includes(:start_model, :buyback_pledge).find_each do |acquisition|
           acquisition.update_columns(price_snapshot: acquisition.list_price)

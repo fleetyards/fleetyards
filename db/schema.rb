@@ -1621,6 +1621,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_29_150000) do
   create_table "hangar_plan_vehicle_marks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "hangar_plan_id", null: false
     t.uuid "vehicle_id", null: false
+    t.uuid "model_id", null: false
     t.string "mark", default: "pending", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
