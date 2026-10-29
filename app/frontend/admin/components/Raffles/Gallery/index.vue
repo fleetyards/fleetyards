@@ -11,6 +11,7 @@ import DirectUpload, {
 import { fileTypeMap } from "@/shared/components/DirectUpload/types";
 import { type MediaFile } from "@/services/fyAdminApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useDirectUpload } from "@/shared/composables/useDirectUpload";
 
 type GalleryImage = {
   signedId: string;
@@ -68,6 +69,46 @@ const onUploadDone = (files: FileUpload[]) => {
   });
 };
 
+const { uploadFile } = useDirectUpload();
+
+const uploading = ref(0);
+
+// Uploads run side by side but land in the order given, so the first file
+// handed in becomes the cover when the gallery was empty. Resolves with the
+// files that failed.
+const addFiles = async (files: File[]) => {
+  uploading.value += files.length;
+
+  const results = await Promise.allSettled(
+    files.map((file) =>
+      uploadFile(file, { progressHandler: () => {} }).finally(() => {
+        uploading.value -= 1;
+      }),
+    ),
+  );
+
+  const failed: File[] = [];
+
+  results.forEach((result, index) => {
+    const file = files[index];
+
+    if (result.status === "rejected") {
+      failed.push(file);
+      return;
+    }
+
+    items.value.push({
+      signedId: result.value.signed_id,
+      name: file.name,
+      url: URL.createObjectURL(file),
+    });
+  });
+
+  return failed;
+};
+
+defineExpose({ addFiles });
+
 const remove = (signedId: string) => {
   items.value = items.value.filter((item) => item.signedId !== signedId);
 };
@@ -98,6 +139,9 @@ const remove = (signedId: string) => {
         </Btn>
       </li>
     </ul>
+    <p v-if="uploading" class="raffle-gallery__hint">
+      {{ t("labels.raffle.imagesUploading", { count: uploading }) }}
+    </p>
     <DirectUpload
       v-if="!disabled"
       multiple

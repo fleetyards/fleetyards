@@ -53,6 +53,8 @@
         "description": "Descrizione",
         "descriptionInfo": "Markdown. Scrivi una nave o un oggetto come [*Nome*] per collegarlo; digita [* per cercare.",
         "translationInfo": "Facoltativo. I campi vuoti mostrano il testo inglese.",
+        "importFolderInfo": "Compila tutte le lingue e la galleria in una volta da una cartella: un en.md, de.md, … per lingua con titolo e premio in un blocco front matter, più le immagini. Nulla viene salvato finché non salvi.",
+        "imagesUploading": "Caricamento immagini: %{count}",
         "code": "Codice regalo",
         "codeInfo": "Il codice che riceve il vincitore. Viene salvato cifrato e non viene mai più mostrato per intero.",
         "codeSet": "È impostato un codice (%{code}). Lascia il campo vuoto per mantenerlo.",
@@ -163,7 +165,11 @@
         "updateFailed": "Impossibile aggiornare l'estrazione.",
         "drawn": "Estrazione effettuata.",
         "drawFailed": "Impossibile effettuare l'estrazione.",
-        "invalid": "Controlla i campi evidenziati: l'estrazione ha bisogno di un titolo, di una data di apertura e di una durata."
+        "invalid": "Controlla i campi evidenziati: l'estrazione ha bisogno di un titolo, di una data di apertura e di una durata.",
+        "imported": "Cartella importata (lingue: %{languages}, immagini: %{images}). Controlla il modulo e salva.",
+        "importSkipped": "File saltati: %{files}",
+        "importEmpty": "La cartella non contiene né un file di lingua né un'immagine.",
+        "importUploadFailed": "Non è stato possibile caricare queste immagini: %{files}"
       },
       "confirm": {
         "raffle": {
@@ -175,7 +181,8 @@
     "actions": {
       "raffle": {
         "entries": "Partecipazioni",
-        "draw": "Estrai"
+        "draw": "Estrai",
+        "importFolder": "Importa cartella"
       }
     },
     "raffles": {

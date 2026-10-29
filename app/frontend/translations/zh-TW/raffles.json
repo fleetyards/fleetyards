@@ -53,6 +53,8 @@
         "description": "描述",
         "descriptionInfo": "Markdown。將艦船或物品寫成 [*名稱*] 即可連結；輸入 [* 進行搜尋。",
         "translationInfo": "選填。留空的欄位將顯示英文內容。",
+        "importFolderInfo": "從一個資料夾一次填寫所有語言和圖庫：每種語言一個 en.md、de.md……，在 front matter 區塊中寫標題和獎品，另附圖片。按下儲存之前不會儲存任何內容。",
+        "imagesUploading": "正在上傳圖片：%{count}",
         "code": "禮品碼",
         "codeInfo": "得獎者獲得的禮品碼。它會加密儲存，且不會再完整顯示。",
         "codeSet": "已設定禮品碼（%{code}）。將此欄位留空即可保留。",
@@ -163,7 +165,11 @@
         "updateFailed": "無法更新抽獎。",
         "drawn": "已開獎。",
         "drawFailed": "無法開獎。",
-        "invalid": "請檢查標示的欄位：抽獎需要標題、開始時間和持續時間。"
+        "invalid": "請檢查標示的欄位：抽獎需要標題、開始時間和持續時間。",
+        "imported": "資料夾已匯入（語言：%{languages}，圖片：%{images}）。請檢查表單後儲存。",
+        "importSkipped": "已略過的檔案：%{files}",
+        "importEmpty": "該資料夾中既沒有語言檔案也沒有圖片。",
+        "importUploadFailed": "以下圖片無法上傳：%{files}"
       },
       "confirm": {
         "raffle": {
@@ -175,7 +181,8 @@
     "actions": {
       "raffle": {
         "entries": "參加紀錄",
-        "draw": "開獎"
+        "draw": "開獎",
+        "importFolder": "匯入資料夾"
       }
     },
     "raffles": {

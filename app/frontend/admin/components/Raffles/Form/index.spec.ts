@@ -11,6 +11,12 @@ beforeAll(() => {
   defineRule("min_value", min_value);
 });
 
+vi.mock("@/shared/composables/useDirectUpload", () => ({
+  useDirectUpload: () => ({
+    uploadFile: async (file: File) => ({ signed_id: `signed-${file.name}` }),
+  }),
+}));
+
 vi.mock("@/shared/components/base/FormDateTime/index.vue", () => ({
   default: {
     name: "FormDateTime",
@@ -100,5 +106,45 @@ describe("RaffleForm", () => {
     await submit(wrapper);
 
     expect(wrapper.emitted("submit")).toBeUndefined();
+  });
+
+  it("fills every language and the gallery from a picked folder", async () => {
+    URL.createObjectURL = vi.fn(() => "blob:preview");
+
+    const wrapper = await mountForm({ raffle });
+    const input = wrapper.find('[data-test="raffle-import-input"]');
+
+    Object.defineProperty(input.element, "files", {
+      configurable: true,
+      value: [
+        new File(["x"], "2-interior.jpg", { type: "image/jpeg" }),
+        new File(
+          ["---\ntitle: Win a Centaurus\nprize: 1x Centaurus\n---\nText"],
+          "en.md",
+        ),
+        new File(["---\nprize: 1x Centaurus mit LTI\n---\n"], "de.md"),
+        new File(["x"], "1-cover.jpg", { type: "image/jpeg" }),
+      ],
+    });
+    await input.trigger("change");
+    await flushPromises();
+
+    expect(wrapper.emitted("submit")).toBeUndefined();
+
+    await submit(wrapper);
+
+    expect(wrapper.emitted("submit")?.[0]?.[0]).toMatchObject({
+      title: "Win a Centaurus",
+      prize: "1x Centaurus",
+      description: "Text",
+      translations: [
+        {
+          locale: "de",
+          title: "Gewinne eine Polaris",
+          prize: "1x Centaurus mit LTI",
+        },
+      ],
+      images: ["signed-1-cover.jpg", "signed-2-interior.jpg"],
+    });
   });
 });
