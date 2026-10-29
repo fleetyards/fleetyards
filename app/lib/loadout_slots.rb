@@ -91,13 +91,14 @@ class LoadoutSlots
     ::Hardpoint::TYPE_CATEGORIES.value?(category.to_s.to_sym)
   end
 
-  # The game files carry one part several times over -- a gas-cloud-resistant
-  # AllStop, a gimbal mount per ship that uses it -- under one name and with
-  # the same figures. A picker offers each once: the slot's own part where it
-  # is one of them, else the plainest key.
+  # The game files carry one part several times over under one name -- a
+  # gas-cloud-resistant AllStop, a gimbal mount per ship that uses it, a
+  # Bulldog tuned down for the ATLS. A picker offers each once: the slot's own
+  # part where it is one of them, else the plainest key. The copies' figures
+  # can differ, so they are not part of what makes two parts the same.
   def self.distinct(components, stock = nil)
     components
-      .group_by { |component| [component.name, component.size, component.grade, component.item_class, component.type_data.to_h] }
+      .group_by { |component| [component.name, component.size, component.grade, component.item_class] }
       .values
       .map { |same| same.find { |component| component.id == stock&.id } || same.min_by { |component| [component.sc_key.to_s.length, component.sc_key.to_s] } }
   end

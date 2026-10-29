@@ -80,6 +80,19 @@ class Api::V1::HardpointsLoadoutOptionsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hardpoints/:id/loadout-options offers a repeated part once even where its figures differ" do
+    port = create(:hardpoint, parent: create(:model), sc_name: "hardpoint_weapon", source: :game_files,
+      types: %w[WeaponGun], min_size: 1, max_size: 1)
+    create(:component, name: "CF-117 Bulldog Repeater", sc_key: "klwe_laserrepeater_s1", component_type: "WeaponGun",
+      category: "weapons", size: "1", grade: "1", type_data: {fire_rate: 750, regen: {max_regen_per_second: 15.0}})
+    create(:component, name: "CF-117 Bulldog Repeater", sc_key: "klwe_laserrepeater_s1_atls", component_type: "WeaponGun",
+      category: "weapons", size: "1", grade: "1", type_data: {fire_rate: 750, regen: {max_regen_per_second: 7.43}})
+
+    assert_api_response :get, 200, path_params: {id: port.id} do
+      assert_equal ["klwe_laserrepeater_s1"], parsed_body.map { |option| option.dig("component", "scKey") }
+    end
+  end
+
   test "GET /hardpoints/:id/loadout-options offers guns where the slot came with a bare gun" do
     mount = create(:component, component_type: "Turret", category: "weapon_mounts", size: "4")
     port = create(:hardpoint, parent: mount, sc_name: "hardpoint_weapon", source: :game_files,
