@@ -6,8 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { FeatureFlagName, type MediaFile } from "@/services/fyApi";
-import { useFeatures } from "@/frontend/composables/useFeatures";
+import { type MediaFile } from "@/services/fyApi";
+import { useItemHolo } from "@/frontend/composables/useItemHolo";
 import { LOW_POWER_HOLO_SIZE_LIMIT } from "@/shared/components/HoloViewer/limits";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useLowPowerDevice } from "@/shared/composables/useLowPowerDevice";
@@ -37,22 +37,13 @@ const mobile = useMobile();
 
 const lowPower = useLowPowerDevice();
 
-const { isFeatureEnabled } = useFeatures();
-
 // The inline preview cannot ask before loading a holo too large for the
 // device, so such a device is not offered the textured one.
-const texturedHoloAvailable = computed(
-  () =>
-    isFeatureEnabled(FeatureFlagName.ITEM_HOLO_TEXTURED) &&
-    !!props.holo?.url &&
-    !!props.holoTextured?.url &&
-    !(
-      lowPower.value &&
-      (props.holoTextured.size ?? 0) > LOW_POWER_HOLO_SIZE_LIMIT
-    ),
-);
-
-const texturedHolo = ref(false);
+const { texturedHolo, texturedHoloAvailable, toggleTexturedHolo, holoModel } =
+  useItemHolo(() => ({ holo: props.holo, holoTextured: props.holoTextured }), {
+    canLoad: (file) =>
+      !(lowPower.value && (file.size ?? 0) > LOW_POWER_HOLO_SIZE_LIMIT),
+  });
 
 watch(
   () => props.holo?.url,
@@ -60,19 +51,6 @@ watch(
     texturedHolo.value = false;
   },
 );
-
-const toggleTexturedHolo = () => {
-  texturedHolo.value = !texturedHolo.value;
-};
-
-const holoModel = computed(() => {
-  const textured = texturedHoloAvailable.value && texturedHolo.value;
-  const holo = textured ? props.holoTextured : props.holo;
-
-  return holo?.url
-    ? { path: holo.url, size: holo.size ?? undefined, textured }
-    : undefined;
-});
 
 // three.js still crashes phones, and the inline preview cannot ask before
 // loading a holo too large for the device, so both keep the picture.
