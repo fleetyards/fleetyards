@@ -57,15 +57,17 @@ watch(
   { deep: true },
 );
 
+const append = (signedId: string, file: File) => {
+  items.value.push({
+    signedId,
+    name: file.name,
+    url: URL.createObjectURL(file),
+  });
+};
+
 const onUploadDone = (files: FileUpload[]) => {
   files.forEach((file) => {
-    if (!file.blob) return;
-
-    items.value.push({
-      signedId: file.blob.signed_id,
-      name: file.file.name,
-      url: URL.createObjectURL(file.file),
-    });
+    if (file.blob) append(file.blob.signed_id, file.file);
   });
 };
 
@@ -73,36 +75,23 @@ const { uploadFile } = useDirectUpload();
 
 const uploading = ref(0);
 
-// Uploads run side by side but land in the order given, so the first file
-// handed in becomes the cover when the gallery was empty. Resolves with the
-// files that failed.
+// One at a time: a saved raffle orders its images by when their blobs were
+// created, so parallel uploads would scramble the order and pick a random
+// cover. Resolves with the files that failed.
 const addFiles = async (files: File[]) => {
+  const failed: File[] = [];
   uploading.value += files.length;
 
-  const results = await Promise.allSettled(
-    files.map((file) =>
-      uploadFile(file, { progressHandler: () => {} }).finally(() => {
-        uploading.value -= 1;
-      }),
-    ),
-  );
-
-  const failed: File[] = [];
-
-  results.forEach((result, index) => {
-    const file = files[index];
-
-    if (result.status === "rejected") {
+  for (const file of files) {
+    try {
+      const blob = await uploadFile(file, { progressHandler: () => {} });
+      append(blob.signed_id, file);
+    } catch {
       failed.push(file);
-      return;
+    } finally {
+      uploading.value -= 1;
     }
-
-    items.value.push({
-      signedId: result.value.signed_id,
-      name: file.name,
-      url: URL.createObjectURL(file),
-    });
-  });
+  }
 
   return failed;
 };
