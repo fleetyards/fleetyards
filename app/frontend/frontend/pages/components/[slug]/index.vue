@@ -297,6 +297,10 @@ watch(
           :image="component.media.storeImage"
           :holo="component.media.holo"
           :holo-textured="component.media.holoTextured"
+          :viewer-route="{
+            name: 'component-viewer',
+            params: { slug: component.slug },
+          }"
           :name="component.name"
           test-id="component-image"
         />

@@ -12,11 +12,13 @@ import { LOW_POWER_HOLO_SIZE_LIMIT } from "@/shared/components/HoloViewer/limits
 import { useI18n } from "@/shared/composables/useI18n";
 import { useLowPowerDevice } from "@/shared/composables/useLowPowerDevice";
 import { useMobile } from "@/shared/composables/useMobile";
+import { type RouteLocationNamedRaw } from "vue-router";
 
 type Props = {
   image?: MediaFile | null;
   holo?: MediaFile | null;
   holoTextured?: MediaFile | null;
+  viewerRoute: RouteLocationNamedRaw;
   name: string;
   testId: string;
 };
@@ -63,7 +65,12 @@ const holoVisible = computed(
     ),
 );
 
-const viewer = ref<{ enableFullscreen: () => void }>();
+// Full screen is a page of its own, as on the ship page, so the inline viewer
+// keeps its own camera and the textured choice travels in the link.
+const fullscreenRoute = computed<RouteLocationNamedRaw>(() => ({
+  ...props.viewerRoute,
+  query: holoModel.value?.textured ? { textured: "1" } : undefined,
+}));
 
 // Without WebGL or a holo that loads, the picture beats the viewer's notice.
 const holoFailed = ref(false);
@@ -95,7 +102,6 @@ watch(
   >
     <HoloViewer
       :key="holoModel.path"
-      ref="viewer"
       :models="[holoModel]"
       :controllable="false"
       :azimuth="HOLO_AZIMUTH"
@@ -117,7 +123,7 @@ watch(
         :aria-label="t('actions.vehicleOverview.fullscreenHolo')"
         v-tooltip="t('actions.vehicleOverview.fullscreenHolo')"
         :data-test="`${testId}-fullscreen`"
-        @click="viewer?.enableFullscreen()"
+        :to="fullscreenRoute"
       >
         <i class="fa-light fa-expand" />
       </Btn>

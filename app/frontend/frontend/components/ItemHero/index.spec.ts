@@ -48,7 +48,12 @@ const mountHero = (
   device.texturedHolo = texturedHolo;
 
   return mount(ItemHero, {
-    props: { ...props, name: "P4-AR Rifle", testId: "item-image" },
+    props: {
+      ...props,
+      name: "P4-AR Rifle",
+      testId: "item-image",
+      viewerRoute: { name: "equipment-item-viewer", params: { slug: "p4-ar" } },
+    },
     global: {
       stubs: {
         HoloViewer: {
@@ -56,7 +61,10 @@ const mountHero = (
           props: ["models"],
           template: "<div />",
         },
-        Btn: { template: "<button><slot /></button>" },
+        Btn: {
+          props: ["to"],
+          template: "<button :data-to='JSON.stringify(to)'><slot /></button>",
+        },
       },
       directives: { tooltip: {} },
     },
@@ -75,6 +83,34 @@ describe("ItemHero", () => {
       true,
     );
     expect(wrapper.find("[data-test='item-image']").exists()).toBe(false);
+  });
+
+  it("links full screen to the viewer page, with the textured holo if shown", async () => {
+    const wrapper = mountHero({
+      holo: file("holo.glb"),
+      holoTextured: file("holo_textured.glb"),
+    });
+    const fullscreen = () =>
+      JSON.parse(
+        wrapper
+          .find("[data-test='item-image-fullscreen']")
+          .attributes("data-to")!,
+      );
+
+    expect(fullscreen()).toEqual({
+      name: "equipment-item-viewer",
+      params: { slug: "p4-ar" },
+    });
+
+    await wrapper
+      .find("[data-test='item-image-holo-textured']")
+      .trigger("click");
+
+    expect(fullscreen()).toEqual({
+      name: "equipment-item-viewer",
+      params: { slug: "p4-ar" },
+      query: { textured: "1" },
+    });
   });
 
   it("falls back to the picture when the holo cannot be shown", async () => {
