@@ -37,6 +37,19 @@
     }
   }
 
+  // The canvas is transparent, so a backdrop is the element's own.
+  &--dark {
+    background-color: black;
+  }
+
+  &--space {
+    background-color: #020308;
+  }
+
+  &--light {
+    background: radial-gradient(circle at 50% 40%, #ffffff, #d5d8dd 80%);
+  }
+
   &__close {
     position: absolute;
     top: 15px;

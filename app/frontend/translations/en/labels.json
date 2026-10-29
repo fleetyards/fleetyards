@@ -476,6 +476,13 @@
       "3dMap": "Map",
       "texturedHolo": "Textured",
       "texturedHoloOwnPaint": "Standard paint",
+      "holoViewer": {
+        "background": {
+          "dark": "Dark",
+          "space": "Space",
+          "light": "Light"
+        }
+      },
       "viewInAr": "AR",
       "viewInArHint": "Place it in your room at true size",
       "filter": "Filter",

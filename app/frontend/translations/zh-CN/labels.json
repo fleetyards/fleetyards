@@ -476,6 +476,13 @@
       "3dMap": "Map",
       "texturedHolo": "纹理",
       "texturedHoloOwnPaint": "标准涂装",
+      "holoViewer": {
+        "background": {
+          "dark": "深色",
+          "space": "太空",
+          "light": "浅色"
+        }
+      },
       "viewInAr": "AR",
       "viewInArHint": "以真实尺寸放置在你的房间中",
       "filter": "筛选",

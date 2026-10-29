@@ -396,6 +396,10 @@
         "color": {
           "enable": "Enable colors",
           "disable": "Disable colors"
+        },
+        "grid": {
+          "enable": "Show grid",
+          "disable": "Hide grid"
         }
       },
       "logistics": {

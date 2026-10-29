@@ -39,7 +39,18 @@ const close = () => {
     <a v-else class="close" aria-label="Close" @click="close">
       <i class="fa-light fa-times" />
     </a>
-    <HoloViewer :models="models" :autoRotate="false" zoomable panable grid />
+    <HoloViewer
+      :models="models"
+      :autoRotate="false"
+      zoomable
+      panable
+      grid
+      backgrounds
+    >
+      <template #actions>
+        <slot name="actions" />
+      </template>
+    </HoloViewer>
   </div>
 </template>
 

@@ -9,6 +9,7 @@ export default {
 import Loader from "@/shared/components/Loader/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import {
   ACESFilmicToneMapping,
   type Camera,
@@ -21,7 +22,7 @@ import { useI18n } from "@/shared/composables/useI18n";
 
 import { TresCanvas } from "@tresjs/core";
 import { webglAvailable } from "@/shared/utils/Webgl";
-import { OrbitControls, TransformControls, Grid } from "@tresjs/cientos";
+import { OrbitControls, TransformControls, Grid, Stars } from "@tresjs/cientos";
 import Model from "./Model/index.vue";
 import RoomLighting from "./RoomLighting/index.vue";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -53,6 +54,8 @@ type Props = {
   inline?: boolean;
   fullscreen?: boolean;
   grid?: boolean;
+  // Offer the backdrops to pick from: the full screen viewer's.
+  backgrounds?: boolean;
   zoomable?: boolean;
   panable?: boolean;
   // Where the camera starts around the model, in degrees from +Z. Holos keep
@@ -81,6 +84,7 @@ const props = withDefaults(defineProps<Props>(), {
   inline: false,
   fullscreen: false,
   grid: false,
+  backgrounds: false,
   panable: false,
   zoomable: false,
   azimuth: -90,
@@ -228,6 +232,34 @@ watch(
 
 const toggleZoom = () => {
   zoom.value = !zoom.value;
+};
+
+const BACKGROUNDS = ["dark", "space", "light"] as const;
+
+type Background = (typeof BACKGROUNDS)[number];
+
+const BACKGROUND_ICONS: Record<Background, string> = {
+  dark: "fa-light fa-moon",
+  space: "fa-light fa-stars",
+  light: "fa-light fa-sun",
+};
+
+const background = ref<Background>("dark");
+
+const backgroundName = (name: Background) =>
+  t(`labels.holoViewer.background.${name}`);
+
+// Hidden only: the model stays scaled and set down as it is on the grid.
+const gridVisible = ref(true);
+
+const gridTooltip = computed(() =>
+  gridVisible.value
+    ? t("actions.holoViewer.grid.disable")
+    : t("actions.holoViewer.grid.enable"),
+);
+
+const toggleGrid = () => {
+  gridVisible.value = !gridVisible.value;
 };
 
 const toggleColor = () => {
@@ -487,6 +519,7 @@ defineExpose({
     :class="{
       'holo-viewer--inline': inline && !internalFullscreen,
       'holo-viewer--fullscreen': internalFullscreen,
+      [`holo-viewer--${background}`]: backgrounds,
     }"
   >
     <Btn
@@ -519,6 +552,38 @@ defineExpose({
       >
         <i class="fa-duotone fa-fill-drip" />
       </Btn>
+      <Btn
+        v-if="grid"
+        v-tooltip="gridTooltip"
+        :active="gridVisible"
+        data-test="holo-viewer-grid"
+        @click="toggleGrid"
+      >
+        <i class="fa-light fa-grid" />
+      </Btn>
+      <BtnDropdown
+        v-if="backgrounds"
+        expand-top
+        expand-left
+        data-test="holo-viewer-background"
+      >
+        <template #label>
+          <i :class="BACKGROUND_ICONS[background]" />
+          <span>{{ backgroundName(background) }}</span>
+          <i class="fa-light fa-chevron-up" />
+        </template>
+        <Btn
+          v-for="option in BACKGROUNDS"
+          :key="option"
+          :active="background === option"
+          :data-test="`holo-viewer-background-${option}`"
+          @click="background = option"
+        >
+          <i :class="BACKGROUND_ICONS[option]" />
+          {{ backgroundName(option) }}
+        </Btn>
+      </BtnDropdown>
+      <slot name="actions" />
     </BtnGroup>
 
     <Loader
@@ -583,8 +648,17 @@ defineExpose({
         @change="handleControlsChange"
       />
       <TransformControls v-if="currentModel" :object="currentModel" />
+      <!-- Out past the camera's widest zoom, and sized with it, so a ship and a
+           part sit in the same sky. -->
+      <Stars
+        v-if="backgrounds && background === 'space'"
+        :radius="maxZoomDistance * 1.5"
+        :depth="maxZoomDistance"
+        :count="4000"
+        :size="maxZoomDistance / 150"
+      />
       <Grid
-        v-if="grid"
+        v-if="grid && gridVisible"
         :args="[10, 10]"
         :position="gridPosition"
         cell-color="#82dbc5"
