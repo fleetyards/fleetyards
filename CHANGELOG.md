@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.28.0](https://github.com/fleetyards/fleetyards/compare/v9.27.0...v9.28.0) (2026-10-29)
+
+
+### Features
+
+* **hangar-planner:** edit a slot's ships from the plan page ([a599408](https://github.com/fleetyards/fleetyards/commit/a5994089bb387a6e2fbddc22234356027cb1d02b))
+
+
+### Bug Fixes
+
+* **models:** stop counting wishlist ships and loaners as in the hangar ([06ea404](https://github.com/fleetyards/fleetyards/commit/06ea4041ec40a66530a2ce0bb304a9deb2ce6861))
+* **nav:** stop listing the raffles page in the navigation ([73856b4](https://github.com/fleetyards/fleetyards/commit/73856b4d533acecda4b516ef43503a97e297d50f))
+* **raffles:** wrap the prize instead of cutting it off ([6f2a793](https://github.com/fleetyards/fleetyards/commit/6f2a793362082aeabc3b9982eab3619b74743be3))
+
+
+### Refactorings
+
+* **hangar-planner:** share the side-by-side candidate specs ([7972393](https://github.com/fleetyards/fleetyards/commit/7972393362f5d4ffa535c5aace32a96179130498))
+
 ## [9.27.0](https://github.com/fleetyards/fleetyards/compare/v9.26.1...v9.27.0) (2026-10-29)
 
 
