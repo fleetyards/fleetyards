@@ -53,7 +53,8 @@ withDefaults(defineProps<Props>(), {
  * The 4px above only works under a plain heading, whose own 12px closes the
  * gap. A divider ends the heading at its rule and an image ends at its edge,
  * so a body after either opens its own space; a body with nothing above it
- * pads like its sides.
+ * pads like its sides. A background image sits before the body without
+ * taking up any space, so it counts as nothing.
  *
  * `:where()` keeps these at the specificity of `.panel-body` itself, so a
  * caller that sets its own padding (the flush metrics tiles) still wins.
@@ -62,7 +63,7 @@ withDefaults(defineProps<Props>(), {
   padding-top: 14px;
 }
 
-.panel-body:where(:first-child) {
+.panel-body:where(:first-child, .panel-bg:first-child + *) {
   padding-top: 18px;
 }
 
