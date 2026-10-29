@@ -240,6 +240,12 @@ class Api::V1::RafflesTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 400, path_params: {raffleId: create(:raffle, :closed).id}, body: {conditionsAccepted: true}
   end
 
+  test "POST /raffles/:raffle_id/entry refuses a raffle that has not started" do
+    sign_in @user
+
+    assert_api_response :post, 400, path_params: {raffleId: create(:raffle, :upcoming).id}, body: {conditionsAccepted: true}
+  end
+
   test "POST /raffles/:raffle_id/entry returns 401 when not signed in" do
     assert_api_response :post, 401, path_params: {raffleId: @raffle.id}, body: {conditionsAccepted: true}
   end

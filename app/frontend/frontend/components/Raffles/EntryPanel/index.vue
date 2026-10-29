@@ -130,7 +130,7 @@ const title = computed(() => {
         </div>
         <div class="metrics-card__row">
           <div class="metrics-card__row__label">
-            {{ t(isOpen ? "raffles.entry.closes" : "raffles.entry.closed") }}
+            {{ t(isOver ? "raffles.entry.closed" : "raffles.entry.closes") }}
           </div>
           <div class="metrics-card__row__value">
             {{ l(raffle.endsAt, "datetime.formats.short") }}
