@@ -33,6 +33,8 @@ import {
   NoColorSpace,
   SRGBColorSpace,
   TextureLoader,
+  Raycaster,
+  Vector2,
 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { prepareGltfLoader } from "../gltfLoader";
@@ -55,6 +57,8 @@ type Props = {
   windowColor?: string;
   // See-through, with the mesh's wireframe drawn over it.
   hologram?: boolean;
+  // Mounted parts answer the pointer, named by their mount's id.
+  pickable?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -64,6 +68,7 @@ const props = withDefaults(defineProps<Props>(), {
   offsetModel: undefined,
   windowColor: "#1d3d59",
   hologram: false,
+  pickable: false,
 });
 
 // One pair for the whole holo, made once: a colour change recolours them
@@ -353,7 +358,7 @@ const { onBeforeRender } = useLoop();
 
 // A viewer drawing on demand draws a frame only when asked: for every change
 // made here, and each step of a fade until it is done.
-const { invalidate } = useTres();
+const { invalidate, camera, renderer } = useTres();
 
 onBeforeRender(({ delta }) => {
   mixer.value?.update(delta);
@@ -408,7 +413,13 @@ onUnmounted(() => {
   if (mountRoot) disposeFading(mountRoot);
 });
 
-const emit = defineEmits(["loaded", "error", "progress"]);
+const emit = defineEmits<{
+  loaded: [size: Vector3, scene: Group];
+  error: [error: unknown];
+  progress: [loaded: number, total: number];
+  mountSelect: [id: string];
+  mountPoint: [id: string | undefined];
+}>();
 
 DefaultLoadingManager.onProgress = (_item, loaded, total) => {
   emit("progress", loaded, total);
@@ -458,6 +469,96 @@ const attachMounts = async (scene: Group) => {
 
   invalidate();
 };
+
+// The part under the pointer, looked for among the mounted parts alone: on a
+// see-through hull the part shows through it, and a click on it should reach
+// it rather than the hull in front.
+const raycaster = new Raycaster();
+const pointer = new Vector2();
+
+const mountAt = (event: PointerEvent | MouseEvent) => {
+  const canvas = renderer.domElement;
+  if (!mountRoot || !camera.value) return undefined;
+
+  const rect = canvas.getBoundingClientRect();
+  pointer.set(
+    ((event.clientX - rect.left) / rect.width) * 2 - 1,
+    -((event.clientY - rect.top) / rect.height) * 2 + 1,
+  );
+  raycaster.setFromCamera(pointer, camera.value);
+
+  const hit = raycaster
+    .intersectObject(mountRoot, true)
+    .find(
+      ({ object }) =>
+        (object as Mesh).isMesh && !object.userData.overlay && object.visible,
+    );
+
+  // A part with no slot of its own, a default gun on its mount, stands for
+  // the slot it hangs from.
+  for (let node = hit?.object ?? null; node; node = node.parent) {
+    if (node.userData.mountId) return node.userData.mountId as string;
+  }
+
+  return undefined;
+};
+
+let pointed: string | undefined;
+
+const onPointerMove = (event: PointerEvent) => {
+  const id = event.buttons ? undefined : mountAt(event);
+
+  renderer.domElement.style.cursor = id ? "pointer" : "";
+  if (id === pointed) return;
+
+  pointed = id;
+  emit("mountPoint", id);
+};
+
+const onPointerLeave = () => {
+  renderer.domElement.style.cursor = "";
+  if (!pointed) return;
+
+  pointed = undefined;
+  emit("mountPoint", undefined);
+};
+
+// A drag turns the holo; only a press released where it began is a click.
+const DRAG_TOLERANCE = 4;
+let pressedAt: [number, number] | undefined;
+
+const onPointerDown = (event: PointerEvent) => {
+  pressedAt = [event.clientX, event.clientY];
+};
+
+const onClick = (event: MouseEvent) => {
+  if (
+    !pressedAt ||
+    Math.hypot(event.clientX - pressedAt[0], event.clientY - pressedAt[1]) >
+      DRAG_TOLERANCE
+  ) {
+    return;
+  }
+
+  const id = mountAt(event);
+  if (id) emit("mountSelect", id);
+};
+
+if (props.pickable) {
+  const canvas = renderer.domElement;
+  canvas.addEventListener("pointermove", onPointerMove);
+  canvas.addEventListener("pointerleave", onPointerLeave);
+  canvas.addEventListener("pointerdown", onPointerDown);
+  canvas.addEventListener("click", onClick);
+
+  onUnmounted(() => {
+    canvas.removeEventListener("pointermove", onPointerMove);
+    canvas.removeEventListener("pointerleave", onPointerLeave);
+    canvas.removeEventListener("pointerdown", onPointerDown);
+    canvas.removeEventListener("click", onClick);
+    canvas.style.cursor = "";
+  });
+}
 
 // The body is the one mesh a paint recolours; decals and glass keep theirs.
 const bodyMaterials = (scene: Group) => {

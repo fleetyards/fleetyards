@@ -746,6 +746,40 @@ const onSocketSelect = async (
   }
 };
 
+// The row a part on the holo stands for: its own slot's, else the nearest one
+// above it the list opens, a turret's for a gun the game fixes to it.
+const socketForPath = (path: string) => {
+  const names = path.split("/");
+
+  for (let depth = names.length; depth > 0; depth -= 1) {
+    const slotId = names.slice(0, depth).join("/");
+
+    for (const [tabId, tab] of Object.entries(componentTabs.value)) {
+      if (!tab.available) continue;
+
+      const socket = socketIn(
+        tab.groups.flatMap((group) => group.slots),
+        slotId,
+      );
+      if (socket && !socket.locked) return { tabId, slotId };
+    }
+  }
+
+  return undefined;
+};
+
+const onPreviewPoint = (path: string | undefined) => {
+  pointedSocket.value = path ? socketForPath(path) : undefined;
+};
+
+const onPreviewSelect = (path: string) => {
+  const socket = socketForPath(path);
+  if (!socket) return;
+
+  pickedTab.value = socket.tabId;
+  void onSocketSelect(socket.slotId, "component", socket.tabId);
+};
+
 const onCraft = async (slot: string, tabId: string) => {
   const opening = activeSlot.value !== slot || activeMode.value !== "craft";
 
@@ -1480,10 +1514,13 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
             :model-slug="modelSlug"
             :slots="previewSlots"
             :interactive="inspecting"
+            :pickable="editable"
             variant="backdrop"
             test-id="vehicle-loadout-preview"
             @available="previewShown = $event"
             @absent="previewAbsent = $event"
+            @select="onPreviewSelect"
+            @point="onPreviewPoint"
           />
         </div>
       </div>
@@ -1606,6 +1643,7 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
         <FormTabs
           v-show="!linking"
           :default-tab="tab"
+          :active-tab="pickedTab"
           @update:active-tab="(id) => (pickedTab = id)"
           :sync-url="false"
           horizontal

@@ -11,6 +11,8 @@ import type { HoloMount } from "@/shared/components/HoloViewer/mounts";
 // slots that part brings.
 export type PreviewSlot = {
   name: string;
+  // The fitting's path to it, which a click on its part on the holo names.
+  path?: string;
   part: Pick<LoadoutComponentRef, "holoUrl"> | null;
   // The slot the editor has open.
   active?: boolean;
@@ -37,6 +39,7 @@ export const previewSlotsFromFitting = (
 ): PreviewSlot[] =>
   tree.map((entry) => ({
     name: entry.slot.name,
+    path: entry.path,
     part: entry.content ?? null,
     active: activePaths.includes(entry.path),
     refitted: !!entry.content && entry.content.id !== entry.slot.stock?.id,
@@ -135,6 +138,7 @@ export const loadoutMounts = (
           position: port.position as HoloMount["position"],
           rotation: port.rotation as HoloMount["rotation"],
           path,
+          id: slot?.path,
           highlighted: !!slot?.active,
           mounts,
         },

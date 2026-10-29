@@ -75,6 +75,8 @@ type Props = {
   // that mostly stands still. Set once: the renderer cannot switch modes once
   // it runs.
   onDemand?: boolean;
+  // Mounted parts answer the pointer: hovered and clicked by their mount's id.
+  pickable?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -92,12 +94,18 @@ const props = withDefaults(defineProps<Props>(), {
   contain: false,
   hologram: false,
   onDemand: false,
+  pickable: false,
 });
 
 // Nothing will be drawn: no WebGL, or a holo that would not load. A caller with
 // a picture to show instead can switch to it.
 // `loaded` once a model is on screen, for a caller holding a picture until then.
-const emit = defineEmits<{ unavailable: []; loaded: [] }>();
+const emit = defineEmits<{
+  unavailable: [];
+  loaded: [];
+  mountSelect: [id: string];
+  mountPoint: [id: string | undefined];
+}>();
 
 const { displayAlert } = useAppNotifications();
 
@@ -348,7 +356,7 @@ const gridFadeDistance = computed(() =>
   Math.max(100, modelMaxDimension.value * 2),
 );
 
-const handleModelLoaded = (size: Vector3, scene: Mesh) => {
+const handleModelLoaded = (size: Vector3, scene: Object3D) => {
   // if (props.grid) {
   //   currentModel.value = scene;
   // }
@@ -680,10 +688,13 @@ defineExpose({
           :on-grid="grid"
           :mobile="lowPower"
           :hologram="hologram"
+          :pickable="pickable"
           :offsetModel="models[models.indexOf(model) - 1]"
           @loaded="handleModelLoaded"
           @error="handleModelError"
           @progress="handleModelProgress"
+          @mount-select="emit('mountSelect', $event)"
+          @mount-point="emit('mountPoint', $event)"
         />
         <template #fallback>
           <Loader :loading="true" :progress="progress" />

@@ -23,6 +23,8 @@ type Props = {
   variant?: "inline" | "backdrop";
   // A backdrop turned and zoomed by the viewer, with the holo's controls.
   interactive?: boolean;
+  // A part on the holo answers the pointer with its slot's path.
+  pickable?: boolean;
   testId?: string;
 };
 
@@ -30,6 +32,7 @@ const props = withDefaults(defineProps<Props>(), {
   slots: undefined,
   variant: "inline",
   interactive: false,
+  pickable: false,
   testId: "loadout-preview",
 });
 
@@ -37,6 +40,8 @@ const emit = defineEmits<{
   available: [available: boolean];
   // Settled that no holo is coming, so a caller can bring its picture in.
   absent: [absent: boolean];
+  select: [path: string];
+  point: [path: string | undefined];
 }>();
 
 // The pose of a ship's angled render: from ahead on its port side and well
@@ -135,8 +140,11 @@ onBeforeUnmount(() => {
       contain
       hologram
       on-demand
+      :pickable="pickable"
       @unavailable="unavailable = true"
       @loaded="loaded = true"
+      @mount-select="emit('select', $event)"
+      @mount-point="emit('point', $event)"
     />
     <HoloViewer
       v-else

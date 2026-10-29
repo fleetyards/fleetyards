@@ -8,6 +8,8 @@ export type HoloMount = {
   position: [number, number, number];
   rotation: [number, number, number, number];
   path?: string;
+  // What the viewer names this part by when it is clicked.
+  id?: string;
   // Drawn in the highlight colour, with everything mounted on it.
   highlighted?: boolean;
   mounts: HoloMount[];
@@ -108,6 +110,7 @@ export const buildMounts = async (mounts: HoloMount[]) => {
         group.position.fromArray(mount.position);
         group.quaternion.fromArray(mount.rotation);
         group.userData.highlighted = !!mount.highlighted;
+        group.userData.mountId = mount.id;
         group.userData.mountGroups = [];
         parent.add(group);
         // In list order, before anything is awaited, so a repaint can walk the
@@ -132,7 +135,7 @@ export const buildMounts = async (mounts: HoloMount[]) => {
   return root;
 };
 
-// Marks the groups a built tree holds with the mounts' highlights.
+// Marks the groups a built tree holds with the mounts' highlights and ids.
 export const applyHighlights = (root: Object3D, mounts: HoloMount[]) => {
   const walk = (parent: Object3D, list: HoloMount[]) => {
     const groups: Object3D[] = parent.userData.mountGroups ?? [];
@@ -142,6 +145,7 @@ export const applyHighlights = (root: Object3D, mounts: HoloMount[]) => {
       if (!group) return;
 
       group.userData.highlighted = !!mount.highlighted;
+      group.userData.mountId = mount.id;
       walk(group, mount.mounts);
     });
   };
