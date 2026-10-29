@@ -188,7 +188,7 @@ gem "doorkeeper", "~> 5.9"
 gem "doorkeeper-jwt"
 gem "doorkeeper-openid_connect"
 
-gem "oauth2", "~> 2.0"
+gem "oauth2", "~> 2.1"
 
 gem "aws-sdk-s3", require: false
 
