@@ -123,6 +123,8 @@ class Api::V1::HangarPlanReportsTest < ActionDispatch::IntegrationTest
     @owned = create(:vehicle, user: @user, model: @cutlass)
     @plan = @user.hangar_plans.new(name: "Explorer")
     HangarPlans::Builder.new(@plan, source: "hangar").run
+    candidate = @plan.slots.create!(label: "Cutlass Black").candidates.create!(model: @cutlass)
+    @plan.acquisitions.create!(candidate:, start_kind: "owned", source_vehicle: @owned)
     @carrack_slot = @plan.slots.create!(label: "Explorer", quantity: 2)
     @carrack_candidate = @carrack_slot.candidates.create!(model: @carrack)
     @plan.acquisitions.create!(candidate: @carrack_candidate, start_kind: "store", start_model: @carrack)
@@ -180,10 +182,11 @@ class Api::V1::HangarPlanReportsTest < ActionDispatch::IntegrationTest
 
   test "PUT rebase adds ships bought since" do
     travel 1.minute do
-      create(:vehicle, user: @user, model: @carrack)
+      bought = create(:vehicle, user: @user, model: @carrack)
 
       assert_api_response :put, 200, api_path: "/hangar/plans/{id}/rebase", path_params: {id: @plan.id} do
-        assert_equal 3, parsed_body["slots"].size
+        assert_equal 2, parsed_body["slots"].size
+        assert_includes parsed_body["vehicleMarks"].map { |mark| mark.values_at("vehicleId", "mark") }, [bought.id, "pending"]
       end
     end
   end

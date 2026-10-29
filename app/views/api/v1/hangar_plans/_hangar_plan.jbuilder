@@ -90,4 +90,11 @@ json.melts melts do |melt|
   end
 end
 
+# Only the owner settles their ships; a shared plan shows the decisions.
+json.vehicle_marks local_assigns[:public_view] ? [] : hangar_plan.vehicle_marks.order(:created_at) do |mark|
+  json.id mark.id
+  json.vehicle_id mark.vehicle_id
+  json.mark mark.mark
+end
+
 json.partial! "api/shared/dates", record: hangar_plan

@@ -352,6 +352,10 @@ es:
               taken: "ya se usa en este plan"
             buyback_pledge_id:
               taken: "ya se usa en este plan"
+        hangar_plan_vehicle_mark:
+          attributes:
+            vehicle_id:
+              taken: "ya se usa en este plan"
         hangar_plan_melt:
           attributes:
             vehicle_id:

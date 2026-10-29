@@ -133,6 +133,8 @@
         "kept": "Tenuta",
         "upgraded": "Potenziata",
         "melted": "Sciolta",
+        "pending": "Da decidere",
+        "change": "Da cambiare",
         "unassigned": "Non nel piano"
       },
       "changes": {
@@ -199,6 +201,14 @@
         "lead": "A sinistra ogni nave che possiedi, a destra ogni nave che serve al piano, e in mezzo cosa succede.",
         "anotherPlan": "Confronta con un altro piano",
         "tallies": {
+          "pending": {
+            "one": "%{count} da decidere",
+            "other": "%{count} da decidere"
+          },
+          "change": {
+            "one": "%{count} da cambiare",
+            "other": "%{count} da cambiare"
+          },
           "kept": {
             "one": "%{count} tenuta",
             "other": "%{count} tenute"
@@ -230,9 +240,16 @@
           "noRoute": "Ancora nessun percorso",
           "notCounted": "non nel totale",
           "noShip": "ancora nessuna nave",
-          "notInPlan": {
-            "one": "%{count} nave non nel piano",
-            "other": "%{count} navi non nel piano"
+          "toDecide": "non ancora deciso",
+          "folded": {
+            "kept": {
+              "one": "%{count} tenuta così com'è",
+              "other": "%{count} tenute così come sono"
+            },
+            "unassigned": {
+              "one": "%{count} nave non nel piano",
+              "other": "%{count} navi non nel piano"
+            }
           }
         },
         "changeSides": {
@@ -423,7 +440,18 @@
           "one": "%{count} altro oggetto che la sincronizzazione dell'hangar non elenca",
           "other": "altri %{count} oggetti che la sincronizzazione dell'hangar non elenca"
         }
-      }
+      },
+      "decisions": {
+        "keep": "Tieni così com'è",
+        "upgrade": "Aggiorna",
+        "melt": "Fondi",
+        "change": "Segna come da cambiare",
+        "pending": "Torna da decidere",
+        "upgradeTo": "Aggiorna %{name} a",
+        "keepPending": "Tieni tutte quelle da decidere"
+      },
+      "slotsTitle": "Slot",
+      "editSlots": "Modifica slot"
     }
   }
 }

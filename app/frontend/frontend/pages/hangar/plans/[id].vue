@@ -24,8 +24,8 @@ import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
 import Loader from "@/shared/components/Loader/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import SlotCard from "@/frontend/components/Hangar/Planner/SlotCard/index.vue";
-import SlotPlaceholders from "@/frontend/components/Hangar/Planner/SlotPlaceholders/index.vue";
+import HangarFlow from "@/frontend/components/Hangar/Planner/HangarFlow/index.vue";
+import ComparisonDetails from "@/frontend/components/Hangar/Planner/ComparisonDetails/index.vue";
 import SummaryPanel from "@/frontend/components/Hangar/Planner/SummaryPanel/index.vue";
 import MeltContents from "@/frontend/components/Hangar/Planner/MeltContents/index.vue";
 import CostTiles from "@/frontend/components/Hangar/Planner/CostTiles/index.vue";
@@ -38,14 +38,20 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useHangarPlanCache } from "@/frontend/composables/useHangarPlanCache";
+import { useHangarPlanDecisions } from "@/frontend/composables/useHangarPlanDecisions";
 import copyText from "@/shared/utils/CopyText";
 import {
+  type HangarPlanAcquisition,
+  type HangarPlanCandidate,
   type HangarPlanMelt,
+  type HangarPlanSlot,
   HangarPlanSlotStateEnum,
+  HangarPlanVehicleStatusEnum,
   useAddHangarPlanToWishlist,
   useDestroyHangarPlan,
   useDestroyHangarPlanMelt,
   useHangarPlan,
+  useHangarPlanComparison,
   useHangarPlanDrift,
   useHangarPlans,
   useHangarPlanSummary,
@@ -67,6 +73,8 @@ const { data: plan, isLoading } = useHangarPlan(planId);
 const { data: summary, isFetching: summaryFetching } =
   useHangarPlanSummary(planId);
 const { data: drift } = useHangarPlanDrift(planId);
+const { data: comparison, isFetching: comparisonFetching } =
+  useHangarPlanComparison(planId);
 const { data: plans } = useHangarPlans();
 
 const otherPlans = computed(() =>
@@ -76,8 +84,43 @@ const otherPlans = computed(() =>
 const slotsIn = (state: HangarPlanSlotStateEnum) =>
   (plan.value?.slots ?? []).filter((slot) => slot.state === state).length;
 
-const slotCost = (slotId: string) =>
-  summary.value?.slots.find((cost) => cost.slotId === slotId);
+const countOf = (status: HangarPlanVehicleStatusEnum) =>
+  (comparison.value?.vehicles ?? []).filter((entry) => entry.status === status)
+    .length;
+
+const tallies = computed(() =>
+  [
+    {
+      key: "pending",
+      variant: PillVariantsEnum.WARNING,
+      value: countOf(HangarPlanVehicleStatusEnum.PENDING),
+    },
+    {
+      key: "change",
+      variant: PillVariantsEnum.WARNING,
+      value: countOf(HangarPlanVehicleStatusEnum.CHANGE),
+    },
+    { key: "kept", value: countOf(HangarPlanVehicleStatusEnum.KEPT) },
+    { key: "upgraded", value: countOf(HangarPlanVehicleStatusEnum.UPGRADED) },
+    { key: "melted", value: countOf(HangarPlanVehicleStatusEnum.MELTED) },
+    {
+      key: "toAcquire",
+      variant: PillVariantsEnum.WARNING,
+      value: (comparison.value?.gaps ?? []).reduce(
+        (sum, gap) => sum + gap.count,
+        0,
+      ),
+    },
+  ]
+    .map((tally) => ({ variant: PillVariantsEnum.NEUTRAL, ...tally }))
+    .filter((tally) => tally.value > 0),
+);
+
+const { deciding, decide, keep, pendingIds } = useHangarPlanDecisions(
+  planId,
+  plan,
+  comparison,
+);
 
 const openModal = (
   component: () => Promise<Component>,
@@ -94,6 +137,24 @@ const addSlot = (label?: string) =>
   openModal(
     () => import("@/frontend/components/Hangar/Planner/SlotModal/index.vue"),
     { planId: planId.value, label },
+  );
+
+const openRoute = (
+  candidate: HangarPlanCandidate,
+  acquisition?: HangarPlanAcquisition,
+) =>
+  comlink.emit("open-modal", {
+    component: () =>
+      import("@/frontend/components/Hangar/Planner/RouteModal/index.vue"),
+    props: { planId: planId.value, candidate, acquisition },
+    wide: true,
+  });
+
+const pickShips = (slot: HangarPlanSlot) =>
+  openModal(
+    () =>
+      import("@/frontend/components/Hangar/Planner/CandidatePickerModal/index.vue"),
+    { planId: planId.value, slot },
   );
 
 const openMelt = (melt?: HangarPlanMelt) =>
@@ -238,11 +299,11 @@ const onDestroy = async () => {
         {{ t("hangarPlanner.addMelt") }}
       </Btn>
       <Btn
-        :to="{ name: 'hangar-plan-hangar', params: { id: plan.id } }"
-        data-test="hangar-plan-compare-hangar"
+        :to="{ name: 'hangar-plan-slots', params: { id: plan.id } }"
+        data-test="hangar-plan-edit-slots"
       >
-        <i class="fa-light fa-code-compare" />
-        {{ t("hangarPlanner.comparison.title") }}
+        <i class="fa-light fa-grid-2" />
+        {{ t("hangarPlanner.editSlots") }}
       </Btn>
       <BtnDropdown data-test="hangar-plan-more">
         <template #label>
@@ -328,14 +389,43 @@ const onDestroy = async () => {
     <Readiness :slots="plan.slots" :costs="summary?.slots" />
 
     <div class="plan-layout">
-      <section class="plan-slots">
-        <SlotPlaceholders v-if="!plan.slots.length" @add="addSlot" />
-        <SlotCard
-          v-for="slot in plan.slots"
-          :key="slot.id"
-          :plan-id="plan.id"
-          :slot="slot"
-          :cost="slotCost(slot.id)"
+      <section class="plan-flow">
+        <div
+          v-if="tallies.length || pendingIds.length"
+          class="plan-tallies"
+          data-test="hangar-plan-tallies"
+        >
+          <Pill
+            v-for="tally in tallies"
+            :key="tally.key"
+            :variant="tally.variant"
+          >
+            {{
+              t(`hangarPlanner.comparison.tallies.${tally.key}`, {
+                count: tally.value,
+              })
+            }}
+          </Pill>
+          <Btn
+            v-if="pendingIds.length"
+            :size="BtnSizesEnum.SM"
+            :loading="deciding"
+            data-test="hangar-plan-keep-pending"
+            @click="keep(pendingIds)"
+          >
+            <i class="fa-light fa-check" />
+            {{ t("hangarPlanner.decisions.keepPending") }}
+          </Btn>
+        </div>
+        <Loader :loading="comparisonFetching && !comparison" />
+        <HangarFlow
+          v-if="comparison"
+          :plan="plan"
+          :comparison="comparison"
+          :summary="summary"
+          @decide="decide"
+          @route="openRoute"
+          @pick="pickShips"
         />
       </section>
 
@@ -399,6 +489,8 @@ const onDestroy = async () => {
         </Panel>
       </aside>
     </div>
+
+    <ComparisonDetails v-if="comparison" :comparison="comparison" />
   </template>
 </template>
 
@@ -432,7 +524,14 @@ const onDestroy = async () => {
   }
 }
 
-.plan-slots,
+.plan-tallies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.plan-flow,
 .plan-side {
   display: flex;
   flex-direction: column;

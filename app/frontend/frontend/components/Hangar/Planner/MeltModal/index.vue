@@ -32,6 +32,8 @@ import {
 type Props = {
   planId: string;
   melt?: HangarPlanMelt;
+  // A hangar ship to melt, picked already.
+  vehicleId?: string;
 };
 
 const props = defineProps<Props>();
@@ -48,7 +50,9 @@ const { data: resources, isLoading } = useHangarPlanResources(
 );
 
 const submitting = ref(false);
-const vehicleId = ref<string | null>(props.melt?.vehicleId ?? null);
+const vehicleId = ref<string | null>(
+  props.melt?.vehicleId ?? props.vehicleId ?? null,
+);
 const valueOverride = ref<string>(props.melt?.valueOverride?.toString() ?? "");
 
 const touched = ref(false);
@@ -69,11 +73,12 @@ const meltableCount = computed(
 
 const meltableOnly = ref(false);
 
-// Filtered by default once the sync has said which ships melt.
+// Filtered by default once the sync has said which ships melt, unless a ship
+// was picked already, which the filter could hide.
 watch(
   meltableCount,
   (count, before) => {
-    if (count && !before) meltableOnly.value = true;
+    if (count && !before && !props.vehicleId) meltableOnly.value = true;
   },
   { immediate: true },
 );

@@ -164,6 +164,11 @@ it:
     hangar_plan_melts:
       create: "Impossibile aggiungere la fusione."
       update: "Impossibile aggiornare la fusione."
+    hangar_plan_vehicle_marks:
+      create: "Impossibile contrassegnare la nave."
+      update: "Impossibile aggiornare il contrassegno."
+    hangar_plan_keeps:
+      create: "Impossibile tenere le navi."
     hangar_inventories:
       create: Impossibile creare l'inventario.
       update: Impossibile aggiornare l'inventario.

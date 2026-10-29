@@ -16,6 +16,7 @@ class HangarPlan < ApplicationRecord
   has_many :upgrade_steps, class_name: "HangarPlanUpgradeStep", inverse_of: :hangar_plan, dependent: :destroy
   has_many :melts, -> { order(:created_at) },
     class_name: "HangarPlanMelt", inverse_of: :hangar_plan, dependent: :destroy
+  has_many :vehicle_marks, class_name: "HangarPlanVehicleMark", inverse_of: :hangar_plan, dependent: :destroy
 
   validates :name, presence: true, length: {maximum: 100}, uniqueness: {scope: :user_id}
   validates :description, length: {maximum: 2000}

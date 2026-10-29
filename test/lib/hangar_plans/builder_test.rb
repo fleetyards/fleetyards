@@ -9,41 +9,20 @@ class HangarPlans::BuilderTest < ActiveSupport::TestCase
     @carrack = create(:model, name: "Carrack", pledge_price: 600, size: "large")
   end
 
-  test "a plan from the hangar keeps each purchased ship, grouped by model" do
+  test "a plan from the hangar leaves each purchased ship to decide" do
     gladii = create_list(:vehicle, 3, user: @user, model: @gladius)
-    create(:vehicle, user: @user, model: @carrack)
+    carrack = create(:vehicle, user: @user, model: @carrack)
     create(:vehicle, user: @user, model: @carrack, wanted: true)
     create(:vehicle, user: @user, model: @carrack, loaner: true)
     create(:vehicle, user: @user, model: @gladius, bundled: true)
 
     plan = build_plan("hangar")
 
-    assert_equal 2, plan.slots.count
-    gladius_slot = plan.slots.find_by(label: "Gladius")
-    assert_equal 3, gladius_slot.quantity
-    assert_equal "decided", gladius_slot.state
-    assert_equal gladii.map(&:id).sort, plan.acquisitions.where(start_kind: "owned", start_model: @gladius).pluck(:source_vehicle_id).sort
-  end
-
-  test "a plan from the hangar yields the hangar's own metrics" do
-    create_list(:vehicle, 2, user: @user, model: @gladius)
-    create(:vehicle, user: @user, model: @carrack)
-    plan = build_plan("hangar")
-
-    assert_equal HangarPlans::Metrics.for(HangarPlans::Metrics.live_models(plan)),
-      HangarPlans::Metrics.for(HangarPlans::Metrics.plan_models(plan))
-  end
-
-  test "ships fitted differently stay apart" do
-    paint = create(:model_paint, model: @gladius)
-    create(:vehicle, user: @user, model: @gladius)
-    painted = create(:vehicle, user: @user, model: @gladius)
-    painted.vehicle_paints.create!(model_paint: paint)
-
-    plan = build_plan("hangar")
-
-    assert_equal 2, plan.slots.count
-    assert_equal [nil, paint.id].to_set, plan.candidates.pluck(:model_paint_id).to_set
+    assert_empty plan.slots
+    assert_empty plan.acquisitions
+    assert_equal [*gladii, carrack].map(&:id).sort, plan.vehicle_marks.pluck(:vehicle_id).sort
+    assert_equal ["pending"], plan.vehicle_marks.distinct.pluck(:mark)
+    assert_equal ["pending"], HangarPlans::Comparison.new(plan).vehicles.map(&:status).uniq
   end
 
   test "a plan from the wishlist has its ships to obtain" do
@@ -55,8 +34,11 @@ class HangarPlans::BuilderTest < ActiveSupport::TestCase
     assert_empty plan.acquisitions
   end
 
-  test "a duplicate copies slots, candidates, routes and melts" do
+  test "a duplicate copies slots, candidates, routes, melts and marks" do
+    gladii = create_list(:vehicle, 2, user: @user, model: @gladius)
+    create(:vehicle, user: @user, model: @carrack)
     source = build_plan("hangar")
+    HangarPlans::Keep.new(source).run(gladii)
     create(:hangar_plan_melt, hangar_plan: source, vehicle: create(:vehicle, user: @user, model: @carrack))
     open_slot = source.slots.create!(label: "Hauler", quantity: 2)
     open_slot.candidates.create!(model: @carrack)
@@ -68,6 +50,7 @@ class HangarPlans::BuilderTest < ActiveSupport::TestCase
       copy.slots.map { |slot| [slot.label, slot.quantity, slot.state] }
     assert_equal source.acquisitions.pluck(:source_vehicle_id).sort, copy.acquisitions.pluck(:source_vehicle_id).sort
     assert_equal source.melts.pluck(:vehicle_id), copy.melts.pluck(:vehicle_id)
+    assert_equal source.vehicle_marks.pluck(:vehicle_id, :mark).sort, copy.vehicle_marks.pluck(:vehicle_id, :mark).sort
   end
 
   private def build_plan(source, source_plan: nil)

@@ -5,7 +5,7 @@ module HangarPlans
   # how the count of each model changes. Only decided slots are targets; an
   # undecided slot has not said which ship it wants yet.
   class Comparison
-    VEHICLE_STATUSES = %w[kept upgraded melted unassigned].freeze
+    VEHICLE_STATUSES = %w[kept upgraded melted pending change unassigned].freeze
     CHANGES = %w[added removed more fewer unchanged].freeze
 
     VehicleStatus = Data.define(:vehicle, :status, :target_model)
@@ -40,16 +40,16 @@ module HangarPlans
 
     def vehicles
       melted = plan.melted_vehicle_ids.to_set
-      routes = plan.acquisitions.where(start_kind: "owned", hangar_plan_candidate_id: decided_candidate_ids)
-        .includes(upgrade_steps: {target_model: MODEL_PRELOAD})
-        .index_by(&:source_vehicle_id)
+      marks = plan.vehicle_marks.pluck(:vehicle_id, :mark).to_h
 
       live_vehicles.map do |vehicle|
-        route = routes[vehicle.id]
+        route = owned_routes[vehicle.id]
         if melted.include?(vehicle.id)
           VehicleStatus.new(vehicle:, status: "melted", target_model: nil)
+        elsif route.nil? && marks[vehicle.id] == "keep"
+          VehicleStatus.new(vehicle:, status: "kept", target_model: vehicle.model)
         elsif route.nil?
-          VehicleStatus.new(vehicle:, status: "unassigned", target_model: nil)
+          VehicleStatus.new(vehicle:, status: marks.fetch(vehicle.id, "unassigned"), target_model: nil)
         elsif route.upgrade_steps.any?
           VehicleStatus.new(vehicle:, status: "upgraded", target_model: route.upgrade_steps.last.target_model)
         else
@@ -83,7 +83,8 @@ module HangarPlans
     private def after_models
       @after_models ||= begin
         open_units = gaps.each_with_object(Hash.new(0)) { |gap, units| units[gap.model.id] += gap.count }
-        left_out = vehicles.select { |entry| entry.status == "unassigned" }.map { |entry| entry.vehicle.model }
+        left_out = vehicles.reject { |entry| entry.status == "melted" || owned_routes.key?(entry.vehicle.id) }
+          .map { |entry| entry.vehicle.model }
 
         staying = left_out.reject do |model|
           next false unless open_units[model.id].positive?
@@ -98,6 +99,12 @@ module HangarPlans
 
     # Routes on a slot that has not picked its ship yet say nothing about what
     # happens to the hangar.
+    private def owned_routes
+      @owned_routes ||= plan.acquisitions.where(start_kind: "owned", hangar_plan_candidate_id: decided_candidate_ids)
+        .includes(upgrade_steps: {target_model: MODEL_PRELOAD})
+        .index_by(&:source_vehicle_id)
+    end
+
     private def decided_candidate_ids
       plan.slots.includes(:candidates).filter_map { |slot| slot.decided_candidate&.id }
     end

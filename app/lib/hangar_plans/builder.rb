@@ -19,8 +19,8 @@ module HangarPlans
       HangarPlan.transaction do
         plan.save!
         case source
-        when "hangar" then copy_vehicles(plan.live_vehicles, keep: true)
-        when "wishlist" then copy_vehicles(plan.user.vehicles.wanted.where(loaner: false, bundled: false), keep: false)
+        when "hangar" then mark_vehicles(plan.live_vehicles.pluck(:id))
+        when "wishlist" then copy_vehicles(plan.user.vehicles.wanted.where(loaner: false, bundled: false))
         when "plan" then copy_plan
         end
         plan.update_columns(based_on_vehicle_ids: plan.live_vehicles.pluck(:id)) unless source == "plan"
@@ -28,7 +28,15 @@ module HangarPlans
       end
     end
 
-    def copy_vehicles(vehicles, keep:)
+    # Every hangar ship waits for the user to say whether it stays, is upgraded
+    # or melts; keeping them all up front decided nothing.
+    def mark_vehicles(vehicle_ids)
+      now = Time.current
+      rows = vehicle_ids.map { |vehicle_id| {vehicle_id:, mark: "pending", created_at: now, updated_at: now} }
+      plan.vehicle_marks.insert_all(rows, unique_by: :index_hangar_plan_vehicle_marks_on_plan_and_vehicle) if rows.any?
+    end
+
+    private def copy_vehicles(vehicles)
       vehicles = vehicles.includes(:model, :vehicle_paints, :vehicle_modules, :vehicle_upgrades).order(:created_at).to_a
       groups = vehicles.group_by do |vehicle|
         [vehicle.model_id, vehicle.vehicle_paints.first&.model_paint_id,
@@ -37,13 +45,8 @@ module HangarPlans
 
       groups.each do |(model_id, paint_id, module_ids, upgrade_ids), group|
         slot = plan.slots.create!(label: group.first.model.name, quantity: group.size)
-        candidate = slot.candidates.create!(model_id:, model_paint_id: paint_id,
+        slot.candidates.create!(model_id:, model_paint_id: paint_id,
           model_module_ids: module_ids, model_upgrade_ids: upgrade_ids)
-        next unless keep
-
-        group.each do |vehicle|
-          plan.acquisitions.create!(candidate:, start_kind: "owned", source_vehicle: vehicle)
-        end
       end
     end
 
@@ -66,6 +69,11 @@ module HangarPlans
         plan.melts.insert_all!([melt.slice(:vehicle_id, :model_id, :value_override, :value_snapshot)
           .merge(created_at: Time.current, updated_at: Time.current)])
       end
+
+      marks = source_plan.vehicle_marks.map do |mark|
+        mark.slice(:vehicle_id, :mark).merge(created_at: Time.current, updated_at: Time.current)
+      end
+      plan.vehicle_marks.insert_all!(marks) if marks.any?
     end
 
     # Copied as they stand, validations included: a source ship the hangar no

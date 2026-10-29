@@ -23,11 +23,16 @@ module V1
               slotsCount: {type: :integer},
               slots: {type: :array, items: ::V1::Schemas::Hangar::Plans::HangarPlanSlot},
               melts: {type: :array, items: ::V1::Schemas::Hangar::Plans::HangarPlanMelt},
+              vehicleMarks: {
+                type: :array,
+                description: "The hangar ships the plan still has to settle; empty on a shared plan",
+                items: ::V1::Schemas::Hangar::Plans::HangarPlanVehicleMark
+              },
               createdAt: {type: :string, format: "date-time"},
               updatedAt: {type: :string, format: "date-time"}
             },
             additionalProperties: false,
-            required: %w[id name basedOnAt startingCredit buybackTokens vatRate syncedBuybackTokens shared slotsCount slots melts createdAt updatedAt]
+            required: %w[id name basedOnAt startingCredit buybackTokens vatRate syncedBuybackTokens shared slotsCount slots melts vehicleMarks createdAt updatedAt]
           })
         end
       end

@@ -321,15 +321,20 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "plans/:id/hangar/",
-    name: "hangar-plan-hangar",
-    component: () => import("@/frontend/pages/hangar/plans/[id]/hangar.vue"),
+    path: "plans/:id/slots/",
+    name: "hangar-plan-slots",
+    component: () => import("@/frontend/pages/hangar/plans/[id]/slots.vue"),
     meta: {
       needsAuthentication: true,
       title: "hangar.plans",
       backgroundImage: "bg-5",
       feature: FeatureFlagName.HANGAR_PLANNER,
     },
+  },
+  // The comparison with the hangar became the plan's own page.
+  {
+    path: "plans/:id/hangar/",
+    redirect: (to) => ({ name: "hangar-plan", params: to.params }),
   },
   {
     path: "plans/:id/compare/:otherId/",

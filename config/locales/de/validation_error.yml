@@ -171,6 +171,11 @@ de:
     hangar_plan_melts:
       create: "Melt konnte nicht hinzugefügt werden."
       update: "Melt konnte nicht aktualisiert werden."
+    hangar_plan_vehicle_marks:
+      create: "Schiff konnte nicht markiert werden."
+      update: "Markierung konnte nicht aktualisiert werden."
+    hangar_plan_keeps:
+      create: "Schiffe konnten nicht behalten werden."
     hangar_inventories:
       create: Inventar konnte nicht erstellt werden.
       update: Inventar konnte nicht aktualisiert werden.

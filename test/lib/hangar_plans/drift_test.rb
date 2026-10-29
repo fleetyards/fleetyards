@@ -10,6 +10,8 @@ class HangarPlans::DriftTest < ActiveSupport::TestCase
     @kept = create(:vehicle, user: @user, model: @gladius)
     @plan = @user.hangar_plans.new(name: "Plan")
     HangarPlans::Builder.new(@plan, source: "hangar").run
+    candidate = @plan.slots.create!(label: "Gladius").candidates.create!(model: @gladius)
+    @plan.acquisitions.create!(candidate:, start_kind: "owned", source_vehicle: @kept)
   end
 
   test "a fresh plan has not drifted" do
@@ -63,19 +65,18 @@ class HangarPlans::DriftTest < ActiveSupport::TestCase
     assert_predicate drift, :drifted?
   end
 
-  test "a rebase adds new ships, keeps edits and takes prices again" do
+  test "a rebase marks new ships to decide, keeps edits and takes prices again" do
     slot = @plan.slots.create!(label: "Carrack")
     candidate = slot.candidates.create!(model: @carrack)
     @plan.acquisitions.create!(candidate:, start_kind: "store", start_model: @carrack, price_override: 500)
     @carrack.update_columns(pledge_price: 650)
 
-    travel 1.minute do
-      create(:vehicle, user: @user, model: @carrack)
-      HangarPlans::Drift.new(@plan).rebase!
+    bought = travel 1.minute do
+      create(:vehicle, user: @user, model: @carrack).tap { HangarPlans::Drift.new(@plan).rebase! }
     end
 
     @plan.reload
-    assert_equal 2, @plan.acquisitions.where(start_model: @carrack).count
+    assert_includes @plan.vehicle_marks.pluck(:vehicle_id, :mark), [bought.id, "pending"]
     assert_equal 500, @plan.acquisitions.find_by(start_kind: "store").price_override
     assert_not HangarPlans::Drift.new(@plan).drifted?
   end

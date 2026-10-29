@@ -352,6 +352,10 @@ zh-CN:
               taken: "已在此计划中使用"
             buyback_pledge_id:
               taken: "已在此计划中使用"
+        hangar_plan_vehicle_mark:
+          attributes:
+            vehicle_id:
+              taken: "已在此计划中使用"
         hangar_plan_melt:
           attributes:
             vehicle_id:

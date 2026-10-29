@@ -76,12 +76,11 @@ module HangarPlans
     end
 
     # Brings the plan up to the live hangar without discarding the user's
-    # edits: added ships become decided slots kept as they are, lost ones stay
+    # edits: added ships wait for the user to decide on them, lost ones stay
     # flagged, and prices are taken again as of now.
     def rebase!
       HangarPlan.transaction do
-        new_ships = new_vehicles
-        Builder.new(plan).copy_vehicles(Vehicle.where(id: new_ships.map(&:id)), keep: true) if new_ships.any?
+        Builder.new(plan).mark_vehicles(new_vehicles.map(&:id))
 
         plan.acquisitions.includes(:start_model, :buyback_pledge).find_each do |acquisition|
           acquisition.update_columns(price_snapshot: acquisition.list_price)

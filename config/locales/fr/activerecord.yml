@@ -352,6 +352,10 @@ fr:
               taken: "est déjà utilisé dans ce plan"
             buyback_pledge_id:
               taken: "est déjà utilisé dans ce plan"
+        hangar_plan_vehicle_mark:
+          attributes:
+            vehicle_id:
+              taken: "est déjà utilisé dans ce plan"
         hangar_plan_melt:
           attributes:
             vehicle_id:

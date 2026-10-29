@@ -164,6 +164,11 @@ fr:
     hangar_plan_melts:
       create: "La fonte n'a pas pu être ajoutée."
       update: "La fonte n'a pas pu être mise à jour."
+    hangar_plan_vehicle_marks:
+      create: "Le vaisseau n'a pas pu être marqué."
+      update: "Le marquage n'a pas pu être mis à jour."
+    hangar_plan_keeps:
+      create: "Les vaisseaux n'ont pas pu être conservés."
     hangar_inventories:
       create: L'inventaire n'a pas pu être créé.
       update: L'inventaire n'a pas pu être mis à jour.

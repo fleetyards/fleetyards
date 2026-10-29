@@ -163,6 +163,11 @@ zh-TW:
     hangar_plan_melts:
       create: "無法新增熔煉。"
       update: "無法更新熔煉。"
+    hangar_plan_vehicle_marks:
+      create: "無法標記艦船。"
+      update: "無法更新標記。"
+    hangar_plan_keeps:
+      create: "無法保留艦船。"
     hangar_inventories:
       create: 無法建立庫存。
       update: 無法更新庫存。
