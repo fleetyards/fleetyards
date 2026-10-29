@@ -41,6 +41,7 @@ import {
   ModelStateEnum,
   modelStateHolo,
   modelStateMetrics,
+  modelStateTexturedHolo,
   useModelStates,
 } from "@/frontend/composables/useModelStates";
 import { storeToRefs } from "pinia";
@@ -50,6 +51,7 @@ import { useWebpCheck } from "@/shared/composables/useWebpCheck";
 import {
   FeatureFlagName,
   type ModelExtended,
+  type ModelPaint,
   useModelPaints,
 } from "@/services/fyApi";
 import { useSessionStore } from "@/frontend/stores/session";
@@ -315,14 +317,17 @@ const preferLiteHolo = isLowPowerDevice();
 
 const texturedHolo = ref(false);
 
-// Only the flying pose has a painted export, so another state leaves the switch
-// out rather than offering a button that changes nothing.
-const texturedHoloAvailable = computed(
-  () =>
-    isFeatureEnabled(FeatureFlagName.HOLO_TEXTURED) &&
-    activeState.value === ModelStateEnum.FLIGHT &&
-    !!props.model.media.holoTextured,
+// A state without a painted export of its own leaves the switch out rather
+// than offering a button that changes nothing.
+const texturedHoloExport = computed(() =>
+  isFeatureEnabled(FeatureFlagName.HOLO_TEXTURED)
+    ? modelStateTexturedHolo(props.model, activeState.value, {
+        lite: preferLiteHolo,
+      })
+    : undefined,
 );
+
+const texturedHoloAvailable = computed(() => !!texturedHoloExport.value);
 
 const toggleTexturedHolo = () => {
   texturedHolo.value = !texturedHolo.value;
@@ -333,8 +338,14 @@ const { data: paints } = useModelPaints(() => props.model.slug, {
   query: { enabled: texturedHoloAvailable },
 });
 
+// Each export has an atlas of its own, so only its own maps fit it.
+const paintMaps = (paint: ModelPaint) =>
+  texturedHoloExport.value?.lite
+    ? { base: paint.media.holoTextureLite, orm: paint.media.holoTextureOrmLite }
+    : { base: paint.media.holoTexture, orm: paint.media.holoTextureOrm };
+
 const holoPaints = computed(() =>
-  (paints.value ?? []).filter((paint) => !!paint.media.holoTexture),
+  (paints.value ?? []).filter((paint) => !!paintMaps(paint).base),
 );
 
 const holoPaintId = ref<string>();
@@ -346,7 +357,7 @@ const holoPaint = computed(() =>
 const holoModel = computed(() => {
   const textured = texturedHoloAvailable.value && texturedHolo.value;
   const holo = textured
-    ? props.model.media.holoTextured
+    ? texturedHoloExport.value?.file
     : modelStateHolo(props.model, activeState.value, { lite: preferLiteHolo });
   const path = holo?.url;
   const length = modelStateMetrics(
@@ -358,13 +369,16 @@ const holoModel = computed(() => {
     return;
   }
 
+  const maps =
+    textured && holoPaint.value ? paintMaps(holoPaint.value) : undefined;
+
   return {
     path,
     length,
     size: holo?.size,
     textured,
-    paint: (textured && holoPaint.value?.media.holoTexture) || undefined,
-    paintOrm: (textured && holoPaint.value?.media.holoTextureOrm) || undefined,
+    paint: maps?.base || undefined,
+    paintOrm: maps?.orm || undefined,
   };
 });
 

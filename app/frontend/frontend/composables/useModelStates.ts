@@ -59,6 +59,11 @@ type StateMedia = {
   views: Record<ModelViewEnum, ViewKeys>;
 };
 
+type TexturedMedia = {
+  holo: keyof ModelMedia;
+  holoLite: keyof ModelMedia;
+};
+
 type StateMetrics = {
   length: keyof ModelMetrics;
   beam: keyof ModelMetrics;
@@ -205,6 +210,18 @@ const STATE_METRICS: Record<ModelStateEnum, StateMetrics> = {
   },
 };
 
+// Only the flying and landed poses are exported painted.
+const STATE_TEXTURED_MEDIA: Partial<Record<ModelStateEnum, TexturedMedia>> = {
+  [ModelStateEnum.FLIGHT]: {
+    holo: "holoTextured",
+    holoLite: "holoTexturedLite",
+  },
+  [ModelStateEnum.LANDED]: {
+    holo: "landedHoloTextured",
+    holoLite: "landedHoloTexturedLite",
+  },
+};
+
 function number(
   metrics: ModelMetrics,
   key: keyof ModelMetrics,
@@ -247,6 +264,36 @@ export function modelStateHolo(
     stateHolo(model, state, lite) ||
     stateHolo(model, ModelStateEnum.FLIGHT, lite) ||
     MODEL_STATES.map((other) => stateHolo(model, other, lite)).find(Boolean)
+  );
+}
+
+export type TexturedHolo = { file: MediaFile; lite: boolean };
+
+// The state's own painted export and no other pose's: the switch for it sits
+// beside the state it shows. `lite` on the result says which paint maps fit,
+// since the lite export has an atlas of its own.
+export function modelStateTexturedHolo(
+  model: Model,
+  state: ModelStateEnum,
+  { lite = false }: { lite?: boolean } = {},
+): TexturedHolo | undefined {
+  const keys = STATE_TEXTURED_MEDIA[state];
+
+  if (!keys) {
+    return undefined;
+  }
+
+  const exports = [
+    { file: file(model.media, keys.holo), lite: false },
+    { file: file(model.media, keys.holoLite), lite: true },
+  ];
+
+  if (lite) {
+    exports.reverse();
+  }
+
+  return exports.find(
+    (entry): entry is TexturedHolo => entry.file !== undefined,
   );
 }
 
