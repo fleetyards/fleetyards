@@ -13,7 +13,7 @@ import {
   RaffleTranslationLocaleEnum,
 } from "@/services/fyAdminApi";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import FormTextarea from "@/shared/components/base/FormTextarea/index.vue";
+import FormMarkdownEditor from "@/shared/components/base/FormMarkdownEditor/index.vue";
 import FormDateTime from "@/shared/components/base/FormDateTime/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import FormActions from "@/shared/components/base/FormActions/index.vue";
@@ -202,11 +202,12 @@ const onSubmit = handleSubmit((values) => {
             />
           </div>
           <div class="col-12 col-md-6">
-            <FormTextarea
+            <FormMarkdownEditor
               v-model="description"
               v-bind="descriptionProps"
               translation-key="raffle.description"
               name="description"
+              :info="t('labels.raffle.descriptionInfo')"
             />
           </div>
         </div>
@@ -239,12 +240,11 @@ const onSubmit = handleSubmit((values) => {
             />
           </div>
           <div class="col-12 col-md-6">
-            <FormTextarea
+            <FormMarkdownEditor
               v-model="translationFields[locale].description[0].value"
               v-bind="translationFields[locale].description[1].value"
               translation-key="raffle.description"
               :name="`translations.${locale}.description`"
-              :placeholder="description"
             />
           </div>
         </div>

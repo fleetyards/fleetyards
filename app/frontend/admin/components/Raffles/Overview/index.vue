@@ -15,6 +15,7 @@ import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import copyText from "@/shared/utils/CopyText";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { type Raffle } from "@/services/fyAdminApi";
+import Markdown from "@/shared/components/Markdown/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
@@ -131,9 +132,7 @@ const publicUrl = computed(
           {{ t("labels.raffle.description") }}
         </PanelHeading>
         <PanelBody>
-          <p class="raffle-overview__description">
-            {{ props.raffle.description }}
-          </p>
+          <Markdown :source="props.raffle.description" />
         </PanelBody>
       </Panel>
       <Panel :variant="PanelVariantsEnum.SLIM">
@@ -181,11 +180,6 @@ const publicUrl = computed(
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-}
-
-.raffle-overview__description {
-  margin: 0;
-  white-space: pre-line;
 }
 
 .raffle-overview__dim {

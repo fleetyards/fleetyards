@@ -51,6 +51,7 @@
         "prize": "Premio",
         "prizeInfo": "Ciò che riceve il vincitore, come mostrato accanto all'estrazione. Obbligatorio per pubblicare.",
         "description": "Descrizione",
+        "descriptionInfo": "Markdown. Scrivi una nave o un oggetto come [*Nome*] per collegarlo; digita [* per cercare.",
         "translationInfo": "Facoltativo. I campi vuoti mostrano il testo inglese.",
         "code": "Codice regalo",
         "codeInfo": "Il codice che riceve il vincitore. Viene salvato cifrato e non viene mai più mostrato per intero.",

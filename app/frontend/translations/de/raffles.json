@@ -51,6 +51,7 @@
         "prize": "Gewinn",
         "prizeInfo": "Was der Gewinner bekommt, wie es neben der Verlosung steht. Zum Veröffentlichen nötig.",
         "description": "Beschreibung",
+        "descriptionInfo": "Markdown. Ein Schiff oder Item als [*Name*] wird verlinkt; tippe [* zum Suchen.",
         "translationInfo": "Optional. Leere Felder zeigen den englischen Text.",
         "code": "Geschenkcode",
         "codeInfo": "Der Code, den der Gewinner erhält. Er wird verschlüsselt gespeichert und nie wieder vollständig angezeigt.",

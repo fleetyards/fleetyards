@@ -14,5 +14,11 @@ module Raffles
         assert_includes text, raffle.frontend_url
       end
     end
+
+    test "the link card reads item links and markup as plain text" do
+      raffle = create(:raffle, description: "Win a **[*Constellation Mk V Centaurus*]**\n\nGood luck!")
+
+      assert_equal "Win a Constellation Mk V Centaurus Good luck!", SocialPost.new(raffle).link_card.description
+    end
   end
 end

@@ -51,6 +51,7 @@
         "prize": "奖品",
         "prizeInfo": "中奖者获得的奖品，显示在抽奖旁边。发布时必填。",
         "description": "描述",
+        "descriptionInfo": "Markdown。将舰船或物品写成 [*名称*] 即可链接；输入 [* 进行搜索。",
         "translationInfo": "可选。留空的字段将显示英文内容。",
         "code": "礼品码",
         "codeInfo": "中奖者获得的礼品码。它会加密存储，且不会再完整显示。",

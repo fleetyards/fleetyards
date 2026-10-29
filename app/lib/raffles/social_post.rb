@@ -33,7 +33,7 @@ module Raffles
       ::Bsky::Post::LinkCard.new(
         uri: @raffle.frontend_url,
         title: @raffle.title,
-        description: @raffle.description.to_s.truncate(300),
+        description: MarkdownPlainText.render(@raffle.description).squish.truncate(300),
         image:,
         content_type:
       )

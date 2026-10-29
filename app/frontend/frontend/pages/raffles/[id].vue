@@ -17,6 +17,7 @@ import Alert from "@/shared/components/base/Alert/index.vue";
 import { AlertVariantsEnum } from "@/shared/components/base/Alert/types";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import AsyncData from "@/shared/components/AsyncData.vue";
+import Markdown from "@/shared/components/Markdown/index.vue";
 import RaffleKeyImage from "@/frontend/components/Raffles/KeyImage/index.vue";
 import RaffleEntryPanel from "@/frontend/components/Raffles/EntryPanel/index.vue";
 import RaffleHowItWorks from "@/frontend/components/Raffles/HowItWorks/index.vue";
@@ -154,7 +155,7 @@ const STATUS_PILLS: Record<RaffleStatusEnum, `${PillVariantsEnum}`> = {
             />
             <Panel v-if="raffle.description" :variant="PanelVariantsEnum.SLIM">
               <PanelBody>
-                <p class="raffle-description">{{ raffle.description }}</p>
+                <Markdown :source="raffle.description" />
               </PanelBody>
             </Panel>
             <RaffleHowItWorks :raffle="raffle" />
@@ -191,10 +192,5 @@ const STATUS_PILLS: Record<RaffleStatusEnum, `${PillVariantsEnum}`> = {
 .raffle-meta__text {
   color: var(--color-text-dim, #959595);
   font-size: 0.875rem;
-}
-
-.raffle-description {
-  margin: 0;
-  white-space: pre-line;
 }
 </style>

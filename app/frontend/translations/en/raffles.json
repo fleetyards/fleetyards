@@ -51,6 +51,7 @@
         "prize": "Prize",
         "prizeInfo": "What the winner gets, as shown next to the raffle. Required to publish.",
         "description": "Description",
+        "descriptionInfo": "Markdown. Name a ship or item as [*Name*] to link it; type [* to search.",
         "translationInfo": "Optional. Any field left empty shows the English text.",
         "code": "Gift code",
         "codeInfo": "The code the winner receives. It is stored encrypted and never shown in full again.",
