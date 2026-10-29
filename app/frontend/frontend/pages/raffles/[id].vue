@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { useQueryClient } from "@tanstack/vue-query";
+import { useDebounceFn } from "@vueuse/core";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import { HeadingSizeEnum } from "@/shared/components/base/Heading/types";
 import Panel from "@/shared/components/base/Panel/index.vue";
@@ -32,7 +33,9 @@ import {
   getCurrentRaffleQueryKey,
   getRaffleEntrantsQueryKey,
 } from "@/services/fyApi";
+import { RafflesChannel } from "@/services/fyCable/channels/RafflesChannel";
 import { isRaffleOver } from "@/frontend/utils/raffleStatus";
+import { useSubscription } from "@/shared/composables/useSubscription";
 import { useI18n } from "@/shared/composables/useI18n";
 
 const { t, l } = useI18n();
@@ -79,6 +82,25 @@ const refresh = () =>
       queryKey: getRaffleEntrantsQueryKey(raffle.value?.id ?? ""),
     }),
   ]);
+
+// Every entry sends a change, so a busy raffle would otherwise have each
+// reader refetch once per entrant; maxWait keeps a steady stream from holding
+// the page back for good.
+const refreshSoon = useDebounceFn(() => void refresh(), 2_000, {
+  maxWait: 10_000,
+});
+
+useSubscription({
+  channel: RafflesChannel,
+  received: (data) => {
+    if (data.raffleId === raffle.value?.id) void refreshSoon();
+  },
+  // Nothing is replayed, so whatever changed while the socket was down is
+  // caught up here.
+  connected: (event) => {
+    if (event?.reconnect) void refreshSoon();
+  },
+});
 
 const STATUS_PILLS: Record<RaffleStatusEnum, `${PillVariantsEnum}`> = {
   [RaffleStatusEnum.DRAFT]: PillVariantsEnum.NEUTRAL,

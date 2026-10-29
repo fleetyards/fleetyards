@@ -24598,6 +24598,7 @@ components:
       - ModelsChannel
       - NotificationsChannel
       - PayoutLedgerChannel
+      - RafflesChannel
       - UserNotificationsChannel
       - UserPresenceChannel
       - WishlistChannel
@@ -24621,6 +24622,7 @@ components:
       - MODELS_CHANNEL
       - NOTIFICATIONS_CHANNEL
       - PAYOUT_LEDGER_CHANNEL
+      - RAFFLES_CHANNEL
       - USER_NOTIFICATIONS_CHANNEL
       - USER_PRESENCE_CHANNEL
       - WISHLIST_CHANNEL

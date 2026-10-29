@@ -32,6 +32,8 @@ class RaffleEntry < ApplicationRecord
 
   before_validation :snapshot_entrant, on: :create
 
+  after_commit -> { raffle&.broadcast_change }
+
   scope :won, -> { where.not(won_at: nil) }
   scope :pending_claim, -> { won.where(claimed_at: nil, forfeited_at: nil) }
   scope :claim_expired, ->(now = Time.current) { pending_claim.where(claim_deadline_at: ..now) }

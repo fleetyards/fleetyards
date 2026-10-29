@@ -121,6 +121,12 @@ channels:
     messages:
       PayoutLedger:
         "$ref": "#/components/messages/PayoutLedger"
+  Raffles:
+    address: raffles
+    x-actioncable-channel: RafflesChannel
+    messages:
+      RaffleChangedMessage:
+        "$ref": "#/components/messages/RaffleChangedMessage"
   UserNotifications:
     address: user_notifications:{user_gid}
     x-actioncable-channel: UserNotificationsChannel
@@ -263,6 +269,13 @@ operations:
     messages:
     - "$ref": "#/channels/PayoutLedger/messages/PayoutLedger"
     summary: A payout ledger the user takes part in changed
+  receiveRaffleChange:
+    action: receive
+    channel:
+      "$ref": "#/channels/Raffles"
+    messages:
+    - "$ref": "#/channels/Raffles/messages/RaffleChangedMessage"
+    summary: A raffle or one of its entries changed
   receiveUserNotification:
     action: receive
     channel:
@@ -5283,6 +5296,15 @@ components:
       required:
       - portPath
       - pips
+    RaffleChangedMessage:
+      type: object
+      properties:
+        raffleId:
+          type: string
+          format: uuid
+      additionalProperties: false
+      required:
+      - raffleId
     RefuelBoom:
       type: object
       properties:
@@ -5870,6 +5892,9 @@ components:
     PayoutLedger:
       payload:
         "$ref": "#/components/schemas/PayoutLedger"
+    RaffleChangedMessage:
+      payload:
+        "$ref": "#/components/schemas/RaffleChangedMessage"
     UserPresenceActivityMessage:
       payload:
         "$ref": "#/components/schemas/UserPresenceActivityMessage"

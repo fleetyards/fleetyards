@@ -57,6 +57,8 @@ class Raffle < ApplicationRecord
   before_validation :compact_translations
   before_destroy :keep_drawn_raffles, prepend: true
 
+  after_commit :broadcast_change, on: %i[create update]
+
   scope :published, -> { where(published: true) }
   scope :running, ->(now = Time.current) { published.where(starts_at: ..now).where("raffles.ends_at > ?", now) }
   scope :start_unannounced, ->(now = Time.current) { running(now).where(start_announced_at: nil) }
@@ -170,6 +172,12 @@ class Raffle < ApplicationRecord
   def conclude!(now = Time.current)
     update!(concluded_at: now)
     entries.update_all(email: nil, updated_at: now)
+  end
+
+  # Readers on the raffle page refetch on this, so a status change, an entry
+  # or a new winner shows without a reload.
+  def broadcast_change
+    ActionCable.server.broadcast("raffles", {"raffleId" => id})
   end
 
   private def compute_ends_at
