@@ -7,7 +7,6 @@
       "editPlan": "編輯方案",
       "destroyPlan": "刪除方案",
       "confirmDestroy": "刪除此方案？你的機庫不會受到影響。",
-      "more": "更多",
       "share": "透過連結分享",
       "copyShareLink": "複製分享連結",
       "unshare": "停止分享",
@@ -133,6 +132,8 @@
         "kept": "保留",
         "upgraded": "已升級",
         "melted": "已熔毀",
+        "pending": "待決定",
+        "change": "應更換",
         "unassigned": "不在方案中"
       },
       "changes": {
@@ -199,6 +200,14 @@
         "lead": "左邊是你擁有的每艘飛船，右邊是方案需要的每艘飛船，中間是會發生的事。",
         "anotherPlan": "與其他方案比較",
         "tallies": {
+          "pending": {
+            "one": "待決定 %{count}",
+            "other": "待決定 %{count}"
+          },
+          "change": {
+            "one": "應更換 %{count}",
+            "other": "應更換 %{count}"
+          },
           "kept": {
             "one": "保留 %{count}",
             "other": "保留 %{count}"
@@ -230,9 +239,16 @@
           "noRoute": "尚無途徑",
           "notCounted": "未計入總額",
           "noShip": "尚無飛船",
-          "notInPlan": {
-            "one": "%{count} 艘飛船不在方案中",
-            "other": "%{count} 艘飛船不在方案中"
+          "toDecide": "尚未決定",
+          "folded": {
+            "kept": {
+              "one": "%{count} 艘原樣保留",
+              "other": "%{count} 艘原樣保留"
+            },
+            "unassigned": {
+              "one": "%{count} 艘飛船不在方案中",
+              "other": "%{count} 艘飛船不在方案中"
+            }
           }
         },
         "changeSides": {
@@ -423,7 +439,18 @@
           "one": "另有 %{count} 件機庫同步未列出的物品",
           "other": "另有 %{count} 件機庫同步未列出的物品"
         }
-      }
+      },
+      "decisions": {
+        "keep": "原樣保留",
+        "upgrade": "升級",
+        "melt": "熔煉",
+        "change": "標記為應更換",
+        "pending": "改回待決定",
+        "upgradeTo": "將 %{name} 升級為",
+        "keepPending": "保留所有待決定的"
+      },
+      "slotsTitle": "槽位",
+      "editSlots": "編輯槽位"
     }
   }
 }

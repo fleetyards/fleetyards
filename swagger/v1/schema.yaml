@@ -13524,6 +13524,46 @@ paths:
                 "$ref": "#/components/schemas/StandardError"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/plans/{hangarPlanId}/keeps":
+    parameters:
+    - name: hangarPlanId
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    post:
+      summary: Keep Hangar Plan Vehicles
+      tags:
+      - HangarPlans
+      operationId: createHangarPlanKeep
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/HangarPlanKeepCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlan"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
   "/hangar/plans/{hangarPlanId}/melts":
     parameters:
     - name: hangarPlanId
@@ -13827,6 +13867,120 @@ paths:
           application/json:
             schema:
               "$ref": "#/components/schemas/HangarPlanSlotChooseInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlan"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/plans/{hangarPlanId}/vehicle-marks":
+    parameters:
+    - name: hangarPlanId
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    post:
+      summary: Create Hangar Plan Vehicle Mark
+      tags:
+      - HangarPlans
+      operationId: createHangarPlanVehicleMark
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/HangarPlanVehicleMarkCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlan"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+  "/hangar/plans/{hangarPlanId}/vehicle-marks/{id}":
+    parameters:
+    - name: hangarPlanId
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    put:
+      summary: Update Hangar Plan Vehicle Mark
+      tags:
+      - HangarPlans
+      operationId: updateHangarPlanVehicleMark
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/HangarPlanVehicleMarkUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlan"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+    delete:
+      summary: Destroy Hangar Plan Vehicle Mark
+      tags:
+      - HangarPlans
+      operationId: destroyHangarPlanVehicleMark
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
       responses:
         '200':
           description: successful
@@ -35178,6 +35332,12 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/HangarPlanMelt"
+        vehicleMarks:
+          type: array
+          description: 'What the plan says about each hangar ship it does not route
+            or melt: undecided, to change, or kept as it is; empty on a shared plan'
+          items:
+            "$ref": "#/components/schemas/HangarPlanVehicleMark"
         createdAt:
           type: string
           format: date-time
@@ -35197,6 +35357,7 @@ components:
       - slotsCount
       - slots
       - melts
+      - vehicleMarks
       - createdAt
       - updatedAt
       title: HangarPlan
@@ -35679,6 +35840,20 @@ components:
       - MISSING_PRICE
       - NOT_ON_SALE
       title: HangarPlanIssueKindEnum
+    HangarPlanKeepCreateInput:
+      type: object
+      properties:
+        vehicleIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          minItems: 1
+          description: Hangar ships to keep as they are
+      required:
+      - vehicleIds
+      additionalProperties: false
+      title: HangarPlanKeepCreateInput
     HangarPlanListItem:
       type: object
       properties:
@@ -35743,12 +35918,30 @@ components:
             the user entered
         vehicleMissing:
           type: boolean
+        pledgeName:
+          type:
+          - string
+          - 'null'
+          description: The name of the pledge the ship came in, as RSI lists it
+        pledgeShips:
+          type: array
+          description: The other ships of the same pledge, which melt with it
+          items:
+            "$ref": "#/components/schemas/HangarPlanPledgeShip"
+        pledgeItems:
+          type: array
+          description: The paints, flair, gear and upgrades of the same pledge the
+            hangar sync read, which melt with it
+          items:
+            "$ref": "#/components/schemas/HangarPlanPledgeItem"
       additionalProperties: false
       required:
       - id
       - model
       - estimated
       - vehicleMissing
+      - pledgeShips
+      - pledgeItems
       title: HangarPlanMelt
     HangarPlanMeltCreateInput:
       type: object
@@ -36198,10 +36391,12 @@ components:
       - acquisition
       - upgrade_step
       - melt
+      - mark
       x-enumNames:
       - ACQUISITION
       - UPGRADE_STEP
       - MELT
+      - MARK
       title: HangarPlanSourceIssueKindEnum
     HangarPlanStartKindEnum:
       type: string
@@ -36454,6 +36649,56 @@ components:
       - toModelId
       additionalProperties: false
       title: HangarPlanUpgradeStepInput
+    HangarPlanVehicleMark:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        vehicleId:
+          type: string
+          format: uuid
+        mark:
+          "$ref": "#/components/schemas/HangarPlanVehicleMarkEnum"
+      additionalProperties: false
+      required:
+      - id
+      - vehicleId
+      - mark
+      title: HangarPlanVehicleMark
+    HangarPlanVehicleMarkCreateInput:
+      type: object
+      properties:
+        vehicleId:
+          type: string
+          format: uuid
+        mark:
+          "$ref": "#/components/schemas/HangarPlanVehicleMarkEnum"
+      required:
+      - vehicleId
+      - mark
+      additionalProperties: false
+      title: HangarPlanVehicleMarkCreateInput
+    HangarPlanVehicleMarkEnum:
+      type: string
+      enum:
+      - pending
+      - change
+      - keep
+      x-enumNames:
+      - PENDING
+      - CHANGE
+      - KEEP
+      title: HangarPlanVehicleMarkEnum
+    HangarPlanVehicleMarkUpdateInput:
+      type: object
+      properties:
+        mark:
+          "$ref": "#/components/schemas/HangarPlanVehicleMarkEnum"
+      required:
+      - mark
+      additionalProperties: false
+      title: HangarPlanVehicleMarkUpdateInput
     HangarPlanVehicleResource:
       type: object
       properties:
@@ -36537,11 +36782,15 @@ components:
       - kept
       - upgraded
       - melted
+      - pending
+      - change
       - unassigned
       x-enumNames:
       - KEPT
       - UPGRADED
       - MELTED
+      - PENDING
+      - CHANGE
       - UNASSIGNED
       title: HangarPlanVehicleStatusEnum
     HangarPlanWishlistResult:

@@ -65,6 +65,41 @@ class HangarPlans::ComparisonTest < ActiveSupport::TestCase
     assert_equal({"Constellation Andromeda" => [1, 0], "Cutlass Black" => [1, 1]}, diffs)
   end
 
+  test "a ship the plan has not settled yet stays, marked as it is" do
+    pending = create(:vehicle, user: @user, model: @constellation)
+    change = create(:vehicle, user: @user, model: @cutlass)
+    @plan.vehicle_marks.create!(vehicle: pending)
+    @plan.vehicle_marks.create!(vehicle: change, mark: "change")
+
+    comparison = HangarPlans::Comparison.new(@plan)
+
+    assert_equal({pending.id => "pending", change.id => "change"}, comparison.vehicles.to_h { |entry| [entry.vehicle.id, entry.status] })
+    assert_equal({"Constellation Andromeda" => [1, 1], "Cutlass Black" => [1, 1]},
+      comparison.models.to_h { |diff| [diff.model.name, [diff.left_count, diff.right_count]] })
+  end
+
+  test "a route settles a marked ship, and removing it brings the mark back" do
+    vehicle = create(:vehicle, user: @user, model: @cutlass)
+    @plan.vehicle_marks.create!(vehicle:, mark: "change")
+    candidate = @plan.slots.create!(label: "Fighter").candidates.create!(model: @cutlass)
+    @plan.acquisitions.create!(candidate:, start_kind: "owned", source_vehicle: vehicle)
+
+    assert_equal ["kept"], HangarPlans::Comparison.new(@plan).vehicles.map(&:status)
+
+    @plan.acquisitions.destroy_all
+    assert_equal ["change"], HangarPlans::Comparison.new(@plan.reload).vehicles.map(&:status)
+  end
+
+  test "the other ships of a melted pledge go with it" do
+    melted = create(:vehicle, user: @user, model: @constellation, rsi_pledge_id: "pack")
+    sibling = create(:vehicle, user: @user, model: @cutlass, rsi_pledge_id: "pack")
+    @plan.melts.create!(vehicle: melted)
+
+    statuses = HangarPlans::Comparison.new(@plan).vehicles.to_h { |entry| [entry.vehicle.id, entry.status] }
+
+    assert_equal({melted.id => "melted", sibling.id => "melted"}, statuses)
+  end
+
   test "units of a decided slot without a route are gaps" do
     slot_for(@carrack, quantity: 2)
 

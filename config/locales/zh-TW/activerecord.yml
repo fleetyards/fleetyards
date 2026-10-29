@@ -352,11 +352,17 @@ zh-TW:
               taken: "已在此計畫中使用"
             buyback_pledge_id:
               taken: "已在此計畫中使用"
+        hangar_plan_vehicle_mark:
+          attributes:
+            vehicle_id:
+              taken: "已在此計畫中使用"
+              pledge_melted: "屬於此計畫熔煉的禮包"
         hangar_plan_melt:
           attributes:
             vehicle_id:
               taken: "已在此計畫中使用"
               pledge_kept: "屬於此計畫保留其他艦船的禮包"
+              pledge_melted: "屬於此計畫熔煉的禮包"
         vehicle_loadout:
           attributes:
             base:

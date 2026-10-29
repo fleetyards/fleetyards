@@ -52,6 +52,8 @@ type Props = {
   planId: string;
   candidate: HangarPlanCandidate;
   acquisition?: HangarPlanAcquisition;
+  // A hangar ship the new route starts from.
+  vehicleId?: string;
 };
 
 type StepDraft = {
@@ -119,7 +121,7 @@ const startKind = ref<HangarPlanStartKindEnum>(
   props.acquisition?.startKind ?? HangarPlanStartKindEnum.OWNED,
 );
 const sourceVehicleId = ref<string | null>(
-  props.acquisition?.sourceVehicleId ?? null,
+  props.acquisition?.sourceVehicleId ?? props.vehicleId ?? null,
 );
 const buybackPledgeId = ref<string | null>(
   props.acquisition?.buybackPledgeId ?? null,

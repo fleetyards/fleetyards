@@ -39,7 +39,10 @@ test.describe("Hangar Planner", () => {
 
     // The Cutlass in the hangar becomes the Carrack through the upgrade the
     // RSI hangar already holds, so the route costs nothing more.
-    await page.getByTestId("hangar-plan-add-route").click();
+    await page
+      .getByTestId("hangar-plan-gap")
+      .getByTestId("hangar-plan-flow-add-route")
+      .click();
     await page.getByTestId("modal").waitFor({ state: "visible" });
 
     const modal = page.getByTestId("modal");
@@ -67,10 +70,10 @@ test.describe("Hangar Planner", () => {
     await routeCreated;
     await page.getByTestId("modal").waitFor({ state: "hidden" });
 
-    const route = page.getByTestId("hangar-plan-route");
-    await expect(route).toContainText("Cutlass Black");
-    await expect(route).toContainText("Carrack");
-    await expect(route).toContainText("My RSI hangar");
+    const statuses = page.getByTestId("hangar-plan-vehicle-status");
+    await expect(statuses.filter({ hasText: "Cutlass Black" })).toContainText(
+      "Upgraded",
+    );
 
     // The Aurora is not needed, so it is melted for store credit.
     await page.getByTestId("hangar-plan-add-melt").click();
@@ -95,13 +98,6 @@ test.describe("Hangar Planner", () => {
       page.getByTestId("hangar-plan-summary-meltCredit"),
     ).toContainText("30");
 
-    await page.getByTestId("hangar-plan-compare-hangar").click();
-    await expect(page).toHaveURL(/\/hangar\/plans\/[0-9a-f-]+\/hangar\//);
-
-    const statuses = page.getByTestId("hangar-plan-vehicle-status");
-    await expect(statuses.filter({ hasText: "Cutlass Black" })).toContainText(
-      "Upgraded",
-    );
     await expect(statuses.filter({ hasText: "Aurora MR" })).toContainText(
       "Melted",
     );

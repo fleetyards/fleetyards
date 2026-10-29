@@ -7,7 +7,6 @@
       "editPlan": "Plan bearbeiten",
       "destroyPlan": "Plan löschen",
       "confirmDestroy": "Diesen Plan löschen? Dein Hangar bleibt unverändert.",
-      "more": "Mehr",
       "share": "Per Link teilen",
       "copyShareLink": "Link zum Teilen kopieren",
       "unshare": "Teilen beenden",
@@ -133,6 +132,8 @@
         "kept": "Behalten",
         "upgraded": "Geupgradet",
         "melted": "Gemeltet",
+        "pending": "Offen",
+        "change": "Soll sich ändern",
         "unassigned": "Nicht im Plan"
       },
       "changes": {
@@ -199,6 +200,14 @@
         "lead": "Links jedes Schiff, das du hast, rechts jedes Schiff, das der Plan braucht, und dazwischen, was passiert.",
         "anotherPlan": "Mit einem anderen Plan vergleichen",
         "tallies": {
+          "pending": {
+            "one": "%{count} offen",
+            "other": "%{count} offen"
+          },
+          "change": {
+            "one": "%{count} soll sich ändern",
+            "other": "%{count} sollen sich ändern"
+          },
           "kept": {
             "one": "%{count} behalten",
             "other": "%{count} behalten"
@@ -230,9 +239,16 @@
           "noRoute": "Noch kein Weg",
           "notCounted": "nicht in der Summe",
           "noShip": "noch kein Schiff",
-          "notInPlan": {
-            "one": "%{count} Schiff nicht im Plan",
-            "other": "%{count} Schiffe nicht im Plan"
+          "toDecide": "noch nicht entschieden",
+          "folded": {
+            "kept": {
+              "one": "%{count} Schiff unverändert behalten",
+              "other": "%{count} Schiffe unverändert behalten"
+            },
+            "unassigned": {
+              "one": "%{count} Schiff nicht im Plan",
+              "other": "%{count} Schiffe nicht im Plan"
+            }
           }
         },
         "changeSides": {
@@ -423,7 +439,18 @@
           "one": "%{count} weiteres Item, das der Hangar-Sync nicht erfasst",
           "other": "%{count} weitere Items, die der Hangar-Sync nicht erfasst"
         }
-      }
+      },
+      "decisions": {
+        "keep": "Behalten wie es ist",
+        "upgrade": "Upgraden",
+        "melt": "Melten",
+        "change": "Als „soll sich ändern“ markieren",
+        "pending": "Wieder offen",
+        "upgradeTo": "%{name} upgraden auf",
+        "keepPending": "Alle offenen behalten"
+      },
+      "slotsTitle": "Slots",
+      "editSlots": "Slots bearbeiten"
     }
   }
 }

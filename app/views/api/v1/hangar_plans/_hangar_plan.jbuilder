@@ -16,6 +16,7 @@ slots.flat_map(&:candidates).flat_map(&:acquisitions).each do |acquisition|
   acquisition.upgrade_steps.each { |step| step.association(:hangar_plan).target = hangar_plan }
 end
 melts.each { |melt| melt.association(:hangar_plan).target = hangar_plan }
+melt_pledges = HangarPlans::PledgeContents.new(hangar_plan, local_assigns[:public_view] ? [] : melts.filter_map(&:vehicle))
 
 # A shared plan does not show what the owner holds, only what they planned.
 owned = local_assigns[:public_view] ? {} : hangar_plan.live_vehicles.where.not(id: hangar_plan.used_vehicle_ids).group(:model_id).count
@@ -72,6 +73,28 @@ json.melts melts do |melt|
   json.value melt.value&.to_f
   json.estimated melt.estimated?
   json.vehicle_missing local_assigns[:public_view] ? false : melt.vehicle_missing?
+  pledge = melt_pledges.for(melt.vehicle)
+  json.pledge_name pledge.name
+  json.pledge_ships pledge.ships do |ship|
+    json.id ship.id
+    json.name ship.name
+    json.model do
+      json.partial! "api/v1/hangar_plans/model", model: ship.model
+    end
+  end
+  json.pledge_items pledge.items do |item|
+    json.id item.id
+    json.name item.name
+    json.kind item.kind
+    json.quantity item.quantity
+  end
+end
+
+# The marks name the owner's hangar ships, which a shared plan does not show.
+json.vehicle_marks local_assigns[:public_view] ? [] : hangar_plan.vehicle_marks.order(:created_at) do |mark|
+  json.id mark.id
+  json.vehicle_id mark.vehicle_id
+  json.mark mark.mark
 end
 
 json.partial! "api/shared/dates", record: hangar_plan

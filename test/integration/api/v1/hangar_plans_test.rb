@@ -131,9 +131,8 @@ class Api::V1::HangarPlansTest < ActionDispatch::IntegrationTest
 
     assert_no_changes -> { Vehicle.count } do
       assert_api_response :post, 201, api_path: "/hangar/plans", body: {name: "From hangar", source: "hangar"} do
-        slot = parsed_body["slots"].first
-        assert_equal "decided", slot["state"]
-        assert_equal vehicle.id, slot.dig("candidates", 0, "acquisitions", 0, "sourceVehicleId")
+        assert_empty parsed_body["slots"]
+        assert_equal [[vehicle.id, "pending"]], parsed_body["vehicleMarks"].map { |mark| mark.values_at("vehicleId", "mark") }
       end
     end
   end

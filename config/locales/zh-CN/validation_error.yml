@@ -163,6 +163,11 @@ zh-CN:
     hangar_plan_melts:
       create: "无法添加熔炼。"
       update: "无法更新熔炼。"
+    hangar_plan_vehicle_marks:
+      create: "无法标记舰船。"
+      update: "无法更新标记。"
+    hangar_plan_keeps:
+      create: "无法保留舰船。"
     hangar_inventories:
       create: 无法创建库存。
       update: 无法更新库存。

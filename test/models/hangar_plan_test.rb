@@ -63,6 +63,11 @@ class HangarPlanTest < ActiveSupport::TestCase
     route = @plan.acquisitions.build(candidate: @candidate, start_kind: "owned", source_vehicle: sibling)
     assert_not route.valid?
     assert_includes route.errors.details[:source_vehicle_id], {error: :pledge_melted}
+    assert_equal [melted.id, sibling.id].sort, @plan.used_vehicle_ids.sort
+
+    second = @plan.melts.build(vehicle: sibling)
+    assert_not second.valid?
+    assert_includes second.errors.details[:vehicle_id], {error: :pledge_melted}
 
     @plan.melts.destroy_all
     route.save!

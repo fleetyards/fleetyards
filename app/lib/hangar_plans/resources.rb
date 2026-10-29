@@ -30,12 +30,10 @@ module HangarPlans
 
     def vehicles
       routes = plan.acquisitions.where.not(source_vehicle_id: nil).pluck(:source_vehicle_id).to_set
-      melts = plan.melts.pluck(:vehicle_id).to_set
+      melts = plan.melted_vehicle_ids.to_set
 
       vehicles = plan.live_vehicles.includes(model: MODEL_PRELOAD).order(:created_at).to_a
-      ships = vehicles.select { |vehicle| vehicle.rsi_pledge_id.present? }.group_by(&:rsi_pledge_id)
-      items = plan.user.hangar_pledge_items.where(rsi_pledge_id: ships.keys)
-        .order(:kind, :name).group_by(&:rsi_pledge_id)
+      pledges = PledgeContents.new(plan, vehicles)
 
       vehicles.map do |vehicle|
         used_by = if routes.include?(vehicle.id)
@@ -43,13 +41,9 @@ module HangarPlans
         elsif melts.include?(vehicle.id)
           "melt"
         end
-        pledge_ships = vehicle.rsi_pledge_id ? ships.fetch(vehicle.rsi_pledge_id) - [vehicle] : []
-        pledge_items = items.fetch(vehicle.rsi_pledge_id, [])
-        # Ships synced before the pledge name was kept still find it on an item
-        # of the same pledge.
-        pledge_name = vehicle.rsi_pledge_name.presence || pledge_items.filter_map(&:pledge_name).first
+        contents = pledges.for(vehicle)
 
-        VehicleResource.new(vehicle:, used_by:, pledge_name:, pledge_ships:, pledge_items:)
+        VehicleResource.new(vehicle:, used_by:, pledge_name: contents.name, pledge_ships: contents.ships, pledge_items: contents.items)
       end
     end
 

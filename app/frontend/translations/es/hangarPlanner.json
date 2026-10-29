@@ -7,7 +7,6 @@
       "editPlan": "Editar plan",
       "destroyPlan": "Eliminar plan",
       "confirmDestroy": "¿Eliminar este plan? Tu hangar no se verá afectado.",
-      "more": "Más",
       "share": "Compartir por enlace",
       "copyShareLink": "Copiar enlace para compartir",
       "unshare": "Dejar de compartir",
@@ -133,6 +132,8 @@
         "kept": "Conservada",
         "upgraded": "Mejorada",
         "melted": "Fundida",
+        "pending": "Por decidir",
+        "change": "Debe cambiar",
         "unassigned": "Fuera del plan"
       },
       "changes": {
@@ -199,6 +200,14 @@
         "lead": "A la izquierda cada nave que tienes, a la derecha cada nave que necesita el plan, y en medio lo que pasa.",
         "anotherPlan": "Comparar con otro plan",
         "tallies": {
+          "pending": {
+            "one": "%{count} por decidir",
+            "other": "%{count} por decidir"
+          },
+          "change": {
+            "one": "%{count} debe cambiar",
+            "other": "%{count} deben cambiar"
+          },
           "kept": {
             "one": "%{count} conservada",
             "other": "%{count} conservadas"
@@ -230,9 +239,16 @@
           "noRoute": "Aún sin vía",
           "notCounted": "no está en el total",
           "noShip": "aún sin nave",
-          "notInPlan": {
-            "one": "%{count} nave fuera del plan",
-            "other": "%{count} naves fuera del plan"
+          "toDecide": "aún sin decidir",
+          "folded": {
+            "kept": {
+              "one": "%{count} conservada tal cual",
+              "other": "%{count} conservadas tal cual"
+            },
+            "unassigned": {
+              "one": "%{count} nave fuera del plan",
+              "other": "%{count} naves fuera del plan"
+            }
           }
         },
         "changeSides": {
@@ -423,7 +439,18 @@
           "one": "%{count} objeto más que la sincronización del hangar no recoge",
           "other": "%{count} objetos más que la sincronización del hangar no recoge"
         }
-      }
+      },
+      "decisions": {
+        "keep": "Conservar tal cual",
+        "upgrade": "Mejorar",
+        "melt": "Fundir",
+        "change": "Marcar como debe cambiar",
+        "pending": "Volver a por decidir",
+        "upgradeTo": "Mejorar %{name} a",
+        "keepPending": "Conservar todas las pendientes"
+      },
+      "slotsTitle": "Slots",
+      "editSlots": "Editar slots"
     }
   }
 }

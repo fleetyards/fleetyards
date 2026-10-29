@@ -7,7 +7,6 @@
       "editPlan": "Modifier le plan",
       "destroyPlan": "Supprimer le plan",
       "confirmDestroy": "Supprimer ce plan ? Votre hangar n'est pas modifié.",
-      "more": "Plus",
       "share": "Partager par lien",
       "copyShareLink": "Copier le lien de partage",
       "unshare": "Arrêter le partage",
@@ -133,6 +132,8 @@
         "kept": "Gardé",
         "upgraded": "Upgradé",
         "melted": "Melt",
+        "pending": "À décider",
+        "change": "Doit changer",
         "unassigned": "Hors plan"
       },
       "changes": {
@@ -199,6 +200,14 @@
         "lead": "À gauche chaque vaisseau que vous possédez, à droite chaque vaisseau dont le plan a besoin, et entre les deux ce qui se passe.",
         "anotherPlan": "Comparer avec un autre plan",
         "tallies": {
+          "pending": {
+            "one": "%{count} à décider",
+            "other": "%{count} à décider"
+          },
+          "change": {
+            "one": "%{count} doit changer",
+            "other": "%{count} doivent changer"
+          },
           "kept": {
             "one": "%{count} conservé",
             "other": "%{count} conservés"
@@ -230,9 +239,16 @@
           "noRoute": "Pas encore de voie",
           "notCounted": "hors du total",
           "noShip": "pas encore de vaisseau",
-          "notInPlan": {
-            "one": "%{count} vaisseau hors du plan",
-            "other": "%{count} vaisseaux hors du plan"
+          "toDecide": "pas encore décidé",
+          "folded": {
+            "kept": {
+              "one": "%{count} gardé tel quel",
+              "other": "%{count} gardés tels quels"
+            },
+            "unassigned": {
+              "one": "%{count} vaisseau hors du plan",
+              "other": "%{count} vaisseaux hors du plan"
+            }
           }
         },
         "changeSides": {
@@ -423,7 +439,18 @@
           "one": "%{count} objet de plus que la synchronisation du hangar ne liste pas",
           "other": "%{count} objets de plus que la synchronisation du hangar ne liste pas"
         }
-      }
+      },
+      "decisions": {
+        "keep": "Garder tel quel",
+        "upgrade": "Améliorer",
+        "melt": "Fondre",
+        "change": "Marquer comme doit changer",
+        "pending": "Remettre à décider",
+        "upgradeTo": "Améliorer %{name} en",
+        "keepPending": "Garder tous ceux à décider"
+      },
+      "slotsTitle": "Emplacements",
+      "editSlots": "Modifier les emplacements"
     }
   }
 }

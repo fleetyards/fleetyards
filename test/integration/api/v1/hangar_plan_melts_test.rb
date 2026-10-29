@@ -77,6 +77,30 @@ class Api::V1::HangarPlanMeltsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "POST lists what else the melted pledge holds" do
+    @vehicle.update_columns(rsi_pledge_id: "500", rsi_pledge_name: "Explorer Pack")
+    sibling = create(:vehicle, user: @user, rsi_pledge_id: "500")
+    create(:vehicle, user: @user, rsi_pledge_id: "501")
+    create(:hangar_pledge_item, user: @user, rsi_pledge_id: "500", name: "Ghoul Paint", quantity: 2)
+
+    assert_api_response :post, 201, api_path: "/hangar/plans/{hangarPlanId}/melts",
+      path_params: {hangarPlanId: @plan.id}, body: {vehicleId: @vehicle.id} do
+      melt = parsed_body["melts"].first
+      assert_equal "Explorer Pack", melt["pledgeName"]
+      assert_equal [sibling.id], melt["pledgeShips"].pluck("id")
+      assert_equal [["Ghoul Paint", 2]], melt["pledgeItems"].map { |item| item.values_at("name", "quantity") }
+    end
+  end
+
+  test "POST rejects a ship whose pledge is already melted" do
+    @vehicle.update_columns(rsi_pledge_id: "500")
+    sibling = create(:vehicle, user: @user, rsi_pledge_id: "500")
+    create(:hangar_plan_melt, hangar_plan: @plan, vehicle: @vehicle)
+
+    assert_api_response :post, 400, api_path: "/hangar/plans/{hangarPlanId}/melts",
+      path_params: {hangarPlanId: @plan.id}, body: {vehicleId: sibling.id}
+  end
+
   test "POST rejects a ship of another user" do
     assert_api_response :post, 400, api_path: "/hangar/plans/{hangarPlanId}/melts",
       path_params: {hangarPlanId: @plan.id}, body: {vehicleId: create(:vehicle).id}

@@ -7,7 +7,6 @@
       "editPlan": "Edit plan",
       "destroyPlan": "Delete plan",
       "confirmDestroy": "Delete this plan? Your hangar is not affected.",
-      "more": "More",
       "share": "Share by link",
       "copyShareLink": "Copy share link",
       "unshare": "Stop sharing",
@@ -133,6 +132,8 @@
         "kept": "Kept",
         "upgraded": "Upgraded",
         "melted": "Melted",
+        "pending": "Needs a decision",
+        "change": "Should change",
         "unassigned": "Not in plan"
       },
       "changes": {
@@ -199,6 +200,14 @@
         "lead": "Every ship you own on the left, every ship the plan needs on the right, and what happens in between.",
         "anotherPlan": "Compare with another plan",
         "tallies": {
+          "pending": {
+            "one": "%{count} to decide",
+            "other": "%{count} to decide"
+          },
+          "change": {
+            "one": "%{count} to change",
+            "other": "%{count} to change"
+          },
           "kept": {
             "one": "%{count} kept",
             "other": "%{count} kept"
@@ -230,9 +239,16 @@
           "noRoute": "No route yet",
           "notCounted": "not in the total",
           "noShip": "no ship yet",
-          "notInPlan": {
-            "one": "%{count} ship not in the plan",
-            "other": "%{count} ships not in the plan"
+          "toDecide": "not decided yet",
+          "folded": {
+            "kept": {
+              "one": "%{count} kept as it is",
+              "other": "%{count} kept as they are"
+            },
+            "unassigned": {
+              "one": "%{count} ship not in the plan",
+              "other": "%{count} ships not in the plan"
+            }
           }
         },
         "changeSides": {
@@ -423,7 +439,18 @@
           "one": "%{count} more item the hangar sync does not list",
           "other": "%{count} more items the hangar sync does not list"
         }
-      }
+      },
+      "decisions": {
+        "keep": "Keep as it is",
+        "upgrade": "Upgrade",
+        "melt": "Melt",
+        "change": "Mark as should change",
+        "pending": "Back to undecided",
+        "upgradeTo": "Upgrade %{name} to",
+        "keepPending": "Keep all undecided"
+      },
+      "slotsTitle": "Slots",
+      "editSlots": "Edit slots"
     }
   }
 }

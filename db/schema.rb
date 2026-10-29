@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_29_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_29_150000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1616,6 +1616,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_29_120000) do
     t.boolean "uses_buyback_token", default: false, null: false
     t.index ["hangar_plan_acquisition_id"], name: "index_hangar_plan_upgrade_steps_on_hangar_plan_acquisition_id"
     t.index ["hangar_plan_id", "buyback_pledge_id"], name: "index_hangar_plan_upgrade_steps_on_plan_and_buyback", unique: true, where: "(buyback_pledge_id IS NOT NULL)"
+  end
+
+  create_table "hangar_plan_vehicle_marks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "hangar_plan_id", null: false
+    t.uuid "vehicle_id", null: false
+    t.uuid "model_id", null: false
+    t.string "mark", default: "pending", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["hangar_plan_id", "vehicle_id"], name: "index_hangar_plan_vehicle_marks_on_plan_and_vehicle", unique: true
   end
 
   create_table "hangar_plans", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -3326,6 +3336,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_29_120000) do
   add_foreign_key "hangar_plan_slots", "hangar_plans", on_delete: :cascade
   add_foreign_key "hangar_plan_upgrade_steps", "hangar_plan_acquisitions", on_delete: :cascade
   add_foreign_key "hangar_plan_upgrade_steps", "hangar_plans", on_delete: :cascade
+  add_foreign_key "hangar_plan_vehicle_marks", "hangar_plans", on_delete: :cascade
   add_foreign_key "hangar_plans", "users"
   add_foreign_key "hangar_pledge_item_model_paints", "hangar_pledge_items", on_delete: :cascade
   add_foreign_key "hangar_pledge_item_model_paints", "model_paints", on_delete: :cascade

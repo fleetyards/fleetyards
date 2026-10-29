@@ -167,6 +167,11 @@ es:
     hangar_plan_melts:
       create: "No se pudo añadir la fundición."
       update: "No se pudo actualizar la fundición."
+    hangar_plan_vehicle_marks:
+      create: "No se pudo marcar la nave."
+      update: "No se pudo actualizar la marca."
+    hangar_plan_keeps:
+      create: "No se pudieron conservar las naves."
     hangar_inventories:
       create: No se pudo crear el inventario.
       update: No se pudo actualizar el inventario.

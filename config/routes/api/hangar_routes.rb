@@ -63,6 +63,8 @@ resource :hangar, only: %i[show destroy] do
     resources :hangar_plan_candidates, path: "candidates", only: %i[create update destroy]
     resources :hangar_plan_acquisitions, path: "acquisitions", only: %i[create update destroy]
     resources :hangar_plan_melts, path: "melts", only: %i[create update destroy]
+    resources :hangar_plan_vehicle_marks, path: "vehicle-marks", only: %i[create update destroy]
+    resources :hangar_plan_keeps, path: "keeps", only: %i[create]
   end
 
   get "contract-destinations", to: "hangar_contract_destinations#index"

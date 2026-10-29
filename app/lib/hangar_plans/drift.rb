@@ -5,7 +5,7 @@ module HangarPlans
   # them: ships it relies on that are gone or changed, ships added since, and
   # what the decided routes cost then and now.
   class Drift
-    SOURCE_KINDS = %w[acquisition upgrade_step melt].freeze
+    SOURCE_KINDS = %w[acquisition upgrade_step melt mark].freeze
 
     SourceIssue = Data.define(:kind, :record_id, :planned_model, :current_model)
 
@@ -47,8 +47,11 @@ module HangarPlans
       gone = melts.select(&:vehicle_missing?).map do |melt|
         SourceIssue.new(kind: "melt", record_id: melt.id, planned_model: melt.model, current_model: nil)
       end
+      kept = plan.vehicle_marks.where(mark: "keep").where.not(vehicle_id: plan.live_vehicle_ids.to_a).includes(:model).map do |mark|
+        SourceIssue.new(kind: "mark", record_id: mark.id, planned_model: mark.model, current_model: nil)
+      end
 
-      routes + steps + gone
+      routes + steps + gone + kept
     end
 
     private def find_changed_sources
@@ -76,12 +79,11 @@ module HangarPlans
     end
 
     # Brings the plan up to the live hangar without discarding the user's
-    # edits: added ships become decided slots kept as they are, lost ones stay
+    # edits: added ships wait for the user to decide on them, lost ones stay
     # flagged, and prices are taken again as of now.
     def rebase!
       HangarPlan.transaction do
-        new_ships = new_vehicles
-        Builder.new(plan).copy_vehicles(Vehicle.where(id: new_ships.map(&:id)), keep: true) if new_ships.any?
+        HangarPlanVehicleMark.write(plan, new_vehicles, "pending")
 
         plan.acquisitions.includes(:start_model, :buyback_pledge).find_each do |acquisition|
           acquisition.update_columns(price_snapshot: acquisition.list_price)

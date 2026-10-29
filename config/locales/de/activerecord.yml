@@ -352,11 +352,17 @@ de:
               taken: "wird in diesem Plan bereits verwendet"
             buyback_pledge_id:
               taken: "wird in diesem Plan bereits verwendet"
+        hangar_plan_vehicle_mark:
+          attributes:
+            vehicle_id:
+              taken: "wird in diesem Plan bereits verwendet"
+              pledge_melted: "gehört zu einem Pledge, das dieser Plan meltet"
         hangar_plan_melt:
           attributes:
             vehicle_id:
               taken: "wird in diesem Plan bereits verwendet"
               pledge_kept: "gehört zu einem Pledge, dessen andere Schiffe dieser Plan behält"
+              pledge_melted: "gehört zu einem Pledge, das dieser Plan meltet"
         vehicle_loadout:
           attributes:
             base:
