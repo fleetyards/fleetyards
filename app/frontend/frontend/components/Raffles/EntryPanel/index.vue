@@ -120,7 +120,10 @@ const title = computed(() => {
     </PanelHeading>
     <PanelBody>
       <div class="metrics-card__rows">
-        <div v-if="raffle.prize" class="metrics-card__row">
+        <div
+          v-if="raffle.prize"
+          class="metrics-card__row metrics-card__row--wrap"
+        >
           <div class="metrics-card__row__label">
             {{ t("raffles.entry.prize") }}
           </div>
