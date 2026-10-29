@@ -144,6 +144,7 @@ describe("frontend routes", () => {
   it.each([
     ["/catalogue/components/bulldog-repeater/", "component"],
     ["/catalogue/components/bulldog-repeater/history/", "component-history"],
+    ["/catalogue/components/bulldog-repeater/viewer/", "component-viewer"],
   ])("opens %s as %s", async (path, name) => {
     await router.push(path);
 

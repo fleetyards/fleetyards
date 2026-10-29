@@ -89,13 +89,15 @@ class Api::V1::EquipmentShowTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 404, params: {slug: hidden.slug}
   end
 
-  test "GET /equipment/{slug} carries the views and the holo" do
+  test "GET /equipment/{slug} carries the views and the holos" do
     @rifle.angled_view.attach(io: file_fixture("test.png").open, filename: "angled.png", content_type: "image/png")
     @rifle.holo.attach(io: StringIO.new("glTF"), filename: "holo.glb", content_type: "model/gltf-binary")
+    @rifle.holo_textured.attach(io: StringIO.new("glTF"), filename: "holo_textured.glb", content_type: "model/gltf-binary")
 
     assert_api_response :get, 200, params: {slug: @rifle.slug} do
       assert_equal "angled.png", parsed_body.dig("media", "angledView", "name")
       assert_equal "holo.glb", parsed_body.dig("media", "holo", "name")
+      assert_equal "holo_textured.glb", parsed_body.dig("media", "holoTextured", "name")
     end
   end
 

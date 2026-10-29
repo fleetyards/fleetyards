@@ -13357,6 +13357,10 @@ components:
           type:
           - string
           - 'null'
+        holoTextured:
+          type:
+          - string
+          - 'null'
         scIdentifier:
           type: string
         scKey:
@@ -15595,6 +15599,10 @@ components:
           - string
           - 'null'
         holo:
+          type:
+          - string
+          - 'null'
+        holoTextured:
           type:
           - string
           - 'null'
@@ -18397,6 +18405,8 @@ components:
         starboardView:
           "$ref": "#/components/schemas/MediaFile"
         holo:
+          "$ref": "#/components/schemas/MediaFile"
+        holoTextured:
           "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
       title: ItemMedia

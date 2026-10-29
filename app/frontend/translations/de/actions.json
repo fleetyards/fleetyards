@@ -396,6 +396,10 @@
         "color": {
           "enable": "Farben aktivieren",
           "disable": "Farben deaktivieren"
+        },
+        "grid": {
+          "enable": "Raster einblenden",
+          "disable": "Raster ausblenden"
         }
       },
       "logistics": {

@@ -24,6 +24,7 @@
       "shipHistory": "%{name} Historie",
       "componentHistory": "%{name} Historie",
       "shipViewer": "%{name} Viewer",
+      "itemViewer": "%{name} Viewer",
       "images": "Bilder",
       "stats": "Statistiken",
       "login": "Anmelden",

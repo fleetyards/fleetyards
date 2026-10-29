@@ -396,6 +396,10 @@
         "color": {
           "enable": "Activar colores",
           "disable": "Desactivar colores"
+        },
+        "grid": {
+          "enable": "Mostrar cuadrícula",
+          "disable": "Ocultar cuadrícula"
         }
       },
       "logistics": {

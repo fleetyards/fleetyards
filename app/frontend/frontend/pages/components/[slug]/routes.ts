@@ -10,6 +10,14 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "viewer/",
+    name: "component-viewer",
+    component: () => import("@/frontend/pages/components/[slug]/viewer.vue"),
+    meta: {
+      customTitle: true,
+    },
+  },
+  {
     path: "history/",
     name: "component-history",
     component: () => import("@/frontend/pages/components/[slug]/history.vue"),

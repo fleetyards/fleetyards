@@ -24,6 +24,7 @@
       "shipHistory": "%{name} 歷史",
       "componentHistory": "%{name} 歷史",
       "shipViewer": "%{name} 檢視器",
+      "itemViewer": "%{name} 檢視器",
       "images": "圖片",
       "stats": "統計",
       "login": "登入",

@@ -103,6 +103,9 @@ holo_ar:
 holo_textured:
   description: "Textured holo — switch the ship page's 3D view to the painted, animated export"
 
+item_holo_textured:
+  description: "Textured item holo — switch a component or equipment page's holo to the painted export"
+
 fleet_directory:
   description: "Fleet directory — a public list of verified fleets, searchable by name, SID, activity and language"
 

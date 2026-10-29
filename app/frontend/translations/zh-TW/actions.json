@@ -396,6 +396,10 @@
         "color": {
           "enable": "Enable colors",
           "disable": "Disable colors"
+        },
+        "grid": {
+          "enable": "顯示網格",
+          "disable": "隱藏網格"
         }
       },
       "logistics": {

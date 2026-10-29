@@ -21,4 +21,12 @@ export const routes: RouteRecordRaw[] = [
       customTitle: true,
     },
   },
+  {
+    path: ":slug/viewer/",
+    name: "equipment-item-viewer",
+    component: () => import("@/frontend/pages/equipment/viewer.vue"),
+    meta: {
+      customTitle: true,
+    },
+  },
 ];

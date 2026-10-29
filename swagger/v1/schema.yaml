@@ -27502,6 +27502,7 @@ components:
       - holo_ar
       - holo_textured
       - homepage_redesign
+      - item_holo_textured
       - loadout_editor
       - loadout_preview
       - oauth-applications
@@ -27530,6 +27531,7 @@ components:
       - HOLO_AR
       - HOLO_TEXTURED
       - HOMEPAGE_REDESIGN
+      - ITEM_HOLO_TEXTURED
       - LOADOUT_EDITOR
       - LOADOUT_PREVIEW
       - OAUTH_APPLICATIONS
@@ -38599,6 +38601,8 @@ components:
         starboardView:
           "$ref": "#/components/schemas/MediaFile"
         holo:
+          "$ref": "#/components/schemas/MediaFile"
+        holoTextured:
           "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
       title: ItemMedia

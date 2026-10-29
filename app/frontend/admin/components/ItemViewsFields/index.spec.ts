@@ -34,13 +34,14 @@ const inputs = (wrapper: ReturnType<typeof mountFields>) =>
   wrapper.findAll(".file-input");
 
 describe("ItemViewsFields", () => {
-  it("offers the holo and the eight views", () => {
+  it("offers the holo, the textured holo and the eight views", () => {
     const wrapper = mountFields();
 
     expect(
       inputs(wrapper).map((input) => input.attributes("data-name")),
     ).toEqual([
       "holo",
+      "holoTextured",
       "topView",
       "portView",
       "frontView",
@@ -52,10 +53,11 @@ describe("ItemViewsFields", () => {
     ]);
   });
 
-  it("takes a holo file for the holo and images for the views", () => {
-    const [holo, ...views] = inputs(mountFields());
+  it("takes holo files for the holos and images for the views", () => {
+    const [holo, holoTextured, ...views] = inputs(mountFields());
 
     expect(holo.attributes("data-types")).toBe("holo");
+    expect(holoTextured.attributes("data-types")).toBe("holo");
     expect(
       views.every((view) => view.attributes("data-types") === "image"),
     ).toBe(true);

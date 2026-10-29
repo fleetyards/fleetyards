@@ -21,7 +21,8 @@ module Shared
             bottomView: ::Shared::V1::Schemas::MediaFile,
             rearView: ::Shared::V1::Schemas::MediaFile,
             starboardView: ::Shared::V1::Schemas::MediaFile,
-            holo: ::Shared::V1::Schemas::MediaFile
+            holo: ::Shared::V1::Schemas::MediaFile,
+            holoTextured: ::Shared::V1::Schemas::MediaFile
           },
           additionalProperties: false
         })

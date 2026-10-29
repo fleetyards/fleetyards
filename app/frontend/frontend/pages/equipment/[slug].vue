@@ -273,6 +273,11 @@ watch(
             <ItemHero
               :image="equipment.storeImage"
               :holo="equipment.media?.holo"
+              :holo-textured="equipment.media?.holoTextured"
+              :viewer-route="{
+                name: 'equipment-item-viewer',
+                params: { slug: equipment.slug },
+              }"
               :name="equipment.name"
               test-id="equipment-image"
             />

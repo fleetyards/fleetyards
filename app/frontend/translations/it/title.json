@@ -24,6 +24,7 @@
       "shipHistory": "Cronologia del %{name}",
       "componentHistory": "Cronologia di %{name}",
       "shipViewer": "%{name} Viewer",
+      "itemViewer": "%{name} Viewer",
       "images": "Immagini",
       "stats": "Statistiche",
       "login": "Accedi",

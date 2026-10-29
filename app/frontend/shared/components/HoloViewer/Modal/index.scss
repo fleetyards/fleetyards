@@ -1,15 +1,29 @@
 .holo-viewer-modal {
-  .close {
+  // What is shown, at the top as on the ship page, with the close button;
+  // the scene's own controls are the viewer's, bottom right. Buttons rather
+  // than bare icons, so they read on the light backdrop too.
+  &__controls {
     position: absolute;
-    top: 20px;
-    right: 20px;
-    margin: 0;
-    padding: 3px 10px;
-    color: white;
-    font-size: 1rem;
-    text-shadow: none;
-    cursor: pointer;
+    top: 15px;
+    right: 15px;
     z-index: 1000;
-    opacity: 1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+
+  // Faded with the viewer's own controls until pointed at or tabbed into; a
+  // touch screen keeps them shown, the close button being the only way out.
+  @media (hover: hover) {
+    &__controls {
+      opacity: 0;
+      transition: opacity $transition-base-speed ease;
+    }
+
+    &:hover &__controls,
+    &__controls:focus-within {
+      opacity: 1;
+    }
   }
 }

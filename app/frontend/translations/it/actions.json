@@ -396,6 +396,10 @@
         "color": {
           "enable": "Abilita i colori",
           "disable": "Disabilita i colori"
+        },
+        "grid": {
+          "enable": "Mostra griglia",
+          "disable": "Nascondi griglia"
         }
       },
       "logistics": {

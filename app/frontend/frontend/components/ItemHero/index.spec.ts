@@ -2,7 +2,17 @@ import { describe, it, expect, vi } from "vitest";
 import { flushPromises, mount } from "@vue/test-utils";
 import { type MediaFile } from "@/services/fyApi";
 
-const device = vi.hoisted(() => ({ mobile: false, lowPower: false }));
+const device = vi.hoisted(() => ({
+  mobile: false,
+  lowPower: false,
+  texturedHolo: true,
+  query: {} as Record<string, string>,
+}));
+
+vi.mock("vue-router", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("vue-router")>()),
+  useRoute: () => ({ query: device.query }),
+}));
 
 vi.mock("@/shared/composables/useI18n", () => ({
   useI18n: () => ({ t: (key: string) => key }),
@@ -14,6 +24,10 @@ vi.mock("@/shared/composables/useMobile", () => ({
 
 vi.mock("@/shared/composables/useLowPowerDevice", () => ({
   useLowPowerDevice: () => ref(device.lowPower),
+}));
+
+vi.mock("@/frontend/composables/useFeatures", () => ({
+  useFeatures: () => ({ isFeatureEnabled: () => device.texturedHolo }),
 }));
 
 // The real viewer pulls in three.js, which does not load outside a browser.
@@ -32,18 +46,31 @@ const file = (name: string, size = 1000): MediaFile => ({
 });
 
 const mountHero = (
-  props: { image?: MediaFile; holo?: MediaFile },
-  { mobile = false, lowPower = false } = {},
+  props: { image?: MediaFile; holo?: MediaFile; holoTextured?: MediaFile },
+  { mobile = false, lowPower = false, texturedHolo = true } = {},
 ) => {
   device.mobile = mobile;
   device.lowPower = lowPower;
+  device.texturedHolo = texturedHolo;
 
   return mount(ItemHero, {
-    props: { ...props, name: "P4-AR Rifle", testId: "item-image" },
+    props: {
+      ...props,
+      name: "P4-AR Rifle",
+      testId: "item-image",
+      viewerRoute: { name: "equipment-item-viewer", params: { slug: "p4-ar" } },
+    },
     global: {
       stubs: {
-        HoloViewer: true,
-        Btn: { template: "<button><slot /></button>" },
+        HoloViewer: {
+          name: "HoloViewer",
+          props: ["models"],
+          template: "<div />",
+        },
+        Btn: {
+          props: ["to"],
+          template: "<button :data-to='JSON.stringify(to)'><slot /></button>",
+        },
       },
       directives: { tooltip: {} },
     },
@@ -62,6 +89,34 @@ describe("ItemHero", () => {
       true,
     );
     expect(wrapper.find("[data-test='item-image']").exists()).toBe(false);
+  });
+
+  it("links full screen to the viewer page, with the textured holo if shown", async () => {
+    const wrapper = mountHero({
+      holo: file("holo.glb"),
+      holoTextured: file("holo_textured.glb"),
+    });
+    const fullscreen = () =>
+      JSON.parse(
+        wrapper
+          .find("[data-test='item-image-fullscreen']")
+          .attributes("data-to")!,
+      );
+
+    expect(fullscreen()).toEqual({
+      name: "equipment-item-viewer",
+      params: { slug: "p4-ar" },
+    });
+
+    await wrapper
+      .find("[data-test='item-image-holo-textured']")
+      .trigger("click");
+
+    expect(fullscreen()).toEqual({
+      name: "equipment-item-viewer",
+      params: { slug: "p4-ar" },
+      query: { textured: "1" },
+    });
   });
 
   it("falls back to the picture when the holo cannot be shown", async () => {
@@ -97,6 +152,125 @@ describe("ItemHero", () => {
     );
 
     expect(wrapper.find("[data-test='item-image-holo']").exists()).toBe(false);
+  });
+
+  it("switches the holo to the textured one and back", async () => {
+    const wrapper = mountHero({
+      holo: file("holo.glb"),
+      holoTextured: file("holo_textured.glb"),
+    });
+    const toggle = wrapper.find("[data-test='item-image-holo-textured']");
+    const models = () =>
+      wrapper.findComponent({ name: "HoloViewer" }).props("models");
+
+    expect(models()).toEqual([
+      expect.objectContaining({
+        path: "https://example.test/holo.glb",
+        textured: false,
+      }),
+    ]);
+
+    await toggle.trigger("click");
+
+    expect(models()).toEqual([
+      expect.objectContaining({
+        path: "https://example.test/holo_textured.glb",
+        textured: true,
+      }),
+    ]);
+
+    await toggle.trigger("click");
+
+    expect(models()).toEqual([
+      expect.objectContaining({ path: "https://example.test/holo.glb" }),
+    ]);
+  });
+
+  it("falls back to the plain holo when the textured one cannot be shown", async () => {
+    const wrapper = mountHero({
+      image: file("angled.webp"),
+      holo: file("holo.glb"),
+      holoTextured: file("holo_textured.glb"),
+    });
+    const viewer = () => wrapper.findComponent({ name: "HoloViewer" });
+
+    await wrapper
+      .find("[data-test='item-image-holo-textured']")
+      .trigger("click");
+    viewer().vm.$emit("unavailable");
+    await nextTick();
+
+    expect(viewer().props("models")).toEqual([
+      expect.objectContaining({ path: "https://example.test/holo.glb" }),
+    ]);
+    expect(wrapper.find("[data-test='item-image']").exists()).toBe(false);
+  });
+
+  it("comes back from full screen on the textured holo", () => {
+    device.query = { textured: "1" };
+    const wrapper = mountHero({
+      holo: file("holo.glb"),
+      holoTextured: file("holo_textured.glb"),
+    });
+    device.query = {};
+
+    expect(
+      wrapper.findComponent({ name: "HoloViewer" }).props("models"),
+    ).toEqual([expect.objectContaining({ textured: true })]);
+  });
+
+  it("leaves the switch out without a textured holo", () => {
+    const wrapper = mountHero({ holo: file("holo.glb") });
+
+    expect(
+      wrapper.find("[data-test='item-image-holo-textured']").exists(),
+    ).toBe(false);
+  });
+
+  it("leaves the switch out on a low-power device for a large textured holo", () => {
+    const wrapper = mountHero(
+      {
+        holo: file("holo.glb"),
+        holoTextured: file("holo_textured.glb", 100_000_000),
+      },
+      { lowPower: true },
+    );
+
+    expect(
+      wrapper.find("[data-test='item-image-holo-textured']").exists(),
+    ).toBe(false);
+  });
+
+  it("starts the next item on its plain holo", async () => {
+    const wrapper = mountHero({
+      holo: file("holo.glb"),
+      holoTextured: file("holo_textured.glb"),
+    });
+
+    await wrapper
+      .find("[data-test='item-image-holo-textured']")
+      .trigger("click");
+    await wrapper.setProps({
+      holo: file("other.glb"),
+      holoTextured: file("other_textured.glb"),
+    });
+
+    expect(
+      wrapper.findComponent({ name: "HoloViewer" }).props("models"),
+    ).toEqual([
+      expect.objectContaining({ path: "https://example.test/other.glb" }),
+    ]);
+  });
+
+  it("leaves the switch out while the flag is off", () => {
+    const wrapper = mountHero(
+      { holo: file("holo.glb"), holoTextured: file("holo_textured.glb") },
+      { texturedHolo: false },
+    );
+
+    expect(
+      wrapper.find("[data-test='item-image-holo-textured']").exists(),
+    ).toBe(false);
   });
 
   it("renders nothing without a picture or a holo", () => {
