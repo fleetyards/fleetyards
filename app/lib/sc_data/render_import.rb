@@ -17,6 +17,8 @@ module ScData
       complete = true
 
       renders(listing, path).each do |field, name, md5|
+        next if detached?(record, field, md5s[field] == md5)
+
         # A render already on the record: imported before, or the same file
         # uploaded by hand, or by an import that predates the stored digests.
         if (md5s[field] == md5 || current_checksum(record, field) == md5) && stored?(record, field)
@@ -116,6 +118,14 @@ module ScData
 
       checksum&.unpack1("m0")&.unpack1("H*")
     end
+
+    # A render taken in before and since detached in the admin, which only a
+    # run that restores detached renders brings back.
+    private def detached?(record, field, imported)
+      imported && !restore_detached? && attachment?(record, field) && !record.public_send(field).attached?
+    end
+
+    private def restore_detached? = true
 
     private def attachment?(record, field)
       record.class.reflect_on_attachment(field).present?

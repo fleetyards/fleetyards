@@ -3,7 +3,8 @@
 # The item-views import skips an item whose listing is unchanged, and the
 # textured holos published before items had a field for them were skipped with
 # it. Clearing the digest makes the next run read every listing again; renders
-# already attached are matched by their MD5 and not fetched.
+# already attached are matched by their MD5 and not fetched, and one detached
+# in the admin stays detached.
 class ReimportItemViewsForTexturedHolos < ActiveRecord::Migration[8.1]
   def up
     [Component, Equipment].each do |klass|

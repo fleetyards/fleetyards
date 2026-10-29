@@ -112,6 +112,25 @@ module ScData
       assert_equal blob, @component.top_view.blob
     end
 
+    test "leaves a render detached in the admin detached on a full run" do
+      @component.update!(item_view_md5s: {"top_view" => Digest::MD5.hexdigest(PNG)})
+      publish(@component.sc_key, {"top.png" => PNG, "holo_textured.gltf" => HOLO})
+
+      perform
+
+      assert_not @component.top_view.attached?
+      assert @component.holo_textured.attached?
+    end
+
+    test "restores a detached render when the item is synced" do
+      @component.update!(item_view_md5s: {"top_view" => Digest::MD5.hexdigest(PNG)})
+      publish(@component.sc_key, {"top.png" => PNG})
+
+      perform("Component", @component.id)
+
+      assert @component.top_view.attached?
+    end
+
     test "syncs one item even when its listing has not changed" do
       @equipment.update!(item_views_digest: "listing-1")
       publish(@equipment.sc_key, {"top.png" => PNG})

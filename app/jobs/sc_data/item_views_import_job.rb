@@ -23,6 +23,7 @@ module ScData
     def perform(record_type = nil, record_id = nil)
       return unless ::ScData::ItemViewsStore.configured?
 
+      @restore_detached = record_id.present?
       store = ::ScData::ItemViewsStore.new
       items = store.items
 
@@ -94,6 +95,10 @@ module ScData
 
       field if FIELDS.include?(field)
     end
+
+    # A full run can re-read a listing whose digest it already holds, so it
+    # leaves a render detached in the admin alone; syncing the item restores it.
+    private def restore_detached? = @restore_detached
 
     private def render_metadata(_record, _field) = {}
 
