@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.27.0](https://github.com/fleetyards/fleetyards/compare/v9.26.1...v9.27.0) (2026-10-29)
+
+
+### Features
+
+* **catalogue:** textured item holos, and full screen holo viewers of their own ([#6043](https://github.com/fleetyards/fleetyards/issues/6043)) ([799cfde](https://github.com/fleetyards/fleetyards/commit/799cfde4455712cc630134eff33f7f329de01620))
+* **hangar-planner:** decide on each hangar ship, and melt whole pledges ([#6047](https://github.com/fleetyards/fleetyards/issues/6047)) ([74e327d](https://github.com/fleetyards/fleetyards/commit/74e327db63db22df2bfb11370ae60064c1c129c1))
+* **holo:** repaint the textured holo with the ship's paints, lite and landed ([#6021](https://github.com/fleetyards/fleetyards/issues/6021)) ([5eed071](https://github.com/fleetyards/fleetyards/commit/5eed07136ab8f81fb80d991c62be9cae6e49fbd8))
+* **raffles:** import a raffle's texts and images from one folder ([#6046](https://github.com/fleetyards/fleetyards/issues/6046)) ([b3b2f6e](https://github.com/fleetyards/fleetyards/commit/b3b2f6e20f14f3a6ed544658aa639861c9a9e429))
+* **raffles:** languages, preview link, live updates and item links ([#6044](https://github.com/fleetyards/fleetyards/issues/6044)) ([2cb4bf1](https://github.com/fleetyards/fleetyards/commit/2cb4bf1b918e40f5bc17593561ff226e0fdb6708))
+
+
+### Bug Fixes
+
+* **loadouts:** centre the picker's badge and check vertically on mobile ([883af75](https://github.com/fleetyards/fleetyards/commit/883af754ba695a96cf3f81dba67138adfc2d4f1e))
+* **loadouts:** keep rocket pods and stray weapons out of gun ports, list a repeated part once ([#6041](https://github.com/fleetyards/fleetyards/issues/6041)) ([d5de19c](https://github.com/fleetyards/fleetyards/commit/d5de19cd46e77b7a6f6621fe0020b52900896adb))
+* **models:** wrap the base card's chips instead of running past its edge ([90ed92c](https://github.com/fleetyards/fleetyards/commit/90ed92cc16485dc671c9fee6ca2b2e89d6befc4f))
+* **panel:** let flush metrics tiles override the body's top padding ([212b792](https://github.com/fleetyards/fleetyards/commit/212b792807187e3f5fa32d60596f996d056e75b3))
+* **panel:** pad a body under a background image like a first body ([5772d6f](https://github.com/fleetyards/fleetyards/commit/5772d6f3eb91573b2cf3ed174a822df1c03f1d39))
+
+
+### Chores
+
+* **deps-dev:** bump orval from 8.44.0 to 8.45.0 ([#6040](https://github.com/fleetyards/fleetyards/issues/6040)) ([e896ced](https://github.com/fleetyards/fleetyards/commit/e896ced4af418c3b38014a6f2f35c3b22b55f53d))
+* **deps-dev:** bump stylelint-scss from 7.3.0 to 7.4.0 ([#6037](https://github.com/fleetyards/fleetyards/issues/6037)) ([e3ac3c5](https://github.com/fleetyards/fleetyards/commit/e3ac3c5c95a96461719acbfa1184ef6fae946e4d))
+* **deps:** bump @event-calendar/core from 5.18.0 to 5.18.1 ([#6038](https://github.com/fleetyards/fleetyards/issues/6038)) ([4272c42](https://github.com/fleetyards/fleetyards/commit/4272c4218fc09847506984c33e6a35648a4a2ab7))
+* **deps:** bump oauth2 from 2.0.25 to 2.1.0 ([#6039](https://github.com/fleetyards/fleetyards/issues/6039)) ([d24ff37](https://github.com/fleetyards/fleetyards/commit/d24ff3798aa712e37b5483a5f9d352a3730f4345))
+* **deps:** bump ransack from 5.0.2 to 5.0.3 ([#6036](https://github.com/fleetyards/fleetyards/issues/6036)) ([2d77ece](https://github.com/fleetyards/fleetyards/commit/2d77ece2b7da7fd04182d78a0111241387bbb785))
+* ignore local raffle notes ([7d9b453](https://github.com/fleetyards/fleetyards/commit/7d9b453b734b9e3b115675b8a7cb97f3563a875b))
+
 ## [9.26.1](https://github.com/fleetyards/fleetyards/compare/v9.26.0...v9.26.1) (2026-10-28)
 
 
