@@ -9,14 +9,9 @@ import { type Model } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useModelsStore } from "@/frontend/stores/models";
 import { storeToRefs } from "pinia";
-import {
-  modelStateHolo,
-  modelStateMetrics,
-  useModelStates,
-} from "@/frontend/composables/useModelStates";
+import { useModelStates } from "@/frontend/composables/useModelStates";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
-import { isLowPowerDevice } from "@/shared/composables/useLowPowerDevice";
 
 type Props = {
   model: Model;
@@ -51,31 +46,24 @@ watch(
 
 const comlink = useComlink();
 
+const route = useRoute();
+
 const { modelState } = storeToRefs(useModelsStore());
 
 const { resolveState } = useModelStates(() => props.model);
 
-// Decided once, so a resize does not swap the file under the open viewer.
-const preferLiteHolo = isLowPowerDevice();
-
-// Popped out of the ship page, so it opens on the state that page was left on.
-const holoModel = computed(() => {
-  const state = resolveState(modelState.value);
-  const holo = modelStateHolo(props.model, state, { lite: preferLiteHolo });
-
-  return {
-    path: holo?.url,
-    length: modelStateMetrics(props.model, state).fleetchartLength,
-    size: holo?.size,
-  };
-});
-
+// Popped out of the ship page, so it opens on the state, and the textured
+// holo and paint, that page was left on.
 const openModal = () => {
   comlink.emit("open-modal", {
-    component: () => import("@/shared/components/HoloViewer/Modal/index.vue"),
+    component: () => import("@/frontend/components/Models/HoloModal/index.vue"),
     fullscreen: true,
     props: {
-      models: [holoModel.value],
+      model: props.model,
+      state: resolveState(modelState.value),
+      textured: route.query.textured === "1",
+      paintId:
+        typeof route.query.paint === "string" ? route.query.paint : undefined,
       backRoute: {
         name: "ship",
         params: { slug: props.model.slug },

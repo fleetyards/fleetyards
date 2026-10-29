@@ -375,6 +375,9 @@ const adiMap = computed(() => {
                     params: {
                       slug: model.slug,
                     },
+                    query: holoModel?.textured
+                      ? { textured: '1', paint: holoPaintId }
+                      : undefined,
                   }"
                   v-tooltip="t('actions.vehicleOverview.fullscreenHolo')"
                   :aria-label="t('actions.vehicleOverview.fullscreenHolo')"
