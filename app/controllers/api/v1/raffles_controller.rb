@@ -37,7 +37,7 @@ module Api
         @raffle = Raffle.find_by_token_for(:preview, params[:token].to_s)
         raise ActiveRecord::RecordNotFound if @raffle.blank?
 
-        @viewer_entries = {}
+        @viewer_entries = viewer_entries_for([@raffle.id])
         render :show
       end
 

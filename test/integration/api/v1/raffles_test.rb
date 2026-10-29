@@ -176,6 +176,15 @@ class Api::V1::RafflesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /raffles/preview/:token marks the reader's own entry" do
+    create(:raffle_entry, raffle: @raffle, user: @user)
+    sign_in @user
+
+    assert_api_response :get, 200, api_path: "/raffles/preview/{token}", path_params: {token: @raffle.generate_token_for(:preview)} do
+      assert parsed_body["entered"]
+    end
+  end
+
   test "GET /raffles/preview/:token returns 404 for an expired token" do
     token = @raffle.generate_token_for(:preview)
 
