@@ -126,11 +126,13 @@ class LoadoutSlots
   end
 
   # A port that names a type's sub types takes only those: a gun port takes a
-  # `WeaponGun` that is a `Gun`, and a rocket pod is a `WeaponGun` too.
+  # `WeaponGun` that is a `Gun`, and a rocket pod is a `WeaponGun` too. A part
+  # whose sub type the game leaves UNDEFINED fits any of them -- every quantum
+  # drive does, and the ports ask for a `QDrive`.
   def self.sub_type_fits?(facts, component)
     allowed = facts.sub_types.to_h[component.component_type]
 
-    allowed.blank? || allowed.include?(component.component_sub_type)
+    allowed.blank? || component.component_sub_type.blank? || allowed.include?(component.component_sub_type)
   end
 
   # Tags the game puts on nearly everything, which say nothing about a fit.

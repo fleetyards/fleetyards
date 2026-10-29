@@ -105,6 +105,16 @@ class Api::V1::HardpointsLoadoutOptionsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hardpoints/:id/loadout-options offers a part whose sub type the game leaves undefined" do
+    port = create(:hardpoint, parent: create(:model), sc_name: "hardpoint_quantum_drive", source: :game_files,
+      types: %w[QuantumDrive], sub_types: {"QuantumDrive" => ["QDrive"]}, min_size: 1, max_size: 1)
+    create(:component, name: "Drive", component_type: "QuantumDrive", component_sub_type: nil, category: "quantumdrive", size: "1")
+
+    assert_api_response :get, 200, path_params: {id: port.id} do
+      assert_equal ["Drive"], parsed_body.map { |option| option.dig("component", "name") }
+    end
+  end
+
   test "GET /hardpoints/:id/loadout-options keeps a rocket pod the slot came with" do
     port = create(:hardpoint, parent: create(:model), sc_name: "hardpoint_weapon", source: :game_files,
       types: %w[WeaponGun], sub_types: {"WeaponGun" => ["Gun"]}, min_size: 1, max_size: 1)
