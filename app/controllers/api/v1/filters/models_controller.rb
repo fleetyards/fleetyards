@@ -67,7 +67,7 @@ module Api
 
           scope = Model.visible.active.includes(:manufacturer)
           scope = with_cargo_grids(scope) if model_query_params.delete("with_cargo_grids")
-          scope = scope.where(id: current_resource_owner.models.select(:id)) if model_query_params.delete("in_hangar") && current_resource_owner.present?
+          scope = scope.where(id: current_resource_owner.vehicles.purchased.where(loaner: false).select(:model_id)) if model_query_params.delete("in_hangar") && current_resource_owner.present?
           scope = container_fit(scope) if container_fit_params.present?
 
           @q = scope.ransack(model_query_params)
@@ -79,12 +79,13 @@ module Api
 
         # Which of the models on this page the current user already has a vehicle
         # for, split by wanted, so the option rows can be marked without asking
-        # per row - Model#in_hangar is one query each.
+        # per row - Model#in_hangar is one query each. Loaners come with another
+        # ship rather than being owned or wished for, so they mark nothing.
         private def hangar_model_ids(models)
           return [[], []] if current_resource_owner.blank?
 
           pairs = current_resource_owner.vehicles
-            .where(model_id: models.map(&:id))
+            .where(loaner: false, model_id: models.map(&:id))
             .pluck(:model_id, :wanted)
 
           [

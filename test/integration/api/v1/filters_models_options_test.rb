@@ -155,6 +155,36 @@ class Api::V1::FiltersModelsOptionsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /filters/models/options does not mark models the signed in user only has as loaners" do
+    lent, lent_for_wish = create_list(:model, 2, :with_store_image)
+    user = create(:user)
+    create(:vehicle, :loaner, user:, model: lent)
+    create(:vehicle, :loaner, :wanted, user:, model: lent_for_wish)
+    sign_in user
+
+    assert_api_response :get, 200 do
+      flags = parsed_body["items"].to_h { |item| [item["id"], item.slice("inHangar", "onWishlist")] }
+
+      assert_equal({"inHangar" => false, "onWishlist" => false}, flags[lent.id])
+      assert_equal({"inHangar" => false, "onWishlist" => false}, flags[lent_for_wish.id])
+    end
+  end
+
+  test "GET /filters/models/options with inHangar lists only ships the signed in user bought" do
+    owned, wished, lent = create_list(:model, 3, :with_store_image)
+    user = create(:user)
+    create(:vehicle, user:, model: owned)
+    create(:vehicle, :wanted, user:, model: wished)
+    create(:vehicle, :loaner, user:, model: lent)
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {"inHangar" => true}} do
+      ids = parsed_body["items"].pluck("id")
+
+      assert_equal [owned.id], ids
+    end
+  end
+
   test "GET /filters/models/options reports no hangar flags when signed out" do
     model = create(:model, :with_store_image)
     create(:vehicle, model:)
