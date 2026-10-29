@@ -331,7 +331,8 @@ export const routes: RouteRecordRaw[] = [
       feature: FeatureFlagName.HANGAR_PLANNER,
     },
   },
-  // The comparison with the hangar became the plan's own page.
+  // The plan page is the comparison with the hangar; this path still resolves
+  // for links saved to it.
   {
     path: "plans/:id/hangar/",
     redirect: (to) => ({ name: "hangar-plan", params: to.params }),

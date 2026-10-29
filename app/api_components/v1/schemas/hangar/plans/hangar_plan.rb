@@ -25,7 +25,7 @@ module V1
               melts: {type: :array, items: ::V1::Schemas::Hangar::Plans::HangarPlanMelt},
               vehicleMarks: {
                 type: :array,
-                description: "The hangar ships the plan still has to settle; empty on a shared plan",
+                description: "What the plan says about each hangar ship it does not route or melt: undecided, to change, or kept as it is; empty on a shared plan",
                 items: ::V1::Schemas::Hangar::Plans::HangarPlanVehicleMark
               },
               createdAt: {type: :string, format: "date-time"},

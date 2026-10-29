@@ -35334,8 +35334,8 @@ components:
             "$ref": "#/components/schemas/HangarPlanMelt"
         vehicleMarks:
           type: array
-          description: The hangar ships the plan still has to settle; empty on a shared
-            plan
+          description: 'What the plan says about each hangar ship it does not route
+            or melt: undecided, to change, or kept as it is; empty on a shared plan'
           items:
             "$ref": "#/components/schemas/HangarPlanVehicleMark"
         createdAt:
