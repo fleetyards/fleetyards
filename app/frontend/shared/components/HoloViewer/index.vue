@@ -9,13 +9,21 @@ export default {
 import Loader from "@/shared/components/Loader/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { type Camera, type Mesh, type Object3D, Vector3 } from "three";
+import {
+  ACESFilmicToneMapping,
+  type Camera,
+  type Mesh,
+  NeutralToneMapping,
+  type Object3D,
+  Vector3,
+} from "three";
 import { useI18n } from "@/shared/composables/useI18n";
 
 import { TresCanvas } from "@tresjs/core";
 import { webglAvailable } from "@/shared/utils/Webgl";
 import { OrbitControls, TransformControls, Grid } from "@tresjs/cientos";
 import Model from "./Model/index.vue";
+import RoomLighting from "./RoomLighting/index.vue";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useLowPowerDevice } from "@/shared/composables/useLowPowerDevice";
 import { LOW_POWER_HOLO_SIZE_LIMIT } from "@/shared/components/HoloViewer/limits";
@@ -28,6 +36,11 @@ export type HoloModel = {
   size?: number;
   // Painted and animated: drawn with its own materials, not the holo's.
   textured?: boolean;
+  // A textured holo's paint: the base-colour map its body is drawn with in
+  // place of the export's own, and the occlusion/roughness/metallic map that
+  // goes with it.
+  paint?: string;
+  paintOrm?: string;
   // Parts drawn on the holo's ports, in its own frame.
   mounts?: HoloMount[];
 };
@@ -91,6 +104,10 @@ const webglSupported = ref(true);
 // What was agreed to, in bytes: anything up to it -- the other pose of the same
 // ship, usually -- loads without asking again, and anything larger asks anew.
 const confirmedSize = ref(0);
+
+// Drawn with its own colours, which the tone mapping keeps as they are rather
+// than pushing the dark ones towards black.
+const textured = computed(() => props.models.some((model) => model.textured));
 
 const totalSize = computed(() =>
   props.models.reduce((sum, model) => sum + (model.size ?? 0), 0),
@@ -539,16 +556,18 @@ defineExpose({
       :antialias="!lowPower"
       ref="canvas"
       :render-mode="renderMode"
+      :tone-mapping="textured ? NeutralToneMapping : ACESFilmicToneMapping"
       alpha
       :on-error="handleRenderError"
     >
       <TresPerspectiveCamera :position="cameraPosition" :args="cameraArgs" />
       <TresDirectionalLight
         :position="lightPosition"
-        :intensity="2"
+        :intensity="textured ? 1.5 : 2"
         :cast-shadow="!lowPower"
       />
-      <TresAmbientLight :intensity="lowPower ? 0.8 : 0.5" />
+      <RoomLighting v-if="textured" />
+      <TresAmbientLight v-else :intensity="lowPower ? 0.8 : 0.5" />
       <OrbitControls
         :auto-rotate="internalAutoRotate"
         :auto-rotate-speed="autoRotateSpeed"

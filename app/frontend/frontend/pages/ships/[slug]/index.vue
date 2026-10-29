@@ -41,13 +41,19 @@ import {
   ModelStateEnum,
   modelStateHolo,
   modelStateMetrics,
+  modelStateTexturedHolo,
   useModelStates,
 } from "@/frontend/composables/useModelStates";
 import { storeToRefs } from "pinia";
 import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";
-import { FeatureFlagName, type ModelExtended } from "@/services/fyApi";
+import {
+  FeatureFlagName,
+  type ModelExtended,
+  type ModelPaint,
+  useModelPaints,
+} from "@/services/fyApi";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import {
@@ -311,23 +317,60 @@ const preferLiteHolo = isLowPowerDevice();
 
 const texturedHolo = ref(false);
 
-// Only the flying pose has a painted export, so another state leaves the switch
-// out rather than offering a button that changes nothing.
-const texturedHoloAvailable = computed(
-  () =>
-    isFeatureEnabled(FeatureFlagName.HOLO_TEXTURED) &&
-    activeState.value === ModelStateEnum.FLIGHT &&
-    !!props.model.media.holoTextured,
+// A state without a painted export of its own leaves the switch out rather
+// than offering a button that changes nothing.
+const texturedHoloExport = computed(() =>
+  isFeatureEnabled(FeatureFlagName.HOLO_TEXTURED)
+    ? modelStateTexturedHolo(props.model, activeState.value, {
+        lite: preferLiteHolo,
+      })
+    : undefined,
 );
+
+const texturedHoloAvailable = computed(() => !!texturedHoloExport.value);
 
 const toggleTexturedHolo = () => {
   texturedHolo.value = !texturedHolo.value;
 };
 
+// The paints the textured holo can be repainted in, beside the ship's own,
+// fetched once the switch is on: most visitors never turn it.
+const { data: paints } = useModelPaints(() => props.model.slug, {
+  query: {
+    enabled: computed(() => texturedHoloAvailable.value && texturedHolo.value),
+  },
+});
+
+// Each export has an atlas of its own, so only its own maps fit it.
+const paintMaps = (paint: ModelPaint) =>
+  texturedHoloExport.value?.lite
+    ? { base: paint.media.holoTextureLite, orm: paint.media.holoTextureOrmLite }
+    : { base: paint.media.holoTexture, orm: paint.media.holoTextureOrm };
+
+// A variant whose own colours are a livery of its base ship's wears it where
+// no paint is picked.
+const liveryMaps = computed(() => {
+  const { media } = props.model;
+
+  return texturedHoloExport.value?.lite
+    ? { base: media.holoTextureLite?.url, orm: media.holoTextureOrmLite?.url }
+    : { base: media.holoTexture?.url, orm: media.holoTextureOrm?.url };
+});
+
+const holoPaints = computed(() =>
+  (paints.value ?? []).filter((paint) => !!paintMaps(paint).base),
+);
+
+const holoPaintId = ref<string>();
+
+const holoPaint = computed(() =>
+  holoPaints.value.find((paint) => paint.id === holoPaintId.value),
+);
+
 const holoModel = computed(() => {
   const textured = texturedHoloAvailable.value && texturedHolo.value;
   const holo = textured
-    ? props.model.media.holoTextured
+    ? texturedHoloExport.value?.file
     : modelStateHolo(props.model, activeState.value, { lite: preferLiteHolo });
   const path = holo?.url;
   const length = modelStateMetrics(
@@ -339,11 +382,19 @@ const holoModel = computed(() => {
     return;
   }
 
+  const maps = textured
+    ? holoPaint.value
+      ? paintMaps(holoPaint.value)
+      : liveryMaps.value
+    : undefined;
+
   return {
     path,
     length,
     size: holo?.size,
     textured,
+    paint: maps?.base || undefined,
+    paintOrm: maps?.orm || undefined,
   };
 });
 
@@ -425,11 +476,42 @@ const adiMap = computed(() => {
                 <Btn
                   v-if="holoOpen && texturedHoloAvailable"
                   :active="texturedHolo"
+                  v-tooltip="t('labels.texturedHolo')"
+                  :aria-label="t('labels.texturedHolo')"
                   data-test="model-holo-textured"
                   @click="toggleTexturedHolo"
                 >
-                  {{ t("labels.texturedHolo") }}
+                  <i class="fa-duotone fa-palette" />
                 </Btn>
+
+                <BtnDropdown
+                  v-if="
+                    holoOpen &&
+                    texturedHoloAvailable &&
+                    texturedHolo &&
+                    holoPaints.length
+                  "
+                  expand-bottom
+                  data-test="model-holo-paint"
+                >
+                  <template #label>
+                    <span>{{
+                      holoPaint?.name ?? t("labels.texturedHoloOwnPaint")
+                    }}</span>
+                    <i class="fa-light fa-chevron-down" />
+                  </template>
+                  <Btn :active="!holoPaint" @click="holoPaintId = undefined">
+                    {{ t("labels.texturedHoloOwnPaint") }}
+                  </Btn>
+                  <Btn
+                    v-for="paint in holoPaints"
+                    :key="paint.id"
+                    :active="holoPaint?.id === paint.id"
+                    @click="holoPaintId = paint.id"
+                  >
+                    {{ paint.name }}
+                  </Btn>
+                </BtnDropdown>
 
                 <Btn v-if="adiMap" :href="adiMap">
                   <img :src="adiIcon" class="adi-icon" />

@@ -9,7 +9,10 @@ module ScData
   # rule added on one side fails the other until it is ported.
   module ShipViewFields
     VIEW_NAME = /\A((?:extended|landed|flight)[-_ ]?)?(top|side|port|front|angled[-_ ]?rear|angled|bottom|rear|starboard)([-_ ]?view)?([-_ ]?colored)?\z/i
-    HOLO_NAME = /\A((?:extended|landed|flight)[-_ ]?)?holo(?:[-_ ]?(lite|textured|hull))?\z/i
+    HOLO_NAME = /\A((?:extended|landed|flight)[-_ ]?)?holo(?:[-_ ]?(lite|textured(?:[-_ ]?lite)?|hull))?\z/i
+    # The painted export is also named without "holo": flight_textured.glb,
+    # landed_textured_lite.glb.
+    TEXTURED_NAME = /\A((?:landed|flight)[-_ ]?)?textured([-_ ]?lite)?\z/i
 
     VIEWPOINTS = {
       "top" => "top",
@@ -27,8 +30,6 @@ module ScData
     VIEW_EXTENSIONS = %w[png jpg jpeg webp gif].freeze
     HOLO_EXTENSIONS = %w[gltf glb].freeze
 
-    FLIGHT_ONLY_HOLOS = %w[textured hull].freeze
-
     module_function
 
     # The attachment name, or nil for a file that has no field.
@@ -37,14 +38,22 @@ module ScData
       stem = basename.sub(/\.[^.]+\z/, "").strip
       extension = basename[(stem.length + 1)..].to_s.downcase
 
+      if (textured = TEXTURED_NAME.match(stem))
+        return unless HOLO_EXTENSIONS.include?(extension)
+
+        return [prefix_for(textured[1]), "holo_textured", ("lite" if textured[2])].compact.join("_")
+      end
+
       if (holo = HOLO_NAME.match(stem))
         return unless HOLO_EXTENSIONS.include?(extension)
 
         prefix = prefix_for(holo[1])
-        variant = holo[2]&.downcase
+        variant = holo[2]&.downcase&.sub(/\Atextured[-_ ]?lite\z/, "textured_lite")
 
-        # Only the flying pose is exported painted, or without its components.
-        return if FLIGHT_ONLY_HOLOS.include?(variant) && prefix
+        # Only the flying pose is exported without its components, and the
+        # extended one is never exported painted.
+        return if variant == "hull" && prefix
+        return if variant&.start_with?("textured") && prefix == "extended"
 
         return [prefix, "holo", variant].compact.join("_")
       end

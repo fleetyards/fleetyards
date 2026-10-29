@@ -58,10 +58,20 @@ module ScData
 
         next if model_id.nil? && model.ship_views_digest == entry["files"]
 
-        fields = import(store, model, path, entry["files"])
+        listing = store.listing(path)
+        @liveried = Model::LIVERY_MAP_ATTACHMENT_NAMES.any? { |name| model.public_send(name).attached? }
+        fields = import(store, model, path, entry["files"], listing:)
         attached[model.slug] = fields if fields.any?
+
+        # A paint map that did not come down is fetched again next run. A
+        # liveried variant's paints come from its base ship's listing.
+        if !@liveried && !textured_paints(store).call(model, path, listing.fetch("files", {}))
+          model.update_columns(ship_views_digest: nil)
+        end
       rescue => e
-        # Left on the old digest, so the next run tries the ship again.
+        # The renders may already have stored the new digest, so it is cleared
+        # for the next run to try the ship again.
+        model&.update_columns(ship_views_digest: nil)
         log(:error, "#{path} failed: #{e.class}: #{e.message}")
         Appsignal.report_error(e)
       end
@@ -96,10 +106,20 @@ module ScData
         .to_h
     end
 
+    private def textured_paints(store)
+      @textured_paints ||= TexturedPaintsImport.new(store, logger: method(:log))
+    end
+
     private def field_for(name)
       return "hardpoint_transforms" if HARDPOINT_TRANSFORMS_NAME.match?(name.split("/").last.to_s)
 
-      ShipViewFields.field_for(name)
+      field = ShipViewFields.field_for(name)
+
+      # A variant in its base ship's livery shows that ship's holos, which its
+      # own maps are cut for; see TexturedPaintsImport.
+      return if @liveried && TexturedPaintsImport::BASE_SHIP_FIELDS.include?(field&.to_sym)
+
+      field
     end
 
     # Checked here rather than where it is served, so a malformed export keeps

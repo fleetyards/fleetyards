@@ -1,6 +1,6 @@
 import { Group, type Material, type Mesh, type Object3D } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { sharedDracoLoader } from "./dracoLoader";
+import { prepareGltfLoader } from "./gltfLoader";
 
 // A part drawn on a port of the holo below it: the port's place in its parent's
 // frame, the part's own holo, and whatever sits on the part's ports in turn.
@@ -72,8 +72,7 @@ const loadHolo = (path: string) => {
   let scene = loaded.get(path);
 
   if (!scene) {
-    scene = new GLTFLoader()
-      .setDRACOLoader(sharedDracoLoader())
+    scene = prepareGltfLoader(new GLTFLoader())
       .loadAsync(path)
       .then((gltf) => gltf.scene);
     // A failed download is tried again by the next preview that asks for it.

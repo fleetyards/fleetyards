@@ -61,11 +61,32 @@
     }
   },
   {
-    "name": "maps the textured holo of the flight state alone",
+    "name": "maps the textured holos of the flight and landed states",
     "cases": {
       "flight_holo_textured.glb": "holoTextured",
       "holo_textured.glb": "holoTextured",
-      "landed_holo_textured.glb": null
+      "flight_textured.glb": "holoTextured",
+      "textured.glb": "holoTextured",
+      "landed_holo_textured.glb": "landedHoloTextured",
+      "landed_textured.glb": "landedHoloTextured",
+      "extended_holo_textured.glb": null,
+      "extended_textured.glb": null,
+      "flight_textured.png": null,
+      "flight_textured.json": null
+    }
+  },
+  {
+    "name": "maps the lite textured holos of the flight and landed states",
+    "cases": {
+      "flight_textured_lite.glb": "holoTexturedLite",
+      "flight_holo_textured_lite.glb": "holoTexturedLite",
+      "holo-textured-lite.glb": "holoTexturedLite",
+      "texturedlite.glb": "holoTexturedLite",
+      "landed_textured_lite.glb": "landedHoloTexturedLite",
+      "landed_holo_textured_lite.glb": "landedHoloTexturedLite",
+      "extended_textured_lite.glb": null,
+      "flight_textured_lite.json": null,
+      "flight_textured_lite_golem-black-red-black.webp": null
     }
   },
   {

@@ -475,6 +475,7 @@
       "3dView": "3D",
       "3dMap": "Map",
       "texturedHolo": "纹理",
+      "texturedHoloOwnPaint": "标准涂装",
       "viewInAr": "AR",
       "viewInArHint": "以真实尺寸放置在你的房间中",
       "filter": "筛选",
@@ -1298,6 +1299,9 @@
         "extendedHoloLite": "展开轻量全息图",
         "landedHoloLite": "着陆轻量全息图",
         "holoTextured": "纹理全息图",
+        "holoTexturedLite": "纹理轻量全息图",
+        "landedHoloTextured": "着陆纹理全息图",
+        "landedHoloTexturedLite": "着陆纹理轻量全息图",
         "holoHull": "船体全息图",
         "state": {
           "flight": "飞行中",

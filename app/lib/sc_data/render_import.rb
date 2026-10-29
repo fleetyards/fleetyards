@@ -10,13 +10,13 @@ module ScData
   # new blob starts with (`render_metadata`). A field that is a column rather
   # than an attachment takes what `render_data` reads out of the file.
   module RenderImport
-    private def import(store, record, path, digest)
+    private def import(store, record, path, digest, listing: store.listing(path))
       md5s = record.public_send(render_md5s_column).dup
       files = []
       columns = []
       complete = true
 
-      renders(store.listing(path), path).each do |field, name, md5|
+      renders(listing, path).each do |field, name, md5|
         # A render already on the record: imported before, or the same file
         # uploaded by hand, or by an import that predates the stored digests.
         if (md5s[field] == md5 || current_checksum(record, field) == md5) && stored?(record, field)

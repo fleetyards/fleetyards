@@ -59,6 +59,9 @@ export const HOLO_FIELDS = [
   "extendedHoloLite",
   "landedHoloLite",
   "holoTextured",
+  "holoTexturedLite",
+  "landedHoloTextured",
+  "landedHoloTexturedLite",
   "holoHull",
 ] as const satisfies readonly (keyof ModelUpdateInput)[];
 
@@ -102,10 +105,19 @@ export const FIELD_SECTIONS: readonly FieldSection[] = (
   ["flight", "extended", "landed"] as const
 ).map((state) => ({
   state,
-  holos: (state === "flight"
-    ? (["holo", "holoLite", "holoTextured", "holoHull"] as const)
-    : (["holo", "holoLite"] as const)
-  ).map((field) => inState(state, field)),
+  holos: (
+    {
+      flight: [
+        "holo",
+        "holoLite",
+        "holoTextured",
+        "holoTexturedLite",
+        "holoHull",
+      ],
+      extended: ["holo", "holoLite"],
+      landed: ["holo", "holoLite", "holoTextured", "holoTexturedLite"],
+    } as const
+  )[state].map((field) => inState(state, field)),
   views: VIEW_ROWS.map((row) => row.map((field) => inState(state, field))),
 }));
 
@@ -129,7 +141,10 @@ export type MappedFile = {
 const VIEW_NAME =
   /^((?:extended|landed|flight)[-_ ]?)?(top|side|port|front|angled[-_ ]?rear|angled|bottom|rear|starboard)([-_ ]?view)?([-_ ]?colored)?$/i;
 const HOLO_NAME =
-  /^((?:extended|landed|flight)[-_ ]?)?holo(?:[-_ ]?(lite|textured|hull))?$/i;
+  /^((?:extended|landed|flight)[-_ ]?)?holo(?:[-_ ]?(lite|textured(?:[-_ ]?lite)?|hull))?$/i;
+// The painted export is also named without "holo": flight_textured.glb,
+// landed_textured_lite.glb.
+const TEXTURED_NAME = /^((?:landed|flight)[-_ ]?)?textured([-_ ]?lite)?$/i;
 
 const VIEWPOINTS: Record<string, string> = {
   top: "top",
@@ -171,6 +186,19 @@ export const fieldFor = (filename: string): FolderField | undefined => {
   const stem = basename.replace(/\.[^.]+$/, "").trim();
   const extension = basename.slice(stem.length + 1).toLowerCase();
 
+  const textured = TEXTURED_NAME.exec(stem);
+
+  if (textured) {
+    if (!HOLO_EXTENSIONS.includes(extension)) {
+      return undefined;
+    }
+
+    const prefix = prefixFor(textured[1]);
+    const base = prefix ? `${prefix}HoloTextured` : "holoTextured";
+
+    return (textured[2] ? `${base}Lite` : base) as HoloField;
+  }
+
   const holo = HOLO_NAME.exec(stem);
 
   if (holo) {
@@ -179,10 +207,17 @@ export const fieldFor = (filename: string): FolderField | undefined => {
     }
 
     const prefix = prefixFor(holo[1]);
-    const variant = holo[2]?.toLowerCase();
+    const variant = holo[2]
+      ?.toLowerCase()
+      .replace(/^textured[-_ ]?lite$/, "texturedLite");
 
-    // Only the flying pose is exported painted, or without its components.
-    if ((variant === "textured" || variant === "hull") && prefix) {
+    // Only the flying pose is exported without its components, and the
+    // extended one is never exported painted.
+    if (variant === "hull" && prefix) {
+      return undefined;
+    }
+
+    if (variant?.startsWith("textured") && prefix === "extended") {
       return undefined;
     }
 

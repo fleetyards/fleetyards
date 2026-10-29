@@ -11,6 +11,7 @@ import {
   modelHasState,
   modelStateHolo,
   modelStateMetrics,
+  modelStateTexturedHolo,
   modelStateView,
   useModelStates,
 } from "./useModelStates";
@@ -241,6 +242,60 @@ describe("picking the holo", () => {
     expect(
       modelStateHolo(subject, ModelStateEnum.LANDED, { lite: true })?.name,
     ).toBe("landed");
+  });
+});
+
+describe("picking the textured holo", () => {
+  it("takes the state's own painted export", () => {
+    const subject = model({
+      holoTextured: file("textured"),
+      landedHoloTextured: file("landed-textured"),
+    });
+
+    expect(
+      modelStateTexturedHolo(subject, ModelStateEnum.LANDED),
+    ).toMatchObject({ file: { name: "landed-textured" }, lite: false });
+  });
+
+  // The switch sits beside the state it shows, so another pose's export would
+  // change the pose under the reader.
+  it("leaves a state without a painted export of its own without one", () => {
+    const subject = model({ holoTextured: file("textured") });
+
+    expect(
+      modelStateTexturedHolo(subject, ModelStateEnum.LANDED),
+    ).toBeUndefined();
+    expect(
+      modelStateTexturedHolo(subject, ModelStateEnum.EXTENDED),
+    ).toBeUndefined();
+  });
+
+  it("says when it took the lite export, whose paint maps differ", () => {
+    const subject = model({
+      holoTextured: file("textured"),
+      holoTexturedLite: file("textured-lite"),
+    });
+
+    expect(
+      modelStateTexturedHolo(subject, ModelStateEnum.FLIGHT),
+    ).toMatchObject({ file: { name: "textured" }, lite: false });
+    expect(
+      modelStateTexturedHolo(subject, ModelStateEnum.FLIGHT, { lite: true }),
+    ).toMatchObject({ file: { name: "textured-lite" }, lite: true });
+  });
+
+  it("takes the other export where the state has only one", () => {
+    const subject = model({
+      holoTexturedLite: file("textured-lite"),
+      landedHoloTextured: file("landed-textured"),
+    });
+
+    expect(
+      modelStateTexturedHolo(subject, ModelStateEnum.FLIGHT),
+    ).toMatchObject({ file: { name: "textured-lite" }, lite: true });
+    expect(
+      modelStateTexturedHolo(subject, ModelStateEnum.LANDED, { lite: true }),
+    ).toMatchObject({ file: { name: "landed-textured" }, lite: false });
   });
 });
 

@@ -1,7 +1,7 @@
 import { type Material, type Mesh, type Object3D, type Texture } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { USDZExporter } from "three/examples/jsm/exporters/USDZExporter.js";
-import { sharedDracoLoader } from "@/shared/components/HoloViewer/dracoLoader";
+import { prepareGltfLoader } from "@/shared/components/HoloViewer/gltfLoader";
 
 const disposeMaterial = (material: Material) => {
   for (const value of Object.values(material)) {
@@ -30,7 +30,7 @@ const dispose = (scene: Object3D) => {
 // grown to the size of the largest holo it has seen, is what an iPhone could
 // not hold on a second tap.
 export const holoToUsdz = async (holoUrl: string): Promise<Blob> => {
-  const loader = new GLTFLoader().setDRACOLoader(sharedDracoLoader());
+  const loader = prepareGltfLoader(new GLTFLoader());
   const { scene } = await loader.loadAsync(holoUrl);
 
   // The exporter writes each node's local matrix, which the loader leaves

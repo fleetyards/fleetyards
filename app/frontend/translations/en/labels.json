@@ -475,6 +475,7 @@
       "3dView": "3D",
       "3dMap": "Map",
       "texturedHolo": "Textured",
+      "texturedHoloOwnPaint": "Standard paint",
       "viewInAr": "AR",
       "viewInArHint": "Place it in your room at true size",
       "filter": "Filter",
@@ -1298,6 +1299,9 @@
         "extendedHoloLite": "Extended Lite Holo",
         "landedHoloLite": "Landed Lite Holo",
         "holoTextured": "Textured Holo",
+        "holoTexturedLite": "Textured Lite Holo",
+        "landedHoloTextured": "Landed Textured Holo",
+        "landedHoloTexturedLite": "Landed Textured Lite Holo",
         "holoHull": "Hull Holo",
         "state": {
           "flight": "In Flight",

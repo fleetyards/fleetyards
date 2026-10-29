@@ -475,6 +475,7 @@
       "3dView": "3D",
       "3dMap": "Map",
       "texturedHolo": "材質",
+      "texturedHoloOwnPaint": "標準塗裝",
       "viewInAr": "AR",
       "viewInArHint": "以真實尺寸放置在你的房間中",
       "filter": "篩選",
@@ -1298,6 +1299,9 @@
         "extendedHoloLite": "展開輕量 Holo",
         "landedHoloLite": "著陸輕量 Holo",
         "holoTextured": "材質 Holo",
+        "holoTexturedLite": "材質輕量 Holo",
+        "landedHoloTextured": "著陸材質 Holo",
+        "landedHoloTexturedLite": "著陸材質輕量 Holo",
         "holoHull": "船體 Holo",
         "state": {
           "flight": "飛行中",

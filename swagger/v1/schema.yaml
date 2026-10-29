@@ -41056,6 +41056,20 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         holoTextured:
           "$ref": "#/components/schemas/MediaFile"
+        holoTexturedLite:
+          "$ref": "#/components/schemas/MediaFile"
+        landedHoloTextured:
+          "$ref": "#/components/schemas/MediaFile"
+        landedHoloTexturedLite:
+          "$ref": "#/components/schemas/MediaFile"
+        holoTexture:
+          "$ref": "#/components/schemas/MediaFile"
+        holoTextureOrm:
+          "$ref": "#/components/schemas/MediaFile"
+        holoTextureLite:
+          "$ref": "#/components/schemas/MediaFile"
+        holoTextureOrmLite:
+          "$ref": "#/components/schemas/MediaFile"
         brochure:
           "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
@@ -41748,6 +41762,22 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         fleetchartImage:
           type: string
+        holoTexture:
+          type:
+          - string
+          - 'null'
+        holoTextureOrm:
+          type:
+          - string
+          - 'null'
+        holoTextureLite:
+          type:
+          - string
+          - 'null'
+        holoTextureOrmLite:
+          type:
+          - string
+          - 'null'
         portView:
           "$ref": "#/components/schemas/MediaFile"
         storeImage:
