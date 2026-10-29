@@ -509,6 +509,16 @@ module ScData
       assert_equal "AEGS_Gladius_PIR", variant.hardpoint_transforms["entity"]
     end
 
+    test "treats a variant with only a lite livery map as liveried" do
+      @model.holo_texture_lite.attach(io: StringIO.new(PNG), filename: "flight_textured_lite_gladiusvaliant.webp")
+      publish({"flight_textured_lite.glb" => GLB, "flight_holo_hull.glb" => GLB})
+
+      perform
+
+      assert_not @model.holo_textured_lite.attached?
+      assert_not @model.holo_hull.attached?
+    end
+
     test "tries a ship again when its paint maps raise" do
       ::ScData::TexturedPaintsImport.any_instance.stubs(:call).raises(ActiveRecord::RecordInvalid)
       publish({"flight_top.png" => PNG})

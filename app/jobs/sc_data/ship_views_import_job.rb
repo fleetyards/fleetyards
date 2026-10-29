@@ -59,7 +59,7 @@ module ScData
         next if model_id.nil? && model.ship_views_digest == entry["files"]
 
         listing = store.listing(path)
-        @liveried = model.holo_texture.attached?
+        @liveried = Model::LIVERY_MAP_ATTACHMENT_NAMES.any? { |name| model.public_send(name).attached? }
         fields = import(store, model, path, entry["files"], listing:)
         attached[model.slug] = fields if fields.any?
 
