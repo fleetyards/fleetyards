@@ -38570,6 +38570,8 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         holo:
           "$ref": "#/components/schemas/MediaFile"
+        holoTextured:
+          "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
       title: ItemMedia
     ItemPrice:

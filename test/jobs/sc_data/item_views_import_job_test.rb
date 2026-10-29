@@ -53,13 +53,14 @@ module ScData
     end
 
     test "attaches a component's renders by its game-file key" do
-      publish(@component.sc_key, {"angled.png" => PNG, "angled_rear.png" => PNG, "holo.gltf" => HOLO})
+      publish(@component.sc_key, {"angled.png" => PNG, "angled_rear.png" => PNG, "holo.gltf" => HOLO, "holo_textured.gltf" => HOLO})
 
       perform
 
       assert @component.angled_view.attached?
       assert @component.angled_rear_view.attached?
       assert @component.holo.attached?
+      assert @component.holo_textured.attached?
       assert_equal "listing-1", @component.item_views_digest
       assert_equal Digest::MD5.hexdigest(PNG), @component.item_view_md5s["angled_view"]
     end

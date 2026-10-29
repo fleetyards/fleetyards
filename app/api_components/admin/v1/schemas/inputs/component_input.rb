@@ -30,6 +30,7 @@ module Admin
               rearView: {type: [:string, :null]},
               starboardView: {type: [:string, :null]},
               holo: {type: [:string, :null]},
+              holoTextured: {type: [:string, :null]},
               scIdentifier: {type: :string},
               scKey: {type: :string},
               scRef: {type: :string}
