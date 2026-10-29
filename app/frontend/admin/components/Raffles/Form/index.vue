@@ -148,6 +148,8 @@ const folderInput = ref<HTMLInputElement>();
 
 const importing = ref(false);
 
+const TEXT_FIELDS = ["title", "prize", "description"] as const;
+
 // Fills the form from a folder of `<locale>.md` files and images. Only the
 // fields a file holds are set, and nothing is saved until the admin submits.
 const importFolder = async (event: Event) => {
@@ -162,20 +164,17 @@ const importFolder = async (event: Event) => {
   try {
     const folder = await readRaffleFolder(files, ["en", ...LOCALES]);
 
-    Object.entries(folder.texts).forEach(([locale, text]) => {
-      const prefix = locale === "en" ? "" : `translations.${locale}.`;
+    TEXT_FIELDS.forEach((field) => {
+      const english = folder.texts.en?.[field];
+      if (english) setFieldValue(field, english);
 
-      Object.entries(text).forEach(([field, value]) => {
-        setFieldValue(`${prefix}${field}` as "title", value);
+      LOCALES.forEach((locale) => {
+        const value = folder.texts[locale]?.[field];
+        if (value) setFieldValue(`translations.${locale}.${field}`, value);
       });
     });
 
     const languages = Object.keys(folder.texts).length;
-
-    if (!languages && !folder.images.length) {
-      displayAlert({ text: t("messages.raffle.importEmpty") });
-      return;
-    }
 
     if (folder.skipped.length) {
       displayWarning({
@@ -183,6 +182,11 @@ const importFolder = async (event: Event) => {
           files: folder.skipped.join(", "),
         }),
       });
+    }
+
+    if (!languages && !folder.images.length) {
+      displayAlert({ text: t("messages.raffle.importEmpty") });
+      return;
     }
 
     const failed = (await gallery.value?.addFiles(folder.images)) ?? [];
@@ -195,12 +199,13 @@ const importFolder = async (event: Event) => {
       });
     }
 
-    displaySuccess({
-      text: t("messages.raffle.imported", {
-        languages,
-        images: folder.images.length - failed.length,
-      }),
-    });
+    const images = folder.images.length - failed.length;
+
+    if (languages || images) {
+      displaySuccess({
+        text: t("messages.raffle.imported", { languages, images }),
+      });
+    }
   } finally {
     importing.value = false;
   }
@@ -226,7 +231,10 @@ const onInvalidSubmit = () => {
   displayAlert({ text: t("messages.raffle.invalid") });
 };
 
+// Images still uploading have no signed id yet, so a save now would drop them.
 const onSubmit = handleSubmit((values) => {
+  if (importing.value) return;
+
   emit("submit", {
     title: values.title,
     prize: values.prize || undefined,
@@ -400,9 +408,9 @@ const onSubmit = handleSubmit((values) => {
       </div>
     </div>
     <FormActions
-      :submitting="submitting"
+      :submitting="submitting || importing"
       :form-id="formId"
-      :dirty="meta.dirty || meta.touched"
+      :dirty="meta.dirty || meta.touched || imageIds !== undefined"
       @cancel="emit('cancel')"
     />
   </form>

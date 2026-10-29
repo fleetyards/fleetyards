@@ -1,5 +1,5 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { beforeAll, describe, expect, it, vi } from "vitest";
+import { beforeAll, describe, expect, it, onTestFinished, vi } from "vitest";
 import { flushPromises } from "@vue/test-utils";
 import { defineRule } from "vee-validate";
 import { required, min_value } from "@vee-validate/rules";
@@ -109,7 +109,15 @@ describe("RaffleForm", () => {
   });
 
   it("fills every language and the gallery from a picked folder", async () => {
-    URL.createObjectURL = vi.fn(() => "blob:preview");
+    const original = Object.getOwnPropertyDescriptor(URL, "createObjectURL");
+    Object.defineProperty(URL, "createObjectURL", {
+      configurable: true,
+      value: () => "blob:preview",
+    });
+    onTestFinished(() => {
+      if (original) Object.defineProperty(URL, "createObjectURL", original);
+      else Reflect.deleteProperty(URL, "createObjectURL");
+    });
 
     const wrapper = await mountForm({ raffle });
     const input = wrapper.find('[data-test="raffle-import-input"]');
