@@ -12,4 +12,17 @@
     z-index: 1000;
     opacity: 1;
   }
+
+  // Faded with the viewer's own controls; a touch screen keeps it shown, as
+  // the only way out.
+  @media (hover: hover) {
+    .close {
+      opacity: 0;
+      transition: opacity $transition-base-speed ease;
+    }
+
+    &:hover .close {
+      opacity: 1;
+    }
+  }
 }
