@@ -93,6 +93,28 @@ class Api::V1::HardpointsLoadoutOptionsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hardpoints/:id/loadout-options leaves rocket pods out of a port that takes guns" do
+    mount = create(:component, component_type: "Turret", category: "weapon_mounts", size: "2")
+    port = create(:hardpoint, parent: mount, sc_name: "hardpoint_class_2", source: :game_files,
+      types: %w[WeaponGun], sub_types: {"WeaponGun" => ["Gun"]}, min_size: 1, max_size: 1)
+    create(:component, name: "Gun", component_type: "WeaponGun", component_sub_type: "Gun", category: "weapons", size: "1")
+    create(:component, name: "Rocket Pod", component_type: "WeaponGun", component_sub_type: "Rocket", category: "weapons", size: "1")
+
+    assert_api_response :get, 200, path_params: {id: port.id} do
+      assert_equal ["Gun"], parsed_body.map { |option| option.dig("component", "name") }
+    end
+  end
+
+  test "GET /hardpoints/:id/loadout-options keeps a rocket pod the slot came with" do
+    port = create(:hardpoint, parent: create(:model), sc_name: "hardpoint_weapon", source: :game_files,
+      types: %w[WeaponGun], sub_types: {"WeaponGun" => ["Gun"]}, min_size: 1, max_size: 1)
+    pod = create(:component, name: "Rocket Pod", component_type: "WeaponGun", component_sub_type: "Rocket", category: "weapons", size: "1")
+
+    assert_api_response :get, 200, path_params: {id: port.id}, params: {stockId: pod.id} do
+      assert_equal ["Rocket Pod"], parsed_body.map { |option| option.dig("component", "name") }
+    end
+  end
+
   test "GET /hardpoints/:id/loadout-options offers guns where the slot came with a bare gun" do
     mount = create(:component, component_type: "Turret", category: "weapon_mounts", size: "4")
     port = create(:hardpoint, parent: mount, sc_name: "hardpoint_weapon", source: :game_files,

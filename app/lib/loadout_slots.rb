@@ -109,7 +109,7 @@ class LoadoutSlots
     facts = port.facts
     types = types_taken(facts, stock)
     kind_matches = if types.any?
-      types.include?(component.component_type)
+      types.include?(component.component_type) && (component.id == stock&.id || sub_type_fits?(facts, component))
     elsif filed_by_type?(facts.category)
       ::Hardpoint::TYPE_CATEGORIES[::Hardpoint.filed_type(component)].to_s == facts.category
     else
@@ -123,6 +123,14 @@ class LoadoutSlots
     return false if facts.max_size && size > facts.max_size
 
     component.id == stock&.id || tags_fit?(facts, component, stock, provided)
+  end
+
+  # A port that names a type's sub types takes only those: a gun port takes a
+  # `WeaponGun` that is a `Gun`, and a rocket pod is a `WeaponGun` too.
+  def self.sub_type_fits?(facts, component)
+    allowed = facts.sub_types.to_h[component.component_type]
+
+    allowed.blank? || allowed.include?(component.component_sub_type)
   end
 
   # Tags the game puts on nearly everything, which say nothing about a fit.
