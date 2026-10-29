@@ -27,6 +27,16 @@ class HangarPlans::DriftTest < ActiveSupport::TestCase
     assert_equal 1, @plan.acquisitions.count
   end
 
+  test "a kept ship that left the hangar is flagged" do
+    gone = create(:vehicle, user: @user, model: @carrack)
+    @plan.vehicle_marks.create!(vehicle: gone, mark: "keep")
+    gone.destroy!
+
+    missing = HangarPlans::Drift.new(@plan.reload).missing_sources
+
+    assert_equal [["mark", @carrack]], missing.map { |issue| [issue.kind, issue.planned_model] }
+  end
+
   test "a ship changed into another model is flagged" do
     @kept.update_columns(model_id: @carrack.id)
 

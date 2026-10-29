@@ -36391,10 +36391,12 @@ components:
       - acquisition
       - upgrade_step
       - melt
+      - mark
       x-enumNames:
       - ACQUISITION
       - UPGRADE_STEP
       - MELT
+      - MARK
       title: HangarPlanSourceIssueKindEnum
     HangarPlanStartKindEnum:
       type: string
