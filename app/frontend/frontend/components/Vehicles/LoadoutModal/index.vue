@@ -492,11 +492,12 @@ const currentTab = computed(() =>
     : tabs.value.find((entry) => tabEnabled(entry.id))?.id,
 );
 
-const { data: modelHardpoints } = useModelHardpoints(
-  modelSlug,
-  { source: HardpointSourceEnum.GAME_FILES },
-  { query: { enabled: flightReady } },
-);
+const { data: modelHardpoints, isPending: hardpointsPending } =
+  useModelHardpoints(
+    modelSlug,
+    { source: HardpointSourceEnum.GAME_FILES },
+    { query: { enabled: flightReady } },
+  );
 
 const savedTree = computed(() =>
   fitting.resolve(
@@ -572,15 +573,18 @@ const tabMetrics = computed(() => {
     };
   }
 
-  // Until the ship's hardpoints are in, a card would show a tab's own figures
-  // and then grow its tiles under them.
   const metrics = currentTab.value && figures.value.tabs[currentTab.value];
-  if (!metrics || !modelHardpoints.value?.length) return undefined;
+  if (!metrics) return undefined;
 
-  return {
-    title: t(`labels.vehicleLoadout.tabs.${currentTab.value}`),
-    metrics,
-  };
+  const title = t(`labels.vehicleLoadout.tabs.${currentTab.value}`);
+
+  // Until the ship's hardpoints are in, a card would show a tab's own figures
+  // and then grow its tiles under them; it holds placeholders instead.
+  if (hardpointsPending.value) return { title, metrics: [], loading: true };
+
+  if (!modelHardpoints.value?.length) return undefined;
+
+  return { title, metrics };
 });
 
 /**
@@ -1557,11 +1561,14 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
           class="vehicle-loadout__figures-collapse"
         >
           <div class="vehicle-loadout__figures-list">
-            <LoadoutMetrics
-              v-if="tabMetrics"
-              v-bind="tabMetrics"
-              class="vehicle-loadout__card"
-            />
+            <Transition name="fade-quick" mode="out-in" appear>
+              <LoadoutMetrics
+                v-if="tabMetrics"
+                :key="tabMetrics.loading ? 'loading' : 'loaded'"
+                v-bind="tabMetrics"
+                class="vehicle-loadout__card"
+              />
+            </Transition>
 
             <LoadoutChanges
               v-if="changedFigures.length"

@@ -75,6 +75,8 @@ const RECIPE = {
   ],
 };
 
+const hardpointsPending = ref(false);
+
 const resolved = () => ({
   isPending: ref(false),
   isFetching: ref(false),
@@ -101,7 +103,11 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   useModelLoadoutSlots: () => ({ data: hullSlots, ...resolved() }),
   useVehicleLoadoutSlots: () => ({ data: savedSlots, ...resolved() }),
   useVehicleLoadoutProblems: () => ({ data: loadoutProblems, ...resolved() }),
-  useModelHardpoints: () => ({ data: modelHardpoints, ...resolved() }),
+  useModelHardpoints: () => ({
+    data: modelHardpoints,
+    ...resolved(),
+    isPending: hardpointsPending,
+  }),
   useHardpointLoadoutOptions: (
     _id: unknown,
     params: () => Record<string, unknown>,
@@ -256,6 +262,7 @@ beforeEach(() => {
   componentOptions.value = [];
   optionsStale.value = false;
   modelHardpoints.value = [];
+  hardpointsPending.value = false;
   createVehicleLoadout.mockClear();
   updateVehicleLoadout.mockClear();
   activateVehicleLoadout.mockClear();
@@ -1921,6 +1928,44 @@ describe("VehicleLoadoutModal component tabs", () => {
     ).toBe(false);
     expect(
       modules.find("[data-test='vehicle-loadout-metric-cargo']").exists(),
+    ).toBe(true);
+  });
+
+  it("holds the open tab's card with placeholders until the hardpoints are in", async () => {
+    hardpointsPending.value = true;
+    const wrapper = await mountClosed(vehicle(), { tab: "weapons" });
+    await flushPromises();
+
+    expect(
+      wrapper.find("[data-test='vehicle-loadout-metrics-loading']").exists(),
+    ).toBe(true);
+    expect(
+      wrapper.find("[data-test='vehicle-loadout-metric-dps']").exists(),
+    ).toBe(false);
+
+    modelHardpoints.value = [
+      {
+        id: "hp-power",
+        name: "hardpoint_power_plant",
+        category: "powerplant",
+        component: {
+          id: "pp",
+          name: "Plant",
+          size: "1",
+          type: "PowerPlant",
+          typeData: { powerBase: 12 },
+        },
+        hardpoints: [],
+      },
+    ];
+    hardpointsPending.value = false;
+    await flushPromises();
+
+    expect(
+      wrapper.find("[data-test='vehicle-loadout-metrics-loading']").exists(),
+    ).toBe(false);
+    expect(
+      wrapper.find("[data-test='vehicle-loadout-metric-dps']").exists(),
     ).toBe(true);
   });
 

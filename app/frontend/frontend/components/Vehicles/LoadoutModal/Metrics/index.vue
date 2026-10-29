@@ -10,17 +10,54 @@ import type { LoadoutMetric } from "@/frontend/composables/useLoadoutMetrics";
 type Props = {
   title: string;
   metrics: LoadoutMetric[];
+  // Its figures still on the way: tiles hold their place until they land.
+  loading?: boolean;
 };
 
-defineProps<Props>();
+withDefaults(defineProps<Props>(), {
+  loading: false,
+});
+
+// The two rows most tabs fill.
+const PLACEHOLDER_TILES = 4;
+
+// Staggered, so the placeholders do not read as a row of identical fields.
+const PLACEHOLDER_WIDTHS = ["70%", "55%", "62%", "48%"];
 
 const width = (ratio: number) => `${Math.min(ratio, 1) * 100}%`;
 </script>
 
 <template>
-  <section class="loadout-metrics" data-test="vehicle-loadout-metrics">
+  <section
+    class="loadout-metrics"
+    :aria-busy="loading"
+    data-test="vehicle-loadout-metrics"
+  >
     <h4 class="metrics-card__section-label">{{ title }}</h4>
     <div
+      v-if="loading"
+      class="metrics-card__hero metrics-card__hero--grid metrics-card__hero--grid-2"
+      aria-hidden="true"
+      data-test="vehicle-loadout-metrics-loading"
+    >
+      <div
+        v-for="tile in PLACEHOLDER_TILES"
+        :key="tile"
+        class="metrics-card__tile"
+      >
+        <div class="metrics-card__tile__label">
+          <span
+            class="skeleton-bar"
+            :style="{ width: PLACEHOLDER_WIDTHS[tile - 1] }"
+          />
+        </div>
+        <div class="metrics-card__tile__value">
+          <span class="skeleton-bar loadout-metrics__placeholder-value" />
+        </div>
+      </div>
+    </div>
+    <div
+      v-else
       class="metrics-card__hero metrics-card__hero--grid metrics-card__hero--grid-2"
     >
       <div
@@ -59,6 +96,7 @@ const width = (ratio: number) => `${Math.min(ratio, 1) * 100}%`;
 
 <style lang="scss" scoped>
 @import "@/shared/components/metricsCard";
+@import "@/shared/components/skeleton";
 
 .loadout-metrics {
   display: flex;
@@ -109,6 +147,10 @@ const width = (ratio: number) => `${Math.min(ratio, 1) * 100}%`;
   &--worse {
     color: var(--color-danger, #{$danger});
   }
+}
+
+.loadout-metrics__placeholder-value {
+  width: 40%;
 }
 
 // A load against its ceiling, the way the power card fills its segments.
