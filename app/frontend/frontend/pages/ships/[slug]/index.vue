@@ -333,9 +333,12 @@ const toggleTexturedHolo = () => {
   texturedHolo.value = !texturedHolo.value;
 };
 
-// The paints the textured holo can be repainted in, beside the ship's own.
+// The paints the textured holo can be repainted in, beside the ship's own,
+// fetched once the switch is on: most visitors never turn it.
 const { data: paints } = useModelPaints(() => props.model.slug, {
-  query: { enabled: texturedHoloAvailable },
+  query: {
+    enabled: computed(() => texturedHoloAvailable.value && texturedHolo.value),
+  },
 });
 
 // Each export has an atlas of its own, so only its own maps fit it.
