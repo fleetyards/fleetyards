@@ -296,6 +296,7 @@ watch(
         <ItemHero
           :image="component.media.storeImage"
           :holo="component.media.holo"
+          :holo-textured="component.media.holoTextured"
           :name="component.name"
           test-id="component-image"
         />

@@ -6,7 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { type MediaFile } from "@/services/fyApi";
+import { FeatureFlagName, type MediaFile } from "@/services/fyApi";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 import { LOW_POWER_HOLO_SIZE_LIMIT } from "@/shared/components/HoloViewer/limits";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useLowPowerDevice } from "@/shared/composables/useLowPowerDevice";
@@ -15,6 +16,7 @@ import { useMobile } from "@/shared/composables/useMobile";
 type Props = {
   image?: MediaFile | null;
   holo?: MediaFile | null;
+  holoTextured?: MediaFile | null;
   name: string;
   testId: string;
 };
@@ -35,11 +37,29 @@ const mobile = useMobile();
 
 const lowPower = useLowPowerDevice();
 
-const holoModel = computed(() =>
-  props.holo?.url
-    ? { path: props.holo.url, size: props.holo.size ?? undefined }
-    : undefined,
+const { isFeatureEnabled } = useFeatures();
+
+const texturedHoloAvailable = computed(
+  () =>
+    isFeatureEnabled(FeatureFlagName.ITEM_HOLO_TEXTURED) &&
+    !!props.holo?.url &&
+    !!props.holoTextured?.url,
 );
+
+const texturedHolo = ref(false);
+
+const toggleTexturedHolo = () => {
+  texturedHolo.value = !texturedHolo.value;
+};
+
+const holoModel = computed(() => {
+  const textured = texturedHoloAvailable.value && texturedHolo.value;
+  const holo = textured ? props.holoTextured : props.holo;
+
+  return holo?.url
+    ? { path: holo.url, size: holo.size ?? undefined, textured }
+    : undefined;
+});
 
 // three.js still crashes phones, and the inline preview cannot ask before
 // loading a holo too large for the device, so both keep the picture.
@@ -57,8 +77,18 @@ const viewer = ref<{ enableFullscreen: () => void }>();
 // Without WebGL or a holo that loads, the picture beats the viewer's notice.
 const holoFailed = ref(false);
 
+// A textured holo that will not draw falls back to the plain one, which keeps
+// the switch back to it.
+const holoUnavailable = () => {
+  if (holoModel.value?.textured) {
+    texturedHolo.value = false;
+  } else {
+    holoFailed.value = true;
+  }
+};
+
 watch(
-  () => props.holo?.url,
+  () => holoModel.value?.path,
   () => {
     holoFailed.value = false;
   },
@@ -77,17 +107,28 @@ watch(
       :controllable="false"
       :azimuth="HOLO_AZIMUTH"
       inline
-      @unavailable="holoFailed = true"
+      @unavailable="holoUnavailable"
     />
-    <Btn
-      class="item-hero__fullscreen"
-      :aria-label="t('actions.vehicleOverview.fullscreenHolo')"
-      v-tooltip="t('actions.vehicleOverview.fullscreenHolo')"
-      :data-test="`${testId}-fullscreen`"
-      @click="viewer?.enableFullscreen()"
-    >
-      <i class="fa-light fa-expand" />
-    </Btn>
+    <div class="item-hero__actions">
+      <Btn
+        v-if="texturedHoloAvailable"
+        :active="texturedHolo"
+        :aria-label="t('labels.texturedHolo')"
+        v-tooltip="t('labels.texturedHolo')"
+        :data-test="`${testId}-holo-textured`"
+        @click="toggleTexturedHolo"
+      >
+        <i class="fa-duotone fa-palette" />
+      </Btn>
+      <Btn
+        :aria-label="t('actions.vehicleOverview.fullscreenHolo')"
+        v-tooltip="t('actions.vehicleOverview.fullscreenHolo')"
+        :data-test="`${testId}-fullscreen`"
+        @click="viewer?.enableFullscreen()"
+      >
+        <i class="fa-light fa-expand" />
+      </Btn>
+    </div>
   </div>
   <img
     v-else-if="image?.largeUrl"

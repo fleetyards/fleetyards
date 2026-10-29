@@ -14,21 +14,23 @@
     object-fit: contain;
   }
 
-  &__fullscreen {
+  &__actions {
     position: absolute;
     top: 8px;
     right: 8px;
+    display: flex;
+    gap: 8px;
   }
 
   // Revealed on hover only where there is one: a touch screen keeps it shown.
   @media (hover: hover) {
-    &__fullscreen {
+    &__actions {
       opacity: 0;
       transition: opacity 150ms ease;
     }
 
-    &--holo:hover &__fullscreen,
-    &--holo:focus-within &__fullscreen {
+    &--holo:hover &__actions,
+    &--holo:focus-within &__actions {
       opacity: 1;
     }
   }

@@ -273,6 +273,7 @@ watch(
             <ItemHero
               :image="equipment.storeImage"
               :holo="equipment.media?.holo"
+              :holo-textured="equipment.media?.holoTextured"
               :name="equipment.name"
               test-id="equipment-image"
             />

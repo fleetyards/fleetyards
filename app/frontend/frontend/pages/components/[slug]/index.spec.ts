@@ -31,6 +31,10 @@ vi.mock("@/shared/composables/useI18n", () => ({
   }),
 }));
 
+vi.mock("@/frontend/composables/useFeatures", () => ({
+  useFeatures: () => ({ isFeatureEnabled: () => false }),
+}));
+
 vi.mock("@/shared/composables/useMetaInfo", () => ({
   useMetaInfo: () => ({ updateMetaInfo: vi.fn() }),
 }));
