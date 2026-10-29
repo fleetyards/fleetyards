@@ -355,6 +355,8 @@ onUnmounted(() => {
   material.dispose();
   windowMaterial.dispose();
   wireMaterial.dispose();
+  // A paint still loading would land after this and never be freed.
+  paintRequest += 1;
   paintMaps.forEach((map) => map.dispose());
   if (mountRoot) disposeFading(mountRoot);
 });
