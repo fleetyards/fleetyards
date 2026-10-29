@@ -196,6 +196,7 @@ module ScData
             min_size: loadout["min_size"],
             max_size: loadout["max_size"],
             types: loadout["types"],
+            sub_types: loadout["sub_types"],
             port_tags: loadout["port_tags"],
             required_tags: loadout["required_tags"],
             flags: loadout["flags"]

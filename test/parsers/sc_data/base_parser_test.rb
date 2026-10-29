@@ -25,6 +25,12 @@ module ScData
         FileUtils.remove_entry(@base_folder)
       end
 
+      test "leaves a type the port also names without sub types open to all of them" do
+        sub_types = @parser.send(:port_sub_types, [["Turret", ["GunTurret"]], ["Turret", []], ["WeaponGun", ["Gun"]], ["WeaponGun", ["Rocket"]]])
+
+        assert_equal({"WeaponGun" => ["Gun", "Rocket"]}, sub_types)
+      end
+
       # Without this the file survives every later parse, the loader keeps
       # reading it as part of the build, and nothing downstream can tell it
       # apart from a record the game files still carry.

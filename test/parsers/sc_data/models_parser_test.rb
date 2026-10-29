@@ -50,6 +50,17 @@ module ScData
         assert_equal ["MissileLauncher", "BombLauncher"], port["types"]
       end
 
+      test "carries the sub types a ship's own definition restricts a type to" do
+        port = ports.fetch("hardpoint_torpedorack")
+
+        assert_equal({"MissileLauncher" => ["MissileRack"], "BombLauncher" => ["BombRack"]}, port["sub_types"])
+      end
+
+      test "carries the sub types the entity record restricts a type to" do
+        assert_equal({"WeaponGun" => ["Gun"]}, ports.fetch("hardpoint_weapon")["sub_types"])
+        assert_empty(ports.fetch("hardpoint_relay")["sub_types"])
+      end
+
       # A type and a size are not enough to tell the Eclipse's racks from the
       # Gladiator's -- both are S3-S5 bomb launchers. The shared tag is, and the
       # flags say whether the port may be changed at all.
@@ -173,6 +184,15 @@ module ScData
                       <SItemPortDefTypes Type="Relay" />
                     </Types>
                   </SItemPortDef>
+                  <SItemPortDef Name="hardpoint_weapon" MinSize="1" MaxSize="1">
+                    <Types>
+                      <SItemPortDefTypes Type="WeaponGun">
+                        <SubTypes>
+                          <Enum value="Gun" />
+                        </SubTypes>
+                      </SItemPortDefTypes>
+                    </Types>
+                  </SItemPortDef>
                   <SItemPortDef Name="hardpoint_front_module" MinSize="3" MaxSize="3">
                     <Types>
                       <SItemPortDefTypes Type="Module" />
@@ -186,6 +206,7 @@ module ScData
                     <entries>
                       <SItemPortLoadoutEntryParams itemPortName="hardpoint_torpedorack" entityClassName="TEST_Torpedo_Rack" />
                       <SItemPortLoadoutEntryParams itemPortName="hardpoint_relay" entityClassName="TEST_Relay" />
+                      <SItemPortLoadoutEntryParams itemPortName="hardpoint_weapon" entityClassName="TEST_Gun" />
                     </entries>
                   </SItemPortLoadoutManualParams>
                 </loadout>

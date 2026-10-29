@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_28_130000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_29_000000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -1681,6 +1681,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_28_130000) do
     t.string "group_key"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "sub_types"
     t.index ["component_id"], name: "index_hardpoint_builds_on_component_id"
     t.index ["environment", "version"], name: "index_hardpoint_builds_on_environment_and_version"
     t.index ["hardpoint_id", "environment", "version"], name: "index_hardpoint_builds_on_hardpoint_and_build", unique: true
@@ -1705,6 +1706,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_28_130000) do
     t.string "port_tags"
     t.string "required_tags"
     t.string "flags"
+    t.string "sub_types"
     t.index ["component_id"], name: "index_hardpoints_on_component_id"
     t.index ["parent_type", "parent_id", "sc_name"], name: "index_hardpoints_on_parent_and_sc_name", unique: true, where: "(source = 1)"
     t.index ["parent_type", "parent_id"], name: "index_hardpoints_on_parent"

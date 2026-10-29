@@ -1103,7 +1103,8 @@ module ScData
             flags: normalize_tags(item.dig("Flags")),
             types: types.map do |type|
               type.dig("Type")
-            end
+            end,
+            sub_types: port_def_sub_types(types)
           }
         end
       end

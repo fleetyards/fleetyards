@@ -91,13 +91,14 @@ class LoadoutSlots
     ::Hardpoint::TYPE_CATEGORIES.value?(category.to_s.to_sym)
   end
 
-  # The game files carry one part several times over -- a gas-cloud-resistant
-  # AllStop, a gimbal mount per ship that uses it -- under one name and with
-  # the same figures. A picker offers each once: the slot's own part where it
-  # is one of them, else the plainest key.
+  # The game files carry one part several times over under one name -- a
+  # gas-cloud-resistant AllStop, a gimbal mount per ship that uses it, a
+  # Bulldog tuned down for the ATLS. A picker offers each once: the slot's own
+  # part where it is one of them, else the plainest key. The copies' figures
+  # can differ, so they are not part of what makes two parts the same.
   def self.distinct(components, stock = nil)
     components
-      .group_by { |component| [component.name, component.size, component.grade, component.item_class, component.type_data.to_h] }
+      .group_by { |component| [component.name, component.size, component.grade, component.item_class] }
       .values
       .map { |same| same.find { |component| component.id == stock&.id } || same.min_by { |component| [component.sc_key.to_s.length, component.sc_key.to_s] } }
   end
@@ -108,7 +109,7 @@ class LoadoutSlots
     facts = port.facts
     types = types_taken(facts, stock)
     kind_matches = if types.any?
-      types.include?(component.component_type)
+      types.include?(component.component_type) && (component.id == stock&.id || sub_type_fits?(facts, component))
     elsif filed_by_type?(facts.category)
       ::Hardpoint::TYPE_CATEGORIES[::Hardpoint.filed_type(component)].to_s == facts.category
     else
@@ -122,6 +123,16 @@ class LoadoutSlots
     return false if facts.max_size && size > facts.max_size
 
     component.id == stock&.id || tags_fit?(facts, component, stock, provided)
+  end
+
+  # A port that names a type's sub types takes only those: a gun port takes a
+  # `WeaponGun` that is a `Gun`, and a rocket pod is a `WeaponGun` too. A part
+  # whose sub type the game leaves UNDEFINED fits any of them -- every quantum
+  # drive does, and the ports ask for a `QDrive`.
+  def self.sub_type_fits?(facts, component)
+    allowed = facts.sub_types.to_h[component.component_type]
+
+    allowed.blank? || component.component_sub_type.blank? || allowed.include?(component.component_sub_type)
   end
 
   # Tags the game puts on nearly everything, which say nothing about a fit.

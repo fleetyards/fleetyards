@@ -80,6 +80,51 @@ class Api::V1::HardpointsLoadoutOptionsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /hardpoints/:id/loadout-options offers a repeated part once even where its figures differ" do
+    port = create(:hardpoint, parent: create(:model), sc_name: "hardpoint_weapon", source: :game_files,
+      types: %w[WeaponGun], min_size: 1, max_size: 1)
+    create(:component, name: "CF-117 Bulldog Repeater", sc_key: "klwe_laserrepeater_s1", component_type: "WeaponGun",
+      category: "weapons", size: "1", grade: "1", type_data: {fire_rate: 750, regen: {max_regen_per_second: 15.0}})
+    create(:component, name: "CF-117 Bulldog Repeater", sc_key: "klwe_laserrepeater_s1_atls", component_type: "WeaponGun",
+      category: "weapons", size: "1", grade: "1", type_data: {fire_rate: 750, regen: {max_regen_per_second: 7.43}})
+
+    assert_api_response :get, 200, path_params: {id: port.id} do
+      assert_equal ["klwe_laserrepeater_s1"], parsed_body.map { |option| option.dig("component", "scKey") }
+    end
+  end
+
+  test "GET /hardpoints/:id/loadout-options leaves rocket pods out of a port that takes guns" do
+    mount = create(:component, component_type: "Turret", category: "weapon_mounts", size: "2")
+    port = create(:hardpoint, parent: mount, sc_name: "hardpoint_class_2", source: :game_files,
+      types: %w[WeaponGun], sub_types: {"WeaponGun" => ["Gun"]}, min_size: 1, max_size: 1)
+    create(:component, name: "Gun", component_type: "WeaponGun", component_sub_type: "Gun", category: "weapons", size: "1")
+    create(:component, name: "Rocket Pod", component_type: "WeaponGun", component_sub_type: "Rocket", category: "weapons", size: "1")
+
+    assert_api_response :get, 200, path_params: {id: port.id} do
+      assert_equal ["Gun"], parsed_body.map { |option| option.dig("component", "name") }
+    end
+  end
+
+  test "GET /hardpoints/:id/loadout-options offers a part whose sub type the game leaves undefined" do
+    port = create(:hardpoint, parent: create(:model), sc_name: "hardpoint_quantum_drive", source: :game_files,
+      types: %w[QuantumDrive], sub_types: {"QuantumDrive" => ["QDrive"]}, min_size: 1, max_size: 1)
+    create(:component, name: "Drive", component_type: "QuantumDrive", component_sub_type: nil, category: "quantumdrive", size: "1")
+
+    assert_api_response :get, 200, path_params: {id: port.id} do
+      assert_equal ["Drive"], parsed_body.map { |option| option.dig("component", "name") }
+    end
+  end
+
+  test "GET /hardpoints/:id/loadout-options keeps a rocket pod the slot came with" do
+    port = create(:hardpoint, parent: create(:model), sc_name: "hardpoint_weapon", source: :game_files,
+      types: %w[WeaponGun], sub_types: {"WeaponGun" => ["Gun"]}, min_size: 1, max_size: 1)
+    pod = create(:component, name: "Rocket Pod", component_type: "WeaponGun", component_sub_type: "Rocket", category: "weapons", size: "1")
+
+    assert_api_response :get, 200, path_params: {id: port.id}, params: {stockId: pod.id} do
+      assert_equal ["Rocket Pod"], parsed_body.map { |option| option.dig("component", "name") }
+    end
+  end
+
   test "GET /hardpoints/:id/loadout-options offers guns where the slot came with a bare gun" do
     mount = create(:component, component_type: "Turret", category: "weapon_mounts", size: "4")
     port = create(:hardpoint, parent: mount, sc_name: "hardpoint_weapon", source: :game_files,

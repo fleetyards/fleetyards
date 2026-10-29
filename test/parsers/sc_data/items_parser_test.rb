@@ -859,6 +859,27 @@ module ScData
         XML
       end
 
+      test "carries the sub types a mount's port restricts a gun to" do
+        write_item("mount_with_gun_port", name: "@item_Namemount_with_gun_port", category: "turret", type: "Turret", sub_type: "GunTurret", components: <<~XML)
+          <SItemPortContainerComponentParams>
+            <Ports>
+              <SItemPortDef Name="hardpoint_class_2" MinSize="1" MaxSize="1">
+                <Types>
+                  <SItemPortDefTypes Type="WeaponGun">
+                    <SubTypes><Enum value="Gun" /></SubTypes>
+                  </SItemPortDefTypes>
+                </Types>
+              </SItemPortDef>
+            </Ports>
+          </SItemPortContainerComponentParams>
+        XML
+
+        port = parsed_item("mount_with_gun_port")["loadout"].sole
+
+        assert_equal ["WeaponGun"], port["types"]
+        assert_equal({"WeaponGun" => ["Gun"]}, port["sub_types"])
+      end
+
       test "reads a gun's spread off its projectile launcher" do
         write_gun("scatter_spread", spread: '<spreadParams min="4" max="6" firstAttack="0.5" attack="0.45" decay="0.6" />')
 
