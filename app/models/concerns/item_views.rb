@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 # The renders a catalogue item can be shown by: the eight angles a ship has, a
-# holo and its painted, textured export. An item has no uncoloured silhouette the way a ship's fleetchart
-# does, so there is one set rather than a plain and a coloured one.
+# holo and its painted, textured export. An item has no uncoloured silhouette
+# the way a ship's fleetchart does, so there is one set rather than a plain and
+# a coloured one.
 module ItemViews
   extend ActiveSupport::Concern
 
