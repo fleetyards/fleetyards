@@ -186,6 +186,27 @@ describe("ItemHero", () => {
     ).toBe(false);
   });
 
+  it("starts the next item on its plain holo", async () => {
+    const wrapper = mountHero({
+      holo: file("holo.glb"),
+      holoTextured: file("holo_textured.glb"),
+    });
+
+    await wrapper
+      .find("[data-test='item-image-holo-textured']")
+      .trigger("click");
+    await wrapper.setProps({
+      holo: file("other.glb"),
+      holoTextured: file("other_textured.glb"),
+    });
+
+    expect(
+      wrapper.findComponent({ name: "HoloViewer" }).props("models"),
+    ).toEqual([
+      expect.objectContaining({ path: "https://example.test/other.glb" }),
+    ]);
+  });
+
   it("leaves the switch out while the flag is off", () => {
     const wrapper = mountHero(
       { holo: file("holo.glb"), holoTextured: file("holo_textured.glb") },

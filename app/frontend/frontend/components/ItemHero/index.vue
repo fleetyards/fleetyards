@@ -54,6 +54,13 @@ const texturedHoloAvailable = computed(
 
 const texturedHolo = ref(false);
 
+watch(
+  () => props.holo?.url,
+  () => {
+    texturedHolo.value = false;
+  },
+);
+
 const toggleTexturedHolo = () => {
   texturedHolo.value = !texturedHolo.value;
 };
