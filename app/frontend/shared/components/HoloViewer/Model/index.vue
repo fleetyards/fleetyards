@@ -123,7 +123,13 @@ const windowMaterial = new MaterialClass({
   opacity: 0.8,
   transparent: true,
   side,
+  ...(props.hologram ? { depthWrite: false } : {}),
 });
+
+// Sorted by distance, a window would land over the hull at some angles and
+// under it at others, and the far side's glass would come and go as the holo
+// turns. Drawn first, the hull always washes over it.
+const WINDOW_RENDER_ORDER = props.hologram ? -1 : 0;
 
 const windowRefs = ["window", "glass"];
 
@@ -250,6 +256,7 @@ const setMaterials = (scene: Group) => {
 
     if (windowRefs.some((item) => node.name.toLowerCase().includes(item))) {
       mesh.material = windowMaterial;
+      mesh.renderOrder = WINDOW_RENDER_ORDER;
     } else {
       bodies.push(mesh);
     }
