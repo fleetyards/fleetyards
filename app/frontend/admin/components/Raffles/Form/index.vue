@@ -121,9 +121,12 @@ const translationFields = Object.fromEntries(
 >;
 
 // Named in the admin's own language, so no label per locale has to be kept.
-const languageName = (locale: string) =>
-  new Intl.DisplayNames([currentLocale()], { type: "language" }).of(locale) ??
-  locale;
+// The admin remounts on a language switch, so one instance per mount holds.
+const languageNames = new Intl.DisplayNames([currentLocale()], {
+  type: "language",
+});
+
+const languageName = (locale: string) => languageNames.of(locale) ?? locale;
 
 const hasTranslation = (locale: RaffleTranslationLocaleEnum) =>
   Object.values(translationFields[locale]).some(([value]) => !!value.value);
