@@ -273,8 +273,11 @@ const bulkCopy = (selectedIds: string[]) => {
         :variant="BtnVariantsEnum.GHOST"
       >
         <i
-          class="fa-duotone fa-eye"
-          :class="!item.hidden ? '' : 'text-muted'"
+          :class="
+            item.hidden
+              ? 'fa-duotone fa-eye-slash text-warning'
+              : 'fa-duotone fa-eye'
+          "
         />
         <span v-if="mobile">{{ t("labels.modelPaint.hidden") }}</span>
       </Btn>
