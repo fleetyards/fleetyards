@@ -306,10 +306,6 @@ const onDestroy = async () => {
         {{ t("hangarPlanner.editSlots") }}
       </Btn>
       <BtnDropdown data-test="hangar-plan-more">
-        <template #label>
-          <i class="fa-light fa-ellipsis" />
-          {{ t("hangarPlanner.more") }}
-        </template>
         <Btn :variant="BtnVariantsEnum.BARE" @click="editPlan">
           <i class="fa-light fa-pen" />
           {{ t("hangarPlanner.editPlan") }}
