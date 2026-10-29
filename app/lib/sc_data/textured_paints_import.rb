@@ -57,7 +57,9 @@ module ScData
       complete = true
       palettes = listing.fetch("paints", {})
       own = palettes.transform_values { |entry| paints_for(model, entry) }
-      liveried = liveried_variants(model, palettes.filter_map { |slug, entry| entry if own[slug].empty? })
+      dresses = !wears_livery?(model)
+      unmatched = palettes.filter_map { |slug, entry| entry if own[slug].empty? }
+      liveried = dresses ? liveried_variants(model, unmatched) : []
 
       palettes.each do |slug, entry|
         maps = maps_for(entry, files, fields)
@@ -70,7 +72,7 @@ module ScData
         records = own[slug] + liveried.flat_map { |variant| paints_for(variant, entry) }
 
         if records.empty?
-          records = liveried_variants(model, [entry])
+          records = dresses ? liveried_variants(model, [entry]) : []
 
           if records.empty?
             @logger.call(:info, "#{path}/#{name}: paint #{slug} matches no paint of #{model.slug}")
@@ -142,6 +144,12 @@ module ScData
         components.any? { |component| component.id == paint.component_id } ||
           names.include?(PaintComponentMatcher.normalize(paint.name))
       end
+    end
+
+    # A ship whose own paint slot holds an item is itself a variant in a
+    # livery, and its `variants` are its siblings: it dresses none of them.
+    private def wears_livery?(model)
+      Hardpoint.paints_category.where(parent: model).where.not(component_id: nil).exists?
     end
 
     private def liveried_variants(model, entries)

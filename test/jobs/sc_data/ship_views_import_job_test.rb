@@ -509,6 +509,23 @@ module ScData
       assert_equal "AEGS_Gladius_PIR", variant.hardpoint_transforms["entity"]
     end
 
+    test "dresses no sibling from a variant that wears a livery itself" do
+      @model.update_columns(rsi_chassis_id: 4242)
+      create(:hardpoint, parent: @model, component: create(:component, category: "paints", sc_key: "paint_gladius_pirate"))
+      sibling = create(:model, rsi_chassis_id: 4242)
+      create(:hardpoint, parent: sibling, component: create(:component, category: "paints", sc_key: "paint_gladius_valiant"))
+      publish_paints(
+        {"gladiusvaliant" => {items: ["paint_gladius_valiant"], base: "flight_textured_gladiusvaliant.webp"}},
+        {"flight_textured.glb" => GLB, "flight_textured_gladiusvaliant.webp" => PNG}
+      )
+
+      perform
+
+      sibling.reload
+      assert_not sibling.holo_textured.attached?
+      assert_not sibling.holo_texture.attached?
+    end
+
     test "treats a variant with only a lite livery map as liveried" do
       @model.holo_texture_lite.attach(io: StringIO.new(PNG), filename: "flight_textured_lite_gladiusvaliant.webp")
       publish({"flight_textured_lite.glb" => GLB, "flight_holo_hull.glb" => GLB})
