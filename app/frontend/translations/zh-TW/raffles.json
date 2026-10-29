@@ -51,6 +51,8 @@
         "prize": "獎品",
         "prizeInfo": "得獎者獲得的獎品，顯示在抽獎旁邊。發布時必填。",
         "description": "描述",
+        "descriptionInfo": "Markdown。將艦船或物品寫成 [*名稱*] 即可連結；輸入 [* 進行搜尋。",
+        "translationInfo": "選填。留空的欄位將顯示英文內容。",
         "code": "禮品碼",
         "codeInfo": "得獎者獲得的禮品碼。它會加密儲存，且不會再完整顯示。",
         "codeSet": "已設定禮品碼（%{code}）。將此欄位留空即可保留。",
@@ -100,7 +102,10 @@
           "drawnBy": "%{date}，由 %{admin}",
           "concludedAt": "已結束",
           "publicPage": "開啟公開頁面",
-          "noImages": "尚無圖片。發布需要至少一張。"
+          "noImages": "尚無圖片。發布需要至少一張。",
+          "previewInfo": "一個連結，任何持有者都能檢視此抽獎（包括草稿），無需帳號。有效期 30 天。",
+          "copyPreview": "複製預覽連結",
+          "openPreview": "開啟預覽"
         }
       },
       "raffleEntry": {
@@ -327,6 +332,10 @@
           "forfeited": "未按時領取",
           "not_won": "未得獎"
         }
+      },
+      "preview": {
+        "title": "預覽",
+        "text": "你正在透過預覽連結檢視此抽獎。在發布之前，只有持有該連結的人才能看到它。"
       }
     }
   }

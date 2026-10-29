@@ -138,6 +138,7 @@ namespace :frontend, **frontend_options do
   get "embed-v2-fleet-test", to: "embed#test_v2_fleet"
 
   get "notifications", to: "base#index", as: :notifications
+  get "raffles/preview/:token", to: "base#index", as: :raffle_preview
   get "raffles/:id", to: "base#index", as: :raffle
   get "raffle-claims/:token", to: "base#index", as: :raffle_claim
   get "settings", to: "base#index", as: :settings_account

@@ -51,6 +51,8 @@
         "prize": "Gewinn",
         "prizeInfo": "Was der Gewinner bekommt, wie es neben der Verlosung steht. Zum Veröffentlichen nötig.",
         "description": "Beschreibung",
+        "descriptionInfo": "Markdown. Ein Schiff oder Item als [*Name*] wird verlinkt; tippe [* zum Suchen.",
+        "translationInfo": "Optional. Leere Felder zeigen den englischen Text.",
         "code": "Geschenkcode",
         "codeInfo": "Der Code, den der Gewinner erhält. Er wird verschlüsselt gespeichert und nie wieder vollständig angezeigt.",
         "codeSet": "Ein Code ist hinterlegt (%{code}). Lass das Feld leer, um ihn zu behalten.",
@@ -100,7 +102,10 @@
           "drawnBy": "%{date} von %{admin}",
           "concludedAt": "Abgeschlossen",
           "publicPage": "Öffentliche Seite öffnen",
-          "noImages": "Noch keine Bilder. Zum Veröffentlichen ist eins nötig."
+          "noImages": "Noch keine Bilder. Zum Veröffentlichen ist eins nötig.",
+          "previewInfo": "Ein Link, der diese Verlosung auch als Entwurf jedem zeigt, der ihn hat. Kein Konto nötig. 30 Tage gültig.",
+          "copyPreview": "Vorschau-Link kopieren",
+          "openPreview": "Vorschau öffnen"
         }
       },
       "raffleEntry": {
@@ -327,6 +332,10 @@
           "forfeited": "Nicht rechtzeitig abgeholt",
           "not_won": "Nicht gewonnen"
         }
+      },
+      "preview": {
+        "title": "Vorschau",
+        "text": "Du siehst diese Verlosung über einen Vorschau-Link. Bis sie veröffentlicht ist, können sie nur Personen mit diesem Link sehen."
       }
     }
   }

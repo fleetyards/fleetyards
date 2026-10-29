@@ -4,8 +4,8 @@ json.items @entries do |entry|
   raffle = entry.raffle
   json.id entry.id
   json.raffle_id raffle.id
-  json.raffle_title raffle.title
-  json.prize raffle.prize if raffle.prize.present?
+  json.raffle_title raffle.localized_title
+  json.prize raffle.localized_prize if raffle.localized_prize.present?
   json.raffle_status raffle.status
   json.ends_at raffle.ends_at.utc.iso8601
   json.entered_at entry.created_at.utc.iso8601

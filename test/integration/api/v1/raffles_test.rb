@@ -35,6 +35,19 @@ class Api::V1::RafflesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  api_path "/raffles/preview/{token}" do
+    parameter name: "token", in: :path, description: "Preview token from the admin", schema: {type: :string}
+
+    get("Raffle Preview") do
+      operationId "rafflePreview"
+      tags "Raffles"
+      produces "application/json"
+
+      response(200, "successful") { schema ::V1::Schemas::Raffle }
+      response(404, "not found") { schema ::Shared::V1::Schemas::StandardError }
+    end
+  end
+
   api_path "/raffles/{id}/entrants" do
     parameter name: "id", in: :path, description: "Raffle id", schema: {type: :string, format: :uuid}
 
@@ -139,6 +152,51 @@ class Api::V1::RafflesTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 404, api_path: "/raffles/{id}", path_params: {id: create(:raffle, :draft).id}
   end
 
+  test "GET /raffles/:id answers in the reader's language, falling back to English" do
+    @raffle.update!(title: "Win a Polaris", prize: "Polaris game package", translations: {"de" => {"title" => "Gewinne eine Polaris"}})
+
+    assert_api_response :get, 200, api_path: "/raffles/{id}", path_params: {id: @raffle.id}, headers: {"Accept-Language" => "de"} do
+      assert_equal "Gewinne eine Polaris", parsed_body["title"]
+      assert_equal "Polaris game package", parsed_body["prize"]
+    end
+
+    assert_api_response :get, 200, api_path: "/raffles/{id}", path_params: {id: @raffle.id}, headers: {"Accept-Language" => "fr"} do
+      assert_equal "Win a Polaris", parsed_body["title"]
+    end
+  end
+
+  test "GET /raffles/preview/:token shows a draft without sign-in or the feature" do
+    Flipper.disable(:raffles)
+    draft = create(:raffle, :draft, code: "DRAFT-CODE")
+
+    assert_api_response :get, 200, api_path: "/raffles/preview/{token}", path_params: {token: draft.generate_token_for(:preview)} do
+      assert_equal draft.id, parsed_body["id"]
+      assert_equal "draft", parsed_body["status"]
+      assert_not_includes response.body, "DRAFT-CODE"
+    end
+  end
+
+  test "GET /raffles/preview/:token marks the reader's own entry" do
+    create(:raffle_entry, raffle: @raffle, user: @user)
+    sign_in @user
+
+    assert_api_response :get, 200, api_path: "/raffles/preview/{token}", path_params: {token: @raffle.generate_token_for(:preview)} do
+      assert parsed_body["entered"]
+    end
+  end
+
+  test "GET /raffles/preview/:token returns 404 for an expired token" do
+    token = @raffle.generate_token_for(:preview)
+
+    travel 31.days do
+      assert_api_response :get, 404, api_path: "/raffles/preview/{token}", path_params: {token:}
+    end
+  end
+
+  test "GET /raffles/preview/:token returns 404 for a made-up token" do
+    assert_api_response :get, 404, api_path: "/raffles/preview/{token}", path_params: {token: "nope"}
+  end
+
   test "GET /raffles/:id/entrants lists every entrant by name" do
     entries = create_list(:raffle_entry, 2, raffle: @raffle)
 
@@ -189,6 +247,12 @@ class Api::V1::RafflesTest < ActionDispatch::IntegrationTest
     sign_in @user
 
     assert_api_response :post, 400, path_params: {raffleId: create(:raffle, :closed).id}, body: {conditionsAccepted: true}
+  end
+
+  test "POST /raffles/:raffle_id/entry refuses a raffle that has not started" do
+    sign_in @user
+
+    assert_api_response :post, 400, path_params: {raffleId: create(:raffle, :upcoming).id}, body: {conditionsAccepted: true}
   end
 
   test "POST /raffles/:raffle_id/entry returns 401 when not signed in" do

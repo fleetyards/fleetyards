@@ -51,6 +51,8 @@
         "prize": "Premio",
         "prizeInfo": "Ciò che riceve il vincitore, come mostrato accanto all'estrazione. Obbligatorio per pubblicare.",
         "description": "Descrizione",
+        "descriptionInfo": "Markdown. Scrivi una nave o un oggetto come [*Nome*] per collegarlo; digita [* per cercare.",
+        "translationInfo": "Facoltativo. I campi vuoti mostrano il testo inglese.",
         "code": "Codice regalo",
         "codeInfo": "Il codice che riceve il vincitore. Viene salvato cifrato e non viene mai più mostrato per intero.",
         "codeSet": "È impostato un codice (%{code}). Lascia il campo vuoto per mantenerlo.",
@@ -100,7 +102,10 @@
           "drawnBy": "%{date} da %{admin}",
           "concludedAt": "Concluso",
           "publicPage": "Apri la pagina pubblica",
-          "noImages": "Nessuna immagine. Ne serve una per pubblicare."
+          "noImages": "Nessuna immagine. Ne serve una per pubblicare.",
+          "previewInfo": "Un link che mostra questa estrazione, anche in bozza, a chiunque lo abbia. Nessun account necessario. Valido 30 giorni.",
+          "copyPreview": "Copia link di anteprima",
+          "openPreview": "Apri anteprima"
         }
       },
       "raffleEntry": {
@@ -327,6 +332,10 @@
           "forfeited": "Non ritirato in tempo",
           "not_won": "Non vinto"
         }
+      },
+      "preview": {
+        "title": "Anteprima",
+        "text": "Stai vedendo questa estrazione tramite un link di anteprima. Finché non viene pubblicata, solo chi ha il link può vederla."
       }
     }
   }

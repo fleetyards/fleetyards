@@ -51,6 +51,8 @@
         "prize": "Prize",
         "prizeInfo": "What the winner gets, as shown next to the raffle. Required to publish.",
         "description": "Description",
+        "descriptionInfo": "Markdown. Name a ship or item as [*Name*] to link it; type [* to search.",
+        "translationInfo": "Optional. Any field left empty shows the English text.",
         "code": "Gift code",
         "codeInfo": "The code the winner receives. It is stored encrypted and never shown in full again.",
         "codeSet": "A code is set (%{code}). Leave the field empty to keep it.",
@@ -100,7 +102,10 @@
           "drawnBy": "%{date} by %{admin}",
           "concludedAt": "Concluded",
           "publicPage": "Open the public page",
-          "noImages": "No images yet. A raffle needs one to be published."
+          "noImages": "No images yet. A raffle needs one to be published.",
+          "previewInfo": "A link that shows this raffle, drafts included, to anyone who has it. No account needed. Valid for 30 days.",
+          "copyPreview": "Copy preview link",
+          "openPreview": "Open preview"
         }
       },
       "raffleEntry": {
@@ -327,6 +332,10 @@
           "forfeited": "Not claimed in time",
           "not_won": "Not won"
         }
+      },
+      "preview": {
+        "title": "Preview",
+        "text": "You are viewing this raffle through a preview link. Until it is published, only people with the link can see it."
       }
     }
   }

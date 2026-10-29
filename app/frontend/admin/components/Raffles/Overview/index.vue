@@ -10,7 +10,12 @@ import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
 import { PanelHeadingTonesEnum } from "@/shared/components/base/Panel/Heading/types";
+import Btn from "@/shared/components/base/Btn/index.vue";
+import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import copyText from "@/shared/utils/CopyText";
+import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { type Raffle } from "@/services/fyAdminApi";
+import Markdown from "@/shared/components/Markdown/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
@@ -20,6 +25,17 @@ type Props = {
 const props = defineProps<Props>();
 
 const { t, l } = useI18n();
+
+const { displayInfo, displayAlert } = useAppNotifications();
+
+const copyPreviewUrl = () => {
+  if (!props.raffle.previewUrl) return;
+
+  copyText(props.raffle.previewUrl).then(
+    () => displayInfo({ text: t("messages.copy.success") }),
+    () => displayAlert({ text: t("messages.copy.failure") }),
+  );
+};
 
 const date = (value?: string) =>
   value ? l(value, "datetime.formats.short") : "—";
@@ -88,6 +104,25 @@ const publicUrl = computed(
             {{ t("labels.raffle.overview.publicPage") }}
             <i class="fa-light fa-arrow-up-right-from-square" />
           </a>
+          <div
+            v-if="props.raffle.previewUrl"
+            class="raffle-overview__preview"
+            data-test="raffle-preview-link"
+          >
+            <p class="raffle-overview__dim">
+              {{ t("labels.raffle.overview.previewInfo") }}
+            </p>
+            <div class="raffle-overview__preview__actions">
+              <Btn :size="BtnSizesEnum.SM" @click="copyPreviewUrl">
+                <i class="fa-light fa-copy" />
+                {{ t("labels.raffle.overview.copyPreview") }}
+              </Btn>
+              <Btn :size="BtnSizesEnum.SM" :href="props.raffle.previewUrl">
+                <i class="fa-light fa-eye" />
+                {{ t("labels.raffle.overview.openPreview") }}
+              </Btn>
+            </div>
+          </div>
         </PanelBody>
       </Panel>
     </div>
@@ -97,9 +132,7 @@ const publicUrl = computed(
           {{ t("labels.raffle.description") }}
         </PanelHeading>
         <PanelBody>
-          <p class="raffle-overview__description">
-            {{ props.raffle.description }}
-          </p>
+          <Markdown :source="props.raffle.description" />
         </PanelBody>
       </Panel>
       <Panel :variant="PanelVariantsEnum.SLIM">
@@ -135,9 +168,18 @@ const publicUrl = computed(
   font-size: 0.875rem;
 }
 
-.raffle-overview__description {
-  margin: 0;
-  white-space: pre-line;
+.raffle-overview__preview {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+  font-size: 0.875rem;
+}
+
+.raffle-overview__preview__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .raffle-overview__dim {

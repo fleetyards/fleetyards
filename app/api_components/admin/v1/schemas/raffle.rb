@@ -13,6 +13,7 @@ module Admin
             title: {type: :string},
             description: {type: :string},
             prize: {type: :string},
+            translations: {type: :array, items: ::Admin::V1::Schemas::RaffleTranslation},
             # The code itself never leaves the server through this component.
             codeSet: {type: :boolean},
             maskedCode: {type: :string},
@@ -23,6 +24,8 @@ module Admin
             claimPeriodDays: {type: :integer},
             published: {type: :boolean},
             status: ::Shared::V1::Schemas::Enums::RaffleStatusEnum,
+            # Left out once the raffle is concluded.
+            previewUrl: {type: :string},
             entriesCount: {type: :integer},
             drawnAt: {type: :string, format: "date-time"},
             drawnBy: {type: :string},
@@ -35,7 +38,7 @@ module Admin
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id title codeSet images startsAt runDays endsAt claimPeriodDays published status entriesCount socialPosts createdAt updatedAt]
+          required: %w[id title translations codeSet images startsAt runDays endsAt claimPeriodDays published status entriesCount socialPosts createdAt updatedAt]
         })
       end
     end

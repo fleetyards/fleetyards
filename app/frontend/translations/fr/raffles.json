@@ -51,6 +51,8 @@
         "prize": "Lot",
         "prizeInfo": "Ce que reçoit le gagnant, tel qu'affiché à côté du tirage. Obligatoire pour publier.",
         "description": "Description",
+        "descriptionInfo": "Markdown. Écrivez un vaisseau ou un objet sous la forme [*Nom*] pour le lier ; tapez [* pour chercher.",
+        "translationInfo": "Facultatif. Un champ laissé vide affiche le texte anglais.",
         "code": "Code cadeau",
         "codeInfo": "Le code que reçoit le gagnant. Il est stocké chiffré et n'est plus jamais affiché en entier.",
         "codeSet": "Un code est défini (%{code}). Laissez le champ vide pour le conserver.",
@@ -100,7 +102,10 @@
           "drawnBy": "%{date} par %{admin}",
           "concludedAt": "Terminé",
           "publicPage": "Ouvrir la page publique",
-          "noImages": "Aucune image. Il en faut une pour publier."
+          "noImages": "Aucune image. Il en faut une pour publier.",
+          "previewInfo": "Un lien qui montre ce tirage au sort, même en brouillon, à toute personne qui l'a. Aucun compte requis. Valable 30 jours.",
+          "copyPreview": "Copier le lien d'aperçu",
+          "openPreview": "Ouvrir l'aperçu"
         }
       },
       "raffleEntry": {
@@ -327,6 +332,10 @@
           "forfeited": "Non réclamé à temps",
           "not_won": "Non gagné"
         }
+      },
+      "preview": {
+        "title": "Aperçu",
+        "text": "Vous consultez ce tirage au sort via un lien d'aperçu. Tant qu'il n'est pas publié, seules les personnes disposant du lien peuvent le voir."
       }
     }
   }

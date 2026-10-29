@@ -20099,6 +20099,34 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/raffles/preview/{token}":
+    parameters:
+    - name: token
+      in: path
+      description: Preview token from the admin
+      schema:
+        type: string
+      required: true
+    get:
+      summary: Raffle Preview
+      tags:
+      - Raffles
+      operationId: rafflePreview
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Raffle"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/raffles/{id}":
     parameters:
     - name: id
@@ -24570,6 +24598,7 @@ components:
       - ModelsChannel
       - NotificationsChannel
       - PayoutLedgerChannel
+      - RafflesChannel
       - UserNotificationsChannel
       - UserPresenceChannel
       - WishlistChannel
@@ -24593,6 +24622,7 @@ components:
       - MODELS_CHANNEL
       - NOTIFICATIONS_CHANNEL
       - PAYOUT_LEDGER_CHANNEL
+      - RAFFLES_CHANNEL
       - USER_NOTIFICATIONS_CHANNEL
       - USER_PRESENCE_CHANNEL
       - WISHLIST_CHANNEL

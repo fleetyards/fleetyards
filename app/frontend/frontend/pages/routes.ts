@@ -244,6 +244,16 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "/raffles/preview/:token/",
+    name: "raffle-preview",
+    component: () => import("@/frontend/pages/raffles/[id].vue"),
+    meta: {
+      title: "raffle",
+      mobileBack: true,
+      backgroundImage: "bg-5",
+    },
+  },
+  {
     path: "/raffles/:id/",
     name: "raffle",
     component: () => import("@/frontend/pages/raffles/[id].vue"),

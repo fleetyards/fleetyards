@@ -12,6 +12,11 @@ class Raffle < ApplicationRecord
   # How long before the close the last-day reminder goes out.
   LAST_DAY = 1.day
 
+  # English lives in the columns; every other locale is optional and falls
+  # back to it field by field.
+  TRANSLATED_ATTRIBUTES = %w[title description prize].freeze
+  TRANSLATION_LOCALES = (I18n.available_locales.map(&:to_s) - ["en"]).freeze
+
   DEFAULT_SORTING_PARAMS = "ends_at desc"
   ALLOWED_SORTING_PARAMS = [
     "title asc", "title desc",
@@ -31,6 +36,10 @@ class Raffle < ApplicationRecord
   has_many :entries, class_name: "RaffleEntry", dependent: :delete_all, inverse_of: :raffle
   has_many :won_entries, -> { won.order(:draw_position) }, class_name: "RaffleEntry", inverse_of: false
 
+  # A link to the raffle page that needs no sign-in and shows a draft too, for
+  # someone outside the team to approve the raffle before it goes out.
+  generates_token_for :preview, expires_in: 30.days
+
   # The first is the cover on cards and the homepage.
   has_many_attached :images
 
@@ -42,9 +51,13 @@ class Raffle < ApplicationRecord
   validates :images, presence: true, if: :published?
   validates :images, no_vector_image: true
   validate :frozen_after_draw, on: :update
+  validate :translations_shape
 
   before_validation :compute_ends_at
+  before_validation :compact_translations
   before_destroy :keep_drawn_raffles, prepend: true
+
+  after_commit -> { self.class.broadcast_change(id) }, on: %i[create update]
 
   scope :published, -> { where(published: true) }
   scope :running, ->(now = Time.current) { published.where(starts_at: ..now).where("raffles.ends_at > ?", now) }
@@ -67,6 +80,32 @@ class Raffle < ApplicationRecord
 
   def self.ransackable_associations(auth_object = nil)
     []
+  end
+
+  TRANSLATED_ATTRIBUTES.each do |attribute|
+    define_method(:"localized_#{attribute}") do |locale = I18n.locale|
+      translations.dig(locale.to_s, attribute).presence || public_send(attribute)
+    end
+  end
+
+  def translations_list
+    TRANSLATION_LOCALES.filter_map do |locale|
+      next if translations[locale].blank?
+
+      {"locale" => locale, **translations[locale]}
+    end
+  end
+
+  # Replaces every translation: a locale left out of the list is dropped.
+  def translations_list=(list)
+    self.translations = Array(list).to_h do |entry|
+      entry = entry.to_h.stringify_keys
+      [entry["locale"].to_s, entry.slice(*TRANSLATED_ATTRIBUTES)]
+    end
+  end
+
+  def preview_url
+    "#{FRONTEND_ENDPOINT}#{Rails.application.routes.url_helpers.frontend_raffle_preview_path(generate_token_for(:preview))}"
   end
 
   # Stored for queries, but known before the first save too.
@@ -135,10 +174,45 @@ class Raffle < ApplicationRecord
     entries.update_all(email: nil, updated_at: now)
   end
 
+  # Readers on the raffle page refetch on this, so a status change, an entry
+  # or a new winner shows without a reload. It runs after the write has
+  # committed, so a cable that is down must not turn a saved entry into an
+  # error.
+  def self.broadcast_change(raffle_id)
+    ActionCable.server.broadcast("raffles", {"raffleId" => raffle_id})
+  rescue => e
+    Appsignal.report_error(e)
+  end
+
   private def compute_ends_at
     return if starts_at.blank? || run_days.blank?
 
     self.ends_at = starts_at + run_days.to_i.days
+  end
+
+  private def compact_translations
+    return unless translations.is_a?(Hash)
+
+    self.translations = translations.to_h do |locale, values|
+      [locale.to_s, values.is_a?(Hash) ? values.transform_keys(&:to_s).compact_blank : values]
+    end.compact_blank
+  end
+
+  private def translations_shape
+    unless translations.is_a?(Hash)
+      errors.add(:translations, :invalid)
+      return
+    end
+
+    translations.each do |locale, values|
+      next if TRANSLATION_LOCALES.include?(locale) &&
+        values.is_a?(Hash) &&
+        (values.keys - TRANSLATED_ATTRIBUTES).empty? &&
+        values.values.all?(String)
+
+      errors.add(:translations, :invalid)
+      break
+    end
   end
 
   # A drawn raffle is the public record of who entered and who won.

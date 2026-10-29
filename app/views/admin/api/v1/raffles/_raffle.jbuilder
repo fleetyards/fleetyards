@@ -4,6 +4,7 @@ json.id raffle.id
 json.title raffle.title
 json.description raffle.description if raffle.description.present?
 json.prize raffle.prize if raffle.prize.present?
+json.translations raffle.translations_list
 json.code_set raffle.code.present?
 json.masked_code raffle.masked_code if raffle.code.present?
 json.partial!("api/v1/raffles/images", raffle:)
@@ -13,6 +14,7 @@ json.ends_at raffle.ends_at.utc.iso8601
 json.claim_period_days raffle.claim_period_days
 json.published raffle.published
 json.status raffle.status
+json.preview_url raffle.preview_url unless raffle.concluded?
 json.entries_count local_assigns.fetch(:entries_count) { raffle.entries.count }
 json.drawn_at raffle.drawn_at.utc.iso8601 if raffle.drawn_at.present?
 json.drawn_by raffle.drawn_by.username if raffle.drawn_by.present?
