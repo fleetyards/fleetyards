@@ -239,7 +239,8 @@ module ScData
             port_tags: normalize_tags(port["PortTags"]),
             required_tags: normalize_tags(port["RequiredPortTags"]),
             flags: normalize_tags(port["Flags"]),
-            types: extract_port_def_types(port)
+            types: extract_port_def_types(port),
+            sub_types: extract_port_def_sub_types(port)
           }
         end
       end
@@ -249,6 +250,14 @@ module ScData
         types = [types] unless types.is_a?(Array)
 
         types.compact.filter_map { |type| type["Type"] }
+      end
+
+      private def extract_port_def_sub_types(port)
+        types = Array.wrap(port.dig("Types", "SItemPortDefTypes")).compact
+
+        port_sub_types(types.map do |type|
+          [type["Type"], Array.wrap(type.dig("SubTypes", "Enum")).filter_map { |sub_type| sub_type["value"].presence }]
+        end)
       end
 
       # A ship's item ports are declared in its vehicle implementation XML. The
@@ -288,7 +297,8 @@ module ScData
               port_tags: normalize_tags(item_port["portTags"]),
               required_tags: normalize_tags(item_port["requiredTags"]),
               flags: normalize_tags(item_port["flags"]),
-              types: extract_item_port_types(item_port)
+              types: extract_item_port_types(item_port),
+              sub_types: extract_item_port_sub_types(item_port)
             }
           end
 
@@ -309,6 +319,16 @@ module ScData
         Array.wrap(types["Type"]).filter_map do |type|
           type["type"] if type.is_a?(Hash)
         end
+      end
+
+      private def extract_item_port_sub_types(item_port)
+        types = item_port["Types"]
+
+        return {} unless types.is_a?(Hash)
+
+        port_sub_types(Array.wrap(types["Type"]).filter_map do |type|
+          [type["type"], type["subtypes"].to_s.split(",").map(&:strip).compact_blank] if type.is_a?(Hash)
+        end)
       end
 
       private def extract_loadout(item)

@@ -368,6 +368,20 @@ module ScData
         value.to_s.split.map { |tag| tag.delete_prefix("$") }.uniq
       end
 
+      # A port names the types it takes and, for some, which of that type's sub
+      # types: an Arrow's gun port takes a `WeaponGun` that is a `Gun`, which a
+      # rocket pod, a `WeaponGun` too, is not. Takes `[type, sub_types]` pairs
+      # and keeps only the restricted types; a type the port also names without
+      # sub types takes any of them.
+      private def port_sub_types(pairs)
+        pairs.group_by(&:first).each_with_object({}) do |(type, entries), index|
+          sub_types = entries.map(&:last)
+          next if type.blank? || sub_types.any?(&:empty?)
+
+          index[type] = sub_types.flatten.uniq
+        end
+      end
+
       private def value_or_nil(value)
         if value == "<= PLACEHOLDER =>" ||
             value == "UNDEFINED" ||

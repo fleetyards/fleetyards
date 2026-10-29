@@ -1103,7 +1103,10 @@ module ScData
             flags: normalize_tags(item.dig("Flags")),
             types: types.map do |type|
               type.dig("Type")
-            end
+            end,
+            sub_types: port_sub_types(types.map do |type|
+              [type.dig("Type"), Array.wrap(type.dig("SubTypes", "Enum")).filter_map { |sub_type| sub_type["value"].presence }]
+            end)
           }
         end
       end
