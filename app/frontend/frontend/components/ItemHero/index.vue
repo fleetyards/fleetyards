@@ -91,7 +91,8 @@ const viewer = ref<{ enableFullscreen: () => void }>();
 const holoFailed = ref(false);
 
 // A textured holo that will not draw falls back to the plain one, which keeps
-// the switch back to it.
+// the switch back to it. The viewer is keyed by the holo, so the plain one gets
+// a fresh context and a late error from the textured one never arrives.
 const holoUnavailable = () => {
   if (holoModel.value?.textured) {
     texturedHolo.value = false;
@@ -115,6 +116,7 @@ watch(
     :data-test="`${testId}-holo`"
   >
     <HoloViewer
+      :key="holoModel.path"
       ref="viewer"
       :models="[holoModel]"
       :controllable="false"
