@@ -39,11 +39,17 @@ const lowPower = useLowPowerDevice();
 
 const { isFeatureEnabled } = useFeatures();
 
+// The inline preview cannot ask before loading a holo too large for the
+// device, so such a device is not offered the textured one.
 const texturedHoloAvailable = computed(
   () =>
     isFeatureEnabled(FeatureFlagName.ITEM_HOLO_TEXTURED) &&
     !!props.holo?.url &&
-    !!props.holoTextured?.url,
+    !!props.holoTextured?.url &&
+    !(
+      lowPower.value &&
+      (props.holoTextured.size ?? 0) > LOW_POWER_HOLO_SIZE_LIMIT
+    ),
 );
 
 const texturedHolo = ref(false);

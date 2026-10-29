@@ -172,6 +172,20 @@ describe("ItemHero", () => {
     ).toBe(false);
   });
 
+  it("leaves the switch out on a low-power device for a large textured holo", () => {
+    const wrapper = mountHero(
+      {
+        holo: file("holo.glb"),
+        holoTextured: file("holo_textured.glb", 100_000_000),
+      },
+      { lowPower: true },
+    );
+
+    expect(
+      wrapper.find("[data-test='item-image-holo-textured']").exists(),
+    ).toBe(false);
+  });
+
   it("leaves the switch out while the flag is off", () => {
     const wrapper = mountHero(
       { holo: file("holo.glb"), holoTextured: file("holo_textured.glb") },
