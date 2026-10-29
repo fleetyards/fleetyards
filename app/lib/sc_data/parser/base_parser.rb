@@ -382,6 +382,13 @@ module ScData
         end
       end
 
+      # The same, read off an entity record's `SItemPortDefTypes`.
+      private def port_def_sub_types(types)
+        port_sub_types(Array.wrap(types).compact.map do |type|
+          [type["Type"], Array.wrap(type.dig("SubTypes", "Enum")).filter_map { |sub_type| value_or_nil(sub_type["value"]) }]
+        end)
+      end
+
       private def value_or_nil(value)
         if value == "<= PLACEHOLDER =>" ||
             value == "UNDEFINED" ||
