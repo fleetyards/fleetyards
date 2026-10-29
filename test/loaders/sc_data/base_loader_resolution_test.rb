@@ -133,6 +133,22 @@ module ScData
         assert_equal [nil, true], slots.map(&:retain_only)
       end
 
+      test "carries what a hidden component's port declares onto the slot it promotes" do
+        gun = create(:component, sc_key: "gats_ballisticgatling_s1", size: "1")
+        turret = create(:component, :hidden, sc_key: "tmbl_cyclone_module_turret")
+        create(:hardpoint, parent: turret, sc_name: "turret_weapon", component: gun, source: :game_files,
+          types: %w[WeaponGun], sub_types: {"WeaponGun" => ["Gun"]}, min_size: 1, max_size: 1,
+          flags: %w[editable])
+
+        slot = resolve({"loadout" => [{"name" => "hardpoint_module_attach", "key" => "tmbl_cyclone_module_turret"}]}).first
+
+        assert_equal "hardpoint_module_attach-turret_weapon", slot.name
+        assert_equal ["WeaponGun"], slot.types
+        assert_equal({"WeaponGun" => ["Gun"]}, slot.sub_types)
+        assert_equal [1, 1], [slot.min_size, slot.max_size]
+        assert_equal ["editable"], slot.flags
+      end
+
       # Derived only for a ship. A module's own loadout, and every nested level,
       # resolves without it -- which is why the model is passed rather than read
       # off whatever happens to be the parent.

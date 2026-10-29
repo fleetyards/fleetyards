@@ -406,7 +406,9 @@ module ScData
 
       # A hidden component is a container the game files ship as an item -- a
       # door that holds a cargo grid. It gets no hardpoint of its own; its
-      # sub-hardpoints are promoted onto this level under a compound name.
+      # sub-hardpoints are promoted onto this level under a compound name, and
+      # take what their port declares with them: the Cyclone's turret module is
+      # one, and its gun port, left without types, took any weapon.
       private def flatten_hidden(item, component)
         nested_loadout = item["loadout"] || item["default_loadout"]
 
@@ -417,10 +419,19 @@ module ScData
           next if sub_component.blank?
           next if loadout_name_blacklisted?(sub_component.sc_key)
 
+          facts = sub_hardpoint.facts
+
           Slot.new(
             name: "#{item["name"]}-#{sub_hardpoint.sc_name}".downcase,
             component: sub_component,
-            children: []
+            children: [],
+            min_size: facts.min_size,
+            max_size: facts.max_size,
+            types: facts.types,
+            sub_types: facts.sub_types,
+            port_tags: facts.port_tags,
+            required_tags: facts.required_tags,
+            flags: facts.flags
           )
         end
 
