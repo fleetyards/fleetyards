@@ -3979,6 +3979,20 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         holoTextured:
           "$ref": "#/components/schemas/MediaFile"
+        holoTexturedLite:
+          "$ref": "#/components/schemas/MediaFile"
+        landedHoloTextured:
+          "$ref": "#/components/schemas/MediaFile"
+        landedHoloTexturedLite:
+          "$ref": "#/components/schemas/MediaFile"
+        holoTexture:
+          "$ref": "#/components/schemas/MediaFile"
+        holoTextureOrm:
+          "$ref": "#/components/schemas/MediaFile"
+        holoTextureLite:
+          "$ref": "#/components/schemas/MediaFile"
+        holoTextureOrmLite:
+          "$ref": "#/components/schemas/MediaFile"
         brochure:
           "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
