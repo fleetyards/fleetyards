@@ -68,6 +68,10 @@ module V1
           holoTexturedLite: ::Shared::V1::Schemas::MediaFile,
           landedHoloTextured: ::Shared::V1::Schemas::MediaFile,
           landedHoloTexturedLite: ::Shared::V1::Schemas::MediaFile,
+          holoTexture: ::Shared::V1::Schemas::MediaFile,
+          holoTextureOrm: ::Shared::V1::Schemas::MediaFile,
+          holoTextureLite: ::Shared::V1::Schemas::MediaFile,
+          holoTextureOrmLite: ::Shared::V1::Schemas::MediaFile,
           brochure: ::Shared::V1::Schemas::MediaFile
         },
         additionalProperties: false

@@ -14,12 +14,24 @@ module ScData
   # item -- listed with the palette, or else carrying the palette's name -- and
   # the paint that item is linked to. That link is made once per paint name, on
   # the base ship, so the variants' paints are found by the same name.
+  #
+  # A palette no paint stands for may be a variant's own colours: the Gladius
+  # Valiant is the Gladius in `paint_gladius_valiant`, the item in its paint
+  # slot. That variant takes the base ship's textured holos, and the maps as
+  # its own -- and its paints are repainted from the base ship's listing too,
+  # since its holos are the base ship's.
   class TexturedPaintsImport
     # Listing => {attachment => the manifest key naming its file}. Only the base
     # colour, listed first, is required: without it a paint has nothing to show.
     LISTINGS = {
       "flight_textured.json" => {holo_texture: "base", holo_texture_orm: "orm"},
       "flight_textured_lite.json" => {holo_texture_lite: "base", holo_texture_orm_lite: "orm"}
+    }.freeze
+
+    # Listing => the holos its maps fit.
+    HOLOS = {
+      "flight_textured.json" => %i[holo_textured landed_holo_textured],
+      "flight_textured_lite.json" => %i[holo_textured_lite landed_holo_textured_lite]
     }.freeze
 
     def initialize(store, logger:)
@@ -39,8 +51,10 @@ module ScData
       return false if listing.nil?
 
       complete = true
+      palettes = listing.fetch("paints", {})
+      liveried = liveried_variants(model, palettes.values.select { |entry| paints_for(model, entry).empty? })
 
-      listing.fetch("paints", {}).each do |slug, entry|
+      palettes.each do |slug, entry|
         maps = maps_for(entry, files, fields)
 
         unless maps.key?(fields.keys.first)
@@ -48,15 +62,21 @@ module ScData
           next
         end
 
-        paints = paints_for(model, entry)
+        records = [model, *liveried].flat_map { |ship| paints_for(ship, entry) }
 
-        if paints.empty?
-          @logger.call(:info, "#{path}/#{name}: paint #{slug} matches no paint of #{model.slug}")
-          next
+        if records.empty?
+          records = liveried_variants(model, [entry])
+
+          if records.empty?
+            @logger.call(:info, "#{path}/#{name}: paint #{slug} matches no paint of #{model.slug}")
+            next
+          end
+
+          share_holos(model, records, HOLOS.fetch(name))
         end
 
         maps.each do |field, (file_name, md5)|
-          stale = paints.reject { |paint| current?(paint.public_send(field), md5) }
+          stale = records.reject { |record| current?(record.public_send(field), md5) }
           next if stale.empty?
 
           complete &= attach(stale, field, path, file_name, md5)
@@ -85,7 +105,7 @@ module ScData
       end
     end
 
-    private def attach(paints, field, path, name, md5)
+    private def attach(records, field, path, name, md5)
       file = @store.fetch(path, name)
 
       if Digest::MD5.file(file.path).hexdigest != md5
@@ -95,7 +115,7 @@ module ScData
 
       # One upload shared by every paint the palette stands for.
       blob = ActiveStorage::Blob.create_and_upload!(io: file, filename: name)
-      paints.each { |paint| paint.update!(field => blob) }
+      records.each { |record| record.update!(field => blob) }
 
       true
     rescue => e
@@ -115,6 +135,31 @@ module ScData
       model.paints.to_a.select do |paint|
         components.any? { |component| component.id == paint.component_id } ||
           names.include?(PaintComponentMatcher.normalize(paint.name))
+      end
+    end
+
+    private def liveried_variants(model, entries)
+      items = entries.flat_map { |entry| Array(entry["items"]) }.select(&:present?)
+      return [] if items.empty?
+
+      liveried = Hardpoint.paints_category
+        .where(parent_type: "Model")
+        .joins(:component)
+        .where(components: {sc_key: items})
+        .select(:parent_id)
+
+      model.variants.where(id: liveried).to_a
+    end
+
+    # The base ship's blobs, shared rather than copied.
+    private def share_holos(model, variants, fields)
+      fields.each do |field|
+        blob = model.public_send(field).blob
+        next if blob.nil?
+
+        variants.each do |variant|
+          variant.update!(field => blob) unless variant.public_send(field).blob == blob
+        end
       end
     end
 

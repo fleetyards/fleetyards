@@ -344,6 +344,16 @@ const paintMaps = (paint: ModelPaint) =>
     ? { base: paint.media.holoTextureLite, orm: paint.media.holoTextureOrmLite }
     : { base: paint.media.holoTexture, orm: paint.media.holoTextureOrm };
 
+// A variant whose own colours are a livery of its base ship's wears it where
+// no paint is picked.
+const liveryMaps = computed(() => {
+  const { media } = props.model;
+
+  return texturedHoloExport.value?.lite
+    ? { base: media.holoTextureLite?.url, orm: media.holoTextureOrmLite?.url }
+    : { base: media.holoTexture?.url, orm: media.holoTextureOrm?.url };
+});
+
 const holoPaints = computed(() =>
   (paints.value ?? []).filter((paint) => !!paintMaps(paint).base),
 );
@@ -369,8 +379,11 @@ const holoModel = computed(() => {
     return;
   }
 
-  const maps =
-    textured && holoPaint.value ? paintMaps(holoPaint.value) : undefined;
+  const maps = textured
+    ? holoPaint.value
+      ? paintMaps(holoPaint.value)
+      : liveryMaps.value
+    : undefined;
 
   return {
     path,

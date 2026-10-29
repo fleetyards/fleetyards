@@ -16,6 +16,7 @@ module ScData
     PATH = "crusader/ares-inferno"
     PNG = Rails.root.join("test/fixtures/files/test.png").binread
     HOLO = Rails.root.join("test/fixtures/holo/plain.gltf").binread
+    GLB = Rails.root.join("test/fixtures/holo/plain.glb").binread
     HARDPOINTS = {
       entity: "AEGS_Gladius", state: "flight", frame: "gltf-y-up", units: "m",
       ports: [{name: "hardpoint_gun_nose", parent: nil, helper: true, position: [0.0, -1.17, -10.59], rotation: [0, 0, 0, 1],
@@ -455,6 +456,72 @@ module ScData
       assert_equal "flight_textured_lite_gladiuspirate_orm.webp", paint.holo_texture_orm_lite.filename.to_s
       assert_not paint.holo_texture.attached?
       assert_equal "listing-1", @model.ship_views_digest
+    end
+
+    test "dresses a variant in the palette its paint slot holds, on the base ship's textured holos" do
+      @model.update_columns(rsi_chassis_id: 4242)
+      variant = create(:model, rsi_chassis_id: 4242)
+      component = create(:component, category: "paints", sc_key: "paint_gladius_valiant", name: "Gladius Valiant Livery")
+      create(:hardpoint, parent: variant, component:)
+      publish_paints(
+        {"gladiusvaliant" => {
+          items: ["paint_gladius_valiant"],
+          base: "flight_textured_gladiusvaliant.webp",
+          orm: "flight_textured_gladiusvaliant_orm.webp"
+        }},
+        {
+          "flight_textured.glb" => GLB,
+          "landed_textured.glb" => GLB,
+          "flight_textured_gladiusvaliant.webp" => PNG,
+          "flight_textured_gladiusvaliant_orm.webp" => "orm"
+        }
+      )
+
+      perform
+
+      variant.reload
+      assert_equal @model.holo_textured.blob, variant.holo_textured.blob
+      assert_equal @model.landed_holo_textured.blob, variant.landed_holo_textured.blob
+      assert_equal "flight_textured_gladiusvaliant.webp", variant.holo_texture.filename.to_s
+      assert_equal "flight_textured_gladiusvaliant_orm.webp", variant.holo_texture_orm.filename.to_s
+      assert_not @model.holo_texture.attached?
+    end
+
+    test "repaints a liveried variant's paints from its base ship's listing" do
+      @model.update_columns(rsi_chassis_id: 4242)
+      variant = create(:model, rsi_chassis_id: 4242)
+      livery = create(:component, category: "paints", sc_key: "paint_gladius_valiant")
+      create(:hardpoint, parent: variant, component: livery)
+      component = create(:component, category: "paints", sc_key: "paint_gladius_pirate")
+      create(:model_paint, model: @model, name: "Nightbreak", component:)
+      paint = create(:model_paint, model: variant, name: "Nightbreak")
+      publish_paints(
+        {
+          "gladiusvaliant" => {items: ["paint_gladius_valiant"], base: "flight_textured_gladiusvaliant.webp"},
+          "nightbreak" => {items: ["paint_gladius_pirate"], base: "flight_textured_nightbreak.webp"}
+        },
+        {"flight_textured_gladiusvaliant.webp" => PNG, "flight_textured_nightbreak.webp" => "nightbreak"}
+      )
+
+      perform
+
+      assert_equal "flight_textured_nightbreak.webp", paint.reload.holo_texture.filename.to_s
+    end
+
+    test "leaves a variant in its base ship's livery without textured holos or paint maps of its own" do
+      @model.holo_texture.attach(io: StringIO.new(PNG), filename: "flight_textured_gladiuspirate.webp")
+      component = create(:component, category: "paints", sc_key: "paint_gladius_pirate")
+      paint = create(:model_paint, model: @model, component:)
+      publish_paints(
+        {"gladiuspirate" => {items: ["paint_gladius_pirate"], base: "flight_textured_gladiuspirate.webp"}},
+        {"flight_top.png" => PNG, "flight_textured.glb" => GLB, "flight_textured_gladiuspirate.webp" => PNG}
+      )
+
+      perform
+
+      assert @model.top_view.attached?
+      assert_not @model.holo_textured.attached?
+      assert_not paint.reload.holo_texture.attached?
     end
 
     test "finds the variant's paint by the name of the one linked on the base ship" do

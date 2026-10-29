@@ -456,7 +456,16 @@ class Model < ApplicationRecord
     holo_textured holo_textured_lite landed_holo_textured landed_holo_textured_lite
   ].freeze
 
-  DETAIL_ATTACHMENT_NAMES = (DETAIL_VIEW_ATTACHMENT_NAMES + TEXTURED_HOLO_ATTACHMENT_NAMES).freeze
+  # A variant whose own colours are a livery of its base ship's -- the Gladius
+  # Valiant -- shows the base ship's textured holos repainted with these, the
+  # same maps a ModelPaint carries.
+  LIVERY_MAP_ATTACHMENT_NAMES = %i[
+    holo_texture holo_texture_orm holo_texture_lite holo_texture_orm_lite
+  ].freeze
+
+  DETAIL_ATTACHMENT_NAMES = (
+    DETAIL_VIEW_ATTACHMENT_NAMES + TEXTURED_HOLO_ATTACHMENT_NAMES + LIVERY_MAP_ATTACHMENT_NAMES
+  ).freeze
 
   # The same export without the interior, for devices that cannot load the full
   # one. Lists carry these beside `holo`: a vehicle in the hangar opens its holo

@@ -59,11 +59,13 @@ module ScData
         next if model_id.nil? && model.ship_views_digest == entry["files"]
 
         listing = store.listing(path)
+        @liveried = model.holo_texture.attached?
         fields = import(store, model, path, entry["files"], listing:)
         attached[model.slug] = fields if fields.any?
 
-        # A paint map that did not come down is fetched again next run.
-        unless textured_paints(store).call(model, path, listing.fetch("files", {}))
+        # A paint map that did not come down is fetched again next run. A
+        # liveried variant's paints come from its base ship's listing.
+        if !@liveried && !textured_paints(store).call(model, path, listing.fetch("files", {}))
           model.update_columns(ship_views_digest: nil)
         end
       rescue => e
@@ -109,7 +111,13 @@ module ScData
     private def field_for(name)
       return "hardpoint_transforms" if HARDPOINT_TRANSFORMS_NAME.match?(name.split("/").last.to_s)
 
-      ShipViewFields.field_for(name)
+      field = ShipViewFields.field_for(name)
+
+      # A variant in its base ship's livery shows that ship's textured holos,
+      # which its own maps are cut for; see TexturedPaintsImport.
+      return if @liveried && Model::TEXTURED_HOLO_ATTACHMENT_NAMES.include?(field&.to_sym)
+
+      field
     end
 
     # Checked here rather than where it is served, so a malformed export keeps
