@@ -93,6 +93,18 @@ module ScData
         assert_equal 9, hardpoint.max_size
       end
 
+      test "clears the sub types a port stops restricting" do
+        create(:component, sc_key: "gun_s1", size: "1")
+        port = {"name" => "hardpoint_weapon", "key" => "gun_s1", "types" => ["WeaponGun"]}
+
+        update_loadout(@model, {"loadout" => [port.merge("sub_types" => {"WeaponGun" => ["Gun"]})]})
+        update_loadout(@model, {"loadout" => [port.merge("sub_types" => {})]})
+
+        hardpoint = game_files_hardpoints(@model).sole
+        assert_empty hardpoint.sub_types
+        assert_empty hardpoint.facts.sub_types
+      end
+
       # Which of the nine bomb racks a port takes is decided by a tag, not by
       # the type and size it shares with the other eight.
       test "persists the tags a port names and whether it may be changed" do

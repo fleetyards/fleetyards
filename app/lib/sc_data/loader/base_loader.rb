@@ -553,7 +553,9 @@ module ScData
         update_params = {source: :game_files, component: slot.component}
         hardpoint.carried_components = carried_components(slot)
         update_params[:types] = slot.types if slot.types.present?
-        update_params[:sub_types] = slot.sub_types if slot.sub_types.present?
+        # Always written: a port a later build stops restricting has to lose the
+        # restriction it had.
+        update_params[:sub_types] = slot.sub_types.to_h
         update_params[:port_tags] = slot.port_tags if slot.port_tags.present?
         update_params[:required_tags] = slot.required_tags if slot.required_tags.present?
         update_params[:flags] = slot.flags if slot.flags.present?
