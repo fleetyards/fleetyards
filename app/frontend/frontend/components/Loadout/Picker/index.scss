@@ -294,13 +294,14 @@
   }
 
   // Too narrow for the figure beside the name: it gets a line of its own
-  // under the description, which may take two, and the name keeps its badge.
+  // under the description, which may take two. The badge and check span both
+  // lines, centred on the row.
   .loadout-picker__option {
     display: grid;
     grid-template-areas:
-      "image body badges"
-      "image figure check";
-    grid-template-columns: 56px minmax(0, 1fr) auto;
+      "image body badges check"
+      "image figure badges check";
+    grid-template-columns: 56px minmax(0, 1fr) auto auto;
     column-gap: 10px;
     row-gap: 2px;
     align-items: start;
@@ -325,6 +326,7 @@
 
   .loadout-picker__badges {
     grid-area: badges;
+    align-self: center;
   }
 
   .loadout-picker__figure {
@@ -346,6 +348,7 @@
   // glyph, on the one row it has.
   .loadout-picker__option--empty {
     grid-template-areas: "image body check";
+    grid-template-columns: 56px minmax(0, 1fr) auto;
     align-items: center;
   }
 }
