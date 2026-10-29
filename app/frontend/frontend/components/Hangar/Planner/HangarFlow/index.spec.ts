@@ -255,4 +255,25 @@ describe("Hangar/Planner/HangarFlow", () => {
     expect([candidate.id, acquisition.id]).toEqual(["vulture", "kept"]);
     expect(wrapper.emitted("pick")).toEqual([[empty]]);
   });
+
+  it("opens a slot from its card, and plans no route until a ship is chosen", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { plan, comparison },
+    });
+
+    const undecided = wrapper.find('[data-test="hangar-plan-flow-undecided"]');
+    expect(
+      undecided.find('[data-test="hangar-plan-flow-add-route"]').exists(),
+    ).toBe(false);
+
+    await undecided
+      .find('[data-test="hangar-plan-flow-edit-slot"]')
+      .trigger("click");
+    await wrapper
+      .find('[data-test="hangar-plan-flow-purchase"]')
+      .find('[data-test="hangar-plan-flow-edit-slot"]')
+      .trigger("click");
+
+    expect(wrapper.emitted("edit")).toEqual([[plan.slots[2]], [plan.slots[0]]]);
+  });
 });

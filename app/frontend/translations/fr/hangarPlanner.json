@@ -34,6 +34,8 @@
       "useAsFirstSlot": "En faire mon premier emplacement",
       "addSlot": "Ajouter un emplacement",
       "editSlot": "Modifier l'emplacement",
+      "editSlotOf": "Modifier %{slot}",
+      "slotSettings": "Nom et filtres",
       "removeSlot": "Retirer l'emplacement",
       "confirmRemoveSlot": "Retirer cet emplacement avec ses vaisseaux et ses voies d'obtention ?",
       "openSlotHint": "Aucun vaisseau choisi pour l'instant. Ajoutez-en un, ou plusieurs si vous hésitez.",
@@ -42,6 +44,7 @@
       "addToSlot": "Ajouter à l'emplacement",
       "inSlot": "Dans cet emplacement",
       "choose": "Choisir",
+      "chooseHint": "Choisissez le vaisseau que cet emplacement retient. Les autres vaisseaux quittent l'emplacement, avec leurs voies d'obtention.",
       "removeCandidate": "Retirer le vaisseau",
       "ownedCount": {
         "one": "%{count} dans votre hangar",

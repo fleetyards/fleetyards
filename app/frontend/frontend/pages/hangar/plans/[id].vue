@@ -157,6 +157,13 @@ const pickShips = (slot: HangarPlanSlot) =>
     { planId: planId.value, slot },
   );
 
+const editSlot = (slot: HangarPlanSlot) =>
+  openModal(
+    () =>
+      import("@/frontend/components/Hangar/Planner/SlotShipsModal/index.vue"),
+    { planId: planId.value, slot },
+  );
+
 const openMelt = (melt?: HangarPlanMelt) =>
   openModal(
     () => import("@/frontend/components/Hangar/Planner/MeltModal/index.vue"),
@@ -422,6 +429,7 @@ const onDestroy = async () => {
           @decide="decide"
           @route="openRoute"
           @pick="pickShips"
+          @edit="editSlot"
         />
       </section>
 

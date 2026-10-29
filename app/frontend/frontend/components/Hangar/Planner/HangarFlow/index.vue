@@ -7,7 +7,6 @@ export default {
 <script lang="ts" setup>
 import Pill from "@/shared/components/base/Pill/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
@@ -47,6 +46,7 @@ const emit = defineEmits<{
   decide: [vehicleId: string, decision: HangarFlowDecision];
   route: [candidate: HangarPlanCandidate, acquisition?: HangarPlanAcquisition];
   pick: [slot: HangarPlanSlot];
+  edit: [slot: HangarPlanSlot];
 }>();
 
 const { t } = useI18n();
@@ -54,6 +54,8 @@ const { money, range } = usePlanMoney();
 
 type Card = {
   title: string;
+  // Every ship the card stands for, where the title runs them together.
+  ships?: string[];
   sub?: string;
   model?: HangarPlanModel;
   pill?: { variant: `${PillVariantsEnum}`; label: string };
@@ -75,6 +77,9 @@ type Row = {
   action: { kind: string; icon?: string; label: string; detail?: string };
   right?: Card;
   rightNone?: string;
+  // The plan slot the right card stands for, opened to choose or change its
+  // ships.
+  slot?: HangarPlanSlot;
   // A hangar ship the plan has not settled, offered every way to settle it.
   vehicleId?: string;
   decisions?: HangarFlowDecision[];
@@ -84,7 +89,7 @@ type Row = {
     | { kind: "pick"; slot: HangarPlanSlot }
     | {
         kind: "route";
-        candidates: HangarPlanCandidate[];
+        candidate: HangarPlanCandidate;
         acquisition?: HangarPlanAcquisition;
       };
 };
@@ -127,7 +132,7 @@ const editRoute = (route?: {
   route
     ? {
         kind: "route" as const,
-        candidates: [route.candidate],
+        candidate: route.candidate,
         acquisition: route.acquisition,
       }
     : undefined;
@@ -216,6 +221,7 @@ const keptRows = computed<Row[]>(() =>
         vehicleId: route ? undefined : entry.vehicleId,
         decisions: route ? undefined : (["pending"] as HangarFlowDecision[]),
         slotAction: editRoute(route),
+        slot: route?.slot,
       };
     }),
 );
@@ -333,11 +339,12 @@ const neededRows = computed<Row[]>(() => {
         pill: decidedPill.value,
       },
       slotAction: editRoute(route),
+      slot: route.slot,
     }));
 
   const gaps = props.comparison.gaps.map((gap) => {
-    const candidate = props.plan.slots.find((slot) => slot.id === gap.slotId)
-      ?.candidates[0];
+    const slot = props.plan.slots.find((entry) => entry.id === gap.slotId);
+    const candidate = slot?.candidates[0];
 
     return {
       key: `gap-${gap.slotId}`,
@@ -357,9 +364,8 @@ const neededRows = computed<Row[]>(() => {
         model: gap.model,
         tone: "warning" as const,
       },
-      slotAction: candidate
-        ? { kind: "route" as const, candidates: [candidate] }
-        : undefined,
+      slotAction: candidate ? { kind: "route" as const, candidate } : undefined,
+      slot,
     };
   });
 
@@ -384,6 +390,7 @@ const neededRows = computed<Row[]>(() => {
           title: slot.candidates
             .map((candidate) => candidate.model.name)
             .join(" / "),
+          ships: slot.candidates.map((candidate) => candidate.model.name),
           sub: slot.label,
           model: slot.candidates[0]?.model,
           pill: {
@@ -392,7 +399,7 @@ const neededRows = computed<Row[]>(() => {
           },
           tone: "warning" as const,
         },
-        slotAction: { kind: "route" as const, candidates: slot.candidates },
+        slot,
       };
     });
 
@@ -461,8 +468,14 @@ const pick = (row: Row) => {
   if (row.slotAction?.kind === "pick") emit("pick", row.slotAction.slot);
 };
 
-const routeCandidates = (row: Row) =>
-  row.slotAction?.kind === "route" ? row.slotAction.candidates : [];
+const routeCandidate = (row: Row) =>
+  row.slotAction?.kind === "route" ? row.slotAction.candidate : undefined;
+
+const openRoute = (row: Row) => {
+  if (row.slotAction?.kind === "route") {
+    emit("route", row.slotAction.candidate, row.slotAction.acquisition);
+  }
+};
 
 const routeAcquisition = (row: Row) =>
   row.slotAction?.kind === "route" ? row.slotAction.acquisition : undefined;
@@ -541,10 +554,7 @@ const imageOf = (model?: HangarPlanModel) =>
             </span>
           </template>
           <template v-else>{{ row.leftNone }}</template>
-          <span
-            v-if="routeCandidates(row).length"
-            class="hangar-flow__route-action"
-          >
+          <span v-if="routeCandidate(row)" class="hangar-flow__route-action">
             <Btn
               v-if="routeAcquisition(row)"
               :size="BtnSizesEnum.XS"
@@ -554,42 +564,19 @@ const imageOf = (model?: HangarPlanModel) =>
               "
               :title="t('hangarPlanner.editRoute', { ship: row.right?.title })"
               data-test="hangar-plan-flow-edit-route"
-              @click="
-                emit('route', routeCandidates(row)[0], routeAcquisition(row))
-              "
+              @click="openRoute(row)"
             >
               <i class="fa-light fa-route" aria-hidden="true" />
             </Btn>
             <Btn
-              v-else-if="routeCandidates(row).length === 1"
+              v-else
               :size="BtnSizesEnum.XS"
               data-test="hangar-plan-flow-add-route"
-              @click="emit('route', routeCandidates(row)[0])"
+              @click="openRoute(row)"
             >
               <i class="fa-light fa-route" aria-hidden="true" />
               {{ t("hangarPlanner.addRouteShort") }}
             </Btn>
-            <BtnDropdown
-              v-else-if="routeCandidates(row).length"
-              :size="BtnSizesEnum.XS"
-              expand-left
-              data-test="hangar-plan-flow-add-route"
-            >
-              <template #label>
-                <i class="fa-light fa-route" aria-hidden="true" />
-                {{ t("hangarPlanner.addRouteShort") }}
-              </template>
-              <Btn
-                v-for="candidate in routeCandidates(row)"
-                :key="candidate.id"
-                :variant="BtnVariantsEnum.BARE"
-                @click="emit('route', candidate)"
-              >
-                {{
-                  t("hangarPlanner.addRoute", { ship: candidate.model.name })
-                }}
-              </Btn>
-            </BtnDropdown>
           </span>
         </div>
 
@@ -633,7 +620,10 @@ const imageOf = (model?: HangarPlanModel) =>
         <div
           v-if="row.right"
           class="hangar-flow__card"
-          :class="{ 'hangar-flow__card--warning': row.right.tone }"
+          :class="{
+            'hangar-flow__card--warning': row.right.tone,
+            'hangar-flow__card--action': row.slot,
+          }"
           role="cell"
         >
           <img
@@ -643,7 +633,24 @@ const imageOf = (model?: HangarPlanModel) =>
             loading="lazy"
           />
           <span class="hangar-flow__text">
-            <strong>{{ row.right.title }}</strong>
+            <button
+              v-if="row.slot"
+              type="button"
+              v-tooltip="{
+                content: (row.right.ships ?? [row.right.title]).join('\n'),
+                multiline: true,
+                preserveLineBreaks: true,
+              }"
+              class="hangar-flow__card-action"
+              :aria-label="
+                t('hangarPlanner.editSlotOf', { slot: row.slot.label })
+              "
+              data-test="hangar-plan-flow-edit-slot"
+              @click="emit('edit', row.slot)"
+            >
+              {{ row.right.title }}
+            </button>
+            <strong v-else>{{ row.right.title }}</strong>
             <span v-if="row.right.sub" class="hangar-flow__muted">
               {{ row.right.sub }}
             </span>
@@ -909,6 +916,46 @@ const imageOf = (model?: HangarPlanModel) =>
 
   strong {
     color: var(--color-warning);
+  }
+}
+
+// The whole card opens its slot: the title's button stretches over it.
+.hangar-flow__card--action {
+  position: relative;
+
+  &:hover {
+    border-color: var(--color-edge-strong);
+    background: var(--color-control-hover);
+  }
+
+  &:has(.hangar-flow__card-action:focus-visible) {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 1px;
+  }
+}
+
+.hangar-flow__card-action {
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-weight: 700;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--color-lifted);
+  cursor: pointer;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+
+  &:focus-visible {
+    outline: none;
   }
 }
 

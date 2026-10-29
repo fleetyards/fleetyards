@@ -34,6 +34,8 @@
       "useAsFirstSlot": "Convertir en mi primer slot",
       "addSlot": "Añadir slot",
       "editSlot": "Editar slot",
+      "editSlotOf": "Editar %{slot}",
+      "slotSettings": "Nombre y filtros",
       "removeSlot": "Quitar slot",
       "confirmRemoveSlot": "¿Quitar este slot junto con sus naves y vías de obtención?",
       "openSlotHint": "Aún no has elegido ninguna nave. Añade una, o varias si estás indeciso.",
@@ -42,6 +44,7 @@
       "addToSlot": "Añadir al slot",
       "inSlot": "En este slot",
       "choose": "Elegir",
+      "chooseHint": "Elige la nave para la que planifica este slot. Las demás naves salen del slot junto con sus vías de obtención.",
       "removeCandidate": "Quitar nave",
       "ownedCount": {
         "one": "%{count} en tu hangar",

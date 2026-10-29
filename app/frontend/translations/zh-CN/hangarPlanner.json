@@ -34,6 +34,8 @@
       "useAsFirstSlot": "设为我的第一个槽位",
       "addSlot": "添加槽位",
       "editSlot": "编辑槽位",
+      "editSlotOf": "编辑 %{slot}",
+      "slotSettings": "名称和筛选条件",
       "removeSlot": "移除槽位",
       "confirmRemoveSlot": "移除此槽位及其中的飞船和获取途径？",
       "openSlotHint": "尚未选择飞船。可添加一艘，如果还没想好也可添加多艘。",
@@ -42,6 +44,7 @@
       "addToSlot": "添加到槽位",
       "inSlot": "在此槽位中",
       "choose": "选定",
+      "chooseHint": "选定此槽位要规划的飞船。其他飞船及其获取途径将从该槽位移除。",
       "removeCandidate": "移除飞船",
       "ownedCount": {
         "one": "你的机库中有 %{count} 艘",

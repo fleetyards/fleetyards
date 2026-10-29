@@ -34,6 +34,8 @@
       "useAsFirstSlot": "Make this my first slot",
       "addSlot": "Add slot",
       "editSlot": "Edit slot",
+      "editSlotOf": "Edit %{slot}",
+      "slotSettings": "Name and filters",
       "removeSlot": "Remove slot",
       "confirmRemoveSlot": "Remove this slot together with its ships and routes?",
       "openSlotHint": "No ship picked yet. Add one ship, or several if you are undecided.",
@@ -42,6 +44,7 @@
       "addToSlot": "Add to slot",
       "inSlot": "In this slot",
       "choose": "Choose",
+      "chooseHint": "Pick the ship this slot plans for. The other ships leave the slot, together with any routes to them.",
       "removeCandidate": "Remove ship",
       "ownedCount": {
         "one": "%{count} in your hangar",
