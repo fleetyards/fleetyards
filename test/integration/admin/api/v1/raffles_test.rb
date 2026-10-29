@@ -315,6 +315,17 @@ class Admin::Api::V1::RafflesTest < ActionDispatch::IntegrationTest
     assert_equal "Gewinne eine Polaris", raffle.reload.translations.dig("de", "title")
   end
 
+  test "GET /raffles/:id hands out a preview link for a draft" do
+    raffle = create(:raffle, :draft)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {id: raffle.id} do
+      token = parsed_body["previewUrl"].split("/raffles/preview/").last.delete_suffix("/")
+
+      assert_equal raffle, Raffle.find_by_token_for(:preview, token)
+    end
+  end
+
   test "PUT /raffles/:id refuses to change the code after the draw" do
     raffle = create(:raffle, :closed, drawn_at: 1.hour.ago)
     sign_in @admin

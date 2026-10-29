@@ -101,7 +101,10 @@
           "drawnBy": "%{date} von %{admin}",
           "concludedAt": "Abgeschlossen",
           "publicPage": "Öffentliche Seite öffnen",
-          "noImages": "Noch keine Bilder. Zum Veröffentlichen ist eins nötig."
+          "noImages": "Noch keine Bilder. Zum Veröffentlichen ist eins nötig.",
+          "previewInfo": "Ein Link, der diese Verlosung auch als Entwurf jedem zeigt, der ihn hat. Kein Konto nötig. 30 Tage gültig.",
+          "copyPreview": "Vorschau-Link kopieren",
+          "openPreview": "Vorschau öffnen"
         }
       },
       "raffleEntry": {
@@ -328,6 +331,10 @@
           "forfeited": "Nicht rechtzeitig abgeholt",
           "not_won": "Nicht gewonnen"
         }
+      },
+      "preview": {
+        "title": "Vorschau",
+        "text": "Du siehst diese Verlosung über einen Vorschau-Link. Bis sie veröffentlicht ist, können sie nur Personen mit diesem Link sehen."
       }
     }
   }

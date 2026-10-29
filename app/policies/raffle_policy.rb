@@ -7,6 +7,10 @@ class RafflePolicy < ApplicationPolicy
     true
   end
 
+  def preview?
+    true
+  end
+
   def show?
     record.published?
   end

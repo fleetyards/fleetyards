@@ -101,7 +101,10 @@
           "drawnBy": "%{date} par %{admin}",
           "concludedAt": "Terminé",
           "publicPage": "Ouvrir la page publique",
-          "noImages": "Aucune image. Il en faut une pour publier."
+          "noImages": "Aucune image. Il en faut une pour publier.",
+          "previewInfo": "Un lien qui montre ce tirage au sort, même en brouillon, à toute personne qui l'a. Aucun compte requis. Valable 30 jours.",
+          "copyPreview": "Copier le lien d'aperçu",
+          "openPreview": "Ouvrir l'aperçu"
         }
       },
       "raffleEntry": {
@@ -328,6 +331,10 @@
           "forfeited": "Non réclamé à temps",
           "not_won": "Non gagné"
         }
+      },
+      "preview": {
+        "title": "Aperçu",
+        "text": "Vous consultez ce tirage au sort via un lien d'aperçu. Tant qu'il n'est pas publié, seules les personnes disposant du lien peuvent le voir."
       }
     }
   }

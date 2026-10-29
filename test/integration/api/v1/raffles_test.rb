@@ -35,6 +35,19 @@ class Api::V1::RafflesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  api_path "/raffles/preview/{token}" do
+    parameter name: "token", in: :path, description: "Preview token from the admin", schema: {type: :string}
+
+    get("Raffle Preview") do
+      operationId "rafflePreview"
+      tags "Raffles"
+      produces "application/json"
+
+      response(200, "successful") { schema ::V1::Schemas::Raffle }
+      response(404, "not found") { schema ::Shared::V1::Schemas::StandardError }
+    end
+  end
+
   api_path "/raffles/{id}/entrants" do
     parameter name: "id", in: :path, description: "Raffle id", schema: {type: :string, format: :uuid}
 
@@ -150,6 +163,29 @@ class Api::V1::RafflesTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, api_path: "/raffles/{id}", path_params: {id: @raffle.id}, headers: {"Accept-Language" => "fr"} do
       assert_equal "Win a Polaris", parsed_body["title"]
     end
+  end
+
+  test "GET /raffles/preview/:token shows a draft without sign-in or the feature" do
+    Flipper.disable(:raffles)
+    draft = create(:raffle, :draft, code: "DRAFT-CODE")
+
+    assert_api_response :get, 200, api_path: "/raffles/preview/{token}", path_params: {token: draft.generate_token_for(:preview)} do
+      assert_equal draft.id, parsed_body["id"]
+      assert_equal "draft", parsed_body["status"]
+      assert_not_includes response.body, "DRAFT-CODE"
+    end
+  end
+
+  test "GET /raffles/preview/:token returns 404 for an expired token" do
+    token = @raffle.generate_token_for(:preview)
+
+    travel 31.days do
+      assert_api_response :get, 404, api_path: "/raffles/preview/{token}", path_params: {token:}
+    end
+  end
+
+  test "GET /raffles/preview/:token returns 404 for a made-up token" do
+    assert_api_response :get, 404, api_path: "/raffles/preview/{token}", path_params: {token: "nope"}
   end
 
   test "GET /raffles/:id/entrants lists every entrant by name" do

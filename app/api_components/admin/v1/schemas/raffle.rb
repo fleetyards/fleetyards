@@ -24,6 +24,8 @@ module Admin
             claimPeriodDays: {type: :integer},
             published: {type: :boolean},
             status: ::Shared::V1::Schemas::Enums::RaffleStatusEnum,
+            # Left out once the raffle is concluded.
+            previewUrl: {type: :string},
             entriesCount: {type: :integer},
             drawnAt: {type: :string, format: "date-time"},
             drawnBy: {type: :string},

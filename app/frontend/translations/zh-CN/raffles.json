@@ -101,7 +101,10 @@
           "drawnBy": "%{date}，由 %{admin}",
           "concludedAt": "已结束",
           "publicPage": "打开公开页面",
-          "noImages": "还没有图片。发布需要至少一张。"
+          "noImages": "还没有图片。发布需要至少一张。",
+          "previewInfo": "一个链接，任何持有者都能查看此抽奖（包括草稿），无需账号。有效期 30 天。",
+          "copyPreview": "复制预览链接",
+          "openPreview": "打开预览"
         }
       },
       "raffleEntry": {
@@ -328,6 +331,10 @@
           "forfeited": "未按时领取",
           "not_won": "未中奖"
         }
+      },
+      "preview": {
+        "title": "预览",
+        "text": "你正在通过预览链接查看此抽奖。在发布之前，只有持有该链接的人才能看到它。"
       }
     }
   }

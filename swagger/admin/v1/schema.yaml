@@ -22211,6 +22211,8 @@ components:
           type: boolean
         status:
           "$ref": "#/components/schemas/RaffleStatusEnum"
+        previewUrl:
+          type: string
         entriesCount:
           type: integer
         drawnAt:

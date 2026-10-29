@@ -101,7 +101,10 @@
           "drawnBy": "%{date} por %{admin}",
           "concludedAt": "Finalizado",
           "publicPage": "Abrir la página pública",
-          "noImages": "Aún no hay imágenes. Se necesita una para publicar."
+          "noImages": "Aún no hay imágenes. Se necesita una para publicar.",
+          "previewInfo": "Un enlace que muestra este sorteo, incluso como borrador, a cualquiera que lo tenga. No hace falta cuenta. Válido durante 30 días.",
+          "copyPreview": "Copiar enlace de vista previa",
+          "openPreview": "Abrir vista previa"
         }
       },
       "raffleEntry": {
@@ -328,6 +331,10 @@
           "forfeited": "No reclamado a tiempo",
           "not_won": "No ganado"
         }
+      },
+      "preview": {
+        "title": "Vista previa",
+        "text": "Estás viendo este sorteo mediante un enlace de vista previa. Hasta que se publique, solo quienes tengan el enlace pueden verlo."
       }
     }
   }

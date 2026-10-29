@@ -36,6 +36,10 @@ class Raffle < ApplicationRecord
   has_many :entries, class_name: "RaffleEntry", dependent: :delete_all, inverse_of: :raffle
   has_many :won_entries, -> { won.order(:draw_position) }, class_name: "RaffleEntry", inverse_of: false
 
+  # A link to the raffle page that needs no sign-in and shows a draft too, for
+  # someone outside the team to approve the raffle before it goes out.
+  generates_token_for :preview, expires_in: 30.days
+
   # The first is the cover on cards and the homepage.
   has_many_attached :images
 
@@ -96,6 +100,10 @@ class Raffle < ApplicationRecord
       entry = entry.to_h.stringify_keys
       [entry["locale"].to_s, entry.slice(*TRANSLATED_ATTRIBUTES)]
     end
+  end
+
+  def preview_url
+    "#{FRONTEND_ENDPOINT}#{Rails.application.routes.url_helpers.frontend_raffle_preview_path(generate_token_for(:preview))}"
   end
 
   # Stored for queries, but known before the first save too.

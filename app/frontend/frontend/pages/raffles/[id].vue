@@ -12,6 +12,8 @@ import Panel from "@/shared/components/base/Panel/index.vue";
 import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import { PanelVariantsEnum } from "@/shared/components/base/Panel/types";
 import Pill from "@/shared/components/base/Pill/index.vue";
+import Alert from "@/shared/components/base/Alert/index.vue";
+import { AlertVariantsEnum } from "@/shared/components/base/Alert/types";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import AsyncData from "@/shared/components/AsyncData.vue";
 import RaffleKeyImage from "@/frontend/components/Raffles/KeyImage/index.vue";
@@ -24,7 +26,9 @@ import {
   RaffleStatusEnum,
   useRaffle,
   useCurrentRaffle,
+  useRafflePreview,
   getRaffleQueryKey,
+  getRafflePreviewQueryKey,
   getCurrentRaffleQueryKey,
   getRaffleEntrantsQueryKey,
 } from "@/services/fyApi";
@@ -39,14 +43,28 @@ const queryClient = useQueryClient();
 // raffle that is current: there is only ever one online.
 const routeId = computed(() => route.params.id as string | undefined);
 
+// A preview link from the admin: shows a draft too, and works for readers
+// the raffles feature is not enabled for.
+const previewToken = computed(() => route.params.token as string | undefined);
+
 const byId = useRaffle(() => routeId.value ?? "", {
   query: { enabled: () => !!routeId.value },
 });
 const current = useCurrentRaffle({
-  query: { enabled: () => !routeId.value },
+  query: { enabled: () => !routeId.value && !previewToken.value },
+});
+const preview = useRafflePreview(() => previewToken.value ?? "", {
+  query: { enabled: () => !!previewToken.value },
 });
 
-const { data: raffle, ...asyncStatus } = routeId.value ? byId : current;
+const source = () => {
+  if (previewToken.value) return preview;
+  if (routeId.value) return byId;
+
+  return current;
+};
+
+const { data: raffle, ...asyncStatus } = source();
 
 const refresh = () =>
   Promise.all([
@@ -54,6 +72,9 @@ const refresh = () =>
       queryKey: getRaffleQueryKey(raffle.value?.id ?? ""),
     }),
     queryClient.invalidateQueries({ queryKey: getCurrentRaffleQueryKey() }),
+    queryClient.invalidateQueries({
+      queryKey: getRafflePreviewQueryKey(previewToken.value ?? ""),
+    }),
     queryClient.invalidateQueries({
       queryKey: getRaffleEntrantsQueryKey(raffle.value?.id ?? ""),
     }),
@@ -73,6 +94,14 @@ const STATUS_PILLS: Record<RaffleStatusEnum, `${PillVariantsEnum}`> = {
   <AsyncData :async-status="asyncStatus">
     <template #resolved>
       <template v-if="raffle">
+        <Alert
+          v-if="previewToken"
+          :title="t('raffles.preview.title')"
+          :variant="AlertVariantsEnum.INFO"
+          data-test="raffle-preview-notice"
+        >
+          {{ t("raffles.preview.text") }}
+        </Alert>
         <Heading hero :size="HeadingSizeEnum.HERO">
           <span>
             <span aria-hidden="true">🎁</span>
@@ -111,12 +140,13 @@ const STATUS_PILLS: Record<RaffleStatusEnum, `${PillVariantsEnum}`> = {
           </div>
           <div class="col-12 col-md-4">
             <RaffleEntryPanel
-              v-if="raffle.status !== RaffleStatusEnum.DRAFT"
+              v-if="previewToken || raffle.status !== RaffleStatusEnum.DRAFT"
               :raffle="raffle"
               @changed="refresh"
             />
             <RaffleWinners :raffle="raffle" />
             <RaffleEntrants
+              v-if="!previewToken"
               :raffle-id="raffle.id"
               :count="raffle.entriesCount"
             />

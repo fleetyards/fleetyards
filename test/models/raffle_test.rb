@@ -154,6 +154,18 @@ class RaffleTest < ActiveSupport::TestCase
     assert build(:raffle, translations: {"de" => {"title" => "Gewinne"}}).valid?
   end
 
+  test "the preview token finds a draft and expires" do
+    raffle = create(:raffle, :draft)
+    token = raffle.generate_token_for(:preview)
+
+    assert_equal raffle, Raffle.find_by_token_for(:preview, token)
+    assert_includes raffle.preview_url, "/raffles/preview/"
+
+    travel 31.days do
+      assert_nil Raffle.find_by_token_for(:preview, token)
+    end
+  end
+
   private def uploaded(filename)
     ActiveStorage::Blob.create_and_upload!(
       io: File.open(Rails.root.join("test/fixtures/files/test.png")), filename:, content_type: "image/png"

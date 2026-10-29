@@ -101,7 +101,10 @@
           "drawnBy": "%{date} da %{admin}",
           "concludedAt": "Concluso",
           "publicPage": "Apri la pagina pubblica",
-          "noImages": "Nessuna immagine. Ne serve una per pubblicare."
+          "noImages": "Nessuna immagine. Ne serve una per pubblicare.",
+          "previewInfo": "Un link che mostra questa estrazione, anche in bozza, a chiunque lo abbia. Nessun account necessario. Valido 30 giorni.",
+          "copyPreview": "Copia link di anteprima",
+          "openPreview": "Apri anteprima"
         }
       },
       "raffleEntry": {
@@ -328,6 +331,10 @@
           "forfeited": "Non ritirato in tempo",
           "not_won": "Non vinto"
         }
+      },
+      "preview": {
+        "title": "Anteprima",
+        "text": "Stai vedendo questa estrazione tramite un link di anteprima. Finché non viene pubblicata, solo chi ha il link può vederla."
       }
     }
   }

@@ -101,7 +101,10 @@
           "drawnBy": "%{date}，由 %{admin}",
           "concludedAt": "已結束",
           "publicPage": "開啟公開頁面",
-          "noImages": "尚無圖片。發布需要至少一張。"
+          "noImages": "尚無圖片。發布需要至少一張。",
+          "previewInfo": "一個連結，任何持有者都能檢視此抽獎（包括草稿），無需帳號。有效期 30 天。",
+          "copyPreview": "複製預覽連結",
+          "openPreview": "開啟預覽"
         }
       },
       "raffleEntry": {
@@ -328,6 +331,10 @@
           "forfeited": "未按時領取",
           "not_won": "未得獎"
         }
+      },
+      "preview": {
+        "title": "預覽",
+        "text": "你正在透過預覽連結檢視此抽獎。在發布之前，只有持有該連結的人才能看到它。"
       }
     }
   }
