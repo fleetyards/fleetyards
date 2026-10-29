@@ -113,9 +113,9 @@ module ScData
 
       field = ShipViewFields.field_for(name)
 
-      # A variant in its base ship's livery shows that ship's textured holos,
-      # which its own maps are cut for; see TexturedPaintsImport.
-      return if @liveried && Model::TEXTURED_HOLO_ATTACHMENT_NAMES.include?(field&.to_sym)
+      # A variant in its base ship's livery shows that ship's holos, which its
+      # own maps are cut for; see TexturedPaintsImport.
+      return if @liveried && TexturedPaintsImport::BASE_SHIP_FIELDS.include?(field&.to_sym)
 
       field
     end

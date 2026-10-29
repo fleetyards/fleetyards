@@ -17,9 +17,9 @@ module ScData
   #
   # A palette no paint stands for may be a variant's own colours: the Gladius
   # Valiant is the Gladius in `paint_gladius_valiant`, the item in its paint
-  # slot. That variant takes the base ship's textured holos, and the maps as
-  # its own -- and its paints are repainted from the base ship's listing too,
-  # since its holos are the base ship's.
+  # slot. That variant takes the base ship's textured holos and hull, and the
+  # maps as its own -- and its paints are repainted from the base ship's
+  # listing too, since its holos are the base ship's.
   class TexturedPaintsImport
     # Listing => {attachment => the manifest key naming its file}. Only the base
     # colour, listed first, is required: without it a paint has nothing to show.
@@ -33,6 +33,10 @@ module ScData
       "flight_textured.json" => %i[holo_textured landed_holo_textured],
       "flight_textured_lite.json" => %i[holo_textured_lite landed_holo_textured_lite]
     }.freeze
+
+    # What a liveried variant takes from its base ship rather than its own
+    # export: the loadout preview mounts its parts on the base ship's hull.
+    BASE_SHIP_FIELDS = (HOLOS.values.flatten + %i[holo_hull]).freeze
 
     def initialize(store, logger:)
       @store = store
@@ -73,6 +77,7 @@ module ScData
           end
 
           share_holos(model, records, HOLOS.fetch(name))
+          share_hull(model, records)
         end
 
         maps.each do |field, (file_name, md5)|
@@ -160,6 +165,19 @@ module ScData
         variants.each do |variant|
           variant.update!(field => blob) unless variant.public_send(field).blob == blob
         end
+      end
+    end
+
+    # The hull-level ports sit where the base ship's do, so a variant's own
+    # transforms win where it has them: below a stock part they are that part's
+    # ports, and the Gladius Pirate's racks carry more missiles.
+    private def share_hull(model, variants)
+      share_holos(model, variants, %i[holo_hull])
+
+      return if model.hardpoint_transforms.nil?
+
+      variants.each do |variant|
+        variant.update!(hardpoint_transforms: model.hardpoint_transforms) if variant.hardpoint_transforms.nil?
       end
     end
 
