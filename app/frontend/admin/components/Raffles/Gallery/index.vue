@@ -11,6 +11,7 @@ import DirectUpload, {
 import { fileTypeMap } from "@/shared/components/DirectUpload/types";
 import { type MediaFile } from "@/services/fyAdminApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useDirectUpload } from "@/shared/composables/useDirectUpload";
 
 type GalleryImage = {
   signedId: string;
@@ -56,17 +57,46 @@ watch(
   { deep: true },
 );
 
-const onUploadDone = (files: FileUpload[]) => {
-  files.forEach((file) => {
-    if (!file.blob) return;
-
-    items.value.push({
-      signedId: file.blob.signed_id,
-      name: file.file.name,
-      url: URL.createObjectURL(file.file),
-    });
+const append = (signedId: string, file: File) => {
+  items.value.push({
+    signedId,
+    name: file.name,
+    url: URL.createObjectURL(file),
   });
 };
+
+const onUploadDone = (files: FileUpload[]) => {
+  files.forEach((file) => {
+    if (file.blob) append(file.blob.signed_id, file.file);
+  });
+};
+
+const { uploadFile } = useDirectUpload();
+
+const uploading = ref(0);
+
+// One at a time: a saved raffle orders its images by when their blobs were
+// created, so parallel uploads would scramble the order and pick a random
+// cover. Resolves with the files that failed.
+const addFiles = async (files: File[]) => {
+  const failed: File[] = [];
+  uploading.value += files.length;
+
+  for (const file of files) {
+    try {
+      const blob = await uploadFile(file, { progressHandler: () => {} });
+      append(blob.signed_id, file);
+    } catch {
+      failed.push(file);
+    } finally {
+      uploading.value -= 1;
+    }
+  }
+
+  return failed;
+};
+
+defineExpose({ addFiles });
 
 const remove = (signedId: string) => {
   items.value = items.value.filter((item) => item.signedId !== signedId);
@@ -98,6 +128,9 @@ const remove = (signedId: string) => {
         </Btn>
       </li>
     </ul>
+    <p v-if="uploading" class="raffle-gallery__hint">
+      {{ t("labels.raffle.imagesUploading", { count: uploading }) }}
+    </p>
     <DirectUpload
       v-if="!disabled"
       multiple

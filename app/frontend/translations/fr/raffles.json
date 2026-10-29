@@ -53,6 +53,8 @@
         "description": "Description",
         "descriptionInfo": "Markdown. Écrivez un vaisseau ou un objet sous la forme [*Nom*] pour le lier ; tapez [* pour chercher.",
         "translationInfo": "Facultatif. Un champ laissé vide affiche le texte anglais.",
+        "importFolderInfo": "Remplissez toutes les langues et la galerie d'un coup depuis un dossier : un en.md, de.md, … par langue avec le titre et le lot dans un bloc front matter, plus des images. Rien n'est enregistré avant que vous n'enregistriez.",
+        "imagesUploading": "Envoi des images : %{count}",
         "code": "Code cadeau",
         "codeInfo": "Le code que reçoit le gagnant. Il est stocké chiffré et n'est plus jamais affiché en entier.",
         "codeSet": "Un code est défini (%{code}). Laissez le champ vide pour le conserver.",
@@ -163,7 +165,11 @@
         "updateFailed": "Impossible de mettre à jour le tirage au sort.",
         "drawn": "Tirage au sort effectué.",
         "drawFailed": "Impossible d'effectuer le tirage au sort.",
-        "invalid": "Vérifiez les champs signalés : le tirage au sort a besoin d'un titre, d'une date d'ouverture et d'une durée."
+        "invalid": "Vérifiez les champs signalés : le tirage au sort a besoin d'un titre, d'une date d'ouverture et d'une durée.",
+        "imported": "Dossier importé (langues : %{languages}, images : %{images}). Vérifiez le formulaire et enregistrez.",
+        "importSkipped": "Fichiers ignorés : %{files}",
+        "importEmpty": "Le dossier ne contient ni fichier de langue ni image.",
+        "importUploadFailed": "Ces images n'ont pas pu être envoyées : %{files}"
       },
       "confirm": {
         "raffle": {
@@ -175,7 +181,8 @@
     "actions": {
       "raffle": {
         "entries": "Participations",
-        "draw": "Tirer au sort"
+        "draw": "Tirer au sort",
+        "importFolder": "Importer un dossier"
       }
     },
     "raffles": {

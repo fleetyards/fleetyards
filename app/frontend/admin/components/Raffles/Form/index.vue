@@ -20,6 +20,7 @@ import FormActions from "@/shared/components/base/FormActions/index.vue";
 import FormTabs from "@/shared/components/base/FormTabs/index.vue";
 import FormTab from "@/shared/components/base/FormTabs/Tab/index.vue";
 import RaffleGallery from "@/admin/components/Raffles/Gallery/index.vue";
+import { readRaffleFolder } from "@/admin/components/Raffles/Form/folderImport";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
@@ -41,7 +42,7 @@ const emit = defineEmits<{
 
 const { t, currentLocale } = useI18n();
 
-const { displayAlert } = useAppNotifications();
+const { displayAlert, displaySuccess, displayWarning } = useAppNotifications();
 
 const drawn = computed(() => !!props.raffle?.drawnAt);
 
@@ -62,40 +63,41 @@ type FormValues = {
   published: boolean;
 };
 
-const { defineField, handleSubmit, meta, errors } = useForm<FormValues>({
-  initialValues: {
-    title: props.raffle?.title ?? "",
-    prize: props.raffle?.prize,
-    description: props.raffle?.description,
-    translations: Object.fromEntries(
-      LOCALES.map((locale) => {
-        const stored = props.raffle?.translations.find(
-          (translation) => translation.locale === locale,
-        );
+const { defineField, handleSubmit, meta, errors, setFieldValue } =
+  useForm<FormValues>({
+    initialValues: {
+      title: props.raffle?.title ?? "",
+      prize: props.raffle?.prize,
+      description: props.raffle?.description,
+      translations: Object.fromEntries(
+        LOCALES.map((locale) => {
+          const stored = props.raffle?.translations.find(
+            (translation) => translation.locale === locale,
+          );
 
-        return [
-          locale,
-          {
-            title: stored?.title,
-            prize: stored?.prize,
-            description: stored?.description,
-          },
-        ];
-      }),
-    ) as FormValues["translations"],
-    code: undefined,
-    startsAt: props.raffle?.startsAt ?? null,
-    runDays: props.raffle?.runDays ?? 14,
-    claimPeriodDays: props.raffle?.claimPeriodDays ?? 3,
-    published: props.raffle?.published ?? false,
-  },
-  validationSchema: {
-    title: "required",
-    startsAt: "required",
-    runDays: "required|min_value:1",
-    claimPeriodDays: "required|min_value:1",
-  },
-});
+          return [
+            locale,
+            {
+              title: stored?.title,
+              prize: stored?.prize,
+              description: stored?.description,
+            },
+          ];
+        }),
+      ) as FormValues["translations"],
+      code: undefined,
+      startsAt: props.raffle?.startsAt ?? null,
+      runDays: props.raffle?.runDays ?? 14,
+      claimPeriodDays: props.raffle?.claimPeriodDays ?? 3,
+      published: props.raffle?.published ?? false,
+    },
+    validationSchema: {
+      title: "required",
+      startsAt: "required",
+      runDays: "required|min_value:1",
+      claimPeriodDays: "required|min_value:1",
+    },
+  });
 
 const [title, titleProps] = defineField("title");
 const [prize, prizeProps] = defineField("prize");
@@ -140,6 +142,75 @@ const [published, publishedProps] = defineField("published");
 // Undefined until the gallery is touched, so an untouched gallery is not sent.
 const imageIds = ref<string[]>();
 
+const gallery = ref<InstanceType<typeof RaffleGallery>>();
+
+const folderInput = ref<HTMLInputElement>();
+
+const importing = ref(false);
+
+const TEXT_FIELDS = ["title", "prize", "description"] as const;
+
+// Fills the form from a folder of `<locale>.md` files and images. Only the
+// fields a file holds are set, and nothing is saved until the admin submits.
+const importFolder = async (event: Event) => {
+  const input = event.target as HTMLInputElement;
+  const files = Array.from(input.files ?? []);
+  input.value = "";
+
+  if (!files.length) return;
+
+  importing.value = true;
+
+  try {
+    const folder = await readRaffleFolder(files, ["en", ...LOCALES]);
+
+    TEXT_FIELDS.forEach((field) => {
+      const english = folder.texts.en?.[field];
+      if (english) setFieldValue(field, english);
+
+      LOCALES.forEach((locale) => {
+        const value = folder.texts[locale]?.[field];
+        if (value) setFieldValue(`translations.${locale}.${field}`, value);
+      });
+    });
+
+    const languages = Object.keys(folder.texts).length;
+
+    if (folder.skipped.length) {
+      displayWarning({
+        text: t("messages.raffle.importSkipped", {
+          files: folder.skipped.join(", "),
+        }),
+      });
+    }
+
+    if (!languages && !folder.images.length) {
+      displayAlert({ text: t("messages.raffle.importEmpty") });
+      return;
+    }
+
+    const failed = (await gallery.value?.addFiles(folder.images)) ?? [];
+
+    if (failed.length) {
+      displayAlert({
+        text: t("messages.raffle.importUploadFailed", {
+          files: failed.map((file) => file.name).join(", "),
+        }),
+      });
+    }
+
+    const images = folder.images.length - failed.length;
+
+    if (languages || images) {
+      displaySuccess({
+        text: t("messages.raffle.imported", { languages, images }),
+      });
+    }
+  } finally {
+    importing.value = false;
+  }
+};
+
 const codeInfo = computed(() => {
   if (drawn.value) return t("labels.raffle.codeFrozen");
   if (props.raffle?.codeSet) {
@@ -160,7 +231,10 @@ const onInvalidSubmit = () => {
   displayAlert({ text: t("messages.raffle.invalid") });
 };
 
+// Images still uploading have no signed id yet, so a save now would drop them.
 const onSubmit = handleSubmit((values) => {
+  if (importing.value) return;
+
   emit("submit", {
     title: values.title,
     prize: values.prize || undefined,
@@ -186,6 +260,29 @@ const onSubmit = handleSubmit((values) => {
 
 <template>
   <form :id="formId" @submit.prevent="onSubmit">
+    <div class="raffle-form__import">
+      <Btn
+        size="sm"
+        :loading="importing"
+        data-test="raffle-import-folder"
+        @click="folderInput?.click()"
+      >
+        <i class="fa-light fa-folder-open" />
+        {{ t("actions.raffle.importFolder") }}
+      </Btn>
+      <p class="raffle-form__info">
+        {{ t("labels.raffle.importFolderInfo") }}
+      </p>
+      <input
+        ref="folderInput"
+        type="file"
+        class="raffle-form__folder-input"
+        webkitdirectory
+        multiple
+        data-test="raffle-import-input"
+        @change="importFolder"
+      />
+    </div>
     <FormTabs :sync-url="false" horizontal>
       <FormTab id="en" :label="languageName('en')" :fields="['title']">
         <div class="row">
@@ -295,6 +392,7 @@ const onSubmit = handleSubmit((values) => {
       </div>
       <div class="col-12 col-md-6">
         <RaffleGallery
+          ref="gallery"
           :images="raffle?.images"
           @update:signed-ids="imageIds = $event"
         />
@@ -310,15 +408,31 @@ const onSubmit = handleSubmit((values) => {
       </div>
     </div>
     <FormActions
-      :submitting="submitting"
+      :submitting="submitting || importing"
       :form-id="formId"
-      :dirty="meta.dirty || meta.touched"
+      :dirty="meta.dirty || meta.touched || imageIds !== undefined"
       @cancel="emit('cancel')"
     />
   </form>
 </template>
 
 <style lang="scss" scoped>
+.raffle-form__import {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+
+  .raffle-form__info {
+    margin: 0;
+  }
+}
+
+.raffle-form__folder-input {
+  display: none;
+}
+
 .raffle-form__info {
   margin: 0 0 12px;
   color: var(--color-text-dim, #959595);

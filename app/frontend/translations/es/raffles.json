@@ -53,6 +53,8 @@
         "description": "Descripción",
         "descriptionInfo": "Markdown. Escribe una nave u objeto como [*Nombre*] para enlazarlo; escribe [* para buscar.",
         "translationInfo": "Opcional. Los campos vacíos muestran el texto en inglés.",
+        "importFolderInfo": "Rellena todos los idiomas y la galería de una vez desde una carpeta: un en.md, de.md, … por idioma con el título y el premio en un bloque front matter, más imágenes. No se guarda nada hasta que guardes.",
+        "imagesUploading": "Subiendo imágenes: %{count}",
         "code": "Código de regalo",
         "codeInfo": "El código que recibe el ganador. Se guarda cifrado y nunca se vuelve a mostrar completo.",
         "codeSet": "Hay un código guardado (%{code}). Deja el campo vacío para conservarlo.",
@@ -163,7 +165,11 @@
         "updateFailed": "No se pudo actualizar el sorteo.",
         "drawn": "Sorteo realizado.",
         "drawFailed": "No se pudo realizar el sorteo.",
-        "invalid": "Revisa los campos marcados: el sorteo necesita un título, una fecha de inicio y una duración."
+        "invalid": "Revisa los campos marcados: el sorteo necesita un título, una fecha de inicio y una duración.",
+        "imported": "Carpeta importada (idiomas: %{languages}, imágenes: %{images}). Revisa el formulario y guarda.",
+        "importSkipped": "Archivos omitidos: %{files}",
+        "importEmpty": "La carpeta no contiene ningún archivo de idioma ni ninguna imagen.",
+        "importUploadFailed": "No se pudieron subir estas imágenes: %{files}"
       },
       "confirm": {
         "raffle": {
@@ -175,7 +181,8 @@
     "actions": {
       "raffle": {
         "entries": "Participaciones",
-        "draw": "Sortear"
+        "draw": "Sortear",
+        "importFolder": "Importar carpeta"
       }
     },
     "raffles": {

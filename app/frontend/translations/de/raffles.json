@@ -53,6 +53,8 @@
         "description": "Beschreibung",
         "descriptionInfo": "Markdown. Ein Schiff oder Item als [*Name*] wird verlinkt; tippe [* zum Suchen.",
         "translationInfo": "Optional. Leere Felder zeigen den englischen Text.",
+        "importFolderInfo": "Alle Sprachen und die Galerie auf einmal aus einem Ordner füllen: je Sprache eine en.md, de.md, … mit Titel und Preis im Front-Matter-Block, dazu Bilder. Gespeichert wird erst beim Speichern.",
+        "imagesUploading": "Bilder werden hochgeladen: %{count}",
         "code": "Geschenkcode",
         "codeInfo": "Der Code, den der Gewinner erhält. Er wird verschlüsselt gespeichert und nie wieder vollständig angezeigt.",
         "codeSet": "Ein Code ist hinterlegt (%{code}). Lass das Feld leer, um ihn zu behalten.",
@@ -163,7 +165,11 @@
         "updateFailed": "Verlosung konnte nicht aktualisiert werden.",
         "drawn": "Verlosung gezogen.",
         "drawFailed": "Die Verlosung konnte nicht gezogen werden.",
-        "invalid": "Prüfe die markierten Felder: Die Verlosung braucht einen Titel, einen Beginn und eine Laufzeit."
+        "invalid": "Prüfe die markierten Felder: Die Verlosung braucht einen Titel, einen Beginn und eine Laufzeit.",
+        "imported": "Ordner importiert (Sprachen: %{languages}, Bilder: %{images}). Prüfe das Formular und speichere.",
+        "importSkipped": "Übersprungene Dateien: %{files}",
+        "importEmpty": "Der Ordner enthält weder eine Sprachdatei noch ein Bild.",
+        "importUploadFailed": "Diese Bilder konnten nicht hochgeladen werden: %{files}"
       },
       "confirm": {
         "raffle": {
@@ -175,7 +181,8 @@
     "actions": {
       "raffle": {
         "entries": "Teilnahmen",
-        "draw": "Ziehen"
+        "draw": "Ziehen",
+        "importFolder": "Ordner importieren"
       }
     },
     "raffles": {
