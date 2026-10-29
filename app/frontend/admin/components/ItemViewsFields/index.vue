@@ -55,6 +55,15 @@ const VIEW_FIELDS = [
         clearable
       />
     </div>
+    <div class="col-12 col-sm-6 col-md-3">
+      <FormFileInput
+        :file="media?.holoTextured"
+        translation-key="model.holoTextured"
+        name="holoTextured"
+        :allowed-types="AllowedFileTypes.HOLO"
+        clearable
+      />
+    </div>
   </div>
   <div class="row">
     <div
