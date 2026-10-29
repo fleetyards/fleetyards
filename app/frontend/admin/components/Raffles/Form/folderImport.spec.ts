@@ -42,6 +42,10 @@ describe("parseRaffleText", () => {
     });
   });
 
+  it("reads an empty front matter block as no fields", () => {
+    expect(parseRaffleText("---\n---\nText")).toEqual({ description: "Text" });
+  });
+
   it("ignores keys the form does not have", () => {
     expect(parseRaffleText("---\ntitle: T\ncode: SECRET\n---\n")).toEqual({
       title: "T",
@@ -49,7 +53,27 @@ describe("parseRaffleText", () => {
   });
 });
 
+const nested = (path: string, content: string) => {
+  const file = textFile(path.split("/").pop() as string, content);
+  Object.defineProperty(file, "webkitRelativePath", { value: path });
+
+  return file;
+};
+
 describe("readRaffleFolder", () => {
+  it("takes only the picked folder's own files, not its subfolders'", async () => {
+    const folder = await readRaffleFolder(
+      [
+        nested("raffle/en.md", "---\ntitle: Win\n---\n"),
+        nested("raffle/drafts/en.md", "---\ntitle: Draft\n---\n"),
+      ],
+      LOCALES,
+    );
+
+    expect(folder.texts).toEqual({ en: { title: "Win" } });
+    expect(folder.skipped).toEqual(["raffle/drafts/en.md"]);
+  });
+
   it("files texts by locale, images by name and skips the rest", async () => {
     const folder = await readRaffleFolder(
       [

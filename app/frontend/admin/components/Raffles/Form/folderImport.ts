@@ -6,8 +6,8 @@ export type RaffleFolderText = {
   description?: string;
 };
 
-export type RaffleFolder = {
-  texts: Record<string, RaffleFolderText>;
+export type RaffleFolder<Locale extends string> = {
+  texts: Partial<Record<Locale, RaffleFolderText>>;
   images: File[];
   skipped: string[];
 };
@@ -36,12 +36,12 @@ const unquote = (value: string) => {
 // keys the form has are read, so a full YAML parser would buy nothing.
 export const parseRaffleText = (source: string): RaffleFolderText => {
   const text = source.replace(/^\uFEFF/, "").replace(/\r\n?/g, "\n");
-  const frontMatter = /^---\n([\s\S]*?)\n---[ \t]*(?:\n|$)/.exec(text);
+  const frontMatter = /^---\n(?:([\s\S]*?)\n)?---[ \t]*(?:\n|$)/.exec(text);
 
   const result: RaffleFolderText = {};
   const body = frontMatter ? text.slice(frontMatter[0].length) : text;
 
-  frontMatter?.[1].split("\n").forEach((line) => {
+  frontMatter?.[1]?.split("\n").forEach((line) => {
     const separator = line.indexOf(":");
     if (separator < 0) return;
 
@@ -67,19 +67,29 @@ const byName = (a: File, b: File) =>
     sensitivity: "base",
   });
 
-export const readRaffleFolder = async (
+// A picked folder hands over its subfolders too; only its own files count, so a
+// drafts/en.md or a folder of originals cannot slip in.
+const isTopLevel = (file: File) =>
+  (file.webkitRelativePath || file.name).split("/").length <= 2;
+
+export const readRaffleFolder = async <Locale extends string>(
   files: File[],
-  locales: string[],
-): Promise<RaffleFolder> => {
+  locales: Locale[],
+): Promise<RaffleFolder<Locale>> => {
   const localeByName = new Map(
     locales.map((locale) => [locale.toLowerCase(), locale]),
   );
 
-  const folder: RaffleFolder = { texts: {}, images: [], skipped: [] };
+  const folder: RaffleFolder<Locale> = { texts: {}, images: [], skipped: [] };
 
   await Promise.all(
     files.map(async (file) => {
       if (file.name.startsWith(".")) return;
+
+      if (!isTopLevel(file)) {
+        folder.skipped.push(file.webkitRelativePath);
+        return;
+      }
 
       const { base, extension } = splitName(file.name);
       const locale = localeByName.get(base.toLowerCase());
