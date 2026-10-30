@@ -16,7 +16,11 @@ import PickList, {
   type PickListItem,
 } from "@/frontend/components/Hangar/Planner/PickList/index.vue";
 import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
-import { reaches } from "@/frontend/components/Hangar/Planner/reach";
+import {
+  canLeave,
+  ccuNote,
+  reaches,
+} from "@/frontend/components/Hangar/Planner/reach";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import {
@@ -78,6 +82,13 @@ const ends = computed(() =>
   }),
 );
 
+// How sure an upgrade into an end is, for one the start becomes by upgrading.
+const upgradeNote = (model: HangarPlanModel) => {
+  const note = ccuNote(model);
+
+  return note && model.id !== props.startModel?.id ? t(note) : undefined;
+};
+
 const items = computed<PickListItem[]>(() => [
   ...(props.vehicleId && props.startModel
     ? [
@@ -94,7 +105,9 @@ const items = computed<PickListItem[]>(() => [
   ...ends.value.map(({ slot, candidate }) => ({
     id: candidate.id,
     title: candidate.model.name,
-    meta: slot.label,
+    meta: [slot.label, upgradeNote(candidate.model)]
+      .filter(Boolean)
+      .join(" · "),
     price: money(candidate.model.pledgePrice),
     sortPrice: candidate.model.pledgePrice,
     badge:
@@ -123,7 +136,9 @@ const choose = (item: PickListItem) => {
 };
 
 // No upgrade leads out of some ships, so they end nowhere but as themselves.
-const upgradable = computed(() => props.startModel?.upgradable !== false);
+const upgradable = computed(
+  () => !props.startModel || canLeave(props.startModel),
+);
 
 const removable = computed(() => !!props.acquisition || !!props.vehicleId);
 

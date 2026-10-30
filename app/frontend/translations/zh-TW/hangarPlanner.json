@@ -481,7 +481,9 @@
         "noReachableShip": "從這個起點無法抵達此欄位的任何艦船。",
         "back": "返回",
         "onlyMelt": "這艘艦船沒有升級，只能熔煉",
-        "excludes": "排除 %{ships}"
+        "excludes": "排除 %{ships}",
+        "ccuSalesOnly": "CCU 僅在促銷期間販售",
+        "ccuUnknown": "尚未見過 CCU"
       },
       "slotsTitle": "槽位",
       "editSlots": "編輯槽位"

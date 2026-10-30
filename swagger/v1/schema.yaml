@@ -35644,6 +35644,30 @@ components:
             format: uuid
       additionalProperties: false
       title: HangarPlanCandidateUpdateInput
+    HangarPlanCcuIntoEnum:
+      type: string
+      enum:
+      - on_sale
+      - sales_only
+      - unknown
+      - none
+      x-enumNames:
+      - ON_SALE
+      - SALES_ONLY
+      - UNKNOWN
+      - NONE
+      title: HangarPlanCcuIntoEnum
+    HangarPlanCcuOutOfEnum:
+      type: string
+      enum:
+      - known
+      - unknown
+      - none
+      x-enumNames:
+      - KNOWN
+      - UNKNOWN
+      - NONE
+      title: HangarPlanCcuOutOfEnum
     HangarPlanCompare:
       type: object
       properties:
@@ -36072,10 +36096,10 @@ components:
           description: Store price in USD; null when unknown
         onSale:
           type: boolean
-        upgradable:
-          type: boolean
-          description: Whether RSI sells upgrades into and out of the ship; none exist
-            for one pledged at $1000 or more
+        ccuInto:
+          "$ref": "#/components/schemas/HangarPlanCcuIntoEnum"
+        ccuOutOf:
+          "$ref": "#/components/schemas/HangarPlanCcuOutOfEnum"
         crew:
           type:
           - integer
@@ -36092,7 +36116,8 @@ components:
       - name
       - slug
       - onSale
-      - upgradable
+      - ccuInto
+      - ccuOutOf
       title: HangarPlanModel
     HangarPlanModelChangeEnum:
       type: string

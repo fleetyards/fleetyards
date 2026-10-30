@@ -15,6 +15,11 @@ loaders_models_job:
   class: 'Loaders::ModelsJob'
   queue: 'loaders'
   enabled: <%= Rails.env.production? %>
+loaders_ccu_catalogue_job:
+  cron: '30 20 */1 * *' # Daily at 20:30, after the models loader read the store
+  class: 'Loaders::CcuCatalogueJob'
+  queue: 'loaders'
+  enabled: <%= Rails.env.production? %>
 loaders_uex_prices_job:
   cron: '0 5 */1 * *' # Daily at 5:00
   class: 'Loaders::UexPricesJob'

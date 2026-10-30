@@ -15,12 +15,18 @@ module Rsi
         model.pledge_price
       end
 
+      # The upgrades the store sells into the ship today; one seen once stays
+      # seen, as most come back for a sale.
+      ccu_on_sale = Array(pledge_data["upgrades"]).any?
+
       model.update!(
         rsi_pledge_slug: pledge_data["slug"],
         rsi_ctm_url: pledge_data.dig("media", "ctm"),
         rsi_pledge_value: pledge_data.dig("msrp"),
         on_sale: pledge_data["purchasable"],
-        pledge_price: nil_or_decimal(pledge_price)
+        pledge_price: nil_or_decimal(pledge_price),
+        ccu_on_sale:,
+        ccu_target_seen_at: model.ccu_target_seen_at || (Time.current if ccu_on_sale)
       )
     end
 

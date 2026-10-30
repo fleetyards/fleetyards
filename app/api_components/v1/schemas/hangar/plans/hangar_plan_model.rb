@@ -20,13 +20,14 @@ module V1
               productionStatus: {type: [:string, :null]},
               pledgePrice: {type: [:number, :null], description: "Store price in USD; null when unknown"},
               onSale: {type: :boolean},
-              upgradable: {type: :boolean, description: "Whether RSI sells upgrades into and out of the ship; none exist for one pledged at $1000 or more"},
+              ccuInto: ::V1::Schemas::Enums::HangarPlanCcuIntoEnum,
+              ccuOutOf: ::V1::Schemas::Enums::HangarPlanCcuOutOfEnum,
               crew: {type: [:integer, :null]},
               cargo: {type: [:number, :null]},
               image: ::Shared::V1::Schemas::MediaFile
             },
             additionalProperties: false,
-            required: %w[id name slug onSale upgradable]
+            required: %w[id name slug onSale ccuInto ccuOutOf]
           })
         end
       end

@@ -481,7 +481,9 @@
         "noReachableShip": "Nessuna nave di questo slot è raggiungibile da questa partenza.",
         "back": "Indietro",
         "onlyMelt": "Non esistono upgrade per questa nave, può solo essere fusa",
-        "excludes": "Esclude %{ships}"
+        "excludes": "Esclude %{ships}",
+        "ccuSalesOnly": "CCU solo durante i saldi",
+        "ccuUnknown": "Nessun CCU visto finora"
       },
       "slotsTitle": "Slot",
       "editSlots": "Modifica slot"

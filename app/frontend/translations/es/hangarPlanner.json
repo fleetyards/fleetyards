@@ -481,7 +481,9 @@
         "noReachableShip": "Ninguna nave de este hueco se puede alcanzar desde este inicio.",
         "back": "Atrás",
         "onlyMelt": "No existen mejoras para ella, solo se puede fundir",
-        "excludes": "Descarta %{ships}"
+        "excludes": "Descarta %{ships}",
+        "ccuSalesOnly": "CCU solo en rebajas",
+        "ccuUnknown": "Aún no se ha visto ningún CCU"
       },
       "slotsTitle": "Slots",
       "editSlots": "Editar slots"

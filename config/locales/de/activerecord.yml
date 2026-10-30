@@ -347,10 +347,10 @@ de:
         hangar_plan_upgrade_step:
           attributes:
             from_model_id:
-              not_upgradable: "hat keine Upgrades, da RSI für ein Schiff ab 1000 $ keine verkauft"
+              not_upgradable: "ist ein Schiff, aus dem RSI kein Upgrade verkauft"
             to_model_id:
               same_as_from: "muss ein anderes Schiff sein als das, von dem aus upgegradet wird"
-              not_upgradable: "hat keine Upgrades, da RSI für ein Schiff ab 1000 $ keine verkauft"
+              not_upgradable: "ist ein Schiff, zu dem RSI kein Upgrade verkauft"
             hangar_pledge_item_id:
               taken: "wird in diesem Plan bereits verwendet"
             buyback_pledge_id:

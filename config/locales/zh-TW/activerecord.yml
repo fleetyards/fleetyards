@@ -347,10 +347,10 @@ zh-TW:
         hangar_plan_upgrade_step:
           attributes:
             from_model_id:
-              not_upgradable: "沒有升級：RSI 不為價格達到或超過 1000 美元的艦船販售升級"
+              not_upgradable: "RSI 不販售從這艘艦船出發的升級"
             to_model_id:
               same_as_from: "必須與升級前的艦船不同"
-              not_upgradable: "沒有升級：RSI 不為價格達到或超過 1000 美元的艦船販售升級"
+              not_upgradable: "RSI 不販售升級到這艘艦船"
             hangar_pledge_item_id:
               taken: "已在此計畫中使用"
             buyback_pledge_id:
