@@ -93,6 +93,21 @@ $views-max-height: 240px;
   }
 }
 
+// Spans the grid and repeats its columns inside. No margin or padding of its own,
+// for the same reason as the folded views on a phone.
+.fleetchart-views__rear {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.fleetchart-views__rear-fold {
+  display: flex;
+  justify-content: center;
+  margin-top: -10px;
+}
+
 .fleetchart-views__fold-label {
   display: inline-flex;
   align-items: center;

@@ -461,3 +461,97 @@ describe("the collapsible views", () => {
     ]);
   });
 });
+
+describe("the views from behind folded under the others", () => {
+  const REAR_VIEWS: Partial<ModelMedia> = {
+    ...FLIGHT_VIEWS,
+    angledRearView: file("angled-rear"),
+    bottomView: file("bottom"),
+    rearView: file("rear"),
+    starboardView: file("starboard"),
+  };
+
+  const mountFolded = (media: Partial<ModelMedia>) =>
+    mountWithDefaults<typeof FleetchartImages>(FleetchartImages, {
+      props: { model: model(media), foldRear: true },
+    });
+
+  type Wrapper = Awaited<ReturnType<typeof mountFolded>>;
+
+  const sources = (wrapper: Wrapper) =>
+    wrapper.findAll("img").map((img) => img.attributes("src"));
+
+  const fold = (wrapper: Wrapper) =>
+    wrapper.find('[data-test="model-views-rear-fold"]');
+
+  const settleAll = async (wrapper: Wrapper) => {
+    for (const img of wrapper.findAll("img")) {
+      Object.defineProperty(img.element, "complete", {
+        value: true,
+        configurable: true,
+      });
+      await img.trigger("load");
+    }
+  };
+
+  const unfolded = (wrapper: Wrapper) =>
+    wrapper.findComponent(Collapsed).props("visible");
+
+  it("starts as the views from the front", async () => {
+    const wrapper = await mountFolded(REAR_VIEWS);
+
+    expect(sources(wrapper)).toEqual([
+      "https://cdn.test/angled?large",
+      "https://cdn.test/top?large",
+      "https://cdn.test/front?large",
+      "https://cdn.test/side?large",
+    ]);
+    expect(unfolded(wrapper)).toBe(false);
+    expect(fold(wrapper).attributes("aria-expanded")).toBe("false");
+  });
+
+  it("fetches the views from behind when asked and unfolds once they arrive", async () => {
+    const wrapper = await mountFolded(REAR_VIEWS);
+    await settleAll(wrapper);
+
+    await fold(wrapper).trigger("click");
+
+    expect(sources(wrapper)).toHaveLength(8);
+    expect(unfolded(wrapper)).toBe(false);
+    expect(fold(wrapper).attributes("aria-busy")).toBe("true");
+
+    await settleAll(wrapper);
+
+    expect(unfolded(wrapper)).toBe(true);
+    expect(fold(wrapper).attributes("aria-expanded")).toBe("true");
+  });
+
+  it("folds them again, keeping them for the next time", async () => {
+    const wrapper = await mountFolded(REAR_VIEWS);
+    await fold(wrapper).trigger("click");
+    await settleAll(wrapper);
+
+    await fold(wrapper).trigger("click");
+
+    expect(unfolded(wrapper)).toBe(false);
+    expect(sources(wrapper)).toHaveLength(8);
+  });
+
+  it("offers nothing to unfold for a ship without the views from behind", async () => {
+    const wrapper = await mountFolded(FLIGHT_VIEWS);
+
+    expect(fold(wrapper).exists()).toBe(false);
+    expect(wrapper.findComponent(Collapsed).exists()).toBe(false);
+  });
+
+  it("folds them again for the next ship", async () => {
+    const wrapper = await mountFolded(REAR_VIEWS);
+    await fold(wrapper).trigger("click");
+    await settleAll(wrapper);
+
+    await wrapper.setProps({ model: model(REAR_VIEWS, "polaris") });
+
+    expect(unfolded(wrapper)).toBe(false);
+    expect(sources(wrapper)).toHaveLength(4);
+  });
+});

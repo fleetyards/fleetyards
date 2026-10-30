@@ -8,6 +8,10 @@ export default {
 import { useMobile } from "@/shared/composables/useMobile";
 import { useI18n } from "@/shared/composables/useI18n";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import Collapsed from "@/shared/components/Collapsed.vue";
@@ -29,11 +33,15 @@ type Props = {
   state?: ModelStateEnum;
   // Starts as the angled view alone, which opens the rest when tapped.
   collapsible?: boolean;
+  // Starts as the views from the front, with a button under them for the ones
+  // from behind.
+  foldRear?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   state: ModelStateEnum.FLIGHT,
   collapsible: false,
+  foldRear: false,
 });
 
 const emit = defineEmits<{
@@ -132,7 +140,18 @@ const frontAngled = computed(
 // A ship without an angled view has nothing to fold behind, so it shows them all.
 const foldable = computed(() => props.collapsible && !!frontAngled.value);
 
-const collapsed = computed(() => foldable.value && !expanded.value);
+const rearFoldable = computed(
+  () =>
+    props.foldRear &&
+    !foldable.value &&
+    viewSets.value.some((set) => set.key === "rear"),
+);
+
+const foldsSet = (key: string) => rearFoldable.value && key === "rear";
+
+const collapsed = computed(
+  () => (foldable.value || rearFoldable.value) && !expanded.value,
+);
 
 // The folded views mount on the first tap rather than with the page, so a phone
 // downloads them only when asked, and stay mounted so folding can animate too.
@@ -153,14 +172,11 @@ const Passthrough: FunctionalComponent = (_, { slots }) => slots.default?.();
 const settledUrls = ref(new Set<string>());
 
 const currentUrls = computed(() =>
-  (collapsed.value && !mounted.value
+  (foldable.value && collapsed.value && !mounted.value
     ? [frontAngled.value]
-    : viewSets.value.flatMap((set) => [
-        set.angled,
-        set.plan,
-        set.end,
-        set.profile,
-      ])
+    : viewSets.value
+        .filter((set) => mounted.value || !foldsSet(set.key))
+        .flatMap((set) => [set.angled, set.plan, set.end, set.profile])
   ).filter((url): url is string => Boolean(url)),
 );
 
@@ -287,13 +303,15 @@ const setProfileImg = (key: string, el: unknown) => {
 const updateProfileHeights = () => {
   profileHeights.value = Object.fromEntries(
     Object.entries(profileImgs)
-      .filter(([, img]) => img)
-      .map(([key, img]) => [key, img!.clientHeight]),
+      .map(([key, img]) => [key, img?.clientHeight ?? 0])
+      .filter(([, height]) => height),
   );
 };
 
+// A folded profile has no height yet; the one from the other side is the same
+// ship's length, so it holds the end view until the fold opens.
 const endStyle = (key: string) => {
-  const height = profileHeights.value[key];
+  const height = profileHeights.value[key] || profileHeights.value.front;
 
   return height ? { maxHeight: `${height}px` } : {};
 };
@@ -380,54 +398,93 @@ useEventListener(window, "resize", () => {
       >
         <template v-if="!foldable || mounted">
           <template v-for="set in viewSets" :key="set.key">
-            <div
-              v-if="!foldable || set.key !== 'front'"
-              class="fleetchart-views__cell"
+            <component
+              :is="foldsSet(set.key) ? Collapsed : Passthrough"
+              v-bind="
+                foldsSet(set.key)
+                  ? {
+                      visible: expanded,
+                      class: 'fleetchart-views__rear',
+                      onOpenEnd: updateProfileHeights,
+                    }
+                  : {}
+              "
             >
-              <img
-                v-if="set.angled"
-                :src="set.angled"
-                :width="(length > beam ? length : beam) * 1.2"
-                @load="settleImage"
-                @error="settleImage"
-              />
-            </div>
-            <div class="fleetchart-views__cell">
-              <img
-                v-if="set.plan"
-                :src="set.plan"
-                :width="length"
-                @load="settleImage"
-                @error="settleImage"
-              />
-            </div>
-            <!-- Folding views take the full width under a height cap instead,
-                 and a hidden profile has no height to match. -->
-            <div class="fleetchart-views__cell" :class="{ small: mobile }">
-              <img
-                v-if="set.end"
-                :src="set.end"
-                :style="collapsible ? undefined : endStyle(set.key)"
-                @load="settleImage"
-                @error="settleImage"
-              />
-            </div>
-            <div class="fleetchart-views__cell">
-              <img
-                v-if="set.profile"
-                :ref="(el) => setProfileImg(set.key, el)"
-                :src="set.profile"
-                :width="length"
-                @load="
-                  updateProfileHeights();
-                  settleImage($event);
-                "
-                @error="settleImage"
-              />
-            </div>
+              <template v-if="!foldsSet(set.key) || mounted">
+                <div
+                  v-if="!foldable || set.key !== 'front'"
+                  class="fleetchart-views__cell"
+                >
+                  <img
+                    v-if="set.angled"
+                    :src="set.angled"
+                    :width="(length > beam ? length : beam) * 1.2"
+                    @load="settleImage"
+                    @error="settleImage"
+                  />
+                </div>
+                <div class="fleetchart-views__cell">
+                  <img
+                    v-if="set.plan"
+                    :src="set.plan"
+                    :width="length"
+                    @load="settleImage"
+                    @error="settleImage"
+                  />
+                </div>
+                <!-- Folding views take the full width under a height cap instead,
+                     and a hidden profile has no height to match. -->
+                <div class="fleetchart-views__cell" :class="{ small: mobile }">
+                  <img
+                    v-if="set.end"
+                    :src="set.end"
+                    :style="collapsible ? undefined : endStyle(set.key)"
+                    @load="settleImage"
+                    @error="settleImage"
+                  />
+                </div>
+                <div class="fleetchart-views__cell">
+                  <img
+                    v-if="set.profile"
+                    :ref="(el) => setProfileImg(set.key, el)"
+                    :src="set.profile"
+                    :width="length"
+                    @load="
+                      updateProfileHeights();
+                      settleImage($event);
+                    "
+                    @error="settleImage"
+                  />
+                </div>
+              </template>
+            </component>
           </template>
         </template>
       </component>
+    </div>
+    <div v-if="rearFoldable" class="fleetchart-views__rear-fold">
+      <Btn
+        :variant="BtnVariantsEnum.BARE"
+        :size="BtnSizesEnum.SM"
+        :aria-expanded="expanded"
+        :aria-busy="opening"
+        data-test="model-views-rear-fold"
+        @click="toggleExpanded"
+      >
+        {{
+          expanded ? t("actions.model.hideViews") : t("actions.model.showViews")
+        }}
+        <i
+          class="fa-light"
+          :class="
+            opening
+              ? 'fa-spinner-third fa-spin'
+              : expanded
+                ? 'fa-chevron-up'
+                : 'fa-chevron-down'
+          "
+        />
+      </Btn>
     </div>
   </div>
 </template>

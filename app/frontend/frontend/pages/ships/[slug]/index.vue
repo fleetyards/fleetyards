@@ -61,6 +61,7 @@ import {
   useLowPowerDevice,
 } from "@/shared/composables/useLowPowerDevice";
 import { LOW_POWER_HOLO_SIZE_LIMIT } from "@/shared/components/HoloViewer/limits";
+import { useMediaQuery } from "@vueuse/core";
 
 // three.js and the viewer are most of a ship page's script. A desktop draws the
 // inline preview on every visit, so it starts fetching them straight away; a
@@ -329,6 +330,10 @@ const inlinePreview = computed(
       lowPower.value && (holoModel.value.size ?? 0) > LOW_POWER_HOLO_SIZE_LIMIT
     ),
 );
+
+// Beside the hero the views set its height, so there the ones from behind wait
+// to be asked for. Matches the xxl breakpoint of the three-column hero.
+const viewsBesideHero = useMediaQuery("(min-width: 2800px)");
 
 const adiMap = computed(() => {
   if (!props.model.adiMap || !props.model.scIdentifier) {
@@ -649,6 +654,7 @@ const adiMap = computed(() => {
           <FleetchartImages
             :model="model"
             :state="activeState"
+            :fold-rear="viewsBesideHero"
             @update:state="setModelState"
           />
         </div>
