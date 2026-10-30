@@ -18,12 +18,13 @@ module V1
               startModel: ::V1::Schemas::Hangar::Plans::HangarPlanModel,
               priceOverride: {type: [:number, :null]},
               price: {type: [:number, :null], description: "What starting this way costs in USD; null when unknown"},
+              routeComplete: {type: :boolean, description: "Whether the start and its upgrades end on the slot's ship; false while the route has yet to be planned"},
               sourceMissing: {type: :boolean},
               usesBuybackToken: {type: :boolean, description: "Pays for this buy-back with store credit, which spends one of the user's buy-back tokens"},
               steps: {type: :array, items: ::V1::Schemas::Hangar::Plans::HangarPlanUpgradeStep}
             },
             additionalProperties: false,
-            required: %w[id startKind startModel sourceMissing usesBuybackToken steps]
+            required: %w[id startKind startModel routeComplete sourceMissing usesBuybackToken steps]
           })
         end
       end

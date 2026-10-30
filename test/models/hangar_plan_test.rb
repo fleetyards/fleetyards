@@ -179,11 +179,31 @@ class HangarPlanTest < ActiveSupport::TestCase
     assert acquisition.errors.of_kind?(:base, :slot_filled)
   end
 
-  test "a route has to end on the slot's ship" do
+  test "a route with upgrades has to end on the slot's ship" do
     acquisition = build_acquisition(start_kind: "store", start_model: @cutlass)
+    acquisition.upgrade_steps.build(source_kind: "store", origin_model: @cutlass, target_model: @constellation, position: 0)
 
     assert_not acquisition.valid?
     assert acquisition.errors.of_kind?(:base, :chain_mismatch)
+  end
+
+  test "a start elsewhere without upgrades holds both ends until its route is planned" do
+    acquisition = create_acquisition(start_kind: "store", start_model: @cutlass)
+
+    assert_not acquisition.route_complete?
+    assert create_acquisition_on_new_slot(@cutlass).route_complete?
+  end
+
+  test "a route moves to another slot only where that slot has room" do
+    acquisition = create_acquisition(start_kind: "store", start_model: @cutlass)
+    full = create_acquisition_on_new_slot(@cutlass).candidate
+
+    acquisition.candidate = full
+    assert_not acquisition.valid?
+    assert acquisition.errors.of_kind?(:base, :slot_filled)
+
+    full.slot.update!(quantity: 2)
+    assert acquisition.reload.update(candidate: full)
   end
 
   test "each upgrade starts where the one before ended" do
@@ -258,5 +278,11 @@ class HangarPlanTest < ActiveSupport::TestCase
 
   private def create_acquisition(**attributes)
     build_acquisition(**attributes).tap(&:save!)
+  end
+
+  private def create_acquisition_on_new_slot(model)
+    slot = create(:hangar_plan_slot, hangar_plan: @plan)
+    candidate = create(:hangar_plan_candidate, slot:, model:)
+    @plan.acquisitions.create!(candidate:, start_kind: "store", start_model: model)
   end
 end

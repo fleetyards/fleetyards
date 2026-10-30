@@ -5,7 +5,7 @@ module HangarPlans
   # how the count of each model changes. Only decided slots are targets; an
   # undecided slot has not said which ship it wants yet.
   class Comparison
-    VEHICLE_STATUSES = %w[kept upgraded melted pending change unassigned].freeze
+    VEHICLE_STATUSES = %w[kept upgraded unrouted melted pending change unassigned].freeze
     CHANGES = %w[added removed more fewer unchanged].freeze
 
     VehicleStatus = Data.define(:vehicle, :status, :target_model)
@@ -50,6 +50,8 @@ module HangarPlans
           VehicleStatus.new(vehicle:, status: "kept", target_model: vehicle.model)
         elsif route.nil?
           VehicleStatus.new(vehicle:, status: marks.fetch(vehicle.id, "unassigned"), target_model: nil)
+        elsif !route.route_complete?
+          VehicleStatus.new(vehicle:, status: "unrouted", target_model: route.candidate.model)
         elsif route.upgrade_steps.any?
           VehicleStatus.new(vehicle:, status: "upgraded", target_model: route.upgrade_steps.last.target_model)
         else
@@ -101,7 +103,7 @@ module HangarPlans
     # happens to the hangar.
     private def owned_routes
       @owned_routes ||= plan.acquisitions.where(start_kind: "owned", hangar_plan_candidate_id: decided_candidate_ids)
-        .includes(upgrade_steps: {target_model: MODEL_PRELOAD})
+        .includes(:start_model, candidate: {model: MODEL_PRELOAD}, upgrade_steps: {target_model: MODEL_PRELOAD})
         .index_by(&:source_vehicle_id)
     end
 

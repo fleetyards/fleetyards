@@ -9,6 +9,7 @@ module V1
         schema({
           type: :object,
           properties: {
+            candidateId: {type: :string, format: :uuid, description: "Moves the route to another ship of the plan"},
             startKind: ::V1::Schemas::Enums::HangarPlanStartKindEnum,
             sourceVehicleId: {type: [:string, :null], format: :uuid},
             buybackPledgeId: {type: [:string, :null], format: :uuid},

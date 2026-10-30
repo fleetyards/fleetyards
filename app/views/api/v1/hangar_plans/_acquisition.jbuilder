@@ -12,6 +12,7 @@ end
 json.price_override acquisition.price_override&.to_f
 json.price acquisition.price&.to_f
 json.uses_buyback_token acquisition.uses_buyback_token
+json.route_complete acquisition.route_complete?
 json.source_missing local_assigns[:public_view] ? false : acquisition.source_missing?
 json.steps do
   json.array! acquisition.upgrade_steps do |step|
