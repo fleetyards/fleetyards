@@ -10,14 +10,6 @@ import {
   vehicleRoute,
 } from "@/frontend/utils/vehicleSegment";
 
-// The overview is the ship's front page.
-const vehicleIndexGuard = (to: RouteLocationNormalized) => ({
-  name: "hangar-vehicle-overview",
-  params: to.params,
-  query: to.query,
-  replace: true,
-});
-
 // Vehicle pages are their owner's alone. Signed out, the session guard sends
 // the visitor to log in first, so only a signed-in reader is turned away here.
 const vehicleOwnerGuard = (to: RouteLocationNormalized) => {
@@ -378,9 +370,12 @@ export const routes: RouteRecordRaw[] = [
       {
         path: "",
         name: "hangar-vehicle",
-        component: () =>
-          import("@/frontend/pages/hangar/[username]/[segment]/loadouts.vue"),
-        beforeEnter: vehicleIndexGuard,
+        // The overview is the ship's front page.
+        redirect: (to) => ({
+          name: "hangar-vehicle-overview",
+          params: to.params,
+          query: to.query,
+        }),
       },
       ...vehicleRoutes,
     ],
