@@ -22,7 +22,8 @@ const model = (
   name,
   slug: name.toLowerCase(),
   onSale: true,
-  upgradable,
+  ccuInto: upgradable ? "on_sale" : "none",
+  ccuOutOf: upgradable ? "known" : "none",
   pledgePrice,
 });
 

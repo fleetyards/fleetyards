@@ -27,6 +27,11 @@ import PickList, {
 import RouteChain from "@/frontend/components/Hangar/Planner/RouteChain/index.vue";
 import type { RouteChainNode } from "@/frontend/components/Hangar/Planner/RouteChain/types";
 import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
+import {
+  canEnter,
+  canLeave,
+  ccuNote,
+} from "@/frontend/components/Hangar/Planner/reach";
 import { useElementSize } from "@vueuse/core";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
@@ -324,19 +329,31 @@ const targetPrice = computed(() => target.value.pledgePrice ?? null);
 const belowTarget = (model?: HangarPlanModel) => {
   if (!model) return true;
   if (model.id === target.value.id) return true;
-  if (!model.upgradable || !target.value.upgradable) return false;
+  if (!canLeave(model) || !canEnter(target.value)) return false;
   if (targetPrice.value === null || typeof model.pledgePrice !== "number") {
     return true;
   }
   return model.pledgePrice < targetPrice.value;
 };
 
+const canLeaveId = (id?: string | null) => {
+  const model = id ? models.value.get(id) : undefined;
+  return !model || canLeave(model);
+};
+
+const canEnterId = (id?: string | null) => {
+  const model = id ? models.value.get(id) : undefined;
+  return !model || canEnter(model);
+};
+
 const priceOf = (id?: string | null) =>
   id ? models.value.get(id)?.pledgePrice : undefined;
 
+// An upgrade into the ship says how sure it is that RSI sells one.
 const storeItem = (
   model: HangarPlanModel,
   price: number | null | undefined,
+  upgradeInto = false,
 ): PickListItem => ({
   id: model.id,
   title: model.name,
@@ -344,6 +361,7 @@ const storeItem = (
     [
       model.manufacturerName,
       model.onSale ? undefined : t("hangarPlanner.notOnSale"),
+      upgradeInto && ccuNote(model) ? t(ccuNote(model) as string) : undefined,
     ]
       .filter(Boolean)
       .join(" · ") || undefined,
@@ -795,8 +813,8 @@ const storeStepItems = (index: number) => {
     .filter(
       (model) =>
         model.id !== fromId &&
-        model.upgradable &&
-        models.value.get(fromId ?? "")?.upgradable !== false &&
+        canEnter(model) &&
+        canLeaveId(fromId) &&
         belowTarget(model) &&
         (typeof from !== "number" || (model.pledgePrice ?? 0) > from),
     )
@@ -806,6 +824,7 @@ const storeStepItems = (index: number) => {
         typeof from === "number" && typeof model.pledgePrice === "number"
           ? model.pledgePrice - from
           : null,
+        true,
       ),
     );
 };
@@ -830,8 +849,8 @@ const storeBackItems = (index: number) => {
     .filter(
       (model) =>
         model.id !== toId &&
-        model.upgradable &&
-        models.value.get(toId ?? "")?.upgradable !== false &&
+        canLeave(model) &&
+        canEnterId(toId) &&
         (typeof to !== "number" || (model.pledgePrice ?? 0) < to),
     )
     .map((model) =>

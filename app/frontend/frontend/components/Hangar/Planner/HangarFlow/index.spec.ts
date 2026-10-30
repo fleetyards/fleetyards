@@ -17,7 +17,8 @@ const model = (name: string): HangarPlanModel => ({
   name,
   slug: name.toLowerCase(),
   onSale: true,
-  upgradable: true,
+  ccuInto: "on_sale",
+  ccuOutOf: "known",
   pledgePrice: 100,
 });
 
@@ -411,7 +412,12 @@ describe("Hangar/Planner/HangarFlow", () => {
   });
 
   it("asks for another start where no upgrade leads to the slot's ship", async () => {
-    const idris = { ...model("Idris-P"), pledgePrice: 1500, upgradable: false };
+    const idris = {
+      ...model("Idris-P"),
+      pledgePrice: 1500,
+      ccuInto: "none" as const,
+      ccuOutOf: "none" as const,
+    };
     const [explorer, ...rest] = plan.slots;
     const wrapper = await mountWithDefaults(Component, {
       props: {
@@ -453,7 +459,12 @@ describe("Hangar/Planner/HangarFlow", () => {
   });
 
   it("only melts a ship RSI sells no upgrades for once it should change", async () => {
-    const kraken = { ...model("Kraken"), pledgePrice: 1650, upgradable: false };
+    const kraken = {
+      ...model("Kraken"),
+      pledgePrice: 1650,
+      ccuInto: "none" as const,
+      ccuOutOf: "none" as const,
+    };
     const wrapper = await mountWithDefaults(Component, {
       props: {
         plan,

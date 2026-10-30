@@ -481,7 +481,9 @@
         "noReachableShip": "Aucun vaisseau de cet emplacement n'est accessible depuis ce départ.",
         "back": "Retour",
         "onlyMelt": "Aucun upgrade n'existe pour lui, il ne peut qu'être fondu",
-        "excludes": "Exclut %{ships}"
+        "excludes": "Exclut %{ships}",
+        "ccuSalesOnly": "CCU seulement pendant les ventes",
+        "ccuUnknown": "Aucun CCU vu pour l'instant"
       },
       "slotsTitle": "Emplacements",
       "editSlots": "Modifier les emplacements"

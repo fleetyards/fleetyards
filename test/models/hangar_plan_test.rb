@@ -206,21 +206,34 @@ class HangarPlanTest < ActiveSupport::TestCase
     assert acquisition.reload.update(candidate: full)
   end
 
-  test "no upgrade leads into or out of a ship pledged at $1000 or more" do
-    idris = create(:model, pledge_price: 1000, on_sale: true)
+  test "a store upgrade leads only into and out of ships RSI sells upgrades for" do
+    pioneer = create(:model, pledge_price: 925, on_sale: true, created_at: 1.year.ago)
     slot = create(:hangar_plan_slot, hangar_plan: @plan)
-    candidate = create(:hangar_plan_candidate, slot:, model: idris)
+    candidate = create(:hangar_plan_candidate, slot:, model: pioneer)
 
     into = @plan.acquisitions.new(candidate:, start_kind: "store", start_model: @carrack)
-    into.upgrade_steps.build(source_kind: "store", origin_model: @carrack, target_model: idris, position: 0)
-    out = build_acquisition(start_kind: "store", start_model: idris)
-    out.upgrade_steps.build(source_kind: "store", origin_model: idris, target_model: @carrack, position: 0)
+    into.upgrade_steps.build(source_kind: "store", origin_model: @carrack, target_model: pioneer, position: 0)
+    out = build_acquisition(start_kind: "store", start_model: pioneer)
+    out.upgrade_steps.build(source_kind: "store", origin_model: pioneer, target_model: @carrack, position: 0)
 
     assert_not into.valid?
     assert into.upgrade_steps.first.errors.of_kind?(:to_model_id, :not_upgradable)
     assert_not out.valid?
     assert out.upgrade_steps.first.errors.of_kind?(:from_model_id, :not_upgradable)
-    assert @plan.acquisitions.new(candidate:, start_kind: "store", start_model: idris).valid?
+    assert @plan.acquisitions.new(candidate:, start_kind: "store", start_model: pioneer).valid?
+  end
+
+  test "an upgrade the user holds counts whatever the store sells" do
+    pioneer = create(:model, pledge_price: 925, on_sale: true, created_at: 1.year.ago)
+    slot = create(:hangar_plan_slot, hangar_plan: @plan)
+    candidate = create(:hangar_plan_candidate, slot:, model: pioneer)
+    ccu = create(:hangar_pledge_item, user: @user, kind: "ccu", name: "Upgrade - Carrack to Pioneer")
+
+    acquisition = @plan.acquisitions.new(candidate:, start_kind: "store", start_model: @carrack)
+    acquisition.upgrade_steps.build(source_kind: "owned_ccu", hangar_pledge_item: ccu, origin_model: @carrack,
+      target_model: pioneer, position: 0)
+
+    assert acquisition.valid?, acquisition.upgrade_steps.first.errors.full_messages.to_sentence
   end
 
   test "each upgrade starts where the one before ended" do

@@ -17,7 +17,7 @@ import PickList, {
   type PickListItem,
 } from "@/frontend/components/Hangar/Planner/PickList/index.vue";
 import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
-import { reaches } from "@/frontend/components/Hangar/Planner/reach";
+import { ccuNote, reaches } from "@/frontend/components/Hangar/Planner/reach";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import {
@@ -197,7 +197,16 @@ const endItems = computed<PickListItem[]>(() =>
     .map((candidate) => ({
       id: candidate.id,
       title: candidate.model.name,
-      meta: candidate.model.manufacturerName ?? undefined,
+      meta:
+        [
+          candidate.model.manufacturerName,
+          candidate.model.id !== startModel.value?.id &&
+          ccuNote(candidate.model)
+            ? t(ccuNote(candidate.model) as string)
+            : undefined,
+        ]
+          .filter(Boolean)
+          .join(" · ") || undefined,
       price: money(candidate.model.pledgePrice),
       sortPrice: candidate.model.pledgePrice,
       badge:

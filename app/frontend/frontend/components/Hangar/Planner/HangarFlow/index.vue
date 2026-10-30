@@ -13,6 +13,7 @@ import {
 } from "@/shared/components/base/Btn/types";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
+import { canEnter, canLeave } from "@/frontend/components/Hangar/Planner/reach";
 import {
   type HangarFlowDecision,
   type HangarFlowEnd,
@@ -184,7 +185,7 @@ const routeTarget = (route: PlannedRoute) => ({
 // RSI sells no upgrade into or out of some ships, so a start elsewhere can
 // never become them.
 const routable = (route: PlannedRoute) =>
-  route.acquisition.startModel.upgradable && route.model.upgradable;
+  canLeave(route.acquisition.startModel) && canEnter(route.model);
 
 const unroutedAction = (route: PlannedRoute) =>
   routable(route)
@@ -349,7 +350,7 @@ const shipRows = computed<Row[]>(() =>
                   icon: "fa-light fa-circle-question",
                   label: t("hangarPlanner.vehicleStatuses.pending"),
                 },
-            ...(change && !entry.model.upgradable
+            ...(change && !canLeave(entry.model)
               ? {
                   // Nothing can be upgraded out of it, so changing it means
                   // melting it.

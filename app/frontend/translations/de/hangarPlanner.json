@@ -481,7 +481,9 @@
         "noReachableShip": "Kein Schiff dieses Platzes ist von diesem Start aus erreichbar.",
         "back": "Zurück",
         "onlyMelt": "Es gibt keine Upgrades dafür, es kann nur eingeschmolzen werden",
-        "excludes": "Schließt %{ships} aus"
+        "excludes": "Schließt %{ships} aus",
+        "ccuSalesOnly": "CCU nur in Sales",
+        "ccuUnknown": "Noch kein CCU gesehen"
       },
       "slotsTitle": "Slots",
       "editSlots": "Slots bearbeiten"
