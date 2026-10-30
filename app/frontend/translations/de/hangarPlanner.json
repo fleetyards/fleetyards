@@ -310,7 +310,8 @@
         },
         "rebased": "Plan aus deinem Hangar aktualisiert.",
         "sharingOn": "Teilen ist an. Jeder mit dem Link kann diesen Plan ansehen.",
-        "copyFailed": "Der Link konnte nicht kopiert werden. Kopiere ihn stattdessen aus dem Feld."
+        "copyFailed": "Der Link konnte nicht kopiert werden. Kopiere ihn stattdessen aus dem Feld.",
+        "filtersSaved": "Filter für %{slot} gespeichert"
       },
       "filterChips": {
         "priceFrom": "ab %{price}",
@@ -489,10 +490,12 @@
           "buyback": "Buy-back",
           "store": "Store"
         },
-        "filters": "Starts eingrenzen"
+        "filters": "Starts eingrenzen",
+        "saveFilters": "Filter für diesen Platz speichern"
       },
       "slotsTitle": "Slots",
-      "editSlots": "Slots bearbeiten"
+      "editSlots": "Slots bearbeiten",
+      "slotNumber": "Platz %{number}"
     }
   }
 }

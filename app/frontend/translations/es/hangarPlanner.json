@@ -310,7 +310,8 @@
         },
         "rebased": "Plan actualizado desde tu hangar.",
         "sharingOn": "Compartir está activado. Cualquiera con el enlace puede ver este plan.",
-        "copyFailed": "No se pudo copiar el enlace. Cópialo desde el campo."
+        "copyFailed": "No se pudo copiar el enlace. Cópialo desde el campo.",
+        "filtersSaved": "Filtros guardados para %{slot}"
       },
       "filterChips": {
         "priceFrom": "desde %{price}",
@@ -489,10 +490,12 @@
           "buyback": "Buy-back",
           "store": "Tienda"
         },
-        "filters": "Acotar los inicios"
+        "filters": "Acotar los inicios",
+        "saveFilters": "Guardar filtros para este hueco"
       },
       "slotsTitle": "Slots",
-      "editSlots": "Editar slots"
+      "editSlots": "Editar slots",
+      "slotNumber": "Hueco %{number}"
     }
   }
 }

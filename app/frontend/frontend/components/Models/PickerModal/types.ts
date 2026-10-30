@@ -13,3 +13,13 @@ export type ModelPickerSelection = {
   option: ModelOption;
   quantity: number;
 };
+
+// The list filters picked in the picker, beyond whatever its caller pinned,
+// for a caller that keeps them.
+export type ModelPickerFilters = {
+  manufacturerIn: string[];
+  classificationIn: string[];
+  focusIn: string[];
+  sizeIn: string[];
+  productionStatusIn: string[];
+};
