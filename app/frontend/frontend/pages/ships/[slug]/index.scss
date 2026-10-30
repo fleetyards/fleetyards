@@ -109,7 +109,7 @@
   }
 
   .image-wrapper-holoviewer {
-    max-height: 100svh;
+    max-height: min(100svh, 1100px);
   }
 }
 
