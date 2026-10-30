@@ -12,7 +12,6 @@ module Push
       Vapid.stubs(:public_key).returns("public")
       Vapid.stubs(:private_key).returns("private")
       Vapid.stubs(:subject).returns("mailto:info@fleetyards.net")
-      Flipper.enable(:push_notifications)
       @user.notification_preferences.find_by!(notification_type: :fleet_invite).update!(push: true)
     end
 
@@ -126,13 +125,6 @@ module Push
 
     test "sends nothing when the reader switched push off after fan-out" do
       @user.notification_preferences.find_by!(notification_type: :fleet_invite).update!(push: false)
-      WebPush.expects(:payload_send).never
-
-      perform
-    end
-
-    test "sends nothing when the flag went off after fan-out" do
-      Flipper.disable(:push_notifications)
       WebPush.expects(:payload_send).never
 
       perform

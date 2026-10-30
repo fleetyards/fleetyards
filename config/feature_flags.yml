@@ -52,9 +52,6 @@ fleet_tours:
 # Rides its own gate rather than hangar_inventories: a ship's cargo is a
 # separate surface and rolls out on its own schedule.
 
-push_notifications:
-  description: "Push notifications — Web Push delivery of notifications to a subscribed browser"
-
 oauth-applications:
   description: "User-owned OAuth applications in settings"
   permanent: true

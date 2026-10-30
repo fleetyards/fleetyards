@@ -16,9 +16,7 @@ import PanelBody from "@/shared/components/base/Panel/Body/index.vue";
 import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import PushDevices from "@/frontend/components/Notifications/PushDevices/index.vue";
-import { useFeatures } from "@/frontend/composables/useFeatures";
 import {
-  FeatureFlagName,
   type NotificationPreference,
   NotificationTypeEnum,
   getNotificationPreferencesQueryKey,
@@ -31,7 +29,6 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 
 const { t } = useI18n();
 const { displayAlert } = useAppNotifications();
-const { isFeatureEnabled } = useFeatures();
 
 const groups: Array<{ key: string; types: NotificationTypeEnum[] }> = [
   {
@@ -288,7 +285,7 @@ const toggleGroup = (
 
   <!-- Above the table: its push switches do nothing on a device that never
      subscribed. -->
-  <PushDevices v-if="isFeatureEnabled(FeatureFlagName.PUSH_NOTIFICATIONS)" />
+  <PushDevices />
 
   <Panel v-for="group in groups" :key="group.key">
     <PanelHeading :level="HeadingLevelEnum.H2">
