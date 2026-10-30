@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.29.1](https://github.com/fleetyards/fleetyards/compare/v9.29.0...v9.29.1) (2026-10-30)
+
+
+### Bug Fixes
+
+* **maintenance:** restore the tasks that still have a job, and keep the tests of live code ([#6063](https://github.com/fleetyards/fleetyards/issues/6063)) ([ea8a4ee](https://github.com/fleetyards/fleetyards/commit/ea8a4ee6088ae59e97a0f6ad5078d96d7beac267))
+* **paints:** link new paints to their components and copy their artwork automatically ([#6058](https://github.com/fleetyards/fleetyards/issues/6058)) ([a523cbb](https://github.com/fleetyards/fleetyards/commit/a523cbb685aa52e8997e42204ec3cbfeb0a2f582))
+
+
+### Chores
+
+* **deps-dev:** bump @tanstack/eslint-plugin-query ([#6051](https://github.com/fleetyards/fleetyards/issues/6051)) ([7cba776](https://github.com/fleetyards/fleetyards/commit/7cba776f9bda804ee3b0722c487b3454620f6e9d))
+* **deps-dev:** bump @typescript-eslint/parser from 8.72.0 to 8.72.1 ([#6053](https://github.com/fleetyards/fleetyards/issues/6053)) ([aa0816d](https://github.com/fleetyards/fleetyards/commit/aa0816d72223942544b0636e5e166c58f617070c))
+* **deps-dev:** bump eslint-plugin-vue from 10.11.1 to 10.12.0 ([#6052](https://github.com/fleetyards/fleetyards/issues/6052)) ([438a86f](https://github.com/fleetyards/fleetyards/commit/438a86fa53e8ea4f6475092f7285f9eae2d90f88))
+* **deps:** bump @tanstack/vue-query from 5.104.5 to 5.105.0 ([#6055](https://github.com/fleetyards/fleetyards/issues/6055)) ([5baff55](https://github.com/fleetyards/fleetyards/commit/5baff556e8e407cd99644c102624f48841295966))
+* **deps:** bump bootsnap from 1.26.0 to 1.26.1 ([#6050](https://github.com/fleetyards/fleetyards/issues/6050)) ([2f19daf](https://github.com/fleetyards/fleetyards/commit/2f19dafccf65eec2509da7dad4cf3177d1b28409))
+* **deps:** bump git from 5.6.0 to 5.6.1 ([#6054](https://github.com/fleetyards/fleetyards/issues/6054)) ([41c7449](https://github.com/fleetyards/fleetyards/commit/41c7449a2905107e1e2b952b29341facf8de4cb4))
+* **maintenance:** drop the one-off tasks that have already run ([#6060](https://github.com/fleetyards/fleetyards/issues/6060)) ([9422b95](https://github.com/fleetyards/fleetyards/commit/9422b9573c32605ac0002ca30ece8ad592179f64))
+* retire the feature flags that are on for everyone ([#6062](https://github.com/fleetyards/fleetyards/issues/6062)) ([2e433cb](https://github.com/fleetyards/fleetyards/commit/2e433cbf70899379726a9af52813a8e91f77905e))
+
 ## [9.29.0](https://github.com/fleetyards/fleetyards/compare/v9.28.0...v9.29.0) (2026-10-30)
 
 
