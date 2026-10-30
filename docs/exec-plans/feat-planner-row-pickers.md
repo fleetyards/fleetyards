@@ -1,6 +1,6 @@
 # Hangar planner: start and end pickers in the flow rows
 
-Issue: not filed yet (the decisions are recorded in the draft issue body handed over with this branch).
+Issue: #6064
 
 ## Phases
 
