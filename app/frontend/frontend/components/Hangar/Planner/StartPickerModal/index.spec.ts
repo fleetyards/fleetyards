@@ -178,17 +178,28 @@ describe("Hangar/Planner/StartPickerModal", () => {
       props: { planId: "plan", slot: slot(options) },
     });
 
-    // Below the cheapest of its ships, or one of them already held; never
-    // the Vulture at $175, nor an Idris RSI sells no upgrades for.
+    // Anything that can become one of its ships, never an Idris RSI sells
+    // no upgrades for; the Vulture at $175 can only become the MOLE.
     expect(titles(wrapper)).toEqual([
       "Buy new on the store",
       "Cutlass Black",
       "Prospector",
+      "Vulture",
     ]);
+    const vultureRow = wrapper
+      .findAll('[data-test="pick-list-row"]')
+      .find((row) => row.text().includes("Vulture"))!;
+    expect(vultureRow.text()).toContain("Rules out Prospector");
 
     await use(wrapper, "Prospector");
     expect(titles(wrapper)).toEqual(["Prospector", "MOLE"]);
 
+    await wrapper.find('[data-test="hangar-plan-start-back"]').trigger("click");
+    await use(wrapper, "Vulture");
+    expect(titles(wrapper)).toEqual(["MOLE"]);
+
+    await wrapper.find('[data-test="hangar-plan-start-back"]').trigger("click");
+    await use(wrapper, "Prospector");
     await use(wrapper, "MOLE");
 
     expect(decide).toHaveBeenLastCalledWith(

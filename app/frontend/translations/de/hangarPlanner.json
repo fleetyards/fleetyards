@@ -480,7 +480,8 @@
         "chooseEnd": "Welches Schiff des Platzes soll aus diesem Start werden?",
         "noReachableShip": "Kein Schiff dieses Platzes ist von diesem Start aus erreichbar.",
         "back": "Zurück",
-        "onlyMelt": "Es gibt keine Upgrades dafür, es kann nur eingeschmolzen werden"
+        "onlyMelt": "Es gibt keine Upgrades dafür, es kann nur eingeschmolzen werden",
+        "excludes": "Schließt %{ships} aus"
       },
       "slotsTitle": "Slots",
       "editSlots": "Slots bearbeiten"

@@ -480,7 +480,8 @@
         "chooseEnd": "Quale nave dello slot deve diventare questa partenza?",
         "noReachableShip": "Nessuna nave di questo slot è raggiungibile da questa partenza.",
         "back": "Indietro",
-        "onlyMelt": "Non esistono upgrade per questa nave, può solo essere fusa"
+        "onlyMelt": "Non esistono upgrade per questa nave, può solo essere fusa",
+        "excludes": "Esclude %{ships}"
       },
       "slotsTitle": "Slot",
       "editSlots": "Modifica slot"
