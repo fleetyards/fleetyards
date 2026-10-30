@@ -119,7 +119,7 @@ class Model < ApplicationRecord
   validates :ccu_override, inclusion: {in: CCU_OVERRIDES}, allow_nil: true
 
   def ccu_target_status
-    return "none" if ccu_override == "none"
+    return "none" if ccu_out_of_store? || ccu_override == "none"
     return "on_sale" if ccu_on_sale
     return "sales_only" if ccu_override == "allowed" || ccu_target_seen_at.present?
 
@@ -129,7 +129,7 @@ class Model < ApplicationRecord
   # Whatever a CCU can reach can be upgraded further, so a ship seen as a
   # target counts as a source too.
   def ccu_source_status
-    return "none" if ccu_override == "none"
+    return "none" if ccu_out_of_store? || ccu_override == "none"
     return "known" if ccu_override == "allowed" || ccu_source_seen_at.present? || ccu_target_seen_at.present?
 
     ccu_unseen_status
@@ -138,6 +138,11 @@ class Model < ApplicationRecord
   def ccu_into? = ccu_target_status != "none"
 
   def ccu_out_of? = ccu_source_status != "none"
+
+  # The store sells upgrades only for ships a player can pledge for there.
+  private def ccu_out_of_store?
+    ingame_only || !player_ownable
+  end
 
   private def ccu_unseen_status
     (created_at.nil? || created_at > CCU_UNKNOWN_FOR.ago) ? "unknown" : "none"
