@@ -184,6 +184,7 @@ describe("Hangar/Planner/StartPickerModal", () => {
     expect(titles(wrapper)).toEqual([
       "Buy new on the store",
       "Prospector",
+      "Earn in game",
       "Standalone Ship - Aurora MR",
       "Cutlass Black",
     ]);
@@ -234,6 +235,7 @@ describe("Hangar/Planner/StartPickerModal", () => {
     // no upgrades for; the Vulture at $175 can only become the MOLE.
     expect(titles(wrapper)).toEqual([
       "Buy new on the store",
+      "Earn in game",
       "Standalone Ship - Aurora MR",
       "Cutlass Black",
       "Prospector",

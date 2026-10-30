@@ -52,8 +52,6 @@
       },
       "notOnSale": "non in vendita",
       "routes": "Come ottenerle",
-      "addRoute": "Aggiungi un percorso per %{ship}",
-      "addRouteShort": "Aggiungi percorso",
       "editRoute": "Percorso per %{ship}",
       "removeRoute": "Rimuovi percorso",
       "unresolvedUnits": {
@@ -87,7 +85,6 @@
         "startKind": "Parte come",
         "ownedShip": "Nave del tuo hangar",
         "buyback": "Pledge buy-back",
-        "startModel": "Nave",
         "priceOverride": "Prezzo pagato",
         "priceOverrideInfo": "Lascia vuoto per usare il prezzo attuale dello store, oppure inserisci un prezzo in saldo o warbond.",
         "upgradeSource": "Upgrade da",
@@ -347,19 +344,8 @@
       "route": {
         "stillToReach": "Ancora da raggiungere",
         "yourRoute": "Il tuo percorso",
-        "startFirst": "Scegli da dove arriva la nave per vedere il percorso.",
         "done": "Il percorso termina sulla %{ship}.",
-        "startHints": {
-          "owned": "Una nave che possiedi già. Se non è la %{ship}, aggiungi gli upgrade che la trasformano.",
-          "buyback": "Un pledge fuso che puoi riacquistare da RSI. Senza token di riacquisto costa denaro nuovo, non credito dello store.",
-          "store": "Un nuovo pledge dallo store RSI. Parti da una nave più economica per farne l'upgrade.",
-          "ingame": "Acquistata con aUEC nel gioco, quindi non costa denaro. Una nave acquistata nel gioco non accetta upgrade, quindi deve essere la %{ship} stessa."
-        },
-        "noVehicles": "Nessuna nave del tuo hangar è libera per questo percorso.",
-        "noBuybacks": "Non hai pledge da riacquistare. Sincronizzali dal tuo account RSI.",
-        "pledgeShip": "Nave del pledge",
         "isTarget": "Stessa nave",
-        "holdsTarget": "La contiene",
         "search": "Cerca",
         "noMatch": "Nessun risultato.",
         "reaches": "Porta alla %{ship}",
@@ -374,8 +360,6 @@
         "showFitting": "Mostra solo gli upgrade adatti",
         "unknownTarget": "A quale nave porta",
         "startCost": "Partenza",
-        "includesShip": "Contiene la %{ship}",
-        "cheaperOnly": "Sono proposte solo navi più economiche della %{ship} (%{price}), dato che poi ne fai l'upgrade.",
         "sort": {
           "price": "Prezzo",
           "name": "Nome"
@@ -395,40 +379,9 @@
           "owned_ccu": "Nessuno degli upgrade nel tuo hangar RSI parte dalla %{ship}.",
           "buyback": "Nessuno dei tuoi upgrade da riacquistare parte dalla %{ship}."
         },
-        "direction": {
-          "label": "Costruisci il percorso",
-          "forward": "Dalla partenza",
-          "reverse": "Dall'obiettivo a ritroso"
-        },
-        "directionHints": {
-          "forward": "Scegli da dove arriva la nave, poi gli upgrade che la portano alla %{ship}.",
-          "reverse": "Risali dalla %{ship}: scegli l'upgrade che termina su di essa, poi quello che termina dove parte. Fermati a una nave che possiedi, puoi riacquistare o comprare."
-        },
-        "startPending": "Partenza ancora da scegliere",
-        "reverseStart": "Il percorso parte dalla %{ship}.",
-        "unknownSource": "Da quale nave parte",
-        "noHeldInto": {
-          "owned_ccu": "Nessuno degli upgrade nel tuo hangar RSI termina sulla %{ship}.",
-          "buyback": "Nessuno dei tuoi upgrade da riacquistare termina sulla %{ship}."
-        },
-        "upgradeInto": "Upgrade verso la %{ship}",
-        "upgradesTo": "verso la %{ship}",
-        "inHangar": "Nel tuo hangar",
-        "buybackAvailable": "Riacquisto disponibile",
-        "nextStep": "Il percorso ora parte dalla %{ship}. Aggiungi l'upgrade verso di essa oppure scegli la %{ship} come partenza.",
-        "addUpgradeInto": "Aggiungi un upgrade verso la %{ship}",
-        "startHere": "Parti dalla %{ship}",
         "shipCard": "Nave",
         "useToken": "Usa token di riacquisto",
-        "withToken": "pagato con un token",
-        "buyTarget": "Compra la %{ship} stessa",
-        "startShort": {
-          "owned": "Hangar",
-          "buyback": "Riacquisto",
-          "store": "Store",
-          "ingame": "Nel gioco"
-        },
-        "ingameNoUpgrades": "Una nave acquistata nel gioco non accetta upgrade. Rimuovi prima gli upgrade."
+        "withToken": "pagato con un token"
       },
       "meltList": {
         "none": "Secondo RSI nessuna delle tue navi può essere fusa. Disattiva il filtro per scegliere una nave qualsiasi.",
@@ -471,7 +424,6 @@
         "use": "Usa",
         "noShips": "Nessuna nave dell'hangar è libera per questo slot.",
         "removeStart": "Togli dallo slot",
-        "otherStarts": "Acquisto in gioco o altro percorso",
         "same": "La stessa nave, tenuta così",
         "sameModel": "Stesso modello",
         "noEnds": "Nessuno slot ha posto per un'altra nave. Scegli una nave qualsiasi per darle uno slot tutto suo.",
@@ -489,7 +441,8 @@
         },
         "filters": "Restringi le partenze",
         "saveFilters": "Salva i filtri per questo slot",
-        "chooseShip": "Scegli la nave dello slot"
+        "chooseShip": "Scegli la nave dello slot",
+        "earnInGame": "Guadagna in gioco"
       },
       "slotsTitle": "Slot",
       "editSlots": "Modifica slot",

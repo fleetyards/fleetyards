@@ -227,8 +227,23 @@ const storeOption = computed<StartOption>(() => ({
   },
 }));
 
+// Earned in game, a ship takes no upgrades, so it starts as the ship itself.
+const ingameOption = computed<StartOption>(() => ({
+  source: "store",
+  start: { kind: "ingame" },
+  model: target.value,
+  item: {
+    id: "ingame",
+    title: t("hangarPlanner.pick.earnInGame"),
+    meta: target.value?.name ?? t("hangarPlanner.pick.buyChosen"),
+    price: money(0),
+    sortPrice: 0,
+  },
+}));
+
 const options = computed(() => [
   storeOption.value,
+  ingameOption.value,
   ...vehicleOptions.value,
   ...buybackOptions.value,
 ]);
@@ -309,20 +324,6 @@ const remove = async () => {
     close();
   }
 };
-
-// Buy-backs, in-game purchases and store starts on another ship are planned
-// with the route itself.
-const otherStarts = () =>
-  comlink.emit("open-modal", {
-    component: () =>
-      import("@/frontend/components/Hangar/Planner/RouteModal/index.vue"),
-    props: {
-      planId: props.planId,
-      candidate: props.candidate,
-      acquisition: props.acquisition,
-    },
-    wide: true,
-  });
 </script>
 
 <template>
@@ -391,16 +392,6 @@ const otherStarts = () =>
       >
         <i class="fa-light fa-xmark" />
         {{ t("hangarPlanner.pick.removeStart") }}
-      </Btn>
-    </template>
-    <template v-if="candidate" #footer>
-      <Btn
-        :disabled="pairing"
-        data-test="hangar-plan-start-other"
-        @click="otherStarts"
-      >
-        <i class="fa-light fa-route" />
-        {{ t("hangarPlanner.pick.otherStarts") }}
       </Btn>
     </template>
   </Modal>

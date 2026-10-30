@@ -21,6 +21,7 @@ import {
 export type HangarPlanStart =
   | { kind: "owned"; vehicleId: string }
   | { kind: "buyback"; pledgeId: string; modelId: string }
+  | { kind: "ingame" }
   | { kind: "store" };
 
 export type HangarPlanEnd =
@@ -86,6 +87,13 @@ export const useHangarPlanPairing = (
           sourceVehicleId: null,
           buybackPledgeId: start.pledgeId,
           startModelId: start.modelId,
+        };
+      case "ingame":
+        return {
+          startKind: HangarPlanStartKindEnum.INGAME,
+          sourceVehicleId: null,
+          buybackPledgeId: null,
+          startModelId: candidate.model.id,
         };
       default:
         return {
