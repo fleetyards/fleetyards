@@ -99,6 +99,8 @@ type Row = {
   // Both ends picked, but no upgrade leads from one to the other, so the
   // middle asks for another start instead.
   restart?: boolean;
+  // A start waits for its slot to choose a ship, which the middle opens.
+  chooseIn?: HangarPlanSlot;
   // The slot the right card opens where it picks no end: one still choosing
   // its ship, or one whose units have no start yet.
   slot?: HangarPlanSlot;
@@ -138,6 +140,54 @@ const routes = computed(() =>
 );
 
 type PlannedRoute = (typeof routes.value)[number];
+
+// Starts picked for a slot still choosing its ship. Each is saved on one of
+// its ships, but says nothing about which one the slot settles on.
+const waitingStarts = computed(() =>
+  props.plan.slots
+    .filter((slot) => slot.state === HangarPlanSlotStateEnum.UNDECIDED)
+    .flatMap((slot) =>
+      slot.candidates.flatMap((candidate) =>
+        candidate.acquisitions.map((acquisition) => ({
+          slot,
+          candidate,
+          acquisition,
+        })),
+      ),
+    ),
+);
+
+type WaitingStart = (typeof waitingStarts.value)[number];
+
+const undecidedCard = (slot: HangarPlanSlot): Card => ({
+  title: slot.candidates.map((candidate) => candidate.model.name).join(" / "),
+  ships: slot.candidates.map((candidate) => candidate.model.name),
+  sub: slot.label,
+  model: slot.candidates[0]?.model,
+  pill: {
+    variant: PillVariantsEnum.WARNING,
+    label: t("hangarPlanner.states.undecided"),
+  },
+  tone: "warning",
+});
+
+const waitingRow = (waiting: WaitingStart, left: Card) => ({
+  action: {
+    kind: "waiting",
+    icon: "fa-light fa-scale-balanced",
+    label: t("hangarPlanner.pick.chooseShip"),
+    detail: t("hangarPlanner.comparison.flow.notCounted"),
+  },
+  left,
+  right: undecidedCard(waiting.slot),
+  start: {
+    slot: waiting.slot,
+    candidate: waiting.candidate,
+    acquisition: waiting.acquisition,
+  },
+  slot: waiting.slot,
+  chooseIn: waiting.slot,
+});
 
 const routeCost = (acquisition: HangarPlanAcquisition) => {
   const prices = [
@@ -312,8 +362,22 @@ const shipRows = computed<Row[]>(() =>
         return [meltedRow(entry)];
       case HangarPlanVehicleStatusEnum.KEPT:
       case HangarPlanVehicleStatusEnum.UPGRADED:
-      case HangarPlanVehicleStatusEnum.UNROUTED:
+      case HangarPlanVehicleStatusEnum.UNROUTED: {
         if (route) return [routedShipRow(entry, route)];
+
+        const waiting = waitingStarts.value.find(
+          (start) => start.acquisition.sourceVehicleId === entry.vehicleId,
+        );
+        if (waiting) {
+          return [
+            {
+              ...base,
+              ...waitingRow(waiting, left),
+              group: "ships",
+              testId: "hangar-plan-vehicle-waiting",
+            },
+          ];
+        }
 
         // Kept without a slot: the plan only noted the decision.
         return [
@@ -330,6 +394,7 @@ const shipRows = computed<Row[]>(() =>
             end,
           },
         ];
+      }
       case HangarPlanVehicleStatusEnum.PENDING:
       case HangarPlanVehicleStatusEnum.CHANGE: {
         const change = entry.status === HangarPlanVehicleStatusEnum.CHANGE;
@@ -469,8 +534,31 @@ const neededRows = computed<Row[]>(() => {
     ];
   });
 
+  const waiting = waitingStarts.value
+    .filter(
+      (start) => start.acquisition.startKind !== HangarPlanStartKindEnum.OWNED,
+    )
+    .map((start, index): Row => ({
+      key: start.acquisition.id,
+      group: "slots",
+      order: slotOrder(start.slot.id) + index,
+      testId: "hangar-plan-flow-waiting",
+      ...waitingRow(start, {
+        title: start.acquisition.startModel.name,
+        sub: t(`hangarPlanner.startKinds.${start.acquisition.startKind}`),
+        model: start.acquisition.startModel,
+      }),
+    }));
+
+  // A slot still choosing its ship keeps a row for each unit no start was
+  // picked for yet.
   const undecided = props.plan.slots
-    .filter((slot) => slot.state === HangarPlanSlotStateEnum.UNDECIDED)
+    .filter(
+      (slot) =>
+        slot.state === HangarPlanSlotStateEnum.UNDECIDED &&
+        waitingStarts.value.filter((start) => start.slot.id === slot.id)
+          .length < slot.quantity,
+    )
     .map((slot): Row => {
       const cost = slotCost(slot);
 
@@ -486,19 +574,7 @@ const neededRows = computed<Row[]>(() => {
           label: t("hangarPlanner.startKinds.store"),
           detail: cost ? range(cost.minCost, cost.maxCost) : undefined,
         },
-        right: {
-          title: slot.candidates
-            .map((candidate) => candidate.model.name)
-            .join(" / "),
-          ships: slot.candidates.map((candidate) => candidate.model.name),
-          sub: slot.label,
-          model: slot.candidates[0]?.model,
-          pill: {
-            variant: PillVariantsEnum.WARNING,
-            label: t("hangarPlanner.states.undecided"),
-          },
-          tone: "warning",
-        },
+        right: undecidedCard(slot),
         start: { slot },
         slot,
       };
@@ -522,7 +598,7 @@ const neededRows = computed<Row[]>(() => {
       slot,
     }));
 
-  return [...bought, ...gaps, ...undecided, ...open];
+  return [...bought, ...gaps, ...waiting, ...undecided, ...open];
 });
 
 // The plan's slots come first, so one just added shows above the ships; then
@@ -580,10 +656,15 @@ const openMiddle = (row: Row) => {
     emit("route", row.route.candidate, row.route.acquisition);
   } else if (row.restart) {
     pickStart(row);
+  } else if (row.chooseIn) {
+    emit("edit", row.chooseIn);
   }
 };
 
 const middleLabel = (row: Row) => {
+  if (row.chooseIn) {
+    return t("hangarPlanner.editSlotOf", { slot: row.chooseIn.label });
+  }
   if (row.restart && row.start) {
     return t("hangarPlanner.pick.startOf", {
       ship: row.start.candidate?.model.name ?? row.start.slot.label,
@@ -1079,6 +1160,14 @@ const imageOf = (model?: HangarPlanModel) =>
       color: var(--color-warning);
     }
   }
+}
+
+.hangar-flow__action--waiting .hangar-flow__tag {
+  border-style: dashed;
+}
+
+.hangar-flow__action--waiting::before {
+  border-top-style: dashed;
 }
 
 .hangar-flow__action--open::before {

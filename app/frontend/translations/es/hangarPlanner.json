@@ -478,9 +478,6 @@
         "removeEnd": "Sacar del plan",
         "anyShip": "Cualquier nave",
         "buyChosen": "La nave que elijas a continuación",
-        "chooseEnd": "¿En cuál de las naves del hueco se convierte este inicio?",
-        "noReachableShip": "Ninguna nave de este hueco se puede alcanzar desde este inicio.",
-        "back": "Atrás",
         "onlyMelt": "No existen mejoras para ella, solo se puede fundir",
         "excludes": "Descarta %{ships}",
         "ccuSalesOnly": "CCU solo en rebajas",
@@ -491,7 +488,8 @@
           "store": "Tienda"
         },
         "filters": "Acotar los inicios",
-        "saveFilters": "Guardar filtros para este hueco"
+        "saveFilters": "Guardar filtros para este hueco",
+        "chooseShip": "Elige la nave del hueco"
       },
       "slotsTitle": "Slots",
       "editSlots": "Editar slots",

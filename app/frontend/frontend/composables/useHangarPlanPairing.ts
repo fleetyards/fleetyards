@@ -6,10 +6,8 @@ import {
   type HangarPlan,
   type HangarPlanAcquisition,
   type HangarPlanCandidate,
-  type HangarPlanSlot,
   HangarPlanStartKindEnum,
   HangarPlanVehicleMarkEnum,
-  useChooseHangarPlanSlotCandidate,
   useCreateHangarPlanAcquisition,
   useCreateHangarPlanCandidate,
   useCreateHangarPlanKeep,
@@ -50,7 +48,6 @@ export const useHangarPlanPairing = (
   const keepMutation = useCreateHangarPlanKeep();
   const createMark = useCreateHangarPlanVehicleMark();
   const updateMark = useUpdateHangarPlanVehicleMark();
-  const choose = useChooseHangarPlanSlotCandidate();
 
   const pairing = ref(false);
 
@@ -224,18 +221,5 @@ export const useHangarPlanPairing = (
       }
     });
 
-  // A slot still choosing its ship settles on the one a start is picked for;
-  // the other ships leave it.
-  const decide = (slot: HangarPlanSlot, candidate: HangarPlanCandidate) =>
-    run(async () => {
-      updatePlan(
-        await choose.mutateAsync({
-          hangarPlanId: hangarPlanId(),
-          id: slot.id,
-          data: { candidateId: candidate.id },
-        }),
-      );
-    });
-
-  return { pairing, pairStart, pairEnd, decide };
+  return { pairing, pairStart, pairEnd };
 };

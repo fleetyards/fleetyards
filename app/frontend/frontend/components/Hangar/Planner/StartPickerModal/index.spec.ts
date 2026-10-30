@@ -106,7 +106,6 @@ const comparison = ref({
 } as unknown as HangarPlanComparison);
 
 const pairStart = vi.fn((..._args: unknown[]) => Promise.resolve(true));
-const decide = vi.fn((..._args: unknown[]) => Promise.resolve(true));
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
@@ -120,7 +119,6 @@ vi.mock("@/frontend/composables/useHangarPlanPairing", () => ({
     pairing: ref(false),
     pairStart,
     pairEnd: vi.fn(),
-    decide,
   }),
 }));
 
@@ -220,7 +218,7 @@ describe("Hangar/Planner/StartPickerModal", () => {
     );
   });
 
-  it("asks which ship an undecided slot settles on once the start is picked", async () => {
+  it("keeps a start for an undecided slot without choosing its ship", async () => {
     const options = [candidate(prospector), candidate(mole)];
     const wrapper = await mountWithDefaults(Component, {
       props: { planId: "plan", slot: slot(options) },
@@ -240,24 +238,20 @@ describe("Hangar/Planner/StartPickerModal", () => {
       .find((row) => row.text().includes("Vulture"))!;
     expect(vultureRow.text()).toContain("Rules out Prospector");
 
+    // Picking a start decides nothing: it waits on the ship it comes
+    // closest to until the slot chooses.
     await use(wrapper, "Prospector");
-    expect(titles(wrapper)).toEqual(["Prospector", "MOLE"]);
-
-    await wrapper.find('[data-test="hangar-plan-start-back"]').trigger("click");
-    await use(wrapper, "Vulture");
-    expect(titles(wrapper)).toEqual(["MOLE"]);
-
-    await wrapper.find('[data-test="hangar-plan-start-back"]').trigger("click");
-    await use(wrapper, "Prospector");
-    await use(wrapper, "MOLE");
-
-    expect(decide).toHaveBeenLastCalledWith(
-      expect.objectContaining({ id: "mining" }),
-      options[1],
+    expect(pairStart).toHaveBeenLastCalledWith(
+      options[0],
+      { kind: "owned", vehicleId: "vehicle-prospector" },
+      undefined,
     );
-    expect(pairStart).toHaveBeenLastCalledWith(options[1], {
-      kind: "owned",
-      vehicleId: "vehicle-prospector",
-    });
+
+    await use(wrapper, "Vulture");
+    expect(pairStart).toHaveBeenLastCalledWith(
+      options[1],
+      { kind: "owned", vehicleId: "vehicle-vulture" },
+      undefined,
+    );
   });
 });

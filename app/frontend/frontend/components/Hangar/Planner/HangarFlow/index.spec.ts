@@ -495,4 +495,70 @@ describe("Hangar/Planner/HangarFlow", () => {
         .map((button) => button.attributes("data-test")),
     ).toEqual(["hangar-plan-decide-melt", "hangar-plan-decide-pending"]);
   });
+
+  it("shows a start picked for an undecided slot as waiting for its ship", async () => {
+    const cutlass = model("Cutlass Black");
+    const prospector = model("Prospector");
+    const [explorer, salvage, mining] = plan.slots;
+    const undecided = {
+      ...mining,
+      candidates: [
+        {
+          ...salvage.candidates[0],
+          id: "prospector",
+          model: prospector,
+          acquisitions: [
+            {
+              ...salvage.candidates[0].acquisitions[0],
+              id: "waiting",
+              sourceVehicleId: "vehicle-cutlass",
+              startModel: cutlass,
+              routeComplete: false,
+            },
+          ],
+        },
+        {
+          ...salvage.candidates[0],
+          id: "mole",
+          model: model("MOLE"),
+          acquisitions: [],
+        },
+      ],
+    };
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        plan: { ...plan, slots: [explorer, salvage, undecided] },
+        comparison: {
+          ...comparison,
+          vehicles: [
+            {
+              vehicleId: "vehicle-cutlass",
+              model: cutlass,
+              status: HangarPlanVehicleStatusEnum.UNROUTED,
+            },
+          ],
+        },
+      },
+    });
+
+    const row = wrapper.find('[data-test="hangar-plan-vehicle-waiting"]');
+    expect(row.text()).toContain("Cutlass Black");
+    expect(row.text()).toContain("Choose the slot's ship");
+    expect(row.text()).toContain("Prospector / MOLE");
+    // Its one unit has a start, so no row asks for one any more.
+    expect(
+      wrapper.find('[data-test="hangar-plan-flow-undecided"]').exists(),
+    ).toBe(false);
+
+    await row.find('[data-test="hangar-plan-flow-route"]').trigger("click");
+    await row
+      .find('[data-test="hangar-plan-flow-pick-start"]')
+      .trigger("click");
+
+    expect(wrapper.emitted("edit")).toEqual([[undecided]]);
+    const [[start]] = wrapper.emitted("start") as [
+      [{ acquisition: { id: string } }],
+    ];
+    expect(start.acquisition.id).toBe("waiting");
+  });
 });

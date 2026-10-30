@@ -32,7 +32,7 @@ module Api
       end
 
       def destroy
-        @candidate.destroy!
+        @candidate.slot.remove_candidate!(@candidate)
 
         render_hangar_plan
       end

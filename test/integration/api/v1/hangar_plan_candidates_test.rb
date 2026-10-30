@@ -121,4 +121,18 @@ class Api::V1::HangarPlanCandidatesTest < ActionDispatch::IntegrationTest
       assert_equal "open", parsed_body.dig("slots", 0, "state")
     end
   end
+
+  test "DELETE hands a start the ship held to a ship that stays" do
+    leaving = create(:hangar_plan_candidate, slot: @slot, model: @gladius)
+    staying = create(:hangar_plan_candidate, slot: @slot, model: @arrow)
+    start = @plan.acquisitions.create!(candidate: leaving, start_kind: "store", start_model: @gladius)
+
+    assert_api_response :delete, 200, api_path: "/hangar/plans/{hangarPlanId}/candidates/{id}",
+      path_params: {hangarPlanId: @plan.id, id: leaving.id}
+
+    assert_equal staying, start.reload.candidate
+    # Bought outright, it buys the ship the slot keeps instead.
+    assert_equal @arrow, start.start_model
+    assert start.route_complete?
+  end
 end

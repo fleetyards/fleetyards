@@ -478,9 +478,6 @@
         "removeEnd": "Retirer du plan",
         "anyShip": "N'importe quel vaisseau",
         "buyChosen": "Le vaisseau que vous choisissez ensuite",
-        "chooseEnd": "Quel vaisseau de l'emplacement ce départ doit-il devenir ?",
-        "noReachableShip": "Aucun vaisseau de cet emplacement n'est accessible depuis ce départ.",
-        "back": "Retour",
         "onlyMelt": "Aucun upgrade n'existe pour lui, il ne peut qu'être fondu",
         "excludes": "Exclut %{ships}",
         "ccuSalesOnly": "CCU seulement pendant les ventes",
@@ -491,7 +488,8 @@
           "store": "Store"
         },
         "filters": "Affiner les départs",
-        "saveFilters": "Enregistrer les filtres pour cet emplacement"
+        "saveFilters": "Enregistrer les filtres pour cet emplacement",
+        "chooseShip": "Choisir le vaisseau de l'emplacement"
       },
       "slotsTitle": "Emplacements",
       "editSlots": "Modifier les emplacements",

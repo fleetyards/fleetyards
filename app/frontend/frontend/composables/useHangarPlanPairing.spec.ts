@@ -27,7 +27,6 @@ const mutation = (name: string) => ({
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
-  useChooseHangarPlanSlotCandidate: () => mutation("choose"),
   useCreateHangarPlanAcquisition: () => mutation("createAcquisition"),
   useUpdateHangarPlanAcquisition: () => mutation("updateAcquisition"),
   useDestroyHangarPlanAcquisition: () => mutation("destroyAcquisition"),
@@ -154,23 +153,6 @@ describe("useHangarPlanPairing", () => {
             vehicleId: "vehicle",
             mark: HangarPlanVehicleMarkEnum.PENDING,
           },
-        },
-      ],
-    ]);
-  });
-
-  it("settles a slot still choosing its ship on the one a start is for", async () => {
-    const { decide } = useHangarPlanPairing("plan", plan);
-
-    await decide(plan.slots[0], carrack);
-
-    expect(calls).toEqual([
-      [
-        "choose",
-        {
-          hangarPlanId: "plan",
-          id: "old",
-          data: { candidateId: "candidate-carrack" },
         },
       ],
     ]);
