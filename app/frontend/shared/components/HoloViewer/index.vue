@@ -350,16 +350,34 @@ const handleControlsChange = (controls: { object: Camera }) => {
 const fitDistance = ref(100);
 const modelMaxDimension = ref(100);
 
+const maxZoomDistance = computed(() => Math.max(250, fitDistance.value * 3));
+
+const starsVisible = computed(
+  () => props.backgrounds && background.value === "space",
+);
+
+const STARS_RADIUS = 1.5;
+const STARS_DEPTH = 1;
+
+// The star shell's far side, seen from the camera zoomed all the way out: past
+// the model's own far plane on anything larger than a fighter, which clipped
+// every star.
+const starsReach = computed(
+  () => maxZoomDistance.value * (1 + STARS_RADIUS + STARS_DEPTH) * 1.05,
+);
+
 const cameraArgs = computed<
   [fov: number, aspect: number, near: number, far: number]
 >(() => [
   35,
   innerWidth.value / innerHeight.value,
   0.1,
-  Math.max(1000, fitDistance.value * 4 + modelMaxDimension.value),
+  Math.max(
+    1000,
+    fitDistance.value * 4 + modelMaxDimension.value,
+    starsVisible.value ? starsReach.value : 0,
+  ),
 ]);
-
-const maxZoomDistance = computed(() => Math.max(250, fitDistance.value * 3));
 
 const cameraHeight = computed(() => (props.inline ? 15 : 30));
 
@@ -690,9 +708,9 @@ defineExpose({
       <!-- Out past the camera's widest zoom, and sized with it, so a ship and a
            part sit in the same sky. -->
       <Stars
-        v-if="backgrounds && background === 'space'"
-        :radius="maxZoomDistance * 1.5"
-        :depth="maxZoomDistance"
+        v-if="starsVisible"
+        :radius="maxZoomDistance * STARS_RADIUS"
+        :depth="maxZoomDistance * STARS_DEPTH"
         :count="4000"
         :size="maxZoomDistance / 150"
       />
