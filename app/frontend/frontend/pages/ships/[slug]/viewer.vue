@@ -29,6 +29,7 @@ useHoloViewerPage({
     fullscreen: true,
     props: {
       model: props.model,
+      syncQuery: true,
       textured: route.query.textured === "1",
       paintId:
         typeof route.query.paint === "string" ? route.query.paint : undefined,

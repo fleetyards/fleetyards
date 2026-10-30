@@ -22,6 +22,8 @@ import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
   model: Model;
+  // Opened as the ship's viewer page, whose address carries the holo shown.
+  syncQuery?: boolean;
   textured?: boolean;
   paintId?: string;
 };
@@ -60,10 +62,12 @@ const {
   { textured: props.textured, paintId: props.paintId },
 );
 
-useHoloQuery(() => ({
-  textured: texturedHoloAvailable.value && texturedHolo.value,
-  paint: holoPaintId.value,
-}));
+if (props.syncQuery) {
+  useHoloQuery(() => ({
+    textured: texturedHoloAvailable.value && texturedHolo.value,
+    paint: holoPaintId.value,
+  }));
+}
 
 // A textured holo that will not draw falls back to the plain one, and the
 // address with it, so a copied link does not carry the failure on.

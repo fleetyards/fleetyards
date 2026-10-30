@@ -120,9 +120,9 @@ const openFullscreenHolo = () => {
   if (!holoModel.value) return;
 
   comlink.emit("open-modal", {
-    component: () => import("@/shared/components/HoloViewer/Modal/index.vue"),
+    component: () => import("@/frontend/components/Models/HoloModal/index.vue"),
     fullscreen: true,
-    props: { models: [holoModel.value] },
+    props: { model: props.vehicle.model },
   });
 };
 
