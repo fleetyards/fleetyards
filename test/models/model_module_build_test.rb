@@ -43,6 +43,28 @@ class ModelModuleBuildTest < ActiveSupport::TestCase
     assert_not ModelModuleBuild.exists?(build_row.id)
   end
 
+  # --- What a module hands its build -----------------------------------------
+
+  test ".facts_from reads what the module says" do
+    model_module = create(:model_module, sc_key: "a_module", description: "a cargo bay")
+
+    assert_equal "a cargo bay", ModelModuleBuild.facts_from(model_module)[:description]
+  end
+
+  # What lets a load count a module it rewrote apart from one it left alone.
+  test ".facts_from applied again for the same source changes nothing" do
+    model_module = create(:model_module, sc_key: "a_module", description: "a cargo bay")
+    model_module.builds.create!(environment: @environment, version: @version,
+      **ModelModuleBuild.facts_from(model_module))
+
+    build_row = model_module.builds.find_or_initialize_by(environment: @environment, version: @version)
+    build_row.assign_attributes(ModelModuleBuild.facts_from(model_module.reload))
+
+    assert_not build_row.new_record?
+    assert_not build_row.changed?, "unexpected changes: #{build_row.changed.inspect}"
+    assert_equal 1, model_module.builds.count
+  end
+
   # --- Reading through the build ---------------------------------------------
 
   test "#description comes from the build in force" do
