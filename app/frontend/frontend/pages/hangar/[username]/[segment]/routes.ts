@@ -57,7 +57,6 @@ export const routes: RouteRecordRaw[] = [
       backgroundImage: "bg-5",
       customTitle: true,
       nav: "pageTabs",
-      feature: FeatureFlagName.SHIP_INVENTORIES,
     },
   },
   {

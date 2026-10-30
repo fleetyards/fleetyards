@@ -54,8 +54,6 @@ hangar_inventories:
 
 # Rides its own gate rather than hangar_inventories: a ship's cargo is a
 # separate surface and rolls out on its own schedule.
-ship_inventories:
-  description: "Ship inventories — the cargo aboard a vehicle"
 
 push_notifications:
   description: "Push notifications — Web Push delivery of notifications to a subscribed browser"

@@ -14,8 +14,7 @@ import VisibilityCard from "@/frontend/components/Vehicles/Overview/VisibilityCa
 import FleetsCard from "@/frontend/components/Vehicles/Overview/FleetsCard/index.vue";
 import PlaqueCard from "@/frontend/components/Vehicles/Overview/PlaqueCard/index.vue";
 import AcquireCard from "@/frontend/components/Vehicles/Overview/AcquireCard/index.vue";
-import { useFeatures } from "@/frontend/composables/useFeatures";
-import { FeatureFlagName, type Vehicle } from "@/services/fyApi";
+import { type Vehicle } from "@/services/fyApi";
 
 type Props = {
   vehicle: Vehicle;
@@ -23,17 +22,13 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { isFeatureEnabled } = useFeatures();
-
 // The same conditions the context menu offers these pages under.
 const inGame = computed(() => !!props.vehicle.model.inGame);
 
 // Loaners get no plaque.
 const plaqueVisible = computed(() => !props.vehicle.loaner);
 
-const cargoVisible = computed(
-  () => inGame.value && isFeatureEnabled(FeatureFlagName.SHIP_INVENTORIES),
-);
+const cargoVisible = computed(() => inGame.value);
 </script>
 
 <template>

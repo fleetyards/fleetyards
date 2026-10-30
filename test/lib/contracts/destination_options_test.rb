@@ -89,12 +89,8 @@ module Contracts
       assert_empty DestinationOptions.new(fleet: @fleet, editor: @officer).fleet_inventories
     end
 
-    test "a ship's hold is offered only while ship inventories are on" do
+    test "a ship's hold is offered alongside the hangar" do
       hold = Inventory.provision_for(create(:vehicle, user: @author), holder: @author)
-
-      assert_not_includes DestinationOptions.new(fleet: @fleet, editor: @author).hangar_inventories, hold
-
-      Flipper.enable(:ship_inventories)
 
       assert_includes DestinationOptions.new(fleet: @fleet, editor: @author).hangar_inventories, hold
     end
@@ -105,7 +101,6 @@ module Contracts
     test "nothing is offered while the gate would refuse the author as recipient" do
       Inventory.provision_for(create(:vehicle, user: @author), holder: @author)
       Flipper.disable(:hangar_inventories)
-      Flipper.enable(:ship_inventories)
 
       assert_equal :unavailable, ::Inventories::TransferGate.new(sender: @officer, recipient: @author).refusal&.code
       assert_empty DestinationOptions.new(fleet: @fleet, editor: @author).hangar_inventories

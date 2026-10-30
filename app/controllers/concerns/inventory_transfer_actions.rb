@@ -142,7 +142,6 @@ module InventoryTransferActions
     if transfer_params[:vehicle_id].present?
       vehicle = current_resource_owner.vehicles.find_by(id: transfer_params[:vehicle_id])
       return if vehicle.blank?
-      return unless feature_enabled?("ship_inventories")
 
       return -> { Inventory.provision_for(vehicle, holder: current_resource_owner) }
     end

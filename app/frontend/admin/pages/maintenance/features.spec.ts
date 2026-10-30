@@ -108,7 +108,7 @@ describe("AdminFeaturesPage", () => {
     features.value = [
       feature({ name: "fleet_logistics" }),
       feature({ name: "oauth-discord", permanent: true }),
-      feature({ name: "ship_inventories" }),
+      feature({ name: "fleet_tours" }),
     ];
   });
 
@@ -118,7 +118,7 @@ describe("AdminFeaturesPage", () => {
     expect(namesOn(wrapper)).toEqual([
       "fleet_logistics",
       "oauth-discord",
-      "ship_inventories",
+      "fleet_tours",
     ]);
   });
 
@@ -131,7 +131,7 @@ describe("AdminFeaturesPage", () => {
   it("leaves the permanent flags out of the rollout tab", async () => {
     const { wrapper } = await mountPage("rollout");
 
-    expect(namesOn(wrapper)).toEqual(["fleet_logistics", "ship_inventories"]);
+    expect(namesOn(wrapper)).toEqual(["fleet_logistics", "fleet_tours"]);
   });
 
   it("falls back to every flag for a tab nobody has", async () => {
@@ -189,7 +189,7 @@ describe("AdminFeaturesPage", () => {
     ).toEqual([
       "/features/fleet_logistics/",
       "/features/oauth-discord/",
-      "/features/ship_inventories/",
+      "/features/fleet_tours/",
     ]);
   });
 

@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 # A transfer is gated by the flags its inventories already ride on: one
-# touching a fleet inventory needs `fleet_logistics`, and one touching a ship
-# needs `ship_inventories`.
+# touching a fleet inventory needs `fleet_logistics`, and one touching a
+# person's own hangar inventory needs `hangar_inventories`. A ship's hold is open
+# to everyone.
 module InventoryTransfersFeatureConcern
   extend ActiveSupport::Concern
 
@@ -15,7 +16,7 @@ module InventoryTransfersFeatureConcern
     case inventory
     when ::FleetInventory then feature_enabled?("fleet_logistics", inventory.fleet)
     when ::Inventory
-      Flipper.enabled?(inventory.vehicle? ? "ship_inventories" : "hangar_inventories", inventory.holder)
+      inventory.vehicle? || Flipper.enabled?("hangar_inventories", inventory.holder)
     else false
     end
   end

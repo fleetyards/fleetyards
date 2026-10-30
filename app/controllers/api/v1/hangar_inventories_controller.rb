@@ -4,7 +4,6 @@ module Api
   module V1
     class HangarInventoriesController < ::Api::BaseController
       include HangarInventoriesFeatureConcern
-      include ShipInventoriesFeatureConcern
 
       after_action -> { pagination_header(:hangar_inventories) }, only: %i[index]
 
@@ -25,7 +24,6 @@ module Api
         ::Inventory.personal_for(current_resource_owner)
 
         scope = current_resource_owner.inventories
-        scope = scope.hand_made unless ship_inventories_enabled?
 
         query_params = params.fetch(:q, {}).permit(:name_cont, :s, :sorts)
         normalize_sort_params(query_params)

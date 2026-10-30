@@ -87,7 +87,6 @@ class Api::V1::FleetContractHangarDeliveryTest < ActionDispatch::IntegrationTest
   test "a delivery into the author's hangar is judged by the author's hangar flag" do
     Flipper.disable(:hangar_inventories)
     Flipper.enable_actor(:hangar_inventories, @author)
-    Flipper.enable_actor(:ship_inventories, @contractor)
 
     ship_hold = Inventory.provision_for(create(:vehicle, user: @contractor), holder: @contractor)
     cargo = create(:inventory_item, inventory: ship_hold,
@@ -111,7 +110,6 @@ class Api::V1::FleetContractHangarDeliveryTest < ActionDispatch::IntegrationTest
   # Clearing a ship's cargo destroys its hold, which is the other way a user
   # removes an inventory a contract may deliver into.
   test "clearing a ship's hold is refused while a contract delivers into it" do
-    Flipper.enable("ship_inventories")
     vehicle = create(:vehicle, user: @author)
     hold = Inventory.provision_for(vehicle, holder: @author)
     create(:fleet_contract, :in_progress, fleet: @fleet, created_by: @author,

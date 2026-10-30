@@ -13,7 +13,7 @@ end
 # The page needs rows to render; these two are still gated, and both carry a
 # self-service row, so it shows more than a bare boolean flag would.
 Flipper.add(:fleet_logistics) unless Flipper.exist?(:fleet_logistics)
-Flipper.add(:ship_inventories) unless Flipper.exist?(:ship_inventories)
+Flipper.add(:fleet_contracts) unless Flipper.exist?(:fleet_contracts)
 
 # Something for the fleet picker on a feature's page to find.
 Fleet.find_by(fid: "E2EFEATUREFLEET") ||

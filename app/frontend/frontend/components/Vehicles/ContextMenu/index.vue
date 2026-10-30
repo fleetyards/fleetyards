@@ -270,8 +270,7 @@ const cargoVisible = computed(
   () =>
     pageLinksVisible.value &&
     !props.wishlist &&
-    props.vehicle.model?.inGame &&
-    isFeatureEnabled(FeatureFlagName.SHIP_INVENTORIES),
+    props.vehicle.model?.inGame,
 );
 
 const shipPageVisible = computed(

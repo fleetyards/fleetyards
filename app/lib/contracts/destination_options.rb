@@ -33,8 +33,7 @@ module Contracts
     # Only while the author can actually receive a transfer. Offering an
     # inventory nobody can deliver into would post a contract that can never
     # be worked. A delivery here is addressed to the author, and the transfer
-    # gate lets a person receive only with the hangar flag on; a ship's hold
-    # also takes the ship flag, the one the transfer endpoints check for it.
+    # gate lets a person receive only with the hangar flag on.
     def hangar_inventories
       return [] unless @fleet.personal_contracts_enabled?
       return [] unless author_can_receive?
@@ -43,7 +42,6 @@ module Contracts
         ::Inventory.personal_for(@author)
 
         @author.inventories.order(personal: :desc, name: :asc).to_a
-          .select { |inventory| !inventory.vehicle? || Flipper.enabled?(:ship_inventories, @author) }
       end
     end
 

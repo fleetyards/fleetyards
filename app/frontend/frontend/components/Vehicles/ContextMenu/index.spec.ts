@@ -109,10 +109,7 @@ const menuStructure = () =>
 
 describe("VehicleContextMenu", () => {
   beforeEach(() => {
-    enabledFlags.value = [
-      FeatureFlagName.VEHICLE_OVERVIEW,
-      FeatureFlagName.SHIP_INVENTORIES,
-    ];
+    enabledFlags.value = [FeatureFlagName.VEHICLE_OVERVIEW];
   });
 
   afterEach(() => {
@@ -294,18 +291,11 @@ describe("VehicleContextMenu", () => {
   });
 
   it("offers no log without the overview", async () => {
-    enabledFlags.value = [FeatureFlagName.SHIP_INVENTORIES];
+    enabledFlags.value = [];
     await mount();
 
     expect(items()).not.toContain("vehicle-log");
     expect(items()).toContain("vehicle-manage-loadouts");
-  });
-
-  it("offers no cargo without inventories", async () => {
-    enabledFlags.value = [FeatureFlagName.VEHICLE_OVERVIEW];
-    await mount();
-
-    expect(items()).not.toContain("vehicle-manage-cargo");
   });
 
   it("moves a wishlist ship to the hangar and keeps its log and cargo out", async () => {

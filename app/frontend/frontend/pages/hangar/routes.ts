@@ -368,7 +368,6 @@ export const routes: RouteRecordRaw[] = [
       title: "hangar.vehicleCargo",
       backgroundImage: "bg-5",
       customTitle: true,
-      feature: FeatureFlagName.SHIP_INVENTORIES,
     },
   },
   // A loadout's page, outside the tab shell like a cargo position, and outside

@@ -3,7 +3,6 @@
 module Api
   module V1
     class VehicleInventoryStockController < ::Api::BaseController
-      include ShipInventoriesFeatureConcern
       include VehicleInventoryScoped
       include InventoryScoped::StockActions
 
@@ -15,7 +14,6 @@ module Api
         unless: :user_signed_in?,
         only: %i[update destroy]
 
-      before_action :check_ship_inventories_feature
       before_action :set_vehicle
       before_action :set_stock_item, only: %i[show update destroy]
 

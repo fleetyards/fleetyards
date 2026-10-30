@@ -67,9 +67,7 @@ const { data: logEntries } = useVehicleLogEntries(vehicleId, {
 
 const { data: inventory } = useVehicleInventory(vehicleId, {
   query: {
-    enabled: computed(
-      () => wanted.value && isFeatureEnabled(FeatureFlagName.SHIP_INVENTORIES),
-    ),
+    enabled: wanted,
   },
 });
 

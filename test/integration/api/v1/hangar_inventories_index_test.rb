@@ -107,8 +107,7 @@ class Api::V1::HangarInventoriesIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET /hangar/inventories lists ship inventories when ship_inventories is enabled" do
-    Flipper.enable("ship_inventories")
+  test "GET /hangar/inventories lists ship inventories" do
     create(:inventory, holder: @user)
     create(:inventory, holder: @user, vehicle: create(:vehicle, user: @user))
     sign_in @user
@@ -119,24 +118,11 @@ class Api::V1::HangarInventoriesIndexTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /hangar/inventories says whether a ship inventory's ship is on the wishlist" do
-    Flipper.enable("ship_inventories")
     create(:inventory, holder: @user, vehicle: create(:vehicle, user: @user, wanted: true))
     sign_in @user
 
     assert_api_response :get, 200 do
       assert(parsed_body["items"].find { |item| item["vehicle"] }["vehicle"]["wanted"])
-    end
-  end
-
-  test "GET /hangar/inventories leaves out ship inventories when ship_inventories is disabled" do
-    Flipper.disable("ship_inventories")
-    create(:inventory, holder: @user)
-    create(:inventory, holder: @user, vehicle: create(:vehicle, user: @user))
-    sign_in @user
-
-    assert_api_response :get, 200 do
-      assert_equal 1, hand_made_items.count
-      assert_nil hand_made_items.first["vehicle"]
     end
   end
 

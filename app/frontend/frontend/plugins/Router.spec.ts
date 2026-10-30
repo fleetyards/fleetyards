@@ -39,7 +39,7 @@ describe("frontend router feature guard", () => {
     queryClient.setQueryData(getFeaturesQueryKey(), []);
 
     const redirect = await beforeResolve(
-      route({ feature: FeatureFlagName.SHIP_INVENTORIES }),
+      route({ feature: FeatureFlagName.HANGAR_PLANNER }),
     );
 
     expect(redirect).toEqual({ routeName: "404" });
@@ -47,11 +47,11 @@ describe("frontend router feature guard", () => {
 
   it("lets a route behind an enabled flag through", async () => {
     queryClient.setQueryData(getFeaturesQueryKey(), [
-      FeatureFlagName.SHIP_INVENTORIES,
+      FeatureFlagName.HANGAR_PLANNER,
     ]);
 
     const redirect = await beforeResolve(
-      route({ feature: FeatureFlagName.SHIP_INVENTORIES }),
+      route({ feature: FeatureFlagName.HANGAR_PLANNER }),
     );
 
     expect(redirect).toBeUndefined();
@@ -132,7 +132,7 @@ describe("frontend router feature guard", () => {
     queryClient.setQueryData(getFeaturesQueryKey(), []);
 
     const redirect = await beforeResolve(
-      route({ feature: FeatureFlagName.SHIP_INVENTORIES }, { slug: "a-model" }),
+      route({ feature: FeatureFlagName.HANGAR_PLANNER }, { slug: "a-model" }),
     );
 
     expect(redirect).toEqual({ routeName: "404" });
@@ -143,7 +143,7 @@ describe("frontend router feature guard", () => {
 
     const redirect = await beforeResolve(
       route({
-        feature: FeatureFlagName.SHIP_INVENTORIES,
+        feature: FeatureFlagName.HANGAR_PLANNER,
         needsAuthentication: true,
       }),
     );
