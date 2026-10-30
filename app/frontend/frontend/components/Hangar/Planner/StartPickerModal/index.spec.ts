@@ -35,6 +35,7 @@ const mole = model("MOLE", 315);
 const idris = model("Idris-P", 1500, false);
 const vulture = model("Vulture", 175);
 const aurora = model("Aurora MR", 30);
+const mustang = model("Mustang Alpha", 30);
 
 const buyback = (
   id: string,
@@ -67,6 +68,7 @@ const resources = ref<HangarPlanResources>({
     vehicle("vehicle-prospector", prospector),
     vehicle("vehicle-idris", idris),
     vehicle("vehicle-vulture", vulture),
+    vehicle("vehicle-mustang", mustang),
   ],
   upgrades: [],
   storeModels: [],
@@ -91,6 +93,11 @@ const comparison = ref({
       vehicleId: "vehicle-prospector",
       model: prospector,
       status: HangarPlanVehicleStatusEnum.PENDING,
+    },
+    {
+      vehicleId: "vehicle-mustang",
+      model: mustang,
+      status: HangarPlanVehicleStatusEnum.KEPT,
     },
     {
       vehicleId: "vehicle-vulture",
@@ -173,8 +180,8 @@ describe("Hangar/Planner/StartPickerModal", () => {
       props: { planId: "plan", slot: slot([mining]), candidate: mining },
     });
 
-    // No upgrade leads out of the Idris, and the Vulture is no cheaper than
-    // a Prospector, so neither is a start for one.
+    // No upgrade leads out of the Idris, the Vulture is no cheaper than a
+    // Prospector, and the Mustang is already kept as it is.
     expect(titles(wrapper)).toEqual([
       "Buy new on the store",
       "Prospector",

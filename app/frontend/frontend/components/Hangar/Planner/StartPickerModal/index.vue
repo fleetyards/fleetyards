@@ -53,12 +53,12 @@ const props = withDefaults(defineProps<Props>(), {
 
 const STORE = "store";
 
-// What a hangar ship free for a start can be in the plan so far.
+// What a hangar ship free for a start can be in the plan so far. One already
+// decided on - kept as it is, given a route, melted - is no start any more.
 const FILTERS = [
   HangarPlanVehicleStatusEnum.CHANGE,
   HangarPlanVehicleStatusEnum.PENDING,
   HangarPlanVehicleStatusEnum.UNASSIGNED,
-  HangarPlanVehicleStatusEnum.KEPT,
 ];
 
 const { t } = useI18n();
@@ -106,7 +106,9 @@ const statusOf = (vehicleId: string) =>
 const freeVehicles = computed(() =>
   (resources.value?.vehicles ?? []).filter(
     (vehicle) =>
-      (!vehicle.usedBy || vehicle.id === props.acquisition?.sourceVehicleId) &&
+      (vehicle.id === props.acquisition?.sourceVehicleId ||
+        (!vehicle.usedBy &&
+          statusOf(vehicle.id) !== HangarPlanVehicleStatusEnum.KEPT)) &&
       (target.value
         ? reaches(vehicle.model, target.value)
         : reachesSlot(vehicle.model)),
