@@ -350,8 +350,7 @@
       "home": {
         "catalogueSearch": "Buscar naves, objetos, misiones y lugares",
         "submitCatalogueSearch": "Buscar",
-        "search": "Buscar naves...",
-        "submitSearch": "Buscar naves"
+        "search": "Buscar naves..."
       },
       "shop": {
         "sellPrice": "vende por",

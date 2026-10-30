@@ -350,8 +350,7 @@
       "home": {
         "catalogueSearch": "Search ships, items, missions and places",
         "submitCatalogueSearch": "Search",
-        "search": "Search for Ships...",
-        "submitSearch": "Search ships"
+        "search": "Search for Ships..."
       },
       "shop": {
         "sellPrice": "sells for",

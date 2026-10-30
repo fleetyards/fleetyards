@@ -350,8 +350,7 @@
       "home": {
         "catalogueSearch": "Rechercher des vaisseaux, objets, missions et lieux",
         "submitCatalogueSearch": "Rechercher",
-        "search": "Recherche de vaisseaux",
-        "submitSearch": "Rechercher des vaisseaux"
+        "search": "Recherche de vaisseaux"
       },
       "shop": {
         "sellPrice": "prix de vente",

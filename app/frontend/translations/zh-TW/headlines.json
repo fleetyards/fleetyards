@@ -223,8 +223,6 @@
         }
       },
       "welcome": "Welcome to",
-      "welcomeShips": "Latest Ships",
-      "welcomeImages": "Random Images",
       "ships": {
         "index": "Ships Index",
         "fleetchart": "飛船艦隊圖表"

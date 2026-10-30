@@ -48,8 +48,6 @@ fleet_tours:
 
 # Rollout of the new "/": a landing page for visitors and a dashboard for
 # signed-in pilots. The old homepage stays the fallback while this is off.
-homepage_redesign:
-  description: "Homepage redesign — a landing page for visitors and a personal dashboard for pilots"
 
 hangar_inventories:
   description: "Personal hangar inventories with a deposit/withdrawal ledger"
