@@ -103,9 +103,7 @@ const PART_OPACITY = 0.5;
 const partColor = new Color();
 
 const updatePartColor = () =>
-  partColor
-    .copy(material.color)
-    .offsetHSL(0, PART_SATURATION, PART_LIGHTNESS);
+  partColor.copy(material.color).offsetHSL(0, PART_SATURATION, PART_LIGHTNESS);
 
 // The hologram's layers in a fixed order. Sorted by distance instead, a part
 // sat over the hull from one side and under it from the other, and a body and
