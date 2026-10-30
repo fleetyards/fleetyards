@@ -21,8 +21,9 @@ module Maintenance
   #
   # The vehicles are not bookkeeping: 4,769 of them are visible, spread over
   # 1,135 users, so this takes ships out of hangars people are looking at. Each
-  # is a loaner for a pledge its owner deleted, which the loaner flag repair
-  # deliberately left alone as a decision for whoever found out how it got
+  # is a loaner for a pledge its owner deleted. Repairing loaner flags never
+  # touched these, because destroying a ship someone can see is a separate
+  # decision from correcting one, best made once it was known how they got
   # orphaned. This is that decision.
   #
   # A maintenance task rather than a data migration, for the reason

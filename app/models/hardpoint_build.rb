@@ -54,8 +54,8 @@ class HardpointBuild < ApplicationRecord
   # `category` and `group_key` are derived by Hardpoint's `before_validation`,
   # so they are only correct once the slot itself has been saved.
   #
-  # One method because both writers need exactly this -- the loader's dual-write
-  # and the backfill task -- and a second copy of the list would drift.
+  # One method because every loader that writes a slot needs exactly this, and
+  # a second copy of the list would drift.
   def self.facts_from(hardpoint)
     FACTS.index_with { |fact| hardpoint.public_send(fact) }
   end
