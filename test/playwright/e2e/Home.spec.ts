@@ -22,7 +22,7 @@ test.describe("Home", () => {
 
     await page.keyboard.press("Enter");
 
-    await expect(page).toHaveURL(/.*\/ships\/ironclad/);
+    await expect(page).toHaveURL(/\/ships\/aegs-ironclad\/$/);
   });
 
   test("Shows Latest Ships", async ({ page }) => {

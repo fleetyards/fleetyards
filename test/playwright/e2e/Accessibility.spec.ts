@@ -12,8 +12,8 @@ test.describe("Accessibility", () => {
     test("home", async ({ page }) => {
       await page.goto("/");
       await expect(
-        page.getByTestId("home-ships").locator(".panel"),
-      ).toHaveCount(2);
+        page.getByTestId("home-landing-latest-ships").locator(".panel").first(),
+      ).toBeVisible();
 
       await expectNoA11yViolations(page);
     });
