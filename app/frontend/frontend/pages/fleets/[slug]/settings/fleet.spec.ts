@@ -10,10 +10,7 @@ import {
   vi,
 } from "vitest";
 import { defineRule } from "vee-validate";
-import {
-  type Fleet,
-  type FleetMember,
-} from "@/services/fyApi";
+import { type Fleet, type FleetMember } from "@/services/fyApi";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import Component from "./fleet.vue";
 

@@ -117,11 +117,7 @@ const modelName = computed(() => model.value?.name);
 // and a loaner, which has no page of its own to edit, still opens the model.
 const toVehicle = useVehicleRoute();
 
-const hasOverview = computed(
-  () =>
-    props.editable &&
-    !props.vehicle.loaner,
-);
+const hasOverview = computed(() => props.editable && !props.vehicle.loaner);
 
 const titleRoute = computed(() => {
   if (hasOverview.value) {

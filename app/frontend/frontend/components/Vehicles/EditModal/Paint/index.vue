@@ -7,10 +7,7 @@ export default {
 <script lang="ts" setup>
 import { useField } from "vee-validate";
 import VehiclePaintPicker from "@/frontend/components/Vehicles/PaintPicker/index.vue";
-import {
-  type Vehicle,
-  useVehiclePaints,
-} from "@/services/fyApi";
+import { type Vehicle, useVehiclePaints } from "@/services/fyApi";
 
 type Props = {
   vehicle: Vehicle;

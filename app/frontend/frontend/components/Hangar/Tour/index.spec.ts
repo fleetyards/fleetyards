@@ -71,7 +71,12 @@ describe("HangarTour", () => {
     const ids = steps().map((step) => step.id);
 
     expect(ids).toEqual(
-      expect.arrayContaining(["overview", "inventories", "pledgeItems", "reset"]),
+      expect.arrayContaining([
+        "overview",
+        "inventories",
+        "pledgeItems",
+        "reset",
+      ]),
     );
   });
 

@@ -118,10 +118,7 @@ const route = useRoute();
 const sessionStore = useSessionStore();
 // Who in the reader's circle flies this ship: there is no circle without an
 // account, and it links into the vehicle overview the flag rolls out.
-const ownersVisible = computed(
-  () =>
-    sessionStore.isAuthenticated,
-);
+const ownersVisible = computed(() => sessionStore.isAuthenticated);
 
 watch(
   () => props.model,

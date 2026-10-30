@@ -112,7 +112,6 @@ describe("CartWidget", () => {
     expect(wrapper.find("[data-test='cart-widget']").exists()).toBe(false);
   });
 
-
   it("collapses to a pill again", async () => {
     const wrapper = await expand(await mount());
 

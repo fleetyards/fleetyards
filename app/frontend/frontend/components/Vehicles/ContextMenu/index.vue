@@ -10,10 +10,7 @@ import { SHIP_GLYPH } from "@/shared/glyphs/ships";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import {
-  VehicleLoadoutKindEnum,
-  type Vehicle,
-} from "@/services/fyApi";
+import { VehicleLoadoutKindEnum, type Vehicle } from "@/services/fyApi";
 import {
   BtnSizesEnum,
   BtnTonesEnum,
@@ -227,9 +224,7 @@ const openLoadout = () => {
   }
 };
 
-const vehicleOverviewVisible = computed(
-  () => props.editable,
-);
+const vehicleOverviewVisible = computed(() => props.editable);
 
 // The vehicle page carries these as tabs and header buttons already. A loaner
 // has no page of its own.
@@ -264,9 +259,7 @@ const loadoutsVisible = computed(
 
 const cargoVisible = computed(
   () =>
-    pageLinksVisible.value &&
-    !props.wishlist &&
-    props.vehicle.model?.inGame,
+    pageLinksVisible.value && !props.wishlist && props.vehicle.model?.inGame,
 );
 
 const shipPageVisible = computed(

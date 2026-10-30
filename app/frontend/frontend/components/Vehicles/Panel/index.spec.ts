@@ -142,14 +142,12 @@ const mount = async (props: {
 };
 
 describe("VehiclesPanel", () => {
-  beforeEach(() => {
-  });
+  beforeEach(() => {});
 
   const titleHref = (wrapper: Awaited<ReturnType<typeof mount>>) =>
     wrapper.find('[data-test="vehicle-panel-title"]').attributes("href");
 
   it("opens the owner's ship on its overview once there is one", async () => {
-
     const wrapper = await mount({
       vehicle: vehicle({ serial: "IC-0210-AB" }),
       editable: true,
@@ -163,9 +161,7 @@ describe("VehiclesPanel", () => {
     ).toBe("vehicle-overview");
   });
 
-
   it("opens the model for someone else's ship", async () => {
-
     const wrapper = await mount({ vehicle: vehicle() });
 
     expect(titleHref(wrapper)).toContain("/ships/odyssey");

@@ -49,7 +49,8 @@ const { updateLoadout, loadouts, mutation, openLoadoutModal } = vi.hoisted(
         updatedAt: "2026-10-01T00:00:00Z",
       },
     ],
-  }));
+  }),
+);
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),

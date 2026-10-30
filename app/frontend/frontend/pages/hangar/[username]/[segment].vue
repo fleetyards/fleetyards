@@ -137,10 +137,7 @@ const crumbs = computed<Crumb[]>(() => [
     <!-- Nothing of a loaner's while it is sent on to its model. -->
     <template v-if="vehicle && !vehicle.loaner" #resolved>
       <BreadCrumbs :crumbs="crumbs" />
-      <VehicleHero
-        :vehicle="vehicle"
-        :compact="!onOverview"
-      />
+      <VehicleHero :vehicle="vehicle" :compact="!onOverview" />
       <TabNavView
         :routes="tabs"
         :authenticated="sessionStore.isAuthenticated"

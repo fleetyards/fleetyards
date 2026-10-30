@@ -94,9 +94,7 @@ const wishlistStore = useWishlistStore();
 // and anyone else's ship on the model.
 const toVehicle = useVehicleRoute();
 
-const hasOverview = (record: Vehicle) =>
-  props.editable &&
-  !record.loaner;
+const hasOverview = (record: Vehicle) => props.editable && !record.loaner;
 
 const nameRoute = (record: Vehicle) => {
   if (hasOverview(record)) {

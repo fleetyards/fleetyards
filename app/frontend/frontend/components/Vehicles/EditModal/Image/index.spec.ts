@@ -235,7 +235,6 @@ describe("VehicleEditModal image tab", () => {
     );
   });
 
-
   it("picks a paint's picture in place of a gallery picture", async () => {
     const wrapper = await mount({
       vehicle: vehicle({

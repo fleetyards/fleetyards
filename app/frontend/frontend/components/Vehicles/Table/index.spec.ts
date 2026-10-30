@@ -183,7 +183,6 @@ describe("VehiclesTable", () => {
     ).toBeUndefined();
   });
 
-
   it("marks the flagship beside its name and tones its row", async () => {
     const wrapper = await mount(vehicle({ flagship: true }));
 
