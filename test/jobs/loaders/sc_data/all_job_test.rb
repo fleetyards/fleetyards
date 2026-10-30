@@ -264,6 +264,19 @@ module Loaders
         end
       end
 
+      test "#perform links the paint components it loaded, and not after a failed load" do
+        ::ScData::Loader::BaseLoader.expects(:all)
+
+        assert_difference -> { ::Loaders::PaintComponentsLinkJob.jobs.size }, 1 do
+          ::Loaders::ScData::AllJob.new.perform
+        end
+
+        ::ScData::Loader::BaseLoader.stubs(:all).raises(StandardError, "sc data error")
+        assert_no_difference -> { ::Loaders::PaintComponentsLinkJob.jobs.size } do
+          assert_raises(StandardError) { ::Loaders::ScData::AllJob.new.perform }
+        end
+      end
+
       test "#perform marks import as failed on error" do
         ::ScData::Loader::BaseLoader.stubs(:all).raises(StandardError, "sc data error")
 

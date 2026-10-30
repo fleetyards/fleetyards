@@ -61,6 +61,7 @@ module Loaders
         # Only once the build is served: before `finish!` a reader is still
         # answered from the one before it, and so would the stats be.
         ::LoadoutStatsJob.perform_async("environment" => source.environment)
+        ::Loaders::PaintComponentsLinkJob.perform_async
       rescue => e
         # Before the transition: `fail!` sends the admin notification, and it
         # reads the reason from `info`.

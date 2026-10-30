@@ -23,6 +23,8 @@ module Loaders
       )
 
       import.finish!
+
+      ::Loaders::PaintComponentsLinkJob.perform_async
     rescue => e
       # The model lookup happens before the import exists -- a model deleted
       # between enqueue and run leaves nothing to mark as failed.
