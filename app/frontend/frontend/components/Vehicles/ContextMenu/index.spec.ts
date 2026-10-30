@@ -123,6 +123,7 @@ describe("VehicleContextMenu", () => {
     expect(items()).toEqual([
       "vehicle-ship-page",
       "vehicle-edit",
+      "vehicle-loadout",
       "vehicle-manage-loadouts",
       "vehicle-manage-cargo",
       "vehicle-log",
@@ -134,6 +135,7 @@ describe("VehicleContextMenu", () => {
       "vehicle-ship-page",
       "separator",
       "vehicle-edit",
+      "vehicle-loadout",
       "separator",
       "vehicle-manage-loadouts",
       "vehicle-manage-cargo",
@@ -152,6 +154,7 @@ describe("VehicleContextMenu", () => {
     expect(items()).toEqual([
       "vehicle-ship-page",
       "vehicle-edit",
+      "vehicle-loadout",
       "vehicle-remove",
     ]);
   });
@@ -161,6 +164,7 @@ describe("VehicleContextMenu", () => {
 
     expect(menuStructure()).toEqual([
       "vehicle-edit",
+      "vehicle-loadout",
       "separator",
       "vehicle-remove",
     ]);
@@ -179,10 +183,6 @@ describe("VehicleContextMenu", () => {
   });
 
   it("keeps loadout editing with edits and separates it from management", async () => {
-    enabledFlags.value = [
-      ...enabledFlags.value,
-      FeatureFlagName.LOADOUT_EDITOR,
-    ];
     await mount({
       hideEdit: true,
       vehicle: vehicle({ model: { ...vehicle().model, hasModules: true } }),
@@ -198,28 +198,12 @@ describe("VehicleContextMenu", () => {
   });
 
   it("offers loadout editing on a flight-ready ship without modules", async () => {
-    enabledFlags.value = [
-      ...enabledFlags.value,
-      FeatureFlagName.LOADOUT_EDITOR,
-    ];
     await mount({ vehicle: vehicle() });
 
     expect(items()).toContain("vehicle-loadout");
   });
 
-  it("offers no loadout editing until the editor is switched on", async () => {
-    await mount({
-      vehicle: vehicle({ model: { ...vehicle().model, hasModules: true } }),
-    });
-
-    expect(items()).not.toContain("vehicle-loadout");
-  });
-
   it("offers no loadout editing on a ship that is not flight ready", async () => {
-    enabledFlags.value = [
-      ...enabledFlags.value,
-      FeatureFlagName.LOADOUT_EDITOR,
-    ];
     await mount({
       vehicle: vehicle({
         model: {
@@ -234,10 +218,6 @@ describe("VehicleContextMenu", () => {
   });
 
   it("shows the owner the active loadout of a ship that is not flight ready", async () => {
-    enabledFlags.value = [
-      ...enabledFlags.value,
-      FeatureFlagName.LOADOUT_EDITOR,
-    ];
     await mount({
       vehicle: vehicle({
         model: {
@@ -257,10 +237,6 @@ describe("VehicleContextMenu", () => {
   });
 
   it("shows a loaner's or wishlist ship's loadout rather than editing it", async () => {
-    enabledFlags.value = [
-      ...enabledFlags.value,
-      FeatureFlagName.LOADOUT_EDITOR,
-    ];
     const modular = { model: { ...vehicle().model, hasModules: true } };
 
     await mount({ vehicle: vehicle({ ...modular, loaner: true }) });

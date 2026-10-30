@@ -9,15 +9,12 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Pill from "@/shared/components/base/Pill/index.vue";
 import InlineEditableList from "@/shared/components/InlineEditableList/index.vue";
-import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
 import VehicleTabLayout from "@/frontend/components/Vehicles/TabLayout/index.vue";
 
 import { useI18n } from "@/shared/composables/useI18n";
 import { useVehicleModals } from "@/frontend/composables/useVehicleModals";
 import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
-import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useLoadoutEditor } from "@/frontend/composables/useLoadoutEditor";
-import { useLoadoutPlanners } from "@/frontend/composables/useLoadoutPlanners";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { firstErrorMessageFrom } from "@/shared/utils/ApiErrors";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
@@ -34,7 +31,6 @@ import {
   getVehicleLoadoutsQueryKey,
   VehicleLoadoutKindEnum,
   ModelProductionStatusEnum,
-  FeatureFlagName,
 } from "@/services/fyApi";
 import { useQueryClient } from "@tanstack/vue-query";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
@@ -47,9 +43,6 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 const queryClient = useQueryClient();
-
-const { erkulUrl: erkulShipUrl, spviewerUrl: spviewerShipUrl } =
-  useLoadoutPlanners(() => props.vehicle.model);
 
 const { data: loadouts, isLoading } = useVehicleLoadouts(props.vehicle.id);
 
@@ -145,15 +138,8 @@ const onDestroy = async (record: VehicleLoadout) => {
   });
 };
 
-// A fleetyards loadout is fitted in the loadout editor, not inline; until the
-// editor is switched on the page keeps to linked builds.
+// A fleetyards loadout is fitted in the loadout editor, not inline.
 const { openLoadoutModal, openLoadoutView } = useVehicleModals();
-
-const { isFeatureEnabled } = useFeatures();
-
-const editorEnabled = computed(() =>
-  isFeatureEnabled(FeatureFlagName.LOADOUT_EDITOR),
-);
 
 // The new-loadout button stays, disabled with its reason, on a ship that is not
 // flight ready; an existing loadout on one has no fitting to open.
@@ -463,19 +449,8 @@ const onToggleVisibility = async (record: VehicleLoadout) => {
         "
         class="loadouts-page__add-wrapper"
       >
-        <!-- With the editor, a link is one of the ways a new loadout starts. -->
+        <!-- A link is one of the ways a new loadout starts, from the editor. -->
         <Btn
-          v-if="!editorEnabled"
-          class="loadouts-page__add"
-          :disabled="editableList?.creating || !flightReady"
-          data-test="loadouts-add"
-          @click="editableList?.startCreate()"
-        >
-          <i class="fa-duotone fa-plus" />
-          {{ t("actions.add") }}
-        </Btn>
-        <Btn
-          v-if="editorEnabled"
           class="loadouts-page__add"
           :disabled="!flightReady"
           data-test="loadouts-new-fleetyards"
@@ -485,27 +460,6 @@ const onToggleVisibility = async (record: VehicleLoadout) => {
           {{ t("actions.vehicleLoadout.newLoadout") }}
         </Btn>
       </span>
-
-      <MetricsCard
-        v-if="!editorEnabled && (erkulShipUrl || spviewerShipUrl)"
-        :title="t('labels.vehicleOverview.planLoadout')"
-        variant="slim"
-      >
-        <div class="loadouts-page__ship-links">
-          <Btn v-if="erkulShipUrl" :href="erkulShipUrl" class="erkul-link">
-            <i />
-            {{ t("labels.hardpoints.erkul") }}
-          </Btn>
-          <Btn
-            v-if="spviewerShipUrl"
-            :href="spviewerShipUrl"
-            class="spviewer-link"
-          >
-            <i />
-            {{ t("labels.hardpoints.spviewer") }}
-          </Btn>
-        </div>
-      </MetricsCard>
     </template>
   </VehicleTabLayout>
 </template>
@@ -523,16 +477,6 @@ const onToggleVisibility = async (record: VehicleLoadout) => {
   // Holds the tooltip a disabled button cannot, and the button's full width.
   &__add-wrapper {
     display: block;
-  }
-
-  &__ship-links {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-
-    > * {
-      width: 100%;
-    }
   }
 
   &__item-display {
