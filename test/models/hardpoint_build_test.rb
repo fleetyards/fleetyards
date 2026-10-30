@@ -110,6 +110,42 @@ class HardpointBuildTest < ActiveSupport::TestCase
     assert_equal ["editable", "swaponly"], build_row.flags
   end
 
+  # --- What a slot hands its build -------------------------------------------
+
+  test ".facts_from reads what the slot says" do
+    component = create(:component)
+    hardpoint = create(:hardpoint, :without_build,
+      source: :game_files, component:, min_size: 2, max_size: 4,
+      types: ["MissileLauncher"], port_tags: ["Eclipse_BombRack"],
+      required_tags: ["Eclipse_BombRack"], flags: ["editable"])
+
+    build_row = hardpoint.builds.create!(environment: @environment, version: @version,
+      **HardpointBuild.facts_from(hardpoint)).reload
+
+    assert_equal component.id, build_row.component_id
+    assert_equal 2, build_row.min_size
+    assert_equal 4, build_row.max_size
+    assert_equal ["MissileLauncher"], build_row.types
+    assert_equal ["Eclipse_BombRack"], build_row.port_tags
+    assert_equal ["Eclipse_BombRack"], build_row.required_tags
+    assert_equal ["editable"], build_row.flags
+  end
+
+  # The three columns Hardpoint derives from the installed component in a
+  # `before_validation`. They have to survive the trip as the same enum value,
+  # which is what the shared constant on Hardpoint is for.
+  test ".facts_from carries the derived group and category across as themselves" do
+    hardpoint = create(:hardpoint, :without_build, source: :game_files,
+      component: create(:component, category: "weapons"))
+
+    build_row = hardpoint.builds.create!(environment: @environment, version: @version,
+      **HardpointBuild.facts_from(hardpoint)).reload
+
+    assert_equal hardpoint.group, build_row.group
+    assert_equal hardpoint.category, build_row.category
+    assert_equal hardpoint.group_key, build_row.group_key
+  end
+
   # --- The slot's natural key ------------------------------------------------
 
   # Once build rows hang off a slot, "the slot called X on this parent" has to
