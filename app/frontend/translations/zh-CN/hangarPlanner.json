@@ -426,7 +426,7 @@
         "removeStart": "从槽位中移除",
         "same": "同一艘舰船，保持原样",
         "sameModel": "相同型号",
-        "noEnds": "没有槽位还能容纳舰船。选择任意舰船，为它新建一个槽位。",
+        "noEnds": "没有这艘舰船可以升级成的舰船。",
         "removeEnd": "从计划中移除",
         "anyShip": "任意舰船",
         "buyChosen": "你接下来选择的舰船",
@@ -442,7 +442,12 @@
         "filters": "筛选起点",
         "saveFilters": "为此槽位保存筛选",
         "chooseShip": "选择槽位的舰船",
-        "earnInGame": "在游戏中获得"
+        "earnInGame": "在游戏中获得",
+        "newSlot": "新槽位",
+        "endSources": {
+          "plan": "计划中的槽位",
+          "catalogue": "任意舰船"
+        }
       },
       "slotsTitle": "槽位",
       "editSlots": "编辑槽位",

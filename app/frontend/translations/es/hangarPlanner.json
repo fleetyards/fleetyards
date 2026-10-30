@@ -426,7 +426,7 @@
         "removeStart": "Quitar del hueco",
         "same": "La misma nave, tal como está",
         "sameModel": "Mismo modelo",
-        "noEnds": "Ningún hueco tiene sitio para otra nave. Elige cualquier nave para darle un hueco propio.",
+        "noEnds": "Ninguna nave en la que pueda convertirse esta.",
         "removeEnd": "Sacar del plan",
         "anyShip": "Cualquier nave",
         "buyChosen": "La nave que elijas a continuación",
@@ -442,7 +442,12 @@
         "filters": "Acotar los inicios",
         "saveFilters": "Guardar filtros para este hueco",
         "chooseShip": "Elige la nave del hueco",
-        "earnInGame": "Ganar en el juego"
+        "earnInGame": "Ganar en el juego",
+        "newSlot": "Hueco nuevo",
+        "endSources": {
+          "plan": "Huecos del plan",
+          "catalogue": "Cualquier nave"
+        }
       },
       "slotsTitle": "Slots",
       "editSlots": "Editar slots",

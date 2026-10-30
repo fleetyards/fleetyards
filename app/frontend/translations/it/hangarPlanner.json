@@ -426,7 +426,7 @@
         "removeStart": "Togli dallo slot",
         "same": "La stessa nave, tenuta così",
         "sameModel": "Stesso modello",
-        "noEnds": "Nessuno slot ha posto per un'altra nave. Scegli una nave qualsiasi per darle uno slot tutto suo.",
+        "noEnds": "Nessuna nave in cui questa possa diventare.",
         "removeEnd": "Togli dal piano",
         "anyShip": "Qualsiasi nave",
         "buyChosen": "La nave che scegli dopo",
@@ -442,7 +442,12 @@
         "filters": "Restringi le partenze",
         "saveFilters": "Salva i filtri per questo slot",
         "chooseShip": "Scegli la nave dello slot",
-        "earnInGame": "Guadagna in gioco"
+        "earnInGame": "Guadagna in gioco",
+        "newSlot": "Nuovo slot",
+        "endSources": {
+          "plan": "Slot del piano",
+          "catalogue": "Qualsiasi nave"
+        }
       },
       "slotsTitle": "Slot",
       "editSlots": "Modifica slot",

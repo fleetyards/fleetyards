@@ -426,7 +426,7 @@
         "removeStart": "Retirer de l'emplacement",
         "same": "Le même vaisseau, gardé tel quel",
         "sameModel": "Même modèle",
-        "noEnds": "Aucun emplacement n'a de place pour un autre vaisseau. Choisissez n'importe quel vaisseau pour lui donner son propre emplacement.",
+        "noEnds": "Aucun vaisseau que celui-ci puisse devenir.",
         "removeEnd": "Retirer du plan",
         "anyShip": "N'importe quel vaisseau",
         "buyChosen": "Le vaisseau que vous choisissez ensuite",
@@ -442,7 +442,12 @@
         "filters": "Affiner les départs",
         "saveFilters": "Enregistrer les filtres pour cet emplacement",
         "chooseShip": "Choisir le vaisseau de l'emplacement",
-        "earnInGame": "Gagner en jeu"
+        "earnInGame": "Gagner en jeu",
+        "newSlot": "Nouvel emplacement",
+        "endSources": {
+          "plan": "Emplacements du plan",
+          "catalogue": "N'importe quel vaisseau"
+        }
       },
       "slotsTitle": "Emplacements",
       "editSlots": "Modifier les emplacements",
