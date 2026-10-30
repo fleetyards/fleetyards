@@ -25,6 +25,13 @@ import { webglAvailable } from "@/shared/utils/Webgl";
 import { OrbitControls, TransformControls, Grid, Stars } from "@tresjs/cientos";
 import Model from "./Model/index.vue";
 import RoomLighting from "./RoomLighting/index.vue";
+import Skybox from "./Skybox/index.vue";
+import pyroNebula from "@/images/skyboxes/pyro_nebula_4k.webp";
+import pyroNebulaSmall from "@/images/skyboxes/pyro_nebula_2k.webp";
+import stantonNebula from "@/images/skyboxes/stanton_nebula_spherical_4k.webp";
+import stantonNebulaSmall from "@/images/skyboxes/stanton_nebula_spherical_2k.webp";
+import crusaderNebula from "@/images/skyboxes/stanton_crusader_nebula_4k.webp";
+import crusaderNebulaSmall from "@/images/skyboxes/stanton_crusader_nebula_2k.webp";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useLowPowerDevice } from "@/shared/composables/useLowPowerDevice";
 import { LOW_POWER_HOLO_SIZE_LIMIT } from "@/shared/components/HoloViewer/limits";
@@ -242,20 +249,45 @@ const toggleZoom = () => {
   zoom.value = !zoom.value;
 };
 
-const BACKGROUNDS = ["dark", "space", "light"] as const;
+const BACKGROUNDS = [
+  "dark",
+  "space",
+  "stanton",
+  "crusader",
+  "pyro",
+  "light",
+] as const;
 
 type Background = (typeof BACKGROUNDS)[number];
 
 const BACKGROUND_ICONS: Record<Background, string> = {
   dark: "fa-light fa-moon",
   space: "fa-light fa-stars",
+  stanton: "fa-light fa-galaxy",
+  crusader: "fa-light fa-planet-moon",
+  pyro: "fa-light fa-fire",
   light: "fa-light fa-sun",
+};
+
+// Panoramas from the game's own skies, the smaller cut on a low power device.
+const SKYBOXES: Partial<Record<Background, { src: string; small: string }>> = {
+  stanton: { src: stantonNebula, small: stantonNebulaSmall },
+  crusader: { src: crusaderNebula, small: crusaderNebulaSmall },
+  pyro: { src: pyroNebula, small: pyroNebulaSmall },
 };
 
 const background = ref<Background>("dark");
 
 const backgroundName = (name: Background) =>
   t(`labels.holoViewer.background.${name}`);
+
+const skybox = computed(() => {
+  if (!props.backgrounds) return undefined;
+
+  const sky = SKYBOXES[background.value];
+
+  return sky && (lowPower.value ? sky.small : sky.src);
+});
 
 // Hidden only: the model stays scaled and set down as it is on the grid.
 const gridVisible = ref(true);
@@ -664,6 +696,7 @@ defineExpose({
         :count="4000"
         :size="maxZoomDistance / 150"
       />
+      <Skybox v-if="skybox" :src="skybox" />
       <Grid
         v-if="grid && gridVisible"
         :args="[10, 10]"

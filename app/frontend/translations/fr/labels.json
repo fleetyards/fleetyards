@@ -480,6 +480,9 @@
         "background": {
           "dark": "Sombre",
           "space": "Espace",
+          "stanton": "Nébuleuse de Stanton",
+          "crusader": "Nébuleuse de Crusader",
+          "pyro": "Nébuleuse de Pyro",
           "light": "Clair"
         }
       },

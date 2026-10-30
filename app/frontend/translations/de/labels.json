@@ -480,6 +480,9 @@
         "background": {
           "dark": "Dunkel",
           "space": "Weltraum",
+          "stanton": "Stanton-Nebel",
+          "crusader": "Crusader-Nebel",
+          "pyro": "Pyro-Nebel",
           "light": "Hell"
         }
       },

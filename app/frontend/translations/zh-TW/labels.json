@@ -480,6 +480,9 @@
         "background": {
           "dark": "深色",
           "space": "太空",
+          "stanton": "Stanton 星雲",
+          "crusader": "Crusader 星雲",
+          "pyro": "Pyro 星雲",
           "light": "淺色"
         }
       },

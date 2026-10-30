@@ -38,7 +38,10 @@
   }
 
   // The canvas is transparent, so a backdrop is the element's own.
-  &--dark {
+  &--dark,
+  &--stanton,
+  &--crusader,
+  &--pyro {
     background-color: black;
   }
 
