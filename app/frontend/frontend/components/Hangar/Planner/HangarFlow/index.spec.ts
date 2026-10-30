@@ -364,9 +364,11 @@ describe("Hangar/Planner/HangarFlow", () => {
       .trigger("click");
     await gap.find('[data-test="hangar-plan-flow-route"]').trigger("click");
     await gap.find('[data-test="hangar-plan-flow-edit-slot"]').trigger("click");
-    await wrapper
-      .find('[data-test="hangar-plan-flow-open"]')
-      .find('[data-test="hangar-plan-flow-pick"]')
+    const open = wrapper.find('[data-test="hangar-plan-flow-open"]');
+    await open.find('[data-test="hangar-plan-flow-pick"]').trigger("click");
+    // Named, removed and given filters before it has a ship.
+    await open
+      .find('[data-test="hangar-plan-flow-edit-slot"]')
       .trigger("click");
 
     const [[start]] = wrapper.emitted("start") as [
@@ -386,7 +388,7 @@ describe("Hangar/Planner/HangarFlow", () => {
     expect((wrapper.emitted("route") as [[{ id: string }]])[0][0].id).toEqual(
       "carrack",
     );
-    expect(wrapper.emitted("edit")).toEqual([[short]]);
+    expect(wrapper.emitted("edit")).toEqual([[short], [empty]]);
     expect(wrapper.emitted("pick")).toEqual([[empty]]);
   });
 

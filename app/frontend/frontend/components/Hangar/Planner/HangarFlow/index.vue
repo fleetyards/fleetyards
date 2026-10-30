@@ -519,6 +519,7 @@ const neededRows = computed<Row[]>(() => {
       },
       rightNone: `${slot.label} · ${t("hangarPlanner.comparison.flow.noShip")}`,
       pickSlot: slot,
+      slot,
     }));
 
   return [...bought, ...gaps, ...undecided, ...open];
@@ -819,7 +820,20 @@ const imageOf = (model?: HangarPlanModel) =>
             {{ row.rightNone }}
           </button>
           <template v-else>
-            {{ row.rightNone }}
+            <button
+              v-if="row.slot"
+              type="button"
+              class="hangar-flow__slot-edit"
+              :aria-label="
+                t('hangarPlanner.editSlotOf', { slot: row.slot.label })
+              "
+              data-test="hangar-plan-flow-edit-slot"
+              @click="emit('edit', row.slot)"
+            >
+              {{ row.rightNone }}
+              <i class="fa-light fa-pen" aria-hidden="true" />
+            </button>
+            <template v-else>{{ row.rightNone }}</template>
             <Btn
               v-if="row.pickSlot"
               :size="BtnSizesEnum.XS"
@@ -1144,6 +1158,29 @@ const imageOf = (model?: HangarPlanModel) =>
 
   i {
     color: var(--color-primary);
+  }
+}
+
+.hangar-flow__slot-edit {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  padding: 4px 6px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+
+  &:hover {
+    background: var(--color-control-hover);
+    color: var(--color-lifted);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 1px;
   }
 }
 
