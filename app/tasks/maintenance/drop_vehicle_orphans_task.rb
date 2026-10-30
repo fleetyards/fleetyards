@@ -21,9 +21,9 @@ module Maintenance
   #
   # The vehicles are not bookkeeping: 4,769 of them are visible, spread over
   # 1,135 users, so this takes ships out of hangars people are looking at. Each
-  # is a loaner for a pledge its owner deleted, which is the case
-  # `RepairLoanerFlagsTask` deliberately left alone -- "destroying it is a
-  # decision for whoever finds out how it got orphaned". This is that decision.
+  # is a loaner for a pledge its owner deleted, which the loaner flag repair
+  # deliberately left alone as a decision for whoever found out how it got
+  # orphaned. This is that decision.
   #
   # A maintenance task rather than a data migration, for the reason
   # `DropChangelessVersionsTask` records: it destroys rows and cannot be undone,
