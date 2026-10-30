@@ -15,6 +15,8 @@ import {
 import PickList, {
   type PickListItem,
 } from "@/frontend/components/Hangar/Planner/PickList/index.vue";
+import Chip from "@/shared/components/base/Chip/index.vue";
+import { ChipStatesEnum } from "@/shared/components/base/Chip/types";
 import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
 import {
   canLeave,
@@ -33,6 +35,7 @@ import {
   type HangarPlanSlot,
   HangarPlanSlotStateEnum,
   useHangarPlan,
+  useHangarPlanResources,
 } from "@/services/fyApi";
 
 type Props = {
@@ -89,8 +92,46 @@ const upgradeNote = (model: HangarPlanModel) => {
   return note && model.id !== props.startModel?.id ? t(note) : undefined;
 };
 
+const { data: resources, isLoading } = useHangarPlanResources(
+  () => props.planId,
+);
+
+const MODEL = "model:";
+
+// Any ship of the store the start can be upgraded into, beyond those the plan
+// already holds a unit for; picking one gives it a slot of its own.
+const catalogue = computed(() => {
+  const start = props.startModel;
+  if (!start) return [];
+
+  const planned = new Set(
+    ends.value.map(({ candidate }) => candidate.model.id),
+  );
+
+  return (resources.value?.storeModels ?? []).filter(
+    (model) =>
+      model.id !== start.id && !planned.has(model.id) && reaches(start, model),
+  );
+});
+
+type Source = "plan" | "catalogue";
+
+const sources = ref<Source[]>([]);
+
+const toggleSource = (source: Source) => {
+  sources.value = sources.value.includes(source)
+    ? sources.value.filter((entry) => entry !== source)
+    : [...sources.value, source];
+};
+
+const sourceCount = (source: Source) =>
+  source === "plan" ? ends.value.length : catalogue.value.length;
+
+const shows = (source: Source) =>
+  !sources.value.length || sources.value.includes(source);
+
 const items = computed<PickListItem[]>(() => [
-  ...(props.vehicleId && props.startModel
+  ...(props.vehicleId && props.startModel && !sources.value.length
     ? [
         {
           id: SAME,
@@ -102,7 +143,7 @@ const items = computed<PickListItem[]>(() => [
         },
       ]
     : []),
-  ...ends.value.map(({ slot, candidate }) => ({
+  ...(shows("plan") ? ends.value : []).map(({ slot, candidate }) => ({
     id: candidate.id,
     title: candidate.model.name,
     meta: [slot.label, upgradeNote(candidate.model)]
@@ -114,6 +155,20 @@ const items = computed<PickListItem[]>(() => [
       candidate.model.id === props.startModel?.id
         ? t("hangarPlanner.pick.sameModel")
         : undefined,
+    pinned: true,
+  })),
+  ...(shows("catalogue") ? catalogue.value : []).map((model) => ({
+    id: `${MODEL}${model.id}`,
+    title: model.name,
+    meta: [
+      model.manufacturerName,
+      t("hangarPlanner.pick.newSlot"),
+      upgradeNote(model),
+    ]
+      .filter(Boolean)
+      .join(" · "),
+    price: money(model.pledgePrice),
+    sortPrice: model.pledgePrice,
   })),
 ]);
 
@@ -130,6 +185,15 @@ const pick = async (end: HangarPlanEnd) => {
 
 const choose = (item: PickListItem) => {
   if (item.id === SAME) return pick({ kind: "same" });
+
+  if (item.id.startsWith(MODEL)) {
+    const model = catalogue.value.find(
+      (entry) => `${MODEL}${entry.id}` === item.id,
+    );
+    return (
+      model && pick({ kind: "model", modelId: model.id, name: model.name })
+    );
+  }
 
   const end = ends.value.find((entry) => entry.candidate.id === item.id);
   if (end) return pick({ kind: "candidate", candidate: end.candidate });
@@ -174,11 +238,35 @@ const editSlot = () =>
     <PickList
       name="hangar-plan-end"
       :items="items"
+      :loading="isLoading"
       actions
       :empty="t('hangarPlanner.pick.noEnds')"
       data-test="hangar-plan-end-picker"
       @pick="choose"
-    />
+    >
+      <template v-if="ends.length && catalogue.length" #filters>
+        <div
+          class="end-picker__filters"
+          role="group"
+          :aria-label="t('hangarPlanner.pick.filters')"
+        >
+          <Chip
+            v-for="source in ['plan', 'catalogue'] as const"
+            :key="source"
+            :state="
+              sources.includes(source)
+                ? ChipStatesEnum.INCLUDED
+                : ChipStatesEnum.NEUTRAL
+            "
+            :count="sourceCount(source)"
+            :data-test="`hangar-plan-end-source-${source}`"
+            @toggle="toggleSource(source)"
+          >
+            {{ t(`hangarPlanner.pick.endSources.${source}`) }}
+          </Chip>
+        </div>
+      </template>
+    </PickList>
 
     <template v-if="removable" #footer-start>
       <Btn
@@ -214,3 +302,11 @@ const editSlot = () =>
     </template>
   </Modal>
 </template>
+
+<style lang="scss" scoped>
+.end-picker__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+</style>

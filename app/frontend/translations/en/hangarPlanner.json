@@ -426,7 +426,7 @@
         "removeStart": "Remove from the slot",
         "same": "Same ship, kept as it is",
         "sameModel": "Same model",
-        "noEnds": "No slot has room for another ship. Pick any ship to give it a slot of its own.",
+        "noEnds": "No ship this one can become.",
         "removeEnd": "Take out of the plan",
         "anyShip": "Any ship",
         "buyChosen": "The ship you pick next",
@@ -442,7 +442,12 @@
         "filters": "Narrow the starts",
         "saveFilters": "Save filters for this slot",
         "chooseShip": "Choose the slot's ship",
-        "earnInGame": "Earn in game"
+        "earnInGame": "Earn in game",
+        "newSlot": "New slot",
+        "endSources": {
+          "plan": "Slots in the plan",
+          "catalogue": "Any ship"
+        }
       },
       "slotsTitle": "Slots",
       "editSlots": "Edit slots",

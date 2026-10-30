@@ -426,7 +426,7 @@
         "removeStart": "從欄位中移除",
         "same": "同一艘艦船，保持原樣",
         "sameModel": "相同型號",
-        "noEnds": "沒有欄位還能容納艦船。選擇任意艦船，為它新增一個欄位。",
+        "noEnds": "沒有這艘艦船可以升級成的艦船。",
         "removeEnd": "從計畫中移除",
         "anyShip": "任意艦船",
         "buyChosen": "你接下來選擇的艦船",
@@ -442,7 +442,12 @@
         "filters": "篩選起點",
         "saveFilters": "為此欄位儲存篩選",
         "chooseShip": "選擇欄位的艦船",
-        "earnInGame": "在遊戲中取得"
+        "earnInGame": "在遊戲中取得",
+        "newSlot": "新欄位",
+        "endSources": {
+          "plan": "計畫中的欄位",
+          "catalogue": "任意艦船"
+        }
       },
       "slotsTitle": "槽位",
       "editSlots": "編輯槽位",

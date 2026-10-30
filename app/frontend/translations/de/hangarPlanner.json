@@ -426,7 +426,7 @@
         "removeStart": "Aus dem Platz nehmen",
         "same": "Dasselbe Schiff, so behalten",
         "sameModel": "Gleiches Modell",
-        "noEnds": "Kein Platz hat Raum für ein weiteres Schiff. Wähle ein beliebiges Schiff, um ihm einen eigenen Platz zu geben.",
+        "noEnds": "Kein Schiff, zu dem dieses werden kann.",
         "removeEnd": "Aus dem Plan nehmen",
         "anyShip": "Beliebiges Schiff",
         "buyChosen": "Das Schiff, das du als Nächstes wählst",
@@ -442,7 +442,12 @@
         "filters": "Starts eingrenzen",
         "saveFilters": "Filter für diesen Platz speichern",
         "chooseShip": "Schiff des Platzes wählen",
-        "earnInGame": "Im Spiel verdienen"
+        "earnInGame": "Im Spiel verdienen",
+        "newSlot": "Neuer Platz",
+        "endSources": {
+          "plan": "Plätze im Plan",
+          "catalogue": "Beliebiges Schiff"
+        }
       },
       "slotsTitle": "Slots",
       "editSlots": "Slots bearbeiten",
