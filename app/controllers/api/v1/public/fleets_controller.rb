@@ -10,7 +10,6 @@ module Api
         # are public, verified and have not opted out.
         skip_verify_authorized only: %i[index]
 
-        before_action :check_fleet_directory_feature, only: %i[index]
         before_action :set_fleet, only: %i[show]
 
         after_action -> { pagination_header(:fleets) }, only: %i[index]
@@ -69,12 +68,6 @@ module Api
             sorts: [], alignment_in: [], activity_in: [], language_in: [], commitment_in: [],
             default_timezone_in: []
           ]).fetch(:q, {})
-        end
-
-        private def check_fleet_directory_feature
-          return if feature_enabled?("fleet_directory")
-
-          render json: {code: "forbidden", message: "This feature is not available"}, status: :forbidden
         end
       end
     end

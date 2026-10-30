@@ -18,7 +18,6 @@ import FormActions from "@/shared/components/base/FormActions/index.vue";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import {
-  FeatureFlagName,
   type Fleet,
   type FleetMember,
   type FleetUpdateInput,
@@ -29,7 +28,6 @@ import { validationErrorFrom } from "@/shared/utils/ApiErrors";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useComlink } from "@/shared/composables/useComlink";
 import { narrowerAudienceDisabled } from "@/frontend/utils/audienceToggles";
-import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useFleetProfileLabels } from "@/frontend/composables/useFleetProfileLabels";
 import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 
@@ -118,18 +116,11 @@ const [alignment, alignmentProps] = defineField("alignment");
 const alliesDisabled = (isPublic: unknown) =>
   narrowerAudienceDisabled(isPublic, submitting.value);
 
-const { isFleetFeatureEnabled } = useFeatures();
-
 const { activityLabel, commitmentLabel, languageLabel, alignmentOptions } =
   useFleetProfileLabels();
 
-// Only a verified fleet can be listed, and the directory has to be rolled out
-// for the choice to mean anything.
-const directoryAvailable = computed(
-  () =>
-    props.fleet.rsiVerified &&
-    isFleetFeatureEnabled(props.fleet, FeatureFlagName.FLEET_DIRECTORY),
-);
+// Only a verified fleet can be listed.
+const directoryAvailable = computed(() => props.fleet.rsiVerified);
 
 const canManage = computed(
   () => props.membership.capabilities?.manageFleet ?? false,

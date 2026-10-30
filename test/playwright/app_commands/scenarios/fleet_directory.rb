@@ -3,9 +3,6 @@ require "factory_bot_rails"
 
 Rails.logger.info "E2E: Creating fleet_directory scenario test data..."
 
-Flipper.add(:fleet_directory) unless Flipper.exist?(:fleet_directory)
-Flipper.enable(:fleet_directory)
-
 directory_fleet = lambda do |name:, fid:, sid:, **profile|
   creator = FactoryBot.create(:user)
   fleet = FactoryBot.create(:fleet, name:, fid:, rsi_sid: sid, created_by: creator.id,

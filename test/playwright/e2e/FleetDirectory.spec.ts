@@ -7,7 +7,7 @@ test.describe("Fleet directory", () => {
     await appScenario("fleet_directory");
   });
 
-  test("/fleets/ opens the directory once it is rolled out", async ({
+  test("/fleets/ opens the directory", async ({
     page,
   }) => {
     await page.goto("/fleets/");

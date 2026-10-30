@@ -32,8 +32,6 @@ class Api::V1::PublicFleetsIndexTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable("fleet_directory")
-
     # Fewer members on Fleetyards than the miners, more on RSI.
     @pirates = listed_fleet("PIRATES", name: "Night Pirates", members: 2, rsi_member_count: 120,
       primary_activity: "piracy", secondary_activity: "smuggling", language: "en",
@@ -169,12 +167,6 @@ class Api::V1::PublicFleetsIndexTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, params: {perPage: 1} do
       assert_equal ["Night Pirates"], names
     end
-  end
-
-  test "GET /public/fleets is unavailable until the directory is rolled out" do
-    Flipper.disable("fleet_directory")
-
-    assert_api_response :get, 403
   end
 
   test "GET /public/fleets pages by perPage and offers its page sizes" do

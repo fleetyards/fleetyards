@@ -1,32 +1,11 @@
 import type { RouteRecordRaw } from "vue-router";
 import { routes as fleetRoutes } from "@/frontend/pages/fleets/[slug]/routes";
-import { FeatureFlagName } from "@/services/fyApi";
-import { featuresQueryOptions } from "@/frontend/composables/useFeatures";
-import { ensureQueryData } from "@/frontend/utils/RouteGuards/queryData";
-
-// The directory, once it is rolled out, is what /fleets/ is for; until then
-// it is where a fleet gets made. A redirect cannot wait for the flags, so the
-// index decides before it is entered.
-const fleetsIndexGuard = async () => {
-  try {
-    const features = await ensureQueryData(featuresQueryOptions());
-
-    if (features?.includes(FeatureFlagName.FLEET_DIRECTORY)) {
-      return { name: "fleet-directory" };
-    }
-  } catch {
-    // Fall through to the page /fleets/ led to before the directory.
-  }
-
-  return { name: "fleet-add" };
-};
 
 export const routes: RouteRecordRaw[] = [
   {
     path: "",
     name: "fleets",
-    component: () => import("@/frontend/pages/fleets/directory.vue"),
-    beforeEnter: fleetsIndexGuard,
+    redirect: { name: "fleet-directory" },
   },
   {
     path: "directory/",
@@ -35,7 +14,6 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       mobileBack: true,
       title: "fleets.directory",
-      feature: FeatureFlagName.FLEET_DIRECTORY,
     },
   },
   {
