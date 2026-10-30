@@ -18,9 +18,8 @@ import VehicleStates from "@/frontend/components/Vehicles/Table/States.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { fociText } from "@/shared/utils/Foci";
 import { useVehicleCargo } from "@/frontend/composables/useVehicleCargo";
-import { FeatureFlagName, type Vehicle } from "@/services/fyApi";
+import { type Vehicle } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useFeatures } from "@/frontend/composables/useFeatures";
 
 import {
   type BaseTableCol,
@@ -91,16 +90,13 @@ const selected = defineModel<string[]>("selected", { default: () => [] });
 const hangarStore = useHangarStore();
 const wishlistStore = useWishlistStore();
 
-const { isFeatureEnabled } = useFeatures();
-
 // Like the panel's title: the owner's own ship opens on its overview, a loaner
 // and anyone else's ship on the model.
 const toVehicle = useVehicleRoute();
 
 const hasOverview = (record: Vehicle) =>
   props.editable &&
-  !record.loaner &&
-  isFeatureEnabled(FeatureFlagName.VEHICLE_OVERVIEW);
+  !record.loaner;
 
 const nameRoute = (record: Vehicle) => {
   if (hasOverview(record)) {

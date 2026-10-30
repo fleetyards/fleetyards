@@ -11,7 +11,6 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
-  FeatureFlagName,
   VehicleLoadoutKindEnum,
   type Vehicle,
 } from "@/services/fyApi";
@@ -21,7 +20,6 @@ import {
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
@@ -54,8 +52,6 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { t } = useI18n();
-
-const { isFeatureEnabled } = useFeatures();
 
 const deleting = ref(false);
 
@@ -232,7 +228,7 @@ const openLoadout = () => {
 };
 
 const vehicleOverviewVisible = computed(
-  () => props.editable && isFeatureEnabled(FeatureFlagName.VEHICLE_OVERVIEW),
+  () => props.editable,
 );
 
 // The vehicle page carries these as tabs and header buttons already. A loaner

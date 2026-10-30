@@ -7,7 +7,6 @@ require "test_helper"
 class FrontendPlaquePreviewTest < ActionDispatch::IntegrationTest
   setup do
     ViteRuby.instance.stubs(:dev_server_running?).returns(true)
-    Flipper.enable("vehicle_overview")
 
     @user = create(:user, public_hangar: true)
     @vehicle = create(:vehicle, user: @user, public: true, name: "Contorta", name_visible: true, dedication: "Built rough")

@@ -93,9 +93,6 @@ holo_textured:
 item_holo_textured:
   description: "Textured item holo — switch a component or equipment page's holo to the painted export"
 
-vehicle_overview:
-  description: "Vehicle overview — an overview tab, a captain's log and an uploaded picture for each ship in the hangar"
-
 loadout_preview:
   description: "Loadout preview — show a ship's 3D holo with the picked components mounted on it"
 

@@ -46,9 +46,8 @@ import { storeToRefs } from "pinia";
 import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";
 import { useWebpCheck } from "@/shared/composables/useWebpCheck";
-import { FeatureFlagName, type ModelExtended } from "@/services/fyApi";
+import { type ModelExtended } from "@/services/fyApi";
 import { useSessionStore } from "@/frontend/stores/session";
-import { useFeatures } from "@/frontend/composables/useFeatures";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
@@ -117,14 +116,11 @@ const combinedCargoHolds = computed(() => [
 const route = useRoute();
 
 const sessionStore = useSessionStore();
-const { isFeatureEnabled } = useFeatures();
-
 // Who in the reader's circle flies this ship: there is no circle without an
 // account, and it links into the vehicle overview the flag rolls out.
 const ownersVisible = computed(
   () =>
-    sessionStore.isAuthenticated &&
-    isFeatureEnabled(FeatureFlagName.VEHICLE_OVERVIEW),
+    sessionStore.isAuthenticated,
 );
 
 watch(

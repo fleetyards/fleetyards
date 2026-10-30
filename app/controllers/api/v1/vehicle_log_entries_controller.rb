@@ -3,8 +3,6 @@
 module Api
   module V1
     class VehicleLogEntriesController < ::Api::BaseController
-      include VehicleOverviewFeatureConcern
-
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
         unless: -> { warden.authenticate?(scope: :user) },
@@ -12,7 +10,6 @@ module Api
       before_action -> { doorkeeper_authorize! "hangar", "hangar:write" },
         unless: -> { warden.authenticate?(scope: :user) },
         except: %i[index]
-      before_action :check_vehicle_overview_feature
 
       before_action :set_vehicle
       before_action :set_log_entry, only: %i[update destroy]

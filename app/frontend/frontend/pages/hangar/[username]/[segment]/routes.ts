@@ -1,5 +1,4 @@
 import type { RouteRecordRaw } from "vue-router";
-import { FeatureFlagName } from "@/services/fyApi";
 
 // The tabs are one page (`nav: "pageTabs"`), so the vehicle's header stays
 // mounted across them and shrinks or grows in place on a tab switch.
@@ -15,7 +14,6 @@ export const routes: RouteRecordRaw[] = [
       backgroundImage: "bg-5",
       customTitle: true,
       nav: "pageTabs",
-      feature: FeatureFlagName.VEHICLE_OVERVIEW,
     },
   },
   {
@@ -29,7 +27,6 @@ export const routes: RouteRecordRaw[] = [
       backgroundImage: "bg-5",
       customTitle: true,
       nav: "pageTabs",
-      feature: FeatureFlagName.VEHICLE_OVERVIEW,
     },
   },
   {

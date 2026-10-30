@@ -33,7 +33,6 @@ class Api::V1::PublicHangarsVehicleShowTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable("vehicle_overview")
     @user = create(:user, public_hangar: true)
     @vehicle = create(:vehicle, user: @user, public: true, dedication: "To boldly go")
   end
@@ -88,9 +87,4 @@ class Api::V1::PublicHangarsVehicleShowTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 404, path_params: {username: @user.username, id: @vehicle.id}
   end
 
-  test "GET /public/hangars/:username/vehicles/:id returns 403 while the owner lacks the feature" do
-    Flipper.disable("vehicle_overview")
-
-    assert_api_response :get, 403, path_params: {username: @user.username, id: @vehicle.id}
-  end
 end

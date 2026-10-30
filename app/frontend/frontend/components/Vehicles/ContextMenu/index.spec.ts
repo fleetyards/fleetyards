@@ -1,23 +1,13 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { createRouter, createWebHashHistory } from "vue-router";
 import Component from "./index.vue";
 import {
   type Vehicle,
   BoughtViaEnum,
-  FeatureFlagName,
   ModelProductionStatusEnum,
   VehicleLoadoutKindEnum,
 } from "@/services/fyApi";
-
-const enabledFlags = ref<FeatureFlagName[]>([]);
-
-vi.mock("@/frontend/composables/useFeatures", () => ({
-  useFeatures: () => ({
-    isFeatureEnabled: (flag: FeatureFlagName) =>
-      enabledFlags.value.includes(flag),
-  }),
-}));
 
 const vehicle = (overrides: Partial<Vehicle> = {}): Vehicle =>
   ({
@@ -108,10 +98,6 @@ const menuStructure = () =>
   );
 
 describe("VehicleContextMenu", () => {
-  beforeEach(() => {
-    enabledFlags.value = [FeatureFlagName.VEHICLE_OVERVIEW];
-  });
-
   afterEach(() => {
     mounted.forEach((wrapper) => wrapper.unmount());
     mounted = [];
@@ -264,14 +250,6 @@ describe("VehicleContextMenu", () => {
     await mount({ onVehiclePage: true, hideShipPage: true });
 
     expect(items()).not.toContain("vehicle-ship-page");
-  });
-
-  it("offers no log without the overview", async () => {
-    enabledFlags.value = [];
-    await mount();
-
-    expect(items()).not.toContain("vehicle-log");
-    expect(items()).toContain("vehicle-manage-loadouts");
   });
 
   it("moves a wishlist ship to the hangar and keeps its log and cargo out", async () => {

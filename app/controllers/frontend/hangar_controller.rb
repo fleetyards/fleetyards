@@ -60,8 +60,6 @@ module Frontend
     # name and its dedication. Only a ship the public hangar shows; until the
     # plaque has been drawn, the ship's own picture stands in.
     private def preview_plaque
-      return unless Flipper.enabled?(:vehicle_overview, @user)
-
       vehicle = @user.vehicles.public.purchased.includes(:model).at_address(params[:plaque]).first
       return if vehicle&.dedication.blank?
 

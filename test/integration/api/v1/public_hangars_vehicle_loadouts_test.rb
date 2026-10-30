@@ -63,7 +63,6 @@ class Api::V1::PublicHangarsVehicleLoadoutsTest < ActionDispatch::IntegrationTes
   end
 
   setup do
-    Flipper.enable("vehicle_overview")
     @user = create(:user, public_hangar: true)
     model = create(:model, production_status: "flight-ready")
     @vehicle = create(:vehicle, user: @user, model:, public: true)
@@ -108,12 +107,6 @@ class Api::V1::PublicHangarsVehicleLoadoutsTest < ActionDispatch::IntegrationTes
     token = @user.ensure_hangar_share_token!
 
     assert_api_response :get, 200, api_path: SLOTS, path_params: path, params: {share: token}
-  end
-
-  test "GET /public/hangars/:username/vehicles/:vehicle_id/loadouts/:id returns 403 while the owner has no vehicle overview" do
-    Flipper.disable("vehicle_overview")
-
-    assert_api_response :get, 403, api_path: SHOW, path_params: path
   end
 
   test "GET /public/hangars/:username/vehicles/:vehicle_id/loadouts/:id returns 404 for a hidden ship" do

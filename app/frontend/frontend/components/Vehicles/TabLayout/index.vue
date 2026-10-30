@@ -5,26 +5,12 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { useFeatures } from "@/frontend/composables/useFeatures";
-import { FeatureFlagName } from "@/services/fyApi";
-
 // The vehicle tabs' shared frame: the tab's content, and beside it a column for
 // what acts on it -- the button that adds to it, the figures that sum it up.
-//
-// Only with the full-width header: without it the tab navigation already takes
-// a column of its own, and a second one would leave the table a sliver.
-const { isFeatureEnabled } = useFeatures();
-
-const split = computed(() =>
-  isFeatureEnabled(FeatureFlagName.VEHICLE_OVERVIEW),
-);
 </script>
 
 <template>
-  <div
-    class="vehicle-tab-layout"
-    :class="{ 'vehicle-tab-layout--split': split }"
-  >
+  <div class="vehicle-tab-layout vehicle-tab-layout--split">
     <div class="vehicle-tab-layout__main">
       <slot />
     </div>

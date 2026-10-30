@@ -41,7 +41,6 @@ class Api::V1::VehicleLogEntriesDestroyTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable("vehicle_overview")
     @user = create(:user)
     @vehicle = create(:vehicle, user: @user)
     @log_entry = create(:vehicle_log_entry, vehicle: @vehicle)
@@ -61,13 +60,6 @@ class Api::V1::VehicleLogEntriesDestroyTest < ActionDispatch::IntegrationTest
     assert_no_difference "VehicleLogEntry.count" do
       assert_api_response :delete, 404, path_params: {vehicle_id: @vehicle.id, id: @log_entry.id}
     end
-  end
-
-  test "DELETE /vehicles/:vehicle_id/log-entries/:id returns 403 while the feature is off" do
-    Flipper.disable("vehicle_overview")
-    sign_in @user
-
-    assert_api_response :delete, 403, path_params: {vehicle_id: @vehicle.id, id: @log_entry.id}
   end
 
   test "DELETE /vehicles/:vehicle_id/log-entries/:id returns 401 when not signed in" do

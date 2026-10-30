@@ -11,7 +11,6 @@ import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import TabNavView from "@/shared/components/TabNavView/index.vue";
 import VehicleHero from "@/frontend/components/Vehicles/Hero/index.vue";
 import {
-  FeatureFlagName,
   useShowVehicle,
   useVehicleInventory,
   useVehicleLogEntries,
@@ -31,12 +30,6 @@ const { t } = useI18n();
 const { isFeatureEnabled } = useFeatures();
 
 const route = useRoute();
-
-// The ship's header: the full one on the overview, the compact one on every
-// other tab, so the ship stays named while its loadouts or cargo are open.
-const heroVisible = computed(() =>
-  isFeatureEnabled(FeatureFlagName.VEHICLE_OVERVIEW),
-);
 
 // The full header belongs to the overview; the other tabs open on the compact
 // one, so their own content starts higher.
@@ -148,20 +141,6 @@ const crumbs = computed<Crumb[]>(() => [
   ...(wanted.value
     ? [{ to: { name: "hangar-wishlist" }, label: t("labels.wishlist") }]
     : []),
-  ...(heroVisible.value
-    ? []
-    : [
-        {
-          to: {
-            name: "hangar-vehicle",
-            params: {
-              username: route.params.username,
-              segment: route.params.segment,
-            },
-          },
-          label: vehicleName.value,
-        },
-      ]),
 ]);
 </script>
 
@@ -171,14 +150,13 @@ const crumbs = computed<Crumb[]>(() => [
     <template v-if="vehicle && !vehicle.loaner" #resolved>
       <BreadCrumbs :crumbs="crumbs" />
       <VehicleHero
-        v-if="heroVisible"
         :vehicle="vehicle"
         :compact="!onOverview"
       />
       <TabNavView
         :routes="tabs"
         :authenticated="sessionStore.isAuthenticated"
-        :horizontal="heroVisible"
+        horizontal
       >
         <template #content>
           <router-view :vehicle="vehicle" />
