@@ -24,7 +24,6 @@ import {
   type VehicleLoadout,
   type VehicleLoadoutInput,
   useVehicleLoadouts,
-  useCreateVehicleLoadout,
   useUpdateVehicleLoadout,
   useDestroyVehicleLoadout,
   useActivateVehicleLoadout,
@@ -58,10 +57,7 @@ const loadoutItems = computed(() => (loadouts.value as VehicleLoadout[]) || []);
 
 const editableList = ref<{
   editingId: string | null;
-  creating: boolean;
-  startCreate: () => void;
   finishEdit: () => void;
-  finishCreate: () => void;
 } | null>(null);
 
 const { invalidateVehiclePage } = useVehicleMutations();
@@ -73,26 +69,6 @@ const invalidateLoadouts = () => {
     queryKey: getVehicleLoadoutsQueryKey(props.vehicle.id),
   });
   void invalidateVehiclePage(props.vehicle);
-};
-
-// Create
-const createForm = ref<VehicleLoadoutInput>({});
-
-const onStartCreate = () => {
-  createForm.value = {};
-};
-
-const createMutation = useCreateVehicleLoadout({
-  mutation: { onSettled: invalidateLoadouts },
-});
-
-const onSaveCreate = async () => {
-  await createMutation.mutateAsync({
-    vehicleId: props.vehicle.id,
-    data: createForm.value,
-  });
-
-  editableList.value?.finishCreate();
 };
 
 // Edit
@@ -260,8 +236,6 @@ const onToggleVisibility = async (record: VehicleLoadout) => {
       :hide-edit="fittingEditable"
       @start-edit="onStartEdit"
       @save-edit="onSaveEdit"
-      @start-create="onStartCreate"
-      @save-create="onSaveCreate"
       @destroy="onDestroy"
     >
       <template #display="{ item }">
@@ -411,16 +385,6 @@ const onToggleVisibility = async (record: VehicleLoadout) => {
             t("actions.vehicleLoadout.editLoadout")
           }}</span>
         </Btn>
-      </template>
-
-      <template #create>
-        <FormInput
-          v-model="createForm.url"
-          name="create-loadout-url"
-          :placeholder="t('labels.loadout.urlPlaceholder')"
-          :no-label="true"
-          inline
-        />
       </template>
 
       <template #edit>
