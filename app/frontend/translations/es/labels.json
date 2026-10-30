@@ -349,8 +349,7 @@
       "addToHangar": "Agregar al hangar",
       "home": {
         "catalogueSearch": "Buscar naves, objetos, misiones y lugares",
-        "submitCatalogueSearch": "Buscar",
-        "search": "Buscar naves..."
+        "submitCatalogueSearch": "Buscar"
       },
       "shop": {
         "sellPrice": "vende por",

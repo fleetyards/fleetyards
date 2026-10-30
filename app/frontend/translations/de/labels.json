@@ -349,8 +349,7 @@
       "addToHangar": "Zum Hangar hinzufügen",
       "home": {
         "catalogueSearch": "Schiffe, Gegenstände, Missionen und Orte suchen",
-        "submitCatalogueSearch": "Suchen",
-        "search": "Schiffe suchen..."
+        "submitCatalogueSearch": "Suchen"
       },
       "shop": {
         "sellPrice": "verkauft für",

@@ -349,8 +349,7 @@
       "addToHangar": "Add to Hangar",
       "home": {
         "catalogueSearch": "Search ships, items, missions and places",
-        "submitCatalogueSearch": "Search",
-        "search": "Search for Ships..."
+        "submitCatalogueSearch": "Search"
       },
       "shop": {
         "sellPrice": "sells for",
