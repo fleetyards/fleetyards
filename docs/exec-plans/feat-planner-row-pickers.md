@@ -32,12 +32,25 @@ Issue: not filed yet (the decisions are recorded in the draft issue body handed 
 
 ## Discovery log
 
-- RSI sells no CCU for a ship pledged at $1000 or more (decided mid-branch):
-  `Model#upgradable?`, validated on every upgrade step, exposed as
-  `upgradable` on the plan's models. "Limited" ships are left out: no data
-  marks them yet.
-- Starts are offered only below the target's price (an undecided slot: below
-  its cheapest ship), or as the same model.
+- CCU availability comes from evidence, not price (the $1000 rule let the
+  Pioneer through and blocked Kraken to Kraken Privateer): `Rsi::CcuCatalogue`
+  records each ship any synced hangar CCU or buy-back upgrade led out of or
+  into (3386 titles, 228 targets in the production dump), the pledge store
+  loader records what is on sale today, and an admin override wins. A ship
+  with no evidence is "unknown" for 90 days after it is listed, then "none".
+  Only store-bought steps are checked; held and bought-back upgrades count
+  regardless. The catalogue runs daily at 20:30; the first production run
+  happens on its own after deploy.
+- RSI's upgrade tool lists its ships without a login, but which targets a
+  ship reaches needs an account, so it is not used.
+- Starts are offered only below the target's price, or as the same model. For
+  an undecided slot, anything that reaches one of its ships, marked with the
+  ships it rules out.
+- Buy-backs sit in the start list beside hangar ships and the store, with
+  source and status chips on top; only in-game starts and step-by-step routes
+  still go through the route editor.
+- Adding a slot asks only for its name; filters are saved from the slot's
+  ship picker.
 - An undecided slot takes a start too: the picker asks which of its ships the
   start becomes and settles the slot on it, as "Choose" in the slot modal does.
 - A non-upgradable ship marked "should change" keeps that mark but offers only
