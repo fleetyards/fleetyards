@@ -317,12 +317,14 @@ const startKindDisabled = (kind: HangarPlanStartKindEnum) =>
 
 // A route upgrades towards its ship, so a start or an upgrade that already
 // costs as much leads nowhere. A ship without a known price is kept: there is
-// nothing to rule it out by.
+// nothing to rule it out by. No upgrade leads into or out of a ship RSI sells
+// none for, so such a ship is only ever the target bought outright.
 const targetPrice = computed(() => target.value.pledgePrice ?? null);
 
 const belowTarget = (model?: HangarPlanModel) => {
   if (!model) return true;
   if (model.id === target.value.id) return true;
+  if (!model.upgradable || !target.value.upgradable) return false;
   if (targetPrice.value === null || typeof model.pledgePrice !== "number") {
     return true;
   }
@@ -793,6 +795,8 @@ const storeStepItems = (index: number) => {
     .filter(
       (model) =>
         model.id !== fromId &&
+        model.upgradable &&
+        models.value.get(fromId ?? "")?.upgradable !== false &&
         belowTarget(model) &&
         (typeof from !== "number" || (model.pledgePrice ?? 0) > from),
     )
@@ -826,6 +830,8 @@ const storeBackItems = (index: number) => {
     .filter(
       (model) =>
         model.id !== toId &&
+        model.upgradable &&
+        models.value.get(toId ?? "")?.upgradable !== false &&
         (typeof to !== "number" || (model.pledgePrice ?? 0) < to),
     )
     .map((model) =>

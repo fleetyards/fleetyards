@@ -21,6 +21,7 @@ const candidate = (
     name,
     slug: name.toLowerCase(),
     onSale: true,
+    upgradable: true,
     pledgePrice,
   },
   modelModuleIds: [],

@@ -106,6 +106,14 @@ class Model < ApplicationRecord
   end
   alias_method :in_game, :in_game?
 
+  # RSI sells no upgrade into or out of a ship pledged at this or more, so one
+  # is only ever bought outright, bought back or melted.
+  CCU_PRICE_LIMIT = 1000
+
+  def upgradable?
+    pledge_price.nil? || pledge_price < CCU_PRICE_LIMIT
+  end
+
   # The filter keeps its name -- a ransacker wins over a same-named column -- so
   # `inGameEq` needs no API change. An `EXISTS` rather than the correlated
   # subquery the fact filters use, because this asks whether a row is there

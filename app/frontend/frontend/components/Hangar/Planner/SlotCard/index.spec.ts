@@ -41,6 +41,7 @@ const model = (name: string, pledgePrice = 100): HangarPlanModel => ({
   name,
   slug: name.toLowerCase(),
   onSale: true,
+  upgradable: true,
   pledgePrice,
 });
 
@@ -124,6 +125,7 @@ describe("Hangar/Planner/SlotCard", () => {
                   startKind: HangarPlanStartKindEnum.STORE,
                   startModel: model("Carrack", 600),
                   price: 600,
+                  routeComplete: true,
                   sourceMissing: false,
                   usesBuybackToken: false,
                   steps: [],

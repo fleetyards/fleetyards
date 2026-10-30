@@ -17,6 +17,7 @@ class HangarPlanUpgradeStep < ApplicationRecord
   validates :source_kind, inclusion: {in: SOURCE_KINDS}
   validates :price_override, numericality: {greater_than_or_equal_to: 0}, allow_nil: true
   validate :distinct_models
+  validate :models_upgradable
 
   # Only a bought-back upgrade can spend a buy-back token.
   before_validation -> { self.uses_buyback_token = false unless source_kind == "buyback" }
@@ -61,6 +62,11 @@ class HangarPlanUpgradeStep < ApplicationRecord
 
   private def distinct_models
     errors.add(:to_model_id, :same_as_from) if from_model_id.present? && from_model_id == to_model_id
+  end
+
+  private def models_upgradable
+    errors.add(:from_model_id, :not_upgradable) if origin_model.present? && !origin_model.upgradable?
+    errors.add(:to_model_id, :not_upgradable) if target_model.present? && !target_model.upgradable?
   end
 
   private def upgrade_source
