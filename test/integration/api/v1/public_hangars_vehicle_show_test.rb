@@ -86,5 +86,4 @@ class Api::V1::PublicHangarsVehicleShowTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 404, path_params: {username: @user.username, id: @vehicle.id}
   end
-
 end

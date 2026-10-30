@@ -43,5 +43,4 @@ class Api::V1::MyRaffleEntriesTest < ActionDispatch::IntegrationTest
   test "GET /my-raffle-entries returns 401 when not signed in" do
     assert_api_response :get, 401
   end
-
 end

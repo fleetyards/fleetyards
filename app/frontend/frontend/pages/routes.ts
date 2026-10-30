@@ -1,5 +1,4 @@
 import type { RouteRecordRaw } from "vue-router";
-import { FeatureFlagName } from "@/services/fyApi";
 import { routes as fleetsRoutes } from "@/frontend/pages/fleets/routes";
 import { routes as hangarRoutes } from "@/frontend/pages/hangar/routes";
 import { routes as locationsRoutes } from "@/frontend/pages/locations/routes";

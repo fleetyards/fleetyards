@@ -120,18 +120,6 @@ watch(
   { immediate: true },
 );
 
-const vehicleName = computed(() => {
-  if (!vehicle.value) return "";
-
-  const nameParts = [vehicle.value.name || vehicle.value.model?.name];
-
-  if (vehicle.value.serial) {
-    nameParts.push(`(${vehicle.value.serial})`);
-  }
-
-  return nameParts.join(" ");
-});
-
 // The hero names the ship, so the trail only leads back to its list.
 const crumbs = computed<Crumb[]>(() => [
   {

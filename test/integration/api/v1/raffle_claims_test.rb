@@ -59,5 +59,4 @@ class Api::V1::RaffleClaimsTest < ActionDispatch::IntegrationTest
   test "POST /raffle-claims refuses an unknown token" do
     assert_api_response :post, 400, body: {token: "nope"}
   end
-
 end

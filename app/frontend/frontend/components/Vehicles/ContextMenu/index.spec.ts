@@ -1,5 +1,5 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it } from "vitest";
 import { createRouter, createWebHashHistory } from "vue-router";
 import Component from "./index.vue";
 import {

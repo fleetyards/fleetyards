@@ -26,7 +26,9 @@ test.describe("Home", () => {
   });
 
   test("Shows Latest Ships", async ({ page }) => {
-    const ships = page.getByTestId("home-landing-latest-ships").locator(".panel");
+    const ships = page
+      .getByTestId("home-landing-latest-ships")
+      .locator(".panel");
     await expect(ships.first()).toBeVisible();
   });
 });

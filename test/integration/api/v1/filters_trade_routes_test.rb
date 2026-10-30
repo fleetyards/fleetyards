@@ -89,5 +89,4 @@ class Api::V1::FiltersTradeRoutesTest < ActionDispatch::IntegrationTest
       assert_equal ["gold"], parsed_body.pluck("value")
     end
   end
-
 end
