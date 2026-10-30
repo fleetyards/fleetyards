@@ -38,6 +38,7 @@ const holoUnavailable = () => {
 <template>
   <HoloViewerModal
     :models="holoModel ? [holoModel] : []"
+    :grid="false"
     @unavailable="holoUnavailable"
   >
     <template #controls>

@@ -15,9 +15,14 @@ import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
   models: HoloModel[];
+  // Sized for ships: under a component or a piece of equipment its cells
+  // dwarf the item.
+  grid?: boolean;
 };
 
-defineProps<Props>();
+withDefaults(defineProps<Props>(), {
+  grid: true,
+});
 
 const emit = defineEmits<{ unavailable: [] }>();
 
@@ -53,7 +58,7 @@ const close = () => {
       :autoRotate="false"
       zoomable
       panable
-      grid
+      :grid="grid"
       backgrounds
       @unavailable="emit('unavailable')"
     />
