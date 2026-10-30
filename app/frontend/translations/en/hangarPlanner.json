@@ -480,7 +480,8 @@
         "chooseEnd": "Which of the slot's ships should this start become?",
         "noReachableShip": "No ship of this slot can be reached from this start.",
         "back": "Back",
-        "onlyMelt": "No upgrades exist for it, so it can only be melted"
+        "onlyMelt": "No upgrades exist for it, so it can only be melted",
+        "excludes": "Rules out %{ships}"
       },
       "slotsTitle": "Slots",
       "editSlots": "Edit slots"

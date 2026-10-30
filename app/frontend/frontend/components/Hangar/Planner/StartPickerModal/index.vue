@@ -76,23 +76,25 @@ const { pairing, pairStart, pairEnd, decide } = useHangarPlanPairing(
 
 const target = computed(() => props.candidate?.model);
 
-// A slot still choosing its ship is reached from below its cheapest one, or
-// from one of its ships already held.
-const reachesSlot = (from: HangarPlanModel) => {
-  const ships = props.slot.candidates.map((candidate) => candidate.model);
-  if (ships.some((ship) => ship.id === from.id)) return true;
+// A slot still choosing its ship is reached by a start that can become at
+// least one of its ships; the ones it cannot become are named on it.
+const unreachedShips = (from: HangarPlanModel) =>
+  props.slot.candidates
+    .map((candidate) => candidate.model)
+    .filter((ship) => !reaches(from, ship));
 
-  const prices = ships
-    .filter((ship) => ship.upgradable)
-    .map((ship) => ship.pledgePrice)
-    .filter((price): price is number => typeof price === "number");
-  if (!prices.length) return false;
+const reachesSlot = (from: HangarPlanModel) =>
+  unreachedShips(from).length < props.slot.candidates.length;
 
-  return (
-    from.upgradable &&
-    (typeof from.pledgePrice !== "number" ||
-      from.pledgePrice < Math.min(...prices))
-  );
+const excludes = (from: HangarPlanModel) => {
+  if (target.value) return undefined;
+
+  const ships = unreachedShips(from);
+  if (!ships.length) return undefined;
+
+  return t("hangarPlanner.pick.excludes", {
+    ships: ships.map((ship) => ship.name).join(", "),
+  });
 };
 
 const statusOf = (vehicleId: string) =>
@@ -167,7 +169,7 @@ const startItems = computed<PickListItem[]>(() => [
           ? t("hangarPlanner.pick.current")
           : vehicle.model.id === target.value?.id
             ? t("hangarPlanner.route.isTarget")
-            : undefined,
+            : excludes(vehicle.model),
       pinned: !!target.value && vehicle.model.id === target.value.id,
     };
   }),

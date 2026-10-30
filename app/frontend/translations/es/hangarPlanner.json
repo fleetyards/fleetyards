@@ -480,7 +480,8 @@
         "chooseEnd": "¿En cuál de las naves del hueco se convierte este inicio?",
         "noReachableShip": "Ninguna nave de este hueco se puede alcanzar desde este inicio.",
         "back": "Atrás",
-        "onlyMelt": "No existen mejoras para ella, solo se puede fundir"
+        "onlyMelt": "No existen mejoras para ella, solo se puede fundir",
+        "excludes": "Descarta %{ships}"
       },
       "slotsTitle": "Slots",
       "editSlots": "Editar slots"

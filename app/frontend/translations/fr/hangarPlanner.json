@@ -480,7 +480,8 @@
         "chooseEnd": "Quel vaisseau de l'emplacement ce départ doit-il devenir ?",
         "noReachableShip": "Aucun vaisseau de cet emplacement n'est accessible depuis ce départ.",
         "back": "Retour",
-        "onlyMelt": "Aucun upgrade n'existe pour lui, il ne peut qu'être fondu"
+        "onlyMelt": "Aucun upgrade n'existe pour lui, il ne peut qu'être fondu",
+        "excludes": "Exclut %{ships}"
       },
       "slotsTitle": "Emplacements",
       "editSlots": "Modifier les emplacements"
