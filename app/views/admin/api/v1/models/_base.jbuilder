@@ -43,6 +43,10 @@ json.foci_labels model.foci_labels
 json.stealth model.stealth
 json.rsi_focus model.rsi_focus
 json.sc_role model.sc_role
+json.ccu_override model.ccu_override
+json.ccu_on_sale model.ccu_on_sale
+json.ccu_source_seen_at model.ccu_source_seen_at&.utc&.iso8601
+json.ccu_target_seen_at model.ccu_target_seen_at&.utc&.iso8601
 json.has_images model.images_count.positive?
 json.has_modules model.module_hardpoints_count.positive?
 json.has_paints model.model_paints_count.positive?
