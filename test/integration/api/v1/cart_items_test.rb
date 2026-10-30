@@ -77,7 +77,6 @@ class Api::V1::CartItemsTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable(:shopping_cart)
     @user = create(:user)
     @commodity = create(:commodity, name: "Agricium")
     @cart_item = create(:cart_item, user: @user, item: @commodity, quantity: 4)
@@ -148,13 +147,6 @@ class Api::V1::CartItemsTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 400, api_path: "/cart/items",
       body: {itemType: "Commodity", itemId: @commodity.id, quantity: -3}
     assert_equal 4, @cart_item.reload.quantity
-  end
-
-  test "POST is forbidden while the feature is off" do
-    Flipper.disable(:shopping_cart)
-
-    assert_api_response :post, 403, api_path: "/cart/items",
-      body: {itemType: "Commodity", itemId: @commodity.id}
   end
 
   test "POST bulk adds every item, one line per item" do

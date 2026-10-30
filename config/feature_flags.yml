@@ -121,8 +121,5 @@ loadout_preview:
 hangar_planner:
   description: "Hangar planner — plan the hangar you want in slots, compare it with your current hangar and work out melts, upgrades and buy-backs to get there"
 
-shopping_cart:
-  description: "Shopping cart — collect commodities, components and equipment and plan where to buy them in game"
-
 raffles:
   description: "Raffles — users enter to win gift codes, an admin draws the winner"

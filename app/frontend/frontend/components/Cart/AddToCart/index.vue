@@ -14,10 +14,8 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useSessionStore } from "@/frontend/stores/session";
-import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useCartCache } from "@/frontend/composables/useCartCache";
 import {
-  FeatureFlagName,
   type InventoryItemTypeEnum,
   useAddCartItem,
   useCartLists,
@@ -38,17 +36,13 @@ const sessionStore = useSessionStore();
 
 const comlink = useComlink();
 
-const { isFeatureEnabled } = useFeatures();
-
 const { updateCart } = useCartCache();
 
 const { displaySuccess, displayAlert, displayWarning } = useAppNotifications();
 
-const enabled = computed(() => isFeatureEnabled(FeatureFlagName.SHOPPING_CART));
-
 // One request however many buttons a page has: they share the query.
 const { data: lists } = useCartLists({
-  query: { enabled: () => enabled.value && sessionStore.isAuthenticated },
+  query: { enabled: () => sessionStore.isAuthenticated },
 });
 
 const btnSize = computed(() =>
@@ -104,7 +98,6 @@ const add = () => {
      changes is in view. -->
 <template>
   <Btn
-    v-if="enabled"
     v-tooltip.bottom="t('cart.addToCart')"
     :variant="BtnVariantsEnum.BARE"
     :size="btnSize"

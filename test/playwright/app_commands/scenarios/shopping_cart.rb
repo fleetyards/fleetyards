@@ -3,9 +3,6 @@ require "factory_bot_rails"
 
 Rails.logger.info "E2E: Creating shopping_cart scenario test data..."
 
-Flipper.add(:shopping_cart) unless Flipper.exist?(:shopping_cart)
-Flipper.enable(:shopping_cart)
-
 FactoryBot.create(:user, username: "shopper", password: "password")
 
 system = FactoryBot.create(:location, name: "Stanton System", kind: "system")

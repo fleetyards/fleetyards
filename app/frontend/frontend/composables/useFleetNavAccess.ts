@@ -46,8 +46,7 @@ export const useFleetNavAccess = (
 
   const sessionStore = useSessionStore();
 
-  const { isFeatureEnabled, isFleetFeatureEnabled, isFleetSquadronsEnabled } =
-    useFeatures();
+  const { isFleetFeatureEnabled, isFleetSquadronsEnabled } = useFeatures();
 
   const fleetSlug = computed(() => route.params.slug as string);
 
@@ -112,13 +111,8 @@ export const useFleetNavAccess = (
     () => !!membership.value && hasBlueprintsAccess.value,
   );
 
-  // The shopping cart is a personal flag: a member without it has no cart to
-  // copy a list into.
   const showShoppingListsNav = computed(
-    () =>
-      !!membership.value &&
-      hasShoppingListsAccess.value &&
-      isFeatureEnabled(FeatureFlagName.SHOPPING_CART),
+    () => !!membership.value && hasShoppingListsAccess.value,
   );
 
   // The one tab somebody outside the fleet can reach, and the reason it stays

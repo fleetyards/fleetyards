@@ -100,7 +100,6 @@ class Api::V1::CartListsTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable(:shopping_cart)
     @user = create(:user)
     @active = create(:cart, user: @user, name: "Mining run", created_at: 2.days.ago)
     @other = create(:cart, user: @user, name: "Bounty loadout", active: false)
@@ -116,12 +115,6 @@ class Api::V1::CartListsTest < ActionDispatch::IntegrationTest
       assert_equal [["Mining run", true, 4], ["Bounty loadout", false, 0]],
         parsed_body.map { |cart| cart.values_at("name", "active", "itemsCount") }
     end
-  end
-
-  test "GET is forbidden while the feature is off" do
-    Flipper.disable(:shopping_cart)
-
-    assert_api_response :get, 403, api_path: "/carts"
   end
 
   test "GET shows where to buy what is on a list that is not active" do

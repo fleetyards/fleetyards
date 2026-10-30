@@ -218,7 +218,6 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "cart",
       needsAuthentication: true,
-      feature: FeatureFlagName.SHOPPING_CART,
       mobileBack: true,
       backgroundImage: "bg-5",
     },

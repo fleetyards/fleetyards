@@ -3,11 +3,8 @@
 module Api
   module V1
     class CartItemsController < ::Api::BaseController
-      include ShoppingCartFeatureConcern
-
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "hangar", "hangar:write" }, unless: :user_signed_in?
-      before_action :check_shopping_cart_feature
       before_action :set_cart_item, only: %i[update destroy]
 
       # Adding an item already in the cart adds to its quantity.

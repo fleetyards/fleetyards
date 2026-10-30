@@ -14,11 +14,9 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useSessionStore } from "@/frontend/stores/session";
-import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useCartCache } from "@/frontend/composables/useCartCache";
 import {
   type CartItemCreateInput,
-  FeatureFlagName,
   useAddCartItems,
   useCartLists,
 } from "@/services/fyApi";
@@ -42,21 +40,15 @@ const sessionStore = useSessionStore();
 
 const comlink = useComlink();
 
-const { isFeatureEnabled } = useFeatures();
-
 const { updateCart } = useCartCache();
 
 const { displaySuccess, displayAlert, displayWarning } = useAppNotifications();
 
-const featureEnabled = computed(() =>
-  isFeatureEnabled(FeatureFlagName.SHOPPING_CART),
-);
-
-const enabled = computed(() => featureEnabled.value && props.items.length > 0);
+const enabled = computed(() => props.items.length > 0);
 
 const { data: lists } = useCartLists({
   query: {
-    enabled: () => featureEnabled.value && sessionStore.isAuthenticated,
+    enabled: () => sessionStore.isAuthenticated,
   },
 });
 

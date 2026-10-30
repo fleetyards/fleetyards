@@ -3,8 +3,6 @@
 module Api
   module V1
     class FleetShoppingListsController < ::Api::BaseController
-      include ShoppingCartFeatureConcern
-
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "fleet", "fleet:read" },
         unless: :user_signed_in?,
@@ -21,7 +19,6 @@ module Api
         unless: :user_signed_in?,
         only: %i[copy]
 
-      before_action :check_shopping_cart_feature
       before_action :set_fleet
       before_action :set_fleet_shopping_list, only: %i[show update destroy copy]
 

@@ -355,16 +355,7 @@ describe("useFleetNavAccess", () => {
     ]);
   });
 
-  it("hides shopping lists from a member without the shopping cart", () => {
-    membership.value = memberAbleTo("readShoppingLists");
-
-    expect(useFleetNavAccess(fleetWith()).showShoppingListsNav.value).toBe(
-      false,
-    );
-  });
-
   it("hides shopping lists from a member whose role cannot read them", () => {
-    viewerFeatures.value = [FeatureFlagName.SHOPPING_CART];
     membership.value = memberAbleTo("readBlueprints");
 
     expect(useFleetNavAccess(fleetWith()).showShoppingListsNav.value).toBe(
@@ -372,8 +363,7 @@ describe("useFleetNavAccess", () => {
     );
   });
 
-  it("shows shopping lists in the assets group to a member with the cart", () => {
-    viewerFeatures.value = [FeatureFlagName.SHOPPING_CART];
+  it("shows shopping lists in the assets group to a member who can read them", () => {
     membership.value = memberAbleTo("readShoppingLists");
     route.value = {
       name: "fleet-shopping-lists",

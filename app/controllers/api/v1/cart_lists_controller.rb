@@ -3,12 +3,9 @@
 module Api
   module V1
     class CartListsController < ::Api::BaseController
-      include ShoppingCartFeatureConcern
-
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "hangar", "hangar:read" }, unless: :user_signed_in?, only: %i[index show]
       before_action -> { doorkeeper_authorize! "hangar", "hangar:write" }, unless: :user_signed_in?, except: %i[index show]
-      before_action :check_shopping_cart_feature
       before_action :set_cart, only: %i[show update destroy clear]
 
       def index
