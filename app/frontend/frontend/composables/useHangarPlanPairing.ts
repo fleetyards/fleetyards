@@ -21,7 +21,9 @@ import {
 } from "@/services/fyApi";
 
 export type HangarPlanStart =
-  { kind: "owned"; vehicleId: string } | { kind: "store" };
+  | { kind: "owned"; vehicleId: string }
+  | { kind: "buyback"; pledgeId: string; modelId: string }
+  | { kind: "store" };
 
 export type HangarPlanEnd =
   | { kind: "same" }
@@ -69,20 +71,34 @@ export const useHangarPlanPairing = (
 
   const hangarPlanId = () => toValue(planId);
 
-  const startData = (start: HangarPlanStart, candidate: HangarPlanCandidate) =>
-    start.kind === "owned"
-      ? {
+  const startData = (
+    start: HangarPlanStart,
+    candidate: HangarPlanCandidate,
+  ) => {
+    switch (start.kind) {
+      case "owned":
+        return {
           startKind: HangarPlanStartKindEnum.OWNED,
           sourceVehicleId: start.vehicleId,
           buybackPledgeId: null,
           startModelId: null,
-        }
-      : {
+        };
+      case "buyback":
+        return {
+          startKind: HangarPlanStartKindEnum.BUYBACK,
+          sourceVehicleId: null,
+          buybackPledgeId: start.pledgeId,
+          startModelId: start.modelId,
+        };
+      default:
+        return {
           startKind: HangarPlanStartKindEnum.STORE,
           sourceVehicleId: null,
           buybackPledgeId: null,
           startModelId: candidate.model.id,
         };
+    }
+  };
 
   const pairStart = (
     candidate: HangarPlanCandidate,

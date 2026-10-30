@@ -470,7 +470,7 @@
         "use": "Usar",
         "noShips": "Ninguna nave del hangar está libre para este hueco.",
         "removeStart": "Quitar del hueco",
-        "otherStarts": "Buy-back u otro inicio",
+        "otherStarts": "Compra en el juego u otra ruta",
         "same": "La misma nave, tal como está",
         "sameModel": "Mismo modelo",
         "noEnds": "Ningún hueco tiene sitio para otra nave. Elige cualquier nave para darle un hueco propio.",
@@ -483,7 +483,13 @@
         "onlyMelt": "No existen mejoras para ella, solo se puede fundir",
         "excludes": "Descarta %{ships}",
         "ccuSalesOnly": "CCU solo en rebajas",
-        "ccuUnknown": "Aún no se ha visto ningún CCU"
+        "ccuUnknown": "Aún no se ha visto ningún CCU",
+        "sources": {
+          "hangar": "Tu hangar",
+          "buyback": "Buy-back",
+          "store": "Tienda"
+        },
+        "filters": "Acotar los inicios"
       },
       "slotsTitle": "Slots",
       "editSlots": "Editar slots"

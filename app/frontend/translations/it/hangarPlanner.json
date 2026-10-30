@@ -470,7 +470,7 @@
         "use": "Usa",
         "noShips": "Nessuna nave dell'hangar è libera per questo slot.",
         "removeStart": "Togli dallo slot",
-        "otherStarts": "Buy-back o altra partenza",
+        "otherStarts": "Acquisto in gioco o altro percorso",
         "same": "La stessa nave, tenuta così",
         "sameModel": "Stesso modello",
         "noEnds": "Nessuno slot ha posto per un'altra nave. Scegli una nave qualsiasi per darle uno slot tutto suo.",
@@ -483,7 +483,13 @@
         "onlyMelt": "Non esistono upgrade per questa nave, può solo essere fusa",
         "excludes": "Esclude %{ships}",
         "ccuSalesOnly": "CCU solo durante i saldi",
-        "ccuUnknown": "Nessun CCU visto finora"
+        "ccuUnknown": "Nessun CCU visto finora",
+        "sources": {
+          "hangar": "Il tuo hangar",
+          "buyback": "Buy-back",
+          "store": "Store"
+        },
+        "filters": "Restringi le partenze"
       },
       "slotsTitle": "Slot",
       "editSlots": "Modifica slot"

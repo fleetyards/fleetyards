@@ -470,7 +470,7 @@
         "use": "Use",
         "noShips": "No hangar ship is free for this slot.",
         "removeStart": "Remove from the slot",
-        "otherStarts": "Buy-back or another start",
+        "otherStarts": "In-game purchase or another route",
         "same": "Same ship, kept as it is",
         "sameModel": "Same model",
         "noEnds": "No slot has room for another ship. Pick any ship to give it a slot of its own.",
@@ -483,7 +483,13 @@
         "onlyMelt": "No upgrades exist for it, so it can only be melted",
         "excludes": "Rules out %{ships}",
         "ccuSalesOnly": "CCU only during sales",
-        "ccuUnknown": "No CCU seen yet"
+        "ccuUnknown": "No CCU seen yet",
+        "sources": {
+          "hangar": "Your hangar",
+          "buyback": "Buy-back",
+          "store": "Store"
+        },
+        "filters": "Narrow the starts"
       },
       "slotsTitle": "Slots",
       "editSlots": "Edit slots"
