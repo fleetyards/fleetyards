@@ -26,8 +26,20 @@ Issue: not filed yet (the decisions are recorded in the draft issue body handed 
 
 ## Progress
 
-- [ ] Phase 1
-- [ ] Phase 2
-- [ ] Phase 3
+- [x] Phase 1
+- [x] Phase 2
+- [x] Phase 3 (translations, specs); PR still to open
 
 ## Discovery log
+
+- RSI sells no CCU for a ship pledged at $1000 or more (decided mid-branch):
+  `Model#upgradable?`, validated on every upgrade step, exposed as
+  `upgradable` on the plan's models. "Limited" ships are left out: no data
+  marks them yet.
+- Starts are offered only below the target's price (an undecided slot: below
+  its cheapest ship), or as the same model.
+- An undecided slot takes a start too: the picker asks which of its ships the
+  start becomes and settles the slot on it, as "Choose" in the slot modal does.
+- A non-upgradable ship marked "should change" keeps that mark but offers only
+  melt or back to undecided.
+- The e2e spec was only re-pointed at the new middle button; CI runs it.
