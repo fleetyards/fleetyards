@@ -51,8 +51,13 @@ Issue: not filed yet (the decisions are recorded in the draft issue body handed 
   still go through the route editor.
 - Adding a slot asks only for its name; filters are saved from the slot's
   ship picker.
-- An undecided slot takes a start too: the picker asks which of its ships the
-  start becomes and settles the slot on it, as "Choose" in the slot modal does.
+- An undecided slot takes a start without deciding anything: it is saved on
+  the ship it comes closest to and moves to whichever ship the slot keeps
+  (`HangarPlanSlot#choose!`, `#remove_candidate!`). Asking for the ship right
+  after the start was tried first and rejected: a start must not force a
+  decision.
+- Ships already kept as they are are no starts; the slot dialog links to the
+  compare page while it holds more than one ship.
 - A non-upgradable ship marked "should change" keeps that mark but offers only
   melt or back to undecided.
 - The e2e spec was only re-pointed at the new middle button; CI runs it.
