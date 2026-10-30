@@ -52,8 +52,6 @@
       },
       "notOnSale": "nicht im Verkauf",
       "routes": "So kommst du dran",
-      "addRoute": "Weg zu %{ship} hinzufügen",
-      "addRouteShort": "Weg hinzufügen",
       "editRoute": "Weg zu %{ship}",
       "removeRoute": "Weg entfernen",
       "unresolvedUnits": {
@@ -87,7 +85,6 @@
         "startKind": "Beginnt als",
         "ownedShip": "Schiff aus deinem Hangar",
         "buyback": "Buy-Back-Pledge",
-        "startModel": "Schiff",
         "priceOverride": "Bezahlter Preis",
         "priceOverrideInfo": "Leer lassen, um den heutigen Store-Preis zu verwenden, oder einen Sale- oder Warbond-Preis eingeben.",
         "upgradeSource": "Upgrade von",
@@ -347,19 +344,8 @@
       "route": {
         "stillToReach": "Noch zu erreichen",
         "yourRoute": "Dein Weg",
-        "startFirst": "Wähle, woher das Schiff kommt, um den Weg zu sehen.",
         "done": "Der Weg endet bei der %{ship}.",
-        "startHints": {
-          "owned": "Ein Schiff, das du schon hast. Ist es nicht die %{ship}, füge die Upgrades hinzu, die es dazu machen.",
-          "buyback": "Ein gemeltetes Pledge, das du bei RSI zurückkaufen kannst. Ohne Buy-Back-Token kostet es neues Geld, kein Store-Guthaben.",
-          "store": "Ein neues Pledge aus dem RSI-Store. Starte mit einem günstigeren Schiff, um es upzugraden.",
-          "ingame": "Im Spiel mit aUEC gekauft, es kostet also kein Geld. Ein im Spiel gekauftes Schiff lässt sich nicht upgraden, es muss also die %{ship} selbst sein."
-        },
-        "noVehicles": "Kein Schiff in deinem Hangar ist für diesen Weg frei.",
-        "noBuybacks": "Du hast keine Buy-Back-Pledges. Synchronisiere sie aus deinem RSI-Konto.",
-        "pledgeShip": "Schiff aus dem Pledge",
         "isTarget": "Gleiches Schiff",
-        "holdsTarget": "Enthält es",
         "search": "Suchen",
         "noMatch": "Keine Treffer.",
         "reaches": "Führt zur %{ship}",
@@ -374,8 +360,6 @@
         "showFitting": "Nur passende Upgrades zeigen",
         "unknownTarget": "Zu welchem Schiff es upgradet",
         "startCost": "Start",
-        "includesShip": "Enthält die %{ship}",
-        "cheaperOnly": "Angeboten werden nur Schiffe, die günstiger als die %{ship} (%{price}) sind, denn von dort upgradest du.",
         "sort": {
           "price": "Preis",
           "name": "Name"
@@ -395,40 +379,9 @@
           "owned_ccu": "Keines der Upgrades in deinem RSI-Hangar startet bei der %{ship}.",
           "buyback": "Keines deiner Buy-Back-Upgrades startet bei der %{ship}."
         },
-        "direction": {
-          "label": "Weg aufbauen",
-          "forward": "Vom Start aus",
-          "reverse": "Vom Ziel zurück"
-        },
-        "directionHints": {
-          "forward": "Wähle, woher das Schiff kommt, dann die Upgrades, die es zur %{ship} machen.",
-          "reverse": "Arbeite dich von der %{ship} zurück: Wähle das Upgrade, das bei ihr endet, dann das, das dort endet, wo dieses startet. Hör bei einem Schiff auf, das du hast, zurückkaufen oder kaufen kannst."
-        },
-        "startPending": "Start noch offen",
-        "reverseStart": "Der Weg startet mit der %{ship}.",
-        "unknownSource": "Von welchem Schiff es upgradet",
-        "noHeldInto": {
-          "owned_ccu": "Keines der Upgrades in deinem RSI-Hangar endet bei der %{ship}.",
-          "buyback": "Keines deiner Buy-Back-Upgrades endet bei der %{ship}."
-        },
-        "upgradeInto": "Upgrade zur %{ship}",
-        "upgradesTo": "zur %{ship}",
-        "inHangar": "In deinem Hangar",
-        "buybackAvailable": "Buy-Back möglich",
-        "nextStep": "Der Weg startet jetzt mit der %{ship}. Füge das Upgrade zu ihr hinzu oder wähle die %{ship} als Start.",
-        "addUpgradeInto": "Upgrade zur %{ship} hinzufügen",
-        "startHere": "Mit der %{ship} starten",
         "shipCard": "Schiff",
         "useToken": "Buy-Back-Token nutzen",
-        "withToken": "mit Token bezahlt",
-        "buyTarget": "Die %{ship} selbst kaufen",
-        "startShort": {
-          "owned": "Hangar",
-          "buyback": "Buy-Back",
-          "store": "Store",
-          "ingame": "Im Spiel"
-        },
-        "ingameNoUpgrades": "Ein im Spiel gekauftes Schiff nimmt keine Upgrades. Entferne zuerst die Upgrades."
+        "withToken": "mit Token bezahlt"
       },
       "meltList": {
         "none": "Laut RSI lässt sich keines deiner Schiffe melten. Schalte den Filter aus, um ein beliebiges Schiff zu wählen.",
@@ -471,7 +424,6 @@
         "use": "Nehmen",
         "noShips": "Kein Schiff im Hangar ist für diesen Platz frei.",
         "removeStart": "Aus dem Platz nehmen",
-        "otherStarts": "Ingame-Kauf oder anderer Weg",
         "same": "Dasselbe Schiff, so behalten",
         "sameModel": "Gleiches Modell",
         "noEnds": "Kein Platz hat Raum für ein weiteres Schiff. Wähle ein beliebiges Schiff, um ihm einen eigenen Platz zu geben.",
@@ -489,7 +441,8 @@
         },
         "filters": "Starts eingrenzen",
         "saveFilters": "Filter für diesen Platz speichern",
-        "chooseShip": "Schiff des Platzes wählen"
+        "chooseShip": "Schiff des Platzes wählen",
+        "earnInGame": "Im Spiel verdienen"
       },
       "slotsTitle": "Slots",
       "editSlots": "Slots bearbeiten",

@@ -21,6 +21,7 @@ import {
 import RouteChain from "@/frontend/components/Hangar/Planner/RouteChain/index.vue";
 import { useAcquisitionNodes } from "@/frontend/components/Hangar/Planner/RouteChain/types";
 import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
+import { reaches } from "@/frontend/components/Hangar/Planner/reach";
 import { useCandidateSpecs } from "@/frontend/components/Hangar/Planner/candidateSpecs";
 import fallbackImage from "@/images/fallback/store_image.webp";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -158,13 +159,36 @@ const addCandidates = () =>
 
 const openRoute = (
   candidate: HangarPlanCandidate,
-  acquisition?: HangarPlanAcquisition,
+  acquisition: HangarPlanAcquisition,
 ) =>
   openModal(
     () => import("@/frontend/components/Hangar/Planner/RouteModal/index.vue"),
     { planId: props.planId, candidate, acquisition },
     { wide: true },
   );
+
+const pickStart = (candidate: HangarPlanCandidate) =>
+  openModal(
+    () =>
+      import("@/frontend/components/Hangar/Planner/StartPickerModal/index.vue"),
+    { planId: props.planId, slot: props.slot, candidate },
+  );
+
+// Upgrades are planned between two different ships they can join; a ship
+// kept or bought as it is has none.
+const chainable = (
+  candidate: HangarPlanCandidate,
+  acquisition: HangarPlanAcquisition,
+) =>
+  acquisition.startModel.id !== candidate.model.id &&
+  reaches(acquisition.startModel, candidate.model);
+
+// Units no start was picked for yet.
+const startless = computed(() =>
+  decidedCandidate.value
+    ? props.slot.quantity - decidedCandidate.value.acquisitions.length
+    : 0,
+);
 
 const destroySlot = useDestroyHangarPlanSlot();
 const destroyCandidate = useDestroyHangarPlanCandidate();
@@ -410,6 +434,7 @@ const removeRoute = (acquisition: HangarPlanAcquisition) =>
             </span>
             <template v-if="!readonly">
               <Btn
+                v-if="chainable(decidedCandidate, acquisition)"
                 :size="BtnSizesEnum.XS"
                 :variant="BtnVariantsEnum.BARE"
                 :aria-label="
@@ -439,13 +464,13 @@ const removeRoute = (acquisition: HangarPlanAcquisition) =>
             {{ t("hangarPlanner.unresolvedUnits", { count: unresolved }) }}
           </span>
           <Btn
-            v-if="!readonly"
+            v-if="!readonly && startless > 0"
             :size="BtnSizesEnum.XS"
             data-test="hangar-plan-add-route"
-            @click="openRoute(decidedCandidate)"
+            @click="pickStart(decidedCandidate)"
           >
-            <i class="fa-light fa-route" />
-            {{ t("hangarPlanner.addRouteShort") }}
+            <i class="fa-light fa-plus" />
+            {{ t("hangarPlanner.pick.pickStart") }}
           </Btn>
         </div>
       </section>

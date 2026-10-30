@@ -150,7 +150,7 @@ const addSlot = (label?: string) =>
 
 const openRoute = (
   candidate: HangarPlanCandidate,
-  acquisition?: HangarPlanAcquisition,
+  acquisition: HangarPlanAcquisition,
 ) =>
   comlink.emit("open-modal", {
     component: () =>

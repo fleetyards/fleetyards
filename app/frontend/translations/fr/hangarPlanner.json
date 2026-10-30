@@ -52,8 +52,6 @@
       },
       "notOnSale": "non vendu",
       "routes": "Comment les obtenir",
-      "addRoute": "Ajouter une voie vers %{ship}",
-      "addRouteShort": "Ajouter une voie",
       "editRoute": "Voie vers %{ship}",
       "removeRoute": "Retirer la voie",
       "unresolvedUnits": {
@@ -87,7 +85,6 @@
         "startKind": "Commence comme",
         "ownedShip": "Vaisseau de votre hangar",
         "buyback": "Pledge de buy-back",
-        "startModel": "Vaisseau",
         "priceOverride": "Prix payé",
         "priceOverrideInfo": "Laissez vide pour utiliser le prix actuel de la boutique, ou saisissez un prix de promotion ou de warbond.",
         "upgradeSource": "Upgrade depuis",
@@ -347,19 +344,8 @@
       "route": {
         "stillToReach": "Reste à atteindre",
         "yourRoute": "Votre voie",
-        "startFirst": "Choisissez d'où vient le vaisseau pour voir la voie.",
         "done": "La voie se termine sur le %{ship}.",
-        "startHints": {
-          "owned": "Un vaisseau que vous possédez déjà. Si ce n'est pas le %{ship}, ajoutez les améliorations qui le transforment.",
-          "buyback": "Un pledge fondu que vous pouvez racheter auprès de RSI. Sans jeton de rachat, il coûte de l'argent frais, pas du crédit boutique.",
-          "store": "Un nouveau pledge de la boutique RSI. Partez d'un vaisseau moins cher pour l'améliorer.",
-          "ingame": "Acheté en aUEC dans le jeu, il ne coûte donc rien. Un vaisseau acheté en jeu ne peut pas être amélioré, il doit donc s'agir du %{ship} lui-même."
-        },
-        "noVehicles": "Aucun vaisseau de votre hangar n'est libre pour cette voie.",
-        "noBuybacks": "Vous n'avez aucun pledge à racheter. Synchronisez-les depuis votre compte RSI.",
-        "pledgeShip": "Vaisseau du pledge",
         "isTarget": "Même vaisseau",
-        "holdsTarget": "Le contient",
         "search": "Rechercher",
         "noMatch": "Aucun résultat.",
         "reaches": "Mène au %{ship}",
@@ -374,8 +360,6 @@
         "showFitting": "N'afficher que les améliorations adaptées",
         "unknownTarget": "Vers quel vaisseau elle mène",
         "startCost": "Départ",
-        "includesShip": "Contient le %{ship}",
-        "cheaperOnly": "Seuls les vaisseaux moins chers que le %{ship} (%{price}) sont proposés, puisque vous les améliorez ensuite.",
         "sort": {
           "price": "Prix",
           "name": "Nom"
@@ -395,40 +379,9 @@
           "owned_ccu": "Aucune des améliorations de votre hangar RSI ne part du %{ship}.",
           "buyback": "Aucune de vos améliorations à racheter ne part du %{ship}."
         },
-        "direction": {
-          "label": "Construire la voie",
-          "forward": "Depuis le départ",
-          "reverse": "Depuis la cible, à rebours"
-        },
-        "directionHints": {
-          "forward": "Choisissez d'où vient le vaisseau, puis les améliorations qui le mènent au %{ship}.",
-          "reverse": "Remontez depuis le %{ship} : choisissez l'amélioration qui y aboutit, puis celle qui aboutit là où elle part. Arrêtez-vous à un vaisseau que vous possédez, pouvez racheter ou acheter."
-        },
-        "startPending": "Départ encore à choisir",
-        "reverseStart": "La voie part du %{ship}.",
-        "unknownSource": "Depuis quel vaisseau elle part",
-        "noHeldInto": {
-          "owned_ccu": "Aucune des améliorations de votre hangar RSI n'aboutit au %{ship}.",
-          "buyback": "Aucune de vos améliorations à racheter n'aboutit au %{ship}."
-        },
-        "upgradeInto": "Amélioration vers le %{ship}",
-        "upgradesTo": "vers le %{ship}",
-        "inHangar": "Dans votre hangar",
-        "buybackAvailable": "Rachat possible",
-        "nextStep": "La voie part maintenant du %{ship}. Ajoutez l'amélioration qui y mène, ou choisissez le %{ship} comme départ.",
-        "addUpgradeInto": "Ajouter une amélioration vers le %{ship}",
-        "startHere": "Partir du %{ship}",
         "shipCard": "Vaisseau",
         "useToken": "Utiliser un jeton de rachat",
-        "withToken": "payé avec un jeton",
-        "buyTarget": "Acheter le %{ship} lui-même",
-        "startShort": {
-          "owned": "Hangar",
-          "buyback": "Rachat",
-          "store": "Boutique",
-          "ingame": "En jeu"
-        },
-        "ingameNoUpgrades": "Un vaisseau acheté en jeu ne prend aucune amélioration. Retirez d'abord les améliorations."
+        "withToken": "payé avec un jeton"
       },
       "meltList": {
         "none": "D'après RSI, aucun de vos vaisseaux ne peut être fondu. Désactivez le filtre pour choisir n'importe quel vaisseau.",
@@ -471,7 +424,6 @@
         "use": "Utiliser",
         "noShips": "Aucun vaisseau du hangar n'est libre pour cet emplacement.",
         "removeStart": "Retirer de l'emplacement",
-        "otherStarts": "Achat en jeu ou autre parcours",
         "same": "Le même vaisseau, gardé tel quel",
         "sameModel": "Même modèle",
         "noEnds": "Aucun emplacement n'a de place pour un autre vaisseau. Choisissez n'importe quel vaisseau pour lui donner son propre emplacement.",
@@ -489,7 +441,8 @@
         },
         "filters": "Affiner les départs",
         "saveFilters": "Enregistrer les filtres pour cet emplacement",
-        "chooseShip": "Choisir le vaisseau de l'emplacement"
+        "chooseShip": "Choisir le vaisseau de l'emplacement",
+        "earnInGame": "Gagner en jeu"
       },
       "slotsTitle": "Emplacements",
       "editSlots": "Modifier les emplacements",

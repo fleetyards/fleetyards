@@ -13,7 +13,7 @@ import {
 } from "@/shared/components/base/Btn/types";
 import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
-import { canEnter, canLeave } from "@/frontend/components/Hangar/Planner/reach";
+import { canLeave, reaches } from "@/frontend/components/Hangar/Planner/reach";
 import {
   type HangarFlowDecision,
   type HangarFlowEnd,
@@ -48,7 +48,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{
   decide: [vehicleId: string, decision: HangarFlowDecision];
-  route: [candidate: HangarPlanCandidate, acquisition?: HangarPlanAcquisition];
+  route: [candidate: HangarPlanCandidate, acquisition: HangarPlanAcquisition];
   start: [start: HangarFlowStart];
   end: [end: HangarFlowEnd];
   pick: [slot: HangarPlanSlot];
@@ -94,7 +94,7 @@ type Row = {
   // The route the middle plans or edits.
   route?: {
     candidate: HangarPlanCandidate;
-    acquisition?: HangarPlanAcquisition;
+    acquisition: HangarPlanAcquisition;
   };
   // Both ends picked, but no upgrade leads from one to the other, so the
   // middle asks for another start instead.
@@ -234,8 +234,10 @@ const routeTarget = (route: PlannedRoute) => ({
 
 // RSI sells no upgrade into or out of some ships, so a start elsewhere can
 // never become them.
+// Whether upgrades can lead from the start to the slot's ship: RSI sells
+// them both ways, and the start is cheaper.
 const routable = (route: PlannedRoute) =>
-  canLeave(route.acquisition.startModel) && canEnter(route.model);
+  reaches(route.acquisition.startModel, route.model);
 
 const unroutedAction = (route: PlannedRoute) =>
   routable(route)
@@ -254,10 +256,16 @@ const unroutedAction = (route: PlannedRoute) =>
 
 // Where the middle leads for a planned route: the route itself, or another
 // start when none can be planned.
-const middle = (route: PlannedRoute) =>
-  route.acquisition.routeComplete || routable(route)
-    ? { route: routeTarget(route) }
+// Where the middle leads: the chain of upgrades between two different ships
+// that upgrades can join, another start where none can, and nowhere for a
+// ship kept or bought as it is.
+const middle = (route: PlannedRoute) => {
+  if (route.acquisition.startModel.id === route.model.id) return {};
+
+  return routable(route)
+    ? { route: { candidate: route.candidate, acquisition: route.acquisition } }
     : { restart: true };
+};
 
 const routedAction = (route: PlannedRoute) => {
   const steps = route.acquisition.steps.length;
@@ -528,7 +536,7 @@ const neededRows = computed<Row[]>(() => {
           tone: "warning",
         },
         start: { slot, candidate },
-        route: { candidate },
+        restart: true,
         slot,
       },
     ];
@@ -672,12 +680,9 @@ const middleLabel = (row: Row) => {
   }
   if (!row.route) return undefined;
 
-  return t(
-    row.route.acquisition
-      ? "hangarPlanner.editRoute"
-      : "hangarPlanner.addRoute",
-    { ship: row.route.candidate.model.name },
-  );
+  return t("hangarPlanner.editRoute", {
+    ship: row.route.candidate.model.name,
+  });
 };
 
 const rightLabel = (row: Row) =>

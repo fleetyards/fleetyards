@@ -282,7 +282,7 @@ describe("Hangar/Planner/HangarFlow", () => {
   });
 
   it("plans the route from the middle once start and end differ", async () => {
-    const cutlass = model("Cutlass Black");
+    const cutlass = { ...model("Cutlass Black"), pledgePrice: 90 };
     const [explorer, salvage, mining] = plan.slots;
     const unrouted: HangarPlan = {
       ...plan,
@@ -385,9 +385,10 @@ describe("Hangar/Planner/HangarFlow", () => {
       "carrack",
       undefined,
     ]);
-    expect((wrapper.emitted("route") as [[{ id: string }]])[0][0].id).toEqual(
-      "carrack",
-    );
+    // A unit without a start has no route to plan yet: its middle asks for
+    // the start as well.
+    expect(wrapper.emitted("route")).toBeUndefined();
+    expect(wrapper.emitted("start")).toHaveLength(2);
     expect(wrapper.emitted("edit")).toEqual([[short], [empty]]);
     expect(wrapper.emitted("pick")).toEqual([[empty]]);
   });
