@@ -3,6 +3,12 @@
 module Loaders
   class PaintsImportJob < ::Loaders::BaseJob
     def perform(admin_user_id = nil, model_id = nil)
+      import_paints(admin_user_id, model_id)
+
+      link_paint_components
+    end
+
+    private def import_paints(admin_user_id, model_id)
       model = Model.find(model_id) if model_id.present?
 
       import = Imports::PaintsImport.create(admin_user_id:, input: model.present? ? {model_id: model.id} : nil)
@@ -23,8 +29,6 @@ module Loaders
       )
 
       import.finish!
-
-      ::Loaders::PaintComponentsLinkJob.perform_async
     rescue => e
       # The model lookup happens before the import exists -- a model deleted
       # between enqueue and run leaves nothing to mark as failed.
@@ -32,6 +36,15 @@ module Loaders
       import&.update!(info: e.message)
 
       raise e
+    end
+
+    # Outside the import's rescue, which can fail an import only while it is
+    # still running. Raising here would retry the job, and import again.
+    private def link_paint_components
+      ::Loaders::PaintComponentsLinkJob.perform_async
+    rescue => e
+      Appsignal.report_error(e)
+      Rails.logger.error("[#{self.class.name}] could not start the paint components link: #{e.message}")
     end
   end
 end

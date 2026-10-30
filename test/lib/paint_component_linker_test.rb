@@ -70,6 +70,49 @@ class PaintComponentLinkerTest < ActiveSupport::TestCase
     assert_equal updated_at, paint.reload.updated_at, "an unchanged link should not be rewritten"
   end
 
+  # Both Aurora liveries read as the one Foundation Festival paint, so moving
+  # the link to whichever claims it last would flip it on every run.
+  test "#link keeps a link once written" do
+    paint = paint_for("Terrapin", "IceBreak")
+    first = paint_component("Terrapin IceBreak Livery")
+    paint.update!(component: first)
+    paint_component("Terrapin IceBreak Livery (Modified)")
+
+    @linker.link
+
+    assert_equal first, paint.reload.component
+  end
+
+  test "#link moves a link off a component the build dropped" do
+    paint = paint_for("Terrapin", "IceBreak")
+    paint.update!(component: create(:component, :without_build, category: "paints", name: "Terrapin IceBreak Livery"))
+    current = paint_component("Terrapin IceBreak Livery (Modified)")
+
+    @linker.link
+
+    assert_equal current, paint.reload.component
+  end
+
+  test "#link links nothing to a component the build dropped" do
+    paint = paint_for("Terrapin", "IceBreak")
+    create(:component, :without_build, category: "paints", name: "Terrapin IceBreak Livery")
+
+    @linker.link
+
+    assert_nil paint.reload.component_id
+  end
+
+  test "#link carries on past a paint that cannot be saved" do
+    paint_for("Terrapin", "IceBreak")
+    paint_for("Nomad", "Fortuna")
+    paint_component("Terrapin IceBreak Livery")
+    paint_component("Nomad Fortuna Livery")
+    Appsignal.stubs(:report_error)
+    ModelPaint.any_instance.expects(:update!).twice.raises(ActiveRecord::RecordInvalid).then.returns(true)
+
+    @linker.link
+  end
+
   # Losing the component must not take the paint with it.
   test "a destroyed component leaves its paints behind, unlinked" do
     paint = linked_paint(with_image: false)

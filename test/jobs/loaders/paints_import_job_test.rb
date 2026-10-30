@@ -107,5 +107,15 @@ module Loaders
         ::Loaders::PaintsImportJob.new.perform
       end
     end
+
+    test "#perform leaves a finished import finished when the link cannot be queued" do
+      stub_importer(results)
+      Appsignal.stubs(:report_error)
+      ::Loaders::PaintComponentsLinkJob.stubs(:perform_async).raises(RedisClient::CannotConnectError, "Redis is down")
+
+      ::Loaders::PaintsImportJob.new.perform
+
+      assert_equal "finished", Imports::PaintsImport.last.aasm_state
+    end
   end
 end

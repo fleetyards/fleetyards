@@ -6,7 +6,7 @@
 # artwork across.
 #
 # Re-runnable: matching is name-based and improves as names are corrected, so
-# a component that found nothing last time may find something now, and a paint
+# a paint that found nothing last time may find something now, and a paint
 # whose artwork arrived after its link still gets it copied.
 class PaintComponentLinker
   def run
@@ -14,15 +14,24 @@ class PaintComponentLinker
     copy_store_images
   end
 
+  # A link, once written, stays: names are a guess, and two components can
+  # read as the same paint -- the Aurora Mk I and Mk II Foundation Fest
+  # liveries both match one -- so moving it whenever another claimant comes
+  # along would flip it on every run. Only a paint with no link, or one whose
+  # component the build dropped, is linked again.
   def link
     matcher = PaintComponentMatcher.new
+    current = Component.where(category: "paints").where.not(name: [nil, ""]).joins(:build)
+    current_ids = current.pluck(:id).to_set
 
-    Component.where(category: "paints").where.not(name: [nil, ""]).find_each do |component|
+    current.find_each do |component|
       paint = matcher.call(component)
 
-      next if paint.nil? || paint.component_id == component.id
+      next if paint.nil? || current_ids.include?(paint.component_id)
 
       paint.update!(component_id: component.id)
+    rescue => e
+      report(e, "component #{component.id} could not be linked")
     end
   end
 
@@ -48,7 +57,13 @@ class PaintComponentLinker
         content_type: paint.store_image.content_type
       )
     end
-  rescue ActiveStorage::FileNotFoundError => e
-    Rails.logger.warn("[paints] #{paint.id} has no stored file to copy: #{e.message}")
+  rescue => e
+    report(e, "paint #{paint.id} artwork could not be copied")
+  end
+
+  # One bad row must not leave every row after it unlinked.
+  private def report(error, message)
+    Appsignal.report_error(error)
+    Rails.logger.error("[#{self.class.name}] #{message}: #{error.class}: #{error.message}")
   end
 end
