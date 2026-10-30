@@ -296,9 +296,6 @@ importers:
       vue-router:
         specifier: 5.4.0
         version: 5.4.0(@vue/compiler-sfc@3.5.44)(esbuild@0.28.2)(pinia@4.1.0(@vue/devtools-api@8.2.1)(typescript@6.0.3)(vue@3.5.44(typescript@6.0.3)))(rolldown@1.2.5)(rollup@4.60.3)(vite@8.3.5(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(sass@1.106.1)(terser@5.46.2)(yaml@2.9.0))(vue@3.5.44(typescript@6.0.3))
-      vue-scrollto:
-        specifier: ^2.20.0
-        version: 2.20.0
       vue3-highlightjs:
         specifier: ^1.0.5
         version: 1.0.5(vue@3.5.44(typescript@6.0.3))
@@ -7282,9 +7279,6 @@ packages:
         optional: true
       vite:
         optional: true
-
-  vue-scrollto@2.20.0:
-    resolution: {integrity: sha512-7i+AGKJTThZnMEkhIPgrZjyAX+fXV7/rGdg+CV283uZZwCxwiMXaBLTmIc5RTA4uwGnT+E6eJle3mXQfM2OD3A==}
 
   vue-tsc@3.3.13:
     resolution: {integrity: sha512-jE4/bXdOMSHVxEGgQCqNllJy+9N3Gx6tfSAsg0yhFK/MAN6eXqISihupnDEKSCt12VVnjN2gI3AqLYcqoh5x/A==}
@@ -14707,10 +14701,6 @@ snapshots:
       - rollup
       - unloader
       - webpack
-
-  vue-scrollto@2.20.0:
-    dependencies:
-      bezier-easing: 2.1.0
 
   vue-tsc@3.3.13(typescript@6.0.3):
     dependencies:
