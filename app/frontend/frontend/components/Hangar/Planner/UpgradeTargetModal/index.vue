@@ -9,76 +9,49 @@ import PickerModal from "@/frontend/components/Models/PickerModal/index.vue";
 import { type ModelPickerSelection } from "@/frontend/components/Models/PickerModal/types";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useAppNotifications } from "@/shared/composables/useAppNotifications";
-import { useHangarPlanCache } from "@/frontend/composables/useHangarPlanCache";
-import {
-  type HangarPlan,
-  useCreateHangarPlanCandidate,
-  useCreateHangarPlanSlot,
-} from "@/services/fyApi";
+import { useHangarPlanPairing } from "@/frontend/composables/useHangarPlanPairing";
+import { type HangarPlanAcquisition, useHangarPlan } from "@/services/fyApi";
 
 type Props = {
   planId: string;
-  vehicleId: string;
-  vehicleName: string;
+  startName: string;
+  vehicleId?: string;
+  acquisition?: HangarPlanAcquisition;
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  vehicleId: undefined,
+  acquisition: undefined,
+});
 
 const { t } = useI18n();
 const comlink = useComlink();
-const { displayAlert } = useAppNotifications();
-const { updatePlan } = useHangarPlanCache();
 
-const submitting = ref(false);
-const createSlot = useCreateHangarPlanSlot();
-const createCandidate = useCreateHangarPlanCandidate();
+const { data: plan } = useHangarPlan(() => props.planId);
+const { pairing, pairEnd } = useHangarPlanPairing(() => props.planId, plan);
 
-const slotIds = (plan: HangarPlan) => plan.slots.map((slot) => slot.id);
-
-// The target gets a slot of its own, then the route from the ship to it is
-// planned like any other.
+// The ship gets a slot of its own, and the route ends there; the upgrades in
+// between are planned from the row.
 const submit = async ([selection]: ModelPickerSelection[]) => {
   if (!selection) return;
 
-  submitting.value = true;
-
-  try {
-    const withSlot = await createSlot.mutateAsync({
-      hangarPlanId: props.planId,
-      data: { label: selection.option.name },
-    });
-    updatePlan(withSlot);
-    const slotId = slotIds(withSlot).at(-1) as string;
-    const plan = await createCandidate.mutateAsync({
-      hangarPlanId: props.planId,
-      data: { slotId, modelId: selection.option.id },
-    });
-    updatePlan(plan);
-
-    const candidate = plan.slots.find((slot) => slot.id === slotId)
-      ?.candidates[0];
-    if (!candidate) return;
-
-    comlink.emit("open-modal", {
-      component: () =>
-        import("@/frontend/components/Hangar/Planner/RouteModal/index.vue"),
-      props: { planId: props.planId, candidate, vehicleId: props.vehicleId },
-      wide: true,
-    });
-  } catch {
-    displayAlert({ text: t("hangarPlanner.messages.saveFailed") });
-  } finally {
-    submitting.value = false;
-  }
+  const paired = await pairEnd(
+    {
+      kind: "model",
+      modelId: selection.option.id,
+      name: selection.option.name,
+    },
+    { vehicleId: props.vehicleId, acquisition: props.acquisition },
+  );
+  if (paired) comlink.emit("close-modal", true);
 };
 </script>
 
 <template>
   <PickerModal
-    :title="t('hangarPlanner.decisions.upgradeTo', { name: vehicleName })"
-    :submit-label="t('hangarPlanner.decisions.upgrade')"
-    :submitting="submitting"
+    :title="t('hangarPlanner.decisions.upgradeTo', { name: startName })"
+    :submit-label="t('hangarPlanner.pick.use')"
+    :submitting="pairing"
     single
     @submit="submit"
   />

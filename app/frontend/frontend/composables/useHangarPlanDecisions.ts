@@ -14,8 +14,9 @@ import {
   useUpdateHangarPlanVehicleMark,
 } from "@/services/fyApi";
 
-// Settles the hangar ships a plan has not decided on: keeps them as they are,
-// opens the upgrade or melt for one, or marks it to change.
+// Settles the hangar ships a plan has not decided on, short of picking where
+// they end up: keeps them as they are, opens the melt for one, or marks it to
+// change.
 export const useHangarPlanDecisions = (
   planId: MaybeRefOrGetter<string>,
   plan: MaybeRefOrGetter<HangarPlan | undefined>,
@@ -73,14 +74,7 @@ export const useHangarPlanDecisions = (
   const decide = (vehicleId: string, decision: HangarFlowDecision) => {
     if (deciding.value) return;
 
-    const entry = toValue(comparison)?.vehicles.find(
-      (vehicle) => vehicle.vehicleId === vehicleId,
-    );
-
     switch (decision) {
-      case "keep":
-        void keep([vehicleId]);
-        break;
       case "change":
         void mark(vehicleId, HangarPlanVehicleMarkEnum.CHANGE);
         break;
@@ -92,17 +86,6 @@ export const useHangarPlanDecisions = (
           component: () =>
             import("@/frontend/components/Hangar/Planner/MeltModal/index.vue"),
           props: { planId: toValue(planId), vehicleId },
-        });
-        break;
-      case "upgrade":
-        comlink.emit("open-modal", {
-          component: () =>
-            import("@/frontend/components/Hangar/Planner/UpgradeTargetModal/index.vue"),
-          props: {
-            planId: toValue(planId),
-            vehicleId,
-            vehicleName: entry?.name || entry?.model.name || "",
-          },
         });
         break;
     }

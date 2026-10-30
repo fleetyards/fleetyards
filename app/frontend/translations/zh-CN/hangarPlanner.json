@@ -134,6 +134,7 @@
       "vehicleStatuses": {
         "kept": "保留",
         "upgraded": "已升级",
+        "unrouted": "缺少路线",
         "melted": "已熔毁",
         "pending": "待决定",
         "change": "应更换",
@@ -198,7 +199,6 @@
         "happens": "会发生什么",
         "meltCredit": "%{value} 信用点",
         "leaves": "离开你的机库",
-        "notInPlan": "不在方案中",
         "notOwned": "不在你的机库中",
         "lead": "左边是你拥有的每艘飞船，右边是方案需要的每艘飞船，中间是会发生的事。",
         "anotherPlan": "与其他方案比较",
@@ -218,6 +218,10 @@
           "upgraded": {
             "one": "已升级 %{count}",
             "other": "已升级 %{count}"
+          },
+          "unrouted": {
+            "one": "%{count} 艘没有路线",
+            "other": "%{count} 艘没有路线"
           },
           "melted": {
             "one": "已熔 %{count}",
@@ -240,9 +244,11 @@
           },
           "shipOf": "第 %{number} 艘，共 %{count} 艘",
           "noRoute": "尚无途径",
+          "planRoute": "规划路线",
+          "noUpgrade": "无法升级",
+          "pickOtherStart": "请选择其他起点",
           "notCounted": "未计入总额",
           "noShip": "尚无飞船",
-          "toDecide": "尚未决定",
           "folded": {
             "kept": {
               "one": "%{count} 艘原样保留",
@@ -444,13 +450,37 @@
         }
       },
       "decisions": {
-        "keep": "原样保留",
-        "upgrade": "升级",
         "melt": "熔炼",
         "change": "标记为应更换",
         "pending": "改回待决定",
         "upgradeTo": "将 %{name} 升级为",
         "keepPending": "保留所有待决定的"
+      },
+      "pick": {
+        "pickStart": "选择起点",
+        "pickEnd": "选择终点",
+        "startOf": "为 %{ship} 选择起点",
+        "endOf": "选择 %{ship} 的终点",
+        "startTitle": "%{ship} 的起点",
+        "startEyebrow": "起点舰船",
+        "endTitle": "%{ship} 的终点",
+        "endEyebrow": "终点舰船",
+        "buyNew": "在商店购买新船",
+        "current": "当前起点",
+        "use": "使用",
+        "noShips": "机库中没有可用于此槽位的舰船。",
+        "removeStart": "从槽位中移除",
+        "otherStarts": "回购或其他起点",
+        "same": "同一艘舰船，保持原样",
+        "sameModel": "相同型号",
+        "noEnds": "没有槽位还能容纳舰船。选择任意舰船，为它新建一个槽位。",
+        "removeEnd": "从计划中移除",
+        "anyShip": "任意舰船",
+        "buyChosen": "你接下来选择的舰船",
+        "chooseEnd": "这个起点要成为槽位中的哪艘舰船？",
+        "noReachableShip": "从这个起点无法到达此槽位的任何舰船。",
+        "back": "返回",
+        "onlyMelt": "这艘舰船没有升级，只能熔炼"
       },
       "slotsTitle": "槽位",
       "editSlots": "编辑槽位"
