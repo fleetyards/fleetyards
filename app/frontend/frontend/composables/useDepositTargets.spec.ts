@@ -5,7 +5,7 @@ import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { useDepositTargets } from "./useDepositTargets";
 
 const api = vi.hoisted(() => ({
-  features: ["hangar_inventories", "fleet_logistics"],
+  features: ["fleet_logistics"],
   hangar: { items: [] as unknown[] } as { items: unknown[] } | Error,
   fleets: [] as { slug: string; name: string; features?: string[] }[],
   memberships: {} as Record<
@@ -94,7 +94,7 @@ const mount = async (enabled = true) => {
 };
 
 beforeEach(() => {
-  api.features = ["hangar_inventories", "fleet_logistics"];
+  api.features = ["fleet_logistics"];
   api.hangar = {
     items: [
       { id: "inv-1", slug: "cargo-hold", name: "Cargo Hold" },
@@ -241,7 +241,7 @@ describe("useDepositTargets", () => {
   });
 
   it("asks a fleet that runs logistics for itself alone", async () => {
-    api.features = ["hangar_inventories"];
+    api.features = [];
     api.fleets = [
       { slug: "crew", name: "Crew", features: ["fleet_logistics"] },
     ];
@@ -302,7 +302,7 @@ describe("useDepositTargets", () => {
   });
 
   it("asks no fleet without fleet logistics", async () => {
-    api.features = ["hangar_inventories"];
+    api.features = [];
 
     const { options } = await mount();
 

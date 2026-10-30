@@ -3,7 +3,6 @@
 module Api
   module V1
     class HangarInventoryStockController < ::Api::BaseController
-      include HangarInventoriesFeatureConcern
       include InventoryScoped::StockActions
 
       before_action :authenticate_user!, only: []
@@ -14,7 +13,6 @@ module Api
         unless: :user_signed_in?,
         only: %i[update destroy]
 
-      before_action :check_hangar_inventories_feature
       before_action :set_stock_item, only: %i[show update destroy]
 
       private def inventory

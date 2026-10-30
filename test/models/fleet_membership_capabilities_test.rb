@@ -95,8 +95,6 @@ class FleetMembershipCapabilitiesTest < ActiveSupport::TestCase
   end
 
   test "creating events and contracts follows their policies' create?" do
-    Flipper.enable(:hangar_inventories)
-
     [true, false].each do |personal_contracts|
       @fleet.update_columns(personal_contracts_enabled: personal_contracts)
 

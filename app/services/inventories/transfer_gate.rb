@@ -159,11 +159,12 @@ module Inventories
 
     # Flipper is per-actor, so "is the feature on" has to be asked of the
     # recipient rather than of the request. A fleet is asked through the flag
-    # its inventories already ride on. Public so a destination can be offered
-    # on the same rule a delivery into it will be judged by.
+    # its inventories already ride on; every person can receive. Public so a
+    # destination can be offered on the same rule a delivery into it will be
+    # judged by.
     def recipient_feature_enabled?
       case @recipient
-      when ::User then Flipper.enabled?(:hangar_inventories, @recipient)
+      when ::User then true
       when ::Fleet then Flipper.enabled?(:fleet_logistics, @recipient)
       else false
       end

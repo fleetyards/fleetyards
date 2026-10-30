@@ -49,9 +49,6 @@ fleet_tours:
 # Rollout of the new "/": a landing page for visitors and a dashboard for
 # signed-in pilots. The old homepage stays the fallback while this is off.
 
-hangar_inventories:
-  description: "Personal hangar inventories with a deposit/withdrawal ledger"
-
 # Rides its own gate rather than hangar_inventories: a ship's cargo is a
 # separate surface and rolls out on its own schedule.
 

@@ -8,9 +8,6 @@ module Inventories
       @fleet = create(:fleet)
       @officer = create(:user)
       create(:fleet_membership, :accepted, :as_officer, fleet: @fleet, user: @officer)
-      [@officer, @fleet].each do |actor|
-      end
-      Flipper.enable_actor(:hangar_inventories, @officer)
       Flipper.enable_actor(:fleet_logistics, @fleet)
 
       @depot = create(:fleet_inventory, fleet: @fleet)

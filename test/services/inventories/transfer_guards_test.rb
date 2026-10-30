@@ -8,9 +8,6 @@ module Inventories
     setup do
       @user = create(:user)
       @recipient = create(:user)
-      [@user, @recipient].each do |actor|
-        Flipper.enable_actor(:hangar_inventories, actor)
-      end
 
       @source = create(:inventory, holder: @user)
       @entry = create(:inventory_item, inventory: @source, name: "Titanium",
@@ -54,7 +51,6 @@ module Inventories
       fleet = create(:fleet)
       officer = create(:user)
       create(:fleet_membership, :accepted, :as_officer, fleet:, user: officer)
-      Flipper.enable_actor(:hangar_inventories, officer)
 
       depot = create(:fleet_inventory, fleet:)
       entry = create(:fleet_inventory_item, fleet_inventory: depot, quantity: 20)

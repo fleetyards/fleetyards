@@ -3,13 +3,9 @@
 module Api
   module V1
     class HangarAllInventoryStockController < ::Api::BaseController
-      include HangarInventoriesFeatureConcern
-
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
         unless: :user_signed_in?
-
-      before_action :check_hangar_inventories_feature
 
       def index
         authorize! with: HangarInventoryItemPolicy, to: :index?

@@ -12,8 +12,6 @@ module Inventories
       @entry = create(:inventory_item, inventory: @source, name: "Titanium",
         category: :commodity, unit: :scu, quantity: 96)
       @position = @entry.position
-
-      enable_transfers(@user)
     end
 
     test "an immediate transfer moves stock and completes on the spot" do
@@ -37,7 +35,6 @@ module Inventories
 
     test "a cross-party transfer withdraws now and deposits only on acceptance" do
       recipient = create(:user)
-      enable_transfers(recipient)
       target = create(:inventory, holder: recipient)
 
       builder = build_transfer(recipient: recipient, quantity: 40)
@@ -56,7 +53,6 @@ module Inventories
 
     test "declining returns the goods by deposit rather than by deletion" do
       recipient = create(:user)
-      enable_transfers(recipient)
       builder = build_transfer(recipient: recipient, quantity: 40)
       builder.call
 
@@ -69,7 +65,6 @@ module Inventories
 
     test "cancelling is the sender calling it back" do
       recipient = create(:user)
-      enable_transfers(recipient)
       builder = build_transfer(recipient: recipient, quantity: 40)
       builder.call
 
@@ -82,7 +77,6 @@ module Inventories
 
     test "expiry sends the goods home with no actor" do
       recipient = create(:user)
-      enable_transfers(recipient)
       builder = build_transfer(recipient: recipient, quantity: 40)
       builder.call
       builder.transfer.update!(expires_at: 1.day.ago)
@@ -95,7 +89,6 @@ module Inventories
 
     test "escrow means the same stock cannot be sent twice" do
       recipient = create(:user)
-      enable_transfers(recipient)
 
       assert build_transfer(recipient: recipient, quantity: 96).call
 
@@ -154,10 +147,6 @@ module Inventories
 
     private def net(inventory, name)
       inventory.reload.stock_positions.find { |row| row.name == name }&.net_quantity.to_i
-    end
-
-    private def enable_transfers(actor)
-      Flipper.enable_actor(:hangar_inventories, actor)
     end
   end
 end

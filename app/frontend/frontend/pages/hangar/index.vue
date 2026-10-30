@@ -550,10 +550,7 @@ const { activeFilters } = useShipFilterSummary(() =>
         <i class="fa-duotone fa-notes" />
         <span>{{ t("nav.hangar.blueprints") }}</span>
       </Btn>
-      <Btn
-        v-if="isFeatureEnabled(FeatureFlagName.HANGAR_INVENTORIES)"
-        :to="{ name: 'hangar-inventories' }"
-      >
+      <Btn :to="{ name: 'hangar-inventories' }">
         <i class="fa-duotone fa-boxes-stacked" />
         <span>{{ t("nav.hangar.inventories") }}</span>
       </Btn>
@@ -657,10 +654,7 @@ const { activeFilters } = useShipFilterSummary(() =>
               <span>{{ t("labels.wishlist") }}</span>
             </Btn>
 
-            <Btn
-              v-if="isFeatureEnabled(FeatureFlagName.HANGAR_INVENTORIES)"
-              :to="{ name: 'hangar-inventories' }"
-            >
+            <Btn :to="{ name: 'hangar-inventories' }">
               <i class="fa-duotone fa-boxes-stacked" />
               <span>{{ t("labels.hangarInventories") }}</span>
             </Btn>

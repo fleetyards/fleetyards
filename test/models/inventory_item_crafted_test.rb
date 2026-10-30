@@ -88,7 +88,6 @@ class InventoryItemCraftedTest < ActiveSupport::TestCase
   end
 
   test "a crafted lot moves with its recipe and grades" do
-    Flipper.enable_actor(:hangar_inventories, @user)
     destination = create(:inventory, holder: @user)
     crafted(qualities: {1 => 750, 2 => 500}, quantity: 2).save!
     position = @inventory.positions.first
@@ -108,7 +107,6 @@ class InventoryItemCraftedTest < ActiveSupport::TestCase
 
   # Least valuable first: plain stock leaves before a crafted lot does.
   test "a transfer ships plain stock ahead of a crafted lot" do
-    Flipper.enable_actor(:hangar_inventories, @user)
     destination = create(:inventory, holder: @user)
     crafted(qualities: {1 => 750, 2 => 500}, quantity: 1).save!
     create(:inventory_item, :component, inventory: @inventory, item: @component, name: "Bulwark",
@@ -166,7 +164,6 @@ class InventoryItemCraftedTest < ActiveSupport::TestCase
   # The position's reference entry can be another lot's, or one typed by hand
   # with a picture and no item; a crafted lot travels as its own part.
   test "a crafted lot moves as its own part" do
-    Flipper.enable_actor(:hangar_inventories, @user)
     destination = create(:inventory, holder: @user)
     crafted(qualities: {1 => 750, 2 => 500}, quantity: 1).save!
     create(:inventory_item, :component, inventory: @inventory, name: "Bulwark", quantity: 1, quality: nil,

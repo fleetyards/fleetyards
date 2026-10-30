@@ -120,8 +120,6 @@ class Api::V1::HangarInventoryTransferActionsTest < ActionDispatch::IntegrationT
   end
 
   setup do
-    Flipper.enable("hangar_inventories")
-
     @sender = create(:user)
     @recipient = create(:user)
     @source = create(:inventory, holder: @sender)

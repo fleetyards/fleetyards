@@ -38,7 +38,6 @@ class Api::V1::HangarInventoriesIndexTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable("hangar_inventories")
     @user = create(:user)
     @other_user = create(:user)
   end
@@ -96,17 +95,6 @@ class Api::V1::HangarInventoriesIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET /hangar/inventories is allowed when hangar_inventories is enabled for the user actor" do
-    Flipper.disable("hangar_inventories")
-    Flipper.enable_actor("hangar_inventories", @user)
-    create_list(:inventory, 3, holder: @user)
-    sign_in @user
-
-    assert_api_response :get, 200 do
-      assert_equal 3, hand_made_items.count
-    end
-  end
-
   test "GET /hangar/inventories lists ship inventories" do
     create(:inventory, holder: @user)
     create(:inventory, holder: @user, vehicle: create(:vehicle, user: @user))
@@ -124,15 +112,6 @@ class Api::V1::HangarInventoriesIndexTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200 do
       assert(parsed_body["items"].find { |item| item["vehicle"] }["vehicle"]["wanted"])
     end
-  end
-
-  test "GET /hangar/inventories is forbidden when hangar_inventories is disabled" do
-    Flipper.disable("hangar_inventories")
-    sign_in @user
-
-    get "/api/v1/hangar/inventories"
-
-    assert_response :forbidden
   end
 
   test "GET /hangar/inventories returns 401 when not signed in" do

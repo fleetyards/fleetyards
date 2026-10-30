@@ -83,7 +83,6 @@ describe("HangarTour", () => {
     const ids = steps().map((step) => step.id);
 
     expect(ids).not.toContain("overview");
-    expect(ids).not.toContain("inventories");
     expect(ids).toEqual(expect.arrayContaining(["pledgeItems", "reset"]));
   });
 
@@ -98,7 +97,6 @@ describe("HangarTour", () => {
   });
 
   it("explains inventories on a phone without the desktop button", () => {
-    enabledFeatures.add(FeatureFlagName.HANGAR_INVENTORIES);
     const inventories = steps().find((step) => step.id === "inventories");
 
     expect(inventories).toBeDefined();
@@ -107,7 +105,6 @@ describe("HangarTour", () => {
 
   it("points inventories at the assets menu on a desktop", () => {
     setViewport(false);
-    enabledFeatures.add(FeatureFlagName.HANGAR_INVENTORIES);
 
     expect(steps().find((step) => step.id === "inventories")?.target).toBe(
       '[data-tour="hangar-assets"]',
@@ -116,7 +113,6 @@ describe("HangarTour", () => {
 
   it("points inventories at the page menu on a phone", () => {
     setViewport(true);
-    enabledFeatures.add(FeatureFlagName.HANGAR_INVENTORIES);
 
     expect(steps().find((step) => step.id === "inventories")?.target).toBe(
       '[data-tour="hangar-menu"]',

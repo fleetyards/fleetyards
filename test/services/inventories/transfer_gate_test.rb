@@ -7,8 +7,6 @@ module Inventories
     setup do
       @sender = create(:user)
       @recipient = create(:user)
-      enable_transfers(@sender)
-      enable_transfers(@recipient)
     end
 
     test "an open recipient admits a stranger" do
@@ -84,13 +82,6 @@ module Inventories
       create(:inventory_transfer_rule, :allow, user: @recipient, subject_user: @sender)
 
       assert_equal :sender_blocked, gate.refusal.code
-    end
-
-    test "an allowance does not override a missing feature flag" do
-      Flipper.disable_actor(:hangar_inventories, @recipient)
-      create(:inventory_transfer_rule, :allow, user: @recipient, subject_user: @sender)
-
-      assert_equal :unavailable, gate.refusal.code
     end
 
     test "the cap counts only pending transfers to this recipient" do
@@ -219,10 +210,6 @@ module Inventories
 
     private def gate(solicited: false)
       TransferGate.new(sender: @sender, recipient: @recipient, solicited:)
-    end
-
-    private def enable_transfers(actor)
-      Flipper.enable_actor(:hangar_inventories, actor)
     end
   end
 end

@@ -35,7 +35,6 @@ class Api::V1::HangarContractDestinationsTest < ActionDispatch::IntegrationTest
 
   setup do
     Flipper.enable("fleet_contracts")
-    Flipper.enable("hangar_inventories")
     Flipper.enable("fleet_logistics")
 
     @author = create(:user)
@@ -86,30 +85,6 @@ class Api::V1::HangarContractDestinationsTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200 do
       assert_equal [hangar.id], parsed_body.pluck("contractId")
-    end
-  end
-
-  test "leaves out a hangar destination whose author has no hangar inventories" do
-    contract(:in_progress, crew: @contractor)
-    Flipper.disable("hangar_inventories")
-    Flipper.enable_actor("hangar_inventories", @contractor)
-    sign_in @contractor
-
-    assert_api_response :get, 200 do
-      assert_empty parsed_body
-    end
-  end
-
-  # The delivery waits for the author, and the gate refuses a recipient who
-  # cannot use hangar inventories.
-  test "leaves out a hangar destination whose author cannot receive transfers" do
-    contract(:in_progress, crew: @contractor)
-    Flipper.disable("hangar_inventories")
-    Flipper.enable_actor("hangar_inventories", @contractor)
-    sign_in @contractor
-
-    assert_api_response :get, 200 do
-      assert_empty parsed_body
     end
   end
 

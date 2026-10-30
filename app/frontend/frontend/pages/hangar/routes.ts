@@ -138,7 +138,6 @@ export const routes: RouteRecordRaw[] = [
       needsAuthentication: true,
       title: "hangar.inventories",
       backgroundImage: "bg-5",
-      feature: FeatureFlagName.HANGAR_INVENTORIES,
     },
   },
   {
@@ -161,7 +160,6 @@ export const routes: RouteRecordRaw[] = [
       needsAuthentication: true,
       title: "hangar.inventories",
       backgroundImage: "bg-5",
-      feature: FeatureFlagName.HANGAR_INVENTORIES,
     },
   },
   {
@@ -183,7 +181,6 @@ export const routes: RouteRecordRaw[] = [
       needsAuthentication: true,
       title: "hangar.inventories",
       backgroundImage: "bg-5",
-      feature: FeatureFlagName.HANGAR_INVENTORIES,
     },
   },
   {

@@ -1,22 +1,18 @@
 # frozen_string_literal: true
 
-# A transfer is gated by the flags its inventories already ride on: one
-# touching a fleet inventory needs `fleet_logistics`, and one touching a
-# person's own hangar inventory needs `hangar_inventories`. A ship's hold is open
-# to everyone.
+# A transfer touching a fleet inventory is gated by the flag fleet inventories
+# already ride on, `fleet_logistics`. A person's own inventories, hangar and
+# ship alike, are open to everyone.
 module InventoryTransfersFeatureConcern
   extend ActiveSupport::Concern
 
   # Both ends of a transfer have to be open, and the two ends may be in
   # different families. Asked of the inventory rather than of the request,
-  # because a crossing transfer is subject to both. A person's inventory is
-  # asked of its holder: that is the caller for their own, and the author for
-  # a contract's hangar destination, which a contractor delivers into.
+  # because a crossing transfer is subject to both.
   private def inventory_feature_enabled?(inventory)
     case inventory
     when ::FleetInventory then feature_enabled?("fleet_logistics", inventory.fleet)
-    when ::Inventory
-      inventory.vehicle? || Flipper.enabled?("hangar_inventories", inventory.holder)
+    when ::Inventory then true
     else false
     end
   end

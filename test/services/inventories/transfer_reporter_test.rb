@@ -7,9 +7,6 @@ module Inventories
     setup do
       @sender = create(:user)
       @recipient = create(:user)
-      [@sender, @recipient].each do |actor|
-        Flipper.enable_actor(:hangar_inventories, actor)
-      end
 
       @source = create(:inventory, holder: @sender)
       entry = create(:inventory_item, inventory: @source, name: "Titanium",

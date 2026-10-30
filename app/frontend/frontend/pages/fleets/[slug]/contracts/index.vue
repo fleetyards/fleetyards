@@ -11,12 +11,7 @@ import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import ContractBoard from "@/frontend/components/Fleets/Contracts/ContractBoard/index.vue";
-import {
-  type Fleet,
-  type FleetMember,
-  FeatureFlagName,
-} from "@/services/fyApi";
-import { useFeatures } from "@/frontend/composables/useFeatures";
+import { type Fleet, type FleetMember } from "@/services/fyApi";
 import { contractBoardViewFrom } from "@/frontend/components/Fleets/Contracts/ContractBoard/views";
 import { useI18n } from "@/shared/composables/useI18n";
 import { checkAccess } from "@/shared/utils/Access";
@@ -41,20 +36,15 @@ const route = useRoute();
 // switches -- `App.vue` keys the page on its path.
 const view = computed(() => contractBoardViewFrom(route.query.view));
 
-const { isFeatureEnabled } = useFeatures();
-
 // A personal contract delivers into the member's own inventory, so it needs no
-// contract privilege -- only a fleet that allows them and inventories that can
-// receive a delivery.
+// contract privilege -- only a fleet that allows them.
 const canCreate = computed(
   () =>
     checkAccess(props.resourceAccess, [
       "fleet:manage",
       "fleet:contracts:manage",
       "fleet:contracts:create",
-    ]) ||
-    (props.fleet.personalContractsEnabled &&
-      isFeatureEnabled(FeatureFlagName.HANGAR_INVENTORIES)),
+    ]) || props.fleet.personalContractsEnabled,
 );
 
 const goToCreate = () => {

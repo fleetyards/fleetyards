@@ -32,8 +32,7 @@ module Contracts
 
     # Only while the author can actually receive a transfer. Offering an
     # inventory nobody can deliver into would post a contract that can never
-    # be worked. A delivery here is addressed to the author, and the transfer
-    # gate lets a person receive only with the hangar flag on.
+    # be worked.
     def hangar_inventories
       return [] unless @fleet.personal_contracts_enabled?
       return [] unless author_can_receive?

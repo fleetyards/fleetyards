@@ -15,7 +15,6 @@ module Inventories
       @hangar = create(:inventory, holder: @user)
       @depot = create(:fleet_inventory, fleet: @fleet)
 
-      [@user, @officer].each { |actor| enable_transfers(actor) }
       Flipper.enable_actor(:fleet_logistics, @fleet)
     end
 
@@ -192,10 +191,6 @@ module Inventories
     # grouped per quality and dropping any group that is not positive.
     private def visible_stock
       @hangar.reload.current_stock.sum { |row| row.net_quantity.to_i }
-    end
-
-    private def enable_transfers(actor)
-      Flipper.enable_actor(:hangar_inventories, actor)
     end
   end
 end

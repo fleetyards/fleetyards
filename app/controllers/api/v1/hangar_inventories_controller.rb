@@ -3,8 +3,6 @@
 module Api
   module V1
     class HangarInventoriesController < ::Api::BaseController
-      include HangarInventoriesFeatureConcern
-
       after_action -> { pagination_header(:hangar_inventories) }, only: %i[index]
 
       before_action :authenticate_user!, only: []
@@ -15,7 +13,6 @@ module Api
         unless: :user_signed_in?,
         only: %i[create update destroy]
 
-      before_action :check_hangar_inventories_feature
       before_action :set_hangar_inventory, only: %i[show update destroy]
 
       def index
