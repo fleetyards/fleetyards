@@ -1241,6 +1241,17 @@
         "topViewColored": "俯视图（彩色）",
         "onSale": "在售",
         "playerOwnable": "玩家可拥有?",
+        "ccuOverride": "CCU",
+        "ccuOverrides": {
+          "allowed": "RSI 出售升级到此舰船及从此舰船出发的 CCU",
+          "none": "RSI 不为此舰船出售 CCU"
+        },
+        "ccuEvidence": {
+          "onSale": "今天在商店有售",
+          "into": "升级到此舰船的 CCU 首次见于 %{date}",
+          "outOf": "从此舰船出发的 CCU 首次见于 %{date}",
+          "none": "在商店、机库或回购中都未见过 CCU"
+        },
         "ingameOnly": "仅游戏内获取",
         "stealth": "隐身",
         "rsiFocus": "RSI：%{value}",

@@ -1241,6 +1241,17 @@
         "topViewColored": "Draufsicht Farbig",
         "onSale": "Im Angebot",
         "playerOwnable": "Für Spieler erwerbbar?",
+        "ccuOverride": "CCUs",
+        "ccuOverrides": {
+          "allowed": "RSI verkauft CCUs zu und aus diesem Schiff",
+          "none": "RSI verkauft keine CCUs dafür"
+        },
+        "ccuEvidence": {
+          "onSale": "Heute im Store erhältlich",
+          "into": "CCU zu diesem Schiff zuerst gesehen am %{date}",
+          "outOf": "CCU aus diesem Schiff zuerst gesehen am %{date}",
+          "none": "Kein CCU in einem Store, Hangar oder Buy-back gesehen"
+        },
         "ingameOnly": "Nur im Spiel",
         "stealth": "Tarnung",
         "rsiFocus": "RSI: %{value}",

@@ -58,6 +58,10 @@ module Admin
               landedFleetchartOffsetBeam: {type: [:number, :null]},
               onSale: {type: :boolean},
               playerOwnable: {type: :boolean},
+              ccuOverride: {
+                type: [:string, :null], enum: ::Model::CCU_OVERRIDES + [nil],
+                description: "Whether RSI sells upgrades into and out of the ship, over what the stores and hangars showed; null to go by those"
+              },
               ingameOnly: {type: :boolean},
               canLandOnPlanets: {type: :boolean},
               storeUrl: {type: [:string, :null]},

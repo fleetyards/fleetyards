@@ -1241,6 +1241,17 @@
         "topViewColored": "Vista superior a color",
         "onSale": "En venta",
         "playerOwnable": "¿Adquirible por jugadores?",
+        "ccuOverride": "CCUs",
+        "ccuOverrides": {
+          "allowed": "RSI vende CCUs hacia y desde esta nave",
+          "none": "RSI no vende CCUs para esta nave"
+        },
+        "ccuEvidence": {
+          "onSale": "A la venta hoy en la tienda",
+          "into": "CCU hacia ella visto por primera vez el %{date}",
+          "outOf": "CCU desde ella visto por primera vez el %{date}",
+          "none": "Ningún CCU visto en tiendas, hangares ni buy-backs"
+        },
         "ingameOnly": "Solo en el juego",
         "stealth": "Sigilo",
         "rsiFocus": "RSI: %{value}",
