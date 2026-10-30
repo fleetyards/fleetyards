@@ -9,6 +9,7 @@ module Loaders
       def perform(version = nil, admin_user_id = nil, environment = nil)
         one_load_at_a_time(version, admin_user_id, environment) do
           load_source(version, admin_user_id, environment)
+          link_paint_components
         end
       end
 
@@ -68,6 +69,15 @@ module Loaders
         import.fail!
 
         raise e
+      end
+
+      # Outside the load's rescue, which would fail an import that already
+      # finished. Raising here would retry the job, and load the build again.
+      private def link_paint_components
+        ::Loaders::PaintComponentsLinkJob.perform_async
+      rescue => e
+        Appsignal.report_error(e)
+        Rails.logger.error("[#{self.class.name}] could not start the paint components link: #{e.message}")
       end
 
       # Read out of the tree's own manifest rather than recomputed from its

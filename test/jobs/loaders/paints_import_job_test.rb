@@ -99,5 +99,23 @@ module Loaders
       assert_equal 1, AdminNotification.where(notification_type: "paints_import").count
       assert_equal 2, AdminNotification.find_by(notification_type: "paints_import").occurrences
     end
+
+    test "#perform links the imported paints to their components" do
+      stub_importer(results)
+
+      assert_difference -> { ::Loaders::PaintComponentsLinkJob.jobs.size }, 1 do
+        ::Loaders::PaintsImportJob.new.perform
+      end
+    end
+
+    test "#perform leaves a finished import finished when the link cannot be queued" do
+      stub_importer(results)
+      Appsignal.stubs(:report_error)
+      ::Loaders::PaintComponentsLinkJob.stubs(:perform_async).raises(RedisClient::CannotConnectError, "Redis is down")
+
+      ::Loaders::PaintsImportJob.new.perform
+
+      assert_equal "finished", Imports::PaintsImport.last.aasm_state
+    end
   end
 end
