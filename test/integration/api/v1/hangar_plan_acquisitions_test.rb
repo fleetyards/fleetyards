@@ -48,6 +48,7 @@ class Api::V1::HangarPlanAcquisitionsTest < ActionDispatch::IntegrationTest
 
       response(200, "successful") { schema PLAN }
       response(400, "validation error") { schema ::Shared::V1::Schemas::ValidationError }
+      response(404, "not found") { schema ::Shared::V1::Schemas::StandardError }
     end
 
     delete("Destroy Hangar Plan Acquisition") do
@@ -132,9 +133,19 @@ class Api::V1::HangarPlanAcquisitionsTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "POST rejects a chain that does not end on the slot's ship" do
+  test "POST holds a start elsewhere until its route is planned" do
+    assert_api_response :post, 201, api_path: "/hangar/plans/{hangarPlanId}/acquisitions",
+      path_params: {hangarPlanId: @plan.id}, body: {candidateId: @candidate.id, startKind: "store", startModelId: @cutlass.id} do
+      route = parsed_body.dig("slots", 0, "candidates", 0, "acquisitions", 0)
+      assert_equal false, route["routeComplete"]
+      assert_equal @cutlass.id, route.dig("startModel", "id")
+    end
+  end
+
+  test "POST rejects upgrades that do not end on the slot's ship" do
     assert_api_response :post, 400, api_path: "/hangar/plans/{hangarPlanId}/acquisitions",
-      path_params: {hangarPlanId: @plan.id}, body: {candidateId: @candidate.id, startKind: "store", startModelId: @cutlass.id}
+      path_params: {hangarPlanId: @plan.id},
+      body: {candidateId: @candidate.id, startKind: "store", startModelId: @cutlass.id, steps: [{sourceKind: "store", toModelId: @constellation.id}]}
   end
 
   test "POST rejects another user's ship" do
@@ -229,6 +240,28 @@ class Api::V1::HangarPlanAcquisitionsTest < ActionDispatch::IntegrationTest
       body: {steps: [{sourceKind: "store", toModelId: @cutlass.id}]}
 
     assert_empty acquisition.reload.upgrade_steps
+  end
+
+  test "PUT moves a route to another ship of the plan" do
+    vehicle = create(:vehicle, user: @user, model: @cutlass)
+    acquisition = @plan.acquisitions.create!(candidate: @candidate, start_kind: "owned", source_vehicle: vehicle)
+    other = create(:hangar_plan_candidate, slot: create(:hangar_plan_slot, hangar_plan: @plan), model: @constellation)
+
+    assert_api_response :put, 200, api_path: "/hangar/plans/{hangarPlanId}/acquisitions/{id}",
+      path_params: {hangarPlanId: @plan.id, id: acquisition.id}, body: {candidateId: other.id, steps: []}
+
+    assert_equal other, acquisition.reload.candidate
+    assert_equal vehicle, acquisition.source_vehicle
+  end
+
+  test "PUT does not move a route to another user's plan" do
+    acquisition = @plan.acquisitions.create!(candidate: @candidate, start_kind: "store", start_model: @carrack)
+    foreign = create(:hangar_plan_candidate, slot: create(:hangar_plan_slot, hangar_plan: create(:hangar_plan)), model: @cutlass)
+
+    assert_api_response :put, 404, api_path: "/hangar/plans/{hangarPlanId}/acquisitions/{id}",
+      path_params: {hangarPlanId: @plan.id, id: acquisition.id}, body: {candidateId: foreign.id}
+
+    assert_equal @candidate, acquisition.reload.candidate
   end
 
   test "DELETE removes a route" do

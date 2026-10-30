@@ -39,6 +39,18 @@ class HangarPlans::ComparisonTest < ActiveSupport::TestCase
     assert_equal ["unassigned"], HangarPlans::Comparison.new(@plan).vehicles.map(&:status)
   end
 
+  test "a hangar ship paired with another ship but no route yet is unrouted" do
+    vehicle = create(:vehicle, user: @user, model: @cutlass)
+    candidate = slot_for(@carrack)
+    @plan.acquisitions.create!(candidate:, start_kind: "owned", source_vehicle: vehicle)
+
+    entry = HangarPlans::Comparison.new(@plan).vehicles.sole
+
+    assert_equal "unrouted", entry.status
+    assert_equal @carrack, entry.target_model
+    assert_empty HangarPlans::Comparison.new(@plan).gaps
+  end
+
   test "model counts change between the hangar and the hangar after the plan" do
     create(:vehicle, user: @user, model: @cutlass)
     create(:vehicle, user: @user, model: @constellation)
