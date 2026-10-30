@@ -470,7 +470,7 @@
         "use": "使用",
         "noShips": "机库中没有可用于此槽位的舰船。",
         "removeStart": "从槽位中移除",
-        "otherStarts": "回购或其他起点",
+        "otherStarts": "游戏内购买或其他路线",
         "same": "同一艘舰船，保持原样",
         "sameModel": "相同型号",
         "noEnds": "没有槽位还能容纳舰船。选择任意舰船，为它新建一个槽位。",
@@ -483,7 +483,13 @@
         "onlyMelt": "这艘舰船没有升级，只能熔炼",
         "excludes": "排除 %{ships}",
         "ccuSalesOnly": "CCU 仅在促销期间出售",
-        "ccuUnknown": "尚未见过 CCU"
+        "ccuUnknown": "尚未见过 CCU",
+        "sources": {
+          "hangar": "你的机库",
+          "buyback": "回购",
+          "store": "商店"
+        },
+        "filters": "筛选起点"
       },
       "slotsTitle": "槽位",
       "editSlots": "编辑槽位"

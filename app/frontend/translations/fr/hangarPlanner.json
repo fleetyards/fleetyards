@@ -470,7 +470,7 @@
         "use": "Utiliser",
         "noShips": "Aucun vaisseau du hangar n'est libre pour cet emplacement.",
         "removeStart": "Retirer de l'emplacement",
-        "otherStarts": "Buy-back ou autre départ",
+        "otherStarts": "Achat en jeu ou autre parcours",
         "same": "Le même vaisseau, gardé tel quel",
         "sameModel": "Même modèle",
         "noEnds": "Aucun emplacement n'a de place pour un autre vaisseau. Choisissez n'importe quel vaisseau pour lui donner son propre emplacement.",
@@ -483,7 +483,13 @@
         "onlyMelt": "Aucun upgrade n'existe pour lui, il ne peut qu'être fondu",
         "excludes": "Exclut %{ships}",
         "ccuSalesOnly": "CCU seulement pendant les ventes",
-        "ccuUnknown": "Aucun CCU vu pour l'instant"
+        "ccuUnknown": "Aucun CCU vu pour l'instant",
+        "sources": {
+          "hangar": "Votre hangar",
+          "buyback": "Buy-back",
+          "store": "Store"
+        },
+        "filters": "Affiner les départs"
       },
       "slotsTitle": "Emplacements",
       "editSlots": "Modifier les emplacements"

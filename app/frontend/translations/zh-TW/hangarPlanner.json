@@ -470,7 +470,7 @@
         "use": "使用",
         "noShips": "機庫中沒有可用於此欄位的艦船。",
         "removeStart": "從欄位中移除",
-        "otherStarts": "回購或其他起點",
+        "otherStarts": "遊戲內購買或其他路線",
         "same": "同一艘艦船，保持原樣",
         "sameModel": "相同型號",
         "noEnds": "沒有欄位還能容納艦船。選擇任意艦船，為它新增一個欄位。",
@@ -483,7 +483,13 @@
         "onlyMelt": "這艘艦船沒有升級，只能熔煉",
         "excludes": "排除 %{ships}",
         "ccuSalesOnly": "CCU 僅在促銷期間販售",
-        "ccuUnknown": "尚未見過 CCU"
+        "ccuUnknown": "尚未見過 CCU",
+        "sources": {
+          "hangar": "你的機庫",
+          "buyback": "回購",
+          "store": "商店"
+        },
+        "filters": "篩選起點"
       },
       "slotsTitle": "槽位",
       "editSlots": "編輯槽位"

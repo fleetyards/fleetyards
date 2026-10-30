@@ -2,8 +2,10 @@ import { flushPromises } from "@vue/test-utils";
 import { describe, expect, it, vi } from "vitest";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import {
+  BuybackPledgeKindEnum,
   HangarPlanSlotStateEnum,
   HangarPlanVehicleStatusEnum,
+  type HangarPlanBuybackResource,
   type HangarPlanCandidate,
   type HangarPlanComparison,
   type HangarPlanModel,
@@ -32,6 +34,22 @@ const prospector = model("Prospector", 155);
 const mole = model("MOLE", 315);
 const idris = model("Idris-P", 1500, false);
 const vulture = model("Vulture", 175);
+const aurora = model("Aurora MR", 30);
+
+const buyback = (
+  id: string,
+  attrs: Partial<HangarPlanBuybackResource> = {},
+): HangarPlanBuybackResource => ({
+  id,
+  name: "Standalone Ship - Aurora MR",
+  kind: BuybackPledgeKindEnum.SHIP,
+  price: 30,
+  used: false,
+  lifetimeInsurance: true,
+  insuranceKnown: true,
+  models: [aurora],
+  ...attrs,
+});
 
 const vehicle = (
   id: string,
@@ -52,7 +70,14 @@ const resources = ref<HangarPlanResources>({
   ],
   upgrades: [],
   storeModels: [],
-  buybacks: [],
+  buybacks: [
+    buyback("buyback-aurora"),
+    buyback("buyback-used", { name: "Used - Aurora MR", used: true }),
+    buyback("buyback-upgrade", {
+      name: "Upgrade - Aurora MR to Prospector",
+      kind: BuybackPledgeKindEnum.UPGRADE,
+    }),
+  ],
 });
 
 const comparison = ref({
@@ -155,6 +180,7 @@ describe("Hangar/Planner/StartPickerModal", () => {
     expect(titles(wrapper)).toEqual([
       "Buy new on the store",
       "Prospector",
+      "Standalone Ship - Aurora MR",
       "Cutlass Black",
     ]);
 
@@ -173,6 +199,27 @@ describe("Hangar/Planner/StartPickerModal", () => {
     );
   });
 
+  it("starts from a buy-back, narrowed to the buy-backs", async () => {
+    const mining = candidate(prospector);
+    const wrapper = await mountWithDefaults(Component, {
+      props: { planId: "plan", slot: slot([mining]), candidate: mining },
+    });
+
+    await wrapper
+      .find('[data-test="hangar-plan-start-source-buyback"] .chip__toggle')
+      .trigger("click");
+
+    expect(titles(wrapper)).toEqual(["Standalone Ship - Aurora MR"]);
+
+    await use(wrapper, "Aurora MR");
+
+    expect(pairStart).toHaveBeenLastCalledWith(
+      mining,
+      { kind: "buyback", pledgeId: "buyback-aurora", modelId: "Aurora MR" },
+      undefined,
+    );
+  });
+
   it("asks which ship an undecided slot settles on once the start is picked", async () => {
     const options = [candidate(prospector), candidate(mole)];
     const wrapper = await mountWithDefaults(Component, {
@@ -183,6 +230,7 @@ describe("Hangar/Planner/StartPickerModal", () => {
     // no upgrades for; the Vulture at $175 can only become the MOLE.
     expect(titles(wrapper)).toEqual([
       "Buy new on the store",
+      "Standalone Ship - Aurora MR",
       "Cutlass Black",
       "Prospector",
       "Vulture",

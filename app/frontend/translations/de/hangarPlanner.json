@@ -470,7 +470,7 @@
         "use": "Nehmen",
         "noShips": "Kein Schiff im Hangar ist für diesen Platz frei.",
         "removeStart": "Aus dem Platz nehmen",
-        "otherStarts": "Buy-back oder anderer Start",
+        "otherStarts": "Ingame-Kauf oder anderer Weg",
         "same": "Dasselbe Schiff, so behalten",
         "sameModel": "Gleiches Modell",
         "noEnds": "Kein Platz hat Raum für ein weiteres Schiff. Wähle ein beliebiges Schiff, um ihm einen eigenen Platz zu geben.",
@@ -483,7 +483,13 @@
         "onlyMelt": "Es gibt keine Upgrades dafür, es kann nur eingeschmolzen werden",
         "excludes": "Schließt %{ships} aus",
         "ccuSalesOnly": "CCU nur in Sales",
-        "ccuUnknown": "Noch kein CCU gesehen"
+        "ccuUnknown": "Noch kein CCU gesehen",
+        "sources": {
+          "hangar": "Dein Hangar",
+          "buyback": "Buy-back",
+          "store": "Store"
+        },
+        "filters": "Starts eingrenzen"
       },
       "slotsTitle": "Slots",
       "editSlots": "Slots bearbeiten"
