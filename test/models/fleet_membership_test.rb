@@ -257,4 +257,23 @@ class FleetMembershipTest < ActiveSupport::TestCase
 
     assert_equal later, @member_membership.reload.verification_reminded_at
   end
+
+  # A hangar sync files ships into a group with `TaskForce.insert_all`, so no
+  # callback on the ship or its loaner ever runs. The refresh has to read the
+  # group as it is now rather than rely on them.
+  test "#update_fleet_vehicles lists a ship filed in bulk into the shared group, and its loaner" do
+    user = create(:user)
+    group = create(:hangar_group, user:)
+    membership = create(:fleet_membership, :accepted, user:, ships_filter: "hangar_group", hangar_group_id: group.id)
+    loaner_model = create(:model)
+    parent_model = create(:model).tap { |model| model.loaners << loaner_model }
+    parent = create(:vehicle, user:, model: parent_model, wanted: false)
+    loaner = Vehicle.find_by!(loaner: true, vehicle_id: parent.id)
+    TaskForce.insert_all([{vehicle_id: parent.id, hangar_group_id: group.id, created_at: Time.current, updated_at: Time.current}])
+    FleetVehicle.where(fleet_id: membership.fleet_id).delete_all
+
+    membership.update_fleet_vehicles
+
+    assert_equal [loaner.id, parent.id].sort, FleetVehicle.where(fleet_id: membership.fleet_id).pluck(:vehicle_id).sort
+  end
 end
