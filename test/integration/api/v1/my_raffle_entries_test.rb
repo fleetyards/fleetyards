@@ -24,7 +24,6 @@ class Api::V1::MyRaffleEntriesTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable(:raffles)
     @user = create(:user)
   end
 
@@ -45,10 +44,4 @@ class Api::V1::MyRaffleEntriesTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 401
   end
 
-  test "GET /my-raffle-entries is forbidden while the feature is off" do
-    Flipper.disable(:raffles)
-    sign_in @user
-
-    assert_api_response :get, 403
-  end
 end

@@ -3,10 +3,6 @@
 module Api
   module V1
     class MyRaffleEntriesController < ::Api::BaseController
-      include RafflesFeatureConcern
-
-      before_action :check_raffles_feature
-
       after_action -> { pagination_header(:entries) }, only: [:index]
 
       def index

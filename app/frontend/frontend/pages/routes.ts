@@ -228,7 +228,6 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/frontend/pages/raffles/[id].vue"),
     meta: {
       title: "raffles",
-      feature: FeatureFlagName.RAFFLES,
       backgroundImage: "bg-5",
     },
   },
@@ -238,7 +237,6 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/frontend/pages/raffle-claims/[token].vue"),
     meta: {
       title: "raffleClaim",
-      feature: FeatureFlagName.RAFFLES,
       backgroundImage: "bg-5",
     },
   },
@@ -258,7 +256,6 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/frontend/pages/raffles/[id].vue"),
     meta: {
       title: "raffle",
-      feature: FeatureFlagName.RAFFLES,
       mobileBack: true,
       backgroundImage: "bg-5",
     },

@@ -98,7 +98,6 @@ class Api::V1::RafflesTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable(:raffles)
     @user = create(:user)
     @raffle = create(:raffle, code: "THE-GIFT-CODE")
   end
@@ -119,12 +118,6 @@ class Api::V1::RafflesTest < ActionDispatch::IntegrationTest
     @raffle.update_columns(published: false)
 
     assert_api_response :get, 404, api_path: "/raffles/current"
-  end
-
-  test "GET /raffles/current is forbidden while the feature is off" do
-    Flipper.disable(:raffles)
-
-    assert_api_response :get, 403, api_path: "/raffles/current"
   end
 
   test "GET /raffles/:id marks the reader's own entry" do
@@ -165,8 +158,7 @@ class Api::V1::RafflesTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test "GET /raffles/preview/:token shows a draft without sign-in or the feature" do
-    Flipper.disable(:raffles)
+  test "GET /raffles/preview/:token shows a draft without sign-in" do
     draft = create(:raffle, :draft, code: "DRAFT-CODE")
 
     assert_api_response :get, 200, api_path: "/raffles/preview/{token}", path_params: {token: draft.generate_token_for(:preview)} do

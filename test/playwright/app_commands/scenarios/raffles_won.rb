@@ -3,9 +3,6 @@ require "factory_bot_rails"
 
 Rails.logger.info "E2E: Creating raffles_won scenario test data..."
 
-Flipper.add(:raffles) unless Flipper.exist?(:raffles)
-Flipper.enable(:raffles)
-
 winner = FactoryBot.create(:user, username: "winner", password: "password")
 
 won = FactoryBot.create(:raffle, :closed, title: "Won Raffle", code: "E2E-GIFT-CODE", drawn_at: 1.hour.ago)

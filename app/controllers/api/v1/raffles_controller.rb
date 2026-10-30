@@ -3,12 +3,7 @@
 module Api
   module V1
     class RafflesController < ::Api::BaseController
-      include RafflesFeatureConcern
-
       skip_before_action :authenticate_user!, only: %i[current show entrants preview]
-      # The token stands in for the feature gate as well: whoever reviews a
-      # raffle before launch is not in the group it is enabled for.
-      before_action :check_raffles_feature, except: %i[preview]
       before_action :set_raffle, only: %i[show entrants]
 
       after_action -> { pagination_header(:entries) }, only: [:entrants]

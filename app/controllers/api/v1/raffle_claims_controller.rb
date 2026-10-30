@@ -3,10 +3,7 @@
 module Api
   module V1
     class RaffleClaimsController < ::Api::PublicBaseController
-      include RafflesFeatureConcern
-
       skip_verify_authorized
-      before_action :check_raffles_feature
 
       def create
         @entry = RaffleEntry.find_by_token_for(:raffle_claim, params[:token].to_s)

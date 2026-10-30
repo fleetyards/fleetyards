@@ -40,7 +40,6 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "settings.raffles",
       needsAuthentication: true,
-      feature: FeatureFlagName.RAFFLES,
     },
   },
   {

@@ -120,6 +120,3 @@ loadout_preview:
 
 hangar_planner:
   description: "Hangar planner — plan the hangar you want in slots, compare it with your current hangar and work out melts, upgrades and buy-backs to get there"
-
-raffles:
-  description: "Raffles — users enter to win gift codes, an admin draws the winner"
