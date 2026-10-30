@@ -10,7 +10,7 @@ export default {
 </script>
 
 <template>
-  <div class="vehicle-tab-layout vehicle-tab-layout--split">
+  <div class="vehicle-tab-layout">
     <div class="vehicle-tab-layout__main">
       <slot />
     </div>
@@ -23,42 +23,32 @@ export default {
 <style lang="scss" scoped>
 .vehicle-tab-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 20px;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 28px;
   align-items: start;
 
-  &--split {
-    grid-template-columns: minmax(0, 1fr) 300px;
-    gap: 28px;
-
-    @media (max-width: $desktop-breakpoint) {
-      grid-template-columns: minmax(0, 1fr);
-      gap: 20px;
-    }
+  @media (max-width: $desktop-breakpoint) {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
   }
 
   &__main {
     min-width: 0;
   }
 
-  // Above the content wherever there is one column: the button that adds to a
-  // list should not sit under the whole of it.
   &__side {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    order: -1;
+    position: sticky;
+    top: 16px;
 
     :deep(.metrics-card__body--slim) {
       padding-top: 15px;
     }
-  }
 
-  &--split &__side {
-    position: sticky;
-    top: 16px;
-    order: 0;
-
+    // Above the content wherever there is one column: the button that adds to
+    // a list should not sit under the whole of it.
     @media (max-width: $desktop-breakpoint) {
       position: static;
       order: -1;

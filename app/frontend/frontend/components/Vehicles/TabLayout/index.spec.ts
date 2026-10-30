@@ -1,15 +1,18 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
+import { h } from "vue";
 import Component from "./index.vue";
 
-vi.mock("@/frontend/composables/useFeatures", () => ({
-  useFeatures: () => ({ isFeatureEnabled: () => true }),
-}));
-
 describe("VehicleTabLayout", () => {
-  it("puts the side column beside the content under the full header", async () => {
-    const wrapper = await mountWithDefaults(Component, {});
+  it("renders the content and the side column", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      slots: {
+        default: () => [h("p", "content")],
+        side: () => [h("p", "side")],
+      },
+    });
 
-    expect(wrapper.classes()).toContain("vehicle-tab-layout--split");
+    expect(wrapper.find(".vehicle-tab-layout__main").text()).toBe("content");
+    expect(wrapper.find(".vehicle-tab-layout__side").text()).toBe("side");
   });
 });
