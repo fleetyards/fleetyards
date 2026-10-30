@@ -113,8 +113,8 @@ const image = computed(() => {
 
 const modelName = computed(() => model.value?.name);
 
-// The owner's own ship opens on its overview once there is one; anyone else's,
-// and a loaner, which has no page of its own to edit, still opens the model.
+// The owner's own ship opens on its overview; anyone else's, and a loaner,
+// which has no page of its own to edit, opens the model.
 const toVehicle = useVehicleRoute();
 
 const hasOverview = computed(() => props.editable && !props.vehicle.loaner);
