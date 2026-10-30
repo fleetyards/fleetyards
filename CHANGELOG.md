@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.29.0](https://github.com/fleetyards/fleetyards/compare/v9.28.0...v9.29.0) (2026-10-30)
+
+
+### Features
+
+* **catalogue:** leave the grid out of an item's full screen holo ([314be8c](https://github.com/fleetyards/fleetyards/commit/314be8c904235010f2954b1c036151730b78fc1d))
+* **hangar:** open a vehicle's full screen holo in the ship's viewer ([a708c1e](https://github.com/fleetyards/fleetyards/commit/a708c1e6848a5810434bd43ee874a47f83a2798f))
+* **holo:** offer the Stanton, Crusader and Pyro nebulae as full screen backdrops ([11f694a](https://github.com/fleetyards/fleetyards/commit/11f694a6f33b183a0e8f87b223f0a269bd5b9c4d))
+* **loadouts:** fade the metrics card in behind a loading state ([a99ce99](https://github.com/fleetyards/fleetyards/commit/a99ce9906c95b4c0bd33152ad07e60bd46333cfb))
+* **loadouts:** select a slot by clicking its part on the holo ([323260d](https://github.com/fleetyards/fleetyards/commit/323260d450a3318952436fd0ec9936f74841ed25))
+* **ships:** fold the views from behind beside the hero on wide screens ([9a736f9](https://github.com/fleetyards/fleetyards/commit/9a736f9b829e77daf2b716bd8b401f0196016168))
+* **ships:** switch the pose in the full screen holo ([aa055b0](https://github.com/fleetyards/fleetyards/commit/aa055b0c0e5ff6707826792919b86eb0a3542455))
+
+
+### Bug Fixes
+
+* **holo:** draw the hologram's mounted parts lighter and in a fixed order ([336bb8f](https://github.com/fleetyards/fleetyards/commit/336bb8f11ffbf7fe3e1d1d51346a9432fa7fe712))
+* **holo:** keep the hologram's windows under the hull at every angle ([691f2b5](https://github.com/fleetyards/fleetyards/commit/691f2b5982ddb86225bf3c72230effa4a7c93611))
+* **holo:** keep the space backdrop's stars inside the camera's far plane ([11c3242](https://github.com/fleetyards/fleetyards/commit/11c3242e87133ab954625940976b9778240c9f6e))
+* **ships:** cap the holo viewer at 1100px on wide screens ([e5b0ed6](https://github.com/fleetyards/fleetyards/commit/e5b0ed6590bdddc045ec4c16eef2f9d6dbe64567))
+
 ## [9.28.0](https://github.com/fleetyards/fleetyards/compare/v9.27.0...v9.28.0) (2026-10-29)
 
 
