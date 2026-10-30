@@ -61,3 +61,7 @@ Issue: not filed yet (the decisions are recorded in the draft issue body handed 
 - A non-upgradable ship marked "should change" keeps that mark but offers only
   melt or back to undecided.
 - The e2e spec was only re-pointed at the new middle button; CI runs it.
+- The route editor only builds the chain of upgrades between a start and an
+  end the row already picked, and is offered only between two different ships
+  upgrades can join. Picking a start, the build-from-the-target mode and the
+  start lists left it; in-game starts moved into the row's start list.
