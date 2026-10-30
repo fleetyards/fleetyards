@@ -1,11 +1,12 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { nextTick, type Ref, ref } from "vue";
+import { h, nextTick, type Ref, ref } from "vue";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import FocusSelect from "@/frontend/components/base/ModelFocusSelect/index.vue";
 import SizeSelect from "@/frontend/components/base/ModelSizeSelect/index.vue";
 import ProductionStatusSelect from "@/frontend/components/base/ProductionStatusSelect/index.vue";
 import ManufacturerSelect from "@/frontend/components/base/ManufacturerSelect/index.vue";
 import { type ModelQuery } from "@/services/fyApi";
+import { type ModelPickerFilters } from "./types";
 import Component from "./index.vue";
 
 const option = {
@@ -253,6 +254,29 @@ describe("Models/PickerModal", () => {
     await wrapper.find(".model-picker__reset").trigger("click");
 
     expect(lastQuery()).toEqual({});
+  });
+
+  it("hands the filters picked to the caller's filter actions", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { title: "Pick", submitLabel: "Add ships" },
+      slots: {
+        "filter-actions": ({ filters }: { filters: ModelPickerFilters }) => [
+          h(
+            "span",
+            { "data-test": "picked" },
+            `${filters.focusIn.join()}/${filters.sizeIn.join()}`,
+          ),
+        ],
+      },
+    });
+
+    wrapper
+      .findComponent(FocusSelect)
+      .vm.$emit("update:modelValue", ["mining"]);
+    wrapper.findComponent(SizeSelect).vm.$emit("update:modelValue", ["large"]);
+    await nextTick();
+
+    expect(wrapper.find('[data-test="picked"]').text()).toBe("mining/large");
   });
 
   it("keeps the caller's production status pin whatever else is picked", async () => {

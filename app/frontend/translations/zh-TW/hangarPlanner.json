@@ -310,7 +310,8 @@
         },
         "rebased": "方案已依你的機庫更新。",
         "sharingOn": "已開啟分享。任何擁有連結的人都可以檢視此計畫。",
-        "copyFailed": "無法複製連結，請從欄位中複製。"
+        "copyFailed": "無法複製連結，請從欄位中複製。",
+        "filtersSaved": "已為 %{slot} 儲存篩選"
       },
       "filterChips": {
         "priceFrom": "%{price} 起",
@@ -489,10 +490,12 @@
           "buyback": "回購",
           "store": "商店"
         },
-        "filters": "篩選起點"
+        "filters": "篩選起點",
+        "saveFilters": "為此欄位儲存篩選"
       },
       "slotsTitle": "槽位",
-      "editSlots": "編輯槽位"
+      "editSlots": "編輯槽位",
+      "slotNumber": "欄位 %{number}"
     }
   }
 }

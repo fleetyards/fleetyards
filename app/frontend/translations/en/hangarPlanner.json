@@ -310,7 +310,8 @@
         },
         "rebased": "Plan updated from your hangar.",
         "sharingOn": "Sharing is on. Anyone with the link can view this plan.",
-        "copyFailed": "The link could not be copied. Copy it from the field instead."
+        "copyFailed": "The link could not be copied. Copy it from the field instead.",
+        "filtersSaved": "Filters saved for %{slot}"
       },
       "filterChips": {
         "priceFrom": "from %{price}",
@@ -489,10 +490,12 @@
           "buyback": "Buy-back",
           "store": "Store"
         },
-        "filters": "Narrow the starts"
+        "filters": "Narrow the starts",
+        "saveFilters": "Save filters for this slot"
       },
       "slotsTitle": "Slots",
-      "editSlots": "Edit slots"
+      "editSlots": "Edit slots",
+      "slotNumber": "Slot %{number}"
     }
   }
 }
