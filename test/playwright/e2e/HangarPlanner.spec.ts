@@ -41,7 +41,7 @@ test.describe("Hangar Planner", () => {
     // RSI hangar already holds, so the route costs nothing more.
     await page
       .getByTestId("hangar-plan-gap")
-      .getByTestId("hangar-plan-flow-add-route")
+      .getByTestId("hangar-plan-flow-route")
       .click();
     await page.getByTestId("modal").waitFor({ state: "visible" });
 

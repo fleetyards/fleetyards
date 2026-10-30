@@ -15,6 +15,8 @@ import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
 import {
   type HangarFlowDecision,
+  type HangarFlowEnd,
+  type HangarFlowStart,
   hangarFlowDecisionIcons,
 } from "@/frontend/components/Hangar/Planner/HangarFlow/types";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -24,6 +26,7 @@ import {
   type HangarPlanAcquisition,
   type HangarPlanCandidate,
   type HangarPlanComparison,
+  type HangarPlanVehicleStatus,
   type HangarPlanModel,
   type HangarPlanSlot,
   type HangarPlanSummary,
@@ -45,6 +48,8 @@ const props = withDefaults(defineProps<Props>(), {
 const emit = defineEmits<{
   decide: [vehicleId: string, decision: HangarFlowDecision];
   route: [candidate: HangarPlanCandidate, acquisition?: HangarPlanAcquisition];
+  start: [start: HangarFlowStart];
+  end: [end: HangarFlowEnd];
   pick: [slot: HangarPlanSlot];
   edit: [slot: HangarPlanSlot];
 }>();
@@ -77,21 +82,27 @@ type Row = {
   action: { kind: string; icon?: string; label: string; detail?: string };
   right?: Card;
   rightNone?: string;
-  // The plan slot the right card stands for, opened to choose or change its
-  // ships.
-  slot?: HangarPlanSlot;
-  // A hangar ship the plan has not settled, offered every way to settle it.
+  // A hangar ship the plan has not settled, with the ways left to settle it
+  // besides picking where it ends up.
   vehicleId?: string;
   decisions?: HangarFlowDecision[];
-  // How the slot side is worked on: ships to pick for an empty slot, or a
-  // route to plan to one of its ships, or to edit.
-  slotAction?:
-    | { kind: "pick"; slot: HangarPlanSlot }
-    | {
-        kind: "route";
-        candidate: HangarPlanCandidate;
-        acquisition?: HangarPlanAcquisition;
-      };
+  // What the left card picks a start for.
+  start?: HangarFlowStart;
+  // What the right card picks an end ship for.
+  end?: HangarFlowEnd;
+  // The route the middle plans or edits.
+  route?: {
+    candidate: HangarPlanCandidate;
+    acquisition?: HangarPlanAcquisition;
+  };
+  // Both ends picked, but no upgrade leads from one to the other, so the
+  // middle asks for another start instead.
+  restart?: boolean;
+  // The slot the right card opens where it picks no end: one still choosing
+  // its ship, or one whose units have no start yet.
+  slot?: HangarPlanSlot;
+  // An empty slot, which the right card fills with ships to choose from.
+  pickSlot?: HangarPlanSlot;
 };
 
 type Group = { key: RowGroup; rows: Row[]; collapsible: boolean };
@@ -125,17 +136,7 @@ const routes = computed(() =>
   ),
 );
 
-const editRoute = (route?: {
-  candidate: HangarPlanCandidate;
-  acquisition: HangarPlanAcquisition;
-}) =>
-  route
-    ? {
-        kind: "route" as const,
-        candidate: route.candidate,
-        acquisition: route.acquisition,
-      }
-    : undefined;
+type PlannedRoute = (typeof routes.value)[number];
 
 const routeCost = (acquisition: HangarPlanAcquisition) => {
   const prices = [
@@ -167,219 +168,317 @@ const hangarCard = (
   model,
 });
 
-const statusOrder: HangarPlanVehicleStatusEnum[] = [
-  HangarPlanVehicleStatusEnum.UPGRADED,
-  HangarPlanVehicleStatusEnum.KEPT,
-];
+const slotCard = (route: PlannedRoute): Card => ({
+  title: route.model.name,
+  sub: slotSub(route.slot, route.index),
+  model: route.model,
+  pill: route.acquisition.routeComplete ? decidedPill.value : undefined,
+  tone: route.acquisition.routeComplete ? undefined : "warning",
+});
 
-const keptRows = computed<Row[]>(() =>
-  props.comparison.vehicles
-    .filter((entry) => statusOrder.includes(entry.status))
-    .sort(
-      (a, b) => statusOrder.indexOf(a.status) - statusOrder.indexOf(b.status),
-    )
-    .map((entry) => {
-      const route = routes.value.find(
-        (candidate) =>
-          candidate.acquisition.sourceVehicleId === entry.vehicleId,
-      );
-      const upgraded = entry.status === HangarPlanVehicleStatusEnum.UPGRADED;
-      const target = upgraded
-        ? (entry.targetModel ?? entry.model)
-        : entry.model;
-      const steps = route?.acquisition.steps.length ?? 0;
+const routeTarget = (route: PlannedRoute) => ({
+  candidate: route.candidate,
+  acquisition: route.acquisition,
+});
 
-      return {
-        key: entry.vehicleId,
-        group: upgraded ? ("ships" as const) : ("kept" as const),
-        order: shipOrder(entry.vehicleId),
-        testId: "hangar-plan-vehicle-status",
-        left: hangarCard(entry.name, entry.model),
-        action: upgraded
-          ? {
-              kind: "upgraded",
-              icon: "fa-light fa-arrow-up-right",
-              label: t("hangarPlanner.vehicleStatuses.upgraded"),
-              detail: t("hangarPlanner.comparison.flow.steps", {
-                count: steps,
-                price: money(route ? routeCost(route.acquisition) : null),
-              }),
-            }
-          : {
+// RSI sells no upgrade into or out of some ships, so a start elsewhere can
+// never become them.
+const routable = (route: PlannedRoute) =>
+  route.acquisition.startModel.upgradable && route.model.upgradable;
+
+const unroutedAction = (route: PlannedRoute) =>
+  routable(route)
+    ? {
+        kind: "unrouted",
+        icon: "fa-light fa-route",
+        label: t("hangarPlanner.comparison.flow.planRoute"),
+        detail: t("hangarPlanner.comparison.flow.notCounted"),
+      }
+    : {
+        kind: "unrouted",
+        icon: "fa-light fa-ban",
+        label: t("hangarPlanner.comparison.flow.noUpgrade"),
+        detail: t("hangarPlanner.comparison.flow.pickOtherStart"),
+      };
+
+// Where the middle leads for a planned route: the route itself, or another
+// start when none can be planned.
+const middle = (route: PlannedRoute) =>
+  route.acquisition.routeComplete || routable(route)
+    ? { route: routeTarget(route) }
+    : { restart: true };
+
+const routedAction = (route: PlannedRoute) => {
+  const steps = route.acquisition.steps.length;
+
+  return {
+    kind: steps ? "upgraded" : "kept",
+    icon: steps ? "fa-light fa-arrow-up-right" : undefined,
+    label: steps
+      ? t("hangarPlanner.vehicleStatuses.upgraded")
+      : t("hangarPlanner.vehicleStatuses.kept"),
+    detail: steps
+      ? t("hangarPlanner.comparison.flow.steps", {
+          count: steps,
+          price: money(routeCost(route.acquisition)),
+        })
+      : money(0),
+  };
+};
+
+// A hangar ship with a route: it starts the route on the left and ends in its
+// slot on the right, and either end can be picked again.
+const routedShipRow = (
+  entry: HangarPlanVehicleStatus,
+  route: PlannedRoute,
+): Row => {
+  const unrouted = !route.acquisition.routeComplete;
+  const upgraded = route.acquisition.steps.length > 0;
+  const left = hangarCard(entry.name, entry.model);
+
+  return {
+    key: entry.vehicleId,
+    group: unrouted || upgraded ? "ships" : "kept",
+    order: shipOrder(entry.vehicleId),
+    testId: unrouted
+      ? "hangar-plan-vehicle-unrouted"
+      : "hangar-plan-vehicle-status",
+    left,
+    action: unrouted ? unroutedAction(route) : routedAction(route),
+    right: slotCard(route),
+    start: { slot: route.slot, ...routeTarget(route) },
+    end: {
+      startName: left.title,
+      startModel: entry.model,
+      vehicleId: entry.vehicleId,
+      acquisition: route.acquisition,
+      slot: route.slot,
+    },
+    ...middle(route),
+  };
+};
+
+const meltedRow = (entry: HangarPlanVehicleStatus): Row => {
+  const melt = props.plan.melts.find(
+    (candidate) => candidate.vehicleId === entry.vehicleId,
+  );
+
+  return {
+    key: entry.vehicleId,
+    group: "ships",
+    order: shipOrder(entry.vehicleId),
+    testId: "hangar-plan-vehicle-status",
+    left: hangarCard(entry.name, entry.model),
+    action: {
+      kind: "melted",
+      icon: "fa-light fa-fire",
+      label: t("hangarPlanner.vehicleStatuses.melted"),
+      detail: melt
+        ? [
+            t("hangarPlanner.comparison.meltCredit", {
+              value: money(melt.value),
+            }),
+            melt.estimated ? t("hangarPlanner.estimated") : undefined,
+          ]
+            .filter(Boolean)
+            .join(" · ")
+        : undefined,
+    },
+    rightNone: t("hangarPlanner.comparison.leaves"),
+  };
+};
+
+const shipRows = computed<Row[]>(() =>
+  props.comparison.vehicles.flatMap((entry): Row[] => {
+    const left = hangarCard(entry.name, entry.model);
+    const route = routes.value.find(
+      (candidate) => candidate.acquisition.sourceVehicleId === entry.vehicleId,
+    );
+    const end: HangarFlowEnd = {
+      startName: left.title,
+      startModel: entry.model,
+      vehicleId: entry.vehicleId,
+    };
+    const base = {
+      key: entry.vehicleId,
+      order: shipOrder(entry.vehicleId),
+      left,
+      vehicleId: entry.vehicleId,
+    };
+
+    switch (entry.status) {
+      case HangarPlanVehicleStatusEnum.MELTED:
+        return [meltedRow(entry)];
+      case HangarPlanVehicleStatusEnum.KEPT:
+      case HangarPlanVehicleStatusEnum.UPGRADED:
+      case HangarPlanVehicleStatusEnum.UNROUTED:
+        if (route) return [routedShipRow(entry, route)];
+
+        // Kept without a slot: the plan only noted the decision.
+        return [
+          {
+            ...base,
+            group: "kept",
+            testId: "hangar-plan-vehicle-status",
+            action: {
               kind: "kept",
               label: t("hangarPlanner.vehicleStatuses.kept"),
               detail: money(0),
             },
-        right: {
-          title: target.name,
-          sub: route ? slotSub(route.slot, route.index) : undefined,
-          model: target,
-          pill: route ? decidedPill.value : undefined,
-        },
-        // Kept without a slot: the plan only noted the decision, so it can be
-        // taken back here.
-        vehicleId: route ? undefined : entry.vehicleId,
-        decisions: route ? undefined : (["pending"] as HangarFlowDecision[]),
-        slotAction: editRoute(route),
-        slot: route?.slot,
-      };
-    }),
-);
+            right: { ...left, sub: t("hangarPlanner.pick.same") },
+            end,
+          },
+        ];
+      case HangarPlanVehicleStatusEnum.PENDING:
+      case HangarPlanVehicleStatusEnum.CHANGE: {
+        const change = entry.status === HangarPlanVehicleStatusEnum.CHANGE;
 
-const settle: HangarFlowDecision[] = ["keep", "upgrade", "melt"];
-
-const reviewRows = computed<Row[]>(() =>
-  props.comparison.vehicles
-    .filter(
-      (entry) =>
-        entry.status === HangarPlanVehicleStatusEnum.PENDING ||
-        entry.status === HangarPlanVehicleStatusEnum.CHANGE,
-    )
-    .map((entry) => {
-      const change = entry.status === HangarPlanVehicleStatusEnum.CHANGE;
-
-      return {
-        key: entry.vehicleId,
-        group: "ships" as const,
-        order: shipOrder(entry.vehicleId),
-        testId: "hangar-plan-vehicle-review",
-        left: hangarCard(entry.name, entry.model),
-        action: change
-          ? {
-              kind: "change",
-              icon: "fa-light fa-arrows-rotate",
-              label: t("hangarPlanner.vehicleStatuses.change"),
-            }
-          : {
-              kind: "pending",
-              icon: "fa-light fa-circle-question",
-              label: t("hangarPlanner.vehicleStatuses.pending"),
-            },
-        rightNone: t("hangarPlanner.comparison.flow.toDecide"),
-        vehicleId: entry.vehicleId,
-        decisions: [...settle, change ? "pending" : "change"],
-      };
-    }),
-);
-
-const leavingRows = computed<Row[]>(() =>
-  props.comparison.vehicles
-    .filter(
-      (entry) =>
-        entry.status === HangarPlanVehicleStatusEnum.MELTED ||
-        entry.status === HangarPlanVehicleStatusEnum.UNASSIGNED,
-    )
-    .map((entry) => {
-      const melted = entry.status === HangarPlanVehicleStatusEnum.MELTED;
-      const melt = props.plan.melts.find(
-        (candidate) => candidate.vehicleId === entry.vehicleId,
-      );
-
-      return {
-        key: entry.vehicleId,
-        group: melted ? ("ships" as const) : ("unassigned" as const),
-        order: shipOrder(entry.vehicleId),
-        testId: "hangar-plan-vehicle-status",
-        left: hangarCard(entry.name, entry.model),
-        action: melted
-          ? {
-              kind: "melted",
-              icon: "fa-light fa-fire",
-              label: t("hangarPlanner.vehicleStatuses.melted"),
-              detail: melt
-                ? [
-                    t("hangarPlanner.comparison.meltCredit", {
-                      value: money(melt.value),
-                    }),
-                    melt.estimated ? t("hangarPlanner.estimated") : undefined,
-                  ]
-                    .filter(Boolean)
-                    .join(" · ")
-                : undefined,
-            }
-          : {
+        return [
+          {
+            ...base,
+            group: "ships",
+            testId: "hangar-plan-vehicle-review",
+            action: change
+              ? {
+                  kind: "change",
+                  icon: "fa-light fa-arrows-rotate",
+                  label: t("hangarPlanner.vehicleStatuses.change"),
+                }
+              : {
+                  kind: "pending",
+                  icon: "fa-light fa-circle-question",
+                  label: t("hangarPlanner.vehicleStatuses.pending"),
+                },
+            ...(change && !entry.model.upgradable
+              ? {
+                  // Nothing can be upgraded out of it, so changing it means
+                  // melting it.
+                  rightNone: t("hangarPlanner.pick.onlyMelt"),
+                  decisions: ["melt", "pending"] as HangarFlowDecision[],
+                }
+              : {
+                  rightNone: t("hangarPlanner.pick.pickEnd"),
+                  decisions: [
+                    "melt",
+                    change ? "pending" : "change",
+                  ] as HangarFlowDecision[],
+                  end,
+                }),
+          },
+        ];
+      }
+      default:
+        return [
+          {
+            ...base,
+            group: "unassigned",
+            testId: "hangar-plan-vehicle-status",
+            action: {
               kind: "unassigned",
               label: t("hangarPlanner.vehicleStatuses.unassigned"),
             },
-        rightNone: melted
-          ? t("hangarPlanner.comparison.leaves")
-          : t("hangarPlanner.comparison.notInPlan"),
-        vehicleId: entry.vehicleId,
-        decisions: melted ? undefined : [...settle, "change"],
-      };
-    }),
+            rightNone: t("hangarPlanner.pick.pickEnd"),
+            decisions: ["melt", "change"],
+            end,
+          },
+        ];
+    }
+  }),
 );
 
 const slotCost = (slot: HangarPlanSlot) =>
   props.summary?.slots.find((cost) => cost.slotId === slot.id);
 
 const neededRows = computed<Row[]>(() => {
-  const notOwned = t("hangarPlanner.comparison.notOwned");
-
   const bought = routes.value
     .filter(
       (route) => route.acquisition.startKind !== HangarPlanStartKindEnum.OWNED,
     )
-    .map((route) => ({
-      key: route.acquisition.id,
-      group: "slots" as const,
-      order: slotOrder(route.slot.id) + route.index,
-      testId: "hangar-plan-flow-purchase",
-      leftNone: notOwned,
-      action: {
-        kind: "buy",
-        icon: "fa-light fa-cart-shopping",
-        label: t(`hangarPlanner.startKinds.${route.acquisition.startKind}`),
-        detail: money(routeCost(route.acquisition)),
-      },
-      right: {
-        title: route.model.name,
-        sub: slotSub(route.slot, route.index),
-        model: route.model,
-        pill: decidedPill.value,
-      },
-      slotAction: editRoute(route),
-      slot: route.slot,
-    }));
+    .map((route): Row => {
+      const { acquisition } = route;
+      const left: Card = {
+        title: acquisition.startModel.name,
+        sub: t(`hangarPlanner.startKinds.${acquisition.startKind}`),
+        model: acquisition.startModel,
+      };
 
-  const gaps = props.comparison.gaps.map((gap) => {
+      return {
+        key: acquisition.id,
+        group: "slots",
+        order: slotOrder(route.slot.id) + route.index,
+        testId: acquisition.routeComplete
+          ? "hangar-plan-flow-purchase"
+          : "hangar-plan-flow-unrouted",
+        left,
+        action: acquisition.routeComplete
+          ? {
+              kind: acquisition.steps.length ? "upgraded" : "buy",
+              icon: "fa-light fa-cart-shopping",
+              label: acquisition.steps.length
+                ? t("hangarPlanner.comparison.flow.steps", {
+                    count: acquisition.steps.length,
+                    price: money(routeCost(acquisition)),
+                  })
+                : t(`hangarPlanner.startKinds.${acquisition.startKind}`),
+              detail: acquisition.steps.length
+                ? undefined
+                : money(routeCost(acquisition)),
+            }
+          : unroutedAction(route),
+        right: slotCard(route),
+        start: { slot: route.slot, ...routeTarget(route) },
+        end: {
+          startName: left.title,
+          startModel: acquisition.startModel,
+          acquisition,
+          slot: route.slot,
+        },
+        ...middle(route),
+      };
+    });
+
+  const gaps = props.comparison.gaps.flatMap((gap): Row[] => {
     const slot = props.plan.slots.find((entry) => entry.id === gap.slotId);
     const candidate = slot?.candidates[0];
+    if (!slot || !candidate) return [];
 
-    return {
-      key: `gap-${gap.slotId}`,
-      group: "slots" as const,
-      order: slotOrder(gap.slotId) + SLOT_ROWS - 1,
-      testId: "hangar-plan-gap",
-      leftNone: notOwned,
-      action: {
-        kind: "gap",
-        icon: "fa-light fa-route",
-        label: t("hangarPlanner.comparison.flow.noRoute"),
-        detail: t("hangarPlanner.comparison.flow.notCounted"),
+    return [
+      {
+        key: `gap-${gap.slotId}`,
+        group: "slots",
+        order: slotOrder(gap.slotId) + SLOT_ROWS - 1,
+        testId: "hangar-plan-gap",
+        leftNone: t("hangarPlanner.pick.pickStart"),
+        action: {
+          kind: "gap",
+          icon: "fa-light fa-route",
+          label: t("hangarPlanner.comparison.flow.noRoute"),
+          detail: t("hangarPlanner.comparison.flow.notCounted"),
+        },
+        right: {
+          title: `${gap.count} × ${gap.model.name}`,
+          sub: gap.label,
+          model: gap.model,
+          tone: "warning",
+        },
+        start: { slot, candidate },
+        route: { candidate },
+        slot,
       },
-      right: {
-        title: `${gap.count} × ${gap.model.name}`,
-        sub: gap.label,
-        model: gap.model,
-        tone: "warning" as const,
-      },
-      slotAction: candidate ? { kind: "route" as const, candidate } : undefined,
-      slot,
-    };
+    ];
   });
 
   const undecided = props.plan.slots
     .filter((slot) => slot.state === HangarPlanSlotStateEnum.UNDECIDED)
-    .map((slot) => {
+    .map((slot): Row => {
       const cost = slotCost(slot);
 
       return {
         key: `undecided-${slot.id}`,
-        group: "slots" as const,
+        group: "slots",
         order: slotOrder(slot.id),
         testId: "hangar-plan-flow-undecided",
-        leftNone: notOwned,
+        leftNone: t("hangarPlanner.pick.pickStart"),
         action: {
           kind: "buy",
           icon: "fa-light fa-cart-shopping",
@@ -397,27 +496,28 @@ const neededRows = computed<Row[]>(() => {
             variant: PillVariantsEnum.WARNING,
             label: t("hangarPlanner.states.undecided"),
           },
-          tone: "warning" as const,
+          tone: "warning",
         },
+        start: { slot },
         slot,
       };
     });
 
   const open = props.plan.slots
     .filter((slot) => slot.state === HangarPlanSlotStateEnum.OPEN)
-    .map((slot) => ({
+    .map((slot): Row => ({
       key: `open-${slot.id}`,
-      group: "slots" as const,
+      group: "slots",
       order: slotOrder(slot.id),
       testId: "hangar-plan-flow-open",
-      leftNone: notOwned,
+      leftNone: t("hangarPlanner.comparison.notOwned"),
       action: {
         kind: "open",
         label: t("hangarPlanner.states.open"),
         detail: t("hangarPlanner.comparison.flow.noShip"),
       },
       rightNone: `${slot.label} · ${t("hangarPlanner.comparison.flow.noShip")}`,
-      slotAction: { kind: "pick" as const, slot },
+      pickSlot: slot,
     }));
 
   return [...bought, ...gaps, ...undecided, ...open];
@@ -431,12 +531,7 @@ const groupOrder: RowGroup[] = ["slots", "ships", "kept", "unassigned"];
 const folded: RowGroup[] = ["kept", "unassigned"];
 
 const groups = computed<Group[]>(() => {
-  const rows = [
-    ...reviewRows.value,
-    ...keptRows.value,
-    ...neededRows.value,
-    ...leavingRows.value,
-  ];
+  const rows = [...shipRows.value, ...neededRows.value];
 
   return groupOrder
     .map((key) => ({
@@ -464,21 +559,50 @@ const decide = (row: Row, decision: HangarFlowDecision) => {
   if (row.vehicleId) emit("decide", row.vehicleId, decision);
 };
 
-const pick = (row: Row) => {
-  if (row.slotAction?.kind === "pick") emit("pick", row.slotAction.slot);
+const pickStart = (row: Row) => {
+  if (row.start) emit("start", row.start);
 };
 
-const routeCandidate = (row: Row) =>
-  row.slotAction?.kind === "route" ? row.slotAction.candidate : undefined;
-
-const openRoute = (row: Row) => {
-  if (row.slotAction?.kind === "route") {
-    emit("route", row.slotAction.candidate, row.slotAction.acquisition);
+const pickEnd = (row: Row) => {
+  if (row.end) {
+    emit("end", row.end);
+  } else if (row.pickSlot) {
+    emit("pick", row.pickSlot);
+  } else if (row.slot) {
+    emit("edit", row.slot);
   }
 };
 
-const routeAcquisition = (row: Row) =>
-  row.slotAction?.kind === "route" ? row.slotAction.acquisition : undefined;
+const openMiddle = (row: Row) => {
+  if (row.route) {
+    emit("route", row.route.candidate, row.route.acquisition);
+  } else if (row.restart) {
+    pickStart(row);
+  }
+};
+
+const middleLabel = (row: Row) => {
+  if (row.restart && row.start) {
+    return t("hangarPlanner.pick.startOf", {
+      ship: row.start.candidate?.model.name ?? row.start.slot.label,
+    });
+  }
+  if (!row.route) return undefined;
+
+  return t(
+    row.route.acquisition
+      ? "hangarPlanner.editRoute"
+      : "hangarPlanner.addRoute",
+    { ship: row.route.candidate.model.name },
+  );
+};
+
+const rightLabel = (row: Row) =>
+  row.end
+    ? t("hangarPlanner.pick.endOf", { ship: row.end.startName })
+    : row.slot
+      ? t("hangarPlanner.editSlotOf", { slot: row.slot.label })
+      : undefined;
 
 const imageOf = (model?: HangarPlanModel) =>
   model?.image?.smallUrl || fallbackImage;
@@ -536,6 +660,7 @@ const imageOf = (model?: HangarPlanModel) =>
           :class="{
             'hangar-flow__card--none': !row.left,
             'hangar-flow__card--warning': row.left?.tone,
+            'hangar-flow__card--action': row.start,
           }"
           role="cell"
         >
@@ -547,37 +672,43 @@ const imageOf = (model?: HangarPlanModel) =>
               loading="lazy"
             />
             <span class="hangar-flow__text">
-              <strong>{{ row.left.title }}</strong>
+              <button
+                v-if="row.start"
+                type="button"
+                class="hangar-flow__card-action"
+                :aria-label="
+                  t('hangarPlanner.pick.startOf', {
+                    ship:
+                      row.start.candidate?.model.name ?? row.start.slot.label,
+                  })
+                "
+                data-test="hangar-plan-flow-pick-start"
+                @click="pickStart(row)"
+              >
+                {{ row.left.title }}
+              </button>
+              <strong v-else>{{ row.left.title }}</strong>
               <span v-if="row.left.sub" class="hangar-flow__muted">
                 {{ row.left.sub }}
               </span>
             </span>
           </template>
+          <button
+            v-else-if="row.start"
+            type="button"
+            class="hangar-flow__card-action hangar-flow__card-action--none"
+            :aria-label="
+              t('hangarPlanner.pick.startOf', {
+                ship: row.start.candidate?.model.name ?? row.start.slot.label,
+              })
+            "
+            data-test="hangar-plan-flow-pick-start"
+            @click="pickStart(row)"
+          >
+            <i class="fa-light fa-plus" aria-hidden="true" />
+            {{ row.leftNone }}
+          </button>
           <template v-else>{{ row.leftNone }}</template>
-          <span v-if="routeCandidate(row)" class="hangar-flow__route-action">
-            <Btn
-              v-if="routeAcquisition(row)"
-              :size="BtnSizesEnum.XS"
-              :variant="BtnVariantsEnum.BARE"
-              :aria-label="
-                t('hangarPlanner.editRoute', { ship: row.right?.title })
-              "
-              :title="t('hangarPlanner.editRoute', { ship: row.right?.title })"
-              data-test="hangar-plan-flow-edit-route"
-              @click="openRoute(row)"
-            >
-              <i class="fa-light fa-route" aria-hidden="true" />
-            </Btn>
-            <Btn
-              v-else
-              :size="BtnSizesEnum.XS"
-              data-test="hangar-plan-flow-add-route"
-              @click="openRoute(row)"
-            >
-              <i class="fa-light fa-route" aria-hidden="true" />
-              {{ t("hangarPlanner.addRouteShort") }}
-            </Btn>
-          </span>
         </div>
 
         <div
@@ -588,13 +719,21 @@ const imageOf = (model?: HangarPlanModel) =>
           ]"
           role="cell"
         >
-          <span class="hangar-flow__tag">
+          <component
+            :is="middleLabel(row) ? 'button' : 'span'"
+            :type="middleLabel(row) ? 'button' : undefined"
+            class="hangar-flow__tag"
+            :class="{ 'hangar-flow__tag--button': middleLabel(row) }"
+            :aria-label="middleLabel(row)"
+            :data-test="middleLabel(row) ? 'hangar-plan-flow-route' : undefined"
+            @click="openMiddle(row)"
+          >
             <strong>
               <i v-if="row.action.icon" :class="row.action.icon" />
               {{ row.action.label }}
             </strong>
             <span v-if="row.action.detail">{{ row.action.detail }}</span>
-          </span>
+          </component>
           <span
             v-if="row.vehicleId && row.decisions"
             class="hangar-flow__decisions"
@@ -622,7 +761,7 @@ const imageOf = (model?: HangarPlanModel) =>
           class="hangar-flow__card"
           :class="{
             'hangar-flow__card--warning': row.right.tone,
-            'hangar-flow__card--action': row.slot,
+            'hangar-flow__card--action': rightLabel(row),
           }"
           role="cell"
         >
@@ -634,7 +773,7 @@ const imageOf = (model?: HangarPlanModel) =>
           />
           <span class="hangar-flow__text">
             <button
-              v-if="row.slot"
+              v-if="rightLabel(row)"
               type="button"
               v-tooltip="{
                 content: (row.right.ships ?? [row.right.title]).join('\n'),
@@ -642,11 +781,13 @@ const imageOf = (model?: HangarPlanModel) =>
                 preserveLineBreaks: true,
               }"
               class="hangar-flow__card-action"
-              :aria-label="
-                t('hangarPlanner.editSlotOf', { slot: row.slot.label })
+              :aria-label="rightLabel(row)"
+              :data-test="
+                row.end
+                  ? 'hangar-plan-flow-pick-end'
+                  : 'hangar-plan-flow-edit-slot'
               "
-              data-test="hangar-plan-flow-edit-slot"
-              @click="emit('edit', row.slot)"
+              @click="pickEnd(row)"
             >
               {{ row.right.title }}
             </button>
@@ -662,18 +803,32 @@ const imageOf = (model?: HangarPlanModel) =>
         <div
           v-else
           class="hangar-flow__card hangar-flow__card--none"
+          :class="{ 'hangar-flow__card--action': row.end }"
           role="cell"
         >
-          {{ row.rightNone }}
-          <Btn
-            v-if="row.slotAction?.kind === 'pick'"
-            :size="BtnSizesEnum.XS"
-            data-test="hangar-plan-flow-pick"
-            @click="pick(row)"
+          <button
+            v-if="row.end"
+            type="button"
+            class="hangar-flow__card-action hangar-flow__card-action--none"
+            :aria-label="rightLabel(row)"
+            data-test="hangar-plan-flow-pick-end"
+            @click="pickEnd(row)"
           >
             <i class="fa-light fa-plus" aria-hidden="true" />
-            {{ t("hangarPlanner.addShips") }}
-          </Btn>
+            {{ row.rightNone }}
+          </button>
+          <template v-else>
+            {{ row.rightNone }}
+            <Btn
+              v-if="row.pickSlot"
+              :size="BtnSizesEnum.XS"
+              data-test="hangar-plan-flow-pick"
+              @click="pickEnd(row)"
+            >
+              <i class="fa-light fa-plus" aria-hidden="true" />
+              {{ t("hangarPlanner.addShips") }}
+            </Btn>
+          </template>
         </div>
       </div>
     </template>
@@ -891,6 +1046,26 @@ const imageOf = (model?: HangarPlanModel) =>
   }
 }
 
+// Both ends are picked but nothing leads from one to the other yet.
+.hangar-flow__action--unrouted {
+  &::before {
+    border-top: 1px dashed var(--color-warning);
+  }
+
+  &::after {
+    border-left-color: var(--color-warning);
+  }
+
+  .hangar-flow__tag {
+    border-style: dashed;
+    border-color: var(--color-warning);
+
+    strong {
+      color: var(--color-warning);
+    }
+  }
+}
+
 .hangar-flow__action--open::before {
   border-top-style: dotted;
 }
@@ -959,12 +1134,16 @@ const imageOf = (model?: HangarPlanModel) =>
   }
 }
 
-.hangar-flow__route-action {
-  margin-left: auto;
-}
+.hangar-flow__card-action--none {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  font-weight: 400;
+  color: var(--color-text-dim);
 
-.hangar-flow__card--none .hangar-flow__route-action {
-  margin-left: 0;
+  i {
+    color: var(--color-primary);
+  }
 }
 
 .hangar-flow__decisions {
@@ -993,6 +1172,23 @@ const imageOf = (model?: HangarPlanModel) =>
 
   i {
     margin-right: 4px;
+  }
+}
+
+.hangar-flow__tag--button {
+  font: inherit;
+  font-size: 0.75rem;
+  color: inherit;
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--color-edge-strong);
+    background: var(--color-control-hover);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 1px;
   }
 }
 

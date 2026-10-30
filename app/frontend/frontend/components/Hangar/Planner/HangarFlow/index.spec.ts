@@ -17,6 +17,7 @@ const model = (name: string): HangarPlanModel => ({
   name,
   slug: name.toLowerCase(),
   onSale: true,
+  upgradable: true,
   pledgePrice: 100,
 });
 
@@ -82,6 +83,7 @@ const plan: HangarPlan = {
               startKind: HangarPlanStartKindEnum.STORE,
               startModel: carrack,
               price: 600,
+              routeComplete: true,
               sourceMissing: false,
               usesBuybackToken: false,
               steps: [],
@@ -106,6 +108,7 @@ const plan: HangarPlan = {
               sourceVehicleId: "vehicle-vulture",
               startModel: vulture,
               price: 0,
+              routeComplete: true,
               sourceMissing: false,
               usesBuybackToken: false,
               steps: [],
@@ -213,67 +216,270 @@ describe("Hangar/Planner/HangarFlow", () => {
       change.find('[data-test="hangar-plan-decide-change"]').exists(),
     ).toBe(false);
     expect(pending.text()).toContain("Needs a decision");
+    // Keeping or upgrading a ship is picking where it ends up.
+    expect(pending.find('[data-test="hangar-plan-decide-keep"]').exists()).toBe(
+      false,
+    );
 
     await pending
-      .find('[data-test="hangar-plan-decide-keep"]')
+      .find('[data-test="hangar-plan-decide-change"]')
       .trigger("click");
     await change
       .find('[data-test="hangar-plan-decide-pending"]')
       .trigger("click");
+    await pending
+      .find('[data-test="hangar-plan-flow-pick-end"]')
+      .trigger("click");
 
     expect(wrapper.emitted("decide")).toEqual([
-      ["vehicle-gladius", "keep"],
+      ["vehicle-gladius", "change"],
       ["vehicle-cutlass", "pending"],
+    ]);
+    expect(wrapper.emitted("end")).toEqual([
+      [
+        {
+          startName: "Gladius",
+          startModel: model("Gladius"),
+          vehicleId: "vehicle-gladius",
+        },
+      ],
     ]);
   });
 
-  it("offers a route from the left and ships for an empty slot on the right", async () => {
-    const empty = slot("Hauler", HangarPlanSlotStateEnum.OPEN);
+  it("picks a route's start on the left and its end on the right", async () => {
     const wrapper = await mountWithDefaults(Component, {
-      props: { plan: { ...plan, slots: [...plan.slots, empty] }, comparison },
+      props: { plan, comparison },
     });
 
-    await wrapper
-      .find('[data-test="hangar-plan-flow-toggle-kept"]')
+    const purchase = wrapper.find('[data-test="hangar-plan-flow-purchase"]');
+    await purchase
+      .find('[data-test="hangar-plan-flow-pick-start"]')
       .trigger("click");
-    const kept = wrapper
-      .findAll('[data-test="hangar-plan-vehicle-status"]')
-      .find((row) => row.text().includes("Vulture"));
-    await kept!
-      .findAll('[role="cell"]')[0]
-      .find('[data-test="hangar-plan-flow-edit-route"]')
+    await purchase
+      .find('[data-test="hangar-plan-flow-pick-end"]')
       .trigger("click");
 
-    await wrapper
-      .find('[data-test="hangar-plan-flow-open"]')
-      .find('[data-test="hangar-plan-flow-pick"]')
-      .trigger("click");
+    const [[start]] = wrapper.emitted("start") as [
+      [
+        {
+          slot: { id: string };
+          candidate: { id: string };
+          acquisition: { id: string };
+        },
+      ],
+    ];
+    expect([start.slot.id, start.candidate.id, start.acquisition.id]).toEqual([
+      "Explorer",
+      "carrack",
+      "bought",
+    ]);
+
+    const [[end]] = wrapper.emitted("end") as [
+      [{ acquisition: { id: string }; slot: HangarPlanSlot }],
+    ];
+    expect([end.acquisition.id, end.slot.id]).toEqual(["bought", "Explorer"]);
+  });
+
+  it("plans the route from the middle once start and end differ", async () => {
+    const cutlass = model("Cutlass Black");
+    const [explorer, salvage, mining] = plan.slots;
+    const unrouted: HangarPlan = {
+      ...plan,
+      slots: [
+        explorer,
+        {
+          ...salvage,
+          candidates: [
+            {
+              ...salvage.candidates[0],
+              acquisitions: [
+                {
+                  ...salvage.candidates[0].acquisitions[0],
+                  sourceVehicleId: "vehicle-cutlass",
+                  startModel: cutlass,
+                  routeComplete: false,
+                },
+              ],
+            },
+          ],
+        },
+        mining,
+      ],
+    };
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        plan: unrouted,
+        comparison: {
+          ...comparison,
+          vehicles: [
+            {
+              vehicleId: "vehicle-cutlass",
+              model: cutlass,
+              status: HangarPlanVehicleStatusEnum.UNROUTED,
+              targetModel: vulture,
+            },
+          ],
+        },
+      },
+    });
+
+    const row = wrapper.find('[data-test="hangar-plan-vehicle-unrouted"]');
+    expect(row.text()).toContain("Cutlass Black");
+    expect(row.text()).toContain("Plan route");
+    expect(row.text()).toContain("Vulture");
+
+    await row.find('[data-test="hangar-plan-flow-route"]').trigger("click");
 
     const [[candidate, acquisition]] = wrapper.emitted("route") as [
       [{ id: string }, { id: string }],
     ];
     expect([candidate.id, acquisition.id]).toEqual(["vulture", "kept"]);
+  });
+
+  it("offers a start for a slot's units without one, and ships for an empty slot", async () => {
+    const empty = slot("Hauler", HangarPlanSlotStateEnum.OPEN);
+    const [explorer, ...rest] = plan.slots;
+    const short = { ...explorer, quantity: 2 };
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        plan: { ...plan, slots: [short, ...rest, empty] },
+        comparison: {
+          ...comparison,
+          gaps: [
+            {
+              slotId: "Explorer",
+              label: "Explorer",
+              model: carrack,
+              count: 1,
+            },
+          ],
+        },
+      },
+    });
+
+    const gap = wrapper.find('[data-test="hangar-plan-gap"]');
+    await gap
+      .find('[data-test="hangar-plan-flow-pick-start"]')
+      .trigger("click");
+    await gap.find('[data-test="hangar-plan-flow-route"]').trigger("click");
+    await gap.find('[data-test="hangar-plan-flow-edit-slot"]').trigger("click");
+    await wrapper
+      .find('[data-test="hangar-plan-flow-open"]')
+      .find('[data-test="hangar-plan-flow-pick"]')
+      .trigger("click");
+
+    const [[start]] = wrapper.emitted("start") as [
+      [
+        {
+          slot: { id: string };
+          candidate: { id: string };
+          acquisition?: unknown;
+        },
+      ],
+    ];
+    expect([start.slot.id, start.candidate.id, start.acquisition]).toEqual([
+      "Explorer",
+      "carrack",
+      undefined,
+    ]);
+    expect((wrapper.emitted("route") as [[{ id: string }]])[0][0].id).toEqual(
+      "carrack",
+    );
+    expect(wrapper.emitted("edit")).toEqual([[short]]);
     expect(wrapper.emitted("pick")).toEqual([[empty]]);
   });
 
-  it("opens a slot from its card, and plans no route until a ship is chosen", async () => {
+  it("picks a start for an undecided slot, and opens its ships from the card", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: { plan, comparison },
     });
 
     const undecided = wrapper.find('[data-test="hangar-plan-flow-undecided"]');
     expect(
-      undecided.find('[data-test="hangar-plan-flow-add-route"]').exists(),
+      undecided.find('[data-test="hangar-plan-flow-route"]').exists(),
     ).toBe(false);
 
     await undecided
-      .find('[data-test="hangar-plan-flow-edit-slot"]')
+      .find('[data-test="hangar-plan-flow-pick-start"]')
       .trigger("click");
-    await wrapper
-      .find('[data-test="hangar-plan-flow-purchase"]')
+    await undecided
       .find('[data-test="hangar-plan-flow-edit-slot"]')
       .trigger("click");
 
-    expect(wrapper.emitted("edit")).toEqual([[plan.slots[2]], [plan.slots[0]]]);
+    expect(wrapper.emitted("start")).toEqual([[{ slot: plan.slots[2] }]]);
+    expect(wrapper.emitted("edit")).toEqual([[plan.slots[2]]]);
+  });
+
+  it("asks for another start where no upgrade leads to the slot's ship", async () => {
+    const idris = { ...model("Idris-P"), pledgePrice: 1500, upgradable: false };
+    const [explorer, ...rest] = plan.slots;
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        plan: {
+          ...plan,
+          slots: [
+            {
+              ...explorer,
+              candidates: [
+                {
+                  ...explorer.candidates[0],
+                  model: idris,
+                  acquisitions: [
+                    {
+                      ...explorer.candidates[0].acquisitions[0],
+                      routeComplete: false,
+                    },
+                  ],
+                },
+              ],
+            },
+            ...rest,
+          ],
+        },
+        comparison,
+      },
+    });
+
+    const row = wrapper.find('[data-test="hangar-plan-flow-unrouted"]');
+    expect(row.text()).toContain("No upgrade possible");
+
+    await row.find('[data-test="hangar-plan-flow-route"]').trigger("click");
+
+    expect(wrapper.emitted("route")).toBeUndefined();
+    expect(
+      (wrapper.emitted("start") as [[{ acquisition: { id: string } }]])[0][0]
+        .acquisition.id,
+    ).toEqual("bought");
+  });
+
+  it("only melts a ship RSI sells no upgrades for once it should change", async () => {
+    const kraken = { ...model("Kraken"), pledgePrice: 1650, upgradable: false };
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        plan,
+        comparison: {
+          ...comparison,
+          vehicles: [
+            {
+              vehicleId: "vehicle-kraken",
+              model: kraken,
+              status: HangarPlanVehicleStatusEnum.CHANGE,
+            },
+          ],
+        },
+      },
+    });
+
+    const row = wrapper.find('[data-test="hangar-plan-vehicle-review"]');
+    expect(row.text()).toContain("Should change");
+    expect(row.text()).toContain("it can only be melted");
+    expect(row.find('[data-test="hangar-plan-flow-pick-end"]').exists()).toBe(
+      false,
+    );
+    expect(
+      row
+        .findAll('[data-test^="hangar-plan-decide-"]')
+        .map((button) => button.attributes("data-test")),
+    ).toEqual(["hangar-plan-decide-melt", "hangar-plan-decide-pending"]);
   });
 });

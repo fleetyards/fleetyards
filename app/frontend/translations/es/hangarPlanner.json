@@ -134,6 +134,7 @@
       "vehicleStatuses": {
         "kept": "Conservada",
         "upgraded": "Mejorada",
+        "unrouted": "Falta la ruta",
         "melted": "Fundida",
         "pending": "Por decidir",
         "change": "Debe cambiar",
@@ -198,7 +199,6 @@
         "happens": "Qué pasa",
         "meltCredit": "%{value} de crédito",
         "leaves": "Sale de tu hangar",
-        "notInPlan": "No está en el plan",
         "notOwned": "No está en tu hangar",
         "lead": "A la izquierda cada nave que tienes, a la derecha cada nave que necesita el plan, y en medio lo que pasa.",
         "anotherPlan": "Comparar con otro plan",
@@ -218,6 +218,10 @@
           "upgraded": {
             "one": "%{count} mejorada",
             "other": "%{count} mejoradas"
+          },
+          "unrouted": {
+            "one": "%{count} sin ruta",
+            "other": "%{count} sin ruta"
           },
           "melted": {
             "one": "%{count} fundida",
@@ -240,9 +244,11 @@
           },
           "shipOf": "nave %{number} de %{count}",
           "noRoute": "Aún sin vía",
+          "planRoute": "Planificar ruta",
+          "noUpgrade": "No hay mejora posible",
+          "pickOtherStart": "elige otro inicio",
           "notCounted": "no está en el total",
           "noShip": "aún sin nave",
-          "toDecide": "aún sin decidir",
           "folded": {
             "kept": {
               "one": "%{count} conservada tal cual",
@@ -444,13 +450,37 @@
         }
       },
       "decisions": {
-        "keep": "Conservar tal cual",
-        "upgrade": "Mejorar",
         "melt": "Fundir",
         "change": "Marcar como debe cambiar",
         "pending": "Volver a por decidir",
         "upgradeTo": "Mejorar %{name} a",
         "keepPending": "Conservar todas las pendientes"
+      },
+      "pick": {
+        "pickStart": "Elegir un inicio",
+        "pickEnd": "Elegir en qué termina",
+        "startOf": "Elegir el inicio para %{ship}",
+        "endOf": "Elegir en qué termina %{ship}",
+        "startTitle": "Inicio para %{ship}",
+        "startEyebrow": "Nave de inicio",
+        "endTitle": "En qué termina %{ship}",
+        "endEyebrow": "Nave final",
+        "buyNew": "Comprar nueva en la tienda",
+        "current": "Inicio actual",
+        "use": "Usar",
+        "noShips": "Ninguna nave del hangar está libre para este hueco.",
+        "removeStart": "Quitar del hueco",
+        "otherStarts": "Buy-back u otro inicio",
+        "same": "La misma nave, tal como está",
+        "sameModel": "Mismo modelo",
+        "noEnds": "Ningún hueco tiene sitio para otra nave. Elige cualquier nave para darle un hueco propio.",
+        "removeEnd": "Sacar del plan",
+        "anyShip": "Cualquier nave",
+        "buyChosen": "La nave que elijas a continuación",
+        "chooseEnd": "¿En cuál de las naves del hueco se convierte este inicio?",
+        "noReachableShip": "Ninguna nave de este hueco se puede alcanzar desde este inicio.",
+        "back": "Atrás",
+        "onlyMelt": "No existen mejoras para ella, solo se puede fundir"
       },
       "slotsTitle": "Slots",
       "editSlots": "Editar slots"

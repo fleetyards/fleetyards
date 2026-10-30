@@ -61,7 +61,10 @@ const unresolvedCount = (slot: HangarPlanSlot) => {
 
   return Math.max(
     0,
-    slot.quantity - (slot.candidates[0]?.acquisitions.length ?? 0),
+    slot.quantity -
+      (slot.candidates[0]?.acquisitions.filter(
+        (acquisition) => acquisition.routeComplete,
+      ).length ?? 0),
   );
 };
 

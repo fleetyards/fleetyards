@@ -134,6 +134,7 @@
       "vehicleStatuses": {
         "kept": "Kept",
         "upgraded": "Upgraded",
+        "unrouted": "Route missing",
         "melted": "Melted",
         "pending": "Needs a decision",
         "change": "Should change",
@@ -198,7 +199,6 @@
         "happens": "What happens",
         "meltCredit": "%{value} credit",
         "leaves": "Leaves your hangar",
-        "notInPlan": "Not in the plan",
         "notOwned": "Not in your hangar",
         "lead": "Every ship you own on the left, every ship the plan needs on the right, and what happens in between.",
         "anotherPlan": "Compare with another plan",
@@ -218,6 +218,10 @@
           "upgraded": {
             "one": "%{count} upgraded",
             "other": "%{count} upgraded"
+          },
+          "unrouted": {
+            "one": "%{count} without a route",
+            "other": "%{count} without a route"
           },
           "melted": {
             "one": "%{count} melted",
@@ -240,9 +244,11 @@
           },
           "shipOf": "ship %{number} of %{count}",
           "noRoute": "No route yet",
+          "planRoute": "Plan route",
+          "noUpgrade": "No upgrade possible",
+          "pickOtherStart": "pick another start",
           "notCounted": "not in the total",
           "noShip": "no ship yet",
-          "toDecide": "not decided yet",
           "folded": {
             "kept": {
               "one": "%{count} kept as it is",
@@ -444,13 +450,37 @@
         }
       },
       "decisions": {
-        "keep": "Keep as it is",
-        "upgrade": "Upgrade",
         "melt": "Melt",
         "change": "Mark as should change",
         "pending": "Back to undecided",
         "upgradeTo": "Upgrade %{name} to",
         "keepPending": "Keep all undecided"
+      },
+      "pick": {
+        "pickStart": "Pick a start",
+        "pickEnd": "Pick where it ends up",
+        "startOf": "Pick the start for %{ship}",
+        "endOf": "Pick where %{ship} ends up",
+        "startTitle": "Start for %{ship}",
+        "startEyebrow": "Start ship",
+        "endTitle": "Where %{ship} ends up",
+        "endEyebrow": "End ship",
+        "buyNew": "Buy new on the store",
+        "current": "Current start",
+        "use": "Use",
+        "noShips": "No hangar ship is free for this slot.",
+        "removeStart": "Remove from the slot",
+        "otherStarts": "Buy-back or another start",
+        "same": "Same ship, kept as it is",
+        "sameModel": "Same model",
+        "noEnds": "No slot has room for another ship. Pick any ship to give it a slot of its own.",
+        "removeEnd": "Take out of the plan",
+        "anyShip": "Any ship",
+        "buyChosen": "The ship you pick next",
+        "chooseEnd": "Which of the slot's ships should this start become?",
+        "noReachableShip": "No ship of this slot can be reached from this start.",
+        "back": "Back",
+        "onlyMelt": "No upgrades exist for it, so it can only be melted"
       },
       "slotsTitle": "Slots",
       "editSlots": "Edit slots"

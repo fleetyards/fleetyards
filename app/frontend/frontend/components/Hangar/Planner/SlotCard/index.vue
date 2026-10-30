@@ -113,7 +113,10 @@ const decidedCandidate = computed(() =>
 
 const unresolved = computed(() =>
   decidedCandidate.value
-    ? props.slot.quantity - decidedCandidate.value.acquisitions.length
+    ? props.slot.quantity -
+      decidedCandidate.value.acquisitions.filter(
+        (acquisition) => acquisition.routeComplete,
+      ).length
     : 0,
 );
 
@@ -396,7 +399,13 @@ const removeRoute = (acquisition: HangarPlanAcquisition) =>
         >
           <RouteChain :nodes="acquisitionNodes(acquisition)" />
           <div class="plan-slot__route-actions">
-            <span class="plan-slot__route-cost">
+            <span
+              v-if="!acquisition.routeComplete"
+              class="plan-slot__route-cost plan-slot__route-cost--missing"
+            >
+              {{ t("hangarPlanner.vehicleStatuses.unrouted") }}
+            </span>
+            <span v-else class="plan-slot__route-cost">
               {{ money(routeCost(acquisition)) }}
             </span>
             <template v-if="!readonly">
@@ -671,6 +680,10 @@ const removeRoute = (acquisition: HangarPlanAcquisition) =>
 .plan-slot__route-cost {
   font-weight: 600;
   color: var(--color-lifted);
+}
+
+.plan-slot__route-cost--missing {
+  color: var(--color-warning);
 }
 
 .plan-slot__warning {

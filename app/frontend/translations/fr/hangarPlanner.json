@@ -134,6 +134,7 @@
       "vehicleStatuses": {
         "kept": "Gardé",
         "upgraded": "Upgradé",
+        "unrouted": "Parcours manquant",
         "melted": "Melt",
         "pending": "À décider",
         "change": "Doit changer",
@@ -198,7 +199,6 @@
         "happens": "Ce qui se passe",
         "meltCredit": "%{value} de crédit",
         "leaves": "Quitte votre hangar",
-        "notInPlan": "Pas dans le plan",
         "notOwned": "Pas dans votre hangar",
         "lead": "À gauche chaque vaisseau que vous possédez, à droite chaque vaisseau dont le plan a besoin, et entre les deux ce qui se passe.",
         "anotherPlan": "Comparer avec un autre plan",
@@ -218,6 +218,10 @@
           "upgraded": {
             "one": "%{count} amélioré",
             "other": "%{count} améliorés"
+          },
+          "unrouted": {
+            "one": "%{count} sans parcours",
+            "other": "%{count} sans parcours"
           },
           "melted": {
             "one": "%{count} fondu",
@@ -240,9 +244,11 @@
           },
           "shipOf": "vaisseau %{number} sur %{count}",
           "noRoute": "Pas encore de voie",
+          "planRoute": "Planifier le parcours",
+          "noUpgrade": "Aucun upgrade possible",
+          "pickOtherStart": "choisissez un autre départ",
           "notCounted": "hors du total",
           "noShip": "pas encore de vaisseau",
-          "toDecide": "pas encore décidé",
           "folded": {
             "kept": {
               "one": "%{count} gardé tel quel",
@@ -444,13 +450,37 @@
         }
       },
       "decisions": {
-        "keep": "Garder tel quel",
-        "upgrade": "Améliorer",
         "melt": "Fondre",
         "change": "Marquer comme doit changer",
         "pending": "Remettre à décider",
         "upgradeTo": "Améliorer %{name} en",
         "keepPending": "Garder tous ceux à décider"
+      },
+      "pick": {
+        "pickStart": "Choisir un départ",
+        "pickEnd": "Choisir l'arrivée",
+        "startOf": "Choisir le départ pour %{ship}",
+        "endOf": "Choisir ce que devient %{ship}",
+        "startTitle": "Départ pour %{ship}",
+        "startEyebrow": "Vaisseau de départ",
+        "endTitle": "Ce que devient %{ship}",
+        "endEyebrow": "Vaisseau d'arrivée",
+        "buyNew": "Acheter neuf sur le store",
+        "current": "Départ actuel",
+        "use": "Utiliser",
+        "noShips": "Aucun vaisseau du hangar n'est libre pour cet emplacement.",
+        "removeStart": "Retirer de l'emplacement",
+        "otherStarts": "Buy-back ou autre départ",
+        "same": "Le même vaisseau, gardé tel quel",
+        "sameModel": "Même modèle",
+        "noEnds": "Aucun emplacement n'a de place pour un autre vaisseau. Choisissez n'importe quel vaisseau pour lui donner son propre emplacement.",
+        "removeEnd": "Retirer du plan",
+        "anyShip": "N'importe quel vaisseau",
+        "buyChosen": "Le vaisseau que vous choisissez ensuite",
+        "chooseEnd": "Quel vaisseau de l'emplacement ce départ doit-il devenir ?",
+        "noReachableShip": "Aucun vaisseau de cet emplacement n'est accessible depuis ce départ.",
+        "back": "Retour",
+        "onlyMelt": "Aucun upgrade n'existe pour lui, il ne peut qu'être fondu"
       },
       "slotsTitle": "Emplacements",
       "editSlots": "Modifier les emplacements"

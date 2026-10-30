@@ -134,6 +134,7 @@
       "vehicleStatuses": {
         "kept": "Behalten",
         "upgraded": "Geupgradet",
+        "unrouted": "Weg fehlt",
         "melted": "Gemeltet",
         "pending": "Offen",
         "change": "Soll sich ändern",
@@ -198,7 +199,6 @@
         "happens": "Was passiert",
         "meltCredit": "%{value} Guthaben",
         "leaves": "Verlässt deinen Hangar",
-        "notInPlan": "Nicht im Plan",
         "notOwned": "Nicht in deinem Hangar",
         "lead": "Links jedes Schiff, das du hast, rechts jedes Schiff, das der Plan braucht, und dazwischen, was passiert.",
         "anotherPlan": "Mit einem anderen Plan vergleichen",
@@ -218,6 +218,10 @@
           "upgraded": {
             "one": "%{count} upgegradet",
             "other": "%{count} upgegradet"
+          },
+          "unrouted": {
+            "one": "%{count} ohne Weg",
+            "other": "%{count} ohne Weg"
           },
           "melted": {
             "one": "%{count} gemeltet",
@@ -240,9 +244,11 @@
           },
           "shipOf": "Schiff %{number} von %{count}",
           "noRoute": "Noch kein Weg",
+          "planRoute": "Weg planen",
+          "noUpgrade": "Kein Upgrade möglich",
+          "pickOtherStart": "anderen Start wählen",
           "notCounted": "nicht in der Summe",
           "noShip": "noch kein Schiff",
-          "toDecide": "noch nicht entschieden",
           "folded": {
             "kept": {
               "one": "%{count} Schiff unverändert behalten",
@@ -444,13 +450,37 @@
         }
       },
       "decisions": {
-        "keep": "Behalten wie es ist",
-        "upgrade": "Upgraden",
         "melt": "Melten",
         "change": "Als „soll sich ändern“ markieren",
         "pending": "Wieder offen",
         "upgradeTo": "%{name} upgraden auf",
         "keepPending": "Alle offenen behalten"
+      },
+      "pick": {
+        "pickStart": "Start wählen",
+        "pickEnd": "Ziel wählen",
+        "startOf": "Start für %{ship} wählen",
+        "endOf": "Wählen, was aus %{ship} wird",
+        "startTitle": "Start für %{ship}",
+        "startEyebrow": "Startschiff",
+        "endTitle": "Was aus %{ship} wird",
+        "endEyebrow": "Zielschiff",
+        "buyNew": "Neu im Store kaufen",
+        "current": "Aktueller Start",
+        "use": "Nehmen",
+        "noShips": "Kein Schiff im Hangar ist für diesen Platz frei.",
+        "removeStart": "Aus dem Platz nehmen",
+        "otherStarts": "Buy-back oder anderer Start",
+        "same": "Dasselbe Schiff, so behalten",
+        "sameModel": "Gleiches Modell",
+        "noEnds": "Kein Platz hat Raum für ein weiteres Schiff. Wähle ein beliebiges Schiff, um ihm einen eigenen Platz zu geben.",
+        "removeEnd": "Aus dem Plan nehmen",
+        "anyShip": "Beliebiges Schiff",
+        "buyChosen": "Das Schiff, das du als Nächstes wählst",
+        "chooseEnd": "Welches Schiff des Platzes soll aus diesem Start werden?",
+        "noReachableShip": "Kein Schiff dieses Platzes ist von diesem Start aus erreichbar.",
+        "back": "Zurück",
+        "onlyMelt": "Es gibt keine Upgrades dafür, es kann nur eingeschmolzen werden"
       },
       "slotsTitle": "Slots",
       "editSlots": "Slots bearbeiten"
