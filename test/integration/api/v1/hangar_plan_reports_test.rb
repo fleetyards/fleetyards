@@ -254,6 +254,8 @@ class Api::V1::HangarPlanReportsTest < ActionDispatch::IntegrationTest
   test "GET resources lists the store's priced ships, cheapest first" do
     create(:model, name: "Unpriced", pledge_price: nil)
     create(:model, name: "Hidden", pledge_price: 50, hidden: true)
+    create(:model, name: "Not ownable", pledge_price: 50, player_ownable: false)
+    create(:model, name: "In game only", pledge_price: 50, ingame_only: true)
 
     assert_api_response :get, 200, api_path: "/hangar/plans/{id}/resources", path_params: {id: @plan.id} do
       assert_equal [["Cutlass Black", 100.0], ["Carrack", 600.0]],

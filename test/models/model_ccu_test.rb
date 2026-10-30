@@ -22,6 +22,16 @@ class ModelCcuTest < ActiveSupport::TestCase
     assert_not old.ccu_out_of?
   end
 
+  test "a ship the store does not sell takes no upgrades, whatever was seen" do
+    ingame = build(:model, ingame_only: true, ccu_on_sale: true, ccu_override: "allowed")
+    npc = build(:model, player_ownable: false, ccu_target_seen_at: 1.day.ago)
+
+    assert_equal "none", ingame.ccu_target_status
+    assert_equal "none", ingame.ccu_source_status
+    assert_equal "none", npc.ccu_target_status
+    assert_equal "none", npc.ccu_source_status
+  end
+
   test "an admin override wins over what was seen" do
     blocked = build(:model, ccu_override: "none", ccu_on_sale: true, ccu_target_seen_at: 1.day.ago)
     allowed = build(:model, ccu_override: "allowed", created_at: 1.year.ago)

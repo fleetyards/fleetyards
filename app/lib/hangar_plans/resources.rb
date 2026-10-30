@@ -58,9 +58,11 @@ module HangarPlans
 
     # Every ship the pledge store prices, for a route that buys its start or an
     # upgrade there. Unpriced ships are left out: the store has no figure to
-    # plan with.
+    # plan with. So are ships no player can own and those only earned in game,
+    # which the store never sells.
     def store_models
-      Model.visible.active.where.not(pledge_price: nil).includes(:manufacturer).order(:pledge_price, :name)
+      Model.visible.active.where(player_ownable: true, ingame_only: false).where.not(pledge_price: nil)
+        .includes(:manufacturer).order(:pledge_price, :name)
     end
 
     def buybacks
