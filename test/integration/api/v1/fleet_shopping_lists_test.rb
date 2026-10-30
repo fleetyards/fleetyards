@@ -118,7 +118,6 @@ class Api::V1::FleetShoppingListsTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable(:shopping_cart)
     @admin = create(:user)
     @member = create(:user)
     @fleet = create(:fleet, admins: [@admin], members: [@member])
@@ -160,13 +159,6 @@ class Api::V1::FleetShoppingListsTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, path_params: {fleetSlug: @fleet.slug} do
       assert_equal ["Officer dress", "Rescue kit", "Standard kit"], parsed_body.pluck("name")
     end
-  end
-
-  test "GET is forbidden while the feature is off" do
-    Flipper.disable(:shopping_cart)
-    sign_in @member
-
-    assert_api_response :get, 403, path_params: {fleetSlug: @fleet.slug}
   end
 
   test "GET answers 401 when signed out" do

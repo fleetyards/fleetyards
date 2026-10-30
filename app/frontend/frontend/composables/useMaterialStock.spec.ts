@@ -21,7 +21,7 @@ vi.mock("@/services/fyApi", () => ({
   useHangarAllInventoryStock: () => ({ data: hangarStock }),
   useMyFleets: () => ({ data: ref([]) }),
   getFleetAllInventoryStockQueryOptions: () => ({}),
-  FeatureFlagName: { HANGAR_INVENTORIES: "a", FLEET_LOGISTICS: "b" },
+  FeatureFlagName: { FLEET_LOGISTICS: "b" },
 }));
 
 const { useMaterialStock } = await import("./useMaterialStock");

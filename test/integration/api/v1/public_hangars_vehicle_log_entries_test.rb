@@ -33,7 +33,6 @@ class Api::V1::PublicHangarsVehicleLogEntriesTest < ActionDispatch::IntegrationT
   end
 
   setup do
-    Flipper.enable("vehicle_overview")
     @user = create(:user, public_hangar: true)
     @vehicle = create(:vehicle, user: @user, public: true)
   end
@@ -78,21 +77,5 @@ class Api::V1::PublicHangarsVehicleLogEntriesTest < ActionDispatch::IntegrationT
     create(:vehicle_log_entry, :public, vehicle: wanted)
 
     assert_api_response :get, 404, path_params: {username: @user.username, vehicle_id: wanted.id}
-  end
-
-  test "GET /public/hangars/:username/vehicles/:vehicle_id/log-entries follows the owner's flag, not the visitor's" do
-    Flipper.disable("vehicle_overview")
-    Flipper.enable_actor("vehicle_overview", @user)
-    create(:vehicle_log_entry, :public, vehicle: @vehicle)
-
-    assert_api_response :get, 200, path_params: {username: @user.username, vehicle_id: @vehicle.id} do
-      assert_equal 1, parsed_body.size
-    end
-  end
-
-  test "GET /public/hangars/:username/vehicles/:vehicle_id/log-entries returns 403 while the feature is off" do
-    Flipper.disable("vehicle_overview")
-
-    assert_api_response :get, 403, path_params: {username: @user.username, vehicle_id: @vehicle.id}
   end
 end

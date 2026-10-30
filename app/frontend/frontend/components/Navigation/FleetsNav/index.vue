@@ -11,20 +11,12 @@ import { useFleetStore } from "@/frontend/stores/fleet";
 import { storeToRefs } from "pinia";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useFeatures } from "@/frontend/composables/useFeatures";
 import {
-  FeatureFlagName,
   useMyFleets as useMyFleetsQuery,
   useFleetInvites as useFleetInvitesQuery,
 } from "@/services/fyApi";
 
 const { t } = useI18n();
-
-const { isFeatureEnabled } = useFeatures();
-
-const directoryEnabled = computed(() =>
-  isFeatureEnabled(FeatureFlagName.FLEET_DIRECTORY),
-);
 
 const fleetStore = useFleetStore();
 
@@ -87,7 +79,6 @@ watch(
         :image="fleet.logo?.smallUrl || undefined"
       />
       <NavItem
-        v-if="directoryEnabled"
         :to="{ name: 'fleet-directory' }"
         :label="t('nav.fleets.directory')"
         icon="fa-duotone fa-magnifying-glass"

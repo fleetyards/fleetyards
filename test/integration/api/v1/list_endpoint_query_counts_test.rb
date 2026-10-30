@@ -68,7 +68,6 @@ class Api::V1::ListEndpointQueryCountsTest < ActionDispatch::IntegrationTest
   end
 
   test "the cart issues the same number of queries for one line as for many" do
-    Flipper.enable(:shopping_cart)
     user = create(:user)
     sign_in user
     station = create(:location, kind: "station", system: create(:location, kind: "system"))

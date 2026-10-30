@@ -39,16 +39,9 @@ type Options = {
 // picker and the gate agree on who counts: a fleet in common, a friendship, or
 // -- when sending on a fleet's behalf -- an alliance.
 //
-// Both sides are filtered on whether the feature is *available* to the party,
-// never on whether the gate would admit this sender: a policy or a standing
-// denial must not be readable from an option going missing.
-//
-// For people that filtering is the API's, through `transferTargets` on the two
-// group endpoints, and it does make one person's feature flags legible from
-// another's picker. The trade was made deliberately: `TransferGate` already
-// answers the same fact one refused send at a time, and a name that can only be
-// picked to be told "this person cannot receive" is worse than a name that was
-// never offered.
+// Fleets are filtered on whether the feature is *available* to them, never on
+// whether the gate would admit this sender: a policy or a standing denial must
+// not be readable from an option going missing.
 
 // The value the group picker uses for "my friends" rather than a fleet slug.
 // Not a slug any fleet can have: slugs are lowercased alphanumerics.
@@ -131,7 +124,7 @@ export const useTransferTargets = (options: Options) => {
   // Accepted friendships, for the party picker. Only for a reader sending as
   // themselves: a fleet has no friends.
   const { data: friends } = useFriends(
-    computed(() => ({ state: "accepted" as const, transferTargets: true })),
+    computed(() => ({ state: "accepted" as const })),
     {
       query: {
         enabled: computed(() => !actingFleet.value),

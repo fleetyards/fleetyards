@@ -56,8 +56,6 @@ class Api::V1::FiltersTradeRoutesTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable("trade_routes")
-
     @arc = create(:terminal, name: "Admin - ARC-L1", star_system: "Stanton")
     @ruin = create(:terminal, name: "Admin - Ruin Station", star_system: "Pyro")
     @closed = create(:terminal, name: "Admin - Old Outpost", star_system: "Nyx", available: false)
@@ -90,11 +88,5 @@ class Api::V1::FiltersTradeRoutesTest < ActionDispatch::IntegrationTest
       assert_equal ["Gold"], parsed_body.pluck("label")
       assert_equal ["gold"], parsed_body.pluck("value")
     end
-  end
-
-  test "GET /filters/trade-routes/terminals is unavailable while the feature is off" do
-    Flipper.disable("trade_routes")
-
-    assert_api_response :get, 403, api_path: "/filters/trade-routes/terminals"
   end
 end

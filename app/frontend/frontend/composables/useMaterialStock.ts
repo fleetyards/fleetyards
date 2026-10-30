@@ -102,14 +102,10 @@ export const useMaterialStock = () => {
   const { isAuthenticated } = storeToRefs(useSessionStore());
   const { isFeatureEnabled } = useFeatures();
 
-  // The endpoints are gated twice over, and a public catalogue page is mostly
-  // read by people who are neither signed in nor running inventories: asking
-  // anyway would answer 401 or 403 for most of them.
-  const hangarEnabled = computed(
-    () =>
-      isAuthenticated.value &&
-      isFeatureEnabled(FeatureFlagName.HANGAR_INVENTORIES),
-  );
+  // A public catalogue page is mostly read by people who are not signed in, and
+  // the fleet endpoints are gated too: asking anyway would answer 401 or 403
+  // for most of them.
+  const hangarEnabled = computed(() => isAuthenticated.value);
 
   const fleetEnabled = computed(
     () =>

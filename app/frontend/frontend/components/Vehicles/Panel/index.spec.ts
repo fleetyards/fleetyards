@@ -22,12 +22,8 @@ beforeEach(() => {
   );
 });
 
-const vehicleOverviewEnabled = ref(false);
-
 vi.mock("@/frontend/composables/useFeatures", () => ({
-  useFeatures: () => ({
-    isFeatureEnabled: () => vehicleOverviewEnabled.value,
-  }),
+  useFeatures: () => ({ isFeatureEnabled: () => true }),
 }));
 
 const openLoadoutModal = vi.fn();
@@ -146,16 +142,12 @@ const mount = async (props: {
 };
 
 describe("VehiclesPanel", () => {
-  beforeEach(() => {
-    vehicleOverviewEnabled.value = false;
-  });
+  beforeEach(() => {});
 
   const titleHref = (wrapper: Awaited<ReturnType<typeof mount>>) =>
     wrapper.find('[data-test="vehicle-panel-title"]').attributes("href");
 
   it("opens the owner's ship on its overview once there is one", async () => {
-    vehicleOverviewEnabled.value = true;
-
     const wrapper = await mount({
       vehicle: vehicle({ serial: "IC-0210-AB" }),
       editable: true,
@@ -169,18 +161,7 @@ describe("VehiclesPanel", () => {
     ).toBe("vehicle-overview");
   });
 
-  it("opens the model while the overview is not rolled out", async () => {
-    const wrapper = await mount({ vehicle: vehicle(), editable: true });
-
-    expect(titleHref(wrapper)).toContain("/ships/odyssey");
-    expect(
-      wrapper.get('[data-test="vehicle-panel-title"]').attributes("data-tour"),
-    ).toBeUndefined();
-  });
-
   it("opens the model for someone else's ship", async () => {
-    vehicleOverviewEnabled.value = true;
-
     const wrapper = await mount({ vehicle: vehicle() });
 
     expect(titleHref(wrapper)).toContain("/ships/odyssey");

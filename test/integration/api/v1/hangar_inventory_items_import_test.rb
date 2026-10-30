@@ -4,7 +4,6 @@ require "openapi_helper"
 
 class Api::V1::HangarInventoryItemsImportTest < ActionDispatch::IntegrationTest
   setup do
-    Flipper.enable("hangar_inventories")
     @user = create(:user)
     @other_user = create(:user)
     @inventory = create(:inventory, holder: @user)

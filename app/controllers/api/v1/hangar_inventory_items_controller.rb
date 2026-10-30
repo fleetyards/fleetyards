@@ -3,7 +3,6 @@
 module Api
   module V1
     class HangarInventoryItemsController < ::Api::BaseController
-      include HangarInventoriesFeatureConcern
       include InventoryScoped::ItemActions
 
       before_action :authenticate_user!, only: []
@@ -14,7 +13,6 @@ module Api
         unless: :user_signed_in?,
         only: %i[create update destroy import add_pledge_items]
 
-      before_action :check_hangar_inventories_feature
       before_action :set_inventory_item, only: %i[update destroy]
 
       # Deposits each given ship component or piece of gear once. An item one of

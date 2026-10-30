@@ -49,7 +49,6 @@ export const routes: RouteRecordRaw[] = [
       needsAuthentication: true,
       backgroundImage: "bg-8",
       customTitle: true,
-      feature: FeatureFlagName.SHOPPING_CART,
       access: [
         "fleet:shopping_lists:read",
         "fleet:shopping_lists:manage",

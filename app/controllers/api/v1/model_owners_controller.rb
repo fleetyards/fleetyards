@@ -5,15 +5,12 @@ module Api
     # Who in the reader's circle flies a model: their own ships of it, the
     # friends whose hangars show one, and per fleet how many are listed there.
     class ModelOwnersController < ::Api::BaseController
-      include VehicleOverviewFeatureConcern
-
       FRIENDS_LIMIT = 12
       FLEET_MEMBERS_LIMIT = 8
 
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
         unless: -> { warden.authenticate?(scope: :user) }
-      before_action :check_vehicle_overview_feature
 
       def index
         authorize! with: ModelOwnersPolicy

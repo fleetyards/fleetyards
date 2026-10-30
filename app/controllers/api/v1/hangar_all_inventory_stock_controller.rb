@@ -3,14 +3,9 @@
 module Api
   module V1
     class HangarAllInventoryStockController < ::Api::BaseController
-      include HangarInventoriesFeatureConcern
-      include ShipInventoriesFeatureConcern
-
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
         unless: :user_signed_in?
-
-      before_action :check_hangar_inventories_feature
 
       def index
         authorize! with: HangarInventoryItemPolicy, to: :index?
@@ -70,7 +65,6 @@ module Api
 
       private def filtered_inventories
         scope = current_resource_owner.inventories
-        return scope.hand_made unless ship_inventories_enabled?
 
         vehicle_id = params.dig(:q, :vehicle_id_eq)
         return scope if vehicle_id.blank?

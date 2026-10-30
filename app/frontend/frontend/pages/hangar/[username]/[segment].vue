@@ -11,7 +11,6 @@ import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import TabNavView from "@/shared/components/TabNavView/index.vue";
 import VehicleHero from "@/frontend/components/Vehicles/Hero/index.vue";
 import {
-  FeatureFlagName,
   useShowVehicle,
   useVehicleInventory,
   useVehicleLogEntries,
@@ -31,12 +30,6 @@ const { t } = useI18n();
 const { isFeatureEnabled } = useFeatures();
 
 const route = useRoute();
-
-// The ship's header: the full one on the overview, the compact one on every
-// other tab, so the ship stays named while its loadouts or cargo are open.
-const heroVisible = computed(() =>
-  isFeatureEnabled(FeatureFlagName.VEHICLE_OVERVIEW),
-);
 
 // The full header belongs to the overview; the other tabs open on the compact
 // one, so their own content starts higher.
@@ -67,9 +60,7 @@ const { data: logEntries } = useVehicleLogEntries(vehicleId, {
 
 const { data: inventory } = useVehicleInventory(vehicleId, {
   query: {
-    enabled: computed(
-      () => wanted.value && isFeatureEnabled(FeatureFlagName.SHIP_INVENTORIES),
-    ),
+    enabled: wanted,
   },
 });
 
@@ -129,18 +120,6 @@ watch(
   { immediate: true },
 );
 
-const vehicleName = computed(() => {
-  if (!vehicle.value) return "";
-
-  const nameParts = [vehicle.value.name || vehicle.value.model?.name];
-
-  if (vehicle.value.serial) {
-    nameParts.push(`(${vehicle.value.serial})`);
-  }
-
-  return nameParts.join(" ");
-});
-
 // The hero names the ship, so the trail only leads back to its list.
 const crumbs = computed<Crumb[]>(() => [
   {
@@ -150,20 +129,6 @@ const crumbs = computed<Crumb[]>(() => [
   ...(wanted.value
     ? [{ to: { name: "hangar-wishlist" }, label: t("labels.wishlist") }]
     : []),
-  ...(heroVisible.value
-    ? []
-    : [
-        {
-          to: {
-            name: "hangar-vehicle",
-            params: {
-              username: route.params.username,
-              segment: route.params.segment,
-            },
-          },
-          label: vehicleName.value,
-        },
-      ]),
 ]);
 </script>
 
@@ -172,15 +137,11 @@ const crumbs = computed<Crumb[]>(() => [
     <!-- Nothing of a loaner's while it is sent on to its model. -->
     <template v-if="vehicle && !vehicle.loaner" #resolved>
       <BreadCrumbs :crumbs="crumbs" />
-      <VehicleHero
-        v-if="heroVisible"
-        :vehicle="vehicle"
-        :compact="!onOverview"
-      />
+      <VehicleHero :vehicle="vehicle" :compact="!onOverview" />
       <TabNavView
         :routes="tabs"
         :authenticated="sessionStore.isAuthenticated"
-        :horizontal="heroVisible"
+        horizontal
       >
         <template #content>
           <router-view :vehicle="vehicle" />

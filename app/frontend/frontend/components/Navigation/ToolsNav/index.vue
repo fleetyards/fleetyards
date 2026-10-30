@@ -7,12 +7,8 @@ export default {
 <script lang="ts" setup>
 import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useFeatures } from "@/frontend/composables/useFeatures";
-import { FeatureFlagName } from "@/services/fyApi";
 
 const { t } = useI18n();
-const { isFeatureEnabled } = useFeatures();
-
 const route = useRoute();
 
 const active = computed(() => {
@@ -64,7 +60,6 @@ const active = computed(() => {
         icon="fa-duotone fa-award"
       />
       <NavItem
-        v-if="isFeatureEnabled(FeatureFlagName.TRADE_ROUTES)"
         :to="{ name: 'trade-routes' }"
         :label="t('nav.tools.tradeRoutes')"
         icon="fa-duotone fa-route"

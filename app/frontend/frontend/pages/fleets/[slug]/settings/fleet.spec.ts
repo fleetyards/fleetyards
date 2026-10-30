@@ -10,11 +10,7 @@ import {
   vi,
 } from "vitest";
 import { defineRule } from "vee-validate";
-import {
-  FeatureFlagName,
-  type Fleet,
-  type FleetMember,
-} from "@/services/fyApi";
+import { type Fleet, type FleetMember } from "@/services/fyApi";
 import FormToggle from "@/shared/components/base/FormToggle/index.vue";
 import Component from "./fleet.vue";
 
@@ -76,7 +72,6 @@ const verifiedFleet = (overrides: Partial<Fleet> = {}) =>
     commitment: "casual",
     recruiting: true,
     roleplay: false,
-    features: [FeatureFlagName.FLEET_DIRECTORY],
     ...overrides,
   }) as Fleet;
 
@@ -104,14 +99,6 @@ const save = async (subject: VueWrapper) => {
 describe("fleet settings: directory", () => {
   it("is hidden until the fleet is verified", async () => {
     const subject = await mount(verifiedFleet({ rsiVerified: false }));
-
-    expect(
-      subject.find('[data-test="fleet-directory-settings"]').exists(),
-    ).toBe(false);
-  });
-
-  it("is hidden while the directory is not rolled out to the fleet", async () => {
-    const subject = await mount(verifiedFleet({ features: [] }));
 
     expect(
       subject.find('[data-test="fleet-directory-settings"]').exists(),

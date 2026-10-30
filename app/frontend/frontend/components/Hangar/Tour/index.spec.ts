@@ -4,18 +4,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { defineComponent, h } from "vue";
 import PrimaryAction from "@/shared/components/PrimaryAction/index.vue";
 import type { TourStep } from "@/shared/components/Tour/types";
-import { FeatureFlagName } from "@/services/fyApi";
 import HangarTour from "./index.vue";
-
-const { enabledFeatures } = vi.hoisted(() => ({
-  enabledFeatures: new Set<string>(),
-}));
-
-vi.mock("@/frontend/composables/useFeatures", () => ({
-  useFeatures: () => ({
-    isFeatureEnabled: (feature: string) => enabledFeatures.has(feature),
-  }),
-}));
 
 vi.mock("@/shared/composables/useI18n", () => ({
   useI18n: () => ({ t: (key: string) => key }),
@@ -52,7 +41,6 @@ const setViewport = (phone: boolean) => {
 
 afterEach(() => {
   wrapper?.unmount();
-  enabledFeatures.clear();
   window.matchMedia = originalMatchMedia;
 });
 
@@ -79,16 +67,20 @@ describe("HangarTour", () => {
     }
   });
 
-  it("leaves unavailable features out of the guide", () => {
+  it("includes every hangar feature in the guide", () => {
     const ids = steps().map((step) => step.id);
 
-    expect(ids).not.toContain("overview");
-    expect(ids).not.toContain("inventories");
-    expect(ids).toEqual(expect.arrayContaining(["pledgeItems", "reset"]));
+    expect(ids).toEqual(
+      expect.arrayContaining([
+        "overview",
+        "inventories",
+        "pledgeItems",
+        "reset",
+      ]),
+    );
   });
 
   it("anchors the ship page to its title and skips it without a ship", () => {
-    enabledFeatures.add(FeatureFlagName.VEHICLE_OVERVIEW);
     const overview = steps().find((step) => step.id === "overview");
 
     expect(overview).toMatchObject({
@@ -98,7 +90,6 @@ describe("HangarTour", () => {
   });
 
   it("explains inventories on a phone without the desktop button", () => {
-    enabledFeatures.add(FeatureFlagName.HANGAR_INVENTORIES);
     const inventories = steps().find((step) => step.id === "inventories");
 
     expect(inventories).toBeDefined();
@@ -107,7 +98,6 @@ describe("HangarTour", () => {
 
   it("points inventories at the assets menu on a desktop", () => {
     setViewport(false);
-    enabledFeatures.add(FeatureFlagName.HANGAR_INVENTORIES);
 
     expect(steps().find((step) => step.id === "inventories")?.target).toBe(
       '[data-tour="hangar-assets"]',
@@ -116,7 +106,6 @@ describe("HangarTour", () => {
 
   it("points inventories at the page menu on a phone", () => {
     setViewport(true);
-    enabledFeatures.add(FeatureFlagName.HANGAR_INVENTORIES);
 
     expect(steps().find((step) => step.id === "inventories")?.target).toBe(
       '[data-tour="hangar-menu"]',

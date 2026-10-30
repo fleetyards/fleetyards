@@ -3,9 +3,6 @@
 module Api
   module V1
     class RaffleEntriesController < ::Api::BaseController
-      include RafflesFeatureConcern
-
-      before_action :check_raffles_feature
       before_action :set_raffle
 
       rescue_from ActiveRecord::RecordNotFound do |_exception|

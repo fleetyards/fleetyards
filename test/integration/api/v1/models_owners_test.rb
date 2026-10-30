@@ -40,7 +40,6 @@ class Api::V1::ModelsOwnersTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable("vehicle_overview")
     @user = create(:user)
     @model = create(:model)
   end
@@ -214,13 +213,6 @@ class Api::V1::ModelsOwnersTest < ActionDispatch::IntegrationTest
     sign_in @user
 
     assert_api_response :get, 404, path_params: {slug: "no-such-ship"}
-  end
-
-  test "GET /models/:slug/owners returns 403 while the feature is off" do
-    Flipper.disable("vehicle_overview")
-    sign_in @user
-
-    assert_api_response :get, 403, path_params: {slug: @model.slug}
   end
 
   test "GET /models/:slug/owners returns 401 when not signed in" do

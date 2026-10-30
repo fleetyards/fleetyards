@@ -343,7 +343,6 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
   end
 
   test "PUT /vehicles/:id picks a paint's picture in place of a gallery image" do
-    Flipper.enable("vehicle_overview")
     vehicle = create(:vehicle, user: @user)
     paint = create(:model_paint, :with_store_image, model: vehicle.model)
     vehicle.update!(picture: create(:image, gallery: vehicle.model))
@@ -357,7 +356,6 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
   end
 
   test "PUT /vehicles/:id rejects another model's paint as the picture" do
-    Flipper.enable("vehicle_overview")
     vehicle = create(:vehicle, user: @user)
     sign_in @user
 
@@ -431,7 +429,6 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
       body: {name: "Enterprise A"}
   end
   test "PUT /vehicles/:id attaches an uploaded image" do
-    Flipper.enable("vehicle_overview")
     vehicle = create(:vehicle, user: @user)
     sign_in @user
 
@@ -443,7 +440,6 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
   end
 
   test "PUT /vehicles/:id removes the image when sent null" do
-    Flipper.enable("vehicle_overview")
     vehicle = create(:vehicle, user: @user)
     vehicle.update!(image: upload_blob("ship.jpg", "image/jpeg").signed_id)
     sign_in @user
@@ -456,7 +452,6 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
   end
 
   test "PUT /vehicles/:id links the ship to a starmap location" do
-    Flipper.enable("vehicle_overview")
     vehicle = create(:vehicle, user: @user)
     location = create(:location, name: "Lorville")
     sign_in @user
@@ -468,7 +463,6 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
   end
 
   test "PUT /vehicles/:id returns 400 for a location that does not exist" do
-    Flipper.enable("vehicle_overview")
     vehicle = create(:vehicle, user: @user)
     sign_in @user
 
@@ -476,7 +470,6 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
   end
 
   test "PUT /vehicles/:id keeps a location the starmap does not carry as text" do
-    Flipper.enable("vehicle_overview")
     vehicle = create(:vehicle, user: @user)
     sign_in @user
 
@@ -487,7 +480,6 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
   end
 
   test "PUT /vehicles/:id sets the dedication plaque" do
-    Flipper.enable("vehicle_overview")
     create(:supporter_contribution, user: @user)
     vehicle = create(:vehicle, user: @user)
     vehicle.model.manufacturer.update!(short_name: "Crusader", shipyard: "Orison, Crusader (Stanton II)")
@@ -512,7 +504,6 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
   end
 
   test "PUT /vehicles/:id lets anyone put a plaque on their ship in the default style" do
-    Flipper.enable("vehicle_overview")
     vehicle = create(:vehicle, user: @user)
     sign_in @user
 
@@ -523,7 +514,6 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
   end
 
   test "PUT /vehicles/:id prints a plaque in English unless given a language" do
-    Flipper.enable("vehicle_overview")
     vehicle = create(:vehicle, user: @user)
     sign_in @user
 
@@ -537,7 +527,6 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
   end
 
   test "PUT /vehicles/:id rejects a plaque language the app does not speak" do
-    Flipper.enable("vehicle_overview")
     vehicle = create(:vehicle, user: @user, dedication: "To boldly go")
     sign_in @user
 
@@ -548,7 +537,6 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
   end
 
   test "PUT /vehicles/:id keeps the other plaque styles for supporters" do
-    Flipper.enable("vehicle_overview")
     vehicle = create(:vehicle, user: @user)
     sign_in @user
 
@@ -560,7 +548,6 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
   end
 
   test "PUT /vehicles/:id lets a lapsed supporter clear their plaque" do
-    Flipper.enable("vehicle_overview")
     vehicle = create(:vehicle, user: @user, dedication: "To boldly go")
     vehicle.update_column(:plaque_style, "neon")
     sign_in @user
@@ -571,7 +558,6 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
   end
 
   test "PUT /vehicles/:id accepts an unchanged plaque from a lapsed supporter" do
-    Flipper.enable("vehicle_overview")
     vehicle = create(:vehicle, user: @user, dedication: "To boldly go")
     sign_in @user
 
@@ -579,7 +565,6 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
   end
 
   test "PUT /vehicles/:id lets a supporter pick a plaque style" do
-    Flipper.enable("vehicle_overview")
     create(:supporter_contribution, user: @user)
     vehicle = create(:vehicle, user: @user)
     sign_in @user
@@ -601,7 +586,6 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
   end
 
   test "PUT /vehicles/:id switches a lapsed supporter's edited plaque to the default style" do
-    Flipper.enable("vehicle_overview")
     vehicle = create(:vehicle, user: @user, dedication: "To boldly go")
     vehicle.update_column(:plaque_style, "neon")
     sign_in @user
@@ -612,7 +596,6 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
   end
 
   test "PUT /vehicles/:id clears the dedication plaque" do
-    Flipper.enable("vehicle_overview")
     create(:supporter_contribution, user: @user)
     vehicle = create(:vehicle, user: @user, dedication: "To boldly go", launched_on: Date.new(2026, 10, 12), affiliation: "Maru Inc.", operations_group: "nine_tails", plaque_captain: "Torlek Maru")
     sign_in @user
@@ -627,7 +610,6 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
   end
 
   test "PUT /vehicles/:id rejects a plaque captain over the limit" do
-    Flipper.enable("vehicle_overview")
     vehicle = create(:vehicle, user: @user)
     sign_in @user
 
@@ -635,7 +617,6 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
   end
 
   test "PUT /vehicles/:id rejects a dedication over the limit" do
-    Flipper.enable("vehicle_overview")
     create(:supporter_contribution, user: @user)
     vehicle = create(:vehicle, user: @user)
     sign_in @user
@@ -644,7 +625,6 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
   end
 
   test "PUT /vehicles/:id rejects an operations group the lore does not know" do
-    Flipper.enable("vehicle_overview")
     create(:supporter_contribution, user: @user)
     vehicle = create(:vehicle, user: @user)
     sign_in @user
@@ -653,7 +633,6 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
   end
 
   test "PUT /vehicles/:id picks a picture from the model's gallery" do
-    Flipper.enable("vehicle_overview")
     vehicle = create(:vehicle, user: @user)
     image = create(:image, gallery: vehicle.model)
     sign_in @user
@@ -666,7 +645,6 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /vehicles/:id leaves out a gallery picture disabled since the pick" do
-    Flipper.enable("vehicle_overview")
     vehicle = create(:vehicle, user: @user)
     image = create(:image, gallery: vehicle.model)
     vehicle.update!(picture: image)
@@ -679,7 +657,6 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
   end
 
   test "PUT /vehicles/:id rejects a picture from another model's gallery" do
-    Flipper.enable("vehicle_overview")
     vehicle = create(:vehicle, user: @user)
     image = create(:image, gallery: create(:model))
     sign_in @user
@@ -690,7 +667,6 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
   end
 
   test "PUT /vehicles/:id rejects a disabled gallery picture" do
-    Flipper.enable("vehicle_overview")
     vehicle = create(:vehicle, user: @user)
     image = create(:image, :disabled, gallery: vehicle.model)
     sign_in @user
@@ -699,7 +675,6 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
   end
 
   test "PUT /vehicles/:id rejects a picture type that is neither an image nor a paint" do
-    Flipper.enable("vehicle_overview")
     vehicle = create(:vehicle, user: @user)
     sign_in @user
 
@@ -707,7 +682,6 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /vehicles/:id serves an upload over the picked picture" do
-    Flipper.enable("vehicle_overview")
     vehicle = create(:vehicle, user: @user)
     vehicle.update!(picture: create(:model_paint, :with_store_image, model: vehicle.model))
     vehicle.image.attach(io: file_fixture("image.jpg").open, filename: "upload.jpg")
@@ -720,27 +694,12 @@ class Api::V1::VehiclesTest < ActionDispatch::IntegrationTest
   end
 
   test "PUT /vehicles/:id rejects an SVG image" do
-    Flipper.enable("vehicle_overview")
     vehicle = create(:vehicle, user: @user)
     sign_in @user
 
     assert_api_response :put, 400, path_params: {id: vehicle.id}, body: {image: upload_blob("vector.svg", "image/svg+xml").signed_id}
 
     assert_not vehicle.reload.image.attached?
-  end
-
-  test "PUT /vehicles/:id ignores the overview fields while the feature is off" do
-    vehicle = create(:vehicle, user: @user)
-    sign_in @user
-
-    assert_api_response :put, 200,
-      path_params: {id: vehicle.id},
-      body: {image: upload_blob("ship.jpg", "image/jpeg").signed_id, logEntriesPublicByDefault: true, dedication: "To boldly go"}
-
-    vehicle.reload
-    assert_not vehicle.image.attached?
-    assert_not vehicle.log_entries_public_by_default
-    assert_nil vehicle.dedication
   end
 
   private def upload_blob(filename, content_type)

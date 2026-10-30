@@ -12,64 +12,44 @@ class UserFeatureScopesTest < ActiveSupport::TestCase
   end
 
   test "admits the actors a feature was switched on for, and nobody else" do
-    Flipper.enable_actor("hangar_inventories", @user)
+    Flipper.enable_actor("hangar_planner", @user)
 
-    assert_equal [@user.id], User.with_feature(:hangar_inventories).pluck(:id)
+    assert_equal [@user.id], User.with_feature(:hangar_planner).pluck(:id)
   end
 
   test "admits everybody once the feature is on outright" do
-    Flipper.enable("hangar_inventories")
+    Flipper.enable("hangar_planner")
 
-    assert_includes User.with_feature(:hangar_inventories).pluck(:id), @other.id
+    assert_includes User.with_feature(:hangar_planner).pluck(:id), @other.id
   end
 
   test "admits nobody for a feature nothing has switched on" do
-    assert_empty User.with_feature(:hangar_inventories)
+    assert_empty User.with_feature(:hangar_planner)
   end
 
   # `testers` is the one registered group a User can be in, and it is a column.
   test "admits the testers group" do
     @other.update!(tester: true)
-    Flipper.enable_group("hangar_inventories", :testers)
+    Flipper.enable_group("hangar_planner", :testers)
 
-    assert_equal [@other.id], User.with_feature(:hangar_inventories).pluck(:id)
+    assert_equal [@other.id], User.with_feature(:hangar_planner).pluck(:id)
   end
 
   # Neither percentage rollout can be written as a query. Admitting everybody
   # offers somebody the gate may still refuse, which is the harmless way round;
   # admitting nobody would hide people who can in fact receive.
   test "admits everybody under a percentage rollout it cannot express" do
-    Flipper.enable_percentage_of_actors("hangar_inventories", 50)
+    Flipper.enable_percentage_of_actors("hangar_planner", 50)
 
-    assert_includes User.with_feature(:hangar_inventories).pluck(:id), @other.id
+    assert_includes User.with_feature(:hangar_planner).pluck(:id), @other.id
   end
 
   # `percentage_of_time` answers differently per call rather than per actor, so
   # there is no set of ids it could ever resolve to. Reading only the actor gate
   # would have hidden everybody for the whole rollout.
   test "admits everybody under a time-based rollout too" do
-    Flipper.enable_percentage_of_time("hangar_inventories", 50)
+    Flipper.enable_percentage_of_time("hangar_planner", 50)
 
-    assert_includes User.with_feature(:hangar_inventories).pluck(:id), @other.id
-  end
-
-  # A transfer to a person lands in their own hangar inventory -- the flag
-  # `Inventories::TransferGate` asks for.
-  test "receiving_transfers wants the hangar inventory surface" do
-    Flipper.enable_actor("hangar_inventories", @user)
-
-    assert_equal [@user.id], User.receiving_transfers.pluck(:id)
-  end
-
-  # The picker must not offer somebody the send would then refuse.
-  test "receiving_transfers agrees with the gate it mirrors" do
-    Flipper.enable_actor("hangar_inventories", @user)
-
-    [@user, @other].each do |user|
-      gate = ::Inventories::TransferGate.new(sender: create(:user), recipient: user)
-
-      assert_equal User.receiving_transfers.exists?(id: user.id),
-        gate.refusal&.code != :unavailable
-    end
+    assert_includes User.with_feature(:hangar_planner).pluck(:id), @other.id
   end
 end

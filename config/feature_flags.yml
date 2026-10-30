@@ -48,19 +48,9 @@ fleet_tours:
 
 # Rollout of the new "/": a landing page for visitors and a dashboard for
 # signed-in pilots. The old homepage stays the fallback while this is off.
-homepage_redesign:
-  description: "Homepage redesign — a landing page for visitors and a personal dashboard for pilots"
-
-hangar_inventories:
-  description: "Personal hangar inventories with a deposit/withdrawal ledger"
 
 # Rides its own gate rather than hangar_inventories: a ship's cargo is a
 # separate surface and rolls out on its own schedule.
-ship_inventories:
-  description: "Ship inventories — the cargo aboard a vehicle"
-
-push_notifications:
-  description: "Push notifications — Web Push delivery of notifications to a subscribed browser"
 
 oauth-applications:
   description: "User-owned OAuth applications in settings"
@@ -94,9 +84,6 @@ oauth-twitch:
   description: "Twitch login"
   permanent: true
 
-trade_routes:
-  description: "Trade routes — profitable commodity runs between two terminals, ranked for a chosen ship"
-
 holo_ar:
   description: "View in AR — place a ship's to-scale holo in your room from the ship page"
 
@@ -106,23 +93,8 @@ holo_textured:
 item_holo_textured:
   description: "Textured item holo — switch a component or equipment page's holo to the painted export"
 
-fleet_directory:
-  description: "Fleet directory — a public list of verified fleets, searchable by name, SID, activity and language"
-
-vehicle_overview:
-  description: "Vehicle overview — an overview tab, a captain's log and an uploaded picture for each ship in the hangar"
-
-loadout_editor:
-  description: "Loadout editor — fit modules slot by slot and save fleetyards loadouts for each ship"
-
 loadout_preview:
   description: "Loadout preview — show a ship's 3D holo with the picked components mounted on it"
 
 hangar_planner:
   description: "Hangar planner — plan the hangar you want in slots, compare it with your current hangar and work out melts, upgrades and buy-backs to get there"
-
-shopping_cart:
-  description: "Shopping cart — collect commodities, components and equipment and plan where to buy them in game"
-
-raffles:
-  description: "Raffles — users enter to win gift codes, an admin draws the winner"

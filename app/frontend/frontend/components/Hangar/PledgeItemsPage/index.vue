@@ -18,7 +18,6 @@ import HangarSyncBtn from "@/frontend/components/Hangar/SyncBtn/index.vue";
 import BulkSelectionBar from "@/shared/components/BulkSelectionBar/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { useBulkSelection } from "@/shared/composables/useBulkSelection";
-import { useFeatures } from "@/frontend/composables/useFeatures";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
@@ -35,7 +34,6 @@ import {
   getHangarEquipmentQueryKey,
   useHangarShipComponents,
   getHangarShipComponentsQueryKey,
-  FeatureFlagName,
   type HangarPledgeItem,
   type HangarPledgeItemQuery,
 } from "@/services/fyApi";
@@ -111,13 +109,9 @@ const {
 
 const comlink = useComlink();
 
-const { isFeatureEnabled } = useFeatures();
-
 // Ship components and FPS gear are things to keep in an inventory.
-const inventoryActions = computed(
-  () =>
-    ["shipComponents", "equipment"].includes(props.kind) &&
-    isFeatureEnabled(FeatureFlagName.HANGAR_INVENTORIES),
+const inventoryActions = computed(() =>
+  ["shipComponents", "equipment"].includes(props.kind),
 );
 
 const records = computed(() => pledgeItems.value?.items ?? []);

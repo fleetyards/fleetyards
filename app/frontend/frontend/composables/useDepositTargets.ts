@@ -34,12 +34,9 @@ type Entry = { option: FilterOption; target: DepositTarget };
  */
 export const useDepositTargets = (enabled: MaybeRefOrGetter<boolean>) => {
   const { t } = useI18n();
-  const { isFeatureEnabled, isFleetFeatureEnabled } = useFeatures();
+  const { isFleetFeatureEnabled } = useFeatures();
 
-  const hangarEnabled = computed(
-    () =>
-      toValue(enabled) && isFeatureEnabled(FeatureFlagName.HANGAR_INVENTORIES),
-  );
+  const hangarEnabled = computed(() => toValue(enabled));
   const fleetEnabled = computed(() => toValue(enabled));
 
   const hangar = useHangarInventories(

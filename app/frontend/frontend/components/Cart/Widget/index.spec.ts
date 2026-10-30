@@ -5,7 +5,6 @@ import { type Cart } from "@/services/fyApi";
 
 const cart = ref<Cart | undefined>();
 const routeName = ref("home");
-const enabled = { value: true };
 
 vi.mock("vue-router", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
@@ -19,10 +18,6 @@ vi.mock("vue-router", async (importOriginal) => ({
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   useCart: () => ({ data: cart }),
-}));
-
-vi.mock("@/frontend/composables/useFeatures", () => ({
-  useFeatures: () => ({ isFeatureEnabled: () => enabled.value }),
 }));
 
 vi.mock("@/shared/composables/useMobile", () => ({
@@ -78,7 +73,6 @@ const expand = async (wrapper: Awaited<ReturnType<typeof mount>>) => {
 describe("CartWidget", () => {
   beforeEach(() => {
     localStorage.clear();
-    enabled.value = true;
     routeName.value = "home";
     cart.value = cartWith(2);
   });
@@ -113,13 +107,6 @@ describe("CartWidget", () => {
 
   it("stays away on the cart page", async () => {
     routeName.value = "cart";
-    const wrapper = await mount();
-
-    expect(wrapper.find("[data-test='cart-widget']").exists()).toBe(false);
-  });
-
-  it("stays away while the feature is off", async () => {
-    enabled.value = false;
     const wrapper = await mount();
 
     expect(wrapper.find("[data-test='cart-widget']").exists()).toBe(false);

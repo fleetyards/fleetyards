@@ -225,8 +225,6 @@
         }
       },
       "welcome": "Welcome to",
-      "welcomeShips": "Latest Ships",
-      "welcomeImages": "Random Images",
       "ships": {
         "index": "Ships Index",
         "fleetchart": "Ships Fleetchart"

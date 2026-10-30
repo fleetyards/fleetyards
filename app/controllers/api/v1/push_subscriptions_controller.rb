@@ -15,7 +15,7 @@ module Api
         unless: :user_signed_in?,
         only: %i[create destroy touch]
 
-      before_action :check_push_notifications_feature
+      before_action :check_push_configured
 
       def index
         authorize! with: PushSubscriptionPolicy
@@ -70,8 +70,8 @@ module Api
 
       # After the doorkeeper callbacks, so a request without a session still
       # gets a 401 rather than a 403 that tells it what exists.
-      private def check_push_notifications_feature
-        return if Push::Vapid.configured? && feature_enabled?("push_notifications")
+      private def check_push_configured
+        return if Push::Vapid.configured?
 
         render json: {code: "forbidden", message: "This feature is not available"}, status: :forbidden
       end

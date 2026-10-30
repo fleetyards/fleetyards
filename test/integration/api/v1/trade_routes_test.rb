@@ -32,8 +32,6 @@ class Api::V1::TradeRoutesTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable("trade_routes")
-
     @arc = create(:terminal, name: "Admin - ARC-L1", star_system: "Stanton", space_station: "ARC-L1 Wide Forest Station")
     @area18 = create(:terminal, name: "TDD - Area 18", star_system: "Stanton", city: "Area 18")
     @ruin = create(:terminal, name: "Admin - Ruin Station", star_system: "Pyro", space_station: "Ruin Station")
@@ -244,12 +242,6 @@ class Api::V1::TradeRoutesTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200 do
       assert_equal [@best_margin.id], ids
     end
-  end
-
-  test "GET /trade-routes is unavailable while the feature is off" do
-    Flipper.disable("trade_routes")
-
-    assert_api_response :get, 403
   end
 
   # The same 64 SCU hold as the ship in setup, on a ship that can't land.

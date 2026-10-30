@@ -16,8 +16,7 @@ import {
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
 import { useSessionStore } from "@/frontend/stores/session";
-import { useFeatures } from "@/frontend/composables/useFeatures";
-import { FeatureFlagName, useCart } from "@/services/fyApi";
+import { useCart } from "@/services/fyApi";
 
 const PREVIEW_LINES = 4;
 
@@ -29,12 +28,7 @@ const mobile = useMobile();
 
 const { isAuthenticated } = storeToRefs(useSessionStore());
 
-const { isFeatureEnabled } = useFeatures();
-
-const enabled = computed(
-  () =>
-    isAuthenticated.value && isFeatureEnabled(FeatureFlagName.SHOPPING_CART),
-);
+const enabled = computed(() => isAuthenticated.value);
 
 // The badge's query, so the widget costs no request of its own.
 const { data: cart } = useCart(undefined, { query: { enabled } });

@@ -3,7 +3,6 @@
 module Api
   module V1
     class VehicleInventoryController < ::Api::BaseController
-      include ShipInventoriesFeatureConcern
       include VehicleInventoryScoped
 
       before_action :authenticate_user!, only: []
@@ -14,7 +13,6 @@ module Api
         unless: :user_signed_in?,
         only: %i[destroy]
 
-      before_action :check_ship_inventories_feature
       before_action :set_vehicle
 
       def show

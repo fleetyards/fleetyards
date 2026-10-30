@@ -40,7 +40,6 @@ class Api::V1::VehiclePaintsIndexTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable("vehicle_overview")
     @user = create(:user)
     @model = create(:model, name: "Ironclad")
     @rust = create(:model_paint, model: @model, name: "Rust Society")
@@ -94,13 +93,6 @@ class Api::V1::VehiclePaintsIndexTest < ActionDispatch::IntegrationTest
     sign_in create(:user)
 
     assert_api_response :get, 404, path_params: {vehicle_id: @vehicle.id}
-  end
-
-  test "GET /vehicles/:vehicle_id/paints returns 403 while the feature is off" do
-    Flipper.disable("vehicle_overview")
-    sign_in @user
-
-    assert_api_response :get, 403, path_params: {vehicle_id: @vehicle.id}
   end
 
   test "GET /vehicles/:vehicle_id/paints returns 401 when not signed in" do

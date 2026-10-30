@@ -1,23 +1,13 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it } from "vitest";
 import { createRouter, createWebHashHistory } from "vue-router";
 import Component from "./index.vue";
 import {
   type Vehicle,
   BoughtViaEnum,
-  FeatureFlagName,
   ModelProductionStatusEnum,
   VehicleLoadoutKindEnum,
 } from "@/services/fyApi";
-
-const enabledFlags = ref<FeatureFlagName[]>([]);
-
-vi.mock("@/frontend/composables/useFeatures", () => ({
-  useFeatures: () => ({
-    isFeatureEnabled: (flag: FeatureFlagName) =>
-      enabledFlags.value.includes(flag),
-  }),
-}));
 
 const vehicle = (overrides: Partial<Vehicle> = {}): Vehicle =>
   ({
@@ -108,13 +98,6 @@ const menuStructure = () =>
   );
 
 describe("VehicleContextMenu", () => {
-  beforeEach(() => {
-    enabledFlags.value = [
-      FeatureFlagName.VEHICLE_OVERVIEW,
-      FeatureFlagName.SHIP_INVENTORIES,
-    ];
-  });
-
   afterEach(() => {
     mounted.forEach((wrapper) => wrapper.unmount());
     mounted = [];
@@ -126,6 +109,7 @@ describe("VehicleContextMenu", () => {
     expect(items()).toEqual([
       "vehicle-ship-page",
       "vehicle-edit",
+      "vehicle-loadout",
       "vehicle-manage-loadouts",
       "vehicle-manage-cargo",
       "vehicle-log",
@@ -137,6 +121,7 @@ describe("VehicleContextMenu", () => {
       "vehicle-ship-page",
       "separator",
       "vehicle-edit",
+      "vehicle-loadout",
       "separator",
       "vehicle-manage-loadouts",
       "vehicle-manage-cargo",
@@ -155,6 +140,7 @@ describe("VehicleContextMenu", () => {
     expect(items()).toEqual([
       "vehicle-ship-page",
       "vehicle-edit",
+      "vehicle-loadout",
       "vehicle-remove",
     ]);
   });
@@ -164,6 +150,7 @@ describe("VehicleContextMenu", () => {
 
     expect(menuStructure()).toEqual([
       "vehicle-edit",
+      "vehicle-loadout",
       "separator",
       "vehicle-remove",
     ]);
@@ -182,10 +169,6 @@ describe("VehicleContextMenu", () => {
   });
 
   it("keeps loadout editing with edits and separates it from management", async () => {
-    enabledFlags.value = [
-      ...enabledFlags.value,
-      FeatureFlagName.LOADOUT_EDITOR,
-    ];
     await mount({
       hideEdit: true,
       vehicle: vehicle({ model: { ...vehicle().model, hasModules: true } }),
@@ -201,28 +184,12 @@ describe("VehicleContextMenu", () => {
   });
 
   it("offers loadout editing on a flight-ready ship without modules", async () => {
-    enabledFlags.value = [
-      ...enabledFlags.value,
-      FeatureFlagName.LOADOUT_EDITOR,
-    ];
     await mount({ vehicle: vehicle() });
 
     expect(items()).toContain("vehicle-loadout");
   });
 
-  it("offers no loadout editing until the editor is switched on", async () => {
-    await mount({
-      vehicle: vehicle({ model: { ...vehicle().model, hasModules: true } }),
-    });
-
-    expect(items()).not.toContain("vehicle-loadout");
-  });
-
   it("offers no loadout editing on a ship that is not flight ready", async () => {
-    enabledFlags.value = [
-      ...enabledFlags.value,
-      FeatureFlagName.LOADOUT_EDITOR,
-    ];
     await mount({
       vehicle: vehicle({
         model: {
@@ -237,10 +204,6 @@ describe("VehicleContextMenu", () => {
   });
 
   it("shows the owner the active loadout of a ship that is not flight ready", async () => {
-    enabledFlags.value = [
-      ...enabledFlags.value,
-      FeatureFlagName.LOADOUT_EDITOR,
-    ];
     await mount({
       vehicle: vehicle({
         model: {
@@ -260,10 +223,6 @@ describe("VehicleContextMenu", () => {
   });
 
   it("shows a loaner's or wishlist ship's loadout rather than editing it", async () => {
-    enabledFlags.value = [
-      ...enabledFlags.value,
-      FeatureFlagName.LOADOUT_EDITOR,
-    ];
     const modular = { model: { ...vehicle().model, hasModules: true } };
 
     await mount({ vehicle: vehicle({ ...modular, loaner: true }) });
@@ -291,21 +250,6 @@ describe("VehicleContextMenu", () => {
     await mount({ onVehiclePage: true, hideShipPage: true });
 
     expect(items()).not.toContain("vehicle-ship-page");
-  });
-
-  it("offers no log without the overview", async () => {
-    enabledFlags.value = [FeatureFlagName.SHIP_INVENTORIES];
-    await mount();
-
-    expect(items()).not.toContain("vehicle-log");
-    expect(items()).toContain("vehicle-manage-loadouts");
-  });
-
-  it("offers no cargo without inventories", async () => {
-    enabledFlags.value = [FeatureFlagName.VEHICLE_OVERVIEW];
-    await mount();
-
-    expect(items()).not.toContain("vehicle-manage-cargo");
   });
 
   it("moves a wishlist ship to the hangar and keeps its log and cargo out", async () => {

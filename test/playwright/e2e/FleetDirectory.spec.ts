@@ -7,9 +7,7 @@ test.describe("Fleet directory", () => {
     await appScenario("fleet_directory");
   });
 
-  test("/fleets/ opens the directory once it is rolled out", async ({
-    page,
-  }) => {
+  test("/fleets/ opens the directory", async ({ page }) => {
     await page.goto("/fleets/");
 
     await expect(page).toHaveURL(/\/fleets\/directory\//);

@@ -179,8 +179,6 @@ module Api
       end
 
       private def vehicle_overview_params
-        return [] unless feature_enabled?("vehicle_overview")
-
         %i[
           image picture_type picture_id log_entries_public_by_default location location_id
           dedication dedication_verse launched_on launch_port launch_port_location_id affiliation operations_group plaque_captain plaque_style plaque_locale plaque_image

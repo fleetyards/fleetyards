@@ -349,9 +349,7 @@
       "addToHangar": "Ajouter au hangar",
       "home": {
         "catalogueSearch": "Rechercher des vaisseaux, objets, missions et lieux",
-        "submitCatalogueSearch": "Rechercher",
-        "search": "Recherche de vaisseaux",
-        "submitSearch": "Rechercher des vaisseaux"
+        "submitCatalogueSearch": "Rechercher"
       },
       "shop": {
         "sellPrice": "prix de vente",
@@ -4673,7 +4671,6 @@
         "location": "Emplacement",
         "noLocation": "Non défini",
         "noGroups": "Aucun groupe",
-        "planLoadout": "Planifier un loadout",
         "pictureUpload": "Téléverser",
         "pictureGallery": "Galerie",
         "stockPicture": "Image standard",

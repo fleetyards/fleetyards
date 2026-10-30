@@ -14,7 +14,6 @@ import VehicleContextMenu from "@/frontend/components/Vehicles/ContextMenu/index
 import HangarGroups from "@/frontend/components/Vehicles/HangarGroups/index.vue";
 import LoadoutMarker from "@/shared/components/LoadoutMarker/index.vue";
 import {
-  FeatureFlagName,
   type Vehicle,
   type VehiclePublic,
   type Manufacturer,
@@ -23,7 +22,6 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useVehicleCargo } from "@/frontend/composables/useVehicleCargo";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useFeatures } from "@/frontend/composables/useFeatures";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { PanelTonesEnum } from "@/shared/components/base/Panel/types";
 import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
@@ -115,18 +113,11 @@ const image = computed(() => {
 
 const modelName = computed(() => model.value?.name);
 
-const { isFeatureEnabled } = useFeatures();
-
-// The owner's own ship opens on its overview once there is one; anyone else's,
-// and a loaner, which has no page of its own to edit, still opens the model.
+// The owner's own ship opens on its overview; anyone else's, and a loaner,
+// which has no page of its own to edit, opens the model.
 const toVehicle = useVehicleRoute();
 
-const hasOverview = computed(
-  () =>
-    props.editable &&
-    !props.vehicle.loaner &&
-    isFeatureEnabled(FeatureFlagName.VEHICLE_OVERVIEW),
-);
+const hasOverview = computed(() => props.editable && !props.vehicle.loaner);
 
 const titleRoute = computed(() => {
   if (hasOverview.value) {

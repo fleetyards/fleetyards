@@ -5,8 +5,6 @@ module Api
     class TradeRoutesController < ::Api::PublicBaseController
       skip_verify_authorized only: %i[index]
 
-      before_action :check_trade_routes_feature
-
       after_action -> { pagination_header(:trade_routes) }, only: [:index]
 
       def index
@@ -61,12 +59,6 @@ module Api
           origin_terminal_id_in: [], destination_terminal_id_in: [],
           origin_terminal_star_system_in: [], destination_terminal_star_system_in: []
         ]).fetch(:q, {})
-      end
-
-      private def check_trade_routes_feature
-        return if feature_enabled?("trade_routes")
-
-        render json: {code: "forbidden", message: "This feature is not available"}, status: :forbidden
       end
     end
   end

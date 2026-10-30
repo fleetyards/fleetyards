@@ -5,8 +5,6 @@
         "maintainer": "Gets the maintainer badge and every supporter perk at the highest tier."
       },
       "index": "Your database for all information around Ships and Stations in Star Citizen.",
-      "indexQuote": "“Strap into one of dozens of ships and embark on a life within the Star Citizen universe.<br>Unbound by profession or skill sets, you choose the path of your own life.”",
-      "indexQuoteSource": "Author Unknown, Source:",
       "support": {
         "info": "Not spending? <a href=\"https://robertsspaceindustries.com/spectrum/community/SC/forum/57219/thread/fleetyards-net\" target=\"_blank\" rel=\"noopener\"><b>Upvote us on Spectrum</b></a> to help more people find FleetYards.",
         "goal": "Covers running costs like server hosting and data services.",

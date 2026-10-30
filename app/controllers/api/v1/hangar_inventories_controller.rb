@@ -3,9 +3,6 @@
 module Api
   module V1
     class HangarInventoriesController < ::Api::BaseController
-      include HangarInventoriesFeatureConcern
-      include ShipInventoriesFeatureConcern
-
       after_action -> { pagination_header(:hangar_inventories) }, only: %i[index]
 
       before_action :authenticate_user!, only: []
@@ -16,7 +13,6 @@ module Api
         unless: :user_signed_in?,
         only: %i[create update destroy]
 
-      before_action :check_hangar_inventories_feature
       before_action :set_hangar_inventory, only: %i[show update destroy]
 
       def index
@@ -25,7 +21,6 @@ module Api
         ::Inventory.personal_for(current_resource_owner)
 
         scope = current_resource_owner.inventories
-        scope = scope.hand_made unless ship_inventories_enabled?
 
         query_params = params.fetch(:q, {}).permit(:name_cont, :s, :sorts)
         normalize_sort_params(query_params)

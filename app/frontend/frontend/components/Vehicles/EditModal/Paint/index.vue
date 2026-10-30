@@ -7,12 +7,7 @@ export default {
 <script lang="ts" setup>
 import { useField } from "vee-validate";
 import VehiclePaintPicker from "@/frontend/components/Vehicles/PaintPicker/index.vue";
-import { useFeatures } from "@/frontend/composables/useFeatures";
-import {
-  FeatureFlagName,
-  type Vehicle,
-  useVehiclePaints,
-} from "@/services/fyApi";
+import { type Vehicle, useVehiclePaints } from "@/services/fyApi";
 
 type Props = {
   vehicle: Vehicle;
@@ -26,13 +21,8 @@ const emit = defineEmits<{
 
 const { value: modelPaintIds, meta } = useField<string[]>("modelPaintIds");
 
-const { isFeatureEnabled } = useFeatures();
-
-// The pledge suggestion comes from the vehicle paints endpoint, which is part of
-// the vehicle overview.
-const { data: vehiclePaints } = useVehiclePaints(() => props.vehicle.id, {
-  query: { enabled: isFeatureEnabled(FeatureFlagName.VEHICLE_OVERVIEW) },
-});
+// The pledge suggestion comes from the vehicle paints endpoint.
+const { data: vehiclePaints } = useVehiclePaints(() => props.vehicle.id);
 
 const paints = computed(() => vehiclePaints.value?.map((entry) => entry.paint));
 

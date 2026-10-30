@@ -2,7 +2,6 @@ import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { describe, expect, it, vi } from "vitest";
 import { ref } from "vue";
 import {
-  FeatureFlagName,
   ModelProductionStatusEnum,
   type Vehicle,
   type VehicleLoadoutMinimal,
@@ -59,13 +58,8 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
 
 const openLoadoutModal = vi.fn();
 
-const enabledFlags = ref<FeatureFlagName[]>([FeatureFlagName.LOADOUT_EDITOR]);
-
 vi.mock("@/frontend/composables/useFeatures", () => ({
-  useFeatures: () => ({
-    isFeatureEnabled: (flag: FeatureFlagName) =>
-      enabledFlags.value.includes(flag),
-  }),
+  useFeatures: () => ({ isFeatureEnabled: () => false }),
 }));
 
 vi.mock("@/frontend/composables/useVehicleModals", () => ({
@@ -259,18 +253,6 @@ describe("VehicleLoadoutView", () => {
       loadoutId: "l1",
       tab: "modules",
     });
-  });
-
-  it("offers the owner no way in until the editor is switched on", async () => {
-    enabledFlags.value = [];
-    const wrapper = await mountWithDefaults(Component, {
-      props: { vehicle, loadout, editable: true },
-    });
-
-    expect(
-      wrapper.find("[data-test='vehicle-loadout-view-edit']").exists(),
-    ).toBe(false);
-    enabledFlags.value = [FeatureFlagName.LOADOUT_EDITOR];
   });
 
   it("offers the owner no way in on a ship that is not flight ready", async () => {

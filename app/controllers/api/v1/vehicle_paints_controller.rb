@@ -3,12 +3,9 @@
 module Api
   module V1
     class VehiclePaintsController < ::Api::BaseController
-      include VehicleOverviewFeatureConcern
-
       before_action :authenticate_user!, only: []
       before_action -> { doorkeeper_authorize! "hangar", "hangar:read" },
         unless: -> { warden.authenticate?(scope: :user) }
-      before_action :check_vehicle_overview_feature
 
       before_action :set_vehicle
 

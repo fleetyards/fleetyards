@@ -1,5 +1,4 @@
 import type { RouteRecordRaw } from "vue-router";
-import { FeatureFlagName } from "@/services/fyApi";
 import { routes as fleetsRoutes } from "@/frontend/pages/fleets/routes";
 import { routes as hangarRoutes } from "@/frontend/pages/hangar/routes";
 import { routes as locationsRoutes } from "@/frontend/pages/locations/routes";
@@ -218,7 +217,6 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "cart",
       needsAuthentication: true,
-      feature: FeatureFlagName.SHOPPING_CART,
       mobileBack: true,
       backgroundImage: "bg-5",
     },
@@ -229,7 +227,6 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/frontend/pages/raffles/[id].vue"),
     meta: {
       title: "raffles",
-      feature: FeatureFlagName.RAFFLES,
       backgroundImage: "bg-5",
     },
   },
@@ -239,7 +236,6 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/frontend/pages/raffle-claims/[token].vue"),
     meta: {
       title: "raffleClaim",
-      feature: FeatureFlagName.RAFFLES,
       backgroundImage: "bg-5",
     },
   },
@@ -259,7 +255,6 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/frontend/pages/raffles/[id].vue"),
     meta: {
       title: "raffle",
-      feature: FeatureFlagName.RAFFLES,
       mobileBack: true,
       backgroundImage: "bg-5",
     },

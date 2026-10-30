@@ -47,7 +47,6 @@ class Api::V1::VehicleLogEntriesCreateTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable("vehicle_overview")
     @user = create(:user)
     @vehicle = create(:vehicle, user: @user)
   end
@@ -111,13 +110,6 @@ class Api::V1::VehicleLogEntriesCreateTest < ActionDispatch::IntegrationTest
     assert_no_difference "VehicleLogEntry.count" do
       assert_api_response :post, 404, path_params: {vehicle_id: @vehicle.id}, body: {title: "Not mine"}
     end
-  end
-
-  test "POST /vehicles/:vehicle_id/log-entries returns 403 while the feature is off" do
-    Flipper.disable("vehicle_overview")
-    sign_in @user
-
-    assert_api_response :post, 403, path_params: {vehicle_id: @vehicle.id}, body: {title: "Too early"}
   end
 
   test "POST /vehicles/:vehicle_id/log-entries returns 401 when not signed in" do

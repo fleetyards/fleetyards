@@ -36,15 +36,9 @@ module RelationshipActions
 
     scope = scope.sent_by(acting_party) if requested_direction == "outgoing"
     scope = scope.received_by(acting_party) if requested_direction == "incoming"
-    scope = narrow_relationships(scope)
 
     @relationships = result_with_pagination(scope.order(created_at: :desc), per_page(relation_class))
   end
-
-  # The mount point's chance to narrow the list past state and direction.
-  # Friendships have one -- the transfer picker asks for the friends it could
-  # actually address -- and alliances do not.
-  private def narrow_relationships(scope) = scope
 
   # What the list reads off the two parties. A mount point whose parties carry
   # more -- a friend's in-game whereabouts -- preloads that too.

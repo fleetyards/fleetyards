@@ -6875,12 +6875,6 @@ paths:
         schema:
           type: string
         required: false
-      - name: transferTargets
-        in: query
-        schema:
-          type: boolean
-        required: false
-        description: Only members who could receive an inventory transfer
       security:
       - SessionCookie: []
       - Oauth2:
@@ -11050,12 +11044,6 @@ paths:
         required: false
         schema:
           type: integer
-      - name: transferTargets
-        in: query
-        required: false
-        schema:
-          type: boolean
-        description: Only friends who could receive an inventory transfer
       security:
       - SessionCookie: []
       - Oauth2:
@@ -27646,18 +27634,14 @@ components:
       type: string
       enum:
       - fleet_contracts
-      - fleet_directory
       - fleet_logistics
       - fleet_mission_builder
       - fleet_subscriptions
       - fleet_tours
-      - hangar_inventories
       - hangar_planner
       - holo_ar
       - holo_textured
-      - homepage_redesign
       - item_holo_textured
-      - loadout_editor
       - loadout_preview
       - oauth-applications
       - oauth-bluesky
@@ -27667,26 +27651,16 @@ components:
       - oauth-google
       - oauth-patreon
       - oauth-twitch
-      - push_notifications
-      - raffles
-      - ship_inventories
-      - shopping_cart
-      - trade_routes
-      - vehicle_overview
       x-enumNames:
       - FLEET_CONTRACTS
-      - FLEET_DIRECTORY
       - FLEET_LOGISTICS
       - FLEET_MISSION_BUILDER
       - FLEET_SUBSCRIPTIONS
       - FLEET_TOURS
-      - HANGAR_INVENTORIES
       - HANGAR_PLANNER
       - HOLO_AR
       - HOLO_TEXTURED
-      - HOMEPAGE_REDESIGN
       - ITEM_HOLO_TEXTURED
-      - LOADOUT_EDITOR
       - LOADOUT_PREVIEW
       - OAUTH_APPLICATIONS
       - OAUTH_BLUESKY
@@ -27696,12 +27670,6 @@ components:
       - OAUTH_GOOGLE
       - OAUTH_PATREON
       - OAUTH_TWITCH
-      - PUSH_NOTIFICATIONS
-      - RAFFLES
-      - SHIP_INVENTORIES
-      - SHOPPING_CART
-      - TRADE_ROUTES
-      - VEHICLE_OVERVIEW
       title: FeatureFlagName
     FeatureNamesList:
       type: array

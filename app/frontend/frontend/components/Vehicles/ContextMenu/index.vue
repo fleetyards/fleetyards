@@ -10,18 +10,13 @@ import { SHIP_GLYPH } from "@/shared/glyphs/ships";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import {
-  FeatureFlagName,
-  VehicleLoadoutKindEnum,
-  type Vehicle,
-} from "@/services/fyApi";
+import { VehicleLoadoutKindEnum, type Vehicle } from "@/services/fyApi";
 import {
   BtnSizesEnum,
   BtnTonesEnum,
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
 import { useComlink } from "@/shared/composables/useComlink";
-import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useVehicleMutations } from "@/frontend/composables/useVehicleMutations";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
@@ -54,8 +49,6 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const { t } = useI18n();
-
-const { isFeatureEnabled } = useFeatures();
 
 const deleting = ref(false);
 
@@ -231,9 +224,7 @@ const openLoadout = () => {
   }
 };
 
-const vehicleOverviewVisible = computed(
-  () => props.editable && isFeatureEnabled(FeatureFlagName.VEHICLE_OVERVIEW),
-);
+const vehicleOverviewVisible = computed(() => props.editable);
 
 // The vehicle page carries these as tabs and header buttons already. A loaner
 // has no page of its own.
@@ -268,10 +259,7 @@ const loadoutsVisible = computed(
 
 const cargoVisible = computed(
   () =>
-    pageLinksVisible.value &&
-    !props.wishlist &&
-    props.vehicle.model?.inGame &&
-    isFeatureEnabled(FeatureFlagName.SHIP_INVENTORIES),
+    pageLinksVisible.value && !props.wishlist && props.vehicle.model?.inGame,
 );
 
 const shipPageVisible = computed(

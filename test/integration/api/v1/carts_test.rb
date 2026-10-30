@@ -40,7 +40,6 @@ class Api::V1::CartsTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable(:shopping_cart)
     @user = create(:user)
 
     system = create(:location, name: "Stanton System", kind: "system")
@@ -180,13 +179,6 @@ class Api::V1::CartsTest < ActionDispatch::IntegrationTest
       unplaced = parsed_body["groups"].find { |group| group["name"] == "Somewhere - Unknown" }
       assert_nil unplaced["location"]
     end
-  end
-
-  test "GET /cart is forbidden while the feature is off" do
-    Flipper.disable(:shopping_cart)
-    sign_in @user
-
-    assert_api_response :get, 403, api_path: "/cart"
   end
 
   test "GET /cart returns 401 when not signed in" do

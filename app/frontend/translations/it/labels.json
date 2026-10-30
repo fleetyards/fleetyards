@@ -349,9 +349,7 @@
       "addToHangar": "Aggiungi all'hangar",
       "home": {
         "catalogueSearch": "Cerca navi, oggetti, missioni e luoghi",
-        "submitCatalogueSearch": "Cerca",
-        "search": "Cerca Navi...",
-        "submitSearch": "Cerca navi"
+        "submitCatalogueSearch": "Cerca"
       },
       "shop": {
         "sellPrice": "vende per",
@@ -4673,7 +4671,6 @@
         "location": "Posizione",
         "noLocation": "Non impostata",
         "noGroups": "Nessun gruppo",
-        "planLoadout": "Pianifica un loadout",
         "pictureUpload": "Carica",
         "pictureGallery": "Galleria",
         "stockPicture": "Immagine predefinita",

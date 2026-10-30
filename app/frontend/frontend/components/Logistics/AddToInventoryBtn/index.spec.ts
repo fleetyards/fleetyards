@@ -5,8 +5,6 @@ import Component from "./index.vue";
 
 const state = vi.hoisted(() => ({
   authenticated: true,
-  features: ["hangar_inventories"],
-  fleets: [] as { features?: string[] }[],
   emit: vi.fn(),
 }));
 
@@ -24,27 +22,6 @@ vi.mock("pinia", async (importOriginal) => {
   return {
     ...(await importOriginal<typeof import("pinia")>()),
     storeToRefs: toRefs,
-  };
-});
-
-vi.mock("@/frontend/composables/useFeatures", () => ({
-  useFeatures: () => ({
-    isFeatureEnabled: (feature: string) => state.features.includes(feature),
-    isFleetFeatureEnabled: (
-      fleet: { features?: string[] } | undefined,
-      feature: string,
-    ) =>
-      state.features.includes(feature) ||
-      (fleet?.features?.includes(feature) ?? false),
-  }),
-}));
-
-vi.mock("@/services/fyApi", async (importOriginal) => {
-  const { ref } = await import("vue");
-
-  return {
-    ...(await importOriginal<typeof import("@/services/fyApi")>()),
-    useMyFleets: () => ({ data: ref(state.fleets) }),
   };
 });
 
@@ -77,8 +54,6 @@ const button = (subject: VueWrapper) =>
 
 beforeEach(() => {
   state.authenticated = true;
-  state.features = ["hangar_inventories"];
-  state.fleets = [{}];
   state.emit.mockReset();
 });
 
@@ -114,32 +89,6 @@ describe("LogisticsAddToInventoryBtn", () => {
 
   it("is not offered to a visitor", () => {
     state.authenticated = false;
-
-    expect(button(mountBtn()).exists()).toBe(false);
-  });
-
-  it("is offered for fleet inventories alone", () => {
-    state.features = ["fleet_logistics"];
-
-    expect(button(mountBtn()).exists()).toBe(true);
-  });
-
-  it("is offered to a member of a fleet that runs logistics", () => {
-    state.features = [];
-    state.fleets = [{ features: ["fleet_logistics"] }];
-
-    expect(button(mountBtn()).exists()).toBe(true);
-  });
-
-  it("is not offered for fleet logistics without a fleet", () => {
-    state.features = ["fleet_logistics"];
-    state.fleets = [];
-
-    expect(button(mountBtn()).exists()).toBe(false);
-  });
-
-  it("is not offered without any inventories", () => {
-    state.features = [];
 
     expect(button(mountBtn()).exists()).toBe(false);
   });

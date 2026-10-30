@@ -7,7 +7,6 @@ class NotificationPushChannelTest < ActiveSupport::TestCase
     @user = create(:user)
     ::Push::DeliverNotificationJob.jobs.clear
     Push::Vapid.stubs(:configured?).returns(true)
-    Flipper.enable(:push_notifications)
   end
 
   def notify!(type: :fleet_invite)
@@ -97,12 +96,6 @@ class NotificationPushChannelTest < ActiveSupport::TestCase
 
   test "the channel is not offered for a type without it" do
     refute NotificationPreference.push_available?(:inventory_transfer_resolved, user: @user)
-  end
-
-  test "the channel is not offered with the flag off for the reader" do
-    Flipper.disable(:push_notifications)
-
-    refute NotificationPreference.push_available?(:fleet_invite, user: @user)
   end
 
   test "the channel is not offered without VAPID keys" do

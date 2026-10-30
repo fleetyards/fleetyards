@@ -10,15 +10,11 @@ import type { TourStep } from "@/shared/components/Tour/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import { useSessionStore } from "@/frontend/stores/session";
-import { useFeatures } from "@/frontend/composables/useFeatures";
 import { useMobile } from "@/shared/composables/useMobile";
-import { FeatureFlagName } from "@/services/fyApi";
 
 const open = defineModel<boolean>("open", { default: false });
 
 const { t } = useI18n();
-const { isFeatureEnabled } = useFeatures();
-
 const mobile = useMobile();
 
 const hangarStore = useHangarStore();
@@ -56,15 +52,11 @@ const steps = computed<TourStep[]>(() => [
     placement: "left",
     requiresTarget: true,
   }),
-  ...(isFeatureEnabled(FeatureFlagName.VEHICLE_OVERVIEW)
-    ? [
-        step("overview", {
-          target: '[data-tour="vehicle-overview"]',
-          placement: "left",
-          requiresTarget: true,
-        }),
-      ]
-    : []),
+  step("overview", {
+    target: '[data-tour="vehicle-overview"]',
+    placement: "left",
+    requiresTarget: true,
+  }),
   step("wishlist", {
     target: '[data-tour="hangar-wishlist"]',
     requiresTarget: true,
@@ -77,16 +69,12 @@ const steps = computed<TourStep[]>(() => [
     target: '[data-tour="hangar-stats"]',
     requiresTarget: true,
   }),
-  ...(isFeatureEnabled(FeatureFlagName.HANGAR_INVENTORIES)
-    ? [
-        step("inventories", {
-          target: mobile.value
-            ? '[data-tour="hangar-menu"]'
-            : '[data-tour="hangar-assets"]',
-          placement: "left",
-        }),
-      ]
-    : []),
+  step("inventories", {
+    target: mobile.value
+      ? '[data-tour="hangar-menu"]'
+      : '[data-tour="hangar-assets"]',
+    placement: "left",
+  }),
   step("share", {
     target: '[data-tour="hangar-share"]',
   }),

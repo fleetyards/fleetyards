@@ -11,8 +11,7 @@ class Api::V1::FleetSubscriptionEnforcementTest < ActionDispatch::IntegrationTes
     @user = create(:user)
     @fleet = create(:fleet, admins: [@user])
 
-    %w[fleet_contracts fleet_mission_builder fleet_logistics fleet_tours
-      hangar_inventories ship_inventories].each { |flag| Flipper.enable(flag) }
+    %w[fleet_contracts fleet_mission_builder fleet_logistics fleet_tours].each { |flag| Flipper.enable(flag) }
   end
 
   # Not an openapi_ruby spec -- this asserts behaviour across 28 controllers

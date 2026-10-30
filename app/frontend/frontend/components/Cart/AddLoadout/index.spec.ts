@@ -7,17 +7,12 @@ const emit = vi.fn();
 const displayWarning = vi.fn();
 
 const authenticated = { value: true };
-const enabled = { value: true };
 const lists = ref<CartList[]>([]);
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   useCartLists: () => ({ data: lists }),
   useAddCartItems: () => ({ mutate, isPending: ref(false) }),
-}));
-
-vi.mock("@/frontend/composables/useFeatures", () => ({
-  useFeatures: () => ({ isFeatureEnabled: () => enabled.value }),
 }));
 
 vi.mock("@/frontend/composables/useCartCache", () => ({
@@ -63,7 +58,6 @@ const mount = (items: CartItemCreateInput[], inModal = false) =>
 describe("CartAddLoadout", () => {
   beforeEach(() => {
     authenticated.value = true;
-    enabled.value = true;
     lists.value = [list("a", true)];
     mutate.mockClear();
     emit.mockClear();
@@ -138,12 +132,5 @@ describe("CartAddLoadout", () => {
 
     expect(mutate).not.toHaveBeenCalled();
     expect(displayWarning).toHaveBeenCalled();
-  });
-
-  it("is not shown while the feature is off", async () => {
-    enabled.value = false;
-    const wrapper = await mount([line("panther")]);
-
-    expect(wrapper.find("[data-test='cart-add-loadout']").exists()).toBe(false);
   });
 });

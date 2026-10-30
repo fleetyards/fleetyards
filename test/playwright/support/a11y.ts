@@ -28,13 +28,15 @@ export const expectNoA11yViolations = async (
 ) => {
   // The route enter transition fades the page in, and axe measures contrast
   // against whatever opacity is current.
-  // Looping animations (spinners) never finish, and a cancelled one rejects.
+  // Looping animations (spinners) and paused ones (a rotation held while it is
+  // off screen) never finish, and a cancelled one rejects.
   await page.evaluate(() =>
     Promise.allSettled(
       document
         .getAnimations()
         .filter(
           (animation) =>
+            animation.playState !== "paused" &&
             animation.effect?.getComputedTiming().iterations !== Infinity,
         )
         .map((animation) => animation.finished),

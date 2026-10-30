@@ -12,8 +12,13 @@ end
 
 # The page needs rows to render; these two are still gated, and both carry a
 # self-service row, so it shows more than a bare boolean flag would.
+#
+# The list is sorted by name and the toggle test switches the first row on for
+# everyone, in a database later specs share. `fleet_logistics` has to stay
+# first, and the other one must be a flag no spec needs off: `fleet_contracts`
+# there put a contracts step into the fleet tour.
 Flipper.add(:fleet_logistics) unless Flipper.exist?(:fleet_logistics)
-Flipper.add(:ship_inventories) unless Flipper.exist?(:ship_inventories)
+Flipper.add(:holo_ar) unless Flipper.exist?(:holo_ar)
 
 # Something for the fleet picker on a feature's page to find.
 Fleet.find_by(fid: "E2EFEATUREFLEET") ||

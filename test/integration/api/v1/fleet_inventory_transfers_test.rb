@@ -179,7 +179,6 @@ class Api::V1::FleetInventoryTransfersTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable("hangar_inventories")
     Flipper.enable("fleet_logistics")
 
     @fleet = create(:fleet)
@@ -473,26 +472,6 @@ class Api::V1::FleetInventoryTransfersTest < ActionDispatch::IntegrationTest
     assert_equal @officer.username, withdrawal["transfer"]["counterparty"]["name"]
     assert_equal locker.name, withdrawal["transfer"]["inventory"]["name"]
     assert_nil typed["transfer"]
-  end
-
-  # An immediate transfer never reaches the gate, which is what checks the
-  # recipient's flags on the waiting path -- so the create path has to check the
-  # destination itself, or a transfer becomes a way into a feature that is
-  # switched off.
-  test "cannot move fleet stock into a hangar inventory whose feature is off" do
-    Flipper.disable("hangar_inventories")
-    locker = create(:inventory, holder: @officer)
-
-    sign_in @officer
-
-    assert_api_response :post, 403, path_params: {fleetSlug: @fleet.slug}, body: {
-      sourceInventoryId: @depot.id,
-      inventoryId: locker.id,
-      lines: [{positionId: @entry.position.id, quantity: 10}]
-    }
-
-    assert_equal 100, @depot.reload.stock_positions.sole.net_quantity
-    assert_equal 0, locker.reload.inventory_items.count
   end
 
   private def donation_to_fleet

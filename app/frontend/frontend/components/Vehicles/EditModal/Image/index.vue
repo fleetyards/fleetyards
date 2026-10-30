@@ -18,13 +18,11 @@ import {
   type Image,
   type ModelPaint,
   type Vehicle,
-  FeatureFlagName,
   NullableVehiclePictureTypeEnum as PictureType,
   useModelImages,
   useVehiclePaints,
 } from "@/services/fyApi";
 import type { VehicleImageChanges } from "@/frontend/components/Vehicles/EditModal/types";
-import { useFeatures } from "@/frontend/composables/useFeatures";
 
 type Props = {
   vehicle: Vehicle;
@@ -50,19 +48,10 @@ const stockImage = computed(
 // anyone can see.
 type Source = "upload" | "gallery" | "paints";
 
-const { isFeatureEnabled } = useFeatures();
-
-// The paints come from the vehicle paints endpoint, part of the vehicle overview,
-// as saving a picture pick is.
-const paintsEnabled = computed(() =>
-  isFeatureEnabled(FeatureFlagName.VEHICLE_OVERVIEW),
-);
-
 const initialSource = (): Source => {
   if (!props.vehicle.pictureId || props.vehicle.imageUploaded) return "upload";
 
-  return props.vehicle.pictureType === PictureType.MODEL_PAINT &&
-    paintsEnabled.value
+  return props.vehicle.pictureType === PictureType.MODEL_PAINT
     ? "paints"
     : "gallery";
 };
@@ -114,9 +103,7 @@ const loadMoreGallery = () => {
 // picture is a look for the ship, not a record of what it owns. The vehicle's
 // own list, because it keeps the current pick after the catalogue hides its
 // paint, and lists owned paints first.
-const { data: vehiclePaints } = useVehiclePaints(() => props.vehicle.id, {
-  query: { enabled: paintsEnabled },
-});
+const { data: vehiclePaints } = useVehiclePaints(() => props.vehicle.id);
 
 const paintPictures = computed<ModelPaint[]>(() =>
   (vehiclePaints.value || [])
@@ -235,7 +222,6 @@ defineExpose({ changes });
         {{ t("labels.vehicleOverview.pictureGallery") }}
       </Btn>
       <Btn
-        v-if="paintsEnabled"
         :active="source === 'paints'"
         :aria-pressed="source === 'paints'"
         data-test="vehicle-image-source-paints"

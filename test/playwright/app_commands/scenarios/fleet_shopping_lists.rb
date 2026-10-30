@@ -3,9 +3,6 @@ require "factory_bot_rails"
 
 Rails.logger.info "E2E: Creating fleet_shopping_lists scenario test data..."
 
-Flipper.add(:shopping_cart) unless Flipper.exist?(:shopping_cart)
-Flipper.enable(:shopping_cart)
-
 quartermaster = FactoryBot.create(:user, username: "quartermaster", password: "password")
 recruit = FactoryBot.create(:user, username: "recruit", password: "password")
 

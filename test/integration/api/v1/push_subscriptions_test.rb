@@ -93,7 +93,6 @@ class Api::V1::PushSubscriptionsTest < ActionDispatch::IntegrationTest
 
   setup do
     @user = create(:user)
-    Flipper.enable("push_notifications")
     Push::Vapid.stubs(:configured?).returns(true)
   end
 
@@ -136,13 +135,6 @@ class Api::V1::PushSubscriptionsTest < ActionDispatch::IntegrationTest
 
   test "GET without a session is unauthorized" do
     assert_api_response :get, 401
-  end
-
-  test "GET is forbidden with the feature off" do
-    Flipper.disable("push_notifications")
-    sign_in @user
-
-    assert_api_response :get, 403
   end
 
   test "GET is forbidden without VAPID keys" do
@@ -228,13 +220,6 @@ class Api::V1::PushSubscriptionsTest < ActionDispatch::IntegrationTest
     token = create(:oauth_access_token, resource_owner_id: @user.id, scopes: ["notifications:read"])
 
     assert_api_response :post, 401, body: subscription_body, headers: {"Authorization" => "Bearer #{token.token}"}
-  end
-
-  test "POST is forbidden with the feature off" do
-    Flipper.disable("push_notifications")
-    sign_in @user
-
-    assert_api_response :post, 403, body: subscription_body
   end
 
   test "PUT touch marks the browser as in use and keeps its failures" do

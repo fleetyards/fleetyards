@@ -8,12 +8,8 @@ import {
   BoughtViaEnum,
 } from "@/services/fyApi";
 
-const vehicleOverviewEnabled = ref(false);
-
 vi.mock("@/frontend/composables/useFeatures", () => ({
-  useFeatures: () => ({
-    isFeatureEnabled: () => vehicleOverviewEnabled.value,
-  }),
+  useFeatures: () => ({ isFeatureEnabled: () => true }),
 }));
 
 const vehicle = (overrides: Partial<Vehicle> = {}): Vehicle =>
@@ -100,7 +96,6 @@ const nameHref = (wrapper: Awaited<ReturnType<typeof mount>>) =>
 
 describe("VehiclesTable", () => {
   beforeEach(() => {
-    vehicleOverviewEnabled.value = true;
     // The row images load lazily, and jsdom has no IntersectionObserver.
     vi.stubGlobal(
       "IntersectionObserver",
@@ -181,16 +176,6 @@ describe("VehiclesTable", () => {
 
   it("opens a loaner on its model", async () => {
     const wrapper = await mount(vehicle({ loaner: true }));
-
-    expect(nameHref(wrapper)).toBe("#/ships/odyssey");
-    expect(
-      wrapper.get('[data-test="vehicle-table-name"]').attributes("data-tour"),
-    ).toBeUndefined();
-  });
-
-  it("opens the model without the overview", async () => {
-    vehicleOverviewEnabled.value = false;
-    const wrapper = await mount(vehicle());
 
     expect(nameHref(wrapper)).toBe("#/ships/odyssey");
     expect(

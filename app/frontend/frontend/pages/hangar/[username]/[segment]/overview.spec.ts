@@ -4,14 +4,6 @@ import { createRouter, createWebHashHistory } from "vue-router";
 import Component from "./overview.vue";
 import { type Vehicle, BoughtViaEnum } from "@/services/fyApi";
 
-const shipInventoriesEnabled = ref(false);
-
-vi.mock("@/frontend/composables/useFeatures", () => ({
-  useFeatures: () => ({
-    isFeatureEnabled: () => shipInventoriesEnabled.value,
-  }),
-}));
-
 // The cards fetch their own data; this spec is about which of them the page
 // offers for a ship, so each one is a marker.
 const { stubCard } = vi.hoisted(() => ({
@@ -100,20 +92,14 @@ const mount = (props: { vehicle: Vehicle }) =>
   mountWithDefaults(Component, { props, plugins: [router] });
 
 describe("HangarVehicleOverviewPage", () => {
-  it("offers loadouts for a ship in the game, and cargo once inventories are on", async () => {
-    shipInventoriesEnabled.value = true;
-
+  it("offers loadouts and cargo for a ship in the game", async () => {
     const wrapper = await mount({ vehicle: vehicle() });
 
     expect(wrapper.findComponent({ name: "LoadoutsCard" }).exists()).toBe(true);
     expect(wrapper.findComponent({ name: "CargoCard" }).exists()).toBe(true);
-
-    shipInventoriesEnabled.value = false;
   });
 
   it("hands a wishlist ship's log and cargo over read-only", async () => {
-    shipInventoriesEnabled.value = true;
-
     const wrapper = await mount({ vehicle: vehicle({ wanted: true }) });
 
     expect(wrapper.findComponent({ name: "LogCard" }).props("readonly")).toBe(
@@ -122,8 +108,6 @@ describe("HangarVehicleOverviewPage", () => {
     expect(wrapper.findComponent({ name: "CargoCard" }).props("readonly")).toBe(
       true,
     );
-
-    shipInventoriesEnabled.value = false;
   });
 
   it("shows the ways to get a ship only while it is on the wishlist", async () => {

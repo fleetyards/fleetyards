@@ -223,8 +223,6 @@
         }
       },
       "welcome": "Welcome to",
-      "welcomeShips": "Latest Ships",
-      "welcomeImages": "Random Images",
       "ships": {
         "index": "Ships Index",
         "fleetchart": "Gráfico de flota de naves"

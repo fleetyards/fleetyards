@@ -349,9 +349,7 @@
       "addToHangar": "Add to Hangar",
       "home": {
         "catalogueSearch": "Search ships, items, missions and places",
-        "submitCatalogueSearch": "Search",
-        "search": "Search for Ships...",
-        "submitSearch": "Search ships"
+        "submitCatalogueSearch": "Search"
       },
       "shop": {
         "sellPrice": "sells for",
@@ -4687,7 +4685,6 @@
         "location": "Location",
         "noLocation": "Not set",
         "noGroups": "No groups",
-        "planLoadout": "Plan a loadout",
         "pictureUpload": "Upload",
         "pictureGallery": "Gallery",
         "stockPicture": "Standard picture",

@@ -23,7 +23,6 @@ class Api::V1::RaffleClaimsTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    Flipper.enable(:raffles)
     @raffle = create(:raffle, :closed, drawn_at: 1.hour.ago, code: "THE-GIFT-CODE")
     @entry = create(:raffle_entry, :after_close, raffle: @raffle, draw_position: 1, won_at: 1.hour.ago, claim_deadline_at: 2.days.from_now)
   end
@@ -59,11 +58,5 @@ class Api::V1::RaffleClaimsTest < ActionDispatch::IntegrationTest
 
   test "POST /raffle-claims refuses an unknown token" do
     assert_api_response :post, 400, body: {token: "nope"}
-  end
-
-  test "POST /raffle-claims is forbidden while the feature is off" do
-    Flipper.disable(:raffles)
-
-    assert_api_response :post, 403, body: {token: @entry.generate_token_for(:raffle_claim)}
   end
 end

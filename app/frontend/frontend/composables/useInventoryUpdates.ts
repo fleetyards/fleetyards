@@ -53,11 +53,7 @@ export const useInventoryUpdates = (
 
   const refreshDebounced = useDebouncedRefresh(refresh);
 
-  const hangarEnabled = computed(
-    () =>
-      isAuthenticated.value &&
-      isFeatureEnabled(FeatureFlagName.HANGAR_INVENTORIES),
-  );
+  const hangarEnabled = computed(() => isAuthenticated.value);
 
   const fleetEnabled = computed(
     () =>

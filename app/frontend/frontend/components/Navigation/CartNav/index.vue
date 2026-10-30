@@ -8,8 +8,7 @@ export default {
 import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useSessionStore } from "@/frontend/stores/session";
-import { useFeatures } from "@/frontend/composables/useFeatures";
-import { FeatureFlagName, useCart } from "@/services/fyApi";
+import { useCart } from "@/services/fyApi";
 import { storeToRefs } from "pinia";
 
 const { t } = useI18n();
@@ -18,12 +17,7 @@ const sessionStore = useSessionStore();
 
 const { isAuthenticated } = storeToRefs(sessionStore);
 
-const { isFeatureEnabled } = useFeatures();
-
-const enabled = computed(
-  () =>
-    isAuthenticated.value && isFeatureEnabled(FeatureFlagName.SHOPPING_CART),
-);
+const enabled = computed(() => isAuthenticated.value);
 
 // Shares the cart page's query, so an edit there or an item added from a
 // catalogue moves the badge without a request of its own.

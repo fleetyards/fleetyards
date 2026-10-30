@@ -6,7 +6,7 @@ require "openapi_helper"
 # inventories, worked from posting to fulfilment through the API.
 class Api::V1::FleetContractHangarDeliveryTest < ActionDispatch::IntegrationTest
   setup do
-    %w[fleet_contracts fleet_logistics hangar_inventories].each { |flag| Flipper.enable(flag) }
+    %w[fleet_contracts fleet_logistics].each { |flag| Flipper.enable(flag) }
 
     @author = create(:user)
     @contractor = create(:user)
@@ -81,14 +81,7 @@ class Api::V1::FleetContractHangarDeliveryTest < ActionDispatch::IntegrationTest
     assert_equal 800, @locker.reload.stock_positions.sole.net_quantity
   end
 
-  # Flags are per person. The author's hangar is judged by the author's flag,
-  # not by the contractor's: a contractor who only runs ship holds can still
-  # deliver into it.
-  test "a delivery into the author's hangar is judged by the author's hangar flag" do
-    Flipper.disable(:hangar_inventories)
-    Flipper.enable_actor(:hangar_inventories, @author)
-    Flipper.enable_actor(:ship_inventories, @contractor)
-
+  test "a contractor delivers a ship's cargo into the author's hangar" do
     ship_hold = Inventory.provision_for(create(:vehicle, user: @contractor), holder: @contractor)
     cargo = create(:inventory_item, inventory: ship_hold,
       name: "Titanium", category: :commodity, unit: :scu, quantity: 100)
@@ -111,7 +104,6 @@ class Api::V1::FleetContractHangarDeliveryTest < ActionDispatch::IntegrationTest
   # Clearing a ship's cargo destroys its hold, which is the other way a user
   # removes an inventory a contract may deliver into.
   test "clearing a ship's hold is refused while a contract delivers into it" do
-    Flipper.enable("ship_inventories")
     vehicle = create(:vehicle, user: @author)
     hold = Inventory.provision_for(vehicle, holder: @author)
     create(:fleet_contract, :in_progress, fleet: @fleet, created_by: @author,
