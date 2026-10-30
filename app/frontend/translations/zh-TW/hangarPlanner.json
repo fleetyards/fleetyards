@@ -478,9 +478,6 @@
         "removeEnd": "從計畫中移除",
         "anyShip": "任意艦船",
         "buyChosen": "你接下來選擇的艦船",
-        "chooseEnd": "這個起點要成為欄位中的哪艘艦船？",
-        "noReachableShip": "從這個起點無法抵達此欄位的任何艦船。",
-        "back": "返回",
         "onlyMelt": "這艘艦船沒有升級，只能熔煉",
         "excludes": "排除 %{ships}",
         "ccuSalesOnly": "CCU 僅在促銷期間販售",
@@ -491,7 +488,8 @@
           "store": "商店"
         },
         "filters": "篩選起點",
-        "saveFilters": "為此欄位儲存篩選"
+        "saveFilters": "為此欄位儲存篩選",
+        "chooseShip": "選擇欄位的艦船"
       },
       "slotsTitle": "槽位",
       "editSlots": "編輯槽位",

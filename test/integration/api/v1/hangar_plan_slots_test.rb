@@ -203,4 +203,19 @@ class Api::V1::HangarPlanSlotsTest < ActionDispatch::IntegrationTest
       assert_equal [keep.id], slot["candidates"].pluck("id")
     end
   end
+
+  test "PUT choose moves a start picked before the slot chose its ship" do
+    cutlass = create(:model, name: "Cutlass Black", pledge_price: 100)
+    carrack = create(:model, name: "Carrack", pledge_price: 600)
+    held = create(:hangar_plan_candidate, slot: @slot, model: cutlass)
+    keep = create(:hangar_plan_candidate, slot: @slot, model: carrack)
+    vehicle = create(:vehicle, user: @user, model: cutlass)
+    start = @plan.acquisitions.create!(candidate: held, start_kind: "owned", source_vehicle: vehicle)
+
+    assert_api_response :put, 200, api_path: "/hangar/plans/{hangarPlanId}/slots/{id}/choose",
+      path_params: {hangarPlanId: @plan.id, id: @slot.id}, body: {candidateId: keep.id}
+
+    assert_equal keep, start.reload.candidate
+    assert_not start.route_complete?
+  end
 end

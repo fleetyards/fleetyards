@@ -478,9 +478,6 @@
         "removeEnd": "从计划中移除",
         "anyShip": "任意舰船",
         "buyChosen": "你接下来选择的舰船",
-        "chooseEnd": "这个起点要成为槽位中的哪艘舰船？",
-        "noReachableShip": "从这个起点无法到达此槽位的任何舰船。",
-        "back": "返回",
         "onlyMelt": "这艘舰船没有升级，只能熔炼",
         "excludes": "排除 %{ships}",
         "ccuSalesOnly": "CCU 仅在促销期间出售",
@@ -491,7 +488,8 @@
           "store": "商店"
         },
         "filters": "筛选起点",
-        "saveFilters": "为此槽位保存筛选"
+        "saveFilters": "为此槽位保存筛选",
+        "chooseShip": "选择槽位的舰船"
       },
       "slotsTitle": "槽位",
       "editSlots": "编辑槽位",

@@ -17,7 +17,7 @@ import PickList, {
   type PickListItem,
 } from "@/frontend/components/Hangar/Planner/PickList/index.vue";
 import { usePlanMoney } from "@/frontend/components/Hangar/Planner/format";
-import { ccuNote, reaches } from "@/frontend/components/Hangar/Planner/reach";
+import { reaches } from "@/frontend/components/Hangar/Planner/reach";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useBuybackInsurance } from "@/frontend/composables/useBuybackInsurance";
@@ -71,7 +71,7 @@ const { data: resources, isLoading } = useHangarPlanResources(
   () => props.planId,
 );
 
-const { pairing, pairStart, pairEnd, decide } = useHangarPlanPairing(
+const { pairing, pairStart, pairEnd } = useHangarPlanPairing(
   () => props.planId,
   plan,
 );
@@ -274,67 +274,32 @@ const startItems = computed<PickListItem[]>(() =>
   options.value.filter(shown).map((option) => option.item),
 );
 
-// A slot still choosing its ship is asked for the ship once the start is
-// known, so only the ships that start can become are offered.
-const start = ref<HangarPlanStart>();
-const startModel = ref<HangarPlanModel>();
-
-const endItems = computed<PickListItem[]>(() =>
-  props.slot.candidates
-    .filter(
-      (candidate) =>
-        !startModel.value || reaches(startModel.value, candidate.model),
-    )
-    .map((candidate) => ({
-      id: candidate.id,
-      title: candidate.model.name,
-      meta:
-        [
-          candidate.model.manufacturerName,
-          candidate.model.id !== startModel.value?.id &&
-          ccuNote(candidate.model)
-            ? t(ccuNote(candidate.model) as string)
-            : undefined,
-        ]
-          .filter(Boolean)
-          .join(" · ") || undefined,
-      price: money(candidate.model.pledgePrice),
-      sortPrice: candidate.model.pledgePrice,
-      badge:
-        candidate.model.id === startModel.value?.id
-          ? t("hangarPlanner.pick.sameModel")
-          : undefined,
-      pinned: candidate.model.id === startModel.value?.id,
-    })),
-);
-
 const close = () => comlink.emit("close-modal", true);
+
+// A slot still choosing its ship keeps the start on the ship it comes closest
+// to, and moves it to whichever ship the slot settles on later; nothing is
+// decided by picking a start.
+const holder = (model?: HangarPlanModel) => {
+  const reachable = props.slot.candidates.filter(
+    (candidate) => !model || reaches(model, candidate.model),
+  );
+
+  return (
+    reachable.find((candidate) => candidate.model.id === model?.id) ??
+    [...reachable].sort(
+      (a, b) => (a.model.pledgePrice ?? 0) - (b.model.pledgePrice ?? 0),
+    )[0]
+  );
+};
 
 const chooseStart = async (item: PickListItem) => {
   const option = options.value.find((entry) => entry.item.id === item.id);
   if (!option) return;
 
-  if (!props.candidate) {
-    start.value = option.start;
-    startModel.value = option.model;
-    return;
-  }
+  const candidate = props.candidate ?? holder(option.model);
+  if (!candidate) return;
 
-  if (await pairStart(props.candidate, option.start, props.acquisition)) {
-    close();
-  }
-};
-
-const chooseEnd = async (item: PickListItem) => {
-  const candidate = props.slot.candidates.find((entry) => entry.id === item.id);
-  if (!candidate || !start.value) return;
-
-  if (
-    (await decide(props.slot, candidate)) &&
-    (await pairStart(candidate, start.value))
-  ) {
-    close();
-  }
+  if (await pairStart(candidate, option.start, props.acquisition)) close();
 };
 
 const remove = async () => {
@@ -365,21 +330,7 @@ const otherStarts = () =>
     "
     :eyebrow="t('hangarPlanner.pick.startEyebrow')"
   >
-    <template v-if="start">
-      <p class="start-picker__hint">
-        {{ t("hangarPlanner.pick.chooseEnd") }}
-      </p>
-      <PickList
-        name="hangar-plan-start-end"
-        :items="endItems"
-        :action-label="t('hangarPlanner.pick.use')"
-        :empty="t('hangarPlanner.pick.noReachableShip')"
-        data-test="hangar-plan-start-end-picker"
-        @pick="chooseEnd"
-      />
-    </template>
     <PickList
-      v-else
       name="hangar-plan-start"
       :items="startItems"
       :loading="isLoading"
@@ -428,19 +379,8 @@ const otherStarts = () =>
       </template>
     </PickList>
 
-    <template v-if="start || acquisition" #footer-start>
+    <template v-if="acquisition" #footer-start>
       <Btn
-        v-if="start"
-        :variant="BtnVariantsEnum.BARE"
-        :disabled="pairing"
-        data-test="hangar-plan-start-back"
-        @click="start = undefined"
-      >
-        <i class="fa-light fa-arrow-left" />
-        {{ t("hangarPlanner.pick.back") }}
-      </Btn>
-      <Btn
-        v-else
         :variant="BtnVariantsEnum.BARE"
         :tone="BtnTonesEnum.DANGER"
         :disabled="pairing"
@@ -465,11 +405,6 @@ const otherStarts = () =>
 </template>
 
 <style lang="scss" scoped>
-.start-picker__hint {
-  margin: 0 0 12px;
-  color: var(--color-text-dim);
-}
-
 .start-picker__filters {
   display: flex;
   flex-wrap: wrap;

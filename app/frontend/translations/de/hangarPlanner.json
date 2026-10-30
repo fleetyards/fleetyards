@@ -478,9 +478,6 @@
         "removeEnd": "Aus dem Plan nehmen",
         "anyShip": "Beliebiges Schiff",
         "buyChosen": "Das Schiff, das du als Nächstes wählst",
-        "chooseEnd": "Welches Schiff des Platzes soll aus diesem Start werden?",
-        "noReachableShip": "Kein Schiff dieses Platzes ist von diesem Start aus erreichbar.",
-        "back": "Zurück",
         "onlyMelt": "Es gibt keine Upgrades dafür, es kann nur eingeschmolzen werden",
         "excludes": "Schließt %{ships} aus",
         "ccuSalesOnly": "CCU nur in Sales",
@@ -491,7 +488,8 @@
           "store": "Store"
         },
         "filters": "Starts eingrenzen",
-        "saveFilters": "Filter für diesen Platz speichern"
+        "saveFilters": "Filter für diesen Platz speichern",
+        "chooseShip": "Schiff des Platzes wählen"
       },
       "slotsTitle": "Slots",
       "editSlots": "Slots bearbeiten",

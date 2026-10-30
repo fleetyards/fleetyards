@@ -478,9 +478,6 @@
         "removeEnd": "Togli dal piano",
         "anyShip": "Qualsiasi nave",
         "buyChosen": "La nave che scegli dopo",
-        "chooseEnd": "Quale nave dello slot deve diventare questa partenza?",
-        "noReachableShip": "Nessuna nave di questo slot è raggiungibile da questa partenza.",
-        "back": "Indietro",
         "onlyMelt": "Non esistono upgrade per questa nave, può solo essere fusa",
         "excludes": "Esclude %{ships}",
         "ccuSalesOnly": "CCU solo durante i saldi",
@@ -491,7 +488,8 @@
           "store": "Store"
         },
         "filters": "Restringi le partenze",
-        "saveFilters": "Salva i filtri per questo slot"
+        "saveFilters": "Salva i filtri per questo slot",
+        "chooseShip": "Scegli la nave dello slot"
       },
       "slotsTitle": "Slot",
       "editSlots": "Modifica slot",
