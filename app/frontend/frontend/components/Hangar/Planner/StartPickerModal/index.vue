@@ -336,7 +336,7 @@ const otherStarts = () =>
       name="hangar-plan-start"
       :items="startItems"
       :loading="isLoading"
-      :action-label="t('hangarPlanner.pick.use')"
+      actions
       :empty="t('hangarPlanner.pick.noShips')"
       data-test="hangar-plan-start-picker"
       @pick="chooseStart"

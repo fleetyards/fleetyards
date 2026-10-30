@@ -168,7 +168,6 @@ const use = async (
   await wrapper
     .findAll('[data-test="pick-list-row"]')
     .find((row) => row.text().includes(title))!
-    .find('[data-test="pick-list-use"]')
     .trigger("click");
   await flushPromises();
 };
