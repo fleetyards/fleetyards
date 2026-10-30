@@ -174,7 +174,7 @@ const editSlot = () =>
     <PickList
       name="hangar-plan-end"
       :items="items"
-      :action-label="t('hangarPlanner.pick.use')"
+      actions
       :empty="t('hangarPlanner.pick.noEnds')"
       data-test="hangar-plan-end-picker"
       @pick="choose"
