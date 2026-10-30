@@ -206,6 +206,23 @@ class HangarPlanTest < ActiveSupport::TestCase
     assert acquisition.reload.update(candidate: full)
   end
 
+  test "no upgrade leads into or out of a ship pledged at $1000 or more" do
+    idris = create(:model, pledge_price: 1000, on_sale: true)
+    slot = create(:hangar_plan_slot, hangar_plan: @plan)
+    candidate = create(:hangar_plan_candidate, slot:, model: idris)
+
+    into = @plan.acquisitions.new(candidate:, start_kind: "store", start_model: @carrack)
+    into.upgrade_steps.build(source_kind: "store", origin_model: @carrack, target_model: idris, position: 0)
+    out = build_acquisition(start_kind: "store", start_model: idris)
+    out.upgrade_steps.build(source_kind: "store", origin_model: idris, target_model: @carrack, position: 0)
+
+    assert_not into.valid?
+    assert into.upgrade_steps.first.errors.of_kind?(:to_model_id, :not_upgradable)
+    assert_not out.valid?
+    assert out.upgrade_steps.first.errors.of_kind?(:from_model_id, :not_upgradable)
+    assert @plan.acquisitions.new(candidate:, start_kind: "store", start_model: idris).valid?
+  end
+
   test "each upgrade starts where the one before ended" do
     acquisition = build_acquisition(start_kind: "store", start_model: @cutlass)
     acquisition.upgrade_steps.build(source_kind: "store", origin_model: @constellation, target_model: @carrack, position: 0)

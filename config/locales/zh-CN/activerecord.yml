@@ -346,8 +346,11 @@ zh-CN:
               taken: "已在此计划中使用"
         hangar_plan_upgrade_step:
           attributes:
+            from_model_id:
+              not_upgradable: "没有升级：RSI 不为价格达到或超过 1000 美元的舰船出售升级"
             to_model_id:
               same_as_from: "必须与升级前的舰船不同"
+              not_upgradable: "没有升级：RSI 不为价格达到或超过 1000 美元的舰船出售升级"
             hangar_pledge_item_id:
               taken: "已在此计划中使用"
             buyback_pledge_id:

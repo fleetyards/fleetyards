@@ -347,8 +347,11 @@ en:
               taken: "is already used in this plan"
         hangar_plan_upgrade_step:
           attributes:
+            from_model_id:
+              not_upgradable: "has no upgrades, as RSI sells none for a ship of $1000 or more"
             to_model_id:
               same_as_from: "has to be another ship than the one it upgrades from"
+              not_upgradable: "has no upgrades, as RSI sells none for a ship of $1000 or more"
             hangar_pledge_item_id:
               taken: "is already used in this plan"
             buyback_pledge_id:

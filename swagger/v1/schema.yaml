@@ -36072,6 +36072,10 @@ components:
           description: Store price in USD; null when unknown
         onSale:
           type: boolean
+        upgradable:
+          type: boolean
+          description: Whether RSI sells upgrades into and out of the ship; none exist
+            for one pledged at $1000 or more
         crew:
           type:
           - integer
@@ -36088,6 +36092,7 @@ components:
       - name
       - slug
       - onSale
+      - upgradable
       title: HangarPlanModel
     HangarPlanModelChangeEnum:
       type: string

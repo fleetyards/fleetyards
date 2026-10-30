@@ -12,6 +12,7 @@ const model = (name: string, pledgePrice = 100): HangarPlanModel => ({
   name,
   slug: name.toLowerCase(),
   onSale: true,
+  upgradable: true,
   pledgePrice,
 });
 

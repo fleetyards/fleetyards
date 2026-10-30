@@ -8,6 +8,7 @@ const carrack = {
   name: "Carrack",
   slug: "carrack",
   onSale: true,
+  upgradable: true,
   pledgePrice: 600,
 };
 

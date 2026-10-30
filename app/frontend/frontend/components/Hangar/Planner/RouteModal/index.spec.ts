@@ -14,6 +14,7 @@ const model = (name: string, pledgePrice = 100): HangarPlanModel => ({
   name,
   slug: name.toLowerCase(),
   onSale: true,
+  upgradable: true,
   pledgePrice,
 });
 
@@ -337,6 +338,7 @@ describe("Hangar/Planner/RouteModal", () => {
           sourceVehicleId: "vehicle-cutlass",
           startModel: cutlass,
           price: 0,
+          routeComplete: true,
           sourceMissing: false,
           usesBuybackToken: false,
           steps: [],

@@ -346,8 +346,11 @@ fr:
               taken: "est déjà utilisé dans ce plan"
         hangar_plan_upgrade_step:
           attributes:
+            from_model_id:
+              not_upgradable: "n'a pas d'upgrade : RSI n'en vend aucun pour un vaisseau de 1000 $ ou plus"
             to_model_id:
               same_as_from: "doit être un autre vaisseau que celui de départ"
+              not_upgradable: "n'a pas d'upgrade : RSI n'en vend aucun pour un vaisseau de 1000 $ ou plus"
             hangar_pledge_item_id:
               taken: "est déjà utilisé dans ce plan"
             buyback_pledge_id:
