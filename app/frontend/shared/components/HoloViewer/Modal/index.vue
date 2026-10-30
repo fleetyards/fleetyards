@@ -34,6 +34,8 @@ const close = () => {
   <div class="holo-viewer-modal">
     <!-- Top right is the item shown, bottom right the scene it is shown in. -->
     <div class="holo-viewer-modal__controls">
+      <!-- Groups of their own, beside the one holding the close button. -->
+      <slot name="groups" />
       <BtnGroup>
         <slot name="controls" />
         <Btn
