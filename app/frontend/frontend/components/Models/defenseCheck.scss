@@ -233,19 +233,6 @@
     width: 76px;
   }
 
-  // The margin column already carries the verdict in colour; the bar would
-  // squeeze the names to nothing.
-  @media (max-width: 640px) {
-    &__col-bar,
-    &__bar-cell {
-      display: none;
-    }
-
-    &__col-num {
-      width: 56px;
-    }
-  }
-
   th {
     position: sticky;
     top: 0;
@@ -350,6 +337,35 @@
     font-size: 14px;
     font-weight: 700;
     color: lighten($text-color, 15%);
+  }
+}
+
+// The bar would squeeze the names to nothing; the margin column already
+// carries the verdict in colour. The column collapses to zero width rather
+// than being removed, so the divider rows' colspan still matches.
+@media (max-width: $tablet-breakpoint) {
+  .dtable {
+    &__col-bar {
+      width: 0;
+    }
+
+    & &__bar-cell {
+      padding: 0;
+      overflow: hidden;
+      visibility: hidden;
+    }
+
+    &__col-num {
+      width: 64px;
+    }
+
+    th {
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
   }
 }
 
