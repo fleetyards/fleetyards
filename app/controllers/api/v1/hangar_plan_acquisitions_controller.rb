@@ -24,9 +24,8 @@ module Api
       end
 
       def update
-        @acquisition.assign_attributes(
-          params.permit(:start_kind, :source_vehicle_id, :buyback_pledge_id, :start_model_id, :price_override, :uses_buyback_token)
-        )
+        @acquisition.assign_attributes(acquisition_params)
+        @acquisition.candidate = @hangar_plan.candidates.find(params[:candidate_id]) if params[:candidate_id].present?
 
         steps = params.key?(:steps) ? params.fetch(:steps, []) : nil
         if save_with_steps(@acquisition, steps)

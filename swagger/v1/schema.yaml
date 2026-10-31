@@ -13364,6 +13364,12 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
     delete:
       summary: Destroy Hangar Plan Acquisition
       tags:
@@ -35360,6 +35366,10 @@ components:
           - number
           - 'null'
           description: What starting this way costs in USD; null when unknown
+        routeComplete:
+          type: boolean
+          description: Whether the start and its upgrades end on the slot's ship;
+            false while the route has yet to be planned
         sourceMissing:
           type: boolean
         usesBuybackToken:
@@ -35375,6 +35385,7 @@ components:
       - id
       - startKind
       - startModel
+      - routeComplete
       - sourceMissing
       - usesBuybackToken
       - steps
@@ -35421,6 +35432,10 @@ components:
     HangarPlanAcquisitionUpdateInput:
       type: object
       properties:
+        candidateId:
+          type: string
+          format: uuid
+          description: Moves the route to another ship of the plan
         startKind:
           "$ref": "#/components/schemas/HangarPlanStartKindEnum"
         sourceVehicleId:
@@ -35597,6 +35612,30 @@ components:
             format: uuid
       additionalProperties: false
       title: HangarPlanCandidateUpdateInput
+    HangarPlanCcuIntoEnum:
+      type: string
+      enum:
+      - on_sale
+      - sales_only
+      - unknown
+      - none
+      x-enumNames:
+      - ON_SALE
+      - SALES_ONLY
+      - UNKNOWN
+      - NONE
+      title: HangarPlanCcuIntoEnum
+    HangarPlanCcuOutOfEnum:
+      type: string
+      enum:
+      - known
+      - unknown
+      - none
+      x-enumNames:
+      - KNOWN
+      - UNKNOWN
+      - NONE
+      title: HangarPlanCcuOutOfEnum
     HangarPlanCompare:
       type: object
       properties:
@@ -36025,6 +36064,10 @@ components:
           description: Store price in USD; null when unknown
         onSale:
           type: boolean
+        ccuInto:
+          "$ref": "#/components/schemas/HangarPlanCcuIntoEnum"
+        ccuOutOf:
+          "$ref": "#/components/schemas/HangarPlanCcuOutOfEnum"
         crew:
           type:
           - integer
@@ -36041,6 +36084,8 @@ components:
       - name
       - slug
       - onSale
+      - ccuInto
+      - ccuOutOf
       title: HangarPlanModel
     HangarPlanModelChangeEnum:
       type: string
@@ -36749,6 +36794,7 @@ components:
       enum:
       - kept
       - upgraded
+      - unrouted
       - melted
       - pending
       - change
@@ -36756,6 +36802,7 @@ components:
       x-enumNames:
       - KEPT
       - UPGRADED
+      - UNROUTED
       - MELTED
       - PENDING
       - CHANGE

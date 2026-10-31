@@ -3,7 +3,9 @@
 # How one ship of a slot is obtained: kept from the hangar, bought on the
 # store or in game, or bought back, then optionally upgraded step by step until
 # it is the planned ship. The start and every step are resources the user owns
-# at most once, so nothing here may be spent twice within a plan.
+# at most once, so nothing here may be spent twice within a plan. A start with
+# no upgrades that is not the planned ship holds both ends while its route has
+# yet to be planned.
 class HangarPlanAcquisition < ApplicationRecord
   START_KINDS = %w[owned store ingame buyback].freeze
   BUYBACK_SHIP_KINDS = %w[ship package other].freeze
@@ -21,7 +23,7 @@ class HangarPlanAcquisition < ApplicationRecord
   validates :start_kind, inclusion: {in: START_KINDS}
   validates :price_override, numericality: {greater_than_or_equal_to: 0}, allow_nil: true
   validate :start_source, if: :start_changed?
-  validate :quantity_available, on: :create
+  validate :quantity_available, if: -> { new_record? || will_save_change_to_hangar_plan_candidate_id? }
   validate :chain_ends_on_candidate
   validate :chain_resources_available
 
@@ -35,6 +37,10 @@ class HangarPlanAcquisition < ApplicationRecord
 
   def final_model
     ordered_steps.last&.target_model || start_model
+  end
+
+  def route_complete?
+    candidate.present? && final_model&.id == candidate.model_id
   end
 
   # Loaded rather than queried, so steps built for an unsaved chain count too.
@@ -122,7 +128,7 @@ class HangarPlanAcquisition < ApplicationRecord
 
   private def quantity_available
     return if candidate.blank?
-    return if candidate.acquisitions.count < candidate.slot.quantity
+    return if candidate.acquisitions.where.not(id:).count < candidate.slot.quantity
 
     errors.add(:base, :slot_filled)
   end
@@ -154,6 +160,6 @@ class HangarPlanAcquisition < ApplicationRecord
       previous = step.target_model || previous
     end
 
-    errors.add(:base, :chain_mismatch) if final_model&.id != candidate.model_id
+    errors.add(:base, :chain_mismatch) if ordered_steps.any? && !route_complete?
   end
 end

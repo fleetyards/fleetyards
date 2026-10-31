@@ -346,8 +346,11 @@ it:
               taken: "è già usato in questo piano"
         hangar_plan_upgrade_step:
           attributes:
+            from_model_id:
+              not_upgradable: "è una nave da cui RSI non vende upgrade"
             to_model_id:
               same_as_from: "deve essere una nave diversa da quella di partenza"
+              not_upgradable: "è una nave verso cui RSI non vende upgrade"
             hangar_pledge_item_id:
               taken: "è già usato in questo piano"
             buyback_pledge_id:

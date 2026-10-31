@@ -45,6 +45,25 @@ class HangarPlanSlot < ApplicationRecord
     candidates.first if state == "decided"
   end
 
+  # Keeps one ship and drops the rest. A start already picked for the slot
+  # rides on whichever ship it was saved with, so it moves to the one kept.
+  def choose!(candidate)
+    transaction do
+      others = candidates.where.not(id: candidate.id).to_a
+      hand_over_starts(others, candidate)
+      others.each(&:destroy!)
+      touch
+    end
+  end
+
+  def remove_candidate!(candidate)
+    transaction do
+      heir = candidates.where.not(id: candidate.id).first
+      hand_over_starts([candidate], heir) if heir
+      candidate.destroy!
+    end
+  end
+
   # Whether a ship meets every filter the slot sets. A ship can be planned
   # outside them; the editor only points it out.
   def matches?(model)
@@ -96,6 +115,24 @@ class HangarPlanSlot < ApplicationRecord
     routes = HangarPlanAcquisition.where(hangar_plan_candidate_id: candidates.select(:id))
       .group(:hangar_plan_candidate_id).count.values.max || 0
     errors.add(:quantity, :below_routes, count: routes) if quantity.to_i < routes
+  end
+
+  # Upgrades that led to the ship leaving go with it; the start stays and waits
+  # for its route to the ship that takes it. Starts beyond the slot's count go
+  # with the ship that held them.
+  private def hand_over_starts(leaving, heir)
+    room = quantity - heir.acquisitions.count
+    HangarPlanAcquisition.where(candidate: leaving).includes(:upgrade_steps).order(:created_at).each do |acquisition|
+      break if room <= 0
+
+      acquisition.upgrade_steps.destroy_all if acquisition.upgrade_steps.last&.to_model_id != heir.model_id
+      acquisition.upgrade_steps.reset
+      # Buying the ship outright buys whichever ship the slot settles on.
+      buys_outright = acquisition.start_kind == "store" && acquisition.start_model_id == acquisition.candidate.model_id
+      acquisition.start_model = heir.model if buys_outright
+      acquisition.update!(candidate: heir)
+      room -= 1
+    end
   end
 
   private def slot_limit

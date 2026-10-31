@@ -1239,6 +1239,17 @@
         "topViewColored": "Vue de dessus colorée",
         "onSale": "En Vente",
         "playerOwnable": "Possédable par un joueur ?",
+        "ccuOverride": "CCUs",
+        "ccuOverrides": {
+          "allowed": "RSI vend des CCU vers et depuis ce vaisseau",
+          "none": "RSI ne vend aucun CCU pour ce vaisseau"
+        },
+        "ccuEvidence": {
+          "onSale": "En vente sur le store aujourd'hui",
+          "into": "CCU vers ce vaisseau vu pour la première fois le %{date}",
+          "outOf": "CCU depuis ce vaisseau vu pour la première fois le %{date}",
+          "none": "Aucun CCU vu dans un store, un hangar ou un buy-back"
+        },
         "ingameOnly": "Uniquement en jeu",
         "stealth": "Furtif",
         "rsiFocus": "RSI : %{value}",

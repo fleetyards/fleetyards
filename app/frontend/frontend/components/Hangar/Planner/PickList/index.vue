@@ -37,8 +37,9 @@ type Props = {
   items: PickListItem[];
   // Selected item in select mode; leave unset for a list of actions.
   modelValue?: string | null;
-  // Shown on each row's button in action mode.
-  actionLabel?: string;
+  // A list of things to do rather than a value to set: a click on a row picks
+  // it, and nothing stays selected.
+  actions?: boolean;
   empty: string;
   loading?: boolean;
   // Opens on the full list even with a pick made, for a list the user asked to
@@ -51,7 +52,7 @@ type Props = {
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: undefined,
-  actionLabel: undefined,
+  actions: false,
   loading: false,
   startOpen: false,
   compact: false,
@@ -124,7 +125,7 @@ const sorted = computed(() => {
   });
 });
 
-const selectable = computed(() => props.actionLabel === undefined);
+const selectable = computed(() => !props.actions);
 
 // Once picked, the list folds to the pick, the way a filled field reads; the
 // full list comes back only when asked for.
@@ -205,17 +206,15 @@ const choose = (item: PickListItem) => {
       </p>
       <ul v-else class="pick-list__rows" :data-test="`pick-list-${name}`">
         <li v-for="item in sorted" :key="item.id">
-          <component
-            :is="selectable ? 'button' : 'div'"
-            :type="selectable ? 'button' : undefined"
-            class="pick-list__row"
+          <button
+            type="button"
+            class="pick-list__row pick-list__row--button"
             :class="{
               'pick-list__row--selected': selectable && modelValue === item.id,
-              'pick-list__row--button': selectable,
             }"
             :aria-pressed="selectable ? modelValue === item.id : undefined"
             data-test="pick-list-row"
-            @click="selectable && choose(item)"
+            @click="choose(item)"
           >
             <span class="pick-list__text">
               <span class="pick-list__title">{{ item.title }}</span>
@@ -238,15 +237,7 @@ const choose = (item: PickListItem) => {
               class="fa-solid fa-check pick-list__check"
               aria-hidden="true"
             />
-            <Btn
-              v-if="!selectable"
-              :size="BtnSizesEnum.XS"
-              data-test="pick-list-use"
-              @click="choose(item)"
-            >
-              {{ actionLabel }}
-            </Btn>
-          </component>
+          </button>
         </li>
       </ul>
     </template>

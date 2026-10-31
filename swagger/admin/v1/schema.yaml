@@ -19316,6 +19316,29 @@ components:
           type:
           - string
           - 'null'
+        ccuOverride:
+          type:
+          - string
+          - 'null'
+          enum:
+          - allowed
+          - none
+          -
+        ccuOnSale:
+          type: boolean
+          description: The store sells an upgrade into the ship today
+        ccuSourceSeenAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When an upgrade out of the ship was first seen
+        ccuTargetSeenAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When an upgrade into the ship was first seen
       additionalProperties: false
       required:
       - id
@@ -19347,6 +19370,7 @@ components:
       - hidden
       - keepCargo
       - active
+      - ccuOnSale
       title: Model
     ModelAvailability:
       type: object
@@ -19656,6 +19680,29 @@ components:
           type:
           - string
           - 'null'
+        ccuOverride:
+          type:
+          - string
+          - 'null'
+          enum:
+          - allowed
+          - none
+          -
+        ccuOnSale:
+          type: boolean
+          description: The store sells an upgrade into the ship today
+        ccuSourceSeenAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When an upgrade out of the ship was first seen
+        ccuTargetSeenAt:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: When an upgrade into the ship was first seen
         baseModelId:
           type: string
           format: uuid
@@ -19705,6 +19752,7 @@ components:
       - hidden
       - keepCargo
       - active
+      - ccuOnSale
       - dockCounts
       - links
       - mediaProcessing
@@ -21378,6 +21426,16 @@ components:
           type: boolean
         playerOwnable:
           type: boolean
+        ccuOverride:
+          type:
+          - string
+          - 'null'
+          enum:
+          - allowed
+          - none
+          -
+          description: Whether RSI sells upgrades into and out of the ship, over what
+            the stores and hangars showed; null to go by those
         ingameOnly:
           type: boolean
         canLandOnPlanets:

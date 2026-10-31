@@ -52,8 +52,6 @@
       },
       "notOnSale": "not on sale",
       "routes": "How you get them",
-      "addRoute": "Add a route to %{ship}",
-      "addRouteShort": "Add route",
       "editRoute": "Route to %{ship}",
       "removeRoute": "Remove route",
       "unresolvedUnits": {
@@ -87,7 +85,6 @@
         "startKind": "Starts as",
         "ownedShip": "Ship from your hangar",
         "buyback": "Buy-back pledge",
-        "startModel": "Ship",
         "priceOverride": "Price paid",
         "priceOverrideInfo": "Leave empty to use today's store price, or enter a sale or warbond price.",
         "upgradeSource": "Upgrade from",
@@ -134,6 +131,7 @@
       "vehicleStatuses": {
         "kept": "Kept",
         "upgraded": "Upgraded",
+        "unrouted": "Route missing",
         "melted": "Melted",
         "pending": "Needs a decision",
         "change": "Should change",
@@ -198,7 +196,6 @@
         "happens": "What happens",
         "meltCredit": "%{value} credit",
         "leaves": "Leaves your hangar",
-        "notInPlan": "Not in the plan",
         "notOwned": "Not in your hangar",
         "lead": "Every ship you own on the left, every ship the plan needs on the right, and what happens in between.",
         "anotherPlan": "Compare with another plan",
@@ -218,6 +215,10 @@
           "upgraded": {
             "one": "%{count} upgraded",
             "other": "%{count} upgraded"
+          },
+          "unrouted": {
+            "one": "%{count} without a route",
+            "other": "%{count} without a route"
           },
           "melted": {
             "one": "%{count} melted",
@@ -240,9 +241,11 @@
           },
           "shipOf": "ship %{number} of %{count}",
           "noRoute": "No route yet",
+          "planRoute": "Plan route",
+          "noUpgrade": "No upgrade possible",
+          "pickOtherStart": "pick another start",
           "notCounted": "not in the total",
           "noShip": "no ship yet",
-          "toDecide": "not decided yet",
           "folded": {
             "kept": {
               "one": "%{count} kept as it is",
@@ -304,7 +307,8 @@
         },
         "rebased": "Plan updated from your hangar.",
         "sharingOn": "Sharing is on. Anyone with the link can view this plan.",
-        "copyFailed": "The link could not be copied. Copy it from the field instead."
+        "copyFailed": "The link could not be copied. Copy it from the field instead.",
+        "filtersSaved": "Filters saved for %{slot}"
       },
       "filterChips": {
         "priceFrom": "from %{price}",
@@ -340,19 +344,8 @@
       "route": {
         "stillToReach": "Still to reach",
         "yourRoute": "Your route",
-        "startFirst": "Pick where the ship comes from to see the route.",
         "done": "The route ends on the %{ship}.",
-        "startHints": {
-          "owned": "A ship you already own. If it is not the %{ship}, add the upgrades that turn it into one.",
-          "buyback": "A pledge you melted and can buy back from RSI. Without a buy-back token it costs new money, not store credit.",
-          "store": "A new pledge from the RSI store. Start from a cheaper ship to upgrade it.",
-          "ingame": "Bought with aUEC in the game, so it costs no money. A ship bought in game takes no upgrades, so it has to be the %{ship} itself."
-        },
-        "noVehicles": "No ship in your hangar is free for this route.",
-        "noBuybacks": "You have no buy-back pledges. Sync them from your RSI account.",
-        "pledgeShip": "Ship from the pledge",
         "isTarget": "Same ship",
-        "holdsTarget": "Includes it",
         "search": "Search",
         "noMatch": "Nothing matches.",
         "reaches": "Reaches the %{ship}",
@@ -367,8 +360,6 @@
         "showFitting": "Show only the upgrades that fit",
         "unknownTarget": "Which ship it upgrades to",
         "startCost": "Start",
-        "includesShip": "Includes the %{ship}",
-        "cheaperOnly": "Only ships cheaper than the %{ship} (%{price}) are offered, since you upgrade from there.",
         "sort": {
           "price": "Price",
           "name": "Name"
@@ -388,40 +379,9 @@
           "owned_ccu": "None of the upgrades in your RSI hangar start from the %{ship}.",
           "buyback": "None of your buy-back upgrades start from the %{ship}."
         },
-        "direction": {
-          "label": "Build the route",
-          "forward": "From the start",
-          "reverse": "From the target back"
-        },
-        "directionHints": {
-          "forward": "Pick where the ship comes from, then the upgrades that take it to the %{ship}.",
-          "reverse": "Work back from the %{ship}: pick the upgrade that ends on it, then the one that ends where that starts. Stop at a ship you own, can buy back or buy."
-        },
-        "startPending": "Start still to pick",
-        "reverseStart": "The route starts as the %{ship}.",
-        "unknownSource": "Which ship it upgrades from",
-        "noHeldInto": {
-          "owned_ccu": "None of the upgrades in your RSI hangar end on the %{ship}.",
-          "buyback": "None of your buy-back upgrades end on the %{ship}."
-        },
-        "upgradeInto": "Upgrade into the %{ship}",
-        "upgradesTo": "to the %{ship}",
-        "inHangar": "In your hangar",
-        "buybackAvailable": "Buy-back available",
-        "nextStep": "The route now starts as the %{ship}. Add the upgrade into it, or pick the %{ship} as your start.",
-        "addUpgradeInto": "Add an upgrade into the %{ship}",
-        "startHere": "Start from the %{ship}",
         "shipCard": "Ship",
         "useToken": "Use buy-back token",
-        "withToken": "paid with a token",
-        "buyTarget": "Buy the %{ship} itself",
-        "startShort": {
-          "owned": "Hangar",
-          "buyback": "Buy-back",
-          "store": "Store",
-          "ingame": "In game"
-        },
-        "ingameNoUpgrades": "A ship bought in game takes no upgrades. Remove the upgrades first."
+        "withToken": "paid with a token"
       },
       "meltList": {
         "none": "None of your ships can be melted, as far as RSI says. Turn off the filter to pick any ship.",
@@ -444,16 +404,54 @@
         }
       },
       "decisions": {
-        "keep": "Keep as it is",
-        "upgrade": "Upgrade",
         "melt": "Melt",
         "change": "Mark as should change",
         "pending": "Back to undecided",
         "upgradeTo": "Upgrade %{name} to",
         "keepPending": "Keep all undecided"
       },
+      "pick": {
+        "pickStart": "Pick a start",
+        "pickEnd": "Pick where it ends up",
+        "startOf": "Pick the start for %{ship}",
+        "endOf": "Pick where %{ship} ends up",
+        "startTitle": "Start for %{ship}",
+        "startEyebrow": "Start ship",
+        "endTitle": "Where %{ship} ends up",
+        "endEyebrow": "End ship",
+        "buyNew": "Buy new on the store",
+        "current": "Current start",
+        "use": "Use",
+        "noShips": "No hangar ship is free for this slot.",
+        "removeStart": "Remove from the slot",
+        "same": "Same ship, kept as it is",
+        "sameModel": "Same model",
+        "noEnds": "No ship this one can become.",
+        "removeEnd": "Take out of the plan",
+        "anyShip": "Any ship",
+        "buyChosen": "The ship you pick next",
+        "onlyMelt": "No upgrades exist for it, so it can only be melted",
+        "excludes": "Rules out %{ships}",
+        "ccuSalesOnly": "CCU only during sales",
+        "ccuUnknown": "No CCU seen yet",
+        "sources": {
+          "hangar": "Your hangar",
+          "buyback": "Buy-back",
+          "store": "Store"
+        },
+        "filters": "Narrow the starts",
+        "saveFilters": "Save filters for this slot",
+        "chooseShip": "Choose the slot's ship",
+        "earnInGame": "Earn in game",
+        "newSlot": "New slot",
+        "endSources": {
+          "plan": "Slots in the plan",
+          "catalogue": "Any ship"
+        }
+      },
       "slotsTitle": "Slots",
-      "editSlots": "Edit slots"
+      "editSlots": "Edit slots",
+      "slotNumber": "Slot %{number}"
     }
   }
 }

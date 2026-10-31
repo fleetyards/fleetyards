@@ -16,8 +16,6 @@ module HangarPlans
     # ship to plan with.
     BUYBACK_KINDS = %w[ship package upgrade].freeze
 
-    UPGRADE_NAME = /\A(?:Upgrade\s*-\s*)?(.+?)\s+to\s+(.+)\z/i
-    SALE_SUFFIX = /\s+(-\s*)?(warbond(\s+edition)?|standard\s+edition|best\s+in\s+show(\s+edition)?(\s+\d{4})?)\z/i
     STANDALONE_PREFIX = /\AStandalone\s+Ships?\s+-\s+/i
     TITLE_SUFFIX = /\s+(-|–|plus)\s+.*\z/i
     CONTAINED_SUFFIX = /\s+and\s+(\d+\s|lifetime\s+insurance).*\z/i
@@ -60,9 +58,11 @@ module HangarPlans
 
     # Every ship the pledge store prices, for a route that buys its start or an
     # upgrade there. Unpriced ships are left out: the store has no figure to
-    # plan with.
+    # plan with. So are ships no player can own and those only earned in game,
+    # which the store never sells.
     def store_models
-      Model.visible.active.where.not(pledge_price: nil).includes(:manufacturer).order(:pledge_price, :name)
+      Model.visible.active.where(player_ownable: true, ingame_only: false).where.not(pledge_price: nil)
+        .includes(:manufacturer).order(:pledge_price, :name)
     end
 
     def buybacks
@@ -96,25 +96,8 @@ module HangarPlans
       names.map { |name| name.squish.downcase }.compact_blank
     end
 
-    # The two ship names an RSI upgrade title carries, downcased, with how the
-    # upgrade was sold taken off the target.
-    private def upgrade_names(name)
-      match = UPGRADE_NAME.match(name.to_s.squish)
-      return [] if match.nil?
+    private def upgrade_names(name) = Rsi::UpgradeTitles.ship_names(name)
 
-      [match[1], match[2].sub(SALE_SUFFIX, "")].map { |part| part.strip.downcase }
-    end
-
-    private def models_by_name(names)
-      return {} if names.empty?
-
-      aliases = Rsi::ShipNames::MAPPING.to_h { |rsi_name, name| [rsi_name.downcase, name.downcase] }
-      lookup = names.uniq.index_with { |name| aliases.fetch(name, name) }
-      found = Model.visible.active.includes(MODEL_PRELOAD).where("lower(models.name) IN (:names) OR lower(models.rsi_name) IN (:names)", names: lookup.values.uniq).to_a
-
-      lookup.transform_values do |name|
-        found.find { |model| model.name.downcase == name } || found.find { |model| model.rsi_name&.downcase == name }
-      end
-    end
+    private def models_by_name(names) = Rsi::UpgradeTitles.models_by_name(names, preload: MODEL_PRELOAD)
   end
 end
