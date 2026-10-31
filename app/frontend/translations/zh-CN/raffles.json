@@ -319,12 +319,7 @@
           "one": "%{count} 天后结束",
           "other": "%{count} 天后结束"
         },
-        "endsToday": "今天结束",
-        "opensIn": {
-          "one": "%{count} 天后开始",
-          "other": "%{count} 天后开始"
-        },
-        "opensToday": "今天开始"
+        "endsToday": "今天结束"
       },
       "mine": {
         "raffle": "抽奖",

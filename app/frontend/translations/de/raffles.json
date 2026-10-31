@@ -319,12 +319,7 @@
           "one": "endet in %{count} Tag",
           "other": "endet in %{count} Tagen"
         },
-        "endsToday": "endet heute",
-        "opensIn": {
-          "one": "startet in %{count} Tag",
-          "other": "startet in %{count} Tagen"
-        },
-        "opensToday": "startet heute"
+        "endsToday": "endet heute"
       },
       "mine": {
         "raffle": "Verlosung",

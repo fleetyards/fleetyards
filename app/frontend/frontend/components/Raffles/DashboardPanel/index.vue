@@ -18,7 +18,6 @@ import {
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
 import { storeToRefs } from "pinia";
-import { RaffleStatusEnum } from "@/services/fyApi";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useHomeRaffle } from "@/frontend/components/Raffles/useHomeRaffle";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -33,13 +32,10 @@ const cover = computed(() => {
   return image?.mediumUrl || image?.url;
 });
 
-const isOpen = computed(() => raffle.value?.status === RaffleStatusEnum.OPEN);
-
 const { currentUser } = storeToRefs(useSessionStore());
 
 const canEnter = computed(
-  () =>
-    isOpen.value && !raffle.value?.entered && !currentUser?.value?.maintainer,
+  () => !raffle.value?.entered && !currentUser?.value?.maintainer,
 );
 </script>
 
@@ -57,14 +53,10 @@ const canEnter = computed(
       <p class="raffle-dashboard__title">{{ raffle.title }}</p>
       <p class="raffle-dashboard__meta">
         {{
-          isOpen
-            ? t("raffles.meta", {
-                date: l(raffle.endsAt, "datetime.formats.short"),
-                count: raffle.entriesCount,
-              })
-            : t("raffles.entry.opensAt", {
-                date: l(raffle.startsAt, "datetime.formats.short"),
-              })
+          t("raffles.meta", {
+            date: l(raffle.endsAt, "datetime.formats.short"),
+            count: raffle.entriesCount,
+          })
         }}
       </p>
       <div class="raffle-dashboard__row">

@@ -319,12 +319,7 @@
           "one": "termina en %{count} día",
           "other": "termina en %{count} días"
         },
-        "endsToday": "termina hoy",
-        "opensIn": {
-          "one": "empieza en %{count} día",
-          "other": "empieza en %{count} días"
-        },
-        "opensToday": "empieza hoy"
+        "endsToday": "termina hoy"
       },
       "mine": {
         "raffle": "Sorteo",

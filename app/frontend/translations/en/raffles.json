@@ -319,12 +319,7 @@
           "one": "ends in %{count} day",
           "other": "ends in %{count} days"
         },
-        "endsToday": "ends today",
-        "opensIn": {
-          "one": "opens in %{count} day",
-          "other": "opens in %{count} days"
-        },
-        "opensToday": "opens today"
+        "endsToday": "ends today"
       },
       "mine": {
         "raffle": "Raffle",

@@ -319,12 +319,7 @@
           "one": "termina tra %{count} giorno",
           "other": "termina tra %{count} giorni"
         },
-        "endsToday": "termina oggi",
-        "opensIn": {
-          "one": "inizia tra %{count} giorno",
-          "other": "inizia tra %{count} giorni"
-        },
-        "opensToday": "inizia oggi"
+        "endsToday": "termina oggi"
       },
       "mine": {
         "raffle": "Estrazione",

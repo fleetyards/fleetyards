@@ -319,12 +319,7 @@
           "one": "se termine dans %{count} jour",
           "other": "se termine dans %{count} jours"
         },
-        "endsToday": "se termine aujourd'hui",
-        "opensIn": {
-          "one": "commence dans %{count} jour",
-          "other": "commence dans %{count} jours"
-        },
-        "opensToday": "commence aujourd'hui"
+        "endsToday": "se termine aujourd'hui"
       },
       "mine": {
         "raffle": "Tirage au sort",
