@@ -22,22 +22,30 @@ module GameMissionFiltersConcern
     # `normalize_sort_params` first, because a sortable list sends `q[s]` and
     # ransack would read a leftover `s` ahead of the whitelisted `sorts`.
     normalize_sort_params(missions_query_params)
-    missions_query_params["sorts"] = with_name_tiebreak(sorting_params(GameMission, missions_query_params["sorts"]))
+    sorts = sorting_params(GameMission, missions_query_params["sorts"])
+    system_sort = sorts.find { |sort| sort.start_with?("system_name ") }
+    missions_query_params["sorts"] = with_tiebreaks(sorts - [system_sort], system_sort)
 
     @q = scope.with_facts(current_version)
       .includes(build: :rewards, last_build: :rewards)
       .ransack(missions_query_params.except(:released, :rewarding, :rewarding_in, :from_org, :at_location, :system_in))
 
-    build_filters(@q.result)
+    result = @q.result
+    # After ransack, which drops any order it is handed before applying its own.
+    result = result.reorder(GameMission.system_order(system_sort.split.last), *result.order_values) if system_sort
+
+    build_filters(result)
   end
 
-  # A system holds hundreds of missions, and the point of sorting by one is to
-  # read the same title's variants side by side.
-  private def with_name_tiebreak(sorts)
-    return sorts if sorts.none? { |sort| sort.start_with?("system_name") }
-    return sorts if sorts.any? { |sort| sort.start_with?("name ") }
+  # The system sort is applied outside ransack, which cannot put the
+  # missions offered nowhere last in both directions. Within a system it reads
+  # by name, so a title's variants sit side by side. The key comes last: 2536
+  # contracts share 836 titles, and a tie leaves the page boundaries to
+  # whatever order Postgres picks.
+  private def with_tiebreaks(sorts, system_sort)
+    sorts += ["name asc"] if system_sort && sorts.none? { |sort| sort.start_with?("name ") }
 
-    sorts + ["name asc"]
+    sorts + ["sc_key asc"]
   end
 
   # The filters that read a build, applied here rather than through ransack.
@@ -89,10 +97,13 @@ module GameMissionFiltersConcern
 
   # By slug, the way the filter options name them, resolved to ids here.
   private def system_filter
-    slugs = Array.wrap(missions_query_params[:system_in]).compact_blank
-    return if slugs.empty?
+    return @system_filter if defined?(@system_filter)
 
-    Location.where(kind: "system", slug: slugs).pluck(:id).presence || [nil]
+    slugs = Array.wrap(missions_query_params[:system_in]).compact_blank
+
+    @system_filter = if slugs.any?
+      GameMission.listed_systems.where(slug: slugs).pluck(:id).presence || [nil]
+    end
   end
 
   private def released_filter

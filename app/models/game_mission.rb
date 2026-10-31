@@ -170,16 +170,20 @@ class GameMission < ApplicationRecord
   end
 
   # The first system, by name, the mission is offered in -- the same `offered`
-  # links `offered_in_system` filters by. A subquery rather than a join, so a
-  # mission offered in two systems is still one row.
-  ransacker(:system_name) do
+  # links `offered_in_system` filters by, and only the systems a row can name.
+  # A subquery rather than a join, so a mission offered in two systems is still
+  # one row. Missions offered nowhere go last either way.
+  def self.system_order(direction)
+    direction = (direction.to_s.downcase == "desc") ? "DESC" : "ASC"
+
     Arel.sql(<<~SQL.squish)
       (SELECT MIN(systems.name)
          FROM game_mission_locations
          JOIN locations ON locations.id = game_mission_locations.location_id
          JOIN locations AS systems ON systems.id = #{GameMissionLocation::SYSTEM_SQL}
         WHERE game_mission_locations.game_mission_id = game_missions.id
-          AND game_mission_locations.source = 'offered')
+          AND game_mission_locations.source = 'offered'
+          AND systems.id IN (#{listed_systems.select(:id).to_sql})) #{direction} NULLS LAST
     SQL
   end
 
@@ -201,7 +205,7 @@ class GameMission < ApplicationRecord
   LOCATION_KINDS = %w[surface space mixed unknown].freeze
 
   def self.ransackable_attributes(auth_object = nil)
-    %w[created_at id id_value name sc_key slug system_name updated_at version] + GameMissionBuild::FILTERABLE.map(&:to_s)
+    %w[created_at id id_value name sc_key slug updated_at version] + GameMissionBuild::FILTERABLE.map(&:to_s)
   end
 
   def self.ransackable_associations(auth_object = nil)
@@ -286,8 +290,12 @@ class GameMission < ApplicationRecord
   # The systems a set of mission links resolves to, as listed, current
   # locations.
   def self.systems_offering(links)
+    listed_systems.where(id: links.offered.joins(:location).select(GameMissionLocation::SYSTEM_SQL))
+  end
+
+  # The systems a reader is shown: current, and not kept off the public pages.
+  def self.listed_systems
     Location.listed.current_version.where(kind: "system").includes(:build, :last_build)
-      .where(id: links.offered.joins(:location).select(GameMissionLocation::SYSTEM_SQL))
   end
 
   # The systems each mission is offered in, set on every record so a list of
@@ -301,8 +309,7 @@ class GameMission < ApplicationRecord
       .distinct
       .pluck(:game_mission_id, GameMissionLocation::SYSTEM_SQL)
 
-    systems = systems_offering(GameMissionLocation.where(game_mission_id: missions.map(&:id)))
-      .index_by(&:id)
+    systems = listed_systems.where(id: pairs.map(&:last).compact.uniq).index_by(&:id)
 
     by_mission = pairs.group_by(&:first)
     missions.each do |mission|

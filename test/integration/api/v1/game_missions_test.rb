@@ -110,6 +110,27 @@ class Api::V1::GameMissionsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /missions puts missions offered in no system last either way" do
+    pyro = create(:location, name: "Pyro System", kind: "system")
+    nyx = create(:location, name: "Nyx System", kind: "system")
+    create(:game_mission_location, game_mission: @hit, location: nyx, source: "offered")
+    create(:game_mission_location, game_mission: @ambush, location: pyro, source: "offered")
+    nowhere = create(:game_mission, name: "Aaa Nowhere")
+
+    assert_api_response :get, 200, params: {q: {"sorts" => ["systemName desc"]}} do
+      assert_equal [@ambush.id, @hit.id, nowhere.id], parsed_body["items"].pluck("id")
+    end
+  end
+
+  test "GET /missions does not filter by a system kept off the public pages" do
+    ellis = create(:location, name: "Ellis System", kind: "system", sc_key: "EllisSolarSystem")
+    create(:game_mission_location, game_mission: @hit, location: ellis, source: "offered")
+
+    assert_api_response :get, 200, params: {q: {"systemIn" => [ellis.slug]}} do
+      assert_empty parsed_body["items"]
+    end
+  end
+
   test "GET /missions answers an unknown system with nothing" do
     assert_api_response :get, 200, params: {q: {"systemIn" => ["nope-system"]}} do
       assert_empty parsed_body["items"]
