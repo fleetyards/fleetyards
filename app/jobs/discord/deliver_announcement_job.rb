@@ -9,7 +9,7 @@ module Discord
     sidekiq_options retry: 3, queue: "notifications"
 
     # Positional on purpose: Sidekiq replays arguments positionally.
-    def perform(fleet_id, kind, channel_id, content, event_id = nil, digest = false)
+    def perform(fleet_id, kind, channel_id, content, event_id = nil, digest = false, image_url = nil)
       fleet = Fleet.kept.find_by(id: fleet_id)
       return if fleet.blank?
       target = AnnouncementTarget.new(kind, channel_id)
@@ -28,7 +28,7 @@ module Discord
         return unless announceable?(event_id, target)
       end
 
-      target.deliver(fleet, content)
+      target.deliver(fleet, content, image_url: image_url)
     end
 
     # Cancelled or archived while the post waited in the queue, sending it now

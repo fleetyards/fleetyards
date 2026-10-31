@@ -28,6 +28,25 @@ module Discord
     end
 
     # A channel id is only what somebody saved; it may point at another server.
+    test "attaches an image as an embed" do
+      channel_in(GUILD)
+      @api.expects(:create_message).with(CHANNEL, {
+        content: "hello",
+        allowed_mentions: {parse: []},
+        embeds: [{image: {url: "https://cdn.example/cover.jpg"}}]
+      }).returns({"id" => "1"})
+
+      assert AnnouncementTarget.squadron(CHANNEL).deliver(@fleet, "hello", image_url: "https://cdn.example/cover.jpg")
+    end
+
+    test "hands the image to the webhook" do
+      ApiClient.stubs(:configured?).returns(false)
+      @setting.update!(discord_webhook_url: "https://discord.com/api/webhooks/1/token")
+      WebhookPost.any_instance.expects(:deliver).with("hello", image_url: "https://cdn.example/cover.jpg").returns(true)
+
+      assert AnnouncementTarget.fleet.deliver(@fleet, "hello", image_url: "https://cdn.example/cover.jpg")
+    end
+
     test "never posts to a channel of another guild" do
       channel_in("800000000000000000")
       @api.expects(:create_message).never
@@ -61,7 +80,7 @@ module Discord
     test "the fleet falls back to its webhook when the bot cannot post in its channel" do
       @setting.update!(discord_announcement_channel_id: CHANNEL, discord_webhook_url: "https://discord.com/api/webhooks/1/token")
       @api.stubs(:get_channel).raises(ApiClient::Error.new(403, "missing access"))
-      WebhookPost.any_instance.expects(:deliver).with("hello").returns(true)
+      WebhookPost.any_instance.expects(:deliver).with("hello", image_url: nil).returns(true)
 
       assert AnnouncementTarget.fleet.deliver(@fleet, "hello")
     end
@@ -70,7 +89,7 @@ module Discord
       ApiClient.stubs(:configured?).returns(false)
       @setting.update!(discord_announcement_channel_id: CHANNEL, discord_webhook_url: "https://discord.com/api/webhooks/1/token")
       @api.expects(:get_channel).never
-      WebhookPost.any_instance.expects(:deliver).with("hello").returns(true)
+      WebhookPost.any_instance.expects(:deliver).with("hello", image_url: nil).returns(true)
 
       assert AnnouncementTarget.fleet.deliver(@fleet, "hello")
     end

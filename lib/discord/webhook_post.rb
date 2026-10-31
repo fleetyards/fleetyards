@@ -24,12 +24,13 @@ module Discord
       @url = url
     end
 
-    def deliver(content)
+    def deliver(content, image_url: nil)
       return false unless self.class.allowed_url?(@url)
 
       Discordrb::Webhooks::Client.new(url: @url).execute do |builder|
         builder.content = MessageLength.truncate(content)
         builder.allowed_mentions = {parse: []}
+        builder.add_embed { |embed| embed.image = Discordrb::Webhooks::EmbedImage.new(url: image_url) } if image_url.present?
       end
       true
     end

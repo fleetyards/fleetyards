@@ -18,6 +18,37 @@ module Discord
       starts_at > Time.current && (!event.recurring? || occurrence_date.present?)
     end
 
+    # The cover the event shows on Fleetyards: the uploaded one, or the preset
+    # art the event falls back to.
+    def image_url
+      return @image_url if defined?(@image_url)
+
+      @image_url = uploaded_cover_url || preset_cover_url
+    end
+
+    private def uploaded_cover_url
+      cover = event.cover_image
+      return nil unless cover.attached?
+      return rails_blob_url(cover) unless cover.representable?
+
+      rails_representation_url(cover.representation(ActiveStorageVariants::REPRESENTATION_SIZES[:medium]))
+    end
+
+    # An announcement without its picture is still worth sending, so a build
+    # missing the asset leaves the image out rather than failing the post.
+    private def preset_cover_url
+      file = event.preset_cover_file
+      return nil if file.nil?
+
+      url = ActionController::Base.helpers.vite_asset_url(file.relative_path_from(Rails.root.join("app/frontend")).to_s)
+      # Without an asset host the helper answers a bare path, which Discord
+      # refuses along with the whole message.
+      url if url.start_with?("http")
+    rescue ViteRuby::MissingEntrypointError => e
+      Rails.logger.warn("[Discord::EventPublished] no preset cover for event #{event.id}: #{e.message}")
+      nil
+    end
+
     private def next_occurrence_date(event)
       return nil unless event.recurring?
 
