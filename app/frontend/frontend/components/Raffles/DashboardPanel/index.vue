@@ -18,13 +18,39 @@ import {
   BtnVariantsEnum,
 } from "@/shared/components/base/Btn/types";
 import { storeToRefs } from "pinia";
+import { useQueryClient } from "@tanstack/vue-query";
+import { useDebounceFn } from "@vueuse/core";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useHomeRaffle } from "@/frontend/components/Raffles/useHomeRaffle";
+import { getCurrentRaffleQueryKey } from "@/services/fyApi";
+import { RafflesChannel } from "@/services/fyCable/channels/RafflesChannel";
+import { useSubscription } from "@/shared/composables/useSubscription";
 import { useI18n } from "@/shared/composables/useI18n";
 
 const { t, l } = useI18n();
 
 const raffle = useHomeRaffle();
+
+const queryClient = useQueryClient();
+
+// Any raffle's change can make it the current one, so every message refetches
+// it, debounced because each entry sends one.
+const refreshSoon = useDebounceFn(
+  () =>
+    void queryClient.invalidateQueries({
+      queryKey: getCurrentRaffleQueryKey(),
+    }),
+  2_000,
+  { maxWait: 10_000 },
+);
+
+useSubscription({
+  channel: RafflesChannel,
+  received: () => void refreshSoon(),
+  connected: (event) => {
+    if (event?.reconnect) void refreshSoon();
+  },
+});
 
 const cover = computed(() => {
   const image = raffle.value?.images[0];
