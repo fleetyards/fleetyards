@@ -437,6 +437,12 @@ const detailSurvival = computed(() => {
                     <td class="dtable__name">
                       <span class="dtable__title">{{ entry.model.name }}</span>
                       <span class="dtable__meta">
+                        <span
+                          v-if="entry.margin === null"
+                          class="dtable__meta-shielded"
+                        >
+                          {{ t("labels.deflectionCheck.stoppedByShields") }}
+                        </span>
                         <span v-if="entry.model.size" class="dtable__size">
                           {{ humanizeSize(entry.model.size) }}
                         </span>

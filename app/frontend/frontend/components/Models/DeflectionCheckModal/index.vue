@@ -356,6 +356,12 @@ const detail = computed(
                     <td class="dtable__name">
                       <span class="dtable__title">{{ entry.weapon.name }}</span>
                       <span class="dtable__meta">
+                        <span
+                          v-if="entry.margin === null"
+                          class="dtable__meta-shielded"
+                        >
+                          {{ t("labels.deflectionCheck.stoppedByShields") }}
+                        </span>
                         <span v-if="entry.weapon.size" class="dtable__size">
                           S{{ entry.weapon.size }}
                         </span>

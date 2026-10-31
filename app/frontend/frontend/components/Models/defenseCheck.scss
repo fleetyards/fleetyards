@@ -315,6 +315,11 @@
     color: $gray-light;
   }
 
+  &__meta-shielded {
+    display: none;
+    color: $primary;
+  }
+
   &__type {
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -365,6 +370,10 @@
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
+    }
+
+    &__meta-shielded {
+      display: inline;
     }
   }
 }
