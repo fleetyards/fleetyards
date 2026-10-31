@@ -38,12 +38,16 @@ const missionLinks = (entry: BlueprintSource) => {
   const links = new Map<string, { key: string; label: string; slug: string }>();
 
   entry.missions.forEach((mission) => {
-    const label =
-      mission.systems.map((system) => system.name).join(", ") ||
-      t("labels.blueprint.viewMission");
+    const systems = mission.systems.map((system) => system.name).join(", ");
+    // A mission naming no system has nothing to fold it into another by.
+    const key = systems || mission.id;
 
-    if (!links.has(label))
-      links.set(label, { key: mission.id, label, slug: mission.slug });
+    if (!links.has(key))
+      links.set(key, {
+        key: mission.id,
+        label: systems || t("labels.blueprint.viewMission"),
+        slug: mission.slug,
+      });
   });
 
   return [...links.values()];
