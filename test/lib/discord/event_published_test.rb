@@ -60,6 +60,48 @@ module Discord
       assert_not EventPublished.new(event: @event).upcoming?
     end
 
+    test "shows an uploaded cover and keeps the link from unfurling a second copy" do
+      @event.cover_image.attach(io: file_fixture("image.jpg").open, filename: "cover.jpg", content_type: "image/jpeg")
+      publication = EventPublished.new(event: @event)
+
+      assert_match %r{\Ahttps?://.+/rails/active_storage/representations/}, publication.image_url
+      assert_includes publication.content, "<http"
+    end
+
+    test "a cover that cannot be read leaves the image out and still announces" do
+      @event.cover_image.attach(io: file_fixture("image.jpg").open, filename: "cover.jpg", content_type: "image/jpeg")
+      ActiveStorage::VariantWithRecord.any_instance.stubs(:processed).raises(ActiveStorage::FileNotFoundError)
+      Appsignal.expects(:report_error)
+      publication = EventPublished.new(event: @event)
+
+      assert_nil publication.image_url
+      assert_includes publication.content, "/fleets/#{@fleet.slug}/events/#{@event.slug}"
+    end
+
+    test "falls back to the preset art the event shows" do
+      @event.update!(cover_image_preset: "mining")
+      ActionController::Base.helpers.expects(:vite_asset_url).with("images/missions/mining.jpg").returns("https://cdn.example/images/missions/mining.jpg")
+
+      assert_equal "https://cdn.example/images/missions/mining.jpg", EventPublished.new(event: @event).image_url
+    end
+
+    test "leaves the image out when the preset has no absolute URL" do
+      ActionController::Base.helpers.stubs(:vite_asset_url).returns("/vite-test/images/missions/mining.jpg")
+
+      publication = EventPublished.new(event: @event)
+
+      assert_nil publication.image_url
+      assert_not_includes publication.content, "<http"
+    end
+
+    test "queues the cover alongside the message" do
+      @fleet.create_fleet_notification_setting!(discord_webhook_url: "https://discord.com/api/webhooks/1/token")
+      ActionController::Base.helpers.stubs(:vite_asset_url).returns("https://cdn.example/images/missions/other.jpg")
+      DeliverAnnouncementJob.expects(:perform_async).with(@fleet.id, "fleet", nil, anything, @event.id, false, "https://cdn.example/images/missions/other.jpg")
+
+      EventPublished.new(event: @event).run
+    end
+
     test "a single event says nothing about repeating" do
       assert_not_includes content, I18n.t("discord.event_published.recurrence.weekly")
     end
