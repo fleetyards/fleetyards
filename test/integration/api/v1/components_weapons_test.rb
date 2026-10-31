@@ -79,6 +79,32 @@ class Api::V1::ComponentsWeaponsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /components/weapons lists guns whose row another environment loaded last" do
+    gun = create(:component, :without_build, name: "PTU Name", category: "coolers",
+      component_sub_type: "Gun", version: "9.9.9-ptu.1",
+      type_data: {"damage_per_shot" => {"physical" => 500.0}})
+    create(:component_build, component: gun, name: "Live Repeater",
+      category: "weapons", component_sub_type: "Gun",
+      type_data: {"damage_per_shot" => {"physical" => 5.0}})
+
+    assert_api_response :get, 200 do
+      assert_equal ["Live Repeater", "Test Gatling"], parsed_body.pluck("name")
+      assert_equal 5.0, parsed_body.first["damagePerShot"]["physical"]
+    end
+  end
+
+  test "GET /components/weapons excludes guns only another environment describes" do
+    gun = create(:component, :without_build, category: "weapons", component_sub_type: "Gun",
+      version: @version, type_data: {"damage_per_shot" => {"physical" => 5.0}})
+    create(:component_build, component: gun, environment: "ptu", version: "9.9.9-ptu.1",
+      category: "weapons", component_sub_type: "Gun",
+      type_data: {"damage_per_shot" => {"physical" => 5.0}})
+
+    assert_api_response :get, 200 do
+      assert_equal ["Test Gatling"], parsed_body.pluck("name")
+    end
+  end
+
   test "GET /components/weapons exposes pellet count and beam flag" do
     assert_api_response :get, 200 do
       assert_equal 1, parsed_body.first["pelletsPerShot"]

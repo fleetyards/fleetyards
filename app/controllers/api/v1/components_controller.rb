@@ -21,17 +21,19 @@ module Api
       # Slim, unpaginated list of every ship gun in the current game version,
       # carrying only what the deflection check needs. The full component
       # serializer (prices, media, hardpoints) is far too heavy for ~200 rows.
+      #
+      # Selected through the build rather than the row: `components.version` is
+      # stamped by whichever environment loaded last, so a ptu load emptied the
+      # list for every live reader.
       def weapons
         @weapons = Component
-          .includes(:manufacturer)
-          .where(
-            category: "weapons",
-            component_sub_type: "Gun",
-            version: ::ScData::Source.version
-          )
-          .where.not(type_data: nil)
-          .where("sc_key IS NULL OR sc_key !~ ?", WEAPON_VARIANT_KEYS)
-          .order(name: :asc)
+          .with_facts
+          .includes(:manufacturer, :build)
+          .where(Component.fact_sql(:category).eq("weapons"))
+          .where(Component.fact_sql(:component_sub_type).eq("Gun"))
+          .where.not(Component.fact_sql(:type_data).eq(nil))
+          .where("components.sc_key IS NULL OR components.sc_key !~ ?", WEAPON_VARIANT_KEYS)
+          .order(Component.fact_sql(:name).asc)
       end
 
       # One component, with the parts a list leaves out. Resolved by slug, which
