@@ -201,9 +201,10 @@
   overflow-y: auto;
 }
 
-// On a phone the stacked pools and filters leave the list no height to shrink
-// into, so the whole body scrolls instead and the header sticks to it.
-@media (max-width: 640px) {
+// On a phone, or a phone turned sideways, the pools and filters leave the list
+// no height to shrink into, so the whole body scrolls instead and the header
+// sticks to it.
+@media (max-width: $tablet-breakpoint), (max-height: 500px) {
   .check-modal {
     flex-shrink: 0;
   }
