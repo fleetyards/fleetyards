@@ -41,8 +41,8 @@ module Discord
       [AnnouncementTarget.officers]
     end
 
-    def self.enqueue(fleet, target, content, event_id: nil, digest: false)
-      DeliverAnnouncementJob.perform_async(fleet.id, *target.to_args, content, event_id, digest)
+    def self.enqueue(fleet, target, content, event_id: nil, digest: false, image_url: nil)
+      DeliverAnnouncementJob.perform_async(fleet.id, *target.to_args, content, event_id, digest, image_url)
     end
 
     attr_reader :event
@@ -51,8 +51,8 @@ module Discord
       @event = event
     end
 
-    def deliver(content)
-      targets.each { |target| self.class.enqueue(event.fleet, target, content, event_id: event.id) }
+    def deliver(content, image_url: nil)
+      targets.each { |target| self.class.enqueue(event.fleet, target, content, event_id: event.id, image_url: image_url) }
     end
 
     def targets

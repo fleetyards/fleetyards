@@ -51,48 +51,48 @@ module Discord
       to_args.hash
     end
 
-    def deliver(fleet, content, components: nil)
+    def deliver(fleet, content, components: nil, image_url: nil)
       setting = fleet.fleet_notification_setting
       return false if setting.blank?
 
       case kind
-      when SQUADRON then squadron_post(setting, content)
-      when FLEET then fleet_post(setting, content)
-      when OFFICERS then officers_post(setting, content, components)
+      when SQUADRON then squadron_post(setting, content, image_url)
+      when FLEET then fleet_post(setting, content, image_url)
+      when OFFICERS then officers_post(setting, content, components, image_url)
       else false
       end
     end
 
-    private def fleet_post(setting, content)
+    private def fleet_post(setting, content, image_url)
       if ApiClient.configured? && setting.discord_announcement_channel_id.present?
-        return true if channel_post(setting, setting.discord_announcement_channel_id, content)
+        return true if channel_post(setting, setting.discord_announcement_channel_id, content, image_url: image_url)
       end
 
       return false if setting.discord_webhook_url.blank?
 
-      WebhookPost.new(setting.discord_webhook_url).deliver(content)
+      WebhookPost.new(setting.discord_webhook_url).deliver(content, image_url: image_url)
     end
 
     # Never the fleet's channel or webhook as a fallback: both are read by
     # every member.
-    private def officers_post(setting, content, components)
+    private def officers_post(setting, content, components, image_url)
       return false if setting.discord_officers_channel_id.blank?
 
       id = setting.discord_officers_channel_id
       return false if shared_with_fleet?(setting, id)
       return false if setting.fleet.fleet_squadrons.exists?(discord_channel_id: id)
 
-      channel_post(setting, id, content, components)
+      channel_post(setting, id, content, components: components, image_url: image_url)
     end
 
     # Squadrons may share a channel with each other -- both read it anyway --
     # but not with the fleet or the officers, whose readers the squadron's
     # events are kept from.
-    private def squadron_post(setting, content)
+    private def squadron_post(setting, content, image_url)
       return false if shared_with_fleet?(setting, channel_id)
       return false if channel_id == setting.discord_officers_channel_id
 
-      channel_post(setting, channel_id, content)
+      channel_post(setting, channel_id, content, image_url: image_url)
     end
 
     # A restricted audience's channel that another audience reads is refused
@@ -101,10 +101,10 @@ module Discord
       id == setting.discord_announcement_channel_id
     end
 
-    private def channel_post(setting, id, content, components = nil)
+    private def channel_post(setting, id, content, components: nil, image_url: nil)
       return false unless ApiClient.configured?
 
-      ChannelPost.new(id, guild_id: setting.discord_guild_id).deliver(content, components: components)
+      ChannelPost.new(id, guild_id: setting.discord_guild_id).deliver(content, components: components, image_url: image_url)
     end
   end
 end

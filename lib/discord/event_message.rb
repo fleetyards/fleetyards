@@ -18,11 +18,17 @@ module Discord
     end
 
     def run
-      EventAnnouncement.new(event).deliver(content)
+      EventAnnouncement.new(event).deliver(content, image_url: image_url)
     end
 
+    # With an image attached the link is wrapped so Discord does not unfurl it
+    # into a second, smaller copy of the same cover.
     def content
-      ["**#{get_title}**", get_message.presence, get_url].compact.join("\n")
+      url = image_url.present? ? "<#{get_url}>" : get_url
+      ["**#{get_title}**", get_message.presence, url].compact.join("\n")
+    end
+
+    def image_url
     end
 
     private def get_title

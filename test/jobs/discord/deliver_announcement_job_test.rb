@@ -11,9 +11,15 @@ module Discord
     end
 
     test "posts to its target" do
-      AnnouncementTarget.any_instance.expects(:deliver).with(@fleet, "hello")
+      AnnouncementTarget.any_instance.expects(:deliver).with(@fleet, "hello", image_url: nil)
 
       DeliverAnnouncementJob.new.perform(@fleet.id, "fleet", nil, "hello", @event.id)
+    end
+
+    test "posts the image it was queued with" do
+      AnnouncementTarget.any_instance.expects(:deliver).with(@fleet, "hello", image_url: "https://cdn.example/cover.jpg")
+
+      DeliverAnnouncementJob.new.perform(@fleet.id, "fleet", nil, "hello", @event.id, false, "https://cdn.example/cover.jpg")
     end
 
     test "posts no digest once the digest was switched off" do
@@ -35,7 +41,7 @@ module Discord
       @event.update_columns(title: "Strike Op", starts_at: 2.days.from_now)
       create(:fleet_event, :open, fleet: @fleet, title: "Mining Run", starts_at: 3.days.from_now)
       @event.update_column(:status, "cancelled")
-      AnnouncementTarget.any_instance.expects(:deliver).with(@fleet, all_of(includes("Mining Run"), Not(includes("Strike Op"))))
+      AnnouncementTarget.any_instance.expects(:deliver).with(@fleet, all_of(includes("Mining Run"), Not(includes("Strike Op"))), image_url: nil)
 
       DeliverAnnouncementJob.new.perform(@fleet.id, "fleet", nil, nil, nil, true)
     end
