@@ -2821,6 +2821,7 @@
           "rewarding": "Paie",
           "alignment": "Côté de la loi",
           "kind": "Type",
+          "system": "Système stellaire",
           "releasedFilter": "Dans la version",
           "released": "Dans la version",
           "unreleased": "Hors version"

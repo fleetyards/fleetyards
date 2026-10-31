@@ -26,7 +26,7 @@ module GameMissionFiltersConcern
 
     @q = scope.with_facts(current_version)
       .includes(build: :rewards, last_build: :rewards)
-      .ransack(missions_query_params.except(:released, :rewarding, :rewarding_in, :from_org, :at_location))
+      .ransack(missions_query_params.except(:released, :rewarding, :rewarding_in, :from_org, :at_location, :system_in))
 
     build_filters(@q.result)
   end
@@ -50,6 +50,7 @@ module GameMissionFiltersConcern
     scope = scope.from_org(org_filter, source, current_only:) if org_filter.present?
     scope = scope.rewarding(reward_filter, source, current_only:) if reward_filter.present?
     scope = scope.where(id: GameMissionLocation.where(location_id: location_filter).select(:game_mission_id)) if location_filter.present?
+    scope = scope.offered_in_system(system_filter) if system_filter.present?
 
     return scope if released_filter.nil?
 
@@ -77,6 +78,14 @@ module GameMissionFiltersConcern
     missions_query_params[:at_location]
   end
 
+  # By slug, the way the filter options name them, resolved to ids here.
+  private def system_filter
+    slugs = Array.wrap(missions_query_params[:system_in]).compact_blank
+    return if slugs.empty?
+
+    Location.where(kind: "system", slug: slugs).pluck(:id).presence || [nil]
+  end
+
   private def released_filter
     missions_query_params[:released]
   end
@@ -97,7 +106,8 @@ module GameMissionFiltersConcern
       # one would silently stop filtering.
       :released, :rewarding, :from_org, :at_location,
       sorts: [], id_in: [], name_in: [], kind_in: [], alignment_in: [],
-      org_name_in: [], min_standing_in: [], rewarding_in: [], location_kind_in: []
+      org_name_in: [], min_standing_in: [], rewarding_in: [], location_kind_in: [],
+      system_in: []
     ]).fetch(:q, {})
   end
 end

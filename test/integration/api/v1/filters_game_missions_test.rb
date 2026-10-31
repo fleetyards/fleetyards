@@ -31,6 +31,18 @@ class Api::V1::FiltersGameMissionsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  api_path "/filters/missions/systems" do
+    get("Mission systems filter") do
+      operationId "filtersGameMissionsSystems"
+      tags "Filters"
+      produces "application/json"
+
+      response(200, "successful") do
+        schema ::Shared::V1::Schemas::FilterOptionsList
+      end
+    end
+  end
+
   api_path "/filters/missions/reward-kinds" do
     get("Mission reward kinds filter") do
       operationId "filtersGameMissionsRewardKinds"
@@ -76,6 +88,17 @@ class Api::V1::FiltersGameMissionsTest < ActionDispatch::IntegrationTest
 
     assert_api_response :get, 200, api_path: "/filters/missions/standings" do
       assert_equal ["Jr. Contractor", "Neutral"], parsed_body.pluck("label")
+    end
+  end
+
+  test "GET /filters/missions/systems lists the systems missions are offered in" do
+    pyro = create(:location, name: "Pyro System", kind: "system")
+    create(:location, name: "Nyx System", kind: "system")
+    ruin = create(:location, name: "Ruin Station", kind: "station", system: pyro)
+    create(:game_mission_location, game_mission: GameMission.first, location: ruin, source: "offered")
+
+    assert_api_response :get, 200, api_path: "/filters/missions/systems" do
+      assert_equal [["Pyro System", pyro.slug]], parsed_body.pluck("label", "value")
     end
   end
 

@@ -186,6 +186,14 @@ const badges = computed<RowListItemBadge[]>(() => {
 
     <template #sub>
       <router-link
+        v-for="system in mission.systems"
+        :key="system.id"
+        class="mission-row__system"
+        :to="filterLink('systemIn', [system.slug])"
+      >
+        {{ system.name }}
+      </router-link>
+      <router-link
         v-if="mission.org?.name"
         :to="filterLink('orgNameIn', [mission.org.name])"
       >

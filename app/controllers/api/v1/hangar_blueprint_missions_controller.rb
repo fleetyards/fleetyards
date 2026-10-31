@@ -26,6 +26,7 @@ module Api
         @missions = filtered_missions(scope)
           .page(page_params)
           .per(per_page(GameMission))
+        GameMission.preload_systems(@missions)
 
         @wanted_blueprints = wanted_blueprints_for(@missions, pools)
       end

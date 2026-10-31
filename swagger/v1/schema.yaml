@@ -1375,6 +1375,19 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/FilterOptionsList"
+  "/filters/missions/systems":
+    get:
+      summary: Mission systems filter
+      tags:
+      - Filters
+      operationId: filtersGameMissionsSystems
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/FilterOptionsList"
   "/filters/models":
     get:
       summary: Models Filters
@@ -34099,6 +34112,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/GameMissionRewardFilterEnum"
+        systems:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationLink"
         description:
           type:
           - string
@@ -34493,6 +34510,10 @@ components:
         atLocation:
           type: string
           format: uuid
+        systemIn:
+          type: array
+          items:
+            type: string
         released:
           type: boolean
         currentVersion:

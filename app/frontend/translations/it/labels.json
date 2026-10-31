@@ -2821,6 +2821,7 @@
           "rewarding": "Paga",
           "alignment": "Lato della legge",
           "kind": "Tipo",
+          "system": "Sistema stellare",
           "releasedFilter": "Nella release",
           "released": "Nella release",
           "unreleased": "Non nella release"

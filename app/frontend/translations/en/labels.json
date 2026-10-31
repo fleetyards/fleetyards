@@ -2821,6 +2821,7 @@
           "rewarding": "Pays",
           "alignment": "Side of the law",
           "kind": "Kind",
+          "system": "Star system",
           "releasedFilter": "In release",
           "released": "In release",
           "unreleased": "Not in release"

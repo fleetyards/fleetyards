@@ -2821,6 +2821,7 @@
           "rewarding": "奖励",
           "alignment": "阵营立场",
           "kind": "类型",
+          "system": "星系",
           "releasedFilter": "正式版",
           "released": "在正式版中",
           "unreleased": "未在正式版"

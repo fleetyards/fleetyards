@@ -107,6 +107,14 @@ class GameMission < ApplicationRecord
     )
   }
 
+  # Missions offered in one of the given star systems, by location id. Off the
+  # `offered` links alone: a location template is shared between systems -- the
+  # Stanton salvage contracts can pick a Pyro Lagrange station -- so the places
+  # a mission can be sent to would file most of them under both.
+  scope :offered_in_system, ->(system_ids) {
+    where(id: GameMissionLocation.offered_in_system(system_ids).select(:game_mission_id))
+  }
+
   before_save :update_slugs
 
   validates :sc_ref, presence: true, uniqueness: true
@@ -248,6 +256,51 @@ class GameMission < ApplicationRecord
       .order(:min_standing)
       .pluck(:min_standing)
       .map { |standing| Filter.new(category: "standing", label: standing, value: standing) }
+  end
+
+  # The star systems missions are offered in. Hidden systems are left out the
+  # way the location pages leave them out.
+  def self.system_filters(source = served_source, current_only: true)
+    missions = named(source, current_only:)
+
+    systems_offering(GameMissionLocation.where(game_mission_id: missions.select(:id)))
+      .order(:name)
+      .map { |system| Filter.new(category: "system", label: system.name, value: system.slug) }
+  end
+
+  # The systems a set of mission links resolves to, as listed, current
+  # locations.
+  def self.systems_offering(links)
+    Location.listed.current_version.where(kind: "system").includes(:build, :last_build)
+      .where(id: links.offered.joins(:location).select(GameMissionLocation::SYSTEM_SQL))
+  end
+
+  # The systems each mission is offered in, set on every record so a list of
+  # missions asks once rather than once per row.
+  def self.preload_systems(missions)
+    missions = missions.to_a
+    return missions if missions.empty?
+
+    pairs = GameMissionLocation.offered.joins(:location)
+      .where(game_mission_id: missions.map(&:id))
+      .distinct
+      .pluck(:game_mission_id, GameMissionLocation::SYSTEM_SQL)
+
+    systems = systems_offering(GameMissionLocation.where(game_mission_id: missions.map(&:id)))
+      .index_by(&:id)
+
+    by_mission = pairs.group_by(&:first)
+    missions.each do |mission|
+      ids = by_mission.fetch(mission.id, []).map(&:last)
+      mission.systems = systems.values_at(*ids).compact.sort_by(&:name)
+    end
+  end
+
+  attr_writer :systems
+
+  def systems
+    ::GameMission.preload_systems([self]) unless defined?(@systems)
+    @systems
   end
 
   # From the constant rather than from a DISTINCT over the array column: all

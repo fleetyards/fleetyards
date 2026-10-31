@@ -2821,6 +2821,7 @@
           "rewarding": "Zahlt",
           "alignment": "Seite des Gesetzes",
           "kind": "Art",
+          "system": "Sternensystem",
           "releasedFilter": "Im Release",
           "released": "Im Release",
           "unreleased": "Nicht im Release"

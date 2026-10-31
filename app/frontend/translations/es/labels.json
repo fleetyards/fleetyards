@@ -2821,6 +2821,7 @@
           "rewarding": "Paga",
           "alignment": "Lado de la ley",
           "kind": "Tipo",
+          "system": "Sistema estelar",
           "releasedFilter": "En la versión",
           "released": "En la versión",
           "unreleased": "Fuera de la versión"

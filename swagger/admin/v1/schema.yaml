@@ -17011,6 +17011,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/GameMissionRewardFilterEnum"
+        systems:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationLink"
         description:
           type:
           - string

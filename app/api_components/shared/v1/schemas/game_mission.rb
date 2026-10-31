@@ -68,6 +68,10 @@ module Shared
               type: :array, items: ::Shared::V1::Schemas::Enums::GameMissionRewardFilterEnum
             },
 
+            # The star systems it is offered in. The same title is offered as a
+            # contract of its own in each system, often paying differently.
+            systems: {type: :array, items: ::Shared::V1::Schemas::LocationLink},
+
             # Detail responses only -- a list omits all four rather than paying
             # for them per row, which is why none of them is required.
             #

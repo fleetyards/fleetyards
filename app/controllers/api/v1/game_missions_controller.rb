@@ -38,6 +38,7 @@ module Api
         @missions = filtered_missions
           .page(page_params)
           .per(per_page(GameMission))
+        GameMission.preload_systems(@missions)
       end
     end
   end

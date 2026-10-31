@@ -11,6 +11,7 @@ namespace :filters do
     collection do
       get :orgs
       get :standings
+      get :systems
       get "reward-kinds", to: "game_missions#reward_kinds"
     end
   end

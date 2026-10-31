@@ -23,6 +23,7 @@ import {
   GameMissionRewardFilterEnum,
   useFiltersGameMissionsOrgs,
   useFiltersGameMissionsStandings,
+  useFiltersGameMissionsSystems,
 } from "@/services/fyApi";
 
 type Props = {
@@ -63,6 +64,7 @@ const prefillFormValues = (): GameMissionQuery => ({
   locationKindIn: asList(
     filters.value.locationKindIn ?? filters.value.locationKindEq,
   ) as GameMissionLocationKindEnum[],
+  systemIn: asList(filters.value.systemIn),
   released: filters.value.released,
 });
 
@@ -92,6 +94,10 @@ const { data: orgs } = useFiltersGameMissionsOrgs();
 // The bands missions are actually offered in. The export declares 380 standing
 // records and no rank order a parse can read, so these arrive alphabetical.
 const { data: standings } = useFiltersGameMissionsStandings();
+
+// The same title is offered as its own contract in each system, often paying
+// differently, so this is how a reader keeps to the one they are in.
+const { data: systems } = useFiltersGameMissionsSystems();
 
 const alignments = computed(() =>
   Object.values(BlueprintSourceAlignmentEnum).map((value) => ({
@@ -185,6 +191,15 @@ const releasedValue = computed({
         :clearable="true"
       />
     </Teleport>
+
+    <BaseSelect
+      v-model="form.systemIn"
+      name="system"
+      :options="systems ?? []"
+      :label="t('labels.filters.missions.system')"
+      :no-label="true"
+      multiple
+    />
 
     <BaseSelect
       v-model="form.orgNameIn"

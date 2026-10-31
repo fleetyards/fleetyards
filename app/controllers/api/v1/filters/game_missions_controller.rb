@@ -24,6 +24,12 @@ module Api
           render "api/v1/shared/filters"
         end
 
+        def systems
+          @filters = GameMission.system_filters
+
+          render "api/v1/shared/filters"
+        end
+
         def reward_kinds
           @filters = GameMission.reward_kind_filters
 
