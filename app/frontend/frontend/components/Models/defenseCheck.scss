@@ -201,6 +201,20 @@
   overflow-y: auto;
 }
 
+// On a phone, or a phone turned sideways, the pools and filters leave the list
+// no height to shrink into, so the whole body scrolls instead and the header
+// sticks to it.
+@media (max-width: $tablet-breakpoint), (max-height: 500px) {
+  .check-modal {
+    flex-shrink: 0;
+  }
+
+  .table-wrap {
+    flex: none;
+    overflow: visible;
+  }
+}
+
 .dtable {
   width: 100%;
   table-layout: fixed;
@@ -301,6 +315,11 @@
     color: $gray-light;
   }
 
+  &__meta-shielded {
+    display: none;
+    color: $primary;
+  }
+
   &__type {
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -323,6 +342,59 @@
     font-size: 14px;
     font-weight: 700;
     color: lighten($text-color, 15%);
+  }
+}
+
+// The bar would squeeze the names to nothing; the margin column already
+// carries the verdict in colour. The column collapses to zero width rather
+// than being removed, so the divider rows' colspan still matches.
+@media (max-width: $tablet-breakpoint) {
+  .dtable {
+    &__col-bar {
+      width: 0;
+    }
+
+    & &__bar-cell {
+      padding: 0;
+      overflow: hidden;
+      visibility: hidden;
+    }
+
+    &__col-num {
+      width: 64px;
+    }
+
+    // Sticky offsets measure from the body's content box, so without these
+    // rows show through the body's padding above the header and below the
+    // detail. Both match the modal body's padding on a phone.
+    th {
+      top: -16px;
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    &__meta-shielded {
+      display: inline;
+    }
+  }
+
+  // Below a scrolling list the breakdown of the tapped row would be out of
+  // sight, so it stays docked at the bottom of the body.
+  .detail {
+    position: sticky;
+    bottom: -20px;
+    z-index: 1;
+  }
+}
+
+// A phone turned sideways keeps the desktop modal and its 20px padding. The
+// detail stays in the flow there: docked, it would cover most of the list.
+@media (min-width: $tablet-breakpoint + 1) and (max-height: 500px) {
+  .dtable th {
+    top: -20px;
   }
 }
 

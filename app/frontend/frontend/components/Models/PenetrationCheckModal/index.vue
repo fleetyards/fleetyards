@@ -400,7 +400,7 @@ const detailSurvival = computed(() => {
               <thead>
                 <tr>
                   <th>{{ t("labels.penetrationCheck.ship") }}</th>
-                  <th class="center">
+                  <th class="center dtable__bar-cell">
                     {{ t("labels.deflectionCheck.boundary") }}
                   </th>
                   <th class="num">{{ t("labels.deflectionCheck.margin") }}</th>
@@ -437,6 +437,12 @@ const detailSurvival = computed(() => {
                     <td class="dtable__name">
                       <span class="dtable__title">{{ entry.model.name }}</span>
                       <span class="dtable__meta">
+                        <span
+                          v-if="entry.margin === null"
+                          class="dtable__meta-shielded"
+                        >
+                          {{ t("labels.deflectionCheck.stoppedByShields") }}
+                        </span>
                         <span v-if="entry.model.size" class="dtable__size">
                           {{ humanizeSize(entry.model.size) }}
                         </span>
@@ -449,7 +455,7 @@ const detailSurvival = computed(() => {
                       </span>
                     </td>
 
-                    <td>
+                    <td class="dtable__bar-cell">
                       <span
                         v-if="entry.margin === null"
                         class="dtable__shielded"
