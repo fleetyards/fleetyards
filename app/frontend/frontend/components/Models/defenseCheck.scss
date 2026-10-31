@@ -390,6 +390,14 @@
   }
 }
 
+// A phone turned sideways keeps the desktop modal and its 20px padding. The
+// detail stays in the flow there: docked, it would cover most of the list.
+@media (min-width: $tablet-breakpoint + 1) and (max-height: 500px) {
+  .dtable th {
+    top: -20px;
+  }
+}
+
 .margin {
   &--absorbed {
     color: $gray;
