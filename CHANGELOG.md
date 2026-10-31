@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.30.0](https://github.com/fleetyards/fleetyards/compare/v9.29.1...v9.30.0) (2026-10-31)
+
+
+### Features
+
+* **raffles:** refresh the dashboard raffle panel live ([cbc4b68](https://github.com/fleetyards/fleetyards/commit/cbc4b68e58275dd0af4344c6083d98c5ad6b04af))
+
+
+### Bug Fixes
+
+* **defense:** list guns in the deflection check whatever environment loaded last ([#6066](https://github.com/fleetyards/fleetyards/issues/6066)) ([e74a376](https://github.com/fleetyards/fleetyards/commit/e74a376082f6294c8e9c0f758ce21b6942bafc9e))
+* **holo-viewer:** scale the camera's near plane to the ship so stacked paint layers stop flickering ([34fa167](https://github.com/fleetyards/fleetyards/commit/34fa167e7391baca57d4472ae2165e221e54127a))
+* **models:** give the deflection and penetration check tables room on a phone ([#6067](https://github.com/fleetyards/fleetyards/issues/6067)) ([f7e713b](https://github.com/fleetyards/fleetyards/commit/f7e713b26c57fb52d6ff9aa8d445d1cbd56bc084))
+* **raffles:** keep the homepage raffle pill tidy on narrow screens ([72ae877](https://github.com/fleetyards/fleetyards/commit/72ae8770d34540508a5ae0c74ed74ff2f1e545e0))
+* **raffles:** only point the homepage at a raffle that is open ([a2bf6f9](https://github.com/fleetyards/fleetyards/commit/a2bf6f9f0890dcb19008aeffae26391b9271f1c3))
+
 ## [9.29.1](https://github.com/fleetyards/fleetyards/compare/v9.29.0...v9.29.1) (2026-10-30)
 
 
