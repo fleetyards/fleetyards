@@ -37,8 +37,10 @@ const meta = computed(() => {
     data-test="raffle-home-banner"
   >
     <span class="raffle-pill__tag">{{ t("raffles.home.pillTag") }}</span>
-    <span class="raffle-pill__title">{{ raffle.title }}</span>
-    <span class="raffle-pill__meta">{{ meta }}</span>
+    <span class="raffle-pill__text">
+      <span class="raffle-pill__title">{{ raffle.title }}</span>
+      <span class="raffle-pill__meta">{{ meta }}</span>
+    </span>
     <i class="fa-light fa-chevron-right raffle-pill__chevron" />
   </router-link>
 </template>
@@ -46,7 +48,6 @@ const meta = computed(() => {
 <style lang="scss" scoped>
 .raffle-pill {
   display: inline-flex;
-  flex-wrap: wrap;
   align-items: center;
   gap: 10px;
   max-width: 100%;
@@ -67,12 +68,24 @@ const meta = computed(() => {
 .raffle-pill__tag {
   padding: 4px 10px;
   border-radius: 999px;
+  flex-shrink: 0;
   background: var(--color-success, #5cb85c);
   color: #000;
   font-family: "Orbitron", tahoma, sans-serif;
   font-size: 10px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
+}
+
+// On a phone the title and the countdown share a column beside the tag, so a
+// long title wraps there instead of dropping the countdown under the tag.
+.raffle-pill__text {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 10px;
+  min-width: 0;
+  text-align: left;
 }
 
 .raffle-pill__title {
@@ -85,6 +98,7 @@ const meta = computed(() => {
 }
 
 .raffle-pill__chevron {
+  flex-shrink: 0;
   color: var(--color-text-dim, #959595);
   font-size: 0.75rem;
 }
