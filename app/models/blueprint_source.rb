@@ -59,6 +59,53 @@ class BlueprintSource < ApplicationRecord
     lawful ? "lawful" : "outlaw"
   end
 
+  # The contracts that hand this source out, matched on everything the source
+  # states about its contract: the pool, the generator, the title, the standing
+  # band and the org. The parse folds a contract offered identically in several
+  # systems, or in two regions of one, into a single source, so one source can
+  # stand for several missions -- each a contract of its own.
+  def self.preload_missions(sources)
+    sources = sources.to_a
+    contracts = sources.select { |source| source.kind == "contract" }
+    sources.each { |source| source.missions = [] }
+    return sources if contracts.empty?
+
+    served = ::GameMission.served_source
+    candidates = ::GameMissionBuild.current(served)
+      .where("blueprint_pool_refs && ARRAY[?]::text[]", contracts.map(&:pool_sc_ref).uniq)
+      .where(game_mission_id: ::GameMission.named(served).select(:id))
+      .to_a
+
+    missions = ::GameMission.preload_systems(
+      ::GameMission.where(id: candidates.map(&:game_mission_id)).includes(:build, :last_build)
+    ).index_by(&:id)
+
+    contracts.each do |source|
+      source.missions = candidates
+        .select { |build| source.describes?(build) }
+        .filter_map { |build| missions[build.game_mission_id] }
+        .sort_by { |mission| [mission.systems.map(&:name), mission.sc_key] }
+    end
+
+    sources
+  end
+
+  attr_writer :missions
+
+  def missions
+    ::BlueprintSource.preload_missions([self]) unless defined?(@missions)
+    @missions
+  end
+
+  def describes?(mission_build)
+    mission_build.blueprint_pool_refs.include?(pool_sc_ref) &&
+      mission_build.generator_key == source_key &&
+      mission_build.name == mission_name &&
+      mission_build.min_standing == min_standing &&
+      mission_build.max_standing == max_standing &&
+      mission_build.org_ref == org_ref
+  end
+
   # The org is the answer where there is one. Nine handlers sit in a generator
   # naming more than one faction and are left unattributed rather than guessed.
   def attributed?

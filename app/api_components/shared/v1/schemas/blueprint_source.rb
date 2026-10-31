@@ -31,10 +31,16 @@ module Shared
             minPoints: {type: [:integer, :null]},
 
             poolKey: {type: [:string, :null]},
-            poolGroup: {type: [:string, :null]}
+            poolGroup: {type: [:string, :null]},
+
+            # The contracts behind a contract source. One source can stand for
+            # several: the same contract offered in several systems, or in two
+            # regions of one, is a mission of its own each time. Empty for a
+            # scenario.
+            missions: {type: :array, items: ::Shared::V1::Schemas::BlueprintSourceMission}
           },
           additionalProperties: false,
-          required: %w[kind]
+          required: %w[kind missions]
         })
       end
     end

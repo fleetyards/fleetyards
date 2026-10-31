@@ -155,6 +155,32 @@ class Api::V1::BlueprintsShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # The parse folds a contract offered identically in two systems into one
+  # source, so the source links every mission it describes.
+  test "GET /blueprints/{slug} links each source to the missions behind it" do
+    source = create(:blueprint_source, build: @blueprint.build, mission_name: "Simple Hit")
+    facts = {
+      name: "Simple Hit", generator_key: source.source_key, org_ref: source.org_ref,
+      min_standing: source.min_standing, max_standing: source.max_standing,
+      blueprint_pool_refs: [source.pool_sc_ref]
+    }
+    stanton_hit = create(:game_mission, sc_key: "simple_hit_stanton", **facts)
+    pyro_hit = create(:game_mission, sc_key: "simple_hit_pyro", **facts)
+    create(:game_mission, sc_key: "simple_hit_senior", **facts, min_standing: "Senior")
+
+    pyro = create(:location, name: "Pyro System", kind: "system")
+    stanton = create(:location, name: "Stanton System", kind: "system")
+    create(:game_mission_location, game_mission: pyro_hit, location: pyro, source: "offered")
+    create(:game_mission_location, game_mission: stanton_hit, location: stanton, source: "offered")
+
+    assert_api_response :get, 200, params: {slug: @blueprint.slug} do
+      missions = parsed_body["sources"].first["missions"]
+
+      assert_equal [pyro_hit.slug, stanton_hit.slug], missions.pluck("slug")
+      assert_equal [["Pyro System"], ["Stanton System"]], missions.map { |mission| mission["systems"].pluck("name") }
+    end
+  end
+
   # 901 of the 1607 recipes in the current build appear in no reward pool. An
   # empty `sources` alone reads as a gap in our data rather than in the game's.
   test "GET /blueprints/{slug} says outright when nothing states a source" do

@@ -4514,6 +4514,7 @@
         "unattributed": "Unattributed",
         "minPoints": "From %{points} points",
         "limitedEvent": "Limited-time event",
+        "viewMission": "View mission",
         "eventHint": "Event rewards drop only while CIG runs the event. The game files keep its reward track between runs, so they cannot say whether it is live right now.",
         "noKnownSource": "No known source",
         "noSourceLead": "No mission or scenario hands this recipe out.",

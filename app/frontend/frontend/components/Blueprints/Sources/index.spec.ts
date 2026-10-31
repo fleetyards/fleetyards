@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { createRouter, createWebHashHistory } from "vue-router";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { type BlueprintSource } from "@/services/fyApi";
 import Component from "./index.vue";
@@ -13,13 +14,73 @@ const source = (attrs: Partial<BlueprintSource> = {}) =>
     alignment: "lawful",
     missionName: "Yellow Level Contract: Ambush An Amateur",
     minStanding: "Neutral",
+    missions: [],
     ...attrs,
   }) as BlueprintSource;
 
 const mount = (sources: BlueprintSource[]) =>
   mountWithDefaults(Component, { props: { sources } });
 
+// The mission links resolve by route name, which the default test router does
+// not carry.
+const routerWithMission = async () => {
+  const router = createRouter({
+    history: createWebHashHistory(),
+    routes: [
+      { path: "/", name: "home", component: { template: "<div />" } },
+      {
+        path: "/catalogue/missions/:slug",
+        name: "mission",
+        component: { template: "<div />" },
+      },
+    ],
+  });
+
+  await router.push("/");
+  await router.isReady();
+
+  return router;
+};
+
+const system = (name: string) => ({
+  id: `${name}-id`,
+  name,
+  slug: name.toLowerCase().replace(" ", "-"),
+  kind: "system" as const,
+  parentName: null,
+});
+
 describe("Blueprints/Sources", () => {
+  it("links each system the contract is offered in to its mission", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: {
+        sources: [
+          source({
+            missions: [
+              { id: "a", slug: "hit-pyro-a", systems: [system("Pyro System")] },
+              { id: "b", slug: "hit-pyro-b", systems: [system("Pyro System")] },
+              {
+                id: "c",
+                slug: "hit-stanton",
+                systems: [system("Stanton System")],
+              },
+            ],
+          }),
+        ],
+      },
+      plugins: [await routerWithMission()],
+    });
+
+    const links = wrapper.findAll(".blueprint-sources__mission-link");
+
+    expect(links.map((link) => link.text())).toEqual([
+      "Pyro System",
+      "Stanton System",
+    ]);
+    expect(links[0].attributes("href")).toContain("hit-pyro-a");
+    expect(links[1].attributes("href")).toContain("hit-stanton");
+  });
+
   it("badges a group with the alignment of the org that hands it out", async () => {
     const wrapper = await mount([source()]);
 

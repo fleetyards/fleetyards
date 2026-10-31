@@ -90,11 +90,6 @@ module Shared
 
             # The recipes this mission hands out, through the reward pools it
             # names. 786 of the 2,536 contracts hand one out.
-            #
-            # The reverse -- a blueprint naming the missions that drop it --
-            # already exists as text on `BlueprintSource#missionName`, and
-            # stays text until that table points at a mission rather than
-            # carrying its own copy of the name.
             blueprints: {type: :array, items: ::Shared::V1::Schemas::GameMissionBlueprint},
 
             # Where it can take place: the specific places its location

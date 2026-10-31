@@ -4500,6 +4500,7 @@
         "unattributed": "Ohne Zuordnung",
         "minPoints": "Ab %{points} Punkten",
         "limitedEvent": "Zeitlich begrenztes Event",
+        "viewMission": "Mission ansehen",
         "eventHint": "Event-Belohnungen gibt es nur, solange CIG das Event laufen lässt. Die Spieldateien behalten die Belohnungsstufen auch zwischen den Durchläufen, daher lässt sich daraus nicht ablesen, ob es gerade aktiv ist.",
         "noKnownSource": "Keine bekannte Quelle",
         "noSourceLead": "Keine Mission und kein Szenario vergibt diesen Bauplan.",

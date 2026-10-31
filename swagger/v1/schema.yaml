@@ -24035,9 +24035,14 @@ components:
           type:
           - string
           - 'null'
+        missions:
+          type: array
+          items:
+            "$ref": "#/components/schemas/BlueprintSourceMission"
       additionalProperties: false
       required:
       - kind
+      - missions
       title: BlueprintSource
     BlueprintSourceAlignmentEnum:
       type: string
@@ -24059,6 +24064,28 @@ components:
       - CONTRACT
       - SCENARIO
       title: BlueprintSourceKindEnum
+    BlueprintSourceMission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type: string
+        systems:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationLink"
+      additionalProperties: false
+      required:
+      - id
+      - slug
+      - systems
+      title: BlueprintSourceMission
     Blueprints:
       type: object
       properties:

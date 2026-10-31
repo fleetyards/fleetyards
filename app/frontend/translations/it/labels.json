@@ -4500,6 +4500,7 @@
         "unattributed": "Non attribuito",
         "minPoints": "Da %{points} punti",
         "limitedEvent": "Evento a tempo limitato",
+        "viewMission": "Vedi missione",
         "eventHint": "Le ricompense evento si ottengono solo mentre CIG tiene attivo l'evento. I file di gioco conservano i livelli di ricompensa tra un'edizione e l'altra, quindi non indicano se è attivo in questo momento.",
         "noKnownSource": "Nessuna fonte nota",
         "noSourceLead": "Nessuna missione o scenario rilascia questo progetto.",

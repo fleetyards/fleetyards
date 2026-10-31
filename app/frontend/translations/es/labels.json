@@ -4500,6 +4500,7 @@
         "unattributed": "Sin atribuir",
         "minPoints": "Desde %{points} puntos",
         "limitedEvent": "Evento por tiempo limitado",
+        "viewMission": "Ver misión",
         "eventHint": "Las recompensas de evento solo se obtienen mientras CIG mantiene el evento activo. Los archivos del juego conservan sus niveles de recompensa entre ediciones, así que no indican si está activo ahora mismo.",
         "noKnownSource": "Sin fuente conocida",
         "noSourceLead": "Ninguna misión ni escenario entrega esta receta.",

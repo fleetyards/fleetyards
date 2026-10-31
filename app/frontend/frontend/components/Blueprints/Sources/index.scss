@@ -160,6 +160,14 @@
     margin-top: 2px;
   }
 
+  &__mission-link {
+    margin-left: 8px;
+
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+
   &__event {
     color: var(--color-warning, #fa6800);
   }
