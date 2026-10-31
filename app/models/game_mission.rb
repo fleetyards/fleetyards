@@ -107,6 +107,14 @@ class GameMission < ApplicationRecord
     )
   }
 
+  # Missions offered in one of the given star systems, by location id. Off the
+  # `offered` links alone: a location template is shared between systems -- the
+  # Stanton salvage contracts can pick a Pyro Lagrange station -- so the places
+  # a mission can be sent to would file most of them under both.
+  scope :offered_in_system, ->(system_ids) {
+    where(id: GameMissionLocation.offered_in_system(system_ids).select(:game_mission_id))
+  }
+
   before_save :update_slugs
 
   validates :sc_ref, presence: true, uniqueness: true
@@ -117,6 +125,7 @@ class GameMission < ApplicationRecord
   ALLOWED_SORTING_PARAMS = [
     "name asc", "name desc",
     "orgName asc", "orgName desc",
+    "systemName asc", "systemName desc",
     "createdAt asc", "createdAt desc"
   ]
 
@@ -158,6 +167,24 @@ class GameMission < ApplicationRecord
 
   GameMissionBuild::FILTERABLE.each do |fact|
     ransacker(fact) { GameMission.fact_sql(fact) }
+  end
+
+  # The first system, by name, the mission is offered in -- the same `offered`
+  # links `offered_in_system` filters by, and only the systems a row can name.
+  # A subquery rather than a join, so a mission offered in two systems is still
+  # one row. Missions offered nowhere go last either way.
+  def self.system_order(direction)
+    direction = (direction.to_s.downcase == "desc") ? "DESC" : "ASC"
+
+    Arel.sql(<<~SQL.squish)
+      (SELECT MIN(systems.name)
+         FROM game_mission_locations
+         JOIN locations ON locations.id = game_mission_locations.location_id
+         JOIN locations AS systems ON systems.id = #{GameMissionLocation::SYSTEM_SQL}
+        WHERE game_mission_locations.game_mission_id = game_missions.id
+          AND game_mission_locations.source = 'offered'
+          AND systems.id IN (#{listed_systems.select(:id).to_sql})) #{direction} NULLS LAST
+    SQL
   end
 
   # The build a read resolves through, for one source: the build we are on where
@@ -248,6 +275,54 @@ class GameMission < ApplicationRecord
       .order(:min_standing)
       .pluck(:min_standing)
       .map { |standing| Filter.new(category: "standing", label: standing, value: standing) }
+  end
+
+  # The star systems missions are offered in. Hidden systems are left out the
+  # way the location pages leave them out.
+  def self.system_filters(source = served_source, current_only: true)
+    missions = named(source, current_only:)
+
+    systems_offering(GameMissionLocation.where(game_mission_id: missions.select(:id)))
+      .order(:name)
+      .map { |system| Filter.new(category: "system", label: system.name, value: system.slug) }
+  end
+
+  # The systems a set of mission links resolves to, as listed, current
+  # locations.
+  def self.systems_offering(links)
+    listed_systems.where(id: links.offered.joins(:location).select(GameMissionLocation::SYSTEM_SQL))
+  end
+
+  # The systems a reader is shown: current, and not kept off the public pages.
+  def self.listed_systems
+    Location.listed.current_version.where(kind: "system").includes(:build, :last_build)
+  end
+
+  # The systems each mission is offered in, set on every record so a list of
+  # missions asks once rather than once per row.
+  def self.preload_systems(missions)
+    missions = missions.to_a
+    return missions if missions.empty?
+
+    pairs = GameMissionLocation.offered.joins(:location)
+      .where(game_mission_id: missions.map(&:id))
+      .distinct
+      .pluck(:game_mission_id, GameMissionLocation::SYSTEM_SQL)
+
+    systems = listed_systems.where(id: pairs.map(&:last).compact.uniq).index_by(&:id)
+
+    by_mission = pairs.group_by(&:first)
+    missions.each do |mission|
+      ids = by_mission.fetch(mission.id, []).map(&:last)
+      mission.systems = systems.values_at(*ids).compact.sort_by(&:name)
+    end
+  end
+
+  attr_writer :systems
+
+  def systems
+    ::GameMission.preload_systems([self]) unless defined?(@systems)
+    @systems
   end
 
   # From the constant rather than from a DISTINCT over the array column: all

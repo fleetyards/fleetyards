@@ -2821,6 +2821,7 @@
           "rewarding": "奖励",
           "alignment": "阵营立场",
           "kind": "类型",
+          "system": "星系",
           "releasedFilter": "正式版",
           "released": "在正式版中",
           "unreleased": "未在正式版"
@@ -4496,6 +4497,7 @@
         "unattributed": "未标明组织",
         "minPoints": "%{points} 点起",
         "limitedEvent": "限时活动",
+        "viewMission": "查看任务",
         "eventHint": "活动奖励仅在 CIG 开启该活动期间发放。游戏文件在两次活动之间仍保留其奖励阶段，因此无法据此判断活动当前是否开启。",
         "noKnownSource": "无已知来源",
         "noSourceLead": "没有任务或场景会发放此蓝图。",
@@ -4539,6 +4541,7 @@
         "blueprints": "蓝图",
         "name": "名称",
         "org": "发布方",
+        "system": "星系",
         "offeredBy": "发布方",
         "offeredByUnknown": "未注明委托方",
         "standing": "声望",

@@ -12440,9 +12440,14 @@ components:
           type:
           - string
           - 'null'
+        missions:
+          type: array
+          items:
+            "$ref": "#/components/schemas/BlueprintSourceMission"
       additionalProperties: false
       required:
       - kind
+      - missions
       title: BlueprintSource
     BlueprintSourceAlignmentEnum:
       type: string
@@ -12464,6 +12469,28 @@ components:
       - CONTRACT
       - SCENARIO
       title: BlueprintSourceKindEnum
+    BlueprintSourceMission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type:
+          - string
+          - 'null'
+        slug:
+          type: string
+        systems:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationLink"
+      additionalProperties: false
+      required:
+      - id
+      - slug
+      - systems
+      title: BlueprintSourceMission
     Blueprints:
       type: object
       properties:
@@ -17011,6 +17038,10 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/GameMissionRewardFilterEnum"
+        systems:
+          type: array
+          items:
+            "$ref": "#/components/schemas/LocationLink"
         description:
           type:
           - string
@@ -17506,6 +17537,8 @@ components:
       - name desc
       - orgName asc
       - orgName desc
+      - systemName asc
+      - systemName desc
       - createdAt asc
       - createdAt desc
       x-enumNames:
@@ -17513,6 +17546,8 @@ components:
       - NAME_DESC
       - ORG_NAME_ASC
       - ORG_NAME_DESC
+      - SYSTEM_NAME_ASC
+      - SYSTEM_NAME_DESC
       - CREATED_AT_ASC
       - CREATED_AT_DESC
       title: GameMissionSortEnum

@@ -2821,6 +2821,7 @@
           "rewarding": "Paga",
           "alignment": "Lado de la ley",
           "kind": "Tipo",
+          "system": "Sistema estelar",
           "releasedFilter": "En la versión",
           "released": "En la versión",
           "unreleased": "Fuera de la versión"
@@ -4499,6 +4500,7 @@
         "unattributed": "Sin atribuir",
         "minPoints": "Desde %{points} puntos",
         "limitedEvent": "Evento por tiempo limitado",
+        "viewMission": "Ver misión",
         "eventHint": "Las recompensas de evento solo se obtienen mientras CIG mantiene el evento activo. Los archivos del juego conservan sus niveles de recompensa entre ediciones, así que no indican si está activo ahora mismo.",
         "noKnownSource": "Sin fuente conocida",
         "noSourceLead": "Ninguna misión ni escenario entrega esta receta.",
@@ -4542,6 +4544,7 @@
         "blueprints": "Planos",
         "name": "Nombre",
         "org": "Ofrecida por",
+        "system": "Sistema",
         "offeredBy": "Ofrecida por",
         "offeredByUnknown": "Sin contratista indicado",
         "standing": "Reputación",

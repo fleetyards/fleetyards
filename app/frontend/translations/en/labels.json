@@ -2821,6 +2821,7 @@
           "rewarding": "Pays",
           "alignment": "Side of the law",
           "kind": "Kind",
+          "system": "Star system",
           "releasedFilter": "In release",
           "released": "In release",
           "unreleased": "Not in release"
@@ -4513,6 +4514,7 @@
         "unattributed": "Unattributed",
         "minPoints": "From %{points} points",
         "limitedEvent": "Limited-time event",
+        "viewMission": "View mission",
         "eventHint": "Event rewards drop only while CIG runs the event. The game files keep its reward track between runs, so they cannot say whether it is live right now.",
         "noKnownSource": "No known source",
         "noSourceLead": "No mission or scenario hands this recipe out.",
@@ -4556,6 +4558,7 @@
         "blueprints": "Blueprints",
         "name": "Name",
         "org": "Offered by",
+        "system": "System",
         "offeredBy": "Offered by",
         "offeredByUnknown": "No stated contractor",
         "standing": "Standing",

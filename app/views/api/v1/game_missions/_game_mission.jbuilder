@@ -9,3 +9,7 @@
 json.cache! ["v2", mission, mission.facts, ::ScData::Source.current] do
   json.partial! "api/v1/game_missions/base", mission:
 end
+
+# Outside the cache: a load rewrites a mission's location links without
+# touching the mission or its build.
+json.partial! "api/v1/game_missions/systems", mission:

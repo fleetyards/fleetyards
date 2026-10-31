@@ -59,6 +59,10 @@ module V1
             # controller against the mission's links.
             atLocation: {type: :string, format: :uuid},
 
+            # The star systems it is offered in, by slug, as
+            # `/filters/missions/systems` names them.
+            systemIn: {type: :array, items: {type: :string}},
+
             # Whether the build is offering it at all. Read by the controller
             # rather than applied through ransack, which skips a scope whose
             # value is false and would answer "what is not released" with the

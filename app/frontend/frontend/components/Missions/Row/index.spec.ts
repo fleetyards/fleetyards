@@ -124,6 +124,26 @@ describe("MissionRow", () => {
     expect(wrapper.find(".row-list-item__badge--quiet").exists()).toBe(false);
   });
 
+  it("names the system it is offered in, as a filter link", async () => {
+    const wrapper = await mount({
+      systems: [
+        {
+          id: "5a1b5a1b-5a1b-5a1b-5a1b-5a1b5a1b5a1b",
+          name: "Pyro System",
+          slug: "pyro-system",
+          kind: "system",
+          parentName: null,
+        },
+      ],
+    });
+
+    const link = wrapper.find(".mission-row__system");
+
+    expect(link.attributes("href")).toContain("systemIn");
+    expect(link.attributes("href")).toContain("pyro-system");
+    expect(link.text()).toBe("Pyro System");
+  });
+
   it("links the org back into the list it narrows", async () => {
     const wrapper = await mount({
       org: { name: "Headhunters", key: "headhunters", alignment: "outlaw" },

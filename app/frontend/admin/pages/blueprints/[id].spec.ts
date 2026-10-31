@@ -216,6 +216,7 @@ describe("AdminBlueprintPage", () => {
           minPoints: 18000,
           poolKey: "bp_missionreward_example",
           poolGroup: "xenothreat2rewards",
+          missions: [],
         },
       ],
     });

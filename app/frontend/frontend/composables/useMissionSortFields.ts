@@ -5,7 +5,7 @@ import { type GameMission } from "@/services/fyApi";
 /**
  * The sorts the mission catalogue offers above its rows.
  *
- * Only the two the API accepts. `GameMission::ALLOWED_SORTING_PARAMS` is the
+ * Only the ones the API accepts. `GameMission::ALLOWED_SORTING_PARAMS` is the
  * whitelist the controller sorts by, and offering a column it does not name
  * would send a request that comes back 400 rather than reordered.
  *
@@ -19,5 +19,10 @@ export const useMissionSortFields = () => {
   return computed<BaseTableCol<GameMission>[]>(() => [
     { name: "name", label: t("labels.gameMission.name"), sortable: true },
     { name: "orgName", label: t("labels.gameMission.org"), sortable: true },
+    {
+      name: "systemName",
+      label: t("labels.gameMission.system"),
+      sortable: true,
+    },
   ]);
 };

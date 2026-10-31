@@ -76,6 +76,67 @@ class Api::V1::GameMissionsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /missions filters by the star system it is offered in" do
+    stanton = create(:location, name: "Stanton System", kind: "system")
+    pyro = create(:location, name: "Pyro System", kind: "system")
+    ruin = create(:location, name: "Ruin Station", kind: "station", system: pyro)
+    lagrange = create(:location, name: "HUR L1", kind: "station", system: stanton)
+    create(:game_mission_location, game_mission: @hit, location: ruin, source: "offered")
+    create(:game_mission_location, game_mission: @ambush, location: stanton, source: "offered")
+    # A template can send a Pyro contract to a Stanton station; that is not
+    # where it is offered.
+    create(:game_mission_location, game_mission: @hit, location: lagrange, source: "template")
+
+    assert_api_response :get, 200, params: {q: {"systemIn" => [pyro.slug]}} do
+      assert_equal [@hit.id], parsed_body["items"].pluck("id")
+      assert_equal ["Pyro System"], parsed_body["items"].first["systems"].pluck("name")
+    end
+
+    assert_api_response :get, 200, params: {q: {"systemIn" => [stanton.slug]}} do
+      assert_equal [@ambush.id], parsed_body["items"].pluck("id")
+    end
+  end
+
+  test "GET /missions sorts by system, then by name within one" do
+    pyro = create(:location, name: "Pyro System", kind: "system")
+    nyx = create(:location, name: "Nyx System", kind: "system")
+    pyro_twin = create(:game_mission, name: "Simple Hit", sc_key: "headhunters_simple_hit_pyro")
+    create(:game_mission_location, game_mission: @hit, location: nyx, source: "offered")
+    create(:game_mission_location, game_mission: pyro_twin, location: pyro, source: "offered")
+    create(:game_mission_location, game_mission: @ambush, location: pyro, source: "offered")
+
+    assert_api_response :get, 200, params: {q: {"sorts" => ["systemName asc"]}} do
+      assert_equal [@hit.id, pyro_twin.id, @ambush.id], parsed_body["items"].pluck("id")
+    end
+  end
+
+  test "GET /missions puts missions offered in no system last either way" do
+    pyro = create(:location, name: "Pyro System", kind: "system")
+    nyx = create(:location, name: "Nyx System", kind: "system")
+    create(:game_mission_location, game_mission: @hit, location: nyx, source: "offered")
+    create(:game_mission_location, game_mission: @ambush, location: pyro, source: "offered")
+    nowhere = create(:game_mission, name: "Aaa Nowhere")
+
+    assert_api_response :get, 200, params: {q: {"sorts" => ["systemName desc"]}} do
+      assert_equal [@ambush.id, @hit.id, nowhere.id], parsed_body["items"].pluck("id")
+    end
+  end
+
+  test "GET /missions does not filter by a system kept off the public pages" do
+    ellis = create(:location, name: "Ellis System", kind: "system", sc_key: "EllisSolarSystem")
+    create(:game_mission_location, game_mission: @hit, location: ellis, source: "offered")
+
+    assert_api_response :get, 200, params: {q: {"systemIn" => [ellis.slug]}} do
+      assert_empty parsed_body["items"]
+    end
+  end
+
+  test "GET /missions answers an unknown system with nothing" do
+    assert_api_response :get, 200, params: {q: {"systemIn" => ["nope-system"]}} do
+      assert_empty parsed_body["items"]
+    end
+  end
+
   test "GET /missions filters by the org that offers the work" do
     assert_api_response :get, 200, params: {q: {"fromOrg" => "Headhunters"}} do
       assert_equal [@hit.id], parsed_body["items"].pluck("id")

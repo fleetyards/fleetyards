@@ -57,7 +57,7 @@ end
 
 # Where it comes from. Empty for the 901 the export says nothing about, which
 # `sourceUnknown` states outright.
-json.sources blueprint.sources do |source|
+json.sources ::BlueprintSource.preload_missions(blueprint.sources) do |source|
   json.kind source.kind
   json.org_name source.org_name
   json.alignment source.alignment
@@ -67,4 +67,11 @@ json.sources blueprint.sources do |source|
   json.min_points source.min_points
   json.pool_key source.pool_key
   json.pool_group source.pool_group
+
+  json.missions source.missions do |mission|
+    json.id mission.id
+    json.name mission.name
+    json.slug mission.slug
+    json.partial! "api/v1/game_missions/systems", mission:
+  end
 end

@@ -68,6 +68,10 @@ module Shared
               type: :array, items: ::Shared::V1::Schemas::Enums::GameMissionRewardFilterEnum
             },
 
+            # The star systems it is offered in. The same title is offered as a
+            # contract of its own in each system, often paying differently.
+            systems: {type: :array, items: ::Shared::V1::Schemas::LocationLink},
+
             # Detail responses only -- a list omits all four rather than paying
             # for them per row, which is why none of them is required.
             #
@@ -86,11 +90,6 @@ module Shared
 
             # The recipes this mission hands out, through the reward pools it
             # names. 786 of the 2,536 contracts hand one out.
-            #
-            # The reverse -- a blueprint naming the missions that drop it --
-            # already exists as text on `BlueprintSource#missionName`, and
-            # stays text until that table points at a mission rather than
-            # carrying its own copy of the name.
             blueprints: {type: :array, items: ::Shared::V1::Schemas::GameMissionBlueprint},
 
             # Where it can take place: the specific places its location

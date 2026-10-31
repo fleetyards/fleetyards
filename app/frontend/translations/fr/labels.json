@@ -2821,6 +2821,7 @@
           "rewarding": "Paie",
           "alignment": "Côté de la loi",
           "kind": "Type",
+          "system": "Système stellaire",
           "releasedFilter": "Dans la version",
           "released": "Dans la version",
           "unreleased": "Hors version"
@@ -4499,6 +4500,7 @@
         "unattributed": "Non attribué",
         "minPoints": "À partir de %{points} points",
         "limitedEvent": "Événement à durée limitée",
+        "viewMission": "Voir la mission",
         "eventHint": "Les récompenses d'événement ne sont obtenues que tant que CIG fait tourner l'événement. Les fichiers du jeu conservent ses paliers de récompense entre deux éditions, ils ne disent donc pas s'il est actif en ce moment.",
         "noKnownSource": "Aucune source connue",
         "noSourceLead": "Aucune mission ni aucun scénario ne distribue ce plan.",
@@ -4542,6 +4544,7 @@
         "blueprints": "Plans",
         "name": "Nom",
         "org": "Proposée par",
+        "system": "Système",
         "offeredBy": "Proposée par",
         "offeredByUnknown": "Aucun commanditaire indiqué",
         "standing": "Réputation",

@@ -2821,6 +2821,7 @@
           "rewarding": "Paga",
           "alignment": "Lato della legge",
           "kind": "Tipo",
+          "system": "Sistema stellare",
           "releasedFilter": "Nella release",
           "released": "Nella release",
           "unreleased": "Non nella release"
@@ -4499,6 +4500,7 @@
         "unattributed": "Non attribuito",
         "minPoints": "Da %{points} punti",
         "limitedEvent": "Evento a tempo limitato",
+        "viewMission": "Vedi missione",
         "eventHint": "Le ricompense evento si ottengono solo mentre CIG tiene attivo l'evento. I file di gioco conservano i livelli di ricompensa tra un'edizione e l'altra, quindi non indicano se è attivo in questo momento.",
         "noKnownSource": "Nessuna fonte nota",
         "noSourceLead": "Nessuna missione o scenario rilascia questo progetto.",
@@ -4542,6 +4544,7 @@
         "blueprints": "Progetti",
         "name": "Nome",
         "org": "Offerta da",
+        "system": "Sistema",
         "offeredBy": "Offerta da",
         "offeredByUnknown": "Nessun committente indicato",
         "standing": "Reputazione",

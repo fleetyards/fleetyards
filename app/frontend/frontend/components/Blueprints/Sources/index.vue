@@ -31,6 +31,28 @@ const titleFor = (entry: BlueprintSource) => {
   return segments(name);
 };
 
+// One link per system: the variants of a contract inside one system -- two
+// regions of Pyro, say -- state the same title, band and pool, so they hand
+// this recipe out on the same terms.
+const missionLinks = (entry: BlueprintSource) => {
+  const links = new Map<string, { key: string; label: string; slug: string }>();
+
+  entry.missions.forEach((mission) => {
+    const systems = mission.systems.map((system) => system.name).join(", ");
+    // A mission naming no system has nothing to fold it into another by.
+    const key = systems || mission.id;
+
+    if (!links.has(key))
+      links.set(key, {
+        key: mission.id,
+        label: systems || t("labels.blueprint.viewMission"),
+        slug: mission.slug,
+      });
+  });
+
+  return [...links.values()];
+};
+
 const anyPlaceholder = computed(() =>
   props.sources.some((source) =>
     (titleFor(source) || []).some((segment) => segment.slot),
@@ -200,6 +222,14 @@ const summary = computed(() =>
                   t("labels.blueprint.minPoints", { points: entry.minPoints })
                 }}
               </span>
+              <router-link
+                v-for="link in missionLinks(entry)"
+                :key="link.key"
+                class="blueprint-sources__mission-link"
+                :to="{ name: 'mission', params: { slug: link.slug } }"
+              >
+                {{ link.label }}
+              </router-link>
             </div>
           </div>
         </div>
