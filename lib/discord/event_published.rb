@@ -37,10 +37,10 @@ module Discord
     # An announcement without its picture is still worth sending, so a build
     # missing the asset leaves the image out rather than failing the post.
     private def preset_cover_url
-      file = event.preset_cover_file
-      return nil if file.nil?
+      path = event.preset_cover_path
+      return nil if path.nil?
 
-      url = ActionController::Base.helpers.vite_asset_url(file.relative_path_from(Rails.root.join("app/frontend")).to_s)
+      url = ActionController::Base.helpers.vite_asset_url(path)
       # Without an asset host the helper answers a bare path, which Discord
       # refuses along with the whole message.
       url if url.start_with?("http")

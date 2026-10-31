@@ -50,7 +50,7 @@ class LinkPreview
   # A path under the frontend's source root, which the controller turns into an
   # asset URL the way it does for any other bundled image.
   def self.preset_cover(event)
-    event.preset_cover_file&.relative_path_from(Rails.root.join("app/frontend"))&.to_s
+    event.preset_cover_path
   end
 
   def self.attached(attachment)

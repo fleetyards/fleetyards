@@ -595,6 +595,11 @@ class FleetEvent < ApplicationRecord
       .find(&:exist?)
   end
 
+  # The preset cover as the asset path the frontend bundles it under.
+  def preset_cover_path
+    preset_cover_file&.relative_path_from(Rails.root.join("app/frontend"))&.to_s
+  end
+
   def officers_only?
     visibility == "officers"
   end
