@@ -13,9 +13,12 @@ import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import {
   ACESFilmicToneMapping,
   type Camera,
+  Box3,
   type Mesh,
   NeutralToneMapping,
   type Object3D,
+  type PerspectiveCamera,
+  Sphere,
   Vector3,
 } from "three";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -344,11 +347,32 @@ const handleControlsChange = (controls: { object: Camera }) => {
   const { x, y, z } = controls.object.position;
   lightPosition.value = [x, y, z];
 
+  const camera = controls.object as PerspectiveCamera;
+  const near = nearPlaneFor(camera.position.length());
+  if (camera.isPerspectiveCamera && camera.near !== near) {
+    camera.near = near;
+    camera.updateProjectionMatrix();
+  }
+
   canvas.value?.context?.renderer?.invalidate();
 };
 
 const fitDistance = ref(100);
 const modelMaxDimension = ref(100);
+
+// How far from the origin the furthest loaded model reaches: the models after
+// the first are stacked above it.
+const modelReach = ref(0);
+
+const MIN_NEAR = 0.1;
+
+// Depth precision falls with the square of the distance over the near plane,
+// and a textured export's hull carries paint layers stacked a fraction of a
+// millimetre apart: with the near plane fixed at 0.1 they fight at any
+// distance that fits the ship. Half the gap to the models' bounding sphere
+// keeps the near plane clear of them, while zoomed in it falls back to 0.1.
+const nearPlaneFor = (cameraDistance: number) =>
+  Math.max(MIN_NEAR, (cameraDistance - modelReach.value) / 2);
 
 const maxZoomDistance = computed(() => Math.max(250, fitDistance.value * 3));
 
@@ -371,7 +395,7 @@ const cameraArgs = computed<
 >(() => [
   35,
   innerWidth.value / innerHeight.value,
-  0.1,
+  nearPlaneFor(fitDistance.value),
   Math.max(
     1000,
     fitDistance.value * 4 + modelMaxDimension.value,
@@ -413,6 +437,14 @@ const handleModelLoaded = (size: Vector3, scene: Object3D) => {
 
   loading.value = false;
   emit("loaded");
+
+  const bounds = new Box3()
+    .setFromObject(scene)
+    .getBoundingSphere(new Sphere());
+  modelReach.value = Math.max(
+    modelReach.value,
+    bounds.center.length() + bounds.radius,
+  );
 
   // Get canvas aspect ratio
   const aspect = cameraArgs.value[1]; // width / height
