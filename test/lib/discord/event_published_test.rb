@@ -68,6 +68,16 @@ module Discord
       assert_includes publication.content, "<http"
     end
 
+    test "a cover that cannot be read leaves the image out and still announces" do
+      @event.cover_image.attach(io: file_fixture("image.jpg").open, filename: "cover.jpg", content_type: "image/jpeg")
+      ActiveStorage::VariantWithRecord.any_instance.stubs(:processed).raises(ActiveStorage::FileNotFoundError)
+      Appsignal.expects(:report_error)
+      publication = EventPublished.new(event: @event)
+
+      assert_nil publication.image_url
+      assert_includes publication.content, "/fleets/#{@fleet.slug}/events/#{@event.slug}"
+    end
+
     test "falls back to the preset art the event shows" do
       ActionController::Base.helpers.stubs(:vite_asset_url).returns("https://cdn.example/images/missions/mining.jpg")
       @event.update!(cover_image_preset: "mining")
