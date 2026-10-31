@@ -201,6 +201,19 @@
   overflow-y: auto;
 }
 
+// On a phone the stacked pools and filters leave the list no height to shrink
+// into, so the whole body scrolls instead and the header sticks to it.
+@media (max-width: 640px) {
+  .check-modal {
+    flex-shrink: 0;
+  }
+
+  .table-wrap {
+    flex: none;
+    overflow: visible;
+  }
+}
+
 .dtable {
   width: 100%;
   table-layout: fixed;
@@ -217,6 +230,19 @@
 
   &__col-num {
     width: 76px;
+  }
+
+  // The margin column already carries the verdict in colour; the bar would
+  // squeeze the names to nothing.
+  @media (max-width: 640px) {
+    &__col-bar,
+    &__bar-cell {
+      display: none;
+    }
+
+    &__col-num {
+      width: 56px;
+    }
   }
 
   th {
