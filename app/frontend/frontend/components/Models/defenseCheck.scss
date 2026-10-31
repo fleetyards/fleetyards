@@ -364,7 +364,11 @@
       width: 64px;
     }
 
+    // Sticky offsets measure from the body's content box, so without these
+    // rows show through the body's padding above the header and below the
+    // detail. Both match the modal body's padding on a phone.
     th {
+      top: -16px;
       font-size: 10px;
       letter-spacing: 0.06em;
       overflow: hidden;
@@ -375,6 +379,14 @@
     &__meta-shielded {
       display: inline;
     }
+  }
+
+  // Below a scrolling list the breakdown of the tapped row would be out of
+  // sight, so it stays docked at the bottom of the body.
+  .detail {
+    position: sticky;
+    bottom: -20px;
+    z-index: 1;
   }
 }
 
