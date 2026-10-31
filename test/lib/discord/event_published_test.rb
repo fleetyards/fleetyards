@@ -79,8 +79,8 @@ module Discord
     end
 
     test "falls back to the preset art the event shows" do
-      ActionController::Base.helpers.stubs(:vite_asset_url).returns("https://cdn.example/images/missions/mining.jpg")
       @event.update!(cover_image_preset: "mining")
+      ActionController::Base.helpers.expects(:vite_asset_url).with("images/missions/mining.jpg").returns("https://cdn.example/images/missions/mining.jpg")
 
       assert_equal "https://cdn.example/images/missions/mining.jpg", EventPublished.new(event: @event).image_url
     end

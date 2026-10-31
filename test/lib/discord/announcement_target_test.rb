@@ -27,7 +27,6 @@ module Discord
       assert AnnouncementTarget.squadron(CHANNEL).deliver(@fleet, "hello")
     end
 
-    # A channel id is only what somebody saved; it may point at another server.
     test "attaches an image as an embed" do
       channel_in(GUILD)
       @api.expects(:create_message).with(CHANNEL, {
@@ -47,6 +46,7 @@ module Discord
       assert AnnouncementTarget.fleet.deliver(@fleet, "hello", image_url: "https://cdn.example/cover.jpg")
     end
 
+    # A channel id is only what somebody saved; it may point at another server.
     test "never posts to a channel of another guild" do
       channel_in("800000000000000000")
       @api.expects(:create_message).never
