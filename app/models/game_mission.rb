@@ -125,6 +125,7 @@ class GameMission < ApplicationRecord
   ALLOWED_SORTING_PARAMS = [
     "name asc", "name desc",
     "orgName asc", "orgName desc",
+    "systemName asc", "systemName desc",
     "createdAt asc", "createdAt desc"
   ]
 
@@ -168,6 +169,20 @@ class GameMission < ApplicationRecord
     ransacker(fact) { GameMission.fact_sql(fact) }
   end
 
+  # The first system, by name, the mission is offered in -- the same `offered`
+  # links `offered_in_system` filters by. A subquery rather than a join, so a
+  # mission offered in two systems is still one row.
+  ransacker(:system_name) do
+    Arel.sql(<<~SQL.squish)
+      (SELECT MIN(systems.name)
+         FROM game_mission_locations
+         JOIN locations ON locations.id = game_mission_locations.location_id
+         JOIN locations AS systems ON systems.id = #{GameMissionLocation::SYSTEM_SQL}
+        WHERE game_mission_locations.game_mission_id = game_missions.id
+          AND game_mission_locations.source = 'offered')
+    SQL
+  end
+
   # The build a read resolves through, for one source: the build we are on where
   # there is one, and the newest older build otherwise. Mirrors exactly what
   # `all_facts_join` picks, so a filter and the row it renders agree about which
@@ -186,7 +201,7 @@ class GameMission < ApplicationRecord
   LOCATION_KINDS = %w[surface space mixed unknown].freeze
 
   def self.ransackable_attributes(auth_object = nil)
-    %w[created_at id id_value name sc_key slug updated_at version] + GameMissionBuild::FILTERABLE.map(&:to_s)
+    %w[created_at id id_value name sc_key slug system_name updated_at version] + GameMissionBuild::FILTERABLE.map(&:to_s)
   end
 
   def self.ransackable_associations(auth_object = nil)

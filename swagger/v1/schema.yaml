@@ -34613,6 +34613,8 @@ components:
       - name desc
       - orgName asc
       - orgName desc
+      - systemName asc
+      - systemName desc
       - createdAt asc
       - createdAt desc
       x-enumNames:
@@ -34620,6 +34622,8 @@ components:
       - NAME_DESC
       - ORG_NAME_ASC
       - ORG_NAME_DESC
+      - SYSTEM_NAME_ASC
+      - SYSTEM_NAME_DESC
       - CREATED_AT_ASC
       - CREATED_AT_DESC
       title: GameMissionSortingEnum

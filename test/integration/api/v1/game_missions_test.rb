@@ -97,6 +97,19 @@ class Api::V1::GameMissionsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /missions sorts by system, then by name within one" do
+    pyro = create(:location, name: "Pyro System", kind: "system")
+    nyx = create(:location, name: "Nyx System", kind: "system")
+    pyro_twin = create(:game_mission, name: "Simple Hit", sc_key: "headhunters_simple_hit_pyro")
+    create(:game_mission_location, game_mission: @hit, location: nyx, source: "offered")
+    create(:game_mission_location, game_mission: pyro_twin, location: pyro, source: "offered")
+    create(:game_mission_location, game_mission: @ambush, location: pyro, source: "offered")
+
+    assert_api_response :get, 200, params: {q: {"sorts" => ["systemName asc"]}} do
+      assert_equal [@hit.id, pyro_twin.id, @ambush.id], parsed_body["items"].pluck("id")
+    end
+  end
+
   test "GET /missions answers an unknown system with nothing" do
     assert_api_response :get, 200, params: {q: {"systemIn" => ["nope-system"]}} do
       assert_empty parsed_body["items"]

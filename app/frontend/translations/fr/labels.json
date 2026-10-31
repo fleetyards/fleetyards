@@ -4543,6 +4543,7 @@
         "blueprints": "Plans",
         "name": "Nom",
         "org": "Proposée par",
+        "system": "Système",
         "offeredBy": "Proposée par",
         "offeredByUnknown": "Aucun commanditaire indiqué",
         "standing": "Réputation",

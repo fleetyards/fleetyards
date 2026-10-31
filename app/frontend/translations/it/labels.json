@@ -4543,6 +4543,7 @@
         "blueprints": "Progetti",
         "name": "Nome",
         "org": "Offerta da",
+        "system": "Sistema",
         "offeredBy": "Offerta da",
         "offeredByUnknown": "Nessun committente indicato",
         "standing": "Reputazione",

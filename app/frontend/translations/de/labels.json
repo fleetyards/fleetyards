@@ -4543,6 +4543,7 @@
         "blueprints": "Baupläne",
         "name": "Name",
         "org": "Angeboten von",
+        "system": "System",
         "offeredBy": "Angeboten von",
         "offeredByUnknown": "Kein Auftraggeber genannt",
         "standing": "Ansehen",

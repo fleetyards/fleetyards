@@ -4557,6 +4557,7 @@
         "blueprints": "Blueprints",
         "name": "Name",
         "org": "Offered by",
+        "system": "System",
         "offeredBy": "Offered by",
         "offeredByUnknown": "No stated contractor",
         "standing": "Standing",

@@ -4540,6 +4540,7 @@
         "blueprints": "藍圖",
         "name": "名稱",
         "org": "發布方",
+        "system": "星系",
         "offeredBy": "發布方",
         "offeredByUnknown": "未註明委託方",
         "standing": "聲望",

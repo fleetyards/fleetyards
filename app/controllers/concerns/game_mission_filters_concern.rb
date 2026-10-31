@@ -22,13 +22,22 @@ module GameMissionFiltersConcern
     # `normalize_sort_params` first, because a sortable list sends `q[s]` and
     # ransack would read a leftover `s` ahead of the whitelisted `sorts`.
     normalize_sort_params(missions_query_params)
-    missions_query_params["sorts"] = sorting_params(GameMission, missions_query_params["sorts"])
+    missions_query_params["sorts"] = with_name_tiebreak(sorting_params(GameMission, missions_query_params["sorts"]))
 
     @q = scope.with_facts(current_version)
       .includes(build: :rewards, last_build: :rewards)
       .ransack(missions_query_params.except(:released, :rewarding, :rewarding_in, :from_org, :at_location, :system_in))
 
     build_filters(@q.result)
+  end
+
+  # A system holds hundreds of missions, and the point of sorting by one is to
+  # read the same title's variants side by side.
+  private def with_name_tiebreak(sorts)
+    return sorts if sorts.none? { |sort| sort.start_with?("system_name") }
+    return sorts if sorts.any? { |sort| sort.start_with?("name ") }
+
+    sorts + ["name asc"]
   end
 
   # The filters that read a build, applied here rather than through ransack.
