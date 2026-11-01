@@ -47,7 +47,7 @@ class LinkPreview
     attached(cover) || attached(fleet.logo)
   end
 
-  # A path under the frontend's source root, which the controller turns into an
+  # The Vite asset name of the bundled art, which the controller turns into an
   # asset URL the way it does for any other bundled image.
   def self.preset_cover(event)
     event.preset_cover_path

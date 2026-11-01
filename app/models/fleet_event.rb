@@ -35,7 +35,7 @@ class FleetEvent < ApplicationRecord
   has_one_attached :cover_image
   validates :cover_image, no_vector_image: true
 
-  # The preset names a file under PRESET_COVER_ROOT, so it is only ever a bare
+  # The preset names a file under PRESET_COVER_DIR, so it is only ever a bare
   # file stem; a path could step out of that directory.
   PRESET_COVER_FORMAT = /\A[a-z0-9_-]+\z/i
   validates :cover_image_preset, format: {with: PRESET_COVER_FORMAT}, allow_blank: true
@@ -583,21 +583,27 @@ class FleetEvent < ApplicationRecord
     self.cover_image_preset = category.to_s
   end
 
-  PRESET_COVER_ROOT = Rails.root.join("app/frontend/images/missions")
+  PRESET_COVER_DIR = "images/missions"
 
-  # The art the event shows without an uploaded cover, following the frontend's
-  # useMissionCover chain: the preset someone picked, then the category's own.
-  # Checked again here because rows saved before the validation are not.
-  def preset_cover_file
-    [cover_image_preset.presence, category.to_s.presence].compact
-      .grep(PRESET_COVER_FORMAT)
-      .flat_map { |stem| %w[jpg jpeg png].map { |ext| PRESET_COVER_ROOT.join("#{stem}.#{ext}") } }
-      .find(&:exist?)
+  # The art the event shows without an uploaded cover, as the asset path the
+  # frontend bundles it under. It follows the frontend's useMissionCover chain:
+  # the preset someone picked, then the category's own. Checked again here
+  # because rows saved before the validation are not.
+  def preset_cover_path
+    preset_cover&.first
   end
 
-  # The preset cover as the asset path the frontend bundles it under.
-  def preset_cover_path
-    preset_cover_file&.relative_path_from(Rails.root.join("app/frontend"))&.to_s
+  def preset_cover_file
+    preset_cover&.last
+  end
+
+  private def preset_cover
+    [cover_image_preset.presence, category.to_s.presence].compact
+      .grep(PRESET_COVER_FORMAT)
+      .flat_map { |stem| %w[jpg jpeg png].map { |ext| "#{PRESET_COVER_DIR}/#{stem}.#{ext}" } }
+      .lazy
+      .filter_map { |path| (file = BundledAsset.file(path)) && [path, file] }
+      .first
   end
 
   def officers_only?

@@ -36,7 +36,7 @@ class LinkPreviewTest < ActiveSupport::TestCase
   test "an event without a cover or art shows the fleet's logo" do
     attach(@fleet.logo)
     event = build(:fleet_event, :open, fleet: @fleet)
-    event.stubs(:preset_cover_file).returns(nil)
+    event.stubs(:preset_cover_path).returns(nil)
 
     assert_equal @fleet.logo, LinkPreview.for_fleet_event(event).image
   end
