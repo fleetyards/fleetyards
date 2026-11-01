@@ -5,65 +5,18 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
+import EntriesNav from "@/frontend/components/Navigation/EntriesNav/index.vue";
+import { TOOLS_GROUPS } from "@/frontend/components/Navigation/entries";
 import { useI18n } from "@/shared/composables/useI18n";
 
 const { t } = useI18n();
-const route = useRoute();
-
-const active = computed(() => {
-  return [
-    "tools",
-    "travel-times",
-    "cargo-grids",
-    "plaque-tool",
-    "trade-routes",
-    "tours",
-    "tour",
-    "tour-add",
-    "tour-join",
-  ].includes(String(route.name));
-});
 </script>
 
 <template>
-  <NavItem
+  <EntriesNav
     :label="t('nav.tools.index')"
     menu-key="tools-menu"
-    :submenu-active="active"
     icon="fa-duotone fa-toolbox"
-  >
-    <template #submenu>
-      <NavItem
-        :to="{ name: 'tools' }"
-        :label="t('nav.tools.index')"
-        icon="fa-duotone fa-browsers"
-      />
-      <NavItem
-        :to="{ name: 'travel-times' }"
-        :label="t('nav.tools.travelTimes')"
-        icon="fa-duotone fa-gauge-high"
-      />
-      <NavItem
-        :to="{ name: 'tours' }"
-        :label="t('nav.tools.tours')"
-        icon="fa-duotone fa-coins"
-      />
-      <NavItem
-        :to="{ name: 'cargo-grids' }"
-        :label="t('nav.tools.cargoGrids')"
-        icon="fa-duotone fa-thin fa-cubes"
-      />
-      <NavItem
-        :to="{ name: 'plaque-tool' }"
-        :label="t('nav.tools.plaque')"
-        icon="fa-duotone fa-award"
-      />
-      <NavItem
-        :to="{ name: 'trade-routes' }"
-        :label="t('nav.tools.tradeRoutes')"
-        icon="fa-duotone fa-route"
-      />
-    </template>
-  </NavItem>
+    :groups="TOOLS_GROUPS"
+  />
 </template>

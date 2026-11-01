@@ -20,6 +20,15 @@ import CartNav from "./CartNav/index.vue";
 import CatalogueNav from "@/frontend/components/Navigation/CatalogueNav/index.vue";
 import FleetsNav from "./FleetsNav/index.vue";
 import ToolsNav from "./ToolsNav/index.vue";
+import FavoritesNav from "./FavoritesNav/index.vue";
+import EntriesNav from "./EntriesNav/index.vue";
+import EntryItem from "./EntryItem/index.vue";
+import {
+  HANGAR_GROUPS,
+  HOME_ENTRY,
+  LOCATIONS_ENTRY,
+  SHIPS_GROUPS,
+} from "./entries";
 import { usePendingFriendRequests } from "@/frontend/composables/usePendingFriendRequests";
 import { useInstallPrompt } from "@/frontend/composables/useInstallPrompt";
 import { useSessionStore } from "@/frontend/stores/session";
@@ -81,23 +90,6 @@ const isVisualTestsRoute = computed(() => {
   return String(route.name).includes("visual-tests");
 });
 
-const isShipRoute = computed(() => {
-  if (!route.name) {
-    return false;
-  }
-
-  return ["ships", "ship", "ship-images", "ship-videos"].includes(
-    String(route.name),
-  );
-});
-
-// A shop is at a place, so its page belongs to the places too.
-const LOCATION_ROUTES = ["locations", "locations-places", "location", "shop"];
-
-const isLocationRoute = computed(() =>
-  LOCATION_ROUTES.includes(String(route.name ?? "")),
-);
-
 const isHangarRoute = computed(() => {
   if (!route.name) {
     return false;
@@ -147,13 +139,20 @@ const settingsActive = computed(() => {
       <VisualTestsNav v-if="isVisualTestsRoute" />
       <FleetNav v-else-if="isFleetRoute" />
       <template v-else>
-        <NavItem
-          :to="{ name: 'home' }"
-          :label="t('nav.home')"
-          icon="fa-duotone fa-home-alt"
+        <EntryItem :entry="HOME_ENTRY" :pinnable="false" />
+        <FavoritesNav />
+        <!-- The hangar's own pages used to be reachable only from buttons on
+             the hangar page, so a signed-in reader gets them as its section. -->
+        <EntriesNav
+          v-if="isAuthenticated"
+          :label="t('nav.hangar.index')"
+          menu-key="hangar-menu"
+          icon="fa-duotone fa-warehouse"
+          :groups="HANGAR_GROUPS"
+          :active="isHangarRoute"
         />
         <NavItem
-          v-if="isAuthenticated || !hangarPreview"
+          v-else-if="!hangarPreview"
           :to="{ name: 'hangar' }"
           :label="t('nav.hangar.index')"
           :active="isHangarRoute"
@@ -165,39 +164,19 @@ const settingsActive = computed(() => {
           :label="t('nav.hangar.index')"
           icon="fa-light fa-warehouse"
         />
-        <NavItem
-          :to="{ name: 'ships' }"
+        <FleetsNav />
+        <EntriesNav
           :label="t('nav.ships.index')"
-          :active="isShipRoute"
+          menu-key="ships-menu"
           :icon="SHIP_GLYPH"
+          :groups="SHIPS_GROUPS"
         />
         <!-- Route meta alone does not put anything here: both menus are written
              out by hand and read none of it, so `nav: "main"` on the route left
              the catalogue reachable only by typing the address. -->
         <CatalogueNav />
-        <NavItem
-          :to="{ name: 'locations' }"
-          :label="t('nav.locations')"
-          :active="isLocationRoute"
-          icon="fa-duotone fa-planet-ringed"
-        />
-        <NavItem
-          :to="{ name: 'compare' }"
-          :label="t('nav.compare.ships')"
-          icon="fa-duotone fa-code-compare"
-        />
-        <FleetsNav />
-        <NavItem
-          :to="{ name: 'images' }"
-          :label="t('nav.images')"
-          icon="fa-duotone fa-images"
-        />
+        <EntryItem :entry="LOCATIONS_ENTRY" />
         <ToolsNav />
-        <NavItem
-          :to="{ name: 'stats' }"
-          :label="t('nav.stats')"
-          icon="fa-duotone fa-chart-bar"
-        />
         <template v-if="visualTestsEnabled">
           <li class="nav-item__divider" />
           <NavItem

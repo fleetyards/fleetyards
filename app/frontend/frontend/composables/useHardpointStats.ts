@@ -1357,7 +1357,8 @@ const hardpointStatsBuilder = (count?: MaybeRefOrGetter<number>) => {
       // Absorption is how much of a hit the shield takes before it reaches
       // the hull, and it moves with the shield's health -- so a range.
       const absorption = shield.absorption as
-        Record<string, { min?: number; max?: number }> | undefined;
+        | Record<string, { min?: number; max?: number }>
+        | undefined;
       (["physical", "energy", "distortion"] as const).forEach((type) => {
         const range = absorption?.[type];
         if (typeof range?.max !== "number" || !range.max) return;
@@ -1755,7 +1756,8 @@ const hardpointStatsBuilder = (count?: MaybeRefOrGetter<number>) => {
         );
       }
       const sigs = radar.signatureDetection as
-        Record<string, { sensitivity?: number }> | undefined;
+        | Record<string, { sensitivity?: number }>
+        | undefined;
       if (sigs) {
         if (sigs.ir?.sensitivity != null) {
           result.push(resistanceStat("radar.ir", sigs.ir.sensitivity));
@@ -1804,7 +1806,8 @@ const hardpointStatsBuilder = (count?: MaybeRefOrGetter<number>) => {
       // Radars last loaded before those were parsed carry only an addition in
       // `sensitivityModifiers`, with no group to name.
       const legacyModifier = radar.sensitivityModifiers as
-        { sensitivityAddition?: number } | undefined;
+        | { sensitivityAddition?: number }
+        | undefined;
       const contactSensitivity = (radar.contactSensitivity ??
         (legacyModifier?.sensitivityAddition
           ? [

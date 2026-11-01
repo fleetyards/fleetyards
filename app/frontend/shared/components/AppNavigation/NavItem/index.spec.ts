@@ -9,6 +9,7 @@ vi.mock("vue-router", () => ({
 }));
 
 import NavItem from "./index.vue";
+import { useNavStore } from "@/shared/stores/nav";
 
 const mountItem = (props: Record<string, unknown>) =>
   mount(NavItem, {
@@ -99,6 +100,70 @@ describe("NavItem", () => {
       const wrapper = mountItem({ action: vi.fn(), label: "Logout" });
 
       expect(wrapper.get("button").attributes("type")).toBe("button");
+    });
+  });
+
+  describe("the favorite star", () => {
+    const navigate = vi.fn();
+
+    // The real link needs a router; the row only ever asks it for the href and
+    // the function that follows it.
+    const RouterLink = defineComponent({
+      props: { to: { type: [Object, String], required: true } },
+      setup(_, { slots }) {
+        return () => slots.default?.({ href: "/trade-routes", navigate });
+      },
+    });
+
+    const mountLink = (props: Record<string, unknown>) =>
+      mount(NavItem, {
+        props: {
+          to: { name: "trade-routes" },
+          label: "Trade Routes",
+          ...props,
+        },
+        global: {
+          directives: { tooltip: {} },
+          components: { RouterLink },
+        },
+      });
+
+    beforeEach(() => {
+      navigate.mockReset();
+      useNavStore().slim = false;
+    });
+
+    it("is absent from a row that cannot be pinned", () => {
+      const wrapper = mountLink({});
+
+      expect(wrapper.find(".nav-item__favorite").exists()).toBe(false);
+    });
+
+    it("says whether the page is pinned", () => {
+      const wrapper = mountLink({ pinnable: true, favorite: true });
+
+      expect(
+        wrapper.get(".nav-item__favorite").attributes("aria-pressed"),
+      ).toBe("true");
+    });
+
+    // The star sits inside the row, which follows the link on click.
+    it("pins without opening the page", async () => {
+      const wrapper = mountLink({ pinnable: true, favorite: false });
+
+      await wrapper.get(".nav-item__favorite").trigger("click");
+
+      expect(wrapper.emitted("toggleFavorite")).toHaveLength(1);
+      expect(navigate).not.toHaveBeenCalled();
+    });
+
+    // A collapsed rail is icons only; there is no room for a second target.
+    it("is left off the collapsed rail", () => {
+      useNavStore().slim = true;
+
+      const wrapper = mountLink({ pinnable: true, favorite: false });
+
+      expect(wrapper.find(".nav-item__favorite").exists()).toBe(false);
     });
   });
 });

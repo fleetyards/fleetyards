@@ -158,7 +158,8 @@ export const craftedCatalogueComponent = (
       ? {
           ...component.durability,
           health: changed(component.durability.health, integrity) as
-            number | undefined,
+            | number
+            | undefined,
         }
       : component.durability;
 

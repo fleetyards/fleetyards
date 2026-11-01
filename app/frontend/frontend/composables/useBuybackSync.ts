@@ -23,7 +23,12 @@ import {
 } from "@/services/fyApi";
 
 export type BuybackSyncStatus =
-  "idle" | "fetching" | "submitting" | "finished" | "unsupported" | "failed";
+  | "idle"
+  | "fetching"
+  | "submitting"
+  | "finished"
+  | "unsupported"
+  | "failed";
 
 export type BuybackSyncOptions = {
   // An extension that can read the list but not yet a pledge's price still

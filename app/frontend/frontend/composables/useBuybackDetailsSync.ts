@@ -15,7 +15,10 @@ import {
 } from "@/services/fyApi";
 
 export type BuybackDetailsSyncStatus =
-  "idle" | "running" | "finished" | "incomplete";
+  | "idle"
+  | "running"
+  | "finished"
+  | "incomplete";
 
 type RunOptions = {
   // Resolves once another request to RSI may go out, or early once `signal`

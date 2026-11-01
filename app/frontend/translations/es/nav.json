@@ -4,6 +4,11 @@
       "cart": "Carrito",
       "locations": "Ubicaciones",
       "home": "Inicio",
+      "favorites": {
+        "index": "Favoritos",
+        "add": "Añadir %{page} a favoritos",
+        "remove": "Quitar %{page} de favoritos"
+      },
       "back": "Atrás",
       "navigation": "Navegación",
       "ships": {
@@ -20,6 +25,9 @@
       "componentHistory": "Historial",
       "hangar": {
         "index": "Mi Hangar",
+        "overview": "Resumen",
+        "wishlist": "Lista de deseos",
+        "stats": "Estadísticas",
         "vehicleLoadouts": "Loadouts",
         "inventories": "Inventories",
         "blueprints": "Planos",
@@ -129,6 +137,7 @@
       "rsiHangar": "Hangar RSI",
       "tools": {
         "index": "Herramientas",
+        "overview": "Resumen",
         "travelTimes": "Tiempos de Viaje",
         "cargoGrids": "Grillas de Carga",
         "plaque": "Placas de dedicatoria",

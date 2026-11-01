@@ -372,3 +372,99 @@ $nav-active-glow: color-mix(
     }
   }
 }
+
+/*
+ * The pin sits over the row's right edge rather than in its flow: the anchor
+ * spans the whole row so the entire width stays a link target, and the star
+ * only borrows the padding the anchor gives up for it.
+ *
+ * Typed as `button.nav-item__favorite` so it outranks the row rules above that
+ * style every `> button` of a row as the row's own full-width trigger.
+ */
+.nav-item--favoritable {
+  position: relative;
+
+  // Doubled class so it also beats the flyout's own row padding.
+  &.nav-item > a {
+    padding-right: 40px;
+  }
+
+  > button.nav-item__favorite {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    color: var(--color-muted, #7a8288);
+    font-size: 14px;
+    text-transform: none;
+    opacity: 0;
+    transform: translateY(-50%);
+    transition:
+      opacity $transition-base-speed ease,
+      color $transition-base-speed ease;
+    cursor: pointer;
+
+    i {
+      min-width: 0;
+      font-size: 14px;
+    }
+
+    &:hover,
+    &:focus-visible {
+      color: var(--color-warning, #f0ad4e);
+    }
+
+    &:focus-visible {
+      opacity: 1;
+      outline: 2px solid var(--color-primary, #428bca);
+    }
+  }
+
+  // Also outranks the flyout's row hover, which tints every `> button` of a row.
+  &:hover > button.nav-item__favorite {
+    background: transparent;
+    opacity: 1;
+  }
+
+  // A touch screen has no hover to reveal it, so the star is always there.
+  @media (hover: none) {
+    > button.nav-item__favorite {
+      opacity: 0.6;
+    }
+  }
+}
+
+.nav-item--favorite > button.nav-item__favorite {
+  color: var(--color-warning, #f0ad4e);
+  opacity: 1;
+}
+
+/*
+ * A label over a group of rows. The collapsed rail has no room for the words,
+ * so there it is drawn as the divider it stands in for.
+ */
+.nav-item__heading {
+  margin: 10px 25px 2px;
+  padding: 0;
+  color: var(--color-muted, #7a8288);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  &--slim {
+    height: 1px;
+    margin: 5px 15px;
+    overflow: hidden;
+    background-color: color.adjust($gray-dark, $lightness: 10%);
+    color: transparent;
+  }
+}

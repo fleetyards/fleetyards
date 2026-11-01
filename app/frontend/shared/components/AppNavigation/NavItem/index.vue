@@ -14,6 +14,7 @@ import { useMobile } from "@/shared/composables/useMobile";
 import Collapsed from "@/shared/components/Collapsed.vue";
 import { storeToRefs } from "pinia";
 import { useNavStore } from "@/shared/stores/nav";
+import { useI18n } from "@/shared/composables/useI18n";
 
 type Props = {
   to?: RouterLinkProps["to"];
@@ -32,6 +33,9 @@ type Props = {
   submenuActive?: boolean;
   submenuDirection?: string;
   badge?: number;
+  // Whether the row offers a star to pin its page, and whether it is pinned.
+  pinnable?: boolean;
+  favorite?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -49,7 +53,15 @@ const props = withDefaults(defineProps<Props>(), {
   submenuActive: false,
   submenuDirection: "down",
   badge: 0,
+  pinnable: false,
+  favorite: false,
 });
+
+const emit = defineEmits<{
+  toggleFavorite: [];
+}>();
+
+const { t } = useI18n();
 
 const open = ref(false);
 
@@ -80,6 +92,23 @@ provide(
   NAV_EXPANDED,
   computed(() => flyout.value || !!expanded?.value),
 );
+
+/*
+ * A collapsed rail is icons only, with no room for a second target beside each
+ * one -- so the star shows wherever the row carries its label: the expanded
+ * rail, the drawer, and the rows inside a flyout.
+ */
+const favoritable = computed(() => props.pinnable && !slim.value);
+
+const favoriteLabel = computed(() =>
+  props.favorite
+    ? t("nav.favorites.remove", { page: props.label })
+    : t("nav.favorites.add", { page: props.label }),
+);
+
+const onToggleFavorite = () => {
+  emit("toggleFavorite");
+};
 
 const routeActive = computed(() => {
   if (props.to) {
@@ -677,6 +706,8 @@ const toggleMenu = () => {
       :class="{
         'nav-item--active': active || routeActive,
         'nav-item--slim': slim,
+        'nav-item--favoritable': favoritable,
+        'nav-item--favorite': favoritable && favorite,
       }"
       :data-test="`nav-${navKey}`"
       class="nav-item"
@@ -695,6 +726,21 @@ const toggleMenu = () => {
           />
         </slot>
       </a>
+      <!-- Inside the row's li, which navigates on click, so the click must stop
+           here or pinning a page would also open it. -->
+      <button
+        v-if="favoritable"
+        type="button"
+        class="nav-item__favorite"
+        :aria-label="favoriteLabel"
+        :aria-pressed="favorite"
+        :title="favoriteLabel"
+        :data-test="`nav-favorite-${navKey}`"
+        @click.stop.prevent="onToggleFavorite"
+        @keypress.enter.stop
+      >
+        <i :class="favorite ? 'fa-solid fa-star' : 'fa-light fa-star'" />
+      </button>
     </li>
   </router-link>
   <li

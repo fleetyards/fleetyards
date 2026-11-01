@@ -22,6 +22,11 @@ module V1
             publicHangarLoaners: {type: :boolean},
             publicHangarStats: {type: :boolean},
             hangarDefaultSort: ::V1::Schemas::Enums::NullableVehicleSortEnum,
+            navFavorites: {
+              type: :array,
+              items: {type: :string, pattern: "^[a-z0-9][a-z0-9-]{0,63}$"},
+              maxItems: ::User::NAV_FAVORITES_LIMIT
+            },
             publicWishlist: {type: :boolean},
             friendsHangar: {type: :boolean},
             friendsHangarStats: {type: :boolean},

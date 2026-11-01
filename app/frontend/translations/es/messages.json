@@ -1333,6 +1333,10 @@
           "other": "%{count} elementos añadidos a %{inventory}"
         },
         "addToInventoryFailed": "No se pudieron añadir los elementos al inventario."
+      },
+      "navFavorites": {
+        "failure": "No se pudieron guardar tus favoritos.",
+        "limit": "Puedes fijar hasta %{count} páginas."
       }
     }
   }

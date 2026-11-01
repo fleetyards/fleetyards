@@ -191,6 +191,30 @@ class Api::V1::UsersMeTest < ActionDispatch::IntegrationTest
     assert_nil user.reload.hangar_default_sort
   end
 
+  test "PUT /users/me sets and clears the navigation favorites" do
+    user = create(:user)
+    sign_in user
+
+    assert_api_response :put, 200, body: {navFavorites: ["hangar-wishlist", "trade-routes", "hangar-wishlist"]} do
+      assert_equal ["hangar-wishlist", "trade-routes"], parsed_body["navFavorites"]
+    end
+
+    assert_api_response :put, 200, body: {navFavorites: []} do
+      assert_equal [], parsed_body["navFavorites"]
+    end
+
+    assert_equal [], user.reload.nav_favorites
+  end
+
+  test "GET /users/me lists no navigation favorites for a new user" do
+    user = create(:user)
+    sign_in user
+
+    assert_api_response :get, 200 do
+      assert_equal [], parsed_body["navFavorites"]
+    end
+  end
+
   test "PUT /users/me sets and clears the display name" do
     user = create(:user)
     sign_in user

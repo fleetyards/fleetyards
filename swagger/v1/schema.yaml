@@ -47168,6 +47168,10 @@ components:
           type: boolean
         hangarDefaultSort:
           "$ref": "#/components/schemas/NullableVehicleSortEnum"
+        navFavorites:
+          type: array
+          items:
+            type: string
         publicWishlist:
           type: boolean
         publicWishlistUrl:
@@ -47237,6 +47241,7 @@ components:
       - publicHangarLoaners
       - publicHangarStats
       - hangarDefaultSort
+      - navFavorites
       - publicWishlist
       - friendsHangar
       - friendsHangarStats
@@ -47522,6 +47527,12 @@ components:
           type: boolean
         hangarDefaultSort:
           "$ref": "#/components/schemas/NullableVehicleSortEnum"
+        navFavorites:
+          type: array
+          items:
+            type: string
+            pattern: "^[a-z0-9][a-z0-9-]{0,63}$"
+          maxItems: 20
         publicWishlist:
           type: boolean
         friendsHangar:

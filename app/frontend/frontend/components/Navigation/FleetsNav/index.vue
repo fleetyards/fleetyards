@@ -7,6 +7,8 @@ export default {
 <script lang="ts" setup>
 import { FLEET_GLYPH } from "@/shared/glyphs/fleets";
 import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
+import EntryItem from "@/frontend/components/Navigation/EntryItem/index.vue";
+import { FLEET_DIRECTORY_ENTRY } from "@/frontend/components/Navigation/entries";
 import { useFleetStore } from "@/frontend/stores/fleet";
 import { storeToRefs } from "pinia";
 import { useSessionStore } from "@/frontend/stores/session";
@@ -78,11 +80,7 @@ watch(
         :label="fleet.name"
         :image="fleet.logo?.smallUrl || undefined"
       />
-      <NavItem
-        :to="{ name: 'fleet-directory' }"
-        :label="t('nav.fleets.directory')"
-        icon="fa-duotone fa-magnifying-glass"
-      />
+      <EntryItem :entry="FLEET_DIRECTORY_ENTRY" />
       <NavItem
         v-if="isAuthenticated && fleetInvites && fleetInvites.length"
         :to="{ name: 'fleet-invites' }"

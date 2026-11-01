@@ -1332,6 +1332,10 @@
           "other": "已将 %{count} 项添加到 %{inventory}"
         },
         "addToInventoryFailed": "无法将物品添加到库存。"
+      },
+      "navFavorites": {
+        "failure": "无法保存你的收藏。",
+        "limit": "最多可以收藏 %{count} 个页面。"
       }
     }
   }

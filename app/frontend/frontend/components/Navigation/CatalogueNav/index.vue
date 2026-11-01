@@ -6,6 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
+import EntryItem from "@/frontend/components/Navigation/EntryItem/index.vue";
+import { CATALOGUE_ENTRIES } from "@/frontend/components/Navigation/entries";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
   CATALOGUE_TENANTS,
@@ -33,13 +35,10 @@ const activeTenant = computed(() =>
     icon="fa-duotone fa-books"
   >
     <template #submenu>
-      <NavItem
-        v-for="tenant in CATALOGUE_TENANTS"
-        :key="tenant.key"
-        :to="{ name: tenant.listRoute }"
-        :label="t(`nav.catalogue.${tenant.key}`)"
-        :active="activeTenant?.key === tenant.key"
-        :icon="tenant.icon"
+      <EntryItem
+        v-for="entry in CATALOGUE_ENTRIES"
+        :key="entry.key"
+        :entry="entry"
       />
     </template>
   </NavItem>

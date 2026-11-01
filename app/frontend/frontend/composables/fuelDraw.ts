@@ -34,7 +34,8 @@ export const fuelDraw = (hardpoints: Hardpoint[]): FuelDraw =>
       }
 
       const thruster = hardpoint.component?.typeData as
-        ComponentThruster | undefined;
+        | ComponentThruster
+        | undefined;
       if (!thruster?.thrustCapacity || !thruster.fuelBurnScuPer10KNewton) {
         return draw;
       }

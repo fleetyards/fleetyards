@@ -756,6 +756,28 @@ class UserRetiredCounterColumnsTest < ActiveSupport::TestCase
     assert_equal ["model_price desc", "rank asc"], build(:user, hangar_default_sort: "modelPrice desc").hangar_sorting_params
     assert_equal ["rank desc"], build(:user, hangar_default_sort: "rank desc").hangar_sorting_params
   end
+
+  test "navigation favorites are stored once each, without blanks" do
+    user = create(:user, nav_favorites: [" hangar-stats ", "", "hangar-stats", "ships"])
+
+    assert_equal ["hangar-stats", "ships"], user.reload.nav_favorites
+  end
+
+  test "navigation favorites accept only registry keys" do
+    user = build(:user, nav_favorites: ["trade-routes"])
+    assert user.valid?
+
+    user.nav_favorites = ["Trade Routes"]
+    assert_not user.valid?
+    assert user.errors.added?(:nav_favorites, :invalid)
+  end
+
+  test "navigation favorites are capped" do
+    user = build(:user, nav_favorites: (1..User::NAV_FAVORITES_LIMIT + 1).map { |n| "page-#{n}" })
+
+    assert_not user.valid?
+    assert user.errors.of_kind?(:nav_favorites, :too_long)
+  end
 end
 
 class UserCurrentLocationTest < ActiveSupport::TestCase

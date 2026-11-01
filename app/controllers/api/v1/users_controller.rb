@@ -124,7 +124,7 @@ module Api
               :discord, :homepage, :youtube, :twitch, :public_hangar_loaners, :hangar_default_sort, :hide_owner,
               :friends_hangar, :friends_hangar_stats, :friends_wishlist,
               :location, :current_system, :current_location_id, :tracking, :show_online_status,
-              :supporter_listed
+              :supporter_listed, nav_favorites: []
             )
           if permitted.delete(:remove_avatar).present?
             @user.avatar.purge if @user.avatar.attached?

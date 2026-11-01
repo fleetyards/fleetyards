@@ -34,12 +34,16 @@ vi.mock("@/frontend/composables/useInstallPrompt", () => ({
     install: vi.fn(),
   }),
 }));
+vi.mock("@/frontend/composables/useFeatures", () => ({
+  useFeatures: () => ({ isFeatureEnabled: () => false }),
+}));
 vi.mock("@vueuse/core", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@vueuse/core")>()),
   useMediaQuery: () => coarsePointer,
 }));
 
 import Navigation from "./index.vue";
+import { NAV_ENTRIES } from "./entries";
 
 // Everything the navigation links to, plus the pages it is asked about.
 const routes = [
@@ -58,9 +62,22 @@ const routes = [
   "stats",
   "login",
   "visual-tests",
-].map((name) => ({ path: `/${name}`, name, component: Stub }));
+  ...NAV_ENTRIES.map((entry) => entry.route).filter((name) => name !== "home"),
+]
+  .filter((name, index, names) => names.indexOf(name) === index)
+  .map((name) => ({ path: `/${name}`, name, component: Stub }));
 
-const mountNavigation = async (routeName: string) => {
+const signedIn = (navFavorites: string[] = []) => ({
+  session: {
+    authenticated: true,
+    currentUser: { id: "user-1", username: "torlek", navFavorites },
+  },
+});
+
+const mountNavigation = async (
+  routeName: string,
+  initialState: Record<string, unknown> = {},
+) => {
   const router = createRouter({
     history: createMemoryHistory(),
     routes: [{ path: "/", name: "home", component: Stub }, ...routes],
@@ -71,7 +88,13 @@ const mountNavigation = async (routeName: string) => {
 
   return mountWithDefaults(Navigation, {
     plugins: [router],
-    initialState: { hangar: { preview: false } },
+    // Expanded, so a section's rows are rendered in place rather than in a
+    // flyout that only exists while it is open.
+    initialState: {
+      hangar: { preview: false },
+      nav: { slim: false },
+      ...initialState,
+    },
   });
 };
 
@@ -109,6 +132,50 @@ describe("Navigation", () => {
   // up next to the settings entry that is actually open.
   it("leaves the hangar unmarked on the hangar settings", async () => {
     expect((await hangarItem("settings-hangar")).props("active")).toBe(false);
+  });
+
+  // The hangar's pages were linked only from the hangar page itself.
+  it("lists the hangar's own pages for a signed-in reader", async () => {
+    const wrapper = await mountNavigation("ships", signedIn());
+
+    for (const key of ["hangar-wishlist", "hangar-stats", "hangar-paints"]) {
+      expect(wrapper.find(`[data-test="nav-${key}"]`).exists()).toBe(true);
+    }
+  });
+
+  it("leaves out a hangar page whose feature is off", async () => {
+    const wrapper = await mountNavigation("ships", signedIn());
+
+    expect(wrapper.find('[data-test="nav-hangar-plans"]').exists()).toBe(false);
+  });
+
+  it("shows no favorites section while nothing is pinned", async () => {
+    const wrapper = await mountNavigation("ships", signedIn());
+
+    expect(wrapper.find('[data-test="nav-favorites-heading"]').exists()).toBe(
+      false,
+    );
+  });
+
+  it("puts the pinned pages at the top, in the order they were pinned", async () => {
+    const wrapper = await mountNavigation(
+      "ships",
+      signedIn(["trade-routes", "hangar-wishlist", "no-such-page"]),
+    );
+
+    expect(wrapper.find('[data-test="nav-favorites-heading"]').exists()).toBe(
+      true,
+    );
+
+    const pinned = wrapper
+      .findAllComponents({ name: "AppNavigationEntryItem" })
+      .map((item) => item.props("entry").key);
+
+    expect(pinned.slice(0, 3)).toEqual([
+      "home",
+      "trade-routes",
+      "hangar-wishlist",
+    ]);
   });
 
   it("offers the install on a touch device", async () => {

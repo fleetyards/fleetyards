@@ -4,6 +4,11 @@
       "cart": "Warenkorb",
       "locations": "Orte",
       "home": "Startseite",
+      "favorites": {
+        "index": "Favoriten",
+        "add": "%{page} zu den Favoriten hinzufügen",
+        "remove": "%{page} aus den Favoriten entfernen"
+      },
       "back": "Zurück",
       "navigation": "Navigation",
       "ships": {
@@ -20,6 +25,9 @@
       "componentHistory": "Historie",
       "hangar": {
         "index": "Mein Hangar",
+        "overview": "Übersicht",
+        "wishlist": "Wunschliste",
+        "stats": "Statistiken",
         "vehicleLoadouts": "Loadouts",
         "inventories": "Inventare",
         "blueprints": "Blaupausen",
@@ -129,6 +137,7 @@
       "rsiHangar": "RSI-Hangar",
       "tools": {
         "index": "Werkzeuge",
+        "overview": "Übersicht",
         "travelTimes": "Reisezeiten",
         "cargoGrids": "Frachtgitter",
         "plaque": "Widmungsplaketten",

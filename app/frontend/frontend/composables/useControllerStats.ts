@@ -18,7 +18,8 @@ function collect(hardpoints: Hardpoint[] | undefined, stats: ControllerStats) {
   for (const hardpoint of hardpoints || []) {
     if (hardpoint.category === HardpointCategoryEnum.CONTROLLER) {
       const typeData = hardpoint.component?.typeData as
-        (ComponentShieldController & ComponentMissileController) | undefined;
+        | (ComponentShieldController & ComponentMissileController)
+        | undefined;
 
       if (typeData?.faceType && !stats.shieldFaceType) {
         stats.shieldFaceType = typeData.faceType;

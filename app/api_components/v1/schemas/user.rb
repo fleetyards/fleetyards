@@ -32,6 +32,7 @@ module V1
           publicHangarLoaners: {type: :boolean},
           publicHangarStats: {type: :boolean},
           hangarDefaultSort: ::V1::Schemas::Enums::NullableVehicleSortEnum,
+          navFavorites: {type: :array, items: {type: :string}},
           publicWishlist: {type: :boolean},
           publicWishlistUrl: {type: :string},
           friendsHangar: {type: :boolean},
@@ -62,7 +63,7 @@ module V1
         },
         additionalProperties: false,
         required: %w[
-          username email dateFormat publicHangar publicHangarLoaners publicHangarStats hangarDefaultSort publicWishlist friendsHangar friendsHangarStats friendsWishlist hideOwner tracking showOnlineStatus supporter maintainer supporterTier supporterRecurring
+          username email dateFormat publicHangar publicHangarLoaners publicHangarStats hangarDefaultSort navFavorites publicWishlist friendsHangar friendsHangarStats friendsWishlist hideOwner tracking showOnlineStatus supporter maintainer supporterTier supporterRecurring
           twoFactorRequired resourceAccess authConnections passwordSetManually oauthOnly placeholderEmail createdAt updatedAt
         ]
       })

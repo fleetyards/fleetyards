@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_29_150000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_01_170000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -3046,6 +3046,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_29_150000) do
     t.integer "rsi_buyback_tokens"
     t.integer "active_week_streak", default: 0, null: false
     t.date "last_active_week"
+    t.string "nav_favorites", default: [], null: false, array: true
     t.index "lower((email)::text)", name: "index_users_on_lower_email"
     t.index "lower((rsi_handle)::text)", name: "index_users_on_verified_rsi_handle", unique: true, where: "rsi_handle_verified"
     t.index "lower((username)::text)", name: "index_users_on_lower_username"

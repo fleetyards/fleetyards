@@ -3,7 +3,10 @@ import { useI18n } from "@/shared/composables/useI18n";
 import type { HardpointStat } from "@/frontend/composables/useHardpointStats";
 
 export type DurabilityGroupKey =
-  "physical" | "damageTaken" | "selfRepair" | "distortion";
+  | "physical"
+  | "damageTaken"
+  | "selfRepair"
+  | "distortion";
 
 export interface DurabilityGroup {
   key: DurabilityGroupKey;

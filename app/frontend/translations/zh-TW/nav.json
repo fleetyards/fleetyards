@@ -4,6 +4,11 @@
       "cart": "購物車",
       "locations": "地點",
       "home": "首頁",
+      "favorites": {
+        "index": "收藏",
+        "add": "將%{page}加入收藏",
+        "remove": "從收藏中移除%{page}"
+      },
       "back": "返回",
       "navigation": "導航",
       "ships": {
@@ -20,6 +25,9 @@
       "componentHistory": "歷史",
       "hangar": {
         "index": "我的機庫",
+        "overview": "概覽",
+        "wishlist": "願望清單",
+        "stats": "統計",
         "vehicleLoadouts": "Loadouts",
         "inventories": "Inventories",
         "blueprints": "藍圖",
@@ -129,6 +137,7 @@
       "rsiHangar": "RSI 機庫",
       "tools": {
         "index": "工具",
+        "overview": "概覽",
         "travelTimes": "旅行時間",
         "cargoGrids": "貨物網格",
         "plaque": "獻詞銘牌",

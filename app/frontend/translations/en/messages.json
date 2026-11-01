@@ -1343,6 +1343,10 @@
           "other": "Added %{count} items to %{inventory}"
         },
         "addToInventoryFailed": "The items could not be added to the inventory."
+      },
+      "navFavorites": {
+        "failure": "Your favorites could not be saved.",
+        "limit": "You can pin up to %{count} pages."
       }
     }
   }

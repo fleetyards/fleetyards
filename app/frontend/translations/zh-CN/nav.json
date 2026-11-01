@@ -4,6 +4,11 @@
       "cart": "购物车",
       "locations": "地点",
       "home": "主页",
+      "favorites": {
+        "index": "收藏",
+        "add": "将%{page}加入收藏",
+        "remove": "从收藏中移除%{page}"
+      },
       "back": "返回",
       "navigation": "导航",
       "ships": {
@@ -20,6 +25,9 @@
       "componentHistory": "历史",
       "hangar": {
         "index": "我的机库",
+        "overview": "概览",
+        "wishlist": "愿望单",
+        "stats": "统计",
         "vehicleLoadouts": "Loadouts",
         "inventories": "Inventories",
         "blueprints": "蓝图",
@@ -129,6 +137,7 @@
       "rsiHangar": "RSI 机库",
       "tools": {
         "index": "工具",
+        "overview": "概览",
         "travelTimes": "旅行时间",
         "cargoGrids": "货物网格",
         "plaque": "献词铭牌",

@@ -504,6 +504,16 @@ class User < ApplicationRecord
   validates :date_format, inclusion: {in: DATE_FORMATS.keys}
   normalizes :hangar_default_sort, with: ->(sort) { sort.presence }
   validates :hangar_default_sort, inclusion: {in: Vehicle::ALLOWED_SORTING_PARAMS}, allow_nil: true
+
+  # The pages a user pinned to the top of the navigation, by the key the
+  # frontend's navigation registry gives them. The backend does not know that
+  # registry, so it only keeps the list in shape: a renamed or removed page
+  # simply stops matching an entry and the frontend leaves it out.
+  NAV_FAVORITES_LIMIT = 20
+  NAV_FAVORITE_KEY_FORMAT = /\A[a-z0-9][a-z0-9-]{0,63}\z/
+  normalizes :nav_favorites, with: ->(keys) { Array(keys).map { |key| key.to_s.strip }.compact_blank.uniq }
+  validates :nav_favorites, length: {maximum: NAV_FAVORITES_LIMIT}
+  validate :nav_favorites_are_keys
   validate :supported_fleet_is_one_of_mine
 
   # The rank is unique per owner, so it breaks the ties any other chosen order
@@ -1013,6 +1023,12 @@ class User < ApplicationRecord
     return if fleet_memberships.kept.accepted.exists?(fleet_id: supported_fleet_id)
 
     errors.add(:supported_fleet, :not_a_fleet_of_the_supporter)
+  end
+
+  private def nav_favorites_are_keys
+    return if nav_favorites.all? { |key| NAV_FAVORITE_KEY_FORMAT.match?(key) }
+
+    errors.add(:nav_favorites, :invalid)
   end
 
   # Runs before the memberships, connections and any fleets this user alone

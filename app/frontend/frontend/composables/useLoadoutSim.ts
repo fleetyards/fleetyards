@@ -240,7 +240,8 @@ function collectPorts(
 ): Collected {
   for (const hardpoint of hardpoints ?? []) {
     const typeData = hardpoint.component?.typeData as
-      Record<string, unknown> | undefined;
+      | Record<string, unknown>
+      | undefined;
     const category = hardpoint.category;
 
     if (typeData && category) {

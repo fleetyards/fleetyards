@@ -4,6 +4,11 @@
       "cart": "Cart",
       "locations": "Locations",
       "home": "Home",
+      "favorites": {
+        "index": "Favorites",
+        "add": "Pin %{page} to favorites",
+        "remove": "Remove %{page} from favorites"
+      },
       "back": "Back",
       "navigation": "Navigation",
       "ships": {
@@ -20,6 +25,9 @@
       "componentHistory": "History",
       "hangar": {
         "index": "My Hangar",
+        "overview": "Overview",
+        "wishlist": "Wishlist",
+        "stats": "Stats",
         "vehicleLoadouts": "Loadouts",
         "inventories": "Inventories",
         "blueprints": "Blueprints",
@@ -129,6 +137,7 @@
       "rsiHangar": "RSI Hangar",
       "tools": {
         "index": "Tools",
+        "overview": "Overview",
         "travelTimes": "Travel Times",
         "cargoGrids": "Cargo Grids",
         "plaque": "Dedication Plaques",

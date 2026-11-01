@@ -4,6 +4,11 @@
       "cart": "Carrello",
       "locations": "Luoghi",
       "home": "Home",
+      "favorites": {
+        "index": "Preferiti",
+        "add": "Aggiungi %{page} ai preferiti",
+        "remove": "Rimuovi %{page} dai preferiti"
+      },
       "back": "Indietro",
       "navigation": "Navigazione",
       "ships": {
@@ -20,6 +25,9 @@
       "componentHistory": "Cronologia",
       "hangar": {
         "index": "Il Mio Hangar",
+        "overview": "Panoramica",
+        "wishlist": "Lista dei desideri",
+        "stats": "Statistiche",
         "vehicleLoadouts": "Loadouts",
         "inventories": "Inventories",
         "blueprints": "Progetti",
@@ -129,6 +137,7 @@
       "rsiHangar": "Hangar RSI",
       "tools": {
         "index": "Strumenti",
+        "overview": "Panoramica",
         "travelTimes": "Tempi di Viaggio",
         "cargoGrids": "Griglie di Carico",
         "plaque": "Targhe di dedica",

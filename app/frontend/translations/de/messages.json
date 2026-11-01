@@ -1339,6 +1339,10 @@
           "other": "%{count} Einträge zu %{inventory} hinzugefügt"
         },
         "addToInventoryFailed": "Die Einträge konnten nicht zum Inventar hinzugefügt werden."
+      },
+      "navFavorites": {
+        "failure": "Deine Favoriten konnten nicht gespeichert werden.",
+        "limit": "Du kannst bis zu %{count} Seiten anheften."
       }
     }
   }

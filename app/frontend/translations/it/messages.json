@@ -1339,6 +1339,10 @@
           "other": "%{count} elementi aggiunti a %{inventory}"
         },
         "addToInventoryFailed": "Non è stato possibile aggiungere gli elementi all'inventario."
+      },
+      "navFavorites": {
+        "failure": "Impossibile salvare i tuoi preferiti.",
+        "limit": "Puoi fissare fino a %{count} pagine."
       }
     }
   }
