@@ -27,6 +27,16 @@ Rails.application.routes.draw do
     match "/uploads/(*path)", to: redirect { |_params, request| "#{Rails.configuration.app.legacy_cdn_endpoint}#{request.fullpath}" }, via: [:get, :head]
   end
 
+  # Feed URLs were once handed out on the frontend host, and calendar clients
+  # keep polling whatever URL they were given.
+  scope constraints: ->(req) { req.subdomain.blank? || %w[admin api docs].exclude?(req.subdomain) },
+    defaults: {format: "ics"} do
+    get "v1/fleets/:fleet_slug/events.ics", to: "api/v1/fleet_calendars#ics",
+      as: :frontend_fleet_calendar_feed, constraints: {format: "ics"}
+    get "v1/me/calendar/events.ics", to: "api/v1/me/calendar_subscriptions#ics",
+      as: :frontend_me_calendar_feed, constraints: {format: "ics"}
+  end
+
   match "404" => "errors#not_found", :via => :all
   match "405" => "errors#method_not_allowed", :via => :all
   match "422" => "errors#unprocessable_entity", :via => :all
