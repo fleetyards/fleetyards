@@ -110,9 +110,9 @@
           "title": "Fleetchart",
           "text": "Line your ships up side by side to scale, and save the chart as an image."
         },
-        "stats": {
-          "title": "Stats",
-          "text": "Roles, manufacturers, sizes and what you have spent, with a CSV export."
+        "pages": {
+          "title": "Hangar pages",
+          "text": "Your stats, wishlist, inventories, blueprints and the items synced from your RSI hangar each have a page in the hangar section of the navigation. Star the ones you use most to pin them to the top."
         },
         "share": {
           "title": "Share your hangar",
@@ -120,23 +120,15 @@
         },
         "menu": {
           "title": "More",
-          "text": "Import or export your hangar and check import history here. On a phone, this menu also holds the wishlist, fleetchart, stats, pledge items and this tour."
+          "text": "Import or export your hangar, check import history and open your RSI hangar here. On a phone, this menu also holds the wishlist, fleetchart and this tour."
         },
         "overview": {
           "title": "Your ship’s own page",
           "text": "Click a ship’s title to open its overview to manage its configuration and visibility, write captain’s log entries and upload a picture. Give an owned ship a dedication plaque and save it as an image. Log entries have their own visibility settings."
         },
-        "pledgeItems": {
-          "title": "More than ships",
-          "text": "Open Paints, Flair or Equipment from this menu to browse the items synced from your RSI hangar. Buy-backs are listed separately and can be synced from their own page."
-        },
         "reset": {
           "title": "After an in-game wipe",
           "text": "Reset in-game ships from this menu: move them all to your wishlist to keep a shopping list, or remove them from your hangar. Pledged ships stay in place."
-        },
-        "inventories": {
-          "title": "Hangar inventories",
-          "text": "Track items at your locations, record deposits and withdrawals, and manage transfers from your hangar inventories."
         },
         "exampleShip": {
           "title": "Example ship",

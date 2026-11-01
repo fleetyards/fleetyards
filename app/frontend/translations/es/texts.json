@@ -110,9 +110,9 @@
           "title": "Fleetchart",
           "text": "Coloca tus naves una junto a otra a escala y guarda el gráfico como imagen."
         },
-        "stats": {
-          "title": "Estadísticas",
-          "text": "Roles, fabricantes, tamaños y lo que has gastado, con exportación CSV."
+        "pages": {
+          "title": "Páginas del hangar",
+          "text": "Tus estadísticas, la lista de deseos, los inventarios, los planos y los objetos sincronizados desde tu hangar RSI tienen cada uno su página en la sección del hangar de la navegación. Marca con una estrella las que más uses para fijarlas arriba."
         },
         "share": {
           "title": "Comparte tu hangar",
@@ -120,23 +120,15 @@
         },
         "menu": {
           "title": "Más",
-          "text": "Importa o exporta tu hangar y consulta el historial de importaciones. En el móvil, este menú también incluye la lista de deseos, el fleetchart, las estadísticas, los objetos de Pledge y esta visita."
+          "text": "Importa o exporta tu hangar, consulta el historial de importaciones y abre tu hangar RSI. En el móvil, este menú también incluye la lista de deseos, el fleetchart y esta visita."
         },
         "overview": {
           "title": "La página de tu nave",
           "text": "Haz clic en el título de la nave para abrir su vista general para gestionar su configuración y visibilidad, escribir en el diario del capitán y subir una imagen. Añade una placa dedicatoria a una nave que poseas y guárdala como imagen. Las entradas del diario tienen sus propios ajustes de visibilidad."
         },
-        "pledgeItems": {
-          "title": "Más que naves",
-          "text": "Abre Pinturas, objetos decorativos o Equipo desde este menú para ver los objetos sincronizados desde tu hangar RSI. Las recompras se muestran por separado y se sincronizan desde su propia página."
-        },
         "reset": {
           "title": "Tras un reinicio del juego",
           "text": "Restablece aquí las naves compradas en el juego: muévelas todas a tu lista de deseos como lista de compras o elimínalas del hangar. Las naves compradas con dinero real se conservan."
-        },
-        "inventories": {
-          "title": "Inventarios del hangar",
-          "text": "Controla los objetos en tus ubicaciones, registra depósitos y retiradas y gestiona transferencias desde los inventarios del hangar."
         },
         "exampleShip": {
           "title": "Nave de ejemplo",

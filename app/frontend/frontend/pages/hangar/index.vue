@@ -39,7 +39,6 @@ import Paginator from "@/shared/components/Paginator/index.vue";
 import {
   type HangarGroupMetric,
   type HangarGroupPublic,
-  FeatureFlagName,
   HangarGroup,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -53,7 +52,6 @@ import rsiLogo from "@/images/rsi_logo.png";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { useHangarFilters } from "@/frontend/composables/useHangarFilters";
-import { useFeatures } from "@/frontend/composables/useFeatures";
 import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { useSubscription } from "@/shared/composables/useSubscription";
 import { HangarChannel } from "@/services/fyCable/channels/HangarChannel";
@@ -82,8 +80,6 @@ const deleting = ref(false);
 const highlightedGroup = ref<string>("");
 
 const mobile = useMobile();
-
-const { isFeatureEnabled } = useFeatures();
 
 const sessionStore = useSessionStore();
 
@@ -387,41 +383,6 @@ useTourAutostart({
   start: openGuide,
 });
 
-// Pages next to the hangar rather than actions on its list, so they sit with
-// the page's own buttons, not in the toolbar's menu.
-const pledgeItemPages = [
-  {
-    route: "hangar-paints",
-    icon: "fa-light fa-paint-roller",
-    label: "nav.hangar.paints",
-  },
-  {
-    route: "hangar-flair",
-    icon: "fa-light fa-trophy-star",
-    label: "nav.hangar.flair",
-  },
-  {
-    route: "hangar-equipment",
-    icon: "fa-light fa-shirt",
-    label: "nav.hangar.equipment",
-  },
-  {
-    route: "hangar-ship-components",
-    icon: "fa-light fa-microchip",
-    label: "nav.hangar.shipComponents",
-  },
-  {
-    route: "hangar-upgrades",
-    icon: "fa-light fa-arrow-up",
-    label: "nav.hangar.upgrades",
-  },
-  {
-    route: "hangar-buybacks",
-    icon: "fa-light fa-rotate-left",
-    label: "nav.hangar.buybacks",
-  },
-];
-
 const RSI_PLEDGES_URL = "https://robertsspaceindustries.com/account/pledges";
 
 const openDisplayOptionsModal = () => {
@@ -533,72 +494,6 @@ const { activeFilters } = useShipFilterSummary(() =>
       {{ t("labels.fleetchart") }}
     </Btn>
 
-    <BtnDropdown
-      :size="BtnSizesEnum.MD"
-      data-tour="hangar-assets"
-      data-test="hangar-assets-menu"
-    >
-      <template #label>
-        <i class="fa-duotone fa-layer-group" />
-        {{ t("nav.hangar.assets") }}
-        <i class="fa-light fa-chevron-down" />
-      </template>
-      <Btn
-        :to="{ name: 'hangar-blueprints' }"
-        data-test="hangar-blueprints-link"
-      >
-        <i class="fa-duotone fa-notes" />
-        <span>{{ t("nav.hangar.blueprints") }}</span>
-      </Btn>
-      <Btn :to="{ name: 'hangar-inventories' }">
-        <i class="fa-duotone fa-boxes-stacked" />
-        <span>{{ t("nav.hangar.inventories") }}</span>
-      </Btn>
-    </BtnDropdown>
-
-    <Btn
-      v-if="isFeatureEnabled(FeatureFlagName.HANGAR_PLANNER)"
-      :size="BtnSizesEnum.MD"
-      :to="{ name: 'hangar-plans' }"
-      data-test="hangar-plans-link"
-    >
-      <i class="fa-duotone fa-compass-drafting" />
-      {{ t("nav.hangar.plans") }}
-    </Btn>
-
-    <BtnDropdown :size="BtnSizesEnum.MD" data-tour="hangar-pledge-items">
-      <template #label>
-        <i class="fa-duotone fa-box-open" />
-        {{ t("nav.hangar.pledgeItems") }}
-        <i class="fa-light fa-chevron-down" />
-      </template>
-      <Btn
-        v-for="item in pledgeItemPages"
-        :key="item.route"
-        :to="{ name: item.route }"
-      >
-        <i :class="item.icon" />
-        <span>{{ t(item.label) }}</span>
-      </Btn>
-
-      <hr />
-
-      <Btn :href="RSI_PLEDGES_URL" target="_blank">
-        <img :src="rsiLogo" />
-        <span>{{ t("nav.rsiHangar") }}</span>
-      </Btn>
-    </BtnDropdown>
-
-    <Btn
-      v-tooltip="t('labels.hangarStats')"
-      :size="BtnSizesEnum.MD"
-      :to="{ name: 'hangar-stats' }"
-      :aria-label="t('labels.hangarStats')"
-      data-tour="hangar-stats"
-    >
-      <i class="fa-light fa-chart-bar" />
-    </Btn>
-
     <Btn
       v-tooltip="t('actions.showGuide')"
       :size="BtnSizesEnum.MD"
@@ -654,48 +549,9 @@ const { activeFilters } = useShipFilterSummary(() =>
               <span>{{ t("labels.wishlist") }}</span>
             </Btn>
 
-            <Btn :to="{ name: 'hangar-inventories' }">
-              <i class="fa-duotone fa-boxes-stacked" />
-              <span>{{ t("labels.hangarInventories") }}</span>
-            </Btn>
-
-            <Btn :to="{ name: 'hangar-blueprints' }">
-              <i class="fa-duotone fa-notes" />
-              <span>{{ t("nav.hangar.blueprints") }}</span>
-            </Btn>
-
-            <Btn
-              v-if="isFeatureEnabled(FeatureFlagName.HANGAR_PLANNER)"
-              :to="{ name: 'hangar-plans' }"
-            >
-              <i class="fa-duotone fa-compass-drafting" />
-              <span>{{ t("nav.hangar.plans") }}</span>
-            </Btn>
-
             <Btn data-test="fleetchart-link" @click="toggleFleetchart">
               <DuotoneGlyph :glyph="SHIP_GLYPH" />
               <span>{{ t("labels.fleetchart") }}</span>
-            </Btn>
-
-            <Btn :to="{ name: 'hangar-stats' }">
-              <i class="fa-duotone fa-chart-bar" />
-              <span>{{ t("labels.hangarStats") }}</span>
-            </Btn>
-
-            <hr />
-
-            <Btn
-              v-for="item in pledgeItemPages"
-              :key="item.route"
-              :to="{ name: item.route }"
-            >
-              <i :class="item.icon" />
-              <span>{{ t(item.label) }}</span>
-            </Btn>
-
-            <Btn :href="RSI_PLEDGES_URL" target="_blank">
-              <img :src="rsiLogo" />
-              <span>{{ t("nav.rsiHangar") }}</span>
             </Btn>
 
             <hr />
@@ -723,6 +579,11 @@ const { activeFilters } = useShipFilterSummary(() =>
           >
             <i class="fa-light fa-clock-rotate-left" />
             <span>{{ t("nav.hangar.imports") }}</span>
+          </Btn>
+
+          <Btn :href="RSI_PLEDGES_URL" target="_blank">
+            <img :src="rsiLogo" />
+            <span>{{ t("nav.rsiHangar") }}</span>
           </Btn>
 
           <hr />

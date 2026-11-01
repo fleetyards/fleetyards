@@ -65,27 +65,13 @@ const steps = computed<TourStep[]>(() => [
     target: '[data-tour="hangar-fleetchart"]',
     requiresTarget: true,
   }),
-  step("stats", {
-    target: '[data-tour="hangar-stats"]',
-    requiresTarget: true,
-  }),
-  step("inventories", {
-    target: mobile.value
-      ? '[data-tour="hangar-menu"]'
-      : '[data-tour="hangar-assets"]',
-    placement: "left",
+  // The sidebar is a closed drawer on a phone, so there is nothing to point at.
+  step("pages", {
+    target: mobile.value ? undefined : '[data-test="nav-hangar-menu"]',
+    placement: "right",
   }),
   step("share", {
     target: '[data-tour="hangar-share"]',
-  }),
-  // A header button on a desktop; on a phone the header's buttons all move
-  // into the page's menu.
-  step("pledgeItems", {
-    target: mobile.value
-      ? '[data-tour="hangar-menu"]'
-      : '[data-tour="hangar-pledge-items"]',
-    placement: "left",
-    requiresTarget: true,
   }),
   step("reset", {
     target: '[data-tour="hangar-menu"]',
