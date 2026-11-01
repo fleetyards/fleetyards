@@ -19,7 +19,10 @@ const { holoModel, fallBackToPlainHolo } = useItemHolo(() => props.media);
 </script>
 
 <template>
+  <!-- Keyed by the holo, so the plain one gets a fresh viewer instead of the
+       one the textured holo lost its WebGL context in. -->
   <HoloViewerModal
+    :key="holoModel?.path"
     :models="holoModel ? [holoModel] : []"
     :grid="false"
     @unavailable="fallBackToPlainHolo"
