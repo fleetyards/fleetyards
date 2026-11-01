@@ -60,6 +60,10 @@ en:
     fleet_subscription_ended_in_error:
       title: "Sorry — %{fleet} did not lose its fleet features"
       body: "The notice from %{date} that %{fleet} had lost its fleet features was sent by mistake: the donation supporting it was still active. The bug behind it is fixed, and there is nothing you need to do."
+    supporter_coverage_ending:
+      title: "Your donation perks end on %{date}"
+      body: "Your one-time donation's supporter perks end on %{date}. Don't lose them — switch to a monthly donation to keep them."
+      body_with_fleet: "Your one-time donation's supporter perks and %{fleet}'s fleet features end on %{date}. Don't lose them — switch to a monthly donation to keep them."
     fleet_rsi_verification_lost:
       title: "%{fleet} is no longer verified for %{sid}"
       body: "Another fleet proved it runs the RSI organisation %{sid} by putting its verification token on the org's page. Your fleet no longer shows the SID as verified. If %{sid} is your organisation, verify it again from the fleet settings."

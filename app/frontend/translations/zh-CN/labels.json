@@ -3845,6 +3845,7 @@
         "fleet_contract_crew_answered": "合约成员申请已处理",
         "fleet_subscription_started": "已获得舰队功能",
         "fleet_subscription_ended": "已失去舰队功能",
+        "supporter_coverage_ending": "支持者权益即将结束",
         "fleet_fid_claim_opened": "舰队 ID 被申领",
         "fleet_fid_claim_completed": "舰队 ID 已转移",
         "fleet_fid_claim_cancelled": "舰队 ID 申领已结束",
