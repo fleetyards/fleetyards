@@ -24,8 +24,8 @@ import {
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
-  DATETIME_LOCAL_FORMAT,
   TIMEZONE_OPTIONS,
+  addHoursInZone,
   isoToWallClock,
   wallClockToIso,
 } from "@/shared/utils/Timezones";
@@ -33,7 +33,6 @@ import {
   useRecurrence,
   WEEKDAYS_MONDAY_FIRST,
 } from "@/frontend/composables/useRecurrence";
-import { format } from "date-fns";
 
 type Props = {
   fleet: Fleet;
@@ -178,25 +177,22 @@ const timezoneOptions = computed<FilterOption[]>(() => {
   return base;
 });
 
-const addHours = (value: string, hours: number) => {
-  if (!value) return "";
-  const parsed = new Date(value);
-  if (isNaN(parsed.getTime())) return "";
-  parsed.setHours(parsed.getHours() + hours);
-  return format(parsed, DATETIME_LOCAL_FORMAT);
-};
-
 // An end nobody has moved follows the start; once it has been set by hand it
 // stops following, so editing the start does not overwrite a deliberate end.
 let endsAtTouched = !!props.event.endsAt;
 watch(endsAt, (newValue) => {
   const start = startsAt.value as string;
   if (!start || !newValue) return;
-  if (newValue !== addHours(start, 2)) endsAtTouched = true;
+  if (newValue !== addHoursInZone(start, 2, timezone.value as string))
+    endsAtTouched = true;
 });
 watch(startsAt, (newStart) => {
   if (!newStart || endsAtTouched) return;
-  endsAt.value = addHours(newStart as string, 2) as never;
+  endsAt.value = addHoursInZone(
+    newStart as string,
+    2,
+    timezone.value as string,
+  ) as never;
 });
 
 // vee-validate hands back wall-clock strings, read in the event's zone.

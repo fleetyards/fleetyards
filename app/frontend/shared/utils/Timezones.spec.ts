@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  addHoursInZone,
   formatInZone,
   isoToWallClock,
   organiserTimeHint,
@@ -66,6 +67,25 @@ describe("formatInZone", () => {
     expect(
       formatInZone("2026-11-05T01:00:00.000Z", "America/New_York", "HH:mm"),
     ).toBe("20:00");
+  });
+});
+
+describe("addHoursInZone", () => {
+  it("adds hours in the event's zone, whatever the browser's DST does", () => {
+    expect(addHoursInZone("2026-03-29T01:30", 2, "America/New_York")).toBe(
+      "2026-03-29T03:30",
+    );
+  });
+
+  it("keeps a real span across the event zone's own DST change", () => {
+    expect(addHoursInZone("2026-03-29T01:30", 2, "Europe/Berlin")).toBe(
+      "2026-03-29T04:30",
+    );
+  });
+
+  it("is empty for an empty or invalid value", () => {
+    expect(addHoursInZone("", 2, "UTC")).toBe("");
+    expect(addHoursInZone("nope", 2, "UTC")).toBe("");
   });
 });
 

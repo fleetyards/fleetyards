@@ -52,6 +52,20 @@ export const isoToWallClock = (
   zone: string | null | undefined,
 ): string => formatInZone(iso, zone, DATETIME_LOCAL_FORMAT);
 
+// A `datetime-local` value `hours` later, both read as wall clocks in `zone`.
+// Going through the instant keeps the span real across either the event zone's
+// or the browser's DST change.
+export const addHoursInZone = (
+  value: string | null | undefined,
+  hours: number,
+  zone: string | null | undefined,
+): string => {
+  const iso = wallClockToIso(value, zone);
+  if (!iso) return "";
+  const later = new Date(new Date(iso).getTime() + hours * 3_600_000);
+  return isoToWallClock(later.toISOString(), zone);
+};
+
 // The browser's own zone, for labelling times shown in it.
 export const browserTimezone = (): string =>
   Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
