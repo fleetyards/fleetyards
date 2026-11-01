@@ -57,9 +57,14 @@ module Kofi
       record = Kofi::PaymentImporter.call(payload("is_subscription_payment" => "true"))
 
       assert_not record.recurring?
+      assert record.kofi_subscription?
       assert_nil record.ended_at
       assert_includes SupporterContribution.active_in(Date.new(2026, 6, 1), Date.new(2026, 6, 30)), record
       assert_not_includes SupporterContribution.active_in(Date.new(2026, 7, 1), Date.new(2026, 7, 31)), record
+    end
+
+    test "a one-off payment is not marked as a subscription" do
+      assert_not Kofi::PaymentImporter.call(payload).kofi_subscription?
     end
 
     test "a replayed webhook updates the same row rather than duplicating it" do

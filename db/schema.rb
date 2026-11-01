@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_29_150000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_01_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2837,6 +2837,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_29_150000) do
     t.uuid "user_id"
     t.string "payer_email"
     t.string "kofi_transaction_id"
+    t.boolean "kofi_subscription", default: false, null: false
     t.string "patreon_user_id"
     t.string "claim_key"
     t.string "linked_via"
