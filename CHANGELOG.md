@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.31.0](https://github.com/fleetyards/fleetyards/compare/v9.30.0...v9.31.0) (2026-10-31)
+
+
+### Features
+
+* **discord:** show the event's cover in its announcement post ([#6069](https://github.com/fleetyards/fleetyards/issues/6069)) ([f5db7c4](https://github.com/fleetyards/fleetyards/commit/f5db7c4ef26fd1418f9f7f8305a06d28e8a54b05))
+* **missions:** filter, sort and link missions by star system ([#6071](https://github.com/fleetyards/fleetyards/issues/6071)) ([12cc422](https://github.com/fleetyards/fleetyards/commit/12cc4226806bf4f7758b5090f47af653f8f58342))
+
 ## [9.30.0](https://github.com/fleetyards/fleetyards/compare/v9.29.1...v9.30.0) (2026-10-31)
 
 
