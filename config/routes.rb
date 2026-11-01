@@ -28,14 +28,14 @@ Rails.application.routes.draw do
   end
 
   # Feed URLs were once handed out on the frontend host, and calendar clients
-  # keep polling whatever URL they were given.
-  scope constraints: ->(req) { req.subdomain.blank? || %w[admin api docs].exclude?(req.subdomain) },
-    defaults: {format: "ics"} do
-    get "v1/fleets/:fleet_slug/events.ics", to: "api/v1/fleet_calendars#ics",
-      as: :frontend_fleet_calendar_feed, constraints: {format: "ics"}
-    get "v1/me/calendar/events.ics", to: "api/v1/me/calendar_subscriptions#ics",
-      as: :frontend_me_calendar_feed, constraints: {format: "ics"}
+  # keep polling whatever URL they were given. Redirected rather than served so
+  # the API host's throttle still applies.
+  calendar_feed_redirect = redirect(status: 301) do |_params, req|
+    path = req.path.delete_prefix("/v1").chomp("/")
+    [API_ENDPOINT + path, req.query_string.presence].compact.join("?")
   end
+  get "v1/fleets/:fleet_slug/events.ics", to: calendar_feed_redirect, format: false
+  get "v1/me/calendar/events.ics", to: calendar_feed_redirect, format: false
 
   match "404" => "errors#not_found", :via => :all
   match "405" => "errors#method_not_allowed", :via => :all
