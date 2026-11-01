@@ -204,6 +204,25 @@ describe("FleetEventEditSchedulePage times", () => {
     expect(data.endsAt).toBe("2026-11-01T06:30:00.000Z");
   });
 
+  // Typed by hand, 01:30 that night reads as its first occurrence, even though
+  // the two-hour default would read the same.
+  it("saves a typed end in a repeated DST hour as typed", async () => {
+    const subject = await mount(
+      series({
+        recurring: false,
+        startsAt: "2026-11-01T04:30:00Z",
+        endsAt: undefined,
+        timezone: "America/New_York",
+      }),
+    );
+
+    const endField = subject.findAllComponents(FormDateTime)[1];
+    endField.vm.$emit("update:modelValue", "2026-11-01T01:30");
+    await flushPromises();
+
+    expect((await save(subject)).endsAt).toBe("2026-11-01T05:30:00.000Z");
+  });
+
   // 01:30 happens twice in New York on 1 November 2026. An untouched field
   // must not be re-resolved onto the other one.
   it("keeps an unchanged time in a repeated DST hour", async () => {

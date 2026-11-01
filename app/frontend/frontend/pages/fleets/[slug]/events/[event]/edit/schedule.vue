@@ -180,22 +180,20 @@ const DEFAULT_DURATION_HOURS = 2;
 const DEFAULT_DURATION_MS = DEFAULT_DURATION_HOURS * 3_600_000;
 
 let endsAtTouched = !!props.event.endsAt;
+// The end the form filled in itself. Any other value was typed, even one that
+// reads the same as start + 2h.
+let defaultEnd: string | null = null;
 watch(endsAt, (newValue) => {
-  const start = startsAt.value as string;
-  if (!start || !newValue) return;
-  if (
-    newValue !==
-    addHoursInZone(start, DEFAULT_DURATION_HOURS, timezone.value as string)
-  )
-    endsAtTouched = true;
+  if (newValue && newValue !== defaultEnd) endsAtTouched = true;
 });
 watch(startsAt, (newStart) => {
   if (!newStart || endsAtTouched) return;
-  endsAt.value = addHoursInZone(
+  defaultEnd = addHoursInZone(
     newStart as string,
     DEFAULT_DURATION_HOURS,
     timezone.value as string,
-  ) as never;
+  );
+  endsAt.value = defaultEnd as never;
 });
 
 // vee-validate hands back wall-clock strings, read in the event's zone.
@@ -212,14 +210,7 @@ const wrapHandleSubmit = (cb: SubmissionHandler<FleetEventUpdateInput>) =>
     // in a repeated DST hour its wall clock names two instants, and reading it
     // back could pick the one an hour early.
     const followsStart =
-      !endsAtTouched &&
-      !!start &&
-      values.endsAt ===
-        addHoursInZone(
-          values.startsAt as string,
-          DEFAULT_DURATION_HOURS,
-          values.timezone,
-        );
+      !endsAtTouched && !!start && !!defaultEnd && values.endsAt === defaultEnd;
     return cb(
       {
         ...values,
