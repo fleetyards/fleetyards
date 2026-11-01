@@ -20,11 +20,8 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 
-const route = useRoute();
-
 // The full screen viewer of the item page, as a page of its own the way the
-// ship viewer is, so it can be linked to; `?textured=1` opens the textured
-// holo the item page was showing.
+// ship viewer is, so it can be linked to.
 useHoloViewerPage({
   title: () => t("title.itemViewer", { name: props.name }),
   backRoute: () => props.backRoute,
@@ -34,10 +31,7 @@ useHoloViewerPage({
           component: () =>
             import("@/frontend/components/ItemHoloModal/index.vue"),
           fullscreen: true,
-          props: {
-            media: props.media,
-            textured: route.query.textured === "1",
-          },
+          props: { media: props.media },
         }
       : undefined,
 });

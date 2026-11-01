@@ -6,12 +6,6 @@ const device = vi.hoisted(() => ({
   mobile: false,
   lowPower: false,
   texturedHolo: true,
-  query: {} as Record<string, string>,
-}));
-
-vi.mock("vue-router", async (importOriginal) => ({
-  ...(await importOriginal<typeof import("vue-router")>()),
-  useRoute: () => ({ query: device.query }),
 }));
 
 vi.mock("@/shared/composables/useI18n", () => ({
@@ -91,32 +85,19 @@ describe("ItemHero", () => {
     expect(wrapper.find("[data-test='item-image']").exists()).toBe(false);
   });
 
-  it("links full screen to the viewer page, with the textured holo if shown", async () => {
+  it("links full screen to the viewer page", () => {
     const wrapper = mountHero({
       holo: file("holo.glb"),
       holoTextured: file("holo_textured.glb"),
     });
-    const fullscreen = () =>
+
+    expect(
       JSON.parse(
         wrapper
           .find("[data-test='item-image-fullscreen']")
           .attributes("data-to")!,
-      );
-
-    expect(fullscreen()).toEqual({
-      name: "equipment-item-viewer",
-      params: { slug: "p4-ar" },
-    });
-
-    await wrapper
-      .find("[data-test='item-image-holo-textured']")
-      .trigger("click");
-
-    expect(fullscreen()).toEqual({
-      name: "equipment-item-viewer",
-      params: { slug: "p4-ar" },
-      query: { textured: "1" },
-    });
+      ),
+    ).toEqual({ name: "equipment-item-viewer", params: { slug: "p4-ar" } });
   });
 
   it("falls back to the picture when the holo cannot be shown", async () => {
@@ -154,36 +135,23 @@ describe("ItemHero", () => {
     expect(wrapper.find("[data-test='item-image-holo']").exists()).toBe(false);
   });
 
-  it("switches the holo to the textured one and back", async () => {
+  it("shows the textured holo, with no switch", () => {
     const wrapper = mountHero({
       holo: file("holo.glb"),
       holoTextured: file("holo_textured.glb"),
     });
-    const toggle = wrapper.find("[data-test='item-image-holo-textured']");
-    const models = () =>
-      wrapper.findComponent({ name: "HoloViewer" }).props("models");
 
-    expect(models()).toEqual([
-      expect.objectContaining({
-        path: "https://example.test/holo.glb",
-        textured: false,
-      }),
-    ]);
-
-    await toggle.trigger("click");
-
-    expect(models()).toEqual([
+    expect(
+      wrapper.findComponent({ name: "HoloViewer" }).props("models"),
+    ).toEqual([
       expect.objectContaining({
         path: "https://example.test/holo_textured.glb",
         textured: true,
       }),
     ]);
-
-    await toggle.trigger("click");
-
-    expect(models()).toEqual([
-      expect.objectContaining({ path: "https://example.test/holo.glb" }),
-    ]);
+    expect(
+      wrapper.find("[data-test='item-image-holo-textured']").exists(),
+    ).toBe(false);
   });
 
   it("falls back to the plain holo when the textured one cannot be shown", async () => {
@@ -194,9 +162,7 @@ describe("ItemHero", () => {
     });
     const viewer = () => wrapper.findComponent({ name: "HoloViewer" });
 
-    await wrapper
-      .find("[data-test='item-image-holo-textured']")
-      .trigger("click");
+    await flushPromises();
     viewer().vm.$emit("unavailable");
     await nextTick();
 
@@ -206,28 +172,15 @@ describe("ItemHero", () => {
     expect(wrapper.find("[data-test='item-image']").exists()).toBe(false);
   });
 
-  it("comes back from full screen on the textured holo", () => {
-    device.query = { textured: "1" };
-    const wrapper = mountHero({
-      holo: file("holo.glb"),
-      holoTextured: file("holo_textured.glb"),
-    });
-    device.query = {};
-
-    expect(
-      wrapper.findComponent({ name: "HoloViewer" }).props("models"),
-    ).toEqual([expect.objectContaining({ textured: true })]);
-  });
-
-  it("leaves the switch out without a textured holo", () => {
+  it("shows the plain holo without a textured one", () => {
     const wrapper = mountHero({ holo: file("holo.glb") });
 
     expect(
-      wrapper.find("[data-test='item-image-holo-textured']").exists(),
-    ).toBe(false);
+      wrapper.findComponent({ name: "HoloViewer" }).props("models"),
+    ).toEqual([expect.objectContaining({ textured: false })]);
   });
 
-  it("leaves the switch out on a low-power device for a large textured holo", () => {
+  it("keeps a low-power device on the plain holo for a large textured one", () => {
     const wrapper = mountHero(
       {
         holo: file("holo.glb"),
@@ -237,19 +190,20 @@ describe("ItemHero", () => {
     );
 
     expect(
-      wrapper.find("[data-test='item-image-holo-textured']").exists(),
-    ).toBe(false);
+      wrapper.findComponent({ name: "HoloViewer" }).props("models"),
+    ).toEqual([
+      expect.objectContaining({ path: "https://example.test/holo.glb" }),
+    ]);
   });
 
-  it("starts the next item on its plain holo", async () => {
+  it("tries the next item's textured holo after one failed", async () => {
     const wrapper = mountHero({
       holo: file("holo.glb"),
       holoTextured: file("holo_textured.glb"),
     });
+    await flushPromises();
 
-    await wrapper
-      .find("[data-test='item-image-holo-textured']")
-      .trigger("click");
+    wrapper.findComponent({ name: "HoloViewer" }).vm.$emit("unavailable");
     await wrapper.setProps({
       holo: file("other.glb"),
       holoTextured: file("other_textured.glb"),
@@ -258,19 +212,21 @@ describe("ItemHero", () => {
     expect(
       wrapper.findComponent({ name: "HoloViewer" }).props("models"),
     ).toEqual([
-      expect.objectContaining({ path: "https://example.test/other.glb" }),
+      expect.objectContaining({
+        path: "https://example.test/other_textured.glb",
+      }),
     ]);
   });
 
-  it("leaves the switch out while the flag is off", () => {
+  it("shows the plain holo while the flag is off", () => {
     const wrapper = mountHero(
       { holo: file("holo.glb"), holoTextured: file("holo_textured.glb") },
       { texturedHolo: false },
     );
 
     expect(
-      wrapper.find("[data-test='item-image-holo-textured']").exists(),
-    ).toBe(false);
+      wrapper.findComponent({ name: "HoloViewer" }).props("models"),
+    ).toEqual([expect.objectContaining({ textured: false })]);
   });
 
   it("renders nothing without a picture or a holo", () => {

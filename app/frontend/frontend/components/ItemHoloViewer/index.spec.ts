@@ -66,26 +66,17 @@ describe("ItemHoloViewer", () => {
       "open-modal",
       expect.objectContaining({ fullscreen: true }),
     );
-    expect(opened()).toEqual({ media: holos, textured: false });
+    expect(opened()).toEqual({ media: holos });
   });
 
-  it("opens on the textured holo when the link asks for it", () => {
-    state.route.query = { textured: "1" };
-
+  it("goes back to the item however it closes", () => {
     mountViewer(holos);
-
-    expect(opened()).toEqual(expect.objectContaining({ textured: true }));
-  });
-
-  it("goes back to the item, on the holo it was left on, however it closes", () => {
-    mountViewer(holos);
-    state.route.query = { textured: "1" };
 
     state.listeners["modal-closed"]();
 
     expect(state.replace).toHaveBeenCalledWith({
       ...backRoute,
-      query: { textured: "1", paint: undefined },
+      query: undefined,
     });
   });
 

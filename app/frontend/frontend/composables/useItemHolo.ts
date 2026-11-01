@@ -7,39 +7,28 @@ type Holos = {
 };
 
 type Options = {
-  textured?: boolean;
   // Whether the textured holo may be loaded where it is shown.
   canLoad?: (file: MediaFile) => boolean;
 };
 
-// The holo a component or piece of equipment is shown by: the plain one, or
-// its painted export.
+// The holo a component or piece of equipment is shown by: its painted export
+// where there is one that loads, the plain one otherwise.
 export const useItemHolo = (
   holos: MaybeRefOrGetter<Holos>,
-  { textured = false, canLoad = () => true }: Options = {},
+  { canLoad = () => true }: Options = {},
 ) => {
   const { isFeatureEnabled } = useFeatures();
 
-  const texturedHoloAvailable = computed(() => {
-    const { holo, holoTextured } = toValue(holos);
+  const failedTexturedUrl = ref<string>();
 
-    return (
+  const holoModel = computed(() => {
+    const { holo, holoTextured } = toValue(holos);
+    const isTextured =
       isFeatureEnabled(FeatureFlagName.ITEM_HOLO_TEXTURED) &&
       !!holo?.url &&
       !!holoTextured?.url &&
-      canLoad(holoTextured)
-    );
-  });
-
-  const texturedHolo = ref(textured);
-
-  const toggleTexturedHolo = () => {
-    texturedHolo.value = !texturedHolo.value;
-  };
-
-  const holoModel = computed(() => {
-    const isTextured = texturedHoloAvailable.value && texturedHolo.value;
-    const { holo, holoTextured } = toValue(holos);
+      canLoad(holoTextured) &&
+      holoTextured.url !== failedTexturedUrl.value;
     const file = isTextured ? holoTextured : holo;
 
     return file?.url
@@ -47,5 +36,15 @@ export const useItemHolo = (
       : undefined;
   });
 
-  return { texturedHolo, texturedHoloAvailable, toggleTexturedHolo, holoModel };
+  // Falls back to the plain holo, and says whether there was one to fall back
+  // from.
+  const fallBackToPlainHolo = () => {
+    if (!holoModel.value?.textured) return false;
+
+    failedTexturedUrl.value = holoModel.value.path;
+
+    return true;
+  };
+
+  return { holoModel, fallBackToPlainHolo };
 };
