@@ -48,7 +48,11 @@ import { useRecurrence } from "@/frontend/composables/useRecurrence";
 import { checkAccess } from "@/shared/utils/Access";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { FeatureFlagName } from "@/services/fyApi";
-import { format, parseISO } from "date-fns";
+import {
+  browserTimezone,
+  formatInZone,
+  organiserTimeHint,
+} from "@/shared/utils/Timezones";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useFleetEventListContextStore } from "@/frontend/stores/fleetEventListContext";
 
@@ -224,23 +228,35 @@ const yourSignupContextLabel = computed(() => {
   return parts.join(" · ");
 });
 
+// Each reader sees the event at their own clock; the organiser's time is a
+// hint beside it, for the reader coordinating with people in that zone.
+const EVENT_TIME_FORMAT = "EEE, MMM d, yyyy · HH:mm";
+
 const startDate = computed(() => {
   if (!event.value) return "";
-  try {
-    return format(parseISO(event.value.startsAt), "EEE, MMM d, yyyy · HH:mm");
-  } catch {
-    return event.value.startsAt;
-  }
+  return (
+    formatInZone(event.value.startsAt, browserTimezone(), EVENT_TIME_FORMAT) ||
+    event.value.startsAt
+  );
 });
 
 const endDate = computed(() => {
   if (!event.value?.endsAt) return null;
-  try {
-    return format(parseISO(event.value.endsAt), "EEE, MMM d, yyyy · HH:mm");
-  } catch {
-    return event.value.endsAt;
-  }
+  return (
+    formatInZone(event.value.endsAt, browserTimezone(), EVENT_TIME_FORMAT) ||
+    event.value.endsAt
+  );
 });
+
+const organiserTime = computed(() =>
+  event.value
+    ? organiserTimeHint(
+        event.value.startsAt,
+        event.value.endsAt,
+        event.value.timezone,
+      )
+    : null,
+);
 
 const signupsLocked = computed(
   () =>
@@ -576,8 +592,12 @@ const crumbs = computed<Crumb[]>(() => [
               <div class="metrics-card__row__value">
                 {{ startDate }}
                 <template v-if="endDate"> — {{ endDate }}</template>
-                <span v-if="event.timezone" class="event-hero__tz">
-                  ({{ event.timezone }})
+                <span
+                  v-if="organiserTime"
+                  class="event-hero__tz"
+                  data-test="event-organiser-time"
+                >
+                  ({{ organiserTime }})
                 </span>
               </div>
             </div>

@@ -12,6 +12,7 @@ import {
 import { defineRule } from "vee-validate";
 import { between, required } from "@vee-validate/rules";
 import FormDateTime from "@/shared/components/base/FormDateTime/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import { type Fleet, type FleetEventExtended } from "@/services/fyApi";
 import Component from "./schedule.vue";
 
@@ -126,6 +127,20 @@ describe("FleetEventEditSchedulePage recurrence", () => {
     expect((await save(subject)).recurrenceWeekdays).toEqual([3, 4]);
   });
 
+  // An unknown zone is read as UTC when the times are converted, so the start
+  // day must be taken in UTC too, not in the browser's zone.
+  it("takes the start day in UTC for a zone the browser cannot resolve", async () => {
+    const subject = await mount(
+      series({
+        startsAt: "2026-10-06T23:30:00Z",
+        timezone: "Foo/Bar",
+        recurrenceWeekdays: [2],
+      }),
+    );
+
+    expect(chip(subject, 2).attributes("disabled")).toBeDefined();
+  });
+
   it("hides the weekdays for a series that is not weekly", async () => {
     const subject = await mount(
       series({ recurrenceInterval: "monthly", recurrenceWeekdays: [] }),
@@ -135,5 +150,119 @@ describe("FleetEventEditSchedulePage recurrence", () => {
       false,
     );
     expect((await save(subject)).recurrenceWeekdays).toEqual([]);
+  });
+});
+
+describe("FleetEventEditSchedulePage times", () => {
+  // The browser running the specs may sit in any zone; these hold in all of
+  // them because the inputs follow the event's zone, not the browser's.
+  it("shows the start as the wall clock in the event's zone", async () => {
+    const subject = await mount(
+      series({
+        recurring: false,
+        startsAt: "2026-11-05T01:00:00Z",
+        timezone: "America/New_York",
+      }),
+    );
+
+    const startField = subject.findAllComponents(FormDateTime)[0];
+    expect(startField.props("modelValue")).toBe("2026-11-04T20:00");
+  });
+
+  it("saves a typed time in the event's zone", async () => {
+    const subject = await mount(
+      series({
+        recurring: false,
+        startsAt: "2026-11-05T01:00:00Z",
+        timezone: "America/New_York",
+      }),
+    );
+
+    const startField = subject.findAllComponents(FormDateTime)[0];
+    startField.vm.$emit("update:modelValue", "2026-11-06T21:30");
+    await flushPromises();
+
+    expect((await save(subject)).startsAt).toBe("2026-11-07T02:30:00.000Z");
+  });
+
+  // 00:30 EDT + 2h is 01:30 EST, a wall clock New York shows twice that night.
+  it("saves a default end two hours after the start across a DST rollback", async () => {
+    const subject = await mount(
+      series({
+        recurring: false,
+        startsAt: "2026-10-31T23:00:00Z",
+        endsAt: undefined,
+        timezone: "America/New_York",
+      }),
+    );
+
+    const startField = subject.findAllComponents(FormDateTime)[0];
+    startField.vm.$emit("update:modelValue", "2026-11-01T00:30");
+    await flushPromises();
+
+    const data = await save(subject);
+    expect(data.startsAt).toBe("2026-11-01T04:30:00.000Z");
+    expect(data.endsAt).toBe("2026-11-01T06:30:00.000Z");
+  });
+
+  // Typed by hand, 01:30 that night reads as its first occurrence, even though
+  // the two-hour default would read the same.
+  it("saves a typed end in a repeated DST hour as typed", async () => {
+    const subject = await mount(
+      series({
+        recurring: false,
+        startsAt: "2026-11-01T04:30:00Z",
+        endsAt: undefined,
+        timezone: "America/New_York",
+      }),
+    );
+
+    const endField = subject.findAllComponents(FormDateTime)[1];
+    endField.vm.$emit("update:modelValue", "2026-11-01T01:30");
+    await flushPromises();
+
+    expect((await save(subject)).endsAt).toBe("2026-11-01T05:30:00.000Z");
+  });
+
+  // The default was worked out across New York's rollback; read in UTC, the
+  // shown 01:30 is one hour after 00:30, and that is what gets saved.
+  it("saves the shown end after the zone changes under a default", async () => {
+    const subject = await mount(
+      series({
+        recurring: false,
+        startsAt: "2026-10-31T23:00:00Z",
+        endsAt: undefined,
+        timezone: "America/New_York",
+      }),
+    );
+
+    const [startField, endField] = subject.findAllComponents(FormDateTime);
+    startField.vm.$emit("update:modelValue", "2026-11-01T00:30");
+    await flushPromises();
+    expect(endField.props("modelValue")).toBe("2026-11-01T01:30");
+
+    subject
+      .findAllComponents(BaseSelect)
+      .find(
+        (select) => (select.props() as { name?: string }).name === "timezone",
+      )
+      ?.vm.$emit("update:modelValue", "UTC");
+    await flushPromises();
+
+    expect((await save(subject)).endsAt).toBe("2026-11-01T01:30:00.000Z");
+  });
+
+  // 01:30 happens twice in New York on 1 November 2026. An untouched field
+  // must not be re-resolved onto the other one.
+  it("keeps an unchanged time in a repeated DST hour", async () => {
+    const subject = await mount(
+      series({
+        recurring: false,
+        startsAt: "2026-11-01T06:30:00Z",
+        timezone: "America/New_York",
+      }),
+    );
+
+    expect((await save(subject)).startsAt).toBe("2026-11-01T06:30:00Z");
   });
 });

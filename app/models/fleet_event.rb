@@ -81,6 +81,7 @@ class FleetEvent < ApplicationRecord
   before_validation :set_external_uid, on: :create
   before_validation :ensure_id, on: :create
   before_validation :default_cover_image_preset
+  before_validation :normalize_timezone
   before_validation :normalize_recurrence
   before_save :update_slug
   after_save { @recurrence_weekdays_assigned = false }
@@ -498,6 +499,17 @@ class FleetEvent < ApplicationRecord
       unit = {"daily" => :days, "weekly" => :weeks, "monthly" => :months}.fetch(recurrence_frequency)
       (0..).each { |index| yield starts_at + (index * step).public_send(unit) }
     end
+  end
+
+  # Browsers only know IANA names, so a Rails alias such as
+  # "Eastern Time (US & Canada)" is stored as the zone it stands for. Otherwise
+  # the server would read the alias's offset while a browser, unable to resolve
+  # it, would show and enter the event's times in UTC.
+  private def normalize_timezone
+    return if timezone.blank? || TZInfo::Timezone.all_identifiers.include?(timezone)
+
+    iana = ActiveSupport::TimeZone::MAPPING[timezone]
+    self.timezone = iana if iana
   end
 
   private def normalize_recurrence

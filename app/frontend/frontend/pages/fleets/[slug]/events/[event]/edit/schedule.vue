@@ -23,12 +23,17 @@ import {
   type FleetEventUpdateInput,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
-import { TIMEZONE_OPTIONS } from "@/shared/utils/Timezones";
+import {
+  TIMEZONE_OPTIONS,
+  addHoursInZone,
+  isoToWallClock,
+  resolveTimezone,
+  wallClockToIso,
+} from "@/shared/utils/Timezones";
 import {
   useRecurrence,
   WEEKDAYS_MONDAY_FIRST,
 } from "@/frontend/composables/useRecurrence";
-import { format, parseISO } from "date-fns";
 
 type Props = {
   fleet: Fleet;
@@ -40,34 +45,19 @@ const props = defineProps<Props>();
 const { t } = useI18n();
 const { weekdayName } = useRecurrence();
 
-const LOCAL_FORMAT = "yyyy-MM-dd'T'HH:mm";
-
-const toLocal = (iso: string | null | undefined) => {
-  if (!iso) return "";
-  try {
-    return format(parseISO(iso), LOCAL_FORMAT);
-  } catch {
-    return "";
-  }
-};
-
 const MAX_RECURRENCE_EVERY = 99;
 
 // The weekday an instant falls on in the event's zone rather than the
 // browser's: that is the day the server always adds to the pattern.
-const wdayIn = (value: string | undefined, zone: string | undefined) => {
+const wdayIn = (value: string | undefined, zone: string | null | undefined) => {
   if (!value) return null;
   const date = new Date(value);
   if (isNaN(date.getTime())) return null;
-  try {
-    const name = new Intl.DateTimeFormat("en-US", {
-      weekday: "short",
-      timeZone: zone || "UTC",
-    }).format(date);
-    return ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(name);
-  } catch {
-    return date.getDay();
-  }
+  const name = new Intl.DateTimeFormat("en-US", {
+    weekday: "short",
+    timeZone: resolveTimezone(zone),
+  }).format(date);
+  return ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(name);
 };
 
 // The start day is implied rather than chosen, so it is left out of the
@@ -80,11 +70,32 @@ const validationSchema = {
   recurrenceEvery: `required|between:1,${MAX_RECURRENCE_EVERY}`,
 };
 
+// The inputs show the event's own wall clock, so an organiser in another zone
+// sees the time the event was planned for, not their local one.
+const initialStartsAt = isoToWallClock(
+  props.event.startsAt,
+  props.event.timezone,
+);
+const initialEndsAt = isoToWallClock(props.event.endsAt, props.event.timezone);
+
+// A field nobody changed sends back the instant it came with. Converting it
+// again would move an event in the hour a DST change repeats, where one wall
+// clock names two instants and the conversion can only pick one of them.
+const toInstant = (
+  value: string | null | undefined,
+  zone: string | null | undefined,
+  initialWallClock: string,
+  original: string | null | undefined,
+) =>
+  value === initialWallClock && zone === props.event.timezone && original
+    ? original
+    : wallClockToIso(value, zone);
+
 const { defineField, handleSubmit, meta, setErrors } =
   useForm<FleetEventUpdateInput>({
     initialValues: {
-      startsAt: toLocal(props.event.startsAt) as never,
-      endsAt: toLocal(props.event.endsAt) as never,
+      startsAt: initialStartsAt as never,
+      endsAt: initialEndsAt as never,
       timezone: props.event.timezone,
       recurring: props.event.recurring ?? false,
       recurrenceInterval: (props.event.recurrenceInterval ?? "weekly") as never,
@@ -118,7 +129,11 @@ watch(recurring, (on) => {
 });
 
 const startWday = computed(() =>
-  wdayIn(startsAt.value as string | undefined, timezone.value as string),
+  wdayIn(
+    wallClockToIso(startsAt.value as string, timezone.value as string) ??
+      undefined,
+    timezone.value as string,
+  ),
 );
 
 const weekdayChecked = (wday: number) =>
@@ -159,40 +174,67 @@ const timezoneOptions = computed<FilterOption[]>(() => {
   return base;
 });
 
-const addHours = (value: string, hours: number) => {
-  if (!value) return "";
-  const parsed = new Date(value);
-  if (isNaN(parsed.getTime())) return "";
-  parsed.setHours(parsed.getHours() + hours);
-  return format(parsed, LOCAL_FORMAT);
-};
-
 // An end nobody has moved follows the start; once it has been set by hand it
 // stops following, so editing the start does not overwrite a deliberate end.
+const DEFAULT_DURATION_HOURS = 2;
+const DEFAULT_DURATION_MS = DEFAULT_DURATION_HOURS * 3_600_000;
+
 let endsAtTouched = !!props.event.endsAt;
+// The end the form filled in itself. Any other value was typed, even one that
+// reads the same as start + 2h.
+let defaultEnd: string | null = null;
 watch(endsAt, (newValue) => {
-  const start = startsAt.value as string;
-  if (!start || !newValue) return;
-  if (newValue !== addHours(start, 2)) endsAtTouched = true;
+  if (newValue && newValue !== defaultEnd) endsAtTouched = true;
 });
 watch(startsAt, (newStart) => {
   if (!newStart || endsAtTouched) return;
-  endsAt.value = addHours(newStart as string, 2) as never;
+  defaultEnd = addHoursInZone(
+    newStart as string,
+    DEFAULT_DURATION_HOURS,
+    timezone.value as string,
+  );
+  endsAt.value = defaultEnd as never;
 });
 
-// vee-validate hands back local datetime strings; the API wants ISO.
+// vee-validate hands back wall-clock strings, read in the event's zone.
 const wrapHandleSubmit = (cb: SubmissionHandler<FleetEventUpdateInput>) =>
   handleSubmit((values, ctx) => {
     const endKind = recurrenceEndKind.value;
+    const start = toInstant(
+      values.startsAt as string,
+      values.timezone,
+      initialStartsAt,
+      props.event.startsAt,
+    );
+    // An end that only followed the start is taken from the start's instant:
+    // in a repeated DST hour its wall clock names two instants, and reading it
+    // back could pick the one an hour early.
+    // The zone can change after the default was filled in, so it must still
+    // read as start + 2h in the zone being saved.
+    const followsStart =
+      !endsAtTouched &&
+      !!start &&
+      values.endsAt === defaultEnd &&
+      values.endsAt ===
+        addHoursInZone(
+          values.startsAt as string,
+          DEFAULT_DURATION_HOURS,
+          values.timezone,
+        );
     return cb(
       {
         ...values,
-        startsAt: values.startsAt
-          ? (new Date(values.startsAt as string).toISOString() as never)
-          : undefined,
-        endsAt: values.endsAt
-          ? (new Date(values.endsAt as string).toISOString() as never)
-          : null,
+        startsAt: (start ?? undefined) as never,
+        endsAt: (followsStart
+          ? new Date(
+              new Date(start as string).getTime() + DEFAULT_DURATION_MS,
+            ).toISOString()
+          : toInstant(
+              values.endsAt as string,
+              values.timezone,
+              initialEndsAt,
+              props.event.endsAt,
+            )) as never,
         recurring: !!values.recurring,
         recurrenceInterval: values.recurring
           ? (values.recurrenceInterval as never)

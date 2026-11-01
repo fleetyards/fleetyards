@@ -4057,6 +4057,7 @@
           },
           "calendar": {
             "month": "Mese",
+            "timesIn": "Orari in %{zone}",
             "week": "Settimana",
             "weekTitle": "Settimana del %{date}"
           },
