@@ -50,14 +50,13 @@ describe("useItemHolo", () => {
     expect(fallBackToPlainHolo()).toBe(false);
   });
 
-  it("tries the textured holo again for the next item", async () => {
+  it("tries the textured holo again for the next item", () => {
     flag.enabled = true;
     const item = ref(holos);
     const { holoModel, fallBackToPlainHolo } = useItemHolo(item);
 
     fallBackToPlainHolo();
     item.value = { holo: file("other.glb"), holoTextured: file("other_t.glb") };
-    await nextTick();
 
     expect(holoModel.value?.path).toBe("https://example.test/other_t.glb");
   });

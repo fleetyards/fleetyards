@@ -19,14 +19,7 @@ export const useItemHolo = (
 ) => {
   const { isFeatureEnabled } = useFeatures();
 
-  const texturedHoloFailed = ref(false);
-
-  watch(
-    () => toValue(holos).holoTextured?.url,
-    () => {
-      texturedHoloFailed.value = false;
-    },
-  );
+  const failedTexturedUrl = ref<string>();
 
   const holoModel = computed(() => {
     const { holo, holoTextured } = toValue(holos);
@@ -35,7 +28,7 @@ export const useItemHolo = (
       !!holo?.url &&
       !!holoTextured?.url &&
       canLoad(holoTextured) &&
-      !texturedHoloFailed.value;
+      holoTextured.url !== failedTexturedUrl.value;
     const file = isTextured ? holoTextured : holo;
 
     return file?.url
@@ -48,7 +41,7 @@ export const useItemHolo = (
   const fallBackToPlainHolo = () => {
     if (!holoModel.value?.textured) return false;
 
-    texturedHoloFailed.value = true;
+    failedTexturedUrl.value = holoModel.value.path;
 
     return true;
   };
