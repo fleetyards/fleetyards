@@ -13,11 +13,20 @@ export const NAV_EXPANDED: InjectionKey<ComputedRef<boolean>> =
   Symbol("navExpanded");
 
 /**
- * The section whose panel is open, if any.
+ * The panels that are open, outermost first: a section's panel, and the panel
+ * of a sub-section inside it.
  *
  * Shared rather than per-row because closing the others is not something a row
  * can do on its own: a pinned panel outlives the pointer that opened it, so two
  * clicks would otherwise leave two panels floating over the page at whatever
- * height their rows happen to sit at.
+ * height their rows happen to sit at. A path rather than one panel, so opening
+ * a sub-section's panel keeps the one it was opened from.
  */
-export const openFlyout = ref<symbol | null>(null);
+export const openFlyout = ref<symbol[]>([]);
+
+/**
+ * The panels a row sits inside, outermost first -- the path its own panel
+ * extends when it opens.
+ */
+export const FLYOUT_PATH: InjectionKey<ComputedRef<symbol[]>> =
+  Symbol("flyoutPath");

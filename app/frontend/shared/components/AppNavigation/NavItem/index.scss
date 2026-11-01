@@ -332,6 +332,18 @@ $nav-active-glow: color-mix(
     }
   }
 
+  /*
+   * A blur and a scroll box each make the panel the box a fixed child is laid
+   * out in and clipped by, so a sub-section's panel opened from in here would
+   * be stuck inside this one. Both give way while it is open; the tint is
+   * deepened to stand in for the blur.
+   */
+  &--nesting {
+    overflow: visible;
+    background-color: rgba($gray-darker, 0.92);
+    backdrop-filter: none;
+  }
+
   &__title {
     padding: 10px 15px 6px;
     color: var(--color-text-dim, #959595);

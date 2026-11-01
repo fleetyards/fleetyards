@@ -121,6 +121,20 @@ describe("NavItem with a submenu", () => {
       wrapper.unmount();
     });
 
+    // A sub-section inside a section opens beside it rather than pushing the
+    // section's own rows down.
+    it("opens an overlay row as the panel all the same", async () => {
+      const wrapper = await mountSection(false, { overlay: true });
+
+      expect(wrapper.find("ul").exists()).toBe(false);
+
+      await wrapper.get("button").trigger("click");
+
+      expect(wrapper.find(".nav-flyout").exists()).toBe(true);
+
+      wrapper.unmount();
+    });
+
     /*
      * The group used to be fenced by the same element that separates one
      * top-level section from another, so a submenu read as a new section rather
@@ -311,6 +325,50 @@ describe("NavItem with a submenu", () => {
 
       expect(wrapper.findAll(".nav-flyout")).toHaveLength(1);
       expect(wrapper.find("li > ul").exists()).toBe(false);
+
+      wrapper.unmount();
+    });
+  });
+
+  describe("a sub-section inside a panel", () => {
+    const mountNested = () =>
+      mountWithDefaults<typeof NavItem>(NavItem, {
+        props: { label: "Hangar", menuKey: "hangar-menu" },
+        slots: {
+          submenu: () => [
+            h(
+              NavItem,
+              { label: "Pledge items", menuKey: "pledge-menu", overlay: true },
+              {
+                submenu: () => [
+                  h(NavItem, { to: { name: "components" }, label: "Paints" }),
+                ],
+              },
+            ),
+          ],
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } as any,
+        initialState: { nav: { slim: true } },
+        plugins: [buildRouter()],
+        attachTo: document.body,
+      });
+
+    // One panel at a time would close the section's the moment its
+    // sub-section opened, taking the sub-section with it.
+    it("keeps the panel it was opened from", async () => {
+      const wrapper = await mountNested();
+
+      await wrapper
+        .get('[data-test="nav-hangar-menu"] > button')
+        .trigger("click");
+      await wrapper
+        .get('[data-test="nav-pledge-menu"] > button')
+        .trigger("click");
+
+      const panels = wrapper.findAll(".nav-flyout");
+
+      expect(panels).toHaveLength(2);
+      expect(panels[0].classes()).toContain("nav-flyout--nesting");
 
       wrapper.unmount();
     });
