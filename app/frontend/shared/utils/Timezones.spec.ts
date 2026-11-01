@@ -117,6 +117,17 @@ describe("organiserTimeHint", () => {
     ).toBe("Wed 20:00–Thu 01:00 New York (EST)");
   });
 
+  it("names both dates for an event a week or longer", () => {
+    expect(
+      organiserTimeHint(
+        "2026-11-03T01:00:00.000Z",
+        "2026-11-10T01:00:00.000Z",
+        "America/New_York",
+        "Europe/Berlin",
+      ),
+    ).toBe("Mon, Nov 2 20:00–Mon, Nov 9 20:00 New York (EST)");
+  });
+
   it("is null when both clocks read the same", () => {
     expect(
       organiserTimeHint(iso, endIso, "America/New_York", "America/New_York"),

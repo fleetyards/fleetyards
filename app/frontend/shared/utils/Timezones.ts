@@ -118,6 +118,19 @@ const abbreviationAt = (iso: string, zone: string | null | undefined) =>
     .formatToParts(new Date(iso))
     .find((part) => part.type === "timeZoneName")?.value ?? "";
 
+const DATED_PATTERN = "EEE, MMM d HH:mm";
+
+// Calendar days from one instant's date to another's, both taken in `zone`.
+const calendarDaysBetween = (
+  fromIso: string,
+  toIso: string,
+  zone: string | null | undefined,
+) => {
+  const day = (iso: string) =>
+    new Date(`${formatInZone(iso, zone, "yyyy-MM-dd")}T00:00:00Z`).getTime();
+  return Math.round((day(toIso) - day(fromIso)) / 86_400_000);
+};
+
 // The organiser's times beside times shown in the viewer's zone, e.g.
 // "Wed 20:00–22:00 New York (EST)" — or null when every clock reads the same,
 // where a second copy would say nothing new. Start and end are compared
@@ -130,26 +143,31 @@ export const organiserTimeHint = (
   viewerZone = browserTimezone(),
 ): string | null => {
   const pattern = "EEE HH:mm";
-  const start = formatInZone(startIso, eventZone, pattern);
-  if (!startIso || !start) return null;
+  if (!startIso || !formatInZone(startIso, eventZone, pattern)) return null;
 
-  const end = endIso ? formatInZone(endIso, eventZone, pattern) : "";
-  const same = (iso: string, there: string) =>
-    there === formatInZone(iso, viewerZone, pattern);
-  if (same(startIso, start) && (!end || same(endIso as string, end))) {
-    return null;
-  }
+  const same = (iso: string) =>
+    formatInZone(iso, eventZone, pattern) ===
+    formatInZone(iso, viewerZone, pattern);
+  if (same(startIso) && (!endIso || same(endIso))) return null;
+
+  // A weekday alone repeats after six days, so a longer event names its dates.
+  const days = endIso ? calendarDaysBetween(startIso, endIso, eventZone) : 0;
+  const endPattern = days === 0 ? "HH:mm" : days < 7 ? pattern : DATED_PATTERN;
+  const start = formatInZone(
+    startIso,
+    eventZone,
+    days < 7 ? pattern : DATED_PATTERN,
+  );
+  const end = endIso ? formatInZone(endIso, eventZone, endPattern) : "";
 
   const name = timezoneLabel(eventZone).replace(/\s*\(.*\)$/, "");
   const startAbbr = abbreviationAt(startIso, eventZone);
   const endAbbr = end ? abbreviationAt(endIso as string, eventZone) : startAbbr;
-  const endLabel =
-    end && end.slice(0, 3) === start.slice(0, 3) ? end.slice(4) : end;
 
   if (end && startAbbr !== endAbbr) {
-    return `${start} ${startAbbr}–${endLabel} ${endAbbr} ${name}`;
+    return `${start} ${startAbbr}–${end} ${endAbbr} ${name}`;
   }
-  const range = end ? `${start}–${endLabel}` : start;
+  const range = end ? `${start}–${end}` : start;
   return startAbbr && startAbbr !== name
     ? `${range} ${name} (${startAbbr})`
     : `${range} ${name}`;
