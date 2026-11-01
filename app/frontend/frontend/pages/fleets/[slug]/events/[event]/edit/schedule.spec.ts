@@ -184,6 +184,26 @@ describe("FleetEventEditSchedulePage times", () => {
     expect((await save(subject)).startsAt).toBe("2026-11-07T02:30:00.000Z");
   });
 
+  // 00:30 EDT + 2h is 01:30 EST, a wall clock New York shows twice that night.
+  it("saves a default end two hours after the start across a DST rollback", async () => {
+    const subject = await mount(
+      series({
+        recurring: false,
+        startsAt: "2026-10-31T23:00:00Z",
+        endsAt: null,
+        timezone: "America/New_York",
+      }),
+    );
+
+    const startField = subject.findAllComponents(FormDateTime)[0];
+    startField.vm.$emit("update:modelValue", "2026-11-01T00:30");
+    await flushPromises();
+
+    const data = await save(subject);
+    expect(data.startsAt).toBe("2026-11-01T04:30:00.000Z");
+    expect(data.endsAt).toBe("2026-11-01T06:30:00.000Z");
+  });
+
   // 01:30 happens twice in New York on 1 November 2026. An untouched field
   // must not be re-resolved onto the other one.
   it("keeps an unchanged time in a repeated DST hour", async () => {

@@ -176,18 +176,24 @@ const timezoneOptions = computed<FilterOption[]>(() => {
 
 // An end nobody has moved follows the start; once it has been set by hand it
 // stops following, so editing the start does not overwrite a deliberate end.
+const DEFAULT_DURATION_HOURS = 2;
+const DEFAULT_DURATION_MS = DEFAULT_DURATION_HOURS * 3_600_000;
+
 let endsAtTouched = !!props.event.endsAt;
 watch(endsAt, (newValue) => {
   const start = startsAt.value as string;
   if (!start || !newValue) return;
-  if (newValue !== addHoursInZone(start, 2, timezone.value as string))
+  if (
+    newValue !==
+    addHoursInZone(start, DEFAULT_DURATION_HOURS, timezone.value as string)
+  )
     endsAtTouched = true;
 });
 watch(startsAt, (newStart) => {
   if (!newStart || endsAtTouched) return;
   endsAt.value = addHoursInZone(
     newStart as string,
-    2,
+    DEFAULT_DURATION_HOURS,
     timezone.value as string,
   ) as never;
 });
@@ -196,21 +202,38 @@ watch(startsAt, (newStart) => {
 const wrapHandleSubmit = (cb: SubmissionHandler<FleetEventUpdateInput>) =>
   handleSubmit((values, ctx) => {
     const endKind = recurrenceEndKind.value;
+    const start = toInstant(
+      values.startsAt as string,
+      values.timezone,
+      initialStartsAt,
+      props.event.startsAt,
+    );
+    // An end that only followed the start is taken from the start's instant:
+    // in a repeated DST hour its wall clock names two instants, and reading it
+    // back could pick the one an hour early.
+    const followsStart =
+      !endsAtTouched &&
+      !!start &&
+      values.endsAt ===
+        addHoursInZone(
+          values.startsAt as string,
+          DEFAULT_DURATION_HOURS,
+          values.timezone,
+        );
     return cb(
       {
         ...values,
-        startsAt: (toInstant(
-          values.startsAt as string,
-          values.timezone,
-          initialStartsAt,
-          props.event.startsAt,
-        ) ?? undefined) as never,
-        endsAt: toInstant(
-          values.endsAt as string,
-          values.timezone,
-          initialEndsAt,
-          props.event.endsAt,
-        ) as never,
+        startsAt: (start ?? undefined) as never,
+        endsAt: (followsStart
+          ? new Date(
+              new Date(start as string).getTime() + DEFAULT_DURATION_MS,
+            ).toISOString()
+          : toInstant(
+              values.endsAt as string,
+              values.timezone,
+              initialEndsAt,
+              props.event.endsAt,
+            )) as never,
         recurring: !!values.recurring,
         recurrenceInterval: values.recurring
           ? (values.recurrenceInterval as never)
