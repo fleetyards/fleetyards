@@ -68,6 +68,27 @@ module Supporters
       assert_empty notices
     end
 
+    test "a one-off ending before a Ko-fi subscription payment waits for the subscription's grace" do
+      donate
+      create(:supporter_contribution, user: @user, started_at: Date.new(2026, 10, 19), kofi_subscription: true)
+
+      run_on Date.new(2026, 11, 16)
+      run_on Date.new(2026, 11, 19)
+      assert_empty notices
+
+      run_on Date.new(2026, 11, 22)
+      assert_includes notices.sole.body, I18n.l(Date.new(2026, 11, 18), format: :long)
+    end
+
+    test "the notice is mailed by default" do
+      donate
+      NotificationMailer.expects(:notification)
+        .with { |notification| notification.notification_type == "supporter_coverage_ended" }
+        .returns(stub(deliver_later: true))
+
+      run_on Date.new(2026, 11, 16)
+    end
+
     test "an ended standing pledge is announced after its last month" do
       create(:supporter_contribution, :recurring, user: @user,
         started_at: Date.new(2026, 1, 1), ended_at: Date.new(2026, 10, 5))

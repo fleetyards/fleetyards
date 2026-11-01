@@ -12,42 +12,56 @@ module Supporters
     sidekiq_options queue: "default", retry: 3
 
     def perform
-      ended_on = Date.current - 1
-      subscription_ended_on = ended_on - ::Subscriptions::Sync::GRACE_DAYS
+      today = Date.current
 
-      candidates(subscription_ended_on, ended_on).group_by(&:user).each do |user, contributions|
-        last_day = contributions.any?(&:kofi_subscription?) ? subscription_ended_on : ended_on
-        next unless contributions.any? { |contribution| contribution.active_until == last_day }
-        next unless due?(user, last_day)
+      candidates(today).each do |user|
+        last_day, subscription = last_cover(user)
+        next if last_day.nil?
+        next unless today == last_day + 1 + (subscription ? ::Subscriptions::Sync::GRACE_DAYS : 0)
+        next unless due?(user)
 
-        notify(user, contributions, last_day)
+        notify(user, last_day)
       end
     end
 
-    # Rows whose cover ran out on either day; `active_until` decides, the dates
-    # only narrow the read.
-    private def candidates(earliest, latest)
+    # Donors with something that ran out in the last few days. Narrows the read
+    # only; `last_cover` decides.
+    private def candidates(today)
+      earliest = today - 1 - ::Subscriptions::Sync::GRACE_DAYS
+
       SupporterContribution
         .where.not(user_id: nil)
         .where(
           "(recurring = ? AND started_at BETWEEN ? AND ?) OR (recurring = ? AND ended_at BETWEEN ? AND ?)",
-          false, earliest - 1.month - 3.days, latest - 27.days,
-          true, earliest.beginning_of_month, latest
+          false, earliest - 1.month - 3.days, today - 27.days,
+          true, earliest.beginning_of_month, today
         )
         .includes(:user)
-        .select { |contribution| contribution.active_until.in?([earliest, latest]) }
+        .map(&:user)
+        .uniq
     end
 
-    private def due?(user, last_day)
+    # The last day any of the donor's contributions covers, and whether one
+    # that covers it is a Ko-fi subscription payment, which earns the grace.
+    # Nil while an open-ended pledge covers them.
+    private def last_cover(user)
+      contributions = user.supporter_contributions.to_a
+      days = contributions.map(&:active_until)
+      return if days.empty? || days.any?(&:nil?)
+
+      last_day = days.max
+      [last_day, contributions.any? { |contribution| contribution.active_until == last_day && contribution.kofi_subscription? }]
+    end
+
+    private def due?(user)
       return false if user.maintainer? || user.supporter?
 
-      user.supporter_contributions.none? { |contribution| contribution.started_at > last_day } &&
-        !::Notification.where(user:, notification_type: "supporter_coverage_ended")
-          .where("created_at > ?", 1.week.ago)
-          .exists?
+      !::Notification.where(user:, notification_type: "supporter_coverage_ended")
+        .where("created_at > ?", 1.week.ago)
+        .exists?
     end
 
-    private def notify(user, contributions, last_day)
+    private def notify(user, last_day)
       I18n.with_locale(user.notification_locale) do
         ::Notification.notify!(
           user:,
@@ -55,7 +69,7 @@ module Supporters
           title: I18n.t("notifications.supporter_coverage_ended.title"),
           body: I18n.t("notifications.supporter_coverage_ended.body", date: I18n.l(last_day, format: :long)),
           link: Rails.application.routes.url_helpers.frontend_support_path,
-          record: contributions.max_by(&:started_at)
+          record: user.supporter_contributions.max_by(&:started_at)
         )
       end
     end
