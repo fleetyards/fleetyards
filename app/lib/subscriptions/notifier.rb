@@ -91,8 +91,12 @@ module Subscriptions
     # The people who could do something about it. A member cannot change what
     # the fleet is entitled to, so telling all 400 of them is noise -- and
     # `fleet:manage` is the privilege that already means "runs this fleet".
+    #
+    # Only those the rollout has reached: subscriptions are reconciled for
+    # every fleet ahead of the announcement, and a manager who cannot see the
+    # feature must not be told it started or ended.
     private def admins
-      fleet.managers
+      fleet.managers.select { |manager| Flipper.enabled?(:fleet_subscriptions, manager, fleet) }
     end
   end
 end

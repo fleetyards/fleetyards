@@ -5,6 +5,7 @@ require "test_helper"
 module Subscriptions
   class SyncTest < ActiveSupport::TestCase
     setup do
+      Flipper.enable("fleet_subscriptions")
       @membership = create(:fleet_membership, :accepted)
       @supporter = @membership.user
       @fleet = @membership.fleet

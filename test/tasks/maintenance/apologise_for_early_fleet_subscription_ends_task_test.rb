@@ -5,6 +5,7 @@ require "test_helper"
 module Maintenance
   class ApologiseForEarlyFleetSubscriptionEndsTaskTest < ActiveSupport::TestCase
     setup do
+      Flipper.enable("fleet_subscriptions")
       membership = create(:fleet_membership, :accepted)
       @fleet = membership.fleet
       @supporter = membership.user
