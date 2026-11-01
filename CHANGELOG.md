@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.32.0](https://github.com/fleetyards/fleetyards/compare/v9.31.0...v9.32.0) (2026-11-01)
+
+
+### Features
+
+* **items:** show the textured holo by default, without a toggle ([#6072](https://github.com/fleetyards/fleetyards/issues/6072)) ([760f288](https://github.com/fleetyards/fleetyards/commit/760f28846f5a07f3fcabb46095e91d0f47e3c091))
+* **nav:** switch between hangar and fleets from the logo, and group the navigation into sections ([#6080](https://github.com/fleetyards/fleetyards/issues/6080)) ([4fd6688](https://github.com/fleetyards/fleetyards/commit/4fd6688c0ce2f12b1cb900ada3b5d137fb255a4b))
+* **supporters:** remind one-off donors three days before their perks end ([#6084](https://github.com/fleetyards/fleetyards/issues/6084)) ([b17a453](https://github.com/fleetyards/fleetyards/commit/b17a45396b64067362a5d0c34a240a688e6e867e))
+
+
+### Bug Fixes
+
+* **calendar:** calendar feed links point at the frontend host ([#6079](https://github.com/fleetyards/fleetyards/issues/6079)) ([27862f9](https://github.com/fleetyards/fleetyards/commit/27862f94226e905b04c45d255f06856e5b60922b))
+* **events:** enter and show event times in the event's timezone ([#6076](https://github.com/fleetyards/fleetyards/issues/6076)) ([e111c66](https://github.com/fleetyards/fleetyards/commit/e111c6627a802053268cfb89ce2f9c40e6bdb193))
+* **fleets:** find the preset cover in the built assets on production ([#6073](https://github.com/fleetyards/fleetyards/issues/6073)) ([dea3e76](https://github.com/fleetyards/fleetyards/commit/dea3e76247dc6e26d823be1015cb4b932e7f4738))
+* **fleets:** tell only managers the rollout has reached about their subscription ([#6085](https://github.com/fleetyards/fleetyards/issues/6085)) ([a4dde44](https://github.com/fleetyards/fleetyards/commit/a4dde44ecbfc31bd3f6f203d6b8721d12659d653))
+* **supporters:** let a one-off donation cover a month from the day it was paid ([#6082](https://github.com/fleetyards/fleetyards/issues/6082)) ([38c2743](https://github.com/fleetyards/fleetyards/commit/38c27430987f0b891d91535374caf48c7461b66b))
+
 ## [9.31.0](https://github.com/fleetyards/fleetyards/compare/v9.30.0...v9.31.0) (2026-10-31)
 
 
