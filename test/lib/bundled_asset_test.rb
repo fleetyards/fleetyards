@@ -7,6 +7,12 @@ class BundledAssetTest < ActiveSupport::TestCase
     assert_equal Rails.root.join("app/frontend/images/missions/mining.jpg"), BundledAsset.file("images/missions/mining.jpg")
   end
 
+  test "leaves the manifest alone where the source tree exists" do
+    ViteRuby.instance.manifest.expects(:path_for).never
+
+    assert_nil BundledAsset.file("images/missions/nope.jpg")
+  end
+
   test "finds the built copy where the source tree is not shipped" do
     Dir.mktmpdir do |dir|
       built = Pathname(dir).join("vite/assets/mining-abc123.jpg")
