@@ -1,4 +1,6 @@
-import { formatInTimeZone, fromZonedTime } from "date-fns-tz";
+import { TZDate } from "@date-fns/tz";
+import { format } from "date-fns";
+import { fromZonedTime } from "date-fns-tz";
 
 type TimezoneOption = { value: string; label: string };
 
@@ -29,19 +31,9 @@ export const wallClockToIso = (
   return isNaN(date.getTime()) ? null : date.toISOString();
 };
 
-// The reverse of wallClockToIso: an instant as the wall clock in `zone`, in the
-// shape a `datetime-local` input takes.
-export const isoToWallClock = (
-  iso: string | null | undefined,
-  zone: string | null | undefined,
-): string => {
-  if (!iso) return "";
-  const date = new Date(iso);
-  if (isNaN(date.getTime())) return "";
-  return formatInTimeZone(date, resolveTimezone(zone), DATETIME_LOCAL_FORMAT);
-};
-
-// Formats an instant as the wall clock in `zone`.
+// Formats an instant as the wall clock in `zone`. A TZDate rather than
+// date-fns-tz's formatInTimeZone, which goes through a browser-local Date: a
+// wall clock in the browser's own DST gap comes out an hour late.
 export const formatInZone = (
   iso: string | null | undefined,
   zone: string | null | undefined,
@@ -50,8 +42,15 @@ export const formatInZone = (
   if (!iso) return "";
   const date = new Date(iso);
   if (isNaN(date.getTime())) return "";
-  return formatInTimeZone(date, resolveTimezone(zone), pattern);
+  return format(new TZDate(date, resolveTimezone(zone)), pattern);
 };
+
+// The reverse of wallClockToIso: an instant as the wall clock in `zone`, in the
+// shape a `datetime-local` input takes.
+export const isoToWallClock = (
+  iso: string | null | undefined,
+  zone: string | null | undefined,
+): string => formatInZone(iso, zone, DATETIME_LOCAL_FORMAT);
 
 // The browser's own zone, for labelling times shown in it.
 export const browserTimezone = (): string =>
