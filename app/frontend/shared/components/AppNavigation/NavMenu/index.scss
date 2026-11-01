@@ -1,0 +1,65 @@
+.nav-menu {
+  position: relative;
+  padding: 0 14px;
+
+  &--slim {
+    padding: 0 10px;
+  }
+}
+
+.nav-menu__trigger {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--color-text, #c8c8c8);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color $transition-base-speed ease,
+    border-color $transition-base-speed ease;
+
+  &:hover,
+  &:focus-visible,
+  &[aria-expanded="true"] {
+    background: var(--color-control-hover, rgba(52, 58, 64, 0.95));
+    border-color: var(--color-edge, rgba(122, 130, 136, 0.5));
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary, #428bca);
+    outline-offset: 2px;
+  }
+
+  .nav-menu--slim & {
+    justify-content: center;
+    padding: 8px 0;
+  }
+}
+
+/*
+ * Above the navigation's 1000 and below AppModal's 1050, the layer a section's
+ * flyout uses too.
+ */
+.nav-menu__panel {
+  position: fixed;
+  z-index: 1040;
+  min-width: 240px;
+  margin: 0;
+  padding: 6px 0;
+  list-style: none;
+  background: var(--color-surface, rgba(39, 43, 48, 0.9));
+  border: 1px solid var(--color-edge, rgba(122, 130, 136, 0.5));
+  border-radius: 12px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(12px);
+
+  &--slim {
+    width: 260px;
+  }
+}
