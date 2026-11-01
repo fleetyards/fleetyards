@@ -130,12 +130,13 @@ const { data: invites } = useFleetInvitesQuery({
       />
     </template>
     <NavMenuItem divider />
+    <!-- Always there: the page also lists the requests the reader sent, which
+         they may want to check with no invitation waiting. -->
     <NavMenuItem
-      v-if="invites?.length"
       :to="{ name: 'fleet-invites' }"
       :label="t('nav.fleets.invites')"
       icon="fa-light fa-envelope-open-text"
-      :badge="invites.length"
+      :badge="invites?.length || 0"
       data-test="nav-fleet-invites"
     />
     <NavMenuItem

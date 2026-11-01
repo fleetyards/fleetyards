@@ -128,12 +128,15 @@ describe("ContextSwitcher", () => {
     ).toBeUndefined();
   });
 
-  it("offers invites only while there are some", async () => {
+  // The invites page also lists the requests the reader sent, so it stays
+  // reachable with no invitation waiting; only the count depends on them.
+  it("always offers invites and counts them when there are some", async () => {
     const switcher = await mountSwitcher("/hangar");
 
     await openSwitcher(switcher);
 
-    expect(row(switcher, "nav-fleet-invites").exists()).toBe(false);
+    expect(row(switcher, "nav-fleet-invites").exists()).toBe(true);
+    expect(row(switcher, "nav-fleet-invites").text()).not.toMatch(/\d/);
     expect(row(switcher, "nav-fleet-directory").exists()).toBe(true);
     expect(row(switcher, "nav-fleet-add").exists()).toBe(true);
 
