@@ -7,58 +7,22 @@ export default {
 <script lang="ts" setup>
 import { FLEET_GLYPH } from "@/shared/glyphs/fleets";
 import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
+import EntryItem from "@/frontend/components/Navigation/EntryItem/index.vue";
+import { FLEET_DIRECTORY_ENTRY } from "@/frontend/components/Navigation/entries";
 import { useFleetStore } from "@/frontend/stores/fleet";
 import { storeToRefs } from "pinia";
-import { useSessionStore } from "@/frontend/stores/session";
 import { useI18n } from "@/shared/composables/useI18n";
-import {
-  useMyFleets as useMyFleetsQuery,
-  useFleetInvites as useFleetInvitesQuery,
-} from "@/services/fyApi";
 
 const { t } = useI18n();
 
-const fleetStore = useFleetStore();
-
-const { preview: fleetPreview } = storeToRefs(fleetStore);
-
-const sessionStore = useSessionStore();
-
-const { isAuthenticated } = storeToRefs(sessionStore);
+const { preview: fleetPreview } = storeToRefs(useFleetStore());
 
 const route = useRoute();
 
-const active = computed(() => {
-  return [
-    "fleets",
-    "fleet-add",
-    "fleet-preview",
-    "fleet-invites",
-    "fleet-directory",
-  ].includes(String(route.name));
-});
-
-const { data: fleets, refetch: refetchMyFleets } = useMyFleetsQuery({
-  query: {
-    refetchOnWindowFocus: false,
-    enabled: isAuthenticated.value,
-  },
-});
-
-const { data: fleetInvites, refetch: refetchInvites } = useFleetInvitesQuery({
-  query: {
-    enabled: isAuthenticated.value && active.value,
-  },
-});
-
-watch(
-  () => isAuthenticated.value,
-  async () => {
-    if (isAuthenticated.value) {
-      await refetchMyFleets();
-      await refetchInvites();
-    }
-  },
+const active = computed(() =>
+  ["fleet-add", "fleet-preview", "fleet-directory"].includes(
+    String(route.name),
+  ),
 );
 </script>
 
@@ -70,27 +34,9 @@ watch(
     :icon="FLEET_GLYPH"
   >
     <template #submenu>
+      <EntryItem :entry="FLEET_DIRECTORY_ENTRY" />
       <NavItem
-        v-for="fleet in fleets"
-        :key="fleet.slug"
-        :menu-key="fleet.slug"
-        :to="{ name: 'fleet', params: { slug: fleet.slug } }"
-        :label="fleet.name"
-        :image="fleet.logo?.smallUrl || undefined"
-      />
-      <NavItem
-        :to="{ name: 'fleet-directory' }"
-        :label="t('nav.fleets.directory')"
-        icon="fa-duotone fa-magnifying-glass"
-      />
-      <NavItem
-        v-if="isAuthenticated && fleetInvites && fleetInvites.length"
-        :to="{ name: 'fleet-invites' }"
-        :label="t('nav.fleets.invites')"
-        icon="fa-duotone fa-envelope-open-text"
-      />
-      <NavItem
-        v-if="isAuthenticated || !fleetPreview"
+        v-if="!fleetPreview"
         :to="{ name: 'fleet-add' }"
         :label="t('nav.fleets.add')"
         icon="fa-light fa-plus"

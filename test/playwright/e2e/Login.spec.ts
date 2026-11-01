@@ -26,6 +26,7 @@ test.describe("Login", () => {
 
     await expect(page.getByTestId("user-menu")).toContainText("test");
 
+    await page.getByTestId("user-menu").click();
     await nav.click("logout");
 
     await expect(page.getByTestId("nav-login")).toBeVisible();

@@ -10,8 +10,7 @@
         "index": "飞船"
       },
       "compare": {
-        "index": "比较",
-        "ships": "比较飞船"
+        "index": "比较"
       },
       "manufacturers": "制造商",
       "images": "图片",
@@ -20,6 +19,9 @@
       "componentHistory": "历史",
       "hangar": {
         "index": "我的机库",
+        "overview": "概览",
+        "wishlist": "愿望单",
+        "stats": "统计",
         "vehicleLoadouts": "Loadouts",
         "inventories": "Inventories",
         "blueprints": "蓝图",
@@ -123,12 +125,14 @@
           "index": "合约",
           "payouts": "分账"
         },
-        "directory": "目录"
+        "directory": "目录",
+        "overview": "概览"
       },
       "rsiProfile": "RSI 档案",
       "rsiHangar": "RSI 机库",
       "tools": {
         "index": "工具",
+        "overview": "概览",
         "travelTimes": "旅行时间",
         "cargoGrids": "货物网格",
         "plaque": "献词铭牌",
@@ -391,6 +395,16 @@
       },
       "equipment": {
         "index": "装备"
+      },
+      "switcher": {
+        "label": "在你的机库和舰队之间切换",
+        "personal": "个人",
+        "yourFleets": "你的舰队",
+        "fleetDirectory": "舰队目录"
+      },
+      "account": {
+        "menu": "账户菜单",
+        "unread": "%{count} 条未读"
       }
     }
   }

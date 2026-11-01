@@ -10,8 +10,7 @@
         "index": "飛船"
       },
       "compare": {
-        "index": "比較",
-        "ships": "比較飛船"
+        "index": "比較"
       },
       "manufacturers": "製造商",
       "images": "圖片",
@@ -20,6 +19,9 @@
       "componentHistory": "歷史",
       "hangar": {
         "index": "我的機庫",
+        "overview": "概覽",
+        "wishlist": "願望清單",
+        "stats": "統計",
         "vehicleLoadouts": "Loadouts",
         "inventories": "Inventories",
         "blueprints": "藍圖",
@@ -123,12 +125,14 @@
           "index": "合約",
           "payouts": "分帳"
         },
-        "directory": "目錄"
+        "directory": "目錄",
+        "overview": "概覽"
       },
       "rsiProfile": "RSI 檔案",
       "rsiHangar": "RSI 機庫",
       "tools": {
         "index": "工具",
+        "overview": "概覽",
         "travelTimes": "旅行時間",
         "cargoGrids": "貨物網格",
         "plaque": "獻詞銘牌",
@@ -391,6 +395,16 @@
       },
       "equipment": {
         "index": "裝備"
+      },
+      "switcher": {
+        "label": "在你的機庫和艦隊之間切換",
+        "personal": "個人",
+        "yourFleets": "你的艦隊",
+        "fleetDirectory": "艦隊目錄"
+      },
+      "account": {
+        "menu": "帳戶選單",
+        "unread": "%{count} 則未讀"
       }
     }
   }

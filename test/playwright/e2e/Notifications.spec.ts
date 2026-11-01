@@ -201,12 +201,16 @@ test.describe("Notifications", () => {
   test("Counts the unread notifications in the navigation", async ({
     page,
   }) => {
-    await expect(page.getByTestId("nav-notifications")).toContainText("4");
+    // The avatar carries the count; the menu row behind it only exists while
+    // the menu is open.
+    const badge = page.getByTestId("user-menu-badge");
+
+    await expect(badge).toHaveText("4");
 
     await row(page, "Hangar sync failed")
       .getByTestId("notification-select")
       .click();
 
-    await expect(page.getByTestId("nav-notifications")).toContainText("3");
+    await expect(badge).toHaveText("3");
   });
 });

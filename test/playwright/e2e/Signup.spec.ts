@@ -45,6 +45,7 @@ test.describe("Signup", () => {
         page.getByTestId("user-menu").getByText(user.username),
       ).toBeVisible();
 
+      await page.getByTestId("user-menu").click();
       await nav.click("settings");
 
       await expect(page).toHaveURL(/\/settings/);
