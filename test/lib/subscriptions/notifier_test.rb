@@ -5,6 +5,7 @@ require "test_helper"
 module Subscriptions
   class NotifierTest < ActiveSupport::TestCase
     setup do
+      Flipper.enable("fleet_subscriptions")
       @admin = create(:user)
       @member = create(:user)
       @fleet = create(:fleet, admins: [@admin], members: [@member])
@@ -30,6 +31,24 @@ module Subscriptions
 
     # A member cannot change what the fleet is entitled to, so telling all of
     # them is noise.
+    test "a manager the rollout has not reached is not notified" do
+      Flipper.disable("fleet_subscriptions")
+
+      Notifier.started(@subscription)
+      Notifier.ended(@subscription, cause: :contribution)
+
+      assert_empty Notification.where(user: @admin)
+    end
+
+    test "a manager with the feature enabled for them alone is notified" do
+      Flipper.disable("fleet_subscriptions")
+      Flipper.enable_actor("fleet_subscriptions", @admin)
+
+      Notifier.started(@subscription)
+
+      assert_equal 1, notifications_for(@admin, "fleet_subscription_started").count
+    end
+
     test "a plain member is not notified" do
       Notifier.started(@subscription)
 

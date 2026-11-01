@@ -137,6 +137,7 @@ class Admin::Api::V1::FleetSubscriptionsTest < ActionDispatch::IntegrationTest
   end
 
   setup do
+    Flipper.enable("fleet_subscriptions")
     @user = create(:admin_user, resource_access: [:supporters])
     @fleet = create(:fleet)
   end
