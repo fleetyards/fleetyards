@@ -29,9 +29,11 @@ class FlagKofiSubscriptionPayments < ActiveRecord::Migration[8.1]
     raise ActiveRecord::IrreversibleMigration
   end
 
+  # Every pair, not only neighbours: a gift between two renewals would
+  # otherwise hide the month between them.
   private def monthly_ids(payments)
-    payments.each_cons(2).flat_map do |(earlier_id, *, earlier_on), (later_id, *, later_on)|
-      MONTHLY_GAP_DAYS.cover?((later_on - earlier_on).to_i) ? [earlier_id, later_id] : []
+    payments.combination(2).flat_map do |(earlier_id, *, earlier_on), (later_id, *, later_on)|
+      MONTHLY_GAP_DAYS.cover?((later_on - earlier_on).to_i.abs) ? [earlier_id, later_id] : []
     end.uniq
   end
 end

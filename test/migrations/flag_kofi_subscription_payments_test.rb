@@ -39,6 +39,19 @@ class FlagKofiSubscriptionPaymentsTest < ActiveSupport::TestCase
     assert unlinked.reload.kofi_subscription?
   end
 
+  test "a gift between two renewals does not hide them" do
+    user = create(:user)
+    september = kofi(Date.new(2026, 9, 1), user:)
+    gift = kofi(Date.new(2026, 9, 15), user:)
+    october = kofi(Date.new(2026, 10, 1), user:)
+
+    FlagKofiSubscriptionPayments.new.up
+
+    assert september.reload.kofi_subscription?
+    assert october.reload.kofi_subscription?
+    assert_not gift.reload.kofi_subscription?
+  end
+
   test "a single payment, or two far apart, stays a one-off" do
     user = create(:user)
     once = kofi(Date.new(2026, 10, 16), payer_email: "once@example.com")
