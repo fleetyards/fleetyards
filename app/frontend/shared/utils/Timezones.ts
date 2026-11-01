@@ -80,3 +80,26 @@ export const TIMEZONE_OPTIONS: TimezoneOption[] = [
   { value: "Australia/Sydney", label: "Sydney" },
   { value: "Pacific/Auckland", label: "Auckland" },
 ];
+
+// The name a zone is offered under in the event form, or the zone itself.
+export const timezoneLabel = (zone: string | null | undefined): string => {
+  const resolved = resolveTimezone(zone);
+  return (
+    TIMEZONE_OPTIONS.find((option) => option.value === resolved)?.label ??
+    resolved
+  );
+};
+
+// The organiser's time beside a time shown in the viewer's zone, e.g.
+// "Wed 20:00 New York (ET)" — or null when both clocks read the same, where a
+// second copy of the time would say nothing new.
+export const organiserTimeHint = (
+  iso: string | null | undefined,
+  eventZone: string | null | undefined,
+  viewerZone = browserTimezone(),
+): string | null => {
+  const pattern = "EEE HH:mm";
+  const there = formatInZone(iso, eventZone, pattern);
+  if (!there || there === formatInZone(iso, viewerZone, pattern)) return null;
+  return `${there} ${timezoneLabel(eventZone)}`;
+};

@@ -48,7 +48,11 @@ import { useRecurrence } from "@/frontend/composables/useRecurrence";
 import { checkAccess } from "@/shared/utils/Access";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { FeatureFlagName } from "@/services/fyApi";
-import { formatInZone, resolveTimezone } from "@/shared/utils/Timezones";
+import {
+  browserTimezone,
+  formatInZone,
+  organiserTimeHint,
+} from "@/shared/utils/Timezones";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useFleetEventListContextStore } from "@/frontend/stores/fleetEventListContext";
 
@@ -224,28 +228,31 @@ const yourSignupContextLabel = computed(() => {
   return parts.join(" · ");
 });
 
-// In the event's own zone, which the page names beside the times: the
-// browser's zone would put a label on a time it does not describe.
+// Each reader sees the event at their own clock; the organiser's time is a
+// hint beside it, for the reader coordinating with people in that zone.
 const EVENT_TIME_FORMAT = "EEE, MMM d, yyyy · HH:mm";
 
 const startDate = computed(() => {
   if (!event.value) return "";
   return (
-    formatInZone(
-      event.value.startsAt,
-      event.value.timezone,
-      EVENT_TIME_FORMAT,
-    ) || event.value.startsAt
+    formatInZone(event.value.startsAt, browserTimezone(), EVENT_TIME_FORMAT) ||
+    event.value.startsAt
   );
 });
 
 const endDate = computed(() => {
   if (!event.value?.endsAt) return null;
   return (
-    formatInZone(event.value.endsAt, event.value.timezone, EVENT_TIME_FORMAT) ||
+    formatInZone(event.value.endsAt, browserTimezone(), EVENT_TIME_FORMAT) ||
     event.value.endsAt
   );
 });
+
+const organiserTime = computed(() =>
+  event.value
+    ? organiserTimeHint(event.value.startsAt, event.value.timezone)
+    : null,
+);
 
 const signupsLocked = computed(
   () =>
@@ -302,14 +309,11 @@ const upcomingOccurrences = computed(() => {
   if (!isRecurring.value || !event.value) return [];
 
   return (event.value.upcomingOccurrences ?? []).map((occurrence) => ({
-    // The event's zone, like the start above it, so the first occurrence
-    // names the same day as the series it starts.
     date: new Date(occurrence.startsAt).toLocaleDateString(undefined, {
       weekday: "short",
       month: "short",
       day: "numeric",
       year: "numeric",
-      timeZone: resolveTimezone(event.value?.timezone),
     }),
     iso: occurrence.date,
     excluded: occurrence.excluded,
@@ -584,8 +588,12 @@ const crumbs = computed<Crumb[]>(() => [
               <div class="metrics-card__row__value">
                 {{ startDate }}
                 <template v-if="endDate"> — {{ endDate }}</template>
-                <span v-if="event.timezone" class="event-hero__tz">
-                  ({{ event.timezone }})
+                <span
+                  v-if="organiserTime"
+                  class="event-hero__tz"
+                  data-test="event-organiser-time"
+                >
+                  ({{ organiserTime }})
                 </span>
               </div>
             </div>

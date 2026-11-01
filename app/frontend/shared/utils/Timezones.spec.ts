@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   formatInZone,
   isoToWallClock,
+  organiserTimeHint,
   resolveTimezone,
   wallClockToIso,
 } from "./Timezones";
@@ -65,5 +66,27 @@ describe("formatInZone", () => {
     expect(
       formatInZone("2026-11-05T01:00:00.000Z", "America/New_York", "HH:mm"),
     ).toBe("20:00");
+  });
+});
+
+describe("organiserTimeHint", () => {
+  const iso = "2026-11-05T01:00:00.000Z";
+
+  it("names the organiser's time when the viewer's clock reads differently", () => {
+    expect(organiserTimeHint(iso, "America/New_York", "Europe/Berlin")).toBe(
+      "Wed 20:00 New York (ET)",
+    );
+  });
+
+  it("is null when both clocks read the same", () => {
+    expect(
+      organiserTimeHint(iso, "America/New_York", "America/New_York"),
+    ).toBeNull();
+  });
+
+  it("falls back to the zone's name for one the form does not offer", () => {
+    expect(organiserTimeHint(iso, "America/Toronto", "UTC")).toBe(
+      "Wed 20:00 America/Toronto",
+    );
   });
 });
