@@ -8,6 +8,8 @@ export default {
 import HoloViewerModal from "@/shared/components/HoloViewer/Modal/index.vue";
 import { type ItemMedia } from "@/services/fyApi";
 import { useItemHolo } from "@/frontend/composables/useItemHolo";
+import { LOW_POWER_HOLO_SIZE_LIMIT } from "@/shared/components/HoloViewer/limits";
+import { useLowPowerDevice } from "@/shared/composables/useLowPowerDevice";
 
 type Props = {
   media: ItemMedia;
@@ -15,7 +17,14 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { holoModel, fallBackToPlainHolo } = useItemHolo(() => props.media);
+const lowPower = useLowPowerDevice();
+
+// With no switch left, a device that would have to confirm a large textured
+// holo is shown the plain one instead.
+const { holoModel, fallBackToPlainHolo } = useItemHolo(() => props.media, {
+  canLoad: (file) =>
+    !(lowPower.value && (file.size ?? 0) > LOW_POWER_HOLO_SIZE_LIMIT),
+});
 </script>
 
 <template>
