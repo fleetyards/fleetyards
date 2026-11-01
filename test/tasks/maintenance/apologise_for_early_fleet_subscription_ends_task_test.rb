@@ -60,6 +60,42 @@ module Maintenance
       assert_equal Date.new(2026, 11, 1), subscription.reload.ended_at
     end
 
+    # A notification broadcasts when it is created, so a rolled-back one would
+    # still reach an open tab.
+    test "a dry run creates no notification at all" do
+      close_early
+
+      travel_to Date.new(2026, 11, 2) do
+        assert_no_difference -> { ::Notification.count } do
+          run_task(dry_run: true)
+        end
+      end
+    end
+
+    test "an admin reopening the same row does not count as an apology" do
+      subscription = close_early
+
+      travel_to Date.new(2026, 11, 2) do
+        subscription.update!(ended_at: nil)
+        ::Subscriptions::Notifier.started(subscription)
+        run_task(dry_run: false)
+      end
+
+      assert_equal 1, apologies.count
+    end
+
+    test "a donation nominated again after the closure earns no apology" do
+      subscription = close_early
+
+      travel_to Date.new(2026, 11, 2) do
+        SupporterContribution.sole.update!(note: "nominated again")
+        run_task(dry_run: false)
+      end
+
+      assert_empty apologies
+      assert_equal Date.new(2026, 11, 1), subscription.reload.ended_at
+    end
+
     test "a subscription ended while still covered is reopened and its recipients get an apology" do
       subscription = close_early
 
@@ -106,12 +142,12 @@ module Maintenance
 
       subscription = @fleet.fleet_subscriptions.sole
 
-      travel_to Date.new(2026, 10, 5) do
+      travel_to Date.new(2026, 10, 15) do
         assert_equal 1, ::Subscriptions::Sync.call[:closed].size
         run_task(dry_run: false)
       end
 
-      assert_equal Date.new(2026, 10, 5), subscription.reload.ended_at
+      assert_equal Date.new(2026, 10, 15), subscription.reload.ended_at
       assert_empty apologies
     end
   end
