@@ -49,6 +49,15 @@ module Subscriptions
       assert_equal 1, notifications_for(@admin, "fleet_subscription_started").count
     end
 
+    test "a fleet the rollout has reached notifies its managers" do
+      Flipper.disable("fleet_subscriptions")
+      Flipper.enable_actor("fleet_subscriptions", @fleet)
+
+      Notifier.started(@subscription)
+
+      assert_equal 1, notifications_for(@admin, "fleet_subscription_started").count
+    end
+
     test "a plain member is not notified" do
       Notifier.started(@subscription)
 
