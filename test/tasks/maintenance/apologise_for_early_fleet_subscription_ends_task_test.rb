@@ -84,6 +84,28 @@ module Maintenance
       assert_equal 1, apologies.count
     end
 
+    # The reconciler runs daily and after every Ko-fi payment, so a failed run
+    # on the 1st leaves the closure to a later day.
+    test "a closure after the 1st is corrected too" do
+      travel_to Date.new(2026, 10, 16) do
+        create(:supporter_contribution, user: @supporter, fleet: @fleet,
+          amount_cents: ::Subscriptions.qualifying_amount_cents, started_at: Date.current)
+        ::Subscriptions::Sync.call
+      end
+
+      subscription = @fleet.fleet_subscriptions.sole
+
+      travel_to Date.new(2026, 11, 2) do
+        subscription.update!(ended_at: Date.current)
+        ::Subscriptions::Notifier.ended(subscription, cause: :contribution)
+      end
+
+      travel_to(Date.new(2026, 11, 3)) { run_task(dry_run: false) }
+
+      assert subscription.reload.open?
+      assert_equal 1, apologies.count
+    end
+
     test "a donation nominated again after the closure earns no apology" do
       subscription = close_early
 

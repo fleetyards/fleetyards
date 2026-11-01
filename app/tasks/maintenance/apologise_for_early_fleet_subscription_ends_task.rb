@@ -4,12 +4,13 @@ module Maintenance
   # Takes back the "has lost the fleet features" notices sent while a one-off
   # donation counted only for the calendar month it was paid in.
   #
-  # That rule only ever ended a subscription on the 1st of a month, so only
-  # notices sent on a 1st are candidates -- read from the notice rather than the
-  # row, which an admin may have reopened since. One is wrong when a donation
-  # that has not changed since still covered the fleet that day, judged by the rule
-  # `SupporterContribution.covering` applies now -- a donation nominated or
-  # edited after the closure says nothing about what entitled the fleet then.
+  # A notice is wrong when a donation that has not changed since still covered
+  # the fleet on the day it was sent -- read from the notice rather than the
+  # row, which an admin may have reopened since -- by the rule
+  # `SupporterContribution.covering` applies now. A donation nominated or
+  # edited after the closure says nothing about what entitled the fleet then,
+  # and that is also what keeps out a closure caused by a nomination being
+  # withdrawn.
   #
   # Each recipient of a wrong notice gets an apology, and a subscription whose
   # fleet is still covered is reopened as the same row: it should never have
@@ -70,13 +71,12 @@ module Maintenance
     end
 
     # Subscription => the ended notices it caused, for every subscription the
-    # reconciler closed on a 1st while its fleet was still covered.
+    # reconciler closed while its fleet was still covered.
     private def early_ends
       @early_ends ||= ::Notification
         .where(notification_type: "fleet_subscription_ended", record_type: "FleetSubscription")
         .where(record_id: FleetSubscription.seeded.select(:id))
         .includes(:user, record: :fleet)
-        .select { |notice| notice.created_at.to_date.day == 1 }
         .group_by(&:record)
         .select { |subscription, notices| early?(subscription, notices) }
     end
