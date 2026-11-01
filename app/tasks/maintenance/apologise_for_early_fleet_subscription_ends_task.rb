@@ -26,22 +26,23 @@ module Maintenance
 
     def process
       ActiveRecord::Base.with_advisory_lock(::Subscriptions::Sync::LOCK) do
-        early_ends.each { |subscription, notices| correct(subscription, notices) }
+        early_ends.each { |(subscription, _day), notices| correct(subscription, notices) }
       end
 
-      log "#{early_ends.size} subscriptions ended early, #{apologies} apologies, #{reopened} reopened"
+      log "#{early_ends.size} early closures, #{apologies} apologies, #{reopened} reopened"
       log "dry run -- nothing was sent or changed" if dry_run
     end
 
     private def correct(subscription, notices)
       fleet = subscription.fleet
-      reopen = covered?(subscription, Date.current) && !fleet.fleet_subscriptions.open.exists?
+      reopen = covered?(subscription, Date.current) &&
+        !fleet.fleet_subscriptions.open.exists? &&
+        reopened_ids.add?(subscription.id)
 
       log "#{fleet.name}: told it ended on #{closed_at(notices).to_date}, #{notices.size} notices#{", reopening" if reopen}"
 
       if reopen
         subscription.update!(ended_at: nil) unless dry_run
-        @reopened = reopened + 1
       end
 
       notices.each { |notice| apologise(notice, subscription) }
@@ -52,9 +53,8 @@ module Maintenance
 
       I18n.with_locale(user.notification_locale) do
         title = I18n.t("notifications.fleet_subscription_ended_in_error.title", fleet: subscription.fleet.name)
-        next if already_apologised?(user, subscription, title)
-
-        @apologies = apologies + 1
+        next if already_apologised?(user, subscription)
+        next unless apologised.add?([user.id, subscription.id])
         next if dry_run
 
         ::Notification.notify!(
@@ -70,20 +70,37 @@ module Maintenance
       end
     end
 
-    # Subscription => the ended notices it caused, for every subscription the
-    # reconciler closed while its fleet was still covered.
+    # [subscription, day] => the ended notices sent that day, for every closure
+    # the reconciler made while the fleet was still covered. Judged per day, so
+    # a genuine lapse later in the same row's life is not excused along with an
+    # early one.
+    #
+    # Only notices giving the lapsed donation as the reason: an administrator
+    # ending a grant says so in its title, and that decision is not undone here.
+    # The title is the only record of the cause, persisted in the recipient's
+    # locale, so every locale's wording is tried.
     private def early_ends
       @early_ends ||= ::Notification
         .where(notification_type: "fleet_subscription_ended", record_type: "FleetSubscription")
         .where(record_id: FleetSubscription.seeded.select(:id))
         .includes(:user, record: :fleet)
-        .group_by(&:record)
-        .select { |subscription, notices| early?(subscription, notices) }
+        .select { |notice| lapsed_donation?(notice) }
+        .group_by { |notice| [notice.record, notice.created_at.to_date] }
+        .select { |(subscription, day), notices| early?(subscription, day, notices) }
     end
 
-    private def early?(subscription, notices)
-      subscription.present? &&
-        covered?(subscription, closed_at(notices).to_date, unchanged_since: closed_at(notices))
+    private def lapsed_donation?(notice)
+      lapsed_donation_reasons.any? { |reason| notice.title.include?(reason) }
+    end
+
+    private def lapsed_donation_reasons
+      @lapsed_donation_reasons ||= I18n.available_locales.map do |locale|
+        I18n.t("notifications.fleet_subscription_ended.reasons.contribution", locale:)
+      end.uniq
+    end
+
+    private def early?(subscription, day, notices)
+      subscription.present? && covered?(subscription, day, unchanged_since: closed_at(notices))
     end
 
     private def closed_at(notices)
@@ -100,22 +117,35 @@ module Maintenance
     end
 
     # Matched on the apology's own title rather than on any later "started"
-    # notice, which an admin reopening the row by hand also sends.
-    private def already_apologised?(user, subscription, title)
+    # notice, which an admin reopening the row by hand also sends -- in every
+    # locale, since the recipient may have switched language since the last run.
+    private def already_apologised?(user, subscription)
+      titles = I18n.available_locales.map do |locale|
+        I18n.t("notifications.fleet_subscription_ended_in_error.title", fleet: subscription.fleet.name, locale:)
+      end
+
       ::Notification.exists?(
         user:,
         notification_type: "fleet_subscription_started",
         record: subscription,
-        title:
+        title: titles
       )
     end
 
+    private def apologised
+      @apologised ||= Set.new
+    end
+
     private def apologies
-      @apologies ||= 0
+      apologised.size
+    end
+
+    private def reopened_ids
+      @reopened_ids ||= Set.new
     end
 
     private def reopened
-      @reopened ||= 0
+      reopened_ids.size
     end
 
     private def log(message)

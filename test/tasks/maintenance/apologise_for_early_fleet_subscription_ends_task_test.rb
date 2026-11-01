@@ -53,7 +53,7 @@ module Maintenance
       travel_to Date.new(2026, 11, 2) do
         output = run_task(dry_run: true)
 
-        assert_match(/1 subscriptions ended early, 1 apologies, 1 reopened/, output)
+        assert_match(/1 early closures, 1 apologies, 1 reopened/, output)
       end
 
       assert_empty apologies
@@ -104,6 +104,46 @@ module Maintenance
 
       assert subscription.reload.open?
       assert_equal 1, apologies.count
+    end
+
+    test "an administrator ending the grant earns no apology" do
+      subscription = close_early
+      ::Notification.where(notification_type: "fleet_subscription_ended").delete_all
+
+      travel_to Date.new(2026, 11, 1) do
+        ::Subscriptions::Notifier.ended(subscription, cause: :manual)
+      end
+
+      travel_to(Date.new(2026, 11, 2)) { run_task(dry_run: false) }
+
+      assert_empty apologies
+      assert_equal Date.new(2026, 11, 1), subscription.reload.ended_at
+    end
+
+    test "a genuine lapse after an early one is not excused with it" do
+      subscription = close_early
+
+      travel_to(Date.new(2026, 11, 2)) { run_task(dry_run: false) }
+
+      travel_to Date.new(2026, 11, 20) do
+        assert_equal [subscription.id], ::Subscriptions::Sync.call[:closed].map(&:id)
+      end
+
+      travel_to(Date.new(2026, 11, 21)) { run_task(dry_run: false) }
+
+      assert_equal 1, apologies.count
+      assert_equal Date.new(2026, 11, 20), subscription.reload.ended_at
+    end
+
+    test "a recipient who switched language is not apologised to twice" do
+      close_early
+
+      travel_to(Date.new(2026, 11, 2)) { run_task(dry_run: false) }
+      @admin.update_columns(locale: "de")
+      travel_to(Date.new(2026, 11, 3)) { run_task(dry_run: false) }
+
+      assert_equal 1, ::Notification.where(notification_type: "fleet_subscription_started", user: @admin)
+        .where.not(title: nil).where("created_at > ?", Date.new(2026, 11, 1)).count
     end
 
     test "a donation nominated again after the closure earns no apology" do
