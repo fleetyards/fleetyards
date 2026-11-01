@@ -482,10 +482,10 @@ class FleetEventTest < ActiveSupport::TestCase
     assert_equal first.id, last.reload.split_from_id
   end
 
-  test "preset_cover_file ignores a preset that is not a bare file stem" do
+  test "preset_cover_path ignores a preset that is not a bare file stem" do
     event = build(:fleet_event, category: "other", cover_image_preset: "../bg-4")
 
-    assert_equal FleetEvent::PRESET_COVER_ROOT, event.preset_cover_file.dirname
+    assert_equal "images/missions/other.jpg", event.preset_cover_path
   end
 
   test "a preset that is not a bare file stem is refused, here and on a mission" do

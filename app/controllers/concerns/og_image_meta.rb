@@ -26,10 +26,13 @@ module OgImageMeta
 
   private def bundled_image_size(path)
     BUNDLED_IMAGE_SIZES.compute_if_absent(path) do
+      file = BundledAsset.file(path)
+      next [] if file.nil?
+
       require "vips"
 
       # Only the header is read; the pixels are never decoded.
-      image = Vips::Image.new_from_file(Rails.root.join("app/frontend", path).to_s)
+      image = Vips::Image.new_from_file(file.to_s)
       [image.width, image.height]
     rescue Vips::Error
       []
