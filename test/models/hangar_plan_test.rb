@@ -179,11 +179,61 @@ class HangarPlanTest < ActiveSupport::TestCase
     assert acquisition.errors.of_kind?(:base, :slot_filled)
   end
 
-  test "a route has to end on the slot's ship" do
+  test "a route with upgrades has to end on the slot's ship" do
     acquisition = build_acquisition(start_kind: "store", start_model: @cutlass)
+    acquisition.upgrade_steps.build(source_kind: "store", origin_model: @cutlass, target_model: @constellation, position: 0)
 
     assert_not acquisition.valid?
     assert acquisition.errors.of_kind?(:base, :chain_mismatch)
+  end
+
+  test "a start elsewhere without upgrades holds both ends until its route is planned" do
+    acquisition = create_acquisition(start_kind: "store", start_model: @cutlass)
+
+    assert_not acquisition.route_complete?
+    assert create_acquisition_on_new_slot(@cutlass).route_complete?
+  end
+
+  test "a route moves to another slot only where that slot has room" do
+    acquisition = create_acquisition(start_kind: "store", start_model: @cutlass)
+    full = create_acquisition_on_new_slot(@cutlass).candidate
+
+    acquisition.candidate = full
+    assert_not acquisition.valid?
+    assert acquisition.errors.of_kind?(:base, :slot_filled)
+
+    full.slot.update!(quantity: 2)
+    assert acquisition.reload.update(candidate: full)
+  end
+
+  test "a store upgrade leads only into and out of ships RSI sells upgrades for" do
+    pioneer = create(:model, pledge_price: 925, on_sale: true, created_at: 1.year.ago)
+    slot = create(:hangar_plan_slot, hangar_plan: @plan)
+    candidate = create(:hangar_plan_candidate, slot:, model: pioneer)
+
+    into = @plan.acquisitions.new(candidate:, start_kind: "store", start_model: @carrack)
+    into.upgrade_steps.build(source_kind: "store", origin_model: @carrack, target_model: pioneer, position: 0)
+    out = build_acquisition(start_kind: "store", start_model: pioneer)
+    out.upgrade_steps.build(source_kind: "store", origin_model: pioneer, target_model: @carrack, position: 0)
+
+    assert_not into.valid?
+    assert into.upgrade_steps.first.errors.of_kind?(:to_model_id, :not_upgradable)
+    assert_not out.valid?
+    assert out.upgrade_steps.first.errors.of_kind?(:from_model_id, :not_upgradable)
+    assert @plan.acquisitions.new(candidate:, start_kind: "store", start_model: pioneer).valid?
+  end
+
+  test "an upgrade the user holds counts whatever the store sells" do
+    pioneer = create(:model, pledge_price: 925, on_sale: true, created_at: 1.year.ago)
+    slot = create(:hangar_plan_slot, hangar_plan: @plan)
+    candidate = create(:hangar_plan_candidate, slot:, model: pioneer)
+    ccu = create(:hangar_pledge_item, user: @user, kind: "ccu", name: "Upgrade - Carrack to Pioneer")
+
+    acquisition = @plan.acquisitions.new(candidate:, start_kind: "store", start_model: @carrack)
+    acquisition.upgrade_steps.build(source_kind: "owned_ccu", hangar_pledge_item: ccu, origin_model: @carrack,
+      target_model: pioneer, position: 0)
+
+    assert acquisition.valid?, acquisition.upgrade_steps.first.errors.full_messages.to_sentence
   end
 
   test "each upgrade starts where the one before ended" do
@@ -258,5 +308,11 @@ class HangarPlanTest < ActiveSupport::TestCase
 
   private def create_acquisition(**attributes)
     build_acquisition(**attributes).tap(&:save!)
+  end
+
+  private def create_acquisition_on_new_slot(model)
+    slot = create(:hangar_plan_slot, hangar_plan: @plan)
+    candidate = create(:hangar_plan_candidate, slot:, model:)
+    @plan.acquisitions.create!(candidate:, start_kind: "store", start_model: model)
   end
 end

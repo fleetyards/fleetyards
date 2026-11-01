@@ -453,6 +453,20 @@ class Admin::Api::V1::ModelsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "PUT /models/:id overrides what the stores and hangars said about its CCUs" do
+    model = create(:model, ccu_target_seen_at: 1.day.ago)
+    sign_in @user
+
+    assert_api_response :put, 200, path_params: {id: model.id}, body: {ccuOverride: "none"} do
+      assert_equal "none", parsed_body["ccuOverride"]
+      assert_not_nil parsed_body["ccuTargetSeenAt"]
+    end
+    assert_equal "none", model.reload.ccu_target_status
+
+    assert_api_response :put, 200, path_params: {id: model.id}, body: {ccuOverride: nil}
+    assert_equal "sales_only", model.reload.ccu_target_status
+  end
+
   test "PUT /models/:id marks a ship as in-game only" do
     model = create(:model)
     sign_in @user

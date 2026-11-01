@@ -52,8 +52,6 @@
       },
       "notOnSale": "未在售",
       "routes": "获取方式",
-      "addRoute": "添加获取 %{ship} 的途径",
-      "addRouteShort": "添加途径",
       "editRoute": "获取 %{ship} 的途径",
       "removeRoute": "移除途径",
       "unresolvedUnits": {
@@ -87,7 +85,6 @@
         "startKind": "起始状态",
         "ownedShip": "你机库中的飞船",
         "buyback": "回购 pledge",
-        "startModel": "飞船",
         "priceOverride": "实付价格",
         "priceOverrideInfo": "留空则使用当前商店价格，也可填写促销价或 warbond 价格。",
         "upgradeSource": "升级自",
@@ -134,6 +131,7 @@
       "vehicleStatuses": {
         "kept": "保留",
         "upgraded": "已升级",
+        "unrouted": "缺少路线",
         "melted": "已熔毁",
         "pending": "待决定",
         "change": "应更换",
@@ -198,7 +196,6 @@
         "happens": "会发生什么",
         "meltCredit": "%{value} 信用点",
         "leaves": "离开你的机库",
-        "notInPlan": "不在方案中",
         "notOwned": "不在你的机库中",
         "lead": "左边是你拥有的每艘飞船，右边是方案需要的每艘飞船，中间是会发生的事。",
         "anotherPlan": "与其他方案比较",
@@ -218,6 +215,10 @@
           "upgraded": {
             "one": "已升级 %{count}",
             "other": "已升级 %{count}"
+          },
+          "unrouted": {
+            "one": "%{count} 艘没有路线",
+            "other": "%{count} 艘没有路线"
           },
           "melted": {
             "one": "已熔 %{count}",
@@ -240,9 +241,11 @@
           },
           "shipOf": "第 %{number} 艘，共 %{count} 艘",
           "noRoute": "尚无途径",
+          "planRoute": "规划路线",
+          "noUpgrade": "无法升级",
+          "pickOtherStart": "请选择其他起点",
           "notCounted": "未计入总额",
           "noShip": "尚无飞船",
-          "toDecide": "尚未决定",
           "folded": {
             "kept": {
               "one": "%{count} 艘原样保留",
@@ -304,7 +307,8 @@
         },
         "rebased": "方案已根据你的机库更新。",
         "sharingOn": "已开启分享。任何拥有链接的人都可以查看此计划。",
-        "copyFailed": "无法复制链接，请从输入框中复制。"
+        "copyFailed": "无法复制链接，请从输入框中复制。",
+        "filtersSaved": "已为 %{slot} 保存筛选"
       },
       "filterChips": {
         "priceFrom": "%{price} 起",
@@ -340,19 +344,8 @@
       "route": {
         "stillToReach": "仍需到达",
         "yourRoute": "你的途径",
-        "startFirst": "选择飞船的来源以查看途径。",
         "done": "途径以 %{ship} 结束。",
-        "startHints": {
-          "owned": "你已拥有的飞船。如果不是 %{ship}，请添加将其变为 %{ship} 的升级。",
-          "buyback": "你已熔掉、可以从 RSI 回购的礼包。没有回购代币时需要花新钱，不能用商店信用点。",
-          "store": "RSI 商店中的新礼包。可以先买更便宜的飞船再升级。",
-          "ingame": "在游戏中用 aUEC 购买，因此不花钱。游戏内购买的飞船无法升级，所以必须直接是 %{ship}。"
-        },
-        "noVehicles": "你的机库中没有可用于此途径的飞船。",
-        "noBuybacks": "你没有可回购的礼包。请从你的 RSI 账户同步。",
-        "pledgeShip": "礼包中的飞船",
         "isTarget": "同一艘飞船",
-        "holdsTarget": "包含该飞船",
         "search": "搜索",
         "noMatch": "没有匹配项。",
         "reaches": "可到达 %{ship}",
@@ -367,8 +360,6 @@
         "showFitting": "只显示合适的升级",
         "unknownTarget": "升级到哪艘飞船",
         "startCost": "起点",
-        "includesShip": "包含 %{ship}",
-        "cheaperOnly": "只列出比 %{ship}（%{price}）便宜的飞船，因为你会从它们升级。",
         "sort": {
           "price": "价格",
           "name": "名称"
@@ -388,40 +379,9 @@
           "owned_ccu": "你 RSI 机库中的升级没有从 %{ship} 出发的。",
           "buyback": "你的回购升级中没有从 %{ship} 出发的。"
         },
-        "direction": {
-          "label": "构建途径",
-          "forward": "从起点开始",
-          "reverse": "从目标倒推"
-        },
-        "directionHints": {
-          "forward": "先选择飞船的来源，再选择把它变为 %{ship} 的升级。",
-          "reverse": "从 %{ship} 倒推：选择以它结束的升级，再选择在其起点结束的升级。停在你拥有、可回购或可购买的飞船上。"
-        },
-        "startPending": "起点待选",
-        "reverseStart": "途径从 %{ship} 开始。",
-        "unknownSource": "从哪艘飞船升级",
-        "noHeldInto": {
-          "owned_ccu": "你 RSI 机库中的升级没有以 %{ship} 结束的。",
-          "buyback": "你的回购升级中没有以 %{ship} 结束的。"
-        },
-        "upgradeInto": "升级至 %{ship}",
-        "upgradesTo": "至 %{ship}",
-        "inHangar": "在你的机库中",
-        "buybackAvailable": "可回购",
-        "nextStep": "途径现在从 %{ship} 开始。添加升级至它，或选择 %{ship} 作为起点。",
-        "addUpgradeInto": "添加升级至 %{ship}",
-        "startHere": "从 %{ship} 开始",
         "shipCard": "飞船",
         "useToken": "使用回购代币",
-        "withToken": "已用代币支付",
-        "buyTarget": "直接购买 %{ship}",
-        "startShort": {
-          "owned": "机库",
-          "buyback": "回购",
-          "store": "商店",
-          "ingame": "游戏内"
-        },
-        "ingameNoUpgrades": "游戏内购买的飞船无法升级。请先移除升级。"
+        "withToken": "已用代币支付"
       },
       "meltList": {
         "none": "根据 RSI，你的飞船都不可熔。关闭筛选即可任选飞船。",
@@ -444,16 +404,54 @@
         }
       },
       "decisions": {
-        "keep": "原样保留",
-        "upgrade": "升级",
         "melt": "熔炼",
         "change": "标记为应更换",
         "pending": "改回待决定",
         "upgradeTo": "将 %{name} 升级为",
         "keepPending": "保留所有待决定的"
       },
+      "pick": {
+        "pickStart": "选择起点",
+        "pickEnd": "选择终点",
+        "startOf": "为 %{ship} 选择起点",
+        "endOf": "选择 %{ship} 的终点",
+        "startTitle": "%{ship} 的起点",
+        "startEyebrow": "起点舰船",
+        "endTitle": "%{ship} 的终点",
+        "endEyebrow": "终点舰船",
+        "buyNew": "在商店购买新船",
+        "current": "当前起点",
+        "use": "使用",
+        "noShips": "机库中没有可用于此槽位的舰船。",
+        "removeStart": "从槽位中移除",
+        "same": "同一艘舰船，保持原样",
+        "sameModel": "相同型号",
+        "noEnds": "没有这艘舰船可以升级成的舰船。",
+        "removeEnd": "从计划中移除",
+        "anyShip": "任意舰船",
+        "buyChosen": "你接下来选择的舰船",
+        "onlyMelt": "这艘舰船没有升级，只能熔炼",
+        "excludes": "排除 %{ships}",
+        "ccuSalesOnly": "CCU 仅在促销期间出售",
+        "ccuUnknown": "尚未见过 CCU",
+        "sources": {
+          "hangar": "你的机库",
+          "buyback": "回购",
+          "store": "商店"
+        },
+        "filters": "筛选起点",
+        "saveFilters": "为此槽位保存筛选",
+        "chooseShip": "选择槽位的舰船",
+        "earnInGame": "在游戏中获得",
+        "newSlot": "新槽位",
+        "endSources": {
+          "plan": "计划中的槽位",
+          "catalogue": "任意舰船"
+        }
+      },
       "slotsTitle": "槽位",
-      "editSlots": "编辑槽位"
+      "editSlots": "编辑槽位",
+      "slotNumber": "槽位 %{number}"
     }
   }
 }

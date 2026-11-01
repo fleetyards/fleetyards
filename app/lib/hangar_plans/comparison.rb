@@ -5,7 +5,7 @@ module HangarPlans
   # how the count of each model changes. Only decided slots are targets; an
   # undecided slot has not said which ship it wants yet.
   class Comparison
-    VEHICLE_STATUSES = %w[kept upgraded melted pending change unassigned].freeze
+    VEHICLE_STATUSES = %w[kept upgraded unrouted melted pending change unassigned].freeze
     CHANGES = %w[added removed more fewer unchanged].freeze
 
     VehicleStatus = Data.define(:vehicle, :status, :target_model)
@@ -50,6 +50,11 @@ module HangarPlans
           VehicleStatus.new(vehicle:, status: "kept", target_model: vehicle.model)
         elsif route.nil?
           VehicleStatus.new(vehicle:, status: marks.fetch(vehicle.id, "unassigned"), target_model: nil)
+        elsif !decided_routes.key?(vehicle.id)
+          # Picked as the start for a slot still choosing its ship.
+          VehicleStatus.new(vehicle:, status: "unrouted", target_model: nil)
+        elsif !route.route_complete?
+          VehicleStatus.new(vehicle:, status: "unrouted", target_model: route.candidate.model)
         elsif route.upgrade_steps.any?
           VehicleStatus.new(vehicle:, status: "upgraded", target_model: route.upgrade_steps.last.target_model)
         else
@@ -83,7 +88,7 @@ module HangarPlans
     private def after_models
       @after_models ||= begin
         open_units = gaps.each_with_object(Hash.new(0)) { |gap, units| units[gap.model.id] += gap.count }
-        left_out = vehicles.reject { |entry| entry.status == "melted" || owned_routes.key?(entry.vehicle.id) }
+        left_out = vehicles.reject { |entry| entry.status == "melted" || decided_routes.key?(entry.vehicle.id) }
           .map { |entry| entry.vehicle.model }
 
         staying = left_out.reject do |model|
@@ -97,16 +102,20 @@ module HangarPlans
       end
     end
 
-    # Routes on a slot that has not picked its ship yet say nothing about what
-    # happens to the hangar.
     private def owned_routes
-      @owned_routes ||= plan.acquisitions.where(start_kind: "owned", hangar_plan_candidate_id: decided_candidate_ids)
-        .includes(upgrade_steps: {target_model: MODEL_PRELOAD})
+      @owned_routes ||= plan.acquisitions.where(start_kind: "owned")
+        .includes(:start_model, candidate: {model: MODEL_PRELOAD}, upgrade_steps: {target_model: MODEL_PRELOAD})
         .index_by(&:source_vehicle_id)
     end
 
+    # A start for a slot that has not picked its ship yet says nothing about
+    # what the ship becomes, so the hangar after the plan still holds it.
+    private def decided_routes
+      @decided_routes ||= owned_routes.select { |_, route| decided_candidate_ids.include?(route.hangar_plan_candidate_id) }
+    end
+
     private def decided_candidate_ids
-      plan.slots.includes(:candidates).filter_map { |slot| slot.decided_candidate&.id }
+      @decided_candidate_ids ||= plan.slots.includes(:candidates).filter_map { |slot| slot.decided_candidate&.id }.to_set
     end
 
     private def live_vehicles

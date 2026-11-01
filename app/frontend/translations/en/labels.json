@@ -1239,6 +1239,17 @@
         "topViewColored": "Top View Colored",
         "onSale": "On Sale",
         "playerOwnable": "Player Ownable?",
+        "ccuOverride": "CCUs",
+        "ccuOverrides": {
+          "allowed": "RSI sells CCUs into and out of it",
+          "none": "RSI sells no CCUs for it"
+        },
+        "ccuEvidence": {
+          "onSale": "On sale in the store today",
+          "into": "CCU into it first seen %{date}",
+          "outOf": "CCU out of it first seen %{date}",
+          "none": "No CCU seen in any store, hangar or buy-back"
+        },
         "ingameOnly": "In-game only",
         "stealth": "Stealth",
         "rsiFocus": "RSI: %{value}",

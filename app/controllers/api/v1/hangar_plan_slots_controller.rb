@@ -54,10 +54,7 @@ module Api
       def choose
         candidate = @slot.candidates.find(params[:candidate_id])
 
-        HangarPlanSlot.transaction do
-          @slot.candidates.where.not(id: candidate.id).destroy_all
-          @slot.touch
-        end
+        @slot.choose!(candidate)
 
         render_hangar_plan
       end

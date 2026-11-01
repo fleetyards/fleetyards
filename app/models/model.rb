@@ -106,6 +106,48 @@ class Model < ApplicationRecord
   end
   alias_method :in_game, :in_game?
 
+  # Whether RSI sells upgrades (CCUs) into and out of a ship. The store only
+  # lists the ones on sale today, and many come back only for a sale, so a CCU
+  # once seen anywhere - the store, a synced hangar, a buy-back - counts for
+  # good. A ship nobody has seen one for is not upgradable once it has been
+  # listed long enough for one to show up; an admin overrides either way.
+  CCU_OVERRIDES = %w[allowed none].freeze
+  CCU_TARGET_STATUSES = %w[on_sale sales_only unknown none].freeze
+  CCU_SOURCE_STATUSES = %w[known unknown none].freeze
+  CCU_UNKNOWN_FOR = 90.days
+
+  validates :ccu_override, inclusion: {in: CCU_OVERRIDES}, allow_nil: true
+
+  def ccu_target_status
+    return "none" if ccu_out_of_store? || ccu_override == "none"
+    return "on_sale" if ccu_on_sale
+    return "sales_only" if ccu_override == "allowed" || ccu_target_seen_at.present?
+
+    ccu_unseen_status
+  end
+
+  # Whatever a CCU can reach can be upgraded further, so a ship seen as a
+  # target counts as a source too.
+  def ccu_source_status
+    return "none" if ccu_out_of_store? || ccu_override == "none"
+    return "known" if ccu_override == "allowed" || ccu_source_seen_at.present? || ccu_target_seen_at.present?
+
+    ccu_unseen_status
+  end
+
+  def ccu_into? = ccu_target_status != "none"
+
+  def ccu_out_of? = ccu_source_status != "none"
+
+  # The store sells upgrades only for ships a player can pledge for there.
+  private def ccu_out_of_store?
+    ingame_only || !player_ownable
+  end
+
+  private def ccu_unseen_status
+    (created_at.nil? || created_at > CCU_UNKNOWN_FOR.ago) ? "unknown" : "none"
+  end
+
   # The filter keeps its name -- a ransacker wins over a same-named column -- so
   # `inGameEq` needs no API change. An `EXISTS` rather than the correlated
   # subquery the fact filters use, because this asks whether a row is there

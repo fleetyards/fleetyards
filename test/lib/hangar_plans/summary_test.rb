@@ -90,6 +90,17 @@ class HangarPlans::SummaryTest < ActiveSupport::TestCase
     assert_not summary.complete?
   end
 
+  test "a start without its route counts as unresolved, not at its price" do
+    slot = decided_slot(@carrack)
+    @plan.acquisitions.create!(candidate: slot, start_kind: "store", start_model: @cutlass)
+
+    summary = HangarPlans::Summary.new(@plan)
+
+    assert_equal 0, summary.spend_max
+    assert_equal 1, summary.unresolved_count
+    assert_not summary.complete?
+  end
+
   test "an undecided slot costs between its cheapest and dearest candidate, less ships already held" do
     slot = create(:hangar_plan_slot, hangar_plan: @plan, quantity: 2)
     create(:hangar_plan_candidate, slot:, model: @cutlass)
