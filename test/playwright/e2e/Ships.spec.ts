@@ -10,7 +10,7 @@ test.describe("Ships", () => {
   });
 
   test("Loads", async ({ page, nav }) => {
-    await nav.click("ships");
+    await nav.click("ships-menu", "ships");
 
     await expect(page).toHaveURL(/\/ships/);
 
