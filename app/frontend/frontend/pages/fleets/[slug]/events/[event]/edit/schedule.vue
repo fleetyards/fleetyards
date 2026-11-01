@@ -23,12 +23,17 @@ import {
   type FleetEventUpdateInput,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
-import { TIMEZONE_OPTIONS } from "@/shared/utils/Timezones";
+import {
+  DATETIME_LOCAL_FORMAT,
+  TIMEZONE_OPTIONS,
+  isoToWallClock,
+  wallClockToIso,
+} from "@/shared/utils/Timezones";
 import {
   useRecurrence,
   WEEKDAYS_MONDAY_FIRST,
 } from "@/frontend/composables/useRecurrence";
-import { format, parseISO } from "date-fns";
+import { format } from "date-fns";
 
 type Props = {
   fleet: Fleet;
@@ -39,17 +44,6 @@ const props = defineProps<Props>();
 
 const { t } = useI18n();
 const { weekdayName } = useRecurrence();
-
-const LOCAL_FORMAT = "yyyy-MM-dd'T'HH:mm";
-
-const toLocal = (iso: string | null | undefined) => {
-  if (!iso) return "";
-  try {
-    return format(parseISO(iso), LOCAL_FORMAT);
-  } catch {
-    return "";
-  }
-};
 
 const MAX_RECURRENCE_EVERY = 99;
 
@@ -83,8 +77,13 @@ const validationSchema = {
 const { defineField, handleSubmit, meta, setErrors } =
   useForm<FleetEventUpdateInput>({
     initialValues: {
-      startsAt: toLocal(props.event.startsAt) as never,
-      endsAt: toLocal(props.event.endsAt) as never,
+      // The inputs show the event's own wall clock, so an organiser in another
+      // zone sees the time the event was planned for, not their local one.
+      startsAt: isoToWallClock(
+        props.event.startsAt,
+        props.event.timezone,
+      ) as never,
+      endsAt: isoToWallClock(props.event.endsAt, props.event.timezone) as never,
       timezone: props.event.timezone,
       recurring: props.event.recurring ?? false,
       recurrenceInterval: (props.event.recurrenceInterval ?? "weekly") as never,
@@ -118,7 +117,11 @@ watch(recurring, (on) => {
 });
 
 const startWday = computed(() =>
-  wdayIn(startsAt.value as string | undefined, timezone.value as string),
+  wdayIn(
+    wallClockToIso(startsAt.value as string, timezone.value as string) ??
+      undefined,
+    timezone.value as string,
+  ),
 );
 
 const weekdayChecked = (wday: number) =>
@@ -164,7 +167,7 @@ const addHours = (value: string, hours: number) => {
   const parsed = new Date(value);
   if (isNaN(parsed.getTime())) return "";
   parsed.setHours(parsed.getHours() + hours);
-  return format(parsed, LOCAL_FORMAT);
+  return format(parsed, DATETIME_LOCAL_FORMAT);
 };
 
 // An end nobody has moved follows the start; once it has been set by hand it
@@ -180,19 +183,19 @@ watch(startsAt, (newStart) => {
   endsAt.value = addHours(newStart as string, 2) as never;
 });
 
-// vee-validate hands back local datetime strings; the API wants ISO.
+// vee-validate hands back wall-clock strings, read in the event's zone.
 const wrapHandleSubmit = (cb: SubmissionHandler<FleetEventUpdateInput>) =>
   handleSubmit((values, ctx) => {
     const endKind = recurrenceEndKind.value;
     return cb(
       {
         ...values,
-        startsAt: values.startsAt
-          ? (new Date(values.startsAt as string).toISOString() as never)
-          : undefined,
-        endsAt: values.endsAt
-          ? (new Date(values.endsAt as string).toISOString() as never)
-          : null,
+        startsAt: (wallClockToIso(values.startsAt as string, values.timezone) ??
+          undefined) as never,
+        endsAt: wallClockToIso(
+          values.endsAt as string,
+          values.timezone,
+        ) as never,
         recurring: !!values.recurring,
         recurrenceInterval: values.recurring
           ? (values.recurrenceInterval as never)

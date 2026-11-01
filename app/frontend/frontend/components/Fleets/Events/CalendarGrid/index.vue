@@ -26,6 +26,7 @@ import { useI18nStore } from "@/shared/stores/i18n";
 import { useMissionCover } from "@/frontend/composables/useMissionCover";
 import { useRouter } from "vue-router";
 import { format, parseISO } from "date-fns";
+import { browserTimezone } from "@/shared/utils/Timezones";
 
 type CalendarViewKind = "month" | "week";
 
@@ -81,6 +82,13 @@ const initialDate = (() => {
 })();
 
 const titleLabel = ref("");
+
+// The grid shows every event at the reader's own clock: the library converts
+// each instant to the browser's zone. Naming that zone is what tells a reader
+// whose events were planned elsewhere why 20:00 New York shows as 02:00.
+const timezoneLabel = computed(() =>
+  t("labels.fleets.events.calendar.timesIn", { zone: browserTimezone() }),
+);
 
 // The first day the view shows. A week is named by its Monday, where the
 // calendar's own date is whatever day it was opened on.
@@ -385,6 +393,9 @@ onUnmounted(() => {
         </BtnGroup>
       </template>
     </PanelHeading>
+    <p class="fy-calendar__zone" data-test="calendar-timezone">
+      {{ timezoneLabel }}
+    </p>
     <slot name="notice" />
     <div ref="calendarEl" class="fy-calendar__body ec-dark" />
   </Panel>
@@ -402,6 +413,13 @@ onUnmounted(() => {
  * .chip--included. Picking them out of the design system rather than by eye is
  * what keeps a highlighted day and a selected chip reading as the same strength.
  */
+.fy-calendar__zone {
+  margin: 0;
+  padding: 6px 12px;
+  color: var(--color-text-dim, #959595);
+  font-size: 0.85em;
+}
+
 .fy-calendar__body {
   :deep(.ec) {
     --ec-bg-color: transparent;

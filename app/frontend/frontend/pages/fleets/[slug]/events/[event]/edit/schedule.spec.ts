@@ -137,3 +137,36 @@ describe("FleetEventEditSchedulePage recurrence", () => {
     expect((await save(subject)).recurrenceWeekdays).toEqual([]);
   });
 });
+
+describe("FleetEventEditSchedulePage times", () => {
+  // The browser running the specs may sit in any zone; these hold in all of
+  // them because the inputs follow the event's zone, not the browser's.
+  it("shows the start as the wall clock in the event's zone", async () => {
+    const subject = await mount(
+      series({
+        recurring: false,
+        startsAt: "2026-11-05T01:00:00Z",
+        timezone: "America/New_York",
+      }),
+    );
+
+    const startField = subject.findAllComponents(FormDateTime)[0];
+    expect(startField.props("modelValue")).toBe("2026-11-04T20:00");
+  });
+
+  it("saves a typed time in the event's zone", async () => {
+    const subject = await mount(
+      series({
+        recurring: false,
+        startsAt: "2026-11-05T01:00:00Z",
+        timezone: "America/New_York",
+      }),
+    );
+
+    const startField = subject.findAllComponents(FormDateTime)[0];
+    startField.vm.$emit("update:modelValue", "2026-11-06T21:30");
+    await flushPromises();
+
+    expect((await save(subject)).startsAt).toBe("2026-11-07T02:30:00.000Z");
+  });
+});

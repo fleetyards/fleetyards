@@ -4057,6 +4057,7 @@
           },
           "calendar": {
             "month": "Monat",
+            "timesIn": "Zeiten in %{zone}",
             "week": "Woche",
             "weekTitle": "Woche vom %{date}"
           },

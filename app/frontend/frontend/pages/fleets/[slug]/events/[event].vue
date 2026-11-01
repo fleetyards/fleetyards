@@ -48,7 +48,7 @@ import { useRecurrence } from "@/frontend/composables/useRecurrence";
 import { checkAccess } from "@/shared/utils/Access";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { FeatureFlagName } from "@/services/fyApi";
-import { format, parseISO } from "date-fns";
+import { formatInZone } from "@/shared/utils/Timezones";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useFleetEventListContextStore } from "@/frontend/stores/fleetEventListContext";
 
@@ -224,22 +224,27 @@ const yourSignupContextLabel = computed(() => {
   return parts.join(" · ");
 });
 
+// In the event's own zone, which the page names beside the times: the
+// browser's zone would put a label on a time it does not describe.
+const EVENT_TIME_FORMAT = "EEE, MMM d, yyyy · HH:mm";
+
 const startDate = computed(() => {
   if (!event.value) return "";
-  try {
-    return format(parseISO(event.value.startsAt), "EEE, MMM d, yyyy · HH:mm");
-  } catch {
-    return event.value.startsAt;
-  }
+  return (
+    formatInZone(
+      event.value.startsAt,
+      event.value.timezone,
+      EVENT_TIME_FORMAT,
+    ) || event.value.startsAt
+  );
 });
 
 const endDate = computed(() => {
   if (!event.value?.endsAt) return null;
-  try {
-    return format(parseISO(event.value.endsAt), "EEE, MMM d, yyyy · HH:mm");
-  } catch {
-    return event.value.endsAt;
-  }
+  return (
+    formatInZone(event.value.endsAt, event.value.timezone, EVENT_TIME_FORMAT) ||
+    event.value.endsAt
+  );
 });
 
 const signupsLocked = computed(
