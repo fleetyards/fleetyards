@@ -46,13 +46,15 @@ module Supporters
     end
 
     private def remind(user, contributions, ending_on)
-      fleet = contributions.filter_map(&:fleet).first
+      fleet_until = ending_on + ::Subscriptions::Sync::GRACE_DAYS
+      fleet = contributions.filter_map(&:fleet).uniq.find { |candidate| loses_features?(candidate, fleet_until) }
 
       I18n.with_locale(user.notification_locale) do
         date = I18n.l(ending_on, format: :long)
         body =
           if fleet
-            I18n.t("notifications.supporter_coverage_ending.body_with_fleet", date:, fleet: fleet.name)
+            I18n.t("notifications.supporter_coverage_ending.body_with_fleet",
+              date:, fleet: fleet.name, fleet_date: I18n.l(fleet_until, format: :long))
           else
             I18n.t("notifications.supporter_coverage_ending.body", date:)
           end
@@ -66,6 +68,20 @@ module Supporters
           record: contributions.max_by(&:started_at)
         )
       end
+    end
+
+    # Whether the fleet's features really end with this donation, on the last
+    # day the reconciler's grace keeps them. Not when they come from somewhere
+    # else -- a manual grant, or another donation that still covers the fleet
+    # the day after.
+    private def loses_features?(fleet, fleet_until)
+      day_after = fleet_until + 1
+
+      FleetSubscription.open.seeded.where(fleet:).exists? &&
+        !FleetSubscription.where(fleet:).where.not(granted_via: "contribution").active_on(day_after).exists? &&
+        SupporterContribution.where(fleet:)
+          .covering(day_after, grace_days: ::Subscriptions::Sync::GRACE_DAYS)
+          .none? { |contribution| ::Subscriptions.qualifying?(contribution) }
     end
   end
 end

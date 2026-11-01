@@ -68,7 +68,7 @@ de:
     supporter_coverage_ending:
       title: "Deine Spenden-Vorteile enden am %{date}"
       body: "Die Unterstützer-Vorteile deiner einmaligen Spende enden am %{date}. Verliere sie nicht — wechsle zu einer monatlichen Spende, um sie zu behalten."
-      body_with_fleet: "Die Unterstützer-Vorteile deiner einmaligen Spende und die Flotten-Funktionen von %{fleet} enden am %{date}. Verliere sie nicht — wechsle zu einer monatlichen Spende, um sie zu behalten."
+      body_with_fleet: "Die Unterstützer-Vorteile deiner einmaligen Spende enden am %{date}, die Flotten-Funktionen von %{fleet} am %{fleet_date}. Verliere sie nicht — wechsle zu einer monatlichen Spende, um sie zu behalten."
     fleet_rsi_verification_lost:
       title: "%{fleet} ist nicht mehr für %{sid} verifiziert"
       body: "Eine andere Flotte hat ihren Verifizierungscode auf die RSI-Seite der Organisation %{sid} gesetzt und damit gezeigt, dass sie sie verwaltet. Deine Flotte zeigt die SID nicht mehr als verifiziert. Wenn %{sid} deine Organisation ist, verifiziere sie in den Flotteneinstellungen erneut."

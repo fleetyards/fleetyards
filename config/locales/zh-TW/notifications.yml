@@ -68,7 +68,7 @@ zh-TW:
     supporter_coverage_ending:
       title: "你的捐贈權益將於 %{date} 結束"
       body: "你的一次性捐贈所帶來的支持者權益將於 %{date} 結束。別錯過——改為每月捐贈即可繼續保留。"
-      body_with_fleet: "你的一次性捐贈所帶來的支持者權益以及 %{fleet} 的艦隊功能將於 %{date} 結束。別錯過——改為每月捐贈即可繼續保留。"
+      body_with_fleet: "你的一次性捐贈所帶來的支持者權益將於 %{date} 結束，%{fleet} 的艦隊功能將於 %{fleet_date} 結束。別錯過——改為每月捐贈即可繼續保留。"
     fleet_rsi_verification_lost:
       title: "%{fleet} 不再是 %{sid} 的已驗證艦隊"
       body: "另一支艦隊將其驗證碼放到了 RSI 組織 %{sid} 的頁面上，證明它在管理該組織。你的艦隊不再將該 SID 顯示為已驗證。如果 %{sid} 是你的組織，請在艦隊設定中重新驗證。"

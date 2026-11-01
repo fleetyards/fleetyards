@@ -39,13 +39,46 @@ module Supporters
       assert_empty reminders
     end
 
-    test "the reminder names the fleet that loses its features" do
-      membership = create(:fleet_membership, :accepted, user: @user)
-      donate(fleet: membership.fleet)
+    private def nominated_fleet
+      fleet = create(:fleet_membership, :accepted, user: @user).fleet
+
+      travel_to Date.new(2026, 10, 16) do
+        donate(fleet:, amount_cents: ::Subscriptions.qualifying_amount_cents)
+        ::Subscriptions::Sync.call
+      end
+
+      fleet
+    end
+
+    test "the reminder names the fleet that loses its features, with the reconciler's grace" do
+      fleet = nominated_fleet
 
       travel_to(Date.new(2026, 11, 12)) { CoverageEndingReminderJob.new.perform }
 
-      assert_includes reminders.sole.body, membership.fleet.name
+      body = reminders.sole.body
+      assert_includes body, fleet.name
+      assert_includes body, I18n.l(Date.new(2026, 11, 18), format: :long)
+    end
+
+    test "a fleet another donation keeps covered is not named" do
+      fleet = nominated_fleet
+      other = create(:fleet_membership, :accepted, fleet:).user
+      create(:supporter_contribution, user: other, fleet:,
+        amount_cents: ::Subscriptions.qualifying_amount_cents, started_at: Date.new(2026, 11, 10))
+
+      travel_to(Date.new(2026, 11, 12)) { CoverageEndingReminderJob.new.perform }
+
+      assert_not_includes reminders.sole.body, fleet.name
+    end
+
+    test "a fleet with a dated manual grant that outlasts the donation is not named" do
+      fleet = nominated_fleet
+      create(:fleet_subscription, fleet:, granted_via: "manual",
+        started_at: Date.new(2026, 10, 1), ended_at: Date.new(2027, 1, 31))
+
+      travel_to(Date.new(2026, 11, 12)) { CoverageEndingReminderJob.new.perform }
+
+      assert_not_includes reminders.sole.body, fleet.name
     end
 
     test "a monthly Ko-fi subscriber is not reminded" do

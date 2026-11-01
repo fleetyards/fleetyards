@@ -68,7 +68,7 @@ es:
     supporter_coverage_ending:
       title: "Las ventajas de tu donación terminan el %{date}"
       body: "Las ventajas de colaborador de tu donación única terminan el %{date}. No las pierdas: cámbiate a una donación mensual para conservarlas."
-      body_with_fleet: "Las ventajas de colaborador de tu donación única y las funciones de flota de %{fleet} terminan el %{date}. No las pierdas: cámbiate a una donación mensual para conservarlas."
+      body_with_fleet: "Las ventajas de colaborador de tu donación única terminan el %{date} y las funciones de flota de %{fleet}, el %{fleet_date}. No las pierdas: cámbiate a una donación mensual para conservarlas."
     fleet_rsi_verification_lost:
       title: "%{fleet} ya no está verificada para %{sid}"
       body: "Otra flota demostró que gestiona la organización de RSI %{sid} poniendo su código de verificación en la página de la organización. Tu flota ya no muestra el SID como verificado. Si %{sid} es tu organización, vuelve a verificarla desde los ajustes de la flota."

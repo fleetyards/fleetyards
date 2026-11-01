@@ -63,7 +63,7 @@ en:
     supporter_coverage_ending:
       title: "Your donation perks end on %{date}"
       body: "Your one-time donation's supporter perks end on %{date}. Don't lose them — switch to a monthly donation to keep them."
-      body_with_fleet: "Your one-time donation's supporter perks and %{fleet}'s fleet features end on %{date}. Don't lose them — switch to a monthly donation to keep them."
+      body_with_fleet: "Your one-time donation's supporter perks end on %{date}, and %{fleet}'s fleet features on %{fleet_date}. Don't lose them — switch to a monthly donation to keep them."
     fleet_rsi_verification_lost:
       title: "%{fleet} is no longer verified for %{sid}"
       body: "Another fleet proved it runs the RSI organisation %{sid} by putting its verification token on the org's page. Your fleet no longer shows the SID as verified. If %{sid} is your organisation, verify it again from the fleet settings."

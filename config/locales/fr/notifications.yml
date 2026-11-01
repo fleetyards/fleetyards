@@ -68,7 +68,7 @@ fr:
     supporter_coverage_ending:
       title: "Les avantages de ton don prennent fin le %{date}"
       body: "Les avantages de soutien de ton don ponctuel prennent fin le %{date}. Ne les perds pas : passe à un don mensuel pour les garder."
-      body_with_fleet: "Les avantages de soutien de ton don ponctuel et les fonctionnalités de flotte de %{fleet} prennent fin le %{date}. Ne les perds pas : passe à un don mensuel pour les garder."
+      body_with_fleet: "Les avantages de soutien de ton don ponctuel prennent fin le %{date}, et les fonctionnalités de flotte de %{fleet} le %{fleet_date}. Ne les perds pas : passe à un don mensuel pour les garder."
     fleet_rsi_verification_lost:
       title: "%{fleet} n’est plus vérifiée pour %{sid}"
       body: "Une autre flotte a prouvé qu’elle gère l’organisation RSI %{sid} en plaçant son code de vérification sur la page de l’organisation. Ta flotte n’affiche plus le SID comme vérifié. Si %{sid} est ton organisation, vérifie-la à nouveau depuis les paramètres de la flotte."

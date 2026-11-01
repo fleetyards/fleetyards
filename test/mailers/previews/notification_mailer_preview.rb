@@ -30,7 +30,8 @@ class NotificationMailerPreview < ActionMailer::Preview
         user: reader,
         notification_type: :supporter_coverage_ending,
         title: I18n.t("notifications.supporter_coverage_ending.title", date:),
-        body: I18n.t("notifications.supporter_coverage_ending.body_with_fleet", date:, fleet: "Ghost Hunters"),
+        body: I18n.t("notifications.supporter_coverage_ending.body_with_fleet",
+          date:, fleet: "Ghost Hunters", fleet_date: I18n.l(6.days.from_now.to_date, format: :long)),
         link: "/support/"
       )
     )
