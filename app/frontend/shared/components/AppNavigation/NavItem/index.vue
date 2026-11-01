@@ -9,7 +9,7 @@ import { useRoute } from "vue-router";
 import type { RouteLocationNamedRaw, RouterLinkProps } from "vue-router";
 import NavItemInner from "./NavItemInner/index.vue";
 import type { Glyph } from "@/shared/components/DuotoneGlyph/glyph";
-import { NAV_EXPANDED, openFlyout } from "./context";
+import { FLYOUT_PATH, NAV_EXPANDED, openFlyout } from "./context";
 import { useMobile } from "@/shared/composables/useMobile";
 import Collapsed from "@/shared/components/Collapsed.vue";
 import { storeToRefs } from "pinia";
@@ -32,6 +32,9 @@ type Props = {
   submenuActive?: boolean;
   submenuDirection?: string;
   badge?: number;
+  // Opens as a panel beside its row on the expanded rail as well, rather than
+  // unfolding in place -- for a sub-section inside a section.
+  overlay?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -49,6 +52,7 @@ const props = withDefaults(defineProps<Props>(), {
   submenuActive: false,
   submenuDirection: "down",
   badge: 0,
+  overlay: false,
 });
 
 const open = ref(false);
@@ -74,7 +78,14 @@ const hasSubmenuSlot = computed(() => !!slots.submenu);
  * another icon says nothing -- so a section opens beside the rail instead of
  * inside it, where its rows can carry their labels.
  */
-const flyout = computed(() => hasSubmenuSlot.value && slim.value);
+/*
+ * Not in the drawer, though, whatever the row asks: that sits against the
+ * right edge of the screen, and a panel beside it would open off it.
+ */
+const flyout = computed(
+  () =>
+    hasSubmenuSlot.value && (slim.value || (props.overlay && !mobile.value)),
+);
 
 provide(
   NAV_EXPANDED,
@@ -135,6 +146,22 @@ const panel = ref<HTMLElement | null>(null);
 const flyoutOpen = ref(false);
 
 const flyoutId = Symbol("navFlyout");
+
+const parentPath = inject(
+  FLYOUT_PATH,
+  computed(() => []),
+);
+
+const ownPath = computed(() => [...parentPath.value, flyoutId]);
+
+provide(FLYOUT_PATH, ownPath);
+
+// A sub-section's panel is open inside this one.
+const nesting = computed(() => {
+  const index = openFlyout.value.indexOf(flyoutId);
+
+  return index >= 0 && index < openFlyout.value.length - 1;
+});
 
 /*
  * A pointer opens the panel on its way past; a click says to keep it there. The
@@ -205,8 +232,9 @@ const closeFlyout = (deliberate = false) => {
   pinned.value = false;
   flyoutOpen.value = false;
 
-  if (openFlyout.value === flyoutId) {
-    openFlyout.value = null;
+  // Back to the panel this one was opened from, which stays.
+  if (openFlyout.value.includes(flyoutId)) {
+    openFlyout.value = parentPath.value;
   }
 };
 
@@ -214,7 +242,7 @@ const showFlyout = async (pin = false) => {
   clearCloseTimer();
 
   pinned.value = pinned.value || pin;
-  openFlyout.value = flyoutId;
+  openFlyout.value = ownPath.value;
 
   if (flyoutOpen.value) {
     return;
@@ -236,7 +264,7 @@ const showFlyout = async (pin = false) => {
 };
 
 watch(openFlyout, (current) => {
-  if (flyoutOpen.value && current !== flyoutId) {
+  if (flyoutOpen.value && !current.includes(flyoutId)) {
     closeFlyout();
   }
 });
@@ -629,6 +657,7 @@ const toggleMenu = () => {
         :id="submenuId"
         ref="panel"
         class="nav-flyout"
+        :class="{ 'nav-flyout--nesting': nesting }"
         :style="panelStyle"
         @pointerenter="onPanelEnter"
         @pointerleave="onPanelLeave"

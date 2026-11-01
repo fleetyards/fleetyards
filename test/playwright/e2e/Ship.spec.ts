@@ -10,7 +10,7 @@ test.describe("Ship", () => {
   });
 
   test("Loads", async ({ page, nav, dropdown }) => {
-    await nav.click("ships");
+    await nav.click("ships-menu", "ships");
 
     await expect(
       page.getByTestId("panel-heading-title").locator("a span").getByText("Ironclad"),

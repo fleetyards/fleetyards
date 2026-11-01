@@ -10,8 +10,7 @@
         "index": "Naves"
       },
       "compare": {
-        "index": "Comparar",
-        "ships": "Comparar Naves"
+        "index": "Comparar"
       },
       "manufacturers": "Fabricantes",
       "images": "Imágenes",
@@ -20,6 +19,9 @@
       "componentHistory": "Historial",
       "hangar": {
         "index": "Mi Hangar",
+        "overview": "Resumen",
+        "wishlist": "Lista de deseos",
+        "stats": "Estadísticas",
         "vehicleLoadouts": "Loadouts",
         "inventories": "Inventories",
         "blueprints": "Planos",
@@ -123,12 +125,14 @@
           "index": "Contratos",
           "payouts": "Pagos"
         },
-        "directory": "Directorio"
+        "directory": "Directorio",
+        "overview": "Resumen"
       },
       "rsiProfile": "Perfil RSI",
       "rsiHangar": "Hangar RSI",
       "tools": {
         "index": "Herramientas",
+        "overview": "Resumen",
         "travelTimes": "Tiempos de Viaje",
         "cargoGrids": "Grillas de Carga",
         "plaque": "Placas de dedicatoria",
@@ -391,6 +395,16 @@
       },
       "equipment": {
         "index": "Equipo"
+      },
+      "switcher": {
+        "label": "Cambiar entre tu hangar y tus flotas",
+        "personal": "Personal",
+        "yourFleets": "Tus flotas",
+        "fleetDirectory": "Directorio de flotas"
+      },
+      "account": {
+        "menu": "Menú de la cuenta",
+        "unread": "%{count} sin leer"
       }
     }
   }

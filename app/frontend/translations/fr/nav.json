@@ -10,8 +10,7 @@
         "index": "Vaisseaux"
       },
       "compare": {
-        "index": "Comparer",
-        "ships": "Comparer les Vaisseaux"
+        "index": "Comparer"
       },
       "manufacturers": "Fabricants",
       "images": "Images",
@@ -20,6 +19,9 @@
       "componentHistory": "Historique",
       "hangar": {
         "index": "Mon Hangar",
+        "overview": "Aperçu",
+        "wishlist": "Liste de souhaits",
+        "stats": "Statistiques",
         "vehicleLoadouts": "Loadouts",
         "inventories": "Inventories",
         "blueprints": "Plans",
@@ -123,12 +125,14 @@
           "index": "Contrats",
           "payouts": "Paiements"
         },
-        "directory": "Annuaire"
+        "directory": "Annuaire",
+        "overview": "Aperçu"
       },
       "rsiProfile": "Profil RSI",
       "rsiHangar": "Hangar RSI",
       "tools": {
         "index": "Outils",
+        "overview": "Aperçu",
         "travelTimes": "Temps de Voyage",
         "cargoGrids": "Grilles de Fret",
         "plaque": "Plaques de dédicace",
@@ -391,6 +395,16 @@
       },
       "equipment": {
         "index": "Équipement"
+      },
+      "switcher": {
+        "label": "Basculer entre votre hangar et vos flottes",
+        "personal": "Personnel",
+        "yourFleets": "Vos flottes",
+        "fleetDirectory": "Annuaire des flottes"
+      },
+      "account": {
+        "menu": "Menu du compte",
+        "unread": "%{count} non lus"
       }
     }
   }

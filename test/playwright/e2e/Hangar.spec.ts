@@ -60,7 +60,7 @@ test.describe("Hangar", () => {
      */
     await expect(page).not.toHaveURL(/\/login/);
 
-    await nav.click("ships");
+    await nav.click("ships-menu", "ships");
 
     await expect(page).toHaveURL(/\/ships\//);
 
@@ -82,7 +82,8 @@ test.describe("Hangar", () => {
 
     await vehicleCreated;
 
-    await nav.click("hangar");
+    // Signed in, the hangar is a section and its overview one of its rows.
+    await nav.click("hangar-menu", "hangar");
 
     await expect(
       page.getByTestId("model-panel-orig-300i").getByTestId("panel-heading-title").locator("a").first(),

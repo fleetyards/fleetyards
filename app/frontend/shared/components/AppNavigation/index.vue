@@ -103,12 +103,16 @@ watchEffect(() => {
     >
       <div class="app-navigation__inner">
         <ul>
-          <NavItem class="logo-menu">
-            <img :src="logo" class="logo-menu-image" alt="logo" />
-            <span v-if="!slim" class="logo-menu-label">
-              {{ title }}
-            </span>
-          </NavItem>
+          <!-- An app may make the logo do something; the plain row is the
+               default. -->
+          <slot name="logo">
+            <NavItem class="logo-menu">
+              <img :src="logo" class="logo-menu-image" alt="logo" />
+              <span v-if="!slim" class="logo-menu-label">
+                {{ title }}
+              </span>
+            </NavItem>
+          </slot>
           <slot name="main" />
         </ul>
         <NavFooter>

@@ -1,0 +1,117 @@
+// Inset and rounded, so a highlighted row stays inside the panel's corners.
+.nav-menu-item {
+  padding: 0 6px;
+}
+
+.nav-menu-item__link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 40px;
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--color-text, #c8c8c8);
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    background: var(--color-control-hover, rgba(52, 58, 64, 0.95));
+    color: var(--color-lifted, #eee);
+    text-decoration: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-primary, #428bca);
+    outline-offset: -2px;
+  }
+
+  &--active {
+    color: var(--color-lifted, #eee);
+  }
+}
+
+.nav-menu-item__icon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  color: var(--color-muted, #7a8288);
+  font-size: 15px;
+}
+
+// Contained, not cropped: a fleet logo is square but a brand mark like RSI's is
+// wide, and cropping it to the box cuts its lettering in half.
+.nav-menu-item__image {
+  max-width: 24px;
+  max-height: 24px;
+  border-radius: 4px;
+  object-fit: contain;
+}
+
+.nav-menu-item__initial {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--color-edge-soft, rgba(122, 130, 136, 0.28));
+  border-radius: 6px;
+  background: var(--color-gray-black, #1a1d21);
+  color: var(--color-text, #c8c8c8);
+  font-family: "Orbitron", sans-serif;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.nav-menu-item__label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nav-menu-item__badge {
+  min-width: 20px;
+  padding: 1px 7px;
+  border-radius: 9px;
+  background: var(--color-primary, #428bca);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.nav-menu-item__count {
+  color: var(--color-text-dim, #959595);
+  font-size: 12px;
+}
+
+.nav-menu-item__check {
+  color: var(--color-primary, #428bca);
+  font-size: 13px;
+}
+
+.nav-menu-item__heading {
+  padding: 10px 16px 4px;
+  color: var(--color-text-dim, #959595);
+  font-family: "Orbitron", sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.nav-menu-item__divider {
+  height: 1px;
+  margin: 6px 12px;
+  background: var(--color-edge-faint, rgba(122, 130, 136, 0.16));
+}

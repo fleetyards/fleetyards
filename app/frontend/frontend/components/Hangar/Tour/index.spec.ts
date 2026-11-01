@@ -70,14 +70,7 @@ describe("HangarTour", () => {
   it("includes every hangar feature in the guide", () => {
     const ids = steps().map((step) => step.id);
 
-    expect(ids).toEqual(
-      expect.arrayContaining([
-        "overview",
-        "inventories",
-        "pledgeItems",
-        "reset",
-      ]),
-    );
+    expect(ids).toEqual(expect.arrayContaining(["overview", "pages", "reset"]));
   });
 
   it("anchors the ship page to its title and skips it without a ship", () => {
@@ -89,43 +82,21 @@ describe("HangarTour", () => {
     });
   });
 
-  it("explains inventories on a phone without the desktop button", () => {
-    const inventories = steps().find((step) => step.id === "inventories");
-
-    expect(inventories).toBeDefined();
-    expect(inventories?.requiresTarget).not.toBe(true);
-  });
-
-  it("points inventories at the assets menu on a desktop", () => {
+  it("points the hangar pages at the navigation on a desktop", () => {
     setViewport(false);
 
-    expect(steps().find((step) => step.id === "inventories")?.target).toBe(
-      '[data-tour="hangar-assets"]',
-    );
+    expect(steps().find((step) => step.id === "pages")).toMatchObject({
+      target: '[data-test="nav-hangar-menu"]',
+    });
   });
 
-  it("points inventories at the page menu on a phone", () => {
+  it("explains the hangar pages on a phone without a target", () => {
     setViewport(true);
 
-    expect(steps().find((step) => step.id === "inventories")?.target).toBe(
-      '[data-tour="hangar-menu"]',
-    );
-  });
+    const pages = steps().find((step) => step.id === "pages");
 
-  it("points pledge items at the header on a desktop", () => {
-    setViewport(false);
-
-    expect(steps().find((step) => step.id === "pledgeItems")?.target).toBe(
-      '[data-tour="hangar-pledge-items"]',
-    );
-  });
-
-  it("points pledge items at the page menu on a phone", () => {
-    setViewport(true);
-
-    expect(steps().find((step) => step.id === "pledgeItems")?.target).toBe(
-      '[data-tour="hangar-menu"]',
-    );
+    expect(pages).toBeDefined();
+    expect(pages?.target).toBeUndefined();
   });
 
   it("explains sharing when the public share button is absent", () => {

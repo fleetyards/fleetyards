@@ -1,0 +1,58 @@
+.account-menu__avatar {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--color-edge, rgba(122, 130, 136, 0.5));
+  border-radius: 50%;
+  background: var(--color-gray-black, #1a1d21);
+
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+}
+
+.account-menu__initial {
+  color: var(--color-text, #c8c8c8);
+  font-size: 15px;
+  text-transform: uppercase;
+}
+
+.account-menu__badge {
+  position: absolute;
+  top: -5px;
+  right: -8px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border: 2px solid var(--color-gray-darker, #272b30);
+  border-radius: 9px;
+  background: var(--color-primary, #428bca);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 14px;
+  text-align: center;
+}
+
+.account-menu__name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--color-lifted, #eee);
+  font-size: 14px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.account-menu__chevron {
+  color: var(--color-muted, #7a8288);
+  font-size: 13px;
+}

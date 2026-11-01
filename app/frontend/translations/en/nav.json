@@ -10,8 +10,7 @@
         "index": "Ships"
       },
       "compare": {
-        "index": "Compare",
-        "ships": "Compare Ships"
+        "index": "Compare"
       },
       "manufacturers": "Manufacturers",
       "images": "Images",
@@ -20,6 +19,9 @@
       "componentHistory": "History",
       "hangar": {
         "index": "My Hangar",
+        "overview": "Overview",
+        "wishlist": "Wishlist",
+        "stats": "Stats",
         "vehicleLoadouts": "Loadouts",
         "inventories": "Inventories",
         "blueprints": "Blueprints",
@@ -123,12 +125,14 @@
           "index": "Contracts",
           "payouts": "Payouts"
         },
-        "directory": "Directory"
+        "directory": "Directory",
+        "overview": "Overview"
       },
       "rsiProfile": "RSI Profile",
       "rsiHangar": "RSI Hangar",
       "tools": {
         "index": "Tools",
+        "overview": "Overview",
         "travelTimes": "Travel Times",
         "cargoGrids": "Cargo Grids",
         "plaque": "Dedication Plaques",
@@ -391,6 +395,16 @@
       },
       "equipment": {
         "index": "Equipment"
+      },
+      "switcher": {
+        "label": "Switch between your hangar and your fleets",
+        "personal": "Personal",
+        "yourFleets": "Your fleets",
+        "fleetDirectory": "Fleet directory"
+      },
+      "account": {
+        "menu": "Account menu",
+        "unread": "%{count} unread"
       }
     }
   }

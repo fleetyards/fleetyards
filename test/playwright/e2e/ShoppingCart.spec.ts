@@ -35,7 +35,8 @@ test.describe("Shopping Cart", () => {
     await page.getByTestId("cart-add").click();
     await added;
 
-    await expect(page.getByTestId("cart-nav").first()).toContainText("1");
+    await page.getByTestId("user-menu").click();
+    await expect(page.getByTestId("cart-nav")).toContainText("1");
 
     await page.goto("/cart/");
 

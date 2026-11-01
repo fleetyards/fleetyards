@@ -12,7 +12,7 @@ import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
 import NotificationsNav from "@/frontend/components/Navigation/NotificationsNav/index.vue";
 import { useSessionStore } from "@/frontend/stores/session";
 import { storeToRefs } from "pinia";
-import { useFleetRouteCheck } from "@/frontend/composables/useFleetRouteCheck";
+import { useNavContext } from "@/frontend/composables/useNavContext";
 import { useFleetNavAccess } from "@/frontend/composables/useFleetNavAccess";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import {
@@ -27,7 +27,11 @@ const { isAuthenticated } = storeToRefs(sessionStore);
 
 const route = useRoute();
 
-const { isFleetRoute } = useFleetRouteCheck();
+// The sidebar's context, so an account page opened from a fleet keeps the
+// fleet's tabs here as well.
+const { fleetSlug: contextFleetSlug } = useNavContext();
+
+const isFleetRoute = computed(() => !!contextFleetSlug.value);
 
 const hangarStore = useHangarStore();
 
@@ -41,9 +45,7 @@ const shipsNavActive = computed(() => {
   return ["fleet-ships", "fleet-fleetchart"].includes(String(route.name));
 });
 
-const fleetSlug = computed(() => {
-  return route.params.slug as string;
-});
+const fleetSlug = computed(() => contextFleetSlug.value ?? "");
 
 const { data: fleetData } = useFleetQuery(fleetSlug, {
   query: {

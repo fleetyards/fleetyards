@@ -6,8 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { SHIP_GLYPH } from "@/shared/glyphs/ships";
-import { useRouter } from "vue-router";
-import { useFleetRouteCheck } from "@/frontend/composables/useFleetRouteCheck";
+import { useNavContext } from "@/frontend/composables/useNavContext";
 import { useI18n } from "@/shared/composables/useI18n";
 import AppNavigation from "@/shared/components/AppNavigation/index.vue";
 import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
@@ -15,18 +14,25 @@ import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
 import ScDataSourceSwitch from "@/frontend/components/ScDataSource/index.vue";
 
 import FleetNav from "./FleetNav/index.vue";
-import NotificationsNav from "./NotificationsNav/index.vue";
-import CartNav from "./CartNav/index.vue";
 import CatalogueNav from "@/frontend/components/Navigation/CatalogueNav/index.vue";
 import FleetsNav from "./FleetsNav/index.vue";
 import ToolsNav from "./ToolsNav/index.vue";
-import { usePendingFriendRequests } from "@/frontend/composables/usePendingFriendRequests";
+import ContextSwitcher from "./ContextSwitcher/index.vue";
+import AccountMenu from "./AccountMenu/index.vue";
+import EntriesNav from "./EntriesNav/index.vue";
+import EntryItem from "./EntryItem/index.vue";
+import {
+  HANGAR_ITEMS,
+  HOME_ENTRY,
+  LOCATIONS_ENTRY,
+  SHIPS_ITEMS,
+  STATS_ENTRY,
+} from "./entries";
 import { useInstallPrompt } from "@/frontend/composables/useInstallPrompt";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useHangarStore } from "@/frontend/stores/hangar";
 import { storeToRefs } from "pinia";
 import { useMediaQuery } from "@vueuse/core";
-import rsiLogo from "@/images/rsi_logo.png";
 import favicon from "@/images/favicon-small.png";
 
 const { t } = useI18n();
@@ -36,10 +42,6 @@ const sessionStore = useSessionStore();
 const { isAuthenticated, currentUser } = storeToRefs(sessionStore);
 
 const hangarStore = useHangarStore();
-
-// Friend requests are answered two levels in, under settings, so the footer
-// row that leads there carries their count.
-const { count: pendingFriendRequests } = usePendingFriendRequests();
 
 const { preview: hangarPreview } = storeToRefs(hangarStore);
 
@@ -54,7 +56,7 @@ const showInstall = computed(
   () => canInstall.value && (touchDevice.value || isIos.value),
 );
 
-const { isFleetRoute } = useFleetRouteCheck();
+const { fleetSlug: contextFleetSlug } = useNavContext();
 
 const route = useRoute();
 
@@ -81,23 +83,6 @@ const isVisualTestsRoute = computed(() => {
   return String(route.name).includes("visual-tests");
 });
 
-const isShipRoute = computed(() => {
-  if (!route.name) {
-    return false;
-  }
-
-  return ["ships", "ship", "ship-images", "ship-videos"].includes(
-    String(route.name),
-  );
-});
-
-// A shop is at a place, so its page belongs to the places too.
-const LOCATION_ROUTES = ["locations", "locations-places", "location", "shop"];
-
-const isLocationRoute = computed(() =>
-  LOCATION_ROUTES.includes(String(route.name ?? "")),
-);
-
 const isHangarRoute = computed(() => {
   if (!route.name) {
     return false;
@@ -107,156 +92,93 @@ const isHangarRoute = computed(() => {
   // match anywhere in the name also lit the hangar up on `settings-hangar`.
   return String(route.name).startsWith("hangar");
 });
-
-const router = useRouter();
-
-const logout = () => {
-  void sessionStore.logout();
-  void router.replace({ name: "login" });
-};
-
-const settingsActive = computed(() => {
-  return [
-    "settings-profile",
-    "settings-account",
-    "settings-hangar",
-    "settings-donations",
-    "settings-features",
-    "settings-notifications",
-    "settings-friends",
-    "settings-friends-incoming",
-    "settings-friends-outgoing",
-    "settings-friends-ignored",
-    "settings-security-status",
-    "settings-two-factor-enable",
-    "settings-two-factor-disable",
-    "settings-two-factor-backup-codes",
-    "settings-change-password",
-    "settings-connections",
-    "settings-oauth-applications",
-    "settings-oauth-application",
-    "settings-oauth-application-create",
-    "settings-oauth-application-edit",
-  ].includes(String(route.name));
-});
 </script>
 
 <template>
   <AppNavigation :title="t('title.default')" :logo="favicon">
+    <template v-if="isAuthenticated" #logo>
+      <ContextSwitcher :logo="favicon" :title="t('title.default')" />
+    </template>
     <template #main>
       <VisualTestsNav v-if="isVisualTestsRoute" />
-      <FleetNav v-else-if="isFleetRoute" />
       <template v-else>
-        <NavItem
-          :to="{ name: 'home' }"
-          :label="t('nav.home')"
-          icon="fa-duotone fa-home-alt"
-        />
-        <NavItem
-          v-if="isAuthenticated || !hangarPreview"
-          :to="{ name: 'hangar' }"
-          :label="t('nav.hangar.index')"
-          :active="isHangarRoute"
-          icon="fa-duotone fa-warehouse"
-        />
-        <NavItem
-          v-else
-          :to="{ name: 'hangar-preview' }"
-          :label="t('nav.hangar.index')"
-          icon="fa-light fa-warehouse"
-        />
-        <NavItem
-          :to="{ name: 'ships' }"
-          :label="t('nav.ships.index')"
-          :active="isShipRoute"
-          :icon="SHIP_GLYPH"
-        />
-        <!-- Route meta alone does not put anything here: both menus are written
+        <!-- Inside a fleet the navigation is the fleet's alone; the switcher
+             above is the way back out. -->
+        <FleetNav v-if="contextFleetSlug" :slug="contextFleetSlug" />
+        <template v-else>
+          <EntryItem :entry="HOME_ENTRY" />
+          <!-- The hangar's own pages used to be reachable only from buttons on
+             the hangar page, so a signed-in reader gets them as its section. -->
+          <EntriesNav
+            v-if="isAuthenticated"
+            :label="t('nav.hangar.index')"
+            menu-key="hangar-menu"
+            icon="fa-duotone fa-warehouse"
+            :items="HANGAR_ITEMS"
+            :active="isHangarRoute"
+          />
+          <NavItem
+            v-else-if="!hangarPreview"
+            :to="{ name: 'hangar' }"
+            :label="t('nav.hangar.index')"
+            :active="isHangarRoute"
+            icon="fa-duotone fa-warehouse"
+          />
+          <NavItem
+            v-else
+            :to="{ name: 'hangar-preview' }"
+            :label="t('nav.hangar.index')"
+            icon="fa-light fa-warehouse"
+          />
+          <!-- A signed-in reader reaches fleets from the switcher. -->
+          <FleetsNav v-if="!isAuthenticated" />
+          <EntriesNav
+            :label="t('nav.ships.index')"
+            menu-key="ships-menu"
+            :icon="SHIP_GLYPH"
+            :items="SHIPS_ITEMS"
+          />
+          <!-- Route meta alone does not put anything here: both menus are written
              out by hand and read none of it, so `nav: "main"` on the route left
              the catalogue reachable only by typing the address. -->
-        <CatalogueNav />
-        <NavItem
-          :to="{ name: 'locations' }"
-          :label="t('nav.locations')"
-          :active="isLocationRoute"
-          icon="fa-duotone fa-planet-ringed"
-        />
-        <NavItem
-          :to="{ name: 'compare' }"
-          :label="t('nav.compare.ships')"
-          icon="fa-duotone fa-code-compare"
-        />
-        <FleetsNav />
-        <NavItem
-          :to="{ name: 'images' }"
-          :label="t('nav.images')"
-          icon="fa-duotone fa-images"
-        />
-        <ToolsNav />
-        <NavItem
-          :to="{ name: 'stats' }"
-          :label="t('nav.stats')"
-          icon="fa-duotone fa-chart-bar"
-        />
-        <template v-if="visualTestsEnabled">
-          <li class="nav-item__divider" />
-          <NavItem
-            :to="{ name: 'visual-tests' }"
-            :label="t('nav.visualTests.index')"
-            icon="fa-duotone fa-pen-swirl"
-          />
+          <CatalogueNav />
+          <EntryItem :entry="LOCATIONS_ENTRY" />
+          <ToolsNav />
+          <EntryItem :entry="STATS_ENTRY" />
+          <template v-if="visualTestsEnabled">
+            <li class="nav-item__divider" />
+            <NavItem
+              :to="{ name: 'visual-tests' }"
+              :label="t('nav.visualTests.index')"
+              icon="fa-duotone fa-pen-swirl"
+            />
+          </template>
         </template>
       </template>
     </template>
     <template #footer>
       <ScDataSourceSwitch />
-      <NavItem
-        v-if="showInstall"
-        :action="installApp"
-        menu-key="install-app"
-        :label="t('nav.installApp')"
-        icon="fa-light fa-mobile-screen"
-        data-test="install-app"
+      <AccountMenu
+        v-if="isAuthenticated && currentUser"
+        :show-install="showInstall"
+        @install="installApp"
       />
-      <template v-if="isAuthenticated && currentUser">
-        <CartNav />
-        <NotificationsNav />
+      <template v-else>
         <NavItem
-          :to="{ name: 'settings' }"
-          :active="settingsActive"
-          :label="t('nav.settings.index')"
-          icon="fa-light fa-cog"
-          :badge="pendingFriendRequests"
-        />
-        <template v-if="currentUser.rsiHandle">
-          <NavItem
-            :href="`https://robertsspaceindustries.com/citizens/${currentUser.rsiHandle}`"
-            :label="t('nav.rsiProfile')"
-            :image="rsiLogo"
-          />
-        </template>
-        <NavItem
-          :action="logout"
-          menu-key="logout"
-          :label="t('nav.logout')"
-          icon="fa-light fa-sign-out"
+          v-if="showInstall"
+          :action="installApp"
+          menu-key="install-app"
+          :label="t('nav.installApp')"
+          icon="fa-light fa-mobile-screen"
+          data-test="install-app"
         />
         <NavItem
-          menu-key="user-menu"
-          :image="currentUser.avatar?.smallUrl"
-          :avatar="true"
-          :label="currentUser.username"
-          class="user-menu mt-1"
-          data-test="user-menu"
+          key="user-menu-guest"
+          :to="{ name: 'login' }"
+          :label="t('nav.login')"
+          icon="fa-light fa-sign-in"
         />
       </template>
-      <NavItem
-        v-else
-        key="user-menu-guest"
-        :to="{ name: 'login' }"
-        :label="t('nav.login')"
-        icon="fa-light fa-sign-in"
-      />
     </template>
   </AppNavigation>
 </template>

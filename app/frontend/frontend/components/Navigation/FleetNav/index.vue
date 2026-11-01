@@ -23,11 +23,16 @@ const route = useRoute();
 
 const sessionStore = useSessionStore();
 
-const fleetSlug = computed(() => {
-  return route.params.slug as string;
-});
+type Props = {
+  // Not always the route's: an account page keeps the fleet it was opened from.
+  slug: string;
+};
 
-const hasSlug = computed(() => route.params.slug !== undefined);
+const props = defineProps<Props>();
+
+const fleetSlug = computed(() => props.slug);
+
+const hasSlug = computed(() => !!props.slug);
 
 const { data: fleet, refetch } = useFleetQuery(fleetSlug, {
   query: {
@@ -93,16 +98,19 @@ onMounted(() => {
 </script>
 
 <template>
+  <!-- A signed-in reader leaves through the switcher; a guest has none. -->
   <NavItem
+    v-if="!sessionStore.isAuthenticated"
     :to="{ name: 'home' }"
     :label="t('nav.back')"
     icon="fa-light fa-chevron-left"
   />
   <template v-if="currentFleet">
+    <!-- The switcher above already names the fleet. -->
     <NavItem
       :to="{ name: 'fleet', params: { slug: currentFleet.slug } }"
-      :label="currentFleet.name"
-      :image="currentFleet.logo?.smallUrl || undefined"
+      :label="t('nav.fleets.overview')"
+      icon="fa-duotone fa-gauge"
       :active="route.name === 'fleet'"
     />
     <!-- Top-level, and staying there: this is the one tab somebody outside
