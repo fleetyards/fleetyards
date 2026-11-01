@@ -3862,6 +3862,8 @@
         "fleet_contract_crew_answered": "Contract crew request answered",
         "fleet_subscription_started": "Fleet features unlocked",
         "fleet_subscription_ended": "Fleet features lost",
+        "supporter_coverage_ending": "Supporter perks ending soon",
+        "supporter_coverage_ended": "Supporter perks ended",
         "fleet_fid_claim_opened": "Fleet ID claimed",
         "fleet_fid_claim_completed": "Fleet ID moved",
         "fleet_fid_claim_cancelled": "Fleet ID claim ended",

@@ -3848,6 +3848,8 @@
         "fleet_contract_crew_answered": "Solicitud de tripulación respondida",
         "fleet_subscription_started": "Funciones de flota activadas",
         "fleet_subscription_ended": "Funciones de flota perdidas",
+        "supporter_coverage_ending": "Ventajas de colaborador a punto de terminar",
+        "supporter_coverage_ended": "Ventajas de colaborador terminadas",
         "fleet_fid_claim_opened": "ID de flota reclamado",
         "fleet_fid_claim_completed": "ID de flota transferido",
         "fleet_fid_claim_cancelled": "Reclamación de ID de flota terminada",

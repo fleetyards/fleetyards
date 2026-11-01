@@ -42,6 +42,8 @@ const groups: Array<{ key: string; types: NotificationTypeEnum[] }> = [
       NotificationTypeEnum.HANGAR_SYNC_FAILED,
       NotificationTypeEnum.MODEL_ON_SALE,
       NotificationTypeEnum.NEW_MODEL,
+      NotificationTypeEnum.SUPPORTER_COVERAGE_ENDING,
+      NotificationTypeEnum.SUPPORTER_COVERAGE_ENDED,
     ],
   },
   {

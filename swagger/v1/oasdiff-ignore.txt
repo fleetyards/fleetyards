@@ -3775,3 +3775,17 @@ GET /hangar/plans/{id}/drift added the new `mark` enum value to the `changedSour
 GET /hangar/plans/{id}/drift added the new `mark` enum value to the `missingSources/items/kind` response property for the response status `200`
 GET /fleets/{fleetSlug}/members deleted the `query` request parameter `transferTargets`
 GET /friends deleted the `query` request parameter `transferTargets`
+GET /notification-preferences added the new `supporter_coverage_ending` enum value to the `items/notificationType` response property for the response status `200`
+PUT /notification-preferences/{id} added the new `supporter_coverage_ending` enum value to the `notificationType` response property for the response status `200`
+GET /notifications added the new `supporter_coverage_ending` enum value to the `items/items/notificationType` response property for the response status `200`
+PUT /notifications/{id}/archive added the new `supporter_coverage_ending` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/read added the new `supporter_coverage_ending` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unarchive added the new `supporter_coverage_ending` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unread added the new `supporter_coverage_ending` enum value to the `notificationType` response property for the response status `200`
+GET /notification-preferences added the new `supporter_coverage_ended` enum value to the `items/notificationType` response property for the response status `200`
+PUT /notification-preferences/{id} added the new `supporter_coverage_ended` enum value to the `notificationType` response property for the response status `200`
+GET /notifications added the new `supporter_coverage_ended` enum value to the `items/items/notificationType` response property for the response status `200`
+PUT /notifications/{id}/archive added the new `supporter_coverage_ended` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/read added the new `supporter_coverage_ended` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unarchive added the new `supporter_coverage_ended` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unread added the new `supporter_coverage_ended` enum value to the `notificationType` response property for the response status `200`

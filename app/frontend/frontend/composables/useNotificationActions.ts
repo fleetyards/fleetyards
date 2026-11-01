@@ -81,6 +81,8 @@ const PRIMARY_ACTIONS: Record<`${NotificationTypeEnum}`, string> = {
   raffle_won: "open",
   raffle_started: "open",
   raffle_last_day: "open",
+  supporter_coverage_ending: "open",
+  supporter_coverage_ended: "open",
   // The one type whose link an admin writes by hand, so there is nothing more
   // specific to promise than what the generic fallback already says.
   announcement: "open",

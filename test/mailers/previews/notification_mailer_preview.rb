@@ -22,6 +22,33 @@ class NotificationMailerPreview < ActionMailer::Preview
     raffle_notification(:raffle_last_day, 1.day.from_now)
   end
 
+  def supporter_coverage_ending
+    date = I18n.l(3.days.from_now.to_date, format: :long)
+
+    NotificationMailer.notification(
+      Notification.new(
+        user: reader,
+        notification_type: :supporter_coverage_ending,
+        title: I18n.t("notifications.supporter_coverage_ending.title", date:),
+        body: I18n.t("notifications.supporter_coverage_ending.body_with_fleet",
+          date:, fleet: "Ghost Hunters", fleet_date: I18n.l(6.days.from_now.to_date, format: :long)),
+        link: "/support/"
+      )
+    )
+  end
+
+  def supporter_coverage_ended
+    NotificationMailer.notification(
+      Notification.new(
+        user: reader,
+        notification_type: :supporter_coverage_ended,
+        title: I18n.t("notifications.supporter_coverage_ended.title"),
+        body: I18n.t("notifications.supporter_coverage_ended.body", date: I18n.l(1.day.ago.to_date, format: :long)),
+        link: "/support/"
+      )
+    )
+  end
+
   private def raffle_notification(type, deadline)
     raffle = "Win an Anvil Polaris"
 

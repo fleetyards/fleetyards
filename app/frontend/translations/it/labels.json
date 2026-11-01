@@ -3848,6 +3848,8 @@
         "fleet_contract_crew_answered": "Richiesta di equipaggio gestita",
         "fleet_subscription_started": "Funzioni di flotta attivate",
         "fleet_subscription_ended": "Funzioni di flotta perse",
+        "supporter_coverage_ending": "Vantaggi da sostenitore in scadenza",
+        "supporter_coverage_ended": "Vantaggi da sostenitore terminati",
         "fleet_fid_claim_opened": "ID flotta rivendicato",
         "fleet_fid_claim_completed": "ID flotta trasferito",
         "fleet_fid_claim_cancelled": "Rivendicazione dell’ID flotta terminata",

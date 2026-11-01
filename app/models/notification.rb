@@ -57,6 +57,8 @@ class Notification < ApplicationRecord
     raffle_won: "raffle_won",
     raffle_started: "raffle_started",
     raffle_last_day: "raffle_last_day",
+    supporter_coverage_ending: "supporter_coverage_ending",
+    supporter_coverage_ended: "supporter_coverage_ended",
     announcement: "announcement"
   }
 
@@ -400,6 +402,23 @@ class Notification < ApplicationRecord
       channels: %i[app mail push discord],
       mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later },
       preference_defaults: {app: true, mail: false, push: false, discord: false}
+    },
+    # Mailed by default, unlike the mass types: it reaches only a donor whose
+    # support ends in a few days, and an inbox they rarely open would tell them
+    # after the perks are gone.
+    supporter_coverage_ending: {
+      retention: 14.days,
+      channels: %i[app mail push discord],
+      mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later },
+      preference_defaults: {app: true, mail: true, push: false, discord: false}
+    },
+    # Mailed by default: an ended pledge or a lapsed Ko-fi subscription gets no
+    # reminder beforehand, so for those donors this is the only word they get.
+    supporter_coverage_ended: {
+      retention: 30.days,
+      channels: %i[app mail push discord],
+      mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later },
+      preference_defaults: {app: true, mail: true, push: false, discord: false}
     },
     # Written by an admin and sent to everybody, which is why mail is off by
     # default: at ~57k confirmed readers an opt-out default is ~57k messages

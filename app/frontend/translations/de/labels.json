@@ -3848,6 +3848,8 @@
         "fleet_contract_crew_answered": "Crew-Anfrage beantwortet",
         "fleet_subscription_started": "Flotten-Funktionen freigeschaltet",
         "fleet_subscription_ended": "Flotten-Funktionen verloren",
+        "supporter_coverage_ending": "Unterstützer-Vorteile enden bald",
+        "supporter_coverage_ended": "Unterstützer-Vorteile abgelaufen",
         "fleet_fid_claim_opened": "Flotten-ID beansprucht",
         "fleet_fid_claim_completed": "Flotten-ID übertragen",
         "fleet_fid_claim_cancelled": "Anspruch auf Flotten-ID beendet",

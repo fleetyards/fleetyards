@@ -46,6 +46,7 @@ module Kofi
       # resolve to an account yet.
       record.note = @payload["message"].presence
       record.recurring = false
+      record.kofi_subscription = @payload["is_subscription_payment"].to_s == "true"
       record.started_at = paid_on
       # Ko-fi asks the donor whether the payment may be shown publicly, so
       # unlike the Patreon import this does not have to assume anonymity.

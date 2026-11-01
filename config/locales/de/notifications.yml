@@ -65,6 +65,13 @@ de:
     fleet_subscription_ended_in_error:
       title: "Entschuldigung — %{fleet} hat die Flotten-Funktionen nicht verloren"
       body: "Die Benachrichtigung vom %{date}, dass %{fleet} die Flotten-Funktionen verloren hat, wurde irrtümlich verschickt: Die unterstützende Spende war noch aktiv. Der Fehler dahinter ist behoben, und du musst nichts tun."
+    supporter_coverage_ending:
+      title: "Deine Spenden-Vorteile enden am %{date}"
+      body: "Die Unterstützer-Vorteile deiner einmaligen Spende, wie die zusätzlichen Plakettenstile, enden am %{date}. Verliere sie nicht — wechsle zu einer monatlichen Spende, um sie zu behalten."
+      body_with_fleet: "Die Unterstützer-Vorteile deiner einmaligen Spende, wie die zusätzlichen Plakettenstile, enden am %{date}, die Flotten-Funktionen von %{fleet} am %{fleet_date}. Verliere sie nicht — wechsle zu einer monatlichen Spende, um sie zu behalten."
+    supporter_coverage_ended:
+      title: "Deine Unterstützer-Vorteile sind abgelaufen"
+      body: "Danke, dass du Fleetyards unterstützt hast! Die Unterstützer-Vorteile deiner Spende, wie die zusätzlichen Plakettenstile, sind am %{date} abgelaufen. Bereits gewählte Plakettenstile bleiben erhalten. Spende erneut — oder monatlich —, um die Vorteile zurückzubekommen."
     fleet_rsi_verification_lost:
       title: "%{fleet} ist nicht mehr für %{sid} verifiziert"
       body: "Eine andere Flotte hat ihren Verifizierungscode auf die RSI-Seite der Organisation %{sid} gesetzt und damit gezeigt, dass sie sie verwaltet. Deine Flotte zeigt die SID nicht mehr als verifiziert. Wenn %{sid} deine Organisation ist, verifiziere sie in den Flotteneinstellungen erneut."

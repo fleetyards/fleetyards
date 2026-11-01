@@ -3848,6 +3848,8 @@
         "fleet_contract_crew_answered": "Demande d'équipage traitée",
         "fleet_subscription_started": "Fonctionnalités de flotte activées",
         "fleet_subscription_ended": "Fonctionnalités de flotte perdues",
+        "supporter_coverage_ending": "Avantages de soutien bientôt terminés",
+        "supporter_coverage_ended": "Avantages de soutien terminés",
         "fleet_fid_claim_opened": "ID de flotte réclamé",
         "fleet_fid_claim_completed": "ID de flotte transféré",
         "fleet_fid_claim_cancelled": "Réclamation d’ID de flotte terminée",
