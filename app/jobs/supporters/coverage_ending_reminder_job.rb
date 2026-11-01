@@ -47,7 +47,9 @@ module Supporters
 
     private def remind(user, contributions, ending_on)
       fleet_until = ending_on + ::Subscriptions::Sync::GRACE_DAYS
-      fleet = contributions.filter_map(&:fleet).uniq.find { |candidate| loses_features?(candidate, fleet_until) }
+      fleet = contributions.filter_map(&:fleet).uniq.find do |candidate|
+        Flipper.enabled?(:fleet_subscriptions, user, candidate) && loses_features?(candidate, fleet_until)
+      end
 
       I18n.with_locale(user.notification_locale) do
         date = I18n.l(ending_on, format: :long)

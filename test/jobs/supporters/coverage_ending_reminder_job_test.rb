@@ -40,6 +40,7 @@ module Supporters
     end
 
     private def nominated_fleet
+      Flipper.enable("fleet_subscriptions")
       fleet = create(:fleet_membership, :accepted, user: @user).fleet
 
       travel_to Date.new(2026, 10, 16) do
@@ -58,6 +59,15 @@ module Supporters
       body = reminders.sole.body
       assert_includes body, fleet.name
       assert_includes body, I18n.l(Date.new(2026, 11, 18), format: :long)
+    end
+
+    test "a fleet is not named to a donor the rollout has not reached" do
+      fleet = nominated_fleet
+      Flipper.disable("fleet_subscriptions")
+
+      travel_to(Date.new(2026, 11, 12)) { CoverageEndingReminderJob.new.perform }
+
+      assert_not_includes reminders.sole.body, fleet.name
     end
 
     test "a fleet another donation keeps covered is not named" do
