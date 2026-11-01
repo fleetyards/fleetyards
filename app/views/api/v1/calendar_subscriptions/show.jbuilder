@@ -8,7 +8,7 @@ json.feed_url(
     api_v1_fleet_calendar_feed_url(
       fleet_slug: @fleet.slug,
       token: @fleet.calendar_feed_token,
-      host: Rails.configuration.app.domain,
+      host: API_DOMAIN,
       protocol: "https"
     )
   end

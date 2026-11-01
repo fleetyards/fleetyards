@@ -7,7 +7,7 @@ json.feed_url(
   if @user.calendar_feed_enabled?
     api_v1_me_calendar_feed_url(
       token: @user.calendar_feed_token,
-      host: Rails.configuration.app.domain,
+      host: API_DOMAIN,
       protocol: "https"
     )
   end
