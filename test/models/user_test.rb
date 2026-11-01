@@ -229,7 +229,7 @@ class UserTest < ActiveSupport::TestCase
       begin
         assert user.supporter?
         assert_equal 2, user.supporter_tier
-        assert_equal Date.current.end_of_month, user.supporter_until
+        assert_equal Date.current + 1.month - 1.day, user.supporter_until
         user.fleet_tier_until
       ensure
         ActiveSupport::Notifications.unsubscribe(subscriber)
@@ -398,7 +398,7 @@ class UserTest < ActiveSupport::TestCase
         amount_cents: 1000, started_at: Date.current)
 
       assert_equal 2, @user.reload.supporter_tier
-      assert_equal Date.current.end_of_month, @user.supporter_until
+      assert_equal Date.current + 1.month - 1.day, @user.supporter_until
     end
 
     test "no contributions means no fleet tier" do
@@ -409,10 +409,30 @@ class UserTest < ActiveSupport::TestCase
       assert_nil @user.supporter_until
     end
 
-    test "a one-off lapses at the end of the month it arrived in" do
+    test "a one-off lapses a month after the day it arrived" do
       create(:supporter_contribution, user: @user, started_at: Date.current)
 
-      assert_equal Date.current.end_of_month, @user.reload.supporter_until
+      assert_equal Date.current + 1.month - 1.day, @user.reload.supporter_until
+    end
+
+    # The month boundary is not where support ends: a donation from the 16th
+    # still counts on the 1st.
+    test "a one-off from last month still counts after the month turns" do
+      travel_to Date.new(2026, 11, 1) do
+        create(:supporter_contribution, user: @user, amount_cents: 600, started_at: Date.new(2026, 10, 16))
+
+        assert @user.reload.supporter?
+        assert_equal 2, @user.supporter_tier
+        assert_equal Date.new(2026, 11, 15), @user.supporter_until
+      end
+    end
+
+    test "a one-off stops counting a month after the day it arrived" do
+      travel_to Date.new(2026, 11, 16) do
+        create(:supporter_contribution, user: @user, started_at: Date.new(2026, 10, 16))
+
+        refute @user.reload.supporter?
+      end
     end
 
     test "an open-ended recurring pledge has no expiry to name" do

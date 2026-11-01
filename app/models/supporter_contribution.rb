@@ -97,6 +97,27 @@ class SupporterContribution < ApplicationRecord
     )
   }
 
+  # Whether a contribution still pays for perks and fleet features on `date`.
+  #
+  # Not `active_now`: that answers "what arrived this month" for the funding
+  # totals, and as an entitlement rule it cut a donation made on the 28th off
+  # three days later. A one-off covers a month from the day it was paid instead,
+  # so every donation buys the same span and a monthly Ko-fi renewal -- recorded
+  # as a one-off, see Kofi::PaymentImporter -- takes over the day the last one
+  # ends. A standing pledge keeps the month rule it has always had.
+  #
+  # `grace_days` stretches a one-off past its month, for callers that would
+  # otherwise act the day a renewal is a little late.
+  scope :covering, ->(date = Date.current, grace_days: 0) {
+    where(
+      "(recurring = ? AND started_at <= CAST(? AS date) AND " \
+      "(started_at + interval '1 month')::date + CAST(? AS integer) > CAST(? AS date)) OR " \
+      "(recurring = ? AND started_at <= ? AND (ended_at IS NULL OR ended_at >= ?))",
+      false, date, grace_days, date,
+      true, date.end_of_month, date.beginning_of_month
+    )
+  }
+
   # Named on the supporters page -- the SQL half of `listed?`, which has to
   # agree with it.
   scope :listed, -> {
@@ -177,15 +198,23 @@ class SupporterContribution < ApplicationRecord
   # The last day this contribution still counts, or nil for an open-ended
   # recurring pledge, which has no last day until somebody ends it.
   #
-  # The month is the unit throughout -- `active_in` matches a pledge ended on
-  # the 5th for the whole of that month, and `monthly_total` counts it there --
-  # so cover runs to the end of the month, not to the date itself. Answering
-  # `ended_at` would have put a date already past next to a badge still reading
-  # as live.
+  # A one-off runs a month from the day it was paid, as `covering` has it. A
+  # pledge is matched by `active_in` for the whole month it ended in, so its
+  # cover runs to the end of that month rather than to `ended_at` -- which would
+  # put a date already past next to a badge still reading as live.
   def active_until
     return ended_at&.end_of_month if recurring?
 
-    started_at.end_of_month
+    started_at + 1.month - 1.day
+  end
+
+  # The Ruby half of `covering`, for a preloaded association. Postgres and
+  # Rails both clamp a month added to the 31st to the last day of a shorter
+  # month, which is what keeps the two in agreement.
+  def covers?(date, grace_days: 0)
+    return active_in?(date.beginning_of_month, date.end_of_month) if recurring?
+
+    started_at <= date && date < started_at + 1.month + grace_days.days
   end
 
   # The Ruby half of `active_in`, so a preloaded association can be filtered

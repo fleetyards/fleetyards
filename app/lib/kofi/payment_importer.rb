@@ -8,8 +8,9 @@ module Kofi
   # and never on cancellation, so a `recurring` row would have no event that
   # could ever end it and would grant its supporter perks forever. A monthly
   # subscriber instead produces one row per month, and
-  # `SupporterContribution.active_in` counts a non-recurring row only in the
-  # month it was paid -- so lapsing is automatic and needs no second signal.
+  # `SupporterContribution.covering` counts a non-recurring row for a month
+  # from the day it was paid -- so lapsing is automatic and needs no second
+  # signal.
   class PaymentImporter
     TARGET_CURRENCY = "EUR"
 

@@ -313,10 +313,43 @@ class SupporterContributionTest < ActiveSupport::TestCase
     refute_includes ids, elsewhere.id
   end
 
-  test "a one-off runs to the end of the month it arrived in" do
+  test "a one-off runs a month from the day it arrived" do
     contribution = create(:supporter_contribution, started_at: Date.new(2026, 6, 10))
 
-    assert_equal Date.new(2026, 6, 30), contribution.active_until
+    assert_equal Date.new(2026, 7, 9), contribution.active_until
+  end
+
+  test ".covering keeps a one-off across the month boundary and drops it a month on" do
+    paid = create(:supporter_contribution, started_at: Date.new(2026, 10, 16))
+
+    assert_includes SupporterContribution.covering(Date.new(2026, 11, 1)), paid
+    assert_includes SupporterContribution.covering(Date.new(2026, 11, 15)), paid
+    refute_includes SupporterContribution.covering(Date.new(2026, 11, 16)), paid
+    assert_includes SupporterContribution.covering(Date.new(2026, 11, 18), grace_days: 3), paid
+    refute_includes SupporterContribution.covering(Date.new(2026, 11, 19), grace_days: 3), paid
+    refute_includes SupporterContribution.covering(Date.new(2026, 10, 15)), paid
+  end
+
+  test "covers? matches the covering scope over every shape of contribution" do
+    [
+      {recurring: false, started_at: Date.new(2026, 1, 31), ended_at: nil},
+      {recurring: false, started_at: Date.new(2026, 2, 3), ended_at: nil},
+      {recurring: false, started_at: Date.new(2026, 2, 27), ended_at: nil},
+      {recurring: false, started_at: Date.new(2026, 3, 1), ended_at: nil},
+      {recurring: true, started_at: Date.new(2026, 1, 1), ended_at: nil},
+      {recurring: true, started_at: Date.new(2026, 1, 1), ended_at: Date.new(2026, 2, 5)},
+      {recurring: true, started_at: Date.new(2026, 1, 1), ended_at: Date.new(2026, 1, 31)},
+      {recurring: true, started_at: Date.new(2026, 3, 1), ended_at: nil}
+    ].each { |attrs| create(:supporter_contribution, **attrs) }
+
+    (Date.new(2026, 2, 25)..Date.new(2026, 3, 6)).each do |date|
+      [0, 3].each do |grace_days|
+        by_scope = SupporterContribution.covering(date, grace_days:).pluck(:id).sort
+        in_ruby = SupporterContribution.all.select { |c| c.covers?(date, grace_days:) }.map(&:id).sort
+
+        assert_equal by_scope, in_ruby, "disagree on #{date} with #{grace_days} days of grace"
+      end
+    end
   end
 
   test "an open-ended recurring pledge has no last day" do

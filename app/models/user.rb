@@ -654,11 +654,9 @@ class User < ApplicationRecord
       # index does -- and filtering what is already in memory is what keeps
       # that one query rather than one per row.
       if supporter_contributions.loaded?
-        supporter_contributions.select do |contribution|
-          contribution.active_in?(today.beginning_of_month, today.end_of_month)
-        end
+        supporter_contributions.select { |contribution| contribution.covers?(today) }
       else
-        supporter_contributions.active_now(today).to_a
+        supporter_contributions.covering(today).to_a
       end
     end
   end
