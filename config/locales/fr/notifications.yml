@@ -67,8 +67,11 @@ fr:
       body: "La notification du %{date} indiquant que %{fleet} avait perdu les fonctionnalités de flotte a été envoyée par erreur : le don qui la soutenait était toujours actif. Le bug est corrigé et tu n'as rien à faire."
     supporter_coverage_ending:
       title: "Les avantages de ton don prennent fin le %{date}"
-      body: "Les avantages de soutien de ton don ponctuel prennent fin le %{date}. Ne les perds pas : passe à un don mensuel pour les garder."
-      body_with_fleet: "Les avantages de soutien de ton don ponctuel prennent fin le %{date}, et les fonctionnalités de flotte de %{fleet} le %{fleet_date}. Ne les perds pas : passe à un don mensuel pour les garder."
+      body: "Les avantages de soutien de ton don ponctuel, comme les styles de plaque supplémentaires, prennent fin le %{date}. Ne les perds pas : passe à un don mensuel pour les garder."
+      body_with_fleet: "Les avantages de soutien de ton don ponctuel, comme les styles de plaque supplémentaires, prennent fin le %{date}, et les fonctionnalités de flotte de %{fleet} le %{fleet_date}. Ne les perds pas : passe à un don mensuel pour les garder."
+    supporter_coverage_ended:
+      title: "Tes avantages de soutien ont pris fin"
+      body: "Merci d'avoir soutenu Fleetyards ! Les avantages de soutien de ton don, comme les styles de plaque supplémentaires, ont pris fin le %{date}. Les styles de plaque déjà choisis restent. Fais un nouveau don — ou un don mensuel — pour les retrouver."
     fleet_rsi_verification_lost:
       title: "%{fleet} n’est plus vérifiée pour %{sid}"
       body: "Une autre flotte a prouvé qu’elle gère l’organisation RSI %{sid} en plaçant son code de vérification sur la page de l’organisation. Ta flotte n’affiche plus le SID comme vérifié. Si %{sid} est ton organisation, vérifie-la à nouveau depuis les paramètres de la flotte."

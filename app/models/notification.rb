@@ -58,6 +58,7 @@ class Notification < ApplicationRecord
     raffle_started: "raffle_started",
     raffle_last_day: "raffle_last_day",
     supporter_coverage_ending: "supporter_coverage_ending",
+    supporter_coverage_ended: "supporter_coverage_ended",
     announcement: "announcement"
   }
 
@@ -410,6 +411,14 @@ class Notification < ApplicationRecord
       channels: %i[app mail push discord],
       mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later },
       preference_defaults: {app: true, mail: true, push: false, discord: false}
+    },
+    # Not mailed by default: the reminder three days earlier was the mail, and
+    # this is the answer to "where did my plaque styles go" for whoever looks.
+    supporter_coverage_ended: {
+      retention: 30.days,
+      channels: %i[app mail push discord],
+      mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later },
+      preference_defaults: {app: true, mail: false, push: false, discord: false}
     },
     # Written by an admin and sent to everybody, which is why mail is off by
     # default: at ~57k confirmed readers an opt-out default is ~57k messages

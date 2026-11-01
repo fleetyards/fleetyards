@@ -67,8 +67,11 @@ it:
       body: "La notifica del %{date} secondo cui %{fleet} aveva perso le funzioni di flotta è stata inviata per errore: la donazione che la sosteneva era ancora attiva. Il bug è stato corretto e non devi fare nulla."
     supporter_coverage_ending:
       title: "I vantaggi della tua donazione terminano il %{date}"
-      body: "I vantaggi da sostenitore della tua donazione singola terminano il %{date}. Non perderli: passa a una donazione mensile per mantenerli."
-      body_with_fleet: "I vantaggi da sostenitore della tua donazione singola terminano il %{date} e le funzioni di flotta di %{fleet} il %{fleet_date}. Non perderli: passa a una donazione mensile per mantenerli."
+      body: "I vantaggi da sostenitore della tua donazione singola, come gli stili di targa aggiuntivi, terminano il %{date}. Non perderli: passa a una donazione mensile per mantenerli."
+      body_with_fleet: "I vantaggi da sostenitore della tua donazione singola, come gli stili di targa aggiuntivi, terminano il %{date} e le funzioni di flotta di %{fleet} il %{fleet_date}. Non perderli: passa a una donazione mensile per mantenerli."
+    supporter_coverage_ended:
+      title: "I tuoi vantaggi da sostenitore sono terminati"
+      body: "Grazie per aver sostenuto Fleetyards! I vantaggi da sostenitore della tua donazione, come gli stili di targa aggiuntivi, sono terminati il %{date}. Gli stili di targa già scelti restano. Dona di nuovo — o ogni mese — per riaverli."
     fleet_rsi_verification_lost:
       title: "%{fleet} non è più verificata per %{sid}"
       body: "Un’altra flotta ha dimostrato di gestire l’organizzazione RSI %{sid} inserendo il proprio codice di verifica nella pagina dell’organizzazione. La tua flotta non mostra più il SID come verificato. Se %{sid} è la tua organizzazione, verificala di nuovo dalle impostazioni della flotta."

@@ -4606,6 +4606,7 @@ components:
       - raffle_started
       - raffle_last_day
       - supporter_coverage_ending
+      - supporter_coverage_ended
       - announcement
       x-enumNames:
       - MODEL_ON_SALE
@@ -4661,6 +4662,7 @@ components:
       - RAFFLE_STARTED
       - RAFFLE_LAST_DAY
       - SUPPORTER_COVERAGE_ENDING
+      - SUPPORTER_COVERAGE_ENDED
       - ANNOUNCEMENT
     NotificationsWithdrawnMessage:
       type: object

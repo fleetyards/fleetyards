@@ -43,6 +43,7 @@ const groups: Array<{ key: string; types: NotificationTypeEnum[] }> = [
       NotificationTypeEnum.MODEL_ON_SALE,
       NotificationTypeEnum.NEW_MODEL,
       NotificationTypeEnum.SUPPORTER_COVERAGE_ENDING,
+      NotificationTypeEnum.SUPPORTER_COVERAGE_ENDED,
     ],
   },
   {

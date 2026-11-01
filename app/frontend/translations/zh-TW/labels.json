@@ -3846,6 +3846,7 @@
         "fleet_subscription_started": "已獲得艦隊功能",
         "fleet_subscription_ended": "已失去艦隊功能",
         "supporter_coverage_ending": "支持者權益即將結束",
+        "supporter_coverage_ended": "支持者權益已結束",
         "fleet_fid_claim_opened": "艦隊 ID 被申領",
         "fleet_fid_claim_completed": "艦隊 ID 已轉移",
         "fleet_fid_claim_cancelled": "艦隊 ID 申領已結束",

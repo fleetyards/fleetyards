@@ -37,6 +37,18 @@ class NotificationMailerPreview < ActionMailer::Preview
     )
   end
 
+  def supporter_coverage_ended
+    NotificationMailer.notification(
+      Notification.new(
+        user: reader,
+        notification_type: :supporter_coverage_ended,
+        title: I18n.t("notifications.supporter_coverage_ended.title"),
+        body: I18n.t("notifications.supporter_coverage_ended.body", date: I18n.l(1.day.ago.to_date, format: :long)),
+        link: "/support/"
+      )
+    )
+  end
+
   private def raffle_notification(type, deadline)
     raffle = "Win an Anvil Polaris"
 
