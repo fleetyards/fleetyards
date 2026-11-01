@@ -27,6 +27,7 @@ import {
   TIMEZONE_OPTIONS,
   addHoursInZone,
   isoToWallClock,
+  resolveTimezone,
   wallClockToIso,
 } from "@/shared/utils/Timezones";
 import {
@@ -48,19 +49,15 @@ const MAX_RECURRENCE_EVERY = 99;
 
 // The weekday an instant falls on in the event's zone rather than the
 // browser's: that is the day the server always adds to the pattern.
-const wdayIn = (value: string | undefined, zone: string | undefined) => {
+const wdayIn = (value: string | undefined, zone: string | null | undefined) => {
   if (!value) return null;
   const date = new Date(value);
   if (isNaN(date.getTime())) return null;
-  try {
-    const name = new Intl.DateTimeFormat("en-US", {
-      weekday: "short",
-      timeZone: zone || "UTC",
-    }).format(date);
-    return ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(name);
-  } catch {
-    return date.getDay();
-  }
+  const name = new Intl.DateTimeFormat("en-US", {
+    weekday: "short",
+    timeZone: resolveTimezone(zone),
+  }).format(date);
+  return ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(name);
 };
 
 // The start day is implied rather than chosen, so it is left out of the

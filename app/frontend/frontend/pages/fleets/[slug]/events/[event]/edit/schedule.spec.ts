@@ -126,6 +126,20 @@ describe("FleetEventEditSchedulePage recurrence", () => {
     expect((await save(subject)).recurrenceWeekdays).toEqual([3, 4]);
   });
 
+  // An unknown zone is read as UTC when the times are converted, so the start
+  // day must be taken in UTC too, not in the browser's zone.
+  it("takes the start day in UTC for a zone the browser cannot resolve", async () => {
+    const subject = await mount(
+      series({
+        startsAt: "2026-10-06T23:30:00Z",
+        timezone: "Foo/Bar",
+        recurrenceWeekdays: [2],
+      }),
+    );
+
+    expect(chip(subject, 2).attributes("disabled")).toBeDefined();
+  });
+
   it("hides the weekdays for a series that is not weekly", async () => {
     const subject = await mount(
       series({ recurrenceInterval: "monthly", recurrenceWeekdays: [] }),
