@@ -190,7 +190,7 @@ describe("FleetEventEditSchedulePage times", () => {
       series({
         recurring: false,
         startsAt: "2026-10-31T23:00:00Z",
-        endsAt: null,
+        endsAt: undefined,
         timezone: "America/New_York",
       }),
     );
