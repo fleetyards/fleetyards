@@ -4054,6 +4054,7 @@
           },
           "calendar": {
             "month": "月",
+            "timesIn": "時間以 %{zone} 顯示",
             "week": "週",
             "weekTitle": "%{date} 當週"
           },
