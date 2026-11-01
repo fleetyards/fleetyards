@@ -48,7 +48,7 @@ import { useRecurrence } from "@/frontend/composables/useRecurrence";
 import { checkAccess } from "@/shared/utils/Access";
 import { useFeatures } from "@/frontend/composables/useFeatures";
 import { FeatureFlagName } from "@/services/fyApi";
-import { formatInZone } from "@/shared/utils/Timezones";
+import { formatInZone, resolveTimezone } from "@/shared/utils/Timezones";
 import { useSessionStore } from "@/frontend/stores/session";
 import { useFleetEventListContextStore } from "@/frontend/stores/fleetEventListContext";
 
@@ -302,11 +302,14 @@ const upcomingOccurrences = computed(() => {
   if (!isRecurring.value || !event.value) return [];
 
   return (event.value.upcomingOccurrences ?? []).map((occurrence) => ({
+    // The event's zone, like the start above it, so the first occurrence
+    // names the same day as the series it starts.
     date: new Date(occurrence.startsAt).toLocaleDateString(undefined, {
       weekday: "short",
       month: "short",
       day: "numeric",
       year: "numeric",
+      timeZone: resolveTimezone(event.value?.timezone),
     }),
     iso: occurrence.date,
     excluded: occurrence.excluded,

@@ -223,6 +223,18 @@ class FleetEventTest < ActiveSupport::TestCase
       assert_equal 3, event.reload.occurrences(from: @thursday, to: @thursday + 7.days).size
     end
 
+    test "stores a Rails timezone alias as its IANA name" do
+      event = create(:fleet_event, fleet: @fleet, starts_at: @thursday, timezone: "Eastern Time (US & Canada)")
+
+      assert_equal "America/New_York", event.timezone
+    end
+
+    test "keeps an IANA timezone as it is" do
+      event = create(:fleet_event, fleet: @fleet, starts_at: @thursday, timezone: "UTC")
+
+      assert_equal "UTC", event.timezone
+    end
+
     test "looks far enough ahead to show a series every few months" do
       travel_to @thursday - 1.day do
         event = create(:fleet_event,

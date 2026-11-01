@@ -74,16 +74,32 @@ const validationSchema = {
   recurrenceEvery: `required|between:1,${MAX_RECURRENCE_EVERY}`,
 };
 
+// The inputs show the event's own wall clock, so an organiser in another zone
+// sees the time the event was planned for, not their local one.
+const initialStartsAt = isoToWallClock(
+  props.event.startsAt,
+  props.event.timezone,
+);
+const initialEndsAt = isoToWallClock(props.event.endsAt, props.event.timezone);
+
+// A field nobody changed sends back the instant it came with. Converting it
+// again would move an event in the hour a DST change repeats, where one wall
+// clock names two instants and the conversion can only pick one of them.
+const toInstant = (
+  value: string | null | undefined,
+  zone: string | null | undefined,
+  initialWallClock: string,
+  original: string | null | undefined,
+) =>
+  value === initialWallClock && zone === props.event.timezone && original
+    ? original
+    : wallClockToIso(value, zone);
+
 const { defineField, handleSubmit, meta, setErrors } =
   useForm<FleetEventUpdateInput>({
     initialValues: {
-      // The inputs show the event's own wall clock, so an organiser in another
-      // zone sees the time the event was planned for, not their local one.
-      startsAt: isoToWallClock(
-        props.event.startsAt,
-        props.event.timezone,
-      ) as never,
-      endsAt: isoToWallClock(props.event.endsAt, props.event.timezone) as never,
+      startsAt: initialStartsAt as never,
+      endsAt: initialEndsAt as never,
       timezone: props.event.timezone,
       recurring: props.event.recurring ?? false,
       recurrenceInterval: (props.event.recurrenceInterval ?? "weekly") as never,
@@ -190,11 +206,17 @@ const wrapHandleSubmit = (cb: SubmissionHandler<FleetEventUpdateInput>) =>
     return cb(
       {
         ...values,
-        startsAt: (wallClockToIso(values.startsAt as string, values.timezone) ??
-          undefined) as never,
-        endsAt: wallClockToIso(
+        startsAt: (toInstant(
+          values.startsAt as string,
+          values.timezone,
+          initialStartsAt,
+          props.event.startsAt,
+        ) ?? undefined) as never,
+        endsAt: toInstant(
           values.endsAt as string,
           values.timezone,
+          initialEndsAt,
+          props.event.endsAt,
         ) as never,
         recurring: !!values.recurring,
         recurrenceInterval: values.recurring

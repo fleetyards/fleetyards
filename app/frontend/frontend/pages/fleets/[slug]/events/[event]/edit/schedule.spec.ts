@@ -169,4 +169,18 @@ describe("FleetEventEditSchedulePage times", () => {
 
     expect((await save(subject)).startsAt).toBe("2026-11-07T02:30:00.000Z");
   });
+
+  // 01:30 happens twice in New York on 1 November 2026. An untouched field
+  // must not be re-resolved onto the other one.
+  it("keeps an unchanged time in a repeated DST hour", async () => {
+    const subject = await mount(
+      series({
+        recurring: false,
+        startsAt: "2026-11-01T06:30:00Z",
+        timezone: "America/New_York",
+      }),
+    );
+
+    expect((await save(subject)).startsAt).toBe("2026-11-01T06:30:00Z");
+  });
 });
