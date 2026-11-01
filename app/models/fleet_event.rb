@@ -590,15 +590,20 @@ class FleetEvent < ApplicationRecord
   # the preset someone picked, then the category's own. Checked again here
   # because rows saved before the validation are not.
   def preset_cover_path
-    [cover_image_preset.presence, category.to_s.presence].compact
-      .grep(PRESET_COVER_FORMAT)
-      .flat_map { |stem| %w[jpg jpeg png].map { |ext| "#{PRESET_COVER_DIR}/#{stem}.#{ext}" } }
-      .find { |path| BundledAsset.file(path) }
+    preset_cover&.first
   end
 
   def preset_cover_file
-    path = preset_cover_path
-    BundledAsset.file(path) if path
+    preset_cover&.last
+  end
+
+  private def preset_cover
+    [cover_image_preset.presence, category.to_s.presence].compact
+      .grep(PRESET_COVER_FORMAT)
+      .flat_map { |stem| %w[jpg jpeg png].map { |ext| "#{PRESET_COVER_DIR}/#{stem}.#{ext}" } }
+      .lazy
+      .filter_map { |path| (file = BundledAsset.file(path)) && [path, file] }
+      .first
   end
 
   def officers_only?
