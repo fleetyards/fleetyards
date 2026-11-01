@@ -67,8 +67,13 @@ export const addHoursInZone = (
 };
 
 // The browser's own zone, for labelling times shown in it.
-export const browserTimezone = (): string =>
-  Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+export const browserTimezone = (): string => {
+  try {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+  } catch {
+    return "UTC";
+  }
+};
 
 // Curated list of common IANA timezones used in event scheduling.
 // Kept short on purpose — covers the regions Star Citizen fleets typically pull

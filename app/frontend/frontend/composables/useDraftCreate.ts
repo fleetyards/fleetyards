@@ -5,6 +5,7 @@ import {
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
+import { browserTimezone } from "@/shared/utils/Timezones";
 
 /*
  * Writing a mission or an event and going straight to its editor. Shared rather
@@ -15,16 +16,6 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
  * Nothing here is offered to the fleet: both arrive as drafts, which only their
  * author and whoever could publish them can see, and deleting one removes it.
  */
-
-// An event's own timezone, read once. A create that omitted it would be refused,
-// and the editor is where the author changes it.
-const browserTimezone = () => {
-  try {
-    return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
-  } catch {
-    return "UTC";
-  }
-};
 
 export const useMissionDraft = () => {
   const { t } = useI18n();
@@ -101,6 +92,8 @@ export const useEventDraft = () => {
         fleetSlug,
         data: {
           startsAt: startsAtIso,
+          // A create that omitted it would be refused; the editor is where the
+          // author changes it.
           timezone: browserTimezone(),
           visibility: FleetEventVisibilityEnum.MEMBERS,
           // The API copies the mission's teams onto the event when this is
