@@ -62,6 +62,9 @@ de:
       reasons:
         contribution: "die unterstützende Spende ist nicht mehr aktiv"
         manual: "die Freigabe wurde von einem Administrator beendet"
+    fleet_subscription_ended_in_error:
+      title: "Entschuldigung — %{fleet} hat die Flotten-Funktionen nicht verloren"
+      body: "Die Benachrichtigung vom %{date}, dass %{fleet} die Flotten-Funktionen verloren hat, wurde irrtümlich verschickt: Die unterstützende Spende war noch aktiv. Der Fehler dahinter ist behoben, und du musst nichts tun."
     fleet_rsi_verification_lost:
       title: "%{fleet} ist nicht mehr für %{sid} verifiziert"
       body: "Eine andere Flotte hat ihren Verifizierungscode auf die RSI-Seite der Organisation %{sid} gesetzt und damit gezeigt, dass sie sie verwaltet. Deine Flotte zeigt die SID nicht mehr als verifiziert. Wenn %{sid} deine Organisation ist, verifiziere sie in den Flotteneinstellungen erneut."

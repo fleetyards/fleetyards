@@ -53,8 +53,8 @@ module Subscriptions
       assert_empty FleetSubscription.all
     end
 
-    test "a contribution that is not active this month opens nothing" do
-      nominated(started_at: Date.current.prev_month.beginning_of_month, recurring: false)
+    test "a contribution that no longer covers the fleet opens nothing" do
+      nominated(started_at: Date.current - 2.months, recurring: false)
 
       Sync.call
 
@@ -67,7 +67,7 @@ module Subscriptions
       Sync.call
       subscription = @fleet.fleet_subscriptions.sole
 
-      contribution.update!(started_at: Date.current.prev_month.beginning_of_month)
+      contribution.update!(started_at: Date.current - 2.months)
       result = Sync.call
 
       assert_equal [subscription.id], result[:closed].map(&:id)
@@ -175,6 +175,35 @@ module Subscriptions
       Sync.call
 
       assert @fleet.fleet_subscriptions.sole.open?
+    end
+
+    test "a donation from mid-month keeps the subscription open past the month's end" do
+      travel_to Date.new(2026, 10, 16) do
+        nominated(started_at: Date.current)
+        Sync.call
+      end
+
+      travel_to Date.new(2026, 11, 1) do
+        result = Sync.call
+
+        assert_empty result[:closed]
+        assert @fleet.fleet_subscriptions.sole.open?
+      end
+    end
+
+    test "a late renewal inside the grace days does not close the subscription" do
+      travel_to Date.new(2026, 10, 16) do
+        nominated(started_at: Date.current)
+        Sync.call
+      end
+
+      travel_to Date.new(2026, 11, 18) do
+        assert_empty Sync.call[:closed]
+      end
+
+      travel_to Date.new(2026, 11, 19) do
+        assert_equal 1, Sync.call[:closed].size
+      end
     end
 
     test "a standing pledge keeps the subscription open month after month" do

@@ -62,6 +62,9 @@ fr:
       reasons:
         contribution: "le don qui la soutenait n'est plus actif"
         manual: "l'octroi a été clôturé par un administrateur"
+    fleet_subscription_ended_in_error:
+      title: "Désolés — %{fleet} n'a pas perdu les fonctionnalités de flotte"
+      body: "La notification du %{date} indiquant que %{fleet} avait perdu les fonctionnalités de flotte a été envoyée par erreur : le don qui la soutenait était toujours actif. Le bug est corrigé et tu n'as rien à faire."
     fleet_rsi_verification_lost:
       title: "%{fleet} n’est plus vérifiée pour %{sid}"
       body: "Une autre flotte a prouvé qu’elle gère l’organisation RSI %{sid} en plaçant son code de vérification sur la page de l’organisation. Ta flotte n’affiche plus le SID comme vérifié. Si %{sid} est ton organisation, vérifie-la à nouveau depuis les paramètres de la flotte."

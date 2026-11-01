@@ -17,6 +17,11 @@ module Subscriptions
   class Sync
     LOCK = "subscriptions_sync"
 
+    # A Ko-fi renewal can land a day or two after the month it renews, and
+    # closing in between would tell a fleet's admins it lost its features only
+    # to tell them it has them back once the payment arrives.
+    GRACE_DAYS = 3
+
     def self.call(date: Date.current)
       new(date:).call
     end
@@ -103,7 +108,7 @@ module Subscriptions
     private def candidate_contributions
       SupporterContribution
         .where.not(fleet_id: nil)
-        .active_now(@date)
+        .covering(@date, grace_days: GRACE_DAYS)
         .order(:started_at)
     end
 

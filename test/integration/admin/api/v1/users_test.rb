@@ -228,7 +228,7 @@ class Admin::Api::V1::UsersTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200, path_params: {id: user.id} do
       assert parsed_body["supporter"]
       assert_equal 2, parsed_body["supporterTier"]
-      assert_equal Date.current.end_of_month.iso8601, parsed_body["supporterUntil"]
+      assert_equal (Date.current + 1.month - 1.day).iso8601, parsed_body["supporterUntil"]
     end
   end
 
