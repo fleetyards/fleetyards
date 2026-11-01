@@ -57,6 +57,9 @@ en:
       reasons:
         contribution: "the donation supporting it is no longer active"
         manual: "the grant was ended by an administrator"
+    fleet_subscription_ended_in_error:
+      title: "Sorry — %{fleet} did not lose its fleet features"
+      body: "The notice from %{date} that %{fleet} had lost its fleet features was sent by mistake: the donation supporting it was still active. The bug behind it is fixed, and there is nothing you need to do."
     fleet_rsi_verification_lost:
       title: "%{fleet} is no longer verified for %{sid}"
       body: "Another fleet proved it runs the RSI organisation %{sid} by putting its verification token on the org's page. Your fleet no longer shows the SID as verified. If %{sid} is your organisation, verify it again from the fleet settings."

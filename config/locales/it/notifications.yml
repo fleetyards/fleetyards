@@ -62,6 +62,9 @@ it:
       reasons:
         contribution: "la donazione che la sosteneva non è più attiva"
         manual: "la concessione è stata terminata da un amministratore"
+    fleet_subscription_ended_in_error:
+      title: "Ci scusiamo — %{fleet} non ha perso le funzioni di flotta"
+      body: "La notifica del %{date} secondo cui %{fleet} aveva perso le funzioni di flotta è stata inviata per errore: la donazione che la sosteneva era ancora attiva. Il bug è stato corretto e non devi fare nulla."
     fleet_rsi_verification_lost:
       title: "%{fleet} non è più verificata per %{sid}"
       body: "Un’altra flotta ha dimostrato di gestire l’organizzazione RSI %{sid} inserendo il proprio codice di verifica nella pagina dell’organizzazione. La tua flotta non mostra più il SID come verificato. Se %{sid} è la tua organizzazione, verificala di nuovo dalle impostazioni della flotta."

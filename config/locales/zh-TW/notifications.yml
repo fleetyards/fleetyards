@@ -62,6 +62,9 @@ zh-TW:
       reasons:
         contribution: "支援該艦隊的捐贈已不再有效"
         manual: "管理員已結束該授權"
+    fleet_subscription_ended_in_error:
+      title: "抱歉 — %{fleet} 並未失去艦隊功能"
+      body: "%{date} 發送的 %{fleet} 已失去艦隊功能的通知是誤發的：支援該艦隊的捐贈當時仍然有效。導致此問題的錯誤已修復，你無需進行任何操作。"
     fleet_rsi_verification_lost:
       title: "%{fleet} 不再是 %{sid} 的已驗證艦隊"
       body: "另一支艦隊將其驗證碼放到了 RSI 組織 %{sid} 的頁面上，證明它在管理該組織。你的艦隊不再將該 SID 顯示為已驗證。如果 %{sid} 是你的組織，請在艦隊設定中重新驗證。"
