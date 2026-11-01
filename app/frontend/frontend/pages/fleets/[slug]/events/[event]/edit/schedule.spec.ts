@@ -12,6 +12,7 @@ import {
 import { defineRule } from "vee-validate";
 import { between, required } from "@vee-validate/rules";
 import FormDateTime from "@/shared/components/base/FormDateTime/index.vue";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import { type Fleet, type FleetEventExtended } from "@/services/fyApi";
 import Component from "./schedule.vue";
 
@@ -221,6 +222,34 @@ describe("FleetEventEditSchedulePage times", () => {
     await flushPromises();
 
     expect((await save(subject)).endsAt).toBe("2026-11-01T05:30:00.000Z");
+  });
+
+  // The default was worked out across New York's rollback; read in UTC, the
+  // shown 01:30 is one hour after 00:30, and that is what gets saved.
+  it("saves the shown end after the zone changes under a default", async () => {
+    const subject = await mount(
+      series({
+        recurring: false,
+        startsAt: "2026-10-31T23:00:00Z",
+        endsAt: undefined,
+        timezone: "America/New_York",
+      }),
+    );
+
+    const [startField, endField] = subject.findAllComponents(FormDateTime);
+    startField.vm.$emit("update:modelValue", "2026-11-01T00:30");
+    await flushPromises();
+    expect(endField.props("modelValue")).toBe("2026-11-01T01:30");
+
+    subject
+      .findAllComponents(BaseSelect)
+      .find(
+        (select) => (select.props() as { name?: string }).name === "timezone",
+      )
+      ?.vm.$emit("update:modelValue", "UTC");
+    await flushPromises();
+
+    expect((await save(subject)).endsAt).toBe("2026-11-01T01:30:00.000Z");
   });
 
   // 01:30 happens twice in New York on 1 November 2026. An untouched field

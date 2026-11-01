@@ -209,8 +209,18 @@ const wrapHandleSubmit = (cb: SubmissionHandler<FleetEventUpdateInput>) =>
     // An end that only followed the start is taken from the start's instant:
     // in a repeated DST hour its wall clock names two instants, and reading it
     // back could pick the one an hour early.
+    // The zone can change after the default was filled in, so it must still
+    // read as start + 2h in the zone being saved.
     const followsStart =
-      !endsAtTouched && !!start && !!defaultEnd && values.endsAt === defaultEnd;
+      !endsAtTouched &&
+      !!start &&
+      values.endsAt === defaultEnd &&
+      values.endsAt ===
+        addHoursInZone(
+          values.startsAt as string,
+          DEFAULT_DURATION_HOURS,
+          values.timezone,
+        );
     return cb(
       {
         ...values,
