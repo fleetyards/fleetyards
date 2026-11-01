@@ -72,21 +72,68 @@ describe("formatInZone", () => {
 describe("organiserTimeHint", () => {
   const iso = "2026-11-05T01:00:00.000Z";
 
+  const endIso = "2026-11-05T03:00:00.000Z";
+
   it("names the organiser's time when the viewer's clock reads differently", () => {
-    expect(organiserTimeHint(iso, "America/New_York", "Europe/Berlin")).toBe(
-      "Wed 20:00 New York (ET)",
-    );
+    expect(
+      organiserTimeHint(iso, null, "America/New_York", "Europe/Berlin"),
+    ).toBe("Wed 20:00 New York (EST)");
+  });
+
+  it("names the organiser's start and end", () => {
+    expect(
+      organiserTimeHint(iso, endIso, "America/New_York", "Europe/Berlin"),
+    ).toBe("Wed 20:00–22:00 New York (EST)");
+  });
+
+  it("keeps the weekday on an end that falls on another day", () => {
+    expect(
+      organiserTimeHint(
+        iso,
+        "2026-11-05T06:00:00.000Z",
+        "America/New_York",
+        "Europe/Berlin",
+      ),
+    ).toBe("Wed 20:00–Thu 01:00 New York (EST)");
   });
 
   it("is null when both clocks read the same", () => {
     expect(
-      organiserTimeHint(iso, "America/New_York", "America/New_York"),
+      organiserTimeHint(iso, endIso, "America/New_York", "America/New_York"),
     ).toBeNull();
   });
 
+  it("shows the hint when only the end differs across a DST change", () => {
+    expect(
+      organiserTimeHint(
+        "2026-03-29T00:30:00.000Z",
+        "2026-03-29T02:30:00.000Z",
+        "Europe/London",
+        "UTC",
+      ),
+    ).toBe("Sun 00:30 GMT–03:30 GMT+1 London");
+  });
+
+  it("names the offset in force on the event's date", () => {
+    expect(
+      organiserTimeHint(
+        "2026-07-15T20:00:00.000Z",
+        null,
+        "Europe/London",
+        "UTC",
+      ),
+    ).toBe("Wed 21:00 London (GMT+1)");
+  });
+
+  it("drops a repeated zone name for UTC", () => {
+    expect(organiserTimeHint(iso, null, "UTC", "Europe/Berlin")).toBe(
+      "Thu 01:00 UTC",
+    );
+  });
+
   it("falls back to the zone's name for one the form does not offer", () => {
-    expect(organiserTimeHint(iso, "America/Toronto", "UTC")).toBe(
-      "Wed 20:00 America/Toronto",
+    expect(organiserTimeHint(iso, null, "America/Toronto", "UTC")).toBe(
+      "Wed 20:00 America/Toronto (EST)",
     );
   });
 });

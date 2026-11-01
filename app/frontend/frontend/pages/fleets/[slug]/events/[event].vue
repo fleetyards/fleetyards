@@ -250,7 +250,11 @@ const endDate = computed(() => {
 
 const organiserTime = computed(() =>
   event.value
-    ? organiserTimeHint(event.value.startsAt, event.value.timezone)
+    ? organiserTimeHint(
+        event.value.startsAt,
+        event.value.endsAt,
+        event.value.timezone,
+      )
     : null,
 );
 

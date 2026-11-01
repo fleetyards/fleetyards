@@ -89,16 +89,49 @@ export const timezoneLabel = (zone: string | null | undefined): string => {
   );
 };
 
-// The organiser's time beside a time shown in the viewer's zone, e.g.
-// "Wed 20:00 New York (ET)" — or null when both clocks read the same, where a
-// second copy of the time would say nothing new.
+// The zone abbreviation in force at `iso`: the option labels carry a fixed one,
+// and "London (GMT)" beside a summer time names the wrong offset.
+const abbreviationAt = (iso: string, zone: string | null | undefined) =>
+  new Intl.DateTimeFormat("en-US", {
+    timeZone: resolveTimezone(zone),
+    timeZoneName: "short",
+  })
+    .formatToParts(new Date(iso))
+    .find((part) => part.type === "timeZoneName")?.value ?? "";
+
+// The organiser's times beside times shown in the viewer's zone, e.g.
+// "Wed 20:00–22:00 New York (EST)" — or null when every clock reads the same,
+// where a second copy would say nothing new. Start and end are compared
+// separately because a DST change between them can make them disagree, and
+// then each carries its own offset.
 export const organiserTimeHint = (
-  iso: string | null | undefined,
+  startIso: string | null | undefined,
+  endIso: string | null | undefined,
   eventZone: string | null | undefined,
   viewerZone = browserTimezone(),
 ): string | null => {
   const pattern = "EEE HH:mm";
-  const there = formatInZone(iso, eventZone, pattern);
-  if (!there || there === formatInZone(iso, viewerZone, pattern)) return null;
-  return `${there} ${timezoneLabel(eventZone)}`;
+  const start = formatInZone(startIso, eventZone, pattern);
+  if (!startIso || !start) return null;
+
+  const end = endIso ? formatInZone(endIso, eventZone, pattern) : "";
+  const same = (iso: string, there: string) =>
+    there === formatInZone(iso, viewerZone, pattern);
+  if (same(startIso, start) && (!end || same(endIso as string, end))) {
+    return null;
+  }
+
+  const name = timezoneLabel(eventZone).replace(/\s*\(.*\)$/, "");
+  const startAbbr = abbreviationAt(startIso, eventZone);
+  const endAbbr = end ? abbreviationAt(endIso as string, eventZone) : startAbbr;
+  const endLabel =
+    end && end.slice(0, 3) === start.slice(0, 3) ? end.slice(4) : end;
+
+  if (end && startAbbr !== endAbbr) {
+    return `${start} ${startAbbr}–${endLabel} ${endAbbr} ${name}`;
+  }
+  const range = end ? `${start}–${endLabel}` : start;
+  return startAbbr && startAbbr !== name
+    ? `${range} ${name} (${startAbbr})`
+    : `${range} ${name}`;
 };
