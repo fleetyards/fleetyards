@@ -126,8 +126,6 @@ export const useFleetNavAccess = (
     () => !!membership.value && hasShoppingListsAccess.value,
   );
 
-  // The one tab somebody outside the fleet can reach, and the reason it stays
-  // top-level rather than joining the Assets group.
   const showMembersNav = computed(() => !!membership.value);
 
   const showSettingsNav = computed(() => !!membership.value);
@@ -136,6 +134,8 @@ export const useFleetNavAccess = (
     () => !!membership.value || !!toValue(fleet)?.publicFleetStats,
   );
 
+  // The one tab somebody outside the fleet can reach, and the reason it stays
+  // top-level rather than joining the Assets group.
   const showShipsNav = computed(
     () => !!membership.value || !!toValue(fleet)?.publicFleet,
   );
