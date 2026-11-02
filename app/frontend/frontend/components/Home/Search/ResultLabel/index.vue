@@ -95,7 +95,7 @@ const nameParts = computed(() => {
       data-test="search-result-plan"
     />
     <span
-      v-else-if="image"
+      v-else-if="image && result.type !== 'Blueprint'"
       class="search-result-label__thumb"
       :class="{ 'search-result-label__thumb--framed': cover }"
       aria-hidden="true"
