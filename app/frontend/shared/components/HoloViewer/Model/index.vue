@@ -256,6 +256,16 @@ const withinMounts = (node: Object3D) => {
   return false;
 };
 
+// A painted part keeps the materials it was exported with.
+const withinTexturedMount = (node: Object3D) => {
+  for (let current: Object3D | null = node; current; current = current.parent) {
+    if (current.userData.textured) return true;
+    if (current === mountRoot) return false;
+  }
+
+  return false;
+};
+
 const wireOf = (body: Mesh) =>
   body.children.find((child) => child.userData.wire) as
     LineSegments<EdgesGeometry, LineBasicMaterial> | undefined;
@@ -290,6 +300,7 @@ const setMaterials = (scene: Group) => {
     const mesh = node as Mesh;
 
     if (!mesh.isMesh || mesh.userData.wire || mesh.userData.overlay) return;
+    if (withinTexturedMount(mesh)) return;
 
     if (!mesh.userData.shared) disposeOriginal(mesh.material);
 
@@ -649,13 +660,17 @@ const applyPaint = async (scene: Group) => {
   invalidate();
 };
 
-const setup = (scene: Group, animations: AnimationClip[]) => {
+const setup = async (scene: Group, animations: AnimationClip[]) => {
   if (props.model.textured) {
     playAnimations(scene, animations);
     if (props.model.paint) void applyPaint(scene);
   } else {
     setMaterials(scene);
   }
+
+  // Parts in one shared frame, a figure dressed from its pieces, are framed
+  // and centred together: the root alone may be any one of them.
+  if (props.model.frameMounts) await attachMounts(scene);
 
   const box = new Box3().setFromObject(scene);
   const size = box.getSize(new Vector3());
@@ -677,14 +692,14 @@ const setup = (scene: Group, animations: AnimationClip[]) => {
 
   emit("loaded", size, scene);
 
-  void attachMounts(scene);
+  if (!props.model.frameMounts) void attachMounts(scene);
 };
 
 watch(
   () => state.value,
   () => {
     if (state.value) {
-      setup(state.value.scene, state.value.animations);
+      void setup(state.value.scene, state.value.animations);
     }
   },
 );

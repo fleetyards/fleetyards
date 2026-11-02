@@ -38,7 +38,11 @@ import crusaderNebulaSmall from "@/images/skyboxes/stanton_crusader_nebula_2k.we
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useLowPowerDevice } from "@/shared/composables/useLowPowerDevice";
 import { LOW_POWER_HOLO_SIZE_LIMIT } from "@/shared/components/HoloViewer/limits";
-import { type HoloMount } from "@/shared/components/HoloViewer/mounts";
+import {
+  type HoloMount,
+  mountsSize,
+  mountsTextured,
+} from "@/shared/components/HoloViewer/mounts";
 
 export type HoloModel = {
   path: string;
@@ -54,6 +58,9 @@ export type HoloModel = {
   paintOrm?: string;
   // Parts drawn on the holo's ports, in its own frame.
   mounts?: HoloMount[];
+  // Framed and centred with its parts rather than on its own: a figure whose
+  // pieces all share one frame.
+  frameMounts?: boolean;
 };
 
 type Props = {
@@ -129,10 +136,15 @@ const confirmedSize = ref(0);
 
 // Drawn with its own colours, which the tone mapping keeps as they are rather
 // than pushing the dark ones towards black.
-const textured = computed(() => props.models.some((model) => model.textured));
+const textured = computed(() =>
+  props.models.some((model) => model.textured || mountsTextured(model.mounts)),
+);
 
 const totalSize = computed(() =>
-  props.models.reduce((sum, model) => sum + (model.size ?? 0), 0),
+  props.models.reduce(
+    (sum, model) => sum + (model.size ?? 0) + mountsSize(model.mounts),
+    0,
+  ),
 );
 
 const awaitingConfirmation = computed(

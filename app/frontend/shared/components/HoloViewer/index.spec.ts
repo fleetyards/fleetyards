@@ -70,6 +70,39 @@ describe("HoloViewer", () => {
     expect(wrapper.find("[data-test='canvas']").exists()).toBe(true);
   });
 
+  it("counts the mounted parts towards the size a phone is asked about", async () => {
+    const wrapper = await mountWithDefaults<typeof HoloViewer>(HoloViewer, {
+      props: {
+        models: [
+          {
+            path: "/body.glb",
+            size: 10 * MB,
+            mounts: [
+              {
+                position: [0, 0, 0],
+                rotation: [0, 0, 0, 1],
+                path: "/core.glb",
+                size: 15 * MB,
+                mounts: [],
+              },
+              {
+                position: [0, 0, 0],
+                rotation: [0, 0, 0, 1],
+                path: "/legs.glb",
+                size: 15 * MB,
+                mounts: [],
+              },
+            ],
+          },
+        ],
+      },
+    });
+
+    expect(
+      wrapper.find("[data-test='holo-viewer-too-large']").text(),
+    ).toContain("40");
+  });
+
   it("never asks a desktop", async () => {
     setViewport(false);
 

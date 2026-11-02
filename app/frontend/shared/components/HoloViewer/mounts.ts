@@ -8,6 +8,10 @@ export type HoloMount = {
   position: [number, number, number];
   rotation: [number, number, number, number];
   path?: string;
+  // Bytes, where the file is known: a phone asks before loading a large one.
+  size?: number;
+  // Painted: drawn with its own materials, not the holo's.
+  textured?: boolean;
   // What the viewer names this part by when it is clicked.
   id?: string;
   // Drawn in the highlight colour, with everything mounted on it.
@@ -24,6 +28,15 @@ export const mountsLayoutKey = (mounts: HoloMount[] = []): string =>
         `${mount.path ?? ""}@${mount.position.join(",")}/${mount.rotation.join(",")}(${mountsLayoutKey(mount.mounts)})`,
     )
     .join(";");
+
+export const mountsTextured = (mounts: HoloMount[] = []): boolean =>
+  mounts.some((mount) => mount.textured || mountsTextured(mount.mounts));
+
+export const mountsSize = (mounts: HoloMount[] = []): number =>
+  mounts.reduce(
+    (sum, mount) => sum + (mount.size ?? 0) + mountsSize(mount.mounts),
+    0,
+  );
 
 // Only what is highlighted, by place in the tree: a change here only repaints.
 export const mountsHighlightKey = (mounts: HoloMount[] = []): string =>
@@ -111,6 +124,7 @@ export const buildMounts = async (mounts: HoloMount[]) => {
         group.quaternion.fromArray(mount.rotation);
         group.userData.highlighted = !!mount.highlighted;
         group.userData.mountId = mount.id;
+        group.userData.textured = !!mount.textured;
         group.userData.mountGroups = [];
         parent.add(group);
         // In list order, before anything is awaited, so a repaint can walk the
