@@ -29,6 +29,8 @@ module ScData
     # A Blender export drops holo.blend, holo.obj and holo.mtl beside the glTF.
     VIEW_EXTENSIONS = %w[png jpg jpeg webp gif].freeze
     HOLO_EXTENSIONS = %w[gltf glb].freeze
+    # Only the flight holo is placed in AR, so only it is exported as USDZ.
+    AR_HOLO_EXTENSION = "usdz"
 
     module_function
 
@@ -45,9 +47,16 @@ module ScData
       end
 
       if (holo = HOLO_NAME.match(stem))
+        prefix = prefix_for(holo[1])
+
+        if extension == AR_HOLO_EXTENSION
+          return if prefix || holo[2]
+
+          return "holo_usdz"
+        end
+
         return unless HOLO_EXTENSIONS.include?(extension)
 
-        prefix = prefix_for(holo[1])
         variant = holo[2]&.downcase&.sub(/\Atextured[-_ ]?lite\z/, "textured_lite")
 
         # Only the flying pose is exported without its components, and the

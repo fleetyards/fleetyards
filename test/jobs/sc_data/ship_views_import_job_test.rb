@@ -17,6 +17,8 @@ module ScData
     PNG = Rails.root.join("test/fixtures/files/test.png").binread
     HOLO = Rails.root.join("test/fixtures/holo/plain.gltf").binread
     GLB = Rails.root.join("test/fixtures/holo/plain.glb").binread
+    # A USDZ is a zip archive; its local file header is all the type detection reads.
+    USDZ = "PK\x03\x04#{"\0" * 60}".b
     HARDPOINTS = {
       entity: "AEGS_Gladius", state: "flight", frame: "gltf-y-up", units: "m",
       ports: [{name: "hardpoint_gun_nose", parent: nil, helper: true, position: [0.0, -1.17, -10.59], rotation: [0, 0, 0, 1],
@@ -274,6 +276,17 @@ module ScData
       assert_equal JSON.parse(HARDPOINTS), @model.hardpoint_transforms
       assert_equal Digest::MD5.hexdigest(HARDPOINTS), @model.ship_view_md5s["hardpoint_transforms"]
       assert_equal "listing-1", @model.ship_views_digest
+      assert_empty MeasureHoloJob.jobs
+    end
+
+    test "attaches the flight holo's USDZ under the type AR Quick Look opens" do
+      publish({"flight_holo.usdz" => USDZ, "landed_holo.usdz" => USDZ})
+
+      perform
+
+      assert @model.holo_usdz.attached?
+      assert_equal "model/vnd.usdz+zip", @model.holo_usdz.content_type
+      assert_equal ["holo_usdz"], @model.ship_view_md5s.keys
       assert_empty MeasureHoloJob.jobs
     end
 
