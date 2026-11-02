@@ -31,7 +31,10 @@ import {
   type Component,
   InventoryItemTypeEnum,
 } from "@/services/fyApi";
-import { quantumDriveTravelTime } from "@/frontend/utils/travelTimes";
+import {
+  quantumDriveImage,
+  quantumDriveTravelTime,
+} from "@/frontend/utils/travelTimes";
 import {
   InputTypesEnum,
   InputAlignmentsEnum,
@@ -299,6 +302,14 @@ const columns = computed<BaseTableCol<Component>[]>(() => {
       width: "56px",
     },
     {
+      name: "image",
+      label: "",
+      width: "80px",
+      alignment: BaseTableColAlignmentEnum.CENTER,
+      mobile: false,
+      skeletonMedia: "36px",
+    },
+    {
       name: "name",
       label: t("labels.travelTimes.quantumDrive"),
       class: "name",
@@ -503,6 +514,17 @@ const columns = computed<BaseTableCol<Component>[]>(() => {
               >
                 {{ String(rankOf(record)).padStart(2, "0") }}
               </span>
+            </template>
+
+            <template #col-image="{ record }">
+              <img
+                v-if="quantumDriveImage(record)"
+                :src="quantumDriveImage(record)"
+                alt=""
+                class="travel-times__image"
+                loading="lazy"
+              />
+              <span v-else class="travel-times__image" />
             </template>
 
             <template #col-name="{ record }">
