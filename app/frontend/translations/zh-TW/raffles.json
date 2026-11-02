@@ -141,7 +141,7 @@
         },
         "warningDetails": {
           "sharedIp": "與以下使用者登入 IP 相同：%{usernames}。常見於同一家庭或行動網路。",
-          "sameInbox": "與以下使用者電子郵件信箱相同：%{usernames}。只有最早的參加會進入抽獎。",
+          "sameInbox": "與以下使用者電子郵件信箱相同：%{usernames}。很可能是同一個人。",
           "newAccount": "帳戶建立不到一天後即參加。",
           "noEmail": "帳戶沒有電子郵件地址。抽獎時將被略過。"
         }

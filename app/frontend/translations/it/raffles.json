@@ -141,7 +141,7 @@
         },
         "warningDetails": {
           "sharedIp": "Stesso IP di accesso di: %{usernames}. Spesso una famiglia o una rete mobile.",
-          "sameInbox": "Stessa casella email di: %{usernames}. Entra nell'estrazione solo la partecipazione più vecchia.",
+          "sameInbox": "Stessa casella email di: %{usernames}. Probabilmente la stessa persona.",
           "newAccount": "Account creato meno di un giorno prima della partecipazione.",
           "noEmail": "Nessun indirizzo email sull'account. Saltato all'estrazione."
         }

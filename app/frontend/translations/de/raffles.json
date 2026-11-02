@@ -141,7 +141,7 @@
         },
         "warningDetails": {
           "sharedIp": "Gleiche Anmelde-IP wie: %{usernames}. Oft ein Haushalt oder Mobilfunknetz.",
-          "sameInbox": "Gleiches E-Mail-Postfach wie: %{usernames}. Nur die früheste Teilnahme wird gezogen.",
+          "sameInbox": "Gleiches E-Mail-Postfach wie: %{usernames}. Wahrscheinlich dieselbe Person.",
           "newAccount": "Konto weniger als einen Tag vor der Teilnahme erstellt.",
           "noEmail": "Keine E-Mail-Adresse im Konto. Wird bei der Ziehung übergangen."
         }

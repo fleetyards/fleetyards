@@ -141,7 +141,7 @@
         },
         "warningDetails": {
           "sharedIp": "Same sign-in IP as: %{usernames}. Often a household or mobile network.",
-          "sameInbox": "Same email inbox as: %{usernames}. Only the earliest entry is drawn.",
+          "sameInbox": "Same email inbox as: %{usernames}. Likely the same person.",
           "newAccount": "Account created less than a day before entering.",
           "noEmail": "No email address on the account. Passed over in the draw."
         }

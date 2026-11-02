@@ -141,7 +141,7 @@
         },
         "warningDetails": {
           "sharedIp": "Misma IP de inicio de sesión que: %{usernames}. A menudo un hogar o una red móvil.",
-          "sameInbox": "Mismo buzón de correo que: %{usernames}. Solo entra en el sorteo la participación más antigua.",
+          "sameInbox": "Mismo buzón de correo que: %{usernames}. Probablemente la misma persona.",
           "newAccount": "Cuenta creada menos de un día antes de participar.",
           "noEmail": "La cuenta no tiene dirección de correo. Se salta en el sorteo."
         }

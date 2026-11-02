@@ -141,7 +141,7 @@
         },
         "warningDetails": {
           "sharedIp": "与以下用户登录 IP 相同：%{usernames}。常见于同一家庭或移动网络。",
-          "sameInbox": "与以下用户邮箱相同：%{usernames}。只有最早的参与会进入抽奖。",
+          "sameInbox": "与以下用户邮箱相同：%{usernames}。很可能是同一个人。",
           "newAccount": "账户创建不到一天后即参与。",
           "noEmail": "账户没有邮箱地址。抽奖时将被跳过。"
         }
