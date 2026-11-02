@@ -43,6 +43,7 @@ class Equipment < ApplicationRecord
   # columns for now, so reads can move over a catalogue at a time.
   has_many :builds, class_name: "EquipmentBuild", dependent: :destroy
   has_many :cart_items, as: :item, dependent: :delete_all
+  has_many :outfit_items, dependent: :delete_all
   # The build we are being served from, which is the configured one unless its
   # load has not run yet. `current` on its own means *exactly* the configured
   # build and has to keep meaning that -- `ScData::CheckJob` asks it whether the
