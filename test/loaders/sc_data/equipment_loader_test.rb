@@ -196,6 +196,16 @@ module ScData
         assert_operator without.size, :<=, 10, "unmeasured: #{without.map { |item| item[:key] }.first(10)}"
       end
 
+      test "#all persists what decides where a worn piece goes" do
+        curated.all
+
+        suit = Equipment.find_by(sc_key: "clda_env_armor_heavy_suit_01_01_01")
+
+        assert_equal "Char_Armor_Undersuit", suit.fit["type"]
+        assert_includes suit.fit["ports"].pluck("name"), "wep_stocked_3"
+        assert_equal "Char_Armor_Helmet", Equipment.find_by(sc_key: "gys_helmet_03_01_01").fit["type"]
+      end
+
       test "a measured piece carries both the volume and the box it fills" do
         helmet = parsed["gys_helmet_03_01_01"]
 

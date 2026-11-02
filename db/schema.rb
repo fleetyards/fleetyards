@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_02_210000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_02_220000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -622,6 +622,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_02_210000) do
     t.jsonb "item_view_md5s", default: {}, null: false
     t.string "family_key"
     t.jsonb "attach_points"
+    t.jsonb "fit"
     t.index ["equipment_type"], name: "index_equipment_on_equipment_type"
     t.index ["family_key"], name: "index_equipment_on_family_key"
     t.index ["item_type"], name: "index_equipment_on_item_type"
@@ -672,6 +673,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_02_210000) do
     t.jsonb "volume_dimensions"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "fit"
     t.index ["environment", "equipment_type"], name: "index_equipment_builds_on_environment_and_equipment_type"
     t.index ["environment", "item_type"], name: "index_equipment_builds_on_environment_and_item_type"
     t.index ["environment", "version"], name: "index_equipment_builds_on_environment_and_version"

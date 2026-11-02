@@ -39,5 +39,201 @@
   },
   "family_key": "clda_env_armor_heavy_suit_01_01",
   "required_tags": null,
-  "ports": null
+  "ports": null,
+  "fit": {
+    "type": "Char_Armor_Undersuit",
+    "tags": [
+      "Environment",
+      "Set_01",
+      "Color_01",
+      "$armor_mobi++",
+      "SM_RestrictedArm",
+      "fakeChestUIcontainer"
+    ],
+    "ports": [
+      {
+        "name": "wep_stocked_2",
+        "types": [
+          {
+            "type": "WeaponPersonal",
+            "sub_types": [
+              "Medium"
+            ]
+          },
+          {
+            "type": "WeaponPersonal",
+            "sub_types": [
+              "Gadget"
+            ]
+          }
+        ],
+        "min_size": 2,
+        "max_size": 4
+      },
+      {
+        "name": "wep_stocked_3",
+        "types": [
+          {
+            "type": "WeaponPersonal",
+            "sub_types": [
+              "Medium",
+              "Large"
+            ]
+          },
+          {
+            "type": "WeaponPersonal",
+            "sub_types": [
+              "Gadget"
+            ]
+          }
+        ],
+        "min_size": 2,
+        "max_size": 5
+      },
+      {
+        "name": "grenade_attach_1",
+        "types": [
+          {
+            "type": "WeaponPersonal",
+            "sub_types": [
+              "Grenade"
+            ]
+          }
+        ],
+        "min_size": 1,
+        "max_size": 1
+      },
+      {
+        "name": "grenade_attach_2",
+        "types": [
+          {
+            "type": "WeaponPersonal",
+            "sub_types": [
+              "Grenade"
+            ]
+          }
+        ],
+        "min_size": 1,
+        "max_size": 1
+      },
+      {
+        "name": "grenade_attach_3",
+        "types": [
+          {
+            "type": "WeaponPersonal",
+            "sub_types": [
+              "Grenade"
+            ]
+          }
+        ],
+        "min_size": 1,
+        "max_size": 1
+      },
+      {
+        "name": "grenade_attach_4",
+        "types": [
+          {
+            "type": "WeaponPersonal",
+            "sub_types": [
+              "Grenade"
+            ]
+          }
+        ],
+        "min_size": 1,
+        "max_size": 1
+      },
+      {
+        "name": "backpack",
+        "types": [
+          {
+            "type": "Char_Armor_Backpack"
+          }
+        ],
+        "min_size": 1,
+        "max_size": 3,
+        "port_tags": [
+          "utility"
+        ],
+        "required_tags": [
+          "$backpack"
+        ]
+      },
+      {
+        "name": "utility_attach_1",
+        "types": [
+          {
+            "type": "WeaponPersonal",
+            "sub_types": [
+              "Gadget",
+              "Rocket"
+            ]
+          }
+        ],
+        "min_size": 1,
+        "max_size": 1,
+        "port_tags": [
+          "multitool"
+        ]
+      },
+      {
+        "name": "utility_attach_2",
+        "types": [
+          {
+            "type": "WeaponPersonal",
+            "sub_types": [
+              "Knife",
+              "Gadget"
+            ]
+          }
+        ],
+        "min_size": 1,
+        "max_size": 1,
+        "port_tags": [
+          "melee"
+        ]
+      },
+      {
+        "name": "wep_sidearm",
+        "types": [
+          {
+            "type": "WeaponPersonal",
+            "sub_types": [
+              "Small",
+              "Rocket"
+            ]
+          }
+        ],
+        "min_size": 1,
+        "max_size": 1
+      },
+      {
+        "name": "Armor_Helmet",
+        "types": [
+          {
+            "type": "Char_Armor_Helmet"
+          }
+        ],
+        "min_size": 1,
+        "max_size": 1,
+        "port_tags": [
+          "clda_env_01",
+          "clda_utility_heavy"
+        ]
+      },
+      {
+        "name": "helmethook_attach",
+        "types": [
+          {
+            "type": "Char_Armor_Helmet"
+          }
+        ],
+        "min_size": 1,
+        "max_size": 1,
+        "port_tags": [
+          "clda_env_01",
+          "clda_utility_heavy"
+        ]
+      }
+    ]
+  }
 }
