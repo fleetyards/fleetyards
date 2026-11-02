@@ -113,6 +113,10 @@ export const bonesByName = (root: Object3D) => {
   return bones;
 };
 
+// Helper bones a later piece hangs from rather than bringing its own: the
+// backpack from the core it is worn on.
+const SHARED_HELPERS = new Set(["backpack_attach_1_override"]);
+
 // The piece's skinned meshes, bound to the body's bones in place of the
 // piece's own copies, so one pose moves the whole figure. A piece carries
 // helper bones of its own -- a magazine pouch's, a helmet light's -- which are
@@ -129,27 +133,42 @@ export const bindToBones = (piece: Object3D, bones: Map<string, Bone>) => {
     if ((node as SkinnedMesh).isSkinnedMesh) meshes.push(node as SkinnedMesh);
   });
 
+  // Marks this piece's own grafts, so a bone it already grafted is found
+  // again rather than grafted twice.
+  const token = Symbol(piece.name);
+
   const resolve = (bone: Bone): Bone | undefined => {
     const known = bones.get(bone.name);
-    // A helper another piece grafted is shared only where it hangs from the
-    // same bone -- the core's backpack bone, for the backpack. A namesake
-    // somewhere else is this piece's own.
-    const elsewhere =
-      known?.userData.grafted && known.parent?.name !== bone.parent?.name;
-    if (known && !elsewhere) return known;
+
+    if (known) {
+      // The body's own skeleton, or a bone this piece grafted already.
+      if (!known.userData.grafted || known.userData.graftedBy === token) {
+        return known;
+      }
+
+      // A bone another piece brought: its own, unless it is the core's
+      // backpack bone, which the backpack hangs from.
+      if (
+        SHARED_HELPERS.has(bone.name) &&
+        known.parent?.name === bone.parent?.name
+      ) {
+        return known;
+      }
+    }
 
     const parent = bone.parent as Bone | null;
     const anchor = parent?.isBone ? resolve(parent) : undefined;
     if (!anchor) return undefined;
 
-    // Its subtree comes along; each of its bones is found under it from now on.
+    // Its subtree comes along. Each bone is found under its name from now on,
+    // over a namesake an earlier piece grafted: an outer layer's holster, not
+    // the undersuit's beneath it, is where a weapon goes.
     anchor.add(bone);
     grafted.push(bone);
     bone.traverse((node) => {
       node.userData.grafted = true;
-      if ((node as Bone).isBone && !bones.has(node.name)) {
-        bones.set(node.name, node as Bone);
-      }
+      node.userData.graftedBy = token;
+      if ((node as Bone).isBone) bones.set(node.name, node as Bone);
     });
 
     return bone;

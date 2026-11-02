@@ -699,8 +699,9 @@ const attachRig = async (scene: Group) => {
     next.userData.grafted.push(...grafted);
   });
 
-  // After the pieces: a holster or a weapon mount is a bone a piece brings.
-  const withHelpers = bonesByName(scene);
+  // After the pieces: a holster or a weapon mount is a bone a piece brings,
+  // and the map holds the outermost piece's copy of each.
+  const withHelpers = bones;
 
   attachments.forEach((attachment) => {
     if (!attachment) return;
