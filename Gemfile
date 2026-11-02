@@ -115,7 +115,6 @@ gem "pghero"
 gem "pghero_assets"
 gem "pg_query", ">= 0.9.0"
 
-gem "git"
 gem "rdoc"
 
 gem "psych", "~> 5.5"
