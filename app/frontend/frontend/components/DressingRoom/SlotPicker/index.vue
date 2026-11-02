@@ -136,9 +136,15 @@ onUnmounted(() => applySearch.cancel());
         v-model="search"
         class="slot-picker__search"
         name="dressing-room-search"
+        icon="fa-light fa-magnifying-glass"
         :label="
           t('dressingRoom.search', { slot: t(`dressingRoom.slots.${slot}`) })
         "
+        :placeholder="
+          t('dressingRoom.search', { slot: t(`dressingRoom.slots.${slot}`) })
+        "
+        no-label
+        clearable
         autofocus
       />
       <Btn
@@ -211,7 +217,7 @@ onUnmounted(() => applySearch.cancel());
 
 .slot-picker__header {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   gap: 0.5rem;
 }
 
