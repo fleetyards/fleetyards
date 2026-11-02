@@ -20,7 +20,7 @@ module ScData
       store.characters.each do |key, entry|
         body = CharacterBody.find_or_create_by!(key:)
         clips = entry["clips"].map { |clip| clip.slice("name", "static", "looping") }
-        weapon_in_hand = entry["weapon_in_hand"]&.slice("bones", "helper")
+        weapon_in_hand = weapon_in_hand(entry["weapon_in_hand"])
         body.update_columns(clips:) if body.clips != clips
         body.update_columns(weapon_in_hand:) if body.weapon_in_hand != weapon_in_hand
 
@@ -36,6 +36,23 @@ module ScData
       end
 
       attached.each { |key, fields| log(:info, "attached #{key}: #{fields.join(", ")}") }
+    end
+
+    # Kept only whole: both hand bones, and a helper with a position and a
+    # rotation. A partial one would break the payload's own schema.
+    private def weapon_in_hand(value)
+      return unless value.is_a?(Hash)
+
+      bones = value["bones"]
+      helper = value["helper"]
+      return unless bones.is_a?(Hash) && bones["right"].is_a?(String) && bones["left"].is_a?(String)
+      return unless helper.is_a?(Hash) && numbers?(helper["position"], 3) && numbers?(helper["rotation"], 4)
+
+      {"bones" => bones.slice("right", "left"), "helper" => helper.slice("position", "rotation")}
+    end
+
+    private def numbers?(values, count)
+      values.is_a?(Array) && values.size == count && values.all?(Numeric)
     end
 
     private def field_for(name) = FIELDS[name]

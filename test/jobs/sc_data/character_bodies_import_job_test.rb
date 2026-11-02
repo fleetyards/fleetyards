@@ -73,6 +73,16 @@ module ScData
       ], body.clips
     end
 
+    test "keeps a body's weapon hand only when the export states it whole" do
+      publish("male", {"body.glb" => BODY})
+      @index["male"][:weaponInHand] = {bones: {right: "RightWeaponBone"}, helper: {position: [0, 0, 0]}}
+      @objects["index.json"] = {bodies: @index}.to_json
+
+      ::ScData::CharacterBodiesImportJob.new.perform
+
+      assert_nil CharacterBody.find_by!(key: "male").weapon_in_hand
+    end
+
     test "takes in a changed clip list without fetching the files again" do
       publish("male", {"body.glb" => BODY})
       ::ScData::CharacterBodiesImportJob.new.perform
