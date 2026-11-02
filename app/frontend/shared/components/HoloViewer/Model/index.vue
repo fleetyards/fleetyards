@@ -918,6 +918,9 @@ const setup = async (scene: Group, animations: AnimationClip[]) => {
   // Parts in one shared frame, a figure dressed from its pieces, are framed
   // and centred together: the root alone may be any one of them.
   if (props.model.rig) {
+    // Shown once it is dressed and posed, rather than bare in its bind pose
+    // while the pieces and clips load.
+    scene.visible = false;
     scene.traverse((node) => {
       // Posed away from the bind pose, the stored bounds no longer hold.
       if ((node as Mesh).isMesh) node.frustumCulled = false;
@@ -934,6 +937,8 @@ const setup = async (scene: Group, animations: AnimationClip[]) => {
       pedestal.visible = !props.fullscreen;
       scene.add(pedestal);
     }
+
+    scene.visible = true;
   }
 
   // Asked again until the parts it frames are the ones that landed: a fitting
