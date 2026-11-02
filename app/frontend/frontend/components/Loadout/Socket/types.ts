@@ -5,6 +5,8 @@ import type { HardpointStat } from "@/frontend/composables/useHardpointStats";
 export interface LoadoutSocketItem {
   id: string;
   name: string;
+  // A component's catalogue slug, for the stats card its name opens on hover.
+  slug?: string;
   image?: string;
   // One figure that says what the item brings, already formatted.
   figure?: string;

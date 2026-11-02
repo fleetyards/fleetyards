@@ -10,6 +10,7 @@ import HardpointItem from "@/frontend/components/Models/Hardpoints/Item/index.vu
 import HardpointSize from "@/frontend/components/Models/Hardpoints/Size/index.vue";
 import HardpointHeadline from "@/frontend/components/Models/Hardpoints/Headline/index.vue";
 import HardpointStats from "@/frontend/components/Models/Hardpoints/Stats/index.vue";
+import CatalogueItemPopover from "@/frontend/components/CatalogueItemPopover/index.vue";
 import type { LoadoutSocketSlot } from "@/frontend/components/Loadout/Socket/types";
 
 type Props = {
@@ -155,7 +156,20 @@ const select = (event: Event) => {
           />
         </span>
         <span class="loadout-socket__name" data-test="loadout-socket-name">
-          {{ socket.item?.name || t("labels.loadoutPicker.emptySocket") }}
+          <!-- The row is the control: no link and no focus stop of its own. -->
+          <CatalogueItemPopover
+            v-if="socket.item?.slug"
+            :item="{
+              type: 'Component',
+              slug: socket.item.slug,
+              name: socket.item.name,
+            }"
+            :link="false"
+            :focusable="false"
+          />
+          <template v-else>
+            {{ socket.item?.name || t("labels.loadoutPicker.emptySocket") }}
+          </template>
         </span>
         <span v-if="socket.item?.figure" class="loadout-socket__figure">
           {{ socket.item.figure }}

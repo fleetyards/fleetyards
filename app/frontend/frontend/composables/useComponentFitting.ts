@@ -631,6 +631,7 @@ export const useComponentFitting = () => {
         ? {
             id: entry.content.id,
             name: entry.content.name,
+            slug: entry.content.slug,
             crafted: !!entry.crafted,
             craftable: !!entry.content.craftable,
             craftingKey: craftingKey(entry.crafted),
