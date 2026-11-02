@@ -272,3 +272,32 @@ describe("FormFileInput processing", () => {
     expect(shownImage(subject).props("src")).toBe("blob:local-view");
   });
 });
+
+describe("FormFileInput holos", () => {
+  const holoFile = (contentType: string, name: string) =>
+    ({
+      name,
+      contentType,
+      url: `https://example.test/${name}`,
+    }) as never;
+
+  it("previews an attached glTF holo in the 3D view", async () => {
+    const subject = await mount({
+      name: "holo",
+      file: holoFile("model/gltf-binary", "holo.glb"),
+      allowedTypes: "holo",
+    });
+
+    expect(subject.findComponent({ name: "HoloViewer" }).exists()).toBe(true);
+  });
+
+  it("does not hand an attached USDZ to the 3D view, which cannot read it", async () => {
+    const subject = await mount({
+      name: "holoUsdz",
+      file: holoFile("model/vnd.usdz+zip", "flight_holo.usdz"),
+      allowedTypes: "arHolo",
+    });
+
+    expect(subject.findComponent({ name: "HoloViewer" }).exists()).toBe(false);
+  });
+});

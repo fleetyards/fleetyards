@@ -4,6 +4,7 @@ export enum AllowedFileTypes {
   AUDIO = "audio",
   PDF = "pdf",
   HOLO = "holo",
+  AR_HOLO = "arHolo",
 }
 
 export const fileTypeMap: Record<AllowedFileTypes, string[]> = {
@@ -11,12 +12,10 @@ export const fileTypeMap: Record<AllowedFileTypes, string[]> = {
   video: ["video/mp4", "video/webm", "video/ogg"],
   audio: ["audio/mpeg", "audio/ogg", "audio/wav"],
   pdf: ["application/pdf"],
-  holo: [
-    "application/octet-stream",
-    "model/gltf+json",
-    "model/gltf-binary",
-    "model/vnd.usdz+zip",
-  ],
+  holo: ["application/octet-stream", "model/gltf+json", "model/gltf-binary"],
+  // Apart from the holos: no 3D view here reads USDZ, so it is never previewed
+  // as one.
+  arHolo: ["model/vnd.usdz+zip"],
 };
 
 // The browser takes `File.type` from the operating system's registry, and

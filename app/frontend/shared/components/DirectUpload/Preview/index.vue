@@ -95,7 +95,10 @@ const isHolo = computed(() => {
 });
 
 const fileTypeIconClass = computed(() => {
-  if (fileTypeMap.holo.includes(fileType.value)) {
+  if (
+    fileTypeMap.holo.includes(fileType.value) ||
+    fileTypeMap.arHolo.includes(fileType.value)
+  ) {
     return "fa-cube"; // Note: FontAwesome does not have a holo icon, replace with appropriate icon
   }
   if (fileTypeMap.image.includes(fileType.value)) {
