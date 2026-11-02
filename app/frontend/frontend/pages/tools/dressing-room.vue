@@ -330,11 +330,28 @@ const weaponPlacement = (slot: OutfitSlotEnum) => {
     return attachment(holo, handMount(body.value));
   }
 
+  // With a backpack on, the game hangs a rifle from the backpack's own mount,
+  // which its rig does not carry yet: hung from the core's, it would sit
+  // inside the pack.
+  if (onBackpack(slot)) return undefined;
+
   const mount = STOWED_MOUNTS[slot];
   const placed =
     mount && attachment(holo, mount, items.value[slot]?.attachPoints);
 
   return placed?.helper ? placed : undefined;
+};
+
+const onBackpack = (slot: OutfitSlotEnum) => {
+  const port =
+    slot === OutfitSlotEnum.PRIMARY
+      ? "wep_stocked_3"
+      : slot === OutfitSlotEnum.SECONDARY
+        ? "wep_stocked_2"
+        : undefined;
+  const ports = items.value[OutfitSlotEnum.BACKPACK]?.fit?.ports ?? [];
+
+  return !!port && ports.some((candidate) => candidate.name === port);
 };
 
 const positionPending = (slot: OutfitSlotEnum) =>

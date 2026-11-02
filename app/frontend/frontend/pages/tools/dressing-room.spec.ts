@@ -41,6 +41,20 @@ const EQUIPMENT: Record<string, Equipment> = {
     },
   } as unknown as Equipment,
   "s-38": piece("s-38", { holo: media("s38.glb") }),
+  "crusader-pack": {
+    ...piece("crusader-pack", {}),
+    fit: {
+      type: "Char_Armor_Backpack",
+      ports: [
+        {
+          name: "wep_stocked_3",
+          types: [{ type: "WeaponPersonal", subTypes: ["Medium", "Large"] }],
+          minSize: 2,
+          maxSize: 5,
+        },
+      ],
+    },
+  } as unknown as Equipment,
   "flight-suit": {
     ...piece("flight-suit", {}),
     name: "Flight Suit",
@@ -63,6 +77,7 @@ const MALE: CharacterBody = {
   holo: media("body.glb"),
   animations: media("animations.glb"),
   weaponInHand: null,
+  lighting: [],
   clips: [
     { name: "shop_pose_01", static: true, looping: false },
     { name: "idle_stand", static: false, looping: true },
@@ -194,6 +209,20 @@ describe("ToolsDressingRoomPage", () => {
         helper: { position: [0, 0.1, -0.2], rotation: [0, 0, 0, 1] },
       },
     ]);
+  });
+
+  it("leaves a rifle undrawn on a backpack whose mount the rig lacks", async () => {
+    const { wrapper } = await mount({
+      primary: "p4-ar-hung",
+      backpack: "crusader-pack",
+    });
+
+    expect(viewerModel(wrapper).rig.attachments ?? []).toEqual([]);
+    expect(
+      wrapper
+        .find('[data-test="dressing-room-position-pending-primary"]')
+        .exists(),
+    ).toBe(true);
   });
 
   it("switches the body and keeps it in the address", async () => {
