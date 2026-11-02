@@ -36,8 +36,9 @@ const SLOT_PORTS: Partial<Record<OutfitSlotEnum, string>> = {
   [OutfitSlotEnum.SIDEARM]: "wep_sidearm",
 };
 
-// Which worn slots can offer a slot's port: the undersuit holds the armour,
-// the core the backpack, and a weapon mount may be on any of them.
+// Which worn slots can offer a slot's port, innermost first: the undersuit
+// holds the armour, the core the backpack, and a weapon mount may be on any of
+// them.
 const PROVIDERS: Partial<Record<OutfitSlotEnum, OutfitSlotEnum[]>> = {
   [OutfitSlotEnum.TORSO]: [OutfitSlotEnum.UNDERSUIT],
   [OutfitSlotEnum.ARMS]: [OutfitSlotEnum.UNDERSUIT],
@@ -45,7 +46,7 @@ const PROVIDERS: Partial<Record<OutfitSlotEnum, OutfitSlotEnum[]>> = {
   [OutfitSlotEnum.HELMET]: [OutfitSlotEnum.UNDERSUIT],
   // A core carries the backpack, and so do the few suits worn in the
   // undersuit slot that have a port of their own for one.
-  [OutfitSlotEnum.BACKPACK]: [OutfitSlotEnum.TORSO, OutfitSlotEnum.UNDERSUIT],
+  [OutfitSlotEnum.BACKPACK]: [OutfitSlotEnum.UNDERSUIT, OutfitSlotEnum.TORSO],
   [OutfitSlotEnum.PRIMARY]: [
     OutfitSlotEnum.UNDERSUIT,
     OutfitSlotEnum.TORSO,
@@ -128,7 +129,6 @@ export const fitsSlot = (fit: SlotFit, item: FitItem) => {
   return fit.ports.some((port) => portTakes(port, item));
 };
 
-// Who the slot is up to, by name: "Flight Suit", or "Core, Undersuit".
 // The outermost worn slot whose item offers the slot's port: the piece a
 // weapon in it hangs from. None where nothing worn says.
 export const portProvider = (
@@ -145,5 +145,6 @@ export const portProvider = (
     );
 };
 
+// Who the slot is up to, by name: "Flight Suit", or "Undersuit, Core".
 export const providerNames = (fit: SlotFit) =>
   fit.kind === "open" ? "" : fit.providers.map((item) => item.name).join(", ");

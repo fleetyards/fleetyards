@@ -213,6 +213,28 @@ describe("portProvider", () => {
     ).toBe(OutfitSlotEnum.UNDERSUIT);
   });
 
+  it("hangs a backpack from the core over a suit with its own port", () => {
+    const backpackPort = {
+      name: "backpack",
+      types: [{ type: "Char_Armor_Backpack" }],
+      minSize: 1,
+      maxSize: 3,
+    };
+
+    expect(
+      portProvider(OutfitSlotEnum.BACKPACK, {
+        [OutfitSlotEnum.UNDERSUIT]: {
+          name: "Suit",
+          fit: { type: "Char_Armor_Undersuit", ports: [backpackPort] },
+        },
+        [OutfitSlotEnum.TORSO]: {
+          name: "Core",
+          fit: { type: "Char_Armor_Torso", ports: [backpackPort] },
+        },
+      }),
+    ).toBe(OutfitSlotEnum.TORSO);
+  });
+
   it("names nothing when nothing worn says", () => {
     expect(portProvider(OutfitSlotEnum.SIDEARM, {})).toBeUndefined();
   });
