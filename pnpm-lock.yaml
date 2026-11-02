@@ -181,10 +181,10 @@ importers:
         version: 3.32.0(@floating-ui/dom@1.8.0)(@tiptap/core@3.32.0(@tiptap/pm@3.32.0))(@tiptap/pm@3.32.0)(vue@3.5.44(typescript@6.0.3))
       '@tresjs/cientos':
         specifier: ^5.10.0
-        version: 5.10.0(@tresjs/core@5.10.0(three@0.186.1)(vue@3.5.44(typescript@6.0.3)))(react@19.1.0)(three@0.186.1)(vue@3.5.44(typescript@6.0.3))
+        version: 5.10.0(@tresjs/core@5.10.1(three@0.186.1)(vue@3.5.44(typescript@6.0.3)))(react@19.1.0)(three@0.186.1)(vue@3.5.44(typescript@6.0.3))
       '@tresjs/core':
-        specifier: ^5.10.0
-        version: 5.10.0(three@0.186.1)(vue@3.5.44(typescript@6.0.3))
+        specifier: ^5.10.1
+        version: 5.10.1(three@0.186.1)(vue@3.5.44(typescript@6.0.3))
       '@vee-validate/rules':
         specifier: ^4.15.1
         version: 4.15.1(vue@3.5.44(typescript@6.0.3))
@@ -3225,8 +3225,8 @@ packages:
       three: '>=0.133'
       vue: '>=3.5.17'
 
-  '@tresjs/core@5.10.0':
-    resolution: {integrity: sha512-ZS0aaXXyNuM5ZxjObGQK77ml6gJCNTZ7vitJ1aGAg/MzwwVYUl3J49iZKKTWc0Mn6Y8OB03cwDUSAxb/GyU12Q==}
+  '@tresjs/core@5.10.1':
+    resolution: {integrity: sha512-kBNfi/xS7kYZRlw6OzbcHiBRzjr+tuVxegV249vfzj2TLWgArQ0g8ViRNy5O354F6qLUJYL+n2shg/dNln3OMQ==}
     peerDependencies:
       three: '>=0.133'
       vue: '>=3.4'
@@ -10215,9 +10215,9 @@ snapshots:
       '@tiptap/extension-bubble-menu': 3.32.0(@tiptap/core@3.32.0(@tiptap/pm@3.32.0))(@tiptap/pm@3.32.0)
       '@tiptap/extension-floating-menu': 3.32.0(@floating-ui/dom@1.8.0)(@tiptap/core@3.32.0(@tiptap/pm@3.32.0))(@tiptap/pm@3.32.0)
 
-  '@tresjs/cientos@5.10.0(@tresjs/core@5.10.0(three@0.186.1)(vue@3.5.44(typescript@6.0.3)))(react@19.1.0)(three@0.186.1)(vue@3.5.44(typescript@6.0.3))':
+  '@tresjs/cientos@5.10.0(@tresjs/core@5.10.1(three@0.186.1)(vue@3.5.44(typescript@6.0.3)))(react@19.1.0)(three@0.186.1)(vue@3.5.44(typescript@6.0.3))':
     dependencies:
-      '@tresjs/core': 5.10.0(three@0.186.1)(vue@3.5.44(typescript@6.0.3))
+      '@tresjs/core': 5.10.1(three@0.186.1)(vue@3.5.44(typescript@6.0.3))
       '@vueuse/core': 15.0.0(vue@3.5.44(typescript@6.0.3))
       camera-controls: 3.1.2(three@0.186.1)
       stats-gl: 4.2.3(three@0.186.1)
@@ -10231,7 +10231,7 @@ snapshots:
       - '@react-three/fiber'
       - react
 
-  '@tresjs/core@5.10.0(three@0.186.1)(vue@3.5.44(typescript@6.0.3))':
+  '@tresjs/core@5.10.1(three@0.186.1)(vue@3.5.44(typescript@6.0.3))':
     dependencies:
       '@pmndrs/pointer-events': 6.6.32
       '@vue/devtools-api': 8.2.1
