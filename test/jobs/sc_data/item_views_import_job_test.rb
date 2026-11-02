@@ -83,6 +83,23 @@ module ScData
       assert_not_includes fetched, "rigged_vanduul.glb"
     end
 
+    test "takes in the helpers an item is hung by" do
+      helpers = {"attach_offset_left_01" => {"position" => [0.01, 0.02, -0.15], "rotation" => [0, 0, 0.7071, 0.7071]}}
+      publish(@equipment.sc_key, {"attach_points.json" => {helpers:}.to_json})
+
+      perform
+
+      assert_equal helpers, @equipment.attach_points
+    end
+
+    test "leaves the helpers alone when the file is malformed" do
+      publish(@equipment.sc_key, {"attach_points.json" => {helpers: {"attach_offset_left_01" => {"position" => [0, 0]}}}.to_json})
+
+      perform
+
+      assert_nil @equipment.attach_points
+    end
+
     test "skips a name for a field an item does not have" do
       publish(@component.sc_key, {"top_colored.png" => PNG, "extended_front.png" => PNG, "front.png" => PNG})
 

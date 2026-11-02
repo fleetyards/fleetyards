@@ -12049,6 +12049,28 @@ components:
       - meta
       - items
       title: Announcements
+    AttachPoint:
+      type: object
+      description: A helper an item is hung by, in its holo's frame
+      properties:
+        position:
+          type: array
+          items:
+            type: number
+          minItems: 3
+          maxItems: 3
+        rotation:
+          type: array
+          items:
+            type: number
+          minItems: 4
+          maxItems: 4
+          description: Quaternion x, y, z, w
+      additionalProperties: false
+      required:
+      - position
+      - rotation
+      title: AttachPoint
     BarChartStats:
       type: object
       properties:
@@ -15468,6 +15490,14 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         media:
           "$ref": "#/components/schemas/ItemMedia"
+        attachPoints:
+          type:
+          - object
+          - 'null'
+          description: Where the item is hung when stowed -- on a back mount, in a
+            holster, on a core -- by helper name; on the detail payload only
+          additionalProperties:
+            "$ref": "#/components/schemas/AttachPoint"
         retired:
           type: boolean
         createdAt:
