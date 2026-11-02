@@ -44,13 +44,15 @@ const glyph = computed(
 
 <style lang="scss" scoped>
 .equipment-icon {
+  --size: var(--equipment-icon-size, 24px);
+
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
+  width: var(--size);
+  height: var(--size);
   flex: none;
-  font-size: 18px;
+  font-size: calc(var(--size) * 0.75);
   line-height: 1;
   color: var(--color-primary, #428bca);
 }

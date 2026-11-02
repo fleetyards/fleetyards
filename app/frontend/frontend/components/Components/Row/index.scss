@@ -4,14 +4,26 @@
 // puts between the name and the badges: the figures drop out entirely on a
 // narrow screen rather than squeezing the name, the way the row's own chips do.
 .component-row {
+  // The same box with or without a picture: most components have none, and a
+  // bare icon left those rows shorter than the rest and their names out of line.
+  &__thumb {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 112px;
+    height: 63px;
+  }
+
   &__icon {
+    --hardpoint-category-icon-size: 36px;
+
     color: var(--color-primary, #428bca);
   }
 
   &__image {
-    flex: 0 0 auto;
-    width: 112px;
-    height: 63px;
+    width: 100%;
+    height: 100%;
     // Mostly a game-file render: transparent and cut tight to the item, so it
     // is fitted rather than cropped.
     object-fit: contain;
