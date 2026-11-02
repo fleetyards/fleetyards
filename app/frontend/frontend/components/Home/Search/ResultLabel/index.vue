@@ -9,6 +9,7 @@ import AppIcon from "@/shared/components/AppIcon/index.vue";
 import MissionText from "@/frontend/components/MissionText/index.vue";
 import LocationGlobe from "@/frontend/components/Locations/Globe/index.vue";
 import LocationKindIcon from "@/frontend/components/Locations/KindIcon/index.vue";
+import BlueprintPlan from "@/frontend/components/Blueprints/Plan/index.vue";
 import { catalogueTokenIcon } from "@/shared/utils/CatalogueTokens";
 import { sunStyle } from "@/shared/utils/LocationGlobe";
 import { type SearchResult } from "@/services/fyApi";
@@ -86,6 +87,13 @@ const nameParts = computed(() => {
         :style="sun"
       />
     </span>
+    <BlueprintPlan
+      v-else-if="result.type === 'Blueprint' && result.image?.smallUrl"
+      :image="result.image"
+      variant="thumb"
+      aria-hidden="true"
+      data-test="search-result-plan"
+    />
     <span
       v-else-if="image"
       class="search-result-label__thumb"

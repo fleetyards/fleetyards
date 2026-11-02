@@ -9,7 +9,7 @@ import { type MediaFile } from "@/services/fyApi";
 
 type Props = {
   image: MediaFile;
-  variant?: "row" | "panel";
+  variant?: "row" | "thumb" | "panel";
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -35,7 +35,7 @@ const src = computed(() =>
       class="blueprint-plan__image"
       :src="src"
       alt=""
-      :loading="variant === 'row' ? 'lazy' : undefined"
+      :loading="variant === 'panel' ? undefined : 'lazy'"
       data-test="blueprint-plan-image"
     />
   </span>

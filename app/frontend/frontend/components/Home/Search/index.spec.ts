@@ -123,6 +123,39 @@ describe("HomeSearch", () => {
     );
   });
 
+  it("draws a blueprint as a plan of what it crafts", async () => {
+    groups = [
+      {
+        type: "Blueprint",
+        items: [
+          {
+            type: "Blueprint",
+            name: "Atlas",
+            slug: "atlas",
+            image: {
+              name: "angled.png",
+              contentType: "image/png",
+              size: 1,
+              url: "https://example.test/angled.png",
+              smallUrl: "https://example.test/angled-small.webp",
+            },
+          },
+        ],
+      },
+    ];
+    const wrapper = await mountWithDefaults(Component, {
+      plugins: [await router()],
+    });
+
+    await typeInto(wrapper, "atlas");
+
+    const row = wrapper.find("[data-test='home-search-result']");
+    expect(
+      row.find("[data-test='blueprint-plan-image']").attributes("src"),
+    ).toBe("https://example.test/angled-small.webp");
+    expect(row.find(".search-result-label__thumb").exists()).toBe(false);
+  });
+
   it("draws a planet and a system rather than picturing them", async () => {
     groups = [
       {

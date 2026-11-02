@@ -33,6 +33,17 @@
     height: 64px;
   }
 
+  // A search result's picture, as wide and tall as every other one beside it.
+  &--thumb {
+    --blueprint-plan-major: 10px;
+    --blueprint-plan-minor: 2.5px;
+    --blueprint-plan-inset: 2px;
+
+    flex: 0 0 auto;
+    width: 64px;
+    height: 40px;
+  }
+
   &--panel {
     --blueprint-plan-major: 48px;
     --blueprint-plan-minor: 12px;
