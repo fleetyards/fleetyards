@@ -443,9 +443,56 @@ module ScData
           tags: attach_def["Tags"].to_s.split,
           required_tags: (attach_def["RequiredTags"].to_s.split.presence if attach_def["Type"] == "WeaponAttachment"),
           ports: (attachment_ports(values).presence if attach_def["Type"] == "WeaponPersonal"),
+          fit: fit(attach_def, values, worn_type),
           hidden: variant?(key),
           **occupancy(attach_def)
         }
+      end
+
+      # What decides where a worn item or a weapon may go: its own type, the
+      # tags it carries and demands of a port, and -- for armour, undersuits
+      # and backpacks -- the ports it offers for armour pieces and weapons. A
+      # port takes an item when one of its types matches the item's, the item's
+      # size is within its range, the port's required tags are among the
+      # item's and the item's among the port's. A flight suit offers no arms or
+      # legs port at all; a heavy core's backpack port takes up to size 3.
+      private def fit(attach_def, values, worn_type)
+        return unless worn_type || attach_def["Type"] == "WeaponPersonal"
+
+        {
+          type: attach_def["Type"],
+          tags: attach_def["Tags"].to_s.split.presence,
+          required_tags: attach_def["RequiredTags"].to_s.split.presence,
+          ports: (worn_ports(values).presence if worn_type)
+        }.compact
+      end
+
+      FIT_PORT_TYPE = /\A(Char_Armor_|WeaponPersonal\z)/
+
+      private def worn_ports(values)
+        ports = Array.wrap(values.dig("Components", "SItemPortContainerComponentParams", "Ports", "SItemPortDef"))
+
+        ports.filter_map do |port|
+          types = Array.wrap(port.dig("Types", "SItemPortDefTypes")).filter_map do |type|
+            next unless FIT_PORT_TYPE.match?(type["Type"].to_s)
+
+            {
+              type: type["Type"],
+              sub_types: Array.wrap(type.dig("SubTypes", "Enum")).filter_map { |sub_type| sub_type["value"].presence }.presence
+            }.compact
+          end
+
+          next if types.empty?
+
+          {
+            name: port["Name"],
+            types:,
+            min_size: port["MinSize"].to_i,
+            max_size: port["MaxSize"].to_i,
+            port_tags: port["PortTags"].to_s.split.presence,
+            required_tags: port["RequiredPortTags"].to_s.split.presence
+          }.compact
+        end
       end
 
       # The ports a weapon takes attachments in -- magazine, optics, barrel,
