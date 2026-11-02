@@ -184,6 +184,14 @@ const gradeOf = (component: Component) => component.gradeLabel || "";
 
 const sizeOf = (component: Component) => Number(component.size) || 0;
 
+// The angled render draws every drive from the same angle; a file that cannot
+// be resized arrives with `url` alone.
+const imageOf = (component: Component) => {
+  const image = component.media?.angledView || component.media?.storeImage;
+
+  return image?.smallUrl || image?.url;
+};
+
 const componentsQueryParams = computed(() => ({
   page: "1",
   perPage: "240",
@@ -297,6 +305,13 @@ const columns = computed<BaseTableCol<Component>[]>(() => {
       label: t("labels.travelTimes.rank"),
       class: "rank",
       width: "56px",
+    },
+    {
+      name: "image",
+      label: "",
+      width: "80px",
+      alignment: BaseTableColAlignmentEnum.CENTER,
+      mobile: false,
     },
     {
       name: "name",
@@ -503,6 +518,16 @@ const columns = computed<BaseTableCol<Component>[]>(() => {
               >
                 {{ String(rankOf(record)).padStart(2, "0") }}
               </span>
+            </template>
+
+            <template #col-image="{ record }">
+              <img
+                v-if="imageOf(record)"
+                :src="imageOf(record)"
+                alt=""
+                class="travel-times__image"
+                loading="lazy"
+              />
             </template>
 
             <template #col-name="{ record }">

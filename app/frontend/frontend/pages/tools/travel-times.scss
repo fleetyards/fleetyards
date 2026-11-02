@@ -146,6 +146,13 @@
     font-variant-numeric: tabular-nums;
   }
 
+  &__image {
+    display: block;
+    width: 64px;
+    height: 36px;
+    object-fit: contain;
+  }
+
   &__drive {
     display: flex;
     flex-direction: column;
