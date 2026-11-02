@@ -182,10 +182,30 @@ describe("riggedOutfitModel body cover", () => {
     clips: [],
   };
 
-  it("draws the body under armour as a dark undersuit and hides the head under a helmet", () => {
-    expect(
-      riggedOutfitModel(body, [], undefined, [], ["legs", "helmet"]).rig,
-    ).toMatchObject({ hide: ["head"], cover: ["legs"] });
+  it("draws the body under armour and a helmet as a dark undersuit", () => {
+    const rig = riggedOutfitModel(
+      body,
+      [],
+      undefined,
+      [],
+      ["legs", "helmet"],
+    ).rig;
+
+    expect(rig?.hide).toBeUndefined();
+    expect(rig?.cover).toEqual(["legs", "head"]);
+  });
+
+  it("keeps the neck under a helmet over an undersuit", () => {
+    const rig = riggedOutfitModel(
+      body,
+      [],
+      undefined,
+      [],
+      ["undersuit", "helmet"],
+    ).rig;
+
+    expect(rig?.hide).toEqual(["torso", "arms", "legs"]);
+    expect(rig?.cover).toEqual(["head"]);
   });
 
   it("hides the whole body under an undersuit", () => {

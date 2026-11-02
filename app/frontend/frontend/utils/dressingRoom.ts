@@ -247,11 +247,13 @@ const coveredRegions = (slots: OutfitSlotEnum[]): BodyRegion[] => [
 ];
 
 // Under a drawn undersuit the body is not drawn; under armour alone it is
-// drawn as a dark undersuit, and under a helmet the head is not drawn.
+// drawn as a dark undersuit. Under a helmet the head is drawn as the
+// undersuit's hood: its mesh runs down to the collar, and a helmet that
+// leaves the neck to it would float over a gap without it.
 const bodyCover = (worn: OutfitSlotEnum[]) => {
   const undersuit = worn.includes(OutfitSlotEnum.UNDERSUIT);
   const regions = coveredRegions(worn);
-  const hide = regions.filter((region) => region === "head" || undersuit);
+  const hide = regions.filter((region) => region !== "head" && undersuit);
   const cover = regions.filter((region) => !hide.includes(region));
 
   return {
