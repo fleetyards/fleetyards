@@ -64,6 +64,8 @@ function applyLineLayout(el: HTMLElement, options: TooltipOptions) {
 function createTooltipEl(options: TooltipOptions): HTMLElement {
   const el = document.createElement("div");
   el.setAttribute("data-tooltip", "");
+  // px rather than rem: the embed shows these tooltips inside other sites,
+  // where rem would follow the host page's root size, not ours.
   el.style.cssText = [
     "position:fixed",
     "z-index:10000",
@@ -72,7 +74,7 @@ function createTooltipEl(options: TooltipOptions): HTMLElement {
     "color:#fff",
     "background:#272b30",
     "border-radius:6px",
-    "font-size:0.875rem",
+    "font-size:14px",
     "line-height:1.4",
     "opacity:0",
     "display:none",
