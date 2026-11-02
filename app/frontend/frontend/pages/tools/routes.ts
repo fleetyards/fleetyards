@@ -54,7 +54,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/frontend/pages/tools/dressing-room.vue"),
     meta: {
       title: "tools.dressingRoom",
-      backgroundImage: "bg-9",
+      backgroundImage: "bg-room",
       feature: FeatureFlagName.DRESSING_ROOM,
     },
   },

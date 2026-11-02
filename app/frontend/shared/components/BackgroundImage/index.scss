@@ -67,6 +67,19 @@
     }
   }
 
+  // No picture: the dressing room's own haze, lit where its viewer stands.
+  &.bg-room {
+    background-image:
+      radial-gradient(
+        ellipse 45% 55% at 55% 45%,
+        #082031,
+        #04111c 55%,
+        transparent 100%
+      ),
+      linear-gradient(to bottom, #02070d, #010307);
+    opacity: 1;
+  }
+
   &.bg-404 {
     background-image: url("@/images/bg-404.jpg");
 
