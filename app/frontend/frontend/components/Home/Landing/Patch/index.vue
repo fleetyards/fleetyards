@@ -787,7 +787,7 @@ a.home-landing-patch__card {
   p {
     margin: 0;
     font-size: 0.84375rem;
-    line-height: 20px;
+    line-height: 1.25rem;
     color: var(--color-text-dim);
   }
 }

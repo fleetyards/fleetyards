@@ -310,7 +310,7 @@ useScrollSettle(() =>
   margin: 0 0 32px;
   color: var(--color-text, #c8c8c8);
   font-size: 1.125rem;
-  line-height: 28px;
+  line-height: 1.75rem;
 }
 
 .home-landing__search {
@@ -397,7 +397,7 @@ useScrollSettle(() =>
   .home-landing__lede {
     margin-bottom: 22px;
     font-size: 0.9375rem;
-    line-height: 23px;
+    line-height: 1.4375rem;
   }
 
   .home-landing__actions {

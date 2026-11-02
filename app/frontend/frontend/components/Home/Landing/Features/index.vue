@@ -734,7 +734,7 @@ GET https://api.fleetyards.net/v1/models/rsi-perseus
   p {
     margin: 0;
     font-size: 0.8125rem;
-    line-height: 18px;
+    line-height: 1.125rem;
     color: var(--color-text-dim);
   }
 }
