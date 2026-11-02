@@ -314,13 +314,15 @@ describe("NavItem with a submenu", () => {
       wrapper.unmount();
     });
 
-    it("unfolds the section the reader is in rather than opening a panel", async () => {
+    // The rail has no width to nest in, so even the section the reader is in
+    // opens beside it rather than unfolding under the icon.
+    it("opens the section the reader is in as the panel too", async () => {
       const wrapper = await mountSection(true, { submenuActive: true });
 
       await wrapper.trigger("pointerenter");
 
-      expect(wrapper.find(".nav-flyout").exists()).toBe(false);
-      expect(wrapper.find("ul").exists()).toBe(true);
+      expect(wrapper.findAll(".nav-flyout")).toHaveLength(1);
+      expect(wrapper.find("li > ul").exists()).toBe(false);
 
       wrapper.unmount();
     });

@@ -71,13 +71,18 @@ const hasSubmenuSlot = computed(() => !!slots.submenu);
 
 /*
  * Only the section the reader is in unfolds in place; every other one opens
- * beside the rail, so the rail never grows by sections nobody is using.
+ * beside the rail, so the rail never grows by sections nobody is using. A
+ * collapsed rail has no width to nest rows in, so there every section opens
+ * beside it.
  *
  * Not in the drawer, though: that sits against the right edge of the screen,
  * and a panel beside it would open off it.
  */
 const flyout = computed(
-  () => hasSubmenuSlot.value && !mobile.value && !props.submenuActive,
+  () =>
+    hasSubmenuSlot.value &&
+    !mobile.value &&
+    (slim.value || !props.submenuActive),
 );
 
 provide(

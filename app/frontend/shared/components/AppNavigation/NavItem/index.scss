@@ -248,35 +248,6 @@ $nav-active-glow: color-mix(
       }
     }
 
-    /*
-     * The section the reader is in, unfolded on the collapsed rail. There is no
-     * width to indent into, so its rows line up under the parent's icon and
-     * wear the plain active bar; the tree line would run straight through them.
-     */
-    &.nav-item--slim > ul {
-      padding-bottom: 0;
-
-      &::before,
-      &::after {
-        content: none;
-      }
-
-      > li > a,
-      > li > button,
-      > li > span {
-        padding-left: 25px;
-
-        i:not(.nav-item__submenu-glyph),
-        svg:not(.nav-item__submenu-glyph) {
-          min-width: 30px;
-        }
-      }
-
-      > li.nav-item--active > a::after {
-        @include nav-active-bar;
-      }
-    }
-
     &--flyout-open {
       > button {
         color: color.adjust($text-color, $lightness: 10%);
