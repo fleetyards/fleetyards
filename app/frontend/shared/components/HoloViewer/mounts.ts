@@ -1,4 +1,10 @@
-import { Group, type Material, type Mesh, type Object3D } from "three";
+import {
+  Group,
+  type Material,
+  type Mesh,
+  type Object3D,
+  type Texture,
+} from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { prepareGltfLoader } from "./gltfLoader";
 
@@ -61,6 +67,14 @@ export const retainMountCache = () => {
 
 // The last viewer gone, the downloads go too: a long session browsing loadouts
 // would otherwise keep every part it ever showed.
+// A painted part keeps the maps it was exported with, which a material's own
+// dispose leaves on the GPU.
+const disposeTextures = (material: Material) => {
+  for (const value of Object.values(material)) {
+    if ((value as Texture | null)?.isTexture) (value as Texture).dispose();
+  }
+};
+
 export const releaseMountCache = () => {
   viewers = Math.max(0, viewers - 1);
   if (viewers) return;
@@ -77,6 +91,7 @@ export const releaseMountCache = () => {
 
           mesh.geometry.dispose();
           for (const material of ([] as Material[]).concat(mesh.material)) {
+            disposeTextures(material);
             material.dispose();
           }
         }),
