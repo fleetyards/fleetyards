@@ -8,9 +8,7 @@ export default {
 import BaseSelect, {
   type BaseSelectParams,
 } from "@/shared/components/base/Select/index.vue";
-import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
-import { InputSizesEnum } from "@/shared/components/base/FormInput/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useLocationFilters } from "@/frontend/composables/useLocationFilters";
 import {
@@ -125,17 +123,6 @@ const starmapValue = computed({
 
 <template>
   <form @submit.prevent="handleSubmit">
-    <Teleport to="#header-left">
-      <FormInput
-        v-model="form.nameCont"
-        :size="InputSizesEnum.MEDIUM"
-        name="search"
-        translation-key="filters.locations.name"
-        :no-label="true"
-        :clearable="true"
-      />
-    </Teleport>
-
     <BaseSelect
       v-model="form.systemIdEq"
       name="system"

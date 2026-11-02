@@ -51,7 +51,7 @@ const sortFields = useEquipmentSortFields(() => equipment.value?.items || []);
     :is-filter-selected="isFilterSelected"
   >
     <template #filter>
-      <FilterForm />
+      <FilterForm hide-quicksearch />
     </template>
 
     <template #pagination-top>

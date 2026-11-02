@@ -54,7 +54,7 @@ const sortFields = useCommoditySortFields();
     :is-filter-selected="isFilterSelected"
   >
     <template #filter>
-      <FilterForm />
+      <FilterForm hide-quicksearch />
     </template>
 
     <template #pagination-top>

@@ -55,7 +55,7 @@ const sortFields = useBlueprintSortFields();
     :is-filter-selected="isFilterSelected"
   >
     <template #filter>
-      <FilterForm />
+      <FilterForm hide-quicksearch />
     </template>
 
     <template #pagination-top>
