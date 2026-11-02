@@ -22,6 +22,14 @@ module Raffles
       assert_includes notification.title, @raffle.localized_title
     end
 
+    test "tells each entrant once" do
+      EmailMissingNotice.new(@raffle).call
+
+      assert_no_difference -> { Notification.count } do
+        assert_equal 0, EmailMissingNotice.new(@raffle).call
+      end
+    end
+
     test "leaves a closed raffle alone" do
       @raffle.update_columns(starts_at: 10.days.ago, ends_at: 1.day.ago)
 

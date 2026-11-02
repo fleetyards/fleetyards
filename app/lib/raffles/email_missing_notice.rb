@@ -14,8 +14,10 @@ module Raffles
       entrants.each { |user| notify(user) }.size
     end
 
+    # A replayed run must not DM the same entrant twice.
     private def entrants
-      @raffle.entries.includes(:user).filter_map(&:user).select(&:placeholder_email?)
+      told = Notification.where(notification_type: :raffle_email_missing, record: @raffle).select(:user_id)
+      @raffle.entries.where.not(user_id: told).includes(:user).filter_map(&:user).select(&:placeholder_email?)
     end
 
     private def notify(user)
