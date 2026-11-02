@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_02_230000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_02_233000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -384,6 +384,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_02_230000) do
     t.datetime "updated_at", null: false
     t.jsonb "clips", default: [], null: false
     t.jsonb "weapon_in_hand"
+    t.jsonb "lighting", default: [], null: false
     t.index ["key"], name: "index_character_bodies_on_key", unique: true
   end
 
@@ -2872,11 +2873,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_02_230000) do
     t.uuid "user_id"
     t.string "payer_email"
     t.string "kofi_transaction_id"
-    t.boolean "kofi_subscription", default: false, null: false
     t.string "patreon_user_id"
     t.string "claim_key"
     t.string "linked_via"
     t.uuid "fleet_id"
+    t.boolean "kofi_subscription", default: false, null: false
     t.index ["fleet_id"], name: "index_supporter_contributions_on_fleet_id", where: "(fleet_id IS NOT NULL)"
     t.index ["kofi_transaction_id"], name: "index_supporter_contributions_on_kofi_transaction_id", unique: true, where: "(kofi_transaction_id IS NOT NULL)"
     t.index ["linked_via"], name: "index_supporter_contributions_on_linked_via", where: "(linked_via IS NOT NULL)"

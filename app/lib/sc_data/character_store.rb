@@ -22,6 +22,15 @@ module ScData
       end
     end
 
+    # The customizer's light rigs, "<rig>" => {"lights" => [...]}: `review_<key>`
+    # lights a body's whole outfit. Empty until the export lists them.
+    def lighting_rigs
+      file = index.dig("lighting", "file")
+      return {} if file.blank?
+
+      read_json(file.delete_prefix("#{prefix}/")).fetch("rigs", {})
+    end
+
     private def prefix
       "characters"
     end

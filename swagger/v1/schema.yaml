@@ -25056,6 +25056,12 @@ components:
           anyOf:
           - "$ref": "#/components/schemas/CharacterBodyWeaponInHand"
           - type: 'null'
+        lighting:
+          type: array
+          description: The game customizer's review lights for a whole outfit, from
+            the character's feet in glTF axes; empty until exported
+          items:
+            "$ref": "#/components/schemas/CharacterBodyLight"
         clips:
           type: array
           items:
@@ -25066,6 +25072,7 @@ components:
       - holo
       - animations
       - weaponInHand
+      - lighting
       - clips
       title: CharacterBody
     CharacterBodyClip:
@@ -25097,6 +25104,52 @@ components:
       - right
       - left
       title: CharacterBodyHandBones
+    CharacterBodyLight:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - spot
+          - point
+        position:
+          type: array
+          items:
+            type: number
+          minItems: 3
+          maxItems: 3
+        direction:
+          type: array
+          items:
+            type: number
+          minItems: 3
+          maxItems: 3
+        color:
+          type: array
+          items:
+            type: number
+          minItems: 3
+          maxItems: 3
+          description: Linear RGB
+        intensity:
+          type: number
+          description: three.js candela
+        range:
+          type: number
+        decay:
+          type: number
+        angle:
+          type: number
+          description: A spot's outer cone angle, in radians
+        penumbra:
+          type: number
+      additionalProperties: false
+      required:
+      - type
+      - position
+      - color
+      - intensity
+      title: CharacterBodyLight
     CharacterBodyWeaponInHand:
       type: object
       properties:

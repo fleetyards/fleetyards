@@ -16,6 +16,7 @@ module ScData
 
       store = ::ScData::CharacterStore.new
       attached = {}
+      rigs = lighting_rigs(store)
 
       store.characters.each do |key, entry|
         body = CharacterBody.find_or_create_by!(key:)
@@ -23,6 +24,8 @@ module ScData
         weapon_in_hand = weapon_in_hand(entry["weapon_in_hand"])
         body.update_columns(clips:) if body.clips != clips
         body.update_columns(weapon_in_hand:) if body.weapon_in_hand != weapon_in_hand
+        lighting = lights(rigs.dig("review_#{key}", "lights"))
+        body.update_columns(lighting:) if body.lighting != lighting
 
         # The index has no digest of its own for a body, so its file list is.
         digest = Digest::MD5.hexdigest(entry["files"].sort.to_json)
@@ -36,6 +39,40 @@ module ScData
       end
 
       attached.each { |key, fields| log(:info, "attached #{key}: #{fields.join(", ")}") }
+    end
+
+    # A rig that cannot be read leaves the bodies lit as they were.
+    private def lighting_rigs(store)
+      store.lighting_rigs
+    rescue => e
+      log(:warn, "lighting could not be read: #{e.class}: #{e.message}")
+      {}
+    end
+
+    LIGHT_TYPES = %w[spot point].freeze
+
+    # The lights three.js needs, each kept only whole: a type, a position,
+    # a colour and an intensity, and for a spot its direction and cone.
+    private def lights(list)
+      Array.wrap(list).filter_map do |light|
+        next unless light.is_a?(Hash) && LIGHT_TYPES.include?(light["type"])
+        next unless numbers?(light["position"], 3) && numbers?(light["color"], 3) && light["intensity"].is_a?(Numeric)
+
+        spot = light["type"] == "spot"
+        next if spot && !numbers?(light["direction"], 3)
+
+        {
+          "type" => light["type"],
+          "position" => light["position"],
+          "direction" => (light["direction"] if spot),
+          "color" => light["color"],
+          "intensity" => light["intensity"],
+          "range" => light["range"],
+          "decay" => light["decay"],
+          "angle" => (light.dig("three", "angle") || light["outerConeAngle"] if spot),
+          "penumbra" => (light.dig("three", "penumbra") if spot)
+        }.compact
+      end
     end
 
     # Kept only whole: both hand bones, and a helper with a position and a

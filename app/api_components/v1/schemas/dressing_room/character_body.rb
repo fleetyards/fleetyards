@@ -19,10 +19,15 @@ module V1
               description: "The hand bones a weapon is held by, and the fixed turn its holo needs there; absent until exported",
               anyOf: [::V1::Schemas::DressingRoom::CharacterBodyWeaponInHand, {type: :null}]
             },
+            lighting: {
+              type: :array,
+              description: "The game customizer's review lights for a whole outfit, from the character's feet in glTF axes; empty until exported",
+              items: ::V1::Schemas::DressingRoom::CharacterBodyLight
+            },
             clips: {type: :array, items: ::V1::Schemas::DressingRoom::CharacterBodyClip}
           },
           additionalProperties: false,
-          required: %w[key holo animations weaponInHand clips]
+          required: %w[key holo animations weaponInHand lighting clips]
         })
       end
     end
