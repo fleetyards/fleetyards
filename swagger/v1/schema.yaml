@@ -25022,11 +25022,40 @@ components:
           description: The body's folder in the export, e.g. male
         holo:
           "$ref": "#/components/schemas/MediaFile"
+        animations:
+          description: The clips that pose the body and every item rigged to it, by
+            bone name; absent until exported
+          anyOf:
+          - "$ref": "#/components/schemas/MediaFile"
+          - type: 'null'
+        clips:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CharacterBodyClip"
       additionalProperties: false
       required:
       - key
       - holo
+      - animations
+      - clips
       title: CharacterBody
+    CharacterBodyClip:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The clip's name in the body's animations file
+        static:
+          type: boolean
+          description: A single-frame pose rather than a motion
+        looping:
+          type: boolean
+      additionalProperties: false
+      required:
+      - name
+      - static
+      - looping
+      title: CharacterBodyClip
     Check:
       type: object
       properties:
@@ -39092,6 +39121,8 @@ components:
         holo:
           "$ref": "#/components/schemas/MediaFile"
         holoTextured:
+          "$ref": "#/components/schemas/MediaFile"
+        holoRiggedMale:
           "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
       title: ItemMedia

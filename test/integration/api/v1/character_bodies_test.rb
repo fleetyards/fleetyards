@@ -23,12 +23,14 @@ class Api::V1::CharacterBodiesTest < ActionDispatch::IntegrationTest
   end
 
   test "GET /character-bodies lists the bodies that have a holo, without signing in" do
-    create(:character_body, :with_holo, key: "male")
+    create(:character_body, :with_holo, key: "male", clips: [{"name" => "shop_pose_01", "static" => true, "looping" => false}])
     create(:character_body, key: "female")
 
     assert_api_response :get, 200 do
       assert_equal ["male"], parsed_body.pluck("key")
       assert_equal "plain.glb", parsed_body.first.dig("holo", "name")
+      assert_nil parsed_body.first["animations"]
+      assert_equal [{"name" => "shop_pose_01", "static" => true, "looping" => false}], parsed_body.first["clips"]
     end
   end
 
