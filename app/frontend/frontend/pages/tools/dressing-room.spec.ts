@@ -34,7 +34,7 @@ const EQUIPMENT: Record<string, Equipment> = {
   "p4-ar-hung": {
     ...piece("p4-ar-hung", { holo: media("p4ar.glb") }),
     attachPoints: {
-      attach_offset_left_01: {
+      attachOffsetLeft01: {
         position: [0, 0.1, -0.2],
         rotation: [0, 0, 0, 1],
       },
@@ -62,9 +62,11 @@ const MALE: CharacterBody = {
   key: "male",
   holo: media("body.glb"),
   animations: media("animations.glb"),
+  weaponInHand: null,
   clips: [
     { name: "shop_pose_01", static: true, looping: false },
     { name: "idle_stand", static: false, looping: true },
+    { name: "hold_rifle_lowered", static: false, looping: true },
   ],
 };
 
@@ -214,6 +216,32 @@ describe("ToolsDressingRoomPage", () => {
     bodies.value = [MALE];
   });
 
+  it("holds a rifle in the body's weapon hand, turned as the export says, and in the rifle pose", async () => {
+    bodies.value = [
+      {
+        ...MALE,
+        weaponInHand: {
+          bones: { right: "RightWeaponBone", left: "LeftWeaponBone" },
+          helper: {
+            position: [0, 0, 0],
+            rotation: [-0.707107, 0, 0, 0.707107],
+          },
+        },
+      },
+    ];
+
+    const { wrapper } = await mount({ primary: "p4-ar", held: "primary" });
+
+    const rig = viewerModel(wrapper).rig;
+    expect(rig.clip).toBe("hold_rifle_lowered");
+    expect(rig.attachments[0]).toMatchObject({
+      bone: "RightWeaponBone",
+      helper: { position: [0, 0, 0], rotation: [-0.707107, 0, 0, 0.707107] },
+    });
+
+    bodies.value = [MALE];
+  });
+
   it("takes a weapon out of hand when it is held again", async () => {
     const { wrapper, router } = await mount({
       sidearm: "s-38",
@@ -257,13 +285,13 @@ describe("ToolsDressingRoomPage", () => {
     const { wrapper } = await mount({ torso: "adp-core", legs: "adp-legs" });
 
     const model = viewerModel(wrapper);
-    expect(model.path).toBe("/legs.glb");
+    expect(model.path).toBe("/core_textured.glb");
     expect(
       model.mounts.map((mount: { path: string; textured: boolean }) => [
         mount.path,
         mount.textured,
       ]),
-    ).toEqual([["/core_textured.glb", true]]);
+    ).toEqual([["/legs.glb", false]]);
 
     bodies.value = [MALE];
   });

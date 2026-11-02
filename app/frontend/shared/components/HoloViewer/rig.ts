@@ -99,8 +99,9 @@ export const bonesByName = (root: Object3D) => {
 // grafted onto the body under the bone they hang from and handed back, so the
 // caller can take them off again. A mesh naming a bone that hangs from
 // nothing the body has is left out rather than drawn frozen in its bind pose.
-export const bindToBones = (piece: Object3D, bodyBones: Map<string, Bone>) => {
-  const bones = new Map(bodyBones);
+// The bones it grafts join `bones`, so a later piece hangs from them too: a
+// backpack from the core's own backpack bone.
+export const bindToBones = (piece: Object3D, bones: Map<string, Bone>) => {
   const grafted: Bone[] = [];
   const meshes: SkinnedMesh[] = [];
 

@@ -33,7 +33,9 @@ import BaseSelect from "@/shared/components/base/Select/index.vue";
 import {
   ALL_SLOTS,
   BACKPACK_MOUNT,
-  HAND_MOUNT,
+  RIFLE_HOLD_CLIP,
+  RIG_ORDER,
+  handMount,
   OUTFIT_SLOTS,
   type OutfitSelection,
   type PieceHolo,
@@ -310,9 +312,9 @@ const holos = computed(
 );
 
 // Undersuit first, so a figure without a body is rooted on the layer the
-// armour sits on.
+// armour sits on, and the core before the backpack that hangs from it.
 const pieces = computed(() =>
-  [...OUTFIT_SLOTS].reverse().flatMap((slot) => {
+  RIG_ORDER.flatMap((slot) => {
     const holo = body.value ? riggedHolos.value[slot] : holos.value[slot];
 
     return holo ? [holo] : [];
@@ -326,7 +328,9 @@ const weaponPlacement = (slot: OutfitSlotEnum) => {
   const holo = staticHolos.value[slot];
   if (!holo) return undefined;
 
-  if (heldWeapon.value === slot) return attachment(holo, HAND_MOUNT);
+  if (heldWeapon.value === slot) {
+    return attachment(holo, handMount(body.value));
+  }
 
   const mount = STOWED_MOUNTS[slot];
   const placed =
@@ -364,12 +368,26 @@ const model = computed(() =>
     ? riggedOutfitModel(
         body.value,
         pieces.value,
-        poseName.value,
+        pose.value,
         attachments.value,
         OUTFIT_SLOTS.filter((slot) => riggedHolos.value[slot]),
       )
     : outfitModel(pieces.value),
 );
+
+// A rifle in hand is held, unless the address picks another pose.
+const pose = computed(() => {
+  if (poseName.value) return poseName.value;
+
+  const holdsRifle =
+    heldWeapon.value === OutfitSlotEnum.PRIMARY ||
+    heldWeapon.value === OutfitSlotEnum.SECONDARY;
+  const holdable = body.value?.clips.some(
+    (clip) => clip.name === RIFLE_HOLD_CLIP,
+  );
+
+  return holdsRifle && holdable ? RIFLE_HOLD_CLIP : undefined;
+});
 
 const holoUnavailable = () => {
   const root = model.value;
