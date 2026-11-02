@@ -269,11 +269,13 @@ onUnmounted(() => window.removeEventListener("keydown", closeOnEscape));
 // Kept out of the model's scene, so framing measures the figure alone.
 const backdrop = shallowRef<Group>();
 
-const placeBackdrop = (scene: Object3D) => {
+// The model arrives centred on the origin, so its feet are half its height
+// below.
+const placeBackdrop = (size: Vector3) => {
   if (!props.backdrop) return;
 
   if (backdrop.value) disposeBackdrop(backdrop.value);
-  backdrop.value = buildBackdrop(new Box3().setFromObject(scene, true), {
+  backdrop.value = buildBackdrop(-size.y / 2, {
     reflective: !lowPower.value,
   });
 };
@@ -537,7 +539,7 @@ const handleModelLoaded = (size: Vector3, scene: Object3D) => {
 
   loading.value = false;
   emit("loaded");
-  placeBackdrop(scene);
+  placeBackdrop(size);
 
   const bounds = new Box3()
     .setFromObject(scene)

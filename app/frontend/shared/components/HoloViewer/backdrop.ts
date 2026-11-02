@@ -1,7 +1,6 @@
 import {
   AdditiveBlending,
   BackSide,
-  type Box3,
   CanvasTexture,
   CircleGeometry,
   Color,
@@ -154,15 +153,14 @@ const PANELS = [
   { angle: -2.5, distance: 7.4 },
 ];
 
+// Around the figure's centre, which the viewer puts at the origin, with the
+// floor at its feet.
 export const buildBackdrop = (
-  figure: Box3,
+  floor: number,
   { reflective = true }: { reflective?: boolean } = {},
 ) => {
-  const center = figure.getCenter(new Vector3());
-  const floor = figure.min.y;
-
   const group = new Group();
-  group.position.set(center.x, floor, center.z);
+  group.position.set(0, floor, 0);
   group.userData.backdrop = true;
 
   const hazeMap = hazeTexture();
