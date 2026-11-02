@@ -15,10 +15,7 @@ withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <div
-    class="form-input-group"
-    :class="{ 'form-input-group--inline': inline }"
-  >
+  <div class="form-input-group" :class="{ 'form-input-group--inline': inline }">
     <slot />
   </div>
 </template>
