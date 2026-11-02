@@ -9,8 +9,12 @@ module ScData
     # "<key>" => {"path", "files", "clips", "weapon_in_hand"}, where "path" is
     # the folder the files sit in below the prefix, and "weapon_in_hand" the
     # hand bones with the fixed turn a weapon's holo needs to sit in them.
-    def characters
-      index.fetch("bodies", {}).to_h do |key, entry|
+    # The index itself, for a caller that reads both the bodies and the
+    # lighting from one fetch of it.
+    def manifest = index
+
+    def characters(manifest = self.manifest)
+      manifest.fetch("bodies", {}).to_h do |key, entry|
         folder = File.dirname(entry.fetch("body", "#{prefix}/#{key}/body.glb")).delete_prefix("#{prefix}/")
 
         [key, {
@@ -24,8 +28,8 @@ module ScData
 
     # The customizer's light rigs, "<rig>" => {"lights" => [...]}: `review_<key>`
     # lights a body's whole outfit. Empty until the export lists them.
-    def lighting_rigs
-      file = index.dig("lighting", "file")
+    def lighting_rigs(manifest = self.manifest)
+      file = manifest.dig("lighting", "file")
       return {} if file.blank?
 
       read_json(file.delete_prefix("#{prefix}/")).fetch("rigs", {})
