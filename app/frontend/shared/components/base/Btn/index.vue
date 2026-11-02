@@ -621,6 +621,14 @@ const handleClick = (event: MouseEvent) => {
   bottom: 0;
   border-radius: var(--cap-r-btn, 1px) var(--cap-r-btn, 1px) 0 0;
 }
+/* Halved when disabled, as a standalone button's caps are. Not while loading:
+   that state fills the surface instead, at full strength. */
+.btn--grouped.active[disabled]:not(.is-loading)::before,
+.btn--grouped.active[disabled]:not(.is-loading)::after,
+.btn--grouped[aria-pressed="true"][disabled]:not(.is-loading)::before,
+.btn--grouped[aria-pressed="true"][disabled]:not(.is-loading)::after {
+  @apply opacity-50;
+}
 
 /* Hovering something already on has to answer too: `.active` outranks the
    neutral grouped hover, so without this an engaged toggle felt dead. */
@@ -657,8 +665,8 @@ const handleClick = (event: MouseEvent) => {
    `.btn--segment.active` and floods the chosen segment on hover. */
 .btn--segment.active:hover:not([disabled]) {
   @apply bg-transparent;
-  /* The grouped active state's lit caps go too, below: the thumb already says
-     which segment is chosen, and caps on it would say it twice. */
+  /* No seam either: the members of a switch touch, and the thumb is what
+     divides them. */
   box-shadow: none;
 }
 
@@ -667,6 +675,8 @@ const handleClick = (event: MouseEvent) => {
   @apply text-lifted;
 }
 
+/* The thumb already says which segment is chosen; lit caps would say it
+   twice. */
 .btn--segment.active::before,
 .btn--segment.active::after,
 .btn--segment[aria-pressed="true"]::before,
@@ -772,6 +782,12 @@ const handleClick = (event: MouseEvent) => {
    bottom one read as both caps carrying the state. */
 .btn.is-loading::before {
   background-color: rgb(122 130 136 / 0.35);
+}
+
+/* A grouped member fills its surface while loading, so an engaged one drops the
+   top cap it would otherwise keep lit beside the fill. */
+.btn.is-loading.btn--grouped::before {
+  content: none;
 }
 
 @keyframes btn-fill-rightward {
