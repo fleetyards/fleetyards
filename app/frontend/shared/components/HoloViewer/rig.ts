@@ -267,7 +267,9 @@ export const bodyRegion = (mesh: SkinnedMesh, height: number): BodyRegion => {
 export const rigLayoutKey = (rig?: HoloRig) =>
   rig
     ? [
-        ...rig.pieces.map((piece) => piece.path),
+        ...rig.pieces.map((piece) =>
+          [piece.path, piece.hangs ? "hangs" : "", piece.from ?? ""].join("|"),
+        ),
         // Everything that changes how a part is drawn: a helper that arrives
         // later moves it, a painted holo that failed swaps it.
         ...(rig.attachments ?? []).map((attachment) =>
