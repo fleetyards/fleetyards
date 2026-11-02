@@ -12,11 +12,12 @@ import {
   type Material,
   type Object3D,
   type Texture,
+  type SkinnedMesh,
   DoubleSide,
   FrontSide,
   Box3,
   Vector3,
-  type Group,
+  Group,
   type AnimationClip,
   Mesh,
   MeshBasicMaterial,
@@ -38,9 +39,12 @@ import {
 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { prepareGltfLoader } from "../gltfLoader";
+import { bindToBones, bonesByName, loadClips, rigLayoutKey } from "../rig";
 import {
   applyHighlights,
   buildMounts,
+  cloneShared,
+  loadHolo,
   mountsHighlightKey,
   mountsLayoutKey,
   releaseMountCache,
@@ -482,6 +486,93 @@ const attachMounts = async (scene: Group) => {
   return true;
 };
 
+// The renderer refreshes a skeleton only when it draws; measured before the
+// first frame, a skinned figure would read as its bind pose.
+const refreshSkeletons = (scene: Group) => {
+  scene.updateMatrixWorld(true);
+  scene.traverse((node) => {
+    if ((node as SkinnedMesh).isSkinnedMesh) {
+      (node as SkinnedMesh).skeleton.update();
+    }
+  });
+};
+
+// Worn pieces skinned to the root's skeleton, bound to its bones under one
+// group so a change of outfit swaps them in place.
+let rigRoot: Group | undefined;
+let rigRequest = 0;
+let rigClips: AnimationClip[] = [];
+
+const pose = (scene: Group) => {
+  mixer.value?.stopAllAction();
+  mixer.value = undefined;
+
+  const wanted = props.model.rig?.clip;
+  const clip =
+    rigClips.find((candidate) => candidate.name === wanted) ?? rigClips[0];
+  if (!clip) return;
+
+  mixer.value = new AnimationMixer(scene);
+  mixer.value.clipAction(clip).play();
+  mixer.value.update(0);
+  refreshSkeletons(scene);
+  invalidate();
+};
+
+// Whether these pieces landed; a newer request supersedes them otherwise.
+const attachRig = async (scene: Group) => {
+  const request = ++rigRequest;
+  const rig = props.model.rig;
+  if (!rig) return true;
+
+  const [pieces, clips] = await Promise.all([
+    Promise.all(
+      rig.pieces.map((piece) =>
+        loadHolo(piece.path)
+          .then(cloneShared)
+          .catch((error: unknown) => {
+            console.warn("A rigged part did not load", error);
+            return undefined;
+          }),
+      ),
+    ),
+    rig.animations
+      ? loadClips(rig.animations).catch(() => [] as AnimationClip[])
+      : Promise.resolve([] as AnimationClip[]),
+  ]);
+
+  if (request !== rigRequest) return false;
+
+  if (rigRoot) {
+    scene.remove(rigRoot);
+    (rigRoot.userData.grafted as Object3D[]).forEach((bone) =>
+      bone.removeFromParent(),
+    );
+  }
+
+  const bones = bonesByName(scene);
+  const next = new Group();
+  next.userData.grafted = [];
+
+  pieces.forEach((piece) => {
+    if (!piece) return;
+
+    const { meshes, grafted } = bindToBones(piece, bones);
+    if (meshes.length) next.add(...meshes);
+    next.userData.grafted.push(...grafted);
+  });
+
+  scene.add(next);
+  rigRoot = next;
+  rigClips = clips;
+
+  if (!props.model.textured) setMaterials(next);
+
+  pose(scene);
+
+  return true;
+};
+
 // The part under the pointer, looked for among the mounted parts alone: on a
 // see-through hull the part shows through it, and a click on it should reach
 // it rather than the hull in front.
@@ -673,13 +764,24 @@ const setup = async (scene: Group, animations: AnimationClip[]) => {
 
   // Parts in one shared frame, a figure dressed from its pieces, are framed
   // and centred together: the root alone may be any one of them.
+  if (props.model.rig) {
+    scene.traverse((node) => {
+      // Posed away from the bind pose, the stored bounds no longer hold.
+      if ((node as Mesh).isMesh) node.frustumCulled = false;
+    });
+    while (!(await attachRig(scene)));
+  }
+
   // Asked again until the parts it frames are the ones that landed: a fitting
   // changed while they loaded would leave it framing the root alone.
   if (props.model.frameMounts) {
     while (!(await attachMounts(scene)));
   }
 
-  const box = new Box3().setFromObject(scene);
+  // A skinned figure is measured where its bones put it: its stored
+  // positions are the bind pose, in the export's own frame.
+  const precise = !!props.model.rig;
+  const box = new Box3().setFromObject(scene, precise);
   const size = box.getSize(new Vector3());
 
   if (props.onGrid && props.model.length) {
@@ -689,13 +791,15 @@ const setup = async (scene: Group, animations: AnimationClip[]) => {
   }
 
   scene.updateMatrixWorld(true);
-  const scaledBox = new Box3().setFromObject(scene);
+  const scaledBox = new Box3().setFromObject(scene, precise);
   const center = scaledBox.getCenter(new Vector3());
   scene.position.sub(center);
 
   if (props.offsetModel?.length) {
     scene.position.y += props.offsetModel.length;
   }
+
+  if (props.model.rig) refreshSkeletons(scene);
 
   emit("loaded", size, scene);
 
@@ -716,6 +820,20 @@ watch(
   () => mountsLayoutKey(props.model.mounts),
   () => {
     if (state.value) void attachMounts(state.value.scene);
+  },
+);
+
+watch(
+  () => rigLayoutKey(props.model.rig),
+  () => {
+    if (state.value) void attachRig(state.value.scene);
+  },
+);
+
+watch(
+  () => props.model.rig?.clip,
+  () => {
+    if (state.value && rigRoot) pose(state.value.scene);
   },
 );
 

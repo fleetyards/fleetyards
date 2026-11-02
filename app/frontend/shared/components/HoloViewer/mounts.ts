@@ -100,7 +100,7 @@ export const releaseMountCache = () => {
   }
 };
 
-const loadHolo = (path: string) => {
+export const loadHolo = (path: string) => {
   let scene = loaded.get(path);
 
   if (!scene) {
@@ -117,7 +117,7 @@ const loadHolo = (path: string) => {
 
 // A clone shares the cached holo's geometry and materials; whoever restyles it
 // must leave those for the cache to free.
-const cloneShared = (scene: Object3D) => {
+export const cloneShared = (scene: Object3D) => {
   const clone = scene.clone(true);
 
   clone.traverse((node) => {

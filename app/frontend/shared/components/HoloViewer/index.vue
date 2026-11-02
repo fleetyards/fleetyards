@@ -18,6 +18,7 @@ import {
   NeutralToneMapping,
   type Object3D,
   type PerspectiveCamera,
+  type SkinnedMesh,
   Sphere,
   Vector3,
 } from "three";
@@ -43,6 +44,7 @@ import {
   mountsSize,
   mountsTextured,
 } from "@/shared/components/HoloViewer/mounts";
+import { type HoloRig, rigSize } from "@/shared/components/HoloViewer/rig";
 
 export type HoloModel = {
   path: string;
@@ -61,6 +63,8 @@ export type HoloModel = {
   // Framed and centred with its parts rather than on its own: a figure whose
   // pieces all share one frame.
   frameMounts?: boolean;
+  // A rigged body: worn pieces bound to its skeleton and posed by a clip.
+  rig?: HoloRig;
 };
 
 type Props = {
@@ -142,7 +146,8 @@ const textured = computed(() =>
 
 const totalSize = computed(() =>
   props.models.reduce(
-    (sum, model) => sum + (model.size ?? 0) + mountsSize(model.mounts),
+    (sum, model) =>
+      sum + (model.size ?? 0) + mountsSize(model.mounts) + rigSize(model.rig),
     0,
   ),
 );
@@ -517,7 +522,13 @@ const handleModelLoaded = (size: Vector3, scene: Object3D) => {
 
       const step = Math.max(1, Math.floor(positions.count / 2000));
       for (let index = 0; index < positions.count; index += step) {
-        point.fromBufferAttribute(positions, index);
+        // A skinned mesh's stored points are its bind pose; its bones say
+        // where they are drawn.
+        if ((mesh as SkinnedMesh).isSkinnedMesh) {
+          (mesh as SkinnedMesh).getVertexPosition(index, point);
+        } else {
+          point.fromBufferAttribute(positions, index);
+        }
         point.applyMatrix4(mesh.matrixWorld);
 
         const depth = point.dot(toCamera);
