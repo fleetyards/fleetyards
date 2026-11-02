@@ -98,7 +98,7 @@ const viewerModel = (wrapper: Awaited<ReturnType<typeof mount>>["wrapper"]) =>
   wrapper.findComponent({ name: "HoloViewer" }).props("models")[0];
 
 describe("ToolsDressingRoomPage", () => {
-  it("dresses the body in the rigged pieces the address names, in a shop pose", async () => {
+  it("dresses the body in the rigged pieces the address names, standing idle", async () => {
     const { wrapper } = await mount({ torso: "adp-core", legs: "adp-legs" });
 
     expect(
@@ -110,7 +110,8 @@ describe("ToolsDressingRoomPage", () => {
     expect(model.rig).toEqual({
       pieces: [{ path: "/core_rigged.glb", size: 1000 }],
       animations: "/animations.glb",
-      clip: "shop_pose_01",
+      clip: "idle_stand",
+      pedestal: true,
     });
     expect(
       wrapper.find('[data-test="dressing-room-no-holo-legs"]').exists(),
@@ -118,9 +119,12 @@ describe("ToolsDressingRoomPage", () => {
   });
 
   it("poses the body as the address says", async () => {
-    const { wrapper } = await mount({ torso: "adp-core", pose: "idle_stand" });
+    const { wrapper } = await mount({
+      torso: "adp-core",
+      pose: "shop_pose_01",
+    });
 
-    expect(viewerModel(wrapper).rig.clip).toBe("idle_stand");
+    expect(viewerModel(wrapper).rig.clip).toBe("shop_pose_01");
   });
 
   it("mounts the static pieces, painted where it can, while no body is exported", async () => {

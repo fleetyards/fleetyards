@@ -95,9 +95,16 @@ export interface OutfitHoloModel {
   rig?: HoloRig;
 }
 
-// The pose a figure starts in: the first single-frame one, a shop display.
+export const DEFAULT_CLIP = "idle_stand";
+
+// The pose a figure starts in: standing idle, else the first single-frame
+// one, a shop display.
 export const defaultClip = (clips: CharacterBodyClip[] = []) =>
-  (clips.find((clip) => clip.static) ?? clips[0])?.name;
+  (
+    clips.find((clip) => clip.name === DEFAULT_CLIP) ??
+    clips.find((clip) => clip.static) ??
+    clips[0]
+  )?.name;
 
 // A clip's name as the export writes it, made readable: "shop_pose_01" reads
 // "Shop pose 01".
@@ -122,6 +129,7 @@ export const riggedOutfitModel = (
       clip && body.clips.some((candidate) => candidate.name === clip)
         ? clip
         : defaultClip(body.clips),
+    pedestal: true,
   },
 });
 

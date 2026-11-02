@@ -47,6 +47,11 @@ const BODY_KEY = "male";
 // in front of it.
 const HOLO_AZIMUTH = 180;
 
+// A little above the chest, looking down at the figure on its pedestal.
+const HOLO_ELEVATION = 8;
+
+const viewer = ref<InstanceType<typeof HoloViewer>>();
+
 const { t } = useI18n();
 const { displayAlert, displaySuccess } = useAppNotifications();
 
@@ -255,12 +260,16 @@ const copyShareLink = () => {
       <div class="dressing-room__stage" data-test="dressing-room-stage">
         <HoloViewer
           v-if="model"
+          ref="viewer"
           :key="model.path"
           :models="[model]"
           :azimuth="HOLO_AZIMUTH"
+          :elevation="HOLO_ELEVATION"
           :auto-rotate="false"
+          :contain-padding="1.08"
           contain
           zoomable
+          turntable
           @unavailable="holoUnavailable"
         />
         <div
@@ -272,6 +281,16 @@ const copyShareLink = () => {
           <p>{{ t("dressingRoom.empty") }}</p>
         </div>
         <div class="dressing-room__actions">
+          <Btn
+            v-if="model"
+            :size="BtnSizesEnum.SM"
+            :aria-label="t('actions.vehicleOverview.fullscreenHolo')"
+            v-tooltip="t('actions.vehicleOverview.fullscreenHolo')"
+            data-test="dressing-room-fullscreen"
+            @click="viewer?.enableFullscreen()"
+          >
+            <i class="fa-light fa-expand" />
+          </Btn>
           <Btn
             :size="BtnSizesEnum.SM"
             :disabled="!selectedSlots.length"
@@ -294,16 +313,7 @@ const copyShareLink = () => {
         </div>
       </div>
 
-      <aside class="dressing-room__side">
-        <BaseSelect
-          v-if="poseOptions.length > 1"
-          v-model="selectedPose"
-          name="dressing-room-pose"
-          :label="t('dressingRoom.pose')"
-          :options="poseOptions"
-          :searchable="false"
-          data-test="dressing-room-pose"
-        />
+      <aside class="dressing-room__side dressing-room__side--pieces">
         <SlotPicker
           v-if="picking"
           :slot="picking"
@@ -380,7 +390,18 @@ const copyShareLink = () => {
             </Btn>
           </li>
         </ul>
+      </aside>
 
+      <aside class="dressing-room__side dressing-room__side--outfit">
+        <BaseSelect
+          v-if="poseOptions.length > 1"
+          v-model="selectedPose"
+          name="dressing-room-pose"
+          :label="t('dressingRoom.pose')"
+          :options="poseOptions"
+          :searchable="false"
+          data-test="dressing-room-pose"
+        />
         <Outfits
           :items="outfitItems"
           :pending="piecesPending"
@@ -401,20 +422,42 @@ const copyShareLink = () => {
 
 .dressing-room {
   display: grid;
+  grid-template-areas:
+    "stage"
+    "pieces"
+    "outfit";
   grid-template-columns: minmax(0, 1fr);
   gap: 1.5rem;
 
   @media (min-width: $desktop-breakpoint) {
-    grid-template-columns: minmax(0, 2fr) minmax(18rem, 1fr);
+    grid-template-areas: "pieces stage outfit";
+    grid-template-columns: minmax(16rem, 1fr) auto minmax(16rem, 1fr);
+    align-items: start;
   }
 }
 
+// Portrait, as a standing figure is: a landscape stage left most of itself
+// empty either side of it.
 .dressing-room__stage {
   position: relative;
+  grid-area: stage;
+  height: min(70vh, 48rem);
   min-height: 24rem;
-  height: 60vh;
   border-radius: 4px;
   background: $gray-black;
+
+  @media (min-width: $desktop-breakpoint) {
+    height: min(78vh, 56rem);
+    aspect-ratio: 3 / 4;
+  }
+}
+
+.dressing-room__side--pieces {
+  grid-area: pieces;
+}
+
+.dressing-room__side--outfit {
+  grid-area: outfit;
 }
 
 .dressing-room__empty {

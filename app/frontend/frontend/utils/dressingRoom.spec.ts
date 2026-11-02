@@ -134,7 +134,7 @@ describe("riggedOutfitModel", () => {
   };
   const core = { path: "/core_rigged.glb", size: 5, textured: false };
 
-  it("dresses the body in the rigged pieces, in its first shop pose", () => {
+  it("dresses the body in the rigged pieces, standing idle", () => {
     expect(riggedOutfitModel(body, [core])).toEqual({
       path: "/body.glb",
       size: 8,
@@ -142,18 +142,28 @@ describe("riggedOutfitModel", () => {
       rig: {
         pieces: [{ path: "/core_rigged.glb", size: 5 }],
         animations: "/animations.glb",
-        clip: "shop_pose_01",
+        clip: "idle_stand",
+        pedestal: true,
       },
     });
   });
 
   it("keeps a pose the body has, and drops one it does not", () => {
-    expect(riggedOutfitModel(body, [], "idle_stand").rig?.clip).toBe(
-      "idle_stand",
+    expect(riggedOutfitModel(body, [], "shop_pose_02").rig?.clip).toBe(
+      "shop_pose_02",
     );
     expect(riggedOutfitModel(body, [], "moonwalk").rig?.clip).toBe(
-      "shop_pose_01",
+      "idle_stand",
     );
+  });
+
+  it("falls back to the first shop pose for a body without an idle stand", () => {
+    const shopOnly = {
+      ...body,
+      clips: body.clips.filter((clip) => clip.name !== "idle_stand"),
+    };
+
+    expect(riggedOutfitModel(shopOnly, []).rig?.clip).toBe("shop_pose_01");
   });
 });
 
