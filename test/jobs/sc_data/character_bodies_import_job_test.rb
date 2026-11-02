@@ -39,7 +39,12 @@ module ScData
         body: "characters/#{key}/body.glb",
         animations: "characters/#{key}/animations.glb",
         files: files.to_h { |name, content| [name, {md5: Digest::MD5.hexdigest(content), size: content.bytesize}] },
-        clips:
+        clips:,
+        weaponInHand: {
+          bones: {right: "RightWeaponBone", left: "LeftWeaponBone"},
+          helper: {position: [0, 0, 0], rotation: [-0.707107, 0, 0, 0.707107]},
+          note: "the item origin goes on the bone"
+        }
       }
       @objects["index.json"] = {updatedAt: "2026-11-02T00:00:00Z", bodies: @index}.to_json
       files.each { |name, content| @objects["#{key}/#{name}"] = content }
@@ -59,6 +64,9 @@ module ScData
       body = CharacterBody.find_by!(key: "male")
       assert_equal "body.glb", body.holo.filename.to_s
       assert_equal "animations.glb", body.animations.filename.to_s
+      assert_equal "RightWeaponBone", body.weapon_in_hand.dig("bones", "right")
+      assert_equal [-0.707107, 0, 0, 0.707107], body.weapon_in_hand.dig("helper", "rotation")
+      assert_nil body.weapon_in_hand["note"]
       assert_equal [
         {"name" => "shop_pose_01", "static" => true, "looping" => false},
         {"name" => "idle_stand", "static" => false, "looping" => true}

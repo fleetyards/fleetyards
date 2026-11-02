@@ -15,10 +15,14 @@ module V1
               description: "The clips that pose the body and every item rigged to it, by bone name; absent until exported",
               anyOf: [::Shared::V1::Schemas::MediaFile, {type: :null}]
             },
+            weaponInHand: {
+              description: "The hand bones a weapon is held by, and the fixed turn its holo needs there; absent until exported",
+              anyOf: [::V1::Schemas::DressingRoom::CharacterBodyWeaponInHand, {type: :null}]
+            },
             clips: {type: :array, items: ::V1::Schemas::DressingRoom::CharacterBodyClip}
           },
           additionalProperties: false,
-          required: %w[key holo animations clips]
+          required: %w[key holo animations weaponInHand clips]
         })
       end
     end

@@ -25050,6 +25050,12 @@ components:
           anyOf:
           - "$ref": "#/components/schemas/MediaFile"
           - type: 'null'
+        weaponInHand:
+          description: The hand bones a weapon is held by, and the fixed turn its
+            holo needs there; absent until exported
+          anyOf:
+          - "$ref": "#/components/schemas/CharacterBodyWeaponInHand"
+          - type: 'null'
         clips:
           type: array
           items:
@@ -25059,6 +25065,7 @@ components:
       - key
       - holo
       - animations
+      - weaponInHand
       - clips
       title: CharacterBody
     CharacterBodyClip:
@@ -25078,6 +25085,30 @@ components:
       - static
       - looping
       title: CharacterBodyClip
+    CharacterBodyHandBones:
+      type: object
+      properties:
+        right:
+          type: string
+        left:
+          type: string
+      additionalProperties: false
+      required:
+      - right
+      - left
+      title: CharacterBodyHandBones
+    CharacterBodyWeaponInHand:
+      type: object
+      properties:
+        bones:
+          "$ref": "#/components/schemas/CharacterBodyHandBones"
+        helper:
+          "$ref": "#/components/schemas/AttachPoint"
+      additionalProperties: false
+      required:
+      - bones
+      - helper
+      title: CharacterBodyWeaponInHand
     Check:
       type: object
       properties:

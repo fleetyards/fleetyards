@@ -20,7 +20,9 @@ module ScData
       store.characters.each do |key, entry|
         body = CharacterBody.find_or_create_by!(key:)
         clips = entry["clips"].map { |clip| clip.slice("name", "static", "looping") }
+        weapon_in_hand = entry["weapon_in_hand"]&.slice("bones", "helper")
         body.update_columns(clips:) if body.clips != clips
+        body.update_columns(weapon_in_hand:) if body.weapon_in_hand != weapon_in_hand
 
         # The index has no digest of its own for a body, so its file list is.
         digest = Digest::MD5.hexdigest(entry["files"].sort.to_json)
