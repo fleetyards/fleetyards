@@ -141,7 +141,7 @@ const { activeFilters } = useShipFilterSummary();
     </template>
 
     <template #filter>
-      <FilterForm />
+      <FilterForm hide-quicksearch />
     </template>
 
     <template #pagination-top>

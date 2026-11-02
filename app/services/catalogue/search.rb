@@ -18,12 +18,16 @@ module Catalogue
     # reader cannot tell apart are worth one.
     CANDIDATES = PER_TYPE * 4
 
-    # Where a catalogue keeps its picture, best first. A mission has none; a
-    # blueprint borrows the one of what it crafts.
+    # Where a catalogue keeps its picture, best first: an angled render where
+    # there is one, the cut-out the results are drawn for. A mission has none;
+    # a blueprint is drawn as a plan of what it crafts, which only an angled
+    # render makes, as in the blueprint list.
+    ITEM_IMAGES = %i[angled_view store_image].freeze
+    BLUEPRINT_IMAGES = %i[angled_view].freeze
     IMAGES = {
       "ship" => ::Model::PREVIEW_VIEWS,
-      "component" => %i[store_image],
-      "equipment" => %i[store_image],
+      "component" => ITEM_IMAGES,
+      "equipment" => ITEM_IMAGES,
       "commodity" => %i[store_image],
       "location" => %i[image]
     }.freeze
@@ -109,13 +113,28 @@ module Catalogue
 
     private def blueprint_images(slugs)
       blueprints = Blueprint.where(slug: slugs).includes(:craftable).to_a
-      craftables = blueprints.filter_map(&:craftable).select { |craftable| craftable.respond_to?(:store_image) }
 
-      ActiveRecord::Associations::Preloader.new(records: craftables, associations: {store_image_attachment: :blob}).call
+      blueprints.filter_map(&:craftable).group_by(&:class).each do |klass, craftables|
+        attachments = craftable_images(klass)
+        next if attachments.empty?
 
-      blueprints
-        .to_h { |blueprint| [blueprint.slug, blueprint.craftable.try(:store_image)] }
-        .select { |_slug, image| image&.attached? }
+        ActiveRecord::Associations::Preloader.new(
+          records: craftables,
+          associations: attachments.to_h { |attachment| [:"#{attachment}_attachment", :blob] }
+        ).call
+      end
+
+      blueprints.each_with_object({}) do |blueprint, images|
+        craftable = blueprint.craftable
+        next unless craftable
+
+        image = craftable_images(craftable.class).map { |attachment| craftable.public_send(attachment) }.find(&:attached?)
+        images[blueprint.slug] = image if image
+      end
+    end
+
+    private def craftable_images(klass)
+      BLUEPRINT_IMAGES.select { |attachment| klass.method_defined?(attachment) }
     end
 
     # Names that start with the query first, then those with a word that does

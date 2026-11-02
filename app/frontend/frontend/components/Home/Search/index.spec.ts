@@ -123,6 +123,39 @@ describe("HomeSearch", () => {
     );
   });
 
+  it("draws a blueprint as a plan of what it crafts", async () => {
+    groups = [
+      {
+        type: "Blueprint",
+        items: [
+          {
+            type: "Blueprint",
+            name: "Atlas",
+            slug: "atlas",
+            image: {
+              name: "angled.png",
+              contentType: "image/png",
+              size: 1,
+              url: "https://example.test/angled.png",
+              smallUrl: "https://example.test/angled-small.webp",
+            },
+          },
+        ],
+      },
+    ];
+    const wrapper = await mountWithDefaults(Component, {
+      plugins: [await router()],
+    });
+
+    await typeInto(wrapper, "atlas");
+
+    const row = wrapper.find("[data-test='home-search-result']");
+    expect(
+      row.find("[data-test='blueprint-plan-image']").attributes("src"),
+    ).toBe("https://example.test/angled-small.webp");
+    expect(row.find(".search-result-label__thumb").exists()).toBe(false);
+  });
+
   it("draws a planet and a system rather than picturing them", async () => {
     groups = [
       {
@@ -216,6 +249,22 @@ describe("HomeSearch", () => {
     await submit(wrapper);
 
     expect(instance.currentRoute.value.fullPath).toBe("/components/gvsr-s2");
+  });
+
+  it("empties the field once a match is opened, for a header that stays mounted", async () => {
+    const instance = await router();
+    const wrapper = await mountWithDefaults(Component, {
+      plugins: [instance],
+    });
+
+    await typeInto(wrapper, "gvsr");
+    await submit(wrapper);
+
+    expect(instance.currentRoute.value.name).not.toBe("home");
+    expect((wrapper.find("input").element as HTMLInputElement).value).toBe("");
+    expect(wrapper.find("[data-test='home-search-result']").exists()).toBe(
+      false,
+    );
   });
 
   it("stays put on Enter when nothing matches, and says so", async () => {

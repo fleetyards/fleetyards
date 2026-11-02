@@ -9,6 +9,7 @@ import AppIcon from "@/shared/components/AppIcon/index.vue";
 import MissionText from "@/frontend/components/MissionText/index.vue";
 import LocationGlobe from "@/frontend/components/Locations/Globe/index.vue";
 import LocationKindIcon from "@/frontend/components/Locations/KindIcon/index.vue";
+import BlueprintPlan from "@/frontend/components/Blueprints/Plan/index.vue";
 import { catalogueTokenIcon } from "@/shared/utils/CatalogueTokens";
 import { sunStyle } from "@/shared/utils/LocationGlobe";
 import { type SearchResult } from "@/services/fyApi";
@@ -86,9 +87,17 @@ const nameParts = computed(() => {
         :style="sun"
       />
     </span>
+    <BlueprintPlan
+      v-else-if="result.type === 'Blueprint' && result.image?.smallUrl"
+      :image="result.image"
+      variant="thumb"
+      aria-hidden="true"
+      data-test="search-result-plan"
+    />
     <span
-      v-else-if="image"
+      v-else-if="image && result.type !== 'Blueprint'"
       class="search-result-label__thumb"
+      :class="{ 'search-result-label__thumb--framed': cover }"
       aria-hidden="true"
     >
       <img
@@ -147,9 +156,14 @@ const nameParts = computed(() => {
   width: 64px;
   height: 40px;
   overflow: hidden;
-  background: var(--color-control, rgb(39 43 48 / 0.9));
-  border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
-  border-radius: 6px;
+
+  // A cut-out stands on the panel as the ship lists show it; only a photo,
+  // cropped to fill, needs an edge.
+  &--framed {
+    background: var(--color-control, rgb(39 43 48 / 0.9));
+    border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+    border-radius: 6px;
+  }
 }
 
 // A drawn body or star needs no frame: it is round, and as tall as a picture.

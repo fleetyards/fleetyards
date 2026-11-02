@@ -81,14 +81,14 @@ module Catalogue
       assert_equal Search::PER_TYPE, search("ore").size
     end
 
-    test "carries the picture an item has, and a blueprint the one of what it crafts" do
+    test "carries the picture an item has, and a blueprint none without an angled render to draw" do
       component = create(:component, :with_store_image, name: "Omni Cannon")
       create(:blueprint, name: "Omni Cannon", craftable: component)
       create(:commodity, name: "Omni Ore")
 
       images = Search.new.call("omni").flat_map(&:items).to_h { |result| [result.type, result.image&.blob&.filename&.to_s] }
 
-      assert_equal({"Component" => "test.png", "Blueprint" => "test.png", "Commodity" => nil}, images)
+      assert_equal({"Component" => "test.png", "Blueprint" => nil, "Commodity" => nil}, images)
     end
 
     test "shows a ship by its angled render rather than its store image" do
@@ -98,6 +98,27 @@ module Catalogue
       ship.angled_view.attach(io: File.open(png), filename: "angled.png")
 
       assert_equal "angled.png", Search.new.call("omni").first.items.first.image.filename.to_s
+    end
+
+    test "shows a component, equipment and a blueprint by the angled render where there is one" do
+      png = Rails.root.join("test/fixtures/files/test.png")
+      component = create(:component, :with_store_image, name: "Omni Cannon")
+      component.angled_view.attach(io: File.open(png), filename: "angled.png")
+      create(:blueprint, name: "Omni Cannon", craftable: component)
+      equipment = create(:equipment, name: "Omni Helmet")
+      equipment.angled_view.attach(io: File.open(png), filename: "angled.png")
+
+      images = Search.new.call("omni").flat_map(&:items).to_h { |result| [result.type, result.image&.blob&.filename&.to_s] }
+
+      assert_equal({"Component" => "angled.png", "Equipment" => "angled.png", "Blueprint" => "angled.png"}, images)
+    end
+
+    test "pictures no blueprint whose item has no angled render to draw" do
+      create(:blueprint, name: "Omni Ore", craftable: create(:commodity, :with_store_image, name: "Omni Ore"))
+
+      blueprint = Search.new.call("omni").find { |group| group.type == "Blueprint" }.items.first
+
+      assert_nil blueprint.image
     end
 
     test "ignores a query too short to mean anything, and what the catalogue hides" do
