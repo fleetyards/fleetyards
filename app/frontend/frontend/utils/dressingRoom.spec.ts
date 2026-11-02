@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { type MediaFile } from "@/services/fyApi";
+import { OutfitSlotEnum } from "@/services/fyApi";
 import {
+  OUTFIT_SLOTS,
+  RIG_ORDER,
   clipLabel,
   outfitModel,
   riggedOutfitModel,
@@ -194,6 +197,15 @@ describe("riggedOutfitModel body cover", () => {
 
     expect(rig?.hide).toEqual(["torso", "arms", "legs"]);
     expect(rig?.cover).toBeUndefined();
+  });
+});
+
+describe("RIG_ORDER", () => {
+  it("binds every armour slot, the core before the backpack", () => {
+    expect([...RIG_ORDER].sort()).toEqual([...OUTFIT_SLOTS].sort());
+    expect(RIG_ORDER.indexOf(OutfitSlotEnum.TORSO)).toBeLessThan(
+      RIG_ORDER.indexOf(OutfitSlotEnum.BACKPACK),
+    );
   });
 });
 
