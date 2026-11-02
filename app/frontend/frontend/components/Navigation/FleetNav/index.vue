@@ -110,7 +110,7 @@ onMounted(() => {
     <NavItem
       :to="{ name: 'fleet', params: { slug: currentFleet.slug } }"
       :label="t('nav.fleets.overview')"
-      icon="fa-duotone fa-gauge"
+      icon="fa-duotone fa-home-alt"
       :active="route.name === 'fleet'"
     />
     <!-- Top-level, and staying there: this is the one tab somebody outside
