@@ -184,6 +184,52 @@ module ScData
       end
 
       # Armour carries WeaponAttachment ports for its magazine pouches.
+      test "reads what an undersuit offers armour and weapons, and what a piece needs to fit" do
+        write_equipment("vgl_flightsuit_01_01_01", name: "Flight Suit", path: "entities/scitem/characters/human/armor/pu_armor/undersuit",
+          type: "Char_Armor_Undersuit", components_extra: <<~XML)
+            <SItemPortContainerComponentParams>
+              <Ports>
+                <SItemPortDef Name="Armor_Torso" MinSize="0" MaxSize="0" PortTags="nvy_flightsuit_01_01_01" RequiredPortTags="$nvy_flightsuit_01_01_01">
+                  <Types><SItemPortDefTypes Type="Char_Armor_Torso" /></Types>
+                </SItemPortDef>
+                <SItemPortDef Name="wep_stocked_3" MinSize="2" MaxSize="5">
+                  <Types>
+                    <SItemPortDefTypes Type="WeaponPersonal">
+                      <SubTypes><Enum value="Medium" /><Enum value="Large" /></SubTypes>
+                    </SItemPortDefTypes>
+                    <SItemPortDefTypes Type="FPS_Deployable" />
+                  </Types>
+                </SItemPortDef>
+                <SItemPortDef Name="universal_necksock_undersuit" MinSize="0" MaxSize="0">
+                  <Types><SItemPortDefTypes Type="Char_Accessory_Head" /></Types>
+                </SItemPortDef>
+              </Ports>
+            </SItemPortContainerComponentParams>
+          XML
+        @parser.translations = {"Flight Suit" => "Flight Suit"}
+
+        fit = parsed.fetch("vgl_flightsuit_01_01_01")["fit"]
+
+        assert_equal "Char_Armor_Undersuit", fit["type"]
+        assert_equal [
+          {"name" => "Armor_Torso", "types" => [{"type" => "Char_Armor_Torso"}], "min_size" => 0, "max_size" => 0,
+           "port_tags" => ["nvy_flightsuit_01_01_01"], "required_tags" => ["$nvy_flightsuit_01_01_01"]},
+          {"name" => "wep_stocked_3", "types" => [{"type" => "WeaponPersonal", "sub_types" => %w[Medium Large]}],
+           "min_size" => 2, "max_size" => 5}
+        ], fit["ports"]
+      end
+
+      test "reads the tags a backpack demands of the port it goes on" do
+        write_equipment("cds_combat_superheavy_backpack_01_01_01", name: "Backpack", path: "entities/scitem/characters/human/armor/pu_armor/heavy/backpack",
+          type: "Char_Armor_Backpack", required_tags: "CdsSuperheavyBackpack_01")
+        @parser.translations = {"Backpack" => "Backpack"}
+
+        fit = parsed.fetch("cds_combat_superheavy_backpack_01_01_01")["fit"]
+
+        assert_equal ["CdsSuperheavyBackpack_01"], fit["required_tags"]
+        assert_nil fit["ports"]
+      end
+
       test "reads no attachment ports off armour" do
         write_equipment("ccc_medium_armor_core_01_01_01", name: "@item_Name_ccc_medium_armor_core_01_01_01",
           path: "entities/scitem/characters/human/armor", type: "Char_Armor_Torso", components_extra: <<~XML)

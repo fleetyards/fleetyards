@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { type MediaFile } from "@/services/fyApi";
+import { OutfitSlotEnum } from "@/services/fyApi";
 import {
+  OUTFIT_SLOTS,
+  RIG_ORDER,
   clipLabel,
   outfitModel,
   riggedOutfitModel,
@@ -126,6 +129,8 @@ describe("riggedOutfitModel", () => {
     key: "male",
     holo: file("/body.glb", 8),
     animations: file("/animations.glb", 3),
+    weaponInHand: null,
+    lighting: [],
     clips: [
       { name: "idle_stand", static: false, looping: true },
       { name: "shop_pose_01", static: true, looping: false },
@@ -172,13 +177,35 @@ describe("riggedOutfitModel body cover", () => {
     key: "male",
     holo: file("/body.glb"),
     animations: null,
+    weaponInHand: null,
+    lighting: [],
     clips: [],
   };
 
-  it("draws the body under armour as a dark undersuit and hides the head under a helmet", () => {
-    expect(
-      riggedOutfitModel(body, [], undefined, [], ["legs", "helmet"]).rig,
-    ).toMatchObject({ hide: ["head"], cover: ["legs"] });
+  it("draws the body under armour and a helmet as a dark undersuit", () => {
+    const rig = riggedOutfitModel(
+      body,
+      [],
+      undefined,
+      [],
+      ["legs", "helmet"],
+    ).rig;
+
+    expect(rig?.hide).toBeUndefined();
+    expect(rig?.cover).toEqual(["legs", "head"]);
+  });
+
+  it("keeps the neck under a helmet over an undersuit", () => {
+    const rig = riggedOutfitModel(
+      body,
+      [],
+      undefined,
+      [],
+      ["undersuit", "helmet"],
+    ).rig;
+
+    expect(rig?.hide).toEqual(["torso", "arms", "legs"]);
+    expect(rig?.cover).toEqual(["head"]);
   });
 
   it("hides the whole body under an undersuit", () => {
@@ -192,6 +219,15 @@ describe("riggedOutfitModel body cover", () => {
 
     expect(rig?.hide).toEqual(["torso", "arms", "legs"]);
     expect(rig?.cover).toBeUndefined();
+  });
+});
+
+describe("RIG_ORDER", () => {
+  it("binds every armour slot, the core before the backpack", () => {
+    expect([...RIG_ORDER].sort()).toEqual([...OUTFIT_SLOTS].sort());
+    expect(RIG_ORDER.indexOf(OutfitSlotEnum.TORSO)).toBeLessThan(
+      RIG_ORDER.indexOf(OutfitSlotEnum.BACKPACK),
+    );
   });
 });
 

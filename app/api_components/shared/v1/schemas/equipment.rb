@@ -63,6 +63,10 @@ module Shared
 
             storeImage: ::Shared::V1::Schemas::MediaFile,
             media: ::Shared::V1::Schemas::ItemMedia,
+            fit: {
+              description: "What decides where the item may be worn or carried; absent for everything else",
+              anyOf: [::Shared::V1::Schemas::EquipmentFit, {type: :null}]
+            },
             attachPoints: {
               type: [:object, :null],
               description: "Where the item is hung when stowed -- on a back mount, in a holster, on a core -- by helper name; on the detail payload only",

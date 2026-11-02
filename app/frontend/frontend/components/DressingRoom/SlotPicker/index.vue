@@ -15,6 +15,11 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { INVENTORY_EQUIPMENT_TYPES } from "@/frontend/composables/useInventoryOptions";
 import { WEAPON_SUB_TYPES, isWeaponSlot } from "@/frontend/utils/dressingRoom";
 import {
+  type SlotFit,
+  fitsSlot,
+  providerNames,
+} from "@/frontend/utils/dressingRoomFit";
+import {
   type Equipment,
   type EquipmentSlotEnum,
   type OutfitSlotEnum,
@@ -24,11 +29,38 @@ import {
 type Props = {
   slot: OutfitSlotEnum;
   selectedSlug?: string;
+  // What the worn pieces leave room for: anything else is shown, but greyed
+  // out with the reason.
+  fit?: SlotFit;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   selectedSlug: undefined,
+  fit: () => ({ kind: "open" }),
 });
+
+// Worked out once per list rather than once per binding.
+const fitting = computed(
+  () =>
+    new Set(
+      records.value
+        .filter((item) => fitsSlot(props.fit, item))
+        .map((item) => item.id),
+    ),
+);
+
+const fits = (item: Equipment) => fitting.value.has(item.id);
+
+const misfitReason = computed(() =>
+  t("dressingRoom.fit.doesNotFit", { item: providerNames(props.fit) }),
+);
+
+// Nothing worn offers this slot at all: said once, above the list.
+const noPort = computed(() =>
+  props.fit.kind === "none"
+    ? t("dressingRoom.fit.noPort", { item: providerNames(props.fit) })
+    : undefined,
+);
 
 const emit = defineEmits<{
   select: [item: Equipment];
@@ -156,6 +188,13 @@ onUnmounted(() => applySearch.cancel());
         <i class="fa-light fa-xmark" />
       </Btn>
     </div>
+    <p
+      v-if="noPort"
+      class="slot-picker__no-port"
+      data-test="dressing-room-slot-picker-no-port"
+    >
+      {{ noPort }}
+    </p>
     <Loader v-if="isFetching && !records.length" :loading="true" />
     <p
       v-else-if="!records.length"
@@ -173,7 +212,11 @@ onUnmounted(() => applySearch.cancel());
         <button
           type="button"
           class="slot-picker__item"
-          :class="{ 'slot-picker__item--selected': item.slug === selectedSlug }"
+          :class="{
+            'slot-picker__item--selected': item.slug === selectedSlug,
+            'slot-picker__item--misfit': !fits(item),
+          }"
+          :disabled="!fits(item)"
           :data-test="`dressing-room-option-${item.slug}`"
           @click="emit('select', item)"
         >
@@ -191,6 +234,12 @@ onUnmounted(() => applySearch.cancel());
             <span class="slot-picker__name">{{ item.name }}</span>
             <span v-if="item.manufacturer" class="slot-picker__sub">
               {{ item.manufacturer.name }}
+            </span>
+            <span
+              v-if="!fits(item)"
+              class="slot-picker__sub slot-picker__sub--misfit"
+            >
+              {{ misfitReason }}
             </span>
           </span>
         </button>
@@ -224,6 +273,11 @@ onUnmounted(() => applySearch.cancel());
 .slot-picker__search {
   flex: 1;
   margin-bottom: 0;
+}
+
+.slot-picker__no-port {
+  margin: 0;
+  color: $warning;
 }
 
 .slot-picker__empty {
@@ -264,6 +318,15 @@ onUnmounted(() => applySearch.cancel());
   &:focus-visible {
     background: $gray-black-hover;
   }
+}
+
+.slot-picker__item--misfit {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.slot-picker__sub--misfit {
+  color: $warning;
 }
 
 .slot-picker__item--selected {

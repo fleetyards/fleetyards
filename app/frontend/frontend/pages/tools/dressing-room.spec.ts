@@ -34,22 +34,68 @@ const EQUIPMENT: Record<string, Equipment> = {
   "p4-ar-hung": {
     ...piece("p4-ar-hung", { holo: media("p4ar.glb") }),
     attachPoints: {
-      attach_offset_left_01: {
+      attachOffsetLeft01: {
         position: [0, 0.1, -0.2],
         rotation: [0, 0, 0, 1],
       },
     },
   } as unknown as Equipment,
   "s-38": piece("s-38", { holo: media("s38.glb") }),
+  "crusader-pack": {
+    ...piece("crusader-pack", { holoRiggedMale: media("pack_rigged.glb") }),
+    fit: {
+      type: "Char_Armor_Backpack",
+      ports: [
+        {
+          name: "wep_stocked_3",
+          types: [{ type: "WeaponPersonal", subTypes: ["Medium", "Large"] }],
+          minSize: 2,
+          maxSize: 5,
+        },
+      ],
+    },
+  } as unknown as Equipment,
+  "pinned-pack": {
+    ...piece("pinned-pack", { holo: media("pack.glb") }),
+    fit: {
+      type: "Char_Armor_Backpack",
+      ports: [
+        {
+          name: "wep_stocked_3",
+          types: [{ type: "WeaponPersonal", subTypes: ["Medium", "Large"] }],
+          minSize: 2,
+          maxSize: 5,
+        },
+      ],
+    },
+  } as unknown as Equipment,
+  "flight-suit": {
+    ...piece("flight-suit", {}),
+    name: "Flight Suit",
+    fit: {
+      type: "Char_Armor_Undersuit",
+      ports: [
+        {
+          name: "Armor_Helmet",
+          types: [{ type: "Char_Armor_Helmet" }],
+          minSize: 1,
+          maxSize: 1,
+        },
+      ],
+    },
+  } as unknown as Equipment,
 };
 
 const MALE: CharacterBody = {
   key: "male",
   holo: media("body.glb"),
   animations: media("animations.glb"),
+  weaponInHand: null,
+  lighting: [],
   clips: [
     { name: "shop_pose_01", static: true, looping: false },
     { name: "idle_stand", static: false, looping: true },
+    { name: "hold_rifle_lowered", static: false, looping: true },
   ],
 };
 
@@ -179,6 +225,56 @@ describe("ToolsDressingRoomPage", () => {
     ]);
   });
 
+  it("hangs a rifle from the worn backpack's own mount", async () => {
+    const { wrapper } = await mount({
+      primary: "p4-ar-hung",
+      backpack: "crusader-pack",
+    });
+
+    expect(viewerModel(wrapper).rig.attachments).toEqual([
+      expect.objectContaining({
+        path: "/p4ar.glb",
+        bone: "wep_stocked_attach_3_override",
+        from: "/pack_rigged.glb",
+      }),
+    ]);
+  });
+
+  it("leaves a rifle undrawn on a backpack with no rig to bring the mount", async () => {
+    const { wrapper } = await mount({
+      primary: "p4-ar-hung",
+      backpack: "pinned-pack",
+    });
+
+    expect(
+      (viewerModel(wrapper).rig.attachments ?? []).filter(
+        (attachment: { path: string }) => attachment.path === "/p4ar.glb",
+      ),
+    ).toEqual([]);
+    expect(
+      wrapper
+        .find('[data-test="dressing-room-position-pending-primary"]')
+        .exists(),
+    ).toBe(true);
+  });
+
+  it("says so when the viewer leaves a weapon off for want of its mount", async () => {
+    const { wrapper } = await mount({ primary: "p4-ar-hung" });
+    const pending = () =>
+      wrapper
+        .find('[data-test="dressing-room-position-pending-primary"]')
+        .exists();
+
+    expect(pending()).toBe(false);
+
+    wrapper
+      .findComponent({ name: "HoloViewer" })
+      .vm.$emit("unplaced", ["/p4ar.glb"]);
+    await flushPromises();
+
+    expect(pending()).toBe(true);
+  });
+
   it("switches the body and keeps it in the address", async () => {
     bodies.value = [
       MALE,
@@ -195,6 +291,32 @@ describe("ToolsDressingRoomPage", () => {
     expect(router.currentRoute.value.query.body).toBe("female");
     expect(viewerModel(wrapper).path).toBe("/female.glb");
     expect(viewerModel(wrapper).rig.pieces).toEqual([]);
+
+    bodies.value = [MALE];
+  });
+
+  it("holds a rifle in the body's weapon hand, turned as the export says, and in the rifle pose", async () => {
+    bodies.value = [
+      {
+        ...MALE,
+        weaponInHand: {
+          bones: { right: "RightWeaponBone", left: "LeftWeaponBone" },
+          helper: {
+            position: [0, 0, 0],
+            rotation: [-0.707107, 0, 0, 0.707107],
+          },
+        },
+      },
+    ];
+
+    const { wrapper } = await mount({ primary: "p4-ar", held: "primary" });
+
+    const rig = viewerModel(wrapper).rig;
+    expect(rig.clip).toBe("hold_rifle_lowered");
+    expect(rig.attachments[0]).toMatchObject({
+      bone: "RightWeaponBone",
+      helper: { position: [0, 0, 0], rotation: [-0.707107, 0, 0, 0.707107] },
+    });
 
     bodies.value = [MALE];
   });
@@ -242,13 +364,13 @@ describe("ToolsDressingRoomPage", () => {
     const { wrapper } = await mount({ torso: "adp-core", legs: "adp-legs" });
 
     const model = viewerModel(wrapper);
-    expect(model.path).toBe("/legs.glb");
+    expect(model.path).toBe("/core_textured.glb");
     expect(
       model.mounts.map((mount: { path: string; textured: boolean }) => [
         mount.path,
         mount.textured,
       ]),
-    ).toEqual([["/core_textured.glb", true]]);
+    ).toEqual([["/legs.glb", false]]);
 
     bodies.value = [MALE];
   });
@@ -329,6 +451,22 @@ describe("ToolsDressingRoomPage", () => {
     });
 
     bodies.value = [MALE];
+  });
+
+  it("closes the slots the undersuit offers no port for", async () => {
+    const { wrapper } = await mount({ undersuit: "flight-suit" });
+
+    expect(
+      wrapper.find('[data-test="dressing-room-fit-arms"]').text(),
+    ).toContain("Flight Suit has no slot for this");
+    expect(
+      wrapper
+        .find('[data-test="dressing-room-pick-arms"]')
+        .attributes("disabled"),
+    ).toBeDefined();
+    expect(
+      wrapper.find('[data-test="dressing-room-fit-helmet"]').exists(),
+    ).toBe(false);
   });
 
   it("shows how to start with nothing to draw", async () => {

@@ -51,7 +51,11 @@
         "male": "Homme",
         "female": "Femme"
       },
-      "positionPending": "Position pas encore exportée"
+      "positionPending": "Position pas encore exportée",
+      "fit": {
+        "noPort": "%{item} n'a pas d'emplacement pour cela",
+        "doesNotFit": "Ne convient pas à %{item}"
+      }
     }
   }
 }

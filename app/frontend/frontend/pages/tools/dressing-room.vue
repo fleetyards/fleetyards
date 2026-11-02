@@ -33,7 +33,9 @@ import BaseSelect from "@/shared/components/base/Select/index.vue";
 import {
   ALL_SLOTS,
   BACKPACK_MOUNT,
-  HAND_MOUNT,
+  RIFLE_HOLD_CLIP,
+  RIG_ORDER,
+  handMount,
   OUTFIT_SLOTS,
   type OutfitSelection,
   type PieceHolo,
@@ -49,6 +51,13 @@ import {
   riggedOutfitModel,
   riggedPieceHolo,
 } from "@/frontend/utils/dressingRoom";
+import {
+  type SlotFit,
+  fitsSlot,
+  portProvider,
+  providerNames,
+  slotFit,
+} from "@/frontend/utils/dressingRoomFit";
 
 // The figure faces -Z, as the game's characters face its +Y: the camera starts
 // in front of it.
@@ -194,6 +203,31 @@ const items = computed(
     ) as Partial<Record<OutfitSlotEnum, Equipment>>,
 );
 
+// What each slot may take, from the ports of what is worn: an arms slot on a
+// flight suit takes nothing, a light core takes a light backpack only.
+const slotFits = computed(
+  () =>
+    Object.fromEntries(
+      ALL_SLOTS.map((slot) => [slot, slotFit(slot, items.value)]),
+    ) as Record<OutfitSlotEnum, SlotFit>,
+);
+
+// Why a slot cannot take its piece, or anything at all; nothing when it fits.
+const fitNote = (slot: OutfitSlotEnum) => {
+  const fit = slotFits.value[slot];
+
+  if (fit.kind === "none") {
+    return t("dressingRoom.fit.noPort", { item: providerNames(fit) });
+  }
+
+  const item = items.value[slot];
+  if (item && !fitsSlot(fit, item)) {
+    return t("dressingRoom.fit.doesNotFit", { item: providerNames(fit) });
+  }
+
+  return undefined;
+};
+
 const loadingSlot = (slot: OutfitSlotEnum) =>
   !!selection.value[slot] &&
   !items.value[slot] &&
@@ -277,12 +311,18 @@ const holos = computed(
 );
 
 // Undersuit first, so a figure without a body is rooted on the layer the
-// armour sits on.
+// armour sits on, and the core before the backpack that hangs from it.
 const pieces = computed(() =>
-  [...OUTFIT_SLOTS].reverse().flatMap((slot) => {
+  RIG_ORDER.flatMap((slot) => {
     const holo = body.value ? riggedHolos.value[slot] : holos.value[slot];
+    if (!holo) return [];
 
-    return holo ? [holo] : [];
+    if (!body.value || slot !== OutfitSlotEnum.BACKPACK) return [holo];
+
+    const provider = portProvider(slot, items.value);
+    const from = provider && riggedHolos.value[provider]?.path;
+
+    return [{ ...holo, hangs: true, ...(from ? { from } : {}) }];
   }),
 );
 
@@ -293,21 +333,45 @@ const weaponPlacement = (slot: OutfitSlotEnum) => {
   const holo = staticHolos.value[slot];
   if (!holo) return undefined;
 
-  if (heldWeapon.value === slot) return attachment(holo, HAND_MOUNT);
+  if (heldWeapon.value === slot) {
+    return attachment(holo, handMount(body.value));
+  }
 
   const mount = STOWED_MOUNTS[slot];
   const placed =
     mount && attachment(holo, mount, items.value[slot]?.attachPoints);
+  if (!placed?.helper) return undefined;
 
-  return placed?.helper ? placed : undefined;
+  // The mount of the piece whose port it is in, never a namesake underneath:
+  // with a backpack on, a rifle hangs from the pack rather than inside it. A
+  // provider without a rig -- a pack pinned whole -- brings no mount at all.
+  const provider = portProvider(slot, items.value);
+  if (!provider) return placed;
+
+  const from = riggedHolos.value[provider]?.path;
+
+  return from ? { ...placed, from } : undefined;
+};
+
+// Left off the figure by the viewer: the piece it hangs from has no mount for
+// it in its rig.
+const unplaced = ref<string[]>([]);
+
+const unplacedSlot = (slot: OutfitSlotEnum) => {
+  const path = isWeaponSlot(slot)
+    ? weaponPlacement(slot)?.path
+    : riggedHolos.value[slot]?.path;
+
+  return !!path && unplaced.value.includes(path);
 };
 
 const positionPending = (slot: OutfitSlotEnum) =>
-  isWeaponSlot(slot) &&
   !!body.value &&
-  !!staticHolos.value[slot] &&
-  heldWeapon.value !== slot &&
-  !weaponPlacement(slot);
+  (unplacedSlot(slot) ||
+    (isWeaponSlot(slot) &&
+      !!staticHolos.value[slot] &&
+      heldWeapon.value !== slot &&
+      !weaponPlacement(slot)));
 
 const attachments = computed(() => [
   ...(pinnedBackpack.value
@@ -331,12 +395,26 @@ const model = computed(() =>
     ? riggedOutfitModel(
         body.value,
         pieces.value,
-        poseName.value,
+        pose.value,
         attachments.value,
         OUTFIT_SLOTS.filter((slot) => riggedHolos.value[slot]),
       )
     : outfitModel(pieces.value),
 );
+
+// A rifle in hand is held, unless the address picks another pose.
+const pose = computed(() => {
+  if (poseName.value) return poseName.value;
+
+  const holdsRifle =
+    heldWeapon.value === OutfitSlotEnum.PRIMARY ||
+    heldWeapon.value === OutfitSlotEnum.SECONDARY;
+  const holdable = body.value?.clips.some(
+    (clip) => clip.name === RIFLE_HOLD_CLIP,
+  );
+
+  return holdsRifle && holdable ? RIFLE_HOLD_CLIP : undefined;
+});
 
 const holoUnavailable = () => {
   const root = model.value;
@@ -434,7 +512,9 @@ const copyShareLink = () => {
           contain
           zoomable
           turntable
+          backdrop
           @unavailable="holoUnavailable"
+          @unplaced="unplaced = $event"
         />
         <div
           v-else
@@ -482,6 +562,7 @@ const copyShareLink = () => {
           v-if="picking"
           :slot="picking"
           :selected-slug="selection[picking]"
+          :fit="slotFits[picking]"
           @select="choose(picking, $event)"
           @close="picking = undefined"
         />
@@ -508,6 +589,7 @@ const copyShareLink = () => {
                   type="button"
                   class="dressing-room__slot-pick"
                   :data-test="`dressing-room-pick-${slot}`"
+                  :disabled="slotFits[slot].kind === 'none' && !selection[slot]"
                   @click="picking = slot"
                 >
                   <span class="dressing-room__slot-label">
@@ -535,7 +617,14 @@ const copyShareLink = () => {
                     {{ t("dressingRoom.choose") }}
                   </span>
                   <span
-                    v-if="items[slot] && positionPending(slot)"
+                    v-if="fitNote(slot)"
+                    class="dressing-room__slot-note dressing-room__slot-note--warning"
+                    :data-test="`dressing-room-fit-${slot}`"
+                  >
+                    {{ fitNote(slot) }}
+                  </span>
+                  <span
+                    v-else-if="items[slot] && positionPending(slot)"
                     class="dressing-room__slot-note"
                     :data-test="`dressing-room-position-pending-${slot}`"
                   >
@@ -792,5 +881,9 @@ const copyShareLink = () => {
   grid-column: 2;
   color: $gray-light;
   font-size: 0.85em;
+}
+
+.dressing-room__slot-note--warning {
+  color: $warning;
 }
 </style>

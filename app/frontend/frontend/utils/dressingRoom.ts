@@ -49,6 +49,9 @@ export const WEAPON_SUB_TYPES: Partial<Record<OutfitSlotEnum, string[]>> = {
 export type Mount = {
   bone: string;
   helper?: string;
+  // A fixed offset in place of a helper on the item: a weapon in hand sits by
+  // its origin, turned into the hand's axes.
+  fixed?: { position: number[]; rotation: number[] };
 };
 
 export const STOWED_MOUNTS: Partial<Record<OutfitSlotEnum, Mount>> = {
@@ -66,8 +69,26 @@ export const STOWED_MOUNTS: Partial<Record<OutfitSlotEnum, Mount>> = {
   },
 };
 
-// In hand the weapon's origin, its grip, sits on the weapon bone.
-export const HAND_MOUNT: Mount = { bone: "RightWeaponBone" };
+// In hand the weapon's origin, its grip, sits on the body's weapon bone,
+// turned as the export says the holo needs there.
+export const handMount = (body?: CharacterBody): Mount => ({
+  bone: body?.weaponInHand?.bones.right ?? "RightWeaponBone",
+  fixed: body?.weaponInHand?.helper,
+});
+
+// A rifle in hand is held in this pose unless another is picked.
+export const RIFLE_HOLD_CLIP = "hold_rifle_lowered";
+
+// Bound in this order: a backpack hangs from a bone the core brings, so the
+// core goes first.
+export const RIG_ORDER: OutfitSlotEnum[] = [
+  OutfitSlotEnum.UNDERSUIT,
+  OutfitSlotEnum.TORSO,
+  OutfitSlotEnum.ARMS,
+  OutfitSlotEnum.LEGS,
+  OutfitSlotEnum.HELMET,
+  OutfitSlotEnum.BACKPACK,
+];
 
 // Where the core carries a backpack that is not rigged to the body.
 export const BACKPACK_MOUNT: Mount = {
@@ -107,6 +128,8 @@ export interface PieceHolo {
   textured: boolean;
   // The plain holo, for a painted one that does not load.
   fallbackPath?: string;
+  hangs?: boolean;
+  from?: string;
 }
 
 // On a body, the piece's rig for it: only a rig follows the body's pose.
@@ -178,6 +201,24 @@ export const clipLabel = (name: string) => {
 
 type AttachPoints = Record<string, { position: number[]; rotation: number[] }>;
 
+// The payload camelizes every key, the game's helper names among them:
+// `attach_offset_left_01` arrives as `attachOffsetLeft01`.
+const camelized = (name: string) =>
+  name.replace(/_([a-z0-9])/g, (_match, next: string) => next.toUpperCase());
+
+const helperFor = (mount: Mount, attachPoints?: AttachPoints | null) => {
+  if (mount.fixed) return mount.fixed;
+
+  if (!mount.helper || !attachPoints) return undefined;
+
+  const point =
+    attachPoints[camelized(mount.helper)] ?? attachPoints[mount.helper];
+
+  return point
+    ? { position: point.position, rotation: point.rotation }
+    : undefined;
+};
+
 // A rigid item pinned to a bone of the figure, from its ordinary holo, by the
 // item's helper for that mount where the export lists it.
 export const attachment = (
@@ -190,7 +231,7 @@ export const attachment = (
   size: holo.size,
   textured: holo.textured,
   fallbackPath: holo.fallbackPath,
-  helper: (mount.helper && attachPoints?.[mount.helper]) || undefined,
+  helper: helperFor(mount, attachPoints),
 });
 
 // The body's regions each worn slot covers: the undersuit all of it but the
@@ -208,11 +249,13 @@ const coveredRegions = (slots: OutfitSlotEnum[]): BodyRegion[] => [
 ];
 
 // Under a drawn undersuit the body is not drawn; under armour alone it is
-// drawn as a dark undersuit, and under a helmet the head is not drawn.
+// drawn as a dark undersuit. Under a helmet the head is drawn as the
+// undersuit's hood: its mesh runs down to the collar, and a helmet that
+// leaves the neck to it would float over a gap without it.
 const bodyCover = (worn: OutfitSlotEnum[]) => {
   const undersuit = worn.includes(OutfitSlotEnum.UNDERSUIT);
   const regions = coveredRegions(worn);
-  const hide = regions.filter((region) => region === "head" || undersuit);
+  const hide = regions.filter((region) => region !== "head" && undersuit);
   const cover = regions.filter((region) => !hide.includes(region));
 
   return {
@@ -232,8 +275,14 @@ export const riggedOutfitModel = (
   size: body.holo.size ?? undefined,
   textured: false,
   rig: {
-    pieces: pieces.map((piece) => ({ path: piece.path, size: piece.size })),
+    pieces: pieces.map((piece) => ({
+      path: piece.path,
+      size: piece.size,
+      ...(piece.hangs ? { hangs: true } : {}),
+      ...(piece.from ? { from: piece.from } : {}),
+    })),
     ...(attachments.length ? { attachments } : {}),
+    ...(body.lighting?.length ? { lights: body.lighting } : {}),
     ...bodyCover(worn),
     animations: body.animations?.url ?? undefined,
     clip:

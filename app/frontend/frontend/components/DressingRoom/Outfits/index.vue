@@ -223,7 +223,7 @@ const submit = () => {
           </Btn>
         </div>
       </form>
-      <Loader v-if="isLoading" :loading="true" />
+      <Loader v-if="isLoading" :loading="true" inline />
       <p v-else-if="!outfits?.length" class="outfits__hint">
         {{ t("dressingRoom.noOutfits") }}
       </p>

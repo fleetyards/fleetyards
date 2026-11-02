@@ -1,6 +1,12 @@
 import {
   type AnimationClip,
   type Bone,
+  Color,
+  Group,
+  LinearSRGBColorSpace,
+  PointLight,
+  SpotLight,
+  Vector3,
   type Object3D,
   Skeleton,
   type SkinnedMesh,
@@ -14,6 +20,12 @@ import { prepareGltfLoader } from "./gltfLoader";
 export type RigPiece = {
   path: string;
   size?: number;
+  // Hung from the mount an earlier piece brought rather than its own copy of
+  // it: a backpack from the core it is worn on.
+  hangs?: boolean;
+  // The piece whose mount it must hang from: left off when that piece's rig
+  // does not carry it, rather than hung from a namesake underneath.
+  from?: string;
 };
 
 // A rigid item pinned to one of the figure's bones -- a weapon in a holster or
@@ -26,6 +38,10 @@ export type RigAttachment = {
   textured?: boolean;
   // Loaded in place of a painted holo that does not load, and drawn plain.
   fallbackPath?: string;
+  // The rig piece whose own copy of the bone it hangs from. Left off the
+  // figure when that piece's rig does not carry it, rather than hung from a
+  // namesake underneath: an undersuit's holster sits inside the leg armour.
+  from?: string;
   // The point on the item that meets the bone, in its holo's frame: where a
   // rifle hooks onto a back mount. Without one the holo's origin does.
   helper?: {
@@ -38,8 +54,22 @@ export type RigAttachment = {
 // through a thin boot.
 export type BodyRegion = "head" | "torso" | "arms" | "legs";
 
+// A light of the game's own rig for the figure, from its feet in glTF axes.
+export type RigLight = {
+  type: string;
+  position: number[];
+  direction?: number[];
+  color: number[];
+  intensity: number;
+  range?: number;
+  decay?: number;
+  angle?: number;
+  penumbra?: number;
+};
+
 export type HoloRig = {
   pieces: RigPiece[];
+  lights?: RigLight[];
   // Under a worn undersuit: not drawn at all.
   hide?: BodyRegion[];
   // Under armour alone: drawn as a dark undersuit, which is what shows
@@ -93,34 +123,77 @@ export const bonesByName = (root: Object3D) => {
   return bones;
 };
 
+// Helper bones a hanging piece takes from the pieces before it.
+const SHARED_HELPERS = new Set(["backpack_attach_1_override"]);
+
 // The piece's skinned meshes, bound to the body's bones in place of the
 // piece's own copies, so one pose moves the whole figure. A piece carries
 // helper bones of its own -- a magazine pouch's, a helmet light's -- which are
 // grafted onto the body under the bone they hang from and handed back, so the
 // caller can take them off again. A mesh naming a bone that hangs from
 // nothing the body has is left out rather than drawn frozen in its bind pose.
-export const bindToBones = (piece: Object3D, bodyBones: Map<string, Bone>) => {
-  const bones = new Map(bodyBones);
+// The bones it grafts join `bones`, so a later piece hangs from them too: a
+// backpack from the core's own backpack bone. Every other piece brings its own
+// copy: an undersuit's backpack bone sits inside the core worn over it.
+export const bindToBones = (
+  piece: Object3D,
+  bones: Map<string, Bone>,
+  {
+    hangs = false,
+    from,
+    source,
+  }: { hangs?: boolean; from?: string; source?: string } = {},
+) => {
   const grafted: Bone[] = [];
   const meshes: SkinnedMesh[] = [];
+  // What each graft replaced in `bones`, so a mesh left out takes its grafts
+  // back rather than leaving mounts of a piece that is not drawn.
+  const replaced: [string, Bone | undefined][] = [];
 
   piece.traverse((node) => {
     if ((node as SkinnedMesh).isSkinnedMesh) meshes.push(node as SkinnedMesh);
   });
 
+  // Marks this piece's own grafts, so a bone it already grafted is found
+  // again rather than grafted twice.
+  const token = Symbol(piece.name);
+
   const resolve = (bone: Bone): Bone | undefined => {
     const known = bones.get(bone.name);
-    if (known) return known;
+
+    if (known) {
+      // The body's own skeleton, or a bone this piece grafted already.
+      if (!known.userData.grafted || known.userData.graftedBy === token) {
+        return known;
+      }
+
+      // A bone another piece brought: its own, unless it hangs from it.
+      if (
+        hangs &&
+        SHARED_HELPERS.has(bone.name) &&
+        known.parent?.name === bone.parent?.name
+      ) {
+        return !from || known.userData.source === from ? known : undefined;
+      }
+    } else if (hangs && from && SHARED_HELPERS.has(bone.name)) {
+      return undefined;
+    }
 
     const parent = bone.parent as Bone | null;
     const anchor = parent?.isBone ? resolve(parent) : undefined;
     if (!anchor) return undefined;
 
-    // Its subtree comes along; each of its bones is found under it from now on.
+    // Its subtree comes along. Each bone is found under its name from now on,
+    // over a namesake an earlier piece grafted: an outer layer's holster, not
+    // the undersuit's beneath it, is where a weapon goes.
     anchor.add(bone);
     grafted.push(bone);
     bone.traverse((node) => {
-      if ((node as Bone).isBone && !bones.has(node.name)) {
+      node.userData.grafted = true;
+      node.userData.graftedBy = token;
+      node.userData.source = source;
+      if ((node as Bone).isBone) {
+        replaced.push([node.name, bones.get(node.name)]);
         bones.set(node.name, node as Bone);
       }
     });
@@ -129,6 +202,8 @@ export const bindToBones = (piece: Object3D, bodyBones: Map<string, Bone>) => {
   };
 
   const bound = meshes.filter((mesh) => {
+    const graftedBefore = grafted.length;
+    const replacedBefore = replaced.length;
     const mapped = mesh.skeleton.bones.map(resolve);
 
     if (mapped.some((bone) => !bone)) {
@@ -136,6 +211,14 @@ export const bindToBones = (piece: Object3D, bodyBones: Map<string, Bone>) => {
         "A rigged part names bones the body does not have",
         mesh.name,
       );
+      grafted.splice(graftedBefore).forEach((bone) => bone.removeFromParent());
+      replaced
+        .splice(replacedBefore)
+        .reverse()
+        .forEach(([name, previous]) => {
+          if (previous) bones.set(name, previous);
+          else bones.delete(name);
+        });
       return false;
     }
 
@@ -184,7 +267,9 @@ export const bodyRegion = (mesh: SkinnedMesh, height: number): BodyRegion => {
 export const rigLayoutKey = (rig?: HoloRig) =>
   rig
     ? [
-        ...rig.pieces.map((piece) => piece.path),
+        ...rig.pieces.map((piece) =>
+          [piece.path, piece.hangs ? "hangs" : "", piece.from ?? ""].join("|"),
+        ),
         // Everything that changes how a part is drawn: a helper that arrives
         // later moves it, a painted holo that failed swaps it.
         ...(rig.attachments ?? []).map((attachment) =>
@@ -194,6 +279,7 @@ export const rigLayoutKey = (rig?: HoloRig) =>
             attachment.textured,
             attachment.fallbackPath,
             attachment.helper,
+            attachment.from,
           ]),
         ),
       ].join(";")
@@ -207,3 +293,50 @@ export const rigSize = (rig?: HoloRig) =>
     (sum, part) => sum + (part.size ?? 0),
     0,
   );
+
+// The rig's lights as three.js lights under one group, each spot aimed down its
+// direction. The group goes into the figure's frame, so the lights turn and
+// centre with it.
+export const buildRigLights = (lights: RigLight[]) => {
+  const group = new Group();
+
+  lights.forEach((light) => {
+    const color = new Color().setRGB(
+      light.color[0],
+      light.color[1],
+      light.color[2],
+      LinearSRGBColorSpace,
+    );
+    const position = new Vector3().fromArray(light.position);
+
+    if (light.type === "spot" && light.direction) {
+      const spot = new SpotLight(
+        color,
+        light.intensity,
+        light.range ?? 0,
+        light.angle ?? Math.PI / 6,
+        light.penumbra ?? 0.2,
+        light.decay ?? 2,
+      );
+      spot.position.copy(position);
+      spot.target.position.copy(
+        position.clone().add(new Vector3().fromArray(light.direction)),
+      );
+      group.add(spot, spot.target);
+    } else {
+      const point = new PointLight(
+        color,
+        light.intensity,
+        light.range ?? 0,
+        light.decay ?? 2,
+      );
+      point.position.copy(position);
+      group.add(point);
+    }
+  });
+
+  return group;
+};
+
+export const rigLightsKey = (rig?: HoloRig) =>
+  JSON.stringify(rig?.lights ?? []);

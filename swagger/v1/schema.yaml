@@ -25050,6 +25050,18 @@ components:
           anyOf:
           - "$ref": "#/components/schemas/MediaFile"
           - type: 'null'
+        weaponInHand:
+          description: The hand bones a weapon is held by, and the fixed turn its
+            holo needs there; absent until exported
+          anyOf:
+          - "$ref": "#/components/schemas/CharacterBodyWeaponInHand"
+          - type: 'null'
+        lighting:
+          type: array
+          description: The game customizer's review lights for a whole outfit, from
+            the character's feet in glTF axes; empty until exported
+          items:
+            "$ref": "#/components/schemas/CharacterBodyLight"
         clips:
           type: array
           items:
@@ -25059,6 +25071,8 @@ components:
       - key
       - holo
       - animations
+      - weaponInHand
+      - lighting
       - clips
       title: CharacterBody
     CharacterBodyClip:
@@ -25078,6 +25092,76 @@ components:
       - static
       - looping
       title: CharacterBodyClip
+    CharacterBodyHandBones:
+      type: object
+      properties:
+        right:
+          type: string
+        left:
+          type: string
+      additionalProperties: false
+      required:
+      - right
+      - left
+      title: CharacterBodyHandBones
+    CharacterBodyLight:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - spot
+          - point
+        position:
+          type: array
+          items:
+            type: number
+          minItems: 3
+          maxItems: 3
+        direction:
+          type: array
+          items:
+            type: number
+          minItems: 3
+          maxItems: 3
+        color:
+          type: array
+          items:
+            type: number
+          minItems: 3
+          maxItems: 3
+          description: Linear RGB
+        intensity:
+          type: number
+          description: three.js candela
+        range:
+          type: number
+        decay:
+          type: number
+        angle:
+          type: number
+          description: A spot's outer cone angle, in radians
+        penumbra:
+          type: number
+      additionalProperties: false
+      required:
+      - type
+      - position
+      - color
+      - intensity
+      title: CharacterBodyLight
+    CharacterBodyWeaponInHand:
+      type: object
+      properties:
+        bones:
+          "$ref": "#/components/schemas/CharacterBodyHandBones"
+        helper:
+          "$ref": "#/components/schemas/AttachPoint"
+      additionalProperties: false
+      required:
+      - bones
+      - helper
+      title: CharacterBodyWeaponInHand
     Check:
       type: object
       properties:
@@ -27638,6 +27722,12 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         media:
           "$ref": "#/components/schemas/ItemMedia"
+        fit:
+          description: What decides where the item may be worn or carried; absent
+            for everything else
+          anyOf:
+          - "$ref": "#/components/schemas/EquipmentFit"
+          - type: 'null'
         attachPoints:
           type:
           - object
@@ -27694,6 +27784,76 @@ components:
       additionalProperties: false
       example: {}
       title: EquipmentFacetFilterQuery
+    EquipmentFit:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The game's item type, e.g. Char_Armor_Torso
+        tags:
+          type: array
+          items:
+            type: string
+        requiredTags:
+          type: array
+          items:
+            type: string
+          description: Tags the port it goes in has to offer
+        ports:
+          type: array
+          items:
+            "$ref": "#/components/schemas/EquipmentFitPort"
+      additionalProperties: false
+      required:
+      - type
+      title: EquipmentFit
+    EquipmentFitPort:
+      type: object
+      description: A port the item offers to armour pieces or weapons
+      properties:
+        name:
+          type: string
+        types:
+          type: array
+          items:
+            "$ref": "#/components/schemas/EquipmentFitPortType"
+        minSize:
+          type: integer
+        maxSize:
+          type: integer
+        portTags:
+          type: array
+          items:
+            type: string
+        requiredTags:
+          type: array
+          items:
+            type: string
+          description: Tags an item needs to go in it; a leading $ is not part of
+            the tag
+      additionalProperties: false
+      required:
+      - name
+      - types
+      - minSize
+      - maxSize
+      title: EquipmentFitPort
+    EquipmentFitPortType:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The game's item type the port takes, e.g. Char_Armor_Arms or
+            WeaponPersonal
+        subTypes:
+          type: array
+          items:
+            type: string
+          description: The sub types it takes of that type; any when absent
+      additionalProperties: false
+      required:
+      - type
+      title: EquipmentFitPortType
     EquipmentList:
       type: array
       items:

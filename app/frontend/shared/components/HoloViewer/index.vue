@@ -13,6 +13,7 @@ import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import {
   ACESFilmicToneMapping,
   type Camera,
+  type Group,
   Box3,
   type Mesh,
   NeutralToneMapping,
@@ -49,6 +50,11 @@ import {
   rigSize,
   rigTextured,
 } from "@/shared/components/HoloViewer/rig";
+import {
+  BACKDROP_RADIUS,
+  buildBackdrop,
+  disposeBackdrop,
+} from "@/shared/components/HoloViewer/backdrop";
 
 export type HoloModel = {
   path: string;
@@ -107,6 +113,8 @@ type Props = {
   turntable?: boolean;
   // Room left around a contained model, as a factor of its fitted distance.
   containPadding?: number;
+  // Stood in a lit room with a glossy floor rather than in an empty frame.
+  backdrop?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -127,6 +135,7 @@ const props = withDefaults(defineProps<Props>(), {
   pickable: false,
   turntable: false,
   containPadding: 1.35,
+  backdrop: false,
 });
 
 // Nothing will be drawn: no WebGL, or a holo that would not load. A caller with
@@ -137,6 +146,7 @@ const emit = defineEmits<{
   loaded: [];
   mountSelect: [id: string];
   mountPoint: [id: string | undefined];
+  unplaced: [paths: string[]];
 }>();
 
 const { displayAlert } = useAppNotifications();
@@ -156,6 +166,12 @@ const textured = computed(() =>
     (model) =>
       model.textured || mountsTextured(model.mounts) || rigTextured(model.rig),
   ),
+);
+
+// A rigged figure that brings the game's own lights is lit by them alone,
+// over a small ambient term.
+const ownLighting = computed(() =>
+  props.models.some((model) => !!model.rig?.lights?.length),
 );
 
 const totalSize = computed(() =>
@@ -250,6 +266,24 @@ watch(
 );
 
 onUnmounted(() => window.removeEventListener("keydown", closeOnEscape));
+
+// Kept out of the model's scene, so framing measures the figure alone.
+const backdrop = shallowRef<Group>();
+
+// The model arrives centred on the origin, so its feet are half its height
+// below.
+const placeBackdrop = (size: Vector3) => {
+  if (!props.backdrop) return;
+
+  if (backdrop.value) disposeBackdrop(backdrop.value);
+  backdrop.value = buildBackdrop(-size.y / 2, {
+    reflective: !lowPower.value,
+  });
+};
+
+onUnmounted(() => {
+  if (backdrop.value) disposeBackdrop(backdrop.value);
+});
 
 const { t } = useI18n();
 
@@ -438,7 +472,10 @@ const MIN_NEAR = 0.1;
 const nearPlaneFor = (cameraDistance: number) =>
   Math.max(MIN_NEAR, (cameraDistance - modelReach.value) / 2);
 
-const maxZoomDistance = computed(() => Math.max(250, fitDistance.value * 3));
+// Inside the room's walls: past them the room reads as a ball in the dark.
+const maxZoomDistance = computed(() =>
+  props.backdrop ? BACKDROP_RADIUS * 0.7 : Math.max(250, fitDistance.value * 3),
+);
 
 const starsVisible = computed(
   () => props.backgrounds && background.value === "space",
@@ -503,6 +540,7 @@ const handleModelLoaded = (size: Vector3, scene: Object3D) => {
 
   loading.value = false;
   emit("loaded");
+  placeBackdrop(size);
 
   const bounds = new Box3()
     .setFromObject(scene)
@@ -681,6 +719,7 @@ defineExpose({
     :class="{
       'holo-viewer--inline': inline && !internalFullscreen,
       'holo-viewer--fullscreen': internalFullscreen,
+      'holo-viewer--framed': backdrop && !internalFullscreen,
       [`holo-viewer--${background}`]: backgrounds,
     }"
   >
@@ -780,6 +819,7 @@ defineExpose({
     </div>
     <TresCanvas
       v-else
+      class="holo-viewer__canvas"
       :clear-alpha="0"
       :shadows="!lowPower"
       :dpr="dpr"
@@ -801,12 +841,16 @@ defineExpose({
         :far="cameraFar"
       />
       <TresDirectionalLight
+        v-if="!ownLighting"
         :position="lightPosition"
         :intensity="textured ? 1.5 : 2"
         :cast-shadow="!lowPower"
       />
       <RoomLighting v-if="textured" />
-      <TresAmbientLight v-else :intensity="lowPower ? 0.8 : 0.5" />
+      <TresAmbientLight
+        v-else
+        :intensity="ownLighting ? 0.15 : lowPower ? 0.8 : 0.5"
+      />
       <OrbitControls
         :auto-rotate="internalAutoRotate"
         :auto-rotate-speed="autoRotateSpeed"
@@ -834,6 +878,7 @@ defineExpose({
         :size="maxZoomDistance / 150"
       />
       <Skybox v-if="skybox" :src="skybox" />
+      <primitive v-if="backdrop" :object="backdrop" />
       <Grid
         v-if="grid && gridVisible"
         :args="[10, 10]"
@@ -866,6 +911,7 @@ defineExpose({
           @progress="handleModelProgress"
           @mount-select="emit('mountSelect', $event)"
           @mount-point="emit('mountPoint', $event)"
+          @unplaced="emit('unplaced', $event)"
         />
         <template #fallback>
           <Loader :loading="true" :progress="progress" />

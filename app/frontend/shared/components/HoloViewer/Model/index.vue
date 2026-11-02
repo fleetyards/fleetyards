@@ -46,6 +46,8 @@ import {
   bindToBones,
   bodyRegion,
   bonesByName,
+  buildRigLights,
+  rigLightsKey,
   type RigAttachment,
   cloneRigPiece,
   loadClips,
@@ -450,6 +452,9 @@ const emit = defineEmits<{
   progress: [loaded: number, total: number];
   mountSelect: [id: string];
   mountPoint: [id: string | undefined];
+  // The rig pieces and attachments left off the figure, by path: their mount
+  // is not in the rig of the piece they hang from.
+  unplaced: [paths: string[]];
 }>();
 
 DefaultLoadingManager.onProgress = (_item, loaded, total) => {
@@ -513,6 +518,21 @@ const refreshSkeletons = (scene: Group) => {
       (node as SkinnedMesh).skeleton.update();
     }
   });
+};
+
+// The game's own lights for the figure, in its frame.
+let rigLights: Group | undefined;
+
+const placeRigLights = (scene: Group) => {
+  if (rigLights) scene.remove(rigLights);
+  rigLights = undefined;
+
+  const lights = props.model.rig?.lights ?? [];
+  if (!lights.length) return;
+
+  rigLights = buildRigLights(lights);
+  scene.add(rigLights);
+  invalidate();
 };
 
 // Stands under a rigged figure; measured with it, so the camera frames both.
@@ -616,7 +636,13 @@ const loadAttachment = async (attachment: RigAttachment) => {
   try {
     const group = await load(attachment.path);
     group.userData.textured = !!attachment.textured;
-    return { group, bone: attachment.bone, textured: !!attachment.textured };
+    return {
+      group,
+      path: attachment.path,
+      bone: attachment.bone,
+      from: attachment.from,
+      textured: !!attachment.textured,
+    };
   } catch (error) {
     if (!attachment.fallbackPath) {
       console.warn("An attached part did not load", error);
@@ -627,7 +653,9 @@ const loadAttachment = async (attachment: RigAttachment) => {
   try {
     return {
       group: await load(attachment.fallbackPath),
+      path: attachment.path,
       bone: attachment.bone,
+      from: attachment.from,
       textured: false,
     };
   } catch (error) {
@@ -673,23 +701,34 @@ const attachRig = async (scene: Group) => {
   const next = new Group();
   next.userData.grafted = [];
   next.userData.attached = [];
+  const unplaced: string[] = [];
 
-  pieces.forEach((piece) => {
+  pieces.forEach((piece, index) => {
     if (!piece) return;
 
-    const { meshes, grafted } = bindToBones(piece, bones);
+    const { meshes, grafted } = bindToBones(piece, bones, {
+      hangs: rig.pieces[index]?.hangs,
+      from: rig.pieces[index]?.from,
+      source: rig.pieces[index]?.path,
+    });
     if (meshes.length) next.add(...meshes);
+    else if (rig.pieces[index]) unplaced.push(rig.pieces[index].path);
     next.userData.grafted.push(...grafted);
   });
 
-  // After the pieces: a holster or a weapon mount is a bone a piece brings.
-  const withHelpers = bonesByName(scene);
-
+  // After the pieces: a holster or a weapon mount is a bone a piece brings,
+  // and the map holds the outermost piece's copy of each.
   attachments.forEach((attachment) => {
     if (!attachment) return;
 
-    const bone = withHelpers.get(attachment.bone);
-    if (!bone) return;
+    const bone = bones.get(attachment.bone);
+    if (
+      !bone ||
+      (attachment.from && bone.userData.source !== attachment.from)
+    ) {
+      unplaced.push(attachment.path);
+      return;
+    }
 
     bone.add(attachment.group);
     next.userData.attached.push(attachment.group);
@@ -704,6 +743,7 @@ const attachRig = async (scene: Group) => {
 
   hideCovered(scene);
   pose(scene);
+  emit("unplaced", unplaced);
 
   return true;
 };
@@ -900,19 +940,28 @@ const setup = async (scene: Group, animations: AnimationClip[]) => {
   // Parts in one shared frame, a figure dressed from its pieces, are framed
   // and centred together: the root alone may be any one of them.
   if (props.model.rig) {
-    scene.traverse((node) => {
-      // Posed away from the bind pose, the stored bounds no longer hold.
-      if ((node as Mesh).isMesh) node.frustumCulled = false;
-    });
-    while (!unmounted && !(await attachRig(scene)));
+    // Shown once it is dressed and posed, rather than bare in its bind pose
+    // while the pieces and clips load.
+    scene.visible = false;
+    try {
+      scene.traverse((node) => {
+        // Posed away from the bind pose, the stored bounds no longer hold.
+        if ((node as Mesh).isMesh) node.frustumCulled = false;
+      });
+      while (!unmounted && !(await attachRig(scene)));
 
-    if (props.model.rig.pedestal && !pedestal) {
-      pedestal = buildPedestal(
-        new Box3().setFromObject(scene, true),
-        props.color,
-      );
-      pedestal.visible = !props.fullscreen;
-      scene.add(pedestal);
+      placeRigLights(scene);
+
+      if (props.model.rig.pedestal && !pedestal) {
+        pedestal = buildPedestal(
+          new Box3().setFromObject(scene, true),
+          props.color,
+        );
+        pedestal.visible = !props.fullscreen;
+        scene.add(pedestal);
+      }
+    } finally {
+      scene.visible = true;
     }
   }
 
@@ -998,6 +1047,13 @@ watch(
 
     pedestal.visible = !fullscreen;
     invalidate();
+  },
+);
+
+watch(
+  () => rigLightsKey(props.model.rig),
+  () => {
+    if (state.value && props.model.rig) placeRigLights(state.value.scene);
   },
 );
 

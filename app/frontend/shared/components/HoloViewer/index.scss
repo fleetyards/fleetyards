@@ -7,6 +7,16 @@
   width: 100%;
   height: 100%;
 
+  // A room drawn into the page: it fades out at every edge rather than
+  // ending in a hard one. The controls stay sharp.
+  &--framed &__canvas {
+    border-radius: 16px;
+    mask-image:
+      linear-gradient(to right, transparent, #000 8%, #000 92%, transparent),
+      linear-gradient(to bottom, transparent, #000 6%, #000 70%, transparent);
+    mask-composite: intersect;
+  }
+
   &--inline {
     position: relative;
     max-height: 200px;

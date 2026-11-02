@@ -12,6 +12,8 @@ json.array! @character_bodies do |body|
   else
     json.animations nil
   end
+  json.weapon_in_hand body.weapon_in_hand
+  json.lighting body.lighting
   json.clips body.clips do |clip|
     json.name clip["name"]
     json.static !!clip["static"]
