@@ -1,5 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { mayHaveAr, openQuickLook, usesQuickLook } from "./arViewer";
+import {
+  mayHaveAr,
+  openQuickLook,
+  openQuickLookFile,
+  usesQuickLook,
+} from "./arViewer";
 
 vi.mock("@/frontend/utils/usdz", () => ({
   holoToUsdz: vi.fn(async () => new Blob(["usdz"])),
@@ -68,6 +73,17 @@ describe("openQuickLook", () => {
       "blob:holo#allowsContentScaling=0",
     );
     expect(clicked[0].querySelector("img")).not.toBeNull();
+  });
+
+  it("hands a USDZ built ahead of time to Quick Look as it is", () => {
+    openQuickLookFile("https://fleetyards.test/files/flight_holo.usdz");
+
+    expect(clicked).toHaveLength(1);
+    expect(clicked[0].rel).toBe("ar");
+    expect(clicked[0].getAttribute("href")).toBe(
+      "https://fleetyards.test/files/flight_holo.usdz#allowsContentScaling=0",
+    );
+    expect(createObjectURL).not.toHaveBeenCalled();
   });
 
   it("opens nothing for a holo no longer wanted once converted", async () => {

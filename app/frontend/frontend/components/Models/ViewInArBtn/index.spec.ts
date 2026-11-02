@@ -12,12 +12,14 @@ const ar = vi.hoisted(() => ({
   openQuickLook: vi.fn((_url: string, _wanted?: () => boolean): Promise<void> =>
     Promise.resolve(),
   ),
+  openQuickLookFile: vi.fn((_url: string) => {}),
 }));
 
 vi.mock("@/frontend/utils/arViewer", () => ({
   mayHaveAr: () => ar.mayHaveAr,
   usesQuickLook: () => ar.quickLook,
   openQuickLook: ar.openQuickLook,
+  openQuickLookFile: ar.openQuickLookFile,
   prepareAr: vi.fn(async () =>
     ar.canActivate
       ? Object.assign(document.createElement("div"), {
@@ -35,6 +37,11 @@ vi.mock("@/shared/composables/useAppNotifications", () => ({
 }));
 
 const mockFlag = ref(true);
+const mockMobile = ref(false);
+
+vi.mock("@/shared/composables/useMobile", () => ({
+  useMobile: () => mockMobile,
+}));
 
 vi.mock("@/frontend/composables/useFeatures", () => ({
   useFeatures: () => ({ isFeatureEnabled: () => mockFlag.value }),
@@ -51,6 +58,12 @@ const model = (overrides: Partial<Model> = {}): Model =>
   }) as Model;
 
 const HOLO = "https://fleetyards.test/files/holo.glb";
+const USDZ = "https://fleetyards.test/files/flight_holo.usdz";
+
+const withUsdz = () =>
+  model({
+    media: { holo: { url: HOLO }, holoUsdz: { url: USDZ } },
+  } as Partial<Model>);
 
 const mount = async (props: {
   model: Model;
@@ -70,12 +83,14 @@ const button = (wrapper: Awaited<ReturnType<typeof mount>>) =>
 describe("ViewInArBtn", () => {
   beforeEach(() => {
     mockFlag.value = true;
+    mockMobile.value = false;
     ar.mayHaveAr = true;
     ar.quickLook = false;
     ar.canActivate = true;
     ar.activateAR.mockClear();
     ar.openQuickLook.mockReset();
     ar.openQuickLook.mockResolvedValue(undefined);
+    ar.openQuickLookFile.mockClear();
   });
 
   it("offers AR for a holo exported to scale", async () => {
@@ -133,6 +148,12 @@ describe("ViewInArBtn", () => {
     ar.canActivate = false;
 
     expect(button(await mount({ model: model() })).exists()).toBe(false);
+  });
+
+  it("keeps Scene Viewer on a phone without a USDZ", async () => {
+    mockMobile.value = true;
+
+    expect(button(await mount({ model: model() })).exists()).toBe(true);
   });
 
   it("hides AR on a device without an AR viewer", async () => {
@@ -207,6 +228,29 @@ describe("ViewInArBtn", () => {
 
     afterEach(() => {
       vi.unstubAllGlobals();
+    });
+
+    it("opens the USDZ built ahead of time, keeping the 3D view", async () => {
+      const wrapper = await mount({ model: withUsdz() });
+
+      await button(wrapper).trigger("click");
+      await flushPromises();
+
+      expect(ar.openQuickLookFile).toHaveBeenCalledWith(USDZ);
+      expect(ar.openQuickLook).not.toHaveBeenCalled();
+      expect(wrapper.emitted("quickLook")).toBeUndefined();
+    });
+
+    it("offers a phone the USDZ built ahead of time", async () => {
+      mockMobile.value = true;
+
+      expect(button(await mount({ model: withUsdz() })).exists()).toBe(true);
+    });
+
+    it("offers a phone no AR without a USDZ, rather than converting the holo", async () => {
+      mockMobile.value = true;
+
+      expect(button(await mount({ model: model() })).exists()).toBe(false);
     });
 
     it("loads no AR viewer beside the open 3D view", async () => {

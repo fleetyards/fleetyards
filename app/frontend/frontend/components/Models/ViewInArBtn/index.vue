@@ -11,12 +11,14 @@ import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
   mayHaveAr,
   openQuickLook as presentQuickLook,
+  openQuickLookFile,
   prepareAr,
   usesQuickLook,
   type ModelViewerElement,
 } from "@/frontend/utils/arViewer";
 import { FeatureFlagName, type Model } from "@/services/fyApi";
 import { useFeatures } from "@/frontend/composables/useFeatures";
+import { useMobile } from "@/shared/composables/useMobile";
 
 type Props = {
   model: Model;
@@ -64,6 +66,18 @@ const holoUrl = computed(() => {
   );
 });
 
+// Built from the flight holo's lite export, so it stands for whichever of the
+// two the 3D view shows.
+const usdzUrl = computed(() => props.model.media.holoUsdz?.url);
+
+const mobile = useMobile();
+
+// Converting the holo in the page is more than a phone holds, so without a USDZ
+// built ahead of time a phone offers no Quick Look at all.
+const quickLookReady = computed(
+  () => !quickLook || !!usdzUrl.value || !mobile.value,
+);
+
 // Only a holo exported in meters can be placed at true size.
 const { isFeatureEnabled } = useFeatures();
 
@@ -73,6 +87,7 @@ const candidate = computed(
     props.active &&
     !!holoUrl.value &&
     !!props.model.holoToScale &&
+    quickLookReady.value &&
     mayHaveAr(),
 );
 
@@ -155,6 +170,11 @@ const openQuickLook = async (url: string) => {
 // opens from a user gesture.
 const open = () => {
   if (opening.value) return;
+
+  if (deferred.value && usdzUrl.value) {
+    openQuickLookFile(usdzUrl.value);
+    return;
+  }
 
   if (deferred.value && holoUrl.value) {
     void openQuickLook(holoUrl.value);
