@@ -524,6 +524,7 @@ const columns = computed<BaseTableCol<Component>[]>(() => {
                 class="travel-times__image"
                 loading="lazy"
               />
+              <span v-else class="travel-times__image" />
             </template>
 
             <template #col-name="{ record }">
