@@ -13,6 +13,7 @@ import BtnDropdown from "@/shared/components/base/BtnDropdown/index.vue";
 import {
   ACESFilmicToneMapping,
   type Camera,
+  type Group,
   Box3,
   type Mesh,
   NeutralToneMapping,
@@ -49,6 +50,11 @@ import {
   rigSize,
   rigTextured,
 } from "@/shared/components/HoloViewer/rig";
+import {
+  BACKDROP_RADIUS,
+  buildBackdrop,
+  disposeBackdrop,
+} from "@/shared/components/HoloViewer/backdrop";
 
 export type HoloModel = {
   path: string;
@@ -107,6 +113,8 @@ type Props = {
   turntable?: boolean;
   // Room left around a contained model, as a factor of its fitted distance.
   containPadding?: number;
+  // Stood in a lit room with a glossy floor rather than in an empty frame.
+  backdrop?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -127,6 +135,7 @@ const props = withDefaults(defineProps<Props>(), {
   pickable: false,
   turntable: false,
   containPadding: 1.35,
+  backdrop: false,
 });
 
 // Nothing will be drawn: no WebGL, or a holo that would not load. A caller with
@@ -256,6 +265,22 @@ watch(
 );
 
 onUnmounted(() => window.removeEventListener("keydown", closeOnEscape));
+
+// Kept out of the model's scene, so framing measures the figure alone.
+const backdrop = shallowRef<Group>();
+
+const placeBackdrop = (scene: Object3D) => {
+  if (!props.backdrop) return;
+
+  if (backdrop.value) disposeBackdrop(backdrop.value);
+  backdrop.value = buildBackdrop(new Box3().setFromObject(scene, true), {
+    reflective: !lowPower.value,
+  });
+};
+
+onUnmounted(() => {
+  if (backdrop.value) disposeBackdrop(backdrop.value);
+});
 
 const { t } = useI18n();
 
@@ -444,7 +469,12 @@ const MIN_NEAR = 0.1;
 const nearPlaneFor = (cameraDistance: number) =>
   Math.max(MIN_NEAR, (cameraDistance - modelReach.value) / 2);
 
-const maxZoomDistance = computed(() => Math.max(250, fitDistance.value * 3));
+// Inside the room's walls: past them the room reads as a ball in the dark.
+const maxZoomDistance = computed(() =>
+  props.backdrop
+    ? BACKDROP_RADIUS * 0.7
+    : Math.max(250, fitDistance.value * 3),
+);
 
 const starsVisible = computed(
   () => props.backgrounds && background.value === "space",
@@ -509,6 +539,7 @@ const handleModelLoaded = (size: Vector3, scene: Object3D) => {
 
   loading.value = false;
   emit("loaded");
+  placeBackdrop(scene);
 
   const bounds = new Box3()
     .setFromObject(scene)
@@ -687,6 +718,7 @@ defineExpose({
     :class="{
       'holo-viewer--inline': inline && !internalFullscreen,
       'holo-viewer--fullscreen': internalFullscreen,
+      'holo-viewer--framed': backdrop && !internalFullscreen,
       [`holo-viewer--${background}`]: backgrounds,
     }"
   >
@@ -786,6 +818,7 @@ defineExpose({
     </div>
     <TresCanvas
       v-else
+      class="holo-viewer__canvas"
       :clear-alpha="0"
       :shadows="!lowPower"
       :dpr="dpr"
@@ -844,6 +877,7 @@ defineExpose({
         :size="maxZoomDistance / 150"
       />
       <Skybox v-if="skybox" :src="skybox" />
+      <primitive v-if="backdrop" :object="backdrop" />
       <Grid
         v-if="grid && gridVisible"
         :args="[10, 10]"

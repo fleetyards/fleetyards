@@ -512,6 +512,7 @@ const copyShareLink = () => {
           contain
           zoomable
           turntable
+          backdrop
           @unavailable="holoUnavailable"
         />
         <div
