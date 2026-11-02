@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.34.0](https://github.com/fleetyards/fleetyards/compare/v9.33.0...v9.34.0) (2026-11-02)
+
+
+### Features
+
+* **catalogue:** home search in every catalogue header ([#6117](https://github.com/fleetyards/fleetyards/issues/6117)) ([e1da3e6](https://github.com/fleetyards/fleetyards/commit/e1da3e60332e3b7d9c243f41d2ef9d80649b9e7c))
+* **dressing-room:** put worn equipment together on a body, with share links and saved outfits ([#6111](https://github.com/fleetyards/fleetyards/issues/6111)) ([6b83f2f](https://github.com/fleetyards/fleetyards/commit/6b83f2ff6bfe890cbf28eb0fa8f9a8b863f648d7))
+* **ships:** serve a pre-built USDZ for AR Quick Look ([#6114](https://github.com/fleetyards/fleetyards/issues/6114)) ([0f5b24c](https://github.com/fleetyards/fleetyards/commit/0f5b24c46ca9194f3c6d098144dca820ff72a0aa))
+
+
+### Bug Fixes
+
+* **nav:** list the fleets section for a signed-in reader again ([#6115](https://github.com/fleetyards/fleetyards/issues/6115)) ([a5b4c34](https://github.com/fleetyards/fleetyards/commit/a5b4c34f7febd137a7854c527b39bfc4825d1c77))
+* **raffles:** no entry without an email address, and fraud signals for admins ([#6118](https://github.com/fleetyards/fleetyards/issues/6118)) ([d8804fb](https://github.com/fleetyards/fleetyards/commit/d8804fb1b5bab695ba81e57eeacd51aef13df87e))
+* **rows:** one thumbnail slot and larger, rem-sized row text ([#6120](https://github.com/fleetyards/fleetyards/issues/6120)) ([ddd299b](https://github.com/fleetyards/fleetyards/commit/ddd299bb149bb00bb7fcafe662c56f7d48efe1a5))
+
 ## [9.33.0](https://github.com/fleetyards/fleetyards/compare/v9.32.1...v9.33.0) (2026-11-02)
 
 
