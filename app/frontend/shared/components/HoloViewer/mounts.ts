@@ -12,6 +12,8 @@ export type HoloMount = {
   size?: number;
   // Painted: drawn with its own materials, not the holo's.
   textured?: boolean;
+  // Loaded in place of a painted holo that does not load, and drawn plain.
+  fallbackPath?: string;
   // What the viewer names this part by when it is clicked.
   id?: string;
   // Drawn in the highlight colour, with everything mounted on it.
@@ -135,7 +137,16 @@ export const buildMounts = async (mounts: HoloMount[]) => {
           try {
             group.add(cloneShared(await loadHolo(mount.path)));
           } catch (error) {
-            console.warn("Loadout preview: a part's holo did not load", error);
+            if (mount.fallbackPath) {
+              try {
+                group.add(cloneShared(await loadHolo(mount.fallbackPath)));
+                group.userData.textured = false;
+              } catch (fallbackError) {
+                console.warn("A part's holo did not load", fallbackError);
+              }
+            } else {
+              console.warn("A part's holo did not load", error);
+            }
           }
         }
 
