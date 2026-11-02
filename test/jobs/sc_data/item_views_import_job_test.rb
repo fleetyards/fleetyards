@@ -101,6 +101,15 @@ module ScData
       assert_nil @equipment.attach_points
     end
 
+    test "skips a helper file that is not an object and keeps the item's renders" do
+      publish(@equipment.sc_key, {"attach_points.json" => "[]", "top.png" => PNG})
+
+      perform
+
+      assert_nil @equipment.attach_points
+      assert @equipment.top_view.attached?
+    end
+
     test "skips a name for a field an item does not have" do
       publish(@component.sc_key, {"top_colored.png" => PNG, "extended_front.png" => PNG, "front.png" => PNG})
 

@@ -115,7 +115,8 @@ module ScData
     # holster, a backpack its core -- in its holo's frame:
     # {"helpers" => {"<name>" => {"position" => [x, y, z], "rotation" => [x, y, z, w]}}}.
     private def render_data(_field, file)
-      helpers = JSON.parse(file.read)["helpers"]
+      data = JSON.parse(file.read)
+      helpers = data["helpers"] if data.is_a?(Hash)
 
       raise ArgumentError, "no helpers listed" unless helpers.is_a?(Hash)
 
