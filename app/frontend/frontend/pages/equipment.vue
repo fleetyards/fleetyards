@@ -4,7 +4,7 @@ import HomeSearch from "@/frontend/components/Home/Search/index.vue";
 
 <template>
   <Teleport to="#header-left">
-    <HomeSearch />
+    <HomeSearch compact />
   </Teleport>
   <router-view />
 </template>

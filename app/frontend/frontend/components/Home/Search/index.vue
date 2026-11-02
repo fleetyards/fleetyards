@@ -26,11 +26,14 @@ type Props = {
   autofocus?: boolean;
   // Searches offered under the field to start from.
   suggestions?: string[];
+  // The page header holds a medium field beside its other controls.
+  compact?: boolean;
 };
 
 withDefaults(defineProps<Props>(), {
   autofocus: false,
   suggestions: () => [],
+  compact: false,
 });
 
 const { t } = useI18n();
@@ -203,7 +206,7 @@ const popoverStyle = computed(() => ({
         <FormInput
           :model-value="searchQuery"
           name="search"
-          :size="InputSizesEnum.LARGE"
+          :size="compact ? InputSizesEnum.MEDIUM : InputSizesEnum.LARGE"
           :autofocus="autofocus"
           translation-key="home.catalogueSearch"
           autocomplete="off"
@@ -214,7 +217,7 @@ const popoverStyle = computed(() => ({
         <Btn
           type="submit"
           :aria-label="t('labels.home.submitCatalogueSearch')"
-          :size="BtnSizesEnum.LG"
+          :size="compact ? BtnSizesEnum.MD : BtnSizesEnum.LG"
           data-test="home-search-submit"
         >
           <i class="fa-light fa-search" />
