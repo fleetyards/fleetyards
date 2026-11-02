@@ -76,23 +76,46 @@ const ARMED_TYPES = new Set(["WeaponGun", "Missile", "Bomb"]);
 
 const AUXILIARY_TYPES = new Set(["TractorBeam", "TowingBeam"]);
 
-const carriedTypes = (slots: LoadoutSlot[]): string[] =>
-  slots.flatMap((slot) => [...slot.types, ...carriedTypes(slot.slots)]);
+type CarriedPart = Pick<LoadoutComponentRef, "type" | "scKey">;
 
-// A turret or mount is filed by what it carries, as the ship page files it: one
-// holding only a tractor beam is auxiliary, not a weapon.
-export const filedCategory = (slot: LoadoutSlot) => {
-  if (!slot.category || !CARRIER_CATEGORIES.has(slot.category)) {
-    return slot.category;
-  }
+// The game files type several SureGrip and ViseLock tractor beams as
+// SalvageHead; only the `salvage_head_*` items are heads.
+const filedType = (part: CarriedPart): string | undefined =>
+  part.type === "SalvageHead" && !part.scKey?.startsWith("salvage_head")
+    ? "TractorBeam"
+    : part.type;
 
-  const types = carriedTypes(slot.slots);
+// A turret or mount is filed by the parts it carries, as the ship page files
+// it: one holding a tractor beam and no gun, missile or bomb is auxiliary.
+const categoryCarrying = (
+  category: LoadoutSlot["category"],
+  carried: CarriedPart[],
+) => {
+  if (!category || !CARRIER_CATEGORIES.has(category)) return category;
 
-  return types.some((type) => AUXILIARY_TYPES.has(type)) &&
-    !types.some((type) => ARMED_TYPES.has(type))
+  const types = carried.map(filedType);
+
+  return types.some((type) => type && AUXILIARY_TYPES.has(type)) &&
+    !types.some((type) => type && ARMED_TYPES.has(type))
     ? HardpointCategoryEnum.TRACTOR_BEAMS
-    : slot.category;
+    : category;
 };
+
+const loadoutParts = (slots: LoadoutSlot[]): CarriedPart[] =>
+  slots.flatMap((slot) => {
+    const part = slot.emptied ? undefined : (slot.fitted ?? slot.stock);
+
+    return part ? [part, ...loadoutParts(slot.slots)] : [];
+  });
+
+// A saved loadout's slot, by what the loadout fits below it.
+export const filedCategory = (slot: LoadoutSlot) =>
+  categoryCarrying(slot.category, loadoutParts(slot.slots));
+
+const fittedParts = (entries: FittedSlot[]): CarriedPart[] =>
+  entries.flatMap((entry) =>
+    entry.content ? [entry.content, ...fittedParts(entry.children)] : [],
+  );
 
 // A slot of the fitting as it stands in the form: the slot, what sits in it,
 // and the slots that part brings.
@@ -572,7 +595,10 @@ export const useComponentFitting = () => {
         return roots(entry.children, tab);
       }
 
-      const category = filedCategory(entry.slot);
+      const category = categoryCarrying(
+        entry.slot.category,
+        fittedParts(entry.children),
+      );
 
       return category && tab.categories.includes(category) ? [entry] : [];
     });
