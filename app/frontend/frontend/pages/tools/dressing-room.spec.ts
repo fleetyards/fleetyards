@@ -27,6 +27,11 @@ const EQUIPMENT: Record<string, Equipment> = {
   }),
   "adp-legs": piece("adp-legs", { holo: media("legs.glb") }),
   "pembroke-backpack": piece("pembroke-backpack", {}),
+  "p4-ar": piece("p4-ar", {
+    holo: media("p4ar.glb"),
+    holoTextured: media("p4ar_textured.glb"),
+  }),
+  "s-38": piece("s-38", { holo: media("s38.glb") }),
 };
 
 const MALE: CharacterBody = {
@@ -116,6 +121,60 @@ describe("ToolsDressingRoomPage", () => {
     expect(
       wrapper.find('[data-test="dressing-room-no-holo-legs"]').exists(),
     ).toBe(true);
+  });
+
+  it("stows the weapons on the bones the armour brings, and puts the held one in hand", async () => {
+    const { wrapper } = await mount({
+      torso: "adp-core",
+      primary: "p4-ar",
+      sidearm: "s-38",
+      held: "sidearm",
+    });
+
+    expect(viewerModel(wrapper).rig.attachments).toEqual([
+      {
+        path: "/p4ar_textured.glb",
+        bone: "wep_stocked_attach_2_override",
+        size: 1000,
+        textured: true,
+        fallbackPath: "/p4ar.glb",
+      },
+      {
+        path: "/s38.glb",
+        bone: "RightWeaponBone",
+        size: 1000,
+        textured: false,
+        fallbackPath: undefined,
+      },
+    ]);
+  });
+
+  it("takes a weapon out of hand when it is held again", async () => {
+    const { wrapper, router } = await mount({
+      sidearm: "s-38",
+      held: "sidearm",
+    });
+
+    await wrapper
+      .find('[data-test="dressing-room-hold-sidearm"]')
+      .trigger("click");
+    await flushPromises();
+
+    expect(router.currentRoute.value.query.held).toBeUndefined();
+  });
+
+  it("drops the weapon in hand with the weapon", async () => {
+    const { wrapper, router } = await mount({
+      sidearm: "s-38",
+      held: "sidearm",
+    });
+
+    await wrapper
+      .find('[data-test="dressing-room-clear-sidearm"]')
+      .trigger("click");
+    await flushPromises();
+
+    expect(router.currentRoute.value.query.held).toBeUndefined();
   });
 
   it("poses the body as the address says", async () => {

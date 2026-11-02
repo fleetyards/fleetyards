@@ -75,7 +75,11 @@ describe("DressingRoomOutfits", () => {
     await flushPromises();
 
     expect(create).toHaveBeenCalledWith({
-      data: { name: "Recon", items: [{ slot: "torso", equipmentId: "core" }] },
+      data: {
+        name: "Recon",
+        items: [{ slot: "torso", equipmentId: "core" }],
+        heldWeapon: null,
+      },
     });
     expect(wrapper.emitted("active")).toEqual([["outfit-2"]]);
   });
@@ -133,6 +137,18 @@ describe("DressingRoomOutfits", () => {
         .find('[data-test="dressing-room-save-new"]')
         .attributes("disabled"),
     ).toBeDefined();
+  });
+
+  it("counts a change of the weapon in hand as a change to save", async () => {
+    const wrapper = await mount({ activeId: "outfit-1" });
+
+    await wrapper.setProps({ heldWeapon: "sidearm" } as never);
+
+    expect(
+      wrapper
+        .find('[data-test="dressing-room-save-changes"]')
+        .attributes("disabled"),
+    ).toBeUndefined();
   });
 
   it("loads an outfit when it is picked from the list", async () => {

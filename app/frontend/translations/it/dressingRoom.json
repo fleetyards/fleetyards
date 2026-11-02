@@ -8,7 +8,10 @@
         "arms": "Braccia",
         "legs": "Gambe",
         "backpack": "Zaino",
-        "undersuit": "Tuta interna"
+        "undersuit": "Tuta interna",
+        "primary": "Primaria",
+        "secondary": "Secondaria",
+        "sidearm": "Arma da fianco"
       },
       "search": "Cerca %{slot}",
       "noResults": "Nessun risultato per questo slot.",
@@ -38,7 +41,12 @@
         "deleteFailed": "Impossibile eliminare l'outfit.",
         "linkCopied": "Link copiato.",
         "copyFailed": "Impossibile copiare il link."
-      }
+      },
+      "groups": {
+        "armour": "Armatura",
+        "weapons": "Armi"
+      },
+      "hold": "Impugna"
     }
   }
 }

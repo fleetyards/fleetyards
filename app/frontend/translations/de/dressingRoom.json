@@ -8,7 +8,10 @@
         "arms": "Arme",
         "legs": "Beine",
         "backpack": "Rucksack",
-        "undersuit": "Unteranzug"
+        "undersuit": "Unteranzug",
+        "primary": "Primärwaffe",
+        "secondary": "Zweitwaffe",
+        "sidearm": "Seitenwaffe"
       },
       "search": "%{slot} suchen",
       "noResults": "Für diesen Slot wurde nichts gefunden.",
@@ -38,7 +41,12 @@
         "deleteFailed": "Das Outfit konnte nicht gelöscht werden.",
         "linkCopied": "Link kopiert.",
         "copyFailed": "Der Link konnte nicht kopiert werden."
-      }
+      },
+      "groups": {
+        "armour": "Rüstung",
+        "weapons": "Waffen"
+      },
+      "hold": "In die Hand nehmen"
     }
   }
 }

@@ -22,16 +22,24 @@ import {
   type Equipment,
   type Outfit,
   type OutfitItemInput,
-  type OutfitSlotEnum,
+  OutfitSlotEnum,
+  type OutfitWeaponSlotEnum,
   getEquipmentItemQueryOptions,
   useCharacterBodies,
 } from "@/services/fyApi";
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import {
+  ALL_SLOTS,
+  BACKPACK_BONE,
+  HAND_BONE,
   OUTFIT_SLOTS,
   type OutfitSelection,
   type PieceHolo,
+  STOWED_WEAPON_BONES,
+  WEAPON_SLOTS,
+  attachment,
   clipLabel,
+  isWeaponSlot,
   outfitModel,
   outfitQuery,
   parseOutfitQuery,
@@ -72,15 +80,34 @@ const activeOutfitId = computed(() => queryValue("outfit"));
 
 const poseName = computed(() => queryValue("pose"));
 
-const navigate = (
-  next: OutfitSelection,
-  outfitId = activeOutfitId.value,
-  pose = poseName.value,
-) =>
-  router.replace({
+// The weapon in hand, only while the outfit carries it.
+const heldWeapon = computed(() => {
+  const held = queryValue("held");
+
+  return isWeaponSlot(held) && selection.value[held] ? held : undefined;
+});
+
+type NavigationState = {
+  outfit?: string;
+  pose?: string;
+  held?: OutfitWeaponSlotEnum;
+};
+
+const navigate = (next: OutfitSelection, state: NavigationState = {}) => {
+  const query: NavigationState = {
+    outfit: activeOutfitId.value,
+    pose: poseName.value,
+    held: heldWeapon.value,
+    ...state,
+  };
+
+  if (query.held && !next[query.held]) query.held = undefined;
+
+  return router.replace({
     name: "dressing-room",
-    query: { ...outfitQuery(next), outfit: outfitId, pose },
+    query: { ...outfitQuery(next), ...query },
   });
+};
 
 const picking = ref<OutfitSlotEnum>();
 
@@ -95,7 +122,15 @@ const clear = (slot: OutfitSlotEnum) => {
 
 const reset = () => {
   picking.value = undefined;
-  void navigate({}, undefined, undefined);
+  void navigate({}, { outfit: undefined, pose: undefined, held: undefined });
+};
+
+const toggleHeld = (slot: OutfitSlotEnum) => {
+  if (!isWeaponSlot(slot)) return;
+
+  void navigate(selection.value, {
+    held: heldWeapon.value === slot ? undefined : slot,
+  });
 };
 
 const loadOutfit = (outfit: Outfit) => {
@@ -104,16 +139,21 @@ const loadOutfit = (outfit: Outfit) => {
     Object.fromEntries(
       outfit.items.map((item) => [item.slot, item.equipment.slug]),
     ),
-    outfit.id,
+    { outfit: outfit.id, held: outfit.heldWeapon ?? undefined },
   );
 };
 
 const setActiveOutfit = (id: string | undefined) => {
-  void navigate(selection.value, id);
+  void navigate(selection.value, { outfit: id });
 };
 
+const SLOT_GROUPS = [
+  { key: "armour", slots: OUTFIT_SLOTS },
+  { key: "weapons", slots: WEAPON_SLOTS },
+];
+
 const selectedSlots = computed(() =>
-  OUTFIT_SLOTS.filter((slot) => selection.value[slot]),
+  ALL_SLOTS.filter((slot) => selection.value[slot]),
 );
 
 const itemQueries = useQueries({
@@ -161,20 +201,52 @@ const body = computed(() =>
     : bodies.value?.find((entry) => entry.key === BODY_KEY && entry.holo?.url),
 );
 
-// On a body only the pieces rigged to it are drawn: a static holo is modelled
-// in another pose and would not sit on it.
+// On a body, armour is drawn only from its rig for that body: a static holo is
+// modelled in another pose and would not sit on it. Rigid things -- weapons, a
+// backpack without a rig -- are pinned to a bone from their ordinary holo.
+const riggedHolos = computed(
+  () =>
+    Object.fromEntries(
+      OUTFIT_SLOTS.map((slot) => [
+        slot,
+        riggedPieceHolo(items.value[slot]?.media),
+      ]),
+    ) as Partial<Record<OutfitSlotEnum, PieceHolo>>,
+);
+
+const staticHolos = computed(
+  () =>
+    Object.fromEntries(
+      ALL_SLOTS.map((slot) => [
+        slot,
+        pieceHolo(items.value[slot]?.media, failedPaths.value),
+      ]),
+    ) as Partial<Record<OutfitSlotEnum, PieceHolo>>,
+);
+
+const pinnedBackpack = computed(() =>
+  body.value && !riggedHolos.value[OutfitSlotEnum.BACKPACK]
+    ? staticHolos.value[OutfitSlotEnum.BACKPACK]
+    : undefined,
+);
+
+// What each slot is drawn from, or nothing: the slot list says which are not.
 const holos = computed(
   () =>
     Object.fromEntries(
-      OUTFIT_SLOTS.map((slot) => {
-        const media = items.value[slot]?.media;
+      ALL_SLOTS.map((slot) => {
+        if (!body.value) {
+          return [
+            slot,
+            isWeaponSlot(slot) ? undefined : staticHolos.value[slot],
+          ];
+        }
+        if (isWeaponSlot(slot)) return [slot, staticHolos.value[slot]];
+        if (slot === OutfitSlotEnum.BACKPACK) {
+          return [slot, riggedHolos.value[slot] ?? pinnedBackpack.value];
+        }
 
-        return [
-          slot,
-          body.value
-            ? riggedPieceHolo(media)
-            : pieceHolo(media, failedPaths.value),
-        ];
+        return [slot, riggedHolos.value[slot]];
       }),
     ) as Partial<Record<OutfitSlotEnum, PieceHolo>>,
 );
@@ -182,14 +254,34 @@ const holos = computed(
 // Undersuit first, so a figure without a body is rooted on the layer the
 // armour sits on.
 const pieces = computed(() =>
-  [...OUTFIT_SLOTS]
-    .reverse()
-    .flatMap((slot) => (holos.value[slot] ? [holos.value[slot]] : [])),
+  [...OUTFIT_SLOTS].reverse().flatMap((slot) => {
+    const holo = body.value ? riggedHolos.value[slot] : holos.value[slot];
+
+    return holo ? [holo] : [];
+  }),
 );
+
+const attachments = computed(() => [
+  ...(pinnedBackpack.value
+    ? [attachment(pinnedBackpack.value, BACKPACK_BONE)]
+    : []),
+  ...WEAPON_SLOTS.flatMap((slot) => {
+    const holo = staticHolos.value[slot];
+    const bone =
+      heldWeapon.value === slot ? HAND_BONE : STOWED_WEAPON_BONES[slot];
+
+    return holo && bone ? [attachment(holo, bone)] : [];
+  }),
+]);
 
 const model = computed(() =>
   body.value
-    ? riggedOutfitModel(body.value, pieces.value, poseName.value)
+    ? riggedOutfitModel(
+        body.value,
+        pieces.value,
+        poseName.value,
+        attachments.value,
+      )
     : outfitModel(pieces.value),
 );
 
@@ -214,7 +306,7 @@ const poseOptions = computed(() =>
 const selectedPose = computed({
   get: () => model.value?.rig?.clip,
   set: (pose?: string) => {
-    void navigate(selection.value, activeOutfitId.value, pose);
+    void navigate(selection.value, { pose });
   },
 });
 
@@ -321,75 +413,102 @@ const copyShareLink = () => {
           @select="choose(picking, $event)"
           @close="picking = undefined"
         />
-        <ul v-else class="dressing-room__slots" data-test="dressing-room-slots">
-          <li
-            v-for="slot in OUTFIT_SLOTS"
-            :key="slot"
-            class="dressing-room__slot"
-            :data-test="`dressing-room-slot-${slot}`"
+        <div v-else class="dressing-room__groups">
+          <section
+            v-for="group in SLOT_GROUPS"
+            :key="group.key"
+            class="dressing-room__group"
           >
-            <button
-              type="button"
-              class="dressing-room__slot-pick"
-              :data-test="`dressing-room-pick-${slot}`"
-              @click="picking = slot"
+            <h2 class="dressing-room__group-title">
+              {{ t(`dressingRoom.groups.${group.key}`) }}
+            </h2>
+            <ul
+              class="dressing-room__slots"
+              :data-test="`dressing-room-slots-${group.key}`"
             >
-              <span class="dressing-room__slot-label">
-                {{ t(`dressingRoom.slots.${slot}`) }}
-              </span>
-              <span v-if="items[slot]" class="dressing-room__slot-item">
-                {{ items[slot]?.name }}
-              </span>
-              <span
-                v-else-if="loadingSlot(slot)"
-                class="dressing-room__slot-item"
+              <li
+                v-for="slot in group.slots"
+                :key="slot"
+                class="dressing-room__slot"
+                :data-test="`dressing-room-slot-${slot}`"
               >
-                …
-              </span>
-              <span
-                v-else-if="missingSlot(slot)"
-                class="dressing-room__slot-item dressing-room__slot-item--missing"
-              >
-                {{ t("dressingRoom.notFound") }}
-              </span>
-              <span
-                v-else
-                class="dressing-room__slot-item dressing-room__slot-item--empty"
-              >
-                {{ t("dressingRoom.choose") }}
-              </span>
-              <span
-                v-if="items[slot] && !holos[slot]"
-                class="dressing-room__slot-note"
-                :data-test="`dressing-room-no-holo-${slot}`"
-              >
-                {{ t("dressingRoom.noHolo") }}
-              </span>
-            </button>
-            <Btn
-              v-if="items[slot]"
-              :size="BtnSizesEnum.SM"
-              :variant="BtnVariantsEnum.BARE"
-              :to="{
-                name: 'equipment-item',
-                params: { slug: items[slot]?.slug },
-              }"
-              :aria-label="t('dressingRoom.openItem')"
-            >
-              <i class="fa-light fa-arrow-up-right-from-square" />
-            </Btn>
-            <Btn
-              v-if="selection[slot]"
-              :size="BtnSizesEnum.SM"
-              :variant="BtnVariantsEnum.BARE"
-              :aria-label="t('dressingRoom.remove')"
-              :data-test="`dressing-room-clear-${slot}`"
-              @click="clear(slot)"
-            >
-              <i class="fa-light fa-xmark" />
-            </Btn>
-          </li>
-        </ul>
+                <button
+                  type="button"
+                  class="dressing-room__slot-pick"
+                  :data-test="`dressing-room-pick-${slot}`"
+                  @click="picking = slot"
+                >
+                  <span class="dressing-room__slot-label">
+                    {{ t(`dressingRoom.slots.${slot}`) }}
+                  </span>
+                  <span v-if="items[slot]" class="dressing-room__slot-item">
+                    {{ items[slot]?.name }}
+                  </span>
+                  <span
+                    v-else-if="loadingSlot(slot)"
+                    class="dressing-room__slot-item"
+                  >
+                    …
+                  </span>
+                  <span
+                    v-else-if="missingSlot(slot)"
+                    class="dressing-room__slot-item dressing-room__slot-item--missing"
+                  >
+                    {{ t("dressingRoom.notFound") }}
+                  </span>
+                  <span
+                    v-else
+                    class="dressing-room__slot-item dressing-room__slot-item--empty"
+                  >
+                    {{ t("dressingRoom.choose") }}
+                  </span>
+                  <span
+                    v-if="items[slot] && !holos[slot]"
+                    class="dressing-room__slot-note"
+                    :data-test="`dressing-room-no-holo-${slot}`"
+                  >
+                    {{ t("dressingRoom.noHolo") }}
+                  </span>
+                </button>
+                <Btn
+                  v-if="isWeaponSlot(slot) && items[slot] && holos[slot]"
+                  :size="BtnSizesEnum.SM"
+                  :variant="BtnVariantsEnum.BARE"
+                  :active="heldWeapon === slot"
+                  :aria-pressed="heldWeapon === slot"
+                  :aria-label="t('dressingRoom.hold')"
+                  v-tooltip="t('dressingRoom.hold')"
+                  :data-test="`dressing-room-hold-${slot}`"
+                  @click="toggleHeld(slot)"
+                >
+                  <i class="fa-light fa-hand" />
+                </Btn>
+                <Btn
+                  v-if="items[slot]"
+                  :size="BtnSizesEnum.SM"
+                  :variant="BtnVariantsEnum.BARE"
+                  :to="{
+                    name: 'equipment-item',
+                    params: { slug: items[slot]?.slug },
+                  }"
+                  :aria-label="t('dressingRoom.openItem')"
+                >
+                  <i class="fa-light fa-arrow-up-right-from-square" />
+                </Btn>
+                <Btn
+                  v-if="selection[slot]"
+                  :size="BtnSizesEnum.SM"
+                  :variant="BtnVariantsEnum.BARE"
+                  :aria-label="t('dressingRoom.remove')"
+                  :data-test="`dressing-room-clear-${slot}`"
+                  @click="clear(slot)"
+                >
+                  <i class="fa-light fa-xmark" />
+                </Btn>
+              </li>
+            </ul>
+          </section>
+        </div>
       </aside>
 
       <aside class="dressing-room__side dressing-room__side--outfit">
@@ -404,6 +523,7 @@ const copyShareLink = () => {
         />
         <Outfits
           :items="outfitItems"
+          :held-weapon="heldWeapon"
           :pending="piecesPending"
           :active-id="activeOutfitId"
           @load="loadOutfit"
@@ -489,6 +609,18 @@ const copyShareLink = () => {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+}
+
+.dressing-room__groups {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.dressing-room__group-title {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  color: $gray-lighter;
 }
 
 .dressing-room__slots {

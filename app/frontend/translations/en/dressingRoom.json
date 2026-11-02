@@ -8,7 +8,10 @@
         "arms": "Arms",
         "legs": "Legs",
         "backpack": "Backpack",
-        "undersuit": "Undersuit"
+        "undersuit": "Undersuit",
+        "primary": "Primary",
+        "secondary": "Secondary",
+        "sidearm": "Sidearm"
       },
       "search": "Search %{slot}",
       "noResults": "Nothing found for this slot.",
@@ -38,7 +41,12 @@
         "deleteFailed": "The outfit could not be deleted.",
         "linkCopied": "Link copied.",
         "copyFailed": "The link could not be copied."
-      }
+      },
+      "groups": {
+        "armour": "Armour",
+        "weapons": "Weapons"
+      },
+      "hold": "Hold"
     }
   }
 }

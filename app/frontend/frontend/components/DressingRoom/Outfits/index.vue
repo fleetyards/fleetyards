@@ -21,6 +21,7 @@ import { useSessionStore } from "@/frontend/stores/session";
 import {
   type Outfit,
   type OutfitItemInput,
+  type OutfitWeaponSlotEnum,
   getOutfitsQueryKey,
   useCreateOutfit,
   useDestroyOutfit,
@@ -35,11 +36,13 @@ type Props = {
   // A piece has not resolved yet, or no longer does: saving now would leave
   // it out.
   pending?: boolean;
+  heldWeapon?: OutfitWeaponSlotEnum;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   activeId: undefined,
   pending: false,
+  heldWeapon: undefined,
 });
 
 const emit = defineEmits<{
@@ -88,7 +91,8 @@ const changed = computed(
   () =>
     !!active.value &&
     (active.value.name !== name.value.trim() ||
-      savedItemsKey(active.value) !== itemsKey(props.items)),
+      savedItemsKey(active.value) !== itemsKey(props.items) ||
+      (active.value.heldWeapon ?? undefined) !== props.heldWeapon),
 );
 
 const refresh = () =>
@@ -105,7 +109,11 @@ const saving = computed(
 const saveNew = async () => {
   try {
     const outfit = await createOutfit.mutateAsync({
-      data: { name: name.value.trim(), items: props.items },
+      data: {
+        name: name.value.trim(),
+        items: props.items,
+        heldWeapon: props.heldWeapon ?? null,
+      },
     });
     await refresh();
     emit("active", outfit.id);
@@ -121,7 +129,11 @@ const saveChanges = async () => {
   try {
     await updateOutfit.mutateAsync({
       id: active.value.id,
-      data: { name: name.value.trim(), items: props.items },
+      data: {
+        name: name.value.trim(),
+        items: props.items,
+        heldWeapon: props.heldWeapon ?? null,
+      },
     });
     await refresh();
     displaySuccess({ text: t("dressingRoom.messages.saved") });

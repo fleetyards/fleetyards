@@ -8,7 +8,10 @@
         "arms": "手臂",
         "legs": "腿部",
         "backpack": "背包",
-        "undersuit": "內襯服"
+        "undersuit": "內襯服",
+        "primary": "主武器",
+        "secondary": "副武器",
+        "sidearm": "手槍"
       },
       "search": "搜尋%{slot}",
       "noResults": "此欄位沒有找到任何物品。",
@@ -38,7 +41,12 @@
         "deleteFailed": "無法刪除裝扮。",
         "linkCopied": "連結已複製。",
         "copyFailed": "無法複製連結。"
-      }
+      },
+      "groups": {
+        "armour": "護甲",
+        "weapons": "武器"
+      },
+      "hold": "手持"
     }
   }
 }

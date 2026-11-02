@@ -8,7 +8,10 @@
         "arms": "Bras",
         "legs": "Jambes",
         "backpack": "Sac à dos",
-        "undersuit": "Sous-combinaison"
+        "undersuit": "Sous-combinaison",
+        "primary": "Principale",
+        "secondary": "Secondaire",
+        "sidearm": "Arme de poing"
       },
       "search": "Rechercher : %{slot}",
       "noResults": "Rien trouvé pour cet emplacement.",
@@ -38,7 +41,12 @@
         "deleteFailed": "La tenue n'a pas pu être supprimée.",
         "linkCopied": "Lien copié.",
         "copyFailed": "Le lien n'a pas pu être copié."
-      }
+      },
+      "groups": {
+        "armour": "Armure",
+        "weapons": "Armes"
+      },
+      "hold": "Tenir en main"
     }
   }
 }

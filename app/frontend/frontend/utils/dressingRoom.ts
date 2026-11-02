@@ -1,11 +1,15 @@
 import { type LocationQuery } from "vue-router";
 import { type HoloMount } from "@/shared/components/HoloViewer/mounts";
-import { type HoloRig } from "@/shared/components/HoloViewer/rig";
+import {
+  type HoloRig,
+  type RigAttachment,
+} from "@/shared/components/HoloViewer/rig";
 import {
   type CharacterBody,
   type CharacterBodyClip,
   type MediaFile,
   OutfitSlotEnum,
+  type OutfitWeaponSlotEnum,
 } from "@/services/fyApi";
 
 // Head to toe, the order the slots are listed in.
@@ -18,12 +22,44 @@ export const OUTFIT_SLOTS: OutfitSlotEnum[] = [
   OutfitSlotEnum.UNDERSUIT,
 ];
 
+// Primaries on the back, a sidearm in the thigh holster.
+export const WEAPON_SLOTS: OutfitSlotEnum[] = [
+  OutfitSlotEnum.PRIMARY,
+  OutfitSlotEnum.SECONDARY,
+  OutfitSlotEnum.SIDEARM,
+];
+
+export const ALL_SLOTS = [...OUTFIT_SLOTS, ...WEAPON_SLOTS];
+
+export const isWeaponSlot = (slot?: string): slot is OutfitWeaponSlotEnum =>
+  WEAPON_SLOTS.includes(slot as OutfitSlotEnum);
+
+// What each weapon slot takes, by the weapon's sub type; the same rule the API
+// checks.
+export const WEAPON_SUB_TYPES: Partial<Record<OutfitSlotEnum, string[]>> = {
+  [OutfitSlotEnum.PRIMARY]: ["Medium", "Large"],
+  [OutfitSlotEnum.SECONDARY]: ["Medium", "Large"],
+  [OutfitSlotEnum.SIDEARM]: ["Small"],
+};
+
+// The bones a stowed weapon hangs from, which the worn core and legs bring.
+export const STOWED_WEAPON_BONES: Partial<Record<OutfitSlotEnum, string>> = {
+  [OutfitSlotEnum.PRIMARY]: "wep_stocked_attach_2_override",
+  [OutfitSlotEnum.SECONDARY]: "wep_stocked_attach_3_override",
+  [OutfitSlotEnum.SIDEARM]: "wep_sidearm_attach_override",
+};
+
+export const HAND_BONE = "RightWeaponBone";
+
+// Where the core carries a backpack that is not rigged to the body.
+export const BACKPACK_BONE = "backpack_attach_1_override";
+
 // Equipment slug per slot: what a share link carries.
 export type OutfitSelection = Partial<Record<OutfitSlotEnum, string>>;
 
 export const parseOutfitQuery = (query: LocationQuery): OutfitSelection =>
   Object.fromEntries(
-    OUTFIT_SLOTS.flatMap((slot) => {
+    ALL_SLOTS.flatMap((slot) => {
       // A key repeated in the address comes back as a list; the first wins.
       const value = [query[slot]].flat()[0];
 
@@ -32,10 +68,10 @@ export const parseOutfitQuery = (query: LocationQuery): OutfitSelection =>
   );
 
 export const outfitQuery = (selection: OutfitSelection) =>
-  Object.fromEntries(OUTFIT_SLOTS.map((slot) => [slot, selection[slot]]));
+  Object.fromEntries(ALL_SLOTS.map((slot) => [slot, selection[slot]]));
 
 export const sameOutfit = (a: OutfitSelection, b: OutfitSelection) =>
-  OUTFIT_SLOTS.every((slot) => a[slot] === b[slot]);
+  ALL_SLOTS.every((slot) => a[slot] === b[slot]);
 
 type ItemHolos = {
   holo?: MediaFile | null;
@@ -114,16 +150,27 @@ export const clipLabel = (name: string) => {
   return words.charAt(0).toUpperCase() + words.slice(1);
 };
 
+// A rigid item pinned to a bone of the figure, from its ordinary holo.
+export const attachment = (holo: PieceHolo, bone: string): RigAttachment => ({
+  path: holo.path,
+  bone,
+  size: holo.size,
+  textured: holo.textured,
+  fallbackPath: holo.fallbackPath,
+});
+
 export const riggedOutfitModel = (
   body: CharacterBody,
   pieces: PieceHolo[],
   clip?: string,
+  attachments: RigAttachment[] = [],
 ): OutfitHoloModel => ({
   path: body.holo.url,
   size: body.holo.size ?? undefined,
   textured: false,
   rig: {
     pieces: pieces.map((piece) => ({ path: piece.path, size: piece.size })),
+    ...(attachments.length ? { attachments } : {}),
     animations: body.animations?.url ?? undefined,
     clip:
       clip && body.clips.some((candidate) => candidate.name === clip)

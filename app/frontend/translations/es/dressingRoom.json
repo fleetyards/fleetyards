@@ -8,7 +8,10 @@
         "arms": "Brazos",
         "legs": "Piernas",
         "backpack": "Mochila",
-        "undersuit": "Traje interior"
+        "undersuit": "Traje interior",
+        "primary": "Principal",
+        "secondary": "Secundaria",
+        "sidearm": "Arma corta"
       },
       "search": "Buscar %{slot}",
       "noResults": "No se encontró nada para esta ranura.",
@@ -38,7 +41,12 @@
         "deleteFailed": "No se pudo eliminar el atuendo.",
         "linkCopied": "Enlace copiado.",
         "copyFailed": "No se pudo copiar el enlace."
-      }
+      },
+      "groups": {
+        "armour": "Armadura",
+        "weapons": "Armas"
+      },
+      "hold": "Empuñar"
     }
   }
 }

@@ -13,8 +13,10 @@ import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { INVENTORY_EQUIPMENT_TYPES } from "@/frontend/composables/useInventoryOptions";
+import { WEAPON_SUB_TYPES, isWeaponSlot } from "@/frontend/utils/dressingRoom";
 import {
   type Equipment,
+  type EquipmentSlotEnum,
   type OutfitSlotEnum,
   equipment as fetchEquipment,
 } from "@/services/fyApi";
@@ -42,11 +44,25 @@ const searchTerm = ref("");
 const page = ref(1);
 const records = ref<Equipment[]>([]);
 
+// A weapon slot takes weapons of its size; an armour slot the armour and
+// undersuits made for it.
+const slotQuery = computed(() =>
+  isWeaponSlot(props.slot)
+    ? {
+        equipmentTypeIn: ["weapon"],
+        subTypeIn: WEAPON_SUB_TYPES[props.slot],
+      }
+    : {
+        slotIn: [props.slot as EquipmentSlotEnum],
+        equipmentTypeIn: INVENTORY_EQUIPMENT_TYPES.armor,
+      },
+);
+
 const { data, isFetching, isPlaceholderData } = useQuery({
   queryKey: computed(() => [
     "dressing-room-slot-picker",
     PER_PAGE,
-    props.slot,
+    slotQuery.value,
     searchTerm.value,
     page.value,
   ]),
@@ -55,8 +71,7 @@ const { data, isFetching, isPlaceholderData } = useQuery({
       page: String(page.value),
       perPage: PER_PAGE,
       q: {
-        slotIn: [props.slot],
-        equipmentTypeIn: INVENTORY_EQUIPMENT_TYPES.armor,
+        ...slotQuery.value,
         nameOrSlugCont: searchTerm.value || undefined,
       },
     }),
