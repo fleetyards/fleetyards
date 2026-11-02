@@ -390,18 +390,20 @@ const starsReach = computed(
   () => maxZoomDistance.value * (1 + STARS_RADIUS + STARS_DEPTH) * 1.05,
 );
 
-const cameraArgs = computed<
-  [fov: number, aspect: number, near: number, far: number]
->(() => [
-  35,
-  innerWidth.value / innerHeight.value,
-  nearPlaneFor(fitDistance.value),
+const CAMERA_FOV = 35;
+
+// The canvas's, which Tres keeps the camera's own aspect in step with.
+const cameraAspect = computed(() => innerWidth.value / innerHeight.value);
+
+const cameraNear = computed(() => nearPlaneFor(fitDistance.value));
+
+const cameraFar = computed(() =>
   Math.max(
     1000,
     fitDistance.value * 4 + modelMaxDimension.value,
     starsVisible.value ? starsReach.value : 0,
   ),
-]);
+);
 
 const cameraHeight = computed(() => (props.inline ? 15 : 30));
 
@@ -447,7 +449,7 @@ const handleModelLoaded = (size: Vector3, scene: Object3D) => {
   );
 
   // Get canvas aspect ratio
-  const aspect = cameraArgs.value[1]; // width / height
+  const aspect = cameraAspect.value; // width / height
 
   // Calculate which dimension dominates based on canvas aspect ratio
   // For wide screens (aspect > 1), horizontal dimension matters more
@@ -465,7 +467,7 @@ const handleModelLoaded = (size: Vector3, scene: Object3D) => {
   const dominantSize = Math.max(effectiveHorizontalSize, effectiveVerticalSize);
 
   // Calculate distance using field of view
-  const fovRadians = (cameraArgs.value[0] * Math.PI) / 180;
+  const fovRadians = (CAMERA_FOV * Math.PI) / 180;
 
   const azimuth = (props.azimuth * Math.PI) / 180;
 
@@ -714,7 +716,15 @@ defineExpose({
       alpha
       :on-error="handleRenderError"
     >
-      <TresPerspectiveCamera :position="cameraPosition" :args="cameraArgs" />
+      <!-- Set as properties, never as `args`: new args build a camera whose uuid
+           is copied over, and the orbit controls, keyed by that uuid, come back
+           without their change listener, so the light stops following. -->
+      <TresPerspectiveCamera
+        :position="cameraPosition"
+        :fov="CAMERA_FOV"
+        :near="cameraNear"
+        :far="cameraFar"
+      />
       <TresDirectionalLight
         :position="lightPosition"
         :intensity="textured ? 1.5 : 2"

@@ -4,13 +4,17 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 vi.mock("@/shared/utils/Webgl", () => ({ webglAvailable: () => true }));
 
 vi.mock("@tresjs/core", () => ({
-  TresCanvas: { name: "TresCanvas", template: "<div data-test='canvas' />" },
+  TresCanvas: {
+    name: "TresCanvas",
+    template: "<div data-test='canvas'><slot /></div>",
+  },
 }));
 
 vi.mock("@tresjs/cientos", () => ({
   OrbitControls: { template: "<div />" },
   TransformControls: { template: "<div />" },
   Grid: { template: "<div />" },
+  Stars: { template: "<div />" },
 }));
 
 vi.mock("./Model/index.vue", () => ({ default: { template: "<div />" } }));
@@ -99,6 +103,20 @@ describe("HoloViewer", () => {
 
     expect(wrapper.find("[data-test='holo-viewer-too-large']").exists()).toBe(
       true,
+    );
+  });
+
+  // New camera args rebuild the camera with a fresh uuid, and the orbit
+  // controls keyed by it come back without their change listener.
+  it("sets the camera's planes as properties, never as args", async () => {
+    setViewport(false);
+
+    const wrapper = await mount(12 * MB);
+    const camera = wrapper.find("TresPerspectiveCamera");
+
+    expect(camera.attributes("args")).toBeUndefined();
+    expect(camera.attributes()).toEqual(
+      expect.objectContaining({ fov: "35", near: expect.any(String) }),
     );
   });
 });
