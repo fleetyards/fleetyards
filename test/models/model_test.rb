@@ -25,6 +25,44 @@ class ModelTest < ActiveSupport::TestCase
     )
   end
 
+  USDZ = "PK\x03\x04#{"\0" * 60}".b
+
+  private def attach_holos(model, **files)
+    files.each do |name, filename|
+      io = filename.end_with?(".usdz") ? StringIO.new(USDZ) : File.open(Rails.root.join("test/fixtures/holo/plain.glb"))
+      model.public_send(:"#{name}=", ActiveStorage::Blob.create_and_upload!(io:, filename:))
+    end
+    model.save!
+    model.reload
+  end
+
+  test "a new lite holo without a USDZ of its own drops the old USDZ" do
+    model = attach_holos(create(:model), holo_lite: "flight_holo_lite.glb", holo_usdz: "flight_holo.usdz")
+
+    attach_holos(model, holo_lite: "flight_holo_lite.glb")
+
+    assert model.holo_lite.attached?
+    assert_not model.holo_usdz.attached?
+  end
+
+  test "a new lite holo with its USDZ keeps the new USDZ" do
+    model = attach_holos(create(:model), holo_lite: "flight_holo_lite.glb", holo_usdz: "flight_holo.usdz")
+    old = model.holo_usdz.blob
+
+    attach_holos(model, holo_lite: "flight_holo_lite.glb", holo_usdz: "flight_holo.usdz")
+
+    assert model.holo_usdz.attached?
+    assert_not_equal old, model.holo_usdz.blob
+  end
+
+  test "a new full holo keeps the USDZ built from the lite export" do
+    model = attach_holos(create(:model), holo_lite: "flight_holo_lite.glb", holo_usdz: "flight_holo.usdz")
+
+    attach_holos(model, holo: "flight_holo.glb")
+
+    assert model.holo_usdz.attached?
+  end
+
   # The concern reads the names in `after_commit`, where `attachment_changes` is
   # already empty -- so before they were captured in `after_save`, neither this
   # nor the trimming it guards ran at all.
