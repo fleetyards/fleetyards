@@ -720,7 +720,6 @@ defineExpose({
       <TresPerspectiveCamera
         :position="cameraPosition"
         :fov="cameraArgs[0]"
-        :aspect="cameraArgs[1]"
         :near="cameraArgs[2]"
         :far="cameraArgs[3]"
       />
