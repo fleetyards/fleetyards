@@ -180,8 +180,8 @@ importers:
         specifier: ^3.32.0
         version: 3.32.0(@floating-ui/dom@1.8.0)(@tiptap/core@3.32.0(@tiptap/pm@3.32.0))(@tiptap/pm@3.32.0)(vue@3.5.44(typescript@6.0.3))
       '@tresjs/cientos':
-        specifier: ^5.10.0
-        version: 5.10.0(@tresjs/core@5.10.0(three@0.186.1)(vue@3.5.44(typescript@6.0.3)))(react@19.1.0)(three@0.186.1)(vue@3.5.44(typescript@6.0.3))
+        specifier: ^5.10.1
+        version: 5.10.1(@tresjs/core@5.10.0(three@0.186.1)(vue@3.5.44(typescript@6.0.3)))(react@19.1.0)(three@0.186.1)(vue@3.5.44(typescript@6.0.3))
       '@tresjs/core':
         specifier: ^5.10.0
         version: 5.10.0(three@0.186.1)(vue@3.5.44(typescript@6.0.3))
@@ -3218,8 +3218,8 @@ packages:
       '@tiptap/pm': 3.32.0
       vue: ^3.0.0
 
-  '@tresjs/cientos@5.10.0':
-    resolution: {integrity: sha512-3zjyImsMR6sZwLc7nKUu2iVLWHPEOTsV1gXZzntaMG2AsPcSYX/2w/BSp9NriGVvi7SNTKjrq6G5ukdqynfUaA==}
+  '@tresjs/cientos@5.10.1':
+    resolution: {integrity: sha512-ub4Z3wLqinzPL4OmTsiuM0NbIdWS5IGfxhCGOvAm+lWPGeOufiCgkSbFcL95d7zZpppMCLqtjVT1Hno3M6yiKA==}
     peerDependencies:
       '@tresjs/core': ^5.9.1
       three: '>=0.133'
@@ -10215,7 +10215,7 @@ snapshots:
       '@tiptap/extension-bubble-menu': 3.32.0(@tiptap/core@3.32.0(@tiptap/pm@3.32.0))(@tiptap/pm@3.32.0)
       '@tiptap/extension-floating-menu': 3.32.0(@floating-ui/dom@1.8.0)(@tiptap/core@3.32.0(@tiptap/pm@3.32.0))(@tiptap/pm@3.32.0)
 
-  '@tresjs/cientos@5.10.0(@tresjs/core@5.10.0(three@0.186.1)(vue@3.5.44(typescript@6.0.3)))(react@19.1.0)(three@0.186.1)(vue@3.5.44(typescript@6.0.3))':
+  '@tresjs/cientos@5.10.1(@tresjs/core@5.10.0(three@0.186.1)(vue@3.5.44(typescript@6.0.3)))(react@19.1.0)(three@0.186.1)(vue@3.5.44(typescript@6.0.3))':
     dependencies:
       '@tresjs/core': 5.10.0(three@0.186.1)(vue@3.5.44(typescript@6.0.3))
       '@vueuse/core': 15.0.0(vue@3.5.44(typescript@6.0.3))
