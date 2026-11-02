@@ -4,14 +4,15 @@ class OutfitItem < ApplicationRecord
   # The worn slots the dressing room draws. Clothing has no holos to draw.
   ARMOR_SLOTS = %w[undersuit torso arms legs helmet backpack].freeze
 
-  # Where a weapon is carried: two primaries stowed on the back, a sidearm in
-  # the thigh holster. Not equipment slots, so numbered clear of them.
+  # Where a weapon is carried: a primary and a second, smaller one stowed on
+  # the back, a sidearm in the thigh holster. Not equipment slots, so numbered
+  # clear of them.
   WEAPON_SLOTS = {"primary" => 100, "secondary" => 101, "sidearm" => 102}.freeze
 
   # What each weapon slot takes, by the weapon's sub type.
   WEAPON_SUB_TYPES = {
     "primary" => %w[Medium Large],
-    "secondary" => %w[Medium Large],
+    "secondary" => %w[Medium],
     "sidearm" => %w[Small]
   }.freeze
 
