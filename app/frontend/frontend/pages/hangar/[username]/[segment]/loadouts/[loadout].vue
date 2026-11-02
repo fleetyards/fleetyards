@@ -448,7 +448,7 @@ const edit = () => {
   position: relative;
   flex: none;
   width: min(640px, 100%);
-  height: 360px;
+  aspect-ratio: 16 / 9;
 }
 
 .loadout-page__fullscreen {
