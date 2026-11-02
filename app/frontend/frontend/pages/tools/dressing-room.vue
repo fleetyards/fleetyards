@@ -564,7 +564,20 @@ const copyShareLink = () => {
   height: min(70vh, 48rem);
   min-height: 24rem;
   border-radius: 4px;
-  background: $gray-black;
+  // No box of its own: the page shows through, lit by a spot behind the
+  // figure and a glow on the floor under its pedestal.
+  background:
+    radial-gradient(
+      ellipse 42% 12% at 50% 90%,
+      rgba($primary, 0.28),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 55% 60% at 50% 42%,
+      rgba($primary, 0.16),
+      rgba($background, 0.35) 70%,
+      transparent 100%
+    );
 
   @media (min-width: $desktop-breakpoint) {
     height: min(78vh, 56rem);
