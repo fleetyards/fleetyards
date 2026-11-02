@@ -471,9 +471,7 @@ const nearPlaneFor = (cameraDistance: number) =>
 
 // Inside the room's walls: past them the room reads as a ball in the dark.
 const maxZoomDistance = computed(() =>
-  props.backdrop
-    ? BACKDROP_RADIUS * 0.7
-    : Math.max(250, fitDistance.value * 3),
+  props.backdrop ? BACKDROP_RADIUS * 0.7 : Math.max(250, fitDistance.value * 3),
 );
 
 const starsVisible = computed(

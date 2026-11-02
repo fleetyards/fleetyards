@@ -12,20 +12,8 @@
   &--framed &__canvas {
     border-radius: 16px;
     mask-image:
-      linear-gradient(
-        to right,
-        transparent,
-        #000 8%,
-        #000 92%,
-        transparent
-      ),
-      linear-gradient(
-        to bottom,
-        transparent,
-        #000 6%,
-        #000 70%,
-        transparent
-      );
+      linear-gradient(to right, transparent, #000 8%, #000 92%, transparent),
+      linear-gradient(to bottom, transparent, #000 6%, #000 70%, transparent);
     mask-composite: intersect;
   }
 
