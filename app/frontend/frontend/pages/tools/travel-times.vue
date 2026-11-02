@@ -312,6 +312,7 @@ const columns = computed<BaseTableCol<Component>[]>(() => {
       width: "80px",
       alignment: BaseTableColAlignmentEnum.CENTER,
       mobile: false,
+      skeletonMedia: "36px",
     },
     {
       name: "name",
