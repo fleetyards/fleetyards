@@ -932,24 +932,26 @@ const setup = async (scene: Group, animations: AnimationClip[]) => {
     // Shown once it is dressed and posed, rather than bare in its bind pose
     // while the pieces and clips load.
     scene.visible = false;
-    scene.traverse((node) => {
-      // Posed away from the bind pose, the stored bounds no longer hold.
-      if ((node as Mesh).isMesh) node.frustumCulled = false;
-    });
-    while (!unmounted && !(await attachRig(scene)));
+    try {
+      scene.traverse((node) => {
+        // Posed away from the bind pose, the stored bounds no longer hold.
+        if ((node as Mesh).isMesh) node.frustumCulled = false;
+      });
+      while (!unmounted && !(await attachRig(scene)));
 
-    placeRigLights(scene);
+      placeRigLights(scene);
 
-    if (props.model.rig.pedestal && !pedestal) {
-      pedestal = buildPedestal(
-        new Box3().setFromObject(scene, true),
-        props.color,
-      );
-      pedestal.visible = !props.fullscreen;
-      scene.add(pedestal);
+      if (props.model.rig.pedestal && !pedestal) {
+        pedestal = buildPedestal(
+          new Box3().setFromObject(scene, true),
+          props.color,
+        );
+        pedestal.visible = !props.fullscreen;
+        scene.add(pedestal);
+      }
+    } finally {
+      scene.visible = true;
     }
-
-    scene.visible = true;
   }
 
   // Asked again until the parts it frames are the ones that landed: a fitting
