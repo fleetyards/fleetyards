@@ -740,7 +740,7 @@ const cellHeight = (span: number) =>
   }
 
   &__fa {
-    font-size: 1.0625rem;
+    font-size: 17px;
     line-height: 15px;
     color: $primary;
     opacity: 1;
