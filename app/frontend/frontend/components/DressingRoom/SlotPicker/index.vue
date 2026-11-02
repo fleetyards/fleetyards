@@ -14,7 +14,11 @@ import Loader from "@/shared/components/Loader/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { INVENTORY_EQUIPMENT_TYPES } from "@/frontend/composables/useInventoryOptions";
 import { WEAPON_SUB_TYPES, isWeaponSlot } from "@/frontend/utils/dressingRoom";
-import { type SlotFit, fitsSlot } from "@/frontend/utils/dressingRoomFit";
+import {
+  type SlotFit,
+  fitsSlot,
+  providerNames,
+} from "@/frontend/utils/dressingRoomFit";
 import {
   type Equipment,
   type EquipmentSlotEnum,
@@ -35,14 +39,27 @@ const props = withDefaults(defineProps<Props>(), {
   fit: () => ({ kind: "open" }),
 });
 
-const fits = (item: Equipment) => fitsSlot(props.fit, item);
+// Worked out once per list rather than once per binding.
+const fitting = computed(
+  () =>
+    new Set(
+      records.value
+        .filter((item) => fitsSlot(props.fit, item))
+        .map((item) => item.id),
+    ),
+);
+
+const fits = (item: Equipment) => fitting.value.has(item.id);
 
 const misfitReason = computed(() =>
-  props.fit.kind === "open"
-    ? ""
-    : t("dressingRoom.fit.doesNotFit", {
-        item: props.fit.providers.map((provider) => provider.name).join(", "),
-      }),
+  t("dressingRoom.fit.doesNotFit", { item: providerNames(props.fit) }),
+);
+
+// Nothing worn offers this slot at all: said once, above the list.
+const noPort = computed(() =>
+  props.fit.kind === "none"
+    ? t("dressingRoom.fit.noPort", { item: providerNames(props.fit) })
+    : undefined,
 );
 
 const emit = defineEmits<{
@@ -171,6 +188,13 @@ onUnmounted(() => applySearch.cancel());
         <i class="fa-light fa-xmark" />
       </Btn>
     </div>
+    <p
+      v-if="noPort"
+      class="slot-picker__no-port"
+      data-test="dressing-room-slot-picker-no-port"
+    >
+      {{ noPort }}
+    </p>
     <Loader v-if="isFetching && !records.length" :loading="true" />
     <p
       v-else-if="!records.length"
@@ -249,6 +273,11 @@ onUnmounted(() => applySearch.cancel());
 .slot-picker__search {
   flex: 1;
   margin-bottom: 0;
+}
+
+.slot-picker__no-port {
+  margin: 0;
+  color: $warning;
 }
 
 .slot-picker__empty {

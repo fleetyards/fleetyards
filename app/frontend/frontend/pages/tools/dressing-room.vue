@@ -54,6 +54,7 @@ import {
 import {
   type SlotFit,
   fitsSlot,
+  providerNames,
   slotFit,
 } from "@/frontend/utils/dressingRoomFit";
 
@@ -209,9 +210,6 @@ const slotFits = computed(
       ALL_SLOTS.map((slot) => [slot, slotFit(slot, items.value)]),
     ) as Record<OutfitSlotEnum, SlotFit>,
 );
-
-const providerNames = (fit: SlotFit) =>
-  fit.kind === "open" ? "" : fit.providers.map((item) => item.name).join(", ");
 
 // Why a slot cannot take its piece, or anything at all; nothing when it fits.
 const fitNote = (slot: OutfitSlotEnum) => {
