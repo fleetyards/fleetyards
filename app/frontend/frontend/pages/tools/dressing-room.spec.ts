@@ -42,7 +42,7 @@ const EQUIPMENT: Record<string, Equipment> = {
   } as unknown as Equipment,
   "s-38": piece("s-38", { holo: media("s38.glb") }),
   "crusader-pack": {
-    ...piece("crusader-pack", {}),
+    ...piece("crusader-pack", { holoRiggedMale: media("pack_rigged.glb") }),
     fit: {
       type: "Char_Armor_Backpack",
       ports: [
@@ -211,18 +211,19 @@ describe("ToolsDressingRoomPage", () => {
     ]);
   });
 
-  it("leaves a rifle undrawn on a backpack whose mount the rig lacks", async () => {
+  it("hangs a rifle from the worn backpack's own mount", async () => {
     const { wrapper } = await mount({
       primary: "p4-ar-hung",
       backpack: "crusader-pack",
     });
 
-    expect(viewerModel(wrapper).rig.attachments ?? []).toEqual([]);
-    expect(
-      wrapper
-        .find('[data-test="dressing-room-position-pending-primary"]')
-        .exists(),
-    ).toBe(true);
+    expect(viewerModel(wrapper).rig.attachments).toEqual([
+      expect.objectContaining({
+        path: "/p4ar.glb",
+        bone: "wep_stocked_attach_3_override",
+        from: "/pack_rigged.glb",
+      }),
+    ]);
   });
 
   it("switches the body and keeps it in the address", async () => {
