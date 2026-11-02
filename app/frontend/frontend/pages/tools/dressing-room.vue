@@ -157,12 +157,22 @@ const body = computed(
   () => bodies.value?.find((entry) => entry.key === BODY_KEY)?.holo,
 );
 
-const model = computed(() => outfitModel(body.value, pieces.value));
+// A body that does not load leaves the pieces to stand on their own.
+const bodyFailed = ref(false);
+
+const model = computed(() =>
+  outfitModel(bodyFailed.value ? undefined : body.value, pieces.value),
+);
 
 const holoUnavailable = () => {
   const root = model.value;
+  if (!root) return;
 
-  if (root?.textured) failedPaths.value = [...failedPaths.value, root.path];
+  if (root.path === body.value?.url) {
+    bodyFailed.value = true;
+  } else if (root.textured) {
+    failedPaths.value = [...failedPaths.value, root.path];
+  }
 };
 
 const piecesPending = computed(() => selectedSlots.value.some(loadingSlot));

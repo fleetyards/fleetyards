@@ -137,6 +137,15 @@ describe("ToolsDressingRoomPage", () => {
     bodies.value = [{ key: "male", holo: media("body.glb") }];
   });
 
+  it("draws the pieces on their own when the body does not load", async () => {
+    const { wrapper } = await mount({ legs: "adp-legs" });
+
+    wrapper.findComponent({ name: "HoloViewer" }).vm.$emit("unavailable");
+    await flushPromises();
+
+    expect(viewerModel(wrapper).path).toBe("/legs.glb");
+  });
+
   it("shows how to start with nothing to draw", async () => {
     bodies.value = [];
 
