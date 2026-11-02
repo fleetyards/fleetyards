@@ -29,12 +29,14 @@ vi.mock("@/frontend/composables/useFeatures", () => ({
 const openLoadoutModal = vi.fn();
 const openEditModal = vi.fn();
 const openLoadoutView = vi.fn();
+const openAddonsView = vi.fn();
 
 vi.mock("@/frontend/composables/useVehicleModals", () => ({
   useVehicleModals: () => ({
     openLoadoutModal,
     openEditModal,
     openLoadoutView,
+    openAddonsView,
   }),
 }));
 
@@ -326,7 +328,7 @@ describe("vehicle add-ons shortcut", () => {
     },
   );
 
-  it("shows what is fitted on the owner's loaner", async () => {
+  it("shows the add-ons on the owner's loaner", async () => {
     const ship = vehicle({
       loaner: true,
       modelModuleIds: ["m1"],
@@ -337,10 +339,10 @@ describe("vehicle add-ons shortcut", () => {
     await wrapper.find(".vehicle-panel-addons").trigger("click");
 
     expect(openEditModal).not.toHaveBeenCalledWith(ship, expect.anything());
-    expect(openLoadoutView).toHaveBeenLastCalledWith(ship);
+    expect(openAddonsView).toHaveBeenLastCalledWith(ship);
   });
 
-  it("shows a visitor what is fitted", async () => {
+  it("shows a visitor the add-ons rather than a loadout", async () => {
     const ship = vehicle({
       modelModuleIds: ["m1"],
       model: { ...vehicle().model, hasModules: true },
@@ -349,7 +351,8 @@ describe("vehicle add-ons shortcut", () => {
 
     await wrapper.find(".vehicle-panel-addons").trigger("click");
 
-    expect(openLoadoutView).toHaveBeenLastCalledWith(ship);
+    expect(openAddonsView).toHaveBeenLastCalledWith(ship);
+    expect(openLoadoutView).not.toHaveBeenCalledWith(ship);
   });
 });
 

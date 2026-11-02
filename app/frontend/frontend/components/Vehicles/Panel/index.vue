@@ -196,10 +196,10 @@ const filterManufacturerQuery = (manufacturer: Manufacturer) => ({
 
 const comlink = useComlink();
 
-const { openEditModal, openLoadoutView } = useVehicleModals();
+const { openEditModal, openLoadoutView, openAddonsView } = useVehicleModals();
 
 // The owner edits what the ship carries; a visitor, or anyone looking at a
-// loaner or a wishlist ship, sees what is fitted.
+// loaner or a wishlist ship, sees it read-only.
 const openAddonsModal = () =>
   props.editable &&
   !(props.vehicle as Vehicle).loaner &&
@@ -209,7 +209,7 @@ const openAddonsModal = () =>
           ? VehicleEditTabsEnum.MODULES
           : VehicleEditTabsEnum.UPGRADES,
       })
-    : openLoadoutView(props.vehicle);
+    : openAddonsView(props.vehicle);
 
 const activeLoadout = computed(() => props.vehicle.activeLoadout);
 
