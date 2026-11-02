@@ -55,6 +55,7 @@ import {
   applyHighlights,
   buildMounts,
   cloneShared,
+  disposeTextures,
   loadHolo,
   mountsHighlightKey,
   mountsLayoutKey,
@@ -195,10 +196,7 @@ const disposeOriginal = (original: Material | Material[]) => {
       continue;
     }
 
-    for (const value of Object.values(entry)) {
-      if ((value as Texture | null)?.isTexture) (value as Texture).dispose();
-    }
-
+    disposeTextures(entry);
     entry.dispose();
   }
 };
@@ -569,7 +567,9 @@ const withinRig = (node: Object3D) => {
 };
 
 const pose = (scene: Group) => {
+  // Its cached bindings and actions go with it, or every pose tried stays.
   mixer.value?.stopAllAction();
+  mixer.value?.uncacheRoot(scene);
   mixer.value = undefined;
 
   const wanted = props.model.rig?.clip;

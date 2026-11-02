@@ -232,13 +232,18 @@ const closeOnEscape = (event: KeyboardEvent) => {
   if (event.key === "Escape") disableFullscreen();
 };
 
-watch(internalFullscreen, (fullscreen) => {
-  if (fullscreen) {
-    window.addEventListener("keydown", closeOnEscape);
-  } else {
-    window.removeEventListener("keydown", closeOnEscape);
-  }
-});
+// Immediate, so a viewer that opens full screen listens from the start.
+watch(
+  internalFullscreen,
+  (fullscreen) => {
+    if (fullscreen) {
+      window.addEventListener("keydown", closeOnEscape);
+    } else {
+      window.removeEventListener("keydown", closeOnEscape);
+    }
+  },
+  { immediate: true },
+);
 
 onUnmounted(() => window.removeEventListener("keydown", closeOnEscape));
 

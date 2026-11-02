@@ -185,8 +185,16 @@ export const rigLayoutKey = (rig?: HoloRig) =>
   rig
     ? [
         ...rig.pieces.map((piece) => piece.path),
-        ...(rig.attachments ?? []).map(
-          (attachment) => `${attachment.path}@${attachment.bone}`,
+        // Everything that changes how a part is drawn: a helper that arrives
+        // later moves it, a painted holo that failed swaps it.
+        ...(rig.attachments ?? []).map((attachment) =>
+          JSON.stringify([
+            attachment.path,
+            attachment.bone,
+            attachment.textured,
+            attachment.fallbackPath,
+            attachment.helper,
+          ]),
         ),
       ].join(";")
     : "";

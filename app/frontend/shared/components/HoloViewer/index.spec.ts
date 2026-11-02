@@ -103,6 +103,18 @@ describe("HoloViewer", () => {
     ).toContain("40");
   });
 
+  it("leaves full screen on Escape, opened full screen from the start", async () => {
+    setViewport(false);
+    const wrapper = await mountWithDefaults<typeof HoloViewer>(HoloViewer, {
+      props: { models: [{ path: "/holo.gltf" }], fullscreen: true },
+    });
+
+    window.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+    await nextTick();
+
+    expect(wrapper.find(".holo-viewer--fullscreen").exists()).toBe(false);
+  });
+
   it("never asks a desktop", async () => {
     setViewport(false);
 

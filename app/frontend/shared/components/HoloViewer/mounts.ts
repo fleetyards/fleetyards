@@ -65,16 +65,16 @@ export const retainMountCache = () => {
   viewers += 1;
 };
 
-// The last viewer gone, the downloads go too: a long session browsing loadouts
-// would otherwise keep every part it ever showed.
 // A painted part keeps the maps it was exported with, which a material's own
 // dispose leaves on the GPU.
-const disposeTextures = (material: Material) => {
+export const disposeTextures = (material: Material) => {
   for (const value of Object.values(material)) {
     if ((value as Texture | null)?.isTexture) (value as Texture).dispose();
   }
 };
 
+// The last viewer gone, the downloads go too: a long session browsing loadouts
+// would otherwise keep every part it ever showed.
 export const releaseMountCache = () => {
   viewers = Math.max(0, viewers - 1);
   if (viewers) return;
