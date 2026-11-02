@@ -51,7 +51,11 @@
         "male": "男性",
         "female": "女性"
       },
-      "positionPending": "位置尚未匯出"
+      "positionPending": "位置尚未匯出",
+      "fit": {
+        "noPort": "%{item} 沒有此欄位",
+        "doesNotFit": "與 %{item} 不相容"
+      }
     }
   }
 }

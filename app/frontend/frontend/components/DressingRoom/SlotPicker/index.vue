@@ -14,6 +14,7 @@ import Loader from "@/shared/components/Loader/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { INVENTORY_EQUIPMENT_TYPES } from "@/frontend/composables/useInventoryOptions";
 import { WEAPON_SUB_TYPES, isWeaponSlot } from "@/frontend/utils/dressingRoom";
+import { type SlotFit, fitsSlot } from "@/frontend/utils/dressingRoomFit";
 import {
   type Equipment,
   type EquipmentSlotEnum,
@@ -24,11 +25,25 @@ import {
 type Props = {
   slot: OutfitSlotEnum;
   selectedSlug?: string;
+  // What the worn pieces leave room for: anything else is shown, but greyed
+  // out with the reason.
+  fit?: SlotFit;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   selectedSlug: undefined,
+  fit: () => ({ kind: "open" }),
 });
+
+const fits = (item: Equipment) => fitsSlot(props.fit, item);
+
+const misfitReason = computed(() =>
+  props.fit.kind === "open"
+    ? ""
+    : t("dressingRoom.fit.doesNotFit", {
+        item: props.fit.providers.map((provider) => provider.name).join(", "),
+      }),
+);
 
 const emit = defineEmits<{
   select: [item: Equipment];
@@ -173,7 +188,11 @@ onUnmounted(() => applySearch.cancel());
         <button
           type="button"
           class="slot-picker__item"
-          :class="{ 'slot-picker__item--selected': item.slug === selectedSlug }"
+          :class="{
+            'slot-picker__item--selected': item.slug === selectedSlug,
+            'slot-picker__item--misfit': !fits(item),
+          }"
+          :disabled="!fits(item)"
           :data-test="`dressing-room-option-${item.slug}`"
           @click="emit('select', item)"
         >
@@ -191,6 +210,12 @@ onUnmounted(() => applySearch.cancel());
             <span class="slot-picker__name">{{ item.name }}</span>
             <span v-if="item.manufacturer" class="slot-picker__sub">
               {{ item.manufacturer.name }}
+            </span>
+            <span
+              v-if="!fits(item)"
+              class="slot-picker__sub slot-picker__sub--misfit"
+            >
+              {{ misfitReason }}
             </span>
           </span>
         </button>
@@ -264,6 +289,15 @@ onUnmounted(() => applySearch.cancel());
   &:focus-visible {
     background: $gray-black-hover;
   }
+}
+
+.slot-picker__item--misfit {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.slot-picker__sub--misfit {
+  color: $warning;
 }
 
 .slot-picker__item--selected {

@@ -49,6 +49,11 @@ import {
   riggedOutfitModel,
   riggedPieceHolo,
 } from "@/frontend/utils/dressingRoom";
+import {
+  type SlotFit,
+  fitsSlot,
+  slotFit,
+} from "@/frontend/utils/dressingRoomFit";
 
 // The figure faces -Z, as the game's characters face its +Y: the camera starts
 // in front of it.
@@ -193,6 +198,34 @@ const items = computed(
       ]),
     ) as Partial<Record<OutfitSlotEnum, Equipment>>,
 );
+
+// What each slot may take, from the ports of what is worn: an arms slot on a
+// flight suit takes nothing, a light core takes a light backpack only.
+const slotFits = computed(
+  () =>
+    Object.fromEntries(
+      ALL_SLOTS.map((slot) => [slot, slotFit(slot, items.value)]),
+    ) as Record<OutfitSlotEnum, SlotFit>,
+);
+
+const providerNames = (fit: SlotFit) =>
+  fit.kind === "open" ? "" : fit.providers.map((item) => item.name).join(", ");
+
+// Why a slot cannot take its piece, or anything at all; nothing when it fits.
+const fitNote = (slot: OutfitSlotEnum) => {
+  const fit = slotFits.value[slot];
+
+  if (fit.kind === "none") {
+    return t("dressingRoom.fit.noPort", { item: providerNames(fit) });
+  }
+
+  const item = items.value[slot];
+  if (item && !fitsSlot(fit, item)) {
+    return t("dressingRoom.fit.doesNotFit", { item: providerNames(fit) });
+  }
+
+  return undefined;
+};
 
 const loadingSlot = (slot: OutfitSlotEnum) =>
   !!selection.value[slot] &&
@@ -482,6 +515,7 @@ const copyShareLink = () => {
           v-if="picking"
           :slot="picking"
           :selected-slug="selection[picking]"
+          :fit="slotFits[picking]"
           @select="choose(picking, $event)"
           @close="picking = undefined"
         />
@@ -508,6 +542,7 @@ const copyShareLink = () => {
                   type="button"
                   class="dressing-room__slot-pick"
                   :data-test="`dressing-room-pick-${slot}`"
+                  :disabled="slotFits[slot].kind === 'none' && !selection[slot]"
                   @click="picking = slot"
                 >
                   <span class="dressing-room__slot-label">
@@ -535,7 +570,14 @@ const copyShareLink = () => {
                     {{ t("dressingRoom.choose") }}
                   </span>
                   <span
-                    v-if="items[slot] && positionPending(slot)"
+                    v-if="fitNote(slot)"
+                    class="dressing-room__slot-note dressing-room__slot-note--warning"
+                    :data-test="`dressing-room-fit-${slot}`"
+                  >
+                    {{ fitNote(slot) }}
+                  </span>
+                  <span
+                    v-else-if="items[slot] && positionPending(slot)"
                     class="dressing-room__slot-note"
                     :data-test="`dressing-room-position-pending-${slot}`"
                   >
@@ -792,5 +834,9 @@ const copyShareLink = () => {
   grid-column: 2;
   color: $gray-light;
   font-size: 0.85em;
+}
+
+.dressing-room__slot-note--warning {
+  color: $warning;
 }
 </style>

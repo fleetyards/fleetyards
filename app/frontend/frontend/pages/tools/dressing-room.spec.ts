@@ -41,6 +41,21 @@ const EQUIPMENT: Record<string, Equipment> = {
     },
   } as unknown as Equipment,
   "s-38": piece("s-38", { holo: media("s38.glb") }),
+  "flight-suit": {
+    ...piece("flight-suit", {}),
+    name: "Flight Suit",
+    fit: {
+      type: "Char_Armor_Undersuit",
+      ports: [
+        {
+          name: "Armor_Helmet",
+          types: [{ type: "Char_Armor_Helmet" }],
+          minSize: 1,
+          maxSize: 1,
+        },
+      ],
+    },
+  } as unknown as Equipment,
 };
 
 const MALE: CharacterBody = {
@@ -329,6 +344,22 @@ describe("ToolsDressingRoomPage", () => {
     });
 
     bodies.value = [MALE];
+  });
+
+  it("closes the slots the undersuit offers no port for", async () => {
+    const { wrapper } = await mount({ undersuit: "flight-suit" });
+
+    expect(
+      wrapper.find('[data-test="dressing-room-fit-arms"]').text(),
+    ).toContain("Flight Suit has no slot for this");
+    expect(
+      wrapper
+        .find('[data-test="dressing-room-pick-arms"]')
+        .attributes("disabled"),
+    ).toBeDefined();
+    expect(
+      wrapper.find('[data-test="dressing-room-fit-helmet"]').exists(),
+    ).toBe(false);
   });
 
   it("shows how to start with nothing to draw", async () => {
