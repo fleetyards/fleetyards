@@ -164,7 +164,8 @@ const VIEWPOINTS: Record<string, string> = {
 // holo.mtl beside the glTF, and every one of them answers to "holo".
 const VIEW_EXTENSIONS = ["png", "jpg", "jpeg", "webp", "gif"];
 const HOLO_EXTENSIONS = ["gltf", "glb"];
-// Only the flight holo is placed in AR, so only it is exported as USDZ.
+// Only the flight holo is placed in AR, so only it is exported as USDZ -- from
+// its lite export, and named either way.
 const AR_HOLO_EXTENSION = "usdz";
 
 // The regex accepts any of the three states, so the prefix that matched decides
@@ -209,7 +210,9 @@ export const fieldFor = (filename: string): FolderField | undefined => {
     const prefix = prefixFor(holo[1]);
 
     if (extension === AR_HOLO_EXTENSION) {
-      return prefix || holo[2] ? undefined : "holoUsdz";
+      const variant = holo[2]?.toLowerCase();
+
+      return prefix || (variant && variant !== "lite") ? undefined : "holoUsdz";
     }
 
     if (!HOLO_EXTENSIONS.includes(extension)) {

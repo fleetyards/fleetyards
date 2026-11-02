@@ -198,7 +198,9 @@
       "Flight-Holo.USDZ": "holoUsdz",
       "landed_holo.usdz": null,
       "extended_holo.usdz": null,
-      "flight_holo_lite.usdz": null,
+      "flight_holo_lite.usdz": "holoUsdz",
+      "holo-lite.usdz": "holoUsdz",
+      "landed_holo_lite.usdz": null,
       "flight_holo_textured.usdz": null,
       "flight_top.usdz": null
     }
