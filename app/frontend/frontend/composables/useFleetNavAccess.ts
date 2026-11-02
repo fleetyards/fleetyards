@@ -39,7 +39,10 @@ export const eventsRouteFor = (
 
 export const useFleetNavAccess = (
   fleet: MaybeRefOrGetter<
-    Pick<Fleet, "features" | "publicFleet" | "squadronsEnabled"> | undefined
+    | (Pick<Fleet, "features" | "publicFleet" | "squadronsEnabled"> & {
+        slug?: string;
+      })
+    | undefined
   >,
 ) => {
   const route = useRoute();
@@ -48,16 +51,23 @@ export const useFleetNavAccess = (
 
   const { isFleetFeatureEnabled, isFleetSquadronsEnabled } = useFeatures();
 
-  const fleetSlug = computed(() => route.params.slug as string);
+  // The fleet's own slug first: an account page opened from a fleet keeps the
+  // fleet in the navigation, but its route carries no slug.
+  const fleetSlug = computed(
+    () => toValue(fleet)?.slug ?? (route.params.slug as string | undefined),
+  );
 
-  const hasSlug = computed(() => route.params.slug !== undefined);
+  const hasSlug = computed(() => !!fleetSlug.value);
 
-  const { data: membership } = useFleetMembershipQuery(fleetSlug, {
-    query: {
-      retry: false,
-      enabled: computed(() => hasSlug.value && sessionStore.isAuthenticated),
+  const { data: membership } = useFleetMembershipQuery(
+    computed(() => fleetSlug.value ?? ""),
+    {
+      query: {
+        retry: false,
+        enabled: computed(() => hasSlug.value && sessionStore.isAuthenticated),
+      },
     },
-  });
+  );
 
   const hasResourceAccess = (...allowed: FleetRoleResourceAccessEnum[]) => {
     const access = membership.value?.fleetRole?.resourceAccess;
