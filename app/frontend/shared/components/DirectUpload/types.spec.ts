@@ -15,6 +15,12 @@ describe("fileTypeOf", () => {
     expect(fileTypeOf({ name: "Holo.GLTF", type: "" })).toBe("model/gltf+json");
   });
 
+  it("types an untyped USDZ by its extension", () => {
+    expect(fileTypeOf({ name: "flight_holo.usdz", type: "" })).toBe(
+      "model/vnd.usdz+zip",
+    );
+  });
+
   it("leaves any other untyped file untyped", () => {
     expect(fileTypeOf({ name: "holo.blend", type: "" })).toBe("");
     expect(fileTypeOf({ name: "glb", type: "" })).toBe("");

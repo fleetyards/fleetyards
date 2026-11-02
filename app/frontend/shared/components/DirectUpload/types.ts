@@ -11,15 +11,21 @@ export const fileTypeMap: Record<AllowedFileTypes, string[]> = {
   video: ["video/mp4", "video/webm", "video/ogg"],
   audio: ["audio/mpeg", "audio/ogg", "audio/wav"],
   pdf: ["application/pdf"],
-  holo: ["application/octet-stream", "model/gltf+json", "model/gltf-binary"],
+  holo: [
+    "application/octet-stream",
+    "model/gltf+json",
+    "model/gltf-binary",
+    "model/vnd.usdz+zip",
+  ],
 };
 
 // The browser takes `File.type` from the operating system's registry, and
-// Windows registers nothing for glTF, so a valid model arrives typed "". Only
-// these extensions are guessed: anything else without a type stays untyped.
+// Windows registers nothing for glTF or USDZ, so a valid model arrives typed "".
+// Only these extensions are guessed: anything else without a type stays untyped.
 const typesByExtension: Record<string, string> = {
   glb: "model/gltf-binary",
   gltf: "model/gltf+json",
+  usdz: "model/vnd.usdz+zip",
 };
 
 export const fileTypeOf = (file: Pick<File, "name" | "type">): string => {
