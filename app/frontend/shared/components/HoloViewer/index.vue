@@ -714,7 +714,16 @@ defineExpose({
       alpha
       :on-error="handleRenderError"
     >
-      <TresPerspectiveCamera :position="cameraPosition" :args="cameraArgs" />
+      <!-- Set as properties, never as `args`: new args build a camera whose uuid
+           is copied over, and the orbit controls, keyed by that uuid, come back
+           without their change listener, so the light stops following. -->
+      <TresPerspectiveCamera
+        :position="cameraPosition"
+        :fov="cameraArgs[0]"
+        :aspect="cameraArgs[1]"
+        :near="cameraArgs[2]"
+        :far="cameraArgs[3]"
+      />
       <TresDirectionalLight
         :position="lightPosition"
         :intensity="textured ? 1.5 : 2"
