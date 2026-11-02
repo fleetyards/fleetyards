@@ -581,6 +581,7 @@ const copyShareLink = () => {
       <aside class="dressing-room__side dressing-room__side--outfit">
         <BtnGroup
           v-if="bodyOptions.length > 1"
+          segmented
           class="dressing-room__bodies"
           data-test="dressing-room-bodies"
         >
@@ -588,7 +589,6 @@ const copyShareLink = () => {
             v-for="option in bodyOptions"
             :key="option"
             :active="option === bodyKey"
-            :aria-pressed="option === bodyKey"
             :data-test="`dressing-room-body-${option}`"
             @click="selectBody(option)"
           >
