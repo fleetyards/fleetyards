@@ -49,13 +49,13 @@ const faceTexture = (color: string) => {
     center,
     center,
   );
-  glow.addColorStop(0, rgba(0.35));
-  glow.addColorStop(0.45, rgba(0.08));
+  glow.addColorStop(0, rgba(0.28));
+  glow.addColorStop(0.4, rgba(0.06));
   glow.addColorStop(1, rgba(0));
   context.fillStyle = glow;
   context.fillRect(0, 0, size, size);
 
-  context.strokeStyle = rgba(0.45);
+  context.strokeStyle = rgba(0.3);
   [0.32, 0.6].forEach((radius) => {
     context.lineWidth = 2;
     context.beginPath();
@@ -117,10 +117,11 @@ export const buildPedestal = (figure: Box3, color: string) => {
     new LatheGeometry(profile, SEGMENTS),
     // Phong ignores the scene's environment, so the pad looks the same
     // whether or not a painted part brings the room light with it.
+    // Gunmetal: a dark blue-grey, with bright, tight highlights.
     new MeshPhongMaterial({
-      color: "#15191e",
-      specular: "#3d4650",
-      shininess: 60,
+      color: "#5b646d",
+      specular: "#e6ecf1",
+      shininess: 110,
     }),
   );
 
