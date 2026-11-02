@@ -43,6 +43,7 @@ import {
   bindToBones,
   bonesByName,
   buildPedestal,
+  type RigAttachment,
   cloneRigPiece,
   disposePedestal,
   loadClips,
@@ -51,6 +52,7 @@ import {
 import {
   applyHighlights,
   buildMounts,
+  cloneShared,
   loadHolo,
   mountsHighlightKey,
   mountsLayoutKey,
@@ -533,13 +535,48 @@ const pose = (scene: Group) => {
   invalidate();
 };
 
+// A rigid item's holo, turned into its bone's axes; its plain holo when the
+// painted one does not load, and nothing when neither does.
+const loadAttachment = async (attachment: RigAttachment) => {
+  const load = (path: string) =>
+    loadHolo(path).then((holo) => {
+      // The holos and the rig share the export's frame, so a holo sits on
+      // its bone as it is.
+      const group = new Group();
+      group.add(cloneShared(holo));
+      return group;
+    });
+
+  try {
+    const group = await load(attachment.path);
+    group.userData.textured = !!attachment.textured;
+    return { group, bone: attachment.bone, textured: !!attachment.textured };
+  } catch (error) {
+    if (!attachment.fallbackPath) {
+      console.warn("An attached part did not load", error);
+      return undefined;
+    }
+  }
+
+  try {
+    return {
+      group: await load(attachment.fallbackPath),
+      bone: attachment.bone,
+      textured: false,
+    };
+  } catch (error) {
+    console.warn("An attached part did not load", error);
+    return undefined;
+  }
+};
+
 // Whether these pieces landed; a newer request supersedes them otherwise.
 const attachRig = async (scene: Group) => {
   const request = ++rigRequest;
   const rig = props.model.rig;
   if (!rig) return true;
 
-  const [pieces, clips] = await Promise.all([
+  const [pieces, attachments, clips] = await Promise.all([
     Promise.all(
       rig.pieces.map((piece) =>
         loadHolo(piece.path)
@@ -550,6 +587,7 @@ const attachRig = async (scene: Group) => {
           }),
       ),
     ),
+    Promise.all((rig.attachments ?? []).map(loadAttachment)),
     rig.animations
       ? loadClips(rig.animations).catch(() => [] as AnimationClip[])
       : Promise.resolve([] as AnimationClip[]),
@@ -559,14 +597,16 @@ const attachRig = async (scene: Group) => {
 
   if (rigRoot) {
     scene.remove(rigRoot);
-    (rigRoot.userData.grafted as Object3D[]).forEach((bone) =>
-      bone.removeFromParent(),
-    );
+    [
+      ...(rigRoot.userData.attached as Object3D[]),
+      ...(rigRoot.userData.grafted as Object3D[]),
+    ].forEach((node) => node.removeFromParent());
   }
 
   const bones = bonesByName(scene);
   const next = new Group();
   next.userData.grafted = [];
+  next.userData.attached = [];
 
   pieces.forEach((piece) => {
     if (!piece) return;
@@ -574,6 +614,20 @@ const attachRig = async (scene: Group) => {
     const { meshes, grafted } = bindToBones(piece, bones);
     if (meshes.length) next.add(...meshes);
     next.userData.grafted.push(...grafted);
+  });
+
+  // After the pieces: a holster or a weapon mount is a bone a piece brings.
+  const withHelpers = bonesByName(scene);
+
+  attachments.forEach((attachment) => {
+    if (!attachment) return;
+
+    const bone = withHelpers.get(attachment.bone);
+    if (!bone) return;
+
+    bone.add(attachment.group);
+    next.userData.attached.push(attachment.group);
+    if (!attachment.textured) setMaterials(attachment.group);
   });
 
   scene.add(next);

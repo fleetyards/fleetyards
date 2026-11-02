@@ -26,8 +26,21 @@ export type RigPiece = {
   size?: number;
 };
 
+// A rigid item pinned to one of the figure's bones -- a weapon in a holster or
+// a hand, a backpack on its mount -- drawn from its ordinary holo.
+export type RigAttachment = {
+  path: string;
+  bone: string;
+  size?: number;
+  // Painted: drawn with its own materials, not the holo's.
+  textured?: boolean;
+  // Loaded in place of a painted holo that does not load, and drawn plain.
+  fallbackPath?: string;
+};
+
 export type HoloRig = {
   pieces: RigPiece[];
+  attachments?: RigAttachment[];
   // The clips that pose the body and every piece by bone name.
   animations?: string;
   clip?: string;
@@ -186,7 +199,20 @@ export const bindToBones = (piece: Object3D, bodyBones: Map<string, Bone>) => {
 };
 
 export const rigLayoutKey = (rig?: HoloRig) =>
-  rig ? rig.pieces.map((piece) => piece.path).join(";") : "";
+  rig
+    ? [
+        ...rig.pieces.map((piece) => piece.path),
+        ...(rig.attachments ?? []).map(
+          (attachment) => `${attachment.path}@${attachment.bone}`,
+        ),
+      ].join(";")
+    : "";
+
+export const rigTextured = (rig?: HoloRig) =>
+  !!rig?.attachments?.some((attachment) => attachment.textured);
 
 export const rigSize = (rig?: HoloRig) =>
-  rig?.pieces.reduce((sum, piece) => sum + (piece.size ?? 0), 0) ?? 0;
+  [...(rig?.pieces ?? []), ...(rig?.attachments ?? [])].reduce(
+    (sum, part) => sum + (part.size ?? 0),
+    0,
+  );

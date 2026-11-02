@@ -44,7 +44,11 @@ import {
   mountsSize,
   mountsTextured,
 } from "@/shared/components/HoloViewer/mounts";
-import { type HoloRig, rigSize } from "@/shared/components/HoloViewer/rig";
+import {
+  type HoloRig,
+  rigSize,
+  rigTextured,
+} from "@/shared/components/HoloViewer/rig";
 
 export type HoloModel = {
   path: string;
@@ -148,7 +152,10 @@ const confirmedSize = ref(0);
 // Drawn with its own colours, which the tone mapping keeps as they are rather
 // than pushing the dark ones towards black.
 const textured = computed(() =>
-  props.models.some((model) => model.textured || mountsTextured(model.mounts)),
+  props.models.some(
+    (model) =>
+      model.textured || mountsTextured(model.mounts) || rigTextured(model.rig),
+  ),
 );
 
 const totalSize = computed(() =>
