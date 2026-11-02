@@ -212,6 +212,8 @@ const previewSlots = computed(() =>
 // Without a holo of the fitting, the ship's angled render stands in for it.
 const previewShown = ref(false);
 
+const preview = ref<InstanceType<typeof LoadoutPreview>>();
+
 const angledImage = computed(() => {
   const media = model.value?.media;
   const file = media?.angledViewColored || media?.angledView;
@@ -357,12 +359,25 @@ const edit = () => {
                   :class="{ 'loadout-page__holo--shown': previewShown }"
                 >
                   <LoadoutPreview
+                    ref="preview"
                     :model-slug="vehicle.model.slug"
                     :slots="previewSlots"
+                    variant="stage"
                     test-id="vehicle-loadout-page-preview"
                     @available="previewShown = $event"
                   />
                 </div>
+                <Btn
+                  v-if="previewShown"
+                  :size="BtnSizesEnum.SM"
+                  :aria-label="t('actions.vehicleOverview.fullscreenHolo')"
+                  v-tooltip="t('actions.vehicleOverview.fullscreenHolo')"
+                  class="loadout-page__fullscreen"
+                  data-test="vehicle-loadout-page-fullscreen"
+                  @click="preview?.enableFullscreen()"
+                >
+                  <i class="fa-light fa-expand" />
+                </Btn>
               </div>
             </div>
 
@@ -432,8 +447,14 @@ const edit = () => {
 .loadout-page__visual {
   position: relative;
   flex: none;
-  width: min(360px, 100%);
-  height: 200px;
+  width: min(640px, 100%);
+  aspect-ratio: 16 / 9;
+}
+
+.loadout-page__fullscreen {
+  position: absolute;
+  top: 8px;
+  right: 8px;
 }
 
 .loadout-page__picture,

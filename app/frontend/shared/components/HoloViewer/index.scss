@@ -19,7 +19,7 @@
 
   &--inline {
     position: relative;
-    max-height: 200px;
+    max-height: var(--holo-viewer-inline-max-height, 200px);
   }
 
   &:hover {

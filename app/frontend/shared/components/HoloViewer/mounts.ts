@@ -6,7 +6,7 @@ import {
   type Texture,
 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { prepareGltfLoader } from "./gltfLoader";
+import { extrasLoadingManager, prepareGltfLoader } from "./gltfLoader";
 
 // A part drawn on a port of the holo below it: the port's place in its parent's
 // frame, the part's own holo, and whatever sits on the part's ports in turn.
@@ -104,7 +104,7 @@ export const loadHolo = (path: string) => {
   let scene = loaded.get(path);
 
   if (!scene) {
-    scene = prepareGltfLoader(new GLTFLoader())
+    scene = prepareGltfLoader(new GLTFLoader(extrasLoadingManager))
       .loadAsync(path)
       .then((gltf) => gltf.scene);
     // A failed download is tried again by the next preview that asks for it.

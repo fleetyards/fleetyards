@@ -203,13 +203,18 @@ provide(BTN_CONTAINER, {
   @apply bg-endcap;
 }
 
+/*
+ * Just inside the border, one row lower than a standalone button's: the track
+ * clips at the border, so an engaged member can light its own caps only on
+ * these rows, and lit and resting caps have to be one line.
+ */
 .btn-group::before {
-  top: -1px;
+  top: 0;
   border-radius: 0 0 var(--cap-r-btn, 1px) var(--cap-r-btn, 1px);
 }
 
 .btn-group::after {
-  bottom: -1px;
+  bottom: 0;
   border-radius: var(--cap-r-btn, 1px) var(--cap-r-btn, 1px) 0 0;
 }
 
@@ -221,6 +226,16 @@ provide(BTN_CONTAINER, {
 .btn-group--segmented {
   @apply bg-control-press border-edge-soft;
   padding: 3px;
+}
+
+/* A switch lights no member caps, so its own stay on the border rather than
+   in the well's padding. */
+.btn-group--segmented::before {
+  top: -1px;
+}
+
+.btn-group--segmented::after {
+  bottom: -1px;
 }
 
 /*

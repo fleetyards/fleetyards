@@ -40,7 +40,7 @@ import {
   Vector2,
 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { prepareGltfLoader } from "../gltfLoader";
+import { extrasLoadingManager, prepareGltfLoader } from "../gltfLoader";
 import { buildPedestal, disposePedestal } from "../pedestal";
 import {
   bindToBones,
@@ -867,7 +867,9 @@ let paintRequest = 0;
 
 const loadPaintMap = (url?: string) =>
   url
-    ? new TextureLoader().loadAsync(url).catch(() => undefined)
+    ? new TextureLoader(extrasLoadingManager)
+        .loadAsync(url)
+        .catch(() => undefined)
     : Promise.resolve(undefined);
 
 // Written like the export's own maps, which are in glTF's orientation.
