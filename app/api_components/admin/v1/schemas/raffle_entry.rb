@@ -24,6 +24,10 @@ module Admin
             prizeMailStatus: ::Admin::V1::Schemas::Enums::RaffleMailStatusEnum,
             prizeMailSentAt: {type: :string, format: "date-time"},
             claimable: {type: :boolean},
+            sharedIpWith: {type: :array, items: {type: :string}},
+            sameInboxAs: {type: :array, items: {type: :string}},
+            newAccount: {type: :boolean},
+            placeholderEmail: {type: :boolean},
             createdAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,

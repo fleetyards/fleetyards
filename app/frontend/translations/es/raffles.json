@@ -131,6 +131,19 @@
           "sent": "enviado",
           "delivered": "entregado",
           "bounced": "rebotado"
+        },
+        "warnings": "Avisos",
+        "warningLabels": {
+          "sharedIp": "IP compartida",
+          "sameInbox": "Mismo buzón",
+          "newAccount": "Cuenta nueva",
+          "noEmail": "Sin correo"
+        },
+        "warningDetails": {
+          "sharedIp": "Misma IP de inicio de sesión que: %{usernames}. A menudo un hogar o una red móvil.",
+          "sameInbox": "Mismo buzón de correo que: %{usernames}. Solo entra en el sorteo la participación más antigua.",
+          "newAccount": "Cuenta creada menos de un día antes de participar.",
+          "noEmail": "La cuenta no tiene dirección de correo. Se salta en el sorteo."
         }
       },
       "admin": {

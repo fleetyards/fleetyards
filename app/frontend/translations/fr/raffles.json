@@ -131,6 +131,19 @@
           "sent": "envoyé",
           "delivered": "distribué",
           "bounced": "rejeté"
+        },
+        "warnings": "Alertes",
+        "warningLabels": {
+          "sharedIp": "IP partagée",
+          "sameInbox": "Même boîte",
+          "newAccount": "Nouveau compte",
+          "noEmail": "Sans e-mail"
+        },
+        "warningDetails": {
+          "sharedIp": "Même IP de connexion que : %{usernames}. Souvent un foyer ou un réseau mobile.",
+          "sameInbox": "Même boîte e-mail que : %{usernames}. Seule la participation la plus ancienne est tirée au sort.",
+          "newAccount": "Compte créé moins d'un jour avant la participation.",
+          "noEmail": "Aucune adresse e-mail sur le compte. Ignoré lors du tirage."
         }
       },
       "admin": {

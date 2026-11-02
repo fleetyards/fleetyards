@@ -131,6 +131,19 @@
           "sent": "inviata",
           "delivered": "consegnata",
           "bounced": "respinta"
+        },
+        "warnings": "Avvisi",
+        "warningLabels": {
+          "sharedIp": "IP condiviso",
+          "sameInbox": "Stessa casella",
+          "newAccount": "Account nuovo",
+          "noEmail": "Nessuna email"
+        },
+        "warningDetails": {
+          "sharedIp": "Stesso IP di accesso di: %{usernames}. Spesso una famiglia o una rete mobile.",
+          "sameInbox": "Stessa casella email di: %{usernames}. Entra nell'estrazione solo la partecipazione più vecchia.",
+          "newAccount": "Account creato meno di un giorno prima della partecipazione.",
+          "noEmail": "Nessun indirizzo email sull'account. Saltato all'estrazione."
         }
       },
       "admin": {

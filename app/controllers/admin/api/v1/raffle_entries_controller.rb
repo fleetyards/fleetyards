@@ -16,6 +16,7 @@ module Admin
             .order(Arel.sql("draw_position ASC NULLS LAST, created_at DESC"))
             .page(page_params)
             .per(per_page(RaffleEntry))
+          @warnings = ::Raffles::EntryWarnings.new(@raffle)
         end
 
         private def set_raffle

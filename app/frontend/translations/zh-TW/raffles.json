@@ -131,6 +131,19 @@
           "sent": "已寄出",
           "delivered": "已送達",
           "bounced": "已退回"
+        },
+        "warnings": "警告",
+        "warningLabels": {
+          "sharedIp": "相同 IP",
+          "sameInbox": "相同信箱",
+          "newAccount": "新帳戶",
+          "noEmail": "無電子郵件"
+        },
+        "warningDetails": {
+          "sharedIp": "與以下使用者登入 IP 相同：%{usernames}。常見於同一家庭或行動網路。",
+          "sameInbox": "與以下使用者電子郵件信箱相同：%{usernames}。只有最早的參加會進入抽獎。",
+          "newAccount": "帳戶建立不到一天後即參加。",
+          "noEmail": "帳戶沒有電子郵件地址。抽獎時將被略過。"
         }
       },
       "admin": {

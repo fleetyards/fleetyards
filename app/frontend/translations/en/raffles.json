@@ -131,6 +131,19 @@
           "sent": "sent",
           "delivered": "delivered",
           "bounced": "bounced"
+        },
+        "warnings": "Warnings",
+        "warningLabels": {
+          "sharedIp": "Shared IP",
+          "sameInbox": "Same inbox",
+          "newAccount": "New account",
+          "noEmail": "No email"
+        },
+        "warningDetails": {
+          "sharedIp": "Same sign-in IP as: %{usernames}. Often a household or mobile network.",
+          "sameInbox": "Same email inbox as: %{usernames}. Only the earliest entry is drawn.",
+          "newAccount": "Account created less than a day before entering.",
+          "noEmail": "No email address on the account. Passed over in the draw."
         }
       },
       "admin": {

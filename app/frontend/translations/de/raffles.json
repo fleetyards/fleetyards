@@ -131,6 +131,19 @@
           "sent": "gesendet",
           "delivered": "zugestellt",
           "bounced": "unzustellbar"
+        },
+        "warnings": "Warnungen",
+        "warningLabels": {
+          "sharedIp": "Gleiche IP",
+          "sameInbox": "Gleiches Postfach",
+          "newAccount": "Neues Konto",
+          "noEmail": "Keine E-Mail"
+        },
+        "warningDetails": {
+          "sharedIp": "Gleiche Anmelde-IP wie: %{usernames}. Oft ein Haushalt oder Mobilfunknetz.",
+          "sameInbox": "Gleiches E-Mail-Postfach wie: %{usernames}. Nur die früheste Teilnahme wird gezogen.",
+          "newAccount": "Konto weniger als einen Tag vor der Teilnahme erstellt.",
+          "noEmail": "Keine E-Mail-Adresse im Konto. Wird bei der Ziehung übergangen."
         }
       },
       "admin": {

@@ -22384,6 +22384,18 @@ components:
           format: date-time
         claimable:
           type: boolean
+        sharedIpWith:
+          type: array
+          items:
+            type: string
+        sameInboxAs:
+          type: array
+          items:
+            type: string
+        newAccount:
+          type: boolean
+        placeholderEmail:
+          type: boolean
         createdAt:
           type: string
           format: date-time
