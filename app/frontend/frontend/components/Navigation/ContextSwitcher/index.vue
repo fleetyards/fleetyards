@@ -15,6 +15,7 @@ import {
   usePublicFleet as usePublicFleetQuery,
   useMyFleets as useMyFleetsQuery,
   useFleetInvites as useFleetInvitesQuery,
+  FleetMembershipStatusEnum,
 } from "@/services/fyApi";
 
 type Props = {
@@ -58,6 +59,14 @@ const { data: fleets } = useMyFleetsQuery({
 const { data: invites } = useFleetInvitesQuery({
   query: { enabled: open },
 });
+
+// The endpoint also returns the join requests the reader sent.
+const invitationCount = computed(
+  () =>
+    (invites.value || []).filter(
+      (invite) => invite.status === FleetMembershipStatusEnum.INVITED,
+    ).length,
+);
 </script>
 
 <template>
@@ -130,7 +139,7 @@ const { data: invites } = useFleetInvitesQuery({
       :to="{ name: 'fleet-invites' }"
       :label="t('nav.fleets.invites')"
       icon="fa-light fa-envelope-open-text"
-      :badge="invites?.length || 0"
+      :badge="invitationCount"
       data-test="nav-fleet-invites"
     />
     <NavMenuItem
