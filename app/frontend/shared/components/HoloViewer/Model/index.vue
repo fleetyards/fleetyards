@@ -39,11 +39,16 @@ import {
 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { prepareGltfLoader } from "../gltfLoader";
-import { bindToBones, bonesByName, loadClips, rigLayoutKey } from "../rig";
+import {
+  bindToBones,
+  bonesByName,
+  cloneRigPiece,
+  loadClips,
+  rigLayoutKey,
+} from "../rig";
 import {
   applyHighlights,
   buildMounts,
-  cloneShared,
   loadHolo,
   mountsHighlightKey,
   mountsLayoutKey,
@@ -529,7 +534,7 @@ const attachRig = async (scene: Group) => {
     Promise.all(
       rig.pieces.map((piece) =>
         loadHolo(piece.path)
-          .then(cloneShared)
+          .then(cloneRigPiece)
           .catch((error: unknown) => {
             console.warn("A rigged part did not load", error);
             return undefined;

@@ -6,6 +6,7 @@ import {
   type SkinnedMesh,
 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { clone as cloneSkinned } from "three/examples/jsm/utils/SkeletonUtils.js";
 import { prepareGltfLoader } from "./gltfLoader";
 
 // A worn piece skinned to the body's skeleton: its own copy of the bones it
@@ -36,6 +37,20 @@ export const loadClips = (path: string) => {
   }
 
   return loaded;
+};
+
+// A piece's own copy to bind and graft. A plain clone keeps its skinned meshes
+// pointing at the cached piece's bones, and grafting those would take them out
+// of the cache's tree for good. Geometry and materials stay shared with the
+// cache, which frees them.
+export const cloneRigPiece = (scene: Object3D) => {
+  const copy = cloneSkinned(scene);
+
+  copy.traverse((node) => {
+    node.userData.shared = true;
+  });
+
+  return copy;
 };
 
 export const bonesByName = (root: Object3D) => {
