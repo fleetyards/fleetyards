@@ -308,6 +308,14 @@ zh-TW:
           attributes:
             base:
               plan_limit_reached: "最多只能有 %{count} 個計畫"
+        outfit:
+          attributes:
+            base:
+              outfit_limit_reached: "最多只能有 %{count} 套裝扮"
+        outfit_item:
+          attributes:
+            equipment:
+              wrong_slot: "不適合此欄位"
         fleet_shopping_list:
           attributes:
             base:

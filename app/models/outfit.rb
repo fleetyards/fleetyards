@@ -1,0 +1,36 @@
+# frozen_string_literal: true
+
+# A set of worn equipment a user put together in the dressing room and kept
+# under a name: at most one item per worn slot.
+class Outfit < ApplicationRecord
+  MAX_PER_USER = 50
+
+  belongs_to :user
+
+  has_many :items, -> { order(:slot) },
+    class_name: "OutfitItem", inverse_of: :outfit, dependent: :delete_all, autosave: true
+
+  validates :name, presence: true, length: {maximum: 100}, uniqueness: {scope: :user_id}
+  validate :outfit_limit, on: :create
+
+  # Replaces what the outfit wears with `[{slot:, equipment_id:}]`. A slot left
+  # out is emptied; a slot already worn keeps its row, so changing an item never
+  # trips the one-item-per-slot index halfway through a save.
+  def item_list=(list)
+    wanted = list.to_h { |item| [item[:slot].to_s, item[:equipment_id]] }
+
+    items.each { |item| item.mark_for_destruction unless wanted.key?(item.slot) }
+
+    wanted.each do |slot, equipment_id|
+      item = items.find { |existing| existing.slot == slot } || items.build(slot:)
+      item.equipment_id = equipment_id
+    end
+  end
+
+  private def outfit_limit
+    return if user.blank?
+    return if user.outfits.count < MAX_PER_USER
+
+    errors.add(:base, :outfit_limit_reached, count: MAX_PER_USER)
+  end
+end

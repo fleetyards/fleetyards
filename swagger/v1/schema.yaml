@@ -685,6 +685,25 @@ paths:
                 "$ref": "#/components/schemas/CatalogueTokenMatches"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/character-bodies":
+    get:
+      summary: Character bodies
+      tags:
+      - DressingRoom
+      operationId: characterBodies
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CharacterBodiesList"
+        '403':
+          description: feature disabled
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/commodities":
     get:
       summary: Commodities list
@@ -18074,6 +18093,185 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/outfits":
+    get:
+      summary: Outfits
+      tags:
+      - DressingRoom
+      operationId: outfits
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/OutfitsList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: feature disabled
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    post:
+      summary: Create Outfit
+      tags:
+      - DressingRoom
+      operationId: createOutfit
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/OutfitCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Outfit"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/outfits/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: Outfit
+      tags:
+      - DressingRoom
+      operationId: outfit
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Outfit"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Outfit
+      tags:
+      - DressingRoom
+      operationId: updateOutfit
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/OutfitUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Outfit"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    delete:
+      summary: Destroy Outfit
+      tags:
+      - DressingRoom
+      operationId: destroyOutfit
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SuccessResponse"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/password":
     put:
       summary: Update password
@@ -24811,6 +25009,24 @@ components:
       - WISHLIST_CREATE_CHANNEL
       - WISHLIST_DESTROY_CHANNEL
       title: ChannelsEnum
+    CharacterBodiesList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/CharacterBody"
+      title: CharacterBodiesList
+    CharacterBody:
+      type: object
+      properties:
+        key:
+          type: string
+          description: The body's folder in the export, e.g. male
+        holo:
+          "$ref": "#/components/schemas/MediaFile"
+      additionalProperties: false
+      required:
+      - key
+      - holo
+      title: CharacterBody
     Check:
       type: object
       properties:
@@ -27673,6 +27889,7 @@ components:
     FeatureFlagName:
       type: string
       enum:
+      - dressing_room
       - fleet_contracts
       - fleet_logistics
       - fleet_mission_builder
@@ -27693,6 +27910,7 @@ components:
       - oauth-patreon
       - oauth-twitch
       x-enumNames:
+      - DRESSING_ROOM
       - FLEET_CONTRACTS
       - FLEET_LOGISTICS
       - FLEET_MISSION_BUILDER
@@ -44279,6 +44497,107 @@ components:
       required:
       - codes
       title: OtpBackupCodes
+    Outfit:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/OutfitItem"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - items
+      - createdAt
+      - updatedAt
+      title: Outfit
+    OutfitCreateInput:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/OutfitItemInput"
+          description: Everything the outfit wears; a slot left out is emptied
+      required:
+      - name
+      additionalProperties: false
+      title: OutfitCreateInput
+    OutfitItem:
+      type: object
+      properties:
+        slot:
+          "$ref": "#/components/schemas/OutfitSlotEnum"
+        equipment:
+          "$ref": "#/components/schemas/Equipment"
+      additionalProperties: false
+      required:
+      - slot
+      - equipment
+      title: OutfitItem
+    OutfitItemInput:
+      type: object
+      properties:
+        slot:
+          "$ref": "#/components/schemas/OutfitSlotEnum"
+        equipmentId:
+          type: string
+          format: uuid
+      required:
+      - slot
+      - equipmentId
+      additionalProperties: false
+      title: OutfitItemInput
+    OutfitSlotEnum:
+      type: string
+      enum:
+      - undersuit
+      - torso
+      - arms
+      - legs
+      - helmet
+      - backpack
+      x-enumNames:
+      - UNDERSUIT
+      - TORSO
+      - ARMS
+      - LEGS
+      - HELMET
+      - BACKPACK
+      title: OutfitSlotEnum
+    OutfitUpdateInput:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/OutfitItemInput"
+          description: Everything the outfit wears; a slot left out is emptied
+      additionalProperties: false
+      title: OutfitUpdateInput
+    OutfitsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/Outfit"
+      title: OutfitsList
     Pagination:
       type: object
       properties:

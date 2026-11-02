@@ -184,6 +184,9 @@ en:
       create: "Plan could not be created."
       update: "Plan could not be updated."
       rebase: "Plan could not be rebased on the hangar."
+    outfits:
+      create: "Outfit could not be saved."
+      update: "Outfit could not be updated."
     fleet_shopping_lists:
       create: "Shopping list could not be published."
       update: "Shopping list could not be updated."

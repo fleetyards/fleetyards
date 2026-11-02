@@ -144,6 +144,9 @@ es:
       create: "No se pudo crear el plan."
       update: "No se pudo actualizar el plan."
       rebase: "No se pudo actualizar el plan con el hangar."
+    outfits:
+      create: "No se pudo guardar el atuendo."
+      update: "No se pudo actualizar el atuendo."
     fleet_shopping_lists:
       create: "No se pudo publicar la lista de compras."
       update: "No se pudo actualizar la lista de compras."

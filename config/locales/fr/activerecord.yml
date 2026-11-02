@@ -308,6 +308,14 @@ fr:
           attributes:
             base:
               plan_limit_reached: "peut contenir au plus %{count} plans"
+        outfit:
+          attributes:
+            base:
+              outfit_limit_reached: "peut contenir au plus %{count} tenues"
+        outfit_item:
+          attributes:
+            equipment:
+              wrong_slot: "ne convient pas à cet emplacement"
         fleet_shopping_list:
           attributes:
             base:

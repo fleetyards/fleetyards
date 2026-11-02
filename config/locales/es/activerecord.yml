@@ -308,6 +308,14 @@ es:
           attributes:
             base:
               plan_limit_reached: "puede tener como máximo %{count} planes"
+        outfit:
+          attributes:
+            base:
+              outfit_limit_reached: "puede tener como máximo %{count} atuendos"
+        outfit_item:
+          attributes:
+            equipment:
+              wrong_slot: "no encaja en esta ranura"
         fleet_shopping_list:
           attributes:
             base:
