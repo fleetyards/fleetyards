@@ -1,6 +1,12 @@
 import { type LocationQuery } from "vue-router";
 import { type HoloMount } from "@/shared/components/HoloViewer/mounts";
-import { type MediaFile, OutfitSlotEnum } from "@/services/fyApi";
+import { type HoloRig } from "@/shared/components/HoloViewer/rig";
+import {
+  type CharacterBody,
+  type CharacterBodyClip,
+  type MediaFile,
+  OutfitSlotEnum,
+} from "@/services/fyApi";
 
 // Head to toe, the order the slots are listed in.
 export const OUTFIT_SLOTS: OutfitSlotEnum[] = [
@@ -34,6 +40,7 @@ export const sameOutfit = (a: OutfitSelection, b: OutfitSelection) =>
 type ItemHolos = {
   holo?: MediaFile | null;
   holoTextured?: MediaFile | null;
+  holoRiggedMale?: MediaFile | null;
 };
 
 export interface PieceHolo {
@@ -43,6 +50,17 @@ export interface PieceHolo {
   // The plain holo, for a painted one that does not load.
   fallbackPath?: string;
 }
+
+// On a body, the piece's rig for it: only a rig follows the body's pose.
+export const riggedPieceHolo = (
+  media?: ItemHolos | null,
+): PieceHolo | undefined => {
+  const rigged = media?.holoRiggedMale;
+
+  return rigged?.url
+    ? { path: rigged.url, size: rigged.size ?? undefined, textured: false }
+    : undefined;
+};
 
 // The painted holo where there is one, the plain one otherwise.
 export const pieceHolo = (
@@ -67,34 +85,59 @@ export const pieceHolo = (
 };
 
 // What the holo viewer draws: the root holo with every other piece mounted on
-// it.
+// it, or a rigged body wearing the pieces.
 export interface OutfitHoloModel {
   path: string;
   size?: number;
   textured: boolean;
-  frameMounts: true;
-  mounts: HoloMount[];
+  frameMounts?: true;
+  mounts?: HoloMount[];
+  rig?: HoloRig;
 }
+
+// The pose a figure starts in: the first single-frame one, a shop display.
+export const defaultClip = (clips: CharacterBodyClip[] = []) =>
+  (clips.find((clip) => clip.static) ?? clips[0])?.name;
+
+// A clip's name as the export writes it, made readable: "shop_pose_01" reads
+// "Shop pose 01".
+export const clipLabel = (name: string) => {
+  const words = name.replace(/_/g, " ").trim();
+
+  return words.charAt(0).toUpperCase() + words.slice(1);
+};
+
+export const riggedOutfitModel = (
+  body: CharacterBody,
+  pieces: PieceHolo[],
+  clip?: string,
+): OutfitHoloModel => ({
+  path: body.holo.url,
+  size: body.holo.size ?? undefined,
+  textured: false,
+  rig: {
+    pieces: pieces.map((piece) => ({ path: piece.path, size: piece.size })),
+    animations: body.animations?.url ?? undefined,
+    clip:
+      clip && body.clips.some((candidate) => candidate.name === clip)
+        ? clip
+        : defaultClip(body.clips),
+  },
+});
 
 const IDENTITY = {
   position: [0, 0, 0] as [number, number, number],
   rotation: [0, 0, 0, 1] as [number, number, number, number],
 };
 
-// Every worn piece is exported in the body's frame, so each is mounted at the
-// origin. Without a body the first piece is the root: the others share its
-// frame all the same.
+// Without a body, the static holos: every worn piece is exported in one frame,
+// so the first is the root and the others are mounted on it at the origin.
 export const outfitModel = (
-  body: MediaFile | undefined,
   pieces: PieceHolo[],
 ): OutfitHoloModel | undefined => {
-  const root: PieceHolo | undefined = body?.url
-    ? { path: body.url, size: body.size ?? undefined, textured: false }
-    : pieces[0];
+  const [root, ...mounted] = pieces;
 
   if (!root) return undefined;
-
-  const mounted = root === pieces[0] ? pieces.slice(1) : pieces;
 
   return {
     path: root.path,

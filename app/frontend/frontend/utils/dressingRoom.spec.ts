@@ -1,7 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { type MediaFile } from "@/services/fyApi";
 import {
+  clipLabel,
   outfitModel,
+  riggedOutfitModel,
+  riggedPieceHolo,
   outfitQuery,
   parseOutfitQuery,
   pieceHolo,
@@ -86,30 +89,78 @@ describe("outfitModel", () => {
   const core = { path: "/core.glb", size: 5, textured: true };
   const legs = { path: "/legs.glb", size: 4, textured: false };
 
-  it("puts every piece on the body at the origin", () => {
-    const model = outfitModel(file("/body.glb", 8), [core, legs]);
+  it("roots the static figure on its first piece and mounts the rest at the origin", () => {
+    const model = outfitModel([core, legs]);
 
-    expect(model?.path).toBe("/body.glb");
-    expect(model?.frameMounts).toBe(true);
-    expect(model?.mounts.map((mount) => mount.path)).toEqual([
-      "/core.glb",
-      "/legs.glb",
-    ]);
-    expect(model?.mounts[0]).toMatchObject({
+    expect(model).toMatchObject({
+      path: "/core.glb",
+      textured: true,
+      frameMounts: true,
+    });
+    expect(model?.mounts?.map((mount) => mount.path)).toEqual(["/legs.glb"]);
+    expect(model?.mounts?.[0]).toMatchObject({
       position: [0, 0, 0],
       rotation: [0, 0, 0, 1],
-      textured: true,
     });
   });
 
-  it("roots the figure on its first piece without a body", () => {
-    const model = outfitModel(undefined, [core, legs]);
+  it("has nothing to draw without a piece", () => {
+    expect(outfitModel([])).toBeUndefined();
+  });
+});
 
-    expect(model).toMatchObject({ path: "/core.glb", textured: true });
-    expect(model?.mounts.map((mount) => mount.path)).toEqual(["/legs.glb"]);
+describe("riggedPieceHolo", () => {
+  it("takes the piece's rig for the body and nothing else", () => {
+    expect(
+      riggedPieceHolo({
+        holo: file("/clay.glb"),
+        holoRiggedMale: file("/rigged.glb", 7),
+      }),
+    ).toEqual({ path: "/rigged.glb", size: 7, textured: false });
+    expect(riggedPieceHolo({ holo: file("/clay.glb") })).toBeUndefined();
+  });
+});
+
+describe("riggedOutfitModel", () => {
+  const body = {
+    key: "male",
+    holo: file("/body.glb", 8),
+    animations: file("/animations.glb", 3),
+    clips: [
+      { name: "idle_stand", static: false, looping: true },
+      { name: "shop_pose_01", static: true, looping: false },
+      { name: "shop_pose_02", static: true, looping: false },
+    ],
+  };
+  const core = { path: "/core_rigged.glb", size: 5, textured: false };
+
+  it("dresses the body in the rigged pieces, in its first shop pose", () => {
+    expect(riggedOutfitModel(body, [core])).toEqual({
+      path: "/body.glb",
+      size: 8,
+      textured: false,
+      rig: {
+        pieces: [{ path: "/core_rigged.glb", size: 5 }],
+        animations: "/animations.glb",
+        clip: "shop_pose_01",
+      },
+    });
   });
 
-  it("has nothing to draw without a body or a piece", () => {
-    expect(outfitModel(undefined, [])).toBeUndefined();
+  it("keeps a pose the body has, and drops one it does not", () => {
+    expect(riggedOutfitModel(body, [], "idle_stand").rig?.clip).toBe(
+      "idle_stand",
+    );
+    expect(riggedOutfitModel(body, [], "moonwalk").rig?.clip).toBe(
+      "shop_pose_01",
+    );
+  });
+});
+
+describe("clipLabel", () => {
+  it("reads a clip name as words", () => {
+    expect(clipLabel("shop_med_marine_holdwrist")).toBe(
+      "Shop med marine holdwrist",
+    );
   });
 });

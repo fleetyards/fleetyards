@@ -23,12 +23,23 @@ const EQUIPMENT: Record<string, Equipment> = {
   "adp-core": piece("adp-core", {
     holo: media("core.glb"),
     holoTextured: media("core_textured.glb"),
+    holoRiggedMale: media("core_rigged.glb"),
   }),
   "adp-legs": piece("adp-legs", { holo: media("legs.glb") }),
   "pembroke-backpack": piece("pembroke-backpack", {}),
 };
 
-const bodies = ref<CharacterBody[]>([{ key: "male", holo: media("body.glb") }]);
+const MALE: CharacterBody = {
+  key: "male",
+  holo: media("body.glb"),
+  animations: media("animations.glb"),
+  clips: [
+    { name: "shop_pose_01", static: true, looping: false },
+    { name: "idle_stand", static: false, looping: true },
+  ],
+};
+
+const bodies = ref<CharacterBody[]>([MALE]);
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
@@ -87,7 +98,7 @@ const viewerModel = (wrapper: Awaited<ReturnType<typeof mount>>["wrapper"]) =>
   wrapper.findComponent({ name: "HoloViewer" }).props("models")[0];
 
 describe("ToolsDressingRoomPage", () => {
-  it("dresses the body in the pieces the address names, painted where it can", async () => {
+  it("dresses the body in the rigged pieces the address names, in a shop pose", async () => {
     const { wrapper } = await mount({ torso: "adp-core", legs: "adp-legs" });
 
     expect(
@@ -96,16 +107,37 @@ describe("ToolsDressingRoomPage", () => {
 
     const model = viewerModel(wrapper);
     expect(model.path).toBe("/body.glb");
-    expect(model.frameMounts).toBe(true);
+    expect(model.rig).toEqual({
+      pieces: [{ path: "/core_rigged.glb", size: 1000 }],
+      animations: "/animations.glb",
+      clip: "shop_pose_01",
+    });
+    expect(
+      wrapper.find('[data-test="dressing-room-no-holo-legs"]').exists(),
+    ).toBe(true);
+  });
+
+  it("poses the body as the address says", async () => {
+    const { wrapper } = await mount({ torso: "adp-core", pose: "idle_stand" });
+
+    expect(viewerModel(wrapper).rig.clip).toBe("idle_stand");
+  });
+
+  it("mounts the static pieces, painted where it can, while no body is exported", async () => {
+    bodies.value = [];
+
+    const { wrapper } = await mount({ torso: "adp-core", legs: "adp-legs" });
+
+    const model = viewerModel(wrapper);
+    expect(model.path).toBe("/legs.glb");
     expect(
       model.mounts.map((mount: { path: string; textured: boolean }) => [
         mount.path,
         mount.textured,
       ]),
-    ).toEqual([
-      ["/legs.glb", false],
-      ["/core_textured.glb", true],
-    ]);
+    ).toEqual([["/core_textured.glb", true]]);
+
+    bodies.value = [MALE];
   });
 
   it("lists a piece without a holo and says it is not drawn", async () => {
@@ -114,7 +146,7 @@ describe("ToolsDressingRoomPage", () => {
     expect(
       wrapper.find('[data-test="dressing-room-no-holo-backpack"]').exists(),
     ).toBe(true);
-    expect(viewerModel(wrapper).mounts).toEqual([]);
+    expect(viewerModel(wrapper).rig.pieces).toEqual([]);
   });
 
   it("empties a slot from the address", async () => {
@@ -132,16 +164,6 @@ describe("ToolsDressingRoomPage", () => {
       torso: "adp-core",
     });
     expect(router.currentRoute.value.query.legs).toBeUndefined();
-  });
-
-  it("roots the figure on a piece while no body is exported", async () => {
-    bodies.value = [];
-
-    const { wrapper } = await mount({ legs: "adp-legs" });
-
-    expect(viewerModel(wrapper).path).toBe("/legs.glb");
-
-    bodies.value = [{ key: "male", holo: media("body.glb") }];
   });
 
   it("draws the pieces on their own when the body does not load", async () => {
@@ -176,6 +198,6 @@ describe("ToolsDressingRoomPage", () => {
       true,
     );
 
-    bodies.value = [{ key: "male", holo: media("body.glb") }];
+    bodies.value = [MALE];
   });
 });

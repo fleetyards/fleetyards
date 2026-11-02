@@ -26,14 +26,18 @@ import {
   getEquipmentItemQueryOptions,
   useCharacterBodies,
 } from "@/services/fyApi";
+import BaseSelect from "@/shared/components/base/Select/index.vue";
 import {
   OUTFIT_SLOTS,
   type OutfitSelection,
   type PieceHolo,
+  clipLabel,
   outfitModel,
   outfitQuery,
   parseOutfitQuery,
   pieceHolo,
+  riggedOutfitModel,
+  riggedPieceHolo,
 } from "@/frontend/utils/dressingRoom";
 
 // The only body exported so far; the others join as the export adds them.
@@ -53,16 +57,24 @@ const selection = computed<OutfitSelection>(() =>
   parseOutfitQuery(route.query),
 );
 
-const activeOutfitId = computed(() => {
-  const value = [route.query.outfit].flat()[0];
+const queryValue = (key: string) => {
+  const value = [route.query[key]].flat()[0];
 
-  return typeof value === "string" ? value : undefined;
-});
+  return typeof value === "string" && value ? value : undefined;
+};
 
-const navigate = (next: OutfitSelection, outfitId = activeOutfitId.value) =>
+const activeOutfitId = computed(() => queryValue("outfit"));
+
+const poseName = computed(() => queryValue("pose"));
+
+const navigate = (
+  next: OutfitSelection,
+  outfitId = activeOutfitId.value,
+  pose = poseName.value,
+) =>
   router.replace({
     name: "dressing-room",
-    query: { ...outfitQuery(next), outfit: outfitId },
+    query: { ...outfitQuery(next), outfit: outfitId, pose },
   });
 
 const picking = ref<OutfitSlotEnum>();
@@ -78,7 +90,7 @@ const clear = (slot: OutfitSlotEnum) => {
 
 const reset = () => {
   picking.value = undefined;
-  void navigate({}, undefined);
+  void navigate({}, undefined, undefined);
 };
 
 const loadOutfit = (outfit: Outfit) => {
@@ -131,13 +143,34 @@ const missingSlot = (slot: OutfitSlotEnum) =>
 // Painted holos that did not load, so the figure is drawn in clay instead.
 const failedPaths = ref<string[]>([]);
 
+const { data: bodies } = useCharacterBodies({
+  query: { retry: false, refetchOnWindowFocus: false },
+});
+
+// A body that does not load leaves the pieces to stand on their own.
+const bodyFailed = ref(false);
+
+const body = computed(() =>
+  bodyFailed.value
+    ? undefined
+    : bodies.value?.find((entry) => entry.key === BODY_KEY && entry.holo?.url),
+);
+
+// On a body only the pieces rigged to it are drawn: a static holo is modelled
+// in another pose and would not sit on it.
 const holos = computed(
   () =>
     Object.fromEntries(
-      OUTFIT_SLOTS.map((slot) => [
-        slot,
-        pieceHolo(items.value[slot]?.media, failedPaths.value),
-      ]),
+      OUTFIT_SLOTS.map((slot) => {
+        const media = items.value[slot]?.media;
+
+        return [
+          slot,
+          body.value
+            ? riggedPieceHolo(media)
+            : pieceHolo(media, failedPaths.value),
+        ];
+      }),
     ) as Partial<Record<OutfitSlotEnum, PieceHolo>>,
 );
 
@@ -149,31 +182,36 @@ const pieces = computed(() =>
     .flatMap((slot) => (holos.value[slot] ? [holos.value[slot]] : [])),
 );
 
-const { data: bodies } = useCharacterBodies({
-  query: { retry: false, refetchOnWindowFocus: false },
-});
-
-const body = computed(
-  () => bodies.value?.find((entry) => entry.key === BODY_KEY)?.holo,
-);
-
-// A body that does not load leaves the pieces to stand on their own.
-const bodyFailed = ref(false);
-
 const model = computed(() =>
-  outfitModel(bodyFailed.value ? undefined : body.value, pieces.value),
+  body.value
+    ? riggedOutfitModel(body.value, pieces.value, poseName.value)
+    : outfitModel(pieces.value),
 );
 
 const holoUnavailable = () => {
   const root = model.value;
   if (!root) return;
 
-  if (root.path === body.value?.url) {
+  if (root.rig) {
     bodyFailed.value = true;
   } else if (root.textured) {
     failedPaths.value = [...failedPaths.value, root.path];
   }
 };
+
+const poseOptions = computed(() =>
+  (body.value?.clips ?? []).map((clip) => ({
+    label: clipLabel(clip.name),
+    value: clip.name,
+  })),
+);
+
+const selectedPose = computed({
+  get: () => model.value?.rig?.clip,
+  set: (pose?: string) => {
+    void navigate(selection.value, activeOutfitId.value, pose);
+  },
+});
 
 // A piece still loading, or one the address names but the catalogue no longer
 // has: saving now would drop it from the outfit.
@@ -223,7 +261,6 @@ const copyShareLink = () => {
           :auto-rotate="false"
           contain
           zoomable
-          inline
           @unavailable="holoUnavailable"
         />
         <div
@@ -258,6 +295,15 @@ const copyShareLink = () => {
       </div>
 
       <aside class="dressing-room__side">
+        <BaseSelect
+          v-if="poseOptions.length > 1"
+          v-model="selectedPose"
+          name="dressing-room-pose"
+          :label="t('dressingRoom.pose')"
+          :options="poseOptions"
+          :searchable="false"
+          data-test="dressing-room-pose"
+        />
         <SlotPicker
           v-if="picking"
           :slot="picking"

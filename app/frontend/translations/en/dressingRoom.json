@@ -18,6 +18,7 @@
       "notFound": "Item not found",
       "noHolo": "No 3D model yet",
       "empty": "Choose a piece for any slot to see the outfit.",
+      "pose": "Pose",
       "copyLink": "Copy link",
       "savedOutfits": "Saved outfits",
       "signInToSave": "Sign in to save outfits.",
