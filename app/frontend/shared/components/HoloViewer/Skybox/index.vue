@@ -6,6 +6,7 @@ export default {
 
 <script lang="ts" setup>
 import { useTres } from "@tresjs/core";
+import { extrasLoadingManager } from "../gltfLoader";
 import {
   EquirectangularReflectionMapping,
   SRGBColorSpace,
@@ -37,7 +38,7 @@ const release = () => {
 watch(
   () => props.src,
   async (src) => {
-    const loaded = await new TextureLoader()
+    const loaded = await new TextureLoader(extrasLoadingManager)
       .loadAsync(src)
       .catch(() => undefined);
 

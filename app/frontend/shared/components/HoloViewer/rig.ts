@@ -7,7 +7,7 @@ import {
 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { clone as cloneSkinned } from "three/examples/jsm/utils/SkeletonUtils.js";
-import { prepareGltfLoader } from "./gltfLoader";
+import { extrasLoadingManager, prepareGltfLoader } from "./gltfLoader";
 
 // A worn piece skinned to the body's skeleton: its own copy of the bones it
 // uses, named as the body's are, in the same bind pose.
@@ -59,7 +59,7 @@ export const loadClips = (path: string) => {
   let loaded = clips.get(path);
 
   if (!loaded) {
-    loaded = prepareGltfLoader(new GLTFLoader())
+    loaded = prepareGltfLoader(new GLTFLoader(extrasLoadingManager))
       .loadAsync(path)
       .then((gltf) => gltf.animations);
     loaded.catch(() => clips.delete(path));
