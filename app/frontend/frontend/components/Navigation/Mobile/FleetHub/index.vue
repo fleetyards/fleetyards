@@ -291,7 +291,6 @@ onBeforeUnmount(() => {
             type="button"
             class="fleet-hub__switch"
             data-test="fleet-hub-switch"
-            :aria-pressed="switching"
             @click="switching = !switching"
           >
             <i
