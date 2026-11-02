@@ -55,6 +55,20 @@ const EQUIPMENT: Record<string, Equipment> = {
       ],
     },
   } as unknown as Equipment,
+  "pinned-pack": {
+    ...piece("pinned-pack", { holo: media("pack.glb") }),
+    fit: {
+      type: "Char_Armor_Backpack",
+      ports: [
+        {
+          name: "wep_stocked_3",
+          types: [{ type: "WeaponPersonal", subTypes: ["Medium", "Large"] }],
+          minSize: 2,
+          maxSize: 5,
+        },
+      ],
+    },
+  } as unknown as Equipment,
   "flight-suit": {
     ...piece("flight-suit", {}),
     name: "Flight Suit",
@@ -224,6 +238,41 @@ describe("ToolsDressingRoomPage", () => {
         from: "/pack_rigged.glb",
       }),
     ]);
+  });
+
+  it("leaves a rifle undrawn on a backpack with no rig to bring the mount", async () => {
+    const { wrapper } = await mount({
+      primary: "p4-ar-hung",
+      backpack: "pinned-pack",
+    });
+
+    expect(
+      (viewerModel(wrapper).rig.attachments ?? []).filter(
+        (attachment: { path: string }) => attachment.path === "/p4ar.glb",
+      ),
+    ).toEqual([]);
+    expect(
+      wrapper
+        .find('[data-test="dressing-room-position-pending-primary"]')
+        .exists(),
+    ).toBe(true);
+  });
+
+  it("says so when the viewer leaves a weapon off for want of its mount", async () => {
+    const { wrapper } = await mount({ primary: "p4-ar-hung" });
+    const pending = () =>
+      wrapper
+        .find('[data-test="dressing-room-position-pending-primary"]')
+        .exists();
+
+    expect(pending()).toBe(false);
+
+    wrapper
+      .findComponent({ name: "HoloViewer" })
+      .vm.$emit("unplaced", ["/p4ar.glb"]);
+    await flushPromises();
+
+    expect(pending()).toBe(true);
   });
 
   it("switches the body and keeps it in the address", async () => {

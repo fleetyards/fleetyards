@@ -343,19 +343,35 @@ const weaponPlacement = (slot: OutfitSlotEnum) => {
   if (!placed?.helper) return undefined;
 
   // The mount of the piece whose port it is in, never a namesake underneath:
-  // with a backpack on, a rifle hangs from the pack rather than inside it.
+  // with a backpack on, a rifle hangs from the pack rather than inside it. A
+  // provider without a rig -- a pack pinned whole -- brings no mount at all.
   const provider = portProvider(slot, items.value);
-  const from = provider && riggedHolos.value[provider]?.path;
+  if (!provider) return placed;
 
-  return from ? { ...placed, from } : placed;
+  const from = riggedHolos.value[provider]?.path;
+
+  return from ? { ...placed, from } : undefined;
+};
+
+// Left off the figure by the viewer: the piece it hangs from has no mount for
+// it in its rig.
+const unplaced = ref<string[]>([]);
+
+const unplacedSlot = (slot: OutfitSlotEnum) => {
+  const path = isWeaponSlot(slot)
+    ? weaponPlacement(slot)?.path
+    : riggedHolos.value[slot]?.path;
+
+  return !!path && unplaced.value.includes(path);
 };
 
 const positionPending = (slot: OutfitSlotEnum) =>
-  isWeaponSlot(slot) &&
   !!body.value &&
-  !!staticHolos.value[slot] &&
-  heldWeapon.value !== slot &&
-  !weaponPlacement(slot);
+  (unplacedSlot(slot) ||
+    (isWeaponSlot(slot) &&
+      !!staticHolos.value[slot] &&
+      heldWeapon.value !== slot &&
+      !weaponPlacement(slot)));
 
 const attachments = computed(() => [
   ...(pinnedBackpack.value
@@ -498,6 +514,7 @@ const copyShareLink = () => {
           turntable
           backdrop
           @unavailable="holoUnavailable"
+          @unplaced="unplaced = $event"
         />
         <div
           v-else

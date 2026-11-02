@@ -452,6 +452,9 @@ const emit = defineEmits<{
   progress: [loaded: number, total: number];
   mountSelect: [id: string];
   mountPoint: [id: string | undefined];
+  // The rig pieces and attachments left off the figure, by path: their mount
+  // is not in the rig of the piece they hang from.
+  unplaced: [paths: string[]];
 }>();
 
 DefaultLoadingManager.onProgress = (_item, loaded, total) => {
@@ -635,6 +638,7 @@ const loadAttachment = async (attachment: RigAttachment) => {
     group.userData.textured = !!attachment.textured;
     return {
       group,
+      path: attachment.path,
       bone: attachment.bone,
       from: attachment.from,
       textured: !!attachment.textured,
@@ -649,6 +653,7 @@ const loadAttachment = async (attachment: RigAttachment) => {
   try {
     return {
       group: await load(attachment.fallbackPath),
+      path: attachment.path,
       bone: attachment.bone,
       from: attachment.from,
       textured: false,
@@ -696,6 +701,7 @@ const attachRig = async (scene: Group) => {
   const next = new Group();
   next.userData.grafted = [];
   next.userData.attached = [];
+  const unplaced: string[] = [];
 
   pieces.forEach((piece, index) => {
     if (!piece) return;
@@ -706,19 +712,23 @@ const attachRig = async (scene: Group) => {
       source: rig.pieces[index]?.path,
     });
     if (meshes.length) next.add(...meshes);
+    else if (rig.pieces[index]) unplaced.push(rig.pieces[index].path);
     next.userData.grafted.push(...grafted);
   });
 
   // After the pieces: a holster or a weapon mount is a bone a piece brings,
   // and the map holds the outermost piece's copy of each.
-  const withHelpers = bones;
-
   attachments.forEach((attachment) => {
     if (!attachment) return;
 
-    const bone = withHelpers.get(attachment.bone);
-    if (!bone) return;
-    if (attachment.from && bone.userData.source !== attachment.from) return;
+    const bone = bones.get(attachment.bone);
+    if (
+      !bone ||
+      (attachment.from && bone.userData.source !== attachment.from)
+    ) {
+      unplaced.push(attachment.path);
+      return;
+    }
 
     bone.add(attachment.group);
     next.userData.attached.push(attachment.group);
@@ -733,6 +743,7 @@ const attachRig = async (scene: Group) => {
 
   hideCovered(scene);
   pose(scene);
+  emit("unplaced", unplaced);
 
   return true;
 };

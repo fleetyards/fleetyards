@@ -146,6 +146,7 @@ const emit = defineEmits<{
   loaded: [];
   mountSelect: [id: string];
   mountPoint: [id: string | undefined];
+  unplaced: [paths: string[]];
 }>();
 
 const { displayAlert } = useAppNotifications();
@@ -910,6 +911,7 @@ defineExpose({
           @progress="handleModelProgress"
           @mount-select="emit('mountSelect', $event)"
           @mount-point="emit('mountPoint', $event)"
+          @unplaced="emit('unplaced', $event)"
         />
         <template #fallback>
           <Loader :loading="true" :progress="progress" />
