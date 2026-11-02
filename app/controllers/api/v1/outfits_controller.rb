@@ -38,7 +38,7 @@ module Api
 
         authorize! @outfit, with: OutfitPolicy
 
-        if @outfit.save
+        if save_outfit
           render :show, status: :created
         else
           render json: ValidationError.new("outfits.create", errors: @outfit.errors), status: :bad_request
@@ -46,7 +46,9 @@ module Api
       end
 
       def update
-        if @outfit.update(outfit_params)
+        @outfit.assign_attributes(outfit_params)
+
+        if save_outfit
           render :show
         else
           render json: ValidationError.new("outfits.update", errors: @outfit.errors), status: :bad_request
@@ -57,6 +59,15 @@ module Api
         @outfit.destroy!
 
         render json: {success: true}
+      end
+
+      # Two saves under one name at once both pass the uniqueness check; the
+      # index refuses the second, which is the same answer.
+      private def save_outfit
+        @outfit.save
+      rescue ActiveRecord::RecordNotUnique
+        @outfit.errors.add(:name, :taken)
+        false
       end
 
       private def set_outfit

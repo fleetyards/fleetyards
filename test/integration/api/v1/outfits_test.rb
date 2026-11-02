@@ -141,6 +141,21 @@ class Api::V1::OutfitsTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 400, api_path: "/outfits", body: {name: "Heavy"}
   end
 
+  test "POST /outfits answers a name lost to a concurrent save as taken" do
+    sign_in @user
+    Outfit.any_instance.stubs(:save).raises(ActiveRecord::RecordNotUnique)
+
+    assert_api_response :post, 400, api_path: "/outfits", body: {name: "Raced"} do
+      assert_equal "validation_error.outfits.create", parsed_body["code"]
+    end
+  end
+
+  test "an equipment item that is deleted leaves the outfits that wore it" do
+    @core.destroy!
+
+    assert_empty @outfit.reload.items
+  end
+
   test "GET /outfits/{id} returns 404 for another user's outfit" do
     sign_in create(:user)
 
