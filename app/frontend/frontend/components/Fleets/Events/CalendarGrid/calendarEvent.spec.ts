@@ -35,8 +35,8 @@ const event = (overrides: Partial<FleetEvent> = {}): FleetEvent => ({
 });
 
 describe("buildCalendarEvent", () => {
-  // The library keeps an ISO string at its UTC clock when it arrives after
-  // mount, which put month-view events at UTC times.
+  // The library leaves an ISO string set after mount at its UTC clock; only a
+  // Date reaches the reader's zone.
   it("hands the library instants, not ISO strings", () => {
     const result = buildCalendarEvent(
       event({ endsAt: "2026-11-04T22:30:00+02:00" }),

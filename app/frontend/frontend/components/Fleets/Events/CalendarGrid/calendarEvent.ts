@@ -7,8 +7,8 @@ const DEFAULT_DURATION_MS = 60 * 60 * 1000;
 
 // Dates rather than ISO strings: the library reads a string at the clock of
 // its own offset and moves it to the reader's zone only on a later options
-// change, so events handed over after mount stayed in UTC. A Date is converted
-// to the browser's zone as it is read.
+// change, which events set after mount never get. A Date is converted to the
+// browser's zone as it is read.
 export const buildCalendarEvent = (event: FleetEvent) => {
   const start = new Date(event.startsAt);
 
