@@ -26,7 +26,6 @@ A dressing room page where anyone can pick a body and one item per worn slot, se
 1. Body as the root `path`, every piece as a mount at identity — the export rig places helmets too.
 2. Fit the camera and near plane after mounts attach, counting mounts in `modelReach`.
 3. Let textured mounts keep their own materials instead of `setMaterials` forcing clay.
-4. Character-scale zoom limits (the 250 floor and `min-distance=-50` are ship scale), as a viewer prop.
 5. Count mount sizes in the low-power confirmation total.
 6. Specs for each, and no regression in the loadout preview.
 
@@ -37,7 +36,6 @@ A dressing room page where anyone can pick a body and one item per worn slot, se
 3. Slot pickers built on `Logistics/ItemPicker` with `slotIn` fixed per slot and `equipmentTypeIn: armor, undersuit`.
 4. Per item detail via `useEquipmentItem(slug)`; holo chosen like `useItemHolo` (textured, then clay); items without a holo listed and marked "not shown in 3D".
 5. Outfit list: save, rename, update, delete for signed-in users; "Copy link" for everyone.
-6. Backpack / core compatibility hint from `core_compatibility` / `backpack_compatibility`.
 7. Phone layout following the ship holo's phone behaviour.
 8. Translations in all seven locales by hand.
 
@@ -69,15 +67,18 @@ A dressing room page where anyone can pick a body and one item per worn slot, se
 - **Building outfits from owned items**: rejected for now, see the issue.
 - **Rigged item holos and hide masks**: the static holos are enough for a rest-pose figure.
 - **Female body**: comes later from the export.
+- **Backpack / core compatibility hint**: `core_compatibility` and `backpack_compatibility` need their exact meaning confirmed against the game files before the page warns about a pairing.
 - **Poses from `animations.glb`**: a rest pose first.
 
 ## Discovery Log
 
+- **2026-11-02** Built all four phases. Zoom limits left alone: item holos down to 0.3 m already work in the viewer. Without a published body the figure roots on its first piece, undersuit first; the pieces share a frame, so nothing moves. A painted piece that fails loads its clay holo. Backpack/core compatibility hint not built.
 - **2026-11-02** Decisions recorded in the issue: `characters/` bucket prefix, helmets placed by the rig, male only, no share token, Tools placement. `characters/` not in the bucket yet.
 - **2026-11-02** Initial research and plan creation. Measured production GLBs: core/arms/legs share a body frame (feet at y=0), helmets are neck-local; clay and textured holos share frames. Coverage: helmet/torso/arms/legs ~98%, undersuit/backpack 0% today.
 
 ## Progress
-- [ ] Phase 1 — Base bodies
-- [ ] Phase 2 — Saved outfits API
-- [ ] Phase 3 — HoloViewer for a character
-- [ ] Phase 4 — Dressing room page
+- [x] Phase 1 — Base bodies
+- [x] Phase 2 — Saved outfits API
+- [x] Phase 3 — HoloViewer for a character
+- [x] Phase 4 — Dressing room page
+- [ ] Live check in the running app once a body is published
