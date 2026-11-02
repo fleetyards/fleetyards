@@ -14,9 +14,15 @@ export const mayHaveAr = (
 
 // Converting a holo in the page is more than an iPhone holds; an iPad manages.
 // By name rather than by width: an iPad in portrait is as narrow as a phone
-// layout.
-export const isIPhone = (userAgent: string = navigator.userAgent): boolean =>
-  /iPhone|iPod/.test(userAgent);
+// layout. Asked for the desktop site, an iPhone names itself a Mac, like an
+// iPad does -- only its touch screen and its size give it away.
+export const isIPhone = (
+  userAgent: string = navigator.userAgent,
+  touchPoints: number = navigator.maxTouchPoints,
+  shortSide: number = Math.min(screen.width, screen.height),
+): boolean =>
+  /iPhone|iPod/.test(userAgent) ||
+  (/Macintosh/.test(userAgent) && touchPoints > 1 && shortSide < 600);
 
 // Quick Look, which only exists on iOS: the holo is converted to USDZ in the
 // page for it, where Scene Viewer fetches the file itself.

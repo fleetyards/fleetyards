@@ -43,6 +43,36 @@ describe("isIPhone", () => {
     ).toBe(true);
   });
 
+  it("knows an iPhone asking for the desktop site", () => {
+    expect(
+      isIPhone(
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15",
+        5,
+        390,
+      ),
+    ).toBe(true);
+  });
+
+  it("does not take an iPad asking for the desktop site for one", () => {
+    expect(
+      isIPhone(
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15",
+        5,
+        820,
+      ),
+    ).toBe(false);
+  });
+
+  it("does not take a Mac for one", () => {
+    expect(
+      isIPhone(
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15",
+        0,
+        900,
+      ),
+    ).toBe(false);
+  });
+
   it("does not take an iPad for one", () => {
     expect(
       isIPhone(
