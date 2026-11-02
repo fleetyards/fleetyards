@@ -131,6 +131,19 @@
           "sent": "inviata",
           "delivered": "consegnata",
           "bounced": "respinta"
+        },
+        "warnings": "Avvisi",
+        "warningLabels": {
+          "sharedIp": "IP condiviso",
+          "sameInbox": "Stessa casella",
+          "newAccount": "Account nuovo",
+          "noEmail": "Nessuna email"
+        },
+        "warningDetails": {
+          "sharedIp": "Stesso IP di accesso di: %{usernames}. Spesso una famiglia o una rete mobile.",
+          "sameInbox": "Stessa casella email di: %{usernames}. Probabilmente la stessa persona.",
+          "newAccount": "Account creato meno di un giorno prima della partecipazione.",
+          "noEmail": "Nessun indirizzo email sull'account. Saltato all'estrazione."
         }
       },
       "admin": {
@@ -143,7 +156,8 @@
       "notificationTypes": {
         "raffle_won": "Estrazione vinta",
         "raffle_started": "Estrazione aperta",
-        "raffle_last_day": "Estrazione in chiusura"
+        "raffle_last_day": "Estrazione in chiusura",
+        "raffle_email_missing": "La partecipazione all'estrazione richiede un indirizzo email"
       }
     },
     "placeholders": {
@@ -233,7 +247,8 @@
       "actions": {
         "enter": "Partecipa all'estrazione",
         "withdraw": "Ritirati",
-        "signInToEnter": "Accedi per partecipare a questa estrazione"
+        "signInToEnter": "Accedi per partecipare a questa estrazione",
+        "addEmail": "Aggiungi indirizzo email"
       },
       "messages": {
         "entered": "Stai partecipando all'estrazione. Buona fortuna!",
@@ -301,7 +316,9 @@
         "enteredHint": "Se vinci, ti inviamo un link per il ritiro. Tieni d'occhio la tua casella di posta per %{days} giorni dopo l'estrazione.",
         "over": "Estrazione conclusa",
         "opensAt": "Apre il %{date}.",
-        "maintainer": "I maintainer gestiscono le estrazioni e non possono partecipare."
+        "maintainer": "I maintainer gestiscono le estrazioni e non possono partecipare.",
+        "emailRequired": "Aggiungi un indirizzo email al tuo account per partecipare. Il premio viene inviato per email e il tuo account non ne ha ancora uno.",
+        "emailMissing": "Il tuo account non ha un indirizzo email, quindi un premio non potrebbe raggiungerti e la tua partecipazione verrà saltata all'estrazione. Aggiungine uno entro il %{date}."
       },
       "slider": {
         "label": "Carosello di immagini",

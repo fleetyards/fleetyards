@@ -19,6 +19,8 @@ import { type BaseTableCol } from "@/shared/components/base/Table/types";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import { AppConfirmTonesEnum } from "@/shared/components/AppConfirm/types";
 import { BtnTonesEnum } from "@/shared/components/base/Btn/types";
+import Pill from "@/shared/components/base/Pill/index.vue";
+import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import {
   type Raffle,
   type RaffleEntry,
@@ -125,6 +127,7 @@ const columns: BaseTableCol<RaffleEntry>[] = [
     mobile: false,
   },
   { name: "state", label: t("labels.raffleEntry.state") },
+  { name: "warnings", label: t("labels.raffleEntry.warnings") },
   { name: "mail", label: t("labels.raffleEntry.mail"), mobile: false },
 ];
 
@@ -283,6 +286,46 @@ const entryState = (entry: RaffleEntry) => {
         <template #col-state="{ record }">
           {{ entryState(record) }}
         </template>
+        <template #col-warnings="{ record }">
+          <div class="raffle-entry-warnings" data-test="raffle-entry-warnings">
+            <Pill
+              v-if="record.sharedIpWith?.length"
+              v-tooltip="
+                t('labels.raffleEntry.warningDetails.sharedIp', {
+                  usernames: record.sharedIpWith.join(', '),
+                })
+              "
+              :variant="PillVariantsEnum.WARNING"
+            >
+              {{ t("labels.raffleEntry.warningLabels.sharedIp") }}
+            </Pill>
+            <Pill
+              v-if="record.sameInboxAs?.length"
+              v-tooltip="
+                t('labels.raffleEntry.warningDetails.sameInbox', {
+                  usernames: record.sameInboxAs.join(', '),
+                })
+              "
+              :variant="PillVariantsEnum.DANGER"
+            >
+              {{ t("labels.raffleEntry.warningLabels.sameInbox") }}
+            </Pill>
+            <Pill
+              v-if="record.newAccount"
+              v-tooltip="t('labels.raffleEntry.warningDetails.newAccount')"
+              :variant="PillVariantsEnum.NEUTRAL"
+            >
+              {{ t("labels.raffleEntry.warningLabels.newAccount") }}
+            </Pill>
+            <Pill
+              v-if="record.placeholderEmail"
+              v-tooltip="t('labels.raffleEntry.warningDetails.noEmail')"
+              :variant="PillVariantsEnum.DANGER"
+            >
+              {{ t("labels.raffleEntry.warningLabels.noEmail") }}
+            </Pill>
+          </div>
+        </template>
         <template #col-mail="{ record }">
           <span v-if="record.claimMailStatus">
             {{ t("labels.raffleEntry.claimMail") }}:
@@ -308,6 +351,12 @@ const entryState = (entry: RaffleEntry) => {
 <style lang="scss" scoped>
 .raffle-social-posts {
   margin-bottom: 24px;
+}
+
+.raffle-entry-warnings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
 }
 
 .raffle-social-posts__title {

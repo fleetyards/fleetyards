@@ -43,6 +43,15 @@ module Raffles
       assert_equal 2, @raffle.entries.where.not(draw_position: nil).count
     end
 
+    test "leaves entrants without a real email address out of the order" do
+      @entries.first.user.update_columns(email: "12345@users.noreply.fleetyards.net")
+
+      Draw.new(@raffle, admin_user: @admin).call
+
+      assert_nil @entries.first.reload.draw_position
+      assert_equal 2, @raffle.entries.where.not(draw_position: nil).count
+    end
+
     test "leaves maintainers out of the order" do
       @entries.first.user.update_columns(maintainer: true)
 

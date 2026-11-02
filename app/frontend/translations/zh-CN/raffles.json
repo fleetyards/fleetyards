@@ -131,6 +131,19 @@
           "sent": "已发送",
           "delivered": "已送达",
           "bounced": "已退回"
+        },
+        "warnings": "警告",
+        "warningLabels": {
+          "sharedIp": "相同 IP",
+          "sameInbox": "相同邮箱",
+          "newAccount": "新账户",
+          "noEmail": "无邮箱"
+        },
+        "warningDetails": {
+          "sharedIp": "与以下用户登录 IP 相同：%{usernames}。常见于同一家庭或移动网络。",
+          "sameInbox": "与以下用户邮箱相同：%{usernames}。很可能是同一个人。",
+          "newAccount": "账户创建不到一天后即参与。",
+          "noEmail": "账户没有邮箱地址。抽奖时将被跳过。"
         }
       },
       "admin": {
@@ -143,7 +156,8 @@
       "notificationTypes": {
         "raffle_won": "抽奖中奖",
         "raffle_started": "抽奖已开始",
-        "raffle_last_day": "抽奖即将截止"
+        "raffle_last_day": "抽奖即将截止",
+        "raffle_email_missing": "参与抽奖需要邮箱地址"
       }
     },
     "placeholders": {
@@ -233,7 +247,8 @@
       "actions": {
         "enter": "参与抽奖",
         "withdraw": "退出",
-        "signInToEnter": "登录后参与此抽奖"
+        "signInToEnter": "登录后参与此抽奖",
+        "addEmail": "添加邮箱地址"
       },
       "messages": {
         "entered": "您已参与抽奖。祝您好运！",
@@ -301,7 +316,9 @@
         "enteredHint": "如果您中奖，我们将向您发送领取链接。抽奖后 %{days} 天内请留意您的邮箱。",
         "over": "抽奖已结束",
         "opensAt": "%{date} 开始。",
-        "maintainer": "维护者负责管理抽奖，不能参与。"
+        "maintainer": "维护者负责管理抽奖，不能参与。",
+        "emailRequired": "请先为账户添加邮箱地址再参与。奖品通过邮件发送，而你的账户还没有邮箱地址。",
+        "emailMissing": "你的账户没有邮箱地址，奖品无法送达，你的参与将在抽奖时被跳过。请在 %{date} 前添加一个。"
       },
       "slider": {
         "label": "图片轮播",

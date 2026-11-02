@@ -131,6 +131,19 @@
           "sent": "gesendet",
           "delivered": "zugestellt",
           "bounced": "unzustellbar"
+        },
+        "warnings": "Warnungen",
+        "warningLabels": {
+          "sharedIp": "Gleiche IP",
+          "sameInbox": "Gleiches Postfach",
+          "newAccount": "Neues Konto",
+          "noEmail": "Keine E-Mail"
+        },
+        "warningDetails": {
+          "sharedIp": "Gleiche Anmelde-IP wie: %{usernames}. Oft ein Haushalt oder Mobilfunknetz.",
+          "sameInbox": "Gleiches E-Mail-Postfach wie: %{usernames}. Wahrscheinlich dieselbe Person.",
+          "newAccount": "Konto weniger als einen Tag vor der Teilnahme erstellt.",
+          "noEmail": "Keine E-Mail-Adresse im Konto. Wird bei der Ziehung übergangen."
         }
       },
       "admin": {
@@ -143,7 +156,8 @@
       "notificationTypes": {
         "raffle_won": "Verlosung gewonnen",
         "raffle_started": "Verlosung gestartet",
-        "raffle_last_day": "Verlosung endet bald"
+        "raffle_last_day": "Verlosung endet bald",
+        "raffle_email_missing": "Verlosungsteilnahme braucht eine E-Mail-Adresse"
       }
     },
     "placeholders": {
@@ -233,7 +247,8 @@
       "actions": {
         "enter": "An Verlosung teilnehmen",
         "withdraw": "Teilnahme zurückziehen",
-        "signInToEnter": "Melde dich an, um an dieser Verlosung teilzunehmen"
+        "signInToEnter": "Melde dich an, um an dieser Verlosung teilzunehmen",
+        "addEmail": "E-Mail-Adresse hinterlegen"
       },
       "messages": {
         "entered": "Du nimmst jetzt an der Verlosung teil. Viel Glück!",
@@ -301,7 +316,9 @@
         "enteredHint": "Wenn du gewinnst, schicken wir dir einen Abhol-Link. Behalte dein Postfach nach der Ziehung %{days} Tage lang im Blick.",
         "over": "Verlosung beendet",
         "opensAt": "Beginnt am %{date}.",
-        "maintainer": "Maintainer betreuen die Verlosungen und können nicht teilnehmen."
+        "maintainer": "Maintainer betreuen die Verlosungen und können nicht teilnehmen.",
+        "emailRequired": "Hinterlege eine E-Mail-Adresse in deinem Konto, um teilzunehmen. Ein Gewinn wird per Mail verschickt, und dein Konto hat noch keine.",
+        "emailMissing": "Dein Konto hat keine E-Mail-Adresse, ein Gewinn könnte dich also nicht erreichen und deine Teilnahme wird bei der Ziehung übergangen. Hinterlege eine vor dem %{date}."
       },
       "slider": {
         "label": "Bilder-Slider",

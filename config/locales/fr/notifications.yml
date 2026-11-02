@@ -7,6 +7,9 @@ fr:
     raffle_last_day:
       title: "Dernier jour : %{raffle}"
       body: "Le tirage au sort se termine le %{deadline}. Participez maintenant si vous le souhaitez."
+    raffle_email_missing:
+      title: "Ajoutez une adresse e-mail pour rester dans le tirage au sort : %{raffle}"
+      body: "Votre compte n'a pas d'adresse e-mail : un lot ne pourrait pas vous parvenir et votre participation serait ignorée lors du tirage. Ajoutez-en une dans les paramètres de votre compte avant la fin du tirage au sort le %{deadline}."
     raffle_won:
       title: "Vous avez gagné le tirage au sort : %{raffle}"
       body: "Félicitations ! Nous vous avons envoyé un e-mail avec un lien pour réclamer votre lot. Cliquez dessus avant le %{deadline}, sinon le lot passe au suivant dans l'ordre."

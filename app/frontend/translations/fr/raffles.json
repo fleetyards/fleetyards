@@ -131,6 +131,19 @@
           "sent": "envoyé",
           "delivered": "distribué",
           "bounced": "rejeté"
+        },
+        "warnings": "Alertes",
+        "warningLabels": {
+          "sharedIp": "IP partagée",
+          "sameInbox": "Même boîte",
+          "newAccount": "Nouveau compte",
+          "noEmail": "Sans e-mail"
+        },
+        "warningDetails": {
+          "sharedIp": "Même IP de connexion que : %{usernames}. Souvent un foyer ou un réseau mobile.",
+          "sameInbox": "Même boîte e-mail que : %{usernames}. Probablement la même personne.",
+          "newAccount": "Compte créé moins d'un jour avant la participation.",
+          "noEmail": "Aucune adresse e-mail sur le compte. Ignoré lors du tirage."
         }
       },
       "admin": {
@@ -143,7 +156,8 @@
       "notificationTypes": {
         "raffle_won": "Tirage au sort gagné",
         "raffle_started": "Tirage au sort ouvert",
-        "raffle_last_day": "Tirage au sort bientôt clos"
+        "raffle_last_day": "Tirage au sort bientôt clos",
+        "raffle_email_missing": "La participation au tirage au sort nécessite une adresse e-mail"
       }
     },
     "placeholders": {
@@ -233,7 +247,8 @@
       "actions": {
         "enter": "Participer au tirage au sort",
         "withdraw": "Se retirer",
-        "signInToEnter": "Connectez-vous pour participer à ce tirage au sort"
+        "signInToEnter": "Connectez-vous pour participer à ce tirage au sort",
+        "addEmail": "Ajouter une adresse e-mail"
       },
       "messages": {
         "entered": "Vous participez au tirage au sort. Bonne chance !",
@@ -301,7 +316,9 @@
         "enteredHint": "Si vous gagnez, nous vous envoyons un lien de réclamation par e-mail. Surveillez votre boîte de réception pendant %{days} jours après le tirage.",
         "over": "Tirage au sort terminé",
         "opensAt": "Ouverture le %{date}.",
-        "maintainer": "Les mainteneurs gèrent les tirages au sort et ne peuvent pas y participer."
+        "maintainer": "Les mainteneurs gèrent les tirages au sort et ne peuvent pas y participer.",
+        "emailRequired": "Ajoutez une adresse e-mail à votre compte pour participer. Le lot est envoyé par e-mail, et votre compte n'en a pas encore.",
+        "emailMissing": "Votre compte n'a pas d'adresse e-mail : un lot ne pourrait pas vous parvenir et votre participation sera ignorée lors du tirage. Ajoutez-en une avant le %{date}."
       },
       "slider": {
         "label": "Carrousel d'images",

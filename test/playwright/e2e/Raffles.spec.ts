@@ -55,6 +55,18 @@ test.describe("Raffles", () => {
     await expect(page.getByTestId("raffle-entrants")).toContainText("entrant");
   });
 
+  test("asks an account without an email address to add one", async ({
+    page,
+  }) => {
+    await appScenario("raffles_placeholder_email");
+    await signIn(page, "noemail");
+
+    await page.goto("/raffles/");
+    await expect(page.getByTestId("raffle-email-required")).toBeVisible();
+    await expect(page.getByTestId("raffle-enter-form")).toHaveCount(0);
+    await expect(page.getByTestId("raffle-add-email")).toBeVisible();
+  });
+
   test("the winner is told to check their mail", async ({ page }) => {
     await appScenario("raffles_won");
     await signIn(page, "winner");

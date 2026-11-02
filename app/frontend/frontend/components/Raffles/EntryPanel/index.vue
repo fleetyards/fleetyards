@@ -66,6 +66,10 @@ const isOpen = computed(() => props.raffle.status === RaffleStatusEnum.OPEN);
 
 const isMaintainer = computed(() => !!currentUser?.value?.maintainer);
 
+const hasPlaceholderEmail = computed(
+  () => !!currentUser?.value?.placeholderEmail,
+);
+
 const isOver = computed(() => isRaffleOver(props.raffle));
 
 const errorText = (error: {
@@ -191,7 +195,27 @@ const title = computed(() => {
                 })
               }}
             </Alert>
-            <p class="raffle-entry__hint">
+            <Alert
+              v-if="hasPlaceholderEmail"
+              :variant="AlertVariantsEnum.WARNING"
+              :size="AlertSizesEnum.COMPACT"
+              data-test="raffle-email-missing"
+            >
+              {{
+                t("raffles.entry.emailMissing", {
+                  date: l(raffle.endsAt, "datetime.formats.short"),
+                })
+              }}
+            </Alert>
+            <Btn
+              v-if="hasPlaceholderEmail"
+              :size="BtnSizesEnum.MD"
+              :to="{ name: 'settings-account' }"
+              data-test="raffle-add-email"
+            >
+              {{ t("raffles.actions.addEmail") }}
+            </Btn>
+            <p v-else class="raffle-entry__hint">
               {{
                 t("raffles.entry.enteredHint", { days: raffle.claimPeriodDays })
               }}
@@ -213,6 +237,24 @@ const title = computed(() => {
           >
             {{ t("raffles.entry.maintainer") }}
           </Alert>
+          <template v-else-if="isAuthenticated && hasPlaceholderEmail">
+            <Alert
+              :variant="AlertVariantsEnum.WARNING"
+              :size="AlertSizesEnum.COMPACT"
+              data-test="raffle-email-required"
+            >
+              {{ t("raffles.entry.emailRequired") }}
+            </Alert>
+            <Btn
+              :size="BtnSizesEnum.LG"
+              :to="{ name: 'settings-account' }"
+              block
+              data-test="raffle-add-email"
+            >
+              <i class="fa-light fa-envelope" />
+              {{ t("raffles.actions.addEmail") }}
+            </Btn>
+          </template>
           <form
             v-else-if="isAuthenticated"
             class="raffle-entry__form"

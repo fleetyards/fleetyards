@@ -1,6 +1,7 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { describe, expect, it } from "vitest";
-import type { Raffle } from "@/services/fyApi";
+import { createRouter, createWebHashHistory } from "vue-router";
+import type { Raffle, User } from "@/services/fyApi";
 import Component from "./index.vue";
 
 const raffle: Raffle = {
@@ -47,5 +48,70 @@ describe("RaffleEntryPanel", () => {
     });
 
     expect(wrapper.find('[data-test="raffle-over"]').exists()).toBe(false);
+  });
+
+  describe("for an account with a placeholder address", () => {
+    const stub = { template: "<div />" };
+    const router = () =>
+      createRouter({
+        history: createWebHashHistory(),
+        routes: [
+          { path: "/", name: "home", component: stub },
+          {
+            path: "/settings/account",
+            name: "settings-account",
+            component: stub,
+          },
+        ],
+      });
+
+    const signedIn = (placeholderEmail: boolean) => ({
+      session: {
+        authenticated: true,
+        currentUser: { username: "pilot", placeholderEmail } as User,
+      },
+    });
+
+    it("asks for an email address instead of offering the entry", async () => {
+      const wrapper = await mountWithDefaults(Component, {
+        props: { raffle },
+        initialState: signedIn(true),
+        plugins: [router()],
+      });
+
+      expect(wrapper.find('[data-test="raffle-email-required"]').exists()).toBe(
+        true,
+      );
+      expect(wrapper.find('[data-test="raffle-enter-form"]').exists()).toBe(
+        false,
+      );
+    });
+
+    it("warns an entrant that the draw will pass them over", async () => {
+      const wrapper = await mountWithDefaults(Component, {
+        props: { raffle: { ...raffle, entered: true } },
+        initialState: signedIn(true),
+        plugins: [router()],
+      });
+
+      expect(wrapper.find('[data-test="raffle-email-missing"]').exists()).toBe(
+        true,
+      );
+    });
+
+    it("offers the entry to an account with a real address", async () => {
+      const wrapper = await mountWithDefaults(Component, {
+        props: { raffle },
+        initialState: signedIn(false),
+        plugins: [router()],
+      });
+
+      expect(wrapper.find('[data-test="raffle-enter-form"]').exists()).toBe(
+        true,
+      );
+      expect(wrapper.find('[data-test="raffle-email-required"]').exists()).toBe(
+        false,
+      );
+    });
   });
 });

@@ -55,6 +55,20 @@ class Admin::Api::V1::RaffleEntriesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /raffles/:raffle_id/entries warns about entries that may be one person" do
+    @winner.user.update_columns(current_sign_in_ip: "203.0.113.7", email: "pilot+1@example.com", created_at: 1.year.ago)
+    @runner_up.user.update_columns(last_sign_in_ip: "203.0.113.7", email: "pilot+2@example.com", created_at: @runner_up.created_at - 1.hour)
+    sign_in @admin
+
+    assert_api_response :get, 200, path_params: {raffleId: @raffle.id} do
+      winner, runner_up = parsed_body["items"]
+      assert_equal [@runner_up.user.username], winner["sharedIpWith"]
+      assert_equal [@winner.user.username], runner_up["sameInboxAs"]
+      assert_not winner["newAccount"]
+      assert runner_up["newAccount"]
+    end
+  end
+
   test "GET /raffles/:raffle_id/entries returns 404 for missing raffle" do
     sign_in @admin
 

@@ -3789,3 +3789,10 @@ PUT /notifications/{id}/archive added the new `supporter_coverage_ended` enum va
 PUT /notifications/{id}/read added the new `supporter_coverage_ended` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/unarchive added the new `supporter_coverage_ended` enum value to the `notificationType` response property for the response status `200`
 PUT /notifications/{id}/unread added the new `supporter_coverage_ended` enum value to the `notificationType` response property for the response status `200`
+GET /notification-preferences added the new `raffle_email_missing` enum value to the `items/notificationType` response property for the response status `200`
+PUT /notification-preferences/{id} added the new `raffle_email_missing` enum value to the `notificationType` response property for the response status `200`
+GET /notifications added the new `raffle_email_missing` enum value to the `items/items/notificationType` response property for the response status `200`
+PUT /notifications/{id}/archive added the new `raffle_email_missing` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/read added the new `raffle_email_missing` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unarchive added the new `raffle_email_missing` enum value to the `notificationType` response property for the response status `200`
+PUT /notifications/{id}/unread added the new `raffle_email_missing` enum value to the `notificationType` response property for the response status `200`

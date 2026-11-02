@@ -7,6 +7,9 @@ de:
     raffle_last_day:
       title: "Letzter Tag: %{raffle}"
       body: "Die Verlosung endet am %{deadline}. Nimm jetzt teil, wenn du dabei sein willst."
+    raffle_email_missing:
+      title: "Hinterlege eine E-Mail-Adresse, um dabei zu bleiben: %{raffle}"
+      body: "Dein Konto hat keine E-Mail-Adresse, ein Gewinn könnte dich also nicht erreichen und deine Teilnahme würde bei der Ziehung übergangen. Hinterlege eine in deinen Kontoeinstellungen, bevor die Verlosung am %{deadline} endet."
     raffle_won:
       title: "Du hast die Verlosung gewonnen: %{raffle}"
       body: "Herzlichen Glückwunsch! Wir haben dir eine Mail mit einem Link zum Abholen deines Gewinns geschickt. Klicke ihn vor %{deadline}, sonst geht der Gewinn an den Nächsten in der Reihe."

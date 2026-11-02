@@ -221,6 +221,9 @@ class User < ApplicationRecord
   validate :username_not_a_route_name, if: :username_changed?
 
   DISPLAY_NAME_LIMIT = 50
+
+  # Given to an account whose sign-in provider shares no email address.
+  PLACEHOLDER_EMAIL_DOMAIN = "users.noreply.fleetyards.net"
   normalizes :display_name, with: ->(name) { name.squish.presence }
   validates :display_name, length: {maximum: DISPLAY_NAME_LIMIT}
 
@@ -315,6 +318,10 @@ class User < ApplicationRecord
 
   def self.confirmed
     where.not(confirmed_at: nil)
+  end
+
+  def self.with_real_email
+    where.not("users.email LIKE ?", "%@#{PLACEHOLDER_EMAIL_DOMAIN}")
   end
 
   def self.unconfirmed
@@ -621,7 +628,7 @@ class User < ApplicationRecord
   end
 
   def placeholder_email?
-    email.ends_with?("@users.noreply.fleetyards.net")
+    email.ends_with?("@#{PLACEHOLDER_EMAIL_DOMAIN}")
   end
 
   # The band this month's spend falls in: 1 from a euro, 2 from six, 3 from
@@ -669,9 +676,10 @@ class User < ApplicationRecord
     super
   end
 
-  # Maintainers run the raffles, so they may not win one.
+  # Maintainers run the raffles, so they may not win one. A placeholder address
+  # counts as confirmed but has no inbox, so the claim mail could never arrive.
   def raffle_eligible?
-    confirmed? && !maintainer?
+    confirmed? && !placeholder_email? && !maintainer?
   end
 
   # A maintainer counts as an ongoing supporter at the highest tier, so every

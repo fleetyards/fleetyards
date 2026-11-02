@@ -13,6 +13,14 @@ class RaffleEntryPolicyTest < ActiveSupport::TestCase
     assert_not policy(nil, raffle.entries.new).apply(:create?)
   end
 
+  test "an account without a real email address may not enter" do
+    raffle = create(:raffle)
+    user = create(:user, email: "12345@users.noreply.fleetyards.net")
+
+    assert user.confirmed?
+    assert_not policy(user, raffle.entries.new(user:)).apply(:create?)
+  end
+
   test "a maintainer may not enter" do
     raffle = create(:raffle)
     maintainer = create(:user, maintainer: true)
