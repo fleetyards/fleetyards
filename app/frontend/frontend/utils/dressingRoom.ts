@@ -1,6 +1,7 @@
 import { type LocationQuery } from "vue-router";
 import { type HoloMount } from "@/shared/components/HoloViewer/mounts";
 import {
+  type BodyRegion,
   type HoloRig,
   type RigAttachment,
 } from "@/shared/components/HoloViewer/rig";
@@ -38,21 +39,40 @@ export const isWeaponSlot = (slot?: string): slot is OutfitWeaponSlotEnum =>
 // checks.
 export const WEAPON_SUB_TYPES: Partial<Record<OutfitSlotEnum, string[]>> = {
   [OutfitSlotEnum.PRIMARY]: ["Medium", "Large"],
-  [OutfitSlotEnum.SECONDARY]: ["Medium", "Large"],
+  [OutfitSlotEnum.SECONDARY]: ["Medium"],
   [OutfitSlotEnum.SIDEARM]: ["Small"],
 };
 
-// The bones a stowed weapon hangs from, which the worn core and legs bring.
-export const STOWED_WEAPON_BONES: Partial<Record<OutfitSlotEnum, string>> = {
-  [OutfitSlotEnum.PRIMARY]: "wep_stocked_attach_2_override",
-  [OutfitSlotEnum.SECONDARY]: "wep_stocked_attach_3_override",
-  [OutfitSlotEnum.SIDEARM]: "wep_sidearm_attach_override",
+// Where each slot's item hangs, as the game's ports say: the bone the worn
+// core, legs or undersuit brings, and the helper on the item that meets it.
+export type Mount = {
+  bone: string;
+  helper?: string;
 };
 
-export const HAND_BONE = "RightWeaponBone";
+export const STOWED_MOUNTS: Partial<Record<OutfitSlotEnum, Mount>> = {
+  [OutfitSlotEnum.PRIMARY]: {
+    bone: "wep_stocked_attach_3_override",
+    helper: "attach_offset_left_01",
+  },
+  [OutfitSlotEnum.SECONDARY]: {
+    bone: "wep_stocked_attach_2_override",
+    helper: "attach_offset_right_01",
+  },
+  [OutfitSlotEnum.SIDEARM]: {
+    bone: "wep_sidearm_attach_override",
+    helper: "attach_offset_left_01",
+  },
+};
+
+// In hand the weapon's origin, its grip, sits on the weapon bone.
+export const HAND_MOUNT: Mount = { bone: "RightWeaponBone" };
 
 // Where the core carries a backpack that is not rigged to the body.
-export const BACKPACK_BONE = "backpack_attach_1_override";
+export const BACKPACK_MOUNT: Mount = {
+  bone: "backpack_attach_1_override",
+  helper: "backpack_attach_1_loc",
+};
 
 // Equipment slug per slot: what a share link carries.
 export type OutfitSelection = Partial<Record<OutfitSlotEnum, string>>;
@@ -150,20 +170,57 @@ export const clipLabel = (name: string) => {
   return words.charAt(0).toUpperCase() + words.slice(1);
 };
 
-// A rigid item pinned to a bone of the figure, from its ordinary holo.
-export const attachment = (holo: PieceHolo, bone: string): RigAttachment => ({
+type AttachPoints = Record<string, { position: number[]; rotation: number[] }>;
+
+// A rigid item pinned to a bone of the figure, from its ordinary holo, by the
+// item's helper for that mount where the export lists it.
+export const attachment = (
+  holo: PieceHolo,
+  mount: Mount,
+  attachPoints?: AttachPoints | null,
+): RigAttachment => ({
   path: holo.path,
-  bone,
+  bone: mount.bone,
   size: holo.size,
   textured: holo.textured,
   fallbackPath: holo.fallbackPath,
+  helper: (mount.helper && attachPoints?.[mount.helper]) || undefined,
 });
+
+// The body's regions each worn slot covers: the undersuit all of it but the
+// head, the helmet the head.
+export const COVERED_REGIONS: Partial<Record<OutfitSlotEnum, BodyRegion[]>> = {
+  [OutfitSlotEnum.UNDERSUIT]: ["torso", "arms", "legs"],
+  [OutfitSlotEnum.TORSO]: ["torso"],
+  [OutfitSlotEnum.ARMS]: ["arms"],
+  [OutfitSlotEnum.LEGS]: ["legs"],
+  [OutfitSlotEnum.HELMET]: ["head"],
+};
+
+const coveredRegions = (slots: OutfitSlotEnum[]): BodyRegion[] => [
+  ...new Set(slots.flatMap((slot) => COVERED_REGIONS[slot] ?? [])),
+];
+
+// Under a drawn undersuit the body is not drawn; under armour alone it is
+// drawn as a dark undersuit, and under a helmet the head is not drawn.
+const bodyCover = (worn: OutfitSlotEnum[]) => {
+  const undersuit = worn.includes(OutfitSlotEnum.UNDERSUIT);
+  const regions = coveredRegions(worn);
+  const hide = regions.filter((region) => region === "head" || undersuit);
+  const cover = regions.filter((region) => !hide.includes(region));
+
+  return {
+    ...(hide.length ? { hide } : {}),
+    ...(cover.length ? { cover } : {}),
+  };
+};
 
 export const riggedOutfitModel = (
   body: CharacterBody,
   pieces: PieceHolo[],
   clip?: string,
   attachments: RigAttachment[] = [],
+  worn: OutfitSlotEnum[] = [],
 ): OutfitHoloModel => ({
   path: body.holo.url,
   size: body.holo.size ?? undefined,
@@ -171,6 +228,7 @@ export const riggedOutfitModel = (
   rig: {
     pieces: pieces.map((piece) => ({ path: piece.path, size: piece.size })),
     ...(attachments.length ? { attachments } : {}),
+    ...bodyCover(worn),
     animations: body.animations?.url ?? undefined,
     clip:
       clip && body.clips.some((candidate) => candidate.name === clip)

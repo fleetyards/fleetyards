@@ -16,6 +16,8 @@ import {
   DoubleSide,
   FrontSide,
   Box3,
+  Matrix4,
+  Quaternion,
   Vector3,
   Group,
   type AnimationClip,
@@ -28,7 +30,7 @@ import {
   LineSegments,
   MeshPhongMaterial,
   MeshLambertMaterial,
-  type MeshStandardMaterial,
+  MeshStandardMaterial,
   DefaultLoadingManager,
   type ColorSpace,
   NoColorSpace,
@@ -42,6 +44,7 @@ import { prepareGltfLoader } from "../gltfLoader";
 import { buildPedestal, disposePedestal } from "../pedestal";
 import {
   bindToBones,
+  bodyRegion,
   bonesByName,
   type RigAttachment,
   cloneRigPiece,
@@ -429,6 +432,7 @@ onUnmounted(() => {
   releaseMountCache();
   mixer.value?.stopAllAction();
   material.dispose();
+  underlayMaterial.dispose();
   windowMaterial.dispose();
   wireMaterial.dispose();
   // A paint still loading would land after this and never be freed.
@@ -518,6 +522,52 @@ let rigRoot: Group | undefined;
 let rigRequest = 0;
 let rigClips: AnimationClip[] = [];
 
+// What shows of the body under armour: a dark, matte undersuit.
+const underlayMaterial = new MeshStandardMaterial({
+  color: "#1d2126",
+  roughness: 0.9,
+  metalness: 0,
+});
+
+// The body's own skinned parts, each with the region it covers: hidden under
+// an undersuit, drawn as one under armour alone.
+const hideCovered = (scene: Group) => {
+  const parts: SkinnedMesh[] = [];
+  scene.traverse((node) => {
+    const mesh = node as SkinnedMesh;
+    if (mesh.isSkinnedMesh && !withinRig(mesh)) parts.push(mesh);
+  });
+
+  // The body's bind-pose height, its stored points being Z up.
+  let height = 0;
+  parts.forEach((part) => {
+    if (/head|eyes|teeth/i.test(part.name)) return;
+    part.geometry.computeBoundingBox();
+    height = Math.max(height, part.geometry.boundingBox?.max.z ?? 0);
+  });
+
+  const hidden = new Set(props.model.rig?.hide ?? []);
+  const covered = new Set(props.model.rig?.cover ?? []);
+  parts.forEach((part) => {
+    part.userData.region ??= bodyRegion(part, height || 1);
+    part.userData.bare ??= part.material;
+    part.visible = !hidden.has(part.userData.region);
+    part.material = covered.has(part.userData.region)
+      ? underlayMaterial
+      : part.userData.bare;
+  });
+
+  invalidate();
+};
+
+const withinRig = (node: Object3D) => {
+  for (let current: Object3D | null = node; current; current = current.parent) {
+    if (current === rigRoot) return true;
+  }
+
+  return false;
+};
+
 const pose = (scene: Group) => {
   mixer.value?.stopAllAction();
   mixer.value = undefined;
@@ -540,9 +590,22 @@ const loadAttachment = async (attachment: RigAttachment) => {
   const load = (path: string) =>
     loadHolo(path).then((holo) => {
       // The holos and the rig share the export's frame, so a holo sits on
-      // its bone as it is.
+      // its bone as it is -- moved so its helper, where it has one, is the
+      // point that meets the bone.
       const group = new Group();
-      group.add(cloneShared(holo));
+      const item = cloneShared(holo);
+      if (attachment.helper) {
+        item.applyMatrix4(
+          new Matrix4()
+            .compose(
+              new Vector3().fromArray(attachment.helper.position),
+              new Quaternion().fromArray(attachment.helper.rotation),
+              new Vector3(1, 1, 1),
+            )
+            .invert(),
+        );
+      }
+      group.add(item);
       return group;
     });
 
@@ -635,6 +698,7 @@ const attachRig = async (scene: Group) => {
 
   if (!props.model.textured) setMaterials(next);
 
+  hideCovered(scene);
   pose(scene);
 
   return true;
@@ -903,6 +967,16 @@ watch(
   () => rigLayoutKey(props.model.rig),
   () => {
     if (state.value) void attachRig(state.value.scene);
+  },
+);
+
+watch(
+  () =>
+    [props.model.rig?.hide ?? [], props.model.rig?.cover ?? []]
+      .map((regions) => regions.join(","))
+      .join("|"),
+  () => {
+    if (state.value && rigRoot) hideCovered(state.value.scene);
   },
 );
 

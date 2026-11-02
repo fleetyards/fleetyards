@@ -167,6 +167,34 @@ describe("riggedOutfitModel", () => {
   });
 });
 
+describe("riggedOutfitModel body cover", () => {
+  const body = {
+    key: "male",
+    holo: file("/body.glb"),
+    animations: null,
+    clips: [],
+  };
+
+  it("draws the body under armour as a dark undersuit and hides the head under a helmet", () => {
+    expect(
+      riggedOutfitModel(body, [], undefined, [], ["legs", "helmet"]).rig,
+    ).toMatchObject({ hide: ["head"], cover: ["legs"] });
+  });
+
+  it("hides the whole body under an undersuit", () => {
+    const rig = riggedOutfitModel(
+      body,
+      [],
+      undefined,
+      [],
+      ["undersuit", "torso"],
+    ).rig;
+
+    expect(rig?.hide).toEqual(["torso", "arms", "legs"]);
+    expect(rig?.cover).toBeUndefined();
+  });
+});
+
 describe("clipLabel", () => {
   it("reads a clip name as words", () => {
     expect(clipLabel("shop_med_marine_holdwrist")).toBe(

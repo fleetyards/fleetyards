@@ -26,10 +26,25 @@ export type RigAttachment = {
   textured?: boolean;
   // Loaded in place of a painted holo that does not load, and drawn plain.
   fallbackPath?: string;
+  // The point on the item that meets the bone, in its holo's frame: where a
+  // rifle hooks onto a back mount. Without one the holo's origin does.
+  helper?: {
+    position: number[];
+    rotation: number[];
+  };
 };
+
+// The body's parts a worn piece covers: a bare foot would otherwise show
+// through a thin boot.
+export type BodyRegion = "head" | "torso" | "arms" | "legs";
 
 export type HoloRig = {
   pieces: RigPiece[];
+  // Under a worn undersuit: not drawn at all.
+  hide?: BodyRegion[];
+  // Under armour alone: drawn as a dark undersuit, which is what shows
+  // through an opening in the armour in the game.
+  cover?: BodyRegion[];
   attachments?: RigAttachment[];
   // The clips that pose the body and every piece by bone name.
   animations?: string;
@@ -135,6 +150,35 @@ export const bindToBones = (piece: Object3D, bodyBones: Map<string, Bone>) => {
   });
 
   return { meshes: bound, grafted };
+};
+
+// Which region a part of the body is, from where it sits in the body's own
+// bind pose: below the hips a leg, out past the shoulders an arm, and the
+// trunk otherwise; the head comes as meshes of its own. Measured against the
+// body's height, so it holds for any body the export adds.
+export const bodyRegion = (mesh: SkinnedMesh, height: number): BodyRegion => {
+  if (/head|eyes|teeth/i.test(mesh.name)) return "head";
+
+  const position = mesh.geometry.getAttribute("position");
+  const index = mesh.geometry.getIndex();
+  const count = index ? index.count : position.count;
+  const step = Math.max(1, Math.floor(count / 600));
+
+  let x = 0;
+  let up = 0;
+  let samples = 0;
+  for (let corner = 0; corner < count; corner += step) {
+    const vertex = index ? index.getX(corner) : corner;
+    x += Math.abs(position.getX(vertex));
+    up += position.getZ(vertex);
+    samples += 1;
+  }
+
+  if (!samples) return "torso";
+  if (up / samples < height * 0.64) return "legs";
+  if (x / samples > height * 0.13) return "arms";
+
+  return "torso";
 };
 
 export const rigLayoutKey = (rig?: HoloRig) =>

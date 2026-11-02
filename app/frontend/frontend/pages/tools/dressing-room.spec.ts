@@ -117,6 +117,7 @@ describe("ToolsDressingRoomPage", () => {
       animations: "/animations.glb",
       clip: "idle_stand",
       pedestal: true,
+      cover: ["torso"],
     });
     expect(
       wrapper.find('[data-test="dressing-room-no-holo-legs"]').exists(),
@@ -134,10 +135,11 @@ describe("ToolsDressingRoomPage", () => {
     expect(viewerModel(wrapper).rig.attachments).toEqual([
       {
         path: "/p4ar_textured.glb",
-        bone: "wep_stocked_attach_2_override",
+        bone: "wep_stocked_attach_3_override",
         size: 1000,
         textured: true,
         fallbackPath: "/p4ar.glb",
+        helper: undefined,
       },
       {
         path: "/s38.glb",
@@ -145,6 +147,7 @@ describe("ToolsDressingRoomPage", () => {
         size: 1000,
         textured: false,
         fallbackPath: undefined,
+        helper: undefined,
       },
     ]);
   });

@@ -30,12 +30,12 @@ import {
 import BaseSelect from "@/shared/components/base/Select/index.vue";
 import {
   ALL_SLOTS,
-  BACKPACK_BONE,
-  HAND_BONE,
+  BACKPACK_MOUNT,
+  HAND_MOUNT,
   OUTFIT_SLOTS,
   type OutfitSelection,
   type PieceHolo,
-  STOWED_WEAPON_BONES,
+  STOWED_MOUNTS,
   WEAPON_SLOTS,
   attachment,
   clipLabel,
@@ -263,14 +263,21 @@ const pieces = computed(() =>
 
 const attachments = computed(() => [
   ...(pinnedBackpack.value
-    ? [attachment(pinnedBackpack.value, BACKPACK_BONE)]
+    ? [
+        attachment(
+          pinnedBackpack.value,
+          BACKPACK_MOUNT,
+          items.value[OutfitSlotEnum.BACKPACK]?.attachPoints,
+        ),
+      ]
     : []),
   ...WEAPON_SLOTS.flatMap((slot) => {
     const holo = staticHolos.value[slot];
-    const bone =
-      heldWeapon.value === slot ? HAND_BONE : STOWED_WEAPON_BONES[slot];
+    const mount = heldWeapon.value === slot ? HAND_MOUNT : STOWED_MOUNTS[slot];
 
-    return holo && bone ? [attachment(holo, bone)] : [];
+    return holo && mount
+      ? [attachment(holo, mount, items.value[slot]?.attachPoints)]
+      : [];
   }),
 ]);
 
@@ -281,6 +288,7 @@ const model = computed(() =>
         pieces.value,
         poseName.value,
         attachments.value,
+        OUTFIT_SLOTS.filter((slot) => riggedHolos.value[slot]),
       )
     : outfitModel(pieces.value),
 );
