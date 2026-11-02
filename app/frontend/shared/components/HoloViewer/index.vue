@@ -18,6 +18,7 @@ import {
   NeutralToneMapping,
   type Object3D,
   type PerspectiveCamera,
+  type SkinnedMesh,
   Sphere,
   Vector3,
 } from "three";
@@ -38,7 +39,16 @@ import crusaderNebulaSmall from "@/images/skyboxes/stanton_crusader_nebula_2k.we
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useLowPowerDevice } from "@/shared/composables/useLowPowerDevice";
 import { LOW_POWER_HOLO_SIZE_LIMIT } from "@/shared/components/HoloViewer/limits";
-import { type HoloMount } from "@/shared/components/HoloViewer/mounts";
+import {
+  type HoloMount,
+  mountsSize,
+  mountsTextured,
+} from "@/shared/components/HoloViewer/mounts";
+import {
+  type HoloRig,
+  rigSize,
+  rigTextured,
+} from "@/shared/components/HoloViewer/rig";
 
 export type HoloModel = {
   path: string;
@@ -54,6 +64,11 @@ export type HoloModel = {
   paintOrm?: string;
   // Parts drawn on the holo's ports, in its own frame.
   mounts?: HoloMount[];
+  // Framed and centred with its parts rather than on its own: a figure whose
+  // pieces all share one frame.
+  frameMounts?: boolean;
+  // A rigged body: worn pieces bound to its skeleton and posed by a clip.
+  rig?: HoloRig;
 };
 
 type Props = {
@@ -87,6 +102,11 @@ type Props = {
   onDemand?: boolean;
   // Mounted parts answer the pointer: hovered and clicked by their mount's id.
   pickable?: boolean;
+  // Turned only about its upright axis, without zoom, until shown full
+  // screen, where it orbits freely.
+  turntable?: boolean;
+  // Room left around a contained model, as a factor of its fitted distance.
+  containPadding?: number;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -105,6 +125,8 @@ const props = withDefaults(defineProps<Props>(), {
   hologram: false,
   onDemand: false,
   pickable: false,
+  turntable: false,
+  containPadding: 1.35,
 });
 
 // Nothing will be drawn: no WebGL, or a holo that would not load. A caller with
@@ -129,10 +151,19 @@ const confirmedSize = ref(0);
 
 // Drawn with its own colours, which the tone mapping keeps as they are rather
 // than pushing the dark ones towards black.
-const textured = computed(() => props.models.some((model) => model.textured));
+const textured = computed(() =>
+  props.models.some(
+    (model) =>
+      model.textured || mountsTextured(model.mounts) || rigTextured(model.rig),
+  ),
+);
 
 const totalSize = computed(() =>
-  props.models.reduce((sum, model) => sum + (model.size ?? 0), 0),
+  props.models.reduce(
+    (sum, model) =>
+      sum + (model.size ?? 0) + mountsSize(model.mounts) + rigSize(model.rig),
+    0,
+  ),
 );
 
 const awaitingConfirmation = computed(
@@ -179,13 +210,46 @@ const powerPreference = computed<WebGLPowerPreference>(() =>
 
 const internalFullscreen = ref(props.fullscreen);
 
+const turntableLocked = computed(
+  () => props.turntable && !internalFullscreen.value,
+);
+
+// Level with the camera's starting height, so the turntable keeps the view
+// it opened on.
+const turntablePolar = computed(
+  () => Math.PI / 2 - ((props.elevation ?? 0) * Math.PI) / 180,
+);
+
 const enableFullscreen = () => {
   internalFullscreen.value = true;
 };
 
 const disableFullscreen = () => {
   internalFullscreen.value = false;
+
+  // A turntable has no zoom of its own: back from full screen, it returns
+  // to the framing it opened on rather than wherever full screen left it.
+  if (props.turntable) cameraPosition.value = [...cameraPosition.value];
 };
+
+const closeOnEscape = (event: KeyboardEvent) => {
+  if (event.key === "Escape") disableFullscreen();
+};
+
+// Immediate, so a viewer that opens full screen listens from the start.
+watch(
+  internalFullscreen,
+  (fullscreen) => {
+    if (fullscreen) {
+      window.addEventListener("keydown", closeOnEscape);
+    } else {
+      window.removeEventListener("keydown", closeOnEscape);
+    }
+  },
+  { immediate: true },
+);
+
+onUnmounted(() => window.removeEventListener("keydown", closeOnEscape));
 
 const { t } = useI18n();
 
@@ -505,7 +569,13 @@ const handleModelLoaded = (size: Vector3, scene: Object3D) => {
 
       const step = Math.max(1, Math.floor(positions.count / 2000));
       for (let index = 0; index < positions.count; index += step) {
-        point.fromBufferAttribute(positions, index);
+        // A skinned mesh's stored points are its bind pose; its bones say
+        // where they are drawn.
+        if ((mesh as SkinnedMesh).isSkinnedMesh) {
+          (mesh as SkinnedMesh).getVertexPosition(index, point);
+        } else {
+          point.fromBufferAttribute(positions, index);
+        }
         point.applyMatrix4(mesh.matrixWorld);
 
         const depth = point.dot(toCamera);
@@ -518,7 +588,7 @@ const handleModelLoaded = (size: Vector3, scene: Object3D) => {
     });
     // Room around it: a frame rarely shows its edges whole, the editor's fades
     // in from the left under the controls.
-    reach *= 1.35;
+    reach *= props.containPadding;
 
     fitDistance.value = reach;
     modelMaxDimension.value = Math.max(size.x, size.y, size.z);
@@ -633,7 +703,12 @@ defineExpose({
       >
         <i class="fa-light fa-planet-ringed" />
       </Btn>
-      <Btn v-tooltip="zoomTooltip" :active="zoom" @click="toggleZoom">
+      <Btn
+        v-if="!turntableLocked"
+        v-tooltip="zoomTooltip"
+        :active="zoom"
+        @click="toggleZoom"
+      >
         <i class="fa-light fa-search-plus" />
       </Btn>
       <Btn
@@ -736,7 +811,9 @@ defineExpose({
         :auto-rotate="internalAutoRotate"
         :auto-rotate-speed="autoRotateSpeed"
         :enable-rotate="controllable || internalFullscreen"
-        :enable-zoom="zoom"
+        :enable-zoom="zoom && !turntableLocked"
+        :min-polar-angle="turntableLocked ? turntablePolar : 0"
+        :max-polar-angle="turntableLocked ? turntablePolar : Math.PI"
         :zoom-speed="0.5"
         :min-distance="-50"
         :max-distance="maxZoomDistance"
@@ -782,6 +859,7 @@ defineExpose({
           :mobile="lowPower"
           :hologram="hologram"
           :pickable="pickable"
+          :fullscreen="internalFullscreen"
           :offsetModel="models[models.indexOf(model) - 1]"
           @loaded="handleModelLoaded"
           @error="handleModelError"

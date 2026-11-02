@@ -22,7 +22,9 @@ module Shared
             rearView: ::Shared::V1::Schemas::MediaFile,
             starboardView: ::Shared::V1::Schemas::MediaFile,
             holo: ::Shared::V1::Schemas::MediaFile,
-            holoTextured: ::Shared::V1::Schemas::MediaFile
+            holoTextured: ::Shared::V1::Schemas::MediaFile,
+            holoRiggedMale: ::Shared::V1::Schemas::MediaFile,
+            holoRiggedFemale: ::Shared::V1::Schemas::MediaFile
           },
           additionalProperties: false
         })

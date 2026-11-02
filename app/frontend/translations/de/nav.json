@@ -137,6 +137,7 @@
         "cargoGrids": "Frachtgitter",
         "plaque": "Widmungsplaketten",
         "tradeRoutes": "Handelsrouten",
+        "dressingRoom": "Umkleide",
         "tours": "Touren"
       },
       "api": "API-Dokumentation",

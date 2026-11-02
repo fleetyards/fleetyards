@@ -63,6 +63,11 @@ module Shared
 
             storeImage: ::Shared::V1::Schemas::MediaFile,
             media: ::Shared::V1::Schemas::ItemMedia,
+            attachPoints: {
+              type: [:object, :null],
+              description: "Where the item is hung when stowed -- on a back mount, in a holster, on a core -- by helper name; on the detail payload only",
+              additionalProperties: ::Shared::V1::Schemas::AttachPoint
+            },
 
             retired: {type: :boolean},
 

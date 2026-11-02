@@ -148,6 +148,9 @@ de:
       create: "Plan konnte nicht erstellt werden."
       update: "Plan konnte nicht aktualisiert werden."
       rebase: "Plan konnte nicht auf den Hangar aktualisiert werden."
+    outfits:
+      create: "Outfit konnte nicht gespeichert werden."
+      update: "Outfit konnte nicht aktualisiert werden."
     fleet_shopping_lists:
       create: "Einkaufsliste konnte nicht veröffentlicht werden."
       update: "Einkaufsliste konnte nicht aktualisiert werden."

@@ -63,4 +63,6 @@ json.media do
   json.partial! "api/v1/shared/item_media", record: equipment, extended:, fallback: true, views: %i[angled_view], store_image: extended
 end
 
+json.attach_points equipment.attach_points if extended
+
 json.partial! "api/shared/dates", record: equipment

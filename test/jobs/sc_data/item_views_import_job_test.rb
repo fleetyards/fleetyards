@@ -74,6 +74,42 @@ module ScData
       assert @equipment.starboard_view.attached?
     end
 
+    test "attaches a worn item's rig for a body it knows, and skips one for a body it does not" do
+      publish(@equipment.sc_key, {"rigged_male.glb" => HOLO, "rigged_female.glb" => HOLO, "rigged_vanduul.glb" => HOLO})
+
+      perform
+
+      assert @equipment.holo_rigged_male.attached?
+      assert @equipment.holo_rigged_female.attached?
+      assert_not_includes fetched, "rigged_vanduul.glb"
+    end
+
+    test "takes in the helpers an item is hung by" do
+      helpers = {"attach_offset_left_01" => {"position" => [0.01, 0.02, -0.15], "rotation" => [0, 0, 0.7071, 0.7071]}}
+      publish(@equipment.sc_key, {"attach_points.json" => {helpers:}.to_json})
+
+      perform
+
+      assert_equal helpers, @equipment.attach_points
+    end
+
+    test "leaves the helpers alone when the file is malformed" do
+      publish(@equipment.sc_key, {"attach_points.json" => {helpers: {"attach_offset_left_01" => {"position" => [0, 0]}}}.to_json})
+
+      perform
+
+      assert_nil @equipment.attach_points
+    end
+
+    test "skips a helper file that is not an object and keeps the item's renders" do
+      publish(@equipment.sc_key, {"attach_points.json" => "[]", "top.png" => PNG})
+
+      perform
+
+      assert_nil @equipment.attach_points
+      assert @equipment.top_view.attached?
+    end
+
     test "skips a name for a field an item does not have" do
       publish(@component.sc_key, {"top_colored.png" => PNG, "extended_front.png" => PNG, "front.png" => PNG})
 

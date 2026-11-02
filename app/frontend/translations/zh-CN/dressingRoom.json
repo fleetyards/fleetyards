@@ -1,0 +1,57 @@
+{
+  "zh-CN": {
+    "dressingRoom": {
+      "lead": "把护甲和内衬服搭配在一起，以 3D 查看装扮。通过链接分享，或登录后保存。",
+      "slots": {
+        "helmet": "头盔",
+        "torso": "躯干",
+        "arms": "手臂",
+        "legs": "腿部",
+        "backpack": "背包",
+        "undersuit": "内衬服",
+        "primary": "主武器",
+        "secondary": "副武器",
+        "sidearm": "手枪"
+      },
+      "search": "搜索%{slot}",
+      "noResults": "此槽位没有找到任何物品。",
+      "choose": "选择…",
+      "remove": "移除",
+      "openItem": "打开物品页面",
+      "notFound": "未找到物品",
+      "noHolo": "暂无 3D 模型",
+      "empty": "为任意槽位选择一件装备即可查看装扮。",
+      "pose": "姿势",
+      "copyLink": "复制链接",
+      "savedOutfits": "已保存的装扮",
+      "signInToSave": "登录后即可保存装扮。",
+      "outfitName": "装扮名称",
+      "nameTaken": "你已经有一套同名的装扮。",
+      "saveNew": "另存为新装扮",
+      "saveChanges": "保存更改",
+      "noOutfits": "还没有保存的装扮。",
+      "pieces": {
+        "one": "%{count} 件",
+        "other": "%{count} 件"
+      },
+      "confirmDelete": "删除装扮 %{name}？",
+      "messages": {
+        "saved": "装扮已保存。",
+        "saveFailed": "无法保存装扮。",
+        "deleteFailed": "无法删除装扮。",
+        "linkCopied": "链接已复制。",
+        "copyFailed": "无法复制链接。"
+      },
+      "groups": {
+        "armour": "护甲",
+        "weapons": "武器"
+      },
+      "hold": "手持",
+      "bodies": {
+        "male": "男性",
+        "female": "女性"
+      },
+      "positionPending": "位置尚未导出"
+    }
+  }
+}

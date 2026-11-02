@@ -185,6 +185,7 @@
         "cargoGrids": "Grilles de cargaison",
         "plaque": "Plaques de dédicace",
         "tradeRoutes": "Routes commerciales",
+        "dressingRoom": "Cabine d'essayage",
         "tours": {
           "index": "Expéditions",
           "add": "Créer une expédition",

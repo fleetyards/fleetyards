@@ -43,6 +43,8 @@ class Equipment < ApplicationRecord
   # columns for now, so reads can move over a catalogue at a time.
   has_many :builds, class_name: "EquipmentBuild", dependent: :destroy
   has_many :cart_items, as: :item, dependent: :delete_all
+  has_many :outfit_items, dependent: :delete_all
+  before_destroy :release_held_outfit_weapons, prepend: true
   # The build we are being served from, which is the configured one unless its
   # load has not run yet. `current` on its own means *exactly* the configured
   # build and has to keep meaning that -- `ScData::CheckJob` asks it whether the
@@ -431,6 +433,16 @@ class Equipment < ApplicationRecord
         label: fact_label(:item_type, item),
         value: item
       )
+    end
+  end
+
+  # An outfit holding this weapon would otherwise name a slot it no longer
+  # carries, and refuse every save after.
+  private def release_held_outfit_weapons
+    held = outfit_items.where(slot: OutfitItem::WEAPON_SLOTS.keys).pluck(:outfit_id, :slot)
+
+    held.each do |outfit_id, slot|
+      Outfit.where(id: outfit_id, held_weapon: slot).update_all(held_weapon: nil)
     end
   end
 end

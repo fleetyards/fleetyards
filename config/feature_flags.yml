@@ -101,3 +101,6 @@ loadout_preview:
 
 hangar_planner:
   description: "Hangar planner — plan the hangar you want in slots, compare it with your current hangar and work out melts, upgrades and buy-backs to get there"
+
+dressing_room:
+  description: "Dressing room — put armour and undersuits together on a body in 3D, share the outfit by link and save it"

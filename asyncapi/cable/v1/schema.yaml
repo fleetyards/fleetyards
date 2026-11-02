@@ -3316,6 +3316,10 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         holoTextured:
           "$ref": "#/components/schemas/MediaFile"
+        holoRiggedMale:
+          "$ref": "#/components/schemas/MediaFile"
+        holoRiggedFemale:
+          "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
     ItemPrice:
       type: object

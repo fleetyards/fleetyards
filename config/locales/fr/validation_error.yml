@@ -141,6 +141,9 @@ fr:
       create: "Le plan n'a pas pu être créé."
       update: "Le plan n'a pas pu être mis à jour."
       rebase: "Le plan n'a pas pu être réaligné sur le hangar."
+    outfits:
+      create: "La tenue n'a pas pu être enregistrée."
+      update: "La tenue n'a pas pu être mise à jour."
     fleet_shopping_lists:
       create: "Impossible de publier la liste d'achats."
       update: "Impossible de mettre à jour la liste d'achats."

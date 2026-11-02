@@ -12,11 +12,14 @@ import {
   type Material,
   type Object3D,
   type Texture,
+  type SkinnedMesh,
   DoubleSide,
   FrontSide,
   Box3,
+  Matrix4,
+  Quaternion,
   Vector3,
-  type Group,
+  Group,
   type AnimationClip,
   Mesh,
   MeshBasicMaterial,
@@ -27,7 +30,7 @@ import {
   LineSegments,
   MeshPhongMaterial,
   MeshLambertMaterial,
-  type MeshStandardMaterial,
+  MeshStandardMaterial,
   DefaultLoadingManager,
   type ColorSpace,
   NoColorSpace,
@@ -38,9 +41,22 @@ import {
 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { prepareGltfLoader } from "../gltfLoader";
+import { buildPedestal, disposePedestal } from "../pedestal";
+import {
+  bindToBones,
+  bodyRegion,
+  bonesByName,
+  type RigAttachment,
+  cloneRigPiece,
+  loadClips,
+  rigLayoutKey,
+} from "../rig";
 import {
   applyHighlights,
   buildMounts,
+  cloneShared,
+  disposeTextures,
+  loadHolo,
   mountsHighlightKey,
   mountsLayoutKey,
   releaseMountCache,
@@ -59,6 +75,8 @@ type Props = {
   hologram?: boolean;
   // Mounted parts answer the pointer, named by their mount's id.
   pickable?: boolean;
+  // Shown full screen: a figure stands without its pedestal there.
+  fullscreen?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -69,6 +87,7 @@ const props = withDefaults(defineProps<Props>(), {
   windowColor: "#1d3d59",
   hologram: false,
   pickable: false,
+  fullscreen: false,
 });
 
 // One pair for the whole holo, made once: a colour change recolours them
@@ -177,10 +196,7 @@ const disposeOriginal = (original: Material | Material[]) => {
       continue;
     }
 
-    for (const value of Object.values(entry)) {
-      if ((value as Texture | null)?.isTexture) (value as Texture).dispose();
-    }
-
+    disposeTextures(entry);
     entry.dispose();
   }
 };
@@ -256,6 +272,16 @@ const withinMounts = (node: Object3D) => {
   return false;
 };
 
+// A painted part keeps the materials it was exported with.
+const withinTexturedMount = (node: Object3D) => {
+  for (let current: Object3D | null = node; current; current = current.parent) {
+    if (current.userData.textured) return true;
+    if (current === mountRoot) return false;
+  }
+
+  return false;
+};
+
 const wireOf = (body: Mesh) =>
   body.children.find((child) => child.userData.wire) as
     LineSegments<EdgesGeometry, LineBasicMaterial> | undefined;
@@ -290,6 +316,7 @@ const setMaterials = (scene: Group) => {
     const mesh = node as Mesh;
 
     if (!mesh.isMesh || mesh.userData.wire || mesh.userData.overlay) return;
+    if (withinTexturedMount(mesh)) return;
 
     if (!mesh.userData.shared) disposeOriginal(mesh.material);
 
@@ -399,16 +426,22 @@ const playAnimations = (scene: Group, animations: AnimationClip[]) => {
 
 retainMountCache();
 
+// Ends the retries in `setup`: a viewer gone mid-load stops asking.
+let unmounted = false;
+
 onUnmounted(() => {
+  unmounted = true;
   releaseMountCache();
   mixer.value?.stopAllAction();
   material.dispose();
+  underlayMaterial.dispose();
   windowMaterial.dispose();
   wireMaterial.dispose();
   // A paint still loading would land after this and never be freed.
   paintRequest += 1;
   paintMaps.forEach((map) => map.dispose());
   if (mountRoot) disposeFading(mountRoot);
+  if (pedestal) disposePedestal(pedestal);
 });
 
 const emit = defineEmits<{
@@ -444,12 +477,13 @@ let mountRoot: Group | undefined;
 // Two quick swaps load in parallel; only the latest may land.
 let mountsRequest = 0;
 
+// Whether these parts landed; a newer request supersedes them otherwise.
 const attachMounts = async (scene: Group) => {
   const request = ++mountsRequest;
   const mounts = props.model.mounts;
   const next = mounts?.length ? await buildMounts(mounts) : undefined;
 
-  if (request !== mountsRequest) return;
+  if (request !== mountsRequest) return false;
 
   if (mountRoot) {
     scene.remove(mountRoot);
@@ -466,6 +500,212 @@ const attachMounts = async (scene: Group) => {
   }
 
   invalidate();
+
+  return true;
+};
+
+// The renderer refreshes a skeleton only when it draws; measured before the
+// first frame, a skinned figure would read as its bind pose.
+const refreshSkeletons = (scene: Group) => {
+  scene.updateMatrixWorld(true);
+  scene.traverse((node) => {
+    if ((node as SkinnedMesh).isSkinnedMesh) {
+      (node as SkinnedMesh).skeleton.update();
+    }
+  });
+};
+
+// Stands under a rigged figure; measured with it, so the camera frames both.
+let pedestal: Group | undefined;
+
+// Worn pieces skinned to the root's skeleton, bound to its bones under one
+// group so a change of outfit swaps them in place.
+let rigRoot: Group | undefined;
+let rigRequest = 0;
+let rigClips: AnimationClip[] = [];
+
+// What shows of the body under armour: a dark, matte undersuit.
+const underlayMaterial = new MeshStandardMaterial({
+  color: "#1d2126",
+  roughness: 0.9,
+  metalness: 0,
+});
+
+// The body's own skinned parts, each with the region it covers: hidden under
+// an undersuit, drawn as one under armour alone.
+const hideCovered = (scene: Group) => {
+  const parts: SkinnedMesh[] = [];
+  scene.traverse((node) => {
+    const mesh = node as SkinnedMesh;
+    if (mesh.isSkinnedMesh && !withinRig(mesh)) parts.push(mesh);
+  });
+
+  // The body's bind-pose height, its stored points being Z up.
+  let height = 0;
+  parts.forEach((part) => {
+    if (/head|eyes|teeth/i.test(part.name)) return;
+    part.geometry.computeBoundingBox();
+    height = Math.max(height, part.geometry.boundingBox?.max.z ?? 0);
+  });
+
+  const hidden = new Set(props.model.rig?.hide ?? []);
+  const covered = new Set(props.model.rig?.cover ?? []);
+  parts.forEach((part) => {
+    part.userData.region ??= bodyRegion(part, height || 1);
+    part.userData.bare ??= part.material;
+    part.visible = !hidden.has(part.userData.region);
+    part.material = covered.has(part.userData.region)
+      ? underlayMaterial
+      : part.userData.bare;
+  });
+
+  invalidate();
+};
+
+const withinRig = (node: Object3D) => {
+  for (let current: Object3D | null = node; current; current = current.parent) {
+    if (current === rigRoot) return true;
+  }
+
+  return false;
+};
+
+const pose = (scene: Group) => {
+  // Its cached bindings and actions go with it, or every pose tried stays.
+  mixer.value?.stopAllAction();
+  mixer.value?.uncacheRoot(scene);
+  mixer.value = undefined;
+
+  const wanted = props.model.rig?.clip;
+  const clip =
+    rigClips.find((candidate) => candidate.name === wanted) ?? rigClips[0];
+  if (!clip) return;
+
+  mixer.value = new AnimationMixer(scene);
+  mixer.value.clipAction(clip).play();
+  mixer.value.update(0);
+  refreshSkeletons(scene);
+  invalidate();
+};
+
+// A rigid item's holo, turned into its bone's axes; its plain holo when the
+// painted one does not load, and nothing when neither does.
+const loadAttachment = async (attachment: RigAttachment) => {
+  const load = (path: string) =>
+    loadHolo(path).then((holo) => {
+      // The holos and the rig share the export's frame, so a holo sits on
+      // its bone as it is -- moved so its helper, where it has one, is the
+      // point that meets the bone.
+      const group = new Group();
+      const item = cloneShared(holo);
+      if (attachment.helper) {
+        item.applyMatrix4(
+          new Matrix4()
+            .compose(
+              new Vector3().fromArray(attachment.helper.position),
+              new Quaternion().fromArray(attachment.helper.rotation),
+              new Vector3(1, 1, 1),
+            )
+            .invert(),
+        );
+      }
+      group.add(item);
+      return group;
+    });
+
+  try {
+    const group = await load(attachment.path);
+    group.userData.textured = !!attachment.textured;
+    return { group, bone: attachment.bone, textured: !!attachment.textured };
+  } catch (error) {
+    if (!attachment.fallbackPath) {
+      console.warn("An attached part did not load", error);
+      return undefined;
+    }
+  }
+
+  try {
+    return {
+      group: await load(attachment.fallbackPath),
+      bone: attachment.bone,
+      textured: false,
+    };
+  } catch (error) {
+    console.warn("An attached part did not load", error);
+    return undefined;
+  }
+};
+
+// Whether these pieces landed; a newer request supersedes them otherwise.
+const attachRig = async (scene: Group) => {
+  const request = ++rigRequest;
+  const rig = props.model.rig;
+  if (!rig) return true;
+
+  const [pieces, attachments, clips] = await Promise.all([
+    Promise.all(
+      rig.pieces.map((piece) =>
+        loadHolo(piece.path)
+          .then(cloneRigPiece)
+          .catch((error: unknown) => {
+            console.warn("A rigged part did not load", error);
+            return undefined;
+          }),
+      ),
+    ),
+    Promise.all((rig.attachments ?? []).map(loadAttachment)),
+    rig.animations
+      ? loadClips(rig.animations).catch(() => [] as AnimationClip[])
+      : Promise.resolve([] as AnimationClip[]),
+  ]);
+
+  if (request !== rigRequest) return false;
+
+  if (rigRoot) {
+    scene.remove(rigRoot);
+    [
+      ...(rigRoot.userData.attached as Object3D[]),
+      ...(rigRoot.userData.grafted as Object3D[]),
+    ].forEach((node) => node.removeFromParent());
+  }
+
+  const bones = bonesByName(scene);
+  const next = new Group();
+  next.userData.grafted = [];
+  next.userData.attached = [];
+
+  pieces.forEach((piece) => {
+    if (!piece) return;
+
+    const { meshes, grafted } = bindToBones(piece, bones);
+    if (meshes.length) next.add(...meshes);
+    next.userData.grafted.push(...grafted);
+  });
+
+  // After the pieces: a holster or a weapon mount is a bone a piece brings.
+  const withHelpers = bonesByName(scene);
+
+  attachments.forEach((attachment) => {
+    if (!attachment) return;
+
+    const bone = withHelpers.get(attachment.bone);
+    if (!bone) return;
+
+    bone.add(attachment.group);
+    next.userData.attached.push(attachment.group);
+    if (!attachment.textured) setMaterials(attachment.group);
+  });
+
+  scene.add(next);
+  rigRoot = next;
+  rigClips = clips;
+
+  if (!props.model.textured) setMaterials(next);
+
+  hideCovered(scene);
+  pose(scene);
+
+  return true;
 };
 
 // The part under the pointer, looked for among the mounted parts alone: on a
@@ -649,7 +889,7 @@ const applyPaint = async (scene: Group) => {
   invalidate();
 };
 
-const setup = (scene: Group, animations: AnimationClip[]) => {
+const setup = async (scene: Group, animations: AnimationClip[]) => {
   if (props.model.textured) {
     playAnimations(scene, animations);
     if (props.model.paint) void applyPaint(scene);
@@ -657,7 +897,35 @@ const setup = (scene: Group, animations: AnimationClip[]) => {
     setMaterials(scene);
   }
 
-  const box = new Box3().setFromObject(scene);
+  // Parts in one shared frame, a figure dressed from its pieces, are framed
+  // and centred together: the root alone may be any one of them.
+  if (props.model.rig) {
+    scene.traverse((node) => {
+      // Posed away from the bind pose, the stored bounds no longer hold.
+      if ((node as Mesh).isMesh) node.frustumCulled = false;
+    });
+    while (!unmounted && !(await attachRig(scene)));
+
+    if (props.model.rig.pedestal && !pedestal) {
+      pedestal = buildPedestal(
+        new Box3().setFromObject(scene, true),
+        props.color,
+      );
+      pedestal.visible = !props.fullscreen;
+      scene.add(pedestal);
+    }
+  }
+
+  // Asked again until the parts it frames are the ones that landed: a fitting
+  // changed while they loaded would leave it framing the root alone.
+  if (props.model.frameMounts) {
+    while (!unmounted && !(await attachMounts(scene)));
+  }
+
+  // A skinned figure is measured where its bones put it: its stored
+  // positions are the bind pose, in the export's own frame.
+  const precise = !!props.model.rig;
+  const box = new Box3().setFromObject(scene, precise);
   const size = box.getSize(new Vector3());
 
   if (props.onGrid && props.model.length) {
@@ -667,7 +935,7 @@ const setup = (scene: Group, animations: AnimationClip[]) => {
   }
 
   scene.updateMatrixWorld(true);
-  const scaledBox = new Box3().setFromObject(scene);
+  const scaledBox = new Box3().setFromObject(scene, precise);
   const center = scaledBox.getCenter(new Vector3());
   scene.position.sub(center);
 
@@ -675,16 +943,18 @@ const setup = (scene: Group, animations: AnimationClip[]) => {
     scene.position.y += props.offsetModel.length;
   }
 
+  if (props.model.rig) refreshSkeletons(scene);
+
   emit("loaded", size, scene);
 
-  void attachMounts(scene);
+  if (!props.model.frameMounts) void attachMounts(scene);
 };
 
 watch(
   () => state.value,
   () => {
     if (state.value) {
-      setup(state.value.scene, state.value.animations);
+      void setup(state.value.scene, state.value.animations);
     }
   },
 );
@@ -694,6 +964,40 @@ watch(
   () => mountsLayoutKey(props.model.mounts),
   () => {
     if (state.value) void attachMounts(state.value.scene);
+  },
+);
+
+watch(
+  () => rigLayoutKey(props.model.rig),
+  () => {
+    if (state.value) void attachRig(state.value.scene);
+  },
+);
+
+watch(
+  () =>
+    [props.model.rig?.hide ?? [], props.model.rig?.cover ?? []]
+      .map((regions) => regions.join(","))
+      .join("|"),
+  () => {
+    if (state.value && rigRoot) hideCovered(state.value.scene);
+  },
+);
+
+watch(
+  () => props.model.rig?.clip,
+  () => {
+    if (state.value && rigRoot) pose(state.value.scene);
+  },
+);
+
+watch(
+  () => props.fullscreen,
+  (fullscreen) => {
+    if (!pedestal) return;
+
+    pedestal.visible = !fullscreen;
+    invalidate();
   },
 );
 

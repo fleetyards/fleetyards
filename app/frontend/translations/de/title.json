@@ -185,6 +185,7 @@
         "cargoGrids": "Frachtgitter",
         "plaque": "Widmungsplaketten",
         "tradeRoutes": "Handelsrouten",
+        "dressingRoom": "Umkleide",
         "tours": {
           "index": "Touren",
           "add": "Neue Tour erstellen",

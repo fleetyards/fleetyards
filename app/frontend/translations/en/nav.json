@@ -137,6 +137,7 @@
         "cargoGrids": "Cargo Grids",
         "plaque": "Dedication Plaques",
         "tradeRoutes": "Trade Routes",
+        "dressingRoom": "Dressing Room",
         "tours": "Tours"
       },
       "api": "API Docs",

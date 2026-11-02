@@ -18,7 +18,8 @@ module ScData
     sidekiq_options queue: "loaders"
 
     ITEM_CLASSES = %w[Component Equipment].freeze
-    FIELDS = ItemViews::ATTACHMENT_NAMES.map(&:to_s).to_set.freeze
+    FIELDS = (ItemViews::ATTACHMENT_NAMES.map(&:to_s) + %w[attach_points]).to_set.freeze
+    ATTACH_POINTS_NAME = "attach_points.json"
 
     def perform(record_type = nil, record_id = nil)
       return unless ::ScData::ItemViewsStore.configured?
@@ -90,7 +91,17 @@ module ScData
       items.to_h { |path, entry| [path, by_sc_key[entry["scKey"]]] }
     end
 
+    RIGGED_NAME = /\Arigged_(\w+)\.glb\z/
+
     private def field_for(name)
+      return "attach_points" if name == ATTACH_POINTS_NAME
+
+      if (rigged = RIGGED_NAME.match(name))
+        field = "holo_rigged_#{rigged[1]}"
+
+        return field if FIELDS.include?(field)
+      end
+
       field = ShipViewFields.field_for(name)
 
       field if FIELDS.include?(field)
@@ -99,6 +110,32 @@ module ScData
     # A full run can re-read a listing whose digest it already holds, so it
     # leaves a render detached in the admin alone; syncing the item restores it.
     private def restore_detached? = @restore_detached
+
+    # The helpers an item is hung by -- where a weapon meets its back mount or
+    # holster, a backpack its core -- in its holo's frame:
+    # {"helpers" => {"<name>" => {"position" => [x, y, z], "rotation" => [x, y, z, w]}}}.
+    private def render_data(_field, file)
+      data = JSON.parse(file.read)
+      helpers = data["helpers"] if data.is_a?(Hash)
+
+      raise ArgumentError, "no helpers listed" unless helpers.is_a?(Hash)
+
+      helpers.each do |name, helper|
+        raise ArgumentError, "helper #{name} is malformed" unless valid_helper?(helper)
+      end
+
+      helpers
+    end
+
+    private def valid_helper?(helper)
+      helper.is_a?(Hash) &&
+        numbers?(helper["position"], 3) &&
+        numbers?(helper["rotation"], 4)
+    end
+
+    private def numbers?(values, count)
+      values.is_a?(Array) && values.size == count && values.all?(Numeric)
+    end
 
     private def render_metadata(_record, _field) = {}
 

@@ -1,0 +1,98 @@
+# frozen_string_literal: true
+
+require "test_helper"
+require "aws-sdk-s3"
+
+module ScData
+  class CharacterBodiesImportJobTest < ActiveJob::TestCase
+    SETTINGS = {
+      endpoint: "https://example.invalid",
+      access_key_id: "key",
+      secret_access_key: "secret",
+      bucket: "fltyrd-sc"
+    }.freeze
+
+    BODY = Rails.root.join("test/fixtures/holo/plain.glb").binread
+    ANIMATIONS = Rails.root.join("test/fixtures/holo/plain.gltf").binread
+
+    setup do
+      @objects = {}
+      @index = {}
+      @client = Aws::S3::Client.new(stub_responses: true)
+      @client.stub_responses(:get_object, ->(context) {
+        body = @objects[context.params[:key].delete_prefix("characters/")]
+        body ? {body:} : "NoSuchKey"
+      })
+
+      store = ::ScData::CharacterStore.new(client: @client, settings: SETTINGS)
+      ::ScData::CharacterStore.stubs(:configured?).returns(true)
+      ::ScData::CharacterStore.stubs(:new).returns(store)
+    end
+
+    CLIPS = [
+      {"name" => "shop_pose_01", "static" => true, "looping" => false, "frames" => 1, "fps" => 30.0, "source" => "poses.dba#01"},
+      {"name" => "idle_stand", "static" => false, "looping" => true, "frames" => 131, "fps" => 30.0, "source" => "idle.dba"}
+    ].freeze
+
+    private def publish(key, files, clips: CLIPS)
+      @index[key] = {
+        body: "characters/#{key}/body.glb",
+        animations: "characters/#{key}/animations.glb",
+        files: files.to_h { |name, content| [name, {md5: Digest::MD5.hexdigest(content), size: content.bytesize}] },
+        clips:
+      }
+      @objects["index.json"] = {updatedAt: "2026-11-02T00:00:00Z", bodies: @index}.to_json
+      files.each { |name, content| @objects["#{key}/#{name}"] = content }
+    end
+
+    private def fetched
+      @client.api_requests
+        .select { |request| request[:operation_name] == :get_object }
+        .map { |request| File.basename(request[:params][:key]) }
+    end
+
+    test "creates a body per listed body with its rest pose, its clips and what each clip is" do
+      publish("male", {"body.glb" => BODY, "animations.glb" => ANIMATIONS})
+
+      ::ScData::CharacterBodiesImportJob.new.perform
+
+      body = CharacterBody.find_by!(key: "male")
+      assert_equal "body.glb", body.holo.filename.to_s
+      assert_equal "animations.glb", body.animations.filename.to_s
+      assert_equal [
+        {"name" => "shop_pose_01", "static" => true, "looping" => false},
+        {"name" => "idle_stand", "static" => false, "looping" => true}
+      ], body.clips
+    end
+
+    test "takes in a changed clip list without fetching the files again" do
+      publish("male", {"body.glb" => BODY})
+      ::ScData::CharacterBodiesImportJob.new.perform
+      @client.api_requests.clear
+
+      publish("male", {"body.glb" => BODY}, clips: CLIPS.first(1))
+      ::ScData::CharacterBodiesImportJob.new.perform
+
+      assert_equal ["index.json"], fetched
+      assert_equal ["shop_pose_01"], CharacterBody.find_by!(key: "male").clips.pluck("name")
+    end
+
+    test "skips a body whose listing has not changed" do
+      publish("male", {"body.glb" => BODY})
+      ::ScData::CharacterBodiesImportJob.new.perform
+      @client.api_requests.clear
+
+      ::ScData::CharacterBodiesImportJob.new.perform
+
+      assert_equal ["index.json"], fetched
+    end
+
+    test "does nothing without a configured store" do
+      ::ScData::CharacterStore.stubs(:configured?).returns(false)
+
+      ::ScData::CharacterBodiesImportJob.new.perform
+
+      assert_equal 0, CharacterBody.count
+    end
+  end
+end

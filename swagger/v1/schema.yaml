@@ -685,6 +685,25 @@ paths:
                 "$ref": "#/components/schemas/CatalogueTokenMatches"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/character-bodies":
+    get:
+      summary: Character bodies
+      tags:
+      - DressingRoom
+      operationId: characterBodies
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/CharacterBodiesList"
+        '403':
+          description: feature disabled
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/commodities":
     get:
       summary: Commodities list
@@ -18074,6 +18093,185 @@ paths:
             application/json:
               schema:
                 "$ref": "#/components/schemas/StandardError"
+  "/outfits":
+    get:
+      summary: Outfits
+      tags:
+      - DressingRoom
+      operationId: outfits
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/OutfitsList"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '403':
+          description: feature disabled
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    post:
+      summary: Create Outfit
+      tags:
+      - DressingRoom
+      operationId: createOutfit
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/OutfitCreateInput"
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Outfit"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+  "/outfits/{id}":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: Outfit
+      tags:
+      - DressingRoom
+      operationId: outfit
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Outfit"
+        '401':
+          description: unauthorized
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
+    put:
+      summary: Update Outfit
+      tags:
+      - DressingRoom
+      operationId: updateOutfit
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/OutfitUpdateInput"
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Outfit"
+        '400':
+          description: validation error
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ValidationError"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+    delete:
+      summary: Destroy Outfit
+      tags:
+      - DressingRoom
+      operationId: destroyOutfit
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:write
+      - OpenId:
+        - hangar
+        - hangar:write
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/SuccessResponse"
+        '404':
+          description: not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/password":
     put:
       summary: Update password
@@ -23655,6 +23853,28 @@ components:
       - meta
       - items
       title: AlliedFleetMembersList
+    AttachPoint:
+      type: object
+      description: A helper an item is hung by, in its holo's frame
+      properties:
+        position:
+          type: array
+          items:
+            type: number
+          minItems: 3
+          maxItems: 3
+        rotation:
+          type: array
+          items:
+            type: number
+          minItems: 4
+          maxItems: 4
+          description: Quaternion x, y, z, w
+      additionalProperties: false
+      required:
+      - position
+      - rotation
+      title: AttachPoint
     BarChartStats:
       type: object
       properties:
@@ -24811,6 +25031,53 @@ components:
       - WISHLIST_CREATE_CHANNEL
       - WISHLIST_DESTROY_CHANNEL
       title: ChannelsEnum
+    CharacterBodiesList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/CharacterBody"
+      title: CharacterBodiesList
+    CharacterBody:
+      type: object
+      properties:
+        key:
+          type: string
+          description: The body's folder in the export, e.g. male
+        holo:
+          "$ref": "#/components/schemas/MediaFile"
+        animations:
+          description: The clips that pose the body and every item rigged to it, by
+            bone name; absent until exported
+          anyOf:
+          - "$ref": "#/components/schemas/MediaFile"
+          - type: 'null'
+        clips:
+          type: array
+          items:
+            "$ref": "#/components/schemas/CharacterBodyClip"
+      additionalProperties: false
+      required:
+      - key
+      - holo
+      - animations
+      - clips
+      title: CharacterBody
+    CharacterBodyClip:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The clip's name in the body's animations file
+        static:
+          type: boolean
+          description: A single-frame pose rather than a motion
+        looping:
+          type: boolean
+      additionalProperties: false
+      required:
+      - name
+      - static
+      - looping
+      title: CharacterBodyClip
     Check:
       type: object
       properties:
@@ -27371,6 +27638,14 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         media:
           "$ref": "#/components/schemas/ItemMedia"
+        attachPoints:
+          type:
+          - object
+          - 'null'
+          description: Where the item is hung when stowed -- on a back mount, in a
+            holster, on a core -- by helper name; on the detail payload only
+          additionalProperties:
+            "$ref": "#/components/schemas/AttachPoint"
         retired:
           type: boolean
         createdAt:
@@ -27673,6 +27948,7 @@ components:
     FeatureFlagName:
       type: string
       enum:
+      - dressing_room
       - fleet_contracts
       - fleet_logistics
       - fleet_mission_builder
@@ -27693,6 +27969,7 @@ components:
       - oauth-patreon
       - oauth-twitch
       x-enumNames:
+      - DRESSING_ROOM
       - FLEET_CONTRACTS
       - FLEET_LOGISTICS
       - FLEET_MISSION_BUILDER
@@ -38875,6 +39152,10 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         holoTextured:
           "$ref": "#/components/schemas/MediaFile"
+        holoRiggedMale:
+          "$ref": "#/components/schemas/MediaFile"
+        holoRiggedFemale:
+          "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
       title: ItemMedia
     ItemPrice:
@@ -43850,6 +44131,21 @@ components:
       - CITY
       - 'NULL'
       title: NullableLocationBodyTypeEnum
+    NullableOutfitWeaponSlotEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - primary
+      - secondary
+      - sidearm
+      -
+      x-enumNames:
+      - PRIMARY
+      - SECONDARY
+      - SIDEARM
+      - 'NULL'
+      title: NullableOutfitWeaponSlotEnum
     NullableRsiHandleVerifiedViaEnum:
       type:
       - string
@@ -44283,6 +44579,147 @@ components:
       required:
       - codes
       title: OtpBackupCodes
+    Outfit:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/OutfitItem"
+        heldWeapon:
+          "$ref": "#/components/schemas/NullableOutfitWeaponSlotEnum"
+        body:
+          "$ref": "#/components/schemas/OutfitBodyEnum"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+      required:
+      - id
+      - name
+      - items
+      - heldWeapon
+      - body
+      - createdAt
+      - updatedAt
+      title: Outfit
+    OutfitBodyEnum:
+      type: string
+      enum:
+      - male
+      - female
+      x-enumNames:
+      - MALE
+      - FEMALE
+      title: OutfitBodyEnum
+    OutfitCreateInput:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/OutfitItemInput"
+          description: Everything the outfit wears; a slot left out is emptied
+        heldWeapon:
+          "$ref": "#/components/schemas/NullableOutfitWeaponSlotEnum"
+        body:
+          "$ref": "#/components/schemas/OutfitBodyEnum"
+      required:
+      - name
+      additionalProperties: false
+      title: OutfitCreateInput
+    OutfitItem:
+      type: object
+      properties:
+        slot:
+          "$ref": "#/components/schemas/OutfitSlotEnum"
+        equipment:
+          "$ref": "#/components/schemas/Equipment"
+      additionalProperties: false
+      required:
+      - slot
+      - equipment
+      title: OutfitItem
+    OutfitItemInput:
+      type: object
+      properties:
+        slot:
+          "$ref": "#/components/schemas/OutfitSlotEnum"
+        equipmentId:
+          type: string
+          format: uuid
+      required:
+      - slot
+      - equipmentId
+      additionalProperties: false
+      title: OutfitItemInput
+    OutfitSlotEnum:
+      type: string
+      enum:
+      - undersuit
+      - torso
+      - arms
+      - legs
+      - helmet
+      - backpack
+      - primary
+      - secondary
+      - sidearm
+      x-enumNames:
+      - UNDERSUIT
+      - TORSO
+      - ARMS
+      - LEGS
+      - HELMET
+      - BACKPACK
+      - PRIMARY
+      - SECONDARY
+      - SIDEARM
+      title: OutfitSlotEnum
+    OutfitUpdateInput:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        items:
+          type: array
+          items:
+            "$ref": "#/components/schemas/OutfitItemInput"
+          description: Everything the outfit wears; a slot left out is emptied
+        heldWeapon:
+          "$ref": "#/components/schemas/NullableOutfitWeaponSlotEnum"
+        body:
+          "$ref": "#/components/schemas/OutfitBodyEnum"
+      additionalProperties: false
+      title: OutfitUpdateInput
+    OutfitWeaponSlotEnum:
+      type: string
+      enum:
+      - primary
+      - secondary
+      - sidearm
+      x-enumNames:
+      - PRIMARY
+      - SECONDARY
+      - SIDEARM
+      title: OutfitWeaponSlotEnum
+    OutfitsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/Outfit"
+      title: OutfitsList
     Pagination:
       type: object
       properties:

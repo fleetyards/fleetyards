@@ -141,6 +141,9 @@ it:
       create: "Impossibile creare il piano."
       update: "Impossibile aggiornare il piano."
       rebase: "Impossibile riallineare il piano all'hangar."
+    outfits:
+      create: "Impossibile salvare l'outfit."
+      update: "Impossibile aggiornare l'outfit."
     fleet_shopping_lists:
       create: "Impossibile pubblicare la lista della spesa."
       update: "Impossibile aggiornare la lista della spesa."

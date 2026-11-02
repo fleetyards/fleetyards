@@ -1,0 +1,57 @@
+{
+  "de": {
+    "dressingRoom": {
+      "lead": "Stelle Rüstung und Unteranzug zusammen und sieh dir das Outfit in 3D an. Teile es per Link oder melde dich an, um es zu speichern.",
+      "slots": {
+        "helmet": "Helm",
+        "torso": "Torso",
+        "arms": "Arme",
+        "legs": "Beine",
+        "backpack": "Rucksack",
+        "undersuit": "Unteranzug",
+        "primary": "Primärwaffe",
+        "secondary": "Zweitwaffe",
+        "sidearm": "Seitenwaffe"
+      },
+      "search": "%{slot} suchen",
+      "noResults": "Für diesen Slot wurde nichts gefunden.",
+      "choose": "Auswählen…",
+      "remove": "Entfernen",
+      "openItem": "Gegenstand öffnen",
+      "notFound": "Gegenstand nicht gefunden",
+      "noHolo": "Noch kein 3D-Modell",
+      "empty": "Wähle für einen beliebigen Slot ein Teil, um das Outfit zu sehen.",
+      "pose": "Pose",
+      "copyLink": "Link kopieren",
+      "savedOutfits": "Gespeicherte Outfits",
+      "signInToSave": "Melde dich an, um Outfits zu speichern.",
+      "outfitName": "Name des Outfits",
+      "nameTaken": "Du hast bereits ein Outfit mit diesem Namen.",
+      "saveNew": "Als neues Outfit speichern",
+      "saveChanges": "Änderungen speichern",
+      "noOutfits": "Noch keine gespeicherten Outfits.",
+      "pieces": {
+        "one": "%{count} Teil",
+        "other": "%{count} Teile"
+      },
+      "confirmDelete": "Das Outfit %{name} löschen?",
+      "messages": {
+        "saved": "Outfit gespeichert.",
+        "saveFailed": "Das Outfit konnte nicht gespeichert werden.",
+        "deleteFailed": "Das Outfit konnte nicht gelöscht werden.",
+        "linkCopied": "Link kopiert.",
+        "copyFailed": "Der Link konnte nicht kopiert werden."
+      },
+      "groups": {
+        "armour": "Rüstung",
+        "weapons": "Waffen"
+      },
+      "hold": "In die Hand nehmen",
+      "bodies": {
+        "male": "Männlich",
+        "female": "Weiblich"
+      },
+      "positionPending": "Position noch nicht exportiert"
+    }
+  }
+}

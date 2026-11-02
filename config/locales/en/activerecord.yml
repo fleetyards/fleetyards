@@ -310,6 +310,16 @@ en:
           attributes:
             base:
               plan_limit_reached: "can hold at most %{count} plans"
+        outfit:
+          attributes:
+            base:
+              outfit_limit_reached: "can hold at most %{count} outfits"
+            held_weapon:
+              not_carried: "is not a weapon this outfit carries"
+        outfit_item:
+          attributes:
+            equipment:
+              wrong_slot: "does not fit this slot"
         fleet_shopping_list:
           attributes:
             base:

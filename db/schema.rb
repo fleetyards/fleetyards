@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_01_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_02_210000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -376,6 +376,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_01_120000) do
     t.index ["user_id"], name: "index_carts_on_user_id_active", unique: true, where: "active"
   end
 
+  create_table "character_bodies", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "key", null: false
+    t.string "views_digest"
+    t.jsonb "view_md5s", default: {}, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.jsonb "clips", default: [], null: false
+    t.index ["key"], name: "index_character_bodies_on_key", unique: true
+  end
+
   create_table "commodities", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "sc_key"
     t.string "sc_ref"
@@ -503,6 +513,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_01_120000) do
     t.jsonb "type_data"
     t.string "item_views_digest"
     t.jsonb "item_view_md5s", default: {}, null: false
+    t.jsonb "attach_points"
     t.index ["manufacturer_id"], name: "index_components_on_manufacturer_id"
     t.index ["name"], name: "index_components_on_name"
     t.index ["sc_key"], name: "index_components_on_sc_key", unique: true
@@ -610,6 +621,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_01_120000) do
     t.string "item_views_digest"
     t.jsonb "item_view_md5s", default: {}, null: false
     t.string "family_key"
+    t.jsonb "attach_points"
     t.index ["equipment_type"], name: "index_equipment_on_equipment_type"
     t.index ["family_key"], name: "index_equipment_on_family_key"
     t.index ["item_type"], name: "index_equipment_on_item_type"
@@ -2634,6 +2646,26 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_01_120000) do
     t.index ["user_id"], name: "index_omniauth_connections_on_user_id"
   end
 
+  create_table "outfit_items", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "outfit_id", null: false
+    t.uuid "equipment_id", null: false
+    t.integer "slot", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["equipment_id"], name: "index_outfit_items_on_equipment_id"
+    t.index ["outfit_id", "slot"], name: "index_outfit_items_on_outfit_id_and_slot", unique: true
+  end
+
+  create_table "outfits", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "held_weapon"
+    t.string "body", default: "male", null: false
+    t.index ["user_id", "name"], name: "index_outfits_on_user_id_and_name", unique: true
+  end
+
   create_table "payout_entries", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "payout_ledger_id", null: false
     t.uuid "payout_participant_id", null: false
@@ -3407,6 +3439,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_01_120000) do
   add_foreign_key "oauth_access_tokens", "users", column: "resource_owner_id"
   add_foreign_key "oauth_openid_requests", "oauth_access_grants", column: "access_grant_id", on_delete: :cascade
   add_foreign_key "omniauth_connections", "users"
+  add_foreign_key "outfit_items", "equipment"
+  add_foreign_key "outfit_items", "outfits", on_delete: :cascade
+  add_foreign_key "outfits", "users"
   add_foreign_key "payout_entries", "payout_ledgers"
   add_foreign_key "payout_entries", "payout_participants"
   add_foreign_key "payout_entries", "users", column: "recorded_by_id"

@@ -308,6 +308,16 @@ zh-CN:
           attributes:
             base:
               plan_limit_reached: "最多只能有 %{count} 个计划"
+        outfit:
+          attributes:
+            base:
+              outfit_limit_reached: "最多只能有 %{count} 套装扮"
+            held_weapon:
+              not_carried: "不是此装扮携带的武器"
+        outfit_item:
+          attributes:
+            equipment:
+              wrong_slot: "不适合此槽位"
         fleet_shopping_list:
           attributes:
             base:

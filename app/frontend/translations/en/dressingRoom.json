@@ -1,0 +1,57 @@
+{
+  "en": {
+    "dressingRoom": {
+      "lead": "Put armour and an undersuit together and see the outfit in 3D. Share it by link, or sign in to save it.",
+      "slots": {
+        "helmet": "Helmet",
+        "torso": "Core",
+        "arms": "Arms",
+        "legs": "Legs",
+        "backpack": "Backpack",
+        "undersuit": "Undersuit",
+        "primary": "Primary",
+        "secondary": "Secondary",
+        "sidearm": "Sidearm"
+      },
+      "search": "Search %{slot}",
+      "noResults": "Nothing found for this slot.",
+      "choose": "Choose…",
+      "remove": "Remove",
+      "openItem": "Open item page",
+      "notFound": "Item not found",
+      "noHolo": "No 3D model yet",
+      "empty": "Choose a piece for any slot to see the outfit.",
+      "pose": "Pose",
+      "copyLink": "Copy link",
+      "savedOutfits": "Saved outfits",
+      "signInToSave": "Sign in to save outfits.",
+      "outfitName": "Outfit name",
+      "nameTaken": "You already have an outfit with this name.",
+      "saveNew": "Save as new outfit",
+      "saveChanges": "Save changes",
+      "noOutfits": "No saved outfits yet.",
+      "pieces": {
+        "one": "%{count} piece",
+        "other": "%{count} pieces"
+      },
+      "confirmDelete": "Delete the outfit %{name}?",
+      "messages": {
+        "saved": "Outfit saved.",
+        "saveFailed": "The outfit could not be saved.",
+        "deleteFailed": "The outfit could not be deleted.",
+        "linkCopied": "Link copied.",
+        "copyFailed": "The link could not be copied."
+      },
+      "groups": {
+        "armour": "Armour",
+        "weapons": "Weapons"
+      },
+      "hold": "Hold",
+      "bodies": {
+        "male": "Male",
+        "female": "Female"
+      },
+      "positionPending": "Position not exported yet"
+    }
+  }
+}

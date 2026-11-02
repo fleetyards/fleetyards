@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # The renders a catalogue item can be shown by: the eight angles a ship has, a
-# holo and its painted, textured export. An item has no uncoloured silhouette
+# holo and its painted, textured export, and a worn item's rig per body. An item has no uncoloured silhouette
 # the way a ship's fleetchart does, so there is one set rather than a plain and
 # a coloured one.
 module ItemViews
@@ -12,7 +12,12 @@ module ItemViews
     angled_rear_view bottom_view rear_view starboard_view
   ].freeze
 
-  ATTACHMENT_NAMES = (VIEW_ATTACHMENT_NAMES + %i[holo holo_textured]).freeze
+  # The bodies a worn item is rigged to, each exported as `rigged_<body>.glb`:
+  # the item skinned to that body's skeleton, for the dressing room.
+  RIGGED_BODIES = %w[male female].freeze
+  RIGGED_ATTACHMENT_NAMES = RIGGED_BODIES.map { |body| :"holo_rigged_#{body}" }.freeze
+
+  ATTACHMENT_NAMES = (VIEW_ATTACHMENT_NAMES + %i[holo holo_textured] + RIGGED_ATTACHMENT_NAMES).freeze
 
   # Everything `display_image_attr` reads, for a list that shows each item by
   # its picture.

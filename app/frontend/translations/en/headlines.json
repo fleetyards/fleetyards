@@ -441,7 +441,8 @@
         "travelTimes": "Travel Times",
         "cargoGrids": "Cargo Grids",
         "plaque": "Dedication Plaques",
-        "tradeRoutes": "Trade Routes"
+        "tradeRoutes": "Trade Routes",
+        "dressingRoom": "Dressing Room"
       },
       "rsiVerification": "Verify your RSI-Account",
       "support": "Support FleetYards.net",

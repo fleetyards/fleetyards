@@ -1,4 +1,10 @@
-import { Group, type Material, type Mesh, type Object3D } from "three";
+import {
+  Group,
+  type Material,
+  type Mesh,
+  type Object3D,
+  type Texture,
+} from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { prepareGltfLoader } from "./gltfLoader";
 
@@ -8,6 +14,12 @@ export type HoloMount = {
   position: [number, number, number];
   rotation: [number, number, number, number];
   path?: string;
+  // Bytes, where the file is known: a phone asks before loading a large one.
+  size?: number;
+  // Painted: drawn with its own materials, not the holo's.
+  textured?: boolean;
+  // Loaded in place of a painted holo that does not load, and drawn plain.
+  fallbackPath?: string;
   // What the viewer names this part by when it is clicked.
   id?: string;
   // Drawn in the highlight colour, with everything mounted on it.
@@ -24,6 +36,15 @@ export const mountsLayoutKey = (mounts: HoloMount[] = []): string =>
         `${mount.path ?? ""}@${mount.position.join(",")}/${mount.rotation.join(",")}(${mountsLayoutKey(mount.mounts)})`,
     )
     .join(";");
+
+export const mountsTextured = (mounts: HoloMount[] = []): boolean =>
+  mounts.some((mount) => mount.textured || mountsTextured(mount.mounts));
+
+export const mountsSize = (mounts: HoloMount[] = []): number =>
+  mounts.reduce(
+    (sum, mount) => sum + (mount.size ?? 0) + mountsSize(mount.mounts),
+    0,
+  );
 
 // Only what is highlighted, by place in the tree: a change here only repaints.
 export const mountsHighlightKey = (mounts: HoloMount[] = []): string =>
@@ -44,6 +65,14 @@ export const retainMountCache = () => {
   viewers += 1;
 };
 
+// A painted part keeps the maps it was exported with, which a material's own
+// dispose leaves on the GPU.
+export const disposeTextures = (material: Material) => {
+  for (const value of Object.values(material)) {
+    if ((value as Texture | null)?.isTexture) (value as Texture).dispose();
+  }
+};
+
 // The last viewer gone, the downloads go too: a long session browsing loadouts
 // would otherwise keep every part it ever showed.
 export const releaseMountCache = () => {
@@ -62,6 +91,7 @@ export const releaseMountCache = () => {
 
           mesh.geometry.dispose();
           for (const material of ([] as Material[]).concat(mesh.material)) {
+            disposeTextures(material);
             material.dispose();
           }
         }),
@@ -70,7 +100,7 @@ export const releaseMountCache = () => {
   }
 };
 
-const loadHolo = (path: string) => {
+export const loadHolo = (path: string) => {
   let scene = loaded.get(path);
 
   if (!scene) {
@@ -87,7 +117,7 @@ const loadHolo = (path: string) => {
 
 // A clone shares the cached holo's geometry and materials; whoever restyles it
 // must leave those for the cache to free.
-const cloneShared = (scene: Object3D) => {
+export const cloneShared = (scene: Object3D) => {
   const clone = scene.clone(true);
 
   clone.traverse((node) => {
@@ -111,6 +141,7 @@ export const buildMounts = async (mounts: HoloMount[]) => {
         group.quaternion.fromArray(mount.rotation);
         group.userData.highlighted = !!mount.highlighted;
         group.userData.mountId = mount.id;
+        group.userData.textured = !!mount.textured;
         group.userData.mountGroups = [];
         parent.add(group);
         // In list order, before anything is awaited, so a repaint can walk the
@@ -121,7 +152,16 @@ export const buildMounts = async (mounts: HoloMount[]) => {
           try {
             group.add(cloneShared(await loadHolo(mount.path)));
           } catch (error) {
-            console.warn("Loadout preview: a part's holo did not load", error);
+            if (mount.fallbackPath) {
+              try {
+                group.add(cloneShared(await loadHolo(mount.fallbackPath)));
+                group.userData.textured = false;
+              } catch (fallbackError) {
+                console.warn("A part's holo did not load", fallbackError);
+              }
+            } else {
+              console.warn("A part's holo did not load", error);
+            }
           }
         }
 
