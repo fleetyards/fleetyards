@@ -90,7 +90,15 @@ module ScData
       items.to_h { |path, entry| [path, by_sc_key[entry["scKey"]]] }
     end
 
+    RIGGED_NAME = /\Arigged_(\w+)\.glb\z/
+
     private def field_for(name)
+      if (rigged = RIGGED_NAME.match(name))
+        field = "holo_rigged_#{rigged[1]}"
+
+        return field if FIELDS.include?(field)
+      end
+
       field = ShipViewFields.field_for(name)
 
       field if FIELDS.include?(field)

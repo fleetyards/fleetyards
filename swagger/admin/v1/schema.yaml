@@ -18443,6 +18443,8 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         holoTextured:
           "$ref": "#/components/schemas/MediaFile"
+        holoRiggedMale:
+          "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
       title: ItemMedia
     ItemPrice:

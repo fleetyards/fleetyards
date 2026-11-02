@@ -74,6 +74,15 @@ module ScData
       assert @equipment.starboard_view.attached?
     end
 
+    test "attaches a worn item's rig for a body it knows, and skips one for a body it does not" do
+      publish(@equipment.sc_key, {"rigged_male.glb" => HOLO, "rigged_vanduul.glb" => HOLO})
+
+      perform
+
+      assert @equipment.holo_rigged_male.attached?
+      assert_not_includes fetched, "rigged_vanduul.glb"
+    end
+
     test "skips a name for a field an item does not have" do
       publish(@component.sc_key, {"top_colored.png" => PNG, "extended_front.png" => PNG, "front.png" => PNG})
 
