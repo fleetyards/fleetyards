@@ -42,7 +42,9 @@ import { prepareGltfLoader } from "../gltfLoader";
 import {
   bindToBones,
   bonesByName,
+  buildPedestal,
   cloneRigPiece,
+  disposePedestal,
   loadClips,
   rigLayoutKey,
 } from "../rig";
@@ -68,6 +70,8 @@ type Props = {
   hologram?: boolean;
   // Mounted parts answer the pointer, named by their mount's id.
   pickable?: boolean;
+  // Shown full screen: a figure stands without its pedestal there.
+  fullscreen?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -78,6 +82,7 @@ const props = withDefaults(defineProps<Props>(), {
   windowColor: "#1d3d59",
   hologram: false,
   pickable: false,
+  fullscreen: false,
 });
 
 // One pair for the whole holo, made once: a colour change recolours them
@@ -429,6 +434,7 @@ onUnmounted(() => {
   paintRequest += 1;
   paintMaps.forEach((map) => map.dispose());
   if (mountRoot) disposeFading(mountRoot);
+  if (pedestal) disposePedestal(pedestal);
 });
 
 const emit = defineEmits<{
@@ -501,6 +507,9 @@ const refreshSkeletons = (scene: Group) => {
     }
   });
 };
+
+// Stands under a rigged figure; measured with it, so the camera frames both.
+let pedestal: Group | undefined;
 
 // Worn pieces skinned to the root's skeleton, bound to its bones under one
 // group so a change of outfit swaps them in place.
@@ -775,6 +784,15 @@ const setup = async (scene: Group, animations: AnimationClip[]) => {
       if ((node as Mesh).isMesh) node.frustumCulled = false;
     });
     while (!(await attachRig(scene)));
+
+    if (props.model.rig.pedestal && !pedestal) {
+      pedestal = buildPedestal(
+        new Box3().setFromObject(scene, true),
+        props.color,
+      );
+      pedestal.visible = !props.fullscreen;
+      scene.add(pedestal);
+    }
   }
 
   // Asked again until the parts it frames are the ones that landed: a fitting
@@ -839,6 +857,16 @@ watch(
   () => props.model.rig?.clip,
   () => {
     if (state.value && rigRoot) pose(state.value.scene);
+  },
+);
+
+watch(
+  () => props.fullscreen,
+  (fullscreen) => {
+    if (!pedestal) return;
+
+    pedestal.visible = !fullscreen;
+    invalidate();
   },
 );
 

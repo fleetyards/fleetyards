@@ -98,6 +98,11 @@ type Props = {
   onDemand?: boolean;
   // Mounted parts answer the pointer: hovered and clicked by their mount's id.
   pickable?: boolean;
+  // Turned only about its upright axis, without zoom, until shown full
+  // screen, where it orbits freely.
+  turntable?: boolean;
+  // Room left around a contained model, as a factor of its fitted distance.
+  containPadding?: number;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -116,6 +121,8 @@ const props = withDefaults(defineProps<Props>(), {
   hologram: false,
   onDemand: false,
   pickable: false,
+  turntable: false,
+  containPadding: 1.35,
 });
 
 // Nothing will be drawn: no WebGL, or a holo that would not load. A caller with
@@ -196,6 +203,16 @@ const powerPreference = computed<WebGLPowerPreference>(() =>
 
 const internalFullscreen = ref(props.fullscreen);
 
+const turntableLocked = computed(
+  () => props.turntable && !internalFullscreen.value,
+);
+
+// Level with the camera's starting height, so the turntable keeps the view
+// it opened on.
+const turntablePolar = computed(
+  () => Math.PI / 2 - ((props.elevation ?? 0) * Math.PI) / 180,
+);
+
 const enableFullscreen = () => {
   internalFullscreen.value = true;
 };
@@ -203,6 +220,20 @@ const enableFullscreen = () => {
 const disableFullscreen = () => {
   internalFullscreen.value = false;
 };
+
+const closeOnEscape = (event: KeyboardEvent) => {
+  if (event.key === "Escape") disableFullscreen();
+};
+
+watch(internalFullscreen, (fullscreen) => {
+  if (fullscreen) {
+    window.addEventListener("keydown", closeOnEscape);
+  } else {
+    window.removeEventListener("keydown", closeOnEscape);
+  }
+});
+
+onUnmounted(() => window.removeEventListener("keydown", closeOnEscape));
 
 const { t } = useI18n();
 
@@ -541,7 +572,7 @@ const handleModelLoaded = (size: Vector3, scene: Object3D) => {
     });
     // Room around it: a frame rarely shows its edges whole, the editor's fades
     // in from the left under the controls.
-    reach *= 1.35;
+    reach *= props.containPadding;
 
     fitDistance.value = reach;
     modelMaxDimension.value = Math.max(size.x, size.y, size.z);
@@ -656,7 +687,12 @@ defineExpose({
       >
         <i class="fa-light fa-planet-ringed" />
       </Btn>
-      <Btn v-tooltip="zoomTooltip" :active="zoom" @click="toggleZoom">
+      <Btn
+        v-if="!turntableLocked"
+        v-tooltip="zoomTooltip"
+        :active="zoom"
+        @click="toggleZoom"
+      >
         <i class="fa-light fa-search-plus" />
       </Btn>
       <Btn
@@ -759,7 +795,9 @@ defineExpose({
         :auto-rotate="internalAutoRotate"
         :auto-rotate-speed="autoRotateSpeed"
         :enable-rotate="controllable || internalFullscreen"
-        :enable-zoom="zoom"
+        :enable-zoom="zoom && !turntableLocked"
+        :min-polar-angle="turntableLocked ? turntablePolar : 0"
+        :max-polar-angle="turntableLocked ? turntablePolar : Math.PI"
         :zoom-speed="0.5"
         :min-distance="-50"
         :max-distance="maxZoomDistance"
@@ -805,6 +843,7 @@ defineExpose({
           :mobile="lowPower"
           :hologram="hologram"
           :pickable="pickable"
+          :fullscreen="internalFullscreen"
           :offsetModel="models[models.indexOf(model) - 1]"
           @loaded="handleModelLoaded"
           @error="handleModelError"

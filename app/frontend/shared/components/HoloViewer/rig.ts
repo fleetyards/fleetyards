@@ -1,9 +1,19 @@
 import {
   type AnimationClip,
   type Bone,
+  type Box3,
+  CylinderGeometry,
+  DoubleSide,
+  Group,
+  type Material,
+  Mesh,
+  MeshBasicMaterial,
+  MeshStandardMaterial,
   type Object3D,
+  RingGeometry,
   Skeleton,
   type SkinnedMesh,
+  Vector3,
 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { clone as cloneSkinned } from "three/examples/jsm/utils/SkeletonUtils.js";
@@ -21,6 +31,59 @@ export type HoloRig = {
   // The clips that pose the body and every piece by bone name.
   animations?: string;
   clip?: string;
+  // A plinth under the figure's feet.
+  pedestal?: boolean;
+};
+
+const PEDESTAL_HEIGHT = 0.08;
+const PEDESTAL_SEGMENTS = 96;
+
+// A dark disc a little wider than the figure's stance, with a rim in the
+// holo's colour, its top flush with the soles.
+export const buildPedestal = (figure: Box3, rimColor: string) => {
+  const size = figure.getSize(new Vector3());
+  const center = figure.getCenter(new Vector3());
+  const radius = (Math.max(size.x, size.z) / 2) * 1.4;
+
+  const group = new Group();
+  group.position.set(center.x, figure.min.y, center.z);
+
+  const base = new Mesh(
+    new CylinderGeometry(
+      radius,
+      radius * 1.06,
+      PEDESTAL_HEIGHT,
+      PEDESTAL_SEGMENTS,
+    ),
+    new MeshStandardMaterial({
+      color: "#2b3036",
+      metalness: 0.5,
+      roughness: 0.55,
+    }),
+  );
+  base.position.y = -PEDESTAL_HEIGHT / 2;
+
+  const rim = new Mesh(
+    new RingGeometry(radius * 0.94, radius, PEDESTAL_SEGMENTS),
+    new MeshBasicMaterial({ color: rimColor, side: DoubleSide }),
+  );
+  rim.rotation.x = -Math.PI / 2;
+  rim.position.y = 0.001;
+
+  group.add(base, rim);
+  group.userData.pedestal = true;
+
+  return group;
+};
+
+export const disposePedestal = (pedestal: Object3D) => {
+  pedestal.traverse((node) => {
+    const mesh = node as Mesh;
+    if (!mesh.isMesh) return;
+
+    mesh.geometry.dispose();
+    (mesh.material as Material).dispose();
+  });
 };
 
 const clips = new Map<string, Promise<AnimationClip[]>>();
