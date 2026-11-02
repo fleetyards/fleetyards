@@ -273,6 +273,7 @@ export const riggedOutfitModel = (
   rig: {
     pieces: pieces.map((piece) => ({ path: piece.path, size: piece.size })),
     ...(attachments.length ? { attachments } : {}),
+    ...(body.lighting?.length ? { lights: body.lighting } : {}),
     ...bodyCover(worn),
     animations: body.animations?.url ?? undefined,
     clip:

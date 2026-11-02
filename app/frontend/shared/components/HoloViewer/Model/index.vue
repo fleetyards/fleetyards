@@ -46,6 +46,8 @@ import {
   bindToBones,
   bodyRegion,
   bonesByName,
+  buildRigLights,
+  rigLightsKey,
   type RigAttachment,
   cloneRigPiece,
   loadClips,
@@ -515,6 +517,21 @@ const refreshSkeletons = (scene: Group) => {
   });
 };
 
+// The game's own lights for the figure, in its frame.
+let rigLights: Group | undefined;
+
+const placeRigLights = (scene: Group) => {
+  if (rigLights) scene.remove(rigLights);
+  rigLights = undefined;
+
+  const lights = props.model.rig?.lights ?? [];
+  if (!lights.length) return;
+
+  rigLights = buildRigLights(lights);
+  scene.add(rigLights);
+  invalidate();
+};
+
 // Stands under a rigged figure; measured with it, so the camera frames both.
 let pedestal: Group | undefined;
 
@@ -906,6 +923,8 @@ const setup = async (scene: Group, animations: AnimationClip[]) => {
     });
     while (!unmounted && !(await attachRig(scene)));
 
+    placeRigLights(scene);
+
     if (props.model.rig.pedestal && !pedestal) {
       pedestal = buildPedestal(
         new Box3().setFromObject(scene, true),
@@ -998,6 +1017,13 @@ watch(
 
     pedestal.visible = !fullscreen;
     invalidate();
+  },
+);
+
+watch(
+  () => rigLightsKey(props.model.rig),
+  () => {
+    if (state.value && props.model.rig) placeRigLights(state.value.scene);
   },
 );
 

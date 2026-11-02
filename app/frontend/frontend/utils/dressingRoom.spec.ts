@@ -130,6 +130,7 @@ describe("riggedOutfitModel", () => {
     holo: file("/body.glb", 8),
     animations: file("/animations.glb", 3),
     weaponInHand: null,
+    lighting: [],
     clips: [
       { name: "idle_stand", static: false, looping: true },
       { name: "shop_pose_01", static: true, looping: false },
@@ -177,6 +178,7 @@ describe("riggedOutfitModel body cover", () => {
     holo: file("/body.glb"),
     animations: null,
     weaponInHand: null,
+    lighting: [],
     clips: [],
   };
 

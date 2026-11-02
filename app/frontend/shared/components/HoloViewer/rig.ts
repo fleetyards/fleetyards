@@ -1,6 +1,12 @@
 import {
   type AnimationClip,
   type Bone,
+  Color,
+  Group,
+  LinearSRGBColorSpace,
+  PointLight,
+  SpotLight,
+  Vector3,
   type Object3D,
   Skeleton,
   type SkinnedMesh,
@@ -38,8 +44,22 @@ export type RigAttachment = {
 // through a thin boot.
 export type BodyRegion = "head" | "torso" | "arms" | "legs";
 
+// A light of the game's own rig for the figure, from its feet in glTF axes.
+export type RigLight = {
+  type: string;
+  position: number[];
+  direction?: number[];
+  color: number[];
+  intensity: number;
+  range?: number;
+  decay?: number;
+  angle?: number;
+  penumbra?: number;
+};
+
 export type HoloRig = {
   pieces: RigPiece[];
+  lights?: RigLight[];
   // Under a worn undersuit: not drawn at all.
   hide?: BodyRegion[];
   // Under armour alone: drawn as a dark undersuit, which is what shows
@@ -214,3 +234,50 @@ export const rigSize = (rig?: HoloRig) =>
     (sum, part) => sum + (part.size ?? 0),
     0,
   );
+
+// The rig's lights as three.js lights under one group, each spot aimed down its
+// direction. The group goes into the figure's frame, so the lights turn and
+// centre with it.
+export const buildRigLights = (lights: RigLight[]) => {
+  const group = new Group();
+
+  lights.forEach((light) => {
+    const color = new Color().setRGB(
+      light.color[0],
+      light.color[1],
+      light.color[2],
+      LinearSRGBColorSpace,
+    );
+    const position = new Vector3().fromArray(light.position);
+
+    if (light.type === "spot" && light.direction) {
+      const spot = new SpotLight(
+        color,
+        light.intensity,
+        light.range ?? 0,
+        light.angle ?? Math.PI / 6,
+        light.penumbra ?? 0.2,
+        light.decay ?? 2,
+      );
+      spot.position.copy(position);
+      spot.target.position.copy(
+        position.clone().add(new Vector3().fromArray(light.direction)),
+      );
+      group.add(spot, spot.target);
+    } else {
+      const point = new PointLight(
+        color,
+        light.intensity,
+        light.range ?? 0,
+        light.decay ?? 2,
+      );
+      point.position.copy(position);
+      group.add(point);
+    }
+  });
+
+  return group;
+};
+
+export const rigLightsKey = (rig?: HoloRig) =>
+  JSON.stringify(rig?.lights ?? []);

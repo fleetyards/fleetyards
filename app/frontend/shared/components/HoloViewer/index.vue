@@ -158,6 +158,12 @@ const textured = computed(() =>
   ),
 );
 
+// A rigged figure that brings the game's own lights is lit by them alone,
+// over a small ambient term.
+const ownLighting = computed(() =>
+  props.models.some((model) => !!model.rig?.lights?.length),
+);
+
 const totalSize = computed(() =>
   props.models.reduce(
     (sum, model) =>
@@ -801,12 +807,16 @@ defineExpose({
         :far="cameraFar"
       />
       <TresDirectionalLight
+        v-if="!ownLighting"
         :position="lightPosition"
         :intensity="textured ? 1.5 : 2"
         :cast-shadow="!lowPower"
       />
       <RoomLighting v-if="textured" />
-      <TresAmbientLight v-else :intensity="lowPower ? 0.8 : 0.5" />
+      <TresAmbientLight
+        v-else
+        :intensity="ownLighting ? 0.15 : lowPower ? 0.8 : 0.5"
+      />
       <OrbitControls
         :auto-rotate="internalAutoRotate"
         :auto-rotate-speed="autoRotateSpeed"
