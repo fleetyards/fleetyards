@@ -83,18 +83,15 @@ export const openQuickLook = async (
 
   const url = URL.createObjectURL(usdz);
 
-  launchQuickLook(url);
+  openQuickLookFile(url);
   // Released the way model-viewer does: Safari has taken the file on the click.
   URL.revokeObjectURL(url);
 };
 
-// A USDZ built ahead of time: Quick Look fetches it from the link itself, so
-// the page neither downloads the holo nor loads three.js for it.
-export const openQuickLookFile = (usdzUrl: string): void => {
-  launchQuickLook(usdzUrl);
-};
-
-const launchQuickLook = (url: string) => {
+// Hands a USDZ to Quick Look. For one built ahead of time, Quick Look fetches
+// it from the link itself, so the page neither downloads the holo nor loads
+// three.js for it.
+export const openQuickLookFile = (url: string): void => {
   const anchor = document.createElement("a");
   anchor.setAttribute("rel", "ar");
   anchor.setAttribute("download", "holo.usdz");
