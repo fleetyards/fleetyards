@@ -455,12 +455,13 @@ let mountRoot: Group | undefined;
 // Two quick swaps load in parallel; only the latest may land.
 let mountsRequest = 0;
 
+// Whether these parts landed; a newer request supersedes them otherwise.
 const attachMounts = async (scene: Group) => {
   const request = ++mountsRequest;
   const mounts = props.model.mounts;
   const next = mounts?.length ? await buildMounts(mounts) : undefined;
 
-  if (request !== mountsRequest) return;
+  if (request !== mountsRequest) return false;
 
   if (mountRoot) {
     scene.remove(mountRoot);
@@ -477,6 +478,8 @@ const attachMounts = async (scene: Group) => {
   }
 
   invalidate();
+
+  return true;
 };
 
 // The part under the pointer, looked for among the mounted parts alone: on a
@@ -670,7 +673,11 @@ const setup = async (scene: Group, animations: AnimationClip[]) => {
 
   // Parts in one shared frame, a figure dressed from its pieces, are framed
   // and centred together: the root alone may be any one of them.
-  if (props.model.frameMounts) await attachMounts(scene);
+  // Asked again until the parts it frames are the ones that landed: a fitting
+  // changed while they loaded would leave it framing the root alone.
+  if (props.model.frameMounts) {
+    while (!(await attachMounts(scene)));
+  }
 
   const box = new Box3().setFromObject(scene);
   const size = box.getSize(new Vector3());
