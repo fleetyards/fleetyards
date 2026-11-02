@@ -18,9 +18,10 @@ export const fileTypeMap: Record<AllowedFileTypes, string[]> = {
   arHolo: ["model/vnd.usdz+zip"],
 };
 
-// The browser takes `File.type` from the operating system's registry, and
-// Windows registers nothing for glTF or USDZ, so a valid model arrives typed "".
-// Only these extensions are guessed: anything else without a type stays untyped.
+// The browser takes `File.type` from the operating system's registry. Windows
+// registers nothing for glTF or USDZ, and a system that knows USDZ only as the
+// zip archive it is reports that, so for these extensions the extension
+// decides. Any other file keeps the type the browser reported, empty or not.
 const typesByExtension: Record<string, string> = {
   glb: "model/gltf-binary",
   gltf: "model/gltf+json",
@@ -28,11 +29,7 @@ const typesByExtension: Record<string, string> = {
 };
 
 export const fileTypeOf = (file: Pick<File, "name" | "type">): string => {
-  if (file.type) {
-    return file.type;
-  }
-
   const extension = /\.([^./]+)$/.exec(file.name)?.[1].toLowerCase() ?? "";
 
-  return typesByExtension[extension] ?? "";
+  return typesByExtension[extension] ?? file.type;
 };

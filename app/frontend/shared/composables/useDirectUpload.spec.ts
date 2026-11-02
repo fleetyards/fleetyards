@@ -34,6 +34,14 @@ describe("useDirectUpload", () => {
     expect(sent.name).toBe("flight_holo.usdz");
   });
 
+  it("uploads a USDZ the browser took for a zip under the USDZ type", async () => {
+    const sent = await upload(
+      new File(["PK"], "flight_holo.usdz", { type: "application/zip" }),
+    );
+
+    expect(sent.type).toBe("model/vnd.usdz+zip");
+  });
+
   it("uploads a typed file as it is", async () => {
     const file = new File(["png"], "top.png", { type: "image/png" });
 

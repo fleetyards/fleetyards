@@ -4,9 +4,8 @@ import { fileTypeOf } from "@/shared/components/DirectUpload/types";
 const DIRECT_UPLOAD_URL = "/files/direct_uploads";
 
 // The blob is stored under the type the browser reports, and the public bucket
-// serves the file under it. A file the operating system has no type for takes
-// the one its extension stands for -- AR Quick Look opens a USDZ only under its
-// own.
+// serves the file under it. A model file goes up under the type its extension
+// stands for instead -- AR Quick Look opens a USDZ only under its own.
 const withType = (file: File) => {
   const type = fileTypeOf(file);
 
