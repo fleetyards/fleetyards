@@ -27,20 +27,18 @@ import {
   useOutfits,
   useUpdateOutfit,
 } from "@/services/fyApi";
-import {
-  type OutfitSelection,
-  sameOutfit,
-} from "@/frontend/utils/dressingRoom";
 
 type Props = {
-  selection: OutfitSelection;
-  // What the selection's slugs are, by id: what an outfit is saved with.
+  // What the outfit on screen wears, by id: what it is saved with.
   items: OutfitItemInput[];
   activeId?: string;
+  // A piece is still loading: saving now would leave it out.
+  pending?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   activeId: undefined,
+  pending: false,
 });
 
 const emit = defineEmits<{
@@ -61,9 +59,18 @@ const active = computed(() =>
   outfits.value?.find((outfit) => outfit.id === props.activeId),
 );
 
-const selectionOf = (outfit: Outfit): OutfitSelection =>
-  Object.fromEntries(
-    outfit.items.map((item) => [item.slot, item.equipment.slug]),
+const itemsKey = (items: { slot: string; equipmentId: string }[]) =>
+  items
+    .map((item) => `${item.slot}:${item.equipmentId}`)
+    .sort()
+    .join(",");
+
+const savedItemsKey = (outfit: Outfit) =>
+  itemsKey(
+    outfit.items.map((item) => ({
+      slot: item.slot,
+      equipmentId: item.equipment.id,
+    })),
   );
 
 const name = ref("");
@@ -80,7 +87,7 @@ const changed = computed(
   () =>
     !!active.value &&
     (active.value.name !== name.value.trim() ||
-      !sameOutfit(selectionOf(active.value), props.selection)),
+      savedItemsKey(active.value) !== itemsKey(props.items)),
 );
 
 const refresh = () =>
@@ -140,8 +147,26 @@ const nameTaken = computed(() =>
 );
 
 const canSave = computed(
-  () => !!name.value.trim() && !nameTaken.value && !saving.value,
+  () =>
+    !!name.value.trim() && !nameTaken.value && !saving.value && !props.pending,
 );
+
+const canSaveNew = computed(
+  () =>
+    canSave.value && (!active.value || name.value.trim() !== active.value.name),
+);
+
+const canSaveChanges = computed(() => canSave.value && changed.value);
+
+// Enter saves what the buttons would: the active outfit's changes, or a new
+// outfit when none is active.
+const submit = () => {
+  if (active.value) {
+    if (canSaveChanges.value) void saveChanges();
+  } else if (canSaveNew.value) {
+    void saveNew();
+  }
+};
 </script>
 
 <template>
@@ -151,10 +176,7 @@ const canSave = computed(
       {{ t("dressingRoom.signInToSave") }}
     </p>
     <template v-else>
-      <form
-        class="outfits__form"
-        @submit.prevent="active ? saveChanges() : saveNew()"
-      >
+      <form class="outfits__form" @submit.prevent="submit">
         <FormInput
           v-model="name"
           name="dressing-room-outfit-name"
@@ -166,7 +188,7 @@ const canSave = computed(
         <div class="outfits__actions">
           <Btn
             v-if="active"
-            :disabled="!canSave || !changed"
+            :disabled="!canSaveChanges"
             data-test="dressing-room-save-changes"
             @click="saveChanges"
           >
@@ -174,7 +196,7 @@ const canSave = computed(
           </Btn>
           <Btn
             :variant="active ? BtnVariantsEnum.GHOST : BtnVariantsEnum.SOLID"
-            :disabled="!canSave || (!!active && name.trim() === active.name)"
+            :disabled="!canSaveNew"
             data-test="dressing-room-save-new"
             @click="saveNew"
           >

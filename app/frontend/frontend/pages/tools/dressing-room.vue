@@ -165,6 +165,8 @@ const holoUnavailable = () => {
   if (root?.textured) failedPaths.value = [...failedPaths.value, root.path];
 };
 
+const piecesPending = computed(() => selectedSlots.value.some(loadingSlot));
+
 const outfitItems = computed<OutfitItemInput[]>(() =>
   selectedSlots.value.flatMap((slot) => {
     const item = items.value[slot];
@@ -320,8 +322,8 @@ const copyShareLink = () => {
         </ul>
 
         <Outfits
-          :selection="selection"
           :items="outfitItems"
+          :pending="piecesPending"
           :active-id="activeOutfitId"
           @load="loadOutfit"
           @active="setActiveOutfit"

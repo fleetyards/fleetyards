@@ -36,7 +36,6 @@ const { default: Outfits } = await import("./index.vue");
 const mount = (props: Record<string, unknown>, signedIn = true) =>
   mountWithDefaults<typeof Outfits>(Outfits, {
     props: {
-      selection: { torso: "adp-core" },
       items: [{ slot: "torso", equipmentId: "core" }],
       ...props,
     } as never,
@@ -101,10 +100,39 @@ describe("DressingRoomOutfits", () => {
     expect(saveChanges().attributes("disabled")).toBeDefined();
 
     await wrapper.setProps({
-      selection: { torso: "adp-core", legs: "adp-legs" },
+      items: [
+        { slot: "torso", equipmentId: "core" },
+        { slot: "legs", equipmentId: "legs" },
+      ],
     } as never);
 
     expect(saveChanges().attributes("disabled")).toBeUndefined();
+  });
+
+  it("does not save on Enter under a name already taken", async () => {
+    const wrapper = await mount({});
+
+    await wrapper
+      .find('input[name="dressing-room-outfit-name"]')
+      .setValue("Heavy");
+    await wrapper.find("form").trigger("submit");
+    await flushPromises();
+
+    expect(create).not.toHaveBeenCalled();
+  });
+
+  it("waits for every piece to load before it saves", async () => {
+    const wrapper = await mount({ pending: true });
+
+    await wrapper
+      .find('input[name="dressing-room-outfit-name"]')
+      .setValue("Recon");
+
+    expect(
+      wrapper
+        .find('[data-test="dressing-room-save-new"]')
+        .attributes("disabled"),
+    ).toBeDefined();
   });
 
   it("loads an outfit when it is picked from the list", async () => {
