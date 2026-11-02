@@ -331,4 +331,16 @@ class Api::V1::ModelsShowTest < ActionDispatch::IntegrationTest
       assert_nil media.dig("holoTextured", "url")
     end
   end
+
+  test "GET /models/:slug links the USDZ Quick Look opens" do
+    model = create(:model)
+    model.holo_usdz.attach(io: StringIO.new("PK\x03\x04#{"\0" * 60}".b), filename: "flight_holo.usdz", content_type: Model::USDZ_CONTENT_TYPE)
+
+    assert_api_response :get, 200, path_params: {slug: model.slug} do
+      usdz = parsed_body.dig("media", "holoUsdz")
+
+      assert_equal "flight_holo.usdz", usdz["name"]
+      assert_match(/flight_holo\.usdz/, usdz["url"])
+    end
+  end
 end
