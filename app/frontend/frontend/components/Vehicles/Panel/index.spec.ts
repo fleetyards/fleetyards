@@ -348,11 +348,12 @@ describe("vehicle add-ons shortcut", () => {
       model: { ...vehicle().model, hasModules: true },
     });
     const wrapper = await mount({ vehicle: ship, editable: false });
+    openLoadoutView.mockClear();
 
     await wrapper.find(".vehicle-panel-addons").trigger("click");
 
     expect(openAddonsView).toHaveBeenLastCalledWith(ship);
-    expect(openLoadoutView).not.toHaveBeenCalledWith(ship);
+    expect(openLoadoutView).not.toHaveBeenCalled();
   });
 });
 
