@@ -5,7 +5,7 @@ class Raffle < ApplicationRecord
 
   # Bumped whenever the participation conditions change in meaning, so every
   # entry records which wording its user accepted.
-  CONDITIONS_VERSION = "2026-10-28"
+  CONDITIONS_VERSION = "2026-11-02"
 
   STATUSES = %w[draft upcoming open closed drawn concluded].freeze
 
@@ -171,7 +171,7 @@ class Raffle < ApplicationRecord
   # they go with it.
   def conclude!(now = Time.current)
     update!(concluded_at: now)
-    entries.update_all(email: nil, updated_at: now)
+    entries.update_all(email: nil, email_key: nil, updated_at: now)
   end
 
   # Readers on the raffle page refetch on this, so a status change, an entry

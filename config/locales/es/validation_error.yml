@@ -9,6 +9,7 @@ es:
       create: "No pudiste participar en el sorteo."
       messages:
         already_entered: "Ya participas en este sorteo."
+        address_entered: "Otra cuenta con esta dirección de correo ya participa en este sorteo. Cada persona puede participar una vez."
     raffle:
       create: "No se pudo crear el sorteo."
       update: "No se pudo actualizar el sorteo."

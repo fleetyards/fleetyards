@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_01_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_02_170000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "hstore"
   enable_extension "pg_catalog.plpgsql"
@@ -2731,8 +2731,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_01_120000) do
     t.datetime "prize_mail_sent_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "email_key"
     t.index ["claim_deadline_at"], name: "index_raffle_entries_on_claim_deadline_at", where: "((claimed_at IS NULL) AND (forfeited_at IS NULL))"
     t.index ["raffle_id", "draw_position"], name: "index_raffle_entries_on_raffle_id_and_draw_position", unique: true
+    t.index ["raffle_id", "email_key"], name: "index_raffle_entries_on_raffle_id_and_email_key", unique: true, where: "(email_key IS NOT NULL)"
     t.index ["raffle_id"], name: "index_raffle_entries_on_raffle_id"
     t.index ["user_id", "raffle_id"], name: "index_raffle_entries_on_user_id_and_raffle_id", unique: true
   end

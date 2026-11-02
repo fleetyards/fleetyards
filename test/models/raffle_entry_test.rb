@@ -116,4 +116,30 @@ class RaffleEntryTest < ActiveSupport::TestCase
     raffle = create(:raffle, :closed, drawn_at: 1.hour.ago)
     create(:raffle_entry, :after_close, raffle:, draw_position: 1, won_at: 1.hour.ago, claim_deadline_at:)
   end
+
+  test "addresses that reach the same inbox share a key" do
+    key = RaffleEntry.email_key_for("pilot@gmail.com")
+
+    assert_equal key, RaffleEntry.email_key_for("Pi.lot+raffle@googlemail.com")
+    assert_equal RaffleEntry.email_key_for("pilot@example.com"), RaffleEntry.email_key_for("pilot+2@Example.com")
+    assert_not_equal RaffleEntry.email_key_for("pi.lot@example.com"), RaffleEntry.email_key_for("pilot@example.com")
+    assert_nil RaffleEntry.email_key_for(nil)
+  end
+
+  test "a second account on the same inbox cannot enter" do
+    raffle = create(:raffle)
+    create(:raffle_entry, raffle:, user: create(:user, email: "pilot+1@example.com"))
+    entry = raffle.entries.new(user: create(:user, email: "pilot+2@example.com"), conditions_accepted: true)
+
+    assert_not entry.valid?(:create)
+    assert entry.errors.of_kind?(:email_key, :taken)
+  end
+
+  test "concluding a raffle drops the keys with the addresses" do
+    entry = create(:raffle_entry)
+
+    entry.raffle.conclude!
+
+    assert_nil entry.reload.email_key
+  end
 end

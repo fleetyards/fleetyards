@@ -17,6 +17,8 @@ module Api
         if @entry.save
           @viewer_entries = {@raffle.id => @entry}
           render "api/v1/raffles/show", status: :created
+        elsif @entry.errors.of_kind?(:email_key, :taken)
+          render json: ValidationError.new("raffle_entry.create", message: I18n.t("validation_error.raffle_entry.messages.address_entered")), status: :bad_request
         else
           render json: ValidationError.new("raffle_entry.create", errors: @entry.errors), status: :bad_request
         end

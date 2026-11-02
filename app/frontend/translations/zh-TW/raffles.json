@@ -248,6 +248,7 @@
         "title": "參加條款",
         "accept": "我已閱讀並接受參加條款。",
         "confirmedAccount": "只有已驗證電子郵件地址的帳戶才能參加，每個帳戶限參加一次。",
+        "onePerPerson": "每人限參加一次。寄到同一個收件匣的地址視為同一個，例如 name+1@… 和 name+2@…，或僅句點不同的 Gmail 地址。其中只有最早的參加會進入抽獎。",
         "noMaintainers": "Fleetyards 維護者不能參加。",
         "publicEntrants": "您的使用者名稱將作為參加者公開顯示在此頁面上。",
         "publicWinner": "如果您得獎，您的使用者名稱將作為得獎者公開顯示。",

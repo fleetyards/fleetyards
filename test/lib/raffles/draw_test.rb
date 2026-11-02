@@ -52,6 +52,18 @@ module Raffles
       assert_equal 2, @raffle.entries.where.not(draw_position: nil).count
     end
 
+    test "draws an inbox entered from several accounts once, for its earliest entry" do
+      @entries.first.update_columns(created_at: 2.days.ago)
+      @entries.first.user.update_columns(email: "pilot+1@example.com")
+      @entries.second.update_columns(email_key: nil)
+      @entries.second.user.update_columns(email: "pilot+2@example.com")
+
+      Draw.new(@raffle, admin_user: @admin).call
+
+      assert @entries.first.reload.draw_position.present?
+      assert_nil @entries.second.reload.draw_position
+    end
+
     test "leaves maintainers out of the order" do
       @entries.first.user.update_columns(maintainer: true)
 

@@ -9,6 +9,7 @@ en:
       create: "You could not enter the raffle."
       messages:
         already_entered: "You have already entered this raffle."
+        address_entered: "Another account with this email address has already entered this raffle. Each person can enter once."
     raffle:
       create: "Raffle could not be created."
       update: "Raffle could not be updated."

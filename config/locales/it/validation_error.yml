@@ -9,6 +9,7 @@ it:
       create: "Non è stato possibile partecipare all'estrazione."
       messages:
         already_entered: "Partecipi già a questa estrazione."
+        address_entered: "Un altro account con questo indirizzo email partecipa già a questa estrazione. Ogni persona può partecipare una volta."
     raffle:
       create: "Non è stato possibile creare l'estrazione."
       update: "Non è stato possibile aggiornare l'estrazione."

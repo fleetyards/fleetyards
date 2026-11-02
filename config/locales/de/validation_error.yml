@@ -9,6 +9,7 @@ de:
       create: "Du konntest nicht an der Verlosung teilnehmen."
       messages:
         already_entered: "Du nimmst bereits an dieser Verlosung teil."
+        address_entered: "Ein anderes Konto mit dieser E-Mail-Adresse nimmt bereits an dieser Verlosung teil. Jede Person kann einmal teilnehmen."
     raffle:
       create: "Verlosung konnte nicht erstellt werden."
       update: "Verlosung konnte nicht aktualisiert werden."

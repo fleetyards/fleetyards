@@ -235,6 +235,16 @@ class Api::V1::RafflesTest < ActionDispatch::IntegrationTest
     assert_api_response :post, 400, path_params: {raffleId: @raffle.id}, body: {conditionsAccepted: true}
   end
 
+  test "POST /raffles/:raffle_id/entry refuses a second account on the same inbox" do
+    @user.update_columns(email: "pilot+2@example.com")
+    create(:raffle_entry, raffle: @raffle, user: create(:user, email: "pilot+1@example.com"))
+    sign_in @user
+
+    assert_api_response :post, 400, path_params: {raffleId: @raffle.id}, body: {conditionsAccepted: true} do
+      assert_equal I18n.t("validation_error.raffle_entry.messages.address_entered"), parsed_body["message"]
+    end
+  end
+
   test "POST /raffles/:raffle_id/entry refuses a closed raffle" do
     sign_in @user
 
