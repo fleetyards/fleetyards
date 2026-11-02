@@ -41,6 +41,7 @@ export const useFleetNavAccess = (
   fleet: MaybeRefOrGetter<
     | (Pick<Fleet, "features" | "publicFleet" | "squadronsEnabled"> & {
         slug?: string;
+        publicFleetStats?: boolean;
       })
     | undefined
   >,
@@ -127,6 +128,14 @@ export const useFleetNavAccess = (
 
   // The one tab somebody outside the fleet can reach, and the reason it stays
   // top-level rather than joining the Assets group.
+  const showMembersNav = computed(() => !!membership.value);
+
+  const showSettingsNav = computed(() => !!membership.value);
+
+  const showStatsNav = computed(
+    () => !!membership.value || !!toValue(fleet)?.publicFleetStats,
+  );
+
   const showShipsNav = computed(
     () => !!membership.value || !!toValue(fleet)?.publicFleet,
   );
@@ -238,6 +247,9 @@ export const useFleetNavAccess = (
 
   return {
     membership,
+    showMembersNav,
+    showSettingsNav,
+    showStatsNav,
     showAssetsNav,
     assetsNavActive,
     showShipsNav,
