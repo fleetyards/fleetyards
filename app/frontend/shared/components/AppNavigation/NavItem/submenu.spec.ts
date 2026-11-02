@@ -112,8 +112,8 @@ describe("NavItem with a submenu", () => {
   });
 
   describe("expanded", () => {
-    it("nests its rows inline rather than beside the navigation", async () => {
-      const wrapper = await mountSection(false);
+    it("nests the rows of the section the reader is in", async () => {
+      const wrapper = await mountSection(false, { submenuActive: true });
 
       expect(wrapper.find("ul").exists()).toBe(true);
       expect(wrapper.find(".nav-flyout").exists()).toBe(false);
@@ -121,14 +121,12 @@ describe("NavItem with a submenu", () => {
       wrapper.unmount();
     });
 
-    // A sub-section inside a section opens beside it rather than pushing the
-    // section's own rows down.
-    it("opens an overlay row as the panel all the same", async () => {
-      const wrapper = await mountSection(false, { overlay: true });
+    it("opens any other section as the panel", async () => {
+      const wrapper = await mountSection(false);
 
       expect(wrapper.find("ul").exists()).toBe(false);
 
-      await wrapper.get("button").trigger("click");
+      await wrapper.trigger("pointerenter");
 
       expect(wrapper.find(".nav-flyout").exists()).toBe(true);
 
@@ -141,7 +139,7 @@ describe("NavItem with a submenu", () => {
      * than as rows belonging to the row above it. The rail replaced them.
      */
     it("fences its rows with a rail, not with dividers", async () => {
-      const wrapper = await mountSection(false);
+      const wrapper = await mountSection(false, { submenuActive: true });
 
       expect(wrapper.find("ul .nav-item__divider").exists()).toBe(false);
 
@@ -316,15 +314,13 @@ describe("NavItem with a submenu", () => {
       wrapper.unmount();
     });
 
-    // The rail has no room to nest in, so the section must not also try to
-    // expand in place underneath the icon.
-    it("does not expand in place as well", async () => {
+    it("unfolds the section the reader is in rather than opening a panel", async () => {
       const wrapper = await mountSection(true, { submenuActive: true });
 
       await wrapper.trigger("pointerenter");
 
-      expect(wrapper.findAll(".nav-flyout")).toHaveLength(1);
-      expect(wrapper.find("li > ul").exists()).toBe(false);
+      expect(wrapper.find(".nav-flyout").exists()).toBe(false);
+      expect(wrapper.find("ul").exists()).toBe(true);
 
       wrapper.unmount();
     });
@@ -338,7 +334,7 @@ describe("NavItem with a submenu", () => {
           submenu: () => [
             h(
               NavItem,
-              { label: "Pledge items", menuKey: "pledge-menu", overlay: true },
+              { label: "Pledge items", menuKey: "pledge-menu" },
               {
                 submenu: () => [
                   h(NavItem, { to: { name: "components" }, label: "Paints" }),

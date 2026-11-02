@@ -86,7 +86,6 @@ const submenuActive = computed(
           :menu-key="item.key"
           :icon="item.icon"
           :submenu-active="isAnyEntryActive(item.entries, routeName)"
-          overlay
         >
           <template #submenu>
             <EntryItem

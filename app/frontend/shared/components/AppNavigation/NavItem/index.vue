@@ -32,9 +32,6 @@ type Props = {
   submenuActive?: boolean;
   submenuDirection?: string;
   badge?: number;
-  // Opens as a panel beside its row on the expanded rail as well, rather than
-  // unfolding in place -- for a sub-section inside a section.
-  overlay?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -52,7 +49,6 @@ const props = withDefaults(defineProps<Props>(), {
   submenuActive: false,
   submenuDirection: "down",
   badge: 0,
-  overlay: false,
 });
 
 const open = ref(false);
@@ -74,17 +70,14 @@ const slots = useSlots();
 const hasSubmenuSlot = computed(() => !!slots.submenu);
 
 /*
- * A collapsed rail has no width to nest rows in -- an icon indented under
- * another icon says nothing -- so a section opens beside the rail instead of
- * inside it, where its rows can carry their labels.
- */
-/*
- * Not in the drawer, though, whatever the row asks: that sits against the
- * right edge of the screen, and a panel beside it would open off it.
+ * Only the section the reader is in unfolds in place; every other one opens
+ * beside the rail, so the rail never grows by sections nobody is using.
+ *
+ * Not in the drawer, though: that sits against the right edge of the screen,
+ * and a panel beside it would open off it.
  */
 const flyout = computed(
-  () =>
-    hasSubmenuSlot.value && (slim.value || (props.overlay && !mobile.value)),
+  () => hasSubmenuSlot.value && !mobile.value && !props.submenuActive,
 );
 
 provide(
@@ -503,6 +496,11 @@ watch(flyout, (isFlyout) => {
     return;
   }
 
+  closeFlyout();
+});
+
+// The panel was placed against the old rail's edge and would float off it.
+watch(slim, () => {
   closeFlyout();
 });
 
