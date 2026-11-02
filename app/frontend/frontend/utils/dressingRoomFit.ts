@@ -129,5 +129,21 @@ export const fitsSlot = (fit: SlotFit, item: FitItem) => {
 };
 
 // Who the slot is up to, by name: "Flight Suit", or "Core, Undersuit".
+// The outermost worn slot whose item offers the slot's port: the piece a
+// weapon in it hangs from. None where nothing worn says.
+export const portProvider = (
+  slot: OutfitSlotEnum,
+  worn: Partial<Record<OutfitSlotEnum, FitItem | undefined>>,
+) => {
+  const portName = SLOT_PORTS[slot];
+  if (!portName) return undefined;
+
+  return [...(PROVIDERS[slot] ?? [])]
+    .reverse()
+    .find((provider) =>
+      worn[provider]?.fit?.ports?.some((port) => port.name === portName),
+    );
+};
+
 export const providerNames = (fit: SlotFit) =>
   fit.kind === "open" ? "" : fit.providers.map((item) => item.name).join(", ");

@@ -54,6 +54,7 @@ import {
 import {
   type SlotFit,
   fitsSlot,
+  portProvider,
   providerNames,
   slotFit,
 } from "@/frontend/utils/dressingRoomFit";
@@ -314,8 +315,14 @@ const holos = computed(
 const pieces = computed(() =>
   RIG_ORDER.flatMap((slot) => {
     const holo = body.value ? riggedHolos.value[slot] : holos.value[slot];
+    if (!holo) return [];
 
-    return holo ? [holo] : [];
+    if (!body.value || slot !== OutfitSlotEnum.BACKPACK) return [holo];
+
+    const provider = portProvider(slot, items.value);
+    const from = provider && riggedHolos.value[provider]?.path;
+
+    return [{ ...holo, hangs: true, ...(from ? { from } : {}) }];
   }),
 );
 
@@ -338,8 +345,13 @@ const weaponPlacement = (slot: OutfitSlotEnum) => {
   const mount = STOWED_MOUNTS[slot];
   const placed =
     mount && attachment(holo, mount, items.value[slot]?.attachPoints);
+  if (!placed?.helper) return undefined;
 
-  return placed?.helper ? placed : undefined;
+  // The mount of the piece whose port it is in, never a namesake underneath.
+  const provider = portProvider(slot, items.value);
+  const from = provider && riggedHolos.value[provider]?.path;
+
+  return from ? { ...placed, from } : placed;
 };
 
 const onBackpack = (slot: OutfitSlotEnum) => {

@@ -633,7 +633,12 @@ const loadAttachment = async (attachment: RigAttachment) => {
   try {
     const group = await load(attachment.path);
     group.userData.textured = !!attachment.textured;
-    return { group, bone: attachment.bone, textured: !!attachment.textured };
+    return {
+      group,
+      bone: attachment.bone,
+      from: attachment.from,
+      textured: !!attachment.textured,
+    };
   } catch (error) {
     if (!attachment.fallbackPath) {
       console.warn("An attached part did not load", error);
@@ -645,6 +650,7 @@ const loadAttachment = async (attachment: RigAttachment) => {
     return {
       group: await load(attachment.fallbackPath),
       bone: attachment.bone,
+      from: attachment.from,
       textured: false,
     };
   } catch (error) {
@@ -691,10 +697,14 @@ const attachRig = async (scene: Group) => {
   next.userData.grafted = [];
   next.userData.attached = [];
 
-  pieces.forEach((piece) => {
+  pieces.forEach((piece, index) => {
     if (!piece) return;
 
-    const { meshes, grafted } = bindToBones(piece, bones);
+    const { meshes, grafted } = bindToBones(piece, bones, {
+      hangs: rig.pieces[index]?.hangs,
+      from: rig.pieces[index]?.from,
+      source: rig.pieces[index]?.path,
+    });
     if (meshes.length) next.add(...meshes);
     next.userData.grafted.push(...grafted);
   });
@@ -708,6 +718,7 @@ const attachRig = async (scene: Group) => {
 
     const bone = withHelpers.get(attachment.bone);
     if (!bone) return;
+    if (attachment.from && bone.userData.source !== attachment.from) return;
 
     bone.add(attachment.group);
     next.userData.attached.push(attachment.group);

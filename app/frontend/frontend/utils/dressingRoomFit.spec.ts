@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
 import { OutfitSlotEnum } from "@/services/fyApi";
-import { type FitItem, fitsSlot, slotFit } from "./dressingRoomFit";
+import {
+  type FitItem,
+  fitsSlot,
+  portProvider,
+  slotFit,
+} from "./dressingRoomFit";
 
 const armourPort = (name: string, type: string) => ({
   name,
@@ -167,5 +172,48 @@ describe("slotFit", () => {
     });
 
     expect(fitsSlot(fit, backpack(3))).toBe(true);
+  });
+});
+
+describe("portProvider", () => {
+  const legs: FitItem = {
+    name: "Heavy Legs",
+    fit: {
+      type: "Char_Armor_Legs",
+      ports: [
+        {
+          name: "wep_sidearm",
+          types: [{ type: "WeaponPersonal", subTypes: ["Small"] }],
+          minSize: 1,
+          maxSize: 1,
+        },
+      ],
+    },
+  };
+  const suit: FitItem = {
+    name: "Undersuit",
+    fit: { type: "Char_Armor_Undersuit", ports: legs.fit?.ports },
+  };
+
+  it("hangs a sidearm from the leg armour over the undersuit", () => {
+    expect(
+      portProvider(OutfitSlotEnum.SIDEARM, {
+        [OutfitSlotEnum.UNDERSUIT]: suit,
+        [OutfitSlotEnum.LEGS]: legs,
+      }),
+    ).toBe(OutfitSlotEnum.LEGS);
+  });
+
+  it("falls back to the undersuit when the legs offer no holster", () => {
+    expect(
+      portProvider(OutfitSlotEnum.SIDEARM, {
+        [OutfitSlotEnum.UNDERSUIT]: suit,
+        [OutfitSlotEnum.LEGS]: { name: "Bare Legs", fit: { type: "x" } },
+      }),
+    ).toBe(OutfitSlotEnum.UNDERSUIT);
+  });
+
+  it("names nothing when nothing worn says", () => {
+    expect(portProvider(OutfitSlotEnum.SIDEARM, {})).toBeUndefined();
   });
 });

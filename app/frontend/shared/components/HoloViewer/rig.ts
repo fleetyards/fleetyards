@@ -20,6 +20,12 @@ import { prepareGltfLoader } from "./gltfLoader";
 export type RigPiece = {
   path: string;
   size?: number;
+  // Hung from the mount an earlier piece brought rather than its own copy of
+  // it: a backpack from the core it is worn on.
+  hangs?: boolean;
+  // The piece whose mount it must hang from: left off when that piece's rig
+  // does not carry it, rather than hung from a namesake underneath.
+  from?: string;
 };
 
 // A rigid item pinned to one of the figure's bones -- a weapon in a holster or
@@ -32,6 +38,10 @@ export type RigAttachment = {
   textured?: boolean;
   // Loaded in place of a painted holo that does not load, and drawn plain.
   fallbackPath?: string;
+  // The rig piece whose own copy of the bone it hangs from. Left off the
+  // figure when that piece's rig does not carry it, rather than hung from a
+  // namesake underneath: an undersuit's holster sits inside the leg armour.
+  from?: string;
   // The point on the item that meets the bone, in its holo's frame: where a
   // rifle hooks onto a back mount. Without one the holo's origin does.
   helper?: {
@@ -113,8 +123,7 @@ export const bonesByName = (root: Object3D) => {
   return bones;
 };
 
-// Helper bones a later piece hangs from rather than bringing its own: the
-// backpack from the core it is worn on.
+// Helper bones a hanging piece takes from the pieces before it.
 const SHARED_HELPERS = new Set(["backpack_attach_1_override"]);
 
 // The piece's skinned meshes, bound to the body's bones in place of the
@@ -124,8 +133,17 @@ const SHARED_HELPERS = new Set(["backpack_attach_1_override"]);
 // caller can take them off again. A mesh naming a bone that hangs from
 // nothing the body has is left out rather than drawn frozen in its bind pose.
 // The bones it grafts join `bones`, so a later piece hangs from them too: a
-// backpack from the core's own backpack bone.
-export const bindToBones = (piece: Object3D, bones: Map<string, Bone>) => {
+// backpack from the core's own backpack bone. Every other piece brings its own
+// copy: an undersuit's backpack bone sits inside the core worn over it.
+export const bindToBones = (
+  piece: Object3D,
+  bones: Map<string, Bone>,
+  {
+    hangs = false,
+    from,
+    source,
+  }: { hangs?: boolean; from?: string; source?: string } = {},
+) => {
   const grafted: Bone[] = [];
   const meshes: SkinnedMesh[] = [];
 
@@ -146,14 +164,16 @@ export const bindToBones = (piece: Object3D, bones: Map<string, Bone>) => {
         return known;
       }
 
-      // A bone another piece brought: its own, unless it is the core's
-      // backpack bone, which the backpack hangs from.
+      // A bone another piece brought: its own, unless it hangs from it.
       if (
+        hangs &&
         SHARED_HELPERS.has(bone.name) &&
         known.parent?.name === bone.parent?.name
       ) {
-        return known;
+        return !from || known.userData.source === from ? known : undefined;
       }
+    } else if (hangs && from && SHARED_HELPERS.has(bone.name)) {
+      return undefined;
     }
 
     const parent = bone.parent as Bone | null;
@@ -168,6 +188,7 @@ export const bindToBones = (piece: Object3D, bones: Map<string, Bone>) => {
     bone.traverse((node) => {
       node.userData.grafted = true;
       node.userData.graftedBy = token;
+      node.userData.source = source;
       if ((node as Bone).isBone) bones.set(node.name, node as Bone);
     });
 
@@ -240,6 +261,7 @@ export const rigLayoutKey = (rig?: HoloRig) =>
             attachment.textured,
             attachment.fallbackPath,
             attachment.helper,
+            attachment.from,
           ]),
         ),
       ].join(";")

@@ -128,6 +128,8 @@ export interface PieceHolo {
   textured: boolean;
   // The plain holo, for a painted one that does not load.
   fallbackPath?: string;
+  hangs?: boolean;
+  from?: string;
 }
 
 // On a body, the piece's rig for it: only a rig follows the body's pose.
@@ -273,7 +275,12 @@ export const riggedOutfitModel = (
   size: body.holo.size ?? undefined,
   textured: false,
   rig: {
-    pieces: pieces.map((piece) => ({ path: piece.path, size: piece.size })),
+    pieces: pieces.map((piece) => ({
+      path: piece.path,
+      size: piece.size,
+      ...(piece.hangs ? { hangs: true } : {}),
+      ...(piece.from ? { from: piece.from } : {}),
+    })),
     ...(attachments.length ? { attachments } : {}),
     ...(body.lighting?.length ? { lights: body.lighting } : {}),
     ...bodyCover(worn),
