@@ -23,11 +23,14 @@ vi.mock("@/services/fyApi", async () => ({
     isPending: computed(() => false),
   }),
   useNotificationsUnreadCount: () => ({ data: computed(() => ({ count: 0 })) }),
+  useFleetInvites: () => ({ data: computed(() => [{ id: "invite-1" }]) }),
 }));
 
 vi.mock("@/frontend/composables/useFleetNavAccess", () => ({
   useFleetNavAccess: () => ({
-    membership: computed(() => ({ id: "membership-1" })),
+    showMembersNav: computed(() => true),
+    showSettingsNav: computed(() => true),
+    showStatsNav: computed(() => true),
     showShipsNav: computed(() => true),
     shipsNavActive: computed(() => false),
     showSquadronsNav: computed(() => false),
@@ -57,13 +60,18 @@ afterEach(() => {
 
 const Stub = { render: () => null };
 
-const mountTabs = async (path: string, fleetSlug: string | null) => {
+const mountTabs = async (
+  path: string,
+  fleetSlug: string | null,
+  authenticated = true,
+) => {
   const router = createRouter({
     history: createMemoryHistory(),
     routes: [
       { path: "/", name: "home", component: Stub },
       { path: "/ships", name: "ships", component: Stub },
       { path: "/hangar", name: "hangar", component: Stub },
+      { path: "/hangar/preview", name: "hangar-preview", component: Stub },
       { path: "/notifications", name: "notifications", component: Stub },
       { path: "/settings/profile", name: "settings-profile", component: Stub },
       { path: "/fleets/:slug", name: "fleet", component: Stub },
@@ -85,6 +93,7 @@ const mountTabs = async (path: string, fleetSlug: string | null) => {
         component: Stub,
       },
       { path: "/fleets/directory", name: "fleet-directory", component: Stub },
+      { path: "/fleets/invites", name: "fleet-invites", component: Stub },
       { path: "/fleets/add", name: "fleet-add", component: Stub },
     ],
   });
@@ -94,10 +103,12 @@ const mountTabs = async (path: string, fleetSlug: string | null) => {
   wrapper = await mountWithDefaults(MobileNavigation, {
     plugins: [router],
     initialState: {
-      session: {
-        authenticated: true,
-        currentUser: { id: "user-1", username: "torlek" },
-      },
+      session: authenticated
+        ? {
+            authenticated: true,
+            currentUser: { id: "user-1", username: "torlek" },
+          }
+        : { authenticated: false },
       navContext: { fleetSlug },
     },
   });
@@ -181,8 +192,36 @@ describe("Mobile navigation", () => {
       expect(hub(tabs).exists()).toBe(false);
     });
 
-    // The tour's events and contracts steps pointed at tabs that now live in
-    // the hub, and skip themselves when their target is missing.
+    it("closes on a tap at the page that is already open", async () => {
+      const tabs = await mountTabs("/fleets/kraken", "kraken");
+
+      await hubTrigger(tabs).trigger("click");
+      await tabs.get('[data-test="fleet-hub-overview"]').trigger("click");
+      await flushPromises();
+
+      expect(hub(tabs).exists()).toBe(false);
+    });
+
+    it("lists the reader's invitations in the switcher", async () => {
+      const tabs = await mountTabs("/fleets/kraken", "kraken");
+
+      await hubTrigger(tabs).trigger("click");
+      await tabs.get('[data-test="fleet-hub-switch"]').trigger("click");
+
+      expect(tabs.get('[data-test="fleet-hub-invites"]').text()).toContain("1");
+    });
+
+    // A guest has no hangar or fleets of their own to switch to.
+    it("offers a guest no switcher", async () => {
+      const tabs = await mountTabs("/fleets/kraken", "kraken", false);
+
+      await hubTrigger(tabs).trigger("click");
+
+      expect(hub(tabs).exists()).toBe(true);
+      expect(tabs.find('[data-test="fleet-hub-switch"]').exists()).toBe(false);
+    });
+
+    // The fleet tour skips a step whose target is missing.
     it("keeps the tour's target for a section that is switched on", async () => {
       const tabs = await mountTabs("/fleets/kraken", "kraken");
 

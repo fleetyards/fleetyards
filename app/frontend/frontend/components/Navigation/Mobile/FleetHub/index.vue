@@ -12,7 +12,13 @@ import { SHIP_GLYPH } from "@/shared/glyphs/ships";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useFleetNavAccess } from "@/frontend/composables/useFleetNavAccess";
 import { fleetInitials } from "@/frontend/utils/fleetInitials";
-import { useMyFleets as useMyFleetsQuery, type Fleet } from "@/services/fyApi";
+import { useSessionStore } from "@/frontend/stores/session";
+import { storeToRefs } from "pinia";
+import {
+  useMyFleets as useMyFleetsQuery,
+  useFleetInvites as useFleetInvitesQuery,
+  type Fleet,
+} from "@/services/fyApi";
 
 type HubFleet = Pick<
   Fleet,
@@ -39,8 +45,12 @@ const route = useRoute();
 
 const switching = ref(false);
 
+const { isAuthenticated } = storeToRefs(useSessionStore());
+
 const {
-  membership,
+  showMembersNav,
+  showSettingsNav,
+  showStatsNav,
   showShipsNav,
   shipsNavActive,
   showSquadronsNav,
@@ -87,7 +97,7 @@ const tiles = computed<Tile[]>(() => {
       icon: SHIP_GLYPH,
       active: shipsNavActive.value,
     },
-    !!membership.value && {
+    showMembersNav.value && {
       key: "members",
       to: { name: "fleet-members", params },
       label: t("nav.fleets.members.index"),
@@ -143,14 +153,14 @@ const tiles = computed<Tile[]>(() => {
             : "fa-duotone fa-calendar-day",
         active: eventsNavActive.value,
       },
-    (!!props.fleet.publicFleetStats || !!membership.value) && {
+    showStatsNav.value && {
       key: "stats",
       to: { name: "fleet-stats", params },
       label: t("nav.fleets.stats"),
       icon: "fa-duotone fa-chart-bar",
       active: routeName.value === "fleet-stats",
     },
-    !!membership.value && {
+    showSettingsNav.value && {
       key: "settings",
       to: { name: "fleet-settings", params },
       label: t("nav.fleets.settings.index"),
@@ -163,38 +173,93 @@ const tiles = computed<Tile[]>(() => {
 });
 
 const { data: myFleets } = useMyFleetsQuery({
-  query: { refetchOnWindowFocus: false, enabled: open },
+  query: {
+    refetchOnWindowFocus: false,
+    enabled: computed(() => open.value && isAuthenticated.value),
+  },
 });
+
+const { data: invites } = useFleetInvitesQuery({
+  query: { enabled: computed(() => switching.value && isAuthenticated.value) },
+});
+
+const sheet = ref<HTMLElement | null>(null);
+
+let returnFocus: HTMLElement | null = null;
 
 const close = () => {
   open.value = false;
 };
 
-watch(open, (value) => {
-  if (!value) {
-    switching.value = false;
+const focusables = () =>
+  Array.from(
+    sheet.value?.querySelectorAll<HTMLElement>("a[href], button") ?? [],
+  );
+
+const onKeydown = (event: KeyboardEvent) => {
+  if (event.key === "Escape") {
+    close();
+
+    return;
   }
-});
+
+  if (event.key !== "Tab") {
+    return;
+  }
+
+  const items = focusables();
+
+  if (!items.length) {
+    return;
+  }
+
+  const first = items[0];
+  const last = items[items.length - 1];
+  const current = document.activeElement;
+
+  if (
+    event.shiftKey &&
+    (current === first || !sheet.value?.contains(current))
+  ) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && current === last) {
+    event.preventDefault();
+    first.focus();
+  }
+};
+
+watch(
+  open,
+  async (value) => {
+    const method = value ? "addEventListener" : "removeEventListener";
+
+    document[method]("keydown", onKeydown as EventListener);
+
+    if (value) {
+      returnFocus = document.activeElement as HTMLElement | null;
+
+      await nextTick();
+
+      focusables()[0]?.focus();
+
+      return;
+    }
+
+    switching.value = false;
+    returnFocus?.focus();
+    returnFocus = null;
+  },
+  { immediate: true },
+);
 
 watch(
   () => route.path,
   () => close(),
 );
 
-const onKeydown = (event: KeyboardEvent) => {
-  if (event.key === "Escape") {
-    close();
-  }
-};
-
-watch(open, (value) => {
-  const method = value ? "addEventListener" : "removeEventListener";
-
-  document[method]("keydown", onKeydown as EventListener);
-});
-
 onBeforeUnmount(() => {
-  document.removeEventListener("keydown", onKeydown);
+  document.removeEventListener("keydown", onKeydown as EventListener);
 });
 </script>
 
@@ -204,13 +269,16 @@ onBeforeUnmount(() => {
       <div class="fleet-hub__scrim" aria-hidden="true" @click="close" />
       <div
         id="fleet-hub-sheet"
+        ref="sheet"
         class="fleet-hub__sheet"
         role="dialog"
+        aria-modal="true"
         :aria-label="fleet.name"
       >
         <div class="fleet-hub__header">
           <h2 class="fleet-hub__title">{{ fleet.name }}</h2>
           <button
+            v-if="isAuthenticated"
             type="button"
             class="fleet-hub__switch"
             data-test="fleet-hub-switch"
@@ -237,6 +305,7 @@ onBeforeUnmount(() => {
               :class="{ 'fleet-hub__tile--active': tile.active }"
               :aria-current="tile.active ? 'page' : undefined"
               :data-test="`fleet-hub-${tile.key}`"
+              @click="close"
             >
               <DuotoneGlyph
                 v-if="isGlyph(tile.icon)"
@@ -256,7 +325,11 @@ onBeforeUnmount(() => {
 
         <ul v-else class="fleet-hub__list" data-test="fleet-hub-switcher">
           <li>
-            <router-link :to="{ name: 'hangar' }" class="fleet-hub__row">
+            <router-link
+              :to="{ name: 'hangar' }"
+              class="fleet-hub__row"
+              @click="close"
+            >
               <i class="fa-duotone fa-warehouse" aria-hidden="true" />
               {{ t("nav.switcher.personal") }}
             </router-link>
@@ -272,6 +345,7 @@ onBeforeUnmount(() => {
                 'fleet-hub__row--active': item.slug === fleet.slug,
               }"
               :aria-current="item.slug === fleet.slug ? 'true' : undefined"
+              @click="close"
             >
               <img
                 v-if="item.logo?.smallUrl"
@@ -287,8 +361,23 @@ onBeforeUnmount(() => {
           </li>
           <li>
             <router-link
+              :to="{ name: 'fleet-invites' }"
+              class="fleet-hub__row fleet-hub__row--bare"
+              data-test="fleet-hub-invites"
+              @click="close"
+            >
+              <i class="fa-light fa-envelope-open-text" aria-hidden="true" />
+              {{ t("nav.fleets.invites") }}
+              <span v-if="invites?.length" class="fleet-hub__badge">
+                {{ invites.length }}
+              </span>
+            </router-link>
+          </li>
+          <li>
+            <router-link
               :to="{ name: 'fleet-directory' }"
               class="fleet-hub__row fleet-hub__row--bare"
+              @click="close"
             >
               <i class="fa-light fa-magnifying-glass" aria-hidden="true" />
               {{ t("nav.switcher.fleetDirectory") }}
@@ -298,6 +387,7 @@ onBeforeUnmount(() => {
             <router-link
               :to="{ name: 'fleet-add' }"
               class="fleet-hub__row fleet-hub__row--bare"
+              @click="close"
             >
               <i class="fa-light fa-plus" aria-hidden="true" />
               {{ t("nav.fleets.add") }}

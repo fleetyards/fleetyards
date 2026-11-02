@@ -77,8 +77,8 @@ watch(navCollapsed, (collapsed) => {
   }
 });
 
-watch(isFleetRoute, (inFleet) => {
-  if (!inFleet) {
+watch([isFleetRoute, currentFleet], ([inFleet, fleet]) => {
+  if (!inFleet || !fleet) {
     hubOpen.value = false;
   }
 });
@@ -129,8 +129,8 @@ watch(isFleetRoute, (inFleet) => {
               {{ fleetInitials(currentFleet.name) }}
             </span>
           </button>
-          <!-- Where the tour points for sections that now live in the hub,
-               present only while the section is, as the tabs were. -->
+          <!-- The fleet tour spotlights these sections on the hub's button,
+               and skips a step whose section is switched off. -->
           <span
             v-if="showEventsNav"
             class="fleet-hub-trigger__tour"

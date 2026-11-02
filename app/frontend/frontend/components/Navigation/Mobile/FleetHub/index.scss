@@ -168,6 +168,22 @@
   }
 }
 
+.fleet-hub__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  margin-inline-start: auto;
+  padding: 0 5px;
+  font-size: 11px;
+  font-weight: bold;
+  line-height: 1;
+  color: #fff;
+  background-color: $danger;
+  border-radius: 9px;
+}
+
 .fleet-hub__logo {
   display: flex;
   align-items: center;
