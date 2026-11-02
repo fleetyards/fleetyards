@@ -232,7 +232,20 @@ class Api::V1::RafflesTest < ActionDispatch::IntegrationTest
     create(:raffle_entry, raffle: @raffle, user: @user)
     sign_in @user
 
-    assert_api_response :post, 400, path_params: {raffleId: @raffle.id}, body: {conditionsAccepted: true}
+    assert_api_response :post, 400, path_params: {raffleId: @raffle.id}, body: {conditionsAccepted: true} do
+      assert_equal I18n.t("validation_error.raffle_entry.messages.already_entered"), parsed_body["message"]
+    end
+  end
+
+  test "POST /raffles/:raffle_id/entry names the inbox rule when a concurrent entry won the race" do
+    RaffleEntry.any_instance.stubs(:save).raises(ActiveRecord::RecordNotUnique.new(
+      'PG::UniqueViolation: duplicate key value violates unique constraint "index_raffle_entries_on_raffle_id_and_email_key"'
+    ))
+    sign_in @user
+
+    assert_api_response :post, 400, path_params: {raffleId: @raffle.id}, body: {conditionsAccepted: true} do
+      assert_equal I18n.t("validation_error.raffle_entry.messages.address_entered"), parsed_body["message"]
+    end
   end
 
   test "POST /raffles/:raffle_id/entry refuses a second account on the same inbox" do

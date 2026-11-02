@@ -17,13 +17,17 @@ module Api
         if @entry.save
           @viewer_entries = {@raffle.id => @entry}
           render "api/v1/raffles/show", status: :created
+        elsif @entry.errors.of_kind?(:user_id, :taken)
+          render_already_entered
         elsif @entry.errors.of_kind?(:email_key, :taken)
-          render json: ValidationError.new("raffle_entry.create", message: I18n.t("validation_error.raffle_entry.messages.address_entered")), status: :bad_request
+          render_address_entered
         else
           render json: ValidationError.new("raffle_entry.create", errors: @entry.errors), status: :bad_request
         end
-      rescue ActiveRecord::RecordNotUnique
-        render json: ValidationError.new("raffle_entry.create", message: I18n.t("validation_error.raffle_entry.messages.already_entered")), status: :bad_request
+      rescue ActiveRecord::RecordNotUnique => e
+        # A concurrent entry passed the same validations; the index it hit
+        # says which rule refused this one.
+        e.message.include?("index_raffle_entries_on_raffle_id_and_email_key") ? render_address_entered : render_already_entered
       end
 
       def destroy
@@ -35,6 +39,14 @@ module Api
         @raffle.reload
         @viewer_entries = {}
         render "api/v1/raffles/show"
+      end
+
+      private def render_already_entered
+        render json: ValidationError.new("raffle_entry.create", message: I18n.t("validation_error.raffle_entry.messages.already_entered")), status: :bad_request
+      end
+
+      private def render_address_entered
+        render json: ValidationError.new("raffle_entry.create", message: I18n.t("validation_error.raffle_entry.messages.address_entered")), status: :bad_request
       end
 
       private def set_raffle
