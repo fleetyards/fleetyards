@@ -35,6 +35,15 @@ module Raffles
       assert_includes PostSocialJob.jobs.map { |job| job["args"] }, [@raffle.id, "last_day"]
     end
 
+    test "leaves out accounts without an email address, which cannot enter" do
+      placeholder = create(:user, email: "1001@users.noreply.fleetyards.net")
+
+      AnnounceJob.new.perform
+      AnnounceBatchJob.drain
+
+      assert_not Notification.exists?(notification_type: "raffle_started", user: placeholder)
+    end
+
     test "a retried batch writes nothing twice" do
       AnnounceBatchJob.new.perform(@raffle.id, "raffle_started", @users.map(&:id))
       AnnounceBatchJob.new.perform(@raffle.id, "raffle_started", @users.map(&:id))

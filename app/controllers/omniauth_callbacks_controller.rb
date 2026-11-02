@@ -114,7 +114,7 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
       if user.nil?
         password = Devise.friendly_token[0, 60]
-        email = auth.info.email.presence || "#{auth.uid}@users.noreply.fleetyards.net"
+        email = auth.info.email.presence || "#{auth.uid}@#{User::PLACEHOLDER_EMAIL_DOMAIN}"
         user = User.new(
           email: email,
           username: sanitize_username(auth.info.nickname || auth.info.name),
