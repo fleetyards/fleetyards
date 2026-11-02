@@ -9,7 +9,6 @@ zh-CN:
       create: "无法参与抽奖。"
       messages:
         already_entered: "你已参与此抽奖。"
-        address_entered: "另一个使用此邮箱地址的账户已参与此抽奖。每人只能参与一次。"
     raffle:
       create: "无法创建抽奖。"
       update: "无法更新抽奖。"

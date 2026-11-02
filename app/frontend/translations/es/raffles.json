@@ -261,7 +261,6 @@
         "title": "Condiciones de participación",
         "accept": "He leído y acepto las condiciones de participación.",
         "confirmedAccount": "Solo pueden participar las cuentas con una dirección de correo confirmada, una vez por cuenta.",
-        "onePerPerson": "Una participación por persona. Las direcciones que llegan al mismo buzón cuentan como una, como nombre+1@… y nombre+2@…, o direcciones de Gmail que solo se diferencian en los puntos. De ellas, solo entra en el sorteo la participación más antigua.",
         "noMaintainers": "Los mantenedores de Fleetyards no pueden participar.",
         "publicEntrants": "Tu nombre de usuario aparece públicamente en esta página como participante.",
         "publicWinner": "Si ganas, tu nombre de usuario se mostrará públicamente como ganador.",

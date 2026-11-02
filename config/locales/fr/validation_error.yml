@@ -9,7 +9,6 @@ fr:
       create: "Vous n'avez pas pu participer au tirage au sort."
       messages:
         already_entered: "Vous participez déjà à ce tirage au sort."
-        address_entered: "Un autre compte avec cette adresse e-mail participe déjà à ce tirage au sort. Chaque personne ne peut participer qu'une fois."
     raffle:
       create: "Le tirage au sort n'a pas pu être créé."
       update: "Le tirage au sort n'a pas pu être mis à jour."

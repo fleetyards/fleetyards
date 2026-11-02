@@ -23,7 +23,6 @@ const { t } = useI18n();
 
 const CONDITIONS = [
   "confirmedAccount",
-  "onePerPerson",
   "noMaintainers",
   "publicEntrants",
   "publicWinner",

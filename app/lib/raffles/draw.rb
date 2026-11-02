@@ -36,13 +36,8 @@ module Raffles
       :drawn
     end
 
-    # An inbox entered from several accounts is drawn once, for its earliest
-    # entry. Keyed on the address the account has now, which is where a win
-    # would be mailed.
     private def eligible_entries
-      @raffle.entries.includes(:user).order(:created_at)
-        .select { |entry| entry.user&.raffle_eligible? }
-        .uniq { |entry| RaffleEntry.email_key_for(entry.user.email) }
+      @raffle.entries.includes(:user).select { |entry| entry.user&.raffle_eligible? }
     end
   end
 end

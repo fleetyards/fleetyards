@@ -261,7 +261,6 @@
         "title": "Participation conditions",
         "accept": "I have read and accept the participation conditions.",
         "confirmedAccount": "Only accounts with a confirmed email address can enter, once per account.",
-        "onePerPerson": "One entry per person. Addresses that reach the same inbox count as one, such as name+1@… and name+2@…, or Gmail addresses that differ only by dots. Of those, only the earliest entry is drawn.",
         "noMaintainers": "Fleetyards maintainers cannot take part.",
         "publicEntrants": "Your username is listed publicly on this page as an entrant.",
         "publicWinner": "If you win, your username is shown publicly as the winner.",
