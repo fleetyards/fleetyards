@@ -198,6 +198,25 @@ class Api::V1::OutfitsTest < ActionDispatch::IntegrationTest
     assert_empty @outfit.reload.items
   end
 
+  test "a deleted weapon leaves the outfit that held it empty-handed" do
+    pistol = create(:equipment, sub_type: "Small")
+    @outfit.update!(item_list: [{slot: "sidearm", equipment_id: pistol.id}], held_weapon: "sidearm")
+
+    pistol.destroy!
+
+    assert_nil @outfit.reload.held_weapon
+    assert @outfit.valid?
+  end
+
+  test "PUT /outfits/{id} answers a slot filled by a concurrent save as taken, not the name" do
+    sign_in @user
+    Outfit.any_instance.stubs(:save).raises(ActiveRecord::RecordNotUnique, "index_outfit_items_on_outfit_id_and_slot")
+
+    assert_api_response :put, 400, path_params: {id: @outfit.id}, body: {name: "Heavy"} do
+      assert parsed_body["errors"].any? { |error| error["attribute"] == "items" }
+    end
+  end
+
   test "GET /outfits/{id} returns 404 for another user's outfit" do
     sign_in create(:user)
 

@@ -61,12 +61,12 @@ module Api
         render json: {success: true}
       end
 
-      # Two saves under one name at once both pass the uniqueness check; the
-      # index refuses the second, which is the same answer.
+      # Two saves at once both pass the uniqueness checks; the indexes refuse
+      # the second, which is the same answer: a name taken, or a slot filled.
       private def save_outfit
         @outfit.save
-      rescue ActiveRecord::RecordNotUnique
-        @outfit.errors.add(:name, :taken)
+      rescue ActiveRecord::RecordNotUnique => e
+        @outfit.errors.add(e.message.include?("index_outfits_on_user_id_and_name") ? :name : :items, :taken)
         false
       end
 
