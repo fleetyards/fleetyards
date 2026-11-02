@@ -130,8 +130,7 @@ const isHangarRoute = computed(() => {
             :label="t('nav.hangar.index')"
             icon="fa-light fa-warehouse"
           />
-          <!-- A signed-in reader reaches fleets from the switcher. -->
-          <FleetsNav v-if="!isAuthenticated" />
+          <FleetsNav />
           <EntriesNav
             :label="t('nav.ships.index')"
             menu-key="ships-menu"
