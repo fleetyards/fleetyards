@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { type Component } from "@/services/fyApi";
-import { quantumDriveTravelTime } from "./travelTimes";
+import { quantumDriveImage, quantumDriveTravelTime } from "./travelTimes";
 
 // Only the fields the calculation reads, in the units the sc_data parser
 // writes them: metres and metres per second.
@@ -44,5 +44,41 @@ describe("quantumDriveTravelTime", () => {
   it("has no answer for a drive the export never described", () => {
     expect(quantumDriveTravelTime(drive(undefined), 20)).toBeUndefined();
     expect(quantumDriveTravelTime(drive({ jumpRange: 1 }), 20)).toBeUndefined();
+  });
+});
+
+describe("quantumDriveImage", () => {
+  const withMedia = (media: Record<string, unknown>) =>
+    ({ media }) as unknown as Component;
+
+  it("pictures a drive by its angled view", () => {
+    expect(
+      quantumDriveImage(
+        withMedia({
+          angledView: { smallUrl: "angled-small.png", url: "angled.png" },
+          storeImage: { smallUrl: "store-small.png", url: "store.png" },
+        }),
+      ),
+    ).toBe("angled-small.png");
+  });
+
+  it("falls back to the store image without an angled view", () => {
+    expect(
+      quantumDriveImage(
+        withMedia({ storeImage: { smallUrl: "store-small.png" } }),
+      ),
+    ).toBe("store-small.png");
+  });
+
+  // A vector is served with `smallUrl` set to the file itself, so only a
+  // non-representable raster arrives with `url` alone.
+  it("uses the original file when it has no representations", () => {
+    expect(
+      quantumDriveImage(withMedia({ angledView: { url: "angled.png" } })),
+    ).toBe("angled.png");
+  });
+
+  it("has no picture for a drive with neither", () => {
+    expect(quantumDriveImage(withMedia({}))).toBeUndefined();
   });
 });

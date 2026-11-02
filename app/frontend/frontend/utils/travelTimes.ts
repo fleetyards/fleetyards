@@ -60,3 +60,11 @@ export const quantumDriveTravelTime = (
     distanceInMkm * KM_PER_MKM,
   );
 };
+
+// The angled render draws every drive from the same angle; a file that cannot
+// be resized arrives with `url` alone.
+export const quantumDriveImage = (component: Component) => {
+  const image = component.media?.angledView || component.media?.storeImage;
+
+  return image?.smallUrl || image?.url;
+};

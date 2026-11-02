@@ -31,7 +31,10 @@ import {
   type Component,
   InventoryItemTypeEnum,
 } from "@/services/fyApi";
-import { quantumDriveTravelTime } from "@/frontend/utils/travelTimes";
+import {
+  quantumDriveImage,
+  quantumDriveTravelTime,
+} from "@/frontend/utils/travelTimes";
 import {
   InputTypesEnum,
   InputAlignmentsEnum,
@@ -183,14 +186,6 @@ const fuelUsage = (component: Component): number | undefined => {
 const gradeOf = (component: Component) => component.gradeLabel || "";
 
 const sizeOf = (component: Component) => Number(component.size) || 0;
-
-// The angled render draws every drive from the same angle; a file that cannot
-// be resized arrives with `url` alone.
-const imageOf = (component: Component) => {
-  const image = component.media?.angledView || component.media?.storeImage;
-
-  return image?.smallUrl || image?.url;
-};
 
 const componentsQueryParams = computed(() => ({
   page: "1",
@@ -523,8 +518,8 @@ const columns = computed<BaseTableCol<Component>[]>(() => {
 
             <template #col-image="{ record }">
               <img
-                v-if="imageOf(record)"
-                :src="imageOf(record)"
+                v-if="quantumDriveImage(record)"
+                :src="quantumDriveImage(record)"
                 alt=""
                 class="travel-times__image"
                 loading="lazy"
