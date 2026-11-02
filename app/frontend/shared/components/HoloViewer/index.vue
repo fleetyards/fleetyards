@@ -226,6 +226,10 @@ const enableFullscreen = () => {
 
 const disableFullscreen = () => {
   internalFullscreen.value = false;
+
+  // A turntable has no zoom of its own: back from full screen, it returns
+  // to the framing it opened on rather than wherever full screen left it.
+  if (props.turntable) cameraPosition.value = [...cameraPosition.value];
 };
 
 const closeOnEscape = (event: KeyboardEvent) => {

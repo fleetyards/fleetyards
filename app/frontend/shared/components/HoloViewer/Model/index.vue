@@ -426,7 +426,11 @@ const playAnimations = (scene: Group, animations: AnimationClip[]) => {
 
 retainMountCache();
 
+// Ends the retries in `setup`: a viewer gone mid-load stops asking.
+let unmounted = false;
+
 onUnmounted(() => {
+  unmounted = true;
   releaseMountCache();
   mixer.value?.stopAllAction();
   material.dispose();
@@ -900,7 +904,7 @@ const setup = async (scene: Group, animations: AnimationClip[]) => {
       // Posed away from the bind pose, the stored bounds no longer hold.
       if ((node as Mesh).isMesh) node.frustumCulled = false;
     });
-    while (!(await attachRig(scene)));
+    while (!unmounted && !(await attachRig(scene)));
 
     if (props.model.rig.pedestal && !pedestal) {
       pedestal = buildPedestal(
@@ -915,7 +919,7 @@ const setup = async (scene: Group, animations: AnimationClip[]) => {
   // Asked again until the parts it frames are the ones that landed: a fitting
   // changed while they loaded would leave it framing the root alone.
   if (props.model.frameMounts) {
-    while (!(await attachMounts(scene)));
+    while (!unmounted && !(await attachMounts(scene)));
   }
 
   // A skinned figure is measured where its bones put it: its stored
