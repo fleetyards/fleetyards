@@ -27680,6 +27680,7 @@ components:
       - fleet_tours
       - hangar_planner
       - holo_ar
+      - holo_phone
       - holo_textured
       - item_holo_textured
       - loadout_preview
@@ -27699,6 +27700,7 @@ components:
       - FLEET_TOURS
       - HANGAR_PLANNER
       - HOLO_AR
+      - HOLO_PHONE
       - HOLO_TEXTURED
       - ITEM_HOLO_TEXTURED
       - LOADOUT_PREVIEW
