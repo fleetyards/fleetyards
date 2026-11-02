@@ -1,6 +1,5 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { describe, expect, it, vi } from "vitest";
-import { ref } from "vue";
 import type { VehiclePublic } from "@/services/fyApi";
 import Component from "./index.vue";
 
