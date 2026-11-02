@@ -44095,6 +44095,21 @@ components:
       - CITY
       - 'NULL'
       title: NullableLocationBodyTypeEnum
+    NullableOutfitWeaponSlotEnum:
+      type:
+      - string
+      - 'null'
+      enum:
+      - primary
+      - secondary
+      - sidearm
+      -
+      x-enumNames:
+      - PRIMARY
+      - SECONDARY
+      - SIDEARM
+      - 'NULL'
+      title: NullableOutfitWeaponSlotEnum
     NullableRsiHandleVerifiedViaEnum:
       type:
       - string
@@ -44540,6 +44555,8 @@ components:
           type: array
           items:
             "$ref": "#/components/schemas/OutfitItem"
+        heldWeapon:
+          "$ref": "#/components/schemas/NullableOutfitWeaponSlotEnum"
         createdAt:
           type: string
           format: date-time
@@ -44551,6 +44568,7 @@ components:
       - id
       - name
       - items
+      - heldWeapon
       - createdAt
       - updatedAt
       title: Outfit
@@ -44565,6 +44583,8 @@ components:
           items:
             "$ref": "#/components/schemas/OutfitItemInput"
           description: Everything the outfit wears; a slot left out is emptied
+        heldWeapon:
+          "$ref": "#/components/schemas/NullableOutfitWeaponSlotEnum"
       required:
       - name
       additionalProperties: false
@@ -44603,6 +44623,9 @@ components:
       - legs
       - helmet
       - backpack
+      - primary
+      - secondary
+      - sidearm
       x-enumNames:
       - UNDERSUIT
       - TORSO
@@ -44610,6 +44633,9 @@ components:
       - LEGS
       - HELMET
       - BACKPACK
+      - PRIMARY
+      - SECONDARY
+      - SIDEARM
       title: OutfitSlotEnum
     OutfitUpdateInput:
       type: object
@@ -44622,8 +44648,21 @@ components:
           items:
             "$ref": "#/components/schemas/OutfitItemInput"
           description: Everything the outfit wears; a slot left out is emptied
+        heldWeapon:
+          "$ref": "#/components/schemas/NullableOutfitWeaponSlotEnum"
       additionalProperties: false
       title: OutfitUpdateInput
+    OutfitWeaponSlotEnum:
+      type: string
+      enum:
+      - primary
+      - secondary
+      - sidearm
+      x-enumNames:
+      - PRIMARY
+      - SECONDARY
+      - SIDEARM
+      title: OutfitWeaponSlotEnum
     OutfitsList:
       type: array
       items:

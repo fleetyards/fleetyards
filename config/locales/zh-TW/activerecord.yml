@@ -312,6 +312,8 @@ zh-TW:
           attributes:
             base:
               outfit_limit_reached: "最多只能有 %{count} 套裝扮"
+            held_weapon:
+              not_carried: "不是此裝扮攜帶的武器"
         outfit_item:
           attributes:
             equipment:

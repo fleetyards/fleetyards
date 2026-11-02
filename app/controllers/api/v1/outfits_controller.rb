@@ -79,7 +79,7 @@ module Api
       end
 
       private def outfit_params
-        permitted = params.transform_keys(&:underscore).permit(:name, items: %i[slot equipment_id])
+        permitted = params.transform_keys(&:underscore).permit(:name, :held_weapon, items: %i[slot equipment_id])
         items = permitted.delete(:items)
 
         items.nil? ? permitted : permitted.merge(item_list: items)

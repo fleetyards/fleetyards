@@ -127,6 +127,40 @@ class Api::V1::OutfitsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "POST /outfits carries a rifle on the back and a pistol in hand" do
+    sign_in @user
+    rifle = create(:equipment, name: "P4-AR Rifle", sub_type: "Medium")
+    pistol = create(:equipment, name: "S-38 Pistol", sub_type: "Small")
+
+    body = {
+      name: "Patrol",
+      items: [{slot: "primary", equipmentId: rifle.id}, {slot: "sidearm", equipmentId: pistol.id}],
+      heldWeapon: "sidearm"
+    }
+
+    assert_api_response :post, 201, api_path: "/outfits", body: do
+      assert_equal "sidearm", parsed_body["heldWeapon"]
+      assert_equal [["primary", "P4-AR Rifle"], ["sidearm", "S-38 Pistol"]],
+        parsed_body["items"].map { |item| [item["slot"], item.dig("equipment", "name")] }.sort
+    end
+  end
+
+  test "POST /outfits refuses a pistol on the back and armour in a holster" do
+    sign_in @user
+    pistol = create(:equipment, sub_type: "Small")
+
+    assert_api_response :post, 400, api_path: "/outfits",
+      body: {name: "Wrong", items: [{slot: "primary", equipmentId: pistol.id}]}
+    assert_api_response :post, 400, api_path: "/outfits",
+      body: {name: "Wrong", items: [{slot: "sidearm", equipmentId: @legs.id}]}
+  end
+
+  test "POST /outfits refuses to hold a weapon the outfit does not carry" do
+    sign_in @user
+
+    assert_api_response :post, 400, api_path: "/outfits", body: {name: "Empty handed", heldWeapon: "primary"}
+  end
+
   test "POST /outfits refuses an item in a slot it does not fit" do
     sign_in @user
 

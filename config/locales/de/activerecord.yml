@@ -312,6 +312,8 @@ de:
           attributes:
             base:
               outfit_limit_reached: "kann höchstens %{count} Outfits enthalten"
+            held_weapon:
+              not_carried: "ist keine Waffe, die dieses Outfit trägt"
         outfit_item:
           attributes:
             equipment:

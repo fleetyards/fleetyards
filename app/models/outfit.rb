@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 # A set of worn equipment a user put together in the dressing room and kept
-# under a name: at most one item per worn slot.
+# under a name: at most one item per worn or weapon slot, and which of the
+# weapons is in hand.
 class Outfit < ApplicationRecord
   MAX_PER_USER = 50
 
@@ -11,7 +12,9 @@ class Outfit < ApplicationRecord
     class_name: "OutfitItem", inverse_of: :outfit, dependent: :delete_all, autosave: true
 
   validates :name, presence: true, length: {maximum: 100}, uniqueness: {scope: :user_id}
+  validates :held_weapon, inclusion: {in: OutfitItem::WEAPON_SLOTS.keys}, allow_nil: true
   validate :outfit_limit, on: :create
+  validate :held_weapon_worn
 
   # Replaces what the outfit wears with `[{slot:, equipment_id:}]`. A slot left
   # out is emptied; a slot already worn keeps its row, so changing an item never
@@ -25,6 +28,14 @@ class Outfit < ApplicationRecord
       item = items.find { |existing| existing.slot == slot } || items.build(slot:)
       item.equipment_id = equipment_id
     end
+  end
+
+  # The weapon in hand is one the outfit carries.
+  private def held_weapon_worn
+    return if held_weapon.nil?
+    return if items.any? { |item| item.slot == held_weapon && !item.marked_for_destruction? }
+
+    errors.add(:held_weapon, :not_carried)
   end
 
   private def outfit_limit

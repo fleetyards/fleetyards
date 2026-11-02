@@ -12,11 +12,12 @@ module V1
             id: {type: :string, format: :uuid},
             name: {type: :string},
             items: {type: :array, items: ::V1::Schemas::DressingRoom::OutfitItem},
+            heldWeapon: ::V1::Schemas::Enums::NullableOutfitWeaponSlotEnum,
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id name items createdAt updatedAt]
+          required: %w[id name items heldWeapon createdAt updatedAt]
         })
       end
     end

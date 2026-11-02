@@ -10,7 +10,8 @@ module V1
           type: :object,
           properties: {
             name: {type: :string, maxLength: 100},
-            items: {type: :array, items: ::V1::Schemas::Inputs::OutfitItemInput, description: "Everything the outfit wears; a slot left out is emptied"}
+            items: {type: :array, items: ::V1::Schemas::Inputs::OutfitItemInput, description: "Everything the outfit wears; a slot left out is emptied"},
+            heldWeapon: ::V1::Schemas::Enums::NullableOutfitWeaponSlotEnum
           },
           additionalProperties: false
         })
