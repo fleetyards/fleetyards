@@ -12,6 +12,7 @@ import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
+import { INVENTORY_EQUIPMENT_TYPES } from "@/frontend/composables/useInventoryOptions";
 import {
   type Equipment,
   type OutfitSlotEnum,
@@ -55,6 +56,7 @@ const { data, isFetching, isPlaceholderData } = useQuery({
       perPage: PER_PAGE,
       q: {
         slotIn: [props.slot],
+        equipmentTypeIn: INVENTORY_EQUIPMENT_TYPES.armor,
         nameOrSlugCont: searchTerm.value || undefined,
       },
     }),
