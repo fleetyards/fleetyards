@@ -463,8 +463,13 @@ class Model < ApplicationRecord
     holo_texture holo_texture_orm holo_texture_lite holo_texture_orm_lite
   ].freeze
 
+  # The flight holo's lite export as USDZ, which AR Quick Look opens as it is
+  # instead of the page converting the holo on the device.
+  AR_HOLO_ATTACHMENT_NAMES = %i[holo_usdz].freeze
+
   DETAIL_ATTACHMENT_NAMES = (
-    DETAIL_VIEW_ATTACHMENT_NAMES + TEXTURED_HOLO_ATTACHMENT_NAMES + LIVERY_MAP_ATTACHMENT_NAMES
+    DETAIL_VIEW_ATTACHMENT_NAMES + TEXTURED_HOLO_ATTACHMENT_NAMES + LIVERY_MAP_ATTACHMENT_NAMES +
+    AR_HOLO_ATTACHMENT_NAMES
   ).freeze
 
   # The same export without the interior, for devices that cannot load the full

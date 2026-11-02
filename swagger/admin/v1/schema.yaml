@@ -11175,6 +11175,8 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         holoTextureOrmLite:
           "$ref": "#/components/schemas/MediaFile"
+        holoUsdz:
+          "$ref": "#/components/schemas/MediaFile"
         brochure:
           "$ref": "#/components/schemas/MediaFile"
         holoHull:
@@ -21704,6 +21706,10 @@ components:
           - string
           - 'null'
         holoHull:
+          type:
+          - string
+          - 'null'
+        holoUsdz:
           type:
           - string
           - 'null'

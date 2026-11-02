@@ -133,6 +133,7 @@ module Admin
               landedHoloTextured: {type: [:string, :null]},
               landedHoloTexturedLite: {type: [:string, :null]},
               holoHull: {type: [:string, :null]},
+              holoUsdz: {type: [:string, :null]},
               brochure: {type: [:string, :null]},
               holo: {type: [:string, :null]}
             },

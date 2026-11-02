@@ -81,6 +81,10 @@ module Fleetyards
     config.active_storage.content_types_to_serve_as_binary -= ["image/svg+xml"]
     config.active_storage.content_types_allowed_inline += ["image/svg+xml"]
 
+    # AR Quick Look opens it straight from the bucket, so it is served for
+    # viewing like an image rather than marked as a download.
+    config.active_storage.content_types_allowed_inline += ["model/vnd.usdz+zip"]
+
     # Hack to fix Zeitwerk issue
     Rails.autoloaders.main.ignore(Rails.root.join("app/frontend/images"))
 

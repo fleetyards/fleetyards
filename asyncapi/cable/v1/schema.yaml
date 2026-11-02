@@ -4008,6 +4008,8 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         holoTextureOrmLite:
           "$ref": "#/components/schemas/MediaFile"
+        holoUsdz:
+          "$ref": "#/components/schemas/MediaFile"
         brochure:
           "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
