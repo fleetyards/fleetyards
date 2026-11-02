@@ -184,13 +184,12 @@ describe("Navigation", () => {
     expect(wrapper.find('[data-test="nav-hangar-plans"]').exists()).toBe(false);
   });
 
-  // A signed-in reader reaches their fleets from the switcher instead.
-  it("gives a signed-in reader the switcher and the account menu", async () => {
+  it("gives a signed-in reader the switcher, the account menu and the fleets section", async () => {
     const wrapper = await mountNavigation("ships", signedIn);
 
     expect(wrapper.find('[data-test="context-switcher"]').exists()).toBe(true);
     expect(wrapper.find('[data-test="account-menu"]').exists()).toBe(true);
-    expect(wrapper.find('[data-test="fleets-nav"]').exists()).toBe(false);
+    expect(wrapper.find('[data-test="fleets-nav"]').exists()).toBe(true);
   });
 
   it("gives a guest the fleets section and the login", async () => {
