@@ -121,4 +121,51 @@ describe("slotFit", () => {
       false,
     );
   });
+
+  it("does not refuse an item it knows nothing about", () => {
+    const fit = slotFit(OutfitSlotEnum.ARMS, {
+      [OutfitSlotEnum.UNDERSUIT]: undersuit,
+    });
+
+    expect(fitsSlot(fit, { name: "Old Arms", fit: null })).toBe(true);
+  });
+
+  it("reads a missing size as unknown, not as size 0", () => {
+    const fit = slotFit(OutfitSlotEnum.BACKPACK, {
+      [OutfitSlotEnum.TORSO]: lightCore,
+    });
+
+    expect(fitsSlot(fit, { ...backpack(1), size: null })).toBe(true);
+  });
+
+  it("matches tags whichever side carries the $", () => {
+    const fit = slotFit(OutfitSlotEnum.BACKPACK, {
+      [OutfitSlotEnum.TORSO]: lightCore,
+    });
+
+    expect(fitsSlot(fit, backpack(1, { tags: ["$backpack"] }))).toBe(true);
+  });
+
+  it("lets a suit in the undersuit slot carry the backpack", () => {
+    const suit: FitItem = {
+      name: "Environment Suit",
+      fit: {
+        type: "Char_Armor_Undersuit",
+        ports: [
+          {
+            name: "backpack",
+            types: [{ type: "Char_Armor_Backpack" }],
+            minSize: 1,
+            maxSize: 3,
+            requiredTags: ["$backpack"],
+          },
+        ],
+      },
+    };
+    const fit = slotFit(OutfitSlotEnum.BACKPACK, {
+      [OutfitSlotEnum.UNDERSUIT]: suit,
+    });
+
+    expect(fitsSlot(fit, backpack(3))).toBe(true);
+  });
 });

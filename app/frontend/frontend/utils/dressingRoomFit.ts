@@ -43,7 +43,9 @@ const PROVIDERS: Partial<Record<OutfitSlotEnum, OutfitSlotEnum[]>> = {
   [OutfitSlotEnum.ARMS]: [OutfitSlotEnum.UNDERSUIT],
   [OutfitSlotEnum.LEGS]: [OutfitSlotEnum.UNDERSUIT],
   [OutfitSlotEnum.HELMET]: [OutfitSlotEnum.UNDERSUIT],
-  [OutfitSlotEnum.BACKPACK]: [OutfitSlotEnum.TORSO],
+  // A core carries the backpack, and so do the few suits worn in the
+  // undersuit slot that have a port of their own for one.
+  [OutfitSlotEnum.BACKPACK]: [OutfitSlotEnum.TORSO, OutfitSlotEnum.UNDERSUIT],
   [OutfitSlotEnum.PRIMARY]: [
     OutfitSlotEnum.UNDERSUIT,
     OutfitSlotEnum.TORSO,
@@ -62,7 +64,9 @@ const bare = (tag: string) => tag.replace(/^\$/, "");
 
 export const portTakes = (port: FitPort, item: FitItem) => {
   const { fit } = item;
-  if (!fit) return false;
+  // Nothing to go by -- a record no fresh parse describes -- is no reason to
+  // refuse it.
+  if (!fit) return true;
 
   const typed = port.types.some(
     (type) =>
@@ -72,19 +76,20 @@ export const portTakes = (port: FitPort, item: FitItem) => {
   );
   if (!typed) return false;
 
-  const size = Number(item.size);
+  const size = item.size == null || item.size === "" ? NaN : Number(item.size);
   if (Number.isFinite(size) && (size < port.minSize || size > port.maxSize)) {
     return false;
   }
 
-  const tags = fit.tags ?? [];
+  // Either side may carry the $; it is not part of the tag.
+  const tags = (fit.tags ?? []).map(bare);
   if (!(port.requiredTags ?? []).every((tag) => tags.includes(bare(tag)))) {
     return false;
   }
 
-  const offered = port.portTags ?? [];
+  const offered = (port.portTags ?? []).map(bare);
 
-  return (fit.requiredTags ?? []).every((tag) => offered.includes(tag));
+  return (fit.requiredTags ?? []).every((tag) => offered.includes(bare(tag)));
 };
 
 export type SlotFit =
@@ -122,3 +127,7 @@ export const fitsSlot = (fit: SlotFit, item: FitItem) => {
 
   return fit.ports.some((port) => portTakes(port, item));
 };
+
+// Who the slot is up to, by name: "Flight Suit", or "Core, Undersuit".
+export const providerNames = (fit: SlotFit) =>
+  fit.kind === "open" ? "" : fit.providers.map((item) => item.name).join(", ");
