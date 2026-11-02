@@ -19,9 +19,11 @@ import VariantsList from "@/frontend/components/Models/VariantsList/index.vue";
 import UpgradesList from "@/frontend/components/Models/UpgradesList/index.vue";
 import ModulesList from "@/frontend/components/Models/ModulesList/index.vue";
 import {
+  FeatureFlagName,
   useModelModules as useModelModulesQuery,
   type ModelModule,
 } from "@/services/fyApi";
+import { useFeatures } from "@/frontend/composables/useFeatures";
 import FleetchartImages from "@/frontend/components/Models/FleetchartImages/index.vue";
 import ModelBaseMetrics from "@/frontend/components/Models/BaseMetrics/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
@@ -64,7 +66,7 @@ import { useMediaQuery } from "@vueuse/core";
 
 // three.js and the viewer are most of a ship page's script. A desktop draws the
 // inline preview on every visit, so it starts fetching them straight away; a
-// phone never draws one.
+// phone only does once the 3D view is opened.
 const loadHoloViewer = () => import("@/shared/components/HoloViewer/index.vue");
 
 const HoloViewer = defineAsyncComponent(loadHoloViewer);
@@ -288,9 +290,16 @@ watch(
   },
 );
 
-// three.js still crashes phones, so they get the views instead of a 3D view --
-// even when a larger window or a `holoviewer` link left it open.
-const holoOpen = computed(() => holoviewerVisible.value && !mobile.value);
+const { isFeatureEnabled } = useFeatures();
+
+// three.js crashed phones on the full exports. A phone with the phone holo on
+// gets the lite export instead; every other phone gets the views, even when a
+// larger window or a `holoviewer` link left the 3D view open.
+const holoAvailable = computed(
+  () => !mobile.value || isFeatureEnabled(FeatureFlagName.HOLO_PHONE),
+);
+
+const holoOpen = computed(() => holoviewerVisible.value && holoAvailable.value);
 
 const toggleHoloviewer = () => {
   modelsStore.toggleHoloviewer();
@@ -367,7 +376,7 @@ const adiMap = computed(() => {
             class="image-wrapper"
           >
             <div
-              v-if="holoStates.length && (!mobile || adiMap)"
+              v-if="holoStates.length && (holoAvailable || adiMap)"
               class="image-toolbar"
             >
               <BtnGroup>
@@ -388,8 +397,9 @@ const adiMap = computed(() => {
                   <i class="fa-light fa-expand" />
                 </Btn>
                 <Btn
-                  v-if="!mobile"
+                  v-if="holoAvailable"
                   :active="holoOpen"
+                  data-test="model-holo-toggle"
                   @click="toggleHoloviewer"
                 >
                   {{ t("labels.3dView") }}
@@ -441,7 +451,7 @@ const adiMap = computed(() => {
                 </Btn>
 
                 <ViewInArBtn
-                  v-if="!mobile"
+                  v-if="holoAvailable"
                   :model="model"
                   :active="holoOpen"
                   :displayed-holo-url="holoModel?.path"
@@ -455,9 +465,29 @@ const adiMap = computed(() => {
                    here it offers every state the model has, so both switches
                    read the same -- one of them showing no selection at all
                    because the chosen state has no holo of its own is worse than
-                   a segment that only moves the dimensions. -->
+                   a segment that only moves the dimensions.
+                   A phone has no inline preview, so there the switch waits for
+                   the holo to open and folds into a menu beside the 3D group. -->
+              <BtnDropdown
+                v-if="holoStates.length > 1 && mobile && holoOpen"
+                data-test="model-holo-states-menu"
+              >
+                <template #label>
+                  <span>{{ t(`labels.model.state.${activeState}`) }}</span>
+                  <i class="fa-light fa-chevron-down" />
+                </template>
+                <Btn
+                  v-for="holoState in availableStates"
+                  :key="holoState"
+                  :active="activeState === holoState"
+                  :data-test="`model-holo-state-${holoState}`"
+                  @click="setModelState(holoState)"
+                >
+                  {{ t(`labels.model.state.${holoState}`) }}
+                </Btn>
+              </BtnDropdown>
               <BtnGroup
-                v-if="holoStates.length > 1 && !mobile"
+                v-else-if="holoStates.length > 1 && !mobile"
                 segmented
                 data-test="model-holo-states"
               >
