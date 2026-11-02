@@ -96,7 +96,7 @@ const labels = computed(() =>
     top: 50%;
     right: 16px;
     transform: translateY(-50%);
-    font-size: 34px;
+    font-size: 2.125rem;
     color: $gray-lighter;
     opacity: 0.5;
     --fa-secondary-opacity: 0.6;
@@ -116,7 +116,7 @@ const labels = computed(() =>
   // no hover and a quieter edge than a control would carry.
   .missing-roles-panel__chip {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     padding: 5px 11px;

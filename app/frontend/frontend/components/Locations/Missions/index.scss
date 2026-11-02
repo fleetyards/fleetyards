@@ -4,7 +4,7 @@
   margin-bottom: 20px;
 
   &__summary {
-    font-size: 11.5px;
+    font-size: 0.71875rem;
     color: var(--color-gray, #52575c);
     font-variant-numeric: tabular-nums;
   }
@@ -44,7 +44,7 @@
   }
 
   &__chevron {
-    font-size: 11px;
+    font-size: 0.6875rem;
     flex: none;
     color: var(--color-muted, #7a8288);
     transition: transform 0.12s ease;
@@ -57,7 +57,7 @@
   &__org {
     flex: 1 1 auto;
     min-width: 0;
-    font-size: 13px;
+    font-size: 0.8125rem;
     font-weight: 600;
     color: #fff;
   }
@@ -72,7 +72,7 @@
   &__alignment {
     flex: none;
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--color-text-dim, #959595);
@@ -88,7 +88,7 @@
 
   &__count {
     flex: none;
-    font-size: 11px;
+    font-size: 0.6875rem;
     color: var(--color-muted, #7a8288);
     font-variant-numeric: tabular-nums;
   }
@@ -107,7 +107,7 @@
   }
 
   &__mission-name {
-    font-size: 13px;
+    font-size: 0.8125rem;
     line-height: 1.35;
     color: #dedede;
   }
@@ -137,7 +137,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
-    font-size: 11.5px;
+    font-size: 0.71875rem;
     color: var(--color-muted, #7a8288);
     margin-top: 2px;
   }
@@ -148,7 +148,7 @@
 
   &__sample {
     margin: 10px 0 0;
-    font-size: 11.5px;
+    font-size: 0.71875rem;
     color: var(--color-text-dim, #959595);
   }
 }

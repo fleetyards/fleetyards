@@ -195,7 +195,7 @@ const onSubmit = handleSubmit(async (values) => {
 <style lang="scss" scoped>
 .payout-participant-modal__hint {
   margin: -8px 0 0;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--color-text-dim, #959595);
 }
 
@@ -203,7 +203,7 @@ const onSubmit = handleSubmit(async (values) => {
   margin: 0;
   text-align: center;
   text-transform: uppercase;
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.04em;
   color: var(--color-muted, #7a8288);
 }

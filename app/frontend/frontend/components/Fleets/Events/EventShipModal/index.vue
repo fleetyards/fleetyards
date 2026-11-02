@@ -488,7 +488,7 @@ const onSubmit = handleSubmit(async (values) => {
 .seat-checklist-label {
   display: block;
   margin-bottom: 4px;
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--color-muted, #7a8288);
 }
 .seat-row {
@@ -496,7 +496,7 @@ const onSubmit = handleSubmit(async (values) => {
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 .seat-name {
   flex: 1;

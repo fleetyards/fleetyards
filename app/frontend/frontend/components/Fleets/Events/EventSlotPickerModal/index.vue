@@ -265,7 +265,7 @@ const teams = computed<FleetEventTeam[]>(
   display: flex;
   align-items: center;
   gap: 7px;
-  font-size: 15px;
+  font-size: 0.9375rem;
 
   i {
     color: var(--color-muted, #7a8288);
@@ -285,7 +285,7 @@ const teams = computed<FleetEventTeam[]>(
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 14px;
+  font-size: 0.875rem;
 
   i {
     color: var(--color-muted, #7a8288);
@@ -325,6 +325,6 @@ const teams = computed<FleetEventTeam[]>(
   margin-left: 8px;
 }
 .small {
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 </style>

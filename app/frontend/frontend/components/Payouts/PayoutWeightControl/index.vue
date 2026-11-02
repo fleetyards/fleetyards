@@ -205,7 +205,7 @@ const onCustom = () => {
   height: 29px;
   padding: 0 8px;
   font-family: inherit;
-  font-size: 15px;
+  font-size: 0.9375rem;
   line-height: 1;
   color: var(--color-lifted, #eee);
   background: var(--color-field, rgb(18 20 23 / 0.96));

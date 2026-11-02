@@ -199,7 +199,7 @@ const groups = computed(() =>
   margin: 8px 0;
   color: var(--color-text-dim, #959595);
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
@@ -254,7 +254,7 @@ const groups = computed(() =>
 
 .contracts-panel__meta {
   color: rgb(255 255 255 / 0.85);
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 
 @media (prefers-reduced-motion: reduce) {

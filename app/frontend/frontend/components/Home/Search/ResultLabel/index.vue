@@ -207,7 +207,7 @@ const nameParts = computed(() => {
   justify-content: center;
   width: 20px;
   color: var(--color-muted, #7a8288);
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
 
 .search-result-label__image {
@@ -229,7 +229,7 @@ const nameParts = computed(() => {
 .search-result-label__name {
   overflow: hidden;
   color: var(--color-lifted, #eee);
-  font-size: 13.5px;
+  font-size: 0.84375rem;
   font-weight: 600;
   line-height: 1.35;
   white-space: nowrap;
@@ -246,7 +246,7 @@ const nameParts = computed(() => {
 .search-result-label__detail {
   overflow: hidden;
   color: var(--color-text-dim, #959595);
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 1.35;
   white-space: nowrap;
   text-overflow: ellipsis;

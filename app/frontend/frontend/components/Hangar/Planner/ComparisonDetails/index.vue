@@ -160,7 +160,7 @@ const unchangedCount = computed(
   h4 {
     margin: 0 0 8px;
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 10px;
+    font-size: 0.625rem;
     font-weight: 400;
     letter-spacing: 0.16em;
     text-transform: uppercase;

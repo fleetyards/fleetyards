@@ -72,7 +72,7 @@ function createTooltipEl(options: TooltipOptions): HTMLElement {
     "color:#fff",
     "background:#272b30",
     "border-radius:6px",
-    "font-size:14px",
+    "font-size:0.875rem",
     "line-height:1.4",
     "opacity:0",
     "display:none",

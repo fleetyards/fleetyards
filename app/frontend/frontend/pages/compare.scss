@@ -31,7 +31,7 @@
   align-items: center;
   gap: 4px 14px;
   margin: 0;
-  font-size: 11.5px;
+  font-size: 0.71875rem;
   color: $gray;
 
   dd {
@@ -41,7 +41,7 @@
 
 .compare-legend__key {
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 400;
 
   &--best {

@@ -92,7 +92,7 @@
 
 .compare-table__count {
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: $gray;
@@ -166,7 +166,7 @@
   width: 24px;
   height: 24px;
   padding: 0;
-  font-size: 11px;
+  font-size: 0.6875rem;
   background: rgba(#000, 0.6);
   color: $text-color;
   border: 1px solid rgba($gray-light, 0.4);
@@ -195,7 +195,7 @@
   .compare-table__action {
     width: 32px;
     height: 32px;
-    font-size: 13px;
+    font-size: 0.8125rem;
   }
 }
 
@@ -209,7 +209,7 @@
 
   a {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 14px;
+    font-size: 0.875rem;
     color: lighten($text-color, 15%);
 
     &:hover {
@@ -220,14 +220,14 @@
 
 .compare-table__tag {
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: $gold;
 }
 
 .compare-table__mfr {
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: $gray-light;
 }
 
@@ -242,7 +242,7 @@
   border-right: 1px solid rgba($gray-light, 0.28);
   box-shadow: 8px 0 12px -10px rgba(#000, 0.9);
   font-family: "Open Sans", sans-serif;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 400;
   text-align: right;
   color: $gray-light;
@@ -281,7 +281,7 @@
   width: 100%;
   padding: 0;
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: lighten($text-color, 15%);
@@ -292,7 +292,7 @@
   @include touch-tap-target;
 
   i {
-    font-size: 9px;
+    font-size: 0.5625rem;
     color: $gray;
     transition: transform 0.2s ease;
   }
@@ -357,7 +357,7 @@
   justify-content: flex-end;
   gap: 4px;
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   color: lighten($text-color, 15%);
@@ -377,14 +377,14 @@
 .compare-table__unit {
   font-family: "Open Sans", sans-serif;
   font-weight: 600;
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.06em;
   color: $gray;
 }
 
 .compare-table__empty {
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 12px;
+  font-size: 0.75rem;
   text-align: right;
   color: $gray;
 }
@@ -448,7 +448,7 @@
 .compare-table__value::after,
 .compare-table__delta::after {
   font-family: "Open Sans", sans-serif;
-  font-size: 8px;
+  font-size: 0.5rem;
   align-self: center;
 }
 
@@ -456,7 +456,7 @@
 
 .compare-table__delta {
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 12.5px;
+  font-size: 0.78125rem;
   font-variant-numeric: tabular-nums;
   text-align: right;
   white-space: nowrap;
@@ -476,7 +476,7 @@
   }
 
   &--base {
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: $gold;
@@ -504,13 +504,13 @@
 
   &__label {
     font-family: "Open Sans", sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     color: $gray;
   }
 
   &__value {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     font-weight: 700;
     font-variant-numeric: tabular-nums;
     color: lighten($text-color, 15%);
@@ -557,7 +557,7 @@
 
 .compare-table__legend-title {
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: $gray-light;
@@ -574,7 +574,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: $gray-light;
 }
 
@@ -621,7 +621,7 @@
   background: var(--color-control);
   border: 1px solid var(--color-edge-soft);
   border-radius: var(--radius-control, 8px);
-  font-size: 13px;
+  font-size: 0.8125rem;
 
   // A frame colour rather than a rail: what the baseline column does not fit.
   &--differs {
@@ -640,18 +640,18 @@
   // rail of its own.
   &__part {
     padding-left: 22px;
-    font-size: 12px;
+    font-size: 0.75rem;
   }
 
   &__qty {
-    font-size: 12px;
+    font-size: 0.75rem;
     color: var(--color-text-dim);
     font-variant-numeric: tabular-nums;
   }
 
   &__size {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 10px;
+    font-size: 0.625rem;
     letter-spacing: 0.06em;
     color: var(--color-lifted);
     background: $gray-black;
@@ -670,7 +670,7 @@
   }
 
   &__figure {
-    font-size: 12.5px;
+    font-size: 0.78125rem;
     font-weight: 600;
     white-space: nowrap;
     color: var(--color-text);
@@ -682,7 +682,7 @@
 
     &::after {
       content: " ▲";
-      font-size: 8px;
+      font-size: 0.5rem;
     }
   }
 
@@ -692,19 +692,19 @@
 
     &::after {
       content: " ▼";
-      font-size: 8px;
+      font-size: 0.5rem;
     }
   }
 
   &__unit {
     font-weight: 400;
-    font-size: 11px;
+    font-size: 0.6875rem;
     color: var(--color-text-dim);
   }
 
   &__note {
     padding-left: 22px;
-    font-size: 12px;
+    font-size: 0.75rem;
     line-height: 1.4;
     color: var(--color-text-dim);
   }

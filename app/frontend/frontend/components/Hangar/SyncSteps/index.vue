@@ -165,7 +165,7 @@ const toggle = (step: SyncStep, index: number) => {
   width: 28px;
   height: 28px;
   color: var(--color-text-dim, #959595);
-  font-size: 13px;
+  font-size: 0.8125rem;
   border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
   border-radius: 999px;
 }
@@ -240,12 +240,12 @@ const toggle = (step: SyncStep, index: number) => {
 
 .sync-steps__label {
   color: var(--color-text-dim, #959595);
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
 
 .sync-steps__detail {
   color: var(--color-text-dim, #959595);
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-variant-numeric: tabular-nums;
 }
 
@@ -281,7 +281,7 @@ const toggle = (step: SyncStep, index: number) => {
 .sync-steps__caption {
   margin: 0;
   color: var(--color-text-dim, #959595);
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-variant-numeric: tabular-nums;
 }
 </style>

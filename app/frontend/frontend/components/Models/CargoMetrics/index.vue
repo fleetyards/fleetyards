@@ -134,7 +134,7 @@ const hasData = computed(() => containerCapacities.value.length > 0);
   }
 
   &__value {
-    font-size: 13px;
+    font-size: 0.8125rem;
     font-weight: 600;
     color: $text-color;
     font-variant-numeric: tabular-nums;
@@ -142,7 +142,7 @@ const hasData = computed(() => containerCapacities.value.length > 0);
 
   &__share {
     margin-left: auto;
-    font-size: 11px;
+    font-size: 0.6875rem;
     color: $gray;
     font-variant-numeric: tabular-nums;
     white-space: nowrap;

@@ -238,7 +238,7 @@ const linkedLabel = computed(() =>
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-size: 12px;
+    font-size: 0.75rem;
     color: var(--color-text-dim, #959595);
   }
 
@@ -279,7 +279,7 @@ const linkedLabel = computed(() =>
   }
 
   &__parent {
-    font-size: 12px;
+    font-size: 0.75rem;
     color: var(--color-text-dim, #959595);
   }
 }

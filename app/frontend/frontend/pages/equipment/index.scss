@@ -20,7 +20,7 @@
     height: 52px;
     flex: none;
     margin-top: 2px;
-    font-size: 34px;
+    font-size: 2.125rem;
   }
 
   &__title {
@@ -32,7 +32,7 @@
     font-family: "Orbitron", tahoma, sans-serif;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    font-size: 28px;
+    font-size: 1.75rem;
     font-weight: 700;
     color: #fff;
     margin: 0;
@@ -51,7 +51,7 @@
 
   &__sub {
     color: var(--color-muted, #7a8288);
-    font-size: 14px;
+    font-size: 0.875rem;
   }
 
   &__badges {
@@ -75,7 +75,7 @@
 
   &__badge-label {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--color-muted, #7a8288);
@@ -83,7 +83,7 @@
 
   &__badge-value {
     font-family: "Open Sans", tahoma, sans-serif;
-    font-size: 15px;
+    font-size: 0.9375rem;
     font-weight: 700;
     line-height: 1;
     color: #fff;

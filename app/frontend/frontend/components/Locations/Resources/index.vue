@@ -76,7 +76,7 @@ const kindLabel = (kind: string) => {
   &__kind {
     margin: 0;
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     font-weight: 500;
     letter-spacing: 0.16em;
     text-transform: uppercase;
@@ -108,7 +108,7 @@ const kindLabel = (kind: string) => {
     align-items: baseline;
     gap: 6px;
     padding: 3px 9px;
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 600;
     color: var(--color-text, #c8c8c8);
     background-color: var(--color-control-hover, rgb(52 58 64 / 0.95));

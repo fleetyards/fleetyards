@@ -376,7 +376,7 @@ const pick = (mission: Mission | null) => {
   padding: 0;
 }
 .template-card__title {
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
 .template-card__meta {
   display: flex;
@@ -385,7 +385,7 @@ const pick = (mission: Mission | null) => {
   flex-wrap: wrap;
 }
 .template-card__hint {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--color-text-dim);
 }
 .template-card__desc {

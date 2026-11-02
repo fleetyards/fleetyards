@@ -1,7 +1,7 @@
 // Shared by the deflection and penetration checks: the same health pools,
 // size filter, tally and threshold-split table, read from opposite ends.
 .intro {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: $gray-light;
   margin-bottom: 14px;
 }
@@ -9,7 +9,7 @@
 .empty {
   padding: 20px;
   text-align: center;
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: $gray;
 }
 
@@ -52,7 +52,7 @@
 
   &__label {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: $gray;
@@ -61,7 +61,7 @@
   &__pct {
     font-family: "Orbitron", tahoma, sans-serif;
     font-weight: 700;
-    font-size: 15px;
+    font-size: 0.9375rem;
     color: $gold;
     font-variant-numeric: tabular-nums;
   }
@@ -79,7 +79,7 @@
     flex-wrap: wrap;
     align-items: baseline;
     gap: 4px 10px;
-    font-size: 11px;
+    font-size: 0.6875rem;
     color: $gray;
   }
 
@@ -94,7 +94,7 @@
 
   &__kind {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
   }
@@ -136,7 +136,7 @@
     border: 1px solid rgba($gray-light, 0.28);
     background: $gray-black;
     color: $gray-light;
-    font-size: 13px;
+    font-size: 0.8125rem;
     font-variant-numeric: tabular-nums;
     cursor: pointer;
     transition:
@@ -158,7 +158,7 @@
 .tally {
   margin-bottom: 14px;
   text-align: right;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: $gray;
 
   &__absorbed {
@@ -219,7 +219,7 @@
   width: 100%;
   table-layout: fixed;
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: 0.8125rem;
 
   &__col-name {
     width: auto;
@@ -241,7 +241,7 @@
     text-align: left;
     font-family: "Orbitron", tahoma, sans-serif;
     font-weight: 400;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: $gray;
@@ -279,7 +279,7 @@
     padding: 6px 0;
     text-align: center;
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: $gray;
@@ -294,7 +294,7 @@
 
   &__title {
     display: block;
-    font-size: 13.5px;
+    font-size: 0.84375rem;
     color: lighten($text-color, 15%);
     overflow: hidden;
     white-space: nowrap;
@@ -305,7 +305,7 @@
     display: flex;
     flex-wrap: nowrap;
     gap: 7px;
-    font-size: 11px;
+    font-size: 0.6875rem;
     color: $gray;
     overflow: hidden;
     white-space: nowrap;
@@ -328,7 +328,7 @@
   &__shielded {
     display: block;
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: $primary;
@@ -339,7 +339,7 @@
   }
 
   &__alpha {
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 700;
     color: lighten($text-color, 15%);
   }
@@ -369,7 +369,7 @@
     // detail. Both match the modal body's padding on a phone.
     th {
       top: -16px;
-      font-size: 10px;
+      font-size: 0.625rem;
       letter-spacing: 0.06em;
       overflow: hidden;
       white-space: nowrap;
@@ -459,7 +459,7 @@
   background: $gray-black;
   border: 1px solid rgba($gray-light, 0.28);
   border-radius: 6px;
-  font-size: 11.5px;
+  font-size: 0.71875rem;
   color: $gray-light;
   min-height: 40px;
 
@@ -475,7 +475,7 @@
   &__absorbed {
     color: $primary;
     text-transform: uppercase;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.1em;
   }
 
@@ -484,7 +484,7 @@
     padding: 2px 8px;
     border-radius: 3px;
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
 
@@ -511,6 +511,6 @@
 
 .note {
   margin: 12px 0 0;
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: $gray;
 }

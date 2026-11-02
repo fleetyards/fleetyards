@@ -1,9 +1,9 @@
 .model-panel {
   &--add-to-hangar-button {
-    font-size: 18px;
+    font-size: 1.125rem;
 
     > :first-child {
-      font-size: 18px;
+      font-size: 1.125rem;
     }
   }
 
@@ -39,7 +39,7 @@
   &-production-status {
     padding: 9px 16px;
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.16em;
     line-height: 1;
     color: $gray-light;

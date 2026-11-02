@@ -221,7 +221,7 @@ const unarchive = async () => {
 
 .event-panel__lede {
   margin: 0 0 12px;
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--color-muted, #7a8288);
 }
 

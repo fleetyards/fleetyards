@@ -23,7 +23,7 @@
     height: 52px;
     flex: none;
     margin-top: 2px;
-    font-size: 34px;
+    font-size: 2.125rem;
   }
 
   &__title {
@@ -35,7 +35,7 @@
     font-family: "Orbitron", tahoma, sans-serif;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    font-size: 28px;
+    font-size: 1.75rem;
     font-weight: 700;
     color: #fff;
     margin: 0;
@@ -54,7 +54,7 @@
 
   &__sub {
     color: var(--color-muted, #7a8288);
-    font-size: 14px;
+    font-size: 0.875rem;
   }
 
   &__badges {

@@ -22,7 +22,7 @@
   }
 
   &__sub {
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: var(--color-text-dim, #959595);
 
     a {
@@ -71,14 +71,14 @@
 
   &__badge-label {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--color-text-dim, #959595);
   }
 
   &__badge-value {
-    font-size: 13.5px;
+    font-size: 0.84375rem;
     font-weight: 600;
     color: var(--color-text, #c8c8c8);
   }
@@ -96,7 +96,7 @@
   &__panel-title {
     margin: 0;
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--color-text-dim, #959595);
@@ -104,7 +104,7 @@
 
   &__description {
     margin: 0;
-    font-size: 14px;
+    font-size: 0.875rem;
     line-height: 1.6;
     color: var(--color-text, #c8c8c8);
   }
@@ -114,7 +114,7 @@
   // qualifies, but not hidden.
   &__note {
     margin: 0;
-    font-size: 12px;
+    font-size: 0.75rem;
     color: var(--color-text-dim, #959595);
   }
 
@@ -132,10 +132,10 @@
     flex-wrap: wrap;
     align-items: baseline;
     gap: 8px;
-    font-size: 14px;
+    font-size: 0.875rem;
 
     span {
-      font-size: 12px;
+      font-size: 0.75rem;
       color: var(--color-text-dim, #959595);
     }
   }
@@ -158,7 +158,7 @@
     display: inline-flex;
     align-items: center;
     padding: 3px 9px;
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 600;
     color: var(--color-text, #c8c8c8);
     background-color: var(--color-control-hover, rgb(52 58 64 / 0.95));
@@ -191,7 +191,7 @@
 
   &__axis-label {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--color-text-dim, #959595);
@@ -199,7 +199,7 @@
 
   &__axis-value {
     margin: 0;
-    font-size: 15px;
+    font-size: 0.9375rem;
     font-weight: 600;
     color: var(--color-text, #c8c8c8);
     font-variant-numeric: tabular-nums;

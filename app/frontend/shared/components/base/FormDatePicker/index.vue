@@ -260,7 +260,7 @@ defineExpose({ clear });
   --dp-disabled-color: var(--color-control, rgb(39 43 48 / 0.9));
   --dp-disabled-color-text: var(--color-endcap, #7a8288);
   --dp-border-radius: var(--radius-control, 8px);
-  --dp-font-size: 16px;
+  --dp-font-size: 1rem;
   --dp-success-color: #{$success};
   --dp-danger-color: var(--color-danger, #dc3545);
 }
@@ -351,7 +351,7 @@ defineExpose({ clear });
     padding: 6px 12px 6px 36px; // 36px left padding leaves room for the calendar icon
     margin: 0;
     color: $input-color;
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: 400;
     line-height: 1.42857;
     font-family: inherit;

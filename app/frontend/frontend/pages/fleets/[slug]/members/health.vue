@@ -977,7 +977,7 @@ const crumbs = computed<Crumb[]>(() => [
   margin: 8px 0 0;
   color: var(--color-text-dim, #959595);
   font-family: Orbitron, sans-serif;
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -997,7 +997,7 @@ const crumbs = computed<Crumb[]>(() => [
   margin: 0;
   padding: 12px 20px 4px;
   color: var(--color-lifted, #eee);
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
 }
 
@@ -1020,7 +1020,7 @@ const crumbs = computed<Crumb[]>(() => [
 
   dt {
     color: var(--color-text-dim, #959595);
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 400;
   }
 
@@ -1028,7 +1028,7 @@ const crumbs = computed<Crumb[]>(() => [
     margin: 0;
     color: var(--color-lifted, #eee);
     font-family: Orbitron, sans-serif;
-    font-size: 20px;
+    font-size: 1.25rem;
     font-weight: 700;
   }
 }

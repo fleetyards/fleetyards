@@ -83,7 +83,7 @@ $phone-indent: 106px;
 
     i,
     svg {
-      font-size: 24px;
+      font-size: 1.5rem;
       color: $gray-light;
     }
   }
@@ -99,7 +99,7 @@ $phone-indent: 106px;
 
 .addon-option__name {
   color: $text-color;
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 /*
@@ -110,7 +110,7 @@ $phone-indent: 106px;
   display: -webkit-box;
   overflow: hidden;
   color: $gray-lighter;
-  font-size: 13px;
+  font-size: 0.8125rem;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
@@ -124,7 +124,7 @@ $phone-indent: 106px;
 
 .addon-option__figure {
   color: $text-color;
-  font-size: 14px;
+  font-size: 0.875rem;
   white-space: nowrap;
 }
 
@@ -147,7 +147,7 @@ $phone-indent: 106px;
   margin: 0;
   padding: 0;
   color: $text-color;
-  font-size: 11px;
+  font-size: 0.6875rem;
   background: transparent;
   border: 0;
   cursor: pointer;
@@ -172,7 +172,7 @@ $phone-indent: 106px;
 .addon-option__count {
   min-width: 18px;
   color: #fff;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-variant-numeric: tabular-nums;
   line-height: 1;
   text-align: center;

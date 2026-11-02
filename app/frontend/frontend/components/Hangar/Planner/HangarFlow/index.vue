@@ -699,7 +699,7 @@ const imageOf = (model?: HangarPlanModel) =>
 
   span {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 10px;
+    font-size: 0.625rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--color-text-dim);

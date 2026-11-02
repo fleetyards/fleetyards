@@ -1,10 +1,10 @@
 .vehicle-panel {
   &--add-to-hangar-button,
   &--context-menu-button {
-    font-size: 18px;
+    font-size: 1.125rem;
 
     > :first-child {
-      font-size: 18px;
+      font-size: 1.125rem;
     }
   }
 
@@ -20,7 +20,7 @@
     background: none;
     display: inline-flex;
     align-items: center;
-    font-size: 18px;
+    font-size: 1.125rem;
     color: var(--color-muted);
     cursor: grab;
 

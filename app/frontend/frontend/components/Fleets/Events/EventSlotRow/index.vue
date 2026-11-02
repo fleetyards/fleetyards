@@ -366,7 +366,7 @@ const submitSignup = async () => {
 }
 
 .event-slot-row__name {
-  font-size: 14.5px;
+  font-size: 0.90625rem;
   font-weight: 600;
   color: var(--color-lifted, #eee);
 }
@@ -385,7 +385,7 @@ const submitSignup = async () => {
 
 .event-slot-row__description {
   margin: 6px 0 0;
-  font-size: 13px;
+  font-size: 0.8125rem;
   white-space: pre-wrap;
   color: var(--color-muted, #7a8288);
 }
@@ -403,7 +403,7 @@ const submitSignup = async () => {
   display: flex;
   align-items: center;
   gap: 7px;
-  font-size: 13.5px;
+  font-size: 0.84375rem;
   flex-wrap: wrap;
 
   i {
@@ -420,7 +420,7 @@ const submitSignup = async () => {
 
 .event-slot-row__signup-status,
 .event-slot-row__signup-vehicle {
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--color-muted, #7a8288);
 }
 
@@ -429,7 +429,7 @@ const submitSignup = async () => {
   gap: 7px;
   margin: 2px 0 0;
   padding-left: 20px;
-  font-size: 13px;
+  font-size: 0.8125rem;
   white-space: pre-wrap;
   color: var(--color-muted, #7a8288);
 

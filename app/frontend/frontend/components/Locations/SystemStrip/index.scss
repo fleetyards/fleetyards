@@ -52,7 +52,7 @@
   }
 
   &__unstable {
-    font-size: 11px;
+    font-size: 0.6875rem;
     font-weight: 600;
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -65,7 +65,7 @@
   }
 
   &__name {
-    font-size: 13px;
+    font-size: 0.8125rem;
     font-weight: 600;
     white-space: nowrap;
   }
@@ -120,7 +120,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 14px;
+    font-size: 0.875rem;
     color: var(--color-text-dim, #959595);
     white-space: nowrap;
 
@@ -129,7 +129,7 @@
     .location-kind-icon {
       flex-shrink: 0;
       margin: -2.5px;
-      font-size: 23px;
+      font-size: 1.4375rem;
       color: var(--color-muted, #7a8288);
     }
 
@@ -160,7 +160,7 @@
 
   &__caption {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--color-text-dim, #959595);
@@ -170,7 +170,7 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: var(--color-text, #c8c8c8);
     white-space: nowrap;
 

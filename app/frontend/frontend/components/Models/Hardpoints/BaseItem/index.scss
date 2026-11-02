@@ -23,7 +23,7 @@
   border: 1px solid rgba($gray-light, 0.35);
   border-radius: 6px;
   color: $gray-light;
-  font-size: 11px;
+  font-size: 0.6875rem;
   cursor: pointer;
   transition:
     color 0.15s,
@@ -91,10 +91,10 @@
   align-items: center;
   gap: 6px;
   color: var(--color-text-dim);
-  font-size: 12px;
+  font-size: 0.75rem;
 
   i {
     color: var(--color-muted);
-    font-size: 10px;
+    font-size: 0.625rem;
   }
 }

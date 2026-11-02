@@ -20,7 +20,7 @@
 
 .account-menu__initial {
   color: var(--color-text, #c8c8c8);
-  font-size: 15px;
+  font-size: 0.9375rem;
   text-transform: uppercase;
 }
 
@@ -35,7 +35,7 @@
   border-radius: 9px;
   background: var(--color-primary, #428bca);
   color: #fff;
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 600;
   line-height: 14px;
   text-align: center;
@@ -46,7 +46,7 @@
   min-width: 0;
   overflow: hidden;
   color: var(--color-lifted, #eee);
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -54,5 +54,5 @@
 
 .account-menu__chevron {
   color: var(--color-muted, #7a8288);
-  font-size: 13px;
+  font-size: 0.8125rem;
 }

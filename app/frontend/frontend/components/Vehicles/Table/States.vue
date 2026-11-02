@@ -99,7 +99,7 @@ const visibility = computed(() => {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 .vehicle-state {

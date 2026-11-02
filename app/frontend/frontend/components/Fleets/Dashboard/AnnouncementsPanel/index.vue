@@ -151,7 +151,7 @@ const edit = (announcement: FleetAnnouncement) =>
   flex: 0 0 auto;
   margin-top: 4px;
   color: var(--color-muted, #7a8288);
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 
 .announcement__content {
@@ -170,6 +170,6 @@ const edit = (announcement: FleetAnnouncement) =>
   gap: 6px;
   margin-top: 8px;
   color: var(--color-text-dim, #959595);
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 </style>

@@ -2,7 +2,7 @@
 // at .16em, in the dim text grey.
 @mixin row-label {
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--color-text-dim, #959595);

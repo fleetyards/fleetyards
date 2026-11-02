@@ -254,7 +254,7 @@ const fleetShipsRoute = (slug: string) => ({
     gap: 6px;
     margin: 0;
     color: var(--color-text-dim);
-    font-size: 11.5px;
+    font-size: 0.71875rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
@@ -321,7 +321,7 @@ const fleetShipsRoute = (slug: string) => ({
 
   &__chevron {
     color: var(--color-muted);
-    font-size: 12px;
+    font-size: 0.75rem;
   }
 
   &__flagship {
@@ -361,7 +361,7 @@ const fleetShipsRoute = (slug: string) => ({
 
   &__names {
     margin: 0;
-    font-size: 13px;
+    font-size: 0.8125rem;
     line-height: 1.5;
   }
 
@@ -400,7 +400,7 @@ const fleetShipsRoute = (slug: string) => ({
 
   &__total {
     font-family: Orbitron, sans-serif;
-    font-size: 13px;
+    font-size: 0.8125rem;
     font-variant-numeric: tabular-nums;
   }
 
@@ -415,13 +415,13 @@ const fleetShipsRoute = (slug: string) => ({
       align-items: center;
       justify-content: center;
       color: var(--color-muted);
-      font-size: 18px;
+      font-size: 1.125rem;
     }
   }
 
   &__muted {
     color: var(--color-text-dim);
-    font-size: 12px;
+    font-size: 0.75rem;
     font-variant-numeric: tabular-nums;
   }
 

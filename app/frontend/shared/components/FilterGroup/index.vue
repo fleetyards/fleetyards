@@ -109,7 +109,7 @@ const contentId = `filter-group-${useId()}`;
 
   &__chevron {
     margin-left: auto;
-    font-size: 11px;
+    font-size: 0.6875rem;
     color: var(--color-muted, #7a8288);
     transition: transform 150ms ease-in-out;
   }

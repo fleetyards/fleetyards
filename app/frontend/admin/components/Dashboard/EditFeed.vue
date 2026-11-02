@@ -142,19 +142,19 @@ const whenTooltip = (createdAt?: string | null) =>
 
 .edit-feed__type {
   color: $gray;
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .edit-feed__author {
   color: $gray-lighter;
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 
 .edit-feed__when {
   color: $gray;
-  font-size: 12px;
+  font-size: 0.75rem;
   margin-left: auto;
   white-space: nowrap;
 }
@@ -164,7 +164,7 @@ const whenTooltip = (createdAt?: string | null) =>
   flex-wrap: wrap;
   gap: 4px 16px;
   margin-top: 4px;
-  font-size: 12.5px;
+  font-size: 0.78125rem;
   color: $gray-lighter;
 }
 
@@ -195,7 +195,7 @@ const whenTooltip = (createdAt?: string | null) =>
 }
 
 .edit-feed__arrow {
-  font-size: 9px;
+  font-size: 0.5625rem;
   color: $gray;
 }
 

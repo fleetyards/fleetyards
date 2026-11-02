@@ -233,6 +233,6 @@ watch(resets, () => {
 .online-members__more {
   margin: 10px 0 0;
   color: var(--color-text-dim, #959595);
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 </style>

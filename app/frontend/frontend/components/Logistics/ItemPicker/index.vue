@@ -523,7 +523,7 @@ const pickCustom = () => {
 .item-picker__count {
   margin: 0;
   padding: 0 0 12px;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-variant-numeric: tabular-nums;
   color: var(--color-text-dim, #959595);
 }
@@ -556,7 +556,7 @@ const pickCustom = () => {
   color: var(--color-text-dim, #959595);
 
   i {
-    font-size: 32px;
+    font-size: 2rem;
     color: var(--color-muted, #7a8288);
   }
 }

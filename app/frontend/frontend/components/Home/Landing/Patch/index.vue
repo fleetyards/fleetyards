@@ -601,7 +601,7 @@ a.home-landing-patch__card {
 .home-landing-patch__micro {
   display: block;
   font-family: Orbitron, sans-serif;
-  font-size: 10px;
+  font-size: 0.625rem;
   color: var(--color-text-dim);
   text-transform: uppercase;
   letter-spacing: 0.16em;
@@ -616,7 +616,7 @@ a.home-landing-patch__card {
   align-items: center;
   gap: 8px;
   font-family: "Open Sans", sans-serif;
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--color-lifted);
   text-decoration: none;
 
@@ -685,7 +685,7 @@ a.home-landing-patch__card {
 
 .home-landing-patch__version-name {
   font-family: Orbitron, sans-serif;
-  font-size: 28px;
+  font-size: 1.75rem;
   color: var(--color-lifted);
 }
 
@@ -701,7 +701,7 @@ a.home-landing-patch__card {
   }
 
   dt {
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 400;
     color: var(--color-text-dim);
   }
@@ -709,7 +709,7 @@ a.home-landing-patch__card {
   dd {
     margin: 0;
     font-family: Orbitron, sans-serif;
-    font-size: 26px;
+    font-size: 1.625rem;
     color: var(--color-lifted);
   }
 }
@@ -757,13 +757,13 @@ a.home-landing-patch__card {
   flex-direction: column;
   align-items: flex-start;
   gap: 2px;
-  font-size: 12.5px;
+  font-size: 0.78125rem;
 }
 
 .home-landing-patch__ship-name {
   margin-top: 6px;
   font-family: Orbitron, sans-serif;
-  font-size: 18px;
+  font-size: 1.125rem;
   color: var(--color-lifted);
 }
 
@@ -779,14 +779,14 @@ a.home-landing-patch__card {
   h3 {
     margin: 0;
     font-family: Orbitron, sans-serif;
-    font-size: 18px;
+    font-size: 1.125rem;
     font-weight: 400;
     color: var(--color-lifted);
   }
 
   p {
     margin: 0;
-    font-size: 13.5px;
+    font-size: 0.84375rem;
     line-height: 20px;
     color: var(--color-text-dim);
   }
@@ -815,7 +815,7 @@ a.home-landing-patch__card {
   display: block;
   margin-top: 3px;
   font-family: Orbitron, sans-serif;
-  font-size: 15px;
+  font-size: 0.9375rem;
   color: var(--color-lifted);
 }
 
@@ -833,7 +833,7 @@ a.home-landing-patch__card {
   grid-template-columns: 1fr auto 44px;
   gap: 3px 10px;
   align-items: baseline;
-  font-size: 12.5px;
+  font-size: 0.78125rem;
   color: var(--color-text);
 }
 
@@ -892,7 +892,7 @@ a.home-landing-patch__card {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 40px;
+  font-size: 2.5rem;
   color: var(--color-muted);
 }
 
@@ -904,7 +904,7 @@ a.home-landing-patch__card {
 }
 
 .home-landing-patch__change-name {
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: 600;
   color: var(--color-lifted);
 }

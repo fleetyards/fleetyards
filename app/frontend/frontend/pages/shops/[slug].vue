@@ -263,7 +263,7 @@ watch(
 .shop-facts {
   &__source {
     margin: 12px 0 0;
-    font-size: 12px;
+    font-size: 0.75rem;
     color: var(--color-text-dim, #959595);
   }
 }

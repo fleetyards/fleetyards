@@ -138,7 +138,7 @@ const cover = computed(() => resolve(props.mission));
 
 .mission-panel__lede {
   margin: 0 0 14px;
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--color-muted, #7a8288);
 }
 </style>

@@ -50,7 +50,7 @@ const glyph = computed(
   width: 24px;
   height: 24px;
   flex: none;
-  font-size: 18px;
+  font-size: 1.125rem;
   line-height: 1;
   color: var(--color-primary, #428bca);
 }

@@ -512,7 +512,7 @@ onUnmounted(() => {
   :deep(.ec-day-head time),
   :deep(.ec-time) {
     color: var(--color-gray-light, #7a8288);
-    font-size: 12px;
+    font-size: 0.75rem;
     font-variant-numeric: tabular-nums;
   }
 
@@ -534,7 +534,7 @@ onUnmounted(() => {
     background-position: center;
     background-repeat: no-repeat;
     color: var(--color-text, #c8c8c8);
-    font-size: 13px;
+    font-size: 0.8125rem;
     line-height: 1.3;
     overflow: hidden;
     cursor: pointer;
@@ -560,7 +560,7 @@ onUnmounted(() => {
   :deep(.fy-event-chip__icon) {
     color: var(--chip-color, var(--color-primary, #428bca));
     flex-shrink: 0;
-    font-size: 12px;
+    font-size: 0.75rem;
     width: 12px;
     text-align: center;
   }
@@ -610,7 +610,7 @@ onUnmounted(() => {
   :deep(.fy-event-chip__time) {
     flex-shrink: 0;
     font-variant-numeric: tabular-nums;
-    font-size: 12px;
+    font-size: 0.75rem;
     color: var(--color-gray-light, #7a8288);
   }
 

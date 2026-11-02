@@ -34,7 +34,7 @@
   // takes.
   &__icon {
     flex: none;
-    font-size: 16px;
+    font-size: 1rem;
     color: var(--color-muted, #7a8288);
   }
 
@@ -68,7 +68,7 @@
     align-items: baseline;
     min-width: 0;
     gap: 0 8px;
-    font-size: 12px;
+    font-size: 0.75rem;
     color: var(--color-text-dim, #959595);
 
     // The " · " the meta lines elsewhere join their parts with. Trailing rather

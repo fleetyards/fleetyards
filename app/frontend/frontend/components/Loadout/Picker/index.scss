@@ -32,7 +32,7 @@
 .loadout-picker__title {
   margin: 0;
   color: $text-color;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 600;
 }
 
@@ -112,14 +112,14 @@
   gap: 8px;
   margin: 0 0 0 auto;
   color: var(--color-text-dim);
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 .loadout-picker__reset {
   margin: 0;
   padding: 0;
   color: var(--color-primary-tint, #92bce0);
-  font-size: 12px;
+  font-size: 0.75rem;
   background: transparent;
   border: 0;
   cursor: pointer;
@@ -192,7 +192,7 @@
     align-items: center;
     justify-content: center;
     color: var(--color-muted);
-    font-size: 16px;
+    font-size: 1rem;
     background: transparent;
     border: 1px dashed var(--color-edge-soft);
   }
@@ -209,7 +209,7 @@
 .loadout-picker__name {
   overflow: hidden;
   color: $text-color;
-  font-size: 14px;
+  font-size: 0.875rem;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
@@ -217,7 +217,7 @@
 .loadout-picker__meta {
   overflow: hidden;
   color: var(--color-text-dim);
-  font-size: 12px;
+  font-size: 0.75rem;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
@@ -228,7 +228,7 @@
 
   .base-pill {
     padding: 3px 6px;
-    font-size: 11px;
+    font-size: 0.6875rem;
   }
 }
 
@@ -239,13 +239,13 @@
   align-items: flex-end;
   min-width: 56px;
   color: $text-color;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 
 .loadout-picker__delta {
-  font-size: 11px;
+  font-size: 0.6875rem;
 
   &--better {
     color: var(--color-success, #{$success});
@@ -335,7 +335,7 @@
     align-items: baseline;
     column-gap: 6px;
     min-width: 0;
-    font-size: 12px;
+    font-size: 0.75rem;
     white-space: normal;
   }
 
@@ -405,7 +405,7 @@
   height: 18px;
   margin-left: 6px;
   color: #fff;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 600;
   line-height: 1;
   background: var(--color-primary, #428bca);
@@ -427,7 +427,7 @@
 .loadout-picker__facet-label {
   color: var(--color-text-dim);
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }

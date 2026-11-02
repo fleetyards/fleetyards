@@ -200,7 +200,7 @@ const errorId = computed(() => `${props.name}-error`);
   flex: 0 1 auto;
   min-width: 0;
   overflow: hidden;
-  font-size: 12px;
+  font-size: 0.75rem;
   white-space: nowrap;
   text-overflow: ellipsis;
   color: var(--color-text-dim, #959595);

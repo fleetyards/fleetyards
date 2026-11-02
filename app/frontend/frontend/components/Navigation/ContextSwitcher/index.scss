@@ -22,7 +22,7 @@
   background: var(--color-gray-black, #1a1d21);
   color: var(--color-text, #c8c8c8);
   font-family: "Orbitron", sans-serif;
-  font-size: 13px;
+  font-size: 0.8125rem;
   text-transform: uppercase;
 }
 
@@ -45,12 +45,12 @@
 .context-switcher__current {
   overflow: hidden;
   color: var(--color-text-dim, #959595);
-  font-size: 12px;
+  font-size: 0.75rem;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .context-switcher__chevron {
   color: var(--color-muted, #7a8288);
-  font-size: 13px;
+  font-size: 0.8125rem;
 }

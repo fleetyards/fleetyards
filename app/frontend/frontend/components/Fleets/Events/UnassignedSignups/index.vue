@@ -160,7 +160,7 @@ const remove = (signup: FleetEventSignup) => {
   display: flex;
   align-items: center;
   gap: 7px;
-  font-size: 14px;
+  font-size: 0.875rem;
   flex-wrap: wrap;
 
   i {
@@ -171,7 +171,7 @@ const remove = (signup: FleetEventSignup) => {
   display: flex;
   gap: 6px;
   margin: 0;
-  font-size: 13px;
+  font-size: 0.8125rem;
   white-space: pre-wrap;
 
   i {
@@ -185,6 +185,6 @@ const remove = (signup: FleetEventSignup) => {
   align-items: center;
 }
 .small {
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 </style>

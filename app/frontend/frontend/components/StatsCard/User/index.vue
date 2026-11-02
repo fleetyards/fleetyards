@@ -125,7 +125,7 @@ const discordUrl = computed(() =>
   display: inline-flex;
   transform: translate(-50%, 50%);
   color: var(--color-success, #5cb85c);
-  font-size: 18px;
+  font-size: 1.125rem;
   line-height: 1;
 }
 </style>

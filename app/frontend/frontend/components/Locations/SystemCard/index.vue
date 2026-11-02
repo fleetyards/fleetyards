@@ -117,7 +117,7 @@ defineExpose({ body });
 
   &__title {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 16px;
+    font-size: 1rem;
     color: var(--color-text, #c8c8c8);
   }
 
@@ -130,13 +130,13 @@ defineExpose({ body });
 
   &__caption {
     margin-right: 2px;
-    font-size: 12px;
+    font-size: 0.75rem;
     color: var(--color-text-dim, #959595);
   }
 
   &__jump-point {
     padding: 2px 8px;
-    font-size: 12px;
+    font-size: 0.75rem;
     color: var(--color-text-dim, #959595);
     border: 1px dashed var(--color-edge-soft, rgb(122 130 136 / 0.45));
     border-radius: var(--radius-control-bare, 6px);
@@ -176,7 +176,7 @@ defineExpose({ body });
     align-items: center;
     gap: 8px;
     margin: 0;
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: var(--color-text-dim, #959595);
   }
 }

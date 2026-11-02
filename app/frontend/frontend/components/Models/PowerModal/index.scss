@@ -27,7 +27,7 @@
   border: 0;
   background: transparent;
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-text-dim, #959595);
@@ -105,7 +105,7 @@
 .power-view__text {
   max-width: 860px;
   margin: 0;
-  font-size: 14px;
+  font-size: 0.875rem;
   line-height: 1.6;
 }
 
@@ -135,19 +135,19 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: 600;
   color: $text-color;
   font-variant-numeric: tabular-nums;
 
   i {
-    font-size: 16px;
+    font-size: 1rem;
     color: $primary;
   }
 
   small {
     margin-left: 2px;
-    font-size: 12px;
+    font-size: 0.75rem;
     color: var(--color-text-dim, #959595);
   }
 
@@ -188,7 +188,7 @@
   .power-view__readout-label {
     flex: 1 0 auto;
     min-width: 0;
-    font-size: 11px;
+    font-size: 0.6875rem;
   }
 
   .power-view__readout-value {
@@ -204,7 +204,7 @@
 .power-view__readout-label {
   min-width: 110px;
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 12px;
+  font-size: 0.75rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-text-dim, #959595);
@@ -212,7 +212,7 @@
 
 .power-view__readout-value {
   min-width: 80px;
-  font-size: 14px;
+  font-size: 0.875rem;
   text-align: right;
   color: $text-color;
   font-variant-numeric: tabular-nums;
@@ -290,7 +290,7 @@
 }
 
 .power-view__count {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: $text-color;
   font-variant-numeric: tabular-nums;
 }
@@ -331,7 +331,7 @@
   border: 0;
   border-radius: 2px;
   background: rgba($gray-light, 0.18);
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 600;
   color: $text-color;
   font-variant-numeric: tabular-nums;
@@ -382,7 +382,7 @@
   gap: 6px;
   min-width: 0;
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-text-dim, #959595);
@@ -402,18 +402,18 @@
 }
 
 .power-view__parts {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--color-text-dim, #959595);
 }
 
 .power-view__effect {
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 600;
 
   small {
     display: block;
     margin-top: 2px;
-    font-size: 11.5px;
+    font-size: 0.71875rem;
     font-weight: normal;
     color: var(--color-text-dim, #959595);
   }
@@ -512,7 +512,7 @@
 
 .power-view__plant-label {
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 12px;
+  font-size: 0.75rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--color-gold, #d4af37);
@@ -520,12 +520,12 @@
 
 .power-view__plant-total {
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 22px;
+  font-size: 1.375rem;
 
   span {
     margin-left: 6px;
     font-family: "Open Sans", sans-serif;
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: var(--color-text-dim, #959595);
   }
 }
@@ -533,7 +533,7 @@
 .power-view__section-label {
   margin: 0;
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: normal;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -573,7 +573,7 @@
 
 .power-view__muted {
   margin-top: 2px;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--color-text-dim, #959595);
 }
 
@@ -589,10 +589,10 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
   margin: 0;
-  font-size: 13px;
+  font-size: 0.8125rem;
 
   dt {
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: normal;
     color: var(--color-text-dim, #959595);
   }

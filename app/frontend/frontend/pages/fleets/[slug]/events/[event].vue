@@ -917,7 +917,7 @@ const crumbs = computed<Crumb[]>(() => [
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: var(--radius-control-bare, 6px);
-  font-size: 14px;
+  font-size: 0.875rem;
 
   &--excluded {
     opacity: 0.55;
@@ -928,7 +928,7 @@ const crumbs = computed<Crumb[]>(() => [
   flex: 1;
 }
 .event-occurrences__badge {
-  font-size: 12px;
+  font-size: 0.75rem;
   padding: 2px 8px;
   background: rgba(255, 255, 255, 0.08);
   border-radius: 10px;
@@ -941,7 +941,7 @@ const crumbs = computed<Crumb[]>(() => [
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.15);
   color: inherit;
-  font-size: 13px;
+  font-size: 0.8125rem;
   padding: 4px 8px;
   border-radius: var(--radius-control-bare, 6px);
   cursor: pointer;
@@ -951,6 +951,6 @@ const crumbs = computed<Crumb[]>(() => [
   }
 }
 .small {
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 </style>

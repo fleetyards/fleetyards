@@ -123,7 +123,7 @@ const signup = async (status: FleetEventSignupStatusEnum) => {
  */
 .event-signup-cta__hint {
   margin: 4px 0 14px;
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--color-muted, #7a8288);
 }
 

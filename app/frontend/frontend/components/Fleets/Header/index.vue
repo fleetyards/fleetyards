@@ -90,7 +90,7 @@ const { t } = useI18n();
   background-color: var(--color-control, rgb(39 43 48 / 0.9));
   border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
   border-radius: 999px;
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--color-text-dim, #959595);
 
   > i {

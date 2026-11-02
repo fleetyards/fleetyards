@@ -109,14 +109,14 @@ const weighted = computed(
 }
 
 .payout-summary__label {
-  font-size: 11px;
+  font-size: 0.6875rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--color-muted, #7a8288);
 }
 
 .payout-summary__value {
-  font-size: 20px;
+  font-size: 1.25rem;
 }
 
 .payout-summary__value--income {
@@ -128,7 +128,7 @@ const weighted = computed(
 }
 
 .payout-summary__shares {
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: var(--color-gold, #d4af37);
 }
 </style>

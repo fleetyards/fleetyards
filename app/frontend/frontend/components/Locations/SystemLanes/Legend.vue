@@ -64,7 +64,7 @@ const shown = computed(() =>
   margin: 0 0 16px;
   padding: 0;
   list-style: none;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--color-text-dim, #959595);
 
   &__item {

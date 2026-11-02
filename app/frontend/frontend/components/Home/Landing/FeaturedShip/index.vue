@@ -147,7 +147,7 @@ const image = computed(
 .home-featured-ship__label {
   color: var(--color-text-dim, #959595);
   font-family: Orbitron, sans-serif;
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
@@ -155,7 +155,7 @@ const image = computed(
 // Brightens like a link, rather than turning blue.
 .home-featured-ship__name {
   color: var(--color-lifted, #eee);
-  font-size: 13.5px;
+  font-size: 0.84375rem;
   font-weight: 600;
   transition: color 0.2s ease;
 
@@ -167,7 +167,7 @@ const image = computed(
 
 .home-featured-ship__maker {
   color: var(--color-text-dim, #959595);
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 @media (max-width: 767px) {

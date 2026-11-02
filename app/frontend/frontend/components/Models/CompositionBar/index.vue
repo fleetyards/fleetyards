@@ -135,19 +135,19 @@ const rows = computed(() => {
   }
 
   &__label {
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: $text-color;
   }
 
   &__value {
     font-weight: 700;
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: lighten($text-color, 15%);
     font-variant-numeric: tabular-nums;
   }
 
   &__pct {
-    font-size: 12px;
+    font-size: 0.75rem;
     color: $gray-light;
     min-width: 42px;
     text-align: right;

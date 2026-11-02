@@ -99,7 +99,7 @@ const { t } = useI18n();
 
 <style lang="scss" scoped>
 .dashboard-panel__more {
-  font-size: 13px;
+  font-size: 0.8125rem;
   white-space: nowrap;
 }
 
@@ -112,7 +112,7 @@ const { t } = useI18n();
 .dashboard-panel__notice {
   margin: 16px 0 0;
   color: var(--color-text-dim, #959595);
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 
 .dashboard-panel__note {

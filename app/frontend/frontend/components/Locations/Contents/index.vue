@@ -128,14 +128,14 @@ const target = (entry: LocationContentsEntry) =>
     margin: 0;
     padding: 0 2px;
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 13px;
+    font-size: 0.8125rem;
     font-weight: 500;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--color-text-dim, #959595);
 
     .location-kind-icon {
-      font-size: 20px;
+      font-size: 1.25rem;
       color: var(--color-muted, #7a8288);
     }
   }
@@ -174,7 +174,7 @@ const target = (entry: LocationContentsEntry) =>
     flex-grow: 1;
     min-width: 0;
     overflow: hidden;
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 600;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -182,7 +182,7 @@ const target = (entry: LocationContentsEntry) =>
 
   &__count {
     padding: 1px 7px;
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 600;
     background-color: var(--color-control-hover, rgb(52 58 64 / 0.95));
     border-radius: 4px;
@@ -201,7 +201,7 @@ const target = (entry: LocationContentsEntry) =>
     border-radius: 6px;
     color: var(--color-text, #c8c8c8);
     font: inherit;
-    font-size: 13px;
+    font-size: 0.8125rem;
     cursor: pointer;
   }
 }

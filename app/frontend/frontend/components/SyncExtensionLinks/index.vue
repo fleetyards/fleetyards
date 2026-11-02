@@ -107,7 +107,7 @@ const { t } = useI18n();
 .sync-extension-stores__icon {
   flex-shrink: 0;
   width: 28px;
-  font-size: 24px;
+  font-size: 1.5rem;
   text-align: center;
 }
 

@@ -56,7 +56,7 @@
     border: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));
     border-radius: var(--radius-control-bare, 6px);
     color: var(--color-muted, #7a8288);
-    font-size: 12px;
+    font-size: 0.75rem;
     line-height: 1.4;
     text-decoration: none;
     transition:
@@ -65,7 +65,7 @@
       color 0.15s ease-in-out;
 
     i {
-      font-size: 10px;
+      font-size: 0.625rem;
       opacity: 0.7;
     }
 

@@ -164,7 +164,7 @@ const visibleFilters = computed(() =>
   &__chip,
   &__more {
     :deep(.chip__toggle) {
-      font-size: 14px;
+      font-size: 0.875rem;
     }
   }
 
@@ -195,7 +195,7 @@ const visibleFilters = computed(() =>
 
   &__remove {
     flex-shrink: 0;
-    font-size: 12px;
+    font-size: 0.75rem;
     color: var(--color-muted, #7a8288);
     transition: color 150ms ease-in-out;
   }

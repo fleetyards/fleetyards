@@ -178,7 +178,7 @@ watch([isFleetRoute, currentFleet], ([inFleet, fleet]) => {
   padding: 0;
   overflow: hidden;
   font-family: "Orbitron", sans-serif;
-  font-size: 18px;
+  font-size: 1.125rem;
   color: var(--color-lifted, #eee);
   background: var(--color-gray-black, #1a1d21);
   border: 2px solid var(--color-edge, rgb(122 130 136 / 0.5));

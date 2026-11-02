@@ -32,7 +32,7 @@
 
   &__title {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 16px;
+    font-size: 1rem;
     color: #fff;
   }
 
@@ -41,7 +41,7 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: var(--color-text, #c8c8c8);
 
     .location-kind-icon {
@@ -59,7 +59,7 @@
 
   &__caption {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--color-text-dim, #959595);
@@ -97,7 +97,7 @@
     // The moon glyph's disc is 400 of its 512 units, so this draws it as wide
     // as the 26px circle a moon with a colour gets; the margins give the
     // overhang back, so it sits where that circle sits.
-    font-size: 33px;
+    font-size: 2.0625rem;
 
     .location-kind-icon {
       flex-shrink: 0;
@@ -113,7 +113,7 @@
   }
 
   &__moon-name {
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 600;
     color: inherit;
   }
@@ -128,7 +128,7 @@
     display: inline-flex;
     align-items: center;
     padding: 3px 9px;
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 600;
     color: var(--color-text, #c8c8c8);
     background-color: var(--color-control-hover, rgb(52 58 64 / 0.95));

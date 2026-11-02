@@ -679,7 +679,7 @@ const cancelRun = () => {
   align-items: center;
   gap: 6px;
   align-self: flex-start;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .buyback-sync__note {
@@ -688,7 +688,7 @@ const cancelRun = () => {
   gap: 10px;
   margin: 0;
   color: var(--color-text-dim, #959595);
-  font-size: 14px;
+  font-size: 0.875rem;
   line-height: 1.5;
 
   i {

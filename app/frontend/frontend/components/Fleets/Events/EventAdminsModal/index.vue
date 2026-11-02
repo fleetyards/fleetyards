@@ -271,6 +271,6 @@ const revoke = (admin: FleetEventAdmin) => {
   }
 }
 .small {
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 </style>

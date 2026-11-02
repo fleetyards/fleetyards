@@ -225,14 +225,14 @@ const isMetric = computed(() => props.tone === PanelHeadingTonesEnum.METRIC);
 }
 
 .panel-heading--compact .panel-heading__metric-title {
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 
 .panel-heading__metric-title {
   @apply flex items-center text-lifted;
   gap: 11px;
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 15px;
+  font-size: 0.9375rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
 }

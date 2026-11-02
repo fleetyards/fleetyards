@@ -1959,7 +1959,7 @@ const onSubmit = async () => {
 .route-side__title {
   margin: 0;
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 400;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -2235,7 +2235,7 @@ dt.route-totals__sum {
 
 .route-step__number {
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--color-text-dim);

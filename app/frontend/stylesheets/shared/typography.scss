@@ -113,16 +113,16 @@ h1,
 
 .price-info {
   // Relative to the button it sits in, but never below the 11px floor.
-  font-size: max(70%, 11px);
+  font-size: max(70%, 0.6875rem);
 }
 
 .panel-title {
   font-weight: normal;
-  font-size: 22px;
+  font-size: 1.375rem;
   font-family: "Orbitron", sans-serif;
 
   small {
-    font-size: 15px;
+    font-size: 0.9375rem;
     font-family: "Open Sans", sans-serif;
   }
 }

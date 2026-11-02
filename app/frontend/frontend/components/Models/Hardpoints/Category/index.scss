@@ -21,7 +21,7 @@
   // inherit into sibling children like the <Btn> link or the icon.
   &__name {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: $gray-light;
@@ -49,7 +49,7 @@
     margin-left: auto;
     padding: 0;
     color: $gray-light;
-    font-size: 11px;
+    font-size: 0.6875rem;
     background: none;
     border: 1px solid rgba($gray-light, 0.35);
     border-radius: 6px;

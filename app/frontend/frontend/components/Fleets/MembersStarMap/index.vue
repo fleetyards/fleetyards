@@ -364,7 +364,7 @@ const ResolutionUpdater = defineComponent({
 }
 
 :deep(.system-label) {
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 500;
   white-space: nowrap;
   pointer-events: none;
@@ -375,7 +375,7 @@ const ResolutionUpdater = defineComponent({
 
 :deep(.system-label-active) {
   color: #428bca;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 700;
   text-shadow:
     0 0 6px rgba(66, 139, 202, 0.5),
@@ -406,7 +406,7 @@ const ResolutionUpdater = defineComponent({
     border-radius: 11px;
     background: #42b883;
     color: #0a1628;
-    font-size: 11px;
+    font-size: 0.6875rem;
     font-weight: 700;
     box-shadow: 0 0 8px rgba(66, 184, 131, 0.6);
   }
@@ -432,7 +432,7 @@ const ResolutionUpdater = defineComponent({
 
   .member-badge-name {
     color: #42b883;
-    font-size: 11px;
+    font-size: 0.6875rem;
     font-weight: 600;
     white-space: nowrap;
     text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);

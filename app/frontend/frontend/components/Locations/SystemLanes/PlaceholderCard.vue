@@ -102,12 +102,12 @@ defineExpose({ body });
 
   &__title {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 16px;
+    font-size: 1rem;
     color: var(--color-text-dim, #959595);
   }
 
   &__note {
-    font-size: 12px;
+    font-size: 0.75rem;
     color: var(--color-text-dim, #959595);
   }
 
@@ -126,7 +126,7 @@ defineExpose({ body });
   // A system card's chip for a connection with no jump point yet.
   &__jump {
     padding: 2px 8px;
-    font-size: 12px;
+    font-size: 0.75rem;
     color: var(--color-text-dim, #959595);
     border: 1px dashed var(--color-primary, #428bca);
     border-radius: var(--radius-control-bare, 6px);
@@ -198,7 +198,7 @@ defineExpose({ body });
   }
 
   &__name {
-    font-size: 13px;
+    font-size: 0.8125rem;
     font-weight: 600;
     white-space: nowrap;
     color: var(--color-text-dim, #959595);

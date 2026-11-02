@@ -284,7 +284,7 @@ const details = computed((): Detail[] => {
     margin: 0;
 
     dt {
-      font-size: 12px;
+      font-size: 0.75rem;
       color: var(--color-text-dim, #959595);
     }
 
@@ -326,7 +326,7 @@ const details = computed((): Detail[] => {
 
   &__shops-title {
     margin: 0 0 8px;
-    font-size: 16px;
+    font-size: 1rem;
   }
 
   &__swatch {

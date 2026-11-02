@@ -184,7 +184,7 @@ const onToggle = async (transfer: PayoutTransfer) => {
 }
 
 .payout-transfers__amount {
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 // Both names are who pays whom; cut down to "orga…" on a phone, neither

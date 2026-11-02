@@ -136,7 +136,7 @@ const width = (ratio: number) => `${Math.min(ratio, 1) * 100}%`;
 
 .loadout-metrics__delta {
   margin-top: 6px;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
 

@@ -82,7 +82,7 @@ const STEPS = ["enter", "draw", "claim", "code"] as const;
   border-radius: var(--radius-control, 8px);
   color: var(--color-lifted, #eee);
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 13px;
+  font-size: 0.8125rem;
   line-height: 30px;
   text-align: center;
 }

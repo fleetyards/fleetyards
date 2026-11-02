@@ -104,7 +104,7 @@ const modules = computed(() => modulesData.value?.items ?? []);
    */
   &__hint {
     color: var(--color-text-dim);
-    font-size: 13px;
+    font-size: 0.8125rem;
   }
 }
 </style>

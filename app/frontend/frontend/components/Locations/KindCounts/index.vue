@@ -75,13 +75,13 @@ const sorted = computed(() =>
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: var(--color-text-dim, #959595);
   }
 
   &__item {
     .location-kind-icon {
-      font-size: 17px;
+      font-size: 1.0625rem;
       color: var(--color-muted, #7a8288);
     }
   }

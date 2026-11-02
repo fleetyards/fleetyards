@@ -206,7 +206,7 @@ const onSubmit = async () => {
 
 .add-to-inventory__note {
   color: var(--color-text-dim, #959595);
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .add-to-inventory__items {

@@ -299,7 +299,7 @@ const onDestroy = async () => {
 <style lang="scss" scoped>
 .payout-entry-modal__hint {
   margin: 0;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--color-text-dim, #959595);
 }
 </style>

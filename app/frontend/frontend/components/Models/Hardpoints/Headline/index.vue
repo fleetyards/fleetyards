@@ -37,14 +37,14 @@ defineProps<Props>();
   display: block;
   color: $gold;
   font-weight: 700;
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
 
 .hardpoint-headline__unit {
   display: block;
   margin-top: 1px;
   color: $gray-light;
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }

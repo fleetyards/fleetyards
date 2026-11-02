@@ -45,7 +45,7 @@ withDefaults(defineProps<Props>(), {
 
   &__title {
     width: 140px;
-    font-size: 16px;
+    font-size: 1rem;
   }
 
   &__strip {

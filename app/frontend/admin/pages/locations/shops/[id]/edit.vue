@@ -154,7 +154,7 @@ const onSubmit = handleSubmit(async (values) => {
 .admin-shop-edit {
   &__hint {
     margin: 0 0 16px;
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: var(--color-text-dim, #959595);
   }
 

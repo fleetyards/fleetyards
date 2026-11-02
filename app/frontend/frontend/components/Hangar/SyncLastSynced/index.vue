@@ -52,7 +52,7 @@ const age = computed(() => {
   gap: 10px;
   margin: 0;
   color: var(--color-text-dim, #959595);
-  font-size: 14px;
+  font-size: 0.875rem;
 
   i {
     width: 16px;
