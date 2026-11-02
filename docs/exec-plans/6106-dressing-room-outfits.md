@@ -72,6 +72,8 @@ A dressing room page where anyone can pick a body and one item per worn slot, se
 
 ## Discovery Log
 
+- **2026-11-02** The rig landed: bodies are skinned, Y-up in render, with helper bones per piece that are grafted onto the body. Static holos and the rig share the export frame (no axis correction). A stowed weapon hangs from the item's own helper (`ItemOffsetHelperName`), which is in the geometry and not in the Foundry records. Body parts are 30 submeshes cut by region, which lets the covered regions be drawn as an undersuit. The game's fit rules are item ports and tags (see the issue).
+
 - **2026-11-02** Built all four phases. Zoom limits left alone: item holos down to 0.3 m already work in the viewer. Without a published body the figure roots on its first piece, undersuit first; the pieces share a frame, so nothing moves. A painted piece that fails loads its clay holo. Backpack/core compatibility hint not built.
 - **2026-11-02** Decisions recorded in the issue: `characters/` bucket prefix, helmets placed by the rig, male only, no share token, Tools placement. `characters/` not in the bucket yet.
 - **2026-11-02** Initial research and plan creation. Measured production GLBs: core/arms/legs share a body frame (feet at y=0), helmets are neck-local; clay and textured holos share frames. Coverage: helmet/torso/arms/legs ~98%, undersuit/backpack 0% today.
@@ -81,4 +83,7 @@ A dressing room page where anyone can pick a body and one item per worn slot, se
 - [x] Phase 2 — Saved outfits API
 - [x] Phase 3 — HoloViewer for a character
 - [x] Phase 4 — Dressing room page
-- [ ] Live check in the running app once a body is published
+- [x] Live check in the running app once a body is published
+- [x] Rigged bodies, poses, weapons, female body, body cover, pedestal, layout
+- [ ] Compatibility rules from item ports and tags (parser change + re-parse; needs a go-ahead for the parsed tree push)
+- [ ] Stowed weapon helpers, holding clips, rigged undersuits and female item rigs (export, sc-tools#14)
