@@ -39,13 +39,12 @@ import {
 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { prepareGltfLoader } from "../gltfLoader";
+import { buildPedestal, disposePedestal } from "../pedestal";
 import {
   bindToBones,
   bonesByName,
-  buildPedestal,
   type RigAttachment,
   cloneRigPiece,
-  disposePedestal,
   loadClips,
   rigLayoutKey,
 } from "../rig";
