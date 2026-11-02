@@ -111,7 +111,12 @@ export const bindToBones = (piece: Object3D, bones: Map<string, Bone>) => {
 
   const resolve = (bone: Bone): Bone | undefined => {
     const known = bones.get(bone.name);
-    if (known) return known;
+    // A helper another piece grafted is shared only where it hangs from the
+    // same bone -- the core's backpack bone, for the backpack. A namesake
+    // somewhere else is this piece's own.
+    const elsewhere =
+      known?.userData.grafted && known.parent?.name !== bone.parent?.name;
+    if (known && !elsewhere) return known;
 
     const parent = bone.parent as Bone | null;
     const anchor = parent?.isBone ? resolve(parent) : undefined;
@@ -121,6 +126,7 @@ export const bindToBones = (piece: Object3D, bones: Map<string, Bone>) => {
     anchor.add(bone);
     grafted.push(bone);
     bone.traverse((node) => {
+      node.userData.grafted = true;
       if ((node as Bone).isBone && !bones.has(node.name)) {
         bones.set(node.name, node as Bone);
       }
