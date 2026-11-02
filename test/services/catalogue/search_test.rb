@@ -113,6 +113,14 @@ module Catalogue
       assert_equal({"Component" => "angled.png", "Equipment" => "angled.png", "Blueprint" => "angled.png"}, images)
     end
 
+    test "pictures no blueprint whose item has no angled render to draw" do
+      create(:blueprint, name: "Omni Ore", craftable: create(:commodity, :with_store_image, name: "Omni Ore"))
+
+      blueprint = Search.new.call("omni").find { |group| group.type == "Blueprint" }.items.first
+
+      assert_nil blueprint.image
+    end
+
     test "ignores a query too short to mean anything, and what the catalogue hides" do
       create(:model, name: "Secret Ship", hidden: true)
 
