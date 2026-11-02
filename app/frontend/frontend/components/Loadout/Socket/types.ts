@@ -1,10 +1,13 @@
 import type { HardpointStat } from "@/frontend/composables/useHardpointStats";
+import type { InventoryCraftedRef } from "@/services/fyApi";
 
 // What a socket holds, as the socket shows it: no slot type's own record, so
 // modules, weapons and the rest all reach it through their caller.
 export interface LoadoutSocketItem {
   id: string;
   name: string;
+  // A component's catalogue slug, for the stats card its name opens on hover.
+  slug?: string;
   image?: string;
   // One figure that says what the item brings, already formatted.
   figure?: string;
@@ -15,6 +18,8 @@ export interface LoadoutSocketItem {
   stats?: HardpointStat[];
   // Made from a recipe rather than bought, its figures as crafted.
   crafted?: boolean;
+  // The recipe and grades, so its stats card shows the crafted figures too.
+  recipe?: InventoryCraftedRef;
   // A recipe makes it, so it can be crafted.
   craftable?: boolean;
   // Tells two craftings of one part apart, so they never stack as one row.

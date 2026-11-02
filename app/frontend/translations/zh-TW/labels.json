@@ -4726,7 +4726,8 @@
           "quantumDrives": "量子引擎",
           "radar": "雷達",
           "lifeSupport": "生命維持",
-          "flightBlades": "飛行刀片"
+          "flightBlades": "飛行刀片",
+          "auxiliary": "輔助"
         },
         "comingSoon": "即將推出",
         "ownedModules": "你擁有的模組",

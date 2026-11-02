@@ -4743,7 +4743,8 @@
           "quantumDrives": "Quantum drives",
           "radar": "Radar",
           "lifeSupport": "Life support",
-          "flightBlades": "Flight blades"
+          "flightBlades": "Flight blades",
+          "auxiliary": "Auxiliary"
         },
         "comingSoon": "Coming soon",
         "ownedModules": "Modules you own",

@@ -9,6 +9,7 @@ import {
 } from "@/services/fyApi";
 import {
   COMPONENT_TABS,
+  filedCategory,
   loadoutValues,
   lowerIsBetter,
   useComponentFitting,
@@ -328,6 +329,26 @@ describe("learnModules", () => {
     expect(fitting.components.value.shield.craftable).toBe(true);
     expect(fitting.components.value.cooler.craftable).toBe(false);
   });
+  it("carries a module part's catalogue slug to its row", () => {
+    const fitting = useComponentFitting();
+
+    const [row] = fitting.moduleContents({
+      id: "m1",
+      name: "Combat Module",
+      slot: "hardpoint_module",
+      hardpoints: [
+        {
+          id: "hp-shield",
+          name: "hardpoint_shield",
+          category: "shieldgenerator",
+          types: ["Shield"],
+          component: { id: "shield", name: "Shield", slug: "shield-alpha" },
+        },
+      ],
+    } as unknown as ModelModule);
+
+    expect(row.item?.slug).toBe("shield-alpha");
+  });
 });
 
 describe("loadoutValues", () => {
@@ -402,5 +423,73 @@ describe("groups of stacked mounts", () => {
       "hardpoint_gun_right/hardpoint_class_2",
     ]);
     expect(firstGun?.members).toEqual(["hardpoint_gun_left/hardpoint_class_2"]);
+  });
+});
+
+describe("tractor beams", () => {
+  type Carried = { type: string; scKey?: string; accepts?: string[] };
+
+  const turret = (...carried: Carried[]): LoadoutSlot =>
+    ({
+      name: "hardpoint_tractor_turret",
+      hardpointId: "port-turret",
+      category: "turret",
+      types: ["Turret"],
+      editable: false,
+      stock: { id: "turret", name: "Remote Turret" },
+      slots: carried.map(({ type, scKey, accepts }, index) => ({
+        name: `turret_weapon_${index}`,
+        hardpointId: `port-turret-${index}`,
+        category: "unknown",
+        types: accepts ?? [type],
+        editable: true,
+        stock: { id: `${type}-${index}`, name: type, type, scKey },
+        slots: [],
+      })),
+    }) as LoadoutSlot;
+
+  const beam = { type: "TractorBeam", scKey: "grin_tractorbeam_s2" };
+  const gun = { type: "WeaponGun", scKey: "klwe_laserrepeater_s3" };
+
+  const tab = (id: string) => COMPONENT_TABS.find((entry) => entry.id === id)!;
+
+  it("files a turret that carries only a tractor beam as auxiliary", () => {
+    expect(filedCategory(turret(beam))).toBe("tractor_beams");
+    expect(filedCategory(turret({ type: "TowingBeam" }))).toBe("tractor_beams");
+  });
+
+  it("keeps a turret that also carries a gun a turret", () => {
+    expect(filedCategory(turret(beam, gun))).toBe("turret");
+  });
+
+  it("goes by the part fitted, not the types the port accepts", () => {
+    const mixed = { ...beam, accepts: ["TractorBeam", "WeaponGun"] };
+
+    expect(filedCategory(turret(mixed))).toBe("tractor_beams");
+  });
+
+  it("reads a tractor beam the game files as a salvage head as one", () => {
+    const salvageTyped = { type: "SalvageHead", scKey: "grin_tractorbeam_s3" };
+    const head = { type: "SalvageHead", scKey: "salvage_head_s1" };
+
+    expect(filedCategory(turret(salvageTyped))).toBe("tractor_beams");
+    expect(filedCategory(turret(head))).toBe("turret");
+  });
+
+  it("follows what the loadout fits in place of the stock part", () => {
+    const slot = turret(beam);
+    slot.slots[0].fitted = { id: "gun", name: "Gun", type: "WeaponGun" };
+
+    expect(filedCategory(slot)).toBe("turret");
+  });
+
+  it("lists the tractor turret on the auxiliary tab, not the weapons tab", () => {
+    const fitting = useComponentFitting();
+    const slots = [turret(beam)];
+    fitting.learn(slots);
+    const tree = fitting.resolve(slots, {});
+
+    expect(fitting.hasSlots(tree, tab("auxiliary"))).toBe(true);
+    expect(fitting.hasSlots(tree, tab("weapons"))).toBe(false);
   });
 });

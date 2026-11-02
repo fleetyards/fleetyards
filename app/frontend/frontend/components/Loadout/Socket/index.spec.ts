@@ -56,6 +56,57 @@ describe("LoadoutSocket", () => {
     expect(readOnly.emitted("select")).toBeUndefined();
   });
 
+  it("opens a component's stats card from its name, still selecting on click", async () => {
+    const wrapper = await mount({
+      socket: {
+        ...FILLED,
+        item: { id: "gun", name: "CF-337 Panther", slug: "cf-337-panther" },
+      },
+      editable: true,
+    });
+
+    const name = wrapper.find("[data-test='loadout-socket-name']");
+
+    expect(name.find("[data-test='popover-trigger']").exists()).toBe(true);
+    expect(name.find("a").exists()).toBe(false);
+
+    await name.find("[data-test='popover-trigger']").trigger("click");
+    expect(wrapper.emitted("select")).toHaveLength(1);
+  });
+
+  it("hands a crafted part's recipe to its stats card", async () => {
+    const recipe = {
+      blueprint: { id: "bp", slug: "panther-recipe", name: "" },
+      qualities: { 1: 800 },
+    };
+    const wrapper = await mount({
+      socket: {
+        ...FILLED,
+        item: {
+          id: "gun",
+          name: "CF-337 Panther",
+          slug: "cf-337-panther",
+          crafted: true,
+          recipe,
+        },
+      },
+    });
+
+    expect(
+      wrapper.findComponent({ name: "CatalogueItemPopover" }).props("crafted"),
+    ).toEqual(recipe);
+  });
+
+  it("names a part without a catalogue entry in plain text", async () => {
+    const wrapper = await mount({ socket: FILLED });
+
+    expect(
+      wrapper
+        .find("[data-test='loadout-socket-name'] [data-test='popover-trigger']")
+        .exists(),
+    ).toBe(false);
+  });
+
   it("says it is the one being filled", async () => {
     const wrapper = await mount({
       socket: EMPTY,

@@ -4729,7 +4729,8 @@
           "quantumDrives": "Motores Quantum",
           "radar": "Radar",
           "lifeSupport": "Soporte vital",
-          "flightBlades": "Blades de vuelo"
+          "flightBlades": "Blades de vuelo",
+          "auxiliary": "Auxiliar"
         },
         "comingSoon": "Próximamente",
         "ownedModules": "Tus módulos",

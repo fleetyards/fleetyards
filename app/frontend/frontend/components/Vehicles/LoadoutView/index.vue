@@ -32,6 +32,7 @@ import { useLoadoutEditor } from "@/frontend/composables/useLoadoutEditor";
 import { useLoadoutModules } from "@/frontend/composables/useLoadoutModules";
 import {
   COMPONENT_TABS,
+  filedCategory,
   slotName,
 } from "@/frontend/composables/useComponentFitting";
 import { useLoadoutFitting } from "@/frontend/composables/useLoadoutFitting";
@@ -201,7 +202,8 @@ const tabSlots = (
     if (slot.category === HardpointCategoryEnum.MODULE) {
       return tabSlots(slot.slots, categories, slotPath);
     }
-    if (!slot.category || !categories.includes(slot.category)) return [];
+    const category = filedCategory(slot);
+    if (!category || !categories.includes(category)) return [];
 
     return swappedIn([slot], undefined, parentPath);
   });
