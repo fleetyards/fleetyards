@@ -72,15 +72,21 @@ const badges = computed<RowListItemBadge[]>(() => {
     :badges="badges"
   >
     <template #leading>
-      <img
-        v-if="equipment.storeImage?.smallUrl"
-        class="equipment-row__image"
-        :src="equipment.storeImage.smallUrl"
-        alt=""
-        loading="lazy"
-        data-test="equipment-row-image"
-      />
-      <EquipmentIcon v-else :equipment="equipment" />
+      <span class="equipment-row__thumb">
+        <img
+          v-if="equipment.storeImage?.smallUrl"
+          class="equipment-row__image"
+          :src="equipment.storeImage.smallUrl"
+          alt=""
+          loading="lazy"
+          data-test="equipment-row-image"
+        />
+        <EquipmentIcon
+          v-else
+          :equipment="equipment"
+          class="equipment-row__icon"
+        />
+      </span>
     </template>
 
     <!-- The name is already the row's link, so it opens the card without
@@ -142,10 +148,24 @@ const badges = computed<RowListItemBadge[]>(() => {
 <style lang="scss" scoped>
 // The figures drop out on a narrow screen rather than squeezing the name.
 .equipment-row {
-  &__image {
-    flex: 0 0 auto;
+  // The same box with or without a picture, so every row is one height and
+  // every name starts on one edge.
+  &__thumb {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
     width: 112px;
     height: 63px;
+  }
+
+  &__icon {
+    --equipment-icon-size: 36px;
+  }
+
+  &__image {
+    width: 100%;
+    height: 100%;
     // Mostly a game-file render: transparent and cut tight to the item, so it
     // is fitted rather than cropped.
     object-fit: contain;
