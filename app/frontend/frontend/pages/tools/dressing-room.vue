@@ -43,9 +43,9 @@ import {
 // The only body exported so far; the others join as the export adds them.
 const BODY_KEY = "male";
 
-// The figure faces +Z in the export; a quarter turn shows it from the front
-// at an angle.
-const HOLO_AZIMUTH = 30;
+// The figure faces -Z, as the game's characters face its +Y: the camera starts
+// in front of it.
+const HOLO_AZIMUTH = 180;
 
 const { t } = useI18n();
 const { displayAlert, displaySuccess } = useAppNotifications();
