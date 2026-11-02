@@ -4,10 +4,18 @@ export default {
 };
 </script>
 
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+type Props = {
+  inline?: boolean;
+};
+
+withDefaults(defineProps<Props>(), {
+  inline: false,
+});
+</script>
 
 <template>
-  <div class="form-input-group">
+  <div class="form-input-group" :class="{ 'form-input-group--inline': inline }">
     <slot />
   </div>
 </template>
@@ -18,6 +26,10 @@ export default {
   align-items: flex-end;
   gap: 5px;
   margin-bottom: 1rem;
+
+  &--inline {
+    margin-bottom: 0;
+  }
 
   :deep(.base-input) {
     flex: 1 1 auto;

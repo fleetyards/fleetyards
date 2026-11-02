@@ -207,7 +207,7 @@ const popoverStyle = computed(() => ({
     @focusout="onBlur"
   >
     <div ref="field" class="home-search__field">
-      <FormInputGroup>
+      <FormInputGroup :inline="compact">
         <FormInput
           :model-value="searchQuery"
           name="search"
