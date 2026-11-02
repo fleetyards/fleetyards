@@ -122,6 +122,11 @@ const pick = async (result: SearchResult) => {
 
   open.value = false;
   await router.push(target);
+
+  // In the page header the field outlives the navigation it started.
+  searchQuery.value = undefined;
+  groups.value = [];
+  searchedFor.value = undefined;
 };
 
 // Enter opens the highlighted match and nothing else. Pressed before the list

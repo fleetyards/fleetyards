@@ -251,6 +251,22 @@ describe("HomeSearch", () => {
     expect(instance.currentRoute.value.fullPath).toBe("/components/gvsr-s2");
   });
 
+  it("empties the field once a match is opened, for a header that stays mounted", async () => {
+    const instance = await router();
+    const wrapper = await mountWithDefaults(Component, {
+      plugins: [instance],
+    });
+
+    await typeInto(wrapper, "gvsr");
+    await submit(wrapper);
+
+    expect(instance.currentRoute.value.name).not.toBe("home");
+    expect((wrapper.find("input").element as HTMLInputElement).value).toBe("");
+    expect(wrapper.find("[data-test='home-search-result']").exists()).toBe(
+      false,
+    );
+  });
+
   it("stays put on Enter when nothing matches, and says so", async () => {
     groups = [];
     const instance = await router();
