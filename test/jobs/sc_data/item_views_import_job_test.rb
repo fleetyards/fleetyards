@@ -75,11 +75,12 @@ module ScData
     end
 
     test "attaches a worn item's rig for a body it knows, and skips one for a body it does not" do
-      publish(@equipment.sc_key, {"rigged_male.glb" => HOLO, "rigged_vanduul.glb" => HOLO})
+      publish(@equipment.sc_key, {"rigged_male.glb" => HOLO, "rigged_female.glb" => HOLO, "rigged_vanduul.glb" => HOLO})
 
       perform
 
       assert @equipment.holo_rigged_male.attached?
+      assert @equipment.holo_rigged_female.attached?
       assert_not_includes fetched, "rigged_vanduul.glb"
     end
 
