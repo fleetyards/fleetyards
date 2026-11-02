@@ -61,10 +61,38 @@ export const COMPONENT_TABS: ComponentTab[] = [
       HardpointCategoryEnum.WEAPON_MOUNTS,
       HardpointCategoryEnum.TURRET,
       HardpointCategoryEnum.MINING_LASERS,
-      HardpointCategoryEnum.TRACTOR_BEAMS,
     ],
   },
+  { id: "auxiliary", categories: [HardpointCategoryEnum.TRACTOR_BEAMS] },
 ];
+
+const CARRIER_CATEGORIES = new Set<string>([
+  HardpointCategoryEnum.TURRET,
+  HardpointCategoryEnum.WEAPON_MOUNTS,
+  HardpointCategoryEnum.WEAPONS,
+]);
+
+const ARMED_TYPES = new Set(["WeaponGun", "Missile", "Bomb"]);
+
+const AUXILIARY_TYPES = new Set(["TractorBeam", "TowingBeam"]);
+
+const carriedTypes = (slots: LoadoutSlot[]): string[] =>
+  slots.flatMap((slot) => [...slot.types, ...carriedTypes(slot.slots)]);
+
+// A turret or mount is filed by what it carries, as the ship page files it: one
+// holding only a tractor beam is auxiliary, not a weapon.
+export const filedCategory = (slot: LoadoutSlot) => {
+  if (!slot.category || !CARRIER_CATEGORIES.has(slot.category)) {
+    return slot.category;
+  }
+
+  const types = carriedTypes(slot.slots);
+
+  return types.some((type) => AUXILIARY_TYPES.has(type)) &&
+    !types.some((type) => ARMED_TYPES.has(type))
+    ? HardpointCategoryEnum.TRACTOR_BEAMS
+    : slot.category;
+};
 
 // A slot of the fitting as it stands in the form: the slot, what sits in it,
 // and the slots that part brings.
@@ -544,9 +572,9 @@ export const useComponentFitting = () => {
         return roots(entry.children, tab);
       }
 
-      return entry.slot.category && tab.categories.includes(entry.slot.category)
-        ? [entry]
-        : [];
+      const category = filedCategory(entry.slot);
+
+      return category && tab.categories.includes(category) ? [entry] : [];
     });
 
   // Whether a slot or anything below it can be changed, so a locked mount

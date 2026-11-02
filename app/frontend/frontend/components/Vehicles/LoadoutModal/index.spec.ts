@@ -1014,6 +1014,7 @@ it("orders systems before propulsion and weapons", async () => {
     "flightBlades",
     "missiles",
     "weapons",
+    "auxiliary",
   ]);
   for (const [id, category] of [
     ["radar", "radar"],
@@ -1026,6 +1027,7 @@ it("orders systems before propulsion and weapons", async () => {
     ["flightBlades", "controller"],
     ["missiles", "missile_racks"],
     ["weapons", "weapons"],
+    ["auxiliary", "tractor_beams"],
   ]) {
     const tab = tabs.find((tab) => tab.props("id") === id)!;
     expect(tab.props("icon")).toBe(categoryIcon(category));

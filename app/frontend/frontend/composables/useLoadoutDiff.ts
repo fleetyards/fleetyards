@@ -87,7 +87,13 @@ const CARDS = [...new Set(Object.values(TAB_METRICS))];
 
 // The tabs whose parts' own figure no card leads with -- a radar's assist
 // range, a drive's speed -- which their tab shows ahead of the card's.
-const OWN_FIGURE_TABS = ["radar", "coolers", "lifeSupport", "quantumDrives"];
+const OWN_FIGURE_TABS = [
+  "radar",
+  "coolers",
+  "lifeSupport",
+  "quantumDrives",
+  "auxiliary",
+];
 
 // Draw and signatures are the power card's to show, summed for the whole ship.
 const CARD_FIGURES = new Set([

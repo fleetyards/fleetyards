@@ -9,6 +9,7 @@ import {
 } from "@/services/fyApi";
 import {
   COMPONENT_TABS,
+  filedCategory,
   loadoutValues,
   lowerIsBetter,
   useComponentFitting,
@@ -402,5 +403,47 @@ describe("groups of stacked mounts", () => {
       "hardpoint_gun_right/hardpoint_class_2",
     ]);
     expect(firstGun?.members).toEqual(["hardpoint_gun_left/hardpoint_class_2"]);
+  });
+});
+
+describe("tractor beams", () => {
+  const turret = (...carried: string[]): LoadoutSlot =>
+    ({
+      name: "hardpoint_tractor_turret",
+      hardpointId: "port-turret",
+      category: "turret",
+      types: ["Turret"],
+      editable: false,
+      stock: { id: "turret", name: "Remote Turret" },
+      slots: carried.map((type, index) => ({
+        name: `turret_weapon_${index}`,
+        hardpointId: `port-turret-${index}`,
+        category: "unknown",
+        types: [type],
+        editable: true,
+        stock: { id: type, name: type },
+        slots: [],
+      })),
+    }) as LoadoutSlot;
+
+  const tab = (id: string) => COMPONENT_TABS.find((entry) => entry.id === id)!;
+
+  it("files a turret that carries only a tractor beam as auxiliary", () => {
+    expect(filedCategory(turret("TractorBeam"))).toBe("tractor_beams");
+    expect(filedCategory(turret("TowingBeam"))).toBe("tractor_beams");
+  });
+
+  it("keeps a turret that also carries a gun a turret", () => {
+    expect(filedCategory(turret("TractorBeam", "WeaponGun"))).toBe("turret");
+  });
+
+  it("lists the tractor turret on the auxiliary tab, not the weapons tab", () => {
+    const fitting = useComponentFitting();
+    const slots = [turret("TractorBeam")];
+    fitting.learn(slots);
+    const tree = fitting.resolve(slots, {});
+
+    expect(fitting.hasSlots(tree, tab("auxiliary"))).toBe(true);
+    expect(fitting.hasSlots(tree, tab("weapons"))).toBe(false);
   });
 });

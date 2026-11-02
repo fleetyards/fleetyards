@@ -397,6 +397,7 @@ const TAB_ICONS: Record<string, string> = {
   flightBlades: "controller",
   missiles: "missile_racks",
   weapons: "weapons",
+  auxiliary: "tractor_beams",
 };
 
 const componentTab = (tab: ComponentTab) => ({
