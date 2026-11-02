@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.32.1](https://github.com/fleetyards/fleetyards/compare/v9.32.0...v9.32.1) (2026-11-02)
+
+
+### Bug Fixes
+
+* **events:** show month view events at the reader's clock ([#6101](https://github.com/fleetyards/fleetyards/issues/6101)) ([37a8836](https://github.com/fleetyards/fleetyards/commit/37a8836e847bb957e2535e61d9e2377ca7d84648))
+
+
+### Chores
+
+* **deps-dev:** bump @types/node from 26.6.5 to 26.6.6 ([#6099](https://github.com/fleetyards/fleetyards/issues/6099)) ([877eb82](https://github.com/fleetyards/fleetyards/commit/877eb82affff86d700ae2e801178ff50d0d4172b))
+* **deps-dev:** bump @typescript-eslint/eslint-plugin ([#6097](https://github.com/fleetyards/fleetyards/issues/6097)) ([7318f69](https://github.com/fleetyards/fleetyards/commit/7318f69d35f63d0543c6936600ac70bd3aab97d9))
+* **deps-dev:** bump knip from 6.43.0 to 6.44.0 ([#6094](https://github.com/fleetyards/fleetyards/issues/6094)) ([7bd06a0](https://github.com/fleetyards/fleetyards/commit/7bd06a0809db16093e0189190d03ad2b07eedcfb))
+* **deps-dev:** bump sass from 1.106.1 to 1.107.0 ([#6092](https://github.com/fleetyards/fleetyards/issues/6092)) ([7498c04](https://github.com/fleetyards/fleetyards/commit/7498c04ffe8c3fae9f90c59f2ed9701fcd8d01ff))
+* **deps-dev:** bump vue-component-type-helpers from 3.3.13 to 3.3.14 ([#6098](https://github.com/fleetyards/fleetyards/issues/6098)) ([9e86a22](https://github.com/fleetyards/fleetyards/commit/9e86a22a2fdf06b6a6986dcc6dee8f4a23b17e7b))
+* **deps:** bump @tresjs/cientos from 5.10.0 to 5.10.1 ([#6095](https://github.com/fleetyards/fleetyards/issues/6095)) ([f325672](https://github.com/fleetyards/fleetyards/commit/f325672171da32807f071a8a20a9b48395c85aa4))
+* **deps:** bump @tresjs/core from 5.10.0 to 5.10.1 ([#6096](https://github.com/fleetyards/fleetyards/issues/6096)) ([04556bf](https://github.com/fleetyards/fleetyards/commit/04556bf80a82e00637393ee933f97e72ca716699))
+* **deps:** bump aws-sdk-s3 from 1.235.0 to 1.237.0 ([#6086](https://github.com/fleetyards/fleetyards/issues/6086)) ([a308d83](https://github.com/fleetyards/fleetyards/commit/a308d831138c6b0860795050ab1e41db8becee6e))
+* **deps:** bump axios from 1.20.0 to 1.21.0 ([#6093](https://github.com/fleetyards/fleetyards/issues/6093)) ([f7a01f4](https://github.com/fleetyards/fleetyards/commit/f7a01f46a89f019786b55eb248eab0428fc6daa5))
+* **deps:** bump csv from 3.3.6 to 3.3.7 ([#6091](https://github.com/fleetyards/fleetyards/issues/6091)) ([5092482](https://github.com/fleetyards/fleetyards/commit/50924826cee6a69fc29d17827c664fee8c0d2ea0))
+* **deps:** bump kaminari from 1.3.0 to 1.3.1 ([#6088](https://github.com/fleetyards/fleetyards/issues/6088)) ([029ca51](https://github.com/fleetyards/fleetyards/commit/029ca5186f03c32b712d43ea38c03dd56ddadb37))
+* **deps:** bump qs from 6.16.1 to 6.17.1 ([#6090](https://github.com/fleetyards/fleetyards/issues/6090)) ([8129c65](https://github.com/fleetyards/fleetyards/commit/8129c65bc92d100dd2ffae48987c7e0b119373c5))
+* **deps:** bump the tiptap group with 8 updates ([#6089](https://github.com/fleetyards/fleetyards/issues/6089)) ([34503a1](https://github.com/fleetyards/fleetyards/commit/34503a1338cea1be2bf0d0865f3515f50d1ff195))
+* **deps:** bump typhoeus from 1.6.0 to 1.7.1 ([#6087](https://github.com/fleetyards/fleetyards/issues/6087)) ([630b96f](https://github.com/fleetyards/fleetyards/commit/630b96fee630d5673413f347b4e0d045612e7900))
+* **deps:** drop the unused git gem ([#6103](https://github.com/fleetyards/fleetyards/issues/6103)) ([058e3bf](https://github.com/fleetyards/fleetyards/commit/058e3bfae6d291f14f1f26c206ccbd2e4b68da74))
+
 ## [9.32.0](https://github.com/fleetyards/fleetyards/compare/v9.31.0...v9.32.0) (2026-11-01)
 
 
