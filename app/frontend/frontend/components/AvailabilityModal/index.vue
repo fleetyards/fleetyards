@@ -281,7 +281,7 @@ const deltaLabel = (price: ItemPrice, best: ItemPrice) => {
 
   &__label {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: $gray;
@@ -295,7 +295,7 @@ const deltaLabel = (price: ItemPrice, best: ItemPrice) => {
     font-weight: 700;
     // Capitals run to eight figures, so the value scales with the tile rather
     // than outgrowing it.
-    font-size: clamp(14px, 13cqw, 22px);
+    font-size: clamp(0.875rem, 13cqw, 1.375rem);
     line-height: 1;
     color: lighten($text-color, 15%);
     font-variant-numeric: tabular-nums;
@@ -305,13 +305,13 @@ const deltaLabel = (price: ItemPrice, best: ItemPrice) => {
   &__unit {
     font-family: "Open Sans", sans-serif;
     font-weight: 600;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.08em;
     color: $gray-light;
   }
 
   &__sub {
-    font-size: 11px;
+    font-size: 0.6875rem;
     color: $gray;
   }
 }
@@ -329,7 +329,7 @@ const deltaLabel = (price: ItemPrice, best: ItemPrice) => {
   justify-content: space-between;
   gap: 10px;
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: $gray;
@@ -342,7 +342,7 @@ const deltaLabel = (price: ItemPrice, best: ItemPrice) => {
 
   &__unit {
     font-family: "Open Sans", sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.08em;
     text-transform: none;
     color: $gray;
@@ -383,12 +383,12 @@ const deltaLabel = (price: ItemPrice, best: ItemPrice) => {
 }
 
 .availability__shop {
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: lighten($text-color, 15%);
 }
 
 .availability__place {
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: $gray;
 }
 
@@ -396,7 +396,7 @@ const deltaLabel = (price: ItemPrice, best: ItemPrice) => {
 .availability__premium {
   flex: none;
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: $gray;
@@ -405,7 +405,7 @@ const deltaLabel = (price: ItemPrice, best: ItemPrice) => {
 
 .availability__price {
   flex: none;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   color: lighten($text-color, 15%);
@@ -418,7 +418,7 @@ const deltaLabel = (price: ItemPrice, best: ItemPrice) => {
 
 .availability__footer {
   margin-top: 14px;
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: $gray;
 }
 </style>

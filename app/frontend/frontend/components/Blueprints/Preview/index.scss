@@ -2,7 +2,7 @@
   margin-bottom: 20px;
 
   &__craftable {
-    font-size: 12.5px;
+    font-size: 0.78125rem;
     color: var(--color-muted, #7a8288);
     text-align: right;
 
@@ -37,19 +37,19 @@
   }
 
   &__stat-name {
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: var(--color-text, #c8c8c8);
   }
 
   &__stat-slots {
     margin-left: 6px;
-    font-size: 11px;
+    font-size: 0.6875rem;
     color: var(--color-gray, #52575c);
   }
 
   &__stat-value {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 18px;
+    font-size: 1.125rem;
     font-weight: 700;
     color: #fff;
     text-align: right;
@@ -61,7 +61,7 @@
   &__delta {
     grid-column: 2;
     text-align: right;
-    font-size: 11.5px;
+    font-size: 0.71875rem;
     font-weight: 700;
     font-variant-numeric: tabular-nums;
     color: var(--color-muted, #7a8288);
@@ -77,7 +77,7 @@
 
   &__stat-base {
     grid-column: 1 / -1;
-    font-size: 11.5px;
+    font-size: 0.71875rem;
     color: var(--color-gray, #52575c);
     font-variant-numeric: tabular-nums;
   }

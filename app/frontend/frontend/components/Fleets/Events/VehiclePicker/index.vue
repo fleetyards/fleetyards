@@ -168,6 +168,6 @@ watch(selectedMatches, (value) => emit("match", value), { immediate: true });
   }
 }
 .small {
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 </style>

@@ -260,7 +260,7 @@ onUnmounted(() => {
   align-items: center;
   gap: 6px;
   padding: 2px 4px;
-  font-size: 13px;
+  font-size: 0.8125rem;
   border-radius: var(--radius-control-bare, 6px);
 
   &:hover {
@@ -274,7 +274,7 @@ onUnmounted(() => {
 .slot-drag-handle {
   cursor: grab;
   color: var(--color-muted, #7a8288);
-  font-size: 12px;
+  font-size: 0.75rem;
   letter-spacing: -0.15em;
   user-select: none;
   flex-shrink: 0;
@@ -318,7 +318,7 @@ onUnmounted(() => {
   border: none;
   color: var(--color-muted, #7a8288);
   cursor: pointer;
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1;
   padding: 0 4px;
   opacity: 0;
@@ -346,7 +346,7 @@ onUnmounted(() => {
   padding: 4px 6px;
   font: inherit;
   color: inherit;
-  font-size: 13px;
+  font-size: 0.8125rem;
 
   &:focus {
     outline: none;
@@ -356,7 +356,7 @@ onUnmounted(() => {
 }
 .slot-empty {
   font-style: italic;
-  font-size: 13px;
+  font-size: 0.8125rem;
   margin: 0;
 }
 </style>

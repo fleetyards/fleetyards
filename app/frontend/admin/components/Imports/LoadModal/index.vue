@@ -137,7 +137,7 @@ const run = async (option: ImportLoaderOption) => {
   }
 
   &__description {
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: var(--color-text-dim, #959595);
   }
 

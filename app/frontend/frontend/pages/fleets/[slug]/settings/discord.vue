@@ -606,7 +606,7 @@ const joinRoleProblem = computed(() => {
   gap: 8px;
   flex-wrap: wrap;
   margin: 6px 0 13px;
-  font-size: 15px;
+  font-size: 0.9375rem;
 
   i {
     color: var(--color-primary, #428bca);
@@ -627,7 +627,7 @@ const joinRoleProblem = computed(() => {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 .discord-status--ok {
   color: var(--color-success, #5cb85c);

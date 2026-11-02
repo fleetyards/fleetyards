@@ -475,13 +475,13 @@ const onReopen = async () => {
 }
 
 .payout-ledger__pending {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--color-warning, #ff9800);
 }
 
 .payout-ledger__preview {
   font-family: "Open Sans", sans-serif;
-  font-size: 11px;
+  font-size: 0.6875rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--color-gold, #d4af37);

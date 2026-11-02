@@ -246,13 +246,13 @@ const onEdit = (entry: PayoutEntry) => {
 }
 
 .payout-entries__meta {
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: var(--color-text-dim, #959595);
   overflow-wrap: anywhere;
 }
 
 .payout-entries__review {
-  font-size: 11px;
+  font-size: 0.6875rem;
 }
 
 .payout-entries__review--pending {

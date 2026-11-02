@@ -175,7 +175,7 @@ const groups = computed(() =>
   align-items: center;
   margin: 0;
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--color-text-dim);
@@ -210,7 +210,7 @@ const groups = computed(() =>
 
 .plan-metrics__label {
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--color-text-dim);

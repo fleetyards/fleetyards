@@ -62,7 +62,7 @@ button.owner:focus-visible {
 
 .owner__count {
   color: $gray-lighter;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-variant-numeric: tabular-nums;
 }
 
@@ -71,7 +71,7 @@ button.owner:focus-visible {
 .owner__ships {
   overflow: hidden;
   color: $gray-lighter;
-  font-size: 12px;
+  font-size: 0.75rem;
   white-space: nowrap;
   text-overflow: ellipsis;
 }

@@ -260,7 +260,7 @@ onUnmounted(() => {
 .team-drag-handle {
   cursor: grab;
   color: var(--color-muted, #7a8288);
-  font-size: 13px;
+  font-size: 0.8125rem;
   letter-spacing: -0.15em;
   user-select: none;
 }
@@ -289,7 +289,7 @@ onUnmounted(() => {
 }
 .no-ships {
   font-style: italic;
-  font-size: 14px;
+  font-size: 0.875rem;
   margin: 0;
 }
 </style>

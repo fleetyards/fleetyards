@@ -145,7 +145,7 @@ const details = computed(() =>
   padding: 0 6px;
   border: 1px solid rgb(122 130 136 / 0.4);
   border-radius: 3px;
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 .health-row__chip--loud {
@@ -157,7 +157,7 @@ const details = computed(() =>
 .health-row__meta {
   overflow: hidden;
   color: var(--color-text-dim, #959595);
-  font-size: 12px;
+  font-size: 0.75rem;
   text-overflow: ellipsis;
   white-space: nowrap;
 }

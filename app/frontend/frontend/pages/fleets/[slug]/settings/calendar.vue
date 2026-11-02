@@ -185,7 +185,7 @@ const copyFeedUrl = async () => {
   flex: 1;
   padding: 6px 10px;
   font-family: monospace;
-  font-size: 13px;
+  font-size: 0.8125rem;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-control-bare, 6px);
@@ -197,6 +197,6 @@ const copyFeedUrl = async () => {
   flex-wrap: wrap;
 }
 .small {
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 </style>

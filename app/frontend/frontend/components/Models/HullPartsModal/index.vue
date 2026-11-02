@@ -229,7 +229,7 @@ const doorBarWidth = (health: number) =>
     font-weight: 700;
     // Capital hulls run past a million; scale to the tile so the value cannot
     // outgrow it.
-    font-size: clamp(15px, 16cqw, 22px);
+    font-size: clamp(0.9375rem, 16cqw, 1.375rem);
     line-height: 1;
     color: lighten($text-color, 15%);
     font-variant-numeric: tabular-nums;
@@ -238,7 +238,7 @@ const doorBarWidth = (health: number) =>
 
   &__label {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: $gray;
@@ -272,7 +272,7 @@ const doorBarWidth = (health: number) =>
   }
 
   &__label {
-    font-size: 11px;
+    font-size: 0.6875rem;
     color: $gray-light;
   }
 
@@ -280,14 +280,14 @@ const doorBarWidth = (health: number) =>
     grid-column: 2;
     font-family: "Orbitron", tahoma, sans-serif;
     font-weight: 700;
-    font-size: 16px;
+    font-size: 1rem;
     color: lighten($text-color, 15%);
     font-variant-numeric: tabular-nums;
   }
 
   &__hp {
     grid-column: 2;
-    font-size: 11px;
+    font-size: 0.6875rem;
     color: $gray;
     font-variant-numeric: tabular-nums;
   }
@@ -302,7 +302,7 @@ const doorBarWidth = (health: number) =>
 
   .parts-head__meta {
     font-family: "Open Sans", sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0;
     text-transform: none;
     color: $gray-light;
@@ -312,7 +312,7 @@ const doorBarWidth = (health: number) =>
 
 .parts-head {
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: $gray;
@@ -338,7 +338,7 @@ const doorBarWidth = (health: number) =>
 .parts-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: 0.8125rem;
 
   td {
     padding: 7px 10px 7px 0;
@@ -369,7 +369,7 @@ const doorBarWidth = (health: number) =>
 
   &__chip {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     white-space: nowrap;
@@ -403,7 +403,7 @@ const doorBarWidth = (health: number) =>
 
   &__nohp {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: $gray;
@@ -418,7 +418,7 @@ const doorBarWidth = (health: number) =>
 
 .parts-note {
   margin: 14px 0 0;
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: $gray;
 }
 </style>

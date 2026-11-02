@@ -226,10 +226,10 @@ const { image } = useInventoryImage(() => props.inventory);
 
   &-edit,
   &-cargo-grids {
-    font-size: 18px;
+    font-size: 1.125rem;
 
     > :first-child {
-      font-size: 18px;
+      font-size: 1.125rem;
     }
   }
 

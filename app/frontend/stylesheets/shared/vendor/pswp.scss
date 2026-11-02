@@ -198,7 +198,7 @@
     height: auto;
     margin: 0 auto 0 0;
     padding: 0 4px;
-    font-size: 15px;
+    font-size: 0.9375rem;
     line-height: var(--viewer-btn, 43px);
     color: var(--color-text, #c8c8c8);
     /* pswp shadows the counter to survive a photo behind it; ours is opaque. */
@@ -222,7 +222,7 @@
     max-width: min(72ch, calc(100% - (var(--viewer-gutter, 16px) * 2)));
     padding: 10px 16px;
 
-    font-size: 15px;
+    font-size: 0.9375rem;
     line-height: 1.5;
     text-align: center;
     text-wrap: pretty;

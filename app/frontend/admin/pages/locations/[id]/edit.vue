@@ -261,12 +261,12 @@ const handleCancel = async () => {
 .admin-location-edit {
   &__title {
     margin: 0 0 4px;
-    font-size: 16px;
+    font-size: 1rem;
   }
 
   &__hint {
     margin: 0 0 16px;
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: var(--color-text-dim, #959595);
   }
 

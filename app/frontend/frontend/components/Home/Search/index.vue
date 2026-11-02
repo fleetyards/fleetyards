@@ -362,19 +362,19 @@ const popoverStyle = computed(() => ({
 .home-search__try-label {
   margin-right: 4px;
   color: var(--color-text-dim, #959595);
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 
 .home-search__try-separator {
   color: var(--color-muted, #7a8288);
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 
 // Links, not buttons: they brighten rather than turn blue, as the app's links do.
 .home-search__try-term {
   padding: 2px 2px;
   color: var(--color-text, #c8c8c8);
-  font-size: 13px;
+  font-size: 0.8125rem;
   background: none;
   border: 0;
   border-bottom: 1px dotted var(--color-muted, #7a8288);
@@ -428,7 +428,7 @@ const popoverStyle = computed(() => ({
   gap: 10px;
   padding: 14px 16px;
   color: var(--color-text-dim, #959595);
-  font-size: 13px;
+  font-size: 0.8125rem;
 
   &--empty {
     gap: 14px;
@@ -436,7 +436,7 @@ const popoverStyle = computed(() => ({
 
     > i {
       color: var(--color-muted, #7a8288);
-      font-size: 24px;
+      font-size: 1.5rem;
     }
   }
 }
@@ -473,14 +473,14 @@ const popoverStyle = computed(() => ({
   padding: 6px 10px 4px;
   color: var(--color-text-dim, #959595);
   font-family: Orbitron, sans-serif;
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
 
   :deep(i),
   :deep(svg) {
     color: var(--color-muted, #7a8288);
-    font-size: 11px;
+    font-size: 0.6875rem;
   }
 }
 
@@ -500,7 +500,7 @@ const popoverStyle = computed(() => ({
   gap: 16px;
   padding: 8px 16px;
   color: var(--color-text-dim, #959595);
-  font-size: 11.5px;
+  font-size: 0.71875rem;
   border-top: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
 
   kbd {
@@ -510,7 +510,7 @@ const popoverStyle = computed(() => ({
     padding: 1px 4px;
     color: var(--color-text, #c8c8c8);
     font-family: inherit;
-    font-size: 11px;
+    font-size: 0.6875rem;
     line-height: 1.3;
     text-align: center;
     background: var(--color-control, rgb(39 43 48 / 0.9));

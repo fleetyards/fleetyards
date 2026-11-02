@@ -474,7 +474,7 @@ const cellHeight = (span: number) =>
     background: transparent;
     border: 0;
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--color-text-dim, #959595);
@@ -495,7 +495,7 @@ const cellHeight = (span: number) =>
   }
 
   &__budget {
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.08em;
     color: var(--color-text-dim, #959595);
     font-variant-numeric: tabular-nums;
@@ -528,19 +528,19 @@ const cellHeight = (span: number) =>
   }
 
   &__icon {
-    font-size: 14px;
+    font-size: 0.875rem;
     color: $primary;
   }
 
   &__value {
-    font-size: 15px;
+    font-size: 0.9375rem;
     font-weight: 600;
     color: $text-color;
     font-variant-numeric: tabular-nums;
   }
 
   &__axis {
-    font-size: 11px;
+    font-size: 0.6875rem;
     font-weight: 600;
     color: var(--color-text-dim, #959595);
     margin-left: 2px;
@@ -555,7 +555,7 @@ const cellHeight = (span: number) =>
 
   &__label {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--color-text-dim, #959595);
@@ -579,7 +579,7 @@ const cellHeight = (span: number) =>
   }
 
   &__value {
-    font-size: 12px;
+    font-size: 0.75rem;
     color: $text-color;
     font-variant-numeric: tabular-nums;
     min-width: 64px;
@@ -625,7 +625,7 @@ const cellHeight = (span: number) =>
 
   &__count {
     // Sized so "8 / 8" fits a column at its minimum width instead of wrapping.
-    font-size: 12px;
+    font-size: 0.75rem;
     font-variant-numeric: tabular-nums;
     color: $text-color;
     min-height: 16px;
@@ -679,7 +679,7 @@ const cellHeight = (span: number) =>
 
   // Count inside a merged (span > 1) block.
   &__pip-label {
-    font-size: 11px;
+    font-size: 0.6875rem;
     font-weight: 600;
     line-height: 1;
     color: $text-color;
@@ -704,7 +704,7 @@ const cellHeight = (span: number) =>
 
   &__label {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 8.5px;
+    font-size: 0.53125rem;
     letter-spacing: 0.08em;
     color: var(--color-text-dim, #959595);
     text-transform: uppercase;

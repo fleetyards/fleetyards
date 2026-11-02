@@ -224,6 +224,8 @@ const isMetric = computed(() => props.tone === PanelHeadingTonesEnum.METRIC);
   margin: 0;
 }
 
+/* The metric title sizes stay in px: the embed renders them inside other
+   sites, where rem would follow the host page's root size, not ours. */
 .panel-heading--compact .panel-heading__metric-title {
   font-size: 13px;
 }

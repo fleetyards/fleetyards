@@ -356,7 +356,7 @@ const setupChart = () => {
 }
 
 .chart-state i {
-  font-size: 48px;
+  font-size: 3rem;
   opacity: 0.4;
 }
 

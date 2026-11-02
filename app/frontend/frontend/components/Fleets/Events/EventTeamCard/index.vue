@@ -312,7 +312,7 @@ onUnmounted(() => {
 .event-team-drag-handle {
   cursor: grab;
   color: var(--color-muted, #7a8288);
-  font-size: 13px;
+  font-size: 0.8125rem;
   user-select: none;
 }
 
@@ -348,7 +348,7 @@ onUnmounted(() => {
 
 .event-team-no-ships {
   margin: 12px 0 0;
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--color-muted, #7a8288);
 }
 </style>

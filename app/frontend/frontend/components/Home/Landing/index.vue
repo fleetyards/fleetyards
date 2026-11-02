@@ -283,7 +283,7 @@ useScrollSettle(() =>
 .home-landing__welcome {
   color: var(--color-text-dim, #959595);
   font-family: Orbitron, sans-serif;
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
@@ -291,14 +291,14 @@ useScrollSettle(() =>
 .home-landing__wordmark {
   color: var(--color-lifted, #eee);
   font-family: Orbitron, sans-serif;
-  font-size: 34px;
+  font-size: 2.125rem;
   line-height: 1.1;
 }
 
 .home-landing__tagline {
   margin: 0 0 12px;
   color: #fff;
-  font-size: 42px;
+  font-size: 2.625rem;
   font-weight: 600;
   line-height: 1.18;
   letter-spacing: -0.01em;
@@ -309,8 +309,8 @@ useScrollSettle(() =>
   max-width: 46ch;
   margin: 0 0 32px;
   color: var(--color-text, #c8c8c8);
-  font-size: 18px;
-  line-height: 28px;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
 }
 
 .home-landing__search {
@@ -328,7 +328,7 @@ useScrollSettle(() =>
 
 .home-landing__link {
   color: var(--color-text, #c8c8c8);
-  font-size: 15px;
+  font-size: 0.9375rem;
 
   &:hover,
   &:focus-visible {
@@ -386,18 +386,18 @@ useScrollSettle(() =>
   }
 
   .home-landing__wordmark {
-    font-size: 22px;
+    font-size: 1.375rem;
   }
 
   .home-landing__tagline {
-    font-size: 26px;
+    font-size: 1.625rem;
     line-height: 1.25;
   }
 
   .home-landing__lede {
     margin-bottom: 22px;
-    font-size: 15px;
-    line-height: 23px;
+    font-size: 0.9375rem;
+    line-height: 1.4375rem;
   }
 
   .home-landing__actions {

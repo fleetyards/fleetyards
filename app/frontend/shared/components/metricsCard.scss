@@ -2,6 +2,9 @@
 // The card *frame* (`.metrics-card`, head/title/dot/body, variants) lives in the
 // MetricsCard component. These classes style slotted content, so they stay in
 // the consuming card's scope — Vue keeps slotted markup in the parent's scope.
+//
+// Text sizes stay in px: the embed renders these cards inside other sites,
+// where rem would follow the host page's root size, not ours.
 
 .metrics-card {
   // Flex (not fixed grid) so the row always fills with however many tiles are

@@ -485,7 +485,7 @@ const hasLegend = computed(() =>
     height: 22px;
     padding: 0 8px;
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 10px;
+    font-size: 0.625rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     white-space: nowrap;

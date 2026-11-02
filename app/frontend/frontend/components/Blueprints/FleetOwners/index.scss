@@ -20,7 +20,7 @@
   // The fleet's own name is the heading of its block, so it takes the body
   // text the sources panel gives an org rather than a brighter one.
   &__name {
-    font-size: 13.5px;
+    font-size: 0.84375rem;
     font-weight: 600;
     color: var(--color-text, #c8c8c8);
     transition: color 150ms ease;
@@ -32,7 +32,7 @@
   }
 
   &__count {
-    font-size: 11.5px;
+    font-size: 0.71875rem;
     color: var(--color-gray, #52575c);
     font-variant-numeric: tabular-nums;
   }
@@ -50,7 +50,7 @@
     display: inline-flex;
     align-items: center;
     padding: 3px 9px;
-    font-size: 12px;
+    font-size: 0.75rem;
     color: var(--color-text-dim, #959595);
     background-color: var(--color-control, rgb(39 43 48 / 0.9));
     border: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));

@@ -415,7 +415,7 @@ GET https://api.fleetyards.net/v1/models/rsi-perseus
 
   i {
     width: 24px;
-    font-size: 20px;
+    font-size: 1.25rem;
     color: var(--color-muted);
     text-align: center;
   }
@@ -482,12 +482,12 @@ GET https://api.fleetyards.net/v1/models/rsi-perseus
 }
 
 .home-landing-features__tab-label {
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: 600;
 }
 
 .home-landing-features__tab-hint {
-  font-size: 12.5px;
+  font-size: 0.78125rem;
   color: var(--color-text-dim);
 }
 
@@ -578,7 +578,7 @@ GET https://api.fleetyards.net/v1/models/rsi-perseus
   align-items: center;
   gap: 6px;
   padding: 4px 9px;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--color-lifted);
   background: rgb(10 14 19 / 80%);
   border: 1px solid var(--color-edge-soft);
@@ -648,7 +648,7 @@ GET https://api.fleetyards.net/v1/models/rsi-perseus
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 600;
   color: var(--color-lifted);
 
@@ -675,7 +675,7 @@ GET https://api.fleetyards.net/v1/models/rsi-perseus
   justify-content: center;
   gap: 10px;
   padding: 12px;
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--color-lifted);
   background: var(--color-control);
   border: 1px solid var(--color-edge);
@@ -698,7 +698,7 @@ GET https://api.fleetyards.net/v1/models/rsi-perseus
 
 .home-landing-features__micro {
   font-family: Orbitron, sans-serif;
-  font-size: 10px;
+  font-size: 0.625rem;
   color: var(--color-text-dim);
   text-transform: uppercase;
   letter-spacing: 0.16em;
@@ -707,7 +707,7 @@ GET https://api.fleetyards.net/v1/models/rsi-perseus
 .home-landing-features__title {
   margin: 4px 0 0;
   font-family: Orbitron, sans-serif;
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: 400;
   color: var(--color-lifted);
 }
@@ -727,14 +727,14 @@ GET https://api.fleetyards.net/v1/models/rsi-perseus
 
   i {
     margin-top: 2px;
-    font-size: 18px;
+    font-size: 1.125rem;
     color: var(--color-muted);
   }
 
   p {
     margin: 0;
-    font-size: 13px;
-    line-height: 18px;
+    font-size: 0.8125rem;
+    line-height: 1.125rem;
     color: var(--color-text-dim);
   }
 }
@@ -762,7 +762,7 @@ GET https://api.fleetyards.net/v1/models/rsi-perseus
 .home-landing-features__item-title {
   display: block;
   margin-bottom: 3px;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
   color: var(--color-lifted);
 }

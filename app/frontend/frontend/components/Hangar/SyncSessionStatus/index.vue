@@ -135,11 +135,11 @@ const { t } = useI18n();
 
 .sync-session-status__account {
   color: var(--color-lifted, #eee);
-  font-size: 15px;
+  font-size: 0.9375rem;
 }
 
 .sync-session-status__hint {
   color: var(--color-text-dim, #959595);
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 </style>

@@ -120,7 +120,7 @@ const columns = computed<BaseTableCol<Tour>[]>(() => {
 }
 
 .tours-table__fleet {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--color-text-dim, #959595);
 }
 </style>

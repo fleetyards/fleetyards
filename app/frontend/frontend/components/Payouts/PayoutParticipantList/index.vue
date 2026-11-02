@@ -409,7 +409,7 @@ const onWeight = async (participant: PayoutParticipant, weight: string) => {
 }
 
 .payout-participants__tag {
-  font-size: 11px;
+  font-size: 0.6875rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   padding: 1px 6px;
@@ -425,7 +425,7 @@ const onWeight = async (participant: PayoutParticipant, weight: string) => {
 }
 
 .payout-participants__weight {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--color-gold, #d4af37);
 }
 </style>

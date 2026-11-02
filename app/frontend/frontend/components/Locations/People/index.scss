@@ -4,7 +4,7 @@
   margin-bottom: 20px;
 
   &__summary {
-    font-size: 11.5px;
+    font-size: 0.71875rem;
     color: var(--color-text-dim, #959595);
     font-variant-numeric: tabular-nums;
   }
@@ -32,13 +32,13 @@
   }
 
   &__name {
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: var(--color-lifted, #eee);
     overflow-wrap: anywhere;
   }
 
   &__place {
-    font-size: 12px;
+    font-size: 0.75rem;
     color: var(--color-text-dim, #959595);
   }
 
@@ -46,7 +46,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 4px 8px;
-    font-size: 11.5px;
+    font-size: 0.71875rem;
     color: var(--color-text-dim, #959595);
   }
 
@@ -56,7 +56,7 @@
 
   &__unlisted {
     margin: 10px 0 0;
-    font-size: 12px;
+    font-size: 0.75rem;
     color: var(--color-text-dim, #959595);
   }
 
@@ -69,7 +69,7 @@
     border-radius: 6px;
     color: var(--color-text, #c8c8c8);
     font: inherit;
-    font-size: 13px;
+    font-size: 0.8125rem;
     cursor: pointer;
   }
 }

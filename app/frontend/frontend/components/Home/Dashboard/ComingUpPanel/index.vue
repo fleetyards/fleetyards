@@ -194,7 +194,7 @@ const answer = async (entry: MyEvent, status: FleetEventSignupStatusEnum) => {
   margin: 6px 2px 0;
   color: var(--color-text-dim, #959595);
   font-family: "Orbitron", sans-serif;
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
 
@@ -217,12 +217,12 @@ const answer = async (entry: MyEvent, status: FleetEventSignupStatusEnum) => {
   gap: 8px;
   padding: 0 2px;
   color: var(--color-text-dim, #959595);
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 .home-coming-up__in-game {
   flex: 0 0 auto;
-  font-size: 12px;
+  font-size: 0.75rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   white-space: nowrap;

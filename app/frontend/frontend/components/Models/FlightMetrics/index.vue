@@ -352,21 +352,21 @@ const rotations = computed(() =>
   }
 
   &__value {
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 600;
     color: $text-color;
     font-variant-numeric: tabular-nums;
   }
 
   &__boost {
-    font-size: 11px;
+    font-size: 0.6875rem;
     font-weight: 600;
     color: $primary;
   }
 
   &__label {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: $gray;

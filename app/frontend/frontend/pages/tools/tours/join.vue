@@ -122,7 +122,7 @@ const onJoin = async () => {
 }
 
 .tour-join__title {
-  font-size: 20px;
+  font-size: 1.25rem;
 }
 
 .tour-join__actions {

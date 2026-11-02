@@ -105,7 +105,7 @@ const visibility = computed(() => {
 .location-starmap__note {
   display: block;
   margin-top: 4px;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 400;
   color: var(--color-text-dim, #959595);
 }

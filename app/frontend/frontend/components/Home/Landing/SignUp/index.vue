@@ -157,7 +157,7 @@ const links: CommunityLink[] = [
 
 .home-landing-sign-up__kicker {
   font-family: Orbitron, sans-serif;
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--color-primary-tint, #8bb8e0);
   text-transform: uppercase;
   letter-spacing: 0.2em;
@@ -177,7 +177,7 @@ const links: CommunityLink[] = [
   }
 
   dt {
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: 400;
     color: var(--color-primary-tint, #8bb8e0);
     text-shadow: 0 1px 8px rgb(0 0 0 / 90%);
@@ -186,7 +186,7 @@ const links: CommunityLink[] = [
   dd {
     margin: 0;
     font-family: Orbitron, sans-serif;
-    font-size: 52px;
+    font-size: 3.25rem;
     line-height: 1;
     color: var(--color-lifted);
   }
@@ -195,7 +195,7 @@ const links: CommunityLink[] = [
 .home-landing-sign-up__title {
   margin: 0;
   font-family: Orbitron, sans-serif;
-  font-size: 34px;
+  font-size: 2.125rem;
   font-weight: 400;
   color: var(--color-lifted);
 }
@@ -210,7 +210,7 @@ const links: CommunityLink[] = [
 
 .home-landing-sign-up__or,
 .home-landing-sign-up__login {
-  font-size: 15px;
+  font-size: 0.9375rem;
   color: var(--color-text-dim);
   text-shadow: 0 1px 8px rgb(0 0 0 / 90%);
 }
@@ -254,7 +254,7 @@ const links: CommunityLink[] = [
   }
 
   > i {
-    font-size: 22px;
+    font-size: 1.375rem;
     color: var(--color-muted);
   }
 
@@ -266,19 +266,19 @@ const links: CommunityLink[] = [
 }
 
 .home-landing-sign-up__link-title {
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
   color: var(--color-lifted);
 }
 
 .home-landing-sign-up__link-text {
-  font-size: 12.5px;
+  font-size: 0.78125rem;
   color: var(--color-text-dim);
 }
 
 @media (max-width: 767px) {
   .home-landing-sign-up__counts dd {
-    font-size: 36px;
+    font-size: 2.25rem;
   }
 
   .home-landing-sign-up__links {

@@ -248,7 +248,7 @@ const statusVariant = computed(() => signupPillVariantFor(props.signup.status));
   align-items: center;
   gap: 8px;
   font-weight: 600;
-  font-size: 15px;
+  font-size: 0.9375rem;
 
   i {
     color: var(--color-primary, #428bca);
@@ -268,7 +268,7 @@ const statusVariant = computed(() => signupPillVariantFor(props.signup.status));
   display: flex;
   gap: 8px;
   margin: 0;
-  font-size: 14px;
+  font-size: 0.875rem;
   white-space: pre-wrap;
 
   i {

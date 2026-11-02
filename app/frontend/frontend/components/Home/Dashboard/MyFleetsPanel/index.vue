@@ -123,7 +123,7 @@ const badgesFor = (fleet: MyFleetSummary): RowListItemBadge[] => {
   margin: 4px 0 0;
   overflow: hidden;
   color: var(--color-text-dim, #959595);
-  font-size: 12.5px;
+  font-size: 0.78125rem;
   text-overflow: ellipsis;
   white-space: nowrap;
 

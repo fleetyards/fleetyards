@@ -252,13 +252,13 @@ const dayLabel = (day: Date) =>
 
 .week-strip__weekday {
   color: var(--color-text-dim, #959595);
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
 .week-strip__number {
-  font-size: 17px;
+  font-size: 1.0625rem;
   font-weight: 600;
 }
 

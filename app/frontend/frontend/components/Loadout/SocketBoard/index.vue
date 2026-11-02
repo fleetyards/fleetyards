@@ -155,7 +155,7 @@ const onKeydown = (event: KeyboardEvent) => {
 .loadout-socket-board__heading {
   margin: 0 0 8px;
   color: var(--color-text-dim);
-  font-size: 12px;
+  font-size: 0.75rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }

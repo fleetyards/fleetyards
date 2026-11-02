@@ -34,7 +34,7 @@ export default {
   border: 0;
   border-radius: 10px 0 0 10px;
   color: #fff;
-  font-size: 13px;
+  font-size: 0.8125rem;
   line-height: 1.4;
   white-space: nowrap;
   text-decoration: none;

@@ -112,7 +112,7 @@ const suffix = computed(() => {
     top: 50%;
     right: 16px;
     transform: translateY(-50%);
-    font-size: 34px;
+    font-size: 2.125rem;
     color: $gray-lighter;
     opacity: 0.5;
     --fa-secondary-opacity: 0.6;

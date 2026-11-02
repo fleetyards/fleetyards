@@ -157,14 +157,14 @@ const { signupPillVariantFor } = useEventStatus();
 
 .event-card__weekday {
   color: rgb(255 255 255 / 0.75);
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 
 .event-card__day {
   color: #fff;
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: 600;
 }
 
@@ -186,14 +186,14 @@ const { signupPillVariantFor } = useEventStatus();
 .event-card__meta {
   overflow: hidden;
   color: rgb(255 255 255 / 0.85);
-  font-size: 13px;
+  font-size: 0.8125rem;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .event-card__signup {
   flex: 0 0 auto;
-  font-size: 13px;
+  font-size: 0.8125rem;
   white-space: nowrap;
 }
 

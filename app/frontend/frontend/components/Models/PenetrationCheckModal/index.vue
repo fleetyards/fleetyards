@@ -598,7 +598,7 @@ const detailSurvival = computed(() => {
     border: 1px solid rgba($gray-light, 0.28);
     background: $gray-black;
     color: $gray;
-    font-size: 12px;
+    font-size: 0.75rem;
     cursor: pointer;
     transition:
       color 0.15s ease,
@@ -618,7 +618,7 @@ const detailSurvival = computed(() => {
   // A beam only changes the time to kill, never the margin.
   &__beam {
     margin-left: 4px;
-    font-size: 10px;
+    font-size: 0.625rem;
     letter-spacing: 0.08em;
     color: var(--color-text-dim);
   }

@@ -95,7 +95,7 @@
   --hardpoint-category-icon-size: 18px;
 
   color: var(--color-muted);
-  font-size: 18px;
+  font-size: 1.125rem;
 
   .loadout-socket--occupied & {
     color: var(--color-success, #{$success});
@@ -115,7 +115,7 @@
   align-items: center;
   gap: 6px;
   color: var(--color-text-dim);
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 .loadout-socket__changed {
@@ -129,7 +129,7 @@
 .loadout-socket__name {
   overflow: hidden;
   color: $text-color;
-  font-size: 15px;
+  font-size: 0.9375rem;
   white-space: nowrap;
   text-overflow: ellipsis;
 
@@ -146,7 +146,7 @@
 
 .loadout-socket__figure {
   color: var(--color-text-dim);
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 // Drawn inward: the socket sits against the edge of the modal's scrolling
@@ -186,11 +186,11 @@
   gap: 6px;
   margin-top: 2px;
   color: var(--color-text-dim);
-  font-size: 12px;
+  font-size: 0.75rem;
 
   i {
     color: var(--color-muted);
-    font-size: 10px;
+    font-size: 0.625rem;
   }
 }
 
@@ -200,11 +200,11 @@
   gap: 6px;
   margin-top: 2px;
   color: var(--color-text-dim);
-  font-size: 12px;
+  font-size: 0.75rem;
 
   i {
     color: var(--color-muted);
-    font-size: 10px;
+    font-size: 0.625rem;
   }
 }
 
@@ -214,9 +214,9 @@
   gap: 6px;
   margin-top: 2px;
   color: var(--color-danger, #{$danger});
-  font-size: 12px;
+  font-size: 0.75rem;
 
   i {
-    font-size: 10px;
+    font-size: 0.625rem;
   }
 }

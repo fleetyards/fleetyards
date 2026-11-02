@@ -356,7 +356,7 @@ const openDeflectionCheck = () => {
   }
 
   &__pct {
-    font-size: 11px;
+    font-size: 0.6875rem;
     color: $gray;
     font-variant-numeric: tabular-nums;
     min-width: 34px;
@@ -372,7 +372,7 @@ const openDeflectionCheck = () => {
   margin: 0 0 4px;
 
   dt {
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 400;
     color: $gray-light;
     white-space: nowrap;
@@ -408,12 +408,12 @@ const openDeflectionCheck = () => {
   white-space: nowrap;
 
   &__label {
-    font-size: 11px;
+    font-size: 0.6875rem;
     color: $gray;
   }
 
   &__value {
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 700;
     color: lighten($text-color, 15%);
     font-variant-numeric: tabular-nums;
@@ -448,7 +448,7 @@ const openDeflectionCheck = () => {
 
   &__label {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: lighten($text-color, 10%);
@@ -457,13 +457,13 @@ const openDeflectionCheck = () => {
   &__value {
     font-family: "Orbitron", tahoma, sans-serif;
     font-weight: 700;
-    font-size: 15px;
+    font-size: 0.9375rem;
     color: lighten($text-color, 15%);
     font-variant-numeric: tabular-nums;
   }
 
   &__unit {
-    font-size: 11px;
+    font-size: 0.6875rem;
     font-weight: 400;
     color: $gray;
   }

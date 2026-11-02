@@ -30,7 +30,7 @@
 
   &__name {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: $gray-light;
@@ -46,7 +46,7 @@
     flex: none;
     padding: 2px 8px;
     color: var(--color-text-dim);
-    font-size: 11px;
+    font-size: 0.6875rem;
     background: none;
     border: 1px solid rgba($gray-light, 0.35);
     border-radius: 4px;
@@ -67,14 +67,14 @@
     min-width: 0;
     overflow: hidden;
     color: var(--color-text-dim);
-    font-size: 12px;
+    font-size: 0.75rem;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
   &__gate {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--color-warning, #fa6800);
@@ -101,7 +101,7 @@
     color: color.adjust($text-color, $lightness: 15%);
     font-family: "Orbitron", tahoma, sans-serif;
     font-weight: 700;
-    font-size: 12px;
+    font-size: 0.75rem;
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
   }
@@ -110,7 +110,7 @@
   // for. Quieter than a name, because it is not one.
   &__unmapped {
     font-family: "Open Sans", tahoma, sans-serif;
-    font-size: 12px;
+    font-size: 0.75rem;
     color: var(--color-muted, #7a8288);
   }
 
@@ -138,7 +138,7 @@
 
   &__quality-label {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--color-muted, #7a8288);
@@ -163,7 +163,7 @@
     background: none;
     border: 0;
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     font-weight: 700;
     font-variant-numeric: tabular-nums;
     color: var(--color-muted, #7a8288);
@@ -242,7 +242,7 @@
     flex: none;
     width: 66px;
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 13px;
+    font-size: 0.8125rem;
     font-weight: 700;
     text-align: right;
     font-variant-numeric: tabular-nums;
@@ -275,7 +275,7 @@
 
   &__below {
     margin: 4px 0 0;
-    font-size: 11.5px;
+    font-size: 0.71875rem;
     color: var(--color-warning, #fa6800);
   }
 
@@ -303,7 +303,7 @@
     padding: 5px 8px;
     margin: 0 -8px;
     border-radius: var(--radius-control-bare, 6px);
-    font-size: 12.5px;
+    font-size: 0.78125rem;
     transition: background-color 120ms ease;
 
     &:hover {
@@ -351,7 +351,7 @@
   &__held-grade {
     padding: 2px 8px;
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     font-weight: 700;
     color: var(--color-text, #c8c8c8);
     background: var(--color-control, rgb(39 43 48 / 0.9));
@@ -411,7 +411,7 @@
   // is the thing that stands out.
   &__held-tag {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--color-gray, #52575c);
@@ -451,7 +451,7 @@
 
   &__stat-name {
     min-width: 0;
-    font-size: 13.5px;
+    font-size: 0.84375rem;
     color: var(--color-text, #c8c8c8);
   }
 
@@ -460,7 +460,7 @@
   &__result {
     flex: none;
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 21px;
+    font-size: 1.3125rem;
     font-weight: 700;
     line-height: 1.1;
     color: #fff;
@@ -524,7 +524,7 @@
     flex-wrap: wrap;
     align-items: baseline;
     gap: 4px 14px;
-    font-size: 11.5px;
+    font-size: 0.71875rem;
     color: var(--color-gray, #52575c);
     font-variant-numeric: tabular-nums;
   }
@@ -556,7 +556,7 @@
 
   &__stat-unvalued {
     flex: none;
-    font-size: 11.5px;
+    font-size: 0.71875rem;
     font-style: italic;
     color: var(--color-gray, #52575c);
   }
@@ -573,7 +573,7 @@
   &__no-stats {
     margin: 0;
     padding: 10px 0 13px;
-    font-size: 12.5px;
+    font-size: 0.78125rem;
     color: var(--color-gray, #52575c);
   }
 }

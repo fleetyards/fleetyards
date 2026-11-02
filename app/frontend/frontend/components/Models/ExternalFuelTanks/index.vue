@@ -115,20 +115,20 @@ const groups = computed<CapacityGroup[]>(() =>
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: lighten($text-color, 15%);
 }
 
 .fuel-tank__count {
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-variant-numeric: tabular-nums;
   color: lighten($text-color, 15%);
 }
 
 .fuel-tank__share {
   flex: 0 0 auto;
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: $gray;
 }
 

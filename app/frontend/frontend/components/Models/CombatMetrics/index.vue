@@ -268,7 +268,7 @@ const showControlComposition = computed(() =>
 
 .metrics-card__aux-sub {
   font-family: inherit;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 400;
   color: var(--color-text-dim);
 }

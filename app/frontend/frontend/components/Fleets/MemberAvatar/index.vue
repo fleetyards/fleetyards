@@ -88,7 +88,7 @@ const squadronNames = computed(() =>
   top: 5px;
   right: 5px;
   transform: translate(50%, -50%);
-  font-size: 14px;
+  font-size: 0.875rem;
   line-height: 1;
   --fa-secondary-color: color-mix(
     in srgb,

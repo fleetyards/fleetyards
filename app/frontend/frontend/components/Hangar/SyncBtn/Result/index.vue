@@ -549,7 +549,7 @@ const hasWarnings = computed(
 .hangar-sync-result__heading {
   margin: 0;
   color: var(--color-text-dim, #959595);
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: normal;
   font-family: inherit;
   letter-spacing: 0.08em;
@@ -572,7 +572,7 @@ const hasWarnings = computed(
   margin: 0;
   padding: 11px 14px 8px;
   color: var(--color-lifted, #eee);
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: normal;
   font-family: inherit;
 }
@@ -585,7 +585,7 @@ const hasWarnings = computed(
 .hangar-sync-result__count {
   min-width: 22px;
   padding: 1px 8px;
-  font-size: 12px;
+  font-size: 0.75rem;
   text-align: center;
   border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
   border-radius: 999px;
@@ -607,6 +607,6 @@ const hasWarnings = computed(
   align-items: center;
   gap: 6px;
   align-self: flex-start;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 </style>

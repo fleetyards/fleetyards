@@ -164,7 +164,7 @@ const groups = computed((): Group[] => {
 
   &__kind {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -172,14 +172,14 @@ const groups = computed((): Group[] => {
 
   &__total {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 600;
     font-variant-numeric: tabular-nums;
   }
 
   &__note {
     margin: 4px 0 0;
-    font-size: 12px;
+    font-size: 0.75rem;
     color: var(--color-text-dim, #959595);
   }
 

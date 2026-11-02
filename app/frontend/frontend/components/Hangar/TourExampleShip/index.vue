@@ -45,7 +45,7 @@ const { t } = useI18n();
   }
 
   &__title {
-    font-size: 18px;
+    font-size: 1.125rem;
     font-weight: 600;
   }
 
@@ -60,7 +60,7 @@ const { t } = useI18n();
     display: flex;
     justify-content: center;
     padding: 24px;
-    font-size: 100px;
+    font-size: 6.25rem;
     color: var(--color-primary);
   }
 

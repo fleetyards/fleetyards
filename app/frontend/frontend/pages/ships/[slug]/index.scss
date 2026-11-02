@@ -270,14 +270,14 @@
 // the key figures start within the first screen of a phone.
 @media (max-width: 576px) {
   .headline {
-    font-size: 26px;
+    font-size: 1.625rem;
   }
 
   .manufacturer {
     justify-content: flex-start;
     margin-top: 4px;
     padding-right: 0;
-    font-size: 14px;
+    font-size: 0.875rem;
 
     .manufacturer-logo {
       position: static;

@@ -474,7 +474,7 @@ const subtitle = computed(() => {
 .ship-drag-handle {
   cursor: grab;
   color: var(--color-muted, #7a8288);
-  font-size: 13px;
+  font-size: 0.8125rem;
   letter-spacing: -0.15em;
   user-select: none;
 }
@@ -483,7 +483,7 @@ const subtitle = computed(() => {
    sits on a hull or on the placeholder's art. A listed spot names its ships
    here, so this is the card's substance rather than an aside. */
 .ship-subtitle {
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--color-lifted, #eee);
 }
 
@@ -492,7 +492,7 @@ const subtitle = computed(() => {
 .event-ship-card__override {
   font-family: "Open Sans", sans-serif;
   font-weight: 600;
-  font-size: 12px;
+  font-size: 0.75rem;
   letter-spacing: 0.08em;
   color: var(--color-gray-light, #7a8288);
   margin-left: 6px;
@@ -500,7 +500,7 @@ const subtitle = computed(() => {
 
 .event-ship-card__desc {
   margin: 14px 0 0;
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--color-muted, #7a8288);
 }
 

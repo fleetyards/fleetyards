@@ -267,13 +267,13 @@ const openAvailability = () => {
     }
 
     .metrics-card__tile__value {
-      font-size: 15px;
+      font-size: 0.9375rem;
     }
   }
 
   &__chip {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: $gray-light;
@@ -286,7 +286,7 @@ const openAvailability = () => {
   // Not `__hint`: that is sized for the explanatory sentences the other cards
   // end on, and this is a value people actually read off the card.
   &__updated {
-    font-size: 13px;
+    font-size: 0.8125rem;
     color: $text-color;
     font-variant-numeric: tabular-nums;
 

@@ -283,7 +283,7 @@ const timeConfig = computed(() => ({
   padding: 6px 12px 6px 36px;
   color: var(--color-text, #c8c8c8);
   font-family: inherit;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 400;
   line-height: 1.42857;
   text-overflow: ellipsis;

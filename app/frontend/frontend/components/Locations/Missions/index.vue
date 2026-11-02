@@ -167,6 +167,6 @@ const standing = (mission: GameMission) => {
 .location-missions__all {
   display: inline-block;
   margin-top: 10px;
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 </style>

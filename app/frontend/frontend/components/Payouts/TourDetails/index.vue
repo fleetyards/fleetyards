@@ -408,7 +408,7 @@ const shareUrl = computed(() => {
 
 .tour-meta__date {
   color: var(--color-muted, #7a8288);
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 .tour-description {

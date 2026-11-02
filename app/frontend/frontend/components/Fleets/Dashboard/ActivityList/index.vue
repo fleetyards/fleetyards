@@ -200,7 +200,7 @@ const metaFor = (entry: FleetActivity) =>
 
 .activity-list__meta {
   color: var(--color-text-dim, #959595);
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 
 .activity-list__mine {
@@ -208,7 +208,7 @@ const metaFor = (entry: FleetActivity) =>
   padding: 0 6px;
   border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
   border-radius: 999px;
-  font-size: 11px;
+  font-size: 0.6875rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }

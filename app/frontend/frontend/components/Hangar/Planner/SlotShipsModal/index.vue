@@ -307,7 +307,7 @@ const editSettings = () =>
 
   dt {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 10px;
+    font-size: 0.625rem;
     font-weight: 400;
     letter-spacing: 0.16em;
     text-transform: uppercase;
@@ -316,7 +316,7 @@ const editSettings = () =>
 
   dd {
     margin: 0;
-    font-size: 13.5px;
+    font-size: 0.84375rem;
     font-weight: 600;
     color: var(--color-lifted);
   }

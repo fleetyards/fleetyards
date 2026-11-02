@@ -72,7 +72,7 @@ const meta = computed(() => {
   background: var(--color-success, #5cb85c);
   color: #000;
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }

@@ -3,7 +3,7 @@
 // scope, so the card's own rule cannot reach it.
 @mixin stats-card-label {
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-text-dim, #959595);

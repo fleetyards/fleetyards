@@ -43,7 +43,7 @@ withDefaults(defineProps<Props>(), {
 .dashboard-empty__icon {
   flex: 0 0 24px;
   color: var(--color-muted, #7a8288);
-  font-size: 20px;
+  font-size: 1.25rem;
   text-align: center;
 }
 
@@ -62,12 +62,12 @@ withDefaults(defineProps<Props>(), {
 
 .dashboard-empty__hint {
   color: var(--color-text-dim, #959595);
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 
 .dashboard-empty__action {
   flex: 0 0 auto;
-  font-size: 13px;
+  font-size: 0.8125rem;
   white-space: nowrap;
 }
 </style>

@@ -83,7 +83,7 @@ const items = computed(() =>
 .home-landing-stats__label {
   color: var(--color-text-dim, #959595);
   font-family: Orbitron, sans-serif;
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 400;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -93,7 +93,7 @@ const items = computed(() =>
   margin: 0;
   color: var(--color-lifted, #eee);
   font-family: Orbitron, sans-serif;
-  font-size: 22px;
+  font-size: 1.375rem;
 }
 
 @media (max-width: 767px) {
@@ -109,13 +109,13 @@ const items = computed(() =>
   }
 
   .home-landing-stats__label {
-    font-size: 9px;
+    font-size: 0.5625rem;
     letter-spacing: 0.12em;
     text-align: center;
   }
 
   .home-landing-stats__value {
-    font-size: 16px;
+    font-size: 1rem;
   }
 }
 </style>

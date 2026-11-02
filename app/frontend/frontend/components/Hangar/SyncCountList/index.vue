@@ -184,7 +184,7 @@ const aside = (count: SyncCount) => {
   min-width: 0;
   margin-right: 12px;
   color: var(--color-text-dim, #959595);
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: normal;
 }
 
@@ -195,13 +195,13 @@ const aside = (count: SyncCount) => {
 .sync-count-list__note {
   margin-left: 6px;
   color: var(--color-success, #5cb85c);
-  font-size: 12px;
+  font-size: 0.75rem;
 }
 
 .sync-count-list__value {
   margin: 0;
   color: var(--color-lifted, #eee);
-  font-size: 15px;
+  font-size: 0.9375rem;
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
@@ -209,7 +209,7 @@ const aside = (count: SyncCount) => {
 .sync-count-list__aside {
   margin: 0;
   color: var(--color-text-dim, #959595);
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }

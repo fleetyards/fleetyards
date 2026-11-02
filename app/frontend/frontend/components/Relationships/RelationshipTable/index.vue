@@ -186,7 +186,7 @@ const canEnd = (row: RelationshipRow) => row.state === "accepted";
 }
 
 .relationship-party__location {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--color-text-dim, #959595);
 }
 </style>

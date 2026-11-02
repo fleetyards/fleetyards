@@ -173,10 +173,10 @@ const railStyle = computed(() => ({
   }
 
   &-action {
-    font-size: 18px;
+    font-size: 1.125rem;
 
     > :first-child {
-      font-size: 18px;
+      font-size: 1.125rem;
     }
   }
 

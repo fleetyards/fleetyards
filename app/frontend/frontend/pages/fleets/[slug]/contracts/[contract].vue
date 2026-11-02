@@ -697,7 +697,7 @@ const crumbs = computed<Crumb[]>(() => [
 
   &__kind {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: $gray-light;
@@ -745,7 +745,7 @@ const crumbs = computed<Crumb[]>(() => [
     // the unit wraps under the amount rather than being cut off.
     .metrics-card__tile--primary .metrics-card__tile__value {
       flex-wrap: wrap;
-      font-size: clamp(16px, 11cqw, 30px);
+      font-size: clamp(1rem, 11cqw, 1.875rem);
     }
   }
 
@@ -793,7 +793,7 @@ const crumbs = computed<Crumb[]>(() => [
 
   &__label {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 0.6875rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: $gray-light;

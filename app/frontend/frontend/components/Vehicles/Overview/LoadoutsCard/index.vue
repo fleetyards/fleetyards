@@ -200,17 +200,17 @@ const loadoutsRoute = computed(() =>
 
       i,
       svg {
-        font-size: 18px;
+        font-size: 1.125rem;
       }
     }
 
     :deep(.addon-option__name) {
-      font-size: 14px;
+      font-size: 0.875rem;
       font-weight: 600;
     }
 
     :deep(.addon-option__contents) {
-      font-size: 12px;
+      font-size: 0.75rem;
     }
   }
 }

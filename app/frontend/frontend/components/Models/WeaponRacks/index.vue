@@ -129,25 +129,25 @@ const groupSize = (group: RackSlotGroup) => {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: lighten($text-color, 15%);
 }
 
 .rack-slot__restriction {
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: $gray;
 }
 
 .rack-slot__count {
   font-family: "Orbitron", tahoma, sans-serif;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-variant-numeric: tabular-nums;
   color: lighten($text-color, 15%);
 }
 
 .rack-slot__size {
   flex: 0 0 auto;
-  font-size: 11px;
+  font-size: 0.6875rem;
   color: $gray;
 }
 

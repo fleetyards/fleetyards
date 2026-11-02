@@ -157,6 +157,6 @@ const onSubmit = async () => {
 .admin-homepage__info {
   margin: -8px 0 16px;
   color: var(--color-text-dim, #959595);
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 </style>
