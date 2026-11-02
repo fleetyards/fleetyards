@@ -185,6 +185,7 @@
         "cargoGrids": "Cargo Grids",
         "plaque": "Dedication Plaques",
         "tradeRoutes": "Trade Routes",
+        "dressingRoom": "Dressing Room",
         "tours": {
           "index": "Tours",
           "add": "Create a new Tour",

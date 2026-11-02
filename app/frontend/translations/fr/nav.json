@@ -137,6 +137,7 @@
         "cargoGrids": "Grilles de Fret",
         "plaque": "Plaques de dédicace",
         "tradeRoutes": "Routes commerciales",
+        "dressingRoom": "Cabine d'essayage",
         "tours": "Expéditions"
       },
       "api": "Documentation API",

@@ -1,0 +1,43 @@
+{
+  "zh-TW": {
+    "dressingRoom": {
+      "lead": "把護甲和內襯服搭配在一起，以 3D 檢視裝扮。透過連結分享，或登入後儲存。",
+      "slots": {
+        "helmet": "頭盔",
+        "torso": "軀幹",
+        "arms": "手臂",
+        "legs": "腿部",
+        "backpack": "背包",
+        "undersuit": "內襯服"
+      },
+      "search": "搜尋%{slot}",
+      "noResults": "此欄位沒有找到任何物品。",
+      "choose": "選擇…",
+      "remove": "移除",
+      "openItem": "開啟物品頁面",
+      "notFound": "找不到物品",
+      "noHolo": "尚無 3D 模型",
+      "empty": "為任一欄位選擇一件裝備即可檢視裝扮。",
+      "copyLink": "複製連結",
+      "savedOutfits": "已儲存的裝扮",
+      "signInToSave": "登入後即可儲存裝扮。",
+      "outfitName": "裝扮名稱",
+      "nameTaken": "你已經有一套同名的裝扮。",
+      "saveNew": "另存為新裝扮",
+      "saveChanges": "儲存變更",
+      "noOutfits": "還沒有儲存的裝扮。",
+      "pieces": {
+        "one": "%{count} 件",
+        "other": "%{count} 件"
+      },
+      "confirmDelete": "刪除裝扮 %{name}？",
+      "messages": {
+        "saved": "裝扮已儲存。",
+        "saveFailed": "無法儲存裝扮。",
+        "deleteFailed": "無法刪除裝扮。",
+        "linkCopied": "連結已複製。",
+        "copyFailed": "無法複製連結。"
+      }
+    }
+  }
+}

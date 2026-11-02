@@ -1,0 +1,43 @@
+{
+  "it": {
+    "dressingRoom": {
+      "lead": "Abbina armatura e tuta interna e guarda l'outfit in 3D. Condividilo con un link o accedi per salvarlo.",
+      "slots": {
+        "helmet": "Casco",
+        "torso": "Torso",
+        "arms": "Braccia",
+        "legs": "Gambe",
+        "backpack": "Zaino",
+        "undersuit": "Tuta interna"
+      },
+      "search": "Cerca %{slot}",
+      "noResults": "Nessun risultato per questo slot.",
+      "choose": "Scegli…",
+      "remove": "Rimuovi",
+      "openItem": "Apri la pagina dell'oggetto",
+      "notFound": "Oggetto non trovato",
+      "noHolo": "Ancora nessun modello 3D",
+      "empty": "Scegli un pezzo per uno slot qualsiasi per vedere l'outfit.",
+      "copyLink": "Copia link",
+      "savedOutfits": "Outfit salvati",
+      "signInToSave": "Accedi per salvare gli outfit.",
+      "outfitName": "Nome dell'outfit",
+      "nameTaken": "Hai già un outfit con questo nome.",
+      "saveNew": "Salva come nuovo outfit",
+      "saveChanges": "Salva modifiche",
+      "noOutfits": "Ancora nessun outfit salvato.",
+      "pieces": {
+        "one": "%{count} pezzo",
+        "other": "%{count} pezzi"
+      },
+      "confirmDelete": "Eliminare l'outfit %{name}?",
+      "messages": {
+        "saved": "Outfit salvato.",
+        "saveFailed": "Impossibile salvare l'outfit.",
+        "deleteFailed": "Impossibile eliminare l'outfit.",
+        "linkCopied": "Link copiato.",
+        "copyFailed": "Impossibile copiare il link."
+      }
+    }
+  }
+}

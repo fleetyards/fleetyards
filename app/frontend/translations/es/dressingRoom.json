@@ -1,0 +1,43 @@
+{
+  "es": {
+    "dressingRoom": {
+      "lead": "Combina armadura y traje interior y mira el atuendo en 3D. Compártelo con un enlace o inicia sesión para guardarlo.",
+      "slots": {
+        "helmet": "Casco",
+        "torso": "Torso",
+        "arms": "Brazos",
+        "legs": "Piernas",
+        "backpack": "Mochila",
+        "undersuit": "Traje interior"
+      },
+      "search": "Buscar %{slot}",
+      "noResults": "No se encontró nada para esta ranura.",
+      "choose": "Elegir…",
+      "remove": "Quitar",
+      "openItem": "Abrir la página del objeto",
+      "notFound": "Objeto no encontrado",
+      "noHolo": "Aún sin modelo 3D",
+      "empty": "Elige una pieza para cualquier ranura para ver el atuendo.",
+      "copyLink": "Copiar enlace",
+      "savedOutfits": "Atuendos guardados",
+      "signInToSave": "Inicia sesión para guardar atuendos.",
+      "outfitName": "Nombre del atuendo",
+      "nameTaken": "Ya tienes un atuendo con este nombre.",
+      "saveNew": "Guardar como nuevo atuendo",
+      "saveChanges": "Guardar cambios",
+      "noOutfits": "Aún no hay atuendos guardados.",
+      "pieces": {
+        "one": "%{count} pieza",
+        "other": "%{count} piezas"
+      },
+      "confirmDelete": "¿Eliminar el atuendo %{name}?",
+      "messages": {
+        "saved": "Atuendo guardado.",
+        "saveFailed": "No se pudo guardar el atuendo.",
+        "deleteFailed": "No se pudo eliminar el atuendo.",
+        "linkCopied": "Enlace copiado.",
+        "copyFailed": "No se pudo copiar el enlace."
+      }
+    }
+  }
+}

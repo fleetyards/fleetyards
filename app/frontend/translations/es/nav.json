@@ -137,6 +137,7 @@
         "cargoGrids": "Grillas de Carga",
         "plaque": "Placas de dedicatoria",
         "tradeRoutes": "Rutas comerciales",
+        "dressingRoom": "Probador",
         "tours": "Expediciones"
       },
       "api": "Documentación API",

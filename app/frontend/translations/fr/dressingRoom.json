@@ -1,0 +1,43 @@
+{
+  "fr": {
+    "dressingRoom": {
+      "lead": "Assemblez une armure et une sous-combinaison et voyez la tenue en 3D. Partagez-la par lien ou connectez-vous pour l'enregistrer.",
+      "slots": {
+        "helmet": "Casque",
+        "torso": "Torse",
+        "arms": "Bras",
+        "legs": "Jambes",
+        "backpack": "Sac à dos",
+        "undersuit": "Sous-combinaison"
+      },
+      "search": "Rechercher : %{slot}",
+      "noResults": "Rien trouvé pour cet emplacement.",
+      "choose": "Choisir…",
+      "remove": "Retirer",
+      "openItem": "Ouvrir la page de l'objet",
+      "notFound": "Objet introuvable",
+      "noHolo": "Pas encore de modèle 3D",
+      "empty": "Choisissez une pièce pour un emplacement pour voir la tenue.",
+      "copyLink": "Copier le lien",
+      "savedOutfits": "Tenues enregistrées",
+      "signInToSave": "Connectez-vous pour enregistrer des tenues.",
+      "outfitName": "Nom de la tenue",
+      "nameTaken": "Vous avez déjà une tenue portant ce nom.",
+      "saveNew": "Enregistrer comme nouvelle tenue",
+      "saveChanges": "Enregistrer les modifications",
+      "noOutfits": "Aucune tenue enregistrée pour l'instant.",
+      "pieces": {
+        "one": "%{count} pièce",
+        "other": "%{count} pièces"
+      },
+      "confirmDelete": "Supprimer la tenue %{name} ?",
+      "messages": {
+        "saved": "Tenue enregistrée.",
+        "saveFailed": "La tenue n'a pas pu être enregistrée.",
+        "deleteFailed": "La tenue n'a pas pu être supprimée.",
+        "linkCopied": "Lien copié.",
+        "copyFailed": "Le lien n'a pas pu être copié."
+      }
+    }
+  }
+}

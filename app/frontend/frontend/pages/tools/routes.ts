@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from "vue-router";
 import { routes as tourRoutes } from "@/frontend/pages/tools/tours/routes";
+import { FeatureFlagName } from "@/services/fyApi";
 
 export const routes: RouteRecordRaw[] = [
   {
@@ -45,6 +46,16 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "tools.tradeRoutes",
       backgroundImage: "bg-7",
+    },
+  },
+  {
+    path: "dressing-room/",
+    name: "dressing-room",
+    component: () => import("@/frontend/pages/tools/dressing-room.vue"),
+    meta: {
+      title: "tools.dressingRoom",
+      backgroundImage: "bg-7",
+      feature: FeatureFlagName.DRESSING_ROOM,
     },
   },
   {

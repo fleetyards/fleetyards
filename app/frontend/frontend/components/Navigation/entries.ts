@@ -240,6 +240,13 @@ export const TOOLS_ITEMS: NavEntry[] = [
     labelKey: "nav.tools.tradeRoutes",
     icon: "fa-duotone fa-route",
   },
+  {
+    key: "dressing-room",
+    route: "dressing-room",
+    labelKey: "nav.tools.dressingRoom",
+    icon: "fa-duotone fa-user-astronaut",
+    featureFlag: FeatureFlagName.DRESSING_ROOM,
+  },
 ];
 
 export const STATS_ENTRY: NavEntry = {
