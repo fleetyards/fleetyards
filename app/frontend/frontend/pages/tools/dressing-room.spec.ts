@@ -71,6 +71,12 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   useCharacterBodies: () => ({ data: bodies }),
 }));
 
+const copied = vi.fn((_text: string) => Promise.resolve());
+
+vi.mock("@/shared/utils/CopyText", () => ({
+  default: (text: string) => copied(text),
+}));
+
 vi.mock("@/shared/components/HoloViewer/index.vue", () => ({
   default: {
     name: "HoloViewer",
@@ -294,6 +300,35 @@ describe("ToolsDressingRoomPage", () => {
     expect(
       wrapper.findComponent({ name: "DressingRoomOutfits" }).props("pending"),
     ).toBe(true);
+  });
+
+  it("shares the body, the pose and the weapon in hand with the outfit", async () => {
+    bodies.value = [
+      MALE,
+      { ...MALE, key: "female", holo: media("female.glb") },
+    ];
+
+    const { wrapper } = await mount({
+      sidearm: "s-38",
+      held: "sidearm",
+      pose: "shop_pose_01",
+      body: "female",
+      outfit: "mine",
+    });
+
+    await wrapper
+      .find('[data-test="dressing-room-copy-link"]')
+      .trigger("click");
+
+    const shared = new URL(copied.mock.calls[0][0].replace("#", ""));
+    expect(Object.fromEntries(shared.searchParams)).toEqual({
+      sidearm: "s-38",
+      held: "sidearm",
+      pose: "shop_pose_01",
+      body: "female",
+    });
+
+    bodies.value = [MALE];
   });
 
   it("shows how to start with nothing to draw", async () => {

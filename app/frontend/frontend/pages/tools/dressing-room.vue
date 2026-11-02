@@ -210,8 +210,13 @@ const { data: bodies } = useCharacterBodies({
   query: { retry: false, refetchOnWindowFocus: false },
 });
 
-// A body that does not load leaves the pieces to stand on their own.
+// A body that does not load leaves the pieces to stand on their own -- that
+// body: another one, however it is picked, is tried afresh.
 const bodyFailed = ref(false);
+
+watch(bodyKey, () => {
+  bodyFailed.value = false;
+});
 
 const body = computed(() =>
   bodyFailed.value
@@ -352,7 +357,6 @@ const bodyOptions = computed(() =>
 );
 
 const selectBody = (key: OutfitBodyEnum) => {
-  bodyFailed.value = false;
   void navigate(selection.value, { body: key });
 };
 
@@ -384,12 +388,20 @@ const outfitItems = computed<OutfitItemInput[]>(() =>
   }),
 );
 
+// Everything that makes the outfit what it looks like, and nothing of the
+// sharer's own: their saved outfit stays out of it.
 const shareUrl = computed(
   () =>
     new URL(
       router.resolve({
         name: "dressing-room",
-        query: outfitQuery(selection.value),
+        query: {
+          ...outfitQuery(selection.value),
+          held: heldWeapon.value,
+          pose: poseName.value,
+          body:
+            bodyKey.value === OutfitBodyEnum.MALE ? undefined : bodyKey.value,
+        },
       }).href,
       window.location.origin,
     ).href,
