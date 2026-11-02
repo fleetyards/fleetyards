@@ -12,6 +12,12 @@ export const mayHaveAr = (
   anchor: HTMLAnchorElement = document.createElement("a"),
 ): boolean => !!anchor.relList?.supports?.("ar") || /android/i.test(userAgent);
 
+// Converting a holo in the page is more than an iPhone holds; an iPad manages.
+// By name rather than by width: an iPad in portrait is as narrow as a phone
+// layout.
+export const isIPhone = (userAgent: string = navigator.userAgent): boolean =>
+  /iPhone|iPod/.test(userAgent);
+
 // Quick Look, which only exists on iOS: the holo is converted to USDZ in the
 // page for it, where Scene Viewer fetches the file itself.
 export const usesQuickLook = (

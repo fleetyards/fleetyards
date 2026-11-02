@@ -7,6 +7,7 @@ import type { Model } from "@/services/fyApi";
 const ar = vi.hoisted(() => ({
   mayHaveAr: true,
   quickLook: false,
+  iPhone: false,
   canActivate: true,
   activateAR: vi.fn(() => Promise.resolve()),
   openQuickLook: vi.fn((_url: string, _wanted?: () => boolean): Promise<void> =>
@@ -18,6 +19,7 @@ const ar = vi.hoisted(() => ({
 vi.mock("@/frontend/utils/arViewer", () => ({
   mayHaveAr: () => ar.mayHaveAr,
   usesQuickLook: () => ar.quickLook,
+  isIPhone: () => ar.iPhone,
   openQuickLook: ar.openQuickLook,
   openQuickLookFile: ar.openQuickLookFile,
   prepareAr: vi.fn(async () =>
@@ -37,11 +39,6 @@ vi.mock("@/shared/composables/useAppNotifications", () => ({
 }));
 
 const mockFlag = ref(true);
-const mockMobile = ref(false);
-
-vi.mock("@/shared/composables/useMobile", () => ({
-  useMobile: () => mockMobile,
-}));
 
 vi.mock("@/frontend/composables/useFeatures", () => ({
   useFeatures: () => ({ isFeatureEnabled: () => mockFlag.value }),
@@ -83,7 +80,7 @@ const button = (wrapper: Awaited<ReturnType<typeof mount>>) =>
 describe("ViewInArBtn", () => {
   beforeEach(() => {
     mockFlag.value = true;
-    mockMobile.value = false;
+    ar.iPhone = false;
     ar.mayHaveAr = true;
     ar.quickLook = false;
     ar.canActivate = true;
@@ -148,12 +145,6 @@ describe("ViewInArBtn", () => {
     ar.canActivate = false;
 
     expect(button(await mount({ model: model() })).exists()).toBe(false);
-  });
-
-  it("keeps Scene Viewer on a phone without a USDZ", async () => {
-    mockMobile.value = true;
-
-    expect(button(await mount({ model: model() })).exists()).toBe(true);
   });
 
   it("hides AR on a device without an AR viewer", async () => {
@@ -241,16 +232,20 @@ describe("ViewInArBtn", () => {
       expect(wrapper.emitted("quickLook")).toBeUndefined();
     });
 
-    it("offers a phone the USDZ built ahead of time", async () => {
-      mockMobile.value = true;
+    it("offers an iPhone the USDZ built ahead of time", async () => {
+      ar.iPhone = true;
 
       expect(button(await mount({ model: withUsdz() })).exists()).toBe(true);
     });
 
-    it("offers a phone no AR without a USDZ, rather than converting the holo", async () => {
-      mockMobile.value = true;
+    it("offers an iPhone no AR without a USDZ, rather than converting the holo", async () => {
+      ar.iPhone = true;
 
       expect(button(await mount({ model: model() })).exists()).toBe(false);
+    });
+
+    it("still converts in the page on an iPad without a USDZ", async () => {
+      expect(button(await mount({ model: model() })).exists()).toBe(true);
     });
 
     it("loads no AR viewer beside the open 3D view", async () => {

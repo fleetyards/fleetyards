@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
+  isIPhone,
   mayHaveAr,
   openQuickLook,
   openQuickLookFile,
@@ -29,6 +30,24 @@ describe("mayHaveAr", () => {
   it("does not expect AR on a desktop", () => {
     expect(
       mayHaveAr("Mozilla/5.0 (Macintosh; Intel Mac OS X 14_0)", anchor(false)),
+    ).toBe(false);
+  });
+});
+
+describe("isIPhone", () => {
+  it("knows an iPhone", () => {
+    expect(
+      isIPhone(
+        "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15",
+      ),
+    ).toBe(true);
+  });
+
+  it("does not take an iPad for one", () => {
+    expect(
+      isIPhone(
+        "Mozilla/5.0 (iPad; CPU OS 18_0 like Mac OS X) AppleWebKit/605.1.15",
+      ),
     ).toBe(false);
   });
 });

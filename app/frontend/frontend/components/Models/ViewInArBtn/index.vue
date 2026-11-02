@@ -9,6 +9,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
+  isIPhone,
   mayHaveAr,
   openQuickLook as presentQuickLook,
   openQuickLookFile,
@@ -18,7 +19,6 @@ import {
 } from "@/frontend/utils/arViewer";
 import { FeatureFlagName, type Model } from "@/services/fyApi";
 import { useFeatures } from "@/frontend/composables/useFeatures";
-import { useMobile } from "@/shared/composables/useMobile";
 
 type Props = {
   model: Model;
@@ -70,12 +70,10 @@ const holoUrl = computed(() => {
 // two the 3D view shows.
 const usdzUrl = computed(() => props.model.media.holoUsdz?.url);
 
-const mobile = useMobile();
-
-// Converting the holo in the page is more than a phone holds, so without a USDZ
-// built ahead of time a phone offers no Quick Look at all.
+// Without a USDZ built ahead of time the page would convert the holo, which an
+// iPhone cannot hold, so there it offers no Quick Look at all.
 const quickLookReady = computed(
-  () => !quickLook || !!usdzUrl.value || !mobile.value,
+  () => !quickLook || !!usdzUrl.value || !isIPhone(),
 );
 
 // Only a holo exported in meters can be placed at true size.
