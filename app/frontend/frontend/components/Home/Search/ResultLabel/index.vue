@@ -89,6 +89,7 @@ const nameParts = computed(() => {
     <span
       v-else-if="image"
       class="search-result-label__thumb"
+      :class="{ 'search-result-label__thumb--framed': cover }"
       aria-hidden="true"
     >
       <img
@@ -147,9 +148,14 @@ const nameParts = computed(() => {
   width: 64px;
   height: 40px;
   overflow: hidden;
-  background: var(--color-control, rgb(39 43 48 / 0.9));
-  border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
-  border-radius: 6px;
+
+  // A cut-out stands on the panel as the ship lists show it; only a photo,
+  // cropped to fill, needs an edge.
+  &--framed {
+    background: var(--color-control, rgb(39 43 48 / 0.9));
+    border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+    border-radius: 6px;
+  }
 }
 
 // A drawn body or star needs no frame: it is round, and as tall as a picture.
