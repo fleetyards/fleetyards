@@ -400,7 +400,8 @@
         "label": "Switch between your hangar and your fleets",
         "personal": "Personal",
         "yourFleets": "Your fleets",
-        "fleetDirectory": "Fleet directory"
+        "fleetDirectory": "Fleet directory",
+        "switch": "Switch"
       },
       "account": {
         "menu": "Account menu",

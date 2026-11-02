@@ -5,20 +5,21 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { FLEET_GLYPH } from "@/shared/glyphs/fleets";
 import { SHIP_GLYPH } from "@/shared/glyphs/ships";
 import AppNavigationMobile from "@/shared/components/AppNavigation/Mobile/index.vue";
 import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
 import NotificationsNav from "@/frontend/components/Navigation/NotificationsNav/index.vue";
+import FleetHub from "./FleetHub/index.vue";
 import { useSessionStore } from "@/frontend/stores/session";
 import { storeToRefs } from "pinia";
 import { useNavContext } from "@/frontend/composables/useNavContext";
-import { useFleetNavAccess } from "@/frontend/composables/useFleetNavAccess";
 import { useHangarStore } from "@/frontend/stores/hangar";
+import { useNavStore } from "@/shared/stores/nav";
+import { useFleetNavAccess } from "@/frontend/composables/useFleetNavAccess";
+import { fleetInitials } from "@/frontend/utils/fleetInitials";
 import {
   useFleet as useFleetQuery,
   usePublicFleet as usePublicFleetQuery,
-  useMyFleets as useMyFleetsQuery,
 } from "@/services/fyApi";
 
 const sessionStore = useSessionStore();
@@ -37,13 +38,13 @@ const hangarStore = useHangarStore();
 
 const { preview: hangarPreview } = storeToRefs(hangarStore);
 
+const navStore = useNavStore();
+
+const { collapsed: navCollapsed } = storeToRefs(navStore);
+
 const routeActive = (routeName: string) => {
   return routeName === route.name;
 };
-
-const shipsNavActive = computed(() => {
-  return ["fleet-ships", "fleet-fleetchart"].includes(String(route.name));
-});
 
 const fleetSlug = computed(() => contextFleetSlug.value ?? "");
 
@@ -65,73 +66,83 @@ const { data: publicFleetData } = usePublicFleetQuery(fleetSlug, {
 
 const currentFleet = computed(() => fleetData.value || publicFleetData.value);
 
-const {
-  showContractsNav,
-  showEventsNav,
-  eventsNavRoute,
-  contractsNavActive,
-  eventsNavActive,
-} = useFleetNavAccess(currentFleet);
+const { showContractsNav, showEventsNav } = useFleetNavAccess(currentFleet);
 
-const { data: myFleets, isPending: myFleetsPending } = useMyFleetsQuery({
-  query: {
-    refetchOnWindowFocus: false,
-    enabled: isAuthenticated,
-  },
+const hubOpen = ref(false);
+
+// The drawer slides the bar aside, and the sheet docked to it with it.
+watch(navCollapsed, (collapsed) => {
+  if (!collapsed) {
+    hubOpen.value = false;
+  }
 });
 
-const primaryFleet = computed(() => myFleets.value?.[0]);
+watch(isFleetRoute, (inFleet) => {
+  if (!inFleet) {
+    hubOpen.value = false;
+  }
+});
 </script>
 
 <template>
   <AppNavigationMobile v-if="route.name">
+    <template v-if="isFleetRoute && currentFleet" #overlay>
+      <FleetHub v-model:open="hubOpen" :fleet="currentFleet" />
+    </template>
     <template v-if="isFleetRoute">
       <template v-if="currentFleet">
         <NavItem
-          :to="{ name: 'fleet', params: { slug: currentFleet.slug } }"
-          :image="currentFleet.logo?.smallUrl"
-          :active="routeActive('fleet')"
-          :label="currentFleet.name"
+          :to="{ name: 'home' }"
+          :active="routeActive('home')"
+          icon="fa-duotone fa-home-alt"
         />
         <NavItem
-          v-if="currentFleet.publicFleet || currentFleet.myFleet"
-          :to="{ name: 'fleet-ships', params: { slug: currentFleet.slug } }"
-          :active="shipsNavActive"
-          :icon="SHIP_GLYPH"
+          v-if="isAuthenticated || !hangarPreview"
+          :to="{ name: 'hangar' }"
+          icon="fa-duotone fa-warehouse"
         />
         <NavItem
-          v-if="currentFleet.myFleet"
-          :to="{
-            name: 'fleet-members',
-            params: { slug: currentFleet.slug },
-          }"
-          :active="String(route.name).startsWith('fleet-members')"
-          icon="fa-duotone fa-users"
+          v-else
+          :to="{ name: 'hangar-preview' }"
+          icon="fa-light fa-warehouse"
         />
-        <NavItem
-          v-if="showContractsNav"
-          data-tour="fleet-contracts"
-          :to="{
-            name: 'fleet-contracts',
-            params: { slug: currentFleet.slug },
-          }"
-          :active="contractsNavActive"
-          icon="fa-duotone fa-clipboard-list"
-        />
-        <NavItem
-          v-if="showEventsNav"
-          data-tour="fleet-events"
-          :to="{
-            name: eventsNavRoute,
-            params: { slug: currentFleet.slug },
-          }"
-          :active="eventsNavActive"
-          :icon="
-            eventsNavRoute === 'fleet-missions'
-              ? 'fa-duotone fa-flag-checkered'
-              : 'fa-duotone fa-calendar-day'
-          "
-        />
+        <!-- Every section of the fleet, and the way out of it, behind its own
+             mark: the bar keeps one shape whatever the reader's role. -->
+        <li class="fleet-hub-trigger">
+          <button
+            type="button"
+            class="fleet-hub-trigger__button"
+            :class="{ 'fleet-hub-trigger__button--open': hubOpen }"
+            :aria-label="currentFleet.name"
+            :aria-expanded="hubOpen"
+            aria-controls="fleet-hub-sheet"
+            data-test="fleet-hub-trigger"
+            @click="hubOpen = !hubOpen"
+          >
+            <img
+              v-if="currentFleet.logo?.smallUrl"
+              :src="currentFleet.logo.smallUrl"
+              alt=""
+              class="fleet-hub-trigger__logo"
+            />
+            <span v-else aria-hidden="true">
+              {{ fleetInitials(currentFleet.name) }}
+            </span>
+          </button>
+          <!-- Where the tour points for sections that now live in the hub,
+               present only while the section is, as the tabs were. -->
+          <span
+            v-if="showEventsNav"
+            class="fleet-hub-trigger__tour"
+            data-tour="fleet-events"
+          />
+          <span
+            v-if="showContractsNav"
+            class="fleet-hub-trigger__tour"
+            data-tour="fleet-contracts"
+          />
+        </li>
+        <NotificationsNav v-if="isAuthenticated" icon-only />
       </template>
     </template>
     <template v-else>
@@ -151,16 +162,48 @@ const primaryFleet = computed(() => myFleets.value?.[0]);
         :to="{ name: 'hangar-preview' }"
         icon="fa-light fa-warehouse"
       />
-      <NavItem
-        v-if="primaryFleet"
-        :to="{ name: 'fleet', params: { slug: primaryFleet.slug } }"
-        :image="primaryFleet.logo?.smallUrl"
-        :icon="FLEET_GLYPH"
-      />
-      <NotificationsNav
-        v-else-if="isAuthenticated && !myFleetsPending"
-        icon-only
-      />
+      <NotificationsNav v-if="isAuthenticated" icon-only />
     </template>
   </AppNavigationMobile>
 </template>
+
+<style lang="scss" scoped>
+.fleet-hub-trigger__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  margin-top: -18px;
+  padding: 0;
+  overflow: hidden;
+  font-family: "Orbitron", sans-serif;
+  font-size: 18px;
+  color: var(--color-lifted, #eee);
+  background: var(--color-gray-black, #1a1d21);
+  border: 2px solid var(--color-edge, rgb(122 130 136 / 0.5));
+  border-radius: 50%;
+  cursor: pointer;
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+
+  &--open {
+    border-color: var(--color-primary, #428bca);
+    box-shadow: 0 0 12px
+      color-mix(in srgb, var(--color-primary-shade, #245682) 90%, transparent);
+  }
+}
+
+.fleet-hub-trigger__tour {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.fleet-hub-trigger__logo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+</style>

@@ -400,7 +400,8 @@
         "label": "在你的机库和舰队之间切换",
         "personal": "个人",
         "yourFleets": "你的舰队",
-        "fleetDirectory": "舰队目录"
+        "fleetDirectory": "舰队目录",
+        "switch": "切换"
       },
       "account": {
         "menu": "账户菜单",

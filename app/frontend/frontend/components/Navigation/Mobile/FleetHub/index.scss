@@ -1,0 +1,211 @@
+/*
+ * Rendered inside the mobile bar's own fixed box, ahead of the tabs, so the bar
+ * stays on top of the scrim and the sheet docks to its upper edge without a
+ * z-index layer of its own.
+ */
+.fleet-hub__scrim {
+  position: fixed;
+  inset: 0;
+  background: rgb(0 0 0 / 0.65);
+}
+
+.fleet-hub__sheet {
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  left: 0;
+  max-height: calc(100dvh - 140px);
+  overflow-y: auto;
+  padding: 20px 16px 16px;
+  background: rgb(39 43 48 / 0.98);
+  border: 2px solid var(--color-edge, rgb(122 130 136 / 0.5));
+  border-bottom: 0;
+  border-radius: var(--radius-surface, 16px) var(--radius-surface, 16px) 0 0;
+  box-shadow: var(--shadow-surface, 0 6px 18px -12px rgb(0 0 0 / 0.8));
+
+  &::before {
+    position: absolute;
+    top: -2px;
+    right: max(10px, var(--cap-inset, 12%));
+    left: max(10px, var(--cap-inset, 12%));
+    height: var(--cap-h, 4px);
+    background: var(--color-endcap, #7a8288);
+    border-radius: 0 0 var(--cap-r, 3px) var(--cap-r, 3px);
+    content: "";
+  }
+}
+
+.fleet-hub__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.fleet-hub__title {
+  flex: 1;
+  min-width: 0;
+  margin: 4px 0 0;
+  overflow: hidden;
+  font-family: "Orbitron", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--color-lifted, #eee);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fleet-hub__switch {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 12px;
+  font: inherit;
+  font-size: 13px;
+  color: var(--color-text, #c8c8c8);
+  background: var(--color-control, rgb(39 43 48 / 0.9));
+  border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
+  border-radius: var(--radius-control, 8px);
+  cursor: pointer;
+}
+
+.fleet-hub__grid,
+.fleet-hub__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fleet-hub__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.fleet-hub__tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 76px;
+  padding: 0 4px;
+  font-size: 12px;
+  color: var(--color-text, #c8c8c8);
+  text-align: center;
+  text-decoration: none;
+  background: var(--color-control, rgb(39 43 48 / 0.9));
+  border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+  border-radius: var(--radius-surface-slim, 12px);
+
+  &--active {
+    color: var(--color-lifted, #eee);
+    background: color-mix(
+      in srgb,
+      var(--color-primary, #428bca) 14%,
+      transparent
+    );
+    border-color: var(--color-primary, #428bca);
+  }
+}
+
+.fleet-hub__icon {
+  height: 22px;
+  font-size: 22px;
+}
+
+.fleet-hub__label {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fleet-hub__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fleet-hub__heading {
+  margin: 8px 0 0;
+  font-family: "Orbitron", sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: var(--color-text-dim, #959595);
+  text-transform: uppercase;
+}
+
+.fleet-hub__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+  padding: 0 14px;
+  font-size: 15px;
+  color: var(--color-text, #c8c8c8);
+  text-decoration: none;
+  background: var(--color-control, rgb(39 43 48 / 0.9));
+  border: 1px solid var(--color-edge-soft, rgb(122 130 136 / 0.28));
+  border-radius: var(--radius-surface-slim, 12px);
+
+  > i {
+    width: 28px;
+    font-size: 20px;
+    text-align: center;
+  }
+
+  &--active {
+    color: var(--color-lifted, #eee);
+    border-color: var(--color-primary, #428bca);
+  }
+
+  &--bare {
+    min-height: 44px;
+    background: transparent;
+    border-color: transparent;
+  }
+}
+
+.fleet-hub__logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  font-family: "Orbitron", sans-serif;
+  font-size: 11px;
+  color: var(--color-lifted, #eee);
+  background: var(--color-gray-black, #1a1d21);
+  border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.fleet-hub-enter-active,
+.fleet-hub-leave-active {
+  transition: opacity 200ms ease;
+
+  .fleet-hub__sheet {
+    transition: transform 200ms ease;
+  }
+}
+
+.fleet-hub-enter-from,
+.fleet-hub-leave-to {
+  opacity: 0;
+
+  .fleet-hub__sheet {
+    transform: translateY(16px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fleet-hub-enter-active,
+  .fleet-hub-leave-active,
+  .fleet-hub-enter-active .fleet-hub__sheet,
+  .fleet-hub-leave-active .fleet-hub__sheet {
+    transition: none;
+  }
+}

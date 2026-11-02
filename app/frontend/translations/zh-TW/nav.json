@@ -400,7 +400,8 @@
         "label": "在你的機庫和艦隊之間切換",
         "personal": "個人",
         "yourFleets": "你的艦隊",
-        "fleetDirectory": "艦隊目錄"
+        "fleetDirectory": "艦隊目錄",
+        "switch": "切換"
       },
       "account": {
         "menu": "帳戶選單",

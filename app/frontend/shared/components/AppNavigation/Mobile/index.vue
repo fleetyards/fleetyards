@@ -18,6 +18,7 @@ const { collapsed: navCollapsed } = storeToRefs(navStore);
 
 <template>
   <div class="navigation-mobile">
+    <slot name="overlay" />
     <ul class="navigation-mobile__items">
       <slot />
       <li>
