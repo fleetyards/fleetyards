@@ -48,7 +48,7 @@
   margin: 4px 0 0;
   overflow: hidden;
   font-family: "Orbitron", sans-serif;
-  font-size: 1.125rem;
+  font-size: 18px;
   font-weight: 400;
   color: var(--color-lifted, #eee);
   text-overflow: ellipsis;
@@ -62,7 +62,7 @@
   height: 36px;
   padding: 0 12px;
   font: inherit;
-  font-size: 0.8125rem;
+  font-size: 13px;
   color: var(--color-text, #c8c8c8);
   background: var(--color-control, rgb(39 43 48 / 0.9));
   border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
@@ -91,7 +91,7 @@
   gap: 6px;
   height: 76px;
   padding: 0 4px;
-  font-size: 0.75rem;
+  font-size: 12px;
   color: var(--color-text, #c8c8c8);
   text-align: center;
   text-decoration: none;
@@ -112,7 +112,7 @@
 
 .fleet-hub__icon {
   height: 22px;
-  font-size: 1.375rem;
+  font-size: 22px;
 }
 
 .fleet-hub__label {
@@ -131,7 +131,7 @@
 .fleet-hub__heading {
   margin: 8px 0 0;
   font-family: "Orbitron", sans-serif;
-  font-size: 0.625rem;
+  font-size: 10px;
   letter-spacing: 0.16em;
   color: var(--color-text-dim, #959595);
   text-transform: uppercase;
@@ -143,7 +143,7 @@
   gap: 12px;
   min-height: 52px;
   padding: 0 14px;
-  font-size: 0.9375rem;
+  font-size: 15px;
   color: var(--color-text, #c8c8c8);
   text-decoration: none;
   background: var(--color-control, rgb(39 43 48 / 0.9));
@@ -152,7 +152,7 @@
 
   > i {
     width: 28px;
-    font-size: 1.25rem;
+    font-size: 20px;
     text-align: center;
   }
 
@@ -176,7 +176,7 @@
   height: 18px;
   margin-inline-start: auto;
   padding: 0 5px;
-  font-size: 0.6875rem;
+  font-size: 11px;
   font-weight: bold;
   line-height: 1;
   color: #fff;
@@ -191,7 +191,7 @@
   width: 28px;
   height: 28px;
   font-family: "Orbitron", sans-serif;
-  font-size: 0.6875rem;
+  font-size: 11px;
   color: var(--color-lifted, #eee);
   background: var(--color-gray-black, #1a1d21);
   border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));

@@ -43,7 +43,7 @@ $nav-active-glow: color-mix(
      * default sans while the rows either side of it read in Open Sans.
      */
     font: inherit;
-    font-size: 1.125rem;
+    font-size: 18px;
     white-space: nowrap;
     text-transform: uppercase;
     width: 100%;
@@ -52,7 +52,7 @@ $nav-active-glow: color-mix(
     i:not(.nav-item__submenu-glyph),
     svg:not(.nav-item__submenu-glyph) {
       min-width: 30px;
-      font-size: 1.5rem;
+      font-size: 24px;
       text-align: center;
       vertical-align: middle;
     }
@@ -98,7 +98,7 @@ $nav-active-glow: color-mix(
         color: var(--color-muted, #7a8288);
 
         .nav-item__submenu-glyph {
-          font-size: 0.875rem;
+          font-size: 14px;
           transition: all $transition-base-speed ease;
         }
       }
@@ -145,12 +145,12 @@ $nav-active-glow: color-mix(
       > li > button,
       > li > span {
         padding-left: 52px;
-        font-size: 1rem;
+        font-size: 16px;
 
         i:not(.nav-item__submenu-glyph),
         svg:not(.nav-item__submenu-glyph) {
           min-width: 22px;
-          font-size: 1.125rem;
+          font-size: 18px;
         }
       }
 
@@ -242,7 +242,7 @@ $nav-active-glow: color-mix(
           transform: translateY(-50%);
 
           .nav-item__submenu-glyph {
-            font-size: 0.875rem;
+            font-size: 14px;
           }
         }
       }
@@ -348,7 +348,7 @@ $nav-active-glow: color-mix(
     padding: 10px 15px 6px;
     color: var(--color-text-dim, #959595);
     font-family: "Orbitron", sans-serif;
-    font-size: 0.75rem;
+    font-size: 12px;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     white-space: nowrap;
@@ -369,12 +369,12 @@ $nav-active-glow: color-mix(
     > li > button,
     > li > span {
       padding: 8px 15px;
-      font-size: 0.9375rem;
+      font-size: 15px;
 
       i:not(.nav-item__submenu-glyph),
       svg:not(.nav-item__submenu-glyph) {
         min-width: 22px;
-        font-size: 1.125rem;
+        font-size: 18px;
       }
     }
 
