@@ -29,12 +29,19 @@ module ScData
       ::ScData::CharacterStore.stubs(:new).returns(store)
     end
 
-    private def publish(key, files, digest: "listing-1")
-      @index[key] = {files: digest, updatedAt: "2026-11-02T00:00:00Z"}
-      @objects["index.json"] = {characters: @index}.to_json
-      @objects["#{key}/files.json"] = {
-        files: files.to_h { |name, content| [name, {md5: Digest::MD5.hexdigest(content), size: content.bytesize}] }
-      }.to_json
+    CLIPS = [
+      {"name" => "shop_pose_01", "static" => true, "looping" => false, "frames" => 1, "fps" => 30.0, "source" => "poses.dba#01"},
+      {"name" => "idle_stand", "static" => false, "looping" => true, "frames" => 131, "fps" => 30.0, "source" => "idle.dba"}
+    ].freeze
+
+    private def publish(key, files, clips: CLIPS)
+      @index[key] = {
+        body: "characters/#{key}/body.glb",
+        animations: "characters/#{key}/animations.glb",
+        files: files.to_h { |name, content| [name, {md5: Digest::MD5.hexdigest(content), size: content.bytesize}] },
+        clips:
+      }
+      @objects["index.json"] = {updatedAt: "2026-11-02T00:00:00Z", bodies: @index}.to_json
       files.each { |name, content| @objects["#{key}/#{name}"] = content }
     end
 
@@ -44,16 +51,30 @@ module ScData
         .map { |request| File.basename(request[:params][:key]) }
     end
 
-    test "creates a body per listed folder and attaches its rest-pose holo" do
+    test "creates a body per listed body with its rest pose, its clips and what each clip is" do
       publish("male", {"body.glb" => BODY, "animations.glb" => ANIMATIONS})
 
       ::ScData::CharacterBodiesImportJob.new.perform
 
       body = CharacterBody.find_by!(key: "male")
-      assert body.holo.attached?
       assert_equal "body.glb", body.holo.filename.to_s
-      assert_equal "listing-1", body.views_digest
-      assert_not_includes fetched, "animations.glb"
+      assert_equal "animations.glb", body.animations.filename.to_s
+      assert_equal [
+        {"name" => "shop_pose_01", "static" => true, "looping" => false},
+        {"name" => "idle_stand", "static" => false, "looping" => true}
+      ], body.clips
+    end
+
+    test "takes in a changed clip list without fetching the files again" do
+      publish("male", {"body.glb" => BODY})
+      ::ScData::CharacterBodiesImportJob.new.perform
+      @client.api_requests.clear
+
+      publish("male", {"body.glb" => BODY}, clips: CLIPS.first(1))
+      ::ScData::CharacterBodiesImportJob.new.perform
+
+      assert_equal ["index.json"], fetched
+      assert_equal ["shop_pose_01"], CharacterBody.find_by!(key: "male").clips.pluck("name")
     end
 
     test "skips a body whose listing has not changed" do

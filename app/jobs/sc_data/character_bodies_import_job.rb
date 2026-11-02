@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 module ScData
-  # Attaches the base bodies sc-tools publishes under `characters/` to a
-  # CharacterBody per folder, creating the record the first time a body is
-  # listed. Only the rest-pose body is taken; the animations are not used yet.
+  # Attaches the rigged base bodies sc-tools publishes under `characters/` to a
+  # CharacterBody per listed body, creating the record the first time a body
+  # is listed: the rest-pose body and the clips that pose it.
   class CharacterBodiesImportJob < ApplicationJob
     include RenderImport
 
     sidekiq_options queue: "loaders"
 
-    FIELDS = {"body.glb" => "holo"}.freeze
+    FIELDS = {"body.glb" => "holo", "animations.glb" => "animations"}.freeze
 
     def perform
       return unless ::ScData::CharacterStore.configured?
@@ -19,10 +19,14 @@ module ScData
 
       store.characters.each do |key, entry|
         body = CharacterBody.find_or_create_by!(key:)
+        clips = entry["clips"].map { |clip| clip.slice("name", "static", "looping") }
+        body.update_columns(clips:) if body.clips != clips
 
-        next if body.views_digest == entry["files"]
+        # The index has no digest of its own for a body, so its file list is.
+        digest = Digest::MD5.hexdigest(entry["files"].sort.to_json)
+        next if body.views_digest == digest
 
-        fields = import(store, body, key, entry["files"])
+        fields = import(store, body, entry["path"], digest, listing: {"files" => entry["files"]})
         attached[key] = fields if fields.any?
       rescue => e
         log(:error, "#{key} failed: #{e.class}: #{e.message}")
