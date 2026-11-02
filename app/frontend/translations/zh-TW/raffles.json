@@ -233,7 +233,8 @@
       "actions": {
         "enter": "參加抽獎",
         "withdraw": "退出",
-        "signInToEnter": "登入後參加此抽獎"
+        "signInToEnter": "登入後參加此抽獎",
+        "addEmail": "新增電子郵件地址"
       },
       "messages": {
         "entered": "您已參加抽獎。祝您好運！",
@@ -301,7 +302,9 @@
         "enteredHint": "如果您得獎，我們將寄給您領取連結。抽獎後 %{days} 天內請留意您的信箱。",
         "over": "抽獎已結束",
         "opensAt": "%{date} 開始。",
-        "maintainer": "維護者負責管理抽獎，不能參加。"
+        "maintainer": "維護者負責管理抽獎，不能參加。",
+        "emailRequired": "請先為帳戶新增電子郵件地址再參加。獎品以郵件寄送，而你的帳戶還沒有電子郵件地址。",
+        "emailMissing": "你的帳戶沒有電子郵件地址，獎品無法送達，你的參加將在抽獎時被略過。請在 %{date} 前新增一個。"
       },
       "slider": {
         "label": "圖片輪播",

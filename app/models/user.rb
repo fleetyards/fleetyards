@@ -669,9 +669,10 @@ class User < ApplicationRecord
     super
   end
 
-  # Maintainers run the raffles, so they may not win one.
+  # Maintainers run the raffles, so they may not win one. A placeholder address
+  # counts as confirmed but has no inbox, so the claim mail could never arrive.
   def raffle_eligible?
-    confirmed? && !maintainer?
+    confirmed? && !placeholder_email? && !maintainer?
   end
 
   # A maintainer counts as an ongoing supporter at the highest tier, so every

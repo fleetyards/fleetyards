@@ -233,7 +233,8 @@
       "actions": {
         "enter": "An Verlosung teilnehmen",
         "withdraw": "Teilnahme zurückziehen",
-        "signInToEnter": "Melde dich an, um an dieser Verlosung teilzunehmen"
+        "signInToEnter": "Melde dich an, um an dieser Verlosung teilzunehmen",
+        "addEmail": "E-Mail-Adresse hinterlegen"
       },
       "messages": {
         "entered": "Du nimmst jetzt an der Verlosung teil. Viel Glück!",
@@ -301,7 +302,9 @@
         "enteredHint": "Wenn du gewinnst, schicken wir dir einen Abhol-Link. Behalte dein Postfach nach der Ziehung %{days} Tage lang im Blick.",
         "over": "Verlosung beendet",
         "opensAt": "Beginnt am %{date}.",
-        "maintainer": "Maintainer betreuen die Verlosungen und können nicht teilnehmen."
+        "maintainer": "Maintainer betreuen die Verlosungen und können nicht teilnehmen.",
+        "emailRequired": "Hinterlege eine E-Mail-Adresse in deinem Konto, um teilzunehmen. Ein Gewinn wird per Mail verschickt, und dein Konto hat noch keine.",
+        "emailMissing": "Dein Konto hat keine E-Mail-Adresse, ein Gewinn könnte dich also nicht erreichen und deine Teilnahme wird bei der Ziehung übergangen. Hinterlege eine vor dem %{date}."
       },
       "slider": {
         "label": "Bilder-Slider",

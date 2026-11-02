@@ -233,7 +233,8 @@
       "actions": {
         "enter": "Participer au tirage au sort",
         "withdraw": "Se retirer",
-        "signInToEnter": "Connectez-vous pour participer à ce tirage au sort"
+        "signInToEnter": "Connectez-vous pour participer à ce tirage au sort",
+        "addEmail": "Ajouter une adresse e-mail"
       },
       "messages": {
         "entered": "Vous participez au tirage au sort. Bonne chance !",
@@ -301,7 +302,9 @@
         "enteredHint": "Si vous gagnez, nous vous envoyons un lien de réclamation par e-mail. Surveillez votre boîte de réception pendant %{days} jours après le tirage.",
         "over": "Tirage au sort terminé",
         "opensAt": "Ouverture le %{date}.",
-        "maintainer": "Les mainteneurs gèrent les tirages au sort et ne peuvent pas y participer."
+        "maintainer": "Les mainteneurs gèrent les tirages au sort et ne peuvent pas y participer.",
+        "emailRequired": "Ajoutez une adresse e-mail à votre compte pour participer. Le lot est envoyé par e-mail, et votre compte n'en a pas encore.",
+        "emailMissing": "Votre compte n'a pas d'adresse e-mail : un lot ne pourrait pas vous parvenir et votre participation sera ignorée lors du tirage. Ajoutez-en une avant le %{date}."
       },
       "slider": {
         "label": "Carrousel d'images",

@@ -233,7 +233,8 @@
       "actions": {
         "enter": "Participar en el sorteo",
         "withdraw": "Retirarse",
-        "signInToEnter": "Inicia sesión para participar en este sorteo"
+        "signInToEnter": "Inicia sesión para participar en este sorteo",
+        "addEmail": "Añadir dirección de correo"
       },
       "messages": {
         "entered": "Estás participando en el sorteo. ¡Buena suerte!",
@@ -301,7 +302,9 @@
         "enteredHint": "Si ganas, te enviamos un enlace para reclamar. Revisa tu bandeja de entrada durante %{days} días tras el sorteo.",
         "over": "Sorteo terminado",
         "opensAt": "Abre el %{date}.",
-        "maintainer": "Los mantenedores gestionan los sorteos y no pueden participar."
+        "maintainer": "Los mantenedores gestionan los sorteos y no pueden participar.",
+        "emailRequired": "Añade una dirección de correo a tu cuenta para participar. El premio se envía por correo y tu cuenta aún no tiene ninguna.",
+        "emailMissing": "Tu cuenta no tiene dirección de correo, así que un premio no podría llegarte y tu participación se saltará en el sorteo. Añade una antes del %{date}."
       },
       "slider": {
         "label": "Carrusel de imágenes",

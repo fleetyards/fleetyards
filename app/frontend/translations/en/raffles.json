@@ -233,7 +233,8 @@
       "actions": {
         "enter": "Enter raffle",
         "withdraw": "Withdraw",
-        "signInToEnter": "Sign in to enter this raffle"
+        "signInToEnter": "Sign in to enter this raffle",
+        "addEmail": "Add email address"
       },
       "messages": {
         "entered": "You have entered the raffle. Good luck!",
@@ -301,7 +302,9 @@
         "enteredHint": "If you win, we mail you a claim link. Keep an eye on your inbox for %{days} days after the draw.",
         "over": "Raffle over",
         "opensAt": "Opens %{date}.",
-        "maintainer": "Maintainers run the raffles and cannot take part."
+        "maintainer": "Maintainers run the raffles and cannot take part.",
+        "emailRequired": "Add an email address to your account to enter. A win is sent by mail, and your account has none yet.",
+        "emailMissing": "Your account has no email address, so a win could not reach you and your entry will be passed over in the draw. Add one before %{date}."
       },
       "slider": {
         "label": "Image slider",
