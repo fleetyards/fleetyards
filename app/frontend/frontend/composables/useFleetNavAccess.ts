@@ -39,7 +39,11 @@ export const eventsRouteFor = (
 
 export const useFleetNavAccess = (
   fleet: MaybeRefOrGetter<
-    Pick<Fleet, "features" | "publicFleet" | "squadronsEnabled"> | undefined
+    | (Pick<Fleet, "features" | "publicFleet" | "squadronsEnabled"> & {
+        slug?: string;
+        publicFleetStats?: boolean;
+      })
+    | undefined
   >,
 ) => {
   const route = useRoute();
@@ -48,16 +52,23 @@ export const useFleetNavAccess = (
 
   const { isFleetFeatureEnabled, isFleetSquadronsEnabled } = useFeatures();
 
-  const fleetSlug = computed(() => route.params.slug as string);
+  // The fleet's own slug first: an account page opened from a fleet keeps the
+  // fleet in the navigation, but its route carries no slug.
+  const fleetSlug = computed(
+    () => toValue(fleet)?.slug ?? (route.params.slug as string | undefined),
+  );
 
-  const hasSlug = computed(() => route.params.slug !== undefined);
+  const hasSlug = computed(() => !!fleetSlug.value);
 
-  const { data: membership } = useFleetMembershipQuery(fleetSlug, {
-    query: {
-      retry: false,
-      enabled: computed(() => hasSlug.value && sessionStore.isAuthenticated),
+  const { data: membership } = useFleetMembershipQuery(
+    computed(() => fleetSlug.value ?? ""),
+    {
+      query: {
+        retry: false,
+        enabled: computed(() => hasSlug.value && sessionStore.isAuthenticated),
+      },
     },
-  });
+  );
 
   const hasResourceAccess = (...allowed: FleetRoleResourceAccessEnum[]) => {
     const access = membership.value?.fleetRole?.resourceAccess;
@@ -113,6 +124,14 @@ export const useFleetNavAccess = (
 
   const showShoppingListsNav = computed(
     () => !!membership.value && hasShoppingListsAccess.value,
+  );
+
+  const showMembersNav = computed(() => !!membership.value);
+
+  const showSettingsNav = computed(() => !!membership.value);
+
+  const showStatsNav = computed(
+    () => !!membership.value || !!toValue(fleet)?.publicFleetStats,
   );
 
   // The one tab somebody outside the fleet can reach, and the reason it stays
@@ -228,6 +247,9 @@ export const useFleetNavAccess = (
 
   return {
     membership,
+    showMembersNav,
+    showSettingsNav,
+    showStatsNav,
     showAssetsNav,
     assetsNavActive,
     showShipsNav,

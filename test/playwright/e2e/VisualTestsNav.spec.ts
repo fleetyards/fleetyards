@@ -34,29 +34,35 @@ const GROUPED = {
 // Pages that carry no group: a group of one is an entry wearing a folder.
 const TOP_LEVEL = ["forms", "events"];
 
-const ALL = [...Object.values(GROUPED).flat(), ...TOP_LEVEL];
-
 test.describe("Visual tests nav", () => {
-  test("every demo page has exactly one nav link", async ({ page, nav }) => {
+  test("every demo page has exactly one nav link", async ({ page }) => {
     await page.goto("/visual-tests/typography/");
     await expect(page.locator(".visual-tests")).toBeVisible();
 
     /*
-     * Expanded, because a collapsed rail opens a section into a panel beside
-     * it and only one of those is up at a time -- so opening the next group
-     * would take the previous group's links back out of the DOM.
+     * Only the group holding the open page unfolds in place; every other one
+     * opens as a panel beside the rail, one at a time. So each group is checked
+     * while its own rows are up, and only opened when they are not already.
      */
-    await nav.expand();
+    for (const [group, members] of Object.entries(GROUPED)) {
+      const firstLink = page.locator(`a[href$='/visual-tests/${members[0]}/']`);
 
-    // Open every group so the submenu links are in the DOM.
-    for (const group of Object.keys(GROUPED)) {
-      await page
-        .locator(`[data-test='nav-visual-tests-${group}-menu'] button`)
-        .first()
-        .click();
+      if ((await firstLink.count()) === 0) {
+        await page
+          .locator(`[data-test='nav-visual-tests-${group}-menu'] button`)
+          .first()
+          .click();
+      }
+
+      for (const name of members) {
+        await expect(
+          page.locator(`a[href$='/visual-tests/${name}/']`),
+          `nav link for ${name}`,
+        ).toHaveCount(1);
+      }
     }
 
-    for (const name of ALL) {
+    for (const name of TOP_LEVEL) {
       await expect(
         page.locator(`a[href$='/visual-tests/${name}/']`),
         `nav link for ${name}`,

@@ -55,7 +55,9 @@ const currentFleet = computed(() => {
 });
 
 const {
-  membership,
+  showMembersNav,
+  showSettingsNav,
+  showStatsNav,
   showAssetsNav,
   assetsNavActive,
   showShipsNav,
@@ -125,7 +127,7 @@ onMounted(() => {
     />
 
     <NavItem
-      v-if="membership"
+      v-if="showMembersNav"
       :to="{ name: 'fleet-members', params: { slug: currentFleet.slug } }"
       :label="t('nav.fleets.members.index')"
       :active="String(route.name).startsWith('fleet-members')"
@@ -214,14 +216,14 @@ onMounted(() => {
     />
 
     <NavItem
-      v-if="currentFleet.publicFleetStats || membership"
+      v-if="showStatsNav"
       :to="{ name: 'fleet-stats', params: { slug: currentFleet.slug } }"
       :label="t('nav.fleets.stats')"
       :active="route.name === 'fleet-stats'"
       icon="fa-duotone fa-chart-bar"
     />
     <NavItem
-      v-if="membership"
+      v-if="showSettingsNav"
       :to="{ name: 'fleet-settings', params: { slug: currentFleet.slug } }"
       :label="t('nav.fleets.settings.index')"
       :active="String(route.name).startsWith('fleet-settings')"

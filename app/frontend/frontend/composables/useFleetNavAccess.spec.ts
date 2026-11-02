@@ -11,6 +11,11 @@ const route = ref<{ name: string; params: object; path: string }>({
 
 const membership = ref<object | undefined>(undefined);
 
+const membershipQuery: {
+  slug?: { value: string };
+  enabled?: { value: boolean };
+} = {};
+
 const viewerFeatures = ref<string[]>([]);
 
 vi.mock("vue-router", () => ({
@@ -32,7 +37,15 @@ vi.mock("@/services/fyApi", async () => {
   return {
     ...flags,
     ...access,
-    useFleetMembership: () => ({ data: membership }),
+    useFleetMembership: (
+      slug: { value: string },
+      options: { query: { enabled: { value: boolean } } },
+    ) => {
+      membershipQuery.slug = slug;
+      membershipQuery.enabled = options.query.enabled;
+
+      return { data: membership };
+    },
     useFeatures: () => ({ data: viewerFeatures }),
     getFeaturesQueryOptions: () => ({}),
   };
@@ -71,6 +84,22 @@ describe("useFleetNavAccess", () => {
     route.value = { name: "fleet", params: { slug: "merc" }, path: "/merc" };
     membership.value = undefined;
     viewerFeatures.value = [];
+  });
+
+  // An account page opened from a fleet keeps the fleet, but not its slug.
+  it("asks for the membership of the fleet it is given, off a fleet route", () => {
+    route.value = { name: "settings-profile", params: {}, path: "/settings" };
+
+    useFleetNavAccess({ ...fleetWith(), slug: "kraken" });
+
+    expect(membershipQuery.slug?.value).toBe("kraken");
+    expect(membershipQuery.enabled?.value).toBe(true);
+  });
+
+  it("falls back to the route's fleet", () => {
+    useFleetNavAccess(fleetWith());
+
+    expect(membershipQuery.slug?.value).toBe("merc");
   });
 
   it("hides contracts from someone who is not a member", () => {

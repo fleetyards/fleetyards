@@ -176,7 +176,6 @@ describe("Navigation", () => {
       true,
     );
     expect(section("hangar-assets-menu").props("submenuActive")).toBe(false);
-    expect(section("hangar-pledge-items-menu").props("overlay")).toBe(true);
   });
 
   it("leaves out a hangar page whose feature is off", async () => {

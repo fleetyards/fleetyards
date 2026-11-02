@@ -400,7 +400,8 @@
         "label": "Passa dal tuo hangar alle tue flotte",
         "personal": "Personale",
         "yourFleets": "Le tue flotte",
-        "fleetDirectory": "Elenco delle flotte"
+        "fleetDirectory": "Elenco delle flotte",
+        "switch": "Cambia"
       },
       "account": {
         "menu": "Menu dell’account",
