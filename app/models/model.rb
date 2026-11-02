@@ -530,11 +530,6 @@ class Model < ApplicationRecord
   # itself, nothing says it is in meters.
   before_save :forget_replaced_holo_measurements
 
-  # The USDZ is built from the lite export, so a new lite export without a USDZ
-  # of its own leaves AR placing a hull that no longer matches at a scale
-  # nothing vouches for.
-  before_save :forget_stale_holo_usdz
-
   before_save :update_slugs
 
   before_save :update_from_hardpoints
@@ -908,13 +903,6 @@ class Model < ApplicationRecord
     HOLO_MEASURED_AT.each do |name, column|
       self[column] = nil if attachment_changes.key?(name)
     end
-  end
-
-  private def forget_stale_holo_usdz
-    return unless attachment_changes.key?("holo_lite")
-    return if attachment_changes.key?("holo_usdz") || !holo_usdz.attached?
-
-    self.holo_usdz = nil
   end
 
   def update_from_hardpoints
