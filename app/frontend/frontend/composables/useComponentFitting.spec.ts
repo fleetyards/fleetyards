@@ -329,6 +329,26 @@ describe("learnModules", () => {
     expect(fitting.components.value.shield.craftable).toBe(true);
     expect(fitting.components.value.cooler.craftable).toBe(false);
   });
+  it("carries a module part's catalogue slug to its row", () => {
+    const fitting = useComponentFitting();
+
+    const [row] = fitting.moduleContents({
+      id: "m1",
+      name: "Combat Module",
+      slot: "hardpoint_module",
+      hardpoints: [
+        {
+          id: "hp-shield",
+          name: "hardpoint_shield",
+          category: "shieldgenerator",
+          types: ["Shield"],
+          component: { id: "shield", name: "Shield", slug: "shield-alpha" },
+        },
+      ],
+    } as unknown as ModelModule);
+
+    expect(row.item?.slug).toBe("shield-alpha");
+  });
 });
 
 describe("loadoutValues", () => {

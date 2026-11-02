@@ -164,6 +164,7 @@ const select = (event: Event) => {
               slug: socket.item.slug,
               name: socket.item.name,
             }"
+            :crafted="socket.item.recipe"
             :link="false"
             :focusable="false"
           />

@@ -74,6 +74,29 @@ describe("LoadoutSocket", () => {
     expect(wrapper.emitted("select")).toHaveLength(1);
   });
 
+  it("hands a crafted part's recipe to its stats card", async () => {
+    const recipe = {
+      blueprint: { id: "bp", slug: "panther-recipe", name: "" },
+      qualities: { 1: 800 },
+    };
+    const wrapper = await mount({
+      socket: {
+        ...FILLED,
+        item: {
+          id: "gun",
+          name: "CF-337 Panther",
+          slug: "cf-337-panther",
+          crafted: true,
+          recipe,
+        },
+      },
+    });
+
+    expect(
+      wrapper.findComponent({ name: "CatalogueItemPopover" }).props("crafted"),
+    ).toEqual(recipe);
+  });
+
   it("names a part without a catalogue entry in plain text", async () => {
     const wrapper = await mount({ socket: FILLED });
 

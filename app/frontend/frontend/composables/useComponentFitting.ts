@@ -659,6 +659,16 @@ export const useComponentFitting = () => {
             name: entry.content.name,
             slug: entry.content.slug,
             crafted: !!entry.crafted,
+            recipe: entry.crafted
+              ? {
+                  blueprint: {
+                    id: entry.crafted.blueprintId,
+                    slug: entry.crafted.blueprintSlug,
+                    name: "",
+                  },
+                  qualities: entry.crafted.qualities,
+                }
+              : undefined,
             craftable: !!entry.content.craftable,
             craftingKey: craftingKey(entry.crafted),
             figure: componentFigure(entry.content),
@@ -812,6 +822,7 @@ export const useComponentFitting = () => {
               ? {
                   id: port.stock.id,
                   name: port.stock.name,
+                  slug: port.stock.slug,
                   figure: componentFigure(port.stock),
                   headline: headlineOf(port.stock, port.category),
                   stats: rowStats(port.stock, port.category),
