@@ -51,7 +51,21 @@ module Raffles
     end
 
     private def ips(user)
-      [user.current_sign_in_ip, user.last_sign_in_ip].compact_blank.uniq
+      [user.current_sign_in_ip, user.last_sign_in_ip].compact_blank.uniq.reject { |ip| proxy?(ip) }
+    end
+
+    # Sign-ins from before the load balancer was trusted recorded its address
+    # instead of the visitor's, and it stays until that account signs in again.
+    private def proxy?(ip)
+      address = IPAddr.new(ip)
+      proxies.any? { |proxy| proxy.include?(address) }
+    rescue IPAddr::InvalidAddressError
+      true
+    end
+
+    private def proxies
+      @proxies ||= Array(Rails.application.config.action_dispatch.trusted_proxies) +
+        ActionDispatch::RemoteIp::TRUSTED_PROXIES
     end
 
     private def entrants
