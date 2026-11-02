@@ -91,5 +91,15 @@ export const useVehicleModals = () => {
     });
   };
 
-  return { openEditModal, openLoadoutModal, openLoadoutView };
+  // The modules and upgrade kits a ship carries, for anyone who cannot edit
+  // them. Owning a module is not fitting it, so the loadout view cannot say.
+  const openAddonsView = (vehicle: Vehicle | VehiclePublic) => {
+    comlink.emit("open-modal", {
+      component: () =>
+        import("@/frontend/components/Vehicles/AddonsView/index.vue"),
+      props: { vehicle },
+    });
+  };
+
+  return { openEditModal, openLoadoutModal, openLoadoutView, openAddonsView };
 };
