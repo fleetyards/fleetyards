@@ -29,9 +29,11 @@ const modelSlug = computed(() => props.vehicle.model?.slug ?? "");
 const hasModules = computed(() => !!props.vehicle.model?.hasModules);
 const hasUpgrades = computed(() => !!props.vehicle.model?.hasUpgrades);
 
+// An owned module beyond the first page of the catalogue would drop out of the
+// list, so this asks for the largest page the endpoint serves.
 const { data: modulesData, ...modulesAsyncStatus } = useModelModulesQuery(
   modelSlug,
-  undefined,
+  { perPage: "100" },
   { query: { enabled: hasModules } },
 );
 
