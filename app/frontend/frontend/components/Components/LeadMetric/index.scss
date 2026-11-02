@@ -11,20 +11,19 @@
     min-width: 0;
   }
 
-  // The label/value pair the metrics cards and their tiles use: Orbitron 10px
-  // at .16em over a 13.5px semibold figure. It was 9px at .14em over 13px,
-  // which put the one figure a row leads with on a scale of its own.
+  // On the scale of the row's own badges beside it, so the figure a row leads
+  // with reads the same as its size and grade.
   &__label {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
-    letter-spacing: 0.16em;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--color-text-dim, #959595);
     white-space: nowrap;
   }
 
   &__value {
-    font-size: 13.5px;
+    font-size: 0.9375rem;
     font-weight: 600;
     color: var(--color-text, #c8c8c8);
     font-variant-numeric: tabular-nums;

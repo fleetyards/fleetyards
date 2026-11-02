@@ -78,7 +78,7 @@
     align-items: baseline;
     min-width: 0;
     gap: 0 8px;
-    font-size: 12px;
+    font-size: 0.875rem;
     color: var(--color-text-dim, #959595);
 
     // `:deep`, here and for the separator below, because the sub-line's parts
@@ -156,7 +156,7 @@
     display: inline-flex;
     align-items: center;
     padding: 3px 9px;
-    font-size: 12px;
+    font-size: 0.875rem;
     font-weight: 600;
     color: var(--color-text, #c8c8c8);
     background-color: var(--color-control-hover, rgb(52 58 64 / 0.95));
@@ -180,7 +180,7 @@
     display: inline-flex;
     align-items: center;
     padding: 3px 7px;
-    font-size: 12px;
+    font-size: 0.875rem;
     color: var(--color-text-dim, #959595);
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
@@ -199,8 +199,8 @@
 
   &__tag {
     font-family: "Orbitron", tahoma, sans-serif;
-    font-size: 11px;
-    letter-spacing: 0.14em;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     white-space: nowrap;
     color: var(--color-text-dim, #959595);
@@ -254,12 +254,17 @@
     }
   }
 
+  // The shared label at a size and tracking that stays legible at row
+  // density; at 11px and .16em the label was the hardest text in the row.
   &__badge-label {
     @include row-label;
+
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
   }
 
   &__badge-value {
-    font-size: 13.5px;
+    font-size: 0.9375rem;
     font-weight: 600;
     color: var(--color-text, #c8c8c8);
     font-variant-numeric: tabular-nums;
