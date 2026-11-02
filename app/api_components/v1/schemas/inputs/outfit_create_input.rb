@@ -11,7 +11,8 @@ module V1
           properties: {
             name: {type: :string, maxLength: 100},
             items: {type: :array, items: ::V1::Schemas::Inputs::OutfitItemInput, description: "Everything the outfit wears; a slot left out is emptied"},
-            heldWeapon: ::V1::Schemas::Enums::NullableOutfitWeaponSlotEnum
+            heldWeapon: ::V1::Schemas::Enums::NullableOutfitWeaponSlotEnum,
+            body: ::V1::Schemas::Enums::OutfitBodyEnum
           },
           required: %w[name],
           additionalProperties: false

@@ -39154,6 +39154,8 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         holoRiggedMale:
           "$ref": "#/components/schemas/MediaFile"
+        holoRiggedFemale:
+          "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
       title: ItemMedia
     ItemPrice:
@@ -44587,6 +44589,8 @@ components:
             "$ref": "#/components/schemas/OutfitItem"
         heldWeapon:
           "$ref": "#/components/schemas/NullableOutfitWeaponSlotEnum"
+        body:
+          "$ref": "#/components/schemas/OutfitBodyEnum"
         createdAt:
           type: string
           format: date-time
@@ -44599,9 +44603,19 @@ components:
       - name
       - items
       - heldWeapon
+      - body
       - createdAt
       - updatedAt
       title: Outfit
+    OutfitBodyEnum:
+      type: string
+      enum:
+      - male
+      - female
+      x-enumNames:
+      - MALE
+      - FEMALE
+      title: OutfitBodyEnum
     OutfitCreateInput:
       type: object
       properties:
@@ -44615,6 +44629,8 @@ components:
           description: Everything the outfit wears; a slot left out is emptied
         heldWeapon:
           "$ref": "#/components/schemas/NullableOutfitWeaponSlotEnum"
+        body:
+          "$ref": "#/components/schemas/OutfitBodyEnum"
       required:
       - name
       additionalProperties: false
@@ -44680,6 +44696,8 @@ components:
           description: Everything the outfit wears; a slot left out is emptied
         heldWeapon:
           "$ref": "#/components/schemas/NullableOutfitWeaponSlotEnum"
+        body:
+          "$ref": "#/components/schemas/OutfitBodyEnum"
       additionalProperties: false
       title: OutfitUpdateInput
     OutfitWeaponSlotEnum:

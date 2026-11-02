@@ -145,6 +145,14 @@ class Api::V1::OutfitsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "POST /outfits keeps the body the outfit is put on" do
+    sign_in @user
+
+    assert_api_response :post, 201, api_path: "/outfits", body: {name: "Recon", body: "female"} do
+      assert_equal "female", parsed_body["body"]
+    end
+  end
+
   test "POST /outfits refuses a pistol on the back and armour in a holster" do
     sign_in @user
     pistol = create(:equipment, sub_type: "Small")

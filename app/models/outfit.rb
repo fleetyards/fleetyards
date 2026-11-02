@@ -13,6 +13,7 @@ class Outfit < ApplicationRecord
 
   validates :name, presence: true, length: {maximum: 100}, uniqueness: {scope: :user_id}
   validates :held_weapon, inclusion: {in: OutfitItem::WEAPON_SLOTS.keys}, allow_nil: true
+  validates :body, inclusion: {in: ItemViews::RIGGED_BODIES}
   validate :outfit_limit, on: :create
   validate :held_weapon_worn
 

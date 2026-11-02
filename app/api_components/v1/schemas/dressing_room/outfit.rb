@@ -13,11 +13,12 @@ module V1
             name: {type: :string},
             items: {type: :array, items: ::V1::Schemas::DressingRoom::OutfitItem},
             heldWeapon: ::V1::Schemas::Enums::NullableOutfitWeaponSlotEnum,
+            body: ::V1::Schemas::Enums::OutfitBodyEnum,
             createdAt: {type: :string, format: "date-time"},
             updatedAt: {type: :string, format: "date-time"}
           },
           additionalProperties: false,
-          required: %w[id name items heldWeapon createdAt updatedAt]
+          required: %w[id name items heldWeapon body createdAt updatedAt]
         })
       end
     end

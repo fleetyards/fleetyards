@@ -9,4 +9,5 @@ json.items outfit.items do |item|
   end
 end
 json.held_weapon outfit.held_weapon
+json.body outfit.body
 json.partial! "api/shared/dates", record: outfit
