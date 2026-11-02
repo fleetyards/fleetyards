@@ -466,6 +466,7 @@ class Model < ApplicationRecord
   # The flight holo's lite export as USDZ, which AR Quick Look opens as it is
   # instead of the page converting the holo on the device.
   AR_HOLO_ATTACHMENT_NAMES = %i[holo_usdz].freeze
+  USDZ_CONTENT_TYPE = "model/vnd.usdz+zip"
 
   DETAIL_ATTACHMENT_NAMES = (
     DETAIL_VIEW_ATTACHMENT_NAMES + TEXTURED_HOLO_ATTACHMENT_NAMES + LIVERY_MAP_ATTACHMENT_NAMES +
@@ -628,6 +629,9 @@ class Model < ApplicationRecord
 
   validates :vehicle_size, inclusion: {in: VEHICLE_SIZES}, allow_nil: true
   validate :vehicle_size_belongs_to_a_vehicle
+
+  # Quick Look is handed this file as it is, and it opens nothing else.
+  validate :holo_usdz_is_a_usdz
 
   DEFAULT_SORTING_PARAMS = "name asc"
   ALLOWED_SORTING_PARAMS = [
@@ -897,6 +901,16 @@ class Model < ApplicationRecord
 
   private def has_new_holos?
     new_holo_names.any?
+  end
+
+  # Only what this save attaches, so a record stays editable whatever it holds.
+  private def holo_usdz_is_a_usdz
+    change = attachment_changes["holo_usdz"]
+    blob = change.blob if change.respond_to?(:blob)
+
+    return if blob.nil? || blob.content_type == USDZ_CONTENT_TYPE
+
+    errors.add(:holo_usdz, :not_a_usdz)
   end
 
   private def forget_replaced_holo_measurements
