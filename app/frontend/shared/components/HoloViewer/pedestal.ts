@@ -1,6 +1,7 @@
 import {
   AdditiveBlending,
   type Box3,
+  BufferAttribute,
   CanvasTexture,
   CircleGeometry,
   Color,
@@ -10,7 +11,6 @@ import {
   type Material,
   Mesh,
   MeshBasicMaterial,
-  MeshPhongMaterial,
   type Object3D,
   SRGBColorSpace,
   type Texture,
@@ -25,8 +25,21 @@ const SEGMENTS = 128;
 // Clear of the soles, so the boots and the top never fight over one plane.
 const SINK = 0.004;
 
-// The projector pad's face: a glow at the heart, faint rings and a ring of
-// ticks at the edge, in the holo's colour on transparency.
+// Gunmetal, painted rather than lit: the viewer's lights follow the camera
+// and either sink a dark metal to black or wash it out white, and a painted
+// part switches them. Drawn in, and kept out of the tone mapping, the pad
+// looks the same under all of them.
+const GUNMETAL = {
+  sheen: "#5a636c",
+  face: "#3a4249",
+  edge: "#262b31",
+  bevel: "#6b747d",
+  side: "#343b42",
+  foot: "#15191d",
+};
+
+// The pad's face: brushed gunmetal with a sheen at the heart, and the
+// projector's markings over it in the holo's colour.
 const faceTexture = (color: string) => {
   const size = 1024;
   const canvas = document.createElement("canvas");
@@ -41,6 +54,30 @@ const faceTexture = (color: string) => {
   const rgba = (alpha: number) =>
     `rgba(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)}, ${alpha})`;
 
+  const metal = context.createRadialGradient(
+    center * 0.85,
+    center * 0.8,
+    0,
+    center,
+    center,
+    center,
+  );
+  metal.addColorStop(0, GUNMETAL.sheen);
+  metal.addColorStop(0.55, GUNMETAL.face);
+  metal.addColorStop(1, GUNMETAL.edge);
+  context.fillStyle = metal;
+  context.fillRect(0, 0, size, size);
+
+  // Brushed rings, a little lighter and darker in turn.
+  for (let ring = 6; ring < center; ring += 3) {
+    context.lineWidth = 1;
+    context.strokeStyle =
+      ring % 2 ? "rgba(255, 255, 255, 0.025)" : "rgba(0, 0, 0, 0.05)";
+    context.beginPath();
+    context.arc(center, center, ring, 0, Math.PI * 2);
+    context.stroke();
+  }
+
   const glow = context.createRadialGradient(
     center,
     center,
@@ -49,13 +86,13 @@ const faceTexture = (color: string) => {
     center,
     center,
   );
-  glow.addColorStop(0, rgba(0.28));
-  glow.addColorStop(0.4, rgba(0.06));
+  glow.addColorStop(0, rgba(0.22));
+  glow.addColorStop(0.4, rgba(0.04));
   glow.addColorStop(1, rgba(0));
   context.fillStyle = glow;
   context.fillRect(0, 0, size, size);
 
-  context.strokeStyle = rgba(0.3);
+  context.strokeStyle = rgba(0.35);
   [0.32, 0.6].forEach((radius) => {
     context.lineWidth = 2;
     context.beginPath();
@@ -64,7 +101,7 @@ const faceTexture = (color: string) => {
   });
 
   context.lineWidth = 3;
-  context.strokeStyle = rgba(0.7);
+  context.strokeStyle = rgba(0.75);
   context.beginPath();
   context.arc(center, center, center * 0.86, 0, Math.PI * 2);
   context.stroke();
@@ -75,7 +112,7 @@ const faceTexture = (color: string) => {
     const inner = center * (long ? 0.88 : 0.9);
     const outer = center * 0.95;
     context.lineWidth = long ? 3 : 1.5;
-    context.strokeStyle = rgba(long ? 0.75 : 0.4);
+    context.strokeStyle = rgba(long ? 0.8 : 0.45);
     context.beginPath();
     context.moveTo(
       center + Math.cos(angle) * inner,
@@ -95,8 +132,33 @@ const faceTexture = (color: string) => {
   return texture;
 };
 
-// A bevelled metal disc a little wider than the figure's stance, its face a
-// holo projector pad and its rim lit in the holo's colour.
+// The disc's bevel and side, shaded from a light band at the bevel to a dark
+// foot, as a metal rim catches a light from above.
+const shadeSide = (geometry: LatheGeometry) => {
+  const positions = geometry.getAttribute("position");
+  const colors = new Float32Array(positions.count * 3);
+  const bevel = new Color(GUNMETAL.bevel);
+  const side = new Color(GUNMETAL.side);
+  const foot = new Color(GUNMETAL.foot);
+  const shade = new Color();
+
+  for (let index = 0; index < positions.count; index += 1) {
+    const depth = -positions.getY(index);
+
+    if (depth <= BEVEL) {
+      shade.copy(bevel);
+    } else {
+      shade.lerpColors(side, foot, (depth - BEVEL) / (HEIGHT - BEVEL));
+    }
+
+    shade.toArray(colors, index * 3);
+  }
+
+  geometry.setAttribute("color", new BufferAttribute(colors, 3));
+};
+
+// A bevelled gunmetal disc a little wider than the figure's stance, its face
+// a holo projector pad and its rim lit in the holo's colour.
 export const buildPedestal = (figure: Box3, color: string) => {
   const size = figure.getSize(new Vector3());
   const center = figure.getCenter(new Vector3());
@@ -113,29 +175,21 @@ export const buildPedestal = (figure: Box3, color: string) => {
     new Vector2(radius * 1.02, -HEIGHT),
     new Vector2(0, -HEIGHT),
   ];
-  const base = new Mesh(
-    new LatheGeometry(profile, SEGMENTS),
-    // Phong ignores the scene's environment, so the pad looks the same
-    // whether or not a painted part brings the room light with it.
-    // Gunmetal: a dark blue-grey, with bright, tight highlights.
-    new MeshPhongMaterial({
-      color: "#5b646d",
-      specular: "#e6ecf1",
-      shininess: 110,
-    }),
-  );
+  const geometry = new LatheGeometry(profile, SEGMENTS);
+  shadeSide(geometry);
 
-  const parts: Object3D[] = [base];
+  const parts: Object3D[] = [
+    new Mesh(
+      geometry,
+      new MeshBasicMaterial({ vertexColors: true, toneMapped: false }),
+    ),
+  ];
 
   const texture = faceTexture(color);
   if (texture) {
     const face = new Mesh(
       new CircleGeometry(radius - BEVEL, SEGMENTS),
-      new MeshBasicMaterial({
-        map: texture,
-        transparent: true,
-        depthWrite: false,
-      }),
+      new MeshBasicMaterial({ map: texture, toneMapped: false }),
     );
     face.rotation.x = -Math.PI / 2;
     face.position.y = 0.0015;
