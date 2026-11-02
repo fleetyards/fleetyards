@@ -23,7 +23,12 @@ vi.mock("@/services/fyApi", async () => ({
     isPending: computed(() => false),
   }),
   useNotificationsUnreadCount: () => ({ data: computed(() => ({ count: 0 })) }),
-  useFleetInvites: () => ({ data: computed(() => [{ id: "invite-1" }]) }),
+  useFleetInvites: () => ({
+    data: computed(() => [
+      { id: "invite-1", status: "invited" },
+      { id: "request-1", status: "requested" },
+    ]),
+  }),
 }));
 
 vi.mock("@/frontend/composables/useFleetNavAccess", () => ({
@@ -202,7 +207,7 @@ describe("Mobile navigation", () => {
       expect(hub(tabs).exists()).toBe(false);
     });
 
-    it("lists the reader's invitations in the switcher", async () => {
+    it("counts only invitations, not the reader's own requests", async () => {
       const tabs = await mountTabs("/fleets/kraken", "kraken");
 
       await hubTrigger(tabs).trigger("click");

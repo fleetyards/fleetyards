@@ -17,6 +17,7 @@ import { storeToRefs } from "pinia";
 import {
   useMyFleets as useMyFleetsQuery,
   useFleetInvites as useFleetInvitesQuery,
+  FleetMembershipStatusEnum,
   type Fleet,
 } from "@/services/fyApi";
 
@@ -182,6 +183,14 @@ const { data: myFleets } = useMyFleetsQuery({
 const { data: invites } = useFleetInvitesQuery({
   query: { enabled: computed(() => switching.value && isAuthenticated.value) },
 });
+
+// The endpoint also returns the join requests the reader sent.
+const invitationCount = computed(
+  () =>
+    (invites.value || []).filter(
+      (invite) => invite.status === FleetMembershipStatusEnum.INVITED,
+    ).length,
+);
 
 const sheet = ref<HTMLElement | null>(null);
 
@@ -368,8 +377,8 @@ onBeforeUnmount(() => {
             >
               <i class="fa-light fa-envelope-open-text" aria-hidden="true" />
               {{ t("nav.fleets.invites") }}
-              <span v-if="invites?.length" class="fleet-hub__badge">
-                {{ invites.length }}
+              <span v-if="invitationCount" class="fleet-hub__badge">
+                {{ invitationCount }}
               </span>
             </router-link>
           </li>
