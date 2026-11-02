@@ -46,7 +46,12 @@
         "armour": "Armour",
         "weapons": "Weapons"
       },
-      "hold": "Hold"
+      "hold": "Hold",
+      "bodies": {
+        "male": "Male",
+        "female": "Female"
+      },
+      "positionPending": "Position not exported yet"
     }
   }
 }

@@ -46,7 +46,12 @@
         "armour": "Rüstung",
         "weapons": "Waffen"
       },
-      "hold": "In die Hand nehmen"
+      "hold": "In die Hand nehmen",
+      "bodies": {
+        "male": "Männlich",
+        "female": "Weiblich"
+      },
+      "positionPending": "Position noch nicht exportiert"
     }
   }
 }

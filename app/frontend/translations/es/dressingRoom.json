@@ -46,7 +46,12 @@
         "armour": "Armadura",
         "weapons": "Armas"
       },
-      "hold": "Empuñar"
+      "hold": "Empuñar",
+      "bodies": {
+        "male": "Masculino",
+        "female": "Femenino"
+      },
+      "positionPending": "Posición aún no exportada"
     }
   }
 }

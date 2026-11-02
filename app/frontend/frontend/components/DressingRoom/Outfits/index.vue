@@ -21,6 +21,7 @@ import { useSessionStore } from "@/frontend/stores/session";
 import {
   type Outfit,
   type OutfitItemInput,
+  type OutfitBodyEnum,
   type OutfitWeaponSlotEnum,
   getOutfitsQueryKey,
   useCreateOutfit,
@@ -37,12 +38,14 @@ type Props = {
   // it out.
   pending?: boolean;
   heldWeapon?: OutfitWeaponSlotEnum;
+  body?: OutfitBodyEnum;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   activeId: undefined,
   pending: false,
   heldWeapon: undefined,
+  body: undefined,
 });
 
 const emit = defineEmits<{
@@ -92,7 +95,8 @@ const changed = computed(
     !!active.value &&
     (active.value.name !== name.value.trim() ||
       savedItemsKey(active.value) !== itemsKey(props.items) ||
-      (active.value.heldWeapon ?? undefined) !== props.heldWeapon),
+      (active.value.heldWeapon ?? undefined) !== props.heldWeapon ||
+      (props.body !== undefined && active.value.body !== props.body)),
 );
 
 const refresh = () =>
@@ -113,6 +117,7 @@ const saveNew = async () => {
         name: name.value.trim(),
         items: props.items,
         heldWeapon: props.heldWeapon ?? null,
+        body: props.body,
       },
     });
     await refresh();
@@ -133,6 +138,7 @@ const saveChanges = async () => {
         name: name.value.trim(),
         items: props.items,
         heldWeapon: props.heldWeapon ?? null,
+        body: props.body,
       },
     });
     await refresh();

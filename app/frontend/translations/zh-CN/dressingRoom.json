@@ -46,7 +46,12 @@
         "armour": "护甲",
         "weapons": "武器"
       },
-      "hold": "手持"
+      "hold": "手持",
+      "bodies": {
+        "male": "男性",
+        "female": "女性"
+      },
+      "positionPending": "位置尚未导出"
     }
   }
 }

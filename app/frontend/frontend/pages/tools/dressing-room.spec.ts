@@ -31,6 +31,15 @@ const EQUIPMENT: Record<string, Equipment> = {
     holo: media("p4ar.glb"),
     holoTextured: media("p4ar_textured.glb"),
   }),
+  "p4-ar-hung": {
+    ...piece("p4-ar-hung", { holo: media("p4ar.glb") }),
+    attachPoints: {
+      attach_offset_left_01: {
+        position: [0, 0.1, -0.2],
+        rotation: [0, 0, 0, 1],
+      },
+    },
+  } as unknown as Equipment,
   "s-38": piece("s-38", { holo: media("s38.glb") }),
 };
 
@@ -124,7 +133,7 @@ describe("ToolsDressingRoomPage", () => {
     ).toBe(true);
   });
 
-  it("stows the weapons on the bones the armour brings, and puts the held one in hand", async () => {
+  it("puts the held weapon in hand, and waits for a stowed one's helper", async () => {
     const { wrapper } = await mount({
       torso: "adp-core",
       primary: "p4-ar",
@@ -134,14 +143,6 @@ describe("ToolsDressingRoomPage", () => {
 
     expect(viewerModel(wrapper).rig.attachments).toEqual([
       {
-        path: "/p4ar_textured.glb",
-        bone: "wep_stocked_attach_3_override",
-        size: 1000,
-        textured: true,
-        fallbackPath: "/p4ar.glb",
-        helper: undefined,
-      },
-      {
         path: "/s38.glb",
         bone: "RightWeaponBone",
         size: 1000,
@@ -150,6 +151,46 @@ describe("ToolsDressingRoomPage", () => {
         helper: undefined,
       },
     ]);
+    expect(
+      wrapper
+        .find('[data-test="dressing-room-position-pending-primary"]')
+        .exists(),
+    ).toBe(true);
+  });
+
+  it("hangs a stowed weapon by the helper the export lists", async () => {
+    const { wrapper } = await mount({ primary: "p4-ar-hung" });
+
+    expect(viewerModel(wrapper).rig.attachments).toEqual([
+      {
+        path: "/p4ar.glb",
+        bone: "wep_stocked_attach_3_override",
+        size: 1000,
+        textured: false,
+        fallbackPath: undefined,
+        helper: { position: [0, 0.1, -0.2], rotation: [0, 0, 0, 1] },
+      },
+    ]);
+  });
+
+  it("switches the body and keeps it in the address", async () => {
+    bodies.value = [
+      MALE,
+      { ...MALE, key: "female", holo: media("female.glb") },
+    ];
+
+    const { wrapper, router } = await mount({ torso: "adp-core" });
+
+    await wrapper
+      .find('[data-test="dressing-room-body-female"]')
+      .trigger("click");
+    await flushPromises();
+
+    expect(router.currentRoute.value.query.body).toBe("female");
+    expect(viewerModel(wrapper).path).toBe("/female.glb");
+    expect(viewerModel(wrapper).rig.pieces).toEqual([]);
+
+    bodies.value = [MALE];
   });
 
   it("takes a weapon out of hand when it is held again", async () => {

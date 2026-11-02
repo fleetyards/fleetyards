@@ -46,7 +46,12 @@
         "armour": "Armure",
         "weapons": "Armes"
       },
-      "hold": "Tenir en main"
+      "hold": "Tenir en main",
+      "bodies": {
+        "male": "Homme",
+        "female": "Femme"
+      },
+      "positionPending": "Position pas encore exportée"
     }
   }
 }

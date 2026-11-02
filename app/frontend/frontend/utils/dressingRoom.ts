@@ -9,6 +9,7 @@ import {
   type CharacterBody,
   type CharacterBodyClip,
   type MediaFile,
+  OutfitBodyEnum,
   OutfitSlotEnum,
   type OutfitWeaponSlotEnum,
 } from "@/services/fyApi";
@@ -97,6 +98,7 @@ type ItemHolos = {
   holo?: MediaFile | null;
   holoTextured?: MediaFile | null;
   holoRiggedMale?: MediaFile | null;
+  holoRiggedFemale?: MediaFile | null;
 };
 
 export interface PieceHolo {
@@ -110,8 +112,12 @@ export interface PieceHolo {
 // On a body, the piece's rig for it: only a rig follows the body's pose.
 export const riggedPieceHolo = (
   media?: ItemHolos | null,
+  body: OutfitBodyEnum = OutfitBodyEnum.MALE,
 ): PieceHolo | undefined => {
-  const rigged = media?.holoRiggedMale;
+  const rigged =
+    body === OutfitBodyEnum.FEMALE
+      ? media?.holoRiggedFemale
+      : media?.holoRiggedMale;
 
   return rigged?.url
     ? { path: rigged.url, size: rigged.size ?? undefined, textured: false }

@@ -46,7 +46,12 @@
         "armour": "Armatura",
         "weapons": "Armi"
       },
-      "hold": "Impugna"
+      "hold": "Impugna",
+      "bodies": {
+        "male": "Maschile",
+        "female": "Femminile"
+      },
+      "positionPending": "Posizione non ancora esportata"
     }
   }
 }

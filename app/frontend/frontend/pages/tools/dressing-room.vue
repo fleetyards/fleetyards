@@ -8,6 +8,7 @@ export default {
 import { useQueries } from "@tanstack/vue-query";
 import Heading from "@/shared/components/base/Heading/index.vue";
 import Btn from "@/shared/components/base/Btn/index.vue";
+import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import {
   BtnSizesEnum,
   BtnVariantsEnum,
@@ -22,6 +23,7 @@ import {
   type Equipment,
   type Outfit,
   type OutfitItemInput,
+  OutfitBodyEnum,
   OutfitSlotEnum,
   type OutfitWeaponSlotEnum,
   getEquipmentItemQueryOptions,
@@ -47,9 +49,6 @@ import {
   riggedOutfitModel,
   riggedPieceHolo,
 } from "@/frontend/utils/dressingRoom";
-
-// The only body exported so far; the others join as the export adds them.
-const BODY_KEY = "male";
 
 // The figure faces -Z, as the game's characters face its +Y: the camera starts
 // in front of it.
@@ -78,6 +77,16 @@ const queryValue = (key: string) => {
 
 const activeOutfitId = computed(() => queryValue("outfit"));
 
+const BODY_KEYS = Object.values(OutfitBodyEnum);
+
+const bodyKey = computed(() => {
+  const key = queryValue("body");
+
+  return BODY_KEYS.includes(key as OutfitBodyEnum)
+    ? (key as OutfitBodyEnum)
+    : OutfitBodyEnum.MALE;
+});
+
 const poseName = computed(() => queryValue("pose"));
 
 // The weapon in hand, only while the outfit carries it.
@@ -91,6 +100,7 @@ type NavigationState = {
   outfit?: string;
   pose?: string;
   held?: OutfitWeaponSlotEnum;
+  body?: OutfitBodyEnum;
 };
 
 const navigate = (next: OutfitSelection, state: NavigationState = {}) => {
@@ -98,8 +108,12 @@ const navigate = (next: OutfitSelection, state: NavigationState = {}) => {
     outfit: activeOutfitId.value,
     pose: poseName.value,
     held: heldWeapon.value,
+    body: bodyKey.value,
     ...state,
   };
+
+  // The usual body is left out of the address.
+  if (query.body === OutfitBodyEnum.MALE) query.body = undefined;
 
   if (query.held && !next[query.held]) query.held = undefined;
 
@@ -139,7 +153,11 @@ const loadOutfit = (outfit: Outfit) => {
     Object.fromEntries(
       outfit.items.map((item) => [item.slot, item.equipment.slug]),
     ),
-    { outfit: outfit.id, held: outfit.heldWeapon ?? undefined },
+    {
+      outfit: outfit.id,
+      held: outfit.heldWeapon ?? undefined,
+      body: outfit.body,
+    },
   );
 };
 
@@ -198,7 +216,9 @@ const bodyFailed = ref(false);
 const body = computed(() =>
   bodyFailed.value
     ? undefined
-    : bodies.value?.find((entry) => entry.key === BODY_KEY && entry.holo?.url),
+    : bodies.value?.find(
+        (entry) => entry.key === bodyKey.value && entry.holo?.url,
+      ),
 );
 
 // On a body, armour is drawn only from its rig for that body: a static holo is
@@ -209,7 +229,7 @@ const riggedHolos = computed(
     Object.fromEntries(
       OUTFIT_SLOTS.map((slot) => [
         slot,
-        riggedPieceHolo(items.value[slot]?.media),
+        riggedPieceHolo(items.value[slot]?.media, bodyKey.value),
       ]),
     ) as Partial<Record<OutfitSlotEnum, PieceHolo>>,
 );
@@ -261,6 +281,29 @@ const pieces = computed(() =>
   }),
 );
 
+// A held weapon sits on its grip, which is its holo's origin. A stowed one
+// hangs by a helper on itself, and is drawn only once the export lists where
+// that is: hung by its grip it sticks out of the holster.
+const weaponPlacement = (slot: OutfitSlotEnum) => {
+  const holo = staticHolos.value[slot];
+  if (!holo) return undefined;
+
+  if (heldWeapon.value === slot) return attachment(holo, HAND_MOUNT);
+
+  const mount = STOWED_MOUNTS[slot];
+  const placed =
+    mount && attachment(holo, mount, items.value[slot]?.attachPoints);
+
+  return placed?.helper ? placed : undefined;
+};
+
+const positionPending = (slot: OutfitSlotEnum) =>
+  isWeaponSlot(slot) &&
+  !!body.value &&
+  !!staticHolos.value[slot] &&
+  heldWeapon.value !== slot &&
+  !weaponPlacement(slot);
+
 const attachments = computed(() => [
   ...(pinnedBackpack.value
     ? [
@@ -272,12 +315,9 @@ const attachments = computed(() => [
       ]
     : []),
   ...WEAPON_SLOTS.flatMap((slot) => {
-    const holo = staticHolos.value[slot];
-    const mount = heldWeapon.value === slot ? HAND_MOUNT : STOWED_MOUNTS[slot];
+    const placed = weaponPlacement(slot);
 
-    return holo && mount
-      ? [attachment(holo, mount, items.value[slot]?.attachPoints)]
-      : [];
+    return placed ? [placed] : [];
   }),
 ]);
 
@@ -302,6 +342,18 @@ const holoUnavailable = () => {
   } else if (root.textured) {
     failedPaths.value = [...failedPaths.value, root.path];
   }
+};
+
+// The bodies the export has, in the order the enum lists them.
+const bodyOptions = computed(() =>
+  BODY_KEYS.filter((key) =>
+    bodies.value?.some((entry) => entry.key === key && entry.holo?.url),
+  ),
+);
+
+const selectBody = (key: OutfitBodyEnum) => {
+  bodyFailed.value = false;
+  void navigate(selection.value, { body: key });
 };
 
 const poseOptions = computed(() =>
@@ -471,7 +523,14 @@ const copyShareLink = () => {
                     {{ t("dressingRoom.choose") }}
                   </span>
                   <span
-                    v-if="items[slot] && !holos[slot]"
+                    v-if="items[slot] && positionPending(slot)"
+                    class="dressing-room__slot-note"
+                    :data-test="`dressing-room-position-pending-${slot}`"
+                  >
+                    {{ t("dressingRoom.positionPending") }}
+                  </span>
+                  <span
+                    v-else-if="items[slot] && !holos[slot]"
                     class="dressing-room__slot-note"
                     :data-test="`dressing-room-no-holo-${slot}`"
                   >
@@ -520,6 +579,22 @@ const copyShareLink = () => {
       </aside>
 
       <aside class="dressing-room__side dressing-room__side--outfit">
+        <BtnGroup
+          v-if="bodyOptions.length > 1"
+          class="dressing-room__bodies"
+          data-test="dressing-room-bodies"
+        >
+          <Btn
+            v-for="option in bodyOptions"
+            :key="option"
+            :active="option === bodyKey"
+            :aria-pressed="option === bodyKey"
+            :data-test="`dressing-room-body-${option}`"
+            @click="selectBody(option)"
+          >
+            {{ t(`dressingRoom.bodies.${option}`) }}
+          </Btn>
+        </BtnGroup>
         <BaseSelect
           v-if="poseOptions.length > 1"
           v-model="selectedPose"
@@ -532,6 +607,7 @@ const copyShareLink = () => {
         <Outfits
           :items="outfitItems"
           :held-weapon="heldWeapon"
+          :body="bodyKey"
           :pending="piecesPending"
           :active-id="activeOutfitId"
           @load="loadOutfit"
