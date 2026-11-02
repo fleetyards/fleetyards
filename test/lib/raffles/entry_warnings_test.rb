@@ -25,17 +25,34 @@ module Raffles
       Rails.application.config.action_dispatch.stubs(:trusted_proxies).returns([IPAddr.new("91.98.1.57")])
       raffle = create(:raffle)
       entries = [create(:raffle_entry, raffle:), create(:raffle_entry, raffle:)]
-      entries.each { |entry| entry.user.update_columns(current_sign_in_ip: "91.98.1.57", last_sign_in_ip: "10.0.0.4") }
+      entries.each { |entry| entry.user.update_columns(current_sign_in_ip: "91.98.1.57", last_sign_in_ip: "91.98.1.57") }
 
       warnings = EntryWarnings.new(raffle)
 
       entries.each { |entry| assert_empty warnings.for(entry.reload).shared_ip_with }
     end
 
-    test "a visitor address shared by two entrants is" do
+    test "a visitor address shared by two entrants is a shared IP" do
       raffle = create(:raffle)
       first, second = create(:raffle_entry, raffle:), create(:raffle_entry, raffle:)
       [first, second].each { |entry| entry.user.update_columns(current_sign_in_ip: "203.0.113.7") }
+
+      assert_equal [second.user.username], EntryWarnings.new(raffle).for(first.reload).shared_ip_with
+    end
+
+    test "a private address counts as a visitor's once a proxy is configured, as RemoteIp does" do
+      Rails.application.config.action_dispatch.stubs(:trusted_proxies).returns([IPAddr.new("91.98.1.57")])
+      raffle = create(:raffle)
+      first, second = create(:raffle_entry, raffle:), create(:raffle_entry, raffle:)
+      [first, second].each { |entry| entry.user.update_columns(current_sign_in_ip: "10.1.2.3") }
+
+      assert_equal [second.user.username], EntryWarnings.new(raffle).for(first.reload).shared_ip_with
+    end
+
+    test "an unreadable saved address is compared as it is" do
+      raffle = create(:raffle)
+      first, second = create(:raffle_entry, raffle:), create(:raffle_entry, raffle:)
+      [first, second].each { |entry| entry.user.update_columns(current_sign_in_ip: "unknown") }
 
       assert_equal [second.user.username], EntryWarnings.new(raffle).for(first.reload).shared_ip_with
     end
