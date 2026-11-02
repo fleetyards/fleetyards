@@ -165,7 +165,7 @@ const toggle = (step: SyncStep, index: number) => {
   width: 28px;
   height: 28px;
   color: var(--color-text-dim, #959595);
-  font-size: 0.8125rem;
+  font-size: 13px;
   border: 1px solid var(--color-edge, rgb(122 130 136 / 0.5));
   border-radius: 999px;
 }

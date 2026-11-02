@@ -95,7 +95,7 @@ const badges = computed<RowListItemBadge[]>(() =>
   justify-content: center;
   width: 32px;
   height: 32px;
-  font-size: 1.25rem;
+  font-size: 20px;
   color: var(--color-muted, #7a8288);
 }
 </style>

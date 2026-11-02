@@ -94,7 +94,7 @@ const spectrumDmUrl = computed(() =>
   justify-content: center;
   width: 22px;
   height: 14px;
-  font-size: 0.875rem;
+  font-size: 14px;
 }
 
 .stats-card-contact__icon.icon-rsi {

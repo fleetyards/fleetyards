@@ -730,7 +730,7 @@ const destroySelected = () =>
   color: $gray-black;
   // Absolute rather than an em: `mobile-icon-only` collapses the label by
   // setting the button's font-size to 0, and the count would go with it.
-  font-size: 0.75rem;
+  font-size: 12px;
   font-weight: bold;
   line-height: 1;
   background-color: var(--color-primary, #{$primary});

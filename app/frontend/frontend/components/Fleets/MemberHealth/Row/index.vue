@@ -113,7 +113,7 @@ const details = computed(() =>
   border-radius: 3px;
   background: rgb(66 139 202 / 0.15);
   color: var(--color-primary-tint, #92bce0);
-  font-size: 0.75rem;
+  font-size: 12px;
   font-weight: 700;
 }
 

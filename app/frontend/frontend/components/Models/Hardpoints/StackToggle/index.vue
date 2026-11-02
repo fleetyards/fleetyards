@@ -53,7 +53,7 @@ const { t } = useI18n();
   border: 1px solid rgba($gray-light, 0.35);
   border-radius: 6px;
   color: $gray-light;
-  font-size: 0.6875rem;
+  font-size: 11px;
   cursor: pointer;
   transition:
     color 0.15s,

@@ -76,7 +76,7 @@ const glyph = computed(
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.125rem;
+    font-size: 18px;
     line-height: 1;
     color: var(--color-primary, #428bca);
   }

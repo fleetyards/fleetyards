@@ -128,11 +128,11 @@ const rsiProfileUrl = computed(() =>
     // three times its size in the hangar's 30px link row.
     .rsi-profile-link--icon & {
       transform: translate(50%, -50%);
-      font-size: 0.9375rem;
+      font-size: 15px;
     }
 
     .rsi-profile-link--large & {
-      font-size: 1.5625rem;
+      font-size: 25px;
     }
   }
 
@@ -151,7 +151,7 @@ const rsiProfileUrl = computed(() =>
     }
 
     &--large &__badge {
-      font-size: 0.9375rem;
+      font-size: 15px;
     }
   }
 }

@@ -220,7 +220,7 @@ const groupOf = (row: LoadoutSocketSlot) =>
   height: 24px;
   padding: 0;
   color: $gray-light;
-  font-size: 0.6875rem;
+  font-size: 11px;
   background: none;
   border: 1px solid rgba($gray-light, 0.35);
   border-radius: 6px;

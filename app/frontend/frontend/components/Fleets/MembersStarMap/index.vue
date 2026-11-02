@@ -406,7 +406,7 @@ const ResolutionUpdater = defineComponent({
     border-radius: 11px;
     background: #42b883;
     color: #0a1628;
-    font-size: 0.6875rem;
+    font-size: 11px;
     font-weight: 700;
     box-shadow: 0 0 8px rgba(66, 184, 131, 0.6);
   }
