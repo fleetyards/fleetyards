@@ -32,9 +32,16 @@ const bodies = ref<CharacterBody[]>([{ key: "male", holo: media("body.glb") }]);
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
-  getEquipmentItemQueryOptions: (slug: string) => ({
+  getEquipmentItemQueryOptions: (
+    slug: string,
+    options?: { query?: Record<string, unknown> },
+  ) => ({
+    ...options?.query,
     queryKey: ["equipment-item", slug],
-    queryFn: () => Promise.resolve(EQUIPMENT[slug]),
+    queryFn: () =>
+      EQUIPMENT[slug]
+        ? Promise.resolve(EQUIPMENT[slug])
+        : Promise.reject(new Error("not found")),
   }),
   useCharacterBodies: () => ({ data: bodies }),
 }));
@@ -144,6 +151,20 @@ describe("ToolsDressingRoomPage", () => {
     await flushPromises();
 
     expect(viewerModel(wrapper).path).toBe("/legs.glb");
+  });
+
+  it("holds off saving while the address names a piece the catalogue lacks", async () => {
+    const { wrapper } = await mount({
+      torso: "adp-core",
+      legs: "retired-legs",
+    });
+
+    expect(
+      wrapper.find('[data-test="dressing-room-slot-legs"]').text(),
+    ).toContain("Item not found");
+    expect(
+      wrapper.findComponent({ name: "DressingRoomOutfits" }).props("pending"),
+    ).toBe(true);
   });
 
   it("shows how to start with nothing to draw", async () => {

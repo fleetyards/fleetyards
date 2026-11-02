@@ -175,7 +175,11 @@ const holoUnavailable = () => {
   }
 };
 
-const piecesPending = computed(() => selectedSlots.value.some(loadingSlot));
+// A piece still loading, or one the address names but the catalogue no longer
+// has: saving now would drop it from the outfit.
+const piecesPending = computed(() =>
+  selectedSlots.value.some((slot) => loadingSlot(slot) || missingSlot(slot)),
+);
 
 const outfitItems = computed<OutfitItemInput[]>(() =>
   selectedSlots.value.flatMap((slot) => {

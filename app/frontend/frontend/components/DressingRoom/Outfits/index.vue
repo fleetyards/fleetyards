@@ -32,7 +32,8 @@ type Props = {
   // What the outfit on screen wears, by id: what it is saved with.
   items: OutfitItemInput[];
   activeId?: string;
-  // A piece is still loading: saving now would leave it out.
+  // A piece has not resolved yet, or no longer does: saving now would leave
+  // it out.
   pending?: boolean;
 };
 
