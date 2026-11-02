@@ -1,6 +1,6 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { VueWrapper } from "@vue/test-utils";
+import { flushPromises, type VueWrapper } from "@vue/test-utils";
 import Component from "./index.vue";
 
 const displaySuccess = vi.fn();
@@ -52,5 +52,31 @@ describe("ViewsFolderUpload", () => {
 
     expect(summary(subject).exists()).toBe(false);
     expect(displaySuccess).not.toHaveBeenCalled();
+  });
+
+  it("previews the views it picked out, but not the USDZ", async () => {
+    vi.stubGlobal("URL", { ...URL, createObjectURL: () => "blob:view" });
+    const read = vi.spyOn(FileReader.prototype, "readAsDataURL");
+    const subject = await mount([]);
+    const filter = subject
+      .findComponent({ name: "DirectUpload" })
+      .props("filter") as (files: File[]) => File[];
+
+    const kept = filter([
+      new File(["png"], "flight_top.png", { type: "image/png" }),
+      new File(["PK"], "flight_holo.usdz"),
+    ]);
+    await flushPromises();
+
+    expect(kept.map((file) => file.name)).toEqual([
+      "flight_holo.usdz",
+      "flight_top.png",
+    ]);
+    expect(read).not.toHaveBeenCalled();
+    expect(subject.emitted("selected")?.at(-1)?.[0]).toEqual({
+      topView: "blob:view",
+    });
+    read.mockRestore();
+    vi.unstubAllGlobals();
   });
 });

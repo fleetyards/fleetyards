@@ -25,6 +25,21 @@ class ModelTest < ActiveSupport::TestCase
     )
   end
 
+  test "takes a USDZ for the AR holo" do
+    model = create(:model)
+    model.holo_usdz = ActiveStorage::Blob.create_and_upload!(io: StringIO.new("PK\x03\x04#{"\0" * 60}".b), filename: "flight_holo.usdz")
+
+    assert model.valid?, model.errors.full_messages.to_sentence
+  end
+
+  test "rejects any other file for the AR holo" do
+    model = create(:model)
+    model.holo_usdz = ActiveStorage::Blob.create_and_upload!(io: File.open(Rails.root.join("test/fixtures/holo/plain.glb")), filename: "flight_holo.glb")
+
+    assert_not model.valid?
+    assert_includes model.errors.details[:holo_usdz], {error: :not_a_usdz}
+  end
+
   # The concern reads the names in `after_commit`, where `attachment_changes` is
   # already empty -- so before they were captured in `after_save`, neither this
   # nor the trimming it guards ran at all.

@@ -12,6 +12,18 @@ export const mayHaveAr = (
   anchor: HTMLAnchorElement = document.createElement("a"),
 ): boolean => !!anchor.relList?.supports?.("ar") || /android/i.test(userAgent);
 
+// Converting a holo in the page is more than an iPhone holds; an iPad manages.
+// By name rather than by width: an iPad in portrait is as narrow as a phone
+// layout. Asked for the desktop site, an iPhone names itself a Mac, like an
+// iPad does -- only its touch screen and its size give it away.
+export const isIPhone = (
+  userAgent: string = navigator.userAgent,
+  touchPoints: number = navigator.maxTouchPoints,
+  shortSide: number = Math.min(screen.width, screen.height),
+): boolean =>
+  /iPhone|iPod/.test(userAgent) ||
+  (/Macintosh/.test(userAgent) && touchPoints > 1 && shortSide < 600);
+
 // Quick Look, which only exists on iOS: the holo is converted to USDZ in the
 // page for it, where Scene Viewer fetches the file itself.
 export const usesQuickLook = (
@@ -77,6 +89,15 @@ export const openQuickLook = async (
 
   const url = URL.createObjectURL(usdz);
 
+  openQuickLookFile(url);
+  // Released the way model-viewer does: Safari has taken the file on the click.
+  URL.revokeObjectURL(url);
+};
+
+// Hands a USDZ to Quick Look. For one built ahead of time, Quick Look fetches
+// it from the link itself, so the page neither downloads the holo nor loads
+// three.js for it.
+export const openQuickLookFile = (url: string): void => {
   const anchor = document.createElement("a");
   anchor.setAttribute("rel", "ar");
   anchor.setAttribute("download", "holo.usdz");
@@ -88,7 +109,5 @@ export const openQuickLook = async (
   document.body.appendChild(anchor);
 
   anchor.click();
-  // Released the way model-viewer does: Safari has taken the file on the click.
-  URL.revokeObjectURL(url);
   setTimeout(() => anchor.remove());
 };

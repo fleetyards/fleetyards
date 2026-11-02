@@ -63,6 +63,7 @@ export const HOLO_FIELDS = [
   "landedHoloTextured",
   "landedHoloTexturedLite",
   "holoHull",
+  "holoUsdz",
 ] as const satisfies readonly (keyof ModelUpdateInput)[];
 
 export type ViewField = (typeof VIEW_FIELDS)[number];
@@ -113,6 +114,7 @@ export const FIELD_SECTIONS: readonly FieldSection[] = (
         "holoTextured",
         "holoTexturedLite",
         "holoHull",
+        "holoUsdz",
       ],
       extended: ["holo", "holoLite"],
       landed: ["holo", "holoLite", "holoTextured", "holoTexturedLite"],
@@ -162,6 +164,9 @@ const VIEWPOINTS: Record<string, string> = {
 // holo.mtl beside the glTF, and every one of them answers to "holo".
 const VIEW_EXTENSIONS = ["png", "jpg", "jpeg", "webp", "gif"];
 const HOLO_EXTENSIONS = ["gltf", "glb"];
+// Only the flight holo is placed in AR, so only it is exported as USDZ -- from
+// its lite export, and named either way.
+const AR_HOLO_EXTENSION = "usdz";
 
 // The regex accepts any of the three states, so the prefix that matched decides
 // which family the file belongs to rather than a bare "is it prefixed at all".
@@ -202,11 +207,18 @@ export const fieldFor = (filename: string): FolderField | undefined => {
   const holo = HOLO_NAME.exec(stem);
 
   if (holo) {
+    const prefix = prefixFor(holo[1]);
+
+    if (extension === AR_HOLO_EXTENSION) {
+      const variant = holo[2]?.toLowerCase();
+
+      return prefix || (variant && variant !== "lite") ? undefined : "holoUsdz";
+    }
+
     if (!HOLO_EXTENSIONS.includes(extension)) {
       return undefined;
     }
 
-    const prefix = prefixFor(holo[1]);
     const variant = holo[2]
       ?.toLowerCase()
       .replace(/^textured[-_ ]?lite$/, "texturedLite");

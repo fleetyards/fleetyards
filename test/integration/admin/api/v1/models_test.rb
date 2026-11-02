@@ -130,6 +130,8 @@ class Admin::Api::V1::ModelsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  USDZ_BYTES = "PK\x03\x04#{"\0" * 60}".b
+
   setup do
     @user = create(:admin_user, resource_access: [:models])
   end
@@ -482,6 +484,40 @@ class Admin::Api::V1::ModelsTest < ActionDispatch::IntegrationTest
       assert_equal false, parsed_body["canLandOnPlanets"]
       assert_not model.reload.can_land_on_planets?
     end
+  end
+
+  test "PUT /models/:id drops the USDZ built from the lite holo it replaces" do
+    sign_in @user
+    model = create(:model)
+    model.holo_usdz.attach(io: StringIO.new(USDZ_BYTES), filename: "flight_holo.usdz", content_type: Model::USDZ_CONTENT_TYPE)
+    lite = ActiveStorage::Blob.create_and_upload!(io: File.open(Rails.root.join("test/fixtures/holo/plain.glb")), filename: "flight_holo_lite.glb")
+
+    assert_api_response :put, 200, path_params: {id: model.id}, body: {holoLite: lite.signed_id}
+
+    model.reload
+    assert model.holo_lite.attached?
+    assert_not model.holo_usdz.attached?
+  end
+
+  test "PUT /models/:id keeps a USDZ uploaded with the lite holo" do
+    sign_in @user
+    model = create(:model)
+    lite = ActiveStorage::Blob.create_and_upload!(io: File.open(Rails.root.join("test/fixtures/holo/plain.glb")), filename: "flight_holo_lite.glb")
+    usdz = ActiveStorage::Blob.create_and_upload!(io: StringIO.new(USDZ_BYTES), filename: "flight_holo.usdz", content_type: Model::USDZ_CONTENT_TYPE)
+
+    assert_api_response :put, 200, path_params: {id: model.id}, body: {holoLite: lite.signed_id, holoUsdz: usdz.signed_id}
+
+    assert_equal "flight_holo.usdz", model.reload.holo_usdz.filename.to_s
+  end
+
+  test "PUT /models/:id leaves the USDZ alone when the lite holo is untouched" do
+    sign_in @user
+    model = create(:model)
+    model.holo_usdz.attach(io: StringIO.new(USDZ_BYTES), filename: "flight_holo.usdz", content_type: Model::USDZ_CONTENT_TYPE)
+
+    assert_api_response :put, 200, path_params: {id: model.id}, body: {name: "Enterprise A"}
+
+    assert model.reload.holo_usdz.attached?
   end
 
   test "PUT /models/:id returns 404 for missing id" do

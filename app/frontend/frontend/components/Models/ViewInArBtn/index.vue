@@ -9,8 +9,10 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import {
+  isIPhone,
   mayHaveAr,
   openQuickLook as presentQuickLook,
+  openQuickLookFile,
   prepareAr,
   usesQuickLook,
   type ModelViewerElement,
@@ -64,6 +66,16 @@ const holoUrl = computed(() => {
   );
 });
 
+// Built from the flight holo's lite export, so it stands for whichever of the
+// two the 3D view shows.
+const usdzUrl = computed(() => props.model.media.holoUsdz?.url);
+
+// Without a USDZ built ahead of time the page would convert the holo, which an
+// iPhone cannot hold, so there it offers no Quick Look at all.
+const quickLookReady = computed(
+  () => !quickLook || !!usdzUrl.value || !isIPhone(),
+);
+
 // Only a holo exported in meters can be placed at true size.
 const { isFeatureEnabled } = useFeatures();
 
@@ -73,6 +85,7 @@ const candidate = computed(
     props.active &&
     !!holoUrl.value &&
     !!props.model.holoToScale &&
+    quickLookReady.value &&
     mayHaveAr(),
 );
 
@@ -155,6 +168,11 @@ const openQuickLook = async (url: string) => {
 // opens from a user gesture.
 const open = () => {
   if (opening.value) return;
+
+  if (deferred.value && usdzUrl.value) {
+    openQuickLookFile(usdzUrl.value);
+    return;
+  }
 
   if (deferred.value && holoUrl.value) {
     void openQuickLook(holoUrl.value);

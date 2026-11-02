@@ -341,6 +341,7 @@ const fileTypeIconClass = computed(() => {
       case "pdf":
         return "fa-file-pdf";
       case "holo":
+      case "arHolo":
         return "fa-cube"; // Note: FontAwesome does not have a holo icon, replace with appropriate icon
       default:
         return "fa-file";

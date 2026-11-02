@@ -142,7 +142,11 @@ const onFolderMapped = (fields: Partial<Record<FolderField, string>>) => {
             v-bind="fieldProps[field]"
             :name="field"
             :preview-src="previews[field]"
-            :allowed-types="AllowedFileTypes.HOLO"
+            :allowed-types="
+              field === 'holoUsdz'
+                ? AllowedFileTypes.AR_HOLO
+                : AllowedFileTypes.HOLO
+            "
             clearable
           />
         </div>

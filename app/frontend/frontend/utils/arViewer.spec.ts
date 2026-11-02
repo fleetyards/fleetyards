@@ -1,5 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { mayHaveAr, openQuickLook, usesQuickLook } from "./arViewer";
+import {
+  isIPhone,
+  mayHaveAr,
+  openQuickLook,
+  openQuickLookFile,
+  usesQuickLook,
+} from "./arViewer";
 
 vi.mock("@/frontend/utils/usdz", () => ({
   holoToUsdz: vi.fn(async () => new Blob(["usdz"])),
@@ -24,6 +30,54 @@ describe("mayHaveAr", () => {
   it("does not expect AR on a desktop", () => {
     expect(
       mayHaveAr("Mozilla/5.0 (Macintosh; Intel Mac OS X 14_0)", anchor(false)),
+    ).toBe(false);
+  });
+});
+
+describe("isIPhone", () => {
+  it("knows an iPhone", () => {
+    expect(
+      isIPhone(
+        "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15",
+      ),
+    ).toBe(true);
+  });
+
+  it("knows an iPhone asking for the desktop site", () => {
+    expect(
+      isIPhone(
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15",
+        5,
+        390,
+      ),
+    ).toBe(true);
+  });
+
+  it("does not take an iPad asking for the desktop site for one", () => {
+    expect(
+      isIPhone(
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15",
+        5,
+        820,
+      ),
+    ).toBe(false);
+  });
+
+  it("does not take a Mac for one", () => {
+    expect(
+      isIPhone(
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15",
+        0,
+        900,
+      ),
+    ).toBe(false);
+  });
+
+  it("does not take an iPad for one", () => {
+    expect(
+      isIPhone(
+        "Mozilla/5.0 (iPad; CPU OS 18_0 like Mac OS X) AppleWebKit/605.1.15",
+      ),
     ).toBe(false);
   });
 });
@@ -68,6 +122,17 @@ describe("openQuickLook", () => {
       "blob:holo#allowsContentScaling=0",
     );
     expect(clicked[0].querySelector("img")).not.toBeNull();
+  });
+
+  it("hands a USDZ built ahead of time to Quick Look as it is", () => {
+    openQuickLookFile("https://fleetyards.test/files/flight_holo.usdz");
+
+    expect(clicked).toHaveLength(1);
+    expect(clicked[0].rel).toBe("ar");
+    expect(clicked[0].getAttribute("href")).toBe(
+      "https://fleetyards.test/files/flight_holo.usdz#allowsContentScaling=0",
+    );
+    expect(createObjectURL).not.toHaveBeenCalled();
   });
 
   it("opens nothing for a holo no longer wanted once converted", async () => {

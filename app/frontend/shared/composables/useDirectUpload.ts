@@ -1,6 +1,18 @@
 import { DirectUpload, type Blob } from "@rails/activestorage";
+import { fileTypeOf } from "@/shared/components/DirectUpload/types";
 
 const DIRECT_UPLOAD_URL = "/files/direct_uploads";
+
+// The blob is stored under the type the browser reports, and the public bucket
+// serves the file under it. A model file goes up under the type its extension
+// stands for instead -- AR Quick Look opens a USDZ only under its own.
+const withType = (file: File) => {
+  const type = fileTypeOf(file);
+
+  return type === file.type
+    ? file
+    : new File([file], file.name, { type, lastModified: file.lastModified });
+};
 
 export const useDirectUpload = () => {
   const uploadFile = (
@@ -22,7 +34,11 @@ export const useDirectUpload = () => {
 
     const promise = new Promise<Blob>((resolve, reject) => {
       try {
-        const upload = new DirectUpload(file, DIRECT_UPLOAD_URL, callbacks);
+        const upload = new DirectUpload(
+          withType(file),
+          DIRECT_UPLOAD_URL,
+          callbacks,
+        );
 
         upload.create((error: string | null, blob?: Blob) => {
           if (error) {

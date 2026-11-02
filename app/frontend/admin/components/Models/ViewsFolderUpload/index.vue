@@ -141,6 +141,12 @@ const filterFolder = (files: File[]) => {
   plan.value.forEach(({ field, file }) => {
     forget(field);
 
+    // Nothing in the admin draws a USDZ, so reading one would only hold its
+    // megabytes in memory.
+    if (field === "holoUsdz") {
+      return;
+    }
+
     if (isHoloField(field)) {
       void readDataUrl(file).then((url) => {
         previews.set(field, url);

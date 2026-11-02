@@ -64,7 +64,7 @@ module Admin
         end
 
         def update
-          return if @model.update_with_facts(model_params.merge(author_id: current_user.id, update_reason: :custom))
+          return if @model.update_with_facts(update_params.merge(author_id: current_user.id, update_reason: :custom))
 
           render json: ValidationError.new("model.update", errors: @model.errors), status: :bad_request
         end
@@ -182,6 +182,14 @@ module Admin
             name_in: [], id_in: [], id_not_in: [], production_status_in: [],
             manufacturer_in: [], s: [], sorts: []
           ]).fetch(:q, {})
+        end
+
+        # The USDZ is built from one lite export, so a lite holo uploaded
+        # without its USDZ would leave Quick Look showing the old hull.
+        private def update_params
+          return model_params if model_params[:holo_lite].blank? || model_params.key?(:holo_usdz)
+
+          model_params.merge(holo_usdz: nil)
         end
 
         private def model_params

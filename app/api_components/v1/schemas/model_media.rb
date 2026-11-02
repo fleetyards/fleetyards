@@ -72,6 +72,7 @@ module V1
           holoTextureOrm: ::Shared::V1::Schemas::MediaFile,
           holoTextureLite: ::Shared::V1::Schemas::MediaFile,
           holoTextureOrmLite: ::Shared::V1::Schemas::MediaFile,
+          holoUsdz: ::Shared::V1::Schemas::MediaFile,
           brochure: ::Shared::V1::Schemas::MediaFile
         },
         additionalProperties: false

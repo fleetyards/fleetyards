@@ -1311,6 +1311,7 @@
         "landedHoloTextured": "着陆纹理全息图",
         "landedHoloTexturedLite": "着陆纹理轻量全息图",
         "holoHull": "船体全息图",
+        "holoUsdz": "AR 全息图 (USDZ)",
         "state": {
           "flight": "飞行中",
           "extended": "展开",
