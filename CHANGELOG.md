@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.33.0](https://github.com/fleetyards/fleetyards/compare/v9.32.1...v9.33.0) (2026-11-02)
+
+
+### Features
+
+* **nav:** active-only submenus and a fleet hub on the mobile bar ([#6108](https://github.com/fleetyards/fleetyards/issues/6108)) ([ab2a53f](https://github.com/fleetyards/fleetyards/commit/ab2a53fa15719c87071340fcebcf2a7a7b2ec281))
+* **nav:** use the home icon for the fleet dashboard ([2f7ae01](https://github.com/fleetyards/fleetyards/commit/2f7ae0191a16ba2eba8e8a61809c8d680db799e5))
+* **ships:** offer the 3D view on phones behind holo_phone ([#6104](https://github.com/fleetyards/fleetyards/issues/6104)) ([afe94ac](https://github.com/fleetyards/fleetyards/commit/afe94acc7269f5799374ce646eab93ad05f8a922))
+* **tools:** picture each quantum drive by its angled view in the travel times table ([#6112](https://github.com/fleetyards/fleetyards/issues/6112)) ([3f97a51](https://github.com/fleetyards/fleetyards/commit/3f97a51267352dfd03e830ec2c370d95da9d49c8))
+
+
+### Bug Fixes
+
+* **hangar:** show a visitor the ship's modules, not an empty loadout ([#6113](https://github.com/fleetyards/fleetyards/issues/6113)) ([a6eab03](https://github.com/fleetyards/fleetyards/commit/a6eab031467b6128deab8eaa9ad0bd07562bb8e0))
+* **holo-viewer:** keep the light following the camera after the near plane changes ([#6107](https://github.com/fleetyards/fleetyards/issues/6107)) ([34f271c](https://github.com/fleetyards/fleetyards/commit/34f271c3e935b98805b2b255e5f36a5a3de86121))
+* **loadouts:** tractor beams on an auxiliary tab, and stats cards in the editor ([#6109](https://github.com/fleetyards/fleetyards/issues/6109)) ([fcbcb8d](https://github.com/fleetyards/fleetyards/commit/fcbcb8dd02b6c6226ddd90a4bda0d2b9bafa8481))
+
 ## [9.32.1](https://github.com/fleetyards/fleetyards/compare/v9.32.0...v9.32.1) (2026-11-02)
 
 
