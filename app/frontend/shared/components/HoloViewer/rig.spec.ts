@@ -85,6 +85,24 @@ describe("bindToBones", () => {
     expect(backpackBone(meshes[0])?.position.z).toBe(0.2);
   });
 
+  it("takes back the mounts of a mesh it leaves out", () => {
+    const bones = body();
+    bindToBones(piece("undersuit", 0.1), bones);
+
+    // A core whose mesh also names a bone hanging from nothing on the body.
+    const core = piece("core", 0.2);
+    const stray = bone("StrayRoot");
+    const mesh = core.children.find(
+      (node) => (node as SkinnedMesh).isSkinnedMesh,
+    ) as SkinnedMesh;
+    mesh.bind(new Skeleton([...mesh.skeleton.bones, stray]));
+
+    const { meshes } = bindToBones(core, bones);
+
+    expect(meshes).toHaveLength(0);
+    expect(bones.get(BACKPACK_BONE)?.position.z).toBe(0.1);
+  });
+
   it("gives a piece that does not hang its own copy of a mount", () => {
     const bones = body();
     bindToBones(piece("undersuit", 0.1), bones);

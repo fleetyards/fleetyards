@@ -146,6 +146,9 @@ export const bindToBones = (
 ) => {
   const grafted: Bone[] = [];
   const meshes: SkinnedMesh[] = [];
+  // What each graft replaced in `bones`, so a mesh left out takes its grafts
+  // back rather than leaving mounts of a piece that is not drawn.
+  const replaced: [string, Bone | undefined][] = [];
 
   piece.traverse((node) => {
     if ((node as SkinnedMesh).isSkinnedMesh) meshes.push(node as SkinnedMesh);
@@ -189,13 +192,18 @@ export const bindToBones = (
       node.userData.grafted = true;
       node.userData.graftedBy = token;
       node.userData.source = source;
-      if ((node as Bone).isBone) bones.set(node.name, node as Bone);
+      if ((node as Bone).isBone) {
+        replaced.push([node.name, bones.get(node.name)]);
+        bones.set(node.name, node as Bone);
+      }
     });
 
     return bone;
   };
 
   const bound = meshes.filter((mesh) => {
+    const graftedBefore = grafted.length;
+    const replacedBefore = replaced.length;
     const mapped = mesh.skeleton.bones.map(resolve);
 
     if (mapped.some((bone) => !bone)) {
@@ -203,6 +211,14 @@ export const bindToBones = (
         "A rigged part names bones the body does not have",
         mesh.name,
       );
+      grafted.splice(graftedBefore).forEach((bone) => bone.removeFromParent());
+      replaced
+        .splice(replacedBefore)
+        .reverse()
+        .forEach(([name, previous]) => {
+          if (previous) bones.set(name, previous);
+          else bones.delete(name);
+        });
       return false;
     }
 
