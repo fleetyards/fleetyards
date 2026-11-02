@@ -143,7 +143,8 @@
       "notificationTypes": {
         "raffle_won": "Raffle won",
         "raffle_started": "Raffle opened",
-        "raffle_last_day": "Raffle closing soon"
+        "raffle_last_day": "Raffle closing soon",
+        "raffle_email_missing": "Raffle entry needs an email address"
       }
     },
     "placeholders": {

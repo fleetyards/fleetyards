@@ -143,7 +143,8 @@
       "notificationTypes": {
         "raffle_won": "抽獎得獎",
         "raffle_started": "抽獎已開始",
-        "raffle_last_day": "抽獎即將截止"
+        "raffle_last_day": "抽獎即將截止",
+        "raffle_email_missing": "參加抽獎需要電子郵件地址"
       }
     },
     "placeholders": {

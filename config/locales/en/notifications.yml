@@ -7,6 +7,9 @@ en:
     raffle_last_day:
       title: "Last day: %{raffle}"
       body: "The raffle closes on %{deadline}. Enter now if you want to take part."
+    raffle_email_missing:
+      title: "Add an email address to stay in: %{raffle}"
+      body: "Your account has no email address, so a win could not reach you and your entry would be passed over in the draw. Add one in your account settings before the raffle closes on %{deadline}."
     raffle_won:
       title: "You won the raffle: %{raffle}"
       body: "Congratulations! We sent you a mail with a link to claim your prize. Click it before %{deadline}, or the win passes to the next in line."

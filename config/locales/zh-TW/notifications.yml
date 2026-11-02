@@ -7,6 +7,9 @@ zh-TW:
     raffle_last_day:
       title: "最後一天：%{raffle}"
       body: "抽獎將於 %{deadline} 結束。想參加請把握時間。"
+    raffle_email_missing:
+      title: "新增電子郵件地址以保留抽獎資格：%{raffle}"
+      body: "你的帳戶沒有電子郵件地址，獎品無法送達，你的參加將在抽獎時被略過。請在抽獎於 %{deadline} 結束前，在帳戶設定中新增一個電子郵件地址。"
     raffle_won:
       title: "你贏得了抽獎：%{raffle}"
       body: "恭喜！我們已寄給你一封附有領獎連結的郵件。請在 %{deadline} 前點擊，否則獎品將轉給下一位。"

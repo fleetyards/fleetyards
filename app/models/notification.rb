@@ -57,6 +57,7 @@ class Notification < ApplicationRecord
     raffle_won: "raffle_won",
     raffle_started: "raffle_started",
     raffle_last_day: "raffle_last_day",
+    raffle_email_missing: "raffle_email_missing",
     supporter_coverage_ending: "supporter_coverage_ending",
     supporter_coverage_ended: "supporter_coverage_ended",
     announcement: "announcement"
@@ -402,6 +403,13 @@ class Notification < ApplicationRecord
       channels: %i[app mail push discord],
       mailer: ->(notification) { NotificationMailer.notification(notification).deliver_later },
       preference_defaults: {app: true, mail: false, push: false, discord: false}
+    },
+    # An entrant whose account has only a placeholder address, so there is no
+    # inbox to mail and the Discord DM is on by default instead.
+    raffle_email_missing: {
+      retention: 30.days,
+      channels: %i[app push discord],
+      preference_defaults: {app: true, push: false, discord: true}
     },
     # Mailed by default, unlike the mass types: it reaches only a donor whose
     # support ends in a few days, and an inbox they rarely open would tell them

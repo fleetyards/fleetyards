@@ -143,7 +143,8 @@
       "notificationTypes": {
         "raffle_won": "Sorteo ganado",
         "raffle_started": "Sorteo abierto",
-        "raffle_last_day": "Sorteo a punto de cerrar"
+        "raffle_last_day": "Sorteo a punto de cerrar",
+        "raffle_email_missing": "La participación en el sorteo necesita una dirección de correo"
       }
     },
     "placeholders": {

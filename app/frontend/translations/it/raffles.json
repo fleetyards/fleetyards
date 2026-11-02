@@ -143,7 +143,8 @@
       "notificationTypes": {
         "raffle_won": "Estrazione vinta",
         "raffle_started": "Estrazione aperta",
-        "raffle_last_day": "Estrazione in chiusura"
+        "raffle_last_day": "Estrazione in chiusura",
+        "raffle_email_missing": "La partecipazione all'estrazione richiede un indirizzo email"
       }
     },
     "placeholders": {

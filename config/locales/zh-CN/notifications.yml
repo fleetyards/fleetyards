@@ -7,6 +7,9 @@ zh-CN:
     raffle_last_day:
       title: "最后一天：%{raffle}"
       body: "抽奖将于 %{deadline} 结束。想参加请尽快。"
+    raffle_email_missing:
+      title: "添加邮箱地址以保留抽奖资格：%{raffle}"
+      body: "你的账户没有邮箱地址，奖品无法送达，你的参与将在抽奖时被跳过。请在抽奖于 %{deadline} 结束前，在账户设置中添加一个邮箱地址。"
     raffle_won:
       title: "你赢得了抽奖：%{raffle}"
       body: "恭喜！我们已给你发送了一封带领奖链接的邮件。请在 %{deadline} 前点击，否则奖品将转给下一位。"

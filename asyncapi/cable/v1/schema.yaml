@@ -4605,6 +4605,7 @@ components:
       - raffle_won
       - raffle_started
       - raffle_last_day
+      - raffle_email_missing
       - supporter_coverage_ending
       - supporter_coverage_ended
       - announcement
@@ -4661,6 +4662,7 @@ components:
       - RAFFLE_WON
       - RAFFLE_STARTED
       - RAFFLE_LAST_DAY
+      - RAFFLE_EMAIL_MISSING
       - SUPPORTER_COVERAGE_ENDING
       - SUPPORTER_COVERAGE_ENDED
       - ANNOUNCEMENT

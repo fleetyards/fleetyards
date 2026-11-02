@@ -7,6 +7,9 @@ es:
     raffle_last_day:
       title: "Último día: %{raffle}"
       body: "El sorteo cierra el %{deadline}. Participa ahora si quieres entrar."
+    raffle_email_missing:
+      title: "Añade una dirección de correo para seguir en el sorteo: %{raffle}"
+      body: "Tu cuenta no tiene dirección de correo, así que un premio no podría llegarte y tu participación se saltaría en el sorteo. Añade una en los ajustes de tu cuenta antes de que el sorteo cierre el %{deadline}."
     raffle_won:
       title: "Has ganado el sorteo: %{raffle}"
       body: "¡Enhorabuena! Te hemos enviado un correo con un enlace para reclamar tu premio. Púlsalo antes del %{deadline} o el premio pasa al siguiente en la lista."

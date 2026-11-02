@@ -143,7 +143,8 @@
       "notificationTypes": {
         "raffle_won": "Tirage au sort gagné",
         "raffle_started": "Tirage au sort ouvert",
-        "raffle_last_day": "Tirage au sort bientôt clos"
+        "raffle_last_day": "Tirage au sort bientôt clos",
+        "raffle_email_missing": "La participation au tirage au sort nécessite une adresse e-mail"
       }
     },
     "placeholders": {
