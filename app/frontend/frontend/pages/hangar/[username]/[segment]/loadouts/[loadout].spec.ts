@@ -73,6 +73,20 @@ vi.mock("@/frontend/components/Models/Hardpoints/index.vue", () => ({
   },
 }));
 
+const enableFullscreen = vi.fn();
+
+vi.mock("@/frontend/components/Loadout/Preview/index.vue", () => ({
+  default: {
+    name: "LoadoutPreview",
+    props: ["modelSlug", "slots", "variant"],
+    emits: ["available"],
+    setup(_props: unknown, { expose }: { expose: (api: object) => void }) {
+      expose({ enableFullscreen });
+    },
+    template: "<div data-test='loadout-preview' />",
+  },
+}));
+
 const openLoadoutModal = vi.fn();
 
 vi.mock("@/frontend/composables/useVehicleModals", () => ({
@@ -161,6 +175,24 @@ describe("HangarVehicleLoadoutPage", () => {
     ).toBe(false);
 
     pending.publicSlots = false;
+    wrapper.unmount();
+  });
+
+  it("opens the fitting's holo full screen once it is in", async () => {
+    const wrapper = await mount();
+    const button = "[data-test='vehicle-loadout-page-fullscreen']";
+
+    expect(wrapper.find(button).exists()).toBe(false);
+
+    wrapper
+      .findComponent({ name: "LoadoutPreview" })
+      .vm.$emit("available", true);
+    await nextTick();
+
+    await wrapper.find(button).trigger("click");
+
+    expect(enableFullscreen).toHaveBeenCalled();
+
     wrapper.unmount();
   });
 

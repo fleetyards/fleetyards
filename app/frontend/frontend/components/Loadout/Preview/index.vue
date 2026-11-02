@@ -18,9 +18,10 @@ type Props = {
   // The fitting's slot tree; without one the stock ship is shown.
   slots?: PreviewSlot[];
   // `inline` turns slowly on its own, as the ship page's small holo does;
-  // `backdrop` fills the box it is put in, still and closer, as a see-through
-  // hologram in the angled render's pose.
-  variant?: "inline" | "backdrop";
+  // `stage` is the inline holo filling the box it is put in, with the holo's
+  // controls, and opens full screen; `backdrop` fills the box too, still and
+  // closer, as a see-through hologram in the angled render's pose.
+  variant?: "inline" | "stage" | "backdrop";
   // A backdrop turned and zoomed by the viewer, with the holo's controls.
   interactive?: boolean;
   // A part on the holo answers the pointer with its slot's path.
@@ -49,9 +50,19 @@ const emit = defineEmits<{
 const ANGLED_AZIMUTH = -135;
 const ANGLED_ELEVATION = 35;
 
+// The inline holo's own low look, framed to the ship rather than to the
+// circle it turns through, so a larger box shows a larger ship.
+const INLINE_ELEVATION = 6;
+
 const HoloViewer = defineAsyncComponent(
   () => import("@/shared/components/HoloViewer/index.vue"),
 );
+
+const viewer = ref<InstanceType<typeof HoloViewer>>();
+
+const enableFullscreen = () => viewer.value?.enableFullscreen();
+
+defineExpose({ enableFullscreen });
 
 const { isFeatureEnabled } = useFeatures();
 
@@ -147,6 +158,16 @@ onBeforeUnmount(() => {
       @mount-point="emit('point', $event)"
     />
     <HoloViewer
+      v-else-if="variant === 'stage'"
+      ref="viewer"
+      :models="[holoModel]"
+      :elevation="INLINE_ELEVATION"
+      contain
+      inline
+      @unavailable="unavailable = true"
+      @loaded="loaded = true"
+    />
+    <HoloViewer
       v-else
       :models="[holoModel]"
       :controllable="false"
@@ -165,6 +186,12 @@ onBeforeUnmount(() => {
   // The inline viewer's own cap.
   &--inline {
     height: 200px;
+  }
+
+  &--stage {
+    --holo-viewer-inline-max-height: none;
+
+    height: 100%;
   }
 
   &--backdrop {
