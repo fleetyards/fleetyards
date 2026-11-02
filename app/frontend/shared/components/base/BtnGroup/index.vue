@@ -203,13 +203,18 @@ provide(BTN_CONTAINER, {
   @apply bg-endcap;
 }
 
+/*
+ * Just inside the border rather than on it, as a standalone button's are: the
+ * track clips at the border, so an engaged member can light its own caps only
+ * on these rows, and lit and resting caps have to be one line.
+ */
 .btn-group::before {
-  top: -1px;
+  top: 0;
   border-radius: 0 0 var(--cap-r-btn, 1px) var(--cap-r-btn, 1px);
 }
 
 .btn-group::after {
-  bottom: -1px;
+  bottom: 0;
   border-radius: var(--cap-r-btn, 1px) var(--cap-r-btn, 1px) 0 0;
 }
 

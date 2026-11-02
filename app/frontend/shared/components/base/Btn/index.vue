@@ -584,11 +584,10 @@ const handleClick = (event: MouseEvent) => {
   background-color: rgb(250 104 0 / 0.35);
 }
 /*
- * Engaged, not hovered. A grouped member has no end-caps to carry state, and a
- * 0.22 tint sat too close to the neutral hover fill to be told apart - so this
- * adds a second signal the hover state cannot borrow: an inset rule along the
- * bottom edge, which reads as a pressed key rather than a lit one. The divider
- * comes along, since this shadow replaces rather than extends the base one.
+ * Engaged, not hovered. A 0.22 tint sat too close to the neutral hover fill to
+ * be told apart, so the member also lights its end-caps, as a standalone button
+ * does. The group draws the resting caps for the whole control; an engaged
+ * member draws its own over them, on the same rows just inside the border.
  */
 .btn--grouped.active,
 .btn--grouped[aria-pressed="true"] {
@@ -598,9 +597,29 @@ const handleClick = (event: MouseEvent) => {
     var(--color-primary, #428bca) 26%,
     transparent
   );
-  box-shadow:
-    inset 0 -2px 0 var(--color-primary, #428bca),
-    -1px 0 0 var(--color-seam, #3a3f44);
+}
+.btn--grouped.active::before,
+.btn--grouped.active::after,
+.btn--grouped[aria-pressed="true"]::before,
+.btn--grouped[aria-pressed="true"]::after {
+  content: "";
+  position: absolute;
+  left: max(10px, var(--cap-inset, 12%));
+  right: max(10px, var(--cap-inset, 12%));
+  height: var(--cap-h-btn, 2px);
+  /* Over the group's own caps, which sit on the same rows. */
+  z-index: 3;
+  background-color: var(--color-primary, #428bca);
+}
+.btn--grouped.active::before,
+.btn--grouped[aria-pressed="true"]::before {
+  top: 0;
+  border-radius: 0 0 var(--cap-r-btn, 1px) var(--cap-r-btn, 1px);
+}
+.btn--grouped.active::after,
+.btn--grouped[aria-pressed="true"]::after {
+  bottom: 0;
+  border-radius: var(--cap-r-btn, 1px) var(--cap-r-btn, 1px) 0 0;
 }
 
 /* Hovering something already on has to answer too: `.active` outranks the
@@ -638,14 +657,21 @@ const handleClick = (event: MouseEvent) => {
    `.btn--segment.active` and floods the chosen segment on hover. */
 .btn--segment.active:hover:not([disabled]) {
   @apply bg-transparent;
-  /* The grouped active state's accent rule as well as its fill: the thumb already
-     says which segment is chosen, and an underline under it says it twice. */
+  /* The grouped active state's lit caps go too, below: the thumb already says
+     which segment is chosen, and caps on it would say it twice. */
   box-shadow: none;
 }
 
 .btn--segment:hover:not([disabled]),
 .btn--segment.active {
   @apply text-lifted;
+}
+
+.btn--segment.active::before,
+.btn--segment.active::after,
+.btn--segment[aria-pressed="true"]::before,
+.btn--segment[aria-pressed="true"]::after {
+  content: none;
 }
 
 /* A tone must not bring a fill back. The grouped tints below are written for a
