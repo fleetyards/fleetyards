@@ -9,6 +9,7 @@ import NavMenu from "@/shared/components/AppNavigation/NavMenu/index.vue";
 import NavMenuItem from "@/shared/components/AppNavigation/NavMenu/Item/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useNavContext } from "@/frontend/composables/useNavContext";
+import { fleetInitials } from "@/frontend/utils/fleetInitials";
 import {
   useFleet as useFleetQuery,
   usePublicFleet as usePublicFleetQuery,
@@ -48,13 +49,6 @@ const { data: publicFleet } = usePublicFleetQuery(fleetSlug, {
 const currentFleet = computed(() =>
   inFleet.value ? fleet.value || publicFleet.value : undefined,
 );
-
-const fleetInitials = (name: string) =>
-  name
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((word) => word.charAt(0))
-    .join("");
 
 const { data: fleets } = useMyFleetsQuery({
   query: { refetchOnWindowFocus: false },
