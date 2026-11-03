@@ -2329,7 +2329,8 @@
           "controller": "Flight Blades",
           "seat": "Seats",
           "thrusters": "Thrusters",
-          "bombcompartments": "Bomb Compartments"
+          "bombcompartments": "Bomb Compartments",
+          "paints": "Paints"
         },
         "name": "Name",
         "category": "Category",

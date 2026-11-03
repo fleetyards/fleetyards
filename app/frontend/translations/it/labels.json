@@ -2329,7 +2329,8 @@
           "controller": "Lame di volo",
           "seat": "Sedili",
           "thrusters": "Propulsori",
-          "bombcompartments": "Vani bombe"
+          "bombcompartments": "Vani bombe",
+          "paints": "Verniciature"
         },
         "name": "Nome",
         "category": "Categoria",

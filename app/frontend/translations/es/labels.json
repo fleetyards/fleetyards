@@ -2329,7 +2329,8 @@
           "controller": "Cuchillas de vuelo",
           "seat": "Asientos",
           "thrusters": "Propulsores",
-          "bombcompartments": "Compartimentos de bombas"
+          "bombcompartments": "Compartimentos de bombas",
+          "paints": "Pinturas"
         },
         "name": "Nombre",
         "category": "Categoría",
