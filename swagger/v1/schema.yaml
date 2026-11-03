@@ -27687,8 +27687,8 @@ components:
           - 'null'
           description: The most damage per second across the weapon's fire modes
         stats:
-          description: What the gear does, from the game files; absent for gear the
-            files give nothing for
+          description: What the gear does, from the game files; on the detail payload
+            only, and absent for gear the files give nothing for
           anyOf:
           - "$ref": "#/components/schemas/EquipmentStats"
           - type: 'null'
