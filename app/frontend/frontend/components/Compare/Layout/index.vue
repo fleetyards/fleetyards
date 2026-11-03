@@ -65,7 +65,9 @@ const baseline = computed({
     <div class="col-12">
       <div class="compare-header">
         <CompareTabs />
-        <slot name="actions" />
+        <div class="compare-header__actions">
+          <slot name="actions" />
+        </div>
       </div>
 
       <slot name="notice" />
