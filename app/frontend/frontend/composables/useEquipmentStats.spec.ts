@@ -1,6 +1,11 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { createPinia, setActivePinia } from "pinia";
-import { EquipmentTypeEnum, type Equipment } from "@/services/fyApi";
+import {
+  EquipmentConsumableEffectKindEnum,
+  EquipmentToolActionKindEnum,
+  EquipmentTypeEnum,
+  type Equipment,
+} from "@/services/fyApi";
 import { useEquipmentStats } from "./useEquipmentStats";
 
 const equipment = (attrs: Partial<Equipment>): Equipment =>
@@ -106,5 +111,62 @@ describe("useEquipmentStats", () => {
     );
 
     expect(stats.value.map((stat) => stat.label)).toEqual(["Volume"]);
+  });
+
+  it("leads a tractor tool with its force and range", () => {
+    const stats = useEquipmentStats(
+      equipment({
+        equipmentType: EquipmentTypeEnum.TOOL,
+        volume: 0.0004,
+        stats: {
+          toolActions: [
+            {
+              kind: EquipmentToolActionKindEnum.TRACTOR,
+              maxForce: 257500,
+              maxDistance: 150,
+            },
+          ],
+        },
+      }),
+    );
+
+    expect(
+      stats.value.filter((stat) => stat.primary).map((stat) => stat.label),
+    ).toEqual(["Tractor Force", "Tractor Range"]);
+  });
+
+  it("leads a grenade with its blast", () => {
+    const stats = useEquipmentStats(
+      equipment({
+        equipmentType: EquipmentTypeEnum.WEAPON,
+        stats: {
+          explosion: { damage: { physical: 120 }, maxRadius: 5.5, fuse: 5 },
+        },
+      }),
+    );
+
+    expect(
+      stats.value.filter((stat) => stat.primary).map((stat) => stat.label),
+    ).toEqual(["Blast Damage", "Blast Radius"]);
+  });
+
+  it("leads a pen with the health it restores", () => {
+    const stats = useEquipmentStats(
+      equipment({
+        equipmentType: EquipmentTypeEnum.MEDICAL,
+        stats: {
+          consumable: {
+            effects: [
+              { kind: EquipmentConsumableEffectKindEnum.HEALTH, amount: 112.5 },
+            ],
+          },
+        },
+      }),
+    );
+
+    expect(stats.value[0]).toMatchObject({
+      label: "Health Restored",
+      primary: true,
+    });
   });
 });

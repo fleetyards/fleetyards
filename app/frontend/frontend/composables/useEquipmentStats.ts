@@ -1,10 +1,32 @@
-import { EquipmentTypeEnum, type Equipment } from "@/services/fyApi";
+import {
+  EquipmentToolActionKindEnum,
+  EquipmentTypeEnum,
+  type ComponentWeaponDamage,
+  type Equipment,
+  type EquipmentToolAction,
+} from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type HardpointStat } from "@/frontend/composables/useHardpointStats";
 
 export type EquipmentStatKey =
   | "alphaDamage"
   | "dps"
+  | "blastDamage"
+  | "blastRadius"
+  | "meleeDamage"
+  | "tractorForce"
+  | "tractorRange"
+  | "healRange"
+  | "doseRate"
+  | "repairRate"
+  | "salvageRate"
+  | "miningPower"
+  | "extinguishRange"
+  | "healthRestored"
+  | "instability"
+  | "resistance"
+  | "clusterFactor"
+  | "optimalChargeWindow"
   | "damageReduction"
   | "temperatureRating"
   | "radiationProtection"
@@ -23,9 +45,13 @@ export type EquipmentStatKey =
 // order. Armour, an undersuit and a rifle share almost nothing, so one fixed
 // list would put a rate of fire on a jacket's page. The columns are flat on the
 // payload, so each entry is a field to read rather than a shape to parse.
+//
+// A type flagged `promote` leads with the first figures it has when its
+// primary ones are missing: a grenade has no DPS but has a blast, a
+// multi-tool none of the tractor figures a tractor tool leads with.
 const VOCABULARY: Record<
   string,
-  { primary: EquipmentStatKey[]; rest: EquipmentStatKey[] }
+  { primary: EquipmentStatKey[]; rest: EquipmentStatKey[]; promote?: boolean }
 > = {
   [EquipmentTypeEnum.ARMOR]: {
     primary: ["damageReduction", "temperatureRating"],
@@ -61,7 +87,48 @@ const VOCABULARY: Record<
   },
   [EquipmentTypeEnum.WEAPON]: {
     primary: ["dps", "alphaDamage"],
-    rest: ["rateOfFire", "range", "weaponClass", "magazineSize", "volume"],
+    rest: [
+      "blastDamage",
+      "blastRadius",
+      "meleeDamage",
+      "rateOfFire",
+      "range",
+      "weaponClass",
+      "magazineSize",
+      "volume",
+    ],
+    promote: true,
+  },
+  [EquipmentTypeEnum.TOOL]: {
+    primary: [],
+    rest: [
+      "tractorForce",
+      "tractorRange",
+      "healRange",
+      "doseRate",
+      "repairRate",
+      "salvageRate",
+      "miningPower",
+      "extinguishRange",
+      "dps",
+      "volume",
+    ],
+    promote: true,
+  },
+  [EquipmentTypeEnum.MEDICAL]: {
+    primary: ["healthRestored"],
+    rest: ["volume"],
+  },
+  [EquipmentTypeEnum.MINING_GADGET]: {
+    primary: [],
+    rest: [
+      "instability",
+      "resistance",
+      "clusterFactor",
+      "optimalChargeWindow",
+      "volume",
+    ],
+    promote: true,
   },
   [EquipmentTypeEnum.WEAPON_ATTACHMENT]: {
     primary: ["magazineSize"],
@@ -69,7 +136,7 @@ const VOCABULARY: Record<
   },
 };
 
-// Tools, medical items and hacking tools carry nothing but their volume.
+// Hacking tools, flair and carried props carry nothing but their volume.
 const FALLBACK = {
   primary: [] as EquipmentStatKey[],
   rest: ["volume"] as EquipmentStatKey[],
@@ -87,10 +154,118 @@ type Figure = {
 
 type Label = { label: (item: Equipment) => string | null | undefined };
 
+// The figures below the flat columns, read off the detail payload's `stats`.
+// A list record carries no `stats`, so these stay empty there.
+const total = (damage?: ComponentWeaponDamage | null) => {
+  if (!damage) return undefined;
+
+  const sum = Object.values(damage).reduce<number>(
+    (acc, value) => acc + (value ?? 0),
+    0,
+  );
+
+  return sum || undefined;
+};
+
+const best = (
+  item: Equipment,
+  kind: EquipmentToolActionKindEnum,
+  field: keyof EquipmentToolAction,
+) => {
+  const values = (item.stats?.toolActions || [])
+    .filter((action) => action.kind === kind)
+    .map((action) => action[field])
+    .filter((value): value is number => typeof value === "number");
+
+  return values.length ? Math.max(...values) : undefined;
+};
+
+const miningModifier = (
+  item: Equipment,
+  key: "instability" | "resistance" | "clusterFactor" | "optimalChargeWindow",
+) => item.stats?.mining?.modifiers?.[key];
+
 // Where each stat is read from: a number, or a label the API already words.
 const SOURCES: Record<EquipmentStatKey, Figure | Label> = {
   alphaDamage: { value: (item) => item.alphaDamage, units: "damage" },
   dps: { value: (item) => item.dps, units: "dps" },
+  blastDamage: {
+    value: (item) =>
+      total(item.stats?.explosion?.damage) ??
+      total(item.stats?.ammo?.explosion?.damage),
+    units: "damage",
+  },
+  blastRadius: {
+    value: (item) =>
+      item.stats?.explosion?.maxRadius ??
+      item.stats?.ammo?.explosion?.maxRadius,
+    units: "distance",
+  },
+  meleeDamage: {
+    value: (item) => {
+      const hits = (item.stats?.melee?.attacks || [])
+        .map((attack) => total(attack.damage))
+        .filter((value): value is number => value != null);
+
+      return hits.length ? Math.max(...hits) : undefined;
+    },
+    units: "damage",
+  },
+  tractorForce: {
+    value: (item) =>
+      best(item, EquipmentToolActionKindEnum.TRACTOR, "maxForce"),
+    units: "newton",
+  },
+  tractorRange: {
+    value: (item) =>
+      best(item, EquipmentToolActionKindEnum.TRACTOR, "maxDistance"),
+    units: "distance",
+  },
+  healRange: {
+    value: (item) => best(item, EquipmentToolActionKindEnum.HEAL, "range"),
+    units: "distance",
+  },
+  doseRate: {
+    value: (item) => best(item, EquipmentToolActionKindEnum.HEAL, "doseRate"),
+  },
+  repairRate: {
+    value: (item) =>
+      best(item, EquipmentToolActionKindEnum.REPAIR, "healthRate"),
+  },
+  salvageRate: {
+    value: (item) =>
+      best(item, EquipmentToolActionKindEnum.SALVAGE, "healthRate"),
+  },
+  miningPower: {
+    value: (item) => best(item, EquipmentToolActionKindEnum.MINING, "power"),
+  },
+  extinguishRange: {
+    value: (item) =>
+      best(item, EquipmentToolActionKindEnum.EXTINGUISH, "range"),
+    units: "distance",
+  },
+  healthRestored: {
+    value: (item) =>
+      item.stats?.consumable?.effects?.find(
+        (effect) => effect.kind === "health",
+      )?.amount,
+  },
+  instability: {
+    value: (item) => miningModifier(item, "instability"),
+    units: "percent",
+  },
+  resistance: {
+    value: (item) => miningModifier(item, "resistance"),
+    units: "percent",
+  },
+  clusterFactor: {
+    value: (item) => miningModifier(item, "clusterFactor"),
+    units: "percent",
+  },
+  optimalChargeWindow: {
+    value: (item) => miningModifier(item, "optimalChargeWindow"),
+    units: "percent",
+  },
   damageReduction: { value: (item) => item.damageReduction, units: "percent" },
   temperatureRating: { label: (item) => item.temperatureRating },
   radiationProtection: {
@@ -183,15 +358,15 @@ export const useEquipmentStats = (
       });
 
     // A weapon leads with its damage, which a record the game files give no
-    // round for does not have; it then leads with the first figures it does.
+    // round for does not have; it then leads with the first figures it does,
+    // and so does a tool or a gadget.
     const primary = build(vocabulary.primary, true);
     const rest = build(vocabulary.rest, false);
     if (primary.length) return [...primary, ...rest];
 
-    const promoted =
-      item.equipmentType === EquipmentTypeEnum.WEAPON
-        ? rest.slice(0, 2).map((stat) => ({ ...stat, primary: true }))
-        : [];
+    const promoted = vocabulary.promote
+      ? rest.slice(0, 2).map((stat) => ({ ...stat, primary: true }))
+      : [];
 
     return [...promoted, ...rest.slice(promoted.length)];
   });
