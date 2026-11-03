@@ -58,6 +58,78 @@ describe("useGearStatSections", () => {
     });
   });
 
+  it("tells apart modes the game gives the same label", () => {
+    const sections = useGearStatSections({
+      fireModes: [
+        {
+          kind: EquipmentFireModeKindEnum.SINGLE,
+          name: "Slug",
+          label: "Semi",
+          alpha: 80,
+        },
+        {
+          kind: EquipmentFireModeKindEnum.SINGLE,
+          name: "Single",
+          label: "Semi",
+          alpha: 100,
+        },
+      ],
+      toolActions: [
+        {
+          kind: EquipmentToolActionKindEnum.HEAL,
+          name: "Heal",
+          label: "Healing",
+          range: 2,
+        },
+        {
+          kind: EquipmentToolActionKindEnum.TRACTOR,
+          name: "Detach",
+          label: "Tractor",
+          maxDistance: 25,
+        },
+        {
+          kind: EquipmentToolActionKindEnum.TRACTOR,
+          name: "TractorBeam",
+          label: "Tractor",
+          maxDistance: 150,
+        },
+      ],
+    });
+
+    expect(sections.value.map((section) => section.title)).toEqual([
+      "Semi · Slug",
+      "Semi · Single",
+      "Healing",
+      "Tractor · Detach",
+      "Tractor · Tractor Beam",
+    ]);
+  });
+
+  it("numbers modes that share both label and name", () => {
+    const sections = useGearStatSections({
+      fireModes: [
+        {
+          kind: EquipmentFireModeKindEnum.SINGLE,
+          name: "Single",
+          label: "Semi",
+          alpha: 36,
+        },
+        {
+          kind: EquipmentFireModeKindEnum.SINGLE,
+          name: "Single",
+          label: "Semi",
+          alpha: 36,
+          spread: { min: 2.7, max: 6 },
+        },
+      ],
+    });
+
+    expect(sections.value.map((section) => section.title)).toEqual([
+      "Semi · 1",
+      "Semi · 2",
+    ]);
+  });
+
   it("shows what an attachment changes as a percent change", () => {
     expect(
       rowsOf(

@@ -71,6 +71,10 @@ const TOOL_FIELDS: {
  * A figure the record does not carry is left out, and so is a card left with
  * nothing in it.
  */
+// "TractorBeam" reads as "Tractor Beam".
+const humanize = (name?: string) =>
+  name?.replace(/([a-z])([A-Z])/g, "$1 $2").trim() || undefined;
+
 export const useGearStatSections = (
   stats: MaybeRefOrGetter<EquipmentStats | null | undefined>,
 ) => {
@@ -222,6 +226,33 @@ export const useGearStatSections = (
       : [],
   });
 
+  // The game labels modes for the HUD, and two can share a label -- the
+  // Arlington's slug and buckshot are both "Semi", the multi-tool has two
+  // "Tractor" actions. Those cards take the mode's own name as well, or a
+  // number where that is shared too.
+  const distinct = <T extends { name?: string }>(
+    entries: T[],
+    build: (entry: T, index: number) => GearStatSection,
+  ) => {
+    const sections = entries.map(build);
+
+    return sections.map((section, index) => {
+      const twins = sections.filter((other) => other.title === section.title);
+      if (twins.length < 2) return section;
+
+      const name = humanize(entries[index].name);
+      const sameName = entries.filter(
+        (entry, other) =>
+          sections[other].title === section.title &&
+          humanize(entry.name) === name,
+      );
+      const suffix =
+        name && sameName.length < 2 ? name : String(twins.indexOf(section) + 1);
+
+      return { ...section, title: `${section.title} · ${suffix}` };
+    });
+  };
+
   const toolAction = (action: EquipmentToolAction, index: number) => ({
     key: `tool-action-${index}`,
     title:
@@ -253,8 +284,8 @@ export const useGearStatSections = (
     );
 
     const sections: GearStatSection[] = [
-      ...(value.fireModes || []).map(fireMode),
-      ...(value.toolActions || []).map(toolAction),
+      ...distinct(value.fireModes || [], fireMode),
+      ...distinct(value.toolActions || [], toolAction),
       ammo("ammo", value.ammo),
       ammo("secondaryAmmo", value.secondaryAmmo),
       {
