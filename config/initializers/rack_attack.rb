@@ -70,7 +70,7 @@ Rack::Attack.throttle("oauth-application-registration", limit: 5, period: 1.hour
   if req.post? &&
       req.path.match?(%r{^/v\d+/oauth-applications/?$}) &&
       req.host.split(".").first == "api"
-    (req.get_header("action_dispatch.remote_ip") || req.ip).to_s
+    client_ip.call(req)
   end
 end
 
@@ -80,7 +80,7 @@ end
 # is worth to anyone who finds the URL.
 Rack::Attack.throttle("kofi-webhook", limit: 60, period: 1.hour) do |req|
   if req.path == "/kofi/webhook" && req.post?
-    (req.get_header("action_dispatch.remote_ip") || req.ip).to_s
+    client_ip.call(req)
   end
 end
 
