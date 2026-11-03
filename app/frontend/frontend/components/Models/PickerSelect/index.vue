@@ -15,11 +15,14 @@ type Props = {
   label: string;
   // Narrows the picker, e.g. to flight-ready ships.
   query?: ModelQuery;
+  // The label still names the field to assistive tech and titles the picker.
+  noLabel?: boolean;
 };
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: undefined,
   query: undefined,
+  noLabel: false,
 });
 
 const emit = defineEmits<{
@@ -88,7 +91,7 @@ onUnmounted(() => {
     class="base-select model-picker-select"
     :data-test="`model-picker-select-${name}`"
   >
-    <div class="field-label">
+    <div v-if="!noLabel" class="field-label">
       <label :for="`${name}-${pickerId}`">{{ label }}</label>
     </div>
     <div class="model-picker-select__row">
