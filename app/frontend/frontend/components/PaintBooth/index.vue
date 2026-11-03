@@ -8,7 +8,14 @@ export default {
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import HoloViewer from "@/shared/components/HoloViewer/index.vue";
-import PickerCard from "@/shared/components/PickerCard/index.vue";
+import Panel from "@/shared/components/base/Panel/index.vue";
+import {
+  PanelTonesEnum,
+  PanelVariantsEnum,
+} from "@/shared/components/base/Panel/types";
+import PanelHeading from "@/shared/components/base/Panel/Heading/index.vue";
+import { PanelHeadingShadowEnum } from "@/shared/components/base/Panel/Heading/types";
+import { HeadingLevelEnum } from "@/shared/components/base/Heading/types";
 import { type MediaFile, type Model } from "@/services/fyApi";
 import {
   ModelStateEnum,
@@ -83,6 +90,24 @@ const painted = computed(
 
 const cardImage = (image?: MediaFile) =>
   image?.mediumUrl ?? image?.smallUrl ?? undefined;
+
+// The ship's own colours first, then its paints, as the ship page lists them.
+const cards = computed(() => [
+  {
+    key: "own",
+    slug: undefined,
+    name: t("labels.texturedHoloOwnPaint"),
+    image: cardImage(props.model.media.storeImage),
+    selected: !holoPaint.value,
+  },
+  ...holoPaints.value.map((paint) => ({
+    key: paint.slug,
+    slug: paint.slug,
+    name: paint.name,
+    image: cardImage(paint.media.storeImage),
+    selected: holoPaint.value?.id === paint.id,
+  })),
+]);
 </script>
 
 <template>
@@ -129,24 +154,39 @@ const cardImage = (image?: MediaFile) =>
       >
         {{ t("paintBooth.unavailable") }}
       </p>
-      <div v-else class="paint-booth__list" data-test="paint-booth-paints">
-        <PickerCard
-          :name="t('labels.texturedHoloOwnPaint')"
-          :image="cardImage(model.media.storeImage)"
-          :selected="!holoPaint"
-          data-test="paint-booth-paint-own"
-          @toggle="emit('update:paint', undefined)"
-        />
-        <PickerCard
-          v-for="paint in holoPaints"
-          :key="paint.id"
-          :name="paint.name"
-          :image="cardImage(paint.media.storeImage)"
-          :selected="holoPaint?.id === paint.id"
-          :data-test="`paint-booth-paint-${paint.slug}`"
-          @toggle="emit('update:paint', paint.slug)"
-        />
-      </div>
+      <ul v-else class="paint-booth__list" data-test="paint-booth-paints">
+        <li
+          v-for="card in cards"
+          :key="card.key"
+          class="paint-booth__item"
+          :data-test="`paint-booth-paint-${card.key}`"
+        >
+          <Panel
+            :bg-image="card.image"
+            :variant="PanelVariantsEnum.SLIM"
+            :tone="
+              card.selected ? PanelTonesEnum.PRIMARY : PanelTonesEnum.NEUTRAL
+            "
+            :outer-spacing="false"
+          >
+            <PanelHeading
+              :shadow="PanelHeadingShadowEnum.TOP"
+              :level="HeadingLevelEnum.H3"
+            >
+              {{ card.name }}
+            </PanelHeading>
+          </Panel>
+          <!-- Over the card rather than around it: a heading may not sit
+               inside a button. -->
+          <button
+            type="button"
+            class="paint-booth__pick"
+            :aria-pressed="card.selected"
+            :aria-label="card.name"
+            @click="emit('update:paint', card.slug)"
+          />
+        </li>
+      </ul>
     </aside>
   </div>
 </template>
@@ -224,16 +264,39 @@ const cardImage = (image?: MediaFile) =>
 }
 
 .paint-booth__list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
-  // A card clips its overflow, so in a list of fixed height its row would
-  // shrink to fit and cut the name off rather than scroll.
-  grid-auto-rows: max-content;
-  align-content: start;
-  gap: 10px;
+  --panel-image-height: 10rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   min-height: 0;
+  margin: 0;
   // Room for the selected card's frame and focus ring at the scroll edges.
   padding: 2px 6px 2px 2px;
   overflow-y: auto;
+  list-style: none;
+}
+
+.paint-booth__item {
+  position: relative;
+}
+
+.paint-booth__pick {
+  position: absolute;
+  inset: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  background: none;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(white, 0.04);
+  }
+
+  &:focus-visible {
+    outline: 2px solid $primary;
+    outline-offset: 2px;
+  }
 }
 </style>
