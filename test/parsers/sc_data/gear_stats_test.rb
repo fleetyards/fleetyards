@@ -114,6 +114,18 @@ module ScData
         assert_nil GearStats.headline(stats)[:dps]
       end
 
+      test "keeps a refill's round out, and a magazine's round in, though both name the same" do
+        gun = Hash.from_xml("<Record>#{weapon(%(<SWeaponActionFireRapidParams name="Rapid" fireRate="600">#{launcher}</SWeaponActionFireRapidParams>))}</Record>").values.first
+        magazines = GearStats.gun_magazines([gun])
+        container = ->(ref) { %(<__ref>#{ref}</__ref><Components><SAmmoContainerComponentParams maxAmmoCount="40" ammoParamsRecord="#{ROUND}" /></Components>) }
+
+        magazine = stats_for(container.call(MAGAZINE), rounds: {ROUND => round(energy: 18)}, gun_magazines: magazines)
+        refill = stats_for(container.call("00000000-0000-0000-0000-00000000b009"), rounds: {ROUND => round(energy: 18)}, gun_magazines: magazines)
+
+        assert_equal({energy: 18.0}, magazine.dig(:ammo, :damage))
+        assert_nil refill[:ammo]
+      end
+
       test "times a mixed sequence's overheat by its cadence, not its DPS over one step's damage" do
         rounds = {ROUND => round(physical: 10), SLUG => round(physical: 90)}
         stats = stats_for(weapon(<<~XML, heat: true, primary: SLUG, secondary: ROUND), rounds:)
@@ -378,7 +390,7 @@ module ScData
         assert_equal({physical: 30.0}, stats.dig(:melee, :attacks, 0, :damage))
       end
 
-      private def stats_for(components, rounds: {}, consumable_subtypes: {}, melee_configs: {}, containers: @containers || {})
+      private def stats_for(components, rounds: {}, consumable_subtypes: {}, melee_configs: {}, containers: @containers || {}, gun_magazines: nil)
         values = Hash.from_xml("<Record>#{components}</Record>").values.first
 
         GearStats.new(
@@ -386,6 +398,7 @@ module ScData
           ammo_containers: containers,
           consumable_subtypes:,
           melee_configs:,
+          gun_magazines:,
           translate: ->(key) { {"@FireMode_Burst" => "[BURST]", "@ui_weapons_multi_mining" => "Mining"}[key] }
         ).call(values)
       end

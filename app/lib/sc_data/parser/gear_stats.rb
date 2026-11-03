@@ -28,8 +28,14 @@ module ScData
         "SWeaponActionFireBurstParams" => "burst"
       }.freeze
 
-      def initialize(ammo_params: {}, ammo_containers: {}, consumable_subtypes: {}, melee_configs: {}, translate: ->(key) { key })
+      # `gun_magazines` names the magazines some gun loads. A medgun's refill
+      # and a multi-tool's canister name a round too -- one real energy guns
+      # fire, so the round cannot tell them apart -- and a container stands
+      # for its round only when a gun loads it. Without the set every
+      # container keeps its round.
+      def initialize(ammo_params: {}, ammo_containers: {}, consumable_subtypes: {}, melee_configs: {}, gun_magazines: nil, translate: ->(key) { key })
         @ammo_params = ammo_params
+        @gun_magazines = gun_magazines
         @ammo_containers = ammo_containers
         @consumable_subtypes = consumable_subtypes
         @melee_configs = melee_configs
@@ -60,7 +66,8 @@ module ScData
 
         # A medgun's vial and a multi-tool's battery still name a round, which
         # nothing fires. Only a gun, or the magazine a gun loads, has one.
-        fires_rounds = fire_modes.any? { |mode| mode[:kind] != "beam" } || weapon.nil?
+        fires_rounds = fire_modes.any? { |mode| mode[:kind] != "beam" } ||
+          (weapon.nil? && (@gun_magazines.nil? || @gun_magazines.include?(values["__ref"])))
 
         {
           fire_modes: fire_modes.presence,
@@ -77,6 +84,25 @@ module ScData
           mining: mining(components),
           consumable: consumable(components)
         }.compact
+      end
+
+      # The magazines the guns among `records` load: those a weapon with a
+      # projectile mode names.
+      def self.gun_magazines(records)
+        records.each_with_object(Set.new) do |values, magazines|
+          weapon = values.is_a?(Hash) ? values.dig("Components", "SCItemWeaponComponentParams") : nil
+          next unless weapon.is_a?(Hash) && fires_projectiles?(weapon["fireActions"])
+
+          magazines << weapon["ammoContainerRecord"] if weapon["ammoContainerRecord"].present?
+        end
+      end
+
+      private_class_method def self.fires_projectiles?(tree)
+        case tree
+        when Hash then tree.any? { |key, value| (PROJECTILE_ACTIONS.key?(key) || key == "SWeaponActionFireChargedParams") || fires_projectiles?(value) }
+        when Array then tree.any? { |value| fires_projectiles?(value) }
+        else false
+        end
       end
 
       # The best a weapon does across its modes, for sorting a list by. A tool

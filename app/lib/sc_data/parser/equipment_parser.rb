@@ -495,9 +495,12 @@ module ScData
       private def gear_stats(records)
         by_ref = records.filter_map { |item| [item[:values]["__ref"], item[:values]] if item[:values].is_a?(Hash) }.to_h
 
+        ammo_containers = by_ref.transform_values { |values| values.dig("Components", "SAmmoContainerComponentParams") }.compact
+
         ScData::Parser::GearStats.new(
           ammo_params:,
-          ammo_containers: by_ref.transform_values { |values| values.dig("Components", "SAmmoContainerComponentParams") }.compact,
+          gun_magazines: ScData::Parser::GearStats.gun_magazines(by_ref.values),
+          ammo_containers:,
           consumable_subtypes:,
           melee_configs: by_ref.select { |_, values| values.key?("attackCategoryParams") },
           translate: ->(key) { localize(key) || translate(key) }
