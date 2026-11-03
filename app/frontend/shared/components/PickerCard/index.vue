@@ -145,7 +145,8 @@ const accessibleName = computed(() =>
 .picker-card {
   --picker-card-plate-clearance: 56px;
 
-  @apply relative flex shrink-0 flex-col overflow-hidden;
+  container-type: inline-size;
+  @apply relative flex flex-col overflow-hidden;
   @apply bg-control border-edge-soft rounded-surface-slim border;
   @apply transition-[background-color,border-color] duration-150 ease-in-out;
 }
@@ -199,6 +200,16 @@ const accessibleName = computed(() =>
    by about what the plate takes. */
 .picker-card--contain .picker-card__image {
   aspect-ratio: 4 / 3;
+}
+
+/* The plate and the stepper keep their height as a card narrows, so below the
+   width where a 16:9 picture still fits both under the selection tick, a card
+   turns square. */
+@container (max-width: 216px) {
+  .picker-card__image,
+  .picker-card--contain .picker-card__image {
+    aspect-ratio: 1;
+  }
 }
 
 /* What stands in for a missing picture: an icon, centred and quiet. */
