@@ -59,6 +59,18 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "paint-booth/",
+    name: "paint-booth",
+    component: () => import("@/frontend/pages/tools/paint-booth.vue"),
+    meta: {
+      title: "tools.paintBooth",
+      backgroundImage: "bg-room",
+      // The booth is the textured holo: without that flag it has nothing to
+      // repaint.
+      feature: [FeatureFlagName.PAINT_BOOTH, FeatureFlagName.HOLO_TEXTURED],
+    },
+  },
+  {
     path: "tours/",
     component: () => import("@/frontend/pages/tools/tours.vue"),
     children: tourRoutes,

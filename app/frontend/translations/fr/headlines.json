@@ -442,7 +442,8 @@
         "cargoGrids": "Grilles de cargaison",
         "plaque": "Plaques de dédicace",
         "tradeRoutes": "Routes commerciales",
-        "dressingRoom": "Cabine d'essayage"
+        "dressingRoom": "Cabine d'essayage",
+        "paintBooth": "Atelier de peinture"
       },
       "rsiVerification": "Vérifier votre compte RSI",
       "support": "Soutenir FleetYards.net",

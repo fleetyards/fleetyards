@@ -67,6 +67,7 @@ module Api
 
           scope = Model.visible.active.includes(:manufacturer)
           scope = with_cargo_grids(scope) if model_query_params.delete("with_cargo_grids")
+          scope = scope.with_textured_holo if ActiveModel::Type::Boolean.new.cast(model_query_params.delete("with_textured_holo"))
           scope = scope.where(id: current_resource_owner.vehicles.purchased.where(loaner: false).select(:model_id)) if model_query_params.delete("in_hangar") && current_resource_owner.present?
           scope = container_fit(scope) if container_fit_params.present?
 
@@ -97,7 +98,7 @@ module Api
         private def model_query_params
           @model_query_params ||= params.permit(
             q: [
-              :name_cont, :name_eq, :slug_eq, :search_cont, :in_hangar, :with_cargo_grids, :stealth_eq, :s, :sorts,
+              :name_cont, :name_eq, :slug_eq, :search_cont, :in_hangar, :with_cargo_grids, :with_textured_holo, :stealth_eq, :s, :sorts,
               :on_sale_eq, :cargo_gteq, :pledge_price_gteq, :pledge_price_lteq,
               name_in: [], slug_in: [], id_in: [], id_not_in: [],
               manufacturer_in: [], classification_in: [], focus_in: [],

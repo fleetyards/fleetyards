@@ -850,6 +850,12 @@ class Model < ApplicationRecord
     end
   }
 
+  # A liveried variant carries a copy of its base ship's textured holo, so
+  # the attachment alone says whether there is one to show.
+  scope :with_textured_holo, -> {
+    where(id: ActiveStorage::Attachment.where(record_type: name, name: TEXTURED_HOLO_ATTACHMENT_NAMES).select(:record_id))
+  }
+
   # Any of the keys, as `classification_in` matches any of its values. Named
   # after the field it replaces, so `focusIn` keeps meaning what it always did,
   # and a focus as a link from before the keys words it ("Heavy Fighter") is

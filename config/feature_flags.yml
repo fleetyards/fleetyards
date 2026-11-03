@@ -104,3 +104,6 @@ hangar_planner:
 
 dressing_room:
   description: "Dressing room — put armour and undersuits together on a body in 3D, share the outfit by link and save it"
+
+paint_booth:
+  description: "Paint booth — a ship's textured holo in every paint it has, on a turntable; the holo also needs holo_textured"

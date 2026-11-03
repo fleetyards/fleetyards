@@ -442,7 +442,8 @@
         "cargoGrids": "Grillas de carga",
         "plaque": "Placas de dedicatoria",
         "tradeRoutes": "Rutas comerciales",
-        "dressingRoom": "Probador"
+        "dressingRoom": "Probador",
+        "paintBooth": "Taller de pintura"
       },
       "rsiVerification": "Verify your RSI-Account",
       "support": "Support FleetYards.net",

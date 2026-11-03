@@ -32,6 +32,19 @@ describe("ModelPickerSelect", () => {
     ).toBe(false);
   });
 
+  it("drops the visible label but keeps naming the field", async () => {
+    const wrapper = await mountWithDefaults(Component, {
+      props: { name: "ship", label: "Your ship", noLabel: true },
+    });
+
+    expect(wrapper.find(".field-label").exists()).toBe(false);
+    expect(
+      wrapper
+        .find('[data-test="model-picker-select-trigger"]')
+        .attributes("aria-label"),
+    ).toBe("Your ship");
+  });
+
   it("names the chosen ship and offers to clear it", async () => {
     const wrapper = await mount("misc-hull-c");
 
