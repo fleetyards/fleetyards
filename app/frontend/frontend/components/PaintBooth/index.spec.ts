@@ -1,7 +1,20 @@
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { flushPromises } from "@vue/test-utils";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { type MediaFile, type Model, type ModelPaint } from "@/services/fyApi";
+
+// The cards carry a lazy background image, and jsdom has no IntersectionObserver.
+// Per test, since a spec sharing this worker can unstub globals between them.
+beforeEach(() => {
+  vi.stubGlobal(
+    "IntersectionObserver",
+    class {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    },
+  );
+});
 
 vi.mock("@/shared/composables/useLowPowerDevice", () => ({
   isLowPowerDevice: () => false,
