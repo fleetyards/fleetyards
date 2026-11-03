@@ -26052,6 +26052,8 @@ components:
           type: number
         inertMaterials:
           type: number
+        clusterFactor:
+          type: number
       additionalProperties: false
       title: ComponentMiningModifiers
     ComponentMiningModule:
@@ -27674,6 +27676,22 @@ components:
           type:
           - number
           - 'null'
+        alphaDamage:
+          type:
+          - number
+          - 'null'
+          description: The most one shot deals across the weapon's fire modes
+        dps:
+          type:
+          - number
+          - 'null'
+          description: The most damage per second across the weapon's fire modes
+        stats:
+          description: What the gear does, from the game files; absent for gear the
+            files give nothing for
+          anyOf:
+          - "$ref": "#/components/schemas/EquipmentStats"
+          - type: 'null'
         volume:
           type:
           - number
@@ -27766,6 +27784,25 @@ components:
       - createdAt
       - updatedAt
       title: Equipment
+    EquipmentAmmo:
+      type: object
+      properties:
+        damage:
+          "$ref": "#/components/schemas/ComponentWeaponDamage"
+        damageDrop:
+          "$ref": "#/components/schemas/EquipmentDamageDrop"
+        speed:
+          type: number
+        lifetime:
+          type: number
+        range:
+          type: number
+        penetration:
+          "$ref": "#/components/schemas/EquipmentPenetration"
+        explosion:
+          "$ref": "#/components/schemas/EquipmentExplosion"
+      additionalProperties: false
+      title: EquipmentAmmo
     EquipmentAttachment:
       type: object
       properties:
@@ -27786,6 +27823,95 @@ components:
       items:
         "$ref": "#/components/schemas/EquipmentAttachment"
       title: EquipmentAttachmentsList
+    EquipmentCharge:
+      type: object
+      properties:
+        time:
+          type: number
+        overchargeTime:
+          type: number
+        overchargedTime:
+          type: number
+        cooldown:
+          type: number
+        damageMultiplier:
+          type: number
+        projectileSpeedMultiplier:
+          type: number
+        partial:
+          type: boolean
+          description: Whether a part charge scales the shot part of the way
+        uncharged:
+          "$ref": "#/components/schemas/EquipmentUnchargedShot"
+      additionalProperties: false
+      title: EquipmentCharge
+    EquipmentConsumable:
+      type: object
+      properties:
+        volume:
+          type: number
+          description: MicroSCU in one dose
+        effects:
+          type: array
+          items:
+            "$ref": "#/components/schemas/EquipmentConsumableEffect"
+      additionalProperties: false
+      title: EquipmentConsumable
+    EquipmentConsumableEffect:
+      type: object
+      properties:
+        kind:
+          "$ref": "#/components/schemas/EquipmentConsumableEffectKindEnum"
+        amount:
+          type: number
+        stat:
+          type: string
+        buff:
+          type: string
+        duration:
+          type: number
+      additionalProperties: false
+      required:
+      - kind
+      title: EquipmentConsumableEffect
+    EquipmentConsumableEffectKindEnum:
+      type: string
+      enum:
+      - health
+      - status
+      - buff
+      x-enumNames:
+      - HEALTH
+      - STATUS
+      - BUFF
+      title: EquipmentConsumableEffectKindEnum
+    EquipmentDamageDrop:
+      type: object
+      properties:
+        minDistance:
+          type: number
+        perMeter:
+          "$ref": "#/components/schemas/ComponentWeaponDamage"
+        minDamage:
+          "$ref": "#/components/schemas/ComponentWeaponDamage"
+      additionalProperties: false
+      title: EquipmentDamageDrop
+    EquipmentExplosion:
+      type: object
+      properties:
+        damage:
+          "$ref": "#/components/schemas/ComponentWeaponDamage"
+        minRadius:
+          type: number
+        maxRadius:
+          type: number
+        pressure:
+          type: number
+        fuse:
+          type: number
+          description: Seconds from the throw
+      additionalProperties: false
+      title: EquipmentExplosion
     EquipmentFacetFilterQuery:
       type: object
       properties:
@@ -27796,6 +27922,83 @@ components:
       additionalProperties: false
       example: {}
       title: EquipmentFacetFilterQuery
+    EquipmentFireMode:
+      type: object
+      properties:
+        name:
+          type: string
+        label:
+          type: string
+        kind:
+          "$ref": "#/components/schemas/EquipmentFireModeKindEnum"
+        condition:
+          "$ref": "#/components/schemas/EquipmentFireModeCondition"
+        fireRate:
+          type: number
+          description: Rounds per minute
+        shots:
+          type: integer
+          description: Rounds per burst
+        cooldown:
+          type: number
+        pellets:
+          type: integer
+        ammoCost:
+          type: integer
+        damageMultiplier:
+          type: number
+        heatPerShot:
+          type: number
+        heatPerSecond:
+          type: number
+        spread:
+          "$ref": "#/components/schemas/ComponentWeaponSpread"
+        charge:
+          "$ref": "#/components/schemas/EquipmentCharge"
+        damagePerSecond:
+          "$ref": "#/components/schemas/ComponentWeaponDamage"
+        fullDamageRange:
+          type: number
+        zeroDamageRange:
+          type: number
+        chargeUpTime:
+          type: number
+        alpha:
+          type: number
+        dps:
+          type: number
+        timeToOverheat:
+          type: number
+        shotsToOverheat:
+          type: integer
+      additionalProperties: false
+      required:
+      - kind
+      title: EquipmentFireMode
+    EquipmentFireModeCondition:
+      type: object
+      properties:
+        heatLevel:
+          type: number
+        comparison:
+          type: string
+      additionalProperties: false
+      title: EquipmentFireModeCondition
+    EquipmentFireModeKindEnum:
+      type: string
+      enum:
+      - rapid
+      - single
+      - burst
+      - charged
+      - beam
+      x-enumNames:
+      - RAPID
+      - SINGLE
+      - BURST
+      - CHARGED
+      - BEAM
+      title: EquipmentFireModeKindEnum
     EquipmentFit:
       type: object
       properties:
@@ -27866,11 +28069,133 @@ components:
       required:
       - type
       title: EquipmentFitPortType
+    EquipmentHeat:
+      type: object
+      properties:
+        overheatTemperature:
+          type: number
+        coolingPerSecond:
+          type: number
+        coolingDelay:
+          type: number
+        overheatFixTime:
+          type: number
+      additionalProperties: false
+      title: EquipmentHeat
     EquipmentList:
       type: array
       items:
         "$ref": "#/components/schemas/Equipment"
       title: EquipmentList
+    EquipmentMagazine:
+      type: object
+      properties:
+        size:
+          type: integer
+        reserve:
+          type: integer
+          description: Spare magazines a player restocks
+      additionalProperties: false
+      title: EquipmentMagazine
+    EquipmentMelee:
+      type: object
+      properties:
+        attacks:
+          type: array
+          items:
+            "$ref": "#/components/schemas/EquipmentMeleeAttack"
+      additionalProperties: false
+      title: EquipmentMelee
+    EquipmentMeleeAttack:
+      type: object
+      properties:
+        category:
+          type: string
+        damage:
+          "$ref": "#/components/schemas/ComponentWeaponDamage"
+        impulse:
+          type: number
+      additionalProperties: false
+      title: EquipmentMeleeAttack
+    EquipmentMine:
+      type: object
+      properties:
+        trigger:
+          type: string
+        radius:
+          type: number
+        warningRadius:
+          type: number
+        horizontalAngle:
+          type: number
+        verticalAngle:
+          type: number
+        length:
+          type: number
+      additionalProperties: false
+      title: EquipmentMine
+    EquipmentMining:
+      type: object
+      properties:
+        modifiers:
+          "$ref": "#/components/schemas/ComponentMiningModifiers"
+        charges:
+          type: integer
+        fracturePower:
+          type: number
+        extractionPower:
+          type: number
+        activation:
+          type: string
+        duration:
+          type: number
+      additionalProperties: false
+      title: EquipmentMining
+    EquipmentModifier:
+      type: object
+      properties:
+        damage:
+          type: number
+        fireRate:
+          type: number
+        projectileSpeed:
+          type: number
+        heat:
+          type: number
+        soundRadius:
+          type: number
+        spread:
+          "$ref": "#/components/schemas/ComponentWeaponSpread"
+        recoil:
+          "$ref": "#/components/schemas/EquipmentModifierRecoil"
+        zoom:
+          type: number
+        secondZoom:
+          type: number
+        zoomTime:
+          type: number
+      additionalProperties: false
+      title: EquipmentModifier
+    EquipmentModifierRecoil:
+      type: object
+      properties:
+        yaw:
+          type: number
+        pitch:
+          type: number
+      additionalProperties: false
+      title: EquipmentModifierRecoil
+    EquipmentPenetration:
+      type: object
+      properties:
+        maxThickness:
+          type: number
+        nearRadius:
+          type: number
+        farRadius:
+          type: number
+      additionalProperties: false
+      title: EquipmentPenetration
     EquipmentQuery:
       type: object
       properties:
@@ -27943,6 +28268,10 @@ components:
           type: number
         volumeGteq:
           type: number
+        alphaDamageGteq:
+          type: number
+        dpsGteq:
+          type: number
         damageReductionLteq:
           type: number
         radiationProtectionLteq:
@@ -27957,6 +28286,10 @@ components:
           type: number
         volumeLteq:
           type: number
+        alphaDamageLteq:
+          type: number
+        dpsLteq:
+          type: number
         s:
           "$ref": "#/components/schemas/EquipmentSortingEnum"
         sorts:
@@ -27966,6 +28299,19 @@ components:
       additionalProperties: false
       example: {}
       title: EquipmentQuery
+    EquipmentRegen:
+      type: object
+      properties:
+        capacity:
+          type: number
+        regenPerSecond:
+          type: number
+        cooldown:
+          type: number
+        costPerShot:
+          type: number
+      additionalProperties: false
+      title: EquipmentRegen
     EquipmentSlotEnum:
       type: string
       enum:
@@ -28026,6 +28372,10 @@ components:
       - rateOfFire desc
       - volume asc
       - volume desc
+      - alphaDamage asc
+      - alphaDamage desc
+      - dps asc
+      - dps desc
       x-enumNames:
       - NAME_ASC
       - NAME_DESC
@@ -28053,7 +28403,138 @@ components:
       - RATE_OF_FIRE_DESC
       - VOLUME_ASC
       - VOLUME_DESC
+      - ALPHA_DAMAGE_ASC
+      - ALPHA_DAMAGE_DESC
+      - DPS_ASC
+      - DPS_DESC
       title: EquipmentSortingEnum
+    EquipmentStats:
+      type: object
+      properties:
+        fireModes:
+          type: array
+          items:
+            "$ref": "#/components/schemas/EquipmentFireMode"
+        toolActions:
+          type: array
+          items:
+            "$ref": "#/components/schemas/EquipmentToolAction"
+        ammo:
+          "$ref": "#/components/schemas/EquipmentAmmo"
+        secondaryAmmo:
+          "$ref": "#/components/schemas/EquipmentAmmo"
+        magazine:
+          "$ref": "#/components/schemas/EquipmentMagazine"
+        regen:
+          "$ref": "#/components/schemas/EquipmentRegen"
+        heat:
+          "$ref": "#/components/schemas/EquipmentHeat"
+        melee:
+          "$ref": "#/components/schemas/EquipmentMelee"
+        modifier:
+          "$ref": "#/components/schemas/EquipmentModifier"
+        explosion:
+          "$ref": "#/components/schemas/EquipmentExplosion"
+        mine:
+          "$ref": "#/components/schemas/EquipmentMine"
+        mining:
+          "$ref": "#/components/schemas/EquipmentMining"
+        consumable:
+          "$ref": "#/components/schemas/EquipmentConsumable"
+      additionalProperties: false
+      title: EquipmentStats
+    EquipmentToolAction:
+      type: object
+      properties:
+        name:
+          type: string
+        label:
+          type: string
+        kind:
+          "$ref": "#/components/schemas/EquipmentToolActionKindEnum"
+        target:
+          type: string
+        range:
+          type: number
+        sensorRange:
+          type: number
+        optimalRange:
+          type: number
+        doseRate:
+          type: number
+        ammoPerDose:
+          type: number
+        batteryDrain:
+          type: number
+        minForce:
+          type: number
+        maxForce:
+          type: number
+        minDistance:
+          type: number
+        maxDistance:
+          type: number
+        fullStrengthDistance:
+          type: number
+        maxAngle:
+          type: number
+        maxVolume:
+          type: number
+        maxSpeed:
+          type: number
+        healthRate:
+          type: number
+        damageMapRate:
+          type: number
+        materialEfficiency:
+          type: number
+        healthToAmmoRatio:
+          type: number
+        rampUpTime:
+          type: number
+        power:
+          type: number
+        chargeUpTime:
+          type: number
+        resourceRate:
+          type: number
+        minPrime:
+          type: number
+        maxPrime:
+          type: number
+        primeTime:
+          type: number
+        overloadDuration:
+          type: number
+        coneAngle:
+          type: number
+        maxRadius:
+          type: number
+      additionalProperties: false
+      required:
+      - kind
+      title: EquipmentToolAction
+    EquipmentToolActionKindEnum:
+      type: string
+      enum:
+      - heal
+      - tractor
+      - salvage
+      - repair
+      - mining
+      - charge
+      - drain
+      - extinguish
+      x-enumNames:
+      - HEAL
+      - TRACTOR
+      - SALVAGE
+      - REPAIR
+      - MINING
+      - CHARGE
+      - DRAIN
+      - EXTINGUISH
+      title: EquipmentToolActionKindEnum
     EquipmentTypeEnum:
       type: string
       enum:
@@ -28085,6 +28566,15 @@ components:
       - CONTAINER
       - SUSTENANCE
       title: EquipmentTypeEnum
+    EquipmentUnchargedShot:
+      type: object
+      properties:
+        alpha:
+          type: number
+        dps:
+          type: number
+      additionalProperties: false
+      title: EquipmentUnchargedShot
     Equipments:
       type: object
       properties:

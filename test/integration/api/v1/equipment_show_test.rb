@@ -37,6 +37,20 @@ class Api::V1::EquipmentShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  # Every section the stats can carry, read from the game files, so the schema
+  # is checked against the shapes the parser actually writes.
+  test "GET /equipment/{slug} returns what the gear does" do
+    stats = JSON.parse(file_fixture("equipment_stats.json").read)
+    gear = create(:equipment, name: "Everything Rifle", stats:, alpha_damage: 6060, dps: 2121)
+
+    assert_api_response :get, 200, params: {slug: gear.slug} do
+      assert_equal [6060.0, 2121.0], parsed_body.values_at("alphaDamage", "dps")
+      assert_equal %w[beam burst charged rapid single], parsed_body.dig("stats", "fireModes").pluck("kind").sort
+      assert_equal 40, parsed_body.dig("stats", "magazine", "size")
+      assert parsed_body.dig("stats", "fireModes", 0).key?("timeToOverheat")
+    end
+  end
+
   # A load writes the build and leaves the row alone when no fact on it changed,
   # so the row alone cannot key the fragment.
   test "GET /equipment/{slug} picks up a build a load wrote after it was cached" do

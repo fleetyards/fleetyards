@@ -941,6 +941,8 @@ components:
           type: number
         inertMaterials:
           type: number
+        clusterFactor:
+          type: number
       additionalProperties: false
     ComponentMiningModule:
       type: object
