@@ -92,7 +92,7 @@ describe("Models/PickerModal", () => {
   it("collects picks until they are submitted", async () => {
     const wrapper = await mount();
 
-    await wrapper.find(".model-card__toggle").trigger("click");
+    await wrapper.find(".picker-card__toggle").trigger("click");
 
     expect(wrapper.emitted("submit")).toBeUndefined();
     expect(wrapper.find(".model-picker__tray").text()).toContain(
@@ -106,7 +106,7 @@ describe("Models/PickerModal", () => {
   it("does not submit the picks when the form is submitted with Enter", async () => {
     const wrapper = await mount();
 
-    await wrapper.find(".model-card__toggle").trigger("click");
+    await wrapper.find(".picker-card__toggle").trigger("click");
     await wrapper.find("form").trigger("submit");
 
     expect(wrapper.emitted("submit")).toBeUndefined();
@@ -119,7 +119,7 @@ describe("Models/PickerModal", () => {
   it("submits the clicked ship straight away in single mode", async () => {
     const wrapper = await mount({ single: true });
 
-    await wrapper.find(".model-card__toggle").trigger("click");
+    await wrapper.find(".picker-card__toggle").trigger("click");
 
     expect(wrapper.emitted("submit")?.[0]).toEqual([[{ option, quantity: 1 }]]);
   });
