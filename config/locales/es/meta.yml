@@ -4,6 +4,14 @@ es:
     plaque_tool:
       description: "Dale a cualquier nave de Star Citizen una placa de dedicatoria, como la que CIG colgó para The Only Constant, y compártela como imagen."
     admin_description: FleetYards.net Command App.
+    compare_components:
+      description:
+        default: Compare componentes de naves lado a lado.
+        vs: Comparar %{items}.
+    compare_equipment:
+      description:
+        default: Compare equipo lado a lado.
+        vs: Comparar %{items}.
     compare_ships:
       description:
         default: Compare sus naves favoritas.

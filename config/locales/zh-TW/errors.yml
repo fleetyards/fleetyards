@@ -19,3 +19,9 @@ zh-TW:
       hangar:
         import:
           no_data: 匯入檔案中未找到資料
+      compare:
+        share:
+          empty: "未提供分享連結的項目"
+          too_many: "分享連結最多支援 %{max} 個項目"
+          unknown_models: "找不到任何指定的項目"
+          mixed: "分享連結只能比較一種類型：飛船、組件或裝備"

@@ -32,6 +32,26 @@ class CompareImageTest < ActiveSupport::TestCase
     assert_equal "anvil-carrack,drake-cutlass-black", record.share_key
   end
 
+  test "keeps a component comparison apart from a ship one with the same slugs" do
+    create(:component).update_columns(slug: "anvil-carrack")
+    create(:component).update_columns(slug: "drake-cutlass-black")
+
+    ships = CompareImage.find_or_create_for_share([@carrack.slug, @cutlass.slug])
+    components = CompareImage.find_or_create_for_share(["anvil-carrack", "drake-cutlass-black"], kind: "components")
+
+    assert_equal "components", components.kind
+    assert_not_equal ships.id, components.id
+    assert_not_equal ships.short_code, components.short_code
+  end
+
+  test "resolves equipment slugs against the equipment catalogue" do
+    create(:equipment).update_columns(slug: "behr-p4-ar")
+
+    record = CompareImage.find_or_create_for_share(["behr-p4-ar", @carrack.slug], kind: "equipment")
+
+    assert_equal "behr-p4-ar", record.share_key
+  end
+
   test "returns nil for an empty slug list" do
     assert_nil CompareImage.find_or_create_for_share([])
   end

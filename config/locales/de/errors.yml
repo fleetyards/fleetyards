@@ -19,3 +19,9 @@ de:
       hangar:
         import:
           no_data: Keine Daten in der Importdatei gefunden
+      compare:
+        share:
+          empty: "Keine Einträge für den Teilen-Link angegeben"
+          too_many: "Ein Teilen-Link unterstützt höchstens %{max} Einträge"
+          unknown_models: "Keiner der angegebenen Einträge wurde gefunden"
+          mixed: "Ein Teilen-Link vergleicht nur eine Art: Schiffe, Komponenten oder Ausrüstung"

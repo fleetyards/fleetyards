@@ -55,6 +55,31 @@ class Api::V1::CompareShareTest < ActionDispatch::IntegrationTest
     assert_equal first, second
   end
 
+  test "POST /compare/share links components to the component compare page" do
+    create(:component).update_columns(slug: "behr-shield")
+
+    assert_api_response :post, 200, body: {components: ["behr-shield"]} do
+      assert_includes parsed_body["longUrl"], "/compare/components"
+      assert_includes parsed_body["longUrl"], "behr-shield"
+    end
+
+    assert_equal "components", CompareImage.find_by(share_key: "behr-shield").kind
+  end
+
+  test "POST /compare/share links equipment to the equipment compare page" do
+    create(:equipment).update_columns(slug: "behr-p4-ar")
+
+    assert_api_response :post, 200, body: {equipment: ["behr-p4-ar"]} do
+      assert_includes parsed_body["longUrl"], "/compare/equipment"
+    end
+  end
+
+  test "POST /compare/share returns 400 for more than one kind" do
+    create(:component).update_columns(slug: "behr-shield")
+
+    assert_api_response :post, 400, body: {models: [@carrack.slug], components: ["behr-shield"]}
+  end
+
   test "POST /compare/share returns 400 with no models supplied" do
     assert_api_response :post, 400, body: {models: []}
   end

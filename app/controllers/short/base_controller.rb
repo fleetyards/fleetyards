@@ -33,13 +33,11 @@ module Short
         return
       end
 
-      slugs = canonical_share_slugs(record.share_key)
-      if slugs.empty?
-        redirect_to frontend_compare_url, allow_other_host: true
-        return
-      end
+      slugs = CompareImage.resolve_canonical_slugs(
+        record.share_key.split(CompareImage::SHARE_KEY_SEPARATOR), kind: record.kind
+      )
 
-      redirect_to frontend_compare_url(models: slugs), allow_other_host: true
+      redirect_to compare_url_for(record.kind, slugs), allow_other_host: true
     end
 
     def fleet_ships
@@ -69,12 +67,15 @@ module Short
       "#{url}?#{request.query_string}"
     end
 
-    private def canonical_share_slugs(share_key)
-      raw_slugs = share_key.split(CompareImage::SHARE_KEY_SEPARATOR)
-      return [] if raw_slugs.empty?
-
-      Model.where(slug: raw_slugs).or(Model.where(legacy_slug: raw_slugs))
-        .pluck(:slug).uniq.sort
+    # An empty set lands on that kind's empty compare page rather than on the
+    # ships one.
+    private def compare_url_for(kind, slugs)
+      query = slugs.presence
+      case kind
+      when "components" then frontend_compare_components_url(components: query)
+      when "equipment" then frontend_compare_equipment_url(equipment: query)
+      else frontend_compare_url(models: query)
+      end
     end
   end
 end
