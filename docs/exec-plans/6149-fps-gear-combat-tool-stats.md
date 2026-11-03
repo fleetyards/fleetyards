@@ -42,7 +42,8 @@ Every FPS weapon, attachment, tool, throwable, mine, mining gadget and consumabl
 - **2026-11-03** A Sequence entry's `delay` with `unit=RPM` is the effective fire rate; its inner action carries pellets and spread.
 
 ## Progress
-- [ ] Phase 1
-- [ ] Phase 2
-- [ ] Phase 3
-- [ ] Phase 4
+- [x] Phase 1
+- [x] Phase 2
+- [x] Phase 3
+- [x] Phase 4
+- [ ] After merge: re-parse and push live and ptu, then check the equipment pages on main
