@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.36.0](https://github.com/fleetyards/fleetyards/compare/v9.35.0...v9.36.0) (2026-11-03)
+
+
+### Features
+
+* **compare:** compare components and equipment side by side ([#6130](https://github.com/fleetyards/fleetyards/issues/6130)) ([cc7f591](https://github.com/fleetyards/fleetyards/commit/cc7f591ee504fc1e316a40cadf887950d72945a3))
+* **overlay:** server-side data export per game channel ([#6143](https://github.com/fleetyards/fleetyards/issues/6143)) ([67acb2e](https://github.com/fleetyards/fleetyards/commit/67acb2e0d212ace0e16de2e41d6daea8803c9a15))
+
+
+### Bug Fixes
+
+* **account:** let accounts without a shared email add one ([#6142](https://github.com/fleetyards/fleetyards/issues/6142)) ([1a9ce71](https://github.com/fleetyards/fleetyards/commit/1a9ce7116a5f730661324f2478944ca211071b99))
+* **api:** rate limits that one browser or one hangar page cannot exhaust ([#6131](https://github.com/fleetyards/fleetyards/issues/6131)) ([7fe7f42](https://github.com/fleetyards/fleetyards/commit/7fe7f42a4d95f360b321a26cda1d2ec9452d8868))
+* **dressing-room:** list the Antium Jet helmet and show item stats in the picker ([#6132](https://github.com/fleetyards/fleetyards/issues/6132)) ([aaefd60](https://github.com/fleetyards/fleetyards/commit/aaefd603509dac7cad2263d9fa875d07365f6418))
+
+
+### Chores
+
+* **deps-dev:** bump @tanstack/vue-query-devtools from 6.3.5 to 6.3.6 ([#6140](https://github.com/fleetyards/fleetyards/issues/6140)) ([7ef99a8](https://github.com/fleetyards/fleetyards/commit/7ef99a83d0930ec261a3a69f235ded8f979744fe))
+* **deps-dev:** bump orval from 8.45.0 to 8.46.0 ([#6139](https://github.com/fleetyards/fleetyards/issues/6139)) ([803a140](https://github.com/fleetyards/fleetyards/commit/803a140481ee4c5772bdaf8dc4d90c683672fd60))
+* **deps:** bump kaminari from 1.3.1 to 1.3.2 ([#6134](https://github.com/fleetyards/fleetyards/issues/6134)) ([9f271e3](https://github.com/fleetyards/fleetyards/commit/9f271e31b7fa90aaedea95d322fc85231fc48008))
+* **deps:** bump swagger-ui-dist from 5.34.0 to 5.34.1 ([#6137](https://github.com/fleetyards/fleetyards/issues/6137)) ([3e50e3e](https://github.com/fleetyards/fleetyards/commit/3e50e3ed407dff4a219b468bb5c870ae0124661a))
+* **deps:** bump the tiptap group with 8 updates ([#6135](https://github.com/fleetyards/fleetyards/issues/6135)) ([ede9c43](https://github.com/fleetyards/fleetyards/commit/ede9c432432f66b6968177a0ef2e6e2877a8320a))
+
 ## [9.35.0](https://github.com/fleetyards/fleetyards/compare/v9.34.0...v9.35.0) (2026-11-03)
 
 
