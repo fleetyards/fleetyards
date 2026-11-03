@@ -57,7 +57,7 @@ const GROUPS = [
   {
     key: "features",
     icon: "fadt fa-puzzle-piece",
-    members: ["blueprints", "squadrons"],
+    members: ["blueprints", "squadrons", "gear-stats"],
   },
 ];
 
@@ -167,6 +167,11 @@ const ITEMS: Record<string, { route: string; label: string; icon: string }> = {
     route: "visual-tests-overlays",
     label: "overlays",
     icon: "fadt fa-window-restore",
+  },
+  "gear-stats": {
+    route: "visual-tests-gear-stats",
+    label: "gearStats",
+    icon: "fadt fa-gun",
   },
   blueprints: {
     route: "visual-tests-blueprints",

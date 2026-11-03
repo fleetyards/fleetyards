@@ -251,6 +251,16 @@ export const routes = [
     },
   },
   {
+    path: "gear-stats/",
+    name: "visual-tests-gear-stats",
+    component: () =>
+      import("@/frontend/components/Equipment/GearStats/visual.vue"),
+    meta: {
+      title: "visualTests.gearStats",
+      backgroundImage: "bg-7",
+    },
+  },
+  {
     path: "chips/",
     name: "visual-tests-chips",
     component: () => import("@/shared/components/base/Chip/visual.vue"),

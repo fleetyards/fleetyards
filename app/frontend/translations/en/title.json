@@ -228,6 +228,7 @@
         "alerts": "Alerts - Visual Tests",
         "verifiedBadges": "Verified Badges - Visual Tests",
         "chips": "Chips - Visual Tests",
+        "gearStats": "Gear Stats - Visual Tests",
         "squadrons": "Squadrons - Visual Tests",
         "notificationCenter": "Notification Center - Visual Tests"
       },
