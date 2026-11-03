@@ -349,6 +349,7 @@ const resultsLabel = computed(() =>
                 ? t('labels.component.category')
                 : t('labels.filters.equipment.equipmentType')
             "
+            no-label
             :searchable="true"
             :nullable="true"
           />
