@@ -35,6 +35,14 @@ class Api::V1::CharacterBodiesTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /character-bodies serves a body's textured holo once it has one" do
+    create(:character_body, :with_holo, :with_textured_holo, key: "male")
+
+    assert_api_response :get, 200 do
+      assert_equal "plain.glb", parsed_body.first.dig("holoTextured", "name")
+    end
+  end
+
   test "GET /character-bodies is forbidden while the feature is off" do
     Flipper.disable(:dressing_room)
 
