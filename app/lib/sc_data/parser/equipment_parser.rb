@@ -492,13 +492,10 @@ module ScData
         by_ref = records.filter_map { |item| [item[:values]["__ref"], item[:values]] if item[:values].is_a?(Hash) }.to_h
 
         ScData::Parser::GearStats.new(
-          ammo_params: Dir.glob("#{import_path}/ammoparams/**/*.xml").to_h do |file|
-            values = Hash.from_xml(File.read(file)).values.first
-            [values["__ref"], values]
-          end,
+          ammo_params:,
           ammo_containers: by_ref.transform_values { |values| values.dig("Components", "SAmmoContainerComponentParams") }.compact,
           consumable_subtypes:,
-          melee_configs: by_ref.select { |_, values| values.is_a?(Hash) && values.key?("attackCategoryParams") },
+          melee_configs: by_ref.select { |_, values| values.key?("attackCategoryParams") },
           translate: ->(key) { localize(key) || translate(key) }
         )
       end

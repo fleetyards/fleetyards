@@ -389,6 +389,16 @@ module ScData
         end)
       end
 
+      # Every round the game defines, ship and personal alike, by record ref.
+      private def ammo_params
+        @ammo_params ||= Dir.glob("#{import_path}/ammoparams/**/*.xml").each_with_object({}) do |file, index|
+          values = Hash.from_xml(File.read(file)).values.first
+          ref = values.is_a?(Hash) ? values["__ref"] : nil
+
+          index[ref] = values if ref.present?
+        end
+      end
+
       private def value_or_nil(value)
         if value == "<= PLACEHOLDER =>" ||
             value == "UNDEFINED" ||

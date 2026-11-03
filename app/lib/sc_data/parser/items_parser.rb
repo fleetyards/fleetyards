@@ -8,7 +8,6 @@ module ScData
       MEDICAL_BED_TIERS = {"Hospital" => 1, "Clinic" => 2, "Ambulance" => 3}.freeze
 
       def all
-        load_ammo_params
         load_weapon_records
         load_cargogrids
         load_items
@@ -542,7 +541,7 @@ module ScData
           fire_actions = fire_actions.is_a?(Array) ? fire_actions.first : fire_actions
 
           ammo_ref = values.dig("Components", "SAmmoContainerComponentParams", "ammoParamsRecord")
-          ammo = @ammo_params[ammo_ref] if ammo_ref.present?
+          ammo = ammo_params[ammo_ref] if ammo_ref.present?
 
           beam = weapon_data.dig("fireActions", "SWeaponActionFireBeamParams")
           beam = beam.is_a?(Array) ? beam.first : beam
@@ -1212,16 +1211,6 @@ module ScData
         }.compact
 
         assist.values.all?(&:zero?) ? nil : assist.presence
-      end
-
-      private def load_ammo_params
-        @ammo_params = {}
-        Dir.glob("#{base_path}/#{FOUNDRY_PATH}/ammoparams/**/*.xml").each do |file|
-          data = Hash.from_xml(File.read(file))
-          values = data.values.first
-          ref = values.dig("__ref")
-          @ammo_params[ref] = values if ref.present?
-        end
       end
 
       # What a launched decoy or noise cloud presents to a seeker, from launch
