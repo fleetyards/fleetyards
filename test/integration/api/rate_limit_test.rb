@@ -76,15 +76,20 @@ class Api::RateLimitTest < ActionDispatch::IntegrationTest
     assert_nil response.headers["Set-Cookie"]
   end
 
-  test "an OAuth client is counted against the token's user" do
-    headers = oauth_headers_for(create(:user), scopes: "public")
+  test "an OAuth client is counted apart from its user's own session" do
+    user = create(:user)
+    headers = oauth_headers_for(user, scopes: "public")
 
+    sign_in user
     get "/api/v1/models"
     get "/api/v1/models"
     assert_response :too_many_requests
 
     get "/api/v1/models", headers: headers
     assert_response :success
+
+    get "/api/v1/models", headers: headers
+    assert_response :too_many_requests
   end
 
   test "a signed-in user gets the larger limit" do

@@ -21,34 +21,37 @@ client_ip = ->(req) { (req.get_header("action_dispatch.remote_ip") || req.ip).to
 # it), which on a 429 or a 404 would hand back a cookie that can overwrite a
 # sign-in still in flight. It is left unwritten here, as Api::BaseController
 # does, and a sign-in in the controller turns writing back on.
-signed_in_user_id = lambda do |req|
-  return req.env["fleetyards.rate_limit_user_id"] if req.env.key?("fleetyards.rate_limit_user_id")
+#
+# An OAuth app is counted apart from its user's own session, so an app that
+# polls hard spends its own budget rather than locking the user out of the site.
+account_bucket = lambda do |req|
+  return req.env["fleetyards.rate_limit_account"] if req.env.key?("fleetyards.rate_limit_account")
 
-  req.env["fleetyards.rate_limit_user_id"] = begin
+  req.env["fleetyards.rate_limit_account"] = begin
     token = Doorkeeper::OAuth::Token.authenticate(
       ActionDispatch::Request.new(req.env), *Doorkeeper.config.access_token_methods
     )
     if token
-      token.resource_owner_id if token.accessible?
+      "oauth:#{token.application_id}:#{token.resource_owner_id}" if token.accessible?
     else
       user_key = req.session["warden.user.user.key"]
       req.session_options[:skip] = true
-      user_key&.first&.first
+      user_id = user_key&.first&.first
+      "user:#{user_id}" if user_id
     end
   end
 end
 
 files_path = ->(req) { req.path.start_with?("#{ActiveStorage.routes_prefix}/") }
 
-# A signed-in user is counted on their own, so a household or office behind one
+# A signed-in account is counted on its own, so a household or office behind one
 # address does not share a single budget with every device on it.
-Rack::Attack.throttle("api", limit: ->(req) { signed_in_user_id.call(req) ? 10_000 : 5000 }, period: 1.hour) do |req|
+Rack::Attack.throttle("api", limit: ->(req) { account_bucket.call(req) ? 10_000 : 5000 }, period: 1.hour) do |req|
   if !req.path.match?(%r{^/v\d+$}) &&
       !req.path.match?(%r{^/v\d+/docs$}) &&
       !files_path.call(req) &&
       req.host.split(".").first == "api"
-    user_id = signed_in_user_id.call(req)
-    user_id ? "user:#{user_id}" : client_ip.call(req)
+    account_bucket.call(req) || client_ip.call(req)
   end
 end
 
