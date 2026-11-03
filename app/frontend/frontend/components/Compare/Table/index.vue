@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  name: "CompareModelsTable",
+  name: "CompareTable",
 };
 </script>
 
@@ -19,14 +19,16 @@ import {
   type CompareLine,
   type CompareLinePart,
   type CompareSection,
+  type CompareColumn,
   type CompareTableRow,
 } from "@/frontend/components/Compare/types";
 import { useI18n } from "@/shared/composables/useI18n";
-import type { Model } from "@/services/fyApi";
 
 type Props = {
-  models: Model[];
+  columns: CompareColumn[];
+  countLabel: string;
   sections: CompareSection[];
+  removeLabel: string;
   baseline?: string;
   delta?: boolean;
   differencesOnly?: boolean;
@@ -114,7 +116,7 @@ const rowsFor = (section: CompareSection) =>
     : section.rows;
 
 const baselineIndex = computed(() =>
-  props.models.findIndex((model) => model.slug === props.baseline),
+  props.columns.findIndex((column) => column.key === props.baseline),
 );
 
 type ValueRow = Extract<CompareTableRow, { kind: "value" }>;
@@ -258,17 +260,22 @@ const deltaLabel = (row: ValueRow, delta?: CompareDelta) => {
         <tr>
           <th scope="col" class="compare-table__rail compare-table__corner">
             <span class="compare-table__count">
-              {{ t("labels.compare.shipCount", { count: models.length }) }}
+              {{ countLabel }}
             </span>
           </th>
-          <th v-for="model in models" :key="model.slug" scope="col">
+          <th v-for="column in columns" :key="column.key" scope="col">
             <div class="compare-table__ship">
-              <div class="compare-table__art">
+              <div
+                class="compare-table__art"
+                :class="{
+                  'compare-table__art--contain': column.imageFit === 'contain',
+                }"
+              >
                 <ViewImage
-                  v-if="model.media.storeImage"
-                  :image="model.media.storeImage"
+                  v-if="column.image"
+                  :image="column.image"
                   :size="ViewImageSizeEnum.LARGE"
-                  :alt="model.name"
+                  :alt="column.name"
                   class="compare-table__image"
                 />
                 <div class="compare-table__actions">
@@ -277,37 +284,35 @@ const deltaLabel = (row: ValueRow, delta?: CompareDelta) => {
                     type="button"
                     class="compare-table__action"
                     :class="{
-                      'compare-table__action--on': baseline === model.slug,
+                      'compare-table__action--on': baseline === column.key,
                     }"
-                    :aria-pressed="baseline === model.slug"
+                    :aria-pressed="baseline === column.key"
                     :aria-label="t('labels.compare.useAsBaseline')"
-                    @click="emit('update:baseline', model.slug)"
+                    @click="emit('update:baseline', column.key)"
                   >
                     <i class="fa-light fa-crosshairs" />
                   </button>
                   <button
-                    v-tooltip="t('labels.compare.removeModel')"
+                    v-tooltip="removeLabel"
                     type="button"
                     class="compare-table__action"
-                    :aria-label="t('labels.compare.removeModel')"
-                    @click="emit('remove', model.slug)"
+                    :aria-label="removeLabel"
+                    @click="emit('remove', column.key)"
                   >
                     <i class="fa-light fa-times" />
                   </button>
                 </div>
               </div>
               <div class="compare-table__name">
-                <router-link
-                  :to="{ name: 'ship', params: { slug: model.slug } }"
-                >
-                  {{ model.name }}
+                <router-link :to="column.to">
+                  {{ column.name }}
                 </router-link>
-                <span v-if="baseline === model.slug" class="compare-table__tag">
+                <span v-if="baseline === column.key" class="compare-table__tag">
                   {{ t("labels.compare.baseline") }}
                 </span>
               </div>
               <div class="compare-table__mfr">
-                {{ model.manufacturer?.name }}
+                {{ column.subtitle }}
               </div>
             </div>
           </th>
@@ -330,7 +335,7 @@ const deltaLabel = (row: ValueRow, delta?: CompareDelta) => {
                 <span class="compare-table__dot" />
               </button>
             </th>
-            <td :colspan="models.length">
+            <td :colspan="columns.length">
               <div class="compare-table__band-rule" />
             </td>
           </tr>

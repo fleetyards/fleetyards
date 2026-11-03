@@ -145,6 +145,12 @@
   }
 }
 
+// Item renders sit on a transparent ground and fill their frame edge to edge, so
+// cropping them as the ship art is cropped cuts the item itself.
+.compare-table__art--contain .compare-table__image :deep(.lazy-image__img) {
+  object-fit: contain;
+}
+
 .compare-table__actions {
   position: absolute;
   top: 8px;
