@@ -1,11 +1,16 @@
-import { type EquipmentStats } from "@/services/fyApi";
+import { type Equipment } from "@/services/fyApi";
 
 // Read from the 4.10.2-live game files by the equipment parser, so the demo
 // shows the shapes and figures the API serves.
 export const GEAR = [
   {
-    key: "behr_rifle_ballistic_01",
+    id: "behr_rifle_ballistic_01",
+    slug: "behr-rifle-ballistic-01",
     name: "P4-AR Rifle",
+    equipmentType: "weapon",
+    storage: 40.0,
+    alphaDamage: 12.0,
+    dps: 162.0,
     stats: {
       fireModes: [
         {
@@ -70,8 +75,13 @@ export const GEAR = [
     },
   },
   {
-    key: "klwe_rifle_energy_01",
+    id: "klwe_rifle_energy_01",
+    slug: "klwe-rifle-energy-01",
     name: "Gallant Rifle",
+    equipmentType: "weapon",
+    storage: 45.0,
+    alphaDamage: 21.0,
+    dps: 147.13,
     stats: {
       fireModes: [
         {
@@ -142,8 +152,13 @@ export const GEAR = [
     },
   },
   {
-    key: "apar_special_ballistic_01",
+    id: "apar_special_ballistic_01",
+    slug: "apar-special-ballistic-01",
     name: "Scourge Railgun",
+    equipmentType: "weapon",
+    storage: 5.0,
+    alphaDamage: 6060.0,
+    dps: 2121.0,
     stats: {
       fireModes: [
         {
@@ -209,8 +224,13 @@ export const GEAR = [
     },
   },
   {
-    key: "hdgw_rifle_ballistic_01",
+    id: "hdgw_rifle_ballistic_01",
+    slug: "hdgw-rifle-ballistic-01",
     name: "Arlington Rifle",
+    equipmentType: "weapon",
+    storage: 20.0,
+    alphaDamage: 100.0,
+    dps: 141.67,
     stats: {
       fireModes: [
         {
@@ -291,8 +311,13 @@ export const GEAR = [
     },
   },
   {
-    key: "volt_rifle_energy_01",
+    id: "volt_rifle_energy_01",
+    slug: "volt-rifle-energy-01",
     name: "Parallax Energy Assault Rifle",
+    equipmentType: "weapon",
+    storage: 80.0,
+    alphaDamage: 21.0,
+    dps: 260.0,
     stats: {
       fireModes: [
         {
@@ -380,8 +405,13 @@ export const GEAR = [
     },
   },
   {
-    key: "crlf_medgun_01",
+    id: "crlf_medgun_01",
+    slug: "crlf-medgun-01",
     name: "ParaMed Medical Device",
+    equipmentType: "tool",
+    storage: null,
+    alphaDamage: null,
+    dps: null,
     stats: {
       toolActions: [
         {
@@ -410,8 +440,13 @@ export const GEAR = [
     },
   },
   {
-    key: "grin_multitool_01",
+    id: "grin_multitool_01",
+    slug: "grin-multitool-01",
     name: "Pyro RYT Multi-Tool",
+    equipmentType: "tool",
+    storage: null,
+    alphaDamage: null,
+    dps: null,
     stats: {
       toolActions: [
         {
@@ -489,8 +524,13 @@ export const GEAR = [
     },
   },
   {
-    key: "behr_gren_frag_01",
+    id: "behr_gren_frag_01",
+    slug: "behr-gren-frag-01",
     name: "MK-4 Frag Grenade",
+    equipmentType: "weapon",
+    storage: null,
+    alphaDamage: null,
+    dps: null,
     stats: {
       explosion: {
         damage: {
@@ -504,8 +544,13 @@ export const GEAR = [
     },
   },
   {
-    key: "behr_ltp_kinetic_01",
+    id: "behr_ltp_kinetic_01",
+    slug: "behr-ltp-kinetic-01",
     name: "ADO-5 Laser Mine",
+    equipmentType: "weapon",
+    storage: null,
+    alphaDamage: null,
+    dps: null,
     stats: {
       explosion: {
         damage: {
@@ -522,8 +567,13 @@ export const GEAR = [
     },
   },
   {
-    key: "mining_gadget_thcn_boremax",
+    id: "mining_gadget_thcn_boremax",
+    slug: "mining-gadget-thcn-boremax",
     name: "BoreMax",
+    equipmentType: "mining_gadget",
+    storage: null,
+    alphaDamage: null,
+    dps: null,
     stats: {
       mining: {
         modifiers: {
@@ -535,8 +585,13 @@ export const GEAR = [
     },
   },
   {
-    key: "arma_barrel_comp_s1",
+    id: "arma_barrel_comp_s1",
+    slug: "arma-barrel-comp-s1",
     name: "Sion Compensator1",
+    equipmentType: "weapon_attachment",
+    storage: null,
+    alphaDamage: null,
+    dps: null,
     stats: {
       modifier: {
         soundRadius: 1.2,
@@ -548,8 +603,13 @@ export const GEAR = [
     },
   },
   {
-    key: "banu_melee_01",
+    id: "banu_melee_01",
+    slug: "banu-melee-01",
     name: "Njakte Knife",
+    equipmentType: "weapon",
+    storage: null,
+    alphaDamage: null,
+    dps: null,
     stats: {
       melee: {
         attacks: [
@@ -572,8 +632,13 @@ export const GEAR = [
     },
   },
   {
-    key: "crlf_consumable_healing_01",
+    id: "crlf_consumable_healing_01",
+    slug: "crlf-consumable-healing-01",
     name: "MedPen (Hemozal)",
+    equipmentType: "medical",
+    storage: null,
+    alphaDamage: null,
+    dps: null,
     stats: {
       consumable: {
         volume: 30.0,
@@ -591,8 +656,4 @@ export const GEAR = [
       },
     },
   },
-] as unknown as {
-  key: string;
-  name: string;
-  stats: EquipmentStats;
-}[];
+] as unknown as Equipment[];
