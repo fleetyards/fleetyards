@@ -6,7 +6,6 @@ export default {
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
-import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import HoloViewer from "@/shared/components/HoloViewer/index.vue";
 import { type Model } from "@/services/fyApi";
@@ -19,7 +18,6 @@ import { useI18n } from "@/shared/composables/useI18n";
 
 interface Props {
   model: Model;
-  pose: ModelStateEnum;
   // The paint's slug, or nothing for the ship's own colours.
   paint?: string;
 }
@@ -29,7 +27,6 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emit = defineEmits<{
-  "update:pose": [pose: ModelStateEnum];
   "update:paint": [slug?: string];
 }>();
 
@@ -44,14 +41,12 @@ const { t } = useI18n();
 
 const viewer = ref<InstanceType<typeof HoloViewer>>();
 
-const poses = computed(() =>
-  [ModelStateEnum.FLIGHT, ModelStateEnum.LANDED].filter(
-    (state) => !!modelStateTexturedHolo(props.model, state),
-  ),
-);
-
-const activePose = computed(() =>
-  poses.value.includes(props.pose) ? props.pose : poses.value[0],
+// Landed, standing on its gear on the floor, wherever that is exported
+// painted.
+const pose = computed(() =>
+  modelStateTexturedHolo(props.model, ModelStateEnum.LANDED)
+    ? ModelStateEnum.LANDED
+    : ModelStateEnum.FLIGHT,
 );
 
 const {
@@ -63,7 +58,7 @@ const {
   holoModel,
 } = useModelHolo(
   () => props.model,
-  () => activePose.value ?? ModelStateEnum.FLIGHT,
+  () => pose.value,
   { textured: true },
 );
 
@@ -76,14 +71,10 @@ watchEffect(() => {
 });
 
 // A textured holo that will not draw falls back to the plain one, which no
-// paint fits. The other pose has an export of its own, so it gets a try.
+// paint fits.
 const holoUnavailable = () => {
   if (holoModel.value?.textured) texturedHolo.value = false;
 };
-
-watch(activePose, () => {
-  texturedHolo.value = true;
-});
 
 const painted = computed(
   () => texturedHoloAvailable.value && texturedHolo.value,
@@ -102,31 +93,14 @@ const ownImage = computed(() => props.model.media.storeImage?.smallUrl);
         :models="[holoModel]"
         :azimuth="HOLO_AZIMUTH"
         :elevation="HOLO_ELEVATION"
-        :contain-padding="1.1"
+        :contain-padding="1.28"
         :auto-rotate="false"
         contain
         zoomable
         turntable
-        grid
+        backdrop
         @unavailable="holoUnavailable"
       />
-      <BtnGroup
-        v-if="poses.length > 1"
-        segmented
-        class="paint-booth__poses"
-        data-test="paint-booth-poses"
-      >
-        <Btn
-          v-for="pose in poses"
-          :key="pose"
-          :size="BtnSizesEnum.SM"
-          :active="activePose === pose"
-          :data-test="`paint-booth-pose-${pose}`"
-          @click="emit('update:pose', pose)"
-        >
-          {{ t(`labels.model.state.${pose}`) }}
-        </Btn>
-      </BtnGroup>
       <Btn
         :size="BtnSizesEnum.SM"
         class="paint-booth__fullscreen"
@@ -210,25 +184,29 @@ const ownImage = computed(() => props.model.media.storeImage?.smallUrl);
   }
 }
 
-// Landscape, as a ship lies. The canvas is transparent, so the black is
-// the stage's own.
+// Landscape, as a ship lies: no box of its own, the page lit by a spot
+// behind the hull and a glow on the floor under its pedestal.
 .paint-booth__stage {
   position: relative;
   height: min(60vh, 40rem);
   min-height: 20rem;
-  overflow: hidden;
   border-radius: 4px;
-  background: black;
+  background:
+    radial-gradient(
+      ellipse 45% 12% at 50% 88%,
+      rgba($primary, 0.28),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 60% 60% at 50% 45%,
+      rgba($primary, 0.16),
+      rgba($background, 0.35) 70%,
+      transparent 100%
+    );
 
   @media (min-width: $desktop-breakpoint) {
     height: min(72vh, 48rem);
   }
-}
-
-.paint-booth__poses {
-  position: absolute;
-  top: 8px;
-  left: 8px;
 }
 
 .paint-booth__fullscreen {

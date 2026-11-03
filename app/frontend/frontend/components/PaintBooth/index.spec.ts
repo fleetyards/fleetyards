@@ -2,7 +2,6 @@ import { describe, expect, it, vi } from "vitest";
 import { flushPromises } from "@vue/test-utils";
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { type MediaFile, type Model, type ModelPaint } from "@/services/fyApi";
-import { ModelStateEnum } from "@/frontend/composables/useModelStates";
 
 vi.mock("@/shared/composables/useLowPowerDevice", () => ({
   isLowPowerDevice: () => false,
@@ -63,9 +62,10 @@ const model = (media: Record<string, MediaFile>) =>
   }) as unknown as Model;
 
 const mount = async (
-  props: { pose?: ModelStateEnum; paint?: string } = {},
+  props: { paint?: string } = {},
   media: Record<string, MediaFile> = {
     holo: file("holo.glb"),
+    landedHolo: file("landed_holo.glb"),
     holoTextured: file("textured.glb"),
     landedHoloTextured: file("landed_textured.glb"),
   },
@@ -73,7 +73,6 @@ const mount = async (
   const wrapper = await mountWithDefaults(PaintBooth, {
     props: {
       model: model(media),
-      pose: props.pose ?? ModelStateEnum.FLIGHT,
       paint: props.paint,
     },
   });
@@ -86,11 +85,11 @@ const viewerModel = (wrapper: Awaited<ReturnType<typeof mount>>) =>
   wrapper.findComponent({ name: "HoloViewer" }).props("models")[0];
 
 describe("PaintBooth", () => {
-  it("shows the textured holo in its own colours and lists every paint with maps", async () => {
+  it("stands the landed textured holo in its own colours, with every paint with maps", async () => {
     const wrapper = await mount();
 
     expect(viewerModel(wrapper)).toMatchObject({
-      path: "https://example.test/textured.glb",
+      path: "https://example.test/landed_textured.glb",
       textured: true,
       paint: undefined,
     });
@@ -138,29 +137,12 @@ describe("PaintBooth", () => {
     ]);
   });
 
-  it("offers the poses with a textured export and shows the landed one", async () => {
-    const wrapper = await mount({ pose: ModelStateEnum.LANDED });
-
-    expect(viewerModel(wrapper).path).toBe(
-      "https://example.test/landed_textured.glb",
-    );
-
-    await wrapper
-      .find(`[data-test="paint-booth-pose-${ModelStateEnum.FLIGHT}"]`)
-      .trigger("click");
-
-    expect(wrapper.emitted("update:pose")).toEqual([[ModelStateEnum.FLIGHT]]);
-  });
-
-  it("leaves the pose switch out for a ship painted in one pose only", async () => {
+  it("shows the flying holo for a ship painted only in flight", async () => {
     const wrapper = await mount(
-      { pose: ModelStateEnum.LANDED },
+      {},
       { holo: file("holo.glb"), holoTextured: file("textured.glb") },
     );
 
-    expect(wrapper.find('[data-test="paint-booth-poses"]').exists()).toBe(
-      false,
-    );
     expect(viewerModel(wrapper).path).toBe("https://example.test/textured.glb");
   });
 
@@ -171,7 +153,7 @@ describe("PaintBooth", () => {
     await flushPromises();
 
     expect(viewerModel(wrapper)).toMatchObject({
-      path: "https://example.test/holo.glb",
+      path: "https://example.test/landed_holo.glb",
       textured: false,
     });
     expect(wrapper.find('[data-test="paint-booth-unavailable"]').exists()).toBe(
@@ -181,20 +163,6 @@ describe("PaintBooth", () => {
       false,
     );
   });
-  it("tries the other pose's textured holo after one failed", async () => {
-    const wrapper = await mount();
-
-    wrapper.findComponent({ name: "HoloViewer" }).vm.$emit("unavailable");
-    await flushPromises();
-    await wrapper.setProps({ pose: ModelStateEnum.LANDED });
-    await flushPromises();
-
-    expect(viewerModel(wrapper)).toMatchObject({
-      path: "https://example.test/landed_textured.glb",
-      textured: true,
-    });
-  });
-
   it("says so for a ship without a textured export", async () => {
     const wrapper = await mount({}, { holo: file("holo.glb") });
 

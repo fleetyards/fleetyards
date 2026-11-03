@@ -3,7 +3,6 @@ import { flushPromises } from "@vue/test-utils";
 import { describe, expect, it, vi } from "vitest";
 import { createRouter, createWebHashHistory } from "vue-router";
 import { type Model } from "@/services/fyApi";
-import { ModelStateEnum } from "@/frontend/composables/useModelStates";
 
 const MODELS: Record<string, Model> = {
   gladius: { slug: "gladius", name: "Gladius" } as unknown as Model,
@@ -36,8 +35,8 @@ vi.mock("@/frontend/components/Models/PickerSelect/index.vue", () => ({
 vi.mock("@/frontend/components/PaintBooth/index.vue", () => ({
   default: {
     name: "PaintBooth",
-    props: ["model", "pose", "paint"],
-    emits: ["update:pose", "update:paint"],
+    props: ["model", "paint"],
+    emits: ["update:paint"],
     template: "<div data-test='paint-booth' />",
   },
 }));
@@ -76,36 +75,21 @@ describe("ToolsPaintBoothPage", () => {
     ).toEqual({ withTexturedHolo: true });
   });
 
-  it("shows the ship, paint and pose the address names", async () => {
-    const { wrapper } = await mount({
-      ship: "gladius",
-      paint: "blue-steel",
-      pose: "landed",
-    });
+  it("shows the ship and paint the address names", async () => {
+    const { wrapper } = await mount({ ship: "gladius", paint: "blue-steel" });
 
     expect(wrapper.findComponent({ name: "PaintBooth" }).props()).toEqual({
       model: MODELS.gladius,
-      pose: ModelStateEnum.LANDED,
       paint: "blue-steel",
     });
   });
 
-  it("keeps the picked paint and pose in the address, leaving flight out", async () => {
+  it("keeps the picked paint in the address", async () => {
     const { wrapper, router } = await mount({ ship: "gladius" });
-    const booth = wrapper.findComponent({ name: "PaintBooth" });
 
-    booth.vm.$emit("update:paint", "blue-steel");
-    await flushPromises();
-    booth.vm.$emit("update:pose", ModelStateEnum.LANDED);
-    await flushPromises();
-
-    expect(router.currentRoute.value.query).toEqual({
-      ship: "gladius",
-      paint: "blue-steel",
-      pose: "landed",
-    });
-
-    booth.vm.$emit("update:pose", ModelStateEnum.FLIGHT);
+    wrapper
+      .findComponent({ name: "PaintBooth" })
+      .vm.$emit("update:paint", "blue-steel");
     await flushPromises();
 
     expect(router.currentRoute.value.query).toEqual({

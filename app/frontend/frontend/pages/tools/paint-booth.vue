@@ -8,7 +8,6 @@ export default {
 import Heading from "@/shared/components/base/Heading/index.vue";
 import ModelPickerSelect from "@/frontend/components/Models/PickerSelect/index.vue";
 import PaintBooth from "@/frontend/components/PaintBooth/index.vue";
-import { ModelStateEnum } from "@/frontend/composables/useModelStates";
 import { useModel } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 
@@ -29,28 +28,17 @@ const shipSlug = computed(() => queryValue("ship"));
 
 const paintSlug = computed(() => queryValue("paint"));
 
-const pose = computed(() =>
-  queryValue("pose") === ModelStateEnum.LANDED
-    ? ModelStateEnum.LANDED
-    : ModelStateEnum.FLIGHT,
-);
-
 type BoothQuery = {
   ship?: string;
   paint?: string;
-  pose?: ModelStateEnum;
 };
 
 const navigate = (next: BoothQuery) => {
   const query: BoothQuery = {
     ship: shipSlug.value,
     paint: paintSlug.value,
-    pose: pose.value,
     ...next,
   };
-
-  // Flying is the usual pose, left out of the address.
-  if (query.pose === ModelStateEnum.FLIGHT) query.pose = undefined;
 
   return router.replace({ name: "paint-booth", query });
 };
@@ -95,9 +83,7 @@ const shownModel = computed(() => (shipSlug.value ? model.value : undefined));
       v-if="shownModel"
       :key="shownModel.slug"
       :model="shownModel"
-      :pose="pose"
       :paint="paintSlug"
-      @update:pose="navigate({ pose: $event })"
       @update:paint="navigate({ paint: $event })"
     />
     <div v-else class="paint-booth-page__empty" data-test="paint-booth-empty">
