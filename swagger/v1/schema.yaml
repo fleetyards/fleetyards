@@ -14399,6 +14399,36 @@ paths:
                 "$ref": "#/components/schemas/HangarPlan"
         '400':
           "$ref": "#/components/responses/SchemaValidationError"
+  "/hangar/plans/{id}/suggestions":
+    parameters:
+    - name: id
+      in: path
+      schema:
+        type: string
+        format: uuid
+      required: true
+    get:
+      summary: Hangar Plan Suggestions
+      tags:
+      - HangarPlans
+      operationId: hangarPlanSuggestions
+      security:
+      - SessionCookie: []
+      - Oauth2:
+        - hangar
+        - hangar:read
+      - OpenId:
+        - hangar
+        - hangar:read
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/HangarPlanSuggestions"
+        '400':
+          "$ref": "#/components/responses/SchemaValidationError"
   "/hangar/plans/{id}/summary":
     parameters:
     - name: id
@@ -36864,6 +36894,38 @@ components:
       - currentTotal
       - drifted
       title: HangarPlanDrift
+    HangarPlanFleetEntry:
+      type: object
+      description: 'One ship of the hangar once the plan is carried out: a unit of
+        a slot, or a hangar ship the plan leaves alone'
+      properties:
+        model:
+          "$ref": "#/components/schemas/HangarPlanModel"
+        slotId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        slotLabel:
+          type:
+          - string
+          - 'null'
+        vehicleId:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The hangar ship that is or becomes this ship
+        vehicleName:
+          type:
+          - string
+          - 'null'
+        vehicleStatus:
+          "$ref": "#/components/schemas/HangarPlanVehicleStatusEnum"
+      additionalProperties: false
+      required:
+      - model
+      title: HangarPlanFleetEntry
     HangarPlanGap:
       type: object
       properties:
@@ -37237,6 +37299,45 @@ components:
       - id
       - model
       title: HangarPlanPledgeShip
+    HangarPlanRedundancy:
+      type: object
+      description: 'Ships of the planned hangar that do the same job: one model more
+        than once, or several models of one role'
+      properties:
+        kind:
+          "$ref": "#/components/schemas/HangarPlanRedundancyKindEnum"
+        model:
+          "$ref": "#/components/schemas/HangarPlanModel"
+        classificationLabel:
+          type:
+          - string
+          - 'null'
+        sizeLabel:
+          type:
+          - string
+          - 'null'
+        focusLabel:
+          type:
+          - string
+          - 'null'
+        entries:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanFleetEntry"
+      additionalProperties: false
+      required:
+      - kind
+      - entries
+      title: HangarPlanRedundancy
+    HangarPlanRedundancyKindEnum:
+      type: string
+      enum:
+      - duplicate
+      - role
+      x-enumNames:
+      - DUPLICATE
+      - ROLE
+      title: HangarPlanRedundancyKindEnum
     HangarPlanResources:
       type: object
       properties:
@@ -37486,6 +37587,17 @@ components:
       - INGAME
       - BUYBACK
       title: HangarPlanStartKindEnum
+    HangarPlanSuggestions:
+      type: object
+      properties:
+        redundancies:
+          type: array
+          items:
+            "$ref": "#/components/schemas/HangarPlanRedundancy"
+      additionalProperties: false
+      required:
+      - redundancies
+      title: HangarPlanSuggestions
     HangarPlanSummary:
       type: object
       properties:

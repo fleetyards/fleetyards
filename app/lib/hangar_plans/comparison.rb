@@ -11,6 +11,10 @@ module HangarPlans
     VehicleStatus = Data.define(:vehicle, :status, :target_model)
     ModelDiff = Data.define(:model, :left_count, :right_count, :change)
     Gap = Data.define(:slot, :model, :count)
+    # One ship of the hangar once the plan is carried out: a unit of a decided
+    # slot, with the hangar ship that becomes it if one does, or a hangar ship
+    # the plan leaves as it is.
+    FleetEntry = Data.define(:model, :slot, :vehicle)
 
     def self.diff(left_models, right_models)
       left = left_models.group_by(&:id)
@@ -85,20 +89,38 @@ module HangarPlans
     # and every ship the plan neither uses nor melts, which stays. A ship left
     # out fills a unit of its own model that has no route yet, rather than being
     # counted twice.
-    private def after_models
-      @after_models ||= begin
+    def fleet
+      @fleet ||= begin
         open_units = gaps.each_with_object(Hash.new(0)) { |gap, units| units[gap.model.id] += gap.count }
         left_out = vehicles.reject { |entry| entry.status == "melted" || decided_routes.key?(entry.vehicle.id) }
-          .map { |entry| entry.vehicle.model }
+          .map(&:vehicle)
 
-        staying = left_out.reject do |model|
-          next false unless open_units[model.id].positive?
+        staying = left_out.reject do |vehicle|
+          next false unless open_units[vehicle.model_id].positive?
 
-          open_units[model.id] -= 1
+          open_units[vehicle.model_id] -= 1
           true
         end
 
-        Metrics.plan_models(plan) + staying
+        slot_entries + staying.map { |vehicle| FleetEntry.new(model: vehicle.model, slot: nil, vehicle:) }
+      end
+    end
+
+    private def after_models
+      @after_models ||= fleet.map(&:model)
+    end
+
+    # Each unit of a decided slot, by the hangar ship routed to it where one is.
+    private def slot_entries
+      by_candidate = decided_routes.values.group_by(&:hangar_plan_candidate_id)
+      vehicles_by_id = live_vehicles.index_by(&:id)
+
+      plan.slots.includes(candidates: {model: MODEL_PRELOAD}).flat_map do |slot|
+        candidate = slot.decided_candidate
+        next [] if candidate.nil?
+
+        routed = by_candidate.fetch(candidate.id, []).filter_map { |route| vehicles_by_id[route.source_vehicle_id] }
+        Array.new(slot.quantity) { |index| FleetEntry.new(model: candidate.model, slot:, vehicle: routed[index]) }
       end
     end
 

@@ -47,6 +47,7 @@ resource :hangar, only: %i[show destroy] do
     member do
       get :summary
       get :comparison
+      get :suggestions
       get "compare/:other_id", action: :compare, as: :compare
       get :drift
       put :rebase
