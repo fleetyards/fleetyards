@@ -219,7 +219,7 @@ const anyShip = () =>
   openModal(
     () =>
       import("@/frontend/components/Hangar/Planner/UpgradeTargetModal/index.vue"),
-    { ...target(), startName: props.startName },
+    { ...target(), startName: props.startName, startModel: props.startModel },
   );
 
 const editSlot = () =>

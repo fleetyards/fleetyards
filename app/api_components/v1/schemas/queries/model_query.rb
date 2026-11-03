@@ -35,6 +35,8 @@ module V1
             ingameOnlyEq: {type: :boolean},
             onSaleEq: {type: :boolean},
             playerOwnableEq: {type: :boolean},
+            ccuTarget: {type: :boolean, description: "Ships RSI sells upgrades into, today or during sales"},
+            pledgePriceGt: {type: :number},
             pledgePriceGteq: {type: :number},
             pledgePriceLteq: {type: :number},
             pledgePriceIn: {type: :array, items: {type: :number}},

@@ -152,6 +152,16 @@ class Api::V1::ModelsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models narrows to the dearer ships an upgrade can lead into" do
+    target = create(:model, pledge_price: 300, ccu_target_seen_at: 1.year.ago, created_at: 2.years.ago)
+    create(:model, pledge_price: 900, created_at: 2.years.ago)
+    create(:model, pledge_price: 100, ccu_on_sale: true)
+
+    assert_api_response :get, 200, params: {q: {"ccuTarget" => true, "pledgePriceGt" => 200}} do
+      assert_equal [target.name], parsed_body["items"].map { |item| item["name"] }
+    end
+  end
+
   test "GET /models accepts a containerFit map" do
     create_list(:model, 2)
 

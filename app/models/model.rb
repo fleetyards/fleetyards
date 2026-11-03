@@ -137,6 +137,20 @@ class Model < ApplicationRecord
 
   def ccu_into? = ccu_target_status != "none"
 
+  # The ships `ccu_into?` holds for, in SQL: the store sells them, no admin
+  # ruled them out, and an upgrade into them was seen or they are too new to
+  # tell.
+  scope :ccu_target, ->(flag = true) {
+    condition = sanitize_sql_array([<<~SQL.squish, CCU_UNKNOWN_FOR.ago])
+      models.player_ownable AND NOT models.ingame_only
+      AND models.ccu_override IS DISTINCT FROM 'none'
+      AND (models.ccu_on_sale OR models.ccu_override = 'allowed' OR models.ccu_target_seen_at IS NOT NULL
+        OR models.created_at IS NULL OR models.created_at > ?)
+    SQL
+
+    ActiveModel::Type::Boolean.new.cast(flag) ? where(condition) : where.not(condition)
+  }
+
   def ccu_out_of? = ccu_source_status != "none"
 
   # The store sells upgrades only for ships a player can pledge for there.
@@ -913,7 +927,7 @@ class Model < ApplicationRecord
   end
 
   def self.ransackable_scopes(auth_object = nil)
-    ["dimensions_drifted", "sold_at_shop", "focus_in"]
+    ["dimensions_drifted", "sold_at_shop", "focus_in", "ccu_target"]
   end
 
   # A ship offers a berth either because one is built into it or because a
