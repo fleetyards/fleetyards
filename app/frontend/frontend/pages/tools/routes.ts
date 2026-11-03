@@ -65,7 +65,9 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "tools.paintBooth",
       backgroundImage: "bg-room",
-      feature: FeatureFlagName.PAINT_BOOTH,
+      // The booth is the textured holo: without that flag it has nothing to
+      // repaint.
+      feature: [FeatureFlagName.PAINT_BOOTH, FeatureFlagName.HOLO_TEXTURED],
     },
   },
   {
