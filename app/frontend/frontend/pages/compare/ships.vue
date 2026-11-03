@@ -98,8 +98,10 @@ const remove = (slug: string) => {
     :remove-label="t('labels.compare.removeModel')"
     @remove="remove"
   >
-    <template #header>
+    <template #add>
       <CompareForm />
+    </template>
+    <template #actions>
       <CompareActions :models="models" />
     </template>
   </CompareLayout>

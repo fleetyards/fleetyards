@@ -1,16 +1,14 @@
 <script lang="ts">
 export default {
-  name: "CompareCatalogueHeader",
+  name: "CompareCatalogueAdd",
 };
 </script>
 
 <script lang="ts" setup>
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
-import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { MAX_MODELS } from "@/frontend/components/Compare/constants";
 import type { CompareCategory } from "@/frontend/components/Compare/category";
-import { useCompareShareUrl } from "@/frontend/composables/useCompareShareUrl";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import type {
@@ -24,8 +22,7 @@ type Props = {
   queryKey: keyof CompareShareInput;
   slugs: string[];
   lock?: CompareCategory<ComponentQuery | EquipmentQuery>;
-  addLabel: string;
-  shareTitle: string;
+  label: string;
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -41,8 +38,6 @@ const full = computed(() => props.slugs.length >= MAX_MODELS);
 const tooltip = computed(() =>
   full.value ? t("labels.compare.enoughItems") : undefined,
 );
-
-const shareUrl = useCompareShareUrl(props.queryKey, () => props.slugs);
 
 const showPicker = () => {
   comlink.emit("open-modal", {
@@ -62,7 +57,7 @@ const showPicker = () => {
   <!-- The tooltip hangs on the wrapper, not the button: a disabled button
        dispatches no pointer events, so the one case that has something to say is
        the one that could never say it. -->
-  <div v-tooltip="tooltip" class="compare-catalogue-header__add">
+  <div v-tooltip="tooltip" class="compare-catalogue-add">
     <Btn
       :disabled="full"
       :size="BtnSizesEnum.MD"
@@ -70,29 +65,14 @@ const showPicker = () => {
       @click="showPicker"
     >
       <i class="fa-light fa-plus" />
-      {{ addLabel }}
+      {{ label }}
     </Btn>
-  </div>
-  <div class="compare-catalogue-header__actions">
-    <ShareBtn
-      v-if="slugs.length"
-      :url="shareUrl"
-      :title="shareTitle"
-      :size="BtnSizesEnum.MD"
-      no-label
-    />
   </div>
 </template>
 
 <style lang="scss" scoped>
-.compare-catalogue-header__add,
-.compare-catalogue-header__actions {
+.compare-catalogue-add {
   display: flex;
   align-items: center;
-}
-
-.compare-catalogue-header__actions {
-  justify-content: flex-end;
-  gap: 10px;
 }
 </style>

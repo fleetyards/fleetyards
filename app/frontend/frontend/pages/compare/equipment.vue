@@ -8,7 +8,8 @@ export default {
 import Alert from "@/shared/components/base/Alert/index.vue";
 import { AlertVariantsEnum } from "@/shared/components/base/Alert/types";
 import CompareLayout from "@/frontend/components/Compare/Layout/index.vue";
-import CompareCatalogueHeader from "@/frontend/components/Compare/CatalogueHeader/index.vue";
+import CompareCatalogueAdd from "@/frontend/components/Compare/CatalogueAdd/index.vue";
+import CompareCatalogueShare from "@/frontend/components/Compare/CatalogueShare/index.vue";
 import { equipmentCompareCategory } from "@/frontend/components/Compare/category";
 import { useEquipmentSections } from "@/frontend/components/Compare/sections/equipment";
 import type { CompareColumn } from "@/frontend/components/Compare/types";
@@ -58,14 +59,20 @@ const columns = computed<CompareColumn[]>(() =>
     :remove-label="t('labels.compare.removeItem')"
     @remove="remove"
   >
-    <template #header>
-      <CompareCatalogueHeader
+    <template #add>
+      <CompareCatalogueAdd
         kind="Equipment"
         query-key="equipment"
         :slugs="slugs"
         :lock="category"
-        :add-label="t('labels.compare.selectEquipment')"
-        :share-title="t('headlines.compare.equipment')"
+        :label="t('labels.compare.selectEquipment')"
+      />
+    </template>
+    <template #actions>
+      <CompareCatalogueShare
+        query-key="equipment"
+        :slugs="slugs"
+        :title="t('headlines.compare.equipment')"
       />
     </template>
 

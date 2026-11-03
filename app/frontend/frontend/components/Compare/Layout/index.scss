@@ -1,4 +1,4 @@
-// Ship picker left, the page's key actions right.
+// What is compared and the picker left, the page's key actions right.
 .compare-header {
   display: flex;
   flex-wrap: wrap;
@@ -6,6 +6,13 @@
   justify-content: space-between;
   gap: 12px 20px;
   margin-bottom: 18px;
+}
+
+.compare-header__start {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
 }
 
 // Sits directly on the table: the view modes at the left edge where the label rail

@@ -10,6 +10,7 @@ import type { AsyncStatus } from "@/shared/components/AsyncData.types";
 import Loader from "@/shared/components/Loader/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import CompareTable from "@/frontend/components/Compare/Table/index.vue";
+import CompareKindSwitch from "@/frontend/components/Compare/KindSwitch/index.vue";
 import type {
   CompareColumn,
   CompareSection,
@@ -63,7 +64,11 @@ const baseline = computed({
   <div class="row compare-models">
     <div class="col-12">
       <div class="compare-header">
-        <slot name="header" />
+        <div class="compare-header__start">
+          <CompareKindSwitch />
+          <slot name="add" />
+        </div>
+        <slot name="actions" />
       </div>
 
       <slot name="notice" />
