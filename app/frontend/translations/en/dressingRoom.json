@@ -59,8 +59,10 @@
       },
       "armorSets": {
         "open": "Armour sets",
-        "search": "Search armour sets",
-        "noResults": "No armour set found."
+        "count": {
+          "one": "%{count} Set",
+          "other": "%{count} Sets"
+        }
       }
     }
   }

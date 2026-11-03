@@ -59,8 +59,10 @@
       },
       "armorSets": {
         "open": "Rüstungssets",
-        "search": "Rüstungssets durchsuchen",
-        "noResults": "Kein Rüstungsset gefunden."
+        "count": {
+          "one": "%{count} Set",
+          "other": "%{count} Sets"
+        }
       }
     }
   }

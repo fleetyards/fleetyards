@@ -59,8 +59,10 @@
       },
       "armorSets": {
         "open": "Set di armatura",
-        "search": "Cerca set di armatura",
-        "noResults": "Nessun set di armatura trovato."
+        "count": {
+          "one": "%{count} set",
+          "other": "%{count} set"
+        }
       }
     }
   }

@@ -59,8 +59,10 @@
       },
       "armorSets": {
         "open": "護甲套裝",
-        "search": "搜尋護甲套裝",
-        "noResults": "找不到護甲套裝。"
+        "count": {
+          "one": "%{count} 套",
+          "other": "%{count} 套"
+        }
       }
     }
   }

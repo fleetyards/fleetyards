@@ -59,8 +59,10 @@
       },
       "armorSets": {
         "open": "Conjuntos de armadura",
-        "search": "Buscar conjuntos de armadura",
-        "noResults": "No se encontró ningún conjunto de armadura."
+        "count": {
+          "one": "%{count} conjunto",
+          "other": "%{count} conjuntos"
+        }
       }
     }
   }

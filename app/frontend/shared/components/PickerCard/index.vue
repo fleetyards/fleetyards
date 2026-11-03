@@ -118,6 +118,7 @@ const accessibleName = computed(() =>
           <span v-if="subtitle" class="picker-card__subtitle">
             {{ subtitle }}
           </span>
+          <slot />
         </div>
       </div>
     </div>
