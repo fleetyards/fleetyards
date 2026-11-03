@@ -91,10 +91,14 @@ module ScData
     # on live 4.9.0 against 4.10.0, 420 components differed on it, each reading
     # only as "something inside this changed".
     #
+    # Equipment's `stats` is the same kind of tree -- every fire mode, round
+    # and tool action -- and the flat `alpha_damage` and `dps` beside it carry
+    # what a reader acts on.
+    #
     # Named rather than excluding every structured column, which would also
     # drop `EquipmentBuild#volume_dimensions` -- three numbers that a reader can
     # act on, and that is compared today.
-    STRUCTURE_FACTS = %i[type_data].freeze
+    STRUCTURE_FACTS = %i[type_data stats].freeze
 
     # What a comparison looks at. `ModelBuild` names its own list because it was
     # tuned by hand for the change log; the others derive it, so a fact added to

@@ -138,6 +138,13 @@ module ScData
 
     # `ModelBuild` tuned its own list by hand for the change log; the comparer
     # defers to it rather than deriving a second answer.
+    test ".diffable_facts leaves out equipment's stats tree but compares its headline figures" do
+      facts = ::ScData::BuildCompare.diffable_facts(EquipmentBuild)
+
+      assert_not_includes facts, :stats
+      assert_includes facts, :dps
+    end
+
     test ".diffable_facts defers to a class that names its own" do
       assert_equal ModelBuild::DIFFABLE_FACTS, ::ScData::BuildCompare.diffable_facts(ModelBuild)
     end
