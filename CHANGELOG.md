@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.35.0](https://github.com/fleetyards/fleetyards/compare/v9.34.0...v9.35.0) (2026-11-03)
+
+
+### Features
+
+* **dressing-room:** fit rules, weapons by their helpers, and holding a weapon ([#6119](https://github.com/fleetyards/fleetyards/issues/6119)) ([94716f9](https://github.com/fleetyards/fleetyards/commit/94716f9caabe6bd737cb33ec20a209eda2d49805))
+* **loadouts:** a larger holo with its controls and a full screen view ([#6126](https://github.com/fleetyards/fleetyards/issues/6126)) ([e3f8af9](https://github.com/fleetyards/fleetyards/commit/e3f8af94dae7f80cf7475862517d81c38c94c6e7))
+
+
+### Bug Fixes
+
+* **admin:** stop flagging the load balancer's address as a shared IP ([#6125](https://github.com/fleetyards/fleetyards/issues/6125)) ([bc37488](https://github.com/fleetyards/fleetyards/commit/bc37488943951be28aa16551477932e3edad69ad))
+* **loadouts:** an editor holo you can always turn, filling its frame ([#6128](https://github.com/fleetyards/fleetyards/issues/6128)) ([4366413](https://github.com/fleetyards/fleetyards/commit/4366413a8f7f7ce52cf45055393c4a69da47489c))
+* **nav:** list a signed-in reader's fleets in the fleets section ([#6127](https://github.com/fleetyards/fleetyards/issues/6127)) ([2c01669](https://github.com/fleetyards/fleetyards/commit/2c01669702c22ccd40429b6478242f5b1cf8c4a5))
+* **search:** centre the header search on the back button ([2e1ef10](https://github.com/fleetyards/fleetyards/commit/2e1ef102167dd7c9b086b90945bde7de6d1e50e9))
+
+
+### Chores
+
+* **styles:** drop a color-scheme rule that never matched ([#6122](https://github.com/fleetyards/fleetyards/issues/6122)) ([2762834](https://github.com/fleetyards/fleetyards/commit/27628348e3a73f665b6c5fa1c6e3e429eaa88cb0))
+
 ## [9.34.0](https://github.com/fleetyards/fleetyards/compare/v9.33.0...v9.34.0) (2026-11-02)
 
 
