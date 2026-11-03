@@ -64,7 +64,6 @@ Working plan for #6129. Decisions live in the issue body. Deleted before the PR 
 ## Not in scope (deferred)
 - **Comparing across categories** — rejected in the issue.
 - **A compare action on list rows** — component and equipment rows carry no action menu, so one needs a design decision first. The lists link their empty compare page from the header instead.
-- **A switcher between the three compare pages** — it would change the approved ship compare header.
 
 ## Discovery Log
 
@@ -78,3 +77,4 @@ Working plan for #6129. Decisions live in the issue body. Deleted before the PR 
 - [x] Phase 3 — Equipment compare
 - [x] Phase 4 — Share image
 - [x] Phase 5 — Routes, i18n, tests
+- [x] Compare tabs: `/compare/` is a tab page over ships, components and equipment
