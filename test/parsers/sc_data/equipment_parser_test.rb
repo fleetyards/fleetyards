@@ -476,6 +476,47 @@ module ScData
         assert parsed.fetch("vlk_spewgun_ballistic_01_mag")["hidden"]
       end
 
+      test "reads a gun's fire modes off the round its magazine names" do
+        ammo_folder = "#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/ammoparams/fps"
+        FileUtils.mkdir_p(ammo_folder)
+        File.write("#{ammo_folder}/behr_rifle_ballistic_01_ammo.xml", <<~XML)
+          <AmmoParams.behr_rifle_ballistic_01_ammo __ref="00000000-0000-0000-0000-0000000a3300" speed="550" lifetime="2">
+            <projectileParams>
+              <BulletProjectileParams>
+                <damage><DamageInfo DamagePhysical="12" DamageEnergy="0" /></damage>
+              </BulletProjectileParams>
+            </projectileParams>
+          </AmmoParams.behr_rifle_ballistic_01_ammo>
+        XML
+
+        write_attachment("behr_rifle_ballistic_01_mag", "P4-AR Magazine", sub_type: "Magazine",
+          ref: "00000000-0000-0000-0000-0000000a3301",
+          components_extra: <<~XML)
+            <SAmmoContainerComponentParams maxAmmoCount="40" maxRestockCount="3" ammoParamsRecord="00000000-0000-0000-0000-0000000a3300" />
+          XML
+        write_weapon("behr_rifle_ballistic_01", "P4-AR Rifle", components_extra: <<~XML)
+          <SCItemWeaponComponentParams ammoContainerRecord="00000000-0000-0000-0000-0000000a3301">
+            <fireActions>
+              <SWeaponActionFireRapidParams name="Rapid" localisedName="@FireMode_Rapid" fireRate="810" heatPerShot="0">
+                <launchParams>
+                  <SProjectileLauncher ammoCost="1" pelletCount="1" damageMultiplier="1">
+                    <spreadParams min="0.18" max="5" firstAttack="1.35" attack="1.25" decay="6.5" />
+                  </SProjectileLauncher>
+                </launchParams>
+              </SWeaponActionFireRapidParams>
+            </fireActions>
+          </SCItemWeaponComponentParams>
+        XML
+        @parser.translations = @parser.translations.merge("FireMode_Rapid" => "[AUTO]")
+
+        rifle = parsed.fetch("behr_rifle_ballistic_01")
+        mode = rifle.dig("stats", "fire_modes", 0)
+
+        assert_equal ["Auto", 12.0, 162.0], mode.values_at("label", "alpha", "dps")
+        assert_equal [12.0, 162.0, "40.0"], rifle.values_at("alpha_damage", "dps", "storage")
+        assert_equal({"size" => 40, "reserve" => 3}, parsed.fetch("behr_rifle_ballistic_01_mag").dig("stats", "magazine"))
+      end
+
       test "reads the spec block of a description that opens with a blank line" do
         @parser.translations = {
           "item_Name_hdh_boots_01_01_13" => "Venture Helmet",
@@ -512,9 +553,9 @@ module ScData
         name_record(key, display_name)
       end
 
-      private def write_attachment(key, display_name, sub_type:, required_tags: nil)
+      private def write_attachment(key, display_name, sub_type:, required_tags: nil, **)
         write_equipment(key, name: "@item_Name_#{key}", path: "entities/scitem/weapons/magazines",
-          type: "WeaponAttachment", sub_type:, required_tags:)
+          type: "WeaponAttachment", sub_type:, required_tags:, **)
         name_record(key, display_name)
       end
 
@@ -540,13 +581,14 @@ module ScData
       end
 
       private def write_equipment(key, name:, path: SOURCE_PATH, type: "Char_Clothing_Feet", sub_type: "UNDEFINED",
-        description: "@LOC_EMPTY", attach_extra: "", components_extra: "", required_tags: nil)
+        description: "@LOC_EMPTY", attach_extra: "", components_extra: "", required_tags: nil,
+        ref: "00000000-0000-0000-0000-00000000beef")
         folder = "#{@raw_path}/#{::ScData::Parser::BaseParser::FOUNDRY_PATH}/#{path}"
 
         FileUtils.mkdir_p(folder)
 
         File.write("#{folder}/#{key}.xml", <<~XML)
-          <EntityClassDefinition.#{key} __ref="00000000-0000-0000-0000-00000000beef">
+          <EntityClassDefinition.#{key} __ref="#{ref}">
             <Components>
               <SAttachableComponentParams>
                 <AttachDef Type="#{type}" SubType="#{sub_type}" Size="1" Grade="1" Tags="#{key}"#{%( RequiredTags="#{required_tags}") if required_tags}>

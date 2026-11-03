@@ -248,7 +248,10 @@ module ScData
       end
 
       def equipment
-        assign_families(mark_skins(load_equipment_data.filter_map { |item| parse_equipment(item) }))
+        records = load_equipment_data
+        @gear_stats = gear_stats(records)
+
+        assign_families(mark_skins(records.filter_map { |item| parse_equipment(item) }))
       end
 
       # Records that share a display name and a maker-and-type key prefix are
@@ -418,6 +421,7 @@ module ScData
         # bar a picked record, whose header would call a flare a grenade, and a
         # garment whose header rates it as armour: a jacket listed under
         # clothing reads as a jacket, not as the one "Heavy Armor" among them.
+        stats = @gear_stats&.call(values) || {}
         described_type = described[:item_type] unless worn_type == "clothing" && described[:item_type].to_s.end_with?("_armor")
         item_type = picked_item_type || described_type || carried_item_type || (item_type(segments, worn_type, slot) unless item.key?(:carried))
 
@@ -432,7 +436,7 @@ module ScData
           weapon_class: described[:weapon_class] || WEAPON_CLASSES.find { |klass| segments.include?(klass) },
           rate_of_fire: described[:rate_of_fire],
           range: described[:range],
-          storage: described[:storage],
+          storage: described[:storage] || magazine_size(attach_def, stats),
           damage_reduction: described[:damage_reduction],
           temperature_rating: described[:temperature_rating],
           radiation_protection: described[:radiation_protection],
@@ -449,6 +453,8 @@ module ScData
           required_tags: (attach_def["RequiredTags"].to_s.split.presence if attach_def["Type"] == "WeaponAttachment"),
           ports: (attachment_ports(values).presence if attach_def["Type"] == "WeaponPersonal"),
           fit: fit(attach_def, values, worn_type),
+          stats: stats.presence,
+          **ScData::Parser::GearStats.headline(stats),
           hidden: variant?(key),
           **occupancy(attach_def)
         }
@@ -470,6 +476,42 @@ module ScData
           required_tags: attach_def["RequiredTags"].to_s.split.presence,
           ports: (worn_ports(values).presence if worn_type)
         }.compact
+      end
+
+      # A weapon's or a magazine's capacity, where the description states none.
+      private def magazine_size(attach_def, stats)
+        stats.dig(:magazine, :size)&.to_d if %w[WeaponPersonal WeaponAttachment].include?(attach_def["Type"])
+      end
+
+      # What the stats read alongside a record: the round a magazine names,
+      # the magazine a gun names, what a pen's contents do and how a blade
+      # strikes. The magazines and blade configs are among the records loaded
+      # here already; the rounds and consumable effects have folders of their
+      # own.
+      private def gear_stats(records)
+        by_ref = records.filter_map { |item| [item[:values]["__ref"], item[:values]] if item[:values].is_a?(Hash) }.to_h
+
+        ScData::Parser::GearStats.new(
+          ammo_params: Dir.glob("#{import_path}/ammoparams/**/*.xml").to_h do |file|
+            values = Hash.from_xml(File.read(file)).values.first
+            [values["__ref"], values]
+          end,
+          ammo_containers: by_ref.transform_values { |values| values.dig("Components", "SAmmoContainerComponentParams") }.compact,
+          consumable_subtypes:,
+          melee_configs: by_ref.select { |_, values| values.is_a?(Hash) && values.key?("attackCategoryParams") },
+          translate: ->(key) { localize(key) || translate(key) }
+        )
+      end
+
+      CONSUMABLE_TYPES_PATH = "consumabletypesdatabase/consumabletypes.records.xml"
+
+      private def consumable_subtypes
+        path = "#{import_path}/#{CONSUMABLE_TYPES_PATH}"
+        return {} unless File.exist?(path)
+
+        Hash.from_xml(File.read(path)).values.first.values.flat_map { |value| Array.wrap(value) }
+          .select { |value| value.is_a?(Hash) && value.key?("effectsPerMicroSCU") }
+          .index_by { |value| value["__ref"] }
       end
 
       FIT_PORT_TYPE = /\A(Char_Armor_|WeaponPersonal\z)/
