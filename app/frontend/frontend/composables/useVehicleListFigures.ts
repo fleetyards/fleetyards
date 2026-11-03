@@ -1,4 +1,5 @@
-import type { Vehicle, VehiclePublic } from "@/services/fyApi";
+import type { HangarQuery, Vehicle, VehiclePublic } from "@/services/fyApi";
+import { HangarSortFieldsEnum } from "@/frontend/stores/hangar";
 import type { MetricRow } from "@/shared/composables/useModelMetricRows";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useVehicleFirepower } from "@/frontend/composables/useVehicleFirepower";
@@ -6,15 +7,20 @@ import { formatWeaponSizes } from "@/frontend/utils/weaponSizes";
 
 // The list's figures a card's details otherwise leave out, named as the list
 // view's columns and sorts name them.
-export enum VehicleListFigureEnum {
-  WEAPONS = "maxWeaponSize",
-  ALPHA = "alpha",
-  BURST_DPS = "burstDps",
-  SUSTAINED_DPS = "sustainedDpsMax",
-  PLEDGE_PRICE = "modelPledgePrice",
-}
+// A const object rather than an enum: an enum whose members reference another
+// enum gets reverse mappings, so Object.values would hand back its keys too.
+export const VehicleListFigureEnum = {
+  WEAPONS: HangarSortFieldsEnum.WEAPONS,
+  ALPHA: HangarSortFieldsEnum.ALPHA,
+  BURST_DPS: HangarSortFieldsEnum.BURST_DPS,
+  SUSTAINED_DPS: HangarSortFieldsEnum.SUSTAINED_DPS,
+  PLEDGE_PRICE: HangarSortFieldsEnum.PLEDGE_PRICE,
+} as const;
 
-const FILTER_KEYS: Record<VehicleListFigureEnum, string[]> = {
+export type VehicleListFigureEnum =
+  (typeof VehicleListFigureEnum)[keyof typeof VehicleListFigureEnum];
+
+const FILTER_KEYS: Record<VehicleListFigureEnum, (keyof HangarQuery)[]> = {
   [VehicleListFigureEnum.WEAPONS]: ["maxWeaponSizeGteq", "maxWeaponSizeLteq"],
   [VehicleListFigureEnum.ALPHA]: ["alphaGteq", "alphaLteq"],
   [VehicleListFigureEnum.BURST_DPS]: ["burstDpsGteq", "burstDpsLteq"],
@@ -70,9 +76,7 @@ export const useVehicleFigureRows = () => {
       case VehicleListFigureEnum.SUSTAINED_DPS:
         return sustainedRange(vehicle);
       case VehicleListFigureEnum.PLEDGE_PRICE:
-        return vehicle.model.pledgePrice == null
-          ? ""
-          : toDollar(vehicle.model.pledgePrice);
+        return toDollar(vehicle.model.pledgePrice);
     }
   };
 

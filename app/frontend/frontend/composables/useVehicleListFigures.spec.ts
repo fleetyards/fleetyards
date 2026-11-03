@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 
 const route = reactive<{ query: Record<string, unknown> }>({ query: {} });
 
@@ -62,13 +62,12 @@ describe("useVehicleListFigures", () => {
   });
 
   it("follows the sort as it changes", () => {
-    let sort = "maxWeaponSize desc";
-    const figures = useVehicleListFigures(() => sort);
+    const sort = ref("maxWeaponSize desc");
+    const figures = useVehicleListFigures(() => sort.value);
 
     expect(figures.value).toEqual([VehicleListFigureEnum.WEAPONS]);
 
-    sort = "sustainedDpsMax desc";
-    route.query = { s: sort };
+    sort.value = "sustainedDpsMax desc";
 
     expect(figures.value).toEqual([VehicleListFigureEnum.SUSTAINED_DPS]);
   });

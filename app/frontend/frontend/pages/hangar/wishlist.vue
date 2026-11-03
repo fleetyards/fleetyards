@@ -61,14 +61,15 @@ const route = useRoute();
 
 // The chips picked in the display options, plus whichever sort the list is in
 // right now so the toolbar never hides the one that is chosen.
-const sortFields = useWishlistSortFields({
-  include: () =>
-    typeof route.query.s === "string" ? route.query.s : undefined,
-});
-
-const listFigures = useVehicleListFigures(() =>
+const activeSort = computed(() =>
   typeof route.query.s === "string" ? route.query.s : undefined,
 );
+
+const sortFields = useWishlistSortFields({
+  include: () => activeSort.value,
+});
+
+const listFigures = useVehicleListFigures(() => activeSort.value);
 
 // Shared by the table's row boxes and the toolbar's select-all box and bulk
 // actions above it.
