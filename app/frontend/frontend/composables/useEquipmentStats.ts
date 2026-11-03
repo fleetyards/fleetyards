@@ -2,7 +2,7 @@ import { EquipmentTypeEnum, type Equipment } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type HardpointStat } from "@/frontend/composables/useHardpointStats";
 
-type StatKey =
+export type EquipmentStatKey =
   | "damageReduction"
   | "temperatureRating"
   | "radiationProtection"
@@ -21,7 +21,10 @@ type StatKey =
 // order. Armour, an undersuit and a rifle share almost nothing, so one fixed
 // list would put a rate of fire on a jacket's page. The columns are flat on the
 // payload, so each entry is a field to read rather than a shape to parse.
-const VOCABULARY: Record<string, { primary: StatKey[]; rest: StatKey[] }> = {
+const VOCABULARY: Record<
+  string,
+  { primary: EquipmentStatKey[]; rest: EquipmentStatKey[] }
+> = {
   [EquipmentTypeEnum.ARMOR]: {
     primary: ["damageReduction", "temperatureRating"],
     rest: [
@@ -65,16 +68,16 @@ const VOCABULARY: Record<string, { primary: StatKey[]; rest: StatKey[] }> = {
 };
 
 // Tools, medical items and hacking tools carry nothing but their volume.
-const FALLBACK = { primary: [] as StatKey[], rest: ["volume"] as StatKey[] };
+const FALLBACK = {
+  primary: [] as EquipmentStatKey[],
+  rest: ["volume"] as EquipmentStatKey[],
+};
 
-/**
- * Every figure the site holds for one equipment item, labelled and ordered for
- * its type, with the one or two it leads with marked `primary` -- the same
- * shape `useComponentStats` hands the metrics card and the row.
- */
-export const useEquipmentStats = (
-  equipment: MaybeRefOrGetter<Equipment | undefined>,
-) => {
+export const equipmentVocabulary = (equipmentType?: string | null) =>
+  VOCABULARY[equipmentType ?? ""] ?? FALLBACK;
+
+// One figure of an item, formatted, and the number behind it where there is one.
+export const useEquipmentStatReader = () => {
   const { t, toNumber } = useI18n();
 
   // A figure the build does not carry is left out rather than printed as "N/A"
@@ -88,7 +91,7 @@ export const useEquipmentStats = (
     return units ? t(`number.${units}`, { count: 0 }) : "0";
   };
 
-  const read = (item: Equipment, key: StatKey): string | undefined => {
+  const read = (item: Equipment, key: EquipmentStatKey): string | undefined => {
     switch (key) {
       case "damageReduction":
         return figure(item.damageReduction, "percent");
@@ -126,13 +129,51 @@ export const useEquipmentStats = (
     }
   };
 
+  const raw = (item: Equipment, key: EquipmentStatKey): number | undefined => {
+    switch (key) {
+      case "damageReduction":
+        return item.damageReduction ?? undefined;
+      case "radiationProtection":
+        return item.radiationProtection ?? undefined;
+      case "radiationScrubRate":
+        return item.radiationScrubRate ?? undefined;
+      case "gForceTolerance":
+        return item.gForceTolerance ?? undefined;
+      case "carryingCapacity":
+      case "magazineSize":
+        return item.storage ?? undefined;
+      case "rateOfFire":
+        return item.rateOfFire ?? undefined;
+      case "range":
+        return item.range ?? undefined;
+      case "volume":
+        return item.volume ?? undefined;
+      default:
+        return undefined;
+    }
+  };
+
+  return { read, raw };
+};
+
+/**
+ * Every figure the site holds for one equipment item, labelled and ordered for
+ * its type, with the one or two it leads with marked `primary` -- the same
+ * shape `useComponentStats` hands the metrics card and the row.
+ */
+export const useEquipmentStats = (
+  equipment: MaybeRefOrGetter<Equipment | undefined>,
+) => {
+  const { t } = useI18n();
+  const { read } = useEquipmentStatReader();
+
   return computed<HardpointStat[]>(() => {
     const item = toValue(equipment);
     if (!item) return [];
 
-    const vocabulary = VOCABULARY[item.equipmentType ?? ""] ?? FALLBACK;
+    const vocabulary = equipmentVocabulary(item.equipmentType);
 
-    const build = (keys: StatKey[], primary: boolean) =>
+    const build = (keys: EquipmentStatKey[], primary: boolean) =>
       keys.flatMap((key) => {
         const value = read(item, key);
         if (!value) return [];
