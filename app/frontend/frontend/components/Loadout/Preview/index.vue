@@ -53,6 +53,12 @@ const emit = defineEmits<{
 const ANGLED_AZIMUTH = -135;
 const ANGLED_ELEVATION = 35;
 
+// The editor's backdrop fades in over the left of its frame, under the
+// controls (LoadoutModal's mask): the ship is fitted beside them, and needs
+// little room besides.
+const BACKDROP_INSET = 0.45;
+const BACKDROP_PADDING = 1.1;
+
 // The inline holo's own low look, framed to the ship rather than to the
 // circle it turns through, so a larger box shows a larger ship.
 const INLINE_ELEVATION = 6;
@@ -151,6 +157,8 @@ onBeforeUnmount(() => {
       :elevation="ANGLED_ELEVATION"
       :controllable="interactive"
       :zoomable="interactive && zoomable"
+      :contain-inset="BACKDROP_INSET"
+      :contain-padding="BACKDROP_PADDING"
       contain
       hologram
       on-demand

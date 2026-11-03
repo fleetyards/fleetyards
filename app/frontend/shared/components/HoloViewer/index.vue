@@ -114,6 +114,9 @@ type Props = {
   turntable?: boolean;
   // Room left around a contained model, as a factor of its fitted distance.
   containPadding?: number;
+  // The share of the frame's width on the left that something covers: a
+  // contained model is fitted to the rest and centred in it, until full screen.
+  containInset?: number;
   // Stood in a lit room with a glossy floor rather than in an empty frame.
   backdrop?: boolean;
 };
@@ -136,6 +139,7 @@ const props = withDefaults(defineProps<Props>(), {
   pickable: false,
   turntable: false,
   containPadding: 1.35,
+  containInset: 0,
   backdrop: false,
 });
 
@@ -449,6 +453,8 @@ const canvas = ref<{
 // The camera as the controls left it, so a refit can keep the view.
 let liveCamera: PerspectiveCamera | undefined;
 
+const cameraRef = shallowRef<PerspectiveCamera>();
+
 // The orbit controls move the camera without asking for a frame. Each change
 // asks for the next one, so a drag, its easing out and an auto-rotation all
 // keep drawing, and a camera at rest draws nothing.
@@ -571,6 +577,21 @@ const handleModelLoaded = (size: Vector3, scene: Object3D) => {
   frameModel(size, scene);
 };
 
+// Shifts what the camera shows to the right, so the model it faces sits in the
+// middle of the part of the frame left uncovered.
+const offsetView = (inset: number) => {
+  const camera = cameraRef.value;
+  const frame = holoViewer.value;
+  if (!camera || !frame) return;
+
+  if (inset > 0 && frame.clientWidth && frame.clientHeight) {
+    const { clientWidth: width, clientHeight: height } = frame;
+    camera.setViewOffset(width, height, (-inset * width) / 2, 0, width, height);
+  } else {
+    camera.clearViewOffset();
+  }
+};
+
 // `keepView` scales the camera's distance to the new fit along the way it
 // faces now, rather than putting it back in the pose.
 const frameModel = (size: Vector3, scene: Object3D, keepView = false) => {
@@ -612,7 +633,9 @@ const frameModel = (size: Vector3, scene: Object3D, keepView = false) => {
       frame && frame.clientHeight ? frame.clientWidth / frame.clientHeight : 1;
     const elevation = ((props.elevation ?? 0) * Math.PI) / 180;
     const tanVertical = Math.tan(fovRadians / 2);
-    const tanHorizontal = tanVertical * frameAspect;
+    const inset = internalFullscreen.value ? 0 : props.containInset;
+    const tanHorizontal = tanVertical * frameAspect * (1 - inset);
+    offsetView(inset);
 
     // The camera's axes, looking at the centred model from the pose.
     const toCamera = new Vector3(
@@ -656,8 +679,7 @@ const frameModel = (size: Vector3, scene: Object3D, keepView = false) => {
         );
       }
     });
-    // Room around it: a frame rarely shows its edges whole, the editor's fades
-    // in from the left under the controls.
+    // Room around it: a frame rarely shows its edges whole.
     reach *= props.containPadding;
 
     const previousReach = fitDistance.value;
@@ -895,6 +917,7 @@ defineExpose({
            is copied over, and the orbit controls, keyed by that uuid, come back
            without their change listener, so the light stops following. -->
       <TresPerspectiveCamera
+        ref="cameraRef"
         :position="cameraPosition"
         :fov="CAMERA_FOV"
         :near="cameraNear"
