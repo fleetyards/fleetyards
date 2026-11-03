@@ -48,9 +48,11 @@ module Overlay
     # last two would also change the hash without the data changing.
     NESTED_META_KEYS = %w[id signedId media storeImage description createdAt updatedAt availability links].freeze
 
-    # The order the site search picks a ship's picture in: an angled render is a
-    # cut-out, which reads at list size where the store image does not.
-    SHIP_IMAGES = ::Model::PREVIEW_VIEWS.map { |name| name.to_s.camelize(:lower) }.freeze
+    # Each kind is pictured as the site search pictures it, by the first of these
+    # `media` entries it has.
+    IMAGE_KEYS = {"component" => "component", "equipment" => "equipment", "model" => "ship"}.to_h do |kind, search_type|
+      [kind, ::Catalogue::Search::IMAGES.fetch(search_type).map { |name| name.to_s.camelize(:lower) }]
+    end.freeze
 
     Result = Data.define(:manifest, :items_gzip, :file_name) do
       def sha256 = manifest[:sha256]
@@ -115,7 +117,6 @@ module Overlay
             sub_type: payload["subType"],
             size: payload["size"],
             grade: payload["gradeLabel"].presence || payload["grade"],
-            image: payload.dig("media", "storeImage"),
             url: "#{FRONTEND_ENDPOINT}/components/#{component.slug}")
         end
     end
@@ -133,7 +134,6 @@ module Overlay
             sub_type: payload["subType"],
             size: payload["size"],
             grade: payload["grade"],
-            image: [payload.dig("media", "storeImage"), payload["storeImage"]].find { |file| file?(file) },
             url: "#{FRONTEND_ENDPOINT}/equipment/#{equipment.slug}")
         end
     end
@@ -149,13 +149,13 @@ module Overlay
             category: payload["classification"],
             type_label: payload["classificationLabel"],
             size: payload.dig("metrics", "size"),
-            image: SHIP_IMAGES.map { |key| payload.dig("media", key) }.find { |file| file?(file) },
             url: "#{FRONTEND_ENDPOINT}/ships/#{model.slug}")
         end
     end
 
-    private def item(kind, payload, sc_key: payload["scKey"], category: nil, type: nil, type_label: nil, sub_type: nil, size: nil, grade: nil, image: nil, url: nil)
+    private def item(kind, payload, sc_key: payload["scKey"], category: nil, type: nil, type_label: nil, sub_type: nil, size: nil, grade: nil, url: nil)
       manufacturer = payload["manufacturer"]
+      image = IMAGE_KEYS.fetch(kind).map { |key| payload.dig("media", key) }.find { |file| file?(file) }
 
       {
         "kind" => kind,

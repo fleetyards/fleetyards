@@ -84,6 +84,32 @@ module Overlay
       assert_not_equal ship["image"], ship["thumb"]
     end
 
+    test "a ship without a coloured render takes the plain one over its store image" do
+      @ship.store_image.attach(io: file_fixture("ship.jpg").open, filename: "ship.jpg", content_type: "image/jpeg")
+      @ship.angled_view.attach(io: file_fixture("test.png").open, filename: "angled.png", content_type: "image/png")
+
+      ship = item("model", @ship.slug)
+
+      assert_includes ship["image"], @ship.angled_view.blob.signed_id
+      assert_includes ship["thumb"], @ship.angled_view.blob.signed_id
+    end
+
+    test "an item is pictured by its angled render over its store image" do
+      [@weapon, @armor].each do |record|
+        record.store_image.attach(io: file_fixture("image.jpg").open, filename: "store.jpg", content_type: "image/jpeg")
+        record.angled_view.attach(io: file_fixture("test.png").open, filename: "angled.png", content_type: "image/png")
+      end
+
+      result = build
+
+      [["component", @weapon], ["equipment", @armor]].each do |kind, record|
+        entry = item(kind, record.slug, result)
+
+        assert_includes entry["image"], record.angled_view.blob.signed_id
+        assert_includes entry["thumb"], record.angled_view.blob.signed_id
+      end
+    end
+
     test "a ship without renders falls back to its store image" do
       @ship.store_image.attach(io: file_fixture("ship.jpg").open, filename: "ship.jpg", content_type: "image/jpeg")
 
