@@ -15,6 +15,8 @@ type FrontendSimpleRoutes =
   | "impressum"
   | "privacy-policy"
   | "compare"
+  | "compare-components"
+  | "compare-equipment"
   | "stats"
   | "fleets"
   | "images"

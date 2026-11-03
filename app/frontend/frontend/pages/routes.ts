@@ -94,6 +94,24 @@ export const routes: RouteRecordRaw[] = [
     },
   },
   {
+    path: "/compare/components/",
+    name: "compare-components",
+    component: () => import("@/frontend/pages/compare/components.vue"),
+    meta: {
+      title: "compare.components",
+      nav: "main",
+    },
+  },
+  {
+    path: "/compare/equipment/",
+    name: "compare-equipment",
+    component: () => import("@/frontend/pages/compare/equipment.vue"),
+    meta: {
+      title: "compare.equipment",
+      nav: "main",
+    },
+  },
+  {
     // Every catalogue lives under this one path, so the section reads as a
     // section in the URL as well as the nav. `/catalogue` itself lands on the
     // first tenant in `CATALOGUE_TENANTS`, and the tenants' own paths are built

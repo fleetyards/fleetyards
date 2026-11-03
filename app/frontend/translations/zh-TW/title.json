@@ -176,7 +176,9 @@
         "friends": "好友"
       },
       "compare": {
-        "ships": "比較艦船"
+        "ships": "比較艦船",
+        "components": "比較組件",
+        "equipment": "比較裝備"
       },
       "notFound": "404",
       "tools": {
