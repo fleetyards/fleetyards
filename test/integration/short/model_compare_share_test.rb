@@ -24,6 +24,17 @@ class Short::ModelCompareShareTest < ActionDispatch::IntegrationTest
     assert_includes response.location, "drake-cutlass-black"
   end
 
+  test "redirects a component short_code to the component compare page" do
+    create(:component).update_columns(slug: "behr-shield")
+    CompareImage.create!(kind: "components", slug_set: "behr-shield", share_key: "behr-shield", short_code: "comp1234")
+
+    get "/c/comp1234"
+
+    assert_response :found
+    assert_includes response.location, "/compare/components"
+    assert_includes response.location, "behr-shield"
+  end
+
   test "redirects unknown short_codes to the bare compare page" do
     get "/c/zzzzzzzz"
 

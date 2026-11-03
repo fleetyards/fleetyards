@@ -167,6 +167,7 @@ export const SHIPS_ITEMS: NavEntry[] = [
     route: "compare",
     labelKey: "nav.compare.index",
     icon: "fa-duotone fa-code-compare",
+    activeRoutes: ["compare-components", "compare-equipment"],
   },
   {
     key: "images",

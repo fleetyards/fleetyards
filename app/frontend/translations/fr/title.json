@@ -176,7 +176,9 @@
         "friends": "Amis"
       },
       "compare": {
-        "ships": "Comparer les vaisseaux"
+        "ships": "Comparer les vaisseaux",
+        "components": "Comparer les composants",
+        "equipment": "Comparer l’équipement"
       },
       "notFound": "404",
       "tools": {

@@ -44,7 +44,14 @@
       "compare": {
         "ships": {
           "info": "Per iniziare a selezionare almeno due e non più di otto Navi che si desiderano confrontare."
-        }
+        },
+        "components": {
+          "info": "Seleziona fino a otto componenti della stessa categoria, come scudi o motori quantici, per confrontarli fianco a fianco."
+        },
+        "equipment": {
+          "info": "Seleziona fino a otto pezzi di equipaggiamento dello stesso tipo, come fucili o caschi, per confrontarli fianco a fianco."
+        },
+        "dropped": "Rimosso %{items}: questo confronto contiene una sola categoria, %{category}."
       },
       "fleets": {
         "leaveInfo": "Non puoi lasciare una flotta come amministratore.",

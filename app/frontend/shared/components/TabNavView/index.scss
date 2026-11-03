@@ -319,6 +319,15 @@ $nav-transition-speed: 0.35s;
   margin-bottom: 20px;
 }
 
+.tab-nav-horizontal--inline > .tabs.tabs--horizontal {
+  margin: 0;
+  box-shadow: none;
+}
+
+.tab-nav-horizontal--inline > .tab-nav-horizontal__dropdown {
+  margin-bottom: 0;
+}
+
 @media (max-width: $desktop-breakpoint) {
   .tabs-wrapper {
     margin-bottom: 20px;

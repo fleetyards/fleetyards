@@ -13,6 +13,8 @@ en:
     server_error: 500
     unprocessable_entity: 422
     frontend:
+      compare_components: Compare Components
+      compare_equipment: Compare Equipment
       compare_ships: Compare Ships
       confirm: Confirm Account
       cookie-policy: Cookie Policy

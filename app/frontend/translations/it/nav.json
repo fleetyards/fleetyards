@@ -10,7 +10,10 @@
         "index": "Navi"
       },
       "compare": {
-        "index": "Confronta"
+        "index": "Confronta",
+        "ships": "Navi",
+        "components": "Componenti",
+        "equipment": "Equipaggiamento"
       },
       "manufacturers": "Produttori",
       "images": "Immagini",

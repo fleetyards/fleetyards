@@ -44,7 +44,14 @@
       "compare": {
         "ships": {
           "info": "To start select at least two and not more than eight Ships you want to compare."
-        }
+        },
+        "components": {
+          "info": "选择最多八个同一类别的组件（例如护盾或量子引擎）进行并排比较。"
+        },
+        "equipment": {
+          "info": "选择最多八件同一类型的装备（例如步枪或头盔）进行并排比较。"
+        },
+        "dropped": "已移除 %{items}：此比较只包含一个类别，%{category}。"
       },
       "fleets": {
         "leaveInfo": "You can not leave a Fleet as an Admin.",

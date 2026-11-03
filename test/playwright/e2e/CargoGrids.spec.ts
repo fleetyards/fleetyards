@@ -152,7 +152,7 @@ test.describe("Cargo Grids", () => {
 
     await expect(
       page.getByTestId("model-picker-card-drak-caterpillar"),
-    ).toHaveClass(/model-card--disabled/);
+    ).toHaveClass(/picker-card--disabled/);
   });
 
   test("Offers only ships the typed load fits into", async ({ page }) => {

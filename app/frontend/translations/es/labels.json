@@ -578,7 +578,24 @@
           "better": "supera la referencia",
           "worse": "por detrás de ella"
         },
-        "selectShips": "Seleccionar naves"
+        "selectShips": "Seleccionar naves",
+        "componentCount": {
+          "one": "%{count} componente",
+          "other": "%{count} componentes"
+        },
+        "equipmentCount": {
+          "one": "%{count} objeto",
+          "other": "%{count} objetos"
+        },
+        "remaining": {
+          "one": "Se puede añadir %{count} más",
+          "other": "Se pueden añadir %{count} más"
+        },
+        "removeItem": "Quitar",
+        "selectComponents": "Seleccionar componentes",
+        "selectEquipment": "Seleccionar equipo",
+        "enoughItems": "Una comparación admite como máximo 8 elementos.",
+        "onlyCategory": "Categoría: %{category}"
       },
       "au": "AU",
       "uec": "aUEC",

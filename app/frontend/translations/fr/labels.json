@@ -578,7 +578,24 @@
           "better": "dépasse la référence",
           "worse": "en dessous"
         },
-        "selectShips": "Sélectionner des vaisseaux"
+        "selectShips": "Sélectionner des vaisseaux",
+        "componentCount": {
+          "one": "%{count} composant",
+          "other": "%{count} composants"
+        },
+        "equipmentCount": {
+          "one": "%{count} objet",
+          "other": "%{count} objets"
+        },
+        "remaining": {
+          "one": "Encore %{count} peut être ajouté",
+          "other": "Encore %{count} peuvent être ajoutés"
+        },
+        "removeItem": "Retirer",
+        "selectComponents": "Sélectionner des composants",
+        "selectEquipment": "Sélectionner de l’équipement",
+        "enoughItems": "Une comparaison contient au plus 8 éléments.",
+        "onlyCategory": "Catégorie : %{category}"
       },
       "au": "AU",
       "uec": "aUEC",

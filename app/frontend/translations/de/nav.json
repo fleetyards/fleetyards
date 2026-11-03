@@ -10,7 +10,10 @@
         "index": "Schiffe"
       },
       "compare": {
-        "index": "Vergleichen"
+        "index": "Vergleichen",
+        "ships": "Schiffe",
+        "components": "Komponenten",
+        "equipment": "Ausrüstung"
       },
       "manufacturers": "Hersteller",
       "images": "Bilder",

@@ -1,0 +1,96 @@
+import type { CompareDirection } from "@/frontend/components/Compare/highlights";
+
+// Which way is better for a component figure, keyed by the `labels.hardpoint`
+// key the stat builder tags it with. A figure missing from both lists is never
+// marked: a gun's fire rate or a radar's sensitivity trades against something
+// else, and a winner there would be an opinion the data does not support.
+const HIGHER: ReadonlySet<string> = new Set([
+  "armor.hp",
+  "coolers.coolingRate",
+  "countermeasureStats.duration",
+  "emp.distortionDamage",
+  "emp.radius",
+  "flightControllers.boostCapacity",
+  "flightControllers.boostRegen",
+  "flightControllers.boostSpeed",
+  "flightControllers.boostedRotation",
+  "flightControllers.navSpeed",
+  "flightControllers.rotation",
+  "flightControllers.scmSpeed",
+  "jumpDrives.alignRate",
+  "jumpDrives.exitSpeed",
+  "jumpDrives.fuelEfficiency",
+  "jumpDrives.maxTunnelSpeed",
+  "jumpDrives.tuneRate",
+  "lifeSupport.output",
+  "mining.extractionPower",
+  "mining.fracturePower",
+  "mining.moduleSlots",
+  "mining.range",
+  "missiles.damage",
+  "missiles.lockRange",
+  "missiles.range",
+  "missiles.speed",
+  "powerPlants.output",
+  "quantumDrives.calibrationRate",
+  "quantumDrives.range",
+  "quantumDrives.speed",
+  "quantumDrives.splineSpeed",
+  "quantumEnforcement.jammerRange",
+  "quantumEnforcement.pulseRadius",
+  "refuelBoom.fuelFlowRate",
+  "refuelBoom.quantumFuelFlowRate",
+  "salvage.extractionEfficiency",
+  "shields.hp",
+  "turrets.turnRate",
+  "utility.capacity",
+  "weapons.ammo",
+  "weapons.burstDps",
+  "weapons.efficiency",
+  "weapons.magazineDamage",
+  "weapons.penetration",
+  "weapons.pool",
+  "weapons.range",
+  "weapons.speed",
+]);
+
+const LOWER: ReadonlySet<string> = new Set([
+  "controllers.launchCooldown",
+  "controllers.reconfigurationCooldown",
+  "emp.chargeTime",
+  "emp.cooldownTime",
+  "flightControllers.boostRegenDelay",
+  "jumpDrives.alignDecay",
+  "jumpDrives.respoolTime",
+  "jumpDrives.tuneDecay",
+  "missiles.lockTime",
+  "powerConsumption",
+  "quantumDrives.cooldownTime",
+  "quantumDrives.fuelConsumption",
+  "quantumDrives.jumpHeat",
+  "quantumDrives.splineCooldownTime",
+  "quantumDrives.splineSpoolUpTime",
+  "quantumDrives.spoolUpTime",
+  "quantumEnforcement.chargeTime",
+  "quantumEnforcement.cooldownTime",
+  "salvage.fillTime",
+  "shields.damagedRegenDelay",
+  "shields.downedRegenDelay",
+  "shields.regenTime",
+  "signatureEm",
+  "signatureIr",
+  "thrusters.fuelBurn",
+  "weapons.costPerShot",
+  "weapons.heatPerSecond",
+  "weapons.heatPerShot",
+  "weapons.spread",
+  "weapons.spreadFirstShot",
+  "weapons.spreadPerShot",
+]);
+
+export const statDirection = (key: string): CompareDirection | undefined => {
+  if (HIGHER.has(key)) return "higher";
+  if (LOWER.has(key)) return "lower";
+
+  return undefined;
+};

@@ -1,4 +1,5 @@
 import type { RouteRecordRaw } from "vue-router";
+import { routes as compareRoutes } from "@/frontend/pages/compare/routes";
 import { routes as fleetsRoutes } from "@/frontend/pages/fleets/routes";
 import { routes as hangarRoutes } from "@/frontend/pages/hangar/routes";
 import { routes as locationsRoutes } from "@/frontend/pages/locations/routes";
@@ -86,10 +87,9 @@ export const routes: RouteRecordRaw[] = [
   },
   {
     path: "/compare/",
-    name: "compare",
     component: () => import("@/frontend/pages/compare.vue"),
+    children: compareRoutes,
     meta: {
-      title: "compare.ships",
       nav: "main",
     },
   },

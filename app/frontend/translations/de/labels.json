@@ -578,7 +578,24 @@
           "better": "besser als die Referenz",
           "worse": "schlechter"
         },
-        "selectShips": "Schiffe auswählen"
+        "selectShips": "Schiffe auswählen",
+        "componentCount": {
+          "one": "%{count} Komponente",
+          "other": "%{count} Komponenten"
+        },
+        "equipmentCount": {
+          "one": "%{count} Gegenstand",
+          "other": "%{count} Gegenstände"
+        },
+        "remaining": {
+          "one": "%{count} weiterer kann hinzugefügt werden",
+          "other": "%{count} weitere können hinzugefügt werden"
+        },
+        "removeItem": "Entfernen",
+        "selectComponents": "Komponenten auswählen",
+        "selectEquipment": "Ausrüstung auswählen",
+        "enoughItems": "Mehr als 8 Einträge fasst ein Vergleich nicht.",
+        "onlyCategory": "Kategorie: %{category}"
       },
       "au": "AU",
       "uec": "aUEC",

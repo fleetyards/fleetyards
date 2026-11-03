@@ -19,3 +19,9 @@ it:
       hangar:
         import:
           no_data: Nessun dato trovato nel file di importazione
+      compare:
+        share:
+          empty: "Nessun elemento indicato per il link di condivisione"
+          too_many: "Un link di condivisione supporta al massimo %{max} elementi"
+          unknown_models: "Nessuno degli elementi indicati è stato trovato"
+          mixed: "Un link di condivisione confronta un solo tipo: navi, componenti o equipaggiamento"

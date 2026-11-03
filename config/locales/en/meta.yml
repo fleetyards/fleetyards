@@ -3,6 +3,14 @@ en:
     plaque_tool:
       description: "Give any Star Citizen ship a dedication plaque, like the one CIG hung for The Only Constant, and share it as a picture."
     admin_description: FleetYards.net Command App.
+    compare_components:
+      description:
+        default: Compare ship components side by side.
+        vs: Compare %{items}.
+    compare_equipment:
+      description:
+        default: Compare equipment side by side.
+        vs: Compare %{items}.
     compare_ships:
       description:
         default: Compare your favorite Ships.
