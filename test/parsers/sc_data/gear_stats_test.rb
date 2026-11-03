@@ -19,7 +19,8 @@ module ScData
         mode = stats[:fire_modes].sole
 
         assert_equal ["burst", 900.0, 3, 0.25, 21.0, 140.0], mode.values_at(:kind, :fire_rate, :shots, :cooldown, :alpha, :dps)
-        assert_equal [2.56, 38], mode.values_at(:time_to_overheat, :shots_to_overheat)
+        # 6.67 shots a second once the cooldown between bursts is counted.
+        assert_equal [6.38, 42], mode.values_at(:time_to_overheat, :shots_to_overheat)
         assert_equal({min: 0.05, max: 2.41, first_attack: 1.21, attack: 1.03, decay: 5.0}, mode[:spread])
         assert_equal({size: 45, reserve: 3}, stats[:magazine])
         assert_equal "Burst", mode[:label]
@@ -69,6 +70,39 @@ module ScData
 
         assert_equal [700.0, 154.74], burst.values_at(:fire_rate, :dps)
         assert_equal [375.0, 131.25], single.values_at(:fire_rate, :dps)
+      end
+
+      test "counts each step of a sequence at its own damage" do
+        rounds = {ROUND => round(physical: 10), SLUG => round(physical: 80)}
+        stats = stats_for(weapon(<<~XML, primary: SLUG, secondary: ROUND), rounds:)
+          <SWeaponActionSequenceParams name="Mixed" mode="Looping">
+            <sequenceEntries>
+              <SWeaponSequenceEntryParams delay="60" unit="RPM" repetitions="1">
+                <weaponAction><SWeaponActionFireSingleParams name="Slug" fireRate="600">#{launcher(type: "Primary")}</SWeaponActionFireSingleParams></weaponAction>
+              </SWeaponSequenceEntryParams>
+              <SWeaponSequenceEntryParams delay="60" unit="RPM" repetitions="1">
+                <weaponAction><SWeaponActionFireSingleParams name="Buck" fireRate="600">#{launcher(type: "Secondary", pellets: 8)}</SWeaponActionFireSingleParams></weaponAction>
+              </SWeaponSequenceEntryParams>
+            </sequenceEntries>
+          </SWeaponActionSequenceParams>
+        XML
+
+        assert_equal 80.0, stats[:fire_modes].sole[:dps]
+      end
+
+      test "keeps no rate for a one-round launcher, charged or not" do
+        stats = stats_for(weapon(<<~XML, magazine_size: 1), rounds: {ROUND => round(physical: 20)})
+          <SWeaponActionFireChargedParams name="Charge" chargeTime="2" fireOnlyOnFullCharge="0">
+            <maxChargeModifier damageMultiplier="300" />
+            <weaponAction><SWeaponActionFireSingleParams name="Single" fireRate="70">#{launcher}</SWeaponActionFireSingleParams></weaponAction>
+          </SWeaponActionFireChargedParams>
+        XML
+
+        mode = stats[:fire_modes].sole
+
+        assert_nil mode[:dps]
+        assert_equal({alpha: 20.0}, mode.dig(:charge, :uncharged))
+        assert_nil GearStats.headline(stats)[:dps]
       end
 
       test "lists each state of a mode that changes with the weapon's heat" do

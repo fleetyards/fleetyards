@@ -291,9 +291,13 @@ module ScData
         shots = steps.sum { |step| step[:shots] }
         return mode unless time.positive?
 
+        # Steps may fire different shots -- a slug, then buckshot -- so each
+        # counts its own damage.
+        dealt = steps.sum { |step| step[:mode][:alpha].to_f * step[:shots] }
+
         mode.merge(
           fire_rate: (mode[:kind] == "burst") ? mode[:fire_rate] : round(shots * 60 / time),
-          dps: (round(mode[:alpha] * shots / time) if mode[:alpha])
+          dps: (round(dealt / time) if dealt.positive?)
         ).compact
       end
 
@@ -351,12 +355,16 @@ module ScData
       # Shots and seconds of sustained fire before the weapon locks up: the
       # cooling runs throughout, so a weapon that sheds heat faster than it
       # builds it never gets there and reports neither.
+      #
+      # A burst's cooldown and a charge's wait count: the shots a mode keeps
+      # up per second are its DPS over its alpha, not its stated rate.
       private def overheat(mode, heat)
         limit = heat&.dig(:overheat_temperature)
+        shots_per_second = (mode[:dps] / mode[:alpha] if mode[:dps] && mode[:alpha]&.positive?)
         per_second = if mode[:heat_per_second]
           mode[:heat_per_second]
-        elsif mode[:heat_per_shot] && mode[:fire_rate]
-          mode[:heat_per_shot] * mode[:fire_rate] / 60
+        elsif mode[:heat_per_shot] && shots_per_second
+          mode[:heat_per_shot] * shots_per_second
         end
         return {} if limit.nil? || per_second.nil?
 
@@ -367,7 +375,7 @@ module ScData
 
         {
           time_to_overheat: round(seconds),
-          shots_to_overheat: (Integer(seconds * mode[:fire_rate] / 60) if mode[:fire_rate] && mode[:heat_per_shot])
+          shots_to_overheat: (Integer(seconds * shots_per_second) if shots_per_second && mode[:heat_per_shot])
         }.compact
       end
 
@@ -622,7 +630,11 @@ module ScData
       private def sustainable(mode, magazine)
         return mode unless magazine&.dig(:size) == 1
 
-        mode.except(:dps, :time_to_overheat, :shots_to_overheat)
+        mode = mode.except(:dps, :time_to_overheat, :shots_to_overheat)
+        return mode unless mode.dig(:charge, :uncharged, :dps)
+
+        uncharged = mode[:charge][:uncharged].except(:dps).presence
+        mode.merge(charge: mode[:charge].merge(uncharged:).compact)
       end
 
       # What one round deals on a hit: the impact, and for a grenade or a
