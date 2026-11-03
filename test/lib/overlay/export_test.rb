@@ -71,6 +71,35 @@ module Overlay
       assert_not ship["stats"].key?("fociLabels")
     end
 
+    test "a ship is pictured by its angled render, as the site search shows it" do
+      @ship.store_image.attach(io: file_fixture("ship.jpg").open, filename: "ship.jpg", content_type: "image/jpeg")
+      @ship.angled_view.attach(io: file_fixture("test.png").open, filename: "angled.png", content_type: "image/png")
+      @ship.angled_view_colored.attach(io: file_fixture("test.png").open, filename: "angled_colored.png", content_type: "image/png")
+
+      ship = item("model", @ship.slug)
+      blob = @ship.angled_view_colored.blob
+
+      assert_includes ship["image"], blob.signed_id
+      assert_includes ship["thumb"], blob.signed_id
+      assert_not_equal ship["image"], ship["thumb"]
+    end
+
+    test "a ship without renders falls back to its store image" do
+      @ship.store_image.attach(io: file_fixture("ship.jpg").open, filename: "ship.jpg", content_type: "image/jpeg")
+
+      ship = item("model", @ship.slug)
+
+      assert_includes ship["image"], @ship.store_image.blob.signed_id
+      assert_includes ship["thumb"], @ship.store_image.blob.signed_id
+    end
+
+    test "an item without a picture has neither image nor thumb" do
+      weapon = item("component", @weapon.slug)
+
+      assert_not weapon.key?("image")
+      assert_not weapon.key?("thumb")
+    end
+
     test "leaves out paints, hidden components, hidden equipment and hidden ships" do
       paint = create(:component, name: "Some Livery", category: "paints")
       hidden = create(:component, :weapon, :hidden)
