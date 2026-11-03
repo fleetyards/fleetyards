@@ -67,6 +67,15 @@ class Api::RateLimitTest < ActionDispatch::IntegrationTest
     assert_response :too_many_requests
   end
 
+  test "reading the session for the rate limit does not write it back" do
+    sign_in create(:user)
+    get "/api/v1/models"
+
+    get "/api/v1/models"
+    assert_response :too_many_requests
+    assert_nil response.headers["Set-Cookie"]
+  end
+
   test "an OAuth client is counted against the token's user" do
     headers = oauth_headers_for(create(:user), scopes: "public")
 

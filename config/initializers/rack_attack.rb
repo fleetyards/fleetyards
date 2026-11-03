@@ -16,6 +16,11 @@ client_ip = ->(req) { (req.get_header("action_dispatch.remote_ip") || req.ip).to
 # Read straight from the session rather than through Warden: fetching the user
 # here would cache it for the request and skip Devise's fetch callbacks, the
 # timeout check among them, when the controller authenticates later.
+#
+# Loading the session commits it again on the way out (`expire_after` forces
+# it), which on a 429 or a 404 would hand back a cookie that can overwrite a
+# sign-in still in flight. It is left unwritten here, as Api::BaseController
+# does, and a sign-in in the controller turns writing back on.
 signed_in_user_id = lambda do |req|
   return req.env["fleetyards.rate_limit_user_id"] if req.env.key?("fleetyards.rate_limit_user_id")
 
@@ -26,7 +31,9 @@ signed_in_user_id = lambda do |req|
     if token
       token.resource_owner_id if token.accessible?
     else
-      req.session["warden.user.user.key"]&.first&.first
+      user_key = req.session["warden.user.user.key"]
+      req.session_options[:skip] = true
+      user_key&.first&.first
     end
   end
 end
