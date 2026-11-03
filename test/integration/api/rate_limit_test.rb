@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
 require "test_helper"
+require "support/oauth_test_helpers"
 
 class Api::RateLimitTest < ActionDispatch::IntegrationTest
+  include OauthTestHelpers
+
   setup do
     @original_store = Rack::Attack.cache.store
     Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new
@@ -46,5 +49,81 @@ class Api::RateLimitTest < ActionDispatch::IntegrationTest
 
     get "/api/v1/models", headers: client_b
     assert_response :success
+  end
+
+  test "a signed-in user is counted apart from the address they share" do
+    get "/api/v1/models"
+    assert_response :success
+
+    get "/api/v1/models"
+    assert_response :too_many_requests
+
+    sign_in create(:user)
+
+    get "/api/v1/models"
+    assert_response :success
+
+    get "/api/v1/models"
+    assert_response :too_many_requests
+  end
+
+  test "reading the session for the rate limit does not write it back" do
+    sign_in create(:user)
+    get "/api/v1/models"
+
+    get "/api/v1/models"
+    assert_response :too_many_requests
+    assert_nil response.headers["Set-Cookie"]
+  end
+
+  test "an OAuth client is counted apart from its user's own session" do
+    user = create(:user)
+    headers = oauth_headers_for(user, scopes: "public")
+
+    sign_in user
+    get "/api/v1/models"
+    get "/api/v1/models"
+    assert_response :too_many_requests
+
+    get "/api/v1/models", headers: headers
+    assert_response :success
+
+    get "/api/v1/models", headers: headers
+    assert_response :too_many_requests
+  end
+
+  test "an account's 429 does not name its user id" do
+    user = create(:user)
+    sign_in user
+    get "/api/v1/models"
+    get "/api/v1/models"
+
+    assert_response :too_many_requests
+    assert_equal "API rate limit exceeded for this account", JSON.parse(response.body)["message"]
+    assert_not_includes response.body, user.id.to_s
+  end
+
+  test "a signed-in user gets the larger limit" do
+    Rack::Attack.throttles["api"].unstub(:limit)
+
+    get "/api/v1/models"
+    assert_equal "5000", response.headers["X-RateLimit-Limit"]
+
+    sign_in create(:user)
+
+    get "/api/v1/models"
+    assert_equal "10000", response.headers["X-RateLimit-Limit"]
+  end
+
+  test "image redirects do not spend the API budget" do
+    Rack::Attack.throttles["files"].stubs(:limit).returns(1)
+    blob_path = "#{ActiveStorage.routes_prefix}/blobs/redirect/missing/image.jpg"
+
+    get blob_path
+    get "/api/v1/models"
+    assert_response :success
+
+    get blob_path
+    assert_response :too_many_requests
   end
 end

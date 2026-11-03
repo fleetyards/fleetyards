@@ -11,11 +11,9 @@ import {
   VueQueryPlugin,
   type VueQueryPluginOptions,
 } from "@tanstack/vue-query";
+import { handlePreloadError } from "@/shared/utils/ChunkReload";
 
-window.addEventListener("vite:preloadError", (event) => {
-  event.preventDefault();
-  window.location.reload();
-});
+window.addEventListener("vite:preloadError", handlePreloadError);
 
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);

@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 Rails.application.configure do
+  # Without ActionController::API the payload below never reaches the API
+  # controllers, and their requests log with no client at all.
+  config.lograge.base_controller_class = ["ActionController::Base", "ActionController::API"]
+
   sanitize = ->(value) { value && value.to_s.delete("\r\n").truncate(512) }
 
   config.lograge.custom_payload do |controller|

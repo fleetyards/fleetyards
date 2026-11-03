@@ -14,13 +14,11 @@ import {
   type VueQueryPluginOptions,
 } from "@tanstack/vue-query";
 import { captureInstallPrompt } from "@/frontend/composables/useInstallPrompt";
+import { handlePreloadError } from "@/shared/utils/ChunkReload";
 
 captureInstallPrompt();
 
-window.addEventListener("vite:preloadError", (event) => {
-  event.preventDefault();
-  window.location.reload();
-});
+window.addEventListener("vite:preloadError", handlePreloadError);
 
 document.addEventListener("DOMContentLoaded", () => {
   if ("serviceWorker" in navigator) {
