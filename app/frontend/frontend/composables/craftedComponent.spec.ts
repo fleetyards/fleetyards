@@ -209,4 +209,19 @@ describe("craftedEquipment", () => {
 
     expect(crafted.temperatureRating).toBe("cold-rated");
   });
+
+  // DPS is damage times rate, so it follows a recipe that moves either.
+  it("moves a weapon's DPS with its damage and its rate of fire", () => {
+    const crafted = craftedEquipment(
+      { name: "P4-AR", alphaDamage: 12, dps: 162, rateOfFire: 810 } as never,
+      new Map([
+        ["gpp_weapon_damage", { additive: false, value: 1.1 }],
+        ["gpp_weapon_firerate", { additive: false, value: 1.2 }],
+      ]),
+    );
+
+    expect(crafted.alphaDamage).toBeCloseTo(13.2);
+    expect(crafted.rateOfFire).toBeCloseTo(972);
+    expect(crafted.dps).toBeCloseTo(213.84);
+  });
 });

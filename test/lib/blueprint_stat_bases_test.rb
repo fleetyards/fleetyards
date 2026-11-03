@@ -55,6 +55,12 @@ class BlueprintStatBasesTest < ActiveSupport::TestCase
   end
 
   # Armour states its band as one rendered string rather than as two columns.
+  test "reads a weapon's best shot for a damage modifier" do
+    equipment = build(:equipment, alpha_damage: 12)
+
+    assert_in_delta 12.0, BlueprintStatBases.new(equipment).for("gpp_weapon_damage")
+  end
+
   test "splits armour's temperature band into its two ends" do
     equipment = build(:equipment, temperature_rating: "-56 / 86 °C")
     bases = BlueprintStatBases.new(equipment)

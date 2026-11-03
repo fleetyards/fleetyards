@@ -173,11 +173,13 @@ export const craftedCatalogueComponent = (
 };
 
 // The equipment figures a recipe moves, as `BlueprintStatBases::EQUIPMENT`
-// pairs them on the server.
-const CRAFTED_EQUIPMENT_FIELDS: Record<string, keyof Equipment> = {
-  gpp_armor_damagemitigation: "damageReduction",
-  gpp_weapon_firerate: "rateOfFire",
-  gpp_armor_radiationdissipation: "radiationScrubRate",
+// pairs them on the server. A weapon's DPS follows both its damage and its
+// rate of fire, so it moves with either.
+const CRAFTED_EQUIPMENT_FIELDS: Record<string, (keyof Equipment)[]> = {
+  gpp_armor_damagemitigation: ["damageReduction"],
+  gpp_weapon_firerate: ["rateOfFire", "dps"],
+  gpp_weapon_damage: ["alphaDamage", "dps"],
+  gpp_armor_radiationdissipation: ["radiationScrubRate"],
 };
 
 // Armour states its band as one string -- "-75 / 98 °C" -- and some leave the
@@ -220,8 +222,9 @@ export const craftedEquipment = (
   const crafted = { ...equipment } as unknown as Record<string, unknown>;
 
   changes.forEach((change, key) => {
-    const field = CRAFTED_EQUIPMENT_FIELDS[key];
-    if (field) crafted[field] = changed(crafted[field], change);
+    (CRAFTED_EQUIPMENT_FIELDS[key] || []).forEach((field) => {
+      crafted[field] = changed(crafted[field], change);
+    });
   });
 
   crafted.temperatureRating = craftedTemperature(
