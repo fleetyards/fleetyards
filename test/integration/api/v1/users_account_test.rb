@@ -77,4 +77,40 @@ class Api::V1::UsersAccountTest < ActionDispatch::IntegrationTest
 
     assert_api_response :put, 400, headers: oauth_headers_for(user, scopes: ["profile:write"]), body: {username: "TestUser"}
   end
+
+  test "PUT /users/account sets an address on a placeholder account without access confirmation" do
+    user = create(:user, email: "#{SecureRandom.uuid}@#{User::PLACEHOLDER_EMAIL_DOMAIN}")
+    sign_in user
+
+    assert_api_response :put, 200, body: {email: "pilot@example.org"}
+
+    user.reload
+
+    assert_equal "pilot@example.org", user.unconfirmed_email
+    assert_predicate user, :placeholder_email?
+  end
+
+  test "PUT /users/account still needs access confirmation for anything else on a placeholder account" do
+    user = create(:user, email: "#{SecureRandom.uuid}@#{User::PLACEHOLDER_EMAIL_DOMAIN}")
+    sign_in user
+
+    assert_api_response :put, 400, body: {email: "pilot@example.org", username: "TestUser"} do
+      assert_equal "requires_access_confirmation", parsed_body["code"]
+    end
+  end
+
+  test "PUT /users/account still needs access confirmation for a placeholder account over OAuth" do
+    user = create(:user, email: "#{SecureRandom.uuid}@#{User::PLACEHOLDER_EMAIL_DOMAIN}")
+
+    assert_api_response :put, 400, headers: oauth_headers_for(user, scopes: ["profile:write"]), body: {email: "pilot@example.org"}
+  end
+
+  test "PUT /users/account still needs access confirmation to change a real address" do
+    user = create(:user)
+    sign_in user
+
+    assert_api_response :put, 400, body: {email: "pilot@example.org"} do
+      assert_equal "requires_access_confirmation", parsed_body["code"]
+    end
+  end
 end
