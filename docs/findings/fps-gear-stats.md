@@ -6,18 +6,18 @@
 
 ## Where the figures live
 
-| What | Where |
-| ---- | ----- |
-| Fire modes | `SCItemWeaponComponentParams.fireActions`: Rapid, Single, Burst, Charged, Beam, wrapped in Sequence, Parallel and DynamicCondition |
+| What                       | Where                                                                                                                                         |
+| -------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| Fire modes                 | `SCItemWeaponComponentParams.fireActions`: Rapid, Single, Burst, Charged, Beam, wrapped in Sequence, Parallel and DynamicCondition            |
 | Second-button tool actions | `SCItemWeaponComponentParams.aimAction > SWeaponActionConditionParams` — the multi-tool's Repair and main TractorBeam live here, one per head |
-| Magazine | the record `ammoContainerRecord` names (its `SAmmoContainerComponentParams`), or the weapon's own container |
-| Round | `ammoparams/**`, by the container's `ammoParamsRecord`; a second round by `secondaryAmmoParamsRecord` |
-| Heat | `connectionParams.simplifiedHeatParams` |
-| Blade attacks | the `MeleeCombatConfig` record `meleeCombatConfig` names, under `weapons/melee/` |
-| Grenade | `EntityComponentTriggerableDevicesParams.triggers` (fuse = timer `duration`); `aiTriggers` is the AI's weaker copy |
-| Mine | `SSensorMineComponentParams.TriggerType`, blast in `SHealthComponentParams.DeathExplosionParams` |
-| Mining gadget | `EntityComponentAttachableModifierParams.modifiers.ItemMineableRockModifierParams` — not the laser-module block; adds a cluster factor |
-| Consumables | `consumabletypesdatabase/consumabletypes.records.xml`, effects per microSCU, scaled by the dose's volume |
+| Magazine                   | the record `ammoContainerRecord` names (its `SAmmoContainerComponentParams`), or the weapon's own container                                   |
+| Round                      | `ammoparams/**`, by the container's `ammoParamsRecord`; a second round by `secondaryAmmoParamsRecord`                                         |
+| Heat                       | `connectionParams.simplifiedHeatParams`                                                                                                       |
+| Blade attacks              | the `MeleeCombatConfig` record `meleeCombatConfig` names, under `weapons/melee/`                                                              |
+| Grenade                    | `EntityComponentTriggerableDevicesParams.triggers` (fuse = timer `duration`); `aiTriggers` is the AI's weaker copy                            |
+| Mine                       | `SSensorMineComponentParams.TriggerType`, blast in `SHealthComponentParams.DeathExplosionParams`                                              |
+| Mining gadget              | `EntityComponentAttachableModifierParams.modifiers.ItemMineableRockModifierParams` — not the laser-module block; adds a cluster factor        |
+| Consumables                | `consumabletypesdatabase/consumabletypes.records.xml`, effects per microSCU, scaled by the dose's volume                                      |
 
 ## Traps
 
