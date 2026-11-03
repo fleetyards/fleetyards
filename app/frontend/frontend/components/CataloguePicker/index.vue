@@ -35,7 +35,7 @@ import {
 
 export type CatalogueItem = Component | Equipment;
 
-type Props = {
+interface Props {
   kind: "Component" | "Equipment";
   // Narrows the catalogue for good, and takes the type filter's place.
   query?: ComponentQuery | EquipmentQuery;
@@ -44,7 +44,7 @@ type Props = {
   isDisabled?: (item: CatalogueItem) => boolean;
   badgesOf?: (item: CatalogueItem) => PickerCardBadge[];
   cardTestPrefix: string;
-};
+}
 
 const props = withDefaults(defineProps<Props>(), {
   query: undefined,
@@ -98,12 +98,12 @@ const activeQuery = computed(() => {
     : { equipmentTypeIn: [type.value] };
 });
 
-type PickerPage = {
+interface PickerPage {
   items: CatalogueItem[];
   currentPage: number;
   totalPages: number;
   totalCount: number;
-};
+}
 
 const fetchPage = async (): Promise<PickerPage> => {
   const params = { page: String(page.value), perPage: PER_PAGE };
@@ -314,10 +314,9 @@ const resultsLabel = computed(() =>
   </CataloguePickerLayout>
 </template>
 
-<style scoped>
-@reference "../../../entrypoints/tailwind.css";
-
+<style lang="scss" scoped>
 .catalogue-picker__filter {
-  @apply min-w-[200px] flex-1;
+  flex: 1;
+  min-width: 200px;
 }
 </style>

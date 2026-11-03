@@ -12,12 +12,12 @@ import Loader from "@/shared/components/Loader/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMobile } from "@/shared/composables/useMobile";
 
-type Props = {
+interface Props {
   countLabel: string;
   loading?: boolean;
   empty?: boolean;
   refreshing?: boolean;
-};
+}
 
 withDefaults(defineProps<Props>(), {
   loading: false,
@@ -103,9 +103,7 @@ const mobile = useMobile();
   </form>
 </template>
 
-<style scoped>
-@reference "../../../../entrypoints/tailwind.css";
-
+<style lang="scss" scoped>
 /* The ship picker's layout, for the same reasons: the header and the tray stay
    in view while the grid scrolls between them, so both run out to the flush
    body's edges and are opaque. */
@@ -118,35 +116,47 @@ const mobile = useMobile();
 }
 
 .catalogue-picker__header {
-  @apply bg-gray-darker sticky top-0 z-[3];
+  position: sticky;
+  top: 0;
+  z-index: 3;
   margin: 0 calc(-1 * var(--modal-gutter, 24px));
   padding: 20px var(--modal-gutter, 24px) 0;
+  background-color: var(--color-gray-darker, #272b30);
 }
 
 .catalogue-picker__toolbar {
-  @apply flex flex-wrap items-start gap-3;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.75rem;
 }
 
 .catalogue-picker__search {
-  @apply min-w-[240px] flex-1;
+  flex: 1;
+  min-width: 240px;
 }
 
 .catalogue-picker--folded .catalogue-picker__search {
-  @apply min-w-0;
+  min-width: 0;
 }
 
 .catalogue-picker__summary {
-  @apply flex flex-wrap items-center gap-3;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
   padding: 2px 0 12px;
 }
 
 .catalogue-picker__count {
-  @apply text-muted text-[13px];
+  color: var(--color-muted, #7a8288);
+  font-size: 13px;
   font-variant-numeric: tabular-nums;
 }
 
 .catalogue-picker__grid {
-  @apply grid gap-3;
+  display: grid;
+  gap: 0.75rem;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 }
 
@@ -158,21 +168,30 @@ const mobile = useMobile();
 }
 
 .catalogue-picker__grid--refreshing {
-  @apply pointer-events-none opacity-50;
+  opacity: 0.5;
+  pointer-events: none;
   transition: opacity 150ms ease-in-out;
 }
 
 .catalogue-picker__more {
-  @apply flex justify-center;
+  display: flex;
+  justify-content: center;
   padding-top: 12px;
 }
 
 .catalogue-picker__tray {
-  @apply bg-gray-darker sticky bottom-0 z-[3];
-  @apply flex max-h-[84px] flex-wrap gap-2 overflow-y-auto;
-  border-top: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));
+  position: sticky;
+  bottom: 0;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  max-height: 84px;
   margin: 12px calc(-1 * var(--modal-gutter, 24px)) 0;
   padding: 12px var(--modal-gutter, 24px);
+  overflow-y: auto;
+  border-top: 1px solid var(--color-edge-faint, rgb(122 130 136 / 0.16));
+  background-color: var(--color-gray-darker, #272b30);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -18,9 +18,9 @@ import {
 } from "@/frontend/utils/dressingRoom";
 import { type ArmorSet, useArmorSets } from "@/services/fyApi";
 
-type Props = {
+interface Props {
   selection: OutfitSelection;
-};
+}
 
 defineProps<Props>();
 

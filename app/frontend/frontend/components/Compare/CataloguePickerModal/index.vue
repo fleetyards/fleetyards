@@ -30,13 +30,13 @@ import {
   type EquipmentQuery,
 } from "@/services/fyApi";
 
-type Props = {
+interface Props {
   kind: "Component" | "Equipment";
   queryKey: string;
   // The category the set already holds. Absent for an empty set, whose first
   // pick decides it.
   lock?: CompareCategory<ComponentQuery | EquipmentQuery>;
-};
+}
 
 const props = withDefaults(defineProps<Props>(), {
   lock: undefined,
@@ -183,20 +183,20 @@ const title = computed(() =>
   </Modal>
 </template>
 
-<style scoped>
-@reference "../../../../entrypoints/tailwind.css";
-
+<style lang="scss" scoped>
 .compare-picker__lock {
-  @apply text-muted text-[13px];
+  color: var(--color-muted, #7a8288);
+  font-size: 13px;
   font-variant-numeric: tabular-nums;
 }
 
 .compare-picker__hint {
-  @apply text-gold text-[13px];
+  color: var(--color-gold, #d4af37);
+  font-size: 13px;
 }
 
 .compare-picker__selected {
-  @apply text-[15px];
+  font-size: 15px;
   font-variant-numeric: tabular-nums;
 }
 </style>

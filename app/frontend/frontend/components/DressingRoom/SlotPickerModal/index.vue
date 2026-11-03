@@ -25,7 +25,7 @@ import {
   OutfitSlotEnum,
 } from "@/services/fyApi";
 
-type Props = {
+interface Props {
   slot: OutfitSlotEnum;
   // Getters, since a modal's props are set once: a worn piece still loading when
   // it opened changes what fits while it is open.
@@ -33,11 +33,11 @@ type Props = {
   // What the worn pieces leave room for: anything else is shown, but greyed
   // out with the reason.
   fit?: () => SlotFit;
-};
+}
 
 const props = withDefaults(defineProps<Props>(), {
   selectedSlug: () => undefined,
-  fit: () => ({ kind: "open" }),
+  fit: (): SlotFit => ({ kind: "open" }),
 });
 
 const emit = defineEmits<{
