@@ -155,4 +155,17 @@ describe("PanelMetrics", () => {
     expect(wrapper.find(".metrics-label").exists()).toBe(false);
     expect(wrapper.find(".metrics-value").exists()).toBe(false);
   });
+
+  it("leads with the rows the list is sorted or filtered by", () => {
+    const wrapper = mount(PanelMetrics, {
+      props: {
+        model: model(),
+        leadRows: [{ label: "alpha", value: "1234" }],
+      },
+    });
+
+    expect(labels(wrapper)[0]).toBe("alpha");
+    expect(valueFor(wrapper, "alpha")).toBe("1234");
+    expect(wrapper.findAll(".metrics-card__rows")).toHaveLength(3);
+  });
 });

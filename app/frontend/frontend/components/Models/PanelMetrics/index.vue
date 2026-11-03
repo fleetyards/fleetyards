@@ -7,19 +7,28 @@ export default {
 <script lang="ts" setup>
 import ModelMetricRows from "@/shared/components/ModelMetricRows/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useModelMetricRows } from "@/shared/composables/useModelMetricRows";
+import {
+  useModelMetricRows,
+  type MetricRow,
+} from "@/shared/composables/useModelMetricRows";
 import type { Model } from "@/services/fyApi";
 
 type Props = {
   model: Model;
   cargoLabel?: string;
+  // Led with, ahead of the model's own figures: what the list around the card
+  // is sorted or filtered by.
+  leadRows?: MetricRow[];
 };
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  cargoLabel: undefined,
+  leadRows: () => [],
+});
 
 const { t, toNumber, toUEC } = useI18n();
 
-const { groups } = useModelMetricRows(
+const { groups: modelGroups } = useModelMetricRows(
   () => props.model,
   {
     t,
@@ -28,6 +37,8 @@ const { groups } = useModelMetricRows(
   },
   () => props.cargoLabel,
 );
+
+const groups = computed(() => [{ rows: props.leadRows }, ...modelGroups.value]);
 </script>
 
 <template>

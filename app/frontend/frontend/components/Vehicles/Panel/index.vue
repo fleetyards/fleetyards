@@ -25,6 +25,10 @@ import { useComlink } from "@/shared/composables/useComlink";
 import { BtnVariantsEnum } from "@/shared/components/base/Btn/types";
 import { PanelTonesEnum } from "@/shared/components/base/Panel/types";
 import { useVehicleRoute } from "@/frontend/composables/useVehicleRoute";
+import {
+  useVehicleFigureRows,
+  type VehicleListFigureEnum,
+} from "@/frontend/composables/useVehicleListFigures";
 
 type Props = {
   vehicle: Vehicle | VehiclePublic;
@@ -40,6 +44,8 @@ type Props = {
   // payload names its owner only when the owner allows it, so the page passes
   // the name it was opened with.
   publicLogUsername?: string;
+  // What the list is sorted or filtered by, led with in the details.
+  figures?: VehicleListFigureEnum[];
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -50,6 +56,7 @@ const props = withDefaults(defineProps<Props>(), {
   loanersHintVisible: false,
   sortable: false,
   publicLogUsername: undefined,
+  figures: () => [],
 });
 
 const emit = defineEmits<{ move: [offset: number] }>();
@@ -57,6 +64,12 @@ const emit = defineEmits<{ move: [offset: number] }>();
 const { t } = useI18n();
 
 const { cargoLabel } = useVehicleCargo();
+
+const figureRows = useVehicleFigureRows();
+
+const leadMetrics = computed(() =>
+  props.details ? figureRows(props.vehicle, props.figures) : [],
+);
 
 // Only a ship with something shared gets the button; the count is already in
 // the payload, so empty logs cost no request.
@@ -250,6 +263,7 @@ const tone = computed(() => {
     :tone="tone"
     :store-image="image"
     :cargo-label="String(cargoLabel(vehicle))"
+    :lead-metrics="leadMetrics"
   >
     <template #heading-title>
       <span class="flex items-baseline gap-2 max-w-full">

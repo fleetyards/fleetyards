@@ -40,6 +40,7 @@ import { useWishlistStore } from "@/frontend/stores/wishlist";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { useHangarFilters } from "@/frontend/composables/useHangarFilters";
+import { useVehicleListFigures } from "@/frontend/composables/useVehicleListFigures";
 import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { useSubscription } from "@/shared/composables/useSubscription";
 import { HangarChannel } from "@/services/fyCable/channels/HangarChannel";
@@ -64,6 +65,10 @@ const sortFields = useWishlistSortFields({
   include: () =>
     typeof route.query.s === "string" ? route.query.s : undefined,
 });
+
+const listFigures = useVehicleListFigures(() =>
+  typeof route.query.s === "string" ? route.query.s : undefined,
+);
 
 // Shared by the table's row boxes and the toolbar's select-all box and bulk
 // actions above it.
@@ -393,6 +398,7 @@ const { activeFilters } = useShipFilterSummary(() =>
           <VehiclePanel
             :vehicle="record"
             :details="detailsVisible"
+            :figures="listFigures"
             :editable="true"
             wishlist
           />
