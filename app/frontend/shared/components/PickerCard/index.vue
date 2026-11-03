@@ -6,6 +6,9 @@ export default {
 
 <script lang="ts" setup>
 import PanelBgImage from "@/shared/components/base/Panel/BgImage/index.vue";
+import { useWebpCheck } from "@/shared/composables/useWebpCheck";
+import fallbackImageJpg from "@/images/fallback/store_image.jpg";
+import fallbackImage from "@/images/fallback/store_image.webp";
 
 export type PickerCardBadge = {
   key: string;
@@ -37,6 +40,20 @@ const emit = defineEmits<{
   toggle: [];
 }>();
 
+const slots = useSlots();
+
+const { supported: webpSupported } = useWebpCheck();
+
+// Named apart from the prop it reads: a setup binding sharing a prop's name
+// shadows it in the template.
+const imageSrc = computed(() => {
+  if (props.image || slots.placeholder) {
+    return props.image;
+  }
+
+  return webpSupported.value ? fallbackImage : fallbackImageJpg;
+});
+
 // The toggle is an empty overlay, so its name has to carry everything the card
 // shows visually - including the badges, which are decoration to a screen reader.
 const accessibleName = computed(() =>
@@ -52,17 +69,18 @@ const accessibleName = computed(() =>
     :class="{
       'picker-card--selected': selected,
       'picker-card--disabled': disabled,
+      'picker-card--contain': imageFit === 'contain',
     }"
   >
     <div class="picker-card__image">
       <img
-        v-if="image && imageFit === 'contain'"
-        :src="image"
+        v-if="imageSrc && imageFit === 'contain'"
+        :src="imageSrc"
         alt=""
         class="picker-card__render"
         loading="lazy"
       />
-      <PanelBgImage v-else-if="image" :image="image" />
+      <PanelBgImage v-else-if="imageSrc" :image="imageSrc" />
       <div v-else-if="$slots.placeholder" class="picker-card__placeholder">
         <slot name="placeholder" />
       </div>
@@ -82,16 +100,20 @@ const accessibleName = computed(() =>
         <i class="fa-regular fa-check" />
       </div>
 
-      <!--
-        Controls of the card's own, such as a quantity stepper: a sibling of the
-        toggle rather than a child, since a button may not contain buttons.
-      -->
-      <slot name="overlay" />
-    </div>
+      <div class="picker-card__dock">
+        <!--
+          Controls of the card's own, such as a quantity stepper: a sibling of the
+          toggle rather than a child, since a button may not contain buttons.
+        -->
+        <slot name="overlay" />
 
-    <div class="picker-card__meta">
-      <span class="picker-card__name">{{ name }}</span>
-      <span v-if="subtitle" class="picker-card__subtitle">{{ subtitle }}</span>
+        <div class="picker-card__meta">
+          <span class="picker-card__name">{{ name }}</span>
+          <span v-if="subtitle" class="picker-card__subtitle">
+            {{ subtitle }}
+          </span>
+        </div>
+      </div>
     </div>
 
     <button
@@ -121,7 +143,9 @@ const accessibleName = computed(() =>
  * reflow the grid on each click.
  */
 .picker-card {
-  @apply relative flex flex-col overflow-hidden;
+  --picker-card-plate-clearance: 56px;
+
+  @apply relative flex shrink-0 flex-col overflow-hidden;
   @apply bg-control border-edge-soft rounded-surface-slim border;
   @apply transition-[background-color,border-color] duration-150 ease-in-out;
 }
@@ -163,16 +187,25 @@ const accessibleName = computed(() =>
   outline-offset: -3px;
 }
 
-/* The containing block PanelBgImage's absolute fill resolves against. */
+/* The containing block PanelBgImage's absolute fill resolves against. Grows so a
+   16:9 card beside a taller 4:3 one in a grid row still keeps its plate at the
+   bottom. */
 .picker-card__image {
-  @apply relative w-full;
+  @apply relative w-full grow;
   aspect-ratio: 16 / 9;
+}
+
+/* A render has to clear the plate to stay recognisable, so its card is taller
+   by about what the plate takes. */
+.picker-card--contain .picker-card__image {
+  aspect-ratio: 4 / 3;
 }
 
 /* What stands in for a missing picture: an icon, centred and quiet. */
 .picker-card__placeholder {
   @apply text-muted absolute inset-0 flex items-center justify-center;
   font-size: 2.5rem;
+  padding-bottom: var(--picker-card-plate-clearance);
 }
 
 /* An item render on a transparent ground, which cropping as a store image is
@@ -180,7 +213,7 @@ const accessibleName = computed(() =>
 .picker-card__render {
   @apply absolute inset-0 h-full w-full;
   object-fit: contain;
-  padding: 8px;
+  padding: 8px 8px var(--picker-card-plate-clearance);
 }
 
 /* ---------- selection tick ----------
@@ -223,10 +256,52 @@ const accessibleName = computed(() =>
   color: #222;
 }
 
-/* ---------- meta ---------- */
+@property --picker-card-plate-mid {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 88%;
+}
+
+/* ---------- name plate ----------
+   The picture fills the card, so hover and selection, which used to tint the
+   card behind the text, show on the plate instead. It dissolves upwards into the
+   picture but stays dark enough behind the text on even a white one. The dock
+   takes no z-index of its own: that would trap the stepper's below the toggle. */
+.picker-card__dock {
+  @apply absolute inset-x-0 bottom-0 flex flex-col;
+}
+
 .picker-card__meta {
+  --picker-card-plate: var(--color-gray-black);
+
   @apply flex min-w-0 flex-col gap-1;
-  padding: 8px 10px 10px;
+  padding: 26px 10px 10px;
+  background-image: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--picker-card-plate) 96%, transparent),
+    color-mix(
+        in srgb,
+        var(--picker-card-plate) var(--picker-card-plate-mid),
+        transparent
+      )
+      60%,
+    transparent
+  );
+  transition: --picker-card-plate-mid 150ms ease-in-out;
+}
+
+/* Hover deepens the gradient rather than tinting the plate, since any flat colour
+   would draw a hard line across the picture at the plate's top edge. */
+.picker-card:hover .picker-card__meta {
+  --picker-card-plate-mid: 97%;
+}
+
+.picker-card--disabled:hover .picker-card__meta {
+  --picker-card-plate-mid: 88%;
+}
+
+.picker-card--selected .picker-card__meta {
+  --picker-card-plate: rgb(18 40 60);
 }
 
 .picker-card__name {
@@ -234,11 +309,12 @@ const accessibleName = computed(() =>
 }
 
 .picker-card__subtitle {
-  @apply text-muted truncate text-[12px] leading-tight;
+  @apply text-gray-lighter truncate text-[12px] leading-tight;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .picker-card,
+  .picker-card__meta,
   .picker-card__check {
     transition-duration: 1ms;
   }
