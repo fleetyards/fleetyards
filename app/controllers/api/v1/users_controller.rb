@@ -24,7 +24,7 @@ module Api
       end
 
       def update_account
-        unless access_confirmed?
+        unless access_confirmed? || first_address_for_placeholder_email?
           render json: {code: "requires_access_confirmation", message: I18n.t("messages.user.requires_access_confirmation")}, status: :bad_request
           return
         end
@@ -134,6 +134,14 @@ module Api
 
           permitted
         end
+      end
+
+      # An account from a provider that shared no address has neither a password
+      # nor an inbox to confirm access with, so giving it an address is the one
+      # change it can make unconfirmed. The address still has to be confirmed from
+      # its own inbox before it replaces the placeholder.
+      private def first_address_for_placeholder_email?
+        doorkeeper_token.blank? && @user.placeholder_email? && user_account_params.keys == ["email"]
       end
 
       private def user_account_params
