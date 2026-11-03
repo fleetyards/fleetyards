@@ -68,7 +68,9 @@ const mobile = useMobile();
       </div>
 
       <div class="catalogue-picker__summary">
-        <span class="catalogue-picker__count">{{ countLabel }}</span>
+        <span v-if="!loading" class="catalogue-picker__count">
+          {{ countLabel }}
+        </span>
         <slot name="summary" />
       </div>
       <slot name="notice" />
