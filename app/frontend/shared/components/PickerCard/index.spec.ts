@@ -14,10 +14,9 @@ beforeEach(() => {
   );
 });
 
-const mount = (props: object = {}, slots: { placeholder?: string } = {}) =>
+const mount = (props: object = {}) =>
   mountWithDefaults(Component, {
     props: { name: "Gladius", subtitle: "Aegis Dynamics", ...props },
-    slots,
   });
 
 describe("PickerCard", () => {
@@ -38,7 +37,10 @@ describe("PickerCard", () => {
   });
 
   it("prefers a placeholder to the stock picture", async () => {
-    const wrapper = await mount({}, { placeholder: "<i class='icon' />" });
+    const wrapper = await mountWithDefaults(Component, {
+      props: { name: "Gladius" },
+      slots: { placeholder: () => [h("i", { class: "icon" })] },
+    });
 
     expect(wrapper.findComponent(PanelBgImage).exists()).toBe(false);
     expect(wrapper.find(".picker-card__placeholder .icon").exists()).toBe(true);
