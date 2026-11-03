@@ -133,16 +133,18 @@ const removeSlot = () =>
     true,
   );
 
-const openModal = (component: () => Promise<Component>) =>
+const openModal = (component: () => Promise<Component>, wide = false) =>
   comlink.emit("open-modal", {
     component,
     props: { planId: props.planId, slot: current.value },
+    wide,
   });
 
 const addShips = () =>
   openModal(
     () =>
       import("@/frontend/components/Hangar/Planner/CandidatePickerModal/index.vue"),
+    true,
   );
 
 const editSettings = () =>

@@ -134,7 +134,8 @@ const { deciding, decide, keep, pendingIds } = useHangarPlanDecisions(
 const openModal = (
   component: () => Promise<Component>,
   props: Record<string, unknown> = {},
-) => comlink.emit("open-modal", { component, props });
+  options: { wide?: boolean } = {},
+) => comlink.emit("open-modal", { component, props, ...options });
 
 const editPlan = () =>
   openModal(
@@ -178,6 +179,7 @@ const pickShips = (slot: HangarPlanSlot) =>
     () =>
       import("@/frontend/components/Hangar/Planner/CandidatePickerModal/index.vue"),
     { planId: planId.value, slot },
+    { wide: true },
   );
 
 const editSlot = (slot: HangarPlanSlot) =>

@@ -155,6 +155,7 @@ const addCandidates = () =>
     () =>
       import("@/frontend/components/Hangar/Planner/CandidatePickerModal/index.vue"),
     { planId: props.planId, slot: props.slot },
+    { wide: true },
   );
 
 const openRoute = (

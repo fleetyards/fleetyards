@@ -209,10 +209,12 @@ const removable = computed(() => !!props.acquisition || !!props.vehicleId);
 const openModal = (
   component: () => Promise<Component>,
   modalProps: Record<string, unknown>,
+  wide = false,
 ) =>
   comlink.emit("open-modal", {
     component,
     props: { planId: props.planId, ...modalProps },
+    wide,
   });
 
 const anyShip = () =>
@@ -220,6 +222,7 @@ const anyShip = () =>
     () =>
       import("@/frontend/components/Hangar/Planner/UpgradeTargetModal/index.vue"),
     { ...target(), startName: props.startName, startModel: props.startModel },
+    true,
   );
 
 const editSlot = () =>
