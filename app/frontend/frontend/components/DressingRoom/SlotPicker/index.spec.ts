@@ -40,4 +40,69 @@ describe("DressingRoomSlotPicker", () => {
       slug: "adp-core",
     });
   });
+
+  it("shows a weapon's size beside its maker and type", async () => {
+    fetchEquipment.mockResolvedValueOnce({
+      items: [
+        {
+          id: "p4",
+          name: "P4-AR Rifle",
+          slug: "p4-ar-rifle",
+          media: {},
+          equipmentType: "weapon",
+          itemTypeLabel: "Assault Rifle",
+          size: "2",
+          manufacturer: { name: "Behring" },
+        },
+      ],
+      meta: { pagination: { currentPage: 1, totalPages: 1 } },
+    } as never);
+
+    const weapons = await mountWithDefaults<typeof SlotPicker>(SlotPicker, {
+      props: { slot: "primary" },
+    });
+    await flushPromises();
+
+    const option = weapons.find(
+      '[data-test="dressing-room-option-p4-ar-rifle"]',
+    );
+    expect(option.text()).toContain("Behring · Assault Rifle");
+    expect(option.find('[data-test="dressing-room-item-size"]').text()).toBe(
+      "S2",
+    );
+  });
+
+  it("shows armour's weight and figures, but no size", async () => {
+    fetchEquipment.mockResolvedValueOnce({
+      items: [
+        {
+          id: "antium",
+          name: "Antium Helmet",
+          slug: "antium-helmet",
+          media: {},
+          equipmentType: "armor",
+          itemTypeLabel: "Heavy Armor",
+          size: "1",
+          damageReduction: 40,
+        },
+      ],
+      meta: { pagination: { currentPage: 1, totalPages: 1 } },
+    } as never);
+
+    const armour = await mountWithDefaults<typeof SlotPicker>(SlotPicker, {
+      props: { slot: "helmet" },
+    });
+    await flushPromises();
+
+    const helmet = armour.find(
+      '[data-test="dressing-room-option-antium-helmet"]',
+    );
+    expect(helmet.text()).toContain("Heavy Armor");
+    expect(helmet.find('[data-test="dressing-room-item-size"]').exists()).toBe(
+      false,
+    );
+    expect(helmet.find('[data-test="dressing-room-item-stats"]').exists()).toBe(
+      true,
+    );
+  });
 });
