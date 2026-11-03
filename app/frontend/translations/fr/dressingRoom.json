@@ -13,9 +13,7 @@
         "secondary": "Secondaire",
         "sidearm": "Arme de poing"
       },
-      "search": "Rechercher : %{slot}",
       "size": "S%{size}",
-      "noResults": "Rien trouvé pour cet emplacement.",
       "choose": "Choisir…",
       "remove": "Retirer",
       "openItem": "Ouvrir la page de l'objet",

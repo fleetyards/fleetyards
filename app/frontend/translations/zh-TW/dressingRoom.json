@@ -13,9 +13,7 @@
         "secondary": "副武器",
         "sidearm": "手槍"
       },
-      "search": "搜尋%{slot}",
       "size": "S%{size}",
-      "noResults": "此欄位沒有找到任何物品。",
       "choose": "選擇…",
       "remove": "移除",
       "openItem": "開啟物品頁面",

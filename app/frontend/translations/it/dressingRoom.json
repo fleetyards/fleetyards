@@ -13,9 +13,7 @@
         "secondary": "Secondaria",
         "sidearm": "Arma da fianco"
       },
-      "search": "Cerca %{slot}",
       "size": "S%{size}",
-      "noResults": "Nessun risultato per questo slot.",
       "choose": "Scegli…",
       "remove": "Rimuovi",
       "openItem": "Apri la pagina dell'oggetto",
