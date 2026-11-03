@@ -13,7 +13,14 @@ const MODELS: Record<string, Model> = {
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   useModel: (slug: Ref<string>) => ({
-    data: computed(() => MODELS[slug.value]),
+    data: computed(() => MODELS[slug.value.toLowerCase()]),
+    isLoading: computed(() => slug.value === "loading"),
+    isError: computed(
+      () =>
+        !!slug.value &&
+        slug.value !== "loading" &&
+        !MODELS[slug.value.toLowerCase()],
+    ),
   }),
 }));
 
@@ -122,5 +129,27 @@ describe("ToolsPaintBoothPage", () => {
     expect(
       wrapper.findComponent({ name: "PaintBooth" }).props("model"),
     ).toEqual(MODELS.arrow);
+  });
+  it("shows a ship the API answers for under another spelling", async () => {
+    const { wrapper } = await mount({ ship: "Gladius" });
+
+    expect(
+      wrapper.findComponent({ name: "PaintBooth" }).props("model"),
+    ).toEqual(MODELS.gladius);
+  });
+
+  it("says a picked ship is loading, or could not be found", async () => {
+    const { wrapper, router } = await mount({ ship: "loading" });
+
+    expect(wrapper.find('[data-test="paint-booth-empty"]').text()).toContain(
+      "Loading…",
+    );
+
+    await router.replace({ name: "paint-booth", query: { ship: "nope" } });
+    await flushPromises();
+
+    expect(wrapper.find('[data-test="paint-booth-empty"]').text()).toContain(
+      "This ship could not be found.",
+    );
   });
 });

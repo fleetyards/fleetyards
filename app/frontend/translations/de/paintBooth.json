@@ -1,10 +1,10 @@
 {
   "de": {
     "paintBooth": {
-      "lead": "Wähle ein Schiff und sieh es dir in jeder seiner Lackierungen auf der Drehscheibe an. Teile die Ansicht per Link.",
       "paints": "Lackierungen",
       "empty": "Wähle ein Schiff, um seine Lackierungen zu sehen.",
-      "unavailable": "Das lackierte Holo dieses Schiffs konnte nicht geladen werden."
+      "unavailable": "Das lackierte Holo dieses Schiffs konnte nicht geladen werden.",
+      "notFound": "Dieses Schiff wurde nicht gefunden."
     }
   }
 }

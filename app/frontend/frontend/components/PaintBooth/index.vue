@@ -17,12 +17,12 @@ import {
 import { useModelHolo } from "@/frontend/composables/useModelHolo";
 import { useI18n } from "@/shared/composables/useI18n";
 
-type Props = {
+interface Props {
   model: Model;
   pose: ModelStateEnum;
   // The paint's slug, or nothing for the ship's own colours.
   paint?: string;
-};
+}
 
 const props = withDefaults(defineProps<Props>(), {
   paint: undefined,
@@ -35,6 +35,10 @@ const emit = defineEmits<{
 
 // Above the hull, so the top of the paint shows as it turns.
 const HOLO_ELEVATION = 18;
+
+// A three-quarter view off the nose: holos keep the game's frame, nose to -Z,
+// and the viewer's default of -90 starts square on the side.
+const HOLO_AZIMUTH = -135;
 
 const { t } = useI18n();
 
@@ -50,12 +54,18 @@ const activePose = computed(() =>
   poses.value.includes(props.pose) ? props.pose : poses.value[0],
 );
 
-const { texturedHolo, holoPaints, holoPaintId, holoPaint, holoModel } =
-  useModelHolo(
-    () => props.model,
-    () => activePose.value ?? ModelStateEnum.FLIGHT,
-    { textured: true },
-  );
+const {
+  texturedHolo,
+  texturedHoloAvailable,
+  holoPaints,
+  holoPaintId,
+  holoPaint,
+  holoModel,
+} = useModelHolo(
+  () => props.model,
+  () => activePose.value ?? ModelStateEnum.FLIGHT,
+  { textured: true },
+);
 
 // The address names a paint by slug, the holo by id: the paints arrive after
 // the ship, so the slug is matched again once they do.
@@ -66,10 +76,18 @@ watchEffect(() => {
 });
 
 // A textured holo that will not draw falls back to the plain one, which no
-// paint fits.
+// paint fits. The other pose has an export of its own, so it gets a try.
 const holoUnavailable = () => {
-  texturedHolo.value = false;
+  if (holoModel.value?.textured) texturedHolo.value = false;
 };
+
+watch(activePose, () => {
+  texturedHolo.value = true;
+});
+
+const painted = computed(
+  () => texturedHoloAvailable.value && texturedHolo.value,
+);
 
 const ownImage = computed(() => props.model.media.storeImage?.smallUrl);
 </script>
@@ -82,11 +100,14 @@ const ownImage = computed(() => props.model.media.storeImage?.smallUrl);
         ref="viewer"
         :key="holoModel.path"
         :models="[holoModel]"
+        :azimuth="HOLO_AZIMUTH"
         :elevation="HOLO_ELEVATION"
         :contain-padding="1.1"
+        :auto-rotate="false"
         contain
+        zoomable
         turntable
-        backdrop
+        grid
         @unavailable="holoUnavailable"
       />
       <BtnGroup
@@ -123,7 +144,7 @@ const ownImage = computed(() => props.model.media.storeImage?.smallUrl);
         {{ t("paintBooth.paints") }}
       </h2>
       <p
-        v-if="!texturedHolo"
+        v-if="!painted"
         class="paint-booth__note"
         data-test="paint-booth-unavailable"
       >
@@ -189,25 +210,15 @@ const ownImage = computed(() => props.model.media.storeImage?.smallUrl);
   }
 }
 
-// Landscape, as a ship lies: no box of its own, the page lit by a spot
-// behind the hull and a glow on the floor under its pedestal.
+// Landscape, as a ship lies. The canvas is transparent, so the black is
+// the stage's own.
 .paint-booth__stage {
   position: relative;
   height: min(60vh, 40rem);
   min-height: 20rem;
+  overflow: hidden;
   border-radius: 4px;
-  background:
-    radial-gradient(
-      ellipse 45% 12% at 50% 88%,
-      rgba($primary, 0.28),
-      transparent 70%
-    ),
-    radial-gradient(
-      ellipse 60% 60% at 50% 45%,
-      rgba($primary, 0.16),
-      rgba($background, 0.35) 70%,
-      transparent 100%
-    );
+  background: black;
 
   @media (min-width: $desktop-breakpoint) {
     height: min(72vh, 48rem);

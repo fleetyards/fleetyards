@@ -1,10 +1,10 @@
 {
   "fr": {
     "paintBooth": {
-      "lead": "Choisissez un vaisseau et voyez-le dans chacune de ses peintures, tournant sur le socle. Partagez la vue avec son lien.",
       "paints": "Peintures",
       "empty": "Choisissez un vaisseau pour voir ses peintures.",
-      "unavailable": "L'holo peint de ce vaisseau n'a pas pu être chargé."
+      "unavailable": "L'holo peint de ce vaisseau n'a pas pu être chargé.",
+      "notFound": "Ce vaisseau est introuvable."
     }
   }
 }

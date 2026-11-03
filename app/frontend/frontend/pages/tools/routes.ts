@@ -64,7 +64,7 @@ export const routes: RouteRecordRaw[] = [
     component: () => import("@/frontend/pages/tools/paint-booth.vue"),
     meta: {
       title: "tools.paintBooth",
-      backgroundImage: "bg-room",
+      backgroundImage: "bg-7",
       feature: FeatureFlagName.HOLO_TEXTURED,
     },
   },

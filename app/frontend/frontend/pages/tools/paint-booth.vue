@@ -60,25 +60,25 @@ const pickShip = (slug?: string) => {
   void navigate({ ship: slug, paint: undefined });
 };
 
-const { data: model } = useModel(
+const {
+  data: model,
+  isLoading,
+  isError,
+} = useModel(
   computed(() => shipSlug.value ?? ""),
   {
     query: { enabled: computed(() => !!shipSlug.value) },
   },
 );
 
-// The query keeps its last answer after a clear.
-const shownModel = computed(() =>
-  shipSlug.value && model.value?.slug === shipSlug.value
-    ? model.value
-    : undefined,
-);
+// The query keeps its last answer after a clear. Its slug is not compared to
+// the address's: an old or differently cased one answers with the current.
+const shownModel = computed(() => (shipSlug.value ? model.value : undefined));
 </script>
 
 <template>
   <div class="paint-booth-page">
     <Heading hero>{{ t(`headlines.${route.meta.title}`) }}</Heading>
-    <p class="paint-booth-page__lead">{{ t("paintBooth.lead") }}</p>
 
     <div class="paint-booth-page__picker">
       <ModelPickerSelect
@@ -86,6 +86,7 @@ const shownModel = computed(() =>
         :label="t('labels.selectModel')"
         :model-value="shipSlug"
         :query="PICKER_QUERY"
+        no-label
         @update:model-value="pickShip"
       />
     </div>
@@ -101,17 +102,14 @@ const shownModel = computed(() =>
     />
     <div v-else class="paint-booth-page__empty" data-test="paint-booth-empty">
       <i class="fa-duotone fa-spray-can-sparkles" />
-      <p>{{ t("paintBooth.empty") }}</p>
+      <p v-if="shipSlug && isLoading">{{ t("labels.loading") }}</p>
+      <p v-else-if="shipSlug && isError">{{ t("paintBooth.notFound") }}</p>
+      <p v-else>{{ t("paintBooth.empty") }}</p>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.paint-booth-page__lead {
-  max-width: 60rem;
-  color: $gray-lighter;
-}
-
 .paint-booth-page__picker {
   max-width: 24rem;
   margin-bottom: 1.5rem;

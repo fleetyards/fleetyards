@@ -1,10 +1,10 @@
 {
   "es": {
     "paintBooth": {
-      "lead": "Elige una nave y mírala con cada una de sus pinturas girando sobre el pedestal. Comparte la vista con su enlace.",
       "paints": "Pinturas",
       "empty": "Elige una nave para ver sus pinturas.",
-      "unavailable": "No se pudo cargar el holo pintado de esta nave."
+      "unavailable": "No se pudo cargar el holo pintado de esta nave.",
+      "notFound": "No se encontró esta nave."
     }
   }
 }

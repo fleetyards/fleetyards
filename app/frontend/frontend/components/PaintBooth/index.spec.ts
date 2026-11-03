@@ -181,4 +181,26 @@ describe("PaintBooth", () => {
       false,
     );
   });
+  it("tries the other pose's textured holo after one failed", async () => {
+    const wrapper = await mount();
+
+    wrapper.findComponent({ name: "HoloViewer" }).vm.$emit("unavailable");
+    await flushPromises();
+    await wrapper.setProps({ pose: ModelStateEnum.LANDED });
+    await flushPromises();
+
+    expect(viewerModel(wrapper)).toMatchObject({
+      path: "https://example.test/landed_textured.glb",
+      textured: true,
+    });
+  });
+
+  it("says so for a ship without a textured export", async () => {
+    const wrapper = await mount({}, { holo: file("holo.glb") });
+
+    expect(viewerModel(wrapper).textured).toBe(false);
+    expect(wrapper.find('[data-test="paint-booth-unavailable"]').exists()).toBe(
+      true,
+    );
+  });
 });

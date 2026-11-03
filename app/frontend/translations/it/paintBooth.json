@@ -1,10 +1,10 @@
 {
   "it": {
     "paintBooth": {
-      "lead": "Scegli una nave e guardala in ogni sua livrea mentre ruota sul piedistallo. Condividi la vista con il suo link.",
       "paints": "Livree",
       "empty": "Scegli una nave per vederne le livree.",
-      "unavailable": "Non è stato possibile caricare l'olo verniciato di questa nave."
+      "unavailable": "Non è stato possibile caricare l'olo verniciato di questa nave.",
+      "notFound": "Questa nave non è stata trovata."
     }
   }
 }
