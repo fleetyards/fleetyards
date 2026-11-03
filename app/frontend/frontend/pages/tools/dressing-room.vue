@@ -424,6 +424,7 @@ const model = computed(() =>
         pose.value,
         attachments.value,
         OUTFIT_SLOTS.filter((slot) => riggedHolos.value[slot]),
+        failedPaths.value,
       )
     : outfitModel(pieces.value),
 );
@@ -446,7 +447,10 @@ const holoUnavailable = () => {
   const root = model.value;
   if (!root) return;
 
-  if (root.rig) {
+  // A painted body falls back to the clay one before the figure goes.
+  if (root.rig && root.textured) {
+    failedPaths.value = [...failedPaths.value, root.path];
+  } else if (root.rig) {
     bodyFailed.value = true;
   } else if (root.textured) {
     failedPaths.value = [...failedPaths.value, root.path];

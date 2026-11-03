@@ -308,16 +308,32 @@ const bodyCover = (worn: OutfitSlotEnum[]) => {
   };
 };
 
+// The body with its skin, unless that did not load: then in clay.
+const bodyHolo = (body: CharacterBody, failedPaths: string[]) => {
+  const textured = body.holoTextured?.url;
+
+  return textured && !failedPaths.includes(textured)
+    ? {
+        path: textured,
+        size: body.holoTextured?.size ?? undefined,
+        textured: true,
+      }
+    : {
+        path: body.holo.url,
+        size: body.holo.size ?? undefined,
+        textured: false,
+      };
+};
+
 export const riggedOutfitModel = (
   body: CharacterBody,
   pieces: PieceHolo[],
   clip?: string,
   attachments: RigAttachment[] = [],
   worn: OutfitSlotEnum[] = [],
+  failedPaths: string[] = [],
 ): OutfitHoloModel => ({
-  path: body.holo.url,
-  size: body.holo.size ?? undefined,
-  textured: false,
+  ...bodyHolo(body, failedPaths),
   rig: {
     pieces: pieces.map((piece) => ({
       path: piece.path,
