@@ -40,8 +40,12 @@ const { updatePlan } = useHangarPlanCache();
 const submitting = ref(false);
 const mutation = useCreateHangarPlanCandidate();
 
-// The slot's filters bound the picker; its own filters narrow within them.
-const query = computed(() => ({ ...props.slot.filters }));
+// The slot's filters bound the picker; its own filters narrow within them. No
+// slot can plan a ship no player can own; one only earned in game it can.
+const query = computed(() => ({
+  ...props.slot.filters,
+  playerOwnableEq: true,
+}));
 
 const taken = computed(() =>
   props.slot.candidates.map((candidate) => candidate.model.slug),

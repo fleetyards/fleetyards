@@ -141,6 +141,17 @@ class Api::V1::ModelsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models filters by playerOwnableEq" do
+    ownable = create(:model)
+    npc = create(:model, player_ownable: false)
+
+    assert_api_response :get, 200, params: {q: {"playerOwnableEq" => true}} do
+      names = parsed_body["items"].map { |item| item["name"] }
+      assert_includes names, ownable.name
+      assert_not_includes names, npc.name
+    end
+  end
+
   test "GET /models accepts a containerFit map" do
     create_list(:model, 2)
 

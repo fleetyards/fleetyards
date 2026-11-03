@@ -19,6 +19,8 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
   useUpdateHangarPlanSlot: () => ({ mutateAsync: updateMutate }),
 }));
 
+const picker = vi.hoisted(() => ({ query: undefined as unknown }));
+
 const picked = vi.hoisted(() => ({
   manufacturerIn: [],
   classificationIn: [],
@@ -27,18 +29,20 @@ const picked = vi.hoisted(() => ({
   productionStatusIn: [],
 }));
 
-// The picker itself queries the catalogue; only the actions it hands its
-// caller matter here.
+// The picker itself queries the catalogue; only what it is asked for and the
+// actions it hands its caller matter here.
 vi.mock("@/frontend/components/Models/PickerModal/index.vue", async () => {
   const { h } = await import("vue");
 
   return {
     default: {
       name: "ModelPickerModal",
-      setup:
-        (_props: unknown, { slots }: SetupContext) =>
-        () =>
-          h("div", slots["filter-actions"]?.({ filters: picked })),
+      props: ["query"],
+      setup: (props: { query: unknown }, { slots }: SetupContext) => {
+        picker.query = props.query;
+
+        return () => h("div", slots["filter-actions"]?.({ filters: picked }));
+      },
     },
   };
 });
@@ -62,6 +66,16 @@ const slot: HangarPlanSlot = {
 };
 
 describe("Hangar/Planner/CandidatePickerModal", () => {
+  it("offers only ships a player can own, within the slot's filters", async () => {
+    await mountWithDefaults(Component, { props: { planId: "plan", slot } });
+
+    expect(picker.query).toEqual({
+      pledgePriceLteq: 400,
+      sizeIn: ["medium"],
+      playerOwnableEq: true,
+    });
+  });
+
   it("saves the filters picked as the slot's own", async () => {
     const wrapper = await mountWithDefaults(Component, {
       props: { planId: "plan", slot },
