@@ -5,11 +5,13 @@ import {
   segmentsOf,
   valueAt,
 } from "@/frontend/composables/useQualityRamp";
-import type {
-  BlueprintCostSlot,
-  Component,
-  Equipment,
-  LoadoutComponentRef,
+import {
+  EquipmentFireModeKindEnum,
+  type BlueprintCostSlot,
+  type Component,
+  type Equipment,
+  type EquipmentFireMode,
+  type LoadoutComponentRef,
 } from "@/services/fyApi";
 
 /**
@@ -173,11 +175,13 @@ export const craftedCatalogueComponent = (
 };
 
 // The equipment figures a recipe moves, as `BlueprintStatBases::EQUIPMENT`
-// pairs them on the server.
-const CRAFTED_EQUIPMENT_FIELDS: Record<string, keyof Equipment> = {
-  gpp_armor_damagemitigation: "damageReduction",
-  gpp_weapon_firerate: "rateOfFire",
-  gpp_armor_radiationdissipation: "radiationScrubRate",
+// pairs them on the server. A weapon's DPS follows both its damage and its
+// rate of fire, so it moves with either.
+const CRAFTED_EQUIPMENT_FIELDS: Record<string, (keyof Equipment)[]> = {
+  gpp_armor_damagemitigation: ["damageReduction"],
+  gpp_weapon_firerate: ["rateOfFire", "dps"],
+  gpp_weapon_damage: ["alphaDamage", "dps"],
+  gpp_armor_radiationdissipation: ["radiationScrubRate"],
 };
 
 // Armour states its band as one string -- "-75 / 98 °C" -- and some leave the
@@ -212,6 +216,92 @@ const craftedTemperature = (
   return moved ? `${roundedDegrees(min)} / ${roundedDegrees(max)} °C` : rating;
 };
 
+const factor = (changes: CraftedChanges, key: string) => {
+  const change = changes.get(key);
+
+  return change && !change.additive ? change.value : 1;
+};
+
+// How long one cycle of a mode takes at a fire rate, where the cycle is not
+// simply the time between shots: a burst waits out its cooldown, a charged
+// shot its charge.
+const cycleTime = (mode: EquipmentFireMode, fireRate: number) => {
+  const shot = 60 / fireRate;
+
+  if (mode.kind === EquipmentFireModeKindEnum.BURST) {
+    return (mode.shots ?? 1) * shot + (mode.cooldown ?? 0);
+  }
+  if (mode.kind === EquipmentFireModeKindEnum.CHARGED) {
+    return (
+      (mode.charge?.time ?? 0) + Math.max(mode.charge?.cooldown ?? 0, shot)
+    );
+  }
+
+  return shot;
+};
+
+// A fire mode as crafted. Damage scales every shot; fire rate shortens the
+// cycle, which for a burst or a charged shot is only part of it. How long it
+// fires before overheating changes with the rate too, and is not worked out
+// again here, so it is left out rather than shown at the stock figure.
+const craftedFireMode = (
+  mode: EquipmentFireMode,
+  damage: number,
+  rate: number,
+): EquipmentFireMode => {
+  const scaled = (value?: number) =>
+    value === undefined ? undefined : value * damage;
+
+  if (mode.kind === EquipmentFireModeKindEnum.BEAM) {
+    const damagePerSecond = mode.damagePerSecond
+      ? Object.fromEntries(
+          Object.entries(mode.damagePerSecond).map(([type, value]) => [
+            type,
+            scaled(value),
+          ]),
+        )
+      : mode.damagePerSecond;
+
+    return { ...mode, damagePerSecond, dps: scaled(mode.dps) };
+  }
+
+  const fireRate = mode.fireRate ? mode.fireRate * rate : mode.fireRate;
+  const quicker =
+    mode.fireRate && fireRate
+      ? cycleTime(mode, mode.fireRate) / cycleTime(mode, fireRate)
+      : 1;
+  const uncharged = mode.charge?.uncharged;
+  const crafted: EquipmentFireMode = {
+    ...mode,
+    fireRate,
+    alpha: scaled(mode.alpha),
+    dps: mode.dps === undefined ? undefined : mode.dps * damage * quicker,
+    charge: mode.charge && {
+      ...mode.charge,
+      uncharged: uncharged && {
+        ...uncharged,
+        alpha: scaled(uncharged.alpha),
+        dps:
+          uncharged.dps === undefined
+            ? undefined
+            : uncharged.dps * damage * rate,
+      },
+    },
+  };
+
+  if (rate === 1) return crafted;
+
+  const { timeToOverheat: _time, shotsToOverheat: _shots, ...rest } = crafted;
+
+  return rest;
+};
+
+const highest = (values: (number | null | undefined)[]) => {
+  const present = values.filter((value): value is number => value != null);
+
+  return present.length ? Math.max(...present) : undefined;
+};
+
 /** A piece of equipment as crafted, its temperature band included. */
 export const craftedEquipment = (
   equipment: Equipment,
@@ -220,14 +310,32 @@ export const craftedEquipment = (
   const crafted = { ...equipment } as unknown as Record<string, unknown>;
 
   changes.forEach((change, key) => {
-    const field = CRAFTED_EQUIPMENT_FIELDS[key];
-    if (field) crafted[field] = changed(crafted[field], change);
+    (CRAFTED_EQUIPMENT_FIELDS[key] || []).forEach((field) => {
+      crafted[field] = changed(crafted[field], change);
+    });
   });
 
   crafted.temperatureRating = craftedTemperature(
     equipment.temperatureRating,
     changes,
   );
+
+  // Where the modes are known, the headline figures are the best crafted
+  // mode's, so the card and the per-mode figures below it agree.
+  const modes = equipment.stats?.fireModes;
+  if (modes?.length) {
+    const damage = factor(changes, "gpp_weapon_damage");
+    const rate = factor(changes, "gpp_weapon_firerate");
+    const fireModes = modes.map((mode) => craftedFireMode(mode, damage, rate));
+
+    crafted.stats = { ...equipment.stats, fireModes };
+    crafted.alphaDamage =
+      highest(fireModes.map((mode) => mode.alpha)) ?? crafted.alphaDamage;
+    crafted.dps =
+      highest(
+        fireModes.flatMap((mode) => [mode.dps, mode.charge?.uncharged?.dps]),
+      ) ?? crafted.dps;
+  }
 
   return crafted as unknown as Equipment;
 };

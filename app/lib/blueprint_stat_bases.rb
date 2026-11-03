@@ -20,6 +20,9 @@ class BlueprintStatBases
   EQUIPMENT = {
     "gpp_armor_damagemitigation" => :damage_reduction,
     "gpp_weapon_firerate" => :rate_of_fire,
+    # The best shot across the weapon's fire modes, which is the figure the
+    # catalogue shows for it.
+    "gpp_weapon_damage" => :alpha_damage,
     "gpp_armor_radiationdissipation" => :radiation_scrub_rate
   }.freeze
 

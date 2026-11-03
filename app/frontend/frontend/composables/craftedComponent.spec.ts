@@ -209,4 +209,59 @@ describe("craftedEquipment", () => {
 
     expect(crafted.temperatureRating).toBe("cold-rated");
   });
+
+  // DPS is damage times rate, so it follows a recipe that moves either.
+  it("moves a weapon's DPS with its damage and its rate of fire", () => {
+    const crafted = craftedEquipment(
+      { name: "P4-AR", alphaDamage: 12, dps: 162, rateOfFire: 810 } as never,
+      new Map([
+        ["gpp_weapon_damage", { additive: false, value: 1.1 }],
+        ["gpp_weapon_firerate", { additive: false, value: 1.2 }],
+      ]),
+    );
+
+    expect(crafted.alphaDamage).toBeCloseTo(13.2);
+    expect(crafted.rateOfFire).toBeCloseTo(972);
+    expect(crafted.dps).toBeCloseTo(213.84);
+  });
+
+  // The card and the per-mode figures below it have to agree, so the best
+  // crafted mode sets the headline figures.
+  it("scales each fire mode and takes the headline from the best of them", () => {
+    const crafted = craftedEquipment(
+      {
+        name: "Gallant",
+        alphaDamage: 21,
+        dps: 140,
+        stats: {
+          fireModes: [
+            {
+              kind: "burst",
+              fireRate: 900,
+              shots: 3,
+              cooldown: 0.25,
+              alpha: 21,
+              dps: 140,
+              timeToOverheat: 5.36,
+            },
+          ],
+        },
+      } as never,
+      new Map([
+        ["gpp_weapon_damage", { additive: false, value: 1.1 }],
+        ["gpp_weapon_firerate", { additive: false, value: 1.2 }],
+      ]),
+    );
+
+    const mode = crafted.stats?.fireModes?.[0];
+
+    expect(mode?.alpha).toBeCloseTo(23.1);
+    expect(mode?.fireRate).toBeCloseTo(1080);
+    // The burst's 0.25s cooldown does not shrink, so DPS rises by less than
+    // the 20% the rate does: 0.45s a cycle becomes 0.4167s.
+    expect(mode?.dps).toBeCloseTo(166.32);
+    expect(mode?.timeToOverheat).toBeUndefined();
+    expect(crafted.dps).toBeCloseTo(166.32);
+    expect(crafted.alphaDamage).toBeCloseTo(23.1);
+  });
 });

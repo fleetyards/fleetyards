@@ -80,5 +80,69 @@
       "min_size": 1,
       "max_size": 2
     }
-  ]
+  ],
+  "stats": {
+    "fire_modes": [
+      {
+        "name": "Rapid",
+        "label": "Auto",
+        "kind": "rapid",
+        "fire_rate": 810.0,
+        "ammo_cost": 1,
+        "spread": {
+          "min": 0.18,
+          "max": 5.0,
+          "first_attack": 1.35,
+          "attack": 1.25,
+          "decay": 6.5
+        },
+        "alpha": 12.0,
+        "dps": 162.0
+      },
+      {
+        "name": "Single",
+        "label": "Semi",
+        "kind": "single",
+        "fire_rate": 810.0,
+        "ammo_cost": 1,
+        "spread": {
+          "min": 0.15,
+          "max": 1.89,
+          "first_attack": 1.45,
+          "attack": 1.35,
+          "decay": 4.0
+        },
+        "alpha": 12.0,
+        "dps": 162.0
+      }
+    ],
+    "ammo": {
+      "damage": {
+        "physical": 12.0
+      },
+      "damage_drop": {
+        "min_distance": 40.0,
+        "per_meter": {
+          "physical": 0.05
+        },
+        "min_damage": {
+          "physical": 10.0
+        }
+      },
+      "speed": 550.0,
+      "lifetime": 2.0,
+      "range": 1100.0,
+      "penetration": {
+        "max_thickness": 5000.0,
+        "near_radius": 0.5,
+        "far_radius": 5.0
+      }
+    },
+    "magazine": {
+      "size": 40,
+      "reserve": 3
+    }
+  },
+  "alpha_damage": 12.0,
+  "dps": 162.0
 }

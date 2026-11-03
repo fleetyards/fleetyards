@@ -21,6 +21,7 @@ import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useMetaInfo } from "@/shared/composables/useMetaInfo";
 import EquipmentStatsCard from "@/frontend/components/StatsCard/Equipment/index.vue";
+import EquipmentGearStats from "@/frontend/components/Equipment/GearStats/index.vue";
 import ItemHero from "@/frontend/components/ItemHero/index.vue";
 import ItemViews from "@/frontend/components/ItemViews/index.vue";
 import Alert from "@/shared/components/base/Alert/index.vue";
@@ -425,6 +426,8 @@ watch(
             </MetricsCard>
           </div>
         </div>
+
+        <EquipmentGearStats :stats="equipment.stats" />
 
         <section
           v-if="ports.length"

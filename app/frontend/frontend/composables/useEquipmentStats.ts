@@ -1,8 +1,42 @@
-import { EquipmentTypeEnum, type Equipment } from "@/services/fyApi";
+import {
+  EquipmentToolActionKindEnum,
+  EquipmentTypeEnum,
+  type Equipment,
+  type EquipmentToolAction,
+} from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import {
+  damageTotal,
+  multiplierChange,
+  signed,
+} from "@/frontend/utils/gearFigures";
 import { type HardpointStat } from "@/frontend/composables/useHardpointStats";
 
 export type EquipmentStatKey =
+  | "alphaDamage"
+  | "dps"
+  | "blastDamage"
+  | "blastRadius"
+  | "meleeDamage"
+  | "tractorForce"
+  | "tractorRange"
+  | "healRange"
+  | "doseRate"
+  | "repairRate"
+  | "salvageRate"
+  | "miningPower"
+  | "extinguishRange"
+  | "healthRestored"
+  | "instability"
+  | "resistance"
+  | "clusterFactor"
+  | "optimalChargeWindow"
+  | "zoom"
+  | "recoilChange"
+  | "spreadChange"
+  | "damageChange"
+  | "fireRateChange"
+  | "soundRadiusChange"
   | "damageReduction"
   | "temperatureRating"
   | "radiationProtection"
@@ -21,9 +55,13 @@ export type EquipmentStatKey =
 // order. Armour, an undersuit and a rifle share almost nothing, so one fixed
 // list would put a rate of fire on a jacket's page. The columns are flat on the
 // payload, so each entry is a field to read rather than a shape to parse.
+//
+// A type flagged `promote` leads with the first figures it has when its
+// primary ones are missing: a grenade has no DPS but has a blast, a
+// multi-tool none of the tractor figures a tractor tool leads with.
 const VOCABULARY: Record<
   string,
-  { primary: EquipmentStatKey[]; rest: EquipmentStatKey[] }
+  { primary: EquipmentStatKey[]; rest: EquipmentStatKey[]; promote?: boolean }
 > = {
   [EquipmentTypeEnum.ARMOR]: {
     primary: ["damageReduction", "temperatureRating"],
@@ -58,16 +96,66 @@ const VOCABULARY: Record<
     ],
   },
   [EquipmentTypeEnum.WEAPON]: {
-    primary: ["rateOfFire", "range"],
-    rest: ["weaponClass", "magazineSize", "volume"],
+    primary: ["dps", "alphaDamage"],
+    rest: [
+      "blastDamage",
+      "blastRadius",
+      "meleeDamage",
+      "rateOfFire",
+      "range",
+      "weaponClass",
+      "magazineSize",
+      "volume",
+    ],
+    promote: true,
+  },
+  [EquipmentTypeEnum.TOOL]: {
+    primary: [],
+    rest: [
+      "tractorForce",
+      "tractorRange",
+      "healRange",
+      "doseRate",
+      "repairRate",
+      "salvageRate",
+      "miningPower",
+      "extinguishRange",
+      "dps",
+      "volume",
+    ],
+    promote: true,
+  },
+  [EquipmentTypeEnum.MEDICAL]: {
+    primary: ["healthRestored"],
+    rest: ["volume"],
+  },
+  [EquipmentTypeEnum.MINING_GADGET]: {
+    primary: [],
+    rest: [
+      "instability",
+      "resistance",
+      "clusterFactor",
+      "optimalChargeWindow",
+      "volume",
+    ],
+    promote: true,
   },
   [EquipmentTypeEnum.WEAPON_ATTACHMENT]: {
     primary: ["magazineSize"],
-    rest: ["volume"],
+    rest: [
+      "zoom",
+      "damageChange",
+      "fireRateChange",
+      "recoilChange",
+      "spreadChange",
+      "soundRadiusChange",
+      "volume",
+    ],
+    promote: true,
   },
 };
 
-// Tools, medical items and hacking tools carry nothing but their volume.
+// Hacking tools, flair and carried props carry nothing but their volume.
 const FALLBACK = {
   primary: [] as EquipmentStatKey[],
   rest: ["volume"] as EquipmentStatKey[],
@@ -76,17 +164,188 @@ const FALLBACK = {
 export const equipmentVocabulary = (equipmentType?: string | null) =>
   VOCABULARY[equipmentType ?? ""] ?? FALLBACK;
 
+// The figures read off the detail payload's `stats` rather than a column.
+const STATS_KEYS: EquipmentStatKey[] = [
+  "blastDamage",
+  "blastRadius",
+  "meleeDamage",
+  "tractorForce",
+  "tractorRange",
+  "healRange",
+  "doseRate",
+  "repairRate",
+  "salvageRate",
+  "miningPower",
+  "extinguishRange",
+  "healthRestored",
+  "instability",
+  "resistance",
+  "clusterFactor",
+  "optimalChargeWindow",
+  "zoom",
+  "recoilChange",
+  "spreadChange",
+  "damageChange",
+  "fireRateChange",
+  "soundRadiusChange",
+];
+
+// Whether an item's card shows anything only the detail payload carries --
+// armour and clothing read their columns alone, so a list row is complete.
+export const equipmentCardReadsStats = (equipmentType?: string | null) => {
+  const vocabulary = equipmentVocabulary(equipmentType);
+
+  return [...vocabulary.primary, ...vocabulary.rest].some((key) =>
+    STATS_KEYS.includes(key),
+  );
+};
+
 type Figure = {
   value: (item: Equipment) => number | null | undefined;
   units?: string;
   // What the figure is shown in, where that differs from what it is stored in.
   shown?: (value: number) => number;
+  // A change rather than an amount, so a rise carries its plus sign.
+  signed?: boolean;
 };
 
 type Label = { label: (item: Equipment) => string | null | undefined };
 
+// The figures below the flat columns, read off the detail payload's `stats`.
+// A list record carries no `stats`, so these stay empty there.
+const best = (
+  item: Equipment,
+  kind: EquipmentToolActionKindEnum,
+  field: keyof EquipmentToolAction,
+) => {
+  const values = (item.stats?.toolActions || [])
+    .filter((action) => action.kind === kind)
+    .map((action) => action[field])
+    .filter((value): value is number => typeof value === "number");
+
+  return values.length ? Math.max(...values) : undefined;
+};
+
+const miningModifier = (
+  item: Equipment,
+  key: "instability" | "resistance" | "clusterFactor" | "optimalChargeWindow",
+) => item.stats?.mining?.modifiers?.[key];
+
 // Where each stat is read from: a number, or a label the API already words.
 const SOURCES: Record<EquipmentStatKey, Figure | Label> = {
+  alphaDamage: { value: (item) => item.alphaDamage, units: "damage" },
+  dps: { value: (item) => item.dps, units: "dps" },
+  blastDamage: {
+    value: (item) =>
+      damageTotal(item.stats?.explosion?.damage) ??
+      damageTotal(item.stats?.ammo?.explosion?.damage),
+    units: "damage",
+  },
+  blastRadius: {
+    value: (item) =>
+      item.stats?.explosion?.maxRadius ??
+      item.stats?.ammo?.explosion?.maxRadius,
+    units: "distance",
+  },
+  meleeDamage: {
+    value: (item) => {
+      const hits = (item.stats?.melee?.attacks || [])
+        .map((attack) => damageTotal(attack.damage))
+        .filter((value): value is number => value != null);
+
+      return hits.length ? Math.max(...hits) : undefined;
+    },
+    units: "damage",
+  },
+  tractorForce: {
+    value: (item) =>
+      best(item, EquipmentToolActionKindEnum.TRACTOR, "maxForce"),
+    units: "newton",
+  },
+  tractorRange: {
+    value: (item) =>
+      best(item, EquipmentToolActionKindEnum.TRACTOR, "maxDistance"),
+    units: "distance",
+  },
+  healRange: {
+    value: (item) => best(item, EquipmentToolActionKindEnum.HEAL, "range"),
+    units: "distance",
+  },
+  doseRate: {
+    value: (item) => best(item, EquipmentToolActionKindEnum.HEAL, "doseRate"),
+  },
+  repairRate: {
+    value: (item) =>
+      best(item, EquipmentToolActionKindEnum.REPAIR, "healthRate"),
+  },
+  salvageRate: {
+    value: (item) =>
+      best(item, EquipmentToolActionKindEnum.SALVAGE, "healthRate"),
+  },
+  miningPower: {
+    value: (item) => best(item, EquipmentToolActionKindEnum.MINING, "power"),
+  },
+  extinguishRange: {
+    value: (item) =>
+      best(item, EquipmentToolActionKindEnum.EXTINGUISH, "range"),
+    units: "distance",
+  },
+  healthRestored: {
+    value: (item) =>
+      item.stats?.consumable?.effects?.find(
+        (effect) => effect.kind === "health",
+      )?.amount,
+  },
+  instability: {
+    value: (item) => miningModifier(item, "instability"),
+    units: "percent",
+    signed: true,
+  },
+  resistance: {
+    value: (item) => miningModifier(item, "resistance"),
+    units: "percent",
+    signed: true,
+  },
+  clusterFactor: {
+    value: (item) => miningModifier(item, "clusterFactor"),
+    units: "percent",
+    signed: true,
+  },
+  optimalChargeWindow: {
+    value: (item) => miningModifier(item, "optimalChargeWindow"),
+    units: "percent",
+    signed: true,
+  },
+  zoom: { value: (item) => item.stats?.modifier?.zoom, units: "zoom" },
+  recoilChange: {
+    value: (item) => {
+      const recoil = item.stats?.modifier?.recoil;
+
+      return multiplierChange(recoil?.pitch ?? recoil?.yaw);
+    },
+    units: "percent",
+    signed: true,
+  },
+  spreadChange: {
+    value: (item) => multiplierChange(item.stats?.modifier?.spread?.max),
+    units: "percent",
+    signed: true,
+  },
+  damageChange: {
+    value: (item) => multiplierChange(item.stats?.modifier?.damage),
+    units: "percent",
+    signed: true,
+  },
+  fireRateChange: {
+    value: (item) => multiplierChange(item.stats?.modifier?.fireRate),
+    units: "percent",
+    signed: true,
+  },
+  soundRadiusChange: {
+    value: (item) => multiplierChange(item.stats?.modifier?.soundRadius),
+    units: "percent",
+    signed: true,
+  },
   damageReduction: { value: (item) => item.damageReduction, units: "percent" },
   temperatureRating: { label: (item) => item.temperatureRating },
   radiationProtection: {
@@ -143,11 +402,14 @@ export const useEquipmentStatReader = () => {
     if ("label" in source) return source.label(item) || undefined;
 
     const value = raw(item, key);
-
-    return figure(
+    const text = figure(
       value !== undefined && source.shown ? source.shown(value) : value,
       source.units,
     );
+
+    return text && source.signed && value !== undefined
+      ? signed(text, value)
+      : text;
   };
 
   return { read, raw };
@@ -175,12 +437,31 @@ export const useEquipmentStats = (
         const value = read(item, key);
         if (!value) return [];
 
-        return [{ label: t(`labels.equipment.stats.${key}`), value, primary }];
+        return [
+          { key, label: t(`labels.equipment.stats.${key}`), value, primary },
+        ];
       });
 
+    // A weapon leads with its damage, which a record the game files give no
+    // round for does not have; it then leads with the first figures it does,
+    // and so does a tool or a gadget.
+    // Volume never leads: it says how much room the item takes, not what it
+    // does.
+    const strip = ({
+      key: _key,
+      ...stat
+    }: { key: EquipmentStatKey } & HardpointStat) => stat;
+    const primary = build(vocabulary.primary, true);
+    const rest = build(vocabulary.rest, false);
+    if (primary.length) return [...primary, ...rest].map(strip);
+
+    const promotable = vocabulary.promote
+      ? rest.filter((stat) => stat.key !== "volume").slice(0, 2)
+      : [];
+
     return [
-      ...build(vocabulary.primary, true),
-      ...build(vocabulary.rest, false),
-    ];
+      ...promotable.map((stat) => ({ ...stat, primary: true })),
+      ...rest.filter((stat) => !promotable.includes(stat)),
+    ].map(strip);
   });
 };

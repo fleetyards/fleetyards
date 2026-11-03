@@ -33,6 +33,12 @@ module Shared
             rateOfFire: {type: [:number, :null]},
             range: {type: [:number, :null]},
             storage: {type: [:number, :null]},
+            alphaDamage: {type: [:number, :null], description: "The most one shot deals across the weapon's fire modes"},
+            dps: {type: [:number, :null], description: "The most damage per second across the weapon's fire modes"},
+            stats: {
+              description: "What the gear does, from the game files; on the detail payload only, and absent for gear the files give nothing for",
+              anyOf: [::Shared::V1::Schemas::EquipmentStats, {type: :null}]
+            },
 
             # What the piece costs a cargo grid or an inventory, and the box it
             # fills once it snaps to one and stops sharing space.

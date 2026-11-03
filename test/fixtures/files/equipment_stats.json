@@ -1,0 +1,376 @@
+{
+  "fire_modes": [
+    {
+      "name": "Burst",
+      "kind": "burst",
+      "fire_rate": 900.0,
+      "shots": 3,
+      "cooldown": 0.25,
+      "ammo_cost": 1,
+      "heat_per_shot": 2.8,
+      "spread": {
+        "min": 0.05,
+        "max": 2.41,
+        "first_attack": 1.21,
+        "attack": 1.03,
+        "decay": 5.0
+      },
+      "alpha": 21.0,
+      "dps": 140.0,
+      "time_to_overheat": 2.56,
+      "shots_to_overheat": 38
+    },
+    {
+      "name": "Charge",
+      "kind": "charged",
+      "fire_rate": 70.0,
+      "ammo_cost": 1,
+      "spread": {
+        "min": 0.0,
+        "max": 0.0,
+        "first_attack": 0.0,
+        "attack": 0.0,
+        "decay": 0.0
+      },
+      "alpha": 6060.0,
+      "dps": 2121.0,
+      "charge": {
+        "time": 2.0,
+        "overcharge_time": 3.0,
+        "overcharged_time": 1.0,
+        "cooldown": 0.5,
+        "damage_multiplier": 300.0,
+        "projectile_speed_multiplier": 50.0,
+        "partial": false,
+        "uncharged": {
+          "alpha": 80.0,
+          "dps": 93.33
+        }
+      }
+    },
+    {
+      "name": "RapidBeam",
+      "condition": {
+        "heat_level": 0.4,
+        "comparison": "greater_or_equal"
+      },
+      "kind": "beam",
+      "damage_per_second": {
+        "energy": 210.0,
+        "distortion": 50.0
+      },
+      "full_damage_range": 65.0,
+      "zero_damage_range": 65.0,
+      "heat_per_second": 17.0,
+      "charge_up_time": 0.1,
+      "spread": {
+        "min": 0.5,
+        "max": 3.0,
+        "first_attack": 0.5,
+        "attack": 0.25,
+        "decay": 0.5
+      },
+      "dps": 260.0
+    },
+    {
+      "name": "Rapid",
+      "kind": "rapid",
+      "fire_rate": 1000.0,
+      "ammo_cost": 1,
+      "spread": {
+        "min": 2.2,
+        "max": 6.6,
+        "first_attack": 1.0,
+        "attack": 1.0,
+        "decay": 13.0
+      },
+      "alpha": 18.5,
+      "dps": 308.33
+    },
+    {
+      "name": "Single",
+      "kind": "single",
+      "fire_rate": 90.0,
+      "pellets": 8,
+      "ammo_cost": 1,
+      "spread": {
+        "min": 4.0,
+        "max": 4.0,
+        "first_attack": 4.0,
+        "attack": 0.5,
+        "decay": 1.0
+      },
+      "alpha": 88.0,
+      "dps": 132.0
+    }
+  ],
+  "tool_actions": [
+    {
+      "name": "Heal",
+      "kind": "heal",
+      "target": "target",
+      "range": 2.5,
+      "sensor_range": 20.0,
+      "dose_rate": 10.0,
+      "ammo_per_dose": 1.0
+    },
+    {
+      "name": "Salvage",
+      "kind": "salvage",
+      "range": 5.0,
+      "health_rate": 310.0,
+      "damage_map_rate": 10.0,
+      "material_efficiency": 0.8,
+      "health_to_ammo_ratio": 2.0,
+      "ramp_up_time": 4.0
+    },
+    {
+      "name": "Detach",
+      "kind": "tractor",
+      "min_force": 100000.0,
+      "max_force": 260000.0,
+      "min_distance": 0.1,
+      "max_distance": 25.0,
+      "full_strength_distance": 10.0,
+      "max_angle": 60.0,
+      "max_volume": 800.0,
+      "max_speed": 70.0
+    },
+    {
+      "name": "Mining beam and scanning",
+      "kind": "mining",
+      "power": 0.1,
+      "range": 10.0,
+      "optimal_range": 10.0,
+      "charge_up_time": 0.1
+    },
+    {
+      "name": "Repair",
+      "kind": "repair",
+      "range": 5.0,
+      "health_rate": 95.0,
+      "damage_map_rate": 10.0,
+      "material_efficiency": 1.0,
+      "health_to_ammo_ratio": 0.08,
+      "ramp_up_time": 0.5
+    },
+    {
+      "name": "Charge",
+      "kind": "charge",
+      "range": 10.0,
+      "resource_rate": 5.0,
+      "min_prime": 20.0,
+      "max_prime": 100.0,
+      "prime_time": 5.0,
+      "overload_duration": 3.0
+    },
+    {
+      "name": "Drain",
+      "kind": "drain",
+      "range": 10.0,
+      "resource_rate": 5.0,
+      "min_prime": 20.0,
+      "max_prime": 100.0,
+      "prime_time": 5.0,
+      "overload_duration": 3.0
+    },
+    {
+      "name": "Extinguisher",
+      "kind": "extinguish",
+      "range": 5.0,
+      "sensor_range": 10.0,
+      "cone_angle": 20.0,
+      "max_radius": 3.0
+    }
+  ],
+  "ammo": {
+    "damage": {
+      "physical": 20.0
+    },
+    "damage_drop": {
+      "min_damage": {
+        "physical": 2.0
+      }
+    },
+    "speed": 50.0,
+    "lifetime": 4.0,
+    "range": 200.0,
+    "penetration": {
+      "max_thickness": 2.5,
+      "near_radius": 1.61,
+      "far_radius": 2.01
+    },
+    "explosion": {
+      "damage": {
+        "physical": 60.0
+      },
+      "min_radius": 5.0,
+      "max_radius": 8.0,
+      "pressure": 10.0
+    }
+  },
+  "secondary_ammo": {
+    "damage": {
+      "energy": 12.5
+    },
+    "speed": 300.0,
+    "lifetime": 2.0,
+    "range": 600.0,
+    "penetration": {
+      "max_thickness": 20.0,
+      "near_radius": 0.5,
+      "far_radius": 5.0
+    }
+  },
+  "magazine": {
+    "size": 40,
+    "reserve": 3
+  },
+  "regen": {
+    "capacity": 75.0,
+    "regen_per_second": 15.0,
+    "cooldown": 3.0,
+    "cost_per_shot": 1.0
+  },
+  "heat": {
+    "overheat_temperature": 100.0,
+    "cooling_per_second": 3.0,
+    "cooling_delay": 1.0
+  },
+  "melee": {
+    "attacks": [
+      {
+        "category": "blade_slash",
+        "damage": {
+          "physical": 30.0
+        },
+        "impulse": 20.0
+      },
+      {
+        "category": "blade_stab",
+        "damage": {
+          "physical": 30.0
+        },
+        "impulse": 20.0
+      }
+    ]
+  },
+  "modifier": {
+    "spread": {
+      "first_attack": 0.65,
+      "attack": 0.65,
+      "decay": 1.2
+    },
+    "zoom_time": 1.2
+  },
+  "explosion": {
+    "damage": {
+      "physical": 120.0
+    },
+    "min_radius": 4.0,
+    "max_radius": 5.5,
+    "pressure": 280.0,
+    "fuse": 5.0
+  },
+  "mine": {
+    "trigger": "proximity",
+    "radius": 2.5,
+    "warning_radius": 3.0,
+    "horizontal_angle": 90.0,
+    "vertical_angle": 180.0
+  },
+  "mining": {
+    "modifiers": {
+      "instability": -70.0,
+      "resistance": 10.0,
+      "cluster_factor": 30.0
+    }
+  },
+  "consumable": {
+    "volume": 15.0,
+    "effects": [
+      {
+        "kind": "status",
+        "stat": "blood_drug_level",
+        "amount": 15.0
+      },
+      {
+        "kind": "buff",
+        "buff": "hurt_locomotion_mask"
+      },
+      {
+        "kind": "buff",
+        "buff": "traversal_lock_mask"
+      },
+      {
+        "kind": "buff",
+        "buff": "traversal_lock_prone_mask"
+      },
+      {
+        "kind": "buff",
+        "buff": "pain_grunt_mask"
+      },
+      {
+        "kind": "buff",
+        "buff": "arms_lock_mask"
+      },
+      {
+        "kind": "buff",
+        "buff": "stun_recovery_mask"
+      },
+      {
+        "kind": "buff",
+        "buff": "impact_resistance_knockdown_mask"
+      },
+      {
+        "kind": "buff",
+        "buff": "impact_resistance_stagger_mask"
+      },
+      {
+        "kind": "buff",
+        "buff": "impact_resistance_twitch_mask"
+      },
+      {
+        "kind": "buff",
+        "buff": "impact_resistance_flinch_mask"
+      },
+      {
+        "kind": "buff",
+        "buff": "move_speed_mask"
+      },
+      {
+        "kind": "buff",
+        "buff": "weapon_sway_mask"
+      },
+      {
+        "kind": "buff",
+        "buff": "ads_enter_mask"
+      },
+      {
+        "kind": "buff",
+        "buff": "wheezing_audio_mask"
+      },
+      {
+        "kind": "buff",
+        "buff": "blood_vision_mask"
+      },
+      {
+        "kind": "buff",
+        "buff": "muffled_audio_injury_mask"
+      },
+      {
+        "kind": "buff",
+        "buff": "stamina_regen_mask"
+      },
+      {
+        "kind": "buff",
+        "buff": "stamina_pool_mask"
+      },
+      {
+        "kind": "buff",
+        "buff": "atrophic",
+        "duration": 900.0
+      }
+    ]
+  }
+}

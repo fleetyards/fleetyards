@@ -141,6 +141,26 @@ module ScData
         assert_equal "Behring", Equipment.find_by(sc_key: "behr_rifle_ballistic_01").manufacturer&.name
       end
 
+      test "#all writes a gun's stats and its best alpha and DPS to the row and the build" do
+        curated.all
+
+        rifle = Equipment.find_by(sc_key: "behr_rifle_ballistic_01")
+        build = rifle.builds.sole
+
+        assert_equal [12.0, 162.0], [rifle.alpha_damage, rifle.dps].map(&:to_f)
+        assert_equal [12.0, 162.0], [build.alpha_damage, build.dps].map(&:to_f)
+        assert_equal %w[rapid single], build.stats["fire_modes"].pluck("kind")
+        assert_equal 40, rifle.stats.dig("magazine", "size")
+      end
+
+      test "#all writes what a pen's dose does" do
+        curated.all
+
+        effects = Equipment.find_by(sc_key: "crlf_consumable_healing_01").stats.dig("consumable", "effects")
+
+        assert_equal({"kind" => "health", "amount" => 112.5}, effects.first)
+      end
+
       # A new build never writes a build row for a dropped record, so
       # current_version filters it out. Re-importing the build we are already on
       # finds the row from the first import, which has to go.

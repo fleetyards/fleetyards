@@ -21,6 +21,8 @@ json.grade equipment.grade
 json.rate_of_fire equipment.rate_of_fire&.to_f
 json.range equipment.range&.to_f
 json.storage equipment.storage&.to_f
+json.alpha_damage equipment.alpha_damage&.to_f
+json.dps equipment.dps&.to_f
 
 json.volume equipment.volume&.to_f
 json.volume_dimensions equipment.volume_dimensions
@@ -65,5 +67,6 @@ json.media do
 end
 
 json.attach_points equipment.attach_points if extended
+json.stats equipment.stats if extended
 
 json.partial! "api/shared/dates", record: equipment

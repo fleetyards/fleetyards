@@ -487,6 +487,7 @@
         "alerts": "Alerts",
         "verifiedBadges": "Verified Badges",
         "chips": "Visual Tests Chips",
+        "gearStats": "Visual Tests Gear Stats",
         "events": "Events",
         "typography": "Typography",
         "forms": "Forms",
@@ -604,6 +605,7 @@
         "metrics": "Metrics",
         "identity": "Details",
         "craftedFrom": "Crafted from",
+        "performance": "Performance",
         "versions": "Other versions",
         "attachments": "Attachments",
         "fits": "Fits"

@@ -485,6 +485,7 @@
         "alerts": "Avvisi",
         "verifiedBadges": "Badge di verifica",
         "chips": "Chips Test Visivi",
+        "gearStats": "Statistiche dell'equipaggiamento Test Visivi",
         "events": "Eventi",
         "typography": "Tipografia",
         "forms": "Moduli",
@@ -602,6 +603,7 @@
         "metrics": "Valori",
         "identity": "Dettagli",
         "craftedFrom": "Fabbricato con",
+        "performance": "Prestazioni",
         "versions": "Altre versioni",
         "attachments": "Accessori",
         "fits": "Compatibile con"

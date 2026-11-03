@@ -485,6 +485,7 @@
         "alerts": "Hinweise",
         "verifiedBadges": "Verifizierungsabzeichen",
         "chips": "Visuelle Tests Chips",
+        "gearStats": "Visuelle Tests Ausrüstungswerte",
         "events": "Events",
         "typography": "Typografie",
         "forms": "Formulare",
@@ -602,6 +603,7 @@
         "metrics": "Werte",
         "identity": "Details",
         "craftedFrom": "Herstellbar aus",
+        "performance": "Leistung",
         "versions": "Weitere Versionen",
         "attachments": "Aufsätze",
         "fits": "Passt auf"

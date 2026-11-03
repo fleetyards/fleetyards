@@ -485,6 +485,7 @@
         "alerts": "提示",
         "verifiedBadges": "驗證徽章",
         "chips": "視覺測試 Chips",
+        "gearStats": "視覺測試 裝備數據",
         "events": "活動",
         "typography": "排版",
         "forms": "表單",
@@ -602,6 +603,7 @@
         "metrics": "數據",
         "identity": "詳情",
         "craftedFrom": "製造配方",
+        "performance": "性能",
         "versions": "其他版本",
         "attachments": "配件",
         "fits": "適用於"

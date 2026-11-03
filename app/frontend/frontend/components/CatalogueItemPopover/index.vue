@@ -8,6 +8,7 @@ export default {
 import BasePopover from "@/shared/components/Popover/index.vue";
 import ComponentStatsCard from "@/frontend/components/StatsCard/Component/index.vue";
 import EquipmentStatsCard from "@/frontend/components/StatsCard/Equipment/index.vue";
+import { equipmentCardReadsStats } from "@/frontend/composables/useEquipmentStats";
 import CommodityStatsCard from "@/frontend/components/StatsCard/Commodity/index.vue";
 import ShipStatsCard from "@/frontend/components/StatsCard/Ship/index.vue";
 import BlueprintStatsCard from "@/frontend/components/StatsCard/Blueprint/index.vue";
@@ -126,8 +127,25 @@ const fetchesInFleet = (type: Ref<boolean>) => {
 const { data: fetchedComponent, isPending: componentPending } =
   useComponentQuery(slug, { query: { enabled: fetches(isComponent) } });
 
+// A list hands over its rows without `stats`, which only the detail payload
+// carries, so a row is completed from the detail when the card opens: a tool
+// leads with its tractor or healing figures, not just its volume.
+const equipmentRecordWithoutStats = computed(
+  () =>
+    isEquipment.value &&
+    !!props.record &&
+    (props.record as Equipment).stats === undefined &&
+    equipmentCardReadsStats((props.record as Equipment).equipmentType),
+);
+
+const fetchesEquipment = computed(
+  () =>
+    fetches(isEquipment).value ||
+    (requested.value && equipmentRecordWithoutStats.value && !!slug.value),
+);
+
 const { data: fetchedEquipment, isPending: equipmentPending } =
-  useEquipmentItemQuery(slug, { query: { enabled: fetches(isEquipment) } });
+  useEquipmentItemQuery(slug, { query: { enabled: fetchesEquipment } });
 
 const { data: fetchedCommodity, isPending: commodityPending } =
   useCommodityQuery(slug, { query: { enabled: fetches(isCommodity) } });
@@ -170,9 +188,15 @@ const { data: fetchedLocation, isPending: locationPending } = useLocationQuery(
 const component = computed(
   () => (props.record as Component | undefined) ?? fetchedComponent.value,
 );
-const equipment = computed(
-  () => (props.record as Equipment | undefined) ?? fetchedEquipment.value,
-);
+const equipment = computed(() => {
+  const record = props.record as Equipment | undefined;
+  if (!record) return fetchedEquipment.value;
+  if (!equipmentRecordWithoutStats.value || !fetchedEquipment.value) {
+    return record;
+  }
+
+  return { ...record, stats: fetchedEquipment.value.stats };
+});
 
 // A crafted part's recipe, fetched with the card, so its figures can be shown
 // as crafting left them rather than as the catalogue lists them.

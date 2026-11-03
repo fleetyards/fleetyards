@@ -122,6 +122,9 @@ module ScData
           volume: equipment_data["volume"],
           volume_dimensions: equipment_data["volume_dimensions"],
           fit: equipment_data["fit"],
+          stats: equipment_data["stats"],
+          alpha_damage: equipment_data["alpha_damage"],
+          dps: equipment_data["dps"],
           hidden: equipment_data["hidden"],
           family_key: equipment_data["family_key"],
           manufacturer: lookup_manufacturer(equipment_data["manufacturer_ref"])

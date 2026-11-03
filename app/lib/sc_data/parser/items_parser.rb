@@ -1,12 +1,13 @@
 module ScData
   module Parser
     class ItemsParser < ScData::Parser::BaseParser
+      include ScData::Parser::MiningModifiers
+
       # The game's medical bed tiers, best first: a Hospital bed treats and
       # respawns where an Ambulance bed only stabilises.
       MEDICAL_BED_TIERS = {"Hospital" => 1, "Clinic" => 2, "Ambulance" => 3}.freeze
 
       def all
-        load_ammo_params
         load_weapon_records
         load_cargogrids
         load_items
@@ -540,7 +541,7 @@ module ScData
           fire_actions = fire_actions.is_a?(Array) ? fire_actions.first : fire_actions
 
           ammo_ref = values.dig("Components", "SAmmoContainerComponentParams", "ammoParamsRecord")
-          ammo = @ammo_params[ammo_ref] if ammo_ref.present?
+          ammo = ammo_params[ammo_ref] if ammo_ref.present?
 
           beam = weapon_data.dig("fireActions", "SWeaponActionFireBeamParams")
           beam = beam.is_a?(Array) ? beam.first : beam
@@ -1212,16 +1213,6 @@ module ScData
         assist.values.all?(&:zero?) ? nil : assist.presence
       end
 
-      private def load_ammo_params
-        @ammo_params = {}
-        Dir.glob("#{base_path}/#{FOUNDRY_PATH}/ammoparams/**/*.xml").each do |file|
-          data = Hash.from_xml(File.read(file))
-          values = data.values.first
-          ref = values.dig("__ref")
-          @ammo_params[ref] = values if ref.present?
-        end
-      end
-
       # What a launched decoy or noise cloud presents to a seeker, from launch
       # to burn-out, and how long it lasts: a flare for its projectile's
       # lifetime, a noise cloud for its own volume lifetime once it spawns.
@@ -1342,64 +1333,6 @@ module ScData
         ports.count do |port|
           Array.wrap(port.dig("Types", "SItemPortDefTypes")).any? { |type| type["Type"] == "MiningModifier" }
         end
-      end
-
-      MINING_MODIFIERS = {
-        instability: "laserInstability",
-        resistance: "resistanceModifier",
-        optimal_charge_window: "optimalChargeWindowSizeModifier",
-        optimal_charge_rate: "optimalChargeWindowRateModifier",
-        catastrophic_charge_rate: "catastrophicChargeWindowRateModifier",
-        shatter_damage: "shatterdamageModifier"
-      }.freeze
-
-      # The filter is stored as how much inert material it screens out, and
-      # reads the other way round from every other modifier: a filter of 30 is
-      # 30 % less inert material, which is how the game describes it.
-      private def extract_mining_modifiers(modifiers, filter_params)
-        values = MINING_MODIFIERS.transform_values do |key|
-          modifiers&.dig(key, "FloatModifierMultiplicative", "value")&.to_f
-        end
-
-        filter = filter_params&.dig("filterModifier", "FloatModifierMultiplicative", "value")&.to_f
-        values[:inert_materials] = -filter if filter
-
-        values.compact.reject { |_, value| value.zero? }.presence
-      end
-
-      # A module either sits in its slot for good (passive) or is fired off for
-      # a few seconds at a time, a set number of times (active). What it does
-      # to the laser's two beams is a multiplier per fire action, kept as the
-      # percent change the game prints.
-      private def extract_mining_module_data(values)
-        params = values.dig("Components", "EntityComponentAttachableModifierParams")
-        return if params.blank?
-
-        mining = Array.wrap(params.dig("modifiers", "ItemMiningModifierParams")).first
-        weapon_modifiers = Array.wrap(params.dig("modifiers", "ItemWeaponModifiersParams"))
-        power_change = ->(index) {
-          modifier = weapon_modifiers.find { |entry| entry["fireActionIndex"].to_s == index.to_s }
-          multiplier = modifier&.dig("weaponModifier", "weaponStats", "damageMultiplier")&.to_f
-          ((multiplier - 1) * 100).round(2).nonzero? if multiplier
-        }
-        active = params["activationMethod"] == "ActivateOnDemand"
-
-        data = {
-          fracture_power: power_change.call(0),
-          extraction_power: power_change.call(1),
-          modifiers: extract_mining_modifiers(
-            mining&.dig("MiningLaserModifier"),
-            params.dig("modifiers", "MiningFilterItemModifierParams", "filterParams")
-          )
-        }.compact
-        return if data.empty?
-
-        data.merge(
-          mining_module: true,
-          activation: active ? "active" : "passive",
-          charges: (params["charges"]&.to_i&.nonzero? if active),
-          duration: (mining&.dig("modifierLifetime", "ItemModifierTimedLife", "lifetime")&.to_f if active)
-        ).compact
       end
 
       # A salvage modifier scales the head's scraping beam. A modifier that

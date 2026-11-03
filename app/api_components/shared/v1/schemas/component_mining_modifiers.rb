@@ -17,7 +17,8 @@ module Shared
             optimalChargeRate: {type: :number},
             catastrophicChargeRate: {type: :number},
             shatterDamage: {type: :number},
-            inertMaterials: {type: :number}
+            inertMaterials: {type: :number},
+            clusterFactor: {type: :number}
           },
           additionalProperties: false
         })
