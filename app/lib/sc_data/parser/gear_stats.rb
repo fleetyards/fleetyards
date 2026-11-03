@@ -352,12 +352,14 @@ module ScData
         }.compact
       end
 
-      # Shots and seconds of sustained fire before the weapon locks up: the
-      # cooling runs throughout, so a weapon that sheds heat faster than it
-      # builds it never gets there and reports neither.
+      # Shots and seconds of sustained fire before the weapon locks up. A
+      # burst's cooldown and a charge's wait count: the shots a mode keeps up
+      # per second are its DPS over its alpha, not its stated rate.
       #
-      # A burst's cooldown and a charge's wait count: the shots a mode keeps
-      # up per second are its DPS over its alpha, not its stated rate.
+      # Cooling only starts once the weapon has been quiet for its delay, so
+      # it works between shots only where the mode pauses that long. A weapon
+      # that sheds more heat in its pauses than it builds never locks up and
+      # reports neither figure.
       private def overheat(mode, heat)
         limit = heat&.dig(:overheat_temperature)
         shots_per_second = (mode[:dps] / mode[:alpha] if mode[:dps] && mode[:alpha]&.positive?)
@@ -368,7 +370,7 @@ module ScData
         end
         return {} if limit.nil? || per_second.nil?
 
-        net = per_second - heat[:cooling_per_second].to_f
+        net = per_second - (cools_between_shots?(mode, heat, shots_per_second) ? heat[:cooling_per_second].to_f : 0)
         return {} unless net.positive?
 
         seconds = limit / net
@@ -377,6 +379,17 @@ module ScData
           time_to_overheat: round(seconds),
           shots_to_overheat: (Integer(seconds * shots_per_second) if shots_per_second && mode[:heat_per_shot])
         }.compact
+      end
+
+      private def cools_between_shots?(mode, heat, shots_per_second)
+        pause = case mode[:kind]
+        when "beam" then 0
+        when "burst" then mode[:cooldown].to_f
+        when "charged" then mode.dig(:charge, :time).to_f
+        else (shots_per_second ? 1 / shots_per_second : 0)
+        end
+
+        pause >= heat[:cooling_delay].to_f
       end
 
       private def tool_action(action)

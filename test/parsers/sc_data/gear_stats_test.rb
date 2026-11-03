@@ -19,11 +19,20 @@ module ScData
         mode = stats[:fire_modes].sole
 
         assert_equal ["burst", 900.0, 3, 0.25, 21.0, 140.0], mode.values_at(:kind, :fire_rate, :shots, :cooldown, :alpha, :dps)
-        # 6.67 shots a second once the cooldown between bursts is counted.
-        assert_equal [6.38, 42], mode.values_at(:time_to_overheat, :shots_to_overheat)
+        # 6.67 shots a second once the cooldown between bursts is counted, and
+        # no cooling: the 0.25s pause is shorter than the 1s cooling delay.
+        assert_equal [5.36, 35], mode.values_at(:time_to_overheat, :shots_to_overheat)
         assert_equal({min: 0.05, max: 2.41, first_attack: 1.21, attack: 1.03, decay: 5.0}, mode[:spread])
         assert_equal({size: 45, reserve: 3}, stats[:magazine])
         assert_equal "Burst", mode[:label]
+      end
+
+      test "cools between shots only where the mode pauses longer than the cooling delay" do
+        stats = stats_for(weapon(<<~XML, heat: true), rounds: {ROUND => round(energy: 50)})
+          <SWeaponActionFireSingleParams name="Single" fireRate="30" heatPerShot="50">#{launcher}</SWeaponActionFireSingleParams>
+        XML
+
+        assert_equal [4.55, 2], stats[:fire_modes].sole.values_at(:time_to_overheat, :shots_to_overheat)
       end
 
       test "reads a charged shot at full charge, and what it deals released early" do
