@@ -66,13 +66,14 @@ const slot: HangarPlanSlot = {
 };
 
 describe("Hangar/Planner/CandidatePickerModal", () => {
-  it("offers only ships a player can own, within the slot's filters", async () => {
+  it("offers only ships the plan can get, within the slot's filters", async () => {
     await mountWithDefaults(Component, { props: { planId: "plan", slot } });
 
     expect(picker.query).toEqual({
       pledgePriceLteq: 400,
       sizeIn: ["medium"],
       playerOwnableEq: true,
+      plannable: true,
     });
   });
 

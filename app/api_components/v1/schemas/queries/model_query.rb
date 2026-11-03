@@ -36,6 +36,7 @@ module V1
             onSaleEq: {type: :boolean},
             playerOwnableEq: {type: :boolean},
             ccuTarget: {type: :boolean, description: "Ships RSI sells upgrades into, today or during sales"},
+            plannable: {type: :boolean, description: "Ships a hangar plan can get: sold on the store at a price, earned in game, or held or bought back by the signed-in user"},
             pledgePriceGt: {type: :number},
             pledgePriceGteq: {type: :number},
             pledgePriceLteq: {type: :number},

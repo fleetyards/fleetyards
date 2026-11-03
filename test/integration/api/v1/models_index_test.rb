@@ -162,6 +162,33 @@ class Api::V1::ModelsIndexTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /models narrows to the ships a plan can get, the user's own among them" do
+    user = create(:user)
+    priced = create(:model, pledge_price: 300)
+    earned = create(:model, pledge_price: nil, ingame_only: true)
+    held = create(:model, pledge_price: nil)
+    bought_back = create(:model, name: "Galaxy Executive", pledge_price: nil)
+    unobtainable = create(:model, pledge_price: nil)
+    create(:vehicle, user:, model: held)
+    create(:buyback_pledge, user:, name: "Standalone Ship - Galaxy Executive")
+
+    assert_api_response :get, 200, params: {q: {"plannable" => true}} do
+      names = parsed_body["items"].map { |item| item["name"] }
+      assert_includes names, priced.name
+      assert_includes names, earned.name
+      assert_not_includes names, held.name
+    end
+
+    sign_in user
+
+    assert_api_response :get, 200, params: {q: {"plannable" => true}} do
+      names = parsed_body["items"].map { |item| item["name"] }
+      assert_includes names, held.name
+      assert_includes names, bought_back.name
+      assert_not_includes names, unobtainable.name
+    end
+  end
+
   test "GET /models accepts a containerFit map" do
     create_list(:model, 2)
 
