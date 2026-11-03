@@ -21,7 +21,10 @@ import PickerCard from "@/shared/components/PickerCard/index.vue";
 import EquipmentIcon from "@/frontend/components/Equipment/Icon/index.vue";
 import HardpointCategoryIcon from "@/frontend/components/Models/Hardpoints/CategoryIcon/index.vue";
 import { MAX_MODELS } from "@/frontend/components/Compare/constants";
-import { compareItemImage } from "@/frontend/components/Compare/image";
+import {
+  compareItemImage,
+  compareItemImageFit,
+} from "@/frontend/components/Compare/image";
 import {
   componentCompareCategory,
   equipmentCompareCategory,
@@ -375,7 +378,7 @@ const resultsLabel = computed(() =>
           :name="item.name"
           :subtitle="subtitleOf(item)"
           :image="imageOf(item)"
-          image-fit="contain"
+          :image-fit="compareItemImageFit(item)"
           :badges="badgesOf(item)"
           :selected="selectedIds.has(item.id)"
           :disabled="cardDisabled(item)"
