@@ -48,6 +48,12 @@ module Overlay
     # last two would also change the hash without the data changing.
     NESTED_META_KEYS = %w[id signedId media storeImage description createdAt updatedAt availability links].freeze
 
+    # Each kind is pictured as the site search pictures it, by the first of these
+    # `media` entries it has.
+    IMAGE_KEYS = {"component" => "component", "equipment" => "equipment", "model" => "ship"}.to_h do |kind, search_type|
+      [kind, ::Catalogue::Search::IMAGES.fetch(search_type).map { |name| name.to_s.camelize(:lower) }]
+    end.freeze
+
     Result = Data.define(:manifest, :items_gzip, :file_name) do
       def sha256 = manifest[:sha256]
     end
@@ -111,7 +117,6 @@ module Overlay
             sub_type: payload["subType"],
             size: payload["size"],
             grade: payload["gradeLabel"].presence || payload["grade"],
-            image: image(payload.dig("media", "storeImage")),
             url: "#{FRONTEND_ENDPOINT}/components/#{component.slug}")
         end
     end
@@ -129,7 +134,6 @@ module Overlay
             sub_type: payload["subType"],
             size: payload["size"],
             grade: payload["grade"],
-            image: image(payload.dig("media", "storeImage")) || image(payload["storeImage"]),
             url: "#{FRONTEND_ENDPOINT}/equipment/#{equipment.slug}")
         end
     end
@@ -145,13 +149,13 @@ module Overlay
             category: payload["classification"],
             type_label: payload["classificationLabel"],
             size: payload.dig("metrics", "size"),
-            image: image(payload.dig("media", "storeImage")),
             url: "#{FRONTEND_ENDPOINT}/ships/#{model.slug}")
         end
     end
 
-    private def item(kind, payload, sc_key: payload["scKey"], category: nil, type: nil, type_label: nil, sub_type: nil, size: nil, grade: nil, image: nil, url: nil)
+    private def item(kind, payload, sc_key: payload["scKey"], category: nil, type: nil, type_label: nil, sub_type: nil, size: nil, grade: nil, url: nil)
       manufacturer = payload["manufacturer"]
+      image = IMAGE_KEYS.fetch(kind).map { |key| payload.dig("media", key) }.find { |file| file?(file) }
 
       {
         "kind" => kind,
@@ -166,7 +170,8 @@ module Overlay
         "subType" => sub_type,
         "size" => size&.to_s,
         "grade" => grade,
-        "image" => image,
+        "image" => image_url(image),
+        "thumb" => thumb_url(image),
         "url" => url,
         "stats" => stats(kind, payload)
       }.reject { |_key, value| blank?(value) }
@@ -206,10 +211,21 @@ module Overlay
       value.nil? || value == "" || (value.respond_to?(:empty?) && value.empty?)
     end
 
-    private def image(file)
-      return unless file.is_a?(Hash)
+    private def file?(file)
+      file.is_a?(Hash) && file["url"].present?
+    end
 
-      file["mediumUrl"].presence || file["smallUrl"].presence || file["url"].presence
+    private def image_url(file)
+      return unless file?(file)
+
+      file["mediumUrl"].presence || file["smallUrl"].presence || file["url"]
+    end
+
+    # The overlay lists dozens of results at once, too many to load at 1,000 px.
+    private def thumb_url(file)
+      return unless file?(file)
+
+      file["smallUrl"].presence || file["mediumUrl"].presence || file["url"]
     end
 
     private def render(partial, **locals)
