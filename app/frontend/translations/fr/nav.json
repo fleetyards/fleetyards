@@ -10,7 +10,10 @@
         "index": "Vaisseaux"
       },
       "compare": {
-        "index": "Comparer"
+        "index": "Comparer",
+        "ships": "Vaisseaux",
+        "components": "Composants",
+        "equipment": "Équipement"
       },
       "manufacturers": "Fabricants",
       "images": "Images",
@@ -138,6 +141,7 @@
         "plaque": "Plaques de dédicace",
         "tradeRoutes": "Routes commerciales",
         "dressingRoom": "Cabine d'essayage",
+        "paintBooth": "Atelier de peinture",
         "tours": "Expéditions"
       },
       "api": "Documentation API",

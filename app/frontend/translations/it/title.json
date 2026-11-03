@@ -176,7 +176,9 @@
         "friends": "Amici"
       },
       "compare": {
-        "ships": "Confronta Navi"
+        "ships": "Confronta Navi",
+        "components": "Confronta componenti",
+        "equipment": "Confronta equipaggiamento"
       },
       "notFound": "404",
       "tools": {
@@ -186,6 +188,7 @@
         "plaque": "Targhe di dedica",
         "tradeRoutes": "Rotte commerciali",
         "dressingRoom": "Camerino",
+        "paintBooth": "Officina di verniciatura",
         "tours": {
           "index": "Spedizioni",
           "add": "Crea una spedizione",

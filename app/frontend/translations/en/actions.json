@@ -219,7 +219,8 @@
         "patreon": "Patreon"
       },
       "compare": {
-        "ships": "Compare"
+        "ships": "Compare",
+        "item": "Compare"
       },
       "cargoGrids": {
         "addShips": "Add Ships"

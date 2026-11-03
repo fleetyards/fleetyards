@@ -19,3 +19,9 @@ es:
       hangar:
         import:
           no_data: No se encontraron datos en el archivo de importación
+      compare:
+        share:
+          empty: "No se indicaron elementos para el enlace compartido"
+          too_many: "Un enlace compartido admite como máximo %{max} elementos"
+          unknown_models: "No se encontró ninguno de los elementos indicados"
+          mixed: "Un enlace compartido compara un solo tipo: naves, componentes o equipo"

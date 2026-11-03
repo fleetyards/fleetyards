@@ -262,6 +262,9 @@ module ScData
       # plushy_orison_whale_1_a and carryable_1h_cy_toy_plushy_orison_whale_1_a
       # -- so its type stands in for the prefix. The suit gear's keys name the
       # wearer's sex instead, so its item type does.
+      #
+      # Worn pieces in different slots are never colourways of each other: the
+      # game names the Antium helmet in Jet "Antium Core Jet".
       private def mark_skins(parsed)
         parsed.group_by { |item| item[:name] }.each_value do |named|
           next if named.one?
@@ -383,7 +386,7 @@ module ScData
         return item[:equipment_type] if CARRIED_EQUIPMENT_TYPES.include?(item[:equipment_type])
         return item[:item_type] if SUIT_ITEM_TYPES.include?(item[:item_type])
 
-        item[:key].split("_").first(2).join("_")
+        [item[:key].split("_").first(2).join("_"), item[:slot]]
       end
 
       private def parse_equipment(item)

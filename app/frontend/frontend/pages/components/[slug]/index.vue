@@ -7,6 +7,7 @@ export default {
 <script lang="ts" setup>
 import ExternalLinks from "@/shared/components/ExternalLinks/index.vue";
 import AddToInventoryBtn from "@/frontend/components/Logistics/AddToInventoryBtn/index.vue";
+import CompareBtn from "@/frontend/components/Compare/CompareBtn/index.vue";
 import BreadCrumbs from "@/shared/components/BreadCrumbs/index.vue";
 import { type Crumb } from "@/shared/components/BreadCrumbs/types";
 import MetricsCard from "@/frontend/components/Models/MetricsCard/index.vue";
@@ -231,6 +232,12 @@ watch(
 
     <ExternalLinks :title="component.name" />
     <AddToInventoryBtn :entry="{ type: 'Component', record: component }" />
+    <CompareBtn
+      :to="{
+        name: 'compare-components',
+        query: { components: [component.slug] },
+      }"
+    />
 
     <router-link
       class="component-page__history-link"

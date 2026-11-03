@@ -26,6 +26,10 @@ const EQUIPMENT: Record<string, Equipment> = {
     holoRiggedMale: media("core_rigged.glb"),
   }),
   "adp-legs": piece("adp-legs", { holo: media("legs.glb") }),
+  "painted-core": piece("painted-core", {
+    holoRiggedMale: media("painted_core_rigged.glb"),
+    holoRiggedTexturedMale: media("painted_core_rigged_textured.glb"),
+  }),
   "pembroke-backpack": piece("pembroke-backpack", {}),
   "p4-ar": piece("p4-ar", {
     holo: media("p4ar.glb"),
@@ -273,6 +277,28 @@ describe("ToolsDressingRoomPage", () => {
     await flushPromises();
 
     expect(pending()).toBe(true);
+  });
+
+  it("draws a piece from its painted rig, and from its plain rig once that fails", async () => {
+    const { wrapper } = await mount({ torso: "painted-core" });
+
+    expect(viewerModel(wrapper).rig.pieces).toEqual([
+      {
+        path: "/painted_core_rigged_textured.glb",
+        size: 1000,
+        textured: true,
+        fallbackPath: "/painted_core_rigged.glb",
+      },
+    ]);
+
+    wrapper
+      .findComponent({ name: "HoloViewer" })
+      .vm.$emit("fellBack", ["/painted_core_rigged_textured.glb"]);
+    await flushPromises();
+
+    expect(viewerModel(wrapper).rig.pieces).toEqual([
+      { path: "/painted_core_rigged.glb", size: 1000 },
+    ]);
   });
 
   it("switches the body and keeps it in the address", async () => {

@@ -14,6 +14,8 @@ zh-TW:
     server_error: 500
     unprocessable_entity: 422
     frontend:
+      compare_components: 比較組件
+      compare_equipment: 比較裝備
       compare_ships: 比較飛船
       confirm: 確認帳戶
       cookie-policy: Cookie 政策

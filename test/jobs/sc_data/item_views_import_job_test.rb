@@ -84,6 +84,15 @@ module ScData
       assert_not_includes fetched, "rigged_vanduul.glb"
     end
 
+    test "attaches a worn item's painted rig for each body" do
+      publish(@equipment.sc_key, {"rigged_textured_male.glb" => HOLO, "rigged_textured_female.glb" => HOLO})
+
+      perform
+
+      assert @equipment.holo_rigged_textured_male.attached?
+      assert @equipment.holo_rigged_textured_female.attached?
+    end
+
     test "takes in the helpers an item is hung by" do
       helpers = {"attach_offset_left_01" => {"position" => [0.01, 0.02, -0.15], "rotation" => [0, 0, 0.7071, 0.7071]}}
       publish(@equipment.sc_key, {"attach_points.json" => {helpers:}.to_json})

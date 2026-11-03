@@ -1,0 +1,10 @@
+{
+  "zh-CN": {
+    "paintBooth": {
+      "paints": "涂装",
+      "empty": "选择一艘舰船以查看其涂装。",
+      "unavailable": "无法加载这艘舰船的涂装全息影像。",
+      "notFound": "找不到这艘舰船。"
+    }
+  }
+}

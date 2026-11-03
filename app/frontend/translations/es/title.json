@@ -176,7 +176,9 @@
         "friends": "Amigos"
       },
       "compare": {
-        "ships": "Comparar naves"
+        "ships": "Comparar naves",
+        "components": "Comparar componentes",
+        "equipment": "Comparar equipo"
       },
       "notFound": "404",
       "tools": {
@@ -186,6 +188,7 @@
         "plaque": "Placas de dedicatoria",
         "tradeRoutes": "Rutas comerciales",
         "dressingRoom": "Probador",
+        "paintBooth": "Taller de pintura",
         "tours": {
           "index": "Expediciones",
           "add": "Crear una expedición",

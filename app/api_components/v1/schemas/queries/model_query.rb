@@ -47,6 +47,7 @@ module V1
             willItFit: {type: :string},
             withCargo: {type: :boolean},
             withCargoGrids: {type: :boolean},
+            withTexturedHolo: {type: :boolean},
             inHangar: {type: :boolean},
             inGameEq: {type: :boolean},
             s: {anyOf: [{

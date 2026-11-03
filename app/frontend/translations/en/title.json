@@ -176,7 +176,9 @@
         "friends": "Friends"
       },
       "compare": {
-        "ships": "Compare Ships"
+        "ships": "Compare Ships",
+        "components": "Compare Components",
+        "equipment": "Compare Equipment"
       },
       "notFound": "404",
       "tools": {
@@ -186,6 +188,7 @@
         "plaque": "Dedication Plaques",
         "tradeRoutes": "Trade Routes",
         "dressingRoom": "Dressing Room",
+        "paintBooth": "Paint Booth",
         "tours": {
           "index": "Tours",
           "add": "Create a new Tour",

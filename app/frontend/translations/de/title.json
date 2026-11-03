@@ -176,7 +176,9 @@
         "friends": "Freunde"
       },
       "compare": {
-        "ships": "Schiffe vergleichen"
+        "ships": "Schiffe vergleichen",
+        "components": "Komponenten vergleichen",
+        "equipment": "Ausrüstung vergleichen"
       },
       "notFound": "404",
       "tools": {
@@ -186,6 +188,7 @@
         "plaque": "Widmungsplaketten",
         "tradeRoutes": "Handelsrouten",
         "dressingRoom": "Umkleide",
+        "paintBooth": "Lackiererei",
         "tours": {
           "index": "Touren",
           "add": "Neue Tour erstellen",

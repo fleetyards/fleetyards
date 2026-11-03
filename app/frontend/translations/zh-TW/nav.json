@@ -10,7 +10,10 @@
         "index": "飛船"
       },
       "compare": {
-        "index": "比較"
+        "index": "比較",
+        "ships": "飛船",
+        "components": "組件",
+        "equipment": "裝備"
       },
       "manufacturers": "製造商",
       "images": "圖片",
@@ -138,6 +141,7 @@
         "plaque": "獻詞銘牌",
         "tradeRoutes": "貿易路線",
         "dressingRoom": "試衣間",
+        "paintBooth": "噴漆間",
         "tours": "行程"
       },
       "api": "API 文件",

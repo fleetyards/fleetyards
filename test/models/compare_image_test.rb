@@ -32,6 +32,37 @@ class CompareImageTest < ActiveSupport::TestCase
     assert_equal "anvil-carrack,drake-cutlass-black", record.share_key
   end
 
+  test "keeps a component comparison apart from a ship one with the same slugs" do
+    create(:component).update_columns(slug: "anvil-carrack")
+    create(:component).update_columns(slug: "drake-cutlass-black")
+
+    ships = CompareImage.find_or_create_for_share([@carrack.slug, @cutlass.slug])
+    components = CompareImage.find_or_create_for_share(["anvil-carrack", "drake-cutlass-black"], kind: "components")
+
+    assert_equal "components", components.kind
+    assert_not_equal ships.id, components.id
+    assert_not_equal ships.short_code, components.short_code
+  end
+
+  test "resolves equipment slugs against the equipment catalogue" do
+    create(:equipment).update_columns(slug: "behr-p4-ar")
+
+    record = CompareImage.find_or_create_for_share(["behr-p4-ar", @carrack.slug], kind: "equipment")
+
+    assert_equal "behr-p4-ar", record.share_key
+  end
+
+  test "pictures a component by its angled render before its store image" do
+    component = create(:component)
+    component.angled_view.attach(io: file_fixture("test.png").open, filename: "angled.png", content_type: "image/png")
+
+    assert_equal "angled_view", CompareImage.image_of(component).name
+  end
+
+  test "has no picture for a component with neither image" do
+    assert_nil CompareImage.image_of(create(:component))
+  end
+
   test "returns nil for an empty slug list" do
     assert_nil CompareImage.find_or_create_for_share([])
   end

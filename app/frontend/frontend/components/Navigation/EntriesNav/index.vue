@@ -9,6 +9,7 @@ import type { Glyph } from "@/shared/components/DuotoneGlyph/glyph";
 import NavItem from "@/shared/components/AppNavigation/NavItem/index.vue";
 import EntryItem from "@/frontend/components/Navigation/EntryItem/index.vue";
 import { useFeatures } from "@/frontend/composables/useFeatures";
+import { checkFeatures } from "@/shared/utils/Access";
 import { useSessionStore } from "@/frontend/stores/session";
 import { storeToRefs } from "pinia";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -49,7 +50,7 @@ const { isAuthenticated } = storeToRefs(useSessionStore());
 
 const visible = (entry: NavEntry) =>
   (!entry.requiresAuth || isAuthenticated.value) &&
-  (!entry.featureFlag || isFeatureEnabled(entry.featureFlag));
+  checkFeatures(entry.featureFlag, isFeatureEnabled);
 
 // A sub-section left with nothing to show is left out with its rows.
 const visibleItems = computed(() =>

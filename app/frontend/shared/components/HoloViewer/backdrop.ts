@@ -25,6 +25,14 @@ import { Reflector } from "three/examples/jsm/objects/Reflector.js";
 // data, stood around the figure's feet.
 
 export const BACKDROP_RADIUS = 9;
+
+// The room is built around a standing figure. Anything larger -- a ship --
+// gets the room grown around it, so it stands inside and the camera framing
+// it does too.
+const FIGURE_REACH = 2.5;
+
+export const backdropScale = (size: Vector3) =>
+  Math.max(1, Math.max(size.x, size.y, size.z) / FIGURE_REACH);
 const PANEL_WIDTH = 0.5;
 const PANEL_HEIGHT = 2.4;
 

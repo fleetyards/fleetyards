@@ -402,7 +402,9 @@
         "edit": "Edit Group"
       },
       "compare": {
-        "ships": "Compare Ships"
+        "ships": "Compare Ships",
+        "components": "Compare Components",
+        "equipment": "Compare Equipment"
       },
       "settings": {
         "account": "Account",
@@ -442,7 +444,8 @@
         "cargoGrids": "Cargo Grids",
         "plaque": "Dedication Plaques",
         "tradeRoutes": "Trade Routes",
-        "dressingRoom": "Dressing Room"
+        "dressingRoom": "Dressing Room",
+        "paintBooth": "Paint Booth"
       },
       "rsiVerification": "Verify your RSI-Account",
       "support": "Support FleetYards.net",

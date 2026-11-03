@@ -176,7 +176,9 @@
         "friends": "好友"
       },
       "compare": {
-        "ships": "比較艦船"
+        "ships": "比較艦船",
+        "components": "比較組件",
+        "equipment": "比較裝備"
       },
       "notFound": "404",
       "tools": {
@@ -186,6 +188,7 @@
         "plaque": "獻詞銘牌",
         "tradeRoutes": "貿易路線",
         "dressingRoom": "試衣間",
+        "paintBooth": "噴漆間",
         "tours": {
           "index": "行程",
           "add": "建立新行程",

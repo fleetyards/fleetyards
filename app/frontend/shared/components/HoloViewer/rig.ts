@@ -20,6 +20,11 @@ import { extrasLoadingManager, prepareGltfLoader } from "./gltfLoader";
 export type RigPiece = {
   path: string;
   size?: number;
+  // Painted: drawn with its own materials, not the holo's.
+  textured?: boolean;
+  // The plain rig, loaded in place of a painted one that does not load. The
+  // piece is still known by its path, so a mount hung from it stays put.
+  fallbackPath?: string;
   // Hung from the mount an earlier piece brought rather than its own copy of
   // it: a backpack from the core it is worn on.
   hangs?: boolean;
@@ -268,7 +273,13 @@ export const rigLayoutKey = (rig?: HoloRig) =>
   rig
     ? [
         ...rig.pieces.map((piece) =>
-          [piece.path, piece.hangs ? "hangs" : "", piece.from ?? ""].join("|"),
+          [
+            piece.path,
+            piece.hangs ? "hangs" : "",
+            piece.from ?? "",
+            piece.textured ? "textured" : "",
+            piece.fallbackPath ?? "",
+          ].join("|"),
         ),
         // Everything that changes how a part is drawn: a helper that arrives
         // later moves it, a painted holo that failed swaps it.
@@ -286,6 +297,7 @@ export const rigLayoutKey = (rig?: HoloRig) =>
     : "";
 
 export const rigTextured = (rig?: HoloRig) =>
+  !!rig?.pieces.some((piece) => piece.textured) ||
   !!rig?.attachments?.some((attachment) => attachment.textured);
 
 export const rigSize = (rig?: HoloRig) =>

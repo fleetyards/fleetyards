@@ -53,6 +53,7 @@ import {
 } from "@/shared/components/HoloViewer/rig";
 import {
   BACKDROP_RADIUS,
+  backdropScale,
   buildBackdrop,
   disposeBackdrop,
 } from "@/shared/components/HoloViewer/backdrop";
@@ -148,6 +149,7 @@ const emit = defineEmits<{
   mountSelect: [id: string];
   mountPoint: [id: string | undefined];
   unplaced: [paths: string[]];
+  fellBack: [paths: string[]];
 }>();
 
 const { displayAlert } = useAppNotifications();
@@ -237,6 +239,12 @@ const turntablePolar = computed(
   () => Math.PI / 2 - ((props.elevation ?? 0) * Math.PI) / 180,
 );
 
+// A room has a floor: the camera stops level with the model's centre, above
+// it, rather than orbiting under to where neither floor nor room draws.
+const FLOOR_POLAR = Math.PI / 2;
+
+const TURNTABLE_SIDES = 16;
+
 const enableFullscreen = () => {
   internalFullscreen.value = true;
 };
@@ -271,15 +279,20 @@ onUnmounted(() => window.removeEventListener("keydown", closeOnEscape));
 // Kept out of the model's scene, so framing measures the figure alone.
 const backdrop = shallowRef<Group>();
 
+// The room grown to the model alone; see `roomScale` for the camera's part.
+const modelRoomScale = ref(1);
+
 // The model arrives centred on the origin, so its feet are half its height
 // below.
 const placeBackdrop = (size: Vector3) => {
   if (!props.backdrop) return;
 
   if (backdrop.value) disposeBackdrop(backdrop.value);
+  modelRoomScale.value = backdropScale(size);
   backdrop.value = buildBackdrop(-size.y / 2, {
     reflective: !lowPower.value,
   });
+  backdrop.value.scale.setScalar(roomScale.value);
 };
 
 onUnmounted(() => {
@@ -471,6 +484,23 @@ const handleControlsChange = (controls: { object: Camera }) => {
 };
 
 const fitDistance = ref(100);
+
+// The camera is held to 0.7 of the room's radius. A frame narrow for its
+// model fits it from further out than that, and the first drag would pull
+// the camera in and cut the model off: the room grows past the fit too.
+const ROOM_ZOOM_REACH = 0.7;
+
+const roomScale = computed(() =>
+  Math.max(
+    modelRoomScale.value,
+    (fitDistance.value * 1.15) / (BACKDROP_RADIUS * ROOM_ZOOM_REACH),
+  ),
+);
+
+watch(roomScale, (scale) => {
+  backdrop.value?.scale.setScalar(scale);
+  canvas.value?.context?.renderer?.invalidate();
+});
 const modelMaxDimension = ref(100);
 
 // How far from the origin the furthest loaded model reaches: the models after
@@ -489,7 +519,9 @@ const nearPlaneFor = (cameraDistance: number) =>
 
 // Inside the room's walls: past them the room reads as a ball in the dark.
 const maxZoomDistance = computed(() =>
-  props.backdrop ? BACKDROP_RADIUS * 0.7 : Math.max(250, fitDistance.value * 3),
+  props.backdrop
+    ? BACKDROP_RADIUS * roomScale.value * ROOM_ZOOM_REACH
+    : Math.max(250, fitDistance.value * 3),
 );
 
 const starsVisible = computed(
@@ -563,12 +595,13 @@ const handleModelLoaded = (size: Vector3, scene: Object3D) => {
 
   loading.value = false;
   emit("loaded");
-  placeBackdrop(size);
 
   framed.value = { size, scene };
   lastFrameSize.width = holoViewer.value?.clientWidth ?? 0;
   lastFrameSize.height = holoViewer.value?.clientHeight ?? 0;
+  // Framed first: the room is sized past the distance it settles on.
   frameModel(size, scene);
+  placeBackdrop(size);
 };
 
 // `keepView` scales the camera's distance to the new fit along the way it
@@ -614,14 +647,26 @@ const frameModel = (size: Vector3, scene: Object3D, keepView = false) => {
     const tanVertical = Math.tan(fovRadians / 2);
     const tanHorizontal = tanVertical * frameAspect;
 
-    // The camera's axes, looking at the centred model from the pose.
-    const toCamera = new Vector3(
-      Math.sin(azimuth) * Math.cos(elevation),
-      Math.sin(elevation),
-      Math.cos(azimuth) * Math.cos(elevation),
-    );
-    const right = new Vector3(0, 1, 0).cross(toCamera).normalize();
-    const up = toCamera.clone().cross(right);
+    // The camera's axes, looking at the centred model from the pose. A
+    // turntable is framed from every side it can be turned to: fitted from
+    // its first angle alone, a ship turned side on runs out of the frame.
+    const azimuths = props.turntable
+      ? Array.from(
+          { length: TURNTABLE_SIDES },
+          (_, side) => azimuth + (side * 2 * Math.PI) / TURNTABLE_SIDES,
+        )
+      : [azimuth];
+    const views = azimuths.map((angle) => {
+      const toCamera = new Vector3(
+        Math.sin(angle) * Math.cos(elevation),
+        Math.sin(elevation),
+        Math.cos(angle) * Math.cos(elevation),
+      );
+      const right = new Vector3(0, 1, 0).cross(toCamera).normalize();
+      const up = toCamera.clone().cross(right);
+
+      return { toCamera, right, up };
+    });
 
     // The nearest distance at which every point of the model is still in
     // frame. Its box would do, but from an angle
@@ -648,12 +693,14 @@ const frameModel = (size: Vector3, scene: Object3D, keepView = false) => {
         }
         point.applyMatrix4(mesh.matrixWorld);
 
-        const depth = point.dot(toCamera);
-        reach = Math.max(
-          reach,
-          depth + Math.abs(point.dot(right)) / tanHorizontal,
-          depth + Math.abs(point.dot(up)) / tanVertical,
-        );
+        for (const { toCamera, right, up } of views) {
+          const depth = point.dot(toCamera);
+          reach = Math.max(
+            reach,
+            depth + Math.abs(point.dot(right)) / tanHorizontal,
+            depth + Math.abs(point.dot(up)) / tanVertical,
+          );
+        }
       }
     });
     // Room around it: a frame rarely shows its edges whole, the editor's fades
@@ -917,7 +964,9 @@ defineExpose({
         :enable-rotate="controllable || internalFullscreen"
         :enable-zoom="zoom && !turntableLocked"
         :min-polar-angle="turntableLocked ? turntablePolar : 0"
-        :max-polar-angle="turntableLocked ? turntablePolar : Math.PI"
+        :max-polar-angle="
+          turntableLocked ? turntablePolar : backdrop ? FLOOR_POLAR : Math.PI
+        "
         :zoom-speed="0.5"
         :min-distance="-50"
         :max-distance="maxZoomDistance"
@@ -972,6 +1021,7 @@ defineExpose({
           @mount-select="emit('mountSelect', $event)"
           @mount-point="emit('mountPoint', $event)"
           @unplaced="emit('unplaced', $event)"
+          @fell-back="emit('fellBack', $event)"
         />
         <template #fallback>
           <Loader :loading="true" :progress="progress" />

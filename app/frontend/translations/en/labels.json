@@ -578,7 +578,24 @@
           "better": "beats the baseline",
           "worse": "behind it"
         },
-        "selectShips": "Select Ships"
+        "selectShips": "Select Ships",
+        "componentCount": {
+          "one": "%{count} Component",
+          "other": "%{count} Components"
+        },
+        "equipmentCount": {
+          "one": "%{count} Item",
+          "other": "%{count} Items"
+        },
+        "remaining": {
+          "one": "%{count} more can be added",
+          "other": "%{count} more can be added"
+        },
+        "removeItem": "Remove",
+        "selectComponents": "Select Components",
+        "selectEquipment": "Select Equipment",
+        "enoughItems": "8 items is as many as one comparison holds.",
+        "onlyCategory": "Category: %{category}"
       },
       "au": "AU",
       "uec": "aUEC",

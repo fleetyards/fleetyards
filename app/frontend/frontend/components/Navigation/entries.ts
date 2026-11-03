@@ -13,7 +13,8 @@ export interface NavEntry {
   labelKey: string;
   icon: string | Glyph;
   requiresAuth?: boolean;
-  featureFlag?: FeatureFlagName;
+  // Several flags are a stack, shown only while every one is on.
+  featureFlag?: FeatureFlagName | FeatureFlagName[];
   // Routes that are this page too -- a detail page is a sibling of its list,
   // so matching on the name alone would leave the list unmarked there.
   activeRoutes?: string[];
@@ -167,6 +168,7 @@ export const SHIPS_ITEMS: NavEntry[] = [
     route: "compare",
     labelKey: "nav.compare.index",
     icon: "fa-duotone fa-code-compare",
+    activeRoutes: ["compare-components", "compare-equipment"],
   },
   {
     key: "images",
@@ -246,6 +248,13 @@ export const TOOLS_ITEMS: NavEntry[] = [
     labelKey: "nav.tools.dressingRoom",
     icon: "fa-duotone fa-user-astronaut",
     featureFlag: FeatureFlagName.DRESSING_ROOM,
+  },
+  {
+    key: "paint-booth",
+    route: "paint-booth",
+    labelKey: "nav.tools.paintBooth",
+    icon: "fa-duotone fa-spray-can-sparkles",
+    featureFlag: [FeatureFlagName.PAINT_BOOTH, FeatureFlagName.HOLO_TEXTURED],
   },
 ];
 

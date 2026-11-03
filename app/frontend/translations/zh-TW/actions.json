@@ -219,7 +219,8 @@
         "patreon": "Patreon"
       },
       "compare": {
-        "ships": "對比"
+        "ships": "對比",
+        "item": "比較"
       },
       "cargoGrids": {
         "addShips": "新增飛船"

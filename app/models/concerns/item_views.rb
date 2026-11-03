@@ -13,9 +13,11 @@ module ItemViews
   ].freeze
 
   # The bodies a worn item is rigged to, each exported as `rigged_<body>.glb`:
-  # the item skinned to that body's skeleton, for the dressing room.
+  # the item skinned to that body's skeleton, for the dressing room. The
+  # painted rig, `rigged_textured_<body>.glb`, shares its skeleton and is
+  # missing where the worn model is not the item's own.
   RIGGED_BODIES = %w[male female].freeze
-  RIGGED_ATTACHMENT_NAMES = RIGGED_BODIES.map { |body| :"holo_rigged_#{body}" }.freeze
+  RIGGED_ATTACHMENT_NAMES = RIGGED_BODIES.flat_map { |body| [:"holo_rigged_#{body}", :"holo_rigged_textured_#{body}"] }.freeze
 
   ATTACHMENT_NAMES = (VIEW_ATTACHMENT_NAMES + %i[holo holo_textured] + RIGGED_ATTACHMENT_NAMES).freeze
 

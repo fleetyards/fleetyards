@@ -1,0 +1,10 @@
+{
+  "it": {
+    "paintBooth": {
+      "paints": "Livree",
+      "empty": "Scegli una nave per vederne le livree.",
+      "unavailable": "Non è stato possibile caricare l'olo verniciato di questa nave.",
+      "notFound": "Questa nave non è stata trovata."
+    }
+  }
+}

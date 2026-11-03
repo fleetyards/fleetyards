@@ -10,7 +10,7 @@ export interface DurabilityGroup {
   stats: HardpointStat[];
 }
 
-const DAMAGE_TYPES = [
+export const DAMAGE_TYPES = [
   "physical",
   "energy",
   "distortion",

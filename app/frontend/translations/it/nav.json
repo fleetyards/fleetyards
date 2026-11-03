@@ -10,7 +10,10 @@
         "index": "Navi"
       },
       "compare": {
-        "index": "Confronta"
+        "index": "Confronta",
+        "ships": "Navi",
+        "components": "Componenti",
+        "equipment": "Equipaggiamento"
       },
       "manufacturers": "Produttori",
       "images": "Immagini",
@@ -138,6 +141,7 @@
         "plaque": "Targhe di dedica",
         "tradeRoutes": "Rotte commerciali",
         "dressingRoom": "Camerino",
+        "paintBooth": "Officina di verniciatura",
         "tours": "Spedizioni"
       },
       "api": "Documentazione delle API",

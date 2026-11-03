@@ -1,0 +1,10 @@
+{
+  "de": {
+    "paintBooth": {
+      "paints": "Lackierungen",
+      "empty": "Wähle ein Schiff, um seine Lackierungen zu sehen.",
+      "unavailable": "Das lackierte Holo dieses Schiffs konnte nicht geladen werden.",
+      "notFound": "Dieses Schiff wurde nicht gefunden."
+    }
+  }
+}

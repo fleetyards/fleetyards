@@ -4,6 +4,14 @@ zh-TW:
     plaque_tool:
       description: "為任意星際公民艦船製作獻詞銘牌，就像 CIG 為 The Only Constant 掛上的那塊，並以圖片形式分享。"
     admin_description: FleetYards.net Command App.
+    compare_components:
+      description:
+        default: 並排比較飛船組件。
+        vs: 比較 %{items}。
+    compare_equipment:
+      description:
+        default: 並排比較裝備。
+        vs: 比較 %{items}。
     compare_ships:
       description:
         default: 比較您喜歡的飛船。

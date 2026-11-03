@@ -1,5 +1,6 @@
 import type { CompareDirection } from "@/frontend/components/Compare/highlights";
-import type { Hardpoint } from "@/services/fyApi";
+import type { RouteLocationRaw } from "vue-router";
+import type { Hardpoint, MediaFile } from "@/services/fyApi";
 
 // Every section resolves to rows of already-computed cells, one per compared ship, so a
 // single table component can render all of them. The alternative — a component per
@@ -94,6 +95,17 @@ export type CompareTableRow =
       label: string;
       cells: { key: string; lines: CompareLine[] }[];
     };
+
+// One compared subject as its header shows it. `key` is the slug the compare set
+// carries, so a column, its cells and the URL all name it the same way.
+export type CompareColumn = {
+  key: string;
+  name: string;
+  subtitle?: string;
+  image?: MediaFile;
+  imageFit?: "cover" | "contain";
+  to: RouteLocationRaw;
+};
 
 export type CompareSection = {
   id: string;

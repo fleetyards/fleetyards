@@ -400,7 +400,9 @@
         "edit": "Edit Group"
       },
       "compare": {
-        "ships": "比较飞船"
+        "ships": "比较飞船",
+        "components": "比较组件",
+        "equipment": "比较装备"
       },
       "settings": {
         "account": "账户",
@@ -440,7 +442,8 @@
         "cargoGrids": "货物网格",
         "plaque": "献词铭牌",
         "tradeRoutes": "贸易路线",
-        "dressingRoom": "试衣间"
+        "dressingRoom": "试衣间",
+        "paintBooth": "喷漆间"
       },
       "rsiVerification": "Verify your RSI-Account",
       "support": "Support FleetYards.net",

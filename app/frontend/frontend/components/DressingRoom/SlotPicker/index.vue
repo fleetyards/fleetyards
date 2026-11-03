@@ -11,6 +11,7 @@ import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
 import Loader from "@/shared/components/Loader/index.vue";
+import ItemStats from "@/frontend/components/DressingRoom/ItemStats/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { INVENTORY_EQUIPMENT_TYPES } from "@/frontend/composables/useInventoryOptions";
 import { WEAPON_SUB_TYPES, isWeaponSlot } from "@/frontend/utils/dressingRoom";
@@ -22,7 +23,7 @@ import {
 import {
   type Equipment,
   type EquipmentSlotEnum,
-  type OutfitSlotEnum,
+  OutfitSlotEnum,
   equipment as fetchEquipment,
 } from "@/services/fyApi";
 
@@ -50,6 +51,14 @@ const fitting = computed(
 );
 
 const fits = (item: Equipment) => fitting.value.has(item.id);
+
+const withSize = computed(
+  () => isWeaponSlot(props.slot) || props.slot === OutfitSlotEnum.BACKPACK,
+);
+
+// The item type is where armour says how heavy it is.
+const byline = (item: Equipment) =>
+  [item.manufacturer?.name, item.itemTypeLabel].filter(Boolean).join(" · ");
 
 const misfitReason = computed(() =>
   t("dressingRoom.fit.doesNotFit", { item: providerNames(props.fit) }),
@@ -232,9 +241,10 @@ onUnmounted(() => applySearch.cancel());
           </span>
           <span class="slot-picker__label">
             <span class="slot-picker__name">{{ item.name }}</span>
-            <span v-if="item.manufacturer" class="slot-picker__sub">
-              {{ item.manufacturer.name }}
+            <span v-if="byline(item)" class="slot-picker__sub">
+              {{ byline(item) }}
             </span>
+            <ItemStats :equipment="item" :with-size="withSize" />
             <span
               v-if="!fits(item)"
               class="slot-picker__sub slot-picker__sub--misfit"

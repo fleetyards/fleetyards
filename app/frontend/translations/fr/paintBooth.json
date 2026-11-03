@@ -1,0 +1,10 @@
+{
+  "fr": {
+    "paintBooth": {
+      "paints": "Peintures",
+      "empty": "Choisissez un vaisseau pour voir ses peintures.",
+      "unavailable": "L'holo peint de ce vaisseau n'a pas pu être chargé.",
+      "notFound": "Ce vaisseau est introuvable."
+    }
+  }
+}

@@ -10,7 +10,10 @@
         "index": "Naves"
       },
       "compare": {
-        "index": "Comparar"
+        "index": "Comparar",
+        "ships": "Naves",
+        "components": "Componentes",
+        "equipment": "Equipo"
       },
       "manufacturers": "Fabricantes",
       "images": "Imágenes",
@@ -138,6 +141,7 @@
         "plaque": "Placas de dedicatoria",
         "tradeRoutes": "Rutas comerciales",
         "dressingRoom": "Probador",
+        "paintBooth": "Taller de pintura",
         "tours": "Expediciones"
       },
       "api": "Documentación API",

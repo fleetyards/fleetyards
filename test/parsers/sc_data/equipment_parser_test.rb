@@ -440,6 +440,22 @@ module ScData
         assert_equal ["hdh_boots_01_01_13"], parsed.keys
       end
 
+      test "keeps a helmet the game names after another piece of the same armour" do
+        {
+          "qrt_specialist_heavy_core_01_01_12" => "Char_Armor_Torso",
+          "qrt_specialist_heavy_helmet_01_01_12" => "Char_Armor_Helmet"
+        }.each do |key, type|
+          write_equipment(key, name: "@item_Name_#{key}", path: "entities/scitem/characters/human/armor", type:)
+        end
+        @parser.translations = {
+          "item_Name_qrt_specialist_heavy_core_01_01_12" => "Antium Core Jet",
+          "item_Name_qrt_specialist_heavy_helmet_01_01_12" => "Antium Core Jet"
+        }
+
+        assert_equal [false, false],
+          parsed.values_at("qrt_specialist_heavy_core_01_01_12", "qrt_specialist_heavy_helmet_01_01_12").pluck("hidden")
+      end
+
       test "shows one of the same carried prop filed under two keys" do
         write_carryable("plushy_orison_whale_1_a", "Finley the Stormwal Plushie")
         write_carryable("carryable_1h_cy_toy_plushy_orison_whale_1_a", "Finley the Stormwal Plushie", sub_type: "Personal")

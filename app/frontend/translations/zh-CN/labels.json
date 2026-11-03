@@ -578,7 +578,24 @@
           "better": "优于基准",
           "worse": "落后于基准"
         },
-        "selectShips": "选择飞船"
+        "selectShips": "选择飞船",
+        "componentCount": {
+          "one": "%{count} 个组件",
+          "other": "%{count} 个组件"
+        },
+        "equipmentCount": {
+          "one": "%{count} 件装备",
+          "other": "%{count} 件装备"
+        },
+        "remaining": {
+          "one": "还可添加 %{count} 个",
+          "other": "还可添加 %{count} 个"
+        },
+        "removeItem": "移除",
+        "selectComponents": "选择组件",
+        "selectEquipment": "选择装备",
+        "enoughItems": "一次比较最多容纳 8 项。",
+        "onlyCategory": "类别：%{category}"
       },
       "au": "AU",
       "uec": "aUEC",

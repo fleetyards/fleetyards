@@ -1,0 +1,10 @@
+{
+  "en": {
+    "paintBooth": {
+      "paints": "Paints",
+      "empty": "Pick a ship to see its paints.",
+      "unavailable": "This ship's painted holo could not be loaded.",
+      "notFound": "This ship could not be found."
+    }
+  }
+}

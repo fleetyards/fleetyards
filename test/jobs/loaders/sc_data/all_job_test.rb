@@ -264,6 +264,20 @@ module Loaders
         end
       end
 
+      test "#perform exports the overlay data of the channel it loaded, and not after a failed load" do
+        ::ScData::Loader::BaseLoader.expects(:all)
+
+        assert_difference -> { ::Overlay::ExportJob.jobs.size }, 1 do
+          ::Loaders::ScData::AllJob.new.perform
+        end
+        assert_equal [::ScData::Source.current.environment], ::Overlay::ExportJob.jobs.last["args"]
+
+        ::ScData::Loader::BaseLoader.stubs(:all).raises(StandardError, "sc data error")
+        assert_no_difference -> { ::Overlay::ExportJob.jobs.size } do
+          assert_raises(StandardError) { ::Loaders::ScData::AllJob.new.perform }
+        end
+      end
+
       test "#perform links the paint components it loaded, and not after a failed load" do
         ::ScData::Loader::BaseLoader.expects(:all)
 
