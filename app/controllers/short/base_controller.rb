@@ -2,6 +2,8 @@
 
 module Short
   class BaseController < ApplicationController
+    include CompareUrlsConcern
+
     def hangar
       redirect_to with_query(frontend_public_hangar_url(username: params[:username])), allow_other_host: true
     end
@@ -65,17 +67,6 @@ module Short
       return url if request.query_string.blank?
 
       "#{url}?#{request.query_string}"
-    end
-
-    # An empty set lands on that kind's empty compare page rather than on the
-    # ships one.
-    private def compare_url_for(kind, slugs)
-      query = slugs.presence
-      case kind
-      when "components" then frontend_compare_components_url(components: query)
-      when "equipment" then frontend_compare_equipment_url(equipment: query)
-      else frontend_compare_url(models: query)
-      end
     end
   end
 end

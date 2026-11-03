@@ -3,6 +3,8 @@
 module Api
   module V1
     class CompareController < ::Api::BaseController
+      include CompareUrlsConcern
+
       skip_verify_authorized
 
       before_action :authenticate_user!, only: []
@@ -44,14 +46,6 @@ module Api
 
       private def share_params
         @share_params ||= params.permit(models: [], components: [], equipment: [])
-      end
-
-      private def compare_url_for(kind, slugs)
-        case kind
-        when "components" then frontend_compare_components_url(components: slugs)
-        when "equipment" then frontend_compare_equipment_url(equipment: slugs)
-        else frontend_compare_url(models: slugs)
-        end
       end
 
       private def build_short_url(short_code)
