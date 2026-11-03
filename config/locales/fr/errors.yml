@@ -19,3 +19,9 @@ fr:
       hangar:
         import:
           no_data: Aucune donnée trouvée dans le fichier d'import
+      compare:
+        share:
+          empty: "Aucun élément fourni pour le lien de partage"
+          too_many: "Un lien de partage accepte au plus %{max} éléments"
+          unknown_models: "Aucun des éléments fournis n’a été trouvé"
+          mixed: "Un lien de partage ne compare qu’un seul type : vaisseaux, composants ou équipement"

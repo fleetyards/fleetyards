@@ -3,8 +3,18 @@
 class CompareImage < ApplicationRecord
   has_one_attached :image
 
-  validates :slug_set, presence: true, uniqueness: true
-  validates :share_key, uniqueness: true, allow_nil: true
+  # What a comparison is of, and so which catalogue its slugs name. A slug is
+  # only unique within its own catalogue, which is why every lookup below is
+  # scoped by it.
+  KINDS = {
+    "models" => "Model",
+    "components" => "Component",
+    "equipment" => "Equipment"
+  }.freeze
+
+  validates :kind, inclusion: {in: KINDS.keys}
+  validates :slug_set, presence: true, uniqueness: {scope: :kind}
+  validates :share_key, uniqueness: {scope: :kind}, allow_nil: true
   validates :short_code, uniqueness: true, allow_nil: true
 
   STYLE_VERSION = "v2"
@@ -12,44 +22,62 @@ class CompareImage < ApplicationRecord
   MAX_SHARE_MODELS = 8
   SHARE_KEY_SEPARATOR = ","
 
-  def self.for(models)
-    models_with_images = models.select { |m| m.store_image.attached? }
-    return nil if models_with_images.empty?
+  # What a record is pictured by: a ship's store art, and for components and
+  # equipment the angled render the compare page itself shows, falling back to
+  # the store image -- most components have only the render.
+  def self.image_of(record)
+    attr = record.respond_to?(:angled_image_attr) ? record.angled_image_attr : :store_image
+    attachment = attr && record.public_send(attr)
+    attachment if attachment&.attached?
+  end
 
-    slug_set = "#{STYLE_VERSION}-#{models_with_images.map(&:slug).sort.join("-")}"
-    record = find_or_initialize_by(slug_set: slug_set)
-    record.generate!(models_with_images) unless record.image.attached?
+  def self.for(records, kind: "models")
+    with_images = records.select { |record| image_of(record) }
+    return nil if with_images.empty?
+
+    slug_set = "#{STYLE_VERSION}-#{with_images.map(&:slug).sort.join("-")}"
+    record = find_or_initialize_by(kind:, slug_set:)
+    record.generate!(with_images) unless record.image.attached?
     return record if record.persisted?
 
     # A lost race leaves this instance unsaved with an in-memory attachment that
     # has no signed_id yet, so hand back the row the winner persisted.
-    find_by(slug_set: slug_set) || record
+    find_by(kind:, slug_set:) || record
   end
 
-  def self.find_or_create_for_share(slugs)
-    canonical = resolve_canonical_slugs(slugs)
+  def self.find_or_create_for_share(slugs, kind: "models")
+    canonical = resolve_canonical_slugs(slugs, kind:)
     return nil if canonical.empty?
     return nil if canonical.size > MAX_SHARE_MODELS
 
     share_key = canonical.join(SHARE_KEY_SEPARATOR)
     og_slug_set = "#{STYLE_VERSION}-#{canonical.join("-")}"
 
-    if (record = find_for_share(share_key, og_slug_set))
+    if (record = find_for_share(share_key, og_slug_set, kind:))
       return ensure_share_attrs!(record, share_key)
     end
 
-    create!(slug_set: share_key, share_key: share_key, short_code: generate_short_code)
+    create!(kind:, slug_set: share_key, share_key: share_key, short_code: generate_short_code)
   rescue ActiveRecord::RecordNotUnique
-    record = find_for_share(share_key, og_slug_set)
+    record = find_for_share(share_key, og_slug_set, kind:)
     record && ensure_share_attrs!(record, share_key)
   end
 
-  def self.resolve_canonical_slugs(slugs)
+  def self.subject_class(kind)
+    KINDS.fetch(kind).constantize
+  end
+
+  # Ships keep the slug they were first published under as `legacy_slug`, so an
+  # old link still resolves. Components and equipment have only the one.
+  def self.resolve_canonical_slugs(slugs, kind: "models")
     normalized = Array(slugs).compact.map { |s| s.to_s.downcase }.uniq
     return [] if normalized.empty?
 
-    Model.where(slug: normalized).or(Model.where(legacy_slug: normalized))
-      .pluck(:slug).uniq.sort
+    klass = subject_class(kind)
+    scope = klass.where(slug: normalized)
+    scope = scope.or(klass.where(legacy_slug: normalized)) if klass == Model
+
+    scope.pluck(:slug).uniq.sort
   end
 
   def self.generate_short_code
@@ -62,8 +90,8 @@ class CompareImage < ApplicationRecord
   # Looks up an existing row that represents this comparison, whether it was
   # created by the share flow (matches by share_key) or by the OG-image flow
   # (matches by versioned slug_set, which uses hyphens between slugs).
-  def self.find_for_share(share_key, og_slug_set)
-    find_by(share_key: share_key) || find_by(slug_set: og_slug_set)
+  def self.find_for_share(share_key, og_slug_set, kind: "models")
+    where(kind:).find_by(share_key: share_key) || where(kind:).find_by(slug_set: og_slug_set)
   end
 
   def self.ensure_share_attrs!(record, share_key)
@@ -78,8 +106,8 @@ class CompareImage < ApplicationRecord
     record.reload
   end
 
-  def generate!(models)
-    buffer = build_composite(models)
+  def generate!(records)
+    buffer = build_composite(records)
     return if buffer.nil?
 
     image.attach(
@@ -100,10 +128,10 @@ class CompareImage < ApplicationRecord
   CANVAS_HEIGHT = 630
   DIAGONAL_SLANT = 80
 
-  private def build_composite(models)
+  private def build_composite(records)
     require "vips"
 
-    buffers = models.filter_map { |model| download_store_image(model) }
+    buffers = records.filter_map { |record| download_image(record) }
     return nil if buffers.empty?
 
     width = CANVAS_WIDTH
@@ -138,14 +166,15 @@ class CompareImage < ApplicationRecord
   end
 
   # An attachment row can outlive its file — pruned local storage, a lost object in
-  # the bucket. Skipping that ship keeps the share image, and the page embedding it,
+  # the bucket. Skipping that item keeps the share image, and the page embedding it,
   # working instead of failing the whole request on a missing file.
-  private def download_store_image(model)
-    return unless model.store_image.attached?
+  private def download_image(record)
+    attachment = self.class.image_of(record)
+    return unless attachment
 
-    model.store_image.download
+    attachment.download
   rescue ActiveStorage::FileNotFoundError
-    Rails.logger.warn("CompareImage: store image file missing for #{model.slug}")
+    Rails.logger.warn("CompareImage: image file missing for #{record.slug}")
     nil
   end
 

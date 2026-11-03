@@ -21,6 +21,10 @@ import {
   type ConfirmAccessInput,
 } from "@/services/fyApi";
 import { useForm } from "vee-validate";
+import {
+  firstErrorMessageFrom,
+  validationErrorFrom,
+} from "@/shared/utils/ApiErrors";
 
 const { t } = useI18n();
 const { displayAlert, displaySuccess } = useAppNotifications();
@@ -167,6 +171,10 @@ const submitSetEmail = async () => {
     .then(() => {
       submitting.value = false;
 
+      newEmail.value = "";
+
+      comlink.emit("user-update");
+
       displaySuccess({
         text: t("messages.setEmail.success"),
       });
@@ -177,7 +185,10 @@ const submitSetEmail = async () => {
       submitting.value = false;
 
       displayAlert({
-        text: t("messages.setEmail.failure"),
+        text:
+          firstErrorMessageFrom(error) ??
+          validationErrorFrom(error).message ??
+          t("messages.setEmail.failure"),
       });
     });
 };
@@ -222,6 +233,21 @@ const verifyConfirmAccessCode = async () => {
           <div class="set-email">
             <h1>{{ t("headlines.setEmail") }}</h1>
             <p>{{ t("texts.setEmail") }}</p>
+
+            <template v-if="sessionStore.currentUser?.unconfirmedEmail">
+              <p data-test="set-email-pending">
+                {{ t("messages.setEmail.success") }}
+              </p>
+
+              <FormInput
+                :model-value="sessionStore.currentUser.unconfirmedEmail"
+                name="unconfirmedEmail"
+                :type="InputTypesEnum.EMAIL"
+                :disabled="true"
+                :label="t('labels.user.unconfirmedEmail')"
+                :no-placeholder="true"
+              />
+            </template>
 
             <form @submit.prevent="submitSetEmail">
               <FormInput

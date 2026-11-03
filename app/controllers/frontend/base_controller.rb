@@ -182,6 +182,26 @@ module Frontend
       render_frontend
     end
 
+    def compare_components
+      slugs = (params.permit(components: [])[:components] || []).map(&:downcase)
+      render_catalogue_compare(
+        Component.where(slug: slugs), kind: "components",
+        title: I18n.t("title.frontend.compare_components"),
+        default: I18n.t("meta.compare_components.description.default"),
+        vs: ->(items) { I18n.t("meta.compare_components.description.vs", items:) }
+      )
+    end
+
+    def compare_equipment
+      slugs = (params.permit(equipment: [])[:equipment] || []).map(&:downcase)
+      render_catalogue_compare(
+        Equipment.where(slug: slugs), kind: "equipment",
+        title: I18n.t("title.frontend.compare_equipment"),
+        default: I18n.t("meta.compare_equipment.description.default"),
+        vs: ->(items) { I18n.t("meta.compare_equipment.description.vs", items:) }
+      )
+    end
+
     def manifest
       respond_to do |format|
         format.json do
@@ -260,11 +280,25 @@ module Frontend
       end
     end
 
-    private def compare_image(models)
-      return if models.blank?
-      return models.first.store_image if models.size == 1 && models.first.store_image.attached?
+    private def compare_image(records, kind: "models")
+      return if records.blank?
+      return CompareImage.image_of(records.first) if records.size == 1
 
-      CompareImage.for(models)&.image
+      CompareImage.for(records, kind:)&.image
+    end
+
+    private def render_catalogue_compare(scope, kind:, title:, default:, vs:)
+      records = scope.order(name: :asc).limit(CompareImage::MAX_SHARE_MODELS).to_a
+      @title = title
+      @description = default
+      @og_type = "article"
+      if records.present?
+        names = records.map(&:name).join(" vs. ")
+        @description = vs.call(names)
+        use_og_image(compare_image(records, kind:), alt: names)
+      end
+
+      render_frontend
     end
 
     private def compare_params

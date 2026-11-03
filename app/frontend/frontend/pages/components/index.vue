@@ -6,6 +6,8 @@ export default {
 
 <script lang="ts" setup>
 import Heading from "@/shared/components/base/Heading/index.vue";
+import PageActions from "@/shared/components/PageActions/index.vue";
+import Btn from "@/shared/components/base/Btn/index.vue";
 import FilteredList from "@/shared/components/FilteredList/index.vue";
 import Paginator from "@/shared/components/Paginator/index.vue";
 import FilterForm from "@/frontend/components/Components/FilterForm/index.vue";
@@ -46,6 +48,17 @@ const sortFields = useComponentSortFields(() => components.value?.items || []);
 
 <template>
   <Heading hidden>{{ t("headlines.components.index") }}</Heading>
+
+  <PageActions>
+    <Btn
+      data-test="components-compare-link"
+      :to="{ name: 'compare-components' }"
+      :aria-label="t('actions.compare.item')"
+    >
+      <i class="fa-duotone fa-code-compare" />
+      {{ t("actions.compare.item") }}
+    </Btn>
+  </PageActions>
 
   <FilteredList
     name="components"

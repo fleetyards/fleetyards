@@ -400,7 +400,9 @@
         "edit": "Modifica Gruppo"
       },
       "compare": {
-        "ships": "Confronta Navi"
+        "ships": "Confronta Navi",
+        "components": "Confronta componenti",
+        "equipment": "Confronta equipaggiamento"
       },
       "settings": {
         "account": "Profilo",

@@ -31,6 +31,10 @@ type Props = {
   // A strip above the content instead of the column beside it, for a page
   // whose header already spans the full width.
   horizontal?: boolean;
+  // A horizontal strip that sits in a row beside other controls rather than
+  // above the content: no margin below it, no rule across the row, and no
+  // content of its own, which the page around it renders.
+  inline?: boolean;
   activeLabelOnly?: boolean;
 };
 
@@ -44,6 +48,7 @@ const props = withDefaults(defineProps<Props>(), {
   badges: undefined,
   anchors: undefined,
   horizontal: false,
+  inline: false,
   activeLabelOnly: false,
 });
 
@@ -93,7 +98,11 @@ watch(
 </script>
 
 <template>
-  <div v-if="props.horizontal" class="tab-nav-horizontal">
+  <div
+    v-if="props.horizontal"
+    class="tab-nav-horizontal"
+    :class="{ 'tab-nav-horizontal--inline': props.inline }"
+  >
     <TabNavViewMobileDropdown
       v-if="collapsed"
       class="tab-nav-horizontal__dropdown"
@@ -138,7 +147,7 @@ watch(
       </slot>
       <slot name="nav-after" />
     </ul>
-    <slot name="content">
+    <slot v-if="!props.inline" name="content">
       <router-view />
     </slot>
   </div>

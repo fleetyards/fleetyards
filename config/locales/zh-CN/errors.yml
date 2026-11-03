@@ -17,3 +17,9 @@ zh-CN:
       hangar:
         import:
           no_data: "导入文件中未找到数据"
+      compare:
+        share:
+          empty: "未提供分享链接的项目"
+          too_many: "分享链接最多支持 %{max} 个项目"
+          unknown_models: "找不到任何指定的项目"
+          mixed: "分享链接只能比较一种类型：飞船、组件或装备"

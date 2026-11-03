@@ -400,7 +400,9 @@
         "edit": "Edit Group"
       },
       "compare": {
-        "ships": "比较飞船"
+        "ships": "比较飞船",
+        "components": "比较组件",
+        "equipment": "比较装备"
       },
       "settings": {
         "account": "账户",

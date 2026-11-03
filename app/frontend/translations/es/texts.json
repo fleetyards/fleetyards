@@ -44,7 +44,14 @@
       "compare": {
         "ships": {
           "info": "To start select at least two and not more than eight Ships you want to compare."
-        }
+        },
+        "components": {
+          "info": "Selecciona hasta ocho componentes de una misma categoría, como escudos o motores cuánticos, para compararlos lado a lado."
+        },
+        "equipment": {
+          "info": "Selecciona hasta ocho piezas de equipo de un mismo tipo, como rifles o cascos, para compararlas lado a lado."
+        },
+        "dropped": "Se quitó %{items}: esta comparación solo admite una categoría, %{category}."
       },
       "fleets": {
         "leaveInfo": "You can not leave a Fleet as an Admin.",

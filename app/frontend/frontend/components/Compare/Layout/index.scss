@@ -1,11 +1,25 @@
-// Ship picker left, the page's key actions right.
+// What is compared left, the page's key actions right, over the tab strip's
+// rule run the full width of the row so the active tab's mark sits on it.
 .compare-header {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   gap: 12px 20px;
   margin-bottom: 18px;
+  box-shadow: inset 0 -1px 0 var(--color-edge-soft);
+}
+
+.compare-header__actions {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+}
+
+.compare-empty__add {
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
 }
 
 // Sits directly on the table: the view modes at the left edge where the label rail

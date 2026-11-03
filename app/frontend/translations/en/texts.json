@@ -44,7 +44,14 @@
       "compare": {
         "ships": {
           "info": "To start select at least two and not more than eight Ships you want to compare."
-        }
+        },
+        "components": {
+          "info": "Select up to eight components of one category, such as shields or quantum drives, to compare them side by side."
+        },
+        "equipment": {
+          "info": "Select up to eight pieces of equipment of one kind, such as rifles or helmets, to compare them side by side."
+        },
+        "dropped": "Removed %{items}: this comparison holds only one category, %{category}."
       },
       "fleets": {
         "leaveInfo": "You can not leave the Fleet.",

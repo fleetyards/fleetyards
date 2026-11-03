@@ -2,6 +2,8 @@
 
 module Short
   class BaseController < ApplicationController
+    include CompareUrlsConcern
+
     def hangar
       redirect_to with_query(frontend_public_hangar_url(username: params[:username])), allow_other_host: true
     end
@@ -33,13 +35,11 @@ module Short
         return
       end
 
-      slugs = canonical_share_slugs(record.share_key)
-      if slugs.empty?
-        redirect_to frontend_compare_url, allow_other_host: true
-        return
-      end
+      slugs = CompareImage.resolve_canonical_slugs(
+        record.share_key.split(CompareImage::SHARE_KEY_SEPARATOR), kind: record.kind
+      )
 
-      redirect_to frontend_compare_url(models: slugs), allow_other_host: true
+      redirect_to compare_url_for(record.kind, slugs), allow_other_host: true
     end
 
     def fleet_ships
@@ -67,14 +67,6 @@ module Short
       return url if request.query_string.blank?
 
       "#{url}?#{request.query_string}"
-    end
-
-    private def canonical_share_slugs(share_key)
-      raw_slugs = share_key.split(CompareImage::SHARE_KEY_SEPARATOR)
-      return [] if raw_slugs.empty?
-
-      Model.where(slug: raw_slugs).or(Model.where(legacy_slug: raw_slugs))
-        .pluck(:slug).uniq.sort
     end
   end
 end

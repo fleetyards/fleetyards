@@ -632,6 +632,12 @@ class User < ApplicationRecord
     email.ends_with?("@#{PLACEHOLDER_EMAIL_DOMAIN}")
   end
 
+  # The placeholder is an address nobody reads, so telling it about the change
+  # would only bounce.
+  private def send_email_changed_notification?
+    super && !placeholder_email?
+  end
+
   # The band this month's spend falls in: 1 from a euro, 2 from six, 3 from
   # twenty-six. Each has an insignia of its own.
   #

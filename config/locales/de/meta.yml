@@ -4,6 +4,14 @@ de:
     plaque_tool:
       description: "Gib jedem Star-Citizen-Schiff eine Widmungsplakette, wie die, die CIG für The Only Constant aufgehängt hat, und teile sie als Bild."
     admin_description: FleetYards.net Command App.
+    compare_components:
+      description:
+        default: Vergleichen Sie Schiffskomponenten nebeneinander.
+        vs: "%{items} vergleichen."
+    compare_equipment:
+      description:
+        default: Vergleichen Sie Ausrüstung nebeneinander.
+        vs: "%{items} vergleichen."
     compare_ships:
       description:
         default: Vergleichen Sie Ihre Lieblingsschiffe.
