@@ -327,6 +327,7 @@ export const useGearStatSections = (
           ...row("heat", change(modifier?.heat)),
           ...row("spreadMin", change(modifier?.spread?.min)),
           ...row("spreadMax", change(modifier?.spread?.max)),
+          ...row("spreadFirstAttack", change(modifier?.spread?.firstAttack)),
           ...row("spreadGrowth", change(modifier?.spread?.attack)),
           ...row("spreadRecovery", change(modifier?.spread?.decay)),
           ...row("recoilYaw", change(modifier?.recoil?.yaw)),
@@ -336,6 +337,13 @@ export const useGearStatSections = (
             "zoom",
             modifier?.zoom != null ? `${figure(modifier.zoom)}×` : undefined,
           ),
+          ...row(
+            "secondZoom",
+            modifier?.secondZoom != null
+              ? `${figure(modifier.secondZoom)}×`
+              : undefined,
+          ),
+          ...row("zoomTime", change(modifier?.zoomTime)),
         ],
       },
       {

@@ -61,13 +61,23 @@ describe("useGearStatSections", () => {
   it("shows what an attachment changes as a percent change", () => {
     expect(
       rowsOf(
-        { modifier: { soundRadius: 1.2, recoil: { yaw: 0.8 }, zoom: 4 } },
+        {
+          modifier: {
+            soundRadius: 1.2,
+            recoil: { yaw: 0.8 },
+            spread: { firstAttack: 0.65 },
+            zoom: 4,
+            zoomTime: 1.2,
+          },
+        },
         "modifier",
       ),
     ).toEqual({
+      "Initial Spread": "-35%",
       "Horizontal Recoil": "-20%",
       "Sound Radius": "+20%",
       Zoom: "4×",
+      "Time to Aim": "+20%",
     });
   });
 
