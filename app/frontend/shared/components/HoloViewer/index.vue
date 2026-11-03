@@ -238,6 +238,10 @@ const turntablePolar = computed(
   () => Math.PI / 2 - ((props.elevation ?? 0) * Math.PI) / 180,
 );
 
+// A room has a floor: the camera stops level with the model's centre, above
+// it, rather than orbiting under to where neither floor nor room draws.
+const FLOOR_POLAR = Math.PI / 2;
+
 const enableFullscreen = () => {
   internalFullscreen.value = true;
 };
@@ -924,7 +928,9 @@ defineExpose({
         :enable-rotate="controllable || internalFullscreen"
         :enable-zoom="zoom && !turntableLocked"
         :min-polar-angle="turntableLocked ? turntablePolar : 0"
-        :max-polar-angle="turntableLocked ? turntablePolar : Math.PI"
+        :max-polar-angle="
+          turntableLocked ? turntablePolar : backdrop ? FLOOR_POLAR : Math.PI
+        "
         :zoom-speed="0.5"
         :min-distance="-50"
         :max-distance="maxZoomDistance"
