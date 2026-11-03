@@ -28141,14 +28141,6 @@ components:
           "$ref": "#/components/schemas/ComponentMiningModifiers"
         charges:
           type: integer
-        fracturePower:
-          type: number
-        extractionPower:
-          type: number
-        activation:
-          type: string
-        duration:
-          type: number
       additionalProperties: false
       title: EquipmentMining
     EquipmentModifier:

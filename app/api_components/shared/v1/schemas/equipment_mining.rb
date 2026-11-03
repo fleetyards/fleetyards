@@ -3,7 +3,7 @@
 module Shared
   module V1
     module Schemas
-      # What a mining gadget or module does to the rock or the laser.
+      # What a mining gadget does to the rock it is stuck to.
       class EquipmentMining
         include OpenapiRuby::Components::Base
 
@@ -11,11 +11,7 @@ module Shared
           type: :object,
           properties: {
             modifiers: ::Shared::V1::Schemas::ComponentMiningModifiers,
-            charges: {type: :integer},
-            fracturePower: {type: :number},
-            extractionPower: {type: :number},
-            activation: {type: :string},
-            duration: {type: :number}
+            charges: {type: :integer}
           },
           additionalProperties: false
         })

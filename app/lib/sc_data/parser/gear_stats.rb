@@ -538,7 +538,7 @@ module ScData
       private def mining(components)
         params = hash(components["EntityComponentAttachableModifierParams"])
         rock = hash(params&.dig("modifiers", "ItemMineableRockModifierParams", "MiningLaserModifier"))
-        return extract_mining_module_data("Components" => components)&.except(:mining_module) if rock.nil?
+        return if rock.nil?
 
         cluster = number(rock.dig("clusterFactorModifier", "FloatModifierMultiplicative", "value"))
         modifiers = (extract_mining_modifiers(rock, nil) || {}).merge(cluster_factor: cluster&.nonzero?).compact
