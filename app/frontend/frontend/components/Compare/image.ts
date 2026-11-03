@@ -19,6 +19,4 @@ export const compareItemImage = (
 export const compareItemImageFit = (
   item: Component | Equipment,
 ): "contain" | "cover" =>
-  compareItemImage(item) === usable(item.media?.angledView)
-    ? "contain"
-    : "cover";
+  usable(item.media?.angledView) ? "contain" : "cover";

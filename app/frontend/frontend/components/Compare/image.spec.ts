@@ -16,4 +16,8 @@ describe("compareItemImageFit", () => {
   it("covers with a store image, which is a full picture of its own", () => {
     expect(compareItemImageFit(item({ storeImage: file }))).toBe("cover");
   });
+
+  it("does not take a missing picture for a render", () => {
+    expect(compareItemImageFit(item({}))).toBe("cover");
+  });
 });
