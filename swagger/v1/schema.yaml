@@ -10,6 +10,25 @@ info:
     url: https://fleetyards.net/docs/logo.png
     altText: FleetYards.net logo
 paths:
+  "/armor-sets":
+    get:
+      summary: Armor sets
+      tags:
+      - DressingRoom
+      operationId: armorSets
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/ArmorSetsList"
+        '403':
+          description: feature disabled
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/StandardError"
   "/blueprints":
     get:
       summary: Blueprints list
@@ -23853,6 +23872,52 @@ components:
       - meta
       - items
       title: AlliedFleetMembersList
+    ArmorSet:
+      type: object
+      properties:
+        name:
+          type: string
+        manufacturerName:
+          type: string
+          nullable: true
+        itemType:
+          type: string
+          nullable: true
+        itemTypeLabel:
+          type: string
+          nullable: true
+        pieces:
+          type: array
+          items:
+            "$ref": "#/components/schemas/ArmorSetPiece"
+      additionalProperties: false
+      required:
+      - name
+      - manufacturerName
+      - itemType
+      - itemTypeLabel
+      - pieces
+      title: ArmorSet
+    ArmorSetPiece:
+      type: object
+      properties:
+        slot:
+          "$ref": "#/components/schemas/OutfitSlotEnum"
+        slug:
+          type: string
+        name:
+          type: string
+      additionalProperties: false
+      required:
+      - slot
+      - slug
+      - name
+      title: ArmorSetPiece
+    ArmorSetsList:
+      type: array
+      items:
+        "$ref": "#/components/schemas/ArmorSet"
+      title: ArmorSetsList
     AttachPoint:
       type: object
       description: A helper an item is hung by, in its holo's frame
