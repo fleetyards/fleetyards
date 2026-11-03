@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.37.0](https://github.com/fleetyards/fleetyards/compare/v9.36.0...v9.37.0) (2026-11-03)
+
+
+### Features
+
+* **dressing-room:** draw worn pieces from their painted rigs ([#6147](https://github.com/fleetyards/fleetyards/issues/6147)) ([698f4c6](https://github.com/fleetyards/fleetyards/commit/698f4c653478440ba0f51e1ac2fc02ac60d96ba8))
+* **tools:** paint booth for ship paints on a turntable holo ([#6145](https://github.com/fleetyards/fleetyards/issues/6145)) ([c095db9](https://github.com/fleetyards/fleetyards/commit/c095db9b8a3d69d36b41361bd69a276f4cb09480))
+
+
+### Chores
+
+* **deps-dev:** bump eslint from 10.13.0 to 10.14.0 ([#6138](https://github.com/fleetyards/fleetyards/issues/6138)) ([797cc28](https://github.com/fleetyards/fleetyards/commit/797cc2838dd4190fcdc2376c37ecda27605be59d))
+
 ## [9.36.0](https://github.com/fleetyards/fleetyards/compare/v9.35.0...v9.36.0) (2026-11-03)
 
 
