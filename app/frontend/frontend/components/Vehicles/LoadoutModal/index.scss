@@ -163,22 +163,22 @@
     mask-image: linear-gradient(90deg, transparent 0%, black 45%);
   }
 
-  &__preview-frame {
+  &--holo &__preview-frame {
     pointer-events: auto;
   }
 
   // A drag anywhere the controls leave empty reaches the holo behind them: the
   // panel and the room a socket list holds for the picker let it through, the
   // controls themselves keep it.
-  &__panel,
-  &__category {
+  &--see-through &__panel,
+  &--see-through &__category {
     pointer-events: none;
   }
 
-  &__category > *,
-  &__link,
-  &__hint,
-  &__refused-alert {
+  &--see-through &__category > *,
+  &--see-through &__link,
+  &--see-through &__hint,
+  &--see-through &__refused-alert {
     pointer-events: auto;
   }
 

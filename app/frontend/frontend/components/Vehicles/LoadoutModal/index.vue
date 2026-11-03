@@ -365,6 +365,15 @@ const renderShown = computed(
 // The figures put away: room to see the ship, and with a holo, to zoom it.
 const inspecting = ref(false);
 
+// A drag on the panel's empty room reaches the holo only while one is there to
+// turn, and not over a tab whose data failed: its error page has its own links.
+const seeThrough = computed(
+  () =>
+    previewShown.value &&
+    !modulesAsyncStatus.isError.value &&
+    !hullSlotsAsyncStatus.isError.value,
+);
+
 const figuresToggleLabel = computed(() =>
   inspecting.value
     ? t("actions.vehicleLoadout.showFigures")
@@ -1494,7 +1503,7 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
       :class="{
         'vehicle-loadout--holo': previewShown,
         'vehicle-loadout--render': renderShown,
-        'vehicle-loadout--inspecting': inspecting,
+        'vehicle-loadout--see-through': seeThrough,
       }"
       :style="backdrop ? { '--loadout-backdrop': `url(${backdrop})` } : {}"
       data-test="vehicle-loadout-form"
