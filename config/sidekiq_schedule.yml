@@ -44,6 +44,11 @@ sc_data_check_job:
   cron: '0 22 */1 * *' # Daily at 22:00
   class: 'ScData::CheckJob'
   queue: 'loaders'
+overlay_export_job:
+  cron: '15 4 */1 * *' # Daily at 4:15, a fallback for the export each sc_data load enqueues
+  class: 'Overlay::ExportJob'
+  queue: 'loaders'
+  enabled: <%= Rails.env.production? && Overlay::Publisher.configured? %>
 sc_data_ship_views_import_job:
   cron: '30 22 */1 * *' # Daily at 22:30
   class: 'ScData::ShipViewsImportJob'
