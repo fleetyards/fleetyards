@@ -21,6 +21,7 @@ import PickerCard from "@/shared/components/PickerCard/index.vue";
 import EquipmentIcon from "@/frontend/components/Equipment/Icon/index.vue";
 import HardpointCategoryIcon from "@/frontend/components/Models/Hardpoints/CategoryIcon/index.vue";
 import { MAX_MODELS } from "@/frontend/components/Compare/constants";
+import { compareItemImage } from "@/frontend/components/Compare/image";
 import {
   componentCompareCategory,
   equipmentCompareCategory,
@@ -80,6 +81,9 @@ const categoryOf = (item: Item) =>
 
 // The set's category, or the first pick's when the set is empty: a comparison
 // holds one category, so the rest of the catalogue goes out of reach with it.
+// Only the set's narrows the query; a pick's greys the other cards out instead,
+// so picking or dropping the first one does not reload the grid under the
+// reader.
 const lock = computed(
   () =>
     props.lock ??
@@ -103,7 +107,7 @@ const { data: typeOptions } = useQuery({
 });
 
 const query = computed(() => {
-  if (lock.value) return lock.value.query;
+  if (props.lock) return props.lock.query;
   if (!type.value) return {};
 
   return props.kind === "Component"
@@ -214,7 +218,7 @@ watch(search, (value) => {
   applySearch(value);
 });
 
-watch([type, lock], () => {
+watch(type, () => {
   page.value = 1;
 });
 
@@ -234,8 +238,12 @@ const selectedIds = computed(
 
 const atMax = computed(() => taken.size + selection.value.length >= MAX_MODELS);
 
-const cardDisabled = (item: Item) =>
-  taken.has(item.slug) || (atMax.value && !selectedIds.value.has(item.id));
+const cardDisabled = (item: Item) => {
+  if (selectedIds.value.has(item.id)) return false;
+  if (taken.has(item.slug) || atMax.value) return true;
+
+  return !!lock.value && categoryOf(item)?.key !== lock.value.key;
+};
 
 const toggle = (item: Item) => {
   if (selectedIds.value.has(item.id)) {
@@ -252,21 +260,10 @@ const remove = (id: string) => {
   selection.value = selection.value.filter((entry) => entry.id !== id);
 };
 
-// The angled render where there is one, as the compare table shows the item.
 const imageOf = (item: Item) => {
-  const media = item.media;
-  const store =
-    props.kind === "Equipment"
-      ? (item as Equipment).storeImage
-      : media?.storeImage;
+  const image = compareItemImage(item);
 
-  return (
-    media?.angledView?.mediumUrl ||
-    media?.angledView?.smallUrl ||
-    store?.mediumUrl ||
-    store?.smallUrl ||
-    undefined
-  );
+  return image?.mediumUrl || image?.smallUrl || undefined;
 };
 
 const subtitleOf = (item: Item) => {

@@ -13,6 +13,7 @@ import CompareCatalogueShare from "@/frontend/components/Compare/CatalogueShare/
 import { equipmentCompareCategory } from "@/frontend/components/Compare/category";
 import { useEquipmentSections } from "@/frontend/components/Compare/sections/equipment";
 import type { CompareColumn } from "@/frontend/components/Compare/types";
+import { compareItemImage } from "@/frontend/components/Compare/image";
 import { useCompareCatalogue } from "@/frontend/composables/useCompareCatalogue";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
@@ -31,14 +32,12 @@ const { slugs, items, category, dropped, loading, asyncStatus, remove } =
 
 const { sections } = useEquipmentSections(() => items.value);
 
-// The angled render where there is one, as the picker shows them: it draws
-// every item from the same angle, which the store art does not.
 const columns = computed<CompareColumn[]>(() =>
   items.value.map((item) => ({
     key: item.slug,
     name: item.name,
     subtitle: item.manufacturer?.name,
-    image: item.media?.angledView ?? item.storeImage ?? undefined,
+    image: compareItemImage(item),
     imageFit: "contain",
     to: { name: "equipment-item", params: { slug: item.slug } },
   })),
@@ -59,13 +58,14 @@ const columns = computed<CompareColumn[]>(() =>
     :remove-label="t('labels.compare.removeItem')"
     @remove="remove"
   >
-    <template #add>
+    <template #add="{ compact }">
       <CompareCatalogueAdd
         kind="Equipment"
         query-key="equipment"
         :slugs="slugs"
         :lock="category"
         :label="t('labels.compare.selectEquipment')"
+        :compact="compact"
       />
     </template>
     <template #actions>
