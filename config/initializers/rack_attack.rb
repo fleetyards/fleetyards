@@ -31,15 +31,25 @@ signed_in_user_id = lambda do |req|
   end
 end
 
+files_path = ->(req) { req.path.start_with?("#{ActiveStorage.routes_prefix}/") }
+
 # A signed-in user is counted on their own, so a household or office behind one
 # address does not share a single budget with every device on it.
 Rack::Attack.throttle("api", limit: ->(req) { signed_in_user_id.call(req) ? 10_000 : 5000 }, period: 1.hour) do |req|
   if !req.path.match?(%r{^/v\d+$}) &&
       !req.path.match?(%r{^/v\d+/docs$}) &&
+      !files_path.call(req) &&
       req.host.split(".").first == "api"
     user_id = signed_in_user_id.call(req)
     user_id ? "user:#{user_id}" : client_ip.call(req)
   end
+end
+
+# Every image is its own redirect, so one hangar page can cost hundreds of
+# requests. They get a budget of their own, sized for browsing, which still
+# stops a scraper walking the whole gallery.
+Rack::Attack.throttle("files", limit: 20_000, period: 1.hour) do |req|
+  client_ip.call(req) if files_path.call(req)
 end
 
 # Registering an OAuth application is a deliberate act nobody performs in bulk,

@@ -89,4 +89,16 @@ class Api::RateLimitTest < ActionDispatch::IntegrationTest
     get "/api/v1/models"
     assert_equal "10000", response.headers["X-RateLimit-Limit"]
   end
+
+  test "image redirects do not spend the API budget" do
+    Rack::Attack.throttles["files"].stubs(:limit).returns(1)
+    blob_path = "#{ActiveStorage.routes_prefix}/blobs/redirect/missing/image.jpg"
+
+    get blob_path
+    get "/api/v1/models"
+    assert_response :success
+
+    get blob_path
+    assert_response :too_many_requests
+  end
 end
