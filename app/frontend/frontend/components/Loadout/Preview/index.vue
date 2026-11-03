@@ -22,8 +22,10 @@ type Props = {
   // controls, and opens full screen; `backdrop` fills the box too, still and
   // closer, as a see-through hologram in the angled render's pose.
   variant?: "inline" | "stage" | "backdrop";
-  // A backdrop turned and zoomed by the viewer, with the holo's controls.
+  // A backdrop turned by the viewer, with the holo's controls.
   interactive?: boolean;
+  // A backdrop the wheel zooms rather than scrolling past.
+  zoomable?: boolean;
   // A part on the holo answers the pointer with its slot's path.
   pickable?: boolean;
   testId?: string;
@@ -33,6 +35,7 @@ const props = withDefaults(defineProps<Props>(), {
   slots: undefined,
   variant: "inline",
   interactive: false,
+  zoomable: false,
   pickable: false,
   testId: "loadout-preview",
 });
@@ -147,7 +150,7 @@ onBeforeUnmount(() => {
       :azimuth="ANGLED_AZIMUTH"
       :elevation="ANGLED_ELEVATION"
       :controllable="interactive"
-      :zoomable="interactive"
+      :zoomable="interactive && zoomable"
       contain
       hologram
       on-demand

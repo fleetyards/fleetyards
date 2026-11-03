@@ -362,8 +362,7 @@ const renderShown = computed(
   () => (!!model.value && !flightReady.value) || previewAbsent.value,
 );
 
-// The figures put away: room to see the ship, and with a holo, to turn and
-// zoom it.
+// The figures put away: room to see the ship, and with a holo, to zoom it.
 const inspecting = ref(false);
 
 const figuresToggleLabel = computed(() =>
@@ -1512,13 +1511,13 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
         v-if="flightReady && !initialising"
         v-show="!linking"
         class="vehicle-loadout__preview"
-        :class="{ 'vehicle-loadout__preview--inspecting': inspecting }"
       >
         <div class="vehicle-loadout__preview-frame">
           <LoadoutPreview
             :model-slug="modelSlug"
             :slots="previewSlots"
-            :interactive="inspecting"
+            :zoomable="inspecting"
+            interactive
             :pickable="editable"
             variant="backdrop"
             test-id="vehicle-loadout-preview"
