@@ -21,6 +21,7 @@ import {
   type ConfirmAccessInput,
 } from "@/services/fyApi";
 import { useForm } from "vee-validate";
+import { firstErrorMessageFrom } from "@/shared/utils/ApiErrors";
 
 const { t } = useI18n();
 const { displayAlert, displaySuccess } = useAppNotifications();
@@ -167,17 +168,17 @@ const submitSetEmail = async () => {
     .then(() => {
       submitting.value = false;
 
+      comlink.emit("user-update");
+
       displaySuccess({
         text: t("messages.setEmail.success"),
       });
     })
     .catch((error) => {
-      console.error(error);
-
       submitting.value = false;
 
       displayAlert({
-        text: t("messages.setEmail.failure"),
+        text: firstErrorMessageFrom(error) ?? t("messages.setEmail.failure"),
       });
     });
 };
