@@ -304,6 +304,13 @@ const internalAutoRotate = ref(props.autoRotate);
 
 const zoom = ref(props.zoomable);
 
+watch(
+  () => props.zoomable,
+  (zoomable) => {
+    zoom.value = zoomable;
+  },
+);
+
 const color = ref(false);
 
 const autoRotateTooltip = computed(() => {
