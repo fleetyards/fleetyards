@@ -66,9 +66,12 @@ module DressingRoom
     end
 
     # The core shows a set best, and every piece of it is rendered from the same
-    # angle; a set whose core has no picture borrows another piece's.
+    # angle, so a set whose core has no render borrows another piece's before a
+    # store photo, which would sit oddly among the renders.
     private def pictured_by(by_slot)
-      PICTURE_ORDER.lazy.filter_map { |slot| by_slot[slot]&.dig(:record) }.find(&:angled_image_attr)
+      records = PICTURE_ORDER.filter_map { |slot| by_slot[slot]&.dig(:record) }
+
+      records.find { |record| record.angled_view.attached? } || records.find(&:angled_image_attr)
     end
 
     # A piece with a rig to wear in the dressing room before one without, and

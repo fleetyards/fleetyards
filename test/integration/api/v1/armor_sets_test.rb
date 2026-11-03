@@ -81,6 +81,17 @@ class Api::V1::ArmorSetsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /armor-sets pictures a set by another piece's render before its core's store image" do
+    picture = ->(file) { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/files/#{file}"), "image/#{File.extname(file).delete(".").sub("jpg", "jpeg")}") }
+    piece("ORC-mkX Helmet Woodland", :helmet, angled_view: picture.call("test.png"))
+    piece("ORC-mkX Core Woodland", :torso, store_image: picture.call("image.jpg"))
+    piece("ORC-mkX Arms Woodland", :arms)
+
+    assert_api_response :get, 200 do
+      assert_equal "test.png", parsed_body.first.dig("image", "name")
+    end
+  end
+
   test "GET /armor-sets is forbidden while the feature is off" do
     Flipper.disable(:dressing_room)
 

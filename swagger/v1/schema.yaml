@@ -23890,8 +23890,9 @@ components:
           - string
           - 'null'
         image:
-          description: A render of one of the set's pieces, its core where it has
-            one; absent when none has a picture
+          description: 'A picture of one of the set''s pieces: the core''s render
+            where it has one, another piece''s render, then a store image; absent
+            when none has a picture'
           anyOf:
           - "$ref": "#/components/schemas/MediaFile"
           - type: 'null'
