@@ -5,6 +5,19 @@ import Component from "../index.vue";
 import { VehicleEditTabsEnum } from "../types";
 import type { Image, ModelPaint, Vehicle } from "@/services/fyApi";
 
+// The cards carry a lazy background image, and jsdom has no IntersectionObserver.
+// Per test, since a spec sharing this worker can unstub globals between them.
+beforeEach(() => {
+  vi.stubGlobal(
+    "IntersectionObserver",
+    class {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    },
+  );
+});
+
 const updateVehicle = vi.fn();
 
 const gallery = vi.hoisted(() => ({
@@ -120,7 +133,9 @@ describe("VehicleEditModal image tab", () => {
       .find('[data-test="vehicle-image-source-gallery"]')
       .trigger("click");
     await wrapper
-      .findAll('[data-test="vehicle-image-gallery-choice-toggle"]')[1]
+      .findAll(
+        '[data-test="vehicle-image-gallery-choice"] .picker-card__toggle',
+      )[1]
       .trigger("click");
     await submit(wrapper);
 
@@ -141,15 +156,13 @@ describe("VehicleEditModal image tab", () => {
 
     expect(
       wrapper
-        .findAll(
-          '[data-test="vehicle-image-gallery-paint"] .addon-option__name',
-        )
+        .findAll('[data-test="vehicle-image-gallery-paint"] .picker-card__name')
         .map((name) => name.text()),
     ).toEqual(["Rust Society", "Stormbringer"]);
     expect(
       wrapper
         .findAll('[data-test="vehicle-image-gallery-paint"]')
-        .map((choice) => choice.find("[data-test='pill']").exists()),
+        .map((choice) => choice.find(".picker-card__badge").exists()),
     ).toEqual([false, true]);
     expect(
       wrapper.findAll('[data-test="vehicle-image-gallery-choice"]'),
@@ -190,7 +203,9 @@ describe("VehicleEditModal image tab", () => {
       .find('[data-test="vehicle-image-source-gallery"]')
       .trigger("click");
     await wrapper
-      .findAll('[data-test="vehicle-image-gallery-choice-toggle"]')[1]
+      .findAll(
+        '[data-test="vehicle-image-gallery-choice"] .picker-card__toggle',
+      )[1]
       .trigger("click");
     await wrapper
       .find('[data-test="vehicle-image-source-paints"]')
@@ -198,7 +213,9 @@ describe("VehicleEditModal image tab", () => {
 
     expect(
       wrapper
-        .findAll('[data-test="vehicle-image-gallery-paint-toggle"]')[1]
+        .findAll(
+          '[data-test="vehicle-image-gallery-paint"] .picker-card__toggle',
+        )[1]
         .attributes("aria-pressed"),
     ).toBe("true");
 
@@ -222,7 +239,7 @@ describe("VehicleEditModal image tab", () => {
 
     expect(
       wrapper
-        .find('[data-test="vehicle-image-gallery-none-toggle"]')
+        .find('[data-test="vehicle-image-gallery-none"] .picker-card__toggle')
         .attributes("aria-pressed"),
     ).toBe("false");
 
@@ -248,7 +265,9 @@ describe("VehicleEditModal image tab", () => {
       .find('[data-test="vehicle-image-source-paints"]')
       .trigger("click");
     await wrapper
-      .findAll('[data-test="vehicle-image-gallery-paint-toggle"]')[1]
+      .findAll(
+        '[data-test="vehicle-image-gallery-paint"] .picker-card__toggle',
+      )[1]
       .trigger("click");
     await submit(wrapper);
 
@@ -268,7 +287,7 @@ describe("VehicleEditModal image tab", () => {
     });
 
     await wrapper
-      .find('[data-test="vehicle-image-gallery-none-toggle"]')
+      .find('[data-test="vehicle-image-gallery-none"] .picker-card__toggle')
       .trigger("click");
     await submit(wrapper);
 
@@ -284,7 +303,7 @@ describe("VehicleEditModal image tab", () => {
     });
 
     await wrapper
-      .find('[data-test="vehicle-image-gallery-none-toggle"]')
+      .find('[data-test="vehicle-image-gallery-none"] .picker-card__toggle')
       .trigger("click");
     await submit(wrapper);
 
@@ -348,7 +367,7 @@ describe("VehicleEditModal image tab", () => {
     });
 
     await wrapper
-      .find('[data-test="vehicle-image-gallery-none-toggle"]')
+      .find('[data-test="vehicle-image-gallery-none"] .picker-card__toggle')
       .trigger("click");
     await submit(wrapper);
 

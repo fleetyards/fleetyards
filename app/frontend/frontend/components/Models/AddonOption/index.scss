@@ -4,11 +4,9 @@ $phone-indent: 106px;
 
 /*
  * A row in a list of addons, shared by the hardpoint slot's module picker, the
- * hangar's modules-and-upgrades modal and its paint picker. A list rather than
- * a grid of photographs: the figures line up down the modal and can be read
- * against each other, which a two-up grid of store images never allowed. The
- * stacked card is the exception, for paints, which have a picture to recognise
- * and no figures to compare.
+ * hangar's modules-and-upgrades modal. A list rather than a grid of photographs:
+ * the figures line up down the modal and can be read against each other, which a
+ * two-up grid of store images never allowed.
  */
 .addon-option {
   position: relative;
@@ -203,74 +201,6 @@ $phone-indent: 106px;
   // than sitting back under the thumbnail.
   .addon-option__quantity {
     margin-left: $phone-indent;
-  }
-}
-
-/*
- * After the phone rules, so the card keeps its full-width picture and drops the
- * indent that lines a row's figures up beside a thumbnail.
- */
-.addon-option--stacked {
-  flex-direction: column;
-  flex-wrap: nowrap;
-  align-items: stretch;
-  gap: 8px;
-  padding: 8px 8px 10px;
-
-  .addon-option__image {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 16 / 9;
-  }
-
-  .addon-option__body {
-    padding: 0 4px;
-  }
-
-  // Over the picture's top corner, so a pill tags the picture instead of
-  // pushing its card taller than the rest of the row.
-  .addon-option__meta {
-    position: absolute;
-    top: 14px;
-    right: 14px;
-    left: 14px;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    width: auto;
-    padding: 0;
-    pointer-events: none;
-  }
-
-  // A pill's fill is a translucent tint made for a panel; over a picture it
-  // vanishes, so here it is mixed into an opaque dark instead.
-  .addon-option__meta .base-pill {
-    background: color-mix(
-      in srgb,
-      var(--color-primary, #428bca) 35%,
-      #{$gray-black}
-    );
-    box-shadow: 0 1px 4px rgb(0 0 0 / 0.5);
-
-    &--neutral {
-      background: color-mix(in srgb, #{$gray-light} 25%, #{$gray-black});
-    }
-
-    &--success {
-      background: color-mix(in srgb, #{$success} 35%, #{$gray-black});
-    }
-
-    &--warning {
-      background: color-mix(in srgb, #{$warning} 35%, #{$gray-black});
-    }
-
-    &--danger {
-      background: color-mix(in srgb, #{$danger} 35%, #{$gray-black});
-    }
-  }
-
-  .addon-option__quantity {
-    align-self: flex-start;
-    margin-left: 4px;
   }
 }
 
