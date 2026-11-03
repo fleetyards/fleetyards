@@ -335,6 +335,13 @@ const onDestroy = async () => {
         <i class="fa-light fa-grid-2" />
         {{ t("hangarPlanner.editSlots") }}
       </Btn>
+      <Btn
+        :to="{ name: 'hangar-plan-suggestions', params: { id: plan.id } }"
+        data-test="hangar-plan-suggestions"
+      >
+        <i class="fa-light fa-lightbulb" />
+        {{ t("hangarPlanner.suggestions.title") }}
+      </Btn>
       <BtnDropdown data-test="hangar-plan-more">
         <Btn :variant="BtnVariantsEnum.BARE" @click="editPlan">
           <i class="fa-light fa-pen" />

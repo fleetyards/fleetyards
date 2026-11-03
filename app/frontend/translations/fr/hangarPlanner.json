@@ -451,7 +451,20 @@
       },
       "slotsTitle": "Emplacements",
       "editSlots": "Modifier les emplacements",
-      "slotNumber": "Emplacement %{number}"
+      "slotNumber": "Emplacement %{number}",
+      "suggestions": {
+        "title": "Suggestions",
+        "lead": "Des idées pour le hangar auquel ce plan aboutit, sans les vaisseaux qu'il fond ou améliore.",
+        "redundant": "Vaisseaux redondants",
+        "noRedundant": "Aucun vaisseau ne fait deux fois le même travail.",
+        "duplicate": "%{ship} × %{count}",
+        "hints": {
+          "duplicate": "Le même vaisseau plusieurs fois. En fondre un de trop rend du crédit store.",
+          "role": "%{count} vaisseaux du même rôle. Un seul pourrait suffire."
+        },
+        "inSlot": "Emplacement %{slot}",
+        "inHangar": "Votre hangar"
+      }
     }
   }
 }

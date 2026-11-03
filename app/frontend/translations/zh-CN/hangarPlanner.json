@@ -451,7 +451,20 @@
       },
       "slotsTitle": "槽位",
       "editSlots": "编辑槽位",
-      "slotNumber": "槽位 %{number}"
+      "slotNumber": "槽位 %{number}",
+      "suggestions": {
+        "title": "建议",
+        "lead": "针对此计划最终形成的机库提出的建议，不含被熔炼或升级掉的舰船。",
+        "redundant": "重复的舰船",
+        "noRedundant": "没有舰船在做重复的工作。",
+        "duplicate": "%{ship} × %{count}",
+        "hints": {
+          "duplicate": "同一艘舰船不止一次。熔炼多余的一艘可以拿回商店信用点。",
+          "role": "%{count} 艘舰船属于同一角色，也许一艘就够了。"
+        },
+        "inSlot": "槽位 %{slot}",
+        "inHangar": "你的机库"
+      }
     }
   }
 }

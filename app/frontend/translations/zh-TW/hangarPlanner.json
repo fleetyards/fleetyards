@@ -451,7 +451,20 @@
       },
       "slotsTitle": "槽位",
       "editSlots": "編輯槽位",
-      "slotNumber": "欄位 %{number}"
+      "slotNumber": "欄位 %{number}",
+      "suggestions": {
+        "title": "建議",
+        "lead": "針對此計畫最終形成的機庫提出的建議，不含被熔煉或升級掉的艦船。",
+        "redundant": "重複的艦船",
+        "noRedundant": "沒有艦船在做重複的工作。",
+        "duplicate": "%{ship} × %{count}",
+        "hints": {
+          "duplicate": "同一艘艦船不止一次。熔煉多餘的一艘可以拿回商店信用點。",
+          "role": "%{count} 艘艦船屬於同一角色，也許一艘就夠了。"
+        },
+        "inSlot": "欄位 %{slot}",
+        "inHangar": "你的機庫"
+      }
     }
   }
 }

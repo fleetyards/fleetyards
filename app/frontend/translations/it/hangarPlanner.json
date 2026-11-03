@@ -451,7 +451,20 @@
       },
       "slotsTitle": "Slot",
       "editSlots": "Modifica slot",
-      "slotNumber": "Slot %{number}"
+      "slotNumber": "Slot %{number}",
+      "suggestions": {
+        "title": "Suggerimenti",
+        "lead": "Idee per l'hangar con cui termina questo piano, senza le navi che fonde o migliora.",
+        "redundant": "Navi ridondanti",
+        "noRedundant": "Nessuna nave fa lo stesso lavoro due volte.",
+        "duplicate": "%{ship} × %{count}",
+        "hints": {
+          "duplicate": "La stessa nave più volte. Fonderne una di troppo restituisce credito dello store.",
+          "role": "%{count} navi dello stesso ruolo. Una potrebbe bastare."
+        },
+        "inSlot": "Slot %{slot}",
+        "inHangar": "Il tuo hangar"
+      }
     }
   }
 }

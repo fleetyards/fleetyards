@@ -451,7 +451,20 @@
       },
       "slotsTitle": "Slots",
       "editSlots": "Slots bearbeiten",
-      "slotNumber": "Platz %{number}"
+      "slotNumber": "Platz %{number}",
+      "suggestions": {
+        "title": "Vorschläge",
+        "lead": "Ideen für den Hangar, den dieser Plan ergibt, wenn alle eingeschmolzenen und weggeupgradeten Schiffe weg sind.",
+        "redundant": "Doppelte Schiffe",
+        "noRedundant": "Kein Schiff erfüllt dieselbe Aufgabe doppelt.",
+        "duplicate": "%{ship} × %{count}",
+        "hints": {
+          "duplicate": "Dasselbe Schiff mehrfach. Ein überzähliges einzuschmelzen bringt Store-Guthaben zurück.",
+          "role": "%{count} Schiffe derselben Rolle. Eines davon könnte reichen."
+        },
+        "inSlot": "Platz %{slot}",
+        "inHangar": "Dein Hangar"
+      }
     }
   }
 }

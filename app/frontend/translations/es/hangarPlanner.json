@@ -451,7 +451,20 @@
       },
       "slotsTitle": "Slots",
       "editSlots": "Editar slots",
-      "slotNumber": "Hueco %{number}"
+      "slotNumber": "Hueco %{number}",
+      "suggestions": {
+        "title": "Sugerencias",
+        "lead": "Ideas para el hangar con el que termina este plan, sin las naves que funde o mejora.",
+        "redundant": "Naves redundantes",
+        "noRedundant": "Ninguna nave hace el mismo trabajo dos veces.",
+        "duplicate": "%{ship} × %{count}",
+        "hints": {
+          "duplicate": "La misma nave más de una vez. Fundir una de sobra devuelve crédito de tienda.",
+          "role": "%{count} naves del mismo rol. Quizá baste con una."
+        },
+        "inSlot": "Hueco %{slot}",
+        "inHangar": "Tu hangar"
+      }
     }
   }
 }

@@ -451,7 +451,20 @@
       },
       "slotsTitle": "Slots",
       "editSlots": "Edit slots",
-      "slotNumber": "Slot %{number}"
+      "slotNumber": "Slot %{number}",
+      "suggestions": {
+        "title": "Suggestions",
+        "lead": "Ideas for the hangar this plan ends with, once every ship it melts or upgrades away is gone.",
+        "redundant": "Redundant ships",
+        "noRedundant": "No ship does the same job twice.",
+        "duplicate": "%{ship} × %{count}",
+        "hints": {
+          "duplicate": "The same ship more than once. Melting an extra one gives store credit back.",
+          "role": "%{count} ships of the same role. One of them may be enough."
+        },
+        "inSlot": "Slot %{slot}",
+        "inHangar": "Your hangar"
+      }
     }
   }
 }
