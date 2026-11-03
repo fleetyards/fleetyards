@@ -10,9 +10,9 @@ module V1
           type: :object,
           properties: {
             name: {type: :string},
-            manufacturerName: {type: :string, nullable: true},
-            itemType: {type: :string, nullable: true},
-            itemTypeLabel: {type: :string, nullable: true},
+            manufacturerName: {type: [:string, :null]},
+            itemType: {type: [:string, :null]},
+            itemTypeLabel: {type: [:string, :null]},
             pieces: {type: :array, items: ::V1::Schemas::DressingRoom::ArmorSetPiece}
           },
           additionalProperties: false,

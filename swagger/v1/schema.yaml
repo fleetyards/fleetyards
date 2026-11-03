@@ -23878,14 +23878,17 @@ components:
         name:
           type: string
         manufacturerName:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         itemType:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         itemTypeLabel:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         pieces:
           type: array
           items:
