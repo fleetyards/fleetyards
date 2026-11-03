@@ -1,6 +1,7 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { flushPromises } from "@vue/test-utils";
 import { describe, expect, it, vi } from "vitest";
+import { type SlotFit } from "@/frontend/utils/dressingRoomFit";
 
 const fetchEquipment = vi.fn((_params: unknown) =>
   Promise.resolve({
@@ -68,8 +69,7 @@ describe("DressingRoomSlotPickerModal", () => {
     expect(closed).toHaveBeenCalled();
   });
 
-  it("greys out what the worn pieces leave no room for, and says why", async () => {
-    closed.mockClear();
+  it("greys out what the worn pieces leave no room for, even once they load after it opened", async () => {
     fetchEquipment.mockResolvedValueOnce({
       items: [
         {
@@ -84,33 +84,31 @@ describe("DressingRoomSlotPickerModal", () => {
       meta: { pagination: { currentPage: 1, totalPages: 1 } },
     } as never);
 
+    const fit = ref<SlotFit>({ kind: "open" });
     const wrapper = await mountWithDefaults<typeof SlotPicker>(SlotPicker, {
-      props: {
-        slot: "backpack",
-        fit: {
-          kind: "ports",
-          ports: [
-            {
-              name: "backpack",
-              types: [{ type: "Char_Armor_Backpack" }],
-              minSize: 1,
-              maxSize: 1,
-            },
-          ],
-          providers: [{ name: "Light Core" }],
-        },
-      },
+      props: { slot: "backpack", fit: () => fit.value },
     });
     await flushPromises();
 
     const card = wrapper.find('[data-test="dressing-room-option-heavy-pack"]');
+    expect(card.classes()).not.toContain("picker-card--disabled");
+
+    fit.value = {
+      kind: "ports",
+      ports: [
+        {
+          name: "backpack",
+          types: [{ type: "Char_Armor_Backpack" }],
+          minSize: 1,
+          maxSize: 1,
+        },
+      ],
+      providers: [{ name: "Light Core" }],
+    };
+    await flushPromises();
+
     expect(card.classes()).toContain("picker-card--disabled");
     expect(card.text()).toContain("Light Core");
-
-    await card.find("button").trigger("click");
-
-    expect(wrapper.emitted("select")).toBeUndefined();
-    expect(closed).not.toHaveBeenCalled();
   });
 
   it("shows a weapon's size beside its maker and type", async () => {

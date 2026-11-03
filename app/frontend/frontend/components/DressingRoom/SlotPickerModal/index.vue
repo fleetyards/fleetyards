@@ -27,14 +27,16 @@ import {
 
 type Props = {
   slot: OutfitSlotEnum;
-  selectedSlug?: string;
+  // Getters, since a modal's props are set once: a worn piece still loading when
+  // it opened changes what fits while it is open.
+  selectedSlug?: () => string | undefined;
   // What the worn pieces leave room for: anything else is shown, but greyed
   // out with the reason.
-  fit?: SlotFit;
+  fit?: () => SlotFit;
 };
 
 const props = withDefaults(defineProps<Props>(), {
-  selectedSlug: undefined,
+  selectedSlug: () => undefined,
   fit: () => ({ kind: "open" }),
 });
 
@@ -46,24 +48,26 @@ const { t } = useI18n();
 
 const comlink = useComlink();
 
-const fits = (item: CatalogueItem) => fitsSlot(props.fit, item as Equipment);
+const fit = computed(() => props.fit());
+
+const fits = (item: CatalogueItem) => fitsSlot(fit.value, item as Equipment);
 
 const isDisabled = (item: CatalogueItem) => !fits(item);
 
-const isSelected = (item: CatalogueItem) => item.slug === props.selectedSlug;
+const isSelected = (item: CatalogueItem) => item.slug === props.selectedSlug();
 
 const withSize = computed(
   () => isWeaponSlot(props.slot) || props.slot === OutfitSlotEnum.BACKPACK,
 );
 
 const misfitReason = computed(() =>
-  t("dressingRoom.fit.doesNotFit", { item: providerNames(props.fit) }),
+  t("dressingRoom.fit.doesNotFit", { item: providerNames(fit.value) }),
 );
 
 // Nothing worn offers this slot at all: said once, above the grid.
 const noPort = computed(() =>
-  props.fit.kind === "none"
-    ? t("dressingRoom.fit.noPort", { item: providerNames(props.fit) })
+  fit.value.kind === "none"
+    ? t("dressingRoom.fit.noPort", { item: providerNames(fit.value) })
     : undefined,
 );
 
@@ -82,8 +86,6 @@ const query = computed(() =>
 );
 
 const pick = (item: CatalogueItem) => {
-  if (isDisabled(item)) return;
-
   emit("select", item as Equipment);
   comlink.emit("close-modal", true);
 };

@@ -164,8 +164,8 @@ const openSlot = (slot: OutfitSlotEnum) => {
       import("@/frontend/components/DressingRoom/SlotPickerModal/index.vue"),
     props: {
       slot,
-      selectedSlug: selection.value[slot],
-      fit: slotFits.value[slot],
+      selectedSlug: () => selection.value[slot],
+      fit: () => slotFits.value[slot],
       onSelect: (item: Equipment) => choose(slot, item),
     },
     wide: true,
