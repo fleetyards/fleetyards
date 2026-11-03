@@ -2,7 +2,12 @@ import { mountWithDefaults } from "@/shared/utils/TestUtils";
 import { flushPromises } from "@vue/test-utils";
 import { describe, expect, it, vi } from "vitest";
 import { createRouter, createWebHashHistory } from "vue-router";
-import { type CharacterBody, type Equipment } from "@/services/fyApi";
+import {
+  type ArmorSet,
+  type CharacterBody,
+  type Equipment,
+  OutfitSlotEnum,
+} from "@/services/fyApi";
 
 const media = (name: string) => ({
   url: `/${name}`,
@@ -105,6 +110,19 @@ const MALE: CharacterBody = {
 
 const bodies = ref<CharacterBody[]>([MALE]);
 
+const ARMOR_SETS: ArmorSet[] = [
+  {
+    name: "ADP Woodland",
+    manufacturerName: "Clark Defense Systems",
+    itemType: "heavy_armor",
+    itemTypeLabel: "Heavy Armor",
+    pieces: [
+      { slot: OutfitSlotEnum.TORSO, slug: "adp-core", name: "ADP Core" },
+      { slot: OutfitSlotEnum.LEGS, slug: "adp-legs", name: "ADP Legs" },
+    ],
+  },
+];
+
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<Record<string, unknown>>()),
   getEquipmentItemQueryOptions: (
@@ -119,6 +137,7 @@ vi.mock("@/services/fyApi", async (importOriginal) => ({
         : Promise.reject(new Error("not found")),
   }),
   useCharacterBodies: () => ({ data: bodies }),
+  useArmorSets: () => ({ data: ref(ARMOR_SETS), isLoading: ref(false) }),
 }));
 
 const copied = vi.fn((_text: string) => Promise.resolve());
@@ -493,6 +512,46 @@ describe("ToolsDressingRoomPage", () => {
     expect(
       wrapper.find('[data-test="dressing-room-fit-helmet"]').exists(),
     ).toBe(false);
+  });
+
+  it("puts on an armour set, keeping the undersuit and weapons and taking off the rest of the old armour", async () => {
+    const { wrapper, router } = await mount({
+      helmet: "old-helmet",
+      torso: "painted-core",
+      undersuit: "flight-suit",
+      primary: "p4-ar",
+    });
+
+    await wrapper
+      .find('[data-test="dressing-room-open-armor-sets"]')
+      .trigger("click");
+    await wrapper
+      .find('[data-test="dressing-room-armor-set-adp-core"]')
+      .trigger("click");
+    await flushPromises();
+
+    expect(router.currentRoute.value.query).toMatchObject({
+      torso: "adp-core",
+      legs: "adp-legs",
+      undersuit: "flight-suit",
+      primary: "p4-ar",
+    });
+    expect(router.currentRoute.value.query.helmet).toBeUndefined();
+    expect(
+      wrapper.find('[data-test="dressing-room-armor-sets"]').exists(),
+    ).toBe(false);
+  });
+
+  it("marks the armour set that is worn", async () => {
+    const { wrapper } = await mount({ torso: "adp-core", legs: "adp-legs" });
+
+    await wrapper
+      .find('[data-test="dressing-room-open-armor-sets"]')
+      .trigger("click");
+
+    expect(
+      wrapper.find('[data-test="dressing-room-armor-set-adp-core"]').classes(),
+    ).toContain("armor-sets__item--selected");
   });
 
   it("shows how to start with nothing to draw", async () => {

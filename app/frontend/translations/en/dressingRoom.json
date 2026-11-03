@@ -56,6 +56,11 @@
       "fit": {
         "noPort": "%{item} has no slot for this",
         "doesNotFit": "Doesn't fit %{item}"
+      },
+      "armorSets": {
+        "open": "Armour sets",
+        "search": "Search armour sets",
+        "noResults": "No armour set found."
       }
     }
   }

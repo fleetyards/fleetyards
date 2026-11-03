@@ -56,6 +56,11 @@
       "fit": {
         "noPort": "%{item} non ha uno slot per questo",
         "doesNotFit": "Non compatibile con %{item}"
+      },
+      "armorSets": {
+        "open": "Set di armatura",
+        "search": "Cerca set di armatura",
+        "noResults": "Nessun set di armatura trovato."
       }
     }
   }

@@ -56,6 +56,11 @@
       "fit": {
         "noPort": "%{item} hat hierfür keinen Platz",
         "doesNotFit": "Passt nicht zu %{item}"
+      },
+      "armorSets": {
+        "open": "Rüstungssets",
+        "search": "Rüstungssets durchsuchen",
+        "noResults": "Kein Rüstungsset gefunden."
       }
     }
   }

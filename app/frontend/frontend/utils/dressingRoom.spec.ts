@@ -12,6 +12,8 @@ import {
   parseOutfitQuery,
   pieceHolo,
   sameOutfit,
+  wearArmorSet,
+  wearsArmorSet,
 } from "./dressingRoom";
 
 const file = (url: string, size = 10): MediaFile => ({
@@ -273,5 +275,50 @@ describe("clipLabel", () => {
     expect(clipLabel("shop_med_marine_holdwrist")).toBe(
       "Shop med marine holdwrist",
     );
+  });
+});
+
+describe("wearArmorSet", () => {
+  const set = {
+    name: "ORC-mkX Woodland",
+    manufacturerName: null,
+    itemType: null,
+    itemTypeLabel: null,
+    pieces: [
+      { slot: OutfitSlotEnum.TORSO, slug: "orc-core", name: "ORC-mkX Core" },
+      { slot: OutfitSlotEnum.ARMS, slug: "orc-arms", name: "ORC-mkX Arms" },
+    ],
+  };
+
+  it("swaps the armour for the set's and keeps the backpack, undersuit and weapons", () => {
+    expect(
+      wearArmorSet(
+        {
+          [OutfitSlotEnum.HELMET]: "adp-helmet",
+          [OutfitSlotEnum.TORSO]: "adp-core",
+          [OutfitSlotEnum.BACKPACK]: "pack",
+          [OutfitSlotEnum.UNDERSUIT]: "suit",
+          [OutfitSlotEnum.PRIMARY]: "p4-ar",
+        },
+        set,
+      ),
+    ).toEqual({
+      [OutfitSlotEnum.HELMET]: undefined,
+      [OutfitSlotEnum.TORSO]: "orc-core",
+      [OutfitSlotEnum.ARMS]: "orc-arms",
+      [OutfitSlotEnum.LEGS]: undefined,
+      [OutfitSlotEnum.BACKPACK]: "pack",
+      [OutfitSlotEnum.UNDERSUIT]: "suit",
+      [OutfitSlotEnum.PRIMARY]: "p4-ar",
+    });
+  });
+
+  it("reads a set as worn only while every piece of it is", () => {
+    const worn = wearArmorSet({}, set);
+
+    expect(wearsArmorSet(worn, set)).toBe(true);
+    expect(
+      wearsArmorSet({ ...worn, [OutfitSlotEnum.ARMS]: "other" }, set),
+    ).toBe(false);
   });
 });

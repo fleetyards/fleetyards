@@ -16,10 +16,12 @@ import {
 import HoloViewer from "@/shared/components/HoloViewer/index.vue";
 import SlotPicker from "@/frontend/components/DressingRoom/SlotPicker/index.vue";
 import Outfits from "@/frontend/components/DressingRoom/Outfits/index.vue";
+import ArmorSets from "@/frontend/components/DressingRoom/ArmorSets/index.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import copyText from "@/shared/utils/CopyText";
 import {
+  type ArmorSet,
   type Equipment,
   type Outfit,
   type OutfitItemInput,
@@ -50,6 +52,7 @@ import {
   pieceHolo,
   riggedOutfitModel,
   riggedPieceHolo,
+  wearArmorSet,
 } from "@/frontend/utils/dressingRoom";
 import {
   type SlotFit,
@@ -134,6 +137,23 @@ const navigate = (next: OutfitSelection, state: NavigationState = {}) => {
 
 const picking = ref<OutfitSlotEnum>();
 
+const pickingSet = ref(false);
+
+const openSlot = (slot: OutfitSlotEnum) => {
+  pickingSet.value = false;
+  picking.value = slot;
+};
+
+const openArmorSets = () => {
+  picking.value = undefined;
+  pickingSet.value = true;
+};
+
+const chooseArmorSet = (set: ArmorSet) => {
+  pickingSet.value = false;
+  void navigate(wearArmorSet(selection.value, set));
+};
+
 const choose = (slot: OutfitSlotEnum, item: Equipment) => {
   picking.value = undefined;
   void navigate({ ...selection.value, [slot]: item.slug });
@@ -145,6 +165,7 @@ const clear = (slot: OutfitSlotEnum) => {
 
 const reset = () => {
   picking.value = undefined;
+  pickingSet.value = false;
   void navigate({}, { outfit: undefined, pose: undefined, held: undefined });
 };
 
@@ -158,6 +179,7 @@ const toggleHeld = (slot: OutfitSlotEnum) => {
 
 const loadOutfit = (outfit: Outfit) => {
   picking.value = undefined;
+  pickingSet.value = false;
   void navigate(
     Object.fromEntries(
       outfit.items.map((item) => [item.slot, item.equipment.slug]),
@@ -571,15 +593,33 @@ const copyShareLink = () => {
           @select="choose(picking, $event)"
           @close="picking = undefined"
         />
+        <ArmorSets
+          v-else-if="pickingSet"
+          :selection="selection"
+          @select="chooseArmorSet"
+          @close="pickingSet = false"
+        />
         <div v-else class="dressing-room__groups">
           <section
             v-for="group in SLOT_GROUPS"
             :key="group.key"
             class="dressing-room__group"
           >
-            <h2 class="dressing-room__group-title">
-              {{ t(`dressingRoom.groups.${group.key}`) }}
-            </h2>
+            <div class="dressing-room__group-header">
+              <h2 class="dressing-room__group-title">
+                {{ t(`dressingRoom.groups.${group.key}`) }}
+              </h2>
+              <Btn
+                v-if="group.key === 'armour'"
+                :size="BtnSizesEnum.SM"
+                :variant="BtnVariantsEnum.GHOST"
+                data-test="dressing-room-open-armor-sets"
+                @click="openArmorSets"
+              >
+                <i class="fa-light fa-layer-group" />
+                {{ t("dressingRoom.armorSets.open") }}
+              </Btn>
+            </div>
             <ul
               class="dressing-room__slots"
               :data-test="`dressing-room-slots-${group.key}`"
@@ -595,7 +635,7 @@ const copyShareLink = () => {
                   class="dressing-room__slot-pick"
                   :data-test="`dressing-room-pick-${slot}`"
                   :disabled="slotFits[slot].kind === 'none' && !selection[slot]"
-                  @click="picking = slot"
+                  @click="openSlot(slot)"
                 >
                   <span class="dressing-room__slot-label">
                     {{ t(`dressingRoom.slots.${slot}`) }}
@@ -820,8 +860,16 @@ const copyShareLink = () => {
   gap: 1.25rem;
 }
 
+.dressing-room__group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
 .dressing-room__group-title {
-  margin: 0 0 0.5rem;
+  margin: 0;
   font-size: 1rem;
   color: $gray-lighter;
 }
