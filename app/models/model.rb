@@ -137,6 +137,23 @@ class Model < ApplicationRecord
 
   def ccu_into? = ccu_target_status != "none"
 
+  # The ships a hangar plan can get: sold on the store at a price, or earned
+  # in game; else one the user already holds or can buy back.
+  def self.plannable_for(user)
+    gettable = where.not(pledge_price: nil).or(where(ingame_only: true))
+    return gettable if user.blank?
+
+    pledges = user.buyback_pledges
+    bought_back = Rsi::UpgradeTitles.models_by_name(
+      pledges.where(kind: %w[ship package other]).flat_map(&:returned_ship_names)
+    ).values.compact.map(&:id)
+
+    gettable
+      .or(where(id: user.vehicles.purchased.where(loaner: false).select(:model_id)))
+      .or(where(id: bought_back))
+      .or(where(rsi_id: pledges.where(kind: "upgrade").select(:upgrade_to_ship_id)))
+  end
+
   # The ships `ccu_into?` holds for, in SQL: the store sells them, no admin
   # ruled them out, and an upgrade into them was seen or they are too new to
   # tell.

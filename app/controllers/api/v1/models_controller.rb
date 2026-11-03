@@ -483,7 +483,7 @@ module Api
         scope = with_cargo_grids(scope) if model_query_params.delete("with_cargo_grids")
         scope = scope.with_textured_holo if ActiveModel::Type::Boolean.new.cast(model_query_params.delete("with_textured_holo"))
         scope = scope.where(id: current_resource_owner.vehicles.purchased.where(loaner: false).select(:model_id)) if model_query_params.delete("in_hangar") && current_resource_owner.present?
-        scope = scope.where(id: plannable_models.select(:id)) if model_query_params.delete("plannable")
+        scope = scope.where(id: Model.plannable_for(current_resource_owner).select(:id)) if model_query_params.delete("plannable")
         scope = container_fit(scope) if container_fit_params.present?
         scope = will_it_fit?(scope) if model_query_params["will_it_fit"].present?
 
@@ -544,24 +544,6 @@ module Api
         end
 
         model
-      end
-
-      # The ships a hangar plan can get: sold on the store at a price, or earned
-      # in game; else one the signed-in user already holds or can buy back.
-      private def plannable_models
-        gettable = Model.where.not(pledge_price: nil).or(Model.where(ingame_only: true))
-        owner = current_resource_owner
-        return gettable if owner.blank?
-
-        pledges = owner.buyback_pledges
-        bought_back = Rsi::UpgradeTitles.models_by_name(
-          pledges.where(kind: %w[ship package other]).flat_map(&:returned_ship_names)
-        ).values.compact.map(&:id)
-
-        gettable
-          .or(Model.where(id: owner.vehicles.purchased.where(loaner: false).select(:model_id)))
-          .or(Model.where(id: bought_back))
-          .or(Model.where(rsi_id: pledges.where(kind: "upgrade").select(:upgrade_to_ship_id)))
       end
 
       private def will_it_fit?(scope)
