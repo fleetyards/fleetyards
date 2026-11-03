@@ -214,6 +214,50 @@ describe("CatalogueItemPopover", () => {
     expect(card()?.textContent).toContain("Glacier");
   });
 
+  // A list row carries no `stats`; the card completes it from the detail so
+  // a tool leads with its own figures.
+  it("completes a list row with the stats only the detail carries", async () => {
+    const wrapper = await mount({
+      item: { type: "Equipment", slug: "pyro", name: "Pyro RYT Multi-Tool" },
+      record: {
+        id: "3",
+        name: "Pyro RYT Multi-Tool",
+        slug: "pyro",
+        equipmentType: "tool",
+      } as unknown as Props["record"],
+    });
+
+    await tapOpen(wrapper);
+
+    expect(enabled.equipment()).toBe(true);
+
+    settle("equipment", {
+      stats: {
+        toolActions: [{ kind: "tractor", maxForce: 257500, maxDistance: 150 }],
+      },
+    });
+    await nextTick();
+
+    expect(card()?.textContent).toContain("Pyro RYT Multi-Tool");
+    expect(card()?.textContent).toContain("Tractor Force");
+  });
+
+  it("fetches nothing for a row that already carries its stats", async () => {
+    const wrapper = await mount({
+      item: { type: "Equipment", slug: "p4", name: "P4-AR" },
+      record: {
+        id: "4",
+        name: "P4-AR",
+        slug: "p4",
+        stats: {},
+      } as unknown as Props["record"],
+    });
+
+    await tapOpen(wrapper);
+
+    expect(enabled.equipment()).toBe(false);
+  });
+
   it("opens a card for a record the catalogue does not list, without a link", async () => {
     const wrapper = await mount({
       item: { type: "Component", slug: "door", name: "Door", listed: false },
