@@ -11,7 +11,9 @@
 }
 
 .compare-header__actions {
-  padding-bottom: 8px;
+  display: flex;
+  align-items: center;
+  min-height: 48px;
 }
 
 .compare-empty__add {

@@ -5,7 +5,10 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
+import {
+  BtnSizesEnum,
+  BtnVariantsEnum,
+} from "@/shared/components/base/Btn/types";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { useCompareShareUrl } from "@/frontend/composables/useCompareShareUrl";
 import type { CompareShareInput } from "@/services/fyApi";
@@ -28,6 +31,7 @@ const shareUrl = useCompareShareUrl(props.queryKey, () => props.slugs);
       :url="shareUrl"
       :title="title"
       :size="BtnSizesEnum.MD"
+      :variant="BtnVariantsEnum.BARE"
       no-label
     />
   </div>
