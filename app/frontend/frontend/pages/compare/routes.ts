@@ -1,7 +1,8 @@
 import type { RouteRecordRaw } from "vue-router";
 
-// One page with a tab per catalogue (`nav: "pageTabs"`), so the tab strip stays
-// mounted when the reader switches between them.
+// A tab per catalogue. `nav: "pageTabs"` gives the three one page key, so a
+// switch between them is not a page change and the app's page transition does
+// not play across it.
 export const routes: RouteRecordRaw[] = [
   {
     path: "",

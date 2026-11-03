@@ -32,7 +32,8 @@ type Props = {
   // whose header already spans the full width.
   horizontal?: boolean;
   // A horizontal strip that sits in a row beside other controls rather than
-  // above the content: no margin below it and no rule across the row.
+  // above the content: no margin below it, no rule across the row, and no
+  // content of its own, which the page around it renders.
   inline?: boolean;
   activeLabelOnly?: boolean;
 };
@@ -146,7 +147,7 @@ watch(
       </slot>
       <slot name="nav-after" />
     </ul>
-    <slot name="content">
+    <slot v-if="!props.inline" name="content">
       <router-view />
     </slot>
   </div>

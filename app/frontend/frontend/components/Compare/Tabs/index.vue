@@ -13,14 +13,10 @@ const sessionStore = useSessionStore();
 </script>
 
 <template>
-  <!-- The page itself is the parent route's view, so the strip renders no
-       content of its own. -->
   <TabNavView
     :routes="routes"
     :authenticated="sessionStore.isAuthenticated"
     horizontal
     inline
-  >
-    <template #content />
-  </TabNavView>
+  />
 </template>
