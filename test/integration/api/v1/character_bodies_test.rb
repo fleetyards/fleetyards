@@ -29,8 +29,17 @@ class Api::V1::CharacterBodiesTest < ActionDispatch::IntegrationTest
     assert_api_response :get, 200 do
       assert_equal ["male"], parsed_body.pluck("key")
       assert_equal "plain.glb", parsed_body.first.dig("holo", "name")
+      assert_nil parsed_body.first["holoTextured"]
       assert_nil parsed_body.first["animations"]
       assert_equal [{"name" => "shop_pose_01", "static" => true, "looping" => false}], parsed_body.first["clips"]
+    end
+  end
+
+  test "GET /character-bodies serves a body's textured holo once it has one" do
+    create(:character_body, :with_holo, :with_textured_holo, key: "male")
+
+    assert_api_response :get, 200 do
+      assert_equal "plain.glb", parsed_body.first.dig("holoTextured", "name")
     end
   end
 

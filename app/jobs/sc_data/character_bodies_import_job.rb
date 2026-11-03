@@ -9,7 +9,7 @@ module ScData
 
     sidekiq_options queue: "loaders"
 
-    FIELDS = {"body.glb" => "holo", "animations.glb" => "animations"}.freeze
+    FIELDS = {"body.glb" => "holo", "body_textured.glb" => "holo_textured", "animations.glb" => "animations"}.freeze
 
     def perform
       return unless ::ScData::CharacterStore.configured?

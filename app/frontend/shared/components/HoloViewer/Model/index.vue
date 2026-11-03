@@ -774,7 +774,8 @@ const attachRig = async (scene: Group) => {
   rigRoot = next;
   rigClips = clips;
 
-  if (!props.model.textured) setMaterials(next);
+  // On a painted body too: only the painted pieces keep their own materials.
+  setMaterials(next);
 
   hideCovered(scene);
   pose(scene);

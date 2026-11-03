@@ -57,12 +57,13 @@ module ScData
     end
 
     test "creates a body per listed body with its rest pose, its clips and what each clip is" do
-      publish("male", {"body.glb" => BODY, "animations.glb" => ANIMATIONS})
+      publish("male", {"body.glb" => BODY, "body_textured.glb" => BODY, "animations.glb" => ANIMATIONS})
 
       ::ScData::CharacterBodiesImportJob.new.perform
 
       body = CharacterBody.find_by!(key: "male")
       assert_equal "body.glb", body.holo.filename.to_s
+      assert_equal "body_textured.glb", body.holo_textured.filename.to_s
       assert_equal "animations.glb", body.animations.filename.to_s
       assert_equal "RightWeaponBone", body.weapon_in_hand.dig("bones", "right")
       assert_equal [-0.707107, 0, 0, 0.707107], body.weapon_in_hand.dig("helper", "rotation")

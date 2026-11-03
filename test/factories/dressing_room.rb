@@ -7,6 +7,10 @@ FactoryBot.define do
     trait :with_holo do
       holo { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/holo/plain.glb"), "model/gltf-binary") }
     end
+
+    trait :with_textured_holo do
+      holo_textured { Rack::Test::UploadedFile.new(Rails.root.join("test/fixtures/holo/plain.glb"), "model/gltf-binary") }
+    end
   end
 
   factory :outfit do

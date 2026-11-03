@@ -25112,6 +25112,12 @@ components:
           description: The body's folder in the export, e.g. male
         holo:
           "$ref": "#/components/schemas/MediaFile"
+        holoTextured:
+          description: The body with the game's skin, eye, teeth and underwear textures;
+            absent until exported
+          anyOf:
+          - "$ref": "#/components/schemas/MediaFile"
+          - type: 'null'
         animations:
           description: The clips that pose the body and every item rigged to it, by
             bone name; absent until exported
@@ -25138,6 +25144,7 @@ components:
       required:
       - key
       - holo
+      - holoTextured
       - animations
       - weaponInHand
       - lighting

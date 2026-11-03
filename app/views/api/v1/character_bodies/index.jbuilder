@@ -5,6 +5,13 @@ json.array! @character_bodies do |body|
   json.holo do
     json.partial! "api/v1/shared/file", record: body, attr: :holo
   end
+  if body.holo_textured.attached?
+    json.holo_textured do
+      json.partial! "api/v1/shared/file", record: body, attr: :holo_textured
+    end
+  else
+    json.holo_textured nil
+  end
   if body.animations.attached?
     json.animations do
       json.partial! "api/v1/shared/file", record: body, attr: :animations

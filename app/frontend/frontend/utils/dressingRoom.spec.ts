@@ -156,6 +156,7 @@ describe("riggedOutfitModel", () => {
   const body = {
     key: "male",
     holo: file("/body.glb", 8),
+    holoTextured: null,
     animations: file("/animations.glb", 3),
     weaponInHand: null,
     lighting: [],
@@ -179,6 +180,26 @@ describe("riggedOutfitModel", () => {
         pedestal: true,
       },
     });
+  });
+
+  it("dresses the body with its skin, and in clay once that did not load", () => {
+    const skinned = { ...body, holoTextured: file("/body_textured.glb", 30) };
+
+    expect(riggedOutfitModel(skinned, [core])).toMatchObject({
+      path: "/body_textured.glb",
+      size: 30,
+      textured: true,
+    });
+    expect(
+      riggedOutfitModel(
+        skinned,
+        [core],
+        undefined,
+        [],
+        [],
+        ["/body_textured.glb"],
+      ),
+    ).toMatchObject({ path: "/body.glb", size: 8, textured: false });
   });
 
   it("passes a painted rig and its plain fallback to the viewer", () => {
@@ -215,6 +236,7 @@ describe("riggedOutfitModel body cover", () => {
   const body = {
     key: "male",
     holo: file("/body.glb"),
+    holoTextured: null,
     animations: null,
     weaponInHand: null,
     lighting: [],

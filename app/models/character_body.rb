@@ -4,12 +4,14 @@
 # lists it under ("male"), so another body joins without a migration. Every
 # worn item's `rigged_<key>.glb` is skinned to the same skeleton in the same
 # bind pose, and `animations` holds the clips that pose all of them by bone
-# name; `clips` is what the export says about each.
+# name; `clips` is what the export says about each. `holo_textured` is the
+# same body with the game's skin, eye, teeth and underwear textures.
 class CharacterBody < ApplicationRecord
   has_one_attached :holo
+  has_one_attached :holo_textured
   has_one_attached :animations
 
   validates :key, presence: true, uniqueness: true
 
-  scope :with_holo, -> { joins(:holo_attachment).with_attached_holo.with_attached_animations.order(:key) }
+  scope :with_holo, -> { joins(:holo_attachment).with_attached_holo.with_attached_holo_textured.with_attached_animations.order(:key) }
 end

@@ -98,6 +98,7 @@ const EQUIPMENT: Record<string, Equipment> = {
 const MALE: CharacterBody = {
   key: "male",
   holo: media("body.glb"),
+  holoTextured: null,
   animations: media("animations.glb"),
   weaponInHand: null,
   lighting: [],
@@ -453,6 +454,30 @@ describe("ToolsDressingRoomPage", () => {
     await flushPromises();
 
     expect(viewerModel(wrapper).path).toBe("/legs.glb");
+  });
+
+  it("draws the body with its skin, and in clay when that does not load", async () => {
+    bodies.value = [{ ...MALE, holoTextured: media("body_textured.glb") }];
+
+    const { wrapper } = await mount({ torso: "adp-core" });
+
+    expect(viewerModel(wrapper)).toMatchObject({
+      path: "/body_textured.glb",
+      textured: true,
+    });
+
+    const viewer = wrapper.findComponent({ name: "HoloViewer" });
+    viewer.vm.$emit("unavailable", "/body_textured.glb");
+    viewer.vm.$emit("unavailable", "/body_textured.glb");
+    await flushPromises();
+
+    expect(viewerModel(wrapper)).toMatchObject({
+      path: "/body.glb",
+      textured: false,
+    });
+    expect(viewerModel(wrapper).rig).toBeDefined();
+
+    bodies.value = [MALE];
   });
 
   it("holds off saving while the address names a piece the catalogue lacks", async () => {
