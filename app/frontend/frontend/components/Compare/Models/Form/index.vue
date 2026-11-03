@@ -41,7 +41,9 @@ const showPickerModal = () => {
     <Btn
       :disabled="full"
       :size="BtnSizesEnum.MD"
+      :aria-label="t('labels.compare.selectShips')"
       data-test="compare-add-models"
+      mobile-icon-only
       @click="showPickerModal"
     >
       <i class="fa-light fa-plus" />

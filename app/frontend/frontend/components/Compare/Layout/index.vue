@@ -10,7 +10,7 @@ import type { AsyncStatus } from "@/shared/components/AsyncData.types";
 import Loader from "@/shared/components/Loader/index.vue";
 import Panel from "@/shared/components/base/Panel/index.vue";
 import CompareTable from "@/frontend/components/Compare/Table/index.vue";
-import CompareKindSwitch from "@/frontend/components/Compare/KindSwitch/index.vue";
+import CompareTabs from "@/frontend/components/Compare/Tabs/index.vue";
 import type {
   CompareColumn,
   CompareSection,
@@ -64,10 +64,7 @@ const baseline = computed({
   <div class="row compare-models">
     <div class="col-12">
       <div class="compare-header">
-        <div class="compare-header__start">
-          <CompareKindSwitch />
-          <slot name="add" />
-        </div>
+        <CompareTabs />
         <slot name="actions" />
       </div>
 
@@ -87,6 +84,9 @@ const baseline = computed({
               <p class="text-muted">
                 {{ emptyInfo }}
               </p>
+              <div class="compare-empty__add">
+                <slot name="add" />
+              </div>
             </template>
           </Empty>
 
@@ -149,8 +149,16 @@ const baseline = computed({
                 :delta="deltaMode"
                 :differences-only="differencesOnly"
                 @remove="emit('remove', $event)"
-              />
+              >
+                <template #corner>
+                  <slot name="add" />
+                </template>
+              </CompareTable>
             </Panel>
+
+            <div v-if="$slots.footer" class="compare-footer">
+              <slot name="footer" />
+            </div>
           </template>
         </template>
       </AsyncData>

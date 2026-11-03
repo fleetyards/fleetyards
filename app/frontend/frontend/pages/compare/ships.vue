@@ -8,6 +8,7 @@ export default {
 import CompareLayout from "@/frontend/components/Compare/Layout/index.vue";
 import CompareForm from "@/frontend/components/Compare/Models/Form/index.vue";
 import CompareActions from "@/frontend/components/Compare/Models/Actions/index.vue";
+import CompareLinks from "@/frontend/components/Compare/Models/Links/index.vue";
 import { useModelSections } from "@/frontend/components/Compare/sections/model";
 import { useLoadoutSections } from "@/frontend/components/Compare/sections/loadout";
 import type {
@@ -103,6 +104,9 @@ const remove = (slug: string) => {
     </template>
     <template #actions>
       <CompareActions :models="models" />
+    </template>
+    <template #footer>
+      <CompareLinks :models="models" />
     </template>
   </CompareLayout>
 </template>

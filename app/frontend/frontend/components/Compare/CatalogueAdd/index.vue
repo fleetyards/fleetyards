@@ -61,7 +61,9 @@ const showPicker = () => {
     <Btn
       :disabled="full"
       :size="BtnSizesEnum.MD"
+      :aria-label="label"
       data-test="compare-add-items"
+      mobile-icon-only
       @click="showPicker"
     >
       <i class="fa-light fa-plus" />

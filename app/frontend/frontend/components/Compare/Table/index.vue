@@ -259,9 +259,12 @@ const deltaLabel = (row: ValueRow, delta?: CompareDelta) => {
       <thead>
         <tr>
           <th scope="col" class="compare-table__rail compare-table__corner">
-            <span class="compare-table__count">
-              {{ countLabel }}
-            </span>
+            <div class="compare-table__corner-inner">
+              <slot name="corner" />
+              <span class="compare-table__count">
+                {{ countLabel }}
+              </span>
+            </div>
           </th>
           <th v-for="column in columns" :key="column.key" scope="col">
             <div class="compare-table__ship">

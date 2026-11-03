@@ -90,6 +90,14 @@
   vertical-align: bottom;
 }
 
+// The way to add a column sits in the one cell no column owns, above the count.
+.compare-table__corner-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
 .compare-table__count {
   font-family: "Orbitron", tahoma, sans-serif;
   font-size: 0.6875rem;
