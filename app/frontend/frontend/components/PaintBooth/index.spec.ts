@@ -104,7 +104,7 @@ describe("PaintBooth", () => {
     ]);
     expect(
       wrapper
-        .find('[data-test="paint-booth-paint-own"]')
+        .find('[data-test="paint-booth-paint-own"] button')
         .attributes("aria-pressed"),
     ).toBe("true");
   });
@@ -118,7 +118,7 @@ describe("PaintBooth", () => {
     });
     expect(
       wrapper
-        .find('[data-test="paint-booth-paint-ghoulish-green"]')
+        .find('[data-test="paint-booth-paint-ghoulish-green"] button')
         .attributes("aria-pressed"),
     ).toBe("true");
   });
@@ -127,9 +127,11 @@ describe("PaintBooth", () => {
     const wrapper = await mount({ paint: "blue-steel" });
 
     await wrapper
-      .find('[data-test="paint-booth-paint-ghoulish-green"]')
+      .find('[data-test="paint-booth-paint-ghoulish-green"] button')
       .trigger("click");
-    await wrapper.find('[data-test="paint-booth-paint-own"]').trigger("click");
+    await wrapper
+      .find('[data-test="paint-booth-paint-own"] button')
+      .trigger("click");
 
     expect(wrapper.emitted("update:paint")).toEqual([
       ["ghoulish-green"],

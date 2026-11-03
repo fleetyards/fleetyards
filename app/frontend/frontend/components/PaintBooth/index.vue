@@ -8,7 +8,8 @@ export default {
 import Btn from "@/shared/components/base/Btn/index.vue";
 import { BtnSizesEnum } from "@/shared/components/base/Btn/types";
 import HoloViewer from "@/shared/components/HoloViewer/index.vue";
-import { type Model } from "@/services/fyApi";
+import PickerCard from "@/shared/components/PickerCard/index.vue";
+import { type MediaFile, type Model } from "@/services/fyApi";
 import {
   ModelStateEnum,
   modelStateTexturedHolo,
@@ -80,7 +81,8 @@ const painted = computed(
   () => texturedHoloAvailable.value && texturedHolo.value,
 );
 
-const ownImage = computed(() => props.model.media.storeImage?.smallUrl);
+const cardImage = (image?: MediaFile) =>
+  image?.mediumUrl ?? image?.smallUrl ?? undefined;
 </script>
 
 <template>
@@ -116,6 +118,9 @@ const ownImage = computed(() => props.model.media.storeImage?.smallUrl);
     <aside class="paint-booth__paints">
       <h2 class="paint-booth__title">
         {{ t("paintBooth.paints") }}
+        <span v-if="painted" class="paint-booth__count">
+          {{ holoPaints.length + 1 }}
+        </span>
       </h2>
       <p
         v-if="!painted"
@@ -124,50 +129,24 @@ const ownImage = computed(() => props.model.media.storeImage?.smallUrl);
       >
         {{ t("paintBooth.unavailable") }}
       </p>
-      <ul v-else class="paint-booth__list" data-test="paint-booth-paints">
-        <li>
-          <button
-            type="button"
-            class="paint-booth__paint"
-            :class="{ 'paint-booth__paint--active': !holoPaint }"
-            :aria-pressed="!holoPaint"
-            data-test="paint-booth-paint-own"
-            @click="emit('update:paint', undefined)"
-          >
-            <img
-              v-if="ownImage"
-              :src="ownImage"
-              alt=""
-              loading="lazy"
-              class="paint-booth__image"
-            />
-            <span class="paint-booth__name">
-              {{ t("labels.texturedHoloOwnPaint") }}
-            </span>
-          </button>
-        </li>
-        <li v-for="paint in holoPaints" :key="paint.id">
-          <button
-            type="button"
-            class="paint-booth__paint"
-            :class="{
-              'paint-booth__paint--active': holoPaint?.id === paint.id,
-            }"
-            :aria-pressed="holoPaint?.id === paint.id"
-            :data-test="`paint-booth-paint-${paint.slug}`"
-            @click="emit('update:paint', paint.slug)"
-          >
-            <img
-              v-if="paint.media.storeImage?.smallUrl"
-              :src="paint.media.storeImage.smallUrl"
-              alt=""
-              loading="lazy"
-              class="paint-booth__image"
-            />
-            <span class="paint-booth__name">{{ paint.name }}</span>
-          </button>
-        </li>
-      </ul>
+      <div v-else class="paint-booth__list" data-test="paint-booth-paints">
+        <PickerCard
+          :name="t('labels.texturedHoloOwnPaint')"
+          :image="cardImage(model.media.storeImage)"
+          :selected="!holoPaint"
+          data-test="paint-booth-paint-own"
+          @toggle="emit('update:paint', undefined)"
+        />
+        <PickerCard
+          v-for="paint in holoPaints"
+          :key="paint.id"
+          :name="paint.name"
+          :image="cardImage(paint.media.storeImage)"
+          :selected="holoPaint?.id === paint.id"
+          :data-test="`paint-booth-paint-${paint.slug}`"
+          @toggle="emit('update:paint', paint.slug)"
+        />
+      </div>
     </aside>
   </div>
 </template>
@@ -226,9 +205,18 @@ const ownImage = computed(() => props.model.media.storeImage?.smallUrl);
 }
 
 .paint-booth__title {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
   margin: 0 0 0.75rem;
   font-size: 1rem;
   color: $gray-lighter;
+}
+
+.paint-booth__count {
+  font-size: 0.85em;
+  color: $gray-light;
+  font-variant-numeric: tabular-nums;
 }
 
 .paint-booth__note {
@@ -237,50 +225,15 @@ const ownImage = computed(() => props.model.media.storeImage?.smallUrl);
 
 .paint-booth__list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
-  gap: 0.5rem;
-  margin: 0;
-  padding: 0;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  // A card clips its overflow, so in a list of fixed height its row would
+  // shrink to fit and cut the name off rather than scroll.
+  grid-auto-rows: max-content;
+  align-content: start;
+  gap: 10px;
+  min-height: 0;
+  // Room for the selected card's frame and focus ring at the scroll edges.
+  padding: 2px 6px 2px 2px;
   overflow-y: auto;
-  list-style: none;
-}
-
-.paint-booth__paint {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  padding: 0;
-  overflow: hidden;
-  border: 1px solid $gray-black-hover;
-  border-radius: 4px;
-  background: rgba($background, 0.5);
-  color: inherit;
-  text-align: left;
-  cursor: pointer;
-
-  &:hover,
-  &:focus-visible {
-    border-color: $gray-light;
-  }
-}
-
-.paint-booth__paint--active,
-.paint-booth__paint--active:hover,
-.paint-booth__paint--active:focus-visible {
-  border-color: $primary;
-  box-shadow: 0 0 0 1px $primary;
-}
-
-.paint-booth__image {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-}
-
-.paint-booth__name {
-  padding: 0.375rem 0.5rem;
-  font-size: 0.85em;
-  line-height: 1.3;
 }
 </style>
