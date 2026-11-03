@@ -11,6 +11,10 @@ module V1
           properties: {
             key: {type: :string, description: "The body's folder in the export, e.g. male"},
             holo: ::Shared::V1::Schemas::MediaFile,
+            holoTextured: {
+              description: "The body with the game's skin, eye, teeth and underwear textures; absent until exported",
+              anyOf: [::Shared::V1::Schemas::MediaFile, {type: :null}]
+            },
             animations: {
               description: "The clips that pose the body and every item rigged to it, by bone name; absent until exported",
               anyOf: [::Shared::V1::Schemas::MediaFile, {type: :null}]
@@ -27,7 +31,7 @@ module V1
             clips: {type: :array, items: ::V1::Schemas::DressingRoom::CharacterBodyClip}
           },
           additionalProperties: false,
-          required: %w[key holo animations weaponInHand lighting clips]
+          required: %w[key holo holoTextured animations weaponInHand lighting clips]
         })
       end
     end
