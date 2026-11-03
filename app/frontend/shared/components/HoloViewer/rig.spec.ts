@@ -130,7 +130,7 @@ describe("rigTextured", () => {
 });
 
 describe("rigLayoutKey", () => {
-  it("changes when a piece swaps its painted rig for the plain one", () => {
+  it("changes when a piece is drawn plain instead of painted", () => {
     const painted = { path: "/core.glb", textured: true };
 
     expect(rigLayoutKey({ pieces: [painted] })).not.toBe(

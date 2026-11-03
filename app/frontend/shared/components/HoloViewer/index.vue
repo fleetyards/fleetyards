@@ -148,6 +148,7 @@ const emit = defineEmits<{
   mountSelect: [id: string];
   mountPoint: [id: string | undefined];
   unplaced: [paths: string[]];
+  fellBack: [paths: string[]];
 }>();
 
 const { displayAlert } = useAppNotifications();
@@ -972,6 +973,7 @@ defineExpose({
           @mount-select="emit('mountSelect', $event)"
           @mount-point="emit('mountPoint', $event)"
           @unplaced="emit('unplaced', $event)"
+          @fell-back="emit('fellBack', $event)"
         />
         <template #fallback>
           <Loader :loading="true" :progress="progress" />

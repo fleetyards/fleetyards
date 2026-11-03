@@ -139,6 +139,7 @@ export interface PieceHolo {
 export const riggedPieceHolo = (
   media?: ItemHolos | null,
   body: OutfitBodyEnum = OutfitBodyEnum.MALE,
+  failedPaths: string[] = [],
 ): PieceHolo | undefined => {
   const female = body === OutfitBodyEnum.FEMALE;
   const plain = female ? media?.holoRiggedFemale : media?.holoRiggedMale;
@@ -146,7 +147,7 @@ export const riggedPieceHolo = (
     ? media?.holoRiggedTexturedFemale
     : media?.holoRiggedTexturedMale;
 
-  if (painted?.url) {
+  if (painted?.url && !failedPaths.includes(painted.url)) {
     return {
       path: painted.url,
       size: painted.size ?? undefined,

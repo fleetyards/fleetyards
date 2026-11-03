@@ -456,6 +456,9 @@ const emit = defineEmits<{
   // The rig pieces and attachments left off the figure, by path: their mount
   // is not in the rig of the piece they hang from.
   unplaced: [paths: string[]];
+  // The painted rig pieces and attachments drawn from their plain holo
+  // instead, by path: they did not load.
+  fellBack: [paths: string[]];
 }>();
 
 DefaultLoadingManager.onProgress = (_item, loaded, total) => {
@@ -706,6 +709,17 @@ const attachRig = async (scene: Group) => {
   ]);
 
   if (request !== rigRequest) return false;
+
+  const fellBack = [
+    ...rig.pieces.filter(
+      (piece, index) => piece.textured && pieces[index]?.textured === false,
+    ),
+    ...(rig.attachments ?? []).filter(
+      (attachment, index) =>
+        attachment.textured && attachments[index]?.textured === false,
+    ),
+  ].map((part) => part.path);
+  if (fellBack.length) emit("fellBack", fellBack);
 
   if (rigRoot) {
     scene.remove(rigRoot);

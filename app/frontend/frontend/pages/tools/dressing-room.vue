@@ -268,7 +268,11 @@ const riggedHolos = computed(
     Object.fromEntries(
       OUTFIT_SLOTS.map((slot) => [
         slot,
-        riggedPieceHolo(items.value[slot]?.media, bodyKey.value),
+        riggedPieceHolo(
+          items.value[slot]?.media,
+          bodyKey.value,
+          failedPaths.value,
+        ),
       ]),
     ) as Partial<Record<OutfitSlotEnum, PieceHolo>>,
 );
@@ -515,6 +519,7 @@ const copyShareLink = () => {
           backdrop
           @unavailable="holoUnavailable"
           @unplaced="unplaced = $event"
+          @fell-back="failedPaths = [...failedPaths, ...$event]"
         />
         <div
           v-else

@@ -137,6 +137,11 @@ describe("riggedPieceHolo", () => {
       textured: true,
       fallbackPath: "/rigged_male.glb",
     });
+    expect(
+      riggedPieceHolo(media, OutfitBodyEnum.MALE, [
+        "/rigged_textured_male.glb",
+      ]),
+    ).toEqual({ path: "/rigged_male.glb", size: 7, textured: false });
     expect(riggedPieceHolo(media, OutfitBodyEnum.FEMALE)).toEqual({
       path: "/rigged_female.glb",
       size: 6,
