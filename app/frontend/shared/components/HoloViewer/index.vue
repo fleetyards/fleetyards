@@ -26,6 +26,7 @@ import {
 import { useI18n } from "@/shared/composables/useI18n";
 
 import { TresCanvas } from "@tresjs/core";
+import { useResizeObserver, useDebounceFn } from "@vueuse/core";
 import { webglAvailable } from "@/shared/utils/Webgl";
 import { OrbitControls, TransformControls, Grid, Stars } from "@tresjs/cientos";
 import Model from "./Model/index.vue";
@@ -533,6 +534,10 @@ const gridFadeDistance = computed(() =>
   Math.max(100, modelMaxDimension.value * 2),
 );
 
+// The model last framed, so a contained one can be framed again when its box
+// changes size.
+const framed = shallowRef<{ size: Vector3; scene: Object3D }>();
+
 const handleModelLoaded = (size: Vector3, scene: Object3D) => {
   // if (props.grid) {
   //   currentModel.value = scene;
@@ -542,6 +547,11 @@ const handleModelLoaded = (size: Vector3, scene: Object3D) => {
   emit("loaded");
   placeBackdrop(size);
 
+  framed.value = { size, scene };
+  frameModel(size, scene);
+};
+
+const frameModel = (size: Vector3, scene: Object3D) => {
   const bounds = new Box3()
     .setFromObject(scene)
     .getBoundingSphere(new Sphere());
@@ -666,6 +676,26 @@ const handleModelLoaded = (size: Vector3, scene: Object3D) => {
   cameraPosition.value = position;
   lightPosition.value = position;
 };
+
+// Measured once, a contained model keeps the scale of the box it loaded in: a
+// modal still opening, or a window resized since, leaves it too large or small.
+const lastFrameSize = { width: 0, height: 0 };
+
+const refitContained = useDebounceFn(() => {
+  const frame = holoViewer.value;
+  if (!props.contain || !framed.value || !frame) return;
+
+  const { clientWidth: width, clientHeight: height } = frame;
+  if (width === lastFrameSize.width && height === lastFrameSize.height) return;
+
+  lastFrameSize.width = width;
+  lastFrameSize.height = height;
+  frameModel(framed.value.size, framed.value.scene);
+}, 150);
+
+useResizeObserver(holoViewer, () => {
+  void refitContained();
+});
 
 const handleRenderError = (error: Error) => {
   console.error("HoloViewer render error:", error);
