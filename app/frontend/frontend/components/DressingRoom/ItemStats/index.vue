@@ -11,8 +11,8 @@ import { type Equipment } from "@/services/fyApi";
 
 type Props = {
   equipment: Equipment;
-  // Every armour piece is size 1, so only weapons and backpacks have one worth
-  // showing.
+  // Helmets, cores, arms, legs and undersuits are all size 1; weapons and
+  // backpacks are the gear whose size varies.
   withSize?: boolean;
 };
 
@@ -25,7 +25,7 @@ const stats = useEquipmentStats(() => props.equipment);
 const leadStats = computed(() => stats.value.filter((stat) => stat.primary));
 
 const size = computed(() =>
-  props.withSize && props.equipment.size
+  props.withSize && Number(props.equipment.size) > 0
     ? t("dressingRoom.size", { size: props.equipment.size })
     : undefined,
 );
