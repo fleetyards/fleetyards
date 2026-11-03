@@ -25,15 +25,15 @@ test.describe("Compare components", () => {
 
     await page.getByTestId("compare-add-items").click();
 
-    const rows = page.locator(".item-picker-row");
-    await expect(rows.getByText("Rampart")).toBeVisible();
-    await expect(rows.getByText("Atlas")).toHaveCount(0);
+    await expect(page.getByTestId("compare-picker-card-rampart")).toBeVisible();
+    await expect(page.getByTestId("compare-picker-card-atlas")).toHaveCount(0);
 
-    // The row is covered by its pick button, which is what takes the click.
-    await rows
-      .filter({ hasText: "Rampart" })
-      .locator(".item-picker-row__pick")
+    // The card is covered by its toggle, which is what takes the click.
+    await page
+      .getByTestId("compare-picker-card-rampart")
+      .locator(".picker-card__toggle")
       .click();
+    await page.getByTestId("compare-picker-submit").click();
 
     await expect(page).toHaveURL(/components%5B%5D=rampart/);
   });
