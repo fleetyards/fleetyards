@@ -184,6 +184,10 @@ const hasMore = computed(
   () => !isPlaceholderData.value && page.value < totalPages.value,
 );
 
+// A next page on its way reads as a placeholder too, which is no reason to take
+// the button away: it shows the wait, and the grid keeps its height.
+const loadingMore = computed(() => isPlaceholderData.value && page.value > 1);
+
 const initialLoading = computed(
   () => isFetching.value && !records.value.length,
 );
@@ -294,7 +298,7 @@ const resultsLabel = computed(() =>
       <slot name="details" :item="item" />
     </PickerCard>
 
-    <template v-if="hasMore" #more>
+    <template v-if="hasMore || loadingMore" #more>
       <Btn
         :loading="isFetching"
         :variant="BtnVariantsEnum.BARE"
