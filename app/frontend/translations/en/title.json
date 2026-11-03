@@ -188,6 +188,7 @@
         "plaque": "Dedication Plaques",
         "tradeRoutes": "Trade Routes",
         "dressingRoom": "Dressing Room",
+        "paintBooth": "Paint Booth",
         "tours": {
           "index": "Tours",
           "add": "Create a new Tour",

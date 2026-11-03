@@ -248,6 +248,13 @@ export const TOOLS_ITEMS: NavEntry[] = [
     icon: "fa-duotone fa-user-astronaut",
     featureFlag: FeatureFlagName.DRESSING_ROOM,
   },
+  {
+    key: "paint-booth",
+    route: "paint-booth",
+    labelKey: "nav.tools.paintBooth",
+    icon: "fa-duotone fa-spray-can-sparkles",
+    featureFlag: FeatureFlagName.HOLO_TEXTURED,
+  },
 ];
 
 export const STATS_ENTRY: NavEntry = {

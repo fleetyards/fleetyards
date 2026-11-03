@@ -442,7 +442,8 @@
         "cargoGrids": "Griglie di carico",
         "plaque": "Targhe di dedica",
         "tradeRoutes": "Rotte commerciali",
-        "dressingRoom": "Camerino"
+        "dressingRoom": "Camerino",
+        "paintBooth": "Officina di verniciatura"
       },
       "rsiVerification": "Verifica il tuo account RSI",
       "support": "Supporta FleetYards.net",

@@ -442,7 +442,8 @@
         "cargoGrids": "Frachtraster",
         "plaque": "Widmungsplaketten",
         "tradeRoutes": "Handelsrouten",
-        "dressingRoom": "Umkleide"
+        "dressingRoom": "Umkleide",
+        "paintBooth": "Lackiererei"
       },
       "rsiVerification": "Verify your RSI-Account",
       "support": "Support FleetYards.net",
