@@ -230,6 +230,7 @@ class Equipment < ApplicationRecord
   # ransack puts nulls last on either direction.
   SORTABLE_METRICS = %w[
     damageReduction radiationProtection gForceTolerance storage range rateOfFire volume
+    alphaDamage dps
   ].freeze
 
   DEFAULT_SORTING_PARAMS = ["name asc"]
@@ -256,7 +257,7 @@ class Equipment < ApplicationRecord
   FACT_RANSACK_TYPES = {
     rate_of_fire: :decimal, range: :decimal, storage: :decimal, damage_reduction: :decimal,
     radiation_protection: :decimal, g_force_tolerance: :decimal, volume: :decimal,
-    hidden: :boolean
+    alpha_damage: :decimal, dps: :decimal, hidden: :boolean
   }.freeze
 
   (EquipmentBuild::FILTERABLE - [:slot]).each do |fact|
@@ -284,7 +285,7 @@ class Equipment < ApplicationRecord
     %w[
       id name slug sc_key equipment_type item_type sub_type weapon_class size grade
       slot hidden manufacturer_id range rate_of_fire storage damage_reduction
-      radiation_protection g_force_tolerance volume store_image created_at updated_at
+      radiation_protection g_force_tolerance volume alpha_damage dps store_image created_at updated_at
     ] + ItemPriceConcern::RANSACKABLE_ATTRIBUTES
   end
 

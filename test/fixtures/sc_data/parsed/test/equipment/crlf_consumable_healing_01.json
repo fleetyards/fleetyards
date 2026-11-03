@@ -35,5 +35,23 @@
   },
   "family_key": null,
   "required_tags": null,
-  "ports": null
+  "ports": null,
+  "stats": {
+    "consumable": {
+      "volume": 30.0,
+      "effects": [
+        {
+          "kind": "health",
+          "amount": 112.5
+        },
+        {
+          "kind": "status",
+          "stat": "blood_drug_level",
+          "amount": 30.0
+        }
+      ]
+    }
+  },
+  "alpha_damage": null,
+  "dps": null
 }
