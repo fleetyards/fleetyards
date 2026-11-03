@@ -188,9 +188,10 @@ export const useEquipmentStats = (
     const rest = build(vocabulary.rest, false);
     if (primary.length) return [...primary, ...rest];
 
-    const promoted = vocabulary.primary.length
-      ? rest.slice(0, 2).map((stat) => ({ ...stat, primary: true }))
-      : [];
+    const promoted =
+      item.equipmentType === EquipmentTypeEnum.WEAPON
+        ? rest.slice(0, 2).map((stat) => ({ ...stat, primary: true }))
+        : [];
 
     return [...promoted, ...rest.slice(promoted.length)];
   });
