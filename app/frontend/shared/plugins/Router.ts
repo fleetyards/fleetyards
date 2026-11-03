@@ -9,6 +9,7 @@ import {
   type RouterOptions,
 } from "vue-router";
 import { reloadForFailedChunk } from "@/shared/utils/ChunkReload";
+import { reportError } from "@/shared/plugins/Appsignal";
 import qs from "qs";
 import { sameApartFromModalQuery } from "@/shared/utils/ModalQuery";
 import { restoreSavedFilter } from "@/shared/stores/filters";
@@ -128,7 +129,7 @@ export const setupRouter = (options: FyRouterOptions) => {
         error.message.includes("error loading dynamically imported module") ||
         error.message.includes("Importing a module script failed"))
     ) {
-      reloadForFailedChunk();
+      if (!reloadForFailedChunk()) reportError(error, "router chunk load");
     }
   });
 
