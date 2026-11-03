@@ -211,8 +211,14 @@ const accessibleName = computed(() =>
 
 /* The plate and the stepper keep their height as a card narrows, so below the
    width where a 16:9 picture still fits both under the selection tick, a card
-   turns square. */
+   gets taller in steps. */
 @container (max-width: 216px) {
+  .picker-card__image {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+@container (max-width: 180px) {
   .picker-card__image,
   .picker-card--contain .picker-card__image {
     aspect-ratio: 1;
