@@ -362,9 +362,17 @@ const renderShown = computed(
   () => (!!model.value && !flightReady.value) || previewAbsent.value,
 );
 
-// The figures put away: room to see the ship, and with a holo, to turn and
-// zoom it.
+// The figures put away: room to see the ship, and with a holo, to zoom it.
 const inspecting = ref(false);
+
+// A drag on the panel's empty room reaches the holo only while one is there to
+// turn, and not over a tab whose data failed: its error page has its own links.
+const seeThrough = computed(
+  () =>
+    previewShown.value &&
+    !modulesAsyncStatus.isError.value &&
+    !hullSlotsAsyncStatus.isError.value,
+);
 
 const figuresToggleLabel = computed(() =>
   inspecting.value
@@ -1495,7 +1503,7 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
       :class="{
         'vehicle-loadout--holo': previewShown,
         'vehicle-loadout--render': renderShown,
-        'vehicle-loadout--inspecting': inspecting,
+        'vehicle-loadout--see-through': seeThrough,
       }"
       :style="backdrop ? { '--loadout-backdrop': `url(${backdrop})` } : {}"
       data-test="vehicle-loadout-form"
@@ -1512,13 +1520,13 @@ const onSaveAsNew = handleSubmit((values) => save(values, true));
         v-if="flightReady && !initialising"
         v-show="!linking"
         class="vehicle-loadout__preview"
-        :class="{ 'vehicle-loadout__preview--inspecting': inspecting }"
       >
         <div class="vehicle-loadout__preview-frame">
           <LoadoutPreview
             :model-slug="modelSlug"
             :slots="previewSlots"
-            :interactive="inspecting"
+            :zoomable="inspecting"
+            interactive
             :pickable="editable"
             variant="backdrop"
             test-id="vehicle-loadout-preview"

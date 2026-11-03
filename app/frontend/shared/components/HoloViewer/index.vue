@@ -26,6 +26,7 @@ import {
 import { useI18n } from "@/shared/composables/useI18n";
 
 import { TresCanvas } from "@tresjs/core";
+import { useResizeObserver, useDebounceFn } from "@vueuse/core";
 import { webglAvailable } from "@/shared/utils/Webgl";
 import { OrbitControls, TransformControls, Grid, Stars } from "@tresjs/cientos";
 import Model from "./Model/index.vue";
@@ -303,6 +304,13 @@ const internalAutoRotate = ref(props.autoRotate);
 
 const zoom = ref(props.zoomable);
 
+watch(
+  () => props.zoomable,
+  (zoomable) => {
+    zoom.value = zoomable;
+  },
+);
+
 const color = ref(false);
 
 const autoRotateTooltip = computed(() => {
@@ -438,10 +446,17 @@ const canvas = ref<{
   context?: { renderer?: { invalidate: () => void } };
 }>();
 
+// The camera as the controls left it, so a refit can keep the view.
+let liveCamera: PerspectiveCamera | undefined;
+
 // The orbit controls move the camera without asking for a frame. Each change
 // asks for the next one, so a drag, its easing out and an auto-rotation all
 // keep drawing, and a camera at rest draws nothing.
 const handleControlsChange = (controls: { object: Camera }) => {
+  liveCamera = (controls.object as PerspectiveCamera).isPerspectiveCamera
+    ? (controls.object as PerspectiveCamera)
+    : undefined;
+
   const { x, y, z } = controls.object.position;
   lightPosition.value = [x, y, z];
 
@@ -533,6 +548,14 @@ const gridFadeDistance = computed(() =>
   Math.max(100, modelMaxDimension.value * 2),
 );
 
+// Measured once, a contained model keeps the scale of the box it loaded in: a
+// modal still opening, or a window resized since, leaves it too large or small.
+const lastFrameSize = { width: 0, height: 0 };
+
+// The model last framed, so a contained one can be framed again when its box
+// changes size.
+const framed = shallowRef<{ size: Vector3; scene: Object3D }>();
+
 const handleModelLoaded = (size: Vector3, scene: Object3D) => {
   // if (props.grid) {
   //   currentModel.value = scene;
@@ -542,6 +565,15 @@ const handleModelLoaded = (size: Vector3, scene: Object3D) => {
   emit("loaded");
   placeBackdrop(size);
 
+  framed.value = { size, scene };
+  lastFrameSize.width = holoViewer.value?.clientWidth ?? 0;
+  lastFrameSize.height = holoViewer.value?.clientHeight ?? 0;
+  frameModel(size, scene);
+};
+
+// `keepView` scales the camera's distance to the new fit along the way it
+// faces now, rather than putting it back in the pose.
+const frameModel = (size: Vector3, scene: Object3D, keepView = false) => {
   const bounds = new Box3()
     .setFromObject(scene)
     .getBoundingSphere(new Sphere());
@@ -628,8 +660,20 @@ const handleModelLoaded = (size: Vector3, scene: Object3D) => {
     // in from the left under the controls.
     reach *= props.containPadding;
 
+    const previousReach = fitDistance.value;
     fitDistance.value = reach;
     modelMaxDimension.value = Math.max(size.x, size.y, size.z);
+
+    if (keepView && liveCamera && previousReach > 0) {
+      liveCamera.position.multiplyScalar(reach / previousReach);
+      liveCamera.near = nearPlaneFor(liveCamera.position.length());
+      liveCamera.updateProjectionMatrix();
+      const { x, y, z } = liveCamera.position;
+      lightPosition.value = [x, y, z];
+      canvas.value?.context?.renderer?.invalidate();
+
+      return;
+    }
 
     const position: [number, number, number] = [
       Math.sin(azimuth) * Math.cos(elevation) * reach,
@@ -666,6 +710,22 @@ const handleModelLoaded = (size: Vector3, scene: Object3D) => {
   cameraPosition.value = position;
   lightPosition.value = position;
 };
+
+const refitContained = useDebounceFn(() => {
+  const frame = holoViewer.value;
+  if (!props.contain || !framed.value || !frame) return;
+
+  const { clientWidth: width, clientHeight: height } = frame;
+  if (width === lastFrameSize.width && height === lastFrameSize.height) return;
+
+  lastFrameSize.width = width;
+  lastFrameSize.height = height;
+  frameModel(framed.value.size, framed.value.scene, true);
+}, 150);
+
+useResizeObserver(holoViewer, () => {
+  void refitContained();
+});
 
 const handleRenderError = (error: Error) => {
   console.error("HoloViewer render error:", error);
