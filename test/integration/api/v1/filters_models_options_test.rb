@@ -107,6 +107,20 @@ class Api::V1::FiltersModelsOptionsTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "GET /filters/models/options filters by withTexturedHolo" do
+    textured = create(:model, :with_store_image)
+    textured.landed_holo_textured_lite.attach(io: File.open(Rails.root.join("test/fixtures/holo/plain.glb")), filename: "landed_holo_textured_lite.glb")
+    plain = create(:model, :with_store_image)
+    plain.holo.attach(io: File.open(Rails.root.join("test/fixtures/holo/plain.glb")), filename: "holo.glb")
+
+    assert_api_response :get, 200, params: {q: {"withTexturedHolo" => true}} do
+      ids = parsed_body["items"].map { |item| item["id"] }
+
+      assert_includes ids, textured.id
+      refute_includes ids, plain.id
+    end
+  end
+
   test "GET /filters/models/options filters by containerFit" do
     roomy = create(:model, :with_store_image)
     roomy.update!(cargo_holds: [cargo_hold_attributes])

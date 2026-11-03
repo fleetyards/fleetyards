@@ -42778,6 +42778,8 @@ components:
           type: boolean
         withCargoGrids:
           type: boolean
+        withTexturedHolo:
+          type: boolean
         inHangar:
           type: boolean
         inGameEq:
