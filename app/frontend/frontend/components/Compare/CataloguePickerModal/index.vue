@@ -51,7 +51,20 @@ const { t, tExists } = useI18n();
 
 const comlink = useComlink();
 
-const { slugs, replace } = useCompareSet(props.queryKey);
+const { slugs: stored, replace, flush } = useCompareSet(props.queryKey);
+
+// Picks still on their way to the URL, which only takes a write after a
+// debounce. Counted as held, so a quick second pick builds on the first rather
+// than on the set the URL still shows.
+const pending = ref<string[]>([]);
+
+const slugs = computed(() => [...new Set([...stored.value, ...pending.value])]);
+
+watch(stored, (current) => {
+  pending.value = pending.value.filter((slug) => !current.includes(slug));
+});
+
+onBeforeUnmount(flush);
 
 const lock = ref(props.lock);
 
@@ -225,6 +238,7 @@ const pick = (entry: ItemPickerEntry) => {
           : undefined;
   }
 
+  pending.value = [...pending.value, entry.record.slug];
   replace(next);
 
   if (next.length >= MAX_MODELS) close();
@@ -249,7 +263,11 @@ const title = computed(() =>
           v-model="type"
           name="compare-picker-type"
           :options="typeOptions || []"
-          :label="t('labels.component.category')"
+          :label="
+            kind === 'Component'
+              ? t('labels.component.category')
+              : t('labels.filters.equipment.equipmentType')
+          "
           :searchable="true"
           :nullable="true"
         />

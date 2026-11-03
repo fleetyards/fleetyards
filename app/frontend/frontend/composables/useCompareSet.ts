@@ -13,5 +13,11 @@ export const useCompareSet = (key: string) => {
     filter({ [key]: next });
   };
 
-  return { slugs, replace };
+  // The write is debounced, and dropped outright if its scope ends first, so
+  // anything about to unmount sends it now.
+  const flush = () => {
+    filter.flush();
+  };
+
+  return { slugs, replace, flush };
 };
