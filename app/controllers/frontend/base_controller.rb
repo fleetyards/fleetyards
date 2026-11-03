@@ -282,7 +282,7 @@ module Frontend
 
     private def compare_image(records, kind: "models")
       return if records.blank?
-      return records.first.store_image if records.size == 1 && records.first.store_image.attached?
+      return CompareImage.image_of(records.first) if records.size == 1
 
       CompareImage.for(records, kind:)&.image
     end

@@ -52,6 +52,17 @@ class CompareImageTest < ActiveSupport::TestCase
     assert_equal "behr-p4-ar", record.share_key
   end
 
+  test "pictures a component by its angled render before its store image" do
+    component = create(:component)
+    component.angled_view.attach(io: file_fixture("test.png").open, filename: "angled.png", content_type: "image/png")
+
+    assert_equal "angled_view", CompareImage.image_of(component).name
+  end
+
+  test "has no picture for a component with neither image" do
+    assert_nil CompareImage.image_of(create(:component))
+  end
+
   test "returns nil for an empty slug list" do
     assert_nil CompareImage.find_or_create_for_share([])
   end

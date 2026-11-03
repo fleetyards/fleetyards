@@ -22,8 +22,17 @@ class CompareImage < ApplicationRecord
   MAX_SHARE_MODELS = 8
   SHARE_KEY_SEPARATOR = ","
 
+  # What a record is pictured by: a ship's store art, and for components and
+  # equipment the angled render the compare page itself shows, falling back to
+  # the store image -- most components have only the render.
+  def self.image_of(record)
+    attr = record.respond_to?(:angled_image_attr) ? record.angled_image_attr : :store_image
+    attachment = attr && record.public_send(attr)
+    attachment if attachment&.attached?
+  end
+
   def self.for(records, kind: "models")
-    with_images = records.select { |record| record.store_image.attached? }
+    with_images = records.select { |record| image_of(record) }
     return nil if with_images.empty?
 
     slug_set = "#{STYLE_VERSION}-#{with_images.map(&:slug).sort.join("-")}"
@@ -122,7 +131,7 @@ class CompareImage < ApplicationRecord
   private def build_composite(records)
     require "vips"
 
-    buffers = records.filter_map { |record| download_store_image(record) }
+    buffers = records.filter_map { |record| download_image(record) }
     return nil if buffers.empty?
 
     width = CANVAS_WIDTH
@@ -159,12 +168,13 @@ class CompareImage < ApplicationRecord
   # An attachment row can outlive its file — pruned local storage, a lost object in
   # the bucket. Skipping that item keeps the share image, and the page embedding it,
   # working instead of failing the whole request on a missing file.
-  private def download_store_image(record)
-    return unless record.store_image.attached?
+  private def download_image(record)
+    attachment = self.class.image_of(record)
+    return unless attachment
 
-    record.store_image.download
+    attachment.download
   rescue ActiveStorage::FileNotFoundError
-    Rails.logger.warn("CompareImage: store image file missing for #{record.slug}")
+    Rails.logger.warn("CompareImage: image file missing for #{record.slug}")
     nil
   end
 
