@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
 require "test_helper"
+require "support/oauth_test_helpers"
 
 class Api::RateLimitTest < ActionDispatch::IntegrationTest
+  include OauthTestHelpers
+
   setup do
     @original_store = Rack::Attack.cache.store
     Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new
@@ -46,5 +49,44 @@ class Api::RateLimitTest < ActionDispatch::IntegrationTest
 
     get "/api/v1/models", headers: client_b
     assert_response :success
+  end
+
+  test "a signed-in user is counted apart from the address they share" do
+    get "/api/v1/models"
+    assert_response :success
+
+    get "/api/v1/models"
+    assert_response :too_many_requests
+
+    sign_in create(:user)
+
+    get "/api/v1/models"
+    assert_response :success
+
+    get "/api/v1/models"
+    assert_response :too_many_requests
+  end
+
+  test "an OAuth client is counted against the token's user" do
+    headers = oauth_headers_for(create(:user), scopes: "public")
+
+    get "/api/v1/models"
+    get "/api/v1/models"
+    assert_response :too_many_requests
+
+    get "/api/v1/models", headers: headers
+    assert_response :success
+  end
+
+  test "a signed-in user gets the larger limit" do
+    Rack::Attack.throttles["api"].unstub(:limit)
+
+    get "/api/v1/models"
+    assert_equal "5000", response.headers["X-RateLimit-Limit"]
+
+    sign_in create(:user)
+
+    get "/api/v1/models"
+    assert_equal "10000", response.headers["X-RateLimit-Limit"]
   end
 end

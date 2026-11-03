@@ -11,19 +11,34 @@ Rack::Attack.cache.store =
     )
   end
 
-limit_proc = proc do |req|
-  if req.env["warden"].authenticate?(scope: :api_user)
-    10_000
-  else
-    5000
+client_ip = ->(req) { (req.get_header("action_dispatch.remote_ip") || req.ip).to_s }
+
+# Read straight from the session rather than through Warden: fetching the user
+# here would cache it for the request and skip Devise's fetch callbacks, the
+# timeout check among them, when the controller authenticates later.
+signed_in_user_id = lambda do |req|
+  return req.env["fleetyards.rate_limit_user_id"] if req.env.key?("fleetyards.rate_limit_user_id")
+
+  req.env["fleetyards.rate_limit_user_id"] = begin
+    token = Doorkeeper::OAuth::Token.authenticate(
+      ActionDispatch::Request.new(req.env), *Doorkeeper.config.access_token_methods
+    )
+    if token
+      token.resource_owner_id if token.accessible?
+    else
+      req.session["warden.user.user.key"]&.first&.first
+    end
   end
 end
 
-Rack::Attack.throttle("api", limit: limit_proc, period: 1.hour) do |req|
+# A signed-in user is counted on their own, so a household or office behind one
+# address does not share a single budget with every device on it.
+Rack::Attack.throttle("api", limit: ->(req) { signed_in_user_id.call(req) ? 10_000 : 5000 }, period: 1.hour) do |req|
   if !req.path.match?(%r{^/v\d+$}) &&
       !req.path.match?(%r{^/v\d+/docs$}) &&
       req.host.split(".").first == "api"
-    (req.get_header("action_dispatch.remote_ip") || req.ip).to_s
+    user_id = signed_in_user_id.call(req)
+    user_id ? "user:#{user_id}" : client_ip.call(req)
   end
 end
 
