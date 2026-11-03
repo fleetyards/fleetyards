@@ -16,10 +16,6 @@ module HangarPlans
     # ship to plan with.
     BUYBACK_KINDS = %w[ship package upgrade].freeze
 
-    STANDALONE_PREFIX = /\AStandalone\s+Ships?\s+-\s+/i
-    TITLE_SUFFIX = /\s+(-|–|plus)\s+.*\z/i
-    CONTAINED_SUFFIX = /\s+and\s+(\d+\s|lifetime\s+insurance).*\z/i
-
     attr_reader :plan
 
     def initialize(plan)
@@ -71,29 +67,13 @@ module HangarPlans
 
       pledges = plan.user.buyback_pledges.where(kind: BUYBACK_KINDS)
         .includes(upgrade_from_model: MODEL_PRELOAD, upgrade_to_model: MODEL_PRELOAD).order(reclaimed_on: :desc, name: :asc).to_a
-      names = pledges.to_h { |pledge| [pledge.id, ship_names(pledge)] }
+      names = pledges.to_h { |pledge| [pledge.id, pledge.returned_ship_names] }
       models = models_by_name(names.values.flatten)
 
       pledges.map do |pledge|
         ships = names[pledge.id].filter_map { |name| models[name] }.uniq
         BuybackResource.new(pledge:, models: ships, used: used.include?(pledge.id))
       end
-    end
-
-    # The ships a buy-back returns, by the names its detail page lists, else its
-    # contents line, else a standalone ship's title. An upgraded pledge comes
-    # back as first bought, so its contents line, which names the upgrade's
-    # target, is skipped. Mirrors `BuybackPledge.obtaining_model`.
-    private def ship_names(pledge)
-      return [] if pledge.kind == "upgrade"
-
-      names = Array(pledge.ship_names).compact_blank
-      names = [pledge.contained.sub(CONTAINED_SUFFIX, "")] if names.empty? && pledge.contained.present? && !pledge.upgraded
-      if names.empty? && pledge.kind == "ship"
-        names = [pledge.name.sub(STANDALONE_PREFIX, "").sub(TITLE_SUFFIX, "")]
-      end
-
-      names.map { |name| name.squish.downcase }.compact_blank
     end
 
     private def upgrade_names(name) = Rsi::UpgradeTitles.ship_names(name)
