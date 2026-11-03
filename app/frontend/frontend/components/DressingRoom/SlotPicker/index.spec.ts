@@ -41,7 +41,7 @@ describe("DressingRoomSlotPicker", () => {
     });
   });
 
-  it("shows a weapon's size and type, but no size on armour", async () => {
+  it("shows a weapon's size beside its maker and type", async () => {
     fetchEquipment.mockResolvedValueOnce({
       items: [
         {
@@ -70,7 +70,9 @@ describe("DressingRoomSlotPicker", () => {
     expect(option.find('[data-test="dressing-room-item-size"]').text()).toBe(
       "S2",
     );
+  });
 
+  it("shows armour's weight and figures, but no size", async () => {
     fetchEquipment.mockResolvedValueOnce({
       items: [
         {
