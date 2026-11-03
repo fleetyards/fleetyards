@@ -54,14 +54,18 @@ module Overlay
       @client = client
     end
 
-    # :unchanged when the published manifest already names these bytes.
+    # :unchanged when the published manifest already says all of this. The same
+    # bytes under a new game version only rewrite the manifest.
     def publish(result)
-      return :unchanged if published_sha256 == result.sha256
+      published = published_manifest
+      return :unchanged if published && published.except("generatedAt") == result.manifest.stringify_keys.except("generatedAt")
 
-      client.put_object(
-        bucket:, key: self.class.key(channel, result.file_name), body: result.items_gzip,
-        acl: "public-read", content_type: "application/gzip", cache_control: ITEMS_CACHE_CONTROL
-      )
+      if published&.dig("sha256") != result.sha256
+        client.put_object(
+          bucket:, key: self.class.key(channel, result.file_name), body: result.items_gzip,
+          acl: "public-read", content_type: "application/gzip", cache_control: ITEMS_CACHE_CONTROL
+        )
+      end
 
       # After the items file, so the manifest never names a file that is not
       # there yet.
@@ -70,14 +74,17 @@ module Overlay
         acl: "public-read", content_type: "application/json", cache_control: MANIFEST_CACHE_CONTROL
       )
 
-      prune(keep: result.file_name)
+      # The file the previous manifest named stays regardless of its age: a
+      # client may have read that manifest moments ago.
+      prune(keep: [result.file_name, published&.dig("file")].compact)
 
       :published
     end
 
-    def published_sha256
+    def published_manifest
       body = client.get_object(bucket:, key: self.class.key(channel, "manifest.json")).body.read
-      JSON.parse(body)["sha256"]
+      manifest = JSON.parse(body)
+      manifest if manifest.is_a?(Hash)
     rescue Aws::S3::Errors::NoSuchKey, Aws::S3::Errors::NotFound, JSON::ParserError
       nil
     end
@@ -99,9 +106,10 @@ module Overlay
 
     private def prune(keep:)
       cutoff = STALE_ITEMS_AFTER.ago
+      kept = keep.map { |file| self.class.key(channel, file) }
 
       stale = client.list_objects_v2(bucket:, prefix: self.class.key(channel, "items.")).flat_map(&:contents).select do |object|
-        object.key != self.class.key(channel, keep) && object.last_modified < cutoff
+        kept.exclude?(object.key) && object.last_modified < cutoff
       end
 
       return if stale.empty?

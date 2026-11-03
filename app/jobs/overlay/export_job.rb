@@ -15,19 +15,28 @@ module Overlay
 
     sidekiq_options retry: 3
 
+    # Without a channel it hands each one a run of its own, so one channel that
+    # fails retries alone rather than taking the others down with it.
     def perform(channel = nil)
-      channels = channel.present? ? [channel.to_s] : ::Overlay::Export.channels
-
-      channels.each do |name|
-        lock = ActiveRecord::Base.with_advisory_lock_result("overlay_export_#{name}", timeout_seconds: 0) do
-          result = ::Overlay::Export.new(name).build
-          outcome = ::Overlay::Publisher.new(name).publish(result)
-
-          Rails.logger.info("[#{self.class.name}] #{name}: #{outcome} #{result.file_name} (#{result.manifest[:count]} items)")
-        end
-
-        self.class.perform_in(RETRY_IN, name) unless lock.lock_was_acquired?
+      unless ::Overlay::Publisher.configured?
+        Rails.logger.info("[#{self.class.name}] skipped: the public storage bucket is not configured")
+        return
       end
+
+      if channel.blank?
+        ::Overlay::Export.channels.each { |name| self.class.perform_async(name) }
+        return
+      end
+
+      name = channel.to_s
+      lock = ActiveRecord::Base.with_advisory_lock_result("overlay_export_#{name}", timeout_seconds: 0) do
+        result = ::Overlay::Export.new(name).build
+        outcome = ::Overlay::Publisher.new(name).publish(result)
+
+        Rails.logger.info("[#{self.class.name}] #{name}: #{outcome} #{result.file_name} (#{result.manifest[:count]} items)")
+      end
+
+      self.class.perform_in(RETRY_IN, name) unless lock.lock_was_acquired?
     end
   end
 end

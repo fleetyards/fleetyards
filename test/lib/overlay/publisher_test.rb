@@ -32,11 +32,30 @@ module Overlay
       assert_equal @result.sha256, JSON.parse(puts.last[:body])["sha256"]
     end
 
-    test "uploads nothing when the published manifest already names these bytes" do
-      @client.stub_responses(:get_object, {body: JSON.generate(sha256: @result.sha256)})
+    test "uploads nothing when the published manifest already says all of this" do
+      @client.stub_responses(:get_object, {body: JSON.generate(@result.manifest.merge(generatedAt: "2026-01-01T00:00:00Z"))})
 
       assert_equal :unchanged, Publisher.new("live", client: @client).publish(@result)
       assert_empty requests(:put_object)
+    end
+
+    test "the same bytes under a new game version rewrite only the manifest" do
+      @client.stub_responses(:get_object, {body: JSON.generate(@result.manifest.merge(gameVersion: "4.3.0"))})
+
+      assert_equal :published, Publisher.new("live", client: @client).publish(@result.with(manifest: @result.manifest.merge(gameVersion: "4.4.0")))
+      assert_equal ["overlay/live/manifest.json"], requests(:put_object).map { |params| params[:key] }
+    end
+
+    test "keeps the file the previous manifest named, however old it is" do
+      previous = "items.#{"cd" * 8}.json.gz"
+      @client.stub_responses(:get_object, {body: JSON.generate(sha256: "cd" * 32, file: previous)})
+      @client.stub_responses(:list_objects_v2, {contents: [
+        {key: "overlay/live/#{previous}", last_modified: 30.days.ago}
+      ]})
+
+      Publisher.new("live", client: @client).publish(@result)
+
+      assert_empty requests(:delete_objects)
     end
 
     test "deletes items files older than a day, but never the one just published" do

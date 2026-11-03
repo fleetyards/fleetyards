@@ -136,7 +136,7 @@ module Overlay
 
     private def models
       Model.visible.active
-        .includes(:manufacturer)
+        .includes(*Model.rendered_associations, *Model.attachment_preloads)
         .find_each.map do |model|
           payload = render("api/v1/models/model", model:, extended: true)
 
