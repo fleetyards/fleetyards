@@ -19,6 +19,8 @@ import type { Equipment } from "@/services/fyApi";
 // Rate of fire and volume trade against something else, and the labelled
 // figures are not numbers at all, so none of those is marked.
 const DIRECTIONS: Partial<Record<EquipmentStatKey, CompareDirection>> = {
+  alphaDamage: "higher",
+  dps: "higher",
   damageReduction: "higher",
   radiationProtection: "higher",
   radiationScrubRate: "higher",

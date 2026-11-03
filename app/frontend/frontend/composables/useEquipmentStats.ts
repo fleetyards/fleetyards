@@ -3,6 +3,8 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { type HardpointStat } from "@/frontend/composables/useHardpointStats";
 
 export type EquipmentStatKey =
+  | "alphaDamage"
+  | "dps"
   | "damageReduction"
   | "temperatureRating"
   | "radiationProtection"
@@ -58,8 +60,8 @@ const VOCABULARY: Record<
     ],
   },
   [EquipmentTypeEnum.WEAPON]: {
-    primary: ["rateOfFire", "range"],
-    rest: ["weaponClass", "magazineSize", "volume"],
+    primary: ["dps", "alphaDamage"],
+    rest: ["rateOfFire", "range", "weaponClass", "magazineSize", "volume"],
   },
   [EquipmentTypeEnum.WEAPON_ATTACHMENT]: {
     primary: ["magazineSize"],
@@ -87,6 +89,8 @@ type Label = { label: (item: Equipment) => string | null | undefined };
 
 // Where each stat is read from: a number, or a label the API already words.
 const SOURCES: Record<EquipmentStatKey, Figure | Label> = {
+  alphaDamage: { value: (item) => item.alphaDamage, units: "damage" },
+  dps: { value: (item) => item.dps, units: "dps" },
   damageReduction: { value: (item) => item.damageReduction, units: "percent" },
   temperatureRating: { label: (item) => item.temperatureRating },
   radiationProtection: {
@@ -178,9 +182,16 @@ export const useEquipmentStats = (
         return [{ label: t(`labels.equipment.stats.${key}`), value, primary }];
       });
 
-    return [
-      ...build(vocabulary.primary, true),
-      ...build(vocabulary.rest, false),
-    ];
+    // A weapon leads with its damage, which a record the game files give no
+    // round for does not have; it then leads with the first figures it does.
+    const primary = build(vocabulary.primary, true);
+    const rest = build(vocabulary.rest, false);
+    if (primary.length) return [...primary, ...rest];
+
+    const promoted = vocabulary.primary.length
+      ? rest.slice(0, 2).map((stat) => ({ ...stat, primary: true }))
+      : [];
+
+    return [...promoted, ...rest.slice(promoted.length)];
   });
 };

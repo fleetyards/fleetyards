@@ -7,6 +7,8 @@ import { type Equipment } from "@/services/fyApi";
 // but reads as a magazine size on a gun and a carrying capacity on a suit, so
 // its sort label is the column's own.
 const METRIC_SORTS = [
+  { sort: "dps", field: "dps" },
+  { sort: "alphaDamage", field: "alphaDamage" },
   { sort: "damageReduction", field: "damageReduction" },
   { sort: "radiationProtection", field: "radiationProtection" },
   { sort: "gForceTolerance", field: "gForceTolerance" },
