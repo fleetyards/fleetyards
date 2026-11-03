@@ -93,7 +93,7 @@ const ownImage = computed(() => props.model.media.storeImage?.smallUrl);
         :models="[holoModel]"
         :azimuth="HOLO_AZIMUTH"
         :elevation="HOLO_ELEVATION"
-        :contain-padding="1.28"
+        :contain-padding="1.1"
         :auto-rotate="false"
         contain
         zoomable
