@@ -14,4 +14,11 @@ namespace :overlay do
     puts "#{dir.join(result.file_name)} (#{result.manifest[:count]} items, sha256 #{result.sha256})"
   end
 
+  desc "Build a channel's overlay export and upload it to the public bucket (live, ptu)"
+  task :publish, [:channel] => :environment do |_task, args|
+    channel = args[:channel].presence || "live"
+    result = Overlay::Export.new(channel).build
+
+    puts "#{channel}: #{Overlay::Publisher.new(channel).publish(result)} #{result.file_name}"
+  end
 end

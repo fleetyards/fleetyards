@@ -27,6 +27,13 @@ Rails.application.routes.draw do
     match "/uploads/(*path)", to: redirect { |_params, request| "#{Rails.configuration.app.legacy_cdn_endpoint}#{request.fullpath}" }, via: [:get, :head]
   end
 
+  # The overlay's data files live in the public storage bucket; this host is
+  # the stable address the overlay is built against.
+  get "/overlay/:channel/:file",
+    to: redirect(status: 302) { |params, _request| Overlay::Publisher.public_url(params[:channel], params[:file]) },
+    constraints: {channel: /[a-z]+/, file: /manifest\.json|items\.[0-9a-f]{16}\.json\.gz/},
+    format: false
+
   # Feed URLs were once handed out on the frontend host, and calendar clients
   # keep polling whatever URL they were given. Redirected rather than served so
   # the API host's throttle still applies.
