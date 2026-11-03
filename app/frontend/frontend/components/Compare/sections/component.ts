@@ -15,6 +15,7 @@ import {
   type HardpointStat,
 } from "@/frontend/composables/useHardpointStats";
 import { useI18n } from "@/shared/composables/useI18n";
+import { useComponentCategoryLabel } from "@/frontend/composables/useComponentCategoryLabel";
 import type { Component, Hardpoint } from "@/services/fyApi";
 
 const statKey = (stat: HardpointStat) => stat.key ?? stat.label;
@@ -22,7 +23,8 @@ const statKey = (stat: HardpointStat) => stat.key ?? stat.label;
 export const useComponentSections = (
   components: MaybeRefOrGetter<Component[]>,
 ) => {
-  const { t, tExists } = useI18n();
+  const { t } = useI18n();
+  const categoryOf = useComponentCategoryLabel();
   const { number, percent, text } = useCompareFormat();
   const statsFor = useHardpointStatsFor();
 
@@ -43,14 +45,6 @@ export const useComponentSections = (
     return filled.length ? { id, title, rows: filled } : undefined;
   };
 
-  const categoryLabel = (category?: string | null) => {
-    if (!category) return undefined;
-
-    const path = `labels.hardpoint.categories.${category}`;
-
-    return tExists(path) ? t(path) : category;
-  };
-
   const identityMetrics: CompareMetric<Component>[] = [
     {
       key: "manufacturer",
@@ -60,7 +54,8 @@ export const useComponentSections = (
     {
       key: "category",
       label: t("labels.component.category"),
-      value: (component) => categoryLabel(component.category),
+      value: (component) =>
+        component.category ? categoryOf(component.category) : undefined,
     },
     {
       key: "sub-type",

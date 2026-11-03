@@ -22,6 +22,7 @@ import {
   type CompareCategory,
 } from "@/frontend/components/Compare/category";
 import { useCompareSet } from "@/frontend/composables/useCompareSet";
+import { useComponentCategoryLabel } from "@/frontend/composables/useComponentCategoryLabel";
 import { useComlink } from "@/shared/composables/useComlink";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
@@ -47,7 +48,9 @@ const props = withDefaults(defineProps<Props>(), {
 
 const PER_PAGE = "30";
 
-const { t, tExists } = useI18n();
+const { t } = useI18n();
+
+const categoryLabel = useComponentCategoryLabel();
 
 const comlink = useComlink();
 
@@ -210,12 +213,6 @@ const loadMore = () => {
   if (!hasMore.value || isFetching.value) return;
 
   page.value += 1;
-};
-
-const categoryLabel = (category: string) => {
-  const path = `labels.hardpoint.categories.${category}`;
-
-  return tExists(path) ? t(path) : category;
 };
 
 const remaining = computed(() => MAX_MODELS - slugs.value.length);

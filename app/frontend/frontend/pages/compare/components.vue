@@ -13,16 +13,13 @@ import { componentCompareCategory } from "@/frontend/components/Compare/category
 import { useComponentSections } from "@/frontend/components/Compare/sections/component";
 import type { CompareColumn } from "@/frontend/components/Compare/types";
 import { useCompareCatalogue } from "@/frontend/composables/useCompareCatalogue";
+import { useComponentCategoryLabel } from "@/frontend/composables/useComponentCategoryLabel";
 import { useI18n } from "@/shared/composables/useI18n";
 import { component as fetchComponent, type Component } from "@/services/fyApi";
 
-const { t, tExists } = useI18n();
+const { t } = useI18n();
 
-const categoryLabel = (category: string) => {
-  const path = `labels.hardpoint.categories.${category}`;
-
-  return tExists(path) ? t(path) : category;
-};
+const categoryLabel = useComponentCategoryLabel();
 
 const { slugs, items, category, dropped, loading, asyncStatus, remove } =
   useCompareCatalogue({
