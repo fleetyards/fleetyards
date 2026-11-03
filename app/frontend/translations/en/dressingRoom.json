@@ -14,6 +14,7 @@
         "sidearm": "Sidearm"
       },
       "search": "Search %{slot}",
+      "size": "S%{size}",
       "noResults": "Nothing found for this slot.",
       "choose": "Choose…",
       "remove": "Remove",

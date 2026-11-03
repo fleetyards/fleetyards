@@ -14,6 +14,7 @@
         "sidearm": "Arma corta"
       },
       "search": "Buscar %{slot}",
+      "size": "S%{size}",
       "noResults": "No se encontró nada para esta ranura.",
       "choose": "Elegir…",
       "remove": "Quitar",

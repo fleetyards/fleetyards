@@ -14,6 +14,7 @@
         "sidearm": "Seitenwaffe"
       },
       "search": "%{slot} suchen",
+      "size": "S%{size}",
       "noResults": "Für diesen Slot wurde nichts gefunden.",
       "choose": "Auswählen…",
       "remove": "Entfernen",

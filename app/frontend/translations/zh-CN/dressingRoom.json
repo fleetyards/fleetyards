@@ -14,6 +14,7 @@
         "sidearm": "手枪"
       },
       "search": "搜索%{slot}",
+      "size": "S%{size}",
       "noResults": "此槽位没有找到任何物品。",
       "choose": "选择…",
       "remove": "移除",
