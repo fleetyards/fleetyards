@@ -466,6 +466,16 @@ module ScData
 
       # The Venture Starwalker helmet in 4.10.3 opens its description with a
       # line break.
+      test "hides the valakkar's spit, which borrows the BR-2's name" do
+        write_weapon("behr_shotgun_ballistic_01", "BR-2 Shotgun")
+        write_weapon("vlk_spewgun_ballistic_reference", "BR-2 Shotgun")
+        write_attachment("vlk_spewgun_ballistic_01_mag", "BR-2 Shotgun Magazine (12 cap)", sub_type: "Magazine")
+
+        assert_not parsed.fetch("behr_shotgun_ballistic_01")["hidden"]
+        assert parsed.fetch("vlk_spewgun_ballistic_reference")["hidden"]
+        assert parsed.fetch("vlk_spewgun_ballistic_01_mag")["hidden"]
+      end
+
       test "reads the spec block of a description that opens with a blank line" do
         @parser.translations = {
           "item_Name_hdh_boots_01_01_13" => "Venture Helmet",

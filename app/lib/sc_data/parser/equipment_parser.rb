@@ -222,8 +222,10 @@ module ScData
       # player: the AI loadout, the tug-of-war and gun-game event weapons, the
       # multi-tool pre-fitted with each attachment, and anything named test or
       # placeholder. Derived from the records that collide on a display name --
-      # twelve of the duplicates were Pyro RYT Multi-Tools.
+      # twelve of the duplicates were Pyro RYT Multi-Tools. The valakkar's spit
+      # is built as a gun and borrows the BR-2 Shotgun's name and magazine.
       VARIANT_MARKERS = [
+        /\Avlk_/,
         /_(ai|tow|gungame|contestedzonereward|ea_elim)(_|\z)/,
         /_default_/,
         /placeholder/,
