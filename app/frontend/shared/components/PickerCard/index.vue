@@ -281,10 +281,10 @@ const accessibleName = computed(() =>
 }
 
 /* ---------- name plate ----------
-   The picture fills the card, so hover and selection, which used to tint the
-   card behind the text, show on the plate instead. It dissolves upwards into the
-   picture but stays dark enough behind the text on even a white one. The dock
-   takes no z-index of its own: that would trap the stepper's below the toggle. */
+   Dissolves upwards into the picture but stays dark enough behind the text on
+   even a white one. A store image hides the card's own background, so hover and
+   selection show here as well. The dock takes no z-index of its own: that would
+   trap the stepper's below the toggle. */
 .picker-card__dock {
   @apply absolute inset-x-0 bottom-0 flex flex-col;
 }
