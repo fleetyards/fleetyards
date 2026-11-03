@@ -232,7 +232,8 @@ module ScData
           <ConsumableSubtype __ref="#{coagulant}" typeName="Coagulant">
             <effectsPerMicroSCU>
               <ConsumableEffectHealth healthChange="3.75" />
-              <ConsumableEffectModifyActorStatus statType="BloodDrugLevel" statPointChange="1" />
+              <ConsumableEffectModifyActorStatus statType="BloodDrugLevel" statPointChange="0.5" />
+              <ConsumableEffectModifyActorStatus statType="BloodDrugLevel" statPointChange="0.5" />
               <ConsumableEffectAddBuffEffect buffType="RadiationAntidote">
                 <buffDurationOverride><BuffDurationOverride durationOverride="10" /></buffDurationOverride>
               </ConsumableEffectAddBuffEffect>

@@ -567,7 +567,19 @@ module ScData
           end
         end
 
-        {volume:, effects: effects.presence}.compact.presence
+        {volume:, effects: merge_effects(effects).presence}.compact.presence
+      end
+
+      # A pen mixing several drugs lists the same body stat once per drug, and
+      # a buff two of them share twice. A dose moves each stat by the sum.
+      private def merge_effects(effects)
+        merged = effects.group_by { |effect| effect.values_at(:kind, :stat, :buff) }.map do |(kind, _, _), same|
+          next same.first unless %w[health status].include?(kind)
+
+          same.first.merge(amount: round(same.sum { |effect| effect[:amount] }))
+        end
+
+        merged.reject { |effect| effect.key?(:amount) && effect[:amount].zero? }
       end
 
       private def consumable_effect(tag, effect, share)
