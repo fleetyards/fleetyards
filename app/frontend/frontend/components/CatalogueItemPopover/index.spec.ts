@@ -242,6 +242,22 @@ describe("CatalogueItemPopover", () => {
     expect(card()?.textContent).toContain("Tractor Force");
   });
 
+  it("fetches nothing for armour, whose card reads only its columns", async () => {
+    const wrapper = await mount({
+      item: { type: "Equipment", slug: "antium", name: "Antium Core" },
+      record: {
+        id: "5",
+        name: "Antium Core",
+        slug: "antium",
+        equipmentType: "armor",
+      } as unknown as Props["record"],
+    });
+
+    await tapOpen(wrapper);
+
+    expect(enabled.equipment()).toBe(false);
+  });
+
   it("fetches nothing for a row that already carries its stats", async () => {
     const wrapper = await mount({
       item: { type: "Equipment", slug: "p4", name: "P4-AR" },

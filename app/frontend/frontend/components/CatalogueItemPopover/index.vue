@@ -8,6 +8,7 @@ export default {
 import BasePopover from "@/shared/components/Popover/index.vue";
 import ComponentStatsCard from "@/frontend/components/StatsCard/Component/index.vue";
 import EquipmentStatsCard from "@/frontend/components/StatsCard/Equipment/index.vue";
+import { equipmentCardReadsStats } from "@/frontend/composables/useEquipmentStats";
 import CommodityStatsCard from "@/frontend/components/StatsCard/Commodity/index.vue";
 import ShipStatsCard from "@/frontend/components/StatsCard/Ship/index.vue";
 import BlueprintStatsCard from "@/frontend/components/StatsCard/Blueprint/index.vue";
@@ -133,7 +134,8 @@ const equipmentRecordWithoutStats = computed(
   () =>
     isEquipment.value &&
     !!props.record &&
-    (props.record as Equipment).stats === undefined,
+    (props.record as Equipment).stats === undefined &&
+    equipmentCardReadsStats((props.record as Equipment).equipmentType),
 );
 
 const fetchesEquipment = computed(

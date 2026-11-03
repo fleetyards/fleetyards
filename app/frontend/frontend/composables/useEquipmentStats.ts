@@ -164,6 +164,42 @@ const FALLBACK = {
 export const equipmentVocabulary = (equipmentType?: string | null) =>
   VOCABULARY[equipmentType ?? ""] ?? FALLBACK;
 
+// The figures read off the detail payload's `stats` rather than a column.
+const STATS_KEYS: EquipmentStatKey[] = [
+  "blastDamage",
+  "blastRadius",
+  "meleeDamage",
+  "tractorForce",
+  "tractorRange",
+  "healRange",
+  "doseRate",
+  "repairRate",
+  "salvageRate",
+  "miningPower",
+  "extinguishRange",
+  "healthRestored",
+  "instability",
+  "resistance",
+  "clusterFactor",
+  "optimalChargeWindow",
+  "zoom",
+  "recoilChange",
+  "spreadChange",
+  "damageChange",
+  "fireRateChange",
+  "soundRadiusChange",
+];
+
+// Whether an item's card shows anything only the detail payload carries --
+// armour and clothing read their columns alone, so a list row is complete.
+export const equipmentCardReadsStats = (equipmentType?: string | null) => {
+  const vocabulary = equipmentVocabulary(equipmentType);
+
+  return [...vocabulary.primary, ...vocabulary.rest].some((key) =>
+    STATS_KEYS.includes(key),
+  );
+};
+
 type Figure = {
   value: (item: Equipment) => number | null | undefined;
   units?: string;
