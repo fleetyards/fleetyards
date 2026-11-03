@@ -24,7 +24,9 @@ module Shared
             holo: ::Shared::V1::Schemas::MediaFile,
             holoTextured: ::Shared::V1::Schemas::MediaFile,
             holoRiggedMale: ::Shared::V1::Schemas::MediaFile,
-            holoRiggedFemale: ::Shared::V1::Schemas::MediaFile
+            holoRiggedFemale: ::Shared::V1::Schemas::MediaFile,
+            holoRiggedTexturedMale: ::Shared::V1::Schemas::MediaFile,
+            holoRiggedTexturedFemale: ::Shared::V1::Schemas::MediaFile
           },
           additionalProperties: false
         })

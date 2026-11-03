@@ -39330,6 +39330,10 @@ components:
           "$ref": "#/components/schemas/MediaFile"
         holoRiggedFemale:
           "$ref": "#/components/schemas/MediaFile"
+        holoRiggedTexturedMale:
+          "$ref": "#/components/schemas/MediaFile"
+        holoRiggedTexturedFemale:
+          "$ref": "#/components/schemas/MediaFile"
       additionalProperties: false
       title: ItemMedia
     ItemPrice:
