@@ -478,9 +478,13 @@ module ScData
         }.compact
       end
 
-      # A weapon's or a magazine's capacity, where the description states none.
+      # A gun's or a magazine's capacity, where the description states none.
+      # A medgun's vial and an extinguisher's tank are containers too, but hold
+      # no rounds, which is what `ammo` says.
       private def magazine_size(attach_def, stats)
-        stats.dig(:magazine, :size)&.to_d if %w[WeaponPersonal WeaponAttachment].include?(attach_def["Type"])
+        return unless stats[:ammo] && %w[WeaponPersonal WeaponAttachment].include?(attach_def["Type"])
+
+        stats.dig(:magazine, :size)&.to_d
       end
 
       # What the stats read alongside a record: the round a magazine names,
