@@ -109,6 +109,9 @@ describe("DressingRoomSlotPickerModal", () => {
 
     expect(card.classes()).toContain("picker-card--disabled");
     expect(card.text()).toContain("Light Core");
+
+    const describedBy = card.find("button").attributes("aria-describedby");
+    expect(card.find(`[id="${describedBy}"]`).text()).toContain("Light Core");
   });
 
   it("shows a weapon's size beside its maker and type", async () => {

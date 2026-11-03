@@ -60,6 +60,8 @@ const fullText = computed(() =>
   [props.name, props.subtitle].filter(Boolean).join(" · "),
 );
 
+const detailsId = useId();
+
 // The toggle is an empty overlay, so its name has to carry everything the card
 // shows visually - including the badges, which are decoration to a screen reader.
 const accessibleName = computed(() =>
@@ -118,7 +120,13 @@ const accessibleName = computed(() =>
           <span v-if="subtitle" class="picker-card__subtitle">
             {{ subtitle }}
           </span>
-          <slot />
+          <span
+            v-if="$slots.default"
+            :id="detailsId"
+            class="picker-card__details"
+          >
+            <slot />
+          </span>
         </div>
       </div>
     </div>
@@ -129,6 +137,7 @@ const accessibleName = computed(() =>
       :aria-pressed="selected"
       :aria-label="accessibleName"
       :title="fullText"
+      :aria-describedby="$slots.default ? detailsId : undefined"
       :disabled="disabled"
       @click="emit('toggle')"
     />
@@ -332,6 +341,10 @@ const accessibleName = computed(() =>
 
 .picker-card__name {
   @apply text-lifted truncate text-[15px] leading-tight font-semibold;
+}
+
+.picker-card__details {
+  display: contents;
 }
 
 .picker-card__subtitle {
