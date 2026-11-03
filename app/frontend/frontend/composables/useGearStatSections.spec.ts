@@ -224,6 +224,19 @@ describe("useGearStatSections", () => {
     expect(rows[0]).toMatchObject({ stack: true });
   });
 
+  it("reads a name a new build brings as words until it has a label", () => {
+    expect(
+      rowsOf(
+        {
+          melee: {
+            attacks: [{ category: "blunt_strike", damage: { physical: 40 } }],
+          },
+        },
+        "melee",
+      ),
+    ).toEqual({ "Blunt strike": "40 Physical" });
+  });
+
   it("leaves out a card with nothing in it", () => {
     expect(useGearStatSections({ magazine: {} }).value).toEqual([]);
     expect(useGearStatSections(null).value).toEqual([]);

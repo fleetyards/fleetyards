@@ -1,11 +1,15 @@
 import {
   EquipmentToolActionKindEnum,
   EquipmentTypeEnum,
-  type ComponentWeaponDamage,
   type Equipment,
   type EquipmentToolAction,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import {
+  damageTotal,
+  multiplierChange,
+  signed,
+} from "@/frontend/utils/gearFigures";
 import { type HardpointStat } from "@/frontend/composables/useHardpointStats";
 
 export type EquipmentStatKey =
@@ -169,25 +173,10 @@ type Figure = {
   signed?: boolean;
 };
 
-// An attachment states multipliers; the card shows the change one makes.
-const percentChange = (multiplier?: number | null) =>
-  multiplier == null ? undefined : Math.round((multiplier - 1) * 1000) / 10;
-
 type Label = { label: (item: Equipment) => string | null | undefined };
 
 // The figures below the flat columns, read off the detail payload's `stats`.
 // A list record carries no `stats`, so these stay empty there.
-const total = (damage?: ComponentWeaponDamage | null) => {
-  if (!damage) return undefined;
-
-  const sum = Object.values(damage).reduce<number>(
-    (acc, value) => acc + (value ?? 0),
-    0,
-  );
-
-  return sum || undefined;
-};
-
 const best = (
   item: Equipment,
   kind: EquipmentToolActionKindEnum,
@@ -212,8 +201,8 @@ const SOURCES: Record<EquipmentStatKey, Figure | Label> = {
   dps: { value: (item) => item.dps, units: "dps" },
   blastDamage: {
     value: (item) =>
-      total(item.stats?.explosion?.damage) ??
-      total(item.stats?.ammo?.explosion?.damage),
+      damageTotal(item.stats?.explosion?.damage) ??
+      damageTotal(item.stats?.ammo?.explosion?.damage),
     units: "damage",
   },
   blastRadius: {
@@ -225,7 +214,7 @@ const SOURCES: Record<EquipmentStatKey, Figure | Label> = {
   meleeDamage: {
     value: (item) => {
       const hits = (item.stats?.melee?.attacks || [])
-        .map((attack) => total(attack.damage))
+        .map((attack) => damageTotal(attack.damage))
         .filter((value): value is number => value != null);
 
       return hits.length ? Math.max(...hits) : undefined;
@@ -296,28 +285,28 @@ const SOURCES: Record<EquipmentStatKey, Figure | Label> = {
     value: (item) => {
       const recoil = item.stats?.modifier?.recoil;
 
-      return percentChange(recoil?.pitch ?? recoil?.yaw);
+      return multiplierChange(recoil?.pitch ?? recoil?.yaw);
     },
     units: "percent",
     signed: true,
   },
   spreadChange: {
-    value: (item) => percentChange(item.stats?.modifier?.spread?.max),
+    value: (item) => multiplierChange(item.stats?.modifier?.spread?.max),
     units: "percent",
     signed: true,
   },
   damageChange: {
-    value: (item) => percentChange(item.stats?.modifier?.damage),
+    value: (item) => multiplierChange(item.stats?.modifier?.damage),
     units: "percent",
     signed: true,
   },
   fireRateChange: {
-    value: (item) => percentChange(item.stats?.modifier?.fireRate),
+    value: (item) => multiplierChange(item.stats?.modifier?.fireRate),
     units: "percent",
     signed: true,
   },
   soundRadiusChange: {
-    value: (item) => percentChange(item.stats?.modifier?.soundRadius),
+    value: (item) => multiplierChange(item.stats?.modifier?.soundRadius),
     units: "percent",
     signed: true,
   },
@@ -382,8 +371,8 @@ export const useEquipmentStatReader = () => {
       source.units,
     );
 
-    return text && source.signed && value !== undefined && value > 0
-      ? `+${text}`
+    return text && source.signed && value !== undefined
+      ? signed(text, value)
       : text;
   };
 

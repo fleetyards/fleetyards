@@ -7,6 +7,11 @@ import {
   type EquipmentToolAction,
 } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
+import {
+  humanizeGameName,
+  multiplierChange,
+  signed,
+} from "@/frontend/utils/gearFigures";
 
 export interface GearStatRow {
   label: string;
@@ -72,9 +77,6 @@ const TOOL_FIELDS: {
  * nothing in it.
  */
 // "TractorBeam" reads as "Tractor Beam".
-const humanize = (name?: string) =>
-  name?.replace(/([a-z])([A-Z])/g, "$1 $2").trim() || undefined;
-
 export const useGearStatSections = (
   stats: MaybeRefOrGetter<EquipmentStats | null | undefined>,
 ) => {
@@ -127,21 +129,23 @@ export const useGearStatSections = (
     return `${precise(value.min, "degrees")} – ${precise(value.max, "degrees")}`;
   };
 
-  // A multiplier reads as the change it makes: 0.8 is 20 % less.
-  const change = (value?: number | null) => {
-    if (value == null) return undefined;
-
-    const percent = Math.round((value - 1) * 1000) / 10;
-
-    return `${percent > 0 ? "+" : ""}${figure(percent, "percent")}`;
-  };
-
   // The mining modifiers are stored as the percent change already.
   const percentChange = (value?: number | null) => {
     if (value == null) return undefined;
 
-    return `${value > 0 ? "+" : ""}${figure(value, "percent")}`;
+    return signed(figure(value, "percent") as string, value);
   };
+
+  // A multiplier reads as the change it makes: 0.8 is 20 % less.
+  const change = (value?: number | null) =>
+    percentChange(multiplierChange(value));
+
+  // A value named by the game, labelled where a label exists and read as
+  // words where a new build brought one nobody has labelled yet.
+  const gameName = (scope: string, name: string) =>
+    t(`labels.equipment.gear.${scope}.${name}`, {
+      defaultValue: humanizeGameName(name),
+    });
 
   const row = (
     key: string,
@@ -246,11 +250,11 @@ export const useGearStatSections = (
       const twins = sections.filter((other) => other.title === section.title);
       if (twins.length < 2) return section;
 
-      const name = humanize(entries[index].name);
+      const name = humanizeGameName(entries[index].name);
       const sameName = entries.filter(
         (entry, other) =>
           sections[other].title === section.title &&
-          humanize(entry.name) === name,
+          humanizeGameName(entry.name) === name,
       );
       const suffix =
         name && sameName.length < 2 ? name : String(twins.indexOf(section) + 1);
@@ -266,9 +270,7 @@ export const useGearStatSections = (
     rows: [
       ...row(
         "target",
-        action.target
-          ? t(`labels.equipment.gear.targets.${action.target}`)
-          : undefined,
+        action.target ? gameName("targets", action.target) : undefined,
       ),
       ...TOOL_FIELDS.flatMap(({ key, units, scale }) => {
         const value = action[key];
@@ -338,7 +340,7 @@ export const useGearStatSections = (
 
           return [
             {
-              label: t(`labels.equipment.gear.meleeAttacks.${attack.category}`),
+              label: gameName("meleeAttacks", attack.category),
               value: amount,
             },
           ];
@@ -354,7 +356,7 @@ export const useGearStatSections = (
           ...row(
             "trigger",
             value.mine?.trigger
-              ? t(`labels.equipment.gear.triggers.${value.mine.trigger}`)
+              ? gameName("triggers", value.mine.trigger)
               : undefined,
           ),
           ...row("triggerRadius", figure(value.mine?.radius, "distance")),
@@ -423,7 +425,7 @@ export const useGearStatSections = (
             if (effect.kind === "status" && effect.stat) {
               return [
                 {
-                  label: t(`labels.equipment.gear.bodyStats.${effect.stat}`),
+                  label: gameName("bodyStats", effect.stat),
                   value: figure(effect.amount) as string,
                 },
               ];
@@ -436,9 +438,7 @@ export const useGearStatSections = (
             buffs.length
               ? buffs
                   .map((effect) => {
-                    const name = t(
-                      `labels.equipment.gear.buffs.${effect.buff}`,
-                    );
+                    const name = gameName("buffs", effect.buff as string);
 
                     return effect.duration
                       ? `${name} (${figure(effect.duration, "seconds")})`
