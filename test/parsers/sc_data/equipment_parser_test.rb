@@ -456,6 +456,40 @@ module ScData
           parsed.values_at("qrt_specialist_heavy_core_01_01_12", "qrt_specialist_heavy_helmet_01_01_12").pluck("hidden")
       end
 
+      test "names a piece the game names after another piece by that piece's colourway" do
+        {
+          "qrt_specialist_heavy_core_01_01_12" => "Char_Armor_Torso",
+          "qrt_specialist_heavy_helmet_01_01_12" => "Char_Armor_Helmet",
+          "qrt_specialist_heavy_helmet_01_01_13" => "Char_Armor_Helmet",
+          "qrt_specialist_heavy_arms_01_01_12" => "Char_Armor_Arms",
+          "qrt_specialist_heavy_arms_01_01_13" => "Char_Armor_Arms"
+        }.each do |key, type|
+          write_equipment(key, name: "@item_Name_#{key}", path: "entities/scitem/characters/human/armor", type:)
+        end
+        @parser.translations = {
+          "item_Name_qrt_specialist_heavy_core_01_01_12" => "Antium Core Jet",
+          "item_Name_qrt_specialist_heavy_helmet_01_01_12" => "Antium Core Jet",
+          "item_Name_qrt_specialist_heavy_helmet_01_01_13" => "Antium Helmet Maroon",
+          "item_Name_qrt_specialist_heavy_arms_01_01_12" => "Antium Arms Jet",
+          "item_Name_qrt_specialist_heavy_arms_01_01_13" => "Antium Helmet Jet"
+        }
+
+        assert_equal ["Antium Core Jet", "Antium Helmet Jet", "Antium Helmet Maroon", "Antium Arms Jet", "Antium Arms Maroon"],
+          parsed.values_at(
+            "qrt_specialist_heavy_core_01_01_12", "qrt_specialist_heavy_helmet_01_01_12",
+            "qrt_specialist_heavy_helmet_01_01_13", "qrt_specialist_heavy_arms_01_01_12",
+            "qrt_specialist_heavy_arms_01_01_13"
+          ).pluck("name")
+      end
+
+      test "swaps the slot word of a misnamed piece whose namesake is not in the build" do
+        write_equipment("cds_armor_heavy_legs_02_04_xenothreat", name: "@item_Name_legs",
+          path: "entities/scitem/characters/human/armor", type: "Char_Armor_Legs")
+        @parser.translations = {"item_Name_legs" => "ADP-mk4 Core Justified"}
+
+        assert_equal "ADP-mk4 Legs Justified", parsed.fetch("cds_armor_heavy_legs_02_04_xenothreat")["name"]
+      end
+
       test "shows one of the same carried prop filed under two keys" do
         write_carryable("plushy_orison_whale_1_a", "Finley the Stormwal Plushie")
         write_carryable("carryable_1h_cy_toy_plushy_orison_whale_1_a", "Finley the Stormwal Plushie", sub_type: "Personal")

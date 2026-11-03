@@ -251,7 +251,44 @@ module ScData
         records = load_equipment_data
         @gear_stats = gear_stats(records)
 
-        assign_families(mark_skins(records.filter_map { |item| parse_equipment(item) }))
+        assign_families(mark_skins(rename_misnamed_pieces(records.filter_map { |item| parse_equipment(item) })))
+      end
+
+      # The word an armour piece's name gives its slot, and the key segment that
+      # says the same: qrt_specialist_heavy_core_01_01_12 is "Antium Core Jet".
+      ARMOR_SLOT_NAMES = {
+        "helmet" => ["Helmet", "helmet"],
+        "torso" => ["Core", "core"],
+        "arms" => ["Arms", "arms"],
+        "legs" => ["Legs", "legs"]
+      }.freeze
+
+      # The game's strings name a few pieces after another one of the set: the
+      # Antium helmet in Jet reads "Antium Core Jet" and the arms in Maroon
+      # "Antium Helmet Jet". The piece the wrong name points at is the one the
+      # key names with that slot's segment swapped in, and its name -- with the
+      # slot word put back -- says which colourway this is.
+      private def rename_misnamed_pieces(parsed)
+        names = parsed.to_h { |item| [item[:key], item[:name]] }
+
+        parsed.each do |item|
+          own_word, own_segment = ARMOR_SLOT_NAMES[item[:slot]] if item[:equipment_type] == "armor"
+          next if own_word.blank? || slot_word?(item[:name], own_word)
+
+          other_word, other_segment = ARMOR_SLOT_NAMES.values.find { |word, _| slot_word?(item[:name], word) }
+          next if other_word.blank?
+
+          segments = item[:key].split("_")
+          index = segments.index(own_segment)
+          sibling = names[segments.dup.tap { |parts| parts[index] = other_segment }.join("_")] if index
+          source = slot_word?(sibling, other_word) ? sibling : item[:name]
+
+          item[:name] = source.sub(/\b#{other_word}\b/, own_word)
+        end
+      end
+
+      private def slot_word?(name, word)
+        name.to_s.match?(/\b#{word}\b/)
       end
 
       # Records that share a display name and a maker-and-type key prefix are
