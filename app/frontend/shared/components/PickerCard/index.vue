@@ -54,6 +54,12 @@ const imageSrc = computed(() => {
   return webpSupported.value ? fallbackImage : fallbackImageJpg;
 });
 
+// The plate truncates, and free text like a gallery caption can differ only past
+// the cut.
+const fullText = computed(() =>
+  [props.name, props.subtitle].filter(Boolean).join(" · "),
+);
+
 // The toggle is an empty overlay, so its name has to carry everything the card
 // shows visually - including the badges, which are decoration to a screen reader.
 const accessibleName = computed(() =>
@@ -121,6 +127,7 @@ const accessibleName = computed(() =>
       class="picker-card__toggle"
       :aria-pressed="selected"
       :aria-label="accessibleName"
+      :title="fullText"
       :disabled="disabled"
       @click="emit('toggle')"
     />
