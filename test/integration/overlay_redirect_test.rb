@@ -4,6 +4,7 @@ require "test_helper"
 
 class OverlayRedirectTest < ActionDispatch::IntegrationTest
   setup do
+    host! Rails.configuration.app.domain
     Rails.configuration.app.stubs(:storage_cdn_endpoint).returns("https://storage.test")
   end
 
@@ -17,6 +18,13 @@ class OverlayRedirectTest < ActionDispatch::IntegrationTest
 
   test "nothing else under the prefix reaches the bucket" do
     get "/overlay/live/secrets.json"
+    assert_not response.location.to_s.start_with?("https://storage.test"), response.location
+  end
+
+  test "only the frontend host answers" do
+    host! "api.example.com"
+    get "/overlay/live/manifest.json"
+
     assert_not response.location.to_s.start_with?("https://storage.test"), response.location
   end
 end
