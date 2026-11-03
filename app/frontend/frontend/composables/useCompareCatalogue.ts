@@ -28,13 +28,14 @@ export const useCompareCatalogue = <T extends CatalogueItem, Q>({
     asyncStatus,
   } = useCompareItems<T>(() => slugs.value, fetchItem);
 
-  const category = computed(() => {
-    const first = slugs.value
+  // The first item that has a category at all: one without cannot set the
+  // lock, or a link leading with it would let any mix through.
+  const category = computed(() =>
+    slugs.value
       .map((slug) => loaded.value.find((item) => item.slug === slug))
-      .find(Boolean);
-
-    return first ? categoryOf(first) : undefined;
-  });
+      .map((item) => (item ? categoryOf(item) : undefined))
+      .find(Boolean),
+  );
 
   const belongs = (item: T) =>
     !category.value || categoryOf(item)?.key === category.value.key;
@@ -42,6 +43,17 @@ export const useCompareCatalogue = <T extends CatalogueItem, Q>({
   const items = computed(() => loaded.value.filter(belongs));
 
   const dropped = ref<string[]>([]);
+
+  // The set the strays were removed from it to. The notice is about that
+  // removal, so any later change to the set ends it.
+  let prunedTo: string | undefined;
+
+  watch(slugs, (current) => {
+    if (prunedTo === undefined || current.join(",") === prunedTo) return;
+
+    prunedTo = undefined;
+    dropped.value = [];
+  });
 
   watch(
     [loaded, loading],
@@ -54,8 +66,10 @@ export const useCompareCatalogue = <T extends CatalogueItem, Q>({
       dropped.value = strays.map((item) => item.name);
 
       const strayed = new Set(strays.map((item) => item.slug));
+      const kept = slugs.value.filter((slug) => !strayed.has(slug));
 
-      replace(slugs.value.filter((slug) => !strayed.has(slug)));
+      prunedTo = kept.join(",");
+      replace(kept);
     },
     { immediate: true },
   );
