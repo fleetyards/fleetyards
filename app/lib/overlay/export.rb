@@ -36,7 +36,7 @@ module Overlay
         equipmentType itemType subType grade size
       ],
       "model" => COMMON_META_KEYS + %w[
-        scIdentifier erkulIdentifier inGame classification adiMap foci
+        scIdentifier erkulIdentifier inGame classification adiMap foci fociLabels
         hasImages hasModules hasPaints hasUpgrades hasVideos lastUpdatedAt
         loaners holoToScale onSale playerOwnable ingameOnly pledgePrice price
         productionNote productionStatus rsiId rsiName rsiSlug brochure holo
@@ -218,9 +218,19 @@ module Overlay
       )
     end
 
+    # Hardpoints are read without an order, so Postgres is free to hand them
+    # back differently between runs; every other array is stored in order.
+    UNORDERED_ARRAYS = %w[hardpoints].freeze
+
     private def deep_sort(value)
       case value
-      when Hash then value.keys.sort.to_h { |key| [key, deep_sort(value[key])] }
+      when Hash
+        value.keys.sort.to_h do |key|
+          nested = deep_sort(value[key])
+          nested = nested.sort_by { |entry| JSON.generate(entry) } if UNORDERED_ARRAYS.include?(key) && nested.is_a?(Array)
+
+          [key, nested]
+        end
       when Array then value.map { |nested| deep_sort(nested) }
       else value
       end

@@ -68,6 +68,7 @@ module Overlay
       assert_equal 1240.0, ship.dig("stats", "speeds", "maxSpeed")
       assert_equal({"value" => 4}, ship.dig("stats", "crew"))
       assert_not ship["stats"].key?("pledgePrice")
+      assert_not ship["stats"].key?("fociLabels")
     end
 
     test "leaves out paints, hidden components, hidden equipment and hidden ships" do
@@ -105,6 +106,13 @@ module Overlay
 
       keys = items(second).map { |entry| [entry["kind"], entry["slug"]] }
       assert_equal keys.sort, keys
+    end
+
+    test "hardpoints are ordered by their content, not by how the database returned them" do
+      export = Export.new("live")
+      payload = {"hardpoints" => [{"name" => "b"}, {"name" => "a"}]}
+
+      assert_equal [{"name" => "a"}, {"name" => "b"}], export.send(:deep_sort, payload)["hardpoints"]
     end
 
     test "refuses a channel that is not configured" do
