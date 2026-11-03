@@ -12,6 +12,7 @@ import Collapsed from "@/shared/components/Collapsed.vue";
 import AddToHangar from "@/frontend/components/Models/AddToHangar/index.vue";
 import ModelPanelMetrics from "@/frontend/components/Models/PanelMetrics/index.vue";
 import type { Model, Manufacturer } from "@/services/fyApi";
+import type { MetricRow } from "@/shared/composables/useModelMetricRows";
 import { useI18n } from "@/shared/composables/useI18n";
 import fallbackImageJpg from "@/images/fallback/store_image.jpg";
 import fallbackImage from "@/images/fallback/store_image.webp";
@@ -30,6 +31,7 @@ type Props = {
   storeImage?: string;
   level?: HeadingLevelEnum;
   cargoLabel?: string;
+  leadMetrics?: MetricRow[];
 };
 
 const props = withDefaults(defineProps<Props>(), {
@@ -39,6 +41,7 @@ const props = withDefaults(defineProps<Props>(), {
   storeImage: undefined,
   level: HeadingLevelEnum.H2,
   cargoLabel: undefined,
+  leadMetrics: () => [],
 });
 
 const { t } = useI18n();
@@ -150,7 +153,11 @@ const route = useRoute();
             </template>
           </strong>
         </div>
-        <ModelPanelMetrics :model="model" :cargo-label="cargoLabel" />
+        <ModelPanelMetrics
+          :model="model"
+          :cargo-label="cargoLabel"
+          :lead-rows="leadMetrics"
+        />
       </Collapsed>
     </template>
   </Panel>

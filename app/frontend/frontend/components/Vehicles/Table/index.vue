@@ -18,6 +18,7 @@ import VehicleStates from "@/frontend/components/Vehicles/Table/States.vue";
 import { useI18n } from "@/shared/composables/useI18n";
 import { fociText } from "@/shared/utils/Foci";
 import { useVehicleCargo } from "@/frontend/composables/useVehicleCargo";
+import { useVehicleFirepower } from "@/frontend/composables/useVehicleFirepower";
 import { type Vehicle } from "@/services/fyApi";
 import { useComlink } from "@/shared/composables/useComlink";
 
@@ -70,18 +71,7 @@ const { t, toNumber, toUEC, toDollar } = useI18n();
 
 const { cargoLabel } = useVehicleCargo();
 
-// No figure is blank, where a gun that does not fire at one pip reads 0.
-const firepower = (value?: number | null) =>
-  value == null ? "" : String(toNumber(Math.round(value), "integer"));
-
-// Sustained fire from one weapon pip to the most the plant gives; a ship whose
-// guns do not care about power shows the one figure.
-const sustainedRange = (record: Vehicle) => {
-  const min = firepower(record.sustainedDpsMin);
-  const max = firepower(record.sustainedDpsMax);
-
-  return !min || min === max ? max : `${min}–${max}`;
-};
+const { firepower, sustainedRange } = useVehicleFirepower();
 
 // Held here unless the page binds it: a table on its own keeps its selection
 // to itself, a table under a toolbar shares it.

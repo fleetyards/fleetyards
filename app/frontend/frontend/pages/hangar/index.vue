@@ -52,6 +52,7 @@ import rsiLogo from "@/images/rsi_logo.png";
 import { usePagination } from "@/shared/composables/usePagination";
 import { useFleetchartStore } from "@/shared/stores/fleetchart";
 import { useHangarFilters } from "@/frontend/composables/useHangarFilters";
+import { useVehicleListFigures } from "@/frontend/composables/useVehicleListFigures";
 import { BtnSizesEnum, BtnTonesEnum } from "@/shared/components/base/Btn/types";
 import { useSubscription } from "@/shared/composables/useSubscription";
 import { HangarChannel } from "@/services/fyCable/channels/HangarChannel";
@@ -169,6 +170,8 @@ const activeSort = computed(() =>
 );
 
 const sortFields = useHangarSortFields({ include: activeSort });
+
+const listFigures = useVehicleListFigures(() => activeSort.value);
 
 // Dragging writes the owner's order, so it is only offered while that order is
 // the one on screen: under another sort, or with some ships filtered out, a
@@ -670,6 +673,7 @@ const { activeFilters } = useShipFilterSummary(() =>
           <VehiclePanel
             :vehicle="record"
             :details="detailsVisible"
+            :figures="listFigures"
             :editable="true"
             :sortable="canSort"
             :highlight="record.hangarGroupIds.includes(highlightedGroup)"
