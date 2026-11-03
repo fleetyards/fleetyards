@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { type MediaFile } from "@/services/fyApi";
-import { OutfitSlotEnum } from "@/services/fyApi";
+import { OutfitBodyEnum, OutfitSlotEnum } from "@/services/fyApi";
 import {
   OUTFIT_SLOTS,
   RIG_ORDER,
@@ -122,6 +122,27 @@ describe("riggedPieceHolo", () => {
     ).toEqual({ path: "/rigged.glb", size: 7, textured: false });
     expect(riggedPieceHolo({ holo: file("/clay.glb") })).toBeUndefined();
   });
+
+  it("prefers the painted rig, with the plain rig behind it", () => {
+    const media = {
+      holoTextured: file("/painted.glb"),
+      holoRiggedMale: file("/rigged_male.glb", 7),
+      holoRiggedTexturedMale: file("/rigged_textured_male.glb", 9),
+      holoRiggedFemale: file("/rigged_female.glb", 6),
+    };
+
+    expect(riggedPieceHolo(media)).toEqual({
+      path: "/rigged_textured_male.glb",
+      size: 9,
+      textured: true,
+      fallbackPath: "/rigged_male.glb",
+    });
+    expect(riggedPieceHolo(media, OutfitBodyEnum.FEMALE)).toEqual({
+      path: "/rigged_female.glb",
+      size: 6,
+      textured: false,
+    });
+  });
 });
 
 describe("riggedOutfitModel", () => {
@@ -151,6 +172,17 @@ describe("riggedOutfitModel", () => {
         pedestal: true,
       },
     });
+  });
+
+  it("passes a painted rig and its plain fallback to the viewer", () => {
+    const painted = {
+      path: "/core_rigged_textured.glb",
+      size: 9,
+      textured: true,
+      fallbackPath: "/core_rigged.glb",
+    };
+
+    expect(riggedOutfitModel(body, [painted]).rig?.pieces).toEqual([painted]);
   });
 
   it("keeps a pose the body has, and drops one it does not", () => {

@@ -7,7 +7,7 @@ import {
   Skeleton,
   SkinnedMesh,
 } from "three";
-import { bindToBones } from "./rig";
+import { bindToBones, rigLayoutKey, rigTextured } from "./rig";
 
 const BACKPACK_BONE = "backpack_attach_1_override";
 
@@ -111,5 +111,30 @@ describe("bindToBones", () => {
 
     expect(backpackBone(meshes[0])?.position.z).toBe(0.2);
     expect(bones.get(BACKPACK_BONE)?.position.z).toBe(0.2);
+  });
+});
+
+describe("rigTextured", () => {
+  it("is painted when a worn piece or an attached item is", () => {
+    expect(rigTextured({ pieces: [{ path: "/core.glb" }] })).toBe(false);
+    expect(
+      rigTextured({ pieces: [{ path: "/core.glb", textured: true }] }),
+    ).toBe(true);
+    expect(
+      rigTextured({
+        pieces: [],
+        attachments: [{ path: "/gun.glb", bone: "hand", textured: true }],
+      }),
+    ).toBe(true);
+  });
+});
+
+describe("rigLayoutKey", () => {
+  it("changes when a piece swaps its painted rig for the plain one", () => {
+    const painted = { path: "/core.glb", textured: true };
+
+    expect(rigLayoutKey({ pieces: [painted] })).not.toBe(
+      rigLayoutKey({ pieces: [{ ...painted, textured: false }] }),
+    );
   });
 });

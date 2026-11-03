@@ -120,6 +120,8 @@ type ItemHolos = {
   holoTextured?: MediaFile | null;
   holoRiggedMale?: MediaFile | null;
   holoRiggedFemale?: MediaFile | null;
+  holoRiggedTexturedMale?: MediaFile | null;
+  holoRiggedTexturedFemale?: MediaFile | null;
 };
 
 export interface PieceHolo {
@@ -132,18 +134,29 @@ export interface PieceHolo {
   from?: string;
 }
 
-// On a body, the piece's rig for it: only a rig follows the body's pose.
+// On a body, the piece's rig for it: only a rig follows the body's pose. The
+// painted rig where there is one, with the plain rig behind it.
 export const riggedPieceHolo = (
   media?: ItemHolos | null,
   body: OutfitBodyEnum = OutfitBodyEnum.MALE,
 ): PieceHolo | undefined => {
-  const rigged =
-    body === OutfitBodyEnum.FEMALE
-      ? media?.holoRiggedFemale
-      : media?.holoRiggedMale;
+  const female = body === OutfitBodyEnum.FEMALE;
+  const plain = female ? media?.holoRiggedFemale : media?.holoRiggedMale;
+  const painted = female
+    ? media?.holoRiggedTexturedFemale
+    : media?.holoRiggedTexturedMale;
 
-  return rigged?.url
-    ? { path: rigged.url, size: rigged.size ?? undefined, textured: false }
+  if (painted?.url) {
+    return {
+      path: painted.url,
+      size: painted.size ?? undefined,
+      textured: true,
+      ...(plain?.url ? { fallbackPath: plain.url } : {}),
+    };
+  }
+
+  return plain?.url
+    ? { path: plain.url, size: plain.size ?? undefined, textured: false }
     : undefined;
 };
 
@@ -278,6 +291,8 @@ export const riggedOutfitModel = (
     pieces: pieces.map((piece) => ({
       path: piece.path,
       size: piece.size,
+      ...(piece.textured ? { textured: true } : {}),
+      ...(piece.fallbackPath ? { fallbackPath: piece.fallbackPath } : {}),
       ...(piece.hangs ? { hangs: true } : {}),
       ...(piece.from ? { from: piece.from } : {}),
     })),

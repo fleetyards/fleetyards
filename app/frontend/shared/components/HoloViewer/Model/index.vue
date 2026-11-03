@@ -49,6 +49,7 @@ import {
   buildRigLights,
   rigLightsKey,
   type RigAttachment,
+  type RigPiece,
   cloneRigPiece,
   loadClips,
   rigLayoutKey,
@@ -664,6 +665,32 @@ const loadAttachment = async (attachment: RigAttachment) => {
   }
 };
 
+// A worn piece's rig; its plain rig when the painted one does not load, and
+// nothing when neither does.
+const loadRigPiece = async (piece: RigPiece) => {
+  try {
+    return {
+      scene: cloneRigPiece(await loadHolo(piece.path)),
+      textured: !!piece.textured,
+    };
+  } catch (error) {
+    if (!piece.fallbackPath) {
+      console.warn("A rigged part did not load", error);
+      return undefined;
+    }
+  }
+
+  try {
+    return {
+      scene: cloneRigPiece(await loadHolo(piece.fallbackPath)),
+      textured: false,
+    };
+  } catch (error) {
+    console.warn("A rigged part did not load", error);
+    return undefined;
+  }
+};
+
 // Whether these pieces landed; a newer request supersedes them otherwise.
 const attachRig = async (scene: Group) => {
   const request = ++rigRequest;
@@ -671,16 +698,7 @@ const attachRig = async (scene: Group) => {
   if (!rig) return true;
 
   const [pieces, attachments, clips] = await Promise.all([
-    Promise.all(
-      rig.pieces.map((piece) =>
-        loadHolo(piece.path)
-          .then(cloneRigPiece)
-          .catch((error: unknown) => {
-            console.warn("A rigged part did not load", error);
-            return undefined;
-          }),
-      ),
-    ),
+    Promise.all(rig.pieces.map(loadRigPiece)),
     Promise.all((rig.attachments ?? []).map(loadAttachment)),
     rig.animations
       ? loadClips(rig.animations).catch(() => [] as AnimationClip[])
@@ -706,10 +724,13 @@ const attachRig = async (scene: Group) => {
   pieces.forEach((piece, index) => {
     if (!piece) return;
 
-    const { meshes, grafted } = bindToBones(piece, bones, {
+    const { meshes, grafted } = bindToBones(piece.scene, bones, {
       hangs: rig.pieces[index]?.hangs,
       from: rig.pieces[index]?.from,
       source: rig.pieces[index]?.path,
+    });
+    meshes.forEach((mesh) => {
+      mesh.userData.textured = piece.textured;
     });
     if (meshes.length) next.add(...meshes);
     else if (rig.pieces[index]) unplaced.push(rig.pieces[index].path);
