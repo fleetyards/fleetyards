@@ -65,3 +65,7 @@ Issue: #6064
   end the row already picked, and is offered only between two different ships
   upgrades can join. Picking a start, the build-from-the-target mode and the
   start lists left it; in-game starts moved into the row's start list.
+- Suggestions page (`/hangar/plans/:id/suggestions`), first iteration: ships
+  of the planned hangar (`Comparison#fleet`) that are the same model twice, or
+  several models of one role (classification, size, most specific focus).
+  Later suggestions join it as more sections.
