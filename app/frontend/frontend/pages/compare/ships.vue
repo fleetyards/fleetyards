@@ -18,12 +18,15 @@ import { useI18n } from "@/shared/composables/useI18n";
 import { useCompareModelFilters } from "@/frontend/composables/useCompareModelFilters";
 import { useCompareHardpoints } from "@/frontend/composables/useCompareHardpoints";
 import { useCompareModels } from "@/frontend/composables/useCompareModels";
+import { useRememberedCompareSet } from "@/frontend/composables/useCompareSet";
 
 const { t } = useI18n();
 
 const { filter, filters } = useCompareModelFilters();
 
 const items = computed(() => filters.value.models);
+
+useRememberedCompareSet("models", items, (next) => filter({ models: next }));
 
 // One detail request per ship rather than the models index. Compare wants more
 // of a ship than any list does, and taking it from the index means every list
@@ -98,8 +101,8 @@ const remove = (slug: string) => {
     :remove-label="t('labels.compare.removeModel')"
     @remove="remove"
   >
-    <template #add>
-      <CompareForm />
+    <template #add="{ compact }">
+      <CompareForm :compact="compact" />
     </template>
     <template #actions>
       <CompareActions :models="models" />

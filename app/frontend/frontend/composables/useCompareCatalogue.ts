@@ -1,6 +1,9 @@
 import type { CompareCategory } from "@/frontend/components/Compare/category";
 import { useCompareItems } from "@/frontend/composables/useCompareItems";
-import { useCompareSet } from "@/frontend/composables/useCompareSet";
+import {
+  useCompareSet,
+  useRememberedCompareSet,
+} from "@/frontend/composables/useCompareSet";
 
 type CatalogueItem = { slug: string; name: string };
 
@@ -21,6 +24,8 @@ export const useCompareCatalogue = <T extends CatalogueItem, Q>({
   categoryOf: (item: T) => CompareCategory<Q> | undefined;
 }) => {
   const { slugs, replace } = useCompareSet(queryKey);
+
+  useRememberedCompareSet(queryKey, slugs, replace);
 
   const {
     items: loaded,

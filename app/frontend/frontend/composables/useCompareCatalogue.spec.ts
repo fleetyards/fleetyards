@@ -10,6 +10,7 @@ const replace = vi.fn((next: string[]) => {
 
 vi.mock("@/frontend/composables/useCompareSet", () => ({
   useCompareSet: () => ({ slugs, replace }),
+  useRememberedCompareSet: () => undefined,
 }));
 
 type Item = { slug: string; name: string; category?: string };

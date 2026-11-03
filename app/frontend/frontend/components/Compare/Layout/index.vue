@@ -87,7 +87,7 @@ const baseline = computed({
                 {{ emptyInfo }}
               </p>
               <div class="compare-empty__add">
-                <slot name="add" />
+                <slot name="add" :compact="false" />
               </div>
             </template>
           </Empty>
@@ -153,13 +153,19 @@ const baseline = computed({
                 @remove="emit('remove', $event)"
               >
                 <template #corner>
-                  <slot name="add" />
+                  <slot name="add" :compact="true" />
                 </template>
               </CompareTable>
             </Panel>
           </template>
         </template>
       </AsyncData>
+
+      <!-- An item the link names that no longer resolves leaves only the error,
+           and without a way to pick again the reader is stuck on it. -->
+      <div v-if="asyncStatus.isError.value" class="compare-empty__add">
+        <slot name="add" :compact="false" />
+      </div>
 
       <!-- The one piece of feedback an incremental fetch gets: the table it is
            filling in stays on screen, so the spinner cannot live in its place. -->
