@@ -53,6 +53,7 @@ import {
 } from "@/shared/components/HoloViewer/rig";
 import {
   BACKDROP_RADIUS,
+  backdropScale,
   buildBackdrop,
   disposeBackdrop,
 } from "@/shared/components/HoloViewer/backdrop";
@@ -271,15 +272,19 @@ onUnmounted(() => window.removeEventListener("keydown", closeOnEscape));
 // Kept out of the model's scene, so framing measures the figure alone.
 const backdrop = shallowRef<Group>();
 
+const roomScale = ref(1);
+
 // The model arrives centred on the origin, so its feet are half its height
 // below.
 const placeBackdrop = (size: Vector3) => {
   if (!props.backdrop) return;
 
   if (backdrop.value) disposeBackdrop(backdrop.value);
+  roomScale.value = backdropScale(size);
   backdrop.value = buildBackdrop(-size.y / 2, {
     reflective: !lowPower.value,
   });
+  backdrop.value.scale.setScalar(roomScale.value);
 };
 
 onUnmounted(() => {
@@ -489,7 +494,9 @@ const nearPlaneFor = (cameraDistance: number) =>
 
 // Inside the room's walls: past them the room reads as a ball in the dark.
 const maxZoomDistance = computed(() =>
-  props.backdrop ? BACKDROP_RADIUS * 0.7 : Math.max(250, fitDistance.value * 3),
+  props.backdrop
+    ? BACKDROP_RADIUS * roomScale.value * 0.7
+    : Math.max(250, fitDistance.value * 3),
 );
 
 const starsVisible = computed(
