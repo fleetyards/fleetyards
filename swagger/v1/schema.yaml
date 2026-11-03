@@ -23889,6 +23889,12 @@ components:
           type:
           - string
           - 'null'
+        image:
+          description: A render of one of the set's pieces, its core where it has
+            one; absent when none has a picture
+          anyOf:
+          - "$ref": "#/components/schemas/MediaFile"
+          - type: 'null'
         pieces:
           type: array
           items:
@@ -23899,6 +23905,7 @@ components:
       - manufacturerName
       - itemType
       - itemTypeLabel
+      - image
       - pieces
       title: ArmorSet
     ArmorSetPiece:

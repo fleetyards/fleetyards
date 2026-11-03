@@ -8,7 +8,7 @@ module DressingRoom
   # per maker, and a few name a garment ("gys_jacket") rather than a core.
   class ArmorSets
     Piece = Struct.new(:slot, :slug, :name, :sc_key, :rigged)
-    ArmorSet = Struct.new(:name, :manufacturer, :item_type, :item_type_label, :pieces)
+    ArmorSet = Struct.new(:name, :manufacturer, :item_type, :item_type_label, :image_record, :pieces)
 
     SLOT_WORDS = {
       "helmet" => "Helmet",
@@ -26,13 +26,15 @@ module DressingRoom
 
     BODY_SLOTS = %w[helmet torso arms legs].freeze
 
+    PICTURE_ORDER = %w[torso helmet legs arms backpack].freeze
+
     # Stand-ins the game keeps under a sold piece's name, for the loadout
     # screens and the shop mannequins.
     STAND_IN_KEY = /\A(invisible|mannequin)_/
 
     def self.cache_key
       [
-        "dressing-room/armor-sets/v1",
+        "dressing-room/armor-sets/v2",
         ::ScData::Source.current.served.cache_key,
         ::Equipment.maximum(:updated_at)&.utc&.to_fs(:usec),
         ::EquipmentBuild.maximum(:updated_at)&.utc&.to_fs(:usec)
@@ -58,8 +60,15 @@ module DressingRoom
         manufacturer: core[:manufacturer],
         item_type: core[:item_type],
         item_type_label: ::Equipment.fact_label(:item_type, core[:item_type]),
+        image_record: pictured_by(by_slot),
         pieces: SLOT_WORDS.keys.filter_map { |slot| by_slot[slot]&.dig(:piece) }
       )
+    end
+
+    # The core shows a set best, and every piece of it is rendered from the same
+    # angle; a set whose core has no picture borrows another piece's.
+    private def pictured_by(by_slot)
+      PICTURE_ORDER.lazy.filter_map { |slot| by_slot[slot]&.dig(:record) }.find(&:angled_image_attr)
     end
 
     # A piece with a rig to wear in the dressing room before one without, and
@@ -74,7 +83,7 @@ module DressingRoom
       ::Equipment.visible
         .where(::Equipment.fact_sql(:equipment_type).eq("armor"))
         .where(::Equipment.fact_sql(:slot).in(SLOT_WORDS.keys.map { |slot| ::Equipment.slots[slot] }))
-        .includes(:manufacturer)
+        .includes(:manufacturer, ::ItemViews::DISPLAY_IMAGE_PRELOAD)
         .select("equipment.*", "equipment_facts.name AS fact_name", "equipment_facts.slot AS fact_slot",
           "equipment_facts.item_type AS fact_item_type", "equipment.id IN (#{rigged.to_sql}) AS rigged")
         .filter_map { |record| piece(record) }
@@ -92,6 +101,7 @@ module DressingRoom
         manufacturer: record.manufacturer,
         item_type: record.fact_item_type,
         set_name:,
+        record:,
         piece: Piece.new(slot:, slug: record.slug, name:, sc_key: record.sc_key, rigged: record.rigged)
       }
     end

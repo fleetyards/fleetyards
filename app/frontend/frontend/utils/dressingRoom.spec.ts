@@ -306,6 +306,7 @@ describe("wearArmorSet", () => {
     manufacturerName: null,
     itemType: null,
     itemTypeLabel: null,
+    image: null,
     pieces: [
       { slot: OutfitSlotEnum.TORSO, slug: "orc-core", name: "ORC-mkX Core" },
       { slot: OutfitSlotEnum.ARMS, slug: "orc-arms", name: "ORC-mkX Arms" },
