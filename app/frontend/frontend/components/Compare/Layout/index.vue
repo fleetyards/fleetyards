@@ -157,10 +157,6 @@ const baseline = computed({
                 </template>
               </CompareTable>
             </Panel>
-
-            <div v-if="$slots.footer" class="compare-footer">
-              <slot name="footer" />
-            </div>
           </template>
         </template>
       </AsyncData>
