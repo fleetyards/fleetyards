@@ -77,4 +77,4 @@ Working plan for #6129. Decisions live in the issue body. Deleted before the PR 
 - [x] Phase 3 — Equipment compare
 - [x] Phase 4 — Share image
 - [x] Phase 5 — Routes, i18n, tests
-- [x] Compare switch: a segmented control beside the add button, over the ships, components and equipment children of `/compare/`
+- [x] Compare tabs: an inline tab strip in the header over the ships, components and equipment children of `/compare/`; the add button in the table corner, Erkul and SP Viewer below the table
