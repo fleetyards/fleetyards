@@ -173,4 +173,21 @@ describe("PaintBooth", () => {
       true,
     );
   });
+  it("says so on the stage when a ship without a plain holo fails to draw", async () => {
+    const wrapper = await mount(
+      {},
+      { landedHoloTextured: file("landed_textured.glb") },
+    );
+
+    wrapper.findComponent({ name: "HoloViewer" }).vm.$emit("unavailable");
+    await flushPromises();
+
+    expect(wrapper.findComponent({ name: "HoloViewer" }).exists()).toBe(false);
+    expect(wrapper.find('[data-test="paint-booth-no-holo"]').exists()).toBe(
+      true,
+    );
+    expect(wrapper.find('[data-test="paint-booth-fullscreen"]').exists()).toBe(
+      false,
+    );
+  });
 });

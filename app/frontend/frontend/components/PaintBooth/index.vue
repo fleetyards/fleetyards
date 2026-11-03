@@ -128,7 +128,14 @@ const cards = computed(() => [
         backdrop
         @unavailable="holoUnavailable"
       />
+      <!-- A ship painted only, whose painted holo failed, has no plain one to
+           fall back to. -->
+      <div v-else class="paint-booth__no-holo" data-test="paint-booth-no-holo">
+        <i class="fa-duotone fa-cube" />
+        <p>{{ t("paintBooth.unavailable") }}</p>
+      </div>
       <Btn
+        v-if="holoModel"
         :size="BtnSizesEnum.SM"
         class="paint-booth__fullscreen"
         :aria-label="t('actions.vehicleOverview.fullscreenHolo')"
@@ -225,6 +232,23 @@ const cards = computed(() => [
 
   @media (min-width: $desktop-breakpoint) {
     height: min(72vh, 48rem);
+  }
+}
+
+.paint-booth__no-holo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  height: 100%;
+  padding: 1rem;
+  color: $gray-lighter;
+  text-align: center;
+
+  i {
+    font-size: 4rem;
+    opacity: 0.4;
   }
 }
 
