@@ -55,6 +55,7 @@ describe("useGearStatSections", () => {
     expect(sections.value[1].rows).toContainEqual({
       label: "Beam Damage per Second",
       value: "210 Energy · 50 Distortion",
+      stack: true,
     });
   });
 
@@ -201,6 +202,26 @@ describe("useGearStatSections", () => {
       "Blood Drug Level": "30",
       Effects: "Radiation Treatment (10 s)",
     });
+  });
+
+  it("calls a tool's container its capacity, not a magazine", () => {
+    const sections = useGearStatSections({
+      toolActions: [{ kind: EquipmentToolActionKindEnum.HEAL, range: 2 }],
+      magazine: { size: 200, reserve: 3 },
+    });
+
+    expect(sections.value[1]).toMatchObject({
+      title: "Capacity",
+      rows: [{ label: "Capacity", value: "200" }],
+    });
+  });
+
+  it("stacks damage of several types under its label", () => {
+    const rows = useGearStatSections({
+      ammo: { damage: { energy: 13, distortion: 5 } },
+    }).value[0].rows;
+
+    expect(rows[0]).toMatchObject({ stack: true });
   });
 
   it("leaves out a card with nothing in it", () => {

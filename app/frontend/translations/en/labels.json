@@ -4403,7 +4403,6 @@
             "damageDrop": "Damage Falloff",
             "speed": "Projectile Speed",
             "range": "Range",
-            "penetration": "Penetration",
             "target": "Target",
             "optimalRange": "Optimal Range",
             "sensorRange": "Sensor Range",

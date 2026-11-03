@@ -4389,7 +4389,6 @@
             "damageDrop": "Atténuation des dégâts",
             "speed": "Vitesse du projectile",
             "range": "Portée",
-            "penetration": "Pénétration",
             "target": "Cible",
             "optimalRange": "Portée optimale",
             "sensorRange": "Portée du capteur",

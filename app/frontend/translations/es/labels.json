@@ -4389,7 +4389,6 @@
             "damageDrop": "Caída de daño",
             "speed": "Velocidad del proyectil",
             "range": "Alcance",
-            "penetration": "Penetración",
             "target": "Objetivo",
             "optimalRange": "Alcance óptimo",
             "sensorRange": "Alcance del sensor",

@@ -4389,7 +4389,6 @@
             "damageDrop": "Schadensabfall",
             "speed": "Projektilgeschwindigkeit",
             "range": "Reichweite",
-            "penetration": "Durchschlag",
             "target": "Ziel",
             "optimalRange": "Optimale Reichweite",
             "sensorRange": "Sensorreichweite",

@@ -120,8 +120,9 @@ export const useGearStatSections = (
     return parts.length ? parts.join(" · ") : undefined;
   };
 
+  // A railgun's charged shot states a spread of nothing at all.
   const spread = (value?: ComponentWeaponSpread | null) => {
-    if (value?.min == null || value.max == null) return undefined;
+    if (value?.min == null || !value.max) return undefined;
 
     return `${precise(value.min, "degrees")} – ${precise(value.max, "degrees")}`;
   };
@@ -147,7 +148,16 @@ export const useGearStatSections = (
     value: string | undefined,
     stack = false,
   ): GearStatRow[] =>
-    value ? [{ label: label(key), value, ...(stack ? { stack } : {}) }] : [];
+    value
+      ? [
+          {
+            label: label(key),
+            value,
+            // Damage of several types runs too long to share a line.
+            ...(stack || value.includes(" · ") ? { stack: true } : {}),
+          },
+        ]
+      : [];
 
   const modeTitle = (mode: EquipmentFireMode) => {
     const name =
@@ -218,10 +228,6 @@ export const useGearStatSections = (
           ...row("damageDrop", damageDrop(value), true),
           ...row("speed", figure(value.speed, "speed")),
           ...row("range", figure(value.range, "distance")),
-          ...row(
-            "penetration",
-            figure(value.penetration?.maxThickness, "distance"),
-          ),
         ]
       : [],
   });
@@ -288,13 +294,24 @@ export const useGearStatSections = (
       ...distinct(value.toolActions || [], toolAction),
       ammo("ammo", value.ammo),
       ammo("secondaryAmmo", value.secondaryAmmo),
+      // A medgun's vial and a multi-tool's battery are containers too, but
+      // hold no rounds and are not swapped from a stock of spares.
       {
         key: "magazine",
-        title: t("labels.equipment.gear.sections.magazine"),
+        title: value.ammo
+          ? t("labels.equipment.gear.sections.magazine")
+          : label("capacity"),
         rows: [
-          ...row("magazineSize", figure(value.magazine?.size)),
-          ...row("reserve", figure(value.magazine?.reserve)),
-          ...row("capacity", figure(value.regen?.capacity)),
+          ...(value.ammo
+            ? [
+                ...row("magazineSize", figure(value.magazine?.size)),
+                ...row("reserve", figure(value.magazine?.reserve)),
+              ]
+            : row(
+                "capacity",
+                figure(value.regen?.capacity ?? value.magazine?.size),
+              )),
+          ...(value.ammo ? row("capacity", figure(value.regen?.capacity)) : []),
           ...row("regenPerSecond", figure(value.regen?.regenPerSecond)),
           ...row("regenCooldown", figure(value.regen?.cooldown, "seconds")),
         ],

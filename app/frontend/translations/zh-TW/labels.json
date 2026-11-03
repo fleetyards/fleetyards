@@ -4386,7 +4386,6 @@
             "damageDrop": "傷害衰減",
             "speed": "彈速",
             "range": "射程",
-            "penetration": "穿透",
             "target": "目標",
             "optimalRange": "最佳距離",
             "sensorRange": "感測距離",
