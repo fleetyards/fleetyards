@@ -36,6 +36,7 @@
       "rateOfFire": "%{count} shots/min",
       "rotation": "%{count} deg/s",
       "degrees": "%{count}°",
+      "zoom": "%{count}×",
       "cargo": "%{count} SCU",
       "integer": "%{count}",
       "dps": "%{count} DPS",

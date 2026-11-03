@@ -27,6 +27,12 @@ export type EquipmentStatKey =
   | "resistance"
   | "clusterFactor"
   | "optimalChargeWindow"
+  | "zoom"
+  | "recoilChange"
+  | "spreadChange"
+  | "damageChange"
+  | "fireRateChange"
+  | "soundRadiusChange"
   | "damageReduction"
   | "temperatureRating"
   | "radiationProtection"
@@ -132,7 +138,16 @@ const VOCABULARY: Record<
   },
   [EquipmentTypeEnum.WEAPON_ATTACHMENT]: {
     primary: ["magazineSize"],
-    rest: ["volume"],
+    rest: [
+      "zoom",
+      "damageChange",
+      "fireRateChange",
+      "recoilChange",
+      "spreadChange",
+      "soundRadiusChange",
+      "volume",
+    ],
+    promote: true,
   },
 };
 
@@ -150,7 +165,13 @@ type Figure = {
   units?: string;
   // What the figure is shown in, where that differs from what it is stored in.
   shown?: (value: number) => number;
+  // A change rather than an amount, so a rise carries its plus sign.
+  signed?: boolean;
 };
+
+// An attachment states multipliers; the card shows the change one makes.
+const percentChange = (multiplier?: number | null) =>
+  multiplier == null ? undefined : Math.round((multiplier - 1) * 1000) / 10;
 
 type Label = { label: (item: Equipment) => string | null | undefined };
 
@@ -253,18 +274,52 @@ const SOURCES: Record<EquipmentStatKey, Figure | Label> = {
   instability: {
     value: (item) => miningModifier(item, "instability"),
     units: "percent",
+    signed: true,
   },
   resistance: {
     value: (item) => miningModifier(item, "resistance"),
     units: "percent",
+    signed: true,
   },
   clusterFactor: {
     value: (item) => miningModifier(item, "clusterFactor"),
     units: "percent",
+    signed: true,
   },
   optimalChargeWindow: {
     value: (item) => miningModifier(item, "optimalChargeWindow"),
     units: "percent",
+    signed: true,
+  },
+  zoom: { value: (item) => item.stats?.modifier?.zoom, units: "zoom" },
+  recoilChange: {
+    value: (item) => {
+      const recoil = item.stats?.modifier?.recoil;
+
+      return percentChange(recoil?.pitch ?? recoil?.yaw);
+    },
+    units: "percent",
+    signed: true,
+  },
+  spreadChange: {
+    value: (item) => percentChange(item.stats?.modifier?.spread?.max),
+    units: "percent",
+    signed: true,
+  },
+  damageChange: {
+    value: (item) => percentChange(item.stats?.modifier?.damage),
+    units: "percent",
+    signed: true,
+  },
+  fireRateChange: {
+    value: (item) => percentChange(item.stats?.modifier?.fireRate),
+    units: "percent",
+    signed: true,
+  },
+  soundRadiusChange: {
+    value: (item) => percentChange(item.stats?.modifier?.soundRadius),
+    units: "percent",
+    signed: true,
   },
   damageReduction: { value: (item) => item.damageReduction, units: "percent" },
   temperatureRating: { label: (item) => item.temperatureRating },
@@ -322,11 +377,14 @@ export const useEquipmentStatReader = () => {
     if ("label" in source) return source.label(item) || undefined;
 
     const value = raw(item, key);
-
-    return figure(
+    const text = figure(
       value !== undefined && source.shown ? source.shown(value) : value,
       source.units,
     );
+
+    return text && source.signed && value !== undefined && value > 0
+      ? `+${text}`
+      : text;
   };
 
   return { read, raw };
@@ -354,20 +412,31 @@ export const useEquipmentStats = (
         const value = read(item, key);
         if (!value) return [];
 
-        return [{ label: t(`labels.equipment.stats.${key}`), value, primary }];
+        return [
+          { key, label: t(`labels.equipment.stats.${key}`), value, primary },
+        ];
       });
 
     // A weapon leads with its damage, which a record the game files give no
     // round for does not have; it then leads with the first figures it does,
     // and so does a tool or a gadget.
+    // Volume never leads: it says how much room the item takes, not what it
+    // does.
+    const strip = ({
+      key: _key,
+      ...stat
+    }: { key: EquipmentStatKey } & HardpointStat) => stat;
     const primary = build(vocabulary.primary, true);
     const rest = build(vocabulary.rest, false);
-    if (primary.length) return [...primary, ...rest];
+    if (primary.length) return [...primary, ...rest].map(strip);
 
-    const promoted = vocabulary.promote
-      ? rest.slice(0, 2).map((stat) => ({ ...stat, primary: true }))
+    const promotable = vocabulary.promote
+      ? rest.filter((stat) => stat.key !== "volume").slice(0, 2)
       : [];
 
-    return [...promoted, ...rest.slice(promoted.length)];
+    return [
+      ...promotable.map((stat) => ({ ...stat, primary: true })),
+      ...rest.filter((stat) => !promotable.includes(stat)),
+    ].map(strip);
   });
 };

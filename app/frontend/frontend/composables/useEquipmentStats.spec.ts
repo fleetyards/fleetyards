@@ -169,4 +169,22 @@ describe("useEquipmentStats", () => {
       primary: true,
     });
   });
+
+  it("leads an attachment with the change it makes, signed", () => {
+    const stats = useEquipmentStats(
+      equipment({
+        equipmentType: EquipmentTypeEnum.WEAPON_ATTACHMENT,
+        volume: 0.0002,
+        stats: {
+          modifier: { soundRadius: 1.2, recoil: { yaw: 0.8, pitch: 0.8 } },
+        },
+      }),
+    );
+
+    expect(stats.value.filter((stat) => stat.primary)).toMatchObject([
+      { label: "Recoil", value: "-20%" },
+      { label: "Sound Radius", value: "+20%" },
+    ]);
+    expect(stats.value.at(-1)).toMatchObject({ label: "Volume" });
+  });
 });
