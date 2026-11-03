@@ -43,20 +43,20 @@ const { t } = useI18n();
 
 const differencesOnly = ref(false);
 const deltaMode = ref(false);
-const baseline = ref<string>();
+const chosen = ref<string>();
 
-// The baseline is a column, so it cannot outlive the set it belongs to.
-watch(
-  () => props.columns,
-  (columns) => {
-    if (
-      !baseline.value ||
-      !columns.some((column) => column.key === baseline.value)
-    ) {
-      baseline.value = columns[0]?.key;
-    }
+// The reader's pick while it is still a column, the first column otherwise.
+// Not whichever column arrived first: the items load one request each, so that
+// made the default depend on which response won the race.
+const baseline = computed({
+  get: () =>
+    props.columns.some((column) => column.key === chosen.value)
+      ? chosen.value
+      : props.columns[0]?.key,
+  set: (key) => {
+    chosen.value = key;
   },
-);
+});
 </script>
 
 <template>
