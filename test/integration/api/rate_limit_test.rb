@@ -92,6 +92,17 @@ class Api::RateLimitTest < ActionDispatch::IntegrationTest
     assert_response :too_many_requests
   end
 
+  test "an account's 429 does not name its user id" do
+    user = create(:user)
+    sign_in user
+    get "/api/v1/models"
+    get "/api/v1/models"
+
+    assert_response :too_many_requests
+    assert_equal "API rate limit exceeded for this account", JSON.parse(response.body)["message"]
+    assert_not_includes response.body, user.id.to_s
+  end
+
   test "a signed-in user gets the larger limit" do
     Rack::Attack.throttles["api"].unstub(:limit)
 

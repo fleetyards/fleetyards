@@ -96,10 +96,14 @@ Rack::Attack.throttled_responder = lambda do |request|
     "X-RateLimit-Reset" => (now + (match_data[:period] - (now.to_i % match_data[:period]))).iso8601
   }
 
+  # An account bucket names an internal user id, which is not the client's to see.
+  discriminator = request.env["rack.attack.match_discriminator"].to_s
+  subject = discriminator.start_with?("user:", "oauth:") ? "this account" : discriminator
+
   [429, headers, [
     {
       code: "rate_limit.exceeded",
-      message: "API rate limit exceeded for #{request.env["rack.attack.match_discriminator"]}"
+      message: "API rate limit exceeded for #{subject}"
     }.to_json
   ]]
 end
