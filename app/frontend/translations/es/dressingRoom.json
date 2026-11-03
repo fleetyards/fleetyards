@@ -56,6 +56,11 @@
       "fit": {
         "noPort": "%{item} no tiene espacio para esto",
         "doesNotFit": "No encaja con %{item}"
+      },
+      "armorSets": {
+        "open": "Conjuntos de armadura",
+        "search": "Buscar conjuntos de armadura",
+        "noResults": "No se encontró ningún conjunto de armadura."
       }
     }
   }

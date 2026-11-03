@@ -6,6 +6,7 @@ import {
   type RigAttachment,
 } from "@/shared/components/HoloViewer/rig";
 import {
+  type ArmorSet,
   type CharacterBody,
   type CharacterBodyClip,
   type MediaFile,
@@ -98,6 +99,35 @@ export const BACKPACK_MOUNT: Mount = {
 
 // Equipment slug per slot: what a share link carries.
 export type OutfitSelection = Partial<Record<OutfitSlotEnum, string>>;
+
+// The pieces a set puts on. The armour it has no piece for comes off with
+// the rest of the old set, but a backpack stays: most sets have none, and the
+// undersuit and weapons are not part of one.
+export const ARMOR_SET_SLOTS: OutfitSlotEnum[] = [
+  OutfitSlotEnum.HELMET,
+  OutfitSlotEnum.TORSO,
+  OutfitSlotEnum.ARMS,
+  OutfitSlotEnum.LEGS,
+];
+
+export const wearArmorSet = (
+  selection: OutfitSelection,
+  set: ArmorSet,
+): OutfitSelection => {
+  const next: OutfitSelection = { ...selection };
+
+  ARMOR_SET_SLOTS.forEach((slot) => {
+    next[slot] = undefined;
+  });
+  set.pieces.forEach((piece) => {
+    next[piece.slot] = piece.slug;
+  });
+
+  return next;
+};
+
+export const wearsArmorSet = (selection: OutfitSelection, set: ArmorSet) =>
+  set.pieces.every((piece) => selection[piece.slot] === piece.slug);
 
 export const parseOutfitQuery = (query: LocationQuery): OutfitSelection =>
   Object.fromEntries(

@@ -56,6 +56,11 @@
       "fit": {
         "noPort": "%{item} 沒有此欄位",
         "doesNotFit": "與 %{item} 不相容"
+      },
+      "armorSets": {
+        "open": "護甲套裝",
+        "search": "搜尋護甲套裝",
+        "noResults": "找不到護甲套裝。"
       }
     }
   }
