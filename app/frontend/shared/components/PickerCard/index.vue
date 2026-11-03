@@ -291,6 +291,7 @@ const accessibleName = computed(() =>
 
 .picker-card__meta {
   --picker-card-plate: var(--color-gray-black);
+  --picker-card-plate-mid: 88%;
 
   @apply flex min-w-0 flex-col gap-1;
   padding: 26px 10px 10px;
