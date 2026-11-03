@@ -18,6 +18,10 @@ module ScData
         stun: "DamageStun"
       }.freeze
 
+      FIRE_MODE_KINDS = %w[rapid single burst charged beam].freeze
+      TOOL_ACTION_KINDS = %w[heal tractor salvage repair mining charge drain extinguish].freeze
+      CONSUMABLE_EFFECT_KINDS = %w[health status buff].freeze
+
       PROJECTILE_ACTIONS = {
         "SWeaponActionFireRapidParams" => "rapid",
         "SWeaponActionFireSingleParams" => "single",
@@ -60,7 +64,7 @@ module ScData
 
         {
           fire_modes: fire_modes.presence,
-          tool_actions: actions.filter_map { |action| tool_action(action) }.presence,
+          tool_actions: (actions + aim_actions(weapon)).filter_map { |action| tool_action(action) }.uniq.presence,
           ammo: (ammo(ammo) if fires_rounds),
           secondary_ammo: (ammo(secondary_ammo) if fires_rounds),
           magazine:,
@@ -180,6 +184,18 @@ module ScData
             end
           else
             [{tag:, params:, condition:}]
+          end
+        end
+      end
+
+      # The multi-tool's second button: which action it fires depends on the
+      # head fitted -- a salvage head repairs, the tractor head pulls.
+      private def aim_actions(weapon)
+        entries(weapon&.dig("aimAction")).flat_map do |tag, params|
+          next [] unless tag == "SWeaponActionConditionParams"
+
+          Array.wrap(params.dig("conditionalWeaponActions", "SConditionalWeaponAction")).flat_map do |entry|
+            flatten_actions(entry["weaponAction"])
           end
         end
       end
@@ -422,7 +438,7 @@ module ScData
             max_radius: positive(params["maxRadius"])
           }
         end
-        return if data.nil? || data[:kind].blank?
+        return unless TOOL_ACTION_KINDS.include?(data&.dig(:kind))
 
         named = action[:parent] || params
 

@@ -153,6 +153,36 @@ module ScData
         assert_equal ["tractor", 257_500.0, 150.0], tractor.values_at(:kind, :max_force, :max_distance)
       end
 
+      test "reads the multi-tool's second button for each head it takes" do
+        stats = stats_for(<<~XML)
+          <Components>
+            <SCItemWeaponComponentParams>
+              <aimAction>
+                <SWeaponActionConditionParams>
+                  <conditionalWeaponActions>
+                    <SConditionalWeaponAction>
+                      <weaponAction>
+                        <SWeaponActionFireSalvageRepairParams name="Repair" salvageRepairMode="Repair" maxHealthRepairRate="95">
+                          <rangeParams maxBeamDistance="5" />
+                        </SWeaponActionFireSalvageRepairParams>
+                      </weaponAction>
+                    </SConditionalWeaponAction>
+                    <SConditionalWeaponAction>
+                      <weaponAction>
+                        <SWeaponActionFireTractorBeamParams name="TractorBeam" maxForce="257500" maxDistance="150" />
+                      </weaponAction>
+                    </SConditionalWeaponAction>
+                  </conditionalWeaponActions>
+                </SWeaponActionConditionParams>
+              </aimAction>
+            </SCItemWeaponComponentParams>
+          </Components>
+        XML
+
+        assert_equal [["repair", 95.0, 5.0], ["tractor", nil, nil]],
+          stats[:tool_actions].map { |action| action.values_at(:kind, :health_rate, :range) }
+      end
+
       test "reads a grenade's blast on its fuse and ignores the AI's weaker copy" do
         stats = stats_for(<<~XML)
           <Components>
