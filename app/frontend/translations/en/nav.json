@@ -10,7 +10,10 @@
         "index": "Ships"
       },
       "compare": {
-        "index": "Compare"
+        "index": "Compare",
+        "ships": "Ships",
+        "components": "Components",
+        "equipment": "Equipment"
       },
       "manufacturers": "Manufacturers",
       "images": "Images",

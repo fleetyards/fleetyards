@@ -10,7 +10,10 @@
         "index": "飞船"
       },
       "compare": {
-        "index": "比较"
+        "index": "比较",
+        "ships": "飞船",
+        "components": "组件",
+        "equipment": "装备"
       },
       "manufacturers": "制造商",
       "images": "图片",

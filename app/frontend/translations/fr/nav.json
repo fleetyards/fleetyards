@@ -10,7 +10,10 @@
         "index": "Vaisseaux"
       },
       "compare": {
-        "index": "Comparer"
+        "index": "Comparer",
+        "ships": "Vaisseaux",
+        "components": "Composants",
+        "equipment": "Équipement"
       },
       "manufacturers": "Fabricants",
       "images": "Images",

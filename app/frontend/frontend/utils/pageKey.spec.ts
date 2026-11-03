@@ -7,7 +7,19 @@ const component = { template: "<div />" };
 const router = createRouter({
   history: createMemoryHistory(),
   routes: [
-    { path: "/compare/", name: "compare", component },
+    {
+      path: "/compare/",
+      component,
+      children: [
+        { path: "", name: "compare", component, meta: { nav: "pageTabs" } },
+        {
+          path: "components/",
+          name: "compare-components",
+          component,
+          meta: { nav: "pageTabs" },
+        },
+      ],
+    },
     {
       path: "/fleets/:slug/squadrons/new/",
       component,
@@ -60,6 +72,10 @@ const keyOf = (path: string) => pageKey(router.resolve(path));
 describe("pageKey", () => {
   it("ignores a trailing slash", () => {
     expect(keyOf("/compare")).toBe(keyOf("/compare/"));
+  });
+
+  it("keeps the compare tabs on one page", () => {
+    expect(keyOf("/compare/components/")).toBe(keyOf("/compare/"));
   });
 
   it("gives every tab of an editor the same key", () => {
