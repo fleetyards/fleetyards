@@ -114,6 +114,29 @@ module ScData
         assert_nil GearStats.headline(stats)[:dps]
       end
 
+      test "times a mixed sequence's overheat by its cadence, not its DPS over one step's damage" do
+        rounds = {ROUND => round(physical: 10), SLUG => round(physical: 90)}
+        stats = stats_for(weapon(<<~XML, heat: true, primary: SLUG, secondary: ROUND), rounds:)
+          <SWeaponActionSequenceParams name="Mixed" mode="Looping">
+            <sequenceEntries>
+              <SWeaponSequenceEntryParams delay="60" unit="RPM" repetitions="1">
+                <weaponAction><SWeaponActionFireSingleParams name="Slug" fireRate="600" heatPerShot="10">#{launcher(type: "Primary")}</SWeaponActionFireSingleParams></weaponAction>
+              </SWeaponSequenceEntryParams>
+              <SWeaponSequenceEntryParams delay="60" unit="RPM" repetitions="1">
+                <weaponAction><SWeaponActionFireSingleParams name="Buck" fireRate="600" heatPerShot="10">#{launcher(type: "Secondary")}</SWeaponActionFireSingleParams></weaponAction>
+              </SWeaponSequenceEntryParams>
+            </sequenceEntries>
+          </SWeaponActionSequenceParams>
+        XML
+
+        mode = stats[:fire_modes].sole
+
+        # One shot a second at 10 heat a shot, cooling 3 once the 1s pause is
+        # reached: 7 heat a second, 100 to overheat.
+        assert_equal [14.29, 14], mode.values_at(:time_to_overheat, :shots_to_overheat)
+        assert_not mode.key?(:cadence)
+      end
+
       test "lists each state of a mode that changes with the weapon's heat" do
         stats = stats_for(weapon(<<~XML), rounds: {ROUND => round(energy: 21)})
           <SWeaponActionDynamicConditionParams name="RapidBeam" localisedName="@LOC_PLACEHOLDER">

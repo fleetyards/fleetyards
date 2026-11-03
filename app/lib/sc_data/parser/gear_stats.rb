@@ -161,19 +161,20 @@ module ScData
         }.compact.presence
       end
 
-      # The modes a player switches between, each as one action. A sequence or
-      # a set of actions fired together is one mode; a mode that changes with
-      # the weapon's heat lists each of its states.
+      # The modes a player switches between, each as one action. A sequence is
+      # one mode; a mode that changes with the weapon's heat lists each of its
+      # states; actions fired together -- only the multi-tool has any -- are
+      # listed one by one, since each is a different tool.
       private def flatten_actions(fire_actions, condition: nil)
         entries(fire_actions).flat_map do |tag, params|
           case tag
           when "SWeaponActionDynamicConditionParams"
-            default = entries(params["defaultWeaponAction"]).map { |inner_tag, inner| [inner_tag, inner, params] }
+            default = flatten_actions(params["defaultWeaponAction"], condition:)
             conditional = Array.wrap(params.dig("conditionalWeaponActions", "SConditionalWeaponAction")).flat_map do |entry|
-              flatten_actions(entry["weaponAction"], condition: condition(entry["condition"])).map { |action| action.merge(parent: params) }
+              flatten_actions(entry["weaponAction"], condition: condition(entry["condition"]))
             end
 
-            default.map { |inner_tag, inner, parent| {tag: inner_tag, params: inner, parent:, condition:} } + conditional
+            (default + conditional).map { |action| action.merge(parent: params) }
           # The multi-tool's mining head fires a beam together with a scanner:
           # the beam is the head's laser, not something to shoot with.
           when "SWeaponActionParallelParams"
@@ -228,7 +229,7 @@ module ScData
           name: value(name),
           label: label((action[:parent] || params)["localisedName"]),
           condition: action[:condition],
-          **mode,
+          **mode.except(:cadence),
           **overheat(mode, heat)
         }.compact
       end
@@ -297,7 +298,8 @@ module ScData
 
         mode.merge(
           fire_rate: (mode[:kind] == "burst") ? mode[:fire_rate] : round(shots * 60 / time),
-          dps: (round(dealt / time) if dealt.positive?)
+          dps: (round(dealt / time) if dealt.positive?),
+          cadence: shots / time
         ).compact
       end
 
@@ -362,7 +364,9 @@ module ScData
       # reports neither figure.
       private def overheat(mode, heat)
         limit = heat&.dig(:overheat_temperature)
-        shots_per_second = (mode[:dps] / mode[:alpha] if mode[:dps] && mode[:alpha]&.positive?)
+        # A sequence knows its own cadence; its steps may differ in damage, so
+        # its DPS over the first step's alpha would not give it.
+        shots_per_second = mode[:cadence] || (mode[:dps] / mode[:alpha] if mode[:dps] && mode[:alpha]&.positive?)
         per_second = if mode[:heat_per_second]
           mode[:heat_per_second]
         elsif mode[:heat_per_shot] && shots_per_second
