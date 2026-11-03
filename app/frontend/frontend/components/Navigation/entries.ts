@@ -253,7 +253,7 @@ export const TOOLS_ITEMS: NavEntry[] = [
     route: "paint-booth",
     labelKey: "nav.tools.paintBooth",
     icon: "fa-duotone fa-spray-can-sparkles",
-    featureFlag: FeatureFlagName.HOLO_TEXTURED,
+    featureFlag: FeatureFlagName.PAINT_BOOTH,
   },
 ];
 

@@ -28140,6 +28140,7 @@ components:
       - oauth-google
       - oauth-patreon
       - oauth-twitch
+      - paint_booth
       x-enumNames:
       - DRESSING_ROOM
       - FLEET_CONTRACTS
@@ -28161,6 +28162,7 @@ components:
       - OAUTH_GOOGLE
       - OAUTH_PATREON
       - OAUTH_TWITCH
+      - PAINT_BOOTH
       title: FeatureFlagName
     FeatureNamesList:
       type: array

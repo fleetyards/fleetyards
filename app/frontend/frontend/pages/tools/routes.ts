@@ -65,7 +65,7 @@ export const routes: RouteRecordRaw[] = [
     meta: {
       title: "tools.paintBooth",
       backgroundImage: "bg-room",
-      feature: FeatureFlagName.HOLO_TEXTURED,
+      feature: FeatureFlagName.PAINT_BOOTH,
     },
   },
   {
