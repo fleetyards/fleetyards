@@ -76,6 +76,47 @@ const FALLBACK = {
 export const equipmentVocabulary = (equipmentType?: string | null) =>
   VOCABULARY[equipmentType ?? ""] ?? FALLBACK;
 
+type Figure = {
+  value: (item: Equipment) => number | null | undefined;
+  units?: string;
+  // What the figure is shown in, where that differs from what it is stored in.
+  shown?: (value: number) => number;
+};
+
+type Label = { label: (item: Equipment) => string | null | undefined };
+
+// Where each stat is read from: a number, or a label the API already words.
+const SOURCES: Record<EquipmentStatKey, Figure | Label> = {
+  damageReduction: { value: (item) => item.damageReduction, units: "percent" },
+  temperatureRating: { label: (item) => item.temperatureRating },
+  radiationProtection: {
+    value: (item) => item.radiationProtection,
+    units: "rem",
+  },
+  radiationScrubRate: {
+    value: (item) => item.radiationScrubRate,
+    units: "remPerSecond",
+  },
+  gForceTolerance: { value: (item) => item.gForceTolerance },
+  // One column, two meanings: the rounds a magazine holds, or what a suit or
+  // jacket can carry. The parser keeps the figure and drops the unit, which is
+  // not the same across apparel, so none is guessed here.
+  carryingCapacity: { value: (item) => item.storage },
+  magazineSize: { value: (item) => item.storage },
+  rateOfFire: { value: (item) => item.rateOfFire, units: "rateOfFire" },
+  range: { value: (item) => item.range, units: "distance" },
+  weaponClass: { label: (item) => item.weaponClassLabel },
+  coreCompatibility: { label: (item) => item.coreCompatibilityLabel },
+  backpackCompatibility: { label: (item) => item.backpackCompatibilityLabel },
+  // In µSCU, the unit an inventory grid counts in. As SCU a jacket is 0.0087,
+  // which the stat formatter would round to nothing.
+  volume: {
+    value: (item) => item.volume,
+    units: "microScu",
+    shown: (value) => Math.round(value * 1_000_000),
+  },
+};
+
 // One figure of an item, formatted, and the number behind it where there is one.
 export const useEquipmentStatReader = () => {
   const { t, toNumber } = useI18n();
@@ -91,66 +132,22 @@ export const useEquipmentStatReader = () => {
     return units ? t(`number.${units}`, { count: 0 }) : "0";
   };
 
-  const read = (item: Equipment, key: EquipmentStatKey): string | undefined => {
-    switch (key) {
-      case "damageReduction":
-        return figure(item.damageReduction, "percent");
-      case "temperatureRating":
-        return item.temperatureRating || undefined;
-      case "radiationProtection":
-        return figure(item.radiationProtection, "rem");
-      case "radiationScrubRate":
-        return figure(item.radiationScrubRate, "remPerSecond");
-      case "gForceTolerance":
-        return figure(item.gForceTolerance);
-      // One column, two meanings: the rounds a magazine holds, or what a suit
-      // or jacket can carry. The parser keeps the figure and drops the unit,
-      // which is not the same across apparel, so none is guessed here.
-      case "carryingCapacity":
-      case "magazineSize":
-        return figure(item.storage);
-      case "rateOfFire":
-        return figure(item.rateOfFire, "rateOfFire");
-      case "range":
-        return figure(item.range, "distance");
-      case "weaponClass":
-        return item.weaponClassLabel || undefined;
-      case "coreCompatibility":
-        return item.coreCompatibilityLabel || undefined;
-      case "backpackCompatibility":
-        return item.backpackCompatibilityLabel || undefined;
-      // In µSCU, the unit an inventory grid counts in. As SCU a jacket is
-      // 0.0087, which the stat formatter would round to nothing.
-      case "volume":
-        return figure(
-          item.volume == null ? undefined : Math.round(item.volume * 1_000_000),
-          "microScu",
-        );
-    }
+  const raw = (item: Equipment, key: EquipmentStatKey): number | undefined => {
+    const source = SOURCES[key];
+
+    return "value" in source ? (source.value(item) ?? undefined) : undefined;
   };
 
-  const raw = (item: Equipment, key: EquipmentStatKey): number | undefined => {
-    switch (key) {
-      case "damageReduction":
-        return item.damageReduction ?? undefined;
-      case "radiationProtection":
-        return item.radiationProtection ?? undefined;
-      case "radiationScrubRate":
-        return item.radiationScrubRate ?? undefined;
-      case "gForceTolerance":
-        return item.gForceTolerance ?? undefined;
-      case "carryingCapacity":
-      case "magazineSize":
-        return item.storage ?? undefined;
-      case "rateOfFire":
-        return item.rateOfFire ?? undefined;
-      case "range":
-        return item.range ?? undefined;
-      case "volume":
-        return item.volume ?? undefined;
-      default:
-        return undefined;
-    }
+  const read = (item: Equipment, key: EquipmentStatKey): string | undefined => {
+    const source = SOURCES[key];
+    if ("label" in source) return source.label(item) || undefined;
+
+    const value = raw(item, key);
+
+    return figure(
+      value !== undefined && source.shown ? source.shown(value) : value,
+      source.units,
+    );
   };
 
   return { read, raw };
