@@ -466,7 +466,9 @@ describe("ToolsDressingRoomPage", () => {
       textured: true,
     });
 
-    wrapper.findComponent({ name: "HoloViewer" }).vm.$emit("unavailable");
+    const viewer = wrapper.findComponent({ name: "HoloViewer" });
+    viewer.vm.$emit("unavailable", "/body_textured.glb");
+    viewer.vm.$emit("unavailable", "/body_textured.glb");
     await flushPromises();
 
     expect(viewerModel(wrapper)).toMatchObject({

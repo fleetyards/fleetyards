@@ -144,7 +144,7 @@ const props = withDefaults(defineProps<Props>(), {
 // a picture to show instead can switch to it.
 // `loaded` once a model is on screen, for a caller holding a picture until then.
 const emit = defineEmits<{
-  unavailable: [];
+  unavailable: [failed?: string];
   loaded: [];
   mountSelect: [id: string];
   mountPoint: [id: string | undefined];
@@ -781,7 +781,7 @@ const handleRenderError = (error: Error) => {
 
 const handleModelError = (error: unknown) => {
   loading.value = false;
-  emit("unavailable");
+  emit("unavailable", typeof error === "string" ? error : undefined);
 
   console.error(error);
 

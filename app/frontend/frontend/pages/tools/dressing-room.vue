@@ -443,17 +443,19 @@ const pose = computed(() => {
   return holdsRifle && holdable ? RIFLE_HOLD_CLIP : undefined;
 });
 
-const holoUnavailable = () => {
+const holoUnavailable = (failed?: string) => {
   const root = model.value;
   if (!root) return;
 
+  // The loader reports one failed download more than once: by then the root
+  // is the fallback, which has not failed.
+  if (failed && failed !== root.path) return;
+
   // A painted body falls back to the clay one before the figure goes.
-  if (root.rig && root.textured) {
+  if (root.textured) {
     failedPaths.value = [...failedPaths.value, root.path];
   } else if (root.rig) {
     bodyFailed.value = true;
-  } else if (root.textured) {
-    failedPaths.value = [...failedPaths.value, root.path];
   }
 };
 
