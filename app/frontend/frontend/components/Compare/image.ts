@@ -13,3 +13,10 @@ export const compareItemImage = (
   usable(item.media?.angledView) ??
   usable("storeImage" in item ? item.storeImage : undefined) ??
   usable(item.media?.storeImage);
+
+// Only the angled render stands on a transparent ground. A store image is a full
+// picture of its own, which `contain` would letterbox inside the card.
+export const compareItemImageFit = (
+  item: Component | Equipment,
+): "contain" | "cover" =>
+  usable(item.media?.angledView) ? "contain" : "cover";

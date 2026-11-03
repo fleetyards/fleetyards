@@ -2329,7 +2329,8 @@
           "controller": "Lames de vol",
           "seat": "Sièges",
           "thrusters": "Propulseurs",
-          "bombcompartments": "Soutes à bombes"
+          "bombcompartments": "Soutes à bombes",
+          "paints": "Peintures"
         },
         "name": "Nom",
         "category": "Catégorie",

@@ -9,9 +9,9 @@ import { useField, useFieldValue } from "vee-validate";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import FormFileInput from "@/shared/components/base/FormFileInput/index.vue";
 import BtnGroup from "@/shared/components/base/BtnGroup/index.vue";
-import AddonOption from "@/frontend/components/Models/AddonOption/index.vue";
-import type { AddonBadge } from "@/frontend/components/Models/AddonOption/types";
-import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
+import PickerCard, {
+  type PickerCardBadge,
+} from "@/shared/components/PickerCard/index.vue";
 import { AllowedFileTypes } from "@/shared/components/DirectUpload/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import {
@@ -115,13 +115,13 @@ const paintPictures = computed<ModelPaint[]>(() =>
 // tab reads as owned here before the form is saved.
 const ownedPaintIds = useFieldValue<string[] | undefined>("modelPaintIds");
 
-const paintBadges = (paint: ModelPaint): AddonBadge[] =>
+const paintBadges = (paint: ModelPaint): PickerCardBadge[] =>
   ownedPaintIds.value?.includes(paint.id)
     ? [
         {
           key: "owned",
           label: t("labels.vehicleLoadout.owned"),
-          variant: PillVariantsEnum.SUCCESS,
+          primary: true,
         },
       ]
     : [];
@@ -252,15 +252,14 @@ defineExpose({ changes });
         class="vehicle-edit-image__gallery"
         data-test="vehicle-image-gallery-paints"
       >
-        <AddonOption
+        <PickerCard
           :name="t('labels.vehicleOverview.stockPicture')"
           :image="stockImage"
           :selected="picked === null"
-          stacked
-          test-id="vehicle-image-gallery-none"
+          data-test="vehicle-image-gallery-none"
           @toggle="pick(null)"
         />
-        <AddonOption
+        <PickerCard
           v-for="paint in paintPictures"
           :key="`paint-${paint.id}`"
           :name="paint.name"
@@ -269,8 +268,7 @@ defineExpose({ changes });
           "
           :badges="paintBadges(paint)"
           :selected="isPicked(PictureType.MODEL_PAINT, paint.id)"
-          stacked
-          test-id="vehicle-image-gallery-paint"
+          data-test="vehicle-image-gallery-paint"
           @toggle="pick({ type: PictureType.MODEL_PAINT, id: paint.id })"
         />
       </div>
@@ -279,22 +277,20 @@ defineExpose({ changes });
           class="vehicle-edit-image__gallery"
           data-test="vehicle-image-gallery-images"
         >
-          <AddonOption
+          <PickerCard
             :name="t('labels.vehicleOverview.stockPicture')"
             :image="stockImage"
             :selected="picked === null"
-            stacked
-            test-id="vehicle-image-gallery-none"
+            data-test="vehicle-image-gallery-none"
             @toggle="pick(null)"
           />
-          <AddonOption
+          <PickerCard
             v-for="galleryImage in galleryImages"
             :key="galleryImage.id"
             :name="galleryImage.caption || vehicle.model.name"
             :image="galleryImage.smallUrl || galleryImage.url"
             :selected="isPicked(PictureType.IMAGE, galleryImage.id)"
-            stacked
-            test-id="vehicle-image-gallery-choice"
+            data-test="vehicle-image-gallery-choice"
             @toggle="pick({ type: PictureType.IMAGE, id: galleryImage.id })"
           />
         </div>

@@ -2329,7 +2329,8 @@
           "controller": "Flight Blades",
           "seat": "Sitze",
           "thrusters": "Triebwerke",
-          "bombcompartments": "Bombenschächte"
+          "bombcompartments": "Bombenschächte",
+          "paints": "Lackierungen"
         },
         "name": "Name",
         "category": "Kategorie",

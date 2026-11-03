@@ -8,9 +8,6 @@ export default {
 import PickerCard from "@/shared/components/PickerCard/index.vue";
 import { type ModelOption } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
-import { useWebpCheck } from "@/shared/composables/useWebpCheck";
-import fallbackImageJpg from "@/images/fallback/store_image.jpg";
-import fallbackImage from "@/images/fallback/store_image.webp";
 import type { ModelPickerBadge } from "@/frontend/components/Models/PickerModal/types";
 
 type Props = {
@@ -39,18 +36,6 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
-
-const { supported: webpSupported } = useWebpCheck();
-
-const image = computed(() => {
-  const storeImage = props.option.media.storeImage;
-
-  if (storeImage?.mediumUrl) {
-    return storeImage.mediumUrl;
-  }
-
-  return webpSupported.value ? fallbackImage : fallbackImageJpg;
-});
 
 const subtitle = computed(() =>
   [props.option.manufacturer.name, props.option.classificationLabel]
@@ -92,7 +77,7 @@ const badges = computed(() => {
   <PickerCard
     :name="option.name"
     :subtitle="subtitle"
-    :image="image"
+    :image="option.media.storeImage?.mediumUrl"
     :badges="badges"
     :selected="selected"
     :disabled="disabled"
@@ -129,10 +114,9 @@ const badges = computed(() => {
 
 /* ---------- quantity ---------- */
 .model-card__quantity {
-  @apply absolute z-[2] flex items-center;
+  @apply relative z-[2] flex items-center self-end;
   @apply bg-gray-black/90 border-edge rounded-control-bare border;
-  right: 8px;
-  bottom: 8px;
+  margin: 0 8px -8px 0;
 }
 
 .model-card__step {

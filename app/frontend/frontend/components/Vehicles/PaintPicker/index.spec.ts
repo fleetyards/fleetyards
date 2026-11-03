@@ -1,7 +1,20 @@
 import { mountWithDefaults } from "@/shared/utils/TestUtils";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import Component from "./index.vue";
 import type { ModelPaint } from "@/services/fyApi";
+
+// The cards carry a lazy background image, and jsdom has no IntersectionObserver.
+// Per test, since a spec sharing this worker can unstub globals between them.
+beforeEach(() => {
+  vi.stubGlobal(
+    "IntersectionObserver",
+    class {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    },
+  );
+});
 
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@/services/fyApi")>()),
@@ -23,7 +36,7 @@ const choices = (wrapper: Awaited<ReturnType<typeof mount>>) =>
   wrapper.findAll('[data-test="paint-picker-choice"]');
 
 const toggles = (wrapper: Awaited<ReturnType<typeof mount>>) =>
-  wrapper.findAll('[data-test="paint-picker-choice-toggle"]');
+  wrapper.findAll('[data-test="paint-picker-choice"] .picker-card__toggle');
 
 describe("VehiclePaintPicker", () => {
   it("offers every paint of the model", async () => {
@@ -31,7 +44,7 @@ describe("VehiclePaintPicker", () => {
 
     expect(
       choices(wrapper).map((choice) =>
-        choice.find(".addon-option__name").text(),
+        choice.find(".picker-card__name").text(),
       ),
     ).toEqual(["Rust Society", "Stormbringer"]);
   });

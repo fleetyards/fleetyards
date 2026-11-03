@@ -20,6 +20,20 @@ vi.mock("@/shared/components/base/FormFileInput/index.vue", () => ({
 }));
 import { type Vehicle, BoughtViaEnum } from "@/services/fyApi";
 
+// The picture tab's cards carry a lazy background image, and jsdom has no
+// IntersectionObserver. Per test, since a spec sharing this worker can unstub
+// globals between them.
+beforeEach(() => {
+  vi.stubGlobal(
+    "IntersectionObserver",
+    class {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    },
+  );
+});
+
 vi.mock("@/services/fyApi", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@/services/fyApi")>()),
   useVehicleBoughtViaFilters: () => ({

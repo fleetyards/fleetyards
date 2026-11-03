@@ -5,10 +5,10 @@ export default {
 </script>
 
 <script lang="ts" setup>
-import AddonOption from "@/frontend/components/Models/AddonOption/index.vue";
-import type { AddonBadge } from "@/frontend/components/Models/AddonOption/types";
+import PickerCard, {
+  type PickerCardBadge,
+} from "@/shared/components/PickerCard/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
-import { PillVariantsEnum } from "@/shared/components/base/Pill/types";
 import { useI18n } from "@/shared/composables/useI18n";
 import { type ModelPaint, useModelPaints } from "@/services/fyApi";
 
@@ -70,14 +70,13 @@ const owned = (paint: ModelPaint) => props.modelValue.includes(paint.id);
 
 const pledged = (paint: ModelPaint) => props.pledgedIds.includes(paint.id);
 
-const badges = (paint: ModelPaint): AddonBadge[] => {
-  const list: AddonBadge[] = [];
+const badges = (paint: ModelPaint): PickerCardBadge[] => {
+  const list: PickerCardBadge[] = [];
 
   if (pledged(paint)) {
     list.push({
       key: "pledged",
       label: t("labels.vehicle.ownedPaintsSelect.pledged"),
-      variant: PillVariantsEnum.NEUTRAL,
     });
   }
 
@@ -114,15 +113,14 @@ const toggle = (paint: ModelPaint) =>
       clearable
     />
     <div class="paint-picker__grid">
-      <AddonOption
+      <PickerCard
         v-for="paint in visiblePaints"
         :key="paint.id"
         :name="paint.name"
         :image="image(paint)"
         :badges="badges(paint)"
         :selected="owned(paint)"
-        stacked
-        test-id="paint-picker-choice"
+        data-test="paint-picker-choice"
         @toggle="toggle(paint)"
       />
 
