@@ -77,4 +77,4 @@ Working plan for #6129. Decisions live in the issue body. Deleted before the PR 
 - [x] Phase 3 — Equipment compare
 - [x] Phase 4 — Share image
 - [x] Phase 5 — Routes, i18n, tests
-- [x] Compare tabs: `/compare/` is a tab page over ships, components and equipment
+- [x] Compare switch: a segmented control beside the add button, over the ships, components and equipment children of `/compare/`
