@@ -171,6 +171,8 @@ const submitSetEmail = async () => {
     .then(() => {
       submitting.value = false;
 
+      newEmail.value = "";
+
       comlink.emit("user-update");
 
       displaySuccess({
@@ -231,6 +233,21 @@ const verifyConfirmAccessCode = async () => {
           <div class="set-email">
             <h1>{{ t("headlines.setEmail") }}</h1>
             <p>{{ t("texts.setEmail") }}</p>
+
+            <template v-if="sessionStore.currentUser?.unconfirmedEmail">
+              <p data-test="set-email-pending">
+                {{ t("messages.setEmail.success") }}
+              </p>
+
+              <FormInput
+                :model-value="sessionStore.currentUser.unconfirmedEmail"
+                name="unconfirmedEmail"
+                :type="InputTypesEnum.EMAIL"
+                :disabled="true"
+                :label="t('labels.user.unconfirmedEmail')"
+                :no-placeholder="true"
+              />
+            </template>
 
             <form @submit.prevent="submitSetEmail">
               <FormInput
