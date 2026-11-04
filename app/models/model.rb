@@ -956,6 +956,15 @@ class Model < ApplicationRecord
     where(id: ActiveStorage::Attachment.where(record_type: name, name: TEXTURED_HOLO_ATTACHMENT_NAMES).select(:record_id))
   }
 
+  # The views the chart takes a ship's size from, without which it cannot draw it.
+  FLEETCHART_SIZING_ATTACHMENT_NAMES = %w[
+    angled_view angled_view_colored port_view port_view_colored top_view top_view_colored
+  ].freeze
+
+  scope :has_fleetchart_views, -> {
+    where(id: ActiveStorage::Attachment.where(record_type: name, name: FLEETCHART_SIZING_ATTACHMENT_NAMES).select(:record_id))
+  }
+
   # Any of the keys, as `classification_in` matches any of its values. Named
   # after the field it replaces, so `focusIn` keeps meaning what it always did,
   # and a focus as a link from before the keys words it ("Heavy Fighter") is
@@ -971,7 +980,7 @@ class Model < ApplicationRecord
   end
 
   def self.ransackable_scopes(auth_object = nil)
-    ["dimensions_drifted", "sold_at_shop", "focus_in", "ccu_target"]
+    ["dimensions_drifted", "sold_at_shop", "focus_in", "ccu_target", "has_fleetchart_views"]
   end
 
   # A ship offers a berth either because one is built into it or because a

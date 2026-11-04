@@ -4,10 +4,15 @@ import AddShips from "./index.vue";
 
 const models = ref<{ items: unknown[] }>({ items: [] });
 const views = vi.fn();
-const lastParams = ref<{ q: { searchCont?: string } }>();
+type Params = {
+  perPage: string;
+  q: { hasFleetchartViews?: boolean; searchCont?: string };
+};
+
+const lastParams = ref<Params>();
 
 vi.mock("@/services/fyApi", () => ({
-  useModels: (params: { value: { q: { searchCont?: string } } }) => {
+  useModels: (params: { value: Params }) => {
     watchEffect(() => {
       lastParams.value = params.value;
     });
@@ -88,6 +93,23 @@ describe("FleetchartCanvasAddShips", () => {
       .trigger("click");
 
     expect(wrapper.emitted("add")?.[0][0]).toMatchObject({ slug: "hornet" });
+  });
+
+  it("asks only for ships with pictures, and can load more of them", async () => {
+    models.value = {
+      items: Array.from({ length: 20 }, (_, index) => ship(`ship-${index}`)),
+    };
+
+    const wrapper = await mountPanel();
+
+    expect(lastParams.value?.q.hasFleetchartViews).toBe(true);
+    expect(lastParams.value?.perPage).toBe("20");
+
+    await wrapper
+      .get("[data-test='fleetchart-add-ships-more']")
+      .trigger("click");
+
+    expect(lastParams.value?.perPage).toBe("40");
   });
 
   it("says so when nothing was found", async () => {

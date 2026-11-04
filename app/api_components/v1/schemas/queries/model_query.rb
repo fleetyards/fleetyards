@@ -35,6 +35,7 @@ module V1
             ingameOnlyEq: {type: :boolean},
             onSaleEq: {type: :boolean},
             playerOwnableEq: {type: :boolean},
+            hasFleetchartViews: {type: :boolean, description: "Ships a fleetchart can size and draw"},
             ccuTarget: {type: :boolean, description: "Ships RSI sells upgrades into, today or during sales"},
             plannable: {type: :boolean, description: "Ships a hangar plan can get: sold on the store at a price, earned in game, or held or bought back by the signed-in user"},
             pledgePriceGt: {type: :number},

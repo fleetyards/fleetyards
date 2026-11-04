@@ -44028,6 +44028,9 @@ components:
           type: boolean
         playerOwnableEq:
           type: boolean
+        hasFleetchartViews:
+          type: boolean
+          description: Ships a fleetchart can size and draw
         ccuTarget:
           type: boolean
           description: Ships RSI sells upgrades into, today or during sales

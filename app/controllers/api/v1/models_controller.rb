@@ -585,7 +585,7 @@ module Api
         @model_query_params ||= params.permit(
           q: [
             :name_cont, :name_eq, :slug_eq, :description_cont, :name_or_description_cont, :on_sale_eq,
-            :ingame_only_eq, :player_ownable_eq, :ccu_target, :sold_at_shop,
+            :ingame_only_eq, :player_ownable_eq, :ccu_target, :has_fleetchart_views, :sold_at_shop,
             :s, :sorts, :length_gteq, :length_lteq, :cargo_gteq, :cargo_lteq, :beam_gteq, :beam_lteq, :height_gteq, :height_lteq,
             :price_gteq, :price_lteq, :pledge_price_gt, :pledge_price_gteq, :pledge_price_lteq, :search_cont,
             :with_dock, :with_cargo, :with_cargo_grids, :with_textured_holo, :in_hangar, :plannable, :in_game_eq,

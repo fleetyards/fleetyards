@@ -19,7 +19,9 @@ import { useModels, type Model } from "@/services/fyApi";
 import { useI18n } from "@/shared/composables/useI18n";
 import { FleetchartViewpoints } from "@/shared/stores/fleetchart";
 
-const RESULTS = "20";
+const RESULTS_STEP = 20;
+// The most models one request returns.
+const MAX_RESULTS = 240;
 const SEARCH_DELAY = 300;
 
 const emit = defineEmits<{ add: [model: Model] }>();
@@ -30,8 +32,11 @@ const search = ref("");
 
 const query = ref("");
 
+const results = ref(RESULTS_STEP);
+
 const applySearch = debounce((value: string) => {
   query.value = value.trim();
+  results.value = RESULTS_STEP;
 }, SEARCH_DELAY);
 
 watch(search, applySearch);
@@ -42,8 +47,8 @@ onBeforeUnmount(() => {
 
 const { data: models, isFetching } = useModels(
   computed(() => ({
-    perPage: RESULTS,
-    q: { searchCont: query.value || undefined },
+    perPage: String(results.value),
+    q: { hasFleetchartViews: true, searchCont: query.value || undefined },
   })),
   { query: { placeholderData: keepPreviousData } },
 );
@@ -53,7 +58,8 @@ const { viewsFor, loading } = useFleetchartViews(
   true,
 );
 
-// Only ships the chart can draw: adding one without pictures would do nothing.
+// The search already asks for ships with pictures, but only the chart's own check
+// knows whether it can draw them.
 const ships = computed(() =>
   (models.value?.items ?? []).flatMap((model) => {
     const entry = {
@@ -61,7 +67,7 @@ const ships = computed(() =>
       media: { ...model.media, ...viewsFor(model.slug) },
     };
 
-    if (!shipGeometry(entry, FleetchartViewpoints.PORT)) {
+    if (!shipGeometry(entry, FleetchartViewpoints.PORT, { colored: true })) {
       return [];
     }
 
@@ -76,6 +82,16 @@ const ships = computed(() =>
     ];
   }),
 );
+
+const hasMore = computed(
+  () =>
+    (models.value?.items.length ?? 0) >= results.value &&
+    results.value < MAX_RESULTS,
+);
+
+const showMore = () => {
+  results.value = Math.min(results.value + RESULTS_STEP, MAX_RESULTS);
+};
 
 const searching = computed(() => isFetching.value || loading.value);
 </script>
@@ -118,8 +134,17 @@ const searching = computed(() => isFetching.value || loading.value);
       </li>
     </ul>
 
+    <Btn
+      v-if="hasMore"
+      variant="bare"
+      data-test="fleetchart-add-ships-more"
+      @click="showMore"
+    >
+      {{ t("actions.loadMore") }}
+    </Btn>
+
     <p
-      v-else-if="!searching"
+      v-if="!ships.length && !searching"
       class="fleetchart-canvas-add-ships__hint"
       data-test="fleetchart-add-ships-empty"
     >

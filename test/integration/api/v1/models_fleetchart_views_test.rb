@@ -68,6 +68,21 @@ class Api::V1::ModelsFleetchartViewsTest < ActionDispatch::IntegrationTest
     assert response.parsed_body.first.dig("media", "rearView", "url").present?
   end
 
+  test "GET /models can ask for only the ships a fleetchart can draw" do
+    png = Base64.decode64("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==")
+    drawable = create(:model)
+    only_rear = create(:model)
+    create(:model)
+
+    drawable.port_view.attach(io: StringIO.new(png), filename: "port.png", content_type: "image/png")
+    only_rear.rear_view.attach(io: StringIO.new(png), filename: "rear.png", content_type: "image/png")
+
+    get "/api/v1/models", params: {q: {hasFleetchartViews: true}}
+
+    assert_response :success
+    assert_equal [drawable.id], response.parsed_body["items"].map { |model| model["id"] }
+  end
+
   test "GET /models/fleetchart-views caps how many slugs it answers" do
     models = create_list(:model, 3)
 
