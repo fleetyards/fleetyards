@@ -127,7 +127,11 @@ const arrangingFleetchart = computed(
     fleetchartStore.fleetchartLayout("hangar") === FleetchartLayouts.FREE,
 );
 
-const { data: wholeHangar, isSuccess: wholeHangarLoaded } = useHangarQuery(
+const {
+  data: wholeHangar,
+  isSuccess: wholeHangarLoaded,
+  refetch: refetchWholeHangar,
+} = useHangarQuery(
   computed(() => ({ perPage: "all", q: getQuery() })),
   { query: { enabled: arrangingFleetchart } },
 );
@@ -150,6 +154,11 @@ const {
 
 const fetch = async () => {
   await refetch();
+
+  if (arrangingFleetchart.value) {
+    await refetchWholeHangar();
+  }
+
   await refetchStats();
   await refetchGroups();
 };
