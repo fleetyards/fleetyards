@@ -9,6 +9,7 @@ import { useQueryClient } from "@tanstack/vue-query";
 import Btn from "@/shared/components/base/Btn/index.vue";
 import BtnConfirm from "@/shared/components/base/BtnConfirm/index.vue";
 import FormInput from "@/shared/components/base/FormInput/index.vue";
+import FormInputGroup from "@/shared/components/base/FormInputGroup/index.vue";
 import ShareBtn from "@/frontend/components/ShareBtn/index.vue";
 import { useAppNotifications } from "@/shared/composables/useAppNotifications";
 import { useI18n } from "@/shared/composables/useI18n";
@@ -109,25 +110,27 @@ const shareUrl = (token: string) => {
     :aria-label="t('labels.fleetchartApp.savedLayouts')"
     data-test="fleetchart-saved-layouts-panel"
   >
-    <form class="fleetchart-canvas-saved-layouts__new" @submit.prevent="save">
-      <FormInput
-        v-model="name"
-        name="fleetchart-layout-name"
-        :label="t('labels.fleetchartApp.layoutName')"
-        no-label
-        :placeholder="t('labels.fleetchartApp.layoutName')"
-      />
-      <Btn
-        type="submit"
-        :disabled="!name.trim()"
-        :loading="createLayout.isPending.value"
-        data-test="fleetchart-save-layout"
-      >
-        {{ t("labels.fleetchartApp.saveLayout") }}
-      </Btn>
+    <form @submit.prevent="save">
+      <FormInputGroup inline>
+        <FormInput
+          v-model="name"
+          name="fleetchart-layout-name"
+          :label="t('labels.fleetchartApp.layoutName')"
+          no-label
+          :placeholder="t('labels.fleetchartApp.layoutName')"
+        />
+        <Btn
+          type="submit"
+          :disabled="!name.trim()"
+          :loading="createLayout.isPending.value"
+          data-test="fleetchart-save-layout"
+        >
+          {{ t("labels.fleetchartApp.saveLayout") }}
+        </Btn>
+      </FormInputGroup>
     </form>
 
-    <ul class="fleetchart-canvas-saved-layouts__list">
+    <ul v-if="layouts?.length" class="fleetchart-canvas-saved-layouts__list">
       <li
         v-for="layout in layouts"
         :key="layout.id"

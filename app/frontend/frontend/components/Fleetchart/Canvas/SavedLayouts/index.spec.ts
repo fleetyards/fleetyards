@@ -80,6 +80,7 @@ const mountPanel = () =>
           props: ["disabled"],
           template: "<button :disabled='disabled'><slot /></button>",
         },
+        FormInputGroup: { template: "<div><slot /></div>" },
         BtnConfirm: {
           emits: ["confirm"],
           template: "<button @click=\"$emit('confirm')\"><slot /></button>",
